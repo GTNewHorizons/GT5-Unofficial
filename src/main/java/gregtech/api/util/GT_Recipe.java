@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -205,10 +204,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         reloadOwner();
     }
 
-    public GT_Recipe(ItemStack aInput1, ItemStack aOutput1, int aFuelValue, int aType) {
-        this(aInput1, aOutput1, null, null, null, aFuelValue, aType);
-    }
-
     private static FluidStack[] tryGetFluidInputsFromCells(ItemStack aInput) {
         FluidStack tFluid = GT_Utility.getFluidForFilledItem(aInput, true);
         return tFluid == null ? null : new FluidStack[] { tFluid };
@@ -257,184 +252,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         }
     }
 
-    public GT_Recipe(FluidStack aInput1, FluidStack aInput2, FluidStack aOutput1, int aDuration, int aEUt,
-        int aSpecialValue) {
-        this(
-            true,
-            null,
-            null,
-            null,
-            null,
-            new FluidStack[] { aInput1, aInput2 },
-            new FluidStack[] { aOutput1 },
-            Math.max(aDuration, 1),
-            aEUt,
-            Math.max(Math.min(aSpecialValue, 160000000), 0));
-        if (mInputs.length > 1) {
-            RecipeMaps.fusionRecipes.addRecipe(this);
-        }
-    }
-
-    public GT_Recipe(ItemStack aInput1, ItemStack aOutput1, ItemStack aOutput2, int aDuration, int aEUt) {
-        this(
-            true,
-            new ItemStack[] { aInput1 },
-            new ItemStack[] { aOutput1, aOutput2 },
-            null,
-            null,
-            null,
-            null,
-            aDuration,
-            aEUt,
-            0);
-        if (mInputs.length > 0 && mOutputs[0] != null) {
-            RecipeMaps.latheRecipes.addRecipe(this);
-        }
-    }
-
-    public GT_Recipe(ItemStack aInput1, int aCellAmount, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3,
-        ItemStack aOutput4, int aDuration, int aEUt) {
-        this(
-            true,
-            new ItemStack[] { aInput1,
-                aCellAmount > 0 ? ItemList.Cell_Empty.get(Math.min(64, Math.max(1, aCellAmount))) : null },
-            new ItemStack[] { aOutput1, aOutput2, aOutput3, aOutput4 },
-            null,
-            null,
-            null,
-            null,
-            Math.max(aDuration, 1),
-            Math.max(aEUt, 1),
-            0);
-        if (mInputs.length > 0 && mOutputs[0] != null) {
-            RecipeMaps.distillationRecipes.addRecipe(this);
-        }
-    }
-
-    public GT_Recipe(ItemStack aInput1, int aInput2, ItemStack aOutput1, ItemStack aOutput2) {
-        this(
-            true,
-            new ItemStack[] { aInput1,
-                GT_ModHandler.getIC2Item(
-                    "industrialTnt",
-                    aInput2 > 0 ? Math.min(aInput2, 64) : 1,
-                    new ItemStack(Blocks.tnt, aInput2 > 0 ? Math.min(aInput2, 64) : 1)) },
-            new ItemStack[] { aOutput1, aOutput2 },
-            null,
-            null,
-            null,
-            null,
-            20,
-            30,
-            0);
-        if (mInputs.length > 0 && mOutputs[0] != null) {
-            RecipeMaps.implosionRecipes.addRecipe(this);
-        }
-    }
-
-    public GT_Recipe(int aEUt, int aDuration, ItemStack aInput1, ItemStack aOutput1) {
-        this(
-            true,
-            new ItemStack[] { aInput1, ItemList.Circuit_Integrated.getWithDamage(0, aInput1.stackSize) },
-            new ItemStack[] { aOutput1 },
-            null,
-            null,
-            null,
-            null,
-            Math.max(aDuration, 1),
-            Math.max(aEUt, 1),
-            0);
-        if (mInputs.length > 0 && mOutputs[0] != null) {
-            RecipeMaps.benderRecipes.addRecipe(this);
-        }
-    }
-
-    public GT_Recipe(ItemStack aInput1, ItemStack aInput2, int aEUt, int aDuration, ItemStack aOutput1) {
-        this(
-            true,
-            aInput2 == null ? new ItemStack[] { aInput1 } : new ItemStack[] { aInput1, aInput2 },
-            new ItemStack[] { aOutput1 },
-            null,
-            null,
-            null,
-            null,
-            Math.max(aDuration, 1),
-            Math.max(aEUt, 1),
-            0);
-        if (mInputs.length > 0 && mOutputs[0] != null) {
-            RecipeMaps.alloySmelterRecipes.addRecipe(this);
-        }
-    }
-
-    public GT_Recipe(ItemStack aInput1, int aEUt, ItemStack aInput2, int aDuration, ItemStack aOutput1,
-        ItemStack aOutput2) {
-        this(
-            true,
-            aInput2 == null ? new ItemStack[] { aInput1 } : new ItemStack[] { aInput1, aInput2 },
-            new ItemStack[] { aOutput1, aOutput2 },
-            null,
-            null,
-            null,
-            null,
-            Math.max(aDuration, 1),
-            Math.max(aEUt, 1),
-            0);
-        if (mInputs.length > 0 && mOutputs[0] != null) {
-            RecipeMaps.cannerRecipes.addRecipe(this);
-        }
-    }
-
-    public GT_Recipe(ItemStack aInput1, ItemStack aOutput1, int aDuration) {
-        this(
-            true,
-            new ItemStack[] { aInput1 },
-            new ItemStack[] { aOutput1 },
-            null,
-            null,
-            null,
-            null,
-            Math.max(aDuration, 1),
-            120,
-            0);
-        if (mInputs.length > 0 && mOutputs[0] != null) {
-            RecipeMaps.vacuumRecipes.addRecipe(this);
-        }
-    }
-
-    public GT_Recipe(ItemStack aInput1, ItemStack aOutput1, int aDuration, int aEUt, int VACUUM) {
-        this(
-            true,
-            new ItemStack[] { aInput1 },
-            new ItemStack[] { aOutput1 },
-            null,
-            null,
-            null,
-            null,
-            Math.max(aDuration, 1),
-            aEUt,
-            0);
-        if (mInputs.length > 0 && mOutputs[0] != null) {
-            RecipeMaps.vacuumRecipes.addRecipe(this);
-        }
-    }
-
-    public GT_Recipe(FluidStack aInput1, FluidStack aOutput1, int aDuration, int aEUt) {
-        this(
-            false,
-            null,
-            null,
-            null,
-            null,
-            new FluidStack[] { aInput1 },
-            new FluidStack[] { aOutput1 },
-            Math.max(aDuration, 1),
-            aEUt,
-            0);
-        if (mFluidInputs.length > 0 && mFluidOutputs[0] != null) {
-            RecipeMaps.vacuumRecipes.addRecipe(this);
-        }
-    }
-
     // Dummy GT_Recipe maker...
     public GT_Recipe(ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems, int[] aChances,
         FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
@@ -455,10 +272,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         GT_Log.out.println("GT_Mod: Re-Unificating Recipes.");
         for (RecipeMap tMapEntry : RecipeMap.sMappings) tMapEntry.reInit();
     }
-
-    // -----
-    // Old Constructors, do not use!
-    // -----
 
     public ItemStack getRepresentativeInput(int aIndex) {
         if (aIndex < 0 || aIndex >= mInputs.length) return null;

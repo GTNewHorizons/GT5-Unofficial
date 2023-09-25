@@ -755,7 +755,17 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         if ((aDuration = GregTech_API.sRecipeFile.get("canning", aInput1, aDuration)) <= 0) {
             return false;
         }
-        new GT_Recipe(aInput1, aEUt, aInput2, aDuration, aOutput1, aOutput2);
+        RecipeMaps.cannerRecipes.addRecipe(
+            true,
+            aInput2 == null ? new ItemStack[] { aInput1 } : new ItemStack[] { aInput1, aInput2 },
+            new ItemStack[] { aOutput1, aOutput2 },
+            null,
+            null,
+            null,
+            null,
+            aDuration,
+            Math.max(aEUt, 1),
+            0);
         return true;
     }
 
@@ -781,10 +791,21 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
             <= 0) {
             return false;
         }
-        GT_Recipe tRecipe = new GT_Recipe(aInput1, aInput2, aEUt, aDuration, aOutput1);
+        GT_Recipe tRecipe = new GT_Recipe(
+            true,
+            aInput2 == null ? new ItemStack[] { aInput1 } : new ItemStack[] { aInput1, aInput2 },
+            new ItemStack[] { aOutput1 },
+            null,
+            null,
+            null,
+            null,
+            aDuration,
+            Math.max(aEUt, 1),
+            0);
         if (hidden) {
             tRecipe.mHidden = true;
         }
+        RecipeMaps.alloySmelterRecipes.addRecipe(tRecipe);
         return true;
     }
 
@@ -806,7 +827,17 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         if ((aDuration = GregTech_API.sRecipeFile.get("lathe", aInput1, aDuration)) <= 0) {
             return false;
         }
-        new GT_Recipe(aInput1, aOutput1, aOutput2, aDuration, aEUt);
+        RecipeMaps.latheRecipes.addRecipe(
+            true,
+            new ItemStack[] { aInput1 },
+            new ItemStack[] { aOutput1, aOutput2 },
+            null,
+            null,
+            null,
+            null,
+            aDuration,
+            aEUt,
+            0);
         return true;
     }
 
@@ -1167,7 +1198,17 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         if ((aDuration = GregTech_API.sRecipeFile.get("bender", aInput1, aDuration)) <= 0) {
             return false;
         }
-        new GT_Recipe(aEUt, aDuration, aInput1, aOutput1);
+        RecipeMaps.benderRecipes.addRecipe(
+            true,
+            new ItemStack[] { aInput1, ItemList.Circuit_Integrated.getWithDamage(0, aInput1.stackSize) },
+            new ItemStack[] { aOutput1 },
+            null,
+            null,
+            null,
+            null,
+            aDuration,
+            Math.max(aEUt, 1),
+            0);
         return true;
     }
 
@@ -1438,7 +1479,16 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         if ((aDuration = GregTech_API.sRecipeFile.get("vacuumfreezer", aInput1, aDuration)) <= 0) {
             return false;
         }
-        new GT_Recipe(aInput1, aOutput1, aDuration, aEUt, 0); // Since all other methods are taken
+        RecipeMaps.vacuumRecipes.addRecipe(
+            false,
+            new ItemStack[] { aInput1 },
+            new ItemStack[] { aOutput1 },
+            null,
+            null,
+            null,
+            aDuration,
+            aEUt,
+            0);
         FluidStack tInputFluid = GT_Utility.getFluidForFilledItem(aInput1, true);
         FluidStack tOutputFluid = GT_Utility.getFluidForFilledItem(aOutput1, true);
         if (tInputFluid != null && tOutputFluid != null) {
@@ -1456,7 +1506,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         if ((aDuration = GregTech_API.sRecipeFile.get("vacuumfreezer", aInput1, aDuration)) <= 0) {
             return false;
         }
-        new GT_Recipe(aInput1, aOutput1, aDuration);
+        addVacuumFreezerRecipe(aInput1, aOutput1, aDuration, 120);
         FluidStack tInputFluid = GT_Utility.getFluidForFilledItem(aInput1, true);
         FluidStack tOutputFluid = GT_Utility.getFluidForFilledItem(aOutput1, true);
         if (tInputFluid != null && tOutputFluid != null) {
@@ -1471,8 +1521,16 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         if ((aInput1 == null) || (aOutput1 == null)) {
             return false;
         }
-
-        new GT_Recipe(aInput1, aOutput1, aDuration, aEUt);
+        RecipeMaps.vacuumRecipes.addRecipe(
+            false,
+            null,
+            null,
+            null,
+            new FluidStack[] { aInput1 },
+            new FluidStack[] { aOutput1 },
+            Math.max(1, aDuration),
+            aEUt,
+            0);
         return true;
     }
 
@@ -1506,7 +1564,14 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         if (aInput1 == null) {
             return false;
         }
-        new GT_Recipe(aInput1, aOutput1, GregTech_API.sRecipeFile.get("fuel_" + aType, aInput1, aEU), aType);
+        new GT_Recipe(
+            aInput1,
+            aOutput1,
+            null,
+            null,
+            null,
+            GregTech_API.sRecipeFile.get("fuel_" + aType, aInput1, aEU),
+            aType);
         return true;
     }
 
