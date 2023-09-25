@@ -78,18 +78,6 @@ public class GT_RecipeConstants {
         .create(Object.class, "oredict_input");
 
     /**
-     * Add fusion recipes. Dispatcher between complex fusion (which accepts arbitrarily many input/outputs) and classic
-     * fusion (2 in 1 out).
-     */
-    public static final IGT_RecipeMap Fusion = IGT_RecipeMap.newRecipeMap(builder -> {
-        if (GT_Utility.isArrayEmptyOrNull(builder.getFluidInputs())
-            || GT_Utility.isArrayEmptyOrNull(builder.getFluidOutputs())) return Collections.emptyList();
-        if (builder.getFluidInputs().length > 2 || builder.getFluidOutputs().length > 2)
-            return GT_Recipe_Map.sComplexFusionRecipes.doAdd(builder);
-        return GT_Recipe_Map.sFusionRecipes.doAdd(builder);
-    });
-
-    /**
      * Add a arc furnace recipe. Adds to both normal arc furnace and plasma arc furnace.
      * Will override the fluid input with oxygen/plasma for the respective recipe maps, so there is no point setting it.
      */

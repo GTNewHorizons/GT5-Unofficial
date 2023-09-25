@@ -810,25 +810,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         this.neiDesc = neiDesc;
     }
 
-    /**
-     * Use {@link GT_Recipe_Map#getItemInputPositions} or {@link GT_Recipe_Map#getSpecialItemPosition} or
-     * {@link GT_Recipe_Map#getFluidInputPositions} instead
-     */
-    @SuppressWarnings("DeprecatedIsStillUsed")
-    @Deprecated
-    public ArrayList<PositionedStack> getInputPositionedStacks() {
-        return null;
-    }
-
-    /**
-     * Use {@link GT_Recipe_Map#getItemOutputPositions} or {@link GT_Recipe_Map#getFluidOutputPositions} instead
-     */
-    @SuppressWarnings("DeprecatedIsStillUsed")
-    @Deprecated
-    public ArrayList<PositionedStack> getOutputPositionedStacks() {
-        return null;
-    }
-
     public void reloadOwner() {
         setOwner(
             Loader.instance()
@@ -1278,23 +1259,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             true).setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_DUST)
                 .setSlotOverlay(false, true, GT_UITextures.OVERLAY_SLOT_CRUSHED_ORE)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_MACERATE, ProgressBar.Direction.RIGHT);
-        @Deprecated
-        public static final GT_Recipe_Map sByProductList = new GT_Recipe_Map(
-            new HashSet<>(1000),
-            "gt.recipe.byproductlist",
-            "Ore Byproduct List",
-            null,
-            GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "Default"),
-            1,
-            6,
-            1,
-            0,
-            1,
-            E,
-            1,
-            E,
-            true,
-            false).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
         public static final GT_Recipe_Map sReplicatorFakeRecipes = new ReplicatorFakeMap(
             new HashSet<>(100),
             "gt.recipe.replicator",
@@ -1793,9 +1757,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             true).setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_BOXED)
                 .setRecipeConfigFile("unboxing", FIRST_ITEM_OUTPUT)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
-        /**
-         * Usually, but not always, you should use {@link GT_RecipeConstants#Fusion} instead.
-         */
         public static final GT_Recipe_Map sFusionRecipes = new GT_Recipe_Map_FluidOnly(
             new HashSet<>(50),
             "gt.recipe.fusionreactor",
@@ -1817,31 +1778,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 .setRecipeConfigFile("fusion", FIRST_FLUID_OUTPUT)
                 .setDisableOptimize(true)
                 .setNEISpecialInfoFormatter(FusionSpecialValueFormatter.INSTANCE);
-        /**
-         * Usually, but not always, you should use {@link GT_RecipeConstants#Fusion} instead.
-         */
-        public static final GT_Recipe_Map sComplexFusionRecipes = new GT_Recipe_Map_ComplexFusion(
-            new HashSet<>(50),
-            "gt.recipe.complexfusionreactor",
-            "Complex Fusion Reactor",
-            null,
-            GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "ComplexFusionReactor"),
-            3,
-            0,
-            0,
-            2,
-            1,
-            "Start: ",
-            1,
-            " EU",
-            true,
-            true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
-                .setUsualFluidInputCount(16)
-                .setUsualFluidOutputCount(16)
-                .setNEITransferRect(new Rectangle(79, 34, 18, 18))
-                .setLogoPos(80, 61)
-                .setNEISpecialInfoFormatter(FusionSpecialValueFormatter.INSTANCE)
-                .setDisableOptimize(true);
         public static final GT_Recipe_Map sCentrifugeRecipes = new GT_Recipe_Map(
             new HashSet<>(1200),
             "gt.recipe.centrifuge",
@@ -2376,11 +2312,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         new GT_Recipe_Map_OilCracker().setRecipeConfigFile("cracking", FIRST_FLUIDSTACK_INPUT)
             .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE, ProgressBar.Direction.RIGHT)
             .setUsualFluidInputCount(2);
-        /**
-         * @deprecated Use sCrackingRecipes instead
-         */
-        @Deprecated
-        public static final GT_Recipe_Map sCrakingRecipes = sCrackingRecipes;
 
         public static final GT_Recipe_Map sPyrolyseRecipes = new GT_Recipe_Map(
             new HashSet<>(150),
@@ -2529,23 +2460,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 .setRecipeConfigFile("canning", FIRST_ITEM_INPUT)
                 .setSlotOverlay(false, false, false, GT_UITextures.OVERLAY_SLOT_CANISTER)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_CANNER, ProgressBar.Direction.RIGHT);
-        @Deprecated
-        public static final GT_Recipe_Map sCNCRecipes = new GT_Recipe_Map(
-            new HashSet<>(100),
-            "gt.recipe.cncmachine",
-            "CNC Machine",
-            null,
-            GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "Default"),
-            2,
-            1,
-            2,
-            1,
-            1,
-            E,
-            1,
-            E,
-            true,
-            true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
         public static final GT_Recipe_Map sLatheRecipes = new GT_Recipe_Map(
             new HashSet<>(1150),
             "gt.recipe.lathe",
@@ -3204,10 +3118,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         private INEISpecialInfoFormatter neiSpecialInfoFormatter;
 
         private final boolean checkForCollision = true;
-        private boolean allowNoInput;
-        private boolean allowNoInputFluid;
-        private boolean allowNoOutput;
-        private boolean allowNoOutputFluid;
         private boolean disableOptimize = false;
         private Function<? super GT_RecipeBuilder, ? extends Iterable<? extends GT_Recipe>> recipeEmitter = this::defaultBuildRecipe;
         private Function<? super GT_Recipe, ? extends GT_Recipe> specialHandler;
@@ -3281,31 +3191,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             colorOverride = GT_GUIColorOverride.get(ModularUITextures.VANILLA_BACKGROUND.location);
             if (sIndexedMappings.put(mUniqueIdentifier, this) != null)
                 throw new IllegalArgumentException("Duplicate recipe map registered: " + mUniqueIdentifier);
-        }
-
-        @Deprecated
-        public GT_Recipe_Map(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName, String aLocalName,
-            String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount, int aMinimalInputItems,
-            int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre, int aNEISpecialValueMultiplier,
-            String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI, boolean aNEIAllowed,
-            boolean aNEIUnificateOutput) {
-            this(
-                aRecipeList,
-                aUnlocalizedName,
-                aLocalName,
-                aNEIName,
-                aNEIGUIPath,
-                aUsualInputCount,
-                aUsualOutputCount,
-                aMinimalInputItems,
-                aMinimalInputFluids,
-                aAmperage,
-                aNEISpecialValuePre,
-                aNEISpecialValueMultiplier,
-                aNEISpecialValuePost,
-                aShowVoltageAmperageInNEI,
-                aNEIAllowed);
-            setNEIUnificateOutput(aNEIUnificateOutput);
         }
 
         public GT_Recipe_Map setDisableOptimize(boolean disableOptimize) {
@@ -4600,23 +4485,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 power = new UnspecifiedEUPower((byte) 1, mAmperage);
             }
             return power;
-        }
-
-        /**
-         * Use {@link #getItemInputPositions} or {@link #getSpecialItemPosition} or {@link #getFluidInputPositions}
-         * instead
-         */
-        @Deprecated
-        public ArrayList<PositionedStack> getInputPositionedStacks(GT_Recipe recipe) {
-            return null;
-        }
-
-        /**
-         * Use {@link #getItemOutputPositions} or {@link #getFluidOutputPositions} instead
-         */
-        @Deprecated
-        public ArrayList<PositionedStack> getOutputPositionedStacks(GT_Recipe recipe) {
-            return null;
         }
 
         public void addRecipe(Object o, FluidStack[] fluidInputArray, FluidStack[] fluidOutputArray) {}
@@ -6338,62 +6206,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     ai.get(),
                     aEUt,
                     aSpecialValue));
-        }
-    }
-
-    public static class GT_Recipe_Map_ComplexFusion extends GT_Recipe_Map {
-
-        public GT_Recipe_Map_ComplexFusion(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName,
-            String aLocalName, String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount,
-            int aMinimalInputItems, int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre,
-            int aNEISpecialValueMultiplier, String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI,
-            boolean aNEIAllowed) {
-            super(
-                aRecipeList,
-                aUnlocalizedName,
-                aLocalName,
-                aNEIName,
-                aNEIGUIPath,
-                aUsualInputCount,
-                aUsualOutputCount,
-                aMinimalInputItems,
-                aMinimalInputFluids,
-                aAmperage,
-                aNEISpecialValuePre,
-                aNEISpecialValueMultiplier,
-                aNEISpecialValuePost,
-                aShowVoltageAmperageInNEI,
-                aNEIAllowed);
-        }
-
-        @Override
-        public GT_Recipe addRecipe(int[] aOutputChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs,
-            int aDuration, int aEUt, int aSpecialValue) {
-            return addRecipe(
-                new GT_Recipe(
-                    false,
-                    null,
-                    null,
-                    null,
-                    aOutputChances,
-                    aFluidInputs,
-                    aFluidOutputs,
-                    aDuration,
-                    aEUt,
-                    aSpecialValue),
-                false,
-                false,
-                false);
-        }
-
-        @Override
-        public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
-            return UIHelper.getGridPositions(fluidInputCount, 7, 9, 4);
-        }
-
-        @Override
-        public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
-            return UIHelper.getGridPositions(fluidOutputCount, 97, 9, 4);
         }
     }
 

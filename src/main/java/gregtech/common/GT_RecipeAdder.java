@@ -80,19 +80,6 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
 
         if (FluidOutputArray.length == 0) return false;
 
-        // If the recipe has more than 2 inputs or 2 outputs it is added to a different recipe map.
-        // This is so NEI can function properly and understand the recipe. Otherwise, it gets cut off.
-        if ((FluidInputArray.length > 2) || (FluidOutputArray.length > 2)) {
-            GT_Recipe.GT_Recipe_Map.sComplexFusionRecipes.addRecipe(
-                null,
-                FluidInputArray,
-                FluidOutputArray,
-                aFusionDurationInTicks,
-                aFusionEnergyPerTick,
-                aEnergyNeededForStartingFusion);
-            return true;
-        }
-
         GT_Recipe.GT_Recipe_Map.sFusionRecipes.addRecipe(
             null,
             FluidInputArray,
