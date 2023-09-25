@@ -3,6 +3,7 @@ package gregtech.loaders.load;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCannerRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMaceratorRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.WILDCARD;
 import static gregtech.api.util.GT_RecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
 
@@ -126,13 +127,13 @@ public class GT_ItemIterator implements Runnable {
         GT_Log.out.println(
             "GT_Mod: Adding Food Recipes to the Automatic Canning Machine. (also during the following Item Iteration)");
         GT_Values.RA.stdBuilder()
-            .itemInputs(new ItemStack(Items.rotten_flesh, 2, 32767), ItemList.IC2_Food_Can_Empty.get(1L))
+            .itemInputs(new ItemStack(Items.rotten_flesh, 2, WILDCARD), ItemList.IC2_Food_Can_Empty.get(1L))
             .itemOutputs(ItemList.IC2_Food_Can_Spoiled.get(1L))
             .duration(10 * SECONDS)
             .eut(1)
             .addTo(sCannerRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(new ItemStack(Items.spider_eye, 2, 32767), ItemList.IC2_Food_Can_Empty.get(1L))
+            .itemInputs(new ItemStack(Items.spider_eye, 2, WILDCARD), ItemList.IC2_Food_Can_Empty.get(1L))
             .itemOutputs(ItemList.IC2_Food_Can_Spoiled.get(1L))
             .duration(5 * SECONDS)
             .eut(1)
@@ -144,13 +145,13 @@ public class GT_ItemIterator implements Runnable {
             .eut(1)
             .addTo(sCannerRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(new ItemStack(Items.cake, 1, 32767), ItemList.IC2_Food_Can_Empty.get(12L))
+            .itemInputs(new ItemStack(Items.cake, 1, WILDCARD), ItemList.IC2_Food_Can_Empty.get(12L))
             .itemOutputs(ItemList.IC2_Food_Can_Filled.get(12L))
             .duration(30 * SECONDS)
             .eut(1)
             .addTo(sCannerRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(new ItemStack(Items.mushroom_stew, 1, 32767), ItemList.IC2_Food_Can_Empty.get(6L))
+            .itemInputs(new ItemStack(Items.mushroom_stew, 1, WILDCARD), ItemList.IC2_Food_Can_Empty.get(6L))
             .itemOutputs(ItemList.IC2_Food_Can_Filled.get(6L), new ItemStack(Items.bowl, 1))
             .duration(15 * SECONDS)
             .eut(1)
@@ -179,10 +180,10 @@ public class GT_ItemIterator implements Runnable {
                         if ((GregTech_API.sRecipeFile.get(
                             ConfigCategories.Recipes.disabledrecipes,
                             "infiniteDurabilityRCCrowbars",
-                            false)) && (GT_ModHandler.removeRecipeByOutput(new ItemStack(tItem, 1, 32767)))) {
+                            false)) && (GT_ModHandler.removeRecipeByOutput(new ItemStack(tItem, 1, WILDCARD)))) {
                             GT_Log.out.println("GT_Mod: Removed infinite RC Crowbar: " + tName);
                         }
-                    } else if (GregTech_API.registerCrowbar(new ItemStack(tItem, 1, 32767))) {
+                    } else if (GregTech_API.registerCrowbar(new ItemStack(tItem, 1, WILDCARD))) {
                         GT_Log.out.println("GT_Mod: Registered valid RC Crowbar: " + tName);
                     }
                 }
@@ -192,10 +193,10 @@ public class GT_ItemIterator implements Runnable {
                         if ((GregTech_API.sRecipeFile.get(
                             ConfigCategories.Recipes.disabledrecipes,
                             "infiniteDurabilityBCWrenches",
-                            false)) && (GT_ModHandler.removeRecipeByOutput(new ItemStack(tItem, 1, 32767)))) {
+                            false)) && (GT_ModHandler.removeRecipeByOutput(new ItemStack(tItem, 1, WILDCARD)))) {
                             GT_Log.out.println("GT_Mod: Removed infinite BC Wrench: " + tName);
                         }
-                    } else if (GregTech_API.registerWrench(new ItemStack(tItem, 1, 32767))) {
+                    } else if (GregTech_API.registerWrench(new ItemStack(tItem, 1, WILDCARD))) {
                         GT_Log.out.println("GT_Mod: Registered valid BC Wrench: " + tName);
                     }
                 }
@@ -220,7 +221,7 @@ public class GT_ItemIterator implements Runnable {
                     if (tFoodValue > 0) {
                         GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
                         recipeBuilder.itemInputs(
-                            new ItemStack(tItem, 1, 32767),
+                            new ItemStack(tItem, 1, WILDCARD),
                             ItemList.IC2_Food_Can_Empty.get(tFoodValue));
                         if (GT_Utility.getContainerItem(new ItemStack(tItem, 1, 0), true) == null) {
                             recipeBuilder.itemOutputs(ItemList.IC2_Food_Can_Filled.get(tFoodValue));
@@ -235,198 +236,220 @@ public class GT_ItemIterator implements Runnable {
                     }
                 }
                 if ((tItem instanceof IFluidContainerItem)) {
-                    GT_OreDictUnificator.addToBlacklist(new ItemStack(tItem, 1, 32767));
+                    GT_OreDictUnificator.addToBlacklist(new ItemStack(tItem, 1, WILDCARD));
                 }
 
-                if ((tName.equals("item.fieryBlood")) || (tName.equals("item.fieryTears"))) {
-                    GT_Values.RA.stdBuilder()
-                        .itemInputs(new ItemStack(tItem, 1, 0))
-                        .metadata(FUEL_VALUE, 2048)
-                        .metadata(FUEL_TYPE, 5)
-                        .duration(0)
-                        .eut(0)
-                        .addTo(GT_RecipeConstants.Fuel);
-                }
-                if (tName.equals("tile.TFRoots")) {
-                    GT_Values.RA.stdBuilder()
-                        .itemInputs(new ItemStack(tItem, 1, 0))
-                        .itemOutputs(new ItemStack(Items.stick, 2), new ItemStack(Items.stick, 1))
-                        .outputChances(10000, 3000)
-                        .duration(20 * SECONDS)
-                        .eut(2)
-                        .addTo(sMaceratorRecipes);
+                switch (tName) {
+                    case "item.fieryBlood":
+                    case "item.fieryTears":
+                        GT_Values.RA.stdBuilder()
+                            .itemInputs(new ItemStack(tItem, 1, 0))
+                            .metadata(FUEL_VALUE, 2048)
+                            .metadata(FUEL_TYPE, 5)
+                            .duration(0)
+                            .eut(0)
+                            .addTo(GT_RecipeConstants.Fuel);
+                        break;
+                    case "tile.TFRoots":
 
-                    GT_ModHandler.addSawmillRecipe(
-                        new ItemStack(tItem, 1, 0),
-                        new ItemStack(Items.stick, 4),
-                        new ItemStack(Items.stick, 2));
+                        GT_Values.RA.stdBuilder()
+                            .itemInputs(new ItemStack(tItem, 1, 0))
+                            .itemOutputs(new ItemStack(Items.stick, 2), new ItemStack(Items.stick, 1))
+                            .outputChances(10000, 3000)
+                            .duration(20 * SECONDS)
+                            .eut(2)
+                            .addTo(sMaceratorRecipes);
 
-                    GT_Values.RA.stdBuilder()
-                        .itemInputs(new ItemStack(tItem, 1, 1))
-                        .itemOutputs(new ItemStack(Items.stick, 4))
-                        .metadata(FUEL_VALUE, 32)
-                        .metadata(FUEL_TYPE, 5)
-                        .duration(0)
-                        .eut(0)
-                        .addTo(GT_RecipeConstants.Fuel);
-                }
-                if (tName.equals("item.tconstruct.manual")) {
-                    GT_OreDictUnificator.registerOre("bookTinkersManual", new ItemStack(tItem, 1, 32767));
-                }
+                        GT_ModHandler.addSawmillRecipe(
+                            new ItemStack(tItem, 1, 0),
+                            new ItemStack(Items.stick, 4),
+                            new ItemStack(Items.stick, 2));
 
-                if (tName.equals("item.itemManuelBook")) {
-                    GT_OreDictUnificator.registerOre("bookWritten", new ItemStack(tItem, 1, 0));
-                }
-                if (tName.equals("item.blueprintItem")) {
-                    GT_OreDictUnificator.registerOre("paperBlueprint", new ItemStack(tItem, 1, 32767));
-                }
-                if (tName.equals("item.ccprintout")) {
-                    GT_OreDictUnificator.registerOre("paperWritten", new ItemStack(tItem, 1, 0));
-                    GT_OreDictUnificator.registerOre("paperWritten", new ItemStack(tItem, 1, 1));
-                    GT_OreDictUnificator.registerOre("bookWritten", new ItemStack(tItem, 1, 2));
-                }
-                if (tName.equals("item.blueprintItem")) {
-                    GT_OreDictUnificator.registerOre("paperBlueprint", new ItemStack(tItem, 1, 32767));
-                }
-                if (tName.equals("item.wirelessmap")) {
-                    GT_OreDictUnificator.registerOre("paperMap", new ItemStack(tItem, 1, 32767));
-                }
-                if (tName.equals("item.ItemResearchNotes")) {
-                    GT_OreDictUnificator.registerOre("paperResearch", new ItemStack(tItem, 1, 32767));
-                }
-                if (tName.equals("item.ItemThaumonomicon")) {
-                    GT_OreDictUnificator.registerOre("bookThaumonomicon", new ItemStack(tItem, 1, 32767));
-                }
-                if (tName.equals("item.ligniteCoal")) {
-                    GT_OreDictUnificator.set(OrePrefixes.gem, Materials.Lignite, new ItemStack(tItem, 1, 0));
-                }
-                if ((tName.equals("tile.extrabiomes.redrock")) || (tName.equals("tile.bop.redRocks"))) {
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.Redrock, new ItemStack(tItem, 1, 0));
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.Redrock, new ItemStack(tItem, 1, 1));
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.Redrock, new ItemStack(tItem, 1, 2));
-                }
-                if (tName.equals("tile.rpstone")) {
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.Marble, new ItemStack(tItem, 1, 0));
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(tItem, 1, 1));
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.Marble, new ItemStack(tItem, 1, 2));
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(tItem, 1, 3));
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(tItem, 1, 4));
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(tItem, 1, 5));
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(tItem, 1, 6));
-                }
-                if (((tName.equals("tile.igneousStone")) || (tName.equals("tile.igneousStoneBrick"))
-                    || (tName.equals("tile.igneousCobblestone")))) {
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.GraniteRed, new ItemStack(tItem, 1, 0));
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.GraniteBlack, new ItemStack(tItem, 1, 1));
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.Rhyolite, new ItemStack(tItem, 1, 2));
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.Andesite, new ItemStack(tItem, 1, 3));
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.Gabbro, new ItemStack(tItem, 1, 4));
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(tItem, 1, 5));
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.Komatiite, new ItemStack(tItem, 1, 6));
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.Dacite, new ItemStack(tItem, 1, 7));
+                        GT_Values.RA.stdBuilder()
+                            .itemInputs(new ItemStack(tItem, 1, 1))
+                            .itemOutputs(new ItemStack(Items.stick, 4))
+                            .metadata(FUEL_VALUE, 32)
+                            .metadata(FUEL_TYPE, 5)
+                            .duration(0)
+                            .eut(0)
+                            .addTo(GT_RecipeConstants.Fuel);
+                        break;
 
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.GraniteRed, new ItemStack(tItem, 1, 8));
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.GraniteBlack, new ItemStack(tItem, 1, 9));
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.Rhyolite, new ItemStack(tItem, 1, 10));
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.Andesite, new ItemStack(tItem, 1, 11));
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.Gabbro, new ItemStack(tItem, 1, 12));
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(tItem, 1, 13));
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.Komatiite, new ItemStack(tItem, 1, 14));
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.Dacite, new ItemStack(tItem, 1, 15));
-                }
-                if ((tName.equals("tile.metamorphicStone")) || (tName.equals("tile.metamorphicStoneBrick"))
-                    || (tName.equals("tile.metamorphicCobblestone"))) {
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.Gneiss, new ItemStack(tItem, 1, 0));
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.Eclogite, new ItemStack(tItem, 1, 1));
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.Marble, new ItemStack(tItem, 1, 2));
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.Quartzite, new ItemStack(tItem, 1, 3));
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.Blueschist, new ItemStack(tItem, 1, 4));
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.Greenschist, new ItemStack(tItem, 1, 5));
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.Soapstone, new ItemStack(tItem, 1, 6));
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.Migmatite, new ItemStack(tItem, 1, 7));
+                    case "item.tconstruct.manual":
+                        GT_OreDictUnificator.registerOre("bookTinkersManual", new ItemStack(tItem, 1, WILDCARD));
+                        break;
 
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.Gneiss, new ItemStack(tItem, 1, 8));
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.Eclogite, new ItemStack(tItem, 1, 9));
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.Marble, new ItemStack(tItem, 1, 10));
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.Quartzite, new ItemStack(tItem, 1, 11));
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.Blueschist, new ItemStack(tItem, 1, 12));
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.Greenschist, new ItemStack(tItem, 1, 13));
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.Soapstone, new ItemStack(tItem, 1, 14));
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.Migmatite, new ItemStack(tItem, 1, 15));
-                }
-                if (tName.equals("tile.blockCosmeticSolid")) {
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.Obsidian, new ItemStack(tItem, 1, 0));
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.stone, Materials.Obsidian, new ItemStack(tItem, 1, 1));
-                    GT_OreDictUnificator
-                        .registerOre(OrePrefixes.block, Materials.Thaumium, new ItemStack(tItem, 1, 4));
-                }
-                if (tName.equals("tile.enderchest")) {
-                    GT_OreDictUnificator.registerOre(OreDictNames.enderChest, new ItemStack(tItem, 1, 32767));
-                }
-                if (tName.equals("tile.autoWorkbenchBlock")) {
-                    GT_OreDictUnificator
-                        .registerOre(OreDictNames.craftingWorkBench, new ItemStack(tItem, 1, 0));
-                }
-                if (tName.equals("tile.pumpBlock")) {
-                    GT_OreDictUnificator.registerOre(OreDictNames.craftingPump, new ItemStack(tItem, 1, 0));
-                    if (GregTech_API.sRecipeFile
-                        .get(ConfigCategories.Recipes.disabledrecipes, "BCPump", false)) {
-                        GT_ModHandler.removeRecipeByOutput(new ItemStack(tItem, 1, 0));
-                    }
-                }
-                if (tName.equals("tile.tankBlock")) {
-                    GT_OreDictUnificator.registerOre(OreDictNames.craftingTank, new ItemStack(tItem, 1, 0));
-                }
-                if (tName.equals("item.drawplateDiamond")) {
-                    GT_OreDictUnificator
-                        .registerOre(ToolDictNames.craftingToolDrawplate, new ItemStack(tItem, 1, 32767));
-                }
+                    case "item.itemManuelBook":
+                        GT_OreDictUnificator.registerOre("bookWritten", new ItemStack(tItem, 1, 0));
+                        break;
 
+                    case "item.blueprintItem":
+                        GT_OreDictUnificator.registerOre("paperBlueprint", new ItemStack(tItem, 1, WILDCARD));
+                        break;
 
+                    case "item.ccprintout":
+                        GT_OreDictUnificator.registerOre("paperWritten", new ItemStack(tItem, 1, 0));
+                        GT_OreDictUnificator.registerOre("paperWritten", new ItemStack(tItem, 1, 1));
+                        GT_OreDictUnificator.registerOre("bookWritten", new ItemStack(tItem, 1, 2));
+                        break;
+
+                    case "item.wirelessmap":
+                        GT_OreDictUnificator.registerOre("paperMap", new ItemStack(tItem, 1, WILDCARD));
+                        break;
+
+                    case "item.ItemResearchNotes":
+                        GT_OreDictUnificator.registerOre("paperResearch", new ItemStack(tItem, 1, WILDCARD));
+                        break;
+
+                    case "item.ItemThaumonomicon":
+                        GT_OreDictUnificator.registerOre("bookThaumonomicon", new ItemStack(tItem, 1, WILDCARD));
+                        break;
+
+                    case "item.ligniteCoal":
+                        GT_OreDictUnificator.set(OrePrefixes.gem, Materials.Lignite, new ItemStack(tItem, 1, 0));
+                        break;
+
+                    case "tile.extrabiomes.redrock":
+                    case"tile.bop.redRocks":
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.Redrock, new ItemStack(tItem, 1, 0));
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.Redrock, new ItemStack(tItem, 1, 1));
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.Redrock, new ItemStack(tItem, 1, 2));
+                        break;
+
+                    case "tile.rpstone":
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.Marble, new ItemStack(tItem, 1, 0));
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(tItem, 1, 1));
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.Marble, new ItemStack(tItem, 1, 2));
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(tItem, 1, 3));
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(tItem, 1, 4));
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(tItem, 1, 5));
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(tItem, 1, 6));
+                        break;
+
+                    case "tile.igneousStone":
+                    case "tile.igneousStoneBrick":
+                    case "tile.igneousCobblestone":
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.GraniteRed, new ItemStack(tItem, 1, 0));
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.GraniteBlack, new ItemStack(tItem, 1, 1));
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.Rhyolite, new ItemStack(tItem, 1, 2));
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.Andesite, new ItemStack(tItem, 1, 3));
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.Gabbro, new ItemStack(tItem, 1, 4));
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(tItem, 1, 5));
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.Komatiite, new ItemStack(tItem, 1, 6));
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.Dacite, new ItemStack(tItem, 1, 7));
+
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.GraniteRed, new ItemStack(tItem, 1, 8));
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.GraniteBlack, new ItemStack(tItem, 1, 9));
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.Rhyolite, new ItemStack(tItem, 1, 10));
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.Andesite, new ItemStack(tItem, 1, 11));
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.Gabbro, new ItemStack(tItem, 1, 12));
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(tItem, 1, 13));
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.Komatiite, new ItemStack(tItem, 1, 14));
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.Dacite, new ItemStack(tItem, 1, 15));
+                        break;
+
+                    case "tile.metamorphicStone":
+                    case "tile.metamorphicStoneBrick":
+                    case "tile.metamorphicCobblestone":
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.Gneiss, new ItemStack(tItem, 1, 0));
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.Eclogite, new ItemStack(tItem, 1, 1));
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.Marble, new ItemStack(tItem, 1, 2));
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.Quartzite, new ItemStack(tItem, 1, 3));
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.Blueschist, new ItemStack(tItem, 1, 4));
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.Greenschist, new ItemStack(tItem, 1, 5));
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.Soapstone, new ItemStack(tItem, 1, 6));
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.Migmatite, new ItemStack(tItem, 1, 7));
+
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.Gneiss, new ItemStack(tItem, 1, 8));
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.Eclogite, new ItemStack(tItem, 1, 9));
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.Marble, new ItemStack(tItem, 1, 10));
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.Quartzite, new ItemStack(tItem, 1, 11));
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.Blueschist, new ItemStack(tItem, 1, 12));
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.Greenschist, new ItemStack(tItem, 1, 13));
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.Soapstone, new ItemStack(tItem, 1, 14));
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.Migmatite, new ItemStack(tItem, 1, 15));
+                        break;
+
+                    case "tile.blockCosmeticSolid":
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.Obsidian, new ItemStack(tItem, 1, 0));
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.stone, Materials.Obsidian, new ItemStack(tItem, 1, 1));
+                        GT_OreDictUnificator
+                            .registerOre(OrePrefixes.block, Materials.Thaumium, new ItemStack(tItem, 1, 4));
+                        break;
+
+                    case "tile.enderchest":
+                        GT_OreDictUnificator.registerOre(OreDictNames.enderChest, new ItemStack(tItem, 1, WILDCARD));
+                        break;
+
+                    case "tile.autoWorkbenchBlock":
+                        GT_OreDictUnificator
+                            .registerOre(OreDictNames.craftingWorkBench, new ItemStack(tItem, 1, 0));
+                        break;
+
+                    case "tile.pumpBlock":
+                        GT_OreDictUnificator.registerOre(OreDictNames.craftingPump, new ItemStack(tItem, 1, 0));
+                        if (GregTech_API.sRecipeFile
+                            .get(ConfigCategories.Recipes.disabledrecipes, "BCPump", false)) {
+                            GT_ModHandler.removeRecipeByOutput(new ItemStack(tItem, 1, 0));
+                        }
+                        break;
+
+                    case "tile.tankBlock":
+                        GT_OreDictUnificator.registerOre(OreDictNames.craftingTank, new ItemStack(tItem, 1, 0));
+                        break;
+
+                    case "item.drawplateDiamond":
+                        GT_OreDictUnificator
+                            .registerOre(ToolDictNames.craftingToolDrawplate, new ItemStack(tItem, 1, WILDCARD));
+                        break;
+                    default:
+                        break;
+
+                }
             }
         } catch (Throwable e) {
             /**/
