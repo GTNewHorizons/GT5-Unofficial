@@ -37,7 +37,6 @@ public class TranscendentPlasmaMixerRecipeMap extends RecipeMap {
             aNEISpecialValuePost,
             aShowVoltageAmperageInNEI,
             aNEIAllowed);
-        useModularUI(true);
         setUsualFluidInputCount(20);
         setUsualFluidOutputCount(1);
         setProgressBarPos(86, 44);

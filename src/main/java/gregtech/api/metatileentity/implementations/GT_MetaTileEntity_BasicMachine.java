@@ -1326,7 +1326,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 
     @Override
     public boolean useModularUI() {
-        return getRecipeList() != null && getRecipeList().useModularUI;
+        return getRecipeList() != null;
     }
 
     @Override

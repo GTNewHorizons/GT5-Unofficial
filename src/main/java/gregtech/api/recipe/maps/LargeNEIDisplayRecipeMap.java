@@ -43,7 +43,6 @@ public class LargeNEIDisplayRecipeMap extends RecipeMap {
             aNEISpecialValuePost,
             aShowVoltageAmperageInNEI,
             aNEIAllowed);
-        useModularUI(true);
         setLogoPos(80, 62);
     }
 

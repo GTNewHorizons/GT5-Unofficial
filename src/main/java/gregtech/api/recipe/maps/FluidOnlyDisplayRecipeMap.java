@@ -34,7 +34,6 @@ public class FluidOnlyDisplayRecipeMap extends RecipeMap {
             aNEISpecialValuePost,
             aShowVoltageAmperageInNEI,
             aNEIAllowed);
-        useModularUI(true);
     }
 
     @Override

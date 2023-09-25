@@ -865,8 +865,7 @@ public class RecipeMaps {
         1,
         "",
         false,
-        true).useModularUI(true)
-            .setRenderRealStackSizes(false)
+        true).setRenderRealStackSizes(false)
             .setUsualFluidInputCount(4)
             .setNEIBackgroundOffset(2, 23)
             .setLogoPos(152, 83)
@@ -1690,8 +1689,7 @@ public class RecipeMaps {
         1,
         "",
         false,
-        true).useModularUI(true)
-            .setUsualFluidInputCount(3)
+        true).setUsualFluidInputCount(3)
             .setDisableOptimize(true)
             .setSlotOverlay(false, false, true, GT_UITextures.OVERLAY_SLOT_LENS)
             .setProgressBar(GT_UITextures.PROGRESSBAR_ASSEMBLE, ProgressBar.Direction.RIGHT);
@@ -1710,8 +1708,7 @@ public class RecipeMaps {
         0,
         E,
         true,
-        true).useModularUI(true)
-            .setUsualFluidInputCount(3)
+        true).setUsualFluidInputCount(3)
             .setUsualFluidOutputCount(0)
             .setDisableOptimize(true)
             .setProgressBar(GT_UITextures.PROGRESSBAR_ASSEMBLE, ProgressBar.Direction.RIGHT)
