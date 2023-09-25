@@ -1,6 +1,7 @@
 package gregtech.api.multitileentity.machine;
 
 import static gregtech.api.enums.GT_Values.*;
+import static gregtech.api.enums.TickTime.MINUTE;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,7 +36,6 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons.CustomIcon;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.logic.FluidInventoryLogic;
 import gregtech.api.logic.ItemInventoryLogic;
 import gregtech.api.logic.MuTEProcessingLogic;
@@ -53,7 +53,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.client.GT_SoundLoop;
 
 public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> extends TickableMultiTileEntity
-    implements IMultiTileMachine, IMachineProgress, ProcessingLogicHost<P> {
+    implements IMultiTileMachine, ProcessingLogicHost<P>, PowerLogicHost {
 
     protected static final int ACTIVE = B[0];
     protected static final int TICKS_BETWEEN_RECIPE_CHECKS = 5 * TickTime.SECOND;
@@ -70,10 +70,6 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
 
     protected int maxParallel = 1;
     protected boolean active = false;
-    protected long storedEnergy = 0;
-    protected long voltage = 0;
-    protected long amperage = 1;
-    protected long eut = 0;
     protected int tier = 0;
     protected long burnTime = 0;
     protected long totalBurnTime = 0;
@@ -85,8 +81,6 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
     protected boolean isElectric = true;
     protected boolean isSteam = false;
     protected boolean acceptsFuel = false;
-    protected boolean canUseWireless = false;
-    protected boolean canUseLaser = false;
 
     protected byte soundEvent = 0;
     protected int soundEventValue = 0;
@@ -99,6 +93,8 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
     @Nonnull
     protected VoidingMode voidingMode = VoidingMode.VOID_NONE;
     protected boolean processingUpdate = false;
+    @Nonnull
+    protected PowerLogic power = createPowerLogic();
 
     @SideOnly(Side.CLIENT)
     protected GT_SoundLoop activitySoundLoop;
@@ -132,11 +128,11 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
         }
 
         nbt.setInteger(NBT.TIER, tier);
-        nbt.setLong(NBT.EUT_CONSUMPTION, eut);
         nbt.setLong(NBT.BURN_TIME_LEFT, burnTime);
         nbt.setLong(NBT.TOTAL_BURN_TIME, totalBurnTime);
         nbt.setBoolean(NBT.ALLOWED_WORK, canWork);
         nbt.setBoolean(NBT.ACTIVE, active);
+        power.saveToNBT(nbt);
     }
 
     protected void saveItemLogic(NBTTagCompound nbt) {
@@ -173,11 +169,11 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
         }
 
         tier = nbt.getInteger(NBT.TIER);
-        eut = nbt.getLong(NBT.EUT_CONSUMPTION);
         burnTime = nbt.getLong(NBT.BURN_TIME_LEFT);
         totalBurnTime = nbt.getLong(NBT.TOTAL_BURN_TIME);
         canWork = nbt.getBoolean(NBT.ALLOWED_WORK);
         active = nbt.getBoolean(NBT.ACTIVE);
+        power.loadFromNBT(nbt);
     }
 
     protected void loadItemLogic(NBTTagCompound nbt) {
@@ -367,8 +363,6 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
         if (this instanceof PowerLogicHost) {
             consumeEnergy();
         }
-
-        emitEnergy();
     }
 
     /**
@@ -377,11 +371,6 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
     protected boolean checkRecipe() {
         return false;
     }
-
-    /**
-     * Runs only on server side
-     */
-    protected void emitEnergy() {}
 
     /**
      * Runs only on server side
@@ -539,22 +528,6 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
         this.acceptsFuel = acceptsFuel;
     }
 
-    protected boolean canUseWireless() {
-        return canUseWireless;
-    }
-
-    protected boolean drainEut(long eut) {
-        return decreaseStoredEnergyUnits(eut, false);
-    }
-
-    protected boolean generateEut(long eut) {
-        return increaseStoredEnergyUnits(eut, true);
-    }
-
-    protected boolean isGenerator() {
-        return false;
-    }
-
     protected boolean consumeFuel() {
         if (isElectric() || isSteam()) return false;
         if (isActive() && burnTime <= 0) {
@@ -595,38 +568,36 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
             list.add("Fuel: " + EnumChatFormatting.GOLD + burnTime + "/" + totalBurnTime);
         }
 
-        if (this instanceof PowerLogicHost powerLogicHost) {
-            PowerLogic logic = powerLogicHost.getPowerLogic(facing);
-            if (isElectric) {
-                list.add(
-                    StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                        + EnumChatFormatting.GREEN
-                        + GT_Utility.formatNumbers(logic.getStoredEnergy())
-                        + EnumChatFormatting.RESET
-                        + " EU / "
-                        + EnumChatFormatting.YELLOW
-                        + GT_Utility.formatNumbers(logic.getCapacity())
-                        + EnumChatFormatting.RESET
-                        + " EU");
-                list.add(
-                    StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
-                        + EnumChatFormatting.RED
-                        + GT_Utility.formatNumbers(eut)
-                        + EnumChatFormatting.RESET
-                        + " EU/t");
-                list.add(
-                    StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
-                        + EnumChatFormatting.YELLOW
-                        + GT_Utility.formatNumbers(logic.getVoltage())
-                        + EnumChatFormatting.RESET
-                        // TODO: Put ampere getter here, once that's variable
-                        + " EU/t(*2A) "
-                        + StatCollector.translateToLocal("GT5U.machines.tier")
-                        + ": "
-                        + EnumChatFormatting.YELLOW
-                        + VN[GT_Utility.getTier(logic.getVoltage())]
-                        + EnumChatFormatting.RESET);
-            }
+        PowerLogic logic = getPowerLogic();
+        if (isElectric) {
+            list.add(
+                StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
+                    + EnumChatFormatting.GREEN
+                    + GT_Utility.formatNumbers(logic.getStoredEnergy())
+                    + EnumChatFormatting.RESET
+                    + " EU / "
+                    + EnumChatFormatting.YELLOW
+                    + GT_Utility.formatNumbers(logic.getCapacity())
+                    + EnumChatFormatting.RESET
+                    + " EU");
+            list.add(
+                StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
+                    + EnumChatFormatting.RED
+                    + GT_Utility.formatNumbers(getProcessingLogic().getCalculatedEut())
+                    + EnumChatFormatting.RESET
+                    + " EU/t");
+            list.add(
+                StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
+                    + EnumChatFormatting.YELLOW
+                    + GT_Utility.formatNumbers(logic.getVoltage())
+                    + EnumChatFormatting.RESET
+                    // TODO: Put ampere getter here, once that's variable
+                    + " EU/t(*2A) "
+                    + StatCollector.translateToLocal("GT5U.machines.tier")
+                    + ": "
+                    + EnumChatFormatting.YELLOW
+                    + VN[GT_Utility.getTier(logic.getVoltage())]
+                    + EnumChatFormatting.RESET);
         }
 
         addProgressStringToScanner(player, logLevel, list);
@@ -671,17 +642,6 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
         itemOutput.update(false);
         fluidInput.update();
         fluidOutput.update();
-    }
-
-    /**
-     * Must always be a positive. If the multi generates Eu/t isGenerator() should be overridden to true
-     */
-    protected void setEut(long eut) {
-        if (eut < 0) {
-            eut = -eut;
-        }
-
-        this.eut = eut;
     }
 
     @Override
@@ -793,4 +753,26 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
         processingUpdate = update;
     }
 
+    @Override
+    @Nullable
+    public PowerLogic getPowerLogic(@Nonnull ForgeDirection side) {
+        if (side == facing) return null;
+        return power;
+    }
+
+    @Override
+    @Nonnull
+    public ForgeDirection getPowerOutputSide() {
+        return Objects.requireNonNull(facing.getOpposite());
+    }
+
+    protected void updatePowerLogic() {
+        power.setEnergyCapacity(GT_Values.V[tier] * power.getMaxAmperage() * 2 * MINUTE);
+        power.setMaxVoltage(GT_Values.V[tier]);
+    }
+
+    @Nonnull
+    protected PowerLogic createPowerLogic() {
+        return new PowerLogic().setType(PowerLogic.RECEIVER);
+    }
 }

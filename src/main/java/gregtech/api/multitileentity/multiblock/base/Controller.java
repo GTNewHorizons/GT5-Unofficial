@@ -1,6 +1,7 @@
 package gregtech.api.multitileentity.multiblock.base;
 
 import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
+import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
 import static mcp.mobius.waila.api.SpecialChars.*;
 
 import java.lang.ref.WeakReference;
@@ -25,6 +26,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -59,7 +61,6 @@ import gregtech.api.enums.InventoryType;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IDescribable;
-import gregtech.api.interfaces.IGlobalWirelessEnergy;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.modularui.ControllerWithOptionalFeatures;
 import gregtech.api.logic.ControllerFluidLogic;
@@ -80,6 +81,7 @@ import gregtech.api.net.GT_Packet_MultiTileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GT_Waila;
 import gregtech.common.tileentities.casings.upgrade.Inventory;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -90,7 +92,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  */
 public abstract class Controller<T extends Controller<T, P>, P extends MuTEProcessingLogic<P>>
     extends MultiTileBasicMachine<P> implements IAlignment, IMultiBlockController, IDescribable, IMTE_AddToolTips,
-    ISurvivalConstructable, ControllerWithOptionalFeatures, IGlobalWirelessEnergy {
+    ISurvivalConstructable, ControllerWithOptionalFeatures {
 
     public static final String ALL_INVENTORIES_NAME = "all";
     protected static final int AUTO_OUTPUT_FREQUENCY_TICK = 20;
@@ -167,6 +169,7 @@ public abstract class Controller<T extends Controller<T, P>, P extends MuTEProce
      */
     public boolean checkMachine() {
         calculateTier();
+        updatePowerLogic();
         return tier > 0;
     }
 
@@ -600,24 +603,6 @@ public abstract class Controller<T extends Controller<T, P>, P extends MuTEProce
     @Override
     public void setCleanroom(boolean cleanroom) {
         isCleanroom = cleanroom;
-    }
-
-    @Override
-    public void setWirelessSupport(boolean canUse) {
-        if (canUse) {
-            strongCheckOrAddUser(getOwnerUuid(), getOwnerName());
-        }
-        canUseWireless = canUse;
-    }
-
-    @Override
-    public void setLaserSupport(boolean canUse) {
-        canUseLaser = canUse;
-    }
-
-    @Override
-    public void setMaxAmperage(long amperage) {
-        this.amperage = amperage;
     }
 
     protected void clearSpecialLists() {
@@ -1210,6 +1195,11 @@ public abstract class Controller<T extends Controller<T, P>, P extends MuTEProce
         tag.setInteger("progress", processing.getProgress());
         tag.setInteger("maxProgress", processing.getDuration());
         tag.setBoolean("structureOkay", structureOkay);
+        tag.setBoolean("isActive", isActive());
+        if (isActive()) {
+            tag.setLong("energyUsage", getProcessingLogic().getCalculatedEut());
+            tag.setLong("energyTier", tier);
+        }
     }
 
     @Override
@@ -1226,6 +1216,26 @@ public abstract class Controller<T extends Controller<T, P>, P extends MuTEProce
             boolean isActive = tag.getBoolean("isActive");
             currentTip.add(
                 GT_Waila.getMachineProgressString(isActive, tag.getInteger("maxProgress"), tag.getInteger("progress")));
+        }
+        boolean isActive = tag.getBoolean("isActive");
+        if (isActive) {
+            long energyTier = tag.getLong("energyTier");
+            long actualEnergyUsage = tag.getLong("energyUsage");
+            if (actualEnergyUsage > 0) {
+                currentTip.add(
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.waila.energy.use_with_amperage",
+                        GT_Utility.formatNumbers(actualEnergyUsage),
+                        GT_Utility.getAmperageForTier(actualEnergyUsage, (byte) energyTier),
+                        GT_Utility.getColoredTierNameFromTier((byte) energyTier)));
+            } else if (actualEnergyUsage < 0) {
+                currentTip.add(
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.waila.energy.produce_with_amperage",
+                        GT_Utility.formatNumbers(-actualEnergyUsage),
+                        GT_Utility.getAmperageForTier(-actualEnergyUsage, (byte) energyTier),
+                        GT_Utility.getColoredTierNameFromTier((byte) energyTier)));
+            }
         }
     }
 
@@ -1275,4 +1285,21 @@ public abstract class Controller<T extends Controller<T, P>, P extends MuTEProce
         };
     }
 
+    @Override
+    public void setWirelessSupport(boolean canUse) {
+        if (canUse) {
+            strongCheckOrAddUser(getOwnerUuid(), getOwnerName());
+        }
+        power.setCanUseWireless(canUse, getOwnerUuid());
+    }
+
+    @Override
+    public void setLaserSupport(boolean canUse) {
+        power.setCanUseLaser(canUse);
+    }
+
+    @Override
+    public void setMaxAmperage(long amperage) {
+        power.setMaxAmperage(amperage);
+    }
 }
