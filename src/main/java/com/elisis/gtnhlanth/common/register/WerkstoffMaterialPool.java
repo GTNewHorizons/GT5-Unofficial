@@ -1542,15 +1542,7 @@ public class WerkstoffMaterialPool implements Runnable {
             TextureSet.SET_DULL);
 
     // Cerium
-    public static final Werkstoff CeriumOreConcentrate = new Werkstoff(
-            new short[] { 60, 240, 180 },
-            "Cerium Ore Concentrate",
-            subscriptNumbers("??Ce??"),
-            new Werkstoff.Stats(),
-            Werkstoff.Types.MIXTURE,
-            new Werkstoff.GenerationFeatures().disable().onlyDust(),
-            offsetID4 + 48,
-            TextureSet.SET_DULL);
+    public static final Werkstoff CeriumOreConcentrate = CeriumRichMixture;
 
     // Neodymium
     public static final Werkstoff NeodymiumOreConcentrate = new Werkstoff(
