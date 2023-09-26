@@ -21,16 +21,13 @@ public class FuelRecipes implements Runnable {
     // todo: add an enum for the fuel type, int values are mysterious
     @Override
     public void run() {
-        if (!GregTech_API.mIC2Classic) {
-            GT_Values.RA.stdBuilder()
-                .itemInputs(GT_ModHandler.getIC2Item("biogasCell", 1L))
-                .metadata(FUEL_VALUE, 40)
-                .metadata(FUEL_TYPE, 1)
-                .duration(0)
-                .eut(0)
-                .addTo(GT_RecipeConstants.Fuel);
-
-        }
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_ModHandler.getIC2Item("biogasCell", 1L))
+            .metadata(FUEL_VALUE, 40)
+            .metadata(FUEL_TYPE, 1)
+            .duration(0)
+            .eut(0)
+            .addTo(GT_RecipeConstants.Fuel);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.golden_apple, 1, 1))

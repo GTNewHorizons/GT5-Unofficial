@@ -8,14 +8,12 @@ public class GT_FakeRecipeLoader implements Runnable {
 
     @Override
     public void run() {
-        if (!GregTech_API.mIC2Classic) {
-            GT_Values.RA.addIC2ReactorBreederCell(
-                GT_ModHandler.getIC2Item("reactorLithiumCell", 1),
-                GT_ModHandler.getIC2Item("TritiumCell", 1),
-                true,
-                3000,
-                1,
-                10000);
-        }
+        GT_Values.RA.addIC2ReactorBreederCell(
+            GT_ModHandler.getIC2Item("reactorLithiumCell", 1),
+            GT_ModHandler.getIC2Item("TritiumCell", 1),
+            true,
+            3000,
+            1,
+            10000);
     }
 }

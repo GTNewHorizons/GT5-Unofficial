@@ -68,16 +68,6 @@ public class PyrolyseRecipes implements Runnable {
                 .addTo(sPyrolyseRecipes);
         }
 
-        if (!GregTech_API.mIC2Classic) {
-            GT_Values.RA.stdBuilder()
-                .itemInputs(GT_ModHandler.getIC2Item("biochaff", 4), GT_Utility.getIntegratedCircuit(1))
-                .fluidInputs(Materials.Water.getFluid(4000))
-                .fluidOutputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 5000))
-                .duration(45 * SECONDS)
-                .eut(10)
-                .addTo(sPyrolyseRecipes);
-        }
-
         if (Forestry.isModLoaded()) {
             GT_Values.RA.stdBuilder()
                 .itemInputs(getModItem(Forestry.ID, "fertilizerBio", 4), GT_Utility.getIntegratedCircuit(1))
@@ -95,6 +85,15 @@ public class PyrolyseRecipes implements Runnable {
                 .eut(10)
                 .addTo(sPyrolyseRecipes);
         }
+
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_ModHandler.getIC2Item("biochaff", 4), GT_Utility.getIntegratedCircuit(1))
+            .fluidInputs(Materials.Water.getFluid(4000))
+            .fluidOutputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 5000))
+            .duration(45 * SECONDS)
+            .eut(10)
+            .addTo(sPyrolyseRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_ModHandler.getIC2Item("biochaff", 1), GT_Utility.getIntegratedCircuit(2))
