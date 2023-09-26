@@ -17,7 +17,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.interfaces.IGT_RecipeMap;
+import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 
 // this class is intended to be import-static-ed on every recipe script
@@ -81,7 +81,7 @@ public class GT_RecipeConstants {
      * Add a arc furnace recipe. Adds to both normal arc furnace and plasma arc furnace.
      * Will override the fluid input with oxygen/plasma for the respective recipe maps, so there is no point setting it.
      */
-    public static final IGT_RecipeMap UniversalArcFurnace = IGT_RecipeMap.newRecipeMap(builder -> {
+    public static final IRecipeMap UniversalArcFurnace = IRecipeMap.newRecipeMap(builder -> {
         if (!GT_Utility.isArrayOfLength(builder.getItemInputsBasic(), 1)
             || GT_Utility.isArrayEmptyOrNull(builder.getItemOutputs())) return Collections.emptyList();
         int aDuration = builder.getDuration();
@@ -107,7 +107,7 @@ public class GT_RecipeConstants {
     /**
      * Add a chemical reactor recipe to both LCR and singleblocks.
      */
-    public static final IGT_RecipeMap UniversalChemical = IGT_RecipeMap.newRecipeMap(builder -> {
+    public static final IRecipeMap UniversalChemical = IRecipeMap.newRecipeMap(builder -> {
         for (ItemStack input : builder.getItemInputsBasic()) {
             // config >= 10 -> this is a special chemical recipe that output fluid/canned fluid variant.
             // it doesn't belong to multiblocks
@@ -129,7 +129,7 @@ public class GT_RecipeConstants {
      * Uses {@link #RESEARCH_ITEM} metadata as research item, and {@link #RESEARCH_TIME} metadata as research time, unit
      * in ticks.
      */
-    public static final IGT_RecipeMap AssemblyLine = IGT_RecipeMap.newRecipeMap(builder -> {
+    public static final IRecipeMap AssemblyLine = IRecipeMap.newRecipeMap(builder -> {
         Optional<GT_Recipe.GT_Recipe_WithAlt> rr = builder.forceOreDictInput()
             .validateInputCount(4, 16)
             .validateOutputCount(1, 1)
@@ -236,7 +236,7 @@ public class GT_RecipeConstants {
      * Just like any normal assembler recipe, however it accepts one input item to be oredicted. Pass in the item to
      * oredict via {@link #OREDICT_INPUT}. It will be used along all other item inputs as input of this recipe.
      */
-    public static IGT_RecipeMap AssemblerOD = IGT_RecipeMap.newRecipeMap(builder -> {
+    public static IRecipeMap AssemblerOD = IRecipeMap.newRecipeMap(builder -> {
         Collection<GT_Recipe> ret = new ArrayList<>();
         for (ItemStack input : GT_OreDictUnificator.getOresImmutable(builder.getMetadata(OREDICT_INPUT))) {
             ret.addAll(
@@ -253,7 +253,7 @@ public class GT_RecipeConstants {
      * Can use {@link FuelType#ordinal()} as a human-readable form of what FUEL_TYPE should be.
      * You can bypass this and add to relevant fuel maps directly if you wish.
      */
-    public static IGT_RecipeMap Fuel = IGT_RecipeMap.newRecipeMap(builder -> {
+    public static IRecipeMap Fuel = IRecipeMap.newRecipeMap(builder -> {
         builder.validateInputCount(1, 1)
             .validateNoInputFluid()
             .validateOutputCount(-1, 1)
@@ -281,9 +281,9 @@ public class GT_RecipeConstants {
         Magic(RecipeMaps.magicFuels),;
 
         private static final FuelType[] VALUES = values();
-        private final IGT_RecipeMap target;
+        private final IRecipeMap target;
 
-        FuelType(IGT_RecipeMap target) {
+        FuelType(IRecipeMap target) {
             this.target = target;
         }
 
@@ -292,7 +292,7 @@ public class GT_RecipeConstants {
             return VALUES[fuelType];
         }
 
-        public IGT_RecipeMap getTarget() {
+        public IRecipeMap getTarget() {
             return target;
         }
     }

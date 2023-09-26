@@ -59,7 +59,7 @@ import gregtech.api.gui.GT_GUIColorOverride;
 import gregtech.api.gui.modularui.FallbackableSteamTexture;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.gui.modularui.SteamTexture;
-import gregtech.api.interfaces.IGT_RecipeMap;
+import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.recipe.check.FindRecipeResult;
@@ -76,7 +76,7 @@ import gregtech.nei.GT_NEI_DefaultHandler;
 import gregtech.nei.INEISpecialInfoFormatter;
 import gregtech.nei.NEIRecipeInfo;
 
-public class RecipeMap implements IGT_RecipeMap {
+public class RecipeMap implements IRecipeMap {
 
     /**
      * Contains all Recipe Maps
@@ -241,7 +241,7 @@ public class RecipeMap implements IGT_RecipeMap {
     private Function<? super GT_Recipe, ? extends GT_Recipe> specialHandler;
     private String recipeConfigCategory;
     private Function<? super GT_Recipe, String> recipeConfigKeyConvertor;
-    private final List<IGT_RecipeMap> downstreams = new ArrayList<>(0);
+    private final List<IRecipeMap> downstreams = new ArrayList<>(0);
 
     /**
      * Flag if a comparator should be used to search the recipe in NEI (which is defined in {@link Power}). Else
@@ -579,7 +579,7 @@ public class RecipeMap implements IGT_RecipeMap {
     }
 
     @Override
-    public void addDownstream(IGT_RecipeMap downstream) {
+    public void addDownstream(IRecipeMap downstream) {
         this.downstreams.add(downstream);
     }
 
@@ -816,7 +816,7 @@ public class RecipeMap implements IGT_RecipeMap {
         }
         if (!ret.isEmpty()) {
             builder.clearInvalid();
-            for (IGT_RecipeMap downstream : downstreams) {
+            for (IRecipeMap downstream : downstreams) {
                 downstream.doAdd(builder);
             }
         }

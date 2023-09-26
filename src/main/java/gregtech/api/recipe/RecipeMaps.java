@@ -28,7 +28,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.api.interfaces.IGT_RecipeMap;
+import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.maps.AssemblerRecipeMap;
 import gregtech.api.recipe.maps.AssemblyLineFakeRecipeMap;
@@ -1735,13 +1735,13 @@ public class RecipeMaps {
         RecipeMaps.mixerRecipes.addDownstream(RecipeMaps.mixerNonCellRecipes.deepCopyInput());
         RecipeMaps.electrolyzerRecipes.addDownstream(RecipeMaps.electrolyzerNonCellRecipes.deepCopyInput());
         RecipeMaps.dieselFuels.addDownstream(
-            IGT_RecipeMap.newRecipeMap(
+            IRecipeMap.newRecipeMap(
                 b -> b.build()
                     .map(RecipeMaps.largeBoilerFakeFuels::addDieselRecipe)
                     .map(Collections::singletonList)
                     .orElse(Collections.emptyList())));
         RecipeMaps.denseLiquidFuels.addDownstream(
-            IGT_RecipeMap.newRecipeMap(
+            IRecipeMap.newRecipeMap(
                 b -> b.build()
                     .map(RecipeMaps.largeBoilerFakeFuels::addDenseLiquidRecipe)
                     .map(Collections::singletonList)

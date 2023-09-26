@@ -29,13 +29,13 @@ being the preferred choice.
 ## complicated recipe adder
 
 1. If one invocation of recipe adder would add multiple recipe to same recipe map, give that recipe map a recipeEmitter
-2. If one invocation of recipe adder would conditionally add recipe, define a new IGT_RecipeMap in GT_RecipeConstants
+2. If one invocation of recipe adder would conditionally add recipe, define a new IRecipeMap in GT_RecipeConstants
 3. If one invocation of recipe adder would add recipe to multiple recipe map,
    1. If all recipe maps involved receive recipe only via this type of adding, use the chaining mechanism offered by GT_RecipeMap, i.e. addDownstream().
 
       e.g.sMultiblockElectrolyzerRecipes and sElectrolyzerRecipes
-   2. Otherwise, define a new IGT_RecipeMap in GT_RecipeConstants.
-4. If the target isn't a real recipe map (e.g. AssLine stuff), define a new IGT_RecipeMap in GT_RecipeConstants.
+   2. Otherwise, define a new IRecipeMap in GT_RecipeConstants.
+4. If the target isn't a real recipe map (e.g. AssLine stuff), define a new IRecipeMap in GT_RecipeConstants.
 
 ## Downstream in an addon
 
@@ -44,7 +44,7 @@ This assumes you need to generate recipe into your own recipe map from a parent 
 ## deep copy or not
 
 There is no need to do deep copy EXCEPT you are downstream.
-If you do modify the values in a downstream recipe map, call IGT_RecipeMap.deepCopyInput() before adding yourself as a downstream.
+If you do modify the values in a downstream recipe map, call IRecipeMap.deepCopyInput() before adding yourself as a downstream.
 
 ## setRecipeSpecialHandler or setRecipeEmitterSingle
 
@@ -52,9 +52,9 @@ Prefer setRecipeSpecialHandler, unless it would throw exception on builder.build
 
 ## Special Value and Special Item
 
-These are considered legacy. IGT_RecipeMap should avoid using these and use the more readable metadata system.
+These are considered legacy. IRecipeMap should avoid using these and use the more readable metadata system.
 
-## Use recipe builder or add() directly inside IGT_RecipeMap.doAdd()?
+## Use recipe builder or add() directly inside IRecipeMap.doAdd()?
 
 You SHOULD use the recipe builder and delegate further processing to the doAdd() on that recipe map. e.g. UniversalDistillation
 However, there are situations that you need to bypass those logic. Then add() is a valid choice.

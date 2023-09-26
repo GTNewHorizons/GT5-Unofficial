@@ -14,7 +14,7 @@ import gregtech.api.util.GT_Utility;
 /**
  * Represents the target of a recipe adding action, usually, but not necessarily, is a recipe map itself.
  */
-public interface IGT_RecipeMap {
+public interface IRecipeMap {
 
     /**
      * Add a downstream recipe map that will get to handle the original builder.
@@ -27,7 +27,7 @@ public interface IGT_RecipeMap {
      *
      * @param downstream the downstream recipe map to add
      */
-    void addDownstream(IGT_RecipeMap downstream);
+    void addDownstream(IRecipeMap downstream);
 
     /**
      * Actually add the recipe represented by the builder. CAN modify the builder's internal states!!!
@@ -41,17 +41,17 @@ public interface IGT_RecipeMap {
      * <p>
      * The returned recipe map will not have any downstreams, but can accept new downstreams.
      */
-    default IGT_RecipeMap deepCopyInput() {
+    default IRecipeMap deepCopyInput() {
         return newRecipeMap(b -> doAdd(b.copy()));
     }
 
-    static IGT_RecipeMap newRecipeMap(Function<? super GT_RecipeBuilder, Collection<GT_Recipe>> func) {
-        return new IGT_RecipeMap() {
+    static IRecipeMap newRecipeMap(Function<? super GT_RecipeBuilder, Collection<GT_Recipe>> func) {
+        return new IRecipeMap() {
 
-            private final Collection<IGT_RecipeMap> downstreams = new ArrayList<>();
+            private final Collection<IRecipeMap> downstreams = new ArrayList<>();
 
             @Override
-            public void addDownstream(IGT_RecipeMap downstream) {
+            public void addDownstream(IRecipeMap downstream) {
                 downstreams.add(downstream);
             }
 
@@ -63,7 +63,7 @@ public interface IGT_RecipeMap {
                 ret.add(out);
                 builder.clearInvalid();
                 if (!out.isEmpty()) {
-                    for (IGT_RecipeMap downstream : downstreams) {
+                    for (IRecipeMap downstream : downstreams) {
                         ret.add(downstream.doAdd(builder));
                     }
                 }

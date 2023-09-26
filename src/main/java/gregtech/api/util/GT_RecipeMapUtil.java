@@ -26,7 +26,7 @@ import com.google.common.collect.Multimap;
 import cpw.mods.fml.common.Loader;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
-import gregtech.api.interfaces.IGT_RecipeMap;
+import gregtech.api.interfaces.IRecipeMap;
 
 /**
  * Define helpers useful in the creation of recipe maps.
@@ -65,8 +65,8 @@ public class GT_RecipeMapUtil {
             : r.mFluidOutputs[0].getFluid()
                 .getName()
         : getStackConfigName(r.mOutputs[0]);
-    private static final Map<String, IGT_RecipeMap> addonRecipeMaps = new HashMap<>();
-    private static final Multimap<String, Consumer<IGT_RecipeMap>> delayedActions = ArrayListMultimap.create();
+    private static final Map<String, IRecipeMap> addonRecipeMaps = new HashMap<>();
+    private static final Multimap<String, Consumer<IRecipeMap>> delayedActions = ArrayListMultimap.create();
 
     public static final Set<GT_RecipeBuilder.MetadataIdentifier<Integer>> SPECIAL_VALUE_ALIASES = new HashSet<>();
 
@@ -143,8 +143,7 @@ public class GT_RecipeMapUtil {
      *                     Currently unused, but you are advised to fill them, so that when The Day (tm) comes we don't
      *                     end up with a bunch of weird concurrency bugs.
      */
-    public static void registerRecipeMap(String identifier, IGT_RecipeMap recipeMap,
-        RecipeMapDependency... dependencies) {
+    public static void registerRecipeMap(String identifier, IRecipeMap recipeMap, RecipeMapDependency... dependencies) {
         String modId = Loader.instance()
             .activeModContainer()
             .getModId();
@@ -152,7 +151,7 @@ public class GT_RecipeMapUtil {
             "do not register recipe map under the name of gregtech! do it in your own preinit!");
         String id = modId + "@" + identifier;
         addonRecipeMaps.put(id, recipeMap);
-        for (Consumer<IGT_RecipeMap> action : delayedActions.get(id)) {
+        for (Consumer<IRecipeMap> action : delayedActions.get(id)) {
             action.accept(recipeMap);
         }
     }
@@ -167,9 +166,9 @@ public class GT_RecipeMapUtil {
      * @param registerAction DO NOT ADD RECIPES TO MAPS OTHER THAN THE ONE PASSED TO YOU. DO NOT DO ANYTHING OTHER THAN
      *                       ADDING RECIPES TO THIS R
      */
-    public static void registerRecipesFor(String modid, String identifier, Consumer<IGT_RecipeMap> registerAction) {
+    public static void registerRecipesFor(String modid, String identifier, Consumer<IRecipeMap> registerAction) {
         String id = modid + "@" + identifier;
-        IGT_RecipeMap map = addonRecipeMaps.get(id);
+        IRecipeMap map = addonRecipeMaps.get(id);
         if (map == null) delayedActions.put(id, registerAction);
         else registerAction.accept(map);
     }
@@ -205,10 +204,10 @@ public class GT_RecipeMapUtil {
 
     public static final class RecipeMapDependency {
 
-        private final IGT_RecipeMap obj;
+        private final IRecipeMap obj;
         private final String id;
 
-        public RecipeMapDependency(IGT_RecipeMap obj, String id) {
+        public RecipeMapDependency(IRecipeMap obj, String id) {
             this.obj = obj;
             this.id = id;
         }
@@ -217,7 +216,7 @@ public class GT_RecipeMapUtil {
             return new RecipeMapDependency(null, id);
         }
 
-        public static RecipeMapDependency create(IGT_RecipeMap obj) {
+        public static RecipeMapDependency create(IRecipeMap obj) {
             return new RecipeMapDependency(obj, null);
         }
     }

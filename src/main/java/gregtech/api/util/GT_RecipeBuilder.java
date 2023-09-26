@@ -20,7 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.interfaces.IGT_RecipeMap;
+import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.util.extensions.ArrayExt;
 
 public class GT_RecipeBuilder {
@@ -564,7 +564,7 @@ public class GT_RecipeBuilder {
 
     /**
      * Validate if input item match requirement. Return as invalidated if fails prereq. Specify -1 as min to allow
-     * unset. Both bound inclusive. Only supposed to be called by IGT_RecipeMap and not client code.
+     * unset. Both bound inclusive. Only supposed to be called by IRecipeMap and not client code.
      */
     public GT_RecipeBuilder validateNoInput() {
         return GT_Utility.isArrayEmptyOrNull(inputsBasic) ? this : invalidate();
@@ -572,7 +572,7 @@ public class GT_RecipeBuilder {
 
     /**
      * Validate if input fluid match requirement. Return as invalidated if fails prereq. Specify -1 as min to allow
-     * unset. Both bound inclusive. Only supposed to be called by IGT_RecipeMap and not client code.
+     * unset. Both bound inclusive. Only supposed to be called by IRecipeMap and not client code.
      */
     public GT_RecipeBuilder validateNoInputFluid() {
         return GT_Utility.isArrayEmptyOrNull(fluidInputs) ? this : invalidate();
@@ -580,7 +580,7 @@ public class GT_RecipeBuilder {
 
     /**
      * Validate if output item match requirement. Return as invalidated if fails prereq. Specify -1 as min to allow
-     * unset. Both bound inclusive. Only supposed to be called by IGT_RecipeMap and not client code.
+     * unset. Both bound inclusive. Only supposed to be called by IRecipeMap and not client code.
      */
     public GT_RecipeBuilder validateNoOutput() {
         return GT_Utility.isArrayEmptyOrNull(outputs) ? this : invalidate();
@@ -588,7 +588,7 @@ public class GT_RecipeBuilder {
 
     /**
      * Validate if output fluid match requirement. Return as invalidated if fails prereq. Specify -1 as min to allow
-     * unset. Both bound inclusive. Only supposed to be called by IGT_RecipeMap and not client code.
+     * unset. Both bound inclusive. Only supposed to be called by IRecipeMap and not client code.
      */
     public GT_RecipeBuilder validateNoOutputFluid() {
         return GT_Utility.isArrayEmptyOrNull(fluidOutputs) ? this : invalidate();
@@ -596,7 +596,7 @@ public class GT_RecipeBuilder {
 
     /**
      * Validate if input item match requirement. Return as invalidated if fails prereq. Specify -1 as min to allow
-     * unset. Both bound inclusive. Only supposed to be called by IGT_RecipeMap and not client code.
+     * unset. Both bound inclusive. Only supposed to be called by IRecipeMap and not client code.
      */
     public GT_RecipeBuilder validateInputCount(int min, int max) {
         if (inputsBasic == null) return min < 0 ? this : invalidate();
@@ -605,7 +605,7 @@ public class GT_RecipeBuilder {
 
     /**
      * Validate if input fluid match requirement. Return as invalidated if fails prereq. Specify -1 as min to allow
-     * unset. Both bound inclusive. Only supposed to be called by IGT_RecipeMap and not client code.
+     * unset. Both bound inclusive. Only supposed to be called by IRecipeMap and not client code.
      */
     public GT_RecipeBuilder validateInputFluidCount(int min, int max) {
         if (fluidInputs == null) return min < 0 ? this : invalidate();
@@ -614,7 +614,7 @@ public class GT_RecipeBuilder {
 
     /**
      * Validate if output item match requirement. Return as invalidated if fails prereq. Specify -1 as min to allow
-     * unset. Both bound inclusive. Only supposed to be called by IGT_RecipeMap and not client code.
+     * unset. Both bound inclusive. Only supposed to be called by IRecipeMap and not client code.
      */
     public GT_RecipeBuilder validateOutputCount(int min, int max) {
         if (outputs == null) return min < 0 ? this : invalidate();
@@ -623,7 +623,7 @@ public class GT_RecipeBuilder {
 
     /**
      * Validate if output fluid match requirement. Return as invalidated if fails prereq. Specify -1 as min to allow
-     * unset. Both bound inclusive. Only supposed to be called by IGT_RecipeMap and not client code.
+     * unset. Both bound inclusive. Only supposed to be called by IRecipeMap and not client code.
      */
     public GT_RecipeBuilder validateOutputFluidCount(int min, int max) {
         if (fluidOutputs == null) return min < 0 ? this : invalidate();
@@ -758,7 +758,7 @@ public class GT_RecipeBuilder {
         return r;
     }
 
-    public Collection<GT_Recipe> addTo(IGT_RecipeMap recipeMap) {
+    public Collection<GT_Recipe> addTo(IRecipeMap recipeMap) {
         return recipeMap.doAdd(this);
     }
 
