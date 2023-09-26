@@ -1360,22 +1360,32 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff CeriumDopedLutetiumAluminiumOxygenBlend = new Werkstoff(
             new short[] { 0, 200, 0 },
             "Cerium-doped Lutetium Aluminium Oxygen Blend",
-            subscriptNumbers("Lu3Al5O12"),
+            subscriptNumbers("(Ce)Lu3Al5O12"),
             new Werkstoff.Stats(),
             Werkstoff.Types.MATERIAL,
-            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            new Werkstoff.GenerationFeatures().disable().onlyDust().addMolten(),
             offsetID4 + 31,
             TextureSet.SET_DULL);
 
     public static final Werkstoff CeriumDopedLutetiumAluminiumGarnet = new Werkstoff(
-            new short[] { 0, 255, 0 },
+            new short[] { 127, 255, 127 },
             "Cerium-doped Lutetium Aluminium Garnet (Ce:LuAG)",
-            subscriptNumbers("Lu3Al5O12"),
+            subscriptNumbers("(Ce)Lu3Al5O12"),
             new Werkstoff.Stats(),
             Werkstoff.Types.MATERIAL,
             new Werkstoff.GenerationFeatures().disable().addGems(),
             offsetID4 + 32,
-            TextureSet.SET_GEM_HORIZONTAL);
+            TextureSet.SET_GEM_VERTICAL);
+
+    // public static final Werkstoff RawCeriumDopedLutetiumAluminiumGarnetPart = new Werkstoff(
+    // new short[] { 63, 255, 63 },
+    // "Raw Cerium Doped Lutetium Aluminium Garnet Part",
+    // subscriptNumbers("(Ce)Lu3Al5O12"),
+    // new Werkstoff.Stats(),
+    // Werkstoff.Types.MATERIAL,
+    // new Werkstoff.GenerationFeatures().disable().addGems(),
+    // offsetID4 + 33,
+    // TextureSet.SET_GEM_VERTICAL);
 
     // public static final Werkstoff C272 = new Werkstoff(
     // new short[] { 0x29, 0xc2, 0x2a },

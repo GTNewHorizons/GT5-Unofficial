@@ -1788,7 +1788,7 @@ public class RecipeLoader {
                 .fluidInputs(Materials.NitricAcid.getFluid(1000), MuddySamariumRareEarthSolution.getFluidOrGas(1000))
                 .itemOutputs(CeriumDioxide.get(OrePrefixes.dust, 1))
                 .fluidOutputs(SamariumRareEarthMud.getFluidOrGas(1000)).eut(1920).duration(300)
-                .addTo(GT_Recipe.GT_Recipe_Map.sChemicalRecipes);
+                .addTo(GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes);
 
         // 1B SamariumRareEarthMud + 9B water =EV@30s= 10B DilutedSamariumRareEarthSolution + 6 NeodymiumREConcentrate
         RecipeAdder.instance.DissolutionTankRecipes.addDissolutionTankRecipe(
@@ -1807,6 +1807,11 @@ public class RecipeLoader {
                 7680,
                 1350,
                 9);
+        // Low Efficiency method in LCR
+        GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(1)).noItemOutputs()
+                .fluidInputs(SamariumRareEarthMud.getFluidOrGas(1000), Materials.Water.getFluid(9000))
+                .fluidOutputs(DilutedSamariumRareEarthSolution.getFluidOrGas(9000)).eut(1920).duration(1200)
+                .addTo(GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes);
 
         // 2B DilutedSamariumRareEarthSolution + 3B Oxalate =EV@10s= 5 ImpureSamariumOxalate + 0.1*2 LepersonniteDust +
         // 50L
@@ -2142,23 +2147,58 @@ public class RecipeLoader {
                 .noFluidInputs().noFluidOutputs().eut(491520).duration(1800)
                 .addTo(GT_Recipe.GT_Recipe_Map.sMixerRecipes);
 
-        // 1 LuAG Blend = 1 LuAG in Blast or Vacuum Furnace
+        // Get LuAG Crystal seed
         GT_Values.RA.stdBuilder().itemInputs(CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 1))
-                .itemOutputs(CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gemExquisite, 1)).noFluidInputs()
-                .noFluidOutputs().specialValue(9100).eut(1919810).duration(100)
-                .addTo(GTPP_Recipe.GTPP_Recipe_Map.sVacuumFurnaceRecipes);
-        GT_Values.RA.stdBuilder().itemInputs(CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 1))
+                .itemOutputs(CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gem, 1))
+                .fluidInputs(Materials.Lutetium.getMolten(144 * 8)).noFluidOutputs().outputChances(514).eut(500000)
+                .duration(500).addTo(GT_Recipe.GT_Recipe_Map.sAutoclaveRecipes);
+
+        // 1 LuAG Blend = 1.1(Og) 1.0(Xe) 0.99(Kr) LuAG in Autoclave
+        GT_Values.RA.stdBuilder()
+                .itemInputs(
+                        CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 1),
+                        CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gem, 1))
+                .itemOutputs(
+                        CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gemExquisite, 1),
+                        CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gemExquisite, 1))
+                .fluidInputs(WerkstoffLoader.Krypton.getFluidOrGas(40)).noFluidOutputs().outputChances(8000, 1900)
+                .eut(1919810).duration(512).addTo(GT_Recipe.GT_Recipe_Map.sAutoclaveRecipes);
+        GT_Values.RA.stdBuilder()
+                .itemInputs(
+                        CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 1),
+                        CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gem, 1))
+                .itemOutputs(
+                        CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gemExquisite, 1),
+                        CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gemExquisite, 1))
+                .fluidInputs(WerkstoffLoader.Xenon.getFluidOrGas(25)).noFluidOutputs().outputChances(9000, 1000)
+                .eut(1919810).duration(256).addTo(GT_Recipe.GT_Recipe_Map.sAutoclaveRecipes);
+        GT_Values.RA.stdBuilder()
+                .itemInputs(
+                        GT_Utility.getIntegratedCircuit(1),
+                        CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 1))
+                .itemOutputs(
+                        CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gemExquisite, 1),
+                        CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gemExquisite, 1))
+                .fluidInputs(WerkstoffLoader.Oganesson.getFluidOrGas(10)).noFluidOutputs().outputChances(10000, 100)
+                .eut(1919810).duration(128).addTo(GT_Recipe.GT_Recipe_Map.sAutoclaveRecipes);
+        GT_Values.RA.stdBuilder()
+                .itemInputs(
+                        CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 1),
+                        CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gem, 1))
+                .itemOutputs(
+                        CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gemExquisite, 1),
+                        CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gemExquisite, 2))
+                .fluidInputs(WerkstoffLoader.Oganesson.getFluidOrGas(10)).noFluidOutputs().outputChances(10000, 2000)
+                .eut(1919810).duration(128).addTo(GT_Recipe.GT_Recipe_Map.sAutoclaveRecipes);
+
+        // 1 LuAG Blend = 1 LuAG in Vacuum Furnace
+        GT_Values.RA.stdBuilder().itemInputs(CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.dust, 1))
                 .itemOutputs(CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gemExquisite, 1))
-                .fluidInputs(WerkstoffLoader.Krypton.getFluidOrGas(40)).noFluidOutputs().specialValue(9100).eut(1919810)
-                .duration(256).addTo(GT_Recipe.GT_Recipe_Map.sBlastRecipes);
+                .fluidInputs(CeriumDopedLutetiumAluminiumOxygenBlend.getMolten(108)).noFluidOutputs().specialValue(9100)
+                .eut(1919810).duration(100).addTo(GTPP_Recipe.GTPP_Recipe_Map.sVacuumFurnaceRecipes);
         GT_Values.RA.stdBuilder().itemInputs(CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 1))
-                .itemOutputs(CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gemExquisite, 1))
-                .fluidInputs(WerkstoffLoader.Xenon.getFluidOrGas(25)).noFluidOutputs().specialValue(9100).eut(1919810)
-                .duration(128).addTo(GT_Recipe.GT_Recipe_Map.sBlastRecipes);
-        GT_Values.RA.stdBuilder().itemInputs(CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 1))
-                .itemOutputs(CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gemExquisite, 1))
-                .fluidInputs(WerkstoffLoader.Oganesson.getFluidOrGas(10)).noFluidOutputs().specialValue(9100)
-                .eut(1919810).duration(64).addTo(GT_Recipe.GT_Recipe_Map.sBlastRecipes);
+                .noItemOutputs().noFluidInputs().fluidOutputs(CeriumDopedLutetiumAluminiumOxygenBlend.getMolten(144))
+                .eut(30000).duration(20).addTo(GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes);
 
         // 16 Adv Crystal SoC
         for (ItemStack itemStack : OreDictionary.getOres("craftingLensBlue")) {
@@ -2170,7 +2210,7 @@ public class RecipeLoader {
                     .requiresCleanRoom().eut(160000).duration(800).addTo(GT_Recipe.GT_Recipe_Map.sLaserEngraverRecipes);
         }
 
-        // 1 LuAG = 16 Crystal SoC
+        // 16 Crystal SoC
         for (ItemStack itemStack : OreDictionary.getOres("craftingLensGreen")) {
             GT_Values.RA.stdBuilder()
                     .itemInputs(
