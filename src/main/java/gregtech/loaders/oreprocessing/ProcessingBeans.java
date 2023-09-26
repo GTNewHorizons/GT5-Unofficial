@@ -22,7 +22,7 @@ public class ProcessingBeans implements gregtech.api.interfaces.IOreRecipeRegist
         ItemStack aStack) {
 
         if (!aOreDictName.equals("beansCocoa")) {
-           return;
+            return;
         }
 
         GT_Values.RA.stdBuilder()

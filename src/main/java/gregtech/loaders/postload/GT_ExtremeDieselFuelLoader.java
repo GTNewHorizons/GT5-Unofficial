@@ -10,7 +10,7 @@ public class GT_ExtremeDieselFuelLoader implements Runnable {
         GT_Log.out.println("GT_Mod: Adding extreme diesel fuel.");
         int added = 0;
         for (GT_Recipe aRecipe : GT_Recipe.GT_Recipe_Map.sDieselFuels.mRecipeList) {
-            if (aRecipe.mSpecialValue < 1500){
+            if (aRecipe.mSpecialValue < 1500) {
                 continue;
             }
 

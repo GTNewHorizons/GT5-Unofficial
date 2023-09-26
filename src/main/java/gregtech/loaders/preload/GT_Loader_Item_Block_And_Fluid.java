@@ -224,8 +224,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             GregTech_API
                 .constructCoolantCellItem("neutroniumHeatCapacitor", "1G Neutronium Heat Capacitor", 1000000000));
 
-        ItemList.Depleted_Thorium_1
-            .set(new GT_DepletetCell_Item("ThoriumcellDep", "Fuel Rod (Depleted Thorium)", 1));
+        ItemList.Depleted_Thorium_1.set(new GT_DepletetCell_Item("ThoriumcellDep", "Fuel Rod (Depleted Thorium)", 1));
         ItemList.Depleted_Thorium_2
             .set(new GT_DepletetCell_Item("Double_ThoriumcellDep", "Dual Fuel Rod (Depleted Thorium)", 1)); // TODO
                                                                                                             // CHECK
@@ -381,8 +380,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .addTo(sCentrifugeRecipes);
 
         ItemList.Depleted_MNq_1.set(new GT_DepletetCell_Item("MNqCellDep", "Fuel Rod (Depleted Nq*)", 1));
-        ItemList.Depleted_MNq_2
-            .set(new GT_DepletetCell_Item("Double_MNqCellDep", "Dual Fuel Rod (Depleted Nq*)", 1));
+        ItemList.Depleted_MNq_2.set(new GT_DepletetCell_Item("Double_MNqCellDep", "Dual Fuel Rod (Depleted Nq*)", 1));
         ItemList.Depleted_MNq_4.set(new GT_DepletetCell_Item("Quad_MNqCellDep", "Quad Fuel Rod (Depleted Nq*)", 1));
         ItemList.MNqCell_1.set(
             new GT_RadioactiveCellIC_Item(
@@ -526,7 +524,6 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 1F,
                 GT_ModHandler.getIC2Item("reactorDepletedMOXQuad", 1),
                 true));
-
 
         GT_Log.out.println("GT_Mod: Adding Blocks.");
         GregTech_API.sBlockMachines = new GT_Block_Machines();
@@ -679,10 +676,8 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         Materials.ConstructionFoam.mFluid = GT_Utility
             .getFluidForFilledItem(GT_ModHandler.getIC2Item("CFCell", 1L), true)
             .getFluid();
-        Materials.UUMatter.mFluid = GT_Utility
-            .getFluidForFilledItem(GT_ModHandler.getIC2Item("uuMatterCell", 1L), true)
+        Materials.UUMatter.mFluid = GT_Utility.getFluidForFilledItem(GT_ModHandler.getIC2Item("uuMatterCell", 1L), true)
             .getFluid();
-
 
         GT_FluidFactory.builder("Air")
             .withLocalizedName("Air")

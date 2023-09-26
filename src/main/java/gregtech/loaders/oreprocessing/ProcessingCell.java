@@ -41,8 +41,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                     if (aModName.equalsIgnoreCase("AtomicScience")) {
                         GT_ModHandler.addExtractionRecipe(ItemList.Cell_Empty.get(1L), aStack);
                     }
-                }
-                else {
+                } else {
                     if (aMaterial.mFuelPower > 0) {
                         GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
                         recipeBuilder.itemInputs(GT_Utility.copyAmount(1L, aStack));
@@ -56,7 +55,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                             .eut(0)
                             .addTo(GT_RecipeConstants.Fuel);
                     }
-                    if (!((aMaterial.mMaterialList.size() > 0) && ((aMaterial.mExtraData & 0x3) != 0))){
+                    if (!((aMaterial.mMaterialList.size() > 0) && ((aMaterial.mExtraData & 0x3) != 0))) {
                         break;
                     }
 
@@ -71,7 +70,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                         : 1L;
                     ArrayList<ItemStack> tList = new ArrayList<>();
                     for (MaterialStack tMat : aMaterial.mMaterialList) {
-                        if (tMat.mAmount <= 0){
+                        if (tMat.mAmount <= 0) {
                             continue;
                         }
 
@@ -81,27 +80,25 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                         } else {
                             tStack = GT_OreDictUnificator.get(OrePrefixes.dust, tMat.mMaterial, tMat.mAmount);
                             if (tStack == null) {
-                                tStack = GT_OreDictUnificator
-                                    .get(OrePrefixes.cell, tMat.mMaterial, tMat.mAmount);
+                                tStack = GT_OreDictUnificator.get(OrePrefixes.cell, tMat.mMaterial, tMat.mAmount);
                             }
                         }
-                        if (tItemAmount + tMat.mAmount * 3628800L
-                            > aStack.getMaxStackSize() * aMaterial.getDensity()) {
+                        if (tItemAmount + tMat.mAmount * 3628800L > aStack.getMaxStackSize() * aMaterial.getDensity()) {
                             continue;
                         }
 
                         tItemAmount += tMat.mAmount * 3628800L;
 
-                        if (tStack == null){
+                        if (tStack == null) {
                             continue;
                         }
 
                         tStack.stackSize = ((int) (tStack.stackSize * tDensityMultiplier));
                         while ((tStack.stackSize > 64)
-                            && (tCapsuleCount + GT_ModHandler.getCapsuleCellContainerCount(tStack) * 64L
-                                < 0L ? tList.size() < 5 : tList.size() < 6)
-                            && (tCapsuleCount + GT_ModHandler.getCapsuleCellContainerCount(tStack) * 64L
-                                <= 64L)) {
+                            && (tCapsuleCount + GT_ModHandler.getCapsuleCellContainerCount(tStack) * 64L < 0L
+                                ? tList.size() < 5
+                                : tList.size() < 6)
+                            && (tCapsuleCount + GT_ModHandler.getCapsuleCellContainerCount(tStack) * 64L <= 64L)) {
                             tCapsuleCount += GT_ModHandler.getCapsuleCellContainerCount(tStack) * 64L;
                             tList.add(GT_Utility.copyAmount(64L, tStack));
                             tStack.stackSize -= 64;
@@ -109,8 +106,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                         int tThisCapsuleCount = GT_ModHandler
                             .getCapsuleCellContainerCountMultipliedWithStackSize(tStack);
                         if (tStack.stackSize > 0 && tCapsuleCount + tThisCapsuleCount <= 64L) {
-                            if (tCapsuleCount + tThisCapsuleCount < 0L ? tList.size() < 5
-                                : tList.size() < 6) {
+                            if (tCapsuleCount + tThisCapsuleCount < 0L ? tList.size() < 5 : tList.size() < 6) {
                                 tCapsuleCount += tThisCapsuleCount;
                                 tList.add(tStack);
                             }
@@ -119,7 +115,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
 
                     tItemAmount = GT_Utility.ceilDiv(tItemAmount * tDensityMultiplier, aMaterial.getDensity());
 
-                    if (tList.size() <= 0){
+                    if (tList.size() <= 0) {
                         break;
                     }
 
@@ -139,8 +135,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                             if (tCapsuleCount < 0L) {
                                 tList.add(ItemList.Cell_Empty.get(-tCapsuleCount));
                             }
-                            ItemStack[] outputsArray = tList
-                                .toArray(new ItemStack[Math.min(tList.size(), 6)]);
+                            ItemStack[] outputsArray = tList.toArray(new ItemStack[Math.min(tList.size(), 6)]);
                             recipeBuilder.itemOutputs(outputsArray)
                                 .duration(Math.max(1L, Math.abs(aMaterial.getProtons() * 2L * tItemAmount)))
                                 .eut(Math.min(4, tList.size()) * 30)
@@ -156,8 +151,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                             if (tCellBalance < 0L) {
                                 tList.add(ItemList.Cell_Empty.get(-tCellBalance));
                             }
-                            ItemStack[] outputsArray = tList
-                                .toArray(new ItemStack[Math.min(tList.size(), 6)]);
+                            ItemStack[] outputsArray = tList.toArray(new ItemStack[Math.min(tList.size(), 6)]);
                             recipeBuilder.itemOutputs(outputsArray)
                                 .duration(Math.max(1L, Math.abs(aMaterial.getProtons() * 8L * tItemAmount)))
                                 .eut(Math.min(4, tList.size()) * 30)

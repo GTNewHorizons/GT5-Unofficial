@@ -103,14 +103,14 @@ public class ProcessingArrows implements gregtech.api.interfaces.IOreRecipeRegis
             .eut(2)
             .addTo(sChemicalBathRecipes);
 
-        if (!aMaterial.mUnificatable){
+        if (!aMaterial.mUnificatable) {
             return;
         }
-        if (aMaterial.mMaterialInto != aMaterial){
+        if (aMaterial.mMaterialInto != aMaterial) {
             return;
         }
 
-        if (aMaterial.contains(SubTag.NO_WORKING)){
+        if (aMaterial.contains(SubTag.NO_WORKING)) {
             return;
         }
 

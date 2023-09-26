@@ -10,7 +10,6 @@ import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -85,7 +84,6 @@ public class PyrolyseRecipes implements Runnable {
                 .eut(10)
                 .addTo(sPyrolyseRecipes);
         }
-
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_ModHandler.getIC2Item("biochaff", 4), GT_Utility.getIntegratedCircuit(1))

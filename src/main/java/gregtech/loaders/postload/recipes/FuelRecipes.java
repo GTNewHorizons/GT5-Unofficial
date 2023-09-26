@@ -11,7 +11,6 @@ import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_RecipeConstants;

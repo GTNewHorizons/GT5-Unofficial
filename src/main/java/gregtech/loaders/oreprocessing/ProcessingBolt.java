@@ -19,19 +19,19 @@ public class ProcessingBolt implements gregtech.api.interfaces.IOreRecipeRegistr
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
-        if (aMaterial.getProcessingMaterialTierEU() >= TierEU.IV){
+        if (aMaterial.getProcessingMaterialTierEU() >= TierEU.IV) {
             return;
         }
 
-        if (!aMaterial.mUnificatable){
+        if (!aMaterial.mUnificatable) {
             return;
         }
 
-        if ((aMaterial.mMaterialInto != aMaterial)){
+        if ((aMaterial.mMaterialInto != aMaterial)) {
             return;
         }
 
-        if (aMaterial.contains(SubTag.NO_WORKING)){
+        if (aMaterial.contains(SubTag.NO_WORKING)) {
             return;
         }
 

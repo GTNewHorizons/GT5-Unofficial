@@ -66,7 +66,7 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
                     .addTo(sThermalCentrifugeRecipes);
 
                 ItemStack tGem = GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L);
-                if (tGem == null){
+                if (tGem == null) {
                     break;
                 }
 

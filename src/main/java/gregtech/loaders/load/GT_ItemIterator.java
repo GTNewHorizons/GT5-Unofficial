@@ -23,7 +23,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.ToolDictNames;
 import gregtech.api.items.GT_Generic_Item;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
@@ -164,23 +163,21 @@ public class GT_ItemIterator implements Runnable {
             for (Object o : Item.itemRegistry) {
                 Object tObject;
 
-                if (!(((tObject = o) instanceof Item) && (!(tObject instanceof GT_Generic_Item)))){
+                if (!(((tObject = o) instanceof Item) && (!(tObject instanceof GT_Generic_Item)))) {
                     continue;
                 }
 
                 Item tItem = (Item) tObject;
                 String tName;
-                if ((tName = tItem.getUnlocalizedName()) == null){
+                if ((tName = tItem.getUnlocalizedName()) == null) {
                     continue;
                 }
 
                 if ((tItem instanceof IToolCrowbar)) {
-                    if ((!tItem.isDamageable())
-                        && (!GT_ModHandler.isElectricItem(new ItemStack(tItem, 1, 0)))) {
-                        if ((GregTech_API.sRecipeFile.get(
-                            ConfigCategories.Recipes.disabledrecipes,
-                            "infiniteDurabilityRCCrowbars",
-                            false)) && (GT_ModHandler.removeRecipeByOutput(new ItemStack(tItem, 1, WILDCARD)))) {
+                    if ((!tItem.isDamageable()) && (!GT_ModHandler.isElectricItem(new ItemStack(tItem, 1, 0)))) {
+                        if ((GregTech_API.sRecipeFile
+                            .get(ConfigCategories.Recipes.disabledrecipes, "infiniteDurabilityRCCrowbars", false))
+                            && (GT_ModHandler.removeRecipeByOutput(new ItemStack(tItem, 1, WILDCARD)))) {
                             GT_Log.out.println("GT_Mod: Removed infinite RC Crowbar: " + tName);
                         }
                     } else if (GregTech_API.registerCrowbar(new ItemStack(tItem, 1, WILDCARD))) {
@@ -188,12 +185,10 @@ public class GT_ItemIterator implements Runnable {
                     }
                 }
                 if ((tItem instanceof IToolWrench)) {
-                    if ((!tItem.isDamageable())
-                        && (!GT_ModHandler.isElectricItem(new ItemStack(tItem, 1, 0)))) {
-                        if ((GregTech_API.sRecipeFile.get(
-                            ConfigCategories.Recipes.disabledrecipes,
-                            "infiniteDurabilityBCWrenches",
-                            false)) && (GT_ModHandler.removeRecipeByOutput(new ItemStack(tItem, 1, WILDCARD)))) {
+                    if ((!tItem.isDamageable()) && (!GT_ModHandler.isElectricItem(new ItemStack(tItem, 1, 0)))) {
+                        if ((GregTech_API.sRecipeFile
+                            .get(ConfigCategories.Recipes.disabledrecipes, "infiniteDurabilityBCWrenches", false))
+                            && (GT_ModHandler.removeRecipeByOutput(new ItemStack(tItem, 1, WILDCARD)))) {
                             GT_Log.out.println("GT_Mod: Removed infinite BC Wrench: " + tName);
                         }
                     } else if (GregTech_API.registerWrench(new ItemStack(tItem, 1, WILDCARD))) {
@@ -206,8 +201,7 @@ public class GT_ItemIterator implements Runnable {
                         tBlock.setHarvestLevel("scoop", 0);
                         gregtech.common.tools.GT_Tool_Scoop.sBeeHiveMaterial = tBlock.getMaterial();
                     }
-                    if (OrePrefixes.stone.mDefaultStackSize
-                        < tItem.getItemStackLimit(new ItemStack(tItem, 1, 0))) {
+                    if (OrePrefixes.stone.mDefaultStackSize < tItem.getItemStackLimit(new ItemStack(tItem, 1, 0))) {
                         if ((tBlock.isReplaceableOreGen(GT_Values.DW, 0, 0, 0, Blocks.stone))
                             || (tBlock.isReplaceableOreGen(GT_Values.DW, 0, 0, 0, Blocks.netherrack))
                             || (tBlock.isReplaceableOreGen(GT_Values.DW, 0, 0, 0, Blocks.end_stone))) {
@@ -220,9 +214,8 @@ public class GT_ItemIterator implements Runnable {
                     int tFoodValue = ((ItemFood) tItem).func_150905_g(new ItemStack(tItem, 1, 0));
                     if (tFoodValue > 0) {
                         GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
-                        recipeBuilder.itemInputs(
-                            new ItemStack(tItem, 1, WILDCARD),
-                            ItemList.IC2_Food_Can_Empty.get(tFoodValue));
+                        recipeBuilder
+                            .itemInputs(new ItemStack(tItem, 1, WILDCARD), ItemList.IC2_Food_Can_Empty.get(tFoodValue));
                         if (GT_Utility.getContainerItem(new ItemStack(tItem, 1, 0), true) == null) {
                             recipeBuilder.itemOutputs(ItemList.IC2_Food_Can_Filled.get(tFoodValue));
                         } else {
@@ -273,16 +266,16 @@ public class GT_ItemIterator implements Runnable {
                     }
 
                     // tinker construct
-                    case "item.tconstruct.manual" ->
-                        GT_OreDictUnificator.registerOre("bookTinkersManual", new ItemStack(tItem, 1, WILDCARD));
+                    case "item.tconstruct.manual" -> GT_OreDictUnificator
+                        .registerOre("bookTinkersManual", new ItemStack(tItem, 1, WILDCARD));
 
                     // buildcraft
-                    case "item.blueprintItem" ->
-                        GT_OreDictUnificator.registerOre("paperBlueprint", new ItemStack(tItem, 1, WILDCARD));
+                    case "item.blueprintItem" -> GT_OreDictUnificator
+                        .registerOre("paperBlueprint", new ItemStack(tItem, 1, WILDCARD));
 
                     // Thaumcraft
-                    case "item.ItemThaumonomicon" ->
-                        GT_OreDictUnificator.registerOre("bookThaumonomicon", new ItemStack(tItem, 1, WILDCARD));
+                    case "item.ItemThaumonomicon" -> GT_OreDictUnificator
+                        .registerOre("bookThaumonomicon", new ItemStack(tItem, 1, WILDCARD));
 
                     // BoP
                     case "tile.bop.redRocks" -> {
@@ -305,8 +298,8 @@ public class GT_ItemIterator implements Runnable {
                     }
 
                     // minecraft
-                    case "tile.enderchest" ->
-                        GT_OreDictUnificator.registerOre(OreDictNames.enderChest, new ItemStack(tItem, 1, WILDCARD));
+                    case "tile.enderchest" -> GT_OreDictUnificator
+                        .registerOre(OreDictNames.enderChest, new ItemStack(tItem, 1, WILDCARD));
 
                     // buildcraft
                     case "tile.autoWorkbenchBlock" -> GT_OreDictUnificator
@@ -315,15 +308,14 @@ public class GT_ItemIterator implements Runnable {
                     // buildcraft
                     case "tile.pumpBlock" -> {
                         GT_OreDictUnificator.registerOre(OreDictNames.craftingPump, new ItemStack(tItem, 1, 0));
-                        if (GregTech_API.sRecipeFile
-                            .get(ConfigCategories.Recipes.disabledrecipes, "BCPump", false)) {
+                        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "BCPump", false)) {
                             GT_ModHandler.removeRecipeByOutput(new ItemStack(tItem, 1, 0));
                         }
                     }
 
                     // buildcraft
-                    case "tile.tankBlock" ->
-                        GT_OreDictUnificator.registerOre(OreDictNames.craftingTank, new ItemStack(tItem, 1, 0));
+                    case "tile.tankBlock" -> GT_OreDictUnificator
+                        .registerOre(OreDictNames.craftingTank, new ItemStack(tItem, 1, 0));
 
                 }
             }

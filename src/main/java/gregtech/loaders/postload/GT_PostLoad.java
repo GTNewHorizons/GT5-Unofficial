@@ -491,8 +491,7 @@ public class GT_PostLoad {
                     ItemStack tStack = new ItemStack(GT_MetaGenerated_Tool_01.INSTANCE, 1, i);
                     GT_MetaGenerated_Tool_01.INSTANCE.isItemStackUsable(tStack);
                     aList.add(
-                        GT_MetaGenerated_Tool_01.INSTANCE
-                            .getToolWithStats(i, 1, Materials.Lead, Materials.Lead, null));
+                        GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(i, 1, Materials.Lead, Materials.Lead, null));
                     aList.add(
                         GT_MetaGenerated_Tool_01.INSTANCE
                             .getToolWithStats(i, 1, Materials.Nickel, Materials.Nickel, null));

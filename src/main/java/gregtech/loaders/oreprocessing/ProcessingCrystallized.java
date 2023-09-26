@@ -23,11 +23,11 @@ public class ProcessingCrystallized implements gregtech.api.interfaces.IOreRecip
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
-        if (aMaterial.mMacerateInto == null){
+        if (aMaterial.mMacerateInto == null) {
             return;
         }
 
-        if (GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1) == null){
+        if (GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1) == null) {
             return;
         }
 

@@ -1,6 +1,5 @@
 package gregtech.loaders.postload;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_ModHandler;
 
