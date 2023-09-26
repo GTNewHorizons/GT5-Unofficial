@@ -26,7 +26,6 @@ import org.lwjgl.opengl.GL11;
 
 import com.mitchej123.hodgepodge.textures.IPatchedTextureAtlasSprite;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.items.GT_MetaGenerated_Item;

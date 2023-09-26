@@ -1,5 +1,7 @@
 package gregtech.common.render.items;
 
+import static gregtech.api.enums.Mods.Avaritia;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderHelper;
@@ -17,11 +19,8 @@ import org.lwjgl.opengl.GL12;
 
 import codechicken.lib.render.TextureUtils;
 import fox.spiteful.avaritia.render.CosmicRenderShenanigans;
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
-
-import static gregtech.api.enums.Mods.Avaritia;
 
 @SuppressWarnings("RedundantLabeledSwitchRuleCodeBlock")
 public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
@@ -83,7 +82,7 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
 
     private void magicRenderMethod(ItemRenderType type, ItemStack aStack, IIcon tIcon, boolean fluidDisplay,
         Object... data) {
-        if (!Avaritia.isModLoaded()){
+        if (!Avaritia.isModLoaded()) {
             return;
         }
 

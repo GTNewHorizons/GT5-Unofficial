@@ -40,7 +40,6 @@ import org.apache.commons.lang3.tuple.MutableTriple;
 
 import cpw.mods.fml.common.Optional;
 import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
@@ -551,8 +550,8 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
             ? (IGregTechTileEntity) tileEntity
             : null;
 
-        if (coverBehavior instanceof GT_Cover_Drain || (TinkerConstruct.isModLoaded() && isTConstructFaucet(tileEntity)))
-            return true;
+        if (coverBehavior instanceof GT_Cover_Drain
+            || (TinkerConstruct.isModLoaded() && isTConstructFaucet(tileEntity))) return true;
 
         final IFluidHandler fTileEntity = (tileEntity instanceof IFluidHandler) ? (IFluidHandler) tileEntity : null;
 
