@@ -10,6 +10,7 @@ import static gregtech.api.enums.GT_Values.NW;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.W;
 import static gregtech.api.enums.Materials.FLUID_MAP;
+import static gregtech.api.enums.Mods.Translocator;
 import static gregtech.common.GT_UndergroundOil.undergroundOilReadInformation;
 import static net.minecraftforge.common.util.ForgeDirection.DOWN;
 import static net.minecraftforge.common.util.ForgeDirection.EAST;
@@ -573,7 +574,7 @@ public class GT_Utility {
         if (TE_CHECK && tileEntity instanceof IItemDuct) return true;
         if (BC_CHECK && tileEntity instanceof buildcraft.api.transport.IPipeTile pipeTile)
             return pipeTile.isPipeConnected(side);
-        return GregTech_API.mTranslocator && tileEntity instanceof codechicken.translocator.TileItemTranslocator;
+        return Translocator.isModLoaded() && tileEntity instanceof codechicken.translocator.TileItemTranslocator;
     }
 
     /**

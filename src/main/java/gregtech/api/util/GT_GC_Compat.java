@@ -11,11 +11,13 @@ import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 
+import static gregtech.api.enums.Mods.GalacticraftCore;
+
 public class GT_GC_Compat {
 
     public static long insertEnergyInto(TileEntity tTileEntity, long aVoltage, ForgeDirection tDirection) {
         // GC Compat
-        if (GregTech_API.mGalacticraft && tTileEntity instanceof IEnergyHandlerGC) {
+        if (GalacticraftCore.isModLoaded() && tTileEntity instanceof IEnergyHandlerGC) {
             if (!(tTileEntity instanceof IConnector)
                 || ((IConnector) tTileEntity).canConnect(tDirection, NetworkType.POWER)) {
                 EnergySource eSource = new EnergySourceAdjacent(tDirection);
@@ -44,7 +46,7 @@ public class GT_GC_Compat {
 
     public static boolean canConnect(TileEntity tTileEntity, ForgeDirection tDirection) {
         // GC Compat
-        return GregTech_API.mGalacticraft && tTileEntity instanceof IEnergyHandlerGC
+        return GalacticraftCore.isModLoaded() && tTileEntity instanceof IEnergyHandlerGC
             && (!(tTileEntity instanceof IConnector)
                 || ((IConnector) tTileEntity).canConnect(tDirection, NetworkType.POWER));
     }

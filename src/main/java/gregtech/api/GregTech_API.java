@@ -278,11 +278,11 @@ public class GregTech_API {
         sMachineExplosions = true, sMachineFlammable = true, sMachineNonWrenchExplosions = true,
         sMachineRainExplosions = true, sMachineThunderExplosions = true, sMachineFireExplosions = true,
         sMachineWireFire = true, mOutputRF = false, mInputRF = false, meIOLoaded = false, mRFExplosions = false,
-        mServerStarted = false, mMagneticraft = false, mImmersiveEngineering = false, mGTPlusPlus = false,
-        mTranslocator = false, mTConstruct = false, mGalacticraft = false, mHodgepodge = false, mAvaritia = false;
+        mServerStarted = false;
 
     @Deprecated
-    public static boolean mIC2Classic = false;
+    public static boolean mIC2Classic = false, mMagneticraft = false, mImmersiveEngineering = false, mGTPlusPlus = false,
+        mTranslocator = false, mTConstruct = false, mGalacticraft = false, mHodgepodge = false, mAvaritia = false;
     /**
      * This is always set to true
      */

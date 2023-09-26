@@ -21,6 +21,8 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 
+import static gregtech.api.enums.Mods.Avaritia;
+
 @SuppressWarnings("RedundantLabeledSwitchRuleCodeBlock")
 public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
 
@@ -81,7 +83,9 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
 
     private void magicRenderMethod(ItemRenderType type, ItemStack aStack, IIcon tIcon, boolean fluidDisplay,
         Object... data) {
-        if (!GregTech_API.mAvaritia) return;
+        if (!Avaritia.isModLoaded()){
+            return;
+        }
 
         RenderItem r = RenderItem.getInstance();
         Minecraft mc = Minecraft.getMinecraft();

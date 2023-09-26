@@ -2,6 +2,8 @@ package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 import static gregtech.api.enums.GT_Values.D1;
+import static gregtech.api.enums.Mods.TinkerConstruct;
+import static gregtech.api.enums.Mods.Translocator;
 import static gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Fluid.Border.BOTTOM;
 import static gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Fluid.Border.LEFT;
 import static gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Fluid.Border.RIGHT;
@@ -549,7 +551,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
             ? (IGregTechTileEntity) tileEntity
             : null;
 
-        if (coverBehavior instanceof GT_Cover_Drain || (GregTech_API.mTConstruct && isTConstructFaucet(tileEntity)))
+        if (coverBehavior instanceof GT_Cover_Drain || (TinkerConstruct.isModLoaded() && isTConstructFaucet(tileEntity)))
             return true;
 
         final IFluidHandler fTileEntity = (tileEntity instanceof IFluidHandler) ? (IFluidHandler) tileEntity : null;
@@ -557,7 +559,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
         if (fTileEntity != null) {
             final FluidTankInfo[] tInfo = fTileEntity.getTankInfo(tSide);
             if (tInfo != null) {
-                return tInfo.length > 0 || (GregTech_API.mTranslocator && isTranslocator(tileEntity))
+                return tInfo.length > 0 || (Translocator.isModLoaded() && isTranslocator(tileEntity))
                     || gTileEntity != null
                         && gTileEntity.getCoverBehaviorAtSideNew(tSide) instanceof GT_Cover_FluidRegulator;
             }

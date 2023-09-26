@@ -18,6 +18,8 @@ import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.render.GT_RenderUtil;
 
+import static gregtech.api.enums.Mods.HodgePodge;
+
 public class GT_GeneratedMaterial_Renderer implements IItemRenderer {
 
     @Override
@@ -158,7 +160,7 @@ public class GT_GeneratedMaterial_Renderer implements IItemRenderer {
     }
 
     protected void markNeedsAnimationUpdate(IIcon icon) {
-        if (GregTech_API.mHodgepodge && icon instanceof IPatchedTextureAtlasSprite) {
+        if (HodgePodge.isModLoaded() && icon instanceof IPatchedTextureAtlasSprite) {
             ((IPatchedTextureAtlasSprite) icon).markNeedsAnimationUpdate();
         }
     }
