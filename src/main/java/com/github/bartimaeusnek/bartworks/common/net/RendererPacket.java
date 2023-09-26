@@ -49,10 +49,9 @@ public class RendererPacket extends GT_Packet_New {
 
     @Override
     public void encode(ByteBuf aOut) {
-
-        byte r = (byte) ((this.integer >> 16 & 0xFF) + Byte.MIN_VALUE);
-        byte g = (byte) ((this.integer >> 8 & 0xFF) + Byte.MIN_VALUE);
-        byte b = (byte) ((this.integer & 0xFF) + Byte.MIN_VALUE);
+        byte r = (byte) (this.integer >> 16 & 0xFF);
+        byte g = (byte) (this.integer >> 8 & 0xFF);
+        byte b = (byte) (this.integer & 0xFF);
         byte checksum = (byte) (this.coords.x % 25 + this.coords.y % 25
                 + this.coords.z % 25
                 + this.coords.wID % 25
@@ -65,8 +64,8 @@ public class RendererPacket extends GT_Packet_New {
     @Override
     public GT_Packet_New decode(ByteArrayDataInput dataInput) {
         this.coords = new Coords(dataInput.readInt(), dataInput.readShort(), dataInput.readInt(), dataInput.readInt());
-        this.integer = BW_ColorUtil.getColorFromRGBArray(
-                new int[] { dataInput.readUnsignedByte(), dataInput.readUnsignedByte(), dataInput.readUnsignedByte() });
+        this.integer = BW_ColorUtil
+                .getColorFromRGBArray(new int[] { dataInput.readByte(), dataInput.readByte(), dataInput.readByte() });
         this.removal = dataInput.readByte();
 
         byte checksum = (byte) (this.coords.x % 25 + this.coords.y % 25
