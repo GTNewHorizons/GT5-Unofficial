@@ -16,8 +16,8 @@ public class WerkstoffMaterialPool implements Runnable {
     private static final int offsetID = 11_000;
     private static final int offsetID2 = 11_100;
     private static final int offsetID3 = 11_300;
-    private static final int offsetID4 = 11_400;
-    private static final int offsetID5 = 11_500;
+    private static final int offsetID4 = 12_000;
+    private static final int offsetID5 = 12_100; // 11500 has been used in GalaxySpace
 
     /*
      * public static final Werkstoff __ = new Werkstoff( new short[] {_, _, _}, "__", new Werkstoff.Stats(),
