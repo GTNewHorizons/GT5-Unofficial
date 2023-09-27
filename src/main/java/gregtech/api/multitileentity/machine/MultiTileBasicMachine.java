@@ -26,6 +26,7 @@ import org.jetbrains.annotations.ApiStatus.OverrideOnly;
 
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -785,7 +786,7 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>>
     }
 
     @Nonnull
-    public GUIProvider<?> getGUI() {
+    public GUIProvider<?> getGUI(@Nonnull UIBuildContext uiContext) {
         return guiProvider;
     }
 }

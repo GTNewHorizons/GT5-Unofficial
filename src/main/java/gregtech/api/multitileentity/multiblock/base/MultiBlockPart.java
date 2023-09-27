@@ -668,13 +668,11 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         if (modeSelected(ITEM_IN, ITEM_OUT)) {
             InventoryType type = modeSelected(ITEM_IN) ? InventoryType.Input : InventoryType.Output;
             ItemInventoryLogic itemLogic = controller.getItemLogic(type, lockedInventory);
-            if (itemLogic == null) return "";
             return itemLogic.getDisplayName();
         }
         if (modeSelected(FLUID_IN, FLUID_OUT)) {
             InventoryType type = modeSelected(FLUID_IN) ? InventoryType.Input : InventoryType.Output;
             FluidInventoryLogic fluidLogic = controller.getFluidLogic(type, lockedInventory);
-            if (fluidLogic == null) return "";
             return fluidLogic.getDisplayName();
         }
         return "";
@@ -694,12 +692,13 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
 
     @Override
     @Nonnull
-    public GUIProvider<?> getGUI() {
+    public GUIProvider<?> getGUI(@Nonnull UIBuildContext uiContext) {
         IMultiBlockController controller = getTarget(false);
         if (controller == null) return guiProvider;
         if (!modeSelected(NOTHING, ENERGY_IN, ENERGY_OUT)) return guiProvider;
         if (!canOpenControllerGui()) return guiProvider;
-        GUIProvider<?> controllerGUI = controller.getGUI();
+        if (uiContext.getPlayer().isSneaking()) return guiProvider;
+        GUIProvider<?> controllerGUI = controller.getGUI(uiContext);
         return controllerGUI;
     }
 

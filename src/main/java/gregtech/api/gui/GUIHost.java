@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
+import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ITileWithModularUI;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -13,10 +14,14 @@ public interface GUIHost extends ITileWithModularUI {
     @Nonnull
     @Override
     default ModularWindow createWindow(UIBuildContext uiContext) {
-        GUIProvider<?> gui = getGUI();
-        return gui.openGUI(Objects.requireNonNull(uiContext));
+        Objects.requireNonNull(uiContext);
+        GUIProvider<?> gui = getGUI(uiContext);
+        return gui.openGUI(uiContext);
     }
 
+    /**
+     * Width of the GUI when its being displayed
+     */
     default int getWidth() {
         return 170;
     }
@@ -26,6 +31,6 @@ public interface GUIHost extends ITileWithModularUI {
     }
 
     @Nonnull
-    GUIProvider<?> getGUI();
+    GUIProvider<?> getGUI(@Nonnull UIBuildContext uiContext);
 
 }
