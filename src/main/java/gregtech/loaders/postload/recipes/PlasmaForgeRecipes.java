@@ -28,7 +28,6 @@ public class PlasmaForgeRecipes implements Runnable {
                 MaterialsUEVplus.ExcitedDTEC.getFluid(100_000_000),
                 MaterialsUEVplus.SpaceTime.getMolten(64 * 2 * 9 * 144))
             .itemOutputs(ItemList.GigaChad.get(1))
-            .fluidOutputs(MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(100_000_000))
             .duration(86400 * 20 * 2)
             .eut(2_000_000_000)
             .metadata(COIL_HEAT, 13500)
