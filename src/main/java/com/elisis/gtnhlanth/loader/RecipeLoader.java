@@ -2084,44 +2084,52 @@ public class RecipeLoader {
                 .fluidOutputs(MuddySamariumRareEarthSolution.getFluidOrGas(1200)).specialValue(800).eut(1920)
                 .duration(200).addTo(RecipeAdder.instance.DigesterRecipes);
 
-        // 1B MuddySmSolution + 1B NitricAcid =EV@10s= 2B SamariumRareEarthMud + 2 CeriumDioxide
+        // 1B MuddySmSolution + 1B NitricAcid =EV@10s= 2B SamariumRareEarthMud + 0.8 CeriumDioxide + 0.6
+        // CeriumRichMixture(CeriumOreConcentrate)
         GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(1))
                 .fluidInputs(Materials.NitricAcid.getFluid(1000), MuddySamariumRareEarthSolution.getFluidOrGas(1000))
-                .itemOutputs(CeriumDioxide.get(OrePrefixes.dust, 2))
-                .fluidOutputs(SamariumRareEarthMud.getFluidOrGas(2000)).specialValue(1).noOptimize().eut(1920)
-                .duration(200).addTo(RecipeAdder.instance.DissolutionTankRecipes);
+                .itemOutputs(CeriumDioxide.get(OrePrefixes.dust, 1), CeriumOreConcentrate.get(OrePrefixes.dust, 1))
+                .fluidOutputs(SamariumRareEarthMud.getFluidOrGas(2000)).specialValue(1).outputChances(8000, 6000)
+                .noOptimize().eut(1920).duration(200).addTo(RecipeAdder.instance.DissolutionTankRecipes);
         GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(9))
                 .fluidInputs(Materials.NitricAcid.getFluid(9000), MuddySamariumRareEarthSolution.getFluidOrGas(9000))
-                .itemOutputs(CeriumDioxide.get(OrePrefixes.dust, 18))
-                .fluidOutputs(SamariumRareEarthMud.getFluidOrGas(18000)).specialValue(1).noOptimize().eut(1920)
-                .duration(200).addTo(RecipeAdder.instance.DissolutionTankRecipes);
+                .itemOutputs(CeriumDioxide.get(OrePrefixes.dust, 9), CeriumOreConcentrate.get(OrePrefixes.dust, 9))
+                .fluidOutputs(SamariumRareEarthMud.getFluidOrGas(18000)).specialValue(1).outputChances(8000, 6000)
+                .noOptimize().eut(7680).duration(300).addTo(RecipeAdder.instance.DissolutionTankRecipes);
         // Low Efficiency method in LCR
         GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(1))
                 .fluidInputs(Materials.NitricAcid.getFluid(1000), MuddySamariumRareEarthSolution.getFluidOrGas(1000))
                 .itemOutputs(CeriumDioxide.get(OrePrefixes.dust, 1))
-                .fluidOutputs(SamariumRareEarthMud.getFluidOrGas(1000)).eut(1920).duration(300)
+                .fluidOutputs(SamariumRareEarthMud.getFluidOrGas(1000)).outputChances(5000).eut(1920).duration(300)
                 .addTo(GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes);
 
-        // 1B SamariumRareEarthMud + 9B water =EV@30s= 10B DilutedSamariumRareEarthSolution + 6 NeodymiumREConcentrate
+        // 1B SamariumRareEarthMud + 9B water =EV@30s= 10B DilutedSamariumRareEarthSolution
+        // + (90% + 60%) NeodymiumREConcentrate
         GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(1))
                 .fluidInputs(Materials.Water.getFluid(9000), SamariumRareEarthMud.getFluidOrGas(1000))
-                .itemOutputs(NeodymicRareEarthConcentrate.get(OrePrefixes.dust, 6))
-                .fluidOutputs(DilutedSamariumRareEarthSolution.getFluidOrGas(10000)).specialValue(9).noOptimize()
-                .eut(1920).duration(600).addTo(RecipeAdder.instance.DissolutionTankRecipes);
+                .itemOutputs(
+                        NeodymicRareEarthConcentrate.get(OrePrefixes.dust, 1),
+                        NeodymicRareEarthConcentrate.get(OrePrefixes.dust, 1))
+                .fluidOutputs(DilutedSamariumRareEarthSolution.getFluidOrGas(10000)).specialValue(9)
+                .outputChances(9000, 6000).noOptimize().eut(1920).duration(600)
+                .addTo(RecipeAdder.instance.DissolutionTankRecipes);
         GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(9))
                 .fluidInputs(Materials.Water.getFluid(81000), SamariumRareEarthMud.getFluidOrGas(9000))
-                .itemOutputs(NeodymicRareEarthConcentrate.get(OrePrefixes.dust, 54))
-                .fluidOutputs(DilutedSamariumRareEarthSolution.getFluidOrGas(90000)).specialValue(9).noOptimize()
-                .eut(1920).duration(600).addTo(RecipeAdder.instance.DissolutionTankRecipes);
+                .itemOutputs(
+                        NeodymicRareEarthConcentrate.get(OrePrefixes.dust, 9),
+                        NeodymicRareEarthConcentrate.get(OrePrefixes.dust, 9))
+                .fluidOutputs(DilutedSamariumRareEarthSolution.getFluidOrGas(90000)).specialValue(9)
+                .outputChances(9000, 6000).noOptimize().eut(7680).duration(900)
+                .addTo(RecipeAdder.instance.DissolutionTankRecipes);
         // Low Efficiency method in LCR
         GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(1)).noItemOutputs()
-                .fluidInputs(SamariumRareEarthMud.getFluidOrGas(1000), Materials.Water.getFluid(9000))
-                .fluidOutputs(DilutedSamariumRareEarthSolution.getFluidOrGas(9000)).eut(1920).duration(1200)
+                .fluidInputs(SamariumRareEarthMud.getFluidOrGas(1000), Materials.Water.getFluid(16000))
+                .fluidOutputs(DilutedSamariumRareEarthSolution.getFluidOrGas(8000)).eut(1920).duration(1200)
                 .addTo(GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes);
 
-        // 2B DilutedSamariumRareEarthSolution + 3B Oxalate =EV@10s= 5 ImpureSamariumOxalate + 0.1*2 LepersonniteDust +
-        // 50L
-        // MuddySamariumRareEarthSolution
+        // 2B DilutedSamariumRareEarthSolution + 3B Oxalate
+        // =EV@10s=
+        // 5 ImpureSamariumOxalate + 0.1*2 LepersonniteDust + 50L MuddySamariumRareEarthSolution
         GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(13))
                 .fluidInputs(
                         DilutedSamariumRareEarthSolution.getFluidOrGas(2000),
@@ -2186,10 +2194,10 @@ public class RecipeLoader {
                 .noFluidInputs().fluidOutputs(ImpureSamariumChloride.getMolten(144)).eut(1920).duration(24)
                 .addTo(GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes);
 
-        // distill with LanthanumDust
+        // distill with LanthanumDust 36*144L moltenSmCl3 = 16*144L moltenSm + 27B Cl
         GT_Values.RA.stdBuilder().itemInputs(Materials.Lanthanum.getDust(9))
                 .itemOutputs(ImpureLanthanumChloride.get(OrePrefixes.dust, 36))
-                .fluidInputs(ImpureSamariumChloride.getMolten(1296)).fluidOutputs(Materials.Samarium.getMolten(1296))
+                .fluidInputs(ImpureSamariumChloride.getMolten(5184)).fluidOutputs(Materials.Samarium.getMolten(2304))
                 .eut(114514).duration(100).noOptimize().addTo(GT_Recipe.GT_Recipe_Map.sDistillationRecipes);
 
         // Centrifuge ImpureLanthanumChlorideDust
@@ -2204,7 +2212,7 @@ public class RecipeLoader {
          */
         GameRegistry.addSmelting(
                 DephosphatedSamariumConcentrate.get(OrePrefixes.dust, 1),
-                SamariumOxide.get(OrePrefixes.dust, 1),
+                SamariumOxide.get(OrePrefixes.dustTiny, 2),
                 114);
         GT_Values.RA.stdBuilder().itemInputs(DephosphatedSamariumConcentrate.get(OrePrefixes.dust, 1)).noFluidInputs()
                 .itemOutputs(SamariumOxide.get(OrePrefixes.dust, 1), Gangue.get(OrePrefixes.dust, 1)).noFluidOutputs()
