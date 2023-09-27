@@ -56,9 +56,9 @@ public class MultiTileEntityItemInternal extends ItemBlock implements IFluidCont
             aList.add("INVALID ITEM!");
             return;
         }
-        if (tTileEntityContainer.mTileEntity instanceof IMTE_AddToolTips) {
+        if (tTileEntityContainer.mTileEntity instanceof IMTE_AddToolTips mte) {
             try {
-                ((IMTE_AddToolTips) tTileEntityContainer.mTileEntity).addToolTips(aList, aStack, aF3_H);
+                mte.addToolTips(aList, aStack, aF3_H);
             } catch (Throwable e) {
                 GT_FML_LOGGER.error("addInformation", e);
             }
@@ -123,13 +123,10 @@ public class MultiTileEntityItemInternal extends ItemBlock implements IFluidCont
                 return false;
             }
 
-            if (!aWorld.checkNoEntityCollision(AxisAlignedBB.getBoundingBox(aX, aY, aZ, aX + 1, aY + 1, aZ + 1))) {
-                return false;
-            }
-
-            if (!(aMTEContainer.mTileEntity instanceof IMTE_IgnoreEntityCollisionWhenPlacing mteIgnoreCollision)
+            if ((!(aMTEContainer.mTileEntity instanceof IMTE_IgnoreEntityCollisionWhenPlacing mteIgnoreCollision)
                 || !mteIgnoreCollision
-                    .ignoreEntityCollisionWhenPlacing(aStack, aPlayer, aWorld, aX, aY, aZ, side, aHitX, aHitY, aHitZ)) {
+                    .ignoreEntityCollisionWhenPlacing(aStack, aPlayer, aWorld, aX, aY, aZ, side, aHitX, aHitY, aHitZ))
+                && !aWorld.checkNoEntityCollision(AxisAlignedBB.getBoundingBox(aX, aY, aZ, aX + 1, aY + 1, aZ + 1))) {
                 return false;
             }
 
