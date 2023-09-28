@@ -2321,7 +2321,9 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         return Arrays.asList(
                             b.build()
                                 .get(),
-                            b.fluidInputs(in)
+                            b.itemInputs()
+                                .itemOutputs()
+                                .fluidInputs(in)
                                 .fluidOutputs(out)
                                 .build()
                                 .get());
