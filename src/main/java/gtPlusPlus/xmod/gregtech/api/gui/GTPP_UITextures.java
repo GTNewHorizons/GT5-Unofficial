@@ -84,6 +84,8 @@ public class GTPP_UITextures {
 
     public static final UITexture OVERLAY_BUTTON_HARVESTER_MODE = UITexture
             .fullImage(GTPlusPlus.ID, "gui/overlay_button/harvester_mode");
+    public static final UITexture OVERLAY_BUTTON_HARVESTER_TOGGLE = UITexture
+            .fullImage(GTPlusPlus.ID, "gui/overlay_button/harvester_toggle");
     public static final UITexture OVERLAY_BUTTON_FLUSH = UITexture.fullImage(GTPlusPlus.ID, "gui/overlay_button/flush");
     public static final UITexture OVERLAY_BUTTON_FLUSH_BRONZE = UITexture
             .fullImage(GTPlusPlus.ID, "gui/overlay_button/flush_bronze");

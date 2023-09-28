@@ -53,6 +53,7 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
     private static final int SLOT_OUTPUT_START = 7;
 
     public boolean mModeAlternative = false;
+    public boolean mHarvestEnabled = true;
 
     public GT_MetaTileEntity_CropHarvestor(final int aID, final int aTier, final String aDescription) {
         super(
@@ -242,6 +243,7 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
             if (aCrop == null) continue;
 
             if (this.mModeAlternative) processSecondaryFunctions(tCrop);
+            if (!this.mHarvestEnabled) break;
 
             if (aCrop.canBeHarvested(tCrop) && tCrop.getSize() == aCrop.getOptimalHavestSize(tCrop)) {
                 if (!getBaseMetaTileEntity().decreaseStoredEnergyUnits(powerUsage(), true)) continue;
@@ -630,12 +632,16 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setBoolean("mModeAlternative", this.mModeAlternative);
+        aNBT.setBoolean("mHarvestEnabled", this.mHarvestEnabled);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         this.mModeAlternative = aNBT.getBoolean("mModeAlternative");
+        if (aNBT.hasKey("mHarvestEnabled")) {
+            this.mHarvestEnabled = aNBT.getBoolean("mHarvestEnabled");
+        }
     }
 
     @Override
@@ -651,6 +657,11 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
                         .addTooltip(0, "Enable Hydration/Fertilizing/Weed-EX")
                         .addTooltip(1, "Disable Hydration/Fertilizing/Weed-EX")
                         .setBackground(GT_UITextures.BUTTON_STANDARD).setPos(47, 63).setSize(18, 18));
+        builder.widget(
+                new CycleButtonWidget().setToggle(() -> mHarvestEnabled, val -> mHarvestEnabled = val)
+                        .setTexture(GTPP_UITextures.OVERLAY_BUTTON_HARVESTER_TOGGLE).addTooltip(0, "Enable Harvest")
+                        .addTooltip(1, "Disable Harvest").setBackground(GT_UITextures.BUTTON_STANDARD).setPos(67, 63)
+                        .setSize(18, 18));
         builder.widget(
                 SlotGroup
                         .ofItemHandler(inventoryHandler, 2).startFromSlot(
