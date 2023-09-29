@@ -35,7 +35,6 @@ import goodgenerator.items.MyMaterial;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Log;
@@ -2129,14 +2128,15 @@ public class RecipeLoader {
 
         // 2B DilutedSamariumRareEarthSolution + 3B Oxalate
         // =EV@10s=
-        // 5 ImpureSamariumOxalate + 0.1*2 LepersonniteDust + 50L MuddySamariumRareEarthSolution
+        // 5 ImpureSamariumOxalate + 50L MuddySamariumRareEarthSolution + 0.1*2 LepersonniteDust
+        // LepersonniteDust -> DephosphatedSamariumConcentrate
         GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(13))
                 .fluidInputs(
                         DilutedSamariumRareEarthSolution.getFluidOrGas(2000),
                         MyMaterial.oxalate.getFluidOrGas(3000))
                 .itemOutputs(
                         ImpureSamariumOxalate.get(OrePrefixes.dust, 5),
-                        GT_ModHandler.getModItem(Mods.GTPlusPlus.ID, "itemDustLepersonnite", 1))
+                        DephosphatedSamariumConcentrate.get(OrePrefixes.dust, 3))
                 .fluidOutputs(MuddySamariumRareEarthSolution.getFluidOrGas(50)).outputChances(10000, 1000).eut(1920)
                 .duration(200).addTo(GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes);
 

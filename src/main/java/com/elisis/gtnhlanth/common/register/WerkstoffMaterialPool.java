@@ -16,8 +16,8 @@ public class WerkstoffMaterialPool implements Runnable {
     private static final int offsetID = 11_000;
     private static final int offsetID2 = 11_100;
     private static final int offsetID3 = 11_300;
-    private static final int offsetID4 = 12_000;
-    private static final int offsetID5 = 12_100; // 11500 has been used in GalaxySpace
+    private static final int offsetID4 = 11_400;
+    private static final int offsetID5 = 11_460;
 
     /*
      * public static final Werkstoff __ = new Werkstoff( new short[] {_, _, _}, "__", new Werkstoff.Stats(),
@@ -1684,7 +1684,7 @@ public class WerkstoffMaterialPool implements Runnable {
             new Werkstoff.Stats(),
             Werkstoff.Types.MATERIAL,
             new Werkstoff.GenerationFeatures().disable().onlyDust().addMolten(),
-            offsetID4 + 98,
+            offsetID5 + 38,
             TextureSet.SET_DULL);
 
     public static final Werkstoff CeriumDopedLutetiumAluminiumGarnet = new Werkstoff(
@@ -1694,7 +1694,7 @@ public class WerkstoffMaterialPool implements Runnable {
             new Werkstoff.Stats(),
             Werkstoff.Types.MATERIAL,
             new Werkstoff.GenerationFeatures().disable().addGems(),
-            offsetID4 + 99,
+            offsetID5 + 39,
             TextureSet.SET_GEM_VERTICAL);
 
     // public static final Werkstoff RawCeriumDopedLutetiumAluminiumGarnetPart = new Werkstoff(
