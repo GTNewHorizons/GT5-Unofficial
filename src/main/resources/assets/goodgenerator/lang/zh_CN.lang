@@ -134,6 +134,7 @@ fuelrodheat.tooltip.1=发热量是铀的%s倍
 fuelrodheat.tooltip.2=具有MOX特性
 depletedfuelrod.tooltip.0=枯竭
 YOTTankCell.tooltip.0=容量：
+YOTTankCell.tooltip.1=用于YOT储罐的流体单元
 hatchTier.tooltip.0=仓室等级：
 huiCircuit.tooltip.0=§b93015-T浮点运算/秒§r
 huiCircuit.tooltip.1=§e76M处理单元§r

@@ -170,6 +170,7 @@ fuelrodheat.tooltip.1=The heat output is %s times than uranium
 fuelrodheat.tooltip.2=Has Mox Behaviour
 depletedfuelrod.tooltip.0=Depleted
 YOTTankCell.tooltip.0=Capacity:
+YOTTankCell.tooltip.1=Fluid cell for the YOTTank
 hatchTier.tooltip.0=Hatch Tier:
 huiCircuit.tooltip.0=§b93015 TFlops§r
 huiCircuit.tooltip.1=§e76M Processor Units§r

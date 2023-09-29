@@ -68,35 +68,37 @@ public class MyItemBlocks extends ItemBlock {
     @Override
     @SuppressWarnings({ "unchecked" })
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List p_77624_3_, boolean p_77624_4_) {
-        if (p_77624_1_ == null) return;
-        p_77624_3_.add(mNoMobsToolTip);
-        if (Block.getBlockFromItem(p_77624_1_.getItem()) instanceof TEBlock) {
-            TEBlock tile = (TEBlock) Block.getBlockFromItem(p_77624_1_.getItem());
+    public void addInformation(ItemStack stack, EntityPlayer playerIn, List tooltip, boolean advanced) {
+        if (stack == null) return;
+        tooltip.add(mNoMobsToolTip);
+        if (Block.getBlockFromItem(stack.getItem()) instanceof TEBlock) {
+            TEBlock tile = (TEBlock) Block.getBlockFromItem(stack.getItem());
             if (tile.getIndex() == 1)
-                p_77624_3_.addAll(Arrays.asList(DescTextLocalization.addText("EssentiaHatch.tooltip", 2)));
+                tooltip.addAll(Arrays.asList(DescTextLocalization.addText("EssentiaHatch.tooltip", 2)));
             if (tile.getIndex() == 2) {
-                p_77624_3_.add(StatCollector.translateToLocal("EssentiaOutputHatch.tooltip.0"));
-                p_77624_3_.add(
+                tooltip.add(StatCollector.translateToLocal("EssentiaOutputHatch.tooltip.0"));
+                tooltip.add(
                         StatCollector.translateToLocal("EssentiaOutputHatch.tooltip.1") + " "
                                 + EssentiaOutputHatch.CAPACITY);
             }
-        } else p_77624_3_.add(mNoTileEntityToolTip);
-
-        if (Block.getBlockFromItem(p_77624_1_.getItem()).equals(yottaFluidTankCell)) {
-            StringBuilder cap = new StringBuilder();
-            cap.append(" 1000000");
-            for (int i = 0; i < p_77624_1_.getItemDamage(); i++) cap.append("00");
-            cap.append(" L");
-            p_77624_3_.add(
-                    StatCollector.translateToLocal("YOTTankCell.tooltip.0")
-                            + CharExchanger.formatNumber(cap.toString()));
+        } else {
+            tooltip.add(mNoTileEntityToolTip);
         }
 
-        if (Block.getBlockFromItem(p_77624_1_.getItem()).equals(essentiaCell)) {
-            p_77624_3_.add(
-                    StatCollector.translateToLocal("hatchTier.tooltip.0") + " "
-                            + tierName[p_77624_1_.getItemDamage() + 4]);
+        if (Block.getBlockFromItem(stack.getItem()).equals(yottaFluidTankCell)) {
+            StringBuilder cap = new StringBuilder();
+            cap.append(" 1000000");
+            for (int i = 0; i < stack.getItemDamage(); i++) cap.append("00");
+            cap.append(" L");
+            tooltip.add(
+                    StatCollector.translateToLocal("YOTTankCell.tooltip.0")
+                            + CharExchanger.formatNumber(cap.toString()));
+            tooltip.add(StatCollector.translateToLocal("YOTTankCell.tooltip.1"));
+        }
+
+        if (Block.getBlockFromItem(stack.getItem()).equals(essentiaCell)) {
+            tooltip.add(
+                    StatCollector.translateToLocal("hatchTier.tooltip.0") + " " + tierName[stack.getItemDamage() + 4]);
         }
     }
 }
