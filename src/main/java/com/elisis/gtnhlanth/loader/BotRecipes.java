@@ -140,15 +140,15 @@ public class BotRecipes {
         // 2Cl + CO = COCl2
 
         GT_Values.RA.stdBuilder().itemInputs(Materials.CarbonMonoxide.getCells(1), GT_Utility.getIntegratedCircuit(12))
-                .itemOutputs(Phosgene.get(cell, 1)).fluidInputs(Materials.Chlorine.getGas(2000)).noFluidOutputs()
+                .itemOutputs(Phosgene.get(cell, 1)).fluidInputs(Materials.Chlorine.getGas(2000))
                 .duration(2 * SECONDS + 10 * TICKS).eut(TierEU.RECIPE_HV).addTo(sChemicalRecipes);
         GT_Values.RA.stdBuilder().itemInputs(Materials.Chlorine.getCells(2), GT_Utility.getIntegratedCircuit(12))
                 .itemOutputs(Phosgene.get(cell, 1), Materials.Empty.getCells(1))
-                .fluidInputs(Materials.CarbonMonoxide.getGas(1000)).noFluidOutputs().duration(2 * SECONDS + 10 * TICKS)
+                .fluidInputs(Materials.CarbonMonoxide.getGas(1000)).duration(2 * SECONDS + 10 * TICKS)
                 .eut(TierEU.RECIPE_HV).addTo(sChemicalRecipes);
         GT_Values.RA.stdBuilder().itemInputs(Materials.CarbonMonoxide.getCells(1), Materials.Chlorine.getCells(2))
-                .itemOutputs(Phosgene.get(cell, 1), Materials.Empty.getCells(2)).noFluidInputs().noFluidOutputs()
-                .duration(2 * SECONDS + 10 * TICKS).eut(TierEU.RECIPE_HV).addTo(sChemicalRecipes);
+                .itemOutputs(Phosgene.get(cell, 1), Materials.Empty.getCells(2)).duration(2 * SECONDS + 10 * TICKS)
+                .eut(TierEU.RECIPE_HV).addTo(sChemicalRecipes);
         GT_Values.RA.stdBuilder().itemInputs(Materials.Chlorine.getCells(2), GT_Utility.getIntegratedCircuit(2))
                 .itemOutputs(Materials.Empty.getCells(2)).fluidInputs(Materials.CarbonMonoxide.getGas(1000))
                 .fluidOutputs(BotWerkstoffMaterialPool.Phosgene.getFluidOrGas(1000)).duration(2 * SECONDS + 10 * TICKS)
