@@ -39,10 +39,10 @@ public class ComplexParallelProcessingLogic<P extends ComplexParallelProcessingL
     public boolean canWork() {
         for (int i = 0; i < maxComplexParallels; i++) {
             if (progresses[i] >= durations[i]) {
-                return false;
+                return machineHost.isAllowedToWork();
             }
         }
-        return true;
+        return false;
     }
 
     @Override
