@@ -68,8 +68,6 @@ import gregtech.api.logic.ControllerItemLogic;
 import gregtech.api.logic.FluidInventoryLogic;
 import gregtech.api.logic.ItemInventoryLogic;
 import gregtech.api.logic.MuTEProcessingLogic;
-import gregtech.api.logic.PowerLogic;
-import gregtech.api.logic.interfaces.PowerLogicHost;
 import gregtech.api.multitileentity.enums.MultiTileCasingPurpose;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
 import gregtech.api.multitileentity.interfaces.IMultiBlockPart;
@@ -869,19 +867,6 @@ public abstract class Controller<T extends Controller<T, P>, P extends MuTEProce
     }
 
     // #endregion Item
-
-    // #region Energy
-
-    @Override
-    public PowerLogic getPowerLogic() {
-        if (!(this instanceof PowerLogicHost powerLogicHost)) {
-            return null;
-        }
-
-        return powerLogicHost.getPowerLogic(ForgeDirection.UNKNOWN);
-    }
-
-    // #endregion Energy
 
     @Override
     protected void updateSlots() {

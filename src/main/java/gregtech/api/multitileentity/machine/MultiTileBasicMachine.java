@@ -362,9 +362,7 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
      * @param tick The current tick of the machine
      */
     protected void runningTick(long tick) {
-        if (this instanceof PowerLogicHost) {
-            consumeEnergy();
-        }
+        consumeEnergy();
     }
 
     /**
@@ -378,11 +376,7 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
      * Runs only on server side
      */
     protected void consumeEnergy() {
-        PowerLogic logic = ((PowerLogicHost) this).getPowerLogic(ForgeDirection.UNKNOWN);
-
-        if (logic == null) {
-            return;
-        }
+        PowerLogic logic = getPowerLogic();
 
         P processing = getProcessingLogic();
 
@@ -773,10 +767,12 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
     protected void updatePowerLogic() {
         power.setEnergyCapacity(GT_Values.V[tier] * power.getMaxAmperage() * 2 * MINUTE);
         power.setMaxVoltage(GT_Values.V[tier]);
+        power.setMaxAmperage(1);
     }
 
     @Nonnull
     protected PowerLogic createPowerLogic() {
-        return new PowerLogic().setType(PowerLogic.RECEIVER);
+        return new PowerLogic().setMaxAmperage(1)
+            .setType(PowerLogic.RECEIVER);
     }
 }
