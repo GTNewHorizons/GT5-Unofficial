@@ -16,6 +16,8 @@ public class WerkstoffMaterialPool implements Runnable {
     private static final int offsetID = 11_000;
     private static final int offsetID2 = 11_100;
     private static final int offsetID3 = 11_300;
+    private static final int offsetID4 = 11_400;
+    private static final int offsetID5 = 11_460;
 
     /*
      * public static final Werkstoff __ = new Werkstoff( new short[] {_, _, _}, "__", new Werkstoff.Stats(),
@@ -946,6 +948,778 @@ public class WerkstoffMaterialPool implements Runnable {
             new Werkstoff.GenerationFeatures().disable().addCells(),
             offsetID3 + 16,
             TextureSet.SET_FLUID);
+
+    // TODO Samarium Processing Line Material regist
+
+    public static final Werkstoff MuddySamariumRareEarthSolution = new Werkstoff(
+            new short[] { 226, 180, 108 },
+            "Muddy Samarium Rare Earth Solution",
+            subscriptNumbers("???Sm???"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID5 + 1,
+            TextureSet.SET_FLUID);
+
+    public static final Werkstoff SamariumRareEarthMud = new Werkstoff(
+            new short[] { 226, 180, 128 },
+            "Samarium Rare Earth Mud",
+            subscriptNumbers("??Sm??"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID5 + 2,
+            TextureSet.SET_FLUID);
+
+    public static final Werkstoff DilutedSamariumRareEarthSolution = new Werkstoff(
+            new short[] { 226, 180, 148 },
+            "Diluted Samarium Rare Earth Solution",
+            subscriptNumbers("?Sm?"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID5 + 3,
+            TextureSet.SET_FLUID);
+
+    public static final Werkstoff ImpureSamariumOxalate = new Werkstoff(
+            new short[] { 248, 248, 180 },
+            "Samarium Oxalate Enriched",
+            subscriptNumbers("?Sm2(C2O4)3"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            offsetID5 + 4,
+            TextureSet.SET_DULL);
+
+    public static final Werkstoff ImpureSamariumChloride = new Werkstoff(
+            new short[] { 248, 248, 120 },
+            "Impure Samarium Chloride",
+            subscriptNumbers("?SmCl3"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().onlyDust().addMolten(),
+            offsetID5 + 5,
+            TextureSet.SET_DULL);
+
+    public static final Werkstoff SamariumChlorideSodiumChlorideBlend = new Werkstoff(
+            new short[] { 255, 200, 230 },
+            "Samarium Chloride-Sodium Chloride Blend",
+            subscriptNumbers("?SmCl3NaCl"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            offsetID5 + 6,
+            TextureSet.SET_DULL);
+
+    public static final Werkstoff ImpureLanthanumChloride = new Werkstoff(
+            new short[] { 90, 100, 30 },
+            "Impure Lanthanum Chloride",
+            subscriptNumbers("?LaCl3"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            offsetID5 + 7,
+            TextureSet.SET_DULL);
+
+    public static final Werkstoff SamariumOxide = new Werkstoff(
+            new short[] { 223, 182, 193 },
+            "Samarium Oxide",
+            subscriptNumbers("Sm2O3"),
+            new Werkstoff.Stats().setElektrolysis(true),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            offsetID5 + 8,
+            TextureSet.SET_DULL,
+            Arrays.asList(Materials.Samarium, Materials.Oxygen),
+            new Pair<>(Materials.Samarium, 2),
+            new Pair<>(Materials.Oxygen, 3));
+
+    public static final Werkstoff ChlorinatedRareEarthConcentrate = new Werkstoff(
+            new short[] { 130, 80, 60 },
+            "Chlorinated Rare Earth Concentrate",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID5 + 9,
+            TextureSet.SET_FLUID);
+
+    public static final Werkstoff ChlorinatedRareEarthEnrichedSolution = new Werkstoff(
+            new short[] { 130, 90, 60 },
+            "Chlorinated Rare Earth Enriched Solution",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID5 + 10,
+            TextureSet.SET_FLUID);
+
+    public static final Werkstoff ChlorinatedRareEarthDilutedSolution = new Werkstoff(
+            new short[] { 216, 180, 100 },
+            "Chlorinated Rare Earth Diluted Solution",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID5 + 11,
+            TextureSet.SET_FLUID);
+
+    public static final Werkstoff RarestEarthResidue = new Werkstoff(
+            new short[] { 224, 211, 211 },
+            "Rarest Earth Residue",
+            subscriptNumbers("???"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            offsetID5 + 12,
+            TextureSet.SET_DULL);
+
+    // TODO reg Lanth Ore Concentrate
+    /**
+     * Extracted Nano Resin Lanthanum1.2 Praseodymium3.4 Cerium5.6 Neodymium7.8 Promethium9.10 Samarium11.12 √
+     * Europium13.14 Gadolinium15.16 Terbium17.18 Dysprosium19.20 Holmium21.22 Erbium23.24 Thulium25.26 Ytterbium27.28
+     * Lutetium29.30
+     */
+
+    public static final Werkstoff LanthanumExtractingNanoResin = new Werkstoff(
+            new short[] { 50, 80, 40 },
+            "Lanthanum Extracting Nano Resin",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MATERIAL,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 1,
+            TextureSet.SET_FLUID);
+
+    public static final Werkstoff FilledLanthanumExtractingNanoResin = new Werkstoff(
+            new short[] { 128, 128, 80 },
+            "Filled Lanthanum Extracting Nano Resin",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MATERIAL,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 2,
+            TextureSet.SET_FLUID);
+
+    public static final Werkstoff PraseodymiumExtractingNanoResin = new Werkstoff(
+            new short[] { 80, 192, 130 },
+            "Praseodymium Extracting Nano Resin",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MATERIAL,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 3,
+            TextureSet.SET_FLUID);
+
+    public static final Werkstoff FilledPraseodymiumExtractingNanoResin = new Werkstoff(
+            new short[] { 140, 192, 130 },
+            "Filled Praseodymium Extracting Nano Resin",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MATERIAL,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 4,
+            TextureSet.SET_FLUID);
+
+    public static final Werkstoff CeriumExtractingNanoResin = new Werkstoff(
+            new short[] { 80, 240, 160 },
+            "Cerium Extracting Nano Resin",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MATERIAL,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 5,
+            TextureSet.SET_FLUID);
+
+    public static final Werkstoff FilledCeriumExtractingNanoResin = new Werkstoff(
+            new short[] { 160, 240, 180 },
+            "Filled Cerium Extracting Nano Resin",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MATERIAL,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 6,
+            TextureSet.SET_FLUID);
+
+    public static final Werkstoff NeodymiumExtractingNanoResin = new Werkstoff(
+            new short[] { 128, 140, 128 },
+            "Neodymium Extracting Nano Resin",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MATERIAL,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 7,
+            TextureSet.SET_FLUID);
+
+    public static final Werkstoff FilledNeodymiumExtractingNanoResin = new Werkstoff(
+            new short[] { 150, 150, 150 },
+            "Filled Neodymium Extracting Nano Resin",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MATERIAL,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 8,
+            TextureSet.SET_FLUID);
+
+    public static final Werkstoff PromethiumExtractingNanoResin = new Werkstoff(
+            new short[] { 110, 255, 60 },
+            "Promethium Extracting Nano Resin",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MATERIAL,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 9,
+            TextureSet.SET_FLUID);
+
+    public static final Werkstoff FilledPromethiumExtractingNanoResin = new Werkstoff(
+            new short[] { 150, 255, 140 },
+            "Filled Promethium Extracting Nano Resin",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MATERIAL,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 10,
+            TextureSet.SET_FLUID);
+
+    public static final Werkstoff SamariumExtractingNanoResin = new Werkstoff(
+            new short[] { 255, 240, 100 },
+            "Samarium Extracting Nano Resin",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MATERIAL,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 11,
+            TextureSet.SET_FLUID);
+
+    public static final Werkstoff FilledSamariumExtractingNanoResin = new Werkstoff(
+            new short[] { 255, 240, 196 },
+            "Filled Samarium Extracting Nano Resin",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MATERIAL,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 12,
+            TextureSet.SET_FLUID);
+
+    public static final Werkstoff EuropiumExtractingNanoResin = new Werkstoff(
+            new short[] { 240, 160, 240 },
+            "Europium Extracting Nano Resin",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MATERIAL,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 13,
+            TextureSet.SET_FLUID);
+
+    public static final Werkstoff FilledEuropiumExtractingNanoResin = new Werkstoff(
+            new short[] { 240, 200, 240 },
+            "Filled Europium Extracting Nano Resin",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MATERIAL,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 14,
+            TextureSet.SET_FLUID);
+
+    public static final Werkstoff GadoliniumExtractingNanoResin = new Werkstoff(
+            new short[] { 120, 255, 80 },
+            "Gadolinium Extracting Nano Resin",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MATERIAL,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 15,
+            TextureSet.SET_FLUID);
+
+    public static final Werkstoff FilledGadoliniumExtractingNanoResin = new Werkstoff(
+            new short[] { 160, 255, 140 },
+            "Filled Gadolinium Extracting Nano Resin",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MATERIAL,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 16,
+            TextureSet.SET_FLUID);
+
+    public static final Werkstoff TerbiumExtractingNanoResin = new Werkstoff(
+            new short[] { 200, 200, 200 },
+            "Terbium Extracting Nano Resin",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MATERIAL,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 17,
+            TextureSet.SET_FLUID);
+
+    public static final Werkstoff FilledTerbiumExtractingNanoResin = new Werkstoff(
+            new short[] { 255, 255, 255 },
+            "Filled Terbium Extracting Nano Resin",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MATERIAL,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 18,
+            TextureSet.SET_FLUID);
+
+    public static final Werkstoff DysprosiumExtractingNanoResin = new Werkstoff(
+            new short[] { 110, 240, 180 },
+            "Dysprosium Extracting Nano Resin",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MATERIAL,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 19,
+            TextureSet.SET_FLUID);
+
+    public static final Werkstoff FilledDysprosiumExtractingNanoResin = new Werkstoff(
+            new short[] { 150, 240, 180 },
+            "Filled Dysprosium Extracting Nano Resin",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MATERIAL,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 20,
+            TextureSet.SET_FLUID);
+
+    public static final Werkstoff HolmiumExtractingNanoResin = new Werkstoff(
+            new short[] { 16, 16, 216 },
+            "Holmium Extracting Nano Resin",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MATERIAL,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 21,
+            TextureSet.SET_FLUID);
+
+    public static final Werkstoff FilledHolmiumExtractingNanoResin = new Werkstoff(
+            new short[] { 60, 90, 255 },
+            "Filled Holmium Extracting Nano Resin",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MATERIAL,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 22,
+            TextureSet.SET_FLUID);
+
+    public static final Werkstoff ErbiumExtractingNanoResin = new Werkstoff(
+            new short[] { 200, 160, 80 },
+            "Erbium Extracting Nano Resin",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MATERIAL,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 23,
+            TextureSet.SET_FLUID);
+
+    public static final Werkstoff FilledErbiumExtractingNanoResin = new Werkstoff(
+            new short[] { 233, 170, 100 },
+            "Filled Erbium Extracting Nano Resin",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MATERIAL,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 24,
+            TextureSet.SET_FLUID);
+
+    public static final Werkstoff ThuliumExtractingNanoResin = new Werkstoff(
+            new short[] { 128, 178, 255 },
+            "Thulium Extracting Nano Resin",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MATERIAL,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 25,
+            TextureSet.SET_FLUID);
+
+    public static final Werkstoff FilledThuliumExtractingNanoResin = new Werkstoff(
+            new short[] { 160, 200, 255 },
+            "Filled Thulium Extracting Nano Resin",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MATERIAL,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 26,
+            TextureSet.SET_FLUID);
+
+    public static final Werkstoff YtterbiumExtractingNanoResin = new Werkstoff(
+            new short[] { 0, 255, 0 },
+            "Ytterbium Extracting Nano Resin",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MATERIAL,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 27,
+            TextureSet.SET_FLUID);
+
+    public static final Werkstoff FilledYtterbiumExtractingNanoResin = new Werkstoff(
+            new short[] { 100, 255, 100 },
+            "Filled Ytterbium Extracting Nano Resin",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MATERIAL,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 28,
+            TextureSet.SET_FLUID);
+
+    public static final Werkstoff LutetiumExtractingNanoResin = new Werkstoff(
+            new short[] { 230, 16, 230 },
+            "Lutetium Extracting Nano Resin",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MATERIAL,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 29,
+            TextureSet.SET_FLUID);
+
+    public static final Werkstoff FilledLutetiumExtractingNanoResin = new Werkstoff(
+            new short[] { 240, 100, 240 },
+            "Filled Lutetium Extracting Nano Resin",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MATERIAL,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 30,
+            TextureSet.SET_FLUID);
+
+    // enum Lanthanides {
+    // Lanthanum,
+    // Praseodymium,
+    // Cerium,
+    // Neodymium,
+    // Promethium,
+    // Samarium,
+    // Europium,
+    // Gadolinium,
+    // Terbium,
+    // Dysprosium,
+    // Holmium,
+    // Erbium,
+    // Thulium,
+    // Ytterbium,
+    // Lutetium
+    // }
+
+    // Lanthanides Chloride Concentrate
+    // Lanthanum
+    public static final Werkstoff LanthanumChlorideConcentrate = new Werkstoff(
+            new short[] { 128, 128, 80 },
+            "Lanthanum Chloride Concentrate",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 31,
+            TextureSet.SET_FLUID);
+
+    // Praseodymium
+    public static final Werkstoff PraseodymiumChlorideConcentrate = new Werkstoff(
+            new short[] { 140, 192, 130 },
+            "Praseodymium Chloride Concentrate",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 32,
+            TextureSet.SET_FLUID);
+
+    // Cerium
+    public static final Werkstoff CeriumChlorideConcentrate = new Werkstoff(
+            new short[] { 160, 240, 180 },
+            "Cerium Chloride Concentrate",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 33,
+            TextureSet.SET_FLUID);
+
+    // Neodymium
+    public static final Werkstoff NeodymiumChlorideConcentrate = new Werkstoff(
+            new short[] { 150, 150, 150 },
+            "Neodymium Chloride Concentrate",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 34,
+            TextureSet.SET_FLUID);
+
+    //
+    public static final Werkstoff PromethiumChlorideConcentrate = new Werkstoff(
+            new short[] { 150, 255, 140 },
+            "Promethium Chloride Concentrate",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 35,
+            TextureSet.SET_FLUID);
+
+    //
+    public static final Werkstoff SamariumChlorideConcentrate = new Werkstoff(
+            new short[] { 255, 240, 196 },
+            "Samarium Chloride Concentrate",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 36,
+            TextureSet.SET_FLUID);
+
+    //
+    public static final Werkstoff EuropiumChlorideConcentrate = new Werkstoff(
+            new short[] { 240, 200, 240 },
+            "Europium Chloride Concentrate",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 37,
+            TextureSet.SET_FLUID);
+
+    //
+    public static final Werkstoff GadoliniumChlorideConcentrate = new Werkstoff(
+            new short[] { 160, 255, 140 },
+            "Gadolinium Chloride Concentrate",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 38,
+            TextureSet.SET_FLUID);
+
+    //
+    public static final Werkstoff TerbiumChlorideConcentrate = new Werkstoff(
+            new short[] { 255, 255, 255 },
+            "Terbium Chloride Concentrate",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 39,
+            TextureSet.SET_FLUID);
+
+    //
+    public static final Werkstoff DysprosiumChlorideConcentrate = new Werkstoff(
+            new short[] { 150, 240, 180 },
+            "Dysprosium Chloride Concentrate",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 40,
+            TextureSet.SET_FLUID);
+
+    //
+    public static final Werkstoff HolmiumChlorideConcentrate = new Werkstoff(
+            new short[] { 60, 90, 255 },
+            "Holmium Chloride Concentrate",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 41,
+            TextureSet.SET_FLUID);
+
+    //
+    public static final Werkstoff ErbiumChlorideConcentrate = new Werkstoff(
+            new short[] { 233, 170, 100 },
+            "Erbium Chloride Concentrate",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 42,
+            TextureSet.SET_FLUID);
+
+    //
+    public static final Werkstoff ThuliumChlorideConcentrate = new Werkstoff(
+            new short[] { 160, 200, 255 },
+            "Thulium Chloride Concentrate",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 43,
+            TextureSet.SET_FLUID);
+
+    //
+    public static final Werkstoff YtterbiumChlorideConcentrate = new Werkstoff(
+            new short[] { 100, 255, 100 },
+            "Ytterbium Chloride Concentrate",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 44,
+            TextureSet.SET_FLUID);
+
+    //
+    public static final Werkstoff LutetiumChlorideConcentrate = new Werkstoff(
+            new short[] { 240, 100, 240 },
+            "Lutetium Chloride Concentrate",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID4 + 45,
+            TextureSet.SET_FLUID);
+
+    // Lanthanides Ore Concentrate
+
+    // Lanthanum
+    public static final Werkstoff LanthanumOreConcentrate = new Werkstoff(
+            new short[] { 128, 128, 96 },
+            "Lanthanum Ore Concentrate",
+            subscriptNumbers("??La??"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            offsetID4 + 46,
+            TextureSet.SET_DULL);
+
+    // Praseodymium
+    public static final Werkstoff PraseodymiumOreConcentrate = new Werkstoff(
+            new short[] { 140, 192, 130 },
+            "Praseodymium Ore Concentrate",
+            subscriptNumbers("??Pr??"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            offsetID4 + 47,
+            TextureSet.SET_DULL);
+
+    // Cerium
+    public static final Werkstoff CeriumOreConcentrate = CeriumRichMixture;
+
+    // Neodymium
+    public static final Werkstoff NeodymiumOreConcentrate = new Werkstoff(
+            new short[] { 128, 128, 128 },
+            "Neodymium Ore Concentrate",
+            subscriptNumbers("??Nd??"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            offsetID4 + 49,
+            TextureSet.SET_DULL);
+
+    // Promethium
+    public static final Werkstoff PromethiumOreConcentrate = new Werkstoff(
+            new short[] { 150, 255, 140 },
+            "Promethium Ore Concentrate",
+            subscriptNumbers("??Po??"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            offsetID4 + 50,
+            TextureSet.SET_DULL);
+
+    // Samarium
+    // public static final Werkstoff SamariumOreConcentrate = new Werkstoff(
+    // new short[] { 255, 200, 230 },
+    // "Samarium Ore Concentrate",
+    // subscriptNumbers("??Sm??"),
+    // new Werkstoff.Stats(),
+    // Werkstoff.Types.MIXTURE,
+    // new Werkstoff.GenerationFeatures().disable().onlyDust(),
+    // offsetID2 + 28,
+    // TextureSet.SET_DULL);
+
+    // Europium
+    public static final Werkstoff EuropiumOreConcentrate = new Werkstoff(
+            new short[] { 240, 200, 240 },
+            "Europium Ore Concentrate",
+            subscriptNumbers("??Eu??"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            offsetID4 + 51,
+            TextureSet.SET_DULL);
+
+    // Gadolinium
+    public static final Werkstoff GadoliniumOreConcentrate = new Werkstoff(
+            new short[] { 160, 255, 140 },
+            "Gadolinium Ore Concentrate",
+            subscriptNumbers("??Gd??"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            offsetID4 + 52,
+            TextureSet.SET_DULL);
+
+    // Terbium
+    public static final Werkstoff TerbiumOreConcentrate = new Werkstoff(
+            new short[] { 255, 255, 255 },
+            "Terbium Ore Concentrate",
+            subscriptNumbers("??Tb??"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            offsetID4 + 53,
+            TextureSet.SET_DULL);
+
+    // Dysprosium
+    public static final Werkstoff DysprosiumOreConcentrate = new Werkstoff(
+            new short[] { 150, 240, 180 },
+            "Dysprosium Ore Concentrate",
+            subscriptNumbers("??Dy??"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            offsetID4 + 54,
+            TextureSet.SET_DULL);
+
+    // Holmium
+    public static final Werkstoff HolmiumOreConcentrate = new Werkstoff(
+            new short[] { 60, 90, 255 },
+            "Holmium Ore Concentrate",
+            subscriptNumbers("??Ho??"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            offsetID4 + 55,
+            TextureSet.SET_DULL);
+
+    // Erbium
+    public static final Werkstoff ErbiumOreConcentrate = new Werkstoff(
+            new short[] { 233, 170, 100 },
+            "Erbium Ore Concentrate",
+            subscriptNumbers("??Eb??"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            offsetID4 + 56,
+            TextureSet.SET_DULL);
+
+    // Thulium
+    public static final Werkstoff ThuliumOreConcentrate = new Werkstoff(
+            new short[] { 160, 200, 255 },
+            "Thulium Ore Concentrate",
+            subscriptNumbers("??Tm??"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            offsetID4 + 57,
+            TextureSet.SET_DULL);
+
+    // Ytterbium
+    public static final Werkstoff YtterbiumOreConcentrate = new Werkstoff(
+            new short[] { 100, 255, 100 },
+            "Ytterbium Ore Concentrate",
+            subscriptNumbers("??Yb??"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            offsetID4 + 58,
+            TextureSet.SET_DULL);
+
+    // Lutetium
+    public static final Werkstoff LutetiumOreConcentrate = new Werkstoff(
+            new short[] { 240, 100, 240 },
+            "Lutetium Ore Concentrate",
+            subscriptNumbers("??Lu??"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            offsetID4 + 59,
+            TextureSet.SET_DULL);
+
+    // LuAG
+    public static final Werkstoff CeriumDopedLutetiumAluminiumOxygenBlend = new Werkstoff(
+            new short[] { 128, 192, 80 },
+            "Cerium-doped Lutetium Aluminium Oxygen Blend",
+            subscriptNumbers("(Ce)Lu3Al5O12"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MATERIAL,
+            new Werkstoff.GenerationFeatures().disable().onlyDust().addMolten(),
+            offsetID5 + 38,
+            TextureSet.SET_DULL);
+
+    public static final Werkstoff CeriumDopedLutetiumAluminiumGarnet = new Werkstoff(
+            new short[] { 144, 255, 63 },
+            "Cerium-doped Lutetium Aluminium Garnet (Ce:LuAG)",
+            subscriptNumbers("(Ce)Lu3Al5O12"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MATERIAL,
+            new Werkstoff.GenerationFeatures().disable().addGems(),
+            offsetID5 + 39,
+            TextureSet.SET_GEM_VERTICAL);
+
+    // public static final Werkstoff RawCeriumDopedLutetiumAluminiumGarnetPart = new Werkstoff(
+    // new short[] { 63, 255, 63 },
+    // "Raw Cerium Doped Lutetium Aluminium Garnet Part",
+    // subscriptNumbers("(Ce)Lu3Al5O12"),
+    // new Werkstoff.Stats(),
+    // Werkstoff.Types.MATERIAL,
+    // new Werkstoff.GenerationFeatures().disable().addGems(),
+    // offsetID4 + 33,
+    // TextureSet.SET_GEM_VERTICAL);
+
+    // public static final Werkstoff C272 = new Werkstoff(
+    // new short[] { 0x29, 0xc2, 0x2a },
+    // "C-272",
+    // subscriptNumbers("(C8H17)2PO2H"),
+    // new Werkstoff.Stats().setElektrolysis(true),
+    // Werkstoff.Types.COMPOUND,
+    // new Werkstoff.GenerationFeatures().disable().addCells(),
+    // offsetID4 + 59,
+    // TextureSet.SET_FLUID,
+    // new Pair<>(Carbon, 16),
+    // new Pair<>(Phosphorus, 1),
+    // new Pair<>(Oxygen, 3),
+    // new Pair<>(Hydrogen, 35));
 
     public static void runInit() {
 

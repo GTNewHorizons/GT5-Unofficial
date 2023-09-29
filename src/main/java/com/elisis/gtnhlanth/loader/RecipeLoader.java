@@ -31,6 +31,7 @@ import com.github.bartimaeusnek.bartworks.system.material.GT_Enhancement.Platinu
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.registry.GameRegistry;
 import goodgenerator.items.MyMaterial;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
