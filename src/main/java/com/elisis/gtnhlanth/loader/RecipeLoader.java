@@ -1498,153 +1498,138 @@ public class RecipeLoader {
         // TODO Electrolyzer recycle Nano Resin and produce molten rare earth metal,
 
         // La
-        GT_Values.RA.stdBuilder().noItemInputs().fluidInputs(FilledLanthanumExtractingNanoResin.getFluidOrGas(1000))
-                .noItemOutputs()
-                .fluidOutputs(
-                        LanthanumExtractingNanoResin.getFluidOrGas(1000),
-                        Materials.Lanthanum.getMolten(144),
-                        Materials.Chlorine.getGas(3000))
-                .eut(TierEU.RECIPE_ZPM).duration(5 * SECONDS).noOptimize()
+        GT_Values.RA.stdBuilder().itemInputs(Materials.Empty.getCells(2))
+                .fluidInputs(FilledLanthanumExtractingNanoResin.getFluidOrGas(1000))
+                .itemOutputs(
+                        LanthanumExtractingNanoResin.get(OrePrefixes.cell, 1),
+                        GT_OreDictUnificator.get(OrePrefixes.cellMolten, Materials.Lanthanum, 1))
+                .fluidOutputs(Materials.Chlorine.getGas(3000)).eut(TierEU.RECIPE_ZPM).duration(5 * SECONDS).noOptimize()
                 .addTo(GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes);
 
         // Pr
-        GT_Values.RA.stdBuilder().noItemInputs().fluidInputs(FilledPraseodymiumExtractingNanoResin.getFluidOrGas(1000))
-                .noItemOutputs()
-                .fluidOutputs(
-                        PraseodymiumExtractingNanoResin.getFluidOrGas(1000),
-                        Materials.Praseodymium.getMolten(144),
-                        Materials.Chlorine.getGas(3000))
-                .eut(TierEU.RECIPE_ZPM).duration(5 * SECONDS).noOptimize()
+        GT_Values.RA.stdBuilder().itemInputs(Materials.Empty.getCells(2))
+                .fluidInputs(FilledPraseodymiumExtractingNanoResin.getFluidOrGas(1000))
+                .itemOutputs(
+                        PraseodymiumExtractingNanoResin.get(OrePrefixes.cell, 1),
+                        GT_OreDictUnificator.get(OrePrefixes.cellMolten, Materials.Praseodymium, 1))
+                .fluidOutputs(Materials.Chlorine.getGas(3000)).eut(TierEU.RECIPE_ZPM).duration(5 * SECONDS).noOptimize()
                 .addTo(GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes);
 
         // Ce
-        GT_Values.RA.stdBuilder().noItemInputs().fluidInputs(FilledCeriumExtractingNanoResin.getFluidOrGas(1000))
-                .noItemOutputs()
-                .fluidOutputs(
-                        CeriumExtractingNanoResin.getFluidOrGas(1000),
-                        Materials.Cerium.getMolten(144),
-                        Materials.Chlorine.getGas(3000))
-                .eut(TierEU.RECIPE_ZPM).duration(5 * SECONDS).noOptimize()
+        GT_Values.RA.stdBuilder().itemInputs(Materials.Empty.getCells(2))
+                .fluidInputs(FilledCeriumExtractingNanoResin.getFluidOrGas(1000))
+                .itemOutputs(
+                        CeriumExtractingNanoResin.get(OrePrefixes.cell, 1),
+                        GT_OreDictUnificator.get(OrePrefixes.cellMolten, Materials.Cerium, 1))
+                .fluidOutputs(Materials.Chlorine.getGas(3000)).eut(TierEU.RECIPE_ZPM).duration(5 * SECONDS).noOptimize()
                 .addTo(GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes);
 
         // Nd
-        GT_Values.RA.stdBuilder().noItemInputs().fluidInputs(FilledNeodymiumExtractingNanoResin.getFluidOrGas(1000))
-                .noItemOutputs()
-                .fluidOutputs(
-                        NeodymiumExtractingNanoResin.getFluidOrGas(1000),
-                        Materials.Neodymium.getMolten(144),
-                        Materials.Chlorine.getGas(3000))
-                .eut(TierEU.RECIPE_ZPM).duration(5 * SECONDS).noOptimize()
+        GT_Values.RA.stdBuilder().itemInputs(Materials.Empty.getCells(2))
+                .fluidInputs(FilledNeodymiumExtractingNanoResin.getFluidOrGas(1000))
+                .itemOutputs(
+                        NeodymiumExtractingNanoResin.get(OrePrefixes.cell, 1),
+                        GT_OreDictUnificator.get(OrePrefixes.cellMolten, Materials.Neodymium, 1))
+                .fluidOutputs(Materials.Chlorine.getGas(3000)).eut(TierEU.RECIPE_ZPM).duration(5 * SECONDS).noOptimize()
                 .addTo(GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes);
 
         // Po
-        GT_Values.RA.stdBuilder().noItemInputs().fluidInputs(FilledPromethiumExtractingNanoResin.getFluidOrGas(1000))
-                .noItemOutputs()
-                .fluidOutputs(
-                        PromethiumExtractingNanoResin.getFluidOrGas(1000),
-                        Materials.Promethium.getMolten(144),
-                        Materials.Chlorine.getGas(3000))
-                .eut(TierEU.RECIPE_ZPM).duration(5 * SECONDS).noOptimize()
+        GT_Values.RA.stdBuilder().itemInputs(Materials.Empty.getCells(2))
+                .fluidInputs(FilledPromethiumExtractingNanoResin.getFluidOrGas(1000))
+                .itemOutputs(
+                        PromethiumExtractingNanoResin.get(OrePrefixes.cell, 1),
+                        GT_OreDictUnificator.get(OrePrefixes.cellMolten, Materials.Promethium, 1))
+                .fluidOutputs(Materials.Chlorine.getGas(3000)).eut(TierEU.RECIPE_ZPM).duration(5 * SECONDS).noOptimize()
                 .addTo(GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes);
 
         // Sm
-        GT_Values.RA.stdBuilder().noItemInputs().fluidInputs(FilledSamariumExtractingNanoResin.getFluidOrGas(1000))
-                .noItemOutputs()
-                .fluidOutputs(
-                        SamariumExtractingNanoResin.getFluidOrGas(1000),
-                        Materials.Samarium.getMolten(144),
-                        Materials.Chlorine.getGas(3000))
-                .eut(TierEU.RECIPE_ZPM).duration(5 * SECONDS).noOptimize()
+        GT_Values.RA.stdBuilder().itemInputs(Materials.Empty.getCells(2))
+                .fluidInputs(FilledSamariumExtractingNanoResin.getFluidOrGas(1000))
+                .itemOutputs(
+                        SamariumExtractingNanoResin.get(OrePrefixes.cell, 1),
+                        GT_OreDictUnificator.get(OrePrefixes.cellMolten, Materials.Samarium, 1))
+                .fluidOutputs(Materials.Chlorine.getGas(3000)).eut(TierEU.RECIPE_ZPM).duration(5 * SECONDS).noOptimize()
                 .addTo(GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes);
 
         // Eu
-        GT_Values.RA.stdBuilder().noItemInputs().fluidInputs(FilledEuropiumExtractingNanoResin.getFluidOrGas(1000))
-                .noItemOutputs()
-                .fluidOutputs(
-                        EuropiumExtractingNanoResin.getFluidOrGas(1000),
-                        Materials.Europium.getMolten(144),
-                        Materials.Chlorine.getGas(3000))
-                .eut(TierEU.RECIPE_ZPM).duration(5 * SECONDS).noOptimize()
+        GT_Values.RA.stdBuilder().itemInputs(Materials.Empty.getCells(2))
+                .fluidInputs(FilledEuropiumExtractingNanoResin.getFluidOrGas(1000))
+                .itemOutputs(
+                        EuropiumExtractingNanoResin.get(OrePrefixes.cell, 1),
+                        GT_OreDictUnificator.get(OrePrefixes.cellMolten, Materials.Europium, 1))
+                .fluidOutputs(Materials.Chlorine.getGas(3000)).eut(TierEU.RECIPE_ZPM).duration(5 * SECONDS).noOptimize()
                 .addTo(GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes);
 
         // Ga
-        GT_Values.RA.stdBuilder().noItemInputs().fluidInputs(FilledGadoliniumExtractingNanoResin.getFluidOrGas(1000))
-                .noItemOutputs()
-                .fluidOutputs(
-                        GadoliniumExtractingNanoResin.getFluidOrGas(1000),
-                        Materials.Gadolinium.getMolten(144),
-                        Materials.Chlorine.getGas(3000))
-                .eut(TierEU.RECIPE_ZPM).duration(5 * SECONDS).noOptimize()
+        GT_Values.RA.stdBuilder().itemInputs(Materials.Empty.getCells(2))
+                .fluidInputs(FilledGadoliniumExtractingNanoResin.getFluidOrGas(1000))
+                .itemOutputs(
+                        GadoliniumExtractingNanoResin.get(OrePrefixes.cell, 1),
+                        GT_OreDictUnificator.get(OrePrefixes.cellMolten, Materials.Gadolinium, 1))
+                .fluidOutputs(Materials.Chlorine.getGas(3000)).eut(TierEU.RECIPE_ZPM).duration(5 * SECONDS).noOptimize()
                 .addTo(GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes);
 
         // Tb
-        GT_Values.RA.stdBuilder().noItemInputs().fluidInputs(FilledTerbiumExtractingNanoResin.getFluidOrGas(1000))
-                .noItemOutputs()
-                .fluidOutputs(
-                        TerbiumExtractingNanoResin.getFluidOrGas(1000),
-                        Materials.Terbium.getMolten(144),
-                        Materials.Chlorine.getGas(3000))
-                .eut(TierEU.RECIPE_ZPM).duration(5 * SECONDS).noOptimize()
+        GT_Values.RA.stdBuilder().itemInputs(Materials.Empty.getCells(2))
+                .fluidInputs(FilledTerbiumExtractingNanoResin.getFluidOrGas(1000))
+                .itemOutputs(
+                        TerbiumExtractingNanoResin.get(OrePrefixes.cell, 1),
+                        GT_OreDictUnificator.get(OrePrefixes.cellMolten, Materials.Terbium, 1))
+                .fluidOutputs(Materials.Chlorine.getGas(3000)).eut(TierEU.RECIPE_ZPM).duration(5 * SECONDS).noOptimize()
                 .addTo(GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes);
 
         // Dy
-        GT_Values.RA.stdBuilder().noItemInputs().fluidInputs(FilledDysprosiumExtractingNanoResin.getFluidOrGas(1000))
-                .noItemOutputs()
-                .fluidOutputs(
-                        DysprosiumExtractingNanoResin.getFluidOrGas(1000),
-                        Materials.Dysprosium.getMolten(144),
-                        Materials.Chlorine.getGas(3000))
-                .eut(TierEU.RECIPE_ZPM).duration(5 * SECONDS).noOptimize()
+        GT_Values.RA.stdBuilder().itemInputs(Materials.Empty.getCells(2))
+                .fluidInputs(FilledDysprosiumExtractingNanoResin.getFluidOrGas(1000))
+                .itemOutputs(
+                        DysprosiumExtractingNanoResin.get(OrePrefixes.cell, 1),
+                        GT_OreDictUnificator.get(OrePrefixes.cellMolten, Materials.Dysprosium, 1))
+                .fluidOutputs(Materials.Chlorine.getGas(3000)).eut(TierEU.RECIPE_ZPM).duration(5 * SECONDS).noOptimize()
                 .addTo(GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes);
 
         // Ho
-        GT_Values.RA.stdBuilder().noItemInputs().fluidInputs(FilledHolmiumExtractingNanoResin.getFluidOrGas(1000))
-                .noItemOutputs()
-                .fluidOutputs(
-                        HolmiumExtractingNanoResin.getFluidOrGas(1000),
-                        Materials.Holmium.getMolten(144),
-                        Materials.Chlorine.getGas(3000))
-                .eut(TierEU.RECIPE_ZPM).duration(5 * SECONDS).noOptimize()
+        GT_Values.RA.stdBuilder().itemInputs(Materials.Empty.getCells(2))
+                .fluidInputs(FilledHolmiumExtractingNanoResin.getFluidOrGas(1000))
+                .itemOutputs(
+                        HolmiumExtractingNanoResin.get(OrePrefixes.cell, 1),
+                        GT_OreDictUnificator.get(OrePrefixes.cellMolten, Materials.Holmium, 1))
+                .fluidOutputs(Materials.Chlorine.getGas(3000)).eut(TierEU.RECIPE_ZPM).duration(5 * SECONDS).noOptimize()
                 .addTo(GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes);
 
         // Er
-        GT_Values.RA.stdBuilder().noItemInputs().fluidInputs(FilledErbiumExtractingNanoResin.getFluidOrGas(1000))
-                .noItemOutputs()
-                .fluidOutputs(
-                        ErbiumExtractingNanoResin.getFluidOrGas(1000),
-                        Materials.Erbium.getMolten(144),
-                        Materials.Chlorine.getGas(3000))
-                .eut(TierEU.RECIPE_ZPM).duration(5 * SECONDS).noOptimize()
+        GT_Values.RA.stdBuilder().itemInputs(Materials.Empty.getCells(2))
+                .fluidInputs(FilledErbiumExtractingNanoResin.getFluidOrGas(1000))
+                .itemOutputs(
+                        ErbiumExtractingNanoResin.get(OrePrefixes.cell, 1),
+                        GT_OreDictUnificator.get(OrePrefixes.cellMolten, Materials.Erbium, 1))
+                .fluidOutputs(Materials.Chlorine.getGas(3000)).eut(TierEU.RECIPE_ZPM).duration(5 * SECONDS).noOptimize()
                 .addTo(GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes);
 
         // Tm
-        GT_Values.RA.stdBuilder().noItemInputs().fluidInputs(FilledThuliumExtractingNanoResin.getFluidOrGas(1000))
-                .noItemOutputs()
-                .fluidOutputs(
-                        ThuliumExtractingNanoResin.getFluidOrGas(1000),
-                        Materials.Thulium.getMolten(144),
-                        Materials.Chlorine.getGas(3000))
-                .eut(TierEU.RECIPE_ZPM).duration(5 * SECONDS).noOptimize()
+        GT_Values.RA.stdBuilder().itemInputs(Materials.Empty.getCells(2))
+                .fluidInputs(FilledThuliumExtractingNanoResin.getFluidOrGas(1000))
+                .itemOutputs(
+                        ThuliumExtractingNanoResin.get(OrePrefixes.cell, 1),
+                        GT_OreDictUnificator.get(OrePrefixes.cellMolten, Materials.Thulium, 1))
+                .fluidOutputs(Materials.Chlorine.getGas(3000)).eut(TierEU.RECIPE_ZPM).duration(5 * SECONDS).noOptimize()
                 .addTo(GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes);
 
         // Yb
-        GT_Values.RA.stdBuilder().noItemInputs().fluidInputs(FilledYtterbiumExtractingNanoResin.getFluidOrGas(1000))
-                .noItemOutputs()
-                .fluidOutputs(
-                        YtterbiumExtractingNanoResin.getFluidOrGas(1000),
-                        Materials.Yttrium.getMolten(144),
-                        Materials.Chlorine.getGas(3000))
-                .eut(TierEU.RECIPE_ZPM).duration(5 * SECONDS).noOptimize()
+        GT_Values.RA.stdBuilder().itemInputs(Materials.Empty.getCells(2))
+                .fluidInputs(FilledYtterbiumExtractingNanoResin.getFluidOrGas(1000))
+                .itemOutputs(
+                        YtterbiumExtractingNanoResin.get(OrePrefixes.cell, 1),
+                        GT_OreDictUnificator.get(OrePrefixes.cellMolten, Materials.Ytterbium, 1))
+                .fluidOutputs(Materials.Chlorine.getGas(3000)).eut(TierEU.RECIPE_ZPM).duration(5 * SECONDS).noOptimize()
                 .addTo(GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes);
 
         // Lu
-        GT_Values.RA.stdBuilder().noItemInputs().fluidInputs(FilledLutetiumExtractingNanoResin.getFluidOrGas(1000))
-                .noItemOutputs()
-                .fluidOutputs(
-                        LutetiumExtractingNanoResin.getFluidOrGas(1000),
-                        Materials.Lutetium.getMolten(144),
-                        Materials.Chlorine.getGas(3000))
-                .eut(TierEU.RECIPE_ZPM).duration(5 * SECONDS).noOptimize()
+        GT_Values.RA.stdBuilder().itemInputs(Materials.Empty.getCells(2))
+                .fluidInputs(FilledLutetiumExtractingNanoResin.getFluidOrGas(1000))
+                .itemOutputs(
+                        LutetiumExtractingNanoResin.get(OrePrefixes.cell, 1),
+                        GT_OreDictUnificator.get(OrePrefixes.cellMolten, Materials.Lutetium, 1))
+                .fluidOutputs(Materials.Chlorine.getGas(3000)).eut(TierEU.RECIPE_ZPM).duration(5 * SECONDS).noOptimize()
                 .addTo(GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes);
 
         // TODO ChlorinitedRareEarthConcentrate process with every 15 Rare Earth Extracting Nano Resin
