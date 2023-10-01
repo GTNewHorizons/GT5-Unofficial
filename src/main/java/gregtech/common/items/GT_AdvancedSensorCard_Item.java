@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -48,15 +47,18 @@ public class GT_AdvancedSensorCard_Item extends Item implements IPanelDataSource
     public static final UUID CARD_TYPE_ID = UUID.fromString("ff952e84-7608-4c4a-85af-dd6e1aa27fc7");
 
     // This has obfuscated formatting, so no need to localize it.
-    private static final ImmutableList<PanelString> SELF_DESTRUCTED_OUTPUT = ImmutableList
-        .of(prebakePanelString(EnumChatFormatting.OBFUSCATED + "critical error" + EnumChatFormatting.RESET, true));
+    private static final String SELF_DESTRUCTED_OUTPUT = EnumChatFormatting.OBFUSCATED + "critical error"
+        + EnumChatFormatting.RESET;
 
-    private static final ImmutableList<PanelString> DECONSTRUCTED_OUTPUT = ImmutableList.of(
-        prebakePanelString(StatCollector.translateToLocal("gt.item.adv_sensor_card.error.deconstructed.1"), true),
-        prebakePanelString(StatCollector.translateToLocal("gt.item.adv_sensor_card.error.deconstructed.2"), true));
+    private static final ImmutableList<String> DECONSTRUCTED_OUTPUT = ImmutableList.of(
+        StatCollector.translateToLocal("gt.item.adv_sensor_card.error.deconstructed.1"),
+        StatCollector.translateToLocal("gt.item.adv_sensor_card.error.deconstructed.2"));
 
-    private static final ImmutableList<PanelString> NO_DATA_FOUND = ImmutableList
-        .of(prebakePanelString(StatCollector.translateToLocal("gt.item.adv_sensor_card.error.no_data"), true));
+    private static final String NO_DATA_FOUND = StatCollector.translateToLocal("gt.item.adv_sensor_card.error.no_data");
+
+    private static final String MACHINE_NAME_KEY = "client_machine_name";
+    private static final String OUTPUT_ENTRY_KEY = "client_entry_%d";
+    private static final String OUTPUT_ENTRY_LENGTH_KEY = "client_entry_length";
 
     private int payloadSize = 0;
 
@@ -136,71 +138,73 @@ public class GT_AdvancedSensorCard_Item extends Item implements IPanelDataSource
 
     @Override
     public CardState update(World world, ICardWrapper card, int maxRange) {
-        getDataFromDatabase(card).ifPresent(data -> {
-            reconcileSelfDestructedCard(card.getItemStack(), data.getState());
-            card.setInt(
-                CARD_STATE_KEY,
-                data.getState()
-                    .getType());
-            payloadSize = switch (data.getState()) {
-                case SELF_DESTRUCTED -> SELF_DESTRUCTED_OUTPUT.size();
-                case HOST_DECONSTRUCTED -> DECONSTRUCTED_OUTPUT.size() + getMachineName(card.getItemStack()).map(x -> 1)
-                    .orElse(0);
-                case OPERATIONAL -> data.getPayload()
-                    .map(List::size)
-                    .orElse(0)
-                    + getMachineName(card.getItemStack()).map(x -> 1)
-                        .orElse(0)
-                    + data.getCoordinates()
-                        .map(x -> 2)
-                        .orElse(0);
-            };
+        final Optional<GlobalMetricsCoverDatabase.Data> optionalData = getDataFromDatabase(card);
+
+        optionalData.ifPresent(data -> {
+            final State machineState = data.getState();
+            reconcileSelfDestructedCard(card.getItemStack(), machineState);
+            card.setInt(CARD_STATE_KEY, machineState.getType());
+
+            getMachineName(card.getItemStack())
+                .ifPresent(name -> card.setString(MACHINE_NAME_KEY, machineState == State.SELF_DESTRUCTED ? "" : name));
+
+            final ImmutableList.Builder<String> builder = ImmutableList.builder();
+            switch (machineState) {
+                case SELF_DESTRUCTED -> builder.add(SELF_DESTRUCTED_OUTPUT);
+                case HOST_DECONSTRUCTED -> builder.addAll(DECONSTRUCTED_OUTPUT);
+                case OPERATIONAL -> {
+                    data.getCoordinates()
+                        .ifPresent(
+                            coordinates -> builder.add(
+                                StatCollector.translateToLocalFormatted(
+                                    "gt.item.adv_sensor_card.dimension",
+                                    coordinates.getDimension()),
+                                StatCollector.translateToLocalFormatted(
+                                    "gt.item.adv_sensor_card.coords",
+                                    coordinates.getLocalizedCoordinates())));
+
+                    data.getPayload()
+                        .ifPresent(builder::addAll);
+                }
+                default -> builder.add(NO_DATA_FOUND);
+            }
+
+            final List<String> payload = builder.build();
+            card.setInt(OUTPUT_ENTRY_LENGTH_KEY, payload.size());
+            for (int i = 0; i < payload.size(); i++) {
+                card.setString(String.format(OUTPUT_ENTRY_KEY, i), payload.get(i));
+            }
         });
+
         return CardState.OK;
     }
 
     @Override
     public List<PanelString> getStringData(final int displaySettings, final ICardWrapper card,
         final boolean showLabels) {
-        // This method needs to return a mutable list, since the calling routine in NuclearCraft appends an item to the
-        // head of the list. Hence, all the array copying.
+        final List<PanelString> returned = new ArrayList<>();
+        final String machineName = card.getString(MACHINE_NAME_KEY);
+        final int bitmaskOffset;
 
-        return getCardState(card).map(state -> switch (state) {
-            case SELF_DESTRUCTED -> new ArrayList<>(SELF_DESTRUCTED_OUTPUT);
-            case HOST_DECONSTRUCTED -> {
-                final ArrayList<PanelString> list = new ArrayList<>();
-                getMachineName(card.getItemStack()).ifPresent(name -> list.add(prebakePanelString(name, true)));
-                list.addAll(DECONSTRUCTED_OUTPUT);
-                yield list;
-            }
-            case OPERATIONAL -> getDataFromDatabase(card).map(data -> {
-                final ImmutableList.Builder<String> builder = ImmutableList.builder();
+        payloadSize = card.getInt(OUTPUT_ENTRY_LENGTH_KEY);
 
-                getMachineName(card.getItemStack()).ifPresent(builder::add);
-                data.getCoordinates()
-                    .ifPresent(
-                        coordinates -> builder.add(
-                            StatCollector.translateToLocalFormatted(
-                                "gt.item.adv_sensor_card.dimension",
-                                coordinates.getDimension()),
-                            StatCollector.translateToLocalFormatted(
-                                "gt.item.adv_sensor_card.coords",
-                                coordinates.getLocalizedCoordinates())));
+        if (!machineName.isEmpty() && (displaySettings & 1) != 0) {
+            returned.add(panelString(machineName, true));
+            payloadSize += 1;
+            bitmaskOffset = 1;
+        } else {
+            bitmaskOffset = 0;
+        }
 
-                data.getPayload()
-                    .ifPresent(builder::addAll);
+        // Not reusing payloadSize here because it can be conditionally mutated.
+        IntStream.range(0, card.getInt(OUTPUT_ENTRY_LENGTH_KEY))
+            .forEach(i -> {
+                if ((displaySettings & 1 << (i + bitmaskOffset)) != 0) {
+                    returned.add(panelString(card.getString(String.format(OUTPUT_ENTRY_KEY, i))));
+                }
+            });
 
-                return builder.build();
-            })
-                .filter(payload -> !payload.isEmpty())
-                .map(
-                    payload -> IntStream.range(0, payload.size())
-                        .filter(i -> (displaySettings & (1 << i)) != 0)
-                        .mapToObj(i -> prebakePanelString(payload.get(i), i == 0))
-                        .collect(Collectors.toCollection(ArrayList::new)))
-                .orElse(null);
-        })
-            .orElse(new ArrayList<>(NO_DATA_FOUND));
+        return returned;
     }
 
     @Override
@@ -305,12 +309,12 @@ public class GT_AdvancedSensorCard_Item extends Item implements IPanelDataSource
     }
 
     @NotNull
-    private static PanelString prebakePanelString(String info) {
-        return prebakePanelString(info, false);
+    private static PanelString panelString(String info) {
+        return panelString(info, false);
     }
 
     @NotNull
-    private static PanelString prebakePanelString(String info, boolean center) {
+    private static PanelString panelString(String info, boolean center) {
         final PanelString panelString = new PanelString();
         if (center) {
             panelString.textCenter = info;
