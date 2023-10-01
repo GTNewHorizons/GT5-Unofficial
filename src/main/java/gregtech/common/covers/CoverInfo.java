@@ -7,6 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -131,7 +132,7 @@ public final class CoverInfo {
     }
 
     public int getTickRate() {
-        return getCoverBehavior().getTickRate(coverSide, coverID, coverData, coveredTile.get()) * tickRateMultiplier;
+        return getMinimumTickRate() * tickRateMultiplier;
     }
 
     public ForgeDirection getSide() {
@@ -244,26 +245,40 @@ public final class CoverInfo {
     }
 
     public void onCoverJackhammer(EntityPlayer aPlayer) {
-        final int stepAmount = tickRateMultiplier == 20 ? (aPlayer.isSneaking() ? 5 : 20)
-            : (tickRateMultiplier <= 20 ? 5 : 20);
-        final String units;
-        final String displayNumber;
-
-        tickRateMultiplier = clamp(stepAmount * ((aPlayer.isSneaking() ? -1 : 1) + tickRateMultiplier / stepAmount));
-
-        if (tickRateMultiplier < 20) {
-            displayNumber = GT_Utility.formatNumbers(tickRateMultiplier);
-            units = StatCollector
-                .translateToLocal(tickRateMultiplier == 1 ? "gt.time.tick.singular" : "gt.time.tick.plural");
-        } else {
-            displayNumber = GT_Utility.formatNumbers(tickRateMultiplier / 20);
-            units = StatCollector
-                .translateToLocal(tickRateMultiplier == 20 ? "gt.time.second.singular" : "gt.time.second.plural");
-        }
+        adjustTickRateMultiplier(aPlayer.isSneaking());
 
         GT_Utility.sendChatToPlayer(
             aPlayer,
-            StatCollector.translateToLocalFormatted("gt.cover.info.tick_rate", displayNumber, units));
+            StatCollector.translateToLocalFormatted("gt.cover.info.chat.tick_rate", getCurrentTickRateFormatted()));
+    }
+
+    /**
+     * Adjusts the tick rate by one step.
+     *
+     * @param isDecreasing If true, lower one step.
+     */
+    public void adjustTickRateMultiplier(final boolean isDecreasing) {
+        final int stepAmount = tickRateMultiplier == 20 ? (isDecreasing ? 5 : 20) : (tickRateMultiplier <= 20 ? 5 : 20);
+
+        tickRateMultiplier = clamp(stepAmount * ((isDecreasing ? -1 : 1) + tickRateMultiplier / stepAmount));
+    }
+
+    /**
+     * Returns information about the cover's tick rate.
+     *
+     * @return An instance of tick rate components
+     */
+    @NotNull
+    public CoverInfo.ClientTickRateFormatter getCurrentTickRateFormatted() {
+        return new ClientTickRateFormatter(getTickRate());
+    }
+
+    public CoverInfo.ClientTickRateFormatter getMinimumTickRateFormatted() {
+        return new ClientTickRateFormatter(getMinimumTickRate(), true);
+    }
+
+    public int getMinimumTickRate() {
+        return getCoverBehavior().getTickRate(coverSide, coverID, coverData, coveredTile.get());
     }
 
     public int getTickRateMultiplier() {
@@ -288,7 +303,7 @@ public final class CoverInfo {
     }
 
     private int clamp(int input) {
-        final int lowerBound = getCoverBehavior().getTickRate(coverSide, coverID, coverData, coveredTile.get());
+        final int lowerBound = getMinimumTickRate();
 
         if (input < lowerBound) {
             input = lowerBound;
@@ -297,5 +312,38 @@ public final class CoverInfo {
         }
 
         return input;
+    }
+
+    public static final class ClientTickRateFormatter {
+
+        /** A translation key for the type of time units being used (e.g.: "tick", "seconds".) */
+        private final String unitI18NKey;
+        /** A number representing a quantity of time. */
+        private final int tickRate;
+        private final boolean dim;
+
+        private ClientTickRateFormatter(final int tickRate, final boolean dim) {
+            this.dim = dim;
+            if (tickRate < 20) {
+                this.unitI18NKey = tickRate == 1 ? "gt.time.tick.singular" : "gt.time.tick.plural";
+                this.tickRate = tickRate;
+            } else {
+                this.unitI18NKey = tickRate == 20 ? "gt.time.second.singular" : "gt.time.second.plural";
+                this.tickRate = tickRate / 20;
+            }
+        }
+
+        public ClientTickRateFormatter(final int tickRate) {
+            this(tickRate, false);
+        }
+
+        public String toString() {
+            return StatCollector.translateToLocalFormatted(
+                "gt.cover.info.format.tick_rate",
+                dim ? EnumChatFormatting.GRAY : EnumChatFormatting.AQUA,
+                tickRate,
+                dim ? EnumChatFormatting.GRAY : EnumChatFormatting.RESET,
+                StatCollector.translateToLocal(unitI18NKey));
+        }
     }
 }
