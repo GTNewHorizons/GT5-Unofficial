@@ -133,7 +133,7 @@ public class GT_PostLoad {
                     .duration(4 * TICKS)
                     .eut(1)
                     .addTo(sFluidCannerRecipes);
-            } else if (tData.emptyContainer.isItemEqual(
+            } else if (IguanaTweaksTinkerConstruct.isModLoaded() && tData.emptyContainer.isItemEqual(
                 Objects.requireNonNull(
                     GT_ModHandler.getModItem(IguanaTweaksTinkerConstruct.ID, "clayBucketFired", 1L, 0)))) {
                         GT_Values.RA.stdBuilder()
