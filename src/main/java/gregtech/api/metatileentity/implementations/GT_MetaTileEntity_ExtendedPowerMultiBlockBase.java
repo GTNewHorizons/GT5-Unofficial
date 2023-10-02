@@ -1,6 +1,7 @@
 package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GT_Values.VN;
+import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,8 +107,8 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
 
     public List<GT_MetaTileEntity_Hatch> getExoticAndNormalEnergyHatchList() {
         List<GT_MetaTileEntity_Hatch> tHatches = new ArrayList<>();
-        tHatches.addAll(mExoticEnergyHatches);
-        tHatches.addAll(mEnergyHatches);
+        tHatches.addAll(filterValidMTEs(mExoticEnergyHatches));
+        tHatches.addAll(filterValidMTEs(mEnergyHatches));
         return tHatches;
     }
 
@@ -155,21 +156,17 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
     @Override
     public String[] getInfoData() {
         int mPollutionReduction = 0;
-        for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) {
-            if (isValidMetaTileEntity(tHatch)) {
-                mPollutionReduction = Math.max(tHatch.calculatePollutionReduction(100), mPollutionReduction);
-            }
+        for (GT_MetaTileEntity_Hatch_Muffler tHatch : filterValidMTEs(mMufflerHatches)) {
+            mPollutionReduction = Math.max(tHatch.calculatePollutionReduction(100), mPollutionReduction);
         }
 
         long storedEnergy = 0;
         long maxEnergy = 0;
         for (GT_MetaTileEntity_Hatch tHatch : getExoticAndNormalEnergyHatchList()) {
-            if (isValidMetaTileEntity(tHatch)) {
-                storedEnergy += tHatch.getBaseMetaTileEntity()
-                    .getStoredEU();
-                maxEnergy += tHatch.getBaseMetaTileEntity()
-                    .getEUCapacity();
-            }
+            storedEnergy += tHatch.getBaseMetaTileEntity()
+                .getStoredEU();
+            maxEnergy += tHatch.getBaseMetaTileEntity()
+                .getEUCapacity();
         }
         long voltage = getAverageInputVoltage();
         long amps = getMaxInputAmps();

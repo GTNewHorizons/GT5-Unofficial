@@ -10,6 +10,9 @@ import static gregtech.api.enums.GT_Values.RA;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.W;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAlloySmelterRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sExtractorRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sOreWasherRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
 import java.util.ArrayList;
@@ -578,6 +581,7 @@ public class GT_ModHandler {
     /**
      * LiquidTransposer Recipe for both directions
      */
+    @Deprecated
     public static boolean addLiquidTransposerRecipe(ItemStack aEmptyContainer, FluidStack aLiquid,
         ItemStack aFullContainer, int aMJ) {
         return true;
@@ -586,6 +590,7 @@ public class GT_ModHandler {
     /**
      * LiquidTransposer Recipe for filling Containers
      */
+    @Deprecated
     public static boolean addLiquidTransposerFillRecipe(ItemStack aEmptyContainer, FluidStack aLiquid,
         ItemStack aFullContainer, int aMJ) {
         return true;
@@ -594,6 +599,7 @@ public class GT_ModHandler {
     /**
      * LiquidTransposer Recipe for emptying Containers
      */
+    @Deprecated
     public static boolean addLiquidTransposerEmptyRecipe(ItemStack aFullContainer, FluidStack aLiquid,
         ItemStack aEmptyContainer, int aMJ) {
         return true;
@@ -602,11 +608,17 @@ public class GT_ModHandler {
     /**
      * IC2-Extractor Recipe. Overloads old Recipes automatically
      */
+    @Deprecated
     public static boolean addExtractionRecipe(ItemStack aInput, ItemStack aOutput) {
         aOutput = GT_OreDictUnificator.get(true, aOutput);
         if (aInput == null || aOutput == null) return false;
         if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.extractor, aInput, true)) return false;
-        RA.addExtractorRecipe(aInput, aOutput, 300, 2);
+        RA.stdBuilder()
+            .itemInputs(aInput)
+            .itemOutputs(aOutput)
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(sExtractorRecipes);
         return true;
     }
 
@@ -689,11 +701,13 @@ public class GT_ModHandler {
         return true;
     }
 
+    @Deprecated
     public static boolean addImmersiveEngineeringRecipe(ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2,
         int aChance2, ItemStack aOutput3, int aChance3) {
         return true;
     }
 
+    @Deprecated
     public static boolean addMagneticraftRecipe(ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2, int aChance2,
         ItemStack aOutput3, int aChance3) {
         return true;
@@ -702,6 +716,7 @@ public class GT_ModHandler {
     /**
      * Adds a Recipe to the Sawmills of ThermalCraft
      */
+    @Deprecated
     public static boolean addSawmillRecipe(ItemStack aInput1, ItemStack aOutput1, ItemStack aOutput2) {
         return true;
     }
@@ -709,11 +724,18 @@ public class GT_ModHandler {
     /**
      * Induction Smelter Recipes and Alloy Smelter Recipes
      */
+    @Deprecated
     public static boolean addAlloySmelterRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput1, int aDuration,
         int aEUt, boolean aAllowSecondaryInputEmpty) {
         if (aInput1 == null || (aInput2 == null && !aAllowSecondaryInputEmpty) || aOutput1 == null) return false;
         aOutput1 = GT_OreDictUnificator.get(true, aOutput1);
-        return RA.addAlloySmelterRecipe(aInput1, aInput2, aOutput1, aDuration, aEUt);
+        RA.stdBuilder()
+            .itemInputs(aInput1, aInput2)
+            .itemOutputs(aOutput1)
+            .duration(aDuration)
+            .eut(aEUt)
+            .addTo(sAlloySmelterRecipes);
+        return true;
     }
 
     /**
@@ -743,61 +765,67 @@ public class GT_ModHandler {
         boolean aExcludeGTIC2Items) {
         Map<ItemStack, ItemStack> aRecipesToRemove = new HashMap<>();
         for (Entry<IRecipeInput, RecipeOutput> iRecipeInputRecipeOutputEntry : aIC2RecipeList.entrySet()) {
-            if (!iRecipeInputRecipeOutputEntry.getValue().items.isEmpty()) {
-                for (ItemStack tStack : (iRecipeInputRecipeOutputEntry.getKey()).getInputs()) {
-                    if (GT_Utility.isStackValid(tStack)) {
-                        if (aAddGTRecipe
-                            && (aGTRecipeMap.findRecipe(null, false, Long.MAX_VALUE, null, tStack) == null)) {
-                            try {
-                                if (aExcludeGTIC2Items && ((tStack.getUnlocalizedName()
-                                    .contains("gt.metaitem.01")
-                                    || tStack.getUnlocalizedName()
-                                        .contains("gt.blockores")
-                                    || tStack.getUnlocalizedName()
-                                        .contains("ic2.itemCrushed")
-                                    || tStack.getUnlocalizedName()
-                                        .contains("ic2.itemPurifiedCrushed"))))
-                                    continue;
-                                switch (aGTRecipeMap.mUnlocalizedName) {
-                                    case "gt.recipe.macerator", "gt.recipe.extractor", "gt.recipe.compressor" -> aGTRecipeMap
-                                        .addRecipe(
-                                            true,
-                                            new ItemStack[] { GT_Utility.copyAmount(
-                                                iRecipeInputRecipeOutputEntry.getKey()
-                                                    .getAmount(),
-                                                tStack) },
-                                            iRecipeInputRecipeOutputEntry.getValue().items.toArray(new ItemStack[0]),
-                                            null,
-                                            null,
-                                            null,
-                                            null,
-                                            300,
-                                            2,
-                                            0);
-                                    case "gt.recipe.thermalcentrifuge" -> aGTRecipeMap.addRecipe(
-                                        true,
-                                        new ItemStack[] { GT_Utility.copyAmount(
-                                            iRecipeInputRecipeOutputEntry.getKey()
-                                                .getAmount(),
-                                            tStack) },
-                                        iRecipeInputRecipeOutputEntry.getValue().items.toArray(new ItemStack[0]),
-                                        null,
-                                        null,
-                                        null,
-                                        null,
-                                        500,
-                                        48,
-                                        0);
-                                }
-                            } catch (Exception e) {
-                                System.err.println(e);
-                            }
+            if (iRecipeInputRecipeOutputEntry.getValue().items.isEmpty()) {
+                continue;
+            }
+
+            for (ItemStack tStack : (iRecipeInputRecipeOutputEntry.getKey()).getInputs()) {
+                if (!GT_Utility.isStackValid(tStack)) {
+                    continue;
+                }
+
+                if (aAddGTRecipe && (aGTRecipeMap.findRecipe(null, false, Long.MAX_VALUE, null, tStack) == null)) {
+                    try {
+                        if (aExcludeGTIC2Items && ((tStack.getUnlocalizedName()
+                            .contains("gt.metaitem.01")
+                            || tStack.getUnlocalizedName()
+                                .contains("gt.blockores")
+                            || tStack.getUnlocalizedName()
+                                .contains("ic2.itemCrushed")
+                            || tStack.getUnlocalizedName()
+                                .contains("ic2.itemPurifiedCrushed"))))
+                            continue;
+                        switch (aGTRecipeMap.mUnlocalizedName) {
+                            case "gt.recipe.macerator", "gt.recipe.extractor", "gt.recipe.compressor" -> aGTRecipeMap
+                                .addRecipe(
+                                    true,
+                                    new ItemStack[] { GT_Utility.copyAmount(
+                                        iRecipeInputRecipeOutputEntry.getKey()
+                                            .getAmount(),
+                                        tStack) },
+                                    iRecipeInputRecipeOutputEntry.getValue().items.toArray(new ItemStack[0]),
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    300,
+                                    2,
+                                    0);
+                            case "gt.recipe.thermalcentrifuge" -> aGTRecipeMap.addRecipe(
+                                true,
+                                new ItemStack[] { GT_Utility.copyAmount(
+                                    iRecipeInputRecipeOutputEntry.getKey()
+                                        .getAmount(),
+                                    tStack) },
+                                iRecipeInputRecipeOutputEntry.getValue().items.toArray(new ItemStack[0]),
+                                null,
+                                null,
+                                null,
+                                null,
+                                500,
+                                48,
+                                0);
                         }
-                        if (aRemoveIC2Recipe)
-                            aRecipesToRemove.put(tStack, iRecipeInputRecipeOutputEntry.getValue().items.get(0));
+                    } catch (Exception e) {
+                        System.err.println(e);
                     }
                 }
+                if (aRemoveIC2Recipe) {
+                    aRecipesToRemove.put(tStack, iRecipeInputRecipeOutputEntry.getValue().items.get(0));
+                }
+
             }
+
         }
         GT_Utility.bulkRemoveSimpleIC2MachineRecipe(aRecipesToRemove, aIC2RecipeList);
     }
@@ -894,46 +922,44 @@ public class GT_ModHandler {
     public static boolean addOreWasherRecipe(ItemStack aInput, int[] aChances, int aWaterAmount, Object... aOutput) {
         if (aInput == null || aOutput == null || aOutput.length == 0 || aOutput[0] == null) return false;
         if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.orewashing, aInput, true)) return false;
-        RA.addOreWasherRecipe(
-            aInput,
-            (ItemStack) aOutput[0],
-            (ItemStack) aOutput[1],
-            (ItemStack) aOutput[2],
-            GT_ModHandler.getWater(aWaterAmount),
-            aChances,
-            500,
-            16);
-        RA.addOreWasherRecipe(
-            aInput,
-            (ItemStack) aOutput[0],
-            (ItemStack) aOutput[1],
-            (ItemStack) aOutput[2],
-            GT_ModHandler.getDistilledWater(aWaterAmount / 5),
-            aChances,
-            300,
-            16);
+        RA.stdBuilder()
+            .itemInputs(aInput)
+            .itemOutputs((ItemStack) aOutput[0], (ItemStack) aOutput[1], (ItemStack) aOutput[2])
+            .outputChances(aChances)
+            .fluidInputs(GT_ModHandler.getWater(aWaterAmount))
+            .duration(25 * SECONDS)
+            .eut(16)
+            .addTo(sOreWasherRecipes);
+
+        RA.stdBuilder()
+            .itemInputs(aInput)
+            .itemOutputs((ItemStack) aOutput[0], (ItemStack) aOutput[1], (ItemStack) aOutput[2])
+            .outputChances(aChances)
+            .fluidInputs(GT_ModHandler.getDistilledWater(aWaterAmount / 5))
+            .duration(15 * SECONDS)
+            .eut(16)
+            .addTo(sOreWasherRecipes);
         return true;
     }
 
     public static boolean addOreWasherRecipe(ItemStack aInput, int aWaterAmount, Object... aOutput) {
         if (aInput == null || aOutput == null || aOutput.length == 0 || aOutput[0] == null) return false;
         if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.orewashing, aInput, true)) return false;
-        RA.addOreWasherRecipe(
-            aInput,
-            (ItemStack) aOutput[0],
-            (ItemStack) aOutput[1],
-            (ItemStack) aOutput[2],
-            GT_ModHandler.getWater(aWaterAmount),
-            500,
-            16);
-        RA.addOreWasherRecipe(
-            aInput,
-            (ItemStack) aOutput[0],
-            (ItemStack) aOutput[1],
-            (ItemStack) aOutput[2],
-            GT_ModHandler.getDistilledWater(aWaterAmount / 5),
-            300,
-            16);
+        RA.stdBuilder()
+            .itemInputs(aInput)
+            .itemOutputs((ItemStack) aOutput[0], (ItemStack) aOutput[1], (ItemStack) aOutput[2])
+            .fluidInputs(GT_ModHandler.getWater(aWaterAmount))
+            .duration(25 * SECONDS)
+            .eut(16)
+            .addTo(sOreWasherRecipes);
+
+        RA.stdBuilder()
+            .itemInputs(aInput)
+            .itemOutputs((ItemStack) aOutput[0], (ItemStack) aOutput[1], (ItemStack) aOutput[2])
+            .fluidInputs(GT_ModHandler.getDistilledWater(aWaterAmount / 5))
+            .duration(15 * SECONDS)
+            .eut(16)
+            .addTo(sOreWasherRecipes);
         return true;
     }
 

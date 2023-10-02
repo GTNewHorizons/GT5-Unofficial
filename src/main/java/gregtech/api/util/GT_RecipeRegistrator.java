@@ -19,6 +19,7 @@ import static gregtech.api.enums.Materials.Steel;
 import static gregtech.api.enums.Materials.Steeleaf;
 import static gregtech.api.enums.Materials.Thaumium;
 import static gregtech.api.enums.Materials.Void;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sHammerRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMaceratorRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sWiremillRecipes;
@@ -213,24 +214,32 @@ public class GT_RecipeRegistrator {
                 || tData.mPrefix == OrePrefixes.block | tData.mPrefix == OrePrefixes.plate)) {
             tHide = true;
         }
-        RA.addFluidSmelterRecipe(
-            GT_Utility.copyAmount(1, aStack),
-            aByproduct
-                == null
-                    ? null
-                    : aByproduct.mMaterial.contains(SubTag.NO_SMELTING) || !aByproduct.mMaterial.contains(SubTag.METAL)
-                        ? aByproduct.mMaterial.contains(SubTag.FLAMMABLE)
-                            ? GT_OreDictUnificator.getDust(Materials.Ash, aByproduct.mAmount / 2)
-                            : aByproduct.mMaterial.contains(SubTag.UNBURNABLE)
-                                ? GT_OreDictUnificator
-                                    .getDustOrIngot(aByproduct.mMaterial.mSmeltInto, aByproduct.mAmount)
-                                : null
-                        : GT_OreDictUnificator.getIngotOrDust(aByproduct.mMaterial.mSmeltInto, aByproduct.mAmount),
-            aMaterial.mSmeltInto.getMolten((L * aMaterialAmount) / (M * aStack.stackSize)),
-            10000,
-            (int) Math.max(1, (24 * aMaterialAmount) / M),
-            Math.max(8, (int) Math.sqrt(2 * aMaterial.mSmeltInto.mStandardMoltenFluid.getTemperature())),
-            tHide);
+
+        ItemStack recipeOutput = aByproduct == null ? null
+            : aByproduct.mMaterial.contains(SubTag.NO_SMELTING) || !aByproduct.mMaterial.contains(SubTag.METAL)
+                ? aByproduct.mMaterial.contains(SubTag.FLAMMABLE)
+                    ? GT_OreDictUnificator.getDust(Materials.Ash, aByproduct.mAmount / 2)
+                    : aByproduct.mMaterial.contains(SubTag.UNBURNABLE)
+                        ? GT_OreDictUnificator.getDustOrIngot(aByproduct.mMaterial.mSmeltInto, aByproduct.mAmount)
+                        : null
+                : GT_OreDictUnificator.getIngotOrDust(aByproduct.mMaterial.mSmeltInto, aByproduct.mAmount);
+
+        if (recipeOutput != null) {
+            RA.stdBuilder()
+                .itemInputs(GT_Utility.copyAmount(1, aStack))
+                .itemOutputs(recipeOutput)
+                .fluidOutputs(aMaterial.mSmeltInto.getMolten((L * aMaterialAmount) / (M * aStack.stackSize)))
+                .duration((int) Math.max(1, (24 * aMaterialAmount) / M))
+                .eut(Math.max(8, (int) Math.sqrt(2 * aMaterial.mSmeltInto.mStandardMoltenFluid.getTemperature())))
+                .addTo(sFluidExtractionRecipes);
+        } else {
+            RA.stdBuilder()
+                .itemInputs(GT_Utility.copyAmount(1, aStack))
+                .fluidOutputs(aMaterial.mSmeltInto.getMolten((L * aMaterialAmount) / (M * aStack.stackSize)))
+                .duration((int) Math.max(1, (24 * aMaterialAmount) / M))
+                .eut(Math.max(8, (int) Math.sqrt(2 * aMaterial.mSmeltInto.mStandardMoltenFluid.getTemperature())))
+                .addTo(sFluidExtractionRecipes);
+        }
     }
 
     /**

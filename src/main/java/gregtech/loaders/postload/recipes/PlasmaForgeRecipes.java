@@ -41,6 +41,7 @@ public class PlasmaForgeRecipes implements Runnable {
                 getModItem(GoodGenerator.ID, "huiCircuit", 0, 4))
             .fluidInputs(MaterialsUEVplus.ExcitedDTRC.getFluid(92), Materials.Duranium.getMolten(144))
             .itemOutputs(getModItem(GTPlusPlus.ID, "MU-metaitem.01", 1, 32105))
+            .fluidOutputs(MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(46))
             .duration(60 * SECONDS)
             .eut((int) TierEU.RECIPE_UEV)
             .metadata(COIL_HEAT, 10800)

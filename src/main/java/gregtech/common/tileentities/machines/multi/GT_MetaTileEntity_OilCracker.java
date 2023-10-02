@@ -10,6 +10,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_G
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofCoil;
+import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -319,35 +320,31 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
     @Override
     public ArrayList<FluidStack> getStoredFluids() {
         final ArrayList<FluidStack> rList = new ArrayList<>();
-        for (final GT_MetaTileEntity_Hatch_Input tHatch : mInputHatches) {
+        for (final GT_MetaTileEntity_Hatch_Input tHatch : filterValidMTEs(mInputHatches)) {
             tHatch.mRecipeMap = getRecipeMap();
             if (tHatch instanceof GT_MetaTileEntity_Hatch_MultiInput) {
-                if (isValidMetaTileEntity(tHatch)) {
-                    for (final FluidStack tFluid : ((GT_MetaTileEntity_Hatch_MultiInput) tHatch).getStoredFluid()) {
-                        if (tFluid != null && !GT_Recipe.GT_Recipe_Map.sCrackingRecipes.isValidCatalystFluid(tFluid)) {
-                            rList.add(tFluid);
-                        }
+                for (final FluidStack tFluid : ((GT_MetaTileEntity_Hatch_MultiInput) tHatch).getStoredFluid()) {
+                    if (tFluid != null && !GT_Recipe.GT_Recipe_Map.sCrackingRecipes.isValidCatalystFluid(tFluid)) {
+                        rList.add(tFluid);
                     }
                 }
             } else {
-                if (isValidMetaTileEntity(tHatch) && tHatch.getFillableStack() != null) {
+                if (tHatch.getFillableStack() != null) {
                     if (!GT_Recipe.GT_Recipe_Map.sCrackingRecipes.isValidCatalystFluid(tHatch.getFillableStack()))
                         rList.add(tHatch.getFillableStack());
                 }
             }
         }
-        for (final GT_MetaTileEntity_Hatch_Input tHatch : mMiddleInputHatches) {
+        for (final GT_MetaTileEntity_Hatch_Input tHatch : filterValidMTEs(mMiddleInputHatches)) {
             tHatch.mRecipeMap = getRecipeMap();
             if (tHatch instanceof GT_MetaTileEntity_Hatch_MultiInput) {
-                if (isValidMetaTileEntity(tHatch)) {
-                    for (final FluidStack tFluid : ((GT_MetaTileEntity_Hatch_MultiInput) tHatch).getStoredFluid()) {
-                        if (tFluid != null && GT_Recipe.GT_Recipe_Map.sCrackingRecipes.isValidCatalystFluid(tFluid)) {
-                            rList.add(tFluid);
-                        }
+                for (final FluidStack tFluid : ((GT_MetaTileEntity_Hatch_MultiInput) tHatch).getStoredFluid()) {
+                    if (tFluid != null && GT_Recipe.GT_Recipe_Map.sCrackingRecipes.isValidCatalystFluid(tFluid)) {
+                        rList.add(tFluid);
                     }
                 }
             } else {
-                if (isValidMetaTileEntity(tHatch) && tHatch.getFillableStack() != null) {
+                if (tHatch.getFillableStack() != null) {
                     final FluidStack tStack = tHatch.getFillableStack();
                     if (GT_Recipe.GT_Recipe_Map.sCrackingRecipes.isValidCatalystFluid(tStack)) {
                         rList.add(tStack);

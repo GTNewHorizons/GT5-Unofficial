@@ -25,7 +25,6 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -57,8 +56,6 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.gui.GT_Container_BasicMachine;
-import gregtech.api.gui.GT_GUIContainer_BasicMachine;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.gui.modularui.SteamTexture;
@@ -111,7 +108,8 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     public int mProgresstime = 0, mMaxProgresstime = 0, mEUt = 0, mOutputBlocked = 0;
     public ForgeDirection mMainFacing = ForgeDirection.WEST;
     public FluidStack mOutputFluid;
-    public String mGUIName, mNEIName;
+    @Deprecated
+    public String mGUIName = "", mNEIName = "";
     protected final Power mPower;
 
     /**
@@ -127,6 +125,8 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         this::getCapacity);
 
     /**
+     * Registers machine with single-line description.
+     *
      * @param aOverlays 0 = SideFacingActive 1 = SideFacingInactive 2 = FrontFacingActive 3 = FrontFacingInactive 4 =
      *                  TopFacingActive 5 = TopFacingInactive 6 = BottomFacingActive 7 = BottomFacingInactive ----- Not
      *                  all Array Elements have to be initialised, you can also just use 8 Parameters for the Default
@@ -134,6 +134,27 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
      *                  TopFacingPipeActive 11 = TopFacingPipeInactive 12 = SideFacingPipeActive 13 =
      *                  SideFacingPipeInactive
      */
+    public GT_MetaTileEntity_BasicMachine(int aID, String aName, String aNameRegional, int aTier, int aAmperage,
+        String aDescription, int aInputSlotCount, int aOutputSlotCount, ITexture... aOverlays) {
+        super(
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            OTHER_SLOT_COUNT + aInputSlotCount + aOutputSlotCount + 1,
+            aDescription,
+            aOverlays);
+        mInputSlotCount = Math.max(0, aInputSlotCount);
+        mOutputItems = new ItemStack[Math.max(0, aOutputSlotCount)];
+        mAmperage = aAmperage;
+        mPower = buildPower();
+    }
+
+    /**
+     * @deprecated Use {@link #GT_MetaTileEntity_BasicMachine(int, String, String, int, int, String, int, int,
+     *             ITexture...)}
+     */
+    @Deprecated
     public GT_MetaTileEntity_BasicMachine(int aID, String aName, String aNameRegional, int aTier, int aAmperage,
         String aDescription, int aInputSlotCount, int aOutputSlotCount, String aGUIName, String aNEIName,
         ITexture... aOverlays) {
@@ -148,11 +169,33 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         mInputSlotCount = Math.max(0, aInputSlotCount);
         mOutputItems = new ItemStack[Math.max(0, aOutputSlotCount)];
         mAmperage = aAmperage;
-        mGUIName = aGUIName;
-        mNEIName = aNEIName;
         mPower = buildPower();
     }
 
+    /**
+     * Registers machine with multi-line descriptions.
+     */
+    public GT_MetaTileEntity_BasicMachine(int aID, String aName, String aNameRegional, int aTier, int aAmperage,
+        String[] aDescription, int aInputSlotCount, int aOutputSlotCount, ITexture... aOverlays) {
+        super(
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            OTHER_SLOT_COUNT + aInputSlotCount + aOutputSlotCount + 1,
+            aDescription,
+            aOverlays);
+        mInputSlotCount = Math.max(0, aInputSlotCount);
+        mOutputItems = new ItemStack[Math.max(0, aOutputSlotCount)];
+        mAmperage = aAmperage;
+        mPower = buildPower();
+    }
+
+    /**
+     * @deprecated Use {@link #GT_MetaTileEntity_BasicMachine(int, String, String, int, int, String[], int, int,
+     *             ITexture...)}
+     */
+    @Deprecated
     public GT_MetaTileEntity_BasicMachine(int aID, String aName, String aNameRegional, int aTier, int aAmperage,
         String[] aDescription, int aInputSlotCount, int aOutputSlotCount, String aGUIName, String aNEIName,
         ITexture... aOverlays) {
@@ -167,30 +210,44 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         mInputSlotCount = Math.max(0, aInputSlotCount);
         mOutputItems = new ItemStack[Math.max(0, aOutputSlotCount)];
         mAmperage = aAmperage;
-        mGUIName = aGUIName;
-        mNEIName = aNEIName;
         mPower = buildPower();
     }
 
+    /**
+     * @deprecated Use {@link #GT_MetaTileEntity_BasicMachine(String, int, int, String[], ITexture[][][], int, int)}
+     */
+    @Deprecated
     public GT_MetaTileEntity_BasicMachine(String aName, int aTier, int aAmperage, String aDescription,
         ITexture[][][] aTextures, int aInputSlotCount, int aOutputSlotCount, String aGUIName, String aNEIName) {
         super(aName, aTier, OTHER_SLOT_COUNT + aInputSlotCount + aOutputSlotCount + 1, aDescription, aTextures);
         mInputSlotCount = Math.max(0, aInputSlotCount);
         mOutputItems = new ItemStack[Math.max(0, aOutputSlotCount)];
         mAmperage = aAmperage;
-        mGUIName = aGUIName;
-        mNEIName = aNEIName;
         mPower = buildPower();
     }
 
+    /**
+     * For {@link #newMetaEntity}.
+     */
+    public GT_MetaTileEntity_BasicMachine(String aName, int aTier, int aAmperage, String[] aDescription,
+        ITexture[][][] aTextures, int aInputSlotCount, int aOutputSlotCount) {
+        super(aName, aTier, OTHER_SLOT_COUNT + aInputSlotCount + aOutputSlotCount + 1, aDescription, aTextures);
+        mInputSlotCount = Math.max(0, aInputSlotCount);
+        mOutputItems = new ItemStack[Math.max(0, aOutputSlotCount)];
+        mAmperage = aAmperage;
+        mPower = buildPower();
+    }
+
+    /**
+     * @deprecated Use {@link #GT_MetaTileEntity_BasicMachine(String, int, int, String[], ITexture[][][], int, int)}
+     */
+    @Deprecated
     public GT_MetaTileEntity_BasicMachine(String aName, int aTier, int aAmperage, String[] aDescription,
         ITexture[][][] aTextures, int aInputSlotCount, int aOutputSlotCount, String aGUIName, String aNEIName) {
         super(aName, aTier, OTHER_SLOT_COUNT + aInputSlotCount + aOutputSlotCount + 1, aDescription, aTextures);
         mInputSlotCount = Math.max(0, aInputSlotCount);
         mOutputItems = new ItemStack[Math.max(0, aOutputSlotCount)];
         mAmperage = aAmperage;
-        mGUIName = aGUIName;
-        mNEIName = aNEIName;
         mPower = buildPower();
     }
 
@@ -504,43 +561,17 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
         if (!GT_Mod.gregtechproxy.mForceFreeFace) {
-            if (useModularUI()) {
-                GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
-            } else {
-                aBaseMetaTileEntity.openGUI(aPlayer);
-            }
+            GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
             return true;
         }
         for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             if (aBaseMetaTileEntity.getAirAtSide(side)) {
-                if (useModularUI()) {
-                    GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
-                } else {
-                    aBaseMetaTileEntity.openGUI(aPlayer);
-                }
+                GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
                 return true;
             }
         }
         GT_Utility.sendChatToPlayer(aPlayer, "No free Side!");
         return true;
-    }
-
-    @Deprecated
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_BasicMachine(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Deprecated
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_BasicMachine(
-            aPlayerInventory,
-            aBaseMetaTileEntity,
-            getLocalName(),
-            mGUIName,
-            GT_Utility.isStringValid(mNEIName) ? mNEIName
-                : getRecipeList() != null ? getRecipeList().mUnlocalizedName : "");
     }
 
     @Override
@@ -898,7 +929,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 
     @Override
     public String[] getInfoData() {
-        return new String[] { EnumChatFormatting.BLUE + mNEIName + EnumChatFormatting.RESET, "Progress:",
+        return new String[] { "Progress:",
             EnumChatFormatting.GREEN + GT_Utility.formatNumbers((mProgresstime / 20))
                 + EnumChatFormatting.RESET
                 + " s / "

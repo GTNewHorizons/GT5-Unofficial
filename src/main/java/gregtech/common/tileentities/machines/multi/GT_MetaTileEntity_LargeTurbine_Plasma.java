@@ -5,6 +5,7 @@ import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_NEW_ACTIVE5;
 import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_NEW_EMPTY5;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
+import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import java.util.ArrayList;
 
@@ -284,10 +285,8 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
     @Override
     public String[] getInfoData() {
         int mPollutionReduction = 0;
-        for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) {
-            if (isValidMetaTileEntity(tHatch)) {
-                mPollutionReduction = Math.max(tHatch.calculatePollutionReduction(100), mPollutionReduction);
-            }
+        for (GT_MetaTileEntity_Hatch_Muffler tHatch : filterValidMTEs(mMufflerHatches)) {
+            mPollutionReduction = Math.max(tHatch.calculatePollutionReduction(100), mPollutionReduction);
         }
 
         String tRunning = mMaxProgresstime > 0
@@ -310,13 +309,11 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
 
         long storedEnergy = 0;
         long maxEnergy = 0;
-        for (GT_MetaTileEntity_Hatch_Dynamo tHatch : mDynamoHatches) {
-            if (isValidMetaTileEntity(tHatch)) {
-                storedEnergy += tHatch.getBaseMetaTileEntity()
-                    .getStoredEU();
-                maxEnergy += tHatch.getBaseMetaTileEntity()
-                    .getEUCapacity();
-            }
+        for (GT_MetaTileEntity_Hatch_Dynamo tHatch : filterValidMTEs(mDynamoHatches)) {
+            storedEnergy += tHatch.getBaseMetaTileEntity()
+                .getStoredEU();
+            maxEnergy += tHatch.getBaseMetaTileEntity()
+                .getEUCapacity();
         }
         String[] ret = new String[] {
             // 8 Lines available for information panels

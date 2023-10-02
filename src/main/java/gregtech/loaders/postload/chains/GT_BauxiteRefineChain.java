@@ -2,6 +2,7 @@ package gregtech.loaders.postload.chains;
 
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sChemicalBathRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCrackingRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMixerRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
@@ -47,13 +48,13 @@ public class GT_BauxiteRefineChain {
             .eut(TierEU.RECIPE_MV)
             .addTo(sMixerRecipes);
 
-        GT_Values.RA.addCrackingRecipe(
-            1,
-            MaterialsOreAlum.BauxiteSlurry.getFluid(32000),
-            GT_ModHandler.getSteam(2000),
-            MaterialsOreAlum.HeatedBauxiteSlurry.getFluid(32000),
-            160,
-            400);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(1))
+            .fluidInputs(MaterialsOreAlum.BauxiteSlurry.getFluid(32000), GT_ModHandler.getSteam(2000))
+            .fluidOutputs(MaterialsOreAlum.HeatedBauxiteSlurry.getFluid(32000))
+            .duration(8 * SECONDS)
+            .eut(400)
+            .addTo(sCrackingRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(Materials.Aluminiumhydroxide.getDust(1))

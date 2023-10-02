@@ -4,6 +4,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH_ACTIVE;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -77,6 +79,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     private boolean autoPullItemList = false;
     private int minAutoPullStackSize = 1;
     private static final int CONFIG_WINDOW_ID = 10;
+    private boolean additionalConnection = false;
 
     public GT_MetaTileEntity_Hatch_InputBus_ME(int aID, String aName, String aNameRegional) {
         super(
@@ -90,6 +93,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                 "Auto-Pull from ME mode will automatically stock the first 16 items in the ME system, updated every 5 seconds.",
                 "Toggle by right-clicking with screwdriver, or use the GUI.",
                 "Use the GUI to limit the minimum stack size for Auto-Pulling.",
+                "Change ME connection behavior by right-clicking with wire cutter",
                 "Configuration data can be copy+pasted using a data stick." });
         disableSort = true;
     }
@@ -134,6 +138,24 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         return isOutputFacing(forgeDirection) ? AECableType.SMART : AECableType.NONE;
     }
 
+    public void setAdditionalConnectionOption() {
+        if (additionalConnection) {
+            gridProxy.setValidSides(EnumSet.complementOf(EnumSet.of(ForgeDirection.UNKNOWN)));
+        } else {
+            gridProxy.setValidSides(EnumSet.of(getBaseMetaTileEntity().getFrontFacing()));
+        }
+    }
+
+    @Override
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ) {
+        additionalConnection = !additionalConnection;
+        setAdditionalConnectionOption();
+        aPlayer.addChatComponentMessage(
+            new ChatComponentTranslation("GT5U.hatch.additionalConnection." + additionalConnection));
+        return true;
+    }
+
     @Override
     public AENetworkProxy getProxy() {
         if (gridProxy == null) {
@@ -144,6 +166,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                     ItemList.Hatch_Output_Bus_ME.get(1),
                     true);
                 gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
+                setAdditionalConnectionOption();
                 if (getBaseMetaTileEntity().getWorld() != null) gridProxy.setOwner(
                     getBaseMetaTileEntity().getWorld()
                         .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
@@ -173,6 +196,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         aNBT.setIntArray("sizes", sizes);
         aNBT.setBoolean("autoStock", autoPullItemList);
         aNBT.setInteger("minAutoPullStackSize", minAutoPullStackSize);
+        aNBT.setBoolean("additionalConnection", additionalConnection);
         getProxy().writeToNBT(aNBT);
     }
 
@@ -205,6 +229,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         }
         autoPullItemList = aNBT.getBoolean("autoStock");
         minAutoPullStackSize = aNBT.getInteger("minAutoPullStackSize");
+        additionalConnection = aNBT.getBoolean("additionalConnection");
         getProxy().readFromNBT(aNBT);
     }
 
@@ -261,6 +286,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         if (GT_Utility.isStackInvalid(circuit)) circuit = null;
         setAutoPullItemList(nbt.getBoolean("autoPull"));
         minAutoPullStackSize = nbt.getInteger("minStackSize");
+        additionalConnection = nbt.getBoolean("additionalConnection");
         if (!autoPullItemList) {
             NBTTagList stockingItems = nbt.getTagList("itemsToStock", 10);
             for (int i = 0; i < stockingItems.tagCount(); i++) {
@@ -268,6 +294,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
             }
         }
         setInventorySlotContents(getCircuitSlot(), circuit);
+        setAdditionalConnectionOption();
         aPlayer.addChatMessage(new ChatComponentText("Loaded Config From Data Stick"));
         return true;
     }
@@ -283,6 +310,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         tag.setString("type", "stockingBus");
         tag.setBoolean("autoPull", autoPullItemList);
         tag.setInteger("minStackSize", minAutoPullStackSize);
+        tag.setBoolean("additionalConnection", additionalConnection);
         tag.setTag("circuit", GT_Utility.saveItem(getStackInSlot(getCircuitSlot())));
 
         NBTTagList stockingItems = new NBTTagList();
