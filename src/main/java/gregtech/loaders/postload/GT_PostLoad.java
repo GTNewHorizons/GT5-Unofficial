@@ -5,6 +5,7 @@ import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GalacticraftMars;
 import static gregtech.api.enums.Mods.GalaxySpace;
+import static gregtech.api.enums.Mods.IguanaTweaksTinkerConstruct;
 import static gregtech.api.enums.Mods.Thaumcraft;
 
 import java.lang.reflect.InvocationTargetException;
@@ -137,28 +138,52 @@ public class GT_PostLoad {
                     4,
                     1,
                     0);
-            } else {
-                GT_Recipe.GT_Recipe_Map.sFluidCannerRecipes.addRecipe(
-                    true,
-                    new ItemStack[] { tData.emptyContainer },
-                    new ItemStack[] { tData.filledContainer },
-                    null,
-                    new FluidStack[] { tData.fluid },
-                    null,
-                    tData.fluid.amount / 62,
-                    1,
-                    0);
-                GT_Recipe.GT_Recipe_Map.sFluidCannerRecipes.addRecipe(
-                    true,
-                    new ItemStack[] { tData.filledContainer },
-                    new ItemStack[] { GT_Utility.getContainerItem(tData.filledContainer, true) },
-                    null,
-                    null,
-                    new FluidStack[] { tData.fluid },
-                    tData.fluid.amount / 62,
-                    1,
-                    0);
-            }
+            } else if (tData.filledContainer
+                == GT_ModHandler.getModItem(IguanaTweaksTinkerConstruct.ID, "clayBucketFired", 0L, 0)) {
+                    GT_Recipe.GT_Recipe_Map.sFluidCannerRecipes.addRecipe(
+                        true,
+                        new ItemStack[] {
+                            GT_ModHandler.getModItem(IguanaTweaksTinkerConstruct.ID, "clayBucketFired", 1L, 0) },
+                        new ItemStack[] { tData.filledContainer },
+                        null,
+                        new FluidStack[] { tData.fluid },
+                        null,
+                        tData.fluid.amount / 62,
+                        1,
+                        0);
+                    GT_Recipe.GT_Recipe_Map.sFluidCannerRecipes.addRecipe(
+                        true,
+                        new ItemStack[] { tData.filledContainer },
+                        new ItemStack[] {
+                            GT_ModHandler.getModItem(IguanaTweaksTinkerConstruct.ID, "clayBucketFired", 1L, 0) },
+                        null,
+                        null,
+                        new FluidStack[] { tData.fluid },
+                        tData.fluid.amount / 62,
+                        1,
+                        0);
+                } else {
+                    GT_Recipe.GT_Recipe_Map.sFluidCannerRecipes.addRecipe(
+                        true,
+                        new ItemStack[] { tData.emptyContainer },
+                        new ItemStack[] { tData.filledContainer },
+                        null,
+                        new FluidStack[] { tData.fluid },
+                        null,
+                        tData.fluid.amount / 62,
+                        1,
+                        0);
+                    GT_Recipe.GT_Recipe_Map.sFluidCannerRecipes.addRecipe(
+                        true,
+                        new ItemStack[] { tData.filledContainer },
+                        new ItemStack[] { GT_Utility.getContainerItem(tData.filledContainer, true) },
+                        null,
+                        null,
+                        new FluidStack[] { tData.fluid },
+                        tData.fluid.amount / 62,
+                        1,
+                        0);
+                }
         }
     }
 
