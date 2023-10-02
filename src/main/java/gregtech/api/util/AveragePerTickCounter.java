@@ -21,11 +21,11 @@ public class AveragePerTickCounter {
         values = new ArrayDeque<>(period);
     }
 
-    public void AddValue(long value) {
+    public void addValue(long value) {
 
         if (value == 0) return;
 
-        final int currTick = GetWorldTimeInTicks();
+        final int currTick = getWorldTimeInTicks();
 
         if (values.isEmpty()) {
             values.addLast(new Measurement(currTick, value));
@@ -36,6 +36,8 @@ public class AveragePerTickCounter {
         Measurement lastMeasurement = values.peekLast();
         final int lastMeasurementTick = lastMeasurement.TimestampInWorldTicks;
 
+        /// sums up values added in the same tick
+        /// for example a cable had an amp running through it multiple times in the same tick
         if (currTick == lastMeasurementTick) {
             lastMeasurement.Value = lastMeasurement.Value + value;
             isCachedAverageValid = false;
@@ -43,7 +45,7 @@ public class AveragePerTickCounter {
         }
 
         if (currTick > lastMeasurementTick) {
-            TrimIrrelevantData(currTick);
+            trimIrrelevantData(currTick);
 
             values.addLast(new Measurement(currTick, value));
             isCachedAverageValid = false;
@@ -51,11 +53,11 @@ public class AveragePerTickCounter {
         }
     }
 
-    public double GetAverage() {
+    public double getAverage() {
 
         if (values.isEmpty()) return 0;
 
-        final int currTick = GetWorldTimeInTicks();
+        final int currTick = getWorldTimeInTicks();
 
         Measurement lastMeasurement = values.peekLast();
         final int lastMeasurementTick = lastMeasurement.TimestampInWorldTicks;
@@ -63,19 +65,19 @@ public class AveragePerTickCounter {
         if (currTick < lastMeasurementTick) return 0;
 
         if (currTick > lastMeasurementTick) {
-            TrimIrrelevantData(currTick);
+            trimIrrelevantData(currTick);
         }
 
         if (isCachedAverageValid) return cachedAverage;
 
-        return CalculateAverage();
+        return calculateAverage();
     }
 
-    public long GetLast() {
+    public long getLast() {
 
         if (values.isEmpty()) return 0;
 
-        final int currTick = GetWorldTimeInTicks();
+        final int currTick = getWorldTimeInTicks();
 
         Measurement lastMeasurement = values.peekLast();
         final int lastMeasurementTick = lastMeasurement.TimestampInWorldTicks;
@@ -85,7 +87,7 @@ public class AveragePerTickCounter {
         return 0;
     }
 
-    private double CalculateAverage() {
+    private double calculateAverage() {
 
         isCachedAverageValid = true;
         long sum = 0;
@@ -97,7 +99,7 @@ public class AveragePerTickCounter {
         return sum / (double) period;
     }
 
-    private void TrimIrrelevantData(int currWorldTimeInTicks) {
+    private void trimIrrelevantData(int currWorldTimeInTicks) {
 
         if (values.isEmpty()) return;
 
@@ -113,7 +115,7 @@ public class AveragePerTickCounter {
         }
     }
 
-    private int GetWorldTimeInTicks() {
+    private int getWorldTimeInTicks() {
         return MinecraftServer.getServer()
             .getTickCounter();
     }

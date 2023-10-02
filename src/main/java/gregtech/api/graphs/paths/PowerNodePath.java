@@ -33,7 +33,7 @@ public class PowerNodePath extends NodePath {
 
     public void applyVoltage(long aVoltage, boolean aCountUp) {
 
-        avgVoltageCounter.AddValue(Math.max(aVoltage - mLoss, 0));
+        avgVoltageCounter.addValue(Math.max(aVoltage - mLoss, 0));
 
         int tNewTime = MinecraftServer.getServer()
             .getTickCounter();
@@ -69,7 +69,7 @@ public class PowerNodePath extends NodePath {
 
     public void addAmps(long aAmps) {
 
-        avgAmperageCounter.AddValue(aAmps);
+        avgAmperageCounter.addValue(aAmps);
 
         this.mAmps += aAmps;
         if (this.mAmps > mMaxAmps * 40) {
@@ -122,19 +122,19 @@ public class PowerNodePath extends NodePath {
     }
 
     public long getAmperage() {
-        return avgAmperageCounter.GetLast();
+        return avgAmperageCounter.getLast();
     }
 
     public double getAvgAmperage() {
-        return avgAmperageCounter.GetAverage();
+        return avgAmperageCounter.getAverage();
     }
 
     public long getVoltage() {
-        return avgVoltageCounter.GetLast();
+        return avgVoltageCounter.getLast();
     }
 
     public double getAvgVoltage() {
-        return avgVoltageCounter.GetAverage();
+        return avgVoltageCounter.getAverage();
     }
 
     @Override
