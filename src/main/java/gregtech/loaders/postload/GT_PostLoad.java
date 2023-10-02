@@ -133,38 +133,50 @@ public class GT_PostLoad {
                     .duration(4 * TICKS)
                     .eut(1)
                     .addTo(sFluidCannerRecipes);
-            } else if (tData.filledContainer
-                == GT_ModHandler.getModItem(IguanaTweaksTinkerConstruct.ID, "clayBucketFired", 0L, 0)) {
-                    GT_Values.RA.stdBuilder()
-                        .itemInputs(GT_ModHandler.getModItem(IguanaTweaksTinkerConstruct.ID, "clayBucketFired", 1L, 0))
-                        .itemOutputs(tData.filledContainer)
-                        .fluidInputs(tData.fluid)
-                        .duration((tData.fluid.amount / 62) * TICKS)
-                        .eut(1)
-                        .addTo(sFluidCannerRecipes);
-                    GT_Values.RA.stdBuilder()
-                        .itemInputs(tData.filledContainer)
-                        .itemOutputs(GT_ModHandler.getModItem(IguanaTweaksTinkerConstruct.ID, "clayBucketFired", 1L, 0))
-                        .fluidOutputs(tData.fluid)
-                        .duration((tData.fluid.amount / 62) * TICKS)
-                        .eut(1)
-                        .addTo(sFluidCannerRecipes);
-                } else {
-                    GT_Values.RA.stdBuilder()
-                        .itemInputs(tData.emptyContainer)
-                        .itemOutputs(tData.filledContainer)
-                        .fluidInputs(tData.fluid)
-                        .duration((tData.fluid.amount / 62) * TICKS)
-                        .eut(1)
-                        .addTo(sFluidCannerRecipes);
-                    GT_Values.RA.stdBuilder()
-                        .itemInputs(tData.filledContainer)
-                        .itemOutputs(GT_Utility.getContainerItem(tData.filledContainer, true))
-                        .fluidOutputs(tData.fluid)
-                        .duration((tData.fluid.amount / 62) * TICKS)
-                        .eut(1)
-                        .addTo(sFluidCannerRecipes);
-                }
+            } else if (tData.emptyContainer.isItemEqual(
+                Objects.requireNonNull(
+                    GT_ModHandler.getModItem(IguanaTweaksTinkerConstruct.ID, "clayBucketFired", 1L, 0)))) {
+                        GT_Values.RA.stdBuilder()
+                            .itemInputs(
+                                GT_ModHandler.getModItem(IguanaTweaksTinkerConstruct.ID, "clayBucketFired", 1L, 0))
+                            .itemOutputs(tData.filledContainer)
+                            .fluidInputs(tData.fluid)
+                            .duration((tData.fluid.amount / 62) * TICKS)
+                            .eut(1)
+                            .addTo(sFluidCannerRecipes);
+                        GT_Values.RA.stdBuilder()
+                            .itemInputs(tData.filledContainer)
+                            .itemOutputs(
+                                GT_ModHandler.getModItem(IguanaTweaksTinkerConstruct.ID, "clayBucketFired", 1L, 0))
+                            .fluidOutputs(tData.fluid)
+                            .duration((tData.fluid.amount / 62) * TICKS)
+                            .eut(1)
+                            .addTo(sFluidCannerRecipes);
+                    } else {
+                        GT_Values.RA.stdBuilder()
+                            .itemInputs(tData.emptyContainer)
+                            .itemOutputs(tData.filledContainer)
+                            .fluidInputs(tData.fluid)
+                            .duration((tData.fluid.amount / 62) * TICKS)
+                            .eut(1)
+                            .addTo(sFluidCannerRecipes);
+                        if (GT_Utility.getContainerItem(tData.filledContainer, true) == null) {
+                            GT_Values.RA.stdBuilder()
+                                .itemInputs(tData.filledContainer)
+                                .fluidOutputs(tData.fluid)
+                                .duration((tData.fluid.amount / 62) * TICKS)
+                                .eut(1)
+                                .addTo(sFluidCannerRecipes);
+                        } else {
+                            GT_Values.RA.stdBuilder()
+                                .itemInputs(tData.filledContainer)
+                                .itemOutputs(GT_Utility.getContainerItem(tData.filledContainer, true))
+                                .fluidOutputs(tData.fluid)
+                                .duration((tData.fluid.amount / 62) * TICKS)
+                                .eut(1)
+                                .addTo(sFluidCannerRecipes);
+                        }
+                    }
         }
     }
 
