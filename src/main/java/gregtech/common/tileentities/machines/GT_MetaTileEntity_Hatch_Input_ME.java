@@ -71,13 +71,14 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_Input
     implements IPowerChannelState, IAddGregtechLogo, IAddUIWidgets {
 
-    public static final int SLOT_COUNT = 16;
-    public static final int ALL_SLOT_COUNT = SLOT_COUNT * 2;
-    protected final FluidStack[] storedFluid;
-    protected final FluidStackTank[] fluidTanks;
-    protected final FluidStack[] shadowStoredFluid;
+    private static final int SLOT_COUNT = 16;
+    private static final int ALL_SLOT_COUNT = SLOT_COUNT * 2;
 
-    private final int[] savedStackSizes;
+    protected final FluidStack[] storedFluid = new FluidStack[ALL_SLOT_COUNT];
+    protected final FluidStackTank[] fluidTanks = new FluidStackTank[ALL_SLOT_COUNT];
+    protected final FluidStack[] shadowStoredFluid = new FluidStack[SLOT_COUNT];
+
+    private final int[] savedStackSizes = new int[SLOT_COUNT];
 
     private boolean additionalConnection = false;
 
@@ -107,16 +108,10 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                 "Toggle by right-clicking with screwdriver, or use the GUI.",
                 "Use the GUI to limit the minimum stack size for Auto-Pulling.",
                 "Configuration data can be copy+pasted using a data stick." });
-        storedFluid = new FluidStack[ALL_SLOT_COUNT];
-        fluidTanks = new FluidStackTank[ALL_SLOT_COUNT];
-        shadowStoredFluid = new FluidStack[SLOT_COUNT];
-        savedStackSizes = new int[SLOT_COUNT];
     }
 
     public GT_MetaTileEntity_Hatch_Input_ME(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, ALL_SLOT_COUNT, aTier, aDescription, aTextures);
-        storedFluid = new FluidStack[ALL_SLOT_COUNT];
-        fluidTanks = new FluidStackTank[ALL_SLOT_COUNT];
         for (int i = 0; i < ALL_SLOT_COUNT; i++) {
             final int index = i;
             fluidTanks[i] = new FluidStackTank(() -> storedFluid[index], fluid -> {
@@ -126,8 +121,6 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                 storedFluid[index] = fluid;
             }, i >= SLOT_COUNT ? Integer.MAX_VALUE : 1);
         }
-        shadowStoredFluid = new FluidStack[SLOT_COUNT];
-        savedStackSizes = new int[SLOT_COUNT];
     }
 
     @Override
@@ -158,6 +151,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
         if (proxy == null || !proxy.isActive()) {
             return;
         }
+
         try {
             IMEMonitor<IAEFluidStack> sg = proxy.getStorage()
                 .getFluidInventory();
@@ -173,10 +167,10 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                     index++;
                 }
             }
+
             for (int i = index; i < SLOT_COUNT; i++) {
                 storedFluid[i] = null;
             }
-
         } catch (final GridAccessException ignored) {}
     }
 
@@ -189,6 +183,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
         if (!processingRecipe) {
             return EMPTY_FLUID_STACK;
         }
+
         AENetworkProxy proxy = getProxy();
         if (proxy == null || !proxy.isActive()) {
             return EMPTY_FLUID_STACK;
@@ -201,11 +196,12 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                 shadowStoredFluid[i] = null;
                 continue;
             }
+
             shadowStoredFluid[i] = storedFluid[i + SLOT_COUNT];
             savedStackSizes[i] = storedFluid[i + SLOT_COUNT].amount;
         }
-        return shadowStoredFluid;
 
+        return shadowStoredFluid;
     }
 
     @Override
@@ -219,6 +215,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
         if (proxy == null || !proxy.isActive()) {
             return;
         }
+
         IMEMonitor<IAEFluidStack> sg;
         try {
             sg = proxy.getStorage()
@@ -226,15 +223,14 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
         } catch (GridAccessException e) {
             return;
         }
+
         for (int i = 0; i < SLOT_COUNT; ++i) {
             FluidStack fluidStack = storedFluid[i + SLOT_COUNT];
-            if (fluidStack == null) {
-                continue;
-            }
+            if (fluidStack == null) continue;
+
             int consume = savedStackSizes[i] - shadowStoredFluid[i].amount;
-            if (consume <= 0) {
-                continue;
-            }
+            if (consume <= 0) continue;
+
             IAEFluidStack request = AEFluidStack.create(storedFluid[i]);
             request.setStackSize(consume);
             sg.extractItems(request, Actionable.MODULATE, getRequestSource());
@@ -243,10 +239,12 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                     .extractAEPower(consume, Actionable.MODULATE, PowerMultiplier.CONFIG);
             } catch (GridAccessException ignored) {}
         }
+
         for (int i = 0; i < SLOT_COUNT; i++) {
             shadowStoredFluid[i] = null;
             savedStackSizes[i] = 0;
         }
+
         processingRecipe = false;
     }
 
@@ -558,15 +556,78 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        final Pos2d[] saSlotPos = new Pos2d[] { new Pos2d(97 + 18 * 0, 9 + 18 * 0), new Pos2d(97 + 18 * 1, 9 + 18 * 0),
-            new Pos2d(97 + 18 * 2, 9 + 18 * 0), new Pos2d(97 + 18 * 3, 9 + 18 * 0), new Pos2d(97 + 18 * 0, 9 + 18 * 1),
-            new Pos2d(97 + 18 * 1, 9 + 18 * 1), new Pos2d(97 + 18 * 2, 9 + 18 * 1), new Pos2d(97 + 18 * 3, 9 + 18 * 1),
-            new Pos2d(97 + 18 * 0, 9 + 18 * 2), new Pos2d(97 + 18 * 1, 9 + 18 * 2), new Pos2d(97 + 18 * 2, 9 + 18 * 2),
-            new Pos2d(97 + 18 * 3, 9 + 18 * 2), new Pos2d(97 + 18 * 0, 9 + 18 * 3), new Pos2d(97 + 18 * 1, 9 + 18 * 3),
-            new Pos2d(97 + 18 * 2, 9 + 18 * 3), new Pos2d(97 + 18 * 3, 9 + 18 * 3), };
+        buildContext.addSyncedWindow(CONFIG_WINDOW_ID, this::createStackSizeConfigurationWindow);
+
         for (int i = 0; i < SLOT_COUNT; i++) {
-            FluidStackTank fluidStackTank = fluidTanks[i + SLOT_COUNT];
-            FluidSlotWidget fluidSlotWidget = new FluidSlotWidget(fluidStackTank) {
+            int finalI = i;
+            FluidSlotWidget fluidSlotWidget = new FluidSlotWidget(fluidTanks[i]) {
+
+                private static final int PACKET_EMPTY_CLICK = 6;
+
+                @Override
+                public ClickResult onClick(int buttonId, boolean doubleClick) {
+                    ItemStack cursorStack = getContext().getCursor()
+                        .getItemStack();
+                    if (cursorStack == null) {
+                        ClickData clickData = ClickData.create(buttonId, doubleClick);
+                        syncToServer(PACKET_EMPTY_CLICK, clickData::writeToPacket);
+                        return ClickResult.ACCEPT;
+                    }
+
+                    return super.onClick(buttonId, doubleClick);
+                }
+
+                @Override
+                public void readOnServer(int id, PacketBuffer buf) throws IOException {
+                    super.readOnServer(id, buf);
+                    switch (id) {
+                        case PACKET_EMPTY_CLICK -> clearTag(ClickData.readPacket(buf));
+                    }
+
+                    markForUpdate();
+                }
+
+                private void clearTag(ClickData clickData) {
+                    if (clickData.mouseButton != 0) return;
+
+                    storedFluid[finalI] = null;
+                    updateInformationSlot(finalI, null);
+                    detectAndSendChanges(false);
+                }
+
+                @Override
+                protected void onClickServer(ClickData clickData, ItemStack clientVerifyToken) {
+                    EntityPlayer player = getContext().getPlayer();
+                    ItemStack heldItem = player.inventory.getItemStack();
+                    if (clickData.mouseButton != 0 || autoPullFluidList) return;
+
+                    if (heldItem == null) {
+                        storedFluid[finalI] = null;
+                        updateInformationSlot(finalI, null);
+                        detectAndSendChanges(false);
+                        return;
+                    }
+
+                    FluidStack heldFluid = getFluidForPhantomItem(heldItem);
+                    if (heldFluid == null || containsSuchStack(heldFluid)) return;
+
+                    FluidStack setFileStack = GT_Utility.copyAmount(1, heldFluid);
+                    storedFluid[finalI] = setFileStack;
+                    updateInformationSlot(finalI, setFileStack);
+                    detectAndSendChanges(false);
+                }
+
+                @Override
+                protected void tryScrollPhantom(int direction) {}
+            };
+
+            fluidSlotWidget.setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_ARROW_ME);
+            fluidSlotWidget.setPos(new Pos2d(7 + (i % 4) * 18, 9 + (i / 4) * 18));
+            builder.widget(fluidSlotWidget);
+        }
+
+        for (int i = 0; i < SLOT_COUNT; i++) {
+            FluidSlotWidget fluidSlotWidget = new FluidSlotWidget(fluidTanks[i + SLOT_COUNT]) {
 
                 @Override
                 protected void onClickServer(ClickData clickData, ItemStack clientVerifyToken) {}
@@ -578,96 +639,11 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                 public boolean onMouseScroll(int direction) {
                     return false;
                 }
-            };// FluidSlotWidget.phantom(fluidStackTank, true);
+            }; // FluidSlotWidget.phantom(fluidStackTank, true);
             fluidSlotWidget.setBackground(GT_UITextures.SLOT_DARK_GRAY);
-            fluidSlotWidget.setPos(saSlotPos[i]);
+            fluidSlotWidget.setPos(new Pos2d(97 + (i % 4) * 18, 9 + (i / 4) * 18));
             builder.widget(fluidSlotWidget);
         }
-
-        FluidSlotWidget[] storedFluidSlotWidget = new FluidSlotWidget[16];
-        final Pos2d[] storedPos = new Pos2d[] { new Pos2d(7 + 18 * 0, 9 + 18 * 0), new Pos2d(7 + 18 * 1, 9 + 18 * 0),
-            new Pos2d(7 + 18 * 2, 9 + 18 * 0), new Pos2d(7 + 18 * 3, 9 + 18 * 0), new Pos2d(7 + 18 * 0, 9 + 18 * 1),
-            new Pos2d(7 + 18 * 1, 9 + 18 * 1), new Pos2d(7 + 18 * 2, 9 + 18 * 1), new Pos2d(7 + 18 * 3, 9 + 18 * 1),
-            new Pos2d(7 + 18 * 0, 9 + 18 * 2), new Pos2d(7 + 18 * 1, 9 + 18 * 2), new Pos2d(7 + 18 * 2, 9 + 18 * 2),
-            new Pos2d(7 + 18 * 3, 9 + 18 * 2), new Pos2d(7 + 18 * 0, 9 + 18 * 3), new Pos2d(7 + 18 * 1, 9 + 18 * 3),
-            new Pos2d(7 + 18 * 2, 9 + 18 * 3), new Pos2d(7 + 18 * 3, 9 + 18 * 3), };
-        for (int i = 0; i < SLOT_COUNT; i++) {
-            FluidStackTank fluidStackTank = fluidTanks[i];
-            int finalI = i;
-            FluidSlotWidget fluidSlotWidget = new FluidSlotWidget(fluidStackTank) {
-
-                static final int PACKET_EMPTY_CLICK = 6;
-
-                @Override
-                public ClickResult onClick(int buttonId, boolean doubleClick) {
-                    ItemStack cursorStack = getContext().getCursor()
-                        .getItemStack();
-                    if (cursorStack == null) {
-                        ClickData clickData = ClickData.create(buttonId, doubleClick);
-                        syncToServer(PACKET_EMPTY_CLICK, clickData::writeToPacket);
-                        return ClickResult.ACCEPT;
-                    }
-                    return super.onClick(buttonId, doubleClick);
-                }
-
-                @Override
-                public void readOnServer(int id, PacketBuffer buf) throws IOException {
-                    super.readOnServer(id, buf);
-                    switch (id) {
-                        case PACKET_EMPTY_CLICK:
-                            clearTag(ClickData.readPacket(buf));
-                            break;
-                    }
-                    markForUpdate();
-                }
-
-                protected void clearTag(ClickData clickData) {
-                    if (clickData.mouseButton != 0) {
-                        return;
-                    }
-                    storedFluid[finalI] = null;
-                    updateInformationSlot(finalI, null);
-                    detectAndSendChanges(false);
-                }
-
-                @Override
-                protected void onClickServer(ClickData clickData, ItemStack clientVerifyToken) {
-                    EntityPlayer player = getContext().getPlayer();
-                    ItemStack heldItem = player.inventory.getItemStack();
-                    if (clickData.mouseButton != 0) {
-                        return;
-                    }
-                    if (autoPullFluidList) {
-                        return;
-                    }
-                    if (heldItem == null) {
-                        storedFluid[finalI] = null;
-                        updateInformationSlot(finalI, null);
-                        detectAndSendChanges(false);
-                        return;
-                    }
-                    FluidStack heldFluid = getFluidForPhantomItem(heldItem);
-                    if (heldFluid == null) {
-                        return;
-                    }
-                    if (containsSuchStack(heldFluid)) {
-                        return;
-                    }
-                    FluidStack setFileStack = GT_Utility.copyAmount(1, heldFluid);
-                    storedFluid[finalI] = setFileStack;
-                    updateInformationSlot(finalI, setFileStack);
-                    detectAndSendChanges(false);
-                }
-
-                @Override
-                protected void tryScrollPhantom(int direction) {}
-            };
-            fluidSlotWidget.setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_ARROW_ME);
-            fluidSlotWidget.setPos(storedPos[i]);
-            builder.widget(fluidSlotWidget);
-        }
-
-        buildContext.addSyncedWindow(CONFIG_WINDOW_ID, this::createStackSizeConfigurationWindow);
 
         builder.widget(
             new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_DOUBLE)
@@ -692,7 +668,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                 .addTooltips(
                     ImmutableList.of(
                         "Click to toggle automatic fluid pulling from ME.",
-                        "Right-Click to edit minimum stack size for item pulling."))
+                        "Right-Click to edit minimum amount for fluid pulling."))
                 .setSize(16, 16)
                 .setPos(80, 10))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> autoPullFluidList, this::setAutoPullFluidList));
