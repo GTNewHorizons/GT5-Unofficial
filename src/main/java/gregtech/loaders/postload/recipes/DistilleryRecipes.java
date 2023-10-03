@@ -602,6 +602,13 @@ public class DistilleryRecipes implements Runnable {
             .eut(TierEU.RECIPE_MV)
             .addTo(sDistillationRecipes);
 
+        GT_Values.RA.stdBuilder()
+            .fluidInputs(new FluidStack(ItemList.sOilExtraHeavy, 1000))
+            .fluidOutputs(Materials.OilHeavy.getFluid(1500))
+            .duration(16 * TICKS)
+            .eut(2400)
+            .addTo(sDistillationRecipes);
+
         if (!GregTech_API.mIC2Classic) {
 
             GT_Values.RA.stdBuilder()

@@ -8,7 +8,13 @@ import static mcp.mobius.waila.api.SpecialChars.GREEN;
 import static mcp.mobius.waila.api.SpecialChars.RED;
 import static mcp.mobius.waila.api.SpecialChars.RESET;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
 import javax.annotation.Nonnull;
@@ -83,7 +89,11 @@ import gregtech.client.GT_SoundLoop;
 import gregtech.common.GT_Pollution;
 import gregtech.common.gui.modularui.widget.CheckRecipeResultSyncer;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
-import gregtech.common.tileentities.machines.*;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_InputBus_ME;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
+import gregtech.common.tileentities.machines.IDualInputHatch;
+import gregtech.common.tileentities.machines.IDualInputInventory;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;

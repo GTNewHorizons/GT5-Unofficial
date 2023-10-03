@@ -438,6 +438,8 @@ GT5U.hatch.infiniteCache.true=ME Output bus will infinitely cache item, until yo
 GT5U.hatch.infiniteCache.false=ME Output bus will stop accepting items when offline for more than 2 seconds
 GT5U.hatch.infiniteCacheFluid.true=ME Output hatch will infinitely cache fluid, until you connect it to ME
 GT5U.hatch.infiniteCacheFluid.false=ME Output hatch will stop accepting fluid when offline for more than 2 seconds
+GT5U.hatch.additionalConnection.true=ME channels connect to any side
+GT5U.hatch.additionalConnection.false=ME channels connect to front side only
 
 GT5U.multiblock.pollution=Pollution reduced to
 GT5U.multiblock.energy=Stored Energy
