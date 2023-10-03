@@ -7,7 +7,6 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
-import gregtech.common.covers.CoverInfo;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -37,6 +36,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.net.GT_Packet_TileEntityCoverGUI;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.common.covers.CoverInfo;
 
 /**
  * For Covers with a special behavior.
@@ -454,7 +454,8 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
             final CoverInfo coverInfo = uiBuildContext.getTile()
                 .getCoverInfoAtSide(uiBuildContext.getCoverSide());
             if (coverInfo.getMinimumTickRate() > 0) {
-                builder.widget(new GT_CoverTickRateButton(coverInfo, builder).setPos(getGUIWidth() - 32, getGUIHeight() - 32));
+                builder.widget(
+                    new GT_CoverTickRateButton(coverInfo, builder).setPos(getGUIWidth() - 32, getGUIHeight() - 32));
             }
 
             return builder.build();
