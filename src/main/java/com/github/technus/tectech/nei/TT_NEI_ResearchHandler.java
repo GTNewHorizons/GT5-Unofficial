@@ -3,7 +3,7 @@ package com.github.technus.tectech.nei;
 import static com.github.technus.tectech.recipe.TT_recipeAdder.nullItem;
 import static gregtech.api.enums.ItemList.Display_Fluid;
 
-import java.awt.*;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;

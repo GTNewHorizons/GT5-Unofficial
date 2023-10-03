@@ -1,6 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.single;
 
-import static com.github.technus.tectech.thing.metaTileEntity.Textures.*;
+import static com.github.technus.tectech.thing.metaTileEntity.Textures.MACHINE_CASINGS_TT;
+import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_OUT_LASER_TT;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.function.Consumer;

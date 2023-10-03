@@ -16,7 +16,13 @@ import com.github.technus.tectech.thing.CustomItemList;
 import com.rwtema.extrautils.ExtraUtils;
 
 import fox.spiteful.avaritia.compat.ticon.Tonkers;
-import gregtech.api.enums.*;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsBotania;
+import gregtech.api.enums.MaterialsKevlar;
+import gregtech.api.enums.MaterialsUEVplus;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.material.ALLOY;

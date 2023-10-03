@@ -1,10 +1,6 @@
 package com.github.technus.tectech.loader;
 
-import static com.github.technus.tectech.TecTech.LOGGER;
-import static com.github.technus.tectech.TecTech.configTecTech;
-import static com.github.technus.tectech.TecTech.creativeTabTecTech;
-import static com.github.technus.tectech.TecTech.instance;
-import static com.github.technus.tectech.TecTech.proxy;
+import static com.github.technus.tectech.TecTech.*;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.TwilightForest;

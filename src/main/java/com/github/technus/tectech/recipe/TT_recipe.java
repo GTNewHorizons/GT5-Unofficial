@@ -4,10 +4,16 @@ import static com.github.technus.tectech.util.CommonValues.EOH_TIER_FANCY_NAMES;
 import static com.google.common.math.LongMath.pow;
 import static gregtech.api.util.GT_Utility.formatNumbers;
 import static java.lang.Math.min;
-import static net.minecraft.util.EnumChatFormatting.*;
+import static net.minecraft.util.EnumChatFormatting.BOLD;
+import static net.minecraft.util.EnumChatFormatting.DARK_RED;
+import static net.minecraft.util.EnumChatFormatting.RESET;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.function.Supplier;
 
 import net.minecraft.item.ItemStack;
