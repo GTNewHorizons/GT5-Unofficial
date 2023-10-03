@@ -26,10 +26,10 @@ import gregtech.api.util.ISerializableObject;
 
 public final class CoverInfo {
 
-    private static final String NBT_SIDE = "s", NBT_ID = "id", NBT_DATA = "d", NBT_TICK_RATE_MULTIPLIER = "trm";
+    private static final String NBT_SIDE = "s", NBT_ID = "id", NBT_DATA = "d", NBT_TICK_RATE_ADDITION = "tra";
 
-    // Five minutes
-    private static final int MAX_TICK_RATE = 6000;
+    // One minute
+    private static final int MAX_ADDITION = 1200;
 
     public static final CoverInfo EMPTY_INFO = new CoverInfo(ForgeDirection.UNKNOWN, null);
     private final ForgeDirection coverSide;
@@ -39,7 +39,7 @@ public final class CoverInfo {
     private final WeakReference<ICoverable> coveredTile;
     private boolean needsUpdate = false;
 
-    private int tickRateMultiplier = 1;
+    private int tickRateAddition = 0;
 
     public CoverInfo(ForgeDirection side, ICoverable aTile) {
         coverSide = side;
@@ -61,7 +61,7 @@ public final class CoverInfo {
         coverData = aNBT.hasKey(NBT_DATA) ? coverBehavior.createDataObject(aNBT.getTag(NBT_DATA))
             : coverBehavior.createDataObject();
         coveredTile = new WeakReference<>(aTile);
-        tickRateMultiplier = aNBT.hasKey(NBT_TICK_RATE_MULTIPLIER) ? aNBT.getInteger(NBT_TICK_RATE_MULTIPLIER) : 1;
+        tickRateAddition = aNBT.hasKey(NBT_TICK_RATE_ADDITION) ? aNBT.getInteger(NBT_TICK_RATE_ADDITION) : 0;
     }
 
     public boolean isValid() {
@@ -71,7 +71,7 @@ public final class CoverInfo {
     public NBTTagCompound writeToNBT(NBTTagCompound aNBT) {
         aNBT.setByte(NBT_SIDE, (byte) coverSide.ordinal());
         aNBT.setInteger(NBT_ID, coverID);
-        aNBT.setInteger(NBT_TICK_RATE_MULTIPLIER, tickRateMultiplier);
+        aNBT.setInteger(NBT_TICK_RATE_ADDITION, tickRateAddition);
         if (coverData != null) aNBT.setTag(NBT_DATA, coverData.saveDataToNBT());
 
         return aNBT;
@@ -132,7 +132,7 @@ public final class CoverInfo {
     }
 
     public int getTickRate() {
-        return getMinimumTickRate() * tickRateMultiplier;
+        return getMinimumTickRate() + tickRateAddition;
     }
 
     public ForgeDirection getSide() {
@@ -258,9 +258,11 @@ public final class CoverInfo {
      * @param isDecreasing If true, lower one step.
      */
     public void adjustTickRateMultiplier(final boolean isDecreasing) {
-        final int stepAmount = tickRateMultiplier == 20 ? (isDecreasing ? 5 : 20) : (tickRateMultiplier <= 20 ? 5 : 20);
+        final int currentTickRate = getTickRate();
+        final int stepAmount = currentTickRate == 20 ? (isDecreasing ? 5 : 20) : (currentTickRate < 20 ? 5 : 20);
 
-        tickRateMultiplier = clamp(stepAmount * ((isDecreasing ? -1 : 1) + tickRateMultiplier / stepAmount));
+        tickRateAddition = clamp(tickRateAddition + (isDecreasing ? -1 : 1) * stepAmount);
+        tickRateAddition = clamp(tickRateAddition - (getTickRate() % stepAmount));
     }
 
     /**
@@ -281,12 +283,12 @@ public final class CoverInfo {
         return getCoverBehavior().getTickRate(coverSide, coverID, coverData, coveredTile.get());
     }
 
-    public int getTickRateMultiplier() {
-        return tickRateMultiplier;
+    public int getTickRateAddition() {
+        return tickRateAddition;
     }
 
-    public void setTickRateMultiplier(final int tickRateMultiplier) {
-        this.tickRateMultiplier = clamp(tickRateMultiplier);
+    public void setTickRateAddition(final int tickRateAddition) {
+        this.tickRateAddition = clamp(tickRateAddition);
     }
 
     public Block getFacadeBlock() {
@@ -302,16 +304,8 @@ public final class CoverInfo {
         return getCoverBehavior().getAdditionalTooltip(data);
     }
 
-    private int clamp(int input) {
-        final int lowerBound = getMinimumTickRate();
-
-        if (input < lowerBound) {
-            input = lowerBound;
-        } else if (input >= MAX_TICK_RATE) {
-            input = MAX_TICK_RATE;
-        }
-
-        return input;
+    private static int clamp(int input) {
+        return Math.min(MAX_ADDITION, Math.max(0, input));
     }
 
     public static final class ClientTickRateFormatter {
