@@ -66,7 +66,7 @@ public class Behaviour_Cover_Tool extends Behaviour_None {
             NBTBase tData = aNBT.getTag("mCoverData");
             if (tData != null) mStoredData = tBehavior.createDataObject(tData);
             else mStoredData = GregTech_API.sNoBehavior.createDataObject();
-            mTickRateAddition = aNBT.hasKey("mTickRateAddition") ? aNBT.getInteger("mTickRateAddition") : 1;
+            mTickRateAddition = aNBT.hasKey("mTickRateAddition") ? aNBT.getInteger("mTickRateAddition") : 0;
         }
     }
 
