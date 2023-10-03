@@ -1341,6 +1341,14 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                         rList.add(tFluid);
                     }
                 }
+            } else if (tHatch instanceof GT_MetaTileEntity_Hatch_Input_ME) {
+                if (isValidMetaTileEntity(tHatch)) {
+                    for (FluidStack fluidStack : ((GT_MetaTileEntity_Hatch_Input_ME) tHatch).getStoredFluids()) {
+                        if (fluidStack == null) continue;
+
+                        rList.add(fluidStack);
+                    }
+                }
             } else {
                 if (tHatch.getFillableStack() != null) {
                     // GT_Log.out.print("sf: " + tHatch.getFillableStack() + "\n");

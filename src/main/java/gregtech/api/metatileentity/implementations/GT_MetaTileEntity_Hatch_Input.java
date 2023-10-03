@@ -53,6 +53,11 @@ public class GT_MetaTileEntity_Hatch_Input extends GT_MetaTileEntity_Hatch {
         super(aID, aName, aNameRegional, aTier, aSlot, aDescription);
     }
 
+    public GT_MetaTileEntity_Hatch_Input(int aID, String aName, String aNameRegional, int aTier, int allSlotCount,
+        String[] strings) {
+        super(aID, aName, aNameRegional, aTier, allSlotCount, strings);
+    }
+
     public int getCapacityPerTank(int aTier, int aSlot) {
         return (int) (8000L * (1L << aTier) / aSlot);
     }
@@ -191,4 +196,8 @@ public class GT_MetaTileEntity_Hatch_Input extends GT_MetaTileEntity_Hatch {
     public boolean useModularUI() {
         return true;
     }
+
+    public void startRecipeProcessing() {}
+
+    public void endRecipeProcessing() {}
 }
