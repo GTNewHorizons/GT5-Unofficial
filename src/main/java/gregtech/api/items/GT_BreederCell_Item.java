@@ -68,7 +68,7 @@ public class GT_BreederCell_Item extends GT_Generic_Item implements IReactorComp
     @Override
     public void onUpdate(ItemStack stack, World world, Entity entity, int slotIndex, boolean isCurrentItem) {
         if ((entity instanceof EntityLivingBase entityLiving)) {
-            if (!GregTech_API.mIC2Classic && !GT_Utility.isWearingFullRadioHazmat(entityLiving)) {
+            if (!GT_Utility.isWearingFullRadioHazmat(entityLiving)) {
                 IC2Potion.radiation.applyTo(entityLiving, 20, 1);
             }
         }

@@ -3,6 +3,7 @@ package gregtech.api.enums;
 import static gregtech.api.enums.GT_Values.B;
 import static gregtech.api.enums.GT_Values.D2;
 import static gregtech.api.enums.GT_Values.M;
+import static gregtech.api.enums.Mods.GTPlusPlus;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1280,7 +1281,7 @@ public enum OrePrefixes {
                     plateQuadruple.mDisabledItems.add(aMaterial);
                 if (!enableUnusedQuinPlates && !(aMaterial == Materials.Paper))
                     plateQuintuple.mDisabledItems.add(aMaterial);
-                if (!(enableUnusedDensePlates || GregTech_API.mGTPlusPlus)
+                if (!(enableUnusedDensePlates || GTPlusPlus.isModLoaded())
                     && !(aMaterial == Materials.Iron || aMaterial == Materials.Copper
                         || aMaterial == Materials.Lead
                         || aMaterial == Materials.Paper

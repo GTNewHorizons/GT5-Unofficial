@@ -1,9 +1,10 @@
 package gregtech.api.util;
 
+import static gregtech.api.enums.Mods.GalacticraftCore;
+
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import gregtech.api.GregTech_API;
 import micdoodle8.mods.galacticraft.api.power.EnergySource;
 import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceAdjacent;
 import micdoodle8.mods.galacticraft.api.power.IEnergyHandlerGC;
@@ -15,7 +16,7 @@ public class GT_GC_Compat {
 
     public static long insertEnergyInto(TileEntity tTileEntity, long aVoltage, ForgeDirection tDirection) {
         // GC Compat
-        if (GregTech_API.mGalacticraft && tTileEntity instanceof IEnergyHandlerGC) {
+        if (GalacticraftCore.isModLoaded() && tTileEntity instanceof IEnergyHandlerGC) {
             if (!(tTileEntity instanceof IConnector)
                 || ((IConnector) tTileEntity).canConnect(tDirection, NetworkType.POWER)) {
                 EnergySource eSource = new EnergySourceAdjacent(tDirection);
@@ -44,7 +45,7 @@ public class GT_GC_Compat {
 
     public static boolean canConnect(TileEntity tTileEntity, ForgeDirection tDirection) {
         // GC Compat
-        return GregTech_API.mGalacticraft && tTileEntity instanceof IEnergyHandlerGC
+        return GalacticraftCore.isModLoaded() && tTileEntity instanceof IEnergyHandlerGC
             && (!(tTileEntity instanceof IConnector)
                 || ((IConnector) tTileEntity).canConnect(tDirection, NetworkType.POWER));
     }

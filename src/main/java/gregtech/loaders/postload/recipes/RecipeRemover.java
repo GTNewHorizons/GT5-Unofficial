@@ -11,7 +11,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -115,43 +114,42 @@ public class RecipeRemover implements Runnable {
             GT_ModHandler.getExtractorRecipeList(),
             null);
 
-        if (!GregTech_API.mIC2Classic) {
-            try {
-                Map<String, ILiquidHeatExchangerManager.HeatExchangeProperty> tLiqExchange = Recipes.liquidCooldownManager
-                    .getHeatExchangeProperties();
-                Iterator<Map.Entry<String, ILiquidHeatExchangerManager.HeatExchangeProperty>> tIterator = tLiqExchange
-                    .entrySet()
-                    .iterator();
-                while (tIterator.hasNext()) {
-                    Map.Entry<String, ILiquidHeatExchangerManager.HeatExchangeProperty> tEntry = tIterator.next();
-                    if (tEntry.getKey()
-                        .equals("ic2hotcoolant")) {
-                        tIterator.remove();
-                        Recipes.liquidCooldownManager.addFluid("ic2hotcoolant", "ic2coolant", 100);
-                    }
+        try {
+            Map<String, ILiquidHeatExchangerManager.HeatExchangeProperty> tLiqExchange = Recipes.liquidCooldownManager
+                .getHeatExchangeProperties();
+            Iterator<Map.Entry<String, ILiquidHeatExchangerManager.HeatExchangeProperty>> tIterator = tLiqExchange
+                .entrySet()
+                .iterator();
+            while (tIterator.hasNext()) {
+                Map.Entry<String, ILiquidHeatExchangerManager.HeatExchangeProperty> tEntry = tIterator.next();
+                if (tEntry.getKey()
+                    .equals("ic2hotcoolant")) {
+                    tIterator.remove();
+                    Recipes.liquidCooldownManager.addFluid("ic2hotcoolant", "ic2coolant", 100);
                 }
-            } catch (Throwable e) {
-                /* Do nothing */
             }
-
-            try {
-                Map<String, ILiquidHeatExchangerManager.HeatExchangeProperty> tLiqExchange = Recipes.liquidHeatupManager
-                    .getHeatExchangeProperties();
-                Iterator<Map.Entry<String, ILiquidHeatExchangerManager.HeatExchangeProperty>> tIterator = tLiqExchange
-                    .entrySet()
-                    .iterator();
-                while (tIterator.hasNext()) {
-                    Map.Entry<String, ILiquidHeatExchangerManager.HeatExchangeProperty> tEntry = tIterator.next();
-                    if (tEntry.getKey()
-                        .equals("ic2coolant")) {
-                        tIterator.remove();
-                        Recipes.liquidHeatupManager.addFluid("ic2coolant", "ic2hotcoolant", 100);
-                    }
-                }
-            } catch (Throwable e) {
-                /* Do nothing */
-            }
+        } catch (Throwable e) {
+            /* Do nothing */
         }
+
+        try {
+            Map<String, ILiquidHeatExchangerManager.HeatExchangeProperty> tLiqExchange = Recipes.liquidHeatupManager
+                .getHeatExchangeProperties();
+            Iterator<Map.Entry<String, ILiquidHeatExchangerManager.HeatExchangeProperty>> tIterator = tLiqExchange
+                .entrySet()
+                .iterator();
+            while (tIterator.hasNext()) {
+                Map.Entry<String, ILiquidHeatExchangerManager.HeatExchangeProperty> tEntry = tIterator.next();
+                if (tEntry.getKey()
+                    .equals("ic2coolant")) {
+                    tIterator.remove();
+                    Recipes.liquidHeatupManager.addFluid("ic2coolant", "ic2hotcoolant", 100);
+                }
+            }
+        } catch (Throwable e) {
+            /* Do nothing */
+        }
+
     }
 
     public void removeSmelting() {

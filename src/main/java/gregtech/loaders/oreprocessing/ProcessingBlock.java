@@ -32,15 +32,15 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
-        if (aMaterial != Materials.Clay && aMaterial != Materials.Basalt
-            && aMaterial != MaterialsBotania.Livingrock
-            && aMaterial != MaterialsBotania.Livingwood
-            && aMaterial != MaterialsBotania.Dreamwood) {
-            if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV
-                && GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L) != null) {
+
+        if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV
+            && GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L) != null) {
+
+            if (aMaterial == MaterialsBotania.Livingrock || aMaterial == MaterialsBotania.Livingwood
+                || aMaterial == MaterialsBotania.Dreamwood) {
 
                 GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                    .itemInputs(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(3))
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
                     .fluidInputs(
                         Materials.Water.getFluid(
@@ -52,7 +52,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                     .addTo(sCutterRecipes);
 
                 GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                    .itemInputs(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(3))
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
                     .fluidInputs(
                         GT_ModHandler.getDistilledWater(
@@ -64,7 +64,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                     .addTo(sCutterRecipes);
 
                 GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                    .itemInputs(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(3))
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
                     .fluidInputs(
                         Materials.Lubricant.getFluid(
@@ -74,16 +74,13 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                     .duration(((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
                     .eut(TierEU.RECIPE_LV)
                     .addTo(sCutterRecipes);
-            }
-        }
 
-        if (aMaterial == MaterialsBotania.Livingrock || aMaterial == MaterialsBotania.Livingwood
-            || aMaterial == MaterialsBotania.Dreamwood) {
-            if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV
-                && GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L) != null) {
+            }
+
+            else if (aMaterial != Materials.Clay && aMaterial != Materials.Basalt) {
 
                 GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(3))
+                    .itemInputs(GT_Utility.copyAmount(1L, aStack))
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
                     .fluidInputs(
                         Materials.Water.getFluid(
@@ -95,7 +92,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                     .addTo(sCutterRecipes);
 
                 GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(3))
+                    .itemInputs(GT_Utility.copyAmount(1L, aStack))
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
                     .fluidInputs(
                         GT_ModHandler.getDistilledWater(
@@ -107,7 +104,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                     .addTo(sCutterRecipes);
 
                 GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(3))
+                    .itemInputs(GT_Utility.copyAmount(1L, aStack))
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
                     .fluidInputs(
                         Materials.Lubricant.getFluid(
