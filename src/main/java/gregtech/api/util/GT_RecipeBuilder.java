@@ -231,14 +231,6 @@ public class GT_RecipeBuilder {
         return noOptimize();
     }
 
-    /**
-     * @deprecated You don't need to call this method, RecipeBuilder now takes empty item input array by default.
-     */
-    @Deprecated
-    public GT_RecipeBuilder noItemInputs() {
-        return this;
-    }
-
     public GT_RecipeBuilder itemOutputs(ItemStack... outputs) {
         if (DEBUG_MODE && containsNull(outputs)) handleNullRecipeComponents("itemOutputs");
         this.outputs = outputs;
@@ -262,47 +254,15 @@ public class GT_RecipeBuilder {
         return this;
     }
 
-    /**
-     * @deprecated You don't need to call this method, RecipeBuilder now takes empty item output array by default.
-     */
-    @Deprecated
-    public GT_RecipeBuilder noItemOutputs() {
-        return this;
-    }
-
     public GT_RecipeBuilder fluidInputs(FluidStack... fluidInputs) {
         if (DEBUG_MODE && containsNull(fluidInputs)) handleNullRecipeComponents("fluidInputs");
         this.fluidInputs = fix(fluidInputs);
         return this;
     }
 
-    /**
-     * @deprecated You don't need to call this method, RecipeBuilder now takes empty fluid input array by default.
-     */
-    @Deprecated
-    public GT_RecipeBuilder noFluidInputs() {
-        return this;
-    }
-
     public GT_RecipeBuilder fluidOutputs(FluidStack... fluidOutputs) {
         if (DEBUG_MODE && containsNull(fluidOutputs)) handleNullRecipeComponents("fluidOutputs");
         this.fluidOutputs = fix(fluidOutputs);
-        return this;
-    }
-
-    /**
-     * @deprecated You don't need to call this method, RecipeBuilder now takes empty fluid output array by default.
-     */
-    @Deprecated
-    public GT_RecipeBuilder noFluidOutputs() {
-        return this;
-    }
-
-    /**
-     * @deprecated You don't need to call this method, RecipeBuilder now takes empty arrays by default.
-     */
-    @Deprecated
-    public GT_RecipeBuilder noOutputs() {
         return this;
     }
 

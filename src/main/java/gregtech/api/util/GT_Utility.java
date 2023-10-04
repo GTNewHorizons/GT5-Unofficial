@@ -496,14 +496,6 @@ public class GT_Utility {
     }
 
     /**
-     * Do not use. It is rounding up voltage
-     */
-    @Deprecated
-    public static long roundDownVoltage(long voltage) {
-        return roundUpVoltage(voltage);
-    }
-
-    /**
      * Rounds up partial voltage that exceeds tiered voltage, e.g. 4,096 -> 8,192(IV)
      */
     public static long roundUpVoltage(long voltage) {

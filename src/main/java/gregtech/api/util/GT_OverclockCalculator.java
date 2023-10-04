@@ -198,27 +198,11 @@ public class GT_OverclockCalculator {
     }
 
     /**
-     * Use {@link #setHeatOC(boolean)}
-     */
-    @Deprecated
-    public GT_OverclockCalculator enableHeatOC() {
-        return setHeatOC(true);
-    }
-
-    /**
      * Set if we should be calculating overclocking using EBF's perfectOC
      */
     public GT_OverclockCalculator setHeatOC(boolean heatOC) {
         this.heatOC = heatOC;
         return this;
-    }
-
-    /**
-     * Use {@link #setHeatDiscount(boolean)}
-     */
-    @Deprecated
-    public GT_OverclockCalculator enableHeatDiscount() {
-        return setHeatDiscount(true);
     }
 
     /**
@@ -235,14 +219,6 @@ public class GT_OverclockCalculator {
     public GT_OverclockCalculator setRecipeHeat(int recipeHeat) {
         this.recipeHeat = recipeHeat;
         return this;
-    }
-
-    /**
-     * Use {@link #setMachineHeat(int)}
-     */
-    @Deprecated
-    public GT_OverclockCalculator setMultiHeat(int machineHeat) {
-        return setMachineHeat(machineHeat);
     }
 
     /**
@@ -310,14 +286,6 @@ public class GT_OverclockCalculator {
     public GT_OverclockCalculator setDurationDecreasePerOC(int durationDecreasePerOC) {
         this.durationDecreasePerOC = durationDecreasePerOC;
         return this;
-    }
-
-    /**
-     * Use {@link #setOneTickDiscount(boolean)}
-     */
-    @Deprecated
-    public GT_OverclockCalculator enableOneTickDiscount() {
-        return setOneTickDiscount(true);
     }
 
     /**
@@ -541,7 +509,7 @@ public class GT_OverclockCalculator {
     /**
      * Returns the EUt consumption one would get from overclocking under 1 tick
      * This Doesn't count as calculating
-     * 
+     *
      * @param originalMaxParallel Parallels which are of the actual machine before the overclocking extra ones
      */
     public long calculateEUtConsumptionUnderOneTick(int originalMaxParallel, int currentParallel) {

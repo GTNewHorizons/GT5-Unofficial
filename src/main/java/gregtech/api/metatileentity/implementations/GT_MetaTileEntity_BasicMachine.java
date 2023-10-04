@@ -109,8 +109,6 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     public int mProgresstime = 0, mMaxProgresstime = 0, mEUt = 0, mOutputBlocked = 0;
     public ForgeDirection mMainFacing = ForgeDirection.WEST;
     public FluidStack mOutputFluid;
-    @Deprecated
-    public String mGUIName = "", mNEIName = "";
     protected final Power mPower;
 
     /**
@@ -152,28 +150,6 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     }
 
     /**
-     * @deprecated Use {@link #GT_MetaTileEntity_BasicMachine(int, String, String, int, int, String, int, int,
-     *             ITexture...)}
-     */
-    @Deprecated
-    public GT_MetaTileEntity_BasicMachine(int aID, String aName, String aNameRegional, int aTier, int aAmperage,
-        String aDescription, int aInputSlotCount, int aOutputSlotCount, String aGUIName, String aNEIName,
-        ITexture... aOverlays) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            OTHER_SLOT_COUNT + aInputSlotCount + aOutputSlotCount + 1,
-            aDescription,
-            aOverlays);
-        mInputSlotCount = Math.max(0, aInputSlotCount);
-        mOutputItems = new ItemStack[Math.max(0, aOutputSlotCount)];
-        mAmperage = aAmperage;
-        mPower = buildPower();
-    }
-
-    /**
      * Registers machine with multi-line descriptions.
      */
     public GT_MetaTileEntity_BasicMachine(int aID, String aName, String aNameRegional, int aTier, int aAmperage,
@@ -193,58 +169,10 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     }
 
     /**
-     * @deprecated Use {@link #GT_MetaTileEntity_BasicMachine(int, String, String, int, int, String[], int, int,
-     *             ITexture...)}
-     */
-    @Deprecated
-    public GT_MetaTileEntity_BasicMachine(int aID, String aName, String aNameRegional, int aTier, int aAmperage,
-        String[] aDescription, int aInputSlotCount, int aOutputSlotCount, String aGUIName, String aNEIName,
-        ITexture... aOverlays) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            OTHER_SLOT_COUNT + aInputSlotCount + aOutputSlotCount + 1,
-            aDescription,
-            aOverlays);
-        mInputSlotCount = Math.max(0, aInputSlotCount);
-        mOutputItems = new ItemStack[Math.max(0, aOutputSlotCount)];
-        mAmperage = aAmperage;
-        mPower = buildPower();
-    }
-
-    /**
-     * @deprecated Use {@link #GT_MetaTileEntity_BasicMachine(String, int, int, String[], ITexture[][][], int, int)}
-     */
-    @Deprecated
-    public GT_MetaTileEntity_BasicMachine(String aName, int aTier, int aAmperage, String aDescription,
-        ITexture[][][] aTextures, int aInputSlotCount, int aOutputSlotCount, String aGUIName, String aNEIName) {
-        super(aName, aTier, OTHER_SLOT_COUNT + aInputSlotCount + aOutputSlotCount + 1, aDescription, aTextures);
-        mInputSlotCount = Math.max(0, aInputSlotCount);
-        mOutputItems = new ItemStack[Math.max(0, aOutputSlotCount)];
-        mAmperage = aAmperage;
-        mPower = buildPower();
-    }
-
-    /**
      * For {@link #newMetaEntity}.
      */
     public GT_MetaTileEntity_BasicMachine(String aName, int aTier, int aAmperage, String[] aDescription,
         ITexture[][][] aTextures, int aInputSlotCount, int aOutputSlotCount) {
-        super(aName, aTier, OTHER_SLOT_COUNT + aInputSlotCount + aOutputSlotCount + 1, aDescription, aTextures);
-        mInputSlotCount = Math.max(0, aInputSlotCount);
-        mOutputItems = new ItemStack[Math.max(0, aOutputSlotCount)];
-        mAmperage = aAmperage;
-        mPower = buildPower();
-    }
-
-    /**
-     * @deprecated Use {@link #GT_MetaTileEntity_BasicMachine(String, int, int, String[], ITexture[][][], int, int)}
-     */
-    @Deprecated
-    public GT_MetaTileEntity_BasicMachine(String aName, int aTier, int aAmperage, String[] aDescription,
-        ITexture[][][] aTextures, int aInputSlotCount, int aOutputSlotCount, String aGUIName, String aNEIName) {
         super(aName, aTier, OTHER_SLOT_COUNT + aInputSlotCount + aOutputSlotCount + 1, aDescription, aTextures);
         mInputSlotCount = Math.max(0, aInputSlotCount);
         mOutputItems = new ItemStack[Math.max(0, aOutputSlotCount)];

@@ -469,66 +469,12 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
     }
 
     /**
-     * @deprecated Use {@link #GT_MetaTileEntity_BasicMachine_GT_Recipe(int, String, String, int, String,
-     *             RecipeMap, int, int, boolean, SoundResource, boolean, boolean, SpecialEffects, String, Object[])}
-     */
-    @Deprecated
-    public GT_MetaTileEntity_BasicMachine_GT_Recipe(int aID, String aName, String aNameRegional, int aTier,
-        String aDescription, RecipeMap aRecipes, int aInputSlots, int aOutputSlots, boolean usesFluids,
-        int aGUIParameterA, int aGUIParameterB, String aGUIName, SoundResource aSound, boolean aSharedTank,
-        boolean aRequiresFluidForFiltering, SpecialEffects aSpecialEffect, String aOverlays, Object[] aRecipe) {
-        this(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            aDescription,
-            aRecipes,
-            aInputSlots,
-            aOutputSlots,
-            usesFluids ? getCapacityForTier(aTier) : 0,
-            aSound.resourceLocation,
-            aSharedTank,
-            aRequiresFluidForFiltering,
-            aSpecialEffect,
-            aOverlays,
-            aRecipe);
-    }
-
-    /**
      * Registers machine with multi-line descriptions, auto-scaled fluid tank, and sound specified by SoundResource.
      */
     public GT_MetaTileEntity_BasicMachine_GT_Recipe(int aID, String aName, String aNameRegional, int aTier,
         String[] aDescription, RecipeMap aRecipes, int aInputSlots, int aOutputSlots, boolean usesFluids,
         SoundResource aSound, boolean aSharedTank, boolean aRequiresFluidForFiltering, SpecialEffects aSpecialEffect,
         String aOverlays, Object[] aRecipe) {
-        this(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            aDescription,
-            aRecipes,
-            aInputSlots,
-            aOutputSlots,
-            usesFluids ? getCapacityForTier(aTier) : 0,
-            aSound.resourceLocation,
-            aSharedTank,
-            aRequiresFluidForFiltering,
-            aSpecialEffect,
-            aOverlays,
-            aRecipe);
-    }
-
-    /**
-     * @deprecated Use {@link #GT_MetaTileEntity_BasicMachine_GT_Recipe(int, String, String, int, String[],
-     *             RecipeMap, int, int, boolean, SoundResource, boolean, boolean, SpecialEffects, String, Object[])}
-     */
-    @Deprecated
-    public GT_MetaTileEntity_BasicMachine_GT_Recipe(int aID, String aName, String aNameRegional, int aTier,
-        String[] aDescription, RecipeMap aRecipes, int aInputSlots, int aOutputSlots, boolean usesFluids,
-        int aGUIParameterA, int aGUIParameterB, String aGUIName, SoundResource aSound, boolean aSharedTank,
-        boolean aRequiresFluidForFiltering, SpecialEffects aSpecialEffect, String aOverlays, Object[] aRecipe) {
         this(
             aID,
             aName,
@@ -573,33 +519,6 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
     }
 
     /**
-     * @deprecated Use {@link #GT_MetaTileEntity_BasicMachine_GT_Recipe(int, String, String, int, String,
-     *             RecipeMap, int, int, int, SoundResource, boolean, boolean, SpecialEffects, String, Object[])}
-     */
-    @Deprecated
-    public GT_MetaTileEntity_BasicMachine_GT_Recipe(int aID, String aName, String aNameRegional, int aTier,
-        String aDescription, RecipeMap aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity,
-        int aGUIParameterA, int aGUIParameterB, String aGUIName, SoundResource aSound, boolean aSharedTank,
-        boolean aRequiresFluidForFiltering, SpecialEffects aSpecialEffect, String aOverlays, Object[] aRecipe) {
-        this(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            aDescription,
-            aRecipes,
-            aInputSlots,
-            aOutputSlots,
-            aTankCapacity,
-            aSound.resourceLocation,
-            aSharedTank,
-            aRequiresFluidForFiltering,
-            aSpecialEffect,
-            aOverlays,
-            aRecipe);
-    }
-
-    /**
      * Registers machine with multi-line descriptions, specific tank capacity, and sound specified by SoundResource.
      */
     public GT_MetaTileEntity_BasicMachine_GT_Recipe(int aID, String aName, String aNameRegional, int aTier,
@@ -620,60 +539,6 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
             aSharedTank,
             aRequiresFluidForFiltering,
             aSpecialEffect,
-            aOverlays,
-            aRecipe);
-    }
-
-    /**
-     * @deprecated Use {@link #GT_MetaTileEntity_BasicMachine_GT_Recipe(int, String, String, int, String[],
-     *             RecipeMap, int, int, int, SoundResource, boolean, boolean, SpecialEffects, String, Object[])}
-     */
-    @Deprecated
-    public GT_MetaTileEntity_BasicMachine_GT_Recipe(int aID, String aName, String aNameRegional, int aTier,
-        String[] aDescription, RecipeMap aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity,
-        int aGUIParameterA, int aGUIParameterB, String aGUIName, SoundResource aSound, boolean aSharedTank,
-        boolean aRequiresFluidForFiltering, SpecialEffects aSpecialEffect, String aOverlays, Object[] aRecipe) {
-        this(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            aDescription,
-            aRecipes,
-            aInputSlots,
-            aOutputSlots,
-            aTankCapacity,
-            aSound.resourceLocation,
-            aSharedTank,
-            aRequiresFluidForFiltering,
-            aSpecialEffect,
-            aOverlays,
-            aRecipe);
-    }
-
-    /**
-     * @deprecated Use {@link #GT_MetaTileEntity_BasicMachine_GT_Recipe(int, String, String, int, String,
-     *             RecipeMap, int, int, int, ResourceLocation, boolean, boolean, SpecialEffects, String, Object[])}
-     */
-    @Deprecated
-    public GT_MetaTileEntity_BasicMachine_GT_Recipe(int aID, String aName, String aNameRegional, int aTier,
-        String aDescription, RecipeMap aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity,
-        int aGUIParameterA, int aGUIParameterB, String aGUIName, String aSound, boolean aSharedTank,
-        boolean aRequiresFluidForFiltering, int aSpecialEffect, String aOverlays, Object[] aRecipe) {
-        this(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            aDescription,
-            aRecipes,
-            aInputSlots,
-            aOutputSlots,
-            aTankCapacity,
-            new ResourceLocation(aSound),
-            aSharedTank,
-            aRequiresFluidForFiltering,
-            SpecialEffects.fromId(aSpecialEffect),
             aOverlays,
             aRecipe);
     }

@@ -10,7 +10,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.interfaces.tileentity.IVoidable;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -118,27 +117,6 @@ public class GT_ParallelHelper {
     public GT_ParallelHelper() {}
 
     /**
-     * Sets MetaTE controller, with current configuration for void protection mode.
-     *
-     * @deprecated Use {@link #setMachine(IVoidable)}
-     */
-    @Deprecated
-    public GT_ParallelHelper setController(GT_MetaTileEntity_MultiBlockBase machineMeta) {
-        return setMachine(machineMeta, machineMeta.protectsExcessItem(), machineMeta.protectsExcessFluid());
-    }
-
-    /**
-     * Sets MetaTE controller, with void protection mode forcibly.
-     *
-     * @deprecated Use {@link #setMachine(IVoidable, boolean, boolean)}
-     */
-    @Deprecated
-    public GT_ParallelHelper setController(GT_MetaTileEntity_MultiBlockBase machineMeta, boolean protectExcessItem,
-        boolean protectExcessFluid) {
-        return setMachine(machineMeta, protectExcessItem, protectExcessFluid);
-    }
-
-    /**
      * Sets machine, with current configuration for void protection mode.
      */
     public GT_ParallelHelper setMachine(IVoidable machine) {
@@ -207,14 +185,6 @@ public class GT_ParallelHelper {
     }
 
     /**
-     * Use {@link #setConsumption(boolean)}
-     */
-    @Deprecated
-    public GT_ParallelHelper enableConsumption() {
-        return setConsumption(true);
-    }
-
-    /**
      * Set if we should consume inputs or not when trying for parallels
      *
      * @param consume Should we consume inputs
@@ -240,14 +210,6 @@ public class GT_ParallelHelper {
         this.batchMode = batchModifier > 1;
         this.batchModifier = batchModifier;
         return this;
-    }
-
-    /**
-     * Use {@link #setOutputCalculation(boolean)}
-     */
-    @Deprecated
-    public GT_ParallelHelper enableOutputCalculation() {
-        return setOutputCalculation(true);
     }
 
     /**
@@ -317,14 +279,6 @@ public class GT_ParallelHelper {
     }
 
     /**
-     * @deprecated Use {@link #getDurationMultiplierDouble()}
-     */
-    @Deprecated
-    public float getDurationMultiplier() {
-        return (float) getDurationMultiplierDouble();
-    }
-
-    /**
      * @return The ItemOutputs from the recipe
      */
     @Nonnull
@@ -357,14 +311,6 @@ public class GT_ParallelHelper {
             throw new IllegalStateException("Tried to get recipe result before building");
         }
         return result;
-    }
-
-    /**
-     * Use {@link #tryConsumeRecipeInputs(GT_Recipe, FluidStack[], ItemStack[], int)}
-     */
-    @Deprecated
-    protected boolean tryConsumeRecipeInputs(GT_Recipe recipe, FluidStack[] fluids, ItemStack[] items) {
-        return tryConsumeRecipeInputs(recipe, fluids, items, 1);
     }
 
     /**
@@ -465,7 +411,7 @@ public class GT_ParallelHelper {
             boolean builtRecipeCheck = false;
             for (; currentParallel < maxParallelBeforeBatchMode
                 && tCurrentUsage < (availableEUt - tRecipeEUt); currentParallel++) {
-                if (!tryConsumeRecipeInputs(recipe, fluidInputs, itemInputs)) {
+                if (!tryConsumeRecipeInputs(recipe, fluidInputs, itemInputs, 1)) {
                     break;
                 }
                 tCurrentUsage += tRecipeEUt;

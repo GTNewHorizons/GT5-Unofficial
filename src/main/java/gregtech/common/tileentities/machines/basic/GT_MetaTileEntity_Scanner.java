@@ -118,15 +118,6 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
         super(aName, aTier, 1, aDescription, aTextures, 1, 1);
     }
 
-    /**
-     * @deprecated Use {@link #GT_MetaTileEntity_Scanner(String, int, String[], ITexture[][][])}
-     */
-    @Deprecated
-    public GT_MetaTileEntity_Scanner(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
-        String aGUIName, String aNEIName) {
-        super(aName, aTier, 1, aDescription, aTextures, 1, 1);
-    }
-
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_Scanner(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
