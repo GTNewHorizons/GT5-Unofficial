@@ -31,6 +31,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.common.base.Stopwatch;
+import com.google.common.collect.SetMultimap;
 
 import appeng.api.AEApi;
 import appeng.helpers.InterfaceTerminalSupportedClassProvider;
@@ -795,6 +796,9 @@ public class GT_Mod implements IGT_Mod {
         GT_Recipe.reInit();
         try {
             for (Map<? extends GT_ItemStack, ?> gt_itemStackMap : GregTech_API.sItemStackMappings) {
+                GT_Utility.reMap(gt_itemStackMap);
+            }
+            for (SetMultimap<? extends GT_ItemStack, ?> gt_itemStackMap : GregTech_API.itemStackMultiMaps) {
                 GT_Utility.reMap(gt_itemStackMap);
             }
         } catch (Throwable e) {

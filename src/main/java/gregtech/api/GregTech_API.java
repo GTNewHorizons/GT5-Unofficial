@@ -36,6 +36,7 @@ import net.minecraft.world.World;
 
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
+import com.google.common.collect.SetMultimap;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -107,6 +108,7 @@ public class GregTech_API {
      * Fixes the HashMap Mappings for ItemStacks once the Server started
      */
     public static final Collection<Map<? extends GT_ItemStack, ?>> sItemStackMappings = new ArrayList<>();
+    public static final Collection<SetMultimap<? extends GT_ItemStack, ?>> itemStackMultiMaps = new ArrayList<>();
 
     /**
      * The MetaTileEntity-ID-List-Length

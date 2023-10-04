@@ -9,10 +9,8 @@ import static gregtech.api.util.GT_Utility.areStacksEqualOrNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -23,6 +21,9 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.SetMultimap;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IRecipeMap;
@@ -44,11 +45,11 @@ public class RecipeMapBackend {
     /**
      * Recipe index based on items.
      */
-    private final Map<GT_ItemStack, Collection<GT_Recipe>> itemIndex = new HashMap<>();
+    private final SetMultimap<GT_ItemStack, GT_Recipe> itemIndex = HashMultimap.create();
     /**
      * Recipe index based on fluids.
      */
-    private final Map<String, Collection<GT_Recipe>> fluidIndex = new HashMap<>();
+    private final SetMultimap<String, GT_Recipe> fluidIndex = HashMultimap.create();
 
     /**
      * All the recipes belonging to this backend.
@@ -68,7 +69,7 @@ public class RecipeMapBackend {
 
     public RecipeMapBackend(RecipeMapBackendPropertiesBuilder propertiesBuilder) {
         this.properties = propertiesBuilder.build();
-        GregTech_API.sItemStackMappings.add(itemIndex);
+        GregTech_API.itemStackMultiMaps.add(itemIndex);
     }
 
     /**
@@ -94,11 +95,10 @@ public class RecipeMapBackend {
         allRecipes.add(recipe);
         for (FluidStack fluid : recipe.mFluidInputs) {
             if (fluid == null) continue;
-            Collection<GT_Recipe> list = fluidIndex.computeIfAbsent(
+            fluidIndex.put(
                 fluid.getFluid()
                     .getName(),
-                k -> new HashSet<>());
-            list.add(recipe);
+                recipe);
         }
         return addToItemMap(recipe);
     }
@@ -109,9 +109,7 @@ public class RecipeMapBackend {
     protected GT_Recipe addToItemMap(GT_Recipe recipe) {
         for (ItemStack item : recipe.mInputs) {
             if (item == null) continue;
-            GT_ItemStack tStack = new GT_ItemStack(item);
-            Collection<GT_Recipe> tList = itemIndex.computeIfAbsent(tStack, k -> new HashSet<>(1));
-            tList.add(recipe);
+            itemIndex.put(new GT_ItemStack(item), recipe);
         }
         return recipe;
     }
