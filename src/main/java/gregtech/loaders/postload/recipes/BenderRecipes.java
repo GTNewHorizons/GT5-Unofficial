@@ -315,14 +315,16 @@ public class BenderRecipes implements Runnable {
             .eut(8)
             .addTo(benderRecipes);
 
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Tin, 1L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.IC2_Food_Can_Empty.get(1L))
-            .duration(20 * TICKS)
-            .eut((int) TierEU.RECIPE_HV)
-            .addTo(benderRecipes);
+        if (GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Tin, 1L) != null) {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Tin, 1L),
+                    GT_Utility.getIntegratedCircuit(1))
+                .itemOutputs(ItemList.IC2_Food_Can_Empty.get(1L))
+                .duration(20 * TICKS)
+                .eut((int) TierEU.RECIPE_HV)
+                .addTo(benderRecipes);
+        }
 
     }
 }
