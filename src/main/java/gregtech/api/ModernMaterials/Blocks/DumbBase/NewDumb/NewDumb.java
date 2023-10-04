@@ -35,7 +35,6 @@ public class NewDumb extends Block {
         this.validIDs = validIDs;
         this.blockIDOffset = blockIDOffset;
         this.blockEnum = blockEnum;
-
     }
 
     public BlocksEnum getBlockEnum() {
@@ -43,9 +42,24 @@ public class NewDumb extends Block {
     }
 
     @Override
+    public int getRenderType() {
+        return blockEnum.getRenderId();
+    }
+
+    @Override
+    public int getRenderBlockPass() {
+        return 0;
+    }
+
+
+    @Override
     public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (int ID : validIDs) {
-            list.add(new ItemStack(item, 1,  ID));
+            list.add(new ItemStack(item, 1,  ID % 16));
         }
+    }
+
+    public int getMaterialID(int metadata) {
+        return blockIDOffset * 16 + metadata;
     }
 }

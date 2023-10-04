@@ -1,8 +1,10 @@
 package gregtech.api.ModernMaterials.Blocks;
 
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import gregtech.api.ModernMaterials.Blocks.DumbBase.Base.BaseBlock;
 import gregtech.api.ModernMaterials.Blocks.DumbBase.Base.BaseTileEntity;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxBlock;
+import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxSimpleBlockRenderer;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxTileEntity;
 import gregtech.api.ModernMaterials.ModernMaterial;
 import gregtech.api.ModernMaterials.PartsClasses.IAssociatedMaterials;
@@ -21,7 +23,8 @@ public enum BlocksEnum implements IGetItem, IAssociatedMaterials {
     FrameBox(
         "% LARP Box",
         FrameBoxBlock.class,
-        FrameBoxTileEntity.class
+        FrameBoxTileEntity.class,
+        new FrameBoxSimpleBlockRenderer()
     );
 
     public String getLocalisedName(final ModernMaterial material) {
@@ -38,16 +41,17 @@ public enum BlocksEnum implements IGetItem, IAssociatedMaterials {
 
     final private Class<? extends BaseBlock> blockClass;
     final private Class<? extends BaseTileEntity> tileClass;
-
+    final private ISimpleBlockRenderingHandler simpleBlockRenderingHandler;
     final private String unlocalizedName;
     private Item item;
     private final HashSet<ModernMaterial> associatedMaterials = new HashSet<>();
 
-    BlocksEnum(@NotNull final String unlocalizedName, @NotNull final Class<? extends BaseBlock> blockClass, @NotNull final Class<? extends BaseTileEntity> tileClass) {
+    BlocksEnum(@NotNull final String unlocalizedName, @NotNull final Class<? extends BaseBlock> blockClass, @NotNull final Class<? extends BaseTileEntity> tileClass, @NotNull ISimpleBlockRenderingHandler simpleBlockRenderingHandler) {
         this.unlocalizedName = unlocalizedName;
 
         this.blockClass = blockClass;
         this.tileClass = tileClass;
+        this.simpleBlockRenderingHandler = simpleBlockRenderingHandler;
     }
 
     @Override
@@ -80,6 +84,10 @@ public enum BlocksEnum implements IGetItem, IAssociatedMaterials {
 
     public void setBlockRenderer(int materialID, final TileEntitySpecialRenderer tileEntitySpecialRenderer) {
         tileEntitySpecialRendererHashMap.put(materialID, tileEntitySpecialRenderer);
+    }
+
+    public int getRenderId() {
+        return simpleBlockRenderingHandler.getRenderId();
     }
 
     public void setItemRenderer(int materialID, IItemRenderer itemRenderer) {

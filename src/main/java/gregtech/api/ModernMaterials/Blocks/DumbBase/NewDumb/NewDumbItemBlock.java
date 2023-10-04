@@ -4,7 +4,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
-import gregtech.api.ModernMaterials.Blocks.DumbBase.Base.BaseItemBlock;
 import gregtech.api.ModernMaterials.ModernMaterial;
 import gregtech.api.ModernMaterials.ModernMaterialUtilities;
 import net.minecraft.block.Block;
@@ -35,18 +34,14 @@ public class NewDumbItemBlock extends ItemBlock {
     @SideOnly(Side.CLIENT)
     @Override
     public void addInformation(@NotNull ItemStack itemStack, EntityPlayer player, List<String> tooltipList, boolean aF3_H)  {
-        tooltipList.add("TEST");
-//
-//        final ModernMaterial material = ModernMaterialUtilities.materialIDToMaterial.get(itemStack.getItemDamage());
-//
-//        for (String line : tooltipGenerator(itemStack.getItem(), material)) {
-//            tooltipList.add(line);
-//        }
+        final ModernMaterial material = ModernMaterialUtilities.materialIDToMaterial.get(getMaterialID(itemStack));
+        tooltipList.addAll(tooltipGenerator(itemStack.getItem(), material));
     }
 
     @Override
-    public String getItemStackDisplayName(ItemStack itemStack) {
-        final ModernMaterial associatedMaterial = ModernMaterialUtilities.materialIDToMaterial.get(itemStack.getItemDamage());
+    public String getItemStackDisplayName(@NotNull ItemStack itemStack) {
+
+        final ModernMaterial associatedMaterial = ModernMaterialUtilities.materialIDToMaterial.get(getMaterialID(itemStack));
 
         NewDumb block = (NewDumb) Block.getBlockFromItem(itemStack.getItem());
         BlocksEnum blockEnum = block.getBlockEnum();
@@ -54,13 +49,18 @@ public class NewDumbItemBlock extends ItemBlock {
         return blockEnum.getLocalisedName(associatedMaterial);
     }
 
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public int getColorFromItemStack(ItemStack itemStack, int renderPass) {
-        final ModernMaterial associatedMaterial = ModernMaterialUtilities.materialIDToMaterial.get(itemStack.getItemDamage());
-
-        return associatedMaterial.getColor().getRGB();
+    public static int getMaterialID(@NotNull final ItemStack itemStack) {
+        NewDumb newDumb = (NewDumb) Block.getBlockFromItem(itemStack.getItem());
+        return newDumb.getMaterialID(itemStack.getItemDamage());
     }
+
+
+//    @Override
+//    @SideOnly(Side.CLIENT)
+//    public int getColorFromItemStack(ItemStack itemStack, int renderPass) {
+//        final ModernMaterial associatedMaterial = ModernMaterialUtilities.materialIDToMaterial.get(itemStack.getItemDamage());
+//
+//        return associatedMaterial.getColor().getRGB();
+//    }
 
 }

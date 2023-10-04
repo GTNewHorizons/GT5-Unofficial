@@ -2,6 +2,7 @@ package gregtech.api.ModernMaterials.Blocks.FrameBox;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import gregtech.api.ModernMaterials.Blocks.DumbBase.NewDumb.NewDumb;
 import gregtech.api.ModernMaterials.ModernMaterial;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.util.LightingHelper;
@@ -18,8 +19,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
-import static gregtech.api.ModernMaterials.ModernMaterialUtilities.drawBlock;
-import static gregtech.api.ModernMaterials.ModernMaterialUtilities.materialIDToMaterial;
+import static gregtech.api.ModernMaterials.ModernMaterialUtilities.*;
 
 public class FrameBoxSimpleBlockRenderer implements ISimpleBlockRenderingHandler {
 
@@ -66,11 +66,8 @@ public class FrameBoxSimpleBlockRenderer implements ISimpleBlockRenderingHandler
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
         Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
 
-        TileEntity tileEntity = world.getTileEntity(x, y, z);
-        if (tileEntity == null) return true;
-        FrameBoxTileEntity frameBoxTile = (FrameBoxTileEntity) tileEntity;
-
-        int ID = frameBoxTile.getMaterialID();
+        NewDumb newDumb = (NewDumb) world.getBlock(x, y, z);
+        int ID = newDumb.getMaterialID(world.getBlockMetadata(x, y, z));
 
         ModernMaterial material = materialIDToMaterial.get(ID);
         if (material == null) return true;
@@ -81,8 +78,9 @@ public class FrameBoxSimpleBlockRenderer implements ISimpleBlockRenderingHandler
         int blue = color.getBlue();
 
         GL11.glPushMatrix();
-        renderer.renderStandardBlock(Blocks.stone, x, y, z);
         GL11.glColor4f(red / 255f, blue / 255f, green / 255f, 1f);
+        //renderer.renderStandardBlock(Blocks.stone, x, y, z);
+        //renderBlock(Blocks.stone.getIcon(0,0));
         renderer.renderStandardBlock(block, x, y, z);
         GL11.glPopMatrix();
 

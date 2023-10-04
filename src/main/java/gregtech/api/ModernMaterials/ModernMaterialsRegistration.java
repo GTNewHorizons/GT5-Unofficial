@@ -70,6 +70,17 @@ public class ModernMaterialsRegistration {
             .addFluid(Plasma, 100_000)
             .build();
 
+        new ModernMaterial.ModernMaterialBuilder("TEST2")
+            .setColor(120, 2, 0)
+            .setMaterialID(18)
+            .setTextureMode(Metallic)
+            .addAllParts()
+            .addFluid(Gas, 1_000)
+            .addFluid(NoPrefix, 3_000)
+            .addFluid(Molten, 10_000)
+            .addFluid(Plasma, 100_000)
+            .build();
+
 //        int[] test = new SplittableRandom().ints(100, 0, Short.MAX_VALUE).parallel().toArray();
 //        for (int ID : test) {
 //            new ModernMaterial.ModernMaterialBuilder(UUID.randomUUID().toString())
