@@ -172,7 +172,7 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
     }
 
     @Override
-    public RecipeMap getRecipeList() {
+    public RecipeMap<?> getRecipeList() {
         return RecipeMaps.massFabFakeRecipes;
     }
 

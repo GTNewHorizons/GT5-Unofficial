@@ -138,7 +138,7 @@ public class GT_MetaTileEntity_MultiFurnace
     }
 
     @Override
-    public RecipeMap getRecipeMap() {
+    public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.furnaceRecipes;
     }
 

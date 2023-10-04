@@ -43,7 +43,7 @@ public class GT_MetaTileEntity_Compressor_Bronze extends GT_MetaTileEntity_Basic
     }
 
     @Override
-    public RecipeMap getRecipeList() {
+    public RecipeMap<?> getRecipeList() {
         return RecipeMaps.compressorRecipes;
     }
 

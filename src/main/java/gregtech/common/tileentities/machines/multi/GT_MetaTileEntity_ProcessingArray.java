@@ -104,7 +104,7 @@ public class GT_MetaTileEntity_ProcessingArray extends
 
     private int mCasingAmount = 0;
 
-    private RecipeMap mLastRecipeMap;
+    private RecipeMap<?> mLastRecipeMap;
     private ItemStack lastControllerStack;
     private int tTier = 0;
     private int mMult = 0;
@@ -181,7 +181,7 @@ public class GT_MetaTileEntity_ProcessingArray extends
         return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][48] };
     }
 
-    private RecipeMap fetchRecipeMap() {
+    private RecipeMap<?> fetchRecipeMap() {
         if (isCorrectMachinePart(getControllerSlot())) {
             // Gets the recipe map for the given machine through its unlocalized name
             return GT_ProcessingArray_Manager
@@ -191,7 +191,7 @@ public class GT_MetaTileEntity_ProcessingArray extends
     }
 
     @Override
-    public RecipeMap getRecipeMap() {
+    public RecipeMap<?> getRecipeMap() {
         return mLastRecipeMap;
     }
 

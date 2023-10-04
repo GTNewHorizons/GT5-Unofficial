@@ -17,7 +17,7 @@ public class NEIRecipeInfo {
     /**
      * RecipeMap the recipe belongs to.
      */
-    public final RecipeMap recipeMap;
+    public final RecipeMap<?> recipeMap;
 
     /**
      * Recipe object for NEI.
@@ -35,7 +35,7 @@ public class NEIRecipeInfo {
      */
     public int yPos;
 
-    public NEIRecipeInfo(GT_Recipe recipe, RecipeMap recipeMap,
+    public NEIRecipeInfo(GT_Recipe recipe, RecipeMap<?> recipeMap,
         GT_NEI_DefaultHandler.CachedDefaultRecipe neiCachedRecipe, Power power, int descriptionYOffset) {
         this.recipe = recipe;
         this.recipeMap = recipeMap;

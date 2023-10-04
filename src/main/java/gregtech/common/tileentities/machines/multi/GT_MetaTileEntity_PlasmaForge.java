@@ -656,7 +656,7 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
     }
 
     @Override
-    public RecipeMap getRecipeMap() {
+    public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.plasmaForgeRecipes;
     }
 

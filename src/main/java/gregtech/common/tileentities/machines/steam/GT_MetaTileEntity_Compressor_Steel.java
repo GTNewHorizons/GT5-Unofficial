@@ -43,7 +43,7 @@ public class GT_MetaTileEntity_Compressor_Steel extends GT_MetaTileEntity_BasicM
     }
 
     @Override
-    public RecipeMap getRecipeList() {
+    public RecipeMap<?> getRecipeList() {
         return RecipeMaps.compressorRecipes;
     }
 

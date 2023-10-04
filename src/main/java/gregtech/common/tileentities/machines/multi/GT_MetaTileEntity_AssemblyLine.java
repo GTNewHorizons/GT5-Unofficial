@@ -181,7 +181,7 @@ public class GT_MetaTileEntity_AssemblyLine
     }
 
     @Override
-    public RecipeMap getRecipeMap() {
+    public RecipeMap<?> getRecipeMap() {
         return null;
     }
 

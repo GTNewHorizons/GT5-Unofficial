@@ -31,9 +31,9 @@ public class ProcessingLogic {
 
     protected IVoidable machine;
     protected IRecipeLockable recipeLockableMachine;
-    protected Supplier<RecipeMap> recipeMapSupplier;
+    protected Supplier<RecipeMap<?>> recipeMapSupplier;
     protected GT_Recipe lastRecipe;
-    protected RecipeMap lastRecipeMap;
+    protected RecipeMap<?> lastRecipeMap;
     protected ItemStack specialSlotItem;
     protected ItemStack[] inputItems;
     protected ItemStack[] outputItems;
@@ -146,11 +146,11 @@ public class ProcessingLogic {
         return this;
     }
 
-    public ProcessingLogic setRecipeMap(RecipeMap recipeMap) {
+    public ProcessingLogic setRecipeMap(RecipeMap<?> recipeMap) {
         return setRecipeMapSupplier(() -> recipeMap);
     }
 
-    public ProcessingLogic setRecipeMapSupplier(Supplier<RecipeMap> supplier) {
+    public ProcessingLogic setRecipeMapSupplier(Supplier<RecipeMap<?>> supplier) {
         this.recipeMapSupplier = supplier;
         return this;
     }
@@ -263,7 +263,7 @@ public class ProcessingLogic {
      */
     @Nonnull
     public CheckRecipeResult process() {
-        RecipeMap recipeMap;
+        RecipeMap<?> recipeMap;
         if (recipeMapSupplier == null) {
             recipeMap = null;
         } else {
@@ -403,7 +403,7 @@ public class ProcessingLogic {
      * Override if you don't work with regular gt recipe maps
      */
     @Nonnull
-    protected FindRecipeResult findRecipe(@Nullable RecipeMap map) {
+    protected FindRecipeResult findRecipe(@Nullable RecipeMap<?> map) {
         if (map == null) return FindRecipeResult.NOT_FOUND;
 
         RecipeValidator recipeValidator = new RecipeValidator(

@@ -107,7 +107,7 @@ public class GT_MetaTileEntity_GasTurbine extends GT_MetaTileEntity_BasicGenerat
     }
 
     @Override
-    public RecipeMap getRecipes() {
+    public RecipeMap<?> getRecipes() {
         return RecipeMaps.gasTurbineFuels;
     }
 

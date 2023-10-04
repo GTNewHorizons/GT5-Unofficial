@@ -151,7 +151,7 @@ public class Macerator extends StackableController<Macerator> {
     }
 
     private boolean processRecipe(ItemStack[] aItemInputs, String aInventory) {
-        RecipeMap tRecipeMap = RecipeMaps.maceratorRecipes;
+        RecipeMap<?> tRecipeMap = RecipeMaps.maceratorRecipes;
         GT_Recipe tRecipe = tRecipeMap.findRecipe(this, false, TierEU.IV, null, aItemInputs);
         if (tRecipe == null) {
             return false;

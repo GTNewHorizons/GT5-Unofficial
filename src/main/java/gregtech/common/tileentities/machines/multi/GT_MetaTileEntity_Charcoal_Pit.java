@@ -240,7 +240,7 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_TooltipMul
     }
 
     @Override
-    public RecipeMap getRecipeMap() {
+    public RecipeMap<?> getRecipeMap() {
         return null;
     }
 

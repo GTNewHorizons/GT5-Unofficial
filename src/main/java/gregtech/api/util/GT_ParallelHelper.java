@@ -374,7 +374,7 @@ public class GT_ParallelHelper {
             if (recipeCheck == null) {
                 // Machine is configured to lock to a single recipe, but haven't built the recipe checker yet.
                 // Build the checker on next successful recipe.
-                RecipeMap recipeMap = singleRecipeMachine.getRecipeMap();
+                RecipeMap<?> recipeMap = singleRecipeMachine.getRecipeMap();
                 if (recipeMap != null) {
                     tSingleRecipeCheckBuilder = SingleRecipeCheck.builder(recipeMap)
                         .setBefore(itemInputs, fluidInputs);

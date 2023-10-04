@@ -106,7 +106,7 @@ public class GT_MetaTileEntity_RockBreaker extends GT_MetaTileEntity_BasicMachin
     }
 
     @Override
-    public RecipeMap getRecipeList() {
+    public RecipeMap<?> getRecipeList() {
         return RecipeMaps.rockBreakerFakeRecipes;
     }
 

@@ -172,7 +172,7 @@ public class GT_MetaTileEntity_NanoForge extends
     }
 
     @Override
-    public RecipeMap getRecipeMap() {
+    public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.nanoForgeRecipes;
     }
 

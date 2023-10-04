@@ -83,7 +83,7 @@ public class AdvChemicalReactor extends ComplexParallelController<AdvChemicalRea
     }
 
     @Override
-    public RecipeMap getRecipeMap() {
+    public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.chemicalReactorRecipes;
     }
 

@@ -19,12 +19,12 @@ abstract class RecipeMapHandler extends TemplateRecipeHandler {
     protected final GT_GUIColorOverride colorOverride;
     private int overrideTextColor = -1;
 
-    RecipeMapHandler(RecipeMap mRecipeMap) {
+    RecipeMapHandler(RecipeMap<?> mRecipeMap) {
         this.mRecipeMap = mRecipeMap;
         colorOverride = GT_GUIColorOverride.get(ModularUITextures.VANILLA_BACKGROUND.location);
     }
 
-    RecipeMap getRecipeMap() {
+    RecipeMap<?> getRecipeMap() {
         return mRecipeMap;
     }
 

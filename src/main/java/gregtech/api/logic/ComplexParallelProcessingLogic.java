@@ -14,7 +14,7 @@ import gregtech.api.util.GT_Recipe;
 public class ComplexParallelProcessingLogic {
 
     protected Controller<?> tileEntity;
-    protected RecipeMap recipeMap;
+    protected RecipeMap<?> recipeMap;
     protected boolean hasPerfectOverclock;
     protected final int maxComplexParallels;
     protected final ItemStack[][] outputItems;
@@ -31,7 +31,7 @@ public class ComplexParallelProcessingLogic {
         this(null, maxComplexParallels);
     }
 
-    public ComplexParallelProcessingLogic(RecipeMap recipeMap, int maxComplexParallels) {
+    public ComplexParallelProcessingLogic(RecipeMap<?> recipeMap, int maxComplexParallels) {
         this.maxComplexParallels = maxComplexParallels;
         this.recipeMap = recipeMap;
         inputItems = new ItemStack[maxComplexParallels][];
@@ -45,7 +45,7 @@ public class ComplexParallelProcessingLogic {
         isFluidVoidProtected = new boolean[maxComplexParallels];
     }
 
-    public ComplexParallelProcessingLogic setRecipeMap(RecipeMap recipeMap) {
+    public ComplexParallelProcessingLogic setRecipeMap(RecipeMap<?> recipeMap) {
         this.recipeMap = recipeMap;
         return this;
     }

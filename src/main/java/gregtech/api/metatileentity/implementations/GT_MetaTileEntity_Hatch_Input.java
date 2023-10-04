@@ -20,7 +20,7 @@ import gregtech.api.util.GT_Utility;
 
 public class GT_MetaTileEntity_Hatch_Input extends GT_MetaTileEntity_Hatch {
 
-    public RecipeMap mRecipeMap = null;
+    public RecipeMap<?> mRecipeMap = null;
 
     public GT_MetaTileEntity_Hatch_Input(int aID, String aName, String aNameRegional, int aTier) {
         this(

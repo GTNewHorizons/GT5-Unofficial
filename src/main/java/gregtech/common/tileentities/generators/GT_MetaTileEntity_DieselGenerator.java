@@ -85,7 +85,7 @@ public class GT_MetaTileEntity_DieselGenerator extends GT_MetaTileEntity_BasicGe
     }
 
     @Override
-    public RecipeMap getRecipes() {
+    public RecipeMap<?> getRecipes() {
         return RecipeMaps.dieselFuels;
     }
 

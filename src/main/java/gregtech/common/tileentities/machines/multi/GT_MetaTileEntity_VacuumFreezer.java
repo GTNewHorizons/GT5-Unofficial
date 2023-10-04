@@ -92,7 +92,7 @@ public class GT_MetaTileEntity_VacuumFreezer
     }
 
     @Override
-    public RecipeMap getRecipeMap() {
+    public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.vacuumRecipes;
     }
 

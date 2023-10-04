@@ -51,7 +51,7 @@ public class GT_MetaTileEntity_Furnace_Bronze extends GT_MetaTileEntity_BasicMac
     }
 
     @Override
-    public RecipeMap getRecipeList() {
+    public RecipeMap<?> getRecipeList() {
         return RecipeMaps.furnaceRecipes;
     }
 

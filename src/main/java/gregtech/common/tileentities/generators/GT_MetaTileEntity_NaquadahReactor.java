@@ -68,8 +68,8 @@ public class GT_MetaTileEntity_NaquadahReactor extends GT_MetaTileEntity_BasicGe
     }
 
     @Override
-    public RecipeMap getRecipes() {
-        RecipeMap ret;
+    public RecipeMap<?> getRecipes() {
+        RecipeMap<?> ret;
         switch (mTier) {
             case 4 -> ret = RecipeMaps.smallNaquadahReactorFuels;
             case 5 -> ret = RecipeMaps.largeNaquadahReactorFuels;

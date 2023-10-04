@@ -2184,7 +2184,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     }
 
     @Override
-    public RecipeMap getRecipeMap() {
+    public RecipeMap<?> getRecipeMap() {
         return null;
     }
 

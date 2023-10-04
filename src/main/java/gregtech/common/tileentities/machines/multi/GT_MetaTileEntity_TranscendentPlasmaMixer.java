@@ -145,7 +145,7 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
     long mWirelessEUt = 0;
 
     @Override
-    public RecipeMap getRecipeMap() {
+    public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.transcendentPlasmaMixerRecipes;
     }
 

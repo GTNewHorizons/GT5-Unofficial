@@ -97,7 +97,7 @@ public class GT_MetaTileEntity_ImplosionCompressor
     }
 
     @Override
-    public RecipeMap getRecipeMap() {
+    public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.implosionRecipes;
     }
 

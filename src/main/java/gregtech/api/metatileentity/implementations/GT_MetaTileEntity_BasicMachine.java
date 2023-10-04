@@ -995,7 +995,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     /**
      * @return the Recipe List which is used for this Machine, this is a useful Default Handler
      */
-    public RecipeMap getRecipeList() {
+    public RecipeMap<?> getRecipeList() {
         return null;
     }
 
@@ -1044,7 +1044,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
      *         FOUND_AND_SUCCESSFULLY_USED_RECIPE = 2;
      */
     public int checkRecipe(boolean skipOC) {
-        RecipeMap tMap = getRecipeList();
+        RecipeMap<?> tMap = getRecipeList();
         if (tMap == null) return DID_NOT_FIND_RECIPE;
         FindRecipeResult result = tMap.findRecipeWithResult(
             getAllInputs(),

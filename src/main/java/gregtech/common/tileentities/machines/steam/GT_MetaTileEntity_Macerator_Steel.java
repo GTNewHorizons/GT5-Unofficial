@@ -72,7 +72,7 @@ public class GT_MetaTileEntity_Macerator_Steel extends GT_MetaTileEntity_BasicMa
     }
 
     @Override
-    public RecipeMap getRecipeList() {
+    public RecipeMap<?> getRecipeList() {
         return RecipeMaps.maceratorRecipes;
     }
 

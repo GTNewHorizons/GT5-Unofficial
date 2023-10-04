@@ -154,7 +154,7 @@ public class GT_MetaTileEntity_PyrolyseOven
     }
 
     @Override
-    public RecipeMap getRecipeMap() {
+    public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.pyrolyseRecipes;
     }
 

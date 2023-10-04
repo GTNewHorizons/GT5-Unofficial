@@ -294,7 +294,7 @@ public abstract class GT_MetaTileEntity_FusionComputer
     }
 
     @Override
-    public RecipeMap getRecipeMap() {
+    public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.fusionRecipes;
     }
 

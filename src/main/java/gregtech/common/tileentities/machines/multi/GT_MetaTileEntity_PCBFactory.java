@@ -520,7 +520,7 @@ public class GT_MetaTileEntity_PCBFactory extends
     }
 
     @Override
-    public RecipeMap getRecipeMap() {
+    public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.pcbFactoryRecipes;
     }
 

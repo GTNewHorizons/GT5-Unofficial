@@ -761,7 +761,7 @@ public class GT_ModHandler {
     /**
      * Adds GT versions of the IC2 recipes from the supplied IC2RecipeList.
      */
-    public static void addIC2RecipesToGT(Map<IRecipeInput, RecipeOutput> aIC2RecipeList, RecipeMap aGTRecipeMap,
+    public static void addIC2RecipesToGT(Map<IRecipeInput, RecipeOutput> aIC2RecipeList, RecipeMap<?> aGTRecipeMap,
         boolean aAddGTRecipe, boolean aRemoveIC2Recipe, boolean aExcludeGTIC2Items) {
         Map<ItemStack, ItemStack> aRecipesToRemove = new HashMap<>();
         for (Entry<IRecipeInput, RecipeOutput> iRecipeInputRecipeOutputEntry : aIC2RecipeList.entrySet()) {

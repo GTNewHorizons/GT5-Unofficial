@@ -54,7 +54,7 @@ public class SingleRecipeCheck {
     @Nonnull
     private final GT_Recipe recipe;
     @Nonnull
-    private final RecipeMap recipeMap;
+    private final RecipeMap<?> recipeMap;
     @Nonnull
     private final ImmutableMap<ItemId, Integer> itemCost;
     @Nonnull
@@ -63,7 +63,7 @@ public class SingleRecipeCheck {
     private final int totalItemCost;
     private final int totalFluidCost;
 
-    private SingleRecipeCheck(@Nonnull GT_Recipe recipe, @Nonnull RecipeMap recipeMap,
+    private SingleRecipeCheck(@Nonnull GT_Recipe recipe, @Nonnull RecipeMap<?> recipeMap,
         @Nonnull ImmutableMap<ItemId, Integer> itemCost, @Nonnull ImmutableMap<Fluid, Integer> fluidCost) {
         this.recipe = recipe;
         this.recipeMap = recipeMap;
@@ -86,7 +86,7 @@ public class SingleRecipeCheck {
     }
 
     @Nonnull
-    public RecipeMap getRecipeMap() {
+    public RecipeMap<?> getRecipeMap() {
         return recipeMap;
     }
 
@@ -251,13 +251,13 @@ public class SingleRecipeCheck {
     }
 
     @Nullable
-    public static SingleRecipeCheck tryLoad(RecipeMap recipeMap, NBTTagCompound tag) {
+    public static SingleRecipeCheck tryLoad(RecipeMap<?> recipeMap, NBTTagCompound tag) {
         if (tag == null || tag.hasNoTags()) return null;
 
-        RecipeMap mapToUse;
+        RecipeMap<?> mapToUse;
         if (tag.hasKey("recipemap")) {
             String mapName = tag.getString("recipemap");
-            RecipeMap foundMap = RecipeMap.findRecipeMap(mapName);
+            RecipeMap<?> foundMap = RecipeMap.findRecipeMap(mapName);
             if (foundMap != null) {
                 mapToUse = foundMap;
             } else {
@@ -289,7 +289,7 @@ public class SingleRecipeCheck {
                     .toImmutableMapSerial(t -> ItemId.create(t.getCompoundTag("id")), t -> t.getInteger("count")));
     }
 
-    private static GT_Recipe tryFindRecipe(@Nonnull RecipeMap recipeMap, NBTTagCompound tag) {
+    private static GT_Recipe tryFindRecipe(@Nonnull RecipeMap<?> recipeMap, NBTTagCompound tag) {
         ItemStack[] inputs = GT_Utility.streamCompounds(tag.getTagList("inputs", Constants.NBT.TAG_COMPOUND))
             .map(GT_Utility::loadItem)
             .toArray(ItemStack[]::new);
@@ -335,13 +335,13 @@ public class SingleRecipeCheck {
         return ImmutableMap.copyOf(fluidMap);
     }
 
-    public static Builder builder(@Nonnull RecipeMap recipeMap) {
+    public static Builder builder(@Nonnull RecipeMap<?> recipeMap) {
         return new Builder(Objects.requireNonNull(recipeMap));
     }
 
     public static class Builder {
 
-        private final RecipeMap recipeMap;
+        private final RecipeMap<?> recipeMap;
 
         // In order to compute which items and fluids are consumed by the recipe, we compare the
         // multi-block's items and fluids before and after inputs are consumed by the recipe.
@@ -352,7 +352,7 @@ public class SingleRecipeCheck {
 
         private GT_Recipe recipe;
 
-        private Builder(@Nonnull RecipeMap recipeMap) {
+        private Builder(@Nonnull RecipeMap<?> recipeMap) {
             this.recipeMap = recipeMap;
         }
 

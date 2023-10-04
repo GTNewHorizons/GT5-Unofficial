@@ -30,5 +30,5 @@ public interface IRecipeLockable {
 
     default void setSingleRecipeCheck(SingleRecipeCheck recipeCheck) {}
 
-    RecipeMap getRecipeMap();
+    RecipeMap<?> getRecipeMap();
 }

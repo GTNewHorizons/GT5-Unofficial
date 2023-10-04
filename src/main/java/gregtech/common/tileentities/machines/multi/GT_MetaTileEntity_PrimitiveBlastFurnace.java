@@ -337,7 +337,7 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
         }
     }
 
-    protected RecipeMap getRecipeMap() {
+    protected RecipeMap<?> getRecipeMap() {
         return RecipeMaps.primitiveBlastRecipes;
     }
 

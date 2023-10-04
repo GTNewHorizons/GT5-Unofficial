@@ -45,7 +45,7 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch
     private static final String ONE_STACK_LIMIT_TOOLTIP = "GT5U.machines.one_stack_limit.tooltip";
     private static final int BUTTON_SIZE = 18;
 
-    public RecipeMap mRecipeMap = null;
+    public RecipeMap<?> mRecipeMap = null;
     public boolean disableSort;
     public boolean disableFilter = true;
     public boolean disableLimited = true;

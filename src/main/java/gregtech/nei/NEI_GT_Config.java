@@ -36,8 +36,8 @@ public class NEI_GT_Config implements IConfigureNEI {
      * Handlers will be displayed in ascending order of integer value. Any recipe map that is not present in this map
      * will be assigned a value of 0. Negative values are fine.
      */
-    private static final ImmutableMap<RecipeMap, Integer> RECIPE_MAP_ORDERING = ImmutableMap
-        .<RecipeMap, Integer>builder()
+    private static final ImmutableMap<RecipeMap<?>, Integer> RECIPE_MAP_ORDERING = ImmutableMap
+        .<RecipeMap<?>, Integer>builder()
         .put(RecipeMaps.assemblylineVisualRecipes, 1)
         .put(RecipeMaps.scannerFakeRecipes, 2)
         .build();

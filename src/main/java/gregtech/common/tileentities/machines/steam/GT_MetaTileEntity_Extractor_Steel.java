@@ -43,7 +43,7 @@ public class GT_MetaTileEntity_Extractor_Steel extends GT_MetaTileEntity_BasicMa
     }
 
     @Override
-    public RecipeMap getRecipeList() {
+    public RecipeMap<?> getRecipeList() {
         return RecipeMaps.extractorRecipes;
     }
 

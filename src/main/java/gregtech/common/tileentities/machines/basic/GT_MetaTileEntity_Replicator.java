@@ -179,7 +179,7 @@ public class GT_MetaTileEntity_Replicator extends GT_MetaTileEntity_BasicMachine
     }
 
     @Override
-    public RecipeMap getRecipeList() {
+    public RecipeMap<?> getRecipeList() {
         return RecipeMaps.replicatorFakeRecipes;
     }
 

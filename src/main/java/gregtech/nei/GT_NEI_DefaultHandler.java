@@ -74,7 +74,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     public static final int sOffsetX = 5;
     public static final int sOffsetY = 11;
 
-    private static final ConcurrentMap<RecipeMap, SortedRecipeListCache> CACHE = new ConcurrentHashMap<>();
+    private static final ConcurrentMap<RecipeMap<?>, SortedRecipeListCache> CACHE = new ConcurrentHashMap<>();
 
     protected Power mPower;
     private String mRecipeName; // Name of the handler displayed on top

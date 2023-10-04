@@ -73,7 +73,7 @@ public class GT_MetaTileEntity_Macerator_Bronze extends GT_MetaTileEntity_BasicM
     }
 
     @Override
-    public RecipeMap getRecipeList() {
+    public RecipeMap<?> getRecipeList() {
         return RecipeMaps.maceratorRecipes;
     }
 

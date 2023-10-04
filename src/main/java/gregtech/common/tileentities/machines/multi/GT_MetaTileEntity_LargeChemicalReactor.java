@@ -162,7 +162,7 @@ public class GT_MetaTileEntity_LargeChemicalReactor extends
     }
 
     @Override
-    public RecipeMap getRecipeMap() {
+    public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.multiblockChemicalReactorRecipes;
     }
 
