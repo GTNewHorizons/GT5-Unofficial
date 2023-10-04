@@ -203,6 +203,14 @@ public abstract class TileEntityModuleBase extends GT_MetaTileEntity_EnhancedMul
     }
 
     /**
+     * @return True as modules don't have maintenance issues
+     */
+    @Override
+    public boolean doRandomMaintenanceDamage() {
+        return true;
+    }
+
+    /**
      * Get the maximum EU that this controller can store
      *
      * @return Maximum EU that this controller can store
