@@ -1,4 +1,4 @@
-package gregtech.api.ModernMaterials.Blocks.DumbBase;
+package gregtech.api.ModernMaterials.Blocks.DumbBase.Special;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 

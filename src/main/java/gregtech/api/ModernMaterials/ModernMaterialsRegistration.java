@@ -5,6 +5,9 @@ import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.TESR.UniversiumFrameItemRenderer;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.TESR.UniversiumFrameBlockRenderer;
 
+import java.util.SplittableRandom;
+import java.util.UUID;
+
 import static gregtech.api.ModernMaterials.Fluids.FluidEnum.*;
 import static gregtech.api.ModernMaterials.ModernMaterialUtilities.registerAllMaterialsItems;
 import static gregtech.api.ModernMaterials.PartProperties.Textures.TextureType.Metallic;
@@ -67,6 +70,19 @@ public class ModernMaterialsRegistration {
             .addFluid(Plasma, 100_000)
             .build();
 
+//        int[] test = new SplittableRandom().ints(100, 0, Short.MAX_VALUE).parallel().toArray();
+//        for (int ID : test) {
+//            new ModernMaterial.ModernMaterialBuilder(UUID.randomUUID().toString())
+//                .setColor(120, 2, 0)
+//                .setMaterialID(ID)
+//                .setTextureMode(Metallic)
+//                .addAllParts()
+//                .addFluid(Gas, 1_000)
+//                .addFluid(NoPrefix, 3_000)
+//                .addFluid(Molten, 10_000)
+//                .addFluid(Plasma, 100_000)
+//                .build();
+//        }
 //                    .addCustomFluid(
 //            new ModernMaterialFluid.Builder("Zebra % Fluid %")
 //                .setTemperature(120_000_000)

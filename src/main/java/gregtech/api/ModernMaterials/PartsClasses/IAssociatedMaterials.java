@@ -2,11 +2,11 @@ package gregtech.api.ModernMaterials.PartsClasses;
 
 import gregtech.api.ModernMaterials.ModernMaterial;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 public interface IAssociatedMaterials {
 
-    ArrayList<ModernMaterial> getAssociatedMaterials();
+    HashSet<ModernMaterial> getAssociatedMaterials();
     void addAssociatedMaterial(final ModernMaterial modernMaterial);
 
 }

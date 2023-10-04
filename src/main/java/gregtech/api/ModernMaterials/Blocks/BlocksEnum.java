@@ -1,10 +1,9 @@
 package gregtech.api.ModernMaterials.Blocks;
 
-import gregtech.api.ModernMaterials.Blocks.DumbBase.Simple.DumbBlock;
-import gregtech.api.ModernMaterials.Blocks.DumbBase.Simple.DumbTileEntity;
+import gregtech.api.ModernMaterials.Blocks.DumbBase.Base.BaseBlock;
+import gregtech.api.ModernMaterials.Blocks.DumbBase.Base.BaseTileEntity;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxBlock;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxTileEntity;
-import gregtech.api.ModernMaterials.Blocks.FrameBox.TESR.UniversiumFrameItemRenderer;
 import gregtech.api.ModernMaterials.ModernMaterial;
 import gregtech.api.ModernMaterials.PartsClasses.IAssociatedMaterials;
 import gregtech.api.ModernMaterials.PartsClasses.IGetItem;
@@ -13,8 +12,8 @@ import net.minecraft.item.Item;
 import net.minecraftforge.client.IItemRenderer;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public enum BlocksEnum implements IGetItem, IAssociatedMaterials {
 
@@ -29,22 +28,22 @@ public enum BlocksEnum implements IGetItem, IAssociatedMaterials {
         return unlocalizedName.replace("%", material.getMaterialName());
     }
 
-    public Class<? extends DumbTileEntity> getTileEntityClass() {
+    public Class<? extends BaseTileEntity> getTileEntityClass() {
         return tileClass;
     }
 
-    public Class<? extends DumbBlock> getBlockClass() {
+    public Class<? extends BaseBlock> getBlockClass() {
         return blockClass;
     }
 
-    final private Class<? extends DumbBlock> blockClass;
-    final private Class<? extends DumbTileEntity> tileClass;
+    final private Class<? extends BaseBlock> blockClass;
+    final private Class<? extends BaseTileEntity> tileClass;
 
     final private String unlocalizedName;
     private Item item;
-    private final ArrayList<ModernMaterial> associatedMaterials = new ArrayList<>();
+    private final HashSet<ModernMaterial> associatedMaterials = new HashSet<>();
 
-    BlocksEnum(@NotNull final String unlocalizedName, @NotNull final Class<? extends DumbBlock> blockClass, @NotNull final Class<? extends DumbTileEntity> tileClass) {
+    BlocksEnum(@NotNull final String unlocalizedName, @NotNull final Class<? extends BaseBlock> blockClass, @NotNull final Class<? extends BaseTileEntity> tileClass) {
         this.unlocalizedName = unlocalizedName;
 
         this.blockClass = blockClass;
@@ -62,7 +61,7 @@ public enum BlocksEnum implements IGetItem, IAssociatedMaterials {
     }
 
     @Override
-    public ArrayList<ModernMaterial> getAssociatedMaterials() {
+    public HashSet<ModernMaterial> getAssociatedMaterials() {
         return associatedMaterials;
     }
 

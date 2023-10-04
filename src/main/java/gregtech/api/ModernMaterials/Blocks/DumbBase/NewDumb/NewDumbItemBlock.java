@@ -1,9 +1,10 @@
-package gregtech.api.ModernMaterials.Blocks.DumbBase.Simple;
+package gregtech.api.ModernMaterials.Blocks.DumbBase.NewDumb;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
+import gregtech.api.ModernMaterials.Blocks.DumbBase.Base.BaseItemBlock;
 import gregtech.api.ModernMaterials.ModernMaterial;
 import gregtech.api.ModernMaterials.ModernMaterialUtilities;
 import net.minecraft.block.Block;
@@ -16,14 +17,14 @@ import java.util.List;
 
 import static gregtech.api.ModernMaterials.ModernMaterialUtilities.tooltipGenerator;
 
-public class DumbItemBlock extends ItemBlock {
-
-    public DumbItemBlock(Block block) {
+public class NewDumbItemBlock extends ItemBlock {
+    public NewDumbItemBlock(Block block) {
         super(block);
         setMaxDamage(0);
         setHasSubtypes(true);
-        setCreativeTab(GregTech_API.TAB_GREGTECH_ORES); // todo add new gt frame tab.
+        setCreativeTab(GregTech_API.TAB_GREGTECH_ORES); // todo add new tabs.
     }
+
 
     @Override
     public boolean getHasSubtypes() {
@@ -34,24 +35,25 @@ public class DumbItemBlock extends ItemBlock {
     @SideOnly(Side.CLIENT)
     @Override
     public void addInformation(@NotNull ItemStack itemStack, EntityPlayer player, List<String> tooltipList, boolean aF3_H)  {
-
-        final ModernMaterial material = ModernMaterialUtilities.materialIDToMaterial.get(itemStack.getItemDamage());
-
-        for (String line : tooltipGenerator((DumbItemBlock) itemStack.getItem(), material)) {
-            tooltipList.add(line);
-        }
+        tooltipList.add("TEST");
+//
+//        final ModernMaterial material = ModernMaterialUtilities.materialIDToMaterial.get(itemStack.getItemDamage());
+//
+//        for (String line : tooltipGenerator(itemStack.getItem(), material)) {
+//            tooltipList.add(line);
+//        }
     }
 
     @Override
     public String getItemStackDisplayName(ItemStack itemStack) {
         final ModernMaterial associatedMaterial = ModernMaterialUtilities.materialIDToMaterial.get(itemStack.getItemDamage());
 
-        return getBlockEnum().getLocalisedName(associatedMaterial);
+        NewDumb block = (NewDumb) Block.getBlockFromItem(itemStack.getItem());
+        BlocksEnum blockEnum = block.getBlockEnum();
+
+        return blockEnum.getLocalisedName(associatedMaterial);
     }
 
-    public BlocksEnum getBlockEnum() {
-        return BlocksEnum.FrameBox;
-    }
 
     @Override
     @SideOnly(Side.CLIENT)

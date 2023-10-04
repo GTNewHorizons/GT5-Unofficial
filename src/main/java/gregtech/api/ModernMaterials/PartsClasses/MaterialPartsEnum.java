@@ -4,6 +4,7 @@ import gregtech.api.ModernMaterials.ModernMaterial;
 import net.minecraft.item.Item;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public enum MaterialPartsEnum implements IGetItem, IAssociatedMaterials {
 
@@ -91,7 +92,7 @@ public enum MaterialPartsEnum implements IGetItem, IAssociatedMaterials {
 
     private Item item;
 
-    private final ArrayList<ModernMaterial> associatedMaterials = new ArrayList<>();
+    private final HashSet<ModernMaterial> associatedMaterials = new HashSet<>();
 
     MaterialPartsEnum(final String partName) {
         this.partName = partName;
@@ -108,7 +109,7 @@ public enum MaterialPartsEnum implements IGetItem, IAssociatedMaterials {
     }
 
     @Override
-    public ArrayList<ModernMaterial> getAssociatedMaterials() {
+    public HashSet<ModernMaterial> getAssociatedMaterials() {
         return associatedMaterials;
     }
 

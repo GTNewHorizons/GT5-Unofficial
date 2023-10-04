@@ -2,15 +2,16 @@ package gregtech.api.ModernMaterials;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import crazypants.enderio.conduit.oc.OCUtil;
 import gregtech.api.GregTech_API;
 import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
-import gregtech.api.ModernMaterials.Blocks.DumbBase.MasterItemRenderer;
-import gregtech.api.ModernMaterials.Blocks.DumbBase.MasterTESR;
-import gregtech.api.ModernMaterials.Blocks.DumbBase.Simple.DumbBlock;
-import gregtech.api.ModernMaterials.Blocks.DumbBase.Simple.DumbItemBlock;
+import gregtech.api.ModernMaterials.Blocks.DumbBase.NewDumb.NewDumb;
+import gregtech.api.ModernMaterials.Blocks.DumbBase.NewDumb.NewDumbItemBlock;
+import gregtech.api.ModernMaterials.Blocks.DumbBase.Special.MasterItemRenderer;
+import gregtech.api.ModernMaterials.Blocks.DumbBase.Special.MasterTESR;
+import gregtech.api.ModernMaterials.Blocks.DumbBase.Base.BaseBlock;
+import gregtech.api.ModernMaterials.Blocks.DumbBase.Base.BaseItemBlock;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxSimpleBlockRenderer;
-import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxTileEntity;
-import gregtech.api.ModernMaterials.Blocks.FrameBox.TESR.UniversiumFrameBlockRenderer;
 import gregtech.api.ModernMaterials.Fluids.ModernMaterialFluid;
 import gregtech.api.ModernMaterials.PartProperties.Rendering.ModernMaterialItemRenderer;
 import gregtech.api.ModernMaterials.PartRecipeGenerators.ModernMaterialsPlateRecipeGenerator;
@@ -26,11 +27,11 @@ import net.minecraft.util.IIcon;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fluids.FluidRegistry;
 import org.lwjgl.opengl.GL11;
+import scala.Int;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static gregtech.api.enums.ConfigCategories.ModernMaterials.materialID;
 
@@ -81,13 +82,10 @@ public class ModernMaterialUtilities {
     public static void registerAllMaterialsBlocks() {
         BlocksEnum.FrameBox.getAssociatedMaterials().addAll(materialIDToMaterial.values());
 
-        for (int matID : materialIDToMaterial.keySet()) {
-            FrameBoxTileEntity.masterTESRMap.put(matID, new UniversiumFrameBlockRenderer());
-        }
-
         for (BlocksEnum blockType : BlocksEnum.values()) {
             registerSimpleBlock(blockType);
-            registerTESRBlock(blockType);
+            //registerTESRBlock(blockType);
+
         }
 
         new FrameBoxSimpleBlockRenderer();
@@ -100,9 +98,9 @@ public class ModernMaterialUtilities {
 
         try {
             // Register the actual block.
-            DumbBlock simpleBlock = blockType.getBlockClass().getDeclaredConstructor().newInstance();
+            BaseBlock simpleBlock = blockType.getBlockClass().getDeclaredConstructor().newInstance();
             simpleBlock.setBlockName(name);
-            GameRegistry.registerBlock(simpleBlock, DumbItemBlock.class, name);
+            GameRegistry.registerBlock(simpleBlock, BaseItemBlock.class, name);
 
             // Register the tile entity itself.
             GameRegistry.registerTileEntity(blockType.getTileEntityClass(), name);
@@ -121,21 +119,43 @@ public class ModernMaterialUtilities {
 
     private static void registerSimpleBlock(BlocksEnum blockType) {
 
-        final String name = "Simple:" + blockType;
+        // Get all Materials.
+        HashSet<ModernMaterial> associatedMaterials = blockType.getAssociatedMaterials();
 
-        try {
-            // Register the actual block.
-            DumbBlock simpleBlock = blockType.getBlockClass().getDeclaredConstructor().newInstance();
-            simpleBlock.setBlockName(name);
-            GameRegistry.registerBlock(simpleBlock, DumbItemBlock.class, name);
+        // Get all IDs that have this blockType
+        List<Integer> sortedIDs = associatedMaterials.stream()
+            .map(ModernMaterial::getMaterialID)
+            .sorted()
+            .collect(Collectors.toList());
 
-            // Register the tile entity itself.
-            GameRegistry.registerTileEntity(blockType.getTileEntityClass(), name);
+        int offset = -1;
+        for (List<Integer> IDs : generateIDGroups(sortedIDs)) {
 
-        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException("Failed to instantiate block", e);
+            offset++;
+            if (IDs.isEmpty()) continue;
+
+            NewDumb block = new NewDumb(blockType, offset, IDs);
+            GameRegistry.registerBlock(block, NewDumbItemBlock.class, blockType + "." + offset);
+        }
+    }
+
+    private static List<List<Integer>> generateIDGroups(List<Integer> sortedIDs) {
+
+        final int minID = Collections.min(sortedIDs);
+        final int maxID = Collections.max(sortedIDs);
+
+        List<List<Integer>> listOfLists = new ArrayList<>();
+        for (int i = minID; i < maxID; i += 16) {
+            listOfLists.add(new ArrayList<>());
         }
 
+        // Iterate over all IDs and put them into groups.
+        for (int ID : sortedIDs) {
+            // Integer division to get the offset then add our element.
+            listOfLists.get(ID / 16).add(ID);
+        }
+
+        return listOfLists;
     }
 
     public static void registerAllMaterialsFluids() {
@@ -191,7 +211,7 @@ public class ModernMaterialUtilities {
         tooltip.add("Generic Tooltip");
         tooltip.add("Material Name: " + material.getMaterialName());
 
-        if (part instanceof DumbItemBlock blockPart) {
+        if (part instanceof BaseItemBlock blockPart) {
             tooltip.add("Material Part Type: " + "Blah blah do later");
         } else if (part instanceof MaterialPart itemPart) {
             tooltip.add("Material Part Type: " + material.getCustomPartInfo(itemPart.getPart()).getTextureType());
@@ -242,7 +262,6 @@ public class ModernMaterialUtilities {
         double maxV;
 
         {
-
             minU = texture.getMinU();
             maxU = texture.getMaxU();
             minV = texture.getMinV();

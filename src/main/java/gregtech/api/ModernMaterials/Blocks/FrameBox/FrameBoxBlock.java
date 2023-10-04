@@ -1,13 +1,14 @@
 package gregtech.api.ModernMaterials.Blocks.FrameBox;
 
 import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
-import gregtech.api.ModernMaterials.Blocks.DumbBase.Simple.DumbBlock;
+import gregtech.api.ModernMaterials.Blocks.DumbBase.Base.BaseBlock;
+import gregtech.api.ModernMaterials.Blocks.DumbBase.Special.SpecialBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
-public class FrameBoxBlock extends DumbBlock {
+public class FrameBoxBlock extends SpecialBlock {
 
     @Override
     public BlocksEnum getBlockEnum() {
@@ -38,9 +39,9 @@ public class FrameBoxBlock extends DumbBlock {
 
     // Yes I know this is deprecated but if you don't override it then walia won't get the right block
     // and all rendering will fail causing big errors.
-    @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
-    {
-        return getDroppedItemStack(world, x, y, z);
-    }
+//    @Override
+//    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+//    {
+//        return getDroppedItemStack(world, x, y, z);
+//    }
 }

@@ -1,7 +1,7 @@
-package gregtech.api.ModernMaterials.Blocks.DumbBase;
+package gregtech.api.ModernMaterials.Blocks.DumbBase.Special;
 
 import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
-import gregtech.api.ModernMaterials.Blocks.DumbBase.Simple.DumbBlock;
+import gregtech.api.ModernMaterials.Blocks.DumbBase.Base.BaseBlock;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
@@ -35,7 +35,7 @@ public class MasterItemRenderer implements IItemRenderer {
         repositionItem(type);
 
         int materialID = itemStack.getItemDamage();
-        DumbBlock dumbBlock = (DumbBlock) Block.getBlockFromItem(itemStack.getItem());
+        BaseBlock dumbBlock = (BaseBlock) Block.getBlockFromItem(itemStack.getItem());
 
         BlocksEnum blockEnum = dumbBlock.getBlockEnum();
         IItemRenderer itemRenderer = blockEnum.getItemRenderer(materialID);

@@ -49,6 +49,10 @@ public final class ModernMaterial {
         return materialName;
     }
 
+    public boolean doesPartExist(BlocksEnum blocksEnum) {
+        return blocksEnum.getAssociatedMaterials().contains(this);
+    }
+
     public double getMaterialTimeMultiplier() {
         return materialTimeMultiplier;
     }

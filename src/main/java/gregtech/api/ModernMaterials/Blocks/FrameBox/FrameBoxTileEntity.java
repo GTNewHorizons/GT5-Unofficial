@@ -1,17 +1,12 @@
 package gregtech.api.ModernMaterials.Blocks.FrameBox;
 
-import gregtech.api.ModernMaterials.Blocks.DumbBase.IGetTESR;
-import gregtech.api.ModernMaterials.Blocks.DumbBase.Simple.DumbTileEntity;
+import gregtech.api.ModernMaterials.Blocks.DumbBase.Special.IGetTESR;
+import gregtech.api.ModernMaterials.Blocks.DumbBase.Base.BaseTileEntity;
+import gregtech.api.ModernMaterials.Blocks.DumbBase.Special.SpecialTileEntity;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 
 import java.util.HashMap;
 
-public class FrameBoxTileEntity extends DumbTileEntity implements IGetTESR {
+public class FrameBoxTileEntity extends SpecialTileEntity {
 
-    public static HashMap<Integer, TileEntitySpecialRenderer> masterTESRMap = new HashMap<>();
-
-    @Override
-    public TileEntitySpecialRenderer getTESR(int ID) {
-        return masterTESRMap.get(ID);
-    }
 }
