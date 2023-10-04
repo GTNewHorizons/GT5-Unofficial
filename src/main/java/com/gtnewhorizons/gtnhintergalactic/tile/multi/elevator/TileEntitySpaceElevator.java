@@ -766,6 +766,14 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
     }
 
     /**
+     * @return True as the elevator doesn't have maintenance issues
+     */
+    @Override
+    public boolean doRandomMaintenanceDamage() {
+        return true;
+    }
+
+    /**
      * @return Whether to bind the inventory in the GUI or not
      */
     @Override
