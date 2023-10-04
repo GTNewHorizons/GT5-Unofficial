@@ -38,7 +38,7 @@ dependencies {
     api("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
     api("com.github.GTNewHorizons:NotEnoughItems:2.4.3-GTNH:dev")
     api("com.github.GTNewHorizons:GTNHLib:0.0.13:dev")
-    api("com.github.GTNewHorizons:ModularUI:1.1.18:dev")
+    api("com.github.GTNewHorizons:ModularUI:1.1.19:dev")
     api("com.github.GTNewHorizons:waila:1.6.0:dev")
     api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-259-GTNH:dev")
     api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.1.43-gtnh:dev")
@@ -46,7 +46,7 @@ dependencies {
 
     compileOnlyApi("com.github.GTNewHorizons:AppleCore:3.2.11:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:BuildCraft:7.1.36:dev") { transitive = false }
-    compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.5.0:dev") { transitive = false }
+    compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.5.1:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:ForestryMC:4.6.14:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:ProjectRed:4.7.12-GTNH:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:Railcraft:9.15.0:dev") { transitive = false }
