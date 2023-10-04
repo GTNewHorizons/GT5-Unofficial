@@ -605,7 +605,12 @@ public class DistilleryRecipes implements Runnable {
             .duration(12 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .addTo(sDistillationRecipes);
-
+        GT_Values.RA.stdBuilder()
+            .fluidInputs(new FluidStack(ItemList.sOilExtraHeavy, 1000))
+            .fluidOutputs(Materials.OilHeavy.getFluid(1500))
+            .duration(16 * TICKS)
+            .eut(2400)
+            .addTo(sDistillationRecipes);
     }
 
     public void universalDistillationTowerRecipes() {

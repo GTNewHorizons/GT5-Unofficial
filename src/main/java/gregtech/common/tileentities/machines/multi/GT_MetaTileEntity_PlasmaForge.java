@@ -717,7 +717,8 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
                     // If running for max_efficiency_time_in_ticks then discount is at maximum.
                     double time_percentage = running_time / max_efficiency_time_in_ticks;
                     time_percentage = Math.min(time_percentage, 1.0d);
-                    discount = (1 - time_percentage);
+                    // Multiplied by 0.5 because that is the maximum achievable discount
+                    discount = 1 - time_percentage * 0.5;
                     discount = Math.max(maximum_discount, discount);
                     tRecipe_1.mFluidInputs[i].amount = (int) Math.round(tRecipe_1.mFluidInputs[i].amount * discount);
                     break outside;

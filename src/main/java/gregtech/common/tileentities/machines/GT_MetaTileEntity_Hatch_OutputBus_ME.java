@@ -277,7 +277,9 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
                 }
             }
         }
-        infiniteCache = aNBT.getBoolean("infiniteCache");
+        if (aNBT.hasKey("infiniteCache")) {
+            infiniteCache = aNBT.getBoolean("infiniteCache");
+        }
         additionalConnection = aNBT.getBoolean("additionalConnection");
         getProxy().readFromNBT(aNBT);
     }
