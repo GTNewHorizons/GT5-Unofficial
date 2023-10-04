@@ -744,7 +744,9 @@ public class RecipeMaps {
                 Collection<GT_Recipe> ret = new ArrayList<>();
                 b.build()
                     .ifPresent(ret::add);
-                b.fluidInputs(in)
+                b.itemInputs()
+                    .itemOutputs()
+                    .fluidInputs(in)
                     .fluidOutputs(out)
                     .build()
                     .ifPresent(ret::add);

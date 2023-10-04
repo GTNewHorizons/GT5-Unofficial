@@ -2372,28 +2372,28 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             addItem(
                 tLastID = 577,
                 "Advanced Redstone Transmitter (External)",
-                "Transfers Redstone signals wirelessly",
+                "Transfers Redstone signals wirelessly/n Can only connect with advanced wireless covers",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L)));
         ItemList.Cover_AdvancedRedstoneTransmitterInternal.set(
             addItem(
                 tLastID = 578,
                 "Advanced Redstone Transmitter (Internal)",
-                "Transfers Redstone signals wirelessly",
+                "Transfers Redstone signals wirelessly/n Can only connect with advanced wireless covers",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L)));
         ItemList.Cover_AdvancedRedstoneReceiverExternal.set(
             addItem(
                 tLastID = 579,
                 "Advanced Redstone Receiver (External)",
-                "Transfers Redstone signals wirelessly",
+                "Transfers Redstone signals wirelessly/n Can only connect with advanced wireless covers",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L)));
         ItemList.Cover_AdvancedRedstoneReceiverInternal.set(
             addItem(
                 tLastID = 580,
                 "Advanced Redstone Receiver (Internal)",
-                "Transfers Redstone signals wirelessly",
+                "Transfers Redstone signals wirelessly/n Can only connect with advanced wireless covers",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L)));
 
@@ -2401,7 +2401,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             addItem(
                 tLastID = 581,
                 "Wireless Fluid Detector Cover",
-                "Transfers Fluid Amount as Redstone wirelessly",
+                "Transfers Fluid Amount as Redstone wirelessly/n Can only connect with advanced wireless covers",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 2L),
@@ -2410,7 +2410,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             addItem(
                 tLastID = 582,
                 "Wireless Item Detector Cover",
-                "Transfers Item Amount as Redstone wirelessly",
+                "Transfers Item Amount as Redstone wirelessly/n Can only connect with advanced wireless covers",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 2L),
@@ -2420,7 +2420,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             addItem(
                 tLastID = 583,
                 "Wireless Needs Maintenance Cover",
-                "Transfers Maintenance Issues as Redstone wirelessly",
+                "Transfers Maintenance Issues as Redstone wirelessly/n Can only connect with advanced wireless covers",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 4L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 3L)));
 
