@@ -1,23 +1,32 @@
-package gregtech.nei;
+package gregtech.nei.formatter;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Function;
+
+import javax.annotation.ParametersAreNonnullByDefault;
+
+import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MethodsReturnNonnullByDefault;
+import gregtech.nei.NEIRecipeInfo;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class FusionSpecialValueFormatter implements INEISpecialInfoFormatter {
 
     public static final FusionSpecialValueFormatter INSTANCE = new FusionSpecialValueFormatter();
     private static final int M = 1000000;
 
     @Override
-    public List<String> format(NEIRecipeInfo recipeInfo, Function<Integer, String> applyPrefixAndSuffix) {
+    public List<String> format(NEIRecipeInfo recipeInfo) {
         int euToStart = recipeInfo.recipe.mSpecialValue;
         int voltage = recipeInfo.recipe.mEUt;
         int tier = getFusionTier(euToStart, voltage);
 
-        return Collections.singletonList(applyPrefixAndSuffix.apply(euToStart) + " (MK " + tier + ")");
+        return Collections.singletonList(
+            StatCollector.translateToLocalFormatted("GT5U.nei.start_eu", GT_Utility.formatNumbers(euToStart), tier));
     }
 
     public static int getFusionTier(int startupPower, long voltage) {

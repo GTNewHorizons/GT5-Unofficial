@@ -278,6 +278,13 @@ public class ProcessingLogic {
             maxParallel = maxParallelSupplier.get();
         }
 
+        if (inputItems == null) {
+            inputItems = new ItemStack[0];
+        }
+        if (inputFluids == null) {
+            inputFluids = new FluidStack[0];
+        }
+
         if (isRecipeLocked && recipeLockableMachine != null && recipeLockableMachine.getSingleRecipeCheck() != null) {
             // Recipe checker is already built, we'll use it
             SingleRecipeCheck singleRecipeCheck = recipeLockableMachine.getSingleRecipeCheck();
@@ -404,15 +411,8 @@ public class ProcessingLogic {
             this::createParallelHelper,
             this::createOverclockCalculator);
 
-        FindRecipeResult findRecipeResult = map.findRecipeWithResult(
-            lastRecipe,
-            recipeValidator,
-            false,
-            false,
-            amperageOC ? availableVoltage * availableAmperage : availableVoltage,
-            inputFluids,
-            specialSlotItem,
-            inputItems);
+        FindRecipeResult findRecipeResult = map
+            .findRecipeWithResult(inputItems, inputFluids, specialSlotItem, recipeValidator, lastRecipe, false, false);
 
         findRecipeResult.setRecipeValidator(recipeValidator);
 

@@ -4,58 +4,45 @@ import static gregtech.api.util.GT_Utility.formatNumbers;
 import static net.minecraft.util.EnumChatFormatting.GRAY;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.function.Supplier;
 
-import net.minecraft.item.ItemStack;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
-import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 
 import appeng.util.ReadableNumberConverter;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.api.recipe.RecipeMap;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.recipe.BasicUIPropertiesBuilder;
+import gregtech.api.recipe.NEIRecipePropertiesBuilder;
+import gregtech.api.recipe.RecipeMapFrontend;
+import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.common.items.GT_FluidDisplayItem;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
+import gregtech.common.misc.spaceprojects.SpaceProjectManager.FakeSpaceProjectRecipe;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 import gregtech.nei.GT_NEI_DefaultHandler;
 
-public class SpaceProjectRecipeMap extends RecipeMap {
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
+public class SpaceProjectFrontend extends RecipeMapFrontend {
 
     IDrawable projectTexture;
 
-    public SpaceProjectRecipeMap(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName, String aLocalName,
-        String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount, int aMinimalInputItems,
-        int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre, int aNEISpecialValueMultiplier,
-        String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI, boolean aNEIAllowed) {
-        super(
-            aRecipeList,
-            aUnlocalizedName,
-            aLocalName,
-            aNEIName,
-            aNEIGUIPath,
-            aUsualInputCount,
-            aUsualOutputCount,
-            aMinimalInputItems,
-            aMinimalInputFluids,
-            aAmperage,
-            aNEISpecialValuePre,
-            aNEISpecialValueMultiplier,
-            aNEISpecialValuePost,
-            aShowVoltageAmperageInNEI,
-            aNEIAllowed);
+    public SpaceProjectFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
+        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+        super(uiPropertiesBuilder, neiPropertiesBuilder);
     }
 
     @Override
@@ -71,7 +58,10 @@ public class SpaceProjectRecipeMap extends RecipeMap {
             fluidOutputsInventory,
             progressSupplier,
             windowOffset);
-        addRecipeSpecificDrawable(builder, windowOffset, () -> projectTexture, new Pos2d(124, 28), new Size(18, 18));
+        builder.widget(
+            new DrawableWidget().setDrawable(() -> projectTexture)
+                .setSize(18, 18)
+                .setPos(new Pos2d(124, 28).add(windowOffset)));
         return builder;
     }
 
@@ -120,7 +110,7 @@ public class SpaceProjectRecipeMap extends RecipeMap {
     }
 
     @Override
-    public void addProgressBarUI(ModularWindow.Builder builder, Supplier<Float> progressSupplier, Pos2d windowOffset) {
+    public void addProgressBar(ModularWindow.Builder builder, Supplier<Float> progressSupplier, Pos2d windowOffset) {
         int bar1Width = 17;
         int bar2Width = 18;
         builder.widget(
@@ -139,16 +129,5 @@ public class SpaceProjectRecipeMap extends RecipeMap {
                 .setSynced(false, false)
                 .setPos(new Pos2d(106, 28).add(windowOffset))
                 .setSize(bar2Width, 72));
-    }
-
-    public static class FakeSpaceProjectRecipe extends GT_Recipe {
-
-        public final String projectName;
-
-        public FakeSpaceProjectRecipe(boolean aOptimize, ItemStack[] aInputs, FluidStack[] aFluidInputs, int aDuration,
-            int aEUt, int aSpecialValue, String projectName) {
-            super(aOptimize, aInputs, null, null, null, aFluidInputs, null, aDuration, aEUt, aSpecialValue);
-            this.projectName = projectName;
-        }
     }
 }

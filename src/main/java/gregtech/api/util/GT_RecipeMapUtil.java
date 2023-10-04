@@ -31,7 +31,6 @@ import gregtech.api.interfaces.IRecipeMap;
 /**
  * Define helpers useful in the creation of recipe maps.
  */
-// Do not place arbitrary stuff here! These are all statically imported in GT_Recipe.java file.
 public class GT_RecipeMapUtil {
 
     public static final Function<GT_Recipe, GT_Recipe> ALL_FAKE_RECIPE = r -> {

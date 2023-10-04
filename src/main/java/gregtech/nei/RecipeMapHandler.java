@@ -14,7 +14,7 @@ import gregtech.api.recipe.RecipeMap;
  */
 abstract class RecipeMapHandler extends TemplateRecipeHandler {
 
-    protected final RecipeMap mRecipeMap;
+    protected final RecipeMap<?> mRecipeMap;
 
     protected final GT_GUIColorOverride colorOverride;
     private int overrideTextColor = -1;

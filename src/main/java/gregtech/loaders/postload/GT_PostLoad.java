@@ -1,6 +1,5 @@
 package gregtech.loaders.postload;
 
-import static gregtech.api.enums.GT_Values.VP;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GalacticraftMars;
@@ -36,6 +35,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
+import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_CLS_Compat;
 import gregtech.api.util.GT_Forestry_Compat;
@@ -287,16 +287,12 @@ public class GT_PostLoad {
                             (int) (tMaterial.getMass() * 8192L),
                             30,
                             0);
-                        RecipeMaps.replicatorFakeRecipes.addFakeRecipe(
-                            false,
-                            null,
-                            iSMat0,
-                            iSMat1,
-                            new FluidStack[] { Materials.UUMatter.getFluid(tMaterial.getMass()) },
-                            null,
-                            (int) (tMaterial.getMass() * 512L),
-                            (int) VP[1],
-                            0);
+                        GT_Values.RA.stdBuilder()
+                            .itemOutputs(iSMat0)
+                            .special(iSMat1)
+                            .fluidInputs(Materials.UUMatter.getFluid(tMaterial.getMass()))
+                            .eut(TierEU.RECIPE_LV)
+                            .addTo(RecipeMaps.replicatorFakeRecipes);
                         return;
                     }
                     tInput = GT_OreDictUnificator.get(OrePrefixes.cell, tMaterial, 1L);
@@ -312,16 +308,12 @@ public class GT_PostLoad {
                             (int) (tMaterial.getMass() * 8192L),
                             30,
                             0);
-                        RecipeMaps.replicatorFakeRecipes.addFakeRecipe(
-                            false,
-                            null,
-                            iSMat0,
-                            iSMat1,
-                            new FluidStack[] { Materials.UUMatter.getFluid(tMaterial.getMass()) },
-                            null,
-                            (int) (tMaterial.getMass() * 512L),
-                            (int) VP[1],
-                            0);
+                        GT_Values.RA.stdBuilder()
+                            .itemOutputs(iSMat0)
+                            .special(iSMat1)
+                            .fluidInputs(Materials.UUMatter.getFluid(tMaterial.getMass()))
+                            .eut(TierEU.RECIPE_LV)
+                            .addTo(RecipeMaps.replicatorFakeRecipes);
                     }
                 }
             });
@@ -502,32 +494,34 @@ public class GT_PostLoad {
     }
 
     public static void addSolidFakeLargeBoilerFuels() {
-        RecipeMaps.largeBoilerFakeFuels.addSolidRecipes(
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Charcoal, 1),
-            GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 1),
-            GT_OreDictUnificator.get(OrePrefixes.block, Materials.Charcoal, 1),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1),
-            GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 1),
-            GT_OreDictUnificator.get(OrePrefixes.block, Materials.Coal, 1),
-            GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.Coal, 1),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lignite, 1),
-            GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Lignite, 1),
-            GT_OreDictUnificator.get(OrePrefixes.block, Materials.Lignite, 1),
-            GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.Lignite, 1),
-            GT_OreDictUnificator.get(OrePrefixes.log, Materials.Wood, 1),
-            GT_OreDictUnificator.get(OrePrefixes.plank, Materials.Wood, 1),
-            GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
-            GT_OreDictUnificator.get(OrePrefixes.slab, Materials.Wood, 1),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 1),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 1),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Caesium, 1),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1),
-            GT_OreDictUnificator.get(ItemList.Block_SSFUEL.get(1)),
-            GT_OreDictUnificator.get(ItemList.Block_MSSFUEL.get(1)),
-            GT_OreDictUnificator.get(OrePrefixes.rod, Materials.Blaze, 1));
+        RecipeMaps.largeBoilerFakeFuels.getBackend()
+            .addSolidRecipes(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Charcoal, 1),
+                GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 1),
+                GT_OreDictUnificator.get(OrePrefixes.block, Materials.Charcoal, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1),
+                GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 1),
+                GT_OreDictUnificator.get(OrePrefixes.block, Materials.Coal, 1),
+                GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.Coal, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lignite, 1),
+                GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Lignite, 1),
+                GT_OreDictUnificator.get(OrePrefixes.block, Materials.Lignite, 1),
+                GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.Lignite, 1),
+                GT_OreDictUnificator.get(OrePrefixes.log, Materials.Wood, 1),
+                GT_OreDictUnificator.get(OrePrefixes.plank, Materials.Wood, 1),
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
+                GT_OreDictUnificator.get(OrePrefixes.slab, Materials.Wood, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Caesium, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1),
+                GT_OreDictUnificator.get(ItemList.Block_SSFUEL.get(1)),
+                GT_OreDictUnificator.get(ItemList.Block_MSSFUEL.get(1)),
+                GT_OreDictUnificator.get(OrePrefixes.rod, Materials.Blaze, 1));
         if (Thaumcraft.isModLoaded()) {
-            RecipeMaps.largeBoilerFakeFuels.addSolidRecipe(GT_ModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1));
+            RecipeMaps.largeBoilerFakeFuels.getBackend()
+                .addSolidRecipe(GT_ModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1));
         }
     }
 

@@ -11,7 +11,6 @@ import codechicken.nei.api.IConfigureNEI;
 import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.GuiUsageRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -61,32 +60,31 @@ public class NEI_GT_Config implements IConfigureNEI {
     @Override
     public void loadConfig() {
         sIsAdded = false;
-        if (FMLCommonHandler.instance()
-            .getEffectiveSide()
-            .isClient()) {
-            List<RecipeMapHandler> handlers = new ArrayList<>();
 
-            for (RecipeMap tMap : RecipeMap.sMappings) {
-                if (tMap.mNEIAllowed) {
-                    handlers.add(new GT_NEI_DefaultHandler(tMap));
-                }
+        List<RecipeMapHandler> handlers = new ArrayList<>();
+
+        for (RecipeMap<?> map : RecipeMap.sMappings) {
+            if (map.getFrontend()
+                .getNEIProperties().registerNEI) {
+                handlers.add(new GT_NEI_DefaultHandler(map));
             }
-
-            handlers.sort(RECIPE_MAP_HANDLER_COMPARATOR);
-            handlers.forEach(NEI_GT_Config::addHandler);
-
-            API.addItemListEntry(ItemList.VOLUMETRIC_FLASK.get(1));
-
-            API.addOption(new MetaTileEntityDumper());
-            API.addOption(new MaterialDumper());
-            API.addOption(new MetaItemDumper(GT_MetaGenerated_Item_01.INSTANCE, "metaitem01"));
-            API.addOption(new MetaItemDumper(GT_MetaGenerated_Item_02.INSTANCE, "metaitem02"));
-            API.addOption(new MetaItemDumper(GT_MetaGenerated_Item_03.INSTANCE, "metaitem03"));
-            API.addOption(new VoidProtectionSupportDumper());
-            API.addOption(new InputSeparationSupportDumper());
-            API.addOption(new BatchModeSupportDumper());
-            API.addOption(new RecipeLockingSupportDumper());
         }
+
+        handlers.sort(RECIPE_MAP_HANDLER_COMPARATOR);
+        handlers.forEach(NEI_GT_Config::addHandler);
+
+        API.addItemListEntry(ItemList.VOLUMETRIC_FLASK.get(1));
+
+        API.addOption(new MetaTileEntityDumper());
+        API.addOption(new MaterialDumper());
+        API.addOption(new MetaItemDumper(GT_MetaGenerated_Item_01.INSTANCE, "metaitem01"));
+        API.addOption(new MetaItemDumper(GT_MetaGenerated_Item_02.INSTANCE, "metaitem02"));
+        API.addOption(new MetaItemDumper(GT_MetaGenerated_Item_03.INSTANCE, "metaitem03"));
+        API.addOption(new VoidProtectionSupportDumper());
+        API.addOption(new InputSeparationSupportDumper());
+        API.addOption(new BatchModeSupportDumper());
+        API.addOption(new RecipeLockingSupportDumper());
+
         sIsAdded = true;
     }
 

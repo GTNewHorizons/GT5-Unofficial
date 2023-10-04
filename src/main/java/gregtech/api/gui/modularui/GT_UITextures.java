@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import com.gtnewhorizons.modularui.api.drawable.AdaptableUITexture;
+import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 
 public class GT_UITextures {
@@ -199,6 +200,10 @@ public class GT_UITextures {
     public static final UITexture PROGRESSBAR_SLICE = UITexture.fullImage(GregTech.ID, "gui/progressbar/slice");
     public static final UITexture PROGRESSBAR_STORED_EU = UITexture.fullImage(GregTech.ID, "gui/progressbar/stored_eu");
     public static final UITexture PROGRESSBAR_WIREMILL = UITexture.fullImage(GregTech.ID, "gui/progressbar/wiremill");
+
+    public static FallbackableUITexture fallbackableProgressbar(String name, UITexture fallback) {
+        return new FallbackableUITexture(UITexture.fullImage(GregTech.ID, "gui/progressbar/" + name), fallback);
+    }
 
     public static final UITexture TAB_COVER_NORMAL = UITexture.fullImage(GregTech.ID, "gui/tab/cover_normal");
     public static final UITexture TAB_COVER_HIGHLIGHT = UITexture.fullImage(GregTech.ID, "gui/tab/cover_highlight");

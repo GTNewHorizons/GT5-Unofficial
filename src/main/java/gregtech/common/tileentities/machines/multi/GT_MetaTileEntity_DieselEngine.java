@@ -45,7 +45,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.recipe.maps.FuelRecipeMap;
+import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
@@ -153,8 +153,8 @@ public class GT_MetaTileEntity_DieselEngine
     }
 
     // can't use getRecipeMap() or else the fluid hatch will reject oxygen
-    protected FuelRecipeMap getFuelMap() {
-        return RecipeMaps.dieselFuels;
+    protected FuelBackend getFuelMap() {
+        return RecipeMaps.dieselFuels.getBackend();
     }
 
     /**

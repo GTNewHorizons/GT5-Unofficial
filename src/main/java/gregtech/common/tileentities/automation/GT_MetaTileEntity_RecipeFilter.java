@@ -105,7 +105,9 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
     }
 
     private static List<ItemStack> getFilteredMachines(RecipeMap recipeMap) {
-        return RecipeCatalysts.getRecipeCatalysts(recipeMap.mNEIName)
+        return RecipeCatalysts.getRecipeCatalysts(
+            recipeMap.getFrontend()
+                .getUIProperties().neiTransferRectId)
             .stream()
             .map(positionedStack -> positionedStack.item)
             .collect(Collectors.toList());
@@ -205,8 +207,10 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
                 + EnumChatFormatting.YELLOW
                 + StatCollector.translateToLocal(recipeMap.mUnlocalizedName)
                 + EnumChatFormatting.RESET);
-        if (recipeMap.mRecipeItemMap.size() > 0) {
-            tooltip.add("Filter size: §e" + recipeMap.mRecipeItemMap.size() + "§r");
+        int recipeSize = recipeMap.getAllRecipes()
+            .size();
+        if (recipeSize > 0) {
+            tooltip.add("Filter size: §e" + recipeSize + "§r");
         }
         tooltip.addAll(mTooltipCache.getData(REPRESENTATION_SLOT_TOOLTIP).text);
         return tooltip;

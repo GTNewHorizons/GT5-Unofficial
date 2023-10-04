@@ -45,7 +45,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMul
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.recipe.maps.LargeBoilerFuelFakeRecipeMap;
+import gregtech.api.recipe.maps.LargeBoilerFuelBackend;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
@@ -232,7 +232,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler
     boolean isFuelValid() {
         if (!isSuperheated()) return true;
         for (ItemStack input : getStoredInputs()) {
-            if (!LargeBoilerFuelFakeRecipeMap.isAllowedSolidFuel(input)
+            if (!LargeBoilerFuelBackend.isAllowedSolidFuel(input)
                 && !Circuit_Integrated.isStackEqual(input, true, true)) {
                 // if any item is not in ALLOWED_SOLID_FUELS, operation cannot be allowed because it might still be
                 // consumed
@@ -262,7 +262,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler
 
         this.mSuperEfficencyIncrease = 0;
         if (!isSuperheated()) {
-            for (GT_Recipe tRecipe : RecipeMaps.dieselFuels.mRecipeList) {
+            for (GT_Recipe tRecipe : RecipeMaps.dieselFuels.getAllRecipes()) {
                 FluidStack tFluid = GT_Utility.getFluidForFilledItem(tRecipe.getRepresentativeInput(0), true);
                 if (tFluid != null && tRecipe.mSpecialValue > 1) {
                     tFluid.amount = 1000;
@@ -274,7 +274,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler
                     }
                 }
             }
-            for (GT_Recipe tRecipe : RecipeMaps.denseLiquidFuels.mRecipeList) {
+            for (GT_Recipe tRecipe : RecipeMaps.denseLiquidFuels.getAllRecipes()) {
                 FluidStack tFluid = GT_Utility.getFluidForFilledItem(tRecipe.getRepresentativeInput(0), true);
                 if (tFluid != null) {
                     tFluid.amount = 1000;

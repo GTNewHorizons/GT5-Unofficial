@@ -2,52 +2,27 @@ package gregtech.api.recipe.maps;
 
 import static gregtech.api.util.GT_Utility.formatNumbers;
 
-import java.awt.Rectangle;
-import java.util.Collection;
 import java.util.List;
+
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 
-import gregtech.api.recipe.RecipeMap;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.recipe.BasicUIPropertiesBuilder;
+import gregtech.api.recipe.NEIRecipePropertiesBuilder;
+import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.nei.NEIRecipeInfo;
 
-public class TranscendentPlasmaMixerRecipeMap extends RecipeMap {
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
+public class TranscendentPlasmaMixerFrontend extends RecipeMapFrontend {
 
-    public TranscendentPlasmaMixerRecipeMap(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName,
-        String aLocalName, String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount,
-        int aMinimalInputItems, int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre,
-        int aNEISpecialValueMultiplier, String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI,
-        boolean aNEIAllowed) {
-        super(
-            aRecipeList,
-            aUnlocalizedName,
-            aLocalName,
-            aNEIName,
-            aNEIGUIPath,
-            aUsualInputCount,
-            aUsualOutputCount,
-            aMinimalInputItems,
-            aMinimalInputFluids,
-            aAmperage,
-            aNEISpecialValuePre,
-            aNEISpecialValueMultiplier,
-            aNEISpecialValuePost,
-            aShowVoltageAmperageInNEI,
-            aNEIAllowed);
-        setUsualFluidInputCount(20);
-        setUsualFluidOutputCount(1);
-        setProgressBarPos(86, 44);
-        setNEITransferRect(
-            new Rectangle(
-                progressBarPos.x - (16 / 2),
-                progressBarPos.y,
-                progressBarSize.width + 16,
-                progressBarSize.height));
-        setLogoPos(87, 99);
-        setNEIBackgroundSize(172, 118);
+    public TranscendentPlasmaMixerFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
+        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+        super(uiPropertiesBuilder, neiPropertiesBuilder);
     }
 
     @Override

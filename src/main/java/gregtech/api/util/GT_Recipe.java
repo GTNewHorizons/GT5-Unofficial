@@ -21,17 +21,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.extensions.ArrayExt;
 import ic2.core.Ic2Items;
 
-/**
- * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
- * <p/>
- * This File contains the functions used for Recipes. Please do not include this File AT ALL in your Moddownload as it
- * ruins compatibility This is just the Core of my Recipe System, if you just want to GET the Recipes I add, then you
- * can access this File. Do NOT add Recipes using the Constructors inside this Class, The GregTech_API File calls the
- * correct Functions for these Constructors.
- * <p/>
- * I know this File causes some Errors, because of missing Main Functions, but if you just need to compile Stuff, then
- * remove said erroreous Functions.
- */
 public class GT_Recipe implements Comparable<GT_Recipe> {
 
     /**
@@ -108,6 +97,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         mSpecialValue = aRecipe.mSpecialValue;
         mEUt = aRecipe.mEUt;
         mNeedsEmptyOutput = aRecipe.mNeedsEmptyOutput;
+        isNBTSensitive = aRecipe.isNBTSensitive;
         mCanBeBuffered = aRecipe.mCanBeBuffered;
         mFakeRecipe = aRecipe.mFakeRecipe;
         mEnabled = aRecipe.mEnabled;
@@ -119,7 +109,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     // only used for GT_RecipeBuilder. Should not be called otherwise
     GT_Recipe(ItemStack[] mInputs, ItemStack[] mOutputs, FluidStack[] mFluidInputs, FluidStack[] mFluidOutputs,
         int[] mChances, Object mSpecialItems, int mDuration, int mEUt, int mSpecialValue, boolean mEnabled,
-        boolean mHidden, boolean mFakeRecipe, boolean mCanBeBuffered, boolean mNeedsEmptyOutput, String[] neiDesc) {
+        boolean mHidden, boolean mFakeRecipe, boolean mCanBeBuffered, boolean mNeedsEmptyOutput, boolean nbtSensitive,
+        String[] neiDesc) {
         this.mInputs = mInputs;
         this.mOutputs = mOutputs;
         this.mFluidInputs = mFluidInputs;
@@ -134,6 +125,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         this.mFakeRecipe = mFakeRecipe;
         this.mCanBeBuffered = mCanBeBuffered;
         this.mNeedsEmptyOutput = mNeedsEmptyOutput;
+        this.isNBTSensitive = nbtSensitive;
         this.neiDesc = neiDesc;
 
         reloadOwner();
@@ -229,7 +221,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 // Diesel Generator
                 case 0 -> {
                     RecipeMaps.dieselFuels.addRecipe(this);
-                    RecipeMaps.largeBoilerFakeFuels.addDieselRecipe(this);
+                    RecipeMaps.largeBoilerFakeFuels.getBackend()
+                        .addDieselRecipe(this);
                 }
                 // Gas Turbine
                 case 1 -> RecipeMaps.gasTurbineFuels.addRecipe(this);
@@ -246,7 +239,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 // Fluid Generator. Usually 3. Every wrong Type ends up in the Semifluid Generator
                 default -> {
                     RecipeMaps.denseLiquidFuels.addRecipe(this);
-                    RecipeMaps.largeBoilerFakeFuels.addDenseLiquidRecipe(this);
+                    RecipeMaps.largeBoilerFakeFuels.getBackend()
+                        .addDenseLiquidRecipe(this);
                 }
             }
         }
@@ -268,9 +262,15 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             aSpecialValue);
     }
 
+    /**
+     * Re-unificates all the items present in recipes.
+     */
     public static void reInit() {
         GT_Log.out.println("GT_Mod: Re-Unificating Recipes.");
-        for (RecipeMap tMapEntry : RecipeMap.sMappings) tMapEntry.reInit();
+        for (RecipeMap<?> map : RecipeMap.sMappings) {
+            map.getBackend()
+                .reInit();
+        }
     }
 
     public ItemStack getRepresentativeInput(int aIndex) {
@@ -507,7 +507,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     /**
      * Sets description shown on NEI. <br>
      * If you have a large number of recipes for the recipemap, this is not efficient memory wise, so use
-     * {@link RecipeMap#setNEISpecialInfoFormatter} instead.
+     * {@link gregtech.api.recipe.RecipeMapBuilder#neiSpecialInfoFormatter} instead.
      */
     public void setNeiDesc(String... neiDesc) {
         this.neiDesc = neiDesc;
@@ -788,7 +788,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         GT_Recipe_WithAlt(ItemStack[] mInputs, ItemStack[] mOutputs, FluidStack[] mFluidInputs,
             FluidStack[] mFluidOutputs, int[] mChances, Object mSpecialItems, int mDuration, int mEUt,
             int mSpecialValue, boolean mEnabled, boolean mHidden, boolean mFakeRecipe, boolean mCanBeBuffered,
-            boolean mNeedsEmptyOutput, String[] neiDesc, ItemStack[][] mOreDictAlt) {
+            boolean mNeedsEmptyOutput, boolean nbtSensitive, String[] neiDesc, ItemStack[][] mOreDictAlt) {
             super(
                 mInputs,
                 mOutputs,
@@ -804,6 +804,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 mFakeRecipe,
                 mCanBeBuffered,
                 mNeedsEmptyOutput,
+                nbtSensitive,
                 neiDesc);
             this.mOreDictAlt = mOreDictAlt;
         }

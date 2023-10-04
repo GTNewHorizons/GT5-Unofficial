@@ -5,7 +5,7 @@ import static gregtech.api.enums.GT_Values.V;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.enums.GT_Values;
-import gregtech.nei.FusionSpecialValueFormatter;
+import gregtech.nei.formatter.FusionSpecialValueFormatter;
 
 public class FusionPower extends BasicMachineEUPower {
 

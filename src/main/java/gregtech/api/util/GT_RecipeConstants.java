@@ -136,6 +136,7 @@ public class GT_RecipeConstants {
             .validateOutputFluidCount(-1, 0)
             .validateInputFluidCount(0, 4)
             .buildWithAlt();
+        // noinspection SimplifyOptionalCallChains
         if (!rr.isPresent()) return Collections.emptyList();
         GT_Recipe.GT_Recipe_WithAlt r = rr.get();
         ItemStack[][] mOreDictAlt = r.mOreDictAlt;

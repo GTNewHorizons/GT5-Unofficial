@@ -261,7 +261,7 @@ public class GT_MetaTileEntity_ProcessingArray extends
 
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
-        logic.setAvailableVoltage(GT_Values.V[tTier] * (mLastRecipeMap != null ? mLastRecipeMap.mAmperage : 1));
+        logic.setAvailableVoltage(GT_Values.V[tTier] * (mLastRecipeMap != null ? mLastRecipeMap.getAmperage() : 1));
         logic.setAvailableAmperage(getMaxParallel());
         logic.setAmperageOC(false);
     }

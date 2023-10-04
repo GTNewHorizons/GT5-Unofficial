@@ -5,7 +5,6 @@ import static gregtech.api.enums.GT_Values.VN;
 import static gregtech.api.enums.GT_Values.W;
 import static gregtech.api.enums.GT_Values.ticksBetweenSounds;
 import static gregtech.api.enums.Mods.BartWorks;
-import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import static net.minecraftforge.common.util.ForgeDirection.UP;
 
@@ -99,7 +98,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
             aName,
             aNameRegional,
             aTier,
-            aRecipes.mAmperage,
+            aRecipes.getAmperage(),
             aDescription,
             aInputSlots,
             aOutputSlots,
@@ -182,7 +181,8 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
         this.mRequiresFluidForFiltering = aRequiresFluidForFiltering;
         this.mRecipes = aRecipes;
         this.mSoundResourceLocation = aSound;
-        this.progressBarTexture = mRecipes.getProgressBarTextureRaw();
+        this.progressBarTexture = mRecipes.getFrontend()
+            .getUIProperties().progressBarTexture;
 
         // TODO: CHECK
         if (aRecipe != null) {
@@ -718,8 +718,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
     }
 
     public GT_MetaTileEntity_BasicMachine_GT_Recipe setProgressBarTextureName(String name, UITexture fallback) {
-        return setProgressBarTexture(
-            new FallbackableUITexture(UITexture.fullImage(GregTech.ID, "gui/progressbar/" + name), fallback));
+        return setProgressBarTexture(GT_UITextures.fallbackableProgressbar(name, fallback));
     }
 
     public GT_MetaTileEntity_BasicMachine_GT_Recipe setProgressBarTextureName(String name) {
@@ -934,8 +933,10 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
     @Override
     protected ProgressBar createProgressBar(UITexture texture, int imageSize, ProgressBar.Direction direction,
         Pos2d pos, Size size) {
-        return super.createProgressBar(texture, imageSize, direction, pos, size)
-            .setTexture(progressBarTexture.get(), mRecipes.getProgressBarImageSize());
+        return super.createProgressBar(texture, imageSize, direction, pos, size).setTexture(
+            progressBarTexture.get(),
+            mRecipes.getFrontend()
+                .getUIProperties().progressBarImageSize);
     }
 
     public enum X {

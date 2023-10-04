@@ -721,7 +721,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
             afterSomeTime++;
             if (afterSomeTime >= 100L) {
                 afterSomeTime = 0;
-                for (GT_Recipe recipe : RecipeMaps.assemblylineVisualRecipes.mRecipeList) {
+                for (GT_Recipe recipe : RecipeMaps.assemblylineVisualRecipes.getAllRecipes()) {
                     recipe.mHidden = false;
                 }
             }

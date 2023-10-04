@@ -1,43 +1,29 @@
 package gregtech.api.recipe.maps;
 
-import java.awt.Rectangle;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
+
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 
 import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.api.recipe.RecipeMap;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.recipe.BasicUIPropertiesBuilder;
+import gregtech.api.recipe.NEIRecipePropertiesBuilder;
+import gregtech.api.recipe.RecipeMapFrontend;
+import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
 
-public class AssemblyLineFakeRecipeMap extends RecipeMap {
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
+public class AssemblyLineFrontend extends RecipeMapFrontend {
 
-    public AssemblyLineFakeRecipeMap(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName, String aLocalName,
-        String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount, int aMinimalInputItems,
-        int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre, int aNEISpecialValueMultiplier,
-        String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI, boolean aNEIAllowed) {
-        super(
-            aRecipeList,
-            aUnlocalizedName,
-            aLocalName,
-            aNEIName,
-            aNEIGUIPath,
-            aUsualInputCount,
-            aUsualOutputCount,
-            aMinimalInputItems,
-            aMinimalInputFluids,
-            aAmperage,
-            aNEISpecialValuePre,
-            aNEISpecialValueMultiplier,
-            aNEISpecialValuePost,
-            aShowVoltageAmperageInNEI,
-            aNEIAllowed);
-        setNEITransferRect(new Rectangle(146, 26, 10, 18));
+    public AssemblyLineFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
+        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+        super(uiPropertiesBuilder, neiPropertiesBuilder);
     }
 
     @Override
@@ -61,7 +47,7 @@ public class AssemblyLineFakeRecipeMap extends RecipeMap {
     }
 
     @Override
-    public void addProgressBarUI(ModularWindow.Builder builder, Supplier<Float> progressSupplier, Pos2d windowOffset) {
+    public void addProgressBar(ModularWindow.Builder builder, Supplier<Float> progressSupplier, Pos2d windowOffset) {
         int bar1Width = 17;
         int bar2Width = 18;
         builder.widget(

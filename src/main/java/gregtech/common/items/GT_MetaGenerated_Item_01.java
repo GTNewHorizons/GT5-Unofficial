@@ -4539,7 +4539,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
     }
 
     public boolean isPlasmaCellUsed(OrePrefixes aPrefix, Materials aMaterial) {
-        Collection<GT_Recipe> fusionRecipes = RecipeMaps.fusionRecipes.mRecipeList;
+        Collection<GT_Recipe> fusionRecipes = RecipeMaps.fusionRecipes.getAllRecipes();
         if (aPrefix == OrePrefixes.cellPlasma && aMaterial.getPlasma(1L) != null) { // Materials has a plasma fluid
             for (GT_Recipe recipe : fusionRecipes) { // Loop through fusion recipes
                 if (recipe.getFluidOutput(0) != null) { // Make sure fluid output can't be null (not sure if possible)

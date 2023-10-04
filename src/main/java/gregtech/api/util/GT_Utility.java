@@ -4752,7 +4752,8 @@ public class GT_Utility {
 
     public static int getPlasmaFuelValueInEUPerLiterFromFluid(FluidStack aLiquid) {
         if (aLiquid == null) return 0;
-        GT_Recipe tFuel = RecipeMaps.plasmaFuels.findFuel(aLiquid);
+        GT_Recipe tFuel = RecipeMaps.plasmaFuels.getBackend()
+            .findFuel(aLiquid);
         if (tFuel != null) return tFuel.mSpecialValue;
         return 0;
     }

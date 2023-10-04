@@ -40,6 +40,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Outpu
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.maps.OilCrackerBackend;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 
@@ -168,7 +169,7 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
     }
 
     @Override
-    public RecipeMap getRecipeMap() {
+    public RecipeMap<OilCrackerBackend> getRecipeMap() {
         return RecipeMaps.crackingRecipes;
     }
 
@@ -325,14 +326,15 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
             tHatch.mRecipeMap = getRecipeMap();
             if (tHatch instanceof GT_MetaTileEntity_Hatch_MultiInput) {
                 for (final FluidStack tFluid : ((GT_MetaTileEntity_Hatch_MultiInput) tHatch).getStoredFluid()) {
-                    if (tFluid != null && !RecipeMaps.crackingRecipes.isValidCatalystFluid(tFluid)) {
+                    if (tFluid != null && !getRecipeMap().getBackend()
+                        .isValidCatalystFluid(tFluid)) {
                         rList.add(tFluid);
                     }
                 }
             } else {
                 if (tHatch.getFillableStack() != null) {
-                    if (!RecipeMaps.crackingRecipes.isValidCatalystFluid(tHatch.getFillableStack()))
-                        rList.add(tHatch.getFillableStack());
+                    if (!getRecipeMap().getBackend()
+                        .isValidCatalystFluid(tHatch.getFillableStack())) rList.add(tHatch.getFillableStack());
                 }
             }
         }
@@ -340,14 +342,16 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
             tHatch.mRecipeMap = getRecipeMap();
             if (tHatch instanceof GT_MetaTileEntity_Hatch_MultiInput) {
                 for (final FluidStack tFluid : ((GT_MetaTileEntity_Hatch_MultiInput) tHatch).getStoredFluid()) {
-                    if (tFluid != null && RecipeMaps.crackingRecipes.isValidCatalystFluid(tFluid)) {
+                    if (tFluid != null && getRecipeMap().getBackend()
+                        .isValidCatalystFluid(tFluid)) {
                         rList.add(tFluid);
                     }
                 }
             } else {
                 if (tHatch.getFillableStack() != null) {
                     final FluidStack tStack = tHatch.getFillableStack();
-                    if (RecipeMaps.crackingRecipes.isValidCatalystFluid(tStack)) {
+                    if (getRecipeMap().getBackend()
+                        .isValidCatalystFluid(tStack)) {
                         rList.add(tStack);
                     }
                 }

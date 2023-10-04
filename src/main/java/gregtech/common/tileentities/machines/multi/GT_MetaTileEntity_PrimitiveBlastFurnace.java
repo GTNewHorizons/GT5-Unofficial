@@ -511,7 +511,9 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
             .widget(
                 new ProgressBar().setTexture(GT_UITextures.PROGRESSBAR_ARROW_2_STEAM.get(getSteamVariant()), 20)
                     .setProgress(() -> (float) mProgresstime / mMaxProgresstime)
-                    .setNEITransferRect(getRecipeMap().mNEIName)
+                    .setNEITransferRect(
+                        getRecipeMap().getFrontend()
+                            .getUIProperties().neiTransferRectId)
                     .setPos(58, 24)
                     .setSize(20, 18));
     }

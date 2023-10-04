@@ -627,7 +627,9 @@ public abstract class GT_MetaTileEntity_FusionComputer
                 .setDefaultColor(COLOR_TEXT_RED.get())
                 .setPos(50, 155))
             .widget(
-                new ButtonWidget().setNEITransferRect(RecipeMaps.fusionRecipes.mNEIName)
+                new ButtonWidget().setNEITransferRect(
+                    RecipeMaps.fusionRecipes.getFrontend()
+                        .getUIProperties().neiTransferRectId)
                     .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_NEI)
                     .setPos(154, 4)
                     .setSize(18, 18));

@@ -359,7 +359,7 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
                 for (GT_Recipe.GT_Recipe_AssemblyLine tRecipe : GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes) {
                     if (GT_Utility.areStacksEqual(tRecipe.mResearchItem, aStack, true)) {
                         boolean failScanner = true;
-                        for (GT_Recipe scannerRecipe : scannerFakeRecipes.mRecipeList) {
+                        for (GT_Recipe scannerRecipe : scannerFakeRecipes.getAllRecipes()) {
                             if (GT_Utility.areStacksEqual(scannerRecipe.mInputs[0], aStack, true)) {
                                 failScanner = false;
                                 break;

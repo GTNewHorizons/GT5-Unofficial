@@ -5,12 +5,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.recipe.maps.SpaceProjectRecipeMap;
+import gregtech.api.util.GT_Recipe;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceBody;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 
@@ -175,6 +177,17 @@ public class SpaceProjectManager {
 
     // #region Project Helper methods
 
+    public static class FakeSpaceProjectRecipe extends GT_Recipe {
+
+        public final String projectName;
+
+        public FakeSpaceProjectRecipe(boolean aOptimize, ItemStack[] aInputs, FluidStack[] aFluidInputs, int aDuration,
+            int aEUt, int aSpecialValue, String projectName) {
+            super(aOptimize, aInputs, null, null, null, aFluidInputs, null, aDuration, aEUt, aSpecialValue);
+            this.projectName = projectName;
+        }
+    }
+
     /**
      * Used to add projects to the internal map.
      *
@@ -183,7 +196,7 @@ public class SpaceProjectManager {
     public static void addProject(ISpaceProject project) {
         spaceProjects.put(project.getProjectName(), project);
         RecipeMaps.spaceProjectFakeRecipes.add(
-            new SpaceProjectRecipeMap.FakeSpaceProjectRecipe(
+            new FakeSpaceProjectRecipe(
                 false,
                 project.getTotalItemsCost(),
                 project.getTotalFluidsCost(),

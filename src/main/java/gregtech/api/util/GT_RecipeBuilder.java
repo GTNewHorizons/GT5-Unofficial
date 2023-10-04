@@ -1,5 +1,6 @@
 package gregtech.api.util;
 
+import static gregtech.api.recipe.check.FindRecipeResult.NOT_FOUND;
 import static gregtech.api.util.GT_Utility.copyFluidArray;
 import static gregtech.api.util.GT_Utility.copyItemArray;
 
@@ -13,6 +14,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import javax.annotation.Nonnull;
 
@@ -21,6 +23,7 @@ import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.interfaces.IRecipeMap;
+import gregtech.api.recipe.check.FindRecipeResult;
 import gregtech.api.util.extensions.ArrayExt;
 
 public class GT_RecipeBuilder {
@@ -72,6 +75,7 @@ public class GT_RecipeBuilder {
     protected boolean fakeRecipe = false;
     protected boolean mCanBeBuffered = true;
     protected boolean mNeedsEmptyOutput = false;
+    protected boolean nbtSensitive = false;
     protected String[] neiDesc;
     protected boolean optimize = true;
     protected Map<MetadataIdentifier<?>, Object> additionalData = new HashMap<>();
@@ -82,7 +86,7 @@ public class GT_RecipeBuilder {
     private GT_RecipeBuilder(ItemStack[] inputsBasic, Object[] inputsOreDict, ItemStack[] outputs, ItemStack[][] alts,
         FluidStack[] fluidInputs, FluidStack[] fluidOutputs, int[] chances, Object special, int duration, int eut,
         int specialValue, boolean enabled, boolean hidden, boolean fakeRecipe, boolean mCanBeBuffered,
-        boolean mNeedsEmptyOutput, String[] neiDesc, boolean optimize,
+        boolean mNeedsEmptyOutput, boolean nbtSensitive, String[] neiDesc, boolean optimize,
         Map<MetadataIdentifier<?>, Object> additionalData, boolean valid) {
         this.inputsBasic = inputsBasic;
         this.inputsOreDict = inputsOreDict;
@@ -100,6 +104,7 @@ public class GT_RecipeBuilder {
         this.fakeRecipe = fakeRecipe;
         this.mCanBeBuffered = mCanBeBuffered;
         this.mNeedsEmptyOutput = mNeedsEmptyOutput;
+        this.nbtSensitive = nbtSensitive;
         this.neiDesc = neiDesc;
         this.optimize = optimize;
         this.additionalData.putAll(additionalData);
@@ -377,6 +382,11 @@ public class GT_RecipeBuilder {
         return this;
     }
 
+    public GT_RecipeBuilder nbtSensitive() {
+        this.nbtSensitive = true;
+        return this;
+    }
+
     public GT_RecipeBuilder setNEIDesc(String... neiDesc) {
         this.neiDesc = neiDesc;
         return this;
@@ -445,6 +455,7 @@ public class GT_RecipeBuilder {
             fakeRecipe,
             mCanBeBuffered,
             mNeedsEmptyOutput,
+            nbtSensitive,
             copy(neiDesc),
             optimize,
             additionalData,
@@ -472,6 +483,7 @@ public class GT_RecipeBuilder {
             fakeRecipe,
             mCanBeBuffered,
             mNeedsEmptyOutput,
+            nbtSensitive,
             copy(neiDesc),
             optimize,
             Collections.emptyMap(),
@@ -652,6 +664,12 @@ public class GT_RecipeBuilder {
 
     // endregion
 
+    /**
+     * Builds new recipe, without custom behavior of recipemaps. For adding recipe to recipemap,
+     * use {@link #addTo} instead.
+     *
+     * @return Built recipe. Returns empty if failed to build.
+     */
     public Optional<GT_Recipe> build() {
         if (!valid) {
             if (DEBUG_MODE) handleInvalidRecipe();
@@ -676,7 +694,17 @@ public class GT_RecipeBuilder {
                     fakeRecipe,
                     mCanBeBuffered,
                     mNeedsEmptyOutput,
+                    nbtSensitive,
                     neiDesc)));
+    }
+
+    /**
+     * Util method for custom recipe search logic to build recipe and construct {@link FindRecipeResult}.
+     */
+    public FindRecipeResult buildAndGetResult(Predicate<GT_Recipe> validator) {
+        return build().filter(validator)
+            .map(FindRecipeResult::ofSuccess)
+            .orElse(NOT_FOUND);
     }
 
     public GT_RecipeBuilder forceOreDictInput() {
@@ -711,6 +739,7 @@ public class GT_RecipeBuilder {
                     fakeRecipe,
                     mCanBeBuffered,
                     mNeedsEmptyOutput,
+                    nbtSensitive,
                     neiDesc,
                     alts)));
     }
@@ -752,6 +781,7 @@ public class GT_RecipeBuilder {
         r.mHidden = hidden;
         r.mCanBeBuffered = mCanBeBuffered;
         r.mNeedsEmptyOutput = mNeedsEmptyOutput;
+        r.isNBTSensitive = nbtSensitive;
         r.mFakeRecipe = fakeRecipe;
         r.mEnabled = enabled;
         if (neiDesc != null) r.setNeiDesc(neiDesc);
@@ -777,6 +807,7 @@ public class GT_RecipeBuilder {
         inputsOreDict = null;
         mCanBeBuffered = true;
         mNeedsEmptyOutput = false;
+        nbtSensitive = false;
         neiDesc = null;
         optimize = true;
         outputs = null;

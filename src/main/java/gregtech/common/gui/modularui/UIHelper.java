@@ -6,14 +6,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.modularui.SteamTexture;
-import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMapFrontend;
+import gregtech.api.util.MethodsReturnNonnullByDefault;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class UIHelper {
 
     /**
@@ -21,9 +25,10 @@ public class UIHelper {
      */
     public static void forEachSlots(ForEachSlot forEachItemInputSlot, ForEachSlot forEachItemOutputSlot,
         ForEachSlot forEachSpecialSlot, ForEachSlot forEachFluidInputSlot, ForEachSlot forEachFluidOutputSlot,
-        IDrawable itemSlotBackground, IDrawable fluidSlotBackground, @Nullable RecipeMap recipeMap, int itemInputCount,
-        int itemOutputCount, int fluidInputCount, int fluidOutputCount, SteamVariant steamVariant, Pos2d offset) {
-        List<Pos2d> itemInputPositions = recipeMap != null ? recipeMap.getItemInputPositions(itemInputCount)
+        IDrawable itemSlotBackground, IDrawable fluidSlotBackground, @Nullable RecipeMapFrontend frontend,
+        int itemInputCount, int itemOutputCount, int fluidInputCount, int fluidOutputCount, SteamVariant steamVariant,
+        Pos2d offset) {
+        List<Pos2d> itemInputPositions = frontend != null ? frontend.getItemInputPositions(itemInputCount)
             : UIHelper.getItemInputPositions(itemInputCount);
         itemInputPositions = itemInputPositions.stream()
             .map(p -> p.add(offset))
@@ -31,11 +36,11 @@ public class UIHelper {
         for (int i = 0; i < itemInputPositions.size(); i++) {
             forEachItemInputSlot.accept(
                 i,
-                getBackgroundsForSlot(itemSlotBackground, recipeMap, false, false, i, false, steamVariant),
+                getBackgroundsForSlot(itemSlotBackground, frontend, false, false, i, false, steamVariant),
                 itemInputPositions.get(i));
         }
 
-        List<Pos2d> itemOutputPositions = recipeMap != null ? recipeMap.getItemOutputPositions(itemOutputCount)
+        List<Pos2d> itemOutputPositions = frontend != null ? frontend.getItemOutputPositions(itemOutputCount)
             : UIHelper.getItemOutputPositions(itemOutputCount);
         itemOutputPositions = itemOutputPositions.stream()
             .map(p -> p.add(offset))
@@ -43,16 +48,16 @@ public class UIHelper {
         for (int i = 0; i < itemOutputPositions.size(); i++) {
             forEachItemOutputSlot.accept(
                 i,
-                getBackgroundsForSlot(itemSlotBackground, recipeMap, false, true, i, false, steamVariant),
+                getBackgroundsForSlot(itemSlotBackground, frontend, false, true, i, false, steamVariant),
                 itemOutputPositions.get(i));
         }
 
         forEachSpecialSlot.accept(
             0,
-            getBackgroundsForSlot(itemSlotBackground, recipeMap, false, false, 0, true, steamVariant),
-            (recipeMap != null ? recipeMap.getSpecialItemPosition() : UIHelper.getSpecialItemPosition()).add(offset));
+            getBackgroundsForSlot(itemSlotBackground, frontend, false, false, 0, true, steamVariant),
+            (frontend != null ? frontend.getSpecialItemPosition() : UIHelper.getSpecialItemPosition()).add(offset));
 
-        List<Pos2d> fluidInputPositions = recipeMap != null ? recipeMap.getFluidInputPositions(fluidInputCount)
+        List<Pos2d> fluidInputPositions = frontend != null ? frontend.getFluidInputPositions(fluidInputCount)
             : UIHelper.getFluidInputPositions(fluidInputCount);
         fluidInputPositions = fluidInputPositions.stream()
             .map(p -> p.add(offset))
@@ -60,11 +65,11 @@ public class UIHelper {
         for (int i = 0; i < fluidInputPositions.size(); i++) {
             forEachFluidInputSlot.accept(
                 i,
-                getBackgroundsForSlot(fluidSlotBackground, recipeMap, true, false, i, false, steamVariant),
+                getBackgroundsForSlot(fluidSlotBackground, frontend, true, false, i, false, steamVariant),
                 fluidInputPositions.get(i));
         }
 
-        List<Pos2d> fluidOutputPositions = recipeMap != null ? recipeMap.getFluidOutputPositions(fluidOutputCount)
+        List<Pos2d> fluidOutputPositions = frontend != null ? frontend.getFluidOutputPositions(fluidOutputCount)
             : UIHelper.getFluidOutputPositions(fluidOutputCount);
         fluidOutputPositions = fluidOutputPositions.stream()
             .map(p -> p.add(offset))
@@ -72,7 +77,7 @@ public class UIHelper {
         for (int i = 0; i < fluidOutputPositions.size(); i++) {
             forEachFluidOutputSlot.accept(
                 i,
-                getBackgroundsForSlot(fluidSlotBackground, recipeMap, true, true, i, false, steamVariant),
+                getBackgroundsForSlot(fluidSlotBackground, frontend, true, true, i, false, steamVariant),
                 fluidOutputPositions.get(i));
         }
     }
@@ -171,25 +176,37 @@ public class UIHelper {
         return getGridPositions(itemCount, xOrigin, yOrigin, xDirMaxCount, yDirMaxCount);
     }
 
-    private static IDrawable[] getBackgroundsForSlot(IDrawable base, RecipeMap recipeMap, boolean isFluid,
-        boolean isOutput, int index, boolean isSpecial, SteamVariant steamVariant) {
-        if (recipeMap != null) {
-            IDrawable overlay;
-            if (steamVariant != SteamVariant.NONE) {
-                SteamTexture steamTexture = recipeMap.getOverlayForSlotSteam(isFluid, isOutput, index, isSpecial);
-                if (steamTexture != null) {
-                    overlay = steamTexture.get(steamVariant);
-                } else {
-                    overlay = null;
-                }
-            } else {
-                overlay = recipeMap.getOverlayForSlot(isFluid, isOutput, index, isSpecial);
-            }
-            if (overlay != null) {
-                return new IDrawable[] { base, overlay };
-            }
+    private static IDrawable[] getBackgroundsForSlot(IDrawable base, @Nullable RecipeMapFrontend frontend,
+        boolean isFluid, boolean isOutput, int index, boolean isSpecial, SteamVariant steamVariant) {
+        IDrawable overlay = getOverlay(frontend, isFluid, isOutput, index, isSpecial, steamVariant);
+        if (overlay != null) {
+            return new IDrawable[] { base, overlay };
+        } else {
+            return new IDrawable[] { base };
         }
-        return new IDrawable[] { base };
+    }
+
+    @Nullable
+    private static IDrawable getOverlay(@Nullable RecipeMapFrontend frontend, boolean isFluid, boolean isOutput,
+        int index, boolean isSpecial, SteamVariant steamVariant) {
+        if (frontend == null) {
+            return null;
+        }
+        if (isSpecial && !frontend.getUIProperties().useSpecialSlot) {
+            return null;
+        }
+        if (steamVariant != SteamVariant.NONE) {
+            SteamTexture steamTexture = frontend.getUIProperties()
+                .getOverlayForSlotSteam(index, isFluid, isOutput, isSpecial);
+            if (steamTexture != null) {
+                return steamTexture.get(steamVariant);
+            } else {
+                return null;
+            }
+        } else {
+            return frontend.getUIProperties()
+                .getOverlayForSlot(index, isFluid, isOutput, isSpecial);
+        }
     }
 
     @FunctionalInterface

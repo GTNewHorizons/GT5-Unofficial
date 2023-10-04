@@ -74,7 +74,8 @@ public class GT_MetaTileEntity_LargeTurbine_GasAdvanced extends GT_MetaTileEntit
 
     public int getFuelValue(FluidStack aLiquid) {
         if (aLiquid == null) return 0;
-        GT_Recipe tFuel = RecipeMaps.gasTurbineFuels.findFuel(aLiquid);
+        GT_Recipe tFuel = RecipeMaps.gasTurbineFuels.getBackend()
+            .findFuel(aLiquid);
         if (tFuel != null) return tFuel.mSpecialValue;
         return 0;
     }

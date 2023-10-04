@@ -49,7 +49,9 @@ public class GT_Achievements {
         this.achievementList = new ConcurrentHashMap<>();
         this.issuedAchievements = new ConcurrentHashMap<>();
 
-        for (GT_Recipe recipe : RecipeMaps.assemblylineVisualRecipes.mRecipeList) registerAssAchievement(recipe);
+        for (GT_Recipe recipe : RecipeMaps.assemblylineVisualRecipes.getAllRecipes()) {
+            registerAssAchievement(recipe);
+        }
 
         registerAchievement(
             "flintpick",
@@ -954,14 +956,8 @@ public class GT_Achievements {
                                                     issueAchievement(player, "conducting");
                                                 }
         if (player.capabilities.isCreativeMode && stack.getUnlocalizedName()
-            .equals("gt.metaitem.01.32761")) { // Debug
-                                               // Scanner
-                                               // pickup
-                                               // shows
-                                               // all
-                                               // assline
-                                               // recipes.
-            for (GT_Recipe recipe : RecipeMaps.assemblylineVisualRecipes.mRecipeList) {
+            .equals("gt.metaitem.01.32761")) { // Debug Scanner pickup shows all assline recipes.
+            for (GT_Recipe recipe : RecipeMaps.assemblylineVisualRecipes.getAllRecipes()) {
                 issueAchievement(
                     player,
                     recipe.getOutput(0)
@@ -969,7 +965,7 @@ public class GT_Achievements {
                 recipe.mHidden = false;
             }
         }
-        for (GT_Recipe recipe : RecipeMaps.assemblylineVisualRecipes.mRecipeList) {
+        for (GT_Recipe recipe : RecipeMaps.assemblylineVisualRecipes.getAllRecipes()) {
             if (recipe.getOutput(0)
                 .getUnlocalizedName()
                 .equals(stack.getUnlocalizedName())) {
