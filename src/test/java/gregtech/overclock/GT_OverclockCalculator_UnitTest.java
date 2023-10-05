@@ -301,7 +301,21 @@ class GT_OverclockCalculator_UnitTest {
             .setOneTickDiscount(true)
             .calculate();
         assertEquals(1, calculator.getDuration(), messageDuration);
-        assertEquals(480 >> 3, calculator.getConsumption(), messageEUt);
+
+        /**
+         * duration with speedboost = 5
+         * log_2(5) ~ 2.3;
+         * round up to 3 to reach one tick duration
+         */
+        int overclocksTillOneTick = 3;
+        int overclocksBeyondOneTick = 2;
+
+        // 3 overclocks, each gives 4x consumption growth per tick (1920)
+        long targetEUt = VP[1] << 2 * overclocksTillOneTick;
+        // 2 remaining overclocks are beyond 1 tick, each provides 2x comsumption discount (480)
+        targetEUt >>= overclocksBeyondOneTick;
+
+        assertEquals(targetEUt, calculator.getConsumption(), messageEUt);
     }
 
     @Test
@@ -313,8 +327,22 @@ class GT_OverclockCalculator_UnitTest {
             .enablePerfectOC()
             .setOneTickDiscount(true)
             .calculate();
+
+        /**
+         * duration with speedboost = 18
+         * log_4(18) ~ 2.08;
+         * round up to 3 to reach one tick duration
+         */
+        int overclocksTillOneTick = 3;
+        int overclocksBeyondOneTick = 2;
+
+        // 3 overclocks, each gives 4x consumption growth per tick (1920)
+        long targetEUt = VP[1] << 2 * overclocksTillOneTick;
+        // 2 remaining overclocks are beyond 1 tick, each provides 4x comsumption discount (120)
+        targetEUt >>= 2 * overclocksBeyondOneTick;
+
+        assertEquals(targetEUt, calculator.getConsumption(), messageEUt);
         assertEquals(1, calculator.getDuration(), messageDuration);
-        assertEquals(480 >> 6, calculator.getConsumption(), messageEUt);
     }
 
     @Test
