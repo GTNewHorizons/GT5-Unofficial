@@ -31,15 +31,16 @@ public class FrameBoxSimpleBlockRenderer implements ISimpleBlockRenderingHandler
     }
 
     @Override
-    public void renderInventoryBlock(Block block, int ID, int modelId, RenderBlocks renderer) {
+    public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
 
         Tessellator tessellator = Tessellator.instance;
 
-        ModernMaterial material = materialIDToMaterial.getOrDefault(ID, materialIDToMaterial.get(2));
+        final int materialID = ((NewDumb) block).getMaterialID(metadata);
+        final ModernMaterial material = materialIDToMaterial.getOrDefault(materialID, materialIDToMaterial.get(2));
 
         if (material == null) return;
 
-        Color color = material.getColor();
+        final Color color = material.getColor();
         int red = color.getRed();
         int green = color.getGreen();
         int blue = color.getBlue();
@@ -48,14 +49,10 @@ public class FrameBoxSimpleBlockRenderer implements ISimpleBlockRenderingHandler
 
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 
-        //tessellator.startDrawingQuads();
-        //drawBlock(Blocks.stone, ID, renderer);
-        //tessellator.draw();
-
         GL11.glColor3f(red / 255.0f, green / 255.0f, blue / 255.0f);
 
         tessellator.startDrawingQuads();
-        drawBlock(block, ID, renderer);
+        drawBlock(block, materialID, renderer);
         tessellator.draw();
 
         GL11.glPopMatrix();
@@ -63,6 +60,10 @@ public class FrameBoxSimpleBlockRenderer implements ISimpleBlockRenderingHandler
 
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+
+        renderer.renderStandardBlock(block, x, y, z);
+        /*
+
         Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
 
         NewDumb newDumb = (NewDumb) world.getBlock(x, y, z);
@@ -76,12 +77,14 @@ public class FrameBoxSimpleBlockRenderer implements ISimpleBlockRenderingHandler
         int green = color.getGreen();
         int blue = color.getBlue();
 
-        GL11.glPushMatrix();
-        GL11.glColor3f(red / 255.0f, green / 255.0f, blue / 255.0f);
 
+        GL11.glPushMatrix();
+        GL11.glTranslated(1, 1, 1);
+        //GL11.glColor4f(red / 255f, blue / 255f, green / 255f, 1f);
+        GL11.glColor4f(1.0F, 0.5F, 0.5F, 1.0F);
         renderer.renderStandardBlock(block, x, y, z);
         GL11.glPopMatrix();
-
+*/
         return true;
     }
 

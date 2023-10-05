@@ -31,6 +31,9 @@ public enum BlocksEnum implements IGetItem, IAssociatedMaterials {
     );
 
     public String getLocalisedName(final ModernMaterial material) {
+
+        if (material == null) return "Error: NULL";
+
         return unlocalizedName.replace("%", material.getMaterialName());
     }
 

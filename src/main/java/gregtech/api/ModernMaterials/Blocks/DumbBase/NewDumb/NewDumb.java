@@ -31,6 +31,7 @@ public abstract class NewDumb extends Block {
 
     public NewDumb(int blockIDOffset, List<Integer> validIDs) {
         super(Material.rock);
+
         setHardness(1.5F);
         setResistance(10.0F);
 
@@ -60,5 +61,11 @@ public abstract class NewDumb extends Block {
 
     public int getMaterialID(int metadata) {
         return blockIDOffset * 16 + metadata;
+    }
+
+    @Override
+    public int damageDropped(int meta)
+    {
+        return meta;
     }
 }
