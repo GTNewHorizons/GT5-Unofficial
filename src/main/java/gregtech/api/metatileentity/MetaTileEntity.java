@@ -1111,6 +1111,22 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
             tWorld.createExplosion(null, tX + 0.5, tY + 0.5, tZ + 0.5, tStrength, true);
     }
 
+    /**
+     * Dismantles this machine, as if it were broken by player with wrench.
+     */
+    public void dismantle() {
+        int x = getBaseMetaTileEntity().getXCoord();
+        int y = getBaseMetaTileEntity().getYCoord();
+        int z = getBaseMetaTileEntity().getZCoord();
+        World world = getBaseMetaTileEntity().getWorld();
+        Block block = world.getBlock(x, y, z);
+        int blockMeta = world.getBlockMetadata(x, y, z);
+
+        block.dropBlockAsItem(world, x, y, z, blockMeta, 0);
+        world.setBlock(x, y, z, Blocks.air);
+        world.playAuxSFX(2001, x, y, z, Block.getIdFromBlock(block) + (blockMeta << 12));
+    }
+
     @Override
     public int getLightOpacity() {
         return ((BaseMetaTileEntity) getBaseMetaTileEntity()).getLightValue() > 0 ? 0 : 255;

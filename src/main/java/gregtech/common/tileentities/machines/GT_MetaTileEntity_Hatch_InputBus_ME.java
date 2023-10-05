@@ -14,10 +14,8 @@ import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -750,16 +748,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                     mInventory[i] = null;
                 }
                 if (tryPushBackAllItems()) {
-                    int x = getBaseMetaTileEntity().getXCoord();
-                    int y = getBaseMetaTileEntity().getYCoord();
-                    int z = getBaseMetaTileEntity().getZCoord();
-                    World world = getBaseMetaTileEntity().getWorld();
-                    Block block = world.getBlock(x, y, z);
-                    int blockMeta = world.getBlockMetadata(x, y, z);
-
-                    block.dropBlockAsItem(world, x, y, z, blockMeta, 0);
-                    world.setBlock(x, y, z, Blocks.air);
-                    world.playAuxSFX(2001, x, y, z, Block.getIdFromBlock(block) + (blockMeta << 12));
+                    dismantle();
                 } else {
                     widget.getContext()
                         .getPlayer()
