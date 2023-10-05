@@ -36,7 +36,6 @@ public class GT_UITextures {
     public static final UITexture OVERLAY_SLOT_ARROW_ME = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/arrow_me");
     public static final UITexture OVERLAY_SLOT_PATTERN_ME = UITexture
         .fullImage(GregTech.ID, "gui/overlay_slot/pattern_me");
-
     public static final UITexture OVERLAY_SLOT_BEAKER_1 = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/beaker_1");
     public static final UITexture OVERLAY_SLOT_BEAKER_2 = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/beaker_2");
     public static final UITexture OVERLAY_SLOT_BEE_DRONE = UITexture
@@ -44,6 +43,7 @@ public class GT_UITextures {
     public static final UITexture OVERLAY_SLOT_BEE_QUEEN = UITexture
         .fullImage(GregTech.ID, "gui/overlay_slot/bee_queen");
     public static final UITexture OVERLAY_SLOT_BENDER = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/bender");
+    public static final UITexture OVERLAY_SLOT_BORDER = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/border");
     public static final UITexture OVERLAY_SLOT_BOX = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/box");
     public static final UITexture OVERLAY_SLOT_BOXED = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/boxed");
     public static final UITexture OVERLAY_SLOT_CANISTER = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/canister");
@@ -379,6 +379,8 @@ public class GT_UITextures {
         .fullImage(GregTech.ID, "gui/overlay_button/replace_cobble_off");
     public static final UITexture OVERLAY_RETRACT_PIPE = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/retract_pipes");
+    public static final UITexture OVERLAY_BUTTON_APPLY_TO_ALL = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/apply_to_all");
 
     /**
      * Can adjust size as needed.
