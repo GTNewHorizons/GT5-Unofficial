@@ -767,7 +767,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     }
 
     private ModularWindow createStockConfigWindow(EntityPlayer player) {
-        ModularWindow.Builder builder = createWindow();
+        ModularWindow.Builder builder = createWindow(Alignment.TopRight);
         builder.widget(
             new FakeSyncWidget.IntegerSyncer(
                 () -> stockConfigWindowSelectedIndex,
@@ -833,7 +833,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     }
 
     private ModularWindow createAutoPullConfigWindow(EntityPlayer player) {
-        ModularWindow.Builder builder = createWindow();
+        ModularWindow.Builder builder = createWindow(Alignment.BottomRight);
         builder.widget(
             TextWidget.localised("GT5U.machines.stocking_bus.auto_pull_mode_config")
                 .setPos(5, 7))
@@ -868,7 +868,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         return builder.build();
     }
 
-    private ModularWindow.Builder createWindow() {
+    private ModularWindow.Builder createWindow(Alignment alignment) {
         final int width = 130;
         final int height = 83;
         final int parentWidth = getGUIWidth();
@@ -880,7 +880,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         builder.setPos(
             (size, window) -> Alignment.Center.getAlignedPos(size, new Size(parentWidth, parentHeight))
                 .add(
-                    Alignment.TopRight.getAlignedPos(new Size(parentWidth, parentHeight), new Size(width, height))
+                    alignment.getAlignedPos(new Size(parentWidth, parentHeight), new Size(width, height))
                         .add(width - 3, 0)));
         return builder;
     }
