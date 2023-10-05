@@ -53,14 +53,12 @@ public class FrameBoxSimpleBlockRenderer implements ISimpleBlockRenderingHandler
 
         GL11.glColor3f(red / 255.0f, green / 255.0f, blue / 255.0f);
 
-        tessellator.startDrawingQuads();
-        drawBlock(block, ID, renderer);
-        tessellator.draw();
+//        tessellator.startDrawingQuads();
+//        drawBlock(block, ID, renderer);
+//        tessellator.draw();
 
         GL11.glPopMatrix();
     }
-
-
 
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
@@ -79,9 +77,9 @@ public class FrameBoxSimpleBlockRenderer implements ISimpleBlockRenderingHandler
 
         GL11.glPushMatrix();
         GL11.glColor4f(red / 255f, blue / 255f, green / 255f, 1f);
-        //renderer.renderStandardBlock(Blocks.stone, x, y, z);
+        renderer.renderStandardBlock(Blocks.stone, x, y, z);
         //renderBlock(Blocks.stone.getIcon(0,0));
-        renderer.renderStandardBlock(block, x, y, z);
+        //renderer.renderStandardBlock(block, x, y, z);
         GL11.glPopMatrix();
 
         return true;

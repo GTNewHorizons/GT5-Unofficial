@@ -24,6 +24,11 @@ public class NewDumbItemBlock extends ItemBlock {
         setCreativeTab(GregTech_API.TAB_GREGTECH_ORES); // todo add new tabs.
     }
 
+    @Override
+    public int getMetadata(int metadata)
+    {
+        return metadata;
+    }
 
     @Override
     public boolean getHasSubtypes() {
@@ -53,14 +58,5 @@ public class NewDumbItemBlock extends ItemBlock {
         NewDumb newDumb = (NewDumb) Block.getBlockFromItem(itemStack.getItem());
         return newDumb.getMaterialID(itemStack.getItemDamage());
     }
-
-
-//    @Override
-//    @SideOnly(Side.CLIENT)
-//    public int getColorFromItemStack(ItemStack itemStack, int renderPass) {
-//        final ModernMaterial associatedMaterial = ModernMaterialUtilities.materialIDToMaterial.get(itemStack.getItemDamage());
-//
-//        return associatedMaterial.getColor().getRGB();
-//    }
 
 }
