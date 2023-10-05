@@ -4,10 +4,10 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH_ACTIVE;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
@@ -84,6 +84,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch_InputBus
     implements IConfigurationCircuitSupport, IAddGregtechLogo, IAddUIWidgets, IPowerChannelState {
 
+    private static IDrawable WRENCH_DRAWABLE;
     private static final int SLOT_COUNT = 16;
     private static final int FETCH_INTERVAL_DEFAULT = 5;
     private static final int STOCK_CONFIG_WINDOW_ID = 98;
@@ -104,7 +105,6 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     private int[] fetchLimits = new int[SLOT_COUNT];
     private int autoPullInterval = FETCH_INTERVAL_DEFAULT;
     private int minAutoPullStackSize = 1;
-    private static IDrawable WRENCH_DRAWABLE;
     private boolean additionalConnection = false;
 
     public GT_MetaTileEntity_Hatch_InputBus_ME(int aID, String aName, String aNameRegional) {
