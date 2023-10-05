@@ -18,8 +18,8 @@ dependencies {
     // for testing EOH recipes
     //runtimeOnlyNonPublishable("TGregworks:TGregworks:1.7.10-GTNH-1.0.23:deobf")
     //runtimeOnlyNonPublishable('com.github.GTNewHorizons:TinkersConstruct:1.10.5-GTNH:dev')
-    //runtimeOnlyNonPublishable('com.github.GTNewHorizons:NewHorizonsCoreMod:2.2.11:dev')
-    //runtimeOnlyNonPublishable('com.github.GTNewHorizons:GoodGenerator:0.7.3:dev') {
+    //runtimeOnlyNonPublishable('com.github.GTNewHorizons:NewHorizonsCoreMod:2.2.12:dev')
+    //runtimeOnlyNonPublishable('com.github.GTNewHorizons:GoodGenerator:0.7.4:dev') {
     //    exclude group: "com.github.GTNewHorizons", module: "TecTech"
     //}
     //runtimeOnlyNonPublishable("curse.maven:extra-utilities-225561:2264384") {transitive=false}
