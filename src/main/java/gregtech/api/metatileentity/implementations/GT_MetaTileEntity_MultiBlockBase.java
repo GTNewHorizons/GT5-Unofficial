@@ -177,7 +177,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     /**
-     * @deprecated Use {@link GT_Utility#filterValidMTEs)}
+     * @deprecated Use {@link GT_Utility#filterValidMTEs}
      */
     @Deprecated
     public static <T extends MetaTileEntity> List<T> filterValidMetaTileEntities(Collection<T> metaTileEntities) {
