@@ -20,6 +20,7 @@ import org.lwjgl.opengl.GL11;
 import java.awt.*;
 
 import static gregtech.api.ModernMaterials.ModernMaterialUtilities.*;
+import static gregtech.api.enums.Mods.GregTech;
 
 public class FrameBoxSimpleBlockRenderer implements ISimpleBlockRenderingHandler {
 
@@ -47,15 +48,15 @@ public class FrameBoxSimpleBlockRenderer implements ISimpleBlockRenderingHandler
 
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 
-        tessellator.startDrawingQuads();
-        drawBlock(Blocks.stone, ID, renderer);
-        tessellator.draw();
+        //tessellator.startDrawingQuads();
+        //drawBlock(Blocks.stone, ID, renderer);
+        //tessellator.draw();
 
         GL11.glColor3f(red / 255.0f, green / 255.0f, blue / 255.0f);
 
-//        tessellator.startDrawingQuads();
-//        drawBlock(block, ID, renderer);
-//        tessellator.draw();
+        tessellator.startDrawingQuads();
+        drawBlock(block, ID, renderer);
+        tessellator.draw();
 
         GL11.glPopMatrix();
     }
@@ -76,10 +77,9 @@ public class FrameBoxSimpleBlockRenderer implements ISimpleBlockRenderingHandler
         int blue = color.getBlue();
 
         GL11.glPushMatrix();
-        GL11.glColor4f(red / 255f, blue / 255f, green / 255f, 1f);
-        renderer.renderStandardBlock(Blocks.stone, x, y, z);
-        //renderBlock(Blocks.stone.getIcon(0,0));
-        //renderer.renderStandardBlock(block, x, y, z);
+        GL11.glColor3f(red / 255.0f, green / 255.0f, blue / 255.0f);
+
+        renderer.renderStandardBlock(block, x, y, z);
         GL11.glPopMatrix();
 
         return true;

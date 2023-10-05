@@ -92,30 +92,30 @@ public class ModernMaterialUtilities {
 
     }
 
-    private static void registerTESRBlock(BlocksEnum blockType) {
-
-        final String name = "TESR:" + blockType;
-
-        try {
-            // Register the actual block.
-            BaseBlock simpleBlock = blockType.getBlockClass().getDeclaredConstructor().newInstance();
-            simpleBlock.setBlockName(name);
-            GameRegistry.registerBlock(simpleBlock, BaseItemBlock.class, name);
-
-            // Register the tile entity itself.
-            GameRegistry.registerTileEntity(blockType.getTileEntityClass(), name);
-
-            Item blockItem = Item.getItemFromBlock(simpleBlock);
-            MinecraftForgeClient.registerItemRenderer(blockItem, new MasterItemRenderer());
-
-            // Register the master TESR. This only exists to redirect to different TESRs for different materials.
-            ClientRegistry.bindTileEntitySpecialRenderer(blockType.getTileEntityClass(), new MasterTESR());
-
-        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException("Failed to instantiate block", e);
-        }
-
-    }
+//    private static void registerTESRBlock(BlocksEnum blockType) {
+//
+//        final String name = "TESR:" + blockType;
+//
+//        try {
+//            // Register the actual block.
+//            BaseBlock simpleBlock = blockType.getBlockClass().getDeclaredConstructor().newInstance();
+//            simpleBlock.setBlockName(name);
+//            GameRegistry.registerBlock(simpleBlock, BaseItemBlock.class, name);
+//
+//            // Register the tile entity itself.
+//            GameRegistry.registerTileEntity(blockType.getTileEntityClass(), name);
+//
+//            Item blockItem = Item.getItemFromBlock(simpleBlock);
+//            MinecraftForgeClient.registerItemRenderer(blockItem, new MasterItemRenderer());
+//
+//            // Register the master TESR. This only exists to redirect to different TESRs for different materials.
+//            ClientRegistry.bindTileEntitySpecialRenderer(blockType.getTileEntityClass(), new MasterTESR());
+//
+//        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+//            throw new RuntimeException("Failed to instantiate block", e);
+//        }
+//
+//    }
 
     private static void registerSimpleBlock(BlocksEnum blockType) {
 
@@ -134,7 +134,12 @@ public class ModernMaterialUtilities {
             offset++;
             if (IDs.isEmpty()) continue;
 
-            NewDumb block = new NewDumb(blockType, offset, IDs);
+            NewDumb block;
+            try {
+                block = blockType.getBlockClass().getDeclaredConstructor(int.class, List.class).newInstance(offset, IDs);
+            } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                throw new RuntimeException("Failed to instantiate block", e);
+            }
             GameRegistry.registerBlock(block, NewDumbItemBlock.class, blockType + "." + offset);
         }
     }

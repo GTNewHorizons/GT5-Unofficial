@@ -1,19 +1,21 @@
 package gregtech.api.ModernMaterials.Blocks.DumbBase.NewDumb;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
 import java.util.List;
 
-public class NewDumb extends Block {
+public abstract class NewDumb extends Block {
 
     List<Integer> validIDs;
-    private final BlocksEnum blockEnum;
 
     private final int blockIDOffset;
 
@@ -27,23 +29,20 @@ public class NewDumb extends Block {
         return false;
     }
 
-    public NewDumb(BlocksEnum blockEnum, int blockIDOffset, List<Integer> validIDs) {
+    public NewDumb(int blockIDOffset, List<Integer> validIDs) {
         super(Material.rock);
         setHardness(1.5F);
         setResistance(10.0F);
 
         this.validIDs = validIDs;
         this.blockIDOffset = blockIDOffset;
-        this.blockEnum = blockEnum;
     }
 
-    public BlocksEnum getBlockEnum() {
-        return blockEnum;
-    }
+    public abstract BlocksEnum getBlockEnum();
 
     @Override
     public int getRenderType() {
-        return blockEnum.getRenderId();
+        return getBlockEnum().getRenderId();
     }
 
     @Override

@@ -3,6 +3,8 @@ package gregtech.api.ModernMaterials.Blocks;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import gregtech.api.ModernMaterials.Blocks.DumbBase.Base.BaseBlock;
 import gregtech.api.ModernMaterials.Blocks.DumbBase.Base.BaseTileEntity;
+import gregtech.api.ModernMaterials.Blocks.DumbBase.NewDumb.FrameBoxNewDumb;
+import gregtech.api.ModernMaterials.Blocks.DumbBase.NewDumb.NewDumb;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxBlock;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxSimpleBlockRenderer;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxTileEntity;
@@ -11,6 +13,7 @@ import gregtech.api.ModernMaterials.PartsClasses.IAssociatedMaterials;
 import gregtech.api.ModernMaterials.PartsClasses.IGetItem;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.Item;
+import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
 import org.jetbrains.annotations.NotNull;
 
@@ -22,7 +25,7 @@ public enum BlocksEnum implements IGetItem, IAssociatedMaterials {
     // Define new blocks here.
     FrameBox(
         "% LARP Box",
-        FrameBoxBlock.class,
+        FrameBoxNewDumb.class,
         FrameBoxTileEntity.class,
         new FrameBoxSimpleBlockRenderer()
     );
@@ -35,18 +38,18 @@ public enum BlocksEnum implements IGetItem, IAssociatedMaterials {
         return tileClass;
     }
 
-    public Class<? extends BaseBlock> getBlockClass() {
+    public Class<? extends NewDumb> getBlockClass() {
         return blockClass;
     }
 
-    final private Class<? extends BaseBlock> blockClass;
+    final private Class<? extends NewDumb> blockClass;
     final private Class<? extends BaseTileEntity> tileClass;
     final private ISimpleBlockRenderingHandler simpleBlockRenderingHandler;
     final private String unlocalizedName;
     private Item item;
     private final HashSet<ModernMaterial> associatedMaterials = new HashSet<>();
 
-    BlocksEnum(@NotNull final String unlocalizedName, @NotNull final Class<? extends BaseBlock> blockClass, @NotNull final Class<? extends BaseTileEntity> tileClass, @NotNull ISimpleBlockRenderingHandler simpleBlockRenderingHandler) {
+    BlocksEnum(@NotNull final String unlocalizedName, @NotNull final Class<? extends NewDumb> blockClass, @NotNull final Class<? extends BaseTileEntity> tileClass, @NotNull ISimpleBlockRenderingHandler simpleBlockRenderingHandler) {
         this.unlocalizedName = unlocalizedName;
 
         this.blockClass = blockClass;
