@@ -14,6 +14,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.GT_HatchElement.Energy;
 import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.GT_Utility.filterValidMTEs;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.ArrayList;
@@ -55,7 +56,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
@@ -164,10 +164,8 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        for (GT_MetaTileEntity_Hatch_Rack rack : eRacks) {
-            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(rack)) {
-                rack.getBaseMetaTileEntity().setActive(false);
-            }
+        for (GT_MetaTileEntity_Hatch_Rack rack : filterValidMTEs(eRacks)) {
+            rack.getBaseMetaTileEntity().setActive(false);
         }
         eRacks.clear();
         if (!structureCheck_EM("front", 1, 2, 0)) {
@@ -194,10 +192,8 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
             return false;
         }
         eCertainMode = (byte) Math.min(totalLen / 3, 5);
-        for (GT_MetaTileEntity_Hatch_Rack rack : eRacks) {
-            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(rack)) {
-                rack.getBaseMetaTileEntity().setActive(iGregTechTileEntity.isActive());
-            }
+        for (GT_MetaTileEntity_Hatch_Rack rack : filterValidMTEs(eRacks)) {
+            rack.getBaseMetaTileEntity().setActive(iGregTechTileEntity.isActive());
         }
         return eUncertainHatches.size() == 1;
     }
@@ -224,10 +220,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
                 && !aBaseMetaTileEntity.isActive()
                 && aTick % 20 == MULTI_CHECK_AT) {
             double maxTemp = 0;
-            for (GT_MetaTileEntity_Hatch_Rack rack : eRacks) {
-                if (!GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(rack)) {
-                    continue;
-                }
+            for (GT_MetaTileEntity_Hatch_Rack rack : filterValidMTEs(eRacks)) {
                 if (rack.heat > maxTemp) {
                     maxTemp = rack.heat;
                 }
@@ -258,10 +251,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
             short thingsActive = 0;
             int rackComputation;
 
-            for (GT_MetaTileEntity_Hatch_Rack rack : eRacks) {
-                if (!GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(rack)) {
-                    continue;
-                }
+            for (GT_MetaTileEntity_Hatch_Rack rack : filterValidMTEs(eRacks)) {
                 if (rack.heat > maxTemp) {
                     maxTemp = rack.heat;
                 }
@@ -409,10 +399,8 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     @Override
     public void onRemoval() {
         super.onRemoval();
-        for (GT_MetaTileEntity_Hatch_Rack rack : eRacks) {
-            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(rack)) {
-                rack.getBaseMetaTileEntity().setActive(false);
-            }
+        for (GT_MetaTileEntity_Hatch_Rack rack : filterValidMTEs(eRacks)) {
+            rack.getBaseMetaTileEntity().setActive(false);
         }
     }
 
@@ -432,20 +420,16 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     public void stopMachine() {
         super.stopMachine();
         eAvailableData = 0;
-        for (GT_MetaTileEntity_Hatch_Rack rack : eRacks) {
-            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(rack)) {
-                rack.getBaseMetaTileEntity().setActive(false);
-            }
+        for (GT_MetaTileEntity_Hatch_Rack rack : filterValidMTEs(eRacks)) {
+            rack.getBaseMetaTileEntity().setActive(false);
         }
     }
 
     @Override
     protected void afterRecipeCheckFailed() {
         super.afterRecipeCheckFailed();
-        for (GT_MetaTileEntity_Hatch_Rack rack : eRacks) {
-            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(rack)) {
-                rack.getBaseMetaTileEntity().setActive(false);
-            }
+        for (GT_MetaTileEntity_Hatch_Rack rack : filterValidMTEs(eRacks)) {
+            rack.getBaseMetaTileEntity().setActive(false);
         }
     }
 

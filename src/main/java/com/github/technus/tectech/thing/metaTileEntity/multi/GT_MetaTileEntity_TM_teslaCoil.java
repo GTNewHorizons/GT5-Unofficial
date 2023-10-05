@@ -17,6 +17,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksT
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.GT_Utility.filterValidMTEs;
 import static java.lang.Math.min;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -90,7 +91,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energ
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -540,20 +540,16 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        for (GT_MetaTileEntity_Hatch_Capacitor cap : eCapacitorHatches) {
-            if (isValidMetaTileEntity(cap)) {
-                cap.getBaseMetaTileEntity().setActive(false);
-            }
+        for (GT_MetaTileEntity_Hatch_Capacitor cap : filterValidMTEs(eCapacitorHatches)) {
+            cap.getBaseMetaTileEntity().setActive(false);
         }
         eCapacitorHatches.clear();
 
         mTier = -1;
 
         if (structureCheck_EM("main", 3, 16, 0)) {
-            for (GT_MetaTileEntity_Hatch_Capacitor cap : eCapacitorHatches) {
-                if (isValidMetaTileEntity(cap)) {
-                    cap.getBaseMetaTileEntity().setActive(iGregTechTileEntity.isActive());
-                }
+            for (GT_MetaTileEntity_Hatch_Capacitor cap : filterValidMTEs(eCapacitorHatches)) {
+                cap.getBaseMetaTileEntity().setActive(iGregTechTileEntity.isActive());
             }
 
             // Only recalculate offsets on orientation or rotation change
@@ -600,10 +596,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         mMaxProgresstime = 20;
         vTier = -1;
         long[] capacitorData;
-        for (GT_MetaTileEntity_Hatch_Capacitor cap : eCapacitorHatches) {
-            if (!GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(cap)) {
-                continue;
-            }
+        for (GT_MetaTileEntity_Hatch_Capacitor cap : filterValidMTEs(eCapacitorHatches)) {
             if (cap.getCapacitors()[0] > vTier) {
                 vTier = (int) cap.getCapacitors()[0];
             }
@@ -621,10 +614,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         }
 
         outputVoltageMax = V[vTier + 1];
-        for (GT_MetaTileEntity_Hatch_Capacitor cap : eCapacitorHatches) {
-            if (!GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(cap)) {
-                continue;
-            }
+        for (GT_MetaTileEntity_Hatch_Capacitor cap : filterValidMTEs(eCapacitorHatches)) {
             cap.getBaseMetaTileEntity().setActive(true);
             capacitorData = cap.getCapacitors();
             if (capacitorData[0] < vTier) {
@@ -701,10 +691,8 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         super.onRemoval();
         if (!getBaseMetaTileEntity().isClientSide()) {
             teslaSimpleNodeSetRemove(this);
-            for (GT_MetaTileEntity_Hatch_Capacitor cap : eCapacitorHatches) {
-                if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(cap)) {
-                    cap.getBaseMetaTileEntity().setActive(false);
-                }
+            for (GT_MetaTileEntity_Hatch_Capacitor cap : filterValidMTEs(eCapacitorHatches)) {
+                cap.getBaseMetaTileEntity().setActive(false);
             }
         }
     }

@@ -11,6 +11,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.GT_HatchElement.Energy;
 import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.GT_Utility.filterValidMTEs;
 import static mcp.mobius.waila.api.SpecialChars.GREEN;
 import static mcp.mobius.waila.api.SpecialChars.RED;
 import static mcp.mobius.waila.api.SpecialChars.RESET;
@@ -56,7 +57,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
@@ -330,10 +330,8 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        for (GT_MetaTileEntity_Hatch_Holder rack : eHolders) {
-            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(rack)) {
-                rack.getBaseMetaTileEntity().setActive(false);
-            }
+        for (GT_MetaTileEntity_Hatch_Holder rack : filterValidMTEs(eHolders)) {
+            rack.getBaseMetaTileEntity().setActive(false);
         }
         eHolders.clear();
 
@@ -341,10 +339,8 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
             return false;
         }
 
-        for (GT_MetaTileEntity_Hatch_Holder rack : eHolders) {
-            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(rack)) {
-                rack.getBaseMetaTileEntity().setActive(iGregTechTileEntity.isActive());
-            }
+        for (GT_MetaTileEntity_Hatch_Holder rack : filterValidMTEs(eHolders)) {
+            rack.getBaseMetaTileEntity().setActive(iGregTechTileEntity.isActive());
         }
         return eHolders.size() == 1;
     }
@@ -487,17 +483,13 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     public String[] getInfoData() {
         long storedEnergy = 0;
         long maxEnergy = 0;
-        for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
-            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
-                storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
-                maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
-            }
+        for (GT_MetaTileEntity_Hatch_Energy tHatch : filterValidMTEs(mEnergyHatches)) {
+            storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
+            maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
         }
-        for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : eEnergyMulti) {
-            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
-                storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
-                maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
-            }
+        for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : filterValidMTEs(eEnergyMulti)) {
+            storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
+            maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
         }
 
         return new String[] { translateToLocalFormatted("tt.keyphrase.Energy_Hatches", clientLocale) + ":",
