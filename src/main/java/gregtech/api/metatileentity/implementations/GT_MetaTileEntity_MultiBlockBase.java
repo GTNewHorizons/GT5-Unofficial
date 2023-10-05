@@ -1369,26 +1369,19 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         }
 
         ArrayList<ItemStack> rList = new ArrayList<>();
-        HashMap<String, ItemStack> rInputBusMeList = new HashMap<>();
         for (GT_MetaTileEntity_Hatch_InputBus tHatch : filterValidMTEs(mInputBusses)) {
             tHatch.mRecipeMap = getRecipeMap();
             IGregTechTileEntity tileEntity = tHatch.getBaseMetaTileEntity();
-            if (tHatch instanceof GT_MetaTileEntity_Hatch_InputBus_ME) {
-                for (int i = tileEntity.getSizeInventory() - 1; i >= 0; i--) {
-                    ItemStack itemStack = tileEntity.getStackInSlot(i);
-                    if (itemStack != null) rInputBusMeList.put(itemStack.toString(), itemStack);
-                }
-            } else {
-                for (int i = tileEntity.getSizeInventory() - 1; i >= 0; i--) {
-                    ItemStack itemStack = tileEntity.getStackInSlot(i);
-                    if (itemStack != null) rList.add(itemStack);
+            for (int i = tileEntity.getSizeInventory() - 1; i >= 0; i--) {
+                ItemStack itemStack = tileEntity.getStackInSlot(i);
+                if (itemStack != null) {
+                    rList.add(itemStack);
                 }
             }
         }
 
         if (getStackInSlot(1) != null && getStackInSlot(1).getUnlocalizedName()
             .startsWith("gt.integrated_circuit")) rList.add(getStackInSlot(1));
-        if (!rInputBusMeList.isEmpty()) rList.addAll(rInputBusMeList.values());
         return rList;
     }
 
