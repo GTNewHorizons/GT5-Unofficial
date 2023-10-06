@@ -4,6 +4,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH_ACTIVE;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
@@ -16,13 +17,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.Alignment;
@@ -261,7 +261,9 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         setAutoPullItemList(!autoPullItemList);
-        GT_Utility.sendChatToPlayer(aPlayer, "Automatic Item Pull " + autoPullItemList);
+        aPlayer.addChatMessage(
+            new ChatComponentTranslation(
+                "GT5U.machines.stocking_bus.auto_pull_toggle." + (autoPullItemList ? "enabled" : "disabled")));
     }
 
     @Override
@@ -296,7 +298,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         }
         setInventorySlotContents(getCircuitSlot(), circuit);
         setAdditionalConnectionOption();
-        aPlayer.addChatMessage(new ChatComponentText("Loaded Config From Data Stick"));
+        aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.stocking_bus.loaded"));
         return true;
     }
 
@@ -324,7 +326,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         }
         dataStick.stackTagCompound = tag;
         dataStick.setStackDisplayName("Stocking Input Bus Configuration");
-        aPlayer.addChatMessage(new ChatComponentText("Saved Config to Data Stick"));
+        aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.stocking_bus.saved"));
     }
 
     private int getManualSlot() {
@@ -567,9 +569,9 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                     return ret.toArray(new IDrawable[0]);
                 })
                 .addTooltips(
-                    ImmutableList.of(
-                        "Click to toggle automatic item pulling from ME.",
-                        "Right-Click to edit minimum stack size for item pulling."))
+                    Arrays.asList(
+                        StatCollector.translateToLocal("GT5U.machines.stocking_bus.auto_pull.tooltip"),
+                        StatCollector.translateToLocal("GT5U.machines.stocking_bus.auto_pull.tooltip.1")))
                 .setSize(16, 16)
                 .setPos(80, 10))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> autoPullItemList, this::setAutoPullItemList))
@@ -596,7 +598,8 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                     Alignment.TopRight.getAlignedPos(new Size(PARENT_WIDTH, PARENT_HEIGHT), new Size(WIDTH, HEIGHT))
                         .add(WIDTH - 3, 0)));
         builder.widget(
-            new TextWidget("Min Stack Size").setPos(3, 2)
+            TextWidget.localised("GT5U.machines.stocking_bus.min_stack_size")
+                .setPos(3, 2)
                 .setSize(74, 14))
             .widget(
                 new TextFieldWidget().setSetterInt(val -> minAutoPullStackSize = val)
@@ -625,8 +628,14 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         NBTTagCompound tag = accessor.getNBTData();
         boolean autopull = tag.getBoolean("autoPull");
         int minSize = tag.getInteger("minStackSize");
-        currenttip.add(String.format("Auto-Pull from ME: %s", autopull ? "Enabled" : "Disabled"));
-        if (autopull) currenttip.add(String.format("Minimum Stack Size: %d", minSize));
+        currenttip.add(
+            StatCollector.translateToLocal("GT5U.waila.stocking_bus.auto_pull." + (autopull ? "enabled" : "disabled")));
+        if (autopull) {
+            currenttip.add(
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.stocking_bus.min_stack_size",
+                    GT_Utility.formatNumbers(minSize)));
+        }
         super.getWailaBody(itemStack, currenttip, accessor, config);
     }
 
