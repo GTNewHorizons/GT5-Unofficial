@@ -164,7 +164,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         if (outputId.equals(getOverlayIdentifier())) {
             if (results.length > 0 && results[0] instanceof Power) {
                 mPower = (Power) results[0];
-                if (neiProperties.useComparatorForNEI) {
+                if (neiProperties.useComparator) {
                     loadTieredCraftingRecipesWithPower(mPower);
                 } else {
                     loadTieredCraftingRecipesUpTo(mPower.getTier());
@@ -412,15 +412,15 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     }
 
     protected int getDescriptionYOffset() {
-        return neiProperties.neiBackgroundSize.height + neiProperties.neiBackgroundOffset.y + WINDOW_OFFSET.y + 3;
+        return neiProperties.recipeBackgroundSize.height + neiProperties.recipeBackgroundOffset.y + WINDOW_OFFSET.y + 3;
     }
 
     protected void drawUI(ModularWindow window) {
         for (IDrawable background : window.getBackground()) {
             GlStateManager.pushMatrix();
             GlStateManager.translate(
-                WINDOW_OFFSET.x + neiProperties.neiBackgroundOffset.x,
-                WINDOW_OFFSET.y + neiProperties.neiBackgroundOffset.y,
+                WINDOW_OFFSET.x + neiProperties.recipeBackgroundOffset.x,
+                WINDOW_OFFSET.y + neiProperties.recipeBackgroundOffset.y,
                 0);
             GlStateManager.color(1f, 1f, 1f, 1f);
             background.draw(Pos2d.ZERO, window.getSize(), 0);
@@ -627,7 +627,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                                         widget.getPos().x + 1,
                                         widget.getPos().y + 1,
                                         aRecipe.getOutputChance(i),
-                                        GT_NEI_DefaultHandler.this.neiProperties.unificateOutputNEI));
+                                        GT_NEI_DefaultHandler.this.neiProperties.unificateOutput));
                             }
                         } else if (widget.getMcSlot()
                             .getItemHandler() == specialSlotInventory) {
@@ -689,7 +689,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                             pos.x + 1,
                             pos.y + 1,
                             aRecipe.getOutputChance(i),
-                            GT_NEI_DefaultHandler.this.neiProperties.unificateOutputNEI));
+                            GT_NEI_DefaultHandler.this.neiProperties.unificateOutput));
                 }
             }, (i, backgrounds, pos) -> {}, (i, backgrounds, pos) -> {
                 if (i >= GT_NEI_DefaultHandler.this.uiProperties.maxFluidInputs && aRecipe.mFluidInputs[i] != null

@@ -32,7 +32,7 @@ import gregtech.nei.formatter.INEISpecialInfoFormatter;
  * to retrieve RecipeMap. Smallest example:
  *
  * <pre>
- * 
+ *
  * {
  *     &#64;code
  *     RecipeMap<RecipeMapBackend> exampleRecipes = RecipeMapBuilder.of("example")
@@ -58,7 +58,7 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
     /**
      * Constructs builder object for {@link RecipeMap} with given backend logic. For custom frontend,
      * call {@link #frontend} for the created builder object.
-     * 
+     *
      * @param unlocalizedName Unique identifier for the recipemap.
      * @return New builder object.
      */
@@ -69,7 +69,7 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
 
     /**
      * Constructs builder object for {@link RecipeMap}.
-     * 
+     *
      * @param unlocalizedName Unique identifier for the recipemap.
      * @return New builder object.
      */
@@ -400,16 +400,16 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
     /**
      * Sets offset of background shown on NEI.
      */
-    public RecipeMapBuilder<B> neiBackgroundSize(int width, int height) {
-        neiPropertiesBuilder.neiBackgroundSize(new Size(width, height));
+    public RecipeMapBuilder<B> neiRecipeBackgroundSize(int width, int height) {
+        neiPropertiesBuilder.recipeBackgroundSize(new Size(width, height));
         return this;
     }
 
     /**
      * Sets size of background shown on NEI.
      */
-    public RecipeMapBuilder<B> neiBackgroundOffset(int x, int y) {
-        neiPropertiesBuilder.neiBackgroundOffset(new Pos2d(x, y));
+    public RecipeMapBuilder<B> neiRecipeBackgroundOffset(int x, int y) {
+        neiPropertiesBuilder.recipeBackgroundOffset(new Pos2d(x, y));
         return this;
     }
 
@@ -465,7 +465,7 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
 
     /**
      * Builds new recipemap.
-     * 
+     *
      * @return Recipemap object with backend type parameter, which is {@code RecipeMapFrontend} unless specified.
      */
     public RecipeMap<B> build() {

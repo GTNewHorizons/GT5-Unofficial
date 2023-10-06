@@ -19,14 +19,14 @@ public class NEIRecipePropertiesBuilder {
 
     private boolean registerNEI = true;
 
-    private Size neiBackgroundSize = new Size(172, 82);
-    private Pos2d neiBackgroundOffset = new Pos2d(2, 3);
+    private Size recipeBackgroundSize = new Size(170, 82);
+    private Pos2d recipeBackgroundOffset = new Pos2d(3, 3);
 
-    private boolean showVoltageAmperageInNEI = true;
+    private boolean showVoltageAmperage = true;
     private INEISpecialInfoFormatter neiSpecialInfoFormatter = DefaultSpecialValueFormatter.INSTANCE;
 
-    private boolean unificateOutputNEI = true;
-    private boolean useComparatorForNEI;
+    private boolean unificateOutput = true;
+    private boolean useComparator;
     private boolean renderRealStackSizes = true;
 
     NEIRecipePropertiesBuilder() {}
@@ -34,12 +34,12 @@ public class NEIRecipePropertiesBuilder {
     public NEIRecipeProperties build() {
         return new NEIRecipeProperties(
             registerNEI,
-            neiBackgroundSize,
-            neiBackgroundOffset,
-            showVoltageAmperageInNEI,
+            recipeBackgroundSize,
+            recipeBackgroundOffset,
+            showVoltageAmperage,
             neiSpecialInfoFormatter,
-            unificateOutputNEI,
-            useComparatorForNEI,
+            unificateOutput,
+            useComparator,
             renderRealStackSizes);
     }
 
@@ -48,18 +48,18 @@ public class NEIRecipePropertiesBuilder {
         return this;
     }
 
-    public NEIRecipePropertiesBuilder neiBackgroundSize(Size neiBackgroundSize) {
-        this.neiBackgroundSize = neiBackgroundSize;
+    public NEIRecipePropertiesBuilder recipeBackgroundSize(Size recipeBackgroundSize) {
+        this.recipeBackgroundSize = recipeBackgroundSize;
         return this;
     }
 
-    public NEIRecipePropertiesBuilder neiBackgroundOffset(Pos2d neiBackgroundOffset) {
-        this.neiBackgroundOffset = neiBackgroundOffset;
+    public NEIRecipePropertiesBuilder recipeBackgroundOffset(Pos2d recipeBackgroundOffset) {
+        this.recipeBackgroundOffset = recipeBackgroundOffset;
         return this;
     }
 
     public NEIRecipePropertiesBuilder disableVoltageAmperageInNEI() {
-        this.showVoltageAmperageInNEI = false;
+        this.showVoltageAmperage = false;
         return this;
     }
 
@@ -69,12 +69,12 @@ public class NEIRecipePropertiesBuilder {
     }
 
     public NEIRecipePropertiesBuilder unificateOutputNEI(boolean unificateOutputNEI) {
-        this.unificateOutputNEI = unificateOutputNEI;
+        this.unificateOutput = unificateOutputNEI;
         return this;
     }
 
     public NEIRecipePropertiesBuilder useComparatorForNEI() {
-        this.useComparatorForNEI = true;
+        this.useComparator = true;
         return this;
     }
 

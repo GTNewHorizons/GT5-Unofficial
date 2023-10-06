@@ -32,7 +32,7 @@ public class LargeNEIFrontend extends RecipeMapFrontend {
         super(uiPropertiesBuilder.logoPos(new Pos2d(80, 62)), neiPropertiesBuilder);
         this.itemRowCount = getItemRowCount();
         this.fluidRowCount = getFluidRowCount();
-        neiProperties.neiBackgroundSize = new Size(172, 82 + (Math.max(itemRowCount + fluidRowCount - 4, 0)) * 18);
+        neiProperties.recipeBackgroundSize = new Size(170, 82 + (Math.max(itemRowCount + fluidRowCount - 4, 0)) * 18);
     }
 
     @Override

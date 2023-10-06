@@ -24,6 +24,8 @@ public class GT_UITextures {
         .of(GregTech.ID, "gui/background/text_field", 142, 28, 1);
     public static final AdaptableUITexture BACKGROUND_TEXT_FIELD_LIGHT_GRAY = AdaptableUITexture
         .of(GregTech.ID, "gui/background/text_field_light_gray", 61, 12, 1);
+    public static final AdaptableUITexture BACKGROUND_NEI_SINGLE_RECIPE = AdaptableUITexture
+        .of(GregTech.ID, "gui/background/nei_single_recipe.png", 64, 64, 2);
 
     public static final SteamTexture SLOT_ITEM_STEAM = SteamTexture.fullImage(GregTech.ID, "gui/slot/item_%s");
     public static final SteamTexture SLOT_FLUID_STEAM = SteamTexture.fullImage(GregTech.ID, "gui/slot/fluid_%s");

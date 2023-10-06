@@ -577,7 +577,7 @@ public class RecipeMaps {
         .maxIO(1, 0, 20, 1)
         .progressBarPos(86, 44)
         .logoPos(87, 99)
-        .neiBackgroundSize(172, 118)
+        .neiRecipeBackgroundSize(170, 118)
         .frontend(TranscendentPlasmaMixerFrontend::new)
         .disableOptimize()
         .disableVoltageAmperageInNEI()
@@ -586,7 +586,7 @@ public class RecipeMaps {
         .of("gt.recipe.fakespaceprojects")
         .maxIO(12, 0, 4, 0)
         .neiSpecialInfoFormatter(new SimpleSpecialValueFormatter("GT5U.nei.stages"))
-        .neiBackgroundOffset(2, 23)
+        .neiRecipeBackgroundOffset(3, 23)
         .logoPos(152, 83)
         .frontend(SpaceProjectFrontend::new)
         .disableRenderRealStackSizes()
@@ -1154,7 +1154,7 @@ public class RecipeMaps {
         .disableOptimize()
         .logo(GT_UITextures.PICTURE_RADIATION_WARNING)
         .logoPos(152, 41)
-        .neiBackgroundSize(172, 60)
+        .neiRecipeBackgroundSize(170, 60)
         .build();
 
     static {

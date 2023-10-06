@@ -32,6 +32,7 @@ import codechicken.nei.PositionedStack;
 import gregtech.GT_Mod;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.GT_GUIColorOverride;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
@@ -58,7 +59,7 @@ public class RecipeMapFrontend {
     protected final NEIRecipeProperties neiProperties;
 
     protected final GT_GUIColorOverride colorOverride = GT_GUIColorOverride
-        .get(ModularUITextures.VANILLA_BACKGROUND.location);
+        .get(GT_UITextures.BACKGROUND_NEI_SINGLE_RECIPE.location);
     private int neiTextColorOverride = -1;
 
     public RecipeMapFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
@@ -88,8 +89,8 @@ public class RecipeMapFrontend {
         IItemHandlerModifiable itemOutputsInventory, IItemHandlerModifiable specialSlotInventory,
         IItemHandlerModifiable fluidInputsInventory, IItemHandlerModifiable fluidOutputsInventory,
         Supplier<Float> progressSupplier, Pos2d windowOffset) {
-        ModularWindow.Builder builder = ModularWindow.builder(neiProperties.neiBackgroundSize)
-            .setBackground(ModularUITextures.VANILLA_BACKGROUND);
+        ModularWindow.Builder builder = ModularWindow.builder(neiProperties.recipeBackgroundSize)
+            .setBackground(GT_UITextures.BACKGROUND_NEI_SINGLE_RECIPE);
 
         UIHelper.forEachSlots(
             (i, backgrounds, pos) -> builder.widget(
@@ -435,7 +436,7 @@ public class RecipeMapFrontend {
     public Power createPower() {
         // By default, assume generic EU LV power with no overclocks
         Power power;
-        if (neiProperties.showVoltageAmperageInNEI) {
+        if (neiProperties.showVoltageAmperage) {
             power = new EUPower((byte) 1, uiProperties.amperage);
         } else {
             power = new UnspecifiedEUPower((byte) 1, uiProperties.amperage);
