@@ -61,6 +61,10 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.modularui.widget.AESlotWidget;
@@ -435,7 +439,8 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     }
 
     @Override
-    public void endRecipeProcessing() {
+    public CheckRecipeResult endRecipeProcessing(GT_MetaTileEntity_MultiBlockBase controller) {
+        CheckRecipeResult checkRecipeResult = CheckRecipeResultRegistry.SUCCESSFUL;
         for (int i = 0; i < SLOT_COUNT; ++i) {
             if (savedStackSizes[i] != 0) {
                 ItemStack oldStack = shadowInventory[i];
@@ -445,11 +450,16 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                         IMEMonitor<IAEItemStack> sg = proxy.getStorage()
                             .getItemInventory();
                         IAEItemStack request = AEItemStack.create(mInventory[i]);
-                        request.setStackSize(savedStackSizes[i] - (oldStack == null ? 0 : oldStack.stackSize));
-                        sg.extractItems(request, Actionable.MODULATE, getRequestSource());
+                        int toExtract = savedStackSizes[i] - (oldStack == null ? 0 : oldStack.stackSize);
+                        request.setStackSize(toExtract);
+                        IAEItemStack result = sg.extractItems(request, Actionable.MODULATE, getRequestSource());
                         proxy.getEnergy()
                             .extractAEPower(request.getStackSize(), Actionable.MODULATE, PowerMultiplier.CONFIG);
                         setInventorySlotContents(i + SLOT_COUNT, oldStack);
+                        if (result == null || result.getStackSize() != toExtract) {
+                            controller.criticalStopMachine();
+                            checkRecipeResult = SimpleCheckRecipeResult.ofFailure("stocking_bus_fail_extraction");
+                        }
                     } catch (final GridAccessException ignored) {}
                 }
                 savedStackSizes[i] = 0;
@@ -457,6 +467,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
             }
         }
         processingRecipe = false;
+        return checkRecipeResult;
     }
 
     public ItemStack updateInformationSlot(int aIndex, ItemStack aStack) {

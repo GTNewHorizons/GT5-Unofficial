@@ -410,6 +410,7 @@ GT5U.gui.text.drill_ores_left_layer=Ores left at y-level %s: §a%s
 GT5U.gui.text.drill_chunks_left=Drilling chunk: §a%s / %s
 GT5U.gui.text.drill_offline_reason=Drill Offline: %s
 GT5U.gui.text.drill_offline_generic=Drill Offline
+GT5U.gui.text.stocking_bus_fail_extraction=§4Failed to extract expected amount of items from stocking bus. This can be caused by attaching multiple storage buses to the same inventory.
 
 GT5U.item.programmed_circuit.select.header=Reprogram Circuit
 

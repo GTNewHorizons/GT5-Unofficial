@@ -499,7 +499,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         }
         this.checkRecipeResult = result;
         endRecipeProcessing();
-        return result.wasSuccessful();
+        // Don't use `result` here because `endRecipeProcessing()` might mutate `this.checkRecipeResult`
+        return this.checkRecipeResult.wasSuccessful();
     }
 
     private boolean shouldCheckRecipeThisTick(long aTick) {
@@ -896,6 +897,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
     public void stopMachine() {
         mOutputItems = null;
+        mOutputFluids = null;
         mEUt = 0;
         mEfficiency = 0;
         mProgresstime = 0;
@@ -1413,11 +1415,19 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     protected void startRecipeProcessing() {
-        for (GT_MetaTileEntity_Hatch_InputBus tHatch : filterValidMTEs(mInputBusses)) tHatch.startRecipeProcessing();
+        for (GT_MetaTileEntity_Hatch_InputBus hatch : filterValidMTEs(mInputBusses)) {
+            hatch.startRecipeProcessing();
+        }
     }
 
     protected void endRecipeProcessing() {
-        for (GT_MetaTileEntity_Hatch_InputBus tHatch : filterValidMTEs(mInputBusses)) tHatch.endRecipeProcessing();
+        for (GT_MetaTileEntity_Hatch_InputBus hatch : filterValidMTEs(mInputBusses)) {
+            CheckRecipeResult result = hatch.endRecipeProcessing(this);
+            if (!result.wasSuccessful()) {
+                this.checkRecipeResult = result;
+                isScheduledForResetCheckRecipeResult = false;
+            }
+        }
     }
 
     protected static <T extends GT_MetaTileEntity_Hatch> T identifyHatch(IGregTechTileEntity aTileEntity,
