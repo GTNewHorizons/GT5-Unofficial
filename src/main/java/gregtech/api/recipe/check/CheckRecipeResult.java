@@ -39,4 +39,11 @@ public interface CheckRecipeResult {
      * Decode synced value.
      */
     void decode(PacketBuffer buffer);
+
+    /**
+     * @return If this message should stay on GUI when the machine is shut down.
+     */
+    default boolean persistsOnShutdown() {
+        return false;
+    }
 }

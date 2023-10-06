@@ -458,7 +458,8 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                         setInventorySlotContents(i + SLOT_COUNT, oldStack);
                         if (result == null || result.getStackSize() != toExtract) {
                             controller.criticalStopMachine();
-                            checkRecipeResult = SimpleCheckRecipeResult.ofFailure("stocking_bus_fail_extraction");
+                            checkRecipeResult = SimpleCheckRecipeResult
+                                .ofFailurePersistOnShutdown("stocking_bus_fail_extraction");
                         }
                     } catch (final GridAccessException ignored) {}
                 }

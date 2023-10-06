@@ -445,8 +445,6 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         if (aBaseMetaTileEntity.isServerSide()) {
             aBaseMetaTileEntity.disableWorking();
             checkRecipeResult = CheckRecipeResultRegistry.CRASH;
-            // Don't let `onSetActive` to overwrite
-            isScheduledForResetCheckRecipeResult = false;
         }
     }
 
@@ -904,7 +902,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         mMaxProgresstime = 0;
         mEfficiencyIncrease = 0;
         getBaseMetaTileEntity().disableWorking();
-        checkRecipeResult = CheckRecipeResultRegistry.NONE;
+        if (!checkRecipeResult.persistsOnShutdown()) {
+            checkRecipeResult = CheckRecipeResultRegistry.NONE;
+        }
     }
 
     public void criticalStopMachine() {
@@ -1425,7 +1425,6 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             CheckRecipeResult result = hatch.endRecipeProcessing(this);
             if (!result.wasSuccessful()) {
                 this.checkRecipeResult = result;
-                isScheduledForResetCheckRecipeResult = false;
             }
         }
     }
@@ -1835,7 +1834,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
     @Override
     public void onSetActive(boolean active) {
-        if (isScheduledForResetCheckRecipeResult && !active) {
+        if (isScheduledForResetCheckRecipeResult && !active && !checkRecipeResult.persistsOnShutdown()) {
             checkRecipeResult = CheckRecipeResultRegistry.NONE;
             isScheduledForResetCheckRecipeResult = false;
         }
