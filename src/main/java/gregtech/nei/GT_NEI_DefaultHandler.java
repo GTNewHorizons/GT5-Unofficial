@@ -293,7 +293,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
 
     @Override
     public String getOverlayIdentifier() {
-        return this.mRecipeMap.mUnlocalizedName;
+        return this.mRecipeMap.unlocalizedName;
     }
 
     @Override
@@ -331,7 +331,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     }
 
     private String computeRecipeName() {
-        String recipeName = GT_LanguageManager.getTranslation(this.mRecipeMap.mUnlocalizedName);
+        String recipeName = GT_LanguageManager.getTranslation(this.mRecipeMap.unlocalizedName);
         if (mPower != null) {
             recipeName = addSuffixToRecipeName(recipeName, mPower.getTierString() + ")");
         }
@@ -369,7 +369,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
 
     @Override
     public String getRecipeTabName() {
-        return GT_LanguageManager.getTranslation(this.mRecipeMap.mUnlocalizedName);
+        return GT_LanguageManager.getTranslation(this.mRecipeMap.unlocalizedName);
     }
 
     @Override

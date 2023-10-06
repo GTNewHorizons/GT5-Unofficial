@@ -107,13 +107,15 @@ public class GT_MetaTileEntity_Hatch_Input extends GT_MetaTileEntity_Hatch {
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        if (mRecipeMap != null) aNBT.setString("recipeMap", mRecipeMap.mUniqueIdentifier);
+        if (mRecipeMap != null) {
+            aNBT.setString("recipeMap", mRecipeMap.unlocalizedName);
+        }
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        mRecipeMap = RecipeMap.sIndexedMappings.getOrDefault(aNBT.getString("recipeMap"), null);
+        mRecipeMap = RecipeMap.getFromOldIdentifier(aNBT.getString("recipeMap"));
     }
 
     @Override

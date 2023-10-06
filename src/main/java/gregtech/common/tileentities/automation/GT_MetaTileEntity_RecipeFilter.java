@@ -149,7 +149,9 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        if (mRecipeMap != null) aNBT.setString("mRecipeMap", this.mRecipeMap.mUniqueIdentifier);
+        if (mRecipeMap != null) {
+            aNBT.setString("mRecipeMap", this.mRecipeMap.unlocalizedName);
+        }
         NBTTagList tagList = new NBTTagList();
         for (ItemStack filteredMachine : filteredMachines) {
             tagList.appendTag(filteredMachine.writeToNBT(new NBTTagCompound()));
@@ -160,7 +162,7 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        this.mRecipeMap = RecipeMap.sIndexedMappings.getOrDefault(aNBT.getString("mRecipeMap"), null);
+        this.mRecipeMap = RecipeMap.getFromOldIdentifier(aNBT.getString("mRecipeMap"));
         filteredMachines.clear();
         NBTTagList tagList = aNBT.getTagList("filteredMachines", Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < tagList.tagCount(); i++) {
@@ -181,8 +183,8 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
         super.addUIWidgets(builder, buildContext);
         builder.widget(
             new FakeSyncWidget.StringSyncer(
-                () -> this.mRecipeMap == null ? "" : this.mRecipeMap.mUniqueIdentifier,
-                (id) -> this.mRecipeMap = RecipeMap.sIndexedMappings.getOrDefault(id, null)));
+                () -> this.mRecipeMap == null ? "" : this.mRecipeMap.unlocalizedName,
+                id -> this.mRecipeMap = RecipeMap.ALL_RECIPE_MAPS.get(id)));
     }
 
     @Override
@@ -205,7 +207,7 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
         tooltip.add(
             StatCollector.translateToLocal(TT_machineType) + ": "
                 + EnumChatFormatting.YELLOW
-                + StatCollector.translateToLocal(recipeMap.mUnlocalizedName)
+                + StatCollector.translateToLocal(recipeMap.unlocalizedName)
                 + EnumChatFormatting.RESET);
         int recipeSize = recipeMap.getAllRecipes()
             .size();
@@ -264,7 +266,7 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
             }
             mRotationIndex = -1;
             syncToServer(SYNC_RECIPEMAP_C2S, buffer -> {
-                NetworkUtils.writeStringSafe(buffer, recipeMap != null ? recipeMap.mUniqueIdentifier : null);
+                NetworkUtils.writeStringSafe(buffer, recipeMap != null ? recipeMap.unlocalizedName : null);
                 buffer.writeVarIntToBuffer(filteredMachines.size());
                 for (ItemStack filteredMachine : filteredMachines) {
                     try {
@@ -284,7 +286,7 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
             }
 
             String recipeMapName = NetworkUtils.readStringSafe(buf);
-            mRecipeMap = recipeMapName != null ? RecipeMap.sIndexedMappings.getOrDefault(recipeMapName, null) : null;
+            mRecipeMap = recipeMapName != null ? RecipeMap.ALL_RECIPE_MAPS.get(recipeMapName) : null;
             if (mRecipeMap != null) {
                 updateAndSendRecipeMapToServer(mRecipeMap);
             }
@@ -302,7 +304,7 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
             }
 
             String recipeMapName = NetworkUtils.readStringSafe(buf);
-            mRecipeMap = recipeMapName != null ? RecipeMap.sIndexedMappings.getOrDefault(recipeMapName, null) : null;
+            mRecipeMap = recipeMapName != null ? RecipeMap.getFromOldIdentifier(recipeMapName) : null;
             mRotationIndex = -1;
             mInventory[FILTER_SLOT_INDEX] = null;
             filteredMachines.clear();
@@ -326,7 +328,7 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
                 // backward compatibility: This machine used to store only mRecipeMap, not filteredMachines
                 syncToClient(
                     REQUEST_FILTERED_MACHINES_S2C,
-                    buffer -> NetworkUtils.writeStringSafe(buffer, mRecipeMap.mUniqueIdentifier));
+                    buffer -> NetworkUtils.writeStringSafe(buffer, mRecipeMap.unlocalizedName));
             }
         }
 

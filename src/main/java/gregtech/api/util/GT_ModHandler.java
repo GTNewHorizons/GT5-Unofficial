@@ -785,7 +785,7 @@ public class GT_ModHandler {
                             || tStack.getUnlocalizedName()
                                 .contains("ic2.itemPurifiedCrushed"))))
                             continue;
-                        switch (aGTRecipeMap.mUnlocalizedName) {
+                        switch (aGTRecipeMap.unlocalizedName) {
                             case "gt.recipe.macerator", "gt.recipe.extractor", "gt.recipe.compressor" -> aGTRecipeMap
                                 .addRecipe(
                                     true,

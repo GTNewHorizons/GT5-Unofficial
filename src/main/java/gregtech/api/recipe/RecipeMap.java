@@ -1,11 +1,12 @@
 package gregtech.api.recipe;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -36,54 +37,30 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
 public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
 
     /**
-     * Contains all Recipe Maps
+     * All the recipemap instances. key=unlocalized name, value=instance.
      */
-    public static final Collection<RecipeMap<?>> sMappings = new ArrayList<>();
-    /**
-     * All recipe maps indexed by their {@link #mUniqueIdentifier}.
-     */
-    public static final Map<String, RecipeMap<?>> sIndexedMappings = new HashMap<>();
-
-    @Nullable
-    public static RecipeMap<?> findRecipeMap(@Nonnull String unlocalizedName) {
-        return sMappings.stream()
-            .filter(m -> unlocalizedName.equals(m.mUnlocalizedName))
-            .findFirst()
-            .orElse(null);
-    }
+    public static final Map<String, RecipeMap<?>> ALL_RECIPE_MAPS = new HashMap<>();
 
     private final B backend;
     private final RecipeMapFrontend frontend;
 
     /**
-     * Unlocalized name of this recipemap. Used for identifier, localization key for NEI tab name, etc.
+     * Unique unlocalized name of this recipemap. Used for identifier, localization key for NEI tab name, etc.
      */
-    public final String mUnlocalizedName;
-
-    /**
-     * Unique identifier for this recipe map. Generated from unlocalizedName and a few other parameters. See
-     * constructor for details.
-     */
-    public final String mUniqueIdentifier;
+    public final String unlocalizedName;
 
     /**
      * Use {@link RecipeMapBuilder} to instantiate.
      */
     RecipeMap(String unlocalizedName, B backend, RecipeMapFrontend frontend) {
-        this.mUnlocalizedName = unlocalizedName;
+        this.unlocalizedName = unlocalizedName;
         this.backend = backend;
         this.frontend = frontend;
-        sMappings.add(this);
-        mUniqueIdentifier = String.format(
-            "%s_%d_%d_%d_%d_%d",
-            unlocalizedName,
-            getAmperage(),
-            frontend.getUIProperties().maxItemInputs,
-            frontend.getUIProperties().maxItemOutputs,
-            backend.getProperties().minFluidInputs,
-            backend.getProperties().minItemInputs);
-        if (sIndexedMappings.put(mUniqueIdentifier, this) != null)
-            throw new IllegalArgumentException("Duplicate recipe map registered: " + mUniqueIdentifier);
+        if (ALL_RECIPE_MAPS.containsKey(unlocalizedName)) {
+            throw new IllegalArgumentException(
+                "Cannot register recipemap with duplicated unlocalized name: " + unlocalizedName);
+        }
+        ALL_RECIPE_MAPS.put(unlocalizedName, this);
     }
 
     public B getBackend() {
@@ -455,4 +432,23 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
     }
 
     // endregion
+
+    private static final Pattern LEGACY_IDENTIFIER_PATTERN = Pattern.compile("(.+)_[0-9]+_[0-9]+_[0-9]+_[0-9]+_[0-9]+");
+
+    /**
+     * Gets recipemap instance from old mUniqueIdentifier format. This is only for backward compat, where tiles
+     * saved recipemap with mUniqueIdentifier.
+     *
+     * @param legacyIdentifier mUniqueIdentifier, in %s_%d_%d_%d_%d_%d format
+     * @return Found recipemap, can be null
+     */
+    @Nullable
+    public static RecipeMap<?> getFromOldIdentifier(String legacyIdentifier) {
+        Matcher matcher = LEGACY_IDENTIFIER_PATTERN.matcher(legacyIdentifier);
+        if (!matcher.find()) {
+            // It can be new format
+            return ALL_RECIPE_MAPS.get(legacyIdentifier);
+        }
+        return ALL_RECIPE_MAPS.get(matcher.group(1));
+    }
 }

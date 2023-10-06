@@ -63,7 +63,7 @@ public class NEI_GT_Config implements IConfigureNEI {
 
         List<RecipeMapHandler> handlers = new ArrayList<>();
 
-        for (RecipeMap<?> map : RecipeMap.sMappings) {
+        for (RecipeMap<?> map : RecipeMap.ALL_RECIPE_MAPS.values()) {
             if (map.getFrontend()
                 .getNEIProperties().registerNEI) {
                 handlers.add(new GT_NEI_DefaultHandler(map));

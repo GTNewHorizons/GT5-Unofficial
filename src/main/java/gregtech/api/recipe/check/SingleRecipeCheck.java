@@ -190,7 +190,7 @@ public class SingleRecipeCheck {
         // we don't yet have a mean to uniquely name a recipe, this will have to make do.
         // Consider move serialization code to GT_Recipe once this has been proven to work
         NBTTagCompound tag = new NBTTagCompound();
-        tag.setString("recipemap", recipeMap.mUnlocalizedName);
+        tag.setString("recipemap", recipeMap.unlocalizedName);
         if (recipe.mInputs != null) {
             tag.setTag("inputs", writeList(recipe.mInputs, GT_Utility::saveItem));
         }
@@ -257,7 +257,7 @@ public class SingleRecipeCheck {
         RecipeMap<?> mapToUse;
         if (tag.hasKey("recipemap")) {
             String mapName = tag.getString("recipemap");
-            RecipeMap<?> foundMap = RecipeMap.findRecipeMap(mapName);
+            RecipeMap<?> foundMap = RecipeMap.ALL_RECIPE_MAPS.get(mapName);
             if (foundMap != null) {
                 mapToUse = foundMap;
             } else {

@@ -380,7 +380,7 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
         String[] description = Arrays.copyOf(mDescriptionArray, mDescriptionArray.length + 1);
         description[mDescriptionArray.length] = StatCollector.translateToLocal(TT_machineType) + ": "
             + EnumChatFormatting.YELLOW
-            + StatCollector.translateToLocal(this.getRecipeList().mUnlocalizedName)
+            + StatCollector.translateToLocal(this.getRecipeList().unlocalizedName)
             + EnumChatFormatting.RESET;
         return description;
     }

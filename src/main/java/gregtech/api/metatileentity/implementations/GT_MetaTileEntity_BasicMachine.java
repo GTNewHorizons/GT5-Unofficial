@@ -1296,10 +1296,10 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
                 .getUIProperties();
             boolean isSteampowered = isSteampowered();
             if (!isSteampowered && properties.progressBarTexture == null) {
-                throw new RuntimeException("Set progressbar texture for " + getRecipeList().mUnlocalizedName);
+                throw new RuntimeException("Set progressbar texture for " + getRecipeList().unlocalizedName);
             }
             if (isSteampowered && properties.progressBarTextureSteam == null) {
-                throw new RuntimeException("Set steam progressbar texture for " + getRecipeList().mUnlocalizedName);
+                throw new RuntimeException("Set steam progressbar texture for " + getRecipeList().unlocalizedName);
             }
             builder.widget(
                 setNEITransferRect(
