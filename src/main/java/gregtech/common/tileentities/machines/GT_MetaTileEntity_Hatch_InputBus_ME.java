@@ -144,9 +144,9 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
 
     public void setAdditionalConnectionOption() {
         if (additionalConnection) {
-            gridProxy.setValidSides(EnumSet.complementOf(EnumSet.of(ForgeDirection.UNKNOWN)));
+            getProxy().setValidSides(EnumSet.complementOf(EnumSet.of(ForgeDirection.UNKNOWN)));
         } else {
-            gridProxy.setValidSides(EnumSet.of(getBaseMetaTileEntity().getFrontFacing()));
+            getProxy().setValidSides(EnumSet.of(getBaseMetaTileEntity().getFrontFacing()));
         }
     }
 
@@ -178,9 +178,6 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         }
         return this.gridProxy;
     }
-
-    @Override
-    public void gridChanged() {}
 
     @Override
     public boolean isPowered() {

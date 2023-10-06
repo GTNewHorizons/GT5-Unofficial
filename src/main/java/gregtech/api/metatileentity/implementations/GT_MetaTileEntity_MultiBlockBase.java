@@ -1429,16 +1429,6 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         }
     }
 
-    protected static <T extends GT_MetaTileEntity_Hatch> T identifyHatch(IGregTechTileEntity aTileEntity,
-        int aBaseCasingIndex, Class<T> clazz) {
-        if (aTileEntity == null) return null;
-        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (!clazz.isInstance(aMetaTileEntity)) return null;
-        T hatch = clazz.cast(aMetaTileEntity);
-        hatch.updateTexture(aBaseCasingIndex);
-        return hatch;
-    }
-
     public boolean addToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
