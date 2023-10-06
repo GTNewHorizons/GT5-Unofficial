@@ -30,6 +30,7 @@ import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
@@ -516,11 +517,18 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                 .endAtSlot(15)
                 .phantom(true)
                 .background(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_ARROW_ME)
+                .slotCreator(index -> new BaseSlot(inventoryHandler, index, true) {
+
+                    @Override
+                    public boolean isEnabled() {
+                        return !autoPullItemList && super.isEnabled();
+                    }
+                })
                 .widgetCreator(slot -> new SlotWidget(slot) {
 
                     @Override
                     protected void phantomClick(ClickData clickData, ItemStack cursorStack) {
-                        if (clickData.mouseButton != 0 || autoPullItemList) return;
+                        if (clickData.mouseButton != 0 || !getMcSlot().isEnabled()) return;
                         final int aSlotIndex = getMcSlot().getSlotIndex();
                         if (cursorStack == null) {
                             getMcSlot().putStack(null);
