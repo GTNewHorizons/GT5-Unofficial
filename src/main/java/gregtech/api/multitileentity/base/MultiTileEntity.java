@@ -749,8 +749,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity
             }
 
             if (!getCoverInfoAtSide(side).isGUIClickable()) return false;
-        }
-        if (isServerSide()) {
+        } else { // server side
             if (!privateAccess() || aPlayer.getDisplayName()
                 .equalsIgnoreCase(getOwnerName())) {
                 final ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();

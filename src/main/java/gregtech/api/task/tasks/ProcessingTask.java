@@ -33,13 +33,11 @@ public class ProcessingTask<T extends TaskHost & ProcessingLogicHost<P> & IMachi
             taskHost.setProcessingUpdate(false);
         }
         if (logic.canWork() && tick % 100 == 0) {
-            if (tick % 100 == 0) {
-                taskHost.setProcessingLogicPower(logic);
-                logic.startCheck();
-                if (logic.getResult()
-                    .wasSuccessful()) {
-                    taskHost.setActive(true);
-                }
+            taskHost.setProcessingLogicPower(logic);
+            logic.startCheck();
+            if (logic.getResult()
+                .wasSuccessful()) {
+                taskHost.setActive(true);
             }
         }
 
