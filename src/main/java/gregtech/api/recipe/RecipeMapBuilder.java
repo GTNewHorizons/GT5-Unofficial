@@ -59,7 +59,8 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
      * Constructs builder object for {@link RecipeMap} with given backend logic. For custom frontend,
      * call {@link #frontend} for the created builder object.
      *
-     * @param unlocalizedName Unique identifier for the recipemap.
+     * @param unlocalizedName Unique identifier for the recipemap. This is also used as translation key
+     *                        for NEI recipe GUI header, so add localization for it if needed.
      * @return New builder object.
      */
     public static <B extends RecipeMapBackend> RecipeMapBuilder<B> of(String unlocalizedName,
@@ -70,7 +71,8 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
     /**
      * Constructs builder object for {@link RecipeMap}.
      *
-     * @param unlocalizedName Unique identifier for the recipemap.
+     * @param unlocalizedName Unique identifier for the recipemap. This is also used as translation key
+     *                        for NEI recipe GUI header, so add localization for it if needed.
      * @return New builder object.
      */
     public static RecipeMapBuilder<RecipeMapBackend> of(String unlocalizedName) {

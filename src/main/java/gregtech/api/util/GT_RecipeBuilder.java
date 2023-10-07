@@ -79,6 +79,7 @@ public class GT_RecipeBuilder {
     protected String[] neiDesc;
     protected boolean optimize = true;
     protected Map<MetadataIdentifier<?>, Object> additionalData = new HashMap<>();
+    protected boolean checkForCollision = true;
     protected boolean valid = true;
 
     GT_RecipeBuilder() {}
@@ -87,7 +88,7 @@ public class GT_RecipeBuilder {
         FluidStack[] fluidInputs, FluidStack[] fluidOutputs, int[] chances, Object special, int duration, int eut,
         int specialValue, boolean enabled, boolean hidden, boolean fakeRecipe, boolean mCanBeBuffered,
         boolean mNeedsEmptyOutput, boolean nbtSensitive, String[] neiDesc, boolean optimize,
-        Map<MetadataIdentifier<?>, Object> additionalData, boolean valid) {
+        Map<MetadataIdentifier<?>, Object> additionalData, boolean checkForCollision, boolean valid) {
         this.inputsBasic = inputsBasic;
         this.inputsOreDict = inputsOreDict;
         this.outputs = outputs;
@@ -108,6 +109,7 @@ public class GT_RecipeBuilder {
         this.neiDesc = neiDesc;
         this.optimize = optimize;
         this.additionalData.putAll(additionalData);
+        this.checkForCollision = checkForCollision;
         this.valid = valid;
     }
 
@@ -360,6 +362,14 @@ public class GT_RecipeBuilder {
         return this;
     }
 
+    /**
+     * Prevents checking collision with existing recipes when adding the built recipe.
+     */
+    public GT_RecipeBuilder ignoreCollision() {
+        this.checkForCollision = false;
+        return this;
+    }
+
     public <T> GT_RecipeBuilder metadata(MetadataIdentifier<T> key, T value) {
         additionalData.put(key, value);
         return this;
@@ -419,6 +429,7 @@ public class GT_RecipeBuilder {
             copy(neiDesc),
             optimize,
             additionalData,
+            checkForCollision,
             valid);
     }
 
@@ -447,6 +458,7 @@ public class GT_RecipeBuilder {
             copy(neiDesc),
             optimize,
             Collections.emptyMap(),
+            checkForCollision,
             valid);
     }
 
@@ -506,6 +518,10 @@ public class GT_RecipeBuilder {
 
     public boolean isOptimize() {
         return optimize;
+    }
+
+    public boolean isCheckForCollision() {
+        return checkForCollision;
     }
 
     // endregion

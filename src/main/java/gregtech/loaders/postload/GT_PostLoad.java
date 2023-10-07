@@ -42,6 +42,7 @@ import gregtech.api.util.GT_Forestry_Compat;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_RecipeBuilder;
 import gregtech.api.util.GT_RecipeRegistrator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
@@ -270,47 +271,47 @@ public class GT_PostLoad {
                 if ((tMaterial.mElement != null) && (!tMaterial.mElement.mIsIsotope)
                     && (tMaterial != Materials.Magic)
                     && (tMaterial.getMass() > 0L)) {
-                    ItemStack tOutput = ItemList.Tool_DataOrb.get(1L);
-                    Behaviour_DataOrb.setDataTitle(tOutput, "Elemental-Scan");
-                    Behaviour_DataOrb.setDataName(tOutput, tMaterial.mElement.name());
-                    ItemStack tInput = GT_OreDictUnificator.get(OrePrefixes.dust, tMaterial, 1L);
-                    ItemStack[] iSMat0 = new ItemStack[] { tInput };
-                    ItemStack[] iSMat1 = new ItemStack[] { tOutput };
-                    if (tInput != null) {
-                        RecipeMaps.scannerFakeRecipes.addFakeRecipe(
-                            false,
-                            iSMat0,
-                            iSMat1,
-                            ItemList.Tool_DataOrb.get(1L),
-                            null,
-                            null,
-                            (int) (tMaterial.getMass() * 8192L),
-                            30,
-                            0);
+                    ItemStack dataOrb = ItemList.Tool_DataOrb.get(1L);
+                    Behaviour_DataOrb.setDataTitle(dataOrb, "Elemental-Scan");
+                    Behaviour_DataOrb.setDataName(dataOrb, tMaterial.mElement.name());
+                    ItemStack dustItem = GT_OreDictUnificator.get(OrePrefixes.dust, tMaterial, 1L);
+                    if (dustItem != null) {
                         GT_Values.RA.stdBuilder()
-                            .itemOutputs(iSMat0)
-                            .special(iSMat1)
+                            .itemInputs(dustItem)
+                            .itemOutputs(dataOrb)
+                            .special(ItemList.Tool_DataOrb.get(1L))
+                            .duration((int) (tMaterial.getMass() * 8192L))
+                            .eut(TierEU.RECIPE_LV)
+                            .fake()
+                            .ignoreCollision()
+                            .addTo(RecipeMaps.scannerFakeRecipes);
+                        GT_Values.RA.stdBuilder()
+                            .itemOutputs(dustItem)
+                            .special(dataOrb)
                             .fluidInputs(Materials.UUMatter.getFluid(tMaterial.getMass()))
                             .eut(TierEU.RECIPE_LV)
                             .addTo(RecipeMaps.replicatorFakeRecipes);
                         return;
                     }
-                    tInput = GT_OreDictUnificator.get(OrePrefixes.cell, tMaterial, 1L);
-                    iSMat0 = new ItemStack[] { tInput };
-                    if (tInput != null) {
-                        RecipeMaps.scannerFakeRecipes.addFakeRecipe(
-                            false,
-                            iSMat0,
-                            iSMat1,
-                            ItemList.Tool_DataOrb.get(1L),
-                            null,
-                            null,
-                            (int) (tMaterial.getMass() * 8192L),
-                            30,
-                            0);
+                    ItemStack cellItem = GT_OreDictUnificator.get(OrePrefixes.cell, tMaterial, 1L);
+                    if (cellItem != null) {
                         GT_Values.RA.stdBuilder()
-                            .itemOutputs(iSMat0)
-                            .special(iSMat1)
+                            .itemInputs(cellItem)
+                            .itemOutputs(dataOrb)
+                            .special(ItemList.Tool_DataOrb.get(1L))
+                            .duration((int) (tMaterial.getMass() * 8192L))
+                            .eut(TierEU.RECIPE_LV)
+                            .fake()
+                            .ignoreCollision()
+                            .addTo(RecipeMaps.scannerFakeRecipes);
+                        FluidStack fluidStack = GT_Utility.getFluidForFilledItem(cellItem, false);
+                        GT_RecipeBuilder builder = GT_Values.RA.stdBuilder();
+                        if (fluidStack != null) {
+                            builder.fluidOutputs(fluidStack);
+                        } else {
+                            builder.itemOutputs(cellItem);
+                        }
+                        builder.special(dataOrb)
                             .fluidInputs(Materials.UUMatter.getFluid(tMaterial.getMass()))
                             .eut(TierEU.RECIPE_LV)
                             .addTo(RecipeMaps.replicatorFakeRecipes);

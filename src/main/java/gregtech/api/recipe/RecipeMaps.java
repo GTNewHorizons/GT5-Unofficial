@@ -182,40 +182,47 @@ public class RecipeMaps {
         .progressBar(GT_UITextures.PROGRESSBAR_MACERATE)
         .build();
     public static final RecipeMap<RecipeMapBackend> replicatorFakeRecipes = RecipeMapBuilder.of("gt.recipe.replicator")
-        .maxIO(0, 1, 1, 0)
+        .maxIO(0, 1, 1, 1)
         .minInputs(0, 1)
         .useSpecialSlot()
         .slotOverlays((index, isFluid, isOutput, isSpecial) -> {
             if (isSpecial) {
                 return GT_UITextures.OVERLAY_SLOT_DATA_ORB;
             }
-            if (isOutput) {
-                return null;
-            }
-            if (isFluid) {
+            if (isFluid && !isOutput) {
                 return GT_UITextures.OVERLAY_SLOT_UUM;
             }
-            return GT_UITextures.OVERLAY_SLOT_CANISTER;
+            return null;
         })
-        .recipeEmitter(
-            builder -> Optional.ofNullable(GT_OreDictUnificator.getAssociation(builder.getItemOutput(0)))
-                .map(itemData -> itemData.mMaterial)
-                .map(materialsStack -> materialsStack.mMaterial)
+        .recipeEmitter(builder -> {
+            Materials material = null;
+            ItemData itemData = GT_OreDictUnificator.getAssociation(builder.getItemOutput(0));
+            if (itemData != null && itemData.mMaterial != null && itemData.mMaterial.mMaterial != null) {
+                material = itemData.mMaterial.mMaterial;
+            }
+            if (material == null) {
+                FluidStack fluidStack = builder.getFluidOutput(0);
+                if (fluidStack != null) {
+                    material = Materials.getGtMaterialFromFluid(fluidStack.getFluid());
+                }
+            }
+            return Optional.ofNullable(material)
                 .map(materials -> materials.mElement)
                 .map(Element::getMass)
                 .flatMap(
                     mass -> Optional.ofNullable(builder.getFluidInput(0))
-                        .map(fluid -> {
-                            fluid.amount = (int) GT_MetaTileEntity_Replicator.cubicFluidMultiplier(mass);
-                            return fluid;
+                        .map(uum -> {
+                            uum.amount = (int) GT_MetaTileEntity_Replicator.cubicFluidMultiplier(mass);
+                            return uum;
                         }))
                 .flatMap(
-                    fluid -> builder.duration(GT_Utility.safeInt(fluid.amount * 512L, 1))
+                    uum -> builder.duration(GT_Utility.safeInt(uum.amount * 512L, 1))
                         .fake()
                         .noOptimize()
                         .build())
                 .map(Collections::singletonList)
-                .orElse(Collections.emptyList()))
+                .orElse(Collections.emptyList());
+        })
         .build();
     /**
      * Use {@link GT_RecipeConstants#AssemblyLine} for recipe addition.

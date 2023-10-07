@@ -56,7 +56,6 @@ public class RecipeMapBackend {
      */
     private final Set<GT_Recipe> allRecipes = new HashSet<>();
 
-    private final boolean checkForCollision = true;
     /**
      * List of recipemaps that also receive recipe addition from this backend.
      */
@@ -149,7 +148,7 @@ public class RecipeMapBackend {
             }
             if (properties.specialHandler != null) recipe = properties.specialHandler.apply(recipe);
             if (recipe == null) continue;
-            if (checkForCollision
+            if (builder.isCheckForCollision()
                 && findRecipeWithResult(recipe.mInputs, recipe.mFluidInputs, null, r -> true, null, false, true)
                     .isSuccessful()) {
                 StringBuilder errorInfo = new StringBuilder();
