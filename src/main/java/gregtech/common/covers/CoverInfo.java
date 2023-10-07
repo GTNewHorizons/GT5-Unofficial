@@ -7,7 +7,6 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -29,7 +28,7 @@ public final class CoverInfo {
     private static final String NBT_SIDE = "s", NBT_ID = "id", NBT_DATA = "d", NBT_TICK_RATE_ADDITION = "tra";
 
     // One minute
-    public static final int MAX_ADDITION = 1200;
+    public static final int MAX_TICK_RATE_ADDITION = 1200;
 
     public static final CoverInfo EMPTY_INFO = new CoverInfo(ForgeDirection.UNKNOWN, null);
     private final ForgeDirection coverSide;
@@ -245,7 +244,7 @@ public final class CoverInfo {
     }
 
     public void onCoverJackhammer(EntityPlayer aPlayer) {
-        adjustTickRateMultiplier(aPlayer.isSneaking(), 1);
+        adjustTickRateMultiplier(aPlayer.isSneaking());
 
         GT_Utility.sendChatToPlayer(
             aPlayer,
@@ -257,11 +256,11 @@ public final class CoverInfo {
      *
      * @param isDecreasing If true, lower one step.
      */
-    public void adjustTickRateMultiplier(final boolean isDecreasing, int multiplier) {
+    public void adjustTickRateMultiplier(final boolean isDecreasing) {
         final int currentTickRate = getTickRate();
         final int stepAmount = currentTickRate == 20 ? (isDecreasing ? 5 : 20) : (currentTickRate < 20 ? 5 : 20);
 
-        tickRateAddition = clamp(tickRateAddition + (isDecreasing ? -multiplier : multiplier) * stepAmount);
+        tickRateAddition = clamp(tickRateAddition + (isDecreasing ? -1 : 1) * stepAmount);
         tickRateAddition = clamp(tickRateAddition - ((tickRateAddition + getMinimumTickRate()) % stepAmount));
     }
 
@@ -273,10 +272,6 @@ public final class CoverInfo {
     @NotNull
     public CoverInfo.ClientTickRateFormatter getCurrentTickRateFormatted() {
         return new ClientTickRateFormatter(getTickRate());
-    }
-
-    public CoverInfo.ClientTickRateFormatter getMinimumTickRateFormatted() {
-        return new ClientTickRateFormatter(getMinimumTickRate(), true);
     }
 
     public int getMinimumTickRate() {
@@ -305,7 +300,7 @@ public final class CoverInfo {
     }
 
     private static int clamp(int input) {
-        return Math.min(MAX_ADDITION, Math.max(0, input));
+        return Math.min(MAX_TICK_RATE_ADDITION, Math.max(0, input));
     }
 
     public static final class ClientTickRateFormatter {
@@ -314,17 +309,13 @@ public final class CoverInfo {
         private final String unitI18NKey;
         /** A number representing a quantity of time. */
         private final int tickRate;
-        /** If true, print the entire message as gray instead of coloring it. */
-        private final boolean useDullColor;
 
         /**
          * Converts a given tick rate into a human-friendly format.
          * 
-         * @param tickRate     The rate at which something ticks, in ticks per operation.
-         * @param useDullColor If true, print the entire message in gray instead of coloring it.
+         * @param tickRate The rate at which something ticks, in ticks per operation.
          */
-        private ClientTickRateFormatter(final int tickRate, final boolean useDullColor) {
-            this.useDullColor = useDullColor;
+        public ClientTickRateFormatter(final int tickRate) {
             if (tickRate < 20) {
                 this.unitI18NKey = tickRate == 1 ? "gt.time.tick.singular" : "gt.time.tick.plural";
                 this.tickRate = tickRate;
@@ -334,16 +325,10 @@ public final class CoverInfo {
             }
         }
 
-        public ClientTickRateFormatter(final int tickRate) {
-            this(tickRate, false);
-        }
-
         public String toString() {
             return StatCollector.translateToLocalFormatted(
                 "gt.cover.info.format.tick_rate",
-                useDullColor ? EnumChatFormatting.GRAY : EnumChatFormatting.AQUA,
                 tickRate,
-                useDullColor ? EnumChatFormatting.GRAY : EnumChatFormatting.RESET,
                 StatCollector.translateToLocal(unitI18NKey));
         }
     }

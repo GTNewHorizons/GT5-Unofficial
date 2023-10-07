@@ -1,7 +1,7 @@
 package gregtech.api.gui.widgets;
 
 import static gregtech.api.gui.modularui.GT_UITextures.OVERLAY_BUTTON_HOURGLASS;
-import static gregtech.common.covers.CoverInfo.MAX_ADDITION;
+import static gregtech.common.covers.CoverInfo.MAX_TICK_RATE_ADDITION;
 
 import java.util.List;
 
@@ -48,7 +48,18 @@ public class GT_CoverTickRateButton extends ButtonWidget {
     }
 
     private void onClick(@NotNull ClickData clickData, @NotNull Widget widget) {
-        coverInfo.adjustTickRateMultiplier(clickData.mouseButton == 1, clickData.ctrl ? 5 : 1);
+        final boolean isDecreasing = clickData.mouseButton == 1;
+
+        if (clickData.ctrl) {
+            // Do five operations at once if Ctrl is held down. Since the actual increase granted by each invocation
+            // can be different on each call, just call the method several times rather than trying to do a bunch of
+            // weird math or adding a pointless for-loop.
+            coverInfo.adjustTickRateMultiplier(isDecreasing);
+            coverInfo.adjustTickRateMultiplier(isDecreasing);
+            coverInfo.adjustTickRateMultiplier(isDecreasing);
+            coverInfo.adjustTickRateMultiplier(isDecreasing);
+        }
+        coverInfo.adjustTickRateMultiplier(isDecreasing);
     }
 
     private List<String> dynamicTooltip() {
@@ -56,7 +67,7 @@ public class GT_CoverTickRateButton extends ButtonWidget {
 
         if (tickRateAddition == 0) {
             boundsNotification = StatCollector.translateToLocal("gt.cover.info.button.bounds_notification.minimum");
-        } else if (tickRateAddition >= MAX_ADDITION - 1) {
+        } else if (tickRateAddition >= MAX_TICK_RATE_ADDITION - 1) {
             // Clamping can make tickRateAddition approach but never actually equal MAX_ADDITION, so we need this
             // adjustment.
             boundsNotification = StatCollector.translateToLocal("gt.cover.info.button.bounds_notification.maximum");
