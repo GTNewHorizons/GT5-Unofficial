@@ -72,12 +72,12 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachin
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.net.GT_Packet_TileEntity;
 import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.util.Cooldown;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.RandomCooldown;
 import gregtech.common.GT_Pollution;
 import gregtech.common.covers.CoverInfo;
 import ic2.api.Direction;
@@ -122,7 +122,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
     private UUID mOwnerUuid = GT_Utility.defaultUuid;
     private NBTTagCompound mRecipeStuff = new NBTTagCompound();
     private int cableUpdateDelay = 30;
-    private Cooldown updateTextureCooldown = new Cooldown(TickTime.SECOND / 2);
+    private RandomCooldown updateTextureCooldown = new RandomCooldown(TickTime.SECOND / 4, TickTime.SECOND / 2);
 
     public BaseMetaTileEntity() {}
 
@@ -333,7 +333,15 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                         oLightValueClient = mLightValue;
                         issueTextureUpdate();
                     }
-
+                    // if (mNeedsUpdate) {
+                    // GT_Log.out.println(
+                    // String.format(
+                    // "trying to update texture for [%s], active = %b, time = %d",
+                    // this.mMetaTileEntity.mName,
+                    // mActive,
+                    // MinecraftServer.getServer()
+                    // .getTickCounter()));
+                    // }
                     if (mNeedsUpdate && updateTextureCooldown.hasPassed()) {
                         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
                         mNeedsUpdate = false;
