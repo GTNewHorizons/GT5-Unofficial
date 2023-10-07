@@ -29,7 +29,7 @@ public final class CoverInfo {
     private static final String NBT_SIDE = "s", NBT_ID = "id", NBT_DATA = "d", NBT_TICK_RATE_ADDITION = "tra";
 
     // One minute
-    private static final int MAX_ADDITION = 1200;
+    public static final int MAX_ADDITION = 1200;
 
     public static final CoverInfo EMPTY_INFO = new CoverInfo(ForgeDirection.UNKNOWN, null);
     private final ForgeDirection coverSide;
@@ -245,7 +245,7 @@ public final class CoverInfo {
     }
 
     public void onCoverJackhammer(EntityPlayer aPlayer) {
-        adjustTickRateMultiplier(aPlayer.isSneaking());
+        adjustTickRateMultiplier(aPlayer.isSneaking(), 1);
 
         GT_Utility.sendChatToPlayer(
             aPlayer,
@@ -257,12 +257,12 @@ public final class CoverInfo {
      *
      * @param isDecreasing If true, lower one step.
      */
-    public void adjustTickRateMultiplier(final boolean isDecreasing) {
+    public void adjustTickRateMultiplier(final boolean isDecreasing, int multiplier) {
         final int currentTickRate = getTickRate();
         final int stepAmount = currentTickRate == 20 ? (isDecreasing ? 5 : 20) : (currentTickRate < 20 ? 5 : 20);
 
-        tickRateAddition = clamp(tickRateAddition + (isDecreasing ? -1 : 1) * stepAmount);
-        tickRateAddition = clamp(tickRateAddition - (getTickRate() % stepAmount));
+        tickRateAddition = clamp(tickRateAddition + (isDecreasing ? -multiplier : multiplier) * stepAmount);
+        tickRateAddition = clamp(tickRateAddition - ((tickRateAddition + getMinimumTickRate()) % stepAmount));
     }
 
     /**
@@ -314,10 +314,17 @@ public final class CoverInfo {
         private final String unitI18NKey;
         /** A number representing a quantity of time. */
         private final int tickRate;
-        private final boolean dim;
+        /** If true, print the entire message as gray instead of coloring it. */
+        private final boolean useDullColor;
 
-        private ClientTickRateFormatter(final int tickRate, final boolean dim) {
-            this.dim = dim;
+        /**
+         * Converts a given tick rate into a human-friendly format.
+         * 
+         * @param tickRate     The rate at which something ticks, in ticks per operation.
+         * @param useDullColor If true, print the entire message in gray instead of coloring it.
+         */
+        private ClientTickRateFormatter(final int tickRate, final boolean useDullColor) {
+            this.useDullColor = useDullColor;
             if (tickRate < 20) {
                 this.unitI18NKey = tickRate == 1 ? "gt.time.tick.singular" : "gt.time.tick.plural";
                 this.tickRate = tickRate;
@@ -334,9 +341,9 @@ public final class CoverInfo {
         public String toString() {
             return StatCollector.translateToLocalFormatted(
                 "gt.cover.info.format.tick_rate",
-                dim ? EnumChatFormatting.GRAY : EnumChatFormatting.AQUA,
+                useDullColor ? EnumChatFormatting.GRAY : EnumChatFormatting.AQUA,
                 tickRate,
-                dim ? EnumChatFormatting.GRAY : EnumChatFormatting.RESET,
+                useDullColor ? EnumChatFormatting.GRAY : EnumChatFormatting.RESET,
                 StatCollector.translateToLocal(unitI18NKey));
         }
     }

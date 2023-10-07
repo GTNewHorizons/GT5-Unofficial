@@ -455,7 +455,7 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
                 .getCoverInfoAtSide(uiBuildContext.getCoverSide());
             if (coverInfo.getMinimumTickRate() > 0) {
                 builder.widget(
-                    new GT_CoverTickRateButton(coverInfo, builder).setPos(getGUIWidth() - 32, getGUIHeight() - 32));
+                    new GT_CoverTickRateButton(coverInfo, builder).setPos(getGUIWidth() - 24, getGUIHeight() - 24));
             }
 
             return builder.build();

@@ -1380,9 +1380,11 @@ gt.item.adv_sensor_card.error.no_data=No data found
 
 gt.cover.info.format.tick_rate=%s%s%s %s
 gt.cover.info.chat.tick_rate=Cover tick rate set to %s
-gt.cover.info.button.tick_rate.1=Current tick rate: Every %s
+gt.cover.info.button.tick_rate.1=Current tick rate: Every %s%s
 gt.cover.info.button.tick_rate.2=Left click to increase, right click to decrease
-gt.cover.info.button.tick_rate.3=§7(Minimum tick rate: Every %s§7)
+gt.cover.info.button.tick_rate.3=Hold Ctrl to adjust by more steps per click
+gt.cover.info.button.bounds_notification.minimum=§7 (minimum)
+gt.cover.info.button.bounds_notification.maximum=§7 (maximum)
 gt.time.tick.singular=tick
 gt.time.tick.plural=ticks
 gt.time.second.singular=second

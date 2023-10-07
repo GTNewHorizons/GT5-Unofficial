@@ -1,6 +1,7 @@
 package gregtech.api.gui.widgets;
 
-import static gregtech.api.gui.modularui.GT_UITextures.HOURGLASS;
+import static gregtech.api.gui.modularui.GT_UITextures.OVERLAY_BUTTON_HOURGLASS;
+import static gregtech.common.covers.CoverInfo.MAX_ADDITION;
 
 import java.util.List;
 
@@ -24,40 +25,51 @@ public class GT_CoverTickRateButton extends ButtonWidget {
 
     private final CoverInfo coverInfo;
     private int clientTickRate;
+    private int tickRateAddition;
 
     public GT_CoverTickRateButton(@NotNull CoverInfo coverInfo, @NotNull IWidgetBuilder<?> builder) {
         this.coverInfo = coverInfo;
-        super.setBackground(BACKGROUND, HOURGLASS);
+        this.clientTickRate = coverInfo.getTickRate();
+        this.tickRateAddition = coverInfo.getTickRateAddition();
+
+        super.setBackground(BACKGROUND, OVERLAY_BUTTON_HOURGLASS);
         super.setOnClick(this::onClick);
         super.dynamicTooltip(this::dynamicTooltip);
         super.attachSyncer(
             new FakeSyncWidget.IntegerSyncer(this.coverInfo::getTickRate, integer -> clientTickRate = integer),
             builder,
-            (widget, aInt) -> notifyTooltipChange());
+            (widget, aInt) -> notifyTooltipChange())
+                .attachSyncer(
+                    new FakeSyncWidget.IntegerSyncer(
+                        this.coverInfo::getTickRateAddition,
+                        integer -> tickRateAddition = integer),
+                    builder);
+
     }
 
     private void onClick(@NotNull ClickData clickData, @NotNull Widget widget) {
-        coverInfo.adjustTickRateMultiplier(clickData.mouseButton == 1);
+        coverInfo.adjustTickRateMultiplier(clickData.mouseButton == 1, clickData.ctrl ? 5 : 1);
     }
 
     private List<String> dynamicTooltip() {
-        final int minimumTickRate = coverInfo.getMinimumTickRate();
+        final String boundsNotification;
 
-        final ImmutableList.Builder<String> builder = ImmutableList.builder();
-
-        builder.add(
-            StatCollector.translateToLocalFormatted(
-                "gt.cover.info.button.tick_rate.1",
-                new CoverInfo.ClientTickRateFormatter(clientTickRate)),
-            StatCollector.translateToLocal("gt.cover.info.button.tick_rate.2"));
-
-        if (minimumTickRate != clientTickRate) {
-            builder.add(
-                StatCollector.translateToLocalFormatted(
-                    "gt.cover.info.button.tick_rate.3",
-                    coverInfo.getMinimumTickRateFormatted()));
+        if (tickRateAddition == 0) {
+            boundsNotification = StatCollector.translateToLocal("gt.cover.info.button.bounds_notification.minimum");
+        } else if (tickRateAddition >= MAX_ADDITION - 1) {
+            // Clamping can make tickRateAddition approach but never actually equal MAX_ADDITION, so we need this
+            // adjustment.
+            boundsNotification = StatCollector.translateToLocal("gt.cover.info.button.bounds_notification.maximum");
+        } else {
+            boundsNotification = "";
         }
 
-        return builder.build();
+        return ImmutableList.of(
+            StatCollector.translateToLocalFormatted(
+                "gt.cover.info.button.tick_rate.1",
+                new CoverInfo.ClientTickRateFormatter(clientTickRate),
+                boundsNotification),
+            StatCollector.translateToLocal("gt.cover.info.button.tick_rate.2"),
+            StatCollector.translateToLocal("gt.cover.info.button.tick_rate.3"));
     }
 }
