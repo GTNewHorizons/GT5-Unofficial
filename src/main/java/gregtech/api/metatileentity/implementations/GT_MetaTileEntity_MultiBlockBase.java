@@ -118,7 +118,6 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     protected VoidingMode voidingMode = getDefaultVoidingMode();
     protected boolean batchMode = getDefaultBatchMode();
     private @Nonnull CheckRecipeResult checkRecipeResult = CheckRecipeResultRegistry.NONE;
-    private boolean isScheduledForResetCheckRecipeResult;
 
     protected static final String INPUT_SEPARATION_NBT_KEY = "inputSeparation";
     protected static final String VOID_EXCESS_NBT_KEY = "voidExcess";
@@ -900,9 +899,6 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         mMaxProgresstime = 0;
         mEfficiencyIncrease = 0;
         getBaseMetaTileEntity().disableWorking();
-        if (!checkRecipeResult.persistsOnShutdown()) {
-            checkRecipeResult = CheckRecipeResultRegistry.NONE;
-        }
     }
 
     public void criticalStopMachine() {
@@ -1813,20 +1809,6 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         }
     }
 
-    @Override
-    public void onSetActive(boolean active) {
-        if (isScheduledForResetCheckRecipeResult && !active && !checkRecipeResult.persistsOnShutdown()) {
-            checkRecipeResult = CheckRecipeResultRegistry.NONE;
-            isScheduledForResetCheckRecipeResult = false;
-        }
-    }
-
-    @Override
-    public void onDisableWorking() {
-        // This prevents deleting result instantly when turning off machine
-        isScheduledForResetCheckRecipeResult = true;
-    }
-
     protected void setMufflers(boolean state) {
         for (GT_MetaTileEntity_Hatch_Muffler aMuffler : mMufflerHatches) {
             final IGregTechTileEntity iGTTileEntity = aMuffler.getBaseMetaTileEntity();
@@ -2291,8 +2273,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                 .setSynced(false)
                 .setTextAlignment(Alignment.CenterLeft)
                 .setEnabled(
-                    widget -> GT_Utility.isStringValid(checkRecipeResult.getDisplayString())
-                        && shouldDisplayCheckRecipeResult()))
+                    widget -> shouldDisplayCheckRecipeResult()
+                        && GT_Utility.isStringValid(checkRecipeResult.getDisplayString())
+                        && (isAllowedToWork() || getBaseMetaTileEntity().isActive()
+                            || checkRecipeResult.persistsOnShutdown())))
             .widget(new CheckRecipeResultSyncer(() -> checkRecipeResult, (result) -> checkRecipeResult = result));
 
         if (showRecipeTextInGUI()) {
