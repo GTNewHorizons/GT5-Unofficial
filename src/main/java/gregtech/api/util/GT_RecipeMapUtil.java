@@ -67,6 +67,9 @@ public class GT_RecipeMapUtil {
     private static final Map<String, IRecipeMap> addonRecipeMaps = new HashMap<>();
     private static final Multimap<String, Consumer<IRecipeMap>> delayedActions = ArrayListMultimap.create();
 
+    /**
+     * Set of metadata that work as alias for special values.
+     */
     public static final Set<GT_RecipeBuilder.MetadataIdentifier<Integer>> SPECIAL_VALUE_ALIASES = new HashSet<>();
 
     public static <T> T[] appendArray(T[] arr, T val) {

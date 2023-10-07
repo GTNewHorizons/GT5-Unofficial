@@ -3,7 +3,6 @@ package gregtech.api.recipe;
 import static gregtech.api.recipe.check.FindRecipeResult.NOT_FOUND;
 import static gregtech.api.recipe.check.FindRecipeResult.ofSuccess;
 import static gregtech.api.util.GT_RecipeBuilder.handleRecipeCollision;
-import static gregtech.api.util.GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES;
 import static gregtech.api.util.GT_Utility.areStacksEqualOrNull;
 
 import java.util.ArrayList;
@@ -32,7 +31,6 @@ import gregtech.api.recipe.check.FindRecipeResult;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_RecipeBuilder;
-import gregtech.api.util.GT_RecipeConstants;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 
 /**
@@ -131,20 +129,6 @@ public class RecipeMapBackend {
             if (recipe.mFluidInputs.length < properties.minFluidInputs
                 && recipe.mInputs.length < properties.minItemInputs) {
                 return Collections.emptyList();
-            }
-            if (recipe.mSpecialValue == 0) {
-                // new style cleanroom/lowgrav handling
-                int specialValue = 0;
-                if (builder.getMetadata(GT_RecipeConstants.LOW_GRAVITY, false)) specialValue -= 100;
-                if (builder.getMetadata(GT_RecipeConstants.CLEANROOM, false)) specialValue -= 200;
-                for (GT_RecipeBuilder.MetadataIdentifier<Integer> ident : SPECIAL_VALUE_ALIASES) {
-                    Integer metadata = builder.getMetadata(ident, null);
-                    if (metadata != null) {
-                        specialValue = metadata;
-                        break;
-                    }
-                }
-                recipe.mSpecialValue = specialValue;
             }
             if (properties.specialHandler != null) recipe = properties.specialHandler.apply(recipe);
             if (recipe == null) continue;

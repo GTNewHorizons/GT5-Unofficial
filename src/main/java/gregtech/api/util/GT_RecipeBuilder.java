@@ -1,6 +1,7 @@
 package gregtech.api.util;
 
 import static gregtech.api.recipe.check.FindRecipeResult.NOT_FOUND;
+import static gregtech.api.util.GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES;
 import static gregtech.api.util.GT_Utility.copyFluidArray;
 import static gregtech.api.util.GT_Utility.copyItemArray;
 
@@ -26,6 +27,7 @@ import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.recipe.check.FindRecipeResult;
 import gregtech.api.util.extensions.ArrayExt;
 
+@SuppressWarnings({ "unused", "UnusedReturnValue" })
 public class GT_RecipeBuilder {
 
     // debug mode expose problems. panic mode help you check nothing is wrong-ish without you actively monitoring
@@ -761,7 +763,24 @@ public class GT_RecipeBuilder {
         r.mFakeRecipe = fakeRecipe;
         r.mEnabled = enabled;
         if (neiDesc != null) r.setNeiDesc(neiDesc);
+        applyDefaultSpecialValues(r);
         return r;
+    }
+
+    private void applyDefaultSpecialValues(GT_Recipe recipe) {
+        if (recipe.mSpecialValue != 0) return;
+
+        int specialValue = 0;
+        if (getMetadata(GT_RecipeConstants.LOW_GRAVITY, false)) specialValue -= 100;
+        if (getMetadata(GT_RecipeConstants.CLEANROOM, false)) specialValue -= 200;
+        for (MetadataIdentifier<Integer> ident : SPECIAL_VALUE_ALIASES) {
+            Integer metadata = getMetadata(ident, null);
+            if (metadata != null) {
+                specialValue = metadata;
+                break;
+            }
+        }
+        recipe.mSpecialValue = specialValue;
     }
 
     public Collection<GT_Recipe> addTo(IRecipeMap recipeMap) {
