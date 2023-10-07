@@ -56,6 +56,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.TickTime;
 import gregtech.api.graphs.GenerateNodeMap;
 import gregtech.api.graphs.GenerateNodeMapPower;
 import gregtech.api.graphs.Node;
@@ -71,6 +72,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachin
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.net.GT_Packet_TileEntity;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.util.Cooldown;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
@@ -120,6 +122,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
     private UUID mOwnerUuid = GT_Utility.defaultUuid;
     private NBTTagCompound mRecipeStuff = new NBTTagCompound();
     private int cableUpdateDelay = 30;
+    private Cooldown updateTextureCooldown = new Cooldown(TickTime.SECOND / 2);
 
     public BaseMetaTileEntity() {}
 
@@ -331,10 +334,10 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                         issueTextureUpdate();
                     }
 
-                    if (mNeedsUpdate) {
+                    if (mNeedsUpdate && updateTextureCooldown.hasPassed()) {
                         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-                        // worldObj.func_147479_m(xCoord, yCoord, zCoord);
                         mNeedsUpdate = false;
+                        updateTextureCooldown.set();
                     }
                 }
                 if (aSideServer && mTickTimer > 10) {
