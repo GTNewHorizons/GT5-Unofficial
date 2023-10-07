@@ -8,7 +8,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
-import net.minecraft.stats.StatBase;
 import net.minecraftforge.common.AchievementPage;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
@@ -32,8 +31,7 @@ import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 
 public class AchievementHandler {
 
-    public ConcurrentHashMap<String, Achievement> achievementList = new ConcurrentHashMap<String, Achievement>();
-    public ConcurrentHashMap<String, Boolean> issuedAchievements = new ConcurrentHashMap<String, Boolean>();
+    public ConcurrentHashMap<String, Achievement> achievementList = new ConcurrentHashMap<>();
 
     public int adjX = 5;
     public int adjY = 9;
@@ -176,7 +174,6 @@ public class AchievementHandler {
                 GregtechItemList.Industrial_FishingPond.get(1),
                 aBaseAchievementName,
                 false);
-        // this.registerAchievement("rtg", -4, -4, GregtechItemList.RTG.get(1), aBaseAchievementName, false);
 
         // Casings
         this.registerAchievement(
@@ -230,45 +227,11 @@ public class AchievementHandler {
                 ItemUtils.getSimpleStack(ModItems.dustMolybdenum99),
                 "multi.cyclo",
                 false);
-        this.registerAchievement(
-                "decay.technetium99m",
-                14,
-                8,
-                ItemUtils.getSimpleStack(ModItems.dustTechnetium99M),
-                "multi.cyclo",
-                false);
-        this.registerAchievement(
-                "decay.technetium99",
-                15,
-                8,
-                ItemUtils.getSimpleStack(ModItems.dustTechnetium99),
-                "multi.cyclo",
-                false);
 
         AchievementPage.registerAchievementPage(
-                new AchievementPage(
-                        "GT++",
-                        (Achievement[]) ((Achievement[]) this.achievementList.values()
-                                .toArray(new Achievement[this.achievementList.size()]))));
+                new AchievementPage("GT++", this.achievementList.values().toArray(new Achievement[0])));
         MinecraftForge.EVENT_BUS.register(this);
         FMLCommonHandler.instance().bus().register(this);
-    }
-
-    public Achievement registerAchievement(String textId, int x, int y, ItemStack icon, Achievement requirement,
-            boolean special) {
-        Achievement achievement = new Achievement(textId, textId, this.adjX + x, this.adjY + y, icon, requirement);
-        if (special) {
-            achievement.setSpecial();
-        }
-
-        achievement.registerStat();
-        if (CORE.DEVENV) {
-            GT_Log.out.println("achievement." + textId + "=");
-            GT_Log.out.println("achievement." + textId + ".desc=");
-        }
-
-        this.achievementList.put(textId, achievement);
-        return achievement;
     }
 
     public Achievement registerAchievement(String textId, int x, int y, ItemStack icon, String requirement,
@@ -296,12 +259,12 @@ public class AchievementHandler {
 
     public void issueAchievement(EntityPlayer entityplayer, String textId) {
         if (entityplayer != null) {
-            entityplayer.triggerAchievement((StatBase) this.achievementList.get(textId));
+            entityplayer.triggerAchievement(this.achievementList.get(textId));
         }
     }
 
     public Achievement getAchievement(String textId) {
-        return this.achievementList.containsKey(textId) ? (Achievement) this.achievementList.get(textId) : null;
+        return this.achievementList.get(textId);
     }
 
     /**
@@ -325,12 +288,12 @@ public class AchievementHandler {
             // Check if valid name // mod
             String aModID = ItemUtils.getModId(aStack);
 
-            if (aModID == null || aModID.length() <= 0 || aModID.isEmpty()) {
+            if (aModID == null || aModID.isEmpty()) {
                 return;
             }
 
-            if (aModID != null && (ItemUtils.getModId(aStack).equals(GTPlusPlus.ID)
-                    || ItemUtils.getModId(aStack).equalsIgnoreCase(GregTech.ID))) {
+            if (ItemUtils.getModId(aStack).equals(GTPlusPlus.ID)
+                    || ItemUtils.getModId(aStack).equalsIgnoreCase(GregTech.ID)) {
                 isValid = true;
             }
             if (!isValid) {
@@ -348,9 +311,7 @@ public class AchievementHandler {
                 aUnlocalName = aUnlocalName.substring(5);
             }
 
-            // Logger.INFO("Picked up "+aUnlocalName);
-
-            /**
+            /*
              * Misc Blocks
              */
             if (aUnlocalName.equals("blockFishTrap")) {
@@ -360,7 +321,7 @@ public class AchievementHandler {
                 this.issueAchievement(aPlayer, "block.withercage");
             }
 
-            /**
+            /*
              * Decayables
              */
             if (aUnlocalName.equals("dustNeptunium238")) {
@@ -375,7 +336,7 @@ public class AchievementHandler {
                 this.issueAchievement(aPlayer, "decay.technetium99");
             }
 
-            /**
+            /*
              * Random Materials worthy of Achievements
              */
             else if (aUnlocalName.equals("itemDustPotin")) {
@@ -390,7 +351,7 @@ public class AchievementHandler {
                 this.issueAchievement(aPlayer, "dust.hypogen");
             }
 
-            /**
+            /*
              * Machines
              */
             else if (aUnlocalName.startsWith("gt.blockmachines.")) {
@@ -398,7 +359,7 @@ public class AchievementHandler {
                 // Readability
                 String aStartsWith = "gt.blockmachines.";
 
-                /**
+                /*
                  * Single Blocks
                  */
 
@@ -439,7 +400,7 @@ public class AchievementHandler {
                     this.issueAchievement(aPlayer, "hatch.control");
                 }
 
-                /**
+                /*
                  * Multis
                  */
 
@@ -474,7 +435,7 @@ public class AchievementHandler {
 
             }
 
-            /**
+            /*
              * Casings
              */
             else if (aUnlocalName.equals("gtplusplus.blockcasings.14")) {
