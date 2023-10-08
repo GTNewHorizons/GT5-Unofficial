@@ -1,5 +1,7 @@
 package com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega;
 
+import static gregtech.api.util.GT_Utility.filterValidMTEs;
+
 import java.util.Arrays;
 
 import net.minecraft.init.Blocks;
@@ -20,7 +22,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPow
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.GT_Utility;
 
 public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_MegaMultiBlockBase<T>>
@@ -50,10 +51,8 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
     protected long[] getCurrentInfoData() {
         long storedEnergy = 0, maxEnergy = 0;
         for (GT_MetaTileEntity_Hatch hatch : this.getExoticAndNormalEnergyHatchList()) {
-            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(hatch)) {
-                storedEnergy += hatch.getBaseMetaTileEntity().getStoredEU();
-                maxEnergy += hatch.getBaseMetaTileEntity().getEUCapacity();
-            }
+            storedEnergy += hatch.getBaseMetaTileEntity().getStoredEU();
+            maxEnergy += hatch.getBaseMetaTileEntity().getEUCapacity();
         }
         return new long[] { storedEnergy, maxEnergy };
     }
@@ -62,21 +61,17 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
     public String[] getInfoData() {
         int mPollutionReduction = 0;
 
-        for (GT_MetaTileEntity_Hatch_Muffler tHatch : this.mMufflerHatches) {
-            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
-                mPollutionReduction = Math.max(tHatch.calculatePollutionReduction(100), mPollutionReduction);
-            }
+        for (GT_MetaTileEntity_Hatch_Muffler tHatch : filterValidMTEs(mMufflerHatches)) {
+            mPollutionReduction = Math.max(tHatch.calculatePollutionReduction(100), mPollutionReduction);
         }
 
         long[] ttHatches = this.getCurrentInfoData();
         long storedEnergy = ttHatches[0];
         long maxEnergy = ttHatches[1];
 
-        for (GT_MetaTileEntity_Hatch_Energy tHatch : this.mEnergyHatches) {
-            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
-                storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
-                maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
-            }
+        for (GT_MetaTileEntity_Hatch_Energy tHatch : filterValidMTEs(mEnergyHatches)) {
+            storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
+            maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
         }
 
         long nominalV = this.getMaxInputEu();

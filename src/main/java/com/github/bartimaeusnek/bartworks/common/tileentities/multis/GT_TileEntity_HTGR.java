@@ -16,6 +16,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElement
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GT_Values.AuthorKuba;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -334,8 +335,7 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
                         this.fuelsupply,
                         HTGRMaterials.MATERIALS_PER_FUEL * this.fueltype + HTGRMaterials.USABLE_FUEL_INDEX);
                 boolean storedAll = false;
-                for (GT_MetaTileEntity_Hatch_OutputBus tHatch : this.mOutputBusses) {
-                    if (!isValidMetaTileEntity(tHatch)) continue;
+                for (GT_MetaTileEntity_Hatch_OutputBus tHatch : filterValidMTEs(mOutputBusses)) {
                     if (tHatch.storeAll(iStack)) {
                         storedAll = true;
                         break;
@@ -365,15 +365,13 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
             int takecoolant = this.coolanttaking;
             int drainedamount = 0;
 
-            for (GT_MetaTileEntity_Hatch_Input tHatch : this.mInputHatches) {
-                if (isValidMetaTileEntity(tHatch)) {
-                    FluidStack tLiquid = tHatch.getFluid();
-                    if (tLiquid != null && tLiquid.isFluidEqual(FluidRegistry.getFluidStack("ic2coolant", 1))) {
-                        FluidStack drained = tHatch.drain(takecoolant, true);
-                        takecoolant -= drained.amount;
-                        drainedamount += drained.amount;
-                        if (takecoolant <= 0) break;
-                    }
+            for (GT_MetaTileEntity_Hatch_Input tHatch : filterValidMTEs(mInputHatches)) {
+                FluidStack tLiquid = tHatch.getFluid();
+                if (tLiquid != null && tLiquid.isFluidEqual(FluidRegistry.getFluidStack("ic2coolant", 1))) {
+                    FluidStack drained = tHatch.drain(takecoolant, true);
+                    takecoolant -= drained.amount;
+                    drainedamount += drained.amount;
+                    if (takecoolant <= 0) break;
                 }
             }
 

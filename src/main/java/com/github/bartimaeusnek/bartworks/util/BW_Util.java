@@ -16,7 +16,6 @@ package com.github.bartimaeusnek.bartworks.util;
 import static gregtech.api.enums.GT_Values.D1;
 import static gregtech.api.enums.GT_Values.E;
 import static gregtech.api.enums.GT_Values.M;
-import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.VN;
 import static gregtech.api.enums.GT_Values.W;
 
@@ -24,7 +23,6 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,11 +62,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.interfaces.IItemContainer;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
@@ -222,26 +215,6 @@ public class BW_Util {
         return special;
     }
 
-    public static boolean addBlockToMachine(int x, int y, int z, int offsetsize,
-            IGregTechTileEntity aBaseMetaTileEntity, Block block) {
-        int xDir = aBaseMetaTileEntity.getBackFacing().offsetX * offsetsize;
-        int zDir = aBaseMetaTileEntity.getBackFacing().offsetZ * offsetsize;
-
-        return block == Blocks.air ? aBaseMetaTileEntity.getAirOffset(xDir + x, y, zDir + z)
-                : aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z).equals(block);
-    }
-
-    public static boolean addBlockToMachine(int x, int y, int z, int offsetsize,
-            IGregTechTileEntity aBaseMetaTileEntity, Block block, int damage) {
-        byte dmg = (byte) damage;
-        int xDir = aBaseMetaTileEntity.getBackFacing().offsetX * offsetsize;
-        int zDir = aBaseMetaTileEntity.getBackFacing().offsetZ * offsetsize;
-
-        return block == Blocks.air ? aBaseMetaTileEntity.getAirOffset(xDir + x, y, zDir + z)
-                : aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z).equals(block)
-                        && aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z) == dmg;
-    }
-
     public static int calculateSv(Materials materials) {
         for (BioVatLogicAdder.MaterialSvPair pair : BioVatLogicAdder.RadioHatch.getMaSv()) {
             if (pair.getMaterials().equals(materials)) return pair.getSievert();
@@ -262,19 +235,6 @@ public class BW_Util {
                 && GT_OreDictUnificator.getAssociation(itemStack).mPrefix != null
                 && GT_OreDictUnificator.getAssociation(itemStack).mMaterial != null
                 && GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial != null;
-    }
-
-    public static Map<ItemStack, ItemStack[]> getInputsFromOutput(Collection<GT_Recipe> gt_recipes,
-            ItemStack... inputs) {
-        return gt_recipes.stream()
-                .filter(ar -> Arrays.stream(inputs).anyMatch(st -> GT_Utility.areStacksEqual(st, ar.mOutputs[0])))
-                .collect(Collectors.toMap(k -> k.mOutputs[0], k -> k.mInputs));
-    }
-
-    public static Map<ItemStack, ItemStack[]> getAsslineInputsFromOutputs(ItemStack... inputs) {
-        return GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.stream()
-                .filter(ar -> Arrays.stream(inputs).anyMatch(st -> GT_Utility.areStacksEqual(st, ar.mOutput)))
-                .collect(Collectors.toMap(k -> k.mOutput, k -> k.mInputs));
     }
 
     public static int abstractHashGTRecipe(GT_Recipe recipe) {
@@ -390,108 +350,6 @@ public class BW_Util {
         };
     }
 
-    /**
-     * Taken from the GTNH fork, made originally by Tec Calcualtes overclocked ness using long integers
-     *
-     * @param aEUt      - recipe EUt
-     * @param aDuration - recipe Duration
-     * @param mAmperage - should be 1 ?
-     */
-    public static void calculateOverclockedNessMulti(@Nonnegative int aEUt, @Nonnegative int aDuration,
-            @Nonnegative int mAmperage, @Nonnegative long maxInputVoltage,
-            @Nonnull GT_MetaTileEntity_MultiBlockBase base) {
-        calculateOverclockednessMultiInternal(aEUt, aDuration, mAmperage, maxInputVoltage, base, false);
-    }
-
-    public static void calculatePerfectOverclockedNessMulti(@Nonnegative int aEUt, @Nonnegative int aDuration,
-            @Nonnegative int mAmperage, @Nonnegative long maxInputVoltage,
-            @Nonnull GT_MetaTileEntity_MultiBlockBase base) {
-        calculateOverclockednessMultiInternal(aEUt, aDuration, mAmperage, maxInputVoltage, base, true);
-    }
-
-    private static void calculateOverclockednessMultiInternal(@Nonnegative int aEUt, @Nonnegative int aDuration,
-            @Nonnegative int mAmperage, @Nonnegative long maxInputVoltage,
-            @Nonnull GT_MetaTileEntity_MultiBlockBase base, @Nonnull boolean perfectOC) {
-        byte mTier = (byte) Math.max(0, GT_Utility.getTier(maxInputVoltage));
-        if (mTier == 0) {
-            // Long time calculation
-            long xMaxProgresstime = (long) aDuration << 1;
-            if (xMaxProgresstime > Integer.MAX_VALUE - 1) {
-                // make impossible if too long
-                base.mEUt = Integer.MAX_VALUE - 1;
-                base.mMaxProgresstime = Integer.MAX_VALUE - 1;
-            } else {
-                base.mEUt = aEUt >> 2;
-                base.mMaxProgresstime = (int) xMaxProgresstime;
-            }
-        } else {
-            // Long EUt calculation
-            long xEUt = aEUt;
-            // Isnt too low EUt check?
-            long tempEUt = Math.max(xEUt, V[1]);
-
-            base.mMaxProgresstime = aDuration;
-
-            while (tempEUt <= V[mTier - 1] * mAmperage) {
-                tempEUt <<= 2; // this actually controls overclocking
-                // xEUt *= 4;//this is effect of everclocking
-                base.mMaxProgresstime >>= perfectOC ? 2 : 1; // this is effect of overclocking
-                xEUt = base.mMaxProgresstime <= 0 ? xEUt >> 1 : xEUt << 2; // U know, if the time is less than 1 tick
-                                                                           // make the machine use less power
-            }
-
-            while (xEUt > maxInputVoltage && xEUt >= aEUt) {
-                // downclock one notch until we are good again, we have overshot.
-                xEUt >>= 2;
-                base.mMaxProgresstime <<= perfectOC ? 2 : 1;
-            }
-
-            if (xEUt < aEUt) {
-                xEUt <<= 2;
-                base.mMaxProgresstime >>= perfectOC ? 2 : 1;
-            }
-
-            if (xEUt > Integer.MAX_VALUE - 1) {
-                base.mEUt = Integer.MAX_VALUE - 1;
-                base.mMaxProgresstime = Integer.MAX_VALUE - 1;
-            } else {
-                base.mEUt = (int) xEUt;
-                if (base.mEUt == 0) base.mEUt = 1;
-                if (base.mMaxProgresstime <= 0) base.mMaxProgresstime = 1; // set time to 1 tick
-            }
-        }
-    }
-
-    public static long getnominalVoltage(GT_MetaTileEntity_MultiBlockBase base) {
-        long rVoltage = 0L;
-        long rAmperage = 0L;
-
-        for (GT_MetaTileEntity_Hatch_Energy tHatch : base.mEnergyHatches) {
-            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
-                rVoltage = Math.max(tHatch.getBaseMetaTileEntity().getInputVoltage(), rVoltage);
-                rAmperage += tHatch.getBaseMetaTileEntity().getInputAmperage();
-            }
-        }
-
-        return rVoltage * rAmperage;
-    }
-
-    public static FluidStack[] getFluidsFromInputHatches(GT_MetaTileEntity_MultiBlockBase aBaseMetaTileEntity) {
-        ArrayList<FluidStack> tmp = new ArrayList<>();
-        for (GT_MetaTileEntity_Hatch_Input fip : aBaseMetaTileEntity.mInputHatches) {
-            tmp.add(fip.getFluid());
-        }
-        return tmp.toArray(new FluidStack[0]);
-    }
-
-    public static ItemStack[] getItemsFromInputBusses(GT_MetaTileEntity_MultiBlockBase aBaseMetaTileEntity) {
-        ArrayList<ItemStack> tmp = new ArrayList<>();
-        for (GT_MetaTileEntity_Hatch_InputBus fip : aBaseMetaTileEntity.mInputBusses) {
-            tmp.addAll(Arrays.asList(fip.mInventory));
-        }
-        return tmp.toArray(new ItemStack[0]);
-    }
-
     public static EnumRarity getRarityFromByte(byte b) {
         return switch (b) {
             case 1 -> EnumRarity.uncommon;
@@ -499,27 +357,6 @@ public class BW_Util {
             case 3 -> EnumRarity.epic;
             default -> EnumRarity.common;
         };
-    }
-
-    public static List<Byte> getMetasFromLayer(IGregTechTileEntity aBaseMetaTileEntity, int radius, int yLevel,
-            int height, int offset, boolean controllerLayer, boolean freeCorners, boolean insideCheck) {
-        ArrayList<Byte> ret = new ArrayList<>();
-        int xDir = aBaseMetaTileEntity.getBackFacing().offsetX * offset;
-        int zDir = aBaseMetaTileEntity.getBackFacing().offsetZ * offset;
-        for (int x = -radius; x <= radius; x++) {
-            for (int y = yLevel; y < height; y++) {
-                for (int z = -radius; z <= radius; z++) {
-                    if (freeCorners && Math.abs(x) == radius && Math.abs(z) == radius) continue;
-                    if (controllerLayer && xDir + x == 0 && zDir + z == 0) continue;
-                    final boolean inside = Math.abs(x) < radius && Math.abs(z) != radius;
-                    if (insideCheck && inside) ret.add(aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z));
-                    if (!inside) {
-                        ret.add(aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z));
-                    }
-                }
-            }
-        }
-        return ret;
     }
 
     public static byte getCircuitTierFromOreDictName(String name) {

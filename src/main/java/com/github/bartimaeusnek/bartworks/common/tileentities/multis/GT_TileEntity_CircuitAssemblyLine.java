@@ -28,6 +28,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_GLOW;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -246,14 +247,12 @@ public class GT_TileEntity_CircuitAssemblyLine extends
     @Override
     public ArrayList<ItemStack> getStoredInputs() {
         ArrayList<ItemStack> rList = new ArrayList<>();
-        for (GT_MetaTileEntity_Hatch_InputBus tHatch : this.mInputBusses) {
+        for (GT_MetaTileEntity_Hatch_InputBus tHatch : filterValidMTEs(mInputBusses)) {
             tHatch.mRecipeMap = this.getRecipeMap();
-            if (isValidMetaTileEntity(tHatch)) {
-                for (int i = 0; i < tHatch.getBaseMetaTileEntity().getSizeInventory(); i++) {
-                    if (tHatch.getBaseMetaTileEntity().getStackInSlot(i) != null) {
-                        rList.add(tHatch.getBaseMetaTileEntity().getStackInSlot(i));
-                        break;
-                    }
+            for (int i = 0; i < tHatch.getBaseMetaTileEntity().getSizeInventory(); i++) {
+                if (tHatch.getBaseMetaTileEntity().getStackInSlot(i) != null) {
+                    rList.add(tHatch.getBaseMetaTileEntity().getStackInSlot(i));
+                    break;
                 }
             }
         }

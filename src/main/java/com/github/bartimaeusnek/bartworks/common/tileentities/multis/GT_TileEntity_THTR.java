@@ -19,6 +19,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -294,15 +295,13 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_EnhancedMultiBlockBase
         int takecoolant = this.coolanttaking;
         int drainedamount = 0;
 
-        for (GT_MetaTileEntity_Hatch_Input tHatch : this.mInputHatches) {
-            if (isValidMetaTileEntity(tHatch)) {
-                FluidStack tLiquid = tHatch.getFluid();
-                if (tLiquid != null && tLiquid.isFluidEqual(FluidRegistry.getFluidStack("ic2coolant", 1))) {
-                    FluidStack drained = tHatch.drain(takecoolant, true);
-                    takecoolant -= drained.amount;
-                    drainedamount += drained.amount;
-                    if (takecoolant <= 0) break;
-                }
+        for (GT_MetaTileEntity_Hatch_Input tHatch : filterValidMTEs(mInputHatches)) {
+            FluidStack tLiquid = tHatch.getFluid();
+            if (tLiquid != null && tLiquid.isFluidEqual(FluidRegistry.getFluidStack("ic2coolant", 1))) {
+                FluidStack drained = tHatch.drain(takecoolant, true);
+                takecoolant -= drained.amount;
+                drainedamount += drained.amount;
+                if (takecoolant <= 0) break;
             }
         }
 
