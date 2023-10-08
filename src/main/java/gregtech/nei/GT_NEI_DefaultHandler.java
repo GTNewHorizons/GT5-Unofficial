@@ -59,32 +59,30 @@ import gregtech.common.blocks.GT_Item_Machines;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.common.power.Power;
 
-public class GT_NEI_DefaultHandler extends RecipeMapHandler {
+public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
 
-    public static final int sOffsetX = 5;
-    public static final int sOffsetY = 11;
+    private static final int offsetX = 5;
+    private static final int offsetY = 11;
+    protected static final Pos2d WINDOW_OFFSET = new Pos2d(-offsetX, -offsetY);
 
     private static final ConcurrentMap<RecipeMap<?>, SortedRecipeListCache> CACHE = new ConcurrentHashMap<>();
 
-    protected Power mPower;
-    private String mRecipeName; // Name of the handler displayed on top
-    private NEIHandlerAbsoluteTooltip mRecipeNameTooltip;
     private static final int RECIPE_NAME_WIDTH = 140;
 
     /**
      * Static version of {@link TemplateRecipeHandler#cycleticks}. Can be referenced from cached recipes.
      */
-    public static int cycleTicksStatic = Math.abs((int) System.currentTimeMillis());
+    private static int cycleTicksStatic = Math.abs((int) System.currentTimeMillis());
     /**
      * Basically {@link #cycleTicksStatic} but always updated even while holding shift
      */
     private static int drawTicks;
+    private static final int PROGRESSBAR_CYCLE_TICKS = 200;
 
-    protected static final int PROGRESSBAR_CYCLE_TICKS = 200;
-
-    private final RecipeMapFrontend frontend;
-    private final BasicUIProperties uiProperties;
-    private final NEIRecipeProperties neiProperties;
+    protected final RecipeMap<?> recipeMap;
+    protected final RecipeMapFrontend frontend;
+    protected final BasicUIProperties uiProperties;
+    protected final NEIRecipeProperties neiProperties;
 
     protected final ModularWindow modularWindow;
     protected final ItemStackHandler itemInputsInventory;
@@ -92,11 +90,20 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     protected final ItemStackHandler specialSlotInventory;
     protected final ItemStackHandler fluidInputsInventory;
     protected final ItemStackHandler fluidOutputsInventory;
-    protected static final Pos2d WINDOW_OFFSET = new Pos2d(-sOffsetX, -sOffsetY);
 
-    public GT_NEI_DefaultHandler(RecipeMap<?> aRecipeMap) {
-        super(aRecipeMap);
-        this.frontend = aRecipeMap.getFrontend();
+    protected Power power;
+    /**
+     * Localized name of this handler displayed on the top.
+     */
+    private String recipeNameDisplay;
+    /**
+     * Tooltip shown while hovering over header of this handler. Can be null if the full name fits in the screen.
+     */
+    private NEIHandlerAbsoluteTooltip recipeNameTooltip;
+
+    public GT_NEI_DefaultHandler(RecipeMap<?> recipeMap) {
+        this.recipeMap = recipeMap;
+        this.frontend = recipeMap.getFrontend();
         this.uiProperties = frontend.getUIProperties();
         this.neiProperties = frontend.getNEIProperties();
         Rectangle transferRect = new Rectangle(uiProperties.neiTransferRect);
@@ -115,8 +122,12 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         UIInfos.initializeWindow(Minecraft.getMinecraft().thePlayer, modularWindow);
     }
 
+    public RecipeMap<?> getRecipeMap() {
+        return recipeMap;
+    }
+
     private SortedRecipeListCache getCacheHolder() {
-        return CACHE.computeIfAbsent(mRecipeMap, m -> new SortedRecipeListCache());
+        return CACHE.computeIfAbsent(recipeMap, m -> new SortedRecipeListCache());
     }
 
     public List<CachedDefaultRecipe> getCache() {
@@ -124,7 +135,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         List<CachedDefaultRecipe> cache;
         if (cacheHolder.getCachedRecipesVersion() != GT_Mod.gregtechproxy.getReloadCount()
             || (cache = cacheHolder.getCachedRecipes()) == null) {
-            cache = mRecipeMap.getAllRecipes()
+            cache = recipeMap.getAllRecipes()
                 .stream() // do not use parallel stream. This is already parallelized by NEI
                 .filter(r -> !r.mHidden)
                 .sorted()
@@ -141,18 +152,18 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
 
     @Override
     public TemplateRecipeHandler newInstance() {
-        return new GT_NEI_DefaultHandler(this.mRecipeMap);
+        return new GT_NEI_DefaultHandler(this.recipeMap);
     }
 
     @Override
     public void loadCraftingRecipes(String outputId, Object... results) {
         if (outputId.equals(getOverlayIdentifier())) {
             if (results.length > 0 && results[0] instanceof Power) {
-                mPower = (Power) results[0];
+                power = (Power) results[0];
                 if (neiProperties.useComparator) {
-                    loadTieredCraftingRecipesWithPower(mPower);
+                    loadTieredCraftingRecipesWithPower(power);
                 } else {
-                    loadTieredCraftingRecipesUpTo(mPower.getTier());
+                    loadTieredCraftingRecipesUpTo(power.getTier());
                 }
             } else {
                 arecipes.addAll(getCache());
@@ -271,14 +282,14 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     public ICraftingHandler getRecipeHandler(String outputId, Object... results) {
         GT_NEI_DefaultHandler handler = (GT_NEI_DefaultHandler) super.getRecipeHandler(outputId, results);
         if (results.length > 0 && results[0] instanceof Power) {
-            handler.mPower = (Power) results[0];
+            handler.power = (Power) results[0];
         }
         return handler;
     }
 
     @Override
     public String getOverlayIdentifier() {
-        return this.mRecipeMap.unlocalizedName;
+        return this.recipeMap.unlocalizedName;
     }
 
     @Override
@@ -307,18 +318,17 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
 
     @Override
     public String getRecipeName() {
-        if (mRecipeName == null) {
-            mRecipeName = computeRecipeName();
-            updateOverrideTextColor();
+        if (recipeNameDisplay == null) {
+            recipeNameDisplay = computeRecipeName();
             frontend.updateNEITextColorOverride();
         }
-        return mRecipeName;
+        return recipeNameDisplay;
     }
 
     private String computeRecipeName() {
-        String recipeName = GT_LanguageManager.getTranslation(this.mRecipeMap.unlocalizedName);
-        if (mPower != null) {
-            recipeName = addSuffixToRecipeName(recipeName, mPower.getTierString() + ")");
+        String recipeName = GT_LanguageManager.getTranslation(this.recipeMap.unlocalizedName);
+        if (power != null) {
+            recipeName = addSuffixToRecipeName(recipeName, power.getTierString() + ")");
         }
         return recipeName;
     }
@@ -349,12 +359,12 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     }
 
     private void setupRecipeNameTooltip(String tooltip) {
-        mRecipeNameTooltip = new NEIHandlerAbsoluteTooltip(tooltip, new Rectangle(13, -34, RECIPE_NAME_WIDTH - 1, 11));
+        recipeNameTooltip = new NEIHandlerAbsoluteTooltip(tooltip, new Rectangle(13, -34, RECIPE_NAME_WIDTH - 1, 11));
     }
 
     @Override
     public String getRecipeTabName() {
-        return GT_LanguageManager.getTranslation(this.mRecipeMap.unlocalizedName);
+        return GT_LanguageManager.getTranslation(this.recipeMap.unlocalizedName);
     }
 
     @Override
@@ -371,8 +381,8 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             currentTip = frontend.handleNEIItemTooltip(aStack, currentTip, (CachedDefaultRecipe) tObject);
         }
 
-        if (mRecipeNameTooltip != null) {
-            mRecipeNameTooltip.handleTooltip(currentTip, aRecipeIndex);
+        if (recipeNameTooltip != null) {
+            recipeNameTooltip.handleTooltip(currentTip, aRecipeIndex);
         }
         return currentTip;
     }
@@ -387,13 +397,12 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
 
     private void drawDescription(CachedDefaultRecipe cachedRecipe) {
         GT_Recipe recipe = cachedRecipe.mRecipe;
-        if (mPower == null) {
-            mPower = frontend.createPower();
+        if (power == null) {
+            power = frontend.createPower();
         }
-        mPower.computePowerUsageAndDuration(recipe.mEUt, recipe.mDuration, recipe.mSpecialValue);
+        power.computePowerUsageAndDuration(recipe.mEUt, recipe.mDuration, recipe.mSpecialValue);
 
-        frontend
-            .drawNEIDescription(new NEIRecipeInfo(recipe, mRecipeMap, cachedRecipe, mPower, getDescriptionYOffset()));
+        frontend.drawNEIDescription(new NEIRecipeInfo(recipe, recipeMap, cachedRecipe, power, getDescriptionYOffset()));
     }
 
     protected int getDescriptionYOffset() {
@@ -680,7 +689,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             while (iterator.hasNext()) {
                 CachedDefaultRecipe recipe = iterator.next();
                 byte recipeTier = GT_Utility
-                    .getTier(recipe.mRecipe.mEUt / GT_NEI_DefaultHandler.this.mRecipeMap.getAmperage());
+                    .getTier(recipe.mRecipe.mEUt / GT_NEI_DefaultHandler.this.recipeMap.getAmperage());
                 if (recipeTier != previousTier) {
                     if (maxIndex != -1) {
                         mTierIndexes.put(previousTier, Range.between(minIndex, maxIndex));

@@ -42,7 +42,7 @@ public class NEI_GT_Config implements IConfigureNEI {
         .put(RecipeMaps.scannerFakeRecipes, 2)
         .build();
 
-    private static final Comparator<RecipeMapHandler> RECIPE_MAP_HANDLER_COMPARATOR = Comparator
+    private static final Comparator<GT_NEI_DefaultHandler> RECIPE_MAP_HANDLER_COMPARATOR = Comparator
         .comparingInt(handler -> RECIPE_MAP_ORDERING.getOrDefault(handler.getRecipeMap(), 0));
 
     public static boolean sIsAdded = true;
@@ -61,7 +61,7 @@ public class NEI_GT_Config implements IConfigureNEI {
     public void loadConfig() {
         sIsAdded = false;
 
-        List<RecipeMapHandler> handlers = new ArrayList<>();
+        List<GT_NEI_DefaultHandler> handlers = new ArrayList<>();
 
         for (RecipeMap<?> map : RecipeMap.ALL_RECIPE_MAPS.values()) {
             if (map.getFrontend()

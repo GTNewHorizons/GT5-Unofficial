@@ -435,13 +435,11 @@ public class RecipeMapFrontend {
 
     public Power createPower() {
         // By default, assume generic EU LV power with no overclocks
-        Power power;
         if (neiProperties.showVoltageAmperage) {
-            power = new EUPower((byte) 1, uiProperties.amperage);
+            return new EUPower((byte) 1, uiProperties.amperage);
         } else {
-            power = new UnspecifiedEUPower((byte) 1, uiProperties.amperage);
+            return new UnspecifiedEUPower((byte) 1, uiProperties.amperage);
         }
-        return power;
     }
 
     @FunctionalInterface
