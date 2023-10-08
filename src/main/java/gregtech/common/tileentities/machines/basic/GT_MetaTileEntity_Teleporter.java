@@ -12,7 +12,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_SIDES_GL
 import java.util.List;
 import java.util.function.Consumer;
 
-import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityHanging;
 import net.minecraft.entity.EntityLiving;
@@ -97,9 +96,6 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank
     }
 
     private static float calculateWeight(Entity aEntity) {
-        if ((aEntity instanceof EntityFX)) {
-            return -1.0F;
-        }
         if ((aEntity instanceof EntityFishHook)) {
             return -1.0F;
         }
