@@ -448,12 +448,12 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
                 builder.widget(
                     ButtonWidget.closeWindowButton(true)
                         .setPos(getGUIWidth() - 15, 3));
-
             }
 
             final CoverInfo coverInfo = uiBuildContext.getTile()
                 .getCoverInfoAtSide(uiBuildContext.getCoverSide());
-            if (coverInfo.getMinimumTickRate() > 0) {
+            final GT_CoverBehaviorBase<?> behavior = coverInfo.getCoverBehavior();
+            if (coverInfo.getMinimumTickRate() > 0 && behavior.allowsTickRateAddition()) {
                 builder.widget(
                     new GT_CoverTickRateButton(coverInfo, builder).setPos(getGUIWidth() - 24, getGUIHeight() - 24));
             }
@@ -845,6 +845,10 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     }
 
     public boolean allowsCopyPasteTool() {
+        return true;
+    }
+
+    public boolean allowsTickRateAddition() {
         return true;
     }
 

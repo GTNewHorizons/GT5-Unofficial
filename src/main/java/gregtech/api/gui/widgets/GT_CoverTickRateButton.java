@@ -48,18 +48,14 @@ public class GT_CoverTickRateButton extends ButtonWidget {
     }
 
     private void onClick(@NotNull ClickData clickData, @NotNull Widget widget) {
+        final int iterations = clickData.ctrl ? 5 : 1;
         final boolean isDecreasing = clickData.mouseButton == 1;
 
-        if (clickData.ctrl) {
-            // Do five operations at once if Ctrl is held down. Since the actual increase granted by each invocation
-            // can be different on each call, just call the method several times rather than trying to do a bunch of
-            // weird math or adding a pointless for-loop.
-            coverInfo.adjustTickRateMultiplier(isDecreasing);
-            coverInfo.adjustTickRateMultiplier(isDecreasing);
-            coverInfo.adjustTickRateMultiplier(isDecreasing);
+        // Do five operations at once if Ctrl is held down. Since the actual increase granted by each invocation can be
+        // different on each call, just call the method several times rather than trying to do a bunch of weird math.
+        for (int i = 0; i < iterations; i++) {
             coverInfo.adjustTickRateMultiplier(isDecreasing);
         }
-        coverInfo.adjustTickRateMultiplier(isDecreasing);
     }
 
     private List<String> dynamicTooltip() {

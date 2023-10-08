@@ -261,7 +261,7 @@ public final class CoverInfo {
         final int stepAmount = currentTickRate == 20 ? (isDecreasing ? 5 : 20) : (currentTickRate < 20 ? 5 : 20);
 
         tickRateAddition = clamp(tickRateAddition + (isDecreasing ? -1 : 1) * stepAmount);
-        tickRateAddition = clamp(tickRateAddition - ((tickRateAddition + getMinimumTickRate()) % stepAmount));
+        tickRateAddition = clamp(tickRateAddition - (getTickRate() % stepAmount));
     }
 
     /**
@@ -312,7 +312,7 @@ public final class CoverInfo {
 
         /**
          * Converts a given tick rate into a human-friendly format.
-         * 
+         *
          * @param tickRate The rate at which something ticks, in ticks per operation.
          */
         public ClientTickRateFormatter(final int tickRate) {
