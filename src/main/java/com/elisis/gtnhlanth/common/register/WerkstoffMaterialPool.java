@@ -983,7 +983,7 @@ public class WerkstoffMaterialPool implements Runnable {
 
     public static final Werkstoff ImpureSamariumOxalate = new Werkstoff(
             new short[] { 248, 248, 180 },
-            "Samarium Oxalate Enriched",
+            "Impure Samarium Oxalate",
             subscriptNumbers("?Sm2(C2O4)3"),
             new Werkstoff.Stats(),
             Werkstoff.Types.MIXTURE,
