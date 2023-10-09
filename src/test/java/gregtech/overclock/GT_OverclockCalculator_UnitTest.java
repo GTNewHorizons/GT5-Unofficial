@@ -282,6 +282,17 @@ class GT_OverclockCalculator_UnitTest {
     }
 
     @Test
+    void perfectOC3TicksTo1Tick_Test() {
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[4])
+            .setEUt(V[5])
+            .setDuration(3)
+            .enablePerfectOC()
+            .calculate();
+        assertEquals(1, calculator.getDuration(), messageDuration);
+        assertEquals(VP[5], calculator.getConsumption(), messageEUt);
+    }
+
+    @Test
     void oneTickDiscountTurnsToOne_Test() {
         GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[1])
             .setEUt(V[6])
@@ -302,7 +313,7 @@ class GT_OverclockCalculator_UnitTest {
             .calculate();
         assertEquals(1, calculator.getDuration(), messageDuration);
 
-        /**
+        /*
          * duration with speedboost = 5
          * log_2(5) ~ 2.3;
          * round up to 3 to reach one tick duration
@@ -328,7 +339,7 @@ class GT_OverclockCalculator_UnitTest {
             .setOneTickDiscount(true)
             .calculate();
 
-        /**
+        /*
          * duration with speedboost = 18
          * log_4(18) ~ 2.08;
          * round up to 3 to reach one tick duration
