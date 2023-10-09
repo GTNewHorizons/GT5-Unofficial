@@ -31,10 +31,12 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUIColorOverride;
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.widgets.GT_CoverTickRateButton;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.net.GT_Packet_TileEntityCoverGUI;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.common.covers.CoverInfo;
 
 /**
  * For Covers with a special behavior.
@@ -447,6 +449,15 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
                     ButtonWidget.closeWindowButton(true)
                         .setPos(getGUIWidth() - 15, 3));
             }
+
+            final CoverInfo coverInfo = uiBuildContext.getTile()
+                .getCoverInfoAtSide(uiBuildContext.getCoverSide());
+            final GT_CoverBehaviorBase<?> behavior = coverInfo.getCoverBehavior();
+            if (coverInfo.getMinimumTickRate() > 0 && behavior.allowsTickRateAddition()) {
+                builder.widget(
+                    new GT_CoverTickRateButton(coverInfo, builder).setPos(getGUIWidth() - 24, getGUIHeight() - 24));
+            }
+
             return builder.build();
         }
 
@@ -834,6 +845,10 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     }
 
     public boolean allowsCopyPasteTool() {
+        return true;
+    }
+
+    public boolean allowsTickRateAddition() {
         return true;
     }
 

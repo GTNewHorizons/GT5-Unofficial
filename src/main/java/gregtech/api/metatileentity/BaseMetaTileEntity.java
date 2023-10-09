@@ -27,6 +27,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -1696,6 +1697,31 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                                 dropCover(coverSide, side, false);
                             }
                             return true;
+                        } else if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sJackhammerList)) {
+                            // Configuration of delicate electronics calls for a tool with precision and subtlety.
+                            if (GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
+                                final CoverInfo info = getCoverInfoAtSide(coverSide);
+                                if (info != CoverInfo.EMPTY_INFO) {
+                                    final GT_CoverBehaviorBase<?> behavior = info.getCoverBehavior();
+                                    if (behavior.allowsTickRateAddition()) {
+                                        info.onCoverJackhammer(aPlayer);
+                                        GT_Utility.sendSoundToPlayers(
+                                            worldObj,
+                                            SoundResource.IC2_TOOLS_DRILL_DRILL_SOFT,
+                                            1.0F,
+                                            1,
+                                            xCoord,
+                                            yCoord,
+                                            zCoord);
+
+                                    } else {
+                                        GT_Utility.sendChatToPlayer(
+                                            aPlayer,
+                                            StatCollector.translateToLocal("gt.cover.info.chat.tick_rate_not_allowed"));
+                                    }
+                                    return true;
+                                }
+                            }
                         }
                     }
                     // End item != null

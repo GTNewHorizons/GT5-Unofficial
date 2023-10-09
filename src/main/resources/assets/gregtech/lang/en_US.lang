@@ -1377,3 +1377,16 @@ gt.item.adv_sensor_card.tooltip.frequency=Frequency: §b%s
 gt.item.adv_sensor_card.error.deconstructed.1=-ERROR- Machine Deconstructed
 gt.item.adv_sensor_card.error.deconstructed.2=Place machine again to re-enable
 gt.item.adv_sensor_card.error.no_data=No data found
+
+gt.cover.info.format.tick_rate=§b%s§r %s
+gt.cover.info.chat.tick_rate=Cover tick rate set to %s
+gt.cover.info.chat.tick_rate_not_allowed=Cannot adjust tick rate of this cover type with a jackhammer
+gt.cover.info.button.tick_rate.1=Current tick rate: Every %s%s
+gt.cover.info.button.tick_rate.2=Left click to increase, right click to decrease
+gt.cover.info.button.tick_rate.3=Hold Ctrl to adjust by more steps per click
+gt.cover.info.button.bounds_notification.minimum=§7 (minimum)§r
+gt.cover.info.button.bounds_notification.maximum=§7 (maximum)§r
+gt.time.tick.singular=tick
+gt.time.tick.plural=ticks
+gt.time.second.singular=second
+gt.time.second.plural=seconds

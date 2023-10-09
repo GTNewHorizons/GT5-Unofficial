@@ -183,7 +183,8 @@ public class GregTech_API {
     public static final GT_HashSet<GT_ItemStack> sToolList = new GT_HashSet<>(), sCrowbarList = new GT_HashSet<>(),
         sScrewdriverList = new GT_HashSet<>(), sWrenchList = new GT_HashSet<>(), sSoftHammerList = new GT_HashSet<>(),
         sHardHammerList = new GT_HashSet<>(), sWireCutterList = new GT_HashSet<>(),
-        sSolderingToolList = new GT_HashSet<>(), sSolderingMetalList = new GT_HashSet<>();
+        sSolderingToolList = new GT_HashSet<>(), sSolderingMetalList = new GT_HashSet<>(),
+        sJackhammerList = new GT_HashSet<>();
     /**
      * The List of Hazmat Armors
      */
