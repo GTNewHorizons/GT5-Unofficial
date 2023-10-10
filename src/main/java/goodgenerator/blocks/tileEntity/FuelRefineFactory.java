@@ -71,6 +71,11 @@ public class FuelRefineFactory extends GT_MetaTileEntity_TooltipMultiBlockBase_E
     }
 
     @Override
+    public boolean doRandomMaintenanceDamage() {
+        return true;
+    }
+
+    @Override
     public void construct(ItemStack itemStack, boolean hintsOnly) {
         structureBuild_EM(mName, 7, 12, 1, itemStack, hintsOnly);
     }
