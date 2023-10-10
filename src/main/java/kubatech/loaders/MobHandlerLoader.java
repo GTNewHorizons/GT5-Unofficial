@@ -38,7 +38,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 import org.apache.logging.log4j.LogManager;
@@ -92,9 +91,7 @@ public class MobHandlerLoader {
             this.mOutputs = transformedDrops;
             this.recipe = recipe;
             try {
-                this.entityCopy = this.recipe.entity.getClass()
-                    .getConstructor(World.class)
-                    .newInstance(this.recipe.entity.worldObj);
+                this.entityCopy = this.recipe.createEntityCopy();
             } catch (NoSuchMethodException | InvocationTargetException | InstantiationException
                 | IllegalAccessException e) {
                 throw new RuntimeException(e);
