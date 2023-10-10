@@ -35,3 +35,4 @@ src/main/resources/mixins.*.json
 classes
 .factorypath
 /.vs
+layout.json
