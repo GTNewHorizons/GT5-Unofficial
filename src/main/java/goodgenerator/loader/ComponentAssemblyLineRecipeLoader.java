@@ -1,6 +1,8 @@
 package goodgenerator.loader;
 
-import static goodgenerator.util.StackUtils.*;
+import static goodgenerator.util.StackUtils.getTotalItems;
+import static goodgenerator.util.StackUtils.mergeStacks;
+import static goodgenerator.util.StackUtils.multiplyAndSplitIntoStacks;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,6 +24,7 @@ import goodgenerator.util.MyRecipeAdder;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -34,15 +37,18 @@ public class ComponentAssemblyLineRecipeLoader {
     private static final String[] compPrefixes = { "Electric_Motor_", "Electric_Piston_", "Electric_Pump_",
             "Robot_Arm_", "Conveyor_Module_", "Emitter_", "Sensor_", "Field_Generator_", };
     private static final String[] blacklistedDictPrefixes = { "circuit" };
-    private static final String[] softBlacklistedDictPrefixes = { "Any", "crafting" };
+    private static final String[] softBlacklistedDictPrefixes = { "Any", "crafting", "nanite" };
+    private static final String moltenMHDCSM = "molten.magnetohydrodynamicallyconstrainedstarmatter";
 
     private static LinkedHashMap<List<GT_Recipe>, Pair<ItemList, Integer>> allAssemblerRecipes;
     private static LinkedHashMap<List<GT_Recipe.GT_Recipe_AssemblyLine>, Pair<ItemList, Integer>> allAsslineRecipes;
 
+    private static final HashMap<OrePrefixes, Double> magnetoConversionMultipliers = new HashMap<>();
     private static final HashMap<OrePrefixes, OrePrefixes> conversion = new HashMap<>();
 
     private static final int INPUT_MULTIPLIER = 48;
     private static final int OUTPUT_MULTIPLIER = 64;
+    private static final int FLUID_CONVERSION_STACKSIZE_THRESHOLD = 64;
 
     public static void run() {
         ComponentAssemblyLineMiscRecipes.run();
@@ -58,6 +64,20 @@ public class ComponentAssemblyLineRecipeLoader {
         conversion.put(OrePrefixes.foil, OrePrefixes.plate);
         conversion.put(OrePrefixes.stick, OrePrefixes.stickLong);
         conversion.put(OrePrefixes.gearGtSmall, OrePrefixes.gearGt);
+        magnetoConversionMultipliers.put(OrePrefixes.frameGt, 1.0);
+        magnetoConversionMultipliers.put(OrePrefixes.plate, 1.0);
+        magnetoConversionMultipliers.put(OrePrefixes.plateDense, 3.0);
+        magnetoConversionMultipliers.put(OrePrefixes.stick, 1.0 / 2.0);
+        magnetoConversionMultipliers.put(OrePrefixes.round, 1.0 / 8.0);
+        magnetoConversionMultipliers.put(OrePrefixes.bolt, 1.0 / 8.0);
+        magnetoConversionMultipliers.put(OrePrefixes.screw, 1.0 / 8.0);
+        magnetoConversionMultipliers.put(OrePrefixes.ring, 1.0 / 4.0);
+        magnetoConversionMultipliers.put(OrePrefixes.foil, 1.0 / 8.0);
+        magnetoConversionMultipliers.put(OrePrefixes.gearGtSmall, 1.0);
+        magnetoConversionMultipliers.put(OrePrefixes.rotor, 2.0);
+        magnetoConversionMultipliers.put(OrePrefixes.stickLong, 1.0);
+        magnetoConversionMultipliers.put(OrePrefixes.gearGt, 2.0);
+        magnetoConversionMultipliers.put(OrePrefixes.wireFine, 1.0 / 8.0);
         findAllRecipes();
         generateAssemblerRecipes();
         generateAsslineRecipes();
@@ -82,10 +102,12 @@ public class ComponentAssemblyLineRecipeLoader {
                         fixedFluids.add(currFluid);
                     }
 
+                    fixedInputs = compactItems(fixedInputs, info.getRight());
+                    replaceIntoFluids(fixedInputs, fixedFluids, 64);
                     int tier = info.getRight();
                     int energy = (int) Math.min(Integer.MAX_VALUE - 7, GT_Values.VP[tier - 1]);
                     MyRecipeAdder.instance.addComponentAssemblyLineRecipe(
-                            compactItems(fixedInputs, info.getRight()).toArray(new ItemStack[0]),
+                            fixedInputs.toArray(new ItemStack[0]),
                             fixedFluids.toArray(new FluidStack[0]),
                             info.getLeft().get(OUTPUT_MULTIPLIER),
                             recipe.mDuration * INPUT_MULTIPLIER,
@@ -116,7 +138,7 @@ public class ComponentAssemblyLineRecipeLoader {
                     // Multiplies the original fluid inputs
                     for (int j = 0; j < recipe.mFluidInputs.length; j++) {
                         FluidStack currFluid = recipe.mFluidInputs[j].copy();
-                        currFluid.amount *= INPUT_MULTIPLIER;
+                        currFluid.amount *= (double) INPUT_MULTIPLIER;
                         fixedFluids.add(currFluid);
                     }
 
@@ -139,11 +161,13 @@ public class ComponentAssemblyLineRecipeLoader {
                         }
                     }
                     fixedInputs = compactItems(fixedInputs, info.getRight());
-                    replaceIntoFluids(fixedInputs, fixedFluids, 128);
+                    replaceIntoFluids(fixedInputs, fixedFluids, FLUID_CONVERSION_STACKSIZE_THRESHOLD);
                     // If it overflows then it tries REALLY HARD to cram as much stuff into there.
                     if (fixedInputs.size() > (addProgrammedCircuit ? 8 : 9))
-                        replaceIntoFluids(fixedInputs, fixedFluids, 32);
+                        replaceIntoFluids(fixedInputs, fixedFluids, FLUID_CONVERSION_STACKSIZE_THRESHOLD / 2);
                     if (addProgrammedCircuit) fixedInputs.add(GT_Utility.getIntegratedCircuit(componentCircuit));
+
+                    addEternityForMHDCSM(fixedFluids);
                     MyRecipeAdder.instance.addComponentAssemblyLineRecipe(
                             fixedInputs.toArray(new ItemStack[0]),
                             fixedFluids.toArray(new FluidStack[0]),
@@ -198,7 +222,7 @@ public class ComponentAssemblyLineRecipeLoader {
                 }
             }
             if (!isConverted) {
-                newInputs.addAll(multiplyAndSplitIntoStacks(input, count));
+                newInputs.add(GT_Utility.copyAmountUnsafe(count, input));
             }
         }
         inputs.clear();
@@ -274,8 +298,8 @@ public class ComponentAssemblyLineRecipeLoader {
 
     /**
      * Transforms each {@code ItemStack}, if possible, into a more compact form. For example, a stack of 16 1x cables,
-     * when passed into the {@code items} array, will be converted into a single 16x cable. Also handles GraviStar
-     * conversion.
+     * when passed into the {@code items} array, will be converted into a single 16x cable. Also handles GraviStar and
+     * neutronium nanite conversion.
      */
     private static ArrayList<ItemStack> compactItems(List<ItemStack> items, int tier) {
         ArrayList<ItemStack> stacks = new ArrayList<>();
@@ -290,6 +314,12 @@ public class ComponentAssemblyLineRecipeLoader {
                 if (dict.startsWith("circuit")) {
                     stacks.addAll(getWrappedCircuits(itemstack, totalItems, dict));
                     isCompacted = true;
+                    break;
+                }
+                if (dict.contains("Magneto")) {
+                    stacks.addAll(getMagnetoConversion(itemstack, totalItems));
+                    isCompacted = true;
+                    break;
                 }
             }
 
@@ -302,6 +332,14 @@ public class ComponentAssemblyLineRecipeLoader {
             }
             if (GT_Utility.areStacksEqual(itemstack, ItemList.Gravistar.get(1)) && tier >= 9) {
                 stacks.addAll(multiplyAndSplitIntoStacks(ItemList.NuclearStar.get(1), totalItems / 16));
+                isCompacted = true;
+            }
+            if (GT_Utility
+                    .areStacksEqual(itemstack, GT_OreDictUnificator.get(OrePrefixes.nanite, Materials.Neutronium, 1))) {
+                stacks.addAll(
+                        multiplyAndSplitIntoStacks(
+                                GT_OreDictUnificator.get(OrePrefixes.nanite, Materials.Gold, 1),
+                                totalItems / 16));
                 isCompacted = true;
             }
             if (!isCompacted) stacks.addAll(multiplyAndSplitIntoStacks(itemstack, totalItems));
@@ -327,7 +365,7 @@ public class ComponentAssemblyLineRecipeLoader {
         allAssemblerRecipes = new LinkedHashMap<>();
         allAsslineRecipes = new LinkedHashMap<>();
         for (String compPrefix : compPrefixes) {
-            for (int t = 1; t <= 12; t++) {
+            for (int t = 1; t <= 13; t++) {
                 String vName = GT_Values.VN[t];
                 ItemList currentComponent = ItemList.valueOf(compPrefix + vName);
                 if (currentComponent.hasBeenSet()) {
@@ -362,5 +400,45 @@ public class ComponentAssemblyLineRecipeLoader {
         else stacks.addAll(multiplyAndSplitIntoStacks(item, total));
 
         return stacks;
+    }
+
+    private static List<ItemStack> getMagnetoConversion(ItemStack item, int total) {
+        ArrayList<ItemStack> stacks = new ArrayList<>();
+        ItemData data = GT_OreDictUnificator.getAssociation(item);
+        if (data == null) {
+            return stacks;
+        }
+        if (total >= FLUID_CONVERSION_STACKSIZE_THRESHOLD) {
+            double multiplier = magnetoConversionMultipliers.get(data.mPrefix);
+            stacks.addAll(
+                    getWrappedCircuits(
+                            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Infinite, 1),
+                            (int) (total * multiplier),
+                            "circuitInfinite"));
+        }
+        stacks.addAll(multiplyAndSplitIntoStacks(item, total));
+        return stacks;
+    }
+
+    private static void addEternityForMHDCSM(ArrayList<FluidStack> fluidInputs) {
+        boolean eternity = false;
+        boolean mhdcsm = false;
+        int mhdcsmAmount = 0;
+
+        for (FluidStack fluidstack : fluidInputs) {
+            if (fluidstack.getFluid().equals(FluidRegistry.getFluid(moltenMHDCSM))) {
+                mhdcsm = true;
+                mhdcsmAmount = fluidstack.amount;
+            }
+            if (fluidstack.getFluid().equals(FluidRegistry.getFluid("molten.eternity"))) {
+                eternity = true;
+            }
+        }
+
+        if (mhdcsm && !eternity) {
+            // 576 * 48 is substracted because uxv parts have 576L mhdcsm fluid (not solid, so no EIC conversion needed)
+            // in their assline recipes and each CoAl recipe has 48x recipe inputs
+            fluidInputs.add(MaterialsUEVplus.Eternity.getMolten(mhdcsmAmount - 576 * 48));
+        }
     }
 }

@@ -18,12 +18,14 @@ import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.technus.tectech.recipe.TT_recipeAdder;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import goodgenerator.items.MyMaterial;
 import goodgenerator.util.StackUtils;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.recipe.common.CI;
@@ -299,6 +301,43 @@ public class ComponentAssemblyLineMiscRecipes {
                 Compassline_Casing_UMV.get(1),
                 50 * 20,
                 32000000);
+        // uxv 13
+        t++;
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+                Compassline_Casing_UMV.get(1),
+                375 << (t - 2),
+                1 << (t - 3),
+                128_000_000,
+                1,
+                new Object[] { GT_OreDictUnificator
+                        .get(OrePrefixes.frameGt, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 1),
+                        GT_OreDictUnificator.get(
+                                OrePrefixes.plateDense,
+                                MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter,
+                                3),
+                        MyMaterial.shirabon.get(OrePrefixes.plateDense, 3),
+                        ComponentType.Robot_Arm.getComponent(t).get(8),
+                        ComponentType.Electric_Piston.getComponent(t).get(10),
+                        ComponentType.Electric_Motor.getComponent(t).get(16),
+                        GT_OreDictUnificator.get(
+                                OrePrefixes.gearGt,
+                                MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter,
+                                2),
+                        MyMaterial.shirabon.get(OrePrefixes.gearGt, 2),
+                        GT_OreDictUnificator.get(
+                                OrePrefixes.gearGtSmall,
+                                MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter,
+                                8),
+                        MyMaterial.shirabon.get(OrePrefixes.gearGtSmall, 8),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Infinity, 4),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt04, MaterialsUEVplus.SpaceTime, 4),
+                        getALCircuit(t, 8), getALCircuit(t - 1, 16) },
+                new FluidStack[] { new FluidStack(sold, 144 * t * 4),
+                        MaterialsUEVplus.BlackDwarfMatter.getMolten(144 * t * 2),
+                        MaterialsUEVplus.Eternity.getMolten(144 * t), Materials.Lubricant.getFluid(1000 * (t - 2)) },
+                Compassline_Casing_UXV.get(1),
+                50 * 20,
+                (int) TierEU.RECIPE_UMV);
     }
 
     private static int getV(int tier) {

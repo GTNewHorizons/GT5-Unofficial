@@ -48,27 +48,16 @@ public class StackUtils {
         ArrayList<ItemStack> output = new ArrayList<>();
         for (int index = 0; index < stacks.size(); index++) {
             ItemStack i = stacks.get(index);
-            boolean hasDupe = false;
             int newSize = i.stackSize;
             for (int j = index + 1; j < stacks.size(); j++) {
                 ItemStack is2 = stacks.get(j);
                 if (GT_Utility.areStacksEqual(i, is2)) {
-                    hasDupe = true;
                     newSize += is2.stackSize;
                     stacks.remove(j);
                     j--;
                 }
             }
-            if (hasDupe) {
-                if (newSize >= 64) {
-                    for (int k = 0; k < newSize / 64; k++) {
-                        output.add(GT_Utility.copyAmount(64, i));
-                    }
-                }
-                if (newSize % 64 > 0) {
-                    output.add(GT_Utility.copyAmount(newSize > 64 ? newSize % 64 : newSize, i));
-                }
-            } else output.add(i);
+            output.add(GT_Utility.copyAmountUnsafe(newSize, i));
         }
         return output;
     }
