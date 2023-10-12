@@ -196,8 +196,4 @@ public class GT_MetaTileEntity_Hatch_Input extends GT_MetaTileEntity_Hatch {
     public boolean useModularUI() {
         return true;
     }
-
-    public void startRecipeProcessing() {}
-
-    public void endRecipeProcessing() {}
 }
