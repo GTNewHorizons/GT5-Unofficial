@@ -14,71 +14,46 @@ public class BlockUpdateHandler {
 
         this.minUpdateCD = aMinUpdateCD;
         this.maxUpdateCD = aMaxUpdateCD;
+
         alreadyTriggeredChunks = new HashMap<ChunkCoordIntPair, RandomCooldown>();
-        cooldown = new RandomCooldown(minUpdateCD, maxUpdateCD);
     }
 
-    public void triggerBlockUpdate(World world, WorldCoord pos) {
+    public boolean triggerBlockUpdate(World world, WorldCoord pos) {
 
-        // int currTime = getServerTimeInTicks();
-
-        // if (currTime > lastTimeUpdated) {
-        // alreadyTriggeredChunks.clear();
-        // lastTimeUpdated = currTime;
-        // }
-
-        // Chunk chunk = world.getChunkFromBlockCoords(pos.x, pos.z);
-        // ChunkCoordIntPair chunkCoords = chunk.getChunkCoordIntPair();
-
-        // if (alreadyTriggeredChunks.contains(chunkCoords)) return;
-
-        // alreadyTriggeredChunks.add(chunkCoords);
-        // world.markBlockForUpdate(pos.x, pos.y, pos.z);
-
-        Chunk chunk = world.getChunkFromBlockCoords(pos.x, pos.z);
-        ChunkCoordIntPair chunkCoords = chunk.getChunkCoordIntPair();
+        ChunkCoordIntPair chunkCoords = getBlockChunkCoords(world, pos);
 
         if (!alreadyTriggeredChunks.containsKey(chunkCoords)) {
-
-            RandomCooldown newCooldown = new RandomCooldown(minUpdateCD, maxUpdateCD);
-            newCooldown.set();
-
-            alreadyTriggeredChunks.put(chunkCoords, newCooldown);
-            world.markBlockForUpdate(pos.x, pos.y, pos.z);
-
-            // GT_Log.out.println(
-            // String.format(
-            // "updating chunk [x = %d, z = %d] on time = %d",
-            // chunkCoords.chunkXPos,
-            // chunkCoords.chunkZPos,
-            // getServerTimeInTicks()));
-
-            return;
+            alreadyTriggeredChunks.put(chunkCoords, new RandomCooldown(minUpdateCD, maxUpdateCD));
         }
 
         RandomCooldown chunkCooldown = alreadyTriggeredChunks.get(chunkCoords);
 
-        if (!chunkCooldown.hasPassed()) return;
+        if (!chunkCooldown.hasPassed()) return false;
 
         world.markBlockForUpdate(pos.x, pos.y, pos.z);
         chunkCooldown.set();
 
-        // GT_Log.out.println(
-        // String.format(
-        // "updating chunk [x = %d, z = %d] on time = %d",
-        // chunkCoords.chunkXPos,
-        // chunkCoords.chunkZPos,
-        // getServerTimeInTicks()));
+        return true;
     }
 
-    // private int getServerTimeInTicks() {
-    // return MinecraftServer.getServer()
-    // .getTickCounter();
-    // }
+    public int getLastTimeUpdated(World world, WorldCoord pos) {
 
-    int minUpdateCD;
-    int maxUpdateCD;
-    RandomCooldown cooldown;
-    HashMap<ChunkCoordIntPair, RandomCooldown> alreadyTriggeredChunks;
-    int lastTimeUpdated = 0;
+        ChunkCoordIntPair chunkCoords = getBlockChunkCoords(world, pos);
+
+        if (!alreadyTriggeredChunks.containsKey(chunkCoords)) return 0;
+
+        return alreadyTriggeredChunks.get(chunkCoords)
+            .getLastTimeStarted();
+    }
+
+    private ChunkCoordIntPair getBlockChunkCoords(World world, WorldCoord pos) {
+
+        Chunk chunk = world.getChunkFromBlockCoords(pos.x, pos.z);
+        return chunk.getChunkCoordIntPair();
+    }
+
+    private int minUpdateCD;
+    private int maxUpdateCD;
+    private HashMap<ChunkCoordIntPair, RandomCooldown> alreadyTriggeredChunks;
+
 }

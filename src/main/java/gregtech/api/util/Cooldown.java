@@ -29,6 +29,10 @@ public class Cooldown {
         return currServTime - lastTimeStarted >= lengthInTicks;
     }
 
+    public int getLastTimeStarted() {
+        return lastTimeStarted;
+    }
+
     private int getServerTimeInTicks() {
         return MinecraftServer.getServer()
             .getTickCounter();

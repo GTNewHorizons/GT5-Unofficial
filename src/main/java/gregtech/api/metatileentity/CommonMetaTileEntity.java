@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.Packet;
+import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
@@ -32,6 +33,7 @@ public abstract class CommonMetaTileEntity extends CoverableTileEntity
     implements IGregTechTileEntity, ICraftingIconProvider {
 
     protected boolean mNeedsBlockUpdate = true, mNeedsUpdate = true, mSendClientData = false, mInventoryChanged = false;
+    protected int lastTimeTextureUpdRequested = 0;
 
     protected boolean createNewMetatileEntity(short aID) {
         if (aID <= 0 || aID >= GregTech_API.METATILEENTITIES.length || GregTech_API.METATILEENTITIES[aID] == null) {
@@ -135,6 +137,8 @@ public abstract class CommonMetaTileEntity extends CoverableTileEntity
 
     @Override
     public void issueTextureUpdate() {
+        lastTimeTextureUpdRequested = MinecraftServer.getServer()
+            .getTickCounter();
         mNeedsUpdate = true;
     }
 
