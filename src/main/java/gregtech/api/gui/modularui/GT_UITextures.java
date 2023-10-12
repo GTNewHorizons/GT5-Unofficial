@@ -380,6 +380,9 @@ public class GT_UITextures {
     public static final UITexture OVERLAY_RETRACT_PIPE = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/retract_pipes");
 
+    public static final UITexture OVERLAY_BUTTON_HOURGLASS = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/hourglass");
+
     /**
      * Can adjust size as needed.
      */

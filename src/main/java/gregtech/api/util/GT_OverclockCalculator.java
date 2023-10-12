@@ -398,7 +398,7 @@ public class GT_OverclockCalculator {
 
         double recipePowerTier = calculateRecipePowerTier(heatDiscountMultiplier);
         double machinePowerTier = calculateMachinePowerTier();
-        // Math.log(a) / Math.log(b) equals to log_b (a)
+
         overclockCount = calculateAmountOfNeededOverclocks(machinePowerTier, recipePowerTier);
         if (recipeVoltage <= GT_Values.V[0]) {
             overclockCount = Math.min(overclockCount, calculateRecipeToMachineVoltageDifference());
@@ -470,11 +470,26 @@ public class GT_OverclockCalculator {
 
     /**
      * Calculates the amount of overclocks needed to reach 1 ticking
+     * 
+     * Here we limit "the tier difference overclock" amount to a number
+     * of overclocks needed to reach 1 tick duration, for example:
+     * 
+     * recipe initial duration = 250 ticks (12,5 seconds LV(1))
+     * we have LCR with IV(5) energy hatch, which overclocks at 4/4 rate
+     * 
+     * log_4 (250) ~ 3,98 is the number of overclocks needed to reach 1 tick
+     * 
+     * to calculate log_a(b) we can use the log property:
+     * log_a(b) = log_c(b) / log_c(a)
+     * in our case we use natural log base as 'c'
+     * 
+     * as a final step we apply Math.ceil(),
+     * otherwise for fractional nums like 3,98 we will never reach 1 tick
      */
     private int calculateAmountOfNeededOverclocks(double machinePowerTier, double recipePowerTier) {
         return (int) Math.min(
             calculateAmountOfOverclocks(machinePowerTier, recipePowerTier),
-            Math.log(duration) / Math.log(1 << durationDecreasePerOC));
+            Math.ceil(Math.log(duration) / Math.log(1 << durationDecreasePerOC)));
     }
 
     private double calculateHeatDiscountMultiplier() {

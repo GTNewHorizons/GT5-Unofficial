@@ -9,6 +9,7 @@ import static gregtech.api.enums.ItemList.Large_Fluid_Cell_StainlessSteel;
 import static gregtech.api.enums.ItemList.Large_Fluid_Cell_Steel;
 import static gregtech.api.enums.ItemList.Large_Fluid_Cell_Titanium;
 import static gregtech.api.enums.ItemList.Large_Fluid_Cell_TungstenSteel;
+import static gregtech.api.enums.Mods.HodgePodge;
 
 import javax.annotation.Nullable;
 
@@ -25,7 +26,6 @@ import org.lwjgl.opengl.GL11;
 
 import com.mitchej123.hodgepodge.textures.IPatchedTextureAtlasSprite;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.items.GT_MetaGenerated_Item;
@@ -194,7 +194,7 @@ public class GT_GeneratedItem_Renderer implements IItemRenderer {
     }
 
     protected void markNeedsAnimationUpdate(IIcon icon) {
-        if (GregTech_API.mHodgepodge && icon instanceof IPatchedTextureAtlasSprite) {
+        if (HodgePodge.isModLoaded() && icon instanceof IPatchedTextureAtlasSprite) {
             ((IPatchedTextureAtlasSprite) icon).markNeedsAnimationUpdate();
         }
     }

@@ -165,7 +165,8 @@ public class GT_BaseCrop extends CropCard implements ICropCardInfo {
 
     @Override
     public final boolean canGrow(ICropTile aCrop) {
-        if (GT_Mod.gregtechproxy.mCropNeedBlock && mBlock != null && aCrop.getSize() == mMaxSize - 1) {
+        // block check is only performed at the last stage of growth
+        if (this.needsBlockBelow() && aCrop.getSize() == mMaxSize - 1) {
             return isBlockBelow(aCrop);
         }
         return aCrop.getSize() < maxSize();
@@ -223,6 +224,15 @@ public class GT_BaseCrop extends CropCard implements ICropCardInfo {
         return maxSize();
     }
 
+    /**
+     * Checks if the crop needs a block below it
+     * 
+     * @return True if the crop needs a block below it to grow to its max size
+     */
+    public boolean needsBlockBelow() {
+        return GT_Mod.gregtechproxy.mCropNeedBlock && this.mBlock != null;
+    }
+
     public boolean isBlockBelow(ICropTile aCrop) {
         if (aCrop == null) {
             return false;
@@ -243,16 +253,38 @@ public class GT_BaseCrop extends CropCard implements ICropCardInfo {
             } else {
                 int tMetaID = aCrop.getWorld()
                     .getBlockMetadata(aCrop.getLocation().posX, aCrop.getLocation().posY - i, aCrop.getLocation().posZ);
-                ItemData tAssotiation = GT_OreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
-                if ((tAssotiation != null) && (tAssotiation.mPrefix.toString()
-                    .startsWith("ore")) && (tAssotiation.mMaterial.mMaterial == mBlock)) {
-                    return true;
-                }
-                if ((tAssotiation != null) && (tAssotiation.mPrefix == OrePrefixes.block)
-                    && (tAssotiation.mMaterial.mMaterial == mBlock)) {
+                if (isBlockBelow(new ItemStack(tBlock, 1, tMetaID))) {
                     return true;
                 }
             }
+        }
+        return false;
+    }
+
+    /**
+     * An isolated function to check if an item stack is a block that should be below this crop
+     * 
+     * @param aItem a stack of the block placed under the crop
+     * @return The result of the check
+     */
+    public boolean isBlockBelow(ItemStack aItem) {
+        // safety in case someone calls this without checking if we have a block
+        if (!this.needsBlockBelow()) return true;
+
+        // get material from stack
+        ItemData tAssociation = GT_OreDictUnificator.getAssociation(aItem);
+        if (tAssociation == null) return false;
+
+        // return true if it's an ore of the material
+        // note: some ores don't appear to have associations in testing, naq ore is an example of that
+        if (tAssociation.mPrefix.toString()
+            .startsWith("ore") && tAssociation.mMaterial.mMaterial == mBlock) {
+            return true;
+        }
+
+        // return true if it's a block of the material
+        if (tAssociation.mPrefix == OrePrefixes.block && tAssociation.mMaterial.mMaterial == mBlock) {
+            return true;
         }
         return false;
     }

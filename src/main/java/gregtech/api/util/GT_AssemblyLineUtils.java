@@ -78,9 +78,9 @@ public class GT_AssemblyLineUtils {
         if (!isItemDataStick(aDataStick) || !doesDataStickHaveOutput(aDataStick)) {
             return LookupResultType.INVALID_STICK.getResult();
         }
-        List<ItemStack> aInputs = new ArrayList<>(15);
+        List<ItemStack> aInputs = new ArrayList<>(16);
         ItemStack aOutput = getDataStickOutput(aDataStick);
-        List<List<ItemStack>> mOreDictAlt = new ArrayList<>(15);
+        List<List<ItemStack>> mOreDictAlt = new ArrayList<>(16);
         List<FluidStack> aFluidInputs = new ArrayList<>(4);
 
         NBTTagCompound aTag = aDataStick.getTagCompound();
@@ -96,7 +96,7 @@ public class GT_AssemblyLineUtils {
             } // else: no cache, or the old recipe run into a hash collision with a different new recipe
         }
 
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 16; i++) {
             int count = aTag.getInteger("a" + i);
             if (!aTag.hasKey("" + i) && count <= 0) {
                 continue;
