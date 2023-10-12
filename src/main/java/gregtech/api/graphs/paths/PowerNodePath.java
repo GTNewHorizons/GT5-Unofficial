@@ -2,9 +2,11 @@ package gregtech.api.graphs.paths;
 
 import net.minecraft.server.MinecraftServer;
 
+import gregtech.api.enums.TickTime;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
+import gregtech.api.util.AveragePerTickCounter;
 
 // path for cables
 // all calculations like amp and voltage happens here
@@ -18,6 +20,9 @@ public class PowerNodePath extends NodePath {
     int mTick = 0;
     boolean mCountUp = true;
 
+    private AveragePerTickCounter avgAmperageCounter = new AveragePerTickCounter(TickTime.SECOND);
+    private AveragePerTickCounter avgVoltageCounter = new AveragePerTickCounter(TickTime.SECOND);
+
     public PowerNodePath(MetaPipeEntity[] aCables) {
         super(aCables);
     }
@@ -27,6 +32,9 @@ public class PowerNodePath extends NodePath {
     }
 
     public void applyVoltage(long aVoltage, boolean aCountUp) {
+
+        avgVoltageCounter.addValue(Math.max(aVoltage - mLoss, 0));
+
         int tNewTime = MinecraftServer.getServer()
             .getTickCounter();
         if (mTick != tNewTime) {
@@ -60,6 +68,9 @@ public class PowerNodePath extends NodePath {
     }
 
     public void addAmps(long aAmps) {
+
+        avgAmperageCounter.addValue(aAmps);
+
         this.mAmps += aAmps;
         if (this.mAmps > mMaxAmps * 40) {
             lock.addTileEntity(null);
@@ -76,6 +87,7 @@ public class PowerNodePath extends NodePath {
 
     // if no amps pass through for more than 0.5 second reduce them to minimize wrong results
     // but still allow the player to see if activity is happening
+    @Deprecated
     public long getAmps() {
         int tTime = MinecraftServer.getServer()
             .getTickCounter() - 10;
@@ -86,6 +98,7 @@ public class PowerNodePath extends NodePath {
         return mAmps;
     }
 
+    @Deprecated
     public long getVoltage(MetaPipeEntity aCable) {
         int tLoss = 0;
         if (mCountUp) {
@@ -106,6 +119,22 @@ public class PowerNodePath extends NodePath {
             }
         }
         return -1;
+    }
+
+    public long getAmperage() {
+        return avgAmperageCounter.getLast();
+    }
+
+    public double getAvgAmperage() {
+        return avgAmperageCounter.getAverage();
+    }
+
+    public long getVoltage() {
+        return avgVoltageCounter.getLast();
+    }
+
+    public double getAvgVoltage() {
+        return avgVoltageCounter.getAverage();
     }
 
     @Override
