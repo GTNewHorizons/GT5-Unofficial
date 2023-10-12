@@ -318,6 +318,23 @@ public class GT_OreDictUnificator {
         if (GT_Utility.isStackValid(aStack) && getItemData(aStack) == null && aData != null) setItemData(aStack, aData);
     }
 
+    public static void addItemDataFromInputs(ItemStack output, Object... inputs) {
+        int length = inputs.length;
+        ItemData[] tData = new ItemData[length];
+        for (int i = 0; i < length; i++) {
+            if (inputs[i] instanceof ItemStack) {
+                tData[i] = GT_OreDictUnificator.getItemData((ItemStack) inputs[i]);
+            } else if (inputs[i] instanceof ItemData) {
+                tData[i] = (ItemData) inputs[i];
+            } else {
+                throw new IllegalArgumentException();
+            }
+        }
+        if (GT_Utility.arrayContainsNonNull(tData)) {
+            GT_OreDictUnificator.addItemData(output, new ItemData(tData));
+        }
+    }
+
     public static void setItemData(ItemStack aStack, ItemData aData) {
         if (GT_Utility.isStackInvalid(aStack) || aData == null) return;
         ItemData tData = getItemData(aStack);

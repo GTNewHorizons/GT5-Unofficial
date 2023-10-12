@@ -380,6 +380,8 @@ public class GT_UITextures {
         .fullImage(GregTech.ID, "gui/overlay_button/replace_cobble_off");
     public static final UITexture OVERLAY_BUTTON_RETRACT_PIPE = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/retract_pipes");
+    public static final UITexture OVERLAY_BUTTON_HOURGLASS = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/hourglass");
 
     /**
      * Can adjust size as needed.
