@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
@@ -1168,6 +1169,20 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+            float aX, float aY, float aZ) {
+        if (supportsVoidProtection()) {
+            Set<VoidingMode> allowed = getAllowedVoidingModes();
+            setVoidingMode(getVoidingMode().nextInCollection(allowed));
+            GT_Utility.sendChatToPlayer(
+                    aPlayer,
+                    StatCollector.translateToLocal("GT5U.gui.button.voiding_mode") + " "
+                            + StatCollector.translateToLocal(getVoidingMode().getTransKey()));
+            return true;
+        } else return super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ);
     }
 
     @Override
