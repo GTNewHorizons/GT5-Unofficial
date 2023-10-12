@@ -328,6 +328,7 @@ public final class ModItems {
             MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().PROTACTINIUM, false);
             MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().CURIUM, false);
             MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().CALIFORNIUM, false);
+            MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().NEPTUNIUM, false);
             MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().FERMIUM, false);
 
             // Nuclear Isotopes
