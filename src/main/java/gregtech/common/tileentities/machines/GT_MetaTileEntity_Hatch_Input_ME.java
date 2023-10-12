@@ -3,8 +3,7 @@ package gregtech.common.tileentities.machines;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH_ACTIVE;
 
-import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
@@ -16,23 +15,24 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.google.common.collect.ImmutableList;
+import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.api.widget.Interactable;
 import com.gtnewhorizons.modularui.common.fluid.FluidStackTank;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
@@ -51,10 +51,12 @@ import appeng.api.networking.security.MachineSource;
 import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.util.AECableType;
+import appeng.core.localization.WailaText;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
 import appeng.util.item.AEFluidStack;
+import cpw.mods.fml.relauncher.ReflectionHelper;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
@@ -63,13 +65,17 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_Input
-    implements IPowerChannelState, IAddGregtechLogo, IAddUIWidgets {
+    implements IPowerChannelState, IAddGregtechLogo, IAddUIWidgets, IRecipeProcessingAwareHatch {
 
     private static final int SLOT_COUNT = 16;
     private static final int ALL_SLOT_COUNT = SLOT_COUNT * 2;
@@ -88,7 +94,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
     protected AENetworkProxy gridProxy = null;
 
     protected boolean autoPullFluidList = false;
-    protected int minAutoPullStackSize = 1;
+    protected int minAutoPullAmount = 1;
     protected boolean processingRecipe = false;
 
     protected static final int CONFIG_WINDOW_ID = 10;
@@ -161,7 +167,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
             int index = 0;
             while (iterator.hasNext() && index < SLOT_COUNT) {
                 IAEFluidStack currItem = iterator.next();
-                if (currItem.getStackSize() >= minAutoPullStackSize) {
+                if (currItem.getStackSize() >= minAutoPullAmount) {
                     FluidStack fluidStack = GT_Utility.copyAmount(1, currItem.getFluidStack());
                     storedFluid[index] = fluidStack;
                     index++;
@@ -197,8 +203,12 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                 continue;
             }
 
-            shadowStoredFluid[i] = storedFluid[i + SLOT_COUNT];
-            savedStackSizes[i] = storedFluid[i + SLOT_COUNT].amount;
+            FluidStack fluidStackWithAmount = storedFluid[i + SLOT_COUNT];
+            // Nothing in stock, no need to save anything
+            if (fluidStackWithAmount == null) continue;
+
+            shadowStoredFluid[i] = fluidStackWithAmount;
+            savedStackSizes[i] = fluidStackWithAmount.amount;
         }
 
         return shadowStoredFluid;
@@ -210,34 +220,36 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
     }
 
     @Override
-    public void endRecipeProcessing() {
+    public CheckRecipeResult endRecipeProcessing(GT_MetaTileEntity_MultiBlockBase controller) {
+        CheckRecipeResult checkRecipeResult = CheckRecipeResultRegistry.SUCCESSFUL;
         AENetworkProxy proxy = getProxy();
-        if (proxy == null || !proxy.isActive()) {
-            return;
-        }
 
-        IMEMonitor<IAEFluidStack> sg;
         try {
-            sg = proxy.getStorage()
+            IMEMonitor<IAEFluidStack> sg = proxy.getStorage()
                 .getFluidInventory();
-        } catch (GridAccessException e) {
-            return;
-        }
 
-        for (int i = 0; i < SLOT_COUNT; ++i) {
-            FluidStack fluidStack = storedFluid[i + SLOT_COUNT];
-            if (fluidStack == null) continue;
+            for (int i = 0; i < SLOT_COUNT; ++i) {
+                FluidStack oldStack = shadowStoredFluid[i];
+                int oldAmount = savedStackSizes[i];
+                if (oldStack == null || oldAmount == 0) continue;
 
-            int consume = savedStackSizes[i] - shadowStoredFluid[i].amount;
-            if (consume <= 0) continue;
+                int toExtract = oldAmount - oldStack.amount;
+                if (toExtract <= 0) continue;
 
-            IAEFluidStack request = AEFluidStack.create(storedFluid[i]);
-            request.setStackSize(consume);
-            sg.extractItems(request, Actionable.MODULATE, getRequestSource());
-            try {
+                IAEFluidStack request = AEFluidStack.create(storedFluid[i]);
+                request.setStackSize(toExtract);
+                IAEFluidStack extractionResult = sg.extractItems(request, Actionable.MODULATE, getRequestSource());
                 proxy.getEnergy()
-                    .extractAEPower(consume, Actionable.MODULATE, PowerMultiplier.CONFIG);
-            } catch (GridAccessException ignored) {}
+                    .extractAEPower(toExtract, Actionable.MODULATE, PowerMultiplier.CONFIG);
+
+                if (extractionResult == null || extractionResult.getStackSize() != toExtract) {
+                    controller.criticalStopMachine();
+                    checkRecipeResult = SimpleCheckRecipeResult
+                        .ofFailurePersistOnShutdown("stocking_hatch_fail_extraction");
+                }
+            }
+        } catch (GridAccessException e) {
+            throw new RuntimeException(e);
         }
 
         for (int i = 0; i < SLOT_COUNT; i++) {
@@ -246,6 +258,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
         }
 
         processingRecipe = false;
+        return checkRecipeResult;
     }
 
     @Override
@@ -261,9 +274,9 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
 
     public void setAdditionalConnectionOption() {
         if (additionalConnection) {
-            gridProxy.setValidSides(EnumSet.complementOf(EnumSet.of(ForgeDirection.UNKNOWN)));
+            getProxy().setValidSides(EnumSet.complementOf(EnumSet.of(ForgeDirection.UNKNOWN)));
         } else {
-            gridProxy.setValidSides(EnumSet.of(getBaseMetaTileEntity().getFrontFacing()));
+            getProxy().setValidSides(EnumSet.of(getBaseMetaTileEntity().getFrontFacing()));
         }
     }
 
@@ -295,9 +308,6 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
         }
         return this.gridProxy;
     }
-
-    @Override
-    public void gridChanged() {}
 
     @Override
     public boolean isPowered() {
@@ -441,7 +451,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
         aNBT.setIntArray("sizes", sizes);
         aNBT.setTag("storedFluid", nbtTagList);
         aNBT.setBoolean("autoStock", autoPullFluidList);
-        aNBT.setInteger("minAutoPullStackSize", minAutoPullStackSize);
+        aNBT.setInteger("minAutoPullStackSize", minAutoPullAmount);
         aNBT.setBoolean("additionalConnection", additionalConnection);
         getProxy().writeToNBT(aNBT);
     }
@@ -469,7 +479,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
             }
         }
 
-        minAutoPullStackSize = aNBT.getInteger("minAutoPullStackSize");
+        minAutoPullAmount = aNBT.getInteger("minAutoPullStackSize");
         autoPullFluidList = aNBT.getBoolean("autoStock");
         additionalConnection = aNBT.getBoolean("additionalConnection");
         getProxy().readFromNBT(aNBT);
@@ -478,7 +488,9 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         setAutoPullFluidList(!autoPullFluidList);
-        GT_Utility.sendChatToPlayer(aPlayer, "Automatic Fluid Pull " + autoPullFluidList);
+        aPlayer.addChatMessage(
+            new ChatComponentTranslation(
+                "GT5U.machines.stocking_hatch.auto_pull_toggle." + (autoPullFluidList ? "enabled" : "disabled")));
     }
 
     @Override
@@ -495,7 +507,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
         NBTTagCompound nbt = dataStick.stackTagCompound;
 
         setAutoPullFluidList(nbt.getBoolean("autoPull"));
-        minAutoPullStackSize = nbt.getInteger("minStackSize");
+        minAutoPullAmount = nbt.getInteger("minAmount");
         additionalConnection = nbt.getBoolean("additionalConnection");
         if (!autoPullFluidList) {
             NBTTagList stockingFluids = nbt.getTagList("fluidsToStock", 10);
@@ -505,7 +517,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
         }
 
         setAdditionalConnectionOption();
-        aPlayer.addChatMessage(new ChatComponentText("Loaded Config From Data Stick"));
+        aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.stocking_bus.loaded"));
         return true;
     }
 
@@ -519,7 +531,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
         NBTTagCompound tag = new NBTTagCompound();
         tag.setString("type", "stockingHatch");
         tag.setBoolean("autoPull", autoPullFluidList);
-        tag.setInteger("minStackSize", minAutoPullStackSize);
+        tag.setInteger("minAmount", minAutoPullAmount);
         tag.setBoolean("additionalConnection", additionalConnection);
 
         NBTTagList stockingFluids = new NBTTagList();
@@ -535,7 +547,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
         }
         dataStick.stackTagCompound = tag;
         dataStick.setStackDisplayName("Stocking Input Hatch Configuration");
-        aPlayer.addChatMessage(new ChatComponentText("Saved Config to Data Stick"));
+        aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.stocking_bus.saved"));
     }
 
     @Override
@@ -555,93 +567,118 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
     }
 
     @Override
+    public int getGUIHeight() {
+        return 179;
+    }
+
+    @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         buildContext.addSyncedWindow(CONFIG_WINDOW_ID, this::createStackSizeConfigurationWindow);
 
         for (int i = 0; i < SLOT_COUNT; i++) {
-            int finalI = i;
+            int slotIndex = i;
             FluidSlotWidget fluidSlotWidget = new FluidSlotWidget(fluidTanks[i]) {
 
-                private static final int PACKET_EMPTY_CLICK = 6;
-
-                @Override
-                public ClickResult onClick(int buttonId, boolean doubleClick) {
-                    ItemStack cursorStack = getContext().getCursor()
-                        .getItemStack();
-                    if (cursorStack == null) {
-                        ClickData clickData = ClickData.create(buttonId, doubleClick);
-                        syncToServer(PACKET_EMPTY_CLICK, clickData::writeToPacket);
-                        return ClickResult.ACCEPT;
-                    }
-
-                    return super.onClick(buttonId, doubleClick);
+                {
+                    // HACK: The only way to create these, is using FluidSlotWidget.phantom(boolean), but that won't
+                    // allow us to override any methods. SlotGroup.FluidGroupBuilder is missing some features and can't
+                    // be used either
+                    ReflectionHelper.setPrivateValue(FluidSlotWidget.class, this, true, "phantom");
                 }
 
                 @Override
-                public void readOnServer(int id, PacketBuffer buf) throws IOException {
-                    super.readOnServer(id, buf);
-                    switch (id) {
-                        case PACKET_EMPTY_CLICK -> clearTag(ClickData.readPacket(buf));
-                    }
-
-                    markForUpdate();
-                }
-
-                private void clearTag(ClickData clickData) {
-                    if (clickData.mouseButton != 0) return;
-
-                    storedFluid[finalI] = null;
-                    updateInformationSlot(finalI, null);
-                    detectAndSendChanges(false);
-                }
-
-                @Override
-                protected void onClickServer(ClickData clickData, ItemStack clientVerifyToken) {
-                    EntityPlayer player = getContext().getPlayer();
-                    ItemStack heldItem = player.inventory.getItemStack();
+                protected void tryClickPhantom(ClickData clickData, ItemStack cursorStack) {
                     if (clickData.mouseButton != 0 || autoPullFluidList) return;
 
-                    if (heldItem == null) {
-                        storedFluid[finalI] = null;
-                        updateInformationSlot(finalI, null);
-                        detectAndSendChanges(false);
-                        return;
+                    FluidStack heldFluid = getFluidForPhantomItem(cursorStack);
+                    if (cursorStack == null) {
+                        storedFluid[slotIndex] = null;
+                    } else {
+                        if (containsSuchStack(heldFluid)) return;
+                        storedFluid[slotIndex] = GT_Utility.copyAmount(1, heldFluid);
                     }
-
-                    FluidStack heldFluid = getFluidForPhantomItem(heldItem);
-                    if (heldFluid == null || containsSuchStack(heldFluid)) return;
-
-                    FluidStack setFileStack = GT_Utility.copyAmount(1, heldFluid);
-                    storedFluid[finalI] = setFileStack;
-                    updateInformationSlot(finalI, setFileStack);
-                    detectAndSendChanges(false);
+                    if (getBaseMetaTileEntity().isServerSide()) {
+                        updateInformationSlot(slotIndex, heldFluid);
+                        detectAndSendChanges(false);
+                    }
                 }
 
                 @Override
                 protected void tryScrollPhantom(int direction) {}
+
+                @Override
+                public IDrawable[] getBackground() {
+                    IDrawable slot;
+                    if (autoPullFluidList) {
+                        slot = GT_UITextures.SLOT_DARK_GRAY;
+                    } else {
+                        slot = ModularUITextures.FLUID_SLOT;
+                    }
+                    return new IDrawable[] { slot, GT_UITextures.OVERLAY_SLOT_ARROW_ME };
+                }
+
+                @Override
+                public void buildTooltip(List<Text> tooltip) {
+                    FluidStack fluid = fluidTanks[slotIndex].getFluid();
+                    if (fluid != null) {
+                        addFluidNameInfo(tooltip, fluid);
+
+                        if (autoPullFluidList) {
+                            tooltip.add(Text.localised("GT5U.machines.stocking_bus.cannot_set_slot"));
+                        } else {
+                            tooltip.add(Text.localised("modularui.phantom.single.clear"));
+                        }
+                    } else {
+                        tooltip.add(
+                            Text.localised("modularui.fluid.empty")
+                                .format(EnumChatFormatting.WHITE));
+                    }
+                }
             };
 
-            fluidSlotWidget.setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_ARROW_ME);
             fluidSlotWidget.setPos(new Pos2d(7 + (i % 4) * 18, 9 + (i / 4) * 18));
             builder.widget(fluidSlotWidget);
         }
 
         for (int i = 0; i < SLOT_COUNT; i++) {
-            FluidSlotWidget fluidSlotWidget = new FluidSlotWidget(fluidTanks[i + SLOT_COUNT]) {
+            int slotIndex = i + SLOT_COUNT;
+            FluidSlotWidget fluidSlotWidget = new FluidSlotWidget(fluidTanks[slotIndex]) {
+
+                {
+                    // HACK: The only way to create these, is using FluidSlotWidget.phantom(boolean), but that won't
+                    // allow us to override any methods. SlotGroup.FluidGroupBuilder is missing some features and can't
+                    // be used either
+                    ReflectionHelper.setPrivateValue(FluidSlotWidget.class, this, true, "phantom");
+                }
 
                 @Override
-                protected void onClickServer(ClickData clickData, ItemStack clientVerifyToken) {}
+                protected void tryClickPhantom(ClickData clickData, ItemStack cursorStack) {}
 
                 @Override
                 protected void tryScrollPhantom(int direction) {}
 
                 @Override
-                public boolean onMouseScroll(int direction) {
-                    return false;
+                public void buildTooltip(List<Text> tooltip) {
+                    FluidStack fluid = fluidTanks[slotIndex].getFluid();
+                    if (fluid != null) {
+                        addFluidNameInfo(tooltip, fluid);
+                        addAdditionalFluidInfo(tooltip, fluid);
+                        if (!Interactable.hasShiftDown()) {
+                            tooltip.add(Text.EMPTY);
+                            tooltip.add(Text.localised("modularui.tooltip.shift"));
+                        }
+                    } else {
+                        tooltip.add(
+                            Text.localised("modularui.fluid.empty")
+                                .format(EnumChatFormatting.WHITE));
+                    }
                 }
-            }; // FluidSlotWidget.phantom(fluidStackTank, true);
+            };
+
             fluidSlotWidget.setBackground(GT_UITextures.SLOT_DARK_GRAY);
             fluidSlotWidget.setPos(new Pos2d(97 + (i % 4) * 18, 9 + (i / 4) * 18));
+            // Needed to get the amount to render
+            fluidSlotWidget.setControlsAmount(true, false);
             builder.widget(fluidSlotWidget);
         }
 
@@ -659,19 +696,32 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
             })
                 .setPlayClickSound(true)
                 .setBackground(() -> {
-                    List<UITexture> ret = new ArrayList<>();
-                    ret.add(GT_UITextures.BUTTON_STANDARD);
-                    if (autoPullFluidList) ret.add(GT_UITextures.OVERLAY_BUTTON_AUTOPULL_ME);
-                    else ret.add(GT_UITextures.OVERLAY_BUTTON_AUTOPULL_ME_DISABLED);
-                    return ret.toArray(new IDrawable[0]);
+                    if (autoPullFluidList) {
+                        return new IDrawable[] { GT_UITextures.BUTTON_STANDARD_PRESSED,
+                            GT_UITextures.OVERLAY_BUTTON_AUTOPULL_ME };
+                    } else {
+                        return new IDrawable[] { GT_UITextures.BUTTON_STANDARD,
+                            GT_UITextures.OVERLAY_BUTTON_AUTOPULL_ME_DISABLED };
+                    }
                 })
                 .addTooltips(
-                    ImmutableList.of(
-                        "Click to toggle automatic fluid pulling from ME.",
-                        "Right-Click to edit minimum amount for fluid pulling."))
+                    Arrays.asList(
+                        StatCollector.translateToLocal("GT5U.machines.stocking_hatch.auto_pull.tooltip.1"),
+                        StatCollector.translateToLocal("GT5U.machines.stocking_hatch.auto_pull.tooltip.2")))
                 .setSize(16, 16)
                 .setPos(80, 10))
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> autoPullFluidList, this::setAutoPullFluidList));
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> autoPullFluidList, this::setAutoPullFluidList))
+            .widget(TextWidget.dynamicString(() -> {
+                boolean isActive = isActive();
+                boolean isPowered = isPowered();
+                boolean isBooting = isBooting();
+                EnumChatFormatting color = (isActive && isPowered) ? EnumChatFormatting.GREEN
+                    : EnumChatFormatting.DARK_RED;
+                return color + WailaText.getPowerState(isActive, isPowered, isBooting);
+            })
+                .setTextAlignment(Alignment.Center)
+                .setSize(90, 9)
+                .setPos(43, 84));
     }
 
     protected ModularWindow createStackSizeConfigurationWindow(final EntityPlayer player) {
@@ -689,11 +739,12 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                     Alignment.TopRight.getAlignedPos(new Size(PARENT_WIDTH, PARENT_HEIGHT), new Size(WIDTH, HEIGHT))
                         .add(WIDTH - 3, 0)));
         builder.widget(
-            new TextWidget("Min Stack Size").setPos(3, 2)
+            TextWidget.localised("GT5U.machines.stocking_hatch.min_amount")
+                .setPos(3, 2)
                 .setSize(74, 14))
             .widget(
-                new TextFieldWidget().setSetterInt(val -> minAutoPullStackSize = val)
-                    .setGetterInt(() -> minAutoPullStackSize)
+                new TextFieldWidget().setSetterInt(val -> minAutoPullAmount = val)
+                    .setGetterInt(() -> minAutoPullAmount)
                     .setNumbers(1, Integer.MAX_VALUE)
                     .setOnScrollNumbers(1, 4, 64)
                     .setTextAlignment(Alignment.Center)
@@ -717,9 +768,15 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
         IWailaConfigHandler config) {
         NBTTagCompound tag = accessor.getNBTData();
         boolean autopull = tag.getBoolean("autoPull");
-        int minSize = tag.getInteger("minStackSize");
-        currenttip.add(String.format("Auto-Pull from ME: %s", autopull ? "Enabled" : "Disabled"));
-        if (autopull) currenttip.add(String.format("Minimum Stack Size: %d", minSize));
+        int minSize = tag.getInteger("minAmount");
+        currenttip.add(
+            StatCollector.translateToLocal("GT5U.waila.stocking_bus.auto_pull." + (autopull ? "enabled" : "disabled")));
+        if (autopull) {
+            currenttip.add(
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.stocking_hatch.min_amount",
+                    GT_Utility.formatNumbers(minSize)));
+        }
         super.getWailaBody(itemStack, currenttip, accessor, config);
     }
 
@@ -727,7 +784,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         tag.setBoolean("autoPull", autoPullFluidList);
-        tag.setInteger("minStackSize", minAutoPullStackSize);
+        tag.setInteger("minAmount", minAutoPullAmount);
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
     }
 

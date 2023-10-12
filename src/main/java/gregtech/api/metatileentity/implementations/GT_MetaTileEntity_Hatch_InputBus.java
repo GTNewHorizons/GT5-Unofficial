@@ -30,8 +30,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ClientPreference;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -39,9 +37,10 @@ import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_TooltipDataCache;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.extensions.ArrayExt;
+import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 
 public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch
-    implements IConfigurationCircuitSupport, IAddUIWidgets {
+    implements IConfigurationCircuitSupport, IAddUIWidgets, IRecipeProcessingAwareHatch {
 
     private static final String SORTING_MODE_TOOLTIP = "GT5U.machines.sorting_mode.tooltip";
     private static final String ONE_STACK_LIMIT_TOOLTIP = "GT5U.machines.one_stack_limit.tooltip";
@@ -263,29 +262,6 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch
             if (GT_Utility.areStacksEqual(GT_OreDictUnificator.get_nocopy(aStack), mInventory[i])) return i == aIndex;
         return mInventory[aIndex] == null;
     }
-
-    /**
-     * Called when multiblock controller starts processing.
-     * {@link #endRecipeProcessing(GT_MetaTileEntity_MultiBlockBase)} is called on the same tick.
-     */
-    public void startRecipeProcessing() {}
-
-    /**
-     * Called when multiblock controller ends processing. {@link #startRecipeProcessing()} is called on the same tick.
-     *
-     * @param controller Caller of this method.
-     * @return Result of the process of this method. {@code !wasSuccessful()} means the returned result should
-     *         overwrite the result calculated on multiblock whatever the reason is.
-     */
-    public CheckRecipeResult endRecipeProcessing(GT_MetaTileEntity_MultiBlockBase controller) {
-        endRecipeProcessing();
-        return CheckRecipeResultRegistry.SUCCESSFUL;
-    }
-
-    /**
-     * Simple version of {@link #endRecipeProcessing(GT_MetaTileEntity_MultiBlockBase)}. Maybe use it instead.
-     */
-    public void endRecipeProcessing() {}
 
     @Override
     public boolean allowSelectCircuit() {
