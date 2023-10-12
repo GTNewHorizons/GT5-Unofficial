@@ -13,6 +13,9 @@ public class EUPower extends Power {
 
     public EUPower(byte tier, int amperage) {
         super(tier);
+        if (amperage < 1) {
+            throw new IllegalArgumentException("Amperage cannot be lower than 1");
+        }
         this.amperage = amperage;
     }
 
@@ -70,6 +73,6 @@ public class EUPower extends Power {
     }
 
     protected int computeVoltageForEuRate(int euPerTick) {
-        return amperage != 0 ? euPerTick / amperage : euPerTick;
+        return euPerTick / amperage;
     }
 }

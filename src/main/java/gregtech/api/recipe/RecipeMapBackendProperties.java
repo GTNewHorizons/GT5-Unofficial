@@ -62,6 +62,9 @@ public final class RecipeMapBackendProperties {
         Function<? super GT_RecipeBuilder, ? extends Iterable<? extends GT_Recipe>> recipeEmitter,
         @Nullable Function<? super GT_Recipe, ? extends GT_Recipe> specialHandler,
         @Nullable String recipeConfigCategory, @Nullable Function<? super GT_Recipe, String> recipeConfigKeyConvertor) {
+        if (minItemInputs < 0 || minFluidInputs < 0) {
+            throw new IllegalArgumentException("minItemInputs and minFluidInputs cannot be negative");
+        }
         this.minItemInputs = minItemInputs;
         this.minFluidInputs = minFluidInputs;
         this.specialSlotSensitive = specialSlotSensitive;

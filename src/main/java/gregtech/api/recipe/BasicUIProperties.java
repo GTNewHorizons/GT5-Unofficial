@@ -136,6 +136,13 @@ public final class BasicUIProperties {
         List<Pair<IDrawable, Pair<Size, Pos2d>>> specialTextures,
         List<Pair<SteamTexture, Pair<Size, Pos2d>>> specialTexturesSteam, IDrawable logo, Size logoSize, Pos2d logoPos,
         int amperage) {
+        if (maxItemInputs < 0 || maxItemOutputs < 0 || maxFluidInputs < 0 || maxFluidOutputs < 0) {
+            throw new IllegalArgumentException(
+                "maxItemInputs, maxItemOutputs, maxFluidInputs and maxFluidOutputs cannot be negative");
+        }
+        if (amperage < 1) {
+            throw new IllegalArgumentException("Amperage cannot be lower than 1");
+        }
         this.maxItemInputs = maxItemInputs;
         this.maxItemOutputs = maxItemOutputs;
         this.maxFluidInputs = maxFluidInputs;
