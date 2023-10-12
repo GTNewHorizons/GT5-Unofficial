@@ -10,7 +10,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.gtnewhorizons.modularui.api.widget.Interactable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -33,6 +32,7 @@ import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.api.widget.Interactable;
 import com.gtnewhorizons.modularui.common.fluid.FluidStackTank;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
@@ -231,7 +231,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
             for (int i = 0; i < SLOT_COUNT; ++i) {
                 FluidStack oldStack = shadowStoredFluid[i];
                 int oldAmount = savedStackSizes[i];
-                if(oldStack == null || oldAmount == 0) continue;
+                if (oldStack == null || oldAmount == 0) continue;
 
                 int toExtract = oldAmount - oldStack.amount;
                 if (toExtract <= 0) continue;
@@ -668,7 +668,9 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                             tooltip.add(Text.localised("modularui.tooltip.shift"));
                         }
                     } else {
-                        tooltip.add(Text.localised("modularui.fluid.empty").format(EnumChatFormatting.WHITE));
+                        tooltip.add(
+                            Text.localised("modularui.fluid.empty")
+                                .format(EnumChatFormatting.WHITE));
                     }
                 }
             };
