@@ -238,15 +238,20 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
         }
 
         @Override
-        public String getVoltageString() {
+        protected boolean shouldShowAmperage() {
+            return !getAmperageString().equals("1");
+        }
+
+        @Override
+        protected String getVoltageString() {
             long voltage = V[1];
-            String voltageDescription = GT_Utility.formatNumbers(voltage) + " EU";
+            String voltageDescription = GT_Utility.formatNumbers(voltage) + " EU/t";
             voltageDescription += GT_Utility.getTierNameWithParentheses(voltage);
             return voltageDescription;
         }
 
         @Override
-        public String getAmperageString() {
+        protected String getAmperageString() {
             long amperage = originalVoltage / V[1];
             int denominator = 1;
             for (int i = 1; i < mTier; i++) {

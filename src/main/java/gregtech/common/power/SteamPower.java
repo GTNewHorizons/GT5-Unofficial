@@ -1,17 +1,21 @@
 package gregtech.common.power;
 
+import static gregtech.api.util.GT_Utility.trans;
+
+import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.GT_Utility;
+import gregtech.nei.NEIRecipeInfo;
 
 public class SteamPower extends Power {
 
-    private final double euPerTickOverride;
-    private final double durationOverride;
+    private final double euPerTickMultiplier;
+    private final double durationMultiplier;
     private final String[] STEAM_TIER_NAMES = { "Bronze", "Steel" };
 
     public SteamPower(byte tier, double euPerTickMultiplier, double durationMultiplier) {
         super(tier);
-        this.euPerTickOverride = euPerTickMultiplier;
-        this.durationOverride = durationMultiplier;
+        this.euPerTickMultiplier = euPerTickMultiplier;
+        this.durationMultiplier = durationMultiplier;
     }
 
     @Override
@@ -26,29 +30,26 @@ public class SteamPower extends Power {
 
     @Override
     public void computePowerUsageAndDuration(int euPerTick, int duration) {
-        recipeEuPerTick = (int) (euPerTick * euPerTickOverride);
-        recipeDuration = (int) (duration * durationOverride);
+        recipeEuPerTick = (int) (euPerTick * euPerTickMultiplier);
+        recipeDuration = (int) (duration * durationMultiplier);
     }
 
     @Override
-    public String getTotalPowerString() {
+    protected void drawNEIDescImpl(NEIRecipeInfo recipeInfo, RecipeMapFrontend frontend) {
+        frontend.drawNEIText(recipeInfo, trans("153", "Usage: ") + getPowerUsageString());
+    }
+
+    @Override
+    protected String getTotalPowerString() {
+        return GT_Utility.formatNumbers(convertEUToSteam(recipeDuration * recipeEuPerTick)) + " Steam";
+    }
+
+    private String getPowerUsageString() {
+        return GT_Utility.formatNumbers(20L * convertEUToSteam(recipeEuPerTick)) + " L/s Steam";
+    }
+
+    private static int convertEUToSteam(int eu) {
         // 2L normal steam == 1EU
-        return GT_Utility.formatNumbers(2L * recipeDuration * recipeEuPerTick) + " Steam";
-    }
-
-    @Override
-    public String getPowerUsageString() {
-        // 2L normal steam == 1EU
-        return GT_Utility.formatNumbers(20L * 2L * recipeEuPerTick) + " L/s Steam";
-    }
-
-    @Override
-    public String getVoltageString() {
-        return null;
-    }
-
-    @Override
-    public String getAmperageString() {
-        return null;
+        return 2 * eu;
     }
 }

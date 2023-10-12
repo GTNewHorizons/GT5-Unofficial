@@ -1,6 +1,10 @@
 package gregtech.common.power;
 
+import static gregtech.api.util.GT_Utility.trans;
+
+import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.GT_Utility;
+import gregtech.nei.NEIRecipeInfo;
 
 public class EUPower extends Power {
 
@@ -31,24 +35,42 @@ public class EUPower extends Power {
     }
 
     @Override
-    public String getTotalPowerString() {
+    protected String getTotalPowerString() {
         return GT_Utility.formatNumbers((long) recipeDuration * recipeEuPerTick) + " EU";
     }
 
     @Override
-    public String getPowerUsageString() {
+    protected void drawNEIDescImpl(NEIRecipeInfo recipeInfo, RecipeMapFrontend frontend) {
+        if (shouldShowAmperage()) {
+            frontend.drawNEIText(recipeInfo, trans("153", "Usage: ") + getPowerUsageString());
+            frontend.drawNEIText(recipeInfo, trans("154", "Voltage: ") + getVoltageString());
+            frontend.drawNEIText(recipeInfo, trans("155", "Amperage: ") + getAmperageString());
+        } else {
+            frontend.drawNEIText(recipeInfo, trans("154", "Voltage: ") + getVoltageString());
+        }
+    }
+
+    protected boolean shouldShowAmperage() {
+        return amperage != 1;
+    }
+
+    /**
+     * @return EU/t usage, without tier display.
+     */
+    protected String getPowerUsageString() {
         return GT_Utility.formatNumbers(recipeEuPerTick) + " EU/t";
     }
 
-    @Override
-    public String getVoltageString() {
+    /**
+     * @return EU/t usage, with tier display.
+     */
+    protected String getVoltageString() {
         String voltageDescription = GT_Utility.formatNumbers(originalVoltage) + " EU/t";
         voltageDescription += GT_Utility.getTierNameWithParentheses(originalVoltage);
         return voltageDescription;
     }
 
-    @Override
-    public String getAmperageString() {
+    protected String getAmperageString() {
         return GT_Utility.formatNumbers(amperage);
     }
 

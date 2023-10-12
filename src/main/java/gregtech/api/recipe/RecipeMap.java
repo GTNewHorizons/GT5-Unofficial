@@ -79,7 +79,8 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
     }
 
     /**
-     * @return Amperage of this recipemap.
+     * @return Amperage of this recipemap. Note that recipes store EU/t with amperage included,
+     *         e.g. Arc Furnace recipe with 90 EU/t means 30 EU/t (LV) with 3 amperage.
      */
     public int getAmperage() {
         return frontend.getUIProperties().amperage;

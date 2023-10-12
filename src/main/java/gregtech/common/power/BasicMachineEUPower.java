@@ -1,6 +1,11 @@
 package gregtech.common.power;
 
 import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.util.GT_Utility.trans;
+
+import gregtech.GT_Mod;
+import gregtech.api.recipe.RecipeMapFrontend;
+import gregtech.nei.NEIRecipeInfo;
 
 public class BasicMachineEUPower extends EUPower {
 
@@ -57,7 +62,26 @@ public class BasicMachineEUPower extends EUPower {
     }
 
     @Override
-    public String getPowerUsageString() {
+    protected void drawNEIDescImpl(NEIRecipeInfo recipeInfo, RecipeMapFrontend frontend) {
+        if (!wasOverclocked) {
+            super.drawNEIDescImpl(recipeInfo, frontend);
+            return;
+        }
+
+        frontend.drawNEIText(recipeInfo, trans("153", "Usage: ") + getPowerUsageString());
+        if (GT_Mod.gregtechproxy.mNEIOriginalVoltage) {
+            EUPower originalPower = new EUPower(tier, amperage);
+            originalPower.computePowerUsageAndDuration(recipeInfo.recipe.mEUt, recipeInfo.recipe.mDuration);
+            frontend.drawNEIText(recipeInfo, trans("275", "Original voltage: ") + originalPower.getVoltageString());
+        }
+        String amperageString = getAmperageString();
+        if (shouldShowAmperage()) {
+            frontend.drawNEIText(recipeInfo, trans("155", "Amperage: ") + amperageString);
+        }
+    }
+
+    @Override
+    protected String getPowerUsageString() {
         return decorateWithOverclockLabel(super.getPowerUsageString());
     }
 

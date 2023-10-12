@@ -209,33 +209,7 @@ public class RecipeMapFrontend {
     }
 
     protected void drawNEIEnergyInfo(NEIRecipeInfo recipeInfo) {
-        GT_Recipe recipe = recipeInfo.recipe;
-        Power power = recipeInfo.power;
-        if (power.getEuPerTick() > 0) {
-            drawNEIText(recipeInfo, trans("152", "Total: ") + power.getTotalPowerString());
-
-            String amperage = power.getAmperageString();
-            String powerUsage = power.getPowerUsageString();
-            if (amperage == null || amperage.equals("unspecified") || powerUsage.contains("(OC)")) {
-                drawNEIText(recipeInfo, trans("153", "Usage: ") + powerUsage);
-                if (GT_Mod.gregtechproxy.mNEIOriginalVoltage) {
-                    Power originalPower = createPower();
-                    if (!(originalPower instanceof UnspecifiedEUPower)) {
-                        originalPower.computePowerUsageAndDuration(recipe.mEUt, recipe.mDuration);
-                        drawNEIText(recipeInfo, trans("275", "Original voltage: ") + originalPower.getVoltageString());
-                    }
-                }
-                if (amperage != null && !amperage.equals("unspecified") && !amperage.equals("1")) {
-                    drawNEIText(recipeInfo, trans("155", "Amperage: ") + amperage);
-                }
-            } else if (amperage.equals("1")) {
-                drawNEIText(recipeInfo, trans("154", "Voltage: ") + power.getVoltageString());
-            } else {
-                drawNEIText(recipeInfo, trans("153", "Usage: ") + powerUsage);
-                drawNEIText(recipeInfo, trans("154", "Voltage: ") + power.getVoltageString());
-                drawNEIText(recipeInfo, trans("155", "Amperage: ") + amperage);
-            }
-        }
+        recipeInfo.power.drawNEIDesc(recipeInfo, this);
     }
 
     protected void drawNEIDurationInfo(NEIRecipeInfo recipeInfo) {
@@ -299,7 +273,7 @@ public class RecipeMapFrontend {
         }
     }
 
-    protected void drawNEIText(NEIRecipeInfo recipeInfo, String text) {
+    public void drawNEIText(NEIRecipeInfo recipeInfo, String text) {
         drawNEIText(recipeInfo, text, 10);
     }
 
@@ -308,8 +282,7 @@ public class RecipeMapFrontend {
      *
      * @param yShift y position to shift after this text
      */
-    @SuppressWarnings("SameParameterValue")
-    protected void drawNEIText(NEIRecipeInfo recipeInfo, String text, int yShift) {
+    public void drawNEIText(NEIRecipeInfo recipeInfo, String text, int yShift) {
         drawNEIText(recipeInfo, text, 10, yShift);
     }
 
@@ -319,8 +292,7 @@ public class RecipeMapFrontend {
      * @param xStart x position to start drawing
      * @param yShift y position to shift after this text
      */
-    @SuppressWarnings("SameParameterValue")
-    protected void drawNEIText(NEIRecipeInfo recipeInfo, String text, int xStart, int yShift) {
+    public void drawNEIText(NEIRecipeInfo recipeInfo, String text, int xStart, int yShift) {
         net.minecraft.client.Minecraft.getMinecraft().fontRenderer
             .drawString(text, xStart, recipeInfo.yPos, neiTextColorOverride != -1 ? neiTextColorOverride : 0x000000);
         recipeInfo.yPos += yShift;
