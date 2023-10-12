@@ -27,9 +27,11 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
+//import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
+//import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -72,12 +74,12 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachin
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.net.GT_Packet_TileEntity;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.util.BlockUpdateHandler;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.RandomCooldown;
 import gregtech.common.GT_Pollution;
 import gregtech.common.covers.CoverInfo;
 import ic2.api.Direction;
@@ -122,7 +124,13 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
     private UUID mOwnerUuid = GT_Utility.defaultUuid;
     private NBTTagCompound mRecipeStuff = new NBTTagCompound();
     private int cableUpdateDelay = 30;
-    private RandomCooldown updateTextureCooldown = new RandomCooldown(TickTime.SECOND / 4, TickTime.SECOND / 2);
+    // private RandomCooldown updateTextureCooldown = new RandomCooldown(TickTime.SECOND * 2, TickTime.SECOND * 4);
+    // private boolean lastActive = false;
+    // private int lastTimeUpdated = -1;
+
+    private static BlockUpdateHandler blockUpdateHandler = new BlockUpdateHandler(
+        TickTime.SECOND * 2,
+        TickTime.SECOND * 4);
 
     public BaseMetaTileEntity() {}
 
@@ -333,6 +341,18 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                         oLightValueClient = mLightValue;
                         issueTextureUpdate();
                     }
+
+                    // int currTime = MinecraftServer.getServer()
+                    // .getTickCounter();
+
+                    // if (lastTimeUpdated < currTime) {
+                    // mNeedsUpdate = true;
+                    // if (mActive == lastActive) mActive = !mActive;
+                    // lastActive = mActive;
+                    // }
+
+                    // lastTimeUpdated = currTime;
+
                     // if (mNeedsUpdate) {
                     // GT_Log.out.println(
                     // String.format(
@@ -342,10 +362,18 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                     // MinecraftServer.getServer()
                     // .getTickCounter()));
                     // }
-                    if (mNeedsUpdate && updateTextureCooldown.hasPassed()) {
-                        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+
+                    // if (mNeedsUpdate && updateTextureCooldown.hasPassed()) {
+                    // blockUpdateHandler.triggerBlockUpdate(worldObj, getLocation());
+                    // // worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                    // // worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
+                    // mNeedsUpdate = false;
+                    // updateTextureCooldown.set();
+                    // }
+
+                    if (mNeedsUpdate) {
+                        blockUpdateHandler.triggerBlockUpdate(worldObj, getLocation());
                         mNeedsUpdate = false;
-                        updateTextureCooldown.set();
                     }
                 }
                 if (aSideServer && mTickTimer > 10) {
@@ -1252,6 +1280,16 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
 
     @Override
     public ITexture[] getTexture(Block aBlock, ForgeDirection side) {
+        // int currTime = MinecraftServer.getServer()
+        //     .getTickCounter();
+        // Chunk chunk = worldObj.getChunkFromBlockCoords(xCoord, zCoord);
+        // ChunkCoordIntPair chunkCoords = chunk.getChunkCoordIntPair();
+        // GT_Log.out.println(
+        //     String.format(
+        //         "get texture for chunk [x = %d, z = %d] on time = %d",
+        //         chunkCoords.chunkXPos,
+        //         chunkCoords.chunkZPos,
+        //         currTime));
         final ITexture coverTexture = getCoverTexture(side);
         final ITexture[] textureUncovered = hasValidMetaTileEntity()
             ? mMetaTileEntity
