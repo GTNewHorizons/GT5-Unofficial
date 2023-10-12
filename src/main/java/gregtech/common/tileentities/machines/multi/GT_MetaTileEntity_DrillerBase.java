@@ -845,9 +845,10 @@ public abstract class GT_MetaTileEntity_DrillerBase
                 .setBackground(() -> {
                     if (mChunkLoadingEnabled) {
                         return new IDrawable[] { GT_UITextures.BUTTON_STANDARD_PRESSED,
-                            GT_UITextures.OVERLAY_CHUNK_LOADING };
+                            GT_UITextures.OVERLAY_BUTTON_CHUNK_LOADING };
                     }
-                    return new IDrawable[] { GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_CHUNK_LOADING_OFF };
+                    return new IDrawable[] { GT_UITextures.BUTTON_STANDARD,
+                        GT_UITextures.OVERLAY_BUTTON_CHUNK_LOADING_OFF };
                 })
                 .attachSyncer(
                     new FakeSyncWidget.BooleanSyncer(
@@ -869,9 +870,10 @@ public abstract class GT_MetaTileEntity_DrillerBase
                     .setBackground(() -> {
                         if (workState == STATE_ABORT) {
                             return new IDrawable[] { GT_UITextures.BUTTON_STANDARD_PRESSED,
-                                GT_UITextures.OVERLAY_RETRACT_PIPE, GT_UITextures.OVERLAY_BUTTON_LOCKED };
+                                GT_UITextures.OVERLAY_BUTTON_RETRACT_PIPE, GT_UITextures.OVERLAY_BUTTON_LOCKED };
                         }
-                        return new IDrawable[] { GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_RETRACT_PIPE };
+                        return new IDrawable[] { GT_UITextures.BUTTON_STANDARD,
+                            GT_UITextures.OVERLAY_BUTTON_RETRACT_PIPE };
                     })
                     .attachSyncer(
                         new FakeSyncWidget.IntegerSyncer(() -> workState, (newInt) -> workState = newInt),
