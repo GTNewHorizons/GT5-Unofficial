@@ -517,7 +517,7 @@ public class RecipeMaps {
     public static final RecipeMap<RecipeMapBackend> fusionRecipes = RecipeMapBuilder.of("gt.recipe.fusionreactor")
         .maxIO(0, 0, 2, 1)
         .minInputs(0, 2)
-        .useComparatorForNEI()
+        .useCustomFilterForNEI()
         .disableOptimize()
         .neiSpecialInfoFormatter(FusionSpecialValueFormatter.INSTANCE)
         .frontend(FluidOnlyFrontend::new)

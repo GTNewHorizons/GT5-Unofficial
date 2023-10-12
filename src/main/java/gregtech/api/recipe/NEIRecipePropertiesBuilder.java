@@ -26,7 +26,7 @@ public class NEIRecipePropertiesBuilder {
     private INEISpecialInfoFormatter neiSpecialInfoFormatter = DefaultSpecialValueFormatter.INSTANCE;
 
     private boolean unificateOutput = true;
-    private boolean useComparator;
+    private boolean useCustomFilter;
     private boolean renderRealStackSizes = true;
 
     NEIRecipePropertiesBuilder() {}
@@ -39,7 +39,7 @@ public class NEIRecipePropertiesBuilder {
             showVoltageAmperage,
             neiSpecialInfoFormatter,
             unificateOutput,
-            useComparator,
+            useCustomFilter,
             renderRealStackSizes);
     }
 
@@ -68,13 +68,13 @@ public class NEIRecipePropertiesBuilder {
         return this;
     }
 
-    public NEIRecipePropertiesBuilder unificateOutputNEI(boolean unificateOutputNEI) {
-        this.unificateOutput = unificateOutputNEI;
+    public NEIRecipePropertiesBuilder unificateOutput(boolean unificateOutput) {
+        this.unificateOutput = unificateOutput;
         return this;
     }
 
-    public NEIRecipePropertiesBuilder useComparatorForNEI() {
-        this.useComparator = true;
+    public NEIRecipePropertiesBuilder useCustomFilter() {
+        this.useCustomFilter = true;
         return this;
     }
 

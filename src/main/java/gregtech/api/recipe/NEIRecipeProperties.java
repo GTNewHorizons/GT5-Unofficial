@@ -54,10 +54,10 @@ public class NEIRecipeProperties {
      */
     public final boolean unificateOutput;
     /**
-     * If a comparator should be used to search the recipe (which is defined in {@link Power}).
-     * Else only the voltage will be used to find recipes.
+     * If a custom filter method {@link Power#canHandle} should be used to limit the shown recipes when searching
+     * recipes with recipe catalyst. Else, the voltage of the recipe is the only factor to filter recipes.
      */
-    public final boolean useComparator;
+    public final boolean useCustomFilter;
     /**
      * Whether to render the actual stack size of items or not.
      */
@@ -65,14 +65,14 @@ public class NEIRecipeProperties {
 
     NEIRecipeProperties(boolean registerNEI, Size recipeBackgroundSize, Pos2d recipeBackgroundOffset,
         boolean showVoltageAmperage, INEISpecialInfoFormatter neiSpecialInfoFormatter, boolean unificateOutput,
-        boolean useComparator, boolean renderRealStackSizes) {
+        boolean useCustomFilter, boolean renderRealStackSizes) {
         this.registerNEI = registerNEI;
         this.recipeBackgroundOffset = recipeBackgroundOffset;
         this.recipeBackgroundSize = recipeBackgroundSize;
         this.showVoltageAmperage = showVoltageAmperage;
         this.neiSpecialInfoFormatter = neiSpecialInfoFormatter;
         this.unificateOutput = unificateOutput;
-        this.useComparator = useComparator;
+        this.useCustomFilter = useCustomFilter;
         this.renderRealStackSizes = renderRealStackSizes;
     }
 }

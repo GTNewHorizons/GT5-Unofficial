@@ -17,7 +17,7 @@ import gregtech.nei.NEIRecipeInfo;
 public class FusionSpecialValueFormatter implements INEISpecialInfoFormatter {
 
     public static final FusionSpecialValueFormatter INSTANCE = new FusionSpecialValueFormatter();
-    private static final int M = 1000000;
+    private static final long M = 1000000;
 
     @Override
     public List<String> format(NEIRecipeInfo recipeInfo) {
@@ -29,7 +29,7 @@ public class FusionSpecialValueFormatter implements INEISpecialInfoFormatter {
             StatCollector.translateToLocalFormatted("GT5U.nei.start_eu", GT_Utility.formatNumbers(euToStart), tier));
     }
 
-    public static int getFusionTier(int startupPower, long voltage) {
+    public static int getFusionTier(long startupPower, long voltage) {
         int tier;
         if (startupPower <= 10 * M * 16) {
             tier = 1;
@@ -37,8 +37,10 @@ public class FusionSpecialValueFormatter implements INEISpecialInfoFormatter {
             tier = 2;
         } else if (startupPower <= 40 * M * 16) {
             tier = 3;
-        } else {
+        } else if (startupPower <= 320 * M * 16) {
             tier = 4;
+        } else {
+            tier = 5;
         }
 
         if (voltage <= GT_Values.V[6]) {

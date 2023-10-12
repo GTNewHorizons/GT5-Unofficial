@@ -16,11 +16,6 @@ public class EUPower extends Power {
         this.amperage = amperage;
     }
 
-    public EUPower(byte tier, int amperage, int specialValue) {
-        super(tier, specialValue);
-        this.amperage = amperage;
-    }
-
     @Override
     // This generic EU Power class has no overclock defined and does no special calculations.
     public void computePowerUsageAndDuration(int euPerTick, int duration) {

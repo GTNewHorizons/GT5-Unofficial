@@ -160,10 +160,10 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
         if (outputId.equals(getOverlayIdentifier())) {
             if (results.length > 0 && results[0] instanceof Power) {
                 power = (Power) results[0];
-                if (neiProperties.useComparator) {
-                    loadTieredCraftingRecipesWithPower(power);
+                if (neiProperties.useCustomFilter) {
+                    loadTieredRecipesWithCustomFilter(power);
                 } else {
-                    loadTieredCraftingRecipesUpTo(power.getTier());
+                    loadTieredRecipesUpTo(power.getTier());
                 }
             } else {
                 arecipes.addAll(getCache());
@@ -211,23 +211,21 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
         }
     }
 
-    private void loadTieredCraftingRecipesWithPower(Power power) {
-        arecipes.addAll(getTieredRecipes(power));
+    private void loadTieredRecipesWithCustomFilter(Power power) {
+        arecipes.addAll(getTieredRecipesWithCustomFilter(power));
     }
 
-    private List<CachedDefaultRecipe> getTieredRecipes(Power power) {
+    private List<CachedDefaultRecipe> getTieredRecipesWithCustomFilter(Power power) {
         List<CachedDefaultRecipe> recipes = getCache();
         if (!recipes.isEmpty()) {
             recipes = recipes.stream()
-                .filter(
-                    recipe -> power.compareTo(GT_Utility.getTier(recipe.mRecipe.mEUt), recipe.mRecipe.mSpecialValue)
-                        >= 0)
+                .filter(recipe -> power.canHandle(recipe.mRecipe))
                 .collect(Collectors.toList());
         }
         return recipes;
     }
 
-    private void loadTieredCraftingRecipesUpTo(byte upperTier) {
+    private void loadTieredRecipesUpTo(byte upperTier) {
         arecipes.addAll(getTieredRecipes(upperTier));
     }
 

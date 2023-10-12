@@ -435,15 +435,21 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
      * Sets whether to show oredict equivalent item outputs on NEI.
      */
     public RecipeMapBuilder<B> unificateOutputNEI(boolean unificateOutputNEI) {
-        neiPropertiesBuilder.unificateOutputNEI(unificateOutputNEI);
+        neiPropertiesBuilder.unificateOutput(unificateOutputNEI);
         return this;
     }
 
     /**
-     * Sets NEI handler to use a comparator to search the recipe on NEI (which is defined in {@link Power}).
+     * Sets NEI recipe handler to use a custom filter method {@link Power#canHandle} to limit the shown recipes when
+     * searching recipes with recipe catalyst. Without calling this method, the voltage of the recipe is the only factor
+     * to filter recipes by default.
+     * <p>
+     * This method on its own doesn't do anything. You need to bind custom {@link Power} object to
+     * {@link gregtech.api.interfaces.metatileentity.IMetaTileEntity#getPower()} for machines that will be shown up as
+     * recipe catalysts for this recipemap.
      */
-    public RecipeMapBuilder<B> useComparatorForNEI() {
-        neiPropertiesBuilder.useComparatorForNEI();
+    public RecipeMapBuilder<B> useCustomFilterForNEI() {
+        neiPropertiesBuilder.useCustomFilter();
         return this;
     }
 

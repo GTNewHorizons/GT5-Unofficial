@@ -5,12 +5,17 @@ import static gregtech.api.enums.GT_Values.V;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
 import gregtech.nei.formatter.FusionSpecialValueFormatter;
 
 public class FusionPower extends BasicMachineEUPower {
 
-    public FusionPower(byte tier, int startupPower) {
-        super(tier, 1, startupPower);
+    protected final long capableStartup;
+
+    public FusionPower(byte tier, long capableStartup) {
+        super(tier, 1);
+        this.capableStartup = capableStartup;
     }
 
     @Override
@@ -20,7 +25,7 @@ public class FusionPower extends BasicMachineEUPower {
         recipeDuration = duration;
         // It's safe to assume fusion is above ULV. We put this as safety check here anyway
         if (tier > 0) {
-            int maxPossibleOverclocks = FusionSpecialValueFormatter.getFusionTier(this.specialValue, V[tier - 1])
+            int maxPossibleOverclocks = FusionSpecialValueFormatter.getFusionTier(this.capableStartup, V[tier - 1])
                 - FusionSpecialValueFormatter.getFusionTier(specialValue, euPerTick);
             // Isn't too low EUt check?
             long tempEUt = Math.max(euPerTick, V[1]);
@@ -48,5 +53,14 @@ public class FusionPower extends BasicMachineEUPower {
         return GT_Values.TIER_COLORS[tier] + "MK "
             + (tier - 5) // Mk1 <-> LuV
             + EnumChatFormatting.RESET;
+    }
+
+    @Override
+    public boolean canHandle(GT_Recipe recipe) {
+        byte tier = GT_Utility.getTier(recipe.mEUt);
+        if (this.tier < tier) {
+            return false;
+        }
+        return this.capableStartup >= recipe.mSpecialValue;
     }
 }

@@ -3,6 +3,7 @@ package gregtech.common.power;
 import static gregtech.api.util.GT_Utility.trans;
 
 import gregtech.api.recipe.RecipeMapFrontend;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.nei.NEIRecipeInfo;
 
@@ -20,15 +21,9 @@ public abstract class Power {
     protected final byte tier;
     protected int recipeEuPerTick;
     protected int recipeDuration;
-    protected final int specialValue;
 
     public Power(byte tier) {
-        this(tier, 0);
-    }
-
-    public Power(byte tier, int specialValue) {
         this.tier = tier;
-        this.specialValue = specialValue;
     }
 
     /**
@@ -97,10 +92,17 @@ public abstract class Power {
      */
     protected abstract String getTotalPowerString();
 
-    public int compareTo(byte tier, int specialValue) {
-        if (this.tier < tier) {
-            return this.tier - tier;
-        }
-        return this.specialValue - specialValue;
+    /**
+     * Used to limit the shown recipes when searching recipes with NEI recipe catalyst. Unless overridden, this method
+     * doesn't do anything special (except for a bit worse performance).
+     * <p>
+     * In order to make use of this method, {@link gregtech.api.recipe.RecipeMapBuilder#useCustomFilterForNEI}
+     * should be enabled for the recipemap.
+     *
+     * @return If this power can handle the supplied recipe
+     */
+    public boolean canHandle(GT_Recipe recipe) {
+        byte tier = GT_Utility.getTier(recipe.mEUt);
+        return this.tier >= tier;
     }
 }
