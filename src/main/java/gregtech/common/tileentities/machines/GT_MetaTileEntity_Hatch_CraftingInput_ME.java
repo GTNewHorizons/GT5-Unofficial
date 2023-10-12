@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
-import appeng.api.util.IIfaceTermViewable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
@@ -65,6 +64,7 @@ import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.util.AECableType;
 import appeng.api.util.DimensionalCoord;
+import appeng.api.util.IIfaceTermViewable;
 import appeng.core.AppEng;
 import appeng.core.sync.GuiBridge;
 import appeng.helpers.ICustomNameObject;
