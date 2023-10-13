@@ -523,7 +523,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                         return !autoPullItemList && super.isEnabled();
                     }
                 })
-                .widgetCreator(slot -> new SlotWidget(slot) {
+                .widgetCreator(slot -> (SlotWidget) new SlotWidget(slot) {
 
                     @Override
                     protected void phantomClick(ClickData clickData, ItemStack cursorStack) {
@@ -570,7 +570,15 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                         }
                         return false;
                     }
+                }.dynamicTooltip(() -> {
+                    if (autoPullItemList) {
+                        return Collections.singletonList(
+                            StatCollector.translateToLocal("GT5U.machines.stocking_bus.cannot_set_slot"));
+                    } else {
+                        return Collections.emptyList();
+                    }
                 })
+                    .setUpdateTooltipEveryTick(true))
                 .build()
                 .setPos(7, 9))
             .widget(
