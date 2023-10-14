@@ -113,6 +113,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                 "Auto-Pull from ME mode will automatically stock the first 16 fluid in the ME system, updated every 5 seconds.",
                 "Toggle by right-clicking with screwdriver, or use the GUI.",
                 "Use the GUI to limit the minimum stack size for Auto-Pulling.",
+                "Change ME connection behavior by right-clicking with wire cutter.",
                 "Configuration data can be copy+pasted using a data stick." });
     }
 
@@ -367,70 +368,23 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
     }
 
     @Override
-    public int fill(FluidStack aFluid, boolean doFill) {
-        return 0;
+    public boolean canTankBeEmptied() {
+        return false;
     }
 
     @Override
-    public FluidStack drain(int maxDrain, boolean doDrain) {
-        AENetworkProxy proxy = getProxy();
-        if (proxy == null || !proxy.isActive()) {
-            return null;
-        }
-        for (int i = 0; i < SLOT_COUNT; i++) {
-            FluidStack fluidStack = storedFluid[i];
-            if (fluidStack == null) {
-                continue;
-            }
-            try {
-                IMEMonitor<IAEFluidStack> sg = proxy.getStorage()
-                    .getFluidInventory();
-                IAEFluidStack request = AEFluidStack.create(fluidStack);
-                IAEFluidStack result = sg
-                    .extractItems(request, doDrain ? Actionable.MODULATE : Actionable.SIMULATE, getRequestSource());
-                FluidStack s = (result != null) ? result.getFluidStack() : null;
-                if (s == null) {
-                    continue;
-                }
-                return s;
-            } catch (GridAccessException e) {}
-        }
-        return null;
+    public boolean canTankBeFilled() {
+        return false;
     }
 
     @Override
-    public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-        return 0;
+    public boolean doesEmptyContainers() {
+        return false;
     }
 
     @Override
-    public FluidStack drain(ForgeDirection from, FluidStack aFluid, boolean doDrain) {
-        AENetworkProxy proxy = getProxy();
-        if (proxy == null || !proxy.isActive()) {
-            return null;
-        }
-        for (int i = 0; i < SLOT_COUNT; i++) {
-            FluidStack fluidStack = storedFluid[i];
-            if (fluidStack == null) {
-                continue;
-            }
-            if (!GT_Utility.areFluidsEqual(aFluid, fluidStack)) {
-                continue;
-            }
-            try {
-                IMEMonitor<IAEFluidStack> sg = proxy.getStorage()
-                    .getFluidInventory();
-                IAEFluidStack request = AEFluidStack.create(fluidStack);
-                IAEFluidStack result = sg
-                    .extractItems(request, doDrain ? Actionable.MODULATE : Actionable.SIMULATE, getRequestSource());
-                FluidStack s = (result != null) ? result.getFluidStack() : null;
-                if (s == null) {
-                    continue;
-                }
-                return s;
-            } catch (GridAccessException e) {}
-        }
-        return null;
+    public boolean isValidSlot(int aIndex) {
+        return false;
     }
 
     @Override
@@ -619,7 +573,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
 
                 @Override
                 public void buildTooltip(List<Text> tooltip) {
-                    FluidStack fluid = fluidTanks[slotIndex].getFluid();
+                    FluidStack fluid = getContent();
                     if (fluid != null) {
                         addFluidNameInfo(tooltip, fluid);
 
@@ -659,7 +613,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
 
                 @Override
                 public void buildTooltip(List<Text> tooltip) {
-                    FluidStack fluid = fluidTanks[slotIndex].getFluid();
+                    FluidStack fluid = getContent();
                     if (fluid != null) {
                         addFluidNameInfo(tooltip, fluid);
                         addAdditionalFluidInfo(tooltip, fluid);
