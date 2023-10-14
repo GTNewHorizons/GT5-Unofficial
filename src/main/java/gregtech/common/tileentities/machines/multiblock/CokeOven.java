@@ -103,7 +103,7 @@ public class CokeOven extends Controller<CokeOven, CokeOvenProcessingLogic> {
     }
 
     @Override
-    protected boolean hasFluidInput() {
+    public boolean hasFluidInput() {
         return false;
     }
 

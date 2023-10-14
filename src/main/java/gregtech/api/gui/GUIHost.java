@@ -9,6 +9,8 @@ import com.gtnewhorizons.modularui.api.screen.ITileWithModularUI;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
+import net.minecraft.item.ItemStack;
+
 public interface GUIHost extends ITileWithModularUI {
 
     @Nonnull
@@ -27,10 +29,29 @@ public interface GUIHost extends ITileWithModularUI {
     }
 
     default int getHeight() {
-        return 100;
+        return 192;
     }
 
     @Nonnull
     GUIProvider<?> getGUI(@Nonnull UIBuildContext uiContext);
 
+    ItemStack getAsItem();
+
+    String getMachineName();
+
+    default boolean hasItemInput() {
+        return true;
+    }
+
+    default boolean hasItemOutput() {
+        return true;
+    }
+
+    default boolean hasFluidInput() {
+        return true;
+    }
+
+    default boolean hasFluidOutput() {
+        return true;
+    }
 }

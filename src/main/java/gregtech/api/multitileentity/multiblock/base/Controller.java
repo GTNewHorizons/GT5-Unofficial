@@ -89,7 +89,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  */
 public abstract class Controller<C extends Controller<C, P>, P extends MuTEProcessingLogic<P>>
     extends MultiTileBasicMachine<P> implements IAlignment, IMultiBlockController, IDescribable,
-    IMTE_AddToolTips, ISurvivalConstructable, ControllerWithOptionalFeatures {
+    IMTE_AddToolTips, ISurvivalConstructable {
 
     public static final String ALL_INVENTORIES_NAME = "all";
     protected static final int AUTO_OUTPUT_FREQUENCY_TICK = 20;
@@ -916,171 +916,6 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
     }
 
     @Override
-    public int getGUIHeight() {
-        return 192;
-    }
-
-    protected Widget getGregTechLogo() {
-        return new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
-            .setSize(17, 17);
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        if (isServerSide()) {
-            for (UpgradeCasing tPart : upgradeCasings) {
-                if (!(tPart instanceof Inventory)) continue;
-                tPart.issueClientUpdate();
-            }
-        }
-        int page = 0;
-        TabContainer tabs = new TabContainer().setButtonSize(20, 24);
-        tabs.addTabButton(
-            new TabButton(page++)
-                .setBackground(
-                    false,
-                    ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f),
-                    new ItemDrawable(getStackForm(1)).withFixedSize(16, 16)
-                        .withOffset(2, 4))
-                .setBackground(
-                    true,
-                    ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f),
-                    new ItemDrawable(getStackForm(1)).withFixedSize(16, 16)
-                        .withOffset(2, 4))
-                .addTooltip(getLocalName())
-                .setPos(20 * (page - 1), -20))
-            .addPage(createMainPage(builder).setSize(getGUIWidth(), getGUIHeight()));
-        if (hasItemInput()) {
-            tabs.addTabButton(
-                new TabButton(page++)
-                    .setBackground(
-                        false,
-                        ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0, 1f, 0.5f),
-                        GT_UITextures.PICTURE_ITEM_IN.withFixedSize(16, 16)
-                            .withOffset(2, 4))
-                    .setBackground(
-                        true,
-                        ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0.5f, 1f, 1f),
-                        GT_UITextures.PICTURE_ITEM_IN.withFixedSize(16, 16)
-                            .withOffset(2, 4))
-                    .addTooltip("Item Input Inventory")
-                    .setPos(20 * (page - 1), -20))
-                .addPage(
-                    new MultiChildWidget().addChild(
-                        controllerItemInput.getAllInventoryLogics()
-                            .getGuiPart()
-                            .setSize(18 * 4 + 4, 18 * 5)
-                            .setPos(52, 7))
-                        .addChild(getGregTechLogo().setPos(147, 86))
-                        .setSize(getGUIWidth(), getGUIHeight()));
-        }
-
-        if (hasItemOutput()) {
-            tabs.addTabButton(
-                new TabButton(page++)
-                    .setBackground(
-                        false,
-                        ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0, 1f, 0.5f),
-                        GT_UITextures.PICTURE_ITEM_OUT.withFixedSize(16, 16)
-                            .withOffset(2, 4))
-                    .setBackground(
-                        true,
-                        ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0.5f, 1f, 1f),
-                        GT_UITextures.PICTURE_ITEM_OUT.withFixedSize(16, 16)
-                            .withOffset(2, 4))
-                    .addTooltip("Item Output Inventory")
-                    .setPos(20 * (page - 1), -20))
-                .addPage(
-                    new MultiChildWidget().addChild(
-                        controllerItemOutput.getAllInventoryLogics()
-                            .getGuiPart()
-                            .setSize(18 * 4 + 4, 18 * 5)
-                            .setPos(52, 7))
-                        .addChild(getGregTechLogo().setPos(147, 86))
-                        .setSize(getGUIWidth(), getGUIHeight()));
-        }
-
-        if (hasFluidInput()) {
-            tabs.addTabButton(
-                new TabButton(page++)
-                    .setBackground(
-                        false,
-                        ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0, 1f, 0.5f),
-                        GT_UITextures.PICTURE_FLUID_IN.withFixedSize(16, 16)
-                            .withOffset(2, 4))
-                    .setBackground(
-                        true,
-                        ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0.5f, 1f, 1f),
-                        GT_UITextures.PICTURE_FLUID_IN.withFixedSize(16, 16)
-                            .withOffset(2, 4))
-                    .addTooltip("Fluid Input Tanks")
-                    .setPos(20 * (page - 1), -20))
-                .addPage(
-                    new MultiChildWidget().addChild(
-                        controllerFluidInput.getAllInventoryLogics()
-                            .getGuiPart()
-                            .setSize(18 * 4 + 4, 18 * 5)
-                            .setPos(52, 7))
-                        .addChild(getGregTechLogo().setPos(147, 86))
-                        .setSize(getGUIWidth(), getGUIHeight()));
-        }
-
-        if (hasFluidOutput()) {
-            tabs.addTabButton(
-                new TabButton(page++)
-                    .setBackground(
-                        false,
-                        ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0, 1f, 0.5f),
-                        GT_UITextures.PICTURE_FLUID_OUT.withFixedSize(16, 16)
-                            .withOffset(2, 4))
-                    .setBackground(
-                        true,
-                        ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0.5f, 1f, 1f),
-                        GT_UITextures.PICTURE_FLUID_OUT.withFixedSize(16, 16)
-                            .withOffset(2, 4))
-                    .addTooltip("Fluid Output Tanks")
-                    .setPos(20 * (page - 1), -20))
-                .addPage(
-                    new MultiChildWidget().addChild(
-                        controllerFluidOutput.getAllInventoryLogics()
-                            .getGuiPart()
-                            .setSize(18 * 4 + 4, 18 * 5)
-                            .setPos(52, 7))
-                        .addChild(getGregTechLogo().setPos(147, 86))
-                        .setSize(getGUIWidth(), getGUIHeight()));
-        }
-        builder.widget(tabs);
-    }
-
-    protected MultiChildWidget createMainPage(IWidgetBuilder<?> builder) {
-        MultiChildWidget page = new MultiChildWidget();
-        page.addChild(
-            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
-                .setPos(7, 4)
-                .setSize(160, 75))
-            .addChild(createButtons(builder));
-        return page;
-    }
-
-    protected MultiChildWidget createButtons(IWidgetBuilder<?> builder) {
-        MultiChildWidget buttons = new MultiChildWidget();
-        buttons.setSize(16, 167)
-            .setPos(7, 86);
-        buttons.addChild(createPowerSwitchButton(builder))
-            .addChild(createVoidExcessButton(builder))
-            .addChild(createInputSeparationButton(builder))
-            .addChild(createBatchModeButton(builder))
-            .addChild(createLockToSingleRecipeButton(builder));
-
-        return buttons;
-    }
-
-    @Override
-    public Pos2d getPowerSwitchButtonPos() {
-        return new Pos2d(144, 0);
-    }
-
-    @Override
     public boolean supportsVoidProtection() {
         return true;
     }
@@ -1106,28 +941,18 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
     }
 
     @Override
-    public Pos2d getVoidingModeButtonPos() {
-        return new Pos2d(54, 0);
-    }
-
-    @Override
     public boolean supportsInputSeparation() {
         return true;
     }
 
     @Override
-    public boolean isInputSeparationEnabled() {
+    public boolean isInputSeparated() {
         return separateInputs;
     }
 
     @Override
-    public void setInputSeparation(boolean enabled) {
+    public void setInputSeparation(Boolean enabled) {
         this.separateInputs = enabled;
-    }
-
-    @Override
-    public Pos2d getInputSeparationButtonPos() {
-        return new Pos2d(36, 0);
     }
 
     @Override
@@ -1141,13 +966,8 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
     }
 
     @Override
-    public void setBatchMode(boolean mode) {
+    public void setBatchMode(Boolean mode) {
         this.batchMode = mode;
-    }
-
-    @Override
-    public Pos2d getBatchModeButtonPos() {
-        return new Pos2d(18, 0);
     }
 
     @Override
@@ -1161,18 +981,8 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
     }
 
     @Override
-    public void setRecipeLocking(boolean enabled) {
+    public void setRecipeLocking(Boolean enabled) {
         this.recipeLock = enabled;
-    }
-
-    @Override
-    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return null;
-    }
-
-    @Override
-    public Pos2d getRecipeLockingButtonPos() {
-        return new Pos2d(0, 0);
     }
 
     @Override

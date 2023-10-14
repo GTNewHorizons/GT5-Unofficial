@@ -233,9 +233,8 @@ public class LaserEngraver extends ComplexParallelController<LaserEngraver, Lase
         return STRUCTURE_DEFINITION;
     }
 
-    @Override
     protected MultiChildWidget createMainPage(IWidgetBuilder<?> builder) {
-        MultiChildWidget child = super.createMainPage(builder);
+        MultiChildWidget child = new MultiChildWidget();
         for (int i = 0; i < MAX_PROCESSES; i++) {
             final int processIndex = i;
             child.addChild(

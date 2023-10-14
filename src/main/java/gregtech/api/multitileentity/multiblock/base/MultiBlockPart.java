@@ -23,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
@@ -41,6 +42,7 @@ import gregtech.api.logic.FluidInventoryLogic;
 import gregtech.api.logic.ItemInventoryLogic;
 import gregtech.api.logic.PowerLogic;
 import gregtech.api.logic.interfaces.PowerLogicHost;
+import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.base.NonTickableMultiTileEntity;
 import gregtech.api.multitileentity.enums.MultiTileCasingPurpose;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
@@ -700,6 +702,16 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         if (uiContext.getPlayer().isSneaking()) return guiProvider;
         GUIProvider<?> controllerGUI = controller.getGUI(uiContext);
         return controllerGUI;
+    }
+
+    @Override
+    public ItemStack getAsItem() {
+        return MultiTileEntityRegistry.getRegistry(getMultiTileEntityRegistryID()).getItem(getMultiTileEntityID());
+    }
+
+    @Override
+    public String getMachineName() {
+        return StatCollector.translateToLocal(getAsItem().getUnlocalizedName());
     }
 
     

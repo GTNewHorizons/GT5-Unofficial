@@ -656,19 +656,19 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>>
         setActive((booleans & ACTIVE) == ACTIVE);
     }
 
-    protected boolean hasItemInput() {
+    public boolean hasItemInput() {
         return true;
     }
 
-    protected boolean hasItemOutput() {
+    public boolean hasItemOutput() {
         return true;
     }
 
-    protected boolean hasFluidInput() {
+    public boolean hasFluidInput() {
         return true;
     }
 
-    protected boolean hasFluidOutput() {
+    public boolean hasFluidOutput() {
         return true;
     }
 
@@ -789,4 +789,16 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>>
     public GUIProvider<?> getGUI(@Nonnull UIBuildContext uiContext) {
         return guiProvider;
     }
+
+    @Override
+    public ItemStack getAsItem() {
+        return MultiTileEntityRegistry.getRegistry(getMultiTileEntityRegistryID()).getItem(getMultiTileEntityID());
+    }
+
+    @Override
+    public String getMachineName() {
+        return StatCollector.translateToLocal(getAsItem().getUnlocalizedName());
+    }
+
+    
 }
