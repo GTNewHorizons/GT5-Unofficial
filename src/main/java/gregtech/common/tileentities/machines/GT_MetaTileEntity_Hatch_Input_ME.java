@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javax.annotation.Nullable;
 
@@ -38,6 +40,7 @@ import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
@@ -56,7 +59,6 @@ import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
 import appeng.util.item.AEFluidStack;
-import cpw.mods.fml.relauncher.ReflectionHelper;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
@@ -78,12 +80,11 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
     implements IPowerChannelState, IAddGregtechLogo, IAddUIWidgets, IRecipeProcessingAwareHatch {
 
     private static final int SLOT_COUNT = 16;
-    private static final int ALL_SLOT_COUNT = SLOT_COUNT * 2;
 
-    protected final FluidStack[] storedFluid = new FluidStack[ALL_SLOT_COUNT];
-    protected final FluidStackTank[] fluidTanks = new FluidStackTank[ALL_SLOT_COUNT];
-    protected final FluidStack[] shadowStoredFluid = new FluidStack[SLOT_COUNT];
+    protected final FluidStack[] storedFluids = new FluidStack[SLOT_COUNT];
+    protected final FluidStack[] storedInformationFluids = new FluidStack[SLOT_COUNT];
 
+    protected final FluidStack[] shadowStoredFluids = new FluidStack[SLOT_COUNT];
     private final int[] savedStackSizes = new int[SLOT_COUNT];
 
     private boolean additionalConnection = false;
@@ -113,20 +114,12 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                 "Auto-Pull from ME mode will automatically stock the first 16 fluid in the ME system, updated every 5 seconds.",
                 "Toggle by right-clicking with screwdriver, or use the GUI.",
                 "Use the GUI to limit the minimum stack size for Auto-Pulling.",
+                "Change ME connection behavior by right-clicking with wire cutter.",
                 "Configuration data can be copy+pasted using a data stick." });
     }
 
     public GT_MetaTileEntity_Hatch_Input_ME(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, ALL_SLOT_COUNT, aTier, aDescription, aTextures);
-        for (int i = 0; i < ALL_SLOT_COUNT; i++) {
-            final int index = i;
-            fluidTanks[i] = new FluidStackTank(() -> storedFluid[index], fluid -> {
-                if (getBaseMetaTileEntity().isServerSide()) {
-                    return;
-                }
-                storedFluid[index] = fluid;
-            }, i >= SLOT_COUNT ? Integer.MAX_VALUE : 1);
-        }
+        super(aName, 0, aTier, aDescription, aTextures);
     }
 
     @Override
@@ -169,13 +162,13 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                 IAEFluidStack currItem = iterator.next();
                 if (currItem.getStackSize() >= minAutoPullAmount) {
                     FluidStack fluidStack = GT_Utility.copyAmount(1, currItem.getFluidStack());
-                    storedFluid[index] = fluidStack;
+                    storedFluids[index] = fluidStack;
                     index++;
                 }
             }
 
             for (int i = index; i < SLOT_COUNT; i++) {
-                storedFluid[i] = null;
+                storedFluids[i] = null;
             }
         } catch (final GridAccessException ignored) {}
     }
@@ -198,20 +191,20 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
         updateAllInformationSlots();
 
         for (int i = 0; i < SLOT_COUNT; i++) {
-            if (storedFluid[i] == null) {
-                shadowStoredFluid[i] = null;
+            if (storedFluids[i] == null) {
+                shadowStoredFluids[i] = null;
                 continue;
             }
 
-            FluidStack fluidStackWithAmount = storedFluid[i + SLOT_COUNT];
+            FluidStack fluidStackWithAmount = storedInformationFluids[i];
             // Nothing in stock, no need to save anything
             if (fluidStackWithAmount == null) continue;
 
-            shadowStoredFluid[i] = fluidStackWithAmount;
+            shadowStoredFluids[i] = fluidStackWithAmount;
             savedStackSizes[i] = fluidStackWithAmount.amount;
         }
 
-        return shadowStoredFluid;
+        return shadowStoredFluids;
     }
 
     @Override
@@ -229,14 +222,14 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                 .getFluidInventory();
 
             for (int i = 0; i < SLOT_COUNT; ++i) {
-                FluidStack oldStack = shadowStoredFluid[i];
+                FluidStack oldStack = shadowStoredFluids[i];
                 int oldAmount = savedStackSizes[i];
                 if (oldStack == null || oldAmount == 0) continue;
 
                 int toExtract = oldAmount - oldStack.amount;
                 if (toExtract <= 0) continue;
 
-                IAEFluidStack request = AEFluidStack.create(storedFluid[i]);
+                IAEFluidStack request = AEFluidStack.create(storedFluids[i]);
                 request.setStackSize(toExtract);
                 IAEFluidStack extractionResult = sg.extractItems(request, Actionable.MODULATE, getRequestSource());
                 proxy.getEnergy()
@@ -253,7 +246,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
         }
 
         for (int i = 0; i < SLOT_COUNT; i++) {
-            shadowStoredFluid[i] = null;
+            shadowStoredFluids[i] = null;
             savedStackSizes[i] = 0;
         }
 
@@ -322,9 +315,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
     private void setAutoPullFluidList(boolean pullFluidList) {
         autoPullFluidList = pullFluidList;
         if (!autoPullFluidList) {
-            for (int i = 0; i < SLOT_COUNT; i++) {
-                storedFluid[i] = null;
-            }
+            Arrays.fill(storedFluids, null);
         } else {
             refreshFluidList();
         }
@@ -333,31 +324,35 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
 
     private void updateAllInformationSlots() {
         for (int index = 0; index < SLOT_COUNT; index++) {
-            updateInformationSlot(index, storedFluid[index]);
+            updateInformationSlot(index);
         }
     }
 
-    public void updateInformationSlot(int aIndex, FluidStack fluidStack) {
-        if (aIndex < 0 || aIndex >= SLOT_COUNT) {
+    public void updateInformationSlot(int index) {
+        if (index < 0 || index >= SLOT_COUNT) {
             return;
         }
+
+        FluidStack fluidStack = storedFluids[index];
         if (fluidStack == null) {
-            storedFluid[aIndex + SLOT_COUNT] = null;
+            storedInformationFluids[index] = null;
             return;
         }
+
         AENetworkProxy proxy = getProxy();
         if (proxy == null || !proxy.isActive()) {
-            storedFluid[aIndex + SLOT_COUNT] = null;
+            storedInformationFluids[index] = null;
             return;
         }
+
         try {
             IMEMonitor<IAEFluidStack> sg = proxy.getStorage()
                 .getFluidInventory();
             IAEFluidStack request = AEFluidStack.create(fluidStack);
             request.setStackSize(Integer.MAX_VALUE);
             IAEFluidStack result = sg.extractItems(request, Actionable.SIMULATE, getRequestSource());
-            FluidStack s = (result != null) ? result.getFluidStack() : null;
-            storedFluid[aIndex + SLOT_COUNT] = s;
+            FluidStack resultFluid = (result != null) ? result.getFluidStack() : null;
+            storedInformationFluids[index] = resultFluid;
         } catch (final GridAccessException ignored) {}
     }
 
@@ -367,70 +362,23 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
     }
 
     @Override
-    public int fill(FluidStack aFluid, boolean doFill) {
-        return 0;
+    public boolean canTankBeEmptied() {
+        return false;
     }
 
     @Override
-    public FluidStack drain(int maxDrain, boolean doDrain) {
-        AENetworkProxy proxy = getProxy();
-        if (proxy == null || !proxy.isActive()) {
-            return null;
-        }
-        for (int i = 0; i < SLOT_COUNT; i++) {
-            FluidStack fluidStack = storedFluid[i];
-            if (fluidStack == null) {
-                continue;
-            }
-            try {
-                IMEMonitor<IAEFluidStack> sg = proxy.getStorage()
-                    .getFluidInventory();
-                IAEFluidStack request = AEFluidStack.create(fluidStack);
-                IAEFluidStack result = sg
-                    .extractItems(request, doDrain ? Actionable.MODULATE : Actionable.SIMULATE, getRequestSource());
-                FluidStack s = (result != null) ? result.getFluidStack() : null;
-                if (s == null) {
-                    continue;
-                }
-                return s;
-            } catch (GridAccessException e) {}
-        }
-        return null;
+    public boolean canTankBeFilled() {
+        return false;
     }
 
     @Override
-    public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-        return 0;
+    public boolean doesEmptyContainers() {
+        return false;
     }
 
     @Override
-    public FluidStack drain(ForgeDirection from, FluidStack aFluid, boolean doDrain) {
-        AENetworkProxy proxy = getProxy();
-        if (proxy == null || !proxy.isActive()) {
-            return null;
-        }
-        for (int i = 0; i < SLOT_COUNT; i++) {
-            FluidStack fluidStack = storedFluid[i];
-            if (fluidStack == null) {
-                continue;
-            }
-            if (!GT_Utility.areFluidsEqual(aFluid, fluidStack)) {
-                continue;
-            }
-            try {
-                IMEMonitor<IAEFluidStack> sg = proxy.getStorage()
-                    .getFluidInventory();
-                IAEFluidStack request = AEFluidStack.create(fluidStack);
-                IAEFluidStack result = sg
-                    .extractItems(request, doDrain ? Actionable.MODULATE : Actionable.SIMULATE, getRequestSource());
-                FluidStack s = (result != null) ? result.getFluidStack() : null;
-                if (s == null) {
-                    continue;
-                }
-                return s;
-            } catch (GridAccessException e) {}
-        }
-        return null;
+    public boolean isValidSlot(int aIndex) {
+        return false;
     }
 
     @Override
@@ -439,19 +387,19 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
 
         NBTTagList nbtTagList = new NBTTagList();
         for (int i = 0; i < SLOT_COUNT; i++) {
-            FluidStack fluidStack = storedFluid[i];
+            FluidStack fluidStack = storedFluids[i];
             if (fluidStack == null) {
                 continue;
             }
-            nbtTagList.appendTag(fluidStack.writeToNBT(new NBTTagCompound()));
+            NBTTagCompound fluidTag = fluidStack.writeToNBT(new NBTTagCompound());
+            if (storedInformationFluids[i] != null)
+                fluidTag.setInteger("informationAmount", storedInformationFluids[i].amount);
+            nbtTagList.appendTag(fluidTag);
         }
 
-        int[] sizes = new int[16];
-        for (int i = 0; i < 16; ++i) sizes[i] = storedFluid[i + 16] == null ? 0 : storedFluid[i + 16].amount;
-        aNBT.setIntArray("sizes", sizes);
-        aNBT.setTag("storedFluid", nbtTagList);
-        aNBT.setBoolean("autoStock", autoPullFluidList);
-        aNBT.setInteger("minAutoPullStackSize", minAutoPullAmount);
+        aNBT.setTag("storedFluids", nbtTagList);
+        aNBT.setBoolean("autoPull", autoPullFluidList);
+        aNBT.setInteger("minAmount", minAutoPullAmount);
         aNBT.setBoolean("additionalConnection", additionalConnection);
         getProxy().writeToNBT(aNBT);
     }
@@ -459,28 +407,23 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        if (aNBT.hasKey("storedFluid")) {
-            NBTTagList nbtTagList = aNBT.getTagList("storedFluid", 10);
+        if (aNBT.hasKey("storedFluids")) {
+            NBTTagList nbtTagList = aNBT.getTagList("storedFluids", 10);
             int c = Math.min(nbtTagList.tagCount(), SLOT_COUNT);
             for (int i = 0; i < c; i++) {
                 NBTTagCompound nbtTagCompound = nbtTagList.getCompoundTagAt(i);
-                storedFluid[i] = GT_Utility.loadFluid(nbtTagCompound);
-            }
-        }
+                FluidStack fluidStack = GT_Utility.loadFluid(nbtTagCompound);
+                storedFluids[i] = fluidStack;
 
-        if (aNBT.hasKey("sizes")) {
-            int[] sizes = aNBT.getIntArray("sizes");
-            for (int i = 0; i < SLOT_COUNT; ++i) {
-                if (sizes[i] != 0 && storedFluid[i] != null) {
-                    FluidStack s = storedFluid[i].copy();
-                    s.amount = sizes[i];
-                    storedFluid[i + SLOT_COUNT] = s;
+                if (nbtTagCompound.hasKey("informationAmount")) {
+                    int informationAmount = nbtTagCompound.getInteger("informationAmount");
+                    storedInformationFluids[i] = GT_Utility.copyAmount(informationAmount, fluidStack);
                 }
             }
         }
 
-        minAutoPullAmount = aNBT.getInteger("minAutoPullStackSize");
-        autoPullFluidList = aNBT.getBoolean("autoStock");
+        minAutoPullAmount = aNBT.getInteger("minAmount");
+        autoPullFluidList = aNBT.getBoolean("autoPull");
         additionalConnection = aNBT.getBoolean("additionalConnection");
         getProxy().readFromNBT(aNBT);
     }
@@ -512,7 +455,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
         if (!autoPullFluidList) {
             NBTTagList stockingFluids = nbt.getTagList("fluidsToStock", 10);
             for (int i = 0; i < stockingFluids.tagCount(); i++) {
-                this.storedFluid[i] = GT_Utility.loadFluid(stockingFluids.getCompoundTagAt(i));
+                storedFluids[i] = GT_Utility.loadFluid(stockingFluids.getCompoundTagAt(i));
             }
         }
 
@@ -537,7 +480,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
         NBTTagList stockingFluids = new NBTTagList();
         if (!autoPullFluidList) {
             for (int index = 0; index < SLOT_COUNT; index++) {
-                FluidStack fluidStack = storedFluid[index];
+                FluidStack fluidStack = storedFluids[index];
                 if (fluidStack == null) {
                     continue;
                 }
@@ -559,7 +502,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
 
     public boolean containsSuchStack(FluidStack tStack) {
         for (int i = 0; i < 16; ++i) {
-            if (GT_Utility.areFluidsEqual(storedFluid[i], tStack, false)) {
+            if (GT_Utility.areFluidsEqual(storedFluids[i], tStack, false)) {
                 return true;
             }
         }
@@ -575,112 +518,104 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         buildContext.addSyncedWindow(CONFIG_WINDOW_ID, this::createStackSizeConfigurationWindow);
 
-        for (int i = 0; i < SLOT_COUNT; i++) {
-            int slotIndex = i;
-            FluidSlotWidget fluidSlotWidget = new FluidSlotWidget(fluidTanks[i]) {
+        builder.widget(
+            SlotGroup.ofFluidTanks(
+                IntStream.range(0, SLOT_COUNT)
+                    .mapToObj(index -> createTankForFluidStack(storedFluids, index, 1))
+                    .collect(Collectors.toList()),
+                4)
+                .phantom(true)
+                .widgetCreator((slotIndex, h) -> new FluidSlotWidget(h) {
 
-                {
-                    // HACK: The only way to create these, is using FluidSlotWidget.phantom(boolean), but that won't
-                    // allow us to override any methods. SlotGroup.FluidGroupBuilder is missing some features and can't
-                    // be used either
-                    ReflectionHelper.setPrivateValue(FluidSlotWidget.class, this, true, "phantom");
-                }
+                    @Override
+                    protected void tryClickPhantom(ClickData clickData, ItemStack cursorStack) {
+                        if (clickData.mouseButton != 0 || autoPullFluidList) return;
 
-                @Override
-                protected void tryClickPhantom(ClickData clickData, ItemStack cursorStack) {
-                    if (clickData.mouseButton != 0 || autoPullFluidList) return;
-
-                    FluidStack heldFluid = getFluidForPhantomItem(cursorStack);
-                    if (cursorStack == null) {
-                        storedFluid[slotIndex] = null;
-                    } else {
-                        if (containsSuchStack(heldFluid)) return;
-                        storedFluid[slotIndex] = GT_Utility.copyAmount(1, heldFluid);
-                    }
-                    if (getBaseMetaTileEntity().isServerSide()) {
-                        updateInformationSlot(slotIndex, heldFluid);
-                        detectAndSendChanges(false);
-                    }
-                }
-
-                @Override
-                protected void tryScrollPhantom(int direction) {}
-
-                @Override
-                public IDrawable[] getBackground() {
-                    IDrawable slot;
-                    if (autoPullFluidList) {
-                        slot = GT_UITextures.SLOT_DARK_GRAY;
-                    } else {
-                        slot = ModularUITextures.FLUID_SLOT;
-                    }
-                    return new IDrawable[] { slot, GT_UITextures.OVERLAY_SLOT_ARROW_ME };
-                }
-
-                @Override
-                public void buildTooltip(List<Text> tooltip) {
-                    FluidStack fluid = fluidTanks[slotIndex].getFluid();
-                    if (fluid != null) {
-                        addFluidNameInfo(tooltip, fluid);
-
-                        if (autoPullFluidList) {
-                            tooltip.add(Text.localised("GT5U.machines.stocking_bus.cannot_set_slot"));
+                        FluidStack heldFluid = getFluidForPhantomItem(cursorStack);
+                        if (cursorStack == null) {
+                            storedFluids[slotIndex] = null;
                         } else {
-                            tooltip.add(Text.localised("modularui.phantom.single.clear"));
+                            if (containsSuchStack(heldFluid)) return;
+                            storedFluids[slotIndex] = heldFluid;
                         }
-                    } else {
-                        tooltip.add(
-                            Text.localised("modularui.fluid.empty")
-                                .format(EnumChatFormatting.WHITE));
-                    }
-                }
-            };
-
-            fluidSlotWidget.setPos(new Pos2d(7 + (i % 4) * 18, 9 + (i / 4) * 18));
-            builder.widget(fluidSlotWidget);
-        }
-
-        for (int i = 0; i < SLOT_COUNT; i++) {
-            int slotIndex = i + SLOT_COUNT;
-            FluidSlotWidget fluidSlotWidget = new FluidSlotWidget(fluidTanks[slotIndex]) {
-
-                {
-                    // HACK: The only way to create these, is using FluidSlotWidget.phantom(boolean), but that won't
-                    // allow us to override any methods. SlotGroup.FluidGroupBuilder is missing some features and can't
-                    // be used either
-                    ReflectionHelper.setPrivateValue(FluidSlotWidget.class, this, true, "phantom");
-                }
-
-                @Override
-                protected void tryClickPhantom(ClickData clickData, ItemStack cursorStack) {}
-
-                @Override
-                protected void tryScrollPhantom(int direction) {}
-
-                @Override
-                public void buildTooltip(List<Text> tooltip) {
-                    FluidStack fluid = fluidTanks[slotIndex].getFluid();
-                    if (fluid != null) {
-                        addFluidNameInfo(tooltip, fluid);
-                        addAdditionalFluidInfo(tooltip, fluid);
-                        if (!Interactable.hasShiftDown()) {
-                            tooltip.add(Text.EMPTY);
-                            tooltip.add(Text.localised("modularui.tooltip.shift"));
+                        if (getBaseMetaTileEntity().isServerSide()) {
+                            updateInformationSlot(slotIndex);
+                            detectAndSendChanges(false);
                         }
-                    } else {
-                        tooltip.add(
-                            Text.localised("modularui.fluid.empty")
-                                .format(EnumChatFormatting.WHITE));
                     }
-                }
-            };
 
-            fluidSlotWidget.setBackground(GT_UITextures.SLOT_DARK_GRAY);
-            fluidSlotWidget.setPos(new Pos2d(97 + (i % 4) * 18, 9 + (i / 4) * 18));
-            // Needed to get the amount to render
-            fluidSlotWidget.setControlsAmount(true, false);
-            builder.widget(fluidSlotWidget);
-        }
+                    @Override
+                    protected void tryScrollPhantom(int direction) {}
+
+                    @Override
+                    public IDrawable[] getBackground() {
+                        IDrawable slot;
+                        if (autoPullFluidList) {
+                            slot = GT_UITextures.SLOT_DARK_GRAY;
+                        } else {
+                            slot = ModularUITextures.FLUID_SLOT;
+                        }
+                        return new IDrawable[] { slot, GT_UITextures.OVERLAY_SLOT_ARROW_ME };
+                    }
+
+                    @Override
+                    public void buildTooltip(List<Text> tooltip) {
+                        FluidStack fluid = getContent();
+                        if (fluid != null) {
+                            addFluidNameInfo(tooltip, fluid);
+
+                            if (autoPullFluidList) {
+                                tooltip.add(Text.localised("GT5U.machines.stocking_bus.cannot_set_slot"));
+                            } else {
+                                tooltip.add(Text.localised("modularui.phantom.single.clear"));
+                            }
+                        } else {
+                            tooltip.add(
+                                Text.localised("modularui.fluid.empty")
+                                    .format(EnumChatFormatting.WHITE));
+                            tooltip.add(Text.localised("GT5U.machines.stocking_bus.cannot_set_slot"));
+                        }
+                    }
+                })
+                .build()
+                .setPos(new Pos2d(7, 9)));
+
+        builder.widget(
+            SlotGroup.ofFluidTanks(
+                IntStream.range(0, SLOT_COUNT)
+                    .mapToObj(index -> createTankForFluidStack(storedInformationFluids, index, Integer.MAX_VALUE))
+                    .collect(Collectors.toList()),
+                4)
+                .phantom(true)
+                .widgetCreator((slotIndex, h) -> new FluidSlotWidget(h) {
+
+                    @Override
+                    protected void tryClickPhantom(ClickData clickData, ItemStack cursorStack) {}
+
+                    @Override
+                    protected void tryScrollPhantom(int direction) {}
+
+                    @Override
+                    public void buildTooltip(List<Text> tooltip) {
+                        FluidStack fluid = getContent();
+                        if (fluid != null) {
+                            addFluidNameInfo(tooltip, fluid);
+                            addAdditionalFluidInfo(tooltip, fluid);
+                            if (!Interactable.hasShiftDown()) {
+                                tooltip.add(Text.EMPTY);
+                                tooltip.add(Text.localised("modularui.tooltip.shift"));
+                            }
+                        } else {
+                            tooltip.add(
+                                Text.localised("modularui.fluid.empty")
+                                    .format(EnumChatFormatting.WHITE));
+                        }
+                    }
+                })
+                .background(GT_UITextures.SLOT_DARK_GRAY)
+                .controlsAmount(true)
+                .build()
+                .setPos(new Pos2d(97, 9)));
 
         builder.widget(
             new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_DOUBLE)
@@ -722,6 +657,16 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                 .setTextAlignment(Alignment.Center)
                 .setSize(90, 9)
                 .setPos(43, 84));
+    }
+
+    private FluidStackTank createTankForFluidStack(FluidStack[] fluidStacks, int slotIndex, int capacity) {
+        return new FluidStackTank(() -> fluidStacks[slotIndex], (stack) -> {
+            if (getBaseMetaTileEntity().isServerSide()) {
+                return;
+            }
+
+            fluidStacks[slotIndex] = stack;
+        }, capacity);
     }
 
     protected ModularWindow createStackSizeConfigurationWindow(final EntityPlayer player) {

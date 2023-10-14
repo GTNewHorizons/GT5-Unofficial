@@ -1417,7 +1417,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             hatch.startRecipeProcessing();
         }
         for (GT_MetaTileEntity_Hatch_Input hatch : filterValidMTEs(mInputHatches)) {
-            if (hatch instanceof IRecipeProcessingAwareHatch aware) aware.startRecipeProcessing();
+            if (hatch instanceof IRecipeProcessingAwareHatch aware) {
+                aware.startRecipeProcessing();
+            }
         }
     }
 
@@ -1432,8 +1434,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             setResultIfFailure.accept(hatch.endRecipeProcessing(this));
         }
         for (GT_MetaTileEntity_Hatch_Input hatch : filterValidMTEs(mInputHatches)) {
-            if (hatch instanceof IRecipeProcessingAwareHatch aware)
+            if (hatch instanceof IRecipeProcessingAwareHatch aware) {
                 setResultIfFailure.accept(aware.endRecipeProcessing(this));
+            }
         }
     }
 
