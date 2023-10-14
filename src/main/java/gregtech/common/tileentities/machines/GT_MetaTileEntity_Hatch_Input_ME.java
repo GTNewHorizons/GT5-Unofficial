@@ -108,7 +108,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
             aName,
             aNameRegional,
             1,
-            0,
+            1,
             new String[] { "Advanced fluid input for Multiblocks", "Retrieves directly from ME",
                 "Keeps 16 fluid types in stock",
                 "Auto-Pull from ME mode will automatically stock the first 16 fluid in the ME system, updated every 5 seconds.",
@@ -119,7 +119,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
     }
 
     public GT_MetaTileEntity_Hatch_Input_ME(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, 0, aTier, aDescription, aTextures);
+        super(aName, 1, aTier, aDescription, aTextures);
     }
 
     @Override
