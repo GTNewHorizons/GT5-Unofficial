@@ -52,7 +52,7 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
             aName,
             aNameRegional,
             aTier,
-            1,
+            8,
             MachineType.MATTER_FABRICATOR.tooltipDescription(),
             1,
             1,
@@ -198,7 +198,7 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
 
         @Override
         public void computePowerUsageAndDuration(int euPerTick, int duration) {
-            originalVoltage = computeVoltageForEuRate(euPerTick);
+            originalEUt = euPerTick;
 
             if (mTier == 0) {
                 // Long time calculation
@@ -239,20 +239,18 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
 
         @Override
         protected boolean shouldShowAmperage() {
-            return !getAmperageString().equals("1");
+            return true;
         }
 
         @Override
         protected String getVoltageString() {
-            long voltage = V[1];
-            String voltageDescription = GT_Utility.formatNumbers(voltage) + " EU/t";
-            voltageDescription += GT_Utility.getTierNameWithParentheses(voltage);
-            return voltageDescription;
+            // standard amperage calculation doesn't work here
+            return GT_Utility.formatNumbers(V[mTier]) + " EU/t" + GT_Utility.getTierNameWithParentheses(V[mTier]);
         }
 
         @Override
         protected String getAmperageString() {
-            long amperage = originalVoltage / V[1];
+            int amperage = this.amperage;
             int denominator = 1;
             for (int i = 1; i < mTier; i++) {
                 amperage >>= 1;

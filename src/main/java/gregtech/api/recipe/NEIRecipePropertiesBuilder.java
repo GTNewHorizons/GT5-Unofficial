@@ -22,7 +22,6 @@ public class NEIRecipePropertiesBuilder {
     private Size recipeBackgroundSize = new Size(170, 82);
     private Pos2d recipeBackgroundOffset = new Pos2d(3, 3);
 
-    private boolean showVoltageAmperage = true;
     private INEISpecialInfoFormatter neiSpecialInfoFormatter = DefaultSpecialValueFormatter.INSTANCE;
 
     private boolean unificateOutput = true;
@@ -36,7 +35,6 @@ public class NEIRecipePropertiesBuilder {
             registerNEI,
             recipeBackgroundSize,
             recipeBackgroundOffset,
-            showVoltageAmperage,
             neiSpecialInfoFormatter,
             unificateOutput,
             useCustomFilter,
@@ -55,11 +53,6 @@ public class NEIRecipePropertiesBuilder {
 
     public NEIRecipePropertiesBuilder recipeBackgroundOffset(Pos2d recipeBackgroundOffset) {
         this.recipeBackgroundOffset = recipeBackgroundOffset;
-        return this;
-    }
-
-    public NEIRecipePropertiesBuilder disableVoltageAmperageInNEI() {
-        this.showVoltageAmperage = false;
         return this;
     }
 

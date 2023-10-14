@@ -18,6 +18,9 @@ import gregtech.nei.NEIRecipeInfo;
  */
 public abstract class Power {
 
+    /**
+     * Tier of the (maybe virtual) machine this power belongs to.
+     */
     protected final byte tier;
     protected int recipeEuPerTick;
     protected int recipeDuration;

@@ -36,7 +36,7 @@ public class SteamPower extends Power {
 
     @Override
     protected void drawNEIDescImpl(NEIRecipeInfo recipeInfo, RecipeMapFrontend frontend) {
-        frontend.drawNEIText(recipeInfo, trans("153", "Usage: ") + getPowerUsageString());
+        frontend.drawNEIText(recipeInfo, trans("153", "Usage: ") + getSteamUsageString());
     }
 
     @Override
@@ -44,7 +44,7 @@ public class SteamPower extends Power {
         return GT_Utility.formatNumbers(convertEUToSteam(recipeDuration * recipeEuPerTick)) + " Steam";
     }
 
-    private String getPowerUsageString() {
+    private String getSteamUsageString() {
         return GT_Utility.formatNumbers(20L * convertEUToSteam(recipeEuPerTick)) + " L/s Steam";
     }
 

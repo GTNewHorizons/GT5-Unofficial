@@ -416,14 +416,6 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
     }
 
     /**
-     * Stops NEI description showing amperage.
-     */
-    public RecipeMapBuilder<B> disableVoltageAmperageInNEI() {
-        neiPropertiesBuilder.disableVoltageAmperageInNEI();
-        return this;
-    }
-
-    /**
      * Sets formatter for special description for the recipe, mainly {@link gregtech.api.util.GT_Recipe#mSpecialValue}.
      */
     public RecipeMapBuilder<B> neiSpecialInfoFormatter(INEISpecialInfoFormatter neiSpecialInfoFormatter) {

@@ -36,9 +36,7 @@ import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
-import gregtech.common.power.EUPower;
 import gregtech.common.power.Power;
-import gregtech.common.power.UnspecifiedEUPower;
 import gregtech.nei.GT_NEI_DefaultHandler;
 import gregtech.nei.NEIRecipeInfo;
 
@@ -232,7 +230,7 @@ public class RecipeMapFrontend {
         String[] recipeDesc = recipeInfo.recipe.getNeiDesc();
         if (recipeDesc != null) {
             for (String s : recipeDesc) {
-                drawOptionalNEIText(recipeInfo, s);
+                drawNEIText(recipeInfo, s);
             }
         } else {
             drawNEITextMultipleLines(recipeInfo, neiProperties.neiSpecialInfoFormatter.format(recipeInfo));
@@ -273,7 +271,7 @@ public class RecipeMapFrontend {
         }
     }
 
-    public void drawNEIText(NEIRecipeInfo recipeInfo, String text) {
+    public void drawNEIText(NEIRecipeInfo recipeInfo, @Nullable String text) {
         drawNEIText(recipeInfo, text, 10);
     }
 
@@ -282,7 +280,7 @@ public class RecipeMapFrontend {
      *
      * @param yShift y position to shift after this text
      */
-    public void drawNEIText(NEIRecipeInfo recipeInfo, String text, int yShift) {
+    public void drawNEIText(NEIRecipeInfo recipeInfo, @Nullable String text, int yShift) {
         drawNEIText(recipeInfo, text, 10, yShift);
     }
 
@@ -292,16 +290,11 @@ public class RecipeMapFrontend {
      * @param xStart x position to start drawing
      * @param yShift y position to shift after this text
      */
-    public void drawNEIText(NEIRecipeInfo recipeInfo, String text, int xStart, int yShift) {
+    public void drawNEIText(NEIRecipeInfo recipeInfo, @Nullable String text, int xStart, int yShift) {
+        if (isStringInvalid(text)) return;
         net.minecraft.client.Minecraft.getMinecraft().fontRenderer
             .drawString(text, xStart, recipeInfo.yPos, neiTextColorOverride != -1 ? neiTextColorOverride : 0x000000);
         recipeInfo.yPos += yShift;
-    }
-
-    protected void drawOptionalNEIText(NEIRecipeInfo recipeInfo, @Nullable String text) {
-        if (isStringValid(text) && !text.equals("unspecified")) {
-            drawNEIText(recipeInfo, text, 10);
-        }
     }
 
     protected void drawNEITextMultipleLines(NEIRecipeInfo recipeInfo, List<String> texts) {
@@ -403,15 +396,6 @@ public class RecipeMapFrontend {
 
     public void updateNEITextColorOverride() {
         neiTextColorOverride = colorOverride.getTextColorOrDefault("nei", -1);
-    }
-
-    public Power createPower() {
-        // By default, assume generic EU LV power with no overclocks
-        if (neiProperties.showVoltageAmperage) {
-            return new EUPower((byte) 1, uiProperties.amperage);
-        } else {
-            return new UnspecifiedEUPower((byte) 1, uiProperties.amperage);
-        }
     }
 
     @FunctionalInterface

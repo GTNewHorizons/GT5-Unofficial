@@ -20,7 +20,7 @@ public class FusionPower extends BasicMachineEUPower {
 
     @Override
     public void computePowerUsageAndDuration(int euPerTick, int duration, int specialValue) {
-        originalVoltage = computeVoltageForEuRate(euPerTick);
+        originalEUt = euPerTick;
         recipeEuPerTick = euPerTick;
         recipeDuration = duration;
         // It's safe to assume fusion is above ULV. We put this as safety check here anyway

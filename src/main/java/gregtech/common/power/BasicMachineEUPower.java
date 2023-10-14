@@ -5,6 +5,7 @@ import static gregtech.api.util.GT_Utility.trans;
 
 import gregtech.GT_Mod;
 import gregtech.api.recipe.RecipeMapFrontend;
+import gregtech.api.util.GT_Utility;
 import gregtech.nei.NEIRecipeInfo;
 
 public class BasicMachineEUPower extends EUPower {
@@ -64,21 +65,35 @@ public class BasicMachineEUPower extends EUPower {
             return;
         }
 
-        frontend.drawNEIText(recipeInfo, trans("153", "Usage: ") + getPowerUsageString());
+        frontend.drawNEIText(recipeInfo, trans("153", "Usage: ") + getEUtDisplay());
+        if (shouldShowAmperage()) {
+            frontend.drawNEIText(recipeInfo, trans("154", "Voltage: ") + getVoltageString());
+        }
         if (GT_Mod.gregtechproxy.mNEIOriginalVoltage) {
             EUPower originalPower = new EUPower(tier, amperage);
             originalPower.computePowerUsageAndDuration(recipeInfo.recipe.mEUt, recipeInfo.recipe.mDuration);
-            frontend.drawNEIText(recipeInfo, trans("275", "Original voltage: ") + originalPower.getVoltageString());
+            frontend.drawNEIText(recipeInfo, trans("275", "Original usage: ") + originalPower.getEUtDisplay());
         }
-        String amperageString = getAmperageString();
         if (shouldShowAmperage()) {
-            frontend.drawNEIText(recipeInfo, trans("155", "Amperage: ") + amperageString);
+            frontend.drawNEIText(recipeInfo, trans("155", "Amperage: ") + getAmperageString());
         }
     }
 
     @Override
-    protected String getPowerUsageString() {
-        return decorateWithOverclockLabel(super.getPowerUsageString());
+    protected String getEUtWithoutTier() {
+        return decorateWithOverclockLabel(super.getEUtWithoutTier());
+    }
+
+    @Override
+    protected String getEUtWithTier() {
+        return this.getEUtWithoutTier() + GT_Utility.getTierNameWithParentheses(recipeEuPerTick);
+    }
+
+    @Override
+    protected String getVoltageString() {
+        int voltage = computeVoltageForEURate(recipeEuPerTick);
+        return decorateWithOverclockLabel(GT_Utility.formatNumbers(voltage) + " EU/t")
+            + GT_Utility.getTierNameWithParentheses(voltage);
     }
 
     protected String decorateWithOverclockLabel(String s) {
@@ -89,6 +104,6 @@ public class BasicMachineEUPower extends EUPower {
     }
 
     protected boolean checkIfOverclocked() {
-        return originalVoltage != computeVoltageForEuRate(recipeEuPerTick);
+        return originalEUt != recipeEuPerTick;
     }
 }

@@ -8,8 +8,11 @@ import gregtech.nei.NEIRecipeInfo;
 
 public class EUPower extends Power {
 
+    /**
+     * Amperage of the recipemap.
+     */
     protected final int amperage;
-    protected int originalVoltage;
+    protected int originalEUt;
 
     public EUPower(byte tier, int amperage) {
         super(tier);
@@ -22,7 +25,7 @@ public class EUPower extends Power {
     @Override
     // This generic EU Power class has no overclock defined and does no special calculations.
     public void computePowerUsageAndDuration(int euPerTick, int duration) {
-        originalVoltage = computeVoltageForEuRate(euPerTick);
+        originalEUt = euPerTick;
         recipeEuPerTick = euPerTick;
         recipeDuration = duration;
     }
@@ -39,40 +42,54 @@ public class EUPower extends Power {
 
     @Override
     protected void drawNEIDescImpl(NEIRecipeInfo recipeInfo, RecipeMapFrontend frontend) {
+        frontend.drawNEIText(recipeInfo, trans("153", "Usage: ") + getEUtDisplay());
         if (shouldShowAmperage()) {
-            frontend.drawNEIText(recipeInfo, trans("153", "Usage: ") + getPowerUsageString());
             frontend.drawNEIText(recipeInfo, trans("154", "Voltage: ") + getVoltageString());
             frontend.drawNEIText(recipeInfo, trans("155", "Amperage: ") + getAmperageString());
-        } else {
-            frontend.drawNEIText(recipeInfo, trans("154", "Voltage: ") + getVoltageString());
         }
     }
 
+    /**
+     * @return If amperage should be shown on NEI.
+     */
     protected boolean shouldShowAmperage() {
         return amperage != 1;
     }
 
     /**
-     * @return EU/t usage, without tier display.
+     * @return Whole EU/t usage, without tier display.
      */
-    protected String getPowerUsageString() {
+    protected String getEUtWithoutTier() {
         return GT_Utility.formatNumbers(recipeEuPerTick) + " EU/t";
     }
 
     /**
-     * @return EU/t usage, with tier display.
+     * @return Whole EU/t usage, with tier display.
+     */
+    protected String getEUtWithTier() {
+        return getEUtWithoutTier() + GT_Utility.getTierNameWithParentheses(recipeEuPerTick);
+    }
+
+    /**
+     * @return Whole EU/t usage. Also displays voltage tier if it should be shown.
+     */
+    protected String getEUtDisplay() {
+        return shouldShowAmperage() ? getEUtWithoutTier() : getEUtWithTier();
+    }
+
+    /**
+     * @return EU/t usage, divided by amperage. With tier display.
      */
     protected String getVoltageString() {
-        String voltageDescription = GT_Utility.formatNumbers(originalVoltage) + " EU/t";
-        voltageDescription += GT_Utility.getTierNameWithParentheses(originalVoltage);
-        return voltageDescription;
+        int voltage = computeVoltageForEURate(recipeEuPerTick);
+        return GT_Utility.formatNumbers(voltage) + " EU/t" + GT_Utility.getTierNameWithParentheses(voltage);
     }
 
     protected String getAmperageString() {
         return GT_Utility.formatNumbers(amperage);
     }
 
-    protected int computeVoltageForEuRate(int euPerTick) {
+    protected int computeVoltageForEURate(int euPerTick) {
         return euPerTick / amperage;
     }
 }

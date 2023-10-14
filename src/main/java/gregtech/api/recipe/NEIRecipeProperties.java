@@ -41,10 +41,6 @@ public class NEIRecipeProperties {
     public final Pos2d recipeBackgroundOffset;
 
     /**
-     * If NEI description should show amperage.
-     */
-    public final boolean showVoltageAmperage;
-    /**
      * Formats special description for the recipe, mainly {@link gregtech.api.util.GT_Recipe#mSpecialValue}.
      */
     public final INEISpecialInfoFormatter neiSpecialInfoFormatter;
@@ -64,12 +60,11 @@ public class NEIRecipeProperties {
     public final boolean renderRealStackSizes;
 
     NEIRecipeProperties(boolean registerNEI, Size recipeBackgroundSize, Pos2d recipeBackgroundOffset,
-        boolean showVoltageAmperage, INEISpecialInfoFormatter neiSpecialInfoFormatter, boolean unificateOutput,
-        boolean useCustomFilter, boolean renderRealStackSizes) {
+        INEISpecialInfoFormatter neiSpecialInfoFormatter, boolean unificateOutput, boolean useCustomFilter,
+        boolean renderRealStackSizes) {
         this.registerNEI = registerNEI;
         this.recipeBackgroundOffset = recipeBackgroundOffset;
         this.recipeBackgroundSize = recipeBackgroundSize;
-        this.showVoltageAmperage = showVoltageAmperage;
         this.neiSpecialInfoFormatter = neiSpecialInfoFormatter;
         this.unificateOutput = unificateOutput;
         this.useCustomFilter = useCustomFilter;

@@ -565,7 +565,6 @@ public class RecipeMaps {
     public static final RecipeMap<RecipeMapBackend> blastRecipes = RecipeMapBuilder.of("gt.recipe.blastfurnace")
         .maxIO(6, 6, 1, 1)
         .minInputs(1, 0)
-        .disableVoltageAmperageInNEI()
         .neiSpecialInfoFormatter(HeatingCoilSpecialValueFormatter.INSTANCE)
         .recipeConfigFile("blastfurnace", FIRST_ITEM_INPUT)
         .build();
@@ -575,7 +574,6 @@ public class RecipeMaps {
     public static final RecipeMap<RecipeMapBackend> plasmaForgeRecipes = RecipeMapBuilder.of("gt.recipe.plasmaforge")
         .maxIO(9, 9, 9, 9)
         .disableOptimize()
-        .disableVoltageAmperageInNEI()
         .neiSpecialInfoFormatter(HeatingCoilSpecialValueFormatter.INSTANCE)
         .frontend(LargeNEIFrontend::new)
         .build();
@@ -587,7 +585,6 @@ public class RecipeMaps {
         .neiRecipeBackgroundSize(170, 118)
         .frontend(TranscendentPlasmaMixerFrontend::new)
         .disableOptimize()
-        .disableVoltageAmperageInNEI()
         .build();
     public static final RecipeMap<RecipeMapBackend> spaceProjectFakeRecipes = RecipeMapBuilder
         .of("gt.recipe.fakespaceprojects")
@@ -597,7 +594,6 @@ public class RecipeMaps {
         .logoPos(152, 83)
         .frontend(SpaceProjectFrontend::new)
         .disableRenderRealStackSizes()
-        .disableVoltageAmperageInNEI()
         .disableOptimize()
         .build();
     /**
@@ -607,7 +603,6 @@ public class RecipeMaps {
         .of("gt.recipe.primitiveblastfurnace")
         .maxIO(3, 3, 0, 0)
         .minInputs(1, 0)
-        .disableVoltageAmperageInNEI()
         .recipeEmitter(builder -> {
             Optional<GT_Recipe> rr = builder.validateInputCount(1, 2)
                 .validateOutputCount(1, 2)
@@ -739,7 +734,6 @@ public class RecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> vacuumRecipes = RecipeMapBuilder.of("gt.recipe.vacuumfreezer")
         .maxIO(1, 1, 2, 1)
-        .disableVoltageAmperageInNEI()
         .recipeEmitter(b -> {
             b.noOptimize();
             FluidStack in, out;
@@ -1130,7 +1124,6 @@ public class RecipeMaps {
             (index, isFluid, isOutput,
                 isSpecial) -> !isFluid && !isOutput && index == 0 ? GT_UITextures.OVERLAY_SLOT_LENS : null)
         .progressBar(GT_UITextures.PROGRESSBAR_ASSEMBLE)
-        .disableVoltageAmperageInNEI()
         .disableOptimize()
         .neiSpecialInfoFormatter(new SimpleSpecialValueFormatter("GT5U.nei.tier"))
         .build();

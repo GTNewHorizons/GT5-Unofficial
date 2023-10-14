@@ -57,6 +57,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Item_Machines;
 import gregtech.common.gui.modularui.UIHelper;
+import gregtech.common.power.EUPower;
 import gregtech.common.power.Power;
 
 public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
@@ -396,7 +397,8 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
     private void drawDescription(CachedDefaultRecipe cachedRecipe) {
         GT_Recipe recipe = cachedRecipe.mRecipe;
         if (power == null) {
-            power = frontend.createPower();
+            // By default, assume generic EU LV power with no overclocks
+            power = new EUPower((byte) 1, uiProperties.amperage);
         }
         power.computePowerUsageAndDuration(recipe.mEUt, recipe.mDuration, recipe.mSpecialValue);
 
