@@ -45,7 +45,7 @@ dependencies {
     //compileOnly("curse.maven:extrautilities-225561:2264384") {
     //    transitive = false
     //}
-    compileOnly("com.github.GTNewHorizons:GTplusplus:1.10.14:dev")
+    compileOnly("com.github.GTNewHorizons:GTplusplus:1.10.17:dev")
     {
         transitive = false
     }
@@ -65,7 +65,7 @@ dependencies {
     {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:NewHorizonsCoreMod:2.2.16:dev")
+    compileOnly("com.github.GTNewHorizons:NewHorizonsCoreMod:2.2.18:dev")
     {
         transitive = false
     }
@@ -84,9 +84,9 @@ dependencies {
 
     // For testing
     //runtimeOnly("com.github.GTNewHorizons:BetterLoadingScreen:1.5.0-GTNH:dev")
-    //runtimeOnly("com.github.GTNewHorizons:GTplusplus:1.10.14:dev")
+    //runtimeOnly("com.github.GTNewHorizons:GTplusplus:1.10.17:dev")
     //runtimeOnly("com.github.GTNewHorizons:harvestcraft:1.1.1-GTNH:dev")
-    //runtimeOnly("com.github.GTNewHorizons:NewHorizonsCoreMod:2.2.16:dev")
+    //runtimeOnly("com.github.GTNewHorizons:NewHorizonsCoreMod:2.2.18:dev")
     //runtimeOnly("com.github.GTNewHorizons:OpenBlocks:1.7.0-GTNH:dev")
     //runtimeOnly("com.github.GTNewHorizons:bartworks:0.8.8:dev")
     //runtimeOnly("com.github.GTNewHorizons:CraftTweaker:3.2.13:dev")
