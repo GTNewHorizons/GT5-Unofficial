@@ -20,7 +20,6 @@
 
 package kubatech.api.helpers;
 
-import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity;
 import static kubatech.api.Variables.ln4;
 
 import java.io.IOException;
@@ -41,7 +40,7 @@ public class GTHelper {
         if (mte instanceof KubaTechGTMultiBlockBase) return ((KubaTechGTMultiBlockBase<?>) mte).getMaxInputEu();
         long rEU = 0;
         for (GT_MetaTileEntity_Hatch_Energy tHatch : mte.mEnergyHatches)
-            if (isValidMetaTileEntity(tHatch)) rEU += tHatch.maxEUInput() * tHatch.maxAmperesIn();
+            if (tHatch.isValid()) rEU += tHatch.maxEUInput() * tHatch.maxAmperesIn();
         return rEU;
     }
 

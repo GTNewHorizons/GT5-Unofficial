@@ -16,12 +16,12 @@ import cpw.mods.fml.relauncher.Side;
 public class LanguageRegistryMixin {
 
     @Inject(method = "loadLanguagesFor", at = @At(value = "HEAD"), remap = false, require = 1)
-    private void loadLanguagesForHEAD(ModContainer container, Side side, CallbackInfo callbackInfo) {
+    private void kubatech$loadLanguagesForHEAD(ModContainer container, Side side, CallbackInfo callbackInfo) {
         currentlyTranslating = container.getModId();
     }
 
     @Inject(method = "loadLanguagesFor", at = @At(value = "RETURN"), remap = false, require = 1)
-    private void loadLanguagesForRETURN(ModContainer container, Side side, CallbackInfo callbackInfo) {
+    private void kubatech$loadLanguagesForRETURN(ModContainer container, Side side, CallbackInfo callbackInfo) {
         currentlyTranslating = null;
     }
 }

@@ -62,6 +62,7 @@ public class TCLoader {
 
     private static InfusionRecipe ultimateTeaRecipe = null;
 
+    @SuppressWarnings("unchecked")
     private static void registerRecipe() {
         if (ultimateTeaRecipe != null) return;
         final ItemStack[] components = new ItemStack[] {

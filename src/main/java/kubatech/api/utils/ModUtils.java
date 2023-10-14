@@ -23,7 +23,6 @@ package kubatech.api.utils;
 import net.minecraft.launchwrapper.Launch;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import kubatech.kubatech;
 
 public class ModUtils {
 

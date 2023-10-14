@@ -459,7 +459,7 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
         int watercheck = waterusage;
         FluidStack waterStack = new FluidStack(FluidRegistry.WATER, 1);
         for (GT_MetaTileEntity_Hatch_Input i : fluids) {
-            if (!isValidMetaTileEntity(i)) continue;
+            if (!i.isValid()) continue;
             if (i instanceof GT_MetaTileEntity_Hatch_MultiInput) {
                 int amount = ((GT_MetaTileEntity_Hatch_MultiInput) i).getFluidAmount(waterStack);
                 if (amount == 0) continue;
@@ -1666,6 +1666,8 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
     }
 
     private static class GreenHouseRandom extends Random {
+
+        private static final long serialVersionUID = -387271808935248890L;
 
         @Override
         public int nextInt(int bound) {

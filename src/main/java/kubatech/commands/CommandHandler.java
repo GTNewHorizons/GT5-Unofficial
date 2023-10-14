@@ -142,8 +142,9 @@ public class CommandHandler extends CommandBase {
                 try {
                     addCommand(
                         (ICommand) Class.forName(clazz.name.replace("/", "."))
+                            .getConstructor()
                             .newInstance());
-                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+                } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
             });

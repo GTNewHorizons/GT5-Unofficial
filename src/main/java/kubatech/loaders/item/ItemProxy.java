@@ -66,16 +66,13 @@ public class ItemProxy {
     private final String unlocalizedName;
     private final String texturepath;
     private IIcon icon;
-    private int itemID;
 
     public ItemProxy(String unlocalizedName, String texture) {
         this.unlocalizedName = "kubaitem." + unlocalizedName;
         texturepath = Tags.MODID + ":" + texture;
     }
 
-    public void ItemInit(int index) {
-        itemID = index;
-    }
+    public void ItemInit(int index) {}
 
     public String getUnlocalizedName() {
         return unlocalizedName;

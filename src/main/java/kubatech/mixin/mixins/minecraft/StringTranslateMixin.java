@@ -24,7 +24,7 @@ public class StringTranslateMixin {
             remap = false),
         remap = false,
         require = 1)
-    private static String replaceAll(Matcher matcher, String replace) {
+    private static String kubatech$replaceAll(Matcher matcher, String replace) {
         if (currentlyTranslating != null && currentlyTranslating.equals(Tags.MODID) && matcher.find()) {
             return matcher.replaceFirst(matcher.group());
         }
