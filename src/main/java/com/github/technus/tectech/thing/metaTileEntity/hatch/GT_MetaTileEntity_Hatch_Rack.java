@@ -55,7 +55,7 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
     private static Textures.BlockIcons.CustomIcon EM_R_ACTIVE;
     public int heat = 0;
     private float overClock = 1, overVolt = 1;
-    private static Map<String, RackComponent> componentBinds = new HashMap<>();
+    private static final Map<String, RackComponent> componentBinds = new HashMap<>();
 
     private String clientLocale = "en_US";
 

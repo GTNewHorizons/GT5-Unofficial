@@ -43,23 +43,12 @@ public class Parameters {
         this.parent = parent;
     }
 
-    public boolean trySetParameters(int hatch, double parameter0, double parameter1) {
+    public void trySetParameters(int hatch, double parameter0, double parameter1) {
         Group p = groups[hatch];
         if (parent.mMaxProgresstime <= 0 || (p != null && p.updateWhileRunning)) {
             iParamsIn[hatch] = parameter0;
             iParamsIn[hatch + 10] = parameter1;
-            return true;
         }
-        return false;
-    }
-
-    public boolean trySetParameters(int hatchNo, int parameterId, double parameter) {
-        Group p = groups[hatchNo];
-        if (parent.mMaxProgresstime <= 0 || (p != null && p.updateWhileRunning)) {
-            iParamsIn[hatchNo + 10 * parameterId] = parameter;
-            return true;
-        }
-        return false;
     }
 
     public void setToDefaults(int hatch, boolean defaultIn, boolean defaultOut) {
@@ -81,35 +70,6 @@ public class Parameters {
     public void setToDefaults(boolean defaultIn, boolean defaultOut) {
         for (int hatch = 0; hatch < 10; hatch++) {
             setToDefaults(hatch, defaultIn, defaultOut);
-        }
-    }
-
-    public void ClearDefinitions() {
-        parameterInArrayList.clear();
-        parameterOutArrayList.clear();
-        for (int i = 0; i < groups.length; i++) {
-            groups[i] = null;
-        }
-    }
-
-    public void removeGroup(Group group) {
-        if (group == groups[group.hatchNo]) {
-            removeGroup(group.hatchNo);
-        } else {
-            throw new IllegalArgumentException("Group does not exists in this parametrization!");
-        }
-    }
-
-    public void removeGroup(int hatchNo) {
-        Group hatch = groups[hatchNo];
-        if (hatch != null) {
-            for (Group.ParameterOut p : hatch.parameterOut) {
-                parameterOutArrayList.remove(p);
-            }
-            for (Group.ParameterIn p : hatch.parameterIn) {
-                parameterInArrayList.remove(p);
-            }
-            groups[hatchNo] = null;
         }
     }
 

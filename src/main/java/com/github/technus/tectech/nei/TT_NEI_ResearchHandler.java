@@ -186,8 +186,7 @@ public class TT_NEI_ResearchHandler extends TemplateRecipeHandler {
     public List<String> handleItemTooltip(GuiRecipe<?> gui, ItemStack aStack, List<String> currenttip,
             int aRecipeIndex) {
         TemplateRecipeHandler.CachedRecipe tObject = arecipes.get(aRecipeIndex);
-        if (tObject instanceof CachedDefaultRecipe) {
-            CachedDefaultRecipe tRecipe = (CachedDefaultRecipe) tObject;
+        if (tObject instanceof CachedDefaultRecipe tRecipe) {
             for (PositionedStack tStack : tRecipe.mOutputs) {
                 if (aStack == tStack.item) {
                     if (!(tStack instanceof FixedPositionedStack) || ((FixedPositionedStack) tStack).mChance <= 0

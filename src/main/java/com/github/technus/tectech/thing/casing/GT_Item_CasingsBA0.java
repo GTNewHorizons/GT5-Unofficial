@@ -105,7 +105,7 @@ public class GT_Item_CasingsBA0 extends GT_Item_Casings_Abstract {
                 break;
             default:
                 aList.add("Damn son where did you get that!?");
-                aList.add(EnumChatFormatting.BLUE.toString() + "From outer space... I guess...");
+                aList.add(EnumChatFormatting.BLUE + "From outer space... I guess...");
         }
     }
 }

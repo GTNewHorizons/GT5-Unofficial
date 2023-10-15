@@ -5,7 +5,6 @@ import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.TwilightForest;
 
-import java.util.Collection;
 import java.util.HashMap;
 
 import net.minecraft.block.Block;
@@ -15,9 +14,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.loader.gui.CreativeTabTecTech;
-import com.github.technus.tectech.loader.gui.ModGuiHandler;
 import com.github.technus.tectech.loader.recipe.BaseRecipeLoader;
-import com.github.technus.tectech.loader.thing.ComponentLoader;
 import com.github.technus.tectech.loader.thing.CoverLoader;
 import com.github.technus.tectech.loader.thing.MachineLoader;
 import com.github.technus.tectech.loader.thing.ThingsLoader;
@@ -25,23 +22,17 @@ import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.github.technus.tectech.thing.metaTileEntity.Textures;
 
 import cpw.mods.fml.common.ProgressManager;
-import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
 
 @SuppressWarnings("deprecation")
 public final class MainLoader {
 
-    public static DamageSource microwaving, elementalPollution, subspace;
+    public static DamageSource microwaving;
 
     private MainLoader() {}
-
-    public static void staticLoad() {
-        new ComponentLoader();
-    }
 
     public static void preLoad() {
         creativeTabTecTech = new CreativeTabTecTech("TecTech");
@@ -71,8 +62,6 @@ public final class MainLoader {
 
         progressBarLoad.step("Add damage types");
         microwaving = new DamageSource("microwaving").setDamageBypassesArmor();
-        elementalPollution = new DamageSource("elementalPollution").setDamageBypassesArmor();
-        subspace = new DamageSource("subspace").setDamageBypassesArmor().setDamageIsAbsolute();
         LOGGER.info("Damage types addition Done");
 
         progressBarLoad.step("Register Packet Dispatcher");
@@ -80,7 +69,6 @@ public final class MainLoader {
         LOGGER.info("Packet Dispatcher registered");
 
         progressBarLoad.step("Register GUI Handler");
-        NetworkRegistry.INSTANCE.registerGuiHandler(instance, new ModGuiHandler());
         proxy.registerRenderInfo();
         LOGGER.info("GUI Handler registered");
 
@@ -178,16 +166,6 @@ public final class MainLoader {
                 r.mFluidInputs[1] = new FluidStack(fluid, r.mFluidInputs[1].amount);
             }
         }
-    }
-
-    public static int getFuelValue(FluidStack aLiquid) {
-        if (aLiquid == null || GT_Recipe.GT_Recipe_Map.sTurbineFuels == null) return 0;
-        FluidStack tLiquid;
-        Collection<GT_Recipe> tRecipeList = GT_Recipe.GT_Recipe_Map.sPlasmaFuels.mRecipeList;
-        if (tRecipeList != null) for (GT_Recipe tFuel : tRecipeList)
-            if ((tLiquid = GT_Utility.getFluidForFilledItem(tFuel.getRepresentativeInput(0), true)) != null)
-                if (aLiquid.isFluidEqual(tLiquid)) return tFuel.mSpecialValue;
-        return 0;
     }
 
     private static void safeSetResistance(Block block, float resistance) {

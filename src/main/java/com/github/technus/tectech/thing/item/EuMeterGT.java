@@ -51,7 +51,7 @@ public class EuMeterGT extends Item {
             return aPlayer instanceof EntityPlayerMP;
         }
         if (aPlayer instanceof EntityPlayerMP && !aPlayer.isSneaking() && tTileEntity instanceof IGregTechTileEntity) {
-            String clientLocale = "en_US";
+            String clientLocale;
             try {
                 EntityPlayerMP player = (EntityPlayerMP) aPlayer;
                 clientLocale = (String) FieldUtils.readField(player, "translator", true);

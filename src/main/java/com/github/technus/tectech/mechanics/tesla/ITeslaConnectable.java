@@ -117,12 +117,12 @@ public interface ITeslaConnectable extends ITeslaConnectableSimple {
                     if (origin.isOverdriveEnabled()) {
                         outputVoltageInjectable = origin.getTeslaOutputVoltage();
                         outputVoltageConsumption = origin.getTeslaOutputVoltage()
-                                + (distance * origin.getTeslaEnergyLossPerBlock())
+                                + ((long) distance * origin.getTeslaEnergyLossPerBlock())
                                 + (long) Math.round(
                                         origin.getTeslaOutputVoltage() * origin.getTeslaOverdriveLossCoefficient());
                     } else {
                         outputVoltageInjectable = origin.getTeslaOutputVoltage()
-                                - (distance * origin.getTeslaEnergyLossPerBlock());
+                                - ((long) distance * origin.getTeslaEnergyLossPerBlock());
                         outputVoltageConsumption = origin.getTeslaOutputVoltage();
                     }
 

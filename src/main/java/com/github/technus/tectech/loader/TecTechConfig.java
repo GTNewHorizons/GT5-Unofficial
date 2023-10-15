@@ -13,8 +13,6 @@ public class TecTechConfig extends ConfigManager {
     // final static to allow compiler to remove the debug code when this is false
     public static boolean DEBUG_MODE = false;
     public static boolean POWERLESS_MODE = false;
-    public boolean DISABLE_MATERIAL_LOADING_FFS;
-
     public boolean BOOM_ENABLE;
     public boolean DISABLE_BLOCK_HARDNESS_NERF;
     public boolean EASY_SCAN;
@@ -48,8 +46,6 @@ public class TecTechConfig extends ConfigManager {
      */
     @Override
     protected void PreInit() {
-
-        DISABLE_MATERIAL_LOADING_FFS = false;
 
         BOOM_ENABLE = true;
         DISABLE_BLOCK_HARDNESS_NERF = false;
@@ -89,11 +85,6 @@ public class TecTechConfig extends ConfigManager {
                 .getBoolean("DebugMode", "debug", DEBUG_MODE, "Enables logging and other purely debug features");
         POWERLESS_MODE = _mainConfig
                 .getBoolean("PowerlessMode", "debug", POWERLESS_MODE, "Enables 0EU/t multi block machinery");
-        DISABLE_MATERIAL_LOADING_FFS = _mainConfig.getBoolean(
-                "DisableMaterialLoading",
-                "debug",
-                DISABLE_MATERIAL_LOADING_FFS,
-                "Set to true to disable gregtech material processing");
 
         BOOM_ENABLE = _mainConfig.getBoolean(
                 "BoomEnable",

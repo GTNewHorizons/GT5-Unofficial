@@ -62,8 +62,7 @@ public class AvrArchitecture implements Architecture {
         int memory = 0;
         for (ItemStack component : components) {
             Item driver = Driver.driverFor(component);
-            if (driver instanceof Memory) {
-                Memory memoryDriver = (Memory) driver;
+            if (driver instanceof Memory memoryDriver) {
                 memory += memoryDriver.amount(component) * 256; // in integers
             } // else if (driver instanceof DriverEEPROM$) {
 

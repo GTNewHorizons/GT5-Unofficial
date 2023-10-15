@@ -41,7 +41,7 @@ public class GT_MetaTileEntity_Hatch_Capacitor extends GT_MetaTileEntity_Hatch i
 
     private static Textures.BlockIcons.CustomIcon TM_H;
     private static Textures.BlockIcons.CustomIcon TM_H_ACTIVE;
-    private static Map<String, GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent> componentBinds = new HashMap<>();
+    private static final Map<String, GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent> componentBinds = new HashMap<>();
 
     public GT_MetaTileEntity_Hatch_Capacitor(int aID, String aName, String aNameRegional, int aTier) {
         super(

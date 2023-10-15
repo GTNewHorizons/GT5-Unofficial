@@ -51,7 +51,7 @@ public class Assembler implements Runnable {
                 200,
                 500000);
 
-        // recipe for ass line data hatches
+        // recipe for assline data hatches
         RA.addAssemblerRecipe(
                 ItemList.Hatch_DataAccess_EV.get(1),
                 CustomItemList.dataIn_Hatch.get(1),
@@ -2348,39 +2348,6 @@ public class Assembler implements Runnable {
                         (int) TierEU.RECIPE_UXV);
             }
         }
-
-        // Parameterizer
-        GT_Values.RA.addAssemblerRecipe(
-                new ItemStack[] { CustomItemList.eM_Computer_Casing.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 1),
-                        CustomItemList.DATApipe.get(4), ItemList.Cover_Screen.get(1),
-                        new ItemStack(Blocks.stone_button, 16), GT_Utility.getIntegratedCircuit(1), },
-                Materials.Iridium.getMolten(2592),
-                CustomItemList.Parametrizer_Hatch.get(1),
-                800,
-                122880);
-
-        // Parametrizer X
-        GT_Values.RA.addAssemblerRecipe(
-                new ItemStack[] { CustomItemList.eM_Computer_Casing.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 1),
-                        CustomItemList.DATApipe.get(6), ItemList.Cover_Screen.get(1),
-                        new ItemStack(Blocks.stone_button, 32), GT_Utility.getIntegratedCircuit(2), },
-                Materials.Iridium.getMolten(2592),
-                CustomItemList.ParametrizerX_Hatch.get(1),
-                800,
-                122880);
-
-        // Parametrizer tXt
-        GT_Values.RA.addAssemblerRecipe(
-                new ItemStack[] { CustomItemList.eM_Computer_Casing.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Bio, 1), CustomItemList.DATApipe.get(8),
-                        ItemList.Cover_Screen.get(2), new ItemStack(Blocks.stone_button, 64),
-                        GT_Utility.getIntegratedCircuit(3), },
-                Materials.Iridium.getMolten(2592),
-                CustomItemList.ParametrizerTXT_Hatch.get(1),
-                800,
-                122880);
 
         // Tesla Capacitor
         {

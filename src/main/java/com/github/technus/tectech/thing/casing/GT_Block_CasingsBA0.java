@@ -27,16 +27,16 @@ import gregtech.common.blocks.GT_Material_Casings;
 // Mostly tesla coils, also 2 eye of harmony casings.
 public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
 
-    private static IIcon[] tM0 = new IIcon[2];
-    private static IIcon[] tM1 = new IIcon[2];
-    private static IIcon[] tM2 = new IIcon[2];
-    private static IIcon[] tM3 = new IIcon[2];
-    private static IIcon[] tM4 = new IIcon[2];
-    private static IIcon[] tM5 = new IIcon[2];
-    private static IIcon[] tM6 = new IIcon[2];
+    private static final IIcon[] tM0 = new IIcon[2];
+    private static final IIcon[] tM1 = new IIcon[2];
+    private static final IIcon[] tM2 = new IIcon[2];
+    private static final IIcon[] tM3 = new IIcon[2];
+    private static final IIcon[] tM4 = new IIcon[2];
+    private static final IIcon[] tM5 = new IIcon[2];
+    private static final IIcon[] tM6 = new IIcon[2];
     private static IIcon tM7;
-    private static IIcon[] tM8 = new IIcon[2];
-    private static IIcon[] tM9 = new IIcon[2];
+    private static final IIcon[] tM8 = new IIcon[2];
+    private static final IIcon[] tM9 = new IIcon[2];
 
     private static IIcon EOH_INNER;
     private static IIcon EOH_OUTER;

@@ -574,7 +574,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
      * <p>
      * good place to update parameter statuses, default implementation handles it well
      *
-     * @param machineBusy is machine doing SHIT
+     * @param machineBusy is machine doing stuff
      */
     protected void parametersStatusesWrite_EM(boolean machineBusy) { // todo unimplement?
         if (!machineBusy) {

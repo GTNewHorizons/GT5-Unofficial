@@ -59,8 +59,7 @@ public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
     @Override
     public int doCoverThings(ForgeDirection side, byte aInputRedstone, int aCoverID, int aCoverVariable,
             ICoverable aTileEntity, long aTimer) {
-        if ((aTileEntity instanceof IFluidHandler)) {
-            IFluidHandler fluidHandlerSelf = (IFluidHandler) aTileEntity;
+        if ((aTileEntity instanceof IFluidHandler fluidHandlerSelf)) {
             IFluidHandler fluidHandlerEnder = getEnderFluidContainer(getEnderLinkTag((IFluidHandler) aTileEntity));
 
             if (testBit(aCoverVariable, IMPORT_EXPORT_MASK)) {

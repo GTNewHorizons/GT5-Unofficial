@@ -145,7 +145,7 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
     protected CheckRecipeResult checkProcessing_EM() {
         if (eDataAccessHatches.size() > 0 && eStacksDataOutputs.size() > 0) {
             mEUt = -(int) V[slave ? 6 : 4];
-            eAmpereFlow = 1 + eStacksDataOutputs.size() * eDataAccessHatches.size();
+            eAmpereFlow = 1 + (long) eStacksDataOutputs.size() * eDataAccessHatches.size();
             mMaxProgresstime = 20;
             mEfficiencyIncrease = 10000;
             return SimpleCheckRecipeResult.ofSuccess("providing_data");

@@ -68,14 +68,6 @@ public class TileEyeOfHarmony extends TileEntity {
 
     private long tier = 9;
 
-    public void incrementSize() {
-        size += 1.5f;
-    }
-
-    public void increaseRotationSpeed() {
-        rotationSpeed++;
-    }
-
     public float getSize() {
         return size;
     }

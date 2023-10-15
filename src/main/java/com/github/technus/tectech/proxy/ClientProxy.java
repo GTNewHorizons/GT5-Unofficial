@@ -4,7 +4,6 @@ import static com.github.technus.tectech.TecTech.RANDOM;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.eyeOfHarmonyRenderBlock;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
@@ -170,12 +169,4 @@ public class ClientProxy extends CommonProxy {
         em_particle(w, box.maxX, box.minY, box.minZ);
     }
 
-    @Override
-    public EntityClientPlayerMP getPlayer() {
-        return Minecraft.getMinecraft().thePlayer;
-    }
-
-    public boolean isThePlayer(EntityPlayer player) {
-        return getPlayer() == player;
-    }
 }

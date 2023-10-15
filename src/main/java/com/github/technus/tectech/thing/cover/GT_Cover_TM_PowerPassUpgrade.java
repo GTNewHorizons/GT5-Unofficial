@@ -17,8 +17,7 @@ public class GT_Cover_TM_PowerPassUpgrade extends GT_CoverBehavior {
     public boolean isCoverPlaceable(ForgeDirection side, ItemStack aStack, ICoverable aTileEntity) {
         IMetaTileEntity iGregTechTileEntityOffset = aTileEntity.getIGregTechTileEntityOffset(0, 0, 0)
                 .getMetaTileEntity();
-        if (iGregTechTileEntityOffset instanceof GT_MetaTileEntity_MultiblockBase_EM) {
-            GT_MetaTileEntity_MultiblockBase_EM multi = (GT_MetaTileEntity_MultiblockBase_EM) iGregTechTileEntityOffset;
+        if (iGregTechTileEntityOffset instanceof GT_MetaTileEntity_MultiblockBase_EM multi) {
             return !multi.ePowerPassCover;
         }
         return false;
@@ -28,8 +27,7 @@ public class GT_Cover_TM_PowerPassUpgrade extends GT_CoverBehavior {
     public void placeCover(ForgeDirection side, ItemStack aCover, ICoverable aTileEntity) {
         IMetaTileEntity iGregTechTileEntityOffset = aTileEntity.getIGregTechTileEntityOffset(0, 0, 0)
                 .getMetaTileEntity();
-        if (iGregTechTileEntityOffset instanceof GT_MetaTileEntity_MultiblockBase_EM) {
-            GT_MetaTileEntity_MultiblockBase_EM multi = (GT_MetaTileEntity_MultiblockBase_EM) iGregTechTileEntityOffset;
+        if (iGregTechTileEntityOffset instanceof GT_MetaTileEntity_MultiblockBase_EM multi) {
             multi.ePowerPassCover = true;
             multi.ePowerPass = true;
         }
@@ -41,8 +39,7 @@ public class GT_Cover_TM_PowerPassUpgrade extends GT_CoverBehavior {
             boolean aForced) {
         IMetaTileEntity iGregTechTileEntityOffset = aTileEntity.getIGregTechTileEntityOffset(0, 0, 0)
                 .getMetaTileEntity();
-        if (iGregTechTileEntityOffset instanceof GT_MetaTileEntity_MultiblockBase_EM) {
-            GT_MetaTileEntity_MultiblockBase_EM multi = (GT_MetaTileEntity_MultiblockBase_EM) iGregTechTileEntityOffset;
+        if (iGregTechTileEntityOffset instanceof GT_MetaTileEntity_MultiblockBase_EM multi) {
             multi.ePowerPassCover = false;
             multi.ePowerPass = false;
         }

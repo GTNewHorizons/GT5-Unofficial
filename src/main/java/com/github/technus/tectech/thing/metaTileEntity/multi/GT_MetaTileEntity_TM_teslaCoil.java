@@ -232,8 +232,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                 @Override
                 public boolean check(GT_MetaTileEntity_TM_teslaCoil t, World world, int x, int y, int z) {
                     TileEntity tBase = world.getTileEntity(x, y, z);
-                    if (tBase instanceof BaseMetaPipeEntity) {
-                        BaseMetaPipeEntity tPipeBase = (BaseMetaPipeEntity) tBase;
+                    if (tBase instanceof BaseMetaPipeEntity tPipeBase) {
                         if (tPipeBase.isInvalidTileEntity()) return false;
                         return tPipeBase.getMetaTileEntity() instanceof GT_MetaPipeEntity_Frame;
                     }
@@ -257,9 +256,9 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                 public boolean placeBlock(GT_MetaTileEntity_TM_teslaCoil t, World world, int x, int y, int z,
                         ItemStack trigger) {
                     ItemStack tFrameStack = GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Titanium, 1);
-                    if (!GT_Utility.isStackValid(tFrameStack) || !(tFrameStack.getItem() instanceof ItemBlock))
+                    if (!GT_Utility.isStackValid(tFrameStack)
+                            || !(tFrameStack.getItem() instanceof ItemBlock tFrameStackItem))
                         return false;
-                    ItemBlock tFrameStackItem = (ItemBlock) tFrameStack.getItem();
                     return tFrameStackItem.placeBlockAt(
                             tFrameStack,
                             null,

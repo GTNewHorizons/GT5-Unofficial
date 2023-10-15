@@ -32,9 +32,7 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
 
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float timeSinceLastTick) {
-        if (!(tile instanceof TileEyeOfHarmony)) return;
-
-        TileEyeOfHarmony EOHRenderTile = (TileEyeOfHarmony) tile;
+        if (!(tile instanceof TileEyeOfHarmony EOHRenderTile)) return;
 
         // Render outer space layer.
 

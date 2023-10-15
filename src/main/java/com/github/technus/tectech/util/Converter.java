@@ -10,35 +10,12 @@ public final class Converter {
 
     private Converter() {}
 
-    public static void writeInts(int[] array, ByteArrayOutputStream byteArrayOutputStream) {
-        try {
-            DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
-            for (int i = 0; i < array.length; i++) {
-                dataOutputStream.writeInt(array[i]);
-            }
-            dataOutputStream.flush();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static void readInts(ByteArrayInputStream byteArrayInputStream, int[] array) {
-        try {
-            DataInputStream dataInputStream = new DataInputStream(byteArrayInputStream);
-            for (int i = 0; i < array.length; i++) {
-                array[i] = dataInputStream.readInt();
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public static byte[] writeInts(int[] array) {
         try {
             ByteArrayOutputStream bos = new ByteArrayOutputStream(array.length * 4);
             DataOutputStream dos = new DataOutputStream(bos);
-            for (int i = 0; i < array.length; i++) {
-                dos.writeInt(array[i]);
+            for (int j : array) {
+                dos.writeInt(j);
             }
 
             return bos.toByteArray();

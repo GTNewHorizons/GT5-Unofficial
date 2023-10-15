@@ -18,7 +18,7 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
  */
 public final class QuantumStuffRender implements ISimpleBlockRenderingHandler {
 
-    private static Tessellator tes = Tessellator.instance;
+    private static final Tessellator tes = Tessellator.instance;
 
     @Override
     public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {

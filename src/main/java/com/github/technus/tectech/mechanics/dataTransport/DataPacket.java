@@ -14,7 +14,7 @@ import com.gtnewhorizon.structurelib.util.Vec3Impl;
 public abstract class DataPacket<T> {
 
     private static final byte MAX_HISTORY = 64;
-    private Set<Vec3Impl> trace = new LinkedHashSet<>();
+    private final Set<Vec3Impl> trace = new LinkedHashSet<>();
 
     protected T content;
 

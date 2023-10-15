@@ -11,10 +11,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
 public class GT_MetaTileEntity_WetTransformer extends GT_MetaTileEntity_TT_Transformer {
 
-    public GT_MetaTileEntity_WetTransformer(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier);
-    }
-
     public GT_MetaTileEntity_WetTransformer(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
