@@ -572,7 +572,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                     .collect(Collectors.toList()),
                 4)
                 .phantom(true)
-                .widgetCreator((slotIndex, h) -> new FluidSlotWidget(h) {
+                .widgetCreator((slotIndex, h) -> (FluidSlotWidget) new FluidSlotWidget(h) {
 
                     @Override
                     protected void tryClickPhantom(ClickData clickData, ItemStack cursorStack) {
@@ -611,19 +611,20 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                         if (fluid != null) {
                             addFluidNameInfo(tooltip, fluid);
 
-                            if (autoPullFluidList) {
-                                tooltip.add(Text.localised("GT5U.machines.stocking_bus.cannot_set_slot"));
-                            } else {
+                            if (!autoPullFluidList) {
                                 tooltip.add(Text.localised("modularui.phantom.single.clear"));
                             }
                         } else {
                             tooltip.add(
                                 Text.localised("modularui.fluid.empty")
                                     .format(EnumChatFormatting.WHITE));
+                        }
+
+                        if (autoPullFluidList) {
                             tooltip.add(Text.localised("GT5U.machines.stocking_bus.cannot_set_slot"));
                         }
                     }
-                })
+                }.setUpdateTooltipEveryTick(true))
                 .build()
                 .setPos(new Pos2d(7, 9)));
 
@@ -634,7 +635,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                     .collect(Collectors.toList()),
                 4)
                 .phantom(true)
-                .widgetCreator((slotIndex, h) -> new FluidSlotWidget(h) {
+                .widgetCreator((slotIndex, h) -> (FluidSlotWidget) new FluidSlotWidget(h) {
 
                     @Override
                     protected void tryClickPhantom(ClickData clickData, ItemStack cursorStack) {}
@@ -647,6 +648,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                         FluidStack fluid = getContent();
                         if (fluid != null) {
                             addFluidNameInfo(tooltip, fluid);
+                            tooltip.add(Text.localised("modularui.fluid.phantom.amount", fluid.amount));
                             addAdditionalFluidInfo(tooltip, fluid);
                             if (!Interactable.hasShiftDown()) {
                                 tooltip.add(Text.EMPTY);
@@ -658,7 +660,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                                     .format(EnumChatFormatting.WHITE));
                         }
                     }
-                })
+                }.setUpdateTooltipEveryTick(true))
                 .background(GT_UITextures.SLOT_DARK_GRAY)
                 .controlsAmount(true)
                 .build()
