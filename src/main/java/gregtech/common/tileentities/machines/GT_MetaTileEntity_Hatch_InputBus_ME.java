@@ -99,7 +99,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                 "Auto-Pull from ME mode will automatically stock the first 16 items in the ME system, updated every 5 seconds.",
                 "Toggle by right-clicking with screwdriver, or use the GUI.",
                 "Use the GUI to limit the minimum stack size for Auto-Pulling.",
-                "Change ME connection behavior by right-clicking with wire cutter",
+                "Change ME connection behavior by right-clicking with wire cutter.",
                 "Configuration data can be copy+pasted using a data stick." });
         disableSort = true;
     }
@@ -614,8 +614,8 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                 })
                 .addTooltips(
                     Arrays.asList(
-                        StatCollector.translateToLocal("GT5U.machines.stocking_bus.auto_pull.tooltip"),
-                        StatCollector.translateToLocal("GT5U.machines.stocking_bus.auto_pull.tooltip.1")))
+                        StatCollector.translateToLocal("GT5U.machines.stocking_bus.auto_pull.tooltip.1"),
+                        StatCollector.translateToLocal("GT5U.machines.stocking_bus.auto_pull.tooltip.2")))
                 .setSize(16, 16)
                 .setPos(80, 10))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> autoPullItemList, this::setAutoPullItemList))

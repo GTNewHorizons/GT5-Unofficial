@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import javax.annotation.Nonnull;
@@ -88,10 +89,12 @@ import gregtech.client.GT_SoundLoop;
 import gregtech.common.GT_Pollution;
 import gregtech.common.gui.modularui.widget.CheckRecipeResultSyncer;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Input_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.IDualInputInventory;
+import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -1341,6 +1344,14 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                         rList.add(tFluid);
                     }
                 }
+            } else if (tHatch instanceof GT_MetaTileEntity_Hatch_Input_ME) {
+                if (isValidMetaTileEntity(tHatch)) {
+                    for (FluidStack fluidStack : ((GT_MetaTileEntity_Hatch_Input_ME) tHatch).getStoredFluids()) {
+                        if (fluidStack == null) continue;
+
+                        rList.add(fluidStack);
+                    }
+                }
             } else {
                 if (tHatch.getFillableStack() != null) {
                     // GT_Log.out.print("sf: " + tHatch.getFillableStack() + "\n");
@@ -1405,13 +1416,26 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         for (GT_MetaTileEntity_Hatch_InputBus hatch : filterValidMTEs(mInputBusses)) {
             hatch.startRecipeProcessing();
         }
+        for (GT_MetaTileEntity_Hatch_Input hatch : filterValidMTEs(mInputHatches)) {
+            if (hatch instanceof IRecipeProcessingAwareHatch aware) {
+                aware.startRecipeProcessing();
+            }
+        }
     }
 
     protected void endRecipeProcessing() {
-        for (GT_MetaTileEntity_Hatch_InputBus hatch : filterValidMTEs(mInputBusses)) {
-            CheckRecipeResult result = hatch.endRecipeProcessing(this);
+        Consumer<CheckRecipeResult> setResultIfFailure = result -> {
             if (!result.wasSuccessful()) {
                 this.checkRecipeResult = result;
+            }
+        };
+
+        for (GT_MetaTileEntity_Hatch_InputBus hatch : filterValidMTEs(mInputBusses)) {
+            setResultIfFailure.accept(hatch.endRecipeProcessing(this));
+        }
+        for (GT_MetaTileEntity_Hatch_Input hatch : filterValidMTEs(mInputHatches)) {
+            if (hatch instanceof IRecipeProcessingAwareHatch aware) {
+                setResultIfFailure.accept(aware.endRecipeProcessing(this));
             }
         }
     }

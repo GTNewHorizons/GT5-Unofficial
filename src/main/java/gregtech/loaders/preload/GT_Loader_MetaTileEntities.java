@@ -161,6 +161,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.INPUT_HATCH_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.INPUT_HATCH_IV;
 import static gregtech.api.enums.MetaTileEntityIDs.INPUT_HATCH_LV;
 import static gregtech.api.enums.MetaTileEntityIDs.INPUT_HATCH_LuV;
+import static gregtech.api.enums.MetaTileEntityIDs.INPUT_HATCH_ME;
 import static gregtech.api.enums.MetaTileEntityIDs.INPUT_HATCH_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.INPUT_HATCH_UHV;
 import static gregtech.api.enums.MetaTileEntityIDs.INPUT_HATCH_ULV;
@@ -511,6 +512,7 @@ import gregtech.common.tileentities.machines.GT_MetaTileEntity_BasicHull_SteelBr
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_CraftingInput_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_CraftingInput_Slave;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_InputBus_ME;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Input_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_AdvSeismicProspector;
@@ -2315,6 +2317,9 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 .getStackForm(1L));
         ItemList.Hatch_Input_Bus_ME.set(
             new GT_MetaTileEntity_Hatch_InputBus_ME(INPUT_BUS_ME.ID, "hatch.input_bus.me", "Stocking Input Bus (ME)")
+                .getStackForm(1L));
+        ItemList.Hatch_Input_ME.set(
+            new GT_MetaTileEntity_Hatch_Input_ME(INPUT_HATCH_ME.ID, "hatch.input.me", "Stocking Input Hatch (ME)")
                 .getStackForm(1L));
         ItemList.Hatch_Output_ME.set(
             new GT_MetaTileEntity_Hatch_Output_ME(OUTPUT_HATCH_ME.ID, "hatch.output.me", "Output Hatch (ME)")

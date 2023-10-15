@@ -58,6 +58,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_AssemblyLine;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Input_ME;
 
 public class GT_MetaTileEntity_AssemblyLine
     extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_AssemblyLine> implements ISurvivalConstructable {
@@ -278,6 +279,13 @@ public class GT_MetaTileEntity_AssemblyLine
                         }
                         tFluids[i] = tRecipe.mFluidInputs[i].amount;
                         tFluidSlot[i] = tMultiHatch.getFluidSlot(tRecipe.mFluidInputs[i]);
+                    } else if (mInputHatches.get(i) instanceof GT_MetaTileEntity_Hatch_Input_ME meHatch) {
+                        FluidStack fluidStack = meHatch.getMatchingFluidStack(tRecipe.mFluidInputs[i]);
+                        if (fluidStack == null || fluidStack.amount < tRecipe.mFluidInputs[i].amount) {
+                            continue nextDataStick;
+                        }
+                        tFluids[i] = tRecipe.mFluidInputs[i].amount;
+                        tFluidSlot[i] = meHatch.getFluidSlot(tRecipe.mFluidInputs[i]);
                     } else {
                         FluidStack fluidInHatch = mInputHatches.get(i).mFluid;
                         if (!GT_Utility.areFluidsEqual(fluidInHatch, tRecipe.mFluidInputs[i], true)
@@ -331,6 +339,9 @@ public class GT_MetaTileEntity_AssemblyLine
                 if (tMultiHatch.getFluid(tFluidSlot[i]).amount <= 0) {
                     tMultiHatch.setFluid(null, tFluidSlot[i]);
                 }
+            } else if (mInputHatches.get(i) instanceof GT_MetaTileEntity_Hatch_Input_ME meHatch) {
+                FluidStack fluidStack = meHatch.getShadowFluidStack(tFluidSlot[i]);
+                fluidStack.amount = Math.max(0, fluidStack.amount - tFluids[i]);
             } else {
                 mInputHatches.get(i).mFluid.amount -= tFluids[i];
                 if (mInputHatches.get(i).mFluid.amount <= 0) {
