@@ -22,7 +22,6 @@ import gregtech.api.net.GT_Packet_TileEntityCoverGUI;
  */
 public abstract class GT_CoverBehavior extends GT_CoverBehaviorBase<ISerializableObject.LegacyCoverData> {
 
-    public WeakReference<EntityPlayer> lastPlayer = null;
     public boolean mPlayerNotified = false;
 
     public GT_CoverBehavior() {
