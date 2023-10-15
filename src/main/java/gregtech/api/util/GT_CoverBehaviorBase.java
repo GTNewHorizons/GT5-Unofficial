@@ -2,6 +2,7 @@ package gregtech.api.util;
 
 import static gregtech.api.enums.GT_Values.E;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -45,7 +46,7 @@ import gregtech.common.covers.CoverInfo;
  */
 public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
 
-    public EntityPlayer lastPlayer = null;
+    public WeakReference<EntityPlayer> lastPlayer = null;
     private final Class<T> typeToken;
     private final ITexture coverFGTexture;
 
@@ -620,7 +621,7 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     protected boolean onCoverShiftRightClickImpl(ForgeDirection side, int aCoverID, T aCoverVariable,
         ICoverable aTileEntity, EntityPlayer aPlayer) {
         if (hasCoverGUI() && aPlayer instanceof EntityPlayerMP) {
-            lastPlayer = aPlayer;
+            lastPlayer = new WeakReference<>(aPlayer);
             if (useModularUI()) {
                 GT_UIInfos.openCoverUI(aTileEntity, aPlayer, side);
             } else {

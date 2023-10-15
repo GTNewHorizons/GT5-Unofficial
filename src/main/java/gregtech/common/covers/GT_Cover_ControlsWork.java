@@ -50,16 +50,20 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior implements IControls
                 if (machine.wasShutdown()) {
                     machine.disableWorking();
                     if (!mPlayerNotified) {
-                        mPlayerNotified = true;
-                        GT_Utility.sendChatToPlayer(
-                            lastPlayer,
-                            aTileEntity.getInventoryName() + "at "
-                                + String.format(
-                                    "(%d,%d,%d)",
-                                    aTileEntity.getXCoord(),
-                                    aTileEntity.getYCoord(),
-                                    aTileEntity.getZCoord())
-                                + " shut down.");
+                        EntityPlayer player = lastPlayer == null ? null : lastPlayer.get();
+                        if (player != null) {
+                            lastPlayer = null;
+                            mPlayerNotified = true;
+                            GT_Utility.sendChatToPlayer(
+                                player,
+                                aTileEntity.getInventoryName() + "at "
+                                    + String.format(
+                                        "(%d,%d,%d)",
+                                        aTileEntity.getXCoord(),
+                                        aTileEntity.getYCoord(),
+                                        aTileEntity.getZCoord())
+                                    + " shut down.");
+                        }
                     }
                     return 2;
                 } else {
