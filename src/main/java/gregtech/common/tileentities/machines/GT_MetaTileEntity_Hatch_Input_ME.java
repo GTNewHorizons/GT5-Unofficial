@@ -361,6 +361,53 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
         return requestSource;
     }
 
+    public FluidStack getMatchingFluidStack(FluidStack fluidStack) {
+        if (fluidStack == null) return null;
+
+        for (int i = 0; i < storedFluids.length; i++) {
+            if (storedFluids[i] == null) {
+                continue;
+            }
+
+            if (GT_Utility.areFluidsEqual(fluidStack, storedFluids[i], false)) {
+                updateInformationSlot(i);
+                if (storedInformationFluids[i] != null) {
+                    shadowStoredFluids[i] = storedInformationFluids[i];
+                    savedStackSizes[i] = storedInformationFluids[i].amount;
+                    return shadowStoredFluids[i];
+                }
+
+                shadowStoredFluids[i] = null;
+                return null;
+            }
+        }
+        return null;
+    }
+
+    public FluidStack getShadowFluidStack(int index) {
+        if (index < 0 || index >= storedFluids.length) {
+            return null;
+        }
+
+        return shadowStoredFluids[index];
+    }
+
+    public int getFluidSlot(FluidStack fluidStack) {
+        if (fluidStack == null) return -1;
+
+        for (int i = 0; i < storedFluids.length; i++) {
+            if (storedFluids[i] == null) {
+                continue;
+            }
+
+            if (GT_Utility.areFluidsEqual(fluidStack, storedFluids[i], false)) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
     @Override
     public boolean canTankBeEmptied() {
         return false;
