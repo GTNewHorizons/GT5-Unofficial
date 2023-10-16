@@ -1,13 +1,26 @@
 package net.glease.ggfab.mte;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockUnlocalizedName;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.GT_Mod.GT_FML_LOGGER;
-import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.enums.GT_HatchElement.Energy;
+import static gregtech.api.enums.GT_HatchElement.ExoticEnergy;
+import static gregtech.api.enums.GT_HatchElement.InputBus;
+import static gregtech.api.enums.GT_HatchElement.InputHatch;
+import static gregtech.api.enums.GT_HatchElement.Maintenance;
+import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
-import static net.glease.ggfab.BlockIcons.*;
+import static net.glease.ggfab.BlockIcons.OVERLAY_FRONT_ADV_ASSLINE;
+import static net.glease.ggfab.BlockIcons.OVERLAY_FRONT_ADV_ASSLINE_ACTIVE;
+import static net.glease.ggfab.BlockIcons.OVERLAY_FRONT_ADV_ASSLINE_ACTIVE_GLOW;
+import static net.glease.ggfab.BlockIcons.OVERLAY_FRONT_ADV_ASSLINE_GLOW;
+import static net.glease.ggfab.BlockIcons.OVERLAY_FRONT_ADV_ASSLINE_STUCK;
+import static net.glease.ggfab.BlockIcons.OVERLAY_FRONT_ADV_ASSLINE_STUCK_GLOW;
 
 import java.util.ArrayList;
 import java.util.Arrays;
