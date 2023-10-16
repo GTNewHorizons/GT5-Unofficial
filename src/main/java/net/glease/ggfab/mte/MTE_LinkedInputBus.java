@@ -271,7 +271,9 @@ public class MTE_LinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus {
 
     @Override
     public boolean shouldDropItemAt(int index) {
-        return mRealInventory != null && mRealInventory.ref <= 1;
+        // NOTE by this time onBlockDestroyed has already been called, i.e. so ref has already been decremented.
+        // so we really should check for ref <= 0 instead of ref <= 1
+        return mRealInventory != null && mRealInventory.ref <= 0;
     }
 
     @Override
