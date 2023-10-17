@@ -3,7 +3,6 @@ package gtPlusPlus.xmod.gregtech.common.helpers;
 import net.minecraft.item.ItemStack;
 
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
-import gtPlusPlus.core.slots.SlotBuzzSaw.SAWTOOL;
 
 public class TreeFarmHelper {
 
@@ -27,6 +26,13 @@ public class TreeFarmHelper {
             }
         }
         return SAWTOOL.NONE;
+    }
+
+    public enum SAWTOOL {
+        NONE,
+        SAW,
+        BUZZSAW,
+        CHAINSAW
     }
 
 }
