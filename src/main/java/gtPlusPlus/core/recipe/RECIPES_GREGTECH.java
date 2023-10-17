@@ -54,7 +54,6 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_RecipeConstants;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.HotFuel;
-import gregtech.api.util.ThermalFuel;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
@@ -1208,8 +1207,6 @@ public class RECIPES_GREGTECH {
                 MISC_MATERIALS.SOLAR_SALT_COLD.getFluidStack(100),
                 FluidUtils.getSuperHeatedSteam(100000),
                 0);
-
-        ThermalFuel.addSteamTurbineFuel(FluidUtils.getFluidStack("steam", 1024));
 
         GT_Values.RA.stdBuilder().itemInputs(ItemUtils.getSimpleStack(Items.lava_bucket)).metadata(FUEL_VALUE, 32)
                 .metadata(FUEL_TYPE, 2).duration(0).eut(0).addTo(GT_RecipeConstants.Fuel);

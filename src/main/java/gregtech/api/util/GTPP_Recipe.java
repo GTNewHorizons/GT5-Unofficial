@@ -271,22 +271,6 @@ public class GTPP_Recipe extends GT_Recipe {
                 E,
                 true,
                 true).setUsualFluidInputCount(3).setUsualFluidOutputCount(3);
-        public static final GT_Recipe_Map sSteamTurbineFuels = new GT_Recipe_Map(
-                new HashSet<>(10),
-                "gtpp.recipe.steamturbinefuel",
-                "GeoThermal Fuel",
-                null,
-                "",
-                1,
-                1,
-                0,
-                0,
-                1,
-                "Fuel Value: ",
-                1000,
-                " EU",
-                true,
-                false).useModularUI(true);
 
         // LFTR recipes
         public static final GT_Recipe_Map sLiquidFluorineThoriumReactorRecipes = new GT_Recipe_Map_FluidOnly(
