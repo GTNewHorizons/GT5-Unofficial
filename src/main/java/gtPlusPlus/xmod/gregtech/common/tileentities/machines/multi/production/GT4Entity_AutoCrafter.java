@@ -30,7 +30,6 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
-import gtPlusPlus.xmod.gregtech.common.helpers.autocrafter.AC_Helper_Utils;
 
 public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase<GT4Entity_AutoCrafter>
         implements ISurvivalConstructable {
@@ -177,18 +176,6 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase<GT4Entity
         }
 
         return new String[] { "Large Scale Auto-Assembler v1.01c", running, maintenance, tSpecialText };
-    }
-
-    @Override
-    public void explodeMultiblock() {
-        AC_Helper_Utils.removeCrafter(this);
-        super.explodeMultiblock();
-    }
-
-    @Override
-    public void doExplosion(long aExplosionPower) {
-        AC_Helper_Utils.removeCrafter(this);
-        super.doExplosion(aExplosionPower);
     }
 
     @Override
