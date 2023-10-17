@@ -92,7 +92,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
             aID,
             aName,
             aNameRegional,
-            1,
+            3,
             SLOT_COUNT * 2 + 2,
             new String[] { "Advanced item input for Multiblocks", "Retrieves directly from ME",
                 "Keeps 16 item types in stock",

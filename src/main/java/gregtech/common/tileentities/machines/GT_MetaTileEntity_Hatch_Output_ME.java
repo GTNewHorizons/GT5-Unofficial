@@ -67,7 +67,7 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
             aID,
             aName,
             aNameRegional,
-            1,
+            3,
             new String[] { "Fluid Output for Multiblocks", "Stores directly into ME",
                 "Can cache infinite amount of fluids.", "Change cache behavior by right-clicking with screwdriver.",
                 "Change ME connection behavior by right-clicking with wire cutter" },

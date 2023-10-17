@@ -107,7 +107,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
             aID,
             aName,
             aNameRegional,
-            1,
+            3,
             1,
             new String[] { "Advanced fluid input for Multiblocks", "Retrieves directly from ME",
                 "Keeps 16 fluid types in stock",
