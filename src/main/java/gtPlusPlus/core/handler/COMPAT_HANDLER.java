@@ -1,7 +1,6 @@
 package gtPlusPlus.core.handler;
 
 import static gregtech.api.enums.Mods.ExtraUtilities;
-import static gregtech.api.enums.Mods.OpenBlocks;
 import static gregtech.api.enums.Mods.PamsHarvestCraft;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Mods.Witchery;
@@ -22,7 +21,6 @@ import gtPlusPlus.api.objects.minecraft.ItemPackage;
 import gtPlusPlus.core.common.compat.COMPAT_ExtraUtils;
 import gtPlusPlus.core.common.compat.COMPAT_HarvestCraft;
 import gtPlusPlus.core.common.compat.COMPAT_IC2;
-import gtPlusPlus.core.common.compat.COMPAT_OpenBlocks;
 import gtPlusPlus.core.common.compat.COMPAT_Thaumcraft;
 import gtPlusPlus.core.common.compat.COMPAT_Witchery;
 import gtPlusPlus.core.handler.Recipes.LateRegistrationHandler;
@@ -192,10 +190,6 @@ public class COMPAT_HANDLER {
 
     // InterMod
     public static void intermodOreDictionarySupport() {
-
-        if (OpenBlocks.isModLoaded()) {
-            COMPAT_OpenBlocks.OreDict();
-        }
         if (Thaumcraft.isModLoaded()) {
             COMPAT_Thaumcraft.OreDict();
         }
@@ -206,7 +200,6 @@ public class COMPAT_HANDLER {
             COMPAT_HarvestCraft.OreDict();
         }
         COMPAT_IC2.OreDict();
-
         if (Witchery.isModLoaded()) {
             COMPAT_Witchery.OreDict();
         }
