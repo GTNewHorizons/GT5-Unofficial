@@ -163,12 +163,6 @@ item.itemGemShards.name=钻石碎片
 item.itemHalfCompleteCasings.name=半成品机械方块
 item.itemSulfuricPotion.name=喷溅型 硫酸
 item.itemHydrofluoricPotion.name=喷溅型 氢氟酸
-item.itemIngotRaisinBread.name=一份葡萄干面包
-item.itemHotIngotRaisinBread.name=一份热葡萄干面包
-item.itemFoodRaisinToast.name=一份葡萄干烤面包
-item.itemHotFoodRaisinToast.name=一份热葡萄干烤面包
-item.itemFoodCurriedSausages.name=一份咖喱香肠
-item.itemHotFoodCurriedSausages.name=一份热咖喱香肠
 
 
 //Conversion Dusts
