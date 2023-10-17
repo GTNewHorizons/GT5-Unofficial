@@ -79,6 +79,7 @@ import gregtech.api.recipe.check.SingleRecipeCheck;
 import gregtech.api.util.GT_ClientPreference;
 import gregtech.api.util.GT_ExoticEnergyInputHelper;
 import gregtech.api.util.GT_Log;
+import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -1120,50 +1121,13 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
      */
     protected void calculateOverclockedNessMultiInternal(long aEUt, int aDuration, int mAmperage, long maxInputVoltage,
         boolean perfectOC) {
-        byte mTier = (byte) Math.max(0, GT_Utility.getTier(maxInputVoltage));
-        if (mTier == 0) {
-            // Long time calculation
-            long xMaxProgresstime = ((long) aDuration) << 1;
-            if (xMaxProgresstime > Integer.MAX_VALUE - 1) {
-                // make impossible if too long
-                mEUt = Integer.MAX_VALUE - 1;
-                mMaxProgresstime = Integer.MAX_VALUE - 1;
-            } else {
-                mEUt = GT_Utility.safeInt(aEUt >> 2);
-                mMaxProgresstime = (int) xMaxProgresstime;
-            }
-        } else {
-            // Long EUt calculation
-            long xEUt = aEUt;
-            // Isnt too low EUt check?
-            long tempEUt = Math.max(xEUt, V[1]);
-
-            mMaxProgresstime = aDuration;
-
-            final int ocTimeShift = perfectOC ? 2 : 1;
-
-            while (tempEUt <= V[mTier - 1] * mAmperage) {
-                tempEUt <<= 2; // this actually controls overclocking
-                // xEUt *= 4;//this is effect of everclocking
-                int oldTime = mMaxProgresstime;
-                mMaxProgresstime >>= ocTimeShift; // this is effect of overclocking
-                if (mMaxProgresstime < 1) {
-                    if (oldTime == 1) break;
-                    xEUt *= (long) oldTime * (perfectOC ? 1 : 2);
-                    break;
-                } else {
-                    xEUt <<= 2;
-                }
-            }
-            if (xEUt > Integer.MAX_VALUE - 1) {
-                mEUt = Integer.MAX_VALUE - 1;
-                mMaxProgresstime = Integer.MAX_VALUE - 1;
-            } else {
-                mEUt = (int) xEUt;
-                if (mEUt == 0) mEUt = 1;
-                if (mMaxProgresstime == 0) mMaxProgresstime = 1; // set time to 1 tick
-            }
-        }
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(aEUt)
+            .setEUt(maxInputVoltage * mAmperage)
+            .setDuration(aDuration)
+            .setDurationDecreasePerOC(perfectOC ? 2 : 1)
+            .calculate();
+        mEUt = (int) calculator.getConsumption();
+        mMaxProgresstime = calculator.getDuration();
     }
 
     @Deprecated

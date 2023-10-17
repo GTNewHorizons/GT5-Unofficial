@@ -3,16 +3,17 @@ package gregtech.common.power;
 import static gregtech.api.util.GT_Utility.trans;
 
 import gregtech.api.recipe.RecipeMapFrontend;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.nei.NEIRecipeInfo;
 
 public class SteamPower extends Power {
 
-    private final double euPerTickMultiplier;
-    private final double durationMultiplier;
+    private final int euPerTickMultiplier;
+    private final int durationMultiplier;
     private final String[] STEAM_TIER_NAMES = { "Bronze", "Steel" };
 
-    public SteamPower(byte tier, double euPerTickMultiplier, double durationMultiplier) {
+    public SteamPower(byte tier, int euPerTickMultiplier, int durationMultiplier) {
         super(tier);
         this.euPerTickMultiplier = euPerTickMultiplier;
         this.durationMultiplier = durationMultiplier;
@@ -29,9 +30,9 @@ public class SteamPower extends Power {
     }
 
     @Override
-    public void computePowerUsageAndDuration(int euPerTick, int duration) {
-        recipeEuPerTick = (int) (euPerTick * euPerTickMultiplier);
-        recipeDuration = (int) (duration * durationMultiplier);
+    public void compute(GT_Recipe recipe) {
+        recipeEuPerTick = recipe.mEUt * euPerTickMultiplier;
+        recipeDuration = recipe.mDuration * durationMultiplier;
     }
 
     @Override

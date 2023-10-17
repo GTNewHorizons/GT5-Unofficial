@@ -2,6 +2,7 @@ package gregtech.common.power;
 
 import static gregtech.api.util.GT_Utility.trans;
 
+import gregtech.api.enums.GT_Values;
 import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -13,6 +14,10 @@ import gregtech.nei.NEIRecipeInfo;
  * <p>
  * Override {@link gregtech.api.interfaces.metatileentity.IMetaTileEntity#getPower()} to use derivatives.
  * When looking up NEI recipe catalyst, Power object for the corresponding machine will be used.
+ * <p>
+ * This is also used for calculating overclock for singleblock machines, while multiblock machines use different system.
+ * This difference comes from multiblocks not having functionality for displaying OCed description on NEI, but it's
+ * still a bit weird... Maybe it can be improved, but for now it's not that bad.
  * <p>
  * See also: {@link gregtech.nei.GT_NEI_DefaultHandler#getUsageAndCatalystHandler}
  */
@@ -42,17 +47,22 @@ public abstract class Power {
     public abstract String getTierString();
 
     /**
-     * Sets recipe EU/t and duration to use for the give parameters.
+     * Computes power usage and duration for the give recipe.
      * <p>
-     * This method should be called prior to usage of any value except the power tier.
+     * This method should be called prior to any method except for getTier() and getTierString().
      */
-    public abstract void computePowerUsageAndDuration(int euPerTick, int duration);
+    public abstract void compute(GT_Recipe recipe);
 
-    public void computePowerUsageAndDuration(int euPerTick, int duration, int specialValue) {
-        computePowerUsageAndDuration(euPerTick, duration);
+    public final void compute(int euPerTick, int duration) {
+        compute(
+            GT_Values.RA.stdBuilder()
+                .eut(euPerTick)
+                .duration(duration)
+                .build()
+                .orElseThrow(RuntimeException::new));
     }
 
-    public int getEuPerTick() {
+    public int getEUPerTick() {
         return recipeEuPerTick;
     }
 
@@ -60,15 +70,15 @@ public abstract class Power {
         return recipeDuration;
     }
 
-    public double getDurationSeconds() {
+    public final double getDurationSeconds() {
         return 0.05d * getDurationTicks();
     }
 
-    public String getDurationStringSeconds() {
+    public final String getDurationStringSeconds() {
         return GT_Utility.formatNumbers(getDurationSeconds()) + GT_Utility.trans("161", " secs");
     }
 
-    public String getDurationStringTicks() {
+    public final String getDurationStringTicks() {
         if (getDurationTicks() == 1) {
             return GT_Utility.formatNumbers(getDurationTicks()) + GT_Utility.trans("209.1", " tick");
         }
@@ -79,7 +89,7 @@ public abstract class Power {
      * Draws info about this power object on NEI recipe GUI. Override {@link #drawNEIDescImpl} for implementation.
      */
     public final void drawNEIDesc(NEIRecipeInfo recipeInfo, RecipeMapFrontend frontend) {
-        if (getEuPerTick() > 0) {
+        if (getEUPerTick() > 0) {
             frontend.drawNEIText(recipeInfo, trans("152", "Total: ") + getTotalPowerString());
             drawNEIDescImpl(recipeInfo, frontend);
         }

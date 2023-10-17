@@ -400,7 +400,7 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
             // By default, assume generic EU LV power with no overclocks
             power = new EUPower((byte) 1, uiProperties.amperage);
         }
-        power.computePowerUsageAndDuration(recipe.mEUt, recipe.mDuration, recipe.mSpecialValue);
+        power.compute(recipe);
 
         frontend.drawNEIDescription(new NEIRecipeInfo(recipe, recipeMap, cachedRecipe, power, getDescriptionYOffset()));
     }

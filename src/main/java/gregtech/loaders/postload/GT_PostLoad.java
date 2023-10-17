@@ -327,7 +327,7 @@ public class GT_PostLoad {
             null,
             new FluidStack[] { Materials.UUMatter.getFluid(1L) },
             GT_MetaTileEntity_Massfabricator.sDurationMultiplier,
-            256,
+            GT_MetaTileEntity_Massfabricator.BASE_EUT,
             0);
         RecipeMaps.massFabFakeRecipes.addFakeRecipe(
             false,
@@ -337,7 +337,7 @@ public class GT_PostLoad {
             new FluidStack[] { Materials.UUAmplifier.getFluid(GT_MetaTileEntity_Massfabricator.sUUAperUUM) },
             new FluidStack[] { Materials.UUMatter.getFluid(1L) },
             GT_MetaTileEntity_Massfabricator.sDurationMultiplier / GT_MetaTileEntity_Massfabricator.sUUASpeedBonus,
-            256,
+            GT_MetaTileEntity_Massfabricator.BASE_EUT,
             0);
         RecipeMaps.rockBreakerFakeRecipes.addFakeRecipe(
             false,

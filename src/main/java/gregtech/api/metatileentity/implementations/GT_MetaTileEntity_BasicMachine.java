@@ -709,19 +709,21 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         return getBaseMetaTileEntity().decreaseStoredEnergyUnits(aEUt, false);
     }
 
-    protected void calculateOverclockedNess(GT_Recipe aRecipe) {
-        calculateOverclockedNess(aRecipe.mEUt, aRecipe.mDuration);
+    /**
+     * Calculates overclock based on {@link #mPower}.
+     */
+    protected void calculateOverclockedNess(GT_Recipe recipe) {
+        mPower.compute(recipe);
+        mEUt = mPower.getEUPerTick();
+        mMaxProgresstime = mPower.getDurationTicks();
     }
 
     /**
-     * Calcualtes overclocked ness using long integers
-     *
-     * @param aEUt      - recipe EUt
-     * @param aDuration - recipe Duration
+     * Calculates overclock based on {@link #mPower}.
      */
-    protected void calculateOverclockedNess(int aEUt, int aDuration) {
-        mPower.computePowerUsageAndDuration(aEUt, aDuration);
-        mEUt = mPower.getEuPerTick();
+    protected void calculateOverclockedNess(int eut, int duration) {
+        mPower.compute(eut, duration);
+        mEUt = mPower.getEUPerTick();
         mMaxProgresstime = mPower.getDurationTicks();
     }
 

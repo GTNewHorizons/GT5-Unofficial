@@ -3,6 +3,7 @@ package gregtech.common.power;
 import static gregtech.api.util.GT_Utility.trans;
 
 import gregtech.api.recipe.RecipeMapFrontend;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.nei.NEIRecipeInfo;
 
@@ -24,10 +25,10 @@ public class EUPower extends Power {
 
     @Override
     // This generic EU Power class has no overclock defined and does no special calculations.
-    public void computePowerUsageAndDuration(int euPerTick, int duration) {
-        originalEUt = euPerTick;
-        recipeEuPerTick = euPerTick;
-        recipeDuration = duration;
+    public void compute(GT_Recipe recipe) {
+        originalEUt = recipe.mEUt;
+        recipeEuPerTick = recipe.mEUt;
+        recipeDuration = recipe.mDuration;
     }
 
     @Override

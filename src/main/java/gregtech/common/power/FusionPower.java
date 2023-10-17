@@ -5,6 +5,7 @@ import static gregtech.api.enums.GT_Values.V;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.nei.formatter.FusionSpecialValueFormatter;
@@ -19,33 +20,23 @@ public class FusionPower extends BasicMachineEUPower {
     }
 
     @Override
-    public void computePowerUsageAndDuration(int euPerTick, int duration, int specialValue) {
-        originalEUt = euPerTick;
-        recipeEuPerTick = euPerTick;
-        recipeDuration = duration;
-        // It's safe to assume fusion is above ULV. We put this as safety check here anyway
-        if (tier > 0) {
-            int maxPossibleOverclocks = FusionSpecialValueFormatter.getFusionTier(this.capableStartup, V[tier - 1])
-                - FusionSpecialValueFormatter.getFusionTier(specialValue, euPerTick);
-            // Isn't too low EUt check?
-            long tempEUt = Math.max(euPerTick, V[1]);
-
-            recipeDuration = duration;
-
-            while (tempEUt <= V[tier - 1] * (long) amperage && maxPossibleOverclocks-- > 0) {
-                tempEUt <<= 1; // this actually controls overclocking
-                recipeDuration >>= 1; // this is effect of overclocking
-            }
-            if (tempEUt > Integer.MAX_VALUE - 1) {
-                recipeEuPerTick = Integer.MAX_VALUE - 1;
-                recipeDuration = Integer.MAX_VALUE - 1;
-            } else {
-                recipeEuPerTick = (int) tempEUt;
-                if (recipeEuPerTick == 0) recipeEuPerTick = 1;
-                if (recipeDuration == 0) recipeDuration = 1; // set time to 1 tick
-            }
-        }
+    public void compute(GT_Recipe recipe) {
+        originalEUt = recipe.mEUt;
+        final int maxPossibleOverclocks = FusionSpecialValueFormatter.getFusionTier(capableStartup, V[tier])
+            - FusionSpecialValueFormatter.getFusionTier(recipe.mSpecialValue, recipe.mEUt);
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
+            .setEUt(V[tier])
+            .setDuration(recipe.mDuration)
+            .setEUtIncreasePerOC(getEUtIncreasePerOC())
+            .limitOverclockCount(maxPossibleOverclocks)
+            .calculate();
+        recipeEuPerTick = (int) calculator.getConsumption();
+        recipeDuration = calculator.getDuration();
         wasOverclocked = checkIfOverclocked();
+    }
+
+    protected int getEUtIncreasePerOC() {
+        return 1;
     }
 
     @Override
