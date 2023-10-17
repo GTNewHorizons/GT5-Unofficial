@@ -11,12 +11,10 @@ import gregtech.api.enums.TAE;
 import gregtech.api.util.GT_LanguageManager;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.handler.AchievementHandler;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.LangUtils;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.common.covers.CoverManager;
-import gtPlusPlus.xmod.gregtech.common.helpers.MachineUpdateHandler;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
 
@@ -34,7 +32,6 @@ public class Meta_GT_Proxy {
     public static void init() {
         PollutionUtils.setPollutionFluids();
         fixIC2FluidNames();
-        Utils.registerEvent(new MachineUpdateHandler());
     }
 
     public static void postInit() {
