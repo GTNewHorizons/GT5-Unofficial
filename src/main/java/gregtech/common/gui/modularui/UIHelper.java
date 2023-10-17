@@ -13,12 +13,38 @@ import com.gtnewhorizons.modularui.api.math.Pos2d;
 
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.modularui.SteamTexture;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class UIHelper {
+
+    /**
+     * Iterates over candidates for slot placement.
+     */
+    public static void forEachSlots(ForEachSlot forEachItemInputSlot, ForEachSlot forEachItemOutputSlot,
+        ForEachSlot forEachSpecialSlot, ForEachSlot forEachFluidInputSlot, ForEachSlot forEachFluidOutputSlot,
+        IDrawable itemSlotBackground, IDrawable fluidSlotBackground, @Nullable RecipeMap<?> recipeMap,
+        int itemInputCount, int itemOutputCount, int fluidInputCount, int fluidOutputCount, SteamVariant steamVariant,
+        Pos2d offset) {
+        forEachSlots(
+            forEachItemInputSlot,
+            forEachItemOutputSlot,
+            forEachSpecialSlot,
+            forEachFluidInputSlot,
+            forEachFluidOutputSlot,
+            itemSlotBackground,
+            fluidSlotBackground,
+            recipeMap != null ? recipeMap.getFrontend() : null,
+            itemInputCount,
+            itemOutputCount,
+            fluidInputCount,
+            fluidOutputCount,
+            steamVariant,
+            offset);
+    }
 
     /**
      * Iterates over candidates for slot placement.
