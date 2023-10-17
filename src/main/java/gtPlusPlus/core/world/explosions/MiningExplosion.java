@@ -22,7 +22,7 @@ import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
-import gtPlusPlus.api.objects.random.XSTR;
+import gregtech.api.objects.XSTR;
 import gtPlusPlus.core.entity.EntityPrimedMiningExplosive;
 import gtPlusPlus.core.util.math.MathUtils;
 

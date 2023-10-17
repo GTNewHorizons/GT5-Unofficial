@@ -11,9 +11,8 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 
-import gtPlusPlus.api.objects.random.XSTR;
+import gregtech.api.objects.XSTR;
 
 public class GenerateDictionaries {
 
@@ -97,14 +96,13 @@ public class GenerateDictionaries {
     private static final class Utils {
 
         private static final Charset utf8 = StandardCharsets.UTF_8;
-        private static final Random rand = new XSTR();
 
         private static final void log(String s) {
             System.out.println("[GTPP-Proguard] " + s);
         }
 
         public static int randInt(final int min, final int max) {
-            return rand.nextInt((max - min) + 1) + min;
+            return XSTR.XSTR_INSTANCE.nextInt((max - min) + 1) + min;
         }
 
         public static boolean doesFileExist(File f) {

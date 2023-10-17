@@ -13,10 +13,10 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 
 import cpw.mods.fml.common.IWorldGenerator;
+import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_Log;
 import gregtech.common.GT_Worldgenerator;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.random.XSTR;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.everglades.dimension.Dimension_Everglades;
 import gtPlusPlus.xmod.gregtech.HANDLER_GT;

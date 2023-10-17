@@ -11,12 +11,12 @@ import net.minecraftforge.fluids.Fluid;
 
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
-import gtPlusPlus.api.objects.random.XSTR;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 public class GTPP_Cover_ToggleVisual extends GT_CoverBehavior {
