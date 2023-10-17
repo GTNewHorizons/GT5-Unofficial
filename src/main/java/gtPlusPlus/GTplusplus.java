@@ -47,7 +47,6 @@ import gtPlusPlus.core.handler.MobMentality;
 import gtPlusPlus.core.handler.PacketHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
 import gtPlusPlus.core.handler.events.LoginEventHandler;
-import gtPlusPlus.core.handler.events.MissingMappingsEvent;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
@@ -175,7 +174,6 @@ public class GTplusplus implements ActionListener {
         // Utils.LOG_INFO("User's Country: " + CORE.USER_COUNTRY);
 
         Utils.registerEvent(new LoginEventHandler());
-        Utils.registerEvent(new MissingMappingsEvent());
         Utils.registerEvent(new MobMentality());
         Logger.INFO("Login Handler Initialized");
 
