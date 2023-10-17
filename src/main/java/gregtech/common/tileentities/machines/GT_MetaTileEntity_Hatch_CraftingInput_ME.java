@@ -380,8 +380,13 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         super.onPostTick(aBaseMetaTileEntity, aTimer);
 
-        if (needPatternSync && aTimer % 10 == 0 && getBaseMetaTileEntity().isServerSide()) {
-            needPatternSync = !postMEPatternChange();
+        if (getBaseMetaTileEntity().isServerSide()) {
+            if (needPatternSync && aTimer % 10 == 0) {
+                needPatternSync = !postMEPatternChange();
+            }
+            if (aTimer % 20 == 0) {
+                getBaseMetaTileEntity().setActive(isActive());
+            }
         }
     }
 

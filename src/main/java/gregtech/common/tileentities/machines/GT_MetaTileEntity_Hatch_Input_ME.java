@@ -139,8 +139,13 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
-        if (aTimer % 100 == 0 && autoPullFluidList) {
-            refreshFluidList();
+        if (getBaseMetaTileEntity().isServerSide()) {
+            if (aTimer % 100 == 0 && autoPullFluidList) {
+                refreshFluidList();
+            }
+            if (aTimer % 20 == 0) {
+                getBaseMetaTileEntity().setActive(isActive());
+            }
         }
         super.onPostTick(aBaseMetaTileEntity, aTimer);
     }
