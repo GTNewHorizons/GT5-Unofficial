@@ -682,7 +682,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                     'A',
                     ofBlocksTiered(
                             (block, meta) -> block == TT_Container_Casings.SpacetimeCompressionFieldGenerators ? meta
-                                    : -1,
+                                    : null,
                             ImmutableList.of(
                                     Pair.of(TT_Container_Casings.SpacetimeCompressionFieldGenerators, 0),
                                     Pair.of(TT_Container_Casings.SpacetimeCompressionFieldGenerators, 1),
@@ -699,7 +699,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             .addElement(
                     'S',
                     ofBlocksTiered(
-                            (block, meta) -> block == TT_Container_Casings.StabilisationFieldGenerators ? meta : -1,
+                            (block, meta) -> block == TT_Container_Casings.StabilisationFieldGenerators ? meta : null,
                             ImmutableList.of(
                                     Pair.of(TT_Container_Casings.StabilisationFieldGenerators, 0),
                                     Pair.of(TT_Container_Casings.StabilisationFieldGenerators, 1),
@@ -722,7 +722,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             .addElement(
                     'E',
                     ofBlocksTiered(
-                            (block, meta) -> block == TT_Container_Casings.TimeAccelerationFieldGenerator ? meta : -1,
+                            (block, meta) -> block == TT_Container_Casings.TimeAccelerationFieldGenerator ? meta : null,
                             ImmutableList.of(
                                     Pair.of(TT_Container_Casings.TimeAccelerationFieldGenerator, 0),
                                     Pair.of(TT_Container_Casings.TimeAccelerationFieldGenerator, 1),
