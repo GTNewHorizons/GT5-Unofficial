@@ -1,7 +1,7 @@
 package gregtech.common.tileentities.machines;
 
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_FLUID_HATCH;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_FLUID_HATCH_ACTIVE;
 
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -107,7 +107,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
             aID,
             aName,
             aNameRegional,
-            1,
+            3,
             1,
             new String[] { "Advanced fluid input for Multiblocks", "Retrieves directly from ME",
                 "Keeps 16 fluid types in stock",
@@ -129,18 +129,23 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_ME_FLUID_HATCH_ACTIVE) };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_ME_INPUT_FLUID_HATCH_ACTIVE) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_ME_FLUID_HATCH) };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_ME_INPUT_FLUID_HATCH) };
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
-        if (aTimer % 100 == 0 && autoPullFluidList) {
-            refreshFluidList();
+        if (getBaseMetaTileEntity().isServerSide()) {
+            if (aTimer % 100 == 0 && autoPullFluidList) {
+                refreshFluidList();
+            }
+            if (aTimer % 20 == 0) {
+                getBaseMetaTileEntity().setActive(isActive());
+            }
         }
         super.onPostTick(aBaseMetaTileEntity, aTimer);
     }
