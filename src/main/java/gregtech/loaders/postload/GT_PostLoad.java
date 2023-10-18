@@ -44,6 +44,7 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_RecipeBuilder;
 import gregtech.api.util.GT_RecipeRegistrator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
@@ -115,17 +116,22 @@ public class GT_PostLoad {
     public static void registerFluidCannerRecipes() {
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
             .getRegisteredFluidContainerData()) {
+            // lava clay bucket is registered with empty container with 0 stack size
+            ItemStack emptyContainer = tData.emptyContainer.copy();
+            emptyContainer.stackSize = 1;
             GT_Values.RA.stdBuilder()
-                .itemInputs(tData.emptyContainer)
+                .itemInputs(emptyContainer)
                 .itemOutputs(tData.filledContainer)
                 .fluidInputs(tData.fluid)
                 .duration((tData.fluid.amount / 62) * TICKS)
                 .eut(1)
                 .addTo(sFluidCannerRecipes);
-            GT_Values.RA.stdBuilder()
-                .itemInputs(tData.filledContainer)
-                .itemOutputs(tData.emptyContainer)
-                .fluidOutputs(tData.fluid)
+            GT_RecipeBuilder builder = GT_Values.RA.stdBuilder()
+                .itemInputs(tData.filledContainer);
+            if (tData.emptyContainer.stackSize > 0) {
+                builder.itemOutputs(tData.emptyContainer);
+            }
+            builder.fluidOutputs(tData.fluid)
                 .duration((tData.fluid.amount / 62) * TICKS)
                 .eut(1)
                 .addTo(sFluidCannerRecipes);
