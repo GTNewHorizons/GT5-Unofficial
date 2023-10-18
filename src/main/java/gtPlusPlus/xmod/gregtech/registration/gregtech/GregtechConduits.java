@@ -648,9 +648,6 @@ public class GregtechConduits {
             Logger.ERROR(Material.name() + " has defaulted to 8v.");
             V = 0;
         }
-        // makeWires(T, ID, 2L, 4L, 2L, GT_Values.V[V], true, false);
-        // makeSuperConductors(T, ID, insulatedLoss, uninsulatedLoss, Amps, GT_Values.V[V], true, false);
-        // makeWires(T, ID, bEC ? 2L : 2L, bEC ? 4L : 4L, 2L, gregtech.api.enums.GT_Values.V[V], true, false);
     }
 
     private static void generateGTFluidPipes(final Materials material, final int startID, final int transferRatePerSec,
@@ -949,8 +946,8 @@ public class GregtechConduits {
         String tName = aName.toString();
         if (GT_Utility.isStringInvalid(tName)) return false;
         ArrayList<ItemStack> tList = GT_OreDictUnificator.getOres(tName);
-        for (int i = 0; i < tList.size(); ++i)
-            if (GT_Utility.areStacksEqual((ItemStack) tList.get(i), aStack, true)) return false;
+        for (ItemStack itemStack : tList)
+            if (GT_Utility.areStacksEqual((ItemStack) itemStack, aStack, true)) return false;
         OreDictionary.registerOre(tName, GT_Utility.copyAmount(1L, new Object[] { aStack }));
         return true;
     }

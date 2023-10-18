@@ -45,7 +45,7 @@ public class TinkersUtils {
     private static Object mSmelteryInstance;
     private static Object mTinkersRegistryInstance;
 
-    private static final HashMap<String, Method> mMethodCache = new LinkedHashMap<String, Method>();
+    private static final HashMap<String, Method> mMethodCache = new LinkedHashMap<>();
 
     static {
         mClass_Smeltery = ReflectionUtils.getClass("tconstruct.library.crafting.Smeltery");
@@ -65,10 +65,6 @@ public class TinkersUtils {
                 .getMethod(getCastingInstance(0), "getCastingRecipes", new Class[] {});
     }
 
-    /**
-     *
-     * @param aSwitch - The Registry to return
-     */
     private static void setTiConDataInstance() {
         if (!TinkerConstruct.isModLoaded()) {
             return;
@@ -78,7 +74,7 @@ public class TinkersUtils {
             if (mClass_Smeltery != null) {
                 try {
                     mSmelteryInstance = ReflectionUtils.getField(mClass_Smeltery, "instance").get(null);
-                } catch (IllegalArgumentException | IllegalAccessException e) {}
+                } catch (IllegalArgumentException | IllegalAccessException ignored) {}
             }
         }
         if (mTinkersRegistryInstance == null) {
@@ -86,36 +82,9 @@ public class TinkersUtils {
                 try {
                     mTinkersRegistryInstance = ReflectionUtils.getField(mClass_TConstructRegistry, "instance")
                             .get(null);
-                } catch (IllegalArgumentException | IllegalAccessException e) {}
+                } catch (IllegalArgumentException | IllegalAccessException ignored) {}
             }
         }
-    }
-
-    public static final boolean isTiConFirstInOD() {
-        if (TinkerConstruct.isModLoaded()) {
-            try {
-                return (boolean) ReflectionUtils.getField(ReflectionUtils.getClass("PHConstruct"), "tconComesFirst")
-                        .get(null);
-            } catch (IllegalArgumentException | IllegalAccessException e) {}
-        }
-        return false;
-    }
-
-    public static final boolean stopTiconLoadingFirst() {
-        if (isTiConFirstInOD()) {
-            try {
-                ReflectionUtils.setFinalFieldValue(ReflectionUtils.getClass("PHConstruct"), "tconComesFirst", false);
-                if ((boolean) ReflectionUtils.getField(ReflectionUtils.getClass("PHConstruct"), "tconComesFirst")
-                        .get(null) == false) {
-                    return true;
-                }
-                // Did not work, let's see where TiCon uses this and prevent it.
-                else {
-                    ItemUtils.getNonTinkersDust("", 1);
-                }
-            } catch (Exception e) {}
-        }
-        return false;
     }
 
     /**
@@ -132,36 +101,6 @@ public class TinkersUtils {
                 "addSmelteryFuel",
                 new Class[] { Fluid.class, int.class, int.class },
                 new Object[] { fluid, power, duration });
-    }
-
-    /**
-     * Returns true if the liquid is a valid smeltery fuel.
-     */
-    public static boolean isSmelteryFuel(Fluid fluid) {
-        setTiConDataInstance();
-        return ReflectionUtils
-                .invoke(mSmelteryInstance, "isSmelteryFuel", new Class[] { Fluid.class }, new Object[] { fluid });
-    }
-
-    /**
-     * Returns the power of a smeltery fuel or 0 if it's not a fuel.
-     */
-    public static int getFuelPower(Fluid fluid) {
-        setTiConDataInstance();
-        return (int) ReflectionUtils
-                .invokeNonBool(mSmelteryInstance, "getFuelPower", new Class[] { Fluid.class }, new Object[] { fluid });
-    }
-
-    /**
-     * Returns the duration of a smeltery fuel or 0 if it's not a fuel.
-     */
-    public static int getFuelDuration(Fluid fluid) {
-        setTiConDataInstance();
-        return (int) ReflectionUtils.invokeNonBool(
-                mSmelteryInstance,
-                "getFuelDuration",
-                new Class[] { Fluid.class },
-                new Object[] { fluid });
     }
 
     public static boolean registerFluidType(String name, Block block, int meta, int baseTemperature, Fluid fluid,
@@ -186,22 +125,7 @@ public class TinkersUtils {
         }
     }
 
-    public static boolean addBaseMeltingRecipes(Material aMaterial) {
-        return addMelting(
-                aMaterial.getBlock(1),
-                aMaterial.getBlock(),
-                0,
-                aMaterial.getMeltingPointC(),
-                aMaterial.getFluidStack(144 * 9))
-                && addMelting(
-                        aMaterial.getIngot(1),
-                        aMaterial.getBlock(),
-                        0,
-                        aMaterial.getMeltingPointC(),
-                        aMaterial.getFluidStack(144));
-    }
-
-    public static boolean addMelting(ItemStack input, Block block, int metadata, int temperature, FluidStack liquid) {
+    public static void addMelting(ItemStack input, Block block, int metadata, int temperature, FluidStack liquid) {
         if (mMethodCache.get("addMelting") == null) {
             Method m = ReflectionUtils.getMethod(
                     mClass_Smeltery,
@@ -215,13 +139,10 @@ public class TinkersUtils {
         }
         try {
             mMethodCache.get("addMelting").invoke(null, input, block, metadata, temperature, liquid);
-            return true;
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            return false;
-        }
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ignored) {}
     }
 
-    public static boolean addMelting(Object type, ItemStack input, int temperatureDifference, int fluidAmount) {
+    public static void addMelting(Object type, ItemStack input, int temperatureDifference, int fluidAmount) {
         if (mMethodCache.get("addMelting") == null) {
             Method m = ReflectionUtils
                     .getMethod(mClass_Smeltery, "addMelting", mClass_FluidType, ItemStack.class, int.class, int.class);
@@ -229,18 +150,10 @@ public class TinkersUtils {
         }
         try {
             mMethodCache.get("addMelting").invoke(null, type, input, temperatureDifference, fluidAmount);
-            return true;
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            return false;
-        }
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ignored) {}
     }
 
-    public static boolean addBaseBasinRecipes(Material aMaterial) {
-        return addBasinRecipe(aMaterial.getBlock(1), aMaterial.getFluidStack(144 * 9), (ItemStack) null, true, 100);
-    }
-
-    public static boolean addBasinRecipe(ItemStack output, FluidStack metal, ItemStack cast, boolean consume,
-            int delay) {
+    public static void addBasinRecipe(ItemStack output, FluidStack metal, ItemStack cast, boolean consume, int delay) {
         if (mMethodCache.get("addBasinRecipe") == null) {
             Method m = ReflectionUtils.getMethod(
                     ReflectionUtils.getClass("tconstruct.library.crafting.LiquidCasting"),
@@ -254,18 +167,10 @@ public class TinkersUtils {
         }
         try {
             mMethodCache.get("addBasinRecipe").invoke(getCastingInstance(0), output, metal, cast, consume, delay);
-            return true;
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            return false;
-        }
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ignored) {}
     }
 
-    public static boolean addBaseCastingRecipes(Material aMaterial) {
-        ItemStack ingotcast = getPattern(1);
-        return addCastingTableRecipe(aMaterial.getIngot(1), aMaterial.getFluidStack(144), ingotcast, false, 50);
-    }
-
-    public static boolean addCastingTableRecipe(ItemStack output, FluidStack metal, ItemStack cast, boolean consume,
+    public static void addCastingTableRecipe(ItemStack output, FluidStack metal, ItemStack cast, boolean consume,
             int delay) {
         if (mMethodCache.get("addCastingTableRecipe") == null) {
             Method m = ReflectionUtils.getMethod(
@@ -281,10 +186,7 @@ public class TinkersUtils {
         try {
             mMethodCache.get("addCastingTableRecipe")
                     .invoke(getCastingInstance(1), output, metal, cast, consume, delay);
-            return true;
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            return false;
-        }
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ignored) {}
     }
 
     /**
@@ -300,15 +202,9 @@ public class TinkersUtils {
         Method m = null;
         if (aType == 0) {
             m = ReflectionUtils.getMethod(mTinkersRegistryInstance, "getTableCasting", new Class[] {});
-            // return ReflectionUtils.invokeVoid(getTiConDataInstance(1), "getTableCasting", new Class[] {}, new
-            // Object[] {});
         } else if (aType == 1) {
             m = ReflectionUtils.getMethod(mTinkersRegistryInstance, "getBasinCasting", new Class[] {});
-            // return ReflectionUtils.invokeVoid(getTiConDataInstance(1), "getBasinCasting", new Class[] {}, new
-            // Object[] {});
-        } else {
-            // return null;
-        }
+        } // return null;
 
         if (m != null) {
             try {
@@ -328,12 +224,11 @@ public class TinkersUtils {
             if (m != null) {
                 try {
                     mTinkerMetalPattern = (Item) m.get(null);
-                } catch (IllegalArgumentException | IllegalAccessException e) {}
+                } catch (IllegalArgumentException | IllegalAccessException ignored) {}
             }
         }
         if (mTinkerMetalPattern != null) {
-            ItemStack ingotCast = new ItemStack(mTinkerMetalPattern, aType, 0);
-            return ingotCast;
+            return new ItemStack(mTinkerMetalPattern, aType, 0);
         }
         return ItemUtils.getErrorStack(1, "Bad Tinkers Pattern");
     }
@@ -344,7 +239,7 @@ public class TinkersUtils {
         if (mDryingRackRecipes != null) {
             return mDryingRackRecipes;
         }
-        AutoMap<Object> aData = new AutoMap<Object>();
+        AutoMap<Object> aData = new AutoMap<>();
         int aCount = 0;
         try {
             ArrayList<?> recipes = (ArrayList<?>) ReflectionUtils
@@ -366,22 +261,6 @@ public class TinkersUtils {
         return aData;
     }
 
-    /**
-     * Generates Tinkers {@link ToolMaterial}'s reflectively.
-     * 
-     * @param name
-     * @param localizationString
-     * @param level
-     * @param durability
-     * @param speed
-     * @param damage
-     * @param handle
-     * @param reinforced
-     * @param stonebound
-     * @param style
-     * @param primaryColor
-     * @return
-     */
     public static Object generateToolMaterial(String name, String localizationString, int level, int durability,
             int speed, int damage, float handle, int reinforced, float stonebound, String style, int primaryColor) {
         try {
@@ -397,7 +276,7 @@ public class TinkersUtils {
                     float.class,
                     String.class,
                     int.class);
-            Object myObject = constructor.newInstance(
+            return constructor.newInstance(
                     name,
                     localizationString,
                     level,
@@ -409,56 +288,10 @@ public class TinkersUtils {
                     stonebound,
                     style,
                     primaryColor);
-            return myObject;
         } catch (Throwable t) {
             t.printStackTrace();
             return null;
         }
-    }
-
-    public static void addToolMaterial(int id, Object aToolMaterial) {
-        if (mMethodCache.get("addToolMaterial") == null) {
-            Method m = ReflectionUtils
-                    .getMethod(mClass_TConstructRegistry, "addtoolMaterial", int.class, mClass_ToolMaterial);
-            mMethodCache.put("addToolMaterial", m);
-        }
-        try {
-            mMethodCache.get("addToolMaterial").invoke(mClass_TConstructRegistry, id, aToolMaterial);
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-
-        }
-    }
-
-    public static void addDefaultToolPartMaterial(int id) {
-        if (mMethodCache.get("addDefaultToolPartMaterial") == null) {
-            Method m = ReflectionUtils.getMethod(mClass_TConstructRegistry, "addDefaultToolPartMaterial", int.class);
-            mMethodCache.put("addDefaultToolPartMaterial", m);
-        }
-        try {
-            mMethodCache.get("addDefaultToolPartMaterial").invoke(mClass_TConstructRegistry, id);
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {}
-    }
-
-    public static void addBowMaterial(int id, int drawspeed, float maxSpeed) {
-        if (mMethodCache.get("addBowMaterial") == null) {
-            Method m = ReflectionUtils
-                    .getMethod(mClass_TConstructRegistry, "addBowMaterial", int.class, int.class, float.class);
-            mMethodCache.put("addBowMaterial", m);
-        }
-        try {
-            mMethodCache.get("addBowMaterial").invoke(mClass_TConstructRegistry, id, drawspeed, maxSpeed);
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {}
-    }
-
-    public static void addArrowMaterial(int id, float mass, float fragility) {
-        if (mMethodCache.get("addArrowMaterial") == null) {
-            Method m = ReflectionUtils
-                    .getMethod(mClass_TConstructRegistry, "addArrowMaterial", int.class, float.class, float.class);
-            mMethodCache.put("addArrowMaterial", m);
-        }
-        try {
-            mMethodCache.get("addArrowMaterial").invoke(mClass_TConstructRegistry, id, mass, fragility);
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {}
     }
 
     public static List<?> getTableCastingRecipes() {
@@ -470,12 +303,12 @@ public class TinkersUtils {
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
             e.printStackTrace();
         }
-        return new ArrayList<Object>();
+        return new ArrayList<>();
     }
 
-    public static boolean generateCastingRecipes(Material aMaterial, int aID) {
+    public static void generateCastingRecipes(Material aMaterial, int aID) {
 
-        List<CastingRecipeHandler> newRecipies = new LinkedList<CastingRecipeHandler>();
+        List<CastingRecipeHandler> newRecipies = new LinkedList<>();
 
         Iterator<?> iterator1 = getTableCastingRecipes().iterator();
         Fluid aMoltenIron = null;
@@ -500,16 +333,15 @@ public class TinkersUtils {
                 }
             } catch (IllegalArgumentException e) {
                 e.printStackTrace();
-                return false;
+                return;
             }
         }
 
         Object ft;
         try {
             ft = mMethod_getFluidType.invoke(null, aMaterial.getLocalizedName());
-            Iterator<CastingRecipeHandler> iterator2 = newRecipies.iterator();
-            while (iterator2.hasNext()) {
-                CastingRecipeHandler recipe = new CastingRecipeHandler(iterator2.next());
+            for (CastingRecipeHandler newRecipy : newRecipies) {
+                CastingRecipeHandler recipe = new CastingRecipeHandler(newRecipy);
                 if (!recipe.valid) {
                     continue;
                 }
@@ -522,10 +354,8 @@ public class TinkersUtils {
             }
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
             e.printStackTrace();
-            return false;
         }
 
-        return true;
     }
 
     private static class CastingRecipeHandler {
@@ -560,12 +390,6 @@ public class TinkersUtils {
             } else {
                 valid = false;
             }
-        }
-
-        public boolean matches(FluidStack metal, ItemStack inputCast) {
-            return this.castingMetal.isFluidEqual(metal) && (this.cast != null && this.cast.getItemDamage() == 32767
-                    && inputCast.getItem() == this.cast.getItem()
-                    || ItemStack.areItemStacksEqual(this.cast, inputCast));
         }
 
         public ItemStack getResult() {

@@ -48,7 +48,7 @@ public class SaplingBase extends BlockSapling {
         this.setCreativeTab(AddToCreativeTab.tabBOP);
     }
 
-    private final void setVanillaVariable(Object toSet, Object value) {
+    private void setVanillaVariable(Object toSet, Object value) {
         toSet = value;
     }
 
@@ -121,33 +121,12 @@ public class SaplingBase extends BlockSapling {
         int j1 = 0;
         boolean flag = false;
 
-        switch (l) {
-            case 0:
-            default:
-                Logger.WARNING("Case 0 - Grow Tree");
-                break;
-        }
-
         Block block = Blocks.air;
 
-        if (flag) {
-            world.setBlock(x + i1, y, z + j1, block, 0, 4);
-            world.setBlock(x + i1 + 1, y, z + j1, block, 0, 4);
-            world.setBlock(x + i1, y, z + j1 + 1, block, 0, 4);
-            world.setBlock(x + i1 + 1, y, z + j1 + 1, block, 0, 4);
-        } else {
-            world.setBlock(x, y, z, block, 0, 4);
-        }
+        world.setBlock(x, y, z, block, 0, 4);
 
         if (!((WorldGenerator) object).generate(world, rand, x + i1, y, z + j1)) {
-            if (flag) {
-                world.setBlock(x + i1, y, z + j1, this, l, 4);
-                world.setBlock(x + i1 + 1, y, z + j1, this, l, 4);
-                world.setBlock(x + i1, y, z + j1 + 1, this, l, 4);
-                world.setBlock(x + i1 + 1, y, z + j1 + 1, this, l, 4);
-            } else {
-                world.setBlock(x, y, z, this, l, 4);
-            }
+            world.setBlock(x, y, z, this, l, 4);
         }
     }
 

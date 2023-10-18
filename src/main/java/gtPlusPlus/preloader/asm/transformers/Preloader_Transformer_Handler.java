@@ -1,117 +1,56 @@
 package gtPlusPlus.preloader.asm.transformers;
 
-import static gtPlusPlus.preloader.asm.ClassesToTransform.COFH_ORE_DICTIONARY_ARBITER;
-import static gtPlusPlus.preloader.asm.ClassesToTransform.FORGE_CHUNK_MANAGER;
-import static gtPlusPlus.preloader.asm.ClassesToTransform.FORGE_ORE_DICTIONARY;
-import static gtPlusPlus.preloader.asm.ClassesToTransform.IC2_BLOCK_BASE_TILE_ENTITY;
-import static gtPlusPlus.preloader.asm.ClassesToTransform.IC2_BLOCK_CHARGEPAD;
-import static gtPlusPlus.preloader.asm.ClassesToTransform.IC2_BLOCK_ELECTRIC;
-import static gtPlusPlus.preloader.asm.ClassesToTransform.IC2_BLOCK_GENERATOR;
-import static gtPlusPlus.preloader.asm.ClassesToTransform.IC2_BLOCK_HEAT_GENERATOR;
-import static gtPlusPlus.preloader.asm.ClassesToTransform.IC2_BLOCK_KINETIC_GENERATOR;
-import static gtPlusPlus.preloader.asm.ClassesToTransform.IC2_BLOCK_LUMINATOR;
-import static gtPlusPlus.preloader.asm.ClassesToTransform.IC2_BLOCK_MACHINE1;
-import static gtPlusPlus.preloader.asm.ClassesToTransform.IC2_BLOCK_MACHINE2;
-import static gtPlusPlus.preloader.asm.ClassesToTransform.IC2_BLOCK_MACHINE3;
-import static gtPlusPlus.preloader.asm.ClassesToTransform.IC2_BLOCK_PERSONAL;
-import static gtPlusPlus.preloader.asm.ClassesToTransform.IC2_BLOCK_REACTOR_ACCESS_HATCH;
-import static gtPlusPlus.preloader.asm.ClassesToTransform.IC2_BLOCK_REACTOR_CHAMBER;
-import static gtPlusPlus.preloader.asm.ClassesToTransform.IC2_BLOCK_REACTOR_FLUID_PORT;
-import static gtPlusPlus.preloader.asm.ClassesToTransform.IC2_BLOCK_REACTOR_REDSTONE_PORT;
-import static gtPlusPlus.preloader.asm.ClassesToTransform.IC2_BLOCK_REACTOR_VESSEL;
-import static gtPlusPlus.preloader.asm.ClassesToTransform.LWJGL_KEYBOARD;
-import static gtPlusPlus.preloader.asm.ClassesToTransform.MINECRAFT_GAMESETTINGS;
-import static gtPlusPlus.preloader.asm.ClassesToTransform.MINECRAFT_GAMESETTINGS_OBF;
-import static gtPlusPlus.preloader.asm.ClassesToTransform.THAUMCRAFT_ITEM_WISP_ESSENCE;
-
-import java.io.File;
-import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import net.minecraft.launchwrapper.IClassTransformer;
-import net.minecraft.launchwrapper.Launch;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 
-import cpw.mods.fml.relauncher.CoreModManager;
-import cpw.mods.fml.relauncher.ReflectionHelper;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import gtPlusPlus.preloader.DevHelper;
+import gtPlusPlus.preloader.CORE_Preloader;
 import gtPlusPlus.preloader.Preloader_Logger;
 import gtPlusPlus.preloader.asm.AsmConfig;
 import gtPlusPlus.preloader.asm.transformers.Preloader_ClassTransformer.OreDictionaryVisitor;
 
 public class Preloader_Transformer_Handler implements IClassTransformer {
 
-    public static final AsmConfig mConfig;
-    public static final AutoMap<String> IC2_WRENCH_PATCH_CLASS_NAMES = new AutoMap<String>();
+    private static final Set<String> IC2_WRENCH_PATCH_CLASS_NAMES = new HashSet<>();
+    private static final String LWJGL_KEYBOARD = "org.lwjgl.input.Keyboard";
+    private static final String MINECRAFT_GAMESETTINGS = "net.minecraft.client.settings.GameSettings";
+    private static final String FORGE_CHUNK_MANAGER = "net.minecraftforge.common.ForgeChunkManager";
+    private static final String FORGE_ORE_DICTIONARY = "net.minecraftforge.oredict.OreDictionary";
+    private static final String COFH_ORE_DICTIONARY_ARBITER = "cofh.core.util.oredict.OreDictionaryArbiter";
+    private static final String THAUMCRAFT_ITEM_WISP_ESSENCE = "thaumcraft.common.items.ItemWispEssence";
 
     static {
-        mConfig = new AsmConfig(new File("config/GTplusplus/asm.cfg"));
-        Preloader_Logger.INFO("Config Location: " + AsmConfig.config.getConfigFile().getAbsolutePath());
-        Preloader_Logger.INFO("Is DevHelper Valid? " + DevHelper.mIsValidHelper);
-        IC2_WRENCH_PATCH_CLASS_NAMES.add(IC2_BLOCK_BASE_TILE_ENTITY);
-        IC2_WRENCH_PATCH_CLASS_NAMES.add(IC2_BLOCK_MACHINE1);
-        IC2_WRENCH_PATCH_CLASS_NAMES.add(IC2_BLOCK_MACHINE2);
-        IC2_WRENCH_PATCH_CLASS_NAMES.add(IC2_BLOCK_MACHINE3);
-        IC2_WRENCH_PATCH_CLASS_NAMES.add(IC2_BLOCK_KINETIC_GENERATOR);
-        IC2_WRENCH_PATCH_CLASS_NAMES.add(IC2_BLOCK_HEAT_GENERATOR);
-        IC2_WRENCH_PATCH_CLASS_NAMES.add(IC2_BLOCK_GENERATOR);
-        IC2_WRENCH_PATCH_CLASS_NAMES.add(IC2_BLOCK_REACTOR_ACCESS_HATCH);
-        IC2_WRENCH_PATCH_CLASS_NAMES.add(IC2_BLOCK_REACTOR_CHAMBER);
-        IC2_WRENCH_PATCH_CLASS_NAMES.add(IC2_BLOCK_REACTOR_FLUID_PORT);
-        IC2_WRENCH_PATCH_CLASS_NAMES.add(IC2_BLOCK_REACTOR_REDSTONE_PORT);
-        IC2_WRENCH_PATCH_CLASS_NAMES.add(IC2_BLOCK_REACTOR_VESSEL);
-        IC2_WRENCH_PATCH_CLASS_NAMES.add(IC2_BLOCK_PERSONAL);
-        IC2_WRENCH_PATCH_CLASS_NAMES.add(IC2_BLOCK_CHARGEPAD);
-        IC2_WRENCH_PATCH_CLASS_NAMES.add(IC2_BLOCK_ELECTRIC);
-        IC2_WRENCH_PATCH_CLASS_NAMES.add(IC2_BLOCK_LUMINATOR);
-    }
-
-    private static Boolean mObf = null;
-
-    public boolean checkObfuscated() {
-        if (mObf != null) {
-            return mObf;
-        }
-        boolean obfuscated = false;
-        try {
-            obfuscated = !(boolean) ReflectionHelper.findField(CoreModManager.class, "deobfuscatedEnvironment")
-                    .get(null);
-        } catch (IllegalArgumentException | IllegalAccessException e) {
-            e.printStackTrace();
-            byte[] bs;
-            try {
-                bs = Launch.classLoader.getClassBytes("net.minecraft.world.World");
-                if (bs != null) {
-                    obfuscated = false;
-                } else {
-                    obfuscated = true;
-                }
-            } catch (IOException e1) {
-                e1.printStackTrace();
-                obfuscated = false;
-            }
-        }
-        mObf = obfuscated;
-        return obfuscated;
+        IC2_WRENCH_PATCH_CLASS_NAMES.add("ic2.core.block.BlockTileEntity");
+        IC2_WRENCH_PATCH_CLASS_NAMES.add("ic2.core.block.machine.BlockMachine");
+        IC2_WRENCH_PATCH_CLASS_NAMES.add("ic2.core.block.machine.BlockMachine2");
+        IC2_WRENCH_PATCH_CLASS_NAMES.add("ic2.core.block.machine.BlockMachine3");
+        IC2_WRENCH_PATCH_CLASS_NAMES.add("ic2.core.block.kineticgenerator.block.BlockKineticGenerator");
+        IC2_WRENCH_PATCH_CLASS_NAMES.add("ic2.core.block.heatgenerator.block.BlockHeatGenerator");
+        IC2_WRENCH_PATCH_CLASS_NAMES.add("ic2.core.block.generator.block.BlockGenerator");
+        IC2_WRENCH_PATCH_CLASS_NAMES.add("ic2.core.block.reactor.block.BlockReactorAccessHatch");
+        IC2_WRENCH_PATCH_CLASS_NAMES.add("ic2.core.block.reactor.block.BlockReactorChamber");
+        IC2_WRENCH_PATCH_CLASS_NAMES.add("ic2.core.block.reactor.block.BlockReactorFluidPort");
+        IC2_WRENCH_PATCH_CLASS_NAMES.add("ic2.core.block.reactor.block.BlockReactorRedstonePort");
+        IC2_WRENCH_PATCH_CLASS_NAMES.add("ic2.core.block.reactor.block.BlockReactorVessel");
+        IC2_WRENCH_PATCH_CLASS_NAMES.add("ic2.core.block.personal.BlockPersonal.class");
+        IC2_WRENCH_PATCH_CLASS_NAMES.add("ic2.core.block.wiring.BlockChargepad.class");
+        IC2_WRENCH_PATCH_CLASS_NAMES.add("ic2.core.block.wiring.BlockElectric.class");
+        IC2_WRENCH_PATCH_CLASS_NAMES.add("ic2.core.block.wiring.BlockLuminator.class");
     }
 
     @Override
     public byte[] transform(String name, String transformedName, byte[] basicClass) {
-        // Is this environment obfuscated? (Extra checks just in case some weird stuff happens during the check)
-        final boolean obfuscated = checkObfuscated();
-
         // Fix LWJGL index array out of bounds on keybinding IDs
-        if ((transformedName.equals(LWJGL_KEYBOARD) || transformedName.equals(MINECRAFT_GAMESETTINGS_OBF)
-                || transformedName.equals(MINECRAFT_GAMESETTINGS)) && AsmConfig.enabledLwjglKeybindingFix
-        // Do not transform if using lwjgl3
+        if ((transformedName.equals(LWJGL_KEYBOARD) || transformedName.equals(MINECRAFT_GAMESETTINGS))
+                && AsmConfig.enabledLwjglKeybindingFix
+                // Do not transform if using lwjgl3
                 && !ReflectionUtils.doesClassExist("org.lwjgl.system.Platform")) {
-            boolean isClientSettingsClass = false;
-            if (!transformedName.equals("org.lwjgl.input.Keyboard")) {
-                isClientSettingsClass = true;
-            }
+            boolean isClientSettingsClass = !transformedName.equals("org.lwjgl.input.Keyboard");
             Preloader_Logger.INFO("LWJGL Keybinding index out of bounds fix", "Transforming " + transformedName);
             return new ClassTransformer_LWJGL_Keyboard(basicClass, isClientSettingsClass).getWriter().toByteArray();
         }
@@ -131,25 +70,24 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
         }
 
         // Fix the OreDictionary COFH
-        if (transformedName.equals(COFH_ORE_DICTIONARY_ARBITER) && (AsmConfig.enableCofhPatch || !obfuscated)) {
+        if (transformedName.equals(COFH_ORE_DICTIONARY_ARBITER)
+                && (AsmConfig.enableCofhPatch || CORE_Preloader.DEV_ENVIRONMENT)) {
             Preloader_Logger.INFO("COFH", "Transforming " + transformedName);
             return new ClassTransformer_COFH_OreDictionaryArbiter(basicClass).getWriter().toByteArray();
         }
 
-        // Fix IC2 Wrench Harvesting
-        for (String y : IC2_WRENCH_PATCH_CLASS_NAMES) {
-            if (transformedName.equals(y)) {
-                Preloader_Logger.INFO("IC2 getHarvestTool Patch", "Transforming " + transformedName);
-                return new ClassTransformer_IC2_GetHarvestTool(basicClass, obfuscated, transformedName).getWriter()
-                        .toByteArray();
-            }
+        if (IC2_WRENCH_PATCH_CLASS_NAMES.contains(transformedName)) {
+            Preloader_Logger.INFO("IC2 getHarvestTool Patch", "Transforming " + transformedName);
+            return new ClassTransformer_IC2_GetHarvestTool(basicClass, !CORE_Preloader.DEV_ENVIRONMENT, transformedName)
+                    .getWriter().toByteArray();
         }
 
         // Fix Thaumcraft stuff
         // Patching ItemWispEssence to allow invalid item handling
         if (transformedName.equals(THAUMCRAFT_ITEM_WISP_ESSENCE) && AsmConfig.enableTcAspectSafety) {
             Preloader_Logger.INFO("Thaumcraft WispEssence_Patch", "Transforming " + transformedName);
-            return new ClassTransformer_TC_ItemWispEssence(basicClass, obfuscated).getWriter().toByteArray();
+            return new ClassTransformer_TC_ItemWispEssence(basicClass, !CORE_Preloader.DEV_ENVIRONMENT).getWriter()
+                    .toByteArray();
         }
 
         return basicClass;

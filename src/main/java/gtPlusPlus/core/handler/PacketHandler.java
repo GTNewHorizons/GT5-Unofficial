@@ -30,12 +30,12 @@ public class PacketHandler {
     /**
      * Registers a message and message handler
      */
-    private static final void registerMessage(Class handlerClass, Class messageClass) {
+    private static void registerMessage(Class handlerClass, Class messageClass) {
         Side side = AbstractClientMessageHandler.class.isAssignableFrom(handlerClass) ? Side.CLIENT : Side.SERVER;
         registerMessage(handlerClass, messageClass, side);
     }
 
-    private static final void registerMessage(Class handlerClass, Class messageClass, Side side) {
+    private static void registerMessage(Class handlerClass, Class messageClass, Side side) {
         INSTANCE.registerMessage(handlerClass, messageClass, packetId++, side);
         if (AbstractPacket.class.isInstance(messageClass.getClass())) {
             AbstractPacket aPacket = ReflectionUtils.createNewInstanceFromConstructor(

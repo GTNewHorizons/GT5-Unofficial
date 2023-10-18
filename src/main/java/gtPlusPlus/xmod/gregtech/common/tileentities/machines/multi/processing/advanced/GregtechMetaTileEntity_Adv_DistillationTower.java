@@ -155,10 +155,9 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends
 
     protected boolean addLayerOutputHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null || aTileEntity.isDead()
-                || !(aTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_Output))
+                || !(aTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_Output tHatch))
             return false;
         while (mOutputHatchesByLayer.size() < mHeight) mOutputHatchesByLayer.add(new ArrayList<>());
-        GT_MetaTileEntity_Hatch_Output tHatch = (GT_MetaTileEntity_Hatch_Output) aTileEntity.getMetaTileEntity();
         tHatch.updateTexture(aBaseCasingIndex);
         return mOutputHatchesByLayer.get(mHeight - 1).add(tHatch) && mOutputHatches.add(tHatch);
     }
@@ -377,14 +376,11 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends
 
     @Override
     public int getMaxParallelRecipes() {
-        switch (mMode) {
-            case DistillationTower:
-                return getTierOfTower() == 1 ? 4 : getTierOfTower() == 2 ? 12 : 0;
-            case Distillery:
-                return getTierOfTower() * (4 * GT_Utility.getTier(this.getMaxInputVoltage()));
-            default:
-                return 0;
-        }
+        return switch (mMode) {
+            case DistillationTower -> getTierOfTower() == 1 ? 4 : getTierOfTower() == 2 ? 12 : 0;
+            case Distillery -> getTierOfTower() * (4 * GT_Utility.getTier(this.getMaxInputVoltage()));
+            default -> 0;
+        };
     }
 
     private int getTierOfTower() {

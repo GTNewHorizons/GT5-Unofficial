@@ -7,7 +7,7 @@ import net.minecraft.client.gui.GuiTextField;
 
 import gtPlusPlus.core.gui.machine.GUI_VolumetricFlaskSetter;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import gtPlusPlus.preloader.DevHelper;
+import gtPlusPlus.preloader.CORE_Preloader;
 
 public class GuiValueField extends GuiTextField {
 
@@ -25,15 +25,6 @@ public class GuiValueField extends GuiTextField {
         mGUI = aGUI;
     }
 
-    public boolean canLoseFocus() {
-        Field canLoseFocus = ReflectionUtils
-                .getField(GuiTextField.class, DevHelper.isObfuscatedEnvironment() ? "field_146212_n" : "canLoseFocus");
-        if (canLoseFocus != null) {
-            return (boolean) ReflectionUtils.getFieldValue(canLoseFocus, this);
-        }
-        return true;
-    }
-
     @Override
     public boolean isFocused() {
         return super.isFocused();
@@ -42,17 +33,16 @@ public class GuiValueField extends GuiTextField {
     public boolean isBackgroundDrawingEnabled() {
         Field enableBackgroundDrawing = ReflectionUtils.getField(
                 GuiTextField.class,
-                DevHelper.isObfuscatedEnvironment() ? "field_146215_m" : "enableBackgroundDrawing");
+                !CORE_Preloader.DEV_ENVIRONMENT ? "field_146215_m" : "enableBackgroundDrawing");
         if (enableBackgroundDrawing != null) {
-            return (boolean) ReflectionUtils.getFieldValue(enableBackgroundDrawing, this);
+            return ReflectionUtils.getFieldValue(enableBackgroundDrawing, this);
         }
         return true;
     }
 
     public int getLineScrollOffset() {
-        Field lineScrollOffset = ReflectionUtils.getField(
-                GuiTextField.class,
-                DevHelper.isObfuscatedEnvironment() ? "field_146225_q" : "lineScrollOffset");
+        Field lineScrollOffset = ReflectionUtils
+                .getField(GuiTextField.class, !CORE_Preloader.DEV_ENVIRONMENT ? "field_146225_q" : "lineScrollOffset");
         if (lineScrollOffset != null) {
             return (int) ReflectionUtils.getFieldValue(lineScrollOffset, this);
         }

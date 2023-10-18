@@ -34,7 +34,7 @@ public class Quad<K, V, C, R> {
     }
 
     public final List values() {
-        List<Object> aVals = new ArrayList<Object>();
+        List<Object> aVals = new ArrayList<>();
         aVals.add(key);
         aVals.add(value);
         aVals.add(value2);

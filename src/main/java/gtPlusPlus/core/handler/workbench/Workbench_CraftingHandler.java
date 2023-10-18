@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 public class Workbench_CraftingHandler {
 
     private static final Workbench_CraftingHandler instance = new Workbench_CraftingHandler();
-    private final List<IRecipe> recipes = new ArrayList<IRecipe>();
+    private final List<IRecipe> recipes = new ArrayList<>();
 
     public static final Workbench_CraftingHandler getInstance() {
         return instance;
@@ -44,8 +44,7 @@ public class Workbench_CraftingHandler {
         if (par2ArrayOfObj[i] instanceof String[]) {
             final String as[] = (String[]) par2ArrayOfObj[i++];
 
-            for (int l = 0; l < as.length; l++) {
-                final String s2 = as[l];
+            for (final String s2 : as) {
                 k++;
                 j = s2.length();
                 s = (new StringBuilder()).append(s).append(s2).toString();
@@ -59,7 +58,7 @@ public class Workbench_CraftingHandler {
             }
         }
 
-        final HashMap<Character, ItemStack> hashmap = new HashMap<Character, ItemStack>();
+        final HashMap<Character, ItemStack> hashmap = new HashMap<>();
 
         for (; i < par2ArrayOfObj.length; i += 2) {
             final Character character = (Character) par2ArrayOfObj[i];
@@ -92,13 +91,11 @@ public class Workbench_CraftingHandler {
     }
 
     public void addShapelessRecipe(final ItemStack par1ItemStack, final Object par2ArrayOfObj[]) {
-        final ArrayList<ItemStack> arraylist = new ArrayList<ItemStack>();
+        final ArrayList<ItemStack> arraylist = new ArrayList<>();
         final Object aobj[] = par2ArrayOfObj;
         final int i = aobj.length;
 
-        for (int j = 0; j < i; j++) {
-            final Object obj = aobj[j];
-
+        for (final Object obj : aobj) {
             if (obj instanceof ItemStack) {
                 arraylist.add(((ItemStack) obj).copy());
                 continue;
@@ -144,9 +141,7 @@ public class Workbench_CraftingHandler {
          * item.getMaxDamage() - j1; if (k1 < 0) { k1 = 0; } return new ItemStack(itemstack.itemID, 1, k1); }
          */
 
-        for (int k = 0; k < this.recipes.size(); k++) {
-            final IRecipe irecipe = this.recipes.get(k);
-
+        for (final IRecipe irecipe : this.recipes) {
             if (irecipe.matches(par1InventoryCrafting, par2World)) {
                 return irecipe.getCraftingResult(par1InventoryCrafting);
             }

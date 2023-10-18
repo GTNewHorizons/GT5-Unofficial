@@ -11,17 +11,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapelessRecipes;
-import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.enums.Materials;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
@@ -39,19 +36,9 @@ public class RecipeUtils {
 
     public static int mInvalidID = 1;
 
-    public static boolean recipeBuilder(final Object slot_1, final Object slot_2, final Object slot_3,
-            final Object slot_4, final Object slot_5, final Object slot_6, final Object slot_7, final Object slot_8,
-            final Object slot_9, ItemStack resultItem) {
-
-        // Old Debug Code, useful for finding recipes loading too early.
-        /*
-         * if (gtPlusPlus.GTplusplus.CURRENT_LOAD_PHASE != GTplusplus.INIT_PHASE.POST_INIT) {
-         * Logger.RECIPE(ReflectionUtils.getMethodName(1)); Logger.RECIPE(ReflectionUtils.getMethodName(2));
-         * Logger.RECIPE(ReflectionUtils.getMethodName(3)); Logger.RECIPE(ReflectionUtils.getMethodName(4));
-         * Logger.RECIPE(ReflectionUtils.getMethodName(5)); Logger.RECIPE(ReflectionUtils.getMethodName(6));
-         * Logger.RECIPE(ReflectionUtils.getMethodName(7)); Logger.RECIPE(ReflectionUtils.getMethodName(8));
-         * Logger.RECIPE(ReflectionUtils.getMethodName(9)); FMLCommonHandler.instance().exitJava(1, true); }
-         */
+    public static void recipeBuilder(final Object slot_1, final Object slot_2, final Object slot_3, final Object slot_4,
+            final Object slot_5, final Object slot_6, final Object slot_7, final Object slot_8, final Object slot_9,
+            ItemStack resultItem) {
 
         if (resultItem == null) {
             Logger.RECIPE(
@@ -59,7 +46,7 @@ public class RecipeUtils {
             resultItem = ItemUtils.getItemStackOfAmountFromOreDict("givemeabrokenitem", 1);
             resultItem.setItemDamage(mInvalidID++);
             RegistrationHandler.recipesFailed++;
-            // return false;
+
         } else if ((slot_1 == null) && (slot_2 == null)
                 && (slot_3 == null)
                 && (slot_4 == null)
@@ -74,7 +61,7 @@ public class RecipeUtils {
                                     ? resultItem.getDisplayName()
                                     : "Bad Output Item" + " | Please report this issue on Github.");
                     RegistrationHandler.recipesFailed++;
-                    return false;
+                    return;
                 }
 
         Object[] o = new Object[] { slot_1, slot_2, slot_3, slot_4, slot_5, slot_6, slot_7, slot_8, slot_9 };
@@ -89,14 +76,8 @@ public class RecipeUtils {
                 } else {
                     LateRegistrationHandler.recipesSuccess++;
                 }
-                return true;
             }
-            return false;
         } catch (RuntimeException k) {
-            // k.getMessage();
-            // k.getClass();
-            // k.printStackTrace();
-            // k.getLocalizedMessage();
             Logger.RECIPE(
                     "[Fix] Invalid Recipe detected for: " + resultItem != null ? resultItem.getUnlocalizedName()
                             : "INVALID OUTPUT ITEM");
@@ -105,189 +86,19 @@ public class RecipeUtils {
             } else {
                 LateRegistrationHandler.recipesFailed++;
             }
-            return false;
         }
     }
 
-    public static void shapelessBuilder(final ItemStack Output, final Object slot_1, final Object slot_2,
-            final Object slot_3, final Object slot_4, final Object slot_5, final Object slot_6, final Object slot_7,
-            final Object slot_8, final Object slot_9) {
-        // Item output_ITEM = Output.getItem();
-
-        final ArrayList<Object> validSlots = new ArrayList<>();
-
-        Logger.WARNING("Trying to add a recipe for " + Output.toString());
-        String a, b, c, d, e, f, g, h, i;
-        if (slot_1 == null) {
-            a = " ";
-        } else {
-            a = "1";
-            validSlots.add('1');
-            validSlots.add(slot_1);
-        }
-        Logger.WARNING(a);
-        if (slot_2 == null) {
-            b = " ";
-        } else {
-            b = "2";
-            validSlots.add('2');
-            validSlots.add(slot_2);
-        }
-        Logger.WARNING(b);
-        if (slot_3 == null) {
-            c = " ";
-        } else {
-            c = "3";
-            validSlots.add('3');
-            validSlots.add(slot_3);
-        }
-        Logger.WARNING(c);
-        if (slot_4 == null) {
-            d = " ";
-        } else {
-            d = "4";
-            validSlots.add('4');
-            validSlots.add(slot_4);
-        }
-        Logger.WARNING(d);
-        if (slot_5 == null) {
-            e = " ";
-        } else {
-            e = "5";
-            validSlots.add('5');
-            validSlots.add(slot_5);
-        }
-        Logger.WARNING(e);
-        if (slot_6 == null) {
-            f = " ";
-        } else {
-            f = "6";
-            validSlots.add('6');
-            validSlots.add(slot_6);
-        }
-        Logger.WARNING(f);
-        if (slot_7 == null) {
-            g = " ";
-        } else {
-            g = "7";
-            validSlots.add('7');
-            validSlots.add(slot_7);
-        }
-        Logger.WARNING(g);
-        if (slot_8 == null) {
-            h = " ";
-        } else {
-            h = "8";
-            validSlots.add('8');
-            validSlots.add(slot_8);
-        }
-        Logger.WARNING(h);
-        if (slot_9 == null) {
-            i = " ";
-        } else {
-            i = "9";
-            validSlots.add('9');
-            validSlots.add(slot_9);
-        }
-        Logger.WARNING(i);
-
-        Logger.ERROR("_______");
-        Logger.ERROR("|" + a + "|" + b + "|" + c + "|");
-        Logger.ERROR("_______");
-        Logger.ERROR("|" + d + "|" + e + "|" + f + "|");
-        Logger.ERROR("_______");
-        Logger.ERROR("|" + g + "|" + h + "|" + i + "|");
-        Logger.ERROR("_______");
-
-        validSlots.add(0, a);
-        validSlots.add(1, b);
-        validSlots.add(2, c);
-        validSlots.add(3, d);
-        validSlots.add(4, e);
-        validSlots.add(5, f);
-        validSlots.add(6, g);
-        validSlots.add(7, h);
-        validSlots.add(8, i);
-
-        try {
-            // GameRegistry.addRecipe(new ShapelessOreRecipe(Output, outputAmount), (Object[]) validSlots.toArray());
-            GameRegistry.addRecipe(new ShapelessOreRecipe(Output, validSlots.toArray()));
-            // GameRegistry.addShapelessRecipe(new ItemStack(output_ITEM, 1), new Object[] {slot_1, slot_2});
-            Logger.RECIPE("Success! Added a recipe for " + Output.getDisplayName());
-            RegistrationHandler.recipesSuccess++;
-        } catch (final RuntimeException k) {
-            k.getMessage();
-            k.getClass();
-            k.printStackTrace();
-            k.getLocalizedMessage();
-            Logger.RECIPE("[Fix] Invalid Recipe detected for: " + Output.getUnlocalizedName());
-            RegistrationHandler.recipesFailed++;
-        }
-
-        // GameRegistry.addShapelessRecipe(new ItemStack(output_ITEM, 1), new Object[] {slot_1, slot_2});
-    }
-
-    public static void recipeBuilder(final Object[] array, final ItemStack outPut) {
-        Logger.SPECIFIC_WARNING(
-                "object Array - recipeBuilder",
-                "Attempting to build a recipe using an object array as an input, splitting it, then running the normal recipeBuilder() method.",
-                396);
-        Object a = null;
-        Object b = null;
-        Object c = null;
-        Object d = null;
-        Object e = null;
-        Object f = null;
-        Object g = null;
-        Object h = null;
-        Object i = null;
-        for (int z = 0; z <= array.length; z++) {
-            array[z].toString();
-            switch (z) {
-                case 0:
-                    a = array[z];
-                    break;
-                case 1:
-                    b = array[z];
-                    break;
-                case 2:
-                    c = array[z];
-                    break;
-                case 3:
-                    d = array[z];
-                    break;
-                case 4:
-                    e = array[z];
-                    break;
-                case 5:
-                    f = array[z];
-                    break;
-                case 6:
-                    g = array[z];
-                    break;
-                case 7:
-                    h = array[z];
-                    break;
-                case 8:
-                    i = array[z];
-                    break;
-                default:
-                    break;
-            }
-            recipeBuilder(a, b, c, d, e, f, g, h, i, outPut);
-        }
-    }
-
-    public static boolean removeCraftingRecipe(Object x) {
+    public static void removeCraftingRecipe(Object x) {
         if (null == x) {
-            return false;
+            return;
         }
         if (x instanceof String) {
             final Item R = ItemUtils.getItemFromFQRN((String) x);
             if (R != null) {
                 x = R;
             } else {
-                return false;
+                return;
             }
         }
         if ((x instanceof Item) || (x instanceof ItemStack)) {
@@ -303,17 +114,15 @@ public class RecipeUtils {
                     x = r;
                 } else {
                     Logger.RECIPE("Recipe removal failed - Tell Alkalus.");
-                    return false;
+                    return;
                 }
             }
             if (RecipeUtils.attemptRecipeRemoval((Item) x)) {
                 Logger.RECIPE("Recipe removal successful");
-                return true;
+                return;
             }
             Logger.RECIPE("Recipe removal failed - Tell Alkalus.");
-            return false;
         }
-        return false;
     }
 
     private static boolean attemptRecipeRemoval(final Item I) {
@@ -332,9 +141,8 @@ public class RecipeUtils {
         Logger.RECIPE("All recipes should be gone?");
         if (!items.hasNext()) {
             Logger.RECIPE("We iterated once, let's try again to double check.");
-            final Iterator<IRecipe> items2 = recipes.iterator();
-            while (items2.hasNext()) {
-                final ItemStack is = items2.next().getRecipeOutput();
+            for (IRecipe recipe : recipes) {
+                final ItemStack is = recipe.getRecipeOutput();
                 if ((is != null) && (is.getItem() == I)) {
                     items.remove();
                     Logger.RECIPE("REMOVING MISSED RECIPE - RECHECK CONSTRUCTORS");
@@ -345,46 +153,6 @@ public class RecipeUtils {
             return true;
         }
         Logger.RECIPE("Return false, because something went wrong.");
-        return false;
-    }
-
-    public static boolean addShapedGregtechRecipeForTypes(final Object InputItem1, final Object InputItem2,
-            final Object InputItem3, final Object InputItem4, final Object InputItem5, final Object InputItem6,
-            final Object InputItem7, final Object InputItem8, final Object InputItem9, final ItemStack OutputItem) {
-
-        int using = 0, recipeSlotCurrent = 0;
-        boolean[] hasMultiStack = new boolean[9];
-        boolean inUse[] = { false, false, false };
-        ItemStack array[][] = new ItemStack[3][9];
-
-        Object[] inputs = { InputItem1, InputItem2, InputItem3, InputItem4, InputItem5, InputItem6, InputItem7,
-                InputItem8, InputItem9 };
-
-        for (Object o : inputs) {
-            if (o.getClass().isArray()) {
-                if (inUse[using] == false) {
-                    inUse[using] = true;
-                    array[using] = (ItemStack[]) o;
-                    hasMultiStack[recipeSlotCurrent] = true;
-                    using++;
-                }
-            } else {
-                hasMultiStack[recipeSlotCurrent] = false;
-            }
-            recipeSlotCurrent++;
-        }
-
-        int using2 = 0;
-        for (boolean t : inUse) {
-
-            if (t) {
-                if (array[using2] != null) {
-                    // addShapedGregtechRecipe
-                }
-            }
-            using2++;
-        }
-
         return false;
     }
 
@@ -417,61 +185,6 @@ public class RecipeUtils {
         return false;
     }
 
-    public static boolean addShapedGregtechRecipe(final Object[] inputs, ItemStack output) {
-
-        if (inputs.length != 9) {
-            Logger.RECIPE(
-                    "[Fix] Input array for " + output.getDisplayName()
-                            + " does not equal 9. "
-                            + inputs.length
-                            + " is the actual size.");
-            RegistrationHandler.recipesFailed++;
-            return false;
-        }
-
-        for (int x = 0; x < 9; x++) {
-            if (inputs[x] == null) {
-                inputs[x] = " ";
-                Logger.WARNING("Input slot " + x + " changed from NULL to a blank space.");
-            } else if (!(inputs[x] instanceof ItemStack) && !(inputs[x] instanceof String)
-                    && !(inputs[x] instanceof Item)) {
-                        if (output != null) {
-                            Logger.RECIPE(
-                                    "[Fix] Invalid Item inserted into inputArray. Item:" + output.getDisplayName()
-                                            + " has a bad recipe. Please report to Alkalus.");
-                            RegistrationHandler.recipesFailed++;
-                            return false;
-                        } else {
-                            Logger.RECIPE("[Fix] Output is Null for a recipe. Report to Alkalus.");
-                            output = ItemUtils.getItemStackOfAmountFromOreDict("sadibasdkjnad", 1);
-                            RegistrationHandler.recipesFailed++;
-                        }
-                    }
-        }
-
-        int size = COMPAT_HANDLER.mGtRecipesToGenerate.size();
-        COMPAT_HANDLER.mGtRecipesToGenerate.put(new InternalRecipeObject(inputs, output, true));
-
-        if (COMPAT_HANDLER.mGtRecipesToGenerate.size() > size) {
-            if (!COMPAT_HANDLER.areInitItemsLoaded) {
-                RegistrationHandler.recipesSuccess++;
-            } else {
-                LateRegistrationHandler.recipesSuccess++;
-            }
-            return true;
-        }
-        return false;
-    }
-
-    public static boolean addShapelessGregtechRecipe(final Object InputItem1, final Object InputItem2,
-            final Object InputItem3, final Object InputItem4, final Object InputItem5, final Object InputItem6,
-            final Object InputItem7, final Object InputItem8, final Object InputItem9, final ItemStack OutputItem) {
-
-        Object[] inputItems = { InputItem1, InputItem2, InputItem3, InputItem4, InputItem5, InputItem6, InputItem7,
-                InputItem8, InputItem9 };
-        return addShapelessGregtechRecipe(inputItems, OutputItem);
-    }
-
     public static boolean addShapelessGregtechRecipe(final Object[] inputItems, final ItemStack OutputItem) {
         // Catch Invalid Recipes
         if (inputItems.length > 9 || inputItems.length < 1) {
@@ -489,15 +202,6 @@ public class RecipeUtils {
         return false;
     }
 
-    public static ItemStack getItemStackFromOreDict(final String oredictName) {
-        final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(oredictName);
-        return oreDictList.get(0);
-    }
-
-    public static boolean buildShapelessRecipe(final ItemStack output, final Object[] input) {
-        return ShapelessUtils.addShapelessRecipe(output, input);
-    }
-
     public static boolean generateMortarRecipe(ItemStack aStack, ItemStack aOutput) {
         return RecipeUtils.addShapedGregtechRecipe(
                 aStack,
@@ -512,32 +216,11 @@ public class RecipeUtils {
                 aOutput);
     }
 
-    public static boolean doesGregtechRecipeHaveEqualCells(GT_Recipe x) {
-        if (x.mInputs.length == 0 && x.mOutputs.length == 0) {
-            return true;
-        }
-
-        final int tInputAmount = GT_ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(x.mInputs);
-        final int tOutputAmount = GT_ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(x.mOutputs);
-
-        if (tInputAmount < tOutputAmount) {
-            if (!Materials.Tin.contains(x.mInputs)) {
-                return false;
-            } else {
-                return true;
-            }
-        } else if (tInputAmount > tOutputAmount && !Materials.Tin.contains(x.mOutputs)) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
     public static String[] getRecipeInfo(GT_Recipe m) {
         if (m == null) {
             return new String[] {};
         }
-        AutoMap<String> result = new AutoMap<String>();
+        AutoMap<String> result = new AutoMap<>();
         result.put(m.toString());
         result.put("Input " + ItemUtils.getArrayStackNames(m.mInputs));
         result.put("Output " + ItemUtils.getArrayStackNames(m.mOutputs));
@@ -628,20 +311,6 @@ public class RecipeUtils {
         }
     }
 
-    public static boolean removeGtRecipe(GT_Recipe aRecipeToRemove, GT_Recipe_Map aRecipeMap) {
-        if (aRecipeMap.mRecipeList.contains(aRecipeToRemove)) {
-            return aRecipeMap.mRecipeList.remove(aRecipeToRemove);
-        }
-        return false;
-    }
-
-    public static boolean addGtRecipe(GT_Recipe aRecipeToAdd, GT_Recipe_Map aRecipeMap) {
-        if (!aRecipeMap.mRecipeList.contains(aRecipeToAdd)) {
-            return aRecipeMap.mRecipeList.add(aRecipeToAdd);
-        }
-        return false;
-    }
-
     public static boolean removeRecipeByOutput(ItemStack aOutput) {
         return removeRecipeByOutput(aOutput, true, false, false);
     }
@@ -683,10 +352,6 @@ public class RecipeUtils {
         }
     }
 
-    public static void addSmeltingRecipe(ItemStack aStackInput, ItemStack aStackOutput) {
-        addSmeltingRecipe(aStackInput, aStackOutput, 0f);
-    }
-
     public static void addSmeltingRecipe(ItemStack aStackInput, ItemStack aStackOutput, float aXpGained) {
 
         GameRegistry.addSmelting(aStackInput, aStackOutput, aXpGained);
@@ -720,8 +385,7 @@ public class RecipeUtils {
             } else if (o instanceof String) {
                 Slots[i] = o;
                 aFullString += aFullStringExpanded.charAt(i);
-            } else if (o instanceof ItemData) {
-                ItemData aData = (ItemData) o;
+            } else if (o instanceof ItemData aData) {
                 ItemStack aStackFromGT = ItemUtils.getOrePrefixStack(aData.mPrefix, aData.mMaterial.mMaterial, 1);
                 Slots[i] = aStackFromGT;
                 aFullString += aFullStringExpanded.charAt(i);
@@ -774,11 +438,6 @@ public class RecipeUtils {
 
         ShapedOreRecipe aRecipe = new ShapedOreRecipe(aOutputStack, aDataObject);
 
-        /*
-         * ShapedOreRecipe aRecipe = new ShapedOreRecipe(aOutputStack, aStringData, 'a', Slots[0], 'b', Slots[1], 'c',
-         * Slots[2], 'd', Slots[3], 'e', Slots[4], 'f', Slots[5], 'g', Slots[6], 'h', Slots[7], 'i', Slots[8]);
-         */
-
         int size = COMPAT_HANDLER.mRecipesToGenerate.size();
         COMPAT_HANDLER.mRecipesToGenerate.put(new InternalRecipeObject2(aRecipe));
         if (COMPAT_HANDLER.mRecipesToGenerate.size() > size) {
@@ -821,8 +480,8 @@ public class RecipeUtils {
 
         @Override
         public String getInfoData() {
-            if (mOutput != null && mOutput instanceof ItemStack) {
-                return ((ItemStack) mOutput).getDisplayName();
+            if (mOutput != null) {
+                return mOutput.getDisplayName();
             }
             return "";
         }

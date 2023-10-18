@@ -294,7 +294,9 @@ public abstract class Gregtech_MetaItem_Base extends Gregtech_Generic_Item
                                     + " / "
                                     + GT_Utility.formatNumbers(Math.abs(tStats[0]))
                                     + " EU - Voltage: "
-                                    + V[(int) (tStats[2] >= 0 ? tStats[2] < V.length ? tStats[2] : V.length - 1 : 1)]
+                                    + GT_Utility.formatNumbers(
+                                            V[(int) (tStats[2] >= 0 ? tStats[2] < V.length ? tStats[2] : V.length - 1
+                                                    : 1)])
                                     + EnumChatFormatting.GRAY);
                 }
             }
@@ -308,7 +310,10 @@ public abstract class Gregtech_MetaItem_Base extends Gregtech_Generic_Item
                             + ((tFluid == null ? "No Fluids Contained" : GT_Utility.getFluidName(tFluid, true)))
                             + EnumChatFormatting.GRAY);
             aList.add(
-                    EnumChatFormatting.BLUE + ((tFluid == null ? 0 : tFluid.amount) + "L / " + tStats[0] + "L")
+                    EnumChatFormatting.BLUE
+                            + (GT_Utility.formatNumbers(tFluid == null ? 0 : tFluid.amount) + "L / "
+                                    + GT_Utility.formatNumbers(tStats[0])
+                                    + "L")
                             + EnumChatFormatting.GRAY);
         }
 

@@ -56,7 +56,7 @@ public class GT_MetaTileEntity_Hatch_MillingBalls extends GT_MetaTileEntity_Hatc
 
     @Override
     public AutoMap<ItemStack> getItemsValidForUsageSlots() {
-        return new AutoMap<ItemStack>();
+        return new AutoMap<>();
     }
 
     @Override

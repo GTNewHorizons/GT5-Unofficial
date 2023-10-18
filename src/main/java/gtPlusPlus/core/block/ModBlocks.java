@@ -16,14 +16,12 @@ import gtPlusPlus.core.block.machine.FishTrap;
 import gtPlusPlus.core.block.machine.Machine_PestKiller;
 import gtPlusPlus.core.block.machine.Machine_PooCollector;
 import gtPlusPlus.core.block.machine.Machine_ProjectTable;
-import gtPlusPlus.core.block.machine.Machine_RoundRobinator;
 import gtPlusPlus.core.block.machine.Machine_SuperJukebox;
 import gtPlusPlus.core.block.machine.VolumetricFlaskSetter;
 import gtPlusPlus.core.fluids.FluidRegistryHandler;
 
 public final class ModBlocks {
 
-    public static Block blockRoundRobinator;
     public static Block blockCircuitProgrammer;
     public static Block blockVolumetricFlaskSetter;
 
@@ -99,8 +97,6 @@ public final class ModBlocks {
         blockPooCollector = new Machine_PooCollector();
 
         blockPestKiller = new Machine_PestKiller();
-
-        blockRoundRobinator = new Machine_RoundRobinator();
 
         blockVolumetricFlaskSetter = new VolumetricFlaskSetter();
 

@@ -10,7 +10,7 @@ public class SneakManager {
 
     // We make this a singleton for clientside data storage.
 
-    public static ConcurrentHashMap<String, SneakManager> mPlayerCache = new ConcurrentHashMap<String, SneakManager>();
+    public static ConcurrentHashMap<String, SneakManager> mPlayerCache = new ConcurrentHashMap<>();
 
     private static void addPlayer(EntityPlayer aPlayer) {
         String aKey = getKey(aPlayer);

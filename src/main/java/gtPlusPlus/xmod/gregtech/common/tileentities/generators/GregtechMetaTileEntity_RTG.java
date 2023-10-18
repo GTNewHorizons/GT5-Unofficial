@@ -128,7 +128,9 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
                     if (this.mInventory[getStackDisplaySlot()] == null)
                         this.mInventory[getStackDisplaySlot()] = new ItemStack(Blocks.fire, 1);
                     this.mInventory[getStackDisplaySlot()].setStackDisplayName(
-                            "Generating: " + (aBaseMetaTileEntity.getUniversalEnergyStored() - getMinimumStoredEU())
+                            "Generating: "
+                                    + GT_Utility.formatNumbers(
+                                            aBaseMetaTileEntity.getUniversalEnergyStored() - getMinimumStoredEU())
                                     + " EU");
                 }
             } else {
@@ -177,8 +179,8 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
                 this.mDescriptionArray,
                 "Fuel is measured in minecraft days (Check with Scanner)",
                 "RTG changes output voltage depending on fuel",
-                "Generates power at " + this.getEfficiency() + "% Efficiency per tick",
-                "Output Voltage: " + this.getOutputTier() + " EU/t",
+                "Generates power at " + GT_Utility.formatNumbers(this.getEfficiency()) + "% Efficiency per tick",
+                "Output Voltage: " + GT_Utility.formatNumbers(this.getOutputTier()) + " EU/t",
                 CORE.GT_Tooltip.get());
     }
 
@@ -310,7 +312,6 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
             this.mCurrentRecipe = tFuel;
             int voltage = tFuel.mEUt;
             this.mVoltage = voltage;
-            int sfsf = this.mTier;
             // this.mDaysRemaining = tFuel.mSpecialValue*365;
 
             // Do some voodoo.
@@ -326,8 +327,6 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
                 } else if (ItemStack.areItemStacksEqual(tFuel.mInputs[0], GregtechItemList.Pellet_RTG_SR90.get(1))) {
                     mTier2 = 1;
                 } else {
-                    // Utils.LOG_INFO("test:"+tFuel.mInputs[0].getDisplayName() + " | " +
-                    // (ItemStack.areItemStacksEqual(tFuel.mInputs[0], GregtechItemList.Pellet_RTG_PU238.get(1))));
                     mTier2 = 0;
                 }
                 ReflectionUtils.setByte(this, "mTier", mTier2);
@@ -345,8 +344,6 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
             this.mDaysRemaining = MathUtils.roundToClosestInt(mTicksToBurnFor / 20 / 60 / 3);
             Logger.WARNING("step | " + (int) (mTicksToBurnFor * getEfficiency() / 100L));
             return (int) (mTicksToBurnFor * getEfficiency() / 100L);
-            // return (int) (tFuel.mSpecialValue * 365L * getEfficiency() / 100L);
-            // return tFuel.mEUt;
         }
         Logger.WARNING("Not sure");
         return 0;
@@ -373,12 +370,11 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
     @Override
     public String[] getInfoData() {
         return new String[] { "RTG - Running at tier " + this.mTier,
-                "Active: " + this.getBaseMetaTileEntity().isActive(), "Current Output: " + this.mVoltage + " EU/t",
-                "Days of Fuel remaining: " + (mTicksToBurnFor / 20 / 60 / 20),
-                "Hours of Fuel remaining: " + (mTicksToBurnFor / 20 / 60 / 60),
-                "Ticks of " + this.mVoltage + "v remaining: " + (mTicksToBurnFor),
-                "Current Recipe input: " + this.mCurrentRecipe != null
-                        ? this.mCurrentRecipe.mInputs[0].getDisplayName() + " x1"
-                        : "NUll" };
+                "Active: " + this.getBaseMetaTileEntity().isActive(),
+                "Current Output: " + GT_Utility.formatNumbers(mVoltage) + " EU/t",
+                "Days of Fuel remaining: " + GT_Utility.formatNumbers(mTicksToBurnFor / 20 / 60 / 20),
+                "Hours of Fuel remaining: " + GT_Utility.formatNumbers(mTicksToBurnFor / 20 / 60 / 60),
+                "Ticks of " + this.mVoltage + "v remaining: " + mTicksToBurnFor,
+                this.mCurrentRecipe.mInputs[0].getDisplayName() + " x1" };
     }
 }

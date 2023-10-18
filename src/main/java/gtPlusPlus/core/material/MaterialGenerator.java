@@ -60,7 +60,7 @@ import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_ShapedCrafting;
 
 public class MaterialGenerator {
 
-    public static final AutoMap<Set<RunnableWithInfo<Material>>> mRecipeMapsToGenerate = new AutoMap<Set<RunnableWithInfo<Material>>>();
+    public static final AutoMap<Set<RunnableWithInfo<Material>>> mRecipeMapsToGenerate = new AutoMap<>();
 
     @SuppressWarnings("unused")
     private static volatile Item temp;
@@ -336,7 +336,7 @@ public class MaterialGenerator {
             }
 
             if (generateOre) {
-                tempBlock = new BlockBaseOre(matInfo, BlockTypes.ORE, Colour.intValue());
+                tempBlock = new BlockBaseOre(matInfo, BlockTypes.ORE);
             }
 
             DustState aState = new DustState(generateDust, generateSmallTinyDusts, generateSmallTinyDusts);
@@ -385,7 +385,7 @@ public class MaterialGenerator {
             final short[] C = matInfo.getRGBA();
             final Integer Colour = Utils.rgbtoHexValue(C[0], C[1], C[2]);
 
-            tempBlock = new BlockBaseOre(matInfo, BlockTypes.ORE, Colour.intValue());
+            tempBlock = new BlockBaseOre(matInfo, BlockTypes.ORE);
             tempBlock = new BlockBaseModular(matInfo, BlockTypes.STANDARD);
             temp = new BaseItemIngot(matInfo);
             temp = new BaseItemDust(matInfo);

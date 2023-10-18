@@ -33,8 +33,8 @@ public class ItemDummyResearch extends ItemGenericToken {
         RESEARCH_10_SPARGING("Gas Sparging", "Blowing gas for results"),
         RESEARCH_11_MOLECULAR_TRANSFORMER("Molecular Transformation", "Turning things into something better");
 
-        private String mName;
-        private String mDesc;
+        private final String mName;
+        private final String mDesc;
 
         private ASSEMBLY_LINE_RESEARCH(String aName, String aDesc) {
             mName = aName;
@@ -43,7 +43,7 @@ public class ItemDummyResearch extends ItemGenericToken {
         }
     }
 
-    private static Map<String, Integer> mInternalNameToIdMap = new LinkedHashMap<String, Integer>();
+    private static Map<String, Integer> mInternalNameToIdMap = new LinkedHashMap<>();
 
     public static ItemStack getResearchStack(ASSEMBLY_LINE_RESEARCH aResearchName, int aStacksize) {
         Integer aMeta = mInternalNameToIdMap.get(Utils.sanitizeString(aResearchName.mName));

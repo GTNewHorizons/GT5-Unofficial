@@ -7,7 +7,6 @@ import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableCustomCapes;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Collection;
 import java.util.HashMap;
 
 import net.minecraft.block.Block;
@@ -26,32 +25,25 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.FishPondFakeRecipe;
 import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.SemiFluidFuelHandler;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.chunkloading.GTPP_ChunkManager;
-import gtPlusPlus.core.commands.CommandDebugChunks;
 import gtPlusPlus.core.commands.CommandEnableDebugWhileRunning;
 import gtPlusPlus.core.commands.CommandMath;
 import gtPlusPlus.core.common.CommonProxy;
 import gtPlusPlus.core.config.ConfigHandler;
 import gtPlusPlus.core.handler.BookHandler;
-import gtPlusPlus.core.handler.MobMentality;
 import gtPlusPlus.core.handler.PacketHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
-import gtPlusPlus.core.handler.events.LoginEventHandler;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.LocaleUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.nei.NEI_IMC_Sender;
 import gtPlusPlus.plugin.manager.Core_Manager;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
@@ -61,13 +53,11 @@ import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_BlastSmelterGT_GTNH;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_MultisUsingFluidInsteadOfCells;
 import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
 
-@MCVersion(value = "1.7.10")
 @Mod(
         modid = Names.G_T_PLUS_PLUS,
         name = CORE.name,
         version = CORE.VERSION,
         dependencies = "required-after:Forge;" + " after:TConstruct;"
-                + " after:PlayerAPI;"
                 + " after:dreamcraft;"
                 + " after:IC2;"
                 + " required-after:gregtech;"
@@ -88,7 +78,7 @@ import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
                 + " required-after:gtnhlib@[0.0.10,);")
 public class GTplusplus implements ActionListener {
 
-    public static enum INIT_PHASE {
+    public enum INIT_PHASE {
 
         SUPER(null),
         PRE_INIT(SUPER),
@@ -97,10 +87,10 @@ public class GTplusplus implements ActionListener {
         SERVER_START(POST_INIT),
         STARTED(SERVER_START);
 
-        protected boolean mIsPhaseActive = false;
+        private boolean mIsPhaseActive = false;
         private final INIT_PHASE mPrev;
 
-        private INIT_PHASE(INIT_PHASE aPreviousPhase) {
+        INIT_PHASE(INIT_PHASE aPreviousPhase) {
             mPrev = aPreviousPhase;
         }
 
@@ -163,7 +153,6 @@ public class GTplusplus implements ActionListener {
         }
 
         // Give this a go mate.
-        // initAnalytics();
         setupMaterialBlacklist();
 
         // Handle GT++ Config
@@ -171,17 +160,11 @@ public class GTplusplus implements ActionListener {
 
         // Check for Dev
         CORE.DEVENV = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
-        // Utils.LOG_INFO("User's Country: " + CORE.USER_COUNTRY);
-
-        Utils.registerEvent(new LoginEventHandler());
-        Utils.registerEvent(new MobMentality());
-        Logger.INFO("Login Handler Initialized");
 
         proxy.preInit(event);
         Logger.INFO("Setting up our own GT_Proxy.");
         Meta_GT_Proxy.preInit();
         Core_Manager.preInit();
-        GTPP_ChunkManager.init();
     }
 
     // Init
@@ -239,7 +222,6 @@ public class GTplusplus implements ActionListener {
         INIT_PHASE.SERVER_START.setPhaseActive(true);
         event.registerServerCommand(new CommandMath());
         event.registerServerCommand(new CommandEnableDebugWhileRunning());
-        event.registerServerCommand(new CommandDebugChunks());
         if (Thaumcraft.isModLoaded()) {
             event.registerServerCommand(new CommandDumpAspects());
         }
@@ -271,13 +253,10 @@ public class GTplusplus implements ActionListener {
 
     protected void generateGregtechRecipeMaps() {
 
-        int[] mValidCount = new int[] { 0, 0, 0 };
         int[] mInvalidCount = new int[] { 0, 0, 0, 0, 0, 0, 0 };
-        int[] mOriginalCount = new int[] { 0, 0, 0 };
 
         RecipeGen_BlastSmelterGT_GTNH.generateGTNHBlastSmelterRecipesFromEBFList();
         FishPondFakeRecipe.generateFishPondRecipes();
-        // GregtechMiniRaFusion.generateSlowFusionrecipes();
         SemiFluidFuelHandler.generateFuels();
 
         mInvalidCount[0] = RecipeGen_MultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
@@ -303,22 +282,7 @@ public class GTplusplus implements ActionListener {
                 GTPP_Recipe.GTPP_Recipe_Map.sNuclearSaltProcessingPlantRecipes);
     }
 
-    protected void dumpGtRecipeMap(final GT_Recipe_Map r) {
-        final Collection<GT_Recipe> x = r.mRecipeList;
-        Logger.INFO("Dumping " + r.mUnlocalizedName + " Recipes for Debug.");
-        for (final GT_Recipe newBo : x) {
-            Logger.INFO("========================");
-            Logger.INFO("Dumping Input: " + ItemUtils.getArrayStackNames(newBo.mInputs));
-            Logger.INFO("Dumping Inputs " + ItemUtils.getFluidArrayStackNames(newBo.mFluidInputs));
-            Logger.INFO("Dumping Duration: " + newBo.mDuration);
-            Logger.INFO("Dumping EU/t: " + newBo.mEUt);
-            Logger.INFO("Dumping Output: " + ItemUtils.getArrayStackNames(newBo.mOutputs));
-            Logger.INFO("Dumping Output: " + ItemUtils.getFluidArrayStackNames(newBo.mFluidOutputs));
-            Logger.INFO("========================");
-        }
-    }
-
-    private static final boolean setupMaterialBlacklist() {
+    private static void setupMaterialBlacklist() {
         Material.invalidMaterials.put(Materials._NULL);
         Material.invalidMaterials.put(Materials.Clay);
         Material.invalidMaterials.put(Materials.Phosphorus);
@@ -339,14 +303,10 @@ public class GTplusplus implements ActionListener {
         Material.invalidMaterials.put(Materials.Soularium);
         Material.invalidMaterials.put(Materials.PhasedIron);
 
-        if (Material.invalidMaterials.size() > 0) {
-            return true;
-        }
-        return false;
     }
 
-    private static final HashMap<String, Item> sMissingItemMappings = new HashMap<String, Item>();
-    private static final HashMap<String, Block> sMissingBlockMappings = new HashMap<String, Block>();
+    private static final HashMap<String, Item> sMissingItemMappings = new HashMap<>();
+    private static final HashMap<String, Block> sMissingBlockMappings = new HashMap<>();
 
     private static void processMissingMappings() {
         sMissingItemMappings.put("miscutils:Ammonium", GameRegistry.findItem(GTPlusPlus.ID, "itemCellAmmonium"));
@@ -417,16 +377,14 @@ public class GTplusplus implements ActionListener {
                 Item aReplacement = sMissingItemMappings.get(mapping.name);
                 if (aReplacement != null) {
                     remap(aReplacement, mapping);
-                } else {
-                    // Logger.INFO("Unable to remap: "+mapping.name+", item has no replacement mapping.");
                 }
+
             } else if (mapping.type == GameRegistry.Type.BLOCK) {
                 Block aReplacement = sMissingBlockMappings.get(mapping.name);
                 if (aReplacement != null) {
                     remap(aReplacement, mapping);
-                } else {
-                    // Logger.INFO("Unable to remap: "+mapping.name+", block has no replacement mapping.");
                 }
+
             }
         }
     }

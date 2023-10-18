@@ -161,7 +161,7 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
     public void switchGateForward(boolean aShift) {
         try {
             Set<Integer> tKeys = GregTech_API.sCircuitryBehaviors.keySet();
-            ArrayList<Integer> tList = new ArrayList<Integer>();
+            ArrayList<Integer> tList = new ArrayList<>();
             tList.addAll(tKeys);
             if (tList.size() <= 0) return;
             Collections.sort(tList);
@@ -179,7 +179,7 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
     public void switchGateBackward(boolean aShift) {
         try {
             Set<Integer> tKeys = GregTech_API.sCircuitryBehaviors.keySet();
-            ArrayList<Integer> tList = new ArrayList<Integer>();
+            ArrayList<Integer> tList = new ArrayList<>();
             tList.addAll(tKeys);
             if (tList.size() <= 0) return;
             Collections.sort(tList);
@@ -308,7 +308,7 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
     }
 
     /** The Item List for Covers */
-    public static final Map<Integer, ItemStack> sCoversItems = new HashMap<Integer, ItemStack>();
+    public static final Map<Integer, ItemStack> sCoversItems = new HashMap<>();
 
     private static void initCovers() {
         for (GT_ItemStack aKey : GregTech_API.sCovers.keySet()) {

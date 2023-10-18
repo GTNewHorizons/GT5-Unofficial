@@ -13,8 +13,8 @@ import gtPlusPlus.core.material.Material;
 
 public class FlotationRecipeHandler {
 
-    private static final HashMap<String, Material> sMaterialMap = new HashMap<String, Material>();
-    private static final HashMap<String, ItemStack> sMilledMap = new HashMap<String, ItemStack>();
+    private static final HashMap<String, Material> sMaterialMap = new HashMap<>();
+    private static final HashMap<String, ItemStack> sMilledMap = new HashMap<>();
 
     public static boolean registerOreType(Material aMaterial) {
         String aMaterialKey = aMaterial.getUnlocalizedName();

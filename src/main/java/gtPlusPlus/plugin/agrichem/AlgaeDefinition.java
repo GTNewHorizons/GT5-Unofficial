@@ -32,26 +32,18 @@ public enum AlgaeDefinition {
     }
 
     public static AlgaeDefinition getByIndex(int aIndex) {
-        switch (aIndex) {
-            default:
-            case 0:
-                return Euglenophyta;
-            case 1:
-                return Chrysophyta;
-            case 2:
-                return Pyrrophyta;
-            case 3:
-                return Chlorophyta;
-            case 4:
-                return Rhodophyta;
-            case 5:
-                return Paeophyta;
-            case 6:
-                return Xanthophyta;
-        }
+        return switch (aIndex) {
+            default -> Euglenophyta;
+            case 1 -> Chrysophyta;
+            case 2 -> Pyrrophyta;
+            case 3 -> Chlorophyta;
+            case 4 -> Rhodophyta;
+            case 5 -> Paeophyta;
+            case 6 -> Xanthophyta;
+        };
     }
 
-    private static final int getRGB(int r, int g, int b) {
+    private static int getRGB(int r, int g, int b) {
         return AlgaeUtils.rgbtoHexValue(r, g, b);
     }
 }

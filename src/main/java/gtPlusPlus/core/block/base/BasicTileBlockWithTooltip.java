@@ -51,8 +51,6 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
 
     /**
      * Does this block have any meta at all?
-     * 
-     * @return
      */
     public final boolean hasMeta() {
         return getMetaCount() > 0;
@@ -60,8 +58,6 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
 
     /**
      * The amount of meta this block has.
-     * 
-     * @return
      */
     public abstract int getMetaCount();
 
@@ -80,15 +76,6 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
      * @return The internal name for this block.
      */
     public abstract String getUnlocalBlockName();
-
-    /**
-     * Does this Block have {@link ITileTooltip} support?
-     * 
-     * @return {@link boolean} that represents if this block supports {@link ITileTooltip} or not.
-     */
-    public final boolean hasTooltip() {
-        return getTooltipID() >= -1;
-    }
 
     /**
      * Lazy Boilerplating.
@@ -114,8 +101,6 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
     /**
      * The ID used by the {@link ITileTooltip} handler. Return -1 if you are not providing a custom {@link ItemBlock} in
      * {@link #getItemBlockClass}().
-     * 
-     * @return
      */
     @Override
     public abstract int getTooltipID();
@@ -138,8 +123,6 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
 
     /**
      * The name of the Tile Entity.
-     * 
-     * @return
      */
     protected abstract String getTileEntityName();
 
@@ -148,7 +131,7 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
      * 
      * @return Sanitized {@link String}, containing no spaces or illegal characters.
      */
-    private final String getTileEntityNameForTexturePathing() {
+    private String getTileEntityNameForTexturePathing() {
         return Utils.sanitizeString(getTileEntityName().replace(" ", ""));
     }
 
@@ -156,8 +139,6 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
      * An array of CubicObjects, one for each meta, else just a single cell array. Expected to be null regularly, as the
      * default texture handling should suffice. Handy if re-using textures or using a non-standard structure for them.
      * FULL texture path must be used, inclusive of the MODID and a colon.
-     * 
-     * @return
      */
     public CubicObject<String>[] getCustomTextureDirectoryObject() {
         return null;
@@ -175,7 +156,7 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
     }
 
     @SideOnly(Side.CLIENT)
-    private final void handleTextures() {
+    private void handleTextures() {
 
         Logger.INFO("[TeTexture] Building Texture Maps for " + getTileEntityName() + ".");
 
@@ -188,7 +169,7 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
 
         // Default Path Name, this will make us look inside 'miscutils\textures\blocks'
         final String aPrefixTexPath = GTPlusPlus.ID + ":";
-        // Default Path Name, this will make us look in the sub-directory for this Tile Entity.
+        // Default Path Name, this will make us look in the subdirectory for this Tile Entity.
         final String aTexPathMid = "TileEntities" + CORE.SEPERATOR
                 + getTileEntityNameForTexturePathing()
                 + CORE.SEPERATOR;
@@ -241,7 +222,7 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
                 aStringLeft = aTexPathBuilt + aStringLeft;
                 aStringRight = aTexPathBuilt + aStringRight;
                 // Convenience Blob
-                CubicObject<String> aMetaBlob = new CubicObject<String>(
+                CubicObject<String> aMetaBlob = new CubicObject<>(
                         aStringBot,
                         aStringTop,
                         aStringBack,
@@ -269,7 +250,7 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
             // Store them in an Array
             SafeTexture[] aInjectBlob = new SafeTexture[] { aBottom, aTop, aBack, aFont, aWest, aEast };
             // Convenience Blob
-            CubicObject<SafeTexture> aMetaBlob2 = new CubicObject<SafeTexture>(aInjectBlob);
+            CubicObject<SafeTexture> aMetaBlob2 = new CubicObject<>(aInjectBlob);
             // Store this Blob into
             mSidedTextureArray.put(aMetaBlob2);
             Logger.INFO("[TeTexture] Added SafeTexture data to map for meta " + (aIndex++));
@@ -323,8 +304,7 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
      */
     @Override
     public int getDamageValue(World aWorld, int aX, int aY, int aZ) {
-        int l = aWorld.getBlockMetadata(aX, aY, aZ);
-        return l;
+        return aWorld.getBlockMetadata(aX, aY, aZ);
     }
 
     @Override
@@ -334,7 +314,7 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
 
     @Override
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-        ArrayList<ItemStack> drops = new ArrayList<ItemStack>();
+        ArrayList<ItemStack> drops = new ArrayList<>();
         drops.add(ItemUtils.simpleMetaStack(this, metadata, 1));
         return drops;
     }

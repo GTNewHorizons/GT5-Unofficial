@@ -65,8 +65,6 @@ public class Container_ProjectTable extends Container {
         // Storage Side
         for (var6 = 0; var6 < 3; ++var6) {
             for (var7 = 0; var7 < 3; ++var7) {
-                // Utils.LOG_WARNING("Adding slots at var:"+(var7 + var6 * 4)+" x:"+(8 + var7 * 18)+" y:"+(7 + var6 *
-                // 18));
                 this.addSlotToContainer(
                         new Slot(this.craftMatrix, nextFreeSlot, 8 + 18 + (var7 * 18), 8 + (var6 * 18)));
                 this.slotGrid[o] = nextFreeSlot;

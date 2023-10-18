@@ -27,7 +27,7 @@ public class AlgaeGeneticData {
     private final AutoMap<AlgaeGrowthRequirement> mSpecialRequirements;
 
     public AlgaeGeneticData() {
-        this(true, true, true, true, (byte) 0, 1f, 1f, (byte) 30, 0, new AutoMap<AlgaeGrowthRequirement>());
+        this(true, true, true, true, (byte) 0, 1f, 1f, (byte) 30, 0, new AutoMap<>());
     }
 
     public AlgaeGeneticData(boolean isDominant, boolean requiresLight, boolean isSalt, boolean isFresh,
@@ -67,7 +67,7 @@ public class AlgaeGeneticData {
             mLifespan = aNBT.getByte("mLifespan");
             mGeneration = aNBT.getInteger("mGeneration");
         }
-        mSpecialRequirements = new AutoMap<AlgaeGrowthRequirement>();
+        mSpecialRequirements = new AutoMap<>();
     }
 
     /**

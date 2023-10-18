@@ -96,10 +96,9 @@ public class ItemMagicFeather extends CoreItem {
     private static void findSuitableBeacon(EntityPlayer player, Collection<TileEntity> tileEntities,
             HashSet<TileEntityBeacon> aBeaconData) {
         for (TileEntity t : tileEntities) {
-            if (!(t instanceof TileEntityBeacon)) {
+            if (!(t instanceof TileEntityBeacon beacon)) {
                 continue;
             }
-            TileEntityBeacon beacon = (TileEntityBeacon) t;
             int level = beacon.getLevels();
             if (level == 0) {
                 continue;
@@ -176,8 +175,7 @@ public class ItemMagicFeather extends CoreItem {
     public void onPlayerDeath(LivingDeathEvent event) {
         if (event.entityLiving == null) return;
         EntityLivingBase aEntity = event.entityLiving;
-        if (!(aEntity instanceof EntityPlayer) || aEntity.worldObj == null || aEntity.worldObj.isRemote) return;
-        EntityPlayer aPlayer = (EntityPlayer) aEntity;
+        if (!(aEntity instanceof EntityPlayer aPlayer) || aEntity.worldObj == null || aEntity.worldObj.isRemote) return;
         ItemMagicFeather.sPlayerData.remove(aPlayer);
         ItemMagicFeather.sBeaconData.remove(aPlayer);
     }

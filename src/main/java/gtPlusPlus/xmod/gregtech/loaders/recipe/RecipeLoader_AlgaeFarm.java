@@ -17,8 +17,8 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class RecipeLoader_AlgaeFarm {
 
-    private static final HashMap<Integer, AutoMap<GT_Recipe>> mRecipeCache = new HashMap<Integer, AutoMap<GT_Recipe>>();
-    private static final HashMap<Integer, AutoMap<GT_Recipe>> mRecipeCompostCache = new HashMap<Integer, AutoMap<GT_Recipe>>();
+    private static final HashMap<Integer, AutoMap<GT_Recipe>> mRecipeCache = new HashMap<>();
+    private static final HashMap<Integer, AutoMap<GT_Recipe>> mRecipeCompostCache = new HashMap<>();
 
     public static void generateRecipes() {
         for (int i = 0; i < 10; i++) {
@@ -35,7 +35,7 @@ public class RecipeLoader_AlgaeFarm {
 
         AutoMap<GT_Recipe> aTemp = aMap.get(aTier);
         if (aTemp == null || aTemp.isEmpty()) {
-            aTemp = new AutoMap<GT_Recipe>();
+            aTemp = new AutoMap<>();
             aMap.put(aTier, aTemp);
             Logger.INFO("Tier " + aTier + aComp + " had no recipes, initialising new map.");
         }
@@ -62,7 +62,7 @@ public class RecipeLoader_AlgaeFarm {
             return null;
         }
 
-        WeightedCollection<Float> aOutputTimeMulti = new WeightedCollection<Float>();
+        WeightedCollection<Float> aOutputTimeMulti = new WeightedCollection<>();
         for (int i = 100; i > 0; i--) {
             float aValue = 0;
             if (i < 10) {
@@ -112,7 +112,7 @@ public class RecipeLoader_AlgaeFarm {
     private static ItemStack[] getOutputsForTier(int aTier) {
 
         // Create an Automap to dump contents into
-        AutoMap<ItemStack> aOutputMap = new AutoMap<ItemStack>();
+        AutoMap<ItemStack> aOutputMap = new AutoMap<>();
 
         // Add loot relevant to tier and also add any from lower tiers.
 

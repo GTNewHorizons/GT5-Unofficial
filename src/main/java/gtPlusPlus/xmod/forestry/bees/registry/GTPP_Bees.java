@@ -30,11 +30,11 @@ public class GTPP_Bees {
     public static GTPP_Drop drop;
     public static GTPP_Comb combs;
 
-    public static HashMap<String, Material> sMaterialMappings = new HashMap<String, Material>();
-    public static HashMap<Integer, GTPP_PropolisType> sPropolisMappings = new HashMap<Integer, GTPP_PropolisType>();
-    public static HashMap<Integer, GTPP_PollenType> sPollenMappings = new HashMap<Integer, GTPP_PollenType>();
-    public static HashMap<Integer, GTPP_DropType> sDropMappings = new HashMap<Integer, GTPP_DropType>();
-    public static HashMap<Integer, GTPP_CombType> sCombMappings = new HashMap<Integer, GTPP_CombType>();
+    public static HashMap<String, Material> sMaterialMappings = new HashMap<>();
+    public static HashMap<Integer, GTPP_PropolisType> sPropolisMappings = new HashMap<>();
+    public static HashMap<Integer, GTPP_PollenType> sPollenMappings = new HashMap<>();
+    public static HashMap<Integer, GTPP_DropType> sDropMappings = new HashMap<>();
+    public static HashMap<Integer, GTPP_CombType> sCombMappings = new HashMap<>();
 
     public GTPP_Bees() {
         if (Forestry.isModLoaded() && GT_Mod.gregtechproxy.mGTBees) {

@@ -189,8 +189,7 @@ public class GT_NEI_LFTR_Sparging extends TemplateRecipeHandler {
     public List<String> handleItemTooltip(final GuiRecipe<?> gui, final ItemStack aStack, final List<String> currenttip,
             final int aRecipeIndex) {
         final TemplateRecipeHandler.CachedRecipe tObject = this.arecipes.get(aRecipeIndex);
-        if ((tObject instanceof GasSpargingRecipeNEI)) {
-            final GasSpargingRecipeNEI tRecipe = (GasSpargingRecipeNEI) tObject;
+        if ((tObject instanceof final GasSpargingRecipeNEI tRecipe)) {
             ItemStack aSpargeInput = tRecipe.mOutputs.get(0).item;
             ItemStack aSpentFuel = tRecipe.mOutputs.get(1).item;
             for (final PositionedStack tStack : tRecipe.mOutputs) {
@@ -249,7 +248,7 @@ public class GT_NEI_LFTR_Sparging extends TemplateRecipeHandler {
             if (this.permutated) {
                 return;
             }
-            final ArrayList<ItemStack> tDisplayStacks = new ArrayList<ItemStack>();
+            final ArrayList<ItemStack> tDisplayStacks = new ArrayList<>();
             for (final ItemStack tStack : this.items) {
                 if (GT_Utility.isStackValid(tStack)) {
                     if (tStack.getItemDamage() == 32767) {
@@ -282,8 +281,8 @@ public class GT_NEI_LFTR_Sparging extends TemplateRecipeHandler {
     public class GasSpargingRecipeNEI extends CachedRecipe implements Comparable<CachedRecipe> {
 
         public final GasSpargingRecipe mRecipe;
-        public final List<PositionedStack> mOutputs = new ArrayList<PositionedStack>();
-        public final List<PositionedStack> mInputs = new ArrayList<PositionedStack>();
+        public final List<PositionedStack> mOutputs = new ArrayList<>();
+        public final List<PositionedStack> mInputs = new ArrayList<>();
 
         public GasSpargingRecipeNEI(GasSpargingRecipe tRecipe) {
             super();

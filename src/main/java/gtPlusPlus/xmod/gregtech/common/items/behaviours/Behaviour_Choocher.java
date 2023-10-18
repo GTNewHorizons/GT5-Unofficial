@@ -11,7 +11,6 @@ import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.items.behaviors.Behaviour_None;
 import gregtech.common.items.behaviors.Behaviour_Wrench;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
@@ -48,7 +47,7 @@ public class Behaviour_Choocher extends Behaviour_None {
         }
 
         if (aPlayer.isSneaking()) {
-            boolean aModeNew = Utils.invertBoolean(inWrenchMode);
+            boolean aModeNew = !inWrenchMode;
             aStack.getTagCompound().setBoolean("aMode", aModeNew);
             PlayerUtils.messagePlayer(aPlayer, "Mode: " + (aModeNew ? "Wrench" : "Hammer"));
             return true;

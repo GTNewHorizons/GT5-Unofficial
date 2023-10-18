@@ -87,25 +87,25 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
     }
 
     private int getCapacityForSlot(int aSlot) {
-        switch (aSlot) {
-            case 0: // 16
-                return 16;
-            case 1: // 36
-                return 36;
-            case 2: // 144
-                return 144;
-            case 3: // 432
-                return 432;
-            case 4: // 576
-                return 576;
-            case 5: // 720
-                return 720;
-            case 6: // 864
-                return 864;
-            case 7: // Custom
-                return getCustomValue();
-        }
-        return 1000;
+        return switch (aSlot) {
+            case 0 -> // 16
+                16;
+            case 1 -> // 36
+                36;
+            case 2 -> // 144
+                144;
+            case 3 -> // 432
+                432;
+            case 4 -> // 576
+                576;
+            case 5 -> // 720
+                720;
+            case 6 -> // 864
+                864;
+            case 7 -> // Custom
+                getCustomValue();
+            default -> 1000;
+        };
     }
 
     public boolean addOutput() {
@@ -126,7 +126,7 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
                 return false;
             }
         }
-        AutoMap<Integer> aValidSlots = new AutoMap<Integer>();
+        AutoMap<Integer> aValidSlots = new AutoMap<>();
         int aSlotCount = 0;
         for (ItemStack i : aInputs) {
             if (i != null) {

@@ -20,7 +20,6 @@ import gregtech.common.items.behaviors.Behaviour_None;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.entity.projectile.EntityLightningAttack;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.helpers.ChargingHelper;
@@ -70,7 +69,7 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
                 Logger.INFO("Changing Mode");
                 boolean aCurrentMode = NBTUtils.getBoolean(aStack, "aFireballMode");
                 Logger.INFO("Is currently in Fireball mode? " + aCurrentMode);
-                boolean aNewMode = Utils.invertBoolean(aCurrentMode);
+                boolean aNewMode = !aCurrentMode;
                 Logger.INFO("Is now set to Fireball mode? " + aNewMode);
                 aStack.getTagCompound().setBoolean("aFireballMod", aNewMode);
                 // NBTUtils.setBoolean(aStack, "aFireballMode", aNewMode);
@@ -123,7 +122,7 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
                 Logger.INFO("Changing Mode");
                 boolean aCurrentMode = NBTUtils.getBoolean(aStack, "aFireballMode");
                 Logger.INFO("Is currently in Fireball mode? " + aCurrentMode);
-                boolean aNewMode = Utils.invertBoolean(aCurrentMode);
+                boolean aNewMode = !aCurrentMode;
                 Logger.INFO("Is now set to Fireball mode? " + aNewMode);
                 aStack.getTagCompound().setBoolean("aFireballMode", aNewMode);
                 // NBTUtils.setBoolean(aStack, "aFireballMode", aNewMode);
@@ -176,9 +175,8 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
                 Logger.WARNING("Preparing Lighter 2");
                 if (ChargingHelper.isItemValid(aStack)) {
                     Logger.WARNING("Preparing Lighter 3");
-                    if (aStack.getItem() instanceof IElectricItemManager) {
+                    if (aStack.getItem() instanceof IElectricItemManager aItemElec) {
                         Logger.WARNING("Preparing Lighter 4");
-                        IElectricItemManager aItemElec = (IElectricItemManager) aStack.getItem();
                         double aCharge = aItemElec.getCharge(aStack);
                         long aEuCost = 4096 * 2;
                         if (aCharge >= aEuCost) {
@@ -203,8 +201,7 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
         if (aStack != null) {
             if (aStack.getItem() instanceof MetaGeneratedGregtechTools) {
                 if (ChargingHelper.isItemValid(aStack)) {
-                    if (aStack.getItem() instanceof IElectricItemManager) {
-                        IElectricItemManager aItemElec = (IElectricItemManager) aStack.getItem();
+                    if (aStack.getItem() instanceof IElectricItemManager aItemElec) {
                         double aCharge = aItemElec.getCharge(aStack);
                         long aEuCost = 4096 * 2;
                         aUses = (int) (aCharge / aEuCost);

@@ -37,12 +37,6 @@ public class GregtechPollutionDevices {
                             "Polluting the skies.",
                             0).getStackForm(1L));
 
-            GregtechItemList.Pollution_Cleaner_ULV.set(
-                    new GregtechMetaAtmosphericReconditioner(
-                            757,
-                            "pollutioncleaner.01.tier.single",
-                            "Pollution Scrubber",
-                            0).getStackForm(1L));
             GregtechItemList.Pollution_Cleaner_LV.set(
                     new GregtechMetaAtmosphericReconditioner(
                             758,

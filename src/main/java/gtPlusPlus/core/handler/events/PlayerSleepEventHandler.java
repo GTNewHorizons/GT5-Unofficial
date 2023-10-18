@@ -18,14 +18,14 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import gtPlusPlus.preloader.DevHelper;
+import gtPlusPlus.preloader.CORE_Preloader;
 
 public class PlayerSleepEventHandler {
 
     private static Field sEffectDuration = ReflectionUtils
-            .getField(PotionEffect.class, DevHelper.isObfuscatedEnvironment() ? "field_76460_b" : "duration");
-    private static ArrayList<Potion> sPositiveEffects = new ArrayList<Potion>();
-    private static ArrayList<Potion> sNegativeEffects = new ArrayList<Potion>();
+            .getField(PotionEffect.class, !CORE_Preloader.DEV_ENVIRONMENT ? "field_76460_b" : "duration");
+    private static ArrayList<Potion> sPositiveEffects = new ArrayList<>();
+    private static ArrayList<Potion> sNegativeEffects = new ArrayList<>();
 
     public static void init() {
         Utils.registerEvent(new PlayerSleepEventHandler());

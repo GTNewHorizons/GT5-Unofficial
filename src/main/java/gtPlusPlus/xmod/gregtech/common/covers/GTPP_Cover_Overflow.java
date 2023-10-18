@@ -46,8 +46,6 @@ public class GTPP_Cover_Overflow extends GT_CoverBehavior {
             directionFrom = ForgeDirection.UNKNOWN;
             tTank1 = (IFluidHandler) aTileEntity;
             if (tTank1 != null) {
-                // Logger.INFO("Found Self. "+aSide);
-                // FluidStack aTankStack = tTank1.drain(ForgeDirection.UNKNOWN, 1, false);
                 FluidStack aTankStack = tTank1.getTankInfo(directionFrom)[0].fluid;
                 if (aTankStack != null) {
                     // Logger.INFO("Found Fluid inside self - "+aTankStack.getLocalizedName()+", overflow point set at
@@ -217,8 +215,8 @@ public class GTPP_Cover_Overflow extends GT_CoverBehavior {
                                                     (warn.get() ? GT_Utility.trans("325", "Max")
                                                             : GT_Utility.trans("324", "Now")) + ": "
                                                             + convert(getCoverData())
-                                                            + "/"
-                                                            + mMaxTransferRate
+                                                            + " / "
+                                                            + GT_Utility.formatNumbers(mMaxTransferRate)
                                                             + " "
                                                             + GT_Utility.trans("323", "L")).color(
                                                                     warn.get() ? COLOR_TEXT_WARN.get()

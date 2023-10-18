@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GT_MetaTileEntity_TieredChest;
 
@@ -26,13 +25,6 @@ public class GregtechSuperChests {
         GregtechItemList.Super_Chest_IV.set(
                 (new GT_MetaTileEntity_TieredChest(mId++, "super.chest.gtpp.tier.05", "Super Chest V" + aSuffix, 5))
                         .getStackForm(1L));
-
-        // Do not add Recipes for GTNH, hide them from NEI instead.
-        ItemUtils.hideItemFromNEI(GregtechItemList.Super_Chest_LV.get(1L));
-        ItemUtils.hideItemFromNEI(GregtechItemList.Super_Chest_MV.get(1L));
-        ItemUtils.hideItemFromNEI(GregtechItemList.Super_Chest_HV.get(1L));
-        ItemUtils.hideItemFromNEI(GregtechItemList.Super_Chest_EV.get(1L));
-        ItemUtils.hideItemFromNEI(GregtechItemList.Super_Chest_IV.get(1L));
 
     }
 }

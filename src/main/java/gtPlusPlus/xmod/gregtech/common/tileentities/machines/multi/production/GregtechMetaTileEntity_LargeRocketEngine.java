@@ -449,9 +449,7 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends
     public boolean onRunningTick(ItemStack aStack) {
         if (this.mRuntime % 20 == 0) {
             if (this.mMufflerHatches.size() == 1
-                    && this.mMufflerHatches.get(0) instanceof GT_MetaTileEntity_Hatch_Muffler_Adv) {
-                GT_MetaTileEntity_Hatch_Muffler_Adv tMuffler = (GT_MetaTileEntity_Hatch_Muffler_Adv) this.mMufflerHatches
-                        .get(0);
+                    && this.mMufflerHatches.get(0) instanceof GT_MetaTileEntity_Hatch_Muffler_Adv tMuffler) {
                 if (!tMuffler.hasValidFilter()) {
                     ArrayList<ItemStack> tInputs = getStoredInputs();
                     for (ItemStack tItem : tInputs) {

@@ -1,7 +1,8 @@
 package gtPlusPlus.xmod.gregtech.common.helpers;
 
 import static gregtech.api.GregTech_API.mEUtoRF;
-import static gregtech.api.enums.Mods.*;
+import static gregtech.api.enums.Mods.Baubles;
+import static gregtech.api.enums.Mods.COFHCore;
 
 import java.util.HashMap;
 import java.util.Map;

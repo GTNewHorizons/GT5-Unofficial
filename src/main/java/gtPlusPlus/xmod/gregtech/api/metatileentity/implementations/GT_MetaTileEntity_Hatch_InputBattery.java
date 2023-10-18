@@ -128,8 +128,7 @@ public class GT_MetaTileEntity_Hatch_InputBattery extends GT_MetaTileEntity_Hatc
             fillStacksIntoFirstSlots();
         }
         if (aBaseMetaTileEntity.isServerSide()) {
-            if (aBaseMetaTileEntity.getMetaTileEntity() instanceof MetaTileEntity) {
-                MetaTileEntity mMetaTileEntity = (MetaTileEntity) aBaseMetaTileEntity.getMetaTileEntity();
+            if (aBaseMetaTileEntity.getMetaTileEntity() instanceof MetaTileEntity mMetaTileEntity) {
                 if (mMetaTileEntity.rechargerSlotCount() > 0 && aBaseMetaTileEntity.getStoredEU() > 0) {
                     for (int i = mMetaTileEntity.rechargerSlotStartIndex(),
                             k = mMetaTileEntity.rechargerSlotCount() + i; i < k; i++) {
@@ -149,11 +148,7 @@ public class GT_MetaTileEntity_Hatch_InputBattery extends GT_MetaTileEntity_Hatc
                             }
                         }
                     }
-                } else {
-                    // Utils.LOG_INFO("reCharger Slot Count = "+mMetaTileEntity.rechargerSlotCount());
-                    // Utils.LOG_INFO("getStoredEU = "+aBaseMetaTileEntity.getStoredEU());
-                    // Utils.LOG_INFO("getEUVar = "+mMetaTileEntity.getEUVar());
-                }
+                } else {}
             }
         }
         super.onPostTick(aBaseMetaTileEntity, aTimer);
@@ -202,14 +197,11 @@ public class GT_MetaTileEntity_Hatch_InputBattery extends GT_MetaTileEntity_Hatc
 
     @Override
     public int rechargerSlotCount() {
-        switch (mTier) {
-            case 2:
-                return 4;
-            case 4:
-                return 16;
-            default:
-                return 16;
-        }
+        return switch (mTier) {
+            case 2 -> 4;
+            case 4 -> 16;
+            default -> 16;
+        };
     }
 
     @Override

@@ -33,7 +33,7 @@ public abstract class ItemPackage implements RunnableWithInfo<String> {
 
     public abstract boolean generateRecipes();
 
-    private final void init() {
+    private void init() {
         items();
         blocks();
         fluids();

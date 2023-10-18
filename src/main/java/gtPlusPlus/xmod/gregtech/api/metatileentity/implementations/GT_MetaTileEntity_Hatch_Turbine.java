@@ -30,7 +30,6 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.GregtechMetaTileEntity_LargerTurbineBase;
@@ -172,7 +171,7 @@ public class GT_MetaTileEntity_Hatch_Turbine extends GT_MetaTileEntity_Hatch {
         }
     }
 
-    private final int getDamageToComponent(ItemStack aStack) {
+    private int getDamageToComponent(ItemStack aStack) {
         return 1;
     }
 
@@ -334,7 +333,7 @@ public class GT_MetaTileEntity_Hatch_Turbine extends GT_MetaTileEntity_Hatch {
                 PlayerUtils.messagePlayer(aPlayer, "Using: " + aMat.mLocalizedName + " " + aSize);
             }
         } else {
-            this.mUsingAnimation = Utils.invertBoolean(mUsingAnimation);
+            this.mUsingAnimation = !mUsingAnimation;
             if (this.mUsingAnimation) {
                 PlayerUtils.messagePlayer(aPlayer, "Using Animated Turbine Texture.");
             } else {

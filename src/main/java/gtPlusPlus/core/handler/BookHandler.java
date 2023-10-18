@@ -21,7 +21,7 @@ public class BookHandler {
 
     public static int mBookKeeperCount = 0;
 
-    public static Map<Integer, BookTemplate> mBookMap = new HashMap<Integer, BookTemplate>();
+    public static Map<Integer, BookTemplate> mBookMap = new HashMap<>();
 
     public static BookTemplate book_ThermalBoiler;
     public static BookTemplate book_MultiPowerStation;
@@ -64,65 +64,79 @@ public class BookHandler {
                 "Alkalus",
                 new String[] {
                         // Page 1
-                        "So, when it comes to power storage you really have three separate options:\n" + " \n"
-                                + "Battery Buffers,\n"
-                                + "Energy Buffers,\n"
-                                + "The Power Sub-Station\n",
+                        """
+                                So, when it comes to power storage you really have three separate options:
+                                \s
+                                Battery Buffers,
+                                Energy Buffers,
+                                The Power Sub-Station
+                                """,
                         // Page 2
-                        "Battery Buffer\n" + " \n"
-                                + "Is rather portable. Allowing you to throw set one up and insert batteries where ever you may need."
-                                + "\n"
-                                + "They output 1A for each battery stored inside, up to a maximum of 16A.",
+                        """
+                                Battery Buffer
+                                \s
+                                Is rather portable. Allowing you to throw set one up and insert batteries where ever you may need.
+                                They output 1A for each battery stored inside, up to a maximum of 16A.""",
                         // Page 3
-                        "Energy Buffer\n" + " \n"
-                                + "Is a more optimal choice for storage in your base. Once placed down, they cannot be moved without losing all stored power."
-                                + "\n"
-                                + "Energy Buffers can output 4A from the output side, however accept 16A as input.",
+                        """
+                                Energy Buffer
+                                \s
+                                Is a more optimal choice for storage in your base. Once placed down, they cannot be moved without losing all stored power.
+                                Energy Buffers can output 4A from the output side, however accept 16A as input.""",
                         // Page 4
-                        "The Power Sub-Station" + " \n"
-                                + "Is used for storing Insane amounts of power later game."
-                                + "\n"
-                                + "Consumes 2% of the average voltage of all energy type hatches every tick."
-                                + "\n",
+                        """
+                                The Power Sub-Station\s
+                                Is used for storing Insane amounts of power later game.
+                                Consumes 2% of the average voltage of all energy type hatches every tick.
+                                """,
                         // Page 5
-                        "Allows Insertion/Removal of power from the rear face of the controller, swap with a screwdriver."
-                                + "\n"
-                                + "Variable Height Structure, between 4-16Y. Inserted Redox Cells dictate max energy tier of structure."
-                                + "\n",
+                        """
+                                Allows Insertion/Removal of power from the rear face of the controller, swap with a screwdriver.
+                                Variable Height Structure, between 4-16Y. Inserted Redox Cells dictate max energy tier of structure.
+                                """,
                         // Page 6
-                        "Redox Cells cannot be placed into the Top or Bottom layer and only take up 3xhx3 internally."
-                                + "\n"
-                                + "Different Tier cells CANNOT be mixed together."
-                                + "\n",
+                        """
+                                Redox Cells cannot be placed into the Top or Bottom layer and only take up 3xhx3 internally.
+                                Different Tier cells CANNOT be mixed together.
+                                """,
                         // Page 7
-                        "All Hatches Must be HV at a Minimum, this minimum tier is in place to stop people abusing ULV/LV hatches to lower the avg/t."
-                                + "\n"
-                                + "Currently the GUI will NOT display anything at all until the structure forms, this is a known bug."
-                                + "\n",
+                        """
+                                All Hatches Must be HV at a Minimum, this minimum tier is in place to stop people abusing ULV/LV hatches to lower the avg/t.
+                                Currently the GUI will NOT display anything at all until the structure forms, this is a known bug.
+                                """,
                         // Page 8
-                        "Valid Hatches:\n" + "Energy Hatch,\n"
-                                + "Dynamo Hatch,\n"
-                                + "Charging Bus,\n"
-                                + "Discharging Bus,\n"
-                                + "Dynamo Buffer,\n"
-                                + "Multi-Amp Dynamo Hatch.\n\n\n"
-                                + "Structure MUST contain at least one energy input and one energy output hatch." });
+                        """
+                                Valid Hatches:
+                                Energy Hatch,
+                                Dynamo Hatch,
+                                Charging Bus,
+                                Discharging Bus,
+                                Dynamo Buffer,
+                                Multi-Amp Dynamo Hatch.
+
+
+                                Structure MUST contain at least one energy input and one energy output hatch.""" });
 
         // Test Novel
         book_ModularBauble = writeBookTemplate(
                 "Manual_Modular_Bauble",
                 "How to: Modular Baubles",
                 "Alkalus",
-                new String[] { "Concept: This idea came from wanting flexibility. \n"
-                        + "First step, Build a Modularity table to begin customisation of your Bauble. \n"
-                        + " After this has been constructed, you can now combine the upgrades listed within this book to improve the baubles level/100.",
-                        "Defence:\n" + "Can be upgraded by combining metal plates with the bauble. \n"
-                                + " | +1 | Aluminium \n"
-                                + " | +2 | Stainless Steel \n"
-                                + " | +3 | Tungsten \n"
-                                + " | +4 | Tungsten Steel \n"
-                                + " | +5 | Naquadah \n",
-                        "There was once a sad and lonely oak tree. \n", "There was once a sad and lonely oak tree. \n",
+                new String[] {
+                        """
+                                Concept: This idea came from wanting flexibility.\s
+                                First step, Build a Modularity table to begin customisation of your Bauble.\s
+                                 After this has been constructed, you can now combine the upgrades listed within this book to improve the baubles level/100.""",
+                        """
+                                Defence:
+                                Can be upgraded by combining metal plates with the bauble.\s
+                                 | +1 | Aluminium\s
+                                 | +2 | Stainless Steel\s
+                                 | +3 | Tungsten\s
+                                 | +4 | Tungsten Steel\s
+                                 | +5 | Naquadah\s
+                                """, "There was once a sad and lonely oak tree. \n",
+                        "There was once a sad and lonely oak tree. \n",
                         "There was once a sad and lonely oak tree. \n" });
 
         // Test Novel
@@ -145,45 +159,57 @@ public class BookHandler {
                 "Alkalus",
                 new String[] {
                         // Page 1
-                        "Fission Fuel Processing Plant\n" + "Size: 3x9x3 [LxHxW]\n"
-                                + "Controller: Center, Bottom\n"
-                                + "4x Input Hatch\n"
-                                + "2x Output Hatch\n"
-                                + "1x Output Bus\n"
-                                + "1x ZPM+ Muffler\n"
-                                + "1x Maintenance Hatch\n"
-                                + "1x Energy Hatch\n",
+                        """
+                                Fission Fuel Processing Plant
+                                Size: 3x9x3 [LxHxW]
+                                Controller: Center, Bottom
+                                4x Input Hatch
+                                2x Output Hatch
+                                1x Output Bus
+                                1x ZPM+ Muffler
+                                1x Maintenance Hatch
+                                1x Energy Hatch
+                                """,
                         // Page 2
-                        "[1] 7x Hastelloy-X or I/O\n" + "[2] 5x Incoloy-DS Fluid Containment\n"
-                                + "[3] 4x Zeron-100 Shielding\n"
-                                + "[4] 17x Hastelloy-N Sealant Case"
-                                + "\n"
-                                + "Multiblock Construction\n"
-                                + "Convention is [LxHxW]\n"
-                                + "\n",
+                        """
+                                [1] 7x Hastelloy-X or I/O
+                                [2] 5x Incoloy-DS Fluid Containment
+                                [3] 4x Zeron-100 Shielding
+                                [4] 17x Hastelloy-N Sealant Case
+                                Multiblock Construction
+                                Convention is [LxHxW]
+
+                                """,
                         // Page 3
-                        "Layer 1/2:\n" + "[1][1][1]\n"
-                                + "[1][1][1]\n"
-                                + "[1][1][1]\n"
-                                + "\n"
-                                + "Layer 3/5/6\n"
-                                + "[ ][4][ ]\n"
-                                + "[4][2][4]\n"
-                                + "[ ][4][ ]\n"
-                                + "\n",
+                        """
+                                Layer 1/2:
+                                [1][1][1]
+                                [1][1][1]
+                                [1][1][1]
+
+                                Layer 3/5/6
+                                [ ][4][ ]
+                                [4][2][4]
+                                [ ][4][ ]
+
+                                """,
                         // Page 4
-                        "Layer 4\n" + "[ ][3][ ]\n"
-                                + "[3][2][3]\n"
-                                + "[ ][3][ ]\n"
-                                + "\n"
-                                + "Layer 7/8/9\n"
-                                + "[ ][ ][ ]\n"
-                                + "[ ][3][ ]\n"
-                                + "[ ][ ][ ]\n",
+                        """
+                                Layer 4
+                                [ ][3][ ]
+                                [3][2][3]
+                                [ ][3][ ]
+
+                                Layer 7/8/9
+                                [ ][ ][ ]
+                                [ ][3][ ]
+                                [ ][ ][ ]
+                                """,
                         // Page 5
-                        "Fission Fuel\n" + "Processing Plant"
-                                + "----------------------\n"
-                                + "This structure is used to produce the Molten Salts required to run a Liquid Fluorine Thorium Reactor [LFTR]." });
+                        """
+                                Fission Fuel
+                                Processing Plant----------------------
+                                This structure is used to produce the Molten Salts required to run a Liquid Fluorine Thorium Reactor [LFTR].""" });
 
         book_MultiChemicalPlant = writeBookTemplate(
                 "book_Multi_ChemicalPlant",
@@ -195,41 +221,31 @@ public class BookHandler {
                         "This book will explain how the Chemical Plant is constructed, which blocks are valid to upgrade it and also how the upgrades work.",
 
                         // Info
-                        "Solid Casings = Plant tier" + "\n"
-                                + "Machine Casings = Hatch tier"
-                                + "\n"
-                                + "Higher tier coils  More Speed"
-                                + "\n"
-                                + "T1 50% , T2 100% , T3 150%, etc"
-                                + "\n",
-                        "Higher tier pipe casings boost parallel" + "\n"
-                                + "and reduce catalyst consumption."
-                                + "\n"
-                                + "+2 parallel per tier, 20% extra chance of"
-                                + "\n"
-                                + "not damaging catalyst per tier.",
-                        "Awakened Draconium Coil (or above) with" + "\n"
-                                + "Tungstensteel Pipe Casing"
-                                + "\n"
-                                + "does not damage catalyst at all.",
+                        """
+                                Solid Casings = Plant tier
+                                Machine Casings = Hatch tier
+                                Higher tier coils  More Speed
+                                T1 50% , T2 100% , T3 150%, etc
+                                """, """
+                                Higher tier pipe casings boost parallel
+                                and reduce catalyst consumption.
+                                +2 parallel per tier, 20% extra chance of
+                                not damaging catalyst per tier.""", """
+                                Awakened Draconium Coil (or above) with
+                                Tungstensteel Pipe Casing
+                                does not damage catalyst at all.""",
 
                         // Machine Casings
-                        "Valid Solid Machine Casings:" + "\n"
-                                + "1 - Strong Bronze"
-                                + "\n"
-                                + "2 - Solid Steel"
-                                + "\n"
-                                + "3 - Sturdy Aluminium"
-                                + "\n"
-                                + "4 - Clean Stainless Steel"
-                                + "\n"
-                                + "5 - Stable Titanium"
-                                + "\n"
-                                + "6 - Robust Tungstensteel"
-                                + "\n"
-                                + "7 - Vigorous Laurenium"
-                                + "\n"
-                                + "8 - Rugged Botmium",
+                        """
+                                Valid Solid Machine Casings:
+                                1 - Strong Bronze
+                                2 - Solid Steel
+                                3 - Sturdy Aluminium
+                                4 - Clean Stainless Steel
+                                5 - Stable Titanium
+                                6 - Robust Tungstensteel
+                                7 - Vigorous Laurenium
+                                8 - Rugged Botmium""",
 
                         // Machine Casings
                         "Valid Tiered Machine Casings:" + "\n"
@@ -265,201 +281,134 @@ public class BookHandler {
                                 + GT_Values.VN[9],
 
                         // Pipe Casings
-                        "Valid Pipe Casings:" + "\n"
-                                + "\n"
-                                + "1 - Bronze"
-                                + "\n"
-                                + "2 - Steel"
-                                + "\n"
-                                + "3 - Titanium"
-                                + "\n"
-                                + "4 - Tungstensteel",
+                        """
+                                Valid Pipe Casings:
+
+                                1 - Bronze
+                                2 - Steel
+                                3 - Titanium
+                                4 - Tungstensteel""",
 
                         // Coils
-                        "Valid Coils:" + "\n"
-                                + "\n"
-                                + "1 - Cupronickel"
-                                + "\n"
-                                + "2 - Kanthal"
-                                + "\n"
-                                + "3 - Nichrome"
-                                + "\n"
-                                + "4 - TPV-Alloy"
-                                + "\n"
-                                + "5 - HSS-G"
-                                + "\n"
-                                + "6 - HSS-S"
-                                + "\n"
-                                + "7 - Naquadah"
-                                + "\n"
-                                + "8 - Naquadah Alloy"
-                                + "\n"
-                                + "9 - Trinium"
-                                + "\n"
-                                + "10 - Fluxed Electrum",
-                        "11 - Awakened Draconium" + "\n"
-                                + "12 - Infinity"
-                                + "\n"
-                                + "13 - Hypogen"
-                                + "\n"
-                                + "14 - Eternal",
+                        """
+                                Valid Coils:
+
+                                1 - Cupronickel
+                                2 - Kanthal
+                                3 - Nichrome
+                                4 - TPV-Alloy
+                                5 - HSS-G
+                                6 - HSS-S
+                                7 - Naquadah
+                                8 - Naquadah Alloy
+                                9 - Trinium
+                                10 - Fluxed Electrum""", """
+                                11 - Awakened Draconium
+                                12 - Infinity
+                                13 - Hypogen
+                                14 - Eternal""",
 
                         // Requirements
-                        "Multiblock Requirements:" + "\n"
-                                + "\n"
-                                + "27x Coils"
-                                + "\n"
-                                + "18x Pipe Casings"
-                                + "\n"
-                                + "57x Tiered Machine Casings"
-                                + "\n"
-                                + "70+ Solid Casings"
-                                + "\n"
-                                + "1x Catalyst Housing (Catalysts cannot go inside an Input Bus)",
+                        """
+                                Multiblock Requirements:
+
+                                27x Coils
+                                18x Pipe Casings
+                                57x Tiered Machine Casings
+                                70+ Solid Casings
+                                1x Catalyst Housing (Catalysts cannot go inside an Input Bus)""",
 
                         // Construction Guide
-                        "Construction Guide Pt1:" + "\n"
-                                + "\n"
-                                + "Controller is placed on a middle casing in the bottom layer"
-                                + "\n"
-                                + "Hatches can only be placed on the bottom layer edges",
-                        "Construction Guide Pt2:" + "\n"
-                                + "\n"
-                                + "7x7x7 Hollow frame of solid casings"
-                                + "\n"
-                                + "5x1x5 layer of solid casings (fills in top layer)"
-                                + "\n"
-                                + "5x1x5 layer of machine casings (fills in bottom layer)",
-                        "Construction Guide Pt3:" + "\n"
-                                + "In the central 3x5x3:"
-                                + "\n"
-                                + "3x1x3 layer of Coils, surrounded by ring of Machine Casings"
-                                + "\n"
-                                + "3x1x3 layer of Pipe Casings"
-                                + "\n"
-                                + "3x1x3 layer of Coils"
-                                + "\n"
-                                + "3x1x3 layer of Pipe Casings"
-                                + "\n"
-                                + "3x1x3 layer of Coils, surrounded by ring of Machine Casings",
+                        """
+                                Construction Guide Pt1:
+
+                                Controller is placed on a middle casing in the bottom layer
+                                Hatches can only be placed on the bottom layer edges""", """
+                                Construction Guide Pt2:
+
+                                7x7x7 Hollow frame of solid casings
+                                5x1x5 layer of solid casings (fills in top layer)
+                                5x1x5 layer of machine casings (fills in bottom layer)""", """
+                                Construction Guide Pt3:
+                                In the central 3x5x3:
+                                3x1x3 layer of Coils, surrounded by ring of Machine Casings
+                                3x1x3 layer of Pipe Casings
+                                3x1x3 layer of Coils
+                                3x1x3 layer of Pipe Casings
+                                3x1x3 layer of Coils, surrounded by ring of Machine Casings""",
 
                         // Construction Guide Info
-                        "Information:" + "\n"
-                                + "\n"
-                                + "A = Air"
-                                + "\n"
-                                + "X = Solid Casing"
-                                + "\n"
-                                + "M = Machine Casing"
-                                + "\n"
-                                + "P = Pipe Casing"
-                                + "\n"
-                                + "C = Coil Casing",
-                        "Layer 1:" + "\n"
-                                + "\n"
-                                + "XXXXXXX"
-                                + "\n"
-                                + "XMMMMMX"
-                                + "\n"
-                                + "XMMMMMX"
-                                + "\n"
-                                + "XMMMMMX"
-                                + "\n"
-                                + "XMMMMMX"
-                                + "\n"
-                                + "XMMMMMX"
-                                + "\n"
-                                + "XXXXXXX",
-                        "Layer 2:" + "\n"
-                                + "\n"
-                                + "XAAAAAX"
-                                + "\n"
-                                + "AMMMMMA"
-                                + "\n"
-                                + "AMCCCMA"
-                                + "\n"
-                                + "AMCCCMA"
-                                + "\n"
-                                + "AMCCCMA"
-                                + "\n"
-                                + "AMMMMMA"
-                                + "\n"
-                                + "XAAAAAX",
-                        "Layer 3:" + "\n"
-                                + "\n"
-                                + "XAAAAAX"
-                                + "\n"
-                                + "AAAAAAA"
-                                + "\n"
-                                + "AAPPPAA"
-                                + "\n"
-                                + "AAPPPAA"
-                                + "\n"
-                                + "AAPPPAA"
-                                + "\n"
-                                + "AAAAAAA"
-                                + "\n"
-                                + "XAAAAAX",
-                        "Layer 4:" + "\n"
-                                + "\n"
-                                + "XAAAAAX"
-                                + "\n"
-                                + "AAAAAAA"
-                                + "\n"
-                                + "AACCCAA"
-                                + "\n"
-                                + "AACCCAA"
-                                + "\n"
-                                + "AACCCAA"
-                                + "\n"
-                                + "AAAAAAA"
-                                + "\n"
-                                + "XAAAAAX",
-                        "Layer 5:" + "\n"
-                                + "\n"
-                                + "XAAAAAX"
-                                + "\n"
-                                + "AAAAAAA"
-                                + "\n"
-                                + "AAPPPAA"
-                                + "\n"
-                                + "AAPPPAA"
-                                + "\n"
-                                + "AAPPPAA"
-                                + "\n"
-                                + "AAAAAAA"
-                                + "\n"
-                                + "XAAAAAX",
-                        "Layer 6:" + "\n"
-                                + "\n"
-                                + "XAAAAAX"
-                                + "\n"
-                                + "AMMMMMA"
-                                + "\n"
-                                + "AMCCCMA"
-                                + "\n"
-                                + "AMCCCMA"
-                                + "\n"
-                                + "AMCCCMA"
-                                + "\n"
-                                + "AMMMMMA"
-                                + "\n"
-                                + "XAAAAAX",
-                        "Layer 7:" + "\n"
-                                + "\n"
-                                + "XXXXXXX"
-                                + "\n"
-                                + "XXXXXXX"
-                                + "\n"
-                                + "XXXXXXX"
-                                + "\n"
-                                + "XXXXXXX"
-                                + "\n"
-                                + "XXXXXXX"
-                                + "\n"
-                                + "XXXXXXX"
-                                + "\n"
-                                + "XXXXXXX", });
+                        """
+                                Information:
+
+                                A = Air
+                                X = Solid Casing
+                                M = Machine Casing
+                                P = Pipe Casing
+                                C = Coil Casing""", """
+                                Layer 1:
+
+                                XXXXXXX
+                                XMMMMMX
+                                XMMMMMX
+                                XMMMMMX
+                                XMMMMMX
+                                XMMMMMX
+                                XXXXXXX""", """
+                                Layer 2:
+
+                                XAAAAAX
+                                AMMMMMA
+                                AMCCCMA
+                                AMCCCMA
+                                AMCCCMA
+                                AMMMMMA
+                                XAAAAAX""", """
+                                Layer 3:
+
+                                XAAAAAX
+                                AAAAAAA
+                                AAPPPAA
+                                AAPPPAA
+                                AAPPPAA
+                                AAAAAAA
+                                XAAAAAX""", """
+                                Layer 4:
+
+                                XAAAAAX
+                                AAAAAAA
+                                AACCCAA
+                                AACCCAA
+                                AACCCAA
+                                AAAAAAA
+                                XAAAAAX""", """
+                                Layer 5:
+
+                                XAAAAAX
+                                AAAAAAA
+                                AAPPPAA
+                                AAPPPAA
+                                AAPPPAA
+                                AAAAAAA
+                                XAAAAAX""", """
+                                Layer 6:
+
+                                XAAAAAX
+                                AMMMMMA
+                                AMCCCMA
+                                AMCCCMA
+                                AMCCCMA
+                                AMMMMMA
+                                XAAAAAX""", """
+                                Layer 7:
+
+                                XXXXXXX
+                                XXXXXXX
+                                XXXXXXX
+                                XXXXXXX
+                                XXXXXXX
+                                XXXXXXX
+                                XXXXXXX""", });
     }
 
     public static ItemStack ItemBookWritten_ThermalBoiler;

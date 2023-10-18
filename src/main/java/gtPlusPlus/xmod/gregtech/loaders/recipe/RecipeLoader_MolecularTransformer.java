@@ -18,8 +18,7 @@ public class RecipeLoader_MolecularTransformer {
 
     public static void run() {
 
-        for (int i = 0; i < transformerRecipes.size(); i++) {
-            MTRecipeRecord aRecipe = transformerRecipes.get(i);
+        for (MTRecipeRecord aRecipe : transformerRecipes) {
             int aEU = MaterialUtils.getVoltageForTier(5);
             Logger.INFO("=======================");
             Logger.INFO("Generating GT recipe for Molecular Transformer.");

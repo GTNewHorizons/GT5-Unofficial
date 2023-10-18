@@ -34,8 +34,7 @@ public class GasSpargingRecipe implements Comparable<GasSpargingRecipe> {
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof GasSpargingRecipe) {
-            GasSpargingRecipe i = (GasSpargingRecipe) o;
+        if (o instanceof GasSpargingRecipe i) {
             if (this.mInputGas.equals(i.mInputGas) && this.mInputSpentFuel.equals(i.mInputSpentFuel)) {
                 return true;
             }
@@ -91,7 +90,7 @@ public class GasSpargingRecipe implements Comparable<GasSpargingRecipe> {
     }
 
     public String[] getRecipeInfo() {
-        AutoMap<String> result = new AutoMap<String>();
+        AutoMap<String> result = new AutoMap<>();
         result.put("Input " + ItemUtils.getArrayStackNames(mFluidInputs));
         result.put("Output " + ItemUtils.getArrayStackNames(mFluidOutputs));
         result.put("Duration: " + mDuration);

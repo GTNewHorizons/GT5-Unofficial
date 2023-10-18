@@ -157,8 +157,7 @@ public class MiningExplosives extends BlockTNT {
     @Override
     public void onEntityCollidedWithBlock(final World world, final int x, final int y, final int z,
             final Entity entityTriggering) {
-        if ((entityTriggering instanceof EntityArrow) && !world.isRemote) {
-            final EntityArrow entityarrow = (EntityArrow) entityTriggering;
+        if ((entityTriggering instanceof final EntityArrow entityarrow) && !world.isRemote) {
 
             if (entityarrow.isBurning()) {
                 this.func_150114_a(

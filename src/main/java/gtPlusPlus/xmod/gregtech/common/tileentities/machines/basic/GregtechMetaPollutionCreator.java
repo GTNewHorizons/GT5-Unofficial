@@ -393,10 +393,6 @@ public class GregtechMetaPollutionCreator extends GregtechMetaTileEntity {
         return false;
     }
 
-    // int mCurrentPollution;
-    // int mAveragePollution;
-    // int mAveragePollutionArray[] = new int[10];
-
     @Override
     public void saveNBTData(final NBTTagCompound aNBT) {
         aNBT.setInteger("mCurrentPollution", this.mCurrentPollution);
@@ -438,9 +434,9 @@ public class GregtechMetaPollutionCreator extends GregtechMetaTileEntity {
         int counter = 0;
         int total = 0;
 
-        for (int i = 0; i < this.mAveragePollutionArray.length; i++) {
-            if (this.mAveragePollutionArray[i] != 0) {
-                total += this.mAveragePollutionArray[i];
+        for (int j : this.mAveragePollutionArray) {
+            if (j != 0) {
+                total += j;
                 counter++;
             }
         }

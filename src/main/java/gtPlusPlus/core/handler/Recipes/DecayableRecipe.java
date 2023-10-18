@@ -8,7 +8,7 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class DecayableRecipe {
 
-    public static final AutoMap<DecayableRecipe> mRecipes = new AutoMap<DecayableRecipe>();
+    public static final AutoMap<DecayableRecipe> mRecipes = new AutoMap<>();
 
     public final int mTime;
     public final ItemStack mInput;
@@ -23,8 +23,7 @@ public class DecayableRecipe {
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof DecayableRecipe) {
-            DecayableRecipe i = (DecayableRecipe) o;
+        if (o instanceof DecayableRecipe i) {
             if (i.mTime == this.mTime && GT_Utility.areStacksEqual(mInput, i.mInput)
                     && GT_Utility.areStacksEqual(mOutput, i.mOutput)) {
                 return true;

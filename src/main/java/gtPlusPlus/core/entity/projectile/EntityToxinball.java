@@ -134,8 +134,8 @@ public abstract class EntityToxinball extends EntityFireball {
                     this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
             double d0 = 0.0D;
 
-            for (int i = 0; i < list.size(); ++i) {
-                Entity entity1 = (Entity) list.get(i);
+            for (Object o : list) {
+                Entity entity1 = (Entity) o;
 
                 if (entity1.canBeCollidedWith()
                         && (!entity1.isEntityEqual(this.shootingEntity) || this.ticksInAir >= 25)) {

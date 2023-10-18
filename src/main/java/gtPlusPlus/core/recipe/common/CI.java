@@ -48,7 +48,6 @@ public class CI {
     public static Object circuitTier9;
 
     // Machine Components
-    public static ItemStack electricMotor_ULV;
     public static ItemStack electricMotor_LV;
     public static ItemStack electricMotor_MV;
     public static ItemStack electricMotor_HV;
@@ -57,8 +56,7 @@ public class CI {
     public static ItemStack electricMotor_LuV;
     public static ItemStack electricMotor_ZPM;
     public static ItemStack electricMotor_UV;
-    public static ItemStack electricMotor_MAX;
-    public static ItemStack electricPump_ULV;
+    public static ItemStack electricMotor_UHV;
     public static ItemStack electricPump_LV;
     public static ItemStack electricPump_MV;
     public static ItemStack electricPump_HV;
@@ -67,8 +65,7 @@ public class CI {
     public static ItemStack electricPump_LuV;
     public static ItemStack electricPump_ZPM;
     public static ItemStack electricPump_UV;
-    public static ItemStack electricPump_MAX;
-    public static ItemStack electricPiston_ULV;
+    public static ItemStack electricPump_UHV;
     public static ItemStack electricPiston_LV;
     public static ItemStack electricPiston_MV;
     public static ItemStack electricPiston_HV;
@@ -77,8 +74,7 @@ public class CI {
     public static ItemStack electricPiston_LuV;
     public static ItemStack electricPiston_ZPM;
     public static ItemStack electricPiston_UV;
-    public static ItemStack electricPiston_MAX;
-    public static ItemStack robotArm_ULV;
+    public static ItemStack electricPiston_UHV;
     public static ItemStack robotArm_LV;
     public static ItemStack robotArm_MV;
     public static ItemStack robotArm_HV;
@@ -87,8 +83,7 @@ public class CI {
     public static ItemStack robotArm_LuV;
     public static ItemStack robotArm_ZPM;
     public static ItemStack robotArm_UV;
-    public static ItemStack robotArm_MAX;
-    public static ItemStack conveyorModule_ULV;
+    public static ItemStack robotArm_UHV;
     public static ItemStack conveyorModule_LV;
     public static ItemStack conveyorModule_MV;
     public static ItemStack conveyorModule_HV;
@@ -97,8 +92,7 @@ public class CI {
     public static ItemStack conveyorModule_LuV;
     public static ItemStack conveyorModule_ZPM;
     public static ItemStack conveyorModule_UV;
-    public static ItemStack conveyorModule_MAX;
-    public static ItemStack emitter_ULV;
+    public static ItemStack conveyorModule_UHV;
     public static ItemStack emitter_LV;
     public static ItemStack emitter_MV;
     public static ItemStack emitter_HV;
@@ -107,8 +101,7 @@ public class CI {
     public static ItemStack emitter_LuV;
     public static ItemStack emitter_ZPM;
     public static ItemStack emitter_UV;
-    public static ItemStack emitter_MAX;
-    public static ItemStack fieldGenerator_ULV;
+    public static ItemStack emitter_UHV;
     public static ItemStack fieldGenerator_LV;
     public static ItemStack fieldGenerator_MV;
     public static ItemStack fieldGenerator_HV;
@@ -117,8 +110,7 @@ public class CI {
     public static ItemStack fieldGenerator_LuV;
     public static ItemStack fieldGenerator_ZPM;
     public static ItemStack fieldGenerator_UV;
-    public static ItemStack fieldGenerator_MAX;
-    public static ItemStack sensor_ULV;
+    public static ItemStack fieldGenerator_UHV;
     public static ItemStack sensor_LV;
     public static ItemStack sensor_MV;
     public static ItemStack sensor_HV;
@@ -127,7 +119,7 @@ public class CI {
     public static ItemStack sensor_LuV;
     public static ItemStack sensor_ZPM;
     public static ItemStack sensor_UV;
-    public static ItemStack sensor_MAX;
+    public static ItemStack sensor_UHV;
 
     public static ItemStack fluidRegulator_LV;
     public static ItemStack fluidRegulator_MV;
@@ -148,7 +140,7 @@ public class CI {
     public static ItemStack machineCasing_LuV;
     public static ItemStack machineCasing_ZPM;
     public static ItemStack machineCasing_UV;
-    public static ItemStack machineCasing_MAX;
+    public static ItemStack machineCasing_UHV;
 
     // Machine Hulls
     public static ItemStack machineHull_ULV;
@@ -160,7 +152,7 @@ public class CI {
     public static ItemStack machineHull_LuV;
     public static ItemStack machineHull_ZPM;
     public static ItemStack machineHull_UV;
-    public static ItemStack machineHull_MAX;
+    public static ItemStack machineHull_UHV;
 
     // Gearbox Casings
     public static ItemStack gearboxCasing_Tier_1;
@@ -175,12 +167,9 @@ public class CI {
     // Crafting Tools
     public static String craftingToolWrench = "craftingToolWrench";
     public static String craftingToolHammer_Hard = "craftingToolHardHammer";
-    public static String craftingToolHammer_Soft = "craftingToolSoftHammer";
     public static String craftingToolScrewdriver = "craftingToolScrewdriver";
     public static String craftingToolFile = "craftingToolFile";
     public static String craftingToolMortar = "craftingToolMortar";
-    public static String craftingToolKnife = "craftingToolKnife";
-    public static String craftingToolCrowbar = "craftingToolCrowbar";
     public static String craftingToolSaw = "craftingToolSaw";
     public static String craftingToolWireCutter = "craftingToolWirecutter";
     public static String craftingToolSolderingIron = "craftingToolSolderingIron";
@@ -192,7 +181,7 @@ public class CI {
 
     public static Materials[] tieredMaterials = new Materials[] { Materials.Iron, Materials.Steel, Materials.Aluminium,
             Materials.StainlessSteel, Materials.Titanium, Materials.TungstenSteel, Materials.Chrome, Materials.Iridium,
-            Materials.Osmium, Materials.Neutronium };;
+            Materials.Osmium, Materials.Neutronium };
 
     public static void preInit() {
 
@@ -234,10 +223,6 @@ public class CI {
 
     public static Object getTieredCircuit(int tier) {
         return getTieredCircuitOreDictName(tier);
-    }
-
-    public static ItemStack[] getAllCircuitsOfTier(int tier) {
-        return ItemUtils.getStackOfAllOreDictGroup(getTieredCircuitOreDictName(tier));
     }
 
     public static String getTieredCircuitOreDictName(int tier) {
@@ -329,7 +314,7 @@ public class CI {
         return ItemList.Tool_DataStick.get(1);
     }
 
-    public static final ItemStack getTieredMachineHull(int tier) {
+    public static ItemStack getTieredMachineHull(int tier) {
         if (tier == 0) {
             return machineHull_ULV;
         } else if (tier == 1) {
@@ -349,13 +334,13 @@ public class CI {
         } else if (tier == 8) {
             return machineHull_UV;
         } else if (tier == 9) {
-            return machineHull_MAX;
+            return machineHull_UHV;
         } else {
             return GregtechItemList.Casing_Multi_Use.get(1);
         }
     }
 
-    public static final ItemStack getTieredMachineCasing(int tier) {
+    public static ItemStack getTieredMachineCasing(int tier) {
         if (tier == 0) {
             if (machineCasing_ULV == null) {
                 machineCasing_ULV = ItemList.Casing_ULV.get(1);
@@ -378,7 +363,7 @@ public class CI {
         } else if (tier == 8) {
             return machineCasing_UV;
         } else if (tier == 9) {
-            return machineCasing_MAX;
+            return machineCasing_UHV;
         } else {
             return GregtechItemList.Casing_Multi_Use.get(1);
         }
@@ -400,7 +385,7 @@ public class CI {
         machineCasing_LuV = ItemList.Casing_LuV.get(1);
         machineCasing_ZPM = ItemList.Casing_ZPM.get(1);
         machineCasing_UV = ItemList.Casing_UV.get(1);
-        machineCasing_MAX = ItemList.Casing_MAX.get(1);
+        machineCasing_UHV = ItemList.Casing_MAX.get(1);
 
         // Machine Hulls
         machineHull_ULV = ItemList.Hull_ULV.get(1);
@@ -412,7 +397,7 @@ public class CI {
         machineHull_LuV = ItemList.Hull_LuV.get(1);
         machineHull_ZPM = ItemList.Hull_ZPM.get(1);
         machineHull_UV = ItemList.Hull_UV.get(1);
-        machineHull_MAX = ItemList.Hull_MAX.get(1);
+        machineHull_UHV = ItemList.Hull_MAX.get(1);
 
         // Gear box Casings
         gearboxCasing_Tier_1 = ItemList.Casing_Gearbox_Bronze.get(1);
@@ -531,7 +516,7 @@ public class CI {
     public static ItemStack getTieredComponent(OrePrefixes aPrefix, int aTier, int aAmount) {
         aTier = Math.max(0, aTier);
 
-        Material m = null;
+        Material m;
 
         if (aPrefix == OrePrefixes.liquid) {
             int aMatID = (aTier == 0 || aTier == 2 || aTier == 5 || aTier == 8 ? 0
@@ -667,8 +652,7 @@ public class CI {
                     // All Invalid?
                     // Let's add a special error ingot.
                     if (!ItemUtils.checkForInvalidItems(aReturn)) {
-                        aReturn = ItemUtils
-                                .getErrorStack(1, (aPrefix.toString() + m.getLocalizedName() + " x" + aAmount));
+                        aReturn = ItemUtils.getErrorStack(1, (aPrefix + m.getLocalizedName() + " x" + aAmount));
                     }
                 }
             }
@@ -679,10 +663,8 @@ public class CI {
 
     public static ItemStack getElectricMotor(int aTier, int aSize) {
         ItemStack aType;
-        int aLazyTier = 0;
+        int aLazyTier = 1;
         if (aTier == aLazyTier++) {
-            aType = CI.electricMotor_ULV;
-        } else if (aTier == aLazyTier++) {
             aType = CI.electricMotor_LV;
         } else if (aTier == aLazyTier++) {
             aType = CI.electricMotor_MV;
@@ -698,10 +680,10 @@ public class CI {
             aType = CI.electricMotor_ZPM;
         } else if (aTier == aLazyTier++) {
             aType = CI.electricMotor_UV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.electricMotor_MAX;
+        } else if (aTier == aLazyTier) {
+            aType = CI.electricMotor_UHV;
         } else {
-            aType = CI.electricMotor_LV;
+            throw new IllegalArgumentException();
         }
         return ItemUtils.getSimpleStack(aType, aSize);
     }
@@ -727,20 +709,18 @@ public class CI {
             aType = CI.fluidRegulator_ZPM;
         } else if (aTier == aLazyTier++) {
             aType = CI.fluidRegulator_UV;
-        } else if (aTier == aLazyTier++) {
+        } else if (aTier == aLazyTier) {
             aType = CI.fluidRegulator_UV;
         } else {
-            aType = CI.fluidRegulator_LV;
+            throw new IllegalArgumentException();
         }
         return ItemUtils.getSimpleStack(aType, aSize);
     }
 
     public static ItemStack getElectricPiston(int aTier, int aSize) {
         ItemStack aType;
-        int aLazyTier = 0;
+        int aLazyTier = 1;
         if (aTier == aLazyTier++) {
-            aType = CI.electricPiston_ULV;
-        } else if (aTier == aLazyTier++) {
             aType = CI.electricPiston_LV;
         } else if (aTier == aLazyTier++) {
             aType = CI.electricPiston_MV;
@@ -756,20 +736,18 @@ public class CI {
             aType = CI.electricPiston_ZPM;
         } else if (aTier == aLazyTier++) {
             aType = CI.electricPiston_UV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.electricPiston_MAX;
+        } else if (aTier == aLazyTier) {
+            aType = CI.electricPiston_UHV;
         } else {
-            aType = CI.electricPiston_LV;
+            throw new IllegalArgumentException();
         }
         return ItemUtils.getSimpleStack(aType, aSize);
     }
 
     public static ItemStack getElectricPump(int aTier, int aSize) {
         ItemStack aType;
-        int aLazyTier = 0;
+        int aLazyTier = 1;
         if (aTier == aLazyTier++) {
-            aType = CI.electricPump_ULV;
-        } else if (aTier == aLazyTier++) {
             aType = CI.electricPump_LV;
         } else if (aTier == aLazyTier++) {
             aType = CI.electricPump_MV;
@@ -785,20 +763,18 @@ public class CI {
             aType = CI.electricPump_ZPM;
         } else if (aTier == aLazyTier++) {
             aType = CI.electricPump_UV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.electricPump_MAX;
+        } else if (aTier == aLazyTier) {
+            aType = CI.electricPump_UHV;
         } else {
-            aType = CI.electricPump_LV;
+            throw new IllegalArgumentException();
         }
         return ItemUtils.getSimpleStack(aType, aSize);
     }
 
     public static ItemStack getRobotArm(int aTier, int aSize) {
         ItemStack aType;
-        int aLazyTier = 0;
+        int aLazyTier = 1;
         if (aTier == aLazyTier++) {
-            aType = CI.robotArm_ULV;
-        } else if (aTier == aLazyTier++) {
             aType = CI.robotArm_LV;
         } else if (aTier == aLazyTier++) {
             aType = CI.robotArm_MV;
@@ -814,20 +790,18 @@ public class CI {
             aType = CI.robotArm_ZPM;
         } else if (aTier == aLazyTier++) {
             aType = CI.robotArm_UV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.robotArm_MAX;
+        } else if (aTier == aLazyTier) {
+            aType = CI.robotArm_UHV;
         } else {
-            aType = CI.robotArm_LV;
+            throw new IllegalArgumentException();
         }
         return ItemUtils.getSimpleStack(aType, aSize);
     }
 
     public static ItemStack getConveyor(int aTier, int aSize) {
         ItemStack aType;
-        int aLazyTier = 0;
+        int aLazyTier = 1;
         if (aTier == aLazyTier++) {
-            aType = CI.conveyorModule_ULV;
-        } else if (aTier == aLazyTier++) {
             aType = CI.conveyorModule_LV;
         } else if (aTier == aLazyTier++) {
             aType = CI.conveyorModule_MV;
@@ -843,20 +817,18 @@ public class CI {
             aType = CI.conveyorModule_ZPM;
         } else if (aTier == aLazyTier++) {
             aType = CI.conveyorModule_UV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.conveyorModule_MAX;
+        } else if (aTier == aLazyTier) {
+            aType = CI.conveyorModule_UHV;
         } else {
-            aType = CI.conveyorModule_LV;
+            throw new IllegalArgumentException();
         }
         return ItemUtils.getSimpleStack(aType, aSize);
     }
 
     public static ItemStack getEmitter(int aTier, int aSize) {
         ItemStack aType;
-        int aLazyTier = 0;
+        int aLazyTier = 1;
         if (aTier == aLazyTier++) {
-            aType = CI.emitter_ULV;
-        } else if (aTier == aLazyTier++) {
             aType = CI.emitter_LV;
         } else if (aTier == aLazyTier++) {
             aType = CI.emitter_MV;
@@ -872,20 +844,18 @@ public class CI {
             aType = CI.emitter_ZPM;
         } else if (aTier == aLazyTier++) {
             aType = CI.emitter_UV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.emitter_MAX;
+        } else if (aTier == aLazyTier) {
+            aType = CI.emitter_UHV;
         } else {
-            aType = CI.emitter_LV;
+            throw new IllegalArgumentException();
         }
         return ItemUtils.getSimpleStack(aType, aSize);
     }
 
     public static ItemStack getSensor(int aTier, int aSize) {
         ItemStack aType;
-        int aLazyTier = 0;
+        int aLazyTier = 1;
         if (aTier == aLazyTier++) {
-            aType = CI.sensor_ULV;
-        } else if (aTier == aLazyTier++) {
             aType = CI.sensor_LV;
         } else if (aTier == aLazyTier++) {
             aType = CI.sensor_MV;
@@ -901,10 +871,10 @@ public class CI {
             aType = CI.sensor_ZPM;
         } else if (aTier == aLazyTier++) {
             aType = CI.sensor_UV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.sensor_MAX;
+        } else if (aTier == aLazyTier) {
+            aType = CI.sensor_UHV;
         } else {
-            aType = CI.sensor_LV;
+            throw new IllegalArgumentException();
         }
         return ItemUtils.getSimpleStack(aType, aSize);
     }
@@ -913,8 +883,6 @@ public class CI {
         ItemStack aType;
         int aLazyTier = 0;
         if (aTier == aLazyTier++) {
-            aType = CI.fieldGenerator_ULV;
-        } else if (aTier == aLazyTier++) {
             aType = CI.fieldGenerator_LV;
         } else if (aTier == aLazyTier++) {
             aType = CI.fieldGenerator_MV;
@@ -930,10 +898,10 @@ public class CI {
             aType = CI.fieldGenerator_ZPM;
         } else if (aTier == aLazyTier++) {
             aType = CI.fieldGenerator_UV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.fieldGenerator_MAX;
+        } else if (aTier == aLazyTier) {
+            aType = CI.fieldGenerator_UHV;
         } else {
-            aType = CI.fieldGenerator_LV;
+            throw new IllegalArgumentException();
         }
         return ItemUtils.getSimpleStack(aType, aSize);
     }
@@ -959,10 +927,10 @@ public class CI {
             aType = CI.machineHull_ZPM;
         } else if (aTier == aLazyTier++) {
             aType = CI.machineHull_UV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.machineHull_MAX;
+        } else if (aTier == aLazyTier) {
+            aType = CI.machineHull_UHV;
         } else {
-            aType = GregtechItemList.Casing_Multi_Use.get(1, CI.machineHull_MV);
+            throw new IllegalArgumentException();
         }
         return ItemUtils.getSimpleStack(aType, aSize);
     }
@@ -986,7 +954,7 @@ public class CI {
         GregtechItemList[] aHulls = new GregtechItemList[] { GregtechItemList.GTPP_Casing_ULV,
                 GregtechItemList.GTPP_Casing_LV, GregtechItemList.GTPP_Casing_MV, GregtechItemList.GTPP_Casing_HV,
                 GregtechItemList.GTPP_Casing_EV, GregtechItemList.GTPP_Casing_IV, GregtechItemList.GTPP_Casing_LuV,
-                GregtechItemList.GTPP_Casing_ZPM, GregtechItemList.GTPP_Casing_UV, GregtechItemList.GTPP_Casing_MAX };
+                GregtechItemList.GTPP_Casing_ZPM, GregtechItemList.GTPP_Casing_UV, GregtechItemList.GTPP_Casing_UHV };
         return aHulls[aTier].get(aAmount);
     }
 
@@ -995,12 +963,11 @@ public class CI {
     }
 
     public static ItemStack getTransmissionComponent(int aTier, int aAmount) {
-        GregtechItemList[] aTransParts = new GregtechItemList[] { GregtechItemList.TransmissionComponent_ULV,
-                GregtechItemList.TransmissionComponent_LV, GregtechItemList.TransmissionComponent_MV,
-                GregtechItemList.TransmissionComponent_HV, GregtechItemList.TransmissionComponent_EV,
-                GregtechItemList.TransmissionComponent_IV, GregtechItemList.TransmissionComponent_LuV,
-                GregtechItemList.TransmissionComponent_ZPM, GregtechItemList.TransmissionComponent_UV,
-                GregtechItemList.TransmissionComponent_MAX, };
+        GregtechItemList[] aTransParts = new GregtechItemList[] { GregtechItemList.TransmissionComponent_LV,
+                GregtechItemList.TransmissionComponent_MV, GregtechItemList.TransmissionComponent_HV,
+                GregtechItemList.TransmissionComponent_EV, GregtechItemList.TransmissionComponent_IV,
+                GregtechItemList.TransmissionComponent_LuV, GregtechItemList.TransmissionComponent_ZPM,
+                GregtechItemList.TransmissionComponent_UV, GregtechItemList.TransmissionComponent_UHV, };
         return aTransParts[aTier].get(aAmount);
     }
 
@@ -1019,46 +986,6 @@ public class CI {
     }
 
     /**
-     * Iron + Copper Catalyst
-     * 
-     * @param aAmount - Stacksize
-     * @return - A Catalyst stack of given size
-     */
-    public static ItemStack getRedCatalyst(int aAmount) {
-        return ItemUtils.simpleMetaStack(GenericChem.mGenericChemItem1, 0, aAmount);
-    }
-
-    /**
-     * Tungsten + Nickel Catalyst
-     * 
-     * @param aAmount - Stacksize
-     * @return - A Catalyst stack of given size
-     */
-    public static ItemStack getYellowCatalyst(int aAmount) {
-        return ItemUtils.simpleMetaStack(GenericChem.mGenericChemItem1, 1, aAmount);
-    }
-
-    /**
-     * Cobalt + Titanium Catalyst
-     * 
-     * @param aAmount - Stacksize
-     * @return - A Catalyst stack of given size
-     */
-    public static ItemStack getBlueCatalyst(int aAmount) {
-        return ItemUtils.simpleMetaStack(GenericChem.mGenericChemItem1, 2, aAmount);
-    }
-
-    /**
-     * Vanadium + Palladium Catalyst
-     * 
-     * @param aAmount - Stacksize
-     * @return - A Catalyst stack of given size
-     */
-    public static ItemStack getOrangeCatalyst(int aAmount) {
-        return ItemUtils.simpleMetaStack(GenericChem.mGenericChemItem1, 3, aAmount);
-    }
-
-    /**
      * Iridium + Ruthenium Catalyst
      * 
      * @param aAmount - Stacksize
@@ -1066,16 +993,6 @@ public class CI {
      */
     public static ItemStack getPurpleCatalyst(int aAmount) {
         return ItemUtils.simpleMetaStack(GenericChem.mGenericChemItem1, 4, aAmount);
-    }
-
-    /**
-     * Aluminium + Nickel Catalyst
-     * 
-     * @param aAmount - Stacksize
-     * @return - A Catalyst stack of given size
-     */
-    public static ItemStack getBrownCatalyst(int aAmount) {
-        return ItemUtils.simpleMetaStack(GenericChem.mGenericChemItem1, 5, aAmount);
     }
 
     /**

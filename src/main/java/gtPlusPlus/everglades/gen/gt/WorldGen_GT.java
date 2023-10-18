@@ -14,7 +14,7 @@ public abstract class WorldGen_GT {
 
     public final String mWorldGenName;
     public final boolean mEnabled;
-    private final Map<String, Boolean> mDimensionMap = new ConcurrentHashMap<String, Boolean>();
+    private final Map<String, Boolean> mDimensionMap = new ConcurrentHashMap<>();
 
     public WorldGen_GT(String aName, List aList, boolean aDefault) {
         this.mWorldGenName = aName;
@@ -45,7 +45,7 @@ public abstract class WorldGen_GT {
             this.mDimensionMap.put(aDimName, Boolean.valueOf(tValue));
             return tValue;
         } else {
-            return tAllowed.booleanValue();
+            return tAllowed;
         }
     }
 }

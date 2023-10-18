@@ -41,23 +41,12 @@ public class EntityToxinballSmall extends EntityToxinball {
                 int k = MoP.blockZ;
 
                 switch (MoP.sideHit) {
-                    case 0:
-                        --j;
-                        break;
-                    case 1:
-                        ++j;
-                        break;
-                    case 2:
-                        --k;
-                        break;
-                    case 3:
-                        ++k;
-                        break;
-                    case 4:
-                        --i;
-                        break;
-                    case 5:
-                        ++i;
+                    case 0 -> --j;
+                    case 1 -> ++j;
+                    case 2 -> --k;
+                    case 3 -> ++k;
+                    case 4 -> --i;
+                    case 5 -> ++i;
                 }
 
                 if (this.worldObj.isAirBlock(i, j, k)) {

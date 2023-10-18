@@ -65,16 +65,12 @@ public class GregtechMetaSpecialMachineCasings extends GregtechMetaCasingBlocksA
 
     @Override
     public IIcon getIcon(int ordinalSide, int aMeta) {
-        switch (aMeta) {
-            case 0:
-                return Textures.BlockIcons.MACHINE_BRONZEPLATEDBRICKS.getIcon();
-            case 1:
-                return Textures.BlockIcons.MACHINE_CASING_FROST_PROOF.getIcon();
-            case 2:
-                return TexturesGtBlock.Casing_Material_Laurenium.getIcon();
-            case 3:
-                return Textures.BlockIcons.MACHINE_HEATPROOFCASING.getIcon();
-        }
-        return Textures.BlockIcons.RENDERING_ERROR.getIcon();
+        return switch (aMeta) {
+            case 0 -> Textures.BlockIcons.MACHINE_BRONZEPLATEDBRICKS.getIcon();
+            case 1 -> Textures.BlockIcons.MACHINE_CASING_FROST_PROOF.getIcon();
+            case 2 -> TexturesGtBlock.Casing_Material_Laurenium.getIcon();
+            case 3 -> Textures.BlockIcons.MACHINE_HEATPROOFCASING.getIcon();
+            default -> Textures.BlockIcons.RENDERING_ERROR.getIcon();
+        };
     }
 }

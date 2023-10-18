@@ -88,8 +88,6 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
         } else {
             return new GT_RenderedTexture(Textures.BlockIcons.MACHINE_HV_SIDE);
         }
-        // return new
-        // GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top);
     }
 
     @Override

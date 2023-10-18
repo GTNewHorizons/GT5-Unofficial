@@ -18,7 +18,7 @@ public class GregtechBufferDynamos {
         run2();
     }
 
-    private static final void run2() {
+    private static void run2() {
         GregtechItemList.Hatch_Buffer_Dynamo_ULV.set(
                 new GT_MetaTileEntity_Hatch_DynamoBuffer(
                         mID++,

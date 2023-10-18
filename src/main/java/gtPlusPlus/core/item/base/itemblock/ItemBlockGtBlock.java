@@ -22,7 +22,7 @@ import gtPlusPlus.core.util.sys.KeyboardUtils;
 
 public class ItemBlockGtBlock extends ItemBlock {
 
-    public static HashMap<String, String> sNameCache = new HashMap<String, String>();
+    public static HashMap<String, String> sNameCache = new HashMap<>();
 
     protected final int blockColour;
     private int sRadiation;
@@ -51,8 +51,7 @@ public class ItemBlockGtBlock extends ItemBlock {
             this.blockColour = block.getBlockColor();
         }
 
-        if (block instanceof BlockBaseModular) {
-            BlockBaseModular g = (BlockBaseModular) block;
+        if (block instanceof BlockBaseModular g) {
             this.mMaterial = g.getMaterialEx();
             this.thisBlockType = g.thisBlock;
         } else {
@@ -87,11 +86,6 @@ public class ItemBlockGtBlock extends ItemBlock {
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
         return this.thisBlock.getLocalizedName();
-        // Logger.INFO("Unlocal Name: "+this.getUnlocalizedName());
-        // String aFormattedLangName = GetProperName();
-        // return
-        // GT_LanguageManager.addStringLocalization("block."+mMaterial.getUnlocalizedName()+"."+this.thisBlockType.name().toLowerCase()+".name",
-        // aFormattedLangName);
     }
 
     public int getRenderColor(final int aMeta) {

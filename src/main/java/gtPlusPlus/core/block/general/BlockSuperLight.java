@@ -27,8 +27,6 @@ public class BlockSuperLight extends BlockContainer {
     @SideOnly(Side.CLIENT)
     private IIcon textureFront;
 
-    // propecia (Inhibit DHD - recover hair get depression)
-
     public BlockSuperLight() {
         super(Material.circuits);
         this.setBlockName("blockSuperLight");
@@ -64,8 +62,6 @@ public class BlockSuperLight extends BlockContainer {
         private long mCreated;
 
         private long mLastUpdateTick = 0;
-
-        private int mLitBlockCount = 0;
 
         private int[][][][] aLitBlocks = new int[50][10][50][1];
 
@@ -128,7 +124,7 @@ public class BlockSuperLight extends BlockContainer {
                         updateLighting(powered);
                     }
                 }
-            } catch (Throwable t) {}
+            } catch (Throwable ignored) {}
         }
 
         @Override
@@ -145,13 +141,9 @@ public class BlockSuperLight extends BlockContainer {
 
             mLastUpdateTick = System.currentTimeMillis();
 
-            if (false) {
-                return;
-            }
-
             aLitBlocks = new int[50][10][50][1];
             int aLitCounter = 0;
-            AutoMap<BlockPos> aBlocksToUpdate = new AutoMap<BlockPos>();
+            AutoMap<BlockPos> aBlocksToUpdate = new AutoMap<>();
             Logger.INFO("Trying to relight area.");
 
             BlockPos aStartIterationPoint = new BlockPos(
@@ -167,7 +159,7 @@ public class BlockSuperLight extends BlockContainer {
                         int zOff = aStartIterationPoint.zPos + z;
                         Block aBlockGet = this.worldObj.getBlock(xOff, yOff, zOff);
                         if (aBlockGet != null) {
-                            if (aBlockGet instanceof BlockAir || aBlockGet instanceof LightGlass) {
+                            if (aBlockGet instanceof BlockAir) {
 
                                 int aLight = aBlockGet.getLightValue();
 
@@ -178,15 +170,8 @@ public class BlockSuperLight extends BlockContainer {
                                 // Turning Lights on
                                 else if (enable && aLight == 0) {
                                     aBlocksToUpdate.put(new BlockPos(xOff, yOff, zOff, this.worldObj));
-                                    if (aBlockGet instanceof BlockAir) {
-                                        this.worldObj.setBlock(
-                                                xOff,
-                                                yOff,
-                                                zOff,
-                                                ModBlocks.MatterFabricatorEffectBlock,
-                                                0,
-                                                3);
-                                    }
+                                    this.worldObj
+                                            .setBlock(xOff, yOff, zOff, ModBlocks.MatterFabricatorEffectBlock, 0, 3);
                                     aLitCounter++;
                                 }
                                 // Turning Lights off
@@ -196,7 +181,6 @@ public class BlockSuperLight extends BlockContainer {
                                         Logger.INFO("Dimmed air.");
                                         this.worldObj.setBlock(xOff, yOff, zOff, Blocks.air, 0, 3);
                                     }
-                                    // aBlockGet.setLightLevel(0);
                                 }
                                 aLitBlocks[x][y][z][0] = enable ? 15 : 0;
                             } else {
@@ -207,18 +191,6 @@ public class BlockSuperLight extends BlockContainer {
                         }
                     }
                 }
-            }
-            mLitBlockCount = aLitCounter;
-            doLargeBlockUpdate(aBlocksToUpdate);
-        }
-
-        public void doLargeBlockUpdate(AutoMap<BlockPos> aUpdateMap) {
-            if (aUpdateMap.isEmpty()) {
-                return;
-            }
-            for (BlockPos p : aUpdateMap) {
-                // this.worldObj.markBlockForUpdate(p.xPos, p.yPos, p.zPos);
-                // this.worldObj.markBlocksDirtyVertical(p_72975_1_, p_72975_2_, p_72975_3_, p_72975_4_);
             }
         }
     }

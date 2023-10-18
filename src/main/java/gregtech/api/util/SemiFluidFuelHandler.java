@@ -57,7 +57,7 @@ public class SemiFluidFuelHandler {
         final FluidStack aCreosote = FluidUtils.getFluidStack("creosote", 1000);
         final FluidStack aHeavyFuel = FluidUtils.getFluidStack("liquid_heavy_fuel", 1000);
         final FluidStack aHeavyOil = FluidUtils.getFluidStack("liquid_heavy_oil", 1000);
-        final HashMap<Integer, Pair<FluidStack, Integer>> aFoundFluidsFromItems = new HashMap<Integer, Pair<FluidStack, Integer>>();
+        final HashMap<Integer, Pair<FluidStack, Integer>> aFoundFluidsFromItems = new HashMap<>();
         // Find Fluids From items
         for (final GT_Recipe r : gregtech.api.util.GT_Recipe.GT_Recipe_Map.sDenseLiquidFuels.mRecipeList) {
 
@@ -67,7 +67,7 @@ public class SemiFluidFuelHandler {
                 for (ItemStack i : g.mInputs) {
                     FluidStack f = FluidContainerRegistry.getFluidForFilledItem(i);
                     if (f != null) {
-                        Pair<FluidStack, Integer> aData = new Pair<FluidStack, Integer>(f, g.mSpecialValue);
+                        Pair<FluidStack, Integer> aData = new Pair<>(f, g.mSpecialValue);
                         aFoundFluidsFromItems.put(aData.hashCode(), aData);
                     }
                 }

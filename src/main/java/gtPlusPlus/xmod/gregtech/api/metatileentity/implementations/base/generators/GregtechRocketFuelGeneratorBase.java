@@ -319,10 +319,6 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
                         // Logger.INFO("Found some fuel?");
                         int aperOp = this.consumedFluidPerOperation(tLiquid);
                         int aConsume = (int) (((long) tFuel.mSpecialValue * this.getEfficiency() * aperOp) / 100);
-                        // Logger.INFO("Fuel Value: "+tFuel.mSpecialValue);
-                        // Logger.INFO("Efficiency: "+getEfficiency());
-                        // Logger.INFO("Consumed per op: "+aperOp);
-                        // Logger.INFO("Consuming "+aConsume);
                         return aConsume;
                     }
                 }

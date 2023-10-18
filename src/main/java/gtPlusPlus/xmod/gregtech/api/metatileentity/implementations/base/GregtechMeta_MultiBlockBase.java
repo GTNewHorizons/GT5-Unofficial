@@ -561,35 +561,29 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
     public boolean causeMaintenanceIssue() {
         boolean b = false;
         switch (this.getBaseMetaTileEntity().getRandomNumber(6)) {
-            case 0: {
+            case 0 -> {
                 this.mWrench = false;
                 b = true;
-                break;
             }
-            case 1: {
+            case 1 -> {
                 this.mScrewdriver = false;
                 b = true;
-                break;
             }
-            case 2: {
+            case 2 -> {
                 this.mSoftHammer = false;
                 b = true;
-                break;
             }
-            case 3: {
+            case 3 -> {
                 this.mHardHammer = false;
                 b = true;
-                break;
             }
-            case 4: {
+            case 4 -> {
                 this.mSolderingTool = false;
                 b = true;
-                break;
             }
-            case 5: {
+            case 5 -> {
                 this.mCrowbar = false;
                 b = true;
-                break;
             }
         }
         return b;
@@ -1018,8 +1012,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch) {
-            GT_MetaTileEntity_Hatch aHatch = (GT_MetaTileEntity_Hatch) aMetaTileEntity;
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch aHatch) {
             return mAllDynamoHatches.add(aHatch);
         }
         return false;
@@ -1072,8 +1065,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch) {
-            GT_MetaTileEntity_Hatch aHatch = (GT_MetaTileEntity_Hatch) aMetaTileEntity;
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch aHatch) {
             return mAllEnergyHatches.add(aHatch);
         }
         return false;
@@ -1209,7 +1201,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
         tryTickWaitTimerDown();
     }
 
-    private final void tryTickWaitTimerDown() {
+    private void tryTickWaitTimerDown() {
         /*
          * if (mStartUpCheck > 10) { mStartUpCheck = 10; }
          */
@@ -1251,7 +1243,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
     public static <T> IStructureElement<T> addTieredBlock(Block aBlock, BiPredicate<T, Integer> aSetTheMeta,
             Function<T, Integer> aGetTheMeta, int minMeta, int maxMeta) {
 
-        return new IStructureElement<T>() {
+        return new IStructureElement<>() {
 
             @Override
             public boolean check(T t, World world, int x, int y, int z) {

@@ -80,41 +80,6 @@ public class StringUtils {
         return false;
     }
 
-    // Can call this Enum for formatting.
-    public static enum TextUtils {
-
-        blue('1'),
-        green('2'),
-        teal('3'),
-        maroon('4'),
-        purple('5'),
-        orange('6'),
-        lightGray('7'),
-        darkGray('8'),
-        lightBlue('9'),
-        black('0'),
-        lime('a'),
-        aqua('b'),
-        red('c'),
-        pink('d'),
-        yellow('e'),
-        white('f');
-
-        private char colourValue;
-
-        private TextUtils(final char value) {
-            this.colourValue = value;
-        }
-
-        public String colour() {
-            return getFormatter() + this.colourValue;
-        }
-
-        private String getFormatter() {
-            return "\u00A7"; // Returns §.
-        }
-    }
-
     public static String firstLetterCaps(String data) {
         String firstLetter = data.substring(0, 1).toUpperCase();
         String restLetters = data.substring(1).toLowerCase();
@@ -125,13 +90,13 @@ public class StringUtils {
         if (parameterTypes == null || parameterTypes.length == 0) {
             return "empty/null";
         } else {
-            String aData = "";
+            StringBuilder aData = new StringBuilder();
             for (V y : parameterTypes) {
                 if (y != null) {
-                    aData += ", " + y.toString();
+                    aData.append(", ").append(y);
                 }
             }
-            return aData;
+            return aData.toString();
         }
     }
 
@@ -142,7 +107,7 @@ public class StringUtils {
      * @return - Is this a special character?
      */
     public static boolean isSpecialCharacter(char aChar) {
-        if (aChar == '"' || aChar == '.'
+        return aChar == '"' || aChar == '.'
                 || aChar == '$'
                 || aChar == '|'
                 || aChar == '('
@@ -155,14 +120,11 @@ public class StringUtils {
                 || aChar == '?'
                 || aChar == '*'
                 || aChar == '+'
-                || aChar == '\\') {
-            return true;
-        }
-        return false;
+                || aChar == '\\';
     }
 
     public static boolean isEscaped(String aString) {
-        return aString.substring(0, 1).equals("\\");
+        return aString.charAt(0) == '\\';
     }
 
     public static String splitAndUppercase(String aInput, String aDelim) {
@@ -185,7 +147,7 @@ public class StringUtils {
         if (aSplit == null || aSplit.length == 0) {
             return aInput;
         } else {
-            AutoMap<String> aTemp = new AutoMap<String>();
+            AutoMap<String> aTemp = new AutoMap<>();
             for (String s : aSplit) {
                 Logger.INFO("Found: " + s);
                 s = s.replace(".", "");
@@ -195,35 +157,16 @@ public class StringUtils {
                 aTemp.put(s);
             }
             Logger.INFO("Rebuilding");
-            String aReturn = "";
+            StringBuilder aReturn = new StringBuilder();
             for (String s : aTemp) {
-                aReturn += s;
+                aReturn.append(s);
                 Logger.INFO("Step: " + aReturn);
             }
-            return aReturn;
-        }
-    }
-
-    public static int characterCount(String aString, char aChar) {
-        return characterCount(aString, "" + aChar);
-    }
-
-    public static int characterCount(String aString, String aChar) {
-        int aLength = aString.length();
-        int aFound = 0;
-        if (aLength == 0 || !aString.contains(aChar)) {
-            return 0;
-        } else {
-            for (int index = 0; index < aLength; index++) {
-                if (aString.substring(index, index + 1).equals(aChar)) {
-                    aFound++;
-                }
-            }
-            return aFound;
+            return aReturn.toString();
         }
     }
 
     public static long uppercaseCount(String aString) {
-        return aString.chars().filter((c) -> Character.isUpperCase(c)).count();
+        return aString.chars().filter(Character::isUpperCase).count();
     }
 }

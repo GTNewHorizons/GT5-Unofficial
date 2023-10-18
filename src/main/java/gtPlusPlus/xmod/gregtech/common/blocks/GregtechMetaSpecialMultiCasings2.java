@@ -84,24 +84,16 @@ public class GregtechMetaSpecialMultiCasings2 extends GregtechMetaCasingBlocksAb
     }
 
     public static IIcon getStaticIcon(final byte aSide, final byte aMeta) {
-        switch (aMeta) {
-            case 0:
-                return TexturesGtBlock.Casing_Resonance_1.getIcon();
-            case 1:
-                return TexturesGtBlock.Casing_Resonance_2.getIcon();
-            case 2:
-                return TexturesGtBlock.Casing_Resonance_3.getIcon();
-            case 3:
-                return TexturesGtBlock.Casing_Resonance_4.getIcon();
-            case 4:
-                return TexturesGtBlock.Casing_Modulator_1.getIcon();
-            case 5:
-                return TexturesGtBlock.Casing_Modulator_2.getIcon();
-            case 6:
-                return TexturesGtBlock.Casing_Modulator_3.getIcon();
-            case 7:
-                return TexturesGtBlock.Casing_Modulator_4.getIcon();
-        }
-        return Textures.BlockIcons.RENDERING_ERROR.getIcon();
+        return switch (aMeta) {
+            case 0 -> TexturesGtBlock.Casing_Resonance_1.getIcon();
+            case 1 -> TexturesGtBlock.Casing_Resonance_2.getIcon();
+            case 2 -> TexturesGtBlock.Casing_Resonance_3.getIcon();
+            case 3 -> TexturesGtBlock.Casing_Resonance_4.getIcon();
+            case 4 -> TexturesGtBlock.Casing_Modulator_1.getIcon();
+            case 5 -> TexturesGtBlock.Casing_Modulator_2.getIcon();
+            case 6 -> TexturesGtBlock.Casing_Modulator_3.getIcon();
+            case 7 -> TexturesGtBlock.Casing_Modulator_4.getIcon();
+            default -> Textures.BlockIcons.RENDERING_ERROR.getIcon();
+        };
     }
 }

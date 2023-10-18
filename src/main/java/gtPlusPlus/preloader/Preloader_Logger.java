@@ -9,15 +9,9 @@ public class Preloader_Logger {
     private Preloader_Logger() {}
 
     // Logging Functions
-    public static final Logger MODLOGGER = Preloader_Logger.makeLogger();
+    public static final Logger MODLOGGER = LogManager.getLogger("GT++ ASM");
 
-    // Generate GT++ Logger
-    public static Logger makeLogger() {
-        final Logger gtPlusPlusLogger = LogManager.getLogger("GT++ ASM");
-        return gtPlusPlusLogger;
-    }
-
-    public static final org.apache.logging.log4j.Logger getLogger() {
+    public static Logger getLogger() {
         return MODLOGGER;
     }
 

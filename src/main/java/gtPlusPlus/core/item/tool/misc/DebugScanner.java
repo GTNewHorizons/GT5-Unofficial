@@ -75,18 +75,15 @@ public class DebugScanner extends CoreItem {
             PlayerUtils.messagePlayer(player, "Invisible? " + entity.isInvisible());
             PlayerUtils.messagePlayer(player, "Age: " + entity.ticksExisted);
 
-            if (entity instanceof EntityLivingBase) {
-                EntityLivingBase g = (EntityLivingBase) entity;
+            if (entity instanceof EntityLivingBase g) {
                 PlayerUtils.messagePlayer(player, "Health: " + g.getHealth() + "/" + g.getMaxHealth());
                 PlayerUtils.messagePlayer(player, "On ground? " + g.onGround);
                 PlayerUtils.messagePlayer(player, "Child? " + g.isChild());
             }
-            if (entity instanceof EntityLiving) {
-                EntityLiving g = (EntityLiving) entity;
+            if (entity instanceof EntityLiving g) {
                 PlayerUtils.messagePlayer(player, "Can Loot? " + g.canPickUpLoot());
             }
-            if (entity instanceof EntityPlayer) {
-                EntityPlayer y = (EntityPlayer) entity;
+            if (entity instanceof EntityPlayer y) {
                 PlayerUtils.messagePlayer(player, "Experience: " + y.experience);
                 PlayerUtils.messagePlayer(player, "Name: " + y.getCommandSenderName());
             }

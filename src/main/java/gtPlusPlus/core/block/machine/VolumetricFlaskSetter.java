@@ -72,9 +72,8 @@ public class VolumetricFlaskSetter extends BasicTileBlockWithTooltip {
 
             if (!mDidScrewDriver) {
                 final TileEntity te = world.getTileEntity(x, y, z);
-                if ((te != null) && (te instanceof TileEntityVolumetricFlaskSetter)) {
+                if ((te != null) && (te instanceof TileEntityVolumetricFlaskSetter aTile)) {
                     player.openGui(GTplusplus.instance, GuiHandler.GUI18, world, x, y, z);
-                    TileEntityVolumetricFlaskSetter aTile = (TileEntityVolumetricFlaskSetter) te;
                     // new Packet_VolumetricFlaskGui2(aTile, aTile.getCustomValue());
                     return true;
                 }
@@ -152,7 +151,7 @@ public class VolumetricFlaskSetter extends BasicTileBlockWithTooltip {
                 GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_H",
                 GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_H",
                 GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_H" };
-        CubicObject<String>[] aTextureData = new CubicObject[] { new CubicObject<String>(aTexData) };
+        CubicObject<String>[] aTextureData = new CubicObject[] { new CubicObject<>(aTexData) };
         return aTextureData;
     }
 }

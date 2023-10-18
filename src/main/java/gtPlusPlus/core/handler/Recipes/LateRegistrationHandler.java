@@ -13,7 +13,7 @@ public class LateRegistrationHandler {
         init();
     }
 
-    private static final void init() {
+    private static void init() {
         for (final ShapedRecipeObject item : COMPAT_HANDLER.AddRecipeQueue) {
             item.buildRecipe();
         }

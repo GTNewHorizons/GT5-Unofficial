@@ -235,16 +235,12 @@ public class ItemBlueprint extends Item implements IItemBlueprint {
                     && !itemStack.stackTagCompound.getString("mName").equals("")) {
                         // Has Blueprint but invalid name set
                         Logger.WARNING("Has Blueprint but invalid name set");
-                        // itemStack.stackTagCompound = null;
-                        // createNBT(itemStack);
                         return false;
                     } else
                 if (!itemStack.stackTagCompound.getBoolean("mBlueprint")
                         && itemStack.stackTagCompound.getString("mName").equals("")) {
                             // Has no Blueprint, but strangely has a name
                             Logger.WARNING("Has no Blueprint, but strangely has a name");
-                            // itemStack.stackTagCompound = null;
-                            // createNBT(itemStack);
                             return false;
                         }
             return false;
@@ -276,15 +272,20 @@ public class ItemBlueprint extends Item implements IItemBlueprint {
             return null;
         }
         Object o = null;
-        if (tagNBT.equals("mID")) {
-            o = itemStack.stackTagCompound.getInteger(tagNBT);
-        } else if (tagNBT.equals("mBlueprint")) {
-            o = itemStack.stackTagCompound.getBoolean(tagNBT);
-        } else if (tagNBT.equals("mName")) {
-            o = itemStack.stackTagCompound.getString(tagNBT);
-        } else if (tagNBT.equals("")) {
-            // For More Tag Support
-            // o = itemStack.stackTagCompound.getInteger(tagNBT);
+        switch (tagNBT) {
+            case "mID":
+                o = itemStack.stackTagCompound.getInteger(tagNBT);
+                break;
+            case "mBlueprint":
+                o = itemStack.stackTagCompound.getBoolean(tagNBT);
+                break;
+            case "mName":
+                o = itemStack.stackTagCompound.getString(tagNBT);
+                break;
+            case "":
+                // For More Tag Support
+                // o = itemStack.stackTagCompound.getInteger(tagNBT);
+                break;
         }
         if (o != null) {
             return o;

@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Vector;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -30,10 +28,6 @@ public class TileEntityProjectTable extends TileEntity
     public InventoryProjectMain inventoryGrid;
     public InventoryProjectOutput inventoryOutputs;
 
-    /** The crafting matrix inventory (3x3). */
-    public InventoryCrafting craftMatrix;
-
-    public IInventory craftResult;
     private Container_ProjectTable container;
 
     public TileEntityProjectTable() {

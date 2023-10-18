@@ -63,7 +63,7 @@ public class GregtechMetaTieredCasingBlocks1 extends GregtechMetaCasingBlocksAbs
         GregtechItemList.GTPP_Casing_LuV.set(new ItemStack(this, 1, 6));
         GregtechItemList.GTPP_Casing_ZPM.set(new ItemStack(this, 1, 7));
         GregtechItemList.GTPP_Casing_UV.set(new ItemStack(this, 1, 8));
-        GregtechItemList.GTPP_Casing_MAX.set(new ItemStack(this, 1, 9));
+        GregtechItemList.GTPP_Casing_UHV.set(new ItemStack(this, 1, 9));
     }
 
     @Override
@@ -71,20 +71,14 @@ public class GregtechMetaTieredCasingBlocks1 extends GregtechMetaCasingBlocksAbs
         if (aMeta < 10) {
             return TexturesGtBlock.TIERED_MACHINE_HULLS[aMeta].getIcon();
         }
-        switch (aMeta) {
-            case 10:
-                return Textures.BlockIcons.RENDERING_ERROR.getIcon();
-            case 11:
-                return Textures.BlockIcons.RENDERING_ERROR.getIcon();
-            case 12:
-                return Textures.BlockIcons.RENDERING_ERROR.getIcon();
-            case 13:
-                return Textures.BlockIcons.RENDERING_ERROR.getIcon();
-            case 14:
-                return Textures.BlockIcons.RENDERING_ERROR.getIcon();
-            case 15:
-                return Textures.BlockIcons.RENDERING_ERROR.getIcon();
-        }
-        return Textures.BlockIcons.RENDERING_ERROR.getIcon();
+        return switch (aMeta) {
+            case 10 -> Textures.BlockIcons.RENDERING_ERROR.getIcon();
+            case 11 -> Textures.BlockIcons.RENDERING_ERROR.getIcon();
+            case 12 -> Textures.BlockIcons.RENDERING_ERROR.getIcon();
+            case 13 -> Textures.BlockIcons.RENDERING_ERROR.getIcon();
+            case 14 -> Textures.BlockIcons.RENDERING_ERROR.getIcon();
+            case 15 -> Textures.BlockIcons.RENDERING_ERROR.getIcon();
+            default -> Textures.BlockIcons.RENDERING_ERROR.getIcon();
+        };
     }
 }

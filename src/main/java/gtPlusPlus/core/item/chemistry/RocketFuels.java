@@ -33,8 +33,8 @@ import gtPlusPlus.core.util.minecraft.MaterialUtils;
 
 public class RocketFuels extends ItemPackage {
 
-    public static HashSet<String> mValidRocketFuelNames = new HashSet<String>();
-    public static HashMap<Integer, Fluid> mValidRocketFuels = new HashMap<Integer, Fluid>();
+    public static HashSet<String> mValidRocketFuelNames = new HashSet<>();
+    public static HashMap<Integer, Fluid> mValidRocketFuels = new HashMap<>();
 
     public static Fluid Oil_Heavy;
     public static Fluid Diesel;
@@ -215,7 +215,7 @@ public class RocketFuels extends ItemPackage {
     }
 
     private static void addRocketFuelsToMap() {
-        HashMap<Integer, GTPP_Recipe> mRocketFuels = new LinkedHashMap<Integer, GTPP_Recipe>();
+        HashMap<Integer, GTPP_Recipe> mRocketFuels = new LinkedHashMap<>();
         mRocketFuels.put(
                 0,
                 new GTPP_Recipe(

@@ -10,11 +10,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.util.GT_Utility;
-import gtPlusPlus.api.objects.data.AutoMap;
-
 public class InventoryUtils {
 
     private static final Random mRandom = new Random();
@@ -22,10 +17,9 @@ public class InventoryUtils {
     public static void dropInventoryItems(World world, int x, int y, int z, Block block) {
         TileEntity tileentity = world.getTileEntity(x, y, z);
 
-        if (tileentity != null && tileentity instanceof IInventory
+        if (tileentity != null && tileentity instanceof IInventory aTileInv
                 && ((IInventory) tileentity).getSizeInventory() > 0) {
 
-            IInventory aTileInv = (IInventory) tileentity;
             int aMinSlot = 0;
             int aMaxSlot = aTileInv.getSizeInventory() - 1;
 
@@ -69,36 +63,4 @@ public class InventoryUtils {
         }
     }
 
-    public static void sortInventoryItems(MetaTileEntity aTile) {
-        sortInventoryItems(aTile.getBaseMetaTileEntity());
-    }
-
-    public static void sortInventoryItems(IGregTechTileEntity aBaseMetaTileEntity) {
-        IInventory mInv = aBaseMetaTileEntity.getIInventory(
-                aBaseMetaTileEntity.getXCoord(),
-                aBaseMetaTileEntity.getYCoord(),
-                aBaseMetaTileEntity.getZCoord());
-        AutoMap<ItemStack> aInvContents = new AutoMap<ItemStack>();
-        int aSize = mInv.getSizeInventory();
-        for (int slot = 0; slot < aSize; slot++) {
-            aInvContents.put(mInv.getStackInSlot(slot));
-        }
-        ItemStack[] mInventory = aInvContents.toArray();
-        for (int i = 0; i < mInventory.length; i++) {
-            for (int j = i + 1; j < mInventory.length; j++) {
-                if (mInventory[j] != null
-                        && (mInventory[i] == null || GT_Utility.areStacksEqual(mInventory[i], mInventory[j]))) {
-                    GT_Utility.moveStackFromSlotAToSlotB(
-                            aBaseMetaTileEntity,
-                            aBaseMetaTileEntity,
-                            j,
-                            i,
-                            (byte) 64,
-                            (byte) 1,
-                            (byte) 64,
-                            (byte) 1);
-                }
-            }
-        }
-    }
 }

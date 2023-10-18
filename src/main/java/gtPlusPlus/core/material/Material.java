@@ -36,12 +36,12 @@ import gtPlusPlus.xmod.tinkers.material.BaseTinkersMaterial;
 
 public class Material {
 
-    public static final Set<Material> mMaterialMap = new HashSet<Material>();
-    public static HashMap<String, Material> mMaterialCache = new HashMap<String, Material>();
+    public static final Set<Material> mMaterialMap = new HashSet<>();
+    public static HashMap<String, Material> mMaterialCache = new HashMap<>();
 
-    public static final Map<String, Map<String, ItemStack>> mComponentMap = new HashMap<String, Map<String, ItemStack>>();
+    public static final Map<String, Map<String, ItemStack>> mComponentMap = new HashMap<>();
 
-    public static HashMap<String, String> sChemicalFormula = new HashMap<String, String>();
+    public static HashMap<String, String> sChemicalFormula = new HashMap<>();
 
     private String unlocalizedName;
     private String localizedName;
@@ -88,7 +88,7 @@ public class Material {
 
     public short werkstoffID;
 
-    public static AutoMap<Materials> invalidMaterials = new AutoMap<Materials>();
+    public static AutoMap<Materials> invalidMaterials = new AutoMap<>();
 
     public Material(final String materialName, final MaterialState defaultState, final MaterialStack... inputs) {
         this(materialName, defaultState, null, inputs);
@@ -376,7 +376,7 @@ public class Material {
             rgba = null;
         }
 
-        mComponentMap.put(unlocalizedName, new HashMap<String, ItemStack>());
+        mComponentMap.put(unlocalizedName, new HashMap<>());
 
         try {
             this.unlocalizedName = Utils.sanitizeString(materialName);
@@ -414,8 +414,8 @@ public class Material {
                         Short[] mMixedRGB = new Short[3];
                         AutoMap<Material> mMaterialSet = MaterialUtils.getCompoundMaterialsRecursively(this);
                         for (int mnh = 0; mnh < 3; mnh++) {
-                            AutoMap<Short> aDataSet = new AutoMap<Short>();
-                            Set<Material> set4 = new HashSet<Material>();
+                            AutoMap<Short> aDataSet = new AutoMap<>();
+                            Set<Material> set4 = new HashSet<>();
                             for (Material u : mMaterialSet) {
                                 // if (u.getState() == MaterialState.ORE || u.getState() == MaterialState.SOLID)
                                 set4.add(u);
@@ -571,7 +571,7 @@ public class Material {
                 this.vRadiationLevel = (byte) radiationLevel;
             } else {
                 if (vMaterialInput.size() > 0) {
-                    AutoMap<Byte> aDataSet = new AutoMap<Byte>();
+                    AutoMap<Byte> aDataSet = new AutoMap<>();
                     for (MaterialStack m : this.vMaterialInput) {
                         aDataSet.put(m.getStackMaterial().vRadiationLevel);
                     }
@@ -582,7 +582,7 @@ public class Material {
                                         + aAverage
                                         + ".");
                         this.isRadioactive = true;
-                        this.vRadiationLevel = (byte) aAverage;
+                        this.vRadiationLevel = aAverage;
                     } else {
                         Logger.MATERIALS(this.getLocalizedName() + " is not radioactive.");
                         this.isRadioactive = false;
@@ -617,8 +617,8 @@ public class Material {
             int tempSmallestSize = 0;
 
             if (this.vSmallestRatio != null) {
-                for (int v = 0; v < this.vSmallestRatio.length; v++) {
-                    tempSmallestSize = (int) (tempSmallestSize + this.vSmallestRatio[v]);
+                for (long l : this.vSmallestRatio) {
+                    tempSmallestSize = (int) (tempSmallestSize + l);
                 }
                 this.smallestStackSizeWhenProcessing = tempSmallestSize; // Valid stacksizes
             } else {
@@ -670,11 +670,11 @@ public class Material {
             }
             String ratio = "";
             if (this.vSmallestRatio != null) {
-                for (int hu = 0; hu < this.vSmallestRatio.length; hu++) {
+                for (long l : this.vSmallestRatio) {
                     if (ratio.equals("")) {
-                        ratio = String.valueOf(this.vSmallestRatio[hu]);
+                        ratio = String.valueOf(l);
                     } else {
-                        ratio = ratio + ":" + this.vSmallestRatio[hu];
+                        ratio = ratio + ":" + l;
                     }
                 }
             }
@@ -825,7 +825,7 @@ public class Material {
         }
 
         // build hash table with count
-        AutoMap<Material> sets = new AutoMap<Material>();
+        AutoMap<Material> sets = new AutoMap<>();
         if (this.vMaterialInput != null) {
             for (MaterialStack r : this.vMaterialInput) {
                 if (r.getStackMaterial().getTextureSet().mSetName.toLowerCase().contains("fluid")) {
@@ -834,8 +834,7 @@ public class Material {
                     sets.put(r.getStackMaterial());
                 }
             }
-            TextureSet mostUsedTypeTextureSet = MaterialUtils
-                    .getMostCommonTextureSet(new ArrayList<Material>(sets.values()));
+            TextureSet mostUsedTypeTextureSet = MaterialUtils.getMostCommonTextureSet(new ArrayList<>(sets.values()));
             if (mostUsedTypeTextureSet != null && mostUsedTypeTextureSet instanceof TextureSet) {
                 Logger.MATERIALS(
                         "Set textureset for " + this.localizedName + " to be " + mostUsedTypeTextureSet.mSetName + ".");
@@ -938,7 +937,7 @@ public class Material {
         String aKey = aPrefix.name();
         Map<String, ItemStack> g = mComponentMap.get(this.unlocalizedName);
         if (g == null) {
-            Map<String, ItemStack> aMap = new HashMap<String, ItemStack>();
+            Map<String, ItemStack> aMap = new HashMap<>();
             mComponentMap.put(unlocalizedName, aMap);
             g = aMap;
         }
@@ -1245,7 +1244,7 @@ public class Material {
         return new int[] {};
     }
 
-    private final short getComponentCount(final MaterialStack[] inputs) {
+    private short getComponentCount(final MaterialStack[] inputs) {
 
         if (inputs == null || inputs.length < 1) {
             return 1;
@@ -1271,8 +1270,6 @@ public class Material {
                 // Utils.LOG_MATERIALS("length: "+inputs.length);
                 final long[] tempRatio = new long[tempInput.size()];
                 for (int x = 0; x < tempInput.size(); x++) {
-                    // tempPercentage = tempPercentage+inputs[x].percentageToUse;
-                    // this.mMaterialList.add(inputs[x]);
                     if (tempInput.get(x) != null) {
                         tempRatio[x] = tempInput.get(x).getPartsPerOneHundred();
                     }
@@ -1282,16 +1279,16 @@ public class Material {
 
                 if (smallestRatio.length > 0) {
                     String tempRatioStringThing1 = "";
-                    for (int r = 0; r < tempRatio.length; r++) {
-                        tempRatioStringThing1 = tempRatioStringThing1 + tempRatio[r] + " : ";
+                    for (long value : tempRatio) {
+                        tempRatioStringThing1 = tempRatioStringThing1 + value + " : ";
                     }
                     Logger.MATERIALS("Default Ratio: " + tempRatioStringThing1);
 
                     String tempRatioStringThing = "";
                     int tempSmallestCraftingUseSize = 0;
-                    for (int r = 0; r < smallestRatio.length; r++) {
-                        tempRatioStringThing = tempRatioStringThing + smallestRatio[r] + " : ";
-                        tempSmallestCraftingUseSize = (int) (tempSmallestCraftingUseSize + smallestRatio[r]);
+                    for (long l : smallestRatio) {
+                        tempRatioStringThing = tempRatioStringThing + l + " : ";
+                        tempSmallestCraftingUseSize = (int) (tempSmallestCraftingUseSize + l);
                     }
                     // this.smallestStackSizeWhenProcessing = tempSmallestCraftingUseSize;
                     Logger.MATERIALS("Smallest Ratio: " + tempRatioStringThing);
@@ -1546,7 +1543,7 @@ public class Material {
 
     public final int calculateMeltingPoint() {
         try {
-            AutoMap<Integer> aDataSet = new AutoMap<Integer>();
+            AutoMap<Integer> aDataSet = new AutoMap<>();
             for (MaterialStack m : this.vMaterialInput) {
                 aDataSet.put(m.getStackMaterial().getMeltingPointC());
             }
@@ -1561,7 +1558,7 @@ public class Material {
     public final int calculateBoilingPoint() {
         try {
 
-            AutoMap<Integer> aDataSet = new AutoMap<Integer>();
+            AutoMap<Integer> aDataSet = new AutoMap<>();
             for (MaterialStack m : this.vMaterialInput) {
                 aDataSet.put(m.getStackMaterial().getBoilingPointC());
             }
@@ -1576,7 +1573,7 @@ public class Material {
     public final long calculateProtons() {
         try {
 
-            AutoMap<Long> aDataSet = new AutoMap<Long>();
+            AutoMap<Long> aDataSet = new AutoMap<>();
             for (MaterialStack m : this.vMaterialInput) {
                 aDataSet.put(m.getStackMaterial().getProtons());
             }
@@ -1591,7 +1588,7 @@ public class Material {
     public final long calculateNeutrons() {
         try {
 
-            AutoMap<Long> aDataSet = new AutoMap<Long>();
+            AutoMap<Long> aDataSet = new AutoMap<>();
             for (MaterialStack m : this.vMaterialInput) {
                 aDataSet.put(m.getStackMaterial().getNeutrons());
             }
@@ -1653,7 +1650,7 @@ public class Material {
         // Register Component
         Map<String, ItemStack> aMap = Material.mComponentMap.get(componentMaterial.getUnlocalizedName());
         if (aMap == null) {
-            aMap = new HashMap<String, ItemStack>();
+            aMap = new HashMap<>();
         }
         String aKey = aPrefix.name();
         ItemStack x = aMap.get(aKey);

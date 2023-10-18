@@ -68,8 +68,7 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
                         if (inv == null) {
                             continue;
                         }
-                        if (inv.getItem() instanceof DustDecayable) {
-                            DustDecayable D = (DustDecayable) inv.getItem();
+                        if (inv.getItem() instanceof DustDecayable D) {
                             tryUpdateDecayable(D, inv, this.worldObj);
                         }
                     }
@@ -353,7 +352,7 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
         this.checkForAdjacentChests();
     }
 
-    private final int updateSlots() {
+    private int updateSlots() {
         // Have slots changed?
         if (cachedChestType == 0) {
             return 0;

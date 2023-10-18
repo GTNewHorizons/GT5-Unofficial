@@ -480,10 +480,7 @@ public abstract class Gregtech_MetaTool extends GT_MetaGenerated_Tool
         }
         this.doDamage(aStack, tStats.getToolDamagePerContainerCraft());
         aStack = aStack.stackSize > 0 ? aStack : null;
-        if (playSound) {
-            // String sound = (aStack == null) ? tStats.getBreakingSound() : tStats.getCraftingSound();
-            // GT_Utility.doSoundAtClient(sound, 1, 1.0F);
-        }
+        if (playSound) {}
         return aStack;
     }
 

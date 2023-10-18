@@ -26,7 +26,7 @@ public class CORE_Preloader {
     }
 
     static {
-        ArrayList<ArtifactVersion> deps = new ArrayList<ArtifactVersion>();
+        ArrayList<ArtifactVersion> deps = new ArrayList<>();
         // deps.add("required-before:gregtech;");
         DEPENDENCIES = Collections.unmodifiableList(deps);
     }

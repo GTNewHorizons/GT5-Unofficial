@@ -15,7 +15,6 @@ import gtPlusPlus.core.container.Container_DecayablesChest;
 import gtPlusPlus.core.container.Container_FishTrap;
 import gtPlusPlus.core.container.Container_PestKiller;
 import gtPlusPlus.core.container.Container_ProjectTable;
-import gtPlusPlus.core.container.Container_RoundRobinator;
 import gtPlusPlus.core.container.Container_SuperJukebox;
 import gtPlusPlus.core.container.Container_VolumetricFlaskSetter;
 import gtPlusPlus.core.gui.beta.Gui_ID_Registry;
@@ -25,7 +24,6 @@ import gtPlusPlus.core.gui.machine.GUI_DecayablesChest;
 import gtPlusPlus.core.gui.machine.GUI_FishTrap;
 import gtPlusPlus.core.gui.machine.GUI_PestKiller;
 import gtPlusPlus.core.gui.machine.GUI_ProjectTable;
-import gtPlusPlus.core.gui.machine.GUI_RoundRobinator;
 import gtPlusPlus.core.gui.machine.GUI_SuperJukebox;
 import gtPlusPlus.core.gui.machine.GUI_VolumetricFlaskSetter;
 import gtPlusPlus.core.interfaces.IGuiManager;
@@ -35,7 +33,6 @@ import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
 import gtPlusPlus.core.tileentities.general.TileEntityVolumetricFlaskSetter;
 import gtPlusPlus.core.tileentities.machines.TileEntityPestKiller;
 import gtPlusPlus.core.tileentities.machines.TileEntityProjectTable;
-import gtPlusPlus.core.tileentities.machines.TileEntityRoundRobinator;
 
 public class GuiHandler implements IGuiHandler {
 
@@ -54,7 +51,7 @@ public class GuiHandler implements IGuiHandler {
     public static final int GUI13 = 12; // Decayables Chest
     public static final int GUI14 = 13; // Super Jukebox
     public static final int GUI15 = 14; // Pest Killer
-    public static final int GUI16 = 15; // Round-Robinator
+    public static final int GUI16 = 15; // None
     public static final int GUI17 = 16; // None
     public static final int GUI18 = 17; // Volumetric Flask Setter
 
@@ -88,8 +85,6 @@ public class GuiHandler implements IGuiHandler {
                 return new Container_SuperJukebox(player.inventory, (TileEntitySuperJukebox) te);
             } else if (ID == GUI15) {
                 return new Container_PestKiller(player.inventory, (TileEntityPestKiller) te);
-            } else if (ID == GUI16) {
-                return new Container_RoundRobinator(player.inventory, (TileEntityRoundRobinator) te);
             } else if (ID == GUI18) {
                 return new Container_VolumetricFlaskSetter(player.inventory, (TileEntityVolumetricFlaskSetter) te);
             }
@@ -130,8 +125,6 @@ public class GuiHandler implements IGuiHandler {
                 return new GUI_SuperJukebox(player.inventory, (TileEntitySuperJukebox) te);
             } else if (ID == GUI15) {
                 return new GUI_PestKiller(player.inventory, (TileEntityPestKiller) te);
-            } else if (ID == GUI16) {
-                return new GUI_RoundRobinator(player.inventory, (TileEntityRoundRobinator) te);
             } else if (ID == GUI18) {
                 return new GUI_VolumetricFlaskSetter(
                         new Container_VolumetricFlaskSetter(player.inventory, (TileEntityVolumetricFlaskSetter) te));

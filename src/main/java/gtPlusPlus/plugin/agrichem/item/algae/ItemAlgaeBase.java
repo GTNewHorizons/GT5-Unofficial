@@ -22,7 +22,6 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.plugin.agrichem.AlgaeDefinition;
 import gtPlusPlus.plugin.agrichem.IAlgalItem;
 import gtPlusPlus.plugin.agrichem.logic.AlgaeGeneticData;
-import gtPlusPlus.plugin.agrichem.logic.AlgaeGrowthRequirement;
 
 public class ItemAlgaeBase extends Item implements IAlgalItem {
 
@@ -211,7 +210,7 @@ public class ItemAlgaeBase extends Item implements IAlgalItem {
                         aSpeed,
                         aLifespan,
                         0,
-                        new AutoMap<AlgaeGrowthRequirement>());
+                        new AutoMap<>());
                 aTag = aGenes.writeToNBT();
             }
         } else {

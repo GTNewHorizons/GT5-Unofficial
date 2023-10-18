@@ -19,8 +19,8 @@ public class TAE {
     public static int gtPPLastUsedIndex = 64;
     public static int secondaryIndex = 0;
 
-    public static HashMap<Integer, GTPP_CopiedBlockTexture> mTAE = new HashMap<Integer, GTPP_CopiedBlockTexture>();
-    private static final HashSet<Integer> mFreeSlots = new HashSet<Integer>(64);
+    public static HashMap<Integer, GTPP_CopiedBlockTexture> mTAE = new HashMap<>();
+    private static final HashSet<Integer> mFreeSlots = new HashSet<>(64);
 
     static {
         for (int i = 64; i < 128; i++) {
@@ -55,7 +55,7 @@ public class TAE {
     public static void finalizeTAE() {
         String aFreeSpaces = "";
         String aPageAndSlotFree = "";
-        AutoMap<Integer> aTemp = new AutoMap<Integer>(mFreeSlots);
+        AutoMap<Integer> aTemp = new AutoMap<>(mFreeSlots);
         for (int i = 0; i < mFreeSlots.size(); i++) {
             int j = aTemp.get(i);
             aFreeSpaces += j;

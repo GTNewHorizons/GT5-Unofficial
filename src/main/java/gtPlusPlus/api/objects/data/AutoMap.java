@@ -27,7 +27,7 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable, Collect
     private static final long serialVersionUID = 3771412318075131790L;
 
     public AutoMap() {
-        this(new LinkedHashMap<Integer, V>());
+        this(new LinkedHashMap<>());
     }
 
     public Map<Integer, V> getMap() {
@@ -36,7 +36,7 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable, Collect
 
     public AutoMap(Map<Integer, V> defaultMapType) {
         mInternalMap = defaultMapType;
-        mInternalNameMap = new LinkedHashMap<String, Integer>();
+        mInternalNameMap = new LinkedHashMap<>();
     }
 
     /**
@@ -45,8 +45,8 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable, Collect
      * @param aList - Data to be inserted into the AutoMap.
      */
     public AutoMap(List<V> aList) {
-        mInternalMap = new LinkedHashMap<Integer, V>();
-        mInternalNameMap = new LinkedHashMap<String, Integer>();
+        mInternalMap = new LinkedHashMap<>();
+        mInternalNameMap = new LinkedHashMap<>();
         if (aList != null && aList.size() > 0) {
             for (V obj : aList) {
                 add(obj);
@@ -60,8 +60,8 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable, Collect
      * @param aList - Data to be inserted into the AutoMap.
      */
     public AutoMap(Set<V> aList) {
-        mInternalMap = new LinkedHashMap<Integer, V>();
-        mInternalNameMap = new LinkedHashMap<String, Integer>();
+        mInternalMap = new LinkedHashMap<>();
+        mInternalNameMap = new LinkedHashMap<>();
         if (aList != null && aList.size() > 0) {
             for (V obj : aList) {
                 add(obj);
@@ -75,8 +75,8 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable, Collect
      * @param aList - Data to be inserted into the AutoMap.
      */
     public AutoMap(Collection<V> aList) {
-        mInternalMap = new LinkedHashMap<Integer, V>();
-        mInternalNameMap = new LinkedHashMap<String, Integer>();
+        mInternalMap = new LinkedHashMap<>();
+        mInternalNameMap = new LinkedHashMap<>();
         if (aList != null && aList.size() > 0) {
             for (V obj : aList) {
                 add(obj);
@@ -90,8 +90,8 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable, Collect
      * @param aArray - Data to be inserted into the AutoMap.
      */
     public AutoMap(V[] aArray) {
-        mInternalMap = new LinkedHashMap<Integer, V>();
-        mInternalNameMap = new LinkedHashMap<String, Integer>();
+        mInternalMap = new LinkedHashMap<>();
+        mInternalNameMap = new LinkedHashMap<>();
         if (aArray != null && aArray.length > 0) {
             for (V obj : aArray) {
                 add(obj);
@@ -244,7 +244,7 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable, Collect
 
     @Override
     public boolean retainAll(Collection<?> c) {
-        AutoMap<?> aTempAllocation = new AutoMap<Object>();
+        AutoMap<?> aTempAllocation = new AutoMap<>();
         boolean aTrue = false;
         aTempAllocation = this;
         aTempAllocation.removeAll(c);
@@ -346,7 +346,7 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable, Collect
 
     @Override
     public List<V> subList(int fromIndex, int toIndex) {
-        AutoMap<V> aNewSubList = new AutoMap<V>();
+        AutoMap<V> aNewSubList = new AutoMap<>();
         for (int slot = fromIndex; slot <= toIndex; slot++) {
             V obj = mInternalMap.get(slot);
             if (obj == null) {

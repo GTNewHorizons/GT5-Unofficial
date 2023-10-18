@@ -12,9 +12,9 @@ import gtPlusPlus.xmod.tinkers.util.TinkersUtils;
 
 public class HANDLER_Tinkers {
 
-    public static AutoMap<BaseTinkersMaterial> mTinkerMaterials = new AutoMap<BaseTinkersMaterial>();
+    public static AutoMap<BaseTinkersMaterial> mTinkerMaterials = new AutoMap<>();
 
-    public static final void postInit() {
+    public static void postInit() {
         if (TinkerConstruct.isModLoaded()) {
 
             Fluid pyrotheumFluid = FluidRegistry.getFluid("pyrotheum");
@@ -25,10 +25,6 @@ public class HANDLER_Tinkers {
 
             // Generate Drying Rack recipes
             TinkersDryingRecipe.generateAllDryingRecipes();
-
-            for (BaseTinkersMaterial y : mTinkerMaterials) {
-                // y.generate();
-            }
         }
     }
 }

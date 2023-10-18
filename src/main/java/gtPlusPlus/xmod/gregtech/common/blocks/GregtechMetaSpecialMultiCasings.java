@@ -97,40 +97,24 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
     }
 
     public static IIcon getStaticIcon(final int ordinalSide, final byte aMeta) {
-        switch (aMeta) {
-            case 0:
-                return TexturesGtBlock.Casing_Redox_1.getIcon();
-            case 1:
-                return Textures.BlockIcons.MACHINE_CASING_TURBINE.getIcon();
-            case 2:
-                return Textures.BlockIcons.MACHINE_CASING_STABLE_TITANIUM.getIcon();
-            case 3:
-                return Textures.BlockIcons.MACHINE_CASING_CLEAN_STAINLESSSTEEL.getIcon();
-            case 4:
-                return Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
-            case 5:
-                return TexturesGtBlock.Casing_Material_RedSteel.getIcon();
-            case 6:
-                return TexturesGtBlock.Casing_Material_MaragingSteel.getIcon();
-            case 7:
-                return TexturesGtBlock.Casing_Material_Stellite.getIcon();
-            case 8:
-                return TexturesGtBlock.Casing_Machine_Simple_Top.getIcon();
-            case 9:
-                return TexturesGtBlock.TEXTURE_CASING_FLOTATION.getIcon();
-            case 10:
-                return TexturesGtBlock.Casing_Material_Talonite.getIcon();
-            case 11:
-                return Textures.BlockIcons.MACHINE_CASING_RADIATIONPROOF.getIcon();
-            case 12:
-                return TexturesGtBlock.Casing_Redox_5.getIcon();
-            case 13:
-                return TexturesGtBlock.TEXTURE_MAGIC_PANEL_B.getIcon();
-            case 14:
-                return TexturesGtBlock.Casing_Material_Talonite.getIcon();
-            case 15:
-                return TexturesGtBlock.Turbine_SC_Material_Casing.getIcon();
-        }
-        return Textures.BlockIcons.RENDERING_ERROR.getIcon();
+        return switch (aMeta) {
+            case 0 -> TexturesGtBlock.Casing_Redox_1.getIcon();
+            case 1 -> Textures.BlockIcons.MACHINE_CASING_TURBINE.getIcon();
+            case 2 -> Textures.BlockIcons.MACHINE_CASING_STABLE_TITANIUM.getIcon();
+            case 3 -> Textures.BlockIcons.MACHINE_CASING_CLEAN_STAINLESSSTEEL.getIcon();
+            case 4 -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
+            case 5 -> TexturesGtBlock.Casing_Material_RedSteel.getIcon();
+            case 6 -> TexturesGtBlock.Casing_Material_MaragingSteel.getIcon();
+            case 7 -> TexturesGtBlock.Casing_Material_Stellite.getIcon();
+            case 8 -> TexturesGtBlock.Casing_Machine_Simple_Top.getIcon();
+            case 9 -> TexturesGtBlock.TEXTURE_CASING_FLOTATION.getIcon();
+            case 10 -> TexturesGtBlock.Casing_Material_Talonite.getIcon();
+            case 11 -> Textures.BlockIcons.MACHINE_CASING_RADIATIONPROOF.getIcon();
+            case 12 -> TexturesGtBlock.Casing_Redox_5.getIcon();
+            case 13 -> TexturesGtBlock.TEXTURE_MAGIC_PANEL_B.getIcon();
+            case 14 -> TexturesGtBlock.Casing_Material_Talonite.getIcon();
+            case 15 -> TexturesGtBlock.Turbine_SC_Material_Casing.getIcon();
+            default -> Textures.BlockIcons.RENDERING_ERROR.getIcon();
+        };
     }
 }

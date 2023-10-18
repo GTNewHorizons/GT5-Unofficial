@@ -20,7 +20,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.GregtechMetaTileEntity_LargerTurbineBase;
@@ -64,20 +63,18 @@ public class GT_MetaTileEntity_Hatch_TurbineProvider extends GT_MetaTileEntity_H
         }
     }
 
-    private final void tryFindParentTurbine() {
+    private void tryFindParentTurbine() {
         Logger.INFO("This turbine housing has no parent, searching world.");
         IGregTechTileEntity T = this.getBaseMetaTileEntity();
         World W = T.getWorld();
         Chunk C = W.getChunkFromBlockCoords(T.getXCoord(), T.getZCoord());
         for (Object o : C.chunkTileEntityMap.values()) {
-            if (o instanceof IGregTechTileEntity) {
-                IGregTechTileEntity G = (IGregTechTileEntity) o;
+            if (o instanceof IGregTechTileEntity G) {
                 final IMetaTileEntity aMetaTileEntity = G.getMetaTileEntity();
                 if (aMetaTileEntity == null) {
                     continue;
                 }
-                if (aMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine) {
-                    GT_MetaTileEntity_LargeTurbine aTurb = (GT_MetaTileEntity_LargeTurbine) aMetaTileEntity;
+                if (aMetaTileEntity instanceof GT_MetaTileEntity_LargeTurbine aTurb) {
                     for (GT_MetaTileEntity_Hatch_InputBus ee : aTurb.mInputBusses) {
                         if (ee.equals(this)) {
                             mParent = aTurb;
@@ -90,7 +87,7 @@ public class GT_MetaTileEntity_Hatch_TurbineProvider extends GT_MetaTileEntity_H
         }
     }
 
-    private final void tryRefillTurbine() {
+    private void tryRefillTurbine() {
         if (mParent == null) {
             tryFindParentTurbine();
         }
@@ -166,7 +163,7 @@ public class GT_MetaTileEntity_Hatch_TurbineProvider extends GT_MetaTileEntity_H
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aPlayer != null) {
             if (KeyboardUtils.isCtrlKeyDown()) {
-                mDescending = Utils.invertBoolean(mDescending);
+                mDescending = !mDescending;
                 PlayerUtils.messagePlayer(aPlayer, "Direction: " + (mDescending ? "DOWN" : "UP"));
             } else {
                 int aAmount = 0;

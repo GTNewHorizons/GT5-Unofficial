@@ -37,8 +37,6 @@ import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GregtechMTE_ElementalDuplicator;
 import gtPlusPlus.xmod.gregtech.loaders.Gregtech_Blocks;
 import gtPlusPlus.xmod.gregtech.loaders.ProcessingAngleGrinder;
-import gtPlusPlus.xmod.gregtech.loaders.ProcessingElectricButcherKnife;
-import gtPlusPlus.xmod.gregtech.loaders.ProcessingElectricLighter;
 import gtPlusPlus.xmod.gregtech.loaders.ProcessingElectricSnips;
 import gtPlusPlus.xmod.gregtech.loaders.misc.AddCustomMachineToPA;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoader_AlgaeFarm;
@@ -80,8 +78,6 @@ public class HANDLER_GT {
         // Only loads if the config option is true (default: true)
         new ProcessingAngleGrinder().run();
         new ProcessingElectricSnips().run();
-        new ProcessingElectricButcherKnife().run();
-        new ProcessingElectricLighter().run();
 
         // Register custom singles to the PA
         AddCustomMachineToPA.register();

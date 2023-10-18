@@ -35,7 +35,7 @@ public class ItemLavaFilter extends CoreItem {
         setGregtechItemList();
     }
 
-    private final boolean setGregtechItemList() {
+    private boolean setGregtechItemList() {
         ItemList.Component_LavaFilter.set(this);
         return ItemList.Component_LavaFilter.get(1) != null ? true : false;
     }

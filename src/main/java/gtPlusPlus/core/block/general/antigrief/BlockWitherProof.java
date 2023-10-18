@@ -37,10 +37,6 @@ public class BlockWitherProof extends Block {
         GameRegistry.registerBlock(this, Utils.sanitizeString("blockBlackGate"));
     }
 
-    public String GetProperName() {
-        return "Wither Cage";
-    }
-
     @Override
     @SideOnly(Side.CLIENT)
     public int getRenderBlockPass() {

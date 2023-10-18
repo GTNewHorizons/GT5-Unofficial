@@ -41,7 +41,6 @@ import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
-import gtPlusPlus.preloader.DevHelper;
 
 public class ClassTransformer_TC_ItemWispEssence {
 
@@ -52,17 +51,16 @@ public class ClassTransformer_TC_ItemWispEssence {
     public ClassTransformer_TC_ItemWispEssence(byte[] basicClass, boolean obfuscated2) {
         ClassReader aTempReader = null;
         ClassWriter aTempWriter = null;
-        boolean obfuscated = obfuscated2;
         FMLRelaunchLog.log(
                 "[GT++ ASM] Thaumcraft WispEssence_Patch",
                 Level.INFO,
-                "Are we patching obfuscated methods? " + obfuscated);
-        String aGetColour = obfuscated ? DevHelper.getSRG("getColorFromItemStack") : "getColorFromItemStack";
+                "Are we patching obfuscated methods? " + obfuscated2);
+        String aGetColour = obfuscated2 ? "func_82790_a" : "getColorFromItemStack";
         aTempReader = new ClassReader(basicClass);
         aTempWriter = new ClassWriter(aTempReader, ClassWriter.COMPUTE_FRAMES);
         aTempReader.accept(new AddAdapter(aTempWriter, new String[] { "getAspects", aGetColour }), 0);
-        injectMethod("getAspects", aTempWriter, obfuscated);
-        injectMethod(aGetColour, aTempWriter, obfuscated);
+        injectMethod("getAspects", aTempWriter, obfuscated2);
+        injectMethod(aGetColour, aTempWriter, obfuscated2);
         if (aTempReader != null && aTempWriter != null) {
             isValid = true;
         } else {

@@ -72,15 +72,10 @@ public class ShapedRecipe {
                                     + " has incorrect number of inputs. Size: "
                                     + aInputs.length
                                     + ".");
-                    // Logger.RECIPE("[1234abcd] Reciped exists at location: "+ReflectionUtils.getMethodName(1));
-                    // Logger.RECIPE("[1234abcd] Reciped exists at location: "+ReflectionUtils.getMethodName(2));
-                    // Logger.RECIPE("[1234abcd] Reciped exists at location: "+ReflectionUtils.getMethodName(3));
-                    // Logger.RECIPE("[1234abcd] Reciped exists at location: "+ReflectionUtils.getMethodName(4));
-                    // Logger.RECIPE("Reciped exists at location: "+ReflectionUtils.getMethodName(1));
                 }
 
                 // Build a Pair for each slot
-                AutoMap<Pair<Character, Object>> aRecipePairs = new AutoMap<Pair<Character, Object>>();
+                AutoMap<Pair<Character, Object>> aRecipePairs = new AutoMap<>();
                 int aCharSlot = 0;
                 int aMemSlot = 0;
                 int aInfoSlot = 0;
@@ -95,7 +90,7 @@ public class ShapedRecipe {
                             }
                             mInfo = ((ItemStack) stack).getDisplayName();
                         }
-                        aRecipePairs.put(new Pair<Character, Object>(CHARS.charAt(aCharSlot), stack));
+                        aRecipePairs.put(new Pair<>(CHARS.charAt(aCharSlot), stack));
                         Logger.RECIPE(
                                 "Storing '" + CHARS.charAt(aCharSlot)
                                         + "' with an object of type "
@@ -106,7 +101,7 @@ public class ShapedRecipe {
                         aCharSlot++;
                         aLoggingInfo[aInfoSlot++] = mInfo;
                     } else {
-                        aRecipePairs.put(new Pair<Character, Object>(' ', (ItemStack) null));
+                        aRecipePairs.put(new Pair<>(' ', (ItemStack) null));
                         Logger.RECIPE("Storing ' ' with an object of type null");
                         aChar[aMemSlot++] = ' ';
                         aLoggingInfo[aInfoSlot++] = "Empty";
@@ -158,7 +153,7 @@ public class ShapedRecipe {
                                 }
                                 mInfo = ((ItemStack) stack).getDisplayName();
                             }
-                            aRecipePairs.put(new Pair<Character, Object>(CHARS.charAt(aCharSlot), stack));
+                            aRecipePairs.put(new Pair<>(CHARS.charAt(aCharSlot), stack));
                             Logger.RECIPE(
                                     "Registering Pair of '" + CHARS.charAt(aCharSlot)
                                             + "' and a "

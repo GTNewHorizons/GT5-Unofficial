@@ -221,8 +221,6 @@ public class CoreItem extends Item {
                 list.add(tooltip);
             } else break;
         }
-        // list.add(this.descColour+this.itemDescription);
-        // super.addInformation(stack, aPlayer, list, bool);
     }
 
     @Override

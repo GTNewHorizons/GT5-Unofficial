@@ -49,8 +49,8 @@ public class ProcessingAngleGrinder implements Interface_OreRecipeRegistrator, R
         Logger.MATERIALS("Materials to attempt tool gen. with: " + size);
         int used = 0;
         Materials aMaterial = null;
-        for (int r = 0; r < size; r++) {
-            aMaterial = i[r];
+        for (Materials materials : i) {
+            aMaterial = materials;
             if ((aMaterial != Materials.Stone) && (aMaterial != Materials.Flint)
                     && (aMaterial != Materials.Rubber)
                     && (aMaterial != Materials._NULL)) {

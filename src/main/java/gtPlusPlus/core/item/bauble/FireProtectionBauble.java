@@ -18,7 +18,7 @@ import baubles.api.BaubleType;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import gtPlusPlus.preloader.DevHelper;
+import gtPlusPlus.preloader.CORE_Preloader;
 
 public class FireProtectionBauble extends BaseBauble {
 
@@ -26,7 +26,7 @@ public class FireProtectionBauble extends BaseBauble {
 
     static {
         isImmuneToFire = ReflectionUtils
-                .getField(Entity.class, DevHelper.isObfuscatedEnvironment() ? "func_70045_F" : "isImmuneToFire");
+                .getField(Entity.class, !CORE_Preloader.DEV_ENVIRONMENT ? "func_70045_F" : "isImmuneToFire");
     }
 
     public static boolean fireImmune(Entity aEntity) {
@@ -89,17 +89,14 @@ public class FireProtectionBauble extends BaseBauble {
     @Override
     public void onEquipped(final ItemStack arg0, final EntityLivingBase aPlayer) {
         if (!aPlayer.worldObj.isRemote) {
-            if (aPlayer instanceof EntityPlayer) {
-                EntityPlayer bPlayer = (EntityPlayer) aPlayer;
-            }
+            if (aPlayer instanceof EntityPlayer bPlayer) {}
         }
     }
 
     @Override
     public void onUnequipped(final ItemStack arg0, final EntityLivingBase aPlayer) {
         if (!aPlayer.worldObj.isRemote) {
-            if (aPlayer instanceof EntityPlayer) {
-                EntityPlayer bPlayer = (EntityPlayer) aPlayer;
+            if (aPlayer instanceof EntityPlayer bPlayer) {
                 if (bPlayer.isPotionActive(Potion.fireResistance)) {
                     bPlayer.removePotionEffect(Potion.fireResistance.id);
                 }
@@ -111,8 +108,7 @@ public class FireProtectionBauble extends BaseBauble {
     @Override
     public void onWornTick(final ItemStack aBaubleStack, final EntityLivingBase aPlayer) {
         if (!aPlayer.worldObj.isRemote) {
-            if (aPlayer instanceof EntityPlayer) {
-                EntityPlayer bPlayer = (EntityPlayer) aPlayer;
+            if (aPlayer instanceof EntityPlayer bPlayer) {
                 if (!fireImmune(bPlayer)) {
                     setEntityImmuneToFire(bPlayer, true);
                 }

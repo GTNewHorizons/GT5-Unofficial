@@ -32,7 +32,7 @@ public class ClassTransformer_LWJGL_Keyboard {
     private final ClassReader reader;
     private final ClassWriter writer;
 
-    private static final HashMap<String, String> mBadKeyCache = new HashMap<String, String>();
+    private static final HashMap<String, String> mBadKeyCache = new HashMap<>();
 
     /**
      * Gets a key's name
@@ -74,8 +74,7 @@ public class ClassTransformer_LWJGL_Keyboard {
             GameSettings options = Minecraft.getMinecraft().gameSettings;
             KeyBinding[] akeybinding = Minecraft.getMinecraft().gameSettings.keyBindings;
             int i = akeybinding.length;
-            for (int j = 0; j < i; ++j) {
-                KeyBinding keybinding = akeybinding[j];
+            for (KeyBinding keybinding : akeybinding) {
                 if (keybinding != null && keybinding.getKeyCode() == aKey) {
                     options.setOptionKeyBinding(keybinding, 0);
                     FMLRelaunchLog.log(
@@ -113,8 +112,7 @@ public class ClassTransformer_LWJGL_Keyboard {
         if (init()) {
             try {
                 Object o = mKeyName.get(null);
-                if (o instanceof String[]) {
-                    String[] y = (String[]) o;
+                if (o instanceof String[]y) {
                     return y;
                 }
             } catch (IllegalArgumentException | IllegalAccessException e) {}

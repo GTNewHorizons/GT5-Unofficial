@@ -25,9 +25,6 @@ public class IC2_Items {
     public static ItemStack shaft_Material_3; // Vibrant Alloy
     public static ItemStack shaft_Material_4; // Iridium
 
-    public static ItemStack blockRTG;
-    public static ItemStack blockKineticGenerator;
-
     private static final String[] mData1 = new String[] { "itemEnergeticRotorBlade", "itemMagnaliumRotorBlade" };
     private static final String[] mData2 = new String[] { "itemEnergeticShaft", "itemMagnaliumShaft" };
     private static final String[] mData3 = new String[] { "itemVibrantRotorBlade", "itemUltimetRotorBlade" };

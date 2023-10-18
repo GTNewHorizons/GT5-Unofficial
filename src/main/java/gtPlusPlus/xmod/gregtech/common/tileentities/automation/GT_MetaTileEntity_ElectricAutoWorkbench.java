@@ -260,7 +260,7 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
                             mCurrentSlot = (mCurrentSlot + 1) % 18;
                     }
                     switch (mMode) {
-                        case 0:
+                        case 0 -> {
                             if (mInventory[mCurrentSlot] != null
                                     && !isItemTypeOrItsEmptyLiquidContainerInCraftingGrid(mInventory[mCurrentSlot])) {
                                 if (mInventory[18] == null && mThroughPut < 2 && mCurrentSlot < 8) {
@@ -277,8 +277,8 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
                                     tRecipe[i].stackSize = 1;
                                 }
                             }
-                            break;
-                        case 1:
+                        }
+                        case 1 -> {
                             if (isItemTypeOrItsEmptyLiquidContainerInCraftingGrid(mInventory[mCurrentSlot])) {
                                 if (mInventory[18] == null && mThroughPut < 2) {
                                     mInventory[18] = mInventory[mCurrentSlot];
@@ -308,10 +308,9 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
                                     mInventory[mCurrentSlot] = null;
                                     mTicksUntilNextUpdate = 1;
                                 }
-                                break;
                             }
-                            break;
-                        case 2:
+                        }
+                        case 2 -> {
                             if (isItemTypeOrItsEmptyLiquidContainerInCraftingGrid(mInventory[mCurrentSlot])) {
                                 if (mInventory[18] == null && mThroughPut < 2) {
                                     mInventory[18] = mInventory[mCurrentSlot];
@@ -329,10 +328,9 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
                                     mInventory[mCurrentSlot] = null;
                                     mTicksUntilNextUpdate = 1;
                                 }
-                                break;
                             }
-                            break;
-                        case 3:
+                        }
+                        case 3 -> {
                             if (isItemTypeOrItsEmptyLiquidContainerInCraftingGrid(mInventory[mCurrentSlot])) {
                                 if (mInventory[18] == null && mThroughPut < 2) {
                                     mInventory[18] = mInventory[mCurrentSlot];
@@ -353,10 +351,9 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
                                     mInventory[mCurrentSlot] = null;
                                     mTicksUntilNextUpdate = 1;
                                 }
-                                break;
                             }
-                            break;
-                        case 4:
+                        }
+                        case 4 -> {
                             if (isItemTypeOrItsEmptyLiquidContainerInCraftingGrid(mInventory[mCurrentSlot])) {
                                 if (mInventory[18] == null && mThroughPut < 2) {
                                     mInventory[18] = mInventory[mCurrentSlot];
@@ -382,10 +379,9 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
                                     mInventory[mCurrentSlot] = null;
                                     mTicksUntilNextUpdate = 1;
                                 }
-                                break;
                             }
-                            break;
-                        case 5:
+                        }
+                        case 5 -> {
                             if (isItemTypeOrItsEmptyLiquidContainerInCraftingGrid(mInventory[mCurrentSlot])) {
                                 if (mInventory[18] == null && mThroughPut < 2) {
                                     mInventory[18] = mInventory[mCurrentSlot];
@@ -397,11 +393,8 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
                             tTempStack = GT_Utility.copy(mInventory[mCurrentSlot]);
                             tTempStack.stackSize = 1;
                             tRecipe[0] = tTempStack;
-
                             tOutput = GT_OreDictUnificator.get(true, tTempStack);
-
                             if (tOutput != null && GT_Utility.areStacksEqual(tOutput, tTempStack)) tOutput = null;
-
                             if (tOutput == null) {
                                 tRecipe[0] = null;
                                 if (mInventory[18] == null) {
@@ -410,15 +403,14 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
                                     mTicksUntilNextUpdate = 1;
                                 }
                             }
-                            break;
-                        case 6:
+                        }
+                        case 6 -> {
                             if (isItemTypeOrItsEmptyLiquidContainerInCraftingGrid(mInventory[mCurrentSlot])) {
                                 if (mInventory[18] == null && mThroughPut < 2) {
                                     mInventory[18] = mInventory[mCurrentSlot];
                                     mInventory[mCurrentSlot] = null;
                                     mTicksUntilNextUpdate = 1;
                                 }
-                                break;
                             } else if (OrePrefixes.dustSmall.contains(mInventory[mCurrentSlot])) {
                                 tTempStack = GT_Utility.copy(mInventory[mCurrentSlot]);
                                 tTempStack.stackSize = 1;
@@ -433,7 +425,6 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
                                         mInventory[mCurrentSlot] = null;
                                         mTicksUntilNextUpdate = 1;
                                     }
-                                    break;
                                 }
                             } else if (OrePrefixes.dustTiny.contains(mInventory[mCurrentSlot])) {
                                 tTempStack = GT_Utility.copy(mInventory[mCurrentSlot]);
@@ -454,7 +445,6 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
                                         mInventory[mCurrentSlot] = null;
                                         mTicksUntilNextUpdate = 1;
                                     }
-                                    break;
                                 }
                             } else {
                                 if (mInventory[18] == null && mThroughPut < 2) {
@@ -462,10 +452,9 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
                                     mInventory[mCurrentSlot] = null;
                                     mTicksUntilNextUpdate = 1;
                                 }
-                                break;
                             }
-                            break;
-                        case 7:
+                        }
+                        case 7 -> {
                             if (isItemTypeOrItsEmptyLiquidContainerInCraftingGrid(mInventory[mCurrentSlot])
                                     || !OrePrefixes.nugget.contains(mInventory[mCurrentSlot])) {
                                 if (mInventory[18] == null && mThroughPut < 2) {
@@ -492,10 +481,9 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
                                     mInventory[mCurrentSlot] = null;
                                     mTicksUntilNextUpdate = 1;
                                 }
-                                break;
                             }
-                            break;
-                        case 8:
+                        }
+                        case 8 -> {
                             if (isItemTypeOrItsEmptyLiquidContainerInCraftingGrid(mInventory[mCurrentSlot])
                                     || mInventory[mCurrentSlot].getItemDamage() <= 0
                                     || !mInventory[mCurrentSlot].getItem().isRepairable()) {
@@ -525,8 +513,8 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
                                     break;
                                 }
                             }
-                            break;
-                        case 9:
+                        }
+                        case 9 -> {
                             if (isItemTypeOrItsEmptyLiquidContainerInCraftingGrid(mInventory[mCurrentSlot])) {
                                 if (mInventory[18] == null && mThroughPut < 2) {
                                     mInventory[18] = mInventory[mCurrentSlot];
@@ -547,7 +535,7 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
                                 }
                             }
                             if (tRecipe[1] == null) tRecipe[0] = null;
-                            break;
+                        }
                     }
                 }
 
@@ -677,13 +665,13 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
     }
 
     private ArrayList<ItemStack> recipeContent(ItemStack[] tRecipe) {
-        ArrayList<ItemStack> tList = new ArrayList<ItemStack>();
+        ArrayList<ItemStack> tList = new ArrayList<>();
         for (byte i = 0; i < 9; i++) {
             if (tRecipe[i] != null) {
                 boolean temp = false;
-                for (byte j = 0; j < tList.size(); j++) {
-                    if (GT_Utility.areStacksEqual(tRecipe[i], tList.get(j))) {
-                        tList.get(j).stackSize++;
+                for (ItemStack itemStack : tList) {
+                    if (GT_Utility.areStacksEqual(tRecipe[i], itemStack)) {
+                        itemStack.stackSize++;
                         temp = true;
                         break;
                     }
@@ -695,7 +683,7 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
     }
 
     private ArrayList<ItemStack> benchContent() {
-        ArrayList<ItemStack> tList = new ArrayList<ItemStack>();
+        ArrayList<ItemStack> tList = new ArrayList<>();
         for (byte i = 0; i < 18; i++) {
             if (mInventory[i] != null) {
                 boolean temp = false;

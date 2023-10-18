@@ -1,6 +1,9 @@
 package gtPlusPlus.core.util.minecraft;
 
-import static gregtech.api.enums.Mods.*;
+import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.enums.Mods.IndustrialCraft2;
+import static gregtech.api.enums.Mods.Minecraft;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,8 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 import net.minecraft.block.Block;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -34,11 +35,8 @@ import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
-import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.item.base.BasicSpawnEgg;
 import gtPlusPlus.core.item.base.dusts.BaseItemDustUnique;
-import gtPlusPlus.core.item.base.plates.BaseItemPlate_OLD;
 import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.item.chemistry.GenericChem;
 import gtPlusPlus.core.lib.CORE;
@@ -120,19 +118,16 @@ public class ItemUtils {
         try {
             Item em = null;
             final Item em1 = getItemFromFQRN(FQRN);
-            // Utils.LOG_WARNING("Found: "+em1.getUnlocalizedName()+":"+meta);
+
             if (em1 != null) {
                 em = em1;
             }
+
             if (em != null) {
 
                 final ItemStack metaStack = new ItemStack(em, 1, meta);
                 GT_OreDictUnificator.registerOre(oreDictName, metaStack);
 
-                /*
-                 * ItemStack itemStackWithMeta = new ItemStack(em,1,meta); GT_OreDictUnificator.registerOre(oreDictName,
-                 * new ItemStack(itemStackWithMeta.getItem()));
-                 */
             }
         } catch (final NullPointerException e) {
             Logger.ERROR(itemName + " not found. [NULL]");
@@ -160,7 +155,7 @@ public class ItemUtils {
             try {
                 Item em = null;
                 final Item em1 = getItemFromFQRN(FQRN);
-                // Utils.LOG_WARNING("Found: "+em1.getUnlocalizedName()+":"+meta);
+
                 if (em1 != null) {
                     if (null == em) {
                         em = em1;
@@ -242,15 +237,6 @@ public class ItemUtils {
         return temp;
     }
 
-    public static ItemStack getCorrectStacktype(final Object item_Input, final int stackSize) {
-        if (item_Input instanceof String) {
-            return getItemStackOfAmountFromOreDictNoBroken((String) item_Input, stackSize);
-        } else if (item_Input instanceof ItemStack) {
-            return (ItemStack) item_Input;
-        }
-        return null;
-    }
-
     public static Item getItemFromFQRN(final String fqrn) // fqrn = fully qualified resource name
     {
         final String[] fqrnSplit = fqrn.split(":");
@@ -280,14 +266,6 @@ public class ItemUtils {
             }
         }
         return null;
-    }
-
-    public static void generateSpawnEgg(final String entityModID, final String parSpawnName, final int colourEgg,
-            final int colourOverlay) {
-        final Item itemSpawnEgg = new BasicSpawnEgg(entityModID, parSpawnName, colourEgg, colourOverlay)
-                .setUnlocalizedName("spawn_egg_" + parSpawnName.toLowerCase())
-                .setTextureName(GTPlusPlus.ID + ":spawn_egg");
-        GameRegistry.registerItem(itemSpawnEgg, "spawnEgg" + parSpawnName);
     }
 
     public static ItemStack[] validItemsForOreDict(final String oredictName) {
@@ -476,35 +454,6 @@ public class ItemUtils {
         return output;
     }
 
-    public static Item generateSpecialUsePlate(final String internalName, final String displayName, final short[] rgb,
-            final int radioactivity) {
-        return generateSpecialUsePlate(
-                internalName,
-                displayName,
-                Utils.rgbtoHexValue(rgb[0], rgb[1], rgb[2]),
-                radioactivity);
-    }
-
-    public static Item generateSpecialUsePlate(final String internalName, final String displayName,
-            final String mFormula, final short[] rgb, final int radioactivity) {
-        return generateSpecialUsePlate(
-                internalName,
-                displayName,
-                mFormula,
-                Utils.rgbtoHexValue(rgb[0], rgb[1], rgb[2]),
-                radioactivity);
-    }
-
-    public static Item generateSpecialUsePlate(final String internalName, final String displayName, final int rgb,
-            final int radioactivity) {
-        return new BaseItemPlate_OLD(internalName, displayName, rgb, radioactivity);
-    }
-
-    public static Item generateSpecialUsePlate(final String internalName, final String displayName,
-            final String mFormula, final int rgb, final int radioactivity) {
-        return new BaseItemPlate_OLD(internalName, displayName, mFormula, rgb, radioactivity);
-    }
-
     public static Item[] generateSpecialUseDusts(final Material material, final boolean onlyLargeDust) {
         return generateSpecialUseDusts(material, onlyLargeDust, false);
     }
@@ -573,44 +522,6 @@ public class ItemUtils {
         return sRadiation;
     }
 
-    public static String getArrayStackNames(ArrayList<?> aStack) {
-        Object aType = aStack.get(0);
-        if (aType instanceof FluidStack) {
-            FluidStack[] aItems = new FluidStack[aStack.size()];
-            for (int i = 0; i < aItems.length; i++) {
-                aItems[i] = (FluidStack) aStack.get(i);
-            }
-            return getArrayStackNames(aItems);
-        }
-        if (aType instanceof ItemStack) {
-            ItemStack[] aItems = new ItemStack[aStack.size()];
-            for (int i = 0; i < aItems.length; i++) {
-                aItems[i] = (ItemStack) aStack.get(i);
-            }
-            return getArrayStackNames(aItems);
-        }
-        return "";
-    }
-
-    public static String getArrayStackNames(final AutoMap<?> aStack) {
-        Object aType = aStack.get(0);
-        if (aType instanceof FluidStack) {
-            FluidStack[] aItems = new FluidStack[aStack.size()];
-            for (int i = 0; i < aItems.length; i++) {
-                aItems[i] = (FluidStack) aStack.get(i);
-            }
-            return getArrayStackNames(aItems);
-        }
-        if (aType instanceof ItemStack) {
-            ItemStack[] aItems = new ItemStack[aStack.size()];
-            for (int i = 0; i < aItems.length; i++) {
-                aItems[i] = (ItemStack) aStack.get(i);
-            }
-            return getArrayStackNames(aItems);
-        }
-        return "";
-    }
-
     public static String getArrayStackNames(final FluidStack[] aStack) {
         String itemNames = "Fluid Array: ";
         for (final FluidStack alph : aStack) {
@@ -641,60 +552,11 @@ public class ItemUtils {
         return itemNames;
     }
 
-    public static String[] getArrayStackNamesAsArray(final ItemStack[] aStack) {
-        final String[] itemNames = aStack == null ? new String[] {} : new String[aStack.length];
-        if (aStack != null) {
-            Logger.INFO("" + aStack.length);
-        }
-
-        if (aStack == null || aStack.length < 1) {
-            return itemNames;
-        }
-
-        int arpos = 0;
-        for (final ItemStack alph : aStack) {
-            if (alph == null) {
-                continue;
-            }
-            try {
-                itemNames[arpos] = alph.getDisplayName();
-                arpos++;
-            } catch (Throwable t) {
-                t.printStackTrace();
-            }
-        }
-        return itemNames;
-    }
-
-    public static String getFluidArrayStackNames(final FluidStack[] aStack) {
-        String itemNames = "Fluid Array: ";
-        for (final FluidStack alph : aStack) {
-            final String temp = itemNames;
-            itemNames = temp + ", " + alph.getFluid().getName() + " x" + alph.amount;
-        }
-        return itemNames;
-    }
-
     public static ItemStack getGregtechCircuit(final int Meta) {
         return ItemUtils.getItemStackWithMeta(true, "gregtech:gt.integrated_circuit", "Gregtech Circuit", Meta, 0);
     }
 
-    public static ItemStack[] getBlockDrops(final ArrayList<ItemStack> blockDrops) {
-        if (blockDrops == null) {
-            return null;
-        }
-        if (blockDrops.isEmpty()) {
-            return null;
-        }
-        final ItemStack[] outputs = new ItemStack[blockDrops.size()];
-        short forCounter = 0;
-        for (final ItemStack I : blockDrops) {
-            outputs[forCounter++] = I;
-        }
-        return outputs;
-    }
-
-    private static Map<Item, String> mModidCache = new HashMap<Item, String>();
+    private static final Map<Item, String> mModidCache = new HashMap<>();
 
     private static String getModId(final Item item) {
         if (mModidCache.containsKey(item)) {
@@ -734,10 +596,10 @@ public class ItemUtils {
         final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(oredictName);
         if (!oreDictList.isEmpty()) {
             ItemStack returnvalue;
-            for (int xrc = 0; xrc < oreDictList.size(); xrc++) {
-                final String modid = getModId(oreDictList.get(xrc).getItem());
+            for (ItemStack itemStack : oreDictList) {
+                final String modid = getModId(itemStack.getItem());
                 if (modid != null && (modid.equals(GregTech.ID) || modid.equals(GTPlusPlus.ID))) {
-                    returnvalue = oreDictList.get(xrc).copy();
+                    returnvalue = itemStack.copy();
                     returnvalue.stackSize = amount;
                     return returnvalue;
                 }
@@ -751,10 +613,10 @@ public class ItemUtils {
         final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(oredictName);
         if (!oreDictList.isEmpty()) {
             ItemStack returnvalue;
-            for (int xrc = 0; xrc < oreDictList.size(); xrc++) {
-                final String modid = getModId(oreDictList.get(xrc).getItem());
+            for (ItemStack itemStack : oreDictList) {
+                final String modid = getModId(itemStack.getItem());
                 if (modid != null && !modid.equals("tconstruct")) {
-                    returnvalue = oreDictList.get(xrc).copy();
+                    returnvalue = itemStack.copy();
                     returnvalue.stackSize = amount;
                     return returnvalue;
                 }
@@ -797,9 +659,7 @@ public class ItemUtils {
     public static ItemStack getErrorStack(int mAmount, String aName) {
         ItemStack g = getSimpleStack(ModItems.AAA_Broken, 1);
         if (aName != null) {
-            // NBTUtils.setString(g, "Lore", EnumChatFormatting.RED+aName);
             NBTUtils.setBookTitle(g, EnumChatFormatting.RED + aName);
-            // NBTUtils.setBookTitle(g, EnumChatFormatting.YELLOW+"Maybe Alkalus should know about this");
         }
         return g;
     }
@@ -820,13 +680,7 @@ public class ItemUtils {
     }
 
     public static boolean registerFuel(ItemStack aBurnable, int burn) {
-        return CORE.burnables.add(new Pair<Integer, ItemStack>(burn, aBurnable));
-    }
-
-    public static String getLocalizedNameOfBlock(BlockPos pos) {
-        Block block = pos.world.getBlock(pos.xPos, pos.yPos, pos.zPos);
-        int metaData = pos.world.getBlockMetadata(pos.xPos, pos.yPos, pos.zPos);
-        return LangUtils.getLocalizedNameOfBlock(block, metaData);
+        return CORE.burnables.add(new Pair<>(burn, aBurnable));
     }
 
     public static boolean checkForInvalidItems(ItemStack mInput) {
@@ -909,59 +763,7 @@ public class ItemUtils {
             }
         }
 
-        /*
-         * for (int o = 0; o < aInputInventory.getSizeInventory(); o++) { aTemp.setInventorySlotContents(o, g[o]); }
-         */
         return aTemp;
-    }
-
-    public static ItemStack[] organiseInventory(ItemStack[] aInputs) {
-
-        // Update Slots
-        int aInvSize = aInputs.length;
-        ItemStack[] newArray = new ItemStack[aInvSize];
-
-        // Try merge stacks
-        for (int i = 0; i < aInvSize; i++) {
-            for (int i2 = 0; i2 < aInvSize; i2++) {
-                if (i != i2) {
-                    ItemStack[] t1 = new ItemStack[] { aInputs[i], aInputs[i2] };
-                    if (t1[0] == null || t1[1] == null) {
-                        continue;
-                    } else if (!GT_Utility.areStacksEqual(t1[0], t1[1])) {
-                        continue;
-                    }
-                    // Try Merge
-                    else {
-
-                        if (GT_Utility.areStacksEqual(t1[0], t1[1])) {
-                            while ((t1[0].stackSize < 64 && t1[1].stackSize > 0)) {
-                                t1[0].stackSize++;
-                                t1[1].stackSize--;
-                                if (t1[1].stackSize <= 0) {
-                                    t1[1] = null;
-                                    break;
-                                }
-                                if (t1[0].stackSize == 64) {
-                                    break;
-                                }
-                            }
-                            newArray[i] = t1[1];
-                            newArray[i2] = t1[0];
-                        }
-                    }
-                }
-            }
-        }
-
-        ItemStack[] newArray2 = new ItemStack[aInvSize];
-
-        // Move nulls to end
-        int count2 = 0;
-        for (int i = 0; i < aInvSize; i++) if (newArray[i] != null) newArray2[count2++] = newArray[i];
-        while (count2 < aInvSize) newArray2[count2++] = null;
-
-        return newArray2;
     }
 
     public static String getFluidName(FluidStack aFluid) {
@@ -985,7 +787,7 @@ public class ItemUtils {
                     }
                 }
             }
-        } catch (Throwable t) {
+        } catch (Throwable ignored) {
 
         }
         if (aDisplay == null || aDisplay.length() <= 0) {
@@ -1028,23 +830,6 @@ public class ItemUtils {
         return false;
     }
 
-    public static boolean isToolWrench(ItemStack aWrench) {
-        if (isItemGregtechTool(aWrench) && (aWrench.getItemDamage() == 16 || aWrench.getItemDamage() == 120
-                || aWrench.getItemDamage() == 122
-                || aWrench.getItemDamage() == 124
-                || aWrench.getItemDamage() == 7734)) {
-            return true;
-        }
-        return false;
-    }
-
-    public static boolean isToolMallet(ItemStack aMallet) {
-        if (isItemGregtechTool(aMallet) && (aMallet.getItemDamage() == 14)) {
-            return true;
-        }
-        return false;
-    }
-
     public static boolean isToolScrewdriver(ItemStack aScrewdriver) {
         if (isItemGregtechTool(aScrewdriver)
                 && (aScrewdriver.getItemDamage() == 22 || aScrewdriver.getItemDamage() == 150)) {
@@ -1053,38 +838,10 @@ public class ItemUtils {
         return false;
     }
 
-    public static boolean isToolCrowbar(ItemStack aCrowbar) {
-        if (isItemGregtechTool(aCrowbar) && (aCrowbar.getItemDamage() == 20)) {
-            return true;
-        }
-        return false;
-    }
-
-    public static boolean isToolWirecutters(ItemStack aWirecutters) {
-        if (isItemGregtechTool(aWirecutters) && (aWirecutters.getItemDamage() == 26)) {
-            return true;
-        }
-        return false;
-    }
-
-    public static boolean isToolHammer(ItemStack aHammer) {
-        if (isItemGregtechTool(aHammer) && (aHammer.getItemDamage() == 12 || aHammer.getItemDamage() == 7734)) {
-            return true;
-        }
-        return false;
-    }
-
-    public static boolean isToolSolderingIron(ItemStack aSoldering) {
-        if (isItemGregtechTool(aSoldering) && (aSoldering.getItemDamage() == 160)) {
-            return true;
-        }
-        return false;
-    }
-
     public static ItemStack[] cleanItemStackArray(ItemStack[] input) {
         int aArraySize = input.length;
         ItemStack[] aOutput = new ItemStack[aArraySize];
-        AutoMap<ItemStack> aCleanedItems = new AutoMap<ItemStack>();
+        AutoMap<ItemStack> aCleanedItems = new AutoMap<>();
         for (ItemStack checkStack : input) {
             if (ItemUtils.checkForInvalidItems(checkStack)) {
                 aCleanedItems.put(checkStack);
@@ -1097,15 +854,6 @@ public class ItemUtils {
             }
         }
         return aOutput;
-    }
-
-    public static ItemStack getEnchantedBook(Enchantment aEnch, int aLevel) {
-        return enchantItem(new ItemStack(Items.enchanted_book), aEnch, aLevel);
-    }
-
-    public static ItemStack enchantItem(ItemStack aStack, Enchantment aEnch, int aLevel) {
-        Items.enchanted_book.addEnchantment(aStack, new EnchantmentData(aEnch, aLevel));
-        return aStack;
     }
 
     public static boolean doesOreDictHaveEntryFor(String string) {

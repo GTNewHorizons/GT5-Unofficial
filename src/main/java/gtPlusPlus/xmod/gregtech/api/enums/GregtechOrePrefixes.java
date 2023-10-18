@@ -109,7 +109,7 @@ public enum GregtechOrePrefixes {
     chipset("Chipsets", "", "", true, true, false, false, false, false, false, false, false, false, 0, -1, 64, -1), // Introduced
     ;
 
-    public static volatile int VERSION = 508;
+    public static final int VERSION = 508;
 
     static {
         ingotHot.mHeatDamage = 3.0F;
@@ -132,11 +132,11 @@ public enum GregtechOrePrefixes {
             mGeneratedItems = new HashSet<>();
     private final ArrayList<Interface_OreRecipeRegistrator> mOreProcessing = new ArrayList<>();
     private final ArrayList<Interface_OreRecipeRegistrator> mOreProcessingFake = new ArrayList<>();
-    public ItemStack mContainerItem = null;
-    public ICondition<ISubTagContainer> mCondition = null;
+    public final ItemStack mContainerItem = null;
+    public final ICondition<ISubTagContainer> mCondition = null;
     public byte mDefaultStackSize = 64;
-    public GregtechMaterialStack mSecondaryMaterial = null;
-    public GregtechOrePrefixes mPrefixInto = this;
+    public final GregtechMaterialStack mSecondaryMaterial = null;
+    public final GregtechOrePrefixes mPrefixInto = this;
     public float mHeatDamage = 0.0F; // Negative for Frost Damage
     /**
      * Yes this Value can be changed to add Bits for the MetaGenerated-Item-Check.
@@ -657,15 +657,22 @@ public enum GregtechOrePrefixes {
                 mOreMultiplier = 1, mByProductMultiplier = 1, mSmeltingMultiplier = 1;
         public long mDensity = M;
         public Element mElement = null;
-        public GT_Materials mDirectSmelting = this, mOreReplacement = this, mMacerateInto = this, mSmeltInto = this,
-                mArcSmeltInto = this, mHandleMaterial = this;
+        public GT_Materials mDirectSmelting = this;
+        public GT_Materials mOreReplacement = this;
+        public GT_Materials mMacerateInto = this;
+        public GT_Materials mSmeltInto = this;
+        public GT_Materials mArcSmeltInto = this;
+        public final GT_Materials mHandleMaterial = this;
         public byte mToolQuality = 0;
-        public Fluid mSolid = null, mFluid = null, mGas = null, mPlasma = null;
+        public final Fluid mSolid = null;
+        public Fluid mFluid = null;
+        public Fluid mGas = null;
+        public Fluid mPlasma = null;
         /**
          * This Fluid is used as standard Unit for Molten Materials. 1296 is a Molten Block, what means 144 is one
          * Material Unit worth
          */
-        public Fluid mStandardMoltenFluid = null;
+        public final Fluid mStandardMoltenFluid = null;
 
         private GT_Materials(final int aMetaItemSubID, final TextureSet aIconSet, final float aToolSpeed,
                 final int aToolDurability, final int aToolQuality, final boolean aUnificatable) {
@@ -1283,6 +1290,6 @@ public enum GregtechOrePrefixes {
             return this.mRGBa;
         }
 
-        public static volatile int VERSION = 508;
+        public static final int VERSION = 508;
     }
 }

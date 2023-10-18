@@ -87,7 +87,7 @@ public class GT_MTE_LargeTurbine_Plasma extends GregtechMetaTileEntity_LargerTur
                             continue;
                         }
                         if (aHatch.insertTurbine(aTurbineItem.copy())) {
-                            boolean aDidDeplete = depleteTurbineFromStock(aTurbineItem);
+                            depleteTurbineFromStock(aTurbineItem);
                             continue hatch;
                         }
                     }

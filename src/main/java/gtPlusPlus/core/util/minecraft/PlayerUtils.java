@@ -1,7 +1,6 @@
 package gtPlusPlus.core.util.minecraft;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -26,7 +25,7 @@ import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class PlayerUtils {
 
-    public static final Map<String, EntityPlayer> mCachedFakePlayers = new WeakHashMap<String, EntityPlayer>();
+    public static final Map<String, EntityPlayer> mCachedFakePlayers = new WeakHashMap<>();
     private static final Class mThaumcraftFakePlayer;
 
     static {
@@ -48,10 +47,9 @@ public class PlayerUtils {
     public static EntityPlayer getPlayer(final String name) {
         try {
             final List<EntityPlayer> i = new ArrayList<>();
-            final Iterator<EntityPlayerMP> iterator = MinecraftServer.getServer()
-                    .getConfigurationManager().playerEntityList.iterator();
-            while (iterator.hasNext()) {
-                i.add((iterator.next()));
+            for (EntityPlayerMP playerMP : (Iterable<EntityPlayerMP>) MinecraftServer.getServer()
+                    .getConfigurationManager().playerEntityList) {
+                i.add(playerMP);
             }
             for (final EntityPlayer temp : i) {
                 if (temp.getDisplayName().toLowerCase().equals(name.toLowerCase())) {
@@ -224,8 +222,7 @@ public class PlayerUtils {
     }
 
     public static boolean isRealPlayer(EntityLivingBase aEntity) {
-        if (aEntity instanceof EntityPlayer) {
-            EntityPlayer p = (EntityPlayer) aEntity;
+        if (aEntity instanceof EntityPlayer p) {
             ChunkCoordinates aChunkLocation = p.getPlayerCoordinates();
             if (p instanceof FakePlayer) {
                 cacheFakePlayer(p);

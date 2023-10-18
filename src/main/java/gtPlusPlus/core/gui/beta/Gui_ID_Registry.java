@@ -8,19 +8,11 @@ import gtPlusPlus.core.interfaces.IGuiManagerMiscUtils;
 
 public class Gui_ID_Registry {
 
-    private static final Map<Class<? extends IGuiManagerMiscUtils>, MU_GuiId> classMap = new HashMap<Class<? extends IGuiManagerMiscUtils>, MU_GuiId>();
-    private static final Map<Integer, MU_GuiId> idMap = new HashMap<Integer, MU_GuiId>();
+    private static final Map<Class<? extends IGuiManagerMiscUtils>, MU_GuiId> classMap = new HashMap<>();
+    private static final Map<Integer, MU_GuiId> idMap = new HashMap<>();
     private static int nextId = 0;
 
-    static {
-        // registerGuiHandlers(Gui_Types.Tile, Arrays.asList(new Class[] {TileAlveary.class}));
-        // registerGuiHandlers(MU_GuiType.Item, Arrays.asList(new Class[] { ItemBackpack.class,
-        // ItemBackpackNaturalist.class, ItemBeealyzer.class, ItemCatalogue.class, ItemFlutterlyzer.class,
-        // ItemHabitatLocator.class, ItemImprinter.class, ItemInfuser.class, ItemLetter.class, ItemSolderingIron.class,
-        // ItemTreealyzer.class }));
-        // registerGuiHandlers(MU_GuiType.Entity, Arrays.asList(new Class[] { EntityMinecartApiary.class,
-        // EntityMinecartBeehouse.class }));
-    }
+    static {}
 
     private static void registerGuiHandlers(final Gui_Types MU_GuiType,
             final List<Class<? extends IGuiManagerMiscUtils>> guiHandlerClasses) {

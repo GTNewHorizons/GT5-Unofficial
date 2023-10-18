@@ -65,7 +65,7 @@ public class GregtechMetaCasingBlocks3 extends GregtechMetaCasingBlocksAbstract 
         GT_LanguageManager
                 .addStringLocalization(this.getUnlocalizedName() + ".7.name", "Vanadium Redox Power Cell (UV)");
         GT_LanguageManager
-                .addStringLocalization(this.getUnlocalizedName() + ".8.name", "Vanadium Redox Power Cell (MAX)");
+                .addStringLocalization(this.getUnlocalizedName() + ".8.name", "Vanadium Redox Power Cell (UHV)");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", "Supply Depot Casing");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", "Advanced Cryogenic Casing");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", "Volcanus Casing");

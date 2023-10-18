@@ -1,13 +1,8 @@
 package gtPlusPlus.everglades.biome;
 
-import java.lang.reflect.Field;
-import java.util.Random;
-
 import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.passive.EntitySquid;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeManager;
@@ -16,11 +11,9 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.entity.monster.EntitySickBlaze;
 import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.everglades.dimension.Dimension_Everglades;
 
 public class Biome_Everglades {
@@ -34,16 +27,6 @@ public class Biome_Everglades {
     public void load() {
         BiomeDictionary.registerBiomeType(biome, BiomeDictionary.Type.DEAD);
         BiomeManager.addSpawnBiome(biome);
-    }
-
-    public void generateNether(World world, Random random, int chunkX, int chunkZ) {}
-
-    public void generateSurface(World world, Random random, int chunkX, int chunkZ) {}
-
-    public void registerRenderers() {}
-
-    public int addFuel(ItemStack fuel) {
-        return 0;
     }
 
     public void serverLoad(FMLServerStartingEvent event) {}
@@ -85,33 +68,6 @@ public class Biome_Everglades {
             this.spawnableCaveCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityBat.class, 10, 8, 8));
         }
 
-        private synchronized boolean setBiomeID() {
-            try {
-                Field mInternalBiomeList = ReflectionUtils.getField(BiomeGenBase.class, "biomeList");
-                BiomeGenBase[] mOriginalList = (BiomeGenBase[]) mInternalBiomeList.get(null);
-                BiomeGenBase[] mTempList = new BiomeGenBase[mOriginalList.length];
-                for (int index = 0; index < mTempList.length; index++) {
-                    mTempList[index] = mOriginalList[index];
-                }
-                return false;
-            } catch (Exception e) {
-                Logger.REFLECTION(
-                        "Could not access 'biomeList' field in " + BiomeGenBase.class.getCanonicalName() + ".");
-                e.printStackTrace();
-                return false;
-            }
-        }
-
-        @SideOnly(Side.CLIENT)
-        public int getBiomeGrassColor() {
-            return 0x111f11;
-        }
-
-        @SideOnly(Side.CLIENT)
-        public int getBiomeFoliageColor() {
-            return 0x111f11;
-        }
-
         @Override
         @SideOnly(Side.CLIENT)
         public int getSkyColorByTemp(float par1) {
@@ -120,7 +76,6 @@ public class Biome_Everglades {
 
         @SuppressWarnings({ "unchecked", "unused" })
         private boolean addToMonsterSpawnLists(Class<?> EntityClass, int a, int b, int c) {
-            // this.spawnableMonsterList.add(new SpawnListEntry(EntityClass, a, b, c));
             this.spawnableCaveCreatureList.add(new SpawnListEntry(EntityClass, a, b, c));
             return true;
         }

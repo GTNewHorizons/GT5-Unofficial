@@ -96,18 +96,10 @@ public class GUI_VolumetricFlaskSetter extends GuiContainer {
             log("Found Digit: " + c + " | char value");
         } else {
             switch (c) {
-                case '0':
-                case '1':
-                case '2':
-                case '3':
-                case '4':
-                case '5':
-                case '6':
-                case '7':
-                case '8':
-                case '9':
+                case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' -> {
                     log("Found Digit: " + c + " | char switch");
                     return true;
+                }
             }
         }
         return isNum;
@@ -115,28 +107,10 @@ public class GUI_VolumetricFlaskSetter extends GuiContainer {
 
     public boolean isNumber(int c) {
         switch (c) {
-            case Keyboard.KEY_0:
-            case Keyboard.KEY_1:
-            case Keyboard.KEY_2:
-            case Keyboard.KEY_3:
-            case Keyboard.KEY_4:
-            case Keyboard.KEY_5:
-            case Keyboard.KEY_6:
-            case Keyboard.KEY_7:
-            case Keyboard.KEY_8:
-            case Keyboard.KEY_9:
-            case Keyboard.KEY_NUMPAD0:
-            case Keyboard.KEY_NUMPAD1:
-            case Keyboard.KEY_NUMPAD2:
-            case Keyboard.KEY_NUMPAD3:
-            case Keyboard.KEY_NUMPAD4:
-            case Keyboard.KEY_NUMPAD5:
-            case Keyboard.KEY_NUMPAD6:
-            case Keyboard.KEY_NUMPAD7:
-            case Keyboard.KEY_NUMPAD8:
-            case Keyboard.KEY_NUMPAD9:
+            case Keyboard.KEY_0, Keyboard.KEY_1, Keyboard.KEY_2, Keyboard.KEY_3, Keyboard.KEY_4, Keyboard.KEY_5, Keyboard.KEY_6, Keyboard.KEY_7, Keyboard.KEY_8, Keyboard.KEY_9, Keyboard.KEY_NUMPAD0, Keyboard.KEY_NUMPAD1, Keyboard.KEY_NUMPAD2, Keyboard.KEY_NUMPAD3, Keyboard.KEY_NUMPAD4, Keyboard.KEY_NUMPAD5, Keyboard.KEY_NUMPAD6, Keyboard.KEY_NUMPAD7, Keyboard.KEY_NUMPAD8, Keyboard.KEY_NUMPAD9 -> {
                 log("Found Digit: " + Keyboard.getKeyName(c) + " | LWJGL Keybinding");
                 return true;
+            }
         }
         return false;
     }

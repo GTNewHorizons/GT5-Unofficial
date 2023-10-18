@@ -224,7 +224,7 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
         return null;
     }
 
-    private final int getCircuitID(ItemStack circuit) {
+    private int getCircuitID(ItemStack circuit) {
         int H = circuit.getItemDamage();
         int T = (H == 20 ? 0 : (H == 21 ? 1 : (H == 22 ? 2 : -1)));
         return MODE_MAP[this.mInternalMode][T];

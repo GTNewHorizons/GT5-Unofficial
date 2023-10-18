@@ -40,7 +40,7 @@ public class COMPAT_IC2 {
         run();
     }
 
-    private static final void run() {
+    private static void run() {
 
         if (ConfigSwitches.disableIC2Recipes) {
 

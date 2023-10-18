@@ -22,8 +22,6 @@ public class CommandMath implements ICommand {
 
     public CommandMath() {
         this.aliases = new ArrayList<>();
-        // this.aliases.add("hometele");
-        // this.aliases.add("warphome");
     }
 
     @Override

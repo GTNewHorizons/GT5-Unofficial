@@ -202,30 +202,25 @@ public class GregtechMetaTileEntity_PowerSubStationController
     }
 
     public static Block getBlockFromTier(int tier) {
-        switch (tier) {
-            case 4:
-                return ModBlocks.blockCasings2Misc;
-            case 5:
-            case 6:
-            case 7:
-            case 8:
-            case 9:
-                return ModBlocks.blockCasings3Misc;
-            default:
-                return null;
-        }
+        return switch (tier) {
+            case 4 -> ModBlocks.blockCasings2Misc;
+            case 5, 6, 7, 8, 9 -> ModBlocks.blockCasings3Misc;
+            default -> null;
+        };
     }
 
     public static int getMaxHatchTier(int aCellTier) {
         switch (aCellTier) {
-            case 9:
+            case 9 -> {
                 return GT_Values.VOLTAGE_NAMES[9].equals("Ultimate High Voltage") ? 15 : 9;
-            default:
+            }
+            default -> {
                 if (aCellTier < 4) {
                     return 0;
                 } else {
                     return aCellTier;
                 }
+            }
         }
     }
 
@@ -537,20 +532,12 @@ public class GregtechMetaTileEntity_PowerSubStationController
             this.mAverageEuUsage = aNBT.getLong("mAverageEuUsage");
         }
         switch (aNBT.func_150299_b("mAverageEuAdded")) {
-            case NBT.TAG_BYTE_ARRAY:
-                this.mAverageEuAdded.read(aNBT, "mAverageEuAdded");
-                break;
-            case NBT.TAG_LONG:
-                this.mAverageEuAdded.set(aNBT.getLong("mAverageEuAdded"));
-                break;
+            case NBT.TAG_BYTE_ARRAY -> this.mAverageEuAdded.read(aNBT, "mAverageEuAdded");
+            case NBT.TAG_LONG -> this.mAverageEuAdded.set(aNBT.getLong("mAverageEuAdded"));
         }
         switch (aNBT.func_150299_b("mAverageEuConsumed")) {
-            case NBT.TAG_BYTE_ARRAY:
-                this.mAverageEuConsumed.read(aNBT, "mAverageEuConsumed");
-                break;
-            case NBT.TAG_LONG:
-                this.mAverageEuConsumed.set(aNBT.getLong("mAverageEuConsumed"));
-                break;
+            case NBT.TAG_BYTE_ARRAY -> this.mAverageEuConsumed.read(aNBT, "mAverageEuConsumed");
+            case NBT.TAG_LONG -> this.mAverageEuConsumed.set(aNBT.getLong("mAverageEuConsumed"));
         }
 
         // Usage Stats
@@ -829,7 +816,7 @@ public class GregtechMetaTileEntity_PowerSubStationController
 
     @Override
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        mIsOutputtingPower = Utils.invertBoolean(mIsOutputtingPower);
+        mIsOutputtingPower = !mIsOutputtingPower;
         if (mIsOutputtingPower) {
             PlayerUtils.messagePlayer(aPlayer, "Sub-Station is now outputting power from the controller.");
         } else {

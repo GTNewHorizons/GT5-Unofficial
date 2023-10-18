@@ -447,8 +447,8 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
         super.onFirstTick(aBaseMetaTileEntity);
     }
 
-    private Map<String, UUID> mWirelessChargingMap = new HashMap<String, UUID>();
-    private Map<String, UUID> mLocalChargingMap = new HashMap<String, UUID>();
+    private Map<String, UUID> mWirelessChargingMap = new HashMap<>();
+    private Map<String, UUID> mLocalChargingMap = new HashMap<>();
 
     private boolean isValidPlayer(EntityPlayer aPlayer) {
         BaseMetaTileEntity aTile = (BaseMetaTileEntity) this.getBaseMetaTileEntity();

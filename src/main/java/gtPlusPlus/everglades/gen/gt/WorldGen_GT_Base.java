@@ -48,9 +48,9 @@ public class WorldGen_GT_Base implements IWorldGenerator {
     /**
      * Try re-implement Richard Hendrick's Chunk by Chunk Ore Generation from his GT5u fork.
      */
-    public static List<Runnable> mList = new ArrayList<Runnable>();
+    public static List<Runnable> mList = new ArrayList<>();
 
-    public static HashSet<Long> ProcChunks = new HashSet<Long>();
+    public static HashSet<Long> ProcChunks = new HashSet<>();
     // This is probably not going to work. Trying to create a fake orevein to
     // put into hashtable when there will be no ores in a vein.
     public static WorldGen_GT_Ore_Layer noOresInVein = new WorldGen_GT_Ore_Layer(
@@ -65,8 +65,7 @@ public class WorldGen_GT_Base implements IWorldGenerator {
             ELEMENT.getInstance().IRON,
             ELEMENT.getInstance().IRON);
 
-    public static Hashtable<Long, WorldGen_GT_Ore_Layer> validOreveins = new Hashtable<Long, WorldGen_GT_Ore_Layer>(
-            1024);
+    public static Hashtable<Long, WorldGen_GT_Ore_Layer> validOreveins = new Hashtable<>(1024);
 
     public boolean mIsGenerating = false;
     public static final Object listLock = new Object();
@@ -209,7 +208,7 @@ public class WorldGen_GT_Base implements IWorldGenerator {
             }
         };
 
-        public static ArrayList<NearbySeeds> seedList = new ArrayList<NearbySeeds>();
+        public static ArrayList<NearbySeeds> seedList = new ArrayList<>();
 
         // aX and aZ are now the by-chunk X and Z for the chunk of interest
         public WorldGenContainer(Random aRandom, int aX, int aZ, int aDimensionType, World aWorld,
@@ -341,7 +340,7 @@ public class WorldGen_GT_Base implements IWorldGenerator {
                                             this.mChunkGenerator,
                                             this.mChunkProvider);
                                     switch (placementResult) {
-                                        case WorldGen_GT_Ore_Layer.ORE_PLACED:
+                                        case WorldGen_GT_Ore_Layer.ORE_PLACED -> {
                                             if (debugWorldGen) GT_Log.out.println(
                                                     " Added oreveinSeed=" + oreveinSeed
                                                             + " tries at oremix="
@@ -353,16 +352,16 @@ public class WorldGen_GT_Base implements IWorldGenerator {
                                             validOreveins.put(oreveinSeed, tWorldGen);
                                             oreveinFound = true;
                                             Logger.INFO("[World Generation Debug] ORE_PLACED");
-                                            break;
-                                        case WorldGen_GT_Ore_Layer.NO_ORE_IN_BOTTOM_LAYER:
+                                        }
+                                        case WorldGen_GT_Ore_Layer.NO_ORE_IN_BOTTOM_LAYER -> {
                                             placementAttempts++;
                                             Logger.INFO(
                                                     "[World Generation Debug] NO_ORE_IN_BOTTOM_LAYER | Attempts: "
                                                             + placementAttempts);
-                                            // SHould do retry in this case
-                                            // until out of chances
-                                            break;
-                                        case WorldGen_GT_Ore_Layer.NO_OVERLAP:
+                                        }
+                                        // SHould do retry in this case
+                                        // until out of chances
+                                        case WorldGen_GT_Ore_Layer.NO_OVERLAP -> {
                                             // Orevein didn't reach this chunk,
                                             // can't add it yet to the hash
                                             Logger.INFO("[World Generation Debug] NO_OVERLAP");
@@ -378,8 +377,8 @@ public class WorldGen_GT_Base implements IWorldGenerator {
                                                             + tDimensionName);
                                             validOreveins.put(oreveinSeed, tWorldGen);
                                             oreveinFound = true;
-                                            break;
-                                        case WorldGen_GT_Ore_Layer.NO_OVERLAP_AIR_BLOCK:
+                                        }
+                                        case WorldGen_GT_Ore_Layer.NO_OVERLAP_AIR_BLOCK -> {
                                             if (debugWorldGen) GT_Log.out.println(
                                                     " No overlap and air block in test spot=" + oreveinSeed
                                                             + " "
@@ -393,7 +392,7 @@ public class WorldGen_GT_Base implements IWorldGenerator {
                                             // SHould do retry in this case until out of chances
                                             Logger.INFO("[World Generation Debug] NO_OVERLAP_AIR_BLOCK");
                                             placementAttempts++;
-                                            break;
+                                        }
                                     }
                                     break; // Try the next orevein
                                 } catch (Throwable e) {
@@ -484,12 +483,12 @@ public class WorldGen_GT_Base implements IWorldGenerator {
                         this.mChunkGenerator,
                         this.mChunkProvider);
                 switch (placementResult) {
-                    case WorldGen_GT_Ore_Layer.NO_ORE_IN_BOTTOM_LAYER:
+                    case WorldGen_GT_Ore_Layer.NO_ORE_IN_BOTTOM_LAYER -> {
                         if (debugWorldGen) GT_Log.out.println(" No ore in bottom layer");
-                        break;
-                    case WorldGen_GT_Ore_Layer.NO_OVERLAP:
+                    }
+                    case WorldGen_GT_Ore_Layer.NO_OVERLAP -> {
                         if (debugWorldGen) GT_Log.out.println(" No overlap");
-                        break;
+                    }
                 }
             }
         }

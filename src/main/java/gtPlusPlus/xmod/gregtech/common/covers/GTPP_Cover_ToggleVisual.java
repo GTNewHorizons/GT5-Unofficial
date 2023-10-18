@@ -21,8 +21,8 @@ import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 public class GTPP_Cover_ToggleVisual extends GT_CoverBehavior {
 
-    private static final Map<String, Integer> sConnectionStateForEntityMap = new ConcurrentHashMap<String, Integer>();
-    private static final Map<String, String> sPrefixMap = new ConcurrentHashMap<String, String>();
+    private static final Map<String, Integer> sConnectionStateForEntityMap = new ConcurrentHashMap<>();
+    private static final Map<String, String> sPrefixMap = new ConcurrentHashMap<>();
     private static final int VALUE_OFF = 0;
     private static final int VALUE_ON = 1;
 
@@ -153,7 +153,7 @@ public class GTPP_Cover_ToggleVisual extends GT_CoverBehavior {
         return aCoverVar == VALUE_ON;
     }
 
-    private static final void trySetState(ForgeDirection side, int aState, ICoverable aTile) {
+    private static void trySetState(ForgeDirection side, int aState, ICoverable aTile) {
         // Try set cover state directly
         if (aTile instanceof IGregTechTileEntity gTileEntity) {
             gTileEntity.setCoverDataAtSide(side, new ISerializableObject.LegacyCoverData(aState));

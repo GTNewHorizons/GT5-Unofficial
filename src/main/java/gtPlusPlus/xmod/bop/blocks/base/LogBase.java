@@ -40,7 +40,7 @@ public abstract class LogBase extends BlockLog {
         Blocks.fire.setFireInfo(this, 20, 100);
     }
 
-    private final void setVanillaVariable(Object toSet, Object value) {
+    private void setVanillaVariable(Object toSet, Object value) {
         toSet = value;
     }
 

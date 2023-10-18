@@ -1,7 +1,5 @@
 package gtPlusPlus.core.container;
 
-import java.util.Iterator;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -177,21 +175,25 @@ public class Container_SuperJukebox extends Container {
     public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer) {
         if (tile_entity == null || tile_entity.getWorldObj().isRemote) return null;
         switch (aSlotIndex) {
-            case SLOT_HOLO_PLAY:
+            case SLOT_HOLO_PLAY -> {
                 if (tile_entity == null) return null;
                 tile_entity.mIsPlaying = !tile_entity.mIsPlaying;
                 Logger.INFO("Jukebox | Playing: " + tile_entity.mIsPlaying);
                 tile_entity.jukeboxLogicUpdate();
                 return null;
-            case SLOT_HOLO_LOOP:
+            }
+            case SLOT_HOLO_LOOP -> {
                 if (tile_entity == null) return null;
                 tile_entity.mIsLooping = !tile_entity.mIsLooping;
                 Logger.INFO("Jukebox | Looping: " + tile_entity.mIsLooping);
                 return null;
-            case 20:
+            }
+            case 20 -> {
                 return null;
-            default:
+            }
+            default -> {
                 return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
+            }
         }
     }
 
@@ -206,9 +208,8 @@ public class Container_SuperJukebox extends Container {
         isPlaying = tile_entity.mIsPlaying;
         isLooping = tile_entity.mIsLooping;
 
-        Iterator var2 = this.crafters.iterator();
-        while (var2.hasNext()) {
-            ICrafting var1 = (ICrafting) var2.next();
+        for (Object crafter : this.crafters) {
+            ICrafting var1 = (ICrafting) crafter;
             var1.sendProgressBarUpdate(this, 102, isPlaying ? 1 : 0);
             var1.sendProgressBarUpdate(this, 103, isLooping ? 1 : 0);
         }
@@ -224,12 +225,8 @@ public class Container_SuperJukebox extends Container {
     public void updateProgressBar(int par1, int par2) {
         super.updateProgressBar(par1, par2);
         switch (par1) {
-            case 102:
-                isPlaying = (par2 != 0);
-                break;
-            case 103:
-                isLooping = (par2 != 0);
-                break;
+            case 102 -> isPlaying = (par2 != 0);
+            case 103 -> isLooping = (par2 != 0);
         }
     }
 }

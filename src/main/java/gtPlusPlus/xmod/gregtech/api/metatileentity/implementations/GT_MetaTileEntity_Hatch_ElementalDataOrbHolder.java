@@ -150,7 +150,7 @@ public class GT_MetaTileEntity_Hatch_ElementalDataOrbHolder extends GT_MetaTileE
     }
 
     public ArrayList<ItemStack> getInventory() {
-        ArrayList<ItemStack> aContents = new ArrayList<ItemStack>();
+        ArrayList<ItemStack> aContents = new ArrayList<>();
         for (int i = getBaseMetaTileEntity().getSizeInventory() - 2; i >= 0; i--) {
             if (getBaseMetaTileEntity().getStackInSlot(i) != null)
                 aContents.add(getBaseMetaTileEntity().getStackInSlot(i));

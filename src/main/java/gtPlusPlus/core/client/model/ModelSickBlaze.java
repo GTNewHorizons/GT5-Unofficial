@@ -40,8 +40,8 @@ public class ModelSickBlaze extends ModelBlaze {
         this.setRotationAngles(p_78088_2_, p_78088_3_, p_78088_4_, p_78088_5_, p_78088_6_, p_78088_7_, p_78088_1_);
         this.blazeHead.render(p_78088_7_);
 
-        for (int i = 0; i < this.blazeSticks.length; ++i) {
-            this.blazeSticks[i].render(p_78088_7_);
+        for (ModelRenderer blazeStick : this.blazeSticks) {
+            blazeStick.render(p_78088_7_);
         }
     }
 

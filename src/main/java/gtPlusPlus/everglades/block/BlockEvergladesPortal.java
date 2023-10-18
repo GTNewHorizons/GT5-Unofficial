@@ -285,8 +285,7 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
     @Override
     public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity) {
         if ((par5Entity.ridingEntity == null) && (par5Entity.riddenByEntity == null)
-                && ((par5Entity instanceof EntityPlayerMP))) {
-            EntityPlayerMP thePlayer = (EntityPlayerMP) par5Entity;
+                && ((par5Entity instanceof EntityPlayerMP thePlayer))) {
             if (thePlayer.timeUntilPortal > 0) {
                 thePlayer.timeUntilPortal = 100;
             } else if (thePlayer.dimension != Dimension_Everglades.DIMID) {

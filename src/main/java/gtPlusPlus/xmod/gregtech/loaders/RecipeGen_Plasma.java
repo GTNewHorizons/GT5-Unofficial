@@ -15,7 +15,7 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class RecipeGen_Plasma extends RecipeGen_Base {
 
-    public static final Set<RunnableWithInfo<Material>> mRecipeGenMap = new HashSet<RunnableWithInfo<Material>>();
+    public static final Set<RunnableWithInfo<Material>> mRecipeGenMap = new HashSet<>();
 
     static {
         MaterialGenerator.mRecipeMapsToGenerate.put(mRecipeGenMap);

@@ -235,8 +235,7 @@ public class WorldGen_Ores {
             ORES.AGARDITE_LA,
             ORES.AGARDITE_CD);
 
-    public static Hashtable<Long, WorldGen_GT_Ore_Layer> validOreveins = new Hashtable<Long, WorldGen_GT_Ore_Layer>(
-            1024);
+    public static Hashtable<Long, WorldGen_GT_Ore_Layer> validOreveins = new Hashtable<>(1024);
 
     static long ID = 0;
 

@@ -36,7 +36,7 @@ public class BlockBaseModular extends BasicBlock {
     protected String thisBlockMaterialTranslatedName;
     protected final String thisBlockType;
 
-    private static HashMap<String, Block> sBlockCache = new HashMap<String, Block>();
+    private static final HashMap<String, Block> sBlockCache = new HashMap<>();
 
     public static Block getMaterialBlock(Material aMaterial, BlockTypes aType) {
         return sBlockCache.get(aMaterial.getUnlocalizedName() + "." + aType.name());
@@ -56,11 +56,9 @@ public class BlockBaseModular extends BasicBlock {
                 Math.min(Math.max(material.vTier, 1), 6));
         blockMaterial = material;
         registerComponent();
-        if (material != null) {
-            sBlockCache.put(material.getUnlocalizedName() + "." + blockType.name(), this);
-            thisBlockMaterialTranslatedName = material.getTranslatedName();
-            GT_LanguageManager.addStringLocalization("gtplusplus." + getUnlocalizedName() + ".name", getProperName());
-        }
+        sBlockCache.put(material.getUnlocalizedName() + "." + blockType.name(), this);
+        thisBlockMaterialTranslatedName = material.getTranslatedName();
+        GT_LanguageManager.addStringLocalization("gtplusplus." + getUnlocalizedName() + ".name", getProperName());
     }
 
     protected BlockBaseModular(final String unlocalizedName, final String blockMaterialString,
@@ -75,8 +73,6 @@ public class BlockBaseModular extends BasicBlock {
         this.thisBlockType = blockType.name().toUpperCase();
         this.setBlockName(this.getUnlocalizedProperName());
         int fx = getBlockTypeMeta();
-        // ItemBlockGtBlock.sNameCache.put("block."+blockMaterial.getUnlocalizedName()+"."+this.thisBlock.name().toLowerCase(),
-        // GetProperName());
         GameRegistry.registerBlock(
                 this,
                 ItemBlockGtBlock.class,
@@ -97,17 +93,17 @@ public class BlockBaseModular extends BasicBlock {
         return rawMaterName.replace(" ", "").replace("-", "").replace("_", "");
     }
 
-    public boolean registerComponent() {
+    public void registerComponent() {
         Logger.MATERIALS("Attempting to register " + this.getUnlocalizedName() + ".");
         if (this.blockMaterial == null) {
             Logger.MATERIALS("Tried to register " + this.getUnlocalizedName() + " but the material was null.");
-            return false;
+            return;
         }
         String aName = blockMaterial.getUnlocalizedName();
         // Register Component
         Map<String, ItemStack> aMap = Material.mComponentMap.get(aName);
         if (aMap == null) {
-            aMap = new HashMap<String, ItemStack>();
+            aMap = new HashMap<>();
         }
         int fx = getBlockTypeMeta();
         String aKey = (fx == 0 ? OrePrefixes.block.name()
@@ -117,11 +113,9 @@ public class BlockBaseModular extends BasicBlock {
             aMap.put(aKey, ItemUtils.getSimpleStack(this));
             Logger.MATERIALS("Registering a material component. Item: [" + aName + "] Map: [" + aKey + "]");
             Material.mComponentMap.put(aName, aMap);
-            return true;
         } else {
             // Bad
             Logger.MATERIALS("Tried to double register a material component.");
-            return false;
         }
     }
 

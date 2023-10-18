@@ -60,22 +60,22 @@ public class RecipeRemovals {
                                 int aCutoff;
                                 String aType;
                                 switch (aMeta) {
-                                    case 170:
+                                    case 170 -> {
                                         aCutoff = CUT;
                                         aType = "Small ";
-                                        break;
-                                    case 172:
+                                    }
+                                    case 172 -> {
                                         aCutoff = 2 * CUT;
                                         aType = "";
-                                        break;
-                                    case 174:
+                                    }
+                                    case 174 -> {
                                         aCutoff = 3 * CUT;
                                         aType = "Large ";
-                                        break;
-                                    default: // 176
+                                    }
+                                    default -> { // 176
                                         aCutoff = 4 * CUT;
                                         aType = "Huge ";
-                                        break;
+                                    }
                                 }
                                 Materials aMainMaterial = GT_MetaGenerated_Tool.getPrimaryMaterial(aI);
                                 Materials aSecondaryMaterial = GT_MetaGenerated_Tool.getSecondaryMaterial(aI);

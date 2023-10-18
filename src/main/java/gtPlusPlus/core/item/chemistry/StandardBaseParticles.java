@@ -20,8 +20,8 @@ import gtPlusPlus.core.util.Utils;
 
 public class StandardBaseParticles extends BaseItemParticle {
 
-    public static HashMap<String, Integer> NameToMetaMap = new HashMap<String, Integer>();
-    public static HashMap<Integer, String> MetaToNameMap = new HashMap<Integer, String>();
+    public static HashMap<String, Integer> NameToMetaMap = new HashMap<>();
+    public static HashMap<Integer, String> MetaToNameMap = new HashMap<>();
 
     public StandardBaseParticles() {
         super("Base", aTypes.length, EnumRarity.rare);

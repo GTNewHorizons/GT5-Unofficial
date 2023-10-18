@@ -20,7 +20,7 @@ import gtPlusPlus.xmod.tinkers.util.TinkersUtils;
 
 public class BaseTinkersMaterial {
 
-    private static HashMap<String, Integer> aInternalMaterialIdMap = new HashMap<String, Integer>();
+    private static HashMap<String, Integer> aInternalMaterialIdMap = new HashMap<>();
     private static int aNextFreeID;
 
     public final String mLocalName;
@@ -88,7 +88,7 @@ public class BaseTinkersMaterial {
     }
 
     private static String calcStyle(Material aMaterial) {
-        String aReturn = "" + EnumChatFormatting.WHITE;
+        String aReturn;
         int aTemp = aMaterial.getMeltingPointC();
         if (aTemp < 3600) {
             aReturn = "" + EnumChatFormatting.WHITE;
@@ -110,45 +110,11 @@ public class BaseTinkersMaterial {
         return aMaterial.getRgbAsHex();
     }
 
-    public Object generateToolMaterial(Material aMaterial) {
-        int level, dura, speed, dmg, reinf, primColour;
-        float handle, stonebound;
-        level = calcHarvestLevel(aMaterial);
-        dura = calcDurability(aMaterial);
-        speed = calcMiningSpeed(aMaterial);
-        dmg = calcAttack(aMaterial);
-        reinf = calcReinforced(aMaterial);
-        primColour = calcColour(aMaterial);
-        handle = calcHandleModifier(aMaterial);
-        // stonebound = calcHarvestLevel(aMaterial);
-        stonebound = 0;
-        return TinkersUtils.generateToolMaterial(
-                aMaterial.getLocalizedName(),
-                aMaterial.getUnlocalizedName(),
-                level,
-                dura,
-                speed,
-                dmg,
-                handle,
-                reinf,
-                stonebound,
-                calcStyle(aMaterial),
-                primColour);
-    }
-
     public void generate() {
 
         Logger.INFO("[TiCon] Trying to generate Material: " + mLocalName);
         int id = mID;
         if (id > 0) {
-
-            // Object aTinkersCustomMaterial = generateToolMaterial(mMaterial);
-            // Logger.INFO("[TiCon] Created Material: "+mLocalName);
-
-            // TinkersUtils.addToolMaterial(id, aTinkersCustomMaterial);
-            // TinkersUtils.addDefaultToolPartMaterial(id);
-            // TinkersUtils.addBowMaterial(id, calcBowDrawSpeed(mMaterial), 1.0F);
-            // TinkersUtils.addArrowMaterial(id, calcProjectileMass(mMaterial), calcProjectileFragility(mMaterial));
 
             NBTTagCompound tag = new NBTTagCompound();
             tag.setInteger("Id", id);
@@ -215,8 +181,6 @@ public class BaseTinkersMaterial {
             return false;
         }
 
-        // Smeltery.addMelting(new ItemStack(ExtraUtils.unstableIngot, 1, 0), ExtraUtils.decorative1, 5, 850,
-        // aMaterial.getFluid(72));
         TinkersUtils.registerFluidType(mLocalName, aMatBlock, 0, aMelt, aFluid, true);
         TinkersUtils.addMelting(aMaterial.getBlock(1), aMatBlock, 0, aMelt, aMaterial.getFluidStack(144 * 9));
         TinkersUtils.addMelting(aMaterial.getIngot(1), aMatBlock, 0, aMelt, aMaterial.getFluidStack(144));
@@ -232,10 +196,7 @@ public class BaseTinkersMaterial {
                     .addCastingTableRecipe(aMaterial.getIngot(1), aMaterial.getFluidStack(144), ingotcast, false, 50);
         }
 
-        boolean extended = TinkersUtils.generateCastingRecipes(aMaterial, aID);
-
-        // TConstructRegistry.getBasinCasting().addCastingRecipe(new ItemStack(ExtraUtils.decorative1, 1, 5), new
-        // FluidStack(unstable, 1296), (ItemStack)null, true, 100);
+        TinkersUtils.generateCastingRecipes(aMaterial, aID);
 
         return true;
     }

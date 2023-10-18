@@ -22,9 +22,6 @@ import gregtech.api.enums.Mods;
 public class FR_ItemRegistry {
 
     // ----- Apiary Frames ----------------------
-    // public static FR_ItemHiveFrame frameUntreated;
-    // public static FR_ItemHiveFrame frameImpregnated;
-    // public static FR_ItemHiveFrame frameProven;
 
     // Magic Bee Frame Items
     public static MB_ItemFrame hiveFrameAccelerated;

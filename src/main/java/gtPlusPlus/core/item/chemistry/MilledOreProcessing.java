@@ -551,10 +551,10 @@ public class MilledOreProcessing extends ItemPackage {
     }
 
     private void addPineOilExtraction() {
-        AutoMap<ItemStack> aLogs = new AutoMap<ItemStack>();
-        AutoMap<ItemStack> aLeaves = new AutoMap<ItemStack>();
-        AutoMap<ItemStack> aSaplings = new AutoMap<ItemStack>();
-        AutoMap<ItemStack> aPinecones = new AutoMap<ItemStack>();
+        AutoMap<ItemStack> aLogs = new AutoMap<>();
+        AutoMap<ItemStack> aLeaves = new AutoMap<>();
+        AutoMap<ItemStack> aSaplings = new AutoMap<>();
+        AutoMap<ItemStack> aPinecones = new AutoMap<>();
 
         ItemStack aCrushedPine = ItemUtils.getSimpleStack(AgriculturalChem.mCrushedPine, 1);
 
@@ -652,7 +652,7 @@ public class MilledOreProcessing extends ItemPackage {
 
     public static ItemStack[] cleanArray(ItemStack[] input) {
         int aArraySize = input.length;
-        AutoMap<ItemStack> aCleanedItems = new AutoMap<ItemStack>();
+        AutoMap<ItemStack> aCleanedItems = new AutoMap<>();
         for (ItemStack checkStack : input) {
             if (ItemUtils.checkForInvalidItems(checkStack)) {
                 aCleanedItems.put(checkStack);
@@ -668,7 +668,7 @@ public class MilledOreProcessing extends ItemPackage {
         return aOutput;
     }
 
-    private static final HashMap<String, Quad<Pair<Material, Integer>, Pair<Material, Integer>, Pair<Material, Integer>, Pair<Material, Integer>>> aMilledFluidMap = new HashMap<String, Quad<Pair<Material, Integer>, Pair<Material, Integer>, Pair<Material, Integer>, Pair<Material, Integer>>>();
+    private static final HashMap<String, Quad<Pair<Material, Integer>, Pair<Material, Integer>, Pair<Material, Integer>, Pair<Material, Integer>>> aMilledFluidMap = new HashMap<>();
 
     public static void registerOreDataForMilledType(Fluid aMilledFluid, Materials aOutput1, int aPerc1,
             Materials aOutput2, int aPerc2, Materials aOutput3, int aPerc3, Materials aOutput4, int aPerc4) {
@@ -687,11 +687,11 @@ public class MilledOreProcessing extends ItemPackage {
     public static void registerOreDataForMilledType(Fluid aMilledFluid, Material aOutput1, int aPerc1,
             Material aOutput2, int aPerc2, Material aOutput3, int aPerc3, Material aOutput4, int aPerc4) {
 
-        Pair<Material, Integer> aFluidOutput1 = new Pair<Material, Integer>(aOutput1, aPerc1);
-        Pair<Material, Integer> aFluidOutput2 = new Pair<Material, Integer>(aOutput2, aPerc2);
-        Pair<Material, Integer> aFluidOutput3 = new Pair<Material, Integer>(aOutput3, aPerc3);
-        Pair<Material, Integer> aFluidOutput4 = new Pair<Material, Integer>(aOutput4, aPerc4);
-        Quad<Pair<Material, Integer>, Pair<Material, Integer>, Pair<Material, Integer>, Pair<Material, Integer>> aDataQuad = new Quad<Pair<Material, Integer>, Pair<Material, Integer>, Pair<Material, Integer>, Pair<Material, Integer>>(
+        Pair<Material, Integer> aFluidOutput1 = new Pair<>(aOutput1, aPerc1);
+        Pair<Material, Integer> aFluidOutput2 = new Pair<>(aOutput2, aPerc2);
+        Pair<Material, Integer> aFluidOutput3 = new Pair<>(aOutput3, aPerc3);
+        Pair<Material, Integer> aFluidOutput4 = new Pair<>(aOutput4, aPerc4);
+        Quad<Pair<Material, Integer>, Pair<Material, Integer>, Pair<Material, Integer>, Pair<Material, Integer>> aDataQuad = new Quad<>(
                 aFluidOutput1,
                 aFluidOutput2,
                 aFluidOutput3,
@@ -706,7 +706,7 @@ public class MilledOreProcessing extends ItemPackage {
 
     private static ItemStack[] getArrayFromQuad(
             Quad<Pair<Material, Integer>, Pair<Material, Integer>, Pair<Material, Integer>, Pair<Material, Integer>> aData) {
-        AutoMap<ItemStack> aOutputs = new AutoMap<ItemStack>();
+        AutoMap<ItemStack> aOutputs = new AutoMap<>();
         for (Object aPair : aData.values()) {
             if (aPair != null && Pair.class.isInstance(aPair)) {
                 Pair aObj = (Pair) aPair;
@@ -724,7 +724,7 @@ public class MilledOreProcessing extends ItemPackage {
     }
 
     private static AutoMap<ItemStack> getItemStackFromPair(Material aMat, Integer aCount) {
-        AutoMap<ItemStack> aOutputs = new AutoMap<ItemStack>();
+        AutoMap<ItemStack> aOutputs = new AutoMap<>();
         if (aCount > 64) {
             AutoMap<Integer> sizes = getStackSizes(aCount);
             for (int aSplitSize : sizes) {
@@ -739,7 +739,7 @@ public class MilledOreProcessing extends ItemPackage {
     }
 
     private static AutoMap<Integer> getStackSizes(int aBigSize) {
-        AutoMap<Integer> aSizes = new AutoMap<Integer>();
+        AutoMap<Integer> aSizes = new AutoMap<>();
         if (aBigSize <= 64) {
             aSizes.add(aBigSize);
         } else {

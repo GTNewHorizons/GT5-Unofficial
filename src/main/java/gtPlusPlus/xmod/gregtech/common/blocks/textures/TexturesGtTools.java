@@ -19,8 +19,8 @@ public final class TexturesGtTools {
 
     public static final class CustomIcon implements IIconContainer, Runnable {
 
-        protected IIcon mIcon, mOverlay;
-        protected final String mIconName;
+        private IIcon mIcon, mOverlay;
+        private final String mIconName;
 
         public CustomIcon(final String aIconName) {
             this.mIconName = aIconName;

@@ -49,8 +49,6 @@ public class RECIPES_General {
     static String RECIPE_BronzePlate = "plateBronze";
     static String RECIPE_StainlessPlate = "plateStainlessSteel";
     static ItemStack RECIPE_BasicCasingIC2;
-    static ItemStack OUTPUT_Workbench_Bronze;
-    static ItemStack OUTPUT_Workbench_Advanced;
     static ItemStack RECIPE_HydrogenDust;
 
     public static void loadRecipes() {
@@ -61,8 +59,6 @@ public class RECIPES_General {
         RECIPE_CraftingTable = ItemUtils.getSimpleStack(Blocks.crafting_table);
         RECIPE_HydrogenDust = ItemUtils.getSimpleStack(ModItems.itemHydrogenBlob);
         RECIPE_BasicCasingIC2 = ItemUtils.getItemStackFromFQRN("IC2:blockMachine", 1);
-        OUTPUT_Workbench_Bronze = GregtechItemList.GT4_Workbench_Bronze.get(1);
-        OUTPUT_Workbench_Advanced = GregtechItemList.GT4_Workbench_Advanced.get(1);
         OUTPUT_Blueprint = ItemUtils.getSimpleStack(ModItems.itemBlueprintBase, 2);
         run();
         addCompressedObsidian();
@@ -82,31 +78,6 @@ public class RECIPES_General {
                 RECIPE_LapisDust,
                 NULL,
                 OUTPUT_Blueprint);
-
-        // Bronze Workbench
-        RecipeUtils.addShapedRecipe(
-                RECIPE_BronzePlate,
-                RECIPE_CraftingTable,
-                RECIPE_BronzePlate,
-                RECIPE_BronzePlate,
-                RECIPE_BasicCasingIC2,
-                RECIPE_BronzePlate,
-                RECIPE_BronzePlate,
-                CI.getTieredCircuitOreDictName(0),
-                RECIPE_BronzePlate,
-                OUTPUT_Workbench_Bronze);
-
-        RecipeUtils.addShapedRecipe(
-                RECIPE_StainlessPlate,
-                CI.getTieredCircuitOreDictName(3),
-                RECIPE_StainlessPlate,
-                RECIPE_StainlessPlate,
-                OUTPUT_Workbench_Bronze,
-                RECIPE_StainlessPlate,
-                RECIPE_StainlessPlate,
-                CI.getTieredCircuitOreDictName(3),
-                RECIPE_StainlessPlate,
-                OUTPUT_Workbench_Advanced);
 
         // Rainforest oak Sapling
         if (RecipeUtils.addShapedRecipe(

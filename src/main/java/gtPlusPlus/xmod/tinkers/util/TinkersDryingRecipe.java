@@ -17,7 +17,7 @@ import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class TinkersDryingRecipe {
 
-    public static AutoMap<TinkersDryingRecipe> recipes = new AutoMap<TinkersDryingRecipe>();
+    public static AutoMap<TinkersDryingRecipe> recipes = new AutoMap<>();
 
     public final int time;
     public final ItemStack input;

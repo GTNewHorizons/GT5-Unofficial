@@ -28,7 +28,7 @@ import gtPlusPlus.core.util.Utils;
 public class BlockBaseFluid extends BlockFluidClassic {
 
     private final String name;
-    private final IIcon textureArray[] = new IIcon[6];
+    private final IIcon[] textureArray = new IIcon[6];
 
     protected float particleRed = 1.0F;
     protected float particleGreen = 1.0F;
@@ -41,18 +41,6 @@ public class BlockBaseFluid extends BlockFluidClassic {
         this.setBlockName("fluid" + this.name);
         this.setCreativeTab(AddToCreativeTab.tabBlock);
         GameRegistry.registerBlock(this, ItemBlockMeta.class, "fluid" + this.name);
-    }
-
-    public BlockFluidClassic setParticleColor(int arg0) {
-        return this
-                .setParticleColor((arg0 >> 16 & 255) / 255.0F, (arg0 >> 8 & 255) / 255.0F, (arg0 >> 0 & 255) / 255.0F);
-    }
-
-    public BlockFluidClassic setParticleColor(float arg0, float arg1, float arg2) {
-        this.particleRed = arg0;
-        this.particleGreen = arg1;
-        this.particleBlue = arg2;
-        return this;
     }
 
     @Override
@@ -72,11 +60,9 @@ public class BlockBaseFluid extends BlockFluidClassic {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister iicon) {
-        this.textureArray[0] = iicon.registerIcon(GTPlusPlus.ID + ":" + "fluid/" + "Fluid_" + this.name + "_Still");
-        this.textureArray[1] = iicon.registerIcon(GTPlusPlus.ID + ":" + "fluid/" + "Fluid_" + this.name + "_Flow");
-        // IconRegistry.addIcon("Fluid" + this.name, this.modName + ":fluid/Fluid_" + this.name + "_Still", arg0);
-        // IconRegistry.addIcon("Fluid" + this.name + "1", this.modName + ":fluid/Fluid_" + this.name + "_Flow", arg0);
+    public void registerBlockIcons(IIconRegister icon) {
+        this.textureArray[0] = icon.registerIcon(GTPlusPlus.ID + ":" + "fluid/" + "Fluid_" + this.name + "_Still");
+        this.textureArray[1] = icon.registerIcon(GTPlusPlus.ID + ":" + "fluid/" + "Fluid_" + this.name + "_Flow");
     }
 
     @Override

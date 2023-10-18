@@ -10,7 +10,7 @@ import gtPlusPlus.preloader.asm.AsmConfig;
 
 public class Logger {
 
-    public Logger(String string) {}
+    public Logger() {}
 
     // Logging Functions
     public static final org.apache.logging.log4j.Logger modLogger = Logger.makeLogger();

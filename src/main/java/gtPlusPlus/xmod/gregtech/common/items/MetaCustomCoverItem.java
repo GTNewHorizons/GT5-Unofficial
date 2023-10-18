@@ -65,7 +65,7 @@ public class MetaCustomCoverItem extends Item {
         return true;
     }
 
-    private final void registerCover() {
+    private void registerCover() {
         // CommonProxy.registerItemRendererGlobal(this, new CustomItemBlockRenderer());
         for (int i = 0; i < icons.length; i++) {
             ItemStack thisStack = ItemUtils.simpleMetaStack(this, i, 1);

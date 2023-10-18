@@ -49,9 +49,9 @@ public class ItemBlockOre extends ItemBlock {
         return this.mThisColour;
     }
 
-    private static Map<String, AutoMap<String>> mMapOreBlockItemToDimName = new LinkedHashMap<String, AutoMap<String>>();
+    private static Map<String, AutoMap<String>> mMapOreBlockItemToDimName = new LinkedHashMap<>();
     private static boolean mInitOres_Everglades = false;
-    private AutoMap<String> mDimsForThisOre = new AutoMap<String>();
+    private AutoMap<String> mDimsForThisOre = new AutoMap<>();
 
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
@@ -62,7 +62,7 @@ public class ItemBlockOre extends ItemBlock {
                 for (Material m1 : m2) {
                     AutoMap<String> aMap = mMapOreBlockItemToDimName.get(m1.getUnlocalizedName().toLowerCase());
                     if (aMap == null) {
-                        aMap = new AutoMap<String>();
+                        aMap = new AutoMap<>();
                     }
                     String aDimName = "Everglades";
                     if (!aMap.containsValue(aDimName)) {

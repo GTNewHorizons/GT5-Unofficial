@@ -57,8 +57,6 @@ public class CustomMovementHandler {
 
         // Check to see if Enabled - Added 6/17/14 to provide option to disable Sneak Toggle
         final boolean isSneaking = SneakManager.get(thisPlayer).Sneaking();
-        // Utils.LOG_INFO("Can sneak: "+isSneaking);
-        // Utils.LOG_INFO("Can sprint: "+SneakManager.Sprinting());
         if (isSneaking) {
             // Key Pressed
             if (settings.keyBindSneak.getIsKeyPressed() && !this.handledSneakPress) {

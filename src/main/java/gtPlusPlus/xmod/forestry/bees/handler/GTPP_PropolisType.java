@@ -13,13 +13,13 @@ public enum GTPP_PropolisType {
     FORCE(1, "Force", true, Utils.rgbtoHexValue(250, 250, 20));
 
     public boolean mShowInList;
-    public Material mMaterial;
+    public final Material mMaterial;
     public int mChance;
-    public int mID;
+    public final int mID;
 
-    private String mName;
-    private String mNameUnlocal;
-    private int mColour;
+    private final String mName;
+    private final String mNameUnlocal;
+    private final int mColour;
 
     private static void map(int aId, GTPP_PropolisType aType) {
         GTPP_Bees.sPropolisMappings.put(aId, aType);

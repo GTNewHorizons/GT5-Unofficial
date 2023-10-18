@@ -3,12 +3,7 @@ package gtPlusPlus.xmod.forestry;
 import static gregtech.api.enums.Mods.ExtraTrees;
 import static gregtech.api.enums.Mods.Forestry;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 
 import binnie.extratrees.genetics.ExtraTreeSpecies;
 import cpw.mods.fml.common.Optional;
@@ -40,39 +35,6 @@ public class HANDLER_FR {
 
         if (ExtraTrees.isModLoaded()) {
             mapExtraTreesSaplingToLog();
-        }
-    }
-
-    public static boolean createBlockBreakParticles(final World world, final int x, final int y, final int z,
-            final Block block) {
-        if (Forestry.isModLoaded()) {
-            createBlockBreakParticles_INTERNAL(world, x, y, z, block);
-        }
-        return false;
-    }
-
-    @Optional.Method(modid = Mods.Names.FORESTRY)
-    private static void createBlockBreakParticles_INTERNAL(final World world, final int x, final int y, final int z,
-            final Block block) {
-        if (Forestry.isModLoaded()) {
-            Class oClass;
-            try {
-                oClass = ReflectionUtils.getClass("forestry.core.proxy.ProxyCommon");
-                Object oProxy = ReflectionUtils.getField(oClass, "common");
-                if (oProxy != null && oClass.isInstance(oProxy)) {
-                    Method mParticles = ReflectionUtils.getMethod(
-                            oClass,
-                            "addBlockDestroyEffects",
-                            World.class,
-                            int.class,
-                            int.class,
-                            int.class,
-                            Block.class,
-                            int.class);
-                    mParticles.invoke(oProxy, world, x, y, z, block, 0);
-                }
-            } catch (SecurityException | IllegalAccessException | IllegalArgumentException
-                    | InvocationTargetException e) {}
         }
     }
 

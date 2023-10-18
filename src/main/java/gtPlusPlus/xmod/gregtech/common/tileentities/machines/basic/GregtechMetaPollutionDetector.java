@@ -385,10 +385,6 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
         return false;
     }
 
-    // int mCurrentPollution;
-    // int mAveragePollution;
-    // int mAveragePollutionArray[] = new int[10];
-
     @Override
     public void saveNBTData(final NBTTagCompound aNBT) {
         aNBT.setInteger("mCurrentPollution", this.mCurrentPollution);
@@ -456,17 +452,10 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
         if (side == this.getBaseMetaTileEntity().getFrontFacing()) {
             final float[] tCoords = GT_Utility.getClickedFacingCoords(side, aX, aY, aZ);
             switch ((byte) ((byte) (int) (tCoords[0] * 2.0F) + (2 * (byte) (int) (tCoords[1] * 2.0F)))) {
-                case 0:
-                    this.mRedstoneLevel -= 5000;
-                    break;
-                case 1:
-                    this.mRedstoneLevel += 5000;
-                    break;
-                case 2:
-                    this.mRedstoneLevel -= 50000;
-                    break;
-                case 3:
-                    this.mRedstoneLevel += 50000;
+                case 0 -> this.mRedstoneLevel -= 5000;
+                case 1 -> this.mRedstoneLevel += 5000;
+                case 2 -> this.mRedstoneLevel -= 50000;
+                case 3 -> this.mRedstoneLevel += 50000;
             }
             this.markDirty();
             GT_Utility.sendChatToPlayer(aPlayer, "Emit Redstone at Pollution Level: " + this.mRedstoneLevel);

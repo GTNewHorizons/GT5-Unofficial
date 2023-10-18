@@ -3,11 +3,9 @@ package gtPlusPlus.nei.handlers;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
@@ -53,18 +51,14 @@ public final class NeiTextureHandler {
     public static final ResourceLocation TEXTURE = new ResourceLocation(
             GTPlusPlus.ID + ":textures/gui/nei/widgets.png");
 
-    public NeiTextureHandler(int x, int y) {
-        this(x, y, 16, 16);
-    }
-
     public NeiTextureHandler(int x, int y, int width, int height) {
         this(
-                (double) width,
-                (double) height,
-                (double) ((float) (0.00390625D * (double) x)),
-                (double) ((float) (0.00390625D * (double) (x + width))),
-                (double) ((float) (0.00390625D * (double) y)),
-                (double) ((float) (0.00390625D * (double) (y + height))));
+                width,
+                height,
+                (float) (0.00390625D * (double) x),
+                (float) (0.00390625D * (double) (x + width)),
+                (float) (0.00390625D * (double) y),
+                (float) (0.00390625D * (double) (y + height)));
     }
 
     public NeiTextureHandler(double width, double height, double minU, double maxU, double minV, double maxV) {
@@ -74,14 +68,6 @@ public final class NeiTextureHandler {
         this.maxU = maxU;
         this.minV = minV;
         this.maxV = maxV;
-    }
-
-    public void renderIcon(double x, double y) {
-        this.renderIcon(x, y, this.width, this.height, 0.0D, false);
-    }
-
-    public void renderIcon(double x, double y, boolean doDraw) {
-        this.renderIcon(x, y, this.width, this.height, 0.0D, doDraw);
     }
 
     public void renderIcon(double x, double y, double width, double height, double zLevel, boolean doDraw) {
@@ -130,22 +116,6 @@ public final class NeiTextureHandler {
         return Minecraft.getMinecraft().renderEngine;
     }
 
-    public static void bindItemTexture(ItemStack stack) {
-        engine().bindTexture(stack.getItemSpriteNumber() == 0 ? BLOCK_TEX : ITEM_TEX);
-    }
-
-    public static void bindItemTexture() {
-        engine().bindTexture(ITEM_TEX);
-    }
-
-    public static void bindBlockTexture() {
-        engine().bindTexture(BLOCK_TEX);
-    }
-
-    public static void bindGlintTexture() {
-        engine().bindTexture(BLOCK_TEX);
-    }
-
     public static void bindTexture(String string) {
         engine().bindTexture(new ResourceLocation(string));
     }
@@ -154,7 +124,4 @@ public final class NeiTextureHandler {
         engine().bindTexture(tex);
     }
 
-    public static FontRenderer fontRenderer() {
-        return Minecraft.getMinecraft().fontRenderer;
-    }
 }

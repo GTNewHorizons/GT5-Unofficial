@@ -36,7 +36,6 @@ public class ShapelessUtils {
             }
         }
         CraftingManager.getInstance().getRecipeList().add(new ShapelessRecipes(output, arraylist));
-        // CraftingManager.getInstance().addShapelessRecipe(output, arraylist);
         return true;
     }
 }

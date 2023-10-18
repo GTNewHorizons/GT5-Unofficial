@@ -1079,9 +1079,9 @@ public class GTPP_Render_MachineBlock extends GT_Renderer_Block {
         }
 
         if (aIcon != null) {
-            for (int i = 0; i < aIcon.length; ++i) {
-                if (aIcon[i] != null) {
-                    aIcon[i].renderYNeg(aRenderer, aBlock, aX, aY, aZ);
+            for (ITexture iTexture : aIcon) {
+                if (iTexture != null) {
+                    iTexture.renderYNeg(aRenderer, aBlock, aX, aY, aZ);
                 }
             }
         }
@@ -1101,9 +1101,9 @@ public class GTPP_Render_MachineBlock extends GT_Renderer_Block {
         }
 
         if (aIcon != null) {
-            for (int i = 0; i < aIcon.length; ++i) {
-                if (aIcon[i] != null) {
-                    aIcon[i].renderYPos(aRenderer, aBlock, aX, aY, aZ);
+            for (ITexture iTexture : aIcon) {
+                if (iTexture != null) {
+                    iTexture.renderYPos(aRenderer, aBlock, aX, aY, aZ);
                 }
             }
         }
@@ -1124,9 +1124,9 @@ public class GTPP_Render_MachineBlock extends GT_Renderer_Block {
 
         aRenderer.flipTexture = !aFullBlock;
         if (aIcon != null) {
-            for (int i = 0; i < aIcon.length; ++i) {
-                if (aIcon[i] != null) {
-                    aIcon[i].renderZNeg(aRenderer, aBlock, aX, aY, aZ);
+            for (ITexture iTexture : aIcon) {
+                if (iTexture != null) {
+                    iTexture.renderZNeg(aRenderer, aBlock, aX, aY, aZ);
                 }
             }
         }
@@ -1146,9 +1146,9 @@ public class GTPP_Render_MachineBlock extends GT_Renderer_Block {
         }
 
         if (aIcon != null) {
-            for (int i = 0; i < aIcon.length; ++i) {
-                if (aIcon[i] != null) {
-                    aIcon[i].renderZPos(aRenderer, aBlock, aX, aY, aZ);
+            for (ITexture iTexture : aIcon) {
+                if (iTexture != null) {
+                    iTexture.renderZPos(aRenderer, aBlock, aX, aY, aZ);
                 }
             }
         }
@@ -1168,9 +1168,9 @@ public class GTPP_Render_MachineBlock extends GT_Renderer_Block {
         }
 
         if (aIcon != null) {
-            for (int i = 0; i < aIcon.length; ++i) {
-                if (aIcon[i] != null) {
-                    aIcon[i].renderXNeg(aRenderer, aBlock, aX, aY, aZ);
+            for (ITexture iTexture : aIcon) {
+                if (iTexture != null) {
+                    iTexture.renderXNeg(aRenderer, aBlock, aX, aY, aZ);
                 }
             }
         }
@@ -1191,9 +1191,9 @@ public class GTPP_Render_MachineBlock extends GT_Renderer_Block {
 
         aRenderer.flipTexture = !aFullBlock;
         if (aIcon != null) {
-            for (int i = 0; i < aIcon.length; ++i) {
-                if (aIcon[i] != null) {
-                    aIcon[i].renderXPos(aRenderer, aBlock, aX, aY, aZ);
+            for (ITexture iTexture : aIcon) {
+                if (iTexture != null) {
+                    iTexture.renderXPos(aRenderer, aBlock, aX, aY, aZ);
                 }
             }
         }

@@ -62,8 +62,6 @@ public class ChunkProviderModded implements IChunkProvider {
     /**
      * Holds Stronghold Generator
      */
-    // private MapGenStronghold strongholdGenerator = new
-    // MapGenStronghold();
     /**
      * Holds Village Generator
      */

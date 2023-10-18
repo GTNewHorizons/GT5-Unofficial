@@ -19,6 +19,7 @@ import baubles.api.BaubleType;
 import baubles.api.IBauble;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -63,8 +64,7 @@ public class ItemCloakingDevice extends Item implements IElectricItem, IElectric
                     continue;
                 }
                 if (is != null) {
-                    if (is.getItem() instanceof IElectricItem) {
-                        final IElectricItem electricItem = (IElectricItem) is.getItem();
+                    if (is.getItem() instanceof final IElectricItem electricItem) {
                         this.chargeEU = ElectricItem.manager.getCharge(is);
                     }
                 }
@@ -120,7 +120,7 @@ public class ItemCloakingDevice extends Item implements IElectricItem, IElectric
     }
 
     public int secondsLeft(final ItemStack stack) {
-        double r = 0;
+        double r;
         r = this.getCharge(stack) / (10000 * 20);
         return (int) MathUtils.decimalRounding(r);
     }
@@ -135,32 +135,19 @@ public class ItemCloakingDevice extends Item implements IElectricItem, IElectric
         list.add(
                 StatCollector.translateToLocalFormatted(
                         "item.personalCloakingDevice.tooltip.3",
-                        this.getTier(this.thisStack),
-                        this.getTransferLimit(this.thisStack)));
+                        GT_Utility.formatNumbers(this.getTier(this.thisStack)),
+                        GT_Utility.formatNumbers(this.getTransferLimit(this.thisStack))));
         list.add(
                 StatCollector.translateToLocalFormatted(
                         "item.personalCloakingDevice.tooltip.4",
-                        (long) this.getCharge(stack),
+                        GT_Utility.formatNumbers(this.getCharge(stack)),
                         MathUtils.findPercentage(this.getCharge(stack), this.getMaxCharge(stack))));
         list.add(
-                StatCollector
-                        .translateToLocalFormatted("item.personalCloakingDevice.tooltip.5", this.secondsLeft(stack)));
+                StatCollector.translateToLocalFormatted(
+                        "item.personalCloakingDevice.tooltip.5",
+                        GT_Utility.formatNumbers(this.secondsLeft(stack))));
         super.addInformation(stack, aPlayer, list, bool);
     }
-
-    /*
-     * @Override public ItemStack getContainerItem(ItemStack itemStack) { ItemStack newItem = itemStack.copy();
-     * newItem.stackSize = 1; extractEnergy(newItem, 150000, false); return newItem; }
-     */
-
-    /*
-     * @Override public boolean hasContainerItem(ItemStack stack) { return true; }
-     */
-
-    /*
-     * @Override public int getBurnTime(ItemStack fuel) { if ((fuel == null) || (fuel.getItem() != this)) { return 0; }
-     * return extractEnergy(fuel, 150000, true) / 50 / 100; }
-     */
 
     @Override
     public double charge(final ItemStack stack, final double amount, final int tier, final boolean ignoreTransferLimit,

@@ -174,8 +174,7 @@ public class GT_MetaTileEntity_Hatch_OutputBattery extends GT_MetaTileEntity_Hat
         }
 
         if (aBaseMetaTileEntity.isServerSide()) {
-            if (aBaseMetaTileEntity.getMetaTileEntity() instanceof MetaTileEntity) {
-                MetaTileEntity mMetaTileEntity = (MetaTileEntity) aBaseMetaTileEntity.getMetaTileEntity();
+            if (aBaseMetaTileEntity.getMetaTileEntity() instanceof MetaTileEntity mMetaTileEntity) {
                 if (mMetaTileEntity.dechargerSlotCount() > 0
                         && mMetaTileEntity.getEUVar() < aBaseMetaTileEntity.getEUCapacity()) {
                     for (int i = mMetaTileEntity.dechargerSlotStartIndex(),

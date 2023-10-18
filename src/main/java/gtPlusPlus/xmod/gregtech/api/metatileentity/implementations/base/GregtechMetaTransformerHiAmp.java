@@ -12,7 +12,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Transformer;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 public class GregtechMetaTransformerHiAmp extends GT_MetaTileEntity_Transformer {
@@ -108,11 +107,10 @@ public class GregtechMetaTransformerHiAmp extends GT_MetaTileEntity_Transformer 
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        this.mHalfMode = Utils.invertBoolean(mHalfMode);
+        this.mHalfMode = !mHalfMode;
         if (this.mHalfMode) {
             PlayerUtils.messagePlayer(aPlayer, "Transformer is now running at 2A:8A in/out Ratio.");
         } else {
-
             PlayerUtils.messagePlayer(aPlayer, "Transformer is now running at 4A:16A in/out Ratio.");
         }
     }

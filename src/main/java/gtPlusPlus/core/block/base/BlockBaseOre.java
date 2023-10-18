@@ -30,7 +30,7 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
 
     private final Material blockMaterial;
 
-    public BlockBaseOre(final Material material, final BlockTypes blockType, final int colour) {
+    public BlockBaseOre(final Material material, final BlockTypes blockType) {
         super(
                 blockType,
                 Utils.sanitizeString(material.getUnlocalizedName()),

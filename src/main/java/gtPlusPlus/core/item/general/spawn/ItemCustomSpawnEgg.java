@@ -30,30 +30,25 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class ItemCustomSpawnEgg extends ItemMonsterPlacer {
 
-    private static final HashMap<Integer, IIcon> mIconMap = new HashMap<Integer, IIcon>();
+    private static final HashMap<Integer, IIcon> mIconMap = new HashMap<>();
     private static int mTotalMetaItems = 0;
 
-    private static final HashMap<Integer, Integer> mMaxStackSizeMap = new HashMap<Integer, Integer>();
-    private static final HashMap<Integer, EnumRarity> mRarityMap = new HashMap<Integer, EnumRarity>();
-    private static final HashMap<Integer, ArrayList<String>> mOreDictNames = new HashMap<Integer, ArrayList<String>>();
+    private static final HashMap<Integer, Integer> mMaxStackSizeMap = new HashMap<>();
+    private static final HashMap<Integer, EnumRarity> mRarityMap = new HashMap<>();
+    private static final HashMap<Integer, ArrayList<String>> mOreDictNames = new HashMap<>();
 
-    private static final HashMap<Integer, Integer> mColourBaseMap = new HashMap<Integer, Integer>();
-    private static final HashMap<Integer, Integer> mColourSpotsMap = new HashMap<Integer, Integer>();
-    private static final HashMap<Integer, String> mEntityNameMap = new HashMap<Integer, String>();
-    private static final HashMap<Integer, String> mEntityFullNameMap = new HashMap<Integer, String>();
+    private static final HashMap<Integer, Integer> mColourBaseMap = new HashMap<>();
+    private static final HashMap<Integer, Integer> mColourSpotsMap = new HashMap<>();
+    private static final HashMap<Integer, String> mEntityNameMap = new HashMap<>();
+    private static final HashMap<Integer, String> mEntityFullNameMap = new HashMap<>();
 
-    private static final HashMap<String, Integer> mReverseEntityMap = new HashMap<String, Integer>();
+    private static final HashMap<String, Integer> mReverseEntityMap = new HashMap<>();
 
     protected EntityLiving entityToSpawn = null;
-
-    public static ItemStack getSpawnEggForEntityname(String aEntityName, int aSize) {
-        return ItemUtils.simpleMetaStack(ModItems.itemCustomSpawnEgg, mReverseEntityMap.get(aEntityName), aSize);
-    }
 
     public static void registerEntityForSpawnEgg(final int aMetaID, String parEntityToSpawnName, int aPrimaryColor,
             int aSecondaryColor) {
@@ -76,18 +71,6 @@ public class ItemCustomSpawnEgg extends ItemMonsterPlacer {
         mColourSpotsMap.put(aMetaID, aSecondaryColor);
         mReverseEntityMap.put(parEntityToSpawnName, aMetaID);
         setEntityToSpawnName(aMetaID, parEntityToSpawnName);
-    }
-
-    public static void registerEggsToOreDict() {
-        for (int aMetaID = 0; aMetaID < mTotalMetaItems; aMetaID++) {
-            ArrayList<String> aOreDictNames = mOreDictNames.get(aMetaID);
-            if (aOreDictNames != null && !aOreDictNames.isEmpty()) {
-                ItemStack aFoodStack = ItemUtils.simpleMetaStack(ModItems.itemCustomSpawnEgg, aMetaID, 1);
-                for (String aOreName : aOreDictNames) {
-                    ItemUtils.addItemToOreDictionary(aFoodStack, aOreName);
-                }
-            }
-        }
     }
 
     public ItemCustomSpawnEgg() {

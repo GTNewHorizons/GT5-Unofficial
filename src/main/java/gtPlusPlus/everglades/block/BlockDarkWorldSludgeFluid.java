@@ -11,8 +11,6 @@ public class BlockDarkWorldSludgeFluid extends Fluid {
 
     protected static int mapColor = 0xFFFFFFFF;
     protected static float overlayAlpha = 0.2F;
-    // protected static SoundEvent emptySound = SoundEvents.ITEM_BUCKET_EMPTY;
-    // protected static SoundEvent fillSound = SoundEvents.ITEM_BUCKET_FILL;
     protected static Material material = SLUDGE;
 
     public BlockDarkWorldSludgeFluid(String fluidName, int rgbColour) {
@@ -23,7 +21,7 @@ public class BlockDarkWorldSludgeFluid extends Fluid {
         super(fluidName);
         setColor(rgbColour);
         if (overlayAlpha != null) {
-            setAlpha(overlayAlpha.floatValue());
+            setAlpha(overlayAlpha);
         } else {
             setAlpha(0);
         }

@@ -13,7 +13,7 @@ public class COMPAT_Witchery {
         run();
     }
 
-    private static final void run() {
+    private static void run() {
         // Koboldite
         ItemStack aKobolditeDust = ItemUtils
                 .getItemStackWithMeta(Witchery.isModLoaded(), "witchery:ingredient", "Koboldite Dust", 148, 1);

@@ -40,7 +40,7 @@ public class BaseBauble extends Item implements IBauble {
      */
     private BaubleType mThisBauble;
 
-    private List<String> damageNegations = new ArrayList<String>();
+    private List<String> damageNegations = new ArrayList<>();
     Multimap<String, AttributeModifier> attributes = HashMultimap.create();
 
     public BaseBauble(BaubleType type, String displayName) {
@@ -71,8 +71,7 @@ public class BaseBauble extends Item implements IBauble {
 
     @SubscribeEvent
     public void onPlayerAttacked(LivingAttackEvent event) {
-        if (event.entityLiving instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) event.entityLiving;
+        if (event.entityLiving instanceof EntityPlayer player) {
             if (getCorrectBauble(player) != null && damageNegations.contains(event.source.damageType))
                 event.setCanceled(true);
         }

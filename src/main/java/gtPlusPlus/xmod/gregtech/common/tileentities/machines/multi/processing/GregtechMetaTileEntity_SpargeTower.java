@@ -266,7 +266,7 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
     private static ArrayList<FluidStack> getByproductsOfSparge(final FluidStack aSpargeGas,
             final FluidStack aSpentFuel) {
         GasSpargingRecipe aSpargeRecipe = GasSpargingRecipeMap.findRecipe(aSpargeGas, aSpentFuel);
-        ArrayList<FluidStack> aOutputGases = new ArrayList<FluidStack>();
+        ArrayList<FluidStack> aOutputGases = new ArrayList<>();
         if (aSpargeRecipe == null) {
             Logger.INFO("Did not find sparge recipe!");
             return aOutputGases;
@@ -274,7 +274,7 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
         int aSpargeGasAmount = aSpargeRecipe.mInputGas.amount;
 
         aOutputGases.add(aSpargeRecipe.mOutputSpargedFuel.copy());
-        ArrayList<FluidStack> aTempMap = new ArrayList<FluidStack>();
+        ArrayList<FluidStack> aTempMap = new ArrayList<>();
         for (int i = 2; i < aSpargeRecipe.mFluidOutputs.length; i++) {
             int aGasAmount = MathUtils.randInt(0, (aSpargeRecipe.mMaxOutputQuantity[i - 2] / 100));
             FluidStack aOutput = aSpargeRecipe.mFluidOutputs[i].copy();

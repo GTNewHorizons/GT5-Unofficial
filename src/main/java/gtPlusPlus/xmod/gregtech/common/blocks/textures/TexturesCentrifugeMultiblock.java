@@ -66,8 +66,7 @@ public class TexturesCentrifugeMultiblock {
     private static int isCentrifugeControllerWithSide(IBlockAccess aWorld, int aX, int aY, int aZ,
             ForgeDirection side) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (!(tTileEntity instanceof IGregTechTileEntity)) return 0;
-        IGregTechTileEntity tTile = (IGregTechTileEntity) tTileEntity;
+        if (!(tTileEntity instanceof IGregTechTileEntity tTile)) return 0;
         if (tTile.getMetaTileEntity() instanceof GregtechMetaTileEntity_IndustrialCentrifuge
                 && tTile.getFrontFacing() == side)
             return tTile.isActive() ? 1 : 2;
@@ -84,7 +83,7 @@ public class TexturesCentrifugeMultiblock {
 
         int tInvertLeftRightMod = ordinalSide % 2 * 2 - 1;
         switch (ordinalSide / 2) {
-            case 0:
+            case 0 -> {
                 for (int i = -1; i < 2; i++) {
                     for (int j = -1; j < 2; j++) {
                         if (i == 0 && j == 0) continue;
@@ -95,8 +94,8 @@ public class TexturesCentrifugeMultiblock {
                         }
                     }
                 }
-                break;
-            case 1:
+            }
+            case 1 -> {
                 for (int i = -1; i < 2; i++) {
                     for (int j = -1; j < 2; j++) {
                         if (i == 0 && j == 0) continue;
@@ -107,8 +106,8 @@ public class TexturesCentrifugeMultiblock {
                         }
                     }
                 }
-                break;
-            case 2:
+            }
+            case 2 -> {
                 for (int i = -1; i < 2; i++) {
                     for (int j = -1; j < 2; j++) {
                         if (i == 0 && j == 0) continue;
@@ -119,7 +118,7 @@ public class TexturesCentrifugeMultiblock {
                         }
                     }
                 }
-                break;
+            }
         }
         return TexturesGtBlock.Casing_Material_Centrifuge.getIcon();
     }

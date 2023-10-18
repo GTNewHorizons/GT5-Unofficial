@@ -29,7 +29,7 @@ import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class RecipeGen_Recycling implements Runnable {
 
-    public static AutoMap<Runnable> mQueuedRecyclingGenerators = new AutoMap<Runnable>();
+    public static AutoMap<Runnable> mQueuedRecyclingGenerators = new AutoMap<>();
 
     public static void executeGenerators() {
         if (mQueuedRecyclingGenerators.size() > 0) {
@@ -80,7 +80,7 @@ public class RecipeGen_Recycling implements Runnable {
                     mValidPrefixesAsString[r].name() + Utils.sanitizeString(material.getLocalizedName()),
                     1);
             if (temp != null) {
-                mValidPairs[mSlotIndex++] = new Pair<OrePrefixes, ItemStack>(mValidPrefixesAsString[r], temp.copy());
+                mValidPairs[mSlotIndex++] = new Pair<>(mValidPrefixesAsString[r], temp.copy());
             }
         }
 
@@ -218,7 +218,7 @@ public class RecipeGen_Recycling implements Runnable {
 
         if (mPrefix != null && mDust != null) {
             Logger.WARNING("Built valid dust pair.");
-            return new Pair<OrePrefixes, ItemStack>(mPrefix, mDust);
+            return new Pair<>(mPrefix, mDust);
         } else {
             Logger.WARNING("mPrefix: " + (mPrefix != null));
             Logger.WARNING("mDust: " + (mDust != null));
@@ -310,7 +310,7 @@ public class RecipeGen_Recycling implements Runnable {
 
     public static ArrayList<ItemStack> getOres(final Object aOreName) {
         final String aName = (aOreName == null) ? "" : aOreName.toString();
-        final ArrayList<ItemStack> rList = new ArrayList<ItemStack>();
+        final ArrayList<ItemStack> rList = new ArrayList<>();
         if (GT_Utility.isStringValid(aName)) {
             Logger.WARNING("Making a list of all OreDict entries for " + aOreName + ".");
             if (rList.addAll(OreDictionary.getOres(aName))) {

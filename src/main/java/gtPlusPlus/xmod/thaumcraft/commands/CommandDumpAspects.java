@@ -73,10 +73,7 @@ public class CommandDumpAspects implements ICommand {
     @Override
     public boolean canCommandSenderUseCommand(final ICommandSender var1) {
         final EntityPlayer P = CommandUtils.getPlayer(var1);
-        if (P == null || !PlayerUtils.isPlayerOP(P)) {
-            return false;
-        }
-        return true;
+        return P != null && PlayerUtils.isPlayerOP(P);
     }
 
     @Override

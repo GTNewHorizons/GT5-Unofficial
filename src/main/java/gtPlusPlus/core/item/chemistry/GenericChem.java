@@ -37,7 +37,6 @@ import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.material.NONMATERIAL;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.plugin.agrichem.BioRecipes;
@@ -95,7 +94,6 @@ public class GenericChem extends ItemPackage {
      */
 
     // Phenol Byproducts
-    public Item PhenolicResins; // https://en.wikipedia.org/wiki/Phenol_formaldehyde_resin
 
     public static ItemGenericChemBase mGenericChemItem1;
     public static Item mAdvancedCircuit;
@@ -143,13 +141,7 @@ public class GenericChem extends ItemPackage {
 
     @Override
     public void items() {
-        PhenolicResins = ItemUtils.generateSpecialUseDusts(
-                "phenolicresins",
-                "Phenolic Resin",
-                "HOC6H4CH2OH",
-                Utils.rgbtoHexValue(80, 40, 40))[0];
-        // MaterialGenerator.generate(BAKELITE, false);
-        // MaterialGenerator.generate(NYLON, false);
+
         MaterialGenerator.generate(TEFLON, false);
 
         mGenericChemItem1 = new ItemGenericChemBase();
@@ -805,19 +797,19 @@ public class GenericChem extends ItemPackage {
 
     }
 
-    private static final ItemStack getTierOneChip() {
+    private static ItemStack getTierOneChip() {
         return CI.getNumberedAdvancedCircuit(4);
     }
 
-    private static final ItemStack getTierTwoChip() {
+    private static ItemStack getTierTwoChip() {
         return CI.getNumberedAdvancedCircuit(8);
     }
 
-    private static final ItemStack getTierThreeChip() {
+    private static ItemStack getTierThreeChip() {
         return CI.getNumberedAdvancedCircuit(12);
     }
 
-    private static final ItemStack getTierFourChip() {
+    private static ItemStack getTierFourChip() {
         return CI.getNumberedAdvancedCircuit(16);
     }
 

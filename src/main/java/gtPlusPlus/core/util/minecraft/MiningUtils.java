@@ -13,48 +13,12 @@ import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class MiningUtils {
 
-    public static Boolean canPickaxeBlock(final Block currentBlock, final World currentWorld) {
-        String correctTool = "";
-        if (!currentWorld.isRemote) {
-            try {
-                correctTool = currentBlock.getHarvestTool(0);
-                // Utils.LOG_WARNING(correctTool);
-                if (correctTool.equals("pickaxe")) {
-                    return true;
-                }
-            } catch (final NullPointerException e) {
-                return false;
-            }
-        }
-        return false;
-    }
-
-    private static void removeBlockAndDropAsItem(final World world, final int X, final int Y, final int Z) {
-        try {
-            final Block block = world.getBlock(X, Y, Z);
-            if (canPickaxeBlock(block, world)) {
-                if ((block != Blocks.bedrock) && (block.getBlockHardness(world, X, Y, Z) != -1)
-                        && (block.getBlockHardness(world, X, Y, Z) <= 100)
-                        && (block != Blocks.water)
-                        && (block != Blocks.lava)) {
-                    block.dropBlockAsItem(world, X, Y, Z, world.getBlockMetadata(X, Y, Z), 0);
-                    world.setBlockToAir(X, Y, Z);
-
-                } else {
-                    Logger.WARNING("Incorrect Tool for mining this block.");
-                }
-            }
-        } catch (final NullPointerException e) {
-
-        }
-    }
-
     public static boolean getBlockType(final Block block, final World world, final int[] xyz, final int miningLevel) {
         final String LIQUID = "liquid";
         final String BLOCK = "block";
         final String ORE = "ore";
         final String AIR = "air";
-        String blockClass = "";
+        String blockClass;
 
         if (world.isRemote) {
             return false;
@@ -89,22 +53,22 @@ public class MiningUtils {
             blockClass = block.getClass().toString().toLowerCase();
             Logger.WARNING(blockClass);
             if (blockClass.toLowerCase().contains(LIQUID)) {
-                Logger.WARNING(block.toString() + " is a Liquid.");
+                Logger.WARNING(block + " is a Liquid.");
                 return false;
             } else if (blockClass.toLowerCase().contains(ORE)) {
-                Logger.WARNING(block.toString() + " is an Ore.");
+                Logger.WARNING(block + " is an Ore.");
                 return true;
             } else if (block.getHarvestLevel(world.getBlockMetadata(xyz[0], xyz[1], xyz[2])) >= miningLevel) {
-                Logger.WARNING(block.toString() + " is minable.");
+                Logger.WARNING(block + " is minable.");
                 return true;
             } else if (blockClass.toLowerCase().contains(AIR)) {
-                Logger.WARNING(block.toString() + " is Air.");
+                Logger.WARNING(block + " is Air.");
                 return false;
             } else if (blockClass.toLowerCase().contains(BLOCK)) {
-                Logger.WARNING(block.toString() + " is a block of some kind.");
+                Logger.WARNING(block + " is a block of some kind.");
                 return false;
             } else {
-                Logger.WARNING(block.toString() + " is mystery.");
+                Logger.WARNING(block + " is mystery.");
                 return false;
             }
         } catch (final NullPointerException e) {
@@ -116,25 +80,9 @@ public class MiningUtils {
     public static int mMarsID = -99;
     public static int mCometsID = -99;
 
-    public static AutoMap<GT_Worldgen_GT_Ore_Layer> getOresForDim(int dim) {
-        if (dim == -1) {
-            return Ores_Nether;
-        } else if (dim == 1) {
-            return Ores_End;
-        } else if (dim == mMoonID) {
-            return Ores_Moon;
-        } else if (dim == mMarsID) {
-            return Ores_Mars;
-        } else if (dim == mCometsID) {
-            return Ores_Comets;
-        } else {
-            return Ores_Overworld;
-        }
-    }
-
     public static void iterateAllOreTypes() {
-        HashMap<String, Integer> M = new HashMap<String, Integer>();
-        String aTextWorldGen = null;
+        HashMap<String, Integer> M = new HashMap<>();
+        String aTextWorldGen;
         if (MiningUtils.findAndMapOreTypesFromGT()) {
             int mapKey = 0;
             for (AutoMap<GT_Worldgen_GT_Ore_Layer> g : MiningUtils.mOreMaps) {
@@ -147,10 +95,8 @@ public class MiningUtils {
                         aTextWorldGen = h.mWorldGenName;
                     }
 
-                    // if (M.containsKey(h.aTextWorldgen + h.mWorldGenName)) {
                     M.put(aTextWorldGen + h.mWorldGenName, mapKey);
                     Logger.INFO("Found Vein type: " + aTextWorldGen + h.mWorldGenName + " in map with key: " + mapKey);
-                    // }
                 }
                 mapKey++;
             }
@@ -158,13 +104,13 @@ public class MiningUtils {
     }
 
     public static AutoMap<GT_Worldgen_GT_Ore_Layer>[] mOreMaps = new AutoMap[7];
-    private static AutoMap<GT_Worldgen_GT_Ore_Layer> Ores_Overworld = new AutoMap<GT_Worldgen_GT_Ore_Layer>();
-    private static AutoMap<GT_Worldgen_GT_Ore_Layer> Ores_Nether = new AutoMap<GT_Worldgen_GT_Ore_Layer>();
-    private static AutoMap<GT_Worldgen_GT_Ore_Layer> Ores_End = new AutoMap<GT_Worldgen_GT_Ore_Layer>();
-    private static AutoMap<GT_Worldgen_GT_Ore_Layer> Ores_Moon = new AutoMap<GT_Worldgen_GT_Ore_Layer>();
-    private static AutoMap<GT_Worldgen_GT_Ore_Layer> Ores_Mars = new AutoMap<GT_Worldgen_GT_Ore_Layer>();
-    private static AutoMap<GT_Worldgen_GT_Ore_Layer> Ores_Comets = new AutoMap<GT_Worldgen_GT_Ore_Layer>();
-    private static AutoMap<GT_Worldgen_GT_Ore_Layer> Ores_Misc = new AutoMap<GT_Worldgen_GT_Ore_Layer>();
+    private static final AutoMap<GT_Worldgen_GT_Ore_Layer> Ores_Overworld = new AutoMap<>();
+    private static final AutoMap<GT_Worldgen_GT_Ore_Layer> Ores_Nether = new AutoMap<>();
+    private static final AutoMap<GT_Worldgen_GT_Ore_Layer> Ores_End = new AutoMap<>();
+    private static final AutoMap<GT_Worldgen_GT_Ore_Layer> Ores_Moon = new AutoMap<>();
+    private static final AutoMap<GT_Worldgen_GT_Ore_Layer> Ores_Mars = new AutoMap<>();
+    private static final AutoMap<GT_Worldgen_GT_Ore_Layer> Ores_Comets = new AutoMap<>();
+    private static final AutoMap<GT_Worldgen_GT_Ore_Layer> Ores_Misc = new AutoMap<>();
 
     public static boolean findAndMapOreTypesFromGT() {
         // Gets Moon ID
@@ -177,7 +123,7 @@ public class MiningUtils {
                         ReflectionUtils.getClass("micdoodle8.mods.galacticraft.core.util.ConfigManagerCore"),
                         "idDimensionMoon").getInt(null);
             }
-        } catch (IllegalArgumentException | IllegalAccessException e) {}
+        } catch (IllegalArgumentException | IllegalAccessException ignored) {}
 
         // Gets Mars ID
         try {
@@ -187,7 +133,7 @@ public class MiningUtils {
                         ReflectionUtils.getClass("micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars"),
                         "dimensionIDMars").getInt(null);
             }
-        } catch (IllegalArgumentException | IllegalAccessException e) {}
+        } catch (IllegalArgumentException | IllegalAccessException ignored) {}
 
         // Get Comets ID
         try {
@@ -198,7 +144,7 @@ public class MiningUtils {
                                 .getClass("micdoodle8.mods.galacticraft.planets.asteroids.ConfigManagerAsteroids"),
                         "dimensionIDAsteroids").getInt(null);
             }
-        } catch (IllegalArgumentException | IllegalAccessException e) {}
+        } catch (IllegalArgumentException | IllegalAccessException ignored) {}
 
         // Clear Cache
         Ores_Overworld.clear();

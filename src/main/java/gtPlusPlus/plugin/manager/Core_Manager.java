@@ -7,7 +7,7 @@ import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class Core_Manager {
 
-    public static AutoMap<IPlugin> mPlugins = new AutoMap<IPlugin>();
+    public static AutoMap<IPlugin> mPlugins = new AutoMap<>();
 
     /**
      * @param plugin - Dynamically registers the plugin for loading.
@@ -36,7 +36,7 @@ public class Core_Manager {
                 }
             }
             return true;
-        } catch (Throwable t) {}
+        } catch (Throwable ignored) {}
         return false;
     }
 
@@ -50,7 +50,7 @@ public class Core_Manager {
                 }
             }
             return true;
-        } catch (Throwable t) {}
+        } catch (Throwable ignored) {}
         return false;
     }
 
@@ -64,11 +64,11 @@ public class Core_Manager {
                 }
             }
             return true;
-        } catch (Throwable t) {}
+        } catch (Throwable ignored) {}
         return false;
     }
 
-    public static boolean serverStart() {
+    public static void serverStart() {
         try {
             for (IPlugin h : mPlugins) {
                 if (h.serverStart()) {
@@ -77,12 +77,10 @@ public class Core_Manager {
                     Logger.INFO("[Plugin] Failed during Server Start Phase for " + h.getPluginName() + ".");
                 }
             }
-            return true;
-        } catch (Throwable t) {}
-        return false;
+        } catch (Throwable ignored) {}
     }
 
-    public static boolean serverStop() {
+    public static void serverStop() {
         try {
             for (IPlugin h : mPlugins) {
                 if (h.serverStop()) {
@@ -91,8 +89,6 @@ public class Core_Manager {
                     Logger.INFO("[Plugin] Failed during Server Stop Phase for " + h.getPluginName() + ".");
                 }
             }
-            return true;
-        } catch (Throwable t) {}
-        return false;
+        } catch (Throwable ignored) {}
     }
 }

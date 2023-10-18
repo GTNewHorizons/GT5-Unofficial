@@ -21,7 +21,7 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class PollutionUtils {
 
-    public static AutoMap<FluidStack> mPollutionFluidStacks = new AutoMap<FluidStack>();
+    public static AutoMap<FluidStack> mPollutionFluidStacks = new AutoMap<>();
 
     public static boolean isPollutionEnabled() {
         return GT_Mod.gregtechproxy.mPollution;
@@ -35,64 +35,54 @@ public class PollutionUtils {
         return false;
     }
 
-    public static boolean addPollution(IHasWorldObjectAndCoords aTileOfSomeSort, int pollutionValue) {
+    public static void addPollution(IHasWorldObjectAndCoords aTileOfSomeSort, int pollutionValue) {
         if (GT_Mod.gregtechproxy.mPollution) {
-            IHasWorldObjectAndCoords j = (IHasWorldObjectAndCoords) aTileOfSomeSort;
-            Chunk c = j.getWorld().getChunkFromBlockCoords(j.getXCoord(), j.getZCoord());
-            return addPollution(c, pollutionValue);
+            Chunk c = aTileOfSomeSort.getWorld()
+                    .getChunkFromBlockCoords(aTileOfSomeSort.getXCoord(), aTileOfSomeSort.getZCoord());
+            addPollution(c, pollutionValue);
         }
-        return false;
     }
 
-    public static boolean addPollution(Chunk aChunk, int pollutionValue) {
+    public static void addPollution(Chunk aChunk, int pollutionValue) {
         if (GT_Mod.gregtechproxy.mPollution) {
             GT_Pollution.addPollution(aChunk, pollutionValue);
-            return true;
         }
-        return false;
     }
 
-    public static boolean removePollution(IGregTechTileEntity te, int pollutionValue) {
-        return addPollution(te, -pollutionValue);
+    public static void removePollution(IGregTechTileEntity te, int pollutionValue) {
+        addPollution(te, -pollutionValue);
     }
 
-    public static boolean removePollution(IHasWorldObjectAndCoords aTileOfSomeSort, int pollutionValue) {
-        return addPollution(aTileOfSomeSort, -pollutionValue);
+    public static void removePollution(Chunk aChunk, int pollutionValue) {
+        addPollution(aChunk, -pollutionValue);
     }
 
-    public static boolean removePollution(Chunk aChunk, int pollutionValue) {
-        return addPollution(aChunk, -pollutionValue);
-    }
-
-    public static boolean nullifyPollution(IGregTechTileEntity te) {
+    public static void nullifyPollution(IGregTechTileEntity te) {
         if (te == null) {
-            return false;
+            return;
         }
-        return nullifyPollution((IHasWorldObjectAndCoords) te);
+        nullifyPollution((IHasWorldObjectAndCoords) te);
     }
 
-    public static boolean nullifyPollution(IHasWorldObjectAndCoords aTileOfSomeSort) {
+    public static void nullifyPollution(IHasWorldObjectAndCoords aTileOfSomeSort) {
         if (aTileOfSomeSort == null) {
-            return false;
+            return;
         }
-        IHasWorldObjectAndCoords j = (IHasWorldObjectAndCoords) aTileOfSomeSort;
-        Chunk c = j.getWorld().getChunkFromBlockCoords(j.getXCoord(), j.getZCoord());
-        return nullifyPollution(c);
+        Chunk c = aTileOfSomeSort.getWorld()
+                .getChunkFromBlockCoords(aTileOfSomeSort.getXCoord(), aTileOfSomeSort.getZCoord());
+        nullifyPollution(c);
     }
 
-    public static boolean nullifyPollution(Chunk aChunk) {
+    public static void nullifyPollution(Chunk aChunk) {
         if (GT_Mod.gregtechproxy.mPollution) {
             if (aChunk == null) {
-                return false;
+                return;
             }
             int getCurrentPollution = getPollution(aChunk);
-            if (getCurrentPollution <= 0) {
-                return false;
-            } else {
-                return removePollution(aChunk, getCurrentPollution);
+            if (getCurrentPollution > 0) {
+                removePollution(aChunk, getCurrentPollution);
             }
         }
-        return false;
     }
 
     public static int getPollution(IGregTechTileEntity te) {
@@ -103,7 +93,7 @@ public class PollutionUtils {
         return GT_Pollution.getPollution(te);
     }
 
-    public static boolean setPollutionFluids() {
+    public static void setPollutionFluids() {
         if (mPollutionFluidStacks.isEmpty()) {
             FluidStack CD, CM, SD;
             CD = FluidUtils.getFluidStack("carbondioxide", 1000);
@@ -147,17 +137,10 @@ public class PollutionUtils {
                     PollutionUtils.mPollutionFluidStacks.put(SD);
                 }
             }
-            if (PollutionUtils.mPollutionFluidStacks.size() > 0) {
-                return true;
-            }
-            return false;
         } else {
             if (mPollutionFluidStacks.size() != 3) {
                 Logger.INFO("Unable to detect all 3 pollution fluids. Found: ");
                 Logger.INFO(ArrayUtils.toString(mPollutionFluidStacks));
-                return false;
-            } else {
-                return true;
             }
         }
     }

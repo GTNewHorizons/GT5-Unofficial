@@ -16,7 +16,6 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import gregtech.api.enums.Mods;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
@@ -32,7 +31,6 @@ import gtPlusPlus.preloader.CORE_Preloader;
 import gtPlusPlus.xmod.gregtech.HANDLER_GT;
 import gtPlusPlus.xmod.gregtech.api.util.GTPP_Config;
 
-@MCVersion(value = "1.7.10")
 @Mod(
         modid = Mods.Names.G_T_PLUS_PLUS_EVERGLADES,
         name = Everglades.NAME,

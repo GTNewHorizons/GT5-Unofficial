@@ -198,29 +198,30 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
             if (side == this.getBaseMetaTileEntity().getFrontFacing()) {
                 final float[] tCoords = GT_Utility.getClickedFacingCoords(side, aX, aY, aZ);
                 switch ((byte) ((byte) (int) (tCoords[0] * 2.0F) + (2 * (byte) (int) (tCoords[1] * 2.0F)))) {
-                    case 0:
+                    case 0 -> {
                         try {
                             CORE.sTesseractTerminalOwnershipMap.get(mOwner).remove(this.mFrequency);
                         } catch (Throwable t) {}
                         this.mFrequency -= 64;
-                        break;
-                    case 1:
+                    }
+                    case 1 -> {
                         try {
                             CORE.sTesseractTerminalOwnershipMap.get(mOwner).remove(this.mFrequency);
                         } catch (Throwable t) {}
                         this.mFrequency += 64;
-                        break;
-                    case 2:
+                    }
+                    case 2 -> {
                         try {
                             CORE.sTesseractTerminalOwnershipMap.get(mOwner).remove(this.mFrequency);
                         } catch (Throwable t) {}
                         this.mFrequency -= 512;
-                        break;
-                    case 3:
+                    }
+                    case 3 -> {
                         try {
                             CORE.sTesseractTerminalOwnershipMap.get(mOwner).remove(this.mFrequency);
                         } catch (Throwable t) {}
                         this.mFrequency += 512;
+                    }
                 }
                 GT_Utility.sendChatToPlayer(
                         aPlayer,

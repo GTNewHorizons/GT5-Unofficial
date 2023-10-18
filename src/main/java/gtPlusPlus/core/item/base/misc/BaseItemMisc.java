@@ -130,9 +130,9 @@ public class BaseItemMisc extends Item {
         DROP("Droplet", " Droplet", "droplet"),
         MUSHROOM("Mushroom", " Mushroom", "mushroom");
 
-        private String TYPE;
-        private String DISPLAY_NAME_SUFFIX;
-        private String OREDICT_PREFIX;
+        private final String TYPE;
+        private final String DISPLAY_NAME_SUFFIX;
+        private final String OREDICT_PREFIX;
 
         private MiscTypes(final String LocalName, final String DisplayNameSuffix, final String OreDictPrefix) {
             this.TYPE = LocalName;

@@ -1,6 +1,12 @@
 package gtPlusPlus.core.recipe;
 
-import static gregtech.api.enums.Mods.*;
+import static gregtech.api.enums.Mods.BartWorks;
+import static gregtech.api.enums.Mods.COFHCore;
+import static gregtech.api.enums.Mods.EternalSingularity;
+import static gregtech.api.enums.Mods.GoodGenerator;
+import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.enums.Mods.Railcraft;
+import static gregtech.api.enums.Mods.RemoteIO;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -43,10 +49,6 @@ import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
 public class RECIPES_Machines {
 
     // Outputs
-    // static ItemStack RECIPE_BufferCore_ULV = new ItemStack(GregtechEnergyBuffer.itemBufferCore);
-    public static ItemStack RECIPE_SteamCondenser;
-    public static ItemStack RECIPE_IronBlastFurnace;
-    public static ItemStack RECIPE_IronPlatedBricks;
     public static ItemStack RECIPE_Buffer_ULV = GregtechItemList.Energy_Buffer_1by1_ULV.get(1);
     public static ItemStack RECIPE_Buffer_LV = GregtechItemList.Energy_Buffer_1by1_LV.get(1);
     public static ItemStack RECIPE_Buffer_MV = GregtechItemList.Energy_Buffer_1by1_MV.get(1);
@@ -235,8 +237,6 @@ public class RECIPES_Machines {
         fakeMachineCasingCovers();
         overflowValveCovers();
         superBuses();
-        roundRobinators();
-        chunkloaders();
         distillus();
         algaeFarm();
         chemPlant();
@@ -250,10 +250,8 @@ public class RECIPES_Machines {
         chiselBuses();
 
         gt4FarmManager();
-        gt4Redstone();
         gt4Inventory();
 
-        // multiGeneratorArray();
         multiForgeHammer();
         multiMolecularTransformer();
         multiXlTurbines();
@@ -325,141 +323,7 @@ public class RECIPES_Machines {
         }
     }
 
-    private static void gt4Redstone() {
-
-        RecipeUtils.addShapedRecipe(
-                "plateIron",
-                "plateGlass",
-                "plateIron",
-                "plateGlass",
-                ItemUtils.getSimpleStack(Blocks.redstone_lamp),
-                "plateGlass",
-                "plateIron",
-                "plateGlass",
-                "plateIron",
-                GregtechItemList.GT4_Redstone_Lamp.get(2));
-        RecipeUtils.addShapedRecipe(
-                "plateAluminium",
-                "plateGlass",
-                "plateAluminium",
-                "plateGlass",
-                ItemUtils.getSimpleStack(Blocks.redstone_lamp),
-                "plateGlass",
-                "plateAluminium",
-                "plateGlass",
-                "plateAluminium",
-                GregtechItemList.GT4_Redstone_Lamp.get(8));
-
-        RecipeUtils.addShapedRecipe(
-                "plateIron",
-                "plateIron",
-                "plateIron",
-                ItemUtils.getSimpleStack(Items.comparator),
-                ItemList.Cover_Screen.get(1),
-                ItemUtils.getSimpleStack(Items.comparator),
-                "plateIron",
-                "plateIron",
-                "plateIron",
-                GregtechItemList.GT4_Redstone_Display.get(2));
-        RecipeUtils.addShapedRecipe(
-                "plateAluminium",
-                "plateAluminium",
-                "plateAluminium",
-                ItemUtils.getSimpleStack(Items.comparator),
-                ItemList.Cover_Screen.get(1),
-                ItemUtils.getSimpleStack(Items.comparator),
-                "plateAluminium",
-                "plateAluminium",
-                "plateAluminium",
-                GregtechItemList.GT4_Redstone_Display.get(8));
-
-        RecipeUtils.addShapedRecipe(
-                "plateIron",
-                "plateIron",
-                "plateIron",
-                ItemUtils.getSimpleStack(Items.comparator),
-                ItemList.Cover_EnergyDetector.get(1),
-                ItemUtils.getSimpleStack(Items.comparator),
-                "plateIron",
-                "plateIron",
-                "plateIron",
-                GregtechItemList.GT4_Redstone_Scale.get(2));
-        RecipeUtils.addShapedRecipe(
-                "plateAluminium",
-                "plateAluminium",
-                "plateAluminium",
-                ItemUtils.getSimpleStack(Items.comparator),
-                ItemList.Cover_EnergyDetector.get(1),
-                ItemUtils.getSimpleStack(Items.comparator),
-                "plateAluminium",
-                "plateAluminium",
-                "plateAluminium",
-                GregtechItemList.GT4_Redstone_Scale.get(8));
-
-        CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] { CI.getTieredMachineHull(1), ItemUtils.getSimpleStack(Blocks.stone_button, 16) },
-                null,
-                GregtechItemList.GT4_Redstone_Button_Panel.get(1),
-                800,
-                4);
-
-        RecipeUtils.addShapedRecipe(
-                "plateIron",
-                ItemUtils.getSimpleStack(Items.repeater),
-                "plateIron",
-                ItemUtils.getSimpleStack(Items.comparator),
-                CI.getTieredCircuitOreDictName(1),
-                ItemUtils.getSimpleStack(Items.comparator),
-                "plateIron",
-                ItemUtils.getSimpleStack(Items.repeater),
-                "plateIron",
-                GregtechItemList.GT4_Redstone_Circuit.get(1));
-        RecipeUtils.addShapedRecipe(
-                "plateAluminium",
-                ItemUtils.getSimpleStack(Items.repeater),
-                "plateAluminium",
-                ItemUtils.getSimpleStack(Items.comparator),
-                CI.getTieredCircuitOreDictName(1),
-                ItemUtils.getSimpleStack(Items.comparator),
-                "plateAluminium",
-                ItemUtils.getSimpleStack(Items.repeater),
-                "plateAluminium",
-                GregtechItemList.GT4_Redstone_Circuit.get(2));
-    }
-
     private static void gt4Inventory() {
-
-        ItemList[] aEnergyHatches = new ItemList[] { ItemList.Hatch_Energy_LV, ItemList.Hatch_Energy_MV,
-                ItemList.Hatch_Energy_HV, ItemList.Hatch_Energy_EV, ItemList.Hatch_Energy_IV, ItemList.Hatch_Energy_LuV,
-                ItemList.Hatch_Energy_ZPM, ItemList.Hatch_Energy_UV };
-
-        ItemList[] aRegulators = new ItemList[] { ItemList.Automation_Regulator_LV, ItemList.Automation_Regulator_MV,
-                ItemList.Automation_Regulator_HV, ItemList.Automation_Regulator_EV, ItemList.Automation_Regulator_IV,
-                ItemList.Automation_Regulator_LuV, ItemList.Automation_Regulator_ZPM,
-                ItemList.Automation_Regulator_UV };
-
-        GregtechItemList[] aOutputInventoryManager = new GregtechItemList[] {
-                GregtechItemList.GT4_Electric_Inventory_Manager_LV, GregtechItemList.GT4_Electric_Inventory_Manager_MV,
-                GregtechItemList.GT4_Electric_Inventory_Manager_HV, GregtechItemList.GT4_Electric_Inventory_Manager_EV,
-                GregtechItemList.GT4_Electric_Inventory_Manager_IV, GregtechItemList.GT4_Electric_Inventory_Manager_LuV,
-                GregtechItemList.GT4_Electric_Inventory_Manager_ZPM,
-                GregtechItemList.GT4_Electric_Inventory_Manager_UV };
-
-        int aTier = 1;
-        for (int i = 0; i < 8; i++) {
-            RecipeUtils.addShapedRecipe(
-                    CI.getTieredCircuitOreDictName(aTier),
-                    aRegulators[i].get(1),
-                    CI.getTieredCircuitOreDictName(aTier),
-                    CI.getRobotArm(aTier, 1),
-                    CI.getTieredMachineHull(aTier),
-                    CI.getRobotArm(aTier, 1),
-                    CI.getTieredCircuitOreDictName(aTier),
-                    aEnergyHatches[i].get(1),
-                    CI.getTieredCircuitOreDictName(aTier),
-                    aOutputInventoryManager[i].get(1));
-            aTier++;
-        }
 
         GregtechItemList[] aOutputElectricCraftingTable = new GregtechItemList[] {
                 GregtechItemList.GT4_Electric_Auto_Workbench_LV, GregtechItemList.GT4_Electric_Auto_Workbench_MV,
@@ -467,7 +331,7 @@ public class RECIPES_Machines {
                 GregtechItemList.GT4_Electric_Auto_Workbench_IV, GregtechItemList.GT4_Electric_Auto_Workbench_LuV,
                 GregtechItemList.GT4_Electric_Auto_Workbench_ZPM, GregtechItemList.GT4_Electric_Auto_Workbench_UV };
 
-        aTier = 1;
+        int aTier = 1;
         for (int i = 0; i < 8; i++) {
             RecipeUtils.addShapedRecipe(
                     ItemUtils.getOrePrefixStack(OrePrefixes.plate, CI.tieredMaterials[aTier], 1),
@@ -529,7 +393,7 @@ public class RECIPES_Machines {
                         ALLOY.INCOLOY_MA956.getFluidStack(144 * 9 * (8)), ALLOY.KANTHAL.getFluidStack(144 * 1 * (4)), },
                 GregtechItemList.Controller_MolecularTransformer.get(1),
                 20 * 60 * 10 * (1),
-                (int) MaterialUtils.getVoltageForTier(6));
+                MaterialUtils.getVoltageForTier(6));
 
         CORE.RA.addSixSlotAssemblingRecipe(
                 new ItemStack[] { CI.getNumberedAdvancedCircuit(16), CI.getPlate(6, 4), CI.getScrew(6, 8),
@@ -881,39 +745,16 @@ public class RECIPES_Machines {
                 5);
     }
 
-    private static void chunkloaders() {
-
-        ItemStack aOutputs[] = new ItemStack[] { GregtechItemList.GT_Chunkloader_HV.get(1L),
-                GregtechItemList.GT_Chunkloader_IV.get(1L), GregtechItemList.GT_Chunkloader_ZPM.get(1L), };
-
-        int aIndex = 0;
-
-        for (int i = 3; i < 8; i++) {
-            if (i == 4 || i == 6) {
-                continue;
-            }
-            CORE.RA.addSixSlotAssemblingRecipe(
-                    new ItemStack[] { CI.getNumberedAdvancedCircuit(21), CI.getElectricPiston(i, 10),
-                            CI.getFieldGenerator(i + 1, 6), CI.getPlate(i, 16), CI.getTransmissionComponent(i - 1, 8),
-                            CI.getTieredComponent(OrePrefixes.cableGt08, i, 16) },
-                    ALLOY.EGLIN_STEEL.getFluidStack(i * (144 * 4)),
-                    aOutputs[aIndex++].copy(),
-                    300 * 20,
-                    MaterialUtils.getVoltageForTier(i));
-        }
-    }
-
     private static void overflowValveCovers() {
-        ItemStack aOutputs[] = new ItemStack[] { GregtechItemList.Cover_Overflow_ULV.get(1L),
-                GregtechItemList.Cover_Overflow_LV.get(1L), GregtechItemList.Cover_Overflow_MV.get(1L),
-                GregtechItemList.Cover_Overflow_HV.get(1L), GregtechItemList.Cover_Overflow_EV.get(1L),
-                GregtechItemList.Cover_Overflow_IV.get(1L), };
+        ItemStack aOutputs[] = new ItemStack[] { GregtechItemList.Cover_Overflow_LV.get(1L),
+                GregtechItemList.Cover_Overflow_MV.get(1L), GregtechItemList.Cover_Overflow_HV.get(1L),
+                GregtechItemList.Cover_Overflow_EV.get(1L), GregtechItemList.Cover_Overflow_IV.get(1L), };
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 1; i < aOutputs.length; i++) {
             CORE.RA.addSixSlotAssemblingRecipe(
                     new ItemStack[] { CI.getNumberedBioCircuit(19), CI.getElectricPump(i, 2), CI.getElectricMotor(i, 2),
                             CI.getPlate(i, 4) },
-                    Materials.SolderingAlloy.getFluid(i * (144 * 1)),
+                    Materials.SolderingAlloy.getFluid(i * (144)),
                     aOutputs[i].copy(),
                     20 * 20,
                     MaterialUtils.getVoltageForTier(i));
@@ -925,7 +766,7 @@ public class RECIPES_Machines {
         GregtechItemList[] aHulls = new GregtechItemList[] { GregtechItemList.GTPP_Casing_ULV,
                 GregtechItemList.GTPP_Casing_LV, GregtechItemList.GTPP_Casing_MV, GregtechItemList.GTPP_Casing_HV,
                 GregtechItemList.GTPP_Casing_EV, GregtechItemList.GTPP_Casing_IV, GregtechItemList.GTPP_Casing_LuV,
-                GregtechItemList.GTPP_Casing_ZPM, GregtechItemList.GTPP_Casing_UV, GregtechItemList.GTPP_Casing_MAX };
+                GregtechItemList.GTPP_Casing_ZPM, GregtechItemList.GTPP_Casing_UV, GregtechItemList.GTPP_Casing_UHV };
 
         for (int i = 0; i < 10; i++) {
             CORE.RA.addSixSlotAssemblingRecipe(
@@ -1044,61 +885,6 @@ public class RECIPES_Machines {
                 ItemUtils.getSimpleStack(ModBlocks.blockPooCollector, 8, 1),
                 20 * 60 * 5,
                 500);
-
-        // Basic Steam Turbine
-        RecipeUtils.addShapedGregtechRecipe(
-                CI.getTieredComponent(OrePrefixes.pipeSmall, 0, 1),
-                "circuitPrimitive",
-                CI.getTieredComponent(OrePrefixes.pipeSmall, 0, 1),
-                ALLOY.TUMBAGA.getRotor(1),
-                CI.machineCasing_ULV,
-                ALLOY.TUMBAGA.getRotor(1),
-                CI.getElectricMotor(0, 1),
-                "cableGt01RedAlloy",
-                CI.getElectricMotor(0, 1),
-                GregtechItemList.Generator_Steam_Turbine_ULV.get(1));
-
-        // Basic Gas Turbine
-        RecipeUtils.addShapedGregtechRecipe(
-                "circuitPrimitive",
-                ALLOY.TUMBAGA.getRotor(1),
-                "circuitPrimitive",
-                ALLOY.TUMBAGA.getRotor(1),
-                CI.machineCasing_ULV,
-                ALLOY.TUMBAGA.getRotor(1),
-                CI.getElectricMotor(0, 1),
-                "cableGt01RedAlloy",
-                CI.getElectricMotor(0, 1),
-                GregtechItemList.Generator_Gas_Turbine_ULV.get(1));
-
-        // Basic Combustion Turbine
-        RecipeUtils.addShapedGregtechRecipe(
-                CI.getElectricPiston(0, 1),
-                "circuitPrimitive",
-                CI.getElectricPiston(0, 1),
-                CI.getElectricMotor(0, 1),
-                CI.machineCasing_ULV,
-                CI.getElectricMotor(0, 1),
-                ALLOY.TUMBAGA.getGear(1),
-                "cableGt01RedAlloy",
-                ALLOY.TUMBAGA.getGear(1),
-                GregtechItemList.Generator_Diesel_ULV.get(1));
-
-        // Steam Condenser
-        if (CORE.ConfigSwitches.enableMachine_SteamConverter) {
-            RECIPE_SteamCondenser = GregtechItemList.Condensor_MAX.get(1);
-            RecipeUtils.addShapedGregtechRecipe(
-                    pipeLargeCopper,
-                    pipeHugeSteel,
-                    pipeLargeCopper,
-                    plateEnergeticAlloy,
-                    CI.electricPump_HV,
-                    plateEnergeticAlloy,
-                    plateEnergeticAlloy,
-                    pipeLargeCopper,
-                    plateEnergeticAlloy,
-                    RECIPE_SteamCondenser);
-        }
 
         ItemStack aBronzeBricks = ItemUtils.simpleMetaStack(GregTech_API.sBlockCasings1, 10, 1);
         // Steam Macerator Multi
@@ -2004,18 +1790,6 @@ public class RECIPES_Machines {
                     CI.getTieredCircuit(1),
                     GregtechItemList.Pollution_Detector.get(1));
 
-            // ULV
-            RecipeUtils.addShapedGregtechRecipe(
-                    CI.component_Plate[0],
-                    ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 0, 1),
-                    CI.component_Plate[0],
-                    CI.component_Plate[0],
-                    CI.electricMotor_ULV,
-                    CI.component_Plate[0],
-                    CI.getTieredCircuit(0),
-                    CI.machineHull_ULV,
-                    CI.getTieredCircuit(0),
-                    GregtechItemList.Pollution_Cleaner_ULV.get(1));
             // LV
             RecipeUtils.addShapedGregtechRecipe(
                     CI.component_Plate[1],
@@ -2118,10 +1892,10 @@ public class RECIPES_Machines {
                     ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 1, 1),
                     CI.component_Plate[9],
                     CI.component_Plate[9],
-                    CI.electricMotor_MAX,
+                    CI.electricMotor_UHV,
                     CI.component_Plate[9],
                     CI.getTieredCircuit(9),
-                    CI.machineHull_MAX,
+                    CI.machineHull_UHV,
                     CI.getTieredCircuit(9),
                     GregtechItemList.Pollution_Cleaner_MAX.get(1));
         }
@@ -2972,33 +2746,31 @@ public class RECIPES_Machines {
 
     private static void wirelessChargers() {
 
-        ItemStack[] aChargers = new ItemStack[] { null, GregtechItemList.Charger_LV.get(1),
+        ItemStack[] aChargers = new ItemStack[] { GregtechItemList.Charger_LV.get(1),
                 GregtechItemList.Charger_MV.get(1), GregtechItemList.Charger_HV.get(1),
                 GregtechItemList.Charger_EV.get(1), GregtechItemList.Charger_IV.get(1),
                 GregtechItemList.Charger_LuV.get(1), GregtechItemList.Charger_ZPM.get(1),
-                GregtechItemList.Charger_UV.get(1), GregtechItemList.Charger_MAX.get(1) };
+                GregtechItemList.Charger_UV.get(1), GregtechItemList.Charger_UHV.get(1) };
 
-        for (int i = 0; i < 10; i++) {
-            if (i == 0) {
-                continue;
-            }
-            int aTier = (i + 1);
-            ItemStack[] aInputs = new ItemStack[] { CI.getTieredMachineHull(i, 1), CI.getTransmissionComponent(i, 2),
-                    CI.getFieldGenerator(i, 1), CI.getTieredComponent(OrePrefixes.plate, aTier, 4),
-                    CI.getTieredComponent(OrePrefixes.circuit, aTier, 2), };
+        for (int tier = 1; tier < aChargers.length; tier++) {
+
+            ItemStack[] aInputs = new ItemStack[] { CI.getTieredMachineHull(tier, 1),
+                    CI.getTransmissionComponent(tier, 2), CI.getFieldGenerator(tier, 1),
+                    CI.getTieredComponent(OrePrefixes.plate, tier, 4),
+                    CI.getTieredComponent(OrePrefixes.circuit, tier, 2), };
             CORE.RA.addSixSlotAssemblingRecipe(
                     aInputs,
-                    CI.getAlternativeTieredFluid(i, (144 * 2 * aTier)), // Input Fluid
-                    aChargers[i],
-                    45 * 10 * 1 * (aTier),
-                    MaterialUtils.getVoltageForTier(i));
+                    CI.getAlternativeTieredFluid(tier, (144 * 2 * tier)), // Input Fluid
+                    aChargers[tier],
+                    45 * 10 * (tier),
+                    MaterialUtils.getVoltageForTier(tier));
         }
     }
 
     private static void largeArcFurnace() {
         int aCostMultiplier = 1;
         CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] { CI.getTieredMachineHull(-1, 1 * aCostMultiplier),
+                new ItemStack[] { GregtechItemList.Casing_Multi_Use.get(aCostMultiplier),
                         CI.getTransmissionComponent(2, 2 * aCostMultiplier),
                         CI.getElectricPiston(4, 2 * aCostMultiplier),
                         CI.getTieredComponent(OrePrefixes.plate, 5, 4 * aCostMultiplier),
@@ -3022,8 +2794,8 @@ public class RECIPES_Machines {
     private static void industrialVacuumFurnace() {
 
         CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] { CI.getTieredMachineHull(-1, 1), CI.getHeatCoil(2), CI.getElectricPiston(3, 2),
-                        CI.getTieredComponent(OrePrefixes.plate, 6, 4),
+                new ItemStack[] { GregtechItemList.Casing_Multi_Use.get(1), CI.getHeatCoil(2),
+                        CI.getElectricPiston(3, 2), CI.getTieredComponent(OrePrefixes.plate, 6, 4),
                         CI.getTieredComponent(OrePrefixes.gearGt, 6, 2), },
                 CI.getTertiaryTieredFluid(5, (144 * 2 * 4)), // Input Fluid
                 GregtechItemList.Casing_Vacuum_Furnace.get(1),
@@ -3246,19 +3018,17 @@ public class RECIPES_Machines {
     }
 
     private static void superBuses() {
-        GregtechItemList[] mSuperBusesInput = new GregtechItemList[] { GregtechItemList.Hatch_SuperBus_Input_ULV,
-                GregtechItemList.Hatch_SuperBus_Input_LV, GregtechItemList.Hatch_SuperBus_Input_MV,
-                GregtechItemList.Hatch_SuperBus_Input_HV, GregtechItemList.Hatch_SuperBus_Input_EV,
-                GregtechItemList.Hatch_SuperBus_Input_IV, GregtechItemList.Hatch_SuperBus_Input_LuV,
-                GregtechItemList.Hatch_SuperBus_Input_ZPM, GregtechItemList.Hatch_SuperBus_Input_UV,
-                GregtechItemList.Hatch_SuperBus_Input_MAX, };
+        GregtechItemList[] mSuperBusesInput = new GregtechItemList[] { GregtechItemList.Hatch_SuperBus_Input_LV,
+                GregtechItemList.Hatch_SuperBus_Input_MV, GregtechItemList.Hatch_SuperBus_Input_HV,
+                GregtechItemList.Hatch_SuperBus_Input_EV, GregtechItemList.Hatch_SuperBus_Input_IV,
+                GregtechItemList.Hatch_SuperBus_Input_LuV, GregtechItemList.Hatch_SuperBus_Input_ZPM,
+                GregtechItemList.Hatch_SuperBus_Input_UV, GregtechItemList.Hatch_SuperBus_Input_MAX, };
 
-        GregtechItemList[] mSuperBusesOutput = new GregtechItemList[] { GregtechItemList.Hatch_SuperBus_Output_ULV,
-                GregtechItemList.Hatch_SuperBus_Output_LV, GregtechItemList.Hatch_SuperBus_Output_MV,
-                GregtechItemList.Hatch_SuperBus_Output_HV, GregtechItemList.Hatch_SuperBus_Output_EV,
-                GregtechItemList.Hatch_SuperBus_Output_IV, GregtechItemList.Hatch_SuperBus_Output_LuV,
-                GregtechItemList.Hatch_SuperBus_Output_ZPM, GregtechItemList.Hatch_SuperBus_Output_UV,
-                GregtechItemList.Hatch_SuperBus_Output_MAX, };
+        GregtechItemList[] mSuperBusesOutput = new GregtechItemList[] { GregtechItemList.Hatch_SuperBus_Output_LV,
+                GregtechItemList.Hatch_SuperBus_Output_MV, GregtechItemList.Hatch_SuperBus_Output_HV,
+                GregtechItemList.Hatch_SuperBus_Output_EV, GregtechItemList.Hatch_SuperBus_Output_IV,
+                GregtechItemList.Hatch_SuperBus_Output_LuV, GregtechItemList.Hatch_SuperBus_Output_ZPM,
+                GregtechItemList.Hatch_SuperBus_Output_UV, GregtechItemList.Hatch_SuperBus_Output_MAX, };
 
         ItemStack[] mInputHatch = new ItemStack[] { ItemList.Hatch_Input_Bus_EV.get(1),
                 ItemList.Hatch_Input_Bus_IV.get(1), ItemList.Hatch_Input_Bus_LuV.get(1),
@@ -3274,126 +3044,45 @@ public class RECIPES_Machines {
                 GregtechItemList.Hatch_SuperBus_Output_MV.get(1), GregtechItemList.Hatch_SuperBus_Output_HV.get(1),
                 GregtechItemList.Hatch_SuperBus_Output_EV.get(1), };
 
-        // Special Case recipes for ULV buses
-        {
-            int i = 0;
-            ItemStack[] aInputs1 = new ItemStack[] { CI.getNumberedCircuit(17), mInputHatch[i],
-                    CI.getElectricMotor(i, 2), CI.getConveyor(i, 5), CI.getBolt(i, 16),
-                    CI.getTieredComponent(OrePrefixes.circuit, i, 2) };
-            Logger.INFO("[FIND] " + ItemUtils.getArrayStackNames(aInputs1));
-            ItemStack[] aOutputs1 = new ItemStack[] { CI.getNumberedCircuit(18), mOutputHatch[i],
-                    CI.getElectricPiston(i, 2), CI.getConveyor(i, 5), CI.getGear(i, 3),
-                    CI.getTieredComponent(OrePrefixes.circuit, i, 2) };
-            Logger.INFO("[FIND] " + ItemUtils.getArrayStackNames(aOutputs1));
-
-            FluidStack a1 = CI.getAlternativeTieredFluid(i, 144 * 8);
-            FluidStack a2 = CI.getTertiaryTieredFluid(i, 144 * 8);
-
-            Logger.INFO("[FIND] Input Bus Fluid: " + ItemUtils.getFluidName(a1));
-            Logger.INFO("[FIND] Output Bus Fluid: " + ItemUtils.getFluidName(a2));
-
-            CORE.RA.addSixSlotAssemblingRecipe(
-                    aInputs1,
-                    a1,
-                    mSuperBusesInput[i].get(1),
-                    20 * 30 * 2 * i,
-                    (int) GT_Values.V[i]);
-
-            CORE.RA.addSixSlotAssemblingRecipe(
-                    aOutputs1,
-                    a2,
-                    mSuperBusesOutput[i].get(1),
-                    20 * 30 * 2 * i,
-                    (int) GT_Values.V[i]);
-        }
-
         // Input Buses
-        for (int i = 1; i < 10; i++) {
+        for (int i = 1; i < mSuperBusesInput.length; i++) {
             CORE.RA.addSixSlotAssemblingRecipe(
                     new ItemStack[] { CI.getNumberedCircuit(17), mInputHatch[i], CI.getElectricMotor(i, 2),
                             CI.getConveyor(i, 5), CI.getBolt(i, 16), CI.getTieredComponent(OrePrefixes.circuit, i, 2) },
                     CI.getAlternativeTieredFluid(i, 144 * 8),
-                    mSuperBusesInput[i].get(1),
+                    mSuperBusesInput[i - 1].get(1),
                     20 * 30 * 2,
                     (int) GT_Values.V[i]);
         }
         // Output Buses
-        for (int i = 1; i < 10; i++) {
+        for (int i = 1; i < mSuperBusesOutput.length; i++) {
             CORE.RA.addSixSlotAssemblingRecipe(
                     new ItemStack[] { CI.getNumberedCircuit(18), mOutputHatch[i], CI.getElectricPiston(i, 2),
                             CI.getConveyor(i, 5), CI.getGear(i, 3), CI.getTieredComponent(OrePrefixes.circuit, i, 2) },
                     CI.getTertiaryTieredFluid(i, 144 * 8),
-                    mSuperBusesOutput[i].get(1),
+                    mSuperBusesOutput[i - 1].get(1),
                     20 * 30 * 2,
                     (int) GT_Values.V[i]);
         }
     }
 
     private static void chiselBuses() {
-        ItemStack[] mSuperBusesInput = new ItemStack[] { ItemList.Hatch_Input_Bus_HV.get(1),
-                GregtechItemList.Hatch_SuperBus_Input_LV.get(1), GregtechItemList.Hatch_SuperBus_Input_MV.get(1),
-                GregtechItemList.Hatch_SuperBus_Input_HV.get(1), };
+        ItemStack[] mSuperBusesInput = new ItemStack[] { GregtechItemList.Hatch_SuperBus_Input_LV.get(1),
+                GregtechItemList.Hatch_SuperBus_Input_MV.get(1), GregtechItemList.Hatch_SuperBus_Input_HV.get(1), };
 
-        ItemStack[] mChiselBuses = new ItemStack[] { GregtechItemList.GT_MetaTileEntity_ChiselBus_I.get(1),
-                GregtechItemList.GT_MetaTileEntity_ChiselBus_II.get(1),
-                GregtechItemList.GT_MetaTileEntity_ChiselBus_III.get(1),
-                GregtechItemList.GT_MetaTileEntity_ChiselBus_IV.get(1), };
+        ItemStack[] mChiselBuses = new ItemStack[] { GregtechItemList.GT_MetaTileEntity_ChiselBus_LV.get(1),
+                GregtechItemList.GT_MetaTileEntity_ChiselBus_MV.get(1),
+                GregtechItemList.GT_MetaTileEntity_ChiselBus_HV.get(1), };
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 1; i < mChiselBuses.length; i++) {
             CORE.RA.addSixSlotAssemblingRecipe(
                     new ItemStack[] { CI.getNumberedCircuit(17), mSuperBusesInput[i], CI.getSensor(i, 1),
                             CI.getRobotArm(i, 2), CI.getBolt(i, 16), ItemUtils.getSimpleStack(Blocks.chest) },
                     CI.getAlternativeTieredFluid(i, 144 * 2),
-                    mChiselBuses[i],
+                    mChiselBuses[i - 1],
                     20 * 30 * 2,
                     (int) GT_Values.VP[i + 1]);
         }
     }
 
-    private static void roundRobinators() {
-
-        RecipeUtils.addShapedGregtechRecipe(
-                ItemUtils.getSimpleStack(Blocks.hopper),
-                "circuitPrimitive",
-                ItemUtils.getSimpleStack(Blocks.hopper),
-                CI.craftingToolWrench,
-                CI.machineCasing_ULV,
-                CI.craftingToolScrewdriver,
-                ItemUtils.getSimpleStack(Blocks.hopper),
-                "circuitPrimitive",
-                ItemUtils.getSimpleStack(Blocks.hopper),
-                ItemUtils.simpleMetaStack(ModBlocks.blockRoundRobinator, 0, 1));
-
-        ItemStack[] aRobinators = new ItemStack[] { ItemUtils.simpleMetaStack(ModBlocks.blockRoundRobinator, 0, 1),
-                ItemUtils.simpleMetaStack(ModBlocks.blockRoundRobinator, 1, 1),
-                ItemUtils.simpleMetaStack(ModBlocks.blockRoundRobinator, 2, 1),
-                ItemUtils.simpleMetaStack(ModBlocks.blockRoundRobinator, 3, 1),
-                ItemUtils.simpleMetaStack(ModBlocks.blockRoundRobinator, 4, 1), };
-
-        for (int i = 0; i < 5; i++) {
-            if (i == 0) {
-                CORE.RA.addSixSlotAssemblingRecipe(
-                        new ItemStack[] { CI.getNumberedCircuit(17), CI.getTieredMachineCasing(0),
-                                ItemUtils.getSimpleStack(Blocks.hopper, 4),
-                                CI.getTieredComponent(OrePrefixes.circuit, 0, 2) },
-                        GT_Values.NF, // Input Fluid
-                        aRobinators[i],
-                        45 * 10 * 1,
-                        8);
-                continue;
-            }
-            int aTier = i + 1;
-            ItemStack[] aInputs = new ItemStack[] { aRobinators[i - 1], CI.getTieredMachineHull(aTier, 1),
-                    CI.getConveyor(aTier, 2), CI.getElectricMotor(aTier, 2),
-                    CI.getTieredComponent(OrePrefixes.plate, aTier, 4),
-                    CI.getTieredComponent(OrePrefixes.circuit, i, 2), };
-
-            CORE.RA.addSixSlotAssemblingRecipe(
-                    aInputs,
-                    GT_Values.NF, // Input Fluid
-                    aRobinators[i],
-                    45 * 10 * 1 * (i + 1),
-                    MaterialUtils.getVoltageForTier(i));
-        }
-    }
 }

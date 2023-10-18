@@ -15,9 +15,9 @@ import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class FishPondFakeRecipe {
 
-    public static ArrayList<WeightedRandomFishable> fish = new ArrayList<WeightedRandomFishable>();
-    public static ArrayList<WeightedRandomFishable> junk = new ArrayList<WeightedRandomFishable>();
-    public static ArrayList<WeightedRandomFishable> treasure = new ArrayList<WeightedRandomFishable>();
+    public static ArrayList<WeightedRandomFishable> fish = new ArrayList<>();
+    public static ArrayList<WeightedRandomFishable> junk = new ArrayList<>();
+    public static ArrayList<WeightedRandomFishable> treasure = new ArrayList<>();
 
     @SuppressWarnings("unchecked")
     public static boolean generateFishPondRecipes() {
@@ -32,16 +32,16 @@ public class FishPondFakeRecipe {
             e.printStackTrace();
         }
 
-        AutoMap<ArrayList<WeightedRandomFishable>> mega = new AutoMap<ArrayList<WeightedRandomFishable>>();
+        AutoMap<ArrayList<WeightedRandomFishable>> mega = new AutoMap<>();
         mega.put(fish);
         mega.put(junk);
         mega.put(treasure);
 
         int mType = 14;
         for (ArrayList<WeightedRandomFishable> f : mega.values()) {
-            for (int e = 0; e < f.size(); e++) {
-                if (f.get(e) != null) {
-                    WeightedRandomFishable u = f.get(e);
+            for (WeightedRandomFishable weightedRandomFishable : f) {
+                if (weightedRandomFishable != null) {
+                    WeightedRandomFishable u = weightedRandomFishable;
                     try {
                         ItemStack t = (ItemStack) ReflectionUtils
                                 .getField(WeightedRandomFishable.class, "field_150711_b").get(u);

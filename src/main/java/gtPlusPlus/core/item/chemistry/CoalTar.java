@@ -156,8 +156,6 @@ public class CoalTar extends ItemPackage {
     private static void recipeCoalTarToCoalTarOil() {
         // v - Distill (60% Tar oil/15% Naphtha/20% Ethylbenzene/5% Anthracene)
         // Create Coal Tar Oil
-        // FluidUtils.generateFluidNonMolten("CoalTarOil", "Coal Tar Oil", 240, new short[]{240, 240, 150, 100}, null,
-        // null);
         GT_Values.RA.addDistilleryRecipe(
                 CI.getNumberedCircuit(1), // Circuit
                 FluidUtils.getFluidStack("fluid.coaltar", 1000), // aInput
@@ -299,8 +297,6 @@ public class CoalTar extends ItemPackage {
                 Utils.rgbtoHexValue(125, 125, 125));
         // v - Dehydrate
         // Lithium Peroxide - 2 LiOOH → Li2O2 + H2O2 + 2 H2O
-        // Lithium_Peroxide = FluidUtils.generateFluidNonMolten("LithiumPeroxide", "Lithium Peroxide", 446, new
-        // short[]{135, 135, 135, 100}, null, null);
     }
 
     @Override

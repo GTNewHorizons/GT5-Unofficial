@@ -91,8 +91,6 @@ public class BaseItemIngotHot extends BaseItemIngot {
         } else {
             this.base = i.registerIcon(
                     GTPlusPlus.ID + ":" + "item" + BaseItemComponent.ComponentTypes.HOTINGOT.getComponent());
-            // this.overlay = i.registerIcon(GTPlusPlus.ID + ":" +
-            // "item"+BaseItemComponent.ComponentTypes.HOTINGOT.getComponent()+"_Overlay");
         }
         // this.overlay = cellMaterial.getFluid(1000).getFluid().get
     }

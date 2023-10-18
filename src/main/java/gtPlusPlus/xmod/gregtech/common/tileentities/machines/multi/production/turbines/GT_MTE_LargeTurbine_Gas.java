@@ -132,11 +132,6 @@ public class GT_MTE_LargeTurbine_Gas extends GregtechMetaTileEntity_LargerTurbin
             if (totalFlow <= 0) return 0;
             tEU = GT_Utility.safeInt((long) totalFlow * fuelValue);
 
-            // log("Total Flow: "+totalFlow);
-            // log("Real Optimal Flow: "+actualOptimalFlow);
-            // log("Flow: "+flow);
-            // log("Remaining Flow: "+remainingFlow);
-
             if (totalFlow == actualOptimalFlow) {
                 tEU = GT_Utility.safeInt((long) tEU * (long) aBaseEff / 10000L);
             } else {

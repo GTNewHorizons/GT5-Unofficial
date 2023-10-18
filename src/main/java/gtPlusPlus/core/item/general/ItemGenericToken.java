@@ -46,12 +46,12 @@ public class ItemGenericToken extends CoreItem {
                 EnumChatFormatting.RESET,
                 false,
                 null);
-        mLocalNames = new HashMap<Integer, String>();
-        mMaxStackSizes = new HashMap<Integer, Integer>();
-        mDescriptionArrays = new HashMap<Integer, String[]>();
-        mRarities = new HashMap<Integer, EnumRarity>();
-        mCustomNameColours = new HashMap<Integer, EnumChatFormatting>();
-        mIcons = new HashMap<Integer, IIcon>();
+        mLocalNames = new HashMap<>();
+        mMaxStackSizes = new HashMap<>();
+        mDescriptionArrays = new HashMap<>();
+        mRarities = new HashMap<>();
+        mCustomNameColours = new HashMap<>();
+        mIcons = new HashMap<>();
         mTextureDir = aTextureDir;
         setMaxStackSize(64);
     }

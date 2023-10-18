@@ -3,7 +3,6 @@ package gtPlusPlus.core.recipe;
 import gregtech.api.enums.ItemList;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class LOADER_Machine_Components {
 
@@ -101,29 +100,15 @@ public class LOADER_Machine_Components {
         CI.fluidRegulator_UV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32667, 1);
 
         // Thanks 0lafe
-        CI.electricMotor_MAX = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32596, 1);
-        CI.electricPump_MAX = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32618, 1);
-        CI.electricPiston_MAX = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32648, 1);
-        CI.robotArm_MAX = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32658, 1);
-        CI.conveyorModule_MAX = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32638, 1);
-        CI.emitter_MAX = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32688, 1);
-        CI.fieldGenerator_MAX = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32678, 1);
-        CI.sensor_MAX = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32698, 1);
+        CI.electricMotor_UHV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32596, 1);
+        CI.electricPump_UHV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32618, 1);
+        CI.electricPiston_UHV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32648, 1);
+        CI.robotArm_UHV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32658, 1);
+        CI.conveyorModule_UHV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32638, 1);
+        CI.emitter_UHV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32688, 1);
+        CI.fieldGenerator_UHV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32678, 1);
+        CI.sensor_UHV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32698, 1);
 
-        registerComponentsULV();
-    }
-
-    private static boolean registerComponentsULV() {
-
-        CI.electricMotor_ULV = GregtechItemList.Electric_Motor_ULV.get(1);
-        CI.electricPump_ULV = GregtechItemList.Electric_Pump_ULV.get(1);
-        CI.electricPiston_ULV = GregtechItemList.Electric_Piston_ULV.get(1);
-        CI.robotArm_ULV = GregtechItemList.Robot_Arm_ULV.get(1);
-        CI.conveyorModule_ULV = GregtechItemList.Conveyor_Module_ULV.get(1);
-        CI.emitter_ULV = GregtechItemList.Emitter_ULV.get(1);
-        CI.fieldGenerator_ULV = GregtechItemList.Field_Generator_ULV.get(1);
-        CI.sensor_ULV = GregtechItemList.Sensor_ULV.get(1);
-        return true;
     }
 
 }

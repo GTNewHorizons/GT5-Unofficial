@@ -56,7 +56,7 @@ public abstract class BaseCrop extends CropCard implements ICropCardInfo {
 
     @Override
     public List<String> getCropInformation() {
-        List<String> ret = new ArrayList<String>();
+        List<String> ret = new ArrayList<>();
         ret.add(Arrays.toString(this.attributes()));
         return ret;
     }

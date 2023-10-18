@@ -28,7 +28,7 @@ import gtPlusPlus.xmod.gregtech.HANDLER_GT;
 
 public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
 
-    public static ArrayList<WorldGen_GT_Ore_Layer> sList = new ArrayList<WorldGen_GT_Ore_Layer>();
+    public static ArrayList<WorldGen_GT_Ore_Layer> sList = new ArrayList<>();
     public static int sWeight = 0;
     public final short mMinY;
     public final short mMaxY;
@@ -56,9 +56,6 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
     public static final int ORE_PLACED = 4;
     public static final int NO_OVERLAP_AIR_BLOCK = 5;
 
-    // public final boolean mMoon;
-    // public final boolean mMars;
-    // public final boolean mAsteroid;
     public final String aTextWorldgen = "worldgen.";
 
     public WorldGen_GT_Ore_Layer(String aName, int aMinY, int aMaxY, int aWeight, int aDensity, int aSize,
@@ -92,10 +89,6 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
                 .get(aTextWorldgen + this.mWorldGenName, "Overworld", aOverworld);
         this.mNether = HANDLER_GT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Nether", aNether);
         this.mEnd = HANDLER_GT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "TheEnd", aEnd);
-        // this.mMoon = HANDLER_GT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Moon", aMoon);
-        // this.mMars = HANDLER_GT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Mars", aMars);
-        // this.mAsteroid = HANDLER_GT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Asteroid",
-        // aAsteroid);
         this.mMinY = 5;
         short mMaxY = 14;
         if (mMaxY < (this.mMinY + 7)) {
@@ -134,14 +127,6 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
         // not exist");
 
         if (this.mEnabled) {
-            // GT_Achievements.registerOre(GregTech_API.sGeneratedMaterials[(mPrimaryMeta % 1000)], aMinY, aMaxY,
-            // aWeight, aOverworld, aNether, aEnd);
-            // GT_Achievements.registerOre(GregTech_API.sGeneratedMaterials[(mSecondaryMeta % 1000)], aMinY, aMaxY,
-            // aWeight, aOverworld, aNether, aEnd);
-            // GT_Achievements.registerOre(GregTech_API.sGeneratedMaterials[(mBetweenMeta % 1000)], aMinY, aMaxY,
-            // aWeight, aOverworld, aNether, aEnd);
-            // GT_Achievements.registerOre(GregTech_API.sGeneratedMaterials[(mSporadicMeta % 1000)], aMinY, aMaxY,
-            // aWeight, aOverworld, aNether, aEnd);
             sWeight += this.mWeight;
         }
     }
@@ -442,7 +427,7 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
 
     private String fString = "unset", ore1String = "unset", ore2String = "unset", ore3String = "unset",
             ore4String = "unset";
-    Map<Materials, String> gtOreMap = new HashMap<Materials, String>();
+    Map<Materials, String> gtOreMap = new HashMap<>();
 
     public boolean setOreBlock(World aWorld, int aX, int aY, int aZ, Block aMetaData, boolean isSmallOre, boolean air) {
         if (!air) {

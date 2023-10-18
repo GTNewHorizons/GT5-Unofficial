@@ -2,8 +2,6 @@ package gtPlusPlus.xmod.gregtech.api.objects;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
@@ -47,9 +45,9 @@ public class GregtechItemData {
             final GregtechMaterialStack[] tByProducts = aByProducts.length < 1 ? EMPTY_GT_MaterialStack_ARRAY
                     : new GregtechMaterialStack[aByProducts.length];
             int j = 0;
-            for (int i = 0; i < aByProducts.length; i++) {
-                if ((aByProducts[i] != null) && (aByProducts[i].mMaterial != null)) {
-                    tByProducts[j++] = aByProducts[i].clone();
+            for (GregtechMaterialStack aByProduct : aByProducts) {
+                if ((aByProduct != null) && (aByProduct.mMaterial != null)) {
+                    tByProducts[j++] = aByProduct.clone();
                 }
             }
             this.mByProducts = j > 0 ? new GregtechMaterialStack[j] : EMPTY_GT_MaterialStack_ARRAY;
@@ -102,13 +100,7 @@ public class GregtechItemData {
             }
         }
 
-        Collections.sort(rList, new Comparator<GregtechMaterialStack>() {
-
-            @Override
-            public int compare(final GregtechMaterialStack a, final GregtechMaterialStack b) {
-                return a.mAmount == b.mAmount ? 0 : a.mAmount > b.mAmount ? -1 : +1;
-            }
-        });
+        rList.sort((a, b) -> Long.compare(b.mAmount, a.mAmount));
 
         if (rList.isEmpty()) {
             this.mMaterial = null;
@@ -117,7 +109,7 @@ public class GregtechItemData {
             rList.remove(0);
         }
 
-        this.mByProducts = rList.toArray(new GregtechMaterialStack[rList.size()]);
+        this.mByProducts = rList.toArray(new GregtechMaterialStack[0]);
     }
 
     public boolean hasValidPrefixMaterialData() {
@@ -133,7 +125,7 @@ public class GregtechItemData {
     }
 
     public ArrayList<GregtechMaterialStack> getAllGT_MaterialStacks() {
-        final ArrayList<GregtechMaterialStack> rList = new ArrayList<GregtechMaterialStack>();
+        final ArrayList<GregtechMaterialStack> rList = new ArrayList<>();
         if (this.hasValidMaterialData()) {
             rList.add(this.mMaterial);
         }

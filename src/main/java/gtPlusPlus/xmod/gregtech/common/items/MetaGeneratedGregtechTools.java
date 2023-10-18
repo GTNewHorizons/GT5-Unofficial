@@ -6,14 +6,10 @@ import gregtech.api.enums.ToolDictNames;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechToolDictNames;
 import gtPlusPlus.xmod.gregtech.common.tools.TOOL_Gregtech_AngleGrinder;
-import gtPlusPlus.xmod.gregtech.common.tools.TOOL_Gregtech_ElectricButcherKnife;
-import gtPlusPlus.xmod.gregtech.common.tools.TOOL_Gregtech_ElectricLighter;
 import gtPlusPlus.xmod.gregtech.common.tools.TOOL_Gregtech_ElectricSnips;
 
 public class MetaGeneratedGregtechTools extends GT_MetaGenerated_Tool {
 
-    public static final short ELECTRIC_LIGHTER = 7534;
-    public static final short ELECTRIC_BUTCHER_KNIFE = 7634;
     public static final short ANGLE_GRINDER = 7834;
     public static final short ELECTRIC_SNIPS = 7934;
     public static GT_MetaGenerated_Tool INSTANCE;
@@ -35,10 +31,11 @@ public class MetaGeneratedGregtechTools extends GT_MetaGenerated_Tool {
                 "Angle Grinder",
                 "Hand-held electric filing device",
                 new TOOL_Gregtech_AngleGrinder(),
-                new Object[] { GregtechToolDictNames.craftingToolAngleGrinder, ToolDictNames.craftingToolFile,
-                        new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L),
-                        new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 2L),
-                        new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L) });
+                GregtechToolDictNames.craftingToolAngleGrinder,
+                ToolDictNames.craftingToolFile,
+                new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 2L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L));
 
         // Electric Wire Cutter
         GregTech_API.registerWireCutter(
@@ -47,32 +44,11 @@ public class MetaGeneratedGregtechTools extends GT_MetaGenerated_Tool {
                         "Automatic Snips",
                         "Hand-held electric wire cutter",
                         new TOOL_Gregtech_ElectricSnips(),
-                        new Object[] { GregtechToolDictNames.craftingToolElectricSnips,
-                                ToolDictNames.craftingToolWireCutter,
-                                new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 4L),
-                                new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 4L),
-                                new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 4L) }));
+                        GregtechToolDictNames.craftingToolElectricSnips,
+                        ToolDictNames.craftingToolWireCutter,
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 4L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 4L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 4L)));
 
-        // Electric Lighter
-        this.addTool(
-                ELECTRIC_LIGHTER,
-                "Pyromatic 9k",
-                "Electric Fire!",
-                new TOOL_Gregtech_ElectricLighter(),
-                new Object[] { GregtechToolDictNames.craftingToolElectricLighter,
-                        new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L),
-                        new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 2L),
-                        new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L) });
-
-        // Electric Butcher Knife
-        this.addTool(
-                ELECTRIC_BUTCHER_KNIFE,
-                "Meat-o-matic",
-                "Electric butcher knife",
-                new TOOL_Gregtech_ElectricButcherKnife(),
-                new Object[] { GregtechToolDictNames.craftingToolElectricButcherKnife, ToolDictNames.craftingToolKnife,
-                        new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 1L),
-                        new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 2L),
-                        new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L) });
     }
 }

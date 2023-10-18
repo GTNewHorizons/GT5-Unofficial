@@ -18,7 +18,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
@@ -75,7 +74,7 @@ public class CommandEnableDebugWhileRunning implements ICommand {
                 || argString[0].toLowerCase().equals("?")) {
             Logger.INFO("Listing commands and their uses.");
             final EntityPlayer P = CommandUtils.getPlayer(S);
-            AsmConfig.disableAllLogging = Utils.invertBoolean(AsmConfig.disableAllLogging);
+            AsmConfig.disableAllLogging = !AsmConfig.disableAllLogging;
             PlayerUtils.messagePlayer(P, "The following are valid args for the '/gtpp' command:");
             PlayerUtils.messagePlayer(P, "?       - This help command.");
             PlayerUtils.messagePlayer(P, "logging - Toggles ALL GT++ logging for current session.");
@@ -88,13 +87,13 @@ public class CommandEnableDebugWhileRunning implements ICommand {
             Logger.INFO("Toggling Debug Mode.");
             final EntityPlayer P = CommandUtils.getPlayer(S);
             if (PlayerUtils.isPlayerOP(P)) {
-                CORE_Preloader.DEBUG_MODE = Utils.invertBoolean(CORE_Preloader.DEBUG_MODE);
+                CORE_Preloader.DEBUG_MODE = !CORE_Preloader.DEBUG_MODE;
                 PlayerUtils.messagePlayer(P, "Toggled GT++ Debug Mode - Enabled: " + CORE_Preloader.DEBUG_MODE);
             }
         } else if (argString[0].toLowerCase().equals("logging")) {
             Logger.INFO("Toggling Logging.");
             final EntityPlayer P = CommandUtils.getPlayer(S);
-            AsmConfig.disableAllLogging = Utils.invertBoolean(AsmConfig.disableAllLogging);
+            AsmConfig.disableAllLogging = !AsmConfig.disableAllLogging;
             PlayerUtils.messagePlayer(P, "Toggled GT++ Logging - Enabled: " + (!AsmConfig.disableAllLogging));
         }
         /*
@@ -130,7 +129,7 @@ public class CommandEnableDebugWhileRunning implements ICommand {
                     String aItemDisplayName = ItemUtils.getItemName(aHeldItem);
                     String aItemUnlocalName = ItemUtils.getUnlocalizedItemName(aHeldItem);
                     String aNbtString = tryIterateNBTData(aHeldItem);
-                    AutoMap<String> aOreDictNames = new AutoMap<String>();
+                    AutoMap<String> aOreDictNames = new AutoMap<>();
 
                     int[] aOreIDs = OreDictionary.getOreIDs(aHeldItem);
                     for (int id : aOreIDs) {
@@ -151,7 +150,7 @@ public class CommandEnableDebugWhileRunning implements ICommand {
                         }
                     }
 
-                    AutoMap<String> aFluidContainerData = new AutoMap<String>();
+                    AutoMap<String> aFluidContainerData = new AutoMap<>();
                     FluidStack aHeldItemFluid = FluidContainerRegistry.getFluidForFilledItem(aHeldItem);
                     if (aHeldItemFluid != null) {
                         aFluidContainerData.put("FluidStack Unlocal Name: " + aHeldItemFluid.getUnlocalizedName());
@@ -214,7 +213,7 @@ public class CommandEnableDebugWhileRunning implements ICommand {
 
     @Override
     public List<?> addTabCompletionOptions(final ICommandSender var1, final String[] var2) {
-        ArrayList<String> aTabCompletes = new ArrayList<String>();
+        ArrayList<String> aTabCompletes = new ArrayList<>();
         aTabCompletes.add("?");
         aTabCompletes.add("logging");
         aTabCompletes.add("debug");
@@ -235,7 +234,7 @@ public class CommandEnableDebugWhileRunning implements ICommand {
 
     public static String tryIterateNBTData(ItemStack aStack) {
         try {
-            AutoMap<String> aItemDataTags = new AutoMap<String>();
+            AutoMap<String> aItemDataTags = new AutoMap<>();
             NBTTagCompound aNBT = NBTUtils.getNBT(aStack);
             if (aNBT != null) {
                 if (!aNBT.hasNoTags()) {

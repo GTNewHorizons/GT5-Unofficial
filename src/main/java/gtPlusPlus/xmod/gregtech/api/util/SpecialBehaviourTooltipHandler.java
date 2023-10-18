@@ -11,7 +11,7 @@ import gregtech.api.util.GT_Utility;
 
 public class SpecialBehaviourTooltipHandler {
 
-    private static final HashMap<ItemStack, String> mTooltipCache = new HashMap<ItemStack, String>();
+    private static final HashMap<ItemStack, String> mTooltipCache = new HashMap<>();
 
     public static void addTooltipForItem(ItemStack aStack, String aTooltip) {
         mTooltipCache.put(aStack, aTooltip);

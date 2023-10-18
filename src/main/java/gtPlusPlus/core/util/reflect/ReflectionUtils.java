@@ -642,7 +642,7 @@ public class ReflectionUtils {
     }
 
     public static Class<?> findSubClassParameterType(Object instance, Class<?> classOfInterest, int parameterIndex) {
-        Map<Type, Type> typeMap = new HashMap<Type, Type>();
+        Map<Type, Type> typeMap = new HashMap<>();
         Class<?> instanceClass = instance.getClass();
         while (classOfInterest != instanceClass.getSuperclass()) {
             extractTypeArguments(typeMap, instanceClass);
@@ -668,11 +668,10 @@ public class ReflectionUtils {
 
     private static void extractTypeArguments(Map<Type, Type> typeMap, Class<?> clazz) {
         Type genericSuperclass = clazz.getGenericSuperclass();
-        if (!(genericSuperclass instanceof ParameterizedType)) {
+        if (!(genericSuperclass instanceof ParameterizedType parameterizedType)) {
             return;
         }
 
-        ParameterizedType parameterizedType = (ParameterizedType) genericSuperclass;
         Type[] typeParameter = ((Class<?>) parameterizedType.getRawType()).getTypeParameters();
         Type[] actualTypeArgument = parameterizedType.getActualTypeArguments();
         for (int i = 0; i < typeParameter.length; i++) {
@@ -685,7 +684,7 @@ public class ReflectionUtils {
 
     private static Class<?> browseNestedTypes(Object instance, TypeVariable<?> actualType) {
         Class<?> instanceClass = instance.getClass();
-        List<Class<?>> nestedOuterTypes = new LinkedList<Class<?>>();
+        List<Class<?>> nestedOuterTypes = new LinkedList<>();
         for (Class<?> enclosingClass = instanceClass.getEnclosingClass(); enclosingClass
                 != null; enclosingClass = enclosingClass.getEnclosingClass()) {
             try {
@@ -693,13 +692,12 @@ public class ReflectionUtils {
                 Object outerInstance = this$0.get(instance);
                 Class<?> outerClass = outerInstance.getClass();
                 nestedOuterTypes.add(outerClass);
-                Map<Type, Type> outerTypeMap = new HashMap<Type, Type>();
+                Map<Type, Type> outerTypeMap = new HashMap<>();
                 extractTypeArguments(outerTypeMap, outerClass);
                 for (Map.Entry<Type, Type> entry : outerTypeMap.entrySet()) {
-                    if (!(entry.getKey() instanceof TypeVariable)) {
+                    if (!(entry.getKey() instanceof TypeVariable<?>foundType)) {
                         continue;
                     }
-                    TypeVariable<?> foundType = (TypeVariable<?>) entry.getKey();
                     if (foundType.getName().equals(actualType.getName())
                             && isInnerClass(foundType.getGenericDeclaration(), actualType.getGenericDeclaration())) {
                         if (entry.getValue() instanceof Class) {
@@ -716,11 +714,9 @@ public class ReflectionUtils {
     }
 
     private static boolean isInnerClass(GenericDeclaration outerDeclaration, GenericDeclaration innerDeclaration) {
-        if (!(outerDeclaration instanceof Class) || !(innerDeclaration instanceof Class)) {
+        if (!(outerDeclaration instanceof Class<?>outerClass) || !(innerDeclaration instanceof Class<?>innerClass)) {
             return false;
         }
-        Class<?> outerClass = (Class<?>) outerDeclaration;
-        Class<?> innerClass = (Class<?>) innerDeclaration;
         while ((innerClass = innerClass.getEnclosingClass()) != null) {
             if (innerClass == outerClass) {
                 return true;

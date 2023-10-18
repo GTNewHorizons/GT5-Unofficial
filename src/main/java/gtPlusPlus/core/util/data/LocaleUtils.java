@@ -20,7 +20,7 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class LocaleUtils {
 
-    public static boolean generateFakeLocaleFile() {
+    public static void generateFakeLocaleFile() {
         for (ModContainer modcontainer : Loader.instance().getModList()) {
             if (modcontainer.getModId().toLowerCase().equals(GTPlusPlus.ID)) {
                 String S = "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
@@ -28,18 +28,16 @@ public class LocaleUtils {
                 dumpItemsAndBlocksForModContainer(modcontainer);
             }
         }
-        return true;
     }
 
-    public static boolean dumpItemsAndBlocksForModContainer(ModContainer mod) {
+    public static void dumpItemsAndBlocksForModContainer(ModContainer mod) {
         writeToFile("Dumping Items from " + mod.getModId() + ".");
         for (Object C : GameData.getItemRegistry()) {
 
             try {
 
                 if (C != null) {
-                    if (C instanceof Item) {
-                        Item R = (Item) C;
+                    if (C instanceof Item R) {
                         ItemStack IS = ItemUtils.getSimpleStack(R);
                         String modid = ItemUtils.getModId(IS);
                         if (modid.equals(GTPlusPlus.ID) || modid.equals(GTPlusPlusEverglades.ID)) {
@@ -49,7 +47,7 @@ public class LocaleUtils {
                     }
                 }
 
-            } catch (Throwable T) {}
+            } catch (Throwable ignored) {}
         }
         writeToFile("Dumping Blocks from " + mod.getModId() + ".");
         for (Object B : GameData.getBlockRegistry()) {
@@ -57,8 +55,7 @@ public class LocaleUtils {
             try {
 
                 if (B != null) {
-                    if (B instanceof Block) {
-                        Block R = (Block) B;
+                    if (B instanceof Block R) {
                         ItemStack IS = ItemUtils.getSimpleStack(R);
                         String modid = ItemUtils.getModId(IS);
                         if (modid.equals(GTPlusPlus.ID) || modid.equals(GTPlusPlusEverglades.ID)) {
@@ -68,10 +65,9 @@ public class LocaleUtils {
                     }
                 }
 
-            } catch (Throwable T) {}
+            } catch (Throwable ignored) {}
         }
 
-        return true;
     }
 
     public static void writeToFile(String S) {
@@ -82,6 +78,6 @@ public class LocaleUtils {
             writer.write(S);
             writer.newLine();
             writer.close();
-        } catch (IOException e) {}
+        } catch (IOException ignored) {}
     }
 }

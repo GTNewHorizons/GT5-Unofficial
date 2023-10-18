@@ -12,11 +12,6 @@ public class GenLayerBiomes extends GenLayer {
         super(seed);
     }
 
-    public GenLayerBiomes(long seed, GenLayer genlayer) {
-        super(seed);
-        this.parent = genlayer;
-    }
-
     @Override
     public int[] getInts(int x, int z, int width, int depth) {
         int[] dest = IntCache.getIntCache(width * depth);

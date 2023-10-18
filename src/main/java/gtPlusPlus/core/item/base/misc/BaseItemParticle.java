@@ -17,7 +17,7 @@ import gtPlusPlus.core.item.base.CoreItem;
 
 public abstract class BaseItemParticle extends CoreItem {
 
-    protected static final Map<Integer, Integer> aColourMap = new LinkedHashMap<Integer, Integer>();
+    protected static final Map<Integer, Integer> aColourMap = new LinkedHashMap<>();
     private final int aMaxCount;
 
     public BaseItemParticle(String aType, int aCount, EnumRarity aRarity) {

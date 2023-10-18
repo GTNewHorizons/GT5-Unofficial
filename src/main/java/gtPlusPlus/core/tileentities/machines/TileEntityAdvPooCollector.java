@@ -63,7 +63,7 @@ public class TileEntityAdvPooCollector extends TileEntityBaseFluidCollector {
         return false;
     }
 
-    private static AutoMap<Class> aEntityToDrain = new AutoMap<Class>();
+    private static AutoMap<Class> aEntityToDrain = new AutoMap<>();
 
     @Override
     public AutoMap<Class> aThingsToLookFor() {

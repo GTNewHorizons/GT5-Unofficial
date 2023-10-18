@@ -21,9 +21,9 @@ import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Mods;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
@@ -110,6 +110,8 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
         return (int) r;
     }
 
+    int EUPerOperation = 1_638_400;
+
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
@@ -119,6 +121,9 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
         String aString3 = StatCollector.translateToLocal("GTPP.nanohealer.tooltip.3");
         String aString4 = StatCollector.translateToLocal("GTPP.nanohealer.tooltip.4");
         String aString5 = StatCollector.translateToLocal("GTPP.nanohealer.tooltip.5");
+
+        String aString6 = StatCollector.translateToLocal("GTPP.nanohealer.tooltip.6");
+
         String aStringTooltip = StatCollector.translateToLocal("GTPP.nanohealer.hidden");
         String aEuInfo = StatCollector.translateToLocal("GTPP.info.euInfo");
         String aTier = StatCollector.translateToLocal("GTPP.machines.tier");
@@ -131,9 +136,13 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
         list.add("");
 
         list.add(EnumChatFormatting.GREEN + aString1 + EnumChatFormatting.GRAY);
-        list.add(EnumChatFormatting.GREEN + aString2 + EnumChatFormatting.GRAY);
-        list.add(EnumChatFormatting.GREEN + aString3 + EnumChatFormatting.GRAY);
-        list.add(EnumChatFormatting.RED + aString4 + EnumChatFormatting.GRAY);
+        list.add(
+                EnumChatFormatting.GREEN + aString2
+                        + GT_Utility.formatNumbers(EUPerOperation)
+                        + aString3
+                        + EnumChatFormatting.GRAY);
+        list.add(EnumChatFormatting.GREEN + aString4 + EnumChatFormatting.GRAY);
+        list.add(EnumChatFormatting.RED + aString5 + EnumChatFormatting.GRAY);
 
         list.add("");
 
@@ -142,13 +151,13 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
                 EnumChatFormatting.GRAY + aTier
                         + ": ["
                         + EnumChatFormatting.YELLOW
-                        + this.getTier(stack)
+                        + GT_Utility.formatNumbers(this.getTier(stack))
                         + EnumChatFormatting.GRAY
                         + "] "
                         + aInputLimit
                         + ": ["
                         + EnumChatFormatting.YELLOW
-                        + this.getTransferLimit(stack)
+                        + GT_Utility.formatNumbers(this.getTransferLimit(stack))
                         + EnumChatFormatting.GRAY
                         + aEUT
                         + "]");
@@ -156,15 +165,16 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
                 EnumChatFormatting.GRAY + aCurrentPower
                         + ": ["
                         + EnumChatFormatting.YELLOW
-                        + (long) this.getCharge(stack)
+                        + GT_Utility.formatNumbers(this.getCharge(stack))
                         + EnumChatFormatting.GRAY
                         + aEU
                         + "] ["
                         + EnumChatFormatting.YELLOW
-                        + MathUtils.findPercentage(this.getCharge(stack), this.getMaxCharge(stack))
+                        + GT_Utility.formatNumbers(
+                                MathUtils.findPercentage(this.getCharge(stack), this.getMaxCharge(stack)))
                         + EnumChatFormatting.GRAY
                         + "%]");
-        list.add(EnumChatFormatting.GOLD + aString5 + EnumChatFormatting.GRAY);
+        list.add(EnumChatFormatting.GOLD + aString6 + EnumChatFormatting.GRAY);
         list.add(
                 EnumChatFormatting.GOLD + aStringTooltip
                         + " "
@@ -237,18 +247,18 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
     public void onUnequipped(final ItemStack arg0, final EntityLivingBase arg1) {}
 
     @Override // TODO
-    public void onWornTick(final ItemStack aBaubleStack, final EntityLivingBase arg1) {
+    public void onWornTick(final ItemStack baubleStack, final EntityLivingBase arg1) {
         if (arg1 != null && arg1.worldObj != null && !arg1.worldObj.isRemote) {
 
             // Try Charge First
 
             // Inv Slots
             for (final ItemStack aInvStack : ((EntityPlayer) arg1).inventory.mainInventory) {
-                if (aInvStack == aBaubleStack) {
+                if (aInvStack == baubleStack) {
                     continue;
                 }
 
-                if (this.getCharge(aBaubleStack) == this.getMaxCharge(aBaubleStack)) {
+                if (this.getCharge(baubleStack) == this.getMaxCharge(baubleStack)) {
                     break;
                 }
 
@@ -264,7 +274,7 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
 
                             aTransferRate = electricItem.getTransferLimit(aInvStack);
                             mTier = electricItem.getTier(aInvStack);
-                            aCurrentChargeForThisBauble = ElectricItem.manager.getCharge(aBaubleStack);
+                            aCurrentChargeForThisBauble = ElectricItem.manager.getCharge(baubleStack);
 
                             if (aCurrentChargeForThisBauble < maxValueEU) {
                                 if ((ElectricItem.manager.getCharge(aInvStack) >= aTransferRate)) {
@@ -272,15 +282,14 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
                                         double d = ElectricItem.manager
                                                 .discharge(aInvStack, aTransferRate, mTier, false, true, false);
                                         // Logger.INFO("Charging from "+aInvStack.getDisplayName() +" | "+d);
-                                        ElectricItem.manager.charge(aBaubleStack, d, mTier, true, false);
+                                        ElectricItem.manager.charge(baubleStack, d, mTier, true, false);
                                     }
                                 }
                             }
                         }
                     }
                 }
-                if (this.getCharge(aBaubleStack)
-                        <= (this.getMaxCharge(aBaubleStack) - getTransferLimit(aBaubleStack))) {
+                if (this.getCharge(baubleStack) <= (this.getMaxCharge(baubleStack) - getTransferLimit(baubleStack))) {
                     continue;
                 } else {
                     break;
@@ -288,12 +297,11 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
             }
 
             // Try Heal
-            if (this.getCharge(aBaubleStack) > 0) {
+            if (this.getCharge(baubleStack) > 0) {
 
-                if (!(arg1 instanceof EntityPlayer)) {
+                if (!(arg1 instanceof EntityPlayer g)) {
                     return;
                 }
-                EntityPlayer g = (EntityPlayer) arg1;
                 // health Check
                 float hp = 0;
                 if (arg1.getHealth() < arg1.getMaxHealth()) {
@@ -301,7 +309,7 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
                     Logger.INFO("rx:" + rx);
                     arg1.heal(rx * 2);
                     hp = rx;
-                    this.discharge(aBaubleStack, (1638400) * rx, 6, true, true, false);
+                    this.discharge(baubleStack, (1638400) * rx, 6, true, true, false);
                 }
 
                 int hunger = 0;
@@ -314,27 +322,33 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
                     if (hunger > 0) {
                         saturation = 20f - aFood.getSaturationLevel();
                         saturation /= hunger * 2f;
-                        this.discharge(aBaubleStack, (1638400) * (hunger + saturation), 6, true, true, false);
+                        this.discharge(baubleStack, (1638400) * (hunger + saturation), 6, true, true, false);
                         aFood.addStats(hunger, saturation);
                     }
                 }
 
                 // Only show Messages if they're enabled.
-                if (getShowMessages(aBaubleStack)) {
+                if (getShowMessages(baubleStack)) {
                     if (hp > 0 || hunger > 0 || saturation > 0) PlayerUtils.messagePlayer(
                             (EntityPlayer) arg1,
                             "Your NanoBooster Whirs! Leaving you feeling stronger.");
 
-                    if (hp > 0) PlayerUtils.messagePlayer((EntityPlayer) arg1, "Healed " + hp + " hp.");
+                    if (hp > 0) PlayerUtils
+                            .messagePlayer((EntityPlayer) arg1, "Healed " + GT_Utility.formatNumbers(hp) + " hp.");
 
-                    if (hunger > 0) PlayerUtils.messagePlayer((EntityPlayer) arg1, "Healed " + hunger + " hunger.");
+                    if (hunger > 0) PlayerUtils.messagePlayer(
+                            (EntityPlayer) arg1,
+                            "Healed " + GT_Utility.formatNumbers(hunger) + " hunger.");
 
-                    if (saturation > 0)
-                        PlayerUtils.messagePlayer((EntityPlayer) arg1, "Satured Hunger by " + saturation + ".");
+                    if (saturation > 0) PlayerUtils.messagePlayer(
+                            (EntityPlayer) arg1,
+                            "Satured Hunger by " + GT_Utility.formatNumbers(saturation) + ".");
 
                     if (hp > 0 || hunger > 0 || saturation > 0) PlayerUtils.messagePlayer(
                             (EntityPlayer) arg1,
-                            "You check it's remaining uses, it has " + (int) this.secondsLeft(aBaubleStack) + ".");
+                            "You check it's remaining uses, it has "
+                                    + GT_Utility.formatNumbers(secondsLeft(baubleStack))
+                                    + " seconds left.");
                 }
             }
         }
@@ -395,7 +409,7 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
         boolean isShiftHeld = KeyboardUtils.isShiftKeyDown();
         if (isShiftHeld) {
             boolean oldState = getShowMessages(superStack);
-            boolean newState = Utils.invertBoolean(oldState);
+            boolean newState = !oldState;
             ItemHealingDevice.setShowMessages(superStack, newState);
             PlayerUtils.messagePlayer(aPlayer, (!oldState ? "Showing info messages" : "Hiding info messages"));
         }

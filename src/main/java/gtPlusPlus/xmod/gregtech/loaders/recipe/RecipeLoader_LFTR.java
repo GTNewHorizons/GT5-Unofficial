@@ -20,12 +20,12 @@ public class RecipeLoader_LFTR {
 
     private static void configureSparging() {
         if (mSpargeGases == null) {
-            mSpargeGases = new AutoMap<Fluid>();
+            mSpargeGases = new AutoMap<>();
             mSpargeGases.add(Materials.Helium.getGas(1).getFluid());
             mSpargeGases.add(Materials.Fluorine.getGas(1).getFluid());
         }
         if (mNobleGases == null) {
-            mNobleGases = new AutoMap<Fluid>();
+            mNobleGases = new AutoMap<>();
             mNobleGases.add(mSpargeGases.get(0));
             mNobleGases.add(ELEMENT.getInstance().XENON.getFluid());
             mNobleGases.add(ELEMENT.getInstance().NEON.getFluid());
@@ -34,7 +34,7 @@ public class RecipeLoader_LFTR {
             mNobleGases.add(ELEMENT.getInstance().RADON.getFluid());
         }
         if (mFluorideGases == null) {
-            mFluorideGases = new AutoMap<Fluid>();
+            mFluorideGases = new AutoMap<>();
             mFluorideGases.add(mSpargeGases.get(1));
             mFluorideGases.add(FLUORIDES.LITHIUM_FLUORIDE.getFluid());
             mFluorideGases.add(FLUORIDES.NEPTUNIUM_HEXAFLUORIDE.getFluid());

@@ -151,32 +151,22 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
         return 21;
     }
 
-    private static final int getRange(int aTier) {
-        switch (aTier) {
-            case 1:
-                return 1;
-            case 2:
-                return 5;
-            case 3:
-                return 9;
-            case 4:
-                return 13;
-            case 5:
-                return 17;
-            case 6:
-                return 21;
-            case 7:
-                return 25;
-            case 8:
-                return 29;
-            case 9:
-                return 33;
-            default:
-                return 0;
-        }
+    private static int getRange(int aTier) {
+        return switch (aTier) {
+            case 1 -> 1;
+            case 2 -> 5;
+            case 3 -> 9;
+            case 4 -> 13;
+            case 5 -> 17;
+            case 6 -> 21;
+            case 7 -> 25;
+            case 8 -> 29;
+            case 9 -> 33;
+            default -> 0;
+        };
     }
 
-    private HashSet<ICropTile> mCropCache = new HashSet<ICropTile>();
+    private HashSet<ICropTile> mCropCache = new HashSet<>();
     private boolean mInvalidCache = false;
 
     public boolean doesInventoryHaveSpace() {
@@ -222,8 +212,7 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
                 for (int x = (-aSide); x <= aSide; x++) {
                     for (int z = (-aSide); z <= aSide; z++) {
                         TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityOffset(x, y, z);
-                        if (tTileEntity != null && tTileEntity instanceof ICropTile) {
-                            ICropTile tCrop = (ICropTile) tTileEntity;
+                        if (tTileEntity != null && tTileEntity instanceof ICropTile tCrop) {
                             this.mCropCache.add(tCrop);
                         }
                     }

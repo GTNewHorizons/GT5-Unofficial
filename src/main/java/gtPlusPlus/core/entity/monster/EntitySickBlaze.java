@@ -41,7 +41,7 @@ public class EntitySickBlaze extends EntityMob {
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataWatcher.addObject(mDataWatcherID, new Byte((byte) 0));
+        this.dataWatcher.addObject(mDataWatcherID, 0);
     }
 
     /**
@@ -105,13 +105,6 @@ public class EntitySickBlaze extends EntityMob {
                             > this.posY + this.getEyeHeight() + this.heightOffset) {
                 this.motionY += (0.30000001192092896D - this.motionY) * 0.30000001192092896D;
             }
-        }
-
-        if (this.rand.nextInt(24) == 0) {
-            /*
-             * this.worldObj.playSoundEffect(this.posX + 0.5D, this.posY + 0.5D, this.posZ + 0.5D, "fire.fire", 1.0F +
-             * this.rand.nextFloat(), this.rand.nextFloat() * 0.7F + 0.3F);
-             */
         }
 
         if (!this.onGround && this.motionY < 0.0D) {

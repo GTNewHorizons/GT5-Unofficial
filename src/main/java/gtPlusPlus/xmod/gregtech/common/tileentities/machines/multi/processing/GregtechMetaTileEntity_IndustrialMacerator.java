@@ -264,12 +264,10 @@ public class GregtechMetaTileEntity_IndustrialMacerator extends
 
     @Override
     protected int getCasingTextureId() {
-        switch (controllerTier) {
-            case 2:
-                return TAE.GTPP_INDEX(7);
-            default:
-                return GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings4, 2);
-        }
+        return switch (controllerTier) {
+            case 2 -> TAE.GTPP_INDEX(7);
+            default -> GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings4, 2);
+        };
     }
 
     @Override
@@ -431,7 +429,10 @@ public class GregtechMetaTileEntity_IndustrialMacerator extends
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
         if (tag.hasKey("tier")) {
-            currentTip.add("Tier: " + EnumChatFormatting.YELLOW + tag.getInteger("tier") + EnumChatFormatting.RESET);
+            currentTip.add(
+                    "Tier: " + EnumChatFormatting.YELLOW
+                            + GT_Utility.formatNumbers(tag.getInteger("tier"))
+                            + EnumChatFormatting.RESET);
         }
     }
 }

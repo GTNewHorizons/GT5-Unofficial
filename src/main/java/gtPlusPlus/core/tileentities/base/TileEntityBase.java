@@ -473,7 +473,7 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
     public boolean ignoreUnloadedChunks = true;
     public boolean isDead = false;
 
-    private final void clearNullMarkersFromTileEntityBuffer() {
+    private void clearNullMarkersFromTileEntityBuffer() {
         for (int i = 0; i < this.mBufferedTileEntities.length; ++i) {
             if (this.mBufferedTileEntities[i] == this) {
                 this.mBufferedTileEntities[i] = null;

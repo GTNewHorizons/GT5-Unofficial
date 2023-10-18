@@ -12,20 +12,14 @@ public abstract class BaseAestheticCrop extends BaseHarvestableCrop {
 
     @Override
     public int stat(int n) {
-        switch (n) {
-            case 0:
-                return 0;
-            case 1:
-                return 0;
-            case 2:
-                return 0;
-            case 3:
-                return 4;
-            case 4:
-                return 0;
-            default:
-                return 0;
-        }
+        return switch (n) {
+            case 0 -> 0;
+            case 1 -> 0;
+            case 2 -> 0;
+            case 3 -> 4;
+            case 4 -> 0;
+            default -> 0;
+        };
     }
 
     @Override

@@ -1,14 +1,9 @@
 package gtPlusPlus.core.proxy;
 
-import static gregtech.api.enums.Mods.PlayerAPI;
-
 import java.util.ArrayList;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.entity.RenderFireball;
-import net.minecraft.client.renderer.entity.RenderSnowball;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -22,7 +17,6 @@ import net.minecraftforge.fluids.FluidStack;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -32,7 +26,6 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.Mods;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;
@@ -44,20 +37,14 @@ import gtPlusPlus.core.client.renderer.RenderSickBlaze;
 import gtPlusPlus.core.client.renderer.RenderStaballoyConstruct;
 import gtPlusPlus.core.client.renderer.RenderToxinball;
 import gtPlusPlus.core.common.CommonProxy;
-import gtPlusPlus.core.common.compat.COMPAT_PlayerAPI;
 import gtPlusPlus.core.entity.EntityPrimedMiningExplosive;
 import gtPlusPlus.core.entity.monster.EntitySickBlaze;
 import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
-import gtPlusPlus.core.entity.projectile.EntityHydrofluoricAcidPotion;
 import gtPlusPlus.core.entity.projectile.EntityLightningAttack;
-import gtPlusPlus.core.entity.projectile.EntitySulfuricAcidPotion;
-import gtPlusPlus.core.entity.projectile.EntityThrowableBomb;
 import gtPlusPlus.core.entity.projectile.EntityToxinballSmall;
-import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.CORE.ConfigSwitches;
 import gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest;
-import gtPlusPlus.core.util.minecraft.particles.EntityParticleFXMysterious;
 import gtPlusPlus.xmod.gregtech.common.render.GTPP_CapeRenderer;
 import gtPlusPlus.xmod.gregtech.common.render.GTPP_FlaskRenderer;
 import gtPlusPlus.xmod.gregtech.common.render.GTPP_Render_MachineBlock;
@@ -94,17 +81,10 @@ public class ClientProxy extends CommonProxy implements Runnable {
         }
         // Do this weird things for textures.
         GTplusplus.loadTextures();
-        // We boot up the sneak manager.
-        if (PlayerAPI.isModLoaded()) {
-            this.init_PlayerAPI_PRE();
-        }
     }
 
     @Override
     public void init(final FMLInitializationEvent e) {
-        if (PlayerAPI.isModLoaded()) {
-            this.init_PlayerAPI_INIT();
-        }
 
         /**
          * Custom Block Renderers
@@ -137,14 +117,6 @@ public class ClientProxy extends CommonProxy implements Runnable {
         RenderingRegistry
                 .registerEntityRenderingHandler(EntityStaballoyConstruct.class, new RenderStaballoyConstruct());
         RenderingRegistry.registerEntityRenderingHandler(EntityToxinballSmall.class, new RenderToxinball(1F));
-        RenderingRegistry.registerEntityRenderingHandler(
-                EntitySulfuricAcidPotion.class,
-                new RenderSnowball(ModItems.itemSulfuricPotion));
-        RenderingRegistry.registerEntityRenderingHandler(
-                EntityHydrofluoricAcidPotion.class,
-                new RenderSnowball(ModItems.itemHydrofluoricPotion));
-        RenderingRegistry
-                .registerEntityRenderingHandler(EntityThrowableBomb.class, new RenderSnowball(ModItems.itemBomb, 1));
         RenderingRegistry.registerEntityRenderingHandler(EntityLightningAttack.class, new RenderFireball(1F));
 
         /**
@@ -168,35 +140,7 @@ public class ClientProxy extends CommonProxy implements Runnable {
     }
 
     @Override
-    public void generateMysteriousParticles(final Entity theEntity) {
-        final double motionX = theEntity.worldObj.rand.nextGaussian() * 0.02D;
-        final double motionY = theEntity.worldObj.rand.nextGaussian() * 0.02D;
-        final double motionZ = theEntity.worldObj.rand.nextGaussian() * 0.02D;
-        final EntityFX particleMysterious = new EntityParticleFXMysterious(
-                theEntity.worldObj,
-                (theEntity.posX + (theEntity.worldObj.rand.nextFloat() * theEntity.width * 2.0F)) - theEntity.width,
-                theEntity.posY + 0.5D + (theEntity.worldObj.rand.nextFloat() * theEntity.height),
-                (theEntity.posZ + (theEntity.worldObj.rand.nextFloat() * theEntity.width * 2.0F)) - theEntity.width,
-                motionX,
-                motionY,
-                motionZ);
-        Minecraft.getMinecraft().effectRenderer.addEffect(particleMysterious);
-    }
-
-    @Override
     public void serverStarting(final FMLServerStartingEvent e) {}
-
-    @Optional.Method(modid = Mods.Names.PLAYER_API)
-    private void init_PlayerAPI_PRE() {
-        // Register player instance
-        COMPAT_PlayerAPI.clientProxy.initPre();
-    }
-
-    @Optional.Method(modid = Mods.Names.PLAYER_API)
-    private void init_PlayerAPI_INIT() {
-        // Register player instance
-        COMPAT_PlayerAPI.clientProxy.Init();
-    }
 
     public void onPreLoad() {
         /*
@@ -227,7 +171,7 @@ public class ClientProxy extends CommonProxy implements Runnable {
     }
 
     public void hideUniversalCells() {
-        ArrayList<ItemStack> itemList = new ArrayList<ItemStack>();
+        ArrayList<ItemStack> itemList = new ArrayList<>();
         for (Fluid fluid : FluidRegistry.getRegisteredFluids().values()) {
             if (fluid == null) {
                 continue;

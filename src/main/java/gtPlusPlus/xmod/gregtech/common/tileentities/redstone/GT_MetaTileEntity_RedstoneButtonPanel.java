@@ -77,67 +77,34 @@ public class GT_MetaTileEntity_RedstoneButtonPanel extends GT_MetaTileEntity_Red
                     case 0:
                     default:
                         switch (side) {
-                            case DOWN:
-                            case UP:
-                                mRedstoneStrength = (byte) ((byte) (aX * 4) + 4 * (byte) (aZ * 4));
-                                break;
-                            case NORTH:
-                                mRedstoneStrength = (byte) ((byte) (4 - aX * 4) + 4 * (byte) (4 - aY * 4));
-                                break;
-                            case SOUTH:
-                                mRedstoneStrength = (byte) ((byte) (aX * 4) + 4 * (byte) (4 - aY * 4));
-                                break;
-                            case WEST:
-                                mRedstoneStrength = (byte) ((byte) (aZ * 4) + 4 * (byte) (4 - aY * 4));
-                                break;
-                            case EAST:
-                                mRedstoneStrength = (byte) ((byte) (4 - aZ * 4) + 4 * (byte) (4 - aY * 4));
-                                break;
+                            case DOWN, UP -> mRedstoneStrength = (byte) ((byte) (aX * 4) + 4 * (byte) (aZ * 4));
+                            case NORTH -> mRedstoneStrength = (byte) ((byte) (4 - aX * 4) + 4 * (byte) (4 - aY * 4));
+                            case SOUTH -> mRedstoneStrength = (byte) ((byte) (aX * 4) + 4 * (byte) (4 - aY * 4));
+                            case WEST -> mRedstoneStrength = (byte) ((byte) (aZ * 4) + 4 * (byte) (4 - aY * 4));
+                            case EAST -> mRedstoneStrength = (byte) ((byte) (4 - aZ * 4) + 4 * (byte) (4 - aY * 4));
                         }
                         break;
                     case 1:
                         switch (side) {
-                            case DOWN:
-                            case UP:
-                                mRedstoneStrength = (byte) (mRedstoneStrength
-                                        ^ (1 << (((byte) (aX * 2) + 2 * (byte) (aZ * 2)))));
-                                break;
-                            case NORTH:
-                                mRedstoneStrength = (byte) (mRedstoneStrength
-                                        ^ (1 << (((byte) (2 - aX * 2) + 2 * (byte) (2 - aY * 2)))));
-                                break;
-                            case SOUTH:
-                                mRedstoneStrength = (byte) (mRedstoneStrength
-                                        ^ (1 << (((byte) (aX * 2) + 2 * (byte) (2 - aY * 2)))));
-                                break;
-                            case WEST:
-                                mRedstoneStrength = (byte) (mRedstoneStrength
-                                        ^ (1 << (((byte) (aZ * 2) + 2 * (byte) (2 - aY * 2)))));
-                                break;
-                            case EAST:
-                                mRedstoneStrength = (byte) (mRedstoneStrength
-                                        ^ (1 << (((byte) (2 - aZ * 2) + 2 * (byte) (2 - aY * 2)))));
-                                break;
+                            case DOWN, UP -> mRedstoneStrength = (byte) (mRedstoneStrength
+                                    ^ (1 << (((byte) (aX * 2) + 2 * (byte) (aZ * 2)))));
+                            case NORTH -> mRedstoneStrength = (byte) (mRedstoneStrength
+                                    ^ (1 << (((byte) (2 - aX * 2) + 2 * (byte) (2 - aY * 2)))));
+                            case SOUTH -> mRedstoneStrength = (byte) (mRedstoneStrength
+                                    ^ (1 << (((byte) (aX * 2) + 2 * (byte) (2 - aY * 2)))));
+                            case WEST -> mRedstoneStrength = (byte) (mRedstoneStrength
+                                    ^ (1 << (((byte) (aZ * 2) + 2 * (byte) (2 - aY * 2)))));
+                            case EAST -> mRedstoneStrength = (byte) (mRedstoneStrength
+                                    ^ (1 << (((byte) (2 - aZ * 2) + 2 * (byte) (2 - aY * 2)))));
                         }
                         break;
                     case 2:
                         switch (side) {
-                            case DOWN:
-                            case UP:
-                                mRedstoneStrength = (byte) (mRedstoneStrength ^ (1 << ((byte) (aZ * 4))));
-                                break;
-                            case NORTH:
-                                mRedstoneStrength = (byte) (mRedstoneStrength ^ (1 << ((byte) (4 - aY * 4))));
-                                break;
-                            case SOUTH:
-                                mRedstoneStrength = (byte) (mRedstoneStrength ^ (1 << ((byte) (4 - aY * 4))));
-                                break;
-                            case WEST:
-                                mRedstoneStrength = (byte) (mRedstoneStrength ^ (1 << ((byte) (4 - aY * 4))));
-                                break;
-                            case EAST:
-                                mRedstoneStrength = (byte) (mRedstoneStrength ^ (1 << ((byte) (4 - aY * 4))));
-                                break;
+                            case DOWN, UP -> mRedstoneStrength = (byte) (mRedstoneStrength ^ (1 << ((byte) (aZ * 4))));
+                            case NORTH -> mRedstoneStrength = (byte) (mRedstoneStrength ^ (1 << ((byte) (4 - aY * 4))));
+                            case SOUTH -> mRedstoneStrength = (byte) (mRedstoneStrength ^ (1 << ((byte) (4 - aY * 4))));
+                            case WEST -> mRedstoneStrength = (byte) (mRedstoneStrength ^ (1 << ((byte) (4 - aY * 4))));
+                            case EAST -> mRedstoneStrength = (byte) (mRedstoneStrength ^ (1 << ((byte) (4 - aY * 4))));
                         }
                         break;
                 }

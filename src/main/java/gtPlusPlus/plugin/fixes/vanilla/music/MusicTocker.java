@@ -62,13 +62,13 @@ public class MusicTocker extends MusicTicker implements Runnable {
         return false;
     }
 
-    private final void updateInternalNumber() {
+    private void updateInternalNumber() {
         if (ReflectionUtils.doesFieldExist(getClass(), "field_147676_d")) {
             ReflectionUtils.setField(this, "field_147676_d", mTimeUntilNextTrack);
         }
     }
 
-    private final void updateInternalSound(ISound aSound) {
+    private void updateInternalSound(ISound aSound) {
         if (ReflectionUtils.doesFieldExist(getClass(), "field_147678_c")) {
             ReflectionUtils.setField(this, "field_147678_c", aSound);
         }

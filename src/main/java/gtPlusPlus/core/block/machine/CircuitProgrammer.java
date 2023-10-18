@@ -147,7 +147,7 @@ public class CircuitProgrammer extends BasicTileBlockWithTooltip {
                 GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_I",
                 GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_I",
                 GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_I" };
-        CubicObject<String>[] aTextureData = new CubicObject[] { new CubicObject<String>(aTexData) };
+        CubicObject<String>[] aTextureData = new CubicObject[] { new CubicObject<>(aTexData) };
         return aTextureData;
     }
 }

@@ -22,6 +22,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Mods;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.math.MathUtils;
 import ic2.api.item.ElectricItem;
@@ -140,13 +141,13 @@ public abstract class ElectricBaseBauble extends BaseBauble implements IElectric
                 EnumChatFormatting.GRAY + aTier
                         + ": ["
                         + EnumChatFormatting.YELLOW
-                        + this.getTier(stack)
+                        + GT_Utility.formatNumbers(this.getTier(stack))
                         + EnumChatFormatting.GRAY
                         + "] "
                         + aInputLimit
                         + ": ["
                         + EnumChatFormatting.YELLOW
-                        + this.getTransferLimit(stack)
+                        + GT_Utility.formatNumbers(this.getTransferLimit(stack))
                         + EnumChatFormatting.GRAY
                         + aEUT
                         + "]");
@@ -154,12 +155,13 @@ public abstract class ElectricBaseBauble extends BaseBauble implements IElectric
                 EnumChatFormatting.GRAY + aCurrentPower
                         + ": ["
                         + EnumChatFormatting.YELLOW
-                        + (long) this.getCharge(stack)
+                        + GT_Utility.formatNumbers(this.getCharge(stack))
                         + EnumChatFormatting.GRAY
                         + aEU
                         + "] ["
                         + EnumChatFormatting.YELLOW
-                        + MathUtils.findPercentage(this.getCharge(stack), this.getMaxCharge(stack))
+                        + GT_Utility.formatNumbers(
+                                MathUtils.findPercentage(this.getCharge(stack), this.getMaxCharge(stack)))
                         + EnumChatFormatting.GRAY
                         + "%]");
         super.addInformation(stack, aPlayer, list, bool);

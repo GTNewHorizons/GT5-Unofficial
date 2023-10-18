@@ -189,37 +189,38 @@ public class StaballoySpade extends ItemSpade {
         float DURABILITY_LOSS = 0;
         if (!world.isRemote) {
 
-            if (FACING.equals("below") || FACING.equals("above")) {
-                DURABILITY_LOSS = 0;
-                for (int i = -1; i < 2; i++) {
-                    for (int j = -1; j < 2; j++) {
-                        DURABILITY_LOSS = (DURABILITY_LOSS
-                                + this.removeBlockAndDropAsItem(world, X + i, Y, Z + j, heldItem));
+            switch (FACING) {
+                case "below", "above" -> {
+                    DURABILITY_LOSS = 0;
+                    for (int i = -1; i < 2; i++) {
+                        for (int j = -1; j < 2; j++) {
+                            DURABILITY_LOSS = (DURABILITY_LOSS
+                                    + this.removeBlockAndDropAsItem(world, X + i, Y, Z + j, heldItem));
+                        }
                     }
                 }
-            } else if (FACING.equals("facingEast") || FACING.equals("facingWest")) {
-                DURABILITY_LOSS = 0;
-                for (int i = -1; i < 2; i++) {
-                    for (int j = -1; j < 2; j++) {
-                        DURABILITY_LOSS = (DURABILITY_LOSS
-                                + this.removeBlockAndDropAsItem(world, X, Y + i, Z + j, heldItem));
+                case "facingEast", "facingWest" -> {
+                    DURABILITY_LOSS = 0;
+                    for (int i = -1; i < 2; i++) {
+                        for (int j = -1; j < 2; j++) {
+                            DURABILITY_LOSS = (DURABILITY_LOSS
+                                    + this.removeBlockAndDropAsItem(world, X, Y + i, Z + j, heldItem));
+                        }
                     }
                 }
-            } else if (FACING.equals("facingNorth") || FACING.equals("facingSouth")) {
-                DURABILITY_LOSS = 0;
-                for (int i = -1; i < 2; i++) {
-                    for (int j = -1; j < 2; j++) {
-                        DURABILITY_LOSS = (DURABILITY_LOSS
-                                + this.removeBlockAndDropAsItem(world, X + j, Y + i, Z, heldItem));
+                case "facingNorth", "facingSouth" -> {
+                    DURABILITY_LOSS = 0;
+                    for (int i = -1; i < 2; i++) {
+                        for (int j = -1; j < 2; j++) {
+                            DURABILITY_LOSS = (DURABILITY_LOSS
+                                    + this.removeBlockAndDropAsItem(world, X + j, Y + i, Z, heldItem));
+                        }
                     }
                 }
             }
 
             // int heldItemDurability = heldItem.getDamage(1);
             Logger.WARNING("Total Loss: " + (int) DURABILITY_LOSS);
-            // heldItem.setDamage(heldStack, DURABILITY_LOSS);
-            // Utils.LOG_WARNING("|GID|Durability: "+heldItem.getItemDamage());
-            // Utils.LOG_WARNING("Durability: "+heldStack.getDamage(heldStack));
             Logger.WARNING("1x: " + (heldItem.getItemDamage()));
             final int itemdmg = heldItem.getItemDamage();
             final int maxdmg = heldItem.getMaxDamage();
@@ -316,8 +317,6 @@ public class StaballoySpade extends ItemSpade {
     public boolean checkFacing(final ItemStack aStack, final EntityPlayer aPlayer, final World world) {
         if (aPlayer != null) {
             final int direction = MathHelper.floor_double((aPlayer.rotationYaw * 4F) / 360F + 0.5D) & 3;
-            // Utils.LOG_WARNING("Player - F: "+direction);
-            // Utils.LOG_WARNING("Player - getLookVec(): "+localPlayer.getLookVec().yCoord);
 
             /*
              * if (localPlayer.getLookVec().yCoord > 0){ localPlayer.getLookVec().yCoord; }

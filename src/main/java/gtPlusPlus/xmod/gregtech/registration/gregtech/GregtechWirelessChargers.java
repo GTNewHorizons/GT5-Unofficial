@@ -84,7 +84,7 @@ public class GregtechWirelessChargers {
                         8,
                         "Hopefully won't give you cancer.",
                         0).getStackForm(1L));
-        GregtechItemList.Charger_MAX.set(
+        GregtechItemList.Charger_UHV.set(
                 new GregtechMetaWirelessCharger(
                         mID++,
                         "wificharger.09.tier.single",

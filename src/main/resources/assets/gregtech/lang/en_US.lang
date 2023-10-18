@@ -51,10 +51,11 @@ GTPP.battpack.tooltip.4=Also charges items on the hotbar
 
 //Tooltips for the Personal Healing Bauble
 GTPP.nanohealer.tooltip.1=Worn as a Necklace within Baubles
-GTPP.nanohealer.tooltip.2=Drains 1638400EU per operation
-GTPP.nanohealer.tooltip.3=Can restore HP, Hunger and Saturation
-GTPP.nanohealer.tooltip.4=WILL NOT PREVENT DEATH
-GTPP.nanohealer.tooltip.5=Shift+RMB to toggle notifications
+GTPP.nanohealer.tooltip.2=Drains
+GTPP.nanohealer.tooltip.3= EU per operation.
+GTPP.nanohealer.tooltip.4=Can restore HP, Hunger and Saturation.
+GTPP.nanohealer.tooltip.5=Will not prevent death.
+GTPP.nanohealer.tooltip.6=Shift+RMB to toggle notifications.
 GTPP.nanohealer.hidden=Hiding Info?
 
 //10/4/19

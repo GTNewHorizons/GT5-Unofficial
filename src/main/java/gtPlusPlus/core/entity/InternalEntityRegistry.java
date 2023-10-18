@@ -5,10 +5,7 @@ import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.entity.monster.EntitySickBlaze;
 import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
-import gtPlusPlus.core.entity.projectile.EntityHydrofluoricAcidPotion;
 import gtPlusPlus.core.entity.projectile.EntityLightningAttack;
-import gtPlusPlus.core.entity.projectile.EntitySulfuricAcidPotion;
-import gtPlusPlus.core.entity.projectile.EntityThrowableBomb;
 import gtPlusPlus.core.entity.projectile.EntityToxinballSmall;
 import gtPlusPlus.core.item.general.spawn.ItemCustomSpawnEgg;
 import gtPlusPlus.core.util.Utils;
@@ -20,8 +17,6 @@ public class InternalEntityRegistry {
     public static void registerEntities() {
         Logger.INFO("Registering GT++ Entities.");
 
-        // EntityRegistry.registerGlobalEntityID(EntityPrimedMiningExplosive.class, "MiningCharge",
-        // EntityRegistry.findGlobalUniqueEntityId(), Utils.rgbtoHexValue(0, 0, 0), Utils.rgbtoHexValue(125, 125, 125));
         EntityRegistry.registerModEntity(
                 EntityPrimedMiningExplosive.class,
                 "MiningCharge",
@@ -31,31 +26,6 @@ public class InternalEntityRegistry {
                 20,
                 true);
 
-        // EntityRegistry.registerGlobalEntityID(EntitySulfuricAcidPotion.class, "throwablePotionSulfuric",
-        // EntityRegistry.findGlobalUniqueEntityId(), Utils.rgbtoHexValue(200, 0, 200), Utils.rgbtoHexValue(125, 125,
-        // 125));
-        EntityRegistry.registerModEntity(
-                EntitySulfuricAcidPotion.class,
-                "throwablePotionSulfuric",
-                mEntityID++,
-                GTplusplus.instance,
-                64,
-                20,
-                true);
-
-        // EntityRegistry.registerGlobalEntityID(EntityHydrofluoricAcidPotion.class, "throwablePotionHydrofluoric",
-        // EntityRegistry.findGlobalUniqueEntityId(), Utils.rgbtoHexValue(0, 0, 0), Utils.rgbtoHexValue(255, 255, 255));
-        EntityRegistry.registerModEntity(
-                EntityHydrofluoricAcidPotion.class,
-                "throwablePotionHydrofluoric",
-                mEntityID++,
-                GTplusplus.instance,
-                64,
-                20,
-                true);
-
-        // EntityRegistry.registerGlobalEntityID(EntityToxinballSmall.class, "toxinBall",
-        // EntityRegistry.findGlobalUniqueEntityId(), Utils.rgbtoHexValue(0, 25, 0), Utils.rgbtoHexValue(0, 125, 0));
         EntityRegistry.registerModEntity(
                 EntityToxinballSmall.class,
                 "toxinBall",
@@ -65,8 +35,6 @@ public class InternalEntityRegistry {
                 20,
                 true);
 
-        // EntityRegistry.registerGlobalEntityID(EntityStaballoyConstruct.class, "constructStaballoy",
-        // EntityRegistry.findGlobalUniqueEntityId(), Utils.rgbtoHexValue(0, 75, 0), Utils.rgbtoHexValue(50, 220, 50));
         EntityRegistry.registerModEntity(
                 EntityStaballoyConstruct.class,
                 "constructStaballoy",
@@ -88,15 +56,6 @@ public class InternalEntityRegistry {
                 "sickBlaze",
                 Utils.rgbtoHexValue(40, 180, 40),
                 Utils.rgbtoHexValue(75, 75, 75));
-
-        EntityRegistry.registerModEntity(
-                EntityThrowableBomb.class,
-                "EntityThrowableBomb",
-                mEntityID++,
-                GTplusplus.instance,
-                64,
-                10,
-                true);
 
         EntityRegistry.registerModEntity(
                 EntityLightningAttack.class,

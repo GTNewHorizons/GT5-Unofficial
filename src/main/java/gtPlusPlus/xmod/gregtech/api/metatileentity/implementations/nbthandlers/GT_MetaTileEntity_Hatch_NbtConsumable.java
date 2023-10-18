@@ -169,7 +169,7 @@ public abstract class GT_MetaTileEntity_Hatch_NbtConsumable extends GT_MetaTileE
     }
 
     public final AutoMap<ItemStack> getContentUsageSlots() {
-        AutoMap<ItemStack> aItems = new AutoMap<ItemStack>();
+        AutoMap<ItemStack> aItems = new AutoMap<>();
         for (int i = mInputslotCount; i < mTotalSlotCount; i++) {
             if (mInventory[i] != null) {
                 aItems.add(mInventory[i]);
@@ -279,24 +279,19 @@ public abstract class GT_MetaTileEntity_Hatch_NbtConsumable extends GT_MetaTileE
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         switch (mTotalSlotCount) {
-            case 8:
-            case 18:
-                builder.widget(
-                        new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo()).setSize(17, 17)
-                                .setPos(152, 63));
-                break;
-            case 32:
-                builder.widget(
-                        new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo()).setSize(17, 17)
-                                .setPos(79, 35));
-                break;
+            case 8, 18 -> builder.widget(
+                    new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo()).setSize(17, 17)
+                            .setPos(152, 63));
+            case 32 -> builder.widget(
+                    new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo()).setSize(17, 17)
+                            .setPos(79, 35));
         }
     }
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         switch (mTotalSlotCount) {
-            case 8:
+            case 8 -> {
                 builder.widget(
                         SlotGroup.ofItemHandler(inventoryHandler, 2).startFromSlot(0).endAtSlot(3).build()
                                 .setPos(25, 25));
@@ -305,8 +300,8 @@ public abstract class GT_MetaTileEntity_Hatch_NbtConsumable extends GT_MetaTileE
                                 .build().setPos(115, 25));
                 builder.widget(new TextWidget("Stock").setDefaultColor(COLOR_TEXT_GRAY.get()).setPos(25, 16))
                         .widget(new TextWidget("Active").setDefaultColor(COLOR_TEXT_GRAY.get()).setPos(115, 16));
-                break;
-            case 18:
+            }
+            case 18 -> {
                 builder.widget(
                         SlotGroup.ofItemHandler(inventoryHandler, 3).startFromSlot(0).endAtSlot(8).build()
                                 .setPos(25, 19));
@@ -315,15 +310,15 @@ public abstract class GT_MetaTileEntity_Hatch_NbtConsumable extends GT_MetaTileE
                                 .build().setPos(97, 19));
                 builder.widget(new TextWidget("Stock").setDefaultColor(COLOR_TEXT_GRAY.get()).setPos(25, 14))
                         .widget(new TextWidget("Active").setDefaultColor(COLOR_TEXT_GRAY.get()).setPos(15, 14));
-                break;
-            case 32:
+            }
+            case 32 -> {
                 builder.widget(
                         SlotGroup.ofItemHandler(inventoryHandler, 4).startFromSlot(0).endAtSlot(15).build()
                                 .setPos(7, 7));
                 builder.widget(
                         SlotGroup.ofItemHandler(inventoryHandler, 4).startFromSlot(16).endAtSlot(31).canInsert(false)
                                 .build().setPos(96, 7));
-                break;
+            }
         }
     }
 }

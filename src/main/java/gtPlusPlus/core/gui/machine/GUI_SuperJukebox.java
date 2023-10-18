@@ -60,7 +60,7 @@ public class GUI_SuperJukebox extends GUI_Base_Tile_Entity {
         final int yStart = (this.height - this.ySize) / 2;
         final int x3 = x2 - xStart;
         final int y3 = y2 - yStart + 5;
-        final List<String> list = new ArrayList<String>();
+        final List<String> list = new ArrayList<>();
 
         if (y3 >= 17 && y3 <= 33) {
             if (x3 >= 80 && x3 <= 96) {

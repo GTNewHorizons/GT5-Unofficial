@@ -14,7 +14,7 @@ public class COMPAT_ExtraUtils {
         run();
     }
 
-    private static final void run() {
+    private static void run() {
         ItemUtils.getItemForOreDict("ExtraUtilities:bedrockiumIngot", "ingotBedrockium", "Bedrockium Ingot", 0);
         // GT_OreDictUnificator.registerOre("plateBedrockium", new ItemStack(ModItems.itemPlateBedrockium));
 
