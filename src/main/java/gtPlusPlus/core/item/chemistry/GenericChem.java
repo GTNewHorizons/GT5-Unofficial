@@ -625,8 +625,8 @@ public class GenericChem extends ItemPackage {
                         CI.getEmptyCatalyst(10),
                         GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 4L),
                         ELEMENT.getInstance().RHODIUM.getDust(4))
-                .itemOutputs(ItemUtils.getSimpleStack(mFormaldehydeCatalyst, 4)).duration(30 * SECONDS)
-                .eut(TierEU.RECIPE_HV / 2).addTo(sAssemblerRecipes);
+                .itemOutputs(ItemUtils.getSimpleStack(mPinkCatalyst, 10)).duration(30 * SECONDS).eut(TierEU.RECIPE_EV)
+                .addTo(sAssemblerRecipes);
     }
 
     private void recipeCatalystFormaldehyde() {
@@ -636,8 +636,8 @@ public class GenericChem extends ItemPackage {
                         getTierThreeChip(),
                         CI.getEmptyCatalyst(4),
                         ItemUtils.getSimpleStack(RocketFuels.Formaldehyde_Catalyst_Dust, 8))
-                .itemOutputs(ItemUtils.getSimpleStack(mBrownCatalyst, 10)).duration(15 * SECONDS).eut(TierEU.RECIPE_LV)
-                .addTo(sAssemblerRecipes);
+                .itemOutputs(ItemUtils.getSimpleStack(mFormaldehydeCatalyst, 4)).duration(30 * SECONDS)
+                .eut(TierEU.RECIPE_HV / 2).addTo(sAssemblerRecipes);
     }
 
     private void recipeCatalystSolidAcid() {
