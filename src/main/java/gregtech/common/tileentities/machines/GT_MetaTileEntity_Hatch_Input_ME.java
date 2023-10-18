@@ -237,14 +237,14 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                     checkRecipeResult = SimpleCheckRecipeResult
                         .ofFailurePersistOnShutdown("stocking_hatch_fail_extraction");
                 }
+                shadowStoredFluids[i] = null;
+                savedStackSizes[i] = 0;
+                if (storedInformationFluids[i] != null && storedInformationFluids[i].amount <= 0) {
+                    storedInformationFluids[i] = null;
+                }
             }
         } catch (GridAccessException e) {
             throw new RuntimeException(e);
-        }
-
-        for (int i = 0; i < SLOT_COUNT; i++) {
-            shadowStoredFluids[i] = null;
-            savedStackSizes[i] = 0;
         }
 
         processingRecipe = false;
