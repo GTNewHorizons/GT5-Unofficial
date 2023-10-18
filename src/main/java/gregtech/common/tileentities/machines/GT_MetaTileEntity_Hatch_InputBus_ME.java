@@ -476,6 +476,9 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                 }
                 savedStackSizes[i] = 0;
                 shadowInventory[i] = null;
+                if (mInventory[i + SLOT_COUNT] != null && mInventory[i + SLOT_COUNT].stackSize <= 0) {
+                    mInventory[i + SLOT_COUNT] = null;
+                }
             }
         }
         processingRecipe = false;

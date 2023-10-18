@@ -228,10 +228,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
 
             for (int i = 0; i < SLOT_COUNT; ++i) {
                 FluidStack oldStack = shadowStoredFluids[i];
-                int oldAmount = savedStackSizes[i];
-                if (oldStack == null || oldAmount == 0) continue;
-
-                int toExtract = oldAmount - oldStack.amount;
+                int toExtract = savedStackSizes[i] - (oldStack != null ? oldStack.amount : 0);
                 if (toExtract <= 0) continue;
 
                 IAEFluidStack request = AEFluidStack.create(storedFluids[i]);
@@ -245,14 +242,14 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                     checkRecipeResult = SimpleCheckRecipeResult
                         .ofFailurePersistOnShutdown("stocking_hatch_fail_extraction");
                 }
+                shadowStoredFluids[i] = null;
+                savedStackSizes[i] = 0;
+                if (storedInformationFluids[i] != null && storedInformationFluids[i].amount <= 0) {
+                    storedInformationFluids[i] = null;
+                }
             }
         } catch (GridAccessException e) {
             throw new RuntimeException(e);
-        }
-
-        for (int i = 0; i < SLOT_COUNT; i++) {
-            shadowStoredFluids[i] = null;
-            savedStackSizes[i] = 0;
         }
 
         processingRecipe = false;
