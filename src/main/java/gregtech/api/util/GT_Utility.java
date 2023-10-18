@@ -1849,13 +1849,6 @@ public class GT_Utility {
     public static ItemStack fillFluidContainer(FluidStack aFluid, ItemStack aStack, boolean aRemoveFluidDirectly,
         boolean aCheckIFluidContainerItems) {
         if (isStackInvalid(aStack) || aFluid == null) return null;
-        if (GT_ModHandler.isWater(aFluid) && ItemList.Bottle_Empty.isStackEqual(aStack)) {
-            if (aFluid.amount >= 250) {
-                if (aRemoveFluidDirectly) aFluid.amount -= 250;
-                return new ItemStack(Items.potionitem, 1, 0);
-            }
-            return null;
-        }
         if (aCheckIFluidContainerItems && aStack.getItem() instanceof IFluidContainerItem
             && ((IFluidContainerItem) aStack.getItem()).getFluid(aStack) == null
             && ((IFluidContainerItem) aStack.getItem()).getCapacity(aStack) <= aFluid.amount) {
@@ -1962,8 +1955,10 @@ public class GT_Utility {
     }
 
     /**
-     * Get general container item, not only fluid container but also non-consumable item.
-     * {@link #getContainerForFilledItem} works better for fluid container.
+     * This is NOT meant for fluid manipulation! It's for getting item container, which is generally used for
+     * crafting recipes. While it also works for many of the fluid containers, some don't.
+     * <p>
+     * Use {@link #getContainerForFilledItem} for getting empty fluid container.
      */
     public static ItemStack getContainerItem(ItemStack aStack, boolean aCheckIFluidContainerItems) {
         if (isStackInvalid(aStack)) return null;
