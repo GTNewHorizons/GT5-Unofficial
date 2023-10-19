@@ -4,6 +4,7 @@ import static gregtech.GT_Mod.GT_FML_LOGGER;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
@@ -18,6 +19,8 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
@@ -38,9 +41,8 @@ import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Item;
 import gregtech.api.util.GT_ItsNotMyFaultException;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalTankBase;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_QuantumChest;
-import gregtech.common.tileentities.storage.GT_MetaTileEntity_QuantumTank;
-import gregtech.common.tileentities.storage.GT_MetaTileEntity_SuperTank;
 
 public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
 
@@ -330,8 +332,7 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
         final short tDamage = (short) getDamage(aStack);
         final EntityLivingBase tPlayer = (EntityPlayer) aPlayer;
         if (GregTech_API.METATILEENTITIES[tDamage] instanceof GT_MetaTileEntity_QuantumChest
-            || GregTech_API.METATILEENTITIES[tDamage] instanceof GT_MetaTileEntity_SuperTank
-            || GregTech_API.METATILEENTITIES[tDamage] instanceof GT_MetaTileEntity_QuantumTank) {
+            || GregTech_API.METATILEENTITIES[tDamage] instanceof GT_MetaTileEntity_DigitalTankBase) {
             final NBTTagCompound tNBT = aStack.stackTagCompound;
             if (tNBT == null) return;
             if (tNBT.hasNoTags()) {
@@ -379,19 +380,31 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
         return 0;
     }
 
+    @Nullable
+    private Fluid getLockedFluid(@Nonnull ItemStack container) {
+        final NBTTagCompound tag = container.stackTagCompound;
+        if (tag == null) return null;
+        String lockedName = tag.getString("lockedFluidName");
+        if (GT_Utility.isStringInvalid(lockedName)) return null;
+        return FluidRegistry.getFluid(lockedName);
+    }
+
     @Override
     public int fill(ItemStack container, FluidStack resource, boolean doFill) {
         if (container != null && resource != null) {
             final int tDamage = container.getItemDamage();
             final IMetaTileEntity tMetaTile = GregTech_API.METATILEENTITIES[tDamage];
-            if (!(tMetaTile instanceof GT_MetaTileEntity_QuantumTank
-                || tMetaTile instanceof GT_MetaTileEntity_SuperTank)) {
+            if (!(tMetaTile instanceof GT_MetaTileEntity_DigitalTankBase)) {
                 return 0;
             }
             if (container.stackTagCompound == null) container.stackTagCompound = new NBTTagCompound();
             final FluidStack tStoredFluid = getFluid(container);
             final int tCapacity = getCapacity(container);
             if (tCapacity <= 0) return 0;
+            final Fluid lockedFluid = getLockedFluid(container);
+            if (lockedFluid != null && resource.getFluid() != lockedFluid) {
+                return 0;
+            }
             if (tStoredFluid != null && tStoredFluid.isFluidEqual(resource)) {
                 final int tAmount = Math.min(tCapacity - tStoredFluid.amount, resource.amount);
                 if (doFill) {
@@ -417,8 +430,7 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
         if (container != null && container.hasTagCompound()) {
             final int tDamage = container.getItemDamage();
             final IMetaTileEntity tMetaTile = GregTech_API.METATILEENTITIES[tDamage];
-            if (!(tMetaTile instanceof GT_MetaTileEntity_QuantumTank
-                || tMetaTile instanceof GT_MetaTileEntity_SuperTank)) {
+            if (!(tMetaTile instanceof GT_MetaTileEntity_DigitalTankBase)) {
                 return null;
             }
             final FluidStack tStoredFluid = getFluid(container);
