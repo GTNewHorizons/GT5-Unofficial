@@ -21,7 +21,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 public class GT_MetaTileEntity_HumongousInputHatch extends GT_MetaTileEntity_Hatch_Input {
 
     public GT_MetaTileEntity_HumongousInputHatch(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, 0);
+        super(aID, aName, aNameRegional, 13);
         this.mDescriptionArray[1] = "Capacity: 2,000,000,000L";
     }
 
