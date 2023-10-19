@@ -332,9 +332,6 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                         issueTextureUpdate();
                     }
 
-                    // mActive = !mActive;
-                    // issueTextureUpdate();
-
                     if (mNeedsUpdate) {
                         BlockUpdateHandler.Instance.enqueueBlockUpdate(worldObj, getLocation());
                         mNeedsUpdate = false;
