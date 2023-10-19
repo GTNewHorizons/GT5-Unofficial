@@ -56,7 +56,6 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.TickTime;
 import gregtech.api.graphs.GenerateNodeMap;
 import gregtech.api.graphs.GenerateNodeMapPower;
 import gregtech.api.graphs.Node;
@@ -72,7 +71,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachin
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.net.GT_Packet_TileEntity;
 import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.util.BlockUpdateHandler;
+import gregtech.api.objects.blockupdate.BlockUpdateHandler;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
@@ -122,8 +121,6 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
     private UUID mOwnerUuid = GT_Utility.defaultUuid;
     private NBTTagCompound mRecipeStuff = new NBTTagCompound();
     private int cableUpdateDelay = 30;
-
-    private static BlockUpdateHandler blockUpdateHandler = new BlockUpdateHandler(TickTime.SECOND / 2, TickTime.SECOND);
 
     public BaseMetaTileEntity() {}
 
@@ -337,7 +334,11 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
 
                     // mActive = !mActive;
                     // issueTextureUpdate();
-                    UpdateTextureIfNeeded();
+
+                    if (mNeedsUpdate) {
+                        BlockUpdateHandler.Instance.enqueueBlockUpdate(worldObj, getLocation());
+                        mNeedsUpdate = false;
+                    }
                 }
                 if (aSideServer && mTickTimer > 10) {
                     if (!doCoverThings()) {
@@ -636,28 +637,6 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
         }
 
         mWorkUpdate = mInventoryChanged = mRunningThroughTick = false;
-    }
-
-    protected void UpdateTextureIfNeeded() {
-
-        if (!mNeedsUpdate) return;
-
-        DimensionalCoord location = getLocation();
-
-        if (lastTimeTextureUpdRequested <= blockUpdateHandler.getLastTimeUpdated(worldObj, location)) {
-            mNeedsUpdate = false;
-        } else if (blockUpdateHandler.triggerBlockUpdate(worldObj, location)) {
-            // Chunk chunk = worldObj.getChunkFromBlockCoords(xCoord, zCoord);
-            // GT_Log.out.println(
-            // String.format(
-            // "updated chunk [x = %d, z = %d], mActive = %b, time = %d",
-            // chunk.xPosition,
-            // chunk.zPosition,
-            // mActive,
-            // MinecraftServer.getServer()
-            // .getTickCounter()));
-            mNeedsUpdate = false;
-        }
     }
 
     @Override
