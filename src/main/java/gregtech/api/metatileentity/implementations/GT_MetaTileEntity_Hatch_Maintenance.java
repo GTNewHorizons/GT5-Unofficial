@@ -16,6 +16,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.gtnewhorizon.structurelib.StructureLibAPI;
+import com.gtnewhorizon.structurelib.alignment.IAlignment;
+import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
+import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
+import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
+import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
@@ -23,6 +30,7 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
@@ -41,7 +49,9 @@ import gregtech.api.util.GT_Utility;
 import ic2.core.IHasGui;
 import ic2.core.item.ItemToolbox;
 
-public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch implements IAddUIWidgets {
+public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch implements IAddUIWidgets, IAlignment {
+
+    private Rotation rotation = Rotation.NORMAL;
 
     private static ItemStack[] sAutoMaintenanceInputs;
     public boolean mWrench = false, mScrewdriver = false, mSoftHammer = false, mHardHammer = false,
@@ -96,23 +106,40 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        if (mAuto) return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_AUTOMAINTENANCE_IDLE),
+        if (mAuto) return new ITexture[] { aBaseTexture, TextureFactory.builder()
+            .addIcon(OVERLAY_AUTOMAINTENANCE_IDLE)
+            .extFacing()
+            .build(),
             TextureFactory.builder()
                 .addIcon(OVERLAY_AUTOMAINTENANCE_IDLE_GLOW)
+                .extFacing()
                 .glow()
                 .build() };
-        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_MAINTENANCE) };
+        return new ITexture[] { aBaseTexture, TextureFactory.builder()
+            .addIcon(OVERLAY_MAINTENANCE)
+            .extFacing()
+            .build() };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        if (mAuto) return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_AUTOMAINTENANCE),
+        if (mAuto) return new ITexture[] { aBaseTexture, TextureFactory.builder()
+            .addIcon(OVERLAY_AUTOMAINTENANCE)
+            .extFacing()
+            .build(),
             TextureFactory.builder()
                 .addIcon(OVERLAY_AUTOMAINTENANCE_GLOW)
+                .extFacing()
                 .glow()
                 .build() };
-        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_MAINTENANCE),
-            TextureFactory.of(OVERLAY_DUCTTAPE) };
+        return new ITexture[] { aBaseTexture, TextureFactory.builder()
+            .addIcon(OVERLAY_MAINTENANCE)
+            .extFacing()
+            .build(),
+            TextureFactory.builder()
+                .addIcon(OVERLAY_DUCTTAPE)
+                .extFacing()
+                .build() };
     }
 
     @Override
@@ -186,6 +213,18 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
         if (aBaseMetaTileEntity.isServerSide() && mAuto && aTick % 100L == 0L) {
             aBaseMetaTileEntity.setActive(!isRecipeInputEqual(false));
         }
+    }
+
+    @Override
+    public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
+        float aX, float aY, float aZ) {
+        if (wrenchingSide != getBaseMetaTileEntity().getFrontFacing())
+            return super.onWrenchRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ);
+        if (!entityPlayer.isSneaking() && isRotationChangeAllowed()) {
+            toolSetRotation(null);
+            return true;
+        }
+        return false;
     }
 
     public boolean autoMaintainance() {
@@ -354,5 +393,65 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
                     new TextWidget("Click with Tool to repair.").setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(8, 12));
         }
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setByte("mRotation", (byte) rotation.getIndex());
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        rotation = Rotation.byIndex(aNBT.getByte("mRotation"));
+        super.loadNBTData(aNBT);
+    }
+
+    @Override
+    public ExtendedFacing getExtendedFacing() {
+        return ExtendedFacing.of(getBaseMetaTileEntity().getFrontFacing(), rotation, Flip.NONE);
+    }
+
+    @Override
+    public void setExtendedFacing(ExtendedFacing alignment) {
+        boolean changed = false;
+        final IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base.getFrontFacing() != alignment.getDirection()) {
+            base.setFrontFacing(alignment.getDirection());
+            changed = true;
+        }
+        if (rotation != alignment.getRotation()) {
+            rotation = alignment.getRotation();
+            changed = true;
+        }
+        if (changed) {
+            if (base.isServerSide() && !GregTech_API.isDummyWorld(base.getWorld())) {
+                StructureLibAPI.sendAlignment(
+                    (IAlignmentProvider) base,
+                    new NetworkRegistry.TargetPoint(
+                        base.getWorld().provider.dimensionId,
+                        base.getXCoord(),
+                        base.getYCoord(),
+                        base.getZCoord(),
+                        512));
+            } else {
+                base.issueTextureUpdate();
+            }
+        }
+    }
+
+    @Override
+    public IAlignmentLimits getAlignmentLimits() {
+        return (d, r, f) -> f.isNotFlipped();
+    }
+
+    @Override
+    public boolean isFlipChangeAllowed() {
+        return false;
+    }
+
+    @Override
+    public boolean isRotationChangeAllowed() {
+        return true;
     }
 }

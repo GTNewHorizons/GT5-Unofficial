@@ -334,6 +334,19 @@ GT5U.machines.allow_nbt.tooltip=Allow items with NBT
 GT5U.machines.allow_nbt.tooltip.extended=§7By default, all items with NBT are blocked.
 GT5U.machines.ignore_nbt.tooltip=Ignore item NBT
 GT5U.machines.ignore_nbt.tooltip.extended=§7By default, item NBT must match.
+GT5U.machines.stocking_bus.cannot_set_slot=§8Cannot set slot while auto-pull mode is enabled
+GT5U.machines.stocking_bus.auto_pull.tooltip.1=Click to toggle automatic item pulling from ME.
+GT5U.machines.stocking_bus.auto_pull.tooltip.2=Right-Click to edit minimum stack size for item pulling.
+GT5U.machines.stocking_bus.min_stack_size=Min Stack Size
+GT5U.machines.stocking_bus.auto_pull_toggle.enabled=Automatic Item Pull Enabled
+GT5U.machines.stocking_bus.auto_pull_toggle.disabled=Automatic Item Pull Disabled
+GT5U.machines.stocking_hatch.auto_pull.tooltip.1=Click to toggle automatic fluid pulling from ME.
+GT5U.machines.stocking_hatch.auto_pull.tooltip.2=Right-Click to edit minimum amount for fluid pulling.
+GT5U.machines.stocking_hatch.min_amount=Min Amount
+GT5U.machines.stocking_hatch.auto_pull_toggle.enabled=Automatic Fluid Pull Enabled
+GT5U.machines.stocking_hatch.auto_pull_toggle.disabled=Automatic Fluid Pull Disabled
+GT5U.machines.stocking_bus.saved=Saved Config to Data Stick
+GT5U.machines.stocking_bus.loaded=Loaded Config From Data Stick
 
 GT5U.recipe_filter.empty_representation_slot.tooltip=§7Click with a machine to set filter
 GT5U.recipe_filter.representation_slot.tooltip=§7Click to clear
@@ -410,6 +423,8 @@ GT5U.gui.text.drill_ores_left_layer=Ores left at y-level %s: §a%s
 GT5U.gui.text.drill_chunks_left=Drilling chunk: §a%s / %s
 GT5U.gui.text.drill_offline_reason=Drill Offline: %s
 GT5U.gui.text.drill_offline_generic=Drill Offline
+GT5U.gui.text.stocking_bus_fail_extraction=§4Failed to extract expected amount of items from stocking bus. This can be caused by attaching multiple storage buses to the same inventory.
+GT5U.gui.text.stocking_hatch_fail_extraction=§4Failed to extract expected amount of fluids from stocking hatch. This can be caused by attaching multiple storage fluid buses to the same tank.
 
 GT5U.item.programmed_circuit.select.header=Reprogram Circuit
 
@@ -539,6 +554,10 @@ GT5U.waila.energy.use=Probably uses: §e%s§r EU/t (%s)
 GT5U.waila.energy.use_with_amperage=Probably uses: §e%s§r EU/t (%sA %s)
 GT5U.waila.energy.produce=Probably generates: §a%s§r EU/t (%s)
 GT5U.waila.energy.produce_with_amperage=Probably generates: §a%s§r EU/t (%sA %s)
+GT5U.waila.stocking_bus.auto_pull.enabled=Auto-Pull from ME: Enabled
+GT5U.waila.stocking_bus.auto_pull.disabled=Auto-Pull from ME: Disabled
+GT5U.waila.stocking_bus.min_stack_size=Minimum Stack Size: %s
+GT5U.waila.stocking_hatch.min_amount=Minimum Amount: %s
 
 achievement.flintpick=First Tools
 achievement.flintpick.desc=Craft a flint pick
@@ -1377,3 +1396,16 @@ gt.item.adv_sensor_card.tooltip.frequency=Frequency: §b%s
 gt.item.adv_sensor_card.error.deconstructed.1=-ERROR- Machine Deconstructed
 gt.item.adv_sensor_card.error.deconstructed.2=Place machine again to re-enable
 gt.item.adv_sensor_card.error.no_data=No data found
+
+gt.cover.info.format.tick_rate=§b%s§r %s
+gt.cover.info.chat.tick_rate=Cover tick rate set to %s
+gt.cover.info.chat.tick_rate_not_allowed=Cannot adjust tick rate of this cover type with a jackhammer
+gt.cover.info.button.tick_rate.1=Current tick rate: Every %s%s
+gt.cover.info.button.tick_rate.2=Left click to increase, right click to decrease
+gt.cover.info.button.tick_rate.3=Hold Ctrl to adjust by more steps per click
+gt.cover.info.button.bounds_notification.minimum=§7 (minimum)§r
+gt.cover.info.button.bounds_notification.maximum=§7 (maximum)§r
+gt.time.tick.singular=tick
+gt.time.tick.plural=ticks
+gt.time.second.singular=second
+gt.time.second.plural=seconds

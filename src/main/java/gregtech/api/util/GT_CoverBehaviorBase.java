@@ -2,6 +2,7 @@ package gregtech.api.util;
 
 import static gregtech.api.enums.GT_Values.E;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -31,10 +32,12 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUIColorOverride;
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.widgets.GT_CoverTickRateButton;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.net.GT_Packet_TileEntityCoverGUI;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.common.covers.CoverInfo;
 
 /**
  * For Covers with a special behavior.
@@ -43,7 +46,7 @@ import gregtech.api.objects.GT_ItemStack;
  */
 public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
 
-    public EntityPlayer lastPlayer = null;
+    public WeakReference<EntityPlayer> lastPlayer = null;
     private final Class<T> typeToken;
     private final ITexture coverFGTexture;
 
@@ -447,6 +450,15 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
                     ButtonWidget.closeWindowButton(true)
                         .setPos(getGUIWidth() - 15, 3));
             }
+
+            final CoverInfo coverInfo = uiBuildContext.getTile()
+                .getCoverInfoAtSide(uiBuildContext.getCoverSide());
+            final GT_CoverBehaviorBase<?> behavior = coverInfo.getCoverBehavior();
+            if (coverInfo.getMinimumTickRate() > 0 && behavior.allowsTickRateAddition()) {
+                builder.widget(
+                    new GT_CoverTickRateButton(coverInfo, builder).setPos(getGUIWidth() - 24, getGUIHeight() - 24));
+            }
+
             return builder.build();
         }
 
@@ -609,7 +621,7 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     protected boolean onCoverShiftRightClickImpl(ForgeDirection side, int aCoverID, T aCoverVariable,
         ICoverable aTileEntity, EntityPlayer aPlayer) {
         if (hasCoverGUI() && aPlayer instanceof EntityPlayerMP) {
-            lastPlayer = aPlayer;
+            lastPlayer = new WeakReference<>(aPlayer);
             if (useModularUI()) {
                 GT_UIInfos.openCoverUI(aTileEntity, aPlayer, side);
             } else {
@@ -834,6 +846,10 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     }
 
     public boolean allowsCopyPasteTool() {
+        return true;
+    }
+
+    public boolean allowsTickRateAddition() {
         return true;
     }
 

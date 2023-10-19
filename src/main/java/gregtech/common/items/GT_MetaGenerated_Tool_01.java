@@ -443,15 +443,17 @@ public class GT_MetaGenerated_Tool_01 extends GT_MetaGenerated_Tool {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 4L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L)),
             GregTech_API.sWrenchList);
-        addTool(
-            JACKHAMMER,
-            "JackHammer (HV)",
-            "Breaks Rocks into pieces",
-            new GT_Tool_JackHammer(),
-            ToolDictNames.craftingToolJackHammer,
-            new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L),
-            new TC_Aspects.TC_AspectStack(TC_Aspects.PERFODIO, 2L),
-            new TC_Aspects.TC_AspectStack(TC_Aspects.PERDITIO, 2L));
+        GregTech_API.registerTool(
+            addTool(
+                JACKHAMMER,
+                "JackHammer (HV)",
+                "Breaks Rocks into pieces",
+                new GT_Tool_JackHammer(),
+                ToolDictNames.craftingToolJackHammer,
+                new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.PERFODIO, 2L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.PERDITIO, 2L)),
+            GregTech_API.sJackhammerList);
         addTool(
             BUZZSAW_LV,
             "Buzzsaw (LV)",

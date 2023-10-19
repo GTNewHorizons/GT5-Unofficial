@@ -190,11 +190,12 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
         if (isCoverOnSide(baseEntity, livingEntity)) return;
         if ((baseEntity.mConnections & IConnectable.HAS_HARDENEDFOAM) == 1) return;
 
-        final long amperage = powerPath.getAmps();
+        final long amperage = powerPath.getAmperage();
+        final long voltage = powerPath.getVoltage();
 
         if (amperage == 0L) return;
 
-        GT_Utility.applyElectricityDamage(livingEntity, mVoltage, amperage);
+        GT_Utility.applyElectricityDamage(livingEntity, voltage, amperage);
     }
 
     @Override
@@ -475,12 +476,18 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
     public String[] getInfoData() {
         final BaseMetaPipeEntity base = (BaseMetaPipeEntity) getBaseMetaTileEntity();
         final PowerNodePath path = (PowerNodePath) base.getNodePath();
-        long amps = 0;
-        long volts = 0;
-        if (path != null) {
-            amps = path.getAmps();
-            volts = path.getVoltage(this);
-        }
+
+        if (path == null)
+            return new String[] { EnumChatFormatting.RED + "Failed to get Power Node info" + EnumChatFormatting.RESET };
+
+        final long currAmp = path.getAmperage();
+        final long currVoltage = path.getVoltage();
+
+        final double avgAmp = path.getAvgAmperage();
+        final double avgVoltage = path.getAvgVoltage();
+
+        final long maxVoltageOut = (mVoltage - mCableLossPerMeter) * mAmperage;
+
         return new String[] {
             "Heat: " + EnumChatFormatting.RED
                 + GT_Utility.formatNumbers(mOverheat)
@@ -490,19 +497,27 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
                 + GT_Utility.formatNumbers(mMaxOverheat)
                 + EnumChatFormatting.RESET,
             "Amperage: " + EnumChatFormatting.GREEN
-                + GT_Utility.formatNumbers(amps)
+                + GT_Utility.formatNumbers(currAmp)
                 + EnumChatFormatting.RESET
                 + " / "
                 + EnumChatFormatting.YELLOW
                 + GT_Utility.formatNumbers(mAmperage)
                 + EnumChatFormatting.RESET
                 + " A",
-            "Max Output: " + EnumChatFormatting.GREEN
-                + GT_Utility.formatNumbers(volts)
+            "Voltage Out: " + EnumChatFormatting.GREEN
+                + GT_Utility.formatNumbers(currVoltage)
                 + EnumChatFormatting.RESET
                 + " / "
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(mVoltage)
+                + GT_Utility.formatNumbers(maxVoltageOut)
+                + EnumChatFormatting.RESET
+                + " EU/t",
+            "Avg Amperage (20t): " + EnumChatFormatting.YELLOW
+                + GT_Utility.formatNumbers(avgAmp)
+                + EnumChatFormatting.RESET
+                + " A",
+            "Avg Output (20t): " + EnumChatFormatting.YELLOW
+                + GT_Utility.formatNumbers(avgVoltage)
                 + EnumChatFormatting.RESET
                 + " EU/t" };
     }

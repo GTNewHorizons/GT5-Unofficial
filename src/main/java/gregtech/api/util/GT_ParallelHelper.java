@@ -405,6 +405,7 @@ public class GT_ParallelHelper {
         final int tRecipeEUt = (int) Math.ceil(recipe.mEUt * eutModifier);
         if (availableEUt < tRecipeEUt) {
             result = CheckRecipeResultRegistry.insufficientPower(tRecipeEUt);
+            return;
         }
 
         // Save the original max parallel before calculating our overclocking under 1 tick

@@ -7,6 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
@@ -19,11 +20,15 @@ import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GT_CoverBehaviorBase;
+import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 
 public final class CoverInfo {
 
-    private static final String NBT_SIDE = "s", NBT_ID = "id", NBT_DATA = "d";
+    private static final String NBT_SIDE = "s", NBT_ID = "id", NBT_DATA = "d", NBT_TICK_RATE_ADDITION = "tra";
+
+    // One minute
+    public static final int MAX_TICK_RATE_ADDITION = 1200;
 
     public static final CoverInfo EMPTY_INFO = new CoverInfo(ForgeDirection.UNKNOWN, null);
     private final ForgeDirection coverSide;
@@ -32,6 +37,8 @@ public final class CoverInfo {
     private ISerializableObject coverData = null;
     private final WeakReference<ICoverable> coveredTile;
     private boolean needsUpdate = false;
+
+    private int tickRateAddition = 0;
 
     public CoverInfo(ForgeDirection side, ICoverable aTile) {
         coverSide = side;
@@ -53,6 +60,7 @@ public final class CoverInfo {
         coverData = aNBT.hasKey(NBT_DATA) ? coverBehavior.createDataObject(aNBT.getTag(NBT_DATA))
             : coverBehavior.createDataObject();
         coveredTile = new WeakReference<>(aTile);
+        tickRateAddition = aNBT.hasKey(NBT_TICK_RATE_ADDITION) ? aNBT.getInteger(NBT_TICK_RATE_ADDITION) : 0;
     }
 
     public boolean isValid() {
@@ -62,6 +70,7 @@ public final class CoverInfo {
     public NBTTagCompound writeToNBT(NBTTagCompound aNBT) {
         aNBT.setByte(NBT_SIDE, (byte) coverSide.ordinal());
         aNBT.setInteger(NBT_ID, coverID);
+        aNBT.setInteger(NBT_TICK_RATE_ADDITION, tickRateAddition);
         if (coverData != null) aNBT.setTag(NBT_DATA, coverData.saveDataToNBT());
 
         return aNBT;
@@ -122,7 +131,7 @@ public final class CoverInfo {
     }
 
     public int getTickRate() {
-        return getCoverBehavior().getTickRate(coverSide, coverID, coverData, coveredTile.get());
+        return getMinimumTickRate() + tickRateAddition;
     }
 
     public ForgeDirection getSide() {
@@ -234,6 +243,49 @@ public final class CoverInfo {
             .onCoverScrewdriverClick(coverSide, coverID, coverData, coveredTile.get(), aPlayer, aX, aY, aZ);
     }
 
+    public void onCoverJackhammer(EntityPlayer aPlayer) {
+        adjustTickRateMultiplier(aPlayer.isSneaking());
+
+        GT_Utility.sendChatToPlayer(
+            aPlayer,
+            StatCollector.translateToLocalFormatted("gt.cover.info.chat.tick_rate", getCurrentTickRateFormatted()));
+    }
+
+    /**
+     * Adjusts the tick rate by one step.
+     *
+     * @param isDecreasing If true, lower one step.
+     */
+    public void adjustTickRateMultiplier(final boolean isDecreasing) {
+        final int currentTickRate = getTickRate();
+        final int stepAmount = currentTickRate == 20 ? (isDecreasing ? 5 : 20) : (currentTickRate < 20 ? 5 : 20);
+
+        tickRateAddition = clamp(tickRateAddition + (isDecreasing ? -1 : 1) * stepAmount);
+        tickRateAddition = clamp(tickRateAddition - (getTickRate() % stepAmount));
+    }
+
+    /**
+     * Returns information about the cover's tick rate.
+     *
+     * @return An instance of tick rate components
+     */
+    @NotNull
+    public CoverInfo.ClientTickRateFormatter getCurrentTickRateFormatted() {
+        return new ClientTickRateFormatter(getTickRate());
+    }
+
+    public int getMinimumTickRate() {
+        return getCoverBehavior().getTickRate(coverSide, coverID, coverData, coveredTile.get());
+    }
+
+    public int getTickRateAddition() {
+        return tickRateAddition;
+    }
+
+    public void setTickRateAddition(final int tickRateAddition) {
+        this.tickRateAddition = clamp(tickRateAddition);
+    }
+
     public Block getFacadeBlock() {
         return getCoverBehavior().getFacadeBlock(coverSide, coverID, coverData, coveredTile.get());
     }
@@ -245,5 +297,39 @@ public final class CoverInfo {
     @NotNull
     public List<String> getAdditionalTooltip(ISerializableObject data) {
         return getCoverBehavior().getAdditionalTooltip(data);
+    }
+
+    private static int clamp(int input) {
+        return Math.min(MAX_TICK_RATE_ADDITION, Math.max(0, input));
+    }
+
+    public static final class ClientTickRateFormatter {
+
+        /** A translation key for the type of time units being used (e.g.: "tick", "seconds".) */
+        private final String unitI18NKey;
+        /** A number representing a quantity of time. */
+        private final int tickRate;
+
+        /**
+         * Converts a given tick rate into a human-friendly format.
+         *
+         * @param tickRate The rate at which something ticks, in ticks per operation.
+         */
+        public ClientTickRateFormatter(final int tickRate) {
+            if (tickRate < 20) {
+                this.unitI18NKey = tickRate == 1 ? "gt.time.tick.singular" : "gt.time.tick.plural";
+                this.tickRate = tickRate;
+            } else {
+                this.unitI18NKey = tickRate == 20 ? "gt.time.second.singular" : "gt.time.second.plural";
+                this.tickRate = tickRate / 20;
+            }
+        }
+
+        public String toString() {
+            return StatCollector.translateToLocalFormatted(
+                "gt.cover.info.format.tick_rate",
+                tickRate,
+                StatCollector.translateToLocal(unitI18NKey));
+        }
     }
 }

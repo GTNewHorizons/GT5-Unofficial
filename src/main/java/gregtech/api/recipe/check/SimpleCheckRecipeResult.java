@@ -14,10 +14,12 @@ public class SimpleCheckRecipeResult implements CheckRecipeResult {
 
     private boolean success;
     private String key;
+    private boolean persistsOnShutdown;
 
-    SimpleCheckRecipeResult(boolean success, String key) {
+    SimpleCheckRecipeResult(boolean success, String key, boolean persistsOnShutdown) {
         this.success = success;
         this.key = key;
+        this.persistsOnShutdown = persistsOnShutdown;
     }
 
     @Override
@@ -37,19 +39,26 @@ public class SimpleCheckRecipeResult implements CheckRecipeResult {
 
     @Override
     public CheckRecipeResult newInstance() {
-        return new SimpleCheckRecipeResult(false, "");
+        return new SimpleCheckRecipeResult(false, "", false);
     }
 
     @Override
     public void encode(PacketBuffer buffer) {
         buffer.writeBoolean(success);
         NetworkUtils.writeStringSafe(buffer, key);
+        buffer.writeBoolean(persistsOnShutdown);
     }
 
     @Override
     public void decode(PacketBuffer buffer) {
         success = buffer.readBoolean();
         key = NetworkUtils.readStringSafe(buffer);
+        persistsOnShutdown = buffer.readBoolean();
+    }
+
+    @Override
+    public boolean persistsOnShutdown() {
+        return persistsOnShutdown;
     }
 
     @Override
@@ -57,7 +66,8 @@ public class SimpleCheckRecipeResult implements CheckRecipeResult {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SimpleCheckRecipeResult that = (SimpleCheckRecipeResult) o;
-        return success == that.success && Objects.equals(key, that.key);
+        return success == that.success && Objects.equals(key, that.key)
+            && persistsOnShutdown == that.persistsOnShutdown;
     }
 
     /**
@@ -65,14 +75,22 @@ public class SimpleCheckRecipeResult implements CheckRecipeResult {
      * This is already registered to registry.
      */
     public static CheckRecipeResult ofSuccess(String key) {
-        return new SimpleCheckRecipeResult(true, key);
+        return new SimpleCheckRecipeResult(true, key, false);
     }
 
     /**
-     * Creates new result object with failed state. Add your localized description with `GT5U.gui.text.{key}`.
+     * Creates new result with failed state. Add your localized description with `GT5U.gui.text.{key}`.
      * This is already registered to registry.
      */
     public static CheckRecipeResult ofFailure(String key) {
-        return new SimpleCheckRecipeResult(false, key);
+        return new SimpleCheckRecipeResult(false, key, false);
+    }
+
+    /**
+     * Creates new result object with failed state that does not get reset on shutdown. Add your localized description
+     * with `GT5U.gui.text.{key}`. This is already registered to registry.
+     */
+    public static CheckRecipeResult ofFailurePersistOnShutdown(String key) {
+        return new SimpleCheckRecipeResult(false, key, true);
     }
 }
