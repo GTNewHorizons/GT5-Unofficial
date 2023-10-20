@@ -15,6 +15,9 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import appeng.api.implementations.tiles.IColorableTile;
+import appeng.api.util.AEColor;
+import appeng.block.networking.BlockCableBus;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Dyes;
@@ -95,7 +98,7 @@ public class Behaviour_Spray_Color extends Behaviour_None {
         } else {
             lookSide = look.zCoord > 0 ? ForgeDirection.SOUTH : ForgeDirection.NORTH;
         }
-        while ((GT_Utility.areStacksEqual(aStack, this.mUsed, true)) && (colorize(aWorld, aX, aY, aZ, side))) {
+        while ((GT_Utility.areStacksEqual(aStack, this.mUsed, true)) && (colorize(aWorld, aX, aY, aZ, side, aPlayer))) {
             GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_PAINTER, 1.0F, 1.0F, aX, aY, aZ);
             if (!aPlayer.capabilities.isCreativeMode) {
                 tUses -= 1L;
@@ -134,27 +137,36 @@ public class Behaviour_Spray_Color extends Behaviour_None {
         return rOutput;
     }
 
-    private boolean colorize(World aWorld, int aX, int aY, int aZ, ForgeDirection side) {
+    private boolean colorize(World aWorld, int aX, int aY, int aZ, ForgeDirection side, EntityPlayer player) {
         final Block aBlock = aWorld.getBlock(aX, aY, aZ);
-        if ((aBlock != Blocks.air)
-            && ((this.mAllowedVanillaBlocks.contains(aBlock)) || ((aBlock instanceof BlockColored)))) {
-            if (aBlock == Blocks.hardened_clay) {
-                aWorld.setBlock(aX, aY, aZ, Blocks.stained_hardened_clay, (~this.mColor) & 0xF, 3);
+        if (aBlock != Blocks.air) {
+            if (this.mAllowedVanillaBlocks.contains(aBlock) || aBlock instanceof BlockColored) {
+                if (aBlock == Blocks.hardened_clay) {
+                    aWorld.setBlock(aX, aY, aZ, Blocks.stained_hardened_clay, (~this.mColor) & 0xF, 3);
+                    return true;
+                }
+                if (aBlock == Blocks.glass_pane) {
+                    aWorld.setBlock(aX, aY, aZ, Blocks.stained_glass_pane, (~this.mColor) & 0xF, 3);
+                    return true;
+                }
+                if (aBlock == Blocks.glass) {
+                    aWorld.setBlock(aX, aY, aZ, Blocks.stained_glass, (~this.mColor) & 0xF, 3);
+                    return true;
+                }
+                if (aWorld.getBlockMetadata(aX, aY, aZ) == ((~this.mColor) & 0xF)) {
+                    return false;
+                }
+                aWorld.setBlockMetadataWithNotify(aX, aY, aZ, (~this.mColor) & 0xF, 3);
                 return true;
             }
-            if (aBlock == Blocks.glass_pane) {
-                aWorld.setBlock(aX, aY, aZ, Blocks.stained_glass_pane, (~this.mColor) & 0xF, 3);
-                return true;
+
+            if (aBlock instanceof IColorableTile) {
+                return ((IColorableTile) aBlock).recolourBlock(side, AEColor.values()[(~this.mColor) & 0xF], player);
             }
-            if (aBlock == Blocks.glass) {
-                aWorld.setBlock(aX, aY, aZ, Blocks.stained_glass, (~this.mColor) & 0xF, 3);
-                return true;
+
+            if (aBlock instanceof BlockCableBus) {
+                return ((BlockCableBus) aBlock).recolourBlock(aWorld, aX, aY, aZ, side, (~this.mColor) & 0xF, player);
             }
-            if (aWorld.getBlockMetadata(aX, aY, aZ) == ((~this.mColor) & 0xF)) {
-                return false;
-            }
-            aWorld.setBlockMetadataWithNotify(aX, aY, aZ, (~this.mColor) & 0xF, 3);
-            return true;
         }
         return aBlock.recolourBlock(aWorld, aX, aY, aZ, side, (~this.mColor) & 0xF);
     }
