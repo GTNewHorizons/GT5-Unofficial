@@ -37,9 +37,10 @@ import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_TooltipDataCache;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.extensions.ArrayExt;
+import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 
 public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch
-    implements IConfigurationCircuitSupport, IAddUIWidgets {
+    implements IConfigurationCircuitSupport, IAddUIWidgets, IRecipeProcessingAwareHatch {
 
     private static final String SORTING_MODE_TOOLTIP = "GT5U.machines.sorting_mode.tooltip";
     private static final String ONE_STACK_LIMIT_TOOLTIP = "GT5U.machines.one_stack_limit.tooltip";
@@ -261,10 +262,6 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch
             if (GT_Utility.areStacksEqual(GT_OreDictUnificator.get_nocopy(aStack), mInventory[i])) return i == aIndex;
         return mInventory[aIndex] == null;
     }
-
-    public void startRecipeProcessing() {}
-
-    public void endRecipeProcessing() {}
 
     @Override
     public boolean allowSelectCircuit() {

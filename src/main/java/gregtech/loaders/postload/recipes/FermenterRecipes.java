@@ -95,13 +95,6 @@ public class FermenterRecipes implements Runnable {
             .addTo(sFermentingRecipes);
 
         GT_Values.RA.stdBuilder()
-            .fluidInputs(getFluidStack("potion.wheatyjuice", 50))
-            .fluidOutputs(getFluidStack("potion.scotch", 25))
-            .duration(51 * SECONDS + 4 * TICKS)
-            .eut(2)
-            .addTo(sFermentingRecipes);
-
-        GT_Values.RA.stdBuilder()
             .fluidInputs(getFluidStack("potion.scotch", 50))
             .fluidOutputs(getFluidStack("potion.glenmckenner", 10))
             .duration(1 * MINUTES + 42 * SECONDS + 8 * TICKS)

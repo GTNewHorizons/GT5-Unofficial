@@ -357,6 +357,14 @@ public class DistilleryRecipes implements Runnable {
             .eut(30)
             .addTo(sDistilleryRecipes);
 
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(1))
+            .fluidInputs(getFluidStack("potion.wheatyjuice", 75))
+            .fluidOutputs(getFluidStack("potion.scotch", 1))
+            .duration(1 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(sDistilleryRecipes);
+
         if (TinkerConstruct.isModLoaded()) {
 
             GT_Values.RA.stdBuilder()

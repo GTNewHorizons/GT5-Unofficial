@@ -47,6 +47,7 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
     public final int mStepSize;
     public final int mTickTime;
     public int mTransferredItems = 0;
+    public long mCurrentTransferStartTick = 0;
     public ForgeDirection mLastReceivedFrom = ForgeDirection.UNKNOWN, oLastReceivedFrom = ForgeDirection.UNKNOWN;
     public boolean mIsRestrictive = false;
     private int[] cacheSides;
@@ -204,8 +205,11 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (aBaseMetaTileEntity.isServerSide() && aTick % 10 == 0) {
-            if (aTick % mTickTime == 0) mTransferredItems = 0;
+        if (aBaseMetaTileEntity.isServerSide() && (aTick - mCurrentTransferStartTick) % 10 == 0) {
+            if ((aTick - mCurrentTransferStartTick) % mTickTime == 0) {
+                mTransferredItems = 0;
+                mCurrentTransferStartTick = 0;
+            }
 
             if (!GT_Mod.gregtechproxy.gt6Pipe || mCheckConnections) checkConnections();
 
@@ -323,6 +327,7 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
 
     @Override
     public boolean incrementTransferCounter(int aIncrement) {
+        if (mTransferredItems == 0) mCurrentTransferStartTick = getBaseMetaTileEntity().getTimer();
         mTransferredItems += aIncrement;
         return pipeCapacityCheck();
     }

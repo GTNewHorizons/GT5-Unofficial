@@ -6,6 +6,8 @@ import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GalacticraftMars;
 import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.Thaumcraft;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sFluidCannerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
@@ -42,6 +44,7 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_RecipeBuilder;
 import gregtech.api.util.GT_RecipeRegistrator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
@@ -111,54 +114,27 @@ public class GT_PostLoad {
     }
 
     public static void registerFluidCannerRecipes() {
-        ItemStack iSData0 = new ItemStack(Items.potionitem, 1, 0);
-        ItemStack iLData0 = ItemList.Bottle_Empty.get(1L);
-
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
             .getRegisteredFluidContainerData()) {
-            if ((tData.filledContainer.getItem() == Items.potionitem) && (tData.filledContainer.getItemDamage() == 0)) {
-                GT_Recipe.GT_Recipe_Map.sFluidCannerRecipes.addRecipe(
-                    true,
-                    new ItemStack[] { iLData0 },
-                    new ItemStack[] { iSData0 },
-                    null,
-                    new FluidStack[] { Materials.Water.getFluid(250L) },
-                    null,
-                    4,
-                    1,
-                    0);
-                GT_Recipe.GT_Recipe_Map.sFluidCannerRecipes.addRecipe(
-                    true,
-                    new ItemStack[] { iSData0 },
-                    new ItemStack[] { iLData0 },
-                    null,
-                    null,
-                    null,
-                    4,
-                    1,
-                    0);
-            } else {
-                GT_Recipe.GT_Recipe_Map.sFluidCannerRecipes.addRecipe(
-                    true,
-                    new ItemStack[] { tData.emptyContainer },
-                    new ItemStack[] { tData.filledContainer },
-                    null,
-                    new FluidStack[] { tData.fluid },
-                    null,
-                    tData.fluid.amount / 62,
-                    1,
-                    0);
-                GT_Recipe.GT_Recipe_Map.sFluidCannerRecipes.addRecipe(
-                    true,
-                    new ItemStack[] { tData.filledContainer },
-                    new ItemStack[] { GT_Utility.getContainerItem(tData.filledContainer, true) },
-                    null,
-                    null,
-                    new FluidStack[] { tData.fluid },
-                    tData.fluid.amount / 62,
-                    1,
-                    0);
+            // lava clay bucket is registered with empty container with 0 stack size
+            ItemStack emptyContainer = tData.emptyContainer.copy();
+            emptyContainer.stackSize = 1;
+            GT_Values.RA.stdBuilder()
+                .itemInputs(emptyContainer)
+                .itemOutputs(tData.filledContainer)
+                .fluidInputs(tData.fluid)
+                .duration((tData.fluid.amount / 62) * TICKS)
+                .eut(1)
+                .addTo(sFluidCannerRecipes);
+            GT_RecipeBuilder builder = GT_Values.RA.stdBuilder()
+                .itemInputs(tData.filledContainer);
+            if (tData.emptyContainer.stackSize > 0) {
+                builder.itemOutputs(tData.emptyContainer);
             }
+            builder.fluidOutputs(tData.fluid)
+                .duration((tData.fluid.amount / 62) * TICKS)
+                .eut(1)
+                .addTo(sFluidCannerRecipes);
         }
     }
 
