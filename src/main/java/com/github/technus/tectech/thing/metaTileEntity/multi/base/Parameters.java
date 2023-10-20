@@ -43,14 +43,25 @@ public class Parameters {
         this.parent = parent;
     }
 
-    public void trySetParameters(int hatch, double parameter0, double parameter1) {
+    public boolean trySetParameters(int hatch, double parameter0, double parameter1) {
         Group p = groups[hatch];
         if (parent.mMaxProgresstime <= 0 || (p != null && p.updateWhileRunning)) {
             iParamsIn[hatch] = parameter0;
             iParamsIn[hatch + 10] = parameter1;
+            return true;
         }
+        return false;
     }
 
+    @SuppressWarnings("unused") // Used in GTNH-Intergalactic, do not delete.
+    public boolean trySetParameters(int hatchNo, int parameterId, double parameter) {
+        Group p = groups[hatchNo];
+        if (parent.mMaxProgresstime <= 0 || (p != null && p.updateWhileRunning)) {
+            iParamsIn[hatchNo + 10 * parameterId] = parameter;
+            return true;
+        }
+        return false;
+    }
     public void setToDefaults(int hatch, boolean defaultIn, boolean defaultOut) {
         Group p = groups[hatch];
         if (p == null) {
