@@ -29,14 +29,12 @@ public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistr
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         net.minecraft.item.ItemStack aStack) {
         // Compressor recipes
-        {
-            GT_Values.RA.stdBuilder()
-                .itemInputs(gregtech.api.util.GT_Utility.copyAmount(8L, aStack))
-                .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-                .duration(15 * SECONDS)
-                .eut(2)
-                .addTo(compressorRecipes);
-        }
+        GT_Values.RA.stdBuilder()
+            .itemInputs(gregtech.api.util.GT_Utility.copyAmount(8L, aStack))
+            .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(compressorRecipes);
 
         Fluid[] waterArray;
 

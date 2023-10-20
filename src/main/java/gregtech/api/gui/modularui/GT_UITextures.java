@@ -375,17 +375,20 @@ public class GT_UITextures {
         .fullImage(GregTech.ID, "gui/overlay_button/use_processing_state.png");
     public static final UITexture OVERLAY_BUTTON_USE_INVERTED_PROCESSING_STATE = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/use_inverted_processing_state.png");
-    public static final UITexture OVERLAY_CHUNK_LOADING = UITexture
+    public static final UITexture OVERLAY_BUTTON_CHUNK_LOADING = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/chunkloading");
-    public static final UITexture OVERLAY_CHUNK_LOADING_OFF = UITexture
+    public static final UITexture OVERLAY_BUTTON_CHUNK_LOADING_OFF = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/chunkloading_off");
-    public static final UITexture OVERLAY_WORK_AREA = UITexture.fullImage(GregTech.ID, "gui/overlay_button/work_area");
-    public static final UITexture OVERLAY_REPLACE_COBBLE_ON = UITexture
+    public static final UITexture OVERLAY_BUTTON_WORK_AREA = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/work_area");
+    public static final UITexture OVERLAY_BUTTON_REPLACE_COBBLE_ON = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/replace_cobble_on");
-    public static final UITexture OVERLAY_REPLACE_COBBLE_OFF = UITexture
+    public static final UITexture OVERLAY_BUTTON_REPLACE_COBBLE_OFF = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/replace_cobble_off");
-    public static final UITexture OVERLAY_RETRACT_PIPE = UITexture
+    public static final UITexture OVERLAY_BUTTON_RETRACT_PIPE = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/retract_pipes");
+    public static final UITexture OVERLAY_BUTTON_HOURGLASS = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/hourglass");
 
     /**
      * Can adjust size as needed.

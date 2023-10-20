@@ -823,7 +823,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
             .getRegisteredFluidContainerData()) {
             if ((tData.filledContainer.getItem() == Items.potionitem) && (tData.filledContainer.getItemDamage() == 0)) {
-                tData.fluid.amount = 0;
+                tData.fluid.amount = 250;
                 break;
             }
         }
@@ -1220,7 +1220,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
             .getRegisteredFluidContainerData()) {
             if ((tData.filledContainer.getItem() == Items.potionitem) && (tData.filledContainer.getItemDamage() == 0)) {
-                tData.fluid.amount = 0;
+                tData.fluid.amount = 250;
                 break;
             }
         }
@@ -1252,7 +1252,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
             .getRegisteredFluidContainerData()) {
             if ((tData.filledContainer.getItem() == Items.potionitem) && (tData.filledContainer.getItemDamage() == 0)) {
-                tData.fluid.amount = 0;
+                tData.fluid.amount = 250;
                 break;
             }
         }
@@ -1345,7 +1345,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
             .getRegisteredFluidContainerData()) {
             if ((tData.filledContainer.getItem() == Items.potionitem) && (tData.filledContainer.getItemDamage() == 0)) {
-                tData.fluid.amount = 0;
+                tData.fluid.amount = 250;
                 break;
             }
         }
@@ -2146,7 +2146,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
     public void onFluidContainerRegistration(FluidContainerRegistry.FluidContainerRegisterEvent aFluidEvent) {
         if ((aFluidEvent.data.filledContainer.getItem() == Items.potionitem)
             && (aFluidEvent.data.filledContainer.getItemDamage() == 0)) {
-            aFluidEvent.data.fluid.amount = 0;
+            aFluidEvent.data.fluid.amount = 250;
         }
         GT_OreDictUnificator.addToBlacklist(aFluidEvent.data.emptyContainer);
         GT_OreDictUnificator.addToBlacklist(aFluidEvent.data.filledContainer);

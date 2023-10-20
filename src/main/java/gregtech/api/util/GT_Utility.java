@@ -10,6 +10,7 @@ import static gregtech.api.enums.GT_Values.NW;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.W;
 import static gregtech.api.enums.Materials.FLUID_MAP;
+import static gregtech.api.enums.Mods.Translocator;
 import static gregtech.common.GT_UndergroundOil.undergroundOilReadInformation;
 import static net.minecraftforge.common.util.ForgeDirection.DOWN;
 import static net.minecraftforge.common.util.ForgeDirection.EAST;
@@ -568,7 +569,7 @@ public class GT_Utility {
         if (TE_CHECK && tileEntity instanceof IItemDuct) return true;
         if (BC_CHECK && tileEntity instanceof buildcraft.api.transport.IPipeTile pipeTile)
             return pipeTile.isPipeConnected(side);
-        return GregTech_API.mTranslocator && tileEntity instanceof codechicken.translocator.TileItemTranslocator;
+        return Translocator.isModLoaded() && tileEntity instanceof codechicken.translocator.TileItemTranslocator;
     }
 
     /**
@@ -1843,13 +1844,6 @@ public class GT_Utility {
     public static ItemStack fillFluidContainer(FluidStack aFluid, ItemStack aStack, boolean aRemoveFluidDirectly,
         boolean aCheckIFluidContainerItems) {
         if (isStackInvalid(aStack) || aFluid == null) return null;
-        if (GT_ModHandler.isWater(aFluid) && ItemList.Bottle_Empty.isStackEqual(aStack)) {
-            if (aFluid.amount >= 250) {
-                if (aRemoveFluidDirectly) aFluid.amount -= 250;
-                return new ItemStack(Items.potionitem, 1, 0);
-            }
-            return null;
-        }
         if (aCheckIFluidContainerItems && aStack.getItem() instanceof IFluidContainerItem
             && ((IFluidContainerItem) aStack.getItem()).getFluid(aStack) == null
             && ((IFluidContainerItem) aStack.getItem()).getCapacity(aStack) <= aFluid.amount) {
@@ -1956,8 +1950,10 @@ public class GT_Utility {
     }
 
     /**
-     * Get general container item, not only fluid container but also non-consumable item.
-     * {@link #getContainerForFilledItem} works better for fluid container.
+     * This is NOT meant for fluid manipulation! It's for getting item container, which is generally used for
+     * crafting recipes. While it also works for many of the fluid containers, some don't.
+     * <p>
+     * Use {@link #getContainerForFilledItem} for getting empty fluid container.
      */
     public static ItemStack getContainerItem(ItemStack aStack, boolean aCheckIFluidContainerItems) {
         if (isStackInvalid(aStack)) return null;

@@ -165,17 +165,17 @@ public class GT_Achievements {
             GT_OreDictUnificator.get(OrePrefixes.crushedCentrifuged, Materials.Redstone, 1L),
             "crushed",
             false);
-        if (!GregTech_API.mIC2Classic) {
-            registerAchievement("newfuel", -4, 8, ItemList.ThoriumCell_4.get(1), "spinit", false);
-            registerAchievement(
-                "newmetal",
-                -4,
-                10,
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 1L),
-                "newfuel",
-                false);
-            registerAchievement("reflect", -2, 9, ItemList.Neutron_Reflector.get(1), "newfuel", false);
-        }
+
+        registerAchievement("newfuel", -4, 8, ItemList.ThoriumCell_4.get(1), "spinit", false);
+        registerAchievement(
+            "newmetal",
+            -4,
+            10,
+            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 1L),
+            "newfuel",
+            false);
+        registerAchievement("reflect", -2, 9, ItemList.Neutron_Reflector.get(1), "newfuel", false);
+
         registerAchievement(
             "bronze",
             2,

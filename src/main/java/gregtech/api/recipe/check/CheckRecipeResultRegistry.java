@@ -59,7 +59,7 @@ public final class CheckRecipeResultRegistry {
     /**
      * Code crashed.
      */
-    public static final CheckRecipeResult CRASH = SimpleCheckRecipeResult.ofFailure("crash");
+    public static final CheckRecipeResult CRASH = SimpleCheckRecipeResult.ofFailurePersistOnShutdown("crash");
     /**
      * Cannot find valid fuel for generator.
      */
@@ -121,7 +121,7 @@ public final class CheckRecipeResultRegistry {
     }
 
     static {
-        register(new SimpleCheckRecipeResult(false, ""));
+        register(new SimpleCheckRecipeResult(false, "", false));
         register(new ResultInsufficientPower(0));
         register(new ResultInsufficientHeat(0));
         register(new ResultInsufficientMachineTier(0));

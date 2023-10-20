@@ -341,6 +341,30 @@ public class DistilleryRecipes implements Runnable {
             .eut(24)
             .addTo(distilleryRecipes);
 
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(1))
+            .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 20))
+            .fluidOutputs(new FluidStack(FluidRegistry.getFluid("ic2biogas"), 32))
+            .duration(2 * SECONDS)
+            .eut(16)
+            .addTo(distilleryRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(2))
+            .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 4))
+            .fluidOutputs(Materials.Water.getFluid(2))
+            .duration(4 * SECONDS)
+            .eut(30)
+            .addTo(distilleryRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(1))
+            .fluidInputs(getFluidStack("potion.wheatyjuice", 75))
+            .fluidOutputs(getFluidStack("potion.scotch", 1))
+            .duration(1 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(distilleryRecipes);
+
         if (TinkerConstruct.isModLoaded()) {
 
             GT_Values.RA.stdBuilder()
@@ -357,26 +381,6 @@ public class DistilleryRecipes implements Runnable {
                 .fluidOutputs(Materials.Glue.getFluid(4L))
                 .duration(1 * TICKS)
                 .eut(24)
-                .addTo(distilleryRecipes);
-
-        }
-
-        if (!GregTech_API.mIC2Classic) {
-
-            GT_Values.RA.stdBuilder()
-                .itemInputs(GT_Utility.getIntegratedCircuit(1))
-                .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 20))
-                .fluidOutputs(new FluidStack(FluidRegistry.getFluid("ic2biogas"), 32))
-                .duration(2 * SECONDS)
-                .eut(16)
-                .addTo(distilleryRecipes);
-
-            GT_Values.RA.stdBuilder()
-                .itemInputs(GT_Utility.getIntegratedCircuit(2))
-                .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 4))
-                .fluidOutputs(Materials.Water.getFluid(2))
-                .duration(4 * SECONDS)
-                .eut(30)
                 .addTo(distilleryRecipes);
 
         }
@@ -603,23 +607,18 @@ public class DistilleryRecipes implements Runnable {
             .addTo(distillationTowerRecipes);
 
         GT_Values.RA.stdBuilder()
+            .itemOutputs(ItemList.IC2_Fertilizer.get(1))
+            .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 3000))
+            .fluidOutputs(new FluidStack(FluidRegistry.getFluid("ic2biogas"), 8000), Materials.Water.getFluid(125L))
+            .duration(12 * SECONDS + 10 * TICKS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(distillationTowerRecipes);
+        GT_Values.RA.stdBuilder()
             .fluidInputs(new FluidStack(ItemList.sOilExtraHeavy, 1000))
             .fluidOutputs(Materials.OilHeavy.getFluid(1500))
             .duration(16 * TICKS)
             .eut(2400)
             .addTo(distillationTowerRecipes);
-
-        if (!GregTech_API.mIC2Classic) {
-
-            GT_Values.RA.stdBuilder()
-                .itemOutputs(ItemList.IC2_Fertilizer.get(1))
-                .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 3000))
-                .fluidOutputs(new FluidStack(FluidRegistry.getFluid("ic2biogas"), 8000), Materials.Water.getFluid(125L))
-                .duration(12 * SECONDS + 10 * TICKS)
-                .eut(TierEU.RECIPE_HV)
-                .addTo(distillationTowerRecipes);
-
-        }
     }
 
     public void universalDistillationTowerRecipes() {

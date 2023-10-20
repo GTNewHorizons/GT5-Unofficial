@@ -66,37 +66,40 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
                     .addTo(thermalCentrifugeRecipes);
 
                 ItemStack tGem = GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L);
-                if (tGem != null) {
-                    switch (aMaterial.mName) {
-                        case "Tanzanite", "Sapphire", "Olivine", "GreenSapphire", "Opal", "Amethyst", "Emerald", "Ruby", "Amber", "Diamond", "FoolsRuby", "BlueTopaz", "GarnetRed", "Topaz", "Jasper", "GarnetYellow" -> GT_Values.RA
-                            .stdBuilder()
-                            .itemInputs(GT_Utility.copyAmount(1L, aStack))
-                            .itemOutputs(
-                                GT_OreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, tGem, 1L),
-                                GT_OreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, tGem, 1L),
-                                tGem,
-                                GT_OreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, tGem, 1L),
-                                GT_OreDictUnificator.get(OrePrefixes.gemChipped, aMaterial, tGem, 1L),
-                                GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, tGem, 1L))
-                            .outputChances(300, 1200, 4500, 1400, 2800, 3500)
-                            .duration(40 * SECONDS)
-                            .eut(16)
-                            .addTo(sifterRecipes);
-                        default -> GT_Values.RA.stdBuilder()
-                            .itemInputs(GT_Utility.copyAmount(1L, aStack))
-                            .itemOutputs(
-                                GT_OreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, tGem, 1L),
-                                GT_OreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, tGem, 1L),
-                                tGem,
-                                GT_OreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, tGem, 1L),
-                                GT_OreDictUnificator.get(OrePrefixes.gemChipped, aMaterial, tGem, 1L),
-                                GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, tGem, 1L))
-                            .outputChances(100, 400, 1500, 2000, 4000, 5000)
-                            .duration(40 * SECONDS)
-                            .eut(16)
-                            .addTo(sifterRecipes);
-                    }
+                if (tGem == null) {
+                    break;
                 }
+
+                switch (aMaterial.mName) {
+                    case "Tanzanite", "Sapphire", "Olivine", "GreenSapphire", "Opal", "Amethyst", "Emerald", "Ruby", "Amber", "Diamond", "FoolsRuby", "BlueTopaz", "GarnetRed", "Topaz", "Jasper", "GarnetYellow" -> GT_Values.RA
+                        .stdBuilder()
+                        .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                        .itemOutputs(
+                            GT_OreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, tGem, 1L),
+                            GT_OreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, tGem, 1L),
+                            tGem,
+                            GT_OreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, tGem, 1L),
+                            GT_OreDictUnificator.get(OrePrefixes.gemChipped, aMaterial, tGem, 1L),
+                            GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, tGem, 1L))
+                        .outputChances(300, 1200, 4500, 1400, 2800, 3500)
+                        .duration(40 * SECONDS)
+                        .eut(16)
+                        .addTo(sifterRecipes);
+                    default -> GT_Values.RA.stdBuilder()
+                        .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                        .itemOutputs(
+                            GT_OreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, tGem, 1L),
+                            GT_OreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, tGem, 1L),
+                            tGem,
+                            GT_OreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, tGem, 1L),
+                            GT_OreDictUnificator.get(OrePrefixes.gemChipped, aMaterial, tGem, 1L),
+                            GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, tGem, 1L))
+                        .outputChances(100, 400, 1500, 2000, 4000, 5000)
+                        .duration(40 * SECONDS)
+                        .eut(16)
+                        .addTo(sifterRecipes);
+                }
+
             }
             default -> {}
         }

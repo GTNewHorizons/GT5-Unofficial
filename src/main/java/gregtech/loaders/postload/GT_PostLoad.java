@@ -5,6 +5,8 @@ import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GalacticraftMars;
 import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.Thaumcraft;
+import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
@@ -104,54 +106,27 @@ public class GT_PostLoad {
     }
 
     public static void registerFluidCannerRecipes() {
-        ItemStack iSData0 = new ItemStack(Items.potionitem, 1, 0);
-        ItemStack iLData0 = ItemList.Bottle_Empty.get(1L);
-
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
             .getRegisteredFluidContainerData()) {
-            if ((tData.filledContainer.getItem() == Items.potionitem) && (tData.filledContainer.getItemDamage() == 0)) {
-                RecipeMaps.fluidCannerRecipes.addRecipe(
-                    true,
-                    new ItemStack[] { iLData0 },
-                    new ItemStack[] { iSData0 },
-                    null,
-                    new FluidStack[] { Materials.Water.getFluid(250L) },
-                    null,
-                    4,
-                    1,
-                    0);
-                RecipeMaps.fluidCannerRecipes.addRecipe(
-                    true,
-                    new ItemStack[] { iSData0 },
-                    new ItemStack[] { iLData0 },
-                    null,
-                    null,
-                    null,
-                    4,
-                    1,
-                    0);
-            } else {
-                RecipeMaps.fluidCannerRecipes.addRecipe(
-                    true,
-                    new ItemStack[] { tData.emptyContainer },
-                    new ItemStack[] { tData.filledContainer },
-                    null,
-                    new FluidStack[] { tData.fluid },
-                    null,
-                    tData.fluid.amount / 62,
-                    1,
-                    0);
-                RecipeMaps.fluidCannerRecipes.addRecipe(
-                    true,
-                    new ItemStack[] { tData.filledContainer },
-                    new ItemStack[] { GT_Utility.getContainerItem(tData.filledContainer, true) },
-                    null,
-                    null,
-                    new FluidStack[] { tData.fluid },
-                    tData.fluid.amount / 62,
-                    1,
-                    0);
+            // lava clay bucket is registered with empty container with 0 stack size
+            ItemStack emptyContainer = tData.emptyContainer.copy();
+            emptyContainer.stackSize = 1;
+            GT_Values.RA.stdBuilder()
+                .itemInputs(emptyContainer)
+                .itemOutputs(tData.filledContainer)
+                .fluidInputs(tData.fluid)
+                .duration((tData.fluid.amount / 62) * TICKS)
+                .eut(1)
+                .addTo(fluidCannerRecipes);
+            GT_RecipeBuilder builder = GT_Values.RA.stdBuilder()
+                .itemInputs(tData.filledContainer);
+            if (tData.emptyContainer.stackSize > 0) {
+                builder.itemOutputs(tData.emptyContainer);
             }
+            builder.fluidOutputs(tData.fluid)
+                .duration((tData.fluid.amount / 62) * TICKS)
+                .eut(1)
+                .addTo(fluidCannerRecipes);
         }
     }
 
@@ -373,38 +348,41 @@ public class GT_PostLoad {
     }
 
     public static void nerfVanillaTools() {
-        if (GT_Mod.gregtechproxy.mNerfedVanillaTools) {
-            GT_Log.out.println("GT_Mod: Nerfing Vanilla Tool Durability");
-            Items.wooden_sword.setMaxDamage(12);
-            Items.wooden_pickaxe.setMaxDamage(12);
-            Items.wooden_shovel.setMaxDamage(12);
-            Items.wooden_axe.setMaxDamage(12);
-            Items.wooden_hoe.setMaxDamage(12);
-
-            Items.stone_sword.setMaxDamage(48);
-            Items.stone_pickaxe.setMaxDamage(48);
-            Items.stone_shovel.setMaxDamage(48);
-            Items.stone_axe.setMaxDamage(48);
-            Items.stone_hoe.setMaxDamage(48);
-
-            Items.iron_sword.setMaxDamage(256);
-            Items.iron_pickaxe.setMaxDamage(256);
-            Items.iron_shovel.setMaxDamage(256);
-            Items.iron_axe.setMaxDamage(256);
-            Items.iron_hoe.setMaxDamage(256);
-
-            Items.golden_sword.setMaxDamage(24);
-            Items.golden_pickaxe.setMaxDamage(24);
-            Items.golden_shovel.setMaxDamage(24);
-            Items.golden_axe.setMaxDamage(24);
-            Items.golden_hoe.setMaxDamage(24);
-
-            Items.diamond_sword.setMaxDamage(768);
-            Items.diamond_pickaxe.setMaxDamage(768);
-            Items.diamond_shovel.setMaxDamage(768);
-            Items.diamond_axe.setMaxDamage(768);
-            Items.diamond_hoe.setMaxDamage(768);
+        if (!GT_Mod.gregtechproxy.mNerfedVanillaTools) {
+            return;
         }
+
+        GT_Log.out.println("GT_Mod: Nerfing Vanilla Tool Durability");
+        Items.wooden_sword.setMaxDamage(12);
+        Items.wooden_pickaxe.setMaxDamage(12);
+        Items.wooden_shovel.setMaxDamage(12);
+        Items.wooden_axe.setMaxDamage(12);
+        Items.wooden_hoe.setMaxDamage(12);
+
+        Items.stone_sword.setMaxDamage(48);
+        Items.stone_pickaxe.setMaxDamage(48);
+        Items.stone_shovel.setMaxDamage(48);
+        Items.stone_axe.setMaxDamage(48);
+        Items.stone_hoe.setMaxDamage(48);
+
+        Items.iron_sword.setMaxDamage(256);
+        Items.iron_pickaxe.setMaxDamage(256);
+        Items.iron_shovel.setMaxDamage(256);
+        Items.iron_axe.setMaxDamage(256);
+        Items.iron_hoe.setMaxDamage(256);
+
+        Items.golden_sword.setMaxDamage(24);
+        Items.golden_pickaxe.setMaxDamage(24);
+        Items.golden_shovel.setMaxDamage(24);
+        Items.golden_axe.setMaxDamage(24);
+        Items.golden_hoe.setMaxDamage(24);
+
+        Items.diamond_sword.setMaxDamage(768);
+        Items.diamond_pickaxe.setMaxDamage(768);
+        Items.diamond_shovel.setMaxDamage(768);
+        Items.diamond_axe.setMaxDamage(768);
+        Items.diamond_hoe.setMaxDamage(768);
+
     }
 
     public static void replaceVanillaMaterials() {
@@ -466,28 +444,30 @@ public class GT_PostLoad {
 
                 for (int i = 0; i < 32766; i += 2) {
                     if (GT_MetaGenerated_Tool_01.INSTANCE
-                        .getToolStats(new ItemStack(GT_MetaGenerated_Tool_01.INSTANCE, 1, i)) != null) {
-                        ItemStack tStack = new ItemStack(GT_MetaGenerated_Tool_01.INSTANCE, 1, i);
-                        GT_MetaGenerated_Tool_01.INSTANCE.isItemStackUsable(tStack);
-                        aList.add(
-                            GT_MetaGenerated_Tool_01.INSTANCE
-                                .getToolWithStats(i, 1, Materials.Lead, Materials.Lead, null));
-                        aList.add(
-                            GT_MetaGenerated_Tool_01.INSTANCE
-                                .getToolWithStats(i, 1, Materials.Nickel, Materials.Nickel, null));
-                        aList.add(
-                            GT_MetaGenerated_Tool_01.INSTANCE
-                                .getToolWithStats(i, 1, Materials.Cobalt, Materials.Cobalt, null));
-                        aList.add(
-                            GT_MetaGenerated_Tool_01.INSTANCE
-                                .getToolWithStats(i, 1, Materials.Osmium, Materials.Osmium, null));
-                        aList.add(
-                            GT_MetaGenerated_Tool_01.INSTANCE
-                                .getToolWithStats(i, 1, Materials.Adamantium, Materials.Adamantium, null));
-                        aList.add(
-                            GT_MetaGenerated_Tool_01.INSTANCE
-                                .getToolWithStats(i, 1, Materials.Neutronium, Materials.Neutronium, null));
+                        .getToolStats(new ItemStack(GT_MetaGenerated_Tool_01.INSTANCE, 1, i)) == null) {
+                        continue;
                     }
+
+                    ItemStack tStack = new ItemStack(GT_MetaGenerated_Tool_01.INSTANCE, 1, i);
+                    GT_MetaGenerated_Tool_01.INSTANCE.isItemStackUsable(tStack);
+                    aList.add(
+                        GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(i, 1, Materials.Lead, Materials.Lead, null));
+                    aList.add(
+                        GT_MetaGenerated_Tool_01.INSTANCE
+                            .getToolWithStats(i, 1, Materials.Nickel, Materials.Nickel, null));
+                    aList.add(
+                        GT_MetaGenerated_Tool_01.INSTANCE
+                            .getToolWithStats(i, 1, Materials.Cobalt, Materials.Cobalt, null));
+                    aList.add(
+                        GT_MetaGenerated_Tool_01.INSTANCE
+                            .getToolWithStats(i, 1, Materials.Osmium, Materials.Osmium, null));
+                    aList.add(
+                        GT_MetaGenerated_Tool_01.INSTANCE
+                            .getToolWithStats(i, 1, Materials.Adamantium, Materials.Adamantium, null));
+                    aList.add(
+                        GT_MetaGenerated_Tool_01.INSTANCE
+                            .getToolWithStats(i, 1, Materials.Neutronium, Materials.Neutronium, null));
+
                 }
                 super.displayAllReleventItems(aList);
             }

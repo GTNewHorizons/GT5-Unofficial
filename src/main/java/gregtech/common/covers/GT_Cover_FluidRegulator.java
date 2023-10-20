@@ -406,6 +406,11 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
         }
     }
 
+    @Override
+    public boolean allowsTickRateAddition() {
+        return false;
+    }
+
     public enum Conditional {
 
         Always(false) {

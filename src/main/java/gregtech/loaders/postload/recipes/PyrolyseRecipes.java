@@ -10,7 +10,6 @@ import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -68,16 +67,6 @@ public class PyrolyseRecipes implements Runnable {
                 .addTo(pyrolyseRecipes);
         }
 
-        if (!GregTech_API.mIC2Classic) {
-            GT_Values.RA.stdBuilder()
-                .itemInputs(GT_ModHandler.getIC2Item("biochaff", 4), GT_Utility.getIntegratedCircuit(1))
-                .fluidInputs(Materials.Water.getFluid(4000))
-                .fluidOutputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 5000))
-                .duration(45 * SECONDS)
-                .eut(10)
-                .addTo(pyrolyseRecipes);
-        }
-
         if (Forestry.isModLoaded()) {
             GT_Values.RA.stdBuilder()
                 .itemInputs(getModItem(Forestry.ID, "fertilizerBio", 4), GT_Utility.getIntegratedCircuit(1))
@@ -95,6 +84,14 @@ public class PyrolyseRecipes implements Runnable {
                 .eut(10)
                 .addTo(pyrolyseRecipes);
         }
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_ModHandler.getIC2Item("biochaff", 4), GT_Utility.getIntegratedCircuit(1))
+            .fluidInputs(Materials.Water.getFluid(4000))
+            .fluidOutputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 5000))
+            .duration(45 * SECONDS)
+            .eut(10)
+            .addTo(pyrolyseRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_ModHandler.getIC2Item("biochaff", 1), GT_Utility.getIntegratedCircuit(2))
