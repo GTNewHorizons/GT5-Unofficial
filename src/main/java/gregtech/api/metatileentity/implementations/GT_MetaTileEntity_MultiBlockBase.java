@@ -1378,7 +1378,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
     protected void startRecipeProcessing() {
         for (GT_MetaTileEntity_Hatch_InputBus hatch : filterValidMTEs(mInputBusses)) {
-            hatch.startRecipeProcessing();
+            if (hatch instanceof IRecipeProcessingAwareHatch aware) {
+                aware.startRecipeProcessing();
+            }
         }
         for (GT_MetaTileEntity_Hatch_Input hatch : filterValidMTEs(mInputHatches)) {
             if (hatch instanceof IRecipeProcessingAwareHatch aware) {
@@ -1395,7 +1397,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         };
 
         for (GT_MetaTileEntity_Hatch_InputBus hatch : filterValidMTEs(mInputBusses)) {
-            setResultIfFailure.accept(hatch.endRecipeProcessing(this));
+            if (hatch instanceof IRecipeProcessingAwareHatch aware) {
+                setResultIfFailure.accept(aware.endRecipeProcessing(this));
+            }
         }
         for (GT_MetaTileEntity_Hatch_Input hatch : filterValidMTEs(mInputHatches)) {
             if (hatch instanceof IRecipeProcessingAwareHatch aware) {

@@ -37,10 +37,9 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_TooltipDataCache;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.extensions.ArrayExt;
-import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 
 public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch
-    implements IConfigurationCircuitSupport, IAddUIWidgets, IRecipeProcessingAwareHatch {
+    implements IConfigurationCircuitSupport, IAddUIWidgets {
 
     private static final String SORTING_MODE_TOOLTIP = "GT5U.machines.sorting_mode.tooltip";
     private static final String ONE_STACK_LIMIT_TOOLTIP = "GT5U.machines.one_stack_limit.tooltip";
