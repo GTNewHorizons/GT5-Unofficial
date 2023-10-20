@@ -658,6 +658,11 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
     public boolean mRenderPollutionFog = true;
 
     /**
+     * This enables BaseMetaTileEntity block updates handled by BlockUpdateHandler
+     */
+    public boolean mUseBlockUpdateHandler = false;
+
+    /**
      * This makes cover tabs visible on GregTech machines
      */
     public boolean mCoverTabsVisible = true;

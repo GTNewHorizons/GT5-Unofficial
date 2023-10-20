@@ -1,7 +1,6 @@
 package gregtech.api.objects.blockupdate;
 
-import java.security.InvalidParameterException;
-import java.util.Random;
+import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 public class RandomCooldown extends Cooldown {
 
@@ -10,25 +9,23 @@ public class RandomCooldown extends Cooldown {
         super(aMinLengthInTicks);
 
         if (aMinLengthInTicks <= 0)
-            throw new InvalidParameterException("min length should be a positive non-zero number");
+            throw new IllegalArgumentException("min length should be a positive non-zero number");
         if (aMaxLengthInTicks <= 0)
-            throw new InvalidParameterException("max length should be a positive non-zero number");
+            throw new IllegalArgumentException("max length should be a positive non-zero number");
         if (aMinLengthInTicks > aMaxLengthInTicks)
-            throw new InvalidParameterException("min length should be less or equal to max length");
+            throw new IllegalArgumentException("min length should be less or equal to max length");
 
         this.minLengthInTicks = aMinLengthInTicks;
         this.maxLengthInTicks = aMaxLengthInTicks;
     }
 
     @Override
-    public void set() {
+    public void set(long currTickTime) {
 
-        super.set();
-        lengthInTicks = minLengthInTicks + random.nextInt(maxLengthInTicks - minLengthInTicks + 1);
-        // GT_Log.out.println(String.format("new random length %d", lengthInTicks));
+        super.set(currTickTime);
+        lengthInTicks = minLengthInTicks + XSTR_INSTANCE.nextInt(maxLengthInTicks - minLengthInTicks + 1);
     }
 
-    private Random random = new Random();
     private int minLengthInTicks;
     private int maxLengthInTicks;
 }

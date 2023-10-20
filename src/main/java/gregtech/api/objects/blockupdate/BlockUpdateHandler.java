@@ -35,8 +35,8 @@ public class BlockUpdateHandler {
 
     private BlockUpdateHandler() {
 
-        blocksToUpdate = new UpdateQueue();
-        cooldowns = new ChunkCooldowns();
+        blocksToUpdate = new HashMap<ChunkCoordIntPair, WorldCoord>();
+        cooldowns = new HashMap<ChunkCoordIntPair, RandomCooldown>();
 
         FMLCommonHandler.instance()
             .bus()
@@ -77,12 +77,14 @@ public class BlockUpdateHandler {
                 cooldowns.put(chunkCoords, cooldown);
             }
 
-            if (!cooldown.hasPassed()) continue;
+            if (!cooldown.hasPassed(internalTickCounter)) continue;
 
             currWorld.markBlockForUpdate(blockCoords.x, blockCoords.y, blockCoords.z);
-            cooldown.set();
+            cooldown.set(internalTickCounter);
             it.remove();
         }
+
+        ++internalTickCounter;
     }
 
     private EntityClientPlayerMP getPlayer() {
@@ -108,13 +110,8 @@ public class BlockUpdateHandler {
         return chunk.getChunkCoordIntPair();
     }
 
-    private UpdateQueue blocksToUpdate;
-    private ChunkCooldowns cooldowns;
+    private HashMap<ChunkCoordIntPair, WorldCoord> blocksToUpdate;
+    private HashMap<ChunkCoordIntPair, RandomCooldown> cooldowns;
     private World currWorld = null;
-
-    protected class UpdateQueue extends HashMap<ChunkCoordIntPair, WorldCoord> {
-    }
-
-    protected class ChunkCooldowns extends HashMap<ChunkCoordIntPair, RandomCooldown> {
-    }
+    private long internalTickCounter = 0;
 }
