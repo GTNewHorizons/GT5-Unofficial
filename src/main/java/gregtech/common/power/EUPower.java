@@ -2,11 +2,16 @@ package gregtech.common.power;
 
 import static gregtech.api.util.GT_Utility.trans;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.NEIRecipeInfo;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class EUPower extends Power {
 
     /**
@@ -42,7 +47,7 @@ public class EUPower extends Power {
     }
 
     @Override
-    protected void drawNEIDescImpl(NEIRecipeInfo recipeInfo, RecipeMapFrontend frontend) {
+    protected void drawEnergyInfoImpl(NEIRecipeInfo recipeInfo, RecipeMapFrontend frontend) {
         frontend.drawNEIText(recipeInfo, trans("153", "Usage: ") + getEUtDisplay());
         if (shouldShowAmperage()) {
             frontend.drawNEIText(recipeInfo, trans("154", "Voltage: ") + getVoltageString());

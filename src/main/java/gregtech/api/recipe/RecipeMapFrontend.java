@@ -36,7 +36,6 @@ import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
-import gregtech.common.power.Power;
 import gregtech.nei.GT_NEI_DefaultHandler;
 import gregtech.nei.NEIRecipeInfo;
 
@@ -207,23 +206,11 @@ public class RecipeMapFrontend {
     }
 
     protected void drawNEIEnergyInfo(NEIRecipeInfo recipeInfo) {
-        recipeInfo.power.drawNEIDesc(recipeInfo, this);
+        recipeInfo.power.drawEnergyInfo(recipeInfo, this);
     }
 
     protected void drawNEIDurationInfo(NEIRecipeInfo recipeInfo) {
-        Power power = recipeInfo.power;
-        if (power.getDurationTicks() > 0) {
-            String textToDraw = trans("158", "Time: ");
-            if (GT_Mod.gregtechproxy.mNEIRecipeSecondMode) {
-                textToDraw += power.getDurationStringSeconds();
-                if (power.getDurationSeconds() <= 1.0d) {
-                    textToDraw += String.format(" (%s)", power.getDurationStringTicks());
-                }
-            } else {
-                textToDraw += power.getDurationStringTicks();
-            }
-            drawNEIText(recipeInfo, textToDraw);
-        }
+        recipeInfo.power.drawDurationInfo(recipeInfo, this);
     }
 
     protected void drawNEISpecialInfo(NEIRecipeInfo recipeInfo) {

@@ -2,14 +2,19 @@ package gregtech.common.power;
 
 import static gregtech.api.enums.GT_Values.V;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.formatter.FusionSpecialValueFormatter;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class FusionPower extends BasicMachineEUPower {
 
     protected final long capableStartup;

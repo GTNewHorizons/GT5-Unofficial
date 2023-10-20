@@ -20,6 +20,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_MASSFAB_GLOW;
 
 import java.util.Arrays;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.primitives.Ints;
@@ -39,6 +41,7 @@ import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.power.BasicMachineEUPower;
 import gregtech.common.power.Power;
 
@@ -192,6 +195,8 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
         return aFluid != null && aFluid.amount >= sUUAperUUM && aFluid.isFluidEqual(Materials.UUAmplifier.getFluid(1L));
     }
 
+    @ParametersAreNonnullByDefault
+    @MethodsReturnNonnullByDefault
     protected class MassfabricatorPower extends BasicMachineEUPower {
 
         protected MassfabricatorPower(byte tier, int amperage) {

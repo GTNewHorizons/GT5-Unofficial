@@ -3,13 +3,18 @@ package gregtech.common.power;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.util.GT_Utility.trans;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import gregtech.GT_Mod;
 import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.NEIRecipeInfo;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class BasicMachineEUPower extends EUPower {
 
     protected static final String OC = " (OC)";
@@ -33,9 +38,9 @@ public class BasicMachineEUPower extends EUPower {
     }
 
     @Override
-    protected void drawNEIDescImpl(NEIRecipeInfo recipeInfo, RecipeMapFrontend frontend) {
+    protected void drawEnergyInfoImpl(NEIRecipeInfo recipeInfo, RecipeMapFrontend frontend) {
         if (!wasOverclocked) {
-            super.drawNEIDescImpl(recipeInfo, frontend);
+            super.drawEnergyInfoImpl(recipeInfo, frontend);
             return;
         }
 

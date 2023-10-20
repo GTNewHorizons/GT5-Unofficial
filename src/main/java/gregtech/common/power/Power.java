@@ -2,10 +2,14 @@ package gregtech.common.power;
 
 import static gregtech.api.util.GT_Utility.trans;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
+import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.NEIRecipeInfo;
 
 /**
@@ -21,6 +25,8 @@ import gregtech.nei.NEIRecipeInfo;
  * <p>
  * See also: {@link gregtech.nei.GT_NEI_DefaultHandler#getUsageAndCatalystHandler}
  */
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public abstract class Power {
 
     /**
@@ -62,6 +68,11 @@ public abstract class Power {
                 .orElseThrow(RuntimeException::new));
     }
 
+    /**
+     * @return Total power to consume for the recipe previously calculated.
+     */
+    protected abstract String getTotalPowerString();
+
     public int getEUPerTick() {
         return recipeEuPerTick;
     }
@@ -70,40 +81,50 @@ public abstract class Power {
         return recipeDuration;
     }
 
-    public final double getDurationSeconds() {
+    private double getDurationSeconds() {
         return 0.05d * getDurationTicks();
     }
 
-    public final String getDurationStringSeconds() {
+    private String getDurationStringSeconds() {
         return GT_Utility.formatNumbers(getDurationSeconds()) + GT_Utility.trans("161", " secs");
     }
 
-    public final String getDurationStringTicks() {
-        if (getDurationTicks() == 1) {
-            return GT_Utility.formatNumbers(getDurationTicks()) + GT_Utility.trans("209.1", " tick");
-        }
-        return GT_Utility.formatNumbers(getDurationTicks()) + GT_Utility.trans("209", " ticks");
+    private String getDurationStringTicks() {
+        String ticksString = getDurationTicks() == 1 ? GT_Utility.trans("209.1", " tick")
+            : GT_Utility.trans("209", " ticks");
+        return GT_Utility.formatNumbers(getDurationTicks()) + ticksString;
     }
 
     /**
-     * Draws info about this power object on NEI recipe GUI. Override {@link #drawNEIDescImpl} for implementation.
+     * Draws info about the energy this power object can handle on NEI recipe GUI.
+     * Override {@link #drawEnergyInfoImpl} for implementation.
      */
-    public final void drawNEIDesc(NEIRecipeInfo recipeInfo, RecipeMapFrontend frontend) {
+    public final void drawEnergyInfo(NEIRecipeInfo recipeInfo, RecipeMapFrontend frontend) {
         if (getEUPerTick() > 0) {
             frontend.drawNEIText(recipeInfo, trans("152", "Total: ") + getTotalPowerString());
-            drawNEIDescImpl(recipeInfo, frontend);
+            drawEnergyInfoImpl(recipeInfo, frontend);
         }
     }
 
     /**
-     * Implement this to draw info about this power object on NEI recipe GUI.
+     * Implement this to draw info about the energy this power object can handle on NEI recipe GUI.
      */
-    protected abstract void drawNEIDescImpl(NEIRecipeInfo recipeInfo, RecipeMapFrontend frontend);
+    protected abstract void drawEnergyInfoImpl(NEIRecipeInfo recipeInfo, RecipeMapFrontend frontend);
 
-    /**
-     * @return Total power to consume for the recipe previously calculated.
-     */
-    protected abstract String getTotalPowerString();
+    public final void drawDurationInfo(NEIRecipeInfo recipeInfo, RecipeMapFrontend frontend) {
+        if (getDurationTicks() <= 0) return;
+
+        String textToDraw = trans("158", "Time: ");
+        if (GT_Mod.gregtechproxy.mNEIRecipeSecondMode) {
+            textToDraw += getDurationStringSeconds();
+            if (getDurationSeconds() <= 1.0d) {
+                textToDraw += String.format(" (%s)", getDurationStringTicks());
+            }
+        } else {
+            textToDraw += getDurationStringTicks();
+        }
+        frontend.drawNEIText(recipeInfo, textToDraw);
+    }
 
     /**
      * Used to limit the shown recipes when searching recipes with NEI recipe catalyst. Unless overridden, this method
