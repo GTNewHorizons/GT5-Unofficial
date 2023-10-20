@@ -62,6 +62,7 @@ public class Parameters {
         }
         return false;
     }
+
     public void setToDefaults(int hatch, boolean defaultIn, boolean defaultOut) {
         Group p = groups[hatch];
         if (p == null) {
