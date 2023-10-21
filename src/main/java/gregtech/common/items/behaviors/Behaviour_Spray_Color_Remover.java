@@ -1,6 +1,5 @@
 package gregtech.common.items.behaviors;
 
-import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -12,7 +11,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import appeng.api.implementations.tiles.IColorableTile;
 import appeng.api.util.AEColor;
 import appeng.block.networking.BlockCableBus;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 import gregtech.api.util.GT_LanguageManager;
 
 public class Behaviour_Spray_Color_Remover extends Behaviour_Spray_Color {
