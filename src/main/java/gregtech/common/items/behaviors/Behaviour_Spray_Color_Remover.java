@@ -1,5 +1,6 @@
 package gregtech.common.items.behaviors;
 
+import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -36,7 +37,7 @@ public class Behaviour_Spray_Color_Remover extends Behaviour_Spray_Color {
             }
 
             TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-            if (tTileEntity instanceof IGregTechTileEntity gte) {
+            if (tTileEntity instanceof IColoredTileEntity gte) {
                 if (gte.getColorization() >= 0) {
                     gte.setColorization((byte) -1);
                     return true;
