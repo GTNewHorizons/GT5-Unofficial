@@ -75,7 +75,7 @@ public class FluidCannerRecipes implements Runnable {
             .addTo(sFluidCannerRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(ItemList.Spray_Empty.get(1))
+            .itemInputs(ItemList.Spray_Color_Remover_Empty.get(1))
             .fluidInputs(Materials.Acetone.getFluid(4608)) // TBD
             .itemOutputs(ItemList.Spray_Color_Remover.get(1))
             .duration(74)
@@ -83,9 +83,9 @@ public class FluidCannerRecipes implements Runnable {
             .addTo(sFluidCannerRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemOutputs(ItemList.Spray_Empty.get(1))
-            .fluidOutputs(Materials.Acetone.getFluid(4608)) // TBD
             .itemInputs(ItemList.Spray_Color_Remover.get(1))
+            .itemOutputs(ItemList.Spray_Color_Remover_Empty.get(1))
+            .fluidOutputs(Materials.Acetone.getFluid(4608)) // TBD
             .duration(74)
             .eut(1)
             .addTo(sFluidCannerRecipes);

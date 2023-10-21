@@ -1213,6 +1213,29 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         addItemBehavior(32000 + tLastID, tBehaviour);
         addItemBehavior(32001 + tLastID, tBehaviour);
 
+        ItemList.Spray_Color_Remover_Empty.set(
+            addItem(
+                tLastID = 467,
+                "Empty Spray Can Solvent Cannister",
+                "Used for making Spray Can Solvent",
+                new ItemData(
+                    Materials.Aluminium,
+                    OrePrefixes.plateDouble.mMaterialAmount * 4L,
+                    Materials.Redstone,
+                    OrePrefixes.dust.mMaterialAmount),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 1L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 1L)));
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
+                ItemList.Large_Fluid_Cell_Aluminium.get(1),
+                GT_Utility.getIntegratedCircuit(1))
+            .itemOutputs(ItemList.Spray_Color_Remover_Empty.get(1L))
+            .duration(40 * SECONDS)
+            .eut(1)
+            .addTo(sAssemblerRecipes);
+
         ItemList.Tool_Matches.set(
             addItem(
                 tLastID = 471,
