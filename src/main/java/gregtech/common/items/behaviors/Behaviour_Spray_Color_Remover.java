@@ -36,9 +36,9 @@ public class Behaviour_Spray_Color_Remover extends Behaviour_Spray_Color {
             }
 
             TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-            if (tTileEntity instanceof IGregTechTileEntity) {
-                if (((IGregTechTileEntity) tTileEntity).getColorization() >= 0) {
-                    ((IGregTechTileEntity) tTileEntity).setColorization((byte) -1);
+            if (tTileEntity instanceof IGregTechTileEntity gte) {
+                if (gte.getColorization() >= 0) {
+                    gte.setColorization((byte) -1);
                     return true;
                 }
             }
