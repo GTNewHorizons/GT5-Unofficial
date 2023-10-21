@@ -1209,7 +1209,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             ItemList.Spray_Empty.get(1L),
             ItemList.SPRAY_CAN_DYES_USED[16].get(1L),
             ItemList.SPRAY_CAN_DYES[16].get(1L),
-            512L);
+            1024L);
         addItemBehavior(32000 + tLastID, tBehaviour);
         addItemBehavior(32001 + tLastID, tBehaviour);
 
