@@ -2000,7 +2000,9 @@ public enum ItemList implements IItemContainer {
 
     VOLUMETRIC_FLASK,
 
+    Hatch_Input_Bus_ME_Basic,
     Hatch_Input_Bus_ME,
+    Hatch_Input_ME_Basic,
     Hatch_Input_ME,
     Hatch_CraftingInput_Bus_ME,
     Hatch_CraftingInput_Bus_ME_ItemOnly,
