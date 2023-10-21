@@ -757,6 +757,8 @@ public enum ItemList implements IItemContainer {
     Spray_Color_Used_15,
     Spray_Color_Used_Remover,
 
+    Spray_Color_Remover_Empty,
+
     Armor_Cheat,
     Armor_Cloaking,
     Armor_Lamp,
