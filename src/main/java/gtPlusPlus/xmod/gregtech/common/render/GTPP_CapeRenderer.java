@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ForkJoinPool;
 
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBiped;
@@ -78,6 +79,14 @@ public class GTPP_CapeRenderer extends RenderPlayer {
             // We have capes turned off, so let's not render.
             if (!ConfigSwitches.enableCustomCapes) {
                 return;
+            }
+
+            if (!CapeUtils.mapsPopulated) {
+                if (!CapeUtils.cacheReady) {
+                    return;
+                }
+                CapeUtils.writeCacheToMaps();
+                CapeUtils.mapsPopulated = true;
             }
 
             // We have already checked if this player has a cape, but since they do not, we best not render.
@@ -233,6 +242,8 @@ public class GTPP_CapeRenderer extends RenderPlayer {
 
         private static char SPLIT_CHARACTER = '§';
         private static AES sAES;
+        private static volatile boolean cacheReady = false;
+        private static boolean mapsPopulated = false;
 
         // UUID - Username
         private static final AutoMap<Pair<String, String>> mOrangeCapes = new AutoMap<>();
@@ -246,14 +257,14 @@ public class GTPP_CapeRenderer extends RenderPlayer {
             if (CORE.DEVENV) {
                 return true;
             }
-            try {
-                if (shouldDownloadCapeList()) {
-                    downloadCapeList();
-                }
-            } catch (Exception e) {
-                return false;
-            }
-            writeCacheToMaps();
+            ForkJoinPool.commonPool().execute(() -> {
+                try {
+                    if (shouldDownloadCapeList()) {
+                        downloadCapeList();
+                    }
+                } catch (Exception ignored) {}
+                cacheReady = true;
+            });
             return true;
         }
 
