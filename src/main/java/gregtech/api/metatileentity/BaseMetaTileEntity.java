@@ -72,6 +72,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachin
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.net.GT_Packet_TileEntity;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.objects.blockupdate.BlockUpdateHandler;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
@@ -333,8 +334,11 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                     }
 
                     if (mNeedsUpdate) {
-                        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-                        // worldObj.func_147479_m(xCoord, yCoord, zCoord);
+                        if (GT_Mod.gregtechproxy.mUseBlockUpdateHandler) {
+                            BlockUpdateHandler.Instance.enqueueBlockUpdate(worldObj, getLocation());
+                        } else {
+                            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                        }
                         mNeedsUpdate = false;
                     }
                 }

@@ -835,6 +835,8 @@ public class GT_PreLoad {
             .get("render", "RenderItemDurabilityBar", true);
         GT_Mod.gregtechproxy.mRenderItemChargeBar = GregTech_API.sClientDataFile
             .get("render", "RenderItemChargeBar", true);
+        GT_Mod.gregtechproxy.mUseBlockUpdateHandler = GregTech_API.sClientDataFile
+            .get("render", "UseBlockUpdateHandler", false);
 
         GT_Mod.gregtechproxy.mCoverTabsVisible = GregTech_API.sClientDataFile
             .get("interface", "DisplayCoverTabs", true);
