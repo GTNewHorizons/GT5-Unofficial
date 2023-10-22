@@ -209,7 +209,8 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
 
     @Override
     public FluidStack drain(ForgeDirection side, FluidStack aFluid, boolean doDrain) {
-        // this is an ME output hatch. allowing draining via logistics would be very wrong (and against canTankbeEmptied())
+        // this is an ME output hatch. allowing draining via logistics would be very wrong (and against
+        // canTankbeEmptied())
         // but we do need to support draining from controller, which uses the UNKNOWN direction.
         if (side != ForgeDirection.UNKNOWN) return null;
         FluidStack stored = getMatchingFluidStack(aFluid);
