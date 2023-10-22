@@ -35,7 +35,6 @@ import appeng.util.IWideReadableNumberConverter;
 import appeng.util.Platform;
 import appeng.util.ReadableNumberConverter;
 import gregtech.GT_Mod;
-import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -63,7 +62,7 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
             aID,
             aName,
             aNameRegional,
-            1,
+            3,
             new String[] { "Item Output for Multiblocks", "Stores directly into ME",
                 "Can cache infinite amount of items.", "Change cache behavior by right-clicking with screwdriver.",
                 "Change ME connection behavior by right-clicking with wire cutter" },
@@ -220,9 +219,10 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (GT_Values.GT.isServerSide()) {
+        if (getBaseMetaTileEntity().isServerSide()) {
             tickCounter = aTick;
             if (tickCounter > (lastOutputTick + 40)) flushCachedStack();
+            if (tickCounter % 20 == 0) getBaseMetaTileEntity().setActive(isActive());
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
     }
