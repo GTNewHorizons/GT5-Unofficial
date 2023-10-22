@@ -67,7 +67,7 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
             aID,
             aName,
             aNameRegional,
-            1,
+            3,
             new String[] { "Fluid Output for Multiblocks", "Stores directly into ME",
                 "Can cache infinite amount of fluids.", "Change cache behavior by right-clicking with screwdriver.",
                 "Change ME connection behavior by right-clicking with wire cutter" },
@@ -85,12 +85,12 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_ME_FLUID_HATCH) };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_ME_FLUID_HATCH_ACTIVE) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_ME_FLUID_HATCH_ACTIVE) };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_ME_FLUID_HATCH) };
     }
 
     @Override
@@ -244,9 +244,10 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (GT_Values.GT.isServerSide()) {
+        if (getBaseMetaTileEntity().isServerSide()) {
             tickCounter = aTick;
             if (tickCounter > (lastOutputTick + 40)) flushCachedStack();
+            if (tickCounter % 20 == 0) getBaseMetaTileEntity().setActive(isActive());
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
     }
