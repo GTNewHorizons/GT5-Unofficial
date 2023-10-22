@@ -208,6 +208,20 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
     }
 
     @Override
+    public FluidStack drain(ForgeDirection side, FluidStack aFluid, boolean doDrain) {
+        // this is an ME input hatch. allowing draining via logistics would be very wrong (and against
+        // canTankBeEmptied()) but we do need to support draining from controller, which uses the UNKNOWN direction.
+        if (side != ForgeDirection.UNKNOWN) return null;
+        FluidStack stored = getMatchingFluidStack(aFluid);
+        if (stored == null) return null;
+        FluidStack drained = GT_Utility.copyAmount(Math.min(stored.amount, aFluid.amount), stored);
+        if (doDrain) {
+            stored.amount -= drained.amount;
+        }
+        return drained;
+    }
+
+    @Override
     public void startRecipeProcessing() {
         processingRecipe = true;
     }
