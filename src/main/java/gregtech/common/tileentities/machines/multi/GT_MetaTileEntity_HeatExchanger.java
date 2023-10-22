@@ -273,6 +273,7 @@ public class GT_MetaTileEntity_HeatExchanger extends
                 // 1:160 ratio with distilled water consumption
 
                 FluidStack distilledStack = GT_ModHandler.getDistilledWater(distilledConsumed);
+                startRecipeProcessing();
                 if (depleteInput(distilledStack)) // Consume the distilled water
                 {
                     if (superheated) {
@@ -291,6 +292,7 @@ public class GT_MetaTileEntity_HeatExchanger extends
                         explodeMultiblock(); // Generate crater
                     }
                 }
+                endRecipeProcessing();
             }
             return true;
         }
