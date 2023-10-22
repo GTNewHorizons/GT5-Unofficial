@@ -64,10 +64,10 @@ import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.util.AECableType;
 import appeng.api.util.DimensionalCoord;
+import appeng.api.util.IIfaceTermViewable;
 import appeng.core.AppEng;
 import appeng.core.sync.GuiBridge;
 import appeng.helpers.ICustomNameObject;
-import appeng.helpers.IInterfaceTerminalSupport;
 import appeng.items.misc.ItemEncodedPattern;
 import appeng.items.tools.quartz.ToolQuartzCuttingKnife;
 import appeng.me.GridAccessException;
@@ -93,7 +93,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_Hatch_InputBus
     implements IConfigurationCircuitSupport, IAddGregtechLogo, IAddUIWidgets, IPowerChannelState, ICraftingProvider,
-    IGridProxyable, IDualInputHatch, ICustomNameObject, IInterfaceTerminalSupport {
+    IGridProxyable, IDualInputHatch, ICustomNameObject, IIfaceTermViewable {
 
     // Each pattern slot in the crafting input hatch has its own internal inventory
     public static class PatternSlot implements IDualInputInventory {
@@ -317,10 +317,6 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     private static final int SLOT_CIRCUIT = MAX_PATTERN_COUNT;
     private static final int SLOT_MANUAL_START = SLOT_CIRCUIT + 1;
     private static final int MANUAL_SLOT_WINDOW = 10;
-    private static final PatternsConfiguration[] patternConfigurations = new PatternsConfiguration[] {
-        new PatternsConfiguration(0, 9), new PatternsConfiguration(9, 9), new PatternsConfiguration(18, 9),
-        new PatternsConfiguration(27, 9) };
-
     private BaseActionSource requestSource = null;
     private @Nullable AENetworkProxy gridProxy = null;
 
@@ -451,12 +447,17 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     }
 
     @Override
-    public PatternsConfiguration[] getPatternsConfigurations() {
-        return patternConfigurations;
+    public int rows() {
+        return 4;
     }
 
     @Override
-    public IInventory getPatterns(int i) {
+    public int rowSize() {
+        return 9;
+    }
+
+    @Override
+    public IInventory getPatterns() {
         return this;
     }
 
@@ -486,6 +487,11 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     @Override
     public TileEntity getTileEntity() {
         return (TileEntity) getBaseMetaTileEntity();
+    }
+
+    @Override
+    public boolean shouldDisplay() {
+        return false;
     }
 
     @Override
