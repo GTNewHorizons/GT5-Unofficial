@@ -364,6 +364,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler
                 excessWater += amount * STEAM_PER_WATER - tGeneratedEU;
                 amount -= excessWater / STEAM_PER_WATER;
                 excessWater %= STEAM_PER_WATER;
+                startRecipeProcessing();
                 if (isSuperheated()) {
                     // Consumes only one third of the water if producing Superheated Steam, to maintain water in the
                     // chain.
@@ -386,6 +387,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler
                         explodeMultiblock();
                     }
                 }
+                endRecipeProcessing();
             }
             return true;
         }
