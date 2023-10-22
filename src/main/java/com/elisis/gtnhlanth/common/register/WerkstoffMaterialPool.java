@@ -1636,7 +1636,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff ErbiumOreConcentrate = new Werkstoff(
             new short[] { 233, 170, 100 },
             "Erbium Ore Concentrate",
-            subscriptNumbers("??Eb??"),
+            subscriptNumbers("??Er??"),
             new Werkstoff.Stats(),
             Werkstoff.Types.MIXTURE,
             new Werkstoff.GenerationFeatures().disable().onlyDust(),
