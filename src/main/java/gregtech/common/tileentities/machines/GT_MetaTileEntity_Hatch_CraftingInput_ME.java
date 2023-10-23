@@ -64,7 +64,7 @@ import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.util.AECableType;
 import appeng.api.util.DimensionalCoord;
-import appeng.api.util.IIfaceTermViewable;
+import appeng.api.util.IInterfaceViewable;
 import appeng.core.AppEng;
 import appeng.core.sync.GuiBridge;
 import appeng.helpers.ICustomNameObject;
@@ -93,7 +93,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_Hatch_InputBus
     implements IConfigurationCircuitSupport, IAddGregtechLogo, IAddUIWidgets, IPowerChannelState, ICraftingProvider,
-    IGridProxyable, IDualInputHatch, ICustomNameObject, IIfaceTermViewable {
+    IGridProxyable, IDualInputHatch, ICustomNameObject, IInterfaceViewable {
 
     // Each pattern slot in the crafting input hatch has its own internal inventory
     public static class PatternSlot implements IDualInputInventory {

@@ -276,7 +276,7 @@ public class GT_Mod implements IGT_Mod {
             .registerModEntity(GT_Entity_Arrow_Potion.class, "GT_Entity_Arrow_Potion", 2, GT_Values.GT, 160, 1, true);
         AEApi.instance()
             .registries()
-            .ifaceTerm()
+            .interfaceTerminal()
             .register(GT_MetaTileEntity_Hatch_CraftingInput_ME.class);
 
         GT_PreLoad.runMineTweakerCompat();
