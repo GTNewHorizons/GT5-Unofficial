@@ -8,12 +8,8 @@ import javax.annotation.Nullable;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-
 import gregtech.api.enums.InventoryType;
 import gregtech.api.gui.GUIHost;
-import gregtech.api.gui.GUIProvider;
 import gregtech.api.logic.FluidInventoryLogic;
 import gregtech.api.logic.ItemInventoryLogic;
 import gregtech.api.logic.interfaces.FluidInventoryLogicHost;

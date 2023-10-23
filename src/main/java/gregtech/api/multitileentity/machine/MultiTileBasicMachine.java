@@ -53,8 +53,8 @@ import gregtech.api.util.GT_Utility;
 import gregtech.client.GT_SoundLoop;
 import gregtech.common.gui.MachineGUIProvider;
 
-public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>>
-    extends TickableMultiTileEntity implements IMultiTileMachine, ProcessingLogicHost<P>, PowerLogicHost, GUIHost {
+public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> extends TickableMultiTileEntity
+    implements IMultiTileMachine, ProcessingLogicHost<P>, PowerLogicHost, GUIHost {
 
     protected static final int ACTIVE = B[0];
     protected static final int TICKS_BETWEEN_RECIPE_CHECKS = 5 * TickTime.SECOND;
@@ -792,7 +792,8 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>>
 
     @Override
     public ItemStack getAsItem() {
-        return MultiTileEntityRegistry.getRegistry(getMultiTileEntityRegistryID()).getItem(getMultiTileEntityID());
+        return MultiTileEntityRegistry.getRegistry(getMultiTileEntityRegistryID())
+            .getItem(getMultiTileEntityID());
     }
 
     @Override
@@ -800,5 +801,4 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>>
         return StatCollector.translateToLocal(getAsItem().getUnlocalizedName());
     }
 
-    
 }

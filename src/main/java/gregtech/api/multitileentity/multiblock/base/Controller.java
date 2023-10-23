@@ -43,30 +43,20 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
-import com.gtnewhorizons.modularui.api.ModularUITextures;
-import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
-import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.*;
-import com.gtnewhorizons.modularui.api.widget.IWidgetBuilder;
-import com.gtnewhorizons.modularui.api.widget.Widget;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
-import com.gtnewhorizons.modularui.common.widget.TabButton;
-import com.gtnewhorizons.modularui.common.widget.TabContainer;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.api.enums.GT_Values.NBT;
 import gregtech.api.enums.InventoryType;
 import gregtech.api.enums.VoidingMode;
-import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IDescribable;
 import gregtech.api.interfaces.fluid.IFluidStore;
-import gregtech.api.interfaces.modularui.ControllerWithOptionalFeatures;
 import gregtech.api.logic.ControllerFluidLogic;
 import gregtech.api.logic.ControllerItemLogic;
 import gregtech.api.logic.FluidInventoryLogic;
 import gregtech.api.logic.ItemInventoryLogic;
 import gregtech.api.logic.MuTEProcessingLogic;
+import gregtech.api.logic.PowerLogic;
 import gregtech.api.multitileentity.enums.MultiTileCasingPurpose;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
 import gregtech.api.multitileentity.interfaces.IMultiBlockPart;
@@ -77,10 +67,8 @@ import gregtech.api.multitileentity.multiblock.casing.UpgradeCasing;
 import gregtech.api.net.GT_Packet_MultiTileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GT_Waila;
-import gregtech.common.tileentities.casings.upgrade.Inventory;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -88,8 +76,8 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  * Multi Tile Entities - or MuTEs - don't have dedicated hatches, but their casings can become hatches.
  */
 public abstract class Controller<C extends Controller<C, P>, P extends MuTEProcessingLogic<P>>
-    extends MultiTileBasicMachine<P> implements IAlignment, IMultiBlockController, IDescribable,
-    IMTE_AddToolTips, ISurvivalConstructable {
+    extends MultiTileBasicMachine<P>
+    implements IAlignment, IMultiBlockController, IDescribable, IMTE_AddToolTips, ISurvivalConstructable {
 
     public static final String ALL_INVENTORIES_NAME = "all";
     protected static final int AUTO_OUTPUT_FREQUENCY_TICK = 20;
@@ -867,6 +855,15 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
 
     // #endregion Item
 
+    // #region Energy
+
+    @Override
+    public PowerLogic getPowerLogic() {
+        return getPowerLogic(ForgeDirection.UNKNOWN);
+    }
+
+    // #endregion Energy
+
     @Override
     protected void updateSlots() {
         controllerItemInput.getAllInventoryLogics()
@@ -885,24 +882,6 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
     @Override
     public boolean useModularUI() {
         return true;
-    }
-
-    @Override
-    public ModularWindow createWindow(UIBuildContext buildContext) {
-        System.out.println("MultiBlockController::createWindow");
-        if (!useModularUI()) return null;
-
-        buildContext.setValidator(getValidator());
-        final ModularWindow.Builder builder = ModularWindow.builder(getGUIWidth(), getGUIHeight());
-        builder.setBackground(getGUITextureSet().getMainBackground());
-        builder.setGuiTint(getGUIColorization());
-        if (doesBindPlayerInventory()) {
-            bindPlayerInventoryUI(builder, buildContext);
-        }
-        addUIWidgets(builder, buildContext);
-        addTitleToUI(builder);
-        addCoverTabs(builder, buildContext);
-        return builder.build();
     }
 
     @Override

@@ -4,12 +4,11 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
-import com.gtnewhorizons.modularui.api.math.Size;
+import net.minecraft.item.ItemStack;
+
 import com.gtnewhorizons.modularui.api.screen.ITileWithModularUI;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-
-import net.minecraft.item.ItemStack;
 
 public interface GUIHost extends ITileWithModularUI {
 

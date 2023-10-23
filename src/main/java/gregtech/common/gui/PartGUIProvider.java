@@ -11,7 +11,8 @@ import gregtech.api.logic.interfaces.FluidInventoryLogicHost;
 import gregtech.api.logic.interfaces.ItemInventoryLogicHost;
 import gregtech.api.logic.interfaces.PowerLogicHost;
 
-public class PartGUIProvider<T extends GUIHost & ItemInventoryLogicHost & PowerLogicHost & FluidInventoryLogicHost> extends GUIProvider<T> {
+public class PartGUIProvider<T extends GUIHost & ItemInventoryLogicHost & PowerLogicHost & FluidInventoryLogicHost>
+    extends GUIProvider<T> {
 
     public PartGUIProvider(@Nonnull T host) {
         super(host);
@@ -28,5 +29,5 @@ public class PartGUIProvider<T extends GUIHost & ItemInventoryLogicHost & PowerL
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'addWidgets'");
     }
-    
+
 }

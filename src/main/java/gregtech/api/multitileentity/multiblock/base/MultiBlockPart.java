@@ -27,7 +27,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow.Builder;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.*;
@@ -699,14 +698,16 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         if (controller == null) return guiProvider;
         if (!modeSelected(NOTHING, ENERGY_IN, ENERGY_OUT)) return guiProvider;
         if (!canOpenControllerGui()) return guiProvider;
-        if (uiContext.getPlayer().isSneaking()) return guiProvider;
+        if (uiContext.getPlayer()
+            .isSneaking()) return guiProvider;
         GUIProvider<?> controllerGUI = controller.getGUI(uiContext);
         return controllerGUI;
     }
 
     @Override
     public ItemStack getAsItem() {
-        return MultiTileEntityRegistry.getRegistry(getMultiTileEntityRegistryID()).getItem(getMultiTileEntityID());
+        return MultiTileEntityRegistry.getRegistry(getMultiTileEntityRegistryID())
+            .getItem(getMultiTileEntityID());
     }
 
     @Override
@@ -714,5 +715,4 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         return StatCollector.translateToLocal(getAsItem().getUnlocalizedName());
     }
 
-    
 }

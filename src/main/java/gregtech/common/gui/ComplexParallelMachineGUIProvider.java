@@ -19,7 +19,7 @@ public class ComplexParallelMachineGUIProvider<T extends GUIHost & ProcessingLog
     public ComplexParallelMachineGUIProvider(@Nonnull T host) {
         super(host);
     }
-    
+
     @Override
     protected void attachSynchHandlers(@Nonnull Builder builder, @Nonnull UIBuildContext uiContext) {
 
