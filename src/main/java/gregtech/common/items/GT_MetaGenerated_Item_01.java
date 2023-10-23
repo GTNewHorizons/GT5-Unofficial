@@ -1196,22 +1196,28 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             addItemBehavior(32001 + tLastID, tBehaviour);
         }
 
-        ItemList.SPRAY_CAN_DYES[16].set(
-            addItem(tLastID = 465, "Spray Can Solvent", "Full", new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 4L)));
-        ItemList.SPRAY_CAN_DYES_USED[16].set(
+        ItemList.Spray_Color_Remover.set(
             addItem(
-                tLastID + 1,
+                tLastID = 465,
+                "Spray Can Solvent",
+                "Full",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 4L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.PERDITIO, 8L)));
+        ItemList.Spray_Color_Used_Remover.set(
+            addItem(
+                tLastID = 466,
                 "Spray Can Solvent",
                 "Used",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 3L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.PERDITIO, 6L),
                 SubTag.INVISIBLE));
         IItemBehaviour<GT_MetaBase_Item> tBehaviour = new Behaviour_Spray_Color_Remover(
             ItemList.Spray_Empty.get(1L),
-            ItemList.SPRAY_CAN_DYES_USED[16].get(1L),
-            ItemList.SPRAY_CAN_DYES[16].get(1L),
+            ItemList.Spray_Color_Used_Remover.get(1L),
+            ItemList.Spray_Color_Remover.get(1L),
             1024L);
-        addItemBehavior(32000 + tLastID, tBehaviour);
-        addItemBehavior(32001 + tLastID, tBehaviour);
+        addItemBehavior(32000 + 465, tBehaviour);
+        addItemBehavior(32000 + 466, tBehaviour);
 
         ItemList.Spray_Color_Remover_Empty.set(
             addItem(
