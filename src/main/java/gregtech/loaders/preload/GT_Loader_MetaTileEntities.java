@@ -2336,8 +2336,11 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "hatch.input.me.basic",
                 "Stocking Input Hatch (ME)").getStackForm(1L));
         ItemList.Hatch_Input_ME.set(
-            new GT_MetaTileEntity_Hatch_Input_ME(INPUT_HATCH_ME.ID, true, "hatch.input.me", "Advanced Stocking Input Hatch (ME)")
-                .getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Input_ME(
+                INPUT_HATCH_ME.ID,
+                true,
+                "hatch.input.me",
+                "Advanced Stocking Input Hatch (ME)").getStackForm(1L));
         ItemList.Hatch_Output_ME.set(
             new GT_MetaTileEntity_Hatch_Output_ME(OUTPUT_HATCH_ME.ID, "hatch.output.me", "Output Hatch (ME)")
                 .getStackForm(1L));
