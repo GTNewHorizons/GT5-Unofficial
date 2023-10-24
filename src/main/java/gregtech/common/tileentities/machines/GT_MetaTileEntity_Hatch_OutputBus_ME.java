@@ -126,12 +126,17 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
         return isOutputFacing(forgeDirection) ? AECableType.SMART : AECableType.NONE;
     }
 
-    public void setAdditionalConnectionOption() {
+    private void updateValidGridProxySides() {
         if (additionalConnection) {
-            gridProxy.setValidSides(EnumSet.complementOf(EnumSet.of(ForgeDirection.UNKNOWN)));
+            getProxy().setValidSides(EnumSet.complementOf(EnumSet.of(ForgeDirection.UNKNOWN)));
         } else {
-            gridProxy.setValidSides(EnumSet.of(getBaseMetaTileEntity().getFrontFacing()));
+            getProxy().setValidSides(EnumSet.of(getBaseMetaTileEntity().getFrontFacing()));
         }
+    }
+
+    @Override
+    public void onFacingChange() {
+        updateValidGridProxySides();
     }
 
     @Override
@@ -151,7 +156,7 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ) {
         additionalConnection = !additionalConnection;
-        setAdditionalConnectionOption();
+        updateValidGridProxySides();
         aPlayer.addChatComponentMessage(
             new ChatComponentTranslation("GT5U.hatch.additionalConnection." + additionalConnection));
         return true;
@@ -167,7 +172,7 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
                     ItemList.Hatch_Output_Bus_ME.get(1),
                     true);
                 gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
-                setAdditionalConnectionOption();
+                updateValidGridProxySides();
                 if (getBaseMetaTileEntity().getWorld() != null) gridProxy.setOwner(
                     getBaseMetaTileEntity().getWorld()
                         .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
@@ -175,9 +180,6 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
         }
         return this.gridProxy;
     }
-
-    @Override
-    public void gridChanged() {}
 
     private void flushCachedStack() {
         lastOutputFailed = false;

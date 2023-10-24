@@ -7,7 +7,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 public class GT_MetaTileEntity_Hatch_QuadrupleHumongous extends GT_MetaTileEntity_Hatch_MultiInput {
 
     public GT_MetaTileEntity_Hatch_QuadrupleHumongous(int aID, int aSlot, String aName, String aNameRegional) {
-        super(aID, aSlot, aName, aNameRegional, 0);
+        super(aID, aSlot, aName, aNameRegional, 13);
     }
 
     public GT_MetaTileEntity_Hatch_QuadrupleHumongous(String aName, int aSlot, int aTier, String[] aDescription,

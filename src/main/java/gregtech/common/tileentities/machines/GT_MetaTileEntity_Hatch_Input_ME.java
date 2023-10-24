@@ -213,6 +213,20 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
     }
 
     @Override
+    public FluidStack drain(ForgeDirection side, FluidStack aFluid, boolean doDrain) {
+        // this is an ME input hatch. allowing draining via logistics would be very wrong (and against
+        // canTankBeEmptied()) but we do need to support draining from controller, which uses the UNKNOWN direction.
+        if (side != ForgeDirection.UNKNOWN) return null;
+        FluidStack stored = getMatchingFluidStack(aFluid);
+        if (stored == null) return null;
+        FluidStack drained = GT_Utility.copyAmount(Math.min(stored.amount, aFluid.amount), stored);
+        if (doDrain) {
+            stored.amount -= drained.amount;
+        }
+        return drained;
+    }
+
+    @Override
     public void startRecipeProcessing() {
         processingRecipe = true;
     }
@@ -228,10 +242,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
 
             for (int i = 0; i < SLOT_COUNT; ++i) {
                 FluidStack oldStack = shadowStoredFluids[i];
-                int oldAmount = savedStackSizes[i];
-                if (oldStack == null || oldAmount == 0) continue;
-
-                int toExtract = oldAmount - oldStack.amount;
+                int toExtract = savedStackSizes[i] - (oldStack != null ? oldStack.amount : 0);
                 if (toExtract <= 0) continue;
 
                 IAEFluidStack request = AEFluidStack.create(storedFluids[i]);
@@ -245,14 +256,14 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                     checkRecipeResult = SimpleCheckRecipeResult
                         .ofFailurePersistOnShutdown("stocking_hatch_fail_extraction");
                 }
+                shadowStoredFluids[i] = null;
+                savedStackSizes[i] = 0;
+                if (storedInformationFluids[i] != null && storedInformationFluids[i].amount <= 0) {
+                    storedInformationFluids[i] = null;
+                }
             }
         } catch (GridAccessException e) {
             throw new RuntimeException(e);
-        }
-
-        for (int i = 0; i < SLOT_COUNT; i++) {
-            shadowStoredFluids[i] = null;
-            savedStackSizes[i] = 0;
         }
 
         processingRecipe = false;
@@ -270,7 +281,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
         return isOutputFacing(forgeDirection) ? AECableType.SMART : AECableType.NONE;
     }
 
-    public void setAdditionalConnectionOption() {
+    private void updateValidGridProxySides() {
         if (additionalConnection) {
             getProxy().setValidSides(EnumSet.complementOf(EnumSet.of(ForgeDirection.UNKNOWN)));
         } else {
@@ -279,10 +290,15 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
     }
 
     @Override
+    public void onFacingChange() {
+        updateValidGridProxySides();
+    }
+
+    @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ) {
         additionalConnection = !additionalConnection;
-        setAdditionalConnectionOption();
+        updateValidGridProxySides();
         aPlayer.addChatComponentMessage(
             new ChatComponentTranslation("GT5U.hatch.additionalConnection." + additionalConnection));
         return true;
@@ -298,7 +314,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                     ItemList.Hatch_Input_ME.get(1),
                     true);
                 gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
-                setAdditionalConnectionOption();
+                updateValidGridProxySides();
                 if (getBaseMetaTileEntity().getWorld() != null) gridProxy.setOwner(
                     getBaseMetaTileEntity().getWorld()
                         .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
@@ -511,7 +527,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
             }
         }
 
-        setAdditionalConnectionOption();
+        updateValidGridProxySides();
         aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.stocking_bus.loaded"));
         return true;
     }
