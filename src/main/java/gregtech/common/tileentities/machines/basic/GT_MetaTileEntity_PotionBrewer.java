@@ -47,8 +47,6 @@ public class GT_MetaTileEntity_PotionBrewer extends GT_MetaTileEntity_BasicMachi
             MachineType.BREWERY.tooltipDescription(),
             1,
             0,
-            "PotionBrewer.png",
-            "",
             TextureFactory.of(
                 TextureFactory.of(OVERLAY_SIDE_POTIONBREWER_ACTIVE),
                 TextureFactory.builder()
@@ -99,25 +97,13 @@ public class GT_MetaTileEntity_PotionBrewer extends GT_MetaTileEntity_BasicMachi
                     .build()));
     }
 
-    public GT_MetaTileEntity_PotionBrewer(String aName, int aTier, String aDescription, ITexture[][][] aTextures,
-        String aGUIName, String aNEIName) {
-        super(aName, aTier, 1, aDescription, aTextures, 1, 0, aGUIName, aNEIName);
-    }
-
-    public GT_MetaTileEntity_PotionBrewer(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
-        String aGUIName, String aNEIName) {
-        super(aName, aTier, 1, aDescription, aTextures, 1, 0, aGUIName, aNEIName);
+    public GT_MetaTileEntity_PotionBrewer(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+        super(aName, aTier, 1, aDescription, aTextures, 1, 0);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_PotionBrewer(
-            this.mName,
-            this.mTier,
-            this.mDescriptionArray,
-            this.mTextures,
-            this.mGUIName,
-            this.mNEIName);
+        return new GT_MetaTileEntity_PotionBrewer(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
     @Override

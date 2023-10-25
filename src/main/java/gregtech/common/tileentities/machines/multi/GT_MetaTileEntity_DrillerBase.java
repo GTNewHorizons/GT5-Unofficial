@@ -19,6 +19,7 @@ import static gregtech.api.enums.Textures.BlockIcons.getCasingTextureForId;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
+import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -626,6 +627,11 @@ public abstract class GT_MetaTileEntity_DrillerBase
     }
 
     @Override
+    public boolean isRotationChangeAllowed() {
+        return false;
+    }
+
+    @Override
     public final IStructureDefinition<GT_MetaTileEntity_DrillerBase> getStructureDefinition() {
         return STRUCTURE_DEFINITION.get(getClass());
     }
@@ -752,19 +758,17 @@ public abstract class GT_MetaTileEntity_DrillerBase
         if (GT_Utility.isStackValid(mInventory[1]) && isCorrectDataItem(mInventory[1], state)) {
             rList.add(mInventory[1]);
         }
-        for (GT_MetaTileEntity_Hatch_DataAccess tHatch : mDataAccessHatches) {
-            if (isValidMetaTileEntity(tHatch)) {
-                for (int i = 0; i < tHatch.getBaseMetaTileEntity()
-                    .getSizeInventory(); i++) {
-                    if (tHatch.getBaseMetaTileEntity()
-                        .getStackInSlot(i) != null && isCorrectDataItem(
-                            tHatch.getBaseMetaTileEntity()
-                                .getStackInSlot(i),
-                            state))
-                        rList.add(
-                            tHatch.getBaseMetaTileEntity()
-                                .getStackInSlot(i));
-                }
+        for (GT_MetaTileEntity_Hatch_DataAccess tHatch : filterValidMTEs(mDataAccessHatches)) {
+            for (int i = 0; i < tHatch.getBaseMetaTileEntity()
+                .getSizeInventory(); i++) {
+                if (tHatch.getBaseMetaTileEntity()
+                    .getStackInSlot(i) != null && isCorrectDataItem(
+                        tHatch.getBaseMetaTileEntity()
+                            .getStackInSlot(i),
+                        state))
+                    rList.add(
+                        tHatch.getBaseMetaTileEntity()
+                            .getStackInSlot(i));
             }
         }
         return rList;
@@ -841,9 +845,10 @@ public abstract class GT_MetaTileEntity_DrillerBase
                 .setBackground(() -> {
                     if (mChunkLoadingEnabled) {
                         return new IDrawable[] { GT_UITextures.BUTTON_STANDARD_PRESSED,
-                            GT_UITextures.OVERLAY_CHUNK_LOADING };
+                            GT_UITextures.OVERLAY_BUTTON_CHUNK_LOADING };
                     }
-                    return new IDrawable[] { GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_CHUNK_LOADING_OFF };
+                    return new IDrawable[] { GT_UITextures.BUTTON_STANDARD,
+                        GT_UITextures.OVERLAY_BUTTON_CHUNK_LOADING_OFF };
                 })
                 .attachSyncer(
                     new FakeSyncWidget.BooleanSyncer(
@@ -865,9 +870,10 @@ public abstract class GT_MetaTileEntity_DrillerBase
                     .setBackground(() -> {
                         if (workState == STATE_ABORT) {
                             return new IDrawable[] { GT_UITextures.BUTTON_STANDARD_PRESSED,
-                                GT_UITextures.OVERLAY_RETRACT_PIPE, GT_UITextures.OVERLAY_BUTTON_LOCKED };
+                                GT_UITextures.OVERLAY_BUTTON_RETRACT_PIPE, GT_UITextures.OVERLAY_BUTTON_LOCKED };
                         }
-                        return new IDrawable[] { GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_RETRACT_PIPE };
+                        return new IDrawable[] { GT_UITextures.BUTTON_STANDARD,
+                            GT_UITextures.OVERLAY_BUTTON_RETRACT_PIPE };
                     })
                     .attachSyncer(
                         new FakeSyncWidget.IntegerSyncer(() -> workState, (newInt) -> workState = newInt),

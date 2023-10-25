@@ -737,6 +737,7 @@ public enum ItemList implements IItemContainer {
     Spray_Color_13,
     Spray_Color_14,
     Spray_Color_15,
+    Spray_Color_Remover,
 
     Spray_Color_Used_00,
     Spray_Color_Used_01,
@@ -754,6 +755,9 @@ public enum ItemList implements IItemContainer {
     Spray_Color_Used_13,
     Spray_Color_Used_14,
     Spray_Color_Used_15,
+    Spray_Color_Used_Remover,
+
+    Spray_Color_Remover_Empty,
 
     Armor_Cheat,
     Armor_Cloaking,
@@ -1997,6 +2001,7 @@ public enum ItemList implements IItemContainer {
     VOLUMETRIC_FLASK,
 
     Hatch_Input_Bus_ME,
+    Hatch_Input_ME,
     Hatch_CraftingInput_Bus_ME,
     Hatch_CraftingInput_Bus_ME_ItemOnly,
     Hatch_CraftingInput_Bus_Slave,

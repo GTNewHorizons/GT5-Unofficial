@@ -388,27 +388,39 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
 
     @Override
     public @NotNull List<String> reportMetrics() {
-        if (getBaseMetaTileEntity().isActive()) {
-            return switch (workState) {
-                case STATE_AT_BOTTOM -> ImmutableList.of(
-                    StatCollector.translateToLocalFormatted("GT5U.gui.text.pump_fluid_type", getFluidName()),
+        final boolean machineIsActive = getBaseMetaTileEntity().isActive();
+        final String failureReason = getFailureReason()
+            .map(reason -> StatCollector.translateToLocalFormatted("GT5U.gui.text.drill_offline_reason", reason))
+            .orElseGet(() -> StatCollector.translateToLocalFormatted("GT5U.gui.text.drill_offline_generic"));
+
+        if (workState == STATE_AT_BOTTOM) {
+            final ImmutableList.Builder<String> builder = ImmutableList.builder();
+            builder.add(StatCollector.translateToLocalFormatted("GT5U.gui.text.pump_fluid_type", getFluidName()));
+
+            if (machineIsActive) {
+                builder.add(
                     StatCollector.translateToLocalFormatted(
                         "GT5U.gui.text.pump_rate.1",
                         EnumChatFormatting.AQUA + getFlowRatePerTick())
                         + StatCollector.translateToLocal("GT5U.gui.text.pump_rate.2"),
                     getReservoirContents() + StatCollector.translateToLocal("GT5U.gui.text.pump_recovery.2"));
+            } else {
+                builder.add(failureReason);
+            }
+
+            return builder.build();
+        }
+
+        if (machineIsActive) {
+            return switch (workState) {
                 case STATE_DOWNWARD -> ImmutableList.of(StatCollector.translateToLocal("GT5U.gui.text.deploying_pipe"));
                 case STATE_UPWARD, STATE_ABORT -> ImmutableList
                     .of(StatCollector.translateToLocal("GT5U.gui.text.retracting_pipe"));
-
                 default -> ImmutableList.of();
             };
         }
 
-        return ImmutableList.of(
-            getFailureReason()
-                .map(reason -> StatCollector.translateToLocalFormatted("GT5U.gui.text.drill_offline_reason", reason))
-                .orElseGet(() -> StatCollector.translateToLocalFormatted("GT5U.gui.text.drill_offline_generic")));
+        return ImmutableList.of(failureReason);
     }
 
     @NotNull

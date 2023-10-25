@@ -9,7 +9,10 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.NEICustomDiagrams;
 import static gregtech.api.enums.Mods.Railcraft;
-import static gregtech.api.recipe.check.FindRecipeResult.*;
+import static gregtech.api.recipe.check.FindRecipeResult.EXPLODE;
+import static gregtech.api.recipe.check.FindRecipeResult.NOT_FOUND;
+import static gregtech.api.recipe.check.FindRecipeResult.ON_FIRE;
+import static gregtech.api.recipe.check.FindRecipeResult.ofSuccess;
 import static gregtech.api.util.GT_RecipeBuilder.handleRecipeCollision;
 import static gregtech.api.util.GT_RecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GT_RecipeMapUtil.FIRST_FLUIDSTACK_INPUT;
@@ -30,7 +33,16 @@ import static net.minecraft.util.EnumChatFormatting.GRAY;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.awt.Rectangle;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -2309,7 +2321,9 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         return Arrays.asList(
                             b.build()
                                 .get(),
-                            b.fluidInputs(in)
+                            b.itemInputs()
+                                .itemOutputs()
+                                .fluidInputs(in)
                                 .fluidOutputs(out)
                                 .build()
                                 .get());

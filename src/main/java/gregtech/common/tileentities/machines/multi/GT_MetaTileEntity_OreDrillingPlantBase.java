@@ -638,7 +638,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
             (ButtonWidget) new GT_LockedWhileActiveButton(this.getBaseMetaTileEntity(), builder)
                 .setOnClick((clickData, widget) -> adjustChunkRadius(clickData.mouseButton == 0))
                 .setPlayClickSound(true)
-                .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_WORK_AREA)
+                .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_WORK_AREA)
                 .attachSyncer(
                     new FakeSyncWidget.IntegerSyncer(() -> chunkRadiusConfig, (val) -> chunkRadiusConfig = val),
                     builder,
@@ -657,9 +657,10 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
                 .setBackground(() -> {
                     if (replaceWithCobblestone) {
                         return new IDrawable[] { GT_UITextures.BUTTON_STANDARD_PRESSED,
-                            GT_UITextures.OVERLAY_REPLACE_COBBLE_ON };
+                            GT_UITextures.OVERLAY_BUTTON_REPLACE_COBBLE_ON };
                     }
-                    return new IDrawable[] { GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_REPLACE_COBBLE_OFF };
+                    return new IDrawable[] { GT_UITextures.BUTTON_STANDARD,
+                        GT_UITextures.OVERLAY_BUTTON_REPLACE_COBBLE_OFF };
                 })
                 .attachSyncer(
                     new FakeSyncWidget.BooleanSyncer(

@@ -66,12 +66,12 @@ public class GT_MetaTileEntity_HeatExchanger extends
         .addElement(
             'C',
             OutputHatch.withAdder(GT_MetaTileEntity_HeatExchanger::addColdFluidOutputToMachineList)
-                .withCount(t -> isValidMetaTileEntity(t.mOutputColdFluidHatch) ? 1 : 0)
+                .withCount(t -> t.mOutputColdFluidHatch.isValid() ? 1 : 0)
                 .newAny(CASING_INDEX, 3))
         .addElement(
             'H',
             OutputHatch.withAdder(GT_MetaTileEntity_HeatExchanger::addHotFluidInputToMachineList)
-                .withCount(t -> isValidMetaTileEntity(t.mInputHotFluidHatch) ? 1 : 0)
+                .withCount(t -> t.mInputHotFluidHatch.isValid() ? 1 : 0)
                 .newAny(CASING_INDEX, 3))
         .addElement(
             'c',
@@ -273,6 +273,7 @@ public class GT_MetaTileEntity_HeatExchanger extends
                 // 1:160 ratio with distilled water consumption
 
                 FluidStack distilledStack = GT_ModHandler.getDistilledWater(distilledConsumed);
+                startRecipeProcessing();
                 if (depleteInput(distilledStack)) // Consume the distilled water
                 {
                     if (superheated) {
@@ -291,6 +292,7 @@ public class GT_MetaTileEntity_HeatExchanger extends
                         explodeMultiblock(); // Generate crater
                     }
                 }
+                endRecipeProcessing();
             }
             return true;
         }

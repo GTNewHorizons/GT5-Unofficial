@@ -1,5 +1,7 @@
 package gregtech.common.render.items;
 
+import static gregtech.api.enums.Mods.HodgePodge;
+
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
@@ -13,7 +15,6 @@ import org.lwjgl.opengl.GL11;
 import com.mitchej123.hodgepodge.textures.IPatchedTextureAtlasSprite;
 
 import codechicken.lib.render.TextureUtils;
-import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.render.GT_RenderUtil;
@@ -158,7 +159,7 @@ public class GT_GeneratedMaterial_Renderer implements IItemRenderer {
     }
 
     protected void markNeedsAnimationUpdate(IIcon icon) {
-        if (GregTech_API.mHodgepodge && icon instanceof IPatchedTextureAtlasSprite) {
+        if (HodgePodge.isModLoaded() && icon instanceof IPatchedTextureAtlasSprite) {
             ((IPatchedTextureAtlasSprite) icon).markNeedsAnimationUpdate();
         }
     }

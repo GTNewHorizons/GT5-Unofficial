@@ -1763,53 +1763,52 @@ public class GT_CraftingRecipeLoader implements Runnable {
             new Object[] { "UUU", "NNN", "UUU", 'U', OrePrefixes.ingot.get(Materials.Uranium), 'N',
                 OrePrefixes.ingot.get(Materials.Plutonium) });
 
-        if (!GregTech_API.mIC2Classic) {
-            GT_ModHandler.removeRecipeByOutputDelayed(Ic2Items.miningLaser.copy());
-            GT_ModHandler.addCraftingRecipe(
-                Ic2Items.miningLaser.copy(),
-                GT_ModHandler.RecipeBits.BUFFERED,
-                new Object[] { "PPP", "GEC", "SBd", 'P', OrePrefixes.plate.get(Materials.Titanium), 'G',
-                    OrePrefixes.gemExquisite.get(Materials.Diamond), 'E', ItemList.Emitter_HV, 'C',
-                    OrePrefixes.circuit.get(Materials.Elite), 'S', OrePrefixes.screw.get(Materials.Titanium), 'B',
-                    new ItemStack(
-                        Ic2Items.chargingEnergyCrystal.copy()
-                            .getItem(),
-                        1,
-                        GT_Values.W) });
-            GT_ModHandler.addCraftingRecipe(
-                Ic2Items.miningLaser.copy(),
-                GT_ModHandler.RecipeBits.BUFFERED,
-                new Object[] { "PPP", "GEC", "SBd", 'P', OrePrefixes.plate.get(Materials.Titanium), 'G',
-                    OrePrefixes.gemExquisite.get(Materials.Ruby), 'E', ItemList.Emitter_HV, 'C',
-                    OrePrefixes.circuit.get(Materials.Elite), 'S', OrePrefixes.screw.get(Materials.Titanium), 'B',
-                    new ItemStack(
-                        Ic2Items.chargingEnergyCrystal.copy()
-                            .getItem(),
-                        1,
-                        GT_Values.W) });
-            GT_ModHandler.addCraftingRecipe(
-                Ic2Items.miningLaser.copy(),
-                GT_ModHandler.RecipeBits.BUFFERED,
-                new Object[] { "PPP", "GEC", "SBd", 'P', OrePrefixes.plate.get(Materials.Titanium), 'G',
-                    OrePrefixes.gemExquisite.get(Materials.Jasper), 'E', ItemList.Emitter_HV, 'C',
-                    OrePrefixes.circuit.get(Materials.Elite), 'S', OrePrefixes.screw.get(Materials.Titanium), 'B',
-                    new ItemStack(
-                        Ic2Items.chargingEnergyCrystal.copy()
-                            .getItem(),
-                        1,
-                        GT_Values.W) });
-            GT_ModHandler.addCraftingRecipe(
-                Ic2Items.miningLaser.copy(),
-                GT_ModHandler.RecipeBits.BUFFERED,
-                new Object[] { "PPP", "GEC", "SBd", 'P', OrePrefixes.plate.get(Materials.Titanium), 'G',
-                    OrePrefixes.gemExquisite.get(Materials.GarnetRed), 'E', ItemList.Emitter_HV, 'C',
-                    OrePrefixes.circuit.get(Materials.Elite), 'S', OrePrefixes.screw.get(Materials.Titanium), 'B',
-                    new ItemStack(
-                        Ic2Items.chargingEnergyCrystal.copy()
-                            .getItem(),
-                        1,
-                        GT_Values.W) });
-        }
+        GT_ModHandler.removeRecipeByOutputDelayed(Ic2Items.miningLaser.copy());
+        GT_ModHandler.addCraftingRecipe(
+            Ic2Items.miningLaser.copy(),
+            GT_ModHandler.RecipeBits.BUFFERED,
+            new Object[] { "PPP", "GEC", "SBd", 'P', OrePrefixes.plate.get(Materials.Titanium), 'G',
+                OrePrefixes.gemExquisite.get(Materials.Diamond), 'E', ItemList.Emitter_HV, 'C',
+                OrePrefixes.circuit.get(Materials.Elite), 'S', OrePrefixes.screw.get(Materials.Titanium), 'B',
+                new ItemStack(
+                    Ic2Items.chargingEnergyCrystal.copy()
+                        .getItem(),
+                    1,
+                    GT_Values.W) });
+        GT_ModHandler.addCraftingRecipe(
+            Ic2Items.miningLaser.copy(),
+            GT_ModHandler.RecipeBits.BUFFERED,
+            new Object[] { "PPP", "GEC", "SBd", 'P', OrePrefixes.plate.get(Materials.Titanium), 'G',
+                OrePrefixes.gemExquisite.get(Materials.Ruby), 'E', ItemList.Emitter_HV, 'C',
+                OrePrefixes.circuit.get(Materials.Elite), 'S', OrePrefixes.screw.get(Materials.Titanium), 'B',
+                new ItemStack(
+                    Ic2Items.chargingEnergyCrystal.copy()
+                        .getItem(),
+                    1,
+                    GT_Values.W) });
+        GT_ModHandler.addCraftingRecipe(
+            Ic2Items.miningLaser.copy(),
+            GT_ModHandler.RecipeBits.BUFFERED,
+            new Object[] { "PPP", "GEC", "SBd", 'P', OrePrefixes.plate.get(Materials.Titanium), 'G',
+                OrePrefixes.gemExquisite.get(Materials.Jasper), 'E', ItemList.Emitter_HV, 'C',
+                OrePrefixes.circuit.get(Materials.Elite), 'S', OrePrefixes.screw.get(Materials.Titanium), 'B',
+                new ItemStack(
+                    Ic2Items.chargingEnergyCrystal.copy()
+                        .getItem(),
+                    1,
+                    GT_Values.W) });
+        GT_ModHandler.addCraftingRecipe(
+            Ic2Items.miningLaser.copy(),
+            GT_ModHandler.RecipeBits.BUFFERED,
+            new Object[] { "PPP", "GEC", "SBd", 'P', OrePrefixes.plate.get(Materials.Titanium), 'G',
+                OrePrefixes.gemExquisite.get(Materials.GarnetRed), 'E', ItemList.Emitter_HV, 'C',
+                OrePrefixes.circuit.get(Materials.Elite), 'S', OrePrefixes.screw.get(Materials.Titanium), 'B',
+                new ItemStack(
+                    Ic2Items.chargingEnergyCrystal.copy()
+                        .getItem(),
+                    1,
+                    GT_Values.W) });
+
         GT_ModHandler.removeRecipeDelayed(GT_ModHandler.getIC2Item("miningPipe", 8));
         GT_ModHandler.addCraftingRecipe(
             GT_ModHandler.getIC2Item("miningPipe", 1),

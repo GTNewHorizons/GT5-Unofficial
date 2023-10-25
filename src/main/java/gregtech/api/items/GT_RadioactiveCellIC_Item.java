@@ -7,7 +7,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_Utility;
 import ic2.api.reactor.IReactor;
@@ -176,7 +175,7 @@ public class GT_RadioactiveCellIC_Item extends GT_RadioactiveCell_Item implement
     @Override
     public void onUpdate(ItemStack stack, World world, Entity entity, int slotIndex, boolean isCurrentItem) {
         if (this.sRadiation > 0 && (entity instanceof EntityLivingBase entityLiving)) {
-            if (!GregTech_API.mIC2Classic && !GT_Utility.isWearingFullRadioHazmat(entityLiving)) {
+            if (!GT_Utility.isWearingFullRadioHazmat(entityLiving)) {
                 IC2Potion.radiation.applyTo(entityLiving, sRadiation * 20, sRadiation * 10);
             }
         }

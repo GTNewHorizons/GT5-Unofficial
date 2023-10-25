@@ -1,10 +1,13 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMaceratorRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+
 import net.minecraft.item.ItemStack;
 
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 
@@ -17,8 +20,16 @@ public class ProcessingBeans implements gregtech.api.interfaces.IOreRecipeRegist
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
-        if (aOreDictName.equals("beansCocoa")) GT_ModHandler.addPulverisationRecipe(
-            GT_Utility.copyAmount(1L, aStack),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cocoa, 1L));
+
+        if (!aOreDictName.equals("beansCocoa")) {
+            return;
+        }
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.copyAmount(1L, aStack))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cocoa, 1L))
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(sMaceratorRecipes);
     }
 }

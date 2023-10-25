@@ -2,6 +2,8 @@ package gregtech.api.util;
 
 import static gregtech.api.enums.GT_Values.E;
 
+import java.lang.ref.WeakReference;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -20,7 +22,6 @@ import gregtech.api.net.GT_Packet_TileEntityCoverGUI;
  */
 public abstract class GT_CoverBehavior extends GT_CoverBehaviorBase<ISerializableObject.LegacyCoverData> {
 
-    public EntityPlayer lastPlayer = null;
     public boolean mPlayerNotified = false;
 
     public GT_CoverBehavior() {
@@ -241,7 +242,7 @@ public abstract class GT_CoverBehavior extends GT_CoverBehaviorBase<ISerializabl
     public boolean onCoverShiftRightclick(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
         EntityPlayer aPlayer) {
         if (hasCoverGUI() && aPlayer instanceof EntityPlayerMP) {
-            lastPlayer = aPlayer;
+            lastPlayer = new WeakReference<>(aPlayer);
             mPlayerNotified = false;
             if (useModularUI()) {
                 GT_UIInfos.openCoverUI(aTileEntity, aPlayer, side);

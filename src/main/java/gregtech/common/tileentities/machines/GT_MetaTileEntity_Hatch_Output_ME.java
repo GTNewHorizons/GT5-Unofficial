@@ -4,6 +4,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH_ACTIVE;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -12,8 +13,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -59,15 +60,17 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
     long tickCounter = 0;
     boolean lastOutputFailed = false;
     boolean infiniteCache = true;
+    boolean additionalConnection = false;
 
     public GT_MetaTileEntity_Hatch_Output_ME(int aID, String aName, String aNameRegional) {
         super(
             aID,
             aName,
             aNameRegional,
-            1,
+            3,
             new String[] { "Fluid Output for Multiblocks", "Stores directly into ME",
-                "Can cache infinite amount of fluids.", "Change cache behavior by right-clicking with screwdriver." },
+                "Can cache infinite amount of fluids.", "Change cache behavior by right-clicking with screwdriver.",
+                "Change ME connection behavior by right-clicking with wire cutter" },
             0);
     }
 
@@ -82,12 +85,12 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_ME_FLUID_HATCH) };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_ME_FLUID_HATCH_ACTIVE) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_ME_FLUID_HATCH_ACTIVE) };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_ME_FLUID_HATCH) };
     }
 
     @Override
@@ -136,6 +139,19 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
         return isOutputFacing(side) ? AECableType.SMART : AECableType.NONE;
     }
 
+    private void updateValidGridProxySides() {
+        if (additionalConnection) {
+            getProxy().setValidSides(EnumSet.complementOf(EnumSet.of(ForgeDirection.UNKNOWN)));
+        } else {
+            getProxy().setValidSides(EnumSet.of(getBaseMetaTileEntity().getFrontFacing()));
+        }
+    }
+
+    @Override
+    public void onFacingChange() {
+        updateValidGridProxySides();
+    }
+
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         return false;
@@ -157,9 +173,17 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
         if (!getBaseMetaTileEntity().getCoverInfoAtSide(side)
             .isGUIClickable()) return;
         infiniteCache = !infiniteCache;
-        GT_Utility.sendChatToPlayer(
-            aPlayer,
-            StatCollector.translateToLocal("GT5U.hatch.infiniteCacheFluid." + infiniteCache));
+        aPlayer.addChatComponentMessage(new ChatComponentTranslation("GT5U.hatch.infiniteCacheFluid." + infiniteCache));
+    }
+
+    @Override
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ) {
+        additionalConnection = !additionalConnection;
+        updateValidGridProxySides();
+        aPlayer.addChatComponentMessage(
+            new ChatComponentTranslation("GT5U.hatch.additionalConnection." + additionalConnection));
+        return true;
     }
 
     @Override
@@ -172,6 +196,7 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
                     ItemList.Hatch_Output_ME.get(1),
                     true);
                 gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
+                updateValidGridProxySides();
                 if (getBaseMetaTileEntity().getWorld() != null) gridProxy.setOwner(
                     getBaseMetaTileEntity().getWorld()
                         .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
@@ -179,9 +204,6 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
         }
         return this.gridProxy;
     }
-
-    @Override
-    public void gridChanged() {}
 
     private void flushCachedStack() {
         if (fluidCache.isEmpty()) return;
@@ -222,9 +244,10 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (GT_Values.GT.isServerSide()) {
+        if (getBaseMetaTileEntity().isServerSide()) {
             tickCounter = aTick;
             if (tickCounter > (lastOutputTick + 40)) flushCachedStack();
+            if (tickCounter % 20 == 0) getBaseMetaTileEntity().setActive(isActive());
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
     }
@@ -244,6 +267,8 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
             fluids.appendTag(tag);
         }
         aNBT.setTag("cachedFluids", fluids);
+        aNBT.setBoolean("infiniteCache", infiniteCache);
+        aNBT.setBoolean("additionalConnection", additionalConnection);
         getProxy().writeToNBT(aNBT);
     }
 
@@ -268,6 +293,10 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
                 }
             }
         }
+        if (aNBT.hasKey("infiniteCache")) {
+            infiniteCache = aNBT.getBoolean("infiniteCache");
+        }
+        additionalConnection = aNBT.getBoolean("additionalConnection");
         getProxy().readFromNBT(aNBT);
     }
 
