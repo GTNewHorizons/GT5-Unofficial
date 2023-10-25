@@ -27,6 +27,7 @@ public abstract class GT_Worldgen_Ore extends GT_Worldgen {
         mSize = GregTech_API.sWorldgenFile.get(aTextWorldgen + mWorldGenName, "Size", aSize);
         mMinY = GregTech_API.sWorldgenFile.get(aTextWorldgen + mWorldGenName, "MinHeight", aMinY);
         mMaxY = GregTech_API.sWorldgenFile.get(aTextWorldgen + mWorldGenName, "MaxHeight", aMaxY);
+        mDeinsity = GregTech_API.sWorldgenFile.get(aTextWorldgen + mWorldGenName,"DensityPercent", aDensity);
         if (aBiomeList == null) mBiomeList = new ArrayList<>();
         else mBiomeList = aBiomeList;
         mAllowToGenerateinVoid = aAllowToGenerateinVoid;
