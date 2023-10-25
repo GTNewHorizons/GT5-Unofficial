@@ -4,7 +4,11 @@ import static gregtech.api.util.GT_Utility.trans;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.util.StatCollector;
+
+import gregtech.api.enums.SteamVariant;
 import gregtech.api.recipe.RecipeMapFrontend;
+import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
@@ -14,47 +18,47 @@ import gregtech.nei.NEIRecipeInfo;
 @MethodsReturnNonnullByDefault
 public class SteamPower extends Power {
 
+    private final SteamVariant steamVariant;
     private final int euPerTickMultiplier;
     private final int durationMultiplier;
-    private final String[] STEAM_TIER_NAMES = { "Bronze", "Steel" };
 
-    public SteamPower(byte tier, int euPerTickMultiplier, int durationMultiplier) {
-        super(tier);
+    public SteamPower(SteamVariant steamVariant, int euPerTickMultiplier, int durationMultiplier) {
+        super((byte) 1); // recipe tier is always LV
+        this.steamVariant = steamVariant;
         this.euPerTickMultiplier = euPerTickMultiplier;
         this.durationMultiplier = durationMultiplier;
     }
 
     @Override
-    public byte getTier() {
-        return 1;
-    }
-
-    @Override
     public String getTierString() {
-        return STEAM_TIER_NAMES[tier - 1];
+        return StatCollector.translateToLocal("GT5U.steam_variant." + steamVariant.toString());
     }
 
     @Override
-    public void compute(GT_Recipe recipe) {
-        recipeEuPerTick = recipe.mEUt * euPerTickMultiplier;
-        recipeDuration = recipe.mDuration * durationMultiplier;
+    public GT_OverclockCalculator createCalculator(GT_OverclockCalculator template, GT_Recipe recipe) {
+        return GT_OverclockCalculator.ofNoOverclock(recipe)
+            .setEUtDiscount(euPerTickMultiplier)
+            .setSpeedBoost(durationMultiplier);
     }
 
     @Override
-    protected void drawEnergyInfoImpl(NEIRecipeInfo recipeInfo, RecipeMapFrontend frontend) {
-        frontend.drawNEIText(recipeInfo, trans("153", "Usage: ") + getSteamUsageString());
+    public void drawEnergyInfo(NEIRecipeInfo recipeInfo, RecipeMapFrontend frontend) {
+        if (recipeInfo.calculator.getConsumption() <= 0) return;
+
+        frontend.drawNEIText(recipeInfo, trans("152", "Total: ") + getTotalPowerString(recipeInfo.calculator));
+        frontend.drawNEIText(recipeInfo, trans("153", "Usage: ") + getSteamUsageString(recipeInfo.calculator));
     }
 
-    @Override
-    protected String getTotalPowerString() {
-        return GT_Utility.formatNumbers(convertEUToSteam(recipeDuration * recipeEuPerTick)) + " Steam";
+    private String getTotalPowerString(GT_OverclockCalculator calculator) {
+        return GT_Utility.formatNumbers(convertEUToSteam(calculator.getConsumption() * calculator.getDuration()))
+            + " Steam";
     }
 
-    private String getSteamUsageString() {
-        return GT_Utility.formatNumbers(20L * convertEUToSteam(recipeEuPerTick)) + " L/s Steam";
+    private String getSteamUsageString(GT_OverclockCalculator calculator) {
+        return GT_Utility.formatNumbers(20 * convertEUToSteam(calculator.getConsumption())) + " L/s Steam";
     }
 
-    private static int convertEUToSteam(int eu) {
+    private static long convertEUToSteam(long eu) {
         // 2L normal steam == 1EU
         return 2 * eu;
     }

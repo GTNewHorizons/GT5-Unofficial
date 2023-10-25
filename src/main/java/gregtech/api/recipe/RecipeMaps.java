@@ -62,7 +62,7 @@ import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
 import mods.railcraft.common.items.RailcraftToolItems;
 
 @SuppressWarnings("SimplifyOptionalCallChains")
-public class RecipeMaps {
+public final class RecipeMaps {
 
     public static final RecipeMap<RecipeMapBackend> oreWasherRecipes = RecipeMapBuilder.of("gt.recipe.orewasher")
         .maxIO(1, 3, 1, 0)

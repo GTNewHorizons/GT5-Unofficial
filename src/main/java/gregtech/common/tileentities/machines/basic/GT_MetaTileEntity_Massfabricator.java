@@ -52,6 +52,8 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
     public static int sDurationMultiplier = 3215;
     public static boolean sRequiresUUA = false;
     public static int BASE_EUT = 256;
+    public static GT_Recipe nonUUARecipe;
+    public static GT_Recipe uuaRecipe;
 
     public GT_MetaTileEntity_Massfabricator(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -158,9 +160,7 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
         FluidStack tFluid = getDrainableStack();
         if ((tFluid == null) || (tFluid.amount < getCapacity())) {
             this.mOutputFluid = Materials.UUMatter.getFluid(1L);
-            calculateOverclockedNess(
-                BASE_EUT,
-                containsUUA(getFillableStack()) ? sDurationMultiplier / sUUASpeedBonus : sDurationMultiplier);
+            calculateCustomOverclock(containsUUA(getFillableStack()) ? uuaRecipe : nonUUARecipe);
             // In case recipe is too OP for that machine
             if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
                 return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
@@ -204,33 +204,27 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
         }
 
         @Override
-        public void compute(GT_Recipe recipe) {
-            originalEUt = recipe.mEUt;
-            GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
-                .setEUt(Ints.saturatedCast(V[tier] * amperage))
-                .setDuration(recipe.mDuration)
+        public GT_OverclockCalculator createCalculator(GT_OverclockCalculator template, GT_Recipe recipe) {
+            return super.createCalculator(template, recipe).setEUt(Ints.saturatedCast(V[tier] * amperage))
                 .setEUtIncreasePerOC(1)
                 .limitOverclockCount(tier - 1)
-                .calculate();
-            recipeEuPerTick = (int) calculator.getConsumption();
-            recipeDuration = calculator.getDuration();
-            wasOverclocked = checkIfOverclocked();
+                .setOneTickDiscount(false);
         }
 
         @Override
-        protected boolean shouldShowAmperage() {
+        protected boolean shouldShowAmperage(GT_OverclockCalculator calculator) {
             return true;
         }
 
         @Override
-        protected String getVoltageString() {
+        protected String getVoltageString(GT_OverclockCalculator calculator) {
             // standard amperage calculation doesn't work here
-            return decorateWithOverclockLabel(GT_Utility.formatNumbers(V[mTier]) + " EU/t")
+            return decorateWithOverclockLabel(GT_Utility.formatNumbers(V[mTier]) + " EU/t", calculator)
                 + GT_Utility.getTierNameWithParentheses(V[mTier]);
         }
 
         @Override
-        protected String getAmperageString() {
+        protected String getAmperageString(GT_OverclockCalculator calculator) {
             int amperage = this.amperage;
             int denominator = 1;
             for (int i = 1; i < mTier; i++) {

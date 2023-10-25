@@ -1,6 +1,7 @@
 package gregtech.nei;
 
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.common.power.Power;
 
@@ -31,16 +32,22 @@ public class NEIRecipeInfo {
     public final Power power;
 
     /**
+     * Pre-built overclock calculator, used for drawing OC information. Do not calculate it again.
+     */
+    public final GT_OverclockCalculator calculator;
+
+    /**
      * Current Y position for drawing description.
      */
     public int yPos;
 
-    public NEIRecipeInfo(GT_Recipe recipe, RecipeMap<?> recipeMap,
-        GT_NEI_DefaultHandler.CachedDefaultRecipe neiCachedRecipe, Power power, int descriptionYOffset) {
+    NEIRecipeInfo(GT_Recipe recipe, RecipeMap<?> recipeMap, GT_NEI_DefaultHandler.CachedDefaultRecipe neiCachedRecipe,
+        Power power, GT_OverclockCalculator calculator, int descriptionYOffset) {
         this.recipe = recipe;
         this.recipeMap = recipeMap;
         this.neiCachedRecipe = neiCachedRecipe;
         this.power = power;
+        this.calculator = calculator;
         this.yPos = descriptionYOffset;
     }
 }

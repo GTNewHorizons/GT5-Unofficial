@@ -19,7 +19,7 @@ import gregtech.nei.formatter.INEISpecialInfoFormatter;
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 @FieldsAreNonnullByDefault
-public class NEIRecipeProperties {
+public final class NEIRecipeProperties {
 
     public static NEIRecipePropertiesBuilder builder() {
         return new NEIRecipePropertiesBuilder();

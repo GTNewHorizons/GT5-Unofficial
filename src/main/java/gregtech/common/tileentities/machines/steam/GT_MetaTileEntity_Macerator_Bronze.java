@@ -91,7 +91,7 @@ public class GT_MetaTileEntity_Macerator_Bronze extends GT_MetaTileEntity_BasicM
         if (!tRecipe.isRecipeInputEqual(true, new FluidStack[] { getFillableStack() }, getAllInputs()))
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         if (tRecipe.getOutput(0) != null) mOutputItems[0] = tRecipe.getOutput(0);
-        calculateOverclockedNess(tRecipe);
+        calculateCustomOverclock(tRecipe);
         return FOUND_AND_SUCCESSFULLY_USED_RECIPE;
     }
 

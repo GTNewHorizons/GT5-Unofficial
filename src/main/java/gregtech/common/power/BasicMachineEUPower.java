@@ -5,6 +5,8 @@ import static gregtech.api.util.GT_Utility.trans;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import com.google.common.primitives.Ints;
+
 import gregtech.GT_Mod;
 import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.GT_OverclockCalculator;
@@ -17,72 +19,64 @@ import gregtech.nei.NEIRecipeInfo;
 @MethodsReturnNonnullByDefault
 public class BasicMachineEUPower extends EUPower {
 
-    protected static final String OC = " (OC)";
-    protected boolean wasOverclocked;
-
     public BasicMachineEUPower(byte tier, int amperage) {
         super(tier, amperage);
     }
 
     @Override
-    public void compute(GT_Recipe recipe) {
-        super.compute(recipe);
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
-            .setEUt(V[tier] * amperage)
-            .setDuration(recipe.mDuration)
-            .setOneTickDiscount(true)
-            .calculate();
-        recipeEuPerTick = (int) calculator.getConsumption();
-        recipeDuration = calculator.getDuration();
-        wasOverclocked = checkIfOverclocked();
+    public GT_OverclockCalculator createCalculator(GT_OverclockCalculator template, GT_Recipe recipe) {
+        return template.setEUt(Ints.saturatedCast(V[tier] * amperage));
     }
 
     @Override
     protected void drawEnergyInfoImpl(NEIRecipeInfo recipeInfo, RecipeMapFrontend frontend) {
-        if (!wasOverclocked) {
+        if (!wasOverclocked(recipeInfo.calculator)) {
             super.drawEnergyInfoImpl(recipeInfo, frontend);
             return;
         }
 
-        frontend.drawNEIText(recipeInfo, trans("153", "Usage: ") + getEUtDisplay());
-        if (shouldShowAmperage()) {
-            frontend.drawNEIText(recipeInfo, trans("154", "Voltage: ") + getVoltageString());
+        frontend.drawNEIText(recipeInfo, trans("153", "Usage: ") + getEUtDisplay(recipeInfo.calculator));
+        if (shouldShowAmperage(recipeInfo.calculator)) {
+            frontend.drawNEIText(recipeInfo, trans("154", "Voltage: ") + getVoltageString(recipeInfo.calculator));
         }
         if (GT_Mod.gregtechproxy.mNEIOriginalVoltage) {
             EUPower originalPower = new EUPower(tier, amperage);
-            originalPower.compute(recipeInfo.recipe);
-            frontend.drawNEIText(recipeInfo, trans("275", "Original usage: ") + originalPower.getEUtDisplay());
+            GT_OverclockCalculator originalPowerCalculator = GT_OverclockCalculator.ofNoOverclock(recipeInfo.recipe)
+                .calculate();
+            frontend.drawNEIText(
+                recipeInfo,
+                trans("275", "Original usage: ") + originalPower.getEUtDisplay(originalPowerCalculator));
         }
-        if (shouldShowAmperage()) {
-            frontend.drawNEIText(recipeInfo, trans("155", "Amperage: ") + getAmperageString());
+        if (shouldShowAmperage(recipeInfo.calculator)) {
+            frontend.drawNEIText(recipeInfo, trans("155", "Amperage: ") + getAmperageString(recipeInfo.calculator));
         }
     }
 
     @Override
-    protected String getEUtWithoutTier() {
-        return decorateWithOverclockLabel(super.getEUtWithoutTier());
+    protected String getEUtWithoutTier(GT_OverclockCalculator calculator) {
+        return decorateWithOverclockLabel(super.getEUtWithoutTier(calculator), calculator);
     }
 
     @Override
-    protected String getEUtWithTier() {
-        return this.getEUtWithoutTier() + GT_Utility.getTierNameWithParentheses(recipeEuPerTick);
+    protected String getEUtWithTier(GT_OverclockCalculator calculator) {
+        return this.getEUtWithoutTier(calculator) + GT_Utility.getTierNameWithParentheses(calculator.getConsumption());
     }
 
     @Override
-    protected String getVoltageString() {
-        int voltage = computeVoltageForEURate(recipeEuPerTick);
-        return decorateWithOverclockLabel(GT_Utility.formatNumbers(voltage) + " EU/t")
+    protected String getVoltageString(GT_OverclockCalculator calculator) {
+        long voltage = computeVoltageForEURate(calculator.getConsumption());
+        return decorateWithOverclockLabel(GT_Utility.formatNumbers(voltage) + " EU/t", calculator)
             + GT_Utility.getTierNameWithParentheses(voltage);
     }
 
-    protected String decorateWithOverclockLabel(String s) {
-        if (wasOverclocked) {
-            s += OC;
+    protected String decorateWithOverclockLabel(String s, GT_OverclockCalculator calculator) {
+        if (wasOverclocked(calculator)) {
+            s += " (OC)";
         }
         return s;
     }
 
-    protected boolean checkIfOverclocked() {
-        return originalEUt != recipeEuPerTick;
+    protected boolean wasOverclocked(GT_OverclockCalculator calculator) {
+        return calculator.getPerformedOverclocks() > 0;
     }
 }

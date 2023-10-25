@@ -294,17 +294,19 @@ public class GT_PostLoad {
                 }
             });
 
-        if (!GT_MetaTileEntity_Massfabricator.sRequiresUUA) RecipeMaps.massFabFakeRecipes.addFakeRecipe(
-            false,
-            null,
-            null,
-            null,
-            null,
-            new FluidStack[] { Materials.UUMatter.getFluid(1L) },
-            GT_MetaTileEntity_Massfabricator.sDurationMultiplier,
-            GT_MetaTileEntity_Massfabricator.BASE_EUT,
-            0);
-        RecipeMaps.massFabFakeRecipes.addFakeRecipe(
+        if (!GT_MetaTileEntity_Massfabricator.sRequiresUUA) {
+            GT_MetaTileEntity_Massfabricator.nonUUARecipe = RecipeMaps.massFabFakeRecipes.addFakeRecipe(
+                false,
+                null,
+                null,
+                null,
+                null,
+                new FluidStack[] { Materials.UUMatter.getFluid(1L) },
+                GT_MetaTileEntity_Massfabricator.sDurationMultiplier,
+                GT_MetaTileEntity_Massfabricator.BASE_EUT,
+                0);
+        }
+        GT_MetaTileEntity_Massfabricator.uuaRecipe = RecipeMaps.massFabFakeRecipes.addFakeRecipe(
             false,
             new ItemStack[] { GT_Utility.getIntegratedCircuit(1) },
             null,

@@ -1,5 +1,7 @@
 package gregtech.nei;
 
+import static gregtech.api.enums.GT_Values.V;
+
 import java.awt.Rectangle;
 import java.lang.ref.SoftReference;
 import java.text.DecimalFormat;
@@ -41,11 +43,11 @@ import codechicken.nei.recipe.IUsageHandler;
 import codechicken.nei.recipe.RecipeCatalysts;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import gregtech.GT_Mod;
-import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.recipe.NEIRecipeProperties;
@@ -53,6 +55,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Item_Machines;
@@ -263,10 +266,10 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
             ItemStack candidate = (ItemStack) ingredients[0];
             GT_NEI_DefaultHandler handler = (GT_NEI_DefaultHandler) newInstance();
             if (RecipeCatalysts.containsCatalyst(handler, candidate)) {
-                IMetaTileEntity gtTileEntity = GT_Item_Machines.getMetaTileEntity(candidate);
+                IMetaTileEntity metaTile = GT_Item_Machines.getMetaTileEntity(candidate);
                 Power power;
-                if (gtTileEntity != null) {
-                    power = gtTileEntity.getPower();
+                if (metaTile instanceof IOverclockDescriptionProvider provider) {
+                    power = provider.getOverclockDescriber();
                 } else {
                     power = null;
                 }
@@ -400,9 +403,15 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
             // By default, assume generic EU LV power with no overclocks
             power = new EUPower((byte) 1, uiProperties.amperage);
         }
-        power.compute(recipe);
 
-        frontend.drawNEIDescription(new NEIRecipeInfo(recipe, recipeMap, cachedRecipe, power, getDescriptionYOffset()));
+        GT_OverclockCalculator calculator = power.createCalculator(
+            new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
+                .setDuration(recipe.mDuration),
+            recipe);
+        calculator.calculate();
+
+        frontend.drawNEIDescription(
+            new NEIRecipeInfo(recipe, recipeMap, cachedRecipe, power, calculator, getDescriptionYOffset()));
     }
 
     protected int getDescriptionYOffset() {
@@ -676,7 +685,7 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
 
         private void computeTierIndexes() {
             // Holds 16 elements without rehashing
-            mTierIndexes = new HashMap<>(GT_Values.V.length + 1, 1f);
+            mTierIndexes = new HashMap<>(V.length + 1, 1f);
             assert mCachedRecipes != null;
             Iterator<CachedDefaultRecipe> iterator = Objects.requireNonNull(mCachedRecipes.get())
                 .iterator();

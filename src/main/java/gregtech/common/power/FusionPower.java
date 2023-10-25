@@ -1,7 +1,5 @@
 package gregtech.common.power;
 
-import static gregtech.api.enums.GT_Values.V;
-
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.util.EnumChatFormatting;
@@ -11,7 +9,6 @@ import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
-import gregtech.nei.formatter.FusionSpecialValueFormatter;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -19,36 +16,29 @@ public class FusionPower extends BasicMachineEUPower {
 
     protected final long capableStartup;
 
-    public FusionPower(byte tier, long capableStartup) {
-        super(tier, 1);
+    public FusionPower(byte energyTier, long capableStartup) {
+        super(energyTier, 1);
         this.capableStartup = capableStartup;
     }
 
     @Override
-    public void compute(GT_Recipe recipe) {
-        originalEUt = recipe.mEUt;
-        final int maxPossibleOverclocks = FusionSpecialValueFormatter.getFusionTier(capableStartup, V[tier])
-            - FusionSpecialValueFormatter.getFusionTier(recipe.mSpecialValue, recipe.mEUt);
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
-            .setEUt(V[tier])
-            .setDuration(recipe.mDuration)
+    public GT_OverclockCalculator createCalculator(GT_OverclockCalculator template, GT_Recipe recipe) {
+        return super.createCalculator(template, recipe).limitOverclockCount(overclock(recipe.mSpecialValue))
             .setEUtIncreasePerOC(getEUtIncreasePerOC())
-            .limitOverclockCount(maxPossibleOverclocks)
-            .calculate();
-        recipeEuPerTick = (int) calculator.getConsumption();
-        recipeDuration = calculator.getDuration();
-        wasOverclocked = checkIfOverclocked();
+            .setDurationDecreasePerOC(getDurationDecreasePerOC());
     }
 
     protected int getEUtIncreasePerOC() {
         return 1;
     }
 
+    protected int getDurationDecreasePerOC() {
+        return 1;
+    }
+
     @Override
     public String getTierString() {
-        return GT_Values.TIER_COLORS[tier] + "MK "
-            + (tier - 5) // Mk1 <-> LuV
-            + EnumChatFormatting.RESET;
+        return GT_Values.TIER_COLORS[tier] + "MK " + getFusionTier() + EnumChatFormatting.RESET;
     }
 
     @Override
@@ -58,5 +48,22 @@ public class FusionPower extends BasicMachineEUPower {
             return false;
         }
         return this.capableStartup >= recipe.mSpecialValue;
+    }
+
+    protected int overclock(int startEnergy) {
+        return switch (getFusionTier()) {
+            case 1 -> 0;
+            case 2 -> (startEnergy <= 160000000) ? 1 : 0;
+            case 3 -> (startEnergy <= 160000000) ? 2 : ((startEnergy <= 320000000) ? 1 : 0);
+            case 4 -> (startEnergy <= 160000000) ? 3
+                : (startEnergy <= 320000000) ? 2 : (startEnergy <= 640000000) ? 1 : 0;
+            case 5 -> (startEnergy <= 160000000) ? 4
+                : (startEnergy <= 320000000) ? 3 : (startEnergy <= 640000000) ? 2 : (startEnergy <= 1280000000) ? 1 : 0;
+            default -> throw new IllegalStateException("Unexpected fusion tier: " + getFusionTier());
+        };
+    }
+
+    protected int getFusionTier() {
+        return this.tier - 5; // Mk1 <-> LuV
     }
 }

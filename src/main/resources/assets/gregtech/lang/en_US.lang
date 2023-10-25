@@ -565,6 +565,9 @@ GT5U.interface.coverTabs.south=South
 GT5U.interface.coverTabs.west=West
 GT5U.interface.coverTabs.east=East
 
+GT5U.steam_variant.bronze=Bronze
+GT5U.steam_variant.steel=Steel
+
 # NEI options
 nei.options.tools.dump.gt5u=GT5u
 nei.options.tools.dump.gt5u.metatileentity=MetaTileEntity

@@ -15,7 +15,7 @@ import gregtech.nei.formatter.INEISpecialInfoFormatter;
 @SuppressWarnings("UnusedReturnValue")
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class NEIRecipePropertiesBuilder {
+public final class NEIRecipePropertiesBuilder {
 
     private boolean registerNEI = true;
 

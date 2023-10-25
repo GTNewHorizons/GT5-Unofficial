@@ -37,7 +37,7 @@ public abstract class GT_MetaTileEntity_BasicMachine_Steel extends GT_MetaTileEn
 
     @Override
     public Power buildPower() {
-        return new SteamPower(mTier, 2, 1);
+        return new SteamPower(SteamVariant.STEEL, 2, 1);
     }
 
     @Override

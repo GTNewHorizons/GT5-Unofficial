@@ -5,25 +5,18 @@ import static gregtech.api.util.GT_Utility.trans;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import gregtech.GT_Mod;
-import gregtech.api.enums.GT_Values;
 import gregtech.api.recipe.RecipeMapFrontend;
+import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.NEIRecipeInfo;
 
 /**
- * This class unifies EU and steam behaviors into abstracted common place. It's useful especially for NEI,
- * to perform virtual overclocking and show machine-dependent info.
+ * Provides an overclock behavior that will run on machines with the ability to draw information about it on NEI.
  * <p>
- * Override {@link gregtech.api.interfaces.metatileentity.IMetaTileEntity#getPower()} to use derivatives.
- * When looking up NEI recipe catalyst, Power object for the corresponding machine will be used.
- * <p>
- * This is also used for calculating overclock for singleblock machines, while multiblock machines use different system.
- * This difference comes from multiblocks not having functionality for displaying OCed description on NEI, but it's
- * still a bit weird... Maybe it can be improved, but for now it's not that bad.
- * <p>
- * See also: {@link gregtech.nei.GT_NEI_DefaultHandler#getUsageAndCatalystHandler}
+ * Implement {@link gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider} for corresponding machine to use
+ * derivative of this class when looking up NEI recipe catalyst.
  */
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -33,8 +26,6 @@ public abstract class Power {
      * Tier of the (maybe virtual) machine this power belongs to.
      */
     protected final byte tier;
-    protected int recipeEuPerTick;
-    protected int recipeDuration;
 
     public Power(byte tier) {
         this.tier = tier;
@@ -43,7 +34,7 @@ public abstract class Power {
     /**
      * @return Tier of this power. Used to limit recipes shown on NEI, based on recipe EU/t.
      */
-    public byte getTier() {
+    public final byte getTier() {
         return tier;
     }
 
@@ -53,75 +44,31 @@ public abstract class Power {
     public abstract String getTierString();
 
     /**
-     * Computes power usage and duration for the give recipe.
-     * <p>
-     * This method should be called prior to any method except for getTier() and getTierString().
+     * Creates overclock calculator from given template. This template should be used instead of building from the
+     * ground to avoid issues coming from different caller using different templates, but it's not applicable when using
+     * {@link GT_OverclockCalculator#ofNoOverclock(GT_Recipe)}.
+     *
+     * @param template Calculator that can be used as template. Recipe EU/t and duration are already set.
+     * @param recipe   Recipe to calculate.
      */
-    public abstract void compute(GT_Recipe recipe);
-
-    public final void compute(int euPerTick, int duration) {
-        compute(
-            GT_Values.RA.stdBuilder()
-                .eut(euPerTick)
-                .duration(duration)
-                .build()
-                .orElseThrow(RuntimeException::new));
-    }
-
-    /**
-     * @return Total power to consume for the recipe previously calculated.
-     */
-    protected abstract String getTotalPowerString();
-
-    public int getEUPerTick() {
-        return recipeEuPerTick;
-    }
-
-    public int getDurationTicks() {
-        return recipeDuration;
-    }
-
-    private double getDurationSeconds() {
-        return 0.05d * getDurationTicks();
-    }
-
-    private String getDurationStringSeconds() {
-        return GT_Utility.formatNumbers(getDurationSeconds()) + GT_Utility.trans("161", " secs");
-    }
-
-    private String getDurationStringTicks() {
-        String ticksString = getDurationTicks() == 1 ? GT_Utility.trans("209.1", " tick")
-            : GT_Utility.trans("209", " ticks");
-        return GT_Utility.formatNumbers(getDurationTicks()) + ticksString;
-    }
+    public abstract GT_OverclockCalculator createCalculator(GT_OverclockCalculator template, GT_Recipe recipe);
 
     /**
      * Draws info about the energy this power object can handle on NEI recipe GUI.
-     * Override {@link #drawEnergyInfoImpl} for implementation.
      */
-    public final void drawEnergyInfo(NEIRecipeInfo recipeInfo, RecipeMapFrontend frontend) {
-        if (getEUPerTick() > 0) {
-            frontend.drawNEIText(recipeInfo, trans("152", "Total: ") + getTotalPowerString());
-            drawEnergyInfoImpl(recipeInfo, frontend);
-        }
-    }
+    public abstract void drawEnergyInfo(NEIRecipeInfo recipeInfo, RecipeMapFrontend frontend);
 
-    /**
-     * Implement this to draw info about the energy this power object can handle on NEI recipe GUI.
-     */
-    protected abstract void drawEnergyInfoImpl(NEIRecipeInfo recipeInfo, RecipeMapFrontend frontend);
-
-    public final void drawDurationInfo(NEIRecipeInfo recipeInfo, RecipeMapFrontend frontend) {
-        if (getDurationTicks() <= 0) return;
+    public void drawDurationInfo(NEIRecipeInfo recipeInfo, RecipeMapFrontend frontend) {
+        if (getDurationTicks(recipeInfo.calculator) <= 0) return;
 
         String textToDraw = trans("158", "Time: ");
         if (GT_Mod.gregtechproxy.mNEIRecipeSecondMode) {
-            textToDraw += getDurationStringSeconds();
-            if (getDurationSeconds() <= 1.0d) {
-                textToDraw += String.format(" (%s)", getDurationStringTicks());
+            textToDraw += getDurationStringSeconds(recipeInfo.calculator);
+            if (getDurationSeconds(recipeInfo.calculator) <= 1.0d) {
+                textToDraw += String.format(" (%s)", getDurationStringTicks(recipeInfo.calculator));
             }
         } else {
-            textToDraw += getDurationStringTicks();
+            textToDraw += getDurationStringTicks(recipeInfo.calculator);
         }
         frontend.drawNEIText(recipeInfo, textToDraw);
     }
@@ -138,5 +85,23 @@ public abstract class Power {
     public boolean canHandle(GT_Recipe recipe) {
         byte tier = GT_Utility.getTier(recipe.mEUt);
         return this.tier >= tier;
+    }
+
+    private int getDurationTicks(GT_OverclockCalculator calculator) {
+        return calculator.getDuration();
+    }
+
+    private double getDurationSeconds(GT_OverclockCalculator calculator) {
+        return 0.05d * getDurationTicks(calculator);
+    }
+
+    private String getDurationStringSeconds(GT_OverclockCalculator calculator) {
+        return GT_Utility.formatNumbers(getDurationSeconds(calculator)) + GT_Utility.trans("161", " secs");
+    }
+
+    private String getDurationStringTicks(GT_OverclockCalculator calculator) {
+        String ticksString = getDurationTicks(calculator) == 1 ? GT_Utility.trans("209.1", " tick")
+            : GT_Utility.trans("209", " ticks");
+        return GT_Utility.formatNumbers(getDurationTicks(calculator)) + ticksString;
     }
 }

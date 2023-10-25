@@ -23,6 +23,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -65,6 +67,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.recipe.RecipeMap;
@@ -74,6 +77,7 @@ import gregtech.api.util.GT_ClientPreference;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_TooltipDataCache;
 import gregtech.api.util.GT_Utility;
@@ -91,7 +95,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  * Machine
  */
 public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_BasicTank
-    implements IConfigurationCircuitSupport, IAddGregtechLogo, IAddUIWidgets {
+    implements IConfigurationCircuitSupport, IOverclockDescriptionProvider, IAddGregtechLogo, IAddUIWidgets {
 
     /**
      * return values for checkRecipe()
@@ -712,19 +716,27 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     /**
      * Calculates overclock based on {@link #mPower}.
      */
-    protected void calculateOverclockedNess(GT_Recipe recipe) {
-        mPower.compute(recipe);
-        mEUt = mPower.getEUPerTick();
-        mMaxProgresstime = mPower.getDurationTicks();
+    protected void calculateCustomOverclock(GT_Recipe recipe) {
+        GT_OverclockCalculator calculator = mPower.createCalculator(
+            new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
+                .setDuration(recipe.mDuration)
+                .setOneTickDiscount(true),
+            recipe);
+        calculator.calculate();
+        mEUt = (int) calculator.getConsumption();
+        mMaxProgresstime = calculator.getDuration();
     }
 
     /**
-     * Calculates overclock based on {@link #mPower}.
+     * Helper method for calculating simple overclock.
      */
     protected void calculateOverclockedNess(int eut, int duration) {
-        mPower.compute(eut, duration);
-        mEUt = mPower.getEUPerTick();
-        mMaxProgresstime = mPower.getDurationTicks();
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(eut)
+            .setDuration(duration)
+            .setOneTickDiscount(true)
+            .calculate();
+        mEUt = (int) calculator.getConsumption();
+        mMaxProgresstime = calculator.getDuration();
     }
 
     protected ItemStack getSpecialSlot() {
@@ -1100,7 +1112,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         }
         mOutputFluid = tRecipe.getFluidOutput(0);
         if (!skipOC) {
-            calculateOverclockedNess(tRecipe);
+            calculateCustomOverclock(tRecipe);
             // In case recipe is too OP for that machine
             if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
                 return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
@@ -1248,8 +1260,9 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         }
     }
 
+    @Nonnull
     @Override
-    public Power getPower() {
+    public Power getOverclockDescriber() {
         return mPower;
     }
 
@@ -1438,7 +1451,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 
     protected Widget setNEITransferRect(Widget widget, String transferRectID) {
         if (hasNEITransferRect()) {
-            final Power powerInfo = getPower();
+            final Power powerInfo = getOverclockDescriber();
             final String transferRectTooltip;
             if (isSteampowered()) {
                 transferRectTooltip = StatCollector
