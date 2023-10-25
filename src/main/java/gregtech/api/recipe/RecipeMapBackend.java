@@ -219,7 +219,7 @@ public class RecipeMapBackend {
     final FindRecipeResult findRecipeWithResult(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot,
         Predicate<GT_Recipe> recipeValidator, @Nullable GT_Recipe cachedRecipe, boolean notUnificated,
         boolean dontCheckStackSizes) {
-        if (doesOverwriteFindRecipe()) {
+        if (GregTech_API.sPostloadFinished && doesOverwriteFindRecipe()) {
             return overwriteFindRecipe(items, fluids, specialSlot, recipeValidator, cachedRecipe);
         }
 
@@ -231,6 +231,9 @@ public class RecipeMapBackend {
             cachedRecipe,
             notUnificated,
             dontCheckStackSizes);
+        if (!GregTech_API.sPostloadFinished) {
+            return result;
+        }
         if (result.isSuccessful()) {
             return modifyFoundRecipe(result, items, fluids, specialSlot);
         }

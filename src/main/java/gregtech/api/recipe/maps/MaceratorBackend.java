@@ -13,7 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
@@ -35,7 +34,7 @@ public class MaceratorBackend extends RecipeMapBackend {
     @Override
     protected FindRecipeResult findFallback(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot,
         Predicate<GT_Recipe> recipeValidator) {
-        if (items.length == 0 || items[0] == null || !GregTech_API.sPostloadFinished) {
+        if (items.length == 0 || items[0] == null) {
             return NOT_FOUND;
         }
 

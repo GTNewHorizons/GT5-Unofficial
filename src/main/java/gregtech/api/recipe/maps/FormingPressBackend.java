@@ -11,7 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.recipe.RecipeMapBackend;
@@ -55,7 +54,7 @@ public class FormingPressBackend extends RecipeMapBackend {
     @Override
     protected FindRecipeResult findFallback(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot,
         Predicate<GT_Recipe> recipeValidator) {
-        if (items.length < 2 || !GregTech_API.sPostloadFinished) {
+        if (items.length < 2) {
             return NOT_FOUND;
         }
         return findRenamingRecipe(items, recipeValidator);
