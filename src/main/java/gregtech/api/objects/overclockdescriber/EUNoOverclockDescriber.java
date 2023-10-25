@@ -1,4 +1,4 @@
-package gregtech.common.power;
+package gregtech.api.objects.overclockdescriber;
 
 import static gregtech.api.util.GT_Utility.trans;
 
@@ -13,14 +13,14 @@ import gregtech.nei.NEIRecipeInfo;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class EUPower extends Power {
+public class EUNoOverclockDescriber extends OverclockDescriber {
 
     /**
      * Amperage of the recipemap.
      */
     protected final int amperage;
 
-    public EUPower(byte tier, int amperage) {
+    public EUNoOverclockDescriber(byte tier, int amperage) {
         super(tier);
         if (amperage < 1) {
             throw new IllegalArgumentException("Amperage cannot be lower than 1");
@@ -47,7 +47,7 @@ public class EUPower extends Power {
     }
 
     /**
-     * Override this to draw custom info about the energy this power object can handle on NEI recipe GUI, minus total
+     * Override this to draw custom info about the energy this object can handle on NEI recipe GUI, minus total
      * power usage.
      */
     protected void drawEnergyInfoImpl(NEIRecipeInfo recipeInfo, RecipeMapFrontend frontend) {

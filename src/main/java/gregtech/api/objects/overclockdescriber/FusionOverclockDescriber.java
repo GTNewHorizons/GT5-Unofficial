@@ -1,4 +1,4 @@
-package gregtech.common.power;
+package gregtech.api.objects.overclockdescriber;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -12,11 +12,11 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class FusionPower extends BasicMachineEUPower {
+public class FusionOverclockDescriber extends EUOverclockDescriber {
 
     protected final long capableStartup;
 
-    public FusionPower(byte energyTier, long capableStartup) {
+    public FusionOverclockDescriber(byte energyTier, long capableStartup) {
         super(energyTier, 1);
         this.capableStartup = capableStartup;
     }

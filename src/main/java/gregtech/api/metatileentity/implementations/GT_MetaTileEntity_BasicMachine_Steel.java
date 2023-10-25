@@ -12,9 +12,9 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IGetTitleColor;
+import gregtech.api.objects.overclockdescriber.OverclockDescriber;
+import gregtech.api.objects.overclockdescriber.SteamOverclockDescriber;
 import gregtech.api.render.TextureFactory;
-import gregtech.common.power.Power;
-import gregtech.common.power.SteamPower;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -36,8 +36,8 @@ public abstract class GT_MetaTileEntity_BasicMachine_Steel extends GT_MetaTileEn
     }
 
     @Override
-    public Power buildPower() {
-        return new SteamPower(SteamVariant.STEEL, 2, 1);
+    public OverclockDescriber createOverclockDescriber() {
+        return new SteamOverclockDescriber(SteamVariant.STEEL, 2, 1);
     }
 
     @Override

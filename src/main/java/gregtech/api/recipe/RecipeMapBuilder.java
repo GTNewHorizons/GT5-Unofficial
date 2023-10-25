@@ -21,10 +21,10 @@ import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import gregtech.api.gui.modularui.FallbackableSteamTexture;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.gui.modularui.SteamTexture;
+import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_RecipeBuilder;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
-import gregtech.common.power.Power;
 import gregtech.nei.formatter.INEISpecialInfoFormatter;
 
 /**
@@ -432,13 +432,13 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
     }
 
     /**
-     * Sets NEI recipe handler to use a custom filter method {@link Power#canHandle} to limit the shown recipes when
-     * searching recipes with recipe catalyst. Without calling this method, the voltage of the recipe is the only factor
-     * to filter recipes by default.
+     * Sets NEI recipe handler to use a custom filter method {@link OverclockDescriber#canHandle} to limit the shown
+     * recipes when searching recipes with recipe catalyst. Without calling this method, the voltage of the recipe is
+     * the only factor to filter recipes by default.
      * <p>
-     * This method on its own doesn't do anything. You need to bind custom {@link Power} object to
-     * {@link gregtech.api.interfaces.metatileentity.IMetaTileEntity#getPower()} for machines that will be shown up as
-     * recipe catalysts for this recipemap.
+     * This method on its own doesn't do anything. You need to bind custom {@link OverclockDescriber} object to machines
+     * that will be shown as recipe catalysts for this recipemap by implementing
+     * {@link gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider}.
      */
     public RecipeMapBuilder<B> useCustomFilterForNEI() {
         neiPropertiesBuilder.useCustomFilter();

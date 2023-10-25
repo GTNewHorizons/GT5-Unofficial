@@ -1,4 +1,4 @@
-package gregtech.common.power;
+package gregtech.api.objects.overclockdescriber;
 
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.util.GT_Utility.trans;
@@ -17,9 +17,9 @@ import gregtech.nei.NEIRecipeInfo;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class BasicMachineEUPower extends EUPower {
+public class EUOverclockDescriber extends EUNoOverclockDescriber {
 
-    public BasicMachineEUPower(byte tier, int amperage) {
+    public EUOverclockDescriber(byte tier, int amperage) {
         super(tier, amperage);
     }
 
@@ -40,7 +40,7 @@ public class BasicMachineEUPower extends EUPower {
             frontend.drawNEIText(recipeInfo, trans("154", "Voltage: ") + getVoltageString(recipeInfo.calculator));
         }
         if (GT_Mod.gregtechproxy.mNEIOriginalVoltage) {
-            EUPower originalPower = new EUPower(tier, amperage);
+            EUNoOverclockDescriber originalPower = new EUNoOverclockDescriber(tier, amperage);
             GT_OverclockCalculator originalPowerCalculator = GT_OverclockCalculator.ofNoOverclock(recipeInfo.recipe)
                 .calculate();
             frontend.drawNEIText(

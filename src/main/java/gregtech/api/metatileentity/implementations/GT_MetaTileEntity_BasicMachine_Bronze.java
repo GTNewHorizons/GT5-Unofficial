@@ -35,13 +35,13 @@ import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.objects.overclockdescriber.OverclockDescriber;
+import gregtech.api.objects.overclockdescriber.SteamOverclockDescriber;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
-import gregtech.common.power.Power;
-import gregtech.common.power.SteamPower;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -70,8 +70,8 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
     }
 
     @Override
-    public Power buildPower() {
-        return new SteamPower(SteamVariant.BRONZE, 1, 2);
+    public OverclockDescriber createOverclockDescriber() {
+        return new SteamOverclockDescriber(SteamVariant.BRONZE, 1, 2);
     }
 
     @Override

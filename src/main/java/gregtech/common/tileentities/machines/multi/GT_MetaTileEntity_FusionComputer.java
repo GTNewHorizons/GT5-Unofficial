@@ -60,6 +60,8 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energ
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.objects.overclockdescriber.FusionOverclockDescriber;
+import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -70,14 +72,12 @@ import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.power.FusionPower;
-import gregtech.common.power.Power;
 
 public abstract class GT_MetaTileEntity_FusionComputer
     extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_FusionComputer>
     implements ISurvivalConstructable, IAddUIWidgets, IOverclockDescriptionProvider {
 
-    private final Power overclockDescriber;
+    private final OverclockDescriber overclockDescriber;
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
     private static final ClassValue<IStructureDefinition<GT_MetaTileEntity_FusionComputer>> STRUCTURE_DEFINITION = new ClassValue<>() {
@@ -162,13 +162,13 @@ public abstract class GT_MetaTileEntity_FusionComputer
         this.overclockDescriber = createOverclockDescriber();
     }
 
-    protected Power createOverclockDescriber() {
-        return new FusionPower((byte) tier(), capableStartupCanonical());
+    protected OverclockDescriber createOverclockDescriber() {
+        return new FusionOverclockDescriber((byte) tier(), capableStartupCanonical());
     }
 
     @Nonnull
     @Override
-    public Power getOverclockDescriber() {
+    public OverclockDescriber getOverclockDescriber() {
         return overclockDescriber;
     }
 

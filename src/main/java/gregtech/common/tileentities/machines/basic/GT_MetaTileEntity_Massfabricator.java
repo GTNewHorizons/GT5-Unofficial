@@ -34,6 +34,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
+import gregtech.api.objects.overclockdescriber.EUOverclockDescriber;
+import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
@@ -42,8 +44,6 @@ import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
-import gregtech.common.power.BasicMachineEUPower;
-import gregtech.common.power.Power;
 
 public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMachine {
 
@@ -130,8 +130,8 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
     }
 
     @Override
-    protected Power buildPower() {
-        return new MassfabricatorPower(mTier, mAmperage);
+    protected OverclockDescriber createOverclockDescriber() {
+        return new MassfabricatorOverclockDescriber(mTier, mAmperage);
     }
 
     @Override
@@ -197,9 +197,9 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
 
     @ParametersAreNonnullByDefault
     @MethodsReturnNonnullByDefault
-    protected class MassfabricatorPower extends BasicMachineEUPower {
+    protected class MassfabricatorOverclockDescriber extends EUOverclockDescriber {
 
-        protected MassfabricatorPower(byte tier, int amperage) {
+        protected MassfabricatorOverclockDescriber(byte tier, int amperage) {
             super(tier, amperage);
         }
 

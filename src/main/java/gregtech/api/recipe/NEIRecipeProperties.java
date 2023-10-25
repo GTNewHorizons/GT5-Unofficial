@@ -5,9 +5,9 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
 
+import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.util.FieldsAreNonnullByDefault;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
-import gregtech.common.power.Power;
 import gregtech.nei.formatter.INEISpecialInfoFormatter;
 
 /**
@@ -50,8 +50,8 @@ public final class NEIRecipeProperties {
      */
     public final boolean unificateOutput;
     /**
-     * If a custom filter method {@link Power#canHandle} should be used to limit the shown recipes when searching
-     * recipes with recipe catalyst. Else, the voltage of the recipe is the only factor to filter recipes.
+     * If a custom filter method {@link OverclockDescriber#canHandle} should be used to limit the shown recipes when
+     * searching recipes with recipe catalyst. Else, the voltage of the recipe is the only factor to filter recipes.
      */
     public final boolean useCustomFilter;
     /**

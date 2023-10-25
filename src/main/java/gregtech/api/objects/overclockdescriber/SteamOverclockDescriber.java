@@ -1,4 +1,4 @@
-package gregtech.common.power;
+package gregtech.api.objects.overclockdescriber;
 
 import static gregtech.api.util.GT_Utility.trans;
 
@@ -16,13 +16,13 @@ import gregtech.nei.NEIRecipeInfo;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class SteamPower extends Power {
+public class SteamOverclockDescriber extends OverclockDescriber {
 
     private final SteamVariant steamVariant;
     private final int euPerTickMultiplier;
     private final int durationMultiplier;
 
-    public SteamPower(SteamVariant steamVariant, int euPerTickMultiplier, int durationMultiplier) {
+    public SteamOverclockDescriber(SteamVariant steamVariant, int euPerTickMultiplier, int durationMultiplier) {
         super((byte) 1); // recipe tier is always LV
         this.steamVariant = steamVariant;
         this.euPerTickMultiplier = euPerTickMultiplier;

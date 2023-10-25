@@ -49,6 +49,8 @@ import gregtech.api.enums.SteamVariant;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
 import gregtech.api.objects.ItemData;
+import gregtech.api.objects.overclockdescriber.EUNoOverclockDescriber;
+import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.recipe.NEIRecipeProperties;
 import gregtech.api.recipe.RecipeMap;
@@ -60,8 +62,6 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Item_Machines;
 import gregtech.common.gui.modularui.UIHelper;
-import gregtech.common.power.EUPower;
-import gregtech.common.power.Power;
 
 public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
 
@@ -95,7 +95,7 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
     protected final ItemStackHandler fluidInputsInventory;
     protected final ItemStackHandler fluidOutputsInventory;
 
-    protected Power power;
+    protected OverclockDescriber overclockDescriber;
     /**
      * Localized name of this handler displayed on the top.
      */
@@ -162,12 +162,12 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
     @Override
     public void loadCraftingRecipes(String outputId, Object... results) {
         if (outputId.equals(getOverlayIdentifier())) {
-            if (results.length > 0 && results[0] instanceof Power) {
-                power = (Power) results[0];
+            if (results.length > 0 && results[0] instanceof OverclockDescriber) {
+                overclockDescriber = (OverclockDescriber) results[0];
                 if (neiProperties.useCustomFilter) {
-                    loadTieredRecipesWithCustomFilter(power);
+                    loadTieredRecipesWithCustomFilter(overclockDescriber);
                 } else {
-                    loadTieredRecipesUpTo(power.getTier());
+                    loadTieredRecipesUpTo(overclockDescriber.getTier());
                 }
             } else {
                 arecipes.addAll(getCache());
@@ -215,15 +215,15 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
         }
     }
 
-    private void loadTieredRecipesWithCustomFilter(Power power) {
-        arecipes.addAll(getTieredRecipesWithCustomFilter(power));
+    private void loadTieredRecipesWithCustomFilter(OverclockDescriber overclockDescriber) {
+        arecipes.addAll(getTieredRecipesWithCustomFilter(overclockDescriber));
     }
 
-    private List<CachedDefaultRecipe> getTieredRecipesWithCustomFilter(Power power) {
+    private List<CachedDefaultRecipe> getTieredRecipesWithCustomFilter(OverclockDescriber overclockDescriber) {
         List<CachedDefaultRecipe> recipes = getCache();
         if (!recipes.isEmpty()) {
             recipes = recipes.stream()
-                .filter(recipe -> power.canHandle(recipe.mRecipe))
+                .filter(recipe -> overclockDescriber.canHandle(recipe.mRecipe))
                 .collect(Collectors.toList());
         }
         return recipes;
@@ -267,13 +267,13 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
             GT_NEI_DefaultHandler handler = (GT_NEI_DefaultHandler) newInstance();
             if (RecipeCatalysts.containsCatalyst(handler, candidate)) {
                 IMetaTileEntity metaTile = GT_Item_Machines.getMetaTileEntity(candidate);
-                Power power;
+                OverclockDescriber overclockDescriber;
                 if (metaTile instanceof IOverclockDescriptionProvider provider) {
-                    power = provider.getOverclockDescriber();
+                    overclockDescriber = provider.getOverclockDescriber();
                 } else {
-                    power = null;
+                    overclockDescriber = null;
                 }
-                handler.loadCraftingRecipes(getOverlayIdentifier(), power);
+                handler.loadCraftingRecipes(getOverlayIdentifier(), overclockDescriber);
                 return handler;
             }
         }
@@ -283,8 +283,8 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
     @Override
     public ICraftingHandler getRecipeHandler(String outputId, Object... results) {
         GT_NEI_DefaultHandler handler = (GT_NEI_DefaultHandler) super.getRecipeHandler(outputId, results);
-        if (results.length > 0 && results[0] instanceof Power) {
-            handler.power = (Power) results[0];
+        if (results.length > 0 && results[0] instanceof OverclockDescriber) {
+            handler.overclockDescriber = (OverclockDescriber) results[0];
         }
         return handler;
     }
@@ -329,8 +329,8 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
 
     private String computeRecipeName() {
         String recipeName = GT_LanguageManager.getTranslation(this.recipeMap.unlocalizedName);
-        if (power != null) {
-            recipeName = addSuffixToRecipeName(recipeName, power.getTierString() + ")");
+        if (overclockDescriber != null) {
+            recipeName = addSuffixToRecipeName(recipeName, overclockDescriber.getTierString() + ")");
         }
         return recipeName;
     }
@@ -399,19 +399,25 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
 
     private void drawDescription(CachedDefaultRecipe cachedRecipe) {
         GT_Recipe recipe = cachedRecipe.mRecipe;
-        if (power == null) {
-            // By default, assume generic EU LV power with no overclocks
-            power = new EUPower((byte) 1, uiProperties.amperage);
+        if (overclockDescriber == null) {
+            // By default, assume generic LV EU with no overclocks
+            overclockDescriber = new EUNoOverclockDescriber((byte) 1, uiProperties.amperage);
         }
 
-        GT_OverclockCalculator calculator = power.createCalculator(
+        GT_OverclockCalculator calculator = overclockDescriber.createCalculator(
             new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
                 .setDuration(recipe.mDuration),
             recipe);
         calculator.calculate();
 
         frontend.drawNEIDescription(
-            new NEIRecipeInfo(recipe, recipeMap, cachedRecipe, power, calculator, getDescriptionYOffset()));
+            new NEIRecipeInfo(
+                recipe,
+                recipeMap,
+                cachedRecipe,
+                overclockDescriber,
+                calculator,
+                getDescriptionYOffset()));
     }
 
     protected int getDescriptionYOffset() {

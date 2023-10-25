@@ -1,4 +1,4 @@
-package gregtech.common.power;
+package gregtech.api.objects.overclockdescriber;
 
 import static gregtech.api.util.GT_Utility.trans;
 
@@ -20,26 +20,26 @@ import gregtech.nei.NEIRecipeInfo;
  */
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public abstract class Power {
+public abstract class OverclockDescriber {
 
     /**
-     * Tier of the (maybe virtual) machine this power belongs to.
+     * Tier of the (maybe virtual) machine this object belongs to.
      */
     protected final byte tier;
 
-    public Power(byte tier) {
+    public OverclockDescriber(byte tier) {
         this.tier = tier;
     }
 
     /**
-     * @return Tier of this power. Used to limit recipes shown on NEI, based on recipe EU/t.
+     * @return Tier of this object. Used to limit recipes shown on NEI, based on recipe EU/t.
      */
     public final byte getTier() {
         return tier;
     }
 
     /**
-     * @return Tier display of this power, shown on NEI header in a form of {@code Machine Name (tier)}
+     * @return Tier display of this object, shown on NEI header in a form of {@code Machine Name (tier)}
      */
     public abstract String getTierString();
 
@@ -54,7 +54,7 @@ public abstract class Power {
     public abstract GT_OverclockCalculator createCalculator(GT_OverclockCalculator template, GT_Recipe recipe);
 
     /**
-     * Draws info about the energy this power object can handle on NEI recipe GUI.
+     * Draws info about the energy this object can handle on NEI recipe GUI.
      */
     public abstract void drawEnergyInfo(NEIRecipeInfo recipeInfo, RecipeMapFrontend frontend);
 
@@ -80,7 +80,7 @@ public abstract class Power {
      * In order to make use of this method, {@link gregtech.api.recipe.RecipeMapBuilder#useCustomFilterForNEI}
      * should be enabled for the recipemap.
      *
-     * @return If this power can handle the supplied recipe
+     * @return If this object can handle the supplied recipe
      */
     public boolean canHandle(GT_Recipe recipe) {
         byte tier = GT_Utility.getTier(recipe.mEUt);

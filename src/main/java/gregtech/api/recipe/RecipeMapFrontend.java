@@ -206,11 +206,11 @@ public class RecipeMapFrontend {
     }
 
     protected void drawNEIEnergyInfo(NEIRecipeInfo recipeInfo) {
-        recipeInfo.power.drawEnergyInfo(recipeInfo, this);
+        recipeInfo.overclockDescriber.drawEnergyInfo(recipeInfo, this);
     }
 
     protected void drawNEIDurationInfo(NEIRecipeInfo recipeInfo) {
-        recipeInfo.power.drawDurationInfo(recipeInfo, this);
+        recipeInfo.overclockDescriber.drawDurationInfo(recipeInfo, this);
     }
 
     protected void drawNEISpecialInfo(NEIRecipeInfo recipeInfo) {

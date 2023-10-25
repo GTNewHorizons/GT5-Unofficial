@@ -69,6 +69,8 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.objects.overclockdescriber.EUOverclockDescriber;
+import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.FindRecipeResult;
@@ -83,8 +85,6 @@ import gregtech.api.util.GT_TooltipDataCache;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GT_Waila;
 import gregtech.common.gui.modularui.UIHelper;
-import gregtech.common.power.BasicMachineEUPower;
-import gregtech.common.power.Power;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -113,7 +113,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     public int mProgresstime = 0, mMaxProgresstime = 0, mEUt = 0, mOutputBlocked = 0;
     public ForgeDirection mMainFacing = ForgeDirection.WEST;
     public FluidStack mOutputFluid;
-    protected final Power mPower;
+    protected final OverclockDescriber overclockDescriber;
 
     /**
      * Contains the Recipe which has been previously used, or null if there was no previous Recipe, which could have
@@ -150,7 +150,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         mInputSlotCount = Math.max(0, aInputSlotCount);
         mOutputItems = new ItemStack[Math.max(0, aOutputSlotCount)];
         mAmperage = aAmperage;
-        mPower = buildPower();
+        overclockDescriber = createOverclockDescriber();
     }
 
     /**
@@ -169,7 +169,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         mInputSlotCount = Math.max(0, aInputSlotCount);
         mOutputItems = new ItemStack[Math.max(0, aOutputSlotCount)];
         mAmperage = aAmperage;
-        mPower = buildPower();
+        overclockDescriber = createOverclockDescriber();
     }
 
     /**
@@ -181,14 +181,14 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         mInputSlotCount = Math.max(0, aInputSlotCount);
         mOutputItems = new ItemStack[Math.max(0, aOutputSlotCount)];
         mAmperage = aAmperage;
-        mPower = buildPower();
+        overclockDescriber = createOverclockDescriber();
     }
 
     /**
-     * To be called by the constructor to initialize this instance's Power
+     * To be called by the constructor to initialize this instance's overclock behavior
      */
-    protected Power buildPower() {
-        return new BasicMachineEUPower(mTier, mAmperage);
+    protected OverclockDescriber createOverclockDescriber() {
+        return new EUOverclockDescriber(mTier, mAmperage);
     }
 
     protected boolean isValidMainFacing(ForgeDirection side) {
@@ -714,10 +714,10 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     }
 
     /**
-     * Calculates overclock based on {@link #mPower}.
+     * Calculates overclock based on {@link #overclockDescriber}.
      */
     protected void calculateCustomOverclock(GT_Recipe recipe) {
-        GT_OverclockCalculator calculator = mPower.createCalculator(
+        GT_OverclockCalculator calculator = overclockDescriber.createCalculator(
             new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
                 .setDuration(recipe.mDuration)
                 .setOneTickDiscount(true),
@@ -1262,8 +1262,8 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 
     @Nonnull
     @Override
-    public Power getOverclockDescriber() {
-        return mPower;
+    public OverclockDescriber getOverclockDescriber() {
+        return overclockDescriber;
     }
 
     // GUI stuff
@@ -1451,16 +1451,15 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 
     protected Widget setNEITransferRect(Widget widget, String transferRectID) {
         if (hasNEITransferRect()) {
-            final Power powerInfo = getOverclockDescriber();
             final String transferRectTooltip;
             if (isSteampowered()) {
                 transferRectTooltip = StatCollector
-                    .translateToLocalFormatted(NEI_TRANSFER_STEAM_TOOLTIP, powerInfo.getTierString());
+                    .translateToLocalFormatted(NEI_TRANSFER_STEAM_TOOLTIP, overclockDescriber.getTierString());
             } else {
                 transferRectTooltip = StatCollector
-                    .translateToLocalFormatted(NEI_TRANSFER_VOLTAGE_TOOLTIP, powerInfo.getTierString());
+                    .translateToLocalFormatted(NEI_TRANSFER_VOLTAGE_TOOLTIP, overclockDescriber.getTierString());
             }
-            widget.setNEITransferRect(transferRectID, new Object[] { powerInfo }, transferRectTooltip);
+            widget.setNEITransferRect(transferRectID, new Object[] { overclockDescriber }, transferRectTooltip);
         }
         return widget;
     }

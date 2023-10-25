@@ -1,9 +1,9 @@
 package gregtech.nei;
 
+import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
-import gregtech.common.power.Power;
 
 /**
  * Holds info used for drawing descriptions on NEI.
@@ -29,7 +29,7 @@ public class NEIRecipeInfo {
      * When user looks up usage for machine, NEI will show all the recipes that the machine can process, taking tier of
      * the machine into consideration. This object can be used to show info around overclocked EU/t and duration.
      */
-    public final Power power;
+    public final OverclockDescriber overclockDescriber;
 
     /**
      * Pre-built overclock calculator, used for drawing OC information. Do not calculate it again.
@@ -42,11 +42,11 @@ public class NEIRecipeInfo {
     public int yPos;
 
     NEIRecipeInfo(GT_Recipe recipe, RecipeMap<?> recipeMap, GT_NEI_DefaultHandler.CachedDefaultRecipe neiCachedRecipe,
-        Power power, GT_OverclockCalculator calculator, int descriptionYOffset) {
+        OverclockDescriber overclockDescriber, GT_OverclockCalculator calculator, int descriptionYOffset) {
         this.recipe = recipe;
         this.recipeMap = recipeMap;
         this.neiCachedRecipe = neiCachedRecipe;
-        this.power = power;
+        this.overclockDescriber = overclockDescriber;
         this.calculator = calculator;
         this.yPos = descriptionYOffset;
     }
