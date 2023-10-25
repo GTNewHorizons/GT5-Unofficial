@@ -47,7 +47,7 @@ public class ModernMaterialsRegistration {
             .build();
 
         new ModernMaterial.ModernMaterialBuilder("EWAD")
-            .setMaterialID(3)
+            .setMaterialID(16)
             .setColor(120, 100, 123)
             .setTextureMode(Metallic)
             .setCustomRenderer(BlocksEnum.FrameBox, new UniversiumFrameItemRenderer(), new UniversiumFrameBlockRenderer())
@@ -60,7 +60,7 @@ public class ModernMaterialsRegistration {
 
         new ModernMaterial.ModernMaterialBuilder("TEST")
             .setColor(120, 2, 0)
-            .setMaterialID(4)
+            .setMaterialID(17)
             .setTextureMode(Metallic)
             .setCustomRenderer(BlocksEnum.FrameBox, new UniversiumFrameItemRenderer(), new UniversiumFrameBlockRenderer())
             .addAllParts()
@@ -72,7 +72,7 @@ public class ModernMaterialsRegistration {
 
         new ModernMaterial.ModernMaterialBuilder("TEST2")
             .setColor(120, 2, 0)
-            .setMaterialID(18)
+            .setMaterialID(61)
             .setTextureMode(Metallic)
             .addAllParts()
             .addFluid(Gas, 1_000)

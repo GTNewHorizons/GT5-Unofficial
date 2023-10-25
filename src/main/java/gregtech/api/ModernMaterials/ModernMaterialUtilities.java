@@ -117,12 +117,17 @@ public class ModernMaterialUtilities {
 //
 //    }
 
+    /**
+     * Registers a simple block with the game based on the provided block type and valid material IDs.
+     *
+     * @param blockType The type of block to be registered.
+     */
     private static void registerSimpleBlock(BlocksEnum blockType) {
 
-        // Get all Materials.
-        HashSet<ModernMaterial> associatedMaterials = blockType.getAssociatedMaterials();
+        // Extract the materials associated with the given block type
+        HashSet<ModernMaterial> associatedMaterials = blockType.getSimpleBlockRenderAssociatedMaterials();
 
-        // Get all IDs that have this blockType
+        // Extract and sort the IDs associated with the materials. We process this in generateIDGroups.
         List<Integer> sortedIDs = associatedMaterials.stream()
             .map(ModernMaterial::getMaterialID)
             .sorted()
@@ -130,37 +135,56 @@ public class ModernMaterialUtilities {
 
         int offset = -1;
         for (List<Integer> IDs : generateIDGroups(sortedIDs)) {
-
             offset++;
-            if (IDs.isEmpty()) continue;
+            if (IDs.isEmpty()) {
+                continue;
+            }
 
-            NewDumb block;
             try {
-                block = blockType.getBlockClass().getDeclaredConstructor(int.class, List.class).newInstance(offset, IDs);
+                NewDumb block = blockType.getBlockClass()
+                    .getDeclaredConstructor(int.class, List.class)
+                    .newInstance(offset, IDs);
+                GameRegistry.registerBlock(block, NewDumbItemBlock.class, blockType + "." + offset);
             } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
                 throw new RuntimeException("Failed to instantiate block", e);
             }
-            GameRegistry.registerBlock(block, NewDumbItemBlock.class, blockType + "." + offset);
+
         }
     }
 
-    private static List<List<Integer>> generateIDGroups(List<Integer> sortedIDs) {
+    private static final int GROUP_SIZE = 16;
 
-        final int minID = Collections.min(sortedIDs);
-        final int maxID = Collections.max(sortedIDs);
-
-        List<List<Integer>> listOfLists = new ArrayList<>();
-        for (int i = minID; i < maxID; i += 16) {
-            listOfLists.add(new ArrayList<>());
+    public static List<List<Integer>> generateIDGroups(List<Integer> sortedIDs) {
+        // Handle null or empty input
+        if (sortedIDs == null || sortedIDs.isEmpty()) {
+            return Collections.emptyList();
         }
 
-        // Iterate over all IDs and put them into groups.
-        for (int ID : sortedIDs) {
-            // Integer division to get the offset then add our element.
-            listOfLists.get(ID / 16).add(ID);
+        List<List<Integer>> groupedIDs = new ArrayList<>();
+
+        // Process each ID from the sorted list
+        for (int currentID : sortedIDs) {
+            int groupIndex = calculateGroupIndex(currentID);
+
+            // Ensure the groupedIDs list has a list initialized for this groupIndex
+            ensureGroupExists(groupedIDs, groupIndex);
+
+            groupedIDs.get(groupIndex).add(currentID);
         }
 
-        return listOfLists;
+        return groupedIDs;
+    }
+
+    // Calculate the group index for the given ID
+    private static int calculateGroupIndex(int id) {
+        return id / GROUP_SIZE;
+    }
+
+    // Ensure that the groupedIDs list has a list initialized for the given groupIndex
+    private static void ensureGroupExists(List<List<Integer>> groupedIDs, int groupIndex) {
+        while (groupedIDs.size() <= groupIndex) {
+            groupedIDs.add(new ArrayList<>());
+        }
     }
 
     public static void registerAllMaterialsFluids() {
