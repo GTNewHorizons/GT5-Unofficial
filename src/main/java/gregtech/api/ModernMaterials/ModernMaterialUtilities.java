@@ -37,17 +37,24 @@ import static gregtech.api.enums.ConfigCategories.ModernMaterials.materialID;
 
 public class ModernMaterialUtilities {
 
-    private static final List<ModernMaterial> newMaterials = new ArrayList<>();
     public static final HashMap<Integer, ModernMaterial> materialIDToMaterial = new HashMap<>();
     public static final HashMap<String, ModernMaterial> materialNameToMaterialMap = new HashMap<>();
 
     public static void registerMaterial(ModernMaterial material) {
+        if (materialIDToMaterial.containsKey(material.getMaterialID())) {
+            throw new IllegalArgumentException("Material with ID " + material.getMaterialID() + " already exists.");
+        }
+
+        if (materialNameToMaterialMap.containsKey(material.getMaterialName())) {
+            throw new IllegalArgumentException("Material with name " + material.getMaterialName() + " already exists. Material was registered with ID " + material.getMaterialID() + ".");
+        }
+
         materialIDToMaterial.put(material.getMaterialID(), material);
         materialNameToMaterialMap.put(material.getMaterialName(), material);
     }
 
     public static void registerAllMaterialsItems() {
-        for (ModernMaterial tMaterial : newMaterials) {
+        for (ModernMaterial tMaterial : materialIDToMaterial.values()) {
             tMaterial.setMaterialID(++GregTech_API.lastMaterialID);
             GregTech_API.modernMaterialIDs.mConfig.get(materialID.name(), tMaterial.getMaterialName(), 0)
                     .set(GregTech_API.lastMaterialID);

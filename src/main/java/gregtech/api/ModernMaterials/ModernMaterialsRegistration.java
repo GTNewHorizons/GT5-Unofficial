@@ -5,9 +5,6 @@ import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.TESR.UniversiumFrameItemRenderer;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.TESR.UniversiumFrameBlockRenderer;
 
-import java.util.SplittableRandom;
-import java.util.UUID;
-
 import static gregtech.api.ModernMaterials.Fluids.FluidEnum.*;
 import static gregtech.api.ModernMaterials.ModernMaterialUtilities.registerAllMaterialsItems;
 import static gregtech.api.ModernMaterials.PartProperties.Textures.TextureType.Metallic;
@@ -25,7 +22,6 @@ public class ModernMaterialsRegistration {
         new ModernMaterial.ModernMaterialBuilder("Copper")
             .setMaterialID(1)
             .setColor(120, 100, 0)
-            .setCustomRenderer(BlocksEnum.FrameBox, new UniversiumFrameItemRenderer(), new UniversiumFrameBlockRenderer())
             .setTextureMode(Metallic)
             .addAllParts()
             .addFluid(Gas, 1_000)
@@ -38,7 +34,6 @@ public class ModernMaterialsRegistration {
             .setMaterialID(2)
             .setColor(3, 100, 97)
             .setTextureMode(Metallic)
-            .setCustomRenderer(BlocksEnum.FrameBox, new UniversiumFrameItemRenderer(), new UniversiumFrameBlockRenderer())
             .addAllParts()
             .addFluid(Gas, 1_000)
             .addFluid(NoPrefix, 3_000)
@@ -50,7 +45,7 @@ public class ModernMaterialsRegistration {
             .setMaterialID(16)
             .setColor(120, 100, 123)
             .setTextureMode(Metallic)
-            .setCustomRenderer(BlocksEnum.FrameBox, new UniversiumFrameItemRenderer(), new UniversiumFrameBlockRenderer())
+            .setCustomBlockRenderer(BlocksEnum.FrameBox, new UniversiumFrameItemRenderer(), new UniversiumFrameBlockRenderer())
             .addAllParts()
             .addFluid(Gas, 1_000)
             .addFluid(NoPrefix, 3_000)
@@ -62,7 +57,18 @@ public class ModernMaterialsRegistration {
             .setColor(120, 2, 0)
             .setMaterialID(17)
             .setTextureMode(Metallic)
-            .setCustomRenderer(BlocksEnum.FrameBox, new UniversiumFrameItemRenderer(), new UniversiumFrameBlockRenderer())
+            .setCustomBlockRenderer(BlocksEnum.FrameBox, new UniversiumFrameItemRenderer(), new UniversiumFrameBlockRenderer())
+            .addAllParts()
+            .addFluid(Gas, 1_000)
+            .addFluid(NoPrefix, 3_000)
+            .addFluid(Molten, 10_000)
+            .addFluid(Plasma, 100_000)
+            .build();
+
+        new ModernMaterial.ModernMaterialBuilder("TEST3232")
+            .setColor(120, 2, 0)
+            .setMaterialID(18)
+            .setTextureMode(Metallic)
             .addAllParts()
             .addFluid(Gas, 1_000)
             .addFluid(NoPrefix, 3_000)
@@ -71,7 +77,7 @@ public class ModernMaterialsRegistration {
             .build();
 
         new ModernMaterial.ModernMaterialBuilder("TEST2")
-            .setColor(120, 2, 0)
+            .setColor(120, 200, 0)
             .setMaterialID(61)
             .setTextureMode(Metallic)
             .addAllParts()

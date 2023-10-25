@@ -159,7 +159,10 @@ public final class ModernMaterial {
             return this;
         }
 
-        public ModernMaterialBuilder setCustomRenderer(@NotNull final BlocksEnum blocksEnum, @NotNull final IItemRenderer itemRenderer, @NotNull final TileEntitySpecialRenderer tileEntitySpecialRenderer) {
+
+        public ModernMaterialBuilder setCustomBlockRenderer(@NotNull final BlocksEnum blocksEnum, @NotNull final IItemRenderer itemRenderer, @NotNull final TileEntitySpecialRenderer tileEntitySpecialRenderer) {
+            blocksEnum.addSpecialBlockRenderAssociatedMaterial(materialToBuild);
+            blocksEnum.setAssociatedItem(blocksEnum.getItem());
             blocksEnum.setItemRenderer(materialToBuild.materialID, itemRenderer);
             blocksEnum.setBlockRenderer(materialToBuild.materialID, tileEntitySpecialRenderer);
             return this;

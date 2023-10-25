@@ -102,6 +102,14 @@ public enum BlocksEnum implements IGetItem, IAssociatedMaterials {
         associatedMaterials.add(modernMaterial);
     }
 
+    public void addSimpleBlockRenderAssociatedMaterial(final ModernMaterial modernMaterial) {
+        simpleBlockRenderAssociatedMaterials.add(modernMaterial);
+    }
+
+    public void addSpecialBlockRenderAssociatedMaterial(final ModernMaterial modernMaterial) {
+        specialBlockRenderAssociatedMaterials.add(modernMaterial);
+    }
+
     public IItemRenderer getItemRenderer(final int materialID) {
         return itemRendererHashMap.get(materialID);
     }

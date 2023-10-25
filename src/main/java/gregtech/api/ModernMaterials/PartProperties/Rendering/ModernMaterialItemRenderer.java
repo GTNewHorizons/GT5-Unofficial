@@ -52,11 +52,13 @@ public class ModernMaterialItemRenderer implements IItemRenderer {
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack itemStack, Object... objects) {
+
+        if (!(itemStack.getItem() instanceof MaterialPart materialPart)) return;
+
         ModernMaterial material = getMaterialFromItemStack(itemStack);
 
         Color materialColor = material.getColor();
 
-        MaterialPart materialPart = (MaterialPart) itemStack.getItem();
         MaterialPartsEnum partsEnum = materialPart.getPart();
         CustomPartInfo customPartInfo = material.getCustomPartInfo(partsEnum);
 
