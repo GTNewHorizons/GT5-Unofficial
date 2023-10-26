@@ -5,9 +5,9 @@ import static gregtech.api.ModernMaterials.ModernMaterialUtilities.registerAllMa
 import static gregtech.api.ModernMaterials.PartProperties.Textures.TextureType.Metallic;
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
-import gregtech.api.ModernMaterials.Blocks.FrameBox.TESR.UniversiumFrameBlockRenderer;
-import gregtech.api.ModernMaterials.Blocks.FrameBox.TESR.UniversiumFrameItemRenderer;
+import gregtech.api.ModernMaterials.Blocks.Registration.BlocksEnum;
+import gregtech.api.ModernMaterials.Blocks.FrameBox.Special.UniversiumFrameBlockRenderer;
+import gregtech.api.ModernMaterials.Blocks.FrameBox.Special.UniversiumFrameItemRenderer;
 
 public class ModernMaterialsRegistration {
 

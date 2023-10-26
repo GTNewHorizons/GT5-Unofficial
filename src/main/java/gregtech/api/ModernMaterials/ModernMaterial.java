@@ -12,7 +12,7 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.jetbrains.annotations.NotNull;
 
-import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
+import gregtech.api.ModernMaterials.Blocks.Registration.BlocksEnum;
 import gregtech.api.ModernMaterials.Fluids.FluidEnum;
 import gregtech.api.ModernMaterials.Fluids.ModernMaterialFluid;
 import gregtech.api.ModernMaterials.PartProperties.Textures.TextureType;

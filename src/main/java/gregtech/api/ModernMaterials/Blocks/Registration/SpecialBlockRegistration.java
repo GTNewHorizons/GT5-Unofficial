@@ -6,19 +6,21 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMaterialBlock;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.MinecraftForgeClient;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
-import gregtech.api.ModernMaterials.Blocks.DumbBase.NewDumb.NewDumb;
-import gregtech.api.ModernMaterials.Blocks.DumbBase.NewDumb.NewDumbItemBlock;
+import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMaterialItemBlock;
 import gregtech.api.ModernMaterials.Blocks.DumbBase.Special.MasterItemBlockRenderer;
 import gregtech.api.ModernMaterials.Blocks.DumbBase.Special.MasterTESR;
 import gregtech.api.ModernMaterials.ModernMaterial;
 
 public class SpecialBlockRegistration {
+
+    private static final MasterItemBlockRenderer masterItemBlockRenderer = new MasterItemBlockRenderer();
+    private static final MasterTESR masterTESR = new MasterTESR();
 
     public static void registerTESRBlock(BlocksEnum blockType) {
 
@@ -29,8 +31,10 @@ public class SpecialBlockRegistration {
             .sorted()
             .collect(Collectors.toList());
 
+        if (sortedIDs.isEmpty()) return;
+
         GameRegistry.registerTileEntity(blockType.getTileEntityClass(), "TileEntity." + blockType);
-        ClientRegistry.bindTileEntitySpecialRenderer(blockType.getTileEntityClass(), new MasterTESR());
+        ClientRegistry.bindTileEntitySpecialRenderer(blockType.getTileEntityClass(), masterTESR);
 
         int offset = -1;
         for (List<Integer> IDs : generateIDGroups(sortedIDs)) {
@@ -39,21 +43,21 @@ public class SpecialBlockRegistration {
                 continue;
             }
 
-            NewDumb block;
+            BaseMaterialBlock block;
 
             try {
                 block = blockType.getBlockClass()
                     .getDeclaredConstructor(int.class, List.class)
                     .newInstance(offset, IDs);
 
-                GameRegistry.registerBlock(block, NewDumbItemBlock.class, "Special." + blockType + "." + offset);
+                GameRegistry.registerBlock(block, BaseMaterialItemBlock.class, "Special." + blockType + "." + offset);
 
             } catch (NoSuchMethodException | InstantiationException | IllegalAccessException
                 | InvocationTargetException e) {
                 throw new RuntimeException("Failed to instantiate block.", e);
             }
 
-            MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(block), new MasterItemBlockRenderer(blockType));
+            MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(block), masterItemBlockRenderer);
 
         }
     }

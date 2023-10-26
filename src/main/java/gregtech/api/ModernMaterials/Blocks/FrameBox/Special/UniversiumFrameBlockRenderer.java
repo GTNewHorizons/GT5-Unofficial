@@ -1,6 +1,6 @@
-package gregtech.api.ModernMaterials.Blocks.FrameBox.TESR;
+package gregtech.api.ModernMaterials.Blocks.FrameBox.Special;
 
-import static gregtech.api.ModernMaterials.Blocks.FrameBox.TESR.CustomTextureRegister.universiumFrameTexture;
+import static gregtech.api.ModernMaterials.Blocks.FrameBox.Special.CustomTextureRegister.universiumFrameTexture;
 import static gregtech.api.ModernMaterials.ModernMaterialUtilities.renderBlock;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;

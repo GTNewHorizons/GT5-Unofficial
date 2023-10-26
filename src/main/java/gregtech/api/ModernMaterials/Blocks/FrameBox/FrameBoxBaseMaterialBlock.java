@@ -1,21 +1,22 @@
-package gregtech.api.ModernMaterials.Blocks.DumbBase.NewDumb;
+package gregtech.api.ModernMaterials.Blocks.FrameBox;
 
 import java.awt.*;
 import java.util.List;
 
+import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMaterialBlock;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
+import gregtech.api.ModernMaterials.Blocks.Registration.BlocksEnum;
 import gregtech.api.ModernMaterials.ModernMaterial;
 import gregtech.api.ModernMaterials.ModernMaterialUtilities;
 
-public class FrameBoxNewDumb extends NewDumb {
+public class FrameBoxBaseMaterialBlock extends BaseMaterialBlock {
 
-    public FrameBoxNewDumb(int blockIDOffset, List<Integer> validIDs) {
+    public FrameBoxBaseMaterialBlock(int blockIDOffset, List<Integer> validIDs) {
         super(blockIDOffset, validIDs);
     }
 

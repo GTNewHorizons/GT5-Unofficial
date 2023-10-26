@@ -1,4 +1,4 @@
-package gregtech.api.ModernMaterials.Blocks.DumbBase.NewDumb;
+package gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -14,11 +14,11 @@ import net.minecraft.world.World;
 
 import org.jetbrains.annotations.NotNull;
 
-import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
+import gregtech.api.ModernMaterials.Blocks.Registration.BlocksEnum;
 import gregtech.api.ModernMaterials.ModernMaterial;
 import gregtech.api.ModernMaterials.ModernMaterialUtilities;
 
-public abstract class NewDumb extends Block {
+public abstract class BaseMaterialBlock extends Block {
 
     List<Integer> validIDs;
 
@@ -53,7 +53,7 @@ public abstract class NewDumb extends Block {
         return false;
     }
 
-    public NewDumb(int blockIDOffset, List<Integer> validIDs) {
+    public BaseMaterialBlock(int blockIDOffset, List<Integer> validIDs) {
         super(Material.rock);
 
         setHardness(1.5F);

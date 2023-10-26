@@ -8,9 +8,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
-import gregtech.api.ModernMaterials.Blocks.DumbBase.NewDumb.NewDumb;
-import gregtech.api.ModernMaterials.Blocks.DumbBase.NewDumb.NewDumbItemBlock;
+import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMaterialBlock;
+import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMaterialItemBlock;
 import gregtech.api.ModernMaterials.ModernMaterial;
 
 public abstract class SimpleBlockRegistration {
@@ -31,6 +30,8 @@ public abstract class SimpleBlockRegistration {
             .sorted()
             .collect(Collectors.toList());
 
+        if (sortedIDs.isEmpty()) return;
+
         int offset = -1;
         for (List<Integer> IDs : generateIDGroups(sortedIDs)) {
             offset++;
@@ -39,10 +40,10 @@ public abstract class SimpleBlockRegistration {
             }
 
             try {
-                NewDumb block = blockType.getBlockClass()
+                BaseMaterialBlock block = blockType.getBlockClass()
                     .getDeclaredConstructor(int.class, List.class)
                     .newInstance(offset, IDs);
-                GameRegistry.registerBlock(block, NewDumbItemBlock.class, blockType + "." + offset);
+                GameRegistry.registerBlock(block, BaseMaterialItemBlock.class, blockType + "." + offset);
             } catch (NoSuchMethodException | InstantiationException | IllegalAccessException
                 | InvocationTargetException e) {
                 throw new RuntimeException("Failed to instantiate block", e);
@@ -51,10 +52,6 @@ public abstract class SimpleBlockRegistration {
     }
 
     public static List<List<Integer>> generateIDGroups(List<Integer> sortedIDs) {
-        // Handle null or empty input
-        if (sortedIDs == null || sortedIDs.isEmpty()) {
-            return Collections.emptyList();
-        }
 
         List<List<Integer>> groupedIDs = new ArrayList<>();
 

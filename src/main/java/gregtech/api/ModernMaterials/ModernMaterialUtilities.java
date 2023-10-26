@@ -10,6 +10,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -18,8 +19,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
-import gregtech.api.ModernMaterials.Blocks.DumbBase.Base.BaseItemBlock;
+import gregtech.api.ModernMaterials.Blocks.Registration.BlocksEnum;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxSimpleBlockRenderer;
 import gregtech.api.ModernMaterials.Fluids.ModernMaterialFluid;
 import gregtech.api.ModernMaterials.PartProperties.Rendering.ModernMaterialItemRenderer;
@@ -141,7 +141,7 @@ public class ModernMaterialUtilities {
         tooltip.add("Generic Tooltip");
         tooltip.add("Material Name: " + material.getMaterialName());
 
-        if (part instanceof BaseItemBlock blockPart) {
+        if (part instanceof ItemBlock blockPart) {
             tooltip.add("Material Part Type: " + "Blah blah do later");
         } else if (part instanceof MaterialPart itemPart) {
             tooltip.add(

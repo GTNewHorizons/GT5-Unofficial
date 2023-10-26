@@ -1,4 +1,4 @@
-package gregtech.api.ModernMaterials.Blocks.DumbBase.NewDumb;
+package gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock;
 
 import static gregtech.api.ModernMaterials.ModernMaterialUtilities.tooltipGenerator;
 
@@ -14,13 +14,13 @@ import org.jetbrains.annotations.NotNull;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
-import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
+import gregtech.api.ModernMaterials.Blocks.Registration.BlocksEnum;
 import gregtech.api.ModernMaterials.ModernMaterial;
 import gregtech.api.ModernMaterials.ModernMaterialUtilities;
 
-public class NewDumbItemBlock extends ItemBlock {
+public class BaseMaterialItemBlock extends ItemBlock {
 
-    public NewDumbItemBlock(Block block) {
+    public BaseMaterialItemBlock(Block block) {
         super(block);
         setMaxDamage(0);
         setHasSubtypes(true);
@@ -52,15 +52,15 @@ public class NewDumbItemBlock extends ItemBlock {
         final ModernMaterial associatedMaterial = ModernMaterialUtilities.materialIDToMaterial
             .get(getMaterialID(itemStack));
 
-        NewDumb block = (NewDumb) Block.getBlockFromItem(itemStack.getItem());
+        BaseMaterialBlock block = (BaseMaterialBlock) Block.getBlockFromItem(itemStack.getItem());
         BlocksEnum blockEnum = block.getBlockEnum();
 
         return blockEnum.getLocalisedName(associatedMaterial);
     }
 
     public static int getMaterialID(@NotNull final ItemStack itemStack) {
-        NewDumb newDumb = (NewDumb) Block.getBlockFromItem(itemStack.getItem());
-        return newDumb.getMaterialID(itemStack.getItemDamage());
+        BaseMaterialBlock baseMaterialBlock = (BaseMaterialBlock) Block.getBlockFromItem(itemStack.getItem());
+        return baseMaterialBlock.getMaterialID(itemStack.getItemDamage());
     }
 
 }
