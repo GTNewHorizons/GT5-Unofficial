@@ -318,8 +318,8 @@ public class BioRecipes {
 
         // Methanol Extraction
         GT_Values.RA.stdBuilder().itemInputs(ItemUtils.getSimpleStack(AgriculturalChem.mCelluloseFiber, 12))
-                .fluidOutputs(Materials.Methanol.getGas(1000L)).duration(7 * SECONDS + 10 * TICKS).eut(TierEU.RECIPE_LV)
-                .addTo(sFluidExtractionRecipes);
+                .fluidOutputs(Materials.Methanol.getFluid(1000L)).duration(7 * SECONDS + 10 * TICKS)
+                .eut(TierEU.RECIPE_LV).addTo(sFluidExtractionRecipes);
 
         // Compost
         GT_Values.RA.stdBuilder().itemInputs(ItemUtils.getSimpleStack(AgriculturalChem.mCelluloseFiber, 3))
