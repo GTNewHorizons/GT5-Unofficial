@@ -6,6 +6,8 @@ import static gregtech.api.ModernMaterials.Blocks.Registration.SpecialBlockRegis
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMaterialItemBlock;
+import gregtech.api.ModernMaterials.PartsClasses.IEnumPart;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -20,13 +22,11 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.ModernMaterials.Blocks.Registration.BlocksEnum;
-import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxSimpleBlockRenderer;
 import gregtech.api.ModernMaterials.Fluids.ModernMaterialFluid;
 import gregtech.api.ModernMaterials.PartProperties.Rendering.ModernMaterialItemRenderer;
 import gregtech.api.ModernMaterials.PartRecipeGenerators.ModernMaterialsPlateRecipeGenerator;
-import gregtech.api.ModernMaterials.PartsClasses.IGetItem;
 import gregtech.api.ModernMaterials.PartsClasses.MaterialPart;
-import gregtech.api.ModernMaterials.PartsClasses.MaterialPartsEnum;
+import gregtech.api.ModernMaterials.PartsClasses.ItemsEnum;
 
 public class ModernMaterialUtilities {
 
@@ -52,7 +52,7 @@ public class ModernMaterialUtilities {
 
     public static void registerAllMaterialsItems() {
 
-        for (MaterialPartsEnum part : MaterialPartsEnum.values()) {
+        for (ItemsEnum part : ItemsEnum.values()) {
 
             MaterialPart materialPart = new MaterialPart(part);
             materialPart.setUnlocalizedName(part.partName);
@@ -77,13 +77,13 @@ public class ModernMaterialUtilities {
     public static void registerAllMaterialsBlocks() {
         BlocksEnum.FrameBox.getAssociatedMaterials()
             .addAll(materialIDToMaterial.values());
+//        BlocksEnum.EarthOreNormal.getAssociatedMaterials()
+//            .addAll(materialIDToMaterial.values());
 
         for (BlocksEnum blockType : BlocksEnum.values()) {
             registerSimpleBlock(blockType);
             registerTESRBlock(blockType);
         }
-
-        new FrameBoxSimpleBlockRenderer();
 
     }
 
@@ -101,11 +101,11 @@ public class ModernMaterialUtilities {
         new ModernMaterialsPlateRecipeGenerator().run(material);
     }
 
-    public static ItemStack getPart(final ModernMaterial material, final IGetItem part, final int stackSize) {
+    public static ItemStack getPart(final ModernMaterial material, final IEnumPart part, final int stackSize) {
         return new ItemStack(part.getItem(), stackSize, material.getMaterialID());
     }
 
-    public static ItemStack getPart(final String materialName, final IGetItem part, final int stackSize) {
+    public static ItemStack getPart(final String materialName, final IEnumPart part, final int stackSize) {
         return getPart(getMaterialFromName(materialName), part, stackSize);
     }
 
@@ -141,12 +141,10 @@ public class ModernMaterialUtilities {
         tooltip.add("Generic Tooltip");
         tooltip.add("Material Name: " + material.getMaterialName());
 
-        if (part instanceof ItemBlock blockPart) {
-            tooltip.add("Material Part Type: " + "Blah blah do later");
+        if (part instanceof BaseMaterialItemBlock blockPart) {
+            tooltip.add("Material Part Type: " + blockPart.getPart());
         } else if (part instanceof MaterialPart itemPart) {
-            tooltip.add(
-                "Material Part Type: " + material.getCustomPartInfo(itemPart.getPart())
-                    .getTextureType());
+            tooltip.add("Material Part Type: " + itemPart.getPart());
         }
 
         return tooltip;

@@ -5,7 +5,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 
 import gregtech.api.ModernMaterials.PartProperties.Rendering.IconWrapper;
-import gregtech.api.ModernMaterials.PartsClasses.MaterialPartsEnum;
+import gregtech.api.ModernMaterials.PartsClasses.ItemsEnum;
 
 public enum TextureType {
 
@@ -17,15 +17,15 @@ public enum TextureType {
     // CustomUnified,
     // CustomIndividual;
 
-    private final HashMap<MaterialPartsEnum, ArrayList<IconWrapper>> textureStorage = new HashMap<>();
+    private final HashMap<ItemsEnum, ArrayList<IconWrapper>> textureStorage = new HashMap<>();
 
-    public void addTexture(MaterialPartsEnum part, IconWrapper iconWrapper) {
+    public void addTexture(ItemsEnum part, IconWrapper iconWrapper) {
         ArrayList<IconWrapper> iconList = textureStorage.getOrDefault(part, new ArrayList<>());
         iconList.add(iconWrapper);
         textureStorage.put(part, iconList);
     }
 
-    public ArrayList<IconWrapper> getTextureArray(MaterialPartsEnum part) {
+    public ArrayList<IconWrapper> getTextureArray(ItemsEnum part) {
         return textureStorage.get(part);
     }
 

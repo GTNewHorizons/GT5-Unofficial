@@ -1,5 +1,6 @@
 package gregtech.api.ModernMaterials;
 
+import static gregtech.api.ModernMaterials.Blocks.Registration.BlocksEnum.EarthOreNormal;
 import static gregtech.api.ModernMaterials.Fluids.FluidEnum.*;
 import static gregtech.api.ModernMaterials.ModernMaterialUtilities.registerAllMaterialsItems;
 import static gregtech.api.ModernMaterials.PartProperties.Textures.TextureType.Metallic;

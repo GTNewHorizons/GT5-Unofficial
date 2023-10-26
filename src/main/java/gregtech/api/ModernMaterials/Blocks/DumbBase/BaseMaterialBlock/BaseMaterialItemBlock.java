@@ -49,18 +49,25 @@ public class BaseMaterialItemBlock extends ItemBlock {
     @Override
     public String getItemStackDisplayName(@NotNull ItemStack itemStack) {
 
-        final ModernMaterial associatedMaterial = ModernMaterialUtilities.materialIDToMaterial
-            .get(getMaterialID(itemStack));
+        ModernMaterial material = getMaterial(itemStack);
 
         BaseMaterialBlock block = (BaseMaterialBlock) Block.getBlockFromItem(itemStack.getItem());
         BlocksEnum blockEnum = block.getBlockEnum();
 
-        return blockEnum.getLocalisedName(associatedMaterial);
+        return blockEnum.getLocalisedName(material);
+    }
+
+    public BlocksEnum getPart() {
+        return ((BaseMaterialBlock) field_150939_a).getBlockEnum();
     }
 
     public static int getMaterialID(@NotNull final ItemStack itemStack) {
         BaseMaterialBlock baseMaterialBlock = (BaseMaterialBlock) Block.getBlockFromItem(itemStack.getItem());
         return baseMaterialBlock.getMaterialID(itemStack.getItemDamage());
+    }
+
+    public static ModernMaterial getMaterial(@NotNull final ItemStack itemStack) {
+        return ModernMaterialUtilities.getMaterialFromID(getMaterialID(itemStack));
     }
 
 }

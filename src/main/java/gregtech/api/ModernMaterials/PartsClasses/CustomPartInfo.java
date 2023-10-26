@@ -6,10 +6,10 @@ import gregtech.api.ModernMaterials.PartProperties.Textures.TextureType;
 
 public class CustomPartInfo {
 
-    public final MaterialPartsEnum part;
+    public final ItemsEnum part;
     private final TextureType textureType;
 
-    public CustomPartInfo(@NotNull final MaterialPartsEnum part, @NotNull final TextureType textureType) {
+    public CustomPartInfo(@NotNull final ItemsEnum part, @NotNull final TextureType textureType) {
         this.part = part;
         this.textureType = textureType;
     }

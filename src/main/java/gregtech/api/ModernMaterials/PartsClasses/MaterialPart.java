@@ -20,9 +20,9 @@ import gregtech.api.util.GT_LanguageManager;
 public class MaterialPart extends Item {
 
     private final String partName;
-    private final MaterialPartsEnum part;
+    private final ItemsEnum part;
 
-    public MaterialPart(final MaterialPartsEnum part) {
+    public MaterialPart(final ItemsEnum part) {
         setCreativeTab(CreativeTabs.tabMaterials);
         setHasSubtypes(true);
 
@@ -59,12 +59,10 @@ public class MaterialPart extends Item {
 
         final ModernMaterial material = ModernMaterialUtilities.materialIDToMaterial.get(itemStack.getItemDamage());
 
-        for (String line : tooltipGenerator((MaterialPart) itemStack.getItem(), material)) {
-            tooltipList.add(line);
-        }
+        tooltipList.addAll(tooltipGenerator(itemStack.getItem(), material));
     }
 
-    public MaterialPartsEnum getPart() {
+    public ItemsEnum getPart() {
         return part;
     }
 }

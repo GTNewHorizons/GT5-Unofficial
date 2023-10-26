@@ -15,7 +15,7 @@ import gregtech.api.ModernMaterials.Blocks.FrameBox.Special.CustomTextureRegiste
 import gregtech.api.ModernMaterials.Fluids.FluidEnum;
 import gregtech.api.ModernMaterials.PartProperties.Rendering.IconWrapper;
 import gregtech.api.ModernMaterials.PartProperties.Textures.TextureType;
-import gregtech.api.ModernMaterials.PartsClasses.MaterialPartsEnum;
+import gregtech.api.ModernMaterials.PartsClasses.ItemsEnum;
 
 public class ModernMaterialsTextureRegister {
 
@@ -55,7 +55,7 @@ public class ModernMaterialsTextureRegister {
     private void itemTextures(TextureMap map) {
 
         // Pre sort this by part name not enum name to save computation later.
-        MaterialPartsEnum[] partsEnum = MaterialPartsEnum.values();
+        ItemsEnum[] partsEnum = ItemsEnum.values();
         Arrays.sort(partsEnum, Comparator.comparing(part -> part.partName));
 
         // Iterate over all texture types and their associated item textures to register them and any
@@ -82,7 +82,7 @@ public class ModernMaterialsTextureRegister {
             // Sort according to the actual unlocalised name rather than enum name.
             fileList.sort(Comparator.comparing(File::getName));
 
-            for (MaterialPartsEnum part : partsEnum) {
+            for (ItemsEnum part : partsEnum) {
 
                 for (File file : fileList) {
 

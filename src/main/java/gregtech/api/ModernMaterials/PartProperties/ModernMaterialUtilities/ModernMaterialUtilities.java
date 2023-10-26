@@ -13,7 +13,4 @@ public class ModernMaterialUtilities {
         return materialIDToMaterial.get(itemStack.getItemDamage());
     }
 
-    public static ModernMaterial getMaterialFromName(String aName) {
-        return materialNameToMaterialMap.get(aName);
-    }
 }

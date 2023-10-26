@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMaterialBlock;
+import gregtech.api.ModernMaterials.Blocks.EarthOreNormal.EarthOreNormalBaseMaterialBlock;
+import gregtech.api.ModernMaterials.Blocks.EarthOreNormal.EarthOreSimpleBlockRenderer;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxBaseMaterialBlock;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.Item;
@@ -16,16 +18,16 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMaterialTileEntity;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxSimpleBlockRenderer;
 import gregtech.api.ModernMaterials.ModernMaterial;
-import gregtech.api.ModernMaterials.PartsClasses.IAssociatedMaterials;
-import gregtech.api.ModernMaterials.PartsClasses.IGetItem;
+import gregtech.api.ModernMaterials.PartsClasses.IEnumPart;
 
 /**
  * Enum representation of block types with their associated details and materials.
  */
-public enum BlocksEnum implements IGetItem, IAssociatedMaterials {
+public enum BlocksEnum implements IEnumPart {
 
-    // Define new blocks here.
-    FrameBox("% LARP Box", FrameBoxBaseMaterialBlock.class, new FrameBoxSimpleBlockRenderer());
+//  Define new blocks here.
+    FrameBox("% LARP Box", FrameBoxBaseMaterialBlock.class, new FrameBoxSimpleBlockRenderer()),
+    EarthOreNormal("% Ore", EarthOreNormalBaseMaterialBlock.class, new EarthOreSimpleBlockRenderer());
 
     private final String unlocalizedName;
     private final Class<? extends BaseMaterialBlock> blockClass;

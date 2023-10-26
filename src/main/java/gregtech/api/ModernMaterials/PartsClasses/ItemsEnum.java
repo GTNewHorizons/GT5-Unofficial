@@ -6,7 +6,7 @@ import net.minecraft.item.Item;
 
 import gregtech.api.ModernMaterials.ModernMaterial;
 
-public enum MaterialPartsEnum implements IGetItem, IAssociatedMaterials {
+public enum ItemsEnum implements IEnumPart {
 
     HotIngot("Hot % Ingot"),
     Ingot("% Ingot"),
@@ -22,8 +22,8 @@ public enum MaterialPartsEnum implements IGetItem, IAssociatedMaterials {
 
     // Plates
     DensePlate("Dense % Plate"),
-    Plate("% Plate"),
     Foil("% Foil"),
+    Plate("% Plate"),
     // DoublePlate("Double % Plate"),
     // TriplePlate("Triple % Plate"),
     // QuadruplePlate("Quadruple % Plate"),
@@ -68,23 +68,23 @@ public enum MaterialPartsEnum implements IGetItem, IAssociatedMaterials {
     Nanites("% Nanites"),
 
     // Tool Parts.
-    ArrowHead("% Arrow Head"),
-    AxeHead("% Axe Head"),
+//    ArrowHead("% Arrow Head"),
+//    AxeHead("% Axe Head"),
     BuzzSaw("% Buzz Saw"),
     ChainSaw("% Chainsaw"),
     DrillTip("% Drill Tip"),
     FileHead("% File Head"),
     HammerHead("% Hammer Head"),
-    HoeHead("% Hoe Head"),
+//    HoeHead("% Hoe Head"),
     MalletHead("% Mallet Head"),
-    PickaxeHead("% Pickaxe Head"),
-    PlowHead("% Plow Head"),
+//    PickaxeHead("% Pickaxe Head"),
+//    PlowHead("% Plow Head"),
     SawBlade("% Saw Blade"),
     ScrewdriverHead("% Screwdriver Head"),
-    SenseHead("% Sense Head"),
-    ShovelHead("% Shovel Head"),
+//    SenseHead("% Sense Head"),
+//    ShovelHead("% Shovel Head"),
     SolderingHead("% Soldering Head"),
-    SwordBlade("% Sword Blade"),
+//    SwordBlade("% Sword Blade"),
     ElectricWrenchHead("% Electric Wrench Head");
 
     public final String partName;
@@ -93,7 +93,7 @@ public enum MaterialPartsEnum implements IGetItem, IAssociatedMaterials {
 
     private final HashSet<ModernMaterial> associatedMaterials = new HashSet<>();
 
-    MaterialPartsEnum(final String partName) {
+    ItemsEnum(final String partName) {
         this.partName = partName;
     }
 

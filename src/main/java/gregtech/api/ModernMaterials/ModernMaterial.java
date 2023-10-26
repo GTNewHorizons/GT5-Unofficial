@@ -17,12 +17,12 @@ import gregtech.api.ModernMaterials.Fluids.FluidEnum;
 import gregtech.api.ModernMaterials.Fluids.ModernMaterialFluid;
 import gregtech.api.ModernMaterials.PartProperties.Textures.TextureType;
 import gregtech.api.ModernMaterials.PartsClasses.CustomPartInfo;
-import gregtech.api.ModernMaterials.PartsClasses.MaterialPartsEnum;
+import gregtech.api.ModernMaterials.PartsClasses.ItemsEnum;
 
 @SuppressWarnings("unused")
 public final class ModernMaterial {
 
-    private final HashMap<MaterialPartsEnum, CustomPartInfo> existingPartsForMaterial = new HashMap<>();
+    private final HashMap<ItemsEnum, CustomPartInfo> existingPartsForMaterial = new HashMap<>();
     public final ArrayList<ModernMaterialFluid> existingFluids = new ArrayList<>();
     private Color color;
     private int materialID;
@@ -64,7 +64,7 @@ public final class ModernMaterial {
         return materialTier;
     }
 
-    public CustomPartInfo getCustomPartInfo(final MaterialPartsEnum part) {
+    public CustomPartInfo getCustomPartInfo(final ItemsEnum part) {
         return existingPartsForMaterial.get(part);
     }
 
@@ -78,12 +78,11 @@ public final class ModernMaterial {
             materialToBuild = new ModernMaterial(materialName);
         }
 
-        ModernMaterial build() {
+        void build() {
             ModernMaterial builtMaterial = materialToBuild;
             materialToBuild = new ModernMaterial();
 
             registerMaterial(builtMaterial);
-            return builtMaterial;
         }
 
         public ModernMaterialBuilder setColor(int red, int green, int blue) {
@@ -96,16 +95,18 @@ public final class ModernMaterial {
             return this;
         }
 
-        public ModernMaterialBuilder addParts(MaterialPartsEnum... parts) {
-            for (MaterialPartsEnum part : parts) {
-                part.addAssociatedMaterial(materialToBuild);
+        public ModernMaterialBuilder addParts(ItemsEnum... parts) {
+            for (ItemsEnum part : parts) {
                 addPart(part);
             }
+
             return this;
         }
 
-        public ModernMaterialBuilder addPart(MaterialPartsEnum part) {
+        public ModernMaterialBuilder addPart(ItemsEnum part) {
+            part.addAssociatedMaterial(materialToBuild);
             materialToBuild.existingPartsForMaterial.put(part, new CustomPartInfo(part, materialToBuild.textureType));
+
             return this;
         }
 
@@ -118,7 +119,7 @@ public final class ModernMaterial {
 
         // This will override all existing parts settings and enable ALL possible parts. Be careful!
         public ModernMaterialBuilder addAllParts() {
-            addParts(MaterialPartsEnum.values());
+            addParts(ItemsEnum.values());
             return this;
         }
 
