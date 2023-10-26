@@ -1,13 +1,11 @@
 package gregtech.api.ModernMaterials.Blocks.DumbBase.Special;
 
-import gregtech.api.ModernMaterials.Blocks.DumbBase.NewDumb.NewDumb;
-import gregtech.api.ModernMaterials.Blocks.DumbBase.NewDumb.NewDumbTileEntity;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 
 import org.jetbrains.annotations.NotNull;
 
-import gregtech.api.ModernMaterials.Blocks.DumbBase.Base.BaseTileEntity;
+import gregtech.api.ModernMaterials.Blocks.DumbBase.NewDumb.NewDumb;
 
 public class MasterTESR extends TileEntitySpecialRenderer {
 
@@ -17,6 +15,8 @@ public class MasterTESR extends TileEntitySpecialRenderer {
         NewDumb block = (NewDumb) tile.getBlockType();
         int ID = block.getMaterialID(tile.getBlockMetadata());
 
-        block.getBlockEnum().getSpecialRenderer(ID).renderTileEntityAt(tile, x, y, z, timeSinceLastTick);
+        block.getBlockEnum()
+            .getSpecialRenderer(ID)
+            .renderTileEntityAt(tile, x, y, z, timeSinceLastTick);
     }
 }

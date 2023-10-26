@@ -59,7 +59,10 @@ public class FrameBoxSimpleBlockRenderer implements ISimpleBlockRenderingHandler
         NewDumb newDumb = (NewDumb) block;
 
         int ID = newDumb.getMaterialID(world.getBlockMetadata(x, y, z));
-        if (newDumb.getBlockEnum().getSpecialBlockRenderAssociatedMaterials().contains(materialIDToMaterial.get(ID))) return true; // True tells minecraft that we have handled this and to not do anymore rendering here.
+        if (newDumb.getBlockEnum()
+            .getSpecialBlockRenderAssociatedMaterials()
+            .contains(materialIDToMaterial.get(ID))) return true; // True tells minecraft that we have handled this and
+                                                                  // to not do anymore rendering here.
 
         renderer.renderStandardBlock(block, x, y, z);
         /*

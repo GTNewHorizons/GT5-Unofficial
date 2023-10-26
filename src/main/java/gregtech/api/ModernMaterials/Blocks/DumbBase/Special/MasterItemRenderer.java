@@ -7,13 +7,27 @@ import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 
 import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
-import gregtech.api.ModernMaterials.Blocks.DumbBase.Base.BaseBlock;
+import gregtech.api.ModernMaterials.Blocks.DumbBase.NewDumb.NewDumb;
+import gregtech.api.ModernMaterials.ModernMaterialUtilities;
 
 public class MasterItemRenderer implements IItemRenderer {
 
+    private final BlocksEnum blockEnum;
+
+    public MasterItemRenderer(BlocksEnum blockEnum) {
+        this.blockEnum = blockEnum;
+    }
+
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-        return true;
+
+        int meta = item.getItemDamage();
+
+        NewDumb block = (NewDumb) Block.getBlockFromItem(item.getItem());
+        int ID = block.getMaterialID(meta);
+
+        return blockEnum.getSpecialBlockRenderAssociatedMaterials()
+            .contains(ModernMaterialUtilities.getMaterialFromID(ID));
     }
 
     @Override
@@ -35,10 +49,10 @@ public class MasterItemRenderer implements IItemRenderer {
         // We will do this for each block, to make life more simple.
         repositionItem(type);
 
-        int materialID = itemStack.getItemDamage();
-        BaseBlock dumbBlock = (BaseBlock) Block.getBlockFromItem(itemStack.getItem());
+        int meta = itemStack.getItemDamage();
+        NewDumb block = (NewDumb) Block.getBlockFromItem(itemStack.getItem());
+        int materialID = block.getMaterialID(meta);
 
-        BlocksEnum blockEnum = dumbBlock.getBlockEnum();
         IItemRenderer itemRenderer = blockEnum.getItemRenderer(materialID);
 
         // Delegate this to the appropriate renderer depending on the material.
