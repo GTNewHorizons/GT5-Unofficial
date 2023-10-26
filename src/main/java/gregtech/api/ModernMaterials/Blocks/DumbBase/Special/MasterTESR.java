@@ -1,19 +1,22 @@
 package gregtech.api.ModernMaterials.Blocks.DumbBase.Special;
 
-import gregtech.api.ModernMaterials.Blocks.DumbBase.Base.BaseTileEntity;
+import gregtech.api.ModernMaterials.Blocks.DumbBase.NewDumb.NewDumb;
+import gregtech.api.ModernMaterials.Blocks.DumbBase.NewDumb.NewDumbTileEntity;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
+
 import org.jetbrains.annotations.NotNull;
+
+import gregtech.api.ModernMaterials.Blocks.DumbBase.Base.BaseTileEntity;
 
 public class MasterTESR extends TileEntitySpecialRenderer {
 
     @Override
     public void renderTileEntityAt(@NotNull TileEntity tile, double x, double y, double z, float timeSinceLastTick) {
 
-        BaseTileEntity dumbTile = (BaseTileEntity) tile;
+        NewDumb block = (NewDumb) tile.getBlockType();
+        int ID = block.getMaterialID(tile.getBlockMetadata());
 
-        int ID = dumbTile.getMaterialID();
-        TileEntitySpecialRenderer TESR = ((IGetTESR) tile).getTESR(ID);
-        TESR.renderTileEntityAt(tile, x, y, z, timeSinceLastTick);
+        block.getBlockEnum().getSpecialRenderer(ID).renderTileEntityAt(tile, x, y, z, timeSinceLastTick);
     }
 }

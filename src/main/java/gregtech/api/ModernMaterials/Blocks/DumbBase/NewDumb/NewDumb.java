@@ -1,17 +1,22 @@
 package gregtech.api.ModernMaterials.Blocks.DumbBase.NewDumb;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
-import java.util.List;
+import org.jetbrains.annotations.NotNull;
+
+import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
+import gregtech.api.ModernMaterials.ModernMaterial;
+import gregtech.api.ModernMaterials.ModernMaterialUtilities;
 
 public abstract class NewDumb extends Block {
 
@@ -21,7 +26,26 @@ public abstract class NewDumb extends Block {
 
     @Override
     public boolean hasTileEntity(int metadata) {
-        return false;
+        return true;
+    }
+
+    @Override
+    public TileEntity createTileEntity(@NotNull World world, int metadata) {
+
+        final int ID = getMaterialID(metadata);
+        final ModernMaterial material = ModernMaterialUtilities.getMaterialFromID(ID);
+
+        if (!getBlockEnum().getSpecialBlockRenderAssociatedMaterials()
+            .contains(material)) return null;
+
+        try {
+            return getBlockEnum().getTileEntityClass()
+                .getDeclaredConstructor()
+                .newInstance();
+        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException
+            | InvocationTargetException e) {
+            throw new RuntimeException("Failed to instantiate tile entity.", e);
+        }
     }
 
     @Override
@@ -51,11 +75,10 @@ public abstract class NewDumb extends Block {
         return 0;
     }
 
-
     @Override
     public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (int ID : validIDs) {
-            list.add(new ItemStack(item, 1,  ID % 16));
+            list.add(new ItemStack(item, 1, ID % 16));
         }
     }
 
@@ -64,8 +87,7 @@ public abstract class NewDumb extends Block {
     }
 
     @Override
-    public int damageDropped(int meta)
-    {
+    public int damageDropped(int meta) {
         return meta;
     }
 }

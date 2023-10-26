@@ -1,14 +1,15 @@
 package gregtech.api.ModernMaterials.Blocks.DumbBase.Special;
 
-import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
-import gregtech.api.ModernMaterials.Blocks.DumbBase.Base.BaseBlock;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
+
 import org.lwjgl.opengl.GL11;
 
-public class MasterItemRenderer implements IItemRenderer {
+import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
+import gregtech.api.ModernMaterials.Blocks.DumbBase.Base.BaseBlock;
 
+public class MasterItemRenderer implements IItemRenderer {
 
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {

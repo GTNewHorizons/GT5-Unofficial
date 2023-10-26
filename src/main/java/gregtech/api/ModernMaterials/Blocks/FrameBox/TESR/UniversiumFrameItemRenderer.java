@@ -1,17 +1,20 @@
 package gregtech.api.ModernMaterials.Blocks.FrameBox.TESR;
 
-import fox.spiteful.avaritia.render.CosmicRenderShenanigans;
+import static gregtech.api.ModernMaterials.Blocks.FrameBox.TESR.CustomTextureRegister.universiumFrameTexture;
+import static gregtech.api.ModernMaterials.ModernMaterialUtilities.renderBlock;
+
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.client.IItemRenderer;
+
 import org.lwjgl.opengl.GL11;
 
-import static gregtech.api.ModernMaterials.Blocks.FrameBox.TESR.CustomTextureRegister.universiumFrameTexture;
-import static gregtech.api.ModernMaterials.ModernMaterialUtilities.renderBlock;
+import fox.spiteful.avaritia.render.CosmicRenderShenanigans;
 
 public class UniversiumFrameItemRenderer implements IItemRenderer {
+
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
         return true;
@@ -21,7 +24,6 @@ public class UniversiumFrameItemRenderer implements IItemRenderer {
     public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
         return true;
     }
-
 
     private boolean shouldUseInventoryCosmicRenderHelper(ItemRenderType type) {
         return switch (type) {
@@ -36,7 +38,7 @@ public class UniversiumFrameItemRenderer implements IItemRenderer {
 
         GL11.glPushMatrix();
 
-        //GL11.glTranslated(0.5, 0.5, 0.5);
+        // GL11.glTranslated(0.5, 0.5, 0.5);
         processLightLevel(type, data);
 
         CosmicRenderShenanigans.inventoryRender = shouldUseInventoryCosmicRenderHelper(type);
@@ -45,7 +47,6 @@ public class UniversiumFrameItemRenderer implements IItemRenderer {
         CosmicRenderShenanigans.useShader();
 
         CosmicRenderShenanigans.bindItemTexture();
-
 
         // This is a bit of a hack here, we do this solely because rendering a block icon will cause the stars
         // in the shader to not appear as they are part of the item atlas. So we store our block in the item atlas
@@ -58,7 +59,6 @@ public class UniversiumFrameItemRenderer implements IItemRenderer {
         GL11.glPopMatrix();
 
     }
-
 
     private void processLightLevel(ItemRenderType type, Object... data) {
         switch (type) {

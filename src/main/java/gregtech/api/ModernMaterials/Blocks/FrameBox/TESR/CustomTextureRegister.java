@@ -1,10 +1,10 @@
 package gregtech.api.ModernMaterials.Blocks.FrameBox.TESR;
 
+import static gregtech.api.enums.Mods.GregTech;
+
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.event.TextureStitchEvent;
-
-import static gregtech.api.enums.Mods.GregTech;
 
 public class CustomTextureRegister {
 

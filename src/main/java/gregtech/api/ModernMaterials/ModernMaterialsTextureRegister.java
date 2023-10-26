@@ -1,21 +1,21 @@
 package gregtech.api.ModernMaterials;
 
+import static gregtech.api.enums.Mods.GregTech;
+
+import java.io.File;
+import java.nio.file.Paths;
+import java.util.*;
+
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.client.event.TextureStitchEvent;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.TESR.CustomTextureRegister;
 import gregtech.api.ModernMaterials.Fluids.FluidEnum;
 import gregtech.api.ModernMaterials.PartProperties.Rendering.IconWrapper;
 import gregtech.api.ModernMaterials.PartProperties.Textures.TextureType;
 import gregtech.api.ModernMaterials.PartsClasses.MaterialPartsEnum;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.client.event.TextureStitchEvent;
-
-import java.io.File;
-import java.nio.file.Paths;
-import java.util.*;
-
-import static gregtech.api.enums.GT_Values.RES_PATH_ITEM;
-import static gregtech.api.enums.Mods.GregTech;
 
 public class ModernMaterialsTextureRegister {
 
@@ -25,7 +25,7 @@ public class ModernMaterialsTextureRegister {
     public void registerIcons(TextureStitchEvent.Pre event) {
         if (event.map.getTextureType() == 1) {
             itemTextures(event.map);
-        } else if (event.map.getTextureType() == 0){
+        } else if (event.map.getTextureType() == 0) {
             // These are both stored in the same texture atlas.
             blockTextures(event.map);
             fluidTextures(event.map);
@@ -41,8 +41,14 @@ public class ModernMaterialsTextureRegister {
 
     private void fluidTextures(TextureMap map) {
         for (FluidEnum fluidEnum : FluidEnum.values()) {
-            fluidEnum.stillIcon = map.registerIcon( GregTech.getResourcePath() + "ModernMaterialsIcons/Fluids/still_" + fluidEnum.name().toLowerCase());
-            fluidEnum.flowingIcon = map.registerIcon( GregTech.getResourcePath() + "ModernMaterialsIcons/Fluids/flowing_" + fluidEnum.name().toLowerCase());
+            fluidEnum.stillIcon = map.registerIcon(
+                GregTech.getResourcePath() + "ModernMaterialsIcons/Fluids/still_"
+                    + fluidEnum.name()
+                        .toLowerCase());
+            fluidEnum.flowingIcon = map.registerIcon(
+                GregTech.getResourcePath() + "ModernMaterialsIcons/Fluids/flowing_"
+                    + fluidEnum.name()
+                        .toLowerCase());
         }
     }
 
@@ -61,19 +67,24 @@ public class ModernMaterialsTextureRegister {
 
         for (TextureType textureType : TextureType.values()) {
 
-            String path = "../src/main/resources/assets/gregtech/textures/items/ModernMaterialsIcons/" + textureType + "/items";
-            final File[] files = Paths.get(path).toFile().listFiles();
+            String path = "../src/main/resources/assets/gregtech/textures/items/ModernMaterialsIcons/" + textureType
+                + "/items";
+            final File[] files = Paths.get(path)
+                .toFile()
+                .listFiles();
             assert files != null;
 
             ArrayList<File> fileList = new ArrayList<>(Arrays.asList(files));
             // Remove .png.mcmeta files, these are irrelevant.
-            fileList.removeIf(file -> file.getName().endsWith(".png.mcmeta"));
+            fileList.removeIf(
+                file -> file.getName()
+                    .endsWith(".png.mcmeta"));
             // Sort according to the actual unlocalised name rather than enum name.
             fileList.sort(Comparator.comparing(File::getName));
 
-            for(MaterialPartsEnum part : partsEnum) {
+            for (MaterialPartsEnum part : partsEnum) {
 
-                for(File file : fileList) {
+                for (File file : fileList) {
 
                     // Saves computing this multiple times.
                     String trueFileName = file.getName();
@@ -91,7 +102,11 @@ public class ModernMaterialsTextureRegister {
                         continue;
                     }
                     // textures/items
-                    IIcon icon = map.registerIcon( GregTech.getResourcePath() + "ModernMaterialsIcons/" + textureType + "/Items/" + removePNG(trueFileName));
+                    IIcon icon = map.registerIcon(
+                        GregTech.getResourcePath() + "ModernMaterialsIcons/"
+                            + textureType
+                            + "/Items/"
+                            + removePNG(trueFileName));
 
                     IconWrapper iconWrapper = new IconWrapper(priority, isColoured, icon);
                     textureType.addTexture(part, iconWrapper);

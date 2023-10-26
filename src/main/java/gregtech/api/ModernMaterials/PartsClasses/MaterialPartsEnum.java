@@ -1,21 +1,20 @@
 package gregtech.api.ModernMaterials.PartsClasses;
 
-import gregtech.api.ModernMaterials.ModernMaterial;
+import java.util.HashSet;
+
 import net.minecraft.item.Item;
 
-import java.util.ArrayList;
-import java.util.HashSet;
+import gregtech.api.ModernMaterials.ModernMaterial;
 
 public enum MaterialPartsEnum implements IGetItem, IAssociatedMaterials {
 
     HotIngot("Hot % Ingot"),
     Ingot("% Ingot"),
-//    DoubleIngot("Double % Ingot"),
-//    TripleIngot("Triple % Ingot"),
-//    QuadrupleIngot("Quadruple % Ingot"),
-//    QuintupleIngot("Quintuple % Ingot"),
+    // DoubleIngot("Double % Ingot"),
+    // TripleIngot("Triple % Ingot"),
+    // QuadrupleIngot("Quadruple % Ingot"),
+    // QuintupleIngot("Quintuple % Ingot"),
     Nugget("% Nugget"),
-
 
     // Gears
     Gear("% Gear"),

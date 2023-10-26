@@ -1,9 +1,10 @@
 package gregtech.api.ModernMaterials.Fluids;
 
-import gregtech.api.ModernMaterials.ModernMaterial;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+
+import gregtech.api.ModernMaterials.ModernMaterial;
 
 final public class ModernMaterialFluid extends Fluid {
 
@@ -27,7 +28,8 @@ final public class ModernMaterialFluid extends Fluid {
 
     @Override
     public int getColor() {
-        return associatedMaterial.getColor().getRGB();
+        return associatedMaterial.getColor()
+            .getRGB();
     }
 
     @Override
@@ -66,10 +68,10 @@ final public class ModernMaterialFluid extends Fluid {
 
         public ModernMaterialFluid build() {
             ModernMaterialFluid materialFluid = new ModernMaterialFluid(unformattedString, associatedMaterial);
-            //materialFluid.setStillIcon(this.stillIcon);
-            //materialFluid.setFlowingIcon(this.flowingIcon);
-            //materialFluid.setTemperature(this.temperature);
-            //materialFluid.setGaseous(this.isGas);
+            // materialFluid.setStillIcon(this.stillIcon);
+            // materialFluid.setFlowingIcon(this.flowingIcon);
+            // materialFluid.setTemperature(this.temperature);
+            // materialFluid.setGaseous(this.isGas);
             return materialFluid;
         }
 

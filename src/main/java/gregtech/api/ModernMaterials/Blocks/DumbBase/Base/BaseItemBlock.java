@@ -1,20 +1,22 @@
 package gregtech.api.ModernMaterials.Blocks.DumbBase.Base;
 
+import static gregtech.api.ModernMaterials.ModernMaterialUtilities.tooltipGenerator;
+
+import java.util.List;
+
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
+
+import org.jetbrains.annotations.NotNull;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
 import gregtech.api.ModernMaterials.ModernMaterial;
 import gregtech.api.ModernMaterials.ModernMaterialUtilities;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
-
-import static gregtech.api.ModernMaterials.ModernMaterialUtilities.tooltipGenerator;
 
 public class BaseItemBlock extends ItemBlock {
 
@@ -33,7 +35,8 @@ public class BaseItemBlock extends ItemBlock {
     // Tooltip information.
     @SideOnly(Side.CLIENT)
     @Override
-    public void addInformation(@NotNull ItemStack itemStack, EntityPlayer player, List<String> tooltipList, boolean aF3_H)  {
+    public void addInformation(@NotNull ItemStack itemStack, EntityPlayer player, List<String> tooltipList,
+        boolean aF3_H) {
 
         final ModernMaterial material = ModernMaterialUtilities.materialIDToMaterial.get(itemStack.getItemDamage());
 
@@ -44,7 +47,8 @@ public class BaseItemBlock extends ItemBlock {
 
     @Override
     public String getItemStackDisplayName(ItemStack itemStack) {
-        final ModernMaterial associatedMaterial = ModernMaterialUtilities.materialIDToMaterial.get(itemStack.getItemDamage());
+        final ModernMaterial associatedMaterial = ModernMaterialUtilities.materialIDToMaterial
+            .get(itemStack.getItemDamage());
 
         return getBlockEnum().getLocalisedName(associatedMaterial);
     }
@@ -56,9 +60,11 @@ public class BaseItemBlock extends ItemBlock {
     @Override
     @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(ItemStack itemStack, int renderPass) {
-        final ModernMaterial associatedMaterial = ModernMaterialUtilities.materialIDToMaterial.get(itemStack.getItemDamage());
+        final ModernMaterial associatedMaterial = ModernMaterialUtilities.materialIDToMaterial
+            .get(itemStack.getItemDamage());
 
-        return associatedMaterial.getColor().getRGB();
+        return associatedMaterial.getColor()
+            .getRGB();
     }
 
 }

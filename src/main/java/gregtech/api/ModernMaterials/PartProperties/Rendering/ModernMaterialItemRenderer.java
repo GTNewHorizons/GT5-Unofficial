@@ -5,9 +5,6 @@ import static org.lwjgl.opengl.GL11.GL_CURRENT_BIT;
 
 import java.awt.*;
 
-import gregtech.api.ModernMaterials.PartsClasses.CustomPartInfo;
-import gregtech.api.ModernMaterials.PartsClasses.MaterialPart;
-import gregtech.api.ModernMaterials.PartsClasses.MaterialPartsEnum;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
@@ -18,6 +15,9 @@ import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 
 import gregtech.api.ModernMaterials.ModernMaterial;
+import gregtech.api.ModernMaterials.PartsClasses.CustomPartInfo;
+import gregtech.api.ModernMaterials.PartsClasses.MaterialPart;
+import gregtech.api.ModernMaterials.PartsClasses.MaterialPartsEnum;
 import gregtech.common.render.GT_RenderUtil;
 
 public class ModernMaterialItemRenderer implements IItemRenderer {
@@ -25,13 +25,13 @@ public class ModernMaterialItemRenderer implements IItemRenderer {
     @Override
     public boolean handleRenderType(ItemStack itemStack, ItemRenderType type) {
         return type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON
-                || type == ItemRenderType.INVENTORY
-                || type == ItemRenderType.ENTITY;
+            || type == ItemRenderType.INVENTORY
+            || type == ItemRenderType.ENTITY;
     }
 
     @Override
     public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack itemStack,
-            ItemRendererHelper itemRendererHelper) {
+        ItemRendererHelper itemRendererHelper) {
         return type == ItemRenderType.ENTITY;
     }
 
@@ -70,7 +70,8 @@ public class ModernMaterialItemRenderer implements IItemRenderer {
         renderPositionCorrection(type);
 
         // Iterate over the items layers and render them.
-        for (IconWrapper iconWrapper : customPartInfo.getTextureType().getTextureArray(partsEnum)) {
+        for (IconWrapper iconWrapper : customPartInfo.getTextureType()
+            .getTextureArray(partsEnum)) {
 
             GL11.glPushAttrib(GL_CURRENT_BIT);
 

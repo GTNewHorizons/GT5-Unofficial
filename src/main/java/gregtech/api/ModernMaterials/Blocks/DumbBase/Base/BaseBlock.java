@@ -1,26 +1,21 @@
 package gregtech.api.ModernMaterials.Blocks.DumbBase.Base;
 
-import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
-import gregtech.api.ModernMaterials.ModernMaterial;
-import gregtech.api.ModernMaterials.ModernMaterialUtilities;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
+import gregtech.api.ModernMaterials.ModernMaterial;
 
 public abstract class BaseBlock extends Block {
 
@@ -62,19 +57,19 @@ public abstract class BaseBlock extends Block {
         return false;
     }
 
-//    @Override
-//    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-//
-//        // Create a new ItemStack with the saved materialID. This bypasses
-//        // the 4 bit storage limit in the blocks damage value.
-//        ArrayList<ItemStack> itemList = new ArrayList<>();
-//        itemList.add(getDroppedItemStack(world, x, y, z));
-//
-//        // Destroy the block.
-//        world.setBlock(x, y, z, Blocks.air);
-//
-//        return itemList;
-//    }
+    // @Override
+    // public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
+    //
+    // // Create a new ItemStack with the saved materialID. This bypasses
+    // // the 4 bit storage limit in the blocks damage value.
+    // ArrayList<ItemStack> itemList = new ArrayList<>();
+    // itemList.add(getDroppedItemStack(world, x, y, z));
+    //
+    // // Destroy the block.
+    // world.setBlock(x, y, z, Blocks.air);
+    //
+    // return itemList;
+    // }
 
     @Override
     public boolean removedByPlayer(World aWorld, EntityPlayer aPlayer, int x, int y, int z, boolean aWillHarvest) {
@@ -82,30 +77,29 @@ public abstract class BaseBlock extends Block {
         return aWillHarvest || super.removedByPlayer(aWorld, aPlayer, x, y, z, false);
     }
 
-//    public ItemStack getDroppedItemStack(World world, int x, int y, int z) {
-//        return new ItemStack(this, 1, getMaterialID(world, x, y, z));
-//    }
+    // public ItemStack getDroppedItemStack(World world, int x, int y, int z) {
+    // return new ItemStack(this, 1, getMaterialID(world, x, y, z));
+    // }
 
     public int getMaterialID(World world, int x, int y, int z) {
         BaseTileEntity dumbTileEntity = (BaseTileEntity) world.getTileEntity(x, y, z);
         return dumbTileEntity.getMaterialID();
     }
 
-//    @SideOnly(Side.CLIENT)
-//    @Override
-//    public int colorMultiplier(IBlockAccess worldIn, int x, int y, int z)
-//    {
-//        final BaseTileEntity dumbTileEntity = (BaseTileEntity) worldIn.getTileEntity(x, y, z);
-//        final int materialID = dumbTileEntity.getMaterialID();
-//        final ModernMaterial material = ModernMaterialUtilities.materialIDToMaterial.get(materialID);
-//
-//        if (material == null) return new Color(100, 100, 0, 255).getRGB();
-//        return material.getColor().getRGB();
-//    }
+    // @SideOnly(Side.CLIENT)
+    // @Override
+    // public int colorMultiplier(IBlockAccess worldIn, int x, int y, int z)
+    // {
+    // final BaseTileEntity dumbTileEntity = (BaseTileEntity) worldIn.getTileEntity(x, y, z);
+    // final int materialID = dumbTileEntity.getMaterialID();
+    // final ModernMaterial material = ModernMaterialUtilities.materialIDToMaterial.get(materialID);
+    //
+    // if (material == null) return new Color(100, 100, 0, 255).getRGB();
+    // return material.getColor().getRGB();
+    // }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player)
-    {
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player) {
         return getPickBlock(target, world, x, y, z);
     }
 }

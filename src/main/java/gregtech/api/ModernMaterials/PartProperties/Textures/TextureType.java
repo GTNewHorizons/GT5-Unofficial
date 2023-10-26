@@ -1,20 +1,21 @@
 package gregtech.api.ModernMaterials.PartProperties.Textures;
 
-import gregtech.api.ModernMaterials.PartProperties.Rendering.IconWrapper;
-import gregtech.api.ModernMaterials.PartsClasses.MaterialPartsEnum;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 
+import gregtech.api.ModernMaterials.PartProperties.Rendering.IconWrapper;
+import gregtech.api.ModernMaterials.PartsClasses.MaterialPartsEnum;
+
 public enum TextureType {
+
     Metallic,
     Dull;
-//    Stone,
-//    Dull;
-//    Dull,
-//    CustomUnified,
-//    CustomIndividual;
+    // Stone,
+    // Dull;
+    // Dull,
+    // CustomUnified,
+    // CustomIndividual;
 
     private final HashMap<MaterialPartsEnum, ArrayList<IconWrapper>> textureStorage = new HashMap<>();
 

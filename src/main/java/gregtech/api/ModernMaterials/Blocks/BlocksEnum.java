@@ -1,19 +1,23 @@
 package gregtech.api.ModernMaterials.Blocks;
 
+import java.util.HashMap;
+import java.util.HashSet;
+
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.item.Item;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.client.IItemRenderer;
+
+import org.jetbrains.annotations.NotNull;
+
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import gregtech.api.ModernMaterials.Blocks.DumbBase.NewDumb.FrameBoxNewDumb;
 import gregtech.api.ModernMaterials.Blocks.DumbBase.NewDumb.NewDumb;
+import gregtech.api.ModernMaterials.Blocks.DumbBase.NewDumb.NewDumbTileEntity;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxSimpleBlockRenderer;
 import gregtech.api.ModernMaterials.ModernMaterial;
 import gregtech.api.ModernMaterials.PartsClasses.IAssociatedMaterials;
 import gregtech.api.ModernMaterials.PartsClasses.IGetItem;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.item.Item;
-import net.minecraftforge.client.IItemRenderer;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.HashMap;
-import java.util.HashSet;
 
 /**
  * Enum representation of block types with their associated details and materials.
@@ -21,11 +25,7 @@ import java.util.HashSet;
 public enum BlocksEnum implements IGetItem, IAssociatedMaterials {
 
     // Define new blocks here.
-    FrameBox(
-        "% LARP Box",
-        FrameBoxNewDumb.class,
-        new FrameBoxSimpleBlockRenderer()
-    );
+    FrameBox("% LARP Box", FrameBoxNewDumb.class, new FrameBoxSimpleBlockRenderer());
 
     private final String unlocalizedName;
     private final Class<? extends NewDumb> blockClass;
@@ -43,13 +43,12 @@ public enum BlocksEnum implements IGetItem, IAssociatedMaterials {
     /**
      * Constructs an instance of the enum with the given parameters.
      *
-     * @param unlocalizedName               The unlocalized name for the block.
-     * @param blockClass                    The class representing the block.
-     * @param simpleBlockRenderingHandler   The rendering handler for the block.
+     * @param unlocalizedName             The unlocalized name for the block.
+     * @param blockClass                  The class representing the block.
+     * @param simpleBlockRenderingHandler The rendering handler for the block.
      */
-    BlocksEnum(@NotNull final String unlocalizedName,
-               @NotNull final Class<? extends NewDumb> blockClass,
-               @NotNull ISimpleBlockRenderingHandler simpleBlockRenderingHandler) {
+    BlocksEnum(@NotNull final String unlocalizedName, @NotNull final Class<? extends NewDumb> blockClass,
+        @NotNull ISimpleBlockRenderingHandler simpleBlockRenderingHandler) {
         this.unlocalizedName = unlocalizedName;
         this.blockClass = blockClass;
         this.simpleBlockRenderingHandler = simpleBlockRenderingHandler;
@@ -128,5 +127,13 @@ public enum BlocksEnum implements IGetItem, IAssociatedMaterials {
 
     public void setItemRenderer(int materialID, IItemRenderer itemRenderer) {
         itemRendererHashMap.put(materialID, itemRenderer);
+    }
+
+    public Class<? extends TileEntity> getTileEntityClass() {
+        return NewDumbTileEntity.class;
+    }
+
+    public TileEntitySpecialRenderer getSpecialRenderer(int id) {
+        return tileEntitySpecialRendererHashMap.get(id);
     }
 }

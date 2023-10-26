@@ -1,15 +1,46 @@
 package gregtech;
 
+import static gregtech.GT_Version.*;
+import static gregtech.api.GregTech_API.registerCircuitProgrammer;
+import static gregtech.api.ModernMaterials.ModernMaterialUtilities.registerAllMaterialsBlocks;
+import static gregtech.api.ModernMaterials.ModernMaterialUtilities.registerAllMaterialsFluids;
+import static gregtech.api.enums.Mods.Forestry;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Locale;
+import java.util.Map;
+import java.util.function.Predicate;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.WeightedRandomChestContent;
+import net.minecraft.world.World;
+import net.minecraftforge.common.ChestGenHooks;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.oredict.OreDictionary;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.google.common.base.Stopwatch;
+
 import appeng.api.AEApi;
 import appeng.helpers.InterfaceTerminalSupportedClassProvider;
-import com.google.common.base.Stopwatch;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import gregtech.api.GregTech_API;
-import gregtech.api.ModernMaterials.Blocks.FrameBox.TESR.CustomTextureRegister;
 import gregtech.api.ModernMaterials.ModernMaterialsRegistration;
 import gregtech.api.ModernMaterials.ModernMaterialsTextureRegister;
 import gregtech.api.enchants.Enchantment_EnderDamage;
@@ -48,35 +79,6 @@ import gregtech.loaders.preload.*;
 import gregtech.nei.IMCForNEI;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.util.WeightedRandomChestContent;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ChestGenHooks;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.oredict.OreDictionary;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Locale;
-import java.util.Map;
-import java.util.function.Predicate;
-
-import static gregtech.GT_Version.*;
-import static gregtech.api.GregTech_API.registerCircuitProgrammer;
-import static gregtech.api.ModernMaterials.ModernMaterialUtilities.registerAllMaterialsBlocks;
-import static gregtech.api.ModernMaterials.ModernMaterialUtilities.registerAllMaterialsFluids;
-import static gregtech.api.enums.Mods.Forestry;
 
 @Mod(
     modid = Mods.Names.GREG_TECH,

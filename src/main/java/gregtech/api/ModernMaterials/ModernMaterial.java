@@ -1,21 +1,23 @@
 package gregtech.api.ModernMaterials;
 
+import static gregtech.api.ModernMaterials.ModernMaterialUtilities.registerMaterial;
+import static gregtech.api.ModernMaterials.PartProperties.Textures.TextureType.Metallic;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraftforge.client.IItemRenderer;
+
 import org.jetbrains.annotations.NotNull;
+
 import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
 import gregtech.api.ModernMaterials.Fluids.FluidEnum;
 import gregtech.api.ModernMaterials.Fluids.ModernMaterialFluid;
 import gregtech.api.ModernMaterials.PartProperties.Textures.TextureType;
 import gregtech.api.ModernMaterials.PartsClasses.CustomPartInfo;
 import gregtech.api.ModernMaterials.PartsClasses.MaterialPartsEnum;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraftforge.client.IItemRenderer;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import static gregtech.api.ModernMaterials.ModernMaterialUtilities.registerMaterial;
-import static gregtech.api.ModernMaterials.PartProperties.Textures.TextureType.Metallic;
 
 @SuppressWarnings("unused")
 public final class ModernMaterial {
@@ -50,7 +52,8 @@ public final class ModernMaterial {
     }
 
     public boolean doesPartExist(BlocksEnum blocksEnum) {
-        return blocksEnum.getAssociatedMaterials().contains(this);
+        return blocksEnum.getAssociatedMaterials()
+            .contains(this);
     }
 
     public double getMaterialTimeMultiplier() {
@@ -113,7 +116,6 @@ public final class ModernMaterial {
             return this;
         }
 
-
         // This will override all existing parts settings and enable ALL possible parts. Be careful!
         public ModernMaterialBuilder addAllParts() {
             addParts(MaterialPartsEnum.values());
@@ -134,7 +136,8 @@ public final class ModernMaterial {
         }
 
         public ModernMaterialBuilder addCustomFluid(ModernMaterialFluid.Builder modernMaterialFluidBuilder) {
-            ModernMaterialFluid modernMaterialFluid = modernMaterialFluidBuilder.setMaterial(materialToBuild).build();
+            ModernMaterialFluid modernMaterialFluid = modernMaterialFluidBuilder.setMaterial(materialToBuild)
+                .build();
             materialToBuild.existingFluids.add(modernMaterialFluid);
             return this;
         }
@@ -159,8 +162,9 @@ public final class ModernMaterial {
             return this;
         }
 
-
-        public ModernMaterialBuilder setCustomBlockRenderer(@NotNull final BlocksEnum blocksEnum, @NotNull final IItemRenderer itemRenderer, @NotNull final TileEntitySpecialRenderer tileEntitySpecialRenderer) {
+        public ModernMaterialBuilder setCustomBlockRenderer(@NotNull final BlocksEnum blocksEnum,
+            @NotNull final IItemRenderer itemRenderer,
+            @NotNull final TileEntitySpecialRenderer tileEntitySpecialRenderer) {
             blocksEnum.addSpecialBlockRenderAssociatedMaterial(materialToBuild);
             blocksEnum.setAssociatedItem(blocksEnum.getItem());
             blocksEnum.setItemRenderer(materialToBuild.materialID, itemRenderer);

@@ -1,23 +1,11 @@
 package gregtech.api.ModernMaterials;
 
-import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
-import crazypants.enderio.conduit.oc.OCUtil;
-import gregtech.api.GregTech_API;
-import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
-import gregtech.api.ModernMaterials.Blocks.DumbBase.NewDumb.NewDumb;
-import gregtech.api.ModernMaterials.Blocks.DumbBase.NewDumb.NewDumbItemBlock;
-import gregtech.api.ModernMaterials.Blocks.DumbBase.Special.MasterItemRenderer;
-import gregtech.api.ModernMaterials.Blocks.DumbBase.Special.MasterTESR;
-import gregtech.api.ModernMaterials.Blocks.DumbBase.Base.BaseBlock;
-import gregtech.api.ModernMaterials.Blocks.DumbBase.Base.BaseItemBlock;
-import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxSimpleBlockRenderer;
-import gregtech.api.ModernMaterials.Fluids.ModernMaterialFluid;
-import gregtech.api.ModernMaterials.PartProperties.Rendering.ModernMaterialItemRenderer;
-import gregtech.api.ModernMaterials.PartRecipeGenerators.ModernMaterialsPlateRecipeGenerator;
-import gregtech.api.ModernMaterials.PartsClasses.IGetItem;
-import gregtech.api.ModernMaterials.PartsClasses.MaterialPart;
-import gregtech.api.ModernMaterials.PartsClasses.MaterialPartsEnum;
+import static gregtech.api.ModernMaterials.Blocks.Registration.SimpleBlockRegistration.registerSimpleBlock;
+import static gregtech.api.ModernMaterials.Blocks.Registration.SpecialBlockRegistration.registerTESRBlock;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -26,14 +14,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fluids.FluidRegistry;
+
 import org.lwjgl.opengl.GL11;
-import scala.Int;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
-import java.util.stream.Collectors;
-
-import static gregtech.api.enums.ConfigCategories.ModernMaterials.materialID;
+import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
+import gregtech.api.ModernMaterials.Blocks.DumbBase.Base.BaseItemBlock;
+import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxSimpleBlockRenderer;
+import gregtech.api.ModernMaterials.Fluids.ModernMaterialFluid;
+import gregtech.api.ModernMaterials.PartProperties.Rendering.ModernMaterialItemRenderer;
+import gregtech.api.ModernMaterials.PartRecipeGenerators.ModernMaterialsPlateRecipeGenerator;
+import gregtech.api.ModernMaterials.PartsClasses.IGetItem;
+import gregtech.api.ModernMaterials.PartsClasses.MaterialPart;
+import gregtech.api.ModernMaterials.PartsClasses.MaterialPartsEnum;
 
 public class ModernMaterialUtilities {
 
@@ -46,7 +39,11 @@ public class ModernMaterialUtilities {
         }
 
         if (materialNameToMaterialMap.containsKey(material.getMaterialName())) {
-            throw new IllegalArgumentException("Material with name " + material.getMaterialName() + " already exists. Material was registered with ID " + material.getMaterialID() + ".");
+            throw new IllegalArgumentException(
+                "Material with name " + material.getMaterialName()
+                    + " already exists. Material was registered with ID "
+                    + material.getMaterialID()
+                    + ".");
         }
 
         materialIDToMaterial.put(material.getMaterialID(), material);
@@ -54,12 +51,6 @@ public class ModernMaterialUtilities {
     }
 
     public static void registerAllMaterialsItems() {
-        for (ModernMaterial tMaterial : materialIDToMaterial.values()) {
-            tMaterial.setMaterialID(++GregTech_API.lastMaterialID);
-            GregTech_API.modernMaterialIDs.mConfig.get(materialID.name(), tMaterial.getMaterialName(), 0)
-                    .set(GregTech_API.lastMaterialID);
-            materialIDToMaterial.put(GregTech_API.lastMaterialID, tMaterial);
-        }
 
         for (MaterialPartsEnum part : MaterialPartsEnum.values()) {
 
@@ -83,115 +74,17 @@ public class ModernMaterialUtilities {
 
     }
 
-
-
-
     public static void registerAllMaterialsBlocks() {
-        BlocksEnum.FrameBox.getAssociatedMaterials().addAll(materialIDToMaterial.values());
+        BlocksEnum.FrameBox.getAssociatedMaterials()
+            .addAll(materialIDToMaterial.values());
 
         for (BlocksEnum blockType : BlocksEnum.values()) {
             registerSimpleBlock(blockType);
-            //registerTESRBlock(blockType);
-
+            registerTESRBlock(blockType);
         }
 
         new FrameBoxSimpleBlockRenderer();
 
-    }
-
-//    private static void registerTESRBlock(BlocksEnum blockType) {
-//
-//        final String name = "TESR:" + blockType;
-//
-//        try {
-//            // Register the actual block.
-//            BaseBlock simpleBlock = blockType.getBlockClass().getDeclaredConstructor().newInstance();
-//            simpleBlock.setBlockName(name);
-//            GameRegistry.registerBlock(simpleBlock, BaseItemBlock.class, name);
-//
-//            // Register the tile entity itself.
-//            GameRegistry.registerTileEntity(blockType.getTileEntityClass(), name);
-//
-//            Item blockItem = Item.getItemFromBlock(simpleBlock);
-//            MinecraftForgeClient.registerItemRenderer(blockItem, new MasterItemRenderer());
-//
-//            // Register the master TESR. This only exists to redirect to different TESRs for different materials.
-//            ClientRegistry.bindTileEntitySpecialRenderer(blockType.getTileEntityClass(), new MasterTESR());
-//
-//        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-//            throw new RuntimeException("Failed to instantiate block", e);
-//        }
-//
-//    }
-
-    /**
-     * Registers a simple block with the game based on the provided block type and valid material IDs.
-     *
-     * @param blockType The type of block to be registered.
-     */
-    private static void registerSimpleBlock(BlocksEnum blockType) {
-
-        // Extract the materials associated with the given block type
-        HashSet<ModernMaterial> associatedMaterials = blockType.getSimpleBlockRenderAssociatedMaterials();
-
-        // Extract and sort the IDs associated with the materials. We process this in generateIDGroups.
-        List<Integer> sortedIDs = associatedMaterials.stream()
-            .map(ModernMaterial::getMaterialID)
-            .sorted()
-            .collect(Collectors.toList());
-
-        int offset = -1;
-        for (List<Integer> IDs : generateIDGroups(sortedIDs)) {
-            offset++;
-            if (IDs.isEmpty()) {
-                continue;
-            }
-
-            try {
-                NewDumb block = blockType.getBlockClass()
-                    .getDeclaredConstructor(int.class, List.class)
-                    .newInstance(offset, IDs);
-                GameRegistry.registerBlock(block, NewDumbItemBlock.class, blockType + "." + offset);
-            } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                throw new RuntimeException("Failed to instantiate block", e);
-            }
-
-        }
-    }
-
-    private static final int GROUP_SIZE = 16;
-
-    public static List<List<Integer>> generateIDGroups(List<Integer> sortedIDs) {
-        // Handle null or empty input
-        if (sortedIDs == null || sortedIDs.isEmpty()) {
-            return Collections.emptyList();
-        }
-
-        List<List<Integer>> groupedIDs = new ArrayList<>();
-
-        // Process each ID from the sorted list
-        for (int currentID : sortedIDs) {
-            int groupIndex = calculateGroupIndex(currentID);
-
-            // Ensure the groupedIDs list has a list initialized for this groupIndex
-            ensureGroupExists(groupedIDs, groupIndex);
-
-            groupedIDs.get(groupIndex).add(currentID);
-        }
-
-        return groupedIDs;
-    }
-
-    // Calculate the group index for the given ID
-    private static int calculateGroupIndex(int id) {
-        return id / GROUP_SIZE;
-    }
-
-    // Ensure that the groupedIDs list has a list initialized for the given groupIndex
-    private static void ensureGroupExists(List<List<Integer>> groupedIDs, int groupIndex) {
-        while (groupedIDs.size() <= groupIndex) {
-            groupedIDs.add(new ArrayList<>());
-        }
     }
 
     public static void registerAllMaterialsFluids() {
@@ -221,7 +114,8 @@ public class ModernMaterialUtilities {
         ModernMaterial modernMaterial = materialNameToMaterialMap.getOrDefault(materialName, null);
 
         if (modernMaterial == null) {
-            throw new IllegalArgumentException("Material % does not exist. Make sure you spelt it correctly.".replace("%", materialName));
+            throw new IllegalArgumentException(
+                "Material % does not exist. Make sure you spelt it correctly.".replace("%", materialName));
         }
 
         return modernMaterial;
@@ -250,7 +144,9 @@ public class ModernMaterialUtilities {
         if (part instanceof BaseItemBlock blockPart) {
             tooltip.add("Material Part Type: " + "Blah blah do later");
         } else if (part instanceof MaterialPart itemPart) {
-            tooltip.add("Material Part Type: " + material.getCustomPartInfo(itemPart.getPart()).getTextureType());
+            tooltip.add(
+                "Material Part Type: " + material.getCustomPartInfo(itemPart.getPart())
+                    .getTextureType());
         }
 
         return tooltip;

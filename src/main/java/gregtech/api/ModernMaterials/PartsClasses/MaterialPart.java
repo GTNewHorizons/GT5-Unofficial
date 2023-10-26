@@ -4,17 +4,18 @@ import static gregtech.api.ModernMaterials.ModernMaterialUtilities.*;
 
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.ModernMaterials.ModernMaterialUtilities;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.ModernMaterials.ModernMaterial;
-import gregtech.api.util.GT_LanguageManager;
 import org.jetbrains.annotations.NotNull;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.ModernMaterials.ModernMaterial;
+import gregtech.api.ModernMaterials.ModernMaterialUtilities;
+import gregtech.api.util.GT_LanguageManager;
 
 public class MaterialPart extends Item {
 
@@ -31,7 +32,7 @@ public class MaterialPart extends Item {
 
     @Override
     public void getSubItems(Item item, CreativeTabs tabs, List itemList) {
-        for(ModernMaterial material : part.getAssociatedMaterials()) {
+        for (ModernMaterial material : part.getAssociatedMaterials()) {
             ItemStack itemStack = new ItemStack(item, 1, material.getMaterialID());
             itemList.add(itemStack);
         }
@@ -53,7 +54,8 @@ public class MaterialPart extends Item {
     // Tooltip information.
     @SideOnly(Side.CLIENT)
     @Override
-    public void addInformation(@NotNull ItemStack itemStack, EntityPlayer player, List<String> tooltipList, boolean aF3_H)  {
+    public void addInformation(@NotNull ItemStack itemStack, EntityPlayer player, List<String> tooltipList,
+        boolean aF3_H) {
 
         final ModernMaterial material = ModernMaterialUtilities.materialIDToMaterial.get(itemStack.getItemDamage());
 
