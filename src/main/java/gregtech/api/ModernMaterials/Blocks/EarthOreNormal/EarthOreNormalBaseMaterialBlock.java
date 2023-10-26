@@ -28,6 +28,7 @@ public class EarthOreNormalBaseMaterialBlock extends BaseMaterialBlock {
     @SideOnly(Side.CLIENT)
     @Override
     public IIcon getIcon(int side, int meta) {
+        // Todo this particle is used to spawn the breaking effect. We should probably change it to something else, like the underlying stone texture, however this has issues because changing it here will cause the colour multiplier function to apply to that later. Non-critical.
         return this.blockIcon;
     }
 

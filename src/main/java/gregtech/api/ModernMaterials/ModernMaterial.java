@@ -7,6 +7,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import gregtech.api.ModernMaterials.PartsClasses.IEnumPart;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraftforge.client.IItemRenderer;
 
@@ -95,17 +96,19 @@ public final class ModernMaterial {
             return this;
         }
 
-        public ModernMaterialBuilder addParts(ItemsEnum... parts) {
-            for (ItemsEnum part : parts) {
+        public ModernMaterialBuilder addParts(IEnumPart... parts) {
+            for (IEnumPart part : parts) {
                 addPart(part);
             }
 
             return this;
         }
 
-        public ModernMaterialBuilder addPart(ItemsEnum part) {
+        public ModernMaterialBuilder addPart(IEnumPart part) {
             part.addAssociatedMaterial(materialToBuild);
-            materialToBuild.existingPartsForMaterial.put(part, new CustomPartInfo(part, materialToBuild.textureType));
+            if (part instanceof ItemsEnum itemsEnum) {
+                materialToBuild.existingPartsForMaterial.put(itemsEnum, new CustomPartInfo(itemsEnum, materialToBuild.textureType));
+            }
 
             return this;
         }
@@ -120,6 +123,7 @@ public final class ModernMaterial {
         // This will override all existing parts settings and enable ALL possible parts. Be careful!
         public ModernMaterialBuilder addAllParts() {
             addParts(ItemsEnum.values());
+            addParts(BlocksEnum.values());
             return this;
         }
 

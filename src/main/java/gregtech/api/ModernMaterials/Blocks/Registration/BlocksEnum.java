@@ -27,7 +27,8 @@ public enum BlocksEnum implements IEnumPart {
 
 //  Define new blocks here.
     FrameBox("% LARP Box", FrameBoxBaseMaterialBlock.class, new FrameBoxSimpleBlockRenderer()),
-    EarthOreNormal("% Ore", EarthOreNormalBaseMaterialBlock.class, new EarthOreSimpleBlockRenderer());
+    EarthOreNormal("% Ore", EarthOreNormalBaseMaterialBlock.class, new EarthOreSimpleBlockRenderer()),
+    MoonOreNormal("% Ore", EarthOreNormalBaseMaterialBlock.class, new EarthOreSimpleBlockRenderer());
 
     private final String unlocalizedName;
     private final Class<? extends BaseMaterialBlock> blockClass;

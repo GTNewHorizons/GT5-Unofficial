@@ -1,6 +1,7 @@
 package gregtech.api.ModernMaterials.Blocks.EarthOreNormal;
 
 import static gregtech.api.ModernMaterials.ModernMaterialUtilities.*;
+import static gregtech.api.ModernMaterials.Render.Utilities.drawBlock;
 
 import java.awt.*;
 
@@ -44,10 +45,13 @@ public class EarthOreSimpleBlockRenderer implements ISimpleBlockRenderingHandler
 
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 
+        tessellator.startDrawingQuads();
+        drawBlock(Blocks.stone, materialID, renderer);
+        tessellator.draw();
+
         GL11.glColor3f(red / 255.0f, green / 255.0f, blue / 255.0f);
 
         tessellator.startDrawingQuads();
-        drawBlock(Blocks.stone, materialID, renderer);
         drawBlock(block, materialID, renderer);
         tessellator.draw();
 
@@ -63,9 +67,11 @@ public class EarthOreSimpleBlockRenderer implements ISimpleBlockRenderingHandler
         int ID = baseMaterialBlock.getMaterialID(world.getBlockMetadata(x, y, z));
         if (baseMaterialBlock.getBlockEnum()
             .getSpecialBlockRenderAssociatedMaterials()
-            .contains(materialIDToMaterial.get(ID))) return true; // True tells minecraft that we have handled this and
-                                                                  // to not do anymore rendering here.
+            .contains(materialIDToMaterial.get(ID))) return true;
+        // True tells minecraft that we have handled this and
+        // to not do anymore rendering here. This is then handled by a TESR instead.
 
+        renderer.renderStandardBlock(Blocks.stone, x, y, z);
         renderer.renderStandardBlock(block, x, y, z);
 
         return true;
