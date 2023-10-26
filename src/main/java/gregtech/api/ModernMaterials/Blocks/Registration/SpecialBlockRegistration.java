@@ -14,7 +14,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
 import gregtech.api.ModernMaterials.Blocks.DumbBase.NewDumb.NewDumb;
 import gregtech.api.ModernMaterials.Blocks.DumbBase.NewDumb.NewDumbItemBlock;
-import gregtech.api.ModernMaterials.Blocks.DumbBase.Special.MasterItemRenderer;
+import gregtech.api.ModernMaterials.Blocks.DumbBase.Special.MasterItemBlockRenderer;
 import gregtech.api.ModernMaterials.Blocks.DumbBase.Special.MasterTESR;
 import gregtech.api.ModernMaterials.ModernMaterial;
 
@@ -53,7 +53,7 @@ public class SpecialBlockRegistration {
                 throw new RuntimeException("Failed to instantiate block.", e);
             }
 
-            MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(block), new MasterItemRenderer(blockType));
+            MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(block), new MasterItemBlockRenderer(blockType));
 
         }
     }

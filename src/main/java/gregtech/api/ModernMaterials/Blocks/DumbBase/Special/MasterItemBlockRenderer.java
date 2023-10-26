@@ -10,11 +10,11 @@ import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
 import gregtech.api.ModernMaterials.Blocks.DumbBase.NewDumb.NewDumb;
 import gregtech.api.ModernMaterials.ModernMaterialUtilities;
 
-public class MasterItemRenderer implements IItemRenderer {
+public class MasterItemBlockRenderer implements IItemRenderer {
 
     private final BlocksEnum blockEnum;
 
-    public MasterItemRenderer(BlocksEnum blockEnum) {
+    public MasterItemBlockRenderer(BlocksEnum blockEnum) {
         this.blockEnum = blockEnum;
     }
 
@@ -37,12 +37,13 @@ public class MasterItemRenderer implements IItemRenderer {
 
     private void repositionItem(ItemRenderType type) {
         switch (type) {
-            case EQUIPPED_FIRST_PERSON, EQUIPPED, INVENTORY -> GL11.glTranslated(0.5, 0.5, 0.5);
-            case FIRST_PERSON_MAP, ENTITY -> {
+            case EQUIPPED_FIRST_PERSON, EQUIPPED -> GL11.glTranslated(0.5, 0.5, 0.5);
+            case FIRST_PERSON_MAP, ENTITY, INVENTORY -> {
                 return;
             }
         };
     }
+
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack itemStack, Object... data) {

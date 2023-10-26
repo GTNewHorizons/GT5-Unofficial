@@ -38,7 +38,6 @@ public class UniversiumFrameItemRenderer implements IItemRenderer {
 
         GL11.glPushMatrix();
 
-        // GL11.glTranslated(0.5, 0.5, 0.5);
         processLightLevel(type, data);
 
         CosmicRenderShenanigans.inventoryRender = shouldUseInventoryCosmicRenderHelper(type);
