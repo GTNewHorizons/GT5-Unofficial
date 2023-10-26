@@ -19,7 +19,6 @@ public class AsmConfig {
     public static boolean enableGtTooltipFix;
     public static boolean enableGtNbtFix;
     public static boolean enableGtCharcoalPitFix;
-    public static boolean enableChunkDebugging;
     public static boolean enableCofhPatch;
     public static boolean enableTcAspectSafety;
     public static boolean enabledLwjglKeybindingFix;
@@ -62,12 +61,6 @@ public class AsmConfig {
             prop.comment = "Enable/Disable entity setHealth() fix.";
             prop.setLanguageKey("gtpp.enabledFixEntitySetHealth").setRequiresMcRestart(true);
             enabledFixEntitySetHealth = prop.getBoolean(false);
-            propOrderDebug.add(prop.getName());
-
-            prop = config.get("debug", "enableChunkDebugging", false);
-            prop.comment = "Enable/Disable Chunk Debugging Features, Must Be enabled on Client and Server.";
-            prop.setLanguageKey("gtpp.enableChunkDebugging").setRequiresMcRestart(true);
-            enableChunkDebugging = prop.getBoolean(false);
             propOrderDebug.add(prop.getName());
 
             prop = config.get("debug", "enableGtNbtFix", true);
@@ -126,7 +119,6 @@ public class AsmConfig {
                 config.save();
             }
 
-            Preloader_Logger.INFO("Chunk Debugging - Enabled: " + enableChunkDebugging);
             Preloader_Logger.INFO("Gt Nbt Fix - Enabled: " + enableGtNbtFix);
             Preloader_Logger.INFO("Gt Tooltip Fix - Enabled: " + enableGtTooltipFix);
             Preloader_Logger.INFO("COFH Patch - Enabled: " + enableCofhPatch);

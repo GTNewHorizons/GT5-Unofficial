@@ -55,12 +55,6 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
             return new ClassTransformer_LWJGL_Keyboard(basicClass, isClientSettingsClass).getWriter().toByteArray();
         }
 
-        // Enable mapping of Tickets and loaded chunks. - Forge
-        if (transformedName.equals(FORGE_CHUNK_MANAGER) && AsmConfig.enableChunkDebugging) {
-            Preloader_Logger.INFO("Chunkloading Patch", "Transforming " + transformedName);
-            return new ClassTransformer_Forge_ChunkLoading(basicClass, false).getWriter().toByteArray();
-        }
-
         // Fix the OreDictionary - Forge
         if (transformedName.equals(FORGE_ORE_DICTIONARY) && AsmConfig.enableOreDictPatch) {
             Preloader_Logger.INFO("OreDictTransformer", "Transforming " + transformedName);
