@@ -56,6 +56,11 @@ public class FrameBoxSimpleBlockRenderer implements ISimpleBlockRenderingHandler
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
         RenderBlocks renderer) {
 
+        NewDumb newDumb = (NewDumb) block;
+
+        int ID = newDumb.getMaterialID(world.getBlockMetadata(x, y, z));
+        if (newDumb.getBlockEnum().getSpecialBlockRenderAssociatedMaterials().contains(materialIDToMaterial.get(ID))) return true; // True tells minecraft that we have handled this and to not do anymore rendering here.
+
         renderer.renderStandardBlock(block, x, y, z);
         /*
          * Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
