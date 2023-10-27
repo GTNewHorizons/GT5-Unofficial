@@ -21,7 +21,7 @@ import gregtech.api.ModernMaterials.ModernMaterialUtilities;
 public abstract class BaseMaterialBlock extends Block {
 
     private final BlocksEnum blockEnum;
-    List<Integer> validIDs;
+    final List<Integer> validIDs;
 
     private final int blockIDOffset;
 

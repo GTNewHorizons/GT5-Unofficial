@@ -7,7 +7,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import gregtech.api.ModernMaterials.PartsClasses.IEnumPart;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraftforge.client.IItemRenderer;
 
@@ -18,6 +17,7 @@ import gregtech.api.ModernMaterials.Fluids.FluidEnum;
 import gregtech.api.ModernMaterials.Fluids.ModernMaterialFluid;
 import gregtech.api.ModernMaterials.PartProperties.Textures.TextureType;
 import gregtech.api.ModernMaterials.PartsClasses.CustomPartInfo;
+import gregtech.api.ModernMaterials.PartsClasses.IEnumPart;
 import gregtech.api.ModernMaterials.PartsClasses.ItemsEnum;
 
 @SuppressWarnings("unused")
@@ -107,7 +107,8 @@ public final class ModernMaterial {
         public ModernMaterialBuilder addPart(IEnumPart part) {
             part.addAssociatedMaterial(materialToBuild);
             if (part instanceof ItemsEnum itemsEnum) {
-                materialToBuild.existingPartsForMaterial.put(itemsEnum, new CustomPartInfo(itemsEnum, materialToBuild.textureType));
+                materialToBuild.existingPartsForMaterial
+                    .put(itemsEnum, new CustomPartInfo(itemsEnum, materialToBuild.textureType));
             }
 
             return this;

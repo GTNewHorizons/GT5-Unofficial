@@ -1,12 +1,10 @@
-package gregtech.api.ModernMaterials.Blocks.FrameBox;
+package gregtech.api.ModernMaterials.Blocks.BlockTypes.FrameBox;
 
 import static gregtech.api.ModernMaterials.ModernMaterialUtilities.*;
 import static gregtech.api.ModernMaterials.Render.Utilities.drawBlock;
 
 import java.awt.*;
 
-import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMaterialBlock;
-import gregtech.api.ModernMaterials.ModernMaterialUtilities;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -16,7 +14,9 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMaterialBlock;
 import gregtech.api.ModernMaterials.ModernMaterial;
+import gregtech.api.ModernMaterials.ModernMaterialUtilities;
 
 public class FrameBoxSimpleBlockRenderer implements ISimpleBlockRenderingHandler {
 

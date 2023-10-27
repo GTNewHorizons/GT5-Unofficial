@@ -68,23 +68,23 @@ public enum ItemsEnum implements IEnumPart {
     Nanites("% Nanites"),
 
     // Tool Parts.
-//    ArrowHead("% Arrow Head"),
-//    AxeHead("% Axe Head"),
+    // ArrowHead("% Arrow Head"),
+    // AxeHead("% Axe Head"),
     BuzzSaw("% Buzz Saw"),
     ChainSaw("% Chainsaw"),
     DrillTip("% Drill Tip"),
     FileHead("% File Head"),
     HammerHead("% Hammer Head"),
-//    HoeHead("% Hoe Head"),
+    // HoeHead("% Hoe Head"),
     MalletHead("% Mallet Head"),
-//    PickaxeHead("% Pickaxe Head"),
-//    PlowHead("% Plow Head"),
+    // PickaxeHead("% Pickaxe Head"),
+    // PlowHead("% Plow Head"),
     SawBlade("% Saw Blade"),
     ScrewdriverHead("% Screwdriver Head"),
-//    SenseHead("% Sense Head"),
-//    ShovelHead("% Shovel Head"),
+    // SenseHead("% Sense Head"),
+    // ShovelHead("% Shovel Head"),
     SolderingHead("% Soldering Head"),
-//    SwordBlade("% Sword Blade"),
+    // SwordBlade("% Sword Blade"),
     ElectricWrenchHead("% Electric Wrench Head");
 
     public final String partName;

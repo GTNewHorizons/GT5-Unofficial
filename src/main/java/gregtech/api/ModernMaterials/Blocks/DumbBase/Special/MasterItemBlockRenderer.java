@@ -1,11 +1,13 @@
 package gregtech.api.ModernMaterials.Blocks.DumbBase.Special;
 
-import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMaterialBlock;
-import gregtech.api.ModernMaterials.ModernMaterialUtilities;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
+
 import org.lwjgl.opengl.GL11;
+
+import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMaterialBlock;
+import gregtech.api.ModernMaterials.ModernMaterialUtilities;
 
 public class MasterItemBlockRenderer implements IItemRenderer {
 
@@ -17,7 +19,8 @@ public class MasterItemBlockRenderer implements IItemRenderer {
         BaseMaterialBlock block = (BaseMaterialBlock) Block.getBlockFromItem(item.getItem());
         int ID = block.getMaterialID(meta);
 
-        return block.getBlockEnum().getSpecialBlockRenderAssociatedMaterials()
+        return block.getBlockEnum()
+            .getSpecialBlockRenderAssociatedMaterials()
             .contains(ModernMaterialUtilities.getMaterialFromID(ID));
     }
 
@@ -32,9 +35,8 @@ public class MasterItemBlockRenderer implements IItemRenderer {
             case FIRST_PERSON_MAP, ENTITY, INVENTORY -> {
                 return;
             }
-        };
+        }
     }
-
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack itemStack, Object... data) {
@@ -45,7 +47,8 @@ public class MasterItemBlockRenderer implements IItemRenderer {
         BaseMaterialBlock block = (BaseMaterialBlock) Block.getBlockFromItem(itemStack.getItem());
         int materialID = block.getMaterialID(meta);
 
-        IItemRenderer itemRenderer = block.getBlockEnum().getItemRenderer(materialID);
+        IItemRenderer itemRenderer = block.getBlockEnum()
+            .getItemRenderer(materialID);
 
         // Delegate this to the appropriate renderer depending on the material.
         itemRenderer.renderItem(type, itemStack, data);

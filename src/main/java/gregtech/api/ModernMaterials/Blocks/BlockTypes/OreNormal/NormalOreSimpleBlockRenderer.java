@@ -1,19 +1,12 @@
-package gregtech.api.ModernMaterials.Blocks.EarthOreNormal;
+package gregtech.api.ModernMaterials.Blocks.BlockTypes.OreNormal;
 
-import static gregtech.api.ModernMaterials.ModernMaterialUtilities.*;
 import static gregtech.api.ModernMaterials.Render.Utilities.drawBlock;
 
 import java.awt.*;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMaterialBlock;
-import gregtech.api.ModernMaterials.ModernMaterialUtilities;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +14,9 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMaterialBlock;
 import gregtech.api.ModernMaterials.ModernMaterial;
+import gregtech.api.ModernMaterials.ModernMaterialUtilities;
 
 public class NormalOreSimpleBlockRenderer implements ISimpleBlockRenderingHandler {
 

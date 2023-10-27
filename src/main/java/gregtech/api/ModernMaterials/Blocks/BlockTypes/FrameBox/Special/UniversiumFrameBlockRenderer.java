@@ -1,6 +1,5 @@
-package gregtech.api.ModernMaterials.Blocks.FrameBox.Special;
+package gregtech.api.ModernMaterials.Blocks.BlockTypes.FrameBox.Special;
 
-import static gregtech.api.ModernMaterials.Blocks.FrameBox.Special.CustomTextureRegister.universiumFrameTexture;
 import static gregtech.api.ModernMaterials.Render.Utilities.renderBlock;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -14,8 +13,6 @@ public class UniversiumFrameBlockRenderer extends TileEntitySpecialRenderer {
 
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float timeSinceLastTick) {
-
-        // I don't really understand fully how this works, so I won't be of much help, sorry.
 
         CosmicRenderShenanigans.inventoryRender = false;
         CosmicRenderShenanigans.cosmicOpacity = 2.5f;
@@ -33,7 +30,7 @@ public class UniversiumFrameBlockRenderer extends TileEntitySpecialRenderer {
         // to draw it along with the stars. Otherwise, the shader would need to be edited.
         CosmicRenderShenanigans.bindItemTexture();
 
-        renderBlock(universiumFrameTexture);
+        renderBlock(CustomTextureRegister.universiumFrameTexture);
 
         CosmicRenderShenanigans.releaseShader();
 

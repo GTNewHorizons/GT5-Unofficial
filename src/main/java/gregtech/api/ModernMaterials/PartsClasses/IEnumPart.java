@@ -2,8 +2,9 @@ package gregtech.api.ModernMaterials.PartsClasses;
 
 import java.util.HashSet;
 
-import gregtech.api.ModernMaterials.ModernMaterial;
 import net.minecraft.item.Item;
+
+import gregtech.api.ModernMaterials.ModernMaterial;
 
 public interface IEnumPart {
 

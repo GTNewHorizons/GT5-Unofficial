@@ -1,6 +1,6 @@
-package gregtech.api.ModernMaterials.Blocks.FrameBox.Special;
+package gregtech.api.ModernMaterials.Blocks.BlockTypes.FrameBox.Special;
 
-import static gregtech.api.ModernMaterials.Blocks.FrameBox.Special.CustomTextureRegister.universiumFrameTexture;
+import static gregtech.api.ModernMaterials.Blocks.BlockTypes.FrameBox.Special.CustomTextureRegister.universiumFrameTexture;
 import static gregtech.api.ModernMaterials.Render.Utilities.renderBlock;
 
 import net.minecraft.entity.EntityLivingBase;

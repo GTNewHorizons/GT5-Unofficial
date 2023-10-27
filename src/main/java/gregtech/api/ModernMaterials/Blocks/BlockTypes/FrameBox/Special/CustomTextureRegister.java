@@ -1,4 +1,4 @@
-package gregtech.api.ModernMaterials.Blocks.FrameBox.Special;
+package gregtech.api.ModernMaterials.Blocks.BlockTypes.FrameBox.Special;
 
 import static gregtech.api.enums.Mods.GregTech;
 

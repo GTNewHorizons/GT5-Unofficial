@@ -16,8 +16,8 @@ import org.lwjgl.opengl.GL11;
 
 import gregtech.api.ModernMaterials.ModernMaterial;
 import gregtech.api.ModernMaterials.PartsClasses.CustomPartInfo;
-import gregtech.api.ModernMaterials.PartsClasses.MaterialPart;
 import gregtech.api.ModernMaterials.PartsClasses.ItemsEnum;
+import gregtech.api.ModernMaterials.PartsClasses.MaterialPart;
 import gregtech.common.render.GT_RenderUtil;
 
 public class ModernMaterialItemRenderer implements IItemRenderer {

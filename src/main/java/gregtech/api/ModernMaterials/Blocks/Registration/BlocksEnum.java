@@ -3,10 +3,6 @@ package gregtech.api.ModernMaterials.Blocks.Registration;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMaterialBlock;
-import gregtech.api.ModernMaterials.Blocks.EarthOreNormal.EarthOreNormalBaseMaterialBlock;
-import gregtech.api.ModernMaterials.Blocks.EarthOreNormal.NormalOreSimpleBlockRenderer;
-import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxBaseMaterialBlock;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -16,8 +12,12 @@ import net.minecraftforge.client.IItemRenderer;
 import org.jetbrains.annotations.NotNull;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import gregtech.api.ModernMaterials.Blocks.BlockTypes.FrameBox.FrameBoxBaseMaterialBlock;
+import gregtech.api.ModernMaterials.Blocks.BlockTypes.FrameBox.FrameBoxSimpleBlockRenderer;
+import gregtech.api.ModernMaterials.Blocks.BlockTypes.OreNormal.NormalBaseMaterialBlock;
+import gregtech.api.ModernMaterials.Blocks.BlockTypes.OreNormal.NormalOreSimpleBlockRenderer;
+import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMaterialBlock;
 import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMaterialTileEntity;
-import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxSimpleBlockRenderer;
 import gregtech.api.ModernMaterials.ModernMaterial;
 import gregtech.api.ModernMaterials.PartsClasses.IEnumPart;
 
@@ -26,12 +26,12 @@ import gregtech.api.ModernMaterials.PartsClasses.IEnumPart;
  */
 public enum BlocksEnum implements IEnumPart {
 
-    //  Define new blocks here.
+    // Define new blocks here.
     FrameBox("% LARP Box", FrameBoxBaseMaterialBlock.class, new FrameBoxSimpleBlockRenderer()),
-    EarthOreNormal("% Ore", EarthOreNormalBaseMaterialBlock.class, new NormalOreSimpleBlockRenderer(Blocks.stone, 0)),
-    MoonOreNormal("% Ore", EarthOreNormalBaseMaterialBlock.class, new NormalOreSimpleBlockRenderer(Blocks.end_stone, 0)),
-    MarsOreNormal("% Ore", EarthOreNormalBaseMaterialBlock.class, new NormalOreSimpleBlockRenderer(Blocks.netherrack, 0));
-
+    BlockOf("Block of %", NormalBaseMaterialBlock.class, new NormalOreSimpleBlockRenderer(Blocks.netherrack, 0)),
+    EarthOreNormal("% Ore", NormalBaseMaterialBlock.class, new NormalOreSimpleBlockRenderer(Blocks.stone, 0)),
+    MoonOreNormal("% Ore", NormalBaseMaterialBlock.class, new NormalOreSimpleBlockRenderer(Blocks.end_stone, 0)),
+    MarsOreNormal("% Ore", NormalBaseMaterialBlock.class, new NormalOreSimpleBlockRenderer(Blocks.netherrack, 0));
 
     private final String unlocalizedName;
     private final Class<? extends BaseMaterialBlock> blockClass;

@@ -6,27 +6,20 @@ import static gregtech.api.ModernMaterials.Blocks.Registration.SpecialBlockRegis
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMaterialItemBlock;
-import gregtech.api.ModernMaterials.PartsClasses.IEnumPart;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fluids.FluidRegistry;
 
-import org.lwjgl.opengl.GL11;
-
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMaterialItemBlock;
 import gregtech.api.ModernMaterials.Blocks.Registration.BlocksEnum;
 import gregtech.api.ModernMaterials.Fluids.ModernMaterialFluid;
 import gregtech.api.ModernMaterials.PartProperties.Rendering.ModernMaterialItemRenderer;
 import gregtech.api.ModernMaterials.PartRecipeGenerators.ModernMaterialsPlateRecipeGenerator;
-import gregtech.api.ModernMaterials.PartsClasses.MaterialPart;
+import gregtech.api.ModernMaterials.PartsClasses.IEnumPart;
 import gregtech.api.ModernMaterials.PartsClasses.ItemsEnum;
+import gregtech.api.ModernMaterials.PartsClasses.MaterialPart;
 
 public class ModernMaterialUtilities {
 
@@ -75,16 +68,10 @@ public class ModernMaterialUtilities {
     }
 
     public static void registerAllMaterialsBlocks() {
-//        BlocksEnum.FrameBox.getAssociatedMaterials()
-//            .addAll(materialIDToMaterial.values());
-//        BlocksEnum.EarthOreNormal.getAssociatedMaterials()
-//            .addAll(materialIDToMaterial.values());
-
         for (BlocksEnum blockType : BlocksEnum.values()) {
             registerSimpleBlock(blockType);
             registerTESRBlock(blockType);
         }
-
     }
 
     public static void registerAllMaterialsFluids() {

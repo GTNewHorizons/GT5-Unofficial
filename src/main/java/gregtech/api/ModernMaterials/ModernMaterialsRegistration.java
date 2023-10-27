@@ -1,10 +1,5 @@
 package gregtech.api.ModernMaterials;
 
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import gregtech.api.ModernMaterials.Blocks.FrameBox.Special.UniversiumFrameBlockRenderer;
-import gregtech.api.ModernMaterials.Blocks.FrameBox.Special.UniversiumFrameItemRenderer;
-import gregtech.api.ModernMaterials.Blocks.Registration.BlocksEnum;
-
 import static gregtech.api.ModernMaterials.Fluids.FluidEnum.Gas;
 import static gregtech.api.ModernMaterials.Fluids.FluidEnum.Molten;
 import static gregtech.api.ModernMaterials.Fluids.FluidEnum.NoPrefix;
@@ -12,15 +7,14 @@ import static gregtech.api.ModernMaterials.Fluids.FluidEnum.Plasma;
 import static gregtech.api.ModernMaterials.ModernMaterialUtilities.registerAllMaterialsItems;
 import static gregtech.api.ModernMaterials.PartProperties.Textures.TextureType.Metallic;
 
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import gregtech.api.ModernMaterials.Blocks.BlockTypes.FrameBox.Special.UniversiumFrameBlockRenderer;
+import gregtech.api.ModernMaterials.Blocks.BlockTypes.FrameBox.Special.UniversiumFrameItemRenderer;
+import gregtech.api.ModernMaterials.Blocks.Registration.BlocksEnum;
+
 public class ModernMaterialsRegistration {
 
     public void run(FMLPreInitializationEvent event) {
-
-        // GregTech_API.modernMaterialIDs = new GT_Config(
-        // new Configuration(
-        // new File(new File(event.getModConfigurationDirectory(), "GregTech"), "ModerMaterialIDs.cfg")));
-        // GregTech_API.lastMaterialID = GregTech_API.modernMaterialIDs.mConfig
-        // .get(ConfigCategories.ModernMaterials.materialID.name(), "LastMaterialID", 0).getInt();
 
         new ModernMaterial.ModernMaterialBuilder("Copper").setMaterialID(1)
             .setColor(120, 100, 0)
@@ -107,18 +101,6 @@ public class ModernMaterialsRegistration {
         // new ModernMaterialFluid.Builder("Zebra % Fluid %")
         // .setTemperature(120_000_000)
         // )
-
-        // new ModernMaterial("UwU").setColor(0, 255, 255)
-        // .setTextureMode(Metallic).addParts(Gear).build();
-        //
-        // new ModernMaterial("Amazium").setColor(100, 0, 200).setTextureMode(Dull).addAllParts() //
-        // .addPart(Ingot).setTextureMode(Metallic).addPart(Gear)
-        // .setMaterialTier(TierEU.UXV).setMaterialTimeMultiplier(2.5).addFluids(Molten, Plasma, Gas).build();
-        //
-        // new ModernMaterial("Samarium").setColor(100, 200, 200).setTextureMode(Metallic).addAllParts()
-        // .setMaterialTier(TierEU.UMV).setMaterialTimeMultiplier(0.5).build();
-        //
-        // new ModernMaterial("Copper").build();
 
         registerAllMaterialsItems();
 
