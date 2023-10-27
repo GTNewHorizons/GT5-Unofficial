@@ -6,6 +6,7 @@ import static gregtech.api.ModernMaterials.Render.Utilities.drawBlock;
 import java.awt.*;
 
 import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMaterialBlock;
+import gregtech.api.ModernMaterials.ModernMaterialUtilities;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -31,9 +32,7 @@ public class FrameBoxSimpleBlockRenderer implements ISimpleBlockRenderingHandler
         Tessellator tessellator = Tessellator.instance;
 
         final int materialID = ((BaseMaterialBlock) block).getMaterialID(metadata);
-        final ModernMaterial material = materialIDToMaterial.getOrDefault(materialID, materialIDToMaterial.get(2));
-
-        if (material == null) return;
+        final ModernMaterial material = ModernMaterialUtilities.getMaterialFromID(materialID);
 
         final Color color = material.getColor();
         int red = color.getRed();

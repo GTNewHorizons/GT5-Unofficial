@@ -13,16 +13,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.ModernMaterials.Blocks.Registration.BlocksEnum;
 import gregtech.api.ModernMaterials.ModernMaterial;
 import gregtech.api.ModernMaterials.ModernMaterialUtilities;
+import net.minecraft.world.World;
 
 public class EarthOreNormalBaseMaterialBlock extends BaseMaterialBlock {
 
-    public EarthOreNormalBaseMaterialBlock(int blockIDOffset, List<Integer> validIDs) {
-        super(blockIDOffset, validIDs);
-    }
-
-    @Override
-    public BlocksEnum getBlockEnum() {
-        return BlocksEnum.EarthOreNormal;
+    public EarthOreNormalBaseMaterialBlock(int blockIDOffset, List<Integer> validIDs, BlocksEnum blockEnum) {
+        super(blockIDOffset, validIDs, blockEnum);
     }
 
     @SideOnly(Side.CLIENT)
@@ -52,5 +48,12 @@ public class EarthOreNormalBaseMaterialBlock extends BaseMaterialBlock {
         if (material == null) return new Color(100, 100, 0, 255).getRGB();
         return material.getColor()
             .getRGB();
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public IIcon getIcon(IBlockAccess worldIn, int x, int y, int z, int side)
+    {
+        return this.getIcon(side, 0);
     }
 }

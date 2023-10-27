@@ -5,25 +5,34 @@ import static gregtech.api.ModernMaterials.Render.Utilities.drawBlock;
 
 import java.awt.*;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMaterialBlock;
+import gregtech.api.ModernMaterials.ModernMaterialUtilities;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import gregtech.api.ModernMaterials.ModernMaterial;
 
-public class EarthOreSimpleBlockRenderer implements ISimpleBlockRenderingHandler {
+public class NormalOreSimpleBlockRenderer implements ISimpleBlockRenderingHandler {
 
-    public static final int renderID = RenderingRegistry.getNextAvailableRenderId();
+    public final int renderID = RenderingRegistry.getNextAvailableRenderId();
+    private final Block underlyingBlock;
+    private final int underlyingBlockMeta;
 
-    public EarthOreSimpleBlockRenderer() {
+    public NormalOreSimpleBlockRenderer(@NotNull Block underlyingBlock, int meta) {
         RenderingRegistry.registerBlockHandler(renderID, this);
+        this.underlyingBlock = underlyingBlock;
+        this.underlyingBlockMeta = meta;
     }
 
     @Override
@@ -32,9 +41,7 @@ public class EarthOreSimpleBlockRenderer implements ISimpleBlockRenderingHandler
         Tessellator tessellator = Tessellator.instance;
 
         final int materialID = ((BaseMaterialBlock) block).getMaterialID(metadata);
-        final ModernMaterial material = materialIDToMaterial.getOrDefault(materialID, materialIDToMaterial.get(2));
-
-        if (material == null) return;
+        final ModernMaterial material = ModernMaterialUtilities.getMaterialFromID(materialID);
 
         final Color color = material.getColor();
         int red = color.getRed();
@@ -46,13 +53,13 @@ public class EarthOreSimpleBlockRenderer implements ISimpleBlockRenderingHandler
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 
         tessellator.startDrawingQuads();
-        drawBlock(Blocks.stone, materialID, renderer);
+        drawBlock(underlyingBlock, underlyingBlockMeta, renderer);
         tessellator.draw();
 
         GL11.glColor3f(red / 255.0f, green / 255.0f, blue / 255.0f);
 
         tessellator.startDrawingQuads();
-        drawBlock(block, materialID, renderer);
+        drawBlock(block, 0, renderer);
         tessellator.draw();
 
         GL11.glPopMatrix();
@@ -65,13 +72,19 @@ public class EarthOreSimpleBlockRenderer implements ISimpleBlockRenderingHandler
         BaseMaterialBlock baseMaterialBlock = (BaseMaterialBlock) block;
 
         int ID = baseMaterialBlock.getMaterialID(world.getBlockMetadata(x, y, z));
+        ModernMaterial material = ModernMaterialUtilities.getMaterialFromID(ID);
+
         if (baseMaterialBlock.getBlockEnum()
             .getSpecialBlockRenderAssociatedMaterials()
-            .contains(materialIDToMaterial.get(ID))) return true;
+            .contains(material)) return true;
         // True tells minecraft that we have handled this and
         // to not do anymore rendering here. This is then handled by a TESR instead.
 
-        renderer.renderStandardBlock(Blocks.stone, x, y, z);
+        renderer.overrideBlockTexture = underlyingBlock.getIcon(0, underlyingBlockMeta);
+
+        renderer.renderStandardBlock(underlyingBlock, x, y, z);
+        renderer.overrideBlockTexture = null;
+
         renderer.renderStandardBlock(block, x, y, z);
 
         return true;

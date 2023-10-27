@@ -16,8 +16,8 @@ import gregtech.api.ModernMaterials.ModernMaterialUtilities;
 
 public class FrameBoxBaseMaterialBlock extends BaseMaterialBlock {
 
-    public FrameBoxBaseMaterialBlock(int blockIDOffset, List<Integer> validIDs) {
-        super(blockIDOffset, validIDs);
+    public FrameBoxBaseMaterialBlock(int blockIDOffset, List<Integer> validIDs, BlocksEnum blockEnum) {
+        super(blockIDOffset, validIDs, blockEnum);
     }
 
     @Override

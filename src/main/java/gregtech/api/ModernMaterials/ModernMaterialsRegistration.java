@@ -1,14 +1,16 @@
 package gregtech.api.ModernMaterials;
 
-import static gregtech.api.ModernMaterials.Blocks.Registration.BlocksEnum.EarthOreNormal;
-import static gregtech.api.ModernMaterials.Fluids.FluidEnum.*;
-import static gregtech.api.ModernMaterials.ModernMaterialUtilities.registerAllMaterialsItems;
-import static gregtech.api.ModernMaterials.PartProperties.Textures.TextureType.Metallic;
-
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import gregtech.api.ModernMaterials.Blocks.Registration.BlocksEnum;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.Special.UniversiumFrameBlockRenderer;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.Special.UniversiumFrameItemRenderer;
+import gregtech.api.ModernMaterials.Blocks.Registration.BlocksEnum;
+
+import static gregtech.api.ModernMaterials.Fluids.FluidEnum.Gas;
+import static gregtech.api.ModernMaterials.Fluids.FluidEnum.Molten;
+import static gregtech.api.ModernMaterials.Fluids.FluidEnum.NoPrefix;
+import static gregtech.api.ModernMaterials.Fluids.FluidEnum.Plasma;
+import static gregtech.api.ModernMaterials.ModernMaterialUtilities.registerAllMaterialsItems;
+import static gregtech.api.ModernMaterials.PartProperties.Textures.TextureType.Metallic;
 
 public class ModernMaterialsRegistration {
 

@@ -47,8 +47,8 @@ public class SpecialBlockRegistration {
 
             try {
                 block = blockType.getBlockClass()
-                    .getDeclaredConstructor(int.class, List.class)
-                    .newInstance(offset, IDs);
+                    .getDeclaredConstructor(int.class, List.class, BlocksEnum.class)
+                    .newInstance(offset, IDs, blockType);
 
                 GameRegistry.registerBlock(block, BaseMaterialItemBlock.class, "Special." + blockType + "." + offset);
 

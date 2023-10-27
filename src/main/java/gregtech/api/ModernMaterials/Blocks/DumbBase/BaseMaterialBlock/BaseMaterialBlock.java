@@ -20,6 +20,7 @@ import gregtech.api.ModernMaterials.ModernMaterialUtilities;
 
 public abstract class BaseMaterialBlock extends Block {
 
+    private final BlocksEnum blockEnum;
     List<Integer> validIDs;
 
     private final int blockIDOffset;
@@ -53,7 +54,7 @@ public abstract class BaseMaterialBlock extends Block {
         return false;
     }
 
-    public BaseMaterialBlock(int blockIDOffset, List<Integer> validIDs) {
+    public BaseMaterialBlock(int blockIDOffset, List<Integer> validIDs, BlocksEnum blockEnum) {
         super(Material.rock);
 
         setHardness(1.5F);
@@ -61,9 +62,12 @@ public abstract class BaseMaterialBlock extends Block {
 
         this.validIDs = validIDs;
         this.blockIDOffset = blockIDOffset;
+        this.blockEnum = blockEnum;
     }
 
-    public abstract BlocksEnum getBlockEnum();
+    public BlocksEnum getBlockEnum() {
+        return blockEnum;
+    }
 
     @Override
     public int getRenderType() {

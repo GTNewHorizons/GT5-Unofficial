@@ -120,7 +120,7 @@ public final class ModernMaterial {
             return this;
         }
 
-        // This will override all existing parts settings and enable ALL possible parts. Be careful!
+        // This will override all existing parts settings and enable ALL possible parts and blocks. Be careful!
         public ModernMaterialBuilder addAllParts() {
             addParts(ItemsEnum.values());
             addParts(BlocksEnum.values());
@@ -177,6 +177,16 @@ public final class ModernMaterial {
             return this;
         }
 
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if (obj instanceof ModernMaterial material) {
+            return material.materialID == this.materialID;
+        }
+
+        return false;
     }
 
 }
