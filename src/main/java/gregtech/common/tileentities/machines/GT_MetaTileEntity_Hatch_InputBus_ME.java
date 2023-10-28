@@ -306,8 +306,12 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
 
         ItemStack circuit = GT_Utility.loadItem(dataStick.stackTagCompound, "circuit");
         if (GT_Utility.isStackInvalid(circuit)) circuit = null;
-        setAutoPullItemList(nbt.getBoolean("autoPull"));
-        minAutoPullStackSize = nbt.getInteger("minStackSize");
+
+        if (autoPullAvailable) {
+            setAutoPullItemList(nbt.getBoolean("autoPull"));
+            minAutoPullStackSize = nbt.getInteger("minStackSize");
+        }
+
         additionalConnection = nbt.getBoolean("additionalConnection");
         if (!autoPullItemList) {
             NBTTagList stockingItems = nbt.getTagList("itemsToStock", 10);
