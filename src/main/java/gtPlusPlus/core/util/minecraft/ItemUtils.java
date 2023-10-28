@@ -73,22 +73,16 @@ public class ItemUtils {
     }
 
     public static ItemStack getSimpleStack(final Item x, final int i) {
-        try {
-            final ItemStack r = new ItemStack(x, i);
-            return r.copy();
-        } catch (final Throwable e) {
-            return null;
-        }
+        return new ItemStack(x, i);
     }
 
     public static ItemStack getSimpleStack(final ItemStack x, final int i) {
-        try {
-            final ItemStack r = x.copy();
-            r.stackSize = i;
-            return r;
-        } catch (final Throwable e) {
+        if (x == null) {
             return null;
         }
+        final ItemStack r = x.copy();
+        r.stackSize = i;
+        return r;
     }
 
     public static final int WILDCARD_VALUE = Short.MAX_VALUE;
