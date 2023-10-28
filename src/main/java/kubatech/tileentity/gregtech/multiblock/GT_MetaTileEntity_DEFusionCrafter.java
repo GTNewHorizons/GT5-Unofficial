@@ -72,11 +72,11 @@ public class GT_MetaTileEntity_DEFusionCrafter extends KubaTechGTMultiBlockBase<
     private static final List<Pair<Block, Integer>> fusionCasingTiers = Arrays
         .asList(Pair.of(GregTech_API.sBlockCasings4, 6), Pair.of(GregTech_API.sBlockCasings4, 8));
     private static final List<Pair<Block, Integer>> coreTiers = Arrays.asList(
-        Pair.of(BlockLoader.defcCasingBlock, 1),
-        Pair.of(BlockLoader.defcCasingBlock, 2),
-        Pair.of(BlockLoader.defcCasingBlock, 3),
-        Pair.of(BlockLoader.defcCasingBlock, 4),
-        Pair.of(BlockLoader.defcCasingBlock, 5));
+        Pair.of(BlockLoader.defcCasingBlock, 8),
+        Pair.of(BlockLoader.defcCasingBlock, 9),
+        Pair.of(BlockLoader.defcCasingBlock, 10),
+        Pair.of(BlockLoader.defcCasingBlock, 11),
+        Pair.of(BlockLoader.defcCasingBlock, 12));
     private static final IStructureDefinition<GT_MetaTileEntity_DEFusionCrafter> STRUCTURE_DEFINITION = StructureDefinition
         .<GT_MetaTileEntity_DEFusionCrafter>builder()
         .addShape(
@@ -97,19 +97,19 @@ public class GT_MetaTileEntity_DEFusionCrafter extends KubaTechGTMultiBlockBase<
         .addElement(
             'N',
             ofChain(
-                onElementPass(e -> e.mCasing++, ofBlock(BlockLoader.defcCasingBlock, 0)),
+                onElementPass(e -> e.mCasing++, ofBlock(BlockLoader.defcCasingBlock, 7)),
                 ofHatchAdder(GT_MetaTileEntity_DEFusionCrafter::addEnergyInputToMachineList, CASING_INDEX, 1),
                 ofHatchAdder(GT_MetaTileEntity_DEFusionCrafter::addInputToMachineList, CASING_INDEX, 1),
                 ofHatchAdder(GT_MetaTileEntity_DEFusionCrafter::addOutputToMachineList, CASING_INDEX, 1),
                 ofHatchAdder(GT_MetaTileEntity_DEFusionCrafter::addMaintenanceToMachineList, CASING_INDEX, 1)))
-        .addElement('n', onElementPass(e -> e.mCasing++, ofBlock(BlockLoader.defcCasingBlock, 0)))
+        .addElement('n', onElementPass(e -> e.mCasing++, ofBlock(BlockLoader.defcCasingBlock, 7)))
         .addElement('f', ofBlock(GregTech_API.sBlockCasings4, 7))
         .addElement('F', ofBlocksTiered((Block b, int m) -> {
             if (b != GregTech_API.sBlockCasings4 || (m != 6 && m != 8)) return -2;
             return m == 6 ? 1 : 2;
         }, fusionCasingTiers, -1, (e, i) -> e.mFusionTierCasing = i, e -> e.mFusionTierCasing))
         .addElement('R', ofBlocksTiered((Block b, int m) -> {
-            if (b != BlockLoader.defcCasingBlock || m < 1 || m > 5) return -2;
+            if (b != BlockLoader.defcCasingBlock || m < 8 || m > 12) return -2;
             return m;
         }, coreTiers, -1, (e, i) -> e.mTierCasing = i, e -> e.mTierCasing))
         .build();

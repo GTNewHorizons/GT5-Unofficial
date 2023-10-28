@@ -24,8 +24,8 @@ public class DEFCCasingItemBlock extends GT_Item_Casings_Abstract {
     @Override
     @SuppressWarnings("unchecked")
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
-        if (getDamage(aStack) > 0)
-            aList.add(StatCollector.translateToLocalFormatted("defc.casing.tip", getDamage(aStack)));
+        if (getDamage(aStack) > 7)
+            aList.add(StatCollector.translateToLocalFormatted("defc.casing.tip", getDamage(aStack) - 7));
         super.addInformation(aStack, aPlayer, aList, aF3_H);
     }
 

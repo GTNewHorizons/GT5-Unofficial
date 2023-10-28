@@ -26,8 +26,6 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
-import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
-import cpw.mods.fml.common.event.FMLModIdMappingEvent;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -40,6 +38,7 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
+import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerAboutToStartEvent;
@@ -48,9 +47,11 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import kubatech.api.enums.ItemList;
 import kubatech.api.helpers.ReflectionHelper;
+import kubatech.loaders.BlockLoader;
 import kubatech.network.CustomTileEntityPacket;
 import kubatech.network.LoadConfigPacket;
 
@@ -183,8 +184,13 @@ public class kubatech {
     }
 
     @Mod.EventHandler
-    public void mapping(FMLMissingMappingsEvent){
-
+    public void missingMappings(FMLMissingMappingsEvent event) {
+        for (FMLMissingMappingsEvent.MissingMapping missingMapping : event.getAll()) {
+            if (missingMapping.name.equals("EMT:EMT_GTBLOCK_CASEING")) {
+                if (missingMapping.type == GameRegistry.Type.BLOCK) missingMapping.remap(BlockLoader.defcCasingBlock);
+                else missingMapping.remap(Item.getItemFromBlock(BlockLoader.defcCasingBlock));
+            }
+        }
     }
 
     public static void debug(String message) {

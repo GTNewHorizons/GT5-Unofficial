@@ -27,19 +27,19 @@ public class DEFCCasingBlock extends GT_Block_Casings_Abstract {
         this.setResistance(30.0F);
         this.setCreativeTab(KT);
 
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Naquadah Alloy Fusion Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Bloody Ichorium Fusion Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Draconium Fusion Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Wyvern Fusion Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Awakened Draconium Fusion Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Chaotic Fusion Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Naquadah Alloy Fusion Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Bloody Ichorium Fusion Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Draconium Fusion Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Wyvern Fusion Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Awakened Draconium Fusion Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Chaotic Fusion Casing");
 
-        ItemList.DEFCCasingBase.set(new ItemStack(this, 1, 0));
-        ItemList.DEFCCasingT1.set(new ItemStack(this, 1, 1));
-        ItemList.DEFCCasingT2.set(new ItemStack(this, 1, 2));
-        ItemList.DEFCCasingT3.set(new ItemStack(this, 1, 3));
-        ItemList.DEFCCasingT4.set(new ItemStack(this, 1, 4));
-        ItemList.DEFCCasingT5.set(new ItemStack(this, 1, 5));
+        ItemList.DEFCCasingBase.set(new ItemStack(this, 1, 7));
+        ItemList.DEFCCasingT1.set(new ItemStack(this, 1, 8));
+        ItemList.DEFCCasingT2.set(new ItemStack(this, 1, 9));
+        ItemList.DEFCCasingT3.set(new ItemStack(this, 1, 10));
+        ItemList.DEFCCasingT4.set(new ItemStack(this, 1, 11));
+        ItemList.DEFCCasingT5.set(new ItemStack(this, 1, 12));
 
         // Taking one texture slot :P
         Textures.BlockIcons.setCasingTexture((byte) 1, (byte) (15 + 48), TextureFactory.of(this, 0));
@@ -48,7 +48,7 @@ public class DEFCCasingBlock extends GT_Block_Casings_Abstract {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
-        return texture[meta];
+        return texture[meta - 7];
     }
 
     @Override
