@@ -518,9 +518,12 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
 
         NBTTagCompound nbt = dataStick.stackTagCompound;
 
-        setAutoPullFluidList(nbt.getBoolean("autoPull"));
-        minAutoPullAmount = nbt.getInteger("minAmount");
+        if (autoPullAvailable) {
+            setAutoPullFluidList(nbt.getBoolean("autoPull"));
+            minAutoPullAmount = nbt.getInteger("minAmount");
+        }
         additionalConnection = nbt.getBoolean("additionalConnection");
+
         if (!autoPullFluidList) {
             NBTTagList stockingFluids = nbt.getTagList("fluidsToStock", 10);
             for (int i = 0; i < stockingFluids.tagCount(); i++) {
