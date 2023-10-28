@@ -105,7 +105,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
     protected static final FluidStack[] EMPTY_FLUID_STACK = new FluidStack[0];
 
     public GT_MetaTileEntity_Hatch_Input_ME(int aID, boolean autoPullAvailable, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, autoPullAvailable ? 6 : 3, 1, getDescriptionArray(autoPullAvailable));
+        super(aID, aName, aNameRegional, autoPullAvailable ? 10 : 8, 1, getDescriptionArray(autoPullAvailable));
         this.autoPullAvailable = autoPullAvailable;
     }
 
@@ -304,7 +304,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                 gridProxy = new AENetworkProxy(
                     (IGridProxyable) getBaseMetaTileEntity(),
                     "proxy",
-                    ItemList.Hatch_Input_ME.get(1),
+                    autoPullAvailable ? ItemList.Hatch_Input_ME_Advanced.get(1) : ItemList.Hatch_Input_ME.get(1),
                     true);
                 gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
                 updateValidGridProxySides();
