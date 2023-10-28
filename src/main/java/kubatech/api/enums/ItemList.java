@@ -20,6 +20,7 @@ public enum ItemList implements IItemContainer {
     ExtremeExterminationChamber,
     ExtremeIndustrialApiary,
     ExtremeIndustrialGreenhouse,
+    DraconicEvolutionFusionCrafter,
     LegendaryBlackTea,
     LegendaryButterflyTea,
     LegendaryEarlGrayTea,
@@ -59,7 +60,19 @@ public enum ItemList implements IItemContainer {
     TeaAcceptorResearchNote,
     TeaAcceptor,
     TeaStorage,
-    Beeeeee;
+    Beeeeee,
+    DEFCCasingBase,
+    DEFCCasingT1,
+    DEFCCasingT2,
+    DEFCCasingT3,
+    DEFCCasingT4,
+    DEFCCasingT5,
+    DEFCDraconicSchematic,
+    DEFCWyvernSchematic,
+    DEFCAwakenedSchematic,
+    DEFCChaoticSchematic,
+
+    ;
 
     private ItemStack mStack;
     private boolean mHasNotBeenSet = true;

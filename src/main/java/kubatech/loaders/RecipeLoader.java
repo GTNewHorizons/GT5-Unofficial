@@ -33,6 +33,7 @@ import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 import static kubatech.api.enums.ItemList.BlackTea;
 import static kubatech.api.enums.ItemList.BlackTeaLeaf;
 import static kubatech.api.enums.ItemList.BruisedTeaLeaf;
+import static kubatech.api.enums.ItemList.DraconicEvolutionFusionCrafter;
 import static kubatech.api.enums.ItemList.EarlGrayTea;
 import static kubatech.api.enums.ItemList.ExtremeExterminationChamber;
 import static kubatech.api.enums.ItemList.ExtremeIndustrialApiary;
@@ -79,6 +80,7 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
 import kubatech.api.LoaderReference;
 import kubatech.api.enums.ItemList;
+import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_DEFusionCrafter;
 import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeExterminationChamber;
 import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeIndustrialGreenhouse;
 import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_MegaIndustrialApiary;
@@ -147,6 +149,16 @@ public class RecipeLoader {
                     LoaderReference.GTNHCoreMod ? CustomItemList.AcceleratorIV.get(1)
                         : gregtech.api.enums.ItemList.Robot_Arm_IV,
                     'Z', OrePrefixes.circuit.get(Materials.Ultimate) });
+        }
+        if (registerMTEUsingID(
+            5_001,
+            DraconicEvolutionFusionCrafter,
+            GT_MetaTileEntity_DEFusionCrafter.class,
+            "multimachine.defusioncrafter",
+            "Draconic Evolution Fusion Crafter",
+            LoaderReference.DraconicEvolution)) {
+            // Controller recipe added in TecTech
+            DEFCRecipes.addRecipes();
         }
         RegisterTeaLine();
         if (MTEID > MTEIDMax + 1) throw new RuntimeException("MTE ID's");

@@ -54,7 +54,7 @@ import kubatech.api.enums.ItemList;
 import kubatech.api.tea.TeaNetwork;
 import kubatech.api.utils.StringUtils;
 import kubatech.loaders.ItemLoader;
-import kubatech.loaders.block.KubaBlock;
+import kubatech.loaders.block.kubablock.KubaBlock;
 
 public class TeaAcceptorTile extends TileEntity
     implements IInventory, ITileWithModularUI, KubaBlock.IModularUIProvider {

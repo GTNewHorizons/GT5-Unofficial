@@ -18,9 +18,9 @@
  * spotless:on
  */
 
-package kubatech.loaders.block;
+package kubatech.loaders.block.kubablock;
 
-import static kubatech.loaders.block.KubaBlock.defaultTileEntityUI;
+import static kubatech.loaders.block.kubablock.KubaBlock.defaultTileEntityUI;
 
 import java.util.List;
 

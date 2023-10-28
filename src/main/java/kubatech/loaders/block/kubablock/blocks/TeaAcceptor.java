@@ -18,9 +18,7 @@
  * spotless:on
  */
 
-package kubatech.loaders.block.blocks;
-
-import static kubatech.api.Variables.numberFormat;
+package kubatech.loaders.block.kubablock.blocks;
 
 import java.util.List;
 
@@ -29,34 +27,34 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
-import kubatech.loaders.block.BlockProxy;
-import kubatech.loaders.block.IProxyTileEntityProvider;
-import kubatech.tileentity.TeaStorageTile;
+import kubatech.loaders.block.kubablock.BlockProxy;
+import kubatech.loaders.block.kubablock.IProxyTileEntityProvider;
+import kubatech.tileentity.TeaAcceptorTile;
 
-public class TeaStorage extends BlockProxy implements IProxyTileEntityProvider {
+public class TeaAcceptor extends BlockProxy implements IProxyTileEntityProvider {
 
-    public TeaStorage() {
-        super("tea_storage", "tea_storage");
+    public TeaAcceptor() {
+        super("tea_acceptor", "tea_acceptor", "blank");
     }
 
     @Override
     public TileEntity createTileEntity(World world) {
-        return new TeaStorageTile();
+        return new TeaAcceptorTile();
     }
 
     @Override
     public void onBlockPlaced(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
         if (world.isRemote) return;
         if (!(player instanceof EntityPlayerMP)) return;
-        ((TeaStorageTile) world.getTileEntity(x, y, z)).setTeaOwner(player.getPersistentID());
+        ((TeaAcceptorTile) world.getTileEntity(x, y, z)).setTeaOwner(player.getPersistentID());
     }
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer entity, List<String> tooltipList, boolean showDebugInfo) {
-        tooltipList.add("Extends Tea Storage by " + EnumChatFormatting.RED + numberFormat.format(Long.MAX_VALUE));
+        tooltipList.add("Accepts Tea items and adds them to your network");
+        tooltipList.add("Can accept up to 10 stacks per tick");
     }
 
     @Override

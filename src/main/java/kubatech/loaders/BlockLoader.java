@@ -25,10 +25,11 @@ import net.minecraft.item.ItemBlock;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import kubatech.api.enums.ItemList;
-import kubatech.loaders.block.KubaBlock;
-import kubatech.loaders.block.KubaItemBlock;
-import kubatech.loaders.block.blocks.TeaAcceptor;
-import kubatech.loaders.block.blocks.TeaStorage;
+import kubatech.loaders.block.defc.DEFCCasingBlock;
+import kubatech.loaders.block.kubablock.KubaBlock;
+import kubatech.loaders.block.kubablock.KubaItemBlock;
+import kubatech.loaders.block.kubablock.blocks.TeaAcceptor;
+import kubatech.loaders.block.kubablock.blocks.TeaStorage;
 import kubatech.tileentity.TeaAcceptorTile;
 import kubatech.tileentity.TeaStorageTile;
 
@@ -36,6 +37,7 @@ public class BlockLoader {
 
     public static final KubaBlock kubaBlock = new KubaBlock(Material.anvil);
     public static final ItemBlock kubaItemBlock = new KubaItemBlock(kubaBlock);
+    public static final DEFCCasingBlock defcCasingBlock = new DEFCCasingBlock();
 
     public static void registerBlocks() {
         GameRegistry.registerTileEntity(TeaAcceptorTile.class, "KT_TeaAcceptor");

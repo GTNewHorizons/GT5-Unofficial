@@ -18,7 +18,9 @@
  * spotless:on
  */
 
-package kubatech.loaders.block.blocks;
+package kubatech.loaders.block.kubablock.blocks;
+
+import static kubatech.api.Variables.numberFormat;
 
 import java.util.List;
 
@@ -27,34 +29,34 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
-import kubatech.loaders.block.BlockProxy;
-import kubatech.loaders.block.IProxyTileEntityProvider;
-import kubatech.tileentity.TeaAcceptorTile;
+import kubatech.loaders.block.kubablock.BlockProxy;
+import kubatech.loaders.block.kubablock.IProxyTileEntityProvider;
+import kubatech.tileentity.TeaStorageTile;
 
-public class TeaAcceptor extends BlockProxy implements IProxyTileEntityProvider {
+public class TeaStorage extends BlockProxy implements IProxyTileEntityProvider {
 
-    public TeaAcceptor() {
-        super("tea_acceptor", "tea_acceptor", "blank");
+    public TeaStorage() {
+        super("tea_storage", "tea_storage");
     }
 
     @Override
     public TileEntity createTileEntity(World world) {
-        return new TeaAcceptorTile();
+        return new TeaStorageTile();
     }
 
     @Override
     public void onBlockPlaced(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
         if (world.isRemote) return;
         if (!(player instanceof EntityPlayerMP)) return;
-        ((TeaAcceptorTile) world.getTileEntity(x, y, z)).setTeaOwner(player.getPersistentID());
+        ((TeaStorageTile) world.getTileEntity(x, y, z)).setTeaOwner(player.getPersistentID());
     }
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer entity, List<String> tooltipList, boolean showDebugInfo) {
-        tooltipList.add("Accepts Tea items and adds them to your network");
-        tooltipList.add("Can accept up to 10 stacks per tick");
+        tooltipList.add("Extends Tea Storage by " + EnumChatFormatting.RED + numberFormat.format(Long.MAX_VALUE));
     }
 
     @Override

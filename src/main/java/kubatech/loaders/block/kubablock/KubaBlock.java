@@ -18,7 +18,7 @@
  * spotless:on
  */
 
-package kubatech.loaders.block;
+package kubatech.loaders.block.kubablock;
 
 import static kubatech.kubatech.KT;
 

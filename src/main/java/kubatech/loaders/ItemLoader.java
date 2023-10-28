@@ -24,6 +24,10 @@ import static kubatech.api.enums.ItemList.Beeeeee;
 import static kubatech.api.enums.ItemList.BlackTea;
 import static kubatech.api.enums.ItemList.BlackTeaLeaf;
 import static kubatech.api.enums.ItemList.BruisedTeaLeaf;
+import static kubatech.api.enums.ItemList.DEFCAwakenedSchematic;
+import static kubatech.api.enums.ItemList.DEFCChaoticSchematic;
+import static kubatech.api.enums.ItemList.DEFCDraconicSchematic;
+import static kubatech.api.enums.ItemList.DEFCWyvernSchematic;
 import static kubatech.api.enums.ItemList.EarlGrayTea;
 import static kubatech.api.enums.ItemList.FermentedTeaLeaf;
 import static kubatech.api.enums.ItemList.GreenTea;
@@ -58,6 +62,13 @@ import static kubatech.api.enums.ItemList.WhiteTea;
 import static kubatech.api.enums.ItemList.WhiteTeaLeaf;
 import static kubatech.api.enums.ItemList.YellowTea;
 import static kubatech.api.enums.ItemList.YellowTeaLeaf;
+
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import kubatech.loaders.item.ItemProxy;
@@ -118,6 +129,21 @@ public class ItemLoader {
 
         TeaAcceptorResearchNote
             .set(kubaitems.registerProxyItem(new ItemProxy("tea_acceptor_research_note", "research_note")));
-        Beeeeee.set(kubaitems.registerProxyItem(new ItemProxy("beeeeee", "beeeeee")));
+        Beeeeee.set(kubaitems.registerProxyItem(new ItemProxy("beeeeee")));
+
+        // DEFC stuff
+        DEFCDraconicSchematic.set(kubaitems.registerProxyItem(new ItemProxy("defc_schematic_t1") {
+
+            @Override
+            public void addInformation(ItemStack stack, EntityPlayer entity, List<String> tooltipList,
+                boolean showDebugInfo) {
+                tooltipList
+                    .add(EnumChatFormatting.GOLD + StatCollector.translateToLocal("kubaitem.defc_schematic_t1.tip"));
+            }
+        }));
+        DEFCWyvernSchematic.set(kubaitems.registerProxyItem(new ItemProxy("defc_schematic_t2")));
+        DEFCAwakenedSchematic.set(kubaitems.registerProxyItem(new ItemProxy("defc_schematic_t3")));
+        DEFCChaoticSchematic.set(kubaitems.registerProxyItem(new ItemProxy("defc_schematic_t4")));
+
     }
 }

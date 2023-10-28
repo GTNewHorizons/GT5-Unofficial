@@ -27,9 +27,17 @@ kubatech.command.tea.usage=<username> get/set/add (<amount>)
 kubablock.tea_acceptor.name=§4§lTea Acceptor
 kubablock.tea_storage.name=§4§lTea Storage Extender
 
+#DEFC Casings
+defc.casing.tip=Draconic Evolution Fusion Crafter Casing, Tier %d
+
 #Items
 kubaitem.fromcollection=This item is from
 kubaitem.notyours=It looks like that item is not yours
+kubaitem.defc_schematic_t1.name=Draconic Core Schematic
+kubaitem.defc_schematic_t1.tip=This Schematic can be found in Pluto Dungeons
+kubaitem.defc_schematic_t2.name=Wyvern Core Schematic
+kubaitem.defc_schematic_t3.name=Awakened Core Schematic
+kubaitem.defc_schematic_t4.name=Chaotic Core Schematic
 
 #Tea
 kubaitem.tea.black_tea.name=Black Tea

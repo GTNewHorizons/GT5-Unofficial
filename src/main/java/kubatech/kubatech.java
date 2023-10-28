@@ -26,6 +26,8 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
+import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
+import cpw.mods.fml.common.event.FMLModIdMappingEvent;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -101,9 +103,13 @@ public class kubatech {
         @Override
         public void displayAllReleventItems(List p_78018_1_) {
             super.displayAllReleventItems(p_78018_1_);
-            p_78018_1_.add(ItemList.ExtremeExterminationChamber.get(1));
-            p_78018_1_.add(ItemList.ExtremeIndustrialApiary.get(1));
-            p_78018_1_.add(ItemList.ExtremeIndustrialGreenhouse.get(1));
+            if (ItemList.ExtremeExterminationChamber.hasBeenSet())
+                p_78018_1_.add(ItemList.ExtremeExterminationChamber.get(1));
+            if (ItemList.ExtremeIndustrialApiary.hasBeenSet()) p_78018_1_.add(ItemList.ExtremeIndustrialApiary.get(1));
+            if (ItemList.ExtremeIndustrialGreenhouse.hasBeenSet())
+                p_78018_1_.add(ItemList.ExtremeIndustrialGreenhouse.get(1));
+            if (ItemList.DraconicEvolutionFusionCrafter.hasBeenSet())
+                p_78018_1_.add(ItemList.DraconicEvolutionFusionCrafter.get(1));
         }
     };
 
@@ -174,6 +180,11 @@ public class kubatech {
     @Mod.EventHandler
     public void loadComplete(FMLLoadCompleteEvent event) {
         proxy.loadComplete(event);
+    }
+
+    @Mod.EventHandler
+    public void mapping(FMLMissingMappingsEvent){
+
     }
 
     public static void debug(String message) {

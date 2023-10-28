@@ -72,6 +72,10 @@ public class ItemProxy {
         texturepath = Tags.MODID + ":" + texture;
     }
 
+    public ItemProxy(String unlocalizedNameAndTexture) {
+        this(unlocalizedNameAndTexture, unlocalizedNameAndTexture);
+    }
+
     public void ItemInit(int index) {}
 
     public String getUnlocalizedName() {

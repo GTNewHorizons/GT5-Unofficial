@@ -18,7 +18,7 @@
  * spotless:on
  */
 
-package kubatech.loaders.block;
+package kubatech.loaders.block.kubablock;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
