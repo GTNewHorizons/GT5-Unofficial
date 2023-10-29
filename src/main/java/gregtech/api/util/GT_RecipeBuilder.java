@@ -27,8 +27,6 @@ import gregtech.api.util.extensions.ArrayExt;
 public class GT_RecipeBuilder {
 
     // debug mode expose problems. panic mode help you check nothing is wrong-ish without you actively monitoring
-    private static final boolean DEBUG_MODE_ALL;
-    private static final boolean PANIC_MODE_ALL;
     private static final boolean DEBUG_MODE_NULL;
     private static final boolean PANIC_MODE_NULL;
     private static final boolean DEBUG_MODE_INVALID;
@@ -53,20 +51,22 @@ public class GT_RecipeBuilder {
     public static final int BUCKETS = 1000;
 
     static {
+        final boolean debugAll;
         if (System.getProperties()
             .containsKey("gt.recipebuilder.debug")) {
-            DEBUG_MODE_ALL = Boolean.getBoolean("gt.recipebuilder.debug");
+            debugAll = Boolean.getBoolean("gt.recipebuilder.debug");
         } else {
             // turn on debug by default in dev mode
-            DEBUG_MODE_ALL = (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
+            debugAll = (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
         }
-        DEBUG_MODE_NULL = Boolean.getBoolean("gt.recipebuilder.debug.null");
-        DEBUG_MODE_INVALID = Boolean.getBoolean("gt.recipebuilder.debug.invalid");
-        DEBUG_MODE_COLLISION = Boolean.getBoolean("gt.recipebuilder.debug.collision");
-        PANIC_MODE_ALL = Boolean.getBoolean("gt.recipebuilder.panic");
-        PANIC_MODE_NULL = Boolean.getBoolean("gt.recipebuilder.panic.null");
-        PANIC_MODE_INVALID = Boolean.getBoolean("gt.recipebuilder.panic.invalid");
-        PANIC_MODE_COLLISION = Boolean.getBoolean("gt.recipebuilder.panic.collision");
+        DEBUG_MODE_NULL = debugAll || Boolean.getBoolean("gt.recipebuilder.debug.null");
+        DEBUG_MODE_INVALID = debugAll || Boolean.getBoolean("gt.recipebuilder.debug.invalid");
+        DEBUG_MODE_COLLISION = debugAll || Boolean.getBoolean("gt.recipebuilder.debug.collision");
+
+        final boolean panicAll = Boolean.getBoolean("gt.recipebuilder.panic");
+        PANIC_MODE_NULL = panicAll || Boolean.getBoolean("gt.recipebuilder.panic.null");
+        PANIC_MODE_INVALID = panicAll || Boolean.getBoolean("gt.recipebuilder.panic.invalid");
+        PANIC_MODE_COLLISION = panicAll || Boolean.getBoolean("gt.recipebuilder.panic.collision");
     }
 
     protected ItemStack[] inputsBasic = new ItemStack[0];
@@ -146,34 +146,34 @@ public class GT_RecipeBuilder {
         GT_Log.err.print("null detected in ");
         GT_Log.err.println(componentType);
         new NullPointerException().printStackTrace(GT_Log.err);
-        if (PANIC_MODE_ALL || PANIC_MODE_NULL) {
+        if (PANIC_MODE_NULL) {
             throw new IllegalArgumentException("null in argument");
         }
     }
 
     private static boolean debugNull() {
-        return DEBUG_MODE_ALL || DEBUG_MODE_NULL || PANIC_MODE_ALL || PANIC_MODE_NULL;
+        return DEBUG_MODE_NULL || PANIC_MODE_NULL;
     }
 
     private static void handleInvalidRecipe() {
-        if (!DEBUG_MODE_ALL && !DEBUG_MODE_INVALID && !PANIC_MODE_ALL && !PANIC_MODE_INVALID) {
+        if (!DEBUG_MODE_INVALID && !PANIC_MODE_INVALID) {
             return;
         }
         // place a breakpoint here to catch all these issues
         GT_Log.err.print("invalid recipe");
         new IllegalArgumentException().printStackTrace(GT_Log.err);
-        if (PANIC_MODE_ALL || PANIC_MODE_INVALID) {
+        if (PANIC_MODE_INVALID) {
             throw new IllegalArgumentException("invalid recipe");
         }
     }
 
     public static void handleRecipeCollision(String details) {
-        if (!DEBUG_MODE_ALL && !DEBUG_MODE_COLLISION && !PANIC_MODE_ALL && !PANIC_MODE_COLLISION) {
+        if (!DEBUG_MODE_COLLISION && !PANIC_MODE_COLLISION) {
             return;
         }
         GT_Log.err.print("Recipe collision resulting in recipe loss detected with ");
         GT_Log.err.println(details);
-        if (PANIC_MODE_ALL || PANIC_MODE_COLLISION) {
+        if (PANIC_MODE_COLLISION) {
             throw new IllegalArgumentException("Recipe Collision");
         } else {
             // place a breakpoint here to catch all these issues
