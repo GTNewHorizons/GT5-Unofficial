@@ -1093,16 +1093,16 @@ public class ResearchStationAssemblyLine implements Runnable {
                     (int) TierEU.RECIPE_UEV);
         }
 
-        // Draconic Evolution Fusion Crafter Controller
-        if (BloodMagic.isModLoaded() && ElectroMagicTools.isModLoaded()) {
+        if (BloodMagic.isModLoaded() && KubaTech.isModLoaded() && DraconicEvolution.isModLoaded()) {
+            // Draconic Evolution Fusion Crafter Controller
             TT_recipeAdder.addResearchableAssemblylineRecipe(
-                    getModItem(ElectroMagicTools.ID, "EMT_GTBLOCK_CASEING", 1, 8),
+                    getModItem(KubaTech.ID, "defc.casing", 1, 8),
                     16_777_216,
                     1024,
                     2_000_000,
                     8,
                     new Object[] { getModItem(GregTech.ID, "gt.blockmachines", 1, 10783),
-                            getModItem(ElectroMagicTools.ID, "EMT_GTBLOCK_CASEING", 1, 8),
+                            getModItem(KubaTech.ID, "defc.casing", 1, 8),
                             GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsBotania.GaiaSpirit, 1L),
                             ItemList.Casing_Coil_AwakenedDraconium.get(8L), ItemList.Electric_Motor_UHV.get(8L),
                             ItemList.Robot_Arm_UHV.get(4L),
@@ -1116,73 +1116,70 @@ public class ResearchStationAssemblyLine implements Runnable {
                     getModItem(GregTech.ID, "gt.blockmachines", 1, 5001),
                     1500,
                     8_000_000);
+            // DE Schematics Cores Tier 1
+            TT_recipeAdder.addResearchableAssemblylineRecipe(
+                    getModItem(KubaTech.ID, "defc.casing", 1, 9),
+                    5_000_000,
+                    512,
+                    1_000_000,
+                    4,
+                    new Object[] { getModItem(DraconicEvolution.ID, "draconicCore", 1, 0),
+                            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Draconium, 1L),
+                            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Ichorium, 1L),
+                            new Object[] { OrePrefixes.circuit.get(Materials.Infinite), 1 }, },
+                    new FluidStack[] { Materials.Sunnarium.getMolten(14400L), Materials.Void.getMolten(28800L), },
+                    getModItem(KubaTech.ID, "kubaitems", 1, 38),
+                    6000,
+                    500_000);
 
-            if (DraconicEvolution.isModLoaded()) {
-                // DE Schematics Cores Tier 1
-                TT_recipeAdder.addResearchableAssemblylineRecipe(
-                        getModItem(ElectroMagicTools.ID, "EMT_GTBLOCK_CASEING", 1, 9),
-                        5_000_000,
-                        512,
-                        1_000_000,
-                        4,
-                        new Object[] { getModItem(DraconicEvolution.ID, "draconicCore", 1, 0),
-                                GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Draconium, 1L),
-                                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Ichorium, 1L),
-                                new Object[] { OrePrefixes.circuit.get(Materials.Infinite), 1 }, },
-                        new FluidStack[] { Materials.Sunnarium.getMolten(14400L), Materials.Void.getMolten(28800L), },
-                        getModItem(ElectroMagicTools.ID, "EMTItems", 1, 16),
-                        6000,
-                        500_000);
+            // DE Schematics Cores Tier 2
+            TT_recipeAdder.addResearchableAssemblylineRecipe(
+                    getModItem(DraconicEvolution.ID, "draconicCore", 1, 0),
+                    10_000_000,
+                    1024,
+                    4_000_000,
+                    8,
+                    new Object[] { getModItem(DraconicEvolution.ID, "draconicCore", 4, 0),
+                            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Draconium, 1L),
+                            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 1L),
+                            new Object[] { OrePrefixes.circuit.get(Materials.Bio), 1 }, },
+                    new FluidStack[] { Materials.Neutronium.getMolten(14400L), Materials.Void.getMolten(57600L), },
+                    getModItem(KubaTech.ID, "kubaitems", 1, 39),
+                    12000,
+                    2_000_000);
 
-                // DE Schematics Cores Tier 2
-                TT_recipeAdder.addResearchableAssemblylineRecipe(
-                        getModItem(DraconicEvolution.ID, "draconicCore", 1, 0),
-                        10_000_000,
-                        1024,
-                        4_000_000,
-                        8,
-                        new Object[] { getModItem(DraconicEvolution.ID, "draconicCore", 4, 0),
-                                GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Draconium, 1L),
-                                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 1L),
-                                new Object[] { OrePrefixes.circuit.get(Materials.Bio), 1 }, },
-                        new FluidStack[] { Materials.Neutronium.getMolten(14400L), Materials.Void.getMolten(57600L), },
-                        getModItem(ElectroMagicTools.ID, "EMTItems", 1, 17),
-                        12000,
-                        2_000_000);
+            // DE Schematics Cores Tier 3
+            TT_recipeAdder.addResearchableAssemblylineRecipe(
+                    getModItem(DraconicEvolution.ID, "wyvernCore", 1, 0),
+                    20_000_000,
+                    2048,
+                    16_000_000,
+                    16,
+                    new Object[] { getModItem(DraconicEvolution.ID, "wyvernCore", 4, 0),
+                            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.DraconiumAwakened, 1L),
+                            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 1L),
+                            new Object[] { OrePrefixes.circuit.get(Materials.Optical), 1L } },
+                    new FluidStack[] { Materials.Infinity.getMolten(14400L), Materials.Void.getMolten(115200L), },
+                    getModItem(KubaTech.ID, "kubaitems", 1, 40),
+                    24000,
+                    8_000_000);
 
-                // DE Schematics Cores Tier 3
-                TT_recipeAdder.addResearchableAssemblylineRecipe(
-                        getModItem(DraconicEvolution.ID, "wyvernCore", 1, 0),
-                        20_000_000,
-                        2048,
-                        16_000_000,
-                        16,
-                        new Object[] { getModItem(DraconicEvolution.ID, "wyvernCore", 4, 0),
-                                GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.DraconiumAwakened, 1L),
-                                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 1L),
-                                new Object[] { OrePrefixes.circuit.get(Materials.Optical), 1L } },
-                        new FluidStack[] { Materials.Infinity.getMolten(14400L), Materials.Void.getMolten(115200L), },
-                        getModItem(ElectroMagicTools.ID, "EMTItems", 1, 18),
-                        24000,
-                        8_000_000);
-
-                // DE Schematics Cores Tier 4
-                TT_recipeAdder.addResearchableAssemblylineRecipe(
-                        getModItem(DraconicEvolution.ID, "awakenedCore", 1, 0),
-                        40_000_000,
-                        4096,
-                        64_000_000,
-                        64,
-                        new Object[] { getModItem(DraconicEvolution.ID, "awakenedCore", 8, 0),
-                                GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.DraconiumAwakened, 4L),
-                                GT_OreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.SpaceTime, 1L),
-                                new Object[] { OrePrefixes.circuit.get(Materials.Piko), 1 }, },
-                        new FluidStack[] { MaterialsUEVplus.SpaceTime.getMolten(14400L),
-                                Materials.Void.getMolten(230400L), },
-                        getModItem(ElectroMagicTools.ID, "EMTItems", 1, 19),
-                        36000,
-                        32_000_000);
-            }
+            // DE Schematics Cores Tier 4
+            TT_recipeAdder.addResearchableAssemblylineRecipe(
+                    getModItem(DraconicEvolution.ID, "awakenedCore", 1, 0),
+                    40_000_000,
+                    4096,
+                    64_000_000,
+                    64,
+                    new Object[] { getModItem(DraconicEvolution.ID, "awakenedCore", 8, 0),
+                            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.DraconiumAwakened, 4L),
+                            GT_OreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.SpaceTime, 1L),
+                            new Object[] { OrePrefixes.circuit.get(Materials.Piko), 1 }, },
+                    new FluidStack[] { MaterialsUEVplus.SpaceTime.getMolten(14400L),
+                            Materials.Void.getMolten(230400L), },
+                    getModItem(KubaTech.ID, "kubaitems", 1, 41),
+                    36000,
+                    32_000_000);
         }
 
         // Debug maintenance hatch
