@@ -5,9 +5,11 @@ import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMixerRecipes;
 
+import java.util.Arrays;
 import java.util.HashSet;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -15,6 +17,7 @@ import net.minecraftforge.fluids.FluidStack;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -124,6 +127,42 @@ public class DEFCRecipes {
             .addTo(sAssemblerRecipes);
 
         fusionRecipes();
+        conversionRecipes();
+    }
+
+    private static final Item EMTItems = GameRegistry.findItem("EMT", "EMTItems");
+
+    private static void addOldHiddenRecipe(GT_Recipe recipe) {
+        if (!LoaderReference.ElectroMagicTools) return;
+        recipe = recipe.copy();
+        recipe.mInputs = Arrays.stream(recipe.mInputs)
+            .map(i -> {
+                if (i != null && i.getItem() == ItemLoader.kubaitems) {
+                    return new ItemStack(
+                        EMTItems,
+                        0,
+                        16 + (i.getItemDamage() - kubatech.api.enums.ItemList.DEFCDraconicSchematic.get(1)
+                            .getItemDamage()));
+                } else return i;
+            })
+            .toArray(ItemStack[]::new);
+        recipe.mHidden = true;
+        sFusionCraftingRecipes.add(recipe);
+    }
+
+    private static void conversionRecipes() {
+        if (!LoaderReference.ElectroMagicTools) return;
+        GameRegistry.addShapelessRecipe(
+            kubatech.api.enums.ItemList.DEFCDraconicSchematic.get(1),
+            new ItemStack(EMTItems, 1, 16));
+        GameRegistry
+            .addShapelessRecipe(kubatech.api.enums.ItemList.DEFCWyvernSchematic.get(1), new ItemStack(EMTItems, 1, 17));
+        GameRegistry.addShapelessRecipe(
+            kubatech.api.enums.ItemList.DEFCAwakenedSchematic.get(1),
+            new ItemStack(EMTItems, 1, 18));
+        GameRegistry.addShapelessRecipe(
+            kubatech.api.enums.ItemList.DEFCChaoticSchematic.get(1),
+            new ItemStack(EMTItems, 1, 19));
     }
 
     private static void fusionRecipes() {
@@ -140,7 +179,8 @@ public class DEFCRecipes {
             .eut(500_000)
             .duration(400)
             .specialValue(1)
-            .addTo(sFusionCraftingRecipes);
+            .addTo(sFusionCraftingRecipes)
+            .forEach(DEFCRecipes::addOldHiddenRecipe);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -154,7 +194,8 @@ public class DEFCRecipes {
             .eut(2_000_000)
             .duration(800)
             .specialValue(2)
-            .addTo(sFusionCraftingRecipes);
+            .addTo(sFusionCraftingRecipes)
+            .forEach(DEFCRecipes::addOldHiddenRecipe);
 
         if (Loader.isModLoaded("supersolarpanel")) {
             GT_Values.RA.stdBuilder()
@@ -169,7 +210,8 @@ public class DEFCRecipes {
                 .eut(8_000_000)
                 .duration(1600)
                 .specialValue(3)
-                .addTo(sFusionCraftingRecipes);
+                .addTo(sFusionCraftingRecipes)
+                .forEach(DEFCRecipes::addOldHiddenRecipe);
         } else {
             GT_Values.RA.stdBuilder()
                 .itemInputs(
@@ -183,7 +225,8 @@ public class DEFCRecipes {
                 .eut(8_000_000)
                 .duration(1600)
                 .specialValue(3)
-                .addTo(sFusionCraftingRecipes);
+                .addTo(sFusionCraftingRecipes)
+                .forEach(DEFCRecipes::addOldHiddenRecipe);
         }
 
         GT_Values.RA.stdBuilder()
@@ -198,7 +241,8 @@ public class DEFCRecipes {
             .eut(24_000_000)
             .duration(3200)
             .specialValue(4)
-            .addTo(sFusionCraftingRecipes);
+            .addTo(sFusionCraftingRecipes)
+            .forEach(DEFCRecipes::addOldHiddenRecipe);
 
         // ENERGY CORES
 
@@ -213,7 +257,8 @@ public class DEFCRecipes {
             .eut(500_000)
             .duration(1000)
             .specialValue(2)
-            .addTo(sFusionCraftingRecipes);
+            .addTo(sFusionCraftingRecipes)
+            .forEach(DEFCRecipes::addOldHiddenRecipe);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -226,7 +271,8 @@ public class DEFCRecipes {
             .eut(2_000_000)
             .duration(2000)
             .specialValue(3)
-            .addTo(sFusionCraftingRecipes);
+            .addTo(sFusionCraftingRecipes)
+            .forEach(DEFCRecipes::addOldHiddenRecipe);
 
         // Dragon Blood
         if (LoaderReference.GTPlusPlus) {
