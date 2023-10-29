@@ -90,116 +90,116 @@ public class DEFCRecipes {
             .specialValue(1)
             .addTo(sFusionCraftingRecipes);
 
-        /*
-         * addFusionCraftingRecipeNonOptimized(
-         * new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmiridium, 4),
-         * GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Ichorium, 1), ItemList.QuantumEye.get(1L),
-         * kubatech.api.enums.ItemList.DEFCDraconicSchematic.get(0L) },
-         * Materials.Sunnarium.getMolten(1440),
-         * GT_ModHandler.getModItem("DraconicEvolution", "draconicCore", 1, 0),
-         * GT_Values.NF,
-         * 400,
-         * 500000,
-         * 1);
-         */
-        addFusionCraftingRecipeNonOptimized(
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Draconium, 8),
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Draconium, 8),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 4),
-                GT_ModHandler.getModItem("DraconicEvolution", "draconicCore", 4, 0), ItemList.QuantumStar.get(1L),
-                kubatech.api.enums.ItemList.DEFCWyvernSchematic.get(0L), },
-            Materials.Neutronium.getMolten(1440),
-            GT_ModHandler.getModItem("DraconicEvolution", "wyvernCore", 1, 0),
-            GT_Values.NF,
-            800,
-            2_000_000,
-            2);
+                GT_ModHandler.getModItem("DraconicEvolution", "draconicCore", 4, 0),
+                ItemList.QuantumStar.get(1L),
+                kubatech.api.enums.ItemList.DEFCWyvernSchematic.get(0L))
+            .fluidInputs(Materials.Neutronium.getMolten(1440))
+            .itemOutputs(GT_ModHandler.getModItem("DraconicEvolution", "wyvernCore", 1, 0))
+            .eut(2_000_000)
+            .duration(800)
+            .specialValue(2)
+            .addTo(sFusionCraftingRecipes);
+
         if (Loader.isModLoaded("supersolarpanel")) {
-            addFusionCraftingRecipeNonOptimized(
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.DraconiumAwakened, 12),
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    GT_OreDictUnificator.get(OrePrefixes.plate, Materials.DraconiumAwakened, 12),
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Draconium, 4),
                     GT_ModHandler.getModItem("DraconicEvolution", "wyvernCore", 4, 0),
                     GT_ModHandler.getModItem("supersolarpanel", "enderquantumcomponent", 1, 0),
-                    kubatech.api.enums.ItemList.DEFCAwakenedSchematic.get(0L) },
-                Materials.Infinity.getMolten(1440),
-                GT_ModHandler.getModItem("DraconicEvolution", "awakenedCore", 1, 0),
-                GT_Values.NF,
-                1600,
-                8_000_000,
-                3);
+                    kubatech.api.enums.ItemList.DEFCAwakenedSchematic.get(0L))
+                .fluidInputs(Materials.Infinity.getMolten(1440))
+                .itemOutputs(GT_ModHandler.getModItem("DraconicEvolution", "awakenedCore", 1, 0))
+                .eut(8_000_000)
+                .duration(1600)
+                .specialValue(3)
+                .addTo(sFusionCraftingRecipes);
         } else {
-            addFusionCraftingRecipeNonOptimized(
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.DraconiumAwakened, 12),
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    GT_OreDictUnificator.get(OrePrefixes.plate, Materials.DraconiumAwakened, 12),
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Draconium, 4),
                     GT_ModHandler.getModItem("DraconicEvolution", "wyvernCore", 4, 0),
                     GT_ModHandler.getModItem("dreamcraft", "item.ManyullynCrystal", 1, 0),
-                    kubatech.api.enums.ItemList.DEFCAwakenedSchematic.get(0L) },
-                Materials.Infinity.getMolten(1440),
-                GT_ModHandler.getModItem("DraconicEvolution", "awakenedCore", 1, 0),
-                GT_Values.NF,
-                1600,
-                8_000_000,
-                3);
+                    kubatech.api.enums.ItemList.DEFCAwakenedSchematic.get(0L))
+                .fluidInputs(Materials.Infinity.getMolten(1440))
+                .itemOutputs(GT_ModHandler.getModItem("DraconicEvolution", "awakenedCore", 1, 0))
+                .eut(8_000_000)
+                .duration(1600)
+                .specialValue(3)
+                .addTo(sFusionCraftingRecipes);
         }
 
-        addFusionCraftingRecipeNonOptimized(
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.DraconiumAwakened, 16),
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.DraconiumAwakened, 16),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.BlackPlutonium, 4),
                 GT_ModHandler.getModItem("DraconicEvolution", "awakenedCore", 4, 0),
                 GT_ModHandler.getModItem("DraconicEvolution", "chaosFragment", 2, 2),
-                kubatech.api.enums.ItemList.DEFCChaoticSchematic.get(0L) },
-            MaterialsUEVplus.SpaceTime.getMolten(1440),
-            GT_ModHandler.getModItem("DraconicEvolution", "chaoticCore", 1, 0),
-            GT_Values.NF,
-            3200,
-            24_000_000,
-            4);
+                kubatech.api.enums.ItemList.DEFCChaoticSchematic.get(0L))
+            .fluidInputs(MaterialsUEVplus.SpaceTime.getMolten(1440))
+            .itemOutputs(GT_ModHandler.getModItem("DraconicEvolution", "chaoticCore", 1, 0))
+            .eut(24_000_000)
+            .duration(3200)
+            .specialValue(4)
+            .addTo(sFusionCraftingRecipes);
 
         // ENERGY CORES
 
-        addFusionCraftingRecipe(
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Draconium, 8),
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Draconium, 8),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StellarAlloy, 4),
                 GT_ModHandler.getModItem("AdvancedSolarPanel", "asp_crafting_items", 4, 1),
                 GT_ModHandler.getModItem("DraconicEvolution", "draconicCore", 1, 0),
-                kubatech.api.enums.ItemList.DEFCWyvernSchematic.get(0L) },
-            GT_ModHandler.getModItem("DraconicEvolution", "draconiumEnergyCore", 1, 0),
-            1000,
-            500_000,
-            2);
+                kubatech.api.enums.ItemList.DEFCWyvernSchematic.get(0L))
+            .itemOutputs(GT_ModHandler.getModItem("DraconicEvolution", "draconiumEnergyCore", 1, 0))
+            .eut(500_000)
+            .duration(1000)
+            .specialValue(2)
+            .addTo(sFusionCraftingRecipes);
 
-        addFusionCraftingRecipe(
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.DraconiumAwakened, 8),
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.DraconiumAwakened, 8),
                 GT_ModHandler.getModItem("DraconicEvolution", "draconiumEnergyCore", 4, 0),
                 GT_ModHandler.getModItem("AdvancedSolarPanel", "asp_crafting_items", 4, 4),
                 GT_ModHandler.getModItem("DraconicEvolution", "wyvernCore", 1, 0),
-                kubatech.api.enums.ItemList.DEFCAwakenedSchematic.get(0L) },
-            GT_ModHandler.getModItem("DraconicEvolution", "draconiumEnergyCore", 1, 1),
-            2000,
-            2_000_000,
-            3);
+                kubatech.api.enums.ItemList.DEFCAwakenedSchematic.get(0L))
+            .itemOutputs(GT_ModHandler.getModItem("DraconicEvolution", "draconiumEnergyCore", 1, 1))
+            .eut(2_000_000)
+            .duration(2000)
+            .specialValue(3)
+            .addTo(sFusionCraftingRecipes);
 
         // Dragon Blood
         if (LoaderReference.GTPlusPlus) {
 
-            addFusionCraftingRecipeNonOptimized(
-                new ItemStack[] { new ItemStack(Blocks.dragon_egg, 0),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64) },
-                Materials.Radon.getPlasma(144),
-                null,
-                new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 288),
-                4200,
-                1_966_080,
-                3);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    new ItemStack(Blocks.dragon_egg, 0),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64))
+                .fluidInputs(Materials.Radon.getPlasma(144))
+                .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 288))
+                .eut(1_966_080)
+                .duration(4200)
+                .specialValue(3)
+                .addTo(sFusionCraftingRecipes);
 
-            addFusionCraftingRecipeNonOptimized(
-                new ItemStack[] { GT_ModHandler.getModItem("witchery", "infinityegg", 0),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64) },
-                Materials.Radon.getPlasma(72),
-                null,
-                new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 432),
-                3600,
-                1_966_080,
-                3);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    GT_ModHandler.getModItem("witchery", "infinityegg", 0),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64))
+                .fluidInputs(Materials.Radon.getPlasma(72))
+                .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 432))
+                .eut(1_966_080)
+                .duration(3600)
+                .specialValue(3)
+                .addTo(sFusionCraftingRecipes);
         }
     }
 }
