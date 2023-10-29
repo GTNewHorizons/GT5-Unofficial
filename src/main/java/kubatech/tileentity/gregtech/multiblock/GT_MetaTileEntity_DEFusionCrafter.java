@@ -2,9 +2,14 @@ package kubatech.tileentity.gregtech.multiblock;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GT_HatchElement.Energy;
+import static gregtech.api.enums.GT_HatchElement.InputBus;
+import static gregtech.api.enums.GT_HatchElement.InputHatch;
+import static gregtech.api.enums.GT_HatchElement.Maintenance;
+import static gregtech.api.enums.GT_HatchElement.OutputBus;
+import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_MAGIC;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_MAGIC_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_MAGIC_ACTIVE_GLOW;
@@ -13,7 +18,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_GLOW;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static kubatech.api.Variables.StructureHologram;
 import static kubatech.api.Variables.buildAuthorList;
 
@@ -27,7 +32,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTech_API;
@@ -47,7 +54,8 @@ import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.loaders.BlockLoader;
 import kubatech.loaders.DEFCRecipes;
 
-public class GT_MetaTileEntity_DEFusionCrafter extends KubaTechGTMultiBlockBase<GT_MetaTileEntity_DEFusionCrafter> {
+public class GT_MetaTileEntity_DEFusionCrafter extends KubaTechGTMultiBlockBase<GT_MetaTileEntity_DEFusionCrafter>
+    implements ISurvivalConstructable {
 
     private static final int CASING_INDEX = (1 << 7) + (15 + 48);
     private int mTierCasing = 0;
@@ -96,12 +104,11 @@ public class GT_MetaTileEntity_DEFusionCrafter extends KubaTechGTMultiBlockBase<
                 })) // spotless:on
         .addElement(
             'N',
-            ofChain(
-                onElementPass(e -> e.mCasing++, ofBlock(BlockLoader.defcCasingBlock, 7)),
-                ofHatchAdder(GT_MetaTileEntity_DEFusionCrafter::addEnergyInputToMachineList, CASING_INDEX, 1),
-                ofHatchAdder(GT_MetaTileEntity_DEFusionCrafter::addInputToMachineList, CASING_INDEX, 1),
-                ofHatchAdder(GT_MetaTileEntity_DEFusionCrafter::addOutputToMachineList, CASING_INDEX, 1),
-                ofHatchAdder(GT_MetaTileEntity_DEFusionCrafter::addMaintenanceToMachineList, CASING_INDEX, 1)))
+            buildHatchAdder(GT_MetaTileEntity_DEFusionCrafter.class)
+                .atLeast(InputBus, InputHatch, OutputBus, OutputHatch, Energy, Maintenance)
+                .casingIndex(CASING_INDEX)
+                .dot(1)
+                .buildAndChain(onElementPass(e -> e.mCasing++, ofBlock(BlockLoader.defcCasingBlock, 7))))
         .addElement('n', onElementPass(e -> e.mCasing++, ofBlock(BlockLoader.defcCasingBlock, 7)))
         .addElement('f', ofBlock(GregTech_API.sBlockCasings4, 7))
         .addElement('F', ofBlocksTiered((Block b, int m) -> {
@@ -251,6 +258,11 @@ public class GT_MetaTileEntity_DEFusionCrafter extends KubaTechGTMultiBlockBase<
     @Override
     public void construct(ItemStack itemStack, boolean b) {
         buildPiece(STRUCTURE_PIECE_MAIN, itemStack, b, 2, 9, 0);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 9, 0, elementBudget, env, true, true);
     }
 
     @Override
