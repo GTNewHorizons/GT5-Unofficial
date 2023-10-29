@@ -14,6 +14,11 @@ kubatech.command.config.usage=<选项>
 #Items
 kubaitem.fromcollection=此物品来自
 kubaitem.notyours=那东西好像不是你的
+kubaitem.defc_schematic_t1.name=龙芯图纸
+kubaitem.defc_schematic_t1.tip=可在冥王星地牢找到相关图纸
+kubaitem.defc_schematic_t2.name=双足飞龙核心图纸
+kubaitem.defc_schematic_t3.name=觉醒核心图纸
+kubaitem.defc_schematic_t4.name=混沌核心图纸
 
 #Tea
 kubaitem.tea.black_tea.name=红茶
