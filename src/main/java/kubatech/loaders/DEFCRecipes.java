@@ -286,6 +286,7 @@ public class DEFCRecipes {
                 .eut(1_966_080)
                 .duration(4200)
                 .specialValue(3)
+                .noOptimize()
                 .addTo(sFusionCraftingRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -297,6 +298,7 @@ public class DEFCRecipes {
                 .eut(1_966_080)
                 .duration(3600)
                 .specialValue(3)
+                .noOptimize()
                 .addTo(sFusionCraftingRecipes);
         }
     }
