@@ -48,6 +48,7 @@ public class DEFCCasingBlock extends GT_Block_Casings_Abstract {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
+        if(meta < 7 || meta > 12) return texture[0];
         return texture[meta - 7];
     }
 
