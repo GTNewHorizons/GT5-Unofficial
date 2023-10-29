@@ -847,13 +847,13 @@ public class SpaceMiningRecipes {
                     200);
         }
 
-        if (Loader.isModLoaded("EMT")) {
+        if (Loader.isModLoaded("kubatech")) {
             // Draconic Core Ruin
             addRecipesToDrones(
                     null,
                     null,
                     new int[] { 100, 100, 9800 },
-                    new ItemStack[] { GT_ModHandler.getModItem("EMT", "EMTItems", 1, 16),
+                    new ItemStack[] { GT_ModHandler.getModItem("kubatech", "kubaitems", 1, 38),
                             GT_ModHandler.getModItem("DraconicEvolution", "draconicCore", 1, 0),
                             ItemList.ZPM.getWithCharge(1, Integer.MAX_VALUE - 1) },
                     1,

@@ -35,7 +35,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
                 + "after:miscutils;"
                 + "after:dreamcraft;"
                 + "after:openmodularturrets;"
-                + "after:EMT;"
                 + "after:IronChest;")
 public class GTNHIntergalactic {
 
