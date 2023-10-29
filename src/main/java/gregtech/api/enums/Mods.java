@@ -97,6 +97,7 @@ public enum Mods {
     IronTanks(Names.IRON_TANKS),
     JABBA(Names.J_A_B_B_A),
     KekzTech(Names.KEKZ_TECH),
+    KubaTech(Names.KUBA_TECH),
     LogisticsPipes(Names.LOGISTICS_PIPES),
     MCFrames(Names.MC_FRAMES),
     MagicBees(Names.MAGIC_BEES),
@@ -273,6 +274,7 @@ public enum Mods {
         public static final String IRON_TANKS = "irontank";
         public static final String J_A_B_B_A = "JABBA";
         public static final String KEKZ_TECH = "kekztech";
+        public static final String KUBA_TECH = "kubatech";
         public static final String LOGISTICS_PIPES = "LogisticsPipes";
         public static final String MC_FRAMES = "MCFrames";
         public static final String MAGIC_BEES = "MagicBees";
