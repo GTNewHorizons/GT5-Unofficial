@@ -43,38 +43,74 @@ public class DEFCRecipes {
         false,
         true).setSlotOverlay(false, false, UITexture.fullImage(Tags.MODID, "gui/slot/fusion_crafter"));
 
-    public static void addFusionCraftingRecipe(ItemStack[] inputs, FluidStack[] fluidinputs, ItemStack[] outputs,
-        FluidStack[] fluidoutputs, int aDuration, int aEUt, int aTier) {
-        sFusionCraftingRecipes
-            .addRecipe(true, inputs, outputs, null, fluidinputs, fluidoutputs, aDuration, aEUt, aTier);
-    }
-
-    public static void addFusionCraftingRecipeNonOptimized(ItemStack[] inputs, FluidStack[] fluidinputs,
-        ItemStack[] outputs, FluidStack[] fluidoutputs, int aDuration, int aEUt, int aTier) {
-        sFusionCraftingRecipes
-            .addRecipe(false, inputs, outputs, null, fluidinputs, fluidoutputs, aDuration, aEUt, aTier);
-    }
-
-    public static void addFusionCraftingRecipe(ItemStack[] inputs, ItemStack output, int aDuration, int aEUt,
-        int aTier) {
-        addFusionCraftingRecipe(inputs, null, new ItemStack[] { output }, null, aDuration, aEUt, aTier);
-    }
-
-    // Use this if you don't want your recipes quantity to be splitted
-    public static void addFusionCraftingRecipeNonOptimized(ItemStack[] inputs, FluidStack fluidinput, ItemStack output,
-        FluidStack fluidoutput, int aDuration, int aEUt, int aTier) {
-        addFusionCraftingRecipeNonOptimized(
-            inputs,
-            new FluidStack[] { fluidinput },
-            new ItemStack[] { output },
-            new FluidStack[] { fluidoutput },
-            aDuration,
-            aEUt,
-            aTier);
-    }
-
     public static void addRecipes() {
 
+        // Dragonblood recipe for magics haters
+        if (LoaderReference.GTPlusPlus) {
+            GT_Values.RA.addMixerRecipe(
+                new ItemStack[] { new ItemStack(Blocks.dragon_egg, 1),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64L),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64L) },
+                new FluidStack[] { Materials.Radon.getPlasma(144) },
+                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 8L) },
+                new FluidStack[] { new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 288) },
+                14000,
+                1966080);
+        }
+
+        // Casings
+
+        GT_Values.RA.addAssemblerRecipe(
+            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.NaquadahAlloy, 6L),
+                GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.NaquadahAlloy, 6L) },
+            Materials.Void.getMolten(1152L),
+            kubatech.api.enums.ItemList.DEFCCasingBase.get(1),
+            24000,
+            491520);
+        GT_Values.RA.addAssemblerRecipe(
+            new ItemStack[] { GT_ModHandler.getModItem("dreamcraft", "tile.BloodyIchorium", 1, 0),
+                GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Osmiridium, 6L) },
+            Materials.Void.getMolten(1152L),
+            kubatech.api.enums.ItemList.DEFCCasingT1.get(1),
+            24000,
+            491520);
+        GT_Values.RA.addAssemblerRecipe(
+            new ItemStack[] { kubatech.api.enums.ItemList.DEFCCasingT1.get(1),
+                GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Draconium, 6L),
+                GT_ModHandler.getModItem("DraconicEvolution", "draconicCore", 1, 0) },
+            Materials.Void.getMolten(2304L),
+            kubatech.api.enums.ItemList.DEFCCasingT2.get(1),
+            24000,
+            491520); // uv
+        GT_Values.RA.addAssemblerRecipe(
+            new ItemStack[] { kubatech.api.enums.ItemList.DEFCCasingT2.get(1),
+                GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.CosmicNeutronium, 6L),
+                GT_ModHandler.getModItem("DraconicEvolution", "wyvernCore", 2, 0) },
+            Materials.Void.getMolten(4608L),
+            kubatech.api.enums.ItemList.DEFCCasingT3.get(1),
+            12000,
+            1996080); // uhv, you need uhv to get the thing anyway?
+        GT_Values.RA.addAssemblerRecipe(
+            new ItemStack[] { kubatech.api.enums.ItemList.DEFCCasingT3.get(1),
+                GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.DraconiumAwakened, 6L),
+                GT_ModHandler.getModItem("DraconicEvolution", "awakenedCore", 3, 0) },
+            Materials.Void.getMolten(9216L),
+            kubatech.api.enums.ItemList.DEFCCasingT4.get(1),
+            12000,
+            7864320); // uev
+        GT_Values.RA.addAssemblerRecipe(
+            new ItemStack[] { kubatech.api.enums.ItemList.DEFCCasingT4.get(1),
+                GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Infinity, 6L),
+                GT_ModHandler.getModItem("DraconicEvolution", "chaoticCore", 4, 0) },
+            Materials.Void.getMolten(18432L),
+            kubatech.api.enums.ItemList.DEFCCasingT5.get(1),
+            12000,
+            31457280); // uiv, use the multi
+
+        fusionRecipes();
+    }
+
+    private static void fusionRecipes(){
         // CORES
 
         GT_Values.RA.stdBuilder()
