@@ -110,7 +110,7 @@ public class GT_MetaTileEntity_DEFusionCrafter extends KubaTechGTMultiBlockBase<
         }, fusionCasingTiers, -1, (e, i) -> e.mFusionTierCasing = i, e -> e.mFusionTierCasing))
         .addElement('R', ofBlocksTiered((Block b, int m) -> {
             if (b != BlockLoader.defcCasingBlock || m < 8 || m > 12) return -2;
-            return m;
+            return m - 7;
         }, coreTiers, -1, (e, i) -> e.mTierCasing = i, e -> e.mTierCasing))
         .build();
 
