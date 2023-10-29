@@ -23,12 +23,31 @@ package kubatech.nei;
 import net.minecraft.nbt.NBTTagCompound;
 
 import cpw.mods.fml.common.event.FMLInterModComms;
+import kubatech.Tags;
 import kubatech.api.LoaderReference;
 
 public class IMCForNEI {
 
     public static void IMCSender() {
         if (LoaderReference.EnderIO) sendCatalyst("mobsinfo.mobhandler", "gregtech:gt.blockmachines:14201");
+        if (LoaderReference.DraconicEvolution) {
+            sendGTStyledHandler("kubatech.defusioncrafter", "gregtech:gt.blockmachines:5001");
+            sendCatalyst("kubatech.defusioncrafter", "gregtech:gt.blockmachines:5001");
+        }
+    }
+
+    private static void sendGTStyledHandler(String aName, String aBlock) {
+        NBTTagCompound aNBT = new NBTTagCompound();
+        aNBT.setString("handler", aName);
+        aNBT.setString("modName", Tags.MODNAME);
+        aNBT.setString("modId", Tags.MODID);
+        aNBT.setBoolean("modRequired", true);
+        aNBT.setString("itemName", aBlock);
+        aNBT.setInteger("handlerHeight", 135);
+        aNBT.setInteger("handlerWidth", 166);
+        aNBT.setInteger("maxRecipesPerPage", 2);
+        aNBT.setInteger("yShift", 6);
+        FMLInterModComms.sendMessage("NotEnoughItems", "registerHandlerInfo", aNBT);
     }
 
     private static void sendCatalyst(String aName, String aStack, int aPriority) {

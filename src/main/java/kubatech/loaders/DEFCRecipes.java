@@ -28,7 +28,7 @@ public class DEFCRecipes {
 
     public static final GT_Recipe.GT_Recipe_Map sFusionCraftingRecipes = new GT_Recipe.GT_Recipe_Map(
         new HashSet<>(16),
-        "emt.recipe.fusioncrafting",
+        "kubatech.defusioncrafter",
         "Draconic Evolution Fusion Crafter",
         null,
         GregTech.getResourcePath("textures/gui/basicmachines", "FusionCrafter"),
