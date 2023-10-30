@@ -3,6 +3,7 @@ package goodgenerator.blocks.tileEntity.base;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
+import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -263,38 +264,35 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
             if (mStartUpCheck < 0) {
                 if (mMachine) {
                     if (this.mEnergyHatches != null) {
-                        for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches)
-                            if (isValidMetaTileEntity(tHatch)) {
-                                if (aBaseMetaTileEntity.getStoredEU()
-                                        + (2048L * tierOverclock() * getMaxPara() * extraPara(100)) < maxEUStore()
-                                        && tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(
-                                                2048L * tierOverclock() * getMaxPara() * extraPara(100),
-                                                false)) {
-                                    aBaseMetaTileEntity.increaseStoredEnergyUnits(
+                        for (GT_MetaTileEntity_Hatch_Energy tHatch : filterValidMTEs(mEnergyHatches)) {
+                            if (aBaseMetaTileEntity.getStoredEU()
+                                    + (2048L * tierOverclock() * getMaxPara() * extraPara(100)) < maxEUStore()
+                                    && tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(
                                             2048L * tierOverclock() * getMaxPara() * extraPara(100),
-                                            true);
-                                } else if (aBaseMetaTileEntity.getStoredEU() + (2048L * tierOverclock()) < maxEUStore()
-                                        && tHatch.getBaseMetaTileEntity()
-                                                .decreaseStoredEnergyUnits(2048L * tierOverclock(), false)) {
-                                                    aBaseMetaTileEntity
-                                                            .increaseStoredEnergyUnits(2048L * tierOverclock(), true);
-                                                }
-                            }
+                                            false)) {
+                                aBaseMetaTileEntity.increaseStoredEnergyUnits(
+                                        2048L * tierOverclock() * getMaxPara() * extraPara(100),
+                                        true);
+                            } else if (aBaseMetaTileEntity.getStoredEU() + (2048L * tierOverclock()) < maxEUStore()
+                                    && tHatch.getBaseMetaTileEntity()
+                                            .decreaseStoredEnergyUnits(2048L * tierOverclock(), false)) {
+                                                aBaseMetaTileEntity
+                                                        .increaseStoredEnergyUnits(2048L * tierOverclock(), true);
+                                            }
+                        }
                     }
                     if (this.eEnergyMulti != null) {
-                        for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : eEnergyMulti)
-                            if (isValidMetaTileEntity(tHatch)) {
-                                if (aBaseMetaTileEntity.getStoredEU() + getSingleHatchPower() < maxEUStore()
-                                        && tHatch.getBaseMetaTileEntity()
-                                                .decreaseStoredEnergyUnits(getSingleHatchPower(), false)) {
-                                    aBaseMetaTileEntity.increaseStoredEnergyUnits(getSingleHatchPower(), true);
-                                } else if (aBaseMetaTileEntity.getStoredEU() + (2048L * tierOverclock()) < maxEUStore()
-                                        && tHatch.getBaseMetaTileEntity()
-                                                .decreaseStoredEnergyUnits(2048L * tierOverclock(), false)) {
-                                                    aBaseMetaTileEntity
-                                                            .increaseStoredEnergyUnits(2048L * tierOverclock(), true);
-                                                }
-                            }
+                        for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : filterValidMTEs(eEnergyMulti)) {
+                            if (aBaseMetaTileEntity.getStoredEU() + getSingleHatchPower() < maxEUStore() && tHatch
+                                    .getBaseMetaTileEntity().decreaseStoredEnergyUnits(getSingleHatchPower(), false)) {
+                                aBaseMetaTileEntity.increaseStoredEnergyUnits(getSingleHatchPower(), true);
+                            } else if (aBaseMetaTileEntity.getStoredEU() + (2048L * tierOverclock()) < maxEUStore()
+                                    && tHatch.getBaseMetaTileEntity()
+                                            .decreaseStoredEnergyUnits(2048L * tierOverclock(), false)) {
+                                                aBaseMetaTileEntity
+                                                        .increaseStoredEnergyUnits(2048L * tierOverclock(), true);
+                                            }
+                        }
                     }
                     if (aBaseMetaTileEntity.getStoredEU() <= 0 && mMaxProgresstime > 0) {
                         stopMachine();

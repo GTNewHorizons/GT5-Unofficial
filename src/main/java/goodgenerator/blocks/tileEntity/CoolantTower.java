@@ -4,6 +4,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_StructureUtility.*;
+import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -196,7 +197,7 @@ public class CoolantTower extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         this.mMaxProgresstime = 20;
         int steam = 0;
 
-        for (GT_MetaTileEntity_Hatch_Input tHatch : mInputHatches) {
+        for (GT_MetaTileEntity_Hatch_Input tHatch : filterValidMTEs(mInputHatches)) {
             steam += maybeDrainHatch(tHatch);
         }
         addOutput(GT_ModHandler.getDistilledWater(steam / 160));
@@ -204,7 +205,6 @@ public class CoolantTower extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     }
 
     private int maybeDrainHatch(GT_MetaTileEntity_Hatch_Input tHatch) {
-        if (!isValidMetaTileEntity(tHatch)) return 0;
         if (tHatch instanceof GT_MetaTileEntity_Hatch_MultiInput) {
             int drained = 0;
             for (FluidStack maybeSteam : ((GT_MetaTileEntity_Hatch_MultiInput) tHatch).getStoredFluid()) {
@@ -216,7 +216,7 @@ public class CoolantTower extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     }
 
     private int maybeDrainSteam(GT_MetaTileEntity_Hatch_Input tHatch, FluidStack maybeSteam) {
-        if (!isValidMetaTileEntity(tHatch) || maybeSteam == null) return 0;
+        if (maybeSteam == null) return 0;
         if (!GT_Utility.areFluidsEqual(maybeSteam, GT_ModHandler.getSteam(1))) return 0;
         FluidStack defoSteam = tHatch.drain(ForgeDirection.UNKNOWN, maybeSteam, true);
         return defoSteam.amount;

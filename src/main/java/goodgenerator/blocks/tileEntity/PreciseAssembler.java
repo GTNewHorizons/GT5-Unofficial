@@ -6,6 +6,7 @@ import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
+import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import java.util.Collections;
 import java.util.stream.Collectors;
@@ -360,15 +361,11 @@ public class PreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlockB
 
     private int checkEnergyHatchTier() {
         int tier = 0;
-        for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
-            if (isValidMetaTileEntity(tHatch)) {
-                tier = Math.max(tHatch.mTier, tier);
-            }
+        for (GT_MetaTileEntity_Hatch_Energy tHatch : filterValidMTEs(mEnergyHatches)) {
+            tier = Math.max(tHatch.mTier, tier);
         }
-        for (GT_MetaTileEntity_Hatch tHatch : mExoticEnergyHatches) {
-            if (isValidMetaTileEntity(tHatch)) {
-                tier = Math.max(tHatch.mTier, tier);
-            }
+        for (GT_MetaTileEntity_Hatch tHatch : filterValidMTEs(mExoticEnergyHatches)) {
+            tier = Math.max(tHatch.mTier, tier);
         }
         return tier;
     }

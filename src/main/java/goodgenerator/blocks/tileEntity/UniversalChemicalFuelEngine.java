@@ -5,6 +5,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -350,12 +351,10 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_TooltipMultiB
     }
 
     public void consumeAllLiquid(FluidStack liquid) {
-        for (GT_MetaTileEntity_Hatch_Input tHatch : mInputHatches) {
-            if (isValidMetaTileEntity(tHatch)) {
-                FluidStack tLiquid = tHatch.getFluid();
-                if (tLiquid != null && tLiquid.isFluidEqual(liquid)) {
-                    tHatch.drain(tLiquid.amount, true);
-                }
+        for (GT_MetaTileEntity_Hatch_Input tHatch : filterValidMTEs(mInputHatches)) {
+            FluidStack tLiquid = tHatch.getFluid();
+            if (tLiquid != null && tLiquid.isFluidEqual(liquid)) {
+                tHatch.drain(tLiquid.amount, true);
             }
         }
     }
