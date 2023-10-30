@@ -1,5 +1,5 @@
 dependencies {
-    api('com.github.GTNewHorizons:GT5-Unofficial:5.09.44.68:dev')
+    api('com.github.GTNewHorizons:GT5-Unofficial:5.09.44.73:dev')
     api("com.github.GTNewHorizons:bartworks:0.8.9:dev")
 
     implementation('curse.maven:cofh-core-69162:2388751')
