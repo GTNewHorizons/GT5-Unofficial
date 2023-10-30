@@ -127,7 +127,7 @@ public class RecipeMapBackend {
                 }
             }
             if (recipe.mFluidInputs.length < properties.minFluidInputs
-                && recipe.mInputs.length < properties.minItemInputs) {
+                || recipe.mInputs.length < properties.minItemInputs) {
                 return Collections.emptyList();
             }
             if (properties.specialHandler != null) recipe = properties.specialHandler.apply(recipe);
