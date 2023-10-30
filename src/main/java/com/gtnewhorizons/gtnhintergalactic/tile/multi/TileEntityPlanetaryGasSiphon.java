@@ -263,7 +263,7 @@ public class TileEntityPlanetaryGasSiphon extends GT_MetaTileEntity_EnhancedMult
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
         // return early if no input busses are present, the first bus is invalid or the TE is not on a space station
-        if (mInputBusses.isEmpty() || !isValidMetaTileEntity(mInputBusses.get(0))) {
+        if (mInputBusses.isEmpty() || !mInputBusses.get(0).isValid()) {
             resetMachine(true);
             return SimpleCheckRecipeResult.ofFailure("no_mining_pipe");
         }
