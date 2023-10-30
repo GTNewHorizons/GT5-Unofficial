@@ -11,6 +11,7 @@ import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.filterByMTETier;
 import static gregtech.api.util.GT_StructureUtility.ofCoil;
+import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -688,13 +689,11 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
         if (this.getControllerSlot() != null) {
             tItems.add(this.getControllerSlot());
         }
-        for (GT_MetaTileEntity_Hatch_Catalysts tHatch : mCatalystBuses) {
+        for (GT_MetaTileEntity_Hatch_Catalysts tHatch : filterValidMTEs(mCatalystBuses)) {
             tHatch.mRecipeMap = getRecipeMap();
-            if (isValidMetaTileEntity(tHatch)) {
-                AutoMap<ItemStack> aHatchContent = tHatch.getContentUsageSlots();
-                if (!aHatchContent.isEmpty()) {
-                    tItems.addAll(aHatchContent);
-                }
+            AutoMap<ItemStack> aHatchContent = tHatch.getContentUsageSlots();
+            if (!aHatchContent.isEmpty()) {
+                tItems.addAll(aHatchContent);
             }
         }
         return tItems;

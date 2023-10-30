@@ -9,6 +9,7 @@ import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.enums.GT_HatchElement.Muffler;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.GT_Utility.filterValidMTEs;
 import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase.GTPPHatchElement.TTDynamo;
 
 import java.util.ArrayList;
@@ -196,10 +197,8 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends
 
     public final double getMufflerReduction() {
         double totalReduction = 0;
-        for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) {
-            if (isValidMetaTileEntity(tHatch)) {
-                totalReduction += ((double) tHatch.calculatePollutionReduction(100)) / 100;
-            }
+        for (GT_MetaTileEntity_Hatch_Muffler tHatch : filterValidMTEs(mMufflerHatches)) {
+            totalReduction += ((double) tHatch.calculatePollutionReduction(100)) / 100;
         }
         return totalReduction / 4;
     }
@@ -610,11 +609,9 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends
 
         long storedEnergy = 0;
         long maxEnergy = 0;
-        for (GT_MetaTileEntity_Hatch_Dynamo tHatch : mDynamoHatches) {
-            if (isValidMetaTileEntity(tHatch)) {
-                storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
-                maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
-            }
+        for (GT_MetaTileEntity_Hatch_Dynamo tHatch : filterValidMTEs(mDynamoHatches)) {
+            storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
+            maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
         }
 
         boolean aIsSteam = this.getClass().getName().toLowerCase().contains("steam");
@@ -679,15 +676,13 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends
     public boolean polluteEnvironment(int aPollutionLevel) {
         if (this.requiresMufflers()) {
             mPollution += aPollutionLevel * getPollutionMultiplier() * mufflerReduction;
-            for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) {
-                if (isValidMetaTileEntity(tHatch)) {
-                    if (mPollution >= 10000) {
-                        if (PollutionUtils.addPollution(this.getBaseMetaTileEntity(), 10000)) {
-                            mPollution -= 10000;
-                        }
-                    } else {
-                        break;
+            for (GT_MetaTileEntity_Hatch_Muffler tHatch : filterValidMTEs(mMufflerHatches)) {
+                if (mPollution >= 10000) {
+                    if (PollutionUtils.addPollution(this.getBaseMetaTileEntity(), 10000)) {
+                        mPollution -= 10000;
                     }
+                } else {
+                    break;
                 }
             }
             return mPollution < 10000;
@@ -793,8 +788,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends
         if (this.mTurbineRotorHatches.isEmpty() || ((System.currentTimeMillis() / 1000) - mLastHatchUpdate) <= 2) {
             return;
         }
-        for (GT_MetaTileEntity_Hatch_Turbine h : this.mTurbineRotorHatches) {
-            if (!isValidMetaTileEntity(h)) continue;
+        for (GT_MetaTileEntity_Hatch_Turbine h : filterValidMTEs(this.mTurbineRotorHatches)) {
             h.setActive(aState);
         }
 
@@ -833,16 +827,11 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends
     public boolean addEnergyOutputMultipleDynamos(long aEU, boolean aAllowMixedVoltageDynamos) {
         int injected = 0;
         long aFirstVoltageFound = -1;
-        for (GT_MetaTileEntity_Hatch aDynamo : mAllDynamoHatches) {
-            if (aDynamo == null) {
-                return false;
-            }
-            if (isValidMetaTileEntity(aDynamo)) {
-                long aVoltage = aDynamo.maxEUOutput();
-                // Check against voltage to check when hatch mixing
-                if (aFirstVoltageFound == -1) {
-                    aFirstVoltageFound = aVoltage;
-                }
+        for (GT_MetaTileEntity_Hatch aDynamo : filterValidMTEs(mAllDynamoHatches)) {
+            long aVoltage = aDynamo.maxEUOutput();
+            // Check against voltage to check when hatch mixing
+            if (aFirstVoltageFound == -1) {
+                aFirstVoltageFound = aVoltage;
             }
         }
 
@@ -851,21 +840,19 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends
         int aAmpsToInject;
         int aRemainder;
         int ampsOnCurrentHatch;
-        for (GT_MetaTileEntity_Hatch aDynamo : mAllDynamoHatches) {
-            if (isValidMetaTileEntity(aDynamo)) {
-                leftToInject = aEU - injected;
-                aVoltage = aDynamo.maxEUOutput();
-                aAmpsToInject = (int) (leftToInject / aVoltage);
-                aRemainder = (int) (leftToInject - (aAmpsToInject * aVoltage));
-                ampsOnCurrentHatch = (int) Math.min(aDynamo.maxAmperesOut(), aAmpsToInject);
-                for (int i = 0; i < ampsOnCurrentHatch; i++) {
-                    aDynamo.getBaseMetaTileEntity().increaseStoredEnergyUnits(aVoltage, false);
-                }
-                injected += aVoltage * ampsOnCurrentHatch;
-                if (aRemainder > 0 && ampsOnCurrentHatch < aDynamo.maxAmperesOut()) {
-                    aDynamo.getBaseMetaTileEntity().increaseStoredEnergyUnits(aRemainder, false);
-                    injected += aRemainder;
-                }
+        for (GT_MetaTileEntity_Hatch aDynamo : filterValidMTEs(mAllDynamoHatches)) {
+            leftToInject = aEU - injected;
+            aVoltage = aDynamo.maxEUOutput();
+            aAmpsToInject = (int) (leftToInject / aVoltage);
+            aRemainder = (int) (leftToInject - (aAmpsToInject * aVoltage));
+            ampsOnCurrentHatch = (int) Math.min(aDynamo.maxAmperesOut(), aAmpsToInject);
+            for (int i = 0; i < ampsOnCurrentHatch; i++) {
+                aDynamo.getBaseMetaTileEntity().increaseStoredEnergyUnits(aVoltage, false);
+            }
+            injected += aVoltage * ampsOnCurrentHatch;
+            if (aRemainder > 0 && ampsOnCurrentHatch < aDynamo.maxAmperesOut()) {
+                aDynamo.getBaseMetaTileEntity().increaseStoredEnergyUnits(aRemainder, false);
+                injected += aRemainder;
             }
         }
         return injected > 0;

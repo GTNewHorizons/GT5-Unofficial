@@ -12,6 +12,7 @@ import static gregtech.api.enums.GT_HatchElement.Muffler;
 import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import java.util.ArrayList;
 
@@ -157,8 +158,7 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends
 
     @Override
     public void updateSlots() {
-        for (GT_MetaTileEntity_Hatch_CustomFluidBase tHatch : mCryotheumHatches)
-            if (isValidMetaTileEntity(tHatch)) tHatch.updateSlots();
+        for (GT_MetaTileEntity_Hatch_CustomFluidBase tHatch : filterValidMTEs(mCryotheumHatches)) tHatch.updateSlots();
         super.updateSlots();
     }
 

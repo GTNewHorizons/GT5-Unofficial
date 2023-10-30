@@ -9,6 +9,7 @@ import static gregtech.api.enums.GT_HatchElement.InputHatch;
 import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.enums.GT_HatchElement.Muffler;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.GT_Utility.filterValidMTEs;
 import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase.GTPPHatchElement.AirIntake;
 import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase.GTPPHatchElement.TTDynamo;
 
@@ -384,31 +385,18 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends
         long totalOutput = 0;
         long aFirstVoltageFound = -1;
         boolean aFoundMixedDynamos = false;
-        for (GT_MetaTileEntity_Hatch aDynamo : this.mAllDynamoHatches) {
-            if (aDynamo == null) {
-                return false;
-            }
-            if (isValidMetaTileEntity(aDynamo)) {
-                long aVoltage = aDynamo.maxEUOutput();
-                long aTotal = aDynamo.maxAmperesOut() * aVoltage;
-                // Check against voltage to check when hatch mixing
-                if (aFirstVoltageFound == -1) {
-                    aFirstVoltageFound = aVoltage;
-                } else {
-                    /**
-                     * Calcualtes overclocked ness using long integers
-                     * 
-                     * @param aEUt      - recipe EUt
-                     * @param aDuration - recipe Duration
-                     * @param mAmperage - should be 1 ?
-                     */
-                    // Long time calculation
-                    if (aFirstVoltageFound != aVoltage) {
-                        aFoundMixedDynamos = true;
-                    }
+        for (GT_MetaTileEntity_Hatch aDynamo : filterValidMTEs(this.mAllDynamoHatches)) {
+            long aVoltage = aDynamo.maxEUOutput();
+            long aTotal = aDynamo.maxAmperesOut() * aVoltage;
+            // Check against voltage to check when hatch mixing
+            if (aFirstVoltageFound == -1) {
+                aFirstVoltageFound = aVoltage;
+            } else {
+                if (aFirstVoltageFound != aVoltage) {
+                    aFoundMixedDynamos = true;
                 }
-                totalOutput += aTotal;
             }
+            totalOutput += aTotal;
         }
 
         if (totalOutput < aEU || (aFoundMixedDynamos && !aAllowMixedVoltageDynamos)) {
@@ -417,29 +405,24 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends
         }
 
         long leftToInject;
-        // Long EUt calculation
         long aVoltage;
-        // Isnt too low EUt check?
         int aAmpsToInject;
         int aRemainder;
 
-        // xEUt *= 4;//this is effect of everclocking
-        for (GT_MetaTileEntity_Hatch aDynamo : this.mAllDynamoHatches) {
-            if (isValidMetaTileEntity(aDynamo)) {
-                leftToInject = aEU - injected;
-                aVoltage = aDynamo.maxEUOutput();
-                aAmpsToInject = (int) (leftToInject / aVoltage);
-                aRemainder = (int) (leftToInject - (aAmpsToInject * aVoltage));
-                long powerGain;
-                for (int i = 0; i < Math.min(aDynamo.maxAmperesOut(), aAmpsToInject + 1); i++) {
-                    if (i == Math.min(aDynamo.maxAmperesOut(), aAmpsToInject)) {
-                        powerGain = aRemainder;
-                    } else {
-                        powerGain = aVoltage;
-                    }
-                    aDynamo.getBaseMetaTileEntity().increaseStoredEnergyUnits(powerGain, false);
-                    injected += powerGain;
+        for (GT_MetaTileEntity_Hatch aDynamo : filterValidMTEs(this.mAllDynamoHatches)) {
+            leftToInject = aEU - injected;
+            aVoltage = aDynamo.maxEUOutput();
+            aAmpsToInject = (int) (leftToInject / aVoltage);
+            aRemainder = (int) (leftToInject - (aAmpsToInject * aVoltage));
+            long powerGain;
+            for (int i = 0; i < Math.min(aDynamo.maxAmperesOut(), aAmpsToInject + 1); i++) {
+                if (i == Math.min(aDynamo.maxAmperesOut(), aAmpsToInject)) {
+                    powerGain = aRemainder;
+                } else {
+                    powerGain = aVoltage;
                 }
+                aDynamo.getBaseMetaTileEntity().increaseStoredEnergyUnits(powerGain, false);
+                injected += powerGain;
             }
         }
         return injected > 0;

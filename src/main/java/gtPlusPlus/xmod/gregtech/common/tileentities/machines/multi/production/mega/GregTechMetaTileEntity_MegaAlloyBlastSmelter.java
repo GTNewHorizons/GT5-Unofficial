@@ -14,6 +14,7 @@ import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofCoil;
+import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -313,11 +314,9 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
         int paras = getBaseMetaTileEntity().isActive() ? processingLogic.getCurrentParallels() : 0;
         int discountP = (int) (getCoilDiscount(coilLevel) * 1000) / 10;
 
-        for (GT_MetaTileEntity_Hatch tHatch : mExoticEnergyHatches) {
-            if (isValidMetaTileEntity(tHatch)) {
-                storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
-                maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
-            }
+        for (GT_MetaTileEntity_Hatch tHatch : filterValidMTEs(mExoticEnergyHatches)) {
+            storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
+            maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
         }
 
         return new String[] { "------------ Critical Information ------------",

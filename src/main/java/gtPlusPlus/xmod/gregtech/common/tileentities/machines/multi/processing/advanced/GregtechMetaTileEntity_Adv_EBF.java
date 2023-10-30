@@ -13,6 +13,7 @@ import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofCoil;
+import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import java.util.ArrayList;
 
@@ -23,7 +24,6 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -179,26 +179,8 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<
 
     @Override
     public void updateSlots() {
-        for (GT_MetaTileEntity_Hatch_CustomFluidBase tHatch : mPyrotheumHatches)
-            if (isValidMetaTileEntity(tHatch)) tHatch.updateSlots();
+        for (GT_MetaTileEntity_Hatch_CustomFluidBase tHatch : filterValidMTEs(mPyrotheumHatches)) tHatch.updateSlots();
         super.updateSlots();
-    }
-
-    private boolean depleteFuel(int aAmount) {
-        for (final GT_MetaTileEntity_Hatch_CustomFluidBase tHatch : this.mPyrotheumHatches) {
-            if (isValidMetaTileEntity(tHatch)) {
-                FluidStack tLiquid = tHatch.getFluid();
-                if (tLiquid == null || tLiquid.amount < aAmount) {
-                    continue;
-                }
-                tLiquid = tHatch.drain(aAmount, false);
-                if (tLiquid != null && tLiquid.amount >= aAmount) {
-                    tLiquid = tHatch.drain(aAmount, true);
-                    return tLiquid != null && tLiquid.amount >= aAmount;
-                }
-            }
-        }
-        return false;
     }
 
     @Override

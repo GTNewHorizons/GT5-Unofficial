@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -183,15 +184,13 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
     @Override
     public boolean depleteInput(FluidStack aLiquid) {
         if (aLiquid == null) return false;
-        for (GT_MetaTileEntity_Hatch_CustomFluidBase tHatch : mSteamInputFluids) {
-            if (isValidMetaTileEntity(tHatch)) {
-                FluidStack tLiquid = tHatch.getFluid();
-                if (tLiquid != null && tLiquid.isFluidEqual(aLiquid)) {
-                    tLiquid = tHatch.drain(aLiquid.amount, false);
-                    if (tLiquid != null && tLiquid.amount >= aLiquid.amount) {
-                        tLiquid = tHatch.drain(aLiquid.amount, true);
-                        return tLiquid != null && tLiquid.amount >= aLiquid.amount;
-                    }
+        for (GT_MetaTileEntity_Hatch_CustomFluidBase tHatch : filterValidMTEs(mSteamInputFluids)) {
+            FluidStack tLiquid = tHatch.getFluid();
+            if (tLiquid != null && tLiquid.isFluidEqual(aLiquid)) {
+                tLiquid = tHatch.drain(aLiquid.amount, false);
+                if (tLiquid != null && tLiquid.amount >= aLiquid.amount) {
+                    tLiquid = tHatch.drain(aLiquid.amount, true);
+                    return tLiquid != null && tLiquid.amount >= aLiquid.amount;
                 }
             }
         }
@@ -203,25 +202,21 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
         if (GT_Utility.isStackInvalid(aStack)) return false;
         FluidStack aLiquid = GT_Utility.getFluidForFilledItem(aStack, true);
         if (aLiquid != null) return depleteInput(aLiquid);
-        for (GT_MetaTileEntity_Hatch_CustomFluidBase tHatch : mSteamInputFluids) {
-            if (isValidMetaTileEntity(tHatch)) {
-                if (GT_Utility.areStacksEqual(aStack, tHatch.getBaseMetaTileEntity().getStackInSlot(0))) {
-                    if (tHatch.getBaseMetaTileEntity().getStackInSlot(0).stackSize >= aStack.stackSize) {
-                        tHatch.getBaseMetaTileEntity().decrStackSize(0, aStack.stackSize);
-                        return true;
-                    }
+        for (GT_MetaTileEntity_Hatch_CustomFluidBase tHatch : filterValidMTEs(mSteamInputFluids)) {
+            if (GT_Utility.areStacksEqual(aStack, tHatch.getBaseMetaTileEntity().getStackInSlot(0))) {
+                if (tHatch.getBaseMetaTileEntity().getStackInSlot(0).stackSize >= aStack.stackSize) {
+                    tHatch.getBaseMetaTileEntity().decrStackSize(0, aStack.stackSize);
+                    return true;
                 }
             }
         }
-        for (GT_MetaTileEntity_Hatch_Steam_BusInput tHatch : mSteamInputs) {
+        for (GT_MetaTileEntity_Hatch_Steam_BusInput tHatch : filterValidMTEs(mSteamInputs)) {
             tHatch.mRecipeMap = getRecipeMap();
-            if (isValidMetaTileEntity(tHatch)) {
-                for (int i = tHatch.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
-                    if (GT_Utility.areStacksEqual(aStack, tHatch.getBaseMetaTileEntity().getStackInSlot(i))) {
-                        if (tHatch.getBaseMetaTileEntity().getStackInSlot(0).stackSize >= aStack.stackSize) {
-                            tHatch.getBaseMetaTileEntity().decrStackSize(0, aStack.stackSize);
-                            return true;
-                        }
+            for (int i = tHatch.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
+                if (GT_Utility.areStacksEqual(aStack, tHatch.getBaseMetaTileEntity().getStackInSlot(i))) {
+                    if (tHatch.getBaseMetaTileEntity().getStackInSlot(0).stackSize >= aStack.stackSize) {
+                        tHatch.getBaseMetaTileEntity().decrStackSize(0, aStack.stackSize);
+                        return true;
                     }
                 }
             }
@@ -232,8 +227,8 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
     @Override
     public ArrayList<FluidStack> getStoredFluids() {
         ArrayList<FluidStack> rList = new ArrayList<>();
-        for (GT_MetaTileEntity_Hatch_CustomFluidBase tHatch : mSteamInputFluids) {
-            if (isValidMetaTileEntity(tHatch) && tHatch.getFillableStack() != null) {
+        for (GT_MetaTileEntity_Hatch_CustomFluidBase tHatch : filterValidMTEs(mSteamInputFluids)) {
+            if (tHatch.getFillableStack() != null) {
                 rList.add(tHatch.getFillableStack());
             }
         }
@@ -243,13 +238,11 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
     @Override
     public ArrayList<ItemStack> getStoredInputs() {
         ArrayList<ItemStack> rList = new ArrayList<>();
-        for (GT_MetaTileEntity_Hatch_Steam_BusInput tHatch : mSteamInputs) {
+        for (GT_MetaTileEntity_Hatch_Steam_BusInput tHatch : filterValidMTEs(mSteamInputs)) {
             tHatch.mRecipeMap = getRecipeMap();
-            if (isValidMetaTileEntity(tHatch)) {
-                for (int i = tHatch.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
-                    if (tHatch.getBaseMetaTileEntity().getStackInSlot(i) != null) {
-                        rList.add(tHatch.getBaseMetaTileEntity().getStackInSlot(i));
-                    }
+            for (int i = tHatch.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
+                if (tHatch.getBaseMetaTileEntity().getStackInSlot(i) != null) {
+                    rList.add(tHatch.getBaseMetaTileEntity().getStackInSlot(i));
                 }
             }
         }
@@ -264,15 +257,15 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
         while (outputSuccess && aStack.stackSize > 0) {
             outputSuccess = false;
             ItemStack single = aStack.splitStack(1);
-            for (GT_MetaTileEntity_Hatch_Steam_BusOutput tHatch : mSteamOutputs) {
-                if (!outputSuccess && isValidMetaTileEntity(tHatch)) {
+            for (GT_MetaTileEntity_Hatch_Steam_BusOutput tHatch : filterValidMTEs(mSteamOutputs)) {
+                if (!outputSuccess) {
                     for (int i = tHatch.getSizeInventory() - 1; i >= 0 && !outputSuccess; i--) {
                         if (tHatch.getBaseMetaTileEntity().addStackToSlot(i, single)) outputSuccess = true;
                     }
                 }
             }
-            for (GT_MetaTileEntity_Hatch_Output tHatch : mOutputHatches) {
-                if (!outputSuccess && isValidMetaTileEntity(tHatch) && tHatch.outputsItems()) {
+            for (GT_MetaTileEntity_Hatch_Output tHatch : filterValidMTEs(mOutputHatches)) {
+                if (!outputSuccess && tHatch.outputsItems()) {
                     if (tHatch.getBaseMetaTileEntity().addStackToSlot(1, single)) outputSuccess = true;
                 }
             }
@@ -283,11 +276,9 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
     @Override
     public ArrayList<ItemStack> getStoredOutputs() {
         ArrayList<ItemStack> rList = new ArrayList<>();
-        for (GT_MetaTileEntity_Hatch_Steam_BusOutput tHatch : mSteamOutputs) {
-            if (isValidMetaTileEntity(tHatch)) {
-                for (int i = tHatch.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
-                    rList.add(tHatch.getBaseMetaTileEntity().getStackInSlot(i));
-                }
+        for (GT_MetaTileEntity_Hatch_Steam_BusOutput tHatch : filterValidMTEs(mSteamOutputs)) {
+            for (int i = tHatch.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
+                rList.add(tHatch.getBaseMetaTileEntity().getStackInSlot(i));
             }
         }
         return rList;
@@ -296,7 +287,7 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
     @Override
     public List<ItemStack> getItemOutputSlots(ItemStack[] toOutput) {
         List<ItemStack> ret = new ArrayList<>();
-        for (final GT_MetaTileEntity_Hatch tBus : filterValidMetaTileEntities(mSteamOutputs)) {
+        for (final GT_MetaTileEntity_Hatch tBus : filterValidMTEs(mSteamOutputs)) {
             final IInventory tBusInv = tBus.getBaseMetaTileEntity();
             for (int i = 0; i < tBusInv.getSizeInventory(); i++) {
                 ret.add(tBus.getStackInSlot(i));
@@ -307,10 +298,8 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
 
     @Override
     public void updateSlots() {
-        for (GT_MetaTileEntity_Hatch_CustomFluidBase tHatch : mSteamInputFluids)
-            if (isValidMetaTileEntity(tHatch)) tHatch.updateSlots();
-        for (GT_MetaTileEntity_Hatch_Steam_BusInput tHatch : mSteamInputs)
-            if (isValidMetaTileEntity(tHatch)) tHatch.updateSlots();
+        for (GT_MetaTileEntity_Hatch_CustomFluidBase tHatch : filterValidMTEs(mSteamInputFluids)) tHatch.updateSlots();
+        for (GT_MetaTileEntity_Hatch_Steam_BusInput tHatch : filterValidMTEs(mSteamInputs)) tHatch.updateSlots();
     }
 
     @Override

@@ -11,6 +11,7 @@ import static gregtech.api.enums.GT_HatchElement.Muffler;
 import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -376,11 +377,9 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
     @Override
     public ArrayList<ItemStack> getStoredInputs() {
         ArrayList<ItemStack> tItems = super.getStoredInputs();
-        for (GT_MetaTileEntity_Hatch_ElementalDataOrbHolder tHatch : mReplicatorDataOrbHatches) {
+        for (GT_MetaTileEntity_Hatch_ElementalDataOrbHolder tHatch : filterValidMTEs(mReplicatorDataOrbHatches)) {
             tHatch.mRecipeMap = getRecipeMap();
-            if (isValidMetaTileEntity(tHatch)) {
-                tItems.add(tHatch.getOrbByCircuit());
-            }
+            tItems.add(tHatch.getOrbByCircuit());
         }
         tItems.removeAll(Collections.singleton(null));
         return tItems;

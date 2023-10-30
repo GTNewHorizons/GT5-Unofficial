@@ -12,6 +12,7 @@ import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.enums.Mods.TecTech;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
+import static gregtech.api.util.GT_Utility.filterValidMTEs;
 import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase.GTPPHatchElement.TTDynamo;
 import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase.GTPPHatchElement.TTEnergy;
 
@@ -569,10 +570,6 @@ public class GregtechMetaTileEntity_PowerSubStationController
     }
 
     private long drawEnergyFromHatch(MetaTileEntity aHatch) {
-        if (!isValidMetaTileEntity(aHatch)) {
-            return 0;
-        }
-
         long stored = aHatch.getEUVar();
         long voltage = aHatch.maxEUInput() * aHatch.maxAmperesIn();
 
@@ -589,10 +586,6 @@ public class GregtechMetaTileEntity_PowerSubStationController
     }
 
     private long addEnergyToHatch(MetaTileEntity aHatch) {
-        if (!isValidMetaTileEntity(aHatch)) {
-            return 0;
-        }
-
         long voltage = aHatch.maxEUOutput() * aHatch.maxAmperesOut();
 
         if (aHatch.getEUVar() > aHatch.maxEUStore() - voltage) {
@@ -638,18 +631,18 @@ public class GregtechMetaTileEntity_PowerSubStationController
         long aInputAverage = 0;
         long aOutputAverage = 0;
         // Input Power
-        for (GT_MetaTileEntity_Hatch THatch : this.mDischargeHatches) {
+        for (GT_MetaTileEntity_Hatch THatch : filterValidMTEs(this.mDischargeHatches)) {
             aInputAverage += drawEnergyFromHatch(THatch);
         }
-        for (GT_MetaTileEntity_Hatch tHatch : this.mAllEnergyHatches) {
+        for (GT_MetaTileEntity_Hatch tHatch : filterValidMTEs(this.mAllEnergyHatches)) {
             aInputAverage += drawEnergyFromHatch(tHatch);
         }
 
         // Output Power
-        for (GT_MetaTileEntity_Hatch THatch : this.mChargeHatches) {
+        for (GT_MetaTileEntity_Hatch THatch : filterValidMTEs(this.mChargeHatches)) {
             aOutputAverage += addEnergyToHatch(THatch);
         }
-        for (GT_MetaTileEntity_Hatch tHatch : this.mAllDynamoHatches) {
+        for (GT_MetaTileEntity_Hatch tHatch : filterValidMTEs(this.mAllDynamoHatches)) {
             aOutputAverage += addEnergyToHatch(tHatch);
         }
         // reset progress time

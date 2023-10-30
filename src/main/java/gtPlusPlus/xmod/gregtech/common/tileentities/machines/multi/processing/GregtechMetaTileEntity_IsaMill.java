@@ -12,6 +12,7 @@ import static gregtech.api.enums.GT_HatchElement.Muffler;
 import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -428,11 +429,9 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<
     @Override
     public ArrayList<ItemStack> getStoredInputs() {
         ArrayList<ItemStack> tItems = super.getStoredInputs();
-        for (GT_MetaTileEntity_Hatch_MillingBalls tHatch : mMillingBallBuses) {
+        for (GT_MetaTileEntity_Hatch_MillingBalls tHatch : filterValidMTEs(mMillingBallBuses)) {
             tHatch.mRecipeMap = getRecipeMap();
-            if (isValidMetaTileEntity(tHatch)) {
-                tItems.addAll(tHatch.getContentUsageSlots());
-            }
+            tItems.addAll(tHatch.getContentUsageSlots());
         }
         return tItems;
     }
