@@ -20,7 +20,6 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 
-import gregtech.api.enums.Element;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -43,6 +42,7 @@ import gregtech.api.recipe.maps.MicrowaveBackend;
 import gregtech.api.recipe.maps.OilCrackerBackend;
 import gregtech.api.recipe.maps.PrinterBackend;
 import gregtech.api.recipe.maps.RecyclerBackend;
+import gregtech.api.recipe.maps.ReplicatorBackend;
 import gregtech.api.recipe.maps.SpaceProjectFrontend;
 import gregtech.api.recipe.maps.TranscendentPlasmaMixerFrontend;
 import gregtech.api.recipe.maps.UnboxinatorBackend;
@@ -53,7 +53,6 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_RecipeConstants;
 import gregtech.api.util.GT_RecipeMapUtil;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Replicator;
 import gregtech.nei.formatter.FuelSpecialValueFormatter;
 import gregtech.nei.formatter.FusionSpecialValueFormatter;
 import gregtech.nei.formatter.HeatingCoilSpecialValueFormatter;
@@ -181,7 +180,8 @@ public final class RecipeMaps {
         })
         .progressBar(GT_UITextures.PROGRESSBAR_MACERATE)
         .build();
-    public static final RecipeMap<RecipeMapBackend> replicatorFakeRecipes = RecipeMapBuilder.of("gt.recipe.replicator")
+    public static final RecipeMap<ReplicatorBackend> replicatorRecipes = RecipeMapBuilder
+        .of("gt.recipe.replicator", ReplicatorBackend::new)
         .maxIO(0, 1, 1, 1)
         .minInputs(0, 1)
         .useSpecialSlot()
@@ -193,35 +193,6 @@ public final class RecipeMaps {
                 return GT_UITextures.OVERLAY_SLOT_UUM;
             }
             return null;
-        })
-        .recipeEmitter(builder -> {
-            Materials material = null;
-            ItemData itemData = GT_OreDictUnificator.getAssociation(builder.getItemOutput(0));
-            if (itemData != null && itemData.mMaterial != null && itemData.mMaterial.mMaterial != null) {
-                material = itemData.mMaterial.mMaterial;
-            }
-            if (material == null) {
-                FluidStack fluidStack = builder.getFluidOutput(0);
-                if (fluidStack != null) {
-                    material = Materials.getGtMaterialFromFluid(fluidStack.getFluid());
-                }
-            }
-            return Optional.ofNullable(material)
-                .map(materials -> materials.mElement)
-                .map(Element::getMass)
-                .flatMap(
-                    mass -> Optional.ofNullable(builder.getFluidInput(0))
-                        .map(uum -> {
-                            uum.amount = (int) GT_MetaTileEntity_Replicator.cubicFluidMultiplier(mass);
-                            return uum;
-                        }))
-                .flatMap(
-                    uum -> builder.duration(GT_Utility.safeInt(uum.amount * 512L, 1))
-                        .fake()
-                        .noOptimize()
-                        .build())
-                .map(Collections::singletonList)
-                .orElse(Collections.emptyList());
         })
         .build();
     /**

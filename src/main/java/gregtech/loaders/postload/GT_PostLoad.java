@@ -45,6 +45,7 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_RecipeBuilder;
+import gregtech.api.util.GT_RecipeConstants;
 import gregtech.api.util.GT_RecipeRegistrator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
@@ -263,9 +264,8 @@ public class GT_PostLoad {
                         GT_Values.RA.stdBuilder()
                             .itemOutputs(dustItem)
                             .special(dataOrb)
-                            .fluidInputs(Materials.UUMatter.getFluid(tMaterial.getMass()))
-                            .eut(TierEU.RECIPE_LV)
-                            .addTo(RecipeMaps.replicatorFakeRecipes);
+                            .metadata(GT_RecipeConstants.MATERIAL, tMaterial)
+                            .addTo(RecipeMaps.replicatorRecipes);
                         return;
                     }
                     ItemStack cellItem = GT_OreDictUnificator.get(OrePrefixes.cell, tMaterial, 1L);
@@ -284,12 +284,12 @@ public class GT_PostLoad {
                         if (fluidStack != null) {
                             builder.fluidOutputs(fluidStack);
                         } else {
-                            builder.itemOutputs(cellItem);
+                            builder.itemInputs(Materials.Empty.getCells(1))
+                                .itemOutputs(cellItem);
                         }
                         builder.special(dataOrb)
-                            .fluidInputs(Materials.UUMatter.getFluid(tMaterial.getMass()))
-                            .eut(TierEU.RECIPE_LV)
-                            .addTo(RecipeMaps.replicatorFakeRecipes);
+                            .metadata(GT_RecipeConstants.MATERIAL, tMaterial)
+                            .addTo(RecipeMaps.replicatorRecipes);
                     }
                 }
             });

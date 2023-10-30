@@ -76,6 +76,11 @@ public class GT_RecipeConstants {
      */
     public static final GT_RecipeBuilder.MetadataIdentifier<Object> OREDICT_INPUT = GT_RecipeBuilder.MetadataIdentifier
         .create(Object.class, "oredict_input");
+    /**
+     * Replicator output material.
+     */
+    public static final GT_RecipeBuilder.MetadataIdentifier<Materials> MATERIAL = GT_RecipeBuilder.MetadataIdentifier
+        .create(Materials.class, "material");
 
     /**
      * Add a arc furnace recipe. Adds to both normal arc furnace and plasma arc furnace.
