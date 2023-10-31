@@ -220,7 +220,7 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
 
     /**
      * Sets how many item/fluid inputs/outputs does this recipemap usually has at most.
-     * It does not actually restrict number of items used in the recipe.
+     * It does not actually restrict the number of items that can be used in recipes.
      */
     public RecipeMapBuilder<B> maxIO(int maxItemInputs, int maxItemOutputs, int maxFluidInputs, int maxFluidOutputs) {
         uiPropertiesBuilder.maxItemInputs(maxItemInputs)

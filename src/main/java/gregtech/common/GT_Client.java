@@ -76,7 +76,6 @@ import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_PlayedSound;
-import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.blocks.GT_Item_Machines;
@@ -721,9 +720,6 @@ public class GT_Client extends GT_Proxy implements Runnable {
             afterSomeTime++;
             if (afterSomeTime >= 100L) {
                 afterSomeTime = 0;
-                for (GT_Recipe recipe : RecipeMaps.assemblylineVisualRecipes.getAllRecipes()) {
-                    recipe.mHidden = false;
-                }
             }
             for (Iterator<Map.Entry<GT_PlayedSound, Integer>> iterator = GT_Utility.sPlayedSoundMap.entrySet()
                 .iterator(); iterator.hasNext();) {
