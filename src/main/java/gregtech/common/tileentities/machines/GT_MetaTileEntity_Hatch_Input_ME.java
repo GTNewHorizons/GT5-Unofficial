@@ -1,8 +1,9 @@
 package gregtech.common.tileentities.machines;
 
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_FLUID_HATCH;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_FLUID_HATCH_ACTIVE;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Iterator;
@@ -94,6 +95,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
     @Nullable
     protected AENetworkProxy gridProxy = null;
 
+    private final boolean autoPullAvailable;
     protected boolean autoPullFluidList = false;
     protected int minAutoPullAmount = 1;
     protected boolean processingRecipe = false;
@@ -102,45 +104,41 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
 
     protected static final FluidStack[] EMPTY_FLUID_STACK = new FluidStack[0];
 
-    public GT_MetaTileEntity_Hatch_Input_ME(int aID, String aName, String aNameRegional) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            1,
-            1,
-            new String[] { "Advanced fluid input for Multiblocks", "Retrieves directly from ME",
-                "Keeps 16 fluid types in stock",
-                "Auto-Pull from ME mode will automatically stock the first 16 fluid in the ME system, updated every 5 seconds.",
-                "Toggle by right-clicking with screwdriver, or use the GUI.",
-                "Use the GUI to limit the minimum stack size for Auto-Pulling.",
-                "Change ME connection behavior by right-clicking with wire cutter.",
-                "Configuration data can be copy+pasted using a data stick." });
+    public GT_MetaTileEntity_Hatch_Input_ME(int aID, boolean autoPullAvailable, String aName, String aNameRegional) {
+        super(aID, aName, aNameRegional, autoPullAvailable ? 10 : 8, 1, getDescriptionArray(autoPullAvailable));
+        this.autoPullAvailable = autoPullAvailable;
     }
 
-    public GT_MetaTileEntity_Hatch_Input_ME(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_Input_ME(String aName, boolean autoPullAvailable, int aTier, String[] aDescription,
+        ITexture[][][] aTextures) {
         super(aName, 1, aTier, aDescription, aTextures);
+        this.autoPullAvailable = autoPullAvailable;
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_Input_ME(mName, mTier, mDescriptionArray, mTextures);
+        return new GT_MetaTileEntity_Hatch_Input_ME(mName, autoPullAvailable, mTier, mDescriptionArray, mTextures);
     }
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_ME_FLUID_HATCH_ACTIVE) };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_ME_INPUT_FLUID_HATCH_ACTIVE) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_ME_FLUID_HATCH) };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_ME_INPUT_FLUID_HATCH) };
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
-        if (aTimer % 100 == 0 && autoPullFluidList) {
-            refreshFluidList();
+        if (getBaseMetaTileEntity().isServerSide()) {
+            if (aTimer % 100 == 0 && autoPullFluidList) {
+                refreshFluidList();
+            }
+            if (aTimer % 20 == 0) {
+                getBaseMetaTileEntity().setActive(isActive());
+            }
         }
         super.onPostTick(aBaseMetaTileEntity, aTimer);
     }
@@ -205,6 +203,20 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
         }
 
         return shadowStoredFluids;
+    }
+
+    @Override
+    public FluidStack drain(ForgeDirection side, FluidStack aFluid, boolean doDrain) {
+        // this is an ME input hatch. allowing draining via logistics would be very wrong (and against
+        // canTankBeEmptied()) but we do need to support draining from controller, which uses the UNKNOWN direction.
+        if (side != ForgeDirection.UNKNOWN) return null;
+        FluidStack stored = getMatchingFluidStack(aFluid);
+        if (stored == null) return null;
+        FluidStack drained = GT_Utility.copyAmount(Math.min(stored.amount, aFluid.amount), stored);
+        if (doDrain) {
+            stored.amount -= drained.amount;
+        }
+        return drained;
     }
 
     @Override
@@ -292,7 +304,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                 gridProxy = new AENetworkProxy(
                     (IGridProxyable) getBaseMetaTileEntity(),
                     "proxy",
-                    ItemList.Hatch_Input_ME.get(1),
+                    autoPullAvailable ? ItemList.Hatch_Input_ME_Advanced.get(1) : ItemList.Hatch_Input_ME.get(1),
                     true);
                 gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
                 updateValidGridProxySides();
@@ -315,6 +327,10 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
     }
 
     private void setAutoPullFluidList(boolean pullFluidList) {
+        if (!autoPullAvailable) {
+            return;
+        }
+
         autoPullFluidList = pullFluidList;
         if (!autoPullFluidList) {
             Arrays.fill(storedFluids, null);
@@ -479,6 +495,10 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (!autoPullAvailable) {
+            return;
+        }
+
         setAutoPullFluidList(!autoPullFluidList);
         aPlayer.addChatMessage(
             new ChatComponentTranslation(
@@ -498,9 +518,12 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
 
         NBTTagCompound nbt = dataStick.stackTagCompound;
 
-        setAutoPullFluidList(nbt.getBoolean("autoPull"));
-        minAutoPullAmount = nbt.getInteger("minAmount");
+        if (autoPullAvailable) {
+            setAutoPullFluidList(nbt.getBoolean("autoPull"));
+            minAutoPullAmount = nbt.getInteger("minAmount");
+        }
         additionalConnection = nbt.getBoolean("additionalConnection");
+
         if (!autoPullFluidList) {
             NBTTagList stockingFluids = nbt.getTagList("fluidsToStock", 10);
             for (int i = 0; i < stockingFluids.tagCount(); i++) {
@@ -565,7 +588,9 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        buildContext.addSyncedWindow(CONFIG_WINDOW_ID, this::createStackSizeConfigurationWindow);
+        if (autoPullAvailable) {
+            buildContext.addSyncedWindow(CONFIG_WINDOW_ID, this::createStackSizeConfigurationWindow);
+        }
 
         builder.widget(
             SlotGroup.ofFluidTanks(
@@ -668,11 +693,8 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                 .build()
                 .setPos(new Pos2d(97, 9)));
 
-        builder.widget(
-            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_DOUBLE)
-                .setPos(82, 30)
-                .setSize(12, 12))
-            .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+        if (autoPullAvailable) {
+            builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
                 if (clickData.mouseButton == 0) {
                     setAutoPullFluidList(!autoPullFluidList);
                 } else if (clickData.mouseButton == 1 && !widget.isClient()) {
@@ -696,7 +718,13 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                         StatCollector.translateToLocal("GT5U.machines.stocking_hatch.auto_pull.tooltip.2")))
                 .setSize(16, 16)
                 .setPos(80, 10))
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> autoPullFluidList, this::setAutoPullFluidList))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> autoPullFluidList, this::setAutoPullFluidList));
+        }
+
+        builder.widget(
+            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_DOUBLE)
+                .setPos(82, 30)
+                .setSize(12, 12))
             .widget(TextWidget.dynamicString(() -> {
                 boolean isActive = isActive();
                 boolean isPowered = isPowered();
@@ -762,6 +790,11 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
+        if (!autoPullAvailable) {
+            super.getWailaBody(itemStack, currenttip, accessor, config);
+            return;
+        }
+
         NBTTagCompound tag = accessor.getNBTData();
         boolean autopull = tag.getBoolean("autoPull");
         int minSize = tag.getInteger("minAmount");
@@ -779,9 +812,31 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
+        if (!autoPullAvailable) {
+            super.getWailaNBTData(player, tile, tag, world, x, y, z);
+            return;
+        }
+
         tag.setBoolean("autoPull", autoPullFluidList);
         tag.setInteger("minAmount", minAutoPullAmount);
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
     }
 
+    private static String[] getDescriptionArray(boolean autoPullAvailable) {
+        List<String> strings = new ArrayList<>(8);
+        strings.add("Advanced fluid input for Multiblocks");
+        strings.add("Retrieves directly from ME");
+        strings.add("Keeps 16 fluid types in stock");
+
+        if (autoPullAvailable) {
+            strings.add(
+                "Auto-Pull from ME mode will automatically stock the first 16 fluid in the ME system, updated every 5 seconds.");
+            strings.add("Toggle by right-clicking with screwdriver, or use the GUI.");
+            strings.add("Use the GUI to limit the minimum stack size for Auto-Pulling.");
+        }
+
+        strings.add("Change ME connection behavior by right-clicking with wire cutter.");
+        strings.add("Configuration data can be copy+pasted using a data stick.");
+        return strings.toArray(new String[0]);
+    }
 }

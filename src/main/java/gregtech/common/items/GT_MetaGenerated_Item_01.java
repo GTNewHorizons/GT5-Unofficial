@@ -131,6 +131,7 @@ import gregtech.common.items.behaviors.Behaviour_Scanner;
 import gregtech.common.items.behaviors.Behaviour_SensorKit;
 import gregtech.common.items.behaviors.Behaviour_Sonictron;
 import gregtech.common.items.behaviors.Behaviour_Spray_Color;
+import gregtech.common.items.behaviors.Behaviour_Spray_Color_Remover;
 import gregtech.common.items.behaviors.Behaviour_WrittenBook;
 
 public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
@@ -1195,6 +1196,53 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             addItemBehavior(32000 + tLastID, tBehaviour);
             addItemBehavior(32001 + tLastID, tBehaviour);
         }
+
+        ItemList.Spray_Color_Remover.set(
+            addItem(
+                tLastID = 465,
+                "Spray Can Solvent",
+                "Full",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 4L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.PERDITIO, 8L)));
+        ItemList.Spray_Color_Used_Remover.set(
+            addItem(
+                tLastID = 466,
+                "Spray Can Solvent",
+                "Used",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 3L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.PERDITIO, 6L),
+                SubTag.INVISIBLE));
+        IItemBehaviour<GT_MetaBase_Item> tBehaviour = new Behaviour_Spray_Color_Remover(
+            ItemList.Spray_Empty.get(1L),
+            ItemList.Spray_Color_Used_Remover.get(1L),
+            ItemList.Spray_Color_Remover.get(1L),
+            1024L);
+        addItemBehavior(32000 + 465, tBehaviour);
+        addItemBehavior(32000 + 466, tBehaviour);
+
+        ItemList.Spray_Color_Remover_Empty.set(
+            addItem(
+                tLastID = 467,
+                "Empty Spray Can Solvent Cannister",
+                "Used for making Spray Can Solvent",
+                new ItemData(
+                    Materials.Aluminium,
+                    OrePrefixes.plateDouble.mMaterialAmount * 4L,
+                    Materials.Redstone,
+                    OrePrefixes.dust.mMaterialAmount),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 1L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 1L)));
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
+                ItemList.Large_Fluid_Cell_Aluminium.get(1),
+                GT_Utility.getIntegratedCircuit(1))
+            .itemOutputs(ItemList.Spray_Color_Remover_Empty.get(1L))
+            .duration(40 * SECONDS)
+            .eut(1)
+            .addTo(assemblerRecipes);
+
         ItemList.Tool_Matches.set(
             addItem(
                 tLastID = 471,
@@ -1218,11 +1266,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 2L)));
 
-        IItemBehaviour<GT_MetaBase_Item> tBehaviour = new Behaviour_Lighter(
-            null,
-            ItemList.Tool_Matches.get(1L),
-            ItemList.Tool_Matches.get(1L),
-            1L);
+        tBehaviour = new Behaviour_Lighter(null, ItemList.Tool_Matches.get(1L), ItemList.Tool_Matches.get(1L), 1L);
         addItemBehavior(32471, tBehaviour);
         tBehaviour = new Behaviour_Lighter(
             null,
@@ -4571,7 +4615,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
     @Override
     public ItemStack getContainerItem(ItemStack aStack) {
         int aDamage = aStack.getItemDamage();
-        if ((aDamage >= 32430) && (aDamage <= 32461)) {
+        if (((aDamage >= 32430) && (aDamage <= 32461)) || (aDamage == 32465 || aDamage == 32466)) {
             return ItemList.Spray_Empty.get(1L);
         }
         if ((aDamage == 32479) || (aDamage == 32476)) {

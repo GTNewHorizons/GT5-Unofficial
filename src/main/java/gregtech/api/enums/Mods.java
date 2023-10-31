@@ -97,6 +97,7 @@ public enum Mods {
     IronTanks(Names.IRON_TANKS),
     JABBA(Names.J_A_B_B_A),
     KekzTech(Names.KEKZ_TECH),
+    KubaTech(Names.KUBA_TECH),
     LogisticsPipes(Names.LOGISTICS_PIPES),
     MCFrames(Names.MC_FRAMES),
     MagicBees(Names.MAGIC_BEES),
@@ -139,17 +140,17 @@ public enum Mods {
     StevesAddons(Names.STEVES_ADDONS),
     StevesCarts2(Names.STEVES_CARTS2),
     StevesFactoryManager(Names.STEVES_FACTORY_MANAGER),
-    StructureLib(Names.STRUCTURE_LIB),
     StorageDrawers(Names.STORAGE_DRAWERS),
+    StructureLib(Names.STRUCTURE_LIB),
     SuperSolarPanels(Names.SUPER_SOLAR_PANELS),
     TaintedMagic(Names.TAINTED_MAGIC),
     TecTech(Names.TECTECH),
     Thaumcraft(Names.THAUMCRAFT),
     ThaumicBases(Names.THAUMIC_BASES),
+    ThaumicBoots(Names.THAUMIC_BOOTS),
     ThaumicEnergistics(Names.THAUMIC_ENERGISTICS),
     ThaumicExploration(Names.THAUMIC_EXPLORATION),
     ThaumicHorizons(Names.THAUMIC_HORIZONS),
-    ThaumicBoots(Names.THAUMIC_BOOTS),
     ThaumicMachina(Names.THAUMIC_MACHINA),
     ThaumicTinkerer(Names.THAUMIC_TINKERER),
     TinkerConstruct(Names.TINKER_CONSTRUCT),
@@ -273,6 +274,7 @@ public enum Mods {
         public static final String IRON_TANKS = "irontank";
         public static final String J_A_B_B_A = "JABBA";
         public static final String KEKZ_TECH = "kekztech";
+        public static final String KUBA_TECH = "kubatech";
         public static final String LOGISTICS_PIPES = "LogisticsPipes";
         public static final String MC_FRAMES = "MCFrames";
         public static final String MAGIC_BEES = "MagicBees";

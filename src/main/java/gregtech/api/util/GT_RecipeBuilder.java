@@ -166,12 +166,9 @@ public class GT_RecipeBuilder {
         }
         GT_Log.err.print("Recipe collision resulting in recipe loss detected with ");
         GT_Log.err.println(details);
-        if (PANIC_MODE) {
-            throw new IllegalArgumentException("Recipe Collision");
-        } else {
-            // place a breakpoint here to catch all these issues
-            new IllegalArgumentException().printStackTrace(GT_Log.err);
-        }
+        // place a breakpoint here to catch all these issues
+        new IllegalArgumentException().printStackTrace(GT_Log.err);
+        // at least for now, do not crash in panic mode over collisions.
     }
 
     // endregion

@@ -3293,24 +3293,6 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(Materials.Benzene.getCells(1), Materials.Empty.getCells(1))
-            .itemOutputs(Materials.Hydrogen.getCells(2))
-            .fluidInputs(Materials.Ethylene.getGas(1000))
-            .fluidOutputs(Materials.Styrene.getFluid(1000))
-            .duration(6 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(UniversalChemical);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(Materials.Ethylene.getCells(1), Materials.Empty.getCells(1))
-            .itemOutputs(Materials.Hydrogen.getCells(2))
-            .fluidInputs(Materials.Benzene.getFluid(1000))
-            .fluidOutputs(Materials.Styrene.getFluid(1000))
-            .duration(6 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(UniversalChemical);
-
-        GT_Values.RA.stdBuilder()
             .itemInputs(Materials.RawStyreneButadieneRubber.getDust(9), Materials.Sulfur.getDust(1))
             .fluidOutputs(Materials.StyreneButadieneRubber.getMolten(1296))
             .duration(30 * SECONDS)
@@ -3918,6 +3900,24 @@ public class ChemicalRecipes implements Runnable {
     }
 
     public void singleBlockOnly() {
+        GT_Values.RA.stdBuilder()
+            .itemInputs(Materials.Benzene.getCells(1), Materials.Empty.getCells(1))
+            .itemOutputs(Materials.Hydrogen.getCells(2))
+            .fluidInputs(Materials.Ethylene.getGas(1000))
+            .fluidOutputs(Materials.Styrene.getFluid(1000))
+            .duration(6 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(chemicalReactorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(Materials.Ethylene.getCells(1), Materials.Empty.getCells(1))
+            .itemOutputs(Materials.Hydrogen.getCells(2))
+            .fluidInputs(Materials.Benzene.getFluid(1000))
+            .fluidOutputs(Materials.Styrene.getFluid(1000))
+            .duration(6 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(chemicalReactorRecipes);
+
         GT_Values.RA.stdBuilder()
             .itemInputs(Materials.Methane.getCells(1), Materials.Empty.getCells(2))
             .itemOutputs(Materials.HydrochloricAcid.getCells(3))

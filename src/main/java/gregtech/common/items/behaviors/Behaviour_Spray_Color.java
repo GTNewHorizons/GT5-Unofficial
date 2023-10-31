@@ -40,18 +40,18 @@ public class Behaviour_Spray_Color extends Behaviour_None {
         Blocks.stained_glass_pane,
         Blocks.carpet,
         Blocks.hardened_clay);
-    private final String mTooltip;
+    protected String mTooltip;
     private final String mTooltipUses = GT_LanguageManager
         .addStringLocalization("gt.behaviour.paintspray.uses", "Remaining Uses:");
     private final String mTooltipUnstackable = GT_LanguageManager
         .addStringLocalization("gt.behaviour.unstackable", "Not usable when stacked!");
     private final String mTooltipChain = GT_LanguageManager.addStringLocalization(
         "gt.behaviour.paintspray.chain",
-        "If used while sneaking it will paint a chain of blocks");
+        "If used while sneaking it will spray a chain of blocks");
 
     private final String mTooltipChainAmount = GT_LanguageManager.addStringLocalization(
         "gt.behaviour.paintspray.chain",
-        "Paints up to %d blocks, in the direction you're looking at");
+        "Sprays up to %d blocks, in the direction you're looking at");
 
     public Behaviour_Spray_Color(ItemStack aEmpty, ItemStack aUsed, ItemStack aFull, long aUses, int aColor) {
         this.mEmpty = aEmpty;
@@ -62,6 +62,15 @@ public class Behaviour_Spray_Color extends Behaviour_None {
         this.mTooltip = GT_LanguageManager.addStringLocalization(
             "gt.behaviour.paintspray." + this.mColor + ".tooltip",
             "Can Color things in " + Dyes.get(this.mColor).mName);
+    }
+
+    public Behaviour_Spray_Color(ItemStack aEmpty, ItemStack aUsed, ItemStack aFull, long aUses) {
+        this.mEmpty = aEmpty;
+        this.mUsed = aUsed;
+        this.mFull = aFull;
+        this.mUses = aUses;
+        this.mColor = 0;
+        mTooltip = "";
     }
 
     @Override
@@ -137,7 +146,7 @@ public class Behaviour_Spray_Color extends Behaviour_None {
         return rOutput;
     }
 
-    private boolean colorize(World aWorld, int aX, int aY, int aZ, ForgeDirection side, EntityPlayer player) {
+    protected boolean colorize(World aWorld, int aX, int aY, int aZ, ForgeDirection side, EntityPlayer player) {
         final Block aBlock = aWorld.getBlock(aX, aY, aZ);
         if (aBlock != Blocks.air) {
             if (this.mAllowedVanillaBlocks.contains(aBlock) || aBlock instanceof BlockColored) {
