@@ -9,6 +9,7 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -488,9 +489,16 @@ public final class RecipeMaps {
     public static final RecipeMap<RecipeMapBackend> fusionRecipes = RecipeMapBuilder.of("gt.recipe.fusionreactor")
         .maxIO(0, 0, 2, 1)
         .minInputs(0, 2)
-        .useCustomFilterForNEI()
         .disableOptimize()
+        .useCustomFilterForNEI()
         .neiSpecialInfoFormatter(FusionSpecialValueFormatter.INSTANCE)
+        .neiRecipeComparator(
+            Comparator
+                .<GT_Recipe, Integer>comparing(
+                    recipe -> FusionSpecialValueFormatter.getFusionTier(recipe.mSpecialValue, recipe.mEUt))
+                .thenComparing(recipe -> recipe.mEUt)
+                .thenComparing(recipe -> recipe.mDuration)
+                .thenComparing(recipe -> recipe.mSpecialValue))
         .frontend(FluidOnlyFrontend::new)
         .recipeConfigFile("fusion", FIRST_FLUID_OUTPUT)
         .build();

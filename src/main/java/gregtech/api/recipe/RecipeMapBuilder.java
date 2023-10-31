@@ -4,6 +4,7 @@ import static gregtech.api.enums.Mods.GregTech;
 
 import java.awt.Rectangle;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -450,6 +451,14 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
      */
     public RecipeMapBuilder<B> disableRenderRealStackSizes() {
         neiPropertiesBuilder.disableRenderRealStackSizes();
+        return this;
+    }
+
+    /**
+     * Sets custom comparator for NEI recipe sort.
+     */
+    public RecipeMapBuilder<B> neiRecipeComparator(Comparator<GT_Recipe> comparator) {
+        neiPropertiesBuilder.recipeComparator(comparator);
         return this;
     }
 

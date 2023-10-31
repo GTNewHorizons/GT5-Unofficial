@@ -1,5 +1,7 @@
 package gregtech.api.recipe;
 
+import java.util.Comparator;
+
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.gtnewhorizons.modularui.api.math.Pos2d;
@@ -7,6 +9,7 @@ import com.gtnewhorizons.modularui.api.math.Size;
 
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.util.FieldsAreNonnullByDefault;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.formatter.INEISpecialInfoFormatter;
 
@@ -59,9 +62,14 @@ public final class NEIRecipeProperties {
      */
     public final boolean renderRealStackSizes;
 
+    /**
+     * Comparator for NEI recipe sort. {@link GT_Recipe#compareTo(GT_Recipe)} by default.
+     */
+    public final Comparator<GT_Recipe> comparator;
+
     NEIRecipeProperties(boolean registerNEI, Size recipeBackgroundSize, Pos2d recipeBackgroundOffset,
         INEISpecialInfoFormatter neiSpecialInfoFormatter, boolean unificateOutput, boolean useCustomFilter,
-        boolean renderRealStackSizes) {
+        boolean renderRealStackSizes, Comparator<GT_Recipe> comparator) {
         this.registerNEI = registerNEI;
         this.recipeBackgroundOffset = recipeBackgroundOffset;
         this.recipeBackgroundSize = recipeBackgroundSize;
@@ -69,5 +77,6 @@ public final class NEIRecipeProperties {
         this.unificateOutput = unificateOutput;
         this.useCustomFilter = useCustomFilter;
         this.renderRealStackSizes = renderRealStackSizes;
+        this.comparator = comparator;
     }
 }

@@ -1,10 +1,13 @@
 package gregtech.api.recipe;
 
+import java.util.Comparator;
+
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
 
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.formatter.DefaultSpecialValueFormatter;
 import gregtech.nei.formatter.INEISpecialInfoFormatter;
@@ -28,6 +31,8 @@ public final class NEIRecipePropertiesBuilder {
     private boolean useCustomFilter;
     private boolean renderRealStackSizes = true;
 
+    private Comparator<GT_Recipe> comparator = GT_Recipe::compareTo;
+
     NEIRecipePropertiesBuilder() {}
 
     public NEIRecipeProperties build() {
@@ -38,7 +43,8 @@ public final class NEIRecipePropertiesBuilder {
             neiSpecialInfoFormatter,
             unificateOutput,
             useCustomFilter,
-            renderRealStackSizes);
+            renderRealStackSizes,
+            comparator);
     }
 
     public NEIRecipePropertiesBuilder disableRegisterNEI() {
@@ -73,6 +79,11 @@ public final class NEIRecipePropertiesBuilder {
 
     public NEIRecipePropertiesBuilder disableRenderRealStackSizes() {
         this.renderRealStackSizes = false;
+        return this;
+    }
+
+    public NEIRecipePropertiesBuilder recipeComparator(Comparator<GT_Recipe> comparator) {
+        this.comparator = comparator;
         return this;
     }
 }

@@ -142,7 +142,7 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
             cache = recipeMap.getAllRecipes()
                 .stream() // do not use parallel stream. This is already parallelized by NEI
                 .filter(r -> !r.mHidden)
-                .sorted()
+                .sorted(neiProperties.comparator)
                 .map(CachedDefaultRecipe::new)
                 .collect(Collectors.toList());
             // while the NEI parallelize handlers, for each individual handler it still uses sequential execution model,
