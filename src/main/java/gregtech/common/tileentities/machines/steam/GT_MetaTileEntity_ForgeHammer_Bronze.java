@@ -51,7 +51,7 @@ public class GT_MetaTileEntity_ForgeHammer_Bronze extends GT_MetaTileEntity_Basi
     }
 
     @Override
-    public RecipeMap<?> getRecipeList() {
+    public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.hammerRecipes;
     }
 

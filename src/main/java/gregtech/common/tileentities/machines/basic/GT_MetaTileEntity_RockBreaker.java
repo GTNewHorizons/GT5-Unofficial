@@ -106,7 +106,7 @@ public class GT_MetaTileEntity_RockBreaker extends GT_MetaTileEntity_BasicMachin
     }
 
     @Override
-    public RecipeMap<?> getRecipeList() {
+    public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.rockBreakerFakeRecipes;
     }
 
@@ -114,7 +114,7 @@ public class GT_MetaTileEntity_RockBreaker extends GT_MetaTileEntity_BasicMachin
     protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, side, aStack)
-            && getRecipeList().containsInput(aStack);
+            && getRecipeMap().containsInput(aStack);
     }
 
     @Override

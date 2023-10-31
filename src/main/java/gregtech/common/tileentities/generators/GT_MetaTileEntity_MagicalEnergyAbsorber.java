@@ -441,7 +441,7 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
     }
 
     @Override
-    public RecipeMap<?> getRecipes() {
+    public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.magicFuels;
     }
 

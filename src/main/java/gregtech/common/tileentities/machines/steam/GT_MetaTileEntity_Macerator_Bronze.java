@@ -73,13 +73,13 @@ public class GT_MetaTileEntity_Macerator_Bronze extends GT_MetaTileEntity_BasicM
     }
 
     @Override
-    public RecipeMap<?> getRecipeList() {
+    public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.maceratorRecipes;
     }
 
     @Override
     public int checkRecipe() {
-        GT_Recipe tRecipe = getRecipeList()
+        GT_Recipe tRecipe = getRecipeMap()
             .findRecipe(getBaseMetaTileEntity(), mLastRecipe, false, TierEU.LV, null, null, getAllInputs());
         if (tRecipe == null) return DID_NOT_FIND_RECIPE;
         if (tRecipe.mCanBeBuffered) mLastRecipe = tRecipe;

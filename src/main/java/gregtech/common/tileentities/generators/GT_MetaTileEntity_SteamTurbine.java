@@ -70,7 +70,7 @@ public class GT_MetaTileEntity_SteamTurbine extends GT_MetaTileEntity_BasicGener
     }
 
     @Override
-    public RecipeMap<?> getRecipes() {
+    public RecipeMap<?> getRecipeMap() {
         return null;
     }
 

@@ -274,7 +274,7 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
 
     public abstract int getPollution();
 
-    public abstract RecipeMap<?> getRecipes();
+    public abstract RecipeMap<?> getRecipeMap();
 
     public abstract int getEfficiency();
 
@@ -288,7 +288,7 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
     }
 
     public long getFuelValue(FluidStack aLiquid, boolean aLong) {
-        RecipeMap<?> tRecipes = getRecipes();
+        RecipeMap<?> tRecipes = getRecipeMap();
         if (aLiquid == null || !(tRecipes.getBackend() instanceof FuelBackend tFuels)) return 0;
         GT_Recipe tFuel = tFuels.findFuel(aLiquid);
         if (tFuel == null) return 0;
@@ -302,8 +302,8 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
     }
 
     public long getFuelValue(ItemStack aStack, boolean aLong) {
-        if (GT_Utility.isStackInvalid(aStack) || getRecipes() == null) return 0;
-        GT_Recipe tFuel = getRecipes().findRecipe(getBaseMetaTileEntity(), false, Long.MAX_VALUE, null, aStack);
+        if (GT_Utility.isStackInvalid(aStack) || getRecipeMap() == null) return 0;
+        GT_Recipe tFuel = getRecipeMap().findRecipe(getBaseMetaTileEntity(), false, Long.MAX_VALUE, null, aStack);
         if (tFuel == null) return 0;
 
         long liters = 10L; // 1000mb/100
@@ -311,8 +311,8 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
     }
 
     public ItemStack getEmptyContainer(ItemStack aStack) {
-        if (GT_Utility.isStackInvalid(aStack) || getRecipes() == null) return null;
-        GT_Recipe tFuel = getRecipes().findRecipe(getBaseMetaTileEntity(), false, Long.MAX_VALUE, null, aStack);
+        if (GT_Utility.isStackInvalid(aStack) || getRecipeMap() == null) return null;
+        GT_Recipe tFuel = getRecipeMap().findRecipe(getBaseMetaTileEntity(), false, Long.MAX_VALUE, null, aStack);
         if (tFuel != null) return GT_Utility.copyOrNull(tFuel.getOutput(0));
         return GT_Utility.getContainerItem(aStack, true);
     }

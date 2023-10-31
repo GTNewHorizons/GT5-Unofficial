@@ -62,7 +62,7 @@ public class GT_RecipeConstants {
     public static final GT_RecipeBuilder.MetadataIdentifier<Integer> FUEL_VALUE = GT_RecipeBuilder.MetadataIdentifier
         .create(Integer.class, "fuel_value");
     /**
-     * Fuel value.
+     * Required heat for heating coil (Kelvin).
      */
     public static final GT_RecipeBuilder.MetadataIdentifier<Integer> COIL_HEAT = GT_RecipeBuilder.MetadataIdentifier
         .create(Integer.class, "coil_heat");

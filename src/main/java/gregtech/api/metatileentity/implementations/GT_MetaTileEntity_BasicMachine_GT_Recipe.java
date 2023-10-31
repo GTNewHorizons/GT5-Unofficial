@@ -599,9 +599,9 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                 return false;
             }
             case 1 -> {
-                if (this.getFillableStack() == null) return !this.mRequiresFluidForFiltering && this.getRecipeList()
+                if (this.getFillableStack() == null) return !this.mRequiresFluidForFiltering && this.getRecipeMap()
                     .containsInput(aStack);
-                else return this.getRecipeList()
+                else return this.getRecipeMap()
                     .findRecipe(
                         this.getBaseMetaTileEntity(),
                         this.mLastRecipe,
@@ -616,11 +616,11 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
             case 2 -> {
                 return (!this.mRequiresFluidForFiltering || this.getFillableStack() != null)
                     && (((this.getInputAt(0) != null && this.getInputAt(1) != null)
-                        || (this.getInputAt(0) == null && this.getInputAt(1) == null ? this.getRecipeList()
+                        || (this.getInputAt(0) == null && this.getInputAt(1) == null ? this.getRecipeMap()
                             .containsInput(aStack)
-                            : (this.getRecipeList()
+                            : (this.getRecipeMap()
                                 .containsInput(aStack)
-                                && this.getRecipeList()
+                                && this.getRecipeMap()
                                     .findRecipe(
                                         this.getBaseMetaTileEntity(),
                                         this.mLastRecipe,
@@ -650,7 +650,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                             .startsWith("circuit")) return true;
                     }
                 }
-                return this.getRecipeList()
+                return this.getRecipeMap()
                     .containsInput(aStack);
             }
         }
@@ -753,7 +753,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
     }
 
     @Override
-    public RecipeMap<?> getRecipeList() {
+    public RecipeMap<?> getRecipeMap() {
         return this.mRecipes;
     }
 

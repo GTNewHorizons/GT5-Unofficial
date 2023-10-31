@@ -51,7 +51,7 @@ public class GT_MetaTileEntity_Furnace_Steel extends GT_MetaTileEntity_BasicMach
     }
 
     @Override
-    public RecipeMap<?> getRecipeList() {
+    public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.furnaceRecipes;
     }
 

@@ -86,11 +86,11 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
 
     private static RecipeMap<?> getMetaTileEntityRecipeMap(IMetaTileEntity metaTileEntity) {
         if (metaTileEntity instanceof GT_MetaTileEntity_BasicMachine machine) {
-            return machine.getRecipeList();
+            return machine.getRecipeMap();
         } else if (metaTileEntity instanceof IRecipeLockable recipeLockable) {
             return recipeLockable.getRecipeMap();
         } else if (metaTileEntity instanceof GT_MetaTileEntity_BasicGenerator generator) {
-            return generator.getRecipes();
+            return generator.getRecipeMap();
         }
         return null;
     }

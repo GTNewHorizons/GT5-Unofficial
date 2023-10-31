@@ -435,7 +435,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 
     @Override
     public boolean isFluidInputAllowed(FluidStack aFluid) {
-        return getFillableStack() != null || (getRecipeList() != null && getRecipeList().containsInput(aFluid));
+        return getFillableStack() != null || (getRecipeMap() != null && getRecipeMap().containsInput(aFluid));
     }
 
     @Override
@@ -1009,7 +1009,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     /**
      * @return the Recipe List which is used for this Machine, this is a useful Default Handler
      */
-    public RecipeMap<?> getRecipeList() {
+    public RecipeMap<?> getRecipeMap() {
         return null;
     }
 
@@ -1058,7 +1058,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
      *         FOUND_AND_SUCCESSFULLY_USED_RECIPE = 2;
      */
     public int checkRecipe(boolean skipOC) {
-        RecipeMap<?> tMap = getRecipeList();
+        RecipeMap<?> tMap = getRecipeMap();
         if (tMap == null) return DID_NOT_FIND_RECIPE;
         FindRecipeResult result = tMap.findRecipeWithResult(
             getAllInputs(),
@@ -1270,7 +1270,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 
     @Override
     public boolean useModularUI() {
-        return getRecipeList() != null;
+        return getRecipeMap() != null;
     }
 
     @Override
@@ -1285,8 +1285,8 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
-        if (getRecipeList() != null) {
-            getRecipeList().getFrontend()
+        if (getRecipeMap() != null) {
+            getRecipeMap().getFrontend()
                 .addGregTechLogo(builder, new Pos2d(0, 0));
         } else {
             builder.widget(
@@ -1306,15 +1306,15 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         addIOSlots(builder);
 
         builder.widget(createChargerSlot(79, 62));
-        if (getRecipeList() != null) {
-            BasicUIProperties properties = getRecipeList().getFrontend()
+        if (getRecipeMap() != null) {
+            BasicUIProperties properties = getRecipeMap().getFrontend()
                 .getUIProperties();
             boolean isSteampowered = isSteampowered();
             if (!isSteampowered && properties.progressBarTexture == null) {
-                throw new RuntimeException("Set progressbar texture for " + getRecipeList().unlocalizedName);
+                throw new RuntimeException("Set progressbar texture for " + getRecipeMap().unlocalizedName);
             }
             if (isSteampowered && properties.progressBarTextureSteam == null) {
-                throw new RuntimeException("Set steam progressbar texture for " + getRecipeList().unlocalizedName);
+                throw new RuntimeException("Set steam progressbar texture for " + getRecipeMap().unlocalizedName);
             }
             builder.widget(
                 setNEITransferRect(
@@ -1325,7 +1325,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
                         properties.progressBarDirection,
                         properties.progressBarPos,
                         properties.progressBarSize),
-                    getRecipeList().getFrontend()
+                    getRecipeMap().getFrontend()
                         .getUIProperties().neiTransferRectId));
             addProgressBarSpecialTextures(builder);
         }
@@ -1339,9 +1339,9 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
      * Adds item I/O, special item, and fluid I/O slots.
      */
     protected void addIOSlots(ModularWindow.Builder builder) {
-        final boolean hasFluidInput = getRecipeList() != null ? (getRecipeList().getFrontend()
+        final boolean hasFluidInput = getRecipeMap() != null ? (getRecipeMap().getFrontend()
             .getUIProperties().maxFluidInputs > 0) : (getCapacity() != 0);
-        final boolean hasFluidOutput = getRecipeList() != null && getRecipeList().getFrontend()
+        final boolean hasFluidOutput = getRecipeMap() != null && getRecipeMap().getFrontend()
             .getUIProperties().maxFluidOutputs > 0;
         UIHelper.forEachSlots(
             (i, backgrounds, pos) -> builder.widget(createItemInputSlot(i, backgrounds, pos)),
@@ -1351,7 +1351,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
             (i, backgrounds, pos) -> builder.widget(createFluidOutputSlot(backgrounds, pos)),
             getGUITextureSet().getItemSlot(),
             getGUITextureSet().getFluidSlot(),
-            getRecipeList(),
+            getRecipeMap(),
             mInputSlotCount,
             mOutputItems.length,
             hasFluidInput ? 1 : 0,
@@ -1386,7 +1386,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
             .disableShiftInsert()
             .setGTTooltip(
                 () -> mTooltipCache.getData(
-                    getRecipeList() != null && getRecipeList().getFrontend()
+                    getRecipeMap() != null && getRecipeMap().getFrontend()
                         .getUIProperties().useSpecialSlot ? SPECIAL_SLOT_TOOLTIP : UNUSED_SLOT_TOOLTIP))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setBackground(backgrounds)
@@ -1446,7 +1446,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     }
 
     public boolean hasNEITransferRect() {
-        return getRecipeList() != null;
+        return getRecipeMap() != null;
     }
 
     protected Widget setNEITransferRect(Widget widget, String transferRectID) {
@@ -1466,7 +1466,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 
     protected void addProgressBarSpecialTextures(ModularWindow.Builder builder) {
         if (isSteampowered()) {
-            for (Pair<SteamTexture, Pair<Size, Pos2d>> specialTexture : getRecipeList().getFrontend()
+            for (Pair<SteamTexture, Pair<Size, Pos2d>> specialTexture : getRecipeMap().getFrontend()
                 .getUIProperties().specialTexturesSteam) {
                 builder.widget(
                     new DrawableWidget().setDrawable(
@@ -1480,7 +1480,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
                                 .getRight()));
             }
         } else {
-            for (Pair<IDrawable, Pair<Size, Pos2d>> specialTexture : getRecipeList().getFrontend()
+            for (Pair<IDrawable, Pair<Size, Pos2d>> specialTexture : getRecipeMap().getFrontend()
                 .getUIProperties().specialTextures) {
                 builder.widget(
                     new DrawableWidget().setDrawable(specialTexture.getLeft())

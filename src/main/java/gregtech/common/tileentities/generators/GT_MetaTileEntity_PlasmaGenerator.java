@@ -114,7 +114,7 @@ public class GT_MetaTileEntity_PlasmaGenerator extends GT_MetaTileEntity_BasicGe
     }
 
     @Override
-    public RecipeMap<?> getRecipes() {
+    public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.plasmaFuels;
     }
 

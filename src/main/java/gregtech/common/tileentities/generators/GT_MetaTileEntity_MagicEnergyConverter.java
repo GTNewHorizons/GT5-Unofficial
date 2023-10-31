@@ -58,7 +58,7 @@ public class GT_MetaTileEntity_MagicEnergyConverter extends GT_MetaTileEntity_Ba
     }
 
     @Override
-    public RecipeMap<?> getRecipes() {
+    public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.magicFuels;
     }
 

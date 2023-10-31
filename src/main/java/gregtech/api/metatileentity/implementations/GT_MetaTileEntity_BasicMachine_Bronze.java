@@ -189,7 +189,7 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
 
     @Override
     public int checkRecipe() {
-        GT_Recipe tRecipe = getRecipeList().findRecipe(getBaseMetaTileEntity(), false, TierEU.LV, null, getAllInputs());
+        GT_Recipe tRecipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(), false, TierEU.LV, null, getAllInputs());
         if ((tRecipe != null) && (canOutput(tRecipe.mOutputs))
             && (tRecipe.isRecipeInputEqual(true, null, getAllInputs()))) {
             this.mOutputItems[0] = tRecipe.getOutput(0);
@@ -380,7 +380,7 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
         String[] description = Arrays.copyOf(mDescriptionArray, mDescriptionArray.length + 1);
         description[mDescriptionArray.length] = StatCollector.translateToLocal(TT_machineType) + ": "
             + EnumChatFormatting.YELLOW
-            + StatCollector.translateToLocal(this.getRecipeList().unlocalizedName)
+            + StatCollector.translateToLocal(this.getRecipeMap().unlocalizedName)
             + EnumChatFormatting.RESET;
         return description;
     }

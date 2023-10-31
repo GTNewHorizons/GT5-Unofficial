@@ -85,7 +85,7 @@ public class GT_MetaTileEntity_DieselGenerator extends GT_MetaTileEntity_BasicGe
     }
 
     @Override
-    public RecipeMap<?> getRecipes() {
+    public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.dieselFuels;
     }
 
@@ -108,7 +108,7 @@ public class GT_MetaTileEntity_DieselGenerator extends GT_MetaTileEntity_BasicGe
 
     @Override
     public int getFuelValue(ItemStack aStack) {
-        if (GT_Utility.isStackInvalid(aStack) || getRecipes() == null) return 0;
+        if (GT_Utility.isStackInvalid(aStack) || getRecipeMap() == null) return 0;
         long rValue = super.getFuelValue(aStack);
         if (ItemList.Fuel_Can_Plastic_Filled.isStackEqual(aStack, false, true)) {
             rValue = Math.max(rValue, GameRegistry.getFuelValue(aStack) * 3L);

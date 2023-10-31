@@ -48,7 +48,7 @@ public class GT_MetaTileEntity_AlloySmelter_Bronze extends GT_MetaTileEntity_Bas
     }
 
     @Override
-    public RecipeMap<?> getRecipeList() {
+    public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.alloySmelterRecipes;
     }
 
