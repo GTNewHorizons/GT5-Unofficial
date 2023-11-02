@@ -723,6 +723,13 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     }
 
     @Override
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
+        if (!super.allowPutStack(aBaseMetaTileEntity, aIndex, side, aStack)) return false;
+        return isItemValidForSlot(aIndex, aStack);
+    }
+
+    @Override
     public void setInventorySlotContents(int aIndex, ItemStack aStack) {
         if (aIndex == queen && aStack != null && getBaseMetaTileEntity().isClientSide()) usedQueen = aStack.copy();
         super.setInventorySlotContents(aIndex, aStack);
