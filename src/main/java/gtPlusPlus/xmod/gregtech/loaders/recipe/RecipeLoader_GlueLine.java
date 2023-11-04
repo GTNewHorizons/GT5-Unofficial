@@ -4,6 +4,8 @@ import static gregtech.api.enums.Mods.BartWorks;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.TecTech;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -13,6 +15,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -149,21 +152,23 @@ public class RecipeLoader_GlueLine {
 
         // CaCO3 + 2HCl = CaCl2 + CO2 + H2O
         if (BartWorks.isModLoaded()) {
-            GT_Values.RA.addChemicalRecipe(
-                    CI.getNumberedCircuit(18),
-                    ItemUtils.getSimpleStack(ModItems.dustCalciumCarbonate, 5),
-                    Materials.HydrochloricAcid.getFluid(2000L),
-                    Materials.CarbonDioxide.getGas(1000),
-                    ItemUtils.getItemStackFromFQRN("bartworks:gt.bwMetaGenerateddust:63", 3),
-                    5 * 20);
+            GT_Values.RA.stdBuilder()
+                    .itemInputs(
+                            ItemUtils.getSimpleStack(ModItems.dustCalciumCarbonate, 5),
+                            GT_Utility.getIntegratedCircuit(8))
+                    .itemOutputs(ItemUtils.getItemStackFromFQRN("bartworks:gt.bwMetaGenerateddust:63", 3))
+                    .fluidInputs(Materials.HydrochloricAcid.getFluid(2000L))
+                    .fluidOutputs(Materials.CarbonDioxide.getGas(1000)).duration(5 * SECONDS).eut(TierEU.RECIPE_LV)
+                    .addTo(UniversalChemical);
         } else {
-            GT_Values.RA.addChemicalRecipe(
-                    CI.getNumberedCircuit(18),
-                    ItemUtils.getSimpleStack(ModItems.dustCalciumCarbonate, 5),
-                    Materials.HydrochloricAcid.getFluid(2000L),
-                    Materials.CarbonDioxide.getGas(1000),
-                    MISC_MATERIALS.CALCIUM_CHLORIDE.getDust(3),
-                    5 * 20);
+            GT_Values.RA.stdBuilder()
+                    .itemInputs(
+                            ItemUtils.getSimpleStack(ModItems.dustCalciumCarbonate, 5),
+                            GT_Utility.getIntegratedCircuit(8))
+                    .itemOutputs(MISC_MATERIALS.CALCIUM_CHLORIDE.getDust(3))
+                    .fluidInputs(Materials.HydrochloricAcid.getFluid(2000L))
+                    .fluidOutputs(Materials.CarbonDioxide.getGas(1000)).duration(5 * SECONDS).eut(TierEU.RECIPE_LV)
+                    .addTo(UniversalChemical);
         }
 
         // Cu + 2H2SO4 = CuSO4 + SO2 + 2H2O
