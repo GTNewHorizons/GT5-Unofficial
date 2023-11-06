@@ -2882,6 +2882,9 @@ public class GT_Utility {
         return rStacks;
     }
 
+    /**
+     * @deprecated use {@link #copy(ItemStack)} instead
+     */
     @Deprecated
     public static ItemStack copy(Object... aStacks) {
         for (Object tStack : aStacks) if (isStackValid(tStack)) return ((ItemStack) tStack).copy();
@@ -2912,9 +2915,20 @@ public class GT_Utility {
         return rStack;
     }
 
+    /**
+     * @deprecated use {@link #copyAmount(int, ItemStack)} instead
+     */
     @Deprecated
     public static ItemStack copyAmount(long aAmount, Object... aStacks) {
-        return copyAmount((int) aAmount, firstStackOrNull(aStacks));
+        return copyAmount(aAmount, firstStackOrNull(aStacks));
+    }
+
+    /**
+     * @deprecated use {@link #copyAmount(int, ItemStack)} instead
+     */
+    @Deprecated
+    public static ItemStack copyAmount(long aAmount, ItemStack aStack) {
+        return copyAmount((int) aAmount, aStack);
     }
 
     public static ItemStack copyAmount(int aAmount, ItemStack aStack) {
@@ -2927,6 +2941,9 @@ public class GT_Utility {
         return rStack;
     }
 
+    /**
+     * @deprecated use {@link #multiplyStack(int, ItemStack)} instead
+     */
     @Deprecated
     public static ItemStack multiplyStack(long aMultiplier, Object... aStacks) {
         return multiplyStack((int) aMultiplier, firstStackOrNull(aStacks));
@@ -2944,7 +2961,7 @@ public class GT_Utility {
     }
 
     /**
-     * Unlike {@link #copyAmount(long, Object...)}, this method does not restrict stack size by 64.
+     * @deprecated use {@link #copyAmountUnsafe(int, ItemStack)} instead
      */
     @Deprecated
     public static ItemStack copyAmountUnsafe(long aAmount, Object... aStacks) {
@@ -2962,6 +2979,9 @@ public class GT_Utility {
         return rStack;
     }
 
+    /**
+     * @deprecated use {@link #copyMetaData(int, ItemStack)} instead
+     */
     @Deprecated
     public static ItemStack copyMetaData(long aMetaData, Object... aStacks) {
         return copyMetaData((int) aMetaData, firstStackOrNull(aStacks));
@@ -2974,9 +2994,20 @@ public class GT_Utility {
         return rStack;
     }
 
+    /**
+     * @deprecated use {@link #copyAmountAndMetaData(int, int, ItemStack)} instead
+     */
     @Deprecated
     public static ItemStack copyAmountAndMetaData(long aAmount, long aMetaData, Object... aStacks) {
-        return copyAmountAndMetaData((int) aAmount, (int) aMetaData, firstStackOrNull(aStacks));
+        return copyAmountAndMetaData(aAmount, aMetaData, firstStackOrNull(aStacks));
+    }
+
+    /**
+     * @deprecated use {@link #copyAmountAndMetaData(int, int, ItemStack)} instead
+     */
+    @Deprecated
+    public static ItemStack copyAmountAndMetaData(long aAmount, long aMetaData, ItemStack aStack) {
+        return copyAmountAndMetaData((int) aAmount, (int) aMetaData, aStack);
     }
 
     public static ItemStack copyAmountAndMetaData(int aAmount, int aMetaData, ItemStack aStack) {
@@ -2987,7 +3018,7 @@ public class GT_Utility {
     }
 
     /**
-     * returns a copy of an ItemStack with its Stacksize being multiplied by aMultiplier
+     * @deprecated use {@link #mul(int, ItemStack)} instead
      */
     @Deprecated
     public static ItemStack mul(long aMultiplier, Object... aStacks) {
