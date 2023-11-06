@@ -40,6 +40,8 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
 @MethodsReturnNonnullByDefault
 public class RecipeMapBackend {
 
+    private static final Predicate<GT_Recipe> ALWAYS = r -> true;
+
     /**
      * Recipe index based on items.
      */
@@ -82,6 +84,8 @@ public class RecipeMapBackend {
     public Set<GT_Recipe> getAllRecipes() {
         return allRecipes;
     }
+
+    // region add recipe
 
     /**
      * Adds the supplied to recipe without any check.
@@ -132,9 +136,7 @@ public class RecipeMapBackend {
             }
             if (properties.specialHandler != null) recipe = properties.specialHandler.apply(recipe);
             if (recipe == null) continue;
-            if (builder.isCheckForCollision()
-                && findRecipeWithResult(recipe.mInputs, recipe.mFluidInputs, null, r -> true, null, false, true)
-                    .isSuccessful()) {
+            if (builder.isCheckForCollision() && checkCollision(recipe)) {
                 StringBuilder errorInfo = new StringBuilder();
                 boolean hasAnEntry = false;
                 for (FluidStack fluid : recipe.mFluidInputs) {
@@ -184,6 +186,8 @@ public class RecipeMapBackend {
         downstreams.add(downstream);
     }
 
+    // endregion
+
     /**
      * Re-unificates all the items present in recipes.
      */
@@ -210,6 +214,8 @@ public class RecipeMapBackend {
         return fluidIndex.containsKey(fluid.getName());
     }
 
+    // region find recipe
+
     /**
      * Finds a matching recipe.
      * <p>
@@ -219,7 +225,7 @@ public class RecipeMapBackend {
     final FindRecipeResult findRecipeWithResult(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot,
         Predicate<GT_Recipe> recipeValidator, @Nullable GT_Recipe cachedRecipe, boolean notUnificated,
         boolean dontCheckStackSizes) {
-        if (GregTech_API.sPostloadFinished && doesOverwriteFindRecipe()) {
+        if (doesOverwriteFindRecipe()) {
             return overwriteFindRecipe(items, fluids, specialSlot, recipeValidator, cachedRecipe);
         }
 
@@ -230,14 +236,21 @@ public class RecipeMapBackend {
             recipeValidator,
             cachedRecipe,
             notUnificated,
-            dontCheckStackSizes);
-        if (!GregTech_API.sPostloadFinished) {
-            return result;
-        }
+            dontCheckStackSizes,
+            false);
         if (result.isSuccessful()) {
             return modifyFoundRecipe(result, items, fluids, specialSlot);
         }
         return findFallback(items, fluids, specialSlot, recipeValidator);
+    }
+
+    /**
+     * Checks if given recipe conflicts with already registered recipes.
+     *
+     * @return True if collision is found.
+     */
+    public boolean checkCollision(GT_Recipe recipe) {
+        return doFind(recipe.mInputs, recipe.mFluidInputs, null, ALWAYS, null, false, true, true).isSuccessful();
     }
 
     /**
@@ -273,10 +286,12 @@ public class RecipeMapBackend {
 
     /**
      * Actual logic to find recipe.
+     *
+     * @param forCollisionCheck If this method is called to check collision with already registered recipes.
      */
     private FindRecipeResult doFind(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot,
         Predicate<GT_Recipe> recipeValidator, @Nullable GT_Recipe cachedRecipe, boolean notUnificated,
-        boolean dontCheckStackSizes) {
+        boolean dontCheckStackSizes, boolean forCollisionCheck) {
         if (allRecipes.isEmpty()) {
             return NOT_FOUND;
         }
@@ -285,7 +300,8 @@ public class RecipeMapBackend {
         // or "at least 2 items" before they start searching for recipes.
         // This improves performance massively, especially when people leave things like programmed circuits,
         // molds or shapes in their machines.
-        if (GregTech_API.sPostloadFinished) {
+        // For checking collision, we assume min inputs check already has been passed as of building the recipe.
+        if (!forCollisionCheck) {
             if (properties.minFluidInputs > 0) {
                 int count = 0;
                 for (FluidStack fluid : fluids) if (fluid != null) count++;
@@ -394,6 +410,8 @@ public class RecipeMapBackend {
         }
         return Optional.empty();
     }
+
+    // endregion
 
     @FunctionalInterface
     public interface BackendCreator<B extends RecipeMapBackend> {

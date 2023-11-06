@@ -160,9 +160,7 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
         aRecipe.mFakeRecipe = aFakeRecipe;
         if (aRecipe.mFluidInputs.length < backend.properties.minFluidInputs
             && aRecipe.mInputs.length < backend.properties.minItemInputs) return null;
-        if (aCheckForCollisions
-            && findRecipe(null, false, true, Long.MAX_VALUE, aRecipe.mFluidInputs, aRecipe.mInputs) != null)
-            return null;
+        if (aCheckForCollisions && backend.checkCollision(aRecipe)) return null;
         return backend.doAdd(aRecipe);
     }
 
