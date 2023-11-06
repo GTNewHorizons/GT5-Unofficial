@@ -32,9 +32,7 @@ import codechicken.nei.recipe.RecipeCatalysts;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.tileentity.IRecipeLockable;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicGenerator;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
+import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_SpecialFilter;
 import gregtech.api.multitileentity.MultiTileEntityContainer;
 import gregtech.api.multitileentity.MultiTileEntityItemInternal;
@@ -85,12 +83,8 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
     }
 
     private static RecipeMap<?> getMetaTileEntityRecipeMap(IMetaTileEntity metaTileEntity) {
-        if (metaTileEntity instanceof GT_MetaTileEntity_BasicMachine machine) {
-            return machine.getRecipeMap();
-        } else if (metaTileEntity instanceof IRecipeLockable recipeLockable) {
-            return recipeLockable.getRecipeMap();
-        } else if (metaTileEntity instanceof GT_MetaTileEntity_BasicGenerator generator) {
-            return generator.getRecipeMap();
+        if (metaTileEntity instanceof RecipeMapWorkable recipeMapWorkable) {
+            return recipeMapWorkable.getRecipeMap();
         }
         return null;
     }
@@ -98,8 +92,9 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
     private static RecipeMap<?> getMuTeRecipeMap(@NotNull ItemStack stack) {
         MultiTileEntityContainer muTeEntityContainer = GT_Loader_MultiTileEntities.MACHINE_REGISTRY
             .getNewTileEntityContainer(stack);
-        if (muTeEntityContainer != null && muTeEntityContainer.mTileEntity instanceof IRecipeLockable recipeLockable) {
-            return recipeLockable.getRecipeMap();
+        if (muTeEntityContainer != null
+            && muTeEntityContainer.mTileEntity instanceof RecipeMapWorkable recipeMapWorkable) {
+            return recipeMapWorkable.getRecipeMap();
         }
         return null;
     }

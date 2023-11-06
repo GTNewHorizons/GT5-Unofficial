@@ -15,6 +15,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.maps.FuelBackend;
@@ -23,7 +24,8 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Pollution;
 
-public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity_BasicTank {
+public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity_BasicTank
+    implements RecipeMapWorkable {
 
     public GT_MetaTileEntity_BasicGenerator(int aID, String aName, String aNameRegional, int aTier, String aDescription,
         ITexture... aTextures) {
@@ -274,6 +276,7 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
 
     public abstract int getPollution();
 
+    @Override
     public abstract RecipeMap<?> getRecipeMap();
 
     public abstract int getEfficiency();

@@ -1,8 +1,6 @@
 package gregtech.nei;
 
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
 
 import com.google.common.collect.ImmutableMap;
 
@@ -12,10 +10,14 @@ import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.GuiUsageRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import cpw.mods.fml.common.event.FMLInterModComms;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.common.items.GT_MetaGenerated_Item_01;
 import gregtech.common.items.GT_MetaGenerated_Item_02;
 import gregtech.common.items.GT_MetaGenerated_Item_03;
@@ -27,6 +29,7 @@ import gregtech.nei.dumper.MetaTileEntityDumper;
 import gregtech.nei.dumper.RecipeLockingSupportDumper;
 import gregtech.nei.dumper.VoidProtectionSupportDumper;
 
+@SuppressWarnings("unused")
 public class NEI_GT_Config implements IConfigureNEI {
 
     /**
@@ -60,21 +63,45 @@ public class NEI_GT_Config implements IConfigureNEI {
     @Override
     public void loadConfig() {
         sIsAdded = false;
+        registerHandlers();
+        registerCatalysts();
+        registerItemEntries();
+        registerDumpers();
+        sIsAdded = true;
+    }
 
-        List<GT_NEI_DefaultHandler> handlers = new ArrayList<>();
+    private void registerHandlers() {
+        RecipeMap.ALL_RECIPE_MAPS.values()
+            .stream()
+            .filter(
+                recipeMap -> recipeMap.getFrontend()
+                    .getNEIProperties().registerNEI)
+            .map(GT_NEI_DefaultHandler::new)
+            .sorted(RECIPE_MAP_HANDLER_COMPARATOR)
+            .forEach(NEI_GT_Config::addHandler);
+    }
 
-        for (RecipeMap<?> map : RecipeMap.ALL_RECIPE_MAPS.values()) {
-            if (map.getFrontend()
-                .getNEIProperties().registerNEI) {
-                handlers.add(new GT_NEI_DefaultHandler(map));
+    private void registerCatalysts() {
+        for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
+            IMetaTileEntity mte = GregTech_API.METATILEENTITIES[i];
+            if (!(mte instanceof RecipeMapWorkable recipeMapWorkable)) continue;
+            for (RecipeMap<?> recipeMap : recipeMapWorkable.getAvailableRecipeMaps()) {
+                API.addRecipeCatalyst(
+                    mte.getStackForm(1),
+                    recipeMap.unlocalizedName,
+                    recipeMapWorkable.getRecipeCatalystPriority());
             }
         }
+        API.addRecipeCatalyst(
+            GT_ModHandler.getIC2Item("nuclearReactor", 1, null),
+            RecipeMaps.ic2NuclearFakeRecipes.unlocalizedName);
+    }
 
-        handlers.sort(RECIPE_MAP_HANDLER_COMPARATOR);
-        handlers.forEach(NEI_GT_Config::addHandler);
-
+    private void registerItemEntries() {
         API.addItemListEntry(ItemList.VOLUMETRIC_FLASK.get(1));
+    }
 
+    private void registerDumpers() {
         API.addOption(new MetaTileEntityDumper());
         API.addOption(new MaterialDumper());
         API.addOption(new MetaItemDumper(GT_MetaGenerated_Item_01.INSTANCE, "metaitem01"));
@@ -84,8 +111,6 @@ public class NEI_GT_Config implements IConfigureNEI {
         API.addOption(new InputSeparationSupportDumper());
         API.addOption(new BatchModeSupportDumper());
         API.addOption(new RecipeLockingSupportDumper());
-
-        sIsAdded = true;
     }
 
     @Override

@@ -15,23 +15,14 @@ public class IMCForNEI {
         }
 
         sendHandler("gt.recipe.transcendentplasmamixerrecipes", "gregtech:gt.blockmachines:1006", 1);
-        sendCatalyst("gt.recipe.transcendentplasmamixerrecipes", "gregtech:gt.blockmachines:1006");
 
         sendHandler("gt.recipe.plasmaforge", "gregtech:gt.blockmachines:1004", 1);
-        sendCatalyst("gt.recipe.plasmaforge", "gregtech:gt.blockmachines:1004");
-
-        sendCatalyst("gt.recipe.gasturbinefuel", "gregtech:gt.blockmachines:1005", -1);
-        sendCatalyst("gt.recipe.gasturbinefuel", "gregtech:gt.blockmachines:1118");
-        sendCatalyst("gt.recipe.gasturbinefuel", "gregtech:gt.blockmachines:1119");
 
         // overwrite yShift to 6
         sendHandler("gt.recipe.fakeAssemblylineProcess", "gregtech:gt.blockmachines:1170");
         sendHandler("gt.recipe.nanoforge", "gregtech:gt.blockmachines:357");
-        sendCatalyst("gt.recipe.nanoforge", "gregtech:gt.blockmachines:357");
         sendHandler("gt.recipe.pcbfactory", "gregtech:gt.blockmachines:356");
-        sendCatalyst("gt.recipe.pcbfactory", "gregtech:gt.blockmachines:356");
         sendHandler("gt.recipe.ic2nuke", "IC2:blockGenerator:5");
-        sendCatalyst("gt.recipe.ic2nuke", "IC2:blockGenerator:5");
     }
 
     private static void sendHandler(String aName, String aBlock, int aMaxRecipesPerPage) {
@@ -50,17 +41,5 @@ public class IMCForNEI {
 
     private static void sendHandler(String aName, String aBlock) {
         sendHandler(aName, aBlock, 2);
-    }
-
-    private static void sendCatalyst(String aName, String aStack, int aPriority) {
-        NBTTagCompound aNBT = new NBTTagCompound();
-        aNBT.setString("handlerID", aName);
-        aNBT.setString("itemName", aStack);
-        aNBT.setInteger("priority", aPriority);
-        FMLInterModComms.sendMessage("NotEnoughItems", "registerCatalystInfo", aNBT);
-    }
-
-    private static void sendCatalyst(String aName, String aStack) {
-        sendCatalyst(aName, aStack, 0);
     }
 }

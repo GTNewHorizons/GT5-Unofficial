@@ -68,6 +68,7 @@ import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
+import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.overclockdescriber.EUOverclockDescriber;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
@@ -94,8 +95,8 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  * This is the main construct for my Basic Machines such as the Automatic Extractor Extend this class to make a simple
  * Machine
  */
-public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_BasicTank
-    implements IConfigurationCircuitSupport, IOverclockDescriptionProvider, IAddGregtechLogo, IAddUIWidgets {
+public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_BasicTank implements RecipeMapWorkable,
+    IConfigurationCircuitSupport, IOverclockDescriptionProvider, IAddGregtechLogo, IAddUIWidgets {
 
     /**
      * return values for checkRecipe()
@@ -1006,9 +1007,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         return GregTech_API.getConfigurationCircuitList(mTier);
     }
 
-    /**
-     * @return the Recipe List which is used for this Machine, this is a useful Default Handler
-     */
+    @Override
     public RecipeMap<?> getRecipeMap() {
         return null;
     }
