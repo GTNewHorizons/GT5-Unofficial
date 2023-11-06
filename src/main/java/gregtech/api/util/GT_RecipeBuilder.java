@@ -23,11 +23,16 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.interfaces.IGT_RecipeMap;
 import gregtech.api.util.extensions.ArrayExt;
 
+@SuppressWarnings("unused")
 public class GT_RecipeBuilder {
 
     // debug mode expose problems. panic mode help you check nothing is wrong-ish without you actively monitoring
-    private static final boolean DEBUG_MODE;
-    private static final boolean PANIC_MODE;
+    private static final boolean DEBUG_MODE_NULL;
+    private static final boolean PANIC_MODE_NULL;
+    private static final boolean DEBUG_MODE_INVALID;
+    private static final boolean PANIC_MODE_INVALID;
+    private static final boolean DEBUG_MODE_COLLISION;
+    private static final boolean PANIC_MODE_COLLISION;
 
     public static final int WILDCARD = 32767;
 
@@ -46,14 +51,22 @@ public class GT_RecipeBuilder {
     public static final int BUCKETS = 1000;
 
     static {
+        final boolean debugAll;
         if (System.getProperties()
             .containsKey("gt.recipebuilder.debug")) {
-            DEBUG_MODE = Boolean.getBoolean("gt.recipebuilder.debug");
+            debugAll = Boolean.getBoolean("gt.recipebuilder.debug");
         } else {
             // turn on debug by default in dev mode
-            DEBUG_MODE = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
+            debugAll = (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
         }
-        PANIC_MODE = DEBUG_MODE && Boolean.getBoolean("gt.recipebuilder.panic");
+        DEBUG_MODE_NULL = debugAll || Boolean.getBoolean("gt.recipebuilder.debug.null");
+        DEBUG_MODE_INVALID = debugAll || Boolean.getBoolean("gt.recipebuilder.debug.invalid");
+        DEBUG_MODE_COLLISION = debugAll || Boolean.getBoolean("gt.recipebuilder.debug.collision");
+
+        final boolean panicAll = Boolean.getBoolean("gt.recipebuilder.panic");
+        PANIC_MODE_NULL = panicAll || Boolean.getBoolean("gt.recipebuilder.panic.null");
+        PANIC_MODE_INVALID = panicAll || Boolean.getBoolean("gt.recipebuilder.panic.invalid");
+        PANIC_MODE_COLLISION = panicAll || Boolean.getBoolean("gt.recipebuilder.panic.collision");
     }
 
     protected ItemStack[] inputsBasic = new ItemStack[0];
@@ -129,37 +142,43 @@ public class GT_RecipeBuilder {
     }
 
     private static void handleNullRecipeComponents(String componentType) {
-        if (PANIC_MODE) {
+        // place a breakpoint here to catch all these issues
+        GT_Log.err.print("null detected in ");
+        GT_Log.err.println(componentType);
+        new NullPointerException().printStackTrace(GT_Log.err);
+        if (PANIC_MODE_NULL) {
             throw new IllegalArgumentException("null in argument");
-        } else {
-            // place a breakpoint here to catch all these issues
-            GT_Log.err.print("null detected in ");
-            GT_Log.err.println(componentType);
-            new NullPointerException().printStackTrace(GT_Log.err);
         }
     }
 
+    private static boolean debugNull() {
+        return DEBUG_MODE_NULL || PANIC_MODE_NULL;
+    }
+
     private static void handleInvalidRecipe() {
-        if (!PANIC_MODE && !DEBUG_MODE) {
+        if (!DEBUG_MODE_INVALID && !PANIC_MODE_INVALID) {
             return;
         }
         // place a breakpoint here to catch all these issues
         GT_Log.err.print("invalid recipe");
         new IllegalArgumentException().printStackTrace(GT_Log.err);
-        if (PANIC_MODE) {
+        if (PANIC_MODE_INVALID) {
             throw new IllegalArgumentException("invalid recipe");
         }
     }
 
     public static void handleRecipeCollision(String details) {
-        if (!PANIC_MODE && !DEBUG_MODE) {
+        if (!DEBUG_MODE_COLLISION && !PANIC_MODE_COLLISION) {
             return;
         }
         GT_Log.err.print("Recipe collision resulting in recipe loss detected with ");
         GT_Log.err.println(details);
-        // place a breakpoint here to catch all these issues
-        new IllegalArgumentException().printStackTrace(GT_Log.err);
-        // at least for now, do not crash in panic mode over collisions.
+        if (PANIC_MODE_COLLISION) {
+            throw new IllegalArgumentException("Recipe Collision");
+        } else {
+            // place a breakpoint here to catch all these issues
+            new IllegalArgumentException().printStackTrace(GT_Log.err);
+        }
     }
 
     // endregion
@@ -170,7 +189,7 @@ public class GT_RecipeBuilder {
      * Non-OreDicted item inputs. Assumes input is unified.
      */
     public GT_RecipeBuilder itemInputsUnified(ItemStack... inputs) {
-        if (DEBUG_MODE && containsNull(inputs)) handleNullRecipeComponents("itemInputUnified");
+        if (debugNull() && containsNull(inputs)) handleNullRecipeComponents("itemInputUnified");
         inputsBasic = ArrayExt.withoutTrailingNulls(inputs, ItemStack[]::new);
         inputsOreDict = null;
         alts = null;
@@ -181,7 +200,7 @@ public class GT_RecipeBuilder {
      * Non-OreDicted item inputs. Assumes input is not unified.
      */
     public GT_RecipeBuilder itemInputs(ItemStack... inputs) {
-        if (DEBUG_MODE && containsNull(inputs)) handleNullRecipeComponents("itemInputs");
+        if (debugNull() && containsNull(inputs)) handleNullRecipeComponents("itemInputs");
         inputsBasic = fix(inputs);
         inputsOreDict = null;
         alts = null;
@@ -232,7 +251,7 @@ public class GT_RecipeBuilder {
     }
 
     public GT_RecipeBuilder itemOutputs(ItemStack... outputs) {
-        if (DEBUG_MODE && containsNull(outputs)) handleNullRecipeComponents("itemOutputs");
+        if (debugNull() && containsNull(outputs)) handleNullRecipeComponents("itemOutputs");
         this.outputs = outputs;
         if (chances != null && chances.length != outputs.length) {
             throw new IllegalArgumentException("Output chances array and items array length differs");
@@ -245,7 +264,7 @@ public class GT_RecipeBuilder {
      * Intended for recipe rewrite middlewares.
      */
     public GT_RecipeBuilder itemOutputs(ItemStack[] outputs, int[] chances) {
-        if (DEBUG_MODE && containsNull(outputs)) handleNullRecipeComponents("itemOutputs");
+        if (debugNull() && containsNull(outputs)) handleNullRecipeComponents("itemOutputs");
         this.outputs = outputs;
         this.chances = chances;
         if (chances != null && chances.length != outputs.length) {
@@ -263,7 +282,7 @@ public class GT_RecipeBuilder {
     }
 
     public GT_RecipeBuilder fluidInputs(FluidStack... fluidInputs) {
-        if (DEBUG_MODE && containsNull(fluidInputs)) handleNullRecipeComponents("fluidInputs");
+        if (debugNull() && containsNull(fluidInputs)) handleNullRecipeComponents("fluidInputs");
         this.fluidInputs = fix(fluidInputs);
         return this;
     }
@@ -277,7 +296,7 @@ public class GT_RecipeBuilder {
     }
 
     public GT_RecipeBuilder fluidOutputs(FluidStack... fluidOutputs) {
-        if (DEBUG_MODE && containsNull(fluidOutputs)) handleNullRecipeComponents("fluidOutputs");
+        if (debugNull() && containsNull(fluidOutputs)) handleNullRecipeComponents("fluidOutputs");
         this.fluidOutputs = fix(fluidOutputs);
         return this;
     }
@@ -647,7 +666,7 @@ public class GT_RecipeBuilder {
 
     public Optional<GT_Recipe> build() {
         if (!valid) {
-            if (DEBUG_MODE) handleInvalidRecipe();
+            handleInvalidRecipe();
             return Optional.empty();
         }
         preBuildChecks();
@@ -682,7 +701,7 @@ public class GT_RecipeBuilder {
             throw new UnsupportedOperationException();
         }
         if (!valid) {
-            if (DEBUG_MODE) handleInvalidRecipe();
+            handleInvalidRecipe();
             return Optional.empty();
         }
         preBuildChecks();
