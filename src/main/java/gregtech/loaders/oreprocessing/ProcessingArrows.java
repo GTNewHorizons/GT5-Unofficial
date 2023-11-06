@@ -27,7 +27,7 @@ public class ProcessingArrows implements gregtech.api.interfaces.IOreRecipeRegis
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
-        ItemStack tOutput = GT_Utility.copyAmount(1L, aStack);
+        ItemStack tOutput = GT_Utility.copyAmount(1, aStack);
         GT_Utility.updateItemStack(tOutput);
         GT_Utility.ItemNBT.addEnchantment(
             tOutput,
@@ -35,14 +35,14 @@ public class ProcessingArrows implements gregtech.api.interfaces.IOreRecipeRegis
             EnchantmentHelper.getEnchantmentLevel(Enchantment.smite.effectId, tOutput) + 3);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.copyAmount(1L, aStack))
+            .itemInputs(GT_Utility.copyAmount(1, aStack))
             .itemOutputs(tOutput)
             .fluidInputs(Materials.HolyWater.getFluid(25L))
             .duration(5 * SECONDS)
             .eut(2)
             .addTo(sChemicalBathRecipes);
 
-        tOutput = GT_Utility.copyAmount(1L, aStack);
+        tOutput = GT_Utility.copyAmount(1, aStack);
         GT_Utility.updateItemStack(tOutput);
         GT_Utility.ItemNBT.addEnchantment(
             tOutput,
@@ -50,14 +50,14 @@ public class ProcessingArrows implements gregtech.api.interfaces.IOreRecipeRegis
             EnchantmentHelper.getEnchantmentLevel(Enchantment.fireAspect.effectId, tOutput) + 3);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.copyAmount(1L, aStack))
+            .itemInputs(GT_Utility.copyAmount(1, aStack))
             .itemOutputs(tOutput)
             .fluidInputs(Materials.FierySteel.getFluid(25L))
             .duration(5 * SECONDS)
             .eut(2)
             .addTo(sChemicalBathRecipes);
 
-        tOutput = GT_Utility.copyAmount(1L, aStack);
+        tOutput = GT_Utility.copyAmount(1, aStack);
         GT_Utility.updateItemStack(tOutput);
         GT_Utility.ItemNBT.addEnchantment(
             tOutput,
@@ -65,14 +65,14 @@ public class ProcessingArrows implements gregtech.api.interfaces.IOreRecipeRegis
             EnchantmentHelper.getEnchantmentLevel(Enchantment.fireAspect.effectId, tOutput) + 1);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.copyAmount(1L, aStack))
+            .itemInputs(GT_Utility.copyAmount(1, aStack))
             .itemOutputs(tOutput)
             .fluidInputs(Materials.Blaze.getMolten(18L))
             .duration(5 * SECONDS)
             .eut(2)
             .addTo(sChemicalBathRecipes);
 
-        tOutput = GT_Utility.copyAmount(1L, aStack);
+        tOutput = GT_Utility.copyAmount(1, aStack);
         GT_Utility.updateItemStack(tOutput);
         GT_Utility.ItemNBT.addEnchantment(
             tOutput,
@@ -80,14 +80,14 @@ public class ProcessingArrows implements gregtech.api.interfaces.IOreRecipeRegis
             EnchantmentHelper.getEnchantmentLevel(Enchantment.knockback.effectId, tOutput) + 1);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.copyAmount(1L, aStack))
+            .itemInputs(GT_Utility.copyAmount(1, aStack))
             .itemOutputs(tOutput)
             .fluidInputs(Materials.Rubber.getMolten(18L))
             .duration(5 * SECONDS)
             .eut(2)
             .addTo(sChemicalBathRecipes);
 
-        tOutput = GT_Utility.copyAmount(1L, aStack);
+        tOutput = GT_Utility.copyAmount(1, aStack);
         GT_Utility.updateItemStack(tOutput);
         GT_Utility.ItemNBT.addEnchantment(
             tOutput,
@@ -96,7 +96,7 @@ public class ProcessingArrows implements gregtech.api.interfaces.IOreRecipeRegis
                 .getEnchantmentLevel(gregtech.api.enchants.Enchantment_EnderDamage.INSTANCE.effectId, tOutput) + 1);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.copyAmount(1L, aStack))
+            .itemInputs(GT_Utility.copyAmount(1, aStack))
             .itemOutputs(tOutput)
             .fluidInputs(Materials.Mercury.getFluid(25L))
             .duration(5 * SECONDS)

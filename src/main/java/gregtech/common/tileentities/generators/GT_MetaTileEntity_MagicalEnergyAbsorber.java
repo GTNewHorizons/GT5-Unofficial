@@ -499,7 +499,7 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
             }
         }
 
-        ItemStack tOutputStack = GT_Utility.copyAmount(1L, tStack);
+        ItemStack tOutputStack = GT_Utility.copyAmount(1, tStack);
         if (tOutputStack != null) {
             if (isDisenchantableItem(tOutputStack)) {
                 tEU = tEU * getEfficiency() / 100;

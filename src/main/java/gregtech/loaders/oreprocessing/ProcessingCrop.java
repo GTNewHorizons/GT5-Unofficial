@@ -30,7 +30,7 @@ public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistr
         net.minecraft.item.ItemStack aStack) {
         // Compressor recipes
         GT_Values.RA.stdBuilder()
-            .itemInputs(gregtech.api.util.GT_Utility.copyAmount(8L, aStack))
+            .itemInputs(gregtech.api.util.GT_Utility.copyAmount(8, aStack))
             .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
             .duration(15 * SECONDS)
             .eut(2)
