@@ -31,7 +31,6 @@ import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_SimpleWasher
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_SolarGenerators;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_SteamConverter;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_Tesseracts;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_WorldAccelerators;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiSizeTools;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_AlloyBlastSmelter;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_Cyclotron;
@@ -255,11 +254,6 @@ public class ConfigHandler {
                 GregTech.ID,
                 true,
                 "These may be overpowered, Consult a local geologist.");
-        enableMachine_WorldAccelerators = config.getBoolean(
-                "enableMachineWorldAccelerators",
-                GregTech.ID,
-                true,
-                "These allow boosting Block/TileEntity Tick times [OP].");
         enableMachine_Tesseracts = config.getBoolean(
                 "enableMachineTesseracts",
                 GregTech.ID,

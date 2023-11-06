@@ -770,16 +770,6 @@ public enum GregtechItemList implements GregtechItemContainer {
     GT_FluidTank_UV,
     GT_FluidTank_MAX,
 
-    // Tick Accelerators from GTNH
-    AcceleratorLV,
-    AcceleratorMV,
-    AcceleratorHV,
-    AcceleratorEV,
-    AcceleratorIV,
-    AcceleratorLuV,
-    AcceleratorZPM,
-    AcceleratorUV,
-
     // GT RTG
     RTG,
 
