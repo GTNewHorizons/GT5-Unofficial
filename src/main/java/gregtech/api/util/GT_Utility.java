@@ -2417,9 +2417,17 @@ public class GT_Utility {
             && ((ItemStack) aStack).stackSize >= 0;
     }
 
+    public static boolean isStackValid(ItemStack aStack) {
+        return (aStack != null) && aStack.getItem() != null && aStack.stackSize >= 0;
+    }
+
     public static boolean isStackInvalid(Object aStack) {
         return !(aStack instanceof ItemStack) || ((ItemStack) aStack).getItem() == null
             || ((ItemStack) aStack).stackSize < 0;
+    }
+
+    public static boolean isStackInvalid(ItemStack aStack) {
+        return aStack == null || aStack.getItem() == null || aStack.stackSize < 0;
     }
 
     public static boolean isDebugItem(ItemStack aStack) {
@@ -2849,6 +2857,15 @@ public class GT_Utility {
         return (ItemStack) aSetStack;
     }
 
+    public static ItemStack setStack(ItemStack aSetStack, ItemStack aToStack) {
+        if (isStackInvalid(aSetStack) || isStackInvalid(aToStack)) return null;
+        aSetStack.func_150996_a(aToStack.getItem());
+        aSetStack.stackSize = aToStack.stackSize;
+        Items.feather.setDamage(aSetStack, Items.feather.getDamage(aToStack));
+        aSetStack.setTagCompound(aToStack.getTagCompound());
+        return aSetStack;
+    }
+
     public static FluidStack[] copyFluidArray(FluidStack... aStacks) {
         if (aStacks == null) return null;
         FluidStack[] rStacks = new FluidStack[aStacks.length];
@@ -2865,6 +2882,11 @@ public class GT_Utility {
 
     public static ItemStack copy(Object... aStacks) {
         for (Object tStack : aStacks) if (isStackValid(tStack)) return ((ItemStack) tStack).copy();
+        return null;
+    }
+
+    public static ItemStack copy(ItemStack... aStacks) {
+        for (var tStack : aStacks) if (isStackValid(tStack)) return tStack.copy();
         return null;
     }
 
@@ -2891,7 +2913,28 @@ public class GT_Utility {
         return rStack;
     }
 
+    public static ItemStack copyAmount(long aAmount, ItemStack... aStacks) {
+        ItemStack rStack = copy(aStacks);
+        if (isStackInvalid(rStack)) return null;
+        if (aAmount > 64) aAmount = 64;
+        else if (aAmount == -1) aAmount = 111;
+        else if (aAmount < 0) aAmount = 0;
+        rStack.stackSize = (byte) aAmount;
+        return rStack;
+    }
+
     public static ItemStack multiplyStack(long aMultiplier, Object... aStacks) {
+        ItemStack rStack = copy(aStacks);
+        if (isStackInvalid(rStack)) return null;
+        long tAmount = rStack.stackSize * aMultiplier;
+        if (tAmount > 64) tAmount = 64;
+        else if (tAmount == -1) tAmount = 111;
+        else if (tAmount < 0) tAmount = 0;
+        rStack.stackSize = (byte) tAmount;
+        return rStack;
+    }
+
+    public static ItemStack multiplyStack(long aMultiplier, ItemStack... aStacks) {
         ItemStack rStack = copy(aStacks);
         if (isStackInvalid(rStack)) return null;
         long tAmount = rStack.stackSize * aMultiplier;
@@ -2914,7 +2957,23 @@ public class GT_Utility {
         return rStack;
     }
 
+    public static ItemStack copyAmountUnsafe(long aAmount, ItemStack... aStacks) {
+        ItemStack rStack = copy(aStacks);
+        if (isStackInvalid(rStack)) return null;
+        if (aAmount > Integer.MAX_VALUE) aAmount = Integer.MAX_VALUE;
+        else if (aAmount < 0) aAmount = 0;
+        rStack.stackSize = (int) aAmount;
+        return rStack;
+    }
+
     public static ItemStack copyMetaData(long aMetaData, Object... aStacks) {
+        ItemStack rStack = copy(aStacks);
+        if (isStackInvalid(rStack)) return null;
+        Items.feather.setDamage(rStack, (short) aMetaData);
+        return rStack;
+    }
+
+    public static ItemStack copyMetaData(long aMetaData, ItemStack... aStacks) {
         ItemStack rStack = copy(aStacks);
         if (isStackInvalid(rStack)) return null;
         Items.feather.setDamage(rStack, (short) aMetaData);
@@ -2928,10 +2987,27 @@ public class GT_Utility {
         return rStack;
     }
 
+    public static ItemStack copyAmountAndMetaData(long aAmount, long aMetaData, ItemStack... aStacks) {
+        ItemStack rStack = copyAmount(aAmount, aStacks);
+        if (isStackInvalid(rStack)) return null;
+        Items.feather.setDamage(rStack, (short) aMetaData);
+        return rStack;
+    }
+
     /**
      * returns a copy of an ItemStack with its Stacksize being multiplied by aMultiplier
      */
     public static ItemStack mul(long aMultiplier, Object... aStacks) {
+        ItemStack rStack = copy(aStacks);
+        if (rStack == null) return null;
+        rStack.stackSize *= aMultiplier;
+        return rStack;
+    }
+
+    /**
+     * returns a copy of an ItemStack with its Stacksize being multiplied by aMultiplier
+     */
+    public static ItemStack mul(long aMultiplier, ItemStack... aStacks) {
         ItemStack rStack = copy(aStacks);
         if (rStack == null) return null;
         rStack.stackSize *= aMultiplier;
