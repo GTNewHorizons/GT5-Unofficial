@@ -174,7 +174,9 @@ import ic2.api.recipe.RecipeOutput;
  */
 public class GT_Utility {
 
-    /** Formats a number with group separator and at most 2 fraction digits. */
+    /**
+     * Formats a number with group separator and at most 2 fraction digits.
+     */
     private static final Map<Locale, DecimalFormat> decimalFormatters = new HashMap<>();
 
     /**
@@ -186,7 +188,9 @@ public class GT_Utility {
     private static final Map<GT_ItemStack, FluidContainerData> sFilledContainerToData = new /* Concurrent */ HashMap<>();
     private static final Map<GT_ItemStack, Map<String, FluidContainerData>> sEmptyContainerToFluidToData = new HashMap<>();
     private static final Map<String, List<ItemStack>> sFluidToContainers = new HashMap<>();
-    /** Must use {@code Supplier} here because the ore prefixes have not yet been registered at class load time. */
+    /**
+     * Must use {@code Supplier} here because the ore prefixes have not yet been registered at class load time.
+     */
     private static final Map<OrePrefixes, Supplier<ItemStack>> sOreToCobble = new HashMap<>();
 
     private static final Map<Integer, Boolean> sOreTable = new HashMap<>();
@@ -194,7 +198,7 @@ public class GT_Utility {
     public static Map<GT_PlayedSound, Integer> sPlayedSoundMap = new /* Concurrent */ HashMap<>();
     private static int sBookCount = 0;
     public static UUID defaultUuid = null; // maybe default non-null?
-                                           // UUID.fromString("00000000-0000-0000-0000-000000000000");
+    // UUID.fromString("00000000-0000-0000-0000-000000000000");
 
     static {
         GregTech_API.sItemStackMappings.add(sFilledContainerToData);
@@ -1025,7 +1029,7 @@ public class GT_Utility {
                         if (++tStacksMoved >= aMaxStackTransfer) return tTotalItemsMoved;
                     }
                 } while (tMovedItems > 0 && tStackSize > 0); // support inventories that store more than a stack in a
-                                                             // slot
+                // slot
             }
 
             // check if source is a double chest, if yes, try move from the adjacent as well
@@ -2412,18 +2416,18 @@ public class GT_Utility {
             .isEmpty();
     }
 
+    @Deprecated
     public static boolean isStackValid(Object aStack) {
-        return (aStack instanceof ItemStack) && ((ItemStack) aStack).getItem() != null
-            && ((ItemStack) aStack).stackSize >= 0;
+        return (aStack instanceof ItemStack stack) && isStackValid(stack);
     }
 
     public static boolean isStackValid(ItemStack aStack) {
         return (aStack != null) && aStack.getItem() != null && aStack.stackSize >= 0;
     }
 
+    @Deprecated
     public static boolean isStackInvalid(Object aStack) {
-        return !(aStack instanceof ItemStack) || ((ItemStack) aStack).getItem() == null
-            || ((ItemStack) aStack).stackSize < 0;
+        return !(aStack instanceof ItemStack stack) || isStackInvalid(stack);
     }
 
     public static boolean isStackInvalid(ItemStack aStack) {
@@ -2848,13 +2852,11 @@ public class GT_Utility {
         return false;
     }
 
+    @Deprecated
     public static ItemStack setStack(Object aSetStack, Object aToStack) {
-        if (isStackInvalid(aSetStack) || isStackInvalid(aToStack)) return null;
-        ((ItemStack) aSetStack).func_150996_a(((ItemStack) aToStack).getItem());
-        ((ItemStack) aSetStack).stackSize = ((ItemStack) aToStack).stackSize;
-        Items.feather.setDamage((ItemStack) aSetStack, Items.feather.getDamage((ItemStack) aToStack));
-        ((ItemStack) aSetStack).setTagCompound(((ItemStack) aToStack).getTagCompound());
-        return (ItemStack) aSetStack;
+        if (aSetStack instanceof ItemStack setStack && aToStack instanceof ItemStack toStack)
+            return setStack(setStack, toStack);
+        return null;
     }
 
     public static ItemStack setStack(ItemStack aSetStack, ItemStack aToStack) {
@@ -2880,13 +2882,20 @@ public class GT_Utility {
         return rStacks;
     }
 
+    @Deprecated
     public static ItemStack copy(Object... aStacks) {
         for (Object tStack : aStacks) if (isStackValid(tStack)) return ((ItemStack) tStack).copy();
         return null;
     }
 
-    public static ItemStack copy(ItemStack... aStacks) {
-        for (var tStack : aStacks) if (isStackValid(tStack)) return tStack.copy();
+    public static ItemStack copy(ItemStack aStack) {
+        if (isStackValid(aStack)) return aStack.copy();
+        return null;
+    }
+
+    @Deprecated
+    private static ItemStack firstStackOrNull(Object... aStacks) {
+        for (Object tStack : aStacks) if (tStack instanceof ItemStack stack) return stack;
         return null;
     }
 
@@ -2903,8 +2912,13 @@ public class GT_Utility {
         return rStack;
     }
 
+    @Deprecated
     public static ItemStack copyAmount(long aAmount, Object... aStacks) {
-        ItemStack rStack = copy(aStacks);
+        return copyAmount((int) aAmount, firstStackOrNull(aStacks));
+    }
+
+    public static ItemStack copyAmount(int aAmount, ItemStack aStack) {
+        ItemStack rStack = copy(aStack);
         if (isStackInvalid(rStack)) return null;
         if (aAmount > 64) aAmount = 64;
         else if (aAmount == -1) aAmount = 111;
@@ -2913,31 +2927,15 @@ public class GT_Utility {
         return rStack;
     }
 
-    public static ItemStack copyAmount(long aAmount, ItemStack... aStacks) {
-        ItemStack rStack = copy(aStacks);
-        if (isStackInvalid(rStack)) return null;
-        if (aAmount > 64) aAmount = 64;
-        else if (aAmount == -1) aAmount = 111;
-        else if (aAmount < 0) aAmount = 0;
-        rStack.stackSize = (byte) aAmount;
-        return rStack;
-    }
-
+    @Deprecated
     public static ItemStack multiplyStack(long aMultiplier, Object... aStacks) {
-        ItemStack rStack = copy(aStacks);
-        if (isStackInvalid(rStack)) return null;
-        long tAmount = rStack.stackSize * aMultiplier;
-        if (tAmount > 64) tAmount = 64;
-        else if (tAmount == -1) tAmount = 111;
-        else if (tAmount < 0) tAmount = 0;
-        rStack.stackSize = (byte) tAmount;
-        return rStack;
+        return multiplyStack((int) aMultiplier, firstStackOrNull(aStacks));
     }
 
-    public static ItemStack multiplyStack(long aMultiplier, ItemStack... aStacks) {
-        ItemStack rStack = copy(aStacks);
+    public static ItemStack multiplyStack(int aMultiplier, ItemStack aStack) {
+        ItemStack rStack = copy(aStack);
         if (isStackInvalid(rStack)) return null;
-        long tAmount = rStack.stackSize * aMultiplier;
+        int tAmount = rStack.stackSize * aMultiplier;
         if (tAmount > 64) tAmount = 64;
         else if (tAmount == -1) tAmount = 111;
         else if (tAmount < 0) tAmount = 0;
@@ -2948,67 +2946,59 @@ public class GT_Utility {
     /**
      * Unlike {@link #copyAmount(long, Object...)}, this method does not restrict stack size by 64.
      */
+    @Deprecated
     public static ItemStack copyAmountUnsafe(long aAmount, Object... aStacks) {
-        ItemStack rStack = copy(aStacks);
+        return copyAmountUnsafe((int) aAmount, firstStackOrNull(aStacks));
+    }
+
+    /**
+     * Unlike {@link #copyAmount(int, ItemStack)}, this method does not restrict stack size by 64.
+     */
+    public static ItemStack copyAmountUnsafe(int aAmount, ItemStack aStack) {
+        ItemStack rStack = copy(aStack);
         if (isStackInvalid(rStack)) return null;
-        if (aAmount > Integer.MAX_VALUE) aAmount = Integer.MAX_VALUE;
         else if (aAmount < 0) aAmount = 0;
         rStack.stackSize = (int) aAmount;
         return rStack;
     }
 
-    public static ItemStack copyAmountUnsafe(long aAmount, ItemStack... aStacks) {
-        ItemStack rStack = copy(aStacks);
-        if (isStackInvalid(rStack)) return null;
-        if (aAmount > Integer.MAX_VALUE) aAmount = Integer.MAX_VALUE;
-        else if (aAmount < 0) aAmount = 0;
-        rStack.stackSize = (int) aAmount;
-        return rStack;
-    }
-
+    @Deprecated
     public static ItemStack copyMetaData(long aMetaData, Object... aStacks) {
-        ItemStack rStack = copy(aStacks);
+        return copyMetaData((int) aMetaData, firstStackOrNull(aStacks));
+    }
+
+    public static ItemStack copyMetaData(int aMetaData, ItemStack aStack) {
+        ItemStack rStack = copy(aStack);
         if (isStackInvalid(rStack)) return null;
-        Items.feather.setDamage(rStack, (short) aMetaData);
+        Items.feather.setDamage(rStack, aMetaData);
         return rStack;
     }
 
-    public static ItemStack copyMetaData(long aMetaData, ItemStack... aStacks) {
-        ItemStack rStack = copy(aStacks);
-        if (isStackInvalid(rStack)) return null;
-        Items.feather.setDamage(rStack, (short) aMetaData);
-        return rStack;
-    }
-
+    @Deprecated
     public static ItemStack copyAmountAndMetaData(long aAmount, long aMetaData, Object... aStacks) {
-        ItemStack rStack = copyAmount(aAmount, aStacks);
-        if (isStackInvalid(rStack)) return null;
-        Items.feather.setDamage(rStack, (short) aMetaData);
-        return rStack;
+        return copyAmountAndMetaData((int) aAmount, (int) aMetaData, firstStackOrNull(aStacks));
     }
 
-    public static ItemStack copyAmountAndMetaData(long aAmount, long aMetaData, ItemStack... aStacks) {
-        ItemStack rStack = copyAmount(aAmount, aStacks);
+    public static ItemStack copyAmountAndMetaData(int aAmount, int aMetaData, ItemStack aStack) {
+        ItemStack rStack = copyAmount(aAmount, aStack);
         if (isStackInvalid(rStack)) return null;
-        Items.feather.setDamage(rStack, (short) aMetaData);
+        Items.feather.setDamage(rStack, aMetaData);
         return rStack;
     }
 
     /**
      * returns a copy of an ItemStack with its Stacksize being multiplied by aMultiplier
      */
+    @Deprecated
     public static ItemStack mul(long aMultiplier, Object... aStacks) {
-        ItemStack rStack = copy(aStacks);
-        if (rStack == null) return null;
-        rStack.stackSize *= aMultiplier;
-        return rStack;
+        return mul((int) aMultiplier, firstStackOrNull(aStacks));
     }
 
     /**
      * returns a copy of an ItemStack with its Stacksize being multiplied by aMultiplier
      */
-    public static ItemStack mul(long aMultiplier, ItemStack... aStacks) {
-        ItemStack rStack = copy(aStacks);
+    public static ItemStack mul(int aMultiplier, ItemStack aStack) {
+        ItemStack rStack = copy(aStack);
         if (rStack == null) return null;
         rStack.stackSize *= aMultiplier;
         return rStack;
@@ -4061,14 +4051,14 @@ public class GT_Utility {
                 .append(",")
                 .append(aFluid.getLocalizedName())
                 .append(","); // TODO
-                              // CHECK
-                              // IF
-                              // THAT
-                              // /5000
-                              // is
-                              // needed
-                              // (Not
-                              // needed)
+            // CHECK
+            // IF
+            // THAT
+            // /5000
+            // is
+            // needed
+            // (Not
+            // needed)
             for (String tString : aOres) {
                 tData.append(tString)
                     .append(",");
@@ -4770,7 +4760,9 @@ public class GT_Utility {
                 tag.hasKey("tag", Constants.NBT.TAG_COMPOUND) ? tag.getCompoundTag("tag") : null);
         }
 
-        /** This method copies NBT, as it is mutable. */
+        /**
+         * This method copies NBT, as it is mutable.
+         */
         public static ItemId create(ItemStack itemStack) {
             NBTTagCompound nbt = itemStack.getTagCompound();
             if (nbt != null) {
@@ -4780,7 +4772,9 @@ public class GT_Utility {
             return new AutoValue_GT_Utility_ItemId(itemStack.getItem(), itemStack.getItemDamage(), nbt);
         }
 
-        /** This method copies NBT, as it is mutable. */
+        /**
+         * This method copies NBT, as it is mutable.
+         */
         public static ItemId create(Item item, int metaData, @Nullable NBTTagCompound nbt) {
             if (nbt != null) {
                 nbt = (NBTTagCompound) nbt.copy();
@@ -4788,7 +4782,9 @@ public class GT_Utility {
             return new AutoValue_GT_Utility_ItemId(item, metaData, nbt);
         }
 
-        /** This method does not copy NBT in order to save time. Make sure not to mutate it! */
+        /**
+         * This method does not copy NBT in order to save time. Make sure not to mutate it!
+         */
         public static ItemId createNoCopy(ItemStack itemStack) {
             return new AutoValue_GT_Utility_ItemId(
                 itemStack.getItem(),
@@ -4796,7 +4792,9 @@ public class GT_Utility {
                 itemStack.getTagCompound());
         }
 
-        /** This method does not copy NBT in order to save time. Make sure not to mutate it! */
+        /**
+         * This method does not copy NBT in order to save time. Make sure not to mutate it!
+         */
         public static ItemId createNoCopy(Item item, int metaData, @Nullable NBTTagCompound nbt) {
             return new AutoValue_GT_Utility_ItemId(item, metaData, nbt);
         }
