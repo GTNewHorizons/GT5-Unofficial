@@ -2,6 +2,8 @@ package gregtech.api.recipe;
 
 import java.awt.Rectangle;
 import java.util.List;
+import java.util.function.IntFunction;
+import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -20,6 +22,7 @@ import gregtech.api.gui.modularui.FallbackableSteamTexture;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
+import gregtech.common.gui.modularui.UIHelper;
 
 /**
  * Builder class for {@link BasicUIProperties}.
@@ -57,6 +60,12 @@ public final class BasicUIPropertiesBuilder {
     private Size logoSize = new Size(17, 17);
     private Pos2d logoPos = new Pos2d(152, 63);
 
+    private IntFunction<List<Pos2d>> itemInputPositionsGetter = UIHelper::getItemInputPositions;
+    private IntFunction<List<Pos2d>> itemOutputPositionsGetter = UIHelper::getItemOutputPositions;
+    private Supplier<Pos2d> specialItemPositionGetter = UIHelper::getSpecialItemPosition;
+    private IntFunction<List<Pos2d>> fluidInputPositionsGetter = UIHelper::getFluidInputPositions;
+    private IntFunction<List<Pos2d>> fluidOutputPositionsGetter = UIHelper::getFluidOutputPositions;
+
     private int amperage = 1;
 
     BasicUIPropertiesBuilder() {}
@@ -92,6 +101,11 @@ public final class BasicUIPropertiesBuilder {
             logo,
             logoSize,
             logoPos,
+            itemInputPositionsGetter,
+            itemOutputPositionsGetter,
+            specialItemPositionGetter,
+            fluidInputPositionsGetter,
+            fluidOutputPositionsGetter,
             amperage);
     }
 
@@ -199,6 +213,31 @@ public final class BasicUIPropertiesBuilder {
 
     public BasicUIPropertiesBuilder logoPos(Pos2d logoPos) {
         this.logoPos = logoPos;
+        return this;
+    }
+
+    public BasicUIPropertiesBuilder itemInputPositionsGetter(IntFunction<List<Pos2d>> itemInputPositionsGetter) {
+        this.itemInputPositionsGetter = itemInputPositionsGetter;
+        return this;
+    }
+
+    public BasicUIPropertiesBuilder itemOutputPositionsGetter(IntFunction<List<Pos2d>> itemOutputPositionsGetter) {
+        this.itemOutputPositionsGetter = itemOutputPositionsGetter;
+        return this;
+    }
+
+    public BasicUIPropertiesBuilder specialItemPositionGetter(Supplier<Pos2d> specialItemPositionGetter) {
+        this.specialItemPositionGetter = specialItemPositionGetter;
+        return this;
+    }
+
+    public BasicUIPropertiesBuilder fluidInputPositionsGetter(IntFunction<List<Pos2d>> fluidInputPositionsGetter) {
+        this.fluidInputPositionsGetter = fluidInputPositionsGetter;
+        return this;
+    }
+
+    public BasicUIPropertiesBuilder fluidOutputPositionsGetter(IntFunction<List<Pos2d>> fluidOutputPositionsGetter) {
+        this.fluidOutputPositionsGetter = fluidOutputPositionsGetter;
         return this;
     }
 

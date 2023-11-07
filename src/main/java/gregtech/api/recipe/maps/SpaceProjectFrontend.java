@@ -28,7 +28,6 @@ import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
-import gregtech.common.items.GT_FluidDisplayItem;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager.FakeSpaceProjectRecipe;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
@@ -79,7 +78,7 @@ public class SpaceProjectFrontend extends RecipeMapFrontend {
     protected List<String> handleNEIItemInputTooltip(List<String> currentTip,
         GT_NEI_DefaultHandler.FixedPositionedStack pStack) {
         super.handleNEIItemOutputTooltip(currentTip, pStack);
-        if (pStack.item != null && pStack.item.getItem() instanceof GT_FluidDisplayItem) return currentTip;
+        if (pStack.isFluid()) return currentTip;
         currentTip.add(GRAY + translateToLocal("Item Count: ") + formatNumbers(pStack.realStackSize));
         return currentTip;
     }
@@ -87,8 +86,8 @@ public class SpaceProjectFrontend extends RecipeMapFrontend {
     @Override
     public void drawNEIOverlays(GT_NEI_DefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
         for (PositionedStack stack : neiCachedRecipe.mInputs) {
-            if (stack instanceof GT_NEI_DefaultHandler.FixedPositionedStack && stack.item != null
-                && !(stack.item.getItem() instanceof GT_FluidDisplayItem)) {
+            if (stack instanceof GT_NEI_DefaultHandler.FixedPositionedStack pStack && stack.item != null
+                && !pStack.isFluid()) {
                 int stackSize = ((GT_NEI_DefaultHandler.FixedPositionedStack) stack).realStackSize;
                 String displayString;
                 if (stack.item.stackSize > 9999) {

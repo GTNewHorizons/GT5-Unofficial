@@ -1,6 +1,6 @@
 package gregtech.api.recipe;
 
-import static gregtech.api.util.GT_Utility.*;
+import static gregtech.api.util.GT_Utility.isStringInvalid;
 import static gregtech.api.util.GT_Utility.trans;
 import static net.minecraft.util.EnumChatFormatting.GRAY;
 
@@ -61,7 +61,12 @@ public class RecipeMapFrontend {
 
     public RecipeMapFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
         NEIRecipePropertiesBuilder neiPropertiesBuilder) {
-        this.uiProperties = uiPropertiesBuilder.build();
+        this.uiProperties = uiPropertiesBuilder.itemInputPositionsGetter(this::getItemInputPositions)
+            .itemOutputPositionsGetter(this::getItemOutputPositions)
+            .specialItemPositionGetter(this::getSpecialItemPosition)
+            .fluidInputPositionsGetter(this::getFluidInputPositions)
+            .fluidOutputPositionsGetter(this::getFluidOutputPositions)
+            .build();
         this.neiProperties = neiPropertiesBuilder.build();
     }
 
@@ -119,7 +124,7 @@ public class RecipeMapFrontend {
                     .setSize(18, 18)),
             ModularUITextures.ITEM_SLOT,
             ModularUITextures.FLUID_SLOT,
-            this,
+            uiProperties,
             uiProperties.maxItemInputs,
             uiProperties.maxItemOutputs,
             uiProperties.maxFluidInputs,

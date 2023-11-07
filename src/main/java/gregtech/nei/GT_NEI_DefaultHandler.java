@@ -630,7 +630,7 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
             },
                 IDrawable.EMPTY,
                 IDrawable.EMPTY,
-                GT_NEI_DefaultHandler.this.frontend,
+                GT_NEI_DefaultHandler.this.frontend.getUIProperties(),
                 aRecipe.mInputs.length,
                 aRecipe.mOutputs.length,
                 aRecipe.mFluidInputs.length,

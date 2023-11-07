@@ -1348,7 +1348,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
             (i, backgrounds, pos) -> builder.widget(createFluidOutputSlot(backgrounds, pos)),
             getGUITextureSet().getItemSlot(),
             getGUITextureSet().getFluidSlot(),
-            getRecipeMap(),
+            uiProperties,
             uiProperties.maxItemInputs,
             uiProperties.maxItemOutputs,
             uiProperties.maxFluidInputs,
