@@ -20,7 +20,7 @@ import gregtech.api.ModernMaterials.ModernMaterialUtilities;
 
 public class BaseMaterialItemBlock extends ItemBlock {
 
-    public BaseMaterialItemBlock(Block block) {
+    public BaseMaterialItemBlock(@NotNull final Block block) {
         super(block);
         setMaxDamage(0);
         setHasSubtypes(true);
@@ -28,7 +28,7 @@ public class BaseMaterialItemBlock extends ItemBlock {
     }
 
     @Override
-    public int getMetadata(int metadata) {
+    public int getMetadata(final int metadata) {
         return metadata;
     }
 
@@ -40,16 +40,18 @@ public class BaseMaterialItemBlock extends ItemBlock {
     // Tooltip information.
     @SideOnly(Side.CLIENT)
     @Override
-    public void addInformation(@NotNull ItemStack itemStack, EntityPlayer player, List<String> tooltipList,
+    public void addInformation(@NotNull final ItemStack itemStack, final EntityPlayer player, List<String> tooltipList,
         boolean aF3_H) {
         final ModernMaterial material = ModernMaterialUtilities.materialIDToMaterial.get(getMaterialID(itemStack));
         tooltipList.addAll(tooltipGenerator(itemStack.getItem(), material));
     }
 
     @Override
-    public String getItemStackDisplayName(@NotNull ItemStack itemStack) {
+    public String getItemStackDisplayName(@NotNull final ItemStack itemStack) {
 
         ModernMaterial material = getMaterial(itemStack);
+
+        // todo custom name overrides, for e.g. names that change over time.
 
         BaseMaterialBlock block = (BaseMaterialBlock) Block.getBlockFromItem(itemStack.getItem());
         BlocksEnum blockEnum = block.getBlockEnum();

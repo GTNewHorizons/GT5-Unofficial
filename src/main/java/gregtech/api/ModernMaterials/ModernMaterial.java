@@ -142,9 +142,10 @@ public final class ModernMaterial {
         }
 
         public ModernMaterialBuilder addCustomFluid(ModernMaterialFluid.Builder modernMaterialFluidBuilder) {
-            ModernMaterialFluid modernMaterialFluid = modernMaterialFluidBuilder.setMaterial(materialToBuild)
-                .build();
+
+            ModernMaterialFluid modernMaterialFluid = modernMaterialFluidBuilder.setMaterial(materialToBuild).build();
             materialToBuild.existingFluids.add(modernMaterialFluid);
+
             return this;
         }
 
