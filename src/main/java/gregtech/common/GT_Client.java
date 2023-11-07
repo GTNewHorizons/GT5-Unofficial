@@ -94,6 +94,7 @@ import gregtech.common.tileentities.debug.GT_MetaTileEntity_AdvDebugStructureWri
 import gregtech.loaders.ExtraIcons;
 import gregtech.loaders.misc.GT_Bees;
 import gregtech.loaders.preload.GT_PreLoad;
+import gregtech.nei.NEI_GT_Config;
 import ic2.api.tile.IWrenchable;
 
 // Referenced classes of package gregtech.common:
@@ -587,6 +588,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
         new GT_Renderer_Entity_Arrow(GT_Entity_Arrow_Potion.class, "arrow_potions");
         new GT_FlaskRenderer();
         new GT_FluidDisplayStackRenderer();
+        MinecraftForge.EVENT_BUS.register(new NEI_GT_Config());
     }
 
     @Override

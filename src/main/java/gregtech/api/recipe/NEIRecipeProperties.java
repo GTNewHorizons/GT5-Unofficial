@@ -1,12 +1,17 @@
 package gregtech.api.recipe;
 
 import java.util.Comparator;
+import java.util.function.UnaryOperator;
 
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
 
+import codechicken.nei.recipe.HandlerInfo;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.ModContainer;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.util.FieldsAreNonnullByDefault;
 import gregtech.api.util.GT_Recipe;
@@ -17,14 +22,14 @@ import gregtech.nei.formatter.INEISpecialInfoFormatter;
  * Data object storing info exclusively used to draw NEI recipe GUI. Not all the properties used to draw NEI
  * are present here. See {@link BasicUIProperties} for the rest.
  * <p>
- * Use {@link #builder()} for creation.
+ * Use {@link #builder} for creation.
  */
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 @FieldsAreNonnullByDefault
 public final class NEIRecipeProperties {
 
-    public static NEIRecipePropertiesBuilder builder() {
+    static NEIRecipePropertiesBuilder builder() {
         return new NEIRecipePropertiesBuilder();
     }
 
@@ -32,6 +37,9 @@ public final class NEIRecipeProperties {
      * Whether to register dedicated NEI recipe page for the recipemap.
      */
     public final boolean registerNEI;
+    public final ModContainer ownerMod;
+    @Nullable
+    public final UnaryOperator<HandlerInfo.Builder> handlerInfoCreator;
 
     /**
      * Size of background shown.
@@ -67,10 +75,14 @@ public final class NEIRecipeProperties {
      */
     public final Comparator<GT_Recipe> comparator;
 
-    NEIRecipeProperties(boolean registerNEI, Size recipeBackgroundSize, Pos2d recipeBackgroundOffset,
-        INEISpecialInfoFormatter neiSpecialInfoFormatter, boolean unificateOutput, boolean useCustomFilter,
-        boolean renderRealStackSizes, Comparator<GT_Recipe> comparator) {
+    NEIRecipeProperties(boolean registerNEI, @Nullable UnaryOperator<HandlerInfo.Builder> handlerInfoCreator,
+        Size recipeBackgroundSize, Pos2d recipeBackgroundOffset, INEISpecialInfoFormatter neiSpecialInfoFormatter,
+        boolean unificateOutput, boolean useCustomFilter, boolean renderRealStackSizes,
+        Comparator<GT_Recipe> comparator) {
         this.registerNEI = registerNEI;
+        this.ownerMod = Loader.instance()
+            .activeModContainer();
+        this.handlerInfoCreator = handlerInfoCreator;
         this.recipeBackgroundOffset = recipeBackgroundOffset;
         this.recipeBackgroundSize = recipeBackgroundSize;
         this.neiSpecialInfoFormatter = neiSpecialInfoFormatter;

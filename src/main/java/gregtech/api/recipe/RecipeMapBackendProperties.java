@@ -18,7 +18,7 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
 @FieldsAreNonnullByDefault
 public final class RecipeMapBackendProperties {
 
-    public static RecipeMapBackendPropertiesBuilder builder() {
+    static RecipeMapBackendPropertiesBuilder builder() {
         return new RecipeMapBackendPropertiesBuilder();
     }
 

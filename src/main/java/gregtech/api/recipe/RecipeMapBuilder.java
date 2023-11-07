@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -19,6 +20,7 @@ import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 
+import codechicken.nei.recipe.HandlerInfo;
 import gregtech.api.gui.modularui.FallbackableSteamTexture;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.gui.modularui.SteamTexture;
@@ -397,6 +399,18 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
      */
     public RecipeMapBuilder<B> disableRegisterNEI() {
         neiPropertiesBuilder.disableRegisterNEI();
+        return this;
+    }
+
+    /**
+     * Specifies properties of NEI handler info this recipemap belongs to. Either use supplied template or return newly
+     * constructed one.
+     * <p>
+     * Invocation of the builder creator is delayed until the actual registration (postinit), so you can safely specify
+     * itemstack that doesn't exist as of recipemap initialization.
+     */
+    public RecipeMapBuilder<B> neiHandlerInfo(UnaryOperator<HandlerInfo.Builder> handlerInfoCreator) {
+        neiPropertiesBuilder.handlerInfoCreator(handlerInfoCreator);
         return this;
     }
 

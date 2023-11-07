@@ -207,6 +207,8 @@ public final class RecipeMaps {
         .slotOverlays((index, isFluid, isOutput, isSpecial) -> isSpecial ? GT_UITextures.OVERLAY_SLOT_DATA_ORB : null)
         .disableOptimize()
         .neiTransferRect(new Rectangle(146, 26, 10, 18))
+        // this overwrites yShift that exists in NEI default config
+        .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.Machine_Multi_Assemblyline.get(1)))
         .frontend(AssemblyLineFrontend::new)
         .build();
     /**
@@ -554,6 +556,9 @@ public final class RecipeMaps {
         .maxIO(9, 9, 9, 9)
         .disableOptimize()
         .neiSpecialInfoFormatter(HeatingCoilSpecialValueFormatter.INSTANCE)
+        .neiHandlerInfo(
+            builder -> builder.setDisplayStack(ItemList.Machine_Multi_PlasmaForge.get(1))
+                .setMaxRecipesPerPage(1))
         .frontend(LargeNEIFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> transcendentPlasmaMixerRecipes = RecipeMapBuilder
@@ -562,6 +567,9 @@ public final class RecipeMaps {
         .progressBarPos(86, 44)
         .logoPos(87, 99)
         .neiRecipeBackgroundSize(170, 118)
+        .neiHandlerInfo(
+            builder -> builder.setDisplayStack(ItemList.Machine_Multi_TranscendentPlasmaMixer.get(1))
+                .setMaxRecipesPerPage(1))
         .frontend(TranscendentPlasmaMixerFrontend::new)
         .disableOptimize()
         .build();
@@ -1104,6 +1112,7 @@ public final class RecipeMaps {
                 isSpecial) -> !isFluid && !isOutput && index == 0 ? GT_UITextures.OVERLAY_SLOT_LENS : null)
         .progressBar(GT_UITextures.PROGRESSBAR_ASSEMBLE)
         .disableOptimize()
+        .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.NanoForge.get(1)))
         .neiSpecialInfoFormatter(new SimpleSpecialValueFormatter("GT5U.nei.tier"))
         .build();
     public static final RecipeMap<RecipeMapBackend> pcbFactoryRecipes = RecipeMapBuilder.of("gt.recipe.pcbfactory")
@@ -1111,6 +1120,7 @@ public final class RecipeMaps {
         .minInputs(3, 1)
         .progressBar(GT_UITextures.PROGRESSBAR_ASSEMBLE)
         .disableOptimize()
+        .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.PCBFactory.get(1)))
         .neiSpecialInfoFormatter(recipeInfo -> {
             List<String> result = new ArrayList<>();
             int bitmap = recipeInfo.recipe.mSpecialValue;
@@ -1134,6 +1144,7 @@ public final class RecipeMaps {
         .logo(GT_UITextures.PICTURE_RADIATION_WARNING)
         .logoPos(152, 41)
         .neiRecipeBackgroundSize(170, 60)
+        .neiHandlerInfo(builder -> builder.setDisplayStack(GT_ModHandler.getIC2Item("nuclearReactor", 1, null)))
         .build();
 
     static {

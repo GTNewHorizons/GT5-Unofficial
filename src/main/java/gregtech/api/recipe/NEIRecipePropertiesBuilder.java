@@ -1,12 +1,15 @@
 package gregtech.api.recipe;
 
 import java.util.Comparator;
+import java.util.function.UnaryOperator;
 
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
 
+import codechicken.nei.recipe.HandlerInfo;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.formatter.DefaultSpecialValueFormatter;
@@ -21,6 +24,8 @@ import gregtech.nei.formatter.INEISpecialInfoFormatter;
 public final class NEIRecipePropertiesBuilder {
 
     private boolean registerNEI = true;
+    @Nullable
+    private UnaryOperator<HandlerInfo.Builder> handlerInfoCreator;
 
     private Size recipeBackgroundSize = new Size(170, 82);
     private Pos2d recipeBackgroundOffset = new Pos2d(3, 3);
@@ -38,6 +43,7 @@ public final class NEIRecipePropertiesBuilder {
     public NEIRecipeProperties build() {
         return new NEIRecipeProperties(
             registerNEI,
+            handlerInfoCreator,
             recipeBackgroundSize,
             recipeBackgroundOffset,
             neiSpecialInfoFormatter,
@@ -49,6 +55,11 @@ public final class NEIRecipePropertiesBuilder {
 
     public NEIRecipePropertiesBuilder disableRegisterNEI() {
         this.registerNEI = false;
+        return this;
+    }
+
+    public NEIRecipePropertiesBuilder handlerInfoCreator(UnaryOperator<HandlerInfo.Builder> builderCreator) {
+        this.handlerInfoCreator = builderCreator;
         return this;
     }
 
