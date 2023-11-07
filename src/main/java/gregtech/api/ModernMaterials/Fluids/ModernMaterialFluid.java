@@ -54,7 +54,7 @@ final public class ModernMaterialFluid extends Fluid {
     public static class Builder {
 
         private ModernMaterial associatedMaterial;
-        private int temperature = 1234;
+        private int temperature = -1;
         private boolean isGas = false;
         private final String unformattedString;
         private IIcon stillIcon;
@@ -67,12 +67,7 @@ final public class ModernMaterialFluid extends Fluid {
         }
 
         public ModernMaterialFluid build() {
-            ModernMaterialFluid materialFluid = new ModernMaterialFluid(unformattedString, associatedMaterial);
-            // materialFluid.setStillIcon(this.stillIcon);
-            // materialFluid.setFlowingIcon(this.flowingIcon);
-            // materialFluid.setTemperature(this.temperature);
-            // materialFluid.setGaseous(this.isGas);
-            return materialFluid;
+            return new ModernMaterialFluid(unformattedString, associatedMaterial);
         }
 
         public ModernMaterialFluid.Builder setMaterial(ModernMaterial material) {

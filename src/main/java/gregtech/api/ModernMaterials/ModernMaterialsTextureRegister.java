@@ -16,6 +16,7 @@ import gregtech.api.ModernMaterials.Fluids.FluidEnum;
 import gregtech.api.ModernMaterials.PartProperties.Rendering.IconWrapper;
 import gregtech.api.ModernMaterials.PartProperties.Textures.TextureType;
 import gregtech.api.ModernMaterials.PartsClasses.ItemsEnum;
+import net.minecraftforge.fluids.Fluid;
 
 public class ModernMaterialsTextureRegister {
 
@@ -50,6 +51,36 @@ public class ModernMaterialsTextureRegister {
                     + fluidEnum.name()
                         .toLowerCase());
         }
+
+
+        // Custom fluid textures.
+        ModernMaterialUtilities.materialNameToMaterialMap.forEach((materialName, materialFluid) -> {
+
+            for (Fluid fluid : materialFluid.existingFluids) {
+
+                // Try retrieve still fluid texture.
+                if (fluid.getStillIcon() == null) {
+
+                    IIcon stillIcon = map.registerIcon(
+                        GregTech.getResourcePath() + "ModernMaterialsIcons/Fluids/CustomIcons/" + materialName + "/still_" + fluid.getName());
+
+                    if (stillIcon == null) throw new RuntimeException("No texture for " + materialName + " still icon.");
+                    fluid.setStillIcon(stillIcon);
+                }
+
+                // Try retrieve flowing fluid texture.
+                if (fluid.getFlowingIcon() == null) {
+
+                    IIcon flowingIcon = map.registerIcon(
+                        GregTech.getResourcePath() + "ModernMaterialsIcons/Fluids/CustomIcons/" + materialName + "/flowing_" + fluid.getName());
+
+                    if (flowingIcon == null) throw new RuntimeException("No texture for " + materialName + " flowing icon.");
+                    fluid.setFlowingIcon(flowingIcon);
+                }
+
+            }
+
+        });
     }
 
     private void itemTextures(TextureMap map) {
