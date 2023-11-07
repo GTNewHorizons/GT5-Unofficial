@@ -3,6 +3,7 @@ package gregtech.common.tileentities.machines;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH_ACTIVE;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -82,37 +83,34 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     private final ItemStack[] shadowInventory = new ItemStack[SLOT_COUNT];
     private final int[] savedStackSizes = new int[SLOT_COUNT];
     private boolean processingRecipe = false;
+    private final boolean autoPullAvailable;
     private boolean autoPullItemList = false;
     private int minAutoPullStackSize = 1;
     private static final int CONFIG_WINDOW_ID = 10;
     private boolean additionalConnection = false;
 
-    public GT_MetaTileEntity_Hatch_InputBus_ME(int aID, String aName, String aNameRegional) {
+    public GT_MetaTileEntity_Hatch_InputBus_ME(int aID, boolean autoPullAvailable, String aName, String aNameRegional) {
         super(
             aID,
             aName,
             aNameRegional,
-            3,
+            autoPullAvailable ? 6 : 3,
             SLOT_COUNT * 2 + 2,
-            new String[] { "Advanced item input for Multiblocks", "Retrieves directly from ME",
-                "Keeps 16 item types in stock",
-                "Auto-Pull from ME mode will automatically stock the first 16 items in the ME system, updated every 5 seconds.",
-                "Toggle by right-clicking with screwdriver, or use the GUI.",
-                "Use the GUI to limit the minimum stack size for Auto-Pulling.",
-                "Change ME connection behavior by right-clicking with wire cutter.",
-                "Configuration data can be copy+pasted using a data stick." });
+            getDescriptionArray(autoPullAvailable));
+        this.autoPullAvailable = autoPullAvailable;
         disableSort = true;
     }
 
-    public GT_MetaTileEntity_Hatch_InputBus_ME(String aName, int aTier, String[] aDescription,
-        ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_InputBus_ME(String aName, boolean autoPullAvailable, int aTier,
+        String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, SLOT_COUNT * 2 + 2, aDescription, aTextures);
+        this.autoPullAvailable = autoPullAvailable;
         disableSort = true;
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_InputBus_ME(mName, mTier, mDescriptionArray, mTextures);
+        return new GT_MetaTileEntity_Hatch_InputBus_ME(mName, autoPullAvailable, mTier, mDescriptionArray, mTextures);
     }
 
     @Override
@@ -179,7 +177,8 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                 gridProxy = new AENetworkProxy(
                     (IGridProxyable) getBaseMetaTileEntity(),
                     "proxy",
-                    ItemList.Hatch_Output_Bus_ME.get(1),
+                    autoPullAvailable ? ItemList.Hatch_Input_Bus_ME_Advanced.get(1)
+                        : ItemList.Hatch_Input_Bus_ME.get(1),
                     true);
                 gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
                 updateValidGridProxySides();
@@ -214,6 +213,10 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     }
 
     private void setAutoPullItemList(boolean pullItemList) {
+        if (!autoPullAvailable) {
+            return;
+        }
+
         autoPullItemList = pullItemList;
         if (!autoPullItemList) {
             for (int i = 0; i < SLOT_COUNT; i++) {
@@ -272,6 +275,10 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (!autoPullAvailable) {
+            return;
+        }
+
         setAutoPullItemList(!autoPullItemList);
         aPlayer.addChatMessage(
             new ChatComponentTranslation(
@@ -299,8 +306,12 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
 
         ItemStack circuit = GT_Utility.loadItem(dataStick.stackTagCompound, "circuit");
         if (GT_Utility.isStackInvalid(circuit)) circuit = null;
-        setAutoPullItemList(nbt.getBoolean("autoPull"));
-        minAutoPullStackSize = nbt.getInteger("minStackSize");
+
+        if (autoPullAvailable) {
+            setAutoPullItemList(nbt.getBoolean("autoPull"));
+            minAutoPullStackSize = nbt.getInteger("minStackSize");
+        }
+
         additionalConnection = nbt.getBoolean("additionalConnection");
         if (!autoPullItemList) {
             NBTTagList stockingItems = nbt.getTagList("itemsToStock", 10);
@@ -523,7 +534,11 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         final SlotWidget[] aeSlotWidgets = new SlotWidget[16];
-        buildContext.addSyncedWindow(CONFIG_WINDOW_ID, this::createStackSizeConfigurationWindow);
+
+        if (autoPullAvailable) {
+            buildContext.addSyncedWindow(CONFIG_WINDOW_ID, this::createStackSizeConfigurationWindow);
+        }
+
         builder.widget(
             SlotGroup.ofItemHandler(inventoryHandler, 4)
                 .startFromSlot(0)
@@ -607,8 +622,10 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
             .widget(
                 new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_DOUBLE)
                     .setPos(82, 30)
-                    .setSize(12, 12))
-            .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+                    .setSize(12, 12));
+
+        if (autoPullAvailable) {
+            builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
                 if (clickData.mouseButton == 0) {
                     setAutoPullItemList(!autoPullItemList);
                 } else if (clickData.mouseButton == 1 && !widget.isClient()) {
@@ -631,18 +648,19 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                         StatCollector.translateToLocal("GT5U.machines.stocking_bus.auto_pull.tooltip.2")))
                 .setSize(16, 16)
                 .setPos(80, 10))
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> autoPullItemList, this::setAutoPullItemList))
-            .widget(TextWidget.dynamicString(() -> {
-                boolean isActive = isActive();
-                boolean isPowered = isPowered();
-                boolean isBooting = isBooting();
-                EnumChatFormatting color = (isActive && isPowered) ? EnumChatFormatting.GREEN
-                    : EnumChatFormatting.DARK_RED;
-                return color + WailaText.getPowerState(isActive, isPowered, isBooting);
-            })
-                .setTextAlignment(Alignment.Center)
-                .setSize(90, 9)
-                .setPos(43, 84))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> autoPullItemList, this::setAutoPullItemList));
+        }
+
+        builder.widget(TextWidget.dynamicString(() -> {
+            boolean isActive = isActive();
+            boolean isPowered = isPowered();
+            boolean isBooting = isBooting();
+            EnumChatFormatting color = (isActive && isPowered) ? EnumChatFormatting.GREEN : EnumChatFormatting.DARK_RED;
+            return color + WailaText.getPowerState(isActive, isPowered, isBooting);
+        })
+            .setTextAlignment(Alignment.Center)
+            .setSize(90, 9)
+            .setPos(43, 84))
             .widget(
                 new SlotWidget(inventoryHandler, getManualSlot())
                     // ghost slots are prioritized over manual slot
@@ -692,6 +710,11 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
+        if (!autoPullAvailable) {
+            super.getWailaBody(itemStack, currenttip, accessor, config);
+            return;
+        }
+
         NBTTagCompound tag = accessor.getNBTData();
         boolean autopull = tag.getBoolean("autoPull");
         int minSize = tag.getInteger("minStackSize");
@@ -709,8 +732,31 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
+        if (!autoPullAvailable) {
+            super.getWailaNBTData(player, tile, tag, world, x, y, z);
+            return;
+        }
+
         tag.setBoolean("autoPull", autoPullItemList);
         tag.setInteger("minStackSize", minAutoPullStackSize);
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
+    }
+
+    private static String[] getDescriptionArray(boolean autoPullAvailable) {
+        List<String> strings = new ArrayList<>(8);
+        strings.add("Advanced item input for Multiblocks");
+        strings.add("Retrieves directly from ME");
+        strings.add("Keeps 16 item types in stock");
+
+        if (autoPullAvailable) {
+            strings.add(
+                "Auto-Pull from ME mode will automatically stock the first 16 items in the ME system, updated every 5 seconds.");
+            strings.add("Toggle by right-clicking with screwdriver, or use the GUI.");
+            strings.add("Use the GUI to limit the minimum stack size for Auto-Pulling.");
+        }
+
+        strings.add("Change ME connection behavior by right-clicking with wire cutter.");
+        strings.add("Configuration data can be copy+pasted using a data stick.");
+        return strings.toArray(new String[0]);
     }
 }

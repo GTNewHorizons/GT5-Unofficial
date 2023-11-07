@@ -151,6 +151,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_IV;
 import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_LV;
 import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_LuV;
 import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_ME;
+import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_ME_ADVANCED;
 import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_UHV;
 import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_ULV;
@@ -162,6 +163,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.INPUT_HATCH_IV;
 import static gregtech.api.enums.MetaTileEntityIDs.INPUT_HATCH_LV;
 import static gregtech.api.enums.MetaTileEntityIDs.INPUT_HATCH_LuV;
 import static gregtech.api.enums.MetaTileEntityIDs.INPUT_HATCH_ME;
+import static gregtech.api.enums.MetaTileEntityIDs.INPUT_HATCH_ME_ADVANCED;
 import static gregtech.api.enums.MetaTileEntityIDs.INPUT_HATCH_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.INPUT_HATCH_UHV;
 import static gregtech.api.enums.MetaTileEntityIDs.INPUT_HATCH_ULV;
@@ -2316,11 +2318,29 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             new GT_MetaTileEntity_Hatch_OutputBus_ME(OUTPUT_BUS_ME.ID, "hatch.output_bus.me", "Output Bus (ME)")
                 .getStackForm(1L));
         ItemList.Hatch_Input_Bus_ME.set(
-            new GT_MetaTileEntity_Hatch_InputBus_ME(INPUT_BUS_ME.ID, "hatch.input_bus.me", "Stocking Input Bus (ME)")
-                .getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_InputBus_ME(
+                INPUT_BUS_ME.ID,
+                false,
+                "hatch.input_bus.me.basic",
+                "Stocking Input Bus (ME)").getStackForm(1L));
+        ItemList.Hatch_Input_Bus_ME_Advanced.set(
+            new GT_MetaTileEntity_Hatch_InputBus_ME(
+                INPUT_BUS_ME_ADVANCED.ID,
+                true,
+                "hatch.input_bus.me",
+                "Advanced Stocking Input Bus (ME)").getStackForm(1L));
         ItemList.Hatch_Input_ME.set(
-            new GT_MetaTileEntity_Hatch_Input_ME(INPUT_HATCH_ME.ID, "hatch.input.me", "Stocking Input Hatch (ME)")
-                .getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Input_ME(
+                INPUT_HATCH_ME.ID,
+                false,
+                "hatch.input.me.basic",
+                "Stocking Input Hatch (ME)").getStackForm(1L));
+        ItemList.Hatch_Input_ME_Advanced.set(
+            new GT_MetaTileEntity_Hatch_Input_ME(
+                INPUT_HATCH_ME_ADVANCED.ID,
+                true,
+                "hatch.input.me",
+                "Advanced Stocking Input Hatch (ME)").getStackForm(1L));
         ItemList.Hatch_Output_ME.set(
             new GT_MetaTileEntity_Hatch_Output_ME(OUTPUT_HATCH_ME.ID, "hatch.output.me", "Output Hatch (ME)")
                 .getStackForm(1L));

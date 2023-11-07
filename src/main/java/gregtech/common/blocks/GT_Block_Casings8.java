@@ -26,7 +26,7 @@ public class GT_Block_Casings8 extends GT_Block_Casings_Abstract {
     public GT_Block_Casings8() {
         super(GT_Item_Casings8.class, "gt.blockcasings8", GT_Material_Casings.INSTANCE, 15);
         /*
-         * DO NOT USE INDEX 15 ! USED HERE: https://github.com/GTNewHorizons/Electro-Magic-Tools/pull/17
+         * DO NOT USE INDEX 15 ! USED HERE: https://github.com/GTNewHorizons/KubaTech/pull/101
          */
 
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Chemically Inert Machine Casing");
