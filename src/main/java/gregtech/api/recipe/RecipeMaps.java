@@ -379,7 +379,7 @@ public final class RecipeMaps {
             return GT_UITextures.OVERLAY_SLOT_BEAKER_1;
         })
         .progressBar(GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE)
-        .recipeSpecialHandler(r -> {
+        .recipeTransformer(r -> {
             int aInput = r.mFluidInputs[0].amount, aOutput = r.mFluidOutputs[0].amount, aDuration = r.mDuration;
 
             // reduce the batch size if fluid amount is exceeding
@@ -433,7 +433,7 @@ public final class RecipeMaps {
         .minInputs(1, 1)
         .slotOverlays(
             (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GT_UITextures.OVERLAY_SLOT_MOLD : null)
-        .recipeSpecialHandler(r -> {
+        .recipeTransformer(r -> {
             if (ArrayUtils.isNotEmpty(r.mFluidInputs)) {
                 if (Materials.PhasedGold.getMolten(1)
                     .isFluidEqual(r.mFluidInputs[0]))
@@ -453,7 +453,7 @@ public final class RecipeMaps {
             (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GT_UITextures.OVERLAY_SLOT_CENTRIFUGE
                 : null)
         .progressBar(GT_UITextures.PROGRESSBAR_EXTRACT)
-        .recipeSpecialHandler(r -> {
+        .recipeTransformer(r -> {
             if (ArrayUtils.isNotEmpty(r.mFluidInputs)) {
                 if (Materials.PhasedGold.getMolten(1)
                     .isFluidEqual(r.mFluidInputs[0]))

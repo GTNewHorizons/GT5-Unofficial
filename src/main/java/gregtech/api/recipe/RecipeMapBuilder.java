@@ -166,8 +166,8 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
      * <p>
      * Recipes added via one of the overloads of addRecipe will NOT be affected by this function.
      */
-    public RecipeMapBuilder<B> recipeSpecialHandler(Function<? super GT_Recipe, ? extends GT_Recipe> specialHandler) {
-        backendPropertiesBuilder.recipeSpecialHandler(specialHandler);
+    public RecipeMapBuilder<B> recipeTransformer(Function<? super GT_Recipe, ? extends GT_Recipe> recipeTransformer) {
+        backendPropertiesBuilder.recipeTransformer(recipeTransformer);
         return this;
     }
 
@@ -177,8 +177,8 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
      * <p>
      * Recipes added via one of the overloads of addRecipe will NOT be affected by this function.
      */
-    public RecipeMapBuilder<B> recipeSpecialHandler(Consumer<GT_Recipe> specialHandler) {
-        return recipeSpecialHandler(withIdentityReturn(specialHandler));
+    public RecipeMapBuilder<B> recipeTransformer(Consumer<GT_Recipe> recipeTransformer) {
+        return recipeTransformer(withIdentityReturn(recipeTransformer));
     }
 
     /**
@@ -187,12 +187,12 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
      * <p>
      * Recipes added via one of the overloads of addRecipe will NOT be affected by this function.
      * <p>
-     * Unlike {@link #recipeSpecialHandler(Function)}, this one will not replace the existing special handler.
+     * Unlike {@link #recipeTransformer(Function)}, this one will not replace the existing special handler.
      * The supplied function will be given the output of existing handler when a recipe is added.
      */
-    public RecipeMapBuilder<B> chainRecipeSpecialHandler(
-        Function<? super GT_Recipe, ? extends GT_Recipe> specialHandler) {
-        backendPropertiesBuilder.chainRecipeSpecialHandler(specialHandler);
+    public RecipeMapBuilder<B> chainRecipeTransformer(
+        Function<? super GT_Recipe, ? extends GT_Recipe> recipeTransformer) {
+        backendPropertiesBuilder.chainRecipeTransformer(recipeTransformer);
         return this;
     }
 
@@ -202,11 +202,11 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
      * <p>
      * Recipes added via one of the overloads of addRecipe will NOT be affected by this function.
      * <p>
-     * Unlike {@link #recipeSpecialHandler(Function)}, this one will not replace the existing special handler.
+     * Unlike {@link #recipeTransformer(Function)}, this one will not replace the existing special handler.
      * The supplied function will be given the output of existing handler when a recipe is added.
      */
-    public RecipeMapBuilder<B> chainRecipeSpecialHandler(Consumer<GT_Recipe> specialHandler) {
-        return chainRecipeSpecialHandler(withIdentityReturn(specialHandler));
+    public RecipeMapBuilder<B> chainRecipeTransformer(Consumer<GT_Recipe> recipeTransformer) {
+        return chainRecipeTransformer(withIdentityReturn(recipeTransformer));
     }
 
     public RecipeMapBuilder<B> recipeConfigFile(String category, Function<? super GT_Recipe, String> keyConvertor) {

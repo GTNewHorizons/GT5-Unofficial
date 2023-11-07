@@ -134,7 +134,9 @@ public class RecipeMapBackend {
                 || recipe.mInputs.length < properties.minItemInputs) {
                 return Collections.emptyList();
             }
-            if (properties.specialHandler != null) recipe = properties.specialHandler.apply(recipe);
+            if (properties.recipeTransformer != null) {
+                recipe = properties.recipeTransformer.apply(recipe);
+            }
             if (recipe == null) continue;
             if (builder.isCheckForCollision() && checkCollision(recipe)) {
                 StringBuilder errorInfo = new StringBuilder();

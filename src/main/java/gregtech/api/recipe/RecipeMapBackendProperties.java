@@ -50,7 +50,7 @@ public final class RecipeMapBackendProperties {
      * Runs a custom hook on all recipes added <b>via builder</b>.
      */
     @Nullable
-    public final Function<? super GT_Recipe, ? extends GT_Recipe> specialHandler;
+    public final Function<? super GT_Recipe, ? extends GT_Recipe> recipeTransformer;
 
     @Nullable
     public final String recipeConfigCategory;
@@ -60,7 +60,7 @@ public final class RecipeMapBackendProperties {
     RecipeMapBackendProperties(int minItemInputs, int minFluidInputs, boolean specialSlotSensitive,
         boolean disableOptimize,
         Function<? super GT_RecipeBuilder, ? extends Iterable<? extends GT_Recipe>> recipeEmitter,
-        @Nullable Function<? super GT_Recipe, ? extends GT_Recipe> specialHandler,
+        @Nullable Function<? super GT_Recipe, ? extends GT_Recipe> recipeTransformer,
         @Nullable String recipeConfigCategory, @Nullable Function<? super GT_Recipe, String> recipeConfigKeyConvertor) {
         if (minItemInputs < 0 || minFluidInputs < 0) {
             throw new IllegalArgumentException("minItemInputs and minFluidInputs cannot be negative");
@@ -70,7 +70,7 @@ public final class RecipeMapBackendProperties {
         this.specialSlotSensitive = specialSlotSensitive;
         this.disableOptimize = disableOptimize;
         this.recipeEmitter = recipeEmitter;
-        this.specialHandler = specialHandler;
+        this.recipeTransformer = recipeTransformer;
         this.recipeConfigCategory = recipeConfigCategory;
         this.recipeConfigKeyConvertor = recipeConfigKeyConvertor;
     }

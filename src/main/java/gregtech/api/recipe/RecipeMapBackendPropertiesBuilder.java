@@ -31,7 +31,7 @@ public final class RecipeMapBackendPropertiesBuilder {
     private Function<? super GT_RecipeBuilder, ? extends Iterable<? extends GT_Recipe>> recipeEmitter = this::defaultBuildRecipe;
 
     @Nullable
-    private Function<? super GT_Recipe, ? extends GT_Recipe> specialHandler;
+    private Function<? super GT_Recipe, ? extends GT_Recipe> recipeTransformer;
 
     @Nullable
     private String recipeConfigCategory;
@@ -47,7 +47,7 @@ public final class RecipeMapBackendPropertiesBuilder {
             specialSlotSensitive,
             disableOptimize,
             recipeEmitter,
-            specialHandler,
+            recipeTransformer,
             recipeConfigCategory,
             recipeConfigKeyConvertor);
     }
@@ -85,15 +85,15 @@ public final class RecipeMapBackendPropertiesBuilder {
         return recipeEmitter(b -> Iterables.concat(cur.apply(b), func.apply(b)));
     }
 
-    public RecipeMapBackendPropertiesBuilder recipeSpecialHandler(
-        Function<? super GT_Recipe, ? extends GT_Recipe> specialHandler) {
-        this.specialHandler = specialHandler;
+    public RecipeMapBackendPropertiesBuilder recipeTransformer(
+        Function<? super GT_Recipe, ? extends GT_Recipe> recipeTransformer) {
+        this.recipeTransformer = recipeTransformer;
         return this;
     }
 
-    public RecipeMapBackendPropertiesBuilder chainRecipeSpecialHandler(
+    public RecipeMapBackendPropertiesBuilder chainRecipeTransformer(
         Function<? super GT_Recipe, ? extends GT_Recipe> func) {
-        this.specialHandler = this.specialHandler == null ? func : this.specialHandler.andThen(func);
+        this.recipeTransformer = this.recipeTransformer == null ? func : this.recipeTransformer.andThen(func);
         return this;
     }
 

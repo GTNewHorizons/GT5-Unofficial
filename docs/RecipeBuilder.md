@@ -46,9 +46,9 @@ This assumes you need to generate recipe into your own recipe map from a parent 
 There is no need to do deep copy EXCEPT you are downstream.
 If you do modify the values in a downstream recipe map, call IRecipeMap.deepCopyInput() before adding yourself as a downstream.
 
-## setRecipeSpecialHandler or setRecipeEmitterSingle
+## recipeTransformer or recipeEmitterSingle
 
-Prefer setRecipeSpecialHandler, unless it would throw exception on builder.build().
+Prefer recipeTransformer, unless it would throw exception on builder.build().
 
 ## Special Value and Special Item
 
