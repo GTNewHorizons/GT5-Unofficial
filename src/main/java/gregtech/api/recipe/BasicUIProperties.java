@@ -30,8 +30,37 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
 @FieldsAreNonnullByDefault
 public final class BasicUIProperties {
 
+    /**
+     * Starts constructing BasicUIProperties.
+     */
     public static BasicUIPropertiesBuilder builder() {
         return new BasicUIPropertiesBuilder();
+    }
+
+    /**
+     * Creates new builder from this instance.
+     */
+    public BasicUIPropertiesBuilder toBuilder() {
+        return new BasicUIPropertiesBuilder().maxItemInputs(maxItemInputs)
+            .maxItemOutputs(maxItemOutputs)
+            .maxFluidInputs(maxFluidInputs)
+            .maxFluidOutputs(maxFluidOutputs)
+            .slotOverlays(slotOverlays)
+            .slotOverlaysSteam(slotOverlaysSteam)
+            .progressBarTexture(progressBarTexture)
+            .progressBarTextureSteam(progressBarTextureSteam)
+            .progressBarDirection(progressBarDirection)
+            .progressBarSize(progressBarSize)
+            .progressBarPos(progressBarPos)
+            .useSpecialSlot(useSpecialSlot)
+            .neiTransferRect(neiTransferRect)
+            .neiTransferRectId(neiTransferRectId)
+            .addSpecialTextures(specialTextures)
+            .addSpecialTexturesSteam(specialTexturesSteam)
+            .logo(logo)
+            .logoSize(logoSize)
+            .logoPos(logoPos)
+            .amperage(amperage);
     }
 
     /**

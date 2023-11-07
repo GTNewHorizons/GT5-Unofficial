@@ -13,6 +13,7 @@ import com.gtnewhorizons.modularui.api.math.Pos2d;
 
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.modularui.SteamTexture;
+import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
@@ -204,7 +205,10 @@ public class UIHelper {
 
     private static IDrawable[] getBackgroundsForSlot(IDrawable base, @Nullable RecipeMapFrontend frontend,
         boolean isFluid, boolean isOutput, int index, boolean isSpecial, SteamVariant steamVariant) {
-        IDrawable overlay = getOverlay(frontend, isFluid, isOutput, index, isSpecial, steamVariant);
+        if (frontend == null) {
+            return new IDrawable[] { base };
+        }
+        IDrawable overlay = getOverlay(frontend.getUIProperties(), isFluid, isOutput, index, isSpecial, steamVariant);
         if (overlay != null) {
             return new IDrawable[] { base, overlay };
         } else {
@@ -213,25 +217,20 @@ public class UIHelper {
     }
 
     @Nullable
-    private static IDrawable getOverlay(@Nullable RecipeMapFrontend frontend, boolean isFluid, boolean isOutput,
-        int index, boolean isSpecial, SteamVariant steamVariant) {
-        if (frontend == null) {
-            return null;
-        }
-        if (isSpecial && !frontend.getUIProperties().useSpecialSlot) {
+    private static IDrawable getOverlay(BasicUIProperties uiProperties, boolean isFluid, boolean isOutput, int index,
+        boolean isSpecial, SteamVariant steamVariant) {
+        if (isSpecial && !uiProperties.useSpecialSlot) {
             return null;
         }
         if (steamVariant != SteamVariant.NONE) {
-            SteamTexture steamTexture = frontend.getUIProperties()
-                .getOverlayForSlotSteam(index, isFluid, isOutput, isSpecial);
+            SteamTexture steamTexture = uiProperties.getOverlayForSlotSteam(index, isFluid, isOutput, isSpecial);
             if (steamTexture != null) {
                 return steamTexture.get(steamVariant);
             } else {
                 return null;
             }
         } else {
-            return frontend.getUIProperties()
-                .getOverlayForSlot(index, isFluid, isOutput, isSpecial);
+            return uiProperties.getOverlayForSlot(index, isFluid, isOutput, isSpecial);
         }
     }
 

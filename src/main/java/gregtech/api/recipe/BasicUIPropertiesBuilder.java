@@ -1,6 +1,7 @@
 package gregtech.api.recipe;
 
 import java.awt.Rectangle;
+import java.util.List;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -125,12 +126,13 @@ public final class BasicUIPropertiesBuilder {
         return this;
     }
 
-    public BasicUIPropertiesBuilder progressBarTexture(FallbackableUITexture progressBarTexture) {
+    public BasicUIPropertiesBuilder progressBarTexture(@Nullable FallbackableUITexture progressBarTexture) {
         this.progressBarTexture = progressBarTexture;
         return this;
     }
 
-    public BasicUIPropertiesBuilder progressBarTextureSteam(FallbackableSteamTexture progressBarTextureSteam) {
+    public BasicUIPropertiesBuilder progressBarTextureSteam(
+        @Nullable FallbackableSteamTexture progressBarTextureSteam) {
         this.progressBarTextureSteam = progressBarTextureSteam;
         return this;
     }
@@ -150,8 +152,8 @@ public final class BasicUIPropertiesBuilder {
         return this;
     }
 
-    public BasicUIPropertiesBuilder useSpecialSlot() {
-        this.useSpecialSlot = true;
+    public BasicUIPropertiesBuilder useSpecialSlot(boolean useSpecialSlot) {
+        this.useSpecialSlot = useSpecialSlot;
         return this;
     }
 
@@ -160,7 +162,7 @@ public final class BasicUIPropertiesBuilder {
         return this;
     }
 
-    public BasicUIPropertiesBuilder neiTransferRectId(String neiTransferRectId) {
+    public BasicUIPropertiesBuilder neiTransferRectId(@Nullable String neiTransferRectId) {
         this.neiTransferRectId = neiTransferRectId;
         return this;
     }
@@ -170,8 +172,18 @@ public final class BasicUIPropertiesBuilder {
         return this;
     }
 
+    BasicUIPropertiesBuilder addSpecialTextures(List<Pair<IDrawable, Pair<Size, Pos2d>>> specialTextures) {
+        this.specialTextures.addAll(specialTextures);
+        return this;
+    }
+
     public BasicUIPropertiesBuilder addSpecialTextureSteam(Size size, Pos2d pos, SteamTexture texture) {
         this.specialTexturesSteam.add(new ImmutablePair<>(texture, new ImmutablePair<>(size, pos)));
+        return this;
+    }
+
+    BasicUIPropertiesBuilder addSpecialTexturesSteam(List<Pair<SteamTexture, Pair<Size, Pos2d>>> specialTextures) {
+        this.specialTexturesSteam.addAll(specialTextures);
         return this;
     }
 

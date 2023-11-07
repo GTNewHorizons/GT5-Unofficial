@@ -41,7 +41,6 @@ import net.minecraftforge.fluids.IFluidHandler;
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -1302,32 +1301,13 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
             builder.widget(createItemAutoOutputButton());
         }
 
-        addIOSlots(builder);
+        BasicUIProperties uiProperties = getUIProperties();
+        addIOSlots(builder, uiProperties);
 
         builder.widget(createChargerSlot(79, 62));
-        if (getRecipeMap() != null) {
-            BasicUIProperties properties = getRecipeMap().getFrontend()
-                .getUIProperties();
-            boolean isSteampowered = isSteampowered();
-            if (!isSteampowered && properties.progressBarTexture == null) {
-                throw new RuntimeException("Set progressbar texture for " + getRecipeMap().unlocalizedName);
-            }
-            if (isSteampowered && properties.progressBarTextureSteam == null) {
-                throw new RuntimeException("Set steam progressbar texture for " + getRecipeMap().unlocalizedName);
-            }
-            builder.widget(
-                setNEITransferRect(
-                    createProgressBar(
-                        isSteampowered ? properties.progressBarTextureSteam.get(getSteamVariant())
-                            : properties.progressBarTexture.get(),
-                        properties.progressBarImageSize,
-                        properties.progressBarDirection,
-                        properties.progressBarPos,
-                        properties.progressBarSize),
-                    getRecipeMap().getFrontend()
-                        .getUIProperties().neiTransferRectId));
-            addProgressBarSpecialTextures(builder);
-        }
+
+        addProgressBar(builder, uiProperties);
+
         builder.widget(
             createErrorStatusArea(
                 builder,
@@ -1335,28 +1315,80 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     }
 
     /**
+     * Override to specify UI properties if this machine doesn't work with recipemap.
+     */
+    protected BasicUIProperties getUIProperties() {
+        if (getRecipeMap() != null) {
+            BasicUIProperties originalProperties = getRecipeMap().getFrontend()
+                .getUIProperties();
+            return originalProperties.toBuilder()
+                .maxItemInputs(mInputSlotCount)
+                .maxItemOutputs(mOutputItems.length)
+                .maxFluidInputs(Math.min(originalProperties.maxFluidInputs, 1))
+                .maxFluidOutputs(Math.min(originalProperties.maxFluidOutputs, 1))
+                .build();
+        }
+        return BasicUIProperties.builder()
+            .maxItemInputs(mInputSlotCount)
+            .maxItemOutputs(mOutputItems.length)
+            .maxFluidInputs(getCapacity() != 0 ? 1 : 0)
+            .maxFluidOutputs(0)
+            .build();
+    }
+
+    /**
      * Adds item I/O, special item, and fluid I/O slots.
      */
-    protected void addIOSlots(ModularWindow.Builder builder) {
-        final boolean hasFluidInput = getRecipeMap() != null ? (getRecipeMap().getFrontend()
-            .getUIProperties().maxFluidInputs > 0) : (getCapacity() != 0);
-        final boolean hasFluidOutput = getRecipeMap() != null && getRecipeMap().getFrontend()
-            .getUIProperties().maxFluidOutputs > 0;
+    protected void addIOSlots(ModularWindow.Builder builder, BasicUIProperties uiProperties) {
         UIHelper.forEachSlots(
             (i, backgrounds, pos) -> builder.widget(createItemInputSlot(i, backgrounds, pos)),
             (i, backgrounds, pos) -> builder.widget(createItemOutputSlot(i, backgrounds, pos)),
-            (i, backgrounds, pos) -> builder.widget(createSpecialSlot(backgrounds, pos)),
+            (i, backgrounds, pos) -> builder.widget(createSpecialSlot(backgrounds, pos, uiProperties)),
             (i, backgrounds, pos) -> builder.widget(createFluidInputSlot(backgrounds, pos)),
             (i, backgrounds, pos) -> builder.widget(createFluidOutputSlot(backgrounds, pos)),
             getGUITextureSet().getItemSlot(),
             getGUITextureSet().getFluidSlot(),
             getRecipeMap(),
-            mInputSlotCount,
-            mOutputItems.length,
-            hasFluidInput ? 1 : 0,
-            hasFluidOutput ? 1 : 0,
+            uiProperties.maxItemInputs,
+            uiProperties.maxItemOutputs,
+            uiProperties.maxFluidInputs,
+            uiProperties.maxFluidOutputs,
             getSteamVariant(),
             Pos2d.ZERO);
+    }
+
+    protected void addProgressBar(ModularWindow.Builder builder, BasicUIProperties uiProperties) {
+        boolean isSteamPowered = isSteampowered();
+        RecipeMap<?> recipeMap = getRecipeMap();
+        if (!isSteamPowered && uiProperties.progressBarTexture == null) {
+            if (recipeMap != null) {
+                // Require progress bar texture for machines working with recipemap, otherwise permit
+                throw new RuntimeException("Missing progressbar texture for " + recipeMap.unlocalizedName);
+            } else {
+                return;
+            }
+        }
+        if (isSteamPowered && uiProperties.progressBarTextureSteam == null) {
+            if (recipeMap != null) {
+                throw new RuntimeException("Missing steam progressbar texture for " + recipeMap.unlocalizedName);
+            } else {
+                return;
+            }
+        }
+
+        builder.widget(
+            setNEITransferRect(
+                new ProgressBar()
+                    .setProgress(() -> maxProgresstime() != 0 ? (float) getProgresstime() / maxProgresstime() : 0)
+                    .setTexture(
+                        isSteamPowered ? uiProperties.progressBarTextureSteam.get(getSteamVariant())
+                            : uiProperties.progressBarTexture.get(),
+                        uiProperties.progressBarImageSize)
+                    .setDirection(uiProperties.progressBarDirection)
+                    .setPos(uiProperties.progressBarPos)
+                    .setSize(uiProperties.progressBarSize),
+                uiProperties.neiTransferRectId));
+        addProgressBarSpecialTextures(builder, uiProperties);
     }
 
     /**
@@ -1380,13 +1412,11 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     /**
      * Override this as needed instead of calling.
      */
-    protected SlotWidget createSpecialSlot(IDrawable[] backgrounds, Pos2d pos) {
+    protected SlotWidget createSpecialSlot(IDrawable[] backgrounds, Pos2d pos, BasicUIProperties uiProperties) {
         return (SlotWidget) new SlotWidget(inventoryHandler, getSpecialSlotIndex()).setAccess(true, true)
             .disableShiftInsert()
             .setGTTooltip(
-                () -> mTooltipCache.getData(
-                    getRecipeMap() != null && getRecipeMap().getFrontend()
-                        .getUIProperties().useSpecialSlot ? SPECIAL_SLOT_TOOLTIP : UNUSED_SLOT_TOOLTIP))
+                () -> mTooltipCache.getData(uiProperties.useSpecialSlot ? SPECIAL_SLOT_TOOLTIP : UNUSED_SLOT_TOOLTIP))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setBackground(backgrounds)
             .setPos(pos);
@@ -1433,40 +1463,25 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
             .setSize(18, 18);
     }
 
-    protected ProgressBar createProgressBar(UITexture texture, int imageSize, ProgressBar.Direction direction,
-        Pos2d pos, Size size) {
-        final ProgressBar ret = new ProgressBar();
-        ret.setProgress(() -> maxProgresstime() != 0 ? (float) getProgresstime() / maxProgresstime() : 0)
-            .setTexture(texture, imageSize)
-            .setDirection(direction)
-            .setPos(pos)
-            .setSize(size);
-        return ret;
-    }
-
-    public boolean hasNEITransferRect() {
-        return getRecipeMap() != null;
-    }
-
     protected Widget setNEITransferRect(Widget widget, String transferRectID) {
-        if (hasNEITransferRect()) {
-            final String transferRectTooltip;
-            if (isSteampowered()) {
-                transferRectTooltip = StatCollector
-                    .translateToLocalFormatted(NEI_TRANSFER_STEAM_TOOLTIP, overclockDescriber.getTierString());
-            } else {
-                transferRectTooltip = StatCollector
-                    .translateToLocalFormatted(NEI_TRANSFER_VOLTAGE_TOOLTIP, overclockDescriber.getTierString());
-            }
-            widget.setNEITransferRect(transferRectID, new Object[] { overclockDescriber }, transferRectTooltip);
+        if (GT_Utility.isStringInvalid(transferRectID)) {
+            return widget;
         }
+        final String transferRectTooltip;
+        if (isSteampowered()) {
+            transferRectTooltip = StatCollector
+                .translateToLocalFormatted(NEI_TRANSFER_STEAM_TOOLTIP, overclockDescriber.getTierString());
+        } else {
+            transferRectTooltip = StatCollector
+                .translateToLocalFormatted(NEI_TRANSFER_VOLTAGE_TOOLTIP, overclockDescriber.getTierString());
+        }
+        widget.setNEITransferRect(transferRectID, new Object[] { overclockDescriber }, transferRectTooltip);
         return widget;
     }
 
-    protected void addProgressBarSpecialTextures(ModularWindow.Builder builder) {
+    protected void addProgressBarSpecialTextures(ModularWindow.Builder builder, BasicUIProperties uiProperties) {
         if (isSteampowered()) {
-            for (Pair<SteamTexture, Pair<Size, Pos2d>> specialTexture : getRecipeMap().getFrontend()
-                .getUIProperties().specialTexturesSteam) {
+            for (Pair<SteamTexture, Pair<Size, Pos2d>> specialTexture : uiProperties.specialTexturesSteam) {
                 builder.widget(
                     new DrawableWidget().setDrawable(
                         specialTexture.getLeft()
@@ -1479,8 +1494,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
                                 .getRight()));
             }
         } else {
-            for (Pair<IDrawable, Pair<Size, Pos2d>> specialTexture : getRecipeMap().getFrontend()
-                .getUIProperties().specialTextures) {
+            for (Pair<IDrawable, Pair<Size, Pos2d>> specialTexture : uiProperties.specialTextures) {
                 builder.widget(
                     new DrawableWidget().setDrawable(specialTexture.getLeft())
                         .setSize(

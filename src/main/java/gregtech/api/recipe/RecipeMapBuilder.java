@@ -319,7 +319,7 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
      * special slot on basic machine GUI indicates it has actual usage.
      */
     public RecipeMapBuilder<B> useSpecialSlot() {
-        uiPropertiesBuilder.useSpecialSlot();
+        uiPropertiesBuilder.useSpecialSlot(true);
         return this;
     }
 

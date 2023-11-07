@@ -20,9 +20,6 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.math.Pos2d;
-import com.gtnewhorizons.modularui.api.math.Size;
-import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -38,6 +35,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
+import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.ExternalMaterials;
@@ -796,12 +794,10 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
     }
 
     @Override
-    protected ProgressBar createProgressBar(UITexture texture, int imageSize, ProgressBar.Direction direction,
-        Pos2d pos, Size size) {
-        return super.createProgressBar(texture, imageSize, direction, pos, size).setTexture(
-            progressBarTexture.get(),
-            mRecipes.getFrontend()
-                .getUIProperties().progressBarImageSize);
+    protected BasicUIProperties getUIProperties() {
+        return super.getUIProperties().toBuilder()
+            .progressBarTexture(progressBarTexture)
+            .build();
     }
 
     public enum X {
