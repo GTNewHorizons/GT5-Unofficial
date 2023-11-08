@@ -160,7 +160,7 @@ public class GT_CraftingRecipeLoader implements Runnable {
         if (tStack != null) {
             GT_ModHandler.addCraftingRecipe(
                 GT_Utility.copyAmount(
-                    GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5L / 4,
+                    GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
                     tStack),
                 bits_no_remove_buffered,
                 new Object[] { "s", "P", "P", 'P', OrePrefixes.plank.get(Materials.Wood) });

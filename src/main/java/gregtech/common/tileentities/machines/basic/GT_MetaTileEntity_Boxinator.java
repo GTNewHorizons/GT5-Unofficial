@@ -211,7 +211,7 @@ public class GT_MetaTileEntity_Boxinator extends GT_MetaTileEntity_BasicMachine 
                 true,
                 gregtech.api.enums.GT_Values.V[mTier],
                 null,
-                GT_Utility.copyAmount(64L, aStack),
+                GT_Utility.copyAmount(64, aStack),
                 tInput1) != null) {
                 return true;
             }

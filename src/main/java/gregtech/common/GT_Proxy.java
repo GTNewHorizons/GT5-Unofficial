@@ -1767,7 +1767,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                     GT_Log.ore.println(
                         tModToName + " is getting re-registered because the OreDict Name containing invalid spaces.");
                     GT_OreDictUnificator
-                        .registerOre(aEvent.Name.replaceAll(" ", ""), GT_Utility.copyAmount(1L, aEvent.Ore));
+                        .registerOre(aEvent.Name.replaceAll(" ", ""), GT_Utility.copyAmount(1, aEvent.Ore));
                     aEvent.Ore.setStackDisplayName("Invalid OreDictionary Tag");
                     return;
                 } else if (this.mInvalidNames.contains(aEvent.Name)) {
@@ -1826,7 +1826,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                                 return;
                             }
                             if (!aPrefix.isIgnored(aMaterial)) {
-                                aPrefix.add(GT_Utility.copyAmount(1L, aEvent.Ore));
+                                aPrefix.add(GT_Utility.copyAmount(1, aEvent.Ore));
                             }
                             if (aMaterial != Materials._NULL) {
                                 Materials tReRegisteredMaterial;
@@ -1835,7 +1835,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                                         .registerOre(aPrefix, tReRegisteredMaterial, aEvent.Ore)) {
                                     tReRegisteredMaterial = i$.next();
                                 }
-                                aMaterial.add(GT_Utility.copyAmount(1L, aEvent.Ore));
+                                aMaterial.add(GT_Utility.copyAmount(1, aEvent.Ore));
 
                                 if (GregTech_API.sThaumcraftCompat != null && aPrefix.doGenerateItem(aMaterial)
                                     && !aPrefix.isIgnored(aMaterial)) {
@@ -2043,11 +2043,11 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                                 return;
                             }
                         } else {
-                            aPrefix.add(GT_Utility.copyAmount(1L, aEvent.Ore));
+                            aPrefix.add(GT_Utility.copyAmount(1, aEvent.Ore));
                         }
                     }
                 } else if (aPrefix.mIsSelfReferencing) {
-                    aPrefix.add(GT_Utility.copyAmount(1L, aEvent.Ore));
+                    aPrefix.add(GT_Utility.copyAmount(1, aEvent.Ore));
                 } else {
                     GT_Log.ore.println(tModToName + " uses a Prefix as full OreDict Name, and is therefor invalid.");
                     aEvent.Ore.setStackDisplayName("Invalid OreDictionary Tag");
@@ -2277,7 +2277,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                     aOre.mMaterial == null ? Materials._NULL : aOre.mMaterial,
                     aOre.mEvent.Name,
                     aOre.mModID,
-                    GT_Utility.copyAmount(1L, aOre.mEvent.Ore));
+                    GT_Utility.copyAmount(1, aOre.mEvent.Ore));
             }
         } else {
             // GT_FML_LOGGER.info("Thingy Name: "+ aOre.mEvent.Name+ " !!!Unknown 'Thingy' detected!!! This

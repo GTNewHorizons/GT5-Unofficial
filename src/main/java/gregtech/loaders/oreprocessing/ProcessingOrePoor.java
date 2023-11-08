@@ -44,14 +44,14 @@ public class ProcessingOrePoor implements gregtech.api.interfaces.IOreRecipeRegi
         }
         if (aMaterial != null) {
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                .itemInputs(GT_Utility.copyAmount(1, aStack))
                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, aMultiplier))
                 .duration(10)
                 .eut(16)
                 .addTo(sHammerRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                .itemInputs(GT_Utility.copyAmount(1, aStack))
                 .itemOutputs(
                     GT_OreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, 2 * aMultiplier),
                     GT_OreDictUnificator.get(
@@ -65,7 +65,7 @@ public class ProcessingOrePoor implements gregtech.api.interfaces.IOreRecipeRegi
                 .addTo(sMaceratorRecipes);
 
             if (aMaterial.contains(SubTag.NO_SMELTING)) GT_ModHandler.addSmeltingRecipe(
-                GT_Utility.copyAmount(1L, aStack),
+                GT_Utility.copyAmount(1, aStack),
                 GT_OreDictUnificator.get(OrePrefixes.nugget, aMaterial.mDirectSmelting, aMultiplier));
         }
     }
