@@ -457,22 +457,21 @@ public class GT_ParallelHelper {
         maxParallelBeforeBatchMode = Math.min(maxParallel, maxParallelBeforeBatchMode);
 
         // determine normal parallel
+        int actualMaxParallel = (int) Math.min(maxParallelBeforeBatchMode, availableEUt / tRecipeEUt);
         if (recipeCheck != null) {
-            int actualMaxParallel = (int) Math.min(maxParallelBeforeBatchMode, availableEUt / tRecipeEUt);
             currentParallel = recipeCheck.checkRecipeInputs(true, actualMaxParallel, itemInputs, fluidInputs);
         } else {
-            if (tSingleRecipeCheckBuilder != null) {
-                // If recipe checker is not built yet, build and set it
-                SingleRecipeCheck builtCheck = tSingleRecipeCheckBuilder.setAfter(itemInputs, fluidInputs)
-                    .setRecipe(recipe)
-                    .build();
+            currentParallel=(int)recipe.maxParallelCalculatedByInputs(actualMaxParallel,fluidInputs,itemInputs);
+            if (currentParallel>0){
+                recipe.consumeInput(1,fluidInputs,itemInputs);
+                if (tSingleRecipeCheckBuilder != null) {
+                    // If recipe checker is not built yet, build and set it
+                    SingleRecipeCheck builtCheck = tSingleRecipeCheckBuilder.setAfter(itemInputs,fluidInputs)
+                        .setRecipe(recipe)
+                        .build();
                     singleRecipeMachine.setSingleRecipeCheck(builtCheck);
-            }
-            currentParallel = (int) Math.min(availableEUt / tRecipeEUt, recipe.maxParallelCalculatedByInput(fluidInputs,itemInputs));
-            currentParallel = Math.min(currentParallel, maxParallelBeforeBatchMode);
-            if (!tryConsumeRecipeInputs(recipe,fluidInputs,itemInputs,currentParallel)){
-                result = CheckRecipeResultRegistry.INTERNAL_ERROR;
-                return;
+                }
+                recipe.consumeInput(currentParallel-1,fluidInputs,itemInputs);
             }
         }
 
