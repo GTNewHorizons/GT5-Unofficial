@@ -775,7 +775,61 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         return true;
     }
+    public int maxParallelCalculatedByInput(FluidStack[] aFluidInputs, ItemStack... aInputs){
+        if (mInputs.length > 0 && aInputs == null) return 0;
+        if (mFluidInputs.length > 0 && aFluidInputs == null) return 0;
+        boolean inputFound;
+        int parallel=Integer.MAX_VALUE;
 
+        if (aFluidInputs != null) {
+            for (FluidStack recipeFluidCost : mFluidInputs) {
+                if (recipeFluidCost != null) {
+                    inputFound = false;
+                    for (FluidStack providedFluid : aFluidInputs) {
+                        if (providedFluid != null && providedFluid.isFluidEqual(recipeFluidCost)) {
+                            inputFound = true;
+                            currentParallel = Math.min(parallel, providedFluid.amount / recipeFluidCost.amount);
+                        }
+                    }
+                    if (!inputFound) {
+                        // for non-consumed inputs, input not found.
+                        return 0;
+                    }
+                }
+            }
+        }
+        if (aInputs != null) {
+            for (ItemStack recipeItemCost : mInputs) {
+                ItemStack unifiedItemCost = GT_OreDictUnificator.get_nocopy(true, recipeItemCost);
+                if (unifiedItemCost != null) {
+                    inputFound = false;
+                    for (ItemStack providedItem : aInputs) {
+                        if (isNBTSensitive && !GT_Utility.areStacksEqual(providedItem, unifiedItemCost, false)) {
+                            continue;
+                        } else if (!isNBTSensitive
+                            && !GT_OreDictUnificator.isInputStackEqual(providedItem, unifiedItemCost)) {
+                            continue;
+                        }
+
+                        if (GTppRecipeHelper) { // Please see JavaDoc on GTppRecipeHelper for why this is here.
+                            if (GT_Utility.areStacksEqual(providedItem, Ic2Items.FluidCell.copy(), true)
+                                || GT_Utility.areStacksEqual(providedItem, ItemList.Tool_DataStick.get(1L), true)
+                                || GT_Utility.areStacksEqual(providedItem, ItemList.Tool_DataOrb.get(1L), true)) {
+                                if (!GT_Utility.areStacksEqual(providedItem, recipeItemCost, false)) continue;
+                            }
+                        }
+                        inputFound = true;
+                        currentParallel = Math.min(parallel, providedItem.stackSize / recipeItemCost.stackSize);
+                    }
+                    if (!inputFound) {
+                        //for non-consumed inputs, input not found.
+                        return 0;
+                    }
+                }
+            }
+        }
+    return parallel;
+    }
     @Override
     public int compareTo(GT_Recipe recipe) {
         // first lowest tier recipes
