@@ -24,6 +24,7 @@ import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.interfaces.IRecipeMap;
+import gregtech.api.recipe.RecipeCategory;
 import gregtech.api.recipe.check.FindRecipeResult;
 import gregtech.api.util.extensions.ArrayExt;
 
@@ -79,6 +80,7 @@ public class GT_RecipeBuilder {
     protected boolean mNeedsEmptyOutput = false;
     protected boolean nbtSensitive = false;
     protected String[] neiDesc;
+    protected RecipeCategory recipeCategory;
     protected boolean optimize = true;
     protected Map<MetadataIdentifier<?>, Object> additionalData = new HashMap<>();
     protected boolean checkForCollision = true;
@@ -89,8 +91,8 @@ public class GT_RecipeBuilder {
     private GT_RecipeBuilder(ItemStack[] inputsBasic, Object[] inputsOreDict, ItemStack[] outputs, ItemStack[][] alts,
         FluidStack[] fluidInputs, FluidStack[] fluidOutputs, int[] chances, Object special, int duration, int eut,
         int specialValue, boolean enabled, boolean hidden, boolean fakeRecipe, boolean mCanBeBuffered,
-        boolean mNeedsEmptyOutput, boolean nbtSensitive, String[] neiDesc, boolean optimize,
-        Map<MetadataIdentifier<?>, Object> additionalData, boolean checkForCollision, boolean valid) {
+        boolean mNeedsEmptyOutput, boolean nbtSensitive, String[] neiDesc, RecipeCategory recipeCategory,
+        boolean optimize, Map<MetadataIdentifier<?>, Object> additionalData, boolean checkForCollision, boolean valid) {
         this.inputsBasic = inputsBasic;
         this.inputsOreDict = inputsOreDict;
         this.outputs = outputs;
@@ -109,6 +111,7 @@ public class GT_RecipeBuilder {
         this.mNeedsEmptyOutput = mNeedsEmptyOutput;
         this.nbtSensitive = nbtSensitive;
         this.neiDesc = neiDesc;
+        this.recipeCategory = recipeCategory;
         this.optimize = optimize;
         this.additionalData.putAll(additionalData);
         this.checkForCollision = checkForCollision;
@@ -148,7 +151,7 @@ public class GT_RecipeBuilder {
         }
     }
 
-    private static void handleInvalidRecipe() {
+    public static void handleInvalidRecipe() {
         if (!PANIC_MODE && !DEBUG_MODE) {
             return;
         }
@@ -353,6 +356,11 @@ public class GT_RecipeBuilder {
         return this;
     }
 
+    public GT_RecipeBuilder recipeCategory(RecipeCategory recipeCategory) {
+        this.recipeCategory = recipeCategory;
+        return this;
+    }
+
     /**
      * Prevent the resulting recipe from optimizing recipe, which is a process that reduce recipe batch size.
      */
@@ -426,6 +434,7 @@ public class GT_RecipeBuilder {
             mNeedsEmptyOutput,
             nbtSensitive,
             copy(neiDesc),
+            recipeCategory,
             optimize,
             additionalData,
             checkForCollision,
@@ -455,6 +464,7 @@ public class GT_RecipeBuilder {
             mNeedsEmptyOutput,
             nbtSensitive,
             copy(neiDesc),
+            recipeCategory,
             optimize,
             Collections.emptyMap(),
             checkForCollision,
@@ -513,6 +523,10 @@ public class GT_RecipeBuilder {
 
     public int getEUt() {
         return eut;
+    }
+
+    public RecipeCategory getRecipeCategory() {
+        return recipeCategory;
     }
 
     public boolean isOptimize() {
@@ -670,7 +684,8 @@ public class GT_RecipeBuilder {
                     mCanBeBuffered,
                     mNeedsEmptyOutput,
                     nbtSensitive,
-                    neiDesc)));
+                    neiDesc,
+                    recipeCategory)));
     }
 
     /**
@@ -716,6 +731,7 @@ public class GT_RecipeBuilder {
                     mNeedsEmptyOutput,
                     nbtSensitive,
                     neiDesc,
+                    recipeCategory,
                     alts)));
     }
 
@@ -801,6 +817,7 @@ public class GT_RecipeBuilder {
         mNeedsEmptyOutput = false;
         nbtSensitive = false;
         neiDesc = null;
+        recipeCategory = null;
         optimize = true;
         outputs = null;
         special = null;

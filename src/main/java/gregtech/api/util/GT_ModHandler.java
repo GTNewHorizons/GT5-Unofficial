@@ -71,6 +71,7 @@ import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.objects.GT_HashSet;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.ItemData;
+import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMap;
 import ic2.api.item.IBoxable;
 import ic2.api.item.IC2Items;
@@ -571,7 +572,8 @@ public class GT_ModHandler {
         }
         recipeBuilder.itemOutputs(aOutput)
             .duration(duration * TICKS)
-            .eut(3);
+            .eut(3)
+            .recipeCategory(RecipeCategories.alloySmelterRecycling);
         if (hidden) {
             recipeBuilder.hidden();
         }

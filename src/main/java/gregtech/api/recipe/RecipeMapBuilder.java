@@ -326,7 +326,9 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
     }
 
     /**
-     * Set size and position of {@link codechicken.nei.recipe.TemplateRecipeHandler.RecipeTransferRect}.
+     * Sets GUI area where clicking shows up all the recipes available.
+     *
+     * @see codechicken.nei.recipe.TemplateRecipeHandler.RecipeTransferRect
      */
     public RecipeMapBuilder<B> neiTransferRect(Rectangle neiTransferRect) {
         uiPropertiesBuilder.neiTransferRect(neiTransferRect);
@@ -403,11 +405,14 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
     }
 
     /**
-     * Specifies properties of NEI handler info this recipemap belongs to. Either use supplied template or return newly
-     * constructed one.
+     * Sets properties of NEI handler info this recipemap belongs to. You can specify icon shown on recipe tab,
+     * handler height, number of recipes per page, etc. Either use supplied template or return newly constructed one.
      * <p>
-     * Invocation of the builder creator is delayed until the actual registration (postinit), so you can safely specify
-     * itemstack that doesn't exist as of recipemap initialization.
+     * Invocation of the builder creator is delayed until the actual registration (FMLLoadCompleteEvent),
+     * so you can safely use itemstack that doesn't exist as of recipemap initialization.
+     * <p>
+     * Precisely, what's registered to NEI is {@link RecipeCategory}, not RecipeMap. However, handler info supplied
+     * by this method will be used for default category where most of the recipes belong to.
      */
     public RecipeMapBuilder<B> neiHandlerInfo(UnaryOperator<HandlerInfo.Builder> handlerInfoCreator) {
         neiPropertiesBuilder.handlerInfoCreator(handlerInfoCreator);

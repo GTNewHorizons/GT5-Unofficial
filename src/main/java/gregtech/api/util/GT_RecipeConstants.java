@@ -18,6 +18,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IRecipeMap;
+import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
 
 // this class is intended to be import-static-ed on every recipe script
@@ -81,6 +82,11 @@ public class GT_RecipeConstants {
      */
     public static final GT_RecipeBuilder.MetadataIdentifier<Materials> MATERIAL = GT_RecipeBuilder.MetadataIdentifier
         .create(Materials.class, "material");
+    /**
+     * Marker for {@link #UniversalArcFurnace} to tell that the recipe belongs to recycling category.
+     */
+    public static final GT_RecipeBuilder.MetadataIdentifier<Boolean> RECYCLE = GT_RecipeBuilder.MetadataIdentifier
+        .create(Boolean.class, "recycle");
 
     /**
      * Add a arc furnace recipe. Adds to both normal arc furnace and plasma arc furnace.
@@ -94,18 +100,24 @@ public class GT_RecipeConstants {
             return Collections.emptyList();
         }
         builder.duration(aDuration);
+        boolean recycle = builder.getMetadata(RECYCLE, false);
         Collection<GT_Recipe> ret = new ArrayList<>();
         for (Materials mat : new Materials[] { Materials.Argon, Materials.Nitrogen }) {
             int tPlasmaAmount = (int) Math.max(1L, aDuration / (mat.getMass() * 16L));
-            GT_RecipeBuilder b2 = builder.copy();
-            b2.fluidInputs(mat.getPlasma(tPlasmaAmount))
+            GT_RecipeBuilder plasmaBuilder = builder.copy()
+                .fluidInputs(mat.getPlasma(tPlasmaAmount))
                 .fluidOutputs(mat.getGas(tPlasmaAmount));
-            ret.addAll(RecipeMaps.plasmaArcFurnaceRecipes.doAdd(b2));
+            if (recycle) {
+                plasmaBuilder.recipeCategory(RecipeCategories.plasmaArcFurnaceRecycling);
+            }
+            ret.addAll(RecipeMaps.plasmaArcFurnaceRecipes.doAdd(plasmaBuilder));
         }
-        ret.addAll(
-            RecipeMaps.arcFurnaceRecipes.doAdd(
-                builder.copy()
-                    .fluidInputs(Materials.Oxygen.getGas(aDuration))));
+        GT_RecipeBuilder arcBuilder = builder.copy()
+            .fluidInputs(Materials.Oxygen.getGas(aDuration));
+        if (recycle) {
+            arcBuilder.recipeCategory(RecipeCategories.arcFurnaceRecycling);
+        }
+        ret.addAll(RecipeMaps.arcFurnaceRecipes.doAdd(arcBuilder));
         return ret;
     });
 

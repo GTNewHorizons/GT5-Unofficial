@@ -2,17 +2,19 @@ package gregtech.api.recipe;
 
 import static gregtech.api.recipe.check.FindRecipeResult.NOT_FOUND;
 import static gregtech.api.recipe.check.FindRecipeResult.ofSuccess;
+import static gregtech.api.util.GT_RecipeBuilder.handleInvalidRecipe;
 import static gregtech.api.util.GT_RecipeBuilder.handleRecipeCollision;
 import static gregtech.api.util.GT_Utility.areStacksEqualOrNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -52,14 +54,16 @@ public class RecipeMapBackend {
     private final SetMultimap<String, GT_Recipe> fluidIndex = HashMultimap.create();
 
     /**
-     * All the recipes belonging to this backend.
+     * All the recipes belonging to this backend, indexed by recipe category.
      */
-    private final Set<GT_Recipe> allRecipes = new HashSet<>();
+    private final Map<RecipeCategory, Collection<GT_Recipe>> recipesByCategory = new HashMap<>();
 
     /**
      * List of recipemaps that also receive recipe addition from this backend.
      */
     private final List<IRecipeMap> downstreams = new ArrayList<>(0);
+
+    private RecipeCategory defaultRecipeCategory;
 
     /**
      * All the properties specific to this backend.
@@ -79,10 +83,37 @@ public class RecipeMapBackend {
     }
 
     /**
-     * @return All the recipes belonging to this backend.
+     * @return All the recipes belonging to this backend. Returned collection is immutable,
+     *         use {@link #compileRecipe} to add / {@link #removeAll} to remove.
      */
-    public Set<GT_Recipe> getAllRecipes() {
-        return allRecipes;
+    public Collection<GT_Recipe> getAllRecipes() {
+        return Collections.unmodifiableCollection(allRecipes());
+    }
+
+    /**
+     * @return Raw recipe list
+     */
+    private Collection<GT_Recipe> allRecipes() {
+        return recipesByCategory.values()
+            .stream()
+            .flatMap(Collection::stream)
+            .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    public Map<RecipeCategory, Collection<GT_Recipe>> getAllRecipesByCategory() {
+        return Collections.unmodifiableMap(recipesByCategory);
+    }
+
+    /**
+     * @return All the recipes belonging to this backend, indexed by recipe category.
+     */
+    public Collection<GT_Recipe> getRecipesByCategory(RecipeCategory recipeCategory) {
+        return Collections
+            .unmodifiableCollection(recipesByCategory.getOrDefault(recipeCategory, Collections.emptyList()));
+    }
+
+    void setDefaultRecipeCategory(RecipeCategory defaultRecipeCategory) {
+        this.defaultRecipeCategory = defaultRecipeCategory;
     }
 
     // region add recipe
@@ -92,8 +123,12 @@ public class RecipeMapBackend {
      *
      * @return Supplied recipe.
      */
-    public GT_Recipe doAdd(GT_Recipe recipe) {
-        allRecipes.add(recipe);
+    public GT_Recipe compileRecipe(GT_Recipe recipe) {
+        if (recipe.getRecipeCategory() == null) {
+            recipe.setRecipeCategory(defaultRecipeCategory);
+        }
+        recipesByCategory.computeIfAbsent(recipe.getRecipeCategory(), v -> new ArrayList<>())
+            .add(recipe);
         for (FluidStack fluid : recipe.mFluidInputs) {
             if (fluid == null) continue;
             fluidIndex.put(
@@ -118,7 +153,7 @@ public class RecipeMapBackend {
     /**
      * Builds recipe from supplied recipe builder and adds it.
      */
-    public Collection<GT_Recipe> doAdd(GT_RecipeBuilder builder) {
+    Collection<GT_Recipe> doAdd(GT_RecipeBuilder builder, RecipeMap<?> recipeMap) {
         Iterable<? extends GT_Recipe> recipes = properties.recipeEmitter.apply(builder);
         Collection<GT_Recipe> ret = new ArrayList<>();
         for (GT_Recipe recipe : recipes) {
@@ -139,41 +174,14 @@ public class RecipeMapBackend {
             }
             if (recipe == null) continue;
             if (builder.isCheckForCollision() && checkCollision(recipe)) {
-                StringBuilder errorInfo = new StringBuilder();
-                boolean hasAnEntry = false;
-                for (FluidStack fluid : recipe.mFluidInputs) {
-                    if (fluid == null) {
-                        continue;
-                    }
-                    String s = fluid.getLocalizedName();
-                    if (s == null) {
-                        continue;
-                    }
-                    if (hasAnEntry) {
-                        errorInfo.append("+")
-                            .append(s);
-                    } else {
-                        errorInfo.append(s);
-                    }
-                    hasAnEntry = true;
-                }
-                for (ItemStack item : recipe.mInputs) {
-                    if (item == null) {
-                        continue;
-                    }
-                    String itemName = item.getDisplayName();
-                    if (hasAnEntry) {
-                        errorInfo.append("+")
-                            .append(itemName);
-                    } else {
-                        errorInfo.append(itemName);
-                    }
-                    hasAnEntry = true;
-                }
-                handleRecipeCollision(errorInfo.toString());
+                handleCollision(recipe);
                 continue;
             }
-            ret.add(doAdd(recipe));
+            if (recipe.getRecipeCategory() != null && recipe.getRecipeCategory().recipeMap != recipeMap) {
+                handleInvalidRecipe();
+                continue;
+            }
+            ret.add(compileRecipe(recipe));
         }
         if (!ret.isEmpty()) {
             builder.clearInvalid();
@@ -184,8 +192,53 @@ public class RecipeMapBackend {
         return ret;
     }
 
+    private void handleCollision(GT_Recipe recipe) {
+        StringBuilder errorInfo = new StringBuilder();
+        boolean hasAnEntry = false;
+        for (FluidStack fluid : recipe.mFluidInputs) {
+            if (fluid == null) {
+                continue;
+            }
+            String s = fluid.getLocalizedName();
+            if (s == null) {
+                continue;
+            }
+            if (hasAnEntry) {
+                errorInfo.append("+")
+                    .append(s);
+            } else {
+                errorInfo.append(s);
+            }
+            hasAnEntry = true;
+        }
+        for (ItemStack item : recipe.mInputs) {
+            if (item == null) {
+                continue;
+            }
+            String itemName = item.getDisplayName();
+            if (hasAnEntry) {
+                errorInfo.append("+")
+                    .append(itemName);
+            } else {
+                errorInfo.append(itemName);
+            }
+            hasAnEntry = true;
+        }
+        handleRecipeCollision(errorInfo.toString());
+    }
+
     void addDownstream(IRecipeMap downstream) {
         downstreams.add(downstream);
+    }
+
+    /**
+     * Removes supplied recipes from recipe list. Do not use unless absolute necessity!
+     */
+    @SuppressWarnings("unused")
+    public void removeAll(Collection<? extends GT_Recipe> recipesToRemove) {
+        for (Collection<GT_Recipe> recipes : recipesByCategory.values()) {
+            recipes.removeAll(recipesToRemove);
+        }
     }
 
     // endregion
@@ -195,7 +248,7 @@ public class RecipeMapBackend {
      */
     public void reInit() {
         itemIndex.clear();
-        for (GT_Recipe recipe : allRecipes) {
+        for (GT_Recipe recipe : allRecipes()) {
             GT_OreDictUnificator.setStackArray(true, recipe.mInputs);
             GT_OreDictUnificator.setStackArray(true, recipe.mOutputs);
             addToItemMap(recipe);
@@ -294,7 +347,7 @@ public class RecipeMapBackend {
     private FindRecipeResult doFind(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot,
         Predicate<GT_Recipe> recipeValidator, @Nullable GT_Recipe cachedRecipe, boolean notUnificated,
         boolean dontCheckStackSizes, boolean forCollisionCheck) {
-        if (allRecipes.isEmpty()) {
+        if (recipesByCategory.isEmpty()) {
             return NOT_FOUND;
         }
 

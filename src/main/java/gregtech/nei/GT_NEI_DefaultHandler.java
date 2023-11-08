@@ -21,6 +21,7 @@ import javax.annotation.Nullable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.Range;
@@ -53,9 +54,9 @@ import gregtech.api.objects.overclockdescriber.EUNoOverclockDescriber;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.recipe.NEIRecipeProperties;
+import gregtech.api.recipe.RecipeCategory;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapFrontend;
-import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
@@ -69,7 +70,7 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
     private static final int offsetY = 11;
     protected static final Pos2d WINDOW_OFFSET = new Pos2d(-offsetX, -offsetY);
 
-    private static final ConcurrentMap<RecipeMap<?>, SortedRecipeListCache> CACHE = new ConcurrentHashMap<>();
+    private static final ConcurrentMap<RecipeCategory, SortedRecipeListCache> CACHE = new ConcurrentHashMap<>();
 
     private static final int RECIPE_NAME_WIDTH = 140;
 
@@ -83,6 +84,7 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
     private static int drawTicks;
     private static final int PROGRESSBAR_CYCLE_TICKS = 200;
 
+    protected final RecipeCategory recipeCategory;
     protected final RecipeMap<?> recipeMap;
     protected final RecipeMapFrontend frontend;
     protected final BasicUIProperties uiProperties;
@@ -105,14 +107,15 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
      */
     private NEIHandlerAbsoluteTooltip recipeNameTooltip;
 
-    public GT_NEI_DefaultHandler(RecipeMap<?> recipeMap) {
-        this.recipeMap = recipeMap;
+    public GT_NEI_DefaultHandler(RecipeCategory recipeCategory) {
+        this.recipeCategory = recipeCategory;
+        this.recipeMap = recipeCategory.recipeMap;
         this.frontend = recipeMap.getFrontend();
         this.uiProperties = frontend.getUIProperties();
         this.neiProperties = frontend.getNEIProperties();
         Rectangle transferRect = new Rectangle(uiProperties.neiTransferRect);
         transferRect.translate(WINDOW_OFFSET.x, WINDOW_OFFSET.y);
-        this.transferRects.add(new RecipeTransferRect(transferRect, getOverlayIdentifier()));
+        this.transferRects.add(new RecipeTransferRect(transferRect, recipeMap.unlocalizedName));
 
         ModularWindow.Builder builder = frontend.createNEITemplate(
             itemInputsInventory = new ItemStackHandler(uiProperties.maxItemInputs),
@@ -131,7 +134,7 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
     }
 
     private SortedRecipeListCache getCacheHolder() {
-        return CACHE.computeIfAbsent(recipeMap, m -> new SortedRecipeListCache());
+        return CACHE.computeIfAbsent(recipeCategory, m -> new SortedRecipeListCache());
     }
 
     public List<CachedDefaultRecipe> getCache() {
@@ -139,7 +142,8 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
         List<CachedDefaultRecipe> cache;
         if (cacheHolder.getCachedRecipesVersion() != GT_Mod.gregtechproxy.getReloadCount()
             || (cache = cacheHolder.getCachedRecipes()) == null) {
-            cache = recipeMap.getAllRecipes()
+            cache = recipeMap.getBackend()
+                .getRecipesByCategory(recipeCategory)
                 .stream() // do not use parallel stream. This is already parallelized by NEI
                 .filter(r -> !r.mHidden)
                 .sorted(neiProperties.comparator)
@@ -156,12 +160,12 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
 
     @Override
     public TemplateRecipeHandler newInstance() {
-        return new GT_NEI_DefaultHandler(this.recipeMap);
+        return new GT_NEI_DefaultHandler(recipeCategory);
     }
 
     @Override
     public void loadCraftingRecipes(String outputId, Object... results) {
-        if (outputId.equals(getOverlayIdentifier())) {
+        if (outputId.equals(recipeMap.unlocalizedName)) {
             if (results.length > 0 && results[0] instanceof OverclockDescriber) {
                 overclockDescriber = (OverclockDescriber) results[0];
                 if (neiProperties.useCustomFilter) {
@@ -273,7 +277,7 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
                 } else {
                     overclockDescriber = null;
                 }
-                handler.loadCraftingRecipes(getOverlayIdentifier(), overclockDescriber);
+                handler.loadCraftingRecipes(recipeMap.unlocalizedName, overclockDescriber);
                 return handler;
             }
         }
@@ -291,7 +295,7 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
 
     @Override
     public String getOverlayIdentifier() {
-        return this.recipeMap.unlocalizedName;
+        return recipeCategory.unlocalizedName;
     }
 
     @Override
@@ -328,7 +332,7 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
     }
 
     private String computeRecipeName() {
-        String recipeName = GT_LanguageManager.getTranslation(this.recipeMap.unlocalizedName);
+        String recipeName = StatCollector.translateToLocal(recipeCategory.unlocalizedName);
         if (overclockDescriber != null) {
             recipeName = addSuffixToRecipeName(recipeName, overclockDescriber.getTierString() + ")");
         }
@@ -366,7 +370,7 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
 
     @Override
     public String getRecipeTabName() {
-        return GT_LanguageManager.getTranslation(this.recipeMap.unlocalizedName);
+        return StatCollector.translateToLocal(recipeCategory.unlocalizedName);
     }
 
     @Override
@@ -378,13 +382,16 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
     @Override
     public List<String> handleItemTooltip(GuiRecipe<?> gui, ItemStack aStack, List<String> currentTip,
         int aRecipeIndex) {
+        if (recipeNameTooltip != null) {
+            recipeNameTooltip.handleTooltip(currentTip, aRecipeIndex);
+        }
+        if (aStack == null) {
+            return currentTip;
+        }
+
         CachedRecipe tObject = this.arecipes.get(aRecipeIndex);
         if (tObject instanceof CachedDefaultRecipe) {
             currentTip = frontend.handleNEIItemTooltip(aStack, currentTip, (CachedDefaultRecipe) tObject);
-        }
-
-        if (recipeNameTooltip != null) {
-            recipeNameTooltip.handleTooltip(currentTip, aRecipeIndex);
         }
         return currentTip;
     }

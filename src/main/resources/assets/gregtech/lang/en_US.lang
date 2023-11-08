@@ -223,6 +223,15 @@ gt.recipe.nanoforge=Nano Forge
 gt.recipe.pcbfactory=PCB Factory
 gt.recipe.ic2nuke=Nuclear Fission
 
+# Recipe categories
+gt.recipe.category.arc_furnace_recycling=Arc Furnace Recycling
+gt.recipe.category.plasma_arc_furnace_recycling=Plasma Arc Furnace Recycling
+gt.recipe.category.macerator_recycling=Macerator Recycling
+gt.recipe.category.fluid_extractor_recycling=Fluid Extractor Recycling
+gt.recipe.category.alloy_smelter_recycling=Alloy Smelter Recycling
+gt.recipe.category.alloy_smelter_molding=Alloy Smelter Molding
+gt.recipe.category.forge_hammer_recycling=Forge Hammer Recycling
+
 GT5U.machines.tier=Tier
 GT5U.machines.workarea=Work Area
 GT5U.machines.workareaset=Work Area set to

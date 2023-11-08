@@ -23,8 +23,8 @@ public class OilCrackerBackend extends RecipeMapBackend {
     }
 
     @Override
-    public GT_Recipe doAdd(GT_Recipe recipe) {
-        GT_Recipe ret = super.doAdd(recipe);
+    public GT_Recipe compileRecipe(GT_Recipe recipe) {
+        GT_Recipe ret = super.compileRecipe(recipe);
         if (ret.mFluidInputs != null && ret.mFluidInputs.length > 1 && ret.mFluidInputs[1] != null) {
             validCatalystFluidNames.add(
                 ret.mFluidInputs[1].getFluid()

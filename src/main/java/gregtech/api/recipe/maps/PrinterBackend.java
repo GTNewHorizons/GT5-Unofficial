@@ -115,7 +115,7 @@ public class PrinterBackend extends RecipeMapBackend {
                 .hidden()
                 .build()
                 .filter(recipeValidator)
-                .map(this::doAdd)
+                .map(this::compileRecipe)
                 .map(FindRecipeResult::ofSuccess)
                 .orElse(NOT_FOUND);
         }
@@ -132,7 +132,7 @@ public class PrinterBackend extends RecipeMapBackend {
                 .hidden()
                 .build()
                 .filter(recipeValidator)
-                .map(this::doAdd)
+                .map(this::compileRecipe)
                 .map(FindRecipeResult::ofSuccess)
                 .orElse(NOT_FOUND);
         }

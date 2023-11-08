@@ -10,8 +10,6 @@ import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
 
 import codechicken.nei.recipe.HandlerInfo;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.ModContainer;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.util.FieldsAreNonnullByDefault;
 import gregtech.api.util.GT_Recipe;
@@ -37,7 +35,6 @@ public final class NEIRecipeProperties {
      * Whether to register dedicated NEI recipe page for the recipemap.
      */
     public final boolean registerNEI;
-    public final ModContainer ownerMod;
     @Nullable
     public final UnaryOperator<HandlerInfo.Builder> handlerInfoCreator;
 
@@ -80,8 +77,6 @@ public final class NEIRecipeProperties {
         boolean unificateOutput, boolean useCustomFilter, boolean renderRealStackSizes,
         Comparator<GT_Recipe> comparator) {
         this.registerNEI = registerNEI;
-        this.ownerMod = Loader.instance()
-            .activeModContainer();
         this.handlerInfoCreator = handlerInfoCreator;
         this.recipeBackgroundOffset = recipeBackgroundOffset;
         this.recipeBackgroundSize = recipeBackgroundSize;

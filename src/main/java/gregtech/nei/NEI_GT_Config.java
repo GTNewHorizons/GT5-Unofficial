@@ -1,7 +1,6 @@
 package gregtech.nei;
 
 import java.util.Comparator;
-import java.util.function.UnaryOperator;
 
 import com.google.common.collect.ImmutableMap;
 
@@ -20,7 +19,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
-import gregtech.api.recipe.NEIRecipeProperties;
+import gregtech.api.recipe.RecipeCategory;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_ModHandler;
@@ -76,10 +75,10 @@ public class NEI_GT_Config implements IConfigureNEI {
     }
 
     private void registerHandlers() {
-        RecipeMap.ALL_RECIPE_MAPS.values()
+        RecipeCategory.ALL_RECIPE_CATEGORIES.values()
             .stream()
             .filter(
-                recipeMap -> recipeMap.getFrontend()
+                recipeCategory -> recipeCategory.recipeMap.getFrontend()
                     .getNEIProperties().registerNEI)
             .map(GT_NEI_DefaultHandler::new)
             .sorted(RECIPE_MAP_HANDLER_COMPARATOR)
@@ -91,10 +90,14 @@ public class NEI_GT_Config implements IConfigureNEI {
             IMetaTileEntity mte = GregTech_API.METATILEENTITIES[i];
             if (!(mte instanceof RecipeMapWorkable recipeMapWorkable)) continue;
             for (RecipeMap<?> recipeMap : recipeMapWorkable.getAvailableRecipeMaps()) {
-                API.addRecipeCatalyst(
-                    mte.getStackForm(1),
-                    recipeMap.unlocalizedName,
-                    recipeMapWorkable.getRecipeCatalystPriority());
+                for (RecipeCategory recipeCategory : recipeMap.getBackend()
+                    .getAllRecipesByCategory()
+                    .keySet()) {
+                    API.addRecipeCatalyst(
+                        mte.getStackForm(1),
+                        recipeCategory.unlocalizedName,
+                        recipeMapWorkable.getRecipeCatalystPriority());
+                }
             }
         }
         API.addRecipeCatalyst(
@@ -120,15 +123,12 @@ public class NEI_GT_Config implements IConfigureNEI {
 
     @SubscribeEvent
     public void registerNEIHandlerInfo(NEIRegisterHandlerInfosEvent event) {
-        RecipeMap.ALL_RECIPE_MAPS.values()
-            .forEach(recipeMap -> {
-                NEIRecipeProperties neiProperties = recipeMap.getFrontend()
-                    .getNEIProperties();
-                UnaryOperator<HandlerInfo.Builder> handlerInfoCreator = neiProperties.handlerInfoCreator;
-                if (handlerInfoCreator != null) {
+        RecipeCategory.ALL_RECIPE_CATEGORIES.values()
+            .forEach(recipeCategory -> {
+                if (recipeCategory.handlerInfoCreator != null) {
                     event.registerHandlerInfo(
-                        handlerInfoCreator
-                            .apply(createHandlerInfoBuilderTemplate(recipeMap.unlocalizedName, neiProperties.ownerMod))
+                        recipeCategory.handlerInfoCreator.apply(
+                            createHandlerInfoBuilderTemplate(recipeCategory.unlocalizedName, recipeCategory.ownerMod))
                             .build());
                 }
             });

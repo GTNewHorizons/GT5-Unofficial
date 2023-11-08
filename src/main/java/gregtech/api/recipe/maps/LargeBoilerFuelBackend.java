@@ -38,7 +38,7 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
                 "vanilla furnace will burn in",
                 "a Large Bronze or Steel Boiler.")
             .build()
-            .map(this::doAdd);
+            .map(this::compileRecipe);
     }
 
     public static boolean isAllowedSolidFuel(ItemStack stack) {
@@ -117,6 +117,6 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
                 "Tungstenst. Boiler: Not allowed");
         }
 
-        return super.doAdd(recipe);
+        return super.compileRecipe(recipe);
     }
 }

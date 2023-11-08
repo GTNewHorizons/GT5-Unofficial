@@ -25,6 +25,7 @@ import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GT_RecipeConstants.RECYCLE;
 import static gregtech.api.util.GT_RecipeConstants.UniversalArcFurnace;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
@@ -61,6 +62,7 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
+import gregtech.api.recipe.RecipeCategories;
 import ic2.api.reactor.IReactorComponent;
 
 /**
@@ -224,22 +226,16 @@ public class GT_RecipeRegistrator {
                         : null
                 : GT_OreDictUnificator.getIngotOrDust(aByproduct.mMaterial.mSmeltInto, aByproduct.mAmount);
 
+        GT_RecipeBuilder builder = RA.stdBuilder()
+            .itemInputs(GT_Utility.copyAmount(1, aStack));
         if (recipeOutput != null) {
-            RA.stdBuilder()
-                .itemInputs(GT_Utility.copyAmount(1, aStack))
-                .itemOutputs(recipeOutput)
-                .fluidOutputs(aMaterial.mSmeltInto.getMolten((L * aMaterialAmount) / (M * aStack.stackSize)))
-                .duration((int) Math.max(1, (24 * aMaterialAmount) / M))
-                .eut(Math.max(8, (int) Math.sqrt(2 * aMaterial.mSmeltInto.mStandardMoltenFluid.getTemperature())))
-                .addTo(fluidExtractionRecipes);
-        } else {
-            RA.stdBuilder()
-                .itemInputs(GT_Utility.copyAmount(1, aStack))
-                .fluidOutputs(aMaterial.mSmeltInto.getMolten((L * aMaterialAmount) / (M * aStack.stackSize)))
-                .duration((int) Math.max(1, (24 * aMaterialAmount) / M))
-                .eut(Math.max(8, (int) Math.sqrt(2 * aMaterial.mSmeltInto.mStandardMoltenFluid.getTemperature())))
-                .addTo(fluidExtractionRecipes);
+            builder.itemOutputs(recipeOutput);
         }
+        builder.fluidOutputs(aMaterial.mSmeltInto.getMolten((L * aMaterialAmount) / (M * aStack.stackSize)))
+            .duration((int) Math.max(1, (24 * aMaterialAmount) / M))
+            .eut(Math.max(8, (int) Math.sqrt(2 * aMaterial.mSmeltInto.mStandardMoltenFluid.getTemperature())))
+            .recipeCategory(RecipeCategories.fluidExtractorRecycling)
+            .addTo(fluidExtractionRecipes);
     }
 
     /**
@@ -285,12 +281,19 @@ public class GT_RecipeRegistrator {
         aData = new ItemData(aData);
 
         if (!aData.hasValidMaterialData()) return;
-        boolean tIron = false;
+        boolean isRecycle = true;
 
         for (MaterialStack tMaterial : aData.getAllMaterialStacks()) {
             if (tMaterial.mMaterial == Materials.Iron || tMaterial.mMaterial == Materials.Copper
                 || tMaterial.mMaterial == Materials.WroughtIron
-                || tMaterial.mMaterial == Materials.AnnealedCopper) tIron = true;
+                || tMaterial.mMaterial == Materials.AnnealedCopper) {
+                ItemData stackData = GT_OreDictUnificator.getItemData(aStack);
+                if (stackData != null
+                    && (stackData.mPrefix == OrePrefixes.ingot || stackData.mPrefix == OrePrefixes.dust)) {
+                    // iron ingot/dust -> wrought iron, copper ingot/dust -> annealed copper
+                    isRecycle = false;
+                }
+            }
 
             if (tMaterial.mMaterial.contains(SubTag.UNBURNABLE)) {
                 tMaterial.mMaterial = tMaterial.mMaterial.mSmeltInto.mArcSmeltInto;
@@ -334,7 +337,7 @@ public class GT_RecipeRegistrator {
         for (MaterialStack tMaterial : aData.getAllMaterialStacks())
             tAmount += tMaterial.mAmount * tMaterial.mMaterial.getMass();
 
-        boolean tHide = !tIron && GT_Mod.gregtechproxy.mHideRecyclingRecipes;
+        boolean tHide = isRecycle && GT_Mod.gregtechproxy.mHideRecyclingRecipes;
         ArrayList<ItemStack> outputs = new ArrayList<>();
         if (GT_OreDictUnificator.getIngotOrDust(aData.mMaterial) != null) {
             outputs.add(GT_OreDictUnificator.getIngotOrDust(aData.mMaterial));
@@ -344,17 +347,17 @@ public class GT_RecipeRegistrator {
                 outputs.add(GT_OreDictUnificator.getIngotOrDust(aData.getByProduct(i)));
             }
         }
-        if (outputs.size() != 0) {
-            ItemStack[] outputsArray = outputs.toArray(new ItemStack[0]);
+        if (!outputs.isEmpty()) {
             GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
             recipeBuilder.itemInputs(aStack)
-                .itemOutputs(outputsArray)
+                .itemOutputs(outputs.toArray(new ItemStack[0]))
                 .fluidInputs(Materials.Oxygen.getGas((int) Math.max(16, tAmount / M)))
                 .duration(((int) Math.max(16, tAmount / M)) * TICKS)
                 .eut(90);
             if (tHide) {
                 recipeBuilder.hidden();
             }
+            recipeBuilder.metadata(RECYCLE, isRecycle);
             recipeBuilder.addTo(UniversalArcFurnace);
         }
 
@@ -402,14 +405,15 @@ public class GT_RecipeRegistrator {
                     outputs.add(GT_OreDictUnificator.getDust(aData.getByProduct(i)));
                 }
             }
-            if (outputs.size() != 0) {
+            if (!outputs.isEmpty()) {
                 ItemStack[] outputsArray = outputs.toArray(new ItemStack[0]);
                 GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
                 recipeBuilder.itemInputs(aStack)
                     .itemOutputs(outputsArray)
                     .duration(
                         (aData.mMaterial.mMaterial == Materials.Marble ? 1 : (int) Math.max(16, tAmount / M)) * TICKS)
-                    .eut(4);
+                    .eut(4)
+                    .recipeCategory(RecipeCategories.maceratorRecycling);
                 if (tHide) {
                     recipeBuilder.hidden();
                 }
@@ -430,8 +434,8 @@ public class GT_RecipeRegistrator {
                     .itemOutputs(GT_OreDictUnificator.getDust(aData.mMaterial))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_LV)
+                    .recipeCategory(RecipeCategories.forgeHammerRecycling)
                     .addTo(hammerRecipes);
-
                 break;
             }
         }

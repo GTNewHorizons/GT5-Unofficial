@@ -16,6 +16,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.recipe.RecipeCategory;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.extensions.ArrayExt;
@@ -78,6 +79,11 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
      */
     private String[] neiDesc = null;
     /**
+     * Category this recipe belongs to. Recipes belonging to recipemap are forced to have non-null category when added,
+     * otherwise it can be null.
+     */
+    private RecipeCategory recipeCategory;
+    /**
      * Stores which mod added this recipe
      */
     public List<ModContainer> owners = new ArrayList<>();
@@ -110,7 +116,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     GT_Recipe(ItemStack[] mInputs, ItemStack[] mOutputs, FluidStack[] mFluidInputs, FluidStack[] mFluidOutputs,
         int[] mChances, Object mSpecialItems, int mDuration, int mEUt, int mSpecialValue, boolean mEnabled,
         boolean mHidden, boolean mFakeRecipe, boolean mCanBeBuffered, boolean mNeedsEmptyOutput, boolean nbtSensitive,
-        String[] neiDesc) {
+        String[] neiDesc, RecipeCategory recipeCategory) {
         this.mInputs = mInputs;
         this.mOutputs = mOutputs;
         this.mFluidInputs = mFluidInputs;
@@ -127,6 +133,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         this.mNeedsEmptyOutput = mNeedsEmptyOutput;
         this.isNBTSensitive = nbtSensitive;
         this.neiDesc = neiDesc;
+        this.recipeCategory = recipeCategory;
 
         reloadOwner();
     }
@@ -513,6 +520,17 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         this.neiDesc = neiDesc;
     }
 
+    public RecipeCategory getRecipeCategory() {
+        return recipeCategory;
+    }
+
+    /**
+     * Exists only for recipe copying from external. For ordinal use case, use {@link GT_RecipeBuilder#recipeCategory}.
+     */
+    public void setRecipeCategory(RecipeCategory recipeCategory) {
+        this.recipeCategory = recipeCategory;
+    }
+
     public void reloadOwner() {
         setOwner(
             Loader.instance()
@@ -788,7 +806,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         GT_Recipe_WithAlt(ItemStack[] mInputs, ItemStack[] mOutputs, FluidStack[] mFluidInputs,
             FluidStack[] mFluidOutputs, int[] mChances, Object mSpecialItems, int mDuration, int mEUt,
             int mSpecialValue, boolean mEnabled, boolean mHidden, boolean mFakeRecipe, boolean mCanBeBuffered,
-            boolean mNeedsEmptyOutput, boolean nbtSensitive, String[] neiDesc, ItemStack[][] mOreDictAlt) {
+            boolean mNeedsEmptyOutput, boolean nbtSensitive, String[] neiDesc, RecipeCategory recipeCategory,
+            ItemStack[][] mOreDictAlt) {
             super(
                 mInputs,
                 mOutputs,
@@ -805,7 +824,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 mCanBeBuffered,
                 mNeedsEmptyOutput,
                 nbtSensitive,
-                neiDesc);
+                neiDesc,
+                recipeCategory);
             this.mOreDictAlt = mOreDictAlt;
         }
 

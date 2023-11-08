@@ -25,8 +25,8 @@ public class FuelBackend extends RecipeMapBackend {
     }
 
     @Override
-    public GT_Recipe doAdd(GT_Recipe recipe) {
-        super.doAdd(recipe);
+    public GT_Recipe compileRecipe(GT_Recipe recipe) {
+        super.compileRecipe(recipe);
         if (recipe.mInputs != null && GT_Utility.getNonnullElementCount(recipe.mInputs) == 1
             && (recipe.mFluidInputs == null || GT_Utility.getNonnullElementCount(recipe.mFluidInputs) == 0)) {
             FluidStack tFluid = GT_Utility.getFluidForFilledItem(recipe.mInputs[0], true);

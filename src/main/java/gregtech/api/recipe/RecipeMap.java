@@ -3,7 +3,6 @@ package gregtech.api.recipe;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -56,6 +55,8 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
         this.unlocalizedName = unlocalizedName;
         this.backend = backend;
         this.frontend = frontend;
+        backend.setDefaultRecipeCategory(
+            new RecipeCategory(unlocalizedName, this, frontend.neiProperties.handlerInfoCreator));
         if (ALL_RECIPE_MAPS.containsKey(unlocalizedName)) {
             throw new IllegalArgumentException(
                 "Cannot register recipemap with duplicated unlocalized name: " + unlocalizedName);
@@ -74,7 +75,7 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
     /**
      * @return All the recipes belonging to this recipemap.
      */
-    public Set<GT_Recipe> getAllRecipes() {
+    public Collection<GT_Recipe> getAllRecipes() {
         return backend.getAllRecipes();
     }
 
@@ -161,7 +162,7 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
         if (aRecipe.mFluidInputs.length < backend.properties.minFluidInputs
             && aRecipe.mInputs.length < backend.properties.minItemInputs) return null;
         if (aCheckForCollisions && backend.checkCollision(aRecipe)) return null;
-        return backend.doAdd(aRecipe);
+        return backend.compileRecipe(aRecipe);
     }
 
     /**
@@ -270,11 +271,11 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
     @Nonnull
     @Override
     public Collection<GT_Recipe> doAdd(GT_RecipeBuilder builder) {
-        return backend.doAdd(builder);
+        return backend.doAdd(builder, this);
     }
 
     public GT_Recipe add(GT_Recipe aRecipe) {
-        return backend.doAdd(aRecipe);
+        return backend.compileRecipe(aRecipe);
     }
 
     // endregion
