@@ -43,12 +43,19 @@ final public class ModernMaterialFluid extends Fluid {
 
     @Override
     public IIcon getStillIcon() {
+        if (fluidEnum == null) return stillIcon; // Custom fluid textures.
         return fluidEnum.stillIcon;
     }
 
     @Override
     public IIcon getFlowingIcon() {
+        if (fluidEnum == null) return flowingIcon; // Custom fluid textures.
         return fluidEnum.flowingIcon;
+    }
+
+    @Override
+    public String toString() {
+        return localisedName;
     }
 
     public static class Builder {

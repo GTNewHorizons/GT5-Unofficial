@@ -6,6 +6,7 @@ import java.io.File;
 import java.nio.file.Paths;
 import java.util.*;
 
+import gregtech.api.ModernMaterials.Fluids.ModernMaterialFluid;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -42,39 +43,42 @@ public class ModernMaterialsTextureRegister {
 
     private void fluidTextures(TextureMap map) {
         for (FluidEnum fluidEnum : FluidEnum.values()) {
+
             fluidEnum.stillIcon = map.registerIcon(
                 GregTech.getResourcePath() + "ModernMaterialsIcons/Fluids/still_"
                     + fluidEnum.name()
                         .toLowerCase());
-            fluidEnum.flowingIcon = map.registerIcon(
-                GregTech.getResourcePath() + "ModernMaterialsIcons/Fluids/flowing_"
-                    + fluidEnum.name()
-                        .toLowerCase());
+
+            fluidEnum.flowingIcon = map.registerIcon(                GregTech.getResourcePath() + "ModernMaterialsIcons/Fluids/flowing_"
+                + fluidEnum.name()
+                .toLowerCase());
+
         }
 
 
         // Custom fluid textures.
-        ModernMaterialUtilities.materialNameToMaterialMap.forEach((materialName, materialFluid) -> {
+        ModernMaterialUtilities.materialNameToMaterialMap.forEach((materialName, modernMaterial) -> {
 
-            for (Fluid fluid : materialFluid.existingFluids) {
+            for (ModernMaterialFluid fluid : modernMaterial.existingFluids) {
 
                 // Try retrieve still fluid texture.
                 if (fluid.getStillIcon() == null) {
 
-                    IIcon stillIcon = map.registerIcon(
-                        GregTech.getResourcePath() + "ModernMaterialsIcons/Fluids/CustomIcons/" + materialName + "/still_" + fluid.getName());
+                    final String path = GregTech.getResourcePath() + "ModernMaterialsIcons/Fluids/CustomIcons/" + materialName + "/still_" + fluid.getName();
+                    IIcon stillIcon = map.registerIcon(path);
 
-                    if (stillIcon == null) throw new RuntimeException("No texture for " + materialName + " still icon.");
+                    // Todo better way to detect this? Idk.
+                    //if (stillIcon.getMinU() == stillIcon.getMaxU()) throw new RuntimeException("No texture for " + materialName + " icon at " + path + ".png");
                     fluid.setStillIcon(stillIcon);
                 }
 
                 // Try retrieve flowing fluid texture.
                 if (fluid.getFlowingIcon() == null) {
 
-                    IIcon flowingIcon = map.registerIcon(
-                        GregTech.getResourcePath() + "ModernMaterialsIcons/Fluids/CustomIcons/" + materialName + "/flowing_" + fluid.getName());
+                    final String path = GregTech.getResourcePath() + "ModernMaterialsIcons/Fluids/CustomIcons/" + materialName + "/flowing_" + fluid.getName();
+                    IIcon flowingIcon = map.registerIcon(path);
 
-                    if (flowingIcon == null) throw new RuntimeException("No texture for " + materialName + " flowing icon.");
+                    //if (flowingIcon.getMinU() == flowingIcon.getMaxU())  throw new RuntimeException("No texture for " + materialName + " icon at " + path + ".png");
                     fluid.setFlowingIcon(flowingIcon);
                 }
 
