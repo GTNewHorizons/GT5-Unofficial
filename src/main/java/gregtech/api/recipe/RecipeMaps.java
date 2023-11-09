@@ -591,7 +591,8 @@ public final class RecipeMaps {
         .maxIO(3, 3, 0, 0)
         .minInputs(1, 0)
         .recipeEmitter(builder -> {
-            Optional<GT_Recipe> rr = builder.validateInputCount(1, 2)
+            Optional<GT_Recipe> rr = builder.eut(0)
+                .validateInputCount(1, 2)
                 .validateOutputCount(1, 2)
                 .validateNoInputFluid()
                 .validateNoOutputFluid()

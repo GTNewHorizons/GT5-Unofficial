@@ -88,7 +88,6 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                                     .itemInputs(GT_Utility.copyAmount(2, aStack))
                                     .itemOutputs(aMaterial.mDirectSmelting.getIngots(outputAmount))
                                     .duration(2 * MINUTES)
-                                    .eut(0)
                                     .metadata(ADDITIVE_AMOUNT, 2)
                                     .addTo(primitiveBlastRecipes);
                             } else if (aMaterial == Materials.Chalcopyrite) {
@@ -98,7 +97,6 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                                         aMaterial.mDirectSmelting.getIngots(outputAmount),
                                         Materials.Ferrosilite.getDustSmall(2 * outputAmount))
                                     .duration(2 * MINUTES)
-                                    .eut(0)
                                     .metadata(ADDITIVE_AMOUNT, 2)
                                     .addTo(primitiveBlastRecipes);
                                 GT_Values.RA.stdBuilder()
@@ -107,7 +105,6 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                                         aMaterial.mDirectSmelting.getIngots(outputAmount),
                                         Materials.Ferrosilite.getDustSmall(7 * outputAmount))
                                     .duration(2 * MINUTES)
-                                    .eut(0)
                                     .metadata(ADDITIVE_AMOUNT, 2)
                                     .addTo(primitiveBlastRecipes);
                                 GT_Values.RA.stdBuilder()
@@ -116,7 +113,6 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                                         aMaterial.mDirectSmelting.getIngots(outputAmount),
                                         Materials.Ferrosilite.getDustSmall(outputAmount))
                                     .duration(2 * MINUTES)
-                                    .eut(0)
                                     .metadata(ADDITIVE_AMOUNT, 2)
                                     .addTo(primitiveBlastRecipes);
                                 GT_Values.RA.stdBuilder()
@@ -125,7 +121,6 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                                         aMaterial.mDirectSmelting.getIngots(outputAmount),
                                         Materials.Ferrosilite.getDustSmall(outputAmount))
                                     .duration(2 * MINUTES)
-                                    .eut(0)
                                     .metadata(ADDITIVE_AMOUNT, 2)
                                     .addTo(primitiveBlastRecipes);
                                 GT_Values.RA.stdBuilder()
@@ -134,7 +129,6 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                                         aMaterial.mDirectSmelting.getIngots(outputAmount),
                                         Materials.Ferrosilite.getDustSmall(outputAmount))
                                     .duration(2 * MINUTES)
-                                    .eut(0)
                                     .metadata(ADDITIVE_AMOUNT, 2)
                                     .addTo(primitiveBlastRecipes);
                                 GT_Values.RA.stdBuilder()
@@ -143,7 +137,6 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                                         aMaterial.mDirectSmelting.getIngots(outputAmount),
                                         Materials.Ferrosilite.getDustSmall(outputAmount))
                                     .duration(2 * MINUTES)
-                                    .eut(0)
                                     .metadata(ADDITIVE_AMOUNT, 2)
                                     .addTo(primitiveBlastRecipes);
                             } else if (aMaterial == Materials.Tetrahedrite) {
@@ -153,7 +146,6 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                                         aMaterial.mDirectSmelting.getIngots(outputAmount),
                                         Materials.Antimony.getNuggets(3 * outputAmount))
                                     .duration(2 * MINUTES)
-                                    .eut(0)
                                     .metadata(ADDITIVE_AMOUNT, 2)
                                     .addTo(primitiveBlastRecipes);
                             } else if (aMaterial == Materials.Galena) {
@@ -163,7 +155,6 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                                         aMaterial.mDirectSmelting.getIngots(outputAmount),
                                         Materials.Silver.getNuggets(3 * outputAmount))
                                     .duration(2 * MINUTES)
-                                    .eut(0)
                                     .metadata(ADDITIVE_AMOUNT, 2)
                                     .addTo(primitiveBlastRecipes);
                             }

@@ -617,7 +617,6 @@ public class BlastFurnaceRecipes implements Runnable {
             .itemInputs(Materials.Iron.getIngots(1))
             .itemOutputs(Materials.Steel.getIngots(1))
             .duration(6 * MINUTES)
-            .eut(0)
             .metadata(ADDITIVE_AMOUNT, 4)
             .addTo(primitiveBlastRecipes);
 
@@ -625,7 +624,6 @@ public class BlastFurnaceRecipes implements Runnable {
             .itemInputs(Materials.Iron.getDust(1))
             .itemOutputs(Materials.Steel.getIngots(1))
             .duration(6 * MINUTES)
-            .eut(0)
             .metadata(ADDITIVE_AMOUNT, 4)
             .addTo(primitiveBlastRecipes);
 
@@ -633,7 +631,6 @@ public class BlastFurnaceRecipes implements Runnable {
             .itemInputs(Materials.Iron.getBlocks(1))
             .itemOutputs(Materials.Steel.getIngots(9))
             .duration(54 * MINUTES)
-            .eut(0)
             .metadata(ADDITIVE_AMOUNT, 36)
             .addTo(primitiveBlastRecipes);
 
@@ -641,7 +638,6 @@ public class BlastFurnaceRecipes implements Runnable {
             .itemInputs(Materials.Steel.getDust(1))
             .itemOutputs(Materials.Steel.getIngots(1))
             .duration(6 * MINUTES)
-            .eut(0)
             .metadata(ADDITIVE_AMOUNT, 2)
             .addTo(primitiveBlastRecipes);
     }
