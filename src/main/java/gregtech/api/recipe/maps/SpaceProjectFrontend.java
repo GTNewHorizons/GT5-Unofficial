@@ -112,19 +112,18 @@ public class SpaceProjectFrontend extends RecipeMapFrontend {
     public void addProgressBar(ModularWindow.Builder builder, Supplier<Float> progressSupplier, Pos2d windowOffset) {
         int bar1Width = 17;
         int bar2Width = 18;
+        List<Supplier<Float>> splitProgress = splitProgress(progressSupplier, bar1Width, bar2Width);
         builder.widget(
             new ProgressBar().setTexture(GT_UITextures.PROGRESSBAR_ASSEMBLY_LINE_1, 17)
                 .setDirection(ProgressBar.Direction.RIGHT)
-                .setProgress(() -> progressSupplier.get() * ((float) (bar1Width + bar2Width) / bar1Width))
+                .setProgress(splitProgress.get(0))
                 .setSynced(false, false)
                 .setPos(new Pos2d(70, 28).add(windowOffset))
                 .setSize(bar1Width, 72));
         builder.widget(
             new ProgressBar().setTexture(GT_UITextures.PROGRESSBAR_ASSEMBLY_LINE_2, 18)
                 .setDirection(ProgressBar.Direction.RIGHT)
-                .setProgress(
-                    () -> (progressSupplier.get() - ((float) bar1Width / (bar1Width + bar2Width)))
-                        * ((float) (bar1Width + bar2Width) / bar2Width))
+                .setProgress(splitProgress.get(1))
                 .setSynced(false, false)
                 .setPos(new Pos2d(106, 28).add(windowOffset))
                 .setSize(bar2Width, 72));

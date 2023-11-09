@@ -38,6 +38,7 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
 /**
  * Responsible for recipe addition / search for recipemap.
  */
+@SuppressWarnings("unused")
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class RecipeMapBackend {
@@ -84,7 +85,7 @@ public class RecipeMapBackend {
 
     /**
      * @return All the recipes belonging to this backend. Returned collection is immutable,
-     *         use {@link #compileRecipe} to add / {@link #removeAll} to remove.
+     *         use {@link #compileRecipe} to add / {@link #removeRecipes} to remove.
      */
     public Collection<GT_Recipe> getAllRecipes() {
         return Collections.unmodifiableCollection(allRecipes());
@@ -110,6 +111,10 @@ public class RecipeMapBackend {
     public Collection<GT_Recipe> getRecipesByCategory(RecipeCategory recipeCategory) {
         return Collections
             .unmodifiableCollection(recipesByCategory.getOrDefault(recipeCategory, Collections.emptyList()));
+    }
+
+    public RecipeCategory getDefaultRecipeCategory() {
+        return defaultRecipeCategory;
     }
 
     void setDefaultRecipeCategory(RecipeCategory defaultRecipeCategory) {
@@ -234,17 +239,23 @@ public class RecipeMapBackend {
     /**
      * Removes supplied recipes from recipe list. Do not use unless absolute necessity!
      */
-    @SuppressWarnings("unused")
-    public void removeAll(Collection<? extends GT_Recipe> recipesToRemove) {
+    public void removeRecipes(Collection<? extends GT_Recipe> recipesToRemove) {
         for (Collection<GT_Recipe> recipes : recipesByCategory.values()) {
             recipes.removeAll(recipesToRemove);
         }
     }
 
+    /**
+     * If you want to shoot your foot...
+     */
+    public void clearRecipes() {
+        recipesByCategory.clear();
+    }
+
     // endregion
 
     /**
-     * Re-unificates all the items present in recipes.
+     * Re-unificates all the items present in recipes. Also reflects recipe removals.
      */
     public void reInit() {
         itemIndex.clear();

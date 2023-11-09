@@ -4,8 +4,10 @@ import static gregtech.api.util.GT_Utility.isStringInvalid;
 import static gregtech.api.util.GT_Utility.trans;
 import static net.minecraft.util.EnumChatFormatting.GRAY;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
+import java.util.stream.IntStream;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -388,6 +390,23 @@ public class RecipeMapFrontend {
 
     public void updateNEITextColorOverride() {
         neiTextColorOverride = colorOverride.getTextColorOrDefault("nei", -1);
+    }
+
+    public static List<Supplier<Float>> splitProgress(Supplier<Float> progress, int... progressbarLengthArray) {
+        float lengthSum = IntStream.of(progressbarLengthArray)
+            .sum();
+        List<Supplier<Float>> ret = new ArrayList<>();
+        float currentLengthSum = 0;
+        for (int progressbarLength : progressbarLengthArray) {
+            float speed = lengthSum / progressbarLength;
+            float offset = currentLengthSum / lengthSum;
+            ret.add(() -> {
+                float current = progress.get();
+                return (current - offset) * speed;
+            });
+            currentLengthSum += progressbarLength;
+        }
+        return ret;
     }
 
     @FunctionalInterface
