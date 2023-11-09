@@ -66,6 +66,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
 
@@ -1103,11 +1104,11 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     public CheckRecipeResult processRecipe(EyeOfHarmonyRecipe recipeObject) {
 
         // Get circuit damage, clamp it and then use it later for overclocking.
-        ItemStack circuit = mInputBusses.get(0).getStackInSlot(0);
-        if (circuit != null) {
-            currentCircuitMultiplier = (long) clamp(circuit.getItemDamage(), 0, 24);
-        } else {
-            currentCircuitMultiplier = 0;
+        for (ItemStack itemStack : mInputBusses.get(0).getRealInventory()) {
+            if (GT_Utility.isAnyIntegratedCircuit(itemStack)) {
+                currentCircuitMultiplier = (long) clamp(itemStack.getItemDamage(), 0, 24);
+                break;
+            }
         }
 
         // Debug mode, overwrites the required fluids to initiate the recipe to 100L of each.
