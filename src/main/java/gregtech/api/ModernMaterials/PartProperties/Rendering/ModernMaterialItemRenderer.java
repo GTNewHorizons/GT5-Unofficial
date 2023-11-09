@@ -1,24 +1,22 @@
 package gregtech.api.ModernMaterials.PartProperties.Rendering;
 
-import static gregtech.api.ModernMaterials.PartProperties.ModernMaterialUtilities.ModernMaterialUtilities.getMaterialFromItemStack;
-import static org.lwjgl.opengl.GL11.GL_CURRENT_BIT;
-
-import java.awt.*;
-
+import gregtech.api.ModernMaterials.ModernMaterial;
+import gregtech.api.ModernMaterials.PartsClasses.CustomPartInfo;
+import gregtech.api.ModernMaterials.PartsClasses.ItemsEnum;
+import gregtech.api.ModernMaterials.PartsClasses.MaterialPart;
+import gregtech.common.render.GT_RenderUtil;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
-
 import org.lwjgl.opengl.GL11;
 
-import gregtech.api.ModernMaterials.ModernMaterial;
-import gregtech.api.ModernMaterials.PartsClasses.CustomPartInfo;
-import gregtech.api.ModernMaterials.PartsClasses.ItemsEnum;
-import gregtech.api.ModernMaterials.PartsClasses.MaterialPart;
-import gregtech.common.render.GT_RenderUtil;
+import java.awt.Color;
+
+import static gregtech.api.ModernMaterials.ModernMaterialUtilities.getMaterialFromItemStack;
+import static org.lwjgl.opengl.GL11.GL_CURRENT_BIT;
 
 public class ModernMaterialItemRenderer implements IItemRenderer {
 

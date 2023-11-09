@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 import gregtech.api.ModernMaterials.PartRecipeGenerators.BaseRecipeGenerator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.item.Item;
 import net.minecraftforge.client.IItemRenderer;
 
 import org.jetbrains.annotations.NotNull;
@@ -189,7 +190,6 @@ public final class ModernMaterial {
             @NotNull final IItemRenderer itemRenderer,
             @NotNull final TileEntitySpecialRenderer tileEntitySpecialRenderer) {
             blocksEnum.addSpecialBlockRenderAssociatedMaterial(materialToBuild);
-            blocksEnum.setAssociatedItem(blocksEnum.getItem());
             blocksEnum.setItemRenderer(materialToBuild.materialID, itemRenderer);
             blocksEnum.setBlockRenderer(materialToBuild.materialID, tileEntitySpecialRenderer);
             return this;

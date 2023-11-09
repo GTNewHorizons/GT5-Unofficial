@@ -1,5 +1,6 @@
 package gregtech.api.ModernMaterials;
 
+import static cpw.mods.fml.common.registry.GameRegistry.findItemStack;
 import static gregtech.api.ModernMaterials.Blocks.Registration.SimpleBlockRegistration.registerSimpleBlock;
 import static gregtech.api.ModernMaterials.Blocks.Registration.SpecialBlockRegistration.registerTESRBlock;
 
@@ -20,6 +21,7 @@ import gregtech.api.ModernMaterials.PartRecipeGenerators.ModernMaterialsPlateRec
 import gregtech.api.ModernMaterials.PartsClasses.IEnumPart;
 import gregtech.api.ModernMaterials.PartsClasses.ItemsEnum;
 import gregtech.api.ModernMaterials.PartsClasses.MaterialPart;
+import org.jetbrains.annotations.NotNull;
 
 public class ModernMaterialUtilities {
 
@@ -53,11 +55,13 @@ public class ModernMaterialUtilities {
             // Registers the item with the game, only available in preInit.
             GameRegistry.registerItem(materialPart, part.partName);
 
-            // Store the Item so these parts can be retrieved later for recipe generation etc.
-            part.setAssociatedItem(materialPart);
-
             // Registers the renderer which allows for part colouring.
             MinecraftForgeClient.registerItemRenderer(materialPart, new ModernMaterialItemRenderer());
+
+            // Assign for recipe generation later.
+            for (ModernMaterial material : part.getAssociatedMaterials()) {
+                part.setItemStack(material, new ItemStack(materialPart, 1, material.getMaterialID()));
+            }
         }
 
         // Register all material parts.
@@ -84,16 +88,24 @@ public class ModernMaterialUtilities {
         }
     }
 
-    private static void registerAllMaterialPartRecipes(ModernMaterial material) {
+    private static void registerAllMaterialPartRecipes(@NotNull ModernMaterial material) {
         new ModernMaterialsPlateRecipeGenerator().run(material);
     }
 
-    public static ItemStack getPart(final ModernMaterial material, final IEnumPart part, final int stackSize) {
-        return new ItemStack(part.getItem(), stackSize, material.getMaterialID());
-    }
+/*    public static ItemStack getPart(@NotNull final ModernMaterial material, @NotNull final IEnumPart part, final int stackSize) {
+        if (part instanceof ItemsEnum) return new ItemStack(part.getItem(), stackSize, material.getMaterialID());
 
-    public static ItemStack getPart(final String materialName, final IEnumPart part, final int stackSize) {
-        return getPart(getMaterialFromName(materialName), part, stackSize);
+        int materialID = material.getMaterialID();
+
+        ItemStack itemStack = findItemStack("gregtech", part + "." + materialID / 16, stackSize);
+        itemStack.setItemDamage(materialID % 16);
+
+        return itemStack;
+    }*/
+
+    // Item damage values are material IDs.
+    public static ModernMaterial getMaterialFromItemStack(ItemStack itemStack) { // Todo rework for blocks
+        return materialIDToMaterial.get(itemStack.getItemDamage());
     }
 
     public static ModernMaterial getMaterialFromName(final String materialName) {

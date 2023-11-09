@@ -34,6 +34,7 @@ public class MaterialPart extends Item {
     public void getSubItems(Item item, CreativeTabs tabs, List itemList) {
         for (ModernMaterial material : part.getAssociatedMaterials()) {
             ItemStack itemStack = new ItemStack(item, 1, material.getMaterialID());
+
             itemList.add(itemStack);
         }
     }

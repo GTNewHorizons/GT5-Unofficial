@@ -1,10 +1,13 @@
 package gregtech.api.ModernMaterials.PartsClasses;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
 import net.minecraft.item.Item;
 
 import gregtech.api.ModernMaterials.ModernMaterial;
+import net.minecraft.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 public enum ItemsEnum implements IEnumPart {
 
@@ -93,6 +96,7 @@ public enum ItemsEnum implements IEnumPart {
     public double percentageOfIngot;
 
     private final HashSet<ModernMaterial> associatedMaterials = new HashSet<>();
+    private final HashMap<ModernMaterial, ItemStack> itemHashMap = new HashMap<>();
 
     ItemsEnum(final String partName, double percentageOfIngot) {
         this.partName = partName;
@@ -103,15 +107,21 @@ public enum ItemsEnum implements IEnumPart {
         this.partName = partName;
     }
 
+
     @Override
-    public void setAssociatedItem(final Item item) {
-        this.item = item;
+    public @NotNull ItemStack getPart(@NotNull ModernMaterial material, int stackSize) {
+
+        final ItemStack itemStack = itemHashMap.get(material);
+
+        return new ItemStack(itemStack.getItem(), stackSize, itemStack.getItemDamage());
     }
 
     @Override
-    public Item getItem() {
-        return item;
+    public void setItemStack(@NotNull ModernMaterial material, ItemStack itemStack) {
+        itemHashMap.put(material, itemStack);
     }
+
+
 
     @Override
     public HashSet<ModernMaterial> getAssociatedMaterials() {

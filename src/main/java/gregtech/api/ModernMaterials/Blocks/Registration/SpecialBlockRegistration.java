@@ -6,7 +6,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import gregtech.api.ModernMaterials.ModernMaterialUtilities;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.MinecraftForgeClient;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -51,6 +53,10 @@ public class SpecialBlockRegistration {
                     .newInstance(offset, IDs, blockType);
 
                 GameRegistry.registerBlock(block, BaseMaterialItemBlock.class, "Special." + blockType + "." + offset);
+
+                for (int ID: IDs) {
+                    blockType.setItemStack(ModernMaterialUtilities.getMaterialFromID(ID), new ItemStack(block, 1, ID % 16));
+                }
 
             } catch (NoSuchMethodException | InstantiationException | IllegalAccessException
                 | InvocationTargetException e) {

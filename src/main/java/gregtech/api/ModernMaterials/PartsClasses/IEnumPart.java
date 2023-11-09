@@ -1,10 +1,13 @@
 package gregtech.api.ModernMaterials.PartsClasses;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
 import net.minecraft.item.Item;
 
 import gregtech.api.ModernMaterials.ModernMaterial;
+import net.minecraft.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 public interface IEnumPart {
 
@@ -12,8 +15,10 @@ public interface IEnumPart {
 
     void addAssociatedMaterial(final ModernMaterial modernMaterial);
 
-    void setAssociatedItem(final Item item);
 
-    Item getItem();
+
+    @NotNull ItemStack getPart(@NotNull ModernMaterial material, int stackSize);
+
+    void setItemStack(@NotNull ModernMaterial material, ItemStack itemStack);
 
 }

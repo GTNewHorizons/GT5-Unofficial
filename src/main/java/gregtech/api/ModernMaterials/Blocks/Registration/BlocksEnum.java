@@ -6,6 +6,7 @@ import java.util.HashSet;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.client.IItemRenderer;
 
@@ -40,11 +41,11 @@ public enum BlocksEnum implements IEnumPart {
     private final HashSet<ModernMaterial> associatedMaterials = new HashSet<>();
     private final HashSet<ModernMaterial> specialBlockRenderAssociatedMaterials = new HashSet<>();
     private HashSet<ModernMaterial> simpleBlockRenderAssociatedMaterials;
+    private final HashMap<ModernMaterial, ItemStack> itemHashMap = new HashMap<>();
 
     private final HashMap<Integer, IItemRenderer> itemRendererHashMap = new HashMap<>();
     private final HashMap<Integer, TileEntitySpecialRenderer> tileEntitySpecialRendererHashMap = new HashMap<>();
 
-    private Item item;
 
     /**
      * Constructs an instance of the enum with the given parameters.
@@ -67,21 +68,24 @@ public enum BlocksEnum implements IEnumPart {
      * @return The localized name.
      */
     public String getLocalisedName(final ModernMaterial material) {
-        return material == null ? "Error: NULL" : unlocalizedName.replace("%", material.getMaterialName());
+        return unlocalizedName.replace("%", material.getMaterialName());
+    }
+
+    @Override
+    public @NotNull ItemStack getPart(@NotNull ModernMaterial material, int stackSize) {
+
+        final ItemStack itemStack = itemHashMap.get(material);
+
+        return new ItemStack(itemStack.getItem(), stackSize, itemStack.getItemDamage());
+    }
+
+    @Override
+    public void setItemStack(@NotNull ModernMaterial material, ItemStack itemStack) {
+        itemHashMap.put(material, itemStack);
     }
 
     public Class<? extends BaseMaterialBlock> getBlockClass() {
         return blockClass;
-    }
-
-    @Override
-    public void setAssociatedItem(final Item item) {
-        this.item = item;
-    }
-
-    @Override
-    public Item getItem() {
-        return item;
     }
 
     @Override
@@ -107,20 +111,12 @@ public enum BlocksEnum implements IEnumPart {
         associatedMaterials.add(modernMaterial);
     }
 
-    public void addSimpleBlockRenderAssociatedMaterial(final ModernMaterial modernMaterial) {
-        simpleBlockRenderAssociatedMaterials.add(modernMaterial);
-    }
-
     public void addSpecialBlockRenderAssociatedMaterial(final ModernMaterial modernMaterial) {
         specialBlockRenderAssociatedMaterials.add(modernMaterial);
     }
 
     public IItemRenderer getItemRenderer(final int materialID) {
         return itemRendererHashMap.get(materialID);
-    }
-
-    public TileEntitySpecialRenderer getBlockRenderer(final int materialID) {
-        return tileEntitySpecialRendererHashMap.get(materialID);
     }
 
     public void setBlockRenderer(int materialID, final TileEntitySpecialRenderer tileEntitySpecialRenderer) {
