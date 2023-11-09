@@ -155,36 +155,26 @@ public class GT_FuelLoader implements Runnable {
             .itemInputs(GT_ModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 4))
             .metadata(FUEL_VALUE, 4)
             .metadata(FUEL_TYPE, 5)
-            .duration(0)
-            .eut(0)
             .addTo(GT_RecipeConstants.Fuel);
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.experience_bottle, 1))
             .metadata(FUEL_VALUE, 10)
             .metadata(FUEL_TYPE, 5)
-            .duration(0)
-            .eut(0)
             .addTo(GT_RecipeConstants.Fuel);
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.ghast_tear, 1))
             .metadata(FUEL_VALUE, 50)
             .metadata(FUEL_TYPE, 5)
-            .duration(0)
-            .eut(0)
             .addTo(GT_RecipeConstants.Fuel);
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.beacon, 1))
             .metadata(FUEL_VALUE, Materials.NetherStar.mFuelPower * 2)
             .metadata(FUEL_TYPE, Materials.NetherStar.mFuelType)
-            .duration(0)
-            .eut(0)
             .addTo(GT_RecipeConstants.Fuel);
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_ModHandler.getModItem(EnderIO.ID, "bucketRocket_fuel", 1))
             .metadata(FUEL_VALUE, 250)
             .metadata(FUEL_TYPE, 1)
-            .duration(0)
-            .eut(0)
             .addTo(GT_RecipeConstants.Fuel);
     }
 }

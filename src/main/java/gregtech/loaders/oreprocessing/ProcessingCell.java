@@ -51,8 +51,6 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                         }
                         recipeBuilder.metadata(FUEL_VALUE, aMaterial.mFuelPower)
                             .metadata(FUEL_TYPE, aMaterial.mFuelType)
-                            .duration(0)
-                            .eut(0)
                             .addTo(GT_RecipeConstants.Fuel);
                     }
                     if (!((aMaterial.mMaterialList.size() > 0) && ((aMaterial.mExtraData & 0x3) != 0))) {
@@ -194,14 +192,10 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                         case "Tin":
                             recipeBuilder.metadata(FUEL_VALUE, 150_000)
                                 .metadata(FUEL_TYPE, 4)
-                                .duration(0)
-                                .eut(0)
                                 .addTo(GT_RecipeConstants.Fuel);
                         default:
                             recipeBuilder.metadata(FUEL_VALUE, (int) Math.max(1024L, 1024L * aMaterial.getMass()))
                                 .metadata(FUEL_TYPE, 4)
-                                .duration(0)
-                                .eut(0)
                                 .addTo(GT_RecipeConstants.Fuel);
                     }
                     if (GT_OreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L) != null) {

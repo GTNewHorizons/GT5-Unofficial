@@ -1,5 +1,6 @@
 package gregtech.api.recipe.maps;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,9 +9,11 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_RecipeBuilder;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 
@@ -22,6 +25,17 @@ public class FuelBackend extends RecipeMapBackend {
 
     public FuelBackend(RecipeMapBackendPropertiesBuilder propertiesBuilder) {
         super(propertiesBuilder.disableOptimize());
+    }
+
+    @Override
+    protected Collection<GT_Recipe> doAdd(GT_RecipeBuilder builder, RecipeMap<?> recipeMap) {
+        if (builder.getDuration() == -1) {
+            builder.duration(0);
+        }
+        if (builder.getEUt() == -1) {
+            builder.eut(0);
+        }
+        return super.doAdd(builder, recipeMap);
     }
 
     @Override

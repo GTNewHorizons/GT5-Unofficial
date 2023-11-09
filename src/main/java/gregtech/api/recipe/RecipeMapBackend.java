@@ -158,7 +158,7 @@ public class RecipeMapBackend {
     /**
      * Builds recipe from supplied recipe builder and adds it.
      */
-    Collection<GT_Recipe> doAdd(GT_RecipeBuilder builder, RecipeMap<?> recipeMap) {
+    protected Collection<GT_Recipe> doAdd(GT_RecipeBuilder builder, RecipeMap<?> recipeMap) {
         Iterable<? extends GT_Recipe> recipes = properties.recipeEmitter.apply(builder);
         Collection<GT_Recipe> ret = new ArrayList<>();
         for (GT_Recipe recipe : recipes) {

@@ -58,8 +58,6 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         .itemInputs(GT_Utility.copyAmount(1L, aStack))
                         .metadata(FUEL_VALUE, aMaterial.mFuelPower)
                         .metadata(FUEL_TYPE, aMaterial.mFuelType)
-                        .duration(0)
-                        .eut(0)
                         .addTo(GT_RecipeConstants.Fuel);
                 }
                 if ((GT_Utility.getFluidForFilledItem(GT_OreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L), true)

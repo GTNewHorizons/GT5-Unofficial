@@ -63,8 +63,6 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         .itemInputs(GT_Utility.copyAmount(1L, aStack))
                         .metadata(FUEL_VALUE, aMaterial.mFuelPower * 2)
                         .metadata(FUEL_TYPE, aMaterial.mFuelType)
-                        .duration(0)
-                        .eut(0)
                         .addTo(GT_RecipeConstants.Fuel);
                 }
 
@@ -313,8 +311,6 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         .itemInputs(GT_Utility.copyAmount(1L, aStack))
                         .metadata(FUEL_VALUE, aMaterial.mFuelPower / 2)
                         .metadata(FUEL_TYPE, aMaterial.mFuelType)
-                        .duration(0)
-                        .eut(0)
                         .addTo(GT_RecipeConstants.Fuel);
                 }
 
@@ -409,8 +405,6 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         .itemInputs(GT_Utility.copyAmount(1L, aStack))
                         .metadata(FUEL_VALUE, aMaterial.mFuelPower * 8)
                         .metadata(FUEL_TYPE, aMaterial.mFuelType)
-                        .duration(0)
-                        .eut(0)
                         .addTo(GT_RecipeConstants.Fuel);
                 }
 
@@ -445,8 +439,6 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         .itemInputs(GT_Utility.copyAmount(1L, aStack))
                         .metadata(FUEL_VALUE, aMaterial.mFuelPower)
                         .metadata(FUEL_TYPE, aMaterial.mFuelType)
-                        .duration(0)
-                        .eut(0)
                         .addTo(GT_RecipeConstants.Fuel);
                 }
 
@@ -550,8 +542,6 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         .itemInputs(GT_Utility.copyAmount(1L, aStack))
                         .metadata(FUEL_VALUE, aMaterial.mFuelPower * 4)
                         .metadata(FUEL_TYPE, aMaterial.mFuelType)
-                        .duration(0)
-                        .eut(0)
                         .addTo(GT_RecipeConstants.Fuel);
                 }
 

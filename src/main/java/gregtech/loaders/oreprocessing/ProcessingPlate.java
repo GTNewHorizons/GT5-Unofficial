@@ -105,8 +105,6 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .itemInputs(GT_Utility.copyAmount(1L, aStack))
                 .metadata(FUEL_VALUE, aMaterial.mFuelPower)
                 .metadata(FUEL_TYPE, aMaterial.mFuelType)
-                .duration(0)
-                .eut(0)
                 .addTo(GT_RecipeConstants.Fuel);
         }
 

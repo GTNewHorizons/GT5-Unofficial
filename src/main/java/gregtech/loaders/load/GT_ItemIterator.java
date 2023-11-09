@@ -238,8 +238,6 @@ public class GT_ItemIterator implements Runnable {
                         .itemInputs(new ItemStack(tItem, 1, 0))
                         .metadata(FUEL_VALUE, 2048)
                         .metadata(FUEL_TYPE, 5)
-                        .duration(0)
-                        .eut(0)
                         .addTo(GT_RecipeConstants.Fuel);
 
                     // twilight forest
@@ -260,8 +258,6 @@ public class GT_ItemIterator implements Runnable {
                             .itemOutputs(new ItemStack(Items.stick, 4))
                             .metadata(FUEL_VALUE, 32)
                             .metadata(FUEL_TYPE, 5)
-                            .duration(0)
-                            .eut(0)
                             .addTo(GT_RecipeConstants.Fuel);
                     }
 

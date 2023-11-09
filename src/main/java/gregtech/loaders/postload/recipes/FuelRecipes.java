@@ -24,8 +24,6 @@ public class FuelRecipes implements Runnable {
             .itemInputs(GT_ModHandler.getIC2Item("biogasCell", 1L))
             .metadata(FUEL_VALUE, 40)
             .metadata(FUEL_TYPE, 1)
-            .duration(0)
-            .eut(0)
             .addTo(GT_RecipeConstants.Fuel);
 
         GT_Values.RA.stdBuilder()
@@ -33,128 +31,96 @@ public class FuelRecipes implements Runnable {
             .itemOutputs(new ItemStack(Items.apple, 1))
             .metadata(FUEL_VALUE, 6400)
             .metadata(FUEL_TYPE, 5)
-            .duration(0)
-            .eut(0)
             .addTo(GT_RecipeConstants.Fuel);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(getModItem(Thaumcraft.ID, "ItemShard", 1L, 6))
             .metadata(FUEL_VALUE, 720)
             .metadata(FUEL_TYPE, 5)
-            .duration(0)
-            .eut(0)
             .addTo(GT_RecipeConstants.Fuel);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(getModItem(ForbiddenMagic.ID, "GluttonyShard", 1L))
             .metadata(FUEL_VALUE, 720)
             .metadata(FUEL_TYPE, 5)
-            .duration(0)
-            .eut(0)
             .addTo(GT_RecipeConstants.Fuel);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(getModItem(ForbiddenMagic.ID, "FMResource", 1L, 3))
             .metadata(FUEL_VALUE, 720)
             .metadata(FUEL_TYPE, 5)
-            .duration(0)
-            .eut(0)
             .addTo(GT_RecipeConstants.Fuel);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(getModItem(ForbiddenMagic.ID, "NetherShard", 1L))
             .metadata(FUEL_VALUE, 720)
             .metadata(FUEL_TYPE, 5)
-            .duration(0)
-            .eut(0)
             .addTo(GT_RecipeConstants.Fuel);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(getModItem(ForbiddenMagic.ID, "NetherShard", 1L, 1))
             .metadata(FUEL_VALUE, 720)
             .metadata(FUEL_TYPE, 5)
-            .duration(0)
-            .eut(0)
             .addTo(GT_RecipeConstants.Fuel);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(getModItem(ForbiddenMagic.ID, "NetherShard", 1L, 2))
             .metadata(FUEL_VALUE, 720)
             .metadata(FUEL_TYPE, 5)
-            .duration(0)
-            .eut(0)
             .addTo(GT_RecipeConstants.Fuel);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(getModItem(ForbiddenMagic.ID, "NetherShard", 1L, 3))
             .metadata(FUEL_VALUE, 720)
             .metadata(FUEL_TYPE, 5)
-            .duration(0)
-            .eut(0)
             .addTo(GT_RecipeConstants.Fuel);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(getModItem(ForbiddenMagic.ID, "NetherShard", 1L, 4))
             .metadata(FUEL_VALUE, 720)
             .metadata(FUEL_TYPE, 5)
-            .duration(0)
-            .eut(0)
             .addTo(GT_RecipeConstants.Fuel);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(getModItem(ForbiddenMagic.ID, "NetherShard", 1L, 5))
             .metadata(FUEL_VALUE, 720)
             .metadata(FUEL_TYPE, 5)
-            .duration(0)
-            .eut(0)
             .addTo(GT_RecipeConstants.Fuel);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(getModItem(ForbiddenMagic.ID, "NetherShard", 1L, 6))
             .metadata(FUEL_VALUE, 720)
             .metadata(FUEL_TYPE, 5)
-            .duration(0)
-            .eut(0)
             .addTo(GT_RecipeConstants.Fuel);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(getModItem(TaintedMagic.ID, "ItemMaterial", 1L, 3))
             .metadata(FUEL_VALUE, 720)
             .metadata(FUEL_TYPE, 5)
-            .duration(0)
-            .eut(0)
             .addTo(GT_RecipeConstants.Fuel);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(getModItem(TaintedMagic.ID, "ItemMaterial", 1L, 4))
             .metadata(FUEL_VALUE, 720)
             .metadata(FUEL_TYPE, 5)
-            .duration(0)
-            .eut(0)
             .addTo(GT_RecipeConstants.Fuel);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(getModItem(TaintedMagic.ID, "ItemMaterial", 1L, 5))
             .metadata(FUEL_VALUE, 720)
             .metadata(FUEL_TYPE, 5)
-            .duration(0)
-            .eut(0)
             .addTo(GT_RecipeConstants.Fuel);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(getModItem(ThaumicTinkerer.ID, "kamiResource", 1L, 6))
             .metadata(FUEL_VALUE, 720)
             .metadata(FUEL_TYPE, 5)
-            .duration(0)
-            .eut(0)
             .addTo(GT_RecipeConstants.Fuel);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(getModItem(ThaumicTinkerer.ID, "kamiResource", 1L, 7))
             .metadata(FUEL_VALUE, 720)
             .metadata(FUEL_TYPE, 5)
-            .duration(0)
-            .eut(0)
             .addTo(GT_RecipeConstants.Fuel);
 
     }
