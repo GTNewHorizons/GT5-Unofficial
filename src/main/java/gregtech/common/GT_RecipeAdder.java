@@ -431,15 +431,17 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
             && aInput1.getItemDamage() >= 10)
             && !(aInput2 != null && aInput2.getItem() instanceof GT_IntegratedCircuit_Item
                 && aInput2.getItemDamage() >= 10)) {
-            GT_Values.RA.stdBuilder()
-                .itemInputs(aInput1, aInput2)
-                .itemOutputs(aOutput, aOutput2)
-                .fluidInputs(aFluidInput)
-                .fluidOutputs(aFluidOutput)
-                .duration(aDuration)
-                .eut(aEUtick)
-                .noOptimize()
-                .addTo(RecipeMaps.multiblockChemicalReactorRecipes);
+            RecipeMaps.multiblockChemicalReactorRecipes.addRecipe(
+                false,
+                new ItemStack[] { aInput1, aInput2 },
+                new ItemStack[] { aOutput, aOutput2 },
+                null,
+                null,
+                new FluidStack[] { aFluidInput },
+                new FluidStack[] { aFluidOutput },
+                aDuration,
+                aEUtick,
+                0);
         }
         return true;
     }
@@ -454,15 +456,8 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         if (aEUtick <= 0) {
             return false;
         }
-        GT_Values.RA.stdBuilder()
-            .itemInputs(aInputs)
-            .itemOutputs(aOutputs)
-            .fluidInputs(aFluidInputs)
-            .fluidOutputs(aFluidOutputs)
-            .duration(aDuration)
-            .eut(aEUtick)
-            .noOptimize()
-            .addTo(RecipeMaps.multiblockChemicalReactorRecipes);
+        RecipeMaps.multiblockChemicalReactorRecipes
+            .addRecipe(false, aInputs, aOutputs, null, null, aFluidInputs, aFluidOutputs, aDuration, aEUtick, 0);
         return true;
     }
 
