@@ -29,7 +29,7 @@ public class GT_RecipeBuilder {
 
     // debug mode expose problems. panic mode help you check nothing is wrong-ish without you actively monitoring
     private static final boolean DEBUG_MODE_NULL;
-    private static final boolean PANIC_MODE_NULL;
+    private static boolean PANIC_MODE_NULL;
     private static final boolean DEBUG_MODE_INVALID;
     private static final boolean PANIC_MODE_INVALID;
     private static final boolean DEBUG_MODE_COLLISION;
@@ -147,13 +147,13 @@ public class GT_RecipeBuilder {
         GT_Log.err.print("null detected in ");
         GT_Log.err.println(componentType);
         new NullPointerException().printStackTrace(GT_Log.err);
-        if (PANIC_MODE_NULL || GT_Mod.gregtechproxy.crashOnNullRecipeInput) {
+        if (PANIC_MODE_NULL) {
             throw new IllegalArgumentException("null in argument");
         }
     }
 
     private static boolean debugNull() {
-        return DEBUG_MODE_NULL || PANIC_MODE_NULL || GT_Mod.gregtechproxy.crashOnNullRecipeInput;
+        return DEBUG_MODE_NULL || PANIC_MODE_NULL;
     }
 
     private static void handleInvalidRecipe() {
@@ -180,6 +180,10 @@ public class GT_RecipeBuilder {
             // place a breakpoint here to catch all these issues
             new IllegalArgumentException().printStackTrace(GT_Log.err);
         }
+    }
+
+    public static void onConfigLoad() {
+        PANIC_MODE_NULL |= GT_Mod.gregtechproxy.crashOnNullRecipeInput;
     }
 
     // endregion
