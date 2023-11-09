@@ -1,6 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.recipe.RecipeMaps.blastRecipes;
+import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
@@ -149,7 +149,7 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
                         .duration(tSmeltInto.stackSize * 25 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
                         .metadata(COIL_HEAT, 1500)
-                        .addTo(blastRecipes);
+                        .addTo(blastFurnaceRecipes);
                     GT_Values.RA.stdBuilder()
                         .itemInputs(
                             aOreStack,
@@ -160,7 +160,7 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
                         .duration(tSmeltInto.stackSize * 25 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
                         .metadata(COIL_HEAT, 1500)
-                        .addTo(blastRecipes);
+                        .addTo(blastFurnaceRecipes);
                 }
             } else if (aMaterial.contains(SubTag.BLASTFURNACE_CALCITE_DOUBLE)) {
                 if (aMaterial.mAutoGenerateBlastFurnaceRecipes) {
@@ -174,7 +174,7 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
                         .duration(tSmeltInto.stackSize * 25 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
                         .metadata(COIL_HEAT, 1500)
-                        .addTo(blastRecipes);
+                        .addTo(blastFurnaceRecipes);
                     GT_Values.RA.stdBuilder()
                         .itemInputs(
                             aOreStack,
@@ -185,7 +185,7 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
                         .duration(tSmeltInto.stackSize * 25 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
                         .metadata(COIL_HEAT, 1500)
-                        .addTo(blastRecipes);
+                        .addTo(blastFurnaceRecipes);
                 }
             }
         }

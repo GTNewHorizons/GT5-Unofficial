@@ -569,7 +569,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         if ((aDuration = GregTech_API.sRecipeFile.get("blastfurnace", aInput1, aDuration)) <= 0) {
             return false;
         }
-        RecipeMaps.blastRecipes.addRecipe(
+        RecipeMaps.blastFurnaceRecipes.addRecipe(
             true,
             new ItemStack[] { aInput1, aInput2 },
             new ItemStack[] { aOutput1, aOutput2 },
@@ -593,7 +593,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         if ((aDuration = GregTech_API.sRecipeFile.get("blastfurnace", aInput1, aDuration)) <= 0) {
             return false;
         }
-        RecipeMaps.blastRecipes.addRecipe(
+        RecipeMaps.blastFurnaceRecipes.addRecipe(
             true,
             new ItemStack[] { aInput1, aInput2, aInput3, aInput4 },
             new ItemStack[] { aOutput1, aOutput2, aOutput3, aOutput4 },

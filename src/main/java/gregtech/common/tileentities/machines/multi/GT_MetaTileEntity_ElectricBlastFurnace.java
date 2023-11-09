@@ -178,7 +178,7 @@ public class GT_MetaTileEntity_ElectricBlastFurnace extends
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.blastRecipes;
+        return RecipeMaps.blastFurnaceRecipes;
     }
 
     @Override

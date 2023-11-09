@@ -543,7 +543,7 @@ public final class RecipeMaps {
     /**
      * Use {@link GT_RecipeConstants#COIL_HEAT} as heat level.
      */
-    public static final RecipeMap<RecipeMapBackend> blastRecipes = RecipeMapBuilder.of("gt.recipe.blastfurnace")
+    public static final RecipeMap<RecipeMapBackend> blastFurnaceRecipes = RecipeMapBuilder.of("gt.recipe.blastfurnace")
         .maxIO(6, 6, 1, 1)
         .minInputs(1, 0)
         .neiSpecialInfoFormatter(HeatingCoilSpecialValueFormatter.INSTANCE)
