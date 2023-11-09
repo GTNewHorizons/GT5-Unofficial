@@ -20,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.GT_Mod;
 import gregtech.api.interfaces.IGT_RecipeMap;
 import gregtech.api.util.extensions.ArrayExt;
 
@@ -146,13 +147,13 @@ public class GT_RecipeBuilder {
         GT_Log.err.print("null detected in ");
         GT_Log.err.println(componentType);
         new NullPointerException().printStackTrace(GT_Log.err);
-        if (PANIC_MODE_NULL) {
+        if (PANIC_MODE_NULL || GT_Mod.gregtechproxy.crashOnNullRecipeInput) {
             throw new IllegalArgumentException("null in argument");
         }
     }
 
     private static boolean debugNull() {
-        return DEBUG_MODE_NULL || PANIC_MODE_NULL;
+        return DEBUG_MODE_NULL || PANIC_MODE_NULL || GT_Mod.gregtechproxy.crashOnNullRecipeInput;
     }
 
     private static void handleInvalidRecipe() {
