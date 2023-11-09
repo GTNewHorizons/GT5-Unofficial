@@ -712,8 +712,8 @@ public class GT_PreLoad {
         GT_Mod.gregtechproxy.costlyCableConnection = tMainConfig
             .get("general", "CableConnectionRequiresSolderingMaterial", false)
             .getBoolean(false);
-        GT_Mod.gregtechproxy.crashOnNullRecipeInput = tMainConfig.get("general", "crashOnNullRecipeInput", true)
-            .getBoolean(true);
+        GT_Mod.gregtechproxy.crashOnNullRecipeInput = tMainConfig.get("general", "crashOnNullRecipeInput", false)
+            .getBoolean(false);
         GT_LanguageManager.i18nPlaceholder = tMainConfig
             .get("general", "EnablePlaceholderForMaterialNamesInLangFile", true)
             .getBoolean(true);

@@ -626,7 +626,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
     public boolean gt6Cable = true;
     public boolean ic2EnergySourceCompat = true;
     public boolean costlyCableConnection = false;
-    public boolean crashOnNullRecipeInput = true;
+    public boolean crashOnNullRecipeInput = false;
 
     /**
      * This enables ambient-occlusion smooth lighting on tiles
