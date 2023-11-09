@@ -56,7 +56,6 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
     private final int mTankCapacity;
     private final SpecialEffects mSpecialEffect;
     private final ResourceLocation mSoundResourceLocation;
-    private final boolean mSharedTank, mRequiresFluidForFiltering;
     private FallbackableUITexture progressBarTexture;
 
     /**
@@ -64,8 +63,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
      */
     public GT_MetaTileEntity_BasicMachine_GT_Recipe(int aID, String aName, String aNameRegional, int aTier,
         String aDescription, RecipeMap<?> aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity,
-        ResourceLocation aSound, boolean aSharedTank, boolean aRequiresFluidForFiltering, SpecialEffects aSpecialEffect,
-        String aOverlays, Object[] aRecipe) {
+        ResourceLocation aSound, SpecialEffects aSpecialEffect, String aOverlays, Object[] aRecipe) {
         this(
             aID,
             aName,
@@ -77,8 +75,6 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
             aOutputSlots,
             aTankCapacity,
             aSound,
-            aSharedTank,
-            aRequiresFluidForFiltering,
             aSpecialEffect,
             aOverlays,
             aRecipe);
@@ -89,8 +85,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
      */
     public GT_MetaTileEntity_BasicMachine_GT_Recipe(int aID, String aName, String aNameRegional, int aTier,
         String[] aDescription, RecipeMap<?> aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity,
-        ResourceLocation aSound, boolean aSharedTank, boolean aRequiresFluidForFiltering, SpecialEffects aSpecialEffect,
-        String aOverlays, Object[] aRecipe) {
+        ResourceLocation aSound, SpecialEffects aSpecialEffect, String aOverlays, Object[] aRecipe) {
         super(
             aID,
             aName,
@@ -173,10 +168,8 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                             "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_BOTTOM_GLOW")))
                     .glow()
                     .build()));
-        this.mSharedTank = aSharedTank;
         this.mTankCapacity = aTankCapacity;
         this.mSpecialEffect = aSpecialEffect;
-        this.mRequiresFluidForFiltering = aRequiresFluidForFiltering;
         this.mRecipes = aRecipes;
         this.mSoundResourceLocation = aSound;
         this.progressBarTexture = mRecipes.getFrontend()
@@ -446,8 +439,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
      */
     public GT_MetaTileEntity_BasicMachine_GT_Recipe(int aID, String aName, String aNameRegional, int aTier,
         String aDescription, RecipeMap<?> aRecipes, int aInputSlots, int aOutputSlots, boolean usesFluids,
-        SoundResource aSound, boolean aSharedTank, boolean aRequiresFluidForFiltering, SpecialEffects aSpecialEffect,
-        String aOverlays, Object[] aRecipe) {
+        SoundResource aSound, SpecialEffects aSpecialEffect, String aOverlays, Object[] aRecipe) {
         this(
             aID,
             aName,
@@ -459,8 +451,6 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
             aOutputSlots,
             usesFluids ? getCapacityForTier(aTier) : 0,
             aSound.resourceLocation,
-            aSharedTank,
-            aRequiresFluidForFiltering,
             aSpecialEffect,
             aOverlays,
             aRecipe);
@@ -471,8 +461,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
      */
     public GT_MetaTileEntity_BasicMachine_GT_Recipe(int aID, String aName, String aNameRegional, int aTier,
         String[] aDescription, RecipeMap<?> aRecipes, int aInputSlots, int aOutputSlots, boolean usesFluids,
-        SoundResource aSound, boolean aSharedTank, boolean aRequiresFluidForFiltering, SpecialEffects aSpecialEffect,
-        String aOverlays, Object[] aRecipe) {
+        SoundResource aSound, SpecialEffects aSpecialEffect, String aOverlays, Object[] aRecipe) {
         this(
             aID,
             aName,
@@ -484,8 +473,6 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
             aOutputSlots,
             usesFluids ? getCapacityForTier(aTier) : 0,
             aSound.resourceLocation,
-            aSharedTank,
-            aRequiresFluidForFiltering,
             aSpecialEffect,
             aOverlays,
             aRecipe);
@@ -496,8 +483,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
      */
     public GT_MetaTileEntity_BasicMachine_GT_Recipe(int aID, String aName, String aNameRegional, int aTier,
         String aDescription, RecipeMap<?> aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity,
-        SoundResource aSound, boolean aSharedTank, boolean aRequiresFluidForFiltering, SpecialEffects aSpecialEffect,
-        String aOverlays, Object[] aRecipe) {
+        SoundResource aSound, SpecialEffects aSpecialEffect, String aOverlays, Object[] aRecipe) {
         this(
             aID,
             aName,
@@ -509,8 +495,6 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
             aOutputSlots,
             aTankCapacity,
             aSound.resourceLocation,
-            aSharedTank,
-            aRequiresFluidForFiltering,
             aSpecialEffect,
             aOverlays,
             aRecipe);
@@ -521,8 +505,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
      */
     public GT_MetaTileEntity_BasicMachine_GT_Recipe(int aID, String aName, String aNameRegional, int aTier,
         String[] aDescription, RecipeMap<?> aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity,
-        SoundResource aSound, boolean aSharedTank, boolean aRequiresFluidForFiltering, SpecialEffects aSpecialEffect,
-        String aOverlays, Object[] aRecipe) {
+        SoundResource aSound, SpecialEffects aSpecialEffect, String aOverlays, Object[] aRecipe) {
         this(
             aID,
             aName,
@@ -534,8 +517,6 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
             aOutputSlots,
             aTankCapacity,
             aSound.resourceLocation,
-            aSharedTank,
-            aRequiresFluidForFiltering,
             aSpecialEffect,
             aOverlays,
             aRecipe);
@@ -546,13 +527,10 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
      */
     public GT_MetaTileEntity_BasicMachine_GT_Recipe(String aName, int aTier, String[] aDescription,
         RecipeMap<?> aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity, int aAmperage,
-        ITexture[][][] aTextures, ResourceLocation aSound, boolean aSharedTank, boolean aRequiresFluidForFiltering,
-        SpecialEffects aSpecialEffect) {
+        ITexture[][][] aTextures, ResourceLocation aSound, SpecialEffects aSpecialEffect) {
         super(aName, aTier, aAmperage, aDescription, aTextures, aInputSlots, aOutputSlots);
-        this.mSharedTank = aSharedTank;
         this.mTankCapacity = aTankCapacity;
         this.mSpecialEffect = aSpecialEffect;
-        this.mRequiresFluidForFiltering = aRequiresFluidForFiltering;
         this.mRecipes = aRecipes;
         this.mSoundResourceLocation = aSound;
     }
@@ -570,8 +548,6 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
             this.mAmperage,
             this.mTextures,
             this.mSoundResourceLocation,
-            this.mSharedTank,
-            this.mRequiresFluidForFiltering,
             this.mSpecialEffect).setProgressBarTexture(this.progressBarTexture);
     }
 
@@ -597,7 +573,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                 return false;
             }
             case 1 -> {
-                if (this.getFillableStack() == null) return !this.mRequiresFluidForFiltering && this.getRecipeMap()
+                if (this.getFillableStack() == null) return this.getRecipeMap()
                     .containsInput(aStack);
                 else return this.getRecipeMap()
                     .findRecipe(
@@ -612,25 +588,23 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                     != null;
             }
             case 2 -> {
-                return (!this.mRequiresFluidForFiltering || this.getFillableStack() != null)
-                    && (((this.getInputAt(0) != null && this.getInputAt(1) != null)
-                        || (this.getInputAt(0) == null && this.getInputAt(1) == null ? this.getRecipeMap()
+                return ((this.getInputAt(0) != null && this.getInputAt(1) != null)
+                    || (this.getInputAt(0) == null && this.getInputAt(1) == null ? this.getRecipeMap()
+                        .containsInput(aStack)
+                        : (this.getRecipeMap()
                             .containsInput(aStack)
-                            : (this.getRecipeMap()
-                                .containsInput(aStack)
-                                && this.getRecipeMap()
-                                    .findRecipe(
-                                        this.getBaseMetaTileEntity(),
-                                        this.mLastRecipe,
-                                        true,
-                                        true,
-                                        V[this.mTier],
-                                        new FluidStack[] { this.getFillableStack() },
-                                        this.getSpecialSlot(),
-                                        aIndex == this.getInputSlot()
-                                            ? appendSelectedCircuit(aStack, this.getInputAt(1))
-                                            : appendSelectedCircuit(this.getInputAt(0), aStack))
-                                    != null))));
+                            && this.getRecipeMap()
+                                .findRecipe(
+                                    this.getBaseMetaTileEntity(),
+                                    this.mLastRecipe,
+                                    true,
+                                    true,
+                                    V[this.mTier],
+                                    new FluidStack[] { this.getFillableStack() },
+                                    this.getSpecialSlot(),
+                                    aIndex == this.getInputSlot() ? appendSelectedCircuit(aStack, this.getInputAt(1))
+                                        : appendSelectedCircuit(this.getInputAt(0), aStack))
+                                != null)));
             }
             default -> {
                 int tID = this.getBaseMetaTileEntity()
@@ -781,16 +755,6 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
             // Does not have overflow protection, but they are longs.
             myMetaTileEntity.mLastSoundTick = myMetaTileEntity.mTickTimer;
         }
-    }
-
-    @Override
-    public FluidStack getFillableStack() {
-        return this.mSharedTank ? this.getDrainableStack() : super.getFillableStack();
-    }
-
-    @Override
-    public FluidStack setFillableStack(FluidStack aFluid) {
-        return this.mSharedTank ? this.setDrainableStack(aFluid) : super.setFillableStack(aFluid);
     }
 
     @Override
