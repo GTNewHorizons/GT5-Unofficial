@@ -7,6 +7,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import gregtech.api.ModernMaterials.PartRecipeGenerators.BaseRecipeGenerator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraftforge.client.IItemRenderer;
 
@@ -29,8 +30,9 @@ public final class ModernMaterial {
     private int materialID;
     private String materialName;
     private long materialTier;
-    private double materialTimeMultiplier;
+    private double materialTimeMultiplier = 1;
     private TextureType textureType = Metallic;
+    private BaseRecipeGenerator recipeGenerator;
 
     public ModernMaterial(final String materialName) {
         this.materialName = materialName;
@@ -70,6 +72,11 @@ public final class ModernMaterial {
     }
 
     private ModernMaterial() {}
+
+    public void registerRecipes(ModernMaterial material) {
+        if (recipeGenerator == null) return;
+        recipeGenerator.generateRecipes(material);
+    }
 
     public static class ModernMaterialBuilder {
 
@@ -141,10 +148,14 @@ public final class ModernMaterial {
             return this;
         }
 
-        public ModernMaterialBuilder addCustomFluid(ModernMaterialFluid.Builder modernMaterialFluidBuilder) {
+        public ModernMaterialBuilder addCustomFluid(ModernMaterialFluid.Builder modernMaterialFluidBuilder, boolean useMaterialColouringForFluid) {
 
             ModernMaterialFluid modernMaterialFluid = modernMaterialFluidBuilder.setMaterial(materialToBuild).build();
             materialToBuild.existingFluids.add(modernMaterialFluid);
+
+            if (!useMaterialColouringForFluid) {
+                modernMaterialFluid.disableFluidColouring();
+            }
 
             return this;
         }
@@ -161,6 +172,11 @@ public final class ModernMaterial {
 
         public ModernMaterialBuilder setTextureMode(@NotNull final TextureType textureType) {
             materialToBuild.textureType = textureType;
+            return this;
+        }
+
+        public ModernMaterialBuilder setRecipeGenerator(@NotNull final BaseRecipeGenerator recipeGenerator) {
+            materialToBuild.recipeGenerator = recipeGenerator;
             return this;
         }
 
@@ -189,6 +205,11 @@ public final class ModernMaterial {
         }
 
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return materialName;
     }
 
 }

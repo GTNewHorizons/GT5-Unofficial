@@ -8,58 +8,58 @@ import gregtech.api.ModernMaterials.ModernMaterial;
 
 public enum ItemsEnum implements IEnumPart {
 
-    HotIngot("Hot % Ingot"),
-    Ingot("% Ingot"),
+    HotIngot("Hot % Ingot", 1),
+    Ingot("% Ingot", 1),
     // DoubleIngot("Double % Ingot"),
     // TripleIngot("Triple % Ingot"),
     // QuadrupleIngot("Quadruple % Ingot"),
     // QuintupleIngot("Quintuple % Ingot"),
-    Nugget("% Nugget"),
+    Nugget("% Nugget", 1/9.0),
 
     // Gears
-    Gear("% Gear"),
-    SmallGear("Small % Gear"),
+    Gear("% Gear", 4),
+    SmallGear("Small % Gear", 1),
 
     // Plates
-    DensePlate("Dense % Plate"),
-    Foil("% Foil"),
-    Plate("% Plate"),
+    DensePlate("Dense % Plate", 9),
+    Foil("% Foil", 4),
+    Plate("% Plate", 1),
     // DoublePlate("Double % Plate"),
     // TriplePlate("Triple % Plate"),
     // QuadruplePlate("Quadruple % Plate"),
     // QuintuplePlate("Quintuple % Plate"),
 
     // Gems.
-    Lens("% Lens"),
-    ExquisiteGem("Exquisite %"),
-    FlawlessGem("Flawless %"),
-    Gem("% Gem"),
-    FlawedGem("Flawed %"),
-    ChippedGem("Chipped %"),
+    Lens("% Lens", 1),
+    ExquisiteGem("Exquisite %", 9),
+    FlawlessGem("Flawless %", 3),
+    Gem("% Gem", 1),
+    FlawedGem("Flawed %", 1/3.0),
+    ChippedGem("Chipped %", 1/9.0),
 
     // Misc.
-    Ring("% Ring"),
-    Rotor("% Rotor"),
-    Round("% Round"),
+    Ring("% Ring", 1/4.0),
+    Rotor("% Rotor", 612/144.0),
+    Round("% Round", 9),
 
-    LongRod("% Long Rod"),
-    Rod("% Rod"),
-    Bolt("% Bolt"),
-    Screw("% Screw"),
+    LongRod("% Long Rod", 1),
+    Rod("% Rod", 1/2.0),
+    Bolt("% Bolt", 1/4.0),
+    Screw("% Screw", 1/8.0),
 
-    TurbineBlade("% Turbine Blade"),
-    FineWire("Fine % Wire"),
+    TurbineBlade("% Turbine Blade", 6),
+    FineWire("Fine % Wire", 1/8.0),
 
     // Springs
-    Spring("% Spring"),
-    SmallSpring("Small % Spring"),
+    Spring("% Spring", 1),
+    SmallSpring("Small % Spring", 1/4.0),
 
     // Dusts.
-    ImpureDust("Impure % Dust"),
-    PurifiedDust("Purified % Dust"),
-    Dust("% Dust"),
-    SmallDust("Small % Dust"),
-    TinyDust("Tiny % Dust"),
+    ImpureDust("Impure % Dust", 1),
+    PurifiedDust("Purified % Dust", 1),
+    Dust("% Dust", 1),
+    SmallDust("Small % Dust", 1/4.0),
+    TinyDust("Tiny % Dust", 1/9.0),
 
     // Ore stuff.
     CrushedCentrifugedOre("Centrifuged % Ore"),
@@ -90,8 +90,14 @@ public enum ItemsEnum implements IEnumPart {
     public final String partName;
 
     private Item item;
+    public double percentageOfIngot;
 
     private final HashSet<ModernMaterial> associatedMaterials = new HashSet<>();
+
+    ItemsEnum(final String partName, double percentageOfIngot) {
+        this.partName = partName;
+        this.percentageOfIngot = percentageOfIngot;
+    }
 
     ItemsEnum(final String partName) {
         this.partName = partName;

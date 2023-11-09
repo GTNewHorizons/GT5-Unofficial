@@ -12,6 +12,8 @@ import gregtech.api.ModernMaterials.Blocks.BlockTypes.FrameBox.Special.Universiu
 import gregtech.api.ModernMaterials.Blocks.BlockTypes.FrameBox.Special.UniversiumFrameItemRenderer;
 import gregtech.api.ModernMaterials.Blocks.Registration.BlocksEnum;
 import gregtech.api.ModernMaterials.Fluids.ModernMaterialFluid;
+import gregtech.api.ModernMaterials.PartRecipeGenerators.Metal;
+import gregtech.api.enums.TierEU;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
@@ -27,7 +29,8 @@ public class ModernMaterialsRegistration {
             .addFluid(NoPrefix, 3_000)
             .addFluid(Molten, 10_000)
             .addFluid(Plasma, 100_000)
-            .addCustomFluid(new ModernMaterialFluid.Builder("Zebra % Fluid %").setTemperature(120_000_000))
+            .addCustomFluid(new ModernMaterialFluid.Builder("Zebra % Fluid %").setTemperature(120_000_000), false)
+            .setMaterialTier(TierEU.MAX)
             .build();
 
         new ModernMaterial.ModernMaterialBuilder("GERE").setMaterialID(2)
@@ -71,6 +74,8 @@ public class ModernMaterialsRegistration {
         new ModernMaterial.ModernMaterialBuilder("TEST3232").setColor(120, 2, 0)
             .setMaterialID(18)
             .setTextureMode(Metallic)
+            .setMaterialTier(TierEU.MAX)
+            .setRecipeGenerator(new Metal())
             .addAllParts()
             .addFluid(Gas, 1_000)
             .addFluid(NoPrefix, 3_000)
@@ -81,6 +86,8 @@ public class ModernMaterialsRegistration {
         new ModernMaterial.ModernMaterialBuilder("TEST2").setColor(120, 200, 0)
             .setMaterialID(61)
             .setTextureMode(Metallic)
+            .setRecipeGenerator(new Metal())
+            .setMaterialTier(TierEU.MAX)
             .addAllParts()
             .addFluid(Gas, 1_000)
             .addFluid(NoPrefix, 3_000)

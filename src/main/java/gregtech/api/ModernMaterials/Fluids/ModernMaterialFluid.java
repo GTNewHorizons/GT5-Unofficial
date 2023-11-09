@@ -26,8 +26,17 @@ final public class ModernMaterialFluid extends Fluid {
         this.associatedMaterial = modernMaterial;
     }
 
+    private boolean shouldColourFluid = true;
+
+    public void disableFluidColouring() {
+        shouldColourFluid = false;
+    }
+
     @Override
     public int getColor() {
+
+        if (!shouldColourFluid) return 0xFFFFFF;
+
         return associatedMaterial.getColor()
             .getRGB();
     }
