@@ -20,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.GT_Mod;
 import gregtech.api.interfaces.IGT_RecipeMap;
 import gregtech.api.util.extensions.ArrayExt;
 
@@ -28,7 +29,7 @@ public class GT_RecipeBuilder {
 
     // debug mode expose problems. panic mode help you check nothing is wrong-ish without you actively monitoring
     private static final boolean DEBUG_MODE_NULL;
-    private static final boolean PANIC_MODE_NULL;
+    private static boolean PANIC_MODE_NULL;
     private static final boolean DEBUG_MODE_INVALID;
     private static final boolean PANIC_MODE_INVALID;
     private static final boolean DEBUG_MODE_COLLISION;
@@ -179,6 +180,10 @@ public class GT_RecipeBuilder {
             // place a breakpoint here to catch all these issues
             new IllegalArgumentException().printStackTrace(GT_Log.err);
         }
+    }
+
+    public static void onConfigLoad() {
+        PANIC_MODE_NULL |= GT_Mod.gregtechproxy.crashOnNullRecipeInput;
     }
 
     // endregion
