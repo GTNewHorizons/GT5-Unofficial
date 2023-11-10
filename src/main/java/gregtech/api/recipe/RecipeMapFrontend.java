@@ -259,8 +259,8 @@ public class RecipeMapFrontend {
             && !recipe.stackTraces.isEmpty()) {
             drawNEIText(recipeInfo, "stackTrace:");
             // todo: good way to show all stacktraces
-            for (StackTraceElement stackTrace : recipe.stackTraces.get(0)) {
-                drawNEIText(recipeInfo, stackTrace.toString());
+            for (String stackTrace : recipe.stackTraces.get(0)) {
+                drawNEIText(recipeInfo, stackTrace);
             }
         }
     }

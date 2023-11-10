@@ -90,7 +90,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     /**
      * Stores stack traces where this recipe was added
      */
-    public List<List<StackTraceElement>> stackTraces = new ArrayList<>();
+    // BW wants to overwrite it, so no final
+    public List<List<String>> stackTraces = new ArrayList<>();
 
     private GT_Recipe(GT_Recipe aRecipe, boolean shallow) {
         mInputs = shallow ? aRecipe.mInputs : GT_Utility.copyItemArray(aRecipe.mInputs);
@@ -531,34 +532,53 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         this.recipeCategory = recipeCategory;
     }
 
+    private static final List<String> excludedStacktraces = Arrays.asList(
+        "java.lang.Thread",
+        "gregtech.api.interfaces.IRecipeMap",
+        "gregtech.api.interfaces.IRecipeMap$1",
+        "gregtech.api.recipe.RecipeMap",
+        "gregtech.api.recipe.RecipeMapBackend",
+        "gregtech.api.recipe.RecipeMapBackendPropertiesBuilder",
+        "gregtech.api.util.GT_Recipe",
+        "gregtech.api.util.GT_RecipeBuilder",
+        "gregtech.api.util.GT_RecipeConstants",
+        "gregtech.api.util.GT_RecipeMapUtil",
+        "gregtech.common.GT_RecipeAdder");
+
     public void reloadOwner() {
         setOwner(
             Loader.instance()
                 .activeModContainer());
 
-        final List<String> excludedClasses = Arrays.asList(
-            "java.lang.Thread",
-            "gregtech.api.util.GT_Recipe",
-            "gregtech.api.util.GT_RecipeBuilder",
-            "gregtech.api.util.GT_Recipe$GT_Recipe_Map",
-            "gregtech.common.GT_RecipeAdder");
         if (GT_Mod.gregtechproxy.mNEIRecipeOwnerStackTrace) {
-            List<StackTraceElement> toAdd = new ArrayList<>();
+            List<String> toAdd = new ArrayList<>();
             for (StackTraceElement stackTrace : Thread.currentThread()
                 .getStackTrace()) {
-                if (excludedClasses.stream()
+                if (excludedStacktraces.stream()
                     .noneMatch(
                         c -> stackTrace.getClassName()
                             .equals(c))) {
-                    toAdd.add(stackTrace);
+                    toAdd.add(formatStackTrace(stackTrace));
                 }
             }
             stackTraces.add(toAdd);
         }
     }
 
+    private static String formatStackTrace(StackTraceElement stackTraceElement) {
+        String raw = stackTraceElement.toString();
+        int startParen = raw.lastIndexOf('(');
+        int colon = raw.lastIndexOf(':');
+        if (colon == -1) {
+            // native or unknown source
+            return raw;
+        }
+        // strip class name and leave line number, as class name is already shown
+        return raw.substring(0, startParen + 1) + raw.substring(colon);
+    }
+
     public void setOwner(ModContainer newOwner) {
-        ModContainer oldOwner = owners.size() > 0 ? this.owners.get(owners.size() - 1) : null;
+        ModContainer oldOwner = !owners.isEmpty() ? this.owners.get(owners.size() - 1) : null;
         if (newOwner != null && newOwner != oldOwner) {
             owners.add(newOwner);
         }
