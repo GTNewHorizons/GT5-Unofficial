@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -15,9 +16,14 @@ import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.MethodsReturnNonnullByDefault;
 
 @SuppressWarnings({ "unused", "UnusedReturnValue" })
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class LargeBoilerFuelBackend extends RecipeMapBackend {
+
+    private static boolean addedGeneralDesc = false;
 
     private static final List<String> ALLOWED_SOLID_FUELS = Arrays.asList(
         GregTech_API.sMachineFile.mConfig.getStringList(
@@ -28,17 +34,6 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
 
     public LargeBoilerFuelBackend(RecipeMapBackendPropertiesBuilder propertiesBuilder) {
         super(propertiesBuilder);
-        GT_Values.RA.stdBuilder()
-            .duration(1)
-            .eut(1)
-            .specialValue(1)
-            .setNEIDesc(
-                "Not all solid fuels are listed.",
-                "Any item that burns in a",
-                "vanilla furnace will burn in",
-                "a Large Bronze or Steel Boiler.")
-            .build()
-            .map(this::compileRecipe);
     }
 
     public static boolean isAllowedSolidFuel(ItemStack stack) {
@@ -72,10 +67,25 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
     }
 
     @Nullable
-    public GT_Recipe addSolidRecipe(ItemStack fuelItemStack) {
+    public GT_Recipe addSolidRecipe(@Nullable ItemStack fuelItemStack) {
         if (fuelItemStack == null) {
             return null;
         }
+        if (!addedGeneralDesc) {
+            GT_Values.RA.stdBuilder()
+                .duration(1)
+                .eut(1)
+                .specialValue(1)
+                .setNEIDesc(
+                    "Not all solid fuels are listed.",
+                    "Any item that burns in a",
+                    "vanilla furnace will burn in",
+                    "a Large Bronze or Steel Boiler.")
+                .build()
+                .map(this::compileRecipe);
+            addedGeneralDesc = true;
+        }
+
         String registryName = Item.itemRegistry.getNameForObject(fuelItemStack.getItem());
         boolean isHighTierAllowed = ALLOWED_SOLID_FUELS.contains(registryName + ":" + fuelItemStack.getItemDamage());
         return GT_Values.RA.stdBuilder()
@@ -117,6 +127,6 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
                 "Tungstenst. Boiler: Not allowed");
         }
 
-        return super.compileRecipe(recipe);
+        return compileRecipe(recipe);
     }
 }
