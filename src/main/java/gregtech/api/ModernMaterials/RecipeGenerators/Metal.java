@@ -27,9 +27,8 @@ public class Metal extends BaseRecipeGenerator {
             .eut((int) (material.getMaterialTier() * 0.95))
             .addTo(sBenderRecipes);
 
-
         GT_Values.RA.stdBuilder()
-            .itemInputs(Ingot.getPart(material, 1), Shape_Extruder_Small_Gear.get(1))
+            .itemInputs(Ingot.getPart(material, 1), Shape_Extruder_Small_Gear.get(0))
             .itemOutputs(SmallGear.getPart(material, 1))
             .duration((int) (1L * material.getMaterialTimeMultiplier()))
             .eut((int) (material.getMaterialTier() * 0.95))

@@ -10,11 +10,7 @@ public enum TextureType {
 
     Metallic,
     Dull;
-    // Stone,
-    // Dull;
-    // Dull,
-    // CustomUnified,
-    // CustomIndividual;
+    // Stone;
 
     private final HashMap<ItemsEnum, ArrayList<IconWrapper>> textureStorage = new HashMap<>();
 

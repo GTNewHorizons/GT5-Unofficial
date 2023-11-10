@@ -101,8 +101,8 @@ public class ModernMaterialsTextureRegister {
 
         for (TextureType textureType : TextureType.values()) {
 
-            String path = "../src/main/resources/assets/gregtech/textures/items/ModernMaterialsIcons/" + textureType
-                + "/items";
+            String path = "../src/main/resources/assets/gregtech/textures/items/ModernMaterialsIcons/" + textureType;
+
             final File[] files = Paths.get(path)
                 .toFile()
                 .listFiles();
@@ -147,6 +147,17 @@ public class ModernMaterialsTextureRegister {
                 }
             }
         }
+
+
+        for (ModernMaterial modernMaterial : ModernMaterialUtilities.materialNameToMaterialMap.values()) {
+            for (ItemsEnum part : ItemsEnum.values()) {
+
+
+            }
+        }
+
+
+
     }
 
     // Remove the .png from the filename as MC does not need this to register the texture file.
