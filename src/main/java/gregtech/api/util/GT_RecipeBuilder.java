@@ -8,23 +8,24 @@ import static gregtech.api.util.GT_Utility.copyItemArray;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.Contract;
+
 import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.recipe.RecipeCategory;
+import gregtech.api.recipe.RecipeMetadataKey;
+import gregtech.api.recipe.RecipeMetadataStorage;
 import gregtech.api.recipe.check.FindRecipeResult;
 import gregtech.api.util.extensions.ArrayExt;
 
@@ -82,17 +83,19 @@ public class GT_RecipeBuilder {
     protected String[] neiDesc;
     protected RecipeCategory recipeCategory;
     protected boolean optimize = true;
-    protected Map<MetadataIdentifier<?>, Object> additionalData = new HashMap<>();
+    protected final RecipeMetadataStorage metadataStorage;
     protected boolean checkForCollision = true;
     protected boolean valid = true;
 
-    GT_RecipeBuilder() {}
+    GT_RecipeBuilder() {
+        this.metadataStorage = new RecipeMetadataStorage();
+    }
 
     private GT_RecipeBuilder(ItemStack[] inputsBasic, Object[] inputsOreDict, ItemStack[] outputs, ItemStack[][] alts,
         FluidStack[] fluidInputs, FluidStack[] fluidOutputs, int[] chances, Object special, int duration, int eut,
         int specialValue, boolean enabled, boolean hidden, boolean fakeRecipe, boolean mCanBeBuffered,
         boolean mNeedsEmptyOutput, boolean nbtSensitive, String[] neiDesc, RecipeCategory recipeCategory,
-        boolean optimize, Map<MetadataIdentifier<?>, Object> additionalData, boolean checkForCollision, boolean valid) {
+        boolean optimize, RecipeMetadataStorage metadataStorage, boolean checkForCollision, boolean valid) {
         this.inputsBasic = inputsBasic;
         this.inputsOreDict = inputsOreDict;
         this.outputs = outputs;
@@ -113,7 +116,7 @@ public class GT_RecipeBuilder {
         this.neiDesc = neiDesc;
         this.recipeCategory = recipeCategory;
         this.optimize = optimize;
-        this.additionalData.putAll(additionalData);
+        this.metadataStorage = metadataStorage;
         this.checkForCollision = checkForCollision;
         this.valid = valid;
     }
@@ -377,17 +380,33 @@ public class GT_RecipeBuilder {
         return this;
     }
 
-    public <T> GT_RecipeBuilder metadata(MetadataIdentifier<T> key, T value) {
-        additionalData.put(key, value);
+    /**
+     * Sets metadata of the recipe. It can be used for recipe emitter to do special things, or for being stored in the
+     * built recipe and used for actual recipe processing.
+     * <p>
+     * {@link GT_RecipeConstants} has a series of metadata keys. Or you can create one yourself.
+     */
+    public <T> GT_RecipeBuilder metadata(RecipeMetadataKey<T> key, T value) {
+        metadataStorage.store(key, value);
         return this;
     }
 
-    public <T> T getMetadata(MetadataIdentifier<T> key) {
-        return key.cast(additionalData.get(key));
+    /**
+     * Gets metadata already set for this builder. Can return null. Use {@link #getMetadata(RecipeMetadataKey, Object)}
+     * if you want to specify default value.
+     */
+    @Nullable
+    public <T> T getMetadata(RecipeMetadataKey<T> key) {
+        return key.cast(metadataStorage.getMetadata(key));
     }
 
-    public <T> T getMetadata(MetadataIdentifier<T> key, T defaultValue) {
-        return key.cast(additionalData.getOrDefault(key, defaultValue));
+    /**
+     * Gets metadata already set for this builder with default value. Does not return null unless default value is null.
+     */
+    @Contract("_, !null -> !null")
+    @Nullable
+    public <T> T getMetadata(RecipeMetadataKey<T> key, T defaultValue) {
+        return key.cast(metadataStorage.getMetadata(key, defaultValue));
     }
 
     public GT_RecipeBuilder requiresCleanRoom() {
@@ -436,7 +455,7 @@ public class GT_RecipeBuilder {
             copy(neiDesc),
             recipeCategory,
             optimize,
-            additionalData,
+            metadataStorage.copy(),
             checkForCollision,
             valid);
     }
@@ -466,7 +485,7 @@ public class GT_RecipeBuilder {
             copy(neiDesc),
             recipeCategory,
             optimize,
-            Collections.emptyMap(),
+            new RecipeMetadataStorage(),
             checkForCollision,
             valid);
     }
@@ -685,6 +704,7 @@ public class GT_RecipeBuilder {
                     mNeedsEmptyOutput,
                     nbtSensitive,
                     neiDesc,
+                    metadataStorage,
                     recipeCategory)));
     }
 
@@ -731,6 +751,7 @@ public class GT_RecipeBuilder {
                     mNeedsEmptyOutput,
                     nbtSensitive,
                     neiDesc,
+                    metadataStorage,
                     recipeCategory,
                     alts)));
     }
@@ -786,7 +807,7 @@ public class GT_RecipeBuilder {
         int specialValue = 0;
         if (getMetadata(GT_RecipeConstants.LOW_GRAVITY, false)) specialValue -= 100;
         if (getMetadata(GT_RecipeConstants.CLEANROOM, false)) specialValue -= 200;
-        for (MetadataIdentifier<Integer> ident : SPECIAL_VALUE_ALIASES) {
+        for (RecipeMetadataKey<Integer> ident : SPECIAL_VALUE_ALIASES) {
             Integer metadata = getMetadata(ident, null);
             if (metadata != null) {
                 specialValue = metadata;
@@ -801,7 +822,7 @@ public class GT_RecipeBuilder {
     }
 
     public GT_RecipeBuilder reset() {
-        additionalData.clear();
+        metadataStorage.clear();
         alts = null;
         chances = null;
         duration = -1;
@@ -824,46 +845,5 @@ public class GT_RecipeBuilder {
         specialValue = 0;
         valid = true;
         return this;
-    }
-
-    public final static class MetadataIdentifier<T> {
-
-        private static final Map<MetadataIdentifier<?>, MetadataIdentifier<?>> allIdentifiers = Collections
-            .synchronizedMap(new HashMap<>());
-        private final Class<T> clazz;
-        private final String identifier;
-
-        private MetadataIdentifier(Class<T> clazz, String identifier) {
-            this.clazz = clazz;
-            this.identifier = identifier;
-        }
-
-        public static <T> MetadataIdentifier<T> create(Class<T> clazz, String identifier) {
-            MetadataIdentifier<T> key = new MetadataIdentifier<>(clazz, identifier);
-            // noinspection unchecked // The class uses type T to fill allIdentifiers
-            return (MetadataIdentifier<T>) allIdentifiers.computeIfAbsent(key, Function.identity());
-        }
-
-        public T cast(Object o) {
-            return clazz.cast(o);
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            MetadataIdentifier<?> that = (MetadataIdentifier<?>) o;
-
-            if (!clazz.equals(that.clazz)) return false;
-            return identifier.equals(that.identifier);
-        }
-
-        @Override
-        public int hashCode() {
-            int result = clazz.hashCode();
-            result = 31 * result + identifier.hashCode();
-            return result;
-        }
     }
 }

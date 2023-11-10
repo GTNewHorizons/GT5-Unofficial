@@ -20,6 +20,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.RecipeMetadataKey;
+import gregtech.api.recipe.metadata.SimpleRecipeMetadataKey;
 
 // this class is intended to be import-static-ed on every recipe script
 // so take care to not put unrelated stuff here!
@@ -29,64 +31,63 @@ public class GT_RecipeConstants {
      * Set to true to signal the recipe require low gravity. do nothing if recipe set specialValue explicitly. Can
      * coexist with CLEANROOM just fine
      */
-    public static final GT_RecipeBuilder.MetadataIdentifier<Boolean> LOW_GRAVITY = GT_RecipeBuilder.MetadataIdentifier
+    public static final RecipeMetadataKey<Boolean> LOW_GRAVITY = SimpleRecipeMetadataKey
         .create(Boolean.class, "low_gravity");
     /**
      * Set to true to signal the recipe require cleanroom. do nothing if recipe set specialValue explicitly. Can coexist
      * with LOW_GRAVITY just fine
      */
-    public static final GT_RecipeBuilder.MetadataIdentifier<Boolean> CLEANROOM = GT_RecipeBuilder.MetadataIdentifier
+    public static final RecipeMetadataKey<Boolean> CLEANROOM = SimpleRecipeMetadataKey
         .create(Boolean.class, "cleanroom");
     /**
      * Common additive to use in recipe, e.g. for PBF, this is coal amount.
      */
-    public static final GT_RecipeBuilder.MetadataIdentifier<Integer> ADDITIVE_AMOUNT = GT_RecipeBuilder.MetadataIdentifier
+    public static final RecipeMetadataKey<Integer> ADDITIVE_AMOUNT = SimpleRecipeMetadataKey
         .create(Integer.class, "additives");
     /**
      * Used for fusion reactor. Denotes ignition threshold.
      */
-    public static final GT_RecipeBuilder.MetadataIdentifier<Integer> FUSION_THRESHOLD = GT_RecipeBuilder.MetadataIdentifier
+    public static final RecipeMetadataKey<Integer> FUSION_THRESHOLD = SimpleRecipeMetadataKey
         .create(Integer.class, "fusion_threshold");
     /**
      * Research time in a scanner used in ticks.
      */
-    public static final GT_RecipeBuilder.MetadataIdentifier<Integer> RESEARCH_TIME = GT_RecipeBuilder.MetadataIdentifier
+    public static final RecipeMetadataKey<Integer> RESEARCH_TIME = SimpleRecipeMetadataKey
         .create(Integer.class, "research_time");
     /**
      * Fuel type. TODO should we use enum directly?
      */
-    public static final GT_RecipeBuilder.MetadataIdentifier<Integer> FUEL_TYPE = GT_RecipeBuilder.MetadataIdentifier
+    public static final RecipeMetadataKey<Integer> FUEL_TYPE = SimpleRecipeMetadataKey
         .create(Integer.class, "fuel_type");
     /**
      * Fuel value.
      */
-    public static final GT_RecipeBuilder.MetadataIdentifier<Integer> FUEL_VALUE = GT_RecipeBuilder.MetadataIdentifier
+    public static final RecipeMetadataKey<Integer> FUEL_VALUE = SimpleRecipeMetadataKey
         .create(Integer.class, "fuel_value");
     /**
      * Required heat for heating coil (Kelvin).
      */
-    public static final GT_RecipeBuilder.MetadataIdentifier<Integer> COIL_HEAT = GT_RecipeBuilder.MetadataIdentifier
+    public static final RecipeMetadataKey<Integer> COIL_HEAT = SimpleRecipeMetadataKey
         .create(Integer.class, "coil_heat");
     /**
      * Research item used by assline recipes.
      */
-    public static final GT_RecipeBuilder.MetadataIdentifier<ItemStack> RESEARCH_ITEM = GT_RecipeBuilder.MetadataIdentifier
+    public static final RecipeMetadataKey<ItemStack> RESEARCH_ITEM = SimpleRecipeMetadataKey
         .create(ItemStack.class, "research_item");
     /**
      * For assembler. It accepts a single item as oredict. It looks like no one uses this anyway...
      */
-    public static final GT_RecipeBuilder.MetadataIdentifier<Object> OREDICT_INPUT = GT_RecipeBuilder.MetadataIdentifier
+    public static final RecipeMetadataKey<Object> OREDICT_INPUT = SimpleRecipeMetadataKey
         .create(Object.class, "oredict_input");
     /**
      * Replicator output material.
      */
-    public static final GT_RecipeBuilder.MetadataIdentifier<Materials> MATERIAL = GT_RecipeBuilder.MetadataIdentifier
+    public static final RecipeMetadataKey<Materials> MATERIAL = SimpleRecipeMetadataKey
         .create(Materials.class, "material");
     /**
      * Marker for {@link #UniversalArcFurnace} to tell that the recipe belongs to recycling category.
      */
-    public static final GT_RecipeBuilder.MetadataIdentifier<Boolean> RECYCLE = GT_RecipeBuilder.MetadataIdentifier
-        .create(Boolean.class, "recycle");
+    public static final RecipeMetadataKey<Boolean> RECYCLE = SimpleRecipeMetadataKey.create(Boolean.class, "recycle");
 
     /**
      * Add a arc furnace recipe. Adds to both normal arc furnace and plasma arc furnace.
@@ -159,6 +160,9 @@ public class GT_RecipeConstants {
         ItemStack[][] mOreDictAlt = r.mOreDictAlt;
         Object[] inputs = builder.getItemInputsOreDict();
         ItemStack aResearchItem = builder.getMetadata(RESEARCH_ITEM);
+        if (aResearchItem == null) {
+            return Collections.emptyList();
+        }
         ItemStack aOutput = r.mOutputs[0];
         int tPersistentHash = 1;
         for (int i = 0, mOreDictAltLength = mOreDictAlt.length; i < mOreDictAltLength; i++) {
@@ -204,7 +208,7 @@ public class GT_RecipeConstants {
             if (fluidInput == null) continue;
             tPersistentHash = tPersistentHash * 31 + GT_Utility.persistentHash(fluidInput, true, false);
         }
-        int aResearchTime = builder.getMetadata(RESEARCH_TIME);
+        int aResearchTime = builder.getMetadata(RESEARCH_TIME, 0);
         tPersistentHash = tPersistentHash * 31 + aResearchTime;
         tPersistentHash = tPersistentHash * 31 + r.mDuration;
         tPersistentHash = tPersistentHash * 31 + r.mEUt;
@@ -277,11 +281,12 @@ public class GT_RecipeConstants {
             .validateOutputCount(-1, 1)
             .validateNoOutputFluid();
         if (!builder.isValid()) return Collections.emptyList();
-        int fuelType = builder.getMetadata(FUEL_TYPE);
+        Integer fuelType = builder.getMetadata(FUEL_TYPE);
+        if (fuelType == null) return Collections.emptyList();
         builder.metadata(
             FUEL_VALUE,
             GregTech_API.sRecipeFile
-                .get("fuel_" + fuelType, builder.getItemInputBasic(0), builder.getMetadata(FUEL_VALUE)));
+                .get("fuel_" + fuelType, builder.getItemInputBasic(0), builder.getMetadata(FUEL_VALUE, 0)));
         return FuelType.get(fuelType)
             .getTarget()
             .doAdd(builder);

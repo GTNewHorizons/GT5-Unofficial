@@ -606,7 +606,7 @@ public final class RecipeMaps {
             ItemStack aOutput2 = builder.getItemOutput(1);
             if ((aInput1 == null && aInput2 == null) || (aOutput1 == null && aOutput2 == null))
                 return Collections.emptyList();
-            int aCoalAmount = builder.getMetadata(ADDITIVE_AMOUNT);
+            int aCoalAmount = builder.getMetadata(ADDITIVE_AMOUNT, 0);
             if (aCoalAmount <= 0) return Collections.emptyList();
             GT_RecipeTemplate coll = asTemplate(rr.get());
             for (Materials coal : new Materials[] { Materials.Coal, Materials.Charcoal }) {
@@ -703,7 +703,7 @@ public final class RecipeMaps {
             if (!t.isPresent()) return Collections.emptyList();
             ItemStack input = b.getItemInputBasic(0);
             GT_RecipeTemplate coll = asTemplate(t.get());
-            int tExplosives = Math.min(b.getMetadata(ADDITIVE_AMOUNT), 64);
+            int tExplosives = Math.min(b.getMetadata(ADDITIVE_AMOUNT, 0), 64);
             int tGunpowder = tExplosives << 1; // Worst
             int tDynamite = Math.max(1, tExplosives >> 1); // good
             @SuppressWarnings("UnnecessaryLocalVariable")

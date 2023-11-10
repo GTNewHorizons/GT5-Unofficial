@@ -44,15 +44,13 @@ public class TranscendentPlasmaMixerFrontend extends RecipeMapFrontend {
     protected void drawNEIEnergyInfo(NEIRecipeInfo recipeInfo) {
         // These look odd because recipeInfo.recipe.mEUt is actually the EU per litre of fluid processed, not
         // the EU/t.
-        drawNEIText(
-            recipeInfo,
+        recipeInfo.drawNEIText(
             GT_Utility.trans("152", "Total: ")
                 + formatNumbers(1000L * recipeInfo.recipe.mDuration / 100L * recipeInfo.recipe.mEUt)
                 + " EU");
         // 1000 / (20 ticks * 5 seconds) = 10L/t. 10L/t * x EU/L = 10 * x EU/t.
         long averageUsage = 10L * recipeInfo.recipe.mEUt;
-        drawNEIText(
-            recipeInfo,
+        recipeInfo.drawNEIText(
             "Average: " + formatNumbers(averageUsage) + " EU/t" + GT_Utility.getTierNameWithParentheses(averageUsage));
     }
 }

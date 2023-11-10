@@ -47,6 +47,8 @@ import gregtech.GT_Mod;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SteamVariant;
+import gregtech.api.gui.GT_GUIColorOverride;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
 import gregtech.api.objects.ItemData;
@@ -106,6 +108,10 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
      * Tooltip shown while hovering over header of this handler. Can be null if the full name fits in the screen.
      */
     private NEIHandlerAbsoluteTooltip recipeNameTooltip;
+
+    protected final GT_GUIColorOverride colorOverride = GT_GUIColorOverride
+        .get(GT_UITextures.BACKGROUND_NEI_SINGLE_RECIPE.location);
+    private int neiTextColorOverride = -1;
 
     public GT_NEI_DefaultHandler(RecipeCategory recipeCategory) {
         this.recipeCategory = recipeCategory;
@@ -326,7 +332,7 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
     public String getRecipeName() {
         if (recipeNameDisplay == null) {
             recipeNameDisplay = computeRecipeName();
-            frontend.updateNEITextColorOverride();
+            neiTextColorOverride = colorOverride.getTextColorOrDefault("nei", -1);
         }
         return recipeNameDisplay;
     }
@@ -424,7 +430,8 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
                 cachedRecipe,
                 overclockDescriber,
                 calculator,
-                getDescriptionYOffset()));
+                getDescriptionYOffset(),
+                neiTextColorOverride));
     }
 
     protected int getDescriptionYOffset() {

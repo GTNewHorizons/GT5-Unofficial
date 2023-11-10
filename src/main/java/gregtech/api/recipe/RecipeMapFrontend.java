@@ -1,15 +1,14 @@
 package gregtech.api.recipe;
 
-import static gregtech.api.util.GT_Utility.isStringInvalid;
 import static gregtech.api.util.GT_Utility.trans;
 import static net.minecraft.util.EnumChatFormatting.GRAY;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.gui.FontRenderer;
@@ -59,7 +58,6 @@ public class RecipeMapFrontend {
 
     protected final GT_GUIColorOverride colorOverride = GT_GUIColorOverride
         .get(GT_UITextures.BACKGROUND_NEI_SINGLE_RECIPE.location);
-    private int neiTextColorOverride = -1;
 
     public RecipeMapFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
         NEIRecipePropertiesBuilder neiPropertiesBuilder) {
@@ -209,25 +207,36 @@ public class RecipeMapFrontend {
         drawNEIEnergyInfo(recipeInfo);
         drawNEIDurationInfo(recipeInfo);
         drawNEISpecialInfo(recipeInfo);
+        drawNEIMetadataInfo(recipeInfo);
         drawNEIRecipeOwnerInfo(recipeInfo);
     }
 
     protected void drawNEIEnergyInfo(NEIRecipeInfo recipeInfo) {
-        recipeInfo.overclockDescriber.drawEnergyInfo(recipeInfo, this);
+        recipeInfo.overclockDescriber.drawEnergyInfo(recipeInfo);
     }
 
     protected void drawNEIDurationInfo(NEIRecipeInfo recipeInfo) {
-        recipeInfo.overclockDescriber.drawDurationInfo(recipeInfo, this);
+        recipeInfo.overclockDescriber.drawDurationInfo(recipeInfo);
     }
 
     protected void drawNEISpecialInfo(NEIRecipeInfo recipeInfo) {
         String[] recipeDesc = recipeInfo.recipe.getNeiDesc();
         if (recipeDesc != null) {
             for (String s : recipeDesc) {
-                drawNEIText(recipeInfo, s);
+                recipeInfo.drawNEIText(s);
             }
         } else {
-            drawNEITextMultipleLines(recipeInfo, neiProperties.neiSpecialInfoFormatter.format(recipeInfo));
+            recipeInfo.drawNEITextMultipleLines(neiProperties.neiSpecialInfoFormatter.format(recipeInfo));
+        }
+    }
+
+    protected void drawNEIMetadataInfo(NEIRecipeInfo recipeInfo) {
+        RecipeMetadataStorage metadataStorage = recipeInfo.recipe.getMetadataStorage();
+        if (metadataStorage != null) {
+            for (Map.Entry<RecipeMetadataKey<?>, Object> entry : metadataStorage.getEntries()) {
+                entry.getKey()
+                    .drawInfo(recipeInfo, entry.getValue());
+            }
         }
     }
 
@@ -235,21 +244,18 @@ public class RecipeMapFrontend {
         GT_Recipe recipe = recipeInfo.recipe;
         if (GT_Mod.gregtechproxy.mNEIRecipeOwner) {
             if (recipe.owners.size() > 1) {
-                drawNEIText(
-                    recipeInfo,
+                recipeInfo.drawNEIText(
                     EnumChatFormatting.ITALIC + trans("273", "Original Recipe by: ")
                         + recipe.owners.get(0)
                             .getName());
                 for (int i = 1; i < recipe.owners.size(); i++) {
-                    drawNEIText(
-                        recipeInfo,
+                    recipeInfo.drawNEIText(
                         EnumChatFormatting.ITALIC + trans("274", "Modified by: ")
                             + recipe.owners.get(i)
                                 .getName());
                 }
             } else if (!recipe.owners.isEmpty()) {
-                drawNEIText(
-                    recipeInfo,
+                recipeInfo.drawNEIText(
                     EnumChatFormatting.ITALIC + trans("272", "Recipe by: ")
                         + recipe.owners.get(0)
                             .getName());
@@ -257,43 +263,11 @@ public class RecipeMapFrontend {
         }
         if (GT_Mod.gregtechproxy.mNEIRecipeOwnerStackTrace && recipe.stackTraces != null
             && !recipe.stackTraces.isEmpty()) {
-            drawNEIText(recipeInfo, "stackTrace:");
+            recipeInfo.drawNEIText("stackTrace:");
             // todo: good way to show all stacktraces
             for (String stackTrace : recipe.stackTraces.get(0)) {
-                drawNEIText(recipeInfo, stackTrace);
+                recipeInfo.drawNEIText(stackTrace);
             }
-        }
-    }
-
-    public void drawNEIText(NEIRecipeInfo recipeInfo, @Nullable String text) {
-        drawNEIText(recipeInfo, text, 10);
-    }
-
-    /**
-     * Draws text on NEI recipe.
-     *
-     * @param yShift y position to shift after this text
-     */
-    public void drawNEIText(NEIRecipeInfo recipeInfo, @Nullable String text, int yShift) {
-        drawNEIText(recipeInfo, text, 10, yShift);
-    }
-
-    /**
-     * Draws text on NEI recipe.
-     *
-     * @param xStart x position to start drawing
-     * @param yShift y position to shift after this text
-     */
-    public void drawNEIText(NEIRecipeInfo recipeInfo, @Nullable String text, int xStart, int yShift) {
-        if (isStringInvalid(text)) return;
-        net.minecraft.client.Minecraft.getMinecraft().fontRenderer
-            .drawString(text, xStart, recipeInfo.yPos, neiTextColorOverride != -1 ? neiTextColorOverride : 0x000000);
-        recipeInfo.yPos += yShift;
-    }
-
-    protected void drawNEITextMultipleLines(NEIRecipeInfo recipeInfo, List<String> texts) {
-        for (String text : texts) {
-            drawNEIText(recipeInfo, text, 10);
         }
     }
 
@@ -386,10 +360,6 @@ public class RecipeMapFrontend {
             0.5f,
             false,
             Alignment.TopLeft);
-    }
-
-    public void updateNEITextColorOverride() {
-        neiTextColorOverride = colorOverride.getTextColorOrDefault("nei", -1);
     }
 
     public static List<Supplier<Float>> splitProgress(Supplier<Float> progress, int... progressbarLengthArray) {

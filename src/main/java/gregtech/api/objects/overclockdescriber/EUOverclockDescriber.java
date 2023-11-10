@@ -8,7 +8,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import com.google.common.primitives.Ints;
 
 import gregtech.GT_Mod;
-import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -29,26 +28,25 @@ public class EUOverclockDescriber extends EUNoOverclockDescriber {
     }
 
     @Override
-    protected void drawEnergyInfoImpl(NEIRecipeInfo recipeInfo, RecipeMapFrontend frontend) {
+    protected void drawEnergyInfoImpl(NEIRecipeInfo recipeInfo) {
         if (!wasOverclocked(recipeInfo.calculator)) {
-            super.drawEnergyInfoImpl(recipeInfo, frontend);
+            super.drawEnergyInfoImpl(recipeInfo);
             return;
         }
 
-        frontend.drawNEIText(recipeInfo, trans("153", "Usage: ") + getEUtDisplay(recipeInfo.calculator));
+        recipeInfo.drawNEIText(trans("153", "Usage: ") + getEUtDisplay(recipeInfo.calculator));
         if (shouldShowAmperage(recipeInfo.calculator)) {
-            frontend.drawNEIText(recipeInfo, trans("154", "Voltage: ") + getVoltageString(recipeInfo.calculator));
+            recipeInfo.drawNEIText(trans("154", "Voltage: ") + getVoltageString(recipeInfo.calculator));
         }
         if (GT_Mod.gregtechproxy.mNEIOriginalVoltage) {
             EUNoOverclockDescriber originalPower = new EUNoOverclockDescriber(tier, amperage);
             GT_OverclockCalculator originalPowerCalculator = GT_OverclockCalculator.ofNoOverclock(recipeInfo.recipe)
                 .calculate();
-            frontend.drawNEIText(
-                recipeInfo,
-                trans("275", "Original usage: ") + originalPower.getEUtDisplay(originalPowerCalculator));
+            recipeInfo
+                .drawNEIText(trans("275", "Original usage: ") + originalPower.getEUtDisplay(originalPowerCalculator));
         }
         if (shouldShowAmperage(recipeInfo.calculator)) {
-            frontend.drawNEIText(recipeInfo, trans("155", "Amperage: ") + getAmperageString(recipeInfo.calculator));
+            recipeInfo.drawNEIText(trans("155", "Amperage: ") + getAmperageString(recipeInfo.calculator));
         }
     }
 

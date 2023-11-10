@@ -7,7 +7,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.SteamVariant;
-import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -42,11 +41,11 @@ public class SteamOverclockDescriber extends OverclockDescriber {
     }
 
     @Override
-    public void drawEnergyInfo(NEIRecipeInfo recipeInfo, RecipeMapFrontend frontend) {
+    public void drawEnergyInfo(NEIRecipeInfo recipeInfo) {
         if (recipeInfo.calculator.getConsumption() <= 0) return;
 
-        frontend.drawNEIText(recipeInfo, trans("152", "Total: ") + getTotalPowerString(recipeInfo.calculator));
-        frontend.drawNEIText(recipeInfo, trans("153", "Usage: ") + getSteamUsageString(recipeInfo.calculator));
+        recipeInfo.drawNEIText(trans("152", "Total: ") + getTotalPowerString(recipeInfo.calculator));
+        recipeInfo.drawNEIText(trans("153", "Usage: ") + getSteamUsageString(recipeInfo.calculator));
     }
 
     private String getTotalPowerString(GT_OverclockCalculator calculator) {

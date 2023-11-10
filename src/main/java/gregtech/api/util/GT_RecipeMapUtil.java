@@ -27,6 +27,7 @@ import cpw.mods.fml.common.Loader;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
 import gregtech.api.interfaces.IRecipeMap;
+import gregtech.api.recipe.RecipeMetadataKey;
 
 /**
  * Define helpers useful in the creation of recipe maps.
@@ -70,7 +71,7 @@ public class GT_RecipeMapUtil {
     /**
      * Set of metadata that work as alias for special values.
      */
-    public static final Set<GT_RecipeBuilder.MetadataIdentifier<Integer>> SPECIAL_VALUE_ALIASES = new HashSet<>();
+    public static final Set<RecipeMetadataKey<Integer>> SPECIAL_VALUE_ALIASES = new HashSet<>();
 
     public static <T> T[] appendArray(T[] arr, T val) {
         T[] newArr = Arrays.copyOf(arr, arr.length + 1);

@@ -6,8 +6,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.Contract;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
@@ -19,6 +23,8 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.recipe.RecipeCategory;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.RecipeMetadataKey;
+import gregtech.api.recipe.RecipeMetadataStorage;
 import gregtech.api.util.extensions.ArrayExt;
 import ic2.core.Ic2Items;
 
@@ -79,6 +85,11 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
      */
     private String[] neiDesc = null;
     /**
+     * Holds a set of metadata for this recipe.
+     */
+    @Nullable
+    private RecipeMetadataStorage metadataStorage;
+    /**
      * Category this recipe belongs to. Recipes belonging to recipemap are forced to have non-null category when added,
      * otherwise it can be null.
      */
@@ -113,11 +124,13 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         reloadOwner();
     }
 
-    // only used for GT_RecipeBuilder. Should not be called otherwise
+    /**
+     * Only for {@link GT_RecipeBuilder}.
+     */
     GT_Recipe(ItemStack[] mInputs, ItemStack[] mOutputs, FluidStack[] mFluidInputs, FluidStack[] mFluidOutputs,
         int[] mChances, Object mSpecialItems, int mDuration, int mEUt, int mSpecialValue, boolean mEnabled,
         boolean mHidden, boolean mFakeRecipe, boolean mCanBeBuffered, boolean mNeedsEmptyOutput, boolean nbtSensitive,
-        String[] neiDesc, RecipeCategory recipeCategory) {
+        String[] neiDesc, RecipeMetadataStorage metadataStorage, RecipeCategory recipeCategory) {
         this.mInputs = mInputs;
         this.mOutputs = mOutputs;
         this.mFluidInputs = mFluidInputs;
@@ -134,6 +147,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         this.mNeedsEmptyOutput = mNeedsEmptyOutput;
         this.isNBTSensitive = nbtSensitive;
         this.neiDesc = neiDesc;
+        this.metadataStorage = metadataStorage;
         this.recipeCategory = recipeCategory;
 
         reloadOwner();
@@ -521,6 +535,39 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         this.neiDesc = neiDesc;
     }
 
+    // region metadata
+
+    /**
+     * Gets metadata associated with this recipe. Can return null. Use {@link #getMetadata(RecipeMetadataKey, Object)}
+     * if you want to specify default value.
+     */
+    @Nullable
+    public <T> T getMetadata(RecipeMetadataKey<T> key) {
+        if (metadataStorage == null) {
+            return null;
+        }
+        return key.cast(metadataStorage.getMetadata(key));
+    }
+
+    /**
+     * Gets metadata associated with this recipe with default value. Does not return null unless default value is null.
+     */
+    @Contract("_, !null -> !null")
+    @Nullable
+    public <T> T getMetadata(RecipeMetadataKey<T> key, @Nullable T defaultValue) {
+        if (metadataStorage == null) {
+            return defaultValue;
+        }
+        return key.cast(metadataStorage.getMetadata(key, defaultValue));
+    }
+
+    @Nullable
+    public RecipeMetadataStorage getMetadataStorage() {
+        return metadataStorage;
+    }
+
+    // endregion
+
     public RecipeCategory getRecipeCategory() {
         return recipeCategory;
     }
@@ -823,11 +870,14 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         ItemStack[][] mOreDictAlt;
 
+        /**
+         * Only for {@link GT_RecipeBuilder}.
+         */
         GT_Recipe_WithAlt(ItemStack[] mInputs, ItemStack[] mOutputs, FluidStack[] mFluidInputs,
             FluidStack[] mFluidOutputs, int[] mChances, Object mSpecialItems, int mDuration, int mEUt,
             int mSpecialValue, boolean mEnabled, boolean mHidden, boolean mFakeRecipe, boolean mCanBeBuffered,
-            boolean mNeedsEmptyOutput, boolean nbtSensitive, String[] neiDesc, RecipeCategory recipeCategory,
-            ItemStack[][] mOreDictAlt) {
+            boolean mNeedsEmptyOutput, boolean nbtSensitive, String[] neiDesc, RecipeMetadataStorage metadataStorage,
+            RecipeCategory recipeCategory, ItemStack[][] mOreDictAlt) {
             super(
                 mInputs,
                 mOutputs,
@@ -845,6 +895,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 mNeedsEmptyOutput,
                 nbtSensitive,
                 neiDesc,
+                metadataStorage,
                 recipeCategory);
             this.mOreDictAlt = mOreDictAlt;
         }
