@@ -1,6 +1,5 @@
 package gregtech.api.ModernMaterials;
 
-import static cpw.mods.fml.common.registry.GameRegistry.findItemStack;
 import static gregtech.api.ModernMaterials.Blocks.Registration.SimpleBlockRegistration.registerSimpleBlock;
 import static gregtech.api.ModernMaterials.Blocks.Registration.SpecialBlockRegistration.registerTESRBlock;
 
@@ -16,11 +15,10 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMaterialItemBlock;
 import gregtech.api.ModernMaterials.Blocks.Registration.BlocksEnum;
 import gregtech.api.ModernMaterials.Fluids.ModernMaterialFluid;
-import gregtech.api.ModernMaterials.PartProperties.Rendering.ModernMaterialItemRenderer;
-import gregtech.api.ModernMaterials.PartRecipeGenerators.ModernMaterialsPlateRecipeGenerator;
-import gregtech.api.ModernMaterials.PartsClasses.IEnumPart;
-import gregtech.api.ModernMaterials.PartsClasses.ItemsEnum;
-import gregtech.api.ModernMaterials.PartsClasses.MaterialPart;
+import gregtech.api.ModernMaterials.Items.PartProperties.ModernMaterialItemRenderer;
+import gregtech.api.ModernMaterials.RecipeGenerators.ModernMaterialsPlateRecipeGenerator;
+import gregtech.api.ModernMaterials.Items.PartsClasses.ItemsEnum;
+import gregtech.api.ModernMaterials.Items.PartsClasses.MaterialPart;
 import org.jetbrains.annotations.NotNull;
 
 public class ModernMaterialUtilities {
@@ -102,11 +100,6 @@ public class ModernMaterialUtilities {
 
         return itemStack;
     }*/
-
-    // Item damage values are material IDs.
-    public static ModernMaterial getMaterialFromItemStack(ItemStack itemStack) { // Todo rework for blocks
-        return materialIDToMaterial.get(itemStack.getItemDamage());
-    }
 
     public static ModernMaterial getMaterialFromName(final String materialName) {
 

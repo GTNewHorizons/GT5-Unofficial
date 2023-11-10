@@ -1,4 +1,4 @@
-package gregtech.api.ModernMaterials.PartRecipeGenerators;
+package gregtech.api.ModernMaterials.RecipeGenerators;
 
 import gregtech.api.ModernMaterials.ModernMaterial;
 import gregtech.api.ModernMaterials.ModernMaterialUtilities;

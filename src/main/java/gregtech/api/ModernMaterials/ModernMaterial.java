@@ -1,15 +1,14 @@
 package gregtech.api.ModernMaterials;
 
 import static gregtech.api.ModernMaterials.ModernMaterialUtilities.registerMaterial;
-import static gregtech.api.ModernMaterials.PartProperties.Textures.TextureType.Metallic;
+import static gregtech.api.ModernMaterials.Items.PartProperties.TextureType.Metallic;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import gregtech.api.ModernMaterials.PartRecipeGenerators.BaseRecipeGenerator;
+import gregtech.api.ModernMaterials.RecipeGenerators.BaseRecipeGenerator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.item.Item;
 import net.minecraftforge.client.IItemRenderer;
 
 import org.jetbrains.annotations.NotNull;
@@ -17,10 +16,10 @@ import org.jetbrains.annotations.NotNull;
 import gregtech.api.ModernMaterials.Blocks.Registration.BlocksEnum;
 import gregtech.api.ModernMaterials.Fluids.FluidEnum;
 import gregtech.api.ModernMaterials.Fluids.ModernMaterialFluid;
-import gregtech.api.ModernMaterials.PartProperties.Textures.TextureType;
-import gregtech.api.ModernMaterials.PartsClasses.CustomPartInfo;
-import gregtech.api.ModernMaterials.PartsClasses.IEnumPart;
-import gregtech.api.ModernMaterials.PartsClasses.ItemsEnum;
+import gregtech.api.ModernMaterials.Items.PartProperties.TextureType;
+import gregtech.api.ModernMaterials.Items.PartsClasses.CustomPartInfo;
+import gregtech.api.ModernMaterials.Items.PartsClasses.IEnumPart;
+import gregtech.api.ModernMaterials.Items.PartsClasses.ItemsEnum;
 
 @SuppressWarnings("unused")
 public final class ModernMaterial {
@@ -34,6 +33,7 @@ public final class ModernMaterial {
     private double materialTimeMultiplier = 1;
     private TextureType textureType = Metallic;
     private BaseRecipeGenerator recipeGenerator;
+    private IItemRenderer customItemRenderer;
 
     public ModernMaterial(final String materialName) {
         this.materialName = materialName;
@@ -77,6 +77,10 @@ public final class ModernMaterial {
     public void registerRecipes(ModernMaterial material) {
         if (recipeGenerator == null) return;
         recipeGenerator.generateRecipes(material);
+    }
+
+    public IItemRenderer getCustomItemRenderer() {
+        return customItemRenderer;
     }
 
     public static class ModernMaterialBuilder {
@@ -195,6 +199,10 @@ public final class ModernMaterial {
             return this;
         }
 
+        public ModernMaterialBuilder setCustomItemRenderer(IItemRenderer customItemRenderer) {
+            materialToBuild.customItemRenderer = customItemRenderer;
+            return this;
+        }
     }
 
     @Override

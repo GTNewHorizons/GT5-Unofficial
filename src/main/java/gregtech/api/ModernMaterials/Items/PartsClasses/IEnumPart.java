@@ -1,4 +1,4 @@
-package gregtech.api.ModernMaterials.PartsClasses;
+package gregtech.api.ModernMaterials.Items.PartsClasses;
 
 import java.util.HashMap;
 import java.util.HashSet;

@@ -1,4 +1,4 @@
-package gregtech.api.ModernMaterials.PartsClasses;
+package gregtech.api.ModernMaterials.Items.PartsClasses;
 
 import static gregtech.api.ModernMaterials.ModernMaterialUtilities.*;
 

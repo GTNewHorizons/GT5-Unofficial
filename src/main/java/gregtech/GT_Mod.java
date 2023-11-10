@@ -4,7 +4,7 @@ import static gregtech.GT_Version.*;
 import static gregtech.api.GregTech_API.registerCircuitProgrammer;
 import static gregtech.api.ModernMaterials.ModernMaterialUtilities.registerAllMaterialsBlocks;
 import static gregtech.api.ModernMaterials.ModernMaterialUtilities.registerAllMaterialsFluids;
-import static gregtech.api.ModernMaterials.PartRecipeGenerators.Utility.registerAllMaterialsRecipes;
+import static gregtech.api.ModernMaterials.RecipeGenerators.Utility.registerAllMaterialsRecipes;
 import static gregtech.api.enums.Mods.Forestry;
 
 import java.io.PrintWriter;

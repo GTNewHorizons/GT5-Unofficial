@@ -14,10 +14,9 @@ import net.minecraftforge.client.event.TextureStitchEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.ModernMaterials.Blocks.BlockTypes.FrameBox.Special.CustomTextureRegister;
 import gregtech.api.ModernMaterials.Fluids.FluidEnum;
-import gregtech.api.ModernMaterials.PartProperties.Rendering.IconWrapper;
-import gregtech.api.ModernMaterials.PartProperties.Textures.TextureType;
-import gregtech.api.ModernMaterials.PartsClasses.ItemsEnum;
-import net.minecraftforge.fluids.Fluid;
+import gregtech.api.ModernMaterials.Items.PartProperties.IconWrapper;
+import gregtech.api.ModernMaterials.Items.PartProperties.TextureType;
+import gregtech.api.ModernMaterials.Items.PartsClasses.ItemsEnum;
 
 public class ModernMaterialsTextureRegister {
 

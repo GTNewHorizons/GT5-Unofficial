@@ -1,8 +1,8 @@
-package gregtech.api.ModernMaterials.PartsClasses;
+package gregtech.api.ModernMaterials.Items.PartsClasses;
 
 import org.jetbrains.annotations.NotNull;
 
-import gregtech.api.ModernMaterials.PartProperties.Textures.TextureType;
+import gregtech.api.ModernMaterials.Items.PartProperties.TextureType;
 
 public class CustomPartInfo {
 

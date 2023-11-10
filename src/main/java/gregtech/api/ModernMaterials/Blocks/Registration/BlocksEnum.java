@@ -5,7 +5,6 @@ import java.util.HashSet;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.client.IItemRenderer;
@@ -20,7 +19,7 @@ import gregtech.api.ModernMaterials.Blocks.BlockTypes.OreNormal.NormalOreSimpleB
 import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMaterialBlock;
 import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMaterialTileEntity;
 import gregtech.api.ModernMaterials.ModernMaterial;
-import gregtech.api.ModernMaterials.PartsClasses.IEnumPart;
+import gregtech.api.ModernMaterials.Items.PartsClasses.IEnumPart;
 
 /**
  * Enum representation of block types with their associated details and materials.

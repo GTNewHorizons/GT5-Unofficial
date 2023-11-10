@@ -5,17 +5,16 @@ import static gregtech.api.ModernMaterials.Fluids.FluidEnum.Molten;
 import static gregtech.api.ModernMaterials.Fluids.FluidEnum.NoPrefix;
 import static gregtech.api.ModernMaterials.Fluids.FluidEnum.Plasma;
 import static gregtech.api.ModernMaterials.ModernMaterialUtilities.registerAllMaterialsItems;
-import static gregtech.api.ModernMaterials.PartProperties.Textures.TextureType.Metallic;
+import static gregtech.api.ModernMaterials.Items.PartProperties.TextureType.Metallic;
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import gregtech.api.ModernMaterials.Blocks.BlockTypes.FrameBox.Special.UniversiumFrameBlockRenderer;
 import gregtech.api.ModernMaterials.Blocks.BlockTypes.FrameBox.Special.UniversiumFrameItemRenderer;
 import gregtech.api.ModernMaterials.Blocks.Registration.BlocksEnum;
 import gregtech.api.ModernMaterials.Fluids.ModernMaterialFluid;
-import gregtech.api.ModernMaterials.PartRecipeGenerators.Metal;
+import gregtech.api.ModernMaterials.Items.PartProperties.CustomItemRenderers.UniversiumItemRenderer;
+import gregtech.api.ModernMaterials.RecipeGenerators.Metal;
 import gregtech.api.enums.TierEU;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.ResourceLocation;
 
 public class ModernMaterialsRegistration {
 
@@ -46,10 +45,6 @@ public class ModernMaterialsRegistration {
         new ModernMaterial.ModernMaterialBuilder("EWAD").setMaterialID(16)
             .setColor(120, 100, 123)
             .setTextureMode(Metallic)
-            .setCustomBlockRenderer(
-                BlocksEnum.FrameBox,
-                new UniversiumFrameItemRenderer(),
-                new UniversiumFrameBlockRenderer())
             .addAllParts()
             .addFluid(Gas, 1_000)
             .addFluid(NoPrefix, 3_000)
@@ -57,13 +52,15 @@ public class ModernMaterialsRegistration {
             .addFluid(Plasma, 100_000)
             .build();
 
-        new ModernMaterial.ModernMaterialBuilder("TEST").setColor(120, 2, 0)
+        new ModernMaterial.ModernMaterialBuilder("Universium")
+            .setColor(255, 255, 255)
             .setMaterialID(17)
             .setTextureMode(Metallic)
             .setCustomBlockRenderer(
                 BlocksEnum.FrameBox,
                 new UniversiumFrameItemRenderer(),
                 new UniversiumFrameBlockRenderer())
+            .setCustomItemRenderer(new UniversiumItemRenderer())
             .setRecipeGenerator(new Metal())
             .addAllParts()
             .addFluid(Gas, 1_000)

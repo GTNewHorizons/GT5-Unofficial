@@ -1,9 +1,9 @@
-package gregtech.api.ModernMaterials.PartProperties.Rendering;
+package gregtech.api.ModernMaterials.Items.PartProperties;
 
 import gregtech.api.ModernMaterials.ModernMaterial;
-import gregtech.api.ModernMaterials.PartsClasses.CustomPartInfo;
-import gregtech.api.ModernMaterials.PartsClasses.ItemsEnum;
-import gregtech.api.ModernMaterials.PartsClasses.MaterialPart;
+import gregtech.api.ModernMaterials.Items.PartsClasses.CustomPartInfo;
+import gregtech.api.ModernMaterials.Items.PartsClasses.ItemsEnum;
+import gregtech.api.ModernMaterials.Items.PartsClasses.MaterialPart;
 import gregtech.common.render.GT_RenderUtil;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Tessellator;
@@ -15,7 +15,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.Color;
 
-import static gregtech.api.ModernMaterials.ModernMaterialUtilities.getMaterialFromItemStack;
+import static gregtech.api.ModernMaterials.ModernMaterialUtilities.materialIDToMaterial;
 import static org.lwjgl.opengl.GL11.GL_CURRENT_BIT;
 
 public class ModernMaterialItemRenderer implements IItemRenderer {
@@ -48,12 +48,23 @@ public class ModernMaterialItemRenderer implements IItemRenderer {
         }
     }
 
+    // Item damage values are material IDs.
+    public static ModernMaterial getMaterialFromItemStack(ItemStack itemStack) { // Todo rework for blocks
+        return materialIDToMaterial.get(itemStack.getItemDamage());
+    }
+
     @Override
     public void renderItem(ItemRenderType type, ItemStack itemStack, Object... objects) {
 
         if (!(itemStack.getItem() instanceof MaterialPart materialPart)) return;
 
         ModernMaterial material = getMaterialFromItemStack(itemStack);
+
+        // Branch off to custom logic.
+        if (material.getCustomItemRenderer() != null) {
+            material.getCustomItemRenderer().renderItem(type, itemStack, objects);
+            return;
+        }
 
         Color materialColor = material.getColor();
 
@@ -90,7 +101,7 @@ public class ModernMaterialItemRenderer implements IItemRenderer {
         GL11.glPopMatrix();
     }
 
-    private void renderLayer(IIcon icon, ItemRenderType renderType) {
+    public static void renderLayer(IIcon icon, ItemRenderType renderType) {
         if (renderType.equals(ItemRenderType.INVENTORY)) {
             GT_RenderUtil.renderItemIcon(icon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
         } else {

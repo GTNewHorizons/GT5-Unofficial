@@ -1,4 +1,4 @@
-package gregtech.api.ModernMaterials.PartProperties.Rendering;
+package gregtech.api.ModernMaterials.Items.PartProperties;
 
 import net.minecraft.util.IIcon;
 

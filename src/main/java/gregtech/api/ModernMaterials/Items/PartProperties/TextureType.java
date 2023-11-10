@@ -1,11 +1,10 @@
-package gregtech.api.ModernMaterials.PartProperties.Textures;
+package gregtech.api.ModernMaterials.Items.PartProperties;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 
-import gregtech.api.ModernMaterials.PartProperties.Rendering.IconWrapper;
-import gregtech.api.ModernMaterials.PartsClasses.ItemsEnum;
+import gregtech.api.ModernMaterials.Items.PartsClasses.ItemsEnum;
 
 public enum TextureType {
 
