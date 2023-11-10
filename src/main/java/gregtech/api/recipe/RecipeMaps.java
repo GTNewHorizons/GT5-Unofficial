@@ -37,6 +37,7 @@ import gregtech.api.recipe.maps.FormingPressBackend;
 import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.api.recipe.maps.FurnaceBackend;
 import gregtech.api.recipe.maps.LargeBoilerFuelBackend;
+import gregtech.api.recipe.maps.LargeBoilerFuelFrontend;
 import gregtech.api.recipe.maps.LargeNEIFrontend;
 import gregtech.api.recipe.maps.MaceratorBackend;
 import gregtech.api.recipe.maps.MicrowaveBackend;
@@ -1104,6 +1105,7 @@ public final class RecipeMaps {
         .maxIO(1, 1, 0, 0)
         .minInputs(1, 0)
         .disableOptimize()
+        .frontend(LargeBoilerFuelFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> nanoForgeRecipes = RecipeMapBuilder.of("gt.recipe.nanoforge")
         .maxIO(6, 2, 3, 0)
