@@ -36,11 +36,11 @@
 dependencies {
     api("com.github.GTNewHorizons:StructureLib:1.2.9:dev")
     api("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
-    api("com.github.GTNewHorizons:NotEnoughItems:2.4.11-GTNH:dev")
+    api("com.github.GTNewHorizons:NotEnoughItems:2.4.12-GTNH:dev")
     api("com.github.GTNewHorizons:GTNHLib:0.0.13:dev")
     api("com.github.GTNewHorizons:ModularUI:1.1.22:dev")
     api("com.github.GTNewHorizons:waila:1.6.2:dev")
-    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-279-GTNH:dev")
+    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-280-GTNH:dev")
     api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.1.63-gtnh:dev")
 
     implementation("com.github.GTNewHorizons:Avaritia:1.46:dev")
