@@ -9,7 +9,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.util.StatCollector;
 
 import gregtech.api.util.MethodsReturnNonnullByDefault;
-import gregtech.nei.NEIRecipeInfo;
+import gregtech.nei.RecipeDisplayInfo;
 
 /**
  * Simple formatter for recipe's special value.
@@ -39,7 +39,7 @@ public class SimpleSpecialValueFormatter implements INEISpecialInfoFormatter {
     }
 
     @Override
-    public List<String> format(NEIRecipeInfo recipeInfo) {
+    public List<String> format(RecipeDisplayInfo recipeInfo) {
         return Collections.singletonList(
             StatCollector.translateToLocalFormatted(formatter, recipeInfo.recipe.mSpecialValue * multiplier));
     }

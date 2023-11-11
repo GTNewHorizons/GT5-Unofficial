@@ -12,7 +12,7 @@ import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
-import gregtech.nei.NEIRecipeInfo;
+import gregtech.nei.RecipeDisplayInfo;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -28,25 +28,25 @@ public class EUOverclockDescriber extends EUNoOverclockDescriber {
     }
 
     @Override
-    protected void drawEnergyInfoImpl(NEIRecipeInfo recipeInfo) {
+    protected void drawEnergyInfoImpl(RecipeDisplayInfo recipeInfo) {
         if (!wasOverclocked(recipeInfo.calculator)) {
             super.drawEnergyInfoImpl(recipeInfo);
             return;
         }
 
-        recipeInfo.drawNEIText(trans("153", "Usage: ") + getEUtDisplay(recipeInfo.calculator));
+        recipeInfo.drawText(trans("153", "Usage: ") + getEUtDisplay(recipeInfo.calculator));
         if (shouldShowAmperage(recipeInfo.calculator)) {
-            recipeInfo.drawNEIText(trans("154", "Voltage: ") + getVoltageString(recipeInfo.calculator));
+            recipeInfo.drawText(trans("154", "Voltage: ") + getVoltageString(recipeInfo.calculator));
         }
         if (GT_Mod.gregtechproxy.mNEIOriginalVoltage) {
             EUNoOverclockDescriber originalPower = new EUNoOverclockDescriber(tier, amperage);
             GT_OverclockCalculator originalPowerCalculator = GT_OverclockCalculator.ofNoOverclock(recipeInfo.recipe)
                 .calculate();
             recipeInfo
-                .drawNEIText(trans("275", "Original usage: ") + originalPower.getEUtDisplay(originalPowerCalculator));
+                .drawText(trans("275", "Original usage: ") + originalPower.getEUtDisplay(originalPowerCalculator));
         }
         if (shouldShowAmperage(recipeInfo.calculator)) {
-            recipeInfo.drawNEIText(trans("155", "Amperage: ") + getAmperageString(recipeInfo.calculator));
+            recipeInfo.drawText(trans("155", "Amperage: ") + getAmperageString(recipeInfo.calculator));
         }
     }
 

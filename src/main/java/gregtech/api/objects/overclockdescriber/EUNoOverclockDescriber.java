@@ -8,7 +8,7 @@ import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
-import gregtech.nei.NEIRecipeInfo;
+import gregtech.nei.RecipeDisplayInfo;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -38,10 +38,10 @@ public class EUNoOverclockDescriber extends OverclockDescriber {
     }
 
     @Override
-    public final void drawEnergyInfo(NEIRecipeInfo recipeInfo) {
+    public final void drawEnergyInfo(RecipeDisplayInfo recipeInfo) {
         if (recipeInfo.calculator.getConsumption() <= 0) return;
 
-        recipeInfo.drawNEIText(trans("152", "Total: ") + getTotalPowerString(recipeInfo.calculator));
+        recipeInfo.drawText(trans("152", "Total: ") + getTotalPowerString(recipeInfo.calculator));
         drawEnergyInfoImpl(recipeInfo);
     }
 
@@ -49,11 +49,11 @@ public class EUNoOverclockDescriber extends OverclockDescriber {
      * Override this to draw custom info about the energy this object can handle on NEI recipe GUI, minus total
      * power usage.
      */
-    protected void drawEnergyInfoImpl(NEIRecipeInfo recipeInfo) {
-        recipeInfo.drawNEIText(trans("153", "Usage: ") + getEUtDisplay(recipeInfo.calculator));
+    protected void drawEnergyInfoImpl(RecipeDisplayInfo recipeInfo) {
+        recipeInfo.drawText(trans("153", "Usage: ") + getEUtDisplay(recipeInfo.calculator));
         if (shouldShowAmperage(recipeInfo.calculator)) {
-            recipeInfo.drawNEIText(trans("154", "Voltage: ") + getVoltageString(recipeInfo.calculator));
-            recipeInfo.drawNEIText(trans("155", "Amperage: ") + getAmperageString(recipeInfo.calculator));
+            recipeInfo.drawText(trans("154", "Voltage: ") + getVoltageString(recipeInfo.calculator));
+            recipeInfo.drawText(trans("155", "Amperage: ") + getAmperageString(recipeInfo.calculator));
         }
     }
 

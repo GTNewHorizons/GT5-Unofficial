@@ -9,7 +9,7 @@ import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
-import gregtech.nei.NEIRecipeInfo;
+import gregtech.nei.RecipeDisplayInfo;
 
 /**
  * Provides an overclock behavior that will run on machines with the ability to draw information about it on NEI.
@@ -55,9 +55,9 @@ public abstract class OverclockDescriber {
     /**
      * Draws info about the energy this object can handle on NEI recipe GUI.
      */
-    public abstract void drawEnergyInfo(NEIRecipeInfo recipeInfo);
+    public abstract void drawEnergyInfo(RecipeDisplayInfo recipeInfo);
 
-    public void drawDurationInfo(NEIRecipeInfo recipeInfo) {
+    public void drawDurationInfo(RecipeDisplayInfo recipeInfo) {
         if (getDurationTicks(recipeInfo.calculator) <= 0) return;
 
         String textToDraw = trans("158", "Time: ");
@@ -69,7 +69,7 @@ public abstract class OverclockDescriber {
         } else {
             textToDraw += getDurationStringTicks(recipeInfo.calculator);
         }
-        recipeInfo.drawNEIText(textToDraw);
+        recipeInfo.drawText(textToDraw);
     }
 
     /**

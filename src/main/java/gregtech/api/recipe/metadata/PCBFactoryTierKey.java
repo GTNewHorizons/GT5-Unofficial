@@ -7,7 +7,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
-import gregtech.nei.NEIRecipeInfo;
+import gregtech.nei.RecipeDisplayInfo;
 
 /**
  * Minimum tier required for the PCB factory recipe.
@@ -23,8 +23,8 @@ public class PCBFactoryTierKey extends RecipeMetadataKey<Integer> {
     }
 
     @Override
-    public void drawInfo(NEIRecipeInfo recipeInfo, @Nullable Object value) {
+    public void drawInfo(RecipeDisplayInfo recipeInfo, @Nullable Object value) {
         int tier = cast(value, 1);
-        recipeInfo.drawNEIText(trans("336", "PCB Factory Tier: ") + tier);
+        recipeInfo.drawText(trans("336", "PCB Factory Tier: ") + tier);
     }
 }

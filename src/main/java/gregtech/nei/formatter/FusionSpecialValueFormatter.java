@@ -10,7 +10,7 @@ import net.minecraft.util.StatCollector;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
-import gregtech.nei.NEIRecipeInfo;
+import gregtech.nei.RecipeDisplayInfo;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -20,7 +20,7 @@ public class FusionSpecialValueFormatter implements INEISpecialInfoFormatter {
     private static final long M = 1000000;
 
     @Override
-    public List<String> format(NEIRecipeInfo recipeInfo) {
+    public List<String> format(RecipeDisplayInfo recipeInfo) {
         int euToStart = recipeInfo.recipe.mSpecialValue;
         int voltage = recipeInfo.recipe.mEUt;
         int tier = getFusionTier(euToStart, voltage);

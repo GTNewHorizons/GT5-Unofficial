@@ -10,7 +10,7 @@ import net.minecraft.util.StatCollector;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
-import gregtech.nei.NEIRecipeInfo;
+import gregtech.nei.RecipeDisplayInfo;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -19,7 +19,7 @@ public class HeatingCoilSpecialValueFormatter implements INEISpecialInfoFormatte
     public static final HeatingCoilSpecialValueFormatter INSTANCE = new HeatingCoilSpecialValueFormatter();
 
     @Override
-    public List<String> format(NEIRecipeInfo recipeInfo) {
+    public List<String> format(RecipeDisplayInfo recipeInfo) {
         int heat = recipeInfo.recipe.mSpecialValue;
         return Collections.singletonList(
             StatCollector.translateToLocalFormatted(

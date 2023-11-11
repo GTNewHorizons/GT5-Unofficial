@@ -11,7 +11,7 @@ import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
-import gregtech.nei.NEIRecipeInfo;
+import gregtech.nei.RecipeDisplayInfo;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -41,11 +41,11 @@ public class SteamOverclockDescriber extends OverclockDescriber {
     }
 
     @Override
-    public void drawEnergyInfo(NEIRecipeInfo recipeInfo) {
+    public void drawEnergyInfo(RecipeDisplayInfo recipeInfo) {
         if (recipeInfo.calculator.getConsumption() <= 0) return;
 
-        recipeInfo.drawNEIText(trans("152", "Total: ") + getTotalPowerString(recipeInfo.calculator));
-        recipeInfo.drawNEIText(trans("153", "Usage: ") + getSteamUsageString(recipeInfo.calculator));
+        recipeInfo.drawText(trans("152", "Total: ") + getTotalPowerString(recipeInfo.calculator));
+        recipeInfo.drawText(trans("153", "Usage: ") + getSteamUsageString(recipeInfo.calculator));
     }
 
     private String getTotalPowerString(GT_OverclockCalculator calculator) {

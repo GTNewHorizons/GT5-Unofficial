@@ -7,7 +7,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
-import gregtech.nei.NEIRecipeInfo;
+import gregtech.nei.RecipeDisplayInfo;
 
 /**
  * If bio upgrade is required for the PCB factory recipe.
@@ -23,10 +23,10 @@ public class PCBFactoryUpgradeKey extends RecipeMetadataKey<PCBFactoryUpgrade> {
     }
 
     @Override
-    public void drawInfo(NEIRecipeInfo recipeInfo, @Nullable Object value) {
+    public void drawInfo(RecipeDisplayInfo recipeInfo, @Nullable Object value) {
         PCBFactoryUpgrade upgrade = cast(value);
         if (upgrade == PCBFactoryUpgrade.BIO) {
-            recipeInfo.drawNEIText(trans("337", "Upgrade Required: ") + trans("338", "Bio"));
+            recipeInfo.drawText(trans("337", "Upgrade Required: ") + trans("338", "Bio"));
         }
     }
 }

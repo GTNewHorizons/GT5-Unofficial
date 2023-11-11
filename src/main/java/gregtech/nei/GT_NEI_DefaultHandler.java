@@ -423,11 +423,10 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
             recipe);
         calculator.calculate();
 
-        frontend.drawNEIDescription(
-            new NEIRecipeInfo(
+        frontend.drawDescription(
+            new RecipeDisplayInfo(
                 recipe,
                 recipeMap,
-                cachedRecipe,
                 overclockDescriber,
                 calculator,
                 getDescriptionYOffset(),

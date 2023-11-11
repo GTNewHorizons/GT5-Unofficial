@@ -5,18 +5,24 @@ import static gregtech.api.util.GT_Utility.isStringInvalid;
 import java.util.List;
 
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.Minecraft;
 
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.util.FieldsAreNonnullByDefault;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.MethodsReturnNonnullByDefault;
 
 /**
  * Holds info used for drawing descriptions on NEI.
  */
-public class NEIRecipeInfo {
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
+@FieldsAreNonnullByDefault
+public class RecipeDisplayInfo {
 
     /**
      * Recipe to show description.
@@ -27,11 +33,6 @@ public class NEIRecipeInfo {
      * RecipeMap the recipe belongs to.
      */
     public final RecipeMap<?> recipeMap;
-
-    /**
-     * Recipe object for NEI.
-     */
-    public final GT_NEI_DefaultHandler.CachedDefaultRecipe neiCachedRecipe;
 
     /**
      * When user looks up usage for machine, NEI will show all the recipes that the machine can process, taking tier of
@@ -47,51 +48,52 @@ public class NEIRecipeInfo {
     /**
      * Current Y position for drawing description.
      */
-    public int yPos;
+    private int yPos;
 
     private final int neiTextColorOverride;
 
-    NEIRecipeInfo(GT_Recipe recipe, RecipeMap<?> recipeMap, GT_NEI_DefaultHandler.CachedDefaultRecipe neiCachedRecipe,
-        OverclockDescriber overclockDescriber, GT_OverclockCalculator calculator, int descriptionYOffset,
-        int neiTextColorOverride) {
+    RecipeDisplayInfo(GT_Recipe recipe, RecipeMap<?> recipeMap, OverclockDescriber overclockDescriber,
+        GT_OverclockCalculator calculator, int descriptionYOffset, int neiTextColorOverride) {
         this.recipe = recipe;
         this.recipeMap = recipeMap;
-        this.neiCachedRecipe = neiCachedRecipe;
         this.overclockDescriber = overclockDescriber;
         this.calculator = calculator;
         this.yPos = descriptionYOffset;
         this.neiTextColorOverride = neiTextColorOverride;
     }
 
-    public void drawNEIText(@Nullable String text) {
-        drawNEIText(text, 10);
+    /**
+     * Draws text.
+     */
+    public void drawText(@Nullable String text) {
+        drawText(text, 10);
     }
 
     /**
-     * Draws text on NEI recipe.
+     * Draws text.
      *
      * @param yShift y position to shift after this text
      */
-    public void drawNEIText(@Nullable String text, int yShift) {
-        drawNEIText(text, 5, yShift);
+    public void drawText(@Nullable String text, int yShift) {
+        drawText(text, 5, yShift);
     }
 
     /**
-     * Draws text on NEI recipe.
+     * Draws text.
      *
      * @param xStart x position to start drawing
      * @param yShift y position to shift after this text
      */
-    public void drawNEIText(@Nullable String text, int xStart, int yShift) {
+    public void drawText(@Nullable String text, int xStart, int yShift) {
         if (isStringInvalid(text)) return;
         Minecraft.getMinecraft().fontRenderer
             .drawString(text, xStart, yPos, neiTextColorOverride != -1 ? neiTextColorOverride : 0x000000);
         yPos += yShift;
     }
 
-    public void drawNEITextMultipleLines(List<String> texts) {
+    public void drawTextMultipleLines(List<String> texts) {
         for (String text : texts) {
-            drawNEIText(text, 10);
+            drawText(text, 10);
         }
     }
 }

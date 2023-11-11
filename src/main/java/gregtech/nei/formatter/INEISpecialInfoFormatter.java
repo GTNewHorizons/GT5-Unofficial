@@ -5,7 +5,7 @@ import java.util.List;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import gregtech.api.util.MethodsReturnNonnullByDefault;
-import gregtech.nei.NEIRecipeInfo;
+import gregtech.nei.RecipeDisplayInfo;
 
 /**
  * Getter for description for {@link gregtech.api.util.GT_Recipe#mSpecialValue} etc. that will be drawn on NEI.
@@ -20,5 +20,5 @@ public interface INEISpecialInfoFormatter {
      *                   {@code recipeInfo.recipe.mSpecialValue}.
      * @return List of strings containing info for special value etc.
      */
-    List<String> format(NEIRecipeInfo recipeInfo);
+    List<String> format(RecipeDisplayInfo recipeInfo);
 }

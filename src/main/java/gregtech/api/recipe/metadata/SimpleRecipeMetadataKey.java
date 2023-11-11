@@ -5,7 +5,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
-import gregtech.nei.NEIRecipeInfo;
+import gregtech.nei.RecipeDisplayInfo;
 
 /**
  * Simple metadata key that does not draw anything on NEI.
@@ -23,5 +23,5 @@ public class SimpleRecipeMetadataKey<T> extends RecipeMetadataKey<T> {
     }
 
     @Override
-    public void drawInfo(NEIRecipeInfo recipeInfo, @Nullable Object value) {}
+    public void drawInfo(RecipeDisplayInfo recipeInfo, @Nullable Object value) {}
 }

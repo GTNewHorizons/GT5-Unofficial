@@ -6,7 +6,7 @@ import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
-import gregtech.nei.NEIRecipeInfo;
+import gregtech.nei.RecipeDisplayInfo;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -18,8 +18,8 @@ public class LargeBoilerFuelFrontend extends RecipeMapFrontend {
     }
 
     @Override
-    protected void drawNEIEnergyInfo(NEIRecipeInfo recipeInfo) {}
+    protected void drawEnergyInfo(RecipeDisplayInfo recipeInfo) {}
 
     @Override
-    protected void drawNEIDurationInfo(NEIRecipeInfo recipeInfo) {}
+    protected void drawDurationInfo(RecipeDisplayInfo recipeInfo) {}
 }

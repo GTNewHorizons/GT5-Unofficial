@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Contract;
 
 import gregtech.api.util.FieldsAreNonnullByDefault;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
-import gregtech.nei.NEIRecipeInfo;
+import gregtech.nei.RecipeDisplayInfo;
 
 /**
  * Unique key for the {@link RecipeMetadataStorage}. It's also responsible for drawing metadata info on NEI.
@@ -44,7 +44,7 @@ public abstract class RecipeMetadataKey<T> {
      * @param recipeInfo Object to use for drawing text.
      * @param value      Metadata stored in the recipe. Can be safely {@link #cast}ed to the desired type.
      */
-    public abstract void drawInfo(NEIRecipeInfo recipeInfo, @Nullable Object value);
+    public abstract void drawInfo(RecipeDisplayInfo recipeInfo, @Nullable Object value);
 
     @Nullable
     public T cast(@Nullable Object o) {

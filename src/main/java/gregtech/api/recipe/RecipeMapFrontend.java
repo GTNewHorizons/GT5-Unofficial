@@ -38,10 +38,11 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.nei.GT_NEI_DefaultHandler;
-import gregtech.nei.NEIRecipeInfo;
+import gregtech.nei.RecipeDisplayInfo;
 
 /**
- * Responsible for managing GUI tied to recipemap. GUI can be NEI or basic machine.
+ * Responsible for managing GUI tied to recipemap. It has two property objects, {@link NEIRecipeProperties} and
+ * {@link BasicUIProperties}. The former is only for NEI display, while the latter is for both NEI and basic machine.
  */
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -203,34 +204,34 @@ public class RecipeMapFrontend {
         return UIHelper.getFluidOutputPositions(fluidOutputCount);
     }
 
-    public void drawNEIDescription(NEIRecipeInfo recipeInfo) {
-        drawNEIEnergyInfo(recipeInfo);
-        drawNEIDurationInfo(recipeInfo);
-        drawNEISpecialInfo(recipeInfo);
-        drawNEIMetadataInfo(recipeInfo);
-        drawNEIRecipeOwnerInfo(recipeInfo);
+    public void drawDescription(RecipeDisplayInfo recipeInfo) {
+        drawEnergyInfo(recipeInfo);
+        drawDurationInfo(recipeInfo);
+        drawSpecialInfo(recipeInfo);
+        drawMetadataInfo(recipeInfo);
+        drawRecipeOwnerInfo(recipeInfo);
     }
 
-    protected void drawNEIEnergyInfo(NEIRecipeInfo recipeInfo) {
+    protected void drawEnergyInfo(RecipeDisplayInfo recipeInfo) {
         recipeInfo.overclockDescriber.drawEnergyInfo(recipeInfo);
     }
 
-    protected void drawNEIDurationInfo(NEIRecipeInfo recipeInfo) {
+    protected void drawDurationInfo(RecipeDisplayInfo recipeInfo) {
         recipeInfo.overclockDescriber.drawDurationInfo(recipeInfo);
     }
 
-    protected void drawNEISpecialInfo(NEIRecipeInfo recipeInfo) {
+    protected void drawSpecialInfo(RecipeDisplayInfo recipeInfo) {
         String[] recipeDesc = recipeInfo.recipe.getNeiDesc();
         if (recipeDesc != null) {
             for (String s : recipeDesc) {
-                recipeInfo.drawNEIText(s);
+                recipeInfo.drawText(s);
             }
         } else {
-            recipeInfo.drawNEITextMultipleLines(neiProperties.neiSpecialInfoFormatter.format(recipeInfo));
+            recipeInfo.drawTextMultipleLines(neiProperties.neiSpecialInfoFormatter.format(recipeInfo));
         }
     }
 
-    protected void drawNEIMetadataInfo(NEIRecipeInfo recipeInfo) {
+    protected void drawMetadataInfo(RecipeDisplayInfo recipeInfo) {
         RecipeMetadataStorage metadataStorage = recipeInfo.recipe.getMetadataStorage();
         if (metadataStorage != null) {
             for (Map.Entry<RecipeMetadataKey<?>, Object> entry : metadataStorage.getEntries()) {
@@ -240,22 +241,22 @@ public class RecipeMapFrontend {
         }
     }
 
-    protected void drawNEIRecipeOwnerInfo(NEIRecipeInfo recipeInfo) {
+    protected void drawRecipeOwnerInfo(RecipeDisplayInfo recipeInfo) {
         GT_Recipe recipe = recipeInfo.recipe;
         if (GT_Mod.gregtechproxy.mNEIRecipeOwner) {
             if (recipe.owners.size() > 1) {
-                recipeInfo.drawNEIText(
+                recipeInfo.drawText(
                     EnumChatFormatting.ITALIC + trans("273", "Original Recipe by: ")
                         + recipe.owners.get(0)
                             .getName());
                 for (int i = 1; i < recipe.owners.size(); i++) {
-                    recipeInfo.drawNEIText(
+                    recipeInfo.drawText(
                         EnumChatFormatting.ITALIC + trans("274", "Modified by: ")
                             + recipe.owners.get(i)
                                 .getName());
                 }
             } else if (!recipe.owners.isEmpty()) {
-                recipeInfo.drawNEIText(
+                recipeInfo.drawText(
                     EnumChatFormatting.ITALIC + trans("272", "Recipe by: ")
                         + recipe.owners.get(0)
                             .getName());
@@ -263,10 +264,10 @@ public class RecipeMapFrontend {
         }
         if (GT_Mod.gregtechproxy.mNEIRecipeOwnerStackTrace && recipe.stackTraces != null
             && !recipe.stackTraces.isEmpty()) {
-            recipeInfo.drawNEIText("stackTrace:");
+            recipeInfo.drawText("stackTrace:");
             // todo: good way to show all stacktraces
             for (String stackTrace : recipe.stackTraces.get(0)) {
-                recipeInfo.drawNEIText(stackTrace);
+                recipeInfo.drawText(stackTrace);
             }
         }
     }
