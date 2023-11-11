@@ -461,17 +461,17 @@ public class GT_ParallelHelper {
         if (recipeCheck != null) {
             currentParallel = recipeCheck.checkRecipeInputs(true, actualMaxParallel, itemInputs, fluidInputs);
         } else {
-            currentParallel=(int)recipe.maxParallelCalculatedByInputs(actualMaxParallel,fluidInputs,itemInputs);
-            if (currentParallel>0){
-                recipe.consumeInput(1,fluidInputs,itemInputs);
+            currentParallel = (int) recipe.maxParallelCalculatedByInputs(actualMaxParallel, fluidInputs, itemInputs);
+            if (currentParallel > 0) {
+                recipe.consumeInput(1, fluidInputs, itemInputs);
                 if (tSingleRecipeCheckBuilder != null) {
                     // If recipe checker is not built yet, build and set it
-                    SingleRecipeCheck builtCheck = tSingleRecipeCheckBuilder.setAfter(itemInputs,fluidInputs)
+                    SingleRecipeCheck builtCheck = tSingleRecipeCheckBuilder.setAfter(itemInputs, fluidInputs)
                         .setRecipe(recipe)
                         .build();
                     singleRecipeMachine.setSingleRecipeCheck(builtCheck);
                 }
-                recipe.consumeInput(currentParallel-1,fluidInputs,itemInputs);
+                recipe.consumeInput(currentParallel - 1, fluidInputs, itemInputs);
             }
         }
 
