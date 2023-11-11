@@ -16,10 +16,8 @@ import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMateri
 import gregtech.api.ModernMaterials.Blocks.Registration.BlocksEnum;
 import gregtech.api.ModernMaterials.Fluids.ModernMaterialFluid;
 import gregtech.api.ModernMaterials.Items.PartProperties.ModernMaterialItemRenderer;
-import gregtech.api.ModernMaterials.RecipeGenerators.ModernMaterialsPlateRecipeGenerator;
 import gregtech.api.ModernMaterials.Items.PartsClasses.ItemsEnum;
 import gregtech.api.ModernMaterials.Items.PartsClasses.MaterialPart;
-import org.jetbrains.annotations.NotNull;
 
 public class ModernMaterialUtilities {
 
@@ -62,11 +60,6 @@ public class ModernMaterialUtilities {
             }
         }
 
-        // Register all material parts.
-        for (ModernMaterial material : materialIDToMaterial.values()) {
-            registerAllMaterialPartRecipes(material);
-        }
-
     }
 
     public static void registerAllMaterialsBlocks() {
@@ -85,21 +78,6 @@ public class ModernMaterialUtilities {
             }
         }
     }
-
-    private static void registerAllMaterialPartRecipes(@NotNull ModernMaterial material) {
-        new ModernMaterialsPlateRecipeGenerator().run(material);
-    }
-
-/*    public static ItemStack getPart(@NotNull final ModernMaterial material, @NotNull final IEnumPart part, final int stackSize) {
-        if (part instanceof ItemsEnum) return new ItemStack(part.getItem(), stackSize, material.getMaterialID());
-
-        int materialID = material.getMaterialID();
-
-        ItemStack itemStack = findItemStack("gregtech", part + "." + materialID / 16, stackSize);
-        itemStack.setItemDamage(materialID % 16);
-
-        return itemStack;
-    }*/
 
     public static ModernMaterial getMaterialFromName(final String materialName) {
 

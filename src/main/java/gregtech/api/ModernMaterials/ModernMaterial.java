@@ -1,7 +1,7 @@
 package gregtech.api.ModernMaterials;
 
 import static gregtech.api.ModernMaterials.ModernMaterialUtilities.registerMaterial;
-import static gregtech.api.ModernMaterials.Items.PartProperties.TextureType.Metallic;
+import static gregtech.api.ModernMaterials.Items.PartProperties.TextureType.Metal_Shiny;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public final class ModernMaterial {
     private String materialName;
     private long materialTier;
     private double materialTimeMultiplier = 1;
-    private TextureType textureType = Metallic;
+    private TextureType textureType = Metal_Shiny;
     private BaseRecipeGenerator recipeGenerator;
     private IItemRenderer customItemRenderer;
     private boolean hasCustomTextures = false;

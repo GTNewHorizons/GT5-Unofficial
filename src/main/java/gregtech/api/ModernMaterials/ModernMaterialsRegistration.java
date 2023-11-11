@@ -4,8 +4,9 @@ import static gregtech.api.ModernMaterials.Fluids.FluidEnum.Gas;
 import static gregtech.api.ModernMaterials.Fluids.FluidEnum.Molten;
 import static gregtech.api.ModernMaterials.Fluids.FluidEnum.NoPrefix;
 import static gregtech.api.ModernMaterials.Fluids.FluidEnum.Plasma;
+import static gregtech.api.ModernMaterials.Items.PartProperties.TextureType.Metal_Dull;
 import static gregtech.api.ModernMaterials.ModernMaterialUtilities.registerAllMaterialsItems;
-import static gregtech.api.ModernMaterials.Items.PartProperties.TextureType.Metallic;
+import static gregtech.api.ModernMaterials.Items.PartProperties.TextureType.Metal_Shiny;
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import gregtech.api.ModernMaterials.Blocks.BlockTypes.FrameBox.Special.UniversiumFrameBlockRenderer;
@@ -22,9 +23,9 @@ public class ModernMaterialsRegistration {
 
         new ModernMaterial.ModernMaterialBuilder("Copper").setMaterialID(1)
             .setColor(120, 100, 0)
-            .setTextureMode(Metallic)
+            .setTextureMode(Metal_Dull)
             .addAllParts()
-            .addFluid(Gas, 1_000)
+            .addFluid(Gas, 100_000)
             .addFluid(NoPrefix, 3_000)
             .addFluid(Molten, 10_000)
             .addFluid(Plasma, 100_000)
@@ -34,7 +35,7 @@ public class ModernMaterialsRegistration {
 
         new ModernMaterial.ModernMaterialBuilder("GERE").setMaterialID(2)
             .setColor(3, 100, 97)
-            .setTextureMode(Metallic)
+            .setTextureMode(Metal_Shiny)
             .addAllParts()
             .addFluid(Gas, 1_000)
             .addFluid(NoPrefix, 3_000)
@@ -44,7 +45,7 @@ public class ModernMaterialsRegistration {
 
         new ModernMaterial.ModernMaterialBuilder("EWAD").setMaterialID(16)
             .setColor(120, 100, 123)
-            .setTextureMode(Metallic)
+            .setTextureMode(Metal_Shiny)
             .addAllParts()
             .addFluid(Gas, 1_000)
             .addFluid(NoPrefix, 3_000)
@@ -55,7 +56,7 @@ public class ModernMaterialsRegistration {
         new ModernMaterial.ModernMaterialBuilder("Universium")
             .setColor(255, 255, 255)
             .setMaterialID(17)
-            .setTextureMode(Metallic)
+            .setTextureMode(Metal_Shiny)
             .setCustomBlockRenderer(
                 BlocksEnum.FrameBox,
                 new UniversiumFrameItemRenderer(),
@@ -71,7 +72,7 @@ public class ModernMaterialsRegistration {
 
         new ModernMaterial.ModernMaterialBuilder("TEST3232").setColor(120, 2, 0)
             .setMaterialID(18)
-            .setTextureMode(Metallic)
+            .setTextureMode(Metal_Shiny)
             .setMaterialTier(TierEU.MAX)
             .addAllParts()
             .setRecipeGenerator(new Metal())
@@ -83,7 +84,7 @@ public class ModernMaterialsRegistration {
 
         new ModernMaterial.ModernMaterialBuilder("TEST2").setColor(120, 200, 0)
             .setMaterialID(61)
-            .setTextureMode(Metallic)
+            .setTextureMode(Metal_Shiny)
             .setMaterialTier(TierEU.MAX)
             .addAllParts()
             .addFluid(Gas, 1_000)

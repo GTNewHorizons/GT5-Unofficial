@@ -1,22 +1,23 @@
 package gregtech.api.ModernMaterials;
 
-import static gregtech.api.enums.Mods.GregTech;
-
-import java.io.File;
-import java.nio.file.Paths;
-import java.util.*;
-
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import gregtech.api.ModernMaterials.Blocks.BlockTypes.FrameBox.Special.CustomTextureRegister;
+import gregtech.api.ModernMaterials.Fluids.FluidEnum;
 import gregtech.api.ModernMaterials.Fluids.ModernMaterialFluid;
+import gregtech.api.ModernMaterials.Items.PartProperties.IconWrapper;
+import gregtech.api.ModernMaterials.Items.PartProperties.TextureType;
+import gregtech.api.ModernMaterials.Items.PartsClasses.ItemsEnum;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.event.TextureStitchEvent;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import gregtech.api.ModernMaterials.Blocks.BlockTypes.FrameBox.Special.CustomTextureRegister;
-import gregtech.api.ModernMaterials.Fluids.FluidEnum;
-import gregtech.api.ModernMaterials.Items.PartProperties.IconWrapper;
-import gregtech.api.ModernMaterials.Items.PartProperties.TextureType;
-import gregtech.api.ModernMaterials.Items.PartsClasses.ItemsEnum;
+import java.io.File;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+
+import static gregtech.api.enums.Mods.GregTech;
 
 public class ModernMaterialsTextureRegister {
 
@@ -102,17 +103,17 @@ public class ModernMaterialsTextureRegister {
         for (TextureType textureType : TextureType.values()) {
 
             String path = "../src/main/resources/assets/gregtech/textures/items/ModernMaterialsIcons/" + textureType;
-
             final File[] files = Paths.get(path)
                 .toFile()
                 .listFiles();
-            assert files != null;
+            if (files == null) throw new RuntimeException("No files found at " + path + ".");
 
             ArrayList<File> fileList = new ArrayList<>(Arrays.asList(files));
             // Remove .png.mcmeta files, these are irrelevant.
             fileList.removeIf(
                 file -> file.getName()
-                    .endsWith(".png.mcmeta"));
+                    .endsWith(".png.mcmeta") || file.getName()
+                    .endsWith(".DS_Store"));
             // Sort according to the actual unlocalised name rather than enum name.
             fileList.sort(Comparator.comparing(File::getName));
 
@@ -138,8 +139,7 @@ public class ModernMaterialsTextureRegister {
                     // textures/items
                     IIcon icon = map.registerIcon(
                         GregTech.getResourcePath() + "ModernMaterialsIcons/"
-                            + textureType
-                            + "/Items/"
+                            + textureType + "/"
                             + removePNG(trueFileName));
 
                     IconWrapper iconWrapper = new IconWrapper(priority, isColoured, icon);
@@ -147,17 +147,6 @@ public class ModernMaterialsTextureRegister {
                 }
             }
         }
-
-
-        for (ModernMaterial modernMaterial : ModernMaterialUtilities.materialNameToMaterialMap.values()) {
-            for (ItemsEnum part : ItemsEnum.values()) {
-
-
-            }
-        }
-
-
-
     }
 
     // Remove the .png from the filename as MC does not need this to register the texture file.

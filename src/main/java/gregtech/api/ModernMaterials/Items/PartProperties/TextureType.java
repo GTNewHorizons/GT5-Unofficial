@@ -8,8 +8,8 @@ import gregtech.api.ModernMaterials.Items.PartsClasses.ItemsEnum;
 
 public enum TextureType {
 
-    Metallic,
-    Dull;
+    Metal_Shiny,
+    Metal_Dull;
     // Stone;
 
     private final HashMap<ItemsEnum, ArrayList<IconWrapper>> textureStorage = new HashMap<>();
