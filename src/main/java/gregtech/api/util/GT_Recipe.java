@@ -734,7 +734,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
     /**
      * Returns the number of parallel recipes, or 0 if recipe is not satisfied at all. 0 < number < 1 means that inputs
-     * are found but not enough.
+     * are found but not enough. Refer to SingleRecipeCheck#checkRecipeInputs.
      */
     public double maxParallelCalculatedByInputs(int maxParallel, FluidStack[] aFluidInputs, ItemStack... aInputs) {
         if (mInputs.length > 0 && aInputs == null) return 0;
@@ -743,6 +743,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         double currentParallel = maxParallel;
 
         if (aFluidInputs != null) {
+            // Create map for fluid -> stored amount
             Map<Fluid, Integer> fluidMap = new HashMap<>();
             Map<Fluid, Integer> fluidCost = new HashMap<>();
             for (FluidStack fluidStack : aFluidInputs) {
