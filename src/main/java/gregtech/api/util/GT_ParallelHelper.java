@@ -499,10 +499,9 @@ public class GT_ParallelHelper {
             if (recipeCheck != null) {
                 tExtraParallels = recipeCheck.checkRecipeInputs(true, maxExtraParallels, itemInputs, fluidInputs);
             } else {
-                while (tExtraParallels < maxExtraParallels
-                    && tryConsumeRecipeInputs(recipe, fluidInputs, itemInputs, currentParallel)) {
-                    tExtraParallels += currentParallel;
-                }
+                tExtraParallels = (int) recipe
+                    .maxParallelCalculatedByInputs(maxExtraParallels, fluidInputs, itemInputs);
+                recipe.consumeInput(tExtraParallels, fluidInputs, itemInputs);
             }
             durationMultiplier = 1.0f + (float) tExtraParallels / currentParallel;
             currentParallel += tExtraParallels;
