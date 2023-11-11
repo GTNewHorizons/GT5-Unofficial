@@ -656,22 +656,22 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
      * set to {@code true}! You'll get weird behavior.
      */
     public boolean isRecipeInputEqual(boolean aDecreaseStacksizeBySuccess, boolean aDontCheckStackSizes,
-                                      int amountMultiplier, FluidStack[] aFluidInputs, ItemStack... aInputs){
-        double maxParallel = maxParallelCalculatedByInputs(amountMultiplier,aFluidInputs,aInputs);
+        int amountMultiplier, FluidStack[] aFluidInputs, ItemStack... aInputs) {
+        double maxParallel = maxParallelCalculatedByInputs(amountMultiplier, aFluidInputs, aInputs);
         if (aDontCheckStackSizes) {
             return maxParallel > 0;
-        }
-        else if (maxParallel>=amountMultiplier){
-            if (aDecreaseStacksizeBySuccess){
-                consumeInput(amountMultiplier,aFluidInputs,aInputs);
+        } else if (maxParallel >= amountMultiplier) {
+            if (aDecreaseStacksizeBySuccess) {
+                consumeInput(amountMultiplier, aFluidInputs, aInputs);
             }
             return true;
         }
         return false;
     }
+
     /**
-     *  WARNING: ensure that the inputs and fluid inputs are enough to be consumed!
-     **/
+     * WARNING: ensure that the inputs and fluid inputs are enough to be consumed!
+     */
     public void consumeInput(int amountMultiplier, FluidStack[] aFluidInputs, ItemStack... aInputs) {
         if (amountMultiplier <= 0) return;
 
@@ -708,8 +708,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                             continue;
                         } else if (!isNBTSensitive
                             && !GT_OreDictUnificator.isInputStackEqual(providedItem, unifiedItemCost)) {
-                            continue;
-                        }
+                                continue;
+                            }
 
                         if (GTppRecipeHelper) { // Please see JavaDoc on GTppRecipeHelper for why this is here.
                             if (GT_Utility.areStacksEqual(providedItem, Ic2Items.FluidCell.copy(), true)
@@ -731,6 +731,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             }
         }
     }
+
     /**
      * Returns the number of parallel recipes, or 0 if recipe is not satisfied at all. 0 < number < 1 means that inputs
      * are found but not enough.
@@ -743,7 +744,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         if (aFluidInputs != null) {
             Map<Fluid, Integer> fluidMap = new HashMap<>();
-            Map<Fluid,Integer> fluidCost=new HashMap<>();
+            Map<Fluid, Integer> fluidCost = new HashMap<>();
             for (FluidStack fluidStack : aFluidInputs) {
                 if (fluidStack == null) continue;
                 fluidMap.merge(fluidStack.getFluid(), fluidStack.amount, Integer::sum);
@@ -755,14 +756,16 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
             // Check how many parallels can it perform for each fluid
             for (Map.Entry<Fluid, Integer> costEntry : fluidCost.entrySet()) {
-                currentParallel = Math
-                    .min(currentParallel, (double)fluidMap.getOrDefault(costEntry.getKey(), 0) / costEntry.getValue());
+                if (costEntry.getValue() > 0) {
+                    currentParallel = Math.min(
+                        currentParallel,
+                        (double) fluidMap.getOrDefault(costEntry.getKey(), 0) / costEntry.getValue());
+                }
                 if (currentParallel <= 0) {
                     return 0;
                 }
             }
         }
-
 
         if (aInputs != null) {
             // Create map for item -> stored amount
@@ -778,8 +781,11 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             }
             // Check how many parallels can it perform for each item
             for (Map.Entry<GT_Utility.ItemId, Integer> costEntry : itemCost.entrySet()) {
-                currentParallel = Math
-                    .min(currentParallel, (double)itemMap.getOrDefault(costEntry.getKey(), 0) / costEntry.getValue());
+                if (costEntry.getValue() > 0) {
+                    currentParallel = Math.min(
+                        currentParallel,
+                        (double) itemMap.getOrDefault(costEntry.getKey(), 0) / costEntry.getValue());
+                }
                 if (currentParallel <= 0) {
                     return 0;
                 }
@@ -787,6 +793,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         }
         return currentParallel;
     }
+
     @Override
     public int compareTo(GT_Recipe recipe) {
         // first lowest tier recipes
