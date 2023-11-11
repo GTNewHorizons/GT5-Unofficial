@@ -3285,25 +3285,6 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
     }
 
     @Override
-    @Deprecated
-    public boolean addPCBFactoryRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack[] aOutputs,
-        int aDuration, int aEUt, int aSpecialValue) {
-
-        if (aInputs == null || aFluidInputs == null || aOutputs == null) {
-            return false;
-        }
-
-        if (aSpecialValue <= 0 || aEUt < 0 || aDuration < 0) {
-            return false;
-        }
-
-        RecipeMaps.pcbFactoryRecipes.addRecipe(
-            new GT_Recipe(false, aInputs, aOutputs, null, null, aFluidInputs, null, aDuration, aEUt, aSpecialValue));
-
-        return true;
-    }
-
-    @Override
     public GT_Recipe addIC2ReactorBreederCell(ItemStack input, ItemStack output, boolean reflector, int heatStep,
         int heatMultiplier, int requiredPulses) {
         return GT_Values.RA.stdBuilder()

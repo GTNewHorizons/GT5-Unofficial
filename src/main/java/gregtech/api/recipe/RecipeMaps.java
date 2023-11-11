@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Optional;
 
 import net.minecraft.init.Blocks;
@@ -48,6 +47,7 @@ import gregtech.api.recipe.maps.ReplicatorBackend;
 import gregtech.api.recipe.maps.SpaceProjectFrontend;
 import gregtech.api.recipe.maps.TranscendentPlasmaMixerFrontend;
 import gregtech.api.recipe.maps.UnboxinatorBackend;
+import gregtech.api.recipe.metadata.PCBFactoryTierKey;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -499,9 +499,7 @@ public final class RecipeMaps {
             Comparator
                 .<GT_Recipe, Integer>comparing(
                     recipe -> FusionSpecialValueFormatter.getFusionTier(recipe.mSpecialValue, recipe.mEUt))
-                .thenComparing(recipe -> recipe.mEUt)
-                .thenComparing(recipe -> recipe.mDuration)
-                .thenComparing(recipe -> recipe.mSpecialValue))
+                .thenComparing(GT_Recipe::compareTo))
         .frontend(FluidOnlyFrontend::new)
         .recipeConfigFile("fusion", FIRST_FLUID_OUTPUT)
         .build();
@@ -1124,21 +1122,9 @@ public final class RecipeMaps {
         .progressBar(GT_UITextures.PROGRESSBAR_ASSEMBLE)
         .disableOptimize()
         .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.PCBFactory.get(1)))
-        .neiSpecialInfoFormatter(recipeInfo -> {
-            List<String> result = new ArrayList<>();
-            int bitmap = recipeInfo.recipe.mSpecialValue;
-            if ((bitmap & 0b1) > 0) {
-                result.add(trans("336", "PCB Factory Tier: ") + 1);
-            } else if ((bitmap & 0b10) > 0) {
-                result.add(trans("336", "PCB Factory Tier: ") + 2);
-            } else if ((bitmap & 0b100) > 0) {
-                result.add(trans("336", "PCB Factory Tier: ") + 3);
-            }
-            if ((bitmap & 0b1000) > 0) {
-                result.add(trans("337", "Upgrade Required: ") + trans("338", "Bio"));
-            }
-            return result;
-        })
+        .neiRecipeComparator(
+            Comparator.<GT_Recipe, Integer>comparing(recipe -> recipe.getMetadata(PCBFactoryTierKey.INSTANCE, 1))
+                .thenComparing(GT_Recipe::compareTo))
         .build();
     public static final RecipeMap<RecipeMapBackend> ic2NuclearFakeRecipes = RecipeMapBuilder.of("gt.recipe.ic2nuke")
         .maxIO(1, 1, 0, 0)

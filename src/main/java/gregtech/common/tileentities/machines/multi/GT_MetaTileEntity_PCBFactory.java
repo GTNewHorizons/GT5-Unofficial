@@ -80,6 +80,9 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.recipe.metadata.PCBFactoryTierKey;
+import gregtech.api.recipe.metadata.PCBFactoryUpgrade;
+import gregtech.api.recipe.metadata.PCBFactoryUpgradeKey;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -545,16 +548,11 @@ public class GT_MetaTileEntity_PCBFactory extends
                 maxParallel = (int) Math.max(Math.ceil(Math.log(numberOfNanites) / Math.log(2) + 0.00001), 1);
                 mMaxParallel = maxParallel;
 
-                int recipeBitMap = recipe.mSpecialValue;
-
-                if (((recipeBitMap & mBioBitMap) == mBioBitMap && !mBioUpgrade))
+                PCBFactoryUpgrade requiredUpgrade = recipe.getMetadata(PCBFactoryUpgradeKey.INSTANCE);
+                if (requiredUpgrade == PCBFactoryUpgrade.BIO && !mBioUpgrade)
                     return SimpleCheckRecipeResult.ofFailure("bio_upgrade_missing");
 
-                int requiredPCBTier = 0;
-                if ((recipeBitMap & mTier3BitMap) == mTier3BitMap) requiredPCBTier = 3;
-                if ((recipeBitMap & mTier2BitMap) == mTier2BitMap) requiredPCBTier = 2;
-                if ((recipeBitMap & mTier1BitMap) == mTier1BitMap) requiredPCBTier = 1;
-
+                int requiredPCBTier = recipe.getMetadata(PCBFactoryTierKey.INSTANCE, 1);
                 if (requiredPCBTier > mTier) return CheckRecipeResultRegistry.insufficientMachineTier(requiredPCBTier);
 
                 return CheckRecipeResultRegistry.SUCCESSFUL;
