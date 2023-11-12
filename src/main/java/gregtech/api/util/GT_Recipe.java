@@ -670,7 +670,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     }
 
     /**
-     * WARNING: ensure that the inputs and fluid inputs are enough to be consumed!
+     * WARNING: Ensure that item inputs and fluid inputs are enough to be consumed with
+     * {@link #maxParallelCalculatedByInputs} before calling this method!
      */
     public void consumeInput(int amountMultiplier, FluidStack[] aFluidInputs, ItemStack... aInputs) {
         if (amountMultiplier <= 0) return;
