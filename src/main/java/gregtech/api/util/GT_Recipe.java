@@ -770,22 +770,32 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         if (aInputs != null) {
             // Create map for item -> stored amount
-            Map<GT_Utility.ItemId, Integer> itemMap = new HashMap<>();
             Map<GT_Utility.ItemId, Integer> itemCost = new HashMap<>();
+            Map<GT_Utility.ItemId, Integer> itemMap = new HashMap<>();
+            Map<GT_Utility.ItemId, Integer> itemMapWildcard = new HashMap<>(); // Used only when wildcard input is found
+            boolean foundWildcard = false;
+            for (ItemStack itemStack : mInputs) {
+                if (itemStack == null) continue;
+                if (itemStack.getItemDamage() == W) {
+                    foundWildcard = true;
+                }
+                itemCost.merge(GT_Utility.ItemId.createNoCopy(itemStack), itemStack.stackSize, Integer::sum);
+            }
             for (ItemStack itemStack : aInputs) {
                 if (itemStack == null) continue;
                 itemMap.merge(GT_Utility.ItemId.createNoCopy(itemStack), itemStack.stackSize, Integer::sum);
-            }
-            for (ItemStack itemStack : mInputs) {
-                if (itemStack == null) continue;
-                itemCost.merge(GT_Utility.ItemId.createNoCopy(itemStack), itemStack.stackSize, Integer::sum);
+                if (foundWildcard) {
+                    itemMapWildcard
+                        .merge(GT_Utility.ItemId.createAsWildcard(itemStack), itemStack.stackSize, Integer::sum);
+                }
             }
             // Check how many parallels can it perform for each item
             for (Map.Entry<GT_Utility.ItemId, Integer> costEntry : itemCost.entrySet()) {
                 if (costEntry.getValue() > 0) {
-                    currentParallel = Math.min(
-                        currentParallel,
-                        (double) itemMap.getOrDefault(costEntry.getKey(), 0) / costEntry.getValue());
+                    GT_Utility.ItemId costItem = costEntry.getKey();
+                    Map<GT_Utility.ItemId, Integer> mapToUse = costItem.metaData() == W ? itemMapWildcard : itemMap;
+                    currentParallel = Math
+                        .min(currentParallel, (double) mapToUse.getOrDefault(costItem, 0) / costEntry.getValue());
                 }
                 if (currentParallel <= 0) {
                     return 0;
