@@ -34,7 +34,6 @@ public final class ModernMaterial {
     private TextureType textureType = Metal_Shiny;
     private BaseRecipeGenerator recipeGenerator;
     private IItemRenderer customItemRenderer;
-    private boolean hasCustomTextures = false;
 
     public ModernMaterial(final String materialName) {
         this.materialName = materialName;
@@ -85,7 +84,7 @@ public final class ModernMaterial {
     }
 
     public boolean hasCustomTextures() {
-        return hasCustomTextures;
+        return textureType == TextureType.Custom;
     }
 
     public static class ModernMaterialBuilder {
@@ -105,11 +104,6 @@ public final class ModernMaterial {
 
         public ModernMaterialBuilder setColor(int red, int green, int blue) {
             materialToBuild.color = new Color(red, green, blue);
-            return this;
-        }
-
-        public ModernMaterialBuilder hasCustomTextures() {
-            materialToBuild.hasCustomTextures = true;
             return this;
         }
 

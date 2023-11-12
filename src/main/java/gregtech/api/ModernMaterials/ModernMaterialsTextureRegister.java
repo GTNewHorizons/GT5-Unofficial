@@ -102,6 +102,9 @@ public class ModernMaterialsTextureRegister {
 
         for (TextureType textureType : TextureType.values()) {
 
+            // We will handle these later.
+            if (textureType.equals(TextureType.Custom)) continue;
+
             String path = "../src/main/resources/assets/gregtech/textures/items/ModernMaterialsIcons/" + textureType;
             final File[] files = Paths.get(path)
                 .toFile()
@@ -147,6 +150,38 @@ public class ModernMaterialsTextureRegister {
                 }
             }
         }
+
+        for (ModernMaterial modernMaterial : ModernMaterialUtilities.materialNameToMaterialMap.values()) {
+
+            if (!modernMaterial.hasCustomTextures()) continue;
+
+            for (TextureType textureType : TextureType.values()) {
+
+                String path = "../src/main/resources/assets/gregtech/textures/items/ModernMaterialsIcons/Custom/" + modernMaterial.getMaterialName();
+                final File[] files = Paths.get(path)
+                    .toFile()
+                    .listFiles();
+                if (files == null) throw new RuntimeException("No files found at " + path + ".");
+
+                ArrayList<File> fileList = new ArrayList<>(Arrays.asList(files));
+                // Remove .png.mcmeta files, these are irrelevant.
+                fileList.removeIf(
+                    file -> file.getName()
+                        .endsWith(".png.mcmeta") || file.getName()
+                        .endsWith(".DS_Store"));
+                // Sort according to the actual unlocalised name rather than enum name.
+                fileList.sort(Comparator.comparing(File::getName));
+
+
+
+            }
+
+
+
+
+        }
+
+
     }
 
     // Remove the .png from the filename as MC does not need this to register the texture file.
