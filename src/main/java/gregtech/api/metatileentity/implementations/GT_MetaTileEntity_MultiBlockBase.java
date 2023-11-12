@@ -2158,7 +2158,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             .append("s / ")
             .append(String.format("%,.2f", (double) mMaxProgresstime / 20))
             .append("s (")
-            .append(String.format("%,.1f", (Math.round((double) mProgresstime / mMaxProgresstime * 1000) / 10.0)))
+            .append(String.format("%,.1f", (double) mProgresstime / mMaxProgresstime * 100))
             .append("%)\n");
 
         Function<Integer, Void> appendRate = (Integer amount) -> {
