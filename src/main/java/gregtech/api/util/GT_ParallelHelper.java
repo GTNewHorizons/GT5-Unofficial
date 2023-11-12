@@ -456,26 +456,23 @@ public class GT_ParallelHelper {
 
         maxParallelBeforeBatchMode = Math.min(maxParallel, maxParallelBeforeBatchMode);
 
-        // Consume inputs to determine normal parallel
+        // determine normal parallel
+        int actualMaxParallel = (int) Math.min(maxParallelBeforeBatchMode, availableEUt / tRecipeEUt);
         if (recipeCheck != null) {
-            int actualMaxParallel = (int) Math.min(maxParallelBeforeBatchMode, availableEUt / tRecipeEUt);
             currentParallel = recipeCheck.checkRecipeInputs(true, actualMaxParallel, itemInputs, fluidInputs);
         } else {
-            long tCurrentUsage = 0;
-            boolean builtRecipeCheck = false;
-            for (; currentParallel < maxParallelBeforeBatchMode
-                && tCurrentUsage < (availableEUt - tRecipeEUt); currentParallel++) {
-                if (!tryConsumeRecipeInputs(recipe, fluidInputs, itemInputs)) {
-                    break;
-                }
-                tCurrentUsage += tRecipeEUt;
-                if (tSingleRecipeCheckBuilder != null && !builtRecipeCheck) {
+            currentParallel = (int) recipe.maxParallelCalculatedByInputs(actualMaxParallel, fluidInputs, itemInputs);
+            if (currentParallel > 0) {
+                if (tSingleRecipeCheckBuilder != null) {
                     // If recipe checker is not built yet, build and set it
+                    recipe.consumeInput(1, fluidInputs, itemInputs);
                     SingleRecipeCheck builtCheck = tSingleRecipeCheckBuilder.setAfter(itemInputs, fluidInputs)
                         .setRecipe(recipe)
                         .build();
                     singleRecipeMachine.setSingleRecipeCheck(builtCheck);
-                    builtRecipeCheck = true;
+                    recipe.consumeInput(currentParallel - 1, fluidInputs, itemInputs);
+                } else {
+                    recipe.consumeInput(currentParallel, fluidInputs, itemInputs);
                 }
             }
         }
@@ -502,10 +499,9 @@ public class GT_ParallelHelper {
             if (recipeCheck != null) {
                 tExtraParallels = recipeCheck.checkRecipeInputs(true, maxExtraParallels, itemInputs, fluidInputs);
             } else {
-                while (tExtraParallels < maxExtraParallels
-                    && tryConsumeRecipeInputs(recipe, fluidInputs, itemInputs, currentParallel)) {
-                    tExtraParallels += currentParallel;
-                }
+                tExtraParallels = (int) recipe
+                    .maxParallelCalculatedByInputs(maxExtraParallels, fluidInputs, itemInputs);
+                recipe.consumeInput(tExtraParallels, fluidInputs, itemInputs);
             }
             durationMultiplier = 1.0f + (float) tExtraParallels / currentParallel;
             currentParallel += tExtraParallels;
