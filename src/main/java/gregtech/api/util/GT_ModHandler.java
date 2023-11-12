@@ -2096,7 +2096,7 @@ public class GT_ModHandler {
     }
 
     private static boolean searchRecyclerCache(ItemStack stack, Set<GT_Utility.ItemId> set) {
-        if (set.contains(GT_Utility.ItemId.createNoCopy(stack.getItem(), stack.getItemDamage(), null))) {
+        if (set.contains(GT_Utility.ItemId.createWithoutNBT(stack))) {
             return true;
         }
         // ic2.api.recipe.RecipeInputItemStack#matches expects item with wildcard meta to accept arbitrary meta

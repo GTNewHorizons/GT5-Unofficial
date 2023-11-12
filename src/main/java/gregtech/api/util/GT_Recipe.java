@@ -780,11 +780,19 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 if (itemStack.getItemDamage() == W) {
                     foundWildcard = true;
                 }
-                itemCost.merge(GT_Utility.ItemId.createNoCopy(itemStack), itemStack.stackSize, Integer::sum);
+                if (isNBTSensitive) {
+                    itemCost.merge(GT_Utility.ItemId.createNoCopy(itemStack), itemStack.stackSize, Integer::sum);
+                } else {
+                    itemCost.merge(GT_Utility.ItemId.createWithoutNBT(itemStack), itemStack.stackSize, Integer::sum);
+                }
             }
             for (ItemStack itemStack : aInputs) {
                 if (itemStack == null) continue;
-                itemMap.merge(GT_Utility.ItemId.createNoCopy(itemStack), itemStack.stackSize, Integer::sum);
+                if (isNBTSensitive) {
+                    itemMap.merge(GT_Utility.ItemId.createNoCopy(itemStack), itemStack.stackSize, Integer::sum);
+                } else {
+                    itemMap.merge(GT_Utility.ItemId.createWithoutNBT(itemStack), itemStack.stackSize, Integer::sum);
+                }
                 if (foundWildcard) {
                     itemMapWildcard
                         .merge(GT_Utility.ItemId.createAsWildcard(itemStack), itemStack.stackSize, Integer::sum);

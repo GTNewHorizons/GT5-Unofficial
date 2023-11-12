@@ -4821,6 +4821,13 @@ public class GT_Utility {
         }
 
         /**
+         * This method stores NBT as null.
+         */
+        public static ItemId createWithoutNBT(ItemStack itemStack) {
+            return new AutoValue_GT_Utility_ItemId(itemStack.getItem(), itemStack.getItemDamage(), null);
+        }
+
+        /**
          * This method does not copy NBT in order to save time. Make sure not to mutate it!
          */
         public static ItemId createNoCopy(ItemStack itemStack) {
