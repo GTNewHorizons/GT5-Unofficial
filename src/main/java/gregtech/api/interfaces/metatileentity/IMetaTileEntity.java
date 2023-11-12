@@ -188,6 +188,11 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     void onRemoval();
 
     /**
+     * Called when the BaseMetaTileEntity gets unloaded
+     */
+    default void onChunkUnload() {}
+
+    /**
      * @param facing the facing direction to check
      * @return if aFacing would be a valid Facing for this Device. Used for wrenching.
      */
