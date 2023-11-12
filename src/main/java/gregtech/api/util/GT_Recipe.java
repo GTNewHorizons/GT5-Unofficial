@@ -791,11 +791,19 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             }
             // Check how many parallels can it perform for each item
             for (Map.Entry<GT_Utility.ItemId, Integer> costEntry : itemCost.entrySet()) {
-                if (costEntry.getValue() > 0) {
-                    GT_Utility.ItemId costItem = costEntry.getKey();
-                    Map<GT_Utility.ItemId, Integer> mapToUse = costItem.metaData() == W ? itemMapWildcard : itemMap;
+                GT_Utility.ItemId costItem = costEntry.getKey();
+                int costValue = costEntry.getValue();
+                Map<GT_Utility.ItemId, Integer> mapToUse = costItem.metaData() == W ? itemMapWildcard : itemMap;
+                if (costValue > 0) {
                     currentParallel = Math
-                        .min(currentParallel, (double) mapToUse.getOrDefault(costItem, 0) / costEntry.getValue());
+                        .min(currentParallel, (double) mapToUse.getOrDefault(costItem, 0) / costValue);
+                } else {
+                    // Non-consumed input
+                    // We need to distinguish null and 0 here, since not having item
+                    // and having 0-sized item (ghost circuit) are different.
+                    if (!mapToUse.containsKey(costItem)) {
+                        currentParallel = 0;
+                    }
                 }
                 if (currentParallel <= 0) {
                     return 0;
