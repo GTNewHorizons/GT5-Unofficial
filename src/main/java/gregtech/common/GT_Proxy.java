@@ -1579,59 +1579,79 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
     }
 
     @SubscribeEvent
+    public void onBlockBreakingEvent(BlockEvent.BreakEvent event) {
+        var player = event.getPlayer();
+        if (player == null) return;
+
+        var item = event.getPlayer()
+            .getCurrentEquippedItem();
+        if (item == null) return;
+
+        if (!(item.getItem() instanceof GT_MetaGenerated_Tool tool)) return;
+
+        var stats = tool.getToolStats(item);
+        if (stats == null) return;
+
+        var tile = event.world.getTileEntity(event.x, event.y, event.z);
+        stats.onBreakBlock(player, event.x, event.y, event.z, event.block, (byte) event.blockMetadata, tile, event);
+    }
+
+    @SubscribeEvent
     public void onBlockHarvestingEvent(BlockEvent.HarvestDropsEvent aEvent) {
-        if (aEvent.harvester != null) {
-            if ((!aEvent.world.isRemote) && (GT_Log.pal != null)) {
-                this.mBufferedPlayerActivity.offer(
-                    getDataAndTime() + ";HARVEST_BLOCK;"
-                        + aEvent.harvester.getDisplayName()
-                        + ";DIM:"
-                        + aEvent.world.provider.dimensionId
-                        + ";"
-                        + aEvent.x
-                        + ";"
-                        + aEvent.y
-                        + ";"
-                        + aEvent.z
-                        + ";|;"
-                        + aEvent.x / 10
-                        + ";"
-                        + aEvent.y / 10
-                        + ";"
-                        + aEvent.z / 10);
-            }
-            ItemStack aStack = aEvent.harvester.getCurrentEquippedItem();
-            if (aStack != null) {
-                if ((aStack.getItem() instanceof GT_MetaGenerated_Tool)) {
-                    ((GT_MetaGenerated_Tool) aStack.getItem()).onHarvestBlockEvent(
-                        aEvent.drops,
-                        aStack,
-                        aEvent.harvester,
-                        aEvent.block,
-                        aEvent.x,
-                        aEvent.y,
-                        aEvent.z,
-                        (byte) aEvent.blockMetadata,
-                        aEvent.fortuneLevel,
-                        aEvent.isSilkTouching,
-                        aEvent);
-                }
-                if (EnchantmentHelper.getEnchantmentLevel(Enchantment.fireAspect.effectId, aStack) > 2) {
-                    try {
-                        for (ItemStack tDrop : aEvent.drops) {
-                            ItemStack tSmeltingOutput = GT_ModHandler.getSmeltingOutput(tDrop, false, null);
-                            if (tSmeltingOutput != null) {
-                                tDrop.stackSize *= tSmeltingOutput.stackSize;
-                                tSmeltingOutput.stackSize = tDrop.stackSize;
-                                GT_Utility.setStack(tDrop, tSmeltingOutput);
-                            }
-                        }
-                    } catch (Throwable e) {
-                        e.printStackTrace(GT_Log.err);
+        if (aEvent.harvester == null) return;
+
+        if ((!aEvent.world.isRemote) && (GT_Log.pal != null)) {
+            this.mBufferedPlayerActivity.offer(
+                getDataAndTime() + ";HARVEST_BLOCK;"
+                    + aEvent.harvester.getDisplayName()
+                    + ";DIM:"
+                    + aEvent.world.provider.dimensionId
+                    + ";"
+                    + aEvent.x
+                    + ";"
+                    + aEvent.y
+                    + ";"
+                    + aEvent.z
+                    + ";|;"
+                    + aEvent.x / 10
+                    + ";"
+                    + aEvent.y / 10
+                    + ";"
+                    + aEvent.z / 10);
+        }
+
+        ItemStack aStack = aEvent.harvester.getCurrentEquippedItem();
+        if (aStack == null) return;
+
+        if ((aStack.getItem() instanceof GT_MetaGenerated_Tool tool)) {
+            tool.onHarvestBlockEvent(
+                aEvent.drops,
+                aStack,
+                aEvent.harvester,
+                aEvent.block,
+                aEvent.x,
+                aEvent.y,
+                aEvent.z,
+                (byte) aEvent.blockMetadata,
+                aEvent.fortuneLevel,
+                aEvent.isSilkTouching,
+                aEvent);
+        }
+        if (EnchantmentHelper.getEnchantmentLevel(Enchantment.fireAspect.effectId, aStack) > 2) {
+            try {
+                for (ItemStack tDrop : aEvent.drops) {
+                    ItemStack tSmeltingOutput = GT_ModHandler.getSmeltingOutput(tDrop, false, null);
+                    if (tSmeltingOutput != null) {
+                        tDrop.stackSize *= tSmeltingOutput.stackSize;
+                        tSmeltingOutput.stackSize = tDrop.stackSize;
+                        GT_Utility.setStack(tDrop, tSmeltingOutput);
                     }
                 }
+            } catch (Throwable e) {
+                e.printStackTrace(GT_Log.err);
             }
         }
+
     }
 
     @SubscribeEvent
@@ -2668,9 +2688,9 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
     }
 
     /**
-     * @deprecated use {@link GT_FluidFactory#builder}
      * @see GT_FluidFactory#of(String, String, Materials, FluidState, int)
      * @see GT_FluidFactory#of(String, String, FluidState, int)
+     * @deprecated use {@link GT_FluidFactory#builder}
      */
     @Deprecated
     public Fluid addFluid(String aName, String aLocalized, Materials aMaterial, int aState, int aTemperatureK) {
@@ -2959,15 +2979,15 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
 
     @Deprecated
     public static final HashMap<Integer, HashMap<ChunkCoordIntPair, int[]>> dimensionWiseChunkData = new HashMap<>(16); // stores
-                                                                                                                        // chunk
-                                                                                                                        // data
-                                                                                                                        // that
-                                                                                                                        // is
-                                                                                                                        // loaded/saved
+    // chunk
+    // data
+    // that
+    // is
+    // loaded/saved
 
     public static final HashMap<Integer, GT_Pollution> dimensionWisePollution = new HashMap<>(16); // stores
-                                                                                                   // GT_Polluttors
-                                                                                                   // objects
+    // GT_Polluttors
+    // objects
     public static final byte GTOIL = 3, GTOILFLUID = 2, GTPOLLUTION = 1, GTMETADATA = 0, NOT_LOADED = 0, LOADED = 1; // consts
 
     // TO get default's fast
@@ -2989,21 +3009,19 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
 
     @SubscribeEvent
     public void onBlockBreakSpeedEvent(PlayerEvent.BreakSpeed aEvent) {
-        if (aEvent.newSpeed > 0.0F) {
-            if (aEvent.entityPlayer != null) {
-                ItemStack aStack = aEvent.entityPlayer.getCurrentEquippedItem();
-                if ((aStack != null) && ((aStack.getItem() instanceof GT_MetaGenerated_Tool))) {
-                    aEvent.newSpeed = ((GT_MetaGenerated_Tool) aStack.getItem()).onBlockBreakSpeedEvent(
-                        aEvent.newSpeed,
-                        aStack,
-                        aEvent.entityPlayer,
-                        aEvent.block,
-                        aEvent.x,
-                        aEvent.y,
-                        aEvent.z,
-                        (byte) aEvent.metadata,
-                        aEvent);
-                }
+        if (aEvent.entityPlayer != null) {
+            ItemStack aStack = aEvent.entityPlayer.getCurrentEquippedItem();
+            if ((aStack != null) && ((aStack.getItem() instanceof GT_MetaGenerated_Tool))) {
+                aEvent.newSpeed = ((GT_MetaGenerated_Tool) aStack.getItem()).onBlockBreakSpeedEvent(
+                    aEvent.newSpeed,
+                    aStack,
+                    aEvent.entityPlayer,
+                    aEvent.block,
+                    aEvent.x,
+                    aEvent.y,
+                    aEvent.z,
+                    (byte) aEvent.metadata,
+                    aEvent);
             }
         }
     }
