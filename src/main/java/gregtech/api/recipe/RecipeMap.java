@@ -433,6 +433,16 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
 
     // endregion
 
+    @Override
+    public String toString() {
+        return "RecipeMap{" + "unlocalizedName='"
+            + unlocalizedName
+            + '\''
+            + ", ownerMod="
+            + backend.getDefaultRecipeCategory().ownerMod.getModId()
+            + '}';
+    }
+
     private static final Pattern LEGACY_IDENTIFIER_PATTERN = Pattern.compile("(.+)_[0-9]+_[0-9]+_[0-9]+_[0-9]+_[0-9]+");
 
     /**

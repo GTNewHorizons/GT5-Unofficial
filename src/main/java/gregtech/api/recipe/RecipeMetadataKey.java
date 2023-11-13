@@ -59,6 +59,11 @@ public abstract class RecipeMetadataKey<T> {
     }
 
     @Override
+    public String toString() {
+        return "RecipeMetadataKey{" + "clazz=" + clazz.getName() + ", identifier=" + identifier + '\'' + '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

@@ -50,6 +50,18 @@ public final class RecipeCategory {
         ALL_RECIPE_CATEGORIES.put(unlocalizedName, this);
     }
 
+    @Override
+    public String toString() {
+        return "RecipeCategory{" + "unlocalizedName='"
+            + unlocalizedName
+            + '\''
+            + ", recipeMap="
+            + recipeMap.unlocalizedName
+            + ", ownerMod="
+            + ownerMod.getModId()
+            + '}';
+    }
+
     /**
      * Creates icon for recipe category. Size is 16px.
      */
