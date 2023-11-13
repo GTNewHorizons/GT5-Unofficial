@@ -5,6 +5,8 @@ import static gregtech.api.items.GT_MetaGenerated_Tool.getPrimaryMaterial;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -20,8 +22,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
-
-import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -172,14 +172,14 @@ public class GT_Tool_Wrench extends GT_Tool {
 
         float newSpeed = Math.max(Float.MIN_NORMAL, getSpeedMultiplier() * getPrimaryMaterial(holding).mToolSpeed);
 
-        if (tile instanceof IWrenchable wrenchable) return newSpeed;
+        if (tile instanceof IWrenchable) return newSpeed;
 
         return mineSpeed;
     }
 
     @Override
-    public void onBreakBlock(@NotNull EntityPlayer player, int x, int y, int z, @NotNull Block block, byte metadata,
-        TileEntity tile, BlockEvent.BreakEvent event) {
+    public void onBreakBlock(@Nonnull EntityPlayer player, int x, int y, int z, @Nonnull Block block, byte metadata,
+        TileEntity tile, @Nonnull BlockEvent.BreakEvent event) {
         final var world = player.worldObj;
         if (tile instanceof IWrenchable wrenchable) {
             var drop = wrenchable.getWrenchDrop(player);
