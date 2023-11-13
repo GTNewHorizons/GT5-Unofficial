@@ -16,6 +16,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 
 import static gregtech.api.enums.Mods.GregTech;
 
@@ -26,7 +27,8 @@ public class ModernMaterialsTextureRegister {
     @SubscribeEvent
     public void registerIcons(TextureStitchEvent.Pre event) {
         if (event.map.getTextureType() == 1) {
-            itemTextures(event.map);
+            standardItemTextures(event.map);
+            customItenTextures(event.map);
         } else if (event.map.getTextureType() == 0) {
             // These are both stored in the same texture atlas.
             blockTextures(event.map);
@@ -87,7 +89,26 @@ public class ModernMaterialsTextureRegister {
         });
     }
 
-    private void itemTextures(TextureMap map) {
+    private ArrayList<File> getFiles(String path) {
+
+        final File[] files = Paths.get(path)
+            .toFile()
+            .listFiles();
+        if (files == null) throw new RuntimeException("No files found at " + path + ".");
+
+        ArrayList<File> fileList = new ArrayList<>(Arrays.asList(files));
+        // Remove .png.mcmeta files, these are irrelevant.
+        fileList.removeIf(
+            file -> !file.getName().toLowerCase().endsWith(".png"));
+
+        // Sort according to the actual unlocalised name rather than enum name.
+        fileList.sort(Comparator.comparing(File::getName));
+
+        return fileList;
+    }
+
+
+    private void standardItemTextures(TextureMap map) {
 
         // Pre sort this by part name not enum name to save computation later.
         ItemsEnum[] partsEnum = ItemsEnum.values();
@@ -100,86 +121,43 @@ public class ModernMaterialsTextureRegister {
         // PartName_1 for example is layer 1 and has no colouring. This can be useful for e.g. fine wire
         // where you want the lower layer to be coloured but not the overlay. You can use 0-9 layers.
 
+        HashMap<String, ItemsEnum> partNameToEnumMap = new HashMap<>();
+        for (ItemsEnum part : partsEnum) {
+            partNameToEnumMap.put(part.partName, part);
+        }
+
         for (TextureType textureType : TextureType.values()) {
 
-            // We will handle these later.
+            // We will handle these elsewhere.
             if (textureType.equals(TextureType.Custom)) continue;
 
-            String path = "../src/main/resources/assets/gregtech/textures/items/ModernMaterialsIcons/" + textureType;
-            final File[] files = Paths.get(path)
-                .toFile()
-                .listFiles();
-            if (files == null) throw new RuntimeException("No files found at " + path + ".");
+            ArrayList<File> fileList = getFiles("../src/main/resources/assets/gregtech/textures/items/ModernMaterialsIcons/" + textureType.name());
 
-            ArrayList<File> fileList = new ArrayList<>(Arrays.asList(files));
-            // Remove .png.mcmeta files, these are irrelevant.
-            fileList.removeIf(
-                file -> file.getName()
-                    .endsWith(".png.mcmeta") || file.getName()
-                    .endsWith(".DS_Store"));
-            // Sort according to the actual unlocalised name rather than enum name.
-            fileList.sort(Comparator.comparing(File::getName));
+            for (File file : fileList) {
 
-            for (ItemsEnum part : partsEnum) {
+                String[] breakdown = file.getName().replace(".png", "").split("_");
 
-                for (File file : fileList) {
+                String partName = breakdown[0];
+                int priority = Integer.parseInt(breakdown[1]);
+                boolean isColoured = breakdown[2].equals("c");
 
-                    // Saves computing this multiple times.
-                    String trueFileName = file.getName();
+                ItemsEnum itemEnum = partNameToEnumMap.getOrDefault(partName, null);
 
-                    // Codes for determining details about image.
-                    String[] preProcessedName = trueFileName.split("_");
-                    String fileNameWithoutCode = preProcessedName[0];
-                    String code = preProcessedName[1];
+                if (itemEnum == null) continue;
 
-                    int priority = code.charAt(0) - '0'; // Dumb way to convert code.charAt(0) to an integer from char.
-                    boolean isColoured = code.charAt(1) == 'c';
+                // textures/items
+                IIcon icon = map.registerIcon(
+                    GregTech.getResourcePath() + "ModernMaterialsIcons/"
+                        + textureType + "/"
+                        + partName + "_" + priority + "_" + (isColoured ? "c" : "n"));
 
-                    // Do not register and move on if it is not equal.
-                    if (!fileNameWithoutCode.equals(part.partName)) {
-                        continue;
-                    }
-                    // textures/items
-                    IIcon icon = map.registerIcon(
-                        GregTech.getResourcePath() + "ModernMaterialsIcons/"
-                            + textureType + "/"
-                            + removePNG(trueFileName));
-
-                    IconWrapper iconWrapper = new IconWrapper(priority, isColoured, icon);
-                    textureType.addTexture(part, iconWrapper);
-                }
+                IconWrapper iconWrapper = new IconWrapper(priority, isColoured, icon);
+                textureType.addTexture(itemEnum, iconWrapper);
             }
         }
+    }
 
-        for (ModernMaterial modernMaterial : ModernMaterialUtilities.materialNameToMaterialMap.values()) {
-
-            if (!modernMaterial.hasCustomTextures()) continue;
-
-            for (TextureType textureType : TextureType.values()) {
-
-                String path = "../src/main/resources/assets/gregtech/textures/items/ModernMaterialsIcons/Custom/" + modernMaterial.getMaterialName();
-                final File[] files = Paths.get(path)
-                    .toFile()
-                    .listFiles();
-                if (files == null) throw new RuntimeException("No files found at " + path + ".");
-
-                ArrayList<File> fileList = new ArrayList<>(Arrays.asList(files));
-                // Remove .png.mcmeta files, these are irrelevant.
-                fileList.removeIf(
-                    file -> file.getName()
-                        .endsWith(".png.mcmeta") || file.getName()
-                        .endsWith(".DS_Store"));
-                // Sort according to the actual unlocalised name rather than enum name.
-                fileList.sort(Comparator.comparing(File::getName));
-
-
-
-            }
-
-
-
-
-        }
+    private void customItenTextures(TextureMap map) {
 
 
     }
