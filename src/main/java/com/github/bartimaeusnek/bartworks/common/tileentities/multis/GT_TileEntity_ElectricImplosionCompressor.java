@@ -123,7 +123,7 @@ public class GT_TileEntity_ElectricImplosionCompressor
                             .casingIndex(CASING_INDEX).dot(2).buildAndChain(
                                     onElementPass(x -> ++x.mCasing, ofBlock(GregTech_API.sBlockCasings2, 0)),
                                     onElementPass(x -> ++x.mCasing, ofBlock(GregTech_API.sBlockCasings3, 4))))
-            .addElement('N', new IStructureElement<GT_TileEntity_ElectricImplosionCompressor>() {
+            .addElement('N', new IStructureElement<>() {
 
                 // Much of this based on StructureUtility.ofBlocksTiered
                 private final List<Pair<Block, Integer>> tiers = getAllBlockTiers();
@@ -336,17 +336,17 @@ public class GT_TileEntity_ElectricImplosionCompressor
 
     @Override
     public void stopMachine() {
-        this.resetPiston();
+        this.resetPiston(this.mBlockTier);
         super.stopMachine();
     }
 
-    private void resetPiston() {
+    private void resetPiston(int tier) {
         if (!pistonEnabled) return;
         IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
         if (!aBaseMetaTileEntity.isServerSide()) return;
         if (!this.piston) {
             List<Pair<Block, Integer>> tiers = getAllBlockTiers();
-            Pair<Block, Integer> tieredBlock = tiers.get(Math.min(this.mBlockTier, tiers.size()) - 1);
+            Pair<Block, Integer> tieredBlock = tiers.get(Math.min(tier, tiers.size()) - 1);
             this.chunkCoordinates.forEach(c -> {
                 // Don't replace real blocks in case user has placed something (e.g. tier upgrade)
                 if (aBaseMetaTileEntity.getWorld().isAirBlock(c.posX, c.posY, c.posZ)) {
@@ -407,6 +407,7 @@ public class GT_TileEntity_ElectricImplosionCompressor
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
+        int pistonTier = this.mBlockTier;
         this.mCasing = 0;
         int mMaxHatchTier = 0;
         this.setBlockTier(0);
@@ -422,7 +423,7 @@ public class GT_TileEntity_ElectricImplosionCompressor
             this.activatePiston();
             return true;
         }
-        this.resetPiston();
+        this.resetPiston(pistonTier);
         return false;
     }
 
