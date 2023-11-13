@@ -7,12 +7,14 @@ import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SoundResource;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects;
 import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaTileEntity_BasicWasher;
 
 public class GregtechSimpleWasher {
 
@@ -22,22 +24,97 @@ public class GregtechSimpleWasher {
             generateDirtyCrushedRecipes();
             // Register the Simple Washer Entity.
             GregtechItemList.SimpleDustWasher_ULV.set(
-                    new GregtechMetaTileEntity_BasicWasher(767, "simplewasher.01.tier.01", "Simple Washer I", 0)
-                            .getStackForm(1L));
+                    new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                            767,
+                            "simplewasher.01.tier.01",
+                            "Simple Washer I",
+                            0,
+                            new String[] { "It's like an automatic Cauldron for washing dusts.",
+                                    CORE.GT_Tooltip.get() },
+                            GTPP_Recipe.GTPP_Recipe_Map.sSimpleWasherRecipes,
+                            1,
+                            1,
+                            true,
+                            SoundResource.NONE,
+                            false,
+                            false,
+                            SpecialEffects.NONE,
+                            "SIMPLE_WASHER",
+                            null).getStackForm(1L));
 
             // People want them in higher tiers apparently
             GregtechItemList.SimpleDustWasher_MV.set(
-                    new GregtechMetaTileEntity_BasicWasher(31017, "simplewasher.01.tier.02", "Simple Washer II", 2)
-                            .getStackForm(1L));
+                    new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                            31017,
+                            "simplewasher.01.tier.02",
+                            "Simple Washer II",
+                            2,
+                            new String[] { "It's like an automatic Cauldron for washing dusts.",
+                                    CORE.GT_Tooltip.get() },
+                            GTPP_Recipe.GTPP_Recipe_Map.sSimpleWasherRecipes,
+                            1,
+                            1,
+                            true,
+                            SoundResource.NONE,
+                            false,
+                            false,
+                            SpecialEffects.NONE,
+                            "SIMPLE_WASHER",
+                            null).getStackForm(1L));
             GregtechItemList.SimpleDustWasher_EV.set(
-                    new GregtechMetaTileEntity_BasicWasher(31018, "simplewasher.01.tier.03", "Simple Washer III", 4)
-                            .getStackForm(1L));
+                    new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                            31018,
+                            "simplewasher.01.tier.03",
+                            "Simple Washer III",
+                            4,
+                            new String[] { "It's like an automatic Cauldron for washing dusts.",
+                                    CORE.GT_Tooltip.get() },
+                            GTPP_Recipe.GTPP_Recipe_Map.sSimpleWasherRecipes,
+                            1,
+                            1,
+                            true,
+                            SoundResource.NONE,
+                            false,
+                            false,
+                            SpecialEffects.NONE,
+                            "SIMPLE_WASHER",
+                            null).getStackForm(1L));
             GregtechItemList.SimpleDustWasher_LuV.set(
-                    new GregtechMetaTileEntity_BasicWasher(31019, "simplewasher.01.tier.04", "Simple Washer IV", 6)
-                            .getStackForm(1L));
+                    new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                            31019,
+                            "simplewasher.01.tier.04",
+                            "Simple Washer IV",
+                            6,
+                            new String[] { "It's like an automatic Cauldron for washing dusts.",
+                                    CORE.GT_Tooltip.get() },
+                            GTPP_Recipe.GTPP_Recipe_Map.sSimpleWasherRecipes,
+                            1,
+                            1,
+                            true,
+                            SoundResource.NONE,
+                            false,
+                            false,
+                            SpecialEffects.NONE,
+                            "SIMPLE_WASHER",
+                            null).getStackForm(1L));
             GregtechItemList.SimpleDustWasher_UV.set(
-                    new GregtechMetaTileEntity_BasicWasher(31020, "simplewasher.01.tier.05", "Simple Washer V", 8)
-                            .getStackForm(1L));
+                    new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                            31020,
+                            "simplewasher.01.tier.05",
+                            "Simple Washer V",
+                            8,
+                            new String[] { "It's like an automatic Cauldron for washing dusts.",
+                                    CORE.GT_Tooltip.get() },
+                            GTPP_Recipe.GTPP_Recipe_Map.sSimpleWasherRecipes,
+                            1,
+                            1,
+                            true,
+                            SoundResource.NONE,
+                            false,
+                            false,
+                            SpecialEffects.NONE,
+                            "SIMPLE_WASHER",
+                            null).getStackForm(1L));
         }
     }
 
