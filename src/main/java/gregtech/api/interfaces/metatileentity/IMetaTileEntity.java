@@ -188,9 +188,9 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     void onRemoval();
 
     /**
-     * Called when the BaseMetaTileEntity gets unloaded
+     * Called when the BaseMetaTileEntity gets unloaded (chunk or world)
      */
-    default void onChunkUnload() {}
+    default void onUnload() {}
 
     /**
      * @param facing the facing direction to check
