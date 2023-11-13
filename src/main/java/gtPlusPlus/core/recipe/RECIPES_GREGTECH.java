@@ -658,44 +658,6 @@ public class RECIPES_GREGTECH {
                 20 * 300,
                 4000);
 
-        // Ruthenium Roasting
-        CORE.RA.addBlastSmelterRecipe(
-                new ItemStack[] { ItemUtils.getGregtechCircuit(19),
-                        ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedIridium", 8),
-                        ELEMENT.getInstance().CARBON.getDust(32), },
-                Materials.SulfuricAcid.getFluid(2000),
-                ELEMENT.getInstance().RUTHENIUM.getFluidStack(288),
-                0,
-                20 * 300,
-                8000);
-        CORE.RA.addBlastSmelterRecipe(
-                new ItemStack[] { ItemUtils.getGregtechCircuit(19),
-                        ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedOsmium", 8),
-                        ELEMENT.getInstance().CARBON.getDust(32), },
-                Materials.SulfuricAcid.getFluid(2000),
-                ELEMENT.getInstance().RUTHENIUM.getFluidStack(288),
-                0,
-                20 * 300,
-                8000);
-        CORE.RA.addBlastSmelterRecipe(
-                new ItemStack[] { ItemUtils.getGregtechCircuit(19),
-                        ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedPlatinum", 8),
-                        ELEMENT.getInstance().CARBON.getDust(32), },
-                Materials.SulfuricAcid.getFluid(2000),
-                ELEMENT.getInstance().RUTHENIUM.getFluidStack(288),
-                0,
-                20 * 300,
-                8000);
-        CORE.RA.addBlastSmelterRecipe(
-                new ItemStack[] { ItemUtils.getGregtechCircuit(19),
-                        ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedCooperite", 8),
-                        ELEMENT.getInstance().CARBON.getDust(32), },
-                Materials.SulfuricAcid.getFluid(8000),
-                ELEMENT.getInstance().RUTHENIUM.getFluidStack(144),
-                0,
-                20 * 300,
-                8000);
-
         // Rhenium Roasting
         CORE.RA.addBlastSmelterRecipe(
                 new ItemStack[] { ItemUtils.getGregtechCircuit(20),
