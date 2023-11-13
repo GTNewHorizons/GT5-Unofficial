@@ -596,6 +596,7 @@ public class PlatinumSludgeOverHaul {
 
                 for (int i = 0; i < recipe.mFluidOutputs.length; i++) {
                     if (map.equals(GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes)) continue maploop;
+                    if ("gtpp.recipe.alloyblastsmelter".equals(map.mUnlocalizedName)) continue maploop;
                     if (map.equals(GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes)
                             || map.equals(GT_Recipe.GT_Recipe_Map.sChemicalRecipes)) {
                         if (GT_Utility.areFluidsEqual(Ruthenium.getMolten(1), recipe.mFluidOutputs[i])
