@@ -670,7 +670,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     }
 
     /**
-     * WARNING: ensure that the inputs and fluid inputs are enough to be consumed!
+     * WARNING: Ensure that item inputs and fluid inputs are enough to be consumed with
+     * {@link #maxParallelCalculatedByInputs} before calling this method!
      */
     public void consumeInput(int amountMultiplier, FluidStack[] aFluidInputs, ItemStack... aInputs) {
         if (amountMultiplier <= 0) return;
@@ -770,22 +771,48 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         if (aInputs != null) {
             // Create map for item -> stored amount
-            Map<GT_Utility.ItemId, Integer> itemMap = new HashMap<>();
             Map<GT_Utility.ItemId, Integer> itemCost = new HashMap<>();
-            for (ItemStack itemStack : aInputs) {
-                if (itemStack == null) continue;
-                itemMap.merge(GT_Utility.ItemId.createNoCopy(itemStack), itemStack.stackSize, Integer::sum);
-            }
+            Map<GT_Utility.ItemId, Integer> itemMap = new HashMap<>();
+            Map<GT_Utility.ItemId, Integer> itemMapWildcard = new HashMap<>(); // Used only when wildcard input is found
+            boolean foundWildcard = false;
             for (ItemStack itemStack : mInputs) {
                 if (itemStack == null) continue;
-                itemCost.merge(GT_Utility.ItemId.createNoCopy(itemStack), itemStack.stackSize, Integer::sum);
+                if (itemStack.getItemDamage() == W) {
+                    foundWildcard = true;
+                }
+                if (isNBTSensitive) {
+                    itemCost.merge(GT_Utility.ItemId.createNoCopy(itemStack), itemStack.stackSize, Integer::sum);
+                } else {
+                    itemCost.merge(GT_Utility.ItemId.createWithoutNBT(itemStack), itemStack.stackSize, Integer::sum);
+                }
+            }
+            for (ItemStack itemStack : aInputs) {
+                if (itemStack == null) continue;
+                if (isNBTSensitive) {
+                    itemMap.merge(GT_Utility.ItemId.createNoCopy(itemStack), itemStack.stackSize, Integer::sum);
+                } else {
+                    itemMap.merge(GT_Utility.ItemId.createWithoutNBT(itemStack), itemStack.stackSize, Integer::sum);
+                }
+                if (foundWildcard) {
+                    itemMapWildcard
+                        .merge(GT_Utility.ItemId.createAsWildcard(itemStack), itemStack.stackSize, Integer::sum);
+                }
             }
             // Check how many parallels can it perform for each item
             for (Map.Entry<GT_Utility.ItemId, Integer> costEntry : itemCost.entrySet()) {
-                if (costEntry.getValue() > 0) {
-                    currentParallel = Math.min(
-                        currentParallel,
-                        (double) itemMap.getOrDefault(costEntry.getKey(), 0) / costEntry.getValue());
+                GT_Utility.ItemId costItem = costEntry.getKey();
+                int costValue = costEntry.getValue();
+                Map<GT_Utility.ItemId, Integer> mapToUse = costItem.metaData() == W ? itemMapWildcard : itemMap;
+                if (costValue > 0) {
+                    currentParallel = Math
+                        .min(currentParallel, (double) mapToUse.getOrDefault(costItem, 0) / costValue);
+                } else {
+                    // Non-consumed input
+                    // We need to distinguish null and 0 here, since not having item
+                    // and having 0-sized item (ghost circuit) are different.
+                    if (!mapToUse.containsKey(costItem)) {
+                        currentParallel = 0;
+                    }
                 }
                 if (currentParallel <= 0) {
                     return 0;
