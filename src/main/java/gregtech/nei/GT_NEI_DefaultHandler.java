@@ -754,16 +754,19 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                             .getItemHandler() == itemOutputsInventory) {
                                 int i = widget.getMcSlot()
                                     .getSlotIndex();
-                                if (aRecipe.mOutputs.length > i && aRecipe.mOutputs[i] != null) {
+
+                                ItemStack output = aRecipe.getRepresentativeOutput(i);
+                                if (output != null) {
                                     mOutputs.add(
                                         new FixedPositionedStack(
-                                            aRecipe.mOutputs[i],
+                                            output,
                                             GT_NEI_DefaultHandler.this.mRecipeMap.renderRealStackSizes,
                                             widget.getPos().x + 1,
                                             widget.getPos().y + 1,
                                             aRecipe.getOutputChance(i),
                                             GT_NEI_DefaultHandler.this.mRecipeMap.mNEIUnificateOutput));
                                 }
+
                             } else if (widget.getMcSlot()
                                 .getItemHandler() == specialSlotInventory) {
                                     if (aRecipe.mSpecialItems != null) {

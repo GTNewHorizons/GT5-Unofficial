@@ -580,6 +580,20 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         return GT_Utility.copyOrNull(mOutputs[aIndex]);
     }
 
+    /***
+     * Dictates the ItemStacks displayed in the output slots of any NEI page handled by the default GT NEI handler.
+     * Override to make shown items differ from a GT_Recipe's item output array
+     * 
+     * @see gregtech.nei.GT_NEI_DefaultHandler
+     * @param i Slot index
+     * @return ItemStack to be displayed in the slot
+     * 
+     */
+    //
+    public ItemStack getRepresentativeOutput(int i) {
+        return getOutput(i);
+    }
+
     public int getOutputChance(int aIndex) {
         if (mChances == null) return 10000;
         if (aIndex < 0 || aIndex >= mChances.length) return 10000;
