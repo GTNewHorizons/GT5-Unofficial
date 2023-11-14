@@ -20,6 +20,12 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
 import org.apache.commons.lang3.Range;
 import org.lwjgl.opengl.GL11;
 
@@ -61,11 +67,6 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Item_Machines;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.common.power.Power;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GT_NEI_DefaultHandler extends RecipeMapHandler {
 
@@ -83,7 +84,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
      * Static version of {@link TemplateRecipeHandler#cycleticks}. Can be referenced from cached recipes.
      */
     public static int cycleTicksStatic = Math.abs((int) System.currentTimeMillis());
-    /**	
+    /**
      * Basically {@link #cycleTicksStatic} but always updated even while holding shift
      */
     private static int drawTicks;
@@ -753,8 +754,8 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                             .getItemHandler() == itemOutputsInventory) {
                                 int i = widget.getMcSlot()
                                     .getSlotIndex();
-                                
-                                ItemStack output = aRecipe.getRepresentativeOutput(i);     
+
+                                ItemStack output = aRecipe.getRepresentativeOutput(i);
                                 if (output != null) {
                                     mOutputs.add(
                                         new FixedPositionedStack(
