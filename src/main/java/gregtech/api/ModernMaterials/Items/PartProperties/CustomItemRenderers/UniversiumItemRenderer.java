@@ -63,7 +63,7 @@ public class UniversiumItemRenderer implements IItemRenderer {
         renderPositionCorrection(type);
 
         // Iterate over the items layers and render them.
-        for (IconWrapper iconWrapper : customPartInfo.getTextureType().getTextureArray(partsEnum)) {
+        for (IconWrapper iconWrapper : customPartInfo.getTextureType().getStandardTextureArray(partsEnum)) {
 
             GL11.glPushAttrib(GL_CURRENT_BIT);
 

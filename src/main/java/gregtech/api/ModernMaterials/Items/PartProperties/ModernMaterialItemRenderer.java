@@ -80,7 +80,7 @@ public class ModernMaterialItemRenderer implements IItemRenderer {
 
         // Iterate over the items layers and render them.
         for (IconWrapper iconWrapper : customPartInfo.getTextureType()
-            .getTextureArray(partsEnum)) {
+            .getStandardTextureArray(partsEnum)) {
 
             GL11.glPushAttrib(GL_CURRENT_BIT);
 

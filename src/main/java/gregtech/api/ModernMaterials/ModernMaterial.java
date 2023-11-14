@@ -180,6 +180,7 @@ public final class ModernMaterial {
         }
 
         public ModernMaterialBuilder setTextureMode(@NotNull final TextureType textureType) {
+            if (textureType == TextureType.Custom) TextureType.registerCustomMaterial(materialToBuild);
             materialToBuild.textureType = textureType;
             return this;
         }

@@ -1,10 +1,14 @@
 package gregtech.api.ModernMaterials.Items.PartProperties;
 
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 import gregtech.api.ModernMaterials.Items.PartsClasses.ItemsEnum;
+import gregtech.api.ModernMaterials.ModernMaterial;
 
 public enum TextureType {
 
@@ -13,23 +17,42 @@ public enum TextureType {
     Custom;
     // Stone;
 
-    private final HashMap<ItemsEnum, ArrayList<IconWrapper>> textureStorage = new HashMap<>();
+    private static final HashSet<ModernMaterial> customTextureMaterials = new HashSet<>();
+    private final HashMap<ItemsEnum, ArrayList<IconWrapper>> standardTextureStorage = new HashMap<>();
+    private static final HashMap<Integer, ArrayList<IconWrapper>> customTextureStorage = new HashMap<>();
 
-    public void addTexture(ItemsEnum part, IconWrapper iconWrapper) {
-        ArrayList<IconWrapper> iconList = textureStorage.getOrDefault(part, new ArrayList<>());
+    public void addStandardTexture(ItemsEnum part, IconWrapper iconWrapper) {
+        ArrayList<IconWrapper> iconList = standardTextureStorage.getOrDefault(part, new ArrayList<>());
         iconList.add(iconWrapper);
-        textureStorage.put(part, iconList);
+
+        standardTextureStorage.put(part, iconList);
     }
 
-    public ArrayList<IconWrapper> getTextureArray(ItemsEnum part) {
-        return textureStorage.get(part);
+    public ArrayList<IconWrapper> getStandardTextureArray(ItemsEnum part) {
+        return standardTextureStorage.get(part);
     }
 
-    // Sort each items textures by priority determined by IconWrapper.
-    public void sortLayers() {
-        for (ArrayList<IconWrapper> iconList : textureStorage.values()) {
-            iconList.sort(Comparator.comparingInt(IconWrapper::getPriority));
-        }
+
+
+
+
+    public static void addCustomTexture(ModernMaterial material, ItemsEnum part, IconWrapper iconWrapper) {
+        ArrayList<IconWrapper> iconList = customTextureStorage.getOrDefault(Objects.hash(material.getMaterialID(), part), new ArrayList<>());
+        iconList.add(iconWrapper);
+
+        customTextureStorage.put(Objects.hash(material.getMaterialID(), part), iconList);
+    }
+
+    public ArrayList<IconWrapper> getCustomTextures(ModernMaterial material, ItemsEnum part) {
+        return customTextureStorage.get(Objects.hash(material.getMaterialID(), part));
+    }
+
+    public static void registerCustomMaterial(ModernMaterial material) {
+        customTextureMaterials.add(material);
+    }
+
+    public static Set<ModernMaterial> getCustomTextureMaterials() {
+        return Collections.unmodifiableSet(customTextureMaterials);
     }
 
 }

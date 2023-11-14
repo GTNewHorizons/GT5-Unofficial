@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 
+import static gregtech.api.ModernMaterials.Items.PartProperties.TextureType.Custom;
 import static gregtech.api.enums.Mods.GregTech;
 
 public class ModernMaterialsTextureRegister {
@@ -108,6 +109,52 @@ public class ModernMaterialsTextureRegister {
     }
 
 
+    private void customItenTextures(TextureMap map) {
+
+        // Pre sort this by part name not enum name to save computation later.
+        ItemsEnum[] partsEnum = ItemsEnum.values();
+        Arrays.sort(partsEnum, Comparator.comparing(part -> part.partName));
+
+        // Iterate over all texture types and their associated item textures to register them and any
+        // additional layers. A file can be identified as PartName_0_c.png, the 0 indicates the layer and c indicates if
+        // the part should have standard GT colouring applied to it for this material.
+
+        // PartName_1 for example is layer 1 and has no colouring. This can be useful for e.g. fine wire
+        // where you want the lower layer to be coloured but not the overlay.
+
+        HashMap<String, ItemsEnum> partNameToEnumMap = new HashMap<>();
+        for (ItemsEnum part : partsEnum) {
+            partNameToEnumMap.put(part.partName, part);
+        }
+
+        for (ModernMaterial material : TextureType.getCustomTextureMaterials()) {
+
+            ArrayList<File> fileList = getFiles("../src/main/resources/assets/gregtech/textures/items/ModernMaterialsIcons/Custom/" + material.getMaterialName());
+
+            for (File file : fileList) {
+
+                String[] breakdown = file.getName().replace(".png", "").split("_");
+
+                String partName = breakdown[0];
+                int priority = Integer.parseInt(breakdown[1]);
+                boolean isColoured = breakdown[2].equals("c");
+
+                ItemsEnum itemEnum = partNameToEnumMap.getOrDefault(partName, null);
+
+                if (itemEnum == null) continue;
+
+                // textures/items
+                IIcon icon = map.registerIcon(
+                    GregTech.getResourcePath() + "ModernMaterialsIcons/"
+                        + Custom + "/" + partName + "_" + priority + "_" + (isColoured ? "c" : "n"));
+
+                IconWrapper iconWrapper = new IconWrapper(priority, isColoured, icon);
+                TextureType.addCustomTexture(material, itemEnum, iconWrapper);
+            }
+        }
+
+    }
+
     private void standardItemTextures(TextureMap map) {
 
         // Pre sort this by part name not enum name to save computation later.
@@ -152,24 +199,9 @@ public class ModernMaterialsTextureRegister {
                         + partName + "_" + priority + "_" + (isColoured ? "c" : "n"));
 
                 IconWrapper iconWrapper = new IconWrapper(priority, isColoured, icon);
-                textureType.addTexture(itemEnum, iconWrapper);
+                textureType.addStandardTexture(itemEnum, iconWrapper);
             }
         }
     }
 
-    private void customItenTextures(TextureMap map) {
-
-
-    }
-
-    // Remove the .png from the filename as MC does not need this to register the texture file.
-    private String removePNG(final String str) {
-        return str.substring(0, str.length() - 4);
-    }
-
-    private void sortItemTextureLayers() {
-        for (TextureType textureType : TextureType.values()) {
-            textureType.sortLayers();
-        }
-    }
 }

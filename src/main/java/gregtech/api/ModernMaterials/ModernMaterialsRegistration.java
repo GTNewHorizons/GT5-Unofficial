@@ -57,7 +57,7 @@ public class ModernMaterialsRegistration {
         new ModernMaterial.ModernMaterialBuilder("Universium")
             .setColor(255, 255, 255)
             .setMaterialID(17)
-            .setTextureMode(Metal_Shiny)
+            .setTextureMode(Custom)
             .setCustomBlockRenderer(
                 BlocksEnum.FrameBox,
                 new UniversiumFrameItemRenderer(),
@@ -73,7 +73,7 @@ public class ModernMaterialsRegistration {
 
         new ModernMaterial.ModernMaterialBuilder("TEST3232").setColor(120, 2, 0)
             .setMaterialID(18)
-            .setTextureMode(Custom)
+            .setTextureMode(Metal_Shiny)
             .setMaterialTier(TierEU.MAX)
             .addAllParts()
             .setRecipeGenerator(new Metal())
