@@ -3657,13 +3657,6 @@ public class ChemicalRecipes implements Runnable {
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
 
-        GT_Values.RA.stdBuilder()
-            .itemInputs(Materials.GasolineRaw.getCells(10), Materials.Toluene.getCells(1))
-            .itemOutputs(Materials.GasolineRegular.getCells(11))
-            .duration(10 * TICKS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(UniversalChemical);
-
         // Oxide Recipe
 
         GT_Values.RA.stdBuilder()
@@ -3900,6 +3893,14 @@ public class ChemicalRecipes implements Runnable {
     }
 
     public void singleBlockOnly() {
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(Materials.GasolineRaw.getCells(10), Materials.Toluene.getCells(1))
+            .itemOutputs(Materials.GasolineRegular.getCells(11))
+            .duration(10 * TICKS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(sChemicalRecipes);
+
         GT_Values.RA.stdBuilder()
             .itemInputs(Materials.Benzene.getCells(1), Materials.Empty.getCells(1))
             .itemOutputs(Materials.Hydrogen.getCells(2))
