@@ -6521,4 +6521,11 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     .setSize(10, 18));
         }
     }
+
+    
+    // Returns the stack to be displayed in the output slot of index i on the recipe's NEI page
+    // Override for more control over what items are displayed
+	public ItemStack getRepresentativeOutput(int i) {
+		return getOutput(i);
+	}
 }

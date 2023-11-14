@@ -20,12 +20,6 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
-
 import org.apache.commons.lang3.Range;
 import org.lwjgl.opengl.GL11;
 
@@ -67,6 +61,12 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Item_Machines;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.common.power.Power;
+import gregtech.nei.GT_NEI_DefaultHandler.FixedPositionedStack;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 public class GT_NEI_DefaultHandler extends RecipeMapHandler {
 
@@ -754,16 +754,22 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                             .getItemHandler() == itemOutputsInventory) {
                                 int i = widget.getMcSlot()
                                     .getSlotIndex();
-                                if (aRecipe.mOutputs.length > i && aRecipe.mOutputs[i] != null) {
-                                    mOutputs.add(
+                                Object output = aRecipe.getRepresentativeOutput(i);
+                                
+                                if (output != null) {
+                                	mOutputs.add(
                                         new FixedPositionedStack(
-                                            aRecipe.mOutputs[i],
+                                        	output,
                                             GT_NEI_DefaultHandler.this.mRecipeMap.renderRealStackSizes,
                                             widget.getPos().x + 1,
                                             widget.getPos().y + 1,
                                             aRecipe.getOutputChance(i),
                                             GT_NEI_DefaultHandler.this.mRecipeMap.mNEIUnificateOutput));
-                                }
+                            }
+                                
+                                
+                                    
+                                
                             } else if (widget.getMcSlot()
                                 .getItemHandler() == specialSlotInventory) {
                                     if (aRecipe.mSpecialItems != null) {
