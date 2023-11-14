@@ -139,6 +139,7 @@ import gregtech.api.fluid.GT_FluidFactory;
 import gregtech.api.interfaces.IBlockOnWalkOver;
 import gregtech.api.interfaces.IGlobalWirelessEnergy;
 import gregtech.api.interfaces.IProjectileItem;
+import gregtech.api.interfaces.IToolStats;
 import gregtech.api.interfaces.internal.IGT_Mod;
 import gregtech.api.interfaces.internal.IThaumcraftCompat;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -1580,19 +1581,19 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
 
     @SubscribeEvent
     public void onBlockBreakingEvent(BlockEvent.BreakEvent event) {
-        var player = event.getPlayer();
+        EntityPlayer player = event.getPlayer();
         if (player == null) return;
 
-        var item = event.getPlayer()
+        ItemStack item = event.getPlayer()
             .getCurrentEquippedItem();
         if (item == null) return;
 
         if (!(item.getItem() instanceof GT_MetaGenerated_Tool tool)) return;
 
-        var stats = tool.getToolStats(item);
+        IToolStats stats = tool.getToolStats(item);
         if (stats == null) return;
 
-        var tile = event.world.getTileEntity(event.x, event.y, event.z);
+        TileEntity tile = event.world.getTileEntity(event.x, event.y, event.z);
         stats.onBreakBlock(player, event.x, event.y, event.z, event.block, (byte) event.blockMetadata, tile, event);
     }
 

@@ -26,6 +26,7 @@ import net.minecraftforge.event.world.BlockEvent;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.util.GT_ToolHarvestHelper;
 import gregtech.common.items.behaviors.Behaviour_Wrench;
@@ -161,13 +162,13 @@ public class GT_Tool_Wrench extends GT_Tool {
     @Override
     public float getMiningSpeed(Block block, byte metadata, float mineSpeed, EntityPlayer player, World world, int x,
         int y, int z) {
-        var holding = player.getCurrentEquippedItem();
+        ItemStack holding = player.getCurrentEquippedItem();
         if (holding == null || !(holding.getItem() instanceof GT_MetaGenerated_Tool tool)) return mineSpeed;
 
-        var stats = tool.getToolStats(holding);
+        IToolStats stats = tool.getToolStats(holding);
         if (stats == null) return mineSpeed;
 
-        var tile = world.getTileEntity(x, y, z);
+        TileEntity tile = world.getTileEntity(x, y, z);
         if (tile == null) return mineSpeed;
 
         float newSpeed = Math.max(Float.MIN_NORMAL, getSpeedMultiplier() * getPrimaryMaterial(holding).mToolSpeed);
@@ -180,9 +181,9 @@ public class GT_Tool_Wrench extends GT_Tool {
     @Override
     public void onBreakBlock(@Nonnull EntityPlayer player, int x, int y, int z, @Nonnull Block block, byte metadata,
         TileEntity tile, @Nonnull BlockEvent.BreakEvent event) {
-        final var world = player.worldObj;
+        final World world = player.worldObj;
         if (tile instanceof IWrenchable wrenchable) {
-            var drop = wrenchable.getWrenchDrop(player);
+            ItemStack drop = wrenchable.getWrenchDrop(player);
             world.setBlockToAir(x, y, z);
             world.spawnEntityInWorld(new EntityItem(world, x, y, z, drop));
         }
