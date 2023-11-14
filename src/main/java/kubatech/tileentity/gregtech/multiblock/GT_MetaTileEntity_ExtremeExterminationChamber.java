@@ -160,6 +160,11 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
         }
     }
 
+    @Override
+    public void onUnload() {
+        if (LoaderReference.BloodMagic) MinecraftForge.EVENT_BUS.unregister(this);
+    }
+
     private static final String WellOfSufferingRitualName = "AW013Suffering";
 
     private static final Item poweredSpawnerItem = Item.getItemFromBlock(EnderIO.blockPoweredSpawner);
