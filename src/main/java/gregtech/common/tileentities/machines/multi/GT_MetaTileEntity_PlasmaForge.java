@@ -17,10 +17,6 @@ import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofCoil;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
-import static java.lang.Math.log;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -58,7 +54,11 @@ import gregtech.api.objects.GT_ChunkManager;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.*;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_OverclockCalculator;
+import gregtech.api.util.GT_ParallelHelper;
+import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
 
 public class GT_MetaTileEntity_PlasmaForge extends
     GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_PlasmaForge> implements ISurvivalConstructable {
@@ -71,9 +71,6 @@ public class GT_MetaTileEntity_PlasmaForge extends
     private static final FluidStack[] valid_fuels = { MaterialsUEVplus.ExcitedDTEC.getFluid(1L),
         MaterialsUEVplus.ExcitedDTRC.getFluid(1L), MaterialsUEVplus.ExcitedDTPC.getFluid(1L),
         MaterialsUEVplus.ExcitedDTCC.getFluid(1L), MaterialsUEVplus.ExcitedDTSC.getFluid(1L) };
-
-    // Saves recomputing this every recipe check for overclocking.
-    private static final double log4 = log(4);
 
     private static final int min_input_hatch = 0;
     private static final int max_input_hatch = 7;
@@ -805,11 +802,6 @@ public class GT_MetaTileEntity_PlasmaForge extends
     }
 
     @Override
-    public boolean drainEnergyInput(long aEU) {
-        return GT_ExoticEnergyInputHelper.drainEnergy(aEU, getExoticAndNormalEnergyHatchList());
-    }
-
-    @Override
     public boolean onRunningTick(ItemStack aStack) {
         if (EU_per_tick < 0) {
             if (!drainEnergyInput(-EU_per_tick)) {
@@ -835,6 +827,8 @@ public class GT_MetaTileEntity_PlasmaForge extends
             maxEnergy += tHatch.getBaseMetaTileEntity()
                 .getEUCapacity();
         }
+        long voltage = getAverageInputVoltage();
+        long amps = getMaxInputAmps();
 
         return new String[] { "------------ Critical Information ------------",
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
@@ -857,25 +851,22 @@ public class GT_MetaTileEntity_PlasmaForge extends
                 + " EU",
             StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
                 + EnumChatFormatting.RED
-                + GT_Utility.formatNumbers(-EU_per_tick)
+                + GT_Utility.formatNumbers(getActualEnergyUsage())
                 + EnumChatFormatting.RESET
                 + " EU/t",
             StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(
-                    GT_ExoticEnergyInputHelper.getAverageInputVoltageMulti(getExoticAndNormalEnergyHatchList()))
+                + GT_Utility.formatNumbers(voltage)
                 + EnumChatFormatting.RESET
                 + " EU/t(*"
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(
-                    GT_ExoticEnergyInputHelper.getMaxWorkingInputAmpsMulti(getExoticAndNormalEnergyHatchList()))
+                + amps
                 + EnumChatFormatting.RESET
                 + "A) "
                 + StatCollector.translateToLocal("GT5U.machines.tier")
                 + ": "
                 + EnumChatFormatting.YELLOW
-                + VN[GT_Utility
-                    .getTier(GT_ExoticEnergyInputHelper.getTotalEuMulti(getExoticAndNormalEnergyHatchList()))]
+                + VN[GT_Utility.getTier(voltage)]
                 + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("GT5U.EBF.heat") + ": "
                 + EnumChatFormatting.GREEN
@@ -891,13 +882,6 @@ public class GT_MetaTileEntity_PlasmaForge extends
                 + EnumChatFormatting.RESET
                 + "%",
             "-----------------------------------------" };
-    }
-
-    public List<GT_MetaTileEntity_Hatch> getExoticAndNormalEnergyHatchList() {
-        List<GT_MetaTileEntity_Hatch> tHatches = new ArrayList<>();
-        tHatches.addAll(mExoticEnergyHatches);
-        tHatches.addAll(mEnergyHatches);
-        return tHatches;
     }
 
     // Reset running time and discount.
