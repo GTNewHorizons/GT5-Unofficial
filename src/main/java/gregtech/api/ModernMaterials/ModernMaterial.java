@@ -6,6 +6,7 @@ import static gregtech.api.ModernMaterials.Items.PartProperties.TextureType.Meta
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import gregtech.api.ModernMaterials.RecipeGenerators.BaseRecipeGenerator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -17,14 +18,13 @@ import gregtech.api.ModernMaterials.Blocks.Registration.BlocksEnum;
 import gregtech.api.ModernMaterials.Fluids.FluidEnum;
 import gregtech.api.ModernMaterials.Fluids.ModernMaterialFluid;
 import gregtech.api.ModernMaterials.Items.PartProperties.TextureType;
-import gregtech.api.ModernMaterials.Items.PartsClasses.CustomPartInfo;
 import gregtech.api.ModernMaterials.Items.PartsClasses.IEnumPart;
 import gregtech.api.ModernMaterials.Items.PartsClasses.ItemsEnum;
 
 @SuppressWarnings("unused")
 public final class ModernMaterial {
 
-    private final HashMap<ItemsEnum, CustomPartInfo> existingPartsForMaterial = new HashMap<>();
+    private final HashSet<IEnumPart> existingPartsForMaterial = new HashSet<>();
     public final ArrayList<ModernMaterialFluid> existingFluids = new ArrayList<>();
     private Color color;
     private int materialID;
@@ -68,8 +68,8 @@ public final class ModernMaterial {
         return materialTier;
     }
 
-    public CustomPartInfo getCustomPartInfo(final ItemsEnum part) {
-        return existingPartsForMaterial.get(part);
+    public TextureType getTextureType() {
+        return textureType;
     }
 
     private ModernMaterial() {}
@@ -122,10 +122,7 @@ public final class ModernMaterial {
 
         public ModernMaterialBuilder addPart(IEnumPart part) {
             part.addAssociatedMaterial(materialToBuild);
-            if (part instanceof ItemsEnum itemsEnum) {
-                materialToBuild.existingPartsForMaterial
-                    .put(itemsEnum, new CustomPartInfo(itemsEnum, materialToBuild.textureType));
-            }
+            materialToBuild.existingPartsForMaterial.add(part);
 
             return this;
         }
@@ -171,11 +168,6 @@ public final class ModernMaterial {
 
         public ModernMaterialBuilder setMaterialTier(long tier) {
             materialToBuild.materialTier = tier;
-            return this;
-        }
-
-        public ModernMaterialBuilder addPart(CustomPartInfo customPartInfo) {
-            materialToBuild.existingPartsForMaterial.put(customPartInfo.part, customPartInfo);
             return this;
         }
 

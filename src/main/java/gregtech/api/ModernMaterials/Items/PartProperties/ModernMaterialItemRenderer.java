@@ -1,7 +1,6 @@
 package gregtech.api.ModernMaterials.Items.PartProperties;
 
 import gregtech.api.ModernMaterials.ModernMaterial;
-import gregtech.api.ModernMaterials.Items.PartsClasses.CustomPartInfo;
 import gregtech.api.ModernMaterials.Items.PartsClasses.ItemsEnum;
 import gregtech.api.ModernMaterials.Items.PartsClasses.MaterialPart;
 import gregtech.common.render.GT_RenderUtil;
@@ -69,7 +68,6 @@ public class ModernMaterialItemRenderer implements IItemRenderer {
         Color materialColor = material.getColor();
 
         ItemsEnum partsEnum = materialPart.getPart();
-        CustomPartInfo customPartInfo = material.getCustomPartInfo(partsEnum);
 
         GL11.glPushMatrix();
 
@@ -79,8 +77,7 @@ public class ModernMaterialItemRenderer implements IItemRenderer {
         renderPositionCorrection(type);
 
         // Iterate over the items layers and render them.
-        for (IconWrapper iconWrapper : customPartInfo.getTextureType()
-            .getStandardTextureArray(partsEnum)) {
+        for (IconWrapper iconWrapper : material.getTextureType().getStandardTextureArray(partsEnum)) {
 
             GL11.glPushAttrib(GL_CURRENT_BIT);
 

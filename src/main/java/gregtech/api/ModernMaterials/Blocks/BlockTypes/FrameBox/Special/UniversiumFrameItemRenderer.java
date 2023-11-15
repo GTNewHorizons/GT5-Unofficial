@@ -25,7 +25,7 @@ public class UniversiumFrameItemRenderer implements IItemRenderer {
         return true;
     }
 
-    private boolean shouldUseInventoryCosmicRenderHelper(ItemRenderType type) {
+    public static boolean shouldUseInventoryCosmicRenderHelper(ItemRenderType type) {
         return switch (type) {
             case EQUIPPED, INVENTORY -> true;
             case EQUIPPED_FIRST_PERSON, FIRST_PERSON_MAP, ENTITY -> false;

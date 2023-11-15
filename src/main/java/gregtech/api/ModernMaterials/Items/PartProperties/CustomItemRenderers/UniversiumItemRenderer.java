@@ -3,17 +3,16 @@ package gregtech.api.ModernMaterials.Items.PartProperties.CustomItemRenderers;
 import fox.spiteful.avaritia.render.CosmicRenderShenanigans;
 import gregtech.api.ModernMaterials.Items.PartProperties.IconWrapper;
 import gregtech.api.ModernMaterials.Items.PartProperties.ModernMaterialItemRenderer;
-import gregtech.api.ModernMaterials.ModernMaterial;
-import gregtech.api.ModernMaterials.Items.PartsClasses.CustomPartInfo;
 import gregtech.api.ModernMaterials.Items.PartsClasses.ItemsEnum;
 import gregtech.api.ModernMaterials.Items.PartsClasses.MaterialPart;
+import gregtech.api.ModernMaterials.ModernMaterial;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 
-import java.awt.Color;
-
+import static gregtech.api.ModernMaterials.Items.PartProperties.TextureType.Custom;
+import static org.lwjgl.opengl.GL11.GL_ALL_ATTRIB_BITS;
 import static org.lwjgl.opengl.GL11.GL_CURRENT_BIT;
 
 public class UniversiumItemRenderer implements IItemRenderer {
@@ -45,34 +44,42 @@ public class UniversiumItemRenderer implements IItemRenderer {
         }
     }
 
+    public static boolean shouldUseInventoryCosmicRenderHelper(ItemRenderType type) {
+        return switch (type) {
+            case EQUIPPED, INVENTORY -> true;
+            case EQUIPPED_FIRST_PERSON, FIRST_PERSON_MAP, ENTITY -> false;
+        };
+    }
+
     @Override
     public void renderItem(ItemRenderType type, ItemStack itemStack, Object... data) {
 
         ModernMaterial material = ModernMaterialItemRenderer.getMaterialFromItemStack(itemStack);
         MaterialPart materialPart = (MaterialPart) itemStack.getItem();
-        Color materialColor = material.getColor();
 
         ItemsEnum partsEnum = materialPart.getPart();
-        CustomPartInfo customPartInfo = material.getCustomPartInfo(partsEnum);
 
         GL11.glPushMatrix();
-
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
         renderPositionCorrection(type);
 
         // Iterate over the items layers and render them.
-        for (IconWrapper iconWrapper : customPartInfo.getTextureType().getStandardTextureArray(partsEnum)) {
+        for (IconWrapper iconWrapper : Custom.getCustomTextures(material, partsEnum)) {
 
-            GL11.glPushAttrib(GL_CURRENT_BIT);
+            GL11.glPushAttrib(GL_ALL_ATTRIB_BITS);
 
-            CosmicRenderShenanigans.useShader();
-            CosmicRenderShenanigans.inventoryRender = true;
+            GL11.glEnable(GL11.GL_BLEND);
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
+            if (iconWrapper.isColoured) {
+                CosmicRenderShenanigans.inventoryRender = shouldUseInventoryCosmicRenderHelper(type);
+                CosmicRenderShenanigans.useShader();
+            }
 
             ModernMaterialItemRenderer.renderLayer(iconWrapper.icon, type);
 
             CosmicRenderShenanigans.releaseShader();
+            CosmicRenderShenanigans.inventoryRender = false;
 
             GL11.glPopAttrib();
 

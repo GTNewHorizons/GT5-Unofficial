@@ -143,10 +143,11 @@ public class ModernMaterialsTextureRegister {
 
                 if (itemEnum == null) continue;
 
-                // textures/items
                 IIcon icon = map.registerIcon(
-                    GregTech.getResourcePath() + "ModernMaterialsIcons/"
-                        + Custom + "/" + partName + "_" + priority + "_" + (isColoured ? "c" : "n"));
+                GregTech.getResourcePath() + "ModernMaterialsIcons/" + Custom + "/" + material.getMaterialName()
+                    + "/" + partName + "_" + priority + "_" + (isColoured ? "c" : "n"));
+
+                // textures/items
 
                 IconWrapper iconWrapper = new IconWrapper(priority, isColoured, icon);
                 TextureType.addCustomTexture(material, itemEnum, iconWrapper);
