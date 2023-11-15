@@ -27,12 +27,15 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_GLOW;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -44,6 +47,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.github.bartimaeusnek.bartworks.API.modularUI.BW_UITextures;
 import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.BW_Meta_Items;
 import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.CircuitImprintLoader;
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;
@@ -54,11 +58,13 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -85,6 +91,13 @@ public class GT_TileEntity_CircuitAssemblyLine extends
     private static final String STRUCTURE_PIECE_FIRST = "first";
     private static final String STRUCTURE_PIECE_NEXT = "next";
 
+    private static final int MINIMUM_CIRCUIT_ASSEMBLER_LENGTH = 5;
+    protected static final String IMPRINT_KEY = "Type";
+    protected static final String LENGTH_KEY = "Length";
+    protected static final String RUNNING_MODE_KEY = "RunningMode";
+
+    private int length;
+    private int mode;
     private String imprintedItemName;
     private ItemStack imprintedStack;
 
@@ -121,12 +134,29 @@ public class GT_TileEntity_CircuitAssemblyLine extends
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Circuit Assembler").addInfo("Controller block for the Circuit Assembly Line")
+        tt.addMachineType("Circuit Assembler/Circuit Assembly Line")
+                .addInfo("Controller block for the Circuit Assembly Line").addInfo("Change Mode with Screwdriver")
+                .addInfo("Does not lose efficiency when overclocked")
+                .addInfo(
+                        "---------" + EnumChatFormatting.WHITE
+                                + StatCollector.translateToLocal("chat.cal.mode.0")
+                                + EnumChatFormatting.GRAY
+                                + "--------")
                 .addInfo("Imprint this machine with a Circuit Imprint,")
                 .addInfo("by putting the imprint in the controller")
                 .addInfo("Every Circuit Assembly Line can only be imprinted ONCE")
-                .addInfo("Does not lose efficiency when overclocked").addInfo(BW_Tooltip_Reference.TT_BLUEPRINT)
-                .addSeparator().beginVariableStructureBlock(2, 7, 3, 3, 3, 3, false)
+                .addInfo(
+                        "---------" + EnumChatFormatting.WHITE
+                                + StatCollector.translateToLocal("chat.cal.mode.1")
+                                + EnumChatFormatting.GRAY
+                                + "--------")
+                .addInfo(
+                        "Does Circuit Assembler recipes, Minimum Length: " + EnumChatFormatting.RED
+                                + MINIMUM_CIRCUIT_ASSEMBLER_LENGTH
+                                + EnumChatFormatting.GRAY)
+                .addInfo("This mode supports Crafting Input Buffer/Bus and allows bus separation").addInfo("")
+                .addInfo(BW_Tooltip_Reference.TT_BLUEPRINT).addSeparator()
+                .beginVariableStructureBlock(2, 7, 3, 3, 3, 3, false)
                 .addStructureInfo("From Bottom to Top, Left to Right")
                 .addStructureInfo(
                         "Layer 1 - Solid Steel Machine Casing, Input bus (Last Output bus), Solid Steel Machine Casing")
@@ -192,27 +222,43 @@ public class GT_TileEntity_CircuitAssemblyLine extends
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        this.type = aNBT.getCompoundTag("Type");
+        this.type = aNBT.getCompoundTag(IMPRINT_KEY);
         this.imprintedItemName = GT_LanguageManager
                 .getTranslateableItemStackName(ItemStack.loadItemStackFromNBT(this.type));
+        mode = aNBT.getInteger(RUNNING_MODE_KEY);
+        length = aNBT.getInteger(LENGTH_KEY);
         super.loadNBTData(aNBT);
     }
 
     @Override
     public void setItemNBT(NBTTagCompound aNBT) {
-        if (!this.type.equals(new NBTTagCompound())) aNBT.setTag("Type", this.type);
+        if (!this.type.equals(new NBTTagCompound())) aNBT.setTag(IMPRINT_KEY, this.type);
+        aNBT.setInteger(RUNNING_MODE_KEY, mode);
+        aNBT.setInteger(LENGTH_KEY, length);
         super.saveNBTData(aNBT);
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        if (!this.type.equals(new NBTTagCompound())) aNBT.setTag("Type", this.type);
+        if (!this.type.equals(new NBTTagCompound())) aNBT.setTag(IMPRINT_KEY, this.type);
+        aNBT.setInteger(RUNNING_MODE_KEY, mode);
+        aNBT.setInteger(LENGTH_KEY, length);
         super.saveNBTData(aNBT);
     }
 
     @Override
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (getBaseMetaTileEntity().isServerSide()) {
+            this.mode = (this.mode + 1) % 2;
+            GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("chat.cal.mode." + this.mode));
+        }
+        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
+    }
+
+    @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return BWRecipes.instance.getMappingsFor((byte) 3);
+        if (this.mode == 0) return BWRecipes.instance.getMappingsFor((byte) 3);
+        return GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes;
     }
 
     @Override
@@ -223,13 +269,18 @@ public class GT_TileEntity_CircuitAssemblyLine extends
     @NotNull
     @Override
     public CheckRecipeResult checkProcessing() {
-        if (this.type.equals(new NBTTagCompound()) && !this.imprintMachine(this.getControllerSlot()))
-            return SimpleCheckRecipeResult.ofFailure("no_imprint");
-        if (this.imprintedItemName == null || this.imprintedStack == null) {
-            this.imprintedStack = new ItemStack(BW_Meta_Items.getNEWCIRCUITS(), 1, 0);
-            this.imprintedStack.setTagCompound(this.type);
-            this.imprintedItemName = GT_LanguageManager.getTranslateableItemStackName(this.imprintedStack);
+        if (mode == 0) {
+            if (this.type.equals(new NBTTagCompound()) && !this.imprintMachine(this.getControllerSlot()))
+                return SimpleCheckRecipeResult.ofFailure("no_imprint");
+            if (this.imprintedItemName == null || this.imprintedStack == null) {
+                this.imprintedStack = new ItemStack(BW_Meta_Items.getNEWCIRCUITS(), 1, 0);
+                this.imprintedStack.setTagCompound(this.type);
+                this.imprintedItemName = GT_LanguageManager.getTranslateableItemStackName(this.imprintedStack);
+            }
+        } else if (length < MINIMUM_CIRCUIT_ASSEMBLER_LENGTH) {
+            return SimpleCheckRecipeResult.ofFailure("not_enough_length");
         }
+
         return super.checkProcessing();
     }
 
@@ -246,17 +297,21 @@ public class GT_TileEntity_CircuitAssemblyLine extends
 
     @Override
     public ArrayList<ItemStack> getStoredInputs() {
-        ArrayList<ItemStack> rList = new ArrayList<>();
-        for (GT_MetaTileEntity_Hatch_InputBus tHatch : filterValidMTEs(mInputBusses)) {
-            tHatch.mRecipeMap = this.getRecipeMap();
-            for (int i = 0; i < tHatch.getBaseMetaTileEntity().getSizeInventory(); i++) {
-                if (tHatch.getBaseMetaTileEntity().getStackInSlot(i) != null) {
-                    rList.add(tHatch.getBaseMetaTileEntity().getStackInSlot(i));
-                    break;
+        if (mode == 0) {
+            ArrayList<ItemStack> rList = new ArrayList<>();
+            for (GT_MetaTileEntity_Hatch_InputBus tHatch : filterValidMTEs(mInputBusses)) {
+                tHatch.mRecipeMap = this.getRecipeMap();
+                for (int i = 0; i < tHatch.getBaseMetaTileEntity().getSizeInventory(); i++) {
+                    if (tHatch.getBaseMetaTileEntity().getStackInSlot(i) != null) {
+                        rList.add(tHatch.getBaseMetaTileEntity().getStackInSlot(i));
+                        break;
+                    }
                 }
             }
+            return rList;
         }
-        return rList;
+
+        return super.getStoredInputs();
     }
 
     @Override
@@ -357,10 +412,12 @@ public class GT_TileEntity_CircuitAssemblyLine extends
     }
 
     private boolean checkMachine(boolean leftToRight) {
+
         for (int i = 1; i < 7; ++i) {
             if (!this.checkPiece(STRUCTURE_PIECE_NEXT, leftToRight ? -i : i, 0, 0)) {
                 return false;
             }
+            length = i;
 
             if (!this.mOutputBusses.isEmpty()) {
                 return this.mEnergyHatches.size() == 1 && this.mMaintenanceHatches.size() == 1;
@@ -397,7 +454,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends
 
     @Override
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
-        if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("Type")) {
+        if (stack.hasTagCompound() && stack.stackTagCompound.hasKey(IMPRINT_KEY)) {
             tooltip.add(
                     StatCollector.translateToLocal("tooltip.cal.imprintedWith") + " "
                             + EnumChatFormatting.YELLOW
@@ -413,6 +470,16 @@ public class GT_TileEntity_CircuitAssemblyLine extends
         super.addUIWidgets(builder, buildContext);
         builder.widget(
                 new FakeSyncWidget.StringSyncer(() -> this.imprintedItemName, val -> this.imprintedItemName = val));
+        builder.widget(
+                new CycleButtonWidget().setToggle(() -> mode == 1, val -> mode = val ? 1 : 0)
+                        .setTextureGetter(
+                                state -> state == 1 ? BW_UITextures.OVERLAY_BUTTON_ASSEMBLER_MODE
+                                        : BW_UITextures.OVERLAY_BUTTON_LINE_MODE)
+                        .setBackground(GT_UITextures.BUTTON_STANDARD).setPos(80, 91).setSize(16, 16)
+                        .dynamicTooltip(
+                                () -> Collections
+                                        .singletonList(StatCollector.translateToLocal("chat.cal.mode." + mode)))
+                        .setUpdateTooltipEveryTick(true).setTooltipShowUpDelay(TOOLTIP_DELAY));
     }
 
     @Override
@@ -426,6 +493,16 @@ public class GT_TileEntity_CircuitAssemblyLine extends
     }
 
     @Override
+    public boolean supportsInputSeparation() {
+        return mode == 0 ? false : true;
+    }
+
+    @Override
+    public boolean isInputSeparationEnabled() {
+        return mode == 0 ? false : super.isInputSeparationEnabled();
+    }
+
+    @Override
     public boolean isRecipeLockingEnabled() {
         return this.imprintedItemName != null && !"".equals(this.imprintedItemName);
     }
@@ -435,7 +512,10 @@ public class GT_TileEntity_CircuitAssemblyLine extends
             IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         NBTTagCompound tag = accessor.getNBTData();
-        if (tag.hasKey("ImprintedWith")) currenttip.add(
+        currenttip.add(
+                EnumChatFormatting.GREEN
+                        + StatCollector.translateToLocal("chat.cal.mode." + tag.getInteger(RUNNING_MODE_KEY)));
+        if (tag.hasKey("ImprintedWith") && tag.getInteger(RUNNING_MODE_KEY) == 0) currenttip.add(
                 StatCollector.translateToLocal("tooltip.cal.imprintedWith") + " "
                         + EnumChatFormatting.YELLOW
                         + tag.getString("ImprintedWith"));
@@ -448,10 +528,12 @@ public class GT_TileEntity_CircuitAssemblyLine extends
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         String imprintedWith = this.getTypeForDisplay();
         if (!imprintedWith.isEmpty()) tag.setString("ImprintedWith", imprintedWith);
+        tag.setInteger(RUNNING_MODE_KEY, mode);
     }
 
     @Override
     protected boolean supportsCraftingMEBuffer() {
-        return false;
+        return mode == 0 ? false : true;
     }
+
 }

@@ -52,4 +52,9 @@ public class BW_UITextures {
             .of(MOD_ID, "GUI/tab/title_dark_brown", 28, 28, 4);
     public static final AdaptableUITexture TAB_TITLE_ANGULAR_BROWN = AdaptableUITexture
             .of(MOD_ID, "GUI/tab/title_angular_brown", 28, 28, 4);
+
+    public static final UITexture OVERLAY_BUTTON_ASSEMBLER_MODE = UITexture
+            .fullImage(MOD_ID, "GUI/overlay_button/assembler_mode");
+    public static final UITexture OVERLAY_BUTTON_LINE_MODE = UITexture
+            .fullImage(MOD_ID, "GUI/overlay_button/line_mode");
 }

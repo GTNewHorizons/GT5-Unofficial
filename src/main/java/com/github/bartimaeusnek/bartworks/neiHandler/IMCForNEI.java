@@ -28,6 +28,7 @@ public class IMCForNEI {
         sendCatalyst("bw.recipe.radhatch", "gregtech:gt.blockmachines:12722");
         sendCatalyst("bw.recipe.radhatch", "gregtech:gt.blockmachines:12723");
         sendCatalyst("bw.recipe.radhatch", "gregtech:gt.blockmachines:12724");
+        sendCatalyst("gt.recipe.circuitassembler", "gregtech:gt.blockmachines:12735", -20);
     }
 
     private static void sendHandler(String name, String block) {
