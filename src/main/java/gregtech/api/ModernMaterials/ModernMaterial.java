@@ -1,14 +1,15 @@
 package gregtech.api.ModernMaterials;
 
 import static gregtech.api.ModernMaterials.ModernMaterialUtilities.registerMaterial;
-import static gregtech.api.ModernMaterials.Items.PartProperties.TextureType.Metal_Shiny;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
+import java.util.function.Consumer;
 
-import gregtech.api.ModernMaterials.RecipeGenerators.BaseRecipeGenerator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraftforge.client.IItemRenderer;
 
@@ -25,14 +26,14 @@ import gregtech.api.ModernMaterials.Items.PartsClasses.ItemsEnum;
 public final class ModernMaterial {
 
     private final HashSet<IEnumPart> existingPartsForMaterial = new HashSet<>();
-    public final ArrayList<ModernMaterialFluid> existingFluids = new ArrayList<>();
+    private final HashSet<ModernMaterialFluid> existingFluids = new HashSet<>();
     private Color color;
     private int materialID;
     private String materialName;
     private long materialTier;
     private double materialTimeMultiplier = 1;
-    private TextureType textureType = Metal_Shiny;
-    private BaseRecipeGenerator recipeGenerator;
+    private TextureType textureType;
+    private Consumer<ModernMaterial> recipeGenerator;
     private IItemRenderer customItemRenderer;
 
     public ModernMaterial(final String materialName) {
@@ -64,6 +65,10 @@ public final class ModernMaterial {
         return materialTimeMultiplier;
     }
 
+    public Set<ModernMaterialFluid> getAssociatedFluids() {
+        return Collections.unmodifiableSet(existingFluids);
+    }
+
     public long getMaterialTier() {
         return materialTier;
     }
@@ -76,7 +81,7 @@ public final class ModernMaterial {
 
     public void registerRecipes(ModernMaterial material) {
         if (recipeGenerator == null) return;
-        recipeGenerator.generateRecipes(material);
+        recipeGenerator.accept(material);
     }
 
     public IItemRenderer getCustomItemRenderer() {
@@ -146,8 +151,8 @@ public final class ModernMaterial {
             ModernMaterialFluid modernMaterialFluid = new ModernMaterialFluid(fluidEnum, materialToBuild);
             modernMaterialFluid.setTemperature(temperature);
             modernMaterialFluid.setGaseous(fluidEnum.isGas());
-            // Determines fluid texture.
             modernMaterialFluid.setFluidEnum(fluidEnum);
+
             // Add fluid to list in material.
             materialToBuild.existingFluids.add(new ModernMaterialFluid(fluidEnum, materialToBuild));
 
@@ -177,7 +182,7 @@ public final class ModernMaterial {
             return this;
         }
 
-        public ModernMaterialBuilder setRecipeGenerator(@NotNull final BaseRecipeGenerator recipeGenerator) {
+        public ModernMaterialBuilder setRecipeGenerator(@NotNull final Consumer<ModernMaterial> recipeGenerator) {
             materialToBuild.recipeGenerator = recipeGenerator;
             return this;
         }

@@ -21,6 +21,7 @@ public enum TextureType {
     private final HashMap<ItemsEnum, ArrayList<IconWrapper>> standardTextureStorage = new HashMap<>();
     private static final HashMap<Integer, ArrayList<IconWrapper>> customTextureStorage = new HashMap<>();
 
+    // Standard texture retrieval.
     public void addStandardTexture(ItemsEnum part, IconWrapper iconWrapper) {
         ArrayList<IconWrapper> iconList = standardTextureStorage.getOrDefault(part, new ArrayList<>());
         iconList.add(iconWrapper);
@@ -33,9 +34,7 @@ public enum TextureType {
     }
 
 
-
-
-
+    // Custom texture retrieval.
     public static void addCustomTexture(ModernMaterial material, ItemsEnum part, IconWrapper iconWrapper) {
         ArrayList<IconWrapper> iconList = customTextureStorage.getOrDefault(Objects.hash(material.getMaterialID(), part), new ArrayList<>());
         iconList.add(iconWrapper);

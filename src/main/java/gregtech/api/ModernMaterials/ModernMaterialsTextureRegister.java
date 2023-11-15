@@ -62,7 +62,7 @@ public class ModernMaterialsTextureRegister {
         // Custom fluid textures.
         ModernMaterialUtilities.materialNameToMaterialMap.forEach((materialName, modernMaterial) -> {
 
-            for (ModernMaterialFluid fluid : modernMaterial.existingFluids) {
+            for (ModernMaterialFluid fluid : modernMaterial.getAssociatedFluids()) {
 
                 // Try retrieve still fluid texture.
                 if (fluid.getStillIcon() == null) {

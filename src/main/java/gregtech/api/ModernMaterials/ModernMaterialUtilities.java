@@ -73,7 +73,7 @@ public class ModernMaterialUtilities {
 
         // Register the fluids with forge.
         for (ModernMaterial material : materialIDToMaterial.values()) {
-            for (ModernMaterialFluid fluid : material.existingFluids) {
+            for (ModernMaterialFluid fluid : material.getAssociatedFluids()) {
                 FluidRegistry.registerFluid(fluid);
             }
         }

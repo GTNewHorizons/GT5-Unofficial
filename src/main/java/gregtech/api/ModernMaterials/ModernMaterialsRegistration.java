@@ -20,7 +20,7 @@ import gregtech.api.enums.TierEU;
 
 public class ModernMaterialsRegistration {
 
-    public void run(FMLPreInitializationEvent event) {
+    public void run() {
 
         new ModernMaterial.ModernMaterialBuilder("Copper").setMaterialID(1)
             .setColor(120, 100, 0)
@@ -63,7 +63,7 @@ public class ModernMaterialsRegistration {
                 new UniversiumFrameItemRenderer(),
                 new UniversiumFrameBlockRenderer())
             .setCustomItemRenderer(new UniversiumItemRenderer())
-            .setRecipeGenerator(new Metal())
+            .setRecipeGenerator(Metal::generateRecipes)
             .addAllParts()
             .addFluid(Gas, 1_000)
             .addFluid(NoPrefix, 3_000)
@@ -76,7 +76,7 @@ public class ModernMaterialsRegistration {
             .setTextureMode(Metal_Shiny)
             .setMaterialTier(TierEU.MAX)
             .addAllParts()
-            .setRecipeGenerator(new Metal())
+            .setRecipeGenerator(Metal::generateRecipes)
             .addFluid(Gas, 1_000)
             .addFluid(NoPrefix, 3_000)
             .addFluid(Molten, 10_000)

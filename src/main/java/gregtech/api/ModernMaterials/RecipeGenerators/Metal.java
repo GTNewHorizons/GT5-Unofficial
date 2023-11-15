@@ -14,11 +14,9 @@ import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBenderRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sExtruderRecipes;
 
-public class Metal extends BaseRecipeGenerator {
+public class Metal {
 
-    @Override
-    public void generateRecipes(ModernMaterial material) {
-
+    public static void generateRecipes(ModernMaterial material) {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(Ingot.getPart(material, 1), GT_Utility.getIntegratedCircuit(1))
