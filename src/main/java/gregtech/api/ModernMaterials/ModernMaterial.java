@@ -1,19 +1,5 @@
 package gregtech.api.ModernMaterials;
 
-import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMaterialBlock;
-import gregtech.api.ModernMaterials.Blocks.Registration.BlocksEnum;
-import gregtech.api.ModernMaterials.Fluids.FluidEnum;
-import gregtech.api.ModernMaterials.Fluids.ModernMaterialFluid;
-import gregtech.api.ModernMaterials.Items.PartProperties.TextureType;
-import gregtech.api.ModernMaterials.Items.PartsClasses.IEnumPart;
-import gregtech.api.ModernMaterials.Items.PartsClasses.ItemsEnum;
-import gregtech.api.ModernMaterials.Items.PartsClasses.MaterialPart;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.client.IItemRenderer;
-import org.jetbrains.annotations.NotNull;
-
 import java.awt.Color;
 import java.util.Collections;
 import java.util.HashMap;
@@ -22,6 +8,22 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.IItemRenderer;
+
+import org.jetbrains.annotations.NotNull;
+
+import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMaterialBlock;
+import gregtech.api.ModernMaterials.Blocks.Registration.BlocksEnum;
+import gregtech.api.ModernMaterials.Fluids.FluidEnum;
+import gregtech.api.ModernMaterials.Fluids.ModernMaterialFluid;
+import gregtech.api.ModernMaterials.Items.PartProperties.TextureType;
+import gregtech.api.ModernMaterials.Items.PartsClasses.IEnumPart;
+import gregtech.api.ModernMaterials.Items.PartsClasses.ItemsEnum;
+import gregtech.api.ModernMaterials.Items.PartsClasses.MaterialPart;
+
 @SuppressWarnings("unused")
 public final class ModernMaterial {
 
@@ -29,12 +31,8 @@ public final class ModernMaterial {
     private final HashSet<ModernMaterialFluid> existingFluids = new HashSet<>();
     private static final HashSet<ModernMaterial> allMaterials = new HashSet<>();
 
-
-
     private static final HashMap<Integer, ModernMaterial> materialIDToMaterial = new HashMap<>();
     private static final HashMap<String, ModernMaterial> materialNameToMaterialMap = new HashMap<>();
-
-
 
     private Color color;
     private int materialID;
@@ -188,9 +186,11 @@ public final class ModernMaterial {
             return this;
         }
 
-        public ModernMaterialBuilder addCustomFluid(ModernMaterialFluid.Builder modernMaterialFluidBuilder, boolean useMaterialColouringForFluid) {
+        public ModernMaterialBuilder addCustomFluid(ModernMaterialFluid.Builder modernMaterialFluidBuilder,
+            boolean useMaterialColouringForFluid) {
 
-            ModernMaterialFluid modernMaterialFluid = modernMaterialFluidBuilder.setMaterial(materialToBuild).build();
+            ModernMaterialFluid modernMaterialFluid = modernMaterialFluidBuilder.setMaterial(materialToBuild)
+                .build();
             materialToBuild.existingFluids.add(modernMaterialFluid);
 
             if (!useMaterialColouringForFluid) {
@@ -251,7 +251,6 @@ public final class ModernMaterial {
         return materialName;
     }
 
-
     public static Map<String, ModernMaterial> getMaterialNameToMaterialMap() {
         return Collections.unmodifiableMap(materialNameToMaterialMap);
     }
@@ -259,8 +258,6 @@ public final class ModernMaterial {
     public static Map<Integer, ModernMaterial> getMaterialIDToMaterialMap() {
         return Collections.unmodifiableMap(materialIDToMaterial);
     }
-
-
 
     public static void registerMaterial(ModernMaterial material) {
         if (materialIDToMaterial.containsKey(material.getMaterialID())) {
@@ -278,7 +275,6 @@ public final class ModernMaterial {
         materialIDToMaterial.put(material.getMaterialID(), material);
         materialNameToMaterialMap.put(material.getMaterialName(), material);
     }
-
 
     public static ModernMaterial getMaterialFromID(final int materialID) {
 

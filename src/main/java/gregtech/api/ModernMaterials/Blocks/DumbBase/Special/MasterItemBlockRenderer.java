@@ -1,6 +1,5 @@
 package gregtech.api.ModernMaterials.Blocks.DumbBase.Special;
 
-import gregtech.api.ModernMaterials.ModernMaterial;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
@@ -8,7 +7,7 @@ import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 
 import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMaterialBlock;
-import gregtech.api.ModernMaterials.ModernMaterialUtilities;
+import gregtech.api.ModernMaterials.ModernMaterial;
 
 public class MasterItemBlockRenderer implements IItemRenderer {
 

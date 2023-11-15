@@ -1,21 +1,23 @@
 package gregtech.api.ModernMaterials.Items.PartProperties.CustomItemRenderers;
 
+import static gregtech.api.ModernMaterials.Items.PartProperties.TextureType.Custom;
+import static org.lwjgl.opengl.GL11.GL_ALL_ATTRIB_BITS;
+
+import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.IItemRenderer;
+
+import org.lwjgl.opengl.GL11;
+
 import fox.spiteful.avaritia.render.CosmicRenderShenanigans;
 import gregtech.api.ModernMaterials.Items.PartProperties.IconWrapper;
 import gregtech.api.ModernMaterials.Items.PartProperties.ModernMaterialItemRenderer;
 import gregtech.api.ModernMaterials.Items.PartsClasses.ItemsEnum;
 import gregtech.api.ModernMaterials.Items.PartsClasses.MaterialPart;
 import gregtech.api.ModernMaterials.ModernMaterial;
-import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.client.IItemRenderer;
-import org.lwjgl.opengl.GL11;
-
-import static gregtech.api.ModernMaterials.Items.PartProperties.TextureType.Custom;
-import static org.lwjgl.opengl.GL11.GL_ALL_ATTRIB_BITS;
-import static org.lwjgl.opengl.GL11.GL_CURRENT_BIT;
 
 public class UniversiumItemRenderer implements IItemRenderer {
+
     @Override
     public boolean handleRenderType(ItemStack itemStack, ItemRenderType type) {
         return type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON
@@ -25,7 +27,7 @@ public class UniversiumItemRenderer implements IItemRenderer {
 
     @Override
     public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack itemStack,
-                                         ItemRendererHelper itemRendererHelper) {
+        ItemRendererHelper itemRendererHelper) {
         return type == ItemRenderType.ENTITY;
     }
 
@@ -86,8 +88,6 @@ public class UniversiumItemRenderer implements IItemRenderer {
         }
 
         GL11.glPopMatrix();
-
-
 
     }
 }

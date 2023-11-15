@@ -16,7 +16,6 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMaterialBlock;
 import gregtech.api.ModernMaterials.ModernMaterial;
-import gregtech.api.ModernMaterials.ModernMaterialUtilities;
 
 public class NormalOreSimpleBlockRenderer implements ISimpleBlockRenderingHandler {
 

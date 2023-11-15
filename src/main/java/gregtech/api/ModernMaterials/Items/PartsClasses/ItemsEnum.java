@@ -4,10 +4,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+
+import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.ModernMaterials.ModernMaterial;
-import net.minecraft.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
 public enum ItemsEnum implements IEnumPart {
 
@@ -17,7 +18,7 @@ public enum ItemsEnum implements IEnumPart {
     // TripleIngot("Triple % Ingot"),
     // QuadrupleIngot("Quadruple % Ingot"),
     // QuintupleIngot("Quintuple % Ingot"),
-    Nugget("% Nugget", 1/9.0),
+    Nugget("% Nugget", 1 / 9.0),
 
     // Gears
     Gear("% Gear", 4),
@@ -37,32 +38,32 @@ public enum ItemsEnum implements IEnumPart {
     ExquisiteGem("Exquisite %", 9),
     FlawlessGem("Flawless %", 3),
     Gem("% Gem", 1),
-    FlawedGem("Flawed %", 1/3.0),
-    ChippedGem("Chipped %", 1/9.0),
+    FlawedGem("Flawed %", 1 / 3.0),
+    ChippedGem("Chipped %", 1 / 9.0),
 
     // Misc.
-    Ring("% Ring", 1/4.0),
-    Rotor("% Rotor", 612/144.0),
+    Ring("% Ring", 1 / 4.0),
+    Rotor("% Rotor", 612 / 144.0),
     Round("% Round", 9),
 
     LongRod("% Long Rod", 1),
-    Rod("% Rod", 1/2.0),
-    Bolt("% Bolt", 1/4.0),
-    Screw("% Screw", 1/8.0),
+    Rod("% Rod", 1 / 2.0),
+    Bolt("% Bolt", 1 / 4.0),
+    Screw("% Screw", 1 / 8.0),
 
     TurbineBlade("% Turbine Blade", 6),
-    FineWire("Fine % Wire", 1/8.0),
+    FineWire("Fine % Wire", 1 / 8.0),
 
     // Springs
     Spring("% Spring", 1),
-    SmallSpring("Small % Spring", 1/4.0),
+    SmallSpring("Small % Spring", 1 / 4.0),
 
     // Dusts.
     ImpureDust("Impure % Dust", 1),
     PurifiedDust("Purified % Dust", 1),
     Dust("% Dust", 1),
-    SmallDust("Small % Dust", 1/4.0),
-    TinyDust("Tiny % Dust", 1/9.0),
+    SmallDust("Small % Dust", 1 / 4.0),
+    TinyDust("Tiny % Dust", 1 / 9.0),
 
     // Ore stuff.
     CrushedCentrifugedOre("Centrifuged % Ore"),
@@ -107,7 +108,6 @@ public enum ItemsEnum implements IEnumPart {
         this.partName = partName;
     }
 
-
     @Override
     public @NotNull ItemStack getPart(@NotNull ModernMaterial material, int stackSize) {
 
@@ -120,8 +120,6 @@ public enum ItemsEnum implements IEnumPart {
     public void setItemStack(@NotNull ModernMaterial material, ItemStack itemStack) {
         itemHashMap.put(material, itemStack);
     }
-
-
 
     @Override
     public HashSet<ModernMaterial> getAssociatedMaterials() {

@@ -18,8 +18,8 @@ import gregtech.api.ModernMaterials.Blocks.BlockTypes.OreNormal.NormalBaseMateri
 import gregtech.api.ModernMaterials.Blocks.BlockTypes.OreNormal.NormalOreSimpleBlockRenderer;
 import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMaterialBlock;
 import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMaterialTileEntity;
-import gregtech.api.ModernMaterials.ModernMaterial;
 import gregtech.api.ModernMaterials.Items.PartsClasses.IEnumPart;
+import gregtech.api.ModernMaterials.ModernMaterial;
 
 /**
  * Enum representation of block types with their associated details and materials.
@@ -44,7 +44,6 @@ public enum BlocksEnum implements IEnumPart {
 
     private final HashMap<Integer, IItemRenderer> itemRendererHashMap = new HashMap<>();
     private final HashMap<Integer, TileEntitySpecialRenderer> tileEntitySpecialRendererHashMap = new HashMap<>();
-
 
     /**
      * Constructs an instance of the enum with the given parameters.

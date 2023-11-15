@@ -16,7 +16,6 @@ import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.ModernMaterials.Blocks.Registration.BlocksEnum;
 import gregtech.api.ModernMaterials.ModernMaterial;
-import gregtech.api.ModernMaterials.ModernMaterialUtilities;
 
 public abstract class BaseMaterialBlock extends Block {
 

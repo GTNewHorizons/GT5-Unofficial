@@ -6,10 +6,9 @@ import static gregtech.api.ModernMaterials.Fluids.FluidEnum.NoPrefix;
 import static gregtech.api.ModernMaterials.Fluids.FluidEnum.Plasma;
 import static gregtech.api.ModernMaterials.Items.PartProperties.TextureType.Custom;
 import static gregtech.api.ModernMaterials.Items.PartProperties.TextureType.Metal_Dull;
-import static gregtech.api.ModernMaterials.ModernMaterialUtilities.registerAllMaterialsItems;
 import static gregtech.api.ModernMaterials.Items.PartProperties.TextureType.Metal_Shiny;
+import static gregtech.api.ModernMaterials.ModernMaterialUtilities.registerAllMaterialsItems;
 
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import gregtech.api.ModernMaterials.Blocks.BlockTypes.FrameBox.Special.UniversiumFrameBlockRenderer;
 import gregtech.api.ModernMaterials.Blocks.BlockTypes.FrameBox.Special.UniversiumFrameItemRenderer;
 import gregtech.api.ModernMaterials.Blocks.Registration.BlocksEnum;
@@ -54,8 +53,7 @@ public class ModernMaterialsRegistration {
             .addFluid(Plasma, 100_000)
             .build();
 
-        new ModernMaterial.ModernMaterialBuilder("Universium")
-            .setColor(255, 255, 255)
+        new ModernMaterial.ModernMaterialBuilder("Universium").setColor(255, 255, 255)
             .setMaterialID(17)
             .setTextureMode(Custom)
             .setCustomBlockRenderer(

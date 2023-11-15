@@ -16,7 +16,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.ModernMaterials.Blocks.Registration.BlocksEnum;
 import gregtech.api.ModernMaterials.ModernMaterial;
-import gregtech.api.ModernMaterials.ModernMaterialUtilities;
 
 public class BaseMaterialItemBlock extends ItemBlock {
 
@@ -42,7 +41,8 @@ public class BaseMaterialItemBlock extends ItemBlock {
     @Override
     public void addInformation(@NotNull final ItemStack itemStack, final EntityPlayer player, List<String> tooltipList,
         boolean aF3_H) {
-        final ModernMaterial material = ModernMaterial.getMaterialIDToMaterialMap().get(getMaterialID(itemStack));
+        final ModernMaterial material = ModernMaterial.getMaterialIDToMaterialMap()
+            .get(getMaterialID(itemStack));
         tooltipList.addAll(tooltipGenerator(itemStack.getItem(), material));
     }
 

@@ -1,19 +1,21 @@
 package gregtech.api.ModernMaterials.Blocks.BlockTypes.BlockOf;
 
+import static gregtech.api.ModernMaterials.Render.Utilities.drawBlock;
+
+import java.awt.Color;
+
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.world.IBlockAccess;
+
+import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMaterialBlock;
 import gregtech.api.ModernMaterials.Blocks.Registration.BlocksEnum;
 import gregtech.api.ModernMaterials.ModernMaterial;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.world.IBlockAccess;
-import org.lwjgl.opengl.GL11;
-
-import java.awt.Color;
-
-import static gregtech.api.ModernMaterials.Render.Utilities.drawBlock;
 
 public class BlockOfSimpleBlockRenderer implements ISimpleBlockRenderingHandler {
 
@@ -60,8 +62,11 @@ public class BlockOfSimpleBlockRenderer implements ISimpleBlockRenderingHandler 
         int ID = baseMaterialBlock.getMaterialID(world.getBlockMetadata(x, y, z));
         if (baseMaterialBlock.getBlockEnum()
             .getSpecialBlockRenderAssociatedMaterials()
-            .contains(ModernMaterial.getMaterialIDToMaterialMap().get(ID))) return true; // True tells minecraft that we have handled this and
-                                                                  // to not do anymore rendering here.
+            .contains(
+                ModernMaterial.getMaterialIDToMaterialMap()
+                    .get(ID)))
+            return true; // True tells minecraft that we have handled this and
+        // to not do anymore rendering here.
 
         renderer.renderStandardBlock(block, x, y, z);
 

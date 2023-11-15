@@ -4,7 +4,6 @@ import static gregtech.api.ModernMaterials.Blocks.Registration.SimpleBlockRegist
 import static gregtech.api.ModernMaterials.Blocks.Registration.SpecialBlockRegistration.registerTESRBlock;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -20,7 +19,6 @@ import gregtech.api.ModernMaterials.Items.PartsClasses.ItemsEnum;
 import gregtech.api.ModernMaterials.Items.PartsClasses.MaterialPart;
 
 public class ModernMaterialUtilities {
-
 
     public static void registerAllMaterialsItems() {
 

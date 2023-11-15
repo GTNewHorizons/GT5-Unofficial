@@ -12,7 +12,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMaterialBlock;
 import gregtech.api.ModernMaterials.Blocks.Registration.BlocksEnum;
 import gregtech.api.ModernMaterials.ModernMaterial;
-import gregtech.api.ModernMaterials.ModernMaterialUtilities;
 
 public class NormalBaseMaterialBlock extends BaseMaterialBlock {
 
@@ -44,7 +43,8 @@ public class NormalBaseMaterialBlock extends BaseMaterialBlock {
     @Override
     public int colorMultiplier(IBlockAccess worldIn, int x, int y, int z) {
         final int materialID = getMaterialID(worldIn.getBlockMetadata(x, y, z));
-        final ModernMaterial material = ModernMaterial.getMaterialIDToMaterialMap().get(materialID);
+        final ModernMaterial material = ModernMaterial.getMaterialIDToMaterialMap()
+            .get(materialID);
 
         if (material == null) return new Color(100, 100, 0, 255).getRGB();
         return material.getColor()

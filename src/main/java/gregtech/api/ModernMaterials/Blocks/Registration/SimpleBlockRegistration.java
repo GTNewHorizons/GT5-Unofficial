@@ -6,12 +6,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import net.minecraft.item.ItemStack;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMaterialBlock;
 import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMaterialItemBlock;
 import gregtech.api.ModernMaterials.ModernMaterial;
-import gregtech.api.ModernMaterials.ModernMaterialUtilities;
-import net.minecraft.item.ItemStack;
 
 public abstract class SimpleBlockRegistration {
 
@@ -46,7 +46,7 @@ public abstract class SimpleBlockRegistration {
                     .newInstance(offset, IDs, blockType);
                 GameRegistry.registerBlock(block, BaseMaterialItemBlock.class, blockType + "." + offset);
 
-                for (int ID: IDs) {
+                for (int ID : IDs) {
                     blockType.setItemStack(ModernMaterial.getMaterialFromID(ID), new ItemStack(block, 1, ID % 16));
                 }
 

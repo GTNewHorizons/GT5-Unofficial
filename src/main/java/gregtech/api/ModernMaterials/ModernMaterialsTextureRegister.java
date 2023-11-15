@@ -1,15 +1,7 @@
 package gregtech.api.ModernMaterials;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import gregtech.api.ModernMaterials.Blocks.BlockTypes.FrameBox.Special.CustomTextureRegister;
-import gregtech.api.ModernMaterials.Fluids.FluidEnum;
-import gregtech.api.ModernMaterials.Fluids.ModernMaterialFluid;
-import gregtech.api.ModernMaterials.Items.PartProperties.IconWrapper;
-import gregtech.api.ModernMaterials.Items.PartProperties.TextureType;
-import gregtech.api.ModernMaterials.Items.PartsClasses.ItemsEnum;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.client.event.TextureStitchEvent;
+import static gregtech.api.ModernMaterials.Items.PartProperties.TextureType.Custom;
+import static gregtech.api.enums.Mods.GregTech;
 
 import java.io.File;
 import java.nio.file.Paths;
@@ -18,8 +10,17 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 
-import static gregtech.api.ModernMaterials.Items.PartProperties.TextureType.Custom;
-import static gregtech.api.enums.Mods.GregTech;
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.client.event.TextureStitchEvent;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import gregtech.api.ModernMaterials.Blocks.BlockTypes.FrameBox.Special.CustomTextureRegister;
+import gregtech.api.ModernMaterials.Fluids.FluidEnum;
+import gregtech.api.ModernMaterials.Fluids.ModernMaterialFluid;
+import gregtech.api.ModernMaterials.Items.PartProperties.IconWrapper;
+import gregtech.api.ModernMaterials.Items.PartProperties.TextureType;
+import gregtech.api.ModernMaterials.Items.PartsClasses.ItemsEnum;
 
 public class ModernMaterialsTextureRegister {
 
@@ -52,42 +53,51 @@ public class ModernMaterialsTextureRegister {
                     + fluidEnum.name()
                         .toLowerCase());
 
-            fluidEnum.flowingIcon = map.registerIcon(                GregTech.getResourcePath() + "ModernMaterialsIcons/Fluids/flowing_"
-                + fluidEnum.name()
-                .toLowerCase());
+            fluidEnum.flowingIcon = map.registerIcon(
+                GregTech.getResourcePath() + "ModernMaterialsIcons/Fluids/flowing_"
+                    + fluidEnum.name()
+                        .toLowerCase());
 
         }
 
-
         // Custom fluid textures.
-        ModernMaterial.getMaterialNameToMaterialMap().forEach((materialName, modernMaterial) -> {
+        ModernMaterial.getMaterialNameToMaterialMap()
+            .forEach((materialName, modernMaterial) -> {
 
-            for (ModernMaterialFluid fluid : modernMaterial.getAssociatedFluids()) {
+                for (ModernMaterialFluid fluid : modernMaterial.getAssociatedFluids()) {
 
-                // Try retrieve still fluid texture.
-                if (fluid.getStillIcon() == null) {
+                    // Try retrieve still fluid texture.
+                    if (fluid.getStillIcon() == null) {
 
-                    final String path = GregTech.getResourcePath() + "ModernMaterialsIcons/Fluids/CustomIcons/" + materialName + "/still_" + fluid.getName();
-                    IIcon stillIcon = map.registerIcon(path);
+                        final String path = GregTech.getResourcePath() + "ModernMaterialsIcons/Fluids/CustomIcons/"
+                            + materialName
+                            + "/still_"
+                            + fluid.getName();
+                        IIcon stillIcon = map.registerIcon(path);
 
-                    // Todo better way to detect this? Idk.
-                    //if (stillIcon.getMinU() == stillIcon.getMaxU()) throw new RuntimeException("No texture for " + materialName + " icon at " + path + ".png");
-                    fluid.setStillIcon(stillIcon);
+                        // Todo better way to detect this? Idk.
+                        // if (stillIcon.getMinU() == stillIcon.getMaxU()) throw new RuntimeException("No texture for "
+                        // + materialName + " icon at " + path + ".png");
+                        fluid.setStillIcon(stillIcon);
+                    }
+
+                    // Try retrieve flowing fluid texture.
+                    if (fluid.getFlowingIcon() == null) {
+
+                        final String path = GregTech.getResourcePath() + "ModernMaterialsIcons/Fluids/CustomIcons/"
+                            + materialName
+                            + "/flowing_"
+                            + fluid.getName();
+                        IIcon flowingIcon = map.registerIcon(path);
+
+                        // if (flowingIcon.getMinU() == flowingIcon.getMaxU()) throw new RuntimeException("No texture
+                        // for " + materialName + " icon at " + path + ".png");
+                        fluid.setFlowingIcon(flowingIcon);
+                    }
+
                 }
 
-                // Try retrieve flowing fluid texture.
-                if (fluid.getFlowingIcon() == null) {
-
-                    final String path = GregTech.getResourcePath() + "ModernMaterialsIcons/Fluids/CustomIcons/" + materialName + "/flowing_" + fluid.getName();
-                    IIcon flowingIcon = map.registerIcon(path);
-
-                    //if (flowingIcon.getMinU() == flowingIcon.getMaxU())  throw new RuntimeException("No texture for " + materialName + " icon at " + path + ".png");
-                    fluid.setFlowingIcon(flowingIcon);
-                }
-
-            }
-
-        });
+            });
     }
 
     private ArrayList<File> getFiles(String path) {
@@ -100,14 +110,15 @@ public class ModernMaterialsTextureRegister {
         ArrayList<File> fileList = new ArrayList<>(Arrays.asList(files));
         // Remove .png.mcmeta files, these are irrelevant.
         fileList.removeIf(
-            file -> !file.getName().toLowerCase().endsWith(".png"));
+            file -> !file.getName()
+                .toLowerCase()
+                .endsWith(".png"));
 
         // Sort according to the actual unlocalised name rather than enum name.
         fileList.sort(Comparator.comparing(File::getName));
 
         return fileList;
     }
-
 
     private void customItenTextures(TextureMap map) {
 
@@ -129,11 +140,15 @@ public class ModernMaterialsTextureRegister {
 
         for (ModernMaterial material : TextureType.getCustomTextureMaterials()) {
 
-            ArrayList<File> fileList = getFiles("../src/main/resources/assets/gregtech/textures/items/ModernMaterialsIcons/Custom/" + material.getMaterialName());
+            ArrayList<File> fileList = getFiles(
+                "../src/main/resources/assets/gregtech/textures/items/ModernMaterialsIcons/Custom/"
+                    + material.getMaterialName());
 
             for (File file : fileList) {
 
-                String[] breakdown = file.getName().replace(".png", "").split("_");
+                String[] breakdown = file.getName()
+                    .replace(".png", "")
+                    .split("_");
 
                 String partName = breakdown[0];
                 int priority = Integer.parseInt(breakdown[1]);
@@ -144,8 +159,16 @@ public class ModernMaterialsTextureRegister {
                 if (itemEnum == null) continue;
 
                 IIcon icon = map.registerIcon(
-                GregTech.getResourcePath() + "ModernMaterialsIcons/" + Custom + "/" + material.getMaterialName()
-                    + "/" + partName + "_" + priority + "_" + (isColoured ? "c" : "n"));
+                    GregTech.getResourcePath() + "ModernMaterialsIcons/"
+                        + Custom
+                        + "/"
+                        + material.getMaterialName()
+                        + "/"
+                        + partName
+                        + "_"
+                        + priority
+                        + "_"
+                        + (isColoured ? "c" : "n"));
 
                 // textures/items
 
@@ -179,11 +202,14 @@ public class ModernMaterialsTextureRegister {
             // We will handle these elsewhere.
             if (textureType.equals(TextureType.Custom)) continue;
 
-            ArrayList<File> fileList = getFiles("../src/main/resources/assets/gregtech/textures/items/ModernMaterialsIcons/" + textureType.name());
+            ArrayList<File> fileList = getFiles(
+                "../src/main/resources/assets/gregtech/textures/items/ModernMaterialsIcons/" + textureType.name());
 
             for (File file : fileList) {
 
-                String[] breakdown = file.getName().replace(".png", "").split("_");
+                String[] breakdown = file.getName()
+                    .replace(".png", "")
+                    .split("_");
 
                 String partName = breakdown[0];
                 int priority = Integer.parseInt(breakdown[1]);
@@ -196,8 +222,13 @@ public class ModernMaterialsTextureRegister {
                 // textures/items
                 IIcon icon = map.registerIcon(
                     GregTech.getResourcePath() + "ModernMaterialsIcons/"
-                        + textureType + "/"
-                        + partName + "_" + priority + "_" + (isColoured ? "c" : "n"));
+                        + textureType
+                        + "/"
+                        + partName
+                        + "_"
+                        + priority
+                        + "_"
+                        + (isColoured ? "c" : "n"));
 
                 IconWrapper iconWrapper = new IconWrapper(priority, isColoured, icon);
                 textureType.addStandardTexture(itemEnum, iconWrapper);

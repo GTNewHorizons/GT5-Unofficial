@@ -16,7 +16,6 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMaterialBlock;
 import gregtech.api.ModernMaterials.ModernMaterial;
-import gregtech.api.ModernMaterials.ModernMaterialUtilities;
 
 public class FrameBoxSimpleBlockRenderer implements ISimpleBlockRenderingHandler {
 
@@ -61,8 +60,11 @@ public class FrameBoxSimpleBlockRenderer implements ISimpleBlockRenderingHandler
         int ID = baseMaterialBlock.getMaterialID(world.getBlockMetadata(x, y, z));
         if (baseMaterialBlock.getBlockEnum()
             .getSpecialBlockRenderAssociatedMaterials()
-            .contains(ModernMaterial.getMaterialIDToMaterialMap().get(ID))) return true; // True tells minecraft that we have handled this and
-                                                                  // to not do anymore rendering here.
+            .contains(
+                ModernMaterial.getMaterialIDToMaterialMap()
+                    .get(ID)))
+            return true; // True tells minecraft that we have handled this and
+        // to not do anymore rendering here.
 
         renderer.renderStandardBlock(block, x, y, z);
 

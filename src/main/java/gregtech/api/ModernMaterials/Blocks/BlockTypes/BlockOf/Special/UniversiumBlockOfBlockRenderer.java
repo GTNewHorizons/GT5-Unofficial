@@ -1,12 +1,14 @@
 package gregtech.api.ModernMaterials.Blocks.BlockTypes.BlockOf.Special;
 
-import fox.spiteful.avaritia.render.CosmicRenderShenanigans;
-import gregtech.api.ModernMaterials.Blocks.BlockTypes.FrameBox.Special.CustomTextureRegister;
+import static gregtech.api.ModernMaterials.Render.Utilities.renderBlock;
+
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
+
 import org.lwjgl.opengl.GL11;
 
-import static gregtech.api.ModernMaterials.Render.Utilities.renderBlock;
+import fox.spiteful.avaritia.render.CosmicRenderShenanigans;
+import gregtech.api.ModernMaterials.Blocks.BlockTypes.FrameBox.Special.CustomTextureRegister;
 
 public class UniversiumBlockOfBlockRenderer extends TileEntitySpecialRenderer {
 

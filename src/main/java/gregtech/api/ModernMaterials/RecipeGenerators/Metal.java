@@ -1,9 +1,5 @@
 package gregtech.api.ModernMaterials.RecipeGenerators;
 
-import gregtech.api.ModernMaterials.ModernMaterial;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.util.GT_Utility;
-
 import static gregtech.api.ModernMaterials.Blocks.Registration.BlocksEnum.FrameBox;
 import static gregtech.api.ModernMaterials.Items.PartsClasses.ItemsEnum.Ingot;
 import static gregtech.api.ModernMaterials.Items.PartsClasses.ItemsEnum.Plate;
@@ -13,6 +9,10 @@ import static gregtech.api.enums.ItemList.Shape_Extruder_Small_Gear;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBenderRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sExtruderRecipes;
+
+import gregtech.api.ModernMaterials.ModernMaterial;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.util.GT_Utility;
 
 public class Metal {
 

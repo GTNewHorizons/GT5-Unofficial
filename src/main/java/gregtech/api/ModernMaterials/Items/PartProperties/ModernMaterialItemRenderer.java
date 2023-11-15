@@ -1,20 +1,22 @@
 package gregtech.api.ModernMaterials.Items.PartProperties;
 
-import gregtech.api.ModernMaterials.ModernMaterial;
-import gregtech.api.ModernMaterials.Items.PartsClasses.ItemsEnum;
-import gregtech.api.ModernMaterials.Items.PartsClasses.MaterialPart;
-import gregtech.common.render.GT_RenderUtil;
+import static org.lwjgl.opengl.GL11.GL_CURRENT_BIT;
+
+import java.awt.Color;
+
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
+
 import org.lwjgl.opengl.GL11;
 
-import java.awt.Color;
-
-import static org.lwjgl.opengl.GL11.GL_CURRENT_BIT;
+import gregtech.api.ModernMaterials.Items.PartsClasses.ItemsEnum;
+import gregtech.api.ModernMaterials.Items.PartsClasses.MaterialPart;
+import gregtech.api.ModernMaterials.ModernMaterial;
+import gregtech.common.render.GT_RenderUtil;
 
 public class ModernMaterialItemRenderer implements IItemRenderer {
 
@@ -46,7 +48,6 @@ public class ModernMaterialItemRenderer implements IItemRenderer {
         }
     }
 
-
     @Override
     public void renderItem(ItemRenderType type, ItemStack itemStack, Object... objects) {
 
@@ -56,7 +57,8 @@ public class ModernMaterialItemRenderer implements IItemRenderer {
 
         // Branch off to custom logic.
         if (material.getCustomItemRenderer() != null) {
-            material.getCustomItemRenderer().renderItem(type, itemStack, objects);
+            material.getCustomItemRenderer()
+                .renderItem(type, itemStack, objects);
             return;
         }
 
@@ -72,7 +74,8 @@ public class ModernMaterialItemRenderer implements IItemRenderer {
         renderPositionCorrection(type);
 
         // Iterate over the items layers and render them.
-        for (IconWrapper iconWrapper : material.getTextureType().getStandardTextureArray(partsEnum)) {
+        for (IconWrapper iconWrapper : material.getTextureType()
+            .getStandardTextureArray(partsEnum)) {
 
             GL11.glPushAttrib(GL_CURRENT_BIT);
 

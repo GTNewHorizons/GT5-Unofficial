@@ -33,10 +33,10 @@ public enum TextureType {
         return standardTextureStorage.get(part);
     }
 
-
     // Custom texture retrieval.
     public static void addCustomTexture(ModernMaterial material, ItemsEnum part, IconWrapper iconWrapper) {
-        ArrayList<IconWrapper> iconList = customTextureStorage.getOrDefault(Objects.hash(material.getMaterialID(), part), new ArrayList<>());
+        ArrayList<IconWrapper> iconList = customTextureStorage
+            .getOrDefault(Objects.hash(material.getMaterialID(), part), new ArrayList<>());
         iconList.add(iconWrapper);
 
         customTextureStorage.put(Objects.hash(material.getMaterialID(), part), iconList);
