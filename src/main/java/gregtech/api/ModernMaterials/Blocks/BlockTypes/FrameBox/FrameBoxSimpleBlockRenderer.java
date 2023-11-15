@@ -32,7 +32,7 @@ public class FrameBoxSimpleBlockRenderer implements ISimpleBlockRenderingHandler
         Tessellator tessellator = Tessellator.instance;
 
         final int materialID = ((BaseMaterialBlock) block).getMaterialID(metadata);
-        final ModernMaterial material = ModernMaterialUtilities.getMaterialFromID(materialID);
+        final ModernMaterial material = ModernMaterial.getMaterialFromID(materialID);
 
         final Color color = material.getColor();
         int red = color.getRed();
@@ -61,7 +61,7 @@ public class FrameBoxSimpleBlockRenderer implements ISimpleBlockRenderingHandler
         int ID = baseMaterialBlock.getMaterialID(world.getBlockMetadata(x, y, z));
         if (baseMaterialBlock.getBlockEnum()
             .getSpecialBlockRenderAssociatedMaterials()
-            .contains(materialIDToMaterial.get(ID))) return true; // True tells minecraft that we have handled this and
+            .contains(ModernMaterial.getMaterialIDToMaterialMap().get(ID))) return true; // True tells minecraft that we have handled this and
                                                                   // to not do anymore rendering here.
 
         renderer.renderStandardBlock(block, x, y, z);

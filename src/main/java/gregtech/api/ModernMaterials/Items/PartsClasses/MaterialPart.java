@@ -1,21 +1,18 @@
 package gregtech.api.ModernMaterials.Items.PartsClasses;
 
-import static gregtech.api.ModernMaterials.ModernMaterialUtilities.*;
-
-import java.util.List;
-
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.ModernMaterials.ModernMaterial;
+import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-
 import org.jetbrains.annotations.NotNull;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.ModernMaterials.ModernMaterial;
-import gregtech.api.ModernMaterials.ModernMaterialUtilities;
-import gregtech.api.util.GT_LanguageManager;
+import java.util.List;
+
+import static gregtech.api.ModernMaterials.ModernMaterialUtilities.tooltipGenerator;
 
 public class MaterialPart extends Item {
 
@@ -42,9 +39,9 @@ public class MaterialPart extends Item {
     @Override
     public String getUnlocalizedName(ItemStack itemStack) {
 
-        ModernMaterial material = materialIDToMaterial.get(itemStack.getItemDamage());
+        ModernMaterial material = ModernMaterial.getMaterialFromItemStack(itemStack);
 
-        String trueName = this.partName.replace("%", material.getMaterialName());
+        String trueName = partName.replace("%", material.getMaterialName());
 
         // Localise the material name.
         GT_LanguageManager.addStringLocalization(trueName + ".name", trueName);
@@ -58,7 +55,7 @@ public class MaterialPart extends Item {
     public void addInformation(@NotNull ItemStack itemStack, EntityPlayer player, List<String> tooltipList,
         boolean aF3_H) {
 
-        final ModernMaterial material = ModernMaterialUtilities.materialIDToMaterial.get(itemStack.getItemDamage());
+        final ModernMaterial material = ModernMaterial.getMaterialFromItemStack(itemStack);
 
         tooltipList.addAll(tooltipGenerator(itemStack.getItem(), material));
     }

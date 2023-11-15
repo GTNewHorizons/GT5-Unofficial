@@ -46,7 +46,7 @@ public class FrameBoxBaseMaterialBlock extends BaseMaterialBlock {
     @Override
     public int colorMultiplier(IBlockAccess worldIn, int x, int y, int z) {
         final int materialID = getMaterialID(worldIn.getBlockMetadata(x, y, z));
-        final ModernMaterial material = ModernMaterialUtilities.materialIDToMaterial.get(materialID);
+        final ModernMaterial material = ModernMaterial.getMaterialIDToMaterialMap().get(materialID);
 
         if (material == null) return new Color(100, 100, 0, 255).getRGB();
         return material.getColor()

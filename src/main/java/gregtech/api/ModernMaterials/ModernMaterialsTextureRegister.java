@@ -60,7 +60,7 @@ public class ModernMaterialsTextureRegister {
 
 
         // Custom fluid textures.
-        ModernMaterialUtilities.materialNameToMaterialMap.forEach((materialName, modernMaterial) -> {
+        ModernMaterial.getMaterialNameToMaterialMap().forEach((materialName, modernMaterial) -> {
 
             for (ModernMaterialFluid fluid : modernMaterial.getAssociatedFluids()) {
 

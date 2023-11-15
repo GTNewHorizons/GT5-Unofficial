@@ -21,25 +21,6 @@ import gregtech.api.ModernMaterials.Items.PartsClasses.MaterialPart;
 
 public class ModernMaterialUtilities {
 
-    public static final HashMap<Integer, ModernMaterial> materialIDToMaterial = new HashMap<>();
-    public static final HashMap<String, ModernMaterial> materialNameToMaterialMap = new HashMap<>();
-
-    public static void registerMaterial(ModernMaterial material) {
-        if (materialIDToMaterial.containsKey(material.getMaterialID())) {
-            throw new IllegalArgumentException("Material with ID " + material.getMaterialID() + " already exists.");
-        }
-
-        if (materialNameToMaterialMap.containsKey(material.getMaterialName())) {
-            throw new IllegalArgumentException(
-                "Material with name " + material.getMaterialName()
-                    + " already exists. Material was registered with ID "
-                    + material.getMaterialID()
-                    + ".");
-        }
-
-        materialIDToMaterial.put(material.getMaterialID(), material);
-        materialNameToMaterialMap.put(material.getMaterialName(), material);
-    }
 
     public static void registerAllMaterialsItems() {
 
@@ -72,34 +53,11 @@ public class ModernMaterialUtilities {
     public static void registerAllMaterialsFluids() {
 
         // Register the fluids with forge.
-        for (ModernMaterial material : materialIDToMaterial.values()) {
+        for (ModernMaterial material : ModernMaterial.allMaterials()) {
             for (ModernMaterialFluid fluid : material.getAssociatedFluids()) {
                 FluidRegistry.registerFluid(fluid);
             }
         }
-    }
-
-    public static ModernMaterial getMaterialFromName(final String materialName) {
-
-        ModernMaterial modernMaterial = materialNameToMaterialMap.getOrDefault(materialName, null);
-
-        if (modernMaterial == null) {
-            throw new IllegalArgumentException(
-                "Material % does not exist. Make sure you spelt it correctly.".replace("%", materialName));
-        }
-
-        return modernMaterial;
-    }
-
-    public static ModernMaterial getMaterialFromID(final int materialID) {
-
-        ModernMaterial modernMaterial = materialIDToMaterial.getOrDefault(materialID, null);
-
-        if (modernMaterial == null) {
-            throw new IllegalArgumentException("Material with ID " + materialID + " does not exist.");
-        }
-
-        return modernMaterial;
     }
 
     public static ArrayList<String> tooltipGenerator(Item part, ModernMaterial material) {

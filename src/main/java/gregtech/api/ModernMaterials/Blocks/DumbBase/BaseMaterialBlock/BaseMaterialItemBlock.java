@@ -42,7 +42,7 @@ public class BaseMaterialItemBlock extends ItemBlock {
     @Override
     public void addInformation(@NotNull final ItemStack itemStack, final EntityPlayer player, List<String> tooltipList,
         boolean aF3_H) {
-        final ModernMaterial material = ModernMaterialUtilities.materialIDToMaterial.get(getMaterialID(itemStack));
+        final ModernMaterial material = ModernMaterial.getMaterialIDToMaterialMap().get(getMaterialID(itemStack));
         tooltipList.addAll(tooltipGenerator(itemStack.getItem(), material));
     }
 
@@ -69,7 +69,7 @@ public class BaseMaterialItemBlock extends ItemBlock {
     }
 
     public static ModernMaterial getMaterial(@NotNull final ItemStack itemStack) {
-        return ModernMaterialUtilities.getMaterialFromID(getMaterialID(itemStack));
+        return ModernMaterial.getMaterialFromID(getMaterialID(itemStack));
     }
 
 }

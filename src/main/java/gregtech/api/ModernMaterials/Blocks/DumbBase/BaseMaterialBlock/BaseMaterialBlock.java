@@ -34,7 +34,7 @@ public abstract class BaseMaterialBlock extends Block {
     public TileEntity createTileEntity(@NotNull World world, int metadata) {
 
         final int ID = getMaterialID(metadata);
-        final ModernMaterial material = ModernMaterialUtilities.getMaterialFromID(ID);
+        final ModernMaterial material = ModernMaterial.getMaterialFromID(ID);
 
         if (!getBlockEnum().getSpecialBlockRenderAssociatedMaterials()
             .contains(material)) return null;

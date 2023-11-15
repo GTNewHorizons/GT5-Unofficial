@@ -14,7 +14,6 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.Color;
 
-import static gregtech.api.ModernMaterials.ModernMaterialUtilities.materialIDToMaterial;
 import static org.lwjgl.opengl.GL11.GL_CURRENT_BIT;
 
 public class ModernMaterialItemRenderer implements IItemRenderer {
@@ -47,17 +46,13 @@ public class ModernMaterialItemRenderer implements IItemRenderer {
         }
     }
 
-    // Item damage values are material IDs.
-    public static ModernMaterial getMaterialFromItemStack(ItemStack itemStack) { // Todo rework for blocks
-        return materialIDToMaterial.get(itemStack.getItemDamage());
-    }
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack itemStack, Object... objects) {
 
         if (!(itemStack.getItem() instanceof MaterialPart materialPart)) return;
 
-        ModernMaterial material = getMaterialFromItemStack(itemStack);
+        ModernMaterial material = ModernMaterial.getMaterialFromItemStack(itemStack);
 
         // Branch off to custom logic.
         if (material.getCustomItemRenderer() != null) {

@@ -54,7 +54,7 @@ public class UniversiumItemRenderer implements IItemRenderer {
     @Override
     public void renderItem(ItemRenderType type, ItemStack itemStack, Object... data) {
 
-        ModernMaterial material = ModernMaterialItemRenderer.getMaterialFromItemStack(itemStack);
+        ModernMaterial material = ModernMaterial.getMaterialFromItemStack(itemStack);
         MaterialPart materialPart = (MaterialPart) itemStack.getItem();
 
         ItemsEnum partsEnum = materialPart.getPart();

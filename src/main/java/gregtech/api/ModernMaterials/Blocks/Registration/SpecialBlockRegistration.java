@@ -55,11 +55,10 @@ public class SpecialBlockRegistration {
                 GameRegistry.registerBlock(block, BaseMaterialItemBlock.class, "Special." + blockType + "." + offset);
 
                 for (int ID: IDs) {
-                    blockType.setItemStack(ModernMaterialUtilities.getMaterialFromID(ID), new ItemStack(block, 1, ID % 16));
+                    blockType.setItemStack(ModernMaterial.getMaterialFromID(ID), new ItemStack(block, 1, ID % 16));
                 }
 
-            } catch (NoSuchMethodException | InstantiationException | IllegalAccessException
-                | InvocationTargetException e) {
+            } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
                 throw new RuntimeException("Failed to instantiate block.", e);
             }
 

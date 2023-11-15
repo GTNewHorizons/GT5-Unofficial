@@ -1,5 +1,6 @@
 package gregtech.api.ModernMaterials.Blocks.DumbBase.Special;
 
+import gregtech.api.ModernMaterials.ModernMaterial;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
@@ -21,7 +22,7 @@ public class MasterItemBlockRenderer implements IItemRenderer {
 
         return block.getBlockEnum()
             .getSpecialBlockRenderAssociatedMaterials()
-            .contains(ModernMaterialUtilities.getMaterialFromID(ID));
+            .contains(ModernMaterial.getMaterialFromID(ID));
     }
 
     @Override

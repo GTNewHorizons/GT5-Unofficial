@@ -1,32 +1,41 @@
 package gregtech.api.ModernMaterials;
 
-import static gregtech.api.ModernMaterials.ModernMaterialUtilities.registerMaterial;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.function.Consumer;
-
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraftforge.client.IItemRenderer;
-
-import org.jetbrains.annotations.NotNull;
-
+import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMaterialBlock;
 import gregtech.api.ModernMaterials.Blocks.Registration.BlocksEnum;
 import gregtech.api.ModernMaterials.Fluids.FluidEnum;
 import gregtech.api.ModernMaterials.Fluids.ModernMaterialFluid;
 import gregtech.api.ModernMaterials.Items.PartProperties.TextureType;
 import gregtech.api.ModernMaterials.Items.PartsClasses.IEnumPart;
 import gregtech.api.ModernMaterials.Items.PartsClasses.ItemsEnum;
+import gregtech.api.ModernMaterials.Items.PartsClasses.MaterialPart;
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.IItemRenderer;
+import org.jetbrains.annotations.NotNull;
+
+import java.awt.Color;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Consumer;
 
 @SuppressWarnings("unused")
 public final class ModernMaterial {
 
     private final HashSet<IEnumPart> existingPartsForMaterial = new HashSet<>();
     private final HashSet<ModernMaterialFluid> existingFluids = new HashSet<>();
+    private static final HashSet<ModernMaterial> allMaterials = new HashSet<>();
+
+
+
+    private static final HashMap<Integer, ModernMaterial> materialIDToMaterial = new HashMap<>();
+    private static final HashMap<String, ModernMaterial> materialNameToMaterialMap = new HashMap<>();
+
+
+
     private Color color;
     private int materialID;
     private String materialName;
@@ -38,6 +47,19 @@ public final class ModernMaterial {
 
     public ModernMaterial(final String materialName) {
         this.materialName = materialName;
+    }
+
+    public static ModernMaterial getMaterialFromItemStack(@NotNull ItemStack itemStack) {
+
+        if (itemStack.getItem() instanceof MaterialPart) {
+            return materialIDToMaterial.get(itemStack.getItemDamage());
+        } else if (Block.getBlockFromItem(itemStack.getItem()) instanceof BaseMaterialBlock baseMaterialBlock) {
+            int ID = baseMaterialBlock.getMaterialID(itemStack.getItemDamage());
+
+            return materialIDToMaterial.get(ID);
+        }
+
+        throw new IllegalArgumentException("ItemStack " + itemStack + " is not a material part or block.");
     }
 
     public void setMaterialID(int aID) {
@@ -54,6 +76,10 @@ public final class ModernMaterial {
 
     public String getMaterialName() {
         return materialName;
+    }
+
+    public static Set<ModernMaterial> allMaterials() {
+        return Collections.unmodifiableSet(allMaterials);
     }
 
     public boolean doesPartExist(BlocksEnum blocksEnum) {
@@ -103,6 +129,9 @@ public final class ModernMaterial {
         void build() {
             ModernMaterial builtMaterial = materialToBuild;
             materialToBuild = new ModernMaterial();
+
+            // Complete set of all materials.
+            allMaterials.add(builtMaterial);
 
             registerMaterial(builtMaterial);
         }
@@ -222,4 +251,43 @@ public final class ModernMaterial {
         return materialName;
     }
 
+
+    public static Map<String, ModernMaterial> getMaterialNameToMaterialMap() {
+        return Collections.unmodifiableMap(materialNameToMaterialMap);
+    }
+
+    public static Map<Integer, ModernMaterial> getMaterialIDToMaterialMap() {
+        return Collections.unmodifiableMap(materialIDToMaterial);
+    }
+
+
+
+    public static void registerMaterial(ModernMaterial material) {
+        if (materialIDToMaterial.containsKey(material.getMaterialID())) {
+            throw new IllegalArgumentException("Material with ID " + material.getMaterialID() + " already exists.");
+        }
+
+        if (materialNameToMaterialMap.containsKey(material.getMaterialName())) {
+            throw new IllegalArgumentException(
+                "Material with name " + material.getMaterialName()
+                    + " already exists. Material was registered with ID "
+                    + material.getMaterialID()
+                    + ".");
+        }
+
+        materialIDToMaterial.put(material.getMaterialID(), material);
+        materialNameToMaterialMap.put(material.getMaterialName(), material);
+    }
+
+
+    public static ModernMaterial getMaterialFromID(final int materialID) {
+
+        ModernMaterial modernMaterial = materialIDToMaterial.getOrDefault(materialID, null);
+
+        if (modernMaterial == null) {
+            throw new IllegalArgumentException("Material with ID " + materialID + " does not exist.");
+        }
+
+        return modernMaterial;
+    }
 }

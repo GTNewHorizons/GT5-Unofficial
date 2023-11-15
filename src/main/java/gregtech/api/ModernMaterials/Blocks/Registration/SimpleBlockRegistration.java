@@ -47,7 +47,7 @@ public abstract class SimpleBlockRegistration {
                 GameRegistry.registerBlock(block, BaseMaterialItemBlock.class, blockType + "." + offset);
 
                 for (int ID: IDs) {
-                    blockType.setItemStack(ModernMaterialUtilities.getMaterialFromID(ID), new ItemStack(block, 1, ID % 16));
+                    blockType.setItemStack(ModernMaterial.getMaterialFromID(ID), new ItemStack(block, 1, ID % 16));
                 }
 
             } catch (NoSuchMethodException | InstantiationException | IllegalAccessException

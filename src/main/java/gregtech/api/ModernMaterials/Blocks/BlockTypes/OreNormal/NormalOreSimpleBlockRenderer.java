@@ -36,7 +36,7 @@ public class NormalOreSimpleBlockRenderer implements ISimpleBlockRenderingHandle
         Tessellator tessellator = Tessellator.instance;
 
         final int materialID = ((BaseMaterialBlock) block).getMaterialID(metadata);
-        final ModernMaterial material = ModernMaterialUtilities.getMaterialFromID(materialID);
+        final ModernMaterial material = ModernMaterial.getMaterialFromID(materialID);
 
         final Color color = material.getColor();
         int red = color.getRed();
@@ -67,7 +67,7 @@ public class NormalOreSimpleBlockRenderer implements ISimpleBlockRenderingHandle
         BaseMaterialBlock baseMaterialBlock = (BaseMaterialBlock) block;
 
         int ID = baseMaterialBlock.getMaterialID(world.getBlockMetadata(x, y, z));
-        ModernMaterial material = ModernMaterialUtilities.getMaterialFromID(ID);
+        ModernMaterial material = ModernMaterial.getMaterialFromID(ID);
 
         if (baseMaterialBlock.getBlockEnum()
             .getSpecialBlockRenderAssociatedMaterials()
