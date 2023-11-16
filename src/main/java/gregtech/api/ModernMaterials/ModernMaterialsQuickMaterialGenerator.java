@@ -1,79 +1,27 @@
 package gregtech.api.ModernMaterials;
 
-public class ModernMaterialsQuickMaterialGenerator {
-    //
-    // public void simpleMetal(final String materialName, final int red, final int green, final int blue) {
-    //
-    // new ModernMaterial(materialName).setColor(red, green, blue)
-    // .addParts(
-    // Dust,
-    // SolderingHead,
-    // PickaxeHead,
-    // HoeHead,
-    // PurifiedDust,
-    // PurifiedOre,
-    // ImpureDust,
-    // Spring,
-    // Ring,
-    // BuzzSaw,
-    // Rotor,
-    // LongRod,
-    // CrushedOre,
-    // FineWire,
-    // SmallSpring,
-    // Foil,
-    // Plate,
-    // ScrewdriverHead,
-    // ShovelHead,
-    // Gear,
-    // Round,
-    // ElectricWrenchHead,
-    // TurbineBlade,
-    // DensePlate,
-    // ArrowHead,
-    // CrushedCentrifugedOre,
-    // AxeHead,
-    // ChainSaw,
-    // SenseHead,
-    // FileHead,
-    // TinyDust,
-    // Screw,
-    // SmallDust,
-    // TinyDust,
-    // SwordBlade,
-    // HammerHead,
-    // Nugget,
-    // SawBlade,
-    // Rod,
-    // DrillTip,
-    // SmallGear,
-    // PlowHead,
-    // Ingot)
-    // .addFluids(Molten, Plasma).build();
-    //
-    // }
-    //
-    // public void gem(final String materialName, final int red, final int green, final int blue) {
-    //
-    // new ModernMaterial(materialName).setColor(red, green, blue)
-    // .addParts(
-    // Dust,
-    // ImpureDust,
-    // PurifiedOre,
-    // PurifiedDust,
-    // CrushedOre,
-    // Bolt,
-    // Rod,
-    // Screw,
-    // Plate,
-    // Lens,
-    // ExquisiteGem,
-    // FlawlessGem,
-    // Gem,
-    // FlawedGem,
-    // ChippedGem)
-    // .addFluids(Molten, Plasma).build();
-    //
-    // }
+import static gregtech.api.ModernMaterials.Fluids.FluidEnum.Molten;
+import static gregtech.api.ModernMaterials.Fluids.FluidEnum.Plasma;
+import static gregtech.api.ModernMaterials.Items.PartProperties.TextureType.Metal_Shiny;
+import static gregtech.api.ModernMaterials.Items.PartsClasses.ItemsEnum.Ingot;
+import static gregtech.api.ModernMaterials.Items.PartsClasses.ItemsEnum.Plate;
 
+import java.awt.Color;
+
+import org.jetbrains.annotations.NotNull;
+
+import gregtech.api.ModernMaterials.RecipeGenerators.Metal;
+
+public class ModernMaterialsQuickMaterialGenerator {
+
+    ModernMaterial.ModernMaterialBuilder generateMetalWithEBF(@NotNull String materialName, int materialID,
+        @NotNull Color color) {
+        return new ModernMaterial.ModernMaterialBuilder(materialName).setMaterialID(materialID)
+            .setColor(color)
+            .setTextureMode(Metal_Shiny)
+            .setRecipeGenerator(Metal::generateExtruderRecipesWithoutTools, Metal::EBFRecipeGeneratorWithFreezer)
+            .addPart(Ingot, Plate)
+            .addFluid(Molten, 10_000)
+            .addFluid(Plasma, 100_000);
+    }
 }

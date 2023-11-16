@@ -3,7 +3,6 @@ package gregtech.api.ModernMaterials.Items.PartsClasses;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import org.jetbrains.annotations.NotNull;
@@ -84,6 +83,7 @@ public enum ItemsEnum implements IEnumPart {
     // PickaxeHead("% Pickaxe Head"),
     // PlowHead("% Plow Head"),
     SawBlade("% Saw Blade"),
+    ItemCasing("% Casing"),
     ScrewdriverHead("% Screwdriver Head"),
     // SenseHead("% Sense Head"),
     // ShovelHead("% Shovel Head"),
@@ -93,7 +93,6 @@ public enum ItemsEnum implements IEnumPart {
 
     public final String partName;
 
-    private Item item;
     public double percentageOfIngot;
 
     private final HashSet<ModernMaterial> associatedMaterials = new HashSet<>();

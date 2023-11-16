@@ -14,7 +14,6 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMaterialBlock;
-import gregtech.api.ModernMaterials.Blocks.Registration.BlocksEnum;
 import gregtech.api.ModernMaterials.ModernMaterial;
 
 public class BlockOfSimpleBlockRenderer implements ISimpleBlockRenderingHandler {
@@ -33,7 +32,6 @@ public class BlockOfSimpleBlockRenderer implements ISimpleBlockRenderingHandler 
         final BaseMaterialBlock baseMaterialBlock = (BaseMaterialBlock) block;
         final int materialID = baseMaterialBlock.getMaterialID(metadata);
         final ModernMaterial material = ModernMaterial.getMaterialFromID(materialID);
-        final BlocksEnum blocksEnum = baseMaterialBlock.getBlockEnum();
 
         final Color color = material.getColor();
         int red = color.getRed();

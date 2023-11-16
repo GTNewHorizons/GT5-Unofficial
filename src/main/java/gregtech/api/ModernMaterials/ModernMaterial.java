@@ -1,6 +1,7 @@
 package gregtech.api.ModernMaterials;
 
 import java.awt.Color;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -35,12 +36,12 @@ public final class ModernMaterial {
     private static final HashMap<String, ModernMaterial> materialNameToMaterialMap = new HashMap<>();
 
     private Color color;
-    private int materialID;
+    private int materialID = -1;
     private String materialName;
     private long materialTier;
-    private double materialTimeMultiplier = 1;
+    private double hardness = 1;
     private TextureType textureType;
-    private Consumer<ModernMaterial> recipeGenerator;
+    private final HashSet<Consumer<ModernMaterial>> recipeGenerators = new HashSet<>();
     private IItemRenderer customItemRenderer;
 
     public ModernMaterial(final String materialName) {
@@ -76,8 +77,16 @@ public final class ModernMaterial {
         return materialName;
     }
 
-    public static Set<ModernMaterial> allMaterials() {
+    public static Set<ModernMaterial> getAllMaterials() {
         return Collections.unmodifiableSet(allMaterials);
+    }
+
+    public static Map<String, ModernMaterial> getMaterialNameToMaterialMap() {
+        return Collections.unmodifiableMap(materialNameToMaterialMap);
+    }
+
+    public static Map<Integer, ModernMaterial> getMaterialIDToMaterialMap() {
+        return Collections.unmodifiableMap(materialIDToMaterial);
     }
 
     public boolean doesPartExist(BlocksEnum blocksEnum) {
@@ -85,8 +94,8 @@ public final class ModernMaterial {
             .contains(this);
     }
 
-    public double getMaterialTimeMultiplier() {
-        return materialTimeMultiplier;
+    public double getHardness() {
+        return hardness;
     }
 
     public Set<ModernMaterialFluid> getAssociatedFluids() {
@@ -104,8 +113,9 @@ public final class ModernMaterial {
     private ModernMaterial() {}
 
     public void registerRecipes(ModernMaterial material) {
-        if (recipeGenerator == null) return;
-        recipeGenerator.accept(material);
+        for (Consumer<ModernMaterial> recipeGenerator : recipeGenerators) {
+            recipeGenerator.accept(material);
+        }
     }
 
     public IItemRenderer getCustomItemRenderer() {
@@ -118,7 +128,7 @@ public final class ModernMaterial {
 
     public static class ModernMaterialBuilder {
 
-        public static ModernMaterial materialToBuild;
+        public ModernMaterial materialToBuild;
 
         public ModernMaterialBuilder(String materialName) {
             materialToBuild = new ModernMaterial(materialName);
@@ -128,9 +138,14 @@ public final class ModernMaterial {
             ModernMaterial builtMaterial = materialToBuild;
             materialToBuild = new ModernMaterial();
 
+            for (IEnumPart part : materialToBuild.existingPartsForMaterial) {
+                part.addAssociatedMaterial(materialToBuild);
+            }
+
             // Complete set of all materials.
             allMaterials.add(builtMaterial);
 
+            safeguardChecks(builtMaterial);
             registerMaterial(builtMaterial);
         }
 
@@ -140,36 +155,30 @@ public final class ModernMaterial {
         }
 
         public ModernMaterialBuilder setMaterialTimeMultiplier(double materialTimeMultiplier) {
-            materialToBuild.materialTimeMultiplier = materialTimeMultiplier;
+            materialToBuild.hardness = materialTimeMultiplier;
             return this;
         }
 
-        public ModernMaterialBuilder addParts(IEnumPart... parts) {
+        // ----------------- Add and remove parts from material -----------------
+
+        public ModernMaterialBuilder addPart(IEnumPart... parts) {
+            materialToBuild.existingPartsForMaterial.addAll(Arrays.asList(parts));
+            return this;
+        }
+
+        public ModernMaterialBuilder removePart(IEnumPart... parts) {
             for (IEnumPart part : parts) {
-                addPart(part);
+                materialToBuild.existingPartsForMaterial.remove(part);
             }
-
             return this;
         }
 
-        public ModernMaterialBuilder addPart(IEnumPart part) {
-            part.addAssociatedMaterial(materialToBuild);
-            materialToBuild.existingPartsForMaterial.add(part);
-
-            return this;
-        }
-
-        private final HashMap<BlocksEnum, TileEntitySpecialRenderer> TESRMap = new HashMap<>();
-
-        public ModernMaterialBuilder addBlockTESR(BlocksEnum block, TileEntitySpecialRenderer TESR) {
-            TESRMap.put(block, TESR);
-            return this;
-        }
+        // ----------------------------------------------------------------------
 
         // This will override all existing parts settings and enable ALL possible parts and blocks. Be careful!
         public ModernMaterialBuilder addAllParts() {
-            addParts(ItemsEnum.values());
-            addParts(BlocksEnum.values());
+            addPart(ItemsEnum.values());
+            addPart(BlocksEnum.values());
             return this;
         }
 
@@ -211,8 +220,10 @@ public final class ModernMaterial {
             return this;
         }
 
-        public ModernMaterialBuilder setRecipeGenerator(@NotNull final Consumer<ModernMaterial> recipeGenerator) {
-            materialToBuild.recipeGenerator = recipeGenerator;
+        @SafeVarargs
+        public final ModernMaterialBuilder setRecipeGenerator(
+            @NotNull final Consumer<ModernMaterial>... recipeGenerators) {
+            materialToBuild.recipeGenerators.addAll(Arrays.asList(recipeGenerators));
             return this;
         }
 
@@ -230,17 +241,21 @@ public final class ModernMaterial {
             return this;
         }
 
-        public ModernMaterialBuilder setCustomItemRenderer(IItemRenderer customItemRenderer) {
+        public ModernMaterialBuilder setCustomItemRenderer(@NotNull IItemRenderer customItemRenderer) {
             materialToBuild.customItemRenderer = customItemRenderer;
+            return this;
+        }
+
+        public ModernMaterialBuilder setColor(@NotNull Color color) {
+            materialToBuild.color = color;
             return this;
         }
     }
 
     @Override
     public boolean equals(Object obj) {
-
-        if (obj instanceof ModernMaterial material) {
-            return material.materialID == this.materialID;
+        if (obj instanceof ModernMaterial that) {
+            return that.materialID == this.materialID;
         }
 
         return false;
@@ -251,12 +266,8 @@ public final class ModernMaterial {
         return materialName;
     }
 
-    public static Map<String, ModernMaterial> getMaterialNameToMaterialMap() {
-        return Collections.unmodifiableMap(materialNameToMaterialMap);
-    }
-
-    public static Map<Integer, ModernMaterial> getMaterialIDToMaterialMap() {
-        return Collections.unmodifiableMap(materialIDToMaterial);
+    public static ModernMaterial getMaterialFromID(final int materialID) {
+        return materialIDToMaterial.get(materialID);
     }
 
     public static void registerMaterial(ModernMaterial material) {
@@ -276,14 +287,29 @@ public final class ModernMaterial {
         materialNameToMaterialMap.put(material.getMaterialName(), material);
     }
 
-    public static ModernMaterial getMaterialFromID(final int materialID) {
+    private static void safeguardChecks(ModernMaterial material) {
 
-        ModernMaterial modernMaterial = materialIDToMaterial.getOrDefault(materialID, null);
-
-        if (modernMaterial == null) {
-            throw new IllegalArgumentException("Material with ID " + materialID + " does not exist.");
+        if (material.color == null) {
+            throw new IllegalArgumentException("Material " + material + " has no colour set.");
         }
 
-        return modernMaterial;
+        if (material.materialID == -1) {
+            throw new IllegalArgumentException("Material " + material + " has no ID set.");
+        }
+
+        if (material.materialName == null) {
+            throw new IllegalArgumentException("Material " + material + " has no name set.");
+        }
+
+        if (material.textureType == null) {
+            throw new IllegalArgumentException("Material " + material + " has no texture type set.");
+        }
+
+        if (material.materialTier == 0 && !material.recipeGenerators.isEmpty()) {
+            throw new IllegalArgumentException(
+                "Material " + material + " has no tier set for its recipe generator(s).");
+        }
+
     }
+
 }

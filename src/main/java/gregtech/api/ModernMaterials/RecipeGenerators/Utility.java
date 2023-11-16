@@ -6,7 +6,7 @@ public abstract class Utility {
 
     public static void registerAllMaterialsRecipes() {
 
-        for (ModernMaterial material : ModernMaterial.allMaterials()) {
+        for (ModernMaterial material : ModernMaterial.getAllMaterials()) {
             material.registerRecipes(material);
         }
 

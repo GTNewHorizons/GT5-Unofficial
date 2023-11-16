@@ -75,9 +75,6 @@ public class ModernMaterialsTextureRegister {
                             + fluid.getName();
                         IIcon stillIcon = map.registerIcon(path);
 
-                        // Todo better way to detect this? Idk.
-                        // if (stillIcon.getMinU() == stillIcon.getMaxU()) throw new RuntimeException("No texture for "
-                        // + materialName + " icon at " + path + ".png");
                         fluid.setStillIcon(stillIcon);
                     }
 
@@ -90,8 +87,6 @@ public class ModernMaterialsTextureRegister {
                             + fluid.getName();
                         IIcon flowingIcon = map.registerIcon(path);
 
-                        // if (flowingIcon.getMinU() == flowingIcon.getMaxU()) throw new RuntimeException("No texture
-                        // for " + materialName + " icon at " + path + ".png");
                         fluid.setFlowingIcon(flowingIcon);
                     }
 

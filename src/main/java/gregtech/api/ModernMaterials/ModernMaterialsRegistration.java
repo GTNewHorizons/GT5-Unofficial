@@ -56,12 +56,13 @@ public class ModernMaterialsRegistration {
         new ModernMaterial.ModernMaterialBuilder("Universium").setColor(255, 255, 255)
             .setMaterialID(17)
             .setTextureMode(Custom)
+            .setMaterialTier(TierEU.MAX)
             .setCustomBlockRenderer(
                 BlocksEnum.FrameBox,
                 new UniversiumFrameItemRenderer(),
                 new UniversiumFrameBlockRenderer())
             .setCustomItemRenderer(new UniversiumItemRenderer())
-            .setRecipeGenerator(Metal::generateRecipes)
+            .setRecipeGenerator(Metal::generateExtruderRecipesWithoutTools)
             .addAllParts()
             .addFluid(Gas, 1_000)
             .addFluid(NoPrefix, 3_000)
@@ -74,7 +75,7 @@ public class ModernMaterialsRegistration {
             .setTextureMode(Metal_Shiny)
             .setMaterialTier(TierEU.MAX)
             .addAllParts()
-            .setRecipeGenerator(Metal::generateRecipes)
+            .setRecipeGenerator(Metal::generateExtruderRecipesWithoutTools)
             .addFluid(Gas, 1_000)
             .addFluid(NoPrefix, 3_000)
             .addFluid(Molten, 10_000)

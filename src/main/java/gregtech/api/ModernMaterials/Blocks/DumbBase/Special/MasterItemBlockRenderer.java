@@ -32,9 +32,7 @@ public class MasterItemBlockRenderer implements IItemRenderer {
     private void repositionItem(ItemRenderType type) {
         switch (type) {
             case EQUIPPED_FIRST_PERSON, EQUIPPED -> GL11.glTranslated(0.5, 0.5, 0.5);
-            case FIRST_PERSON_MAP, ENTITY, INVENTORY -> {
-                return;
-            }
+            case FIRST_PERSON_MAP, ENTITY, INVENTORY -> {}
         }
     }
 
