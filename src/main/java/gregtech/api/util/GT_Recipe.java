@@ -802,7 +802,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             }
             for (ItemStack itemStack : aInputs) {
                 if (itemStack == null) continue;
-                ItemStack unifiedStack = GT_OreDictUnificator.get_nocopy(false, itemStack);
+                ItemStack unifiedStack = GT_OreDictUnificator.get(false, itemStack, true);
                 if (unifiedStack == null) continue;
                 if (isNBTSensitive) {
                     itemMap.merge(GT_Utility.ItemId.createNoCopy(unifiedStack), unifiedStack.stackSize, Integer::sum);
