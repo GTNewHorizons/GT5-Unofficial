@@ -583,11 +583,11 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     /***
      * Dictates the ItemStacks displayed in the output slots of any NEI page handled by the default GT NEI handler.
      * Override to make shown items differ from a GT_Recipe's item output array
-     * 
+     *
      * @see gregtech.nei.GT_NEI_DefaultHandler
      * @param i Slot index
      * @return ItemStack to be displayed in the slot
-     * 
+     *
      */
     //
     public ItemStack getRepresentativeOutput(int i) {
@@ -802,14 +802,17 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             }
             for (ItemStack itemStack : aInputs) {
                 if (itemStack == null) continue;
+                ItemStack unifiedStack = GT_OreDictUnificator.get_nocopy(false, itemStack);
+                if (unifiedStack == null) continue;
                 if (isNBTSensitive) {
-                    itemMap.merge(GT_Utility.ItemId.createNoCopy(itemStack), itemStack.stackSize, Integer::sum);
+                    itemMap.merge(GT_Utility.ItemId.createNoCopy(unifiedStack), unifiedStack.stackSize, Integer::sum);
                 } else {
-                    itemMap.merge(GT_Utility.ItemId.createWithoutNBT(itemStack), itemStack.stackSize, Integer::sum);
+                    itemMap
+                        .merge(GT_Utility.ItemId.createWithoutNBT(unifiedStack), unifiedStack.stackSize, Integer::sum);
                 }
                 if (foundWildcard) {
                     itemMapWildcard
-                        .merge(GT_Utility.ItemId.createAsWildcard(itemStack), itemStack.stackSize, Integer::sum);
+                        .merge(GT_Utility.ItemId.createAsWildcard(unifiedStack), unifiedStack.stackSize, Integer::sum);
                 }
             }
             // Check how many parallels can it perform for each item
