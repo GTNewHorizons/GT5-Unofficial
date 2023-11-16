@@ -186,7 +186,7 @@ public final class BasicUIPropertiesBuilder {
         return this;
     }
 
-    BasicUIPropertiesBuilder addSpecialTextures(List<Pair<IDrawable, Pair<Size, Pos2d>>> specialTextures) {
+    BasicUIPropertiesBuilder specialTextures(List<Pair<IDrawable, Pair<Size, Pos2d>>> specialTextures) {
         this.specialTextures.addAll(specialTextures);
         return this;
     }
@@ -196,7 +196,7 @@ public final class BasicUIPropertiesBuilder {
         return this;
     }
 
-    BasicUIPropertiesBuilder addSpecialTexturesSteam(List<Pair<SteamTexture, Pair<Size, Pos2d>>> specialTextures) {
+    BasicUIPropertiesBuilder specialTexturesSteam(List<Pair<SteamTexture, Pair<Size, Pos2d>>> specialTextures) {
         this.specialTexturesSteam.addAll(specialTextures);
         return this;
     }

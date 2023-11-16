@@ -23,6 +23,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.Unmodifiable;
+
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
 
@@ -87,6 +89,7 @@ public class RecipeMapBackend {
      * @return All the recipes belonging to this backend. Returned collection is immutable,
      *         use {@link #compileRecipe} to add / {@link #removeRecipes} to remove.
      */
+    @Unmodifiable
     public Collection<GT_Recipe> getAllRecipes() {
         return Collections.unmodifiableCollection(allRecipes());
     }
@@ -108,6 +111,7 @@ public class RecipeMapBackend {
     /**
      * @return All the recipes belonging to this backend, indexed by recipe category.
      */
+    @Unmodifiable
     public Collection<GT_Recipe> getRecipesByCategory(RecipeCategory recipeCategory) {
         return Collections
             .unmodifiableCollection(recipesByCategory.getOrDefault(recipeCategory, Collections.emptyList()));
@@ -243,6 +247,21 @@ public class RecipeMapBackend {
         for (Collection<GT_Recipe> recipes : recipesByCategory.values()) {
             recipes.removeAll(recipesToRemove);
         }
+        for (GT_ItemStack key : new HashMap<>(itemIndex.asMap()).keySet()) {
+            itemIndex.get(key)
+                .removeAll(recipesToRemove);
+        }
+        for (String key : new HashMap<>(fluidIndex.asMap()).keySet()) {
+            fluidIndex.get(key)
+                .removeAll(recipesToRemove);
+        }
+    }
+
+    /**
+     * Removes supplied recipe from recipe list. Do not use unless absolute necessity!
+     */
+    public void removeRecipe(GT_Recipe recipe) {
+        removeRecipes(Collections.singleton(recipe));
     }
 
     /**

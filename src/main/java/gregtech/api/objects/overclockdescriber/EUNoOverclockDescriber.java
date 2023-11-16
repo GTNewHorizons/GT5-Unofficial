@@ -41,7 +41,9 @@ public class EUNoOverclockDescriber extends OverclockDescriber {
     public final void drawEnergyInfo(RecipeDisplayInfo recipeInfo) {
         if (recipeInfo.calculator.getConsumption() <= 0) return;
 
-        recipeInfo.drawText(trans("152", "Total: ") + getTotalPowerString(recipeInfo.calculator));
+        if (recipeInfo.calculator.getDuration() > 0) {
+            recipeInfo.drawText(trans("152", "Total: ") + getTotalPowerString(recipeInfo.calculator));
+        }
         drawEnergyInfoImpl(recipeInfo);
     }
 

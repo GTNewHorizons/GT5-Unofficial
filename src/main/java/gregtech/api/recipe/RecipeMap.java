@@ -15,6 +15,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.Unmodifiable;
+
 import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.recipe.check.FindRecipeResult;
@@ -75,6 +77,7 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
     /**
      * @return All the recipes belonging to this recipemap.
      */
+    @Unmodifiable
     public Collection<GT_Recipe> getAllRecipes() {
         return backend.getAllRecipes();
     }
@@ -156,7 +159,7 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
     }
 
     @Nullable
-    private GT_Recipe addRecipe(GT_Recipe aRecipe, boolean aCheckForCollisions, boolean aFakeRecipe, boolean aHidden) {
+    public GT_Recipe addRecipe(GT_Recipe aRecipe, boolean aCheckForCollisions, boolean aFakeRecipe, boolean aHidden) {
         aRecipe.mHidden = aHidden;
         aRecipe.mFakeRecipe = aFakeRecipe;
         if (aRecipe.mFluidInputs.length < backend.properties.minFluidInputs

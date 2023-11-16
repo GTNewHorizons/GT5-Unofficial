@@ -57,6 +57,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
     private final SpecialEffects mSpecialEffect;
     private final ResourceLocation mSoundResourceLocation;
     private FallbackableUITexture progressBarTexture;
+    private int recipeCatalystPriority;
 
     /**
      * Registers machine with single-line description, specific tank capacity, and sound specified by ResourceLocation.
@@ -548,7 +549,8 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
             this.mAmperage,
             this.mTextures,
             this.mSoundResourceLocation,
-            this.mSpecialEffect).setProgressBarTexture(this.progressBarTexture);
+            this.mSpecialEffect).setProgressBarTexture(this.progressBarTexture)
+                .setRecipeCatalystPriority(this.recipeCatalystPriority);
     }
 
     public GT_MetaTileEntity_BasicMachine_GT_Recipe setProgressBarTexture(FallbackableUITexture progressBarTexture) {
@@ -727,6 +729,16 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
     @Override
     public RecipeMap<?> getRecipeMap() {
         return this.mRecipes;
+    }
+
+    @Override
+    public int getRecipeCatalystPriority() {
+        return recipeCatalystPriority;
+    }
+
+    public GT_MetaTileEntity_BasicMachine_GT_Recipe setRecipeCatalystPriority(int recipeCatalystPriority) {
+        this.recipeCatalystPriority = recipeCatalystPriority;
+        return this;
     }
 
     @Override

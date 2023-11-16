@@ -8,6 +8,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.util.StatCollector;
 
+import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.RecipeDisplayInfo;
 
@@ -19,28 +20,30 @@ import gregtech.nei.RecipeDisplayInfo;
 public class SimpleSpecialValueFormatter implements INEISpecialInfoFormatter {
 
     @Nullable
-    private final String formatter;
+    private final String translationKey;
     private final int multiplier;
 
     /**
-     * @param formatter  Localization key to format
-     * @param multiplier Number to multiply to special value for display
+     * @param translationKey Localization key to format
+     * @param multiplier     Number to multiply to special value for display
      */
-    public SimpleSpecialValueFormatter(@Nullable String formatter, int multiplier) {
-        this.formatter = formatter;
+    public SimpleSpecialValueFormatter(@Nullable String translationKey, int multiplier) {
+        this.translationKey = translationKey;
         this.multiplier = multiplier;
     }
 
     /**
-     * @param formatter Localization key to format
+     * @param translationKey Localization key to format
      */
-    public SimpleSpecialValueFormatter(@Nullable String formatter) {
-        this(formatter, 1);
+    public SimpleSpecialValueFormatter(@Nullable String translationKey) {
+        this(translationKey, 1);
     }
 
     @Override
     public List<String> format(RecipeDisplayInfo recipeInfo) {
         return Collections.singletonList(
-            StatCollector.translateToLocalFormatted(formatter, recipeInfo.recipe.mSpecialValue * multiplier));
+            StatCollector.translateToLocalFormatted(
+                translationKey,
+                GT_Utility.formatNumbers((long) recipeInfo.recipe.mSpecialValue * multiplier)));
     }
 }
