@@ -14,6 +14,15 @@ ggfab.waila.advassline.slice.stuck=Slice #%s: §4STUCK
 ggfab.gui.advassline.slice.idle=Slice #%s: Idle
 ggfab.gui.advassline.slice.stuck=Slice #%s: §4STUCK
 ggfab.gui.advassline.slice.unknown=Slice #%s: ?
+ggfab.gui.advassline.shutdown=§4Last abnormal shutdown reason:
+ggfab.gui.advassline.shutdown_clear=§6Clear
+ggfab.gui.advassline.shutdown.input_busses=§4Too few input busses to support current recipe
+ggfab.gui.advassline.shutdown.recipe_null=§4Recipe is null (report to author)
+ggfab.gui.advassline.shutdown.fluid_null=§4Fluid drained failed (check your ME fluid storage)
+ggfab.gui.advassline.shutdown.structure=§4Incompatible structural change
+ggfab.gui.advassline.shutdown.energy=§4Insufficient power
+ggfab.gui.advassline.shutdown.load.energy=§4Loaded invalid electric stat
+ggfab.gui.advassline.shutdown.load.recipe=§4Incompatible recipe change
 
 ggfab.info.linked_input_bus.not_owned=§6The settings were copied from a different owner!
 ggfab.info.linked_input_bus.no_data=§6Configuration data not found!

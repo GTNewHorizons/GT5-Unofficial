@@ -30,8 +30,13 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.IntStream;
 
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.widget.Widget;
+import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Input_ME;
 import net.glease.ggfab.ConfigurationHandler;
 import net.glease.ggfab.GGConstants;
+import net.glease.ggfab.mui.ClickableTextWidget;
 import net.glease.ggfab.util.OverclockHelper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -44,6 +49,7 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.StringUtils;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -176,6 +182,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
     private final List<GT_MetaTileEntity_Hatch_DataAccess> mDataAccessHatches = new ArrayList<>();
     private final ItemStack[] itemInputsCurTick = new ItemStack[16];
     private int currentInputLength;
+    private String lastStopReason = "";
 
     public MTE_AdvAssLine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -207,6 +214,8 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
     }
 
     private boolean checkMachine(boolean leftToRight) {
+        clearHatches();
+        if (!checkPiece(STRUCTURE_PIECE_FIRST, 0, 1, 0)) return false;
         for (int i = 1; i < 16; i++) {
             if (!checkPiece(STRUCTURE_PIECE_LATER, leftToRight ? -i : i, 1, 0)) return false;
             if (!mOutputBusses.isEmpty())
@@ -345,6 +354,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
+        aNBT.setString("lastStop", lastStopReason);
         // we need to check for active here.
         // if machine was turned off via soft mallet it will not call checkRecipe() on recipe end
         // in that case we don't have a current recipe, so this should be ignored
@@ -364,6 +374,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
+        lastStopReason = aNBT.getString("lastStop");
         ItemStack loadedStack = null;
         GT_Recipe.GT_Recipe_AssemblyLine recipe = null;
         if (aNBT.hasKey(TAG_KEY_PROGRESS_TIMES, Constants.NBT.TAG_INT_ARRAY)) {
@@ -389,7 +400,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
                     inputEUt = aNBT.getLong("inputEU");
                     baseEUt = aNBT.getLong("baseEU");
                     if (inputVoltage <= 0 || inputEUt <= 0 || baseEUt >= 0) {
-                        criticalStopMachine();
+                        criticalStopMachine("ggfab.gui.advassline.shutdown.load.energy");
                         loadedStack = null;
                         recipe = null;
                     }
@@ -399,13 +410,29 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
                     // TODO finish the last recipe instead of aborting
                 default:
                     // recipe is gone. to prevent issues, abort the current recipe
-                    criticalStopMachine();
+                    criticalStopMachine("ggfab.gui.advassline.shutdown.load.recipe");
                     loadedStack = null;
                     break;
             }
         }
         if (loadedStack == null || recipe == null) clearCurrentRecipe();
         else setCurrentRecipe(loadedStack, recipe);
+    }
+
+    /**
+     * roughly the same as {@link #criticalStopMachine()}, but does not attempt to send a halting sound if world is not loaded.
+     * also supports setting a stop reason
+     */
+    private void criticalStopMachine(String reason) {
+        int oMaxProgresstime = mMaxProgresstime;
+        stopMachine();
+        // don't do these at all if the machine wasn't working before anyway
+        if (oMaxProgresstime > 0) {
+            if (getBaseMetaTileEntity().getWorld() != null)
+                sendSound(INTERRUPT_SOUND_INDEX);
+            getBaseMetaTileEntity().setShutdownStatus(true);
+            lastStopReason = reason;
+        }
     }
 
     @Override
@@ -429,7 +456,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
             mEnergyHatches.forEach(this::recordEnergySupplier);
             mExoticEnergyHatches.forEach(this::recordEnergySupplier);
             if (mMaxProgresstime > 0 && (oV != inputVoltage || oEut != inputEUt)) {
-                criticalStopMachine();
+                criticalStopMachine("ggfab.gui.advassline.shutdown.structure");
             }
             return true;
         } else {
@@ -483,6 +510,18 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
                 w.updateText();
             }
         }));
+        screenElements.widget(new TextWidget(Text.localised("ggfab.gui.advassline.shutdown")).setEnabled(this::hasAbnormalStopReason));
+        screenElements.widget(
+                TextWidget.dynamicText(() -> Text.localised(lastStopReason))
+                        .setSynced(false)
+                        .attachSyncer(new FakeSyncWidget.StringSyncer(() -> lastStopReason,
+                                r -> this.lastStopReason = r), screenElements)
+                        .setEnabled(this::hasAbnormalStopReason));
+        screenElements.widget(new ClickableTextWidget(Text.localised("ggfab.gui.advassline.shutdown_clear").alignment(Alignment.CenterLeft)).setMarginInLines(0).setOnClick((d, w) -> lastStopReason = "").setSize(36, 20).setEnabled(this::hasAbnormalStopReason));
+    }
+
+    private Boolean hasAbnormalStopReason(Widget w) {
+        return !StringUtils.isNullOrEmpty(lastStopReason);
     }
 
     @Override
@@ -494,7 +533,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
     @Override
     public boolean onRunningTick(ItemStack aStack) {
         if (currentRecipe == null) {
-            criticalStopMachine();
+            criticalStopMachine("ggfab.gui.advassline.shutdown.recipe_null");
             return false;
         }
         for (GT_MetaTileEntity_Hatch_DataAccess hatch_dataAccess : mDataAccessHatches) {
@@ -502,7 +541,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
         }
 
         if (mInputBusses.size() < currentInputLength) {
-            criticalStopMachine();
+            criticalStopMachine("ggfab.gui.advassline.shutdown.input_busses");
             return false;
         }
         boolean oStuck = stuck;
@@ -534,7 +573,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
             lEUt = Long.MIN_VALUE;
             for (int i = 0; i < working; i++) {
                 if (!drainEnergyInput(-baseEUt)) {
-                    criticalStopMachine();
+                    criticalStopMachine("ggfab.gui.advassline.shutdown.energy");
                     return false;
                 }
             }
@@ -627,8 +666,15 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
             if (!tInputHatch.isValid()) {
                 return false;
             }
-            FluidStack drained = tInputHatch.drain(ForgeDirection.UNKNOWN, tRecipe.mFluidInputs[i], false);
-            if (drained == null || drained.amount < tRecipe.mFluidInputs[i].amount) {
+            FluidStack tFluidRequired = tRecipe.mFluidInputs[i];
+            FluidStack drained;
+            if (tInputHatch instanceof GT_MetaTileEntity_Hatch_Input_ME) {
+                GT_MetaTileEntity_Hatch_Input_ME me = (GT_MetaTileEntity_Hatch_Input_ME) tInputHatch;
+                drained = me.getMatchingFluidStack(tFluidRequired);
+            } else {
+             drained = tInputHatch.drain(ForgeDirection.UNKNOWN, tFluidRequired, false);
+            }
+            if (drained == null || drained.amount < tFluidRequired.amount) {
                 return false;
             }
             if (GT_Values.D1) {
@@ -873,11 +919,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
         private SliceStatusWidget(Slice slice) {
             this.slice = slice;
             updateText();
-        }
-
-        @Override
-        public boolean isEnabled() {
-            return super.isEnabled() && slice.progress <= 0 && currentInputLength > slice.id;
+            setEnabled(w -> slice.progress == 0 && currentInputLength > slice.id);
         }
 
         @Override
