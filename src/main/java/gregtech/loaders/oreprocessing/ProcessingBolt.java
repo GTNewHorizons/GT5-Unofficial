@@ -36,7 +36,7 @@ public class ProcessingBolt implements gregtech.api.interfaces.IOreRecipeRegistr
         }
 
         GT_ModHandler.addCraftingRecipe(
-            GT_Utility.copyAmount(2L, aStack),
+            GT_Utility.copyAmount(2, aStack),
             GT_Proxy.tBits,
             new Object[] { "s ", " X", 'X', OrePrefixes.stick.get(aMaterial) });
 

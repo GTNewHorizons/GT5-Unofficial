@@ -21,7 +21,7 @@ public class ProcessingStoneCobble implements gregtech.api.interfaces.IOreRecipe
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.copyAmount(8L, aStack), GT_Utility.getIntegratedCircuit(8))
+            .itemInputs(GT_Utility.copyAmount(8, aStack), GT_Utility.getIntegratedCircuit(8))
             .itemOutputs(new ItemStack(Blocks.furnace, 1))
             .duration(20 * SECONDS)
             .eut(4)

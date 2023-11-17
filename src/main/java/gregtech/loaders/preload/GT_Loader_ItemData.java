@@ -369,7 +369,7 @@ public class GT_Loader_ItemData implements Runnable {
             new ItemStack(Items.beef), new ItemStack(Items.chicken), new ItemStack(Items.fish) }) {
             if (tItem != null) {
                 GT_OreDictUnificator.addItemData(
-                    GT_Utility.copyMetaData(32767L, tItem),
+                    GT_Utility.copyMetaData(32767, tItem),
                     new ItemData(Materials.MeatRaw, 3628800L, new MaterialStack(Materials.Bone, 403200L)));
             }
         }
@@ -379,7 +379,7 @@ public class GT_Loader_ItemData implements Runnable {
             new ItemStack(Items.cooked_fished) }) {
             if (tItem != null) {
                 GT_OreDictUnificator.addItemData(
-                    GT_Utility.copyMetaData(32767L, tItem),
+                    GT_Utility.copyMetaData(32767, tItem),
                     new ItemData(Materials.MeatCooked, 3628800L, new MaterialStack(Materials.Bone, 403200L)));
             }
         }

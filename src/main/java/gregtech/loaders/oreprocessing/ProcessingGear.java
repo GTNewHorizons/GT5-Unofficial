@@ -73,7 +73,7 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                     if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
                         GT_Values.RA.stdBuilder()
                             .itemInputs(ItemList.Shape_Mold_Gear_Small.get(0L))
-                            .itemOutputs(GT_Utility.copyAmount(1L, aStack))
+                            .itemOutputs(GT_Utility.copyAmount(1, aStack))
                             .fluidInputs(aMaterial.getMolten(144L))
                             .duration(16 * TICKS)
                             .eut(calculateRecipeEU(aMaterial, 8))

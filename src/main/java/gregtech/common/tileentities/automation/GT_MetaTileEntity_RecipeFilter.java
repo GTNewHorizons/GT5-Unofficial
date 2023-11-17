@@ -119,7 +119,7 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
             return;
         }
         this.mInventory[FILTER_SLOT_INDEX] = GT_Utility.copyAmount(
-            1L,
+            1,
             this.filteredMachines.get(this.mRotationIndex = (this.mRotationIndex + 1) % this.filteredMachines.size()));
         if (this.mInventory[FILTER_SLOT_INDEX] == null) return;
     }

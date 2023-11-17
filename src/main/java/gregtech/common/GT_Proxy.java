@@ -101,6 +101,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.terraingen.OreGenEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.ChunkDataEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -139,6 +140,7 @@ import gregtech.api.fluid.GT_FluidFactory;
 import gregtech.api.interfaces.IBlockOnWalkOver;
 import gregtech.api.interfaces.IGlobalWirelessEnergy;
 import gregtech.api.interfaces.IProjectileItem;
+import gregtech.api.interfaces.IToolStats;
 import gregtech.api.interfaces.internal.IGT_Mod;
 import gregtech.api.interfaces.internal.IThaumcraftCompat;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -626,6 +628,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
     public boolean gt6Cable = true;
     public boolean ic2EnergySourceCompat = true;
     public boolean costlyCableConnection = false;
+    public boolean crashOnNullRecipeInput = false;
 
     /**
      * This enables ambient-occlusion smooth lighting on tiles
@@ -1578,59 +1581,79 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
     }
 
     @SubscribeEvent
+    public void onBlockBreakingEvent(BlockEvent.BreakEvent event) {
+        EntityPlayer player = event.getPlayer();
+        if (player == null) return;
+
+        ItemStack item = event.getPlayer()
+            .getCurrentEquippedItem();
+        if (item == null) return;
+
+        if (!(item.getItem() instanceof GT_MetaGenerated_Tool tool)) return;
+
+        IToolStats stats = tool.getToolStats(item);
+        if (stats == null) return;
+
+        TileEntity tile = event.world.getTileEntity(event.x, event.y, event.z);
+        stats.onBreakBlock(player, event.x, event.y, event.z, event.block, (byte) event.blockMetadata, tile, event);
+    }
+
+    @SubscribeEvent
     public void onBlockHarvestingEvent(BlockEvent.HarvestDropsEvent aEvent) {
-        if (aEvent.harvester != null) {
-            if ((!aEvent.world.isRemote) && (GT_Log.pal != null)) {
-                this.mBufferedPlayerActivity.offer(
-                    getDataAndTime() + ";HARVEST_BLOCK;"
-                        + aEvent.harvester.getDisplayName()
-                        + ";DIM:"
-                        + aEvent.world.provider.dimensionId
-                        + ";"
-                        + aEvent.x
-                        + ";"
-                        + aEvent.y
-                        + ";"
-                        + aEvent.z
-                        + ";|;"
-                        + aEvent.x / 10
-                        + ";"
-                        + aEvent.y / 10
-                        + ";"
-                        + aEvent.z / 10);
-            }
-            ItemStack aStack = aEvent.harvester.getCurrentEquippedItem();
-            if (aStack != null) {
-                if ((aStack.getItem() instanceof GT_MetaGenerated_Tool)) {
-                    ((GT_MetaGenerated_Tool) aStack.getItem()).onHarvestBlockEvent(
-                        aEvent.drops,
-                        aStack,
-                        aEvent.harvester,
-                        aEvent.block,
-                        aEvent.x,
-                        aEvent.y,
-                        aEvent.z,
-                        (byte) aEvent.blockMetadata,
-                        aEvent.fortuneLevel,
-                        aEvent.isSilkTouching,
-                        aEvent);
-                }
-                if (EnchantmentHelper.getEnchantmentLevel(Enchantment.fireAspect.effectId, aStack) > 2) {
-                    try {
-                        for (ItemStack tDrop : aEvent.drops) {
-                            ItemStack tSmeltingOutput = GT_ModHandler.getSmeltingOutput(tDrop, false, null);
-                            if (tSmeltingOutput != null) {
-                                tDrop.stackSize *= tSmeltingOutput.stackSize;
-                                tSmeltingOutput.stackSize = tDrop.stackSize;
-                                GT_Utility.setStack(tDrop, tSmeltingOutput);
-                            }
-                        }
-                    } catch (Throwable e) {
-                        e.printStackTrace(GT_Log.err);
+        if (aEvent.harvester == null) return;
+
+        if ((!aEvent.world.isRemote) && (GT_Log.pal != null)) {
+            this.mBufferedPlayerActivity.offer(
+                getDataAndTime() + ";HARVEST_BLOCK;"
+                    + aEvent.harvester.getDisplayName()
+                    + ";DIM:"
+                    + aEvent.world.provider.dimensionId
+                    + ";"
+                    + aEvent.x
+                    + ";"
+                    + aEvent.y
+                    + ";"
+                    + aEvent.z
+                    + ";|;"
+                    + aEvent.x / 10
+                    + ";"
+                    + aEvent.y / 10
+                    + ";"
+                    + aEvent.z / 10);
+        }
+
+        ItemStack aStack = aEvent.harvester.getCurrentEquippedItem();
+        if (aStack == null) return;
+
+        if ((aStack.getItem() instanceof GT_MetaGenerated_Tool tool)) {
+            tool.onHarvestBlockEvent(
+                aEvent.drops,
+                aStack,
+                aEvent.harvester,
+                aEvent.block,
+                aEvent.x,
+                aEvent.y,
+                aEvent.z,
+                (byte) aEvent.blockMetadata,
+                aEvent.fortuneLevel,
+                aEvent.isSilkTouching,
+                aEvent);
+        }
+        if (EnchantmentHelper.getEnchantmentLevel(Enchantment.fireAspect.effectId, aStack) > 2) {
+            try {
+                for (ItemStack tDrop : aEvent.drops) {
+                    ItemStack tSmeltingOutput = GT_ModHandler.getSmeltingOutput(tDrop, false, null);
+                    if (tSmeltingOutput != null) {
+                        tDrop.stackSize *= tSmeltingOutput.stackSize;
+                        tSmeltingOutput.stackSize = tDrop.stackSize;
+                        GT_Utility.setStack(tDrop, tSmeltingOutput);
                     }
                 }
+            } catch (Throwable e) {
+                e.printStackTrace(GT_Log.err);
             }
         }
+
     }
 
     @SubscribeEvent
@@ -1767,7 +1790,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                     GT_Log.ore.println(
                         tModToName + " is getting re-registered because the OreDict Name containing invalid spaces.");
                     GT_OreDictUnificator
-                        .registerOre(aEvent.Name.replaceAll(" ", ""), GT_Utility.copyAmount(1L, aEvent.Ore));
+                        .registerOre(aEvent.Name.replaceAll(" ", ""), GT_Utility.copyAmount(1, aEvent.Ore));
                     aEvent.Ore.setStackDisplayName("Invalid OreDictionary Tag");
                     return;
                 } else if (this.mInvalidNames.contains(aEvent.Name)) {
@@ -1826,7 +1849,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                                 return;
                             }
                             if (!aPrefix.isIgnored(aMaterial)) {
-                                aPrefix.add(GT_Utility.copyAmount(1L, aEvent.Ore));
+                                aPrefix.add(GT_Utility.copyAmount(1, aEvent.Ore));
                             }
                             if (aMaterial != Materials._NULL) {
                                 Materials tReRegisteredMaterial;
@@ -1835,7 +1858,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                                         .registerOre(aPrefix, tReRegisteredMaterial, aEvent.Ore)) {
                                     tReRegisteredMaterial = i$.next();
                                 }
-                                aMaterial.add(GT_Utility.copyAmount(1L, aEvent.Ore));
+                                aMaterial.add(GT_Utility.copyAmount(1, aEvent.Ore));
 
                                 if (GregTech_API.sThaumcraftCompat != null && aPrefix.doGenerateItem(aMaterial)
                                     && !aPrefix.isIgnored(aMaterial)) {
@@ -2043,11 +2066,11 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                                 return;
                             }
                         } else {
-                            aPrefix.add(GT_Utility.copyAmount(1L, aEvent.Ore));
+                            aPrefix.add(GT_Utility.copyAmount(1, aEvent.Ore));
                         }
                     }
                 } else if (aPrefix.mIsSelfReferencing) {
-                    aPrefix.add(GT_Utility.copyAmount(1L, aEvent.Ore));
+                    aPrefix.add(GT_Utility.copyAmount(1, aEvent.Ore));
                 } else {
                     GT_Log.ore.println(tModToName + " uses a Prefix as full OreDict Name, and is therefor invalid.");
                     aEvent.Ore.setStackDisplayName("Invalid OreDictionary Tag");
@@ -2264,6 +2287,15 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         }
     }
 
+    @SubscribeEvent
+    public void onWorldUnload(WorldEvent.Unload event) {
+        for (TileEntity tileEntity : event.world.loadedTileEntityList) {
+            if (tileEntity instanceof IGregTechTileEntity) {
+                tileEntity.onChunkUnload();
+            }
+        }
+    }
+
     public static void registerRecipes(GT_Proxy.OreDictEventContainer aOre) {
         if ((aOre.mEvent.Ore == null) || (aOre.mEvent.Ore.getItem() == null)) {
             return;
@@ -2277,7 +2309,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                     aOre.mMaterial == null ? Materials._NULL : aOre.mMaterial,
                     aOre.mEvent.Name,
                     aOre.mModID,
-                    GT_Utility.copyAmount(1L, aOre.mEvent.Ore));
+                    GT_Utility.copyAmount(1, aOre.mEvent.Ore));
             }
         } else {
             // GT_FML_LOGGER.info("Thingy Name: "+ aOre.mEvent.Name+ " !!!Unknown 'Thingy' detected!!! This
@@ -2667,9 +2699,9 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
     }
 
     /**
-     * @deprecated use {@link GT_FluidFactory#builder}
      * @see GT_FluidFactory#of(String, String, Materials, FluidState, int)
      * @see GT_FluidFactory#of(String, String, FluidState, int)
+     * @deprecated use {@link GT_FluidFactory#builder}
      */
     @Deprecated
     public Fluid addFluid(String aName, String aLocalized, Materials aMaterial, int aState, int aTemperatureK) {
@@ -2958,15 +2990,15 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
 
     @Deprecated
     public static final HashMap<Integer, HashMap<ChunkCoordIntPair, int[]>> dimensionWiseChunkData = new HashMap<>(16); // stores
-                                                                                                                        // chunk
-                                                                                                                        // data
-                                                                                                                        // that
-                                                                                                                        // is
-                                                                                                                        // loaded/saved
+    // chunk
+    // data
+    // that
+    // is
+    // loaded/saved
 
     public static final HashMap<Integer, GT_Pollution> dimensionWisePollution = new HashMap<>(16); // stores
-                                                                                                   // GT_Polluttors
-                                                                                                   // objects
+    // GT_Polluttors
+    // objects
     public static final byte GTOIL = 3, GTOILFLUID = 2, GTPOLLUTION = 1, GTMETADATA = 0, NOT_LOADED = 0, LOADED = 1; // consts
 
     // TO get default's fast
@@ -2988,21 +3020,19 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
 
     @SubscribeEvent
     public void onBlockBreakSpeedEvent(PlayerEvent.BreakSpeed aEvent) {
-        if (aEvent.newSpeed > 0.0F) {
-            if (aEvent.entityPlayer != null) {
-                ItemStack aStack = aEvent.entityPlayer.getCurrentEquippedItem();
-                if ((aStack != null) && ((aStack.getItem() instanceof GT_MetaGenerated_Tool))) {
-                    aEvent.newSpeed = ((GT_MetaGenerated_Tool) aStack.getItem()).onBlockBreakSpeedEvent(
-                        aEvent.newSpeed,
-                        aStack,
-                        aEvent.entityPlayer,
-                        aEvent.block,
-                        aEvent.x,
-                        aEvent.y,
-                        aEvent.z,
-                        (byte) aEvent.metadata,
-                        aEvent);
-                }
+        if (aEvent.entityPlayer != null) {
+            ItemStack aStack = aEvent.entityPlayer.getCurrentEquippedItem();
+            if ((aStack != null) && ((aStack.getItem() instanceof GT_MetaGenerated_Tool))) {
+                aEvent.newSpeed = ((GT_MetaGenerated_Tool) aStack.getItem()).onBlockBreakSpeedEvent(
+                    aEvent.newSpeed,
+                    aStack,
+                    aEvent.entityPlayer,
+                    aEvent.block,
+                    aEvent.x,
+                    aEvent.y,
+                    aEvent.z,
+                    (byte) aEvent.metadata,
+                    aEvent);
             }
         }
     }

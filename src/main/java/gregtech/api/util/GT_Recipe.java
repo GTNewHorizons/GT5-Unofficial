@@ -580,6 +580,20 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         return GT_Utility.copyOrNull(mOutputs[aIndex]);
     }
 
+    /***
+     * Dictates the ItemStacks displayed in the output slots of any NEI page handled by the default GT NEI handler.
+     * Override to make shown items differ from a GT_Recipe's item output array
+     * 
+     * @see gregtech.nei.GT_NEI_DefaultHandler
+     * @param i Slot index
+     * @return ItemStack to be displayed in the slot
+     * 
+     */
+    //
+    public ItemStack getRepresentativeOutput(int i) {
+        return getOutput(i);
+    }
+
     public int getOutputChance(int aIndex) {
         if (mChances == null) return 10000;
         if (aIndex < 0 || aIndex >= mChances.length) return 10000;
@@ -657,65 +671,54 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
      */
     public boolean isRecipeInputEqual(boolean aDecreaseStacksizeBySuccess, boolean aDontCheckStackSizes,
         int amountMultiplier, FluidStack[] aFluidInputs, ItemStack... aInputs) {
-        if (mInputs.length > 0 && aInputs == null) return false;
-        if (mFluidInputs.length > 0 && aFluidInputs == null) return false;
+        double maxParallel = maxParallelCalculatedByInputs(amountMultiplier, aFluidInputs, aInputs);
+        if (aDontCheckStackSizes) {
+            return maxParallel > 0;
+        } else if (maxParallel >= amountMultiplier) {
+            if (aDecreaseStacksizeBySuccess) {
+                consumeInput(amountMultiplier, aFluidInputs, aInputs);
+            }
+            return true;
+        }
+        return false;
+    }
 
-        // We need to handle 0-size recipe inputs. These are for inputs that don't get consumed.
-        boolean inputFound;
+    /**
+     * WARNING: Ensure that item inputs and fluid inputs are enough to be consumed with
+     * {@link #maxParallelCalculatedByInputs} before calling this method!
+     */
+    public void consumeInput(int amountMultiplier, FluidStack[] aFluidInputs, ItemStack... aInputs) {
+        if (amountMultiplier <= 0) return;
+
         int remainingCost;
 
-        // Array tracking modified fluid amounts. For efficiency, we will lazily initialize this array.
-        // We use Integer so that we can have null as the default value, meaning unchanged.
-        Integer[] newFluidAmounts = null;
         if (aFluidInputs != null) {
-            newFluidAmounts = new Integer[aFluidInputs.length];
-
             for (FluidStack recipeFluidCost : mFluidInputs) {
                 if (recipeFluidCost != null) {
-                    inputFound = false;
                     remainingCost = recipeFluidCost.amount * amountMultiplier;
 
-                    for (int i = 0; i < aFluidInputs.length; i++) {
-                        FluidStack providedFluid = aFluidInputs[i];
+                    for (FluidStack providedFluid : aFluidInputs) {
                         if (providedFluid != null && providedFluid.isFluidEqual(recipeFluidCost)) {
-                            inputFound = true;
-                            if (newFluidAmounts[i] == null) {
-                                newFluidAmounts[i] = providedFluid.amount;
-                            }
-
-                            if (aDontCheckStackSizes || newFluidAmounts[i] >= remainingCost) {
-                                newFluidAmounts[i] -= remainingCost;
-                                remainingCost = 0;
+                            if (providedFluid.amount >= remainingCost) {
+                                providedFluid.amount -= remainingCost;
                                 break;
                             } else {
-                                remainingCost -= newFluidAmounts[i];
-                                newFluidAmounts[i] = 0;
+                                remainingCost -= providedFluid.amount;
+                                providedFluid.amount = 0;
                             }
                         }
-                    }
-
-                    if (remainingCost > 0 || !inputFound) {
-                        // Cost not satisfied, or for non-consumed inputs, input not found.
-                        return false;
                     }
                 }
             }
         }
 
-        // Array tracking modified item stack sizes. For efficiency, we will lazily initialize this array.
-        // We use Integer so that we can have null as the default value, meaning unchanged.
-        Integer[] newItemAmounts = null;
         if (aInputs != null) {
-            newItemAmounts = new Integer[aInputs.length];
-
             for (ItemStack recipeItemCost : mInputs) {
                 ItemStack unifiedItemCost = GT_OreDictUnificator.get_nocopy(true, recipeItemCost);
                 if (unifiedItemCost != null) {
-                    inputFound = false;
                     remainingCost = recipeItemCost.stackSize * amountMultiplier;
 
-                    for (int i = 0; i < aInputs.length; i++) {
-                        ItemStack providedItem = aInputs[i];
+                    for (ItemStack providedItem : aInputs) {
                         if (isNBTSensitive && !GT_Utility.areStacksEqual(providedItem, unifiedItemCost, false)) {
                             continue;
                         } else if (!isNBTSensitive
@@ -731,49 +734,106 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                             }
                         }
 
-                        inputFound = true;
-                        if (newItemAmounts[i] == null) {
-                            newItemAmounts[i] = providedItem.stackSize;
-                        }
-
-                        if (aDontCheckStackSizes || newItemAmounts[i] >= remainingCost) {
-                            newItemAmounts[i] -= remainingCost;
-                            remainingCost = 0;
+                        if (providedItem.stackSize >= remainingCost) {
+                            providedItem.stackSize -= remainingCost;
                             break;
                         } else {
-                            remainingCost -= newItemAmounts[i];
-                            newItemAmounts[i] = 0;
+                            remainingCost -= providedItem.stackSize;
+                            providedItem.stackSize = 0;
                         }
                     }
+                }
+            }
+        }
+    }
 
-                    if (remainingCost > 0 || !inputFound) {
-                        // Cost not satisfied, or for non-consumed inputs, input not found.
-                        return false;
-                    }
+    /**
+     * Returns the number of parallel recipes, or 0 if recipe is not satisfied at all. 0 < number < 1 means that inputs
+     * are found but not enough. Refer to SingleRecipeCheck#checkRecipeInputs.
+     */
+    public double maxParallelCalculatedByInputs(int maxParallel, FluidStack[] aFluidInputs, ItemStack... aInputs) {
+        if (mInputs.length > 0 && aInputs == null) return 0;
+        if (mFluidInputs.length > 0 && aFluidInputs == null) return 0;
+
+        double currentParallel = maxParallel;
+
+        if (aFluidInputs != null) {
+            // Create map for fluid -> stored amount
+            Map<Fluid, Integer> fluidMap = new HashMap<>();
+            Map<Fluid, Integer> fluidCost = new HashMap<>();
+            for (FluidStack fluidStack : aFluidInputs) {
+                if (fluidStack == null) continue;
+                fluidMap.merge(fluidStack.getFluid(), fluidStack.amount, Integer::sum);
+            }
+            for (FluidStack fluidStack : mFluidInputs) {
+                if (fluidStack == null) continue;
+                fluidCost.merge(fluidStack.getFluid(), fluidStack.amount, Integer::sum);
+            }
+
+            // Check how many parallels can it perform for each fluid
+            for (Map.Entry<Fluid, Integer> costEntry : fluidCost.entrySet()) {
+                if (costEntry.getValue() > 0) {
+                    currentParallel = Math.min(
+                        currentParallel,
+                        (double) fluidMap.getOrDefault(costEntry.getKey(), 0) / costEntry.getValue());
+                }
+                if (currentParallel <= 0) {
+                    return 0;
                 }
             }
         }
 
-        if (aDecreaseStacksizeBySuccess) {
-            // Copy modified amounts into the input stacks.
-            if (aFluidInputs != null) {
-                for (int i = 0; i < aFluidInputs.length; i++) {
-                    if (newFluidAmounts[i] != null) {
-                        aFluidInputs[i].amount = newFluidAmounts[i];
-                    }
+        if (aInputs != null) {
+            // Create map for item -> stored amount
+            Map<GT_Utility.ItemId, Integer> itemCost = new HashMap<>();
+            Map<GT_Utility.ItemId, Integer> itemMap = new HashMap<>();
+            Map<GT_Utility.ItemId, Integer> itemMapWildcard = new HashMap<>(); // Used only when wildcard input is found
+            boolean foundWildcard = false;
+            for (ItemStack itemStack : mInputs) {
+                if (itemStack == null) continue;
+                if (itemStack.getItemDamage() == W) {
+                    foundWildcard = true;
+                }
+                if (isNBTSensitive) {
+                    itemCost.merge(GT_Utility.ItemId.createNoCopy(itemStack), itemStack.stackSize, Integer::sum);
+                } else {
+                    itemCost.merge(GT_Utility.ItemId.createWithoutNBT(itemStack), itemStack.stackSize, Integer::sum);
                 }
             }
-
-            if (aInputs != null) {
-                for (int i = 0; i < aInputs.length; i++) {
-                    if (newItemAmounts[i] != null) {
-                        aInputs[i].stackSize = newItemAmounts[i];
+            for (ItemStack itemStack : aInputs) {
+                if (itemStack == null) continue;
+                if (isNBTSensitive) {
+                    itemMap.merge(GT_Utility.ItemId.createNoCopy(itemStack), itemStack.stackSize, Integer::sum);
+                } else {
+                    itemMap.merge(GT_Utility.ItemId.createWithoutNBT(itemStack), itemStack.stackSize, Integer::sum);
+                }
+                if (foundWildcard) {
+                    itemMapWildcard
+                        .merge(GT_Utility.ItemId.createAsWildcard(itemStack), itemStack.stackSize, Integer::sum);
+                }
+            }
+            // Check how many parallels can it perform for each item
+            for (Map.Entry<GT_Utility.ItemId, Integer> costEntry : itemCost.entrySet()) {
+                GT_Utility.ItemId costItem = costEntry.getKey();
+                int costValue = costEntry.getValue();
+                Map<GT_Utility.ItemId, Integer> mapToUse = costItem.metaData() == W ? itemMapWildcard : itemMap;
+                if (costValue > 0) {
+                    currentParallel = Math
+                        .min(currentParallel, (double) mapToUse.getOrDefault(costItem, 0) / costValue);
+                } else {
+                    // Non-consumed input
+                    // We need to distinguish null and 0 here, since not having item
+                    // and having 0-sized item (ghost circuit) are different.
+                    if (!mapToUse.containsKey(costItem)) {
+                        currentParallel = 0;
                     }
+                }
+                if (currentParallel <= 0) {
+                    return 0;
                 }
             }
         }
-
-        return true;
+        return currentParallel;
     }
 
     @Override
@@ -2210,10 +2270,10 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         && (aOutput1 == null || aOutput1.stackSize <= 6)
                         && (aOutput2 == null || aOutput2.stackSize <= 6)) {
                         // we don't use GT_Utility.mul() here. It does not have the truncating we need here.
-                        aInput1 = GT_Utility.multiplyStack(10L, aInput1);
-                        aInput2 = GT_Utility.multiplyStack(10L, aInput2);
-                        aOutput1 = GT_Utility.multiplyStack(10L, aOutput1);
-                        aOutput2 = GT_Utility.multiplyStack(10L, aOutput2);
+                        aInput1 = GT_Utility.multiplyStack(10, aInput1);
+                        aInput2 = GT_Utility.multiplyStack(10, aInput2);
+                        aOutput1 = GT_Utility.multiplyStack(10, aOutput1);
+                        aOutput2 = GT_Utility.multiplyStack(10, aOutput2);
                         for (Materials coal : new Materials[] { Materials.Coal, Materials.Charcoal }) {
                             coll.derive()
                                 .setInputs(aInput1, aInput2, coal.getBlocks(aCoalAmount))

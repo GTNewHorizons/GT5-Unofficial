@@ -28,14 +28,14 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
         switch (aPrefix) {
             case crushedCentrifuged -> {
                 GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                    .itemInputs(GT_Utility.copyAmount(1, aStack))
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L))
                     .duration(10 * TICKS)
                     .eut(16)
                     .addTo(sHammerRecipes);
 
                 GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                    .itemInputs(GT_Utility.copyAmount(1, aStack))
                     .itemOutputs(
                         GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L),
                         GT_OreDictUnificator.get(
@@ -49,7 +49,7 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
             }
             case crushedPurified -> {
                 GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                    .itemInputs(GT_Utility.copyAmount(1, aStack))
                     .itemOutputs(
                         GT_OreDictUnificator.get(
                             OrePrefixes.crushedCentrifuged,
@@ -73,7 +73,7 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
                 switch (aMaterial.mName) {
                     case "Tanzanite", "Sapphire", "Olivine", "GreenSapphire", "Opal", "Amethyst", "Emerald", "Ruby", "Amber", "Diamond", "FoolsRuby", "BlueTopaz", "GarnetRed", "Topaz", "Jasper", "GarnetYellow" -> GT_Values.RA
                         .stdBuilder()
-                        .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                        .itemInputs(GT_Utility.copyAmount(1, aStack))
                         .itemOutputs(
                             GT_OreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, tGem, 1L),
                             GT_OreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, tGem, 1L),
@@ -86,7 +86,7 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
                         .eut(16)
                         .addTo(sSifterRecipes);
                     default -> GT_Values.RA.stdBuilder()
-                        .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                        .itemInputs(GT_Utility.copyAmount(1, aStack))
                         .itemOutputs(
                             GT_OreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, tGem, 1L),
                             GT_OreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, tGem, 1L),

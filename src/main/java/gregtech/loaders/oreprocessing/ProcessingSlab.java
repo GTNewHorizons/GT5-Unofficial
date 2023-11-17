@@ -24,7 +24,7 @@ public class ProcessingSlab implements gregtech.api.interfaces.IOreRecipeRegistr
         if (aOreDictName.startsWith("slabWood")) {
             if (Railcraft.isModLoaded()) {
                 GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_Utility.copyAmount(3L, aStack))
+                    .itemInputs(GT_Utility.copyAmount(3, aStack))
                     .itemOutputs(ItemList.RC_Tie_Wood.get(3L))
                     .fluidInputs(Materials.Creosote.getFluid(300L))
                     .duration(10 * SECONDS)

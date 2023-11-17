@@ -51,7 +51,6 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
@@ -2097,11 +2096,11 @@ public class GT_ModHandler {
     }
 
     private static boolean searchRecyclerCache(ItemStack stack, Set<GT_Utility.ItemId> set) {
-        if (set.contains(GT_Utility.ItemId.createNoCopy(stack.getItem(), stack.getItemDamage(), null))) {
+        if (set.contains(GT_Utility.ItemId.createWithoutNBT(stack))) {
             return true;
         }
         // ic2.api.recipe.RecipeInputItemStack#matches expects item with wildcard meta to accept arbitrary meta
-        return set.contains(GT_Utility.ItemId.createNoCopy(stack.getItem(), OreDictionary.WILDCARD_VALUE, null));
+        return set.contains(GT_Utility.ItemId.createAsWildcard(stack));
     }
 
     /**

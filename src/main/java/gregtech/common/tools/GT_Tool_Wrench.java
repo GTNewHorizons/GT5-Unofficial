@@ -1,26 +1,36 @@
 package gregtech.common.tools;
 
+import static gregtech.api.items.GT_MetaGenerated_Tool.getPrimaryMaterial;
+
 import java.util.Arrays;
 import java.util.List;
+
+import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
+import net.minecraft.world.World;
+import net.minecraftforge.event.world.BlockEvent;
 
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.util.GT_ToolHarvestHelper;
 import gregtech.common.items.behaviors.Behaviour_Wrench;
+import ic2.api.tile.IWrenchable;
 
 public class GT_Tool_Wrench extends GT_Tool {
 
@@ -130,7 +140,7 @@ public class GT_Tool_Wrench extends GT_Tool {
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa : null;
+        return aIsToolHead ? getPrimaryMaterial(aStack).mRGBa : null;
     }
 
     @Override
@@ -147,5 +157,35 @@ public class GT_Tool_Wrench extends GT_Tool {
                 + EnumChatFormatting.RED
                 + aEntity.getCommandSenderName()
                 + EnumChatFormatting.WHITE);
+    }
+
+    @Override
+    public float getMiningSpeed(Block block, byte metadata, float mineSpeed, EntityPlayer player, World world, int x,
+        int y, int z) {
+        ItemStack holding = player.getCurrentEquippedItem();
+        if (holding == null || !(holding.getItem() instanceof GT_MetaGenerated_Tool tool)) return mineSpeed;
+
+        IToolStats stats = tool.getToolStats(holding);
+        if (stats == null) return mineSpeed;
+
+        TileEntity tile = world.getTileEntity(x, y, z);
+        if (tile == null) return mineSpeed;
+
+        float newSpeed = Math.max(Float.MIN_NORMAL, getSpeedMultiplier() * getPrimaryMaterial(holding).mToolSpeed);
+
+        if (tile instanceof IWrenchable) return newSpeed;
+
+        return mineSpeed;
+    }
+
+    @Override
+    public void onBreakBlock(@Nonnull EntityPlayer player, int x, int y, int z, @Nonnull Block block, byte metadata,
+        TileEntity tile, @Nonnull BlockEvent.BreakEvent event) {
+        final World world = player.worldObj;
+        if (tile instanceof IWrenchable wrenchable) {
+            ItemStack drop = wrenchable.getWrenchDrop(player);
+            world.setBlockToAir(x, y, z);
+            world.spawnEntityInWorld(new EntityItem(world, x, y, z, drop));
+        }
     }
 }
