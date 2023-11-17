@@ -30,6 +30,7 @@ public final class ModernMaterial {
 
     private final HashSet<IEnumPart> existingPartsForMaterial = new HashSet<>();
     private final HashSet<ModernMaterialFluid> existingFluids = new HashSet<>();
+    private final HashSet<Consumer<ModernMaterial>> recipeGenerators = new HashSet<>();
     private static final HashSet<ModernMaterial> allMaterials = new HashSet<>();
 
     private static final HashMap<Integer, ModernMaterial> materialIDToMaterial = new HashMap<>();
@@ -41,7 +42,6 @@ public final class ModernMaterial {
     private long materialTier;
     private double hardness = 1;
     private TextureType textureType;
-    private final HashSet<Consumer<ModernMaterial>> recipeGenerators = new HashSet<>();
     private IItemRenderer customItemRenderer;
 
     public ModernMaterial(final String materialName) {
@@ -89,11 +89,6 @@ public final class ModernMaterial {
         return Collections.unmodifiableMap(materialIDToMaterial);
     }
 
-    public boolean doesPartExist(BlocksEnum blocksEnum) {
-        return blocksEnum.getAssociatedMaterials()
-            .contains(this);
-    }
-
     public double getHardness() {
         return hardness;
     }
@@ -136,7 +131,6 @@ public final class ModernMaterial {
 
         void build() {
             ModernMaterial builtMaterial = materialToBuild;
-            materialToBuild = new ModernMaterial();
 
             for (IEnumPart part : materialToBuild.existingPartsForMaterial) {
                 part.addAssociatedMaterial(materialToBuild);
@@ -144,6 +138,8 @@ public final class ModernMaterial {
 
             // Complete set of all materials.
             allMaterials.add(builtMaterial);
+
+            materialToBuild = new ModernMaterial();
 
             safeguardChecks(builtMaterial);
             registerMaterial(builtMaterial);
