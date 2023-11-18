@@ -209,7 +209,6 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
     }
 
     private boolean checkMachine() {
-        if (!checkPiece(STRUCTURE_PIECE_FIRST, 0, 1, 0)) return false;
         return checkMachine(true) || checkMachine(false);
     }
 
