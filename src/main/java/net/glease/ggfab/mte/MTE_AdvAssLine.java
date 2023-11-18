@@ -502,6 +502,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
     @Override
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
         super.drawTexts(screenElements, inventorySlot);
+        /*
         SliceStatusWidget[] arr = Arrays.stream(slices).map(SliceStatusWidget::new).toArray(SliceStatusWidget[]::new);
         screenElements.widgets(arr);
         screenElements.widget(new FakeSyncWidget.IntegerSyncer(() -> currentInputLength, l -> {
@@ -510,6 +511,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
                 w.updateText();
             }
         }));
+        */
         screenElements.widget(new TextWidget(Text.localised("ggfab.gui.advassline.shutdown")).setEnabled(this::hasAbnormalStopReason));
         screenElements.widget(
                 TextWidget.dynamicText(() -> Text.localised(lastStopReason))
