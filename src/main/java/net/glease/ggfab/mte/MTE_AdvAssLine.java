@@ -30,10 +30,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.IntStream;
 
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.widget.Widget;
-import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Input_ME;
 import net.glease.ggfab.ConfigurationHandler;
 import net.glease.ggfab.GGConstants;
 import net.glease.ggfab.mui.ClickableTextWidget;
@@ -62,7 +58,9 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.drawable.Text;
+import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.widget.ISyncedWidget;
+import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
@@ -91,6 +89,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GT_Waila;
 import gregtech.api.util.IGT_HatchAdder;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Input_ME;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -419,16 +418,15 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
     }
 
     /**
-     * roughly the same as {@link #criticalStopMachine()}, but does not attempt to send a halting sound if world is not loaded.
-     * also supports setting a stop reason
+     * roughly the same as {@link #criticalStopMachine()}, but does not attempt to send a halting sound if world is not
+     * loaded. also supports setting a stop reason
      */
     private void criticalStopMachine(String reason) {
         int oMaxProgresstime = mMaxProgresstime;
         stopMachine();
         // don't do these at all if the machine wasn't working before anyway
         if (oMaxProgresstime > 0) {
-            if (getBaseMetaTileEntity().getWorld() != null)
-                sendSound(INTERRUPT_SOUND_INDEX);
+            if (getBaseMetaTileEntity().getWorld() != null) sendSound(INTERRUPT_SOUND_INDEX);
             getBaseMetaTileEntity().setShutdownStatus(true);
             lastStopReason = reason;
         }
@@ -502,23 +500,25 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
         super.drawTexts(screenElements, inventorySlot);
         /*
-        SliceStatusWidget[] arr = Arrays.stream(slices).map(SliceStatusWidget::new).toArray(SliceStatusWidget[]::new);
-        screenElements.widgets(arr);
-        screenElements.widget(new FakeSyncWidget.IntegerSyncer(() -> currentInputLength, l -> {
-            currentInputLength = l;
-            for (SliceStatusWidget w : arr) {
-                w.updateText();
-            }
-        }));
-        */
-        screenElements.widget(new TextWidget(Text.localised("ggfab.gui.advassline.shutdown")).setEnabled(this::hasAbnormalStopReason));
+         * SliceStatusWidget[] arr =
+         * Arrays.stream(slices).map(SliceStatusWidget::new).toArray(SliceStatusWidget[]::new);
+         * screenElements.widgets(arr); screenElements.widget(new FakeSyncWidget.IntegerSyncer(() -> currentInputLength,
+         * l -> { currentInputLength = l; for (SliceStatusWidget w : arr) { w.updateText(); } }));
+         */
         screenElements.widget(
-                TextWidget.dynamicText(() -> Text.localised(lastStopReason))
-                        .setSynced(false)
-                        .attachSyncer(new FakeSyncWidget.StringSyncer(() -> lastStopReason,
-                                r -> this.lastStopReason = r), screenElements)
+                new TextWidget(Text.localised("ggfab.gui.advassline.shutdown"))
                         .setEnabled(this::hasAbnormalStopReason));
-        screenElements.widget(new ClickableTextWidget(Text.localised("ggfab.gui.advassline.shutdown_clear").alignment(Alignment.CenterLeft)).setMarginInLines(0).setOnClick((d, w) -> lastStopReason = "").setSize(36, 20).setEnabled(this::hasAbnormalStopReason));
+        screenElements.widget(
+                TextWidget.dynamicText(() -> Text.localised(lastStopReason)).setSynced(false)
+                        .attachSyncer(
+                                new FakeSyncWidget.StringSyncer(() -> lastStopReason, r -> this.lastStopReason = r),
+                                screenElements)
+                        .setEnabled(this::hasAbnormalStopReason));
+        screenElements.widget(
+                new ClickableTextWidget(
+                        Text.localised("ggfab.gui.advassline.shutdown_clear").alignment(Alignment.CenterLeft))
+                                .setMarginInLines(0).setOnClick((d, w) -> lastStopReason = "").setSize(36, 20)
+                                .setEnabled(this::hasAbnormalStopReason));
     }
 
     private Boolean hasAbnormalStopReason(Widget w) {
@@ -673,7 +673,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
                 GT_MetaTileEntity_Hatch_Input_ME me = (GT_MetaTileEntity_Hatch_Input_ME) tInputHatch;
                 drained = me.getMatchingFluidStack(tFluidRequired);
             } else {
-             drained = tInputHatch.drain(ForgeDirection.UNKNOWN, tFluidRequired, false);
+                drained = tInputHatch.drain(ForgeDirection.UNKNOWN, tFluidRequired, false);
             }
             if (drained == null || drained.amount < tFluidRequired.amount) {
                 return false;
