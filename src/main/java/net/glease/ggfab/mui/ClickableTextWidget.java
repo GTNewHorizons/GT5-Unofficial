@@ -2,13 +2,14 @@ package net.glease.ggfab.mui;
 
 import java.util.Arrays;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.drawable.TextRenderer;
 import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import org.jetbrains.annotations.NotNull;
 
 public class ClickableTextWidget extends ButtonWidget {
 
@@ -46,8 +47,9 @@ public class ClickableTextWidget extends ButtonWidget {
 
     @Override
     protected @NotNull Size determineSize(int maxWidth, int maxHeight) {
-        if (caption == null)
-            return super.determineSize(maxWidth, maxHeight);
-        return new Size(Math.min(maxWidth, TextRenderer.getFontRenderer().getStringWidth(caption.getFormatted())), (maxLines + marginInLines) * TextRenderer.getFontRenderer().FONT_HEIGHT);
+        if (caption == null) return super.determineSize(maxWidth, maxHeight);
+        return new Size(
+                Math.min(maxWidth, TextRenderer.getFontRenderer().getStringWidth(caption.getFormatted())),
+                (maxLines + marginInLines) * TextRenderer.getFontRenderer().FONT_HEIGHT);
     }
 }
