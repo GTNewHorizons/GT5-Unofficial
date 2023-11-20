@@ -31,7 +31,7 @@ public class UniversiumBlockOfBlockRenderer extends TileEntitySpecialRenderer {
         // to draw it along with the stars. Otherwise, the shader would need to be edited.
         CosmicRenderShenanigans.bindItemTexture();
 
-        renderBlock(CustomTextureRegister.universiumFrameTexture);
+        renderBlock(CustomTextureRegister.universiumSolidBlockTexutre);
 
         CosmicRenderShenanigans.releaseShader();
 

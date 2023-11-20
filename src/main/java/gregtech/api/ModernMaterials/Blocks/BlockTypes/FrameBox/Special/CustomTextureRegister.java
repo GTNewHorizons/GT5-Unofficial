@@ -9,6 +9,7 @@ import net.minecraftforge.client.event.TextureStitchEvent;
 public class CustomTextureRegister {
 
     public static IIcon universiumFrameTexture;
+    public static IIcon universiumSolidBlockTexutre;
 
     public static void registerIcons(TextureStitchEvent.Pre event) {
 
@@ -27,6 +28,7 @@ public class CustomTextureRegister {
         // in the shader to not appear as they are part of the item atlas. So we store our block in the item atlas
         // to draw it along with the stars. Otherwise, the shader would need to be edited.
         universiumFrameTexture = map.registerIcon(GregTech.getResourcePath() + "test");
+        universiumSolidBlockTexutre = map.registerIcon(GregTech.getResourcePath() + "test1");
     }
 
     private static void registerBlocks(TextureMap map) {

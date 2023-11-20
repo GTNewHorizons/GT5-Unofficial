@@ -64,7 +64,7 @@ public class BlockOfSimpleBlockRenderer implements ISimpleBlockRenderingHandler 
                 ModernMaterial.getMaterialIDToMaterialMap()
                     .get(ID)))
             return true; // True tells minecraft that we have handled this and
-        // to not do anymore rendering here.
+        // to not do anymore rendering here. This indicates it is a TESR.
 
         renderer.renderStandardBlock(block, x, y, z);
 

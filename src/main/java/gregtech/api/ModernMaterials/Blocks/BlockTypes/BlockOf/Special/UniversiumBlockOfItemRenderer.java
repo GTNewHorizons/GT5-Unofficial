@@ -1,17 +1,15 @@
 package gregtech.api.ModernMaterials.Blocks.BlockTypes.BlockOf.Special;
 
-import static gregtech.api.ModernMaterials.Blocks.BlockTypes.FrameBox.Special.CustomTextureRegister.universiumFrameTexture;
-import static gregtech.api.ModernMaterials.Render.Utilities.renderBlock;
-
+import fox.spiteful.avaritia.render.CosmicRenderShenanigans;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.client.IItemRenderer;
-
 import org.lwjgl.opengl.GL11;
 
-import fox.spiteful.avaritia.render.CosmicRenderShenanigans;
+import static gregtech.api.ModernMaterials.Blocks.BlockTypes.FrameBox.Special.CustomTextureRegister.universiumSolidBlockTexutre;
+import static gregtech.api.ModernMaterials.Render.Utilities.renderBlock;
 
 public class UniversiumBlockOfItemRenderer implements IItemRenderer {
 
@@ -52,7 +50,7 @@ public class UniversiumBlockOfItemRenderer implements IItemRenderer {
         // to draw it along with the stars. Otherwise, the shader would need to be edited.
         CosmicRenderShenanigans.bindItemTexture();
 
-        renderBlock(universiumFrameTexture);
+        renderBlock(universiumSolidBlockTexutre);
 
         CosmicRenderShenanigans.releaseShader();
         GL11.glPopMatrix();

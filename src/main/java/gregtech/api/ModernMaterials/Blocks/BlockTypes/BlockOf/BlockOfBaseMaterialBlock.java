@@ -21,7 +21,7 @@ public class BlockOfBaseMaterialBlock extends BaseMaterialBlock {
 
     @Override
     public BlocksEnum getBlockEnum() {
-        return BlocksEnum.FrameBox;
+        return BlocksEnum.SolidBlock;
     }
 
     @SideOnly(Side.CLIENT)
@@ -30,15 +30,9 @@ public class BlockOfBaseMaterialBlock extends BaseMaterialBlock {
         return this.blockIcon;
     }
 
-    // Make block see through.
-    @Override
-    public boolean isOpaqueCube() {
-        return false;
-    }
-
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister reg) {
-        this.blockIcon = reg.registerIcon("gregtech:ModernMaterialsIcons/Blocks/frameGt");
+        this.blockIcon = reg.registerIcon("gregtech:ModernMaterialsIcons/Blocks/block5");
     }
 
     @SideOnly(Side.CLIENT)

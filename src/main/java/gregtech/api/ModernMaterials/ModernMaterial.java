@@ -121,6 +121,66 @@ public final class ModernMaterial {
         return textureType == TextureType.Custom;
     }
 
+    public static ModernMaterial getMaterialFromID(final int materialID) {
+        return materialIDToMaterial.get(materialID);
+    }
+
+    public static void registerMaterial(ModernMaterial material) {
+        if (materialIDToMaterial.containsKey(material.getMaterialID())) {
+            throw new IllegalArgumentException("Material with ID " + material.getMaterialID() + " already exists.");
+        }
+
+        if (materialNameToMaterialMap.containsKey(material.getMaterialName())) {
+            throw new IllegalArgumentException(
+                "Material with name " + material.getMaterialName()
+                    + " already exists. Material was registered with ID "
+                    + material.getMaterialID()
+                    + ".");
+        }
+
+        materialIDToMaterial.put(material.getMaterialID(), material);
+        materialNameToMaterialMap.put(material.getMaterialName(), material);
+    }
+
+    private static void safeguardChecks(ModernMaterial material) {
+
+        if (material.color == null) {
+            throw new IllegalArgumentException("Material " + material + " has no colour set.");
+        }
+
+        if (material.materialID == -1) {
+            throw new IllegalArgumentException("Material " + material + " has no ID set.");
+        }
+
+        if (material.materialName == null) {
+            throw new IllegalArgumentException("Material " + material + " has no name set.");
+        }
+
+        if (material.textureType == null) {
+            throw new IllegalArgumentException("Material " + material + " has no texture type set.");
+        }
+
+        if (material.materialTier == 0 && !material.recipeGenerators.isEmpty()) {
+            throw new IllegalArgumentException(
+                "Material " + material + " has no tier set for its recipe generator(s).");
+        }
+
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof ModernMaterial that) {
+            return that.materialID == this.materialID;
+        }
+
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return materialName;
+    }
+
     public static class ModernMaterialBuilder {
 
         public ModernMaterial materialToBuild;
@@ -232,6 +292,9 @@ public final class ModernMaterial {
             @NotNull final IItemRenderer itemRenderer,
             @NotNull final TileEntitySpecialRenderer tileEntitySpecialRenderer) {
             blocksEnum.addSpecialBlockRenderAssociatedMaterial(materialToBuild);
+
+            if (materialToBuild.materialID == -1) throw new RuntimeException("Material ID for " + materialToBuild + " must be set before you can call setCustomBlockRenderer.");
+
             blocksEnum.setItemRenderer(materialToBuild.materialID, itemRenderer);
             blocksEnum.setBlockRenderer(materialToBuild.materialID, tileEntitySpecialRenderer);
             return this;
@@ -246,66 +309,6 @@ public final class ModernMaterial {
             materialToBuild.color = color;
             return this;
         }
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof ModernMaterial that) {
-            return that.materialID == this.materialID;
-        }
-
-        return false;
-    }
-
-    @Override
-    public String toString() {
-        return materialName;
-    }
-
-    public static ModernMaterial getMaterialFromID(final int materialID) {
-        return materialIDToMaterial.get(materialID);
-    }
-
-    public static void registerMaterial(ModernMaterial material) {
-        if (materialIDToMaterial.containsKey(material.getMaterialID())) {
-            throw new IllegalArgumentException("Material with ID " + material.getMaterialID() + " already exists.");
-        }
-
-        if (materialNameToMaterialMap.containsKey(material.getMaterialName())) {
-            throw new IllegalArgumentException(
-                "Material with name " + material.getMaterialName()
-                    + " already exists. Material was registered with ID "
-                    + material.getMaterialID()
-                    + ".");
-        }
-
-        materialIDToMaterial.put(material.getMaterialID(), material);
-        materialNameToMaterialMap.put(material.getMaterialName(), material);
-    }
-
-    private static void safeguardChecks(ModernMaterial material) {
-
-        if (material.color == null) {
-            throw new IllegalArgumentException("Material " + material + " has no colour set.");
-        }
-
-        if (material.materialID == -1) {
-            throw new IllegalArgumentException("Material " + material + " has no ID set.");
-        }
-
-        if (material.materialName == null) {
-            throw new IllegalArgumentException("Material " + material + " has no name set.");
-        }
-
-        if (material.textureType == null) {
-            throw new IllegalArgumentException("Material " + material + " has no texture type set.");
-        }
-
-        if (material.materialTier == 0 && !material.recipeGenerators.isEmpty()) {
-            throw new IllegalArgumentException(
-                "Material " + material + " has no tier set for its recipe generator(s).");
-        }
-
     }
 
 }

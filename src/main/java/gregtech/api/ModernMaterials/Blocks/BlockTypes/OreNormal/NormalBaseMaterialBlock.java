@@ -25,7 +25,7 @@ public class NormalBaseMaterialBlock extends BaseMaterialBlock {
         // Todo this particle is used to spawn the breaking effect. We should probably change it to something else, like
         // the underlying stone texture, however this has issues because changing it here will cause the colour
         // multiplier function to apply to that later. Non-critical.
-        return this.blockIcon;
+        return blockIcon;
     }
 
     // Make block see through.
@@ -36,7 +36,7 @@ public class NormalBaseMaterialBlock extends BaseMaterialBlock {
 
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister reg) {
-        this.blockIcon = reg.registerIcon("gregtech:ModernMaterialsIcons/Blocks/ore");
+        blockIcon = reg.registerIcon("gregtech:ModernMaterialsIcons/Blocks/ore");
     }
 
     @SideOnly(Side.CLIENT)

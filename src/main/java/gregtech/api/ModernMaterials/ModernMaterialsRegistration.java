@@ -9,6 +9,8 @@ import static gregtech.api.ModernMaterials.Items.PartProperties.TextureType.Meta
 import static gregtech.api.ModernMaterials.Items.PartProperties.TextureType.Metal_Shiny;
 import static gregtech.api.ModernMaterials.ModernMaterialUtilities.registerAllMaterialsItems;
 
+import gregtech.api.ModernMaterials.Blocks.BlockTypes.BlockOf.Special.UniversiumBlockOfBlockRenderer;
+import gregtech.api.ModernMaterials.Blocks.BlockTypes.BlockOf.Special.UniversiumBlockOfItemRenderer;
 import gregtech.api.ModernMaterials.Blocks.BlockTypes.FrameBox.Special.UniversiumFrameBlockRenderer;
 import gregtech.api.ModernMaterials.Blocks.BlockTypes.FrameBox.Special.UniversiumFrameItemRenderer;
 import gregtech.api.ModernMaterials.Blocks.Registration.BlocksEnum;
@@ -61,6 +63,10 @@ public class ModernMaterialsRegistration {
                 BlocksEnum.FrameBox,
                 new UniversiumFrameItemRenderer(),
                 new UniversiumFrameBlockRenderer())
+            .setCustomBlockRenderer(
+                BlocksEnum.SolidBlock,
+                new UniversiumBlockOfItemRenderer(),
+                new UniversiumBlockOfBlockRenderer())
             .setCustomItemRenderer(new UniversiumItemRenderer())
             .setRecipeGenerator(Metal::generateExtruderRecipesWithoutTools)
             .addAllParts()

@@ -3,6 +3,8 @@ package gregtech.api.ModernMaterials.Blocks.Registration;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import gregtech.api.ModernMaterials.Blocks.BlockTypes.BlockOf.BlockOfBaseMaterialBlock;
+import gregtech.api.ModernMaterials.Blocks.BlockTypes.BlockOf.BlockOfSimpleBlockRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -27,8 +29,8 @@ import gregtech.api.ModernMaterials.ModernMaterial;
 public enum BlocksEnum implements IEnumPart {
 
     // Define new blocks here.
-    FrameBox("% LARP Box", FrameBoxBaseMaterialBlock.class, new FrameBoxSimpleBlockRenderer()),
-    BlockOf("Block of %", NormalBaseMaterialBlock.class, new NormalOreSimpleBlockRenderer(Blocks.netherrack, 0)),
+    FrameBox("% Frame Box", FrameBoxBaseMaterialBlock.class, new FrameBoxSimpleBlockRenderer()),
+    SolidBlock("Block of %", BlockOfBaseMaterialBlock.class, new BlockOfSimpleBlockRenderer()),
     EarthOreNormal("% Ore", NormalBaseMaterialBlock.class, new NormalOreSimpleBlockRenderer(Blocks.stone, 0)),
     MoonOreNormal("% Ore", NormalBaseMaterialBlock.class, new NormalOreSimpleBlockRenderer(Blocks.end_stone, 0)),
     MarsOreNormal("% Ore", NormalBaseMaterialBlock.class, new NormalOreSimpleBlockRenderer(Blocks.netherrack, 0));

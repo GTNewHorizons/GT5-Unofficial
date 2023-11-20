@@ -1,5 +1,6 @@
 package gregtech.api.ModernMaterials.RecipeGenerators;
 
+import static gregtech.api.ModernMaterials.Blocks.Registration.BlocksEnum.SolidBlock;
 import static gregtech.api.ModernMaterials.Items.PartsClasses.ItemsEnum.Bolt;
 import static gregtech.api.ModernMaterials.Items.PartsClasses.ItemsEnum.Dust;
 import static gregtech.api.ModernMaterials.Items.PartsClasses.ItemsEnum.Gear;
@@ -9,6 +10,7 @@ import static gregtech.api.ModernMaterials.Items.PartsClasses.ItemsEnum.Plate;
 import static gregtech.api.ModernMaterials.Items.PartsClasses.ItemsEnum.Ring;
 import static gregtech.api.ModernMaterials.Items.PartsClasses.ItemsEnum.Rod;
 import static gregtech.api.ModernMaterials.Items.PartsClasses.ItemsEnum.SmallGear;
+import static gregtech.api.enums.ItemList.Shape_Extruder_Block;
 import static gregtech.api.enums.ItemList.Shape_Extruder_Bolt;
 import static gregtech.api.enums.ItemList.Shape_Extruder_Casing;
 import static gregtech.api.enums.ItemList.Shape_Extruder_Gear;
@@ -60,7 +62,7 @@ public class Metal {
             .eut(material.getMaterialTier() * 0.95)
             .addTo(sExtruderRecipes);
 
-        // Casing
+        // Item Casing
         GT_Values.RA.stdBuilder()
             .itemInputs(Ingot.getPart(material, 5), Shape_Extruder_Casing.get(0))
             .itemOutputs(ItemCasing.getPart(material, 2))
@@ -88,6 +90,13 @@ public class Metal {
         GT_Values.RA.stdBuilder()
             .itemInputs(Ingot.getPart(material, 1), Shape_Extruder_Bolt.get(0))
             .itemOutputs(Bolt.getPart(material, 8))
+            .duration(SECONDS * material.getHardness() * Bolt.percentageOfIngot)
+            .eut(material.getMaterialTier() * 0.95)
+            .addTo(sExtruderRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(Ingot.getPart(material, 9), Shape_Extruder_Block.get(0))
+            .itemOutputs(SolidBlock.getPart(material, 1))
             .duration(SECONDS * material.getHardness() * Bolt.percentageOfIngot)
             .eut(material.getMaterialTier() * 0.95)
             .addTo(sExtruderRecipes);

@@ -83,7 +83,7 @@ public enum ItemsEnum implements IEnumPart {
     // PickaxeHead("% Pickaxe Head"),
     // PlowHead("% Plow Head"),
     SawBlade("% Saw Blade"),
-    ItemCasing("% Casing"),
+    ItemCasing("% Item Casing"),
     ScrewdriverHead("% Screwdriver Head"),
     // SenseHead("% Sense Head"),
     // ShovelHead("% Shovel Head"),
