@@ -4,9 +4,7 @@ import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -162,30 +160,32 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
     @Override
     public boolean canConnectRedstone(IBlockAccess aWorld, int aX, int aY, int aZ, int ordinalSide) {
         int forgeSide = -100;
-        switch(ordinalSide) {
-            case(-2):
+        switch (ordinalSide) {
+            case (-2):
                 forgeSide = 0;
                 break;
-            case(-1):
+            case (-1):
                 forgeSide = 1;
                 break;
-            case(0):
+            case (0):
                 forgeSide = 2;
                 break;
-            case(2):
+            case (2):
                 forgeSide = 3;
                 break;
-            case(3):
+            case (3):
                 forgeSide = 4;
                 break;
-            case(1):
+            case (1):
                 forgeSide = 5;
                 break;
             default:
                 break;
         }
         final TileEntity machineEntity = aWorld.getTileEntity(aX, aY, aZ);
-        return machineEntity instanceof CoverableTileEntity cte && cte.getCoverInfoAtSide(ForgeDirection.getOrientation(forgeSide)).getCoverID() != 0;
+        return machineEntity instanceof CoverableTileEntity cte
+            && cte.getCoverInfoAtSide(ForgeDirection.getOrientation(forgeSide))
+                .getCoverID() != 0;
     }
 
     @Override
