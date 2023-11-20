@@ -8,6 +8,8 @@ import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.RemoteIO;
 
+import java.util.List;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -17,6 +19,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import com.github.technus.tectech.recipe.TT_recipeAdder;
 import com.github.technus.tectech.thing.CustomItemList;
+import com.google.common.collect.ImmutableList;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
@@ -1686,68 +1689,28 @@ public class RECIPES_Machines {
         }
 
         if (CORE.ConfigSwitches.enableMachine_SimpleWasher) {
-            ItemStack plateWrought = ItemUtils.getItemStackOfAmountFromOreDict("plateWroughtIron", 1);
-            ItemStack washerPipe;
+            final List<ItemStack> washers = ImmutableList.of(
+                    GregtechItemList.SimpleDustWasher_LV.get(1),
+                    GregtechItemList.SimpleDustWasher_MV.get(1),
+                    GregtechItemList.SimpleDustWasher_HV.get(1),
+                    GregtechItemList.SimpleDustWasher_EV.get(1),
+                    GregtechItemList.SimpleDustWasher_IV.get(1),
+                    GregtechItemList.SimpleDustWasher_LuV.get(1),
+                    GregtechItemList.SimpleDustWasher_ZPM.get(1),
+                    GregtechItemList.SimpleDustWasher_UV.get(1));
 
-            if (CORE.ConfigSwitches.enableCustom_Pipes) {
-                washerPipe = ItemUtils.getItemStackOfAmountFromOreDict("pipeLargeClay", 1);
-                RecipeUtils.addShapedGregtechRecipe(
-                        plateWrought,
-                        CI.electricPump_LV,
-                        plateWrought,
-                        plateWrought,
-                        washerPipe,
-                        plateWrought,
-                        plateWrought,
-                        CI.machineCasing_ULV,
-                        plateWrought,
-                        GregtechItemList.SimpleDustWasher_ULV.get(1));
-            }
-            // Add Recipe
-            washerPipe = ItemUtils.getItemStackOfAmountFromOreDict("pipeLargeCopper", 1);
-            RecipeUtils.addShapedGregtechRecipe(
-                    plateWrought,
-                    CI.electricPump_LV,
-                    plateWrought,
-                    plateWrought,
-                    washerPipe,
-                    plateWrought,
-                    plateWrought,
-                    CI.machineCasing_ULV,
-                    plateWrought,
-                    GregtechItemList.SimpleDustWasher_ULV.get(1));
-
-            int aSimpleWasherTier = 2;
-            int aSlot = 0;
-            ItemStack[][] aInputsForSimpleWashers = new ItemStack[4][6];
-
-            aInputsForSimpleWashers[0] = new ItemStack[] { CI.getTieredMachineHull(2),
-                    CI.getTieredComponent(OrePrefixes.screw, 2, 8), CI.getTieredComponent(OrePrefixes.plate, 1, 4),
-                    CI.getTieredComponent(OrePrefixes.rod, 2, 2), CI.getTieredComponent(OrePrefixes.circuit, 2, 1), };
-            aInputsForSimpleWashers[1] = new ItemStack[] { CI.getTieredMachineHull(4),
-                    CI.getTieredComponent(OrePrefixes.screw, 4, 12), CI.getTieredComponent(OrePrefixes.plate, 3, 6),
-                    CI.getTieredComponent(OrePrefixes.rod, 4, 3), CI.getTieredComponent(OrePrefixes.circuit, 4, 2), };
-            aInputsForSimpleWashers[2] = new ItemStack[] { CI.getTieredMachineHull(6),
-                    CI.getTieredComponent(OrePrefixes.screw, 6, 24), CI.getTieredComponent(OrePrefixes.plate, 5, 8),
-                    CI.getTieredComponent(OrePrefixes.rod, 6, 4), CI.getTieredComponent(OrePrefixes.circuit, 6, 3), };
-            aInputsForSimpleWashers[3] = new ItemStack[] { CI.getTieredMachineHull(8),
-                    CI.getTieredComponent(OrePrefixes.screw, 8, 32), CI.getTieredComponent(OrePrefixes.plate, 7, 16),
-                    CI.getTieredComponent(OrePrefixes.rod, 8, 5), CI.getTieredComponent(OrePrefixes.circuit, 8, 4), };
-
-            ItemStack[] aSimpleWashers = new ItemStack[] { GregtechItemList.SimpleDustWasher_MV.get(1),
-                    GregtechItemList.SimpleDustWasher_EV.get(1), GregtechItemList.SimpleDustWasher_LuV.get(1),
-                    GregtechItemList.SimpleDustWasher_UV.get(1) };
-            for (int i = 0; i < 4; i++) {
-
+            for (int i = 0; i < washers.size(); i++) {
+                final int tier = i + 1;
                 CORE.RA.addSixSlotAssemblingRecipe(
-                        aInputsForSimpleWashers[aSlot],
-                        CI.getTieredFluid(aSimpleWasherTier, 144 * aSimpleWasherTier),
-                        aSimpleWashers[aSlot],
-                        20 * 15 * aSimpleWasherTier,
-                        (int) GT_Values.V[aSimpleWasherTier]);
-
-                aSimpleWasherTier += 2;
-                aSlot++;
+                        new ItemStack[] { CI.getTieredMachineHull(tier),
+                                CI.getTieredComponent(OrePrefixes.screw, tier, tier * 4),
+                                CI.getTieredComponent(OrePrefixes.plate, tier - 1, tier * 2),
+                                CI.getTieredComponent(OrePrefixes.rod, tier, tier),
+                                CI.getTieredComponent(OrePrefixes.circuit, tier, 1) },
+                        CI.getTieredFluid(tier, 144 * tier),
+                        washers.get(i),
+                        20 * 5 * tier,
+                        (int) GT_Values.V[tier]);
             }
         }
 

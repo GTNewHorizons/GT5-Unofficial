@@ -803,6 +803,11 @@ public enum GregtechItemList implements GregtechItemContainer {
     Cover_Overflow_Item_IV,
 
     // ----------------------------------------------------------------------------
+    // Additional washers
+    SimpleDustWasher_LV,
+    SimpleDustWasher_HV,
+    SimpleDustWasher_IV,
+    SimpleDustWasher_ZPM,
 
     ;
 
