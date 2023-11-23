@@ -340,34 +340,29 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
     private String computeRecipeName() {
         String recipeName = StatCollector.translateToLocal(recipeCategory.unlocalizedName);
         if (overclockDescriber != null) {
-            recipeName = addSuffixToRecipeName(recipeName, overclockDescriber.getTierString() + ")");
-        }
-        return recipeName;
-    }
-
-    private String addSuffixToRecipeName(final String aRecipeName, final String suffix) {
-        final String recipeName;
-        final String separator;
-        FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-        int recipeNameWidth = fontRenderer.getStringWidth(aRecipeName);
-        int targetWidth = RECIPE_NAME_WIDTH - fontRenderer.getStringWidth(suffix);
-        if (recipeNameWidth + fontRenderer.getStringWidth(" (") <= targetWidth) {
-            recipeName = aRecipeName;
-            separator = " (";
+            String suffix = "(" + overclockDescriber.getTierString() + ")";
+            // Space will be cropped if title exceeds
+            return shrinkRecipeName(recipeName + " ", suffix);
         } else {
-            setupRecipeNameTooltip(aRecipeName + " (" + suffix);
-            separator = "...(";
-            recipeName = shrinkRecipeName(aRecipeName, targetWidth - fontRenderer.getStringWidth(separator));
+            return shrinkRecipeName(recipeName, "");
         }
-        return recipeName + separator + suffix;
     }
 
-    private String shrinkRecipeName(String recipeName, int targetWidth) {
+    private String shrinkRecipeName(final String originalRecipeName, final String suffix) {
         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+        int suffixWidth = fontRenderer.getStringWidth(suffix);
+        if (fontRenderer.getStringWidth(originalRecipeName) + suffixWidth <= RECIPE_NAME_WIDTH) {
+            return originalRecipeName + suffix;
+        }
+
+        final String ellipsis = "...";
+        final int ellipsisWidth = fontRenderer.getStringWidth(ellipsis);
+        String recipeName = originalRecipeName;
         do {
-            recipeName = recipeName.substring(0, recipeName.length() - 2);
-        } while (fontRenderer.getStringWidth(recipeName) > targetWidth);
-        return recipeName;
+            recipeName = recipeName.substring(0, recipeName.length() - 1);
+        } while (fontRenderer.getStringWidth(recipeName) + ellipsisWidth + suffixWidth > RECIPE_NAME_WIDTH);
+        setupRecipeNameTooltip(originalRecipeName + suffix);
+        return recipeName + ellipsis + suffix;
     }
 
     private void setupRecipeNameTooltip(String tooltip) {
