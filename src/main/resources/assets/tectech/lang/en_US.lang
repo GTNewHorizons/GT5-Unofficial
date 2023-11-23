@@ -101,6 +101,12 @@ item.tm.powerpassupgradecover.desc.0=Add power pass functionality to TecTech Mul
 item.tm.powerpassupgradecover.desc.1=Active transformer in a can??
 item.tm.powerpassupgradecover.desc.2=Chain them up like Christmas lights!
 
+item.tm.itemAstralArrayFabricator.name=Astral Array Fabricator
+item.tm.itemAstralArrayFabricator.desc0=Parallel dimensions?!
+item.tm.itemAstralArrayFabricator.desc1=Device capable of enhancing the Eye of Harmony's spatial compression,
+item.tm.itemAstralArrayFabricator.desc2=reaching into the space beyond.
+item.tm.itemAstralArrayFabricator.desc3=Allows for recipe parallelism.
+
 #Death Messages
 death.attack.microwaving=%1$s was dehydrated by radiation.
 death.attack.microwaving.player=%1$s was dehydrated by radiation while fighting %2$s.
@@ -973,12 +979,14 @@ GT5U.gui.text.no_data=§7Can't output data
 GT5U.gui.text.no_planet_block=§7Missing planet block
 GT5U.gui.text.no_helium=§7Not enough Helium
 GT5U.gui.text.no_hydrogen=§7Not enough Hydrogen
+GT5U.gui.text.no_stellar_plasma=§7Not enough Stellar Plasma
 GT5U.gui.text.invalid_hysteresis=§7Invalid hysteresis settings
 GT5U.gui.text.invalid_transfer_radius=§7Invalid transfer radius settings
 GT5U.gui.text.invalid_voltage_setting=§7Invalid voltage setting
 GT5U.gui.text.invalid_current_setting=§7Invalid current setting
 GT5U.gui.text.invalid_time_setting=§7Invalid time setting
 GT5U.gui.text.invalid_overdrive_setting=§7Invalid overdrive setting
+GT5U.gui.text.insufficient_power_no_val=§7Insufficient power
 
 #Keywords and phrases
 #Example: ID:3

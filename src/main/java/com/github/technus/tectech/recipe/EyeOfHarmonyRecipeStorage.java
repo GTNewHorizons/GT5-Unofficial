@@ -10,9 +10,11 @@ import java.util.HashSet;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import com.github.technus.tectech.util.FluidStackLong;
 import com.github.technus.tectech.util.ItemStackLong;
 import com.google.common.math.LongMath;
 
@@ -99,6 +101,11 @@ public class EyeOfHarmonyRecipeStorage {
                 outputItems.add(itemStackLong.itemStack);
             }
 
+            ArrayList<FluidStack> outputFluids = new ArrayList<>();
+            for (FluidStackLong fluidStackLong : recipe.getOutputFluids()) {
+                outputFluids.add(fluidStackLong.fluidStack);
+            }
+
             ItemStack planetItem = recipe.getRecipeTriggerItem().copy();
             planetItem.stackSize = 0;
 
@@ -109,7 +116,7 @@ public class EyeOfHarmonyRecipeStorage {
                     recipe,
                     null,
                     null,
-                    recipe.getOutputFluids(),
+                    outputFluids.toArray(new FluidStack[0]),
                     (int) recipe.getRecipeTimeInTicks(),
                     0,
                     0);

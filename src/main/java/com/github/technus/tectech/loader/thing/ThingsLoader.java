@@ -13,6 +13,7 @@ import com.github.technus.tectech.thing.casing.SpacetimeCompressionFieldCasing;
 import com.github.technus.tectech.thing.casing.StabilisationFieldCasing;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.github.technus.tectech.thing.casing.TimeAccelerationFieldCasing;
+import com.github.technus.tectech.thing.item.AstralArrayFabricator;
 import com.github.technus.tectech.thing.item.EnderFluidLinkCover;
 import com.github.technus.tectech.thing.item.EuMeterGT;
 import com.github.technus.tectech.thing.item.ParametrizerMemoryCard;
@@ -75,6 +76,7 @@ public class ThingsLoader implements Runnable {
         TecTech.LOGGER.info("Useful Items registered");
 
         TeslaCoilComponent.run();
+        AstralArrayFabricator.run();
         TecTech.LOGGER.info("Crafting Components registered");
 
         TecTech.LOGGER.info("Debug Items registered");

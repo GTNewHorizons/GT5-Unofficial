@@ -429,7 +429,9 @@ public enum CustomItemList implements IItemContainer {
     StabilisationFieldGeneratorTier5,
     StabilisationFieldGeneratorTier6,
     StabilisationFieldGeneratorTier7,
-    StabilisationFieldGeneratorTier8;
+    StabilisationFieldGeneratorTier8,
+
+    astralArrayFabricator;
 
     private ItemStack mStack;
     private boolean mHasNotBeenSet = true;
