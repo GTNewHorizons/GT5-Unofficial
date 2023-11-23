@@ -1,8 +1,12 @@
 package gregtech.nei;
 
+import java.util.Collection;
 import java.util.Comparator;
+import java.util.Map;
 
+import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ListMultimap;
 
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
@@ -11,7 +15,6 @@ import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.GuiUsageRecipe;
 import codechicken.nei.recipe.HandlerInfo;
 import codechicken.nei.recipe.TemplateRecipeHandler;
-import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.GregTech_API;
@@ -52,6 +55,8 @@ public class NEI_GT_Config implements IConfigureNEI {
     private static final Comparator<GT_NEI_DefaultHandler> RECIPE_MAP_HANDLER_COMPARATOR = Comparator
         .comparingInt(handler -> RECIPE_MAP_ORDERING.getOrDefault(handler.getRecipeMap(), 0));
 
+    private static ListMultimap<RecipeCategory, RecipeMapWorkable> RECIPE_CATALYST_INDEX;
+
     public static boolean sIsAdded = true;
 
     private static void addHandler(TemplateRecipeHandler handler) {
@@ -86,19 +91,14 @@ public class NEI_GT_Config implements IConfigureNEI {
     }
 
     private void registerCatalysts() {
-        for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
-            IMetaTileEntity mte = GregTech_API.METATILEENTITIES[i];
-            if (!(mte instanceof RecipeMapWorkable recipeMapWorkable)) continue;
-            for (RecipeMap<?> recipeMap : recipeMapWorkable.getAvailableRecipeMaps()) {
-                for (RecipeCategory recipeCategory : recipeMap.getBackend()
-                    .getAllRecipesByCategory()
-                    .keySet()) {
-                    API.addRecipeCatalyst(
-                        mte.getStackForm(1),
-                        recipeCategory.unlocalizedName,
-                        recipeMapWorkable.getRecipeCatalystPriority());
-                }
-            }
+        for (Map.Entry<RecipeCategory, Collection<RecipeMapWorkable>> entry : RECIPE_CATALYST_INDEX.asMap()
+            .entrySet()) {
+            entry.getValue()
+                .forEach(
+                    recipeMapWorkable -> API.addRecipeCatalyst(
+                        recipeMapWorkable.getStackForm(1),
+                        entry.getKey().unlocalizedName,
+                        recipeMapWorkable.getRecipeCatalystPriority()));
         }
         API.addRecipeCatalyst(
             GT_ModHandler.getIC2Item("nuclearReactor", 1, null),
@@ -122,22 +122,53 @@ public class NEI_GT_Config implements IConfigureNEI {
     }
 
     @SubscribeEvent
-    public void registerNEIHandlerInfo(NEIRegisterHandlerInfosEvent event) {
+    public void registerHandlerInfo(NEIRegisterHandlerInfosEvent event) {
+        if (RECIPE_CATALYST_INDEX == null) {
+            // This method will be called earlier than #loadConfig
+            generateRecipeCatalystIndex();
+        }
         RecipeCategory.ALL_RECIPE_CATEGORIES.values()
             .forEach(recipeCategory -> {
+                HandlerInfo.Builder builder = createHandlerInfoBuilderTemplate(recipeCategory);
+                HandlerInfo handlerInfo;
                 if (recipeCategory.handlerInfoCreator != null) {
-                    event.registerHandlerInfo(
-                        recipeCategory.handlerInfoCreator.apply(
-                            createHandlerInfoBuilderTemplate(recipeCategory.unlocalizedName, recipeCategory.ownerMod))
-                            .build());
+                    handlerInfo = recipeCategory.handlerInfoCreator.apply(builder)
+                        .build();
+                } else {
+                    // Infer icon from recipe catalysts
+                    RECIPE_CATALYST_INDEX.get(recipeCategory)
+                        .stream()
+                        .findFirst()
+                        .ifPresent(catalyst -> builder.setDisplayStack(catalyst.getStackForm(1)));
+                    handlerInfo = builder.build();
                 }
+                event.registerHandlerInfo(handlerInfo);
             });
     }
 
-    private HandlerInfo.Builder createHandlerInfoBuilderTemplate(String unlocalizedName, ModContainer ownerMod) {
-        return new HandlerInfo.Builder(unlocalizedName, ownerMod.getName(), ownerMod.getModId()).setShiftY(6)
-            .setHeight(135)
-            .setMaxRecipesPerPage(2);
+    private HandlerInfo.Builder createHandlerInfoBuilderTemplate(RecipeCategory recipeCategory) {
+        return new HandlerInfo.Builder(
+            recipeCategory.unlocalizedName,
+            recipeCategory.ownerMod.getName(),
+            recipeCategory.ownerMod.getModId()).setShiftY(6)
+                .setHeight(135)
+                .setMaxRecipesPerPage(2);
+    }
+
+    private static void generateRecipeCatalystIndex() {
+        ImmutableListMultimap.Builder<RecipeCategory, RecipeMapWorkable> builder = new ImmutableListMultimap.Builder<>();
+        builder
+            .orderValuesBy(Comparator.comparing(recipeMapWorkable -> -recipeMapWorkable.getRecipeCatalystPriority()));
+        for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
+            IMetaTileEntity mte = GregTech_API.METATILEENTITIES[i];
+            if (!(mte instanceof RecipeMapWorkable recipeMapWorkable)) continue;
+            for (RecipeMap<?> recipeMap : recipeMapWorkable.getAvailableRecipeMaps()) {
+                for (RecipeCategory recipeCategory : recipeMap.getAssociatedCategories()) {
+                    builder.put(recipeCategory, recipeMapWorkable);
+                }
+            }
+        }
+        RECIPE_CATALYST_INDEX = builder.build();
     }
 
     @Override

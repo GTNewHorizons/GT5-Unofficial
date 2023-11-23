@@ -50,6 +50,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_MultiInput;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
@@ -183,7 +184,7 @@ public class GT_MetaTileEntity_AssemblyLine
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return null;
+        return RecipeMaps.assemblylineVisualRecipes;
     }
 
     @Override

@@ -109,6 +109,8 @@ public final class RecipeMaps {
             (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GT_UITextures.OVERLAY_SLOT_COMPRESSOR_STEAM
                 : null)
         .progressBarSteam(GT_UITextures.PROGRESSBAR_COMPRESS_STEAM)
+        // Avoid steam machine being used as handler icon
+        .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.Machine_LV_Compressor.get(1)))
         .recipeConfigFile("compressor", FIRST_ITEM_INPUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> extractorRecipes = RecipeMapBuilder.of("gt.recipe.extractor")
@@ -122,6 +124,8 @@ public final class RecipeMaps {
             (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GT_UITextures.OVERLAY_SLOT_CENTRIFUGE_STEAM
                 : null)
         .progressBarSteam(GT_UITextures.PROGRESSBAR_EXTRACT_STEAM)
+        // Avoid steam machine being used as handler icon
+        .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.Machine_LV_Extractor.get(1)))
         .recipeConfigFile("extractor", FIRST_ITEM_INPUT)
         .build();
     public static final RecipeMap<RecyclerBackend> recyclerRecipes = RecipeMapBuilder
@@ -208,8 +212,6 @@ public final class RecipeMaps {
         .slotOverlays((index, isFluid, isOutput, isSpecial) -> isSpecial ? GT_UITextures.OVERLAY_SLOT_DATA_ORB : null)
         .disableOptimize()
         .neiTransferRect(new Rectangle(146, 26, 10, 18))
-        // this overwrites yShift that exists in NEI default config
-        .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.Machine_Multi_Assemblyline.get(1)))
         .frontend(AssemblyLineFrontend::new)
         .build();
     /**
@@ -331,6 +333,8 @@ public final class RecipeMaps {
                 : GT_UITextures.OVERLAY_SLOT_CRUSHED_ORE_STEAM)
         .progressBar(GT_UITextures.PROGRESSBAR_MACERATE)
         .progressBarSteam(GT_UITextures.PROGRESSBAR_MACERATE_STEAM)
+        // Avoid steam machine being used as handler icon
+        .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.Machine_LV_Macerator.get(1)))
         .recipeConfigFile("pulveriser", FIRST_ITEM_INPUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> chemicalBathRecipes = RecipeMapBuilder.of("gt.recipe.chemicalbath")
@@ -851,6 +855,8 @@ public final class RecipeMaps {
                     .validateInputCount(1, 2)
                     .validateOutputCount(1, 1));
         })
+        // Avoid steam machine being used as handler icon
+        .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.Machine_LV_AlloySmelter.get(1)))
         .recipeConfigFile(
             "alloysmelting",
             r -> GT_Config.getStackConfigName(GT_Utility.isArrayOfLength(r.mInputs, 1) ? r.mInputs[0] : r.mOutputs[0]))
@@ -983,6 +989,8 @@ public final class RecipeMaps {
             (index, isFluid, isOutput, isSpecial) -> !isOutput ? GT_UITextures.OVERLAY_SLOT_HAMMER_STEAM : null)
         .progressBarSteam(GT_UITextures.PROGRESSBAR_HAMMER_STEAM)
         .addSpecialTextureSteam(20, 6, 78, 42, GT_UITextures.PROGRESSBAR_HAMMER_BASE_STEAM)
+        // Avoid steam machine being used as handler icon
+        .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.Machine_LV_Hammer.get(1)))
         .recipeConfigFile("forgehammer", FIRST_ITEM_OUTPUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> amplifierRecipes = RecipeMapBuilder.of("gt.recipe.uuamplifier")
@@ -1113,7 +1121,6 @@ public final class RecipeMaps {
                 isSpecial) -> !isFluid && !isOutput && index == 0 ? GT_UITextures.OVERLAY_SLOT_LENS : null)
         .progressBar(GT_UITextures.PROGRESSBAR_ASSEMBLE)
         .disableOptimize()
-        .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.NanoForge.get(1)))
         .neiSpecialInfoFormatter(new SimpleSpecialValueFormatter("GT5U.nei.tier"))
         .build();
     public static final RecipeMap<RecipeMapBackend> pcbFactoryRecipes = RecipeMapBuilder.of("gt.recipe.pcbfactory")
@@ -1121,7 +1128,6 @@ public final class RecipeMaps {
         .minInputs(3, 1)
         .progressBar(GT_UITextures.PROGRESSBAR_ASSEMBLE)
         .disableOptimize()
-        .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.PCBFactory.get(1)))
         .neiRecipeComparator(
             Comparator.<GT_Recipe, Integer>comparing(recipe -> recipe.getMetadata(PCBFactoryTierKey.INSTANCE, 1))
                 .thenComparing(GT_Recipe::compareTo))

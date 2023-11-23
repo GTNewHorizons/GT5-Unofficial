@@ -5,6 +5,8 @@ import java.util.Collections;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.recipe.RecipeMap;
 
 /**
@@ -17,6 +19,11 @@ public interface RecipeMapWorkable {
      * @return RecipeMap this machine currently can execute. In general, it's allowed to be null.
      */
     RecipeMap<?> getRecipeMap();
+
+    /**
+     * @return ItemStack form of this machine.
+     */
+    ItemStack getStackForm(long amount);
 
     /**
      * @return List of possible RecipeMaps this machine can handle. Must not contain null element.

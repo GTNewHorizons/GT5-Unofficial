@@ -50,6 +50,10 @@ public final class RecipeCategory {
         ALL_RECIPE_CATEGORIES.put(unlocalizedName, this);
     }
 
+    RecipeCategory(RecipeMap<?> recipeMap) {
+        this(recipeMap.unlocalizedName, recipeMap, recipeMap.getFrontend().neiProperties.handlerInfoCreator);
+    }
+
     @Override
     public String toString() {
         return "RecipeCategory{" + "unlocalizedName='"

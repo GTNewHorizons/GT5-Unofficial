@@ -2,10 +2,12 @@ package gregtech.api.recipe;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -57,8 +59,7 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
         this.unlocalizedName = unlocalizedName;
         this.backend = backend;
         this.frontend = frontend;
-        backend.setDefaultRecipeCategory(
-            new RecipeCategory(unlocalizedName, this, frontend.neiProperties.handlerInfoCreator));
+        backend.setDefaultRecipeCategory(new RecipeCategory(this));
         if (ALL_RECIPE_MAPS.containsKey(unlocalizedName)) {
             throw new IllegalArgumentException(
                 "Cannot register recipemap with duplicated unlocalized name: " + unlocalizedName);
@@ -80,6 +81,16 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
     @Unmodifiable
     public Collection<GT_Recipe> getAllRecipes() {
         return backend.getAllRecipes();
+    }
+
+    /**
+     * @return List of registered recipe categories associated with this recipemap.
+     */
+    public List<RecipeCategory> getAssociatedCategories() {
+        return RecipeCategory.ALL_RECIPE_CATEGORIES.values()
+            .stream()
+            .filter(category -> category.recipeMap == this)
+            .collect(Collectors.toList());
     }
 
     /**

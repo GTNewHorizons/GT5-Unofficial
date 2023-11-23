@@ -104,10 +104,6 @@ public class RecipeMapBackend {
             .collect(Collectors.toCollection(ArrayList::new));
     }
 
-    public Map<RecipeCategory, Collection<GT_Recipe>> getAllRecipesByCategory() {
-        return Collections.unmodifiableMap(recipesByCategory);
-    }
-
     /**
      * @return All the recipes belonging to this backend, indexed by recipe category.
      */

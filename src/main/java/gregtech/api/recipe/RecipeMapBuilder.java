@@ -411,6 +411,8 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
      * Invocation of the builder creator is delayed until the actual registration (FMLLoadCompleteEvent),
      * so you can safely use itemstack that doesn't exist as of recipemap initialization.
      * <p>
+     * If this method is not used, handler icon will be inferred from recipe catalysts associated with this recipemap.
+     * <p>
      * Precisely, what's registered to NEI is {@link RecipeCategory}, not RecipeMap. However, handler info supplied
      * by this method will be used for default category where most of the recipes belong to.
      */
