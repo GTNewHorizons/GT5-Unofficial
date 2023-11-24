@@ -582,22 +582,6 @@ public class CentrifugeRecipes implements Runnable {
             .eut(4096)
             .addTo(centrifugeRecipes);
 
-        // rare earth ( why this still remain
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.RareEarth, 1))
-            .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Neodymium, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Yttrium, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Lanthanum, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Cerium, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Cadmium, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Caesium, 1))
-            .outputChances(2500, 2500, 2500, 2500, 2500, 2500)
-            .duration(3 * SECONDS + 4 * TICKS)
-            .eut(20)
-            .addTo(centrifugeRecipes);
-
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 45),
