@@ -9,7 +9,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
 import gregtech.api.util.GT_Recipe;
@@ -28,14 +27,14 @@ public class FuelBackend extends RecipeMapBackend {
     }
 
     @Override
-    protected Collection<GT_Recipe> doAdd(GT_RecipeBuilder builder, RecipeMap<?> recipeMap) {
+    protected Collection<GT_Recipe> doAdd(GT_RecipeBuilder builder) {
         if (builder.getDuration() == -1) {
             builder.duration(0);
         }
         if (builder.getEUt() == -1) {
             builder.eut(0);
         }
-        return super.doAdd(builder, recipeMap);
+        return super.doAdd(builder);
     }
 
     @Override

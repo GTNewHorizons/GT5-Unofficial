@@ -47,6 +47,8 @@ public class RecipeMapBackend {
 
     private static final Predicate<GT_Recipe> ALWAYS = r -> true;
 
+    private RecipeMap<?> recipeMap;
+
     /**
      * Recipe index based on items.
      */
@@ -66,8 +68,6 @@ public class RecipeMapBackend {
      */
     private final List<IRecipeMap> downstreams = new ArrayList<>(0);
 
-    private RecipeCategory defaultRecipeCategory;
-
     /**
      * All the properties specific to this backend.
      */
@@ -76,6 +76,10 @@ public class RecipeMapBackend {
     public RecipeMapBackend(RecipeMapBackendPropertiesBuilder propertiesBuilder) {
         this.properties = propertiesBuilder.build();
         GregTech_API.itemStackMultiMaps.add(itemIndex);
+    }
+
+    void setRecipeMap(RecipeMap<?> recipeMap) {
+        this.recipeMap = recipeMap;
     }
 
     /**
@@ -113,14 +117,6 @@ public class RecipeMapBackend {
             .unmodifiableCollection(recipesByCategory.getOrDefault(recipeCategory, Collections.emptyList()));
     }
 
-    public RecipeCategory getDefaultRecipeCategory() {
-        return defaultRecipeCategory;
-    }
-
-    void setDefaultRecipeCategory(RecipeCategory defaultRecipeCategory) {
-        this.defaultRecipeCategory = defaultRecipeCategory;
-    }
-
     // region add recipe
 
     /**
@@ -130,7 +126,7 @@ public class RecipeMapBackend {
      */
     public GT_Recipe compileRecipe(GT_Recipe recipe) {
         if (recipe.getRecipeCategory() == null) {
-            recipe.setRecipeCategory(defaultRecipeCategory);
+            recipe.setRecipeCategory(recipeMap.getDefaultRecipeCategory());
         }
         recipesByCategory.computeIfAbsent(recipe.getRecipeCategory(), v -> new ArrayList<>())
             .add(recipe);
@@ -158,7 +154,7 @@ public class RecipeMapBackend {
     /**
      * Builds recipe from supplied recipe builder and adds it.
      */
-    protected Collection<GT_Recipe> doAdd(GT_RecipeBuilder builder, RecipeMap<?> recipeMap) {
+    protected Collection<GT_Recipe> doAdd(GT_RecipeBuilder builder) {
         Iterable<? extends GT_Recipe> recipes = properties.recipeEmitter.apply(builder);
         Collection<GT_Recipe> ret = new ArrayList<>();
         for (GT_Recipe recipe : recipes) {
@@ -182,7 +178,7 @@ public class RecipeMapBackend {
                 handleCollision(recipe);
                 continue;
             }
-            if (recipe.getRecipeCategory() != null && recipe.getRecipeCategory().recipeMap != recipeMap) {
+            if (recipe.getRecipeCategory() != null && recipe.getRecipeCategory().recipeMap != this.recipeMap) {
                 handleInvalidRecipe();
                 continue;
             }

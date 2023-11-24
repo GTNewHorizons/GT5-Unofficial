@@ -52,6 +52,8 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
      */
     public final String unlocalizedName;
 
+    private final RecipeCategory defaultRecipeCategory;
+
     /**
      * Use {@link RecipeMapBuilder} to instantiate.
      */
@@ -59,7 +61,8 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
         this.unlocalizedName = unlocalizedName;
         this.backend = backend;
         this.frontend = frontend;
-        backend.setDefaultRecipeCategory(new RecipeCategory(this));
+        this.defaultRecipeCategory = new RecipeCategory(this);
+        backend.setRecipeMap(this);
         if (ALL_RECIPE_MAPS.containsKey(unlocalizedName)) {
             throw new IllegalArgumentException(
                 "Cannot register recipemap with duplicated unlocalized name: " + unlocalizedName);
@@ -91,6 +94,10 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
             .stream()
             .filter(category -> category.recipeMap == this)
             .collect(Collectors.toList());
+    }
+
+    public RecipeCategory getDefaultRecipeCategory() {
+        return defaultRecipeCategory;
     }
 
     /**
@@ -285,7 +292,7 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
     @Nonnull
     @Override
     public Collection<GT_Recipe> doAdd(GT_RecipeBuilder builder) {
-        return backend.doAdd(builder, this);
+        return backend.doAdd(builder);
     }
 
     public GT_Recipe add(GT_Recipe aRecipe) {
@@ -453,7 +460,7 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
             + unlocalizedName
             + '\''
             + ", ownerMod="
-            + backend.getDefaultRecipeCategory().ownerMod.getModId()
+            + defaultRecipeCategory.ownerMod.getModId()
             + '}';
     }
 
