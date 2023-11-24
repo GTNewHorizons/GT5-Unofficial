@@ -1479,7 +1479,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         if ((aDuration = GregTech_API.sRecipeFile.get("vacuumfreezer", aInput1, aDuration)) <= 0) {
             return false;
         }
-        RecipeMaps.vacuumRecipes.addRecipe(
+        RecipeMaps.vacuumFreezerRecipes.addRecipe(
             false,
             new ItemStack[] { aInput1 },
             new ItemStack[] { aOutput1 },
@@ -1521,7 +1521,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         if ((aInput1 == null) || (aOutput1 == null)) {
             return false;
         }
-        RecipeMaps.vacuumRecipes.addRecipe(
+        RecipeMaps.vacuumFreezerRecipes.addRecipe(
             false,
             null,
             null,
@@ -1538,7 +1538,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
     @Deprecated
     public boolean addVacuumFreezerRecipe(ItemStack[] aItemInput, FluidStack[] aFluidInput, ItemStack[] aItemOutput,
         FluidStack[] aFluidOutput, int aDuration, int aEUt) {
-        RecipeMaps.vacuumRecipes.addRecipe(
+        RecipeMaps.vacuumFreezerRecipes.addRecipe(
             false,
             aItemInput,
             aItemOutput,

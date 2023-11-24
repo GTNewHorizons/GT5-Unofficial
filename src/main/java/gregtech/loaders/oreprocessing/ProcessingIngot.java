@@ -3,7 +3,7 @@ package gregtech.loaders.oreprocessing;
 import static gregtech.api.recipe.RecipeMaps.benderRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidfierRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
-import static gregtech.api.recipe.RecipeMaps.vacuumRecipes;
+import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.FUEL_TYPE;
@@ -296,7 +296,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L))
                         .duration(((int) Math.max(aMaterialMass * 3L, 1L)) * TICKS)
                         .eut(TierEU.RECIPE_MV)
-                        .addTo(vacuumRecipes);
+                        .addTo(vacuumFreezerRecipes);
                 }
             }
             default -> {}

@@ -2,7 +2,7 @@ package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
-import static gregtech.api.recipe.RecipeMaps.vacuumRecipes;
+import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
@@ -204,7 +204,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L))
                             .duration(((int) Math.max(aMaterial.getMass() * 2L, 1L)) * TICKS)
                             .eut(TierEU.RECIPE_MV)
-                            .addTo(vacuumRecipes);
+                            .addTo(vacuumFreezerRecipes);
                     }
                 }
             }

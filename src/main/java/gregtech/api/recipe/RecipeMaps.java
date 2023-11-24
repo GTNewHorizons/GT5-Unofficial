@@ -726,7 +726,8 @@ public final class RecipeMaps {
         })
         .recipeConfigFile("implosion", FIRST_ITEM_INPUT)
         .build();
-    public static final RecipeMap<RecipeMapBackend> vacuumRecipes = RecipeMapBuilder.of("gt.recipe.vacuumfreezer")
+    public static final RecipeMap<RecipeMapBackend> vacuumFreezerRecipes = RecipeMapBuilder
+        .of("gt.recipe.vacuumfreezer")
         .maxIO(1, 1, 2, 1)
         .recipeEmitter(b -> {
             b.noOptimize();
