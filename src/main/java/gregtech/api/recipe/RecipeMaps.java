@@ -1039,7 +1039,7 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<FuelBackend> hotFuels = RecipeMapBuilder
         .of("gt.recipe.thermalgeneratorfuel", FuelBackend::new)
-        .maxIO(1, 1, 0, 0)
+        .maxIO(1, 4, 0, 0)
         .neiSpecialInfoFormatter(FuelSpecialValueFormatter.INSTANCE)
         .build();
     public static final RecipeMap<FuelBackend> denseLiquidFuels = RecipeMapBuilder
