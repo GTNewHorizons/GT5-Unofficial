@@ -44,27 +44,30 @@ public class ReplicatorBackend extends RecipeMapBackend {
     @Override
     protected FindRecipeResult overwriteFindRecipe(ItemStack[] items, FluidStack[] fluids,
         @Nullable ItemStack specialSlot, Predicate<GT_Recipe> recipeValidator, @Nullable GT_Recipe cachedRecipe) {
-        if (cachedRecipe != null && cachedRecipe.mSpecialItems instanceof ItemStack recipeOrb) {
-            Materials foundMaterial = getMaterialFromDataOrb(specialSlot);
-            Materials cachedRecipeMaterial = getMaterialFromDataOrb(recipeOrb);
+        if (specialSlot == null) {
+            return NOT_FOUND;
+        }
+        Materials foundMaterial = getMaterialFromDataOrb(specialSlot);
+        if (foundMaterial == null) {
+            return NOT_FOUND;
+        }
+        if (cachedRecipe != null) {
+            Materials cachedRecipeMaterial = cachedRecipe.getMetadata(GT_RecipeConstants.MATERIAL);
             if (foundMaterial == cachedRecipeMaterial && recipeValidator.test(cachedRecipe)) {
                 return FindRecipeResult.ofSuccess(cachedRecipe);
             }
         }
-        Materials foundMaterial = getMaterialFromDataOrb(specialSlot);
         for (GT_Recipe recipe : getAllRecipes()) {
-            if (recipe.mSpecialItems instanceof ItemStack recipeOrb) {
-                Materials recipeMaterial = getMaterialFromDataOrb(recipeOrb);
-                if (foundMaterial == recipeMaterial && recipeValidator.test(recipe)) {
-                    return FindRecipeResult.ofSuccess(recipe);
-                }
+            Materials recipeMaterial = recipe.getMetadata(GT_RecipeConstants.MATERIAL);
+            if (foundMaterial == recipeMaterial && recipeValidator.test(recipe)) {
+                return FindRecipeResult.ofSuccess(recipe);
             }
         }
         return NOT_FOUND;
     }
 
     @Nullable
-    private static Materials getMaterialFromDataOrb(@Nullable ItemStack stack) {
+    private static Materials getMaterialFromDataOrb(ItemStack stack) {
         if (ItemList.Tool_DataOrb.isStackEqual(stack, false, true) && Behaviour_DataOrb.getDataTitle(stack)
             .equals("Elemental-Scan")) {
             return Element.get(Behaviour_DataOrb.getDataName(stack)).mLinkedMaterials.stream()
