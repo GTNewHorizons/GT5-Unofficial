@@ -5,7 +5,6 @@ import static gregtech.api.util.GT_RecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GT_RecipeMapUtil.*;
 import static gregtech.api.util.GT_Utility.*;
 
-import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -211,7 +210,9 @@ public final class RecipeMaps {
         .useSpecialSlot()
         .slotOverlays((index, isFluid, isOutput, isSpecial) -> isSpecial ? GT_UITextures.OVERLAY_SLOT_DATA_ORB : null)
         .disableOptimize()
-        .neiTransferRect(new Rectangle(146, 26, 10, 18))
+        .neiTransferRect(88, 8, 18, 72)
+        .neiTransferRect(124, 8, 18, 72)
+        .neiTransferRect(142, 26, 18, 18)
         .frontend(AssemblyLineFrontend::new)
         .build();
     /**
@@ -582,6 +583,8 @@ public final class RecipeMaps {
         .neiSpecialInfoFormatter(new SimpleSpecialValueFormatter("GT5U.nei.stages"))
         .neiRecipeBackgroundOffset(3, 23)
         .logoPos(152, 83)
+        .neiTransferRect(70, 28, 18, 72)
+        .neiTransferRect(106, 28, 18, 72)
         .frontend(SpaceProjectFrontend::new)
         .disableRenderRealStackSizes()
         .disableOptimize()

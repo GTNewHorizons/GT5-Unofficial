@@ -326,12 +326,12 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
     }
 
     /**
-     * Sets GUI area where clicking shows up all the recipes available.
+     * Adds GUI area where clicking shows up all the recipes available.
      *
      * @see codechicken.nei.recipe.TemplateRecipeHandler.RecipeTransferRect
      */
-    public RecipeMapBuilder<B> neiTransferRect(Rectangle neiTransferRect) {
-        uiPropertiesBuilder.neiTransferRect(neiTransferRect);
+    public RecipeMapBuilder<B> neiTransferRect(int x, int y, int width, int height) {
+        uiPropertiesBuilder.addNEITransferRect(new Rectangle(x, y, width, height));
         return this;
     }
 

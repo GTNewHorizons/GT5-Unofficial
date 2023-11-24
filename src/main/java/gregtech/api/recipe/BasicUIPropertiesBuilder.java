@@ -1,6 +1,7 @@
 package gregtech.api.recipe;
 
 import java.awt.Rectangle;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.IntFunction;
 import java.util.function.Supplier;
@@ -48,7 +49,7 @@ public final class BasicUIPropertiesBuilder {
 
     private boolean useSpecialSlot;
 
-    private Rectangle neiTransferRect;
+    private final ImmutableList.Builder<Rectangle> neiTransferRect = ImmutableList.builder();
     @Nullable
     private String neiTransferRectId;
 
@@ -74,12 +75,14 @@ public final class BasicUIPropertiesBuilder {
         if (maxItemInputs == 0 && maxItemOutputs == 0 && maxFluidInputs == 0 && maxFluidOutputs == 0) {
             throw new IllegalArgumentException("Set either of max I/O count");
         }
-        if (neiTransferRect == null) {
-            neiTransferRect = new Rectangle(
-                progressBarPos.x - (16 / 2),
-                progressBarPos.y,
-                progressBarSize.width + 16,
-                progressBarSize.height);
+        List<Rectangle> builtNEITransferRect = neiTransferRect.build();
+        if (builtNEITransferRect.isEmpty()) {
+            builtNEITransferRect = Collections.singletonList(
+                new Rectangle(
+                    progressBarPos.x - (16 / 2),
+                    progressBarPos.y,
+                    progressBarSize.width + 16,
+                    progressBarSize.height));
         }
         return new BasicUIProperties(
             maxItemInputs,
@@ -93,7 +96,7 @@ public final class BasicUIPropertiesBuilder {
             progressBarDirection,
             progressBarSize,
             progressBarPos,
-            neiTransferRect,
+            builtNEITransferRect,
             neiTransferRectId,
             useSpecialSlot,
             specialTextures.build(),
@@ -171,8 +174,13 @@ public final class BasicUIPropertiesBuilder {
         return this;
     }
 
-    public BasicUIPropertiesBuilder neiTransferRect(Rectangle neiTransferRect) {
-        this.neiTransferRect = neiTransferRect;
+    public BasicUIPropertiesBuilder addNEITransferRect(Rectangle neiTransferRect) {
+        this.neiTransferRect.add(neiTransferRect);
+        return this;
+    }
+
+    BasicUIPropertiesBuilder neiTransferRect(List<Rectangle> neiTransferRect) {
+        this.neiTransferRect.addAll(neiTransferRect);
         return this;
     }
 

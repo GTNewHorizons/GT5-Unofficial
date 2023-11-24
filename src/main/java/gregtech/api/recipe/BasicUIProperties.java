@@ -129,7 +129,7 @@ public final class BasicUIProperties {
     /**
      * GUI area where clicking shows up all the recipes available.
      */
-    public final Rectangle neiTransferRect;
+    public final List<Rectangle> neiTransferRect;
     /**
      * ID used to open NEI recipe GUI when progressbar is clicked.
      */
@@ -174,7 +174,7 @@ public final class BasicUIProperties {
         SlotOverlayGetter<IDrawable> slotOverlays, SlotOverlayGetter<SteamTexture> slotOverlaysSteam,
         @Nullable FallbackableUITexture progressBarTexture, @Nullable FallbackableSteamTexture progressBarTextureSteam,
         ProgressBar.Direction progressBarDirection, Size progressBarSize, Pos2d progressBarPos,
-        Rectangle neiTransferRect, @Nullable String neiTransferRectId, boolean useSpecialSlot,
+        List<Rectangle> neiTransferRect, @Nullable String neiTransferRectId, boolean useSpecialSlot,
         List<Pair<IDrawable, Pair<Size, Pos2d>>> specialTextures,
         List<Pair<SteamTexture, Pair<Size, Pos2d>>> specialTexturesSteam, IDrawable logo, Size logoSize, Pos2d logoPos,
         IntFunction<List<Pos2d>> itemInputPositionsGetter, IntFunction<List<Pos2d>> itemOutputPositionsGetter,

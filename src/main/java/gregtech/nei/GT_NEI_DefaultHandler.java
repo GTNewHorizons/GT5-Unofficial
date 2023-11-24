@@ -119,9 +119,11 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
         this.frontend = recipeMap.getFrontend();
         this.uiProperties = frontend.getUIProperties();
         this.neiProperties = frontend.getNEIProperties();
-        Rectangle transferRect = new Rectangle(uiProperties.neiTransferRect);
-        transferRect.translate(WINDOW_OFFSET.x, WINDOW_OFFSET.y);
-        this.transferRects.add(new RecipeTransferRect(transferRect, recipeMap.unlocalizedName));
+        uiProperties.neiTransferRect.forEach(transferRect -> {
+            transferRect = new Rectangle(transferRect);
+            transferRect.translate(WINDOW_OFFSET.x, WINDOW_OFFSET.y);
+            this.transferRects.add(new RecipeTransferRect(transferRect, recipeMap.unlocalizedName));
+        });
 
         ModularWindow.Builder builder = frontend.createNEITemplate(
             itemInputsInventory = new ItemStackHandler(uiProperties.maxItemInputs),
