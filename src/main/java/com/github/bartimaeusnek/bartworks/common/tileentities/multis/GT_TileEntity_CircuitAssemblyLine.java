@@ -494,12 +494,12 @@ public class GT_TileEntity_CircuitAssemblyLine extends
 
     @Override
     public boolean supportsInputSeparation() {
-        return mode == 0 ? false : true;
+        return mode != 0;
     }
 
     @Override
     public boolean isInputSeparationEnabled() {
-        return mode == 0 ? false : super.isInputSeparationEnabled();
+        return mode == 1 && super.isInputSeparationEnabled();
     }
 
     @Override
@@ -533,7 +533,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends
 
     @Override
     protected boolean supportsCraftingMEBuffer() {
-        return mode == 0 ? false : true;
+        return mode != 0;
     }
 
 }
