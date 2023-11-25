@@ -726,6 +726,21 @@ public class RECIPES_GREGTECH {
                 0,
                 20 * 120,
                 491520);
+
+        // molten precious metals alloy
+        CORE.RA.addBlastSmelterRecipe(
+                new ItemStack[] { ItemUtils.getGregtechCircuit(6),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustRuthenium", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustRhodium", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustPalladium", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustPlatinum", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustOsmium", 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustIridium", 1) },
+                GT_Values.NF,
+                FluidUtils.getFluidStack("molten.precious metals alloy", 864),
+                0,
+                20 * 540,
+                7864320);
     }
 
     private static void dehydratorRecipes() {
