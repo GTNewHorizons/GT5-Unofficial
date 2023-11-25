@@ -668,6 +668,11 @@ public class GT_Client extends GT_Proxy implements Runnable {
     }
 
     @Override
+    public void reload() {
+        mReloadCount++;
+    }
+
+    @Override
     public int getReloadCount() {
         return mReloadCount;
     }

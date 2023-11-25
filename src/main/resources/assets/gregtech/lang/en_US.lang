@@ -562,6 +562,7 @@ GT5U.config.nei.RecipeOwner=Show which mod added the recipe
 GT5U.config.nei.RecipeOwnerStackTrace=[debug] Show stack traces of recipe addition
 GT5U.config.nei.RecipeOwnerStackTrace.tooltip=[requires reboot]
 GT5U.config.nei.OriginalVoltage=Show original voltage when overclocked
+GT5U.config.nei.recipe_categories=Recipe Categories
 GT5U.config.waila=Waila
 GT5U.config.waila.WailaTransformerVoltageTier=Show voltage tier of transformer
 GT5U.config.waila.WailaAverageNS=Show average ns of multiblocks on waila

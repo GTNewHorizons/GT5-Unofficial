@@ -139,6 +139,20 @@ public class GT_Config implements Runnable {
         return rResult;
     }
 
+    public String getWithValidValues(Object aCategory, String aName, String[] validValues, String aDefault) {
+        if (GT_Utility.isStringInvalid(aName)) return aDefault;
+        Property tProperty = mConfig.get(
+            aCategory.toString()
+                .replaceAll("\\|", "_"),
+            aName.replaceAll("\\|", "_"),
+            aDefault,
+            null,
+            validValues);
+        String rResult = tProperty.getString();
+        if (!tProperty.wasRead() && GregTech_API.sPostloadFinished) mConfig.save();
+        return rResult;
+    }
+
     @Override
     public void run() {
         mConfig.save();

@@ -117,6 +117,11 @@ public class RecipeMapBackend {
             .unmodifiableCollection(recipesByCategory.getOrDefault(recipeCategory, Collections.emptyList()));
     }
 
+    @Unmodifiable
+    public Map<RecipeCategory, Collection<GT_Recipe>> getRecipeCategoryMap() {
+        return Collections.unmodifiableMap(recipesByCategory);
+    }
+
     // region add recipe
 
     /**

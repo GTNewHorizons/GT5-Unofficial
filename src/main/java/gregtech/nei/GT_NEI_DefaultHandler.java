@@ -6,6 +6,8 @@ import java.awt.Rectangle;
 import java.lang.ref.SoftReference;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -14,6 +16,7 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -57,6 +60,7 @@ import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.recipe.NEIRecipeProperties;
 import gregtech.api.recipe.RecipeCategory;
+import gregtech.api.recipe.RecipeCategorySetting;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -150,9 +154,38 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
         List<CachedDefaultRecipe> cache;
         if (cacheHolder.getCachedRecipesVersion() != GT_Mod.gregtechproxy.getReloadCount()
             || (cache = cacheHolder.getCachedRecipes()) == null) {
-            cache = recipeMap.getBackend()
-                .getRecipesByCategory(recipeCategory)
-                .stream() // do not use parallel stream. This is already parallelized by NEI
+            RecipeCategory defaultCategory = recipeMap.getDefaultRecipeCategory();
+            Collection<GT_Recipe> recipes;
+            if (this.recipeCategory == defaultCategory) {
+                // This is main category, so merge categories that are configured as such
+                Stream<GT_Recipe> recipesToMerge = recipeMap.getBackend()
+                    .getRecipeCategoryMap()
+                    .entrySet()
+                    .stream()
+                    .flatMap(entry -> {
+                        boolean merge = entry.getKey() != defaultCategory && GT_Mod.gregtechproxy.recipeCategorySettings
+                            .getOrDefault(entry.getKey(), RecipeCategorySetting.getDefault())
+                            == RecipeCategorySetting.MERGE;
+                        return merge ? entry.getValue()
+                            .stream() : Stream.empty();
+                    });
+                recipes = Stream.concat(
+                    recipesToMerge,
+                    recipeMap.getBackend()
+                        .getRecipesByCategory(defaultCategory)
+                        .stream())
+                    .collect(Collectors.toList());
+            } else {
+                // This is "sub" category
+                if (GT_Mod.gregtechproxy.recipeCategorySettings
+                    .getOrDefault(recipeCategory, RecipeCategorySetting.getDefault()) == RecipeCategorySetting.ENABLE) {
+                    recipes = recipeMap.getBackend()
+                        .getRecipesByCategory(recipeCategory);
+                } else {
+                    recipes = Collections.emptyList();
+                }
+            }
+            cache = recipes.stream() // do not use parallel stream. This is already parallelized by NEI
                 .filter(r -> !r.mHidden)
                 .sorted(neiProperties.comparator)
                 .map(CachedDefaultRecipe::new)

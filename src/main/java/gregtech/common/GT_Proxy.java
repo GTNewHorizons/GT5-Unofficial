@@ -149,6 +149,8 @@ import gregtech.api.objects.GT_ChunkManager;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_UO_DimensionList;
 import gregtech.api.objects.ItemData;
+import gregtech.api.recipe.RecipeCategory;
+import gregtech.api.recipe.RecipeCategorySetting;
 import gregtech.api.util.GT_BlockMap;
 import gregtech.api.util.GT_CLS_Compat;
 import gregtech.api.util.GT_ChunkAssociatedData;
@@ -716,6 +718,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
      * This enables the blue charge bar for an electric item's charge
      */
     public boolean mRenderItemChargeBar = true;
+
+    public final Map<RecipeCategory, RecipeCategorySetting> recipeCategorySettings = new HashMap<>();
 
     /**
      * This enables showing voltage tier of transformer for Waila, instead of raw voltage number
@@ -1415,6 +1419,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
 
     @SubscribeEvent
     public void onClientConnectedToServerEvent(FMLNetworkEvent.ClientConnectedToServerEvent aEvent) {}
+
+    public void reload() {}
 
     public int getReloadCount() {
         return 0;

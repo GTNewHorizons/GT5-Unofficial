@@ -17,6 +17,8 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
 
 /**
  * Used to display recipes on NEI on different tabs.
+ * <p>
+ * Also apply {@link RecipeCategoryHolder} annotation to each instance to be picked up by GT config.
  */
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
