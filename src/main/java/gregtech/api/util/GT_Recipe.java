@@ -789,7 +789,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             Map<GT_Utility.ItemId, Integer> itemMapUnified = new HashMap<>();
             Map<GT_Utility.ItemId, Integer> itemMap = new HashMap<>();
             Map<GT_Utility.ItemId, Integer> itemMapWildcard = new HashMap<>();// Used only when wildcard input is found
-            Map<GT_Utility.ItemId, Integer> itemMapWildcardUnified = new HashMap<>();// Used only when wildcard input is found
+            Map<GT_Utility.ItemId, Integer> itemMapWildcardUnified = new HashMap<>();// Used only when wildcard input is
+                                                                                     // found
             boolean foundWildcard = false;
             for (ItemStack itemStack : mInputs) {
                 if (itemStack == null) continue;
