@@ -786,8 +786,10 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         if (aInputs != null) {
             // Create map for item -> stored amount
             Map<GT_Utility.ItemId, Integer> itemCost = new HashMap<>();
+            Map<GT_Utility.ItemId, Integer> itemMapUnified = new HashMap<>();
             Map<GT_Utility.ItemId, Integer> itemMap = new HashMap<>();
-            Map<GT_Utility.ItemId, Integer> itemMapWildcard = new HashMap<>(); // Used only when wildcard input is found
+            Map<GT_Utility.ItemId, Integer> itemMapWildcard = new HashMap<>();// Used only when wildcard input is found
+            Map<GT_Utility.ItemId, Integer> itemMapWildcardUnified = new HashMap<>();// Used only when wildcard input is found
             boolean foundWildcard = false;
             for (ItemStack itemStack : mInputs) {
                 if (itemStack == null) continue;
@@ -802,27 +804,43 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             }
             for (ItemStack itemStack : aInputs) {
                 if (itemStack == null) continue;
-                ItemStack unifiedStack = GT_OreDictUnificator.get(false, itemStack, true);
-                if (unifiedStack == null) continue;
                 if (isNBTSensitive) {
-                    itemMap.merge(GT_Utility.ItemId.createNoCopy(unifiedStack), unifiedStack.stackSize, Integer::sum);
+                    itemMap.merge(GT_Utility.ItemId.createNoCopy(itemStack), itemStack.stackSize, Integer::sum);
                 } else {
-                    itemMap
-                        .merge(GT_Utility.ItemId.createWithoutNBT(unifiedStack), unifiedStack.stackSize, Integer::sum);
+                    itemMap.merge(GT_Utility.ItemId.createWithoutNBT(itemStack), itemStack.stackSize, Integer::sum);
                 }
                 if (foundWildcard) {
                     itemMapWildcard
+                        .merge(GT_Utility.ItemId.createAsWildcard(itemStack), itemStack.stackSize, Integer::sum);
+                }
+                ItemStack unifiedStack = GT_OreDictUnificator.get(false, itemStack, true);
+                if (unifiedStack == null) continue;
+                if (isNBTSensitive) {
+                    itemMapUnified
+                        .merge(GT_Utility.ItemId.createNoCopy(unifiedStack), unifiedStack.stackSize, Integer::sum);
+                } else {
+                    itemMapUnified
+                        .merge(GT_Utility.ItemId.createWithoutNBT(unifiedStack), unifiedStack.stackSize, Integer::sum);
+                }
+                if (foundWildcard) {
+                    itemMapWildcardUnified
                         .merge(GT_Utility.ItemId.createAsWildcard(unifiedStack), unifiedStack.stackSize, Integer::sum);
                 }
+
             }
             // Check how many parallels can it perform for each item
             for (Map.Entry<GT_Utility.ItemId, Integer> costEntry : itemCost.entrySet()) {
                 GT_Utility.ItemId costItem = costEntry.getKey();
                 int costValue = costEntry.getValue();
                 Map<GT_Utility.ItemId, Integer> mapToUse = costItem.metaData() == W ? itemMapWildcard : itemMap;
+                Map<GT_Utility.ItemId, Integer> unifiedMapToUse = costItem.metaData() == W ? itemMapWildcardUnified
+                    : itemMapUnified;
                 if (costValue > 0) {
-                    currentParallel = Math
-                        .min(currentParallel, (double) mapToUse.getOrDefault(costItem, 0) / costValue);
+                    currentParallel = Math.min(
+                        currentParallel,
+                        Math.max(
+                            (double) mapToUse.getOrDefault(costItem, 0) / costValue,
+                            (double) unifiedMapToUse.getOrDefault(costItem, 0) / costValue));
                 } else {
                     // Non-consumed input
                     // We need to distinguish null and 0 here, since not having item
