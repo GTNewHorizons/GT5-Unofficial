@@ -805,25 +805,21 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             }
             for (ItemStack itemStack : aInputs) {
                 if (itemStack == null) continue;
-                if (isNBTSensitive) {
-                    itemMap.merge(GT_Utility.ItemId.createNoCopy(itemStack), itemStack.stackSize, Integer::sum);
-                } else {
-                    itemMap.merge(GT_Utility.ItemId.createWithoutNBT(itemStack), itemStack.stackSize, Integer::sum);
-                }
-                if (foundWildcard) {
-                    itemMapWildcard
-                        .merge(GT_Utility.ItemId.createAsWildcard(itemStack), itemStack.stackSize, Integer::sum);
-                }
+
                 ItemStack unifiedStack = GT_OreDictUnificator.get(false, itemStack, true);
                 if (unifiedStack == null) continue;
                 if (isNBTSensitive) {
+                    itemMap.merge(GT_Utility.ItemId.createNoCopy(itemStack), itemStack.stackSize, Integer::sum);
                     itemMapUnified
                         .merge(GT_Utility.ItemId.createNoCopy(unifiedStack), unifiedStack.stackSize, Integer::sum);
                 } else {
+                    itemMap.merge(GT_Utility.ItemId.createWithoutNBT(itemStack), itemStack.stackSize, Integer::sum);
                     itemMapUnified
                         .merge(GT_Utility.ItemId.createWithoutNBT(unifiedStack), unifiedStack.stackSize, Integer::sum);
                 }
                 if (foundWildcard) {
+                    itemMapWildcard
+                        .merge(GT_Utility.ItemId.createAsWildcard(itemStack), itemStack.stackSize, Integer::sum);
                     itemMapWildcardUnified
                         .merge(GT_Utility.ItemId.createAsWildcard(unifiedStack), unifiedStack.stackSize, Integer::sum);
                 }
