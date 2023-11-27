@@ -71,6 +71,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_InputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
 
@@ -93,7 +94,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     private int stabilisationFieldMetadata = -1;
 
     private static final double SPACETIME_CASING_DIFFERENCE_DISCOUNT_PERCENTAGE = 0.03;
-    private static final double TIME_ACCEL_DECREASE_CHANCE_PER_TIER = 0.1;
+    private static final double TIME_ACCEL_DECREASE_CHANCE_PER_TIER = 0.0925;
     // % Increase in recipe chance and % decrease in yield per tier.
     private static final double STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER = 0.05;
     private static final double LOG_CONSTANT = Math.log(1.7);
@@ -862,9 +863,15 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             }
         }
 
-        // Check there is 1 input bus.
-        if (mInputBusses.size() != 1) {
-            return false;
+        // Check there is 1 input bus, and it is not a stocking input bus.
+        {
+            if (mInputBusses.size() != 1) {
+                return false;
+            }
+
+            if (mInputBusses.get(0) instanceof GT_MetaTileEntity_Hatch_InputBus_ME) {
+                return false;
+            }
         }
 
         // Make sure there are no energy hatches.
