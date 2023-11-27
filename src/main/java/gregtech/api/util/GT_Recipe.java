@@ -783,71 +783,40 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             }
         }
 
+        double remainingCost;
+        int providedAmount;
         if (aInputs != null) {
-            // Create map for item -> stored amount
-            Map<GT_Utility.ItemId, Integer> itemCost = new HashMap<>();
-            Map<GT_Utility.ItemId, Integer> itemMapUnified = new HashMap<>();
-            Map<GT_Utility.ItemId, Integer> itemMap = new HashMap<>();
-            Map<GT_Utility.ItemId, Integer> itemMapWildcard = new HashMap<>();// Used only when wildcard input is found
-            Map<GT_Utility.ItemId, Integer> itemMapWildcardUnified = new HashMap<>();// Used only when wildcard input is
-                                                                                     // found
-            boolean foundWildcard = false;
-            for (ItemStack itemStack : mInputs) {
-                if (itemStack == null) continue;
-                if (itemStack.getItemDamage() == W) {
-                    foundWildcard = true;
-                }
-                if (isNBTSensitive) {
-                    itemCost.merge(GT_Utility.ItemId.createNoCopy(itemStack), itemStack.stackSize, Integer::sum);
-                } else {
-                    itemCost.merge(GT_Utility.ItemId.createWithoutNBT(itemStack), itemStack.stackSize, Integer::sum);
-                }
-            }
-            for (ItemStack itemStack : aInputs) {
-                if (itemStack == null) continue;
+            nextRecipeItemCost: for (ItemStack recipeItemCost : mInputs) {
 
-                ItemStack unifiedStack = GT_OreDictUnificator.get(false, itemStack, true);
-                if (unifiedStack == null) continue;
-                if (isNBTSensitive) {
-                    itemMap.merge(GT_Utility.ItemId.createNoCopy(itemStack), itemStack.stackSize, Integer::sum);
-                    itemMapUnified
-                        .merge(GT_Utility.ItemId.createNoCopy(unifiedStack), unifiedStack.stackSize, Integer::sum);
-                } else {
-                    itemMap.merge(GT_Utility.ItemId.createWithoutNBT(itemStack), itemStack.stackSize, Integer::sum);
-                    itemMapUnified
-                        .merge(GT_Utility.ItemId.createWithoutNBT(unifiedStack), unifiedStack.stackSize, Integer::sum);
-                }
-                if (foundWildcard) {
-                    itemMapWildcard
-                        .merge(GT_Utility.ItemId.createAsWildcard(itemStack), itemStack.stackSize, Integer::sum);
-                    itemMapWildcardUnified
-                        .merge(GT_Utility.ItemId.createAsWildcard(unifiedStack), unifiedStack.stackSize, Integer::sum);
-                }
+                ItemStack unifiedItemCost = GT_OreDictUnificator.get_nocopy(true, recipeItemCost);
+                if (unifiedItemCost != null) {
+                    remainingCost = recipeItemCost.stackSize * currentParallel;
+                    providedAmount = 0;
 
-            }
-            // Check how many parallels can it perform for each item
-            for (Map.Entry<GT_Utility.ItemId, Integer> costEntry : itemCost.entrySet()) {
-                GT_Utility.ItemId costItem = costEntry.getKey();
-                int costValue = costEntry.getValue();
-                Map<GT_Utility.ItemId, Integer> mapToUse = costItem.metaData() == W ? itemMapWildcard : itemMap;
-                Map<GT_Utility.ItemId, Integer> unifiedMapToUse = costItem.metaData() == W ? itemMapWildcardUnified
-                    : itemMapUnified;
-                if (costValue > 0) {
-                    currentParallel = Math.min(
-                        currentParallel,
-                        Math.max(
-                            (double) mapToUse.getOrDefault(costItem, 0) / costValue,
-                            (double) unifiedMapToUse.getOrDefault(costItem, 0) / costValue));
-                } else {
-                    // Non-consumed input
-                    // We need to distinguish null and 0 here, since not having item
-                    // and having 0-sized item (ghost circuit) are different.
-                    if (!mapToUse.containsKey(costItem)) {
-                        currentParallel = 0;
+                    for (ItemStack providedItem : aInputs) {
+                        if (isNBTSensitive && !GT_Utility.areStacksEqual(providedItem, unifiedItemCost, false)) {
+                            continue;
+                        } else if (!isNBTSensitive
+                            && !GT_OreDictUnificator.isInputStackEqual(providedItem, unifiedItemCost)) {
+                                continue;
+                            }
+
+                        if (GTppRecipeHelper) { // Please see JavaDoc on GTppRecipeHelper for why this is here.
+                            if (GT_Utility.areStacksEqual(providedItem, Ic2Items.FluidCell.copy(), true)
+                                || GT_Utility.areStacksEqual(providedItem, ItemList.Tool_DataStick.get(1L), true)
+                                || GT_Utility.areStacksEqual(providedItem, ItemList.Tool_DataOrb.get(1L), true)) {
+                                if (!GT_Utility.areStacksEqual(providedItem, recipeItemCost, false)) continue;
+                            }
+                        }
+                        // for non-consumed input
+                        if (recipeItemCost.stackSize == 0) continue nextRecipeItemCost;
+
+                        providedAmount += providedItem.stackSize;
+
+                        if (providedAmount >= remainingCost) continue nextRecipeItemCost;
                     }
-                }
-                if (currentParallel <= 0) {
-                    return 0;
+                    if (providedAmount == 0) return 0;
+                    currentParallel = Math.min(currentParallel, (double) providedAmount / recipeItemCost.stackSize);
                 }
             }
         }
