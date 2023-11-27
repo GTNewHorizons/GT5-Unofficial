@@ -42,6 +42,8 @@ dependencies {
     api("com.github.GTNewHorizons:waila:1.6.2:dev")
     api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-280-GTNH:dev")
     api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.1.63-gtnh:dev")
+    api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.1.63-gtnh:dev")
+    api("com.github.GTNewHorizons:Amazing-Trophies:0.10.0:dev")
 
     implementation("com.github.GTNewHorizons:Avaritia:1.46:dev")
 

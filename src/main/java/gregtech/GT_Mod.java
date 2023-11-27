@@ -14,6 +14,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.function.Predicate;
 
+import gregtech.common.trophies.TrophyRegistration;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -374,6 +375,8 @@ public class GT_Mod implements IGT_Mod {
                 e.printStackTrace(GT_Log.err);
             }
         }
+
+        TrophyRegistration.load();
     }
 
     @Mod.EventHandler
