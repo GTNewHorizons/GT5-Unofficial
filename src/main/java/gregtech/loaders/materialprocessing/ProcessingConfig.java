@@ -13,7 +13,7 @@ public class ProcessingConfig implements gregtech.api.interfaces.IMaterialHandle
     /**
      * To add a new material, please see the following example:
      * <blockquote>
-     * 
+     *
      * <pre>
      * int numberOfMaterialSlots = GregTech_API.sMaterialProperties.get("general", "AmountOfCustomMaterialSlots", 16);
      * for (int i = 0; i < numberOfMaterialSlots; i++) {
@@ -46,38 +46,10 @@ public class ProcessingConfig implements gregtech.api.interfaces.IMaterialHandle
      *         aID);
      * }
      * </pre>
-     * 
+     *
      * </blockquote>
      */
     @SuppressWarnings("unused")
     @Override
     public void onMaterialsInit() {}
-
-    @Override
-    public void onComponentInit() {
-        // This is left here as an example of how to add components.
-        // TODO: convert the example to a javadoc
-        /*
-         * Enabling specific components: OrePrefixes.spring.enableComponent(Materials.Cobalt);
-         * OrePrefixes.ingotDouble.enableComponent(Materials.Cobalt);
-         * OrePrefixes.ingotTriple.enableComponent(Materials.Cobalt);
-         * OrePrefixes.ingotQuadruple.enableComponent(Materials.Cobalt);
-         * OrePrefixes.ingotQuintuple.enableComponent(Materials.Cobalt);
-         * OrePrefixes.plateDouble.enableComponent(Materials.Cobalt);
-         * OrePrefixes.plateTriple.enableComponent(Materials.Cobalt);
-         * OrePrefixes.plateQuadruple.enableComponent(Materials.Cobalt);
-         * OrePrefixes.plateQuintuple.enableComponent(Materials.Cobalt);
-         * OrePrefixes.plateDense.enableComponent(Materials.Cobalt);
-         */
-    }
-
-    @Override
-    public void onComponentIteration(Materials aMaterial) {
-        // This is left here as an example of how to add components.
-        // TODO: convert the example to a javadoc
-        /*
-         * Enabling/Disabling components depending on the current Materials values: if ((aMaterial.mTypes & 0x40) != 0)
-         * { //This material can be made into tool heads OrePrefixes.plateQuadruple.mDisabledItems.remove(aMaterial); }
-         */
-    }
 }

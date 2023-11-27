@@ -117,8 +117,6 @@ public class GT_PreLoad {
             new Configuration(new File(new File(configDir, "GregTech"), "WorldGeneration.cfg")));
         GregTech_API.sMaterialProperties = new GT_Config(
             new Configuration(new File(new File(configDir, "GregTech"), "MaterialProperties.cfg")));
-        GregTech_API.sMaterialComponents = new GT_Config(
-            new Configuration(new File(new File(configDir, "GregTech"), "MaterialComponents.cfg")));
         GregTech_API.sUnification = new GT_Config(
             new Configuration(new File(new File(configDir, "GregTech"), "Unification.cfg")));
         GregTech_API.sSpecialFile = new GT_Config(
@@ -524,8 +522,6 @@ public class GT_PreLoad {
             .get(GT_Mod.aTextGeneral, "ArcSmeltIntoAnnealedWrought", true)
             .getBoolean(true);
         GT_Mod.gregtechproxy.mEnableAllMaterials = tMainConfig.get("general", "EnableAllMaterials", false)
-            .getBoolean(false);
-        GT_Mod.gregtechproxy.mEnableAllComponents = tMainConfig.get("general", "EnableAllComponents", false)
             .getBoolean(false);
 
         // Pollution: edit GT_Proxy.java to change default values
