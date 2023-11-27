@@ -1,15 +1,5 @@
 package gregtech.api.ModernMaterials.Blocks.Registration;
 
-import static gregtech.api.ModernMaterials.Blocks.Registration.SimpleBlockRegistration.generateIDGroups;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.client.MinecraftForgeClient;
-
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMaterialBlock;
@@ -17,6 +7,10 @@ import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMateri
 import gregtech.api.ModernMaterials.Blocks.DumbBase.Special.MasterItemBlockRenderer;
 import gregtech.api.ModernMaterials.Blocks.DumbBase.Special.MasterTESR;
 import gregtech.api.ModernMaterials.ModernMaterial;
+import net.minecraft.item.Item;
+import net.minecraftforge.client.MinecraftForgeClient;
+
+import java.lang.reflect.InvocationTargetException;
 
 public class SpecialBlockRegistration {
 
@@ -25,45 +19,30 @@ public class SpecialBlockRegistration {
 
     public static void registerTESRBlock(BlocksEnum blockType) {
 
-        // Extract and sort the IDs associated with the materials. We process this in generateIDGroups.
-        List<Integer> sortedIDs = blockType.getSpecialBlockRenderAssociatedMaterials()
-            .stream()
-            .map(ModernMaterial::getMaterialID)
-            .sorted()
-            .collect(Collectors.toList());
-
-        if (sortedIDs.isEmpty()) return;
+        if (blockType.getSpecialBlockRenderAssociatedMaterials().isEmpty()) return;
 
         GameRegistry.registerTileEntity(blockType.getTileEntityClass(), "TileEntity." + blockType);
         ClientRegistry.bindTileEntitySpecialRenderer(blockType.getTileEntityClass(), masterTESR);
 
-        int offset = -1;
-        for (List<Integer> IDs : generateIDGroups(sortedIDs)) {
-            offset++;
-            if (IDs.isEmpty()) {
-                continue;
+        BaseMaterialBlock block;
+
+        try {
+            block = blockType.getBlockClass()
+                .getDeclaredConstructor(BlocksEnum.class)
+                .newInstance(blockType);
+
+            GameRegistry.registerBlock(block, BaseMaterialItemBlock.class, "Special." + blockType);
+
+            for (ModernMaterial material : blockType.getSpecialBlockRenderAssociatedMaterials()) {
+                blockType.setItem(material, Item.getItemFromBlock(block));
             }
 
-            BaseMaterialBlock block;
-
-            try {
-                block = blockType.getBlockClass()
-                    .getDeclaredConstructor(int.class, List.class, BlocksEnum.class)
-                    .newInstance(offset, IDs, blockType);
-
-                GameRegistry.registerBlock(block, BaseMaterialItemBlock.class, "Special." + blockType + "." + offset);
-
-                for (int ID : IDs) {
-                    blockType.setItemStack(ModernMaterial.getMaterialFromID(ID), new ItemStack(block, 1, ID % 16));
-                }
-
-            } catch (NoSuchMethodException | InstantiationException | IllegalAccessException
-                | InvocationTargetException e) {
-                throw new RuntimeException("Failed to instantiate block.", e);
-            }
-
-            MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(block), masterItemBlockRenderer);
-
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException
+            | InvocationTargetException e) {
+            throw new RuntimeException("Failed to instantiate block.", e);
         }
+
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(block), masterItemBlockRenderer);
+
     }
 }

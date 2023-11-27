@@ -1,8 +1,8 @@
 package gregtech.api.ModernMaterials.Items.PartsClasses;
 
-import java.util.HashMap;
 import java.util.HashSet;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import org.jetbrains.annotations.NotNull;
@@ -96,7 +96,6 @@ public enum ItemsEnum implements IEnumPart {
     public double percentageOfIngot;
 
     private final HashSet<ModernMaterial> associatedMaterials = new HashSet<>();
-    private final HashMap<ModernMaterial, ItemStack> itemHashMap = new HashMap<>();
 
     ItemsEnum(final String partName, double percentageOfIngot) {
         this.partName = partName;
@@ -109,15 +108,18 @@ public enum ItemsEnum implements IEnumPart {
 
     @Override
     public @NotNull ItemStack getPart(@NotNull ModernMaterial material, int stackSize) {
-
-        final ItemStack itemStack = itemHashMap.get(material);
-
-        return new ItemStack(itemStack.getItem(), stackSize, itemStack.getItemDamage());
+        return new ItemStack(getItem(), stackSize, material.getMaterialID());
     }
 
-    @Override
-    public void setItemStack(@NotNull ModernMaterial material, ItemStack itemStack) {
-        itemHashMap.put(material, itemStack);
+    private Item item;
+
+    public Item getItem() {
+        return item;
+    }
+
+    public void setStandardItemBlock(Item standardItemBlock) {
+        if (this.item != null) throw new RuntimeException(this + " already has a set item.");
+        this.item = standardItemBlock;
     }
 
     @Override

@@ -13,10 +13,10 @@ public class MasterTESR extends TileEntitySpecialRenderer {
     public void renderTileEntityAt(@NotNull TileEntity tile, double x, double y, double z, float timeSinceLastTick) {
 
         if (!(tile.getBlockType() instanceof BaseMaterialBlock block)) return;
-        int ID = block.getMaterialID(tile.getBlockMetadata());
+        int materialID = tile.getBlockMetadata();
 
         block.getBlockEnum()
-            .getSpecialRenderer(ID)
+            .getSpecialRenderer(materialID)
             .renderTileEntityAt(tile, x, y, z, timeSinceLastTick);
     }
 }

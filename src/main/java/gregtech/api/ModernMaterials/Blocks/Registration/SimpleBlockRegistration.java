@@ -2,16 +2,14 @@ package gregtech.api.ModernMaterials.Blocks.Registration;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import net.minecraft.item.ItemStack;
+import gregtech.api.ModernMaterials.ModernMaterial;
+import net.minecraft.item.Item;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMaterialBlock;
 import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMaterialItemBlock;
-import gregtech.api.ModernMaterials.ModernMaterial;
 
 public abstract class SimpleBlockRegistration {
 
@@ -22,38 +20,21 @@ public abstract class SimpleBlockRegistration {
      */
     public static void registerSimpleBlock(BlocksEnum blockType) {
 
-        // Extract the materials associated with the given block type
-        HashSet<ModernMaterial> associatedMaterials = blockType.getSimpleBlockRenderAssociatedMaterials();
+        if (blockType.getSimpleBlockRenderAssociatedMaterials().isEmpty()) return;
 
-        // Extract and sort the IDs associated with the materials. We process this in generateIDGroups.
-        List<Integer> sortedIDs = associatedMaterials.stream()
-            .map(ModernMaterial::getMaterialID)
-            .sorted()
-            .collect(Collectors.toList());
+        try {
+            BaseMaterialBlock block = blockType.getBlockClass()
+                .getDeclaredConstructor(BlocksEnum.class)
+                .newInstance(blockType);
+            GameRegistry.registerBlock(block, BaseMaterialItemBlock.class, String.valueOf(blockType));
 
-        if (sortedIDs.isEmpty()) return;
-
-        int offset = -1;
-        for (List<Integer> IDs : generateIDGroups(sortedIDs)) {
-            offset++;
-            if (IDs.isEmpty()) {
-                continue;
+            for (ModernMaterial material : blockType.getSimpleBlockRenderAssociatedMaterials()) {
+                blockType.setItem(material, Item.getItemFromBlock(block));
             }
 
-            try {
-                BaseMaterialBlock block = blockType.getBlockClass()
-                    .getDeclaredConstructor(int.class, List.class, BlocksEnum.class)
-                    .newInstance(offset, IDs, blockType);
-                GameRegistry.registerBlock(block, BaseMaterialItemBlock.class, blockType + "." + offset);
-
-                for (int ID : IDs) {
-                    blockType.setItemStack(ModernMaterial.getMaterialFromID(ID), new ItemStack(block, 1, ID % 16));
-                }
-
-            } catch (NoSuchMethodException | InstantiationException | IllegalAccessException
-                | InvocationTargetException e) {
-                throw new RuntimeException("Failed to instantiate block", e);
-            }
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException
+            | InvocationTargetException e) {
+            throw new RuntimeException("Failed to instantiate block", e);
         }
     }
 

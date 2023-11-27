@@ -29,9 +29,7 @@ public class BlockOfSimpleBlockRenderer implements ISimpleBlockRenderingHandler 
 
         Tessellator tessellator = Tessellator.instance;
 
-        final BaseMaterialBlock baseMaterialBlock = (BaseMaterialBlock) block;
-        final int materialID = baseMaterialBlock.getMaterialID(metadata);
-        final ModernMaterial material = ModernMaterial.getMaterialFromID(materialID);
+        final ModernMaterial material = ModernMaterial.getMaterialFromID(metadata);
 
         final Color color = material.getColor();
         int red = color.getRed();
@@ -45,7 +43,7 @@ public class BlockOfSimpleBlockRenderer implements ISimpleBlockRenderingHandler 
         GL11.glColor3f(red / 255.0f, green / 255.0f, blue / 255.0f);
 
         tessellator.startDrawingQuads();
-        drawBlock(block, materialID, renderer);
+        drawBlock(block, metadata, renderer);
         tessellator.draw();
 
         GL11.glPopMatrix();
@@ -57,12 +55,12 @@ public class BlockOfSimpleBlockRenderer implements ISimpleBlockRenderingHandler 
 
         BaseMaterialBlock baseMaterialBlock = (BaseMaterialBlock) block;
 
-        int ID = baseMaterialBlock.getMaterialID(world.getBlockMetadata(x, y, z));
+        int materialID = world.getBlockMetadata(x, y, z);
         if (baseMaterialBlock.getBlockEnum()
             .getSpecialBlockRenderAssociatedMaterials()
             .contains(
                 ModernMaterial.getMaterialIDToMaterialMap()
-                    .get(ID)))
+                    .get(materialID)))
             return true; // True tells minecraft that we have handled this and
         // to not do anymore rendering here. This indicates it is a TESR.
 

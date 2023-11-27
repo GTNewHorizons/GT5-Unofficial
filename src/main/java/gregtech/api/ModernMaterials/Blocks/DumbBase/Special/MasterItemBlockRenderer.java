@@ -14,14 +14,12 @@ public class MasterItemBlockRenderer implements IItemRenderer {
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
 
-        int meta = item.getItemDamage();
-
+        int materialID = item.getItemDamage();
         BaseMaterialBlock block = (BaseMaterialBlock) Block.getBlockFromItem(item.getItem());
-        int ID = block.getMaterialID(meta);
 
         return block.getBlockEnum()
             .getSpecialBlockRenderAssociatedMaterials()
-            .contains(ModernMaterial.getMaterialFromID(ID));
+            .contains(ModernMaterial.getMaterialFromID(materialID));
     }
 
     @Override
@@ -41,9 +39,8 @@ public class MasterItemBlockRenderer implements IItemRenderer {
         // We will do this for each block, to make life more simple.
         repositionItem(type);
 
-        int meta = itemStack.getItemDamage();
+        int materialID = itemStack.getItemDamage();
         BaseMaterialBlock block = (BaseMaterialBlock) Block.getBlockFromItem(itemStack.getItem());
-        int materialID = block.getMaterialID(meta);
 
         IItemRenderer itemRenderer = block.getBlockEnum()
             .getItemRenderer(materialID);

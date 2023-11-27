@@ -2,6 +2,7 @@ package gregtech.api.ModernMaterials.Items.PartsClasses;
 
 import java.util.HashSet;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import org.jetbrains.annotations.NotNull;
@@ -16,7 +17,5 @@ public interface IEnumPart {
 
     @NotNull
     ItemStack getPart(@NotNull ModernMaterial material, int stackSize);
-
-    void setItemStack(@NotNull ModernMaterial material, ItemStack itemStack);
 
 }

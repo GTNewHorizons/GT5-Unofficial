@@ -15,8 +15,8 @@ import gregtech.api.ModernMaterials.ModernMaterial;
 
 public class BlockOfBaseMaterialBlock extends BaseMaterialBlock {
 
-    public BlockOfBaseMaterialBlock(int blockIDOffset, List<Integer> validIDs, BlocksEnum blockEnum) {
-        super(blockIDOffset, validIDs, blockEnum);
+    public BlockOfBaseMaterialBlock(BlocksEnum blockEnum) {
+        super(blockEnum);
     }
 
     @Override
@@ -38,7 +38,7 @@ public class BlockOfBaseMaterialBlock extends BaseMaterialBlock {
     @SideOnly(Side.CLIENT)
     @Override
     public int colorMultiplier(IBlockAccess worldIn, int x, int y, int z) {
-        final int materialID = getMaterialID(worldIn.getBlockMetadata(x, y, z));
+        final int materialID = worldIn.getBlockMetadata(x, y, z);
         final ModernMaterial material = ModernMaterial.getMaterialIDToMaterialMap()
             .get(materialID);
 

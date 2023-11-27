@@ -20,9 +20,6 @@ import gregtech.api.ModernMaterials.ModernMaterial;
 public abstract class BaseMaterialBlock extends Block {
 
     private final BlocksEnum blockEnum;
-    final List<Integer> validIDs;
-
-    private final int blockIDOffset;
 
     @Override
     public boolean hasTileEntity(int metadata) {
@@ -32,8 +29,7 @@ public abstract class BaseMaterialBlock extends Block {
     @Override
     public TileEntity createTileEntity(@NotNull World world, int metadata) {
 
-        final int ID = getMaterialID(metadata);
-        final ModernMaterial material = ModernMaterial.getMaterialFromID(ID);
+        final ModernMaterial material = ModernMaterial.getMaterialFromID(metadata);
 
         if (!getBlockEnum().getSpecialBlockRenderAssociatedMaterials()
             .contains(material)) return null;
@@ -53,14 +49,12 @@ public abstract class BaseMaterialBlock extends Block {
         return false;
     }
 
-    public BaseMaterialBlock(int blockIDOffset, List<Integer> validIDs, BlocksEnum blockEnum) {
+    public BaseMaterialBlock(BlocksEnum blockEnum) {
         super(Material.rock);
 
         setHardness(1.5F);
         setResistance(10.0F);
 
-        this.validIDs = validIDs;
-        this.blockIDOffset = blockIDOffset;
         this.blockEnum = blockEnum;
     }
 
@@ -80,13 +74,9 @@ public abstract class BaseMaterialBlock extends Block {
 
     @Override
     public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
-        for (int ID : validIDs) {
-            list.add(new ItemStack(item, 1, ID % 16));
+        for (ModernMaterial material : getBlockEnum().getAssociatedMaterials()) {
+            list.add(new ItemStack(item, 1, material.getMaterialID()));
         }
-    }
-
-    public int getMaterialID(int metadata) {
-        return blockIDOffset * 16 + metadata;
     }
 
     @Override

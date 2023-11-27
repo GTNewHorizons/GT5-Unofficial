@@ -6,7 +6,6 @@ import static gregtech.api.ModernMaterials.Blocks.Registration.SpecialBlockRegis
 import java.util.ArrayList;
 
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fluids.FluidRegistry;
 
@@ -24,6 +23,8 @@ public class ModernMaterialUtilities {
 
         for (ItemsEnum part : ItemsEnum.values()) {
 
+            if (part.getAssociatedMaterials().isEmpty()) return;
+
             MaterialPart materialPart = new MaterialPart(part);
             materialPart.setUnlocalizedName(part.partName);
 
@@ -33,10 +34,7 @@ public class ModernMaterialUtilities {
             // Registers the renderer which allows for part colouring.
             MinecraftForgeClient.registerItemRenderer(materialPart, new ModernMaterialItemRenderer());
 
-            // Assign for recipe generation later.
-            for (ModernMaterial material : part.getAssociatedMaterials()) {
-                part.setItemStack(material, new ItemStack(materialPart, 1, material.getMaterialID()));
-            }
+            part.setStandardItemBlock(materialPart);
         }
 
     }

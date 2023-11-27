@@ -7,6 +7,7 @@ import gregtech.api.ModernMaterials.Blocks.BlockTypes.BlockOf.BlockOfBaseMateria
 import gregtech.api.ModernMaterials.Blocks.BlockTypes.BlockOf.BlockOfSimpleBlockRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.client.IItemRenderer;
@@ -42,10 +43,11 @@ public enum BlocksEnum implements IEnumPart {
     private final HashSet<ModernMaterial> associatedMaterials = new HashSet<>();
     private final HashSet<ModernMaterial> specialBlockRenderAssociatedMaterials = new HashSet<>();
     private HashSet<ModernMaterial> simpleBlockRenderAssociatedMaterials;
-    private final HashMap<ModernMaterial, ItemStack> itemHashMap = new HashMap<>();
 
     private final HashMap<Integer, IItemRenderer> itemRendererHashMap = new HashMap<>();
     private final HashMap<Integer, TileEntitySpecialRenderer> tileEntitySpecialRendererHashMap = new HashMap<>();
+
+    private final HashMap<ModernMaterial, Item> materialIDToItem = new HashMap<>();
 
     /**
      * Constructs an instance of the enum with the given parameters.
@@ -73,16 +75,9 @@ public enum BlocksEnum implements IEnumPart {
 
     @Override
     public @NotNull ItemStack getPart(@NotNull ModernMaterial material, int stackSize) {
-
-        final ItemStack itemStack = itemHashMap.get(material);
-
-        return new ItemStack(itemStack.getItem(), stackSize, itemStack.getItemDamage());
+        return new ItemStack(getItem(material), stackSize, material.getMaterialID());
     }
 
-    @Override
-    public void setItemStack(@NotNull ModernMaterial material, ItemStack itemStack) {
-        itemHashMap.put(material, itemStack);
-    }
 
     public Class<? extends BaseMaterialBlock> getBlockClass() {
         return blockClass;
@@ -104,6 +99,15 @@ public enum BlocksEnum implements IEnumPart {
             simpleBlockRenderAssociatedMaterials.removeAll(specialBlockRenderAssociatedMaterials);
         }
         return simpleBlockRenderAssociatedMaterials;
+    }
+
+    public void setItem(@NotNull ModernMaterial material, @NotNull Item item) {
+        Item val = materialIDToItem.putIfAbsent(material, item);
+        if (val != null) throw new RuntimeException("Material " + material + " already has an item set for " + this);
+    }
+
+    public Item getItem(@NotNull ModernMaterial material) {
+        return materialIDToItem.get(material);
     }
 
     @Override

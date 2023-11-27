@@ -42,7 +42,7 @@ public class BaseMaterialItemBlock extends ItemBlock {
     public void addInformation(@NotNull final ItemStack itemStack, final EntityPlayer player, List<String> tooltipList,
         boolean aF3_H) {
         final ModernMaterial material = ModernMaterial.getMaterialIDToMaterialMap()
-            .get(getMaterialID(itemStack));
+            .get(itemStack.getItemDamage());
         tooltipList.addAll(tooltipGenerator(itemStack.getItem(), material));
     }
 
@@ -63,13 +63,8 @@ public class BaseMaterialItemBlock extends ItemBlock {
         return ((BaseMaterialBlock) field_150939_a).getBlockEnum();
     }
 
-    public static int getMaterialID(@NotNull final ItemStack itemStack) {
-        BaseMaterialBlock baseMaterialBlock = (BaseMaterialBlock) Block.getBlockFromItem(itemStack.getItem());
-        return baseMaterialBlock.getMaterialID(itemStack.getItemDamage());
-    }
-
     public static ModernMaterial getMaterial(@NotNull final ItemStack itemStack) {
-        return ModernMaterial.getMaterialFromID(getMaterialID(itemStack));
+        return ModernMaterial.getMaterialFromID(itemStack.getItemDamage());
     }
 
 }

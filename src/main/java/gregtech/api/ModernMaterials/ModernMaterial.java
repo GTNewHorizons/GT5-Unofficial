@@ -49,16 +49,7 @@ public final class ModernMaterial {
     }
 
     public static ModernMaterial getMaterialFromItemStack(@NotNull ItemStack itemStack) {
-
-        if (itemStack.getItem() instanceof MaterialPart) {
-            return materialIDToMaterial.get(itemStack.getItemDamage());
-        } else if (Block.getBlockFromItem(itemStack.getItem()) instanceof BaseMaterialBlock baseMaterialBlock) {
-            int ID = baseMaterialBlock.getMaterialID(itemStack.getItemDamage());
-
-            return materialIDToMaterial.get(ID);
-        }
-
-        throw new IllegalArgumentException("ItemStack " + itemStack + " is not a material part or block.");
+        return materialIDToMaterial.get(itemStack.getItemDamage());
     }
 
     public void setMaterialID(int aID) {

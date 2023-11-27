@@ -1,22 +1,20 @@
 package gregtech.api.ModernMaterials.Blocks.BlockTypes.OreNormal;
 
-import java.awt.*;
-import java.util.List;
-
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock.BaseMaterialBlock;
 import gregtech.api.ModernMaterials.Blocks.Registration.BlocksEnum;
 import gregtech.api.ModernMaterials.ModernMaterial;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
+
+import java.awt.*;
 
 public class NormalBaseMaterialBlock extends BaseMaterialBlock {
 
-    public NormalBaseMaterialBlock(int blockIDOffset, List<Integer> validIDs, BlocksEnum blockEnum) {
-        super(blockIDOffset, validIDs, blockEnum);
+    public NormalBaseMaterialBlock(BlocksEnum blockEnum) {
+        super(blockEnum);
     }
 
     @SideOnly(Side.CLIENT)
@@ -42,7 +40,7 @@ public class NormalBaseMaterialBlock extends BaseMaterialBlock {
     @SideOnly(Side.CLIENT)
     @Override
     public int colorMultiplier(IBlockAccess worldIn, int x, int y, int z) {
-        final int materialID = getMaterialID(worldIn.getBlockMetadata(x, y, z));
+        final int materialID = worldIn.getBlockMetadata(x, y, z);
         final ModernMaterial material = ModernMaterial.getMaterialIDToMaterialMap()
             .get(materialID);
 
