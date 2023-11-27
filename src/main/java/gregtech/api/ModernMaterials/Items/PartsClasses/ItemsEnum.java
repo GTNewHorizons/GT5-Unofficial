@@ -117,9 +117,9 @@ public enum ItemsEnum implements IEnumPart {
         return item;
     }
 
-    public void setStandardItemBlock(Item standardItemBlock) {
+    public void setItem(Item setItem) {
         if (this.item != null) throw new RuntimeException(this + " already has a set item.");
-        this.item = standardItemBlock;
+        this.item = setItem;
     }
 
     @Override

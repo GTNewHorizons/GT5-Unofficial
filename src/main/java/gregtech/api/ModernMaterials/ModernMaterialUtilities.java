@@ -34,7 +34,7 @@ public class ModernMaterialUtilities {
             // Registers the renderer which allows for part colouring.
             MinecraftForgeClient.registerItemRenderer(materialPart, new ModernMaterialItemRenderer());
 
-            part.setStandardItemBlock(materialPart);
+            part.setItem(materialPart);
         }
 
     }
