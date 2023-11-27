@@ -562,7 +562,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
     public boolean mNerfedCrops = true;
     public boolean mGTBees = true;
     public boolean mHideUnusedOres = true;
-    public boolean mHideRecyclingRecipes = false;
     public boolean mPollution = true;
     public boolean mExplosionItemDrop = false;
     public boolean mUseGreatlyShrukenReplacementList = true;

@@ -523,8 +523,6 @@ public class GT_PreLoad {
             .getBoolean(true);
         GT_Mod.gregtechproxy.mHideUnusedOres = tMainConfig.get(GT_Mod.aTextGeneral, "HideUnusedOres", true)
             .getBoolean(true);
-        GT_Mod.gregtechproxy.mHideRecyclingRecipes = tMainConfig.get(GT_Mod.aTextGeneral, "HideRecyclingRecipes", true)
-            .getBoolean(true);
         GT_Mod.gregtechproxy.mArcSmeltIntoAnnealed = tMainConfig
             .get(GT_Mod.aTextGeneral, "ArcSmeltIntoAnnealedWrought", true)
             .getBoolean(true);
