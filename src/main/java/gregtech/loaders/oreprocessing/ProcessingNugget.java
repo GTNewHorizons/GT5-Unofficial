@@ -1,7 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
-import static gregtech.api.recipe.RecipeMaps.fluidSolidfierRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
@@ -59,7 +59,7 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
                     .fluidInputs(aMaterial.getMolten(16L))
                     .duration(16 * TICKS)
                     .eut(calculateRecipeEU(aMaterial, 4))
-                    .addTo(fluidSolidfierRecipes);
+                    .addTo(fluidSolidifierRecipes);
             }
         }
 

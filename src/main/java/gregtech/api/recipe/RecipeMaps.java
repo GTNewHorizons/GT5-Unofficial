@@ -435,7 +435,7 @@ public final class RecipeMaps {
         .progressBar(GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE)
         .recipeConfigFile("fermenting", FIRST_FLUIDSTACK_OUTPUT)
         .build();
-    public static final RecipeMap<RecipeMapBackend> fluidSolidfierRecipes = RecipeMapBuilder
+    public static final RecipeMap<RecipeMapBackend> fluidSolidifierRecipes = RecipeMapBuilder
         .of("gt.recipe.fluidsolidifier")
         .maxIO(1, 1, 1, 0)
         .minInputs(1, 1)

@@ -2,7 +2,7 @@ package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
-import static gregtech.api.recipe.RecipeMaps.fluidSolidfierRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
@@ -89,7 +89,7 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
                         .fluidInputs(aMaterial.getMolten(612L))
                         .duration(((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
                         .eut(calculateRecipeEU(aMaterial, 24))
-                        .addTo(fluidSolidfierRecipes);
+                        .addTo(fluidSolidifierRecipes);
                 }
             }
         }

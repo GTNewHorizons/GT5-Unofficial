@@ -3,7 +3,7 @@ package gregtech.loaders.oreprocessing;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
-import static gregtech.api.recipe.RecipeMaps.fluidSolidfierRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
@@ -142,7 +142,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                         .fluidInputs(aMaterial.getMolten(1296L))
                         .duration(14 * SECONDS + 8 * TICKS)
                         .eut(8)
-                        .addTo(fluidSolidfierRecipes);
+                        .addTo(fluidSolidifierRecipes);
                 }
             }
         }

@@ -2,7 +2,7 @@ package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
-import static gregtech.api.recipe.RecipeMaps.fluidSolidfierRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.formingPressRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
@@ -67,7 +67,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                             .fluidInputs(aMaterial.getMolten(36L))
                             .duration(16 * TICKS)
                             .eut(8)
-                            .addTo(fluidSolidfierRecipes);
+                            .addTo(fluidSolidifierRecipes);
                     }
                 if (aSpecialRecipeReq2) {
                     GT_ModHandler.addCraftingRecipe(
@@ -532,7 +532,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                             .fluidInputs(aMaterial.getMolten(144 * 4))
                             .duration(5 * SECONDS)
                             .eut(calculateRecipeEU(aMaterial, (int) TierEU.RECIPE_MV))
-                            .addTo(fluidSolidfierRecipes);
+                            .addTo(fluidSolidifierRecipes);
                     }
                     if (GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L) != null) {
                         GT_Values.RA.stdBuilder()

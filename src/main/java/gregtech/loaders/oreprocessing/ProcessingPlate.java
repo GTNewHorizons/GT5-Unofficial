@@ -9,7 +9,7 @@ import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.benderRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
-import static gregtech.api.recipe.RecipeMaps.fluidSolidfierRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.implosionRecipes;
 import static gregtech.api.util.GT_ModHandler.RecipeBits.BUFFERED;
 import static gregtech.api.util.GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS;
@@ -116,7 +116,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .fluidInputs(aMaterial.getMolten(L))
                 .duration(1 * SECONDS + 12 * TICKS)
                 .eut(calculateRecipeEU(aMaterial, 8))
-                .addTo(fluidSolidfierRecipes);
+                .addTo(fluidSolidifierRecipes);
         }
 
         GT_ModHandler.addCraftingRecipe(
@@ -477,7 +477,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .fluidInputs(aMaterial.getMolten(L / 2))
                 .duration(16 * TICKS)
                 .eut(calculateRecipeEU(aMaterial, 8))
-                .addTo(fluidSolidfierRecipes);
+                .addTo(fluidSolidifierRecipes);
         }
 
         if (aMaterial.mUnificatable && aMaterial.mMaterialInto == aMaterial

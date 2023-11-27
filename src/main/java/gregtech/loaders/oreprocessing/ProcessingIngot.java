@@ -1,7 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.recipe.RecipeMaps.benderRecipes;
-import static gregtech.api.recipe.RecipeMaps.fluidSolidfierRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
@@ -69,7 +69,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                         .fluidInputs(aMaterial.getMolten(144L))
                         .duration(1 * SECONDS + 12 * TICKS)
                         .eut(calculateRecipeEU(aMaterial, 8))
-                        .addTo(fluidSolidfierRecipes);
+                        .addTo(fluidSolidifierRecipes);
                 }
                 // Reverse recipes
                 {

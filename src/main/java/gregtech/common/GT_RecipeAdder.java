@@ -1949,7 +1949,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
     public boolean addFluidSolidifierRecipe(final ItemStack[] itemInputs, final FluidStack[] fluidInputs,
         final ItemStack[] itemOutputs, final FluidStack[] fluidOutputs, final int EUPerTick,
         final int aDurationInTicks) {
-        RecipeMaps.fluidSolidfierRecipes
+        RecipeMaps.fluidSolidifierRecipes
             .addRecipe(true, itemInputs, itemOutputs, null, fluidInputs, fluidOutputs, aDurationInTicks, EUPerTick, 0);
         return true;
     }
@@ -1970,7 +1970,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         if ((aDuration = GregTech_API.sRecipeFile.get("fluidsolidifier", aOutput, aDuration)) <= 0) {
             return false;
         }
-        RecipeMaps.fluidSolidfierRecipes.addRecipe(
+        RecipeMaps.fluidSolidifierRecipes.addRecipe(
             true,
             new ItemStack[] { aMold },
             new ItemStack[] { aOutput },

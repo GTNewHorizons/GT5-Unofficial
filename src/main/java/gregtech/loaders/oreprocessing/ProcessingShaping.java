@@ -2,7 +2,7 @@ package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
-import static gregtech.api.recipe.RecipeMaps.fluidSolidfierRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
@@ -152,7 +152,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 .fluidInputs(aMaterial.getMolten(36L))
                                 .duration(5 * SECONDS)
                                 .eut(calculateRecipeEU(aMaterial, 4 * tVoltageMultiplier))
-                                .addTo(fluidSolidfierRecipes);
+                                .addTo(fluidSolidifierRecipes);
                         }
                         if (GT_OreDictUnificator.get(OrePrefixes.screw, aMaterial, 1L) != null) {
                             GT_Values.RA.stdBuilder()
@@ -161,7 +161,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 .fluidInputs(aMaterial.getMolten(18L))
                                 .duration(2 * SECONDS + 10 * TICKS)
                                 .eut(calculateRecipeEU(aMaterial, 2 * tVoltageMultiplier))
-                                .addTo(fluidSolidfierRecipes);
+                                .addTo(fluidSolidifierRecipes);
                         }
                         if (GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L) != null) {
                             GT_Values.RA.stdBuilder()
@@ -170,7 +170,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 .fluidInputs(aMaterial.getMolten(72L))
                                 .duration(7 * SECONDS + 10 * TICKS)
                                 .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
-                                .addTo(fluidSolidfierRecipes);
+                                .addTo(fluidSolidifierRecipes);
                         }
                         if (GT_OreDictUnificator.get(OrePrefixes.bolt, aMaterial, 1L) != null) {
                             GT_Values.RA.stdBuilder()
@@ -179,7 +179,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 .fluidInputs(aMaterial.getMolten(18L))
                                 .duration(2 * SECONDS + 10 * TICKS)
                                 .eut(calculateRecipeEU(aMaterial, 2 * tVoltageMultiplier))
-                                .addTo(fluidSolidfierRecipes);
+                                .addTo(fluidSolidifierRecipes);
                         }
                         if (GT_OreDictUnificator.get(OrePrefixes.round, aMaterial, 1L) != null) {
                             GT_Values.RA.stdBuilder()
@@ -188,7 +188,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 .fluidInputs(aMaterial.getMolten(18L))
                                 .duration(2 * SECONDS + 10 * TICKS)
                                 .eut(calculateRecipeEU(aMaterial, 2 * tVoltageMultiplier))
-                                .addTo(fluidSolidfierRecipes);
+                                .addTo(fluidSolidifierRecipes);
                         }
                         if (GT_OreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L) != null) {
                             GT_Values.RA.stdBuilder()
@@ -197,7 +197,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 .fluidInputs(aMaterial.getMolten(144L))
                                 .duration(15 * SECONDS)
                                 .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
-                                .addTo(fluidSolidfierRecipes);
+                                .addTo(fluidSolidifierRecipes);
                         }
                         if (GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 1L) != null) {
                             GT_Values.RA.stdBuilder()
@@ -206,7 +206,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 .fluidInputs(aMaterial.getMolten(864L))
                                 .duration(20 * SECONDS)
                                 .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
-                                .addTo(fluidSolidfierRecipes);
+                                .addTo(fluidSolidifierRecipes);
                         }
                         if (GT_OreDictUnificator.get(OrePrefixes.pipeTiny, aMaterial, 1L) != null) {
                             GT_Values.RA.stdBuilder()
@@ -215,7 +215,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 .fluidInputs(aMaterial.getMolten(72L))
                                 .duration(1 * SECONDS)
                                 .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
-                                .addTo(fluidSolidfierRecipes);
+                                .addTo(fluidSolidifierRecipes);
                         }
                         if (GT_OreDictUnificator.get(OrePrefixes.pipeSmall, aMaterial, 1L) != null) {
                             GT_Values.RA.stdBuilder()
@@ -224,7 +224,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 .fluidInputs(aMaterial.getMolten(144L))
                                 .duration(2 * SECONDS)
                                 .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
-                                .addTo(fluidSolidfierRecipes);
+                                .addTo(fluidSolidifierRecipes);
                         }
                         if (GT_OreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 1L) != null) {
                             GT_Values.RA.stdBuilder()
@@ -233,7 +233,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 .fluidInputs(aMaterial.getMolten(432L))
                                 .duration(4 * SECONDS)
                                 .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
-                                .addTo(fluidSolidfierRecipes);
+                                .addTo(fluidSolidifierRecipes);
                         }
                         if (GT_OreDictUnificator.get(OrePrefixes.pipeLarge, aMaterial, 1L) != null) {
                             GT_Values.RA.stdBuilder()
@@ -242,7 +242,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 .fluidInputs(aMaterial.getMolten(864L))
                                 .duration(8 * SECONDS)
                                 .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
-                                .addTo(fluidSolidfierRecipes);
+                                .addTo(fluidSolidifierRecipes);
                         }
                         if (GT_OreDictUnificator.get(OrePrefixes.pipeHuge, aMaterial, 1L) != null) {
                             GT_Values.RA.stdBuilder()
@@ -251,7 +251,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 .fluidInputs(aMaterial.getMolten(1728L))
                                 .duration(16 * SECONDS)
                                 .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
-                                .addTo(fluidSolidfierRecipes);
+                                .addTo(fluidSolidifierRecipes);
                         }
                     }
                 }

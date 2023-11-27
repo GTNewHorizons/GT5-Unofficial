@@ -88,7 +88,7 @@ public class GT_ProcessingArrayRecipeLoader {
         GT_ProcessingArray_Manager.addRecipeMapToPA("basicmachine.fluidheater", RecipeMaps.fluidHeaterRecipes);
         GT_ProcessingArray_Manager.addSoundResourceToPA("basicmachine.fluidheater", SoundResource.NONE);
         // Fluid Solidifier
-        GT_ProcessingArray_Manager.addRecipeMapToPA("basicmachine.fluidsolidifier", RecipeMaps.fluidSolidfierRecipes);
+        GT_ProcessingArray_Manager.addRecipeMapToPA("basicmachine.fluidsolidifier", RecipeMaps.fluidSolidifierRecipes);
         GT_ProcessingArray_Manager.addSoundResourceToPA("basicmachine.fluidsolidifier", SoundResource.NONE);
         // Forge Hammer
         GT_ProcessingArray_Manager.addRecipeMapToPA("basicmachine.hammer", RecipeMaps.hammerRecipes);
