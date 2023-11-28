@@ -1,6 +1,7 @@
 package gregtech.api.ModernMaterials.Blocks.BlockTypes.FrameBox;
 
 import java.awt.*;
+import java.util.HashSet;
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -15,8 +16,8 @@ import gregtech.api.ModernMaterials.ModernMaterial;
 
 public class FrameBoxBaseMaterialBlock extends BaseMaterialBlock {
 
-    public FrameBoxBaseMaterialBlock(BlocksEnum blockEnum) {
-        super(blockEnum);
+    public FrameBoxBaseMaterialBlock(BlocksEnum blockEnum, HashSet<ModernMaterial> validMaterials) {
+        super(blockEnum, validMaterials);
     }
 
     @Override

@@ -31,6 +31,7 @@ public class FrameBoxSimpleBlockRenderer implements ISimpleBlockRenderingHandler
         Tessellator tessellator = Tessellator.instance;
 
         final ModernMaterial material = ModernMaterial.getMaterialFromID(metadata);
+        if (material == null) return;
 
         final Color color = material.getColor();
         int red = color.getRed();

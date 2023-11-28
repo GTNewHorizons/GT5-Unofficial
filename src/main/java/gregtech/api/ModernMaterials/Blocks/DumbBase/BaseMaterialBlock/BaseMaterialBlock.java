@@ -1,6 +1,7 @@
 package gregtech.api.ModernMaterials.Blocks.DumbBase.BaseMaterialBlock;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashSet;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -20,6 +21,7 @@ import gregtech.api.ModernMaterials.ModernMaterial;
 public abstract class BaseMaterialBlock extends Block {
 
     private final BlocksEnum blockEnum;
+    private final HashSet<ModernMaterial> validMaterials;
 
     @Override
     public boolean hasTileEntity(int metadata) {
@@ -49,13 +51,14 @@ public abstract class BaseMaterialBlock extends Block {
         return false;
     }
 
-    public BaseMaterialBlock(BlocksEnum blockEnum) {
+    public BaseMaterialBlock(BlocksEnum blockEnum, HashSet<ModernMaterial> validMaterials) {
         super(Material.rock);
 
         setHardness(1.5F);
         setResistance(10.0F);
 
         this.blockEnum = blockEnum;
+        this.validMaterials = validMaterials;
     }
 
     public BlocksEnum getBlockEnum() {
@@ -74,7 +77,7 @@ public abstract class BaseMaterialBlock extends Block {
 
     @Override
     public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
-        for (ModernMaterial material : getBlockEnum().getAssociatedMaterials()) {
+        for (ModernMaterial material : validMaterials) {
             list.add(new ItemStack(item, 1, material.getMaterialID()));
         }
     }

@@ -1,6 +1,7 @@
 package gregtech.api.ModernMaterials.Blocks.BlockTypes.BlockOf;
 
 import java.awt.Color;
+import java.util.HashSet;
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -15,8 +16,8 @@ import gregtech.api.ModernMaterials.ModernMaterial;
 
 public class BlockOfBaseMaterialBlock extends BaseMaterialBlock {
 
-    public BlockOfBaseMaterialBlock(BlocksEnum blockEnum) {
-        super(blockEnum);
+    public BlockOfBaseMaterialBlock(BlocksEnum blockEnum, HashSet<ModernMaterial> validMaterials) {
+        super(blockEnum, validMaterials);
     }
 
     @Override

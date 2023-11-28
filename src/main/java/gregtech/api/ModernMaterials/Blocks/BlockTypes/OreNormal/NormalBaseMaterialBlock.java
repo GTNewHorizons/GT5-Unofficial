@@ -10,11 +10,13 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
 import java.awt.*;
+import java.util.HashSet;
+import java.util.List;
 
 public class NormalBaseMaterialBlock extends BaseMaterialBlock {
 
-    public NormalBaseMaterialBlock(BlocksEnum blockEnum) {
-        super(blockEnum);
+    public NormalBaseMaterialBlock(BlocksEnum blockEnum, HashSet<ModernMaterial> validIDs) {
+        super(blockEnum, validIDs);
     }
 
     @SideOnly(Side.CLIENT)

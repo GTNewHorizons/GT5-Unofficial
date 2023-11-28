@@ -11,6 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraftforge.client.MinecraftForgeClient;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashSet;
 
 public class SpecialBlockRegistration {
 
@@ -19,7 +20,9 @@ public class SpecialBlockRegistration {
 
     public static void registerTESRBlock(BlocksEnum blockType) {
 
-        if (blockType.getSpecialBlockRenderAssociatedMaterials().isEmpty()) return;
+        final HashSet<ModernMaterial> validMaterials = blockType.getSpecialBlockRenderAssociatedMaterials();
+
+        if (validMaterials.isEmpty()) return;
 
         GameRegistry.registerTileEntity(blockType.getTileEntityClass(), "TileEntity." + blockType);
         ClientRegistry.bindTileEntitySpecialRenderer(blockType.getTileEntityClass(), masterTESR);
@@ -28,8 +31,8 @@ public class SpecialBlockRegistration {
 
         try {
             block = blockType.getBlockClass()
-                .getDeclaredConstructor(BlocksEnum.class)
-                .newInstance(blockType);
+                .getDeclaredConstructor(BlocksEnum.class, HashSet.class)
+                .newInstance(blockType, validMaterials);
 
             GameRegistry.registerBlock(block, BaseMaterialItemBlock.class, "Special." + blockType);
 
@@ -39,7 +42,7 @@ public class SpecialBlockRegistration {
 
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException
             | InvocationTargetException e) {
-            throw new RuntimeException("Failed to instantiate block.", e);
+            throw new RuntimeException("Failed to instantiate " + blockType, e);
         }
 
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(block), masterItemBlockRenderer);

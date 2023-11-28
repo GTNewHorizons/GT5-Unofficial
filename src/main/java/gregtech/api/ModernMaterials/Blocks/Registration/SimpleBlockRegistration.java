@@ -2,6 +2,7 @@ package gregtech.api.ModernMaterials.Blocks.Registration;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import gregtech.api.ModernMaterials.ModernMaterial;
@@ -20,12 +21,14 @@ public abstract class SimpleBlockRegistration {
      */
     public static void registerSimpleBlock(BlocksEnum blockType) {
 
-        if (blockType.getSimpleBlockRenderAssociatedMaterials().isEmpty()) return;
+        final HashSet<ModernMaterial> validMaterials = blockType.getSimpleBlockRenderAssociatedMaterials();
+
+        if (validMaterials.isEmpty()) return;
 
         try {
             BaseMaterialBlock block = blockType.getBlockClass()
-                .getDeclaredConstructor(BlocksEnum.class)
-                .newInstance(blockType);
+                .getDeclaredConstructor(BlocksEnum.class, HashSet.class)
+                .newInstance(blockType, validMaterials);
             GameRegistry.registerBlock(block, BaseMaterialItemBlock.class, String.valueOf(blockType));
 
             for (ModernMaterial material : blockType.getSimpleBlockRenderAssociatedMaterials()) {
@@ -34,7 +37,7 @@ public abstract class SimpleBlockRegistration {
 
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException
             | InvocationTargetException e) {
-            throw new RuntimeException("Failed to instantiate block", e);
+            throw new RuntimeException("Failed to instantiate " + blockType, e);
         }
     }
 

@@ -50,6 +50,7 @@ public class BaseMaterialItemBlock extends ItemBlock {
     public String getItemStackDisplayName(@NotNull final ItemStack itemStack) {
 
         ModernMaterial material = getMaterial(itemStack);
+        if (material == null) return "";
 
         // todo custom name overrides, for e.g. names that change over time.
 
