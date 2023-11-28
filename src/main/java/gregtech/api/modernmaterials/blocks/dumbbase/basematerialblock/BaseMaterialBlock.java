@@ -83,7 +83,8 @@ public abstract class BaseMaterialBlock extends Block {
     }
 
     @Override
-    public int damageDropped(int meta) {
+    public int damageDropped(int meta)
+    {
         return meta;
     }
 }
