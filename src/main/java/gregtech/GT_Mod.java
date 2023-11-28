@@ -2,9 +2,9 @@ package gregtech;
 
 import static gregtech.GT_Version.*;
 import static gregtech.api.GregTech_API.registerCircuitProgrammer;
-import static gregtech.api.ModernMaterials.ModernMaterialUtilities.registerAllMaterialsBlocks;
-import static gregtech.api.ModernMaterials.ModernMaterialUtilities.registerAllMaterialsFluids;
-import static gregtech.api.ModernMaterials.RecipeGenerators.Utility.registerAllMaterialsRecipes;
+import static gregtech.api.modernmaterials.ModernMaterialUtilities.registerAllMaterialsBlocks;
+import static gregtech.api.modernmaterials.ModernMaterialUtilities.registerAllMaterialsFluids;
+import static gregtech.api.modernmaterials.recipegenerators.Utility.registerAllMaterialsRecipes;
 import static gregtech.api.enums.Mods.Forestry;
 
 import java.io.PrintWriter;
@@ -41,8 +41,8 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import gregtech.api.GregTech_API;
-import gregtech.api.ModernMaterials.ModernMaterialsRegistration;
-import gregtech.api.ModernMaterials.ModernMaterialsTextureRegister;
+import gregtech.api.modernmaterials.ModernMaterialsRegistration;
+import gregtech.api.modernmaterials.ModernMaterialsTextureRegister;
 import gregtech.api.enchants.Enchantment_EnderDamage;
 import gregtech.api.enchants.Enchantment_Hazmat;
 import gregtech.api.enchants.Enchantment_Radioactivity;
