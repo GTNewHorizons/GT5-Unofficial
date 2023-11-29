@@ -43,10 +43,8 @@ public class BaseMaterialItemBlock extends ItemBlock {
     @SideOnly(Side.CLIENT)
     @Override
     public void addInformation(@NotNull final ItemStack itemStack, final EntityPlayer player, List<String> tooltipList,
-        boolean aF3_H) {
-        final ModernMaterial material = ModernMaterial.getMaterialIDToMaterialMap()
-            .get(itemStack.getItemDamage());
-        tooltipList.addAll(tooltipGenerator(itemStack.getItem(), material));
+        boolean F3_H) {
+        tooltipList.addAll(tooltipGenerator(itemStack, player, tooltipList, F3_H));
     }
 
     @Override

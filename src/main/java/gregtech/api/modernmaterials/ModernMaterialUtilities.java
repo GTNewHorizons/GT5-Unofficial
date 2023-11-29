@@ -4,8 +4,11 @@ import static gregtech.api.modernmaterials.blocks.registration.SimpleBlockRegist
 import static gregtech.api.modernmaterials.blocks.registration.SpecialBlockRegistration.registerTESRBlock;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fluids.FluidRegistry;
 
@@ -16,6 +19,7 @@ import gregtech.api.modernmaterials.fluids.ModernMaterialFluid;
 import gregtech.api.modernmaterials.items.partproperties.ModernMaterialItemRenderer;
 import gregtech.api.modernmaterials.items.partclasses.ItemsEnum;
 import gregtech.api.modernmaterials.items.partclasses.MaterialPart;
+import org.jetbrains.annotations.NotNull;
 
 public class ModernMaterialUtilities {
 
@@ -56,15 +60,24 @@ public class ModernMaterialUtilities {
         }
     }
 
-    public static ArrayList<String> tooltipGenerator(Item part, ModernMaterial material) {
+    public static ArrayList<String> tooltipGenerator(@NotNull ItemStack itemStack, EntityPlayer player, List<String> tooltipList, boolean F3_H) {
         // Todo, this is just temporary as a proof of concept/debug info.
         // Probably will put radioactive warning here. Not sure what else yet, if any.
 
+        ModernMaterial material = ModernMaterial.getMaterialFromItemStack(itemStack);
         ArrayList<String> tooltip = new ArrayList<>();
+
+        if (material.getCustomTooltipGenerator() != null) {
+            return material.getCustomTooltipGenerator().apply(itemStack, player, tooltipList, F3_H);
+        }
+
+        // Default handling, no custom tooltip.
+        Item part = itemStack.getItem();
 
         tooltip.add("Generic Tooltip");
         tooltip.add("Material Name: " + material.getMaterialName());
 
+        // Todo interface? There was some reason this was impractical before...
         if (part instanceof BaseMaterialItemBlock blockPart) {
             tooltip.add("Material Part Type: " + blockPart.getPart());
         } else if (part instanceof MaterialPart itemPart) {

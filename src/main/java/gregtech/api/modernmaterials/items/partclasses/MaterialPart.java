@@ -58,15 +58,7 @@ public class MaterialPart extends Item {
     @SideOnly(Side.CLIENT)
     @Override
     public void addInformation(@NotNull ItemStack itemStack, EntityPlayer player, List<String> tooltipList, boolean F3_H) {
-
-        final ModernMaterial material = ModernMaterial.getMaterialFromItemStack(itemStack);
-
-        if (material.getCustomTooltipGenerator() != null) {
-            tooltipList.addAll(material.getCustomTooltipGenerator().apply(itemStack, player, tooltipList, F3_H));
-            return; // No more processing needed.
-        }
-
-        tooltipList.addAll(tooltipGenerator(itemStack.getItem(), material));
+        tooltipList.addAll(tooltipGenerator(itemStack, player, tooltipList, F3_H));
     }
 
     public ItemsEnum getPart() {
