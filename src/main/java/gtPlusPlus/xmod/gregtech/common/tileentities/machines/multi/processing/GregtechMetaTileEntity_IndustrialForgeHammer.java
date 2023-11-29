@@ -92,7 +92,7 @@ public class GregtechMetaTileEntity_IndustrialForgeHammer extends
         }
 
         tt.addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 3, true)
-                .addController("Front Center").addCasingInfoMin("Forge Casing", 10, false).addInputBus("Any Casing", 1)
+                .addController("Front Center").addCasingInfoMin("Forge Casing", 6, false).addInputBus("Any Casing", 1)
                 .addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1).addOutputHatch("Any Casing", 1)
                 .addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
                 .addOtherStructurePart("Anvil", "In the center of 3x3x3 structure", 2)
@@ -167,7 +167,7 @@ public class GregtechMetaTileEntity_IndustrialForgeHammer extends
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
-        return checkPiece(mName, 1, 1, 0) && mCasing >= 10 && checkHatch();
+        return checkPiece(mName, 1, 1, 0) && mCasing >= 6 && checkHatch();
     }
 
     @Override

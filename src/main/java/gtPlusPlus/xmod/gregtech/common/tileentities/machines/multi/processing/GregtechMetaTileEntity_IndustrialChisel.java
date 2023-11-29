@@ -81,7 +81,7 @@ public class GregtechMetaTileEntity_IndustrialChisel
                 .addInfo("If no target is provided for common buses, the result of the first chisel is used")
                 .addInfo("Speed: +200% | EU Usage: 75% | Parallel: Tier x 16")
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 3, true)
-                .addController("Front center").addCasingInfoMin("Sturdy Printer Casing", 10, false)
+                .addController("Front center").addCasingInfoMin("Sturdy Printer Casing", 6, false)
                 .addInputBus("Any casing", 1).addOutputBus("Any casing", 1).addEnergyHatch("Any casing", 1)
                 .addMaintenanceHatch("Any casing", 1).addMufflerHatch("Any casing", 1)
                 .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
@@ -127,7 +127,7 @@ public class GregtechMetaTileEntity_IndustrialChisel
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
-        return checkPiece(mName, 1, 1, 0) && mCasing >= 10 && checkHatch();
+        return checkPiece(mName, 1, 1, 0) && mCasing >= 6 && checkHatch();
     }
 
     @Override

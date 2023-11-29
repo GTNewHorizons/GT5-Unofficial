@@ -69,7 +69,7 @@ public class GregtechMetaTileEntity_IndustrialCuttingMachine extends
                 .addInfo("200% faster than using single block machines of the same voltage")
                 .addInfo("Only uses 75% of the EU/t normally required").addInfo("Processes four items per voltage tier")
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 5, true)
-                .addController("Front Center").addCasingInfoMin("Cutting Factory Frames", 26, false)
+                .addController("Front Center").addCasingInfoMin("Cutting Factory Frames", 14, false)
                 .addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1)
                 .addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
                 .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
@@ -111,7 +111,7 @@ public class GregtechMetaTileEntity_IndustrialCuttingMachine extends
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
-        return checkPiece(mName, 1, 1, 0) && mCasing >= 26 && checkHatch();
+        return checkPiece(mName, 1, 1, 0) && mCasing >= 14 && checkHatch();
     }
 
     @Override

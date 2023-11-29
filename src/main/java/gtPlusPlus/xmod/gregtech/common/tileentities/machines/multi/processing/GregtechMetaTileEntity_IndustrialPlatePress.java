@@ -67,7 +67,7 @@ public class GregtechMetaTileEntity_IndustrialPlatePress extends
                 .addInfo("Processes four items per voltage tier").addInfo("Circuit for recipe goes in the Input Bus")
                 .addInfo("Each Input Bus can have a different Circuit/Shape!")
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 3, true)
-                .addController("Front Center").addCasingInfoMin("Material Press Machine Casings", 10, false)
+                .addController("Front Center").addCasingInfoMin("Material Press Machine Casings", 6, false)
                 .addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1).addEnergyHatch("Any Casing", 1)
                 .addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
                 .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
@@ -108,7 +108,7 @@ public class GregtechMetaTileEntity_IndustrialPlatePress extends
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
-        return checkPiece(mName, 1, 1, 0) && mCasing >= 10 && checkHatch();
+        return checkPiece(mName, 1, 1, 0) && mCasing >= 6 && checkHatch();
     }
 
     @Override
