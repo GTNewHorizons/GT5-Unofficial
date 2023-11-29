@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 
+import gregtech.api.modernmaterials.effects.IEffect;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
@@ -22,16 +23,13 @@ import gregtech.api.modernmaterials.items.partproperties.TextureType;
 import gregtech.api.modernmaterials.items.partclasses.IEnumPart;
 import gregtech.api.modernmaterials.items.partclasses.ItemsEnum;
 
-@SuppressWarnings("unused")
 public final class ModernMaterial {
 
     private final HashSet<IEnumPart> existingPartsForMaterial = new HashSet<>();
     private final HashSet<ModernMaterialFluid> existingFluids = new HashSet<>();
     private final HashSet<Consumer<ModernMaterial>> recipeGenerators = new HashSet<>();
-    private static final HashSet<ModernMaterial> allMaterials = new HashSet<>();
+    private final HashSet<IEffect> heldItemEffect = new HashSet<>();
 
-    private static final HashMap<Integer, ModernMaterial> materialIDToMaterial = new HashMap<>();
-    private static final HashMap<String, ModernMaterial> materialNameToMaterialMap = new HashMap<>();
 
     private Color color;
     private int materialID = -1;
@@ -40,6 +38,13 @@ public final class ModernMaterial {
     private double hardness = 1;
     private TextureType textureType;
     private IItemRenderer customItemRenderer;
+
+
+    private static final HashSet<ModernMaterial> allMaterials = new HashSet<>();
+    private static final HashMap<Integer, ModernMaterial> materialIDToMaterial = new HashMap<>();
+    private static final HashMap<String, ModernMaterial> materialNameToMaterialMap = new HashMap<>();
+
+
 
     public ModernMaterial(final String materialName) {
         this.materialName = materialName;
@@ -169,6 +174,10 @@ public final class ModernMaterial {
         return materialName;
     }
 
+    public HashSet<IEffect> getEffects() {
+        return heldItemEffect;
+    }
+
     public static class ModernMaterialBuilder {
 
         public ModernMaterial materialToBuild;
@@ -295,6 +304,11 @@ public final class ModernMaterial {
 
         public ModernMaterialBuilder setColor(@NotNull Color color) {
             materialToBuild.color = color;
+            return this;
+        }
+
+        public ModernMaterialBuilder addPlayerEffect(@NotNull IEffect... effects) {
+            materialToBuild.heldItemEffect.addAll(Arrays.asList(effects));
             return this;
         }
     }

@@ -14,6 +14,7 @@ import gregtech.api.modernmaterials.blocks.blocktypes.blockof.special.Universium
 import gregtech.api.modernmaterials.blocks.blocktypes.framebox.special.UniversiumFrameBlockRenderer;
 import gregtech.api.modernmaterials.blocks.blocktypes.framebox.special.UniversiumFrameItemRenderer;
 import gregtech.api.modernmaterials.blocks.registration.BlocksEnum;
+import gregtech.api.modernmaterials.effects.Effects;
 import gregtech.api.modernmaterials.fluids.ModernMaterialFluid;
 import gregtech.api.modernmaterials.items.partproperties.customitemrenderers.UniversiumItemRenderer;
 import gregtech.api.modernmaterials.recipegenerators.Metal;
@@ -59,6 +60,7 @@ public class ModernMaterialsRegistration {
             .setMaterialID(17)
             .setTextureMode(Custom)
             .setMaterialTier(TierEU.MAX)
+            .addPlayerEffect(Effects::radiation)
             .setCustomBlockRenderer(
                 BlocksEnum.FrameBox,
                 new UniversiumFrameItemRenderer(),

@@ -4,11 +4,14 @@ import static gregtech.api.modernmaterials.ModernMaterialUtilities.tooltipGenera
 
 import java.util.List;
 
+import gregtech.api.modernmaterials.effects.IEffect;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
 import cpw.mods.fml.relauncher.Side;
@@ -64,5 +67,14 @@ public class MaterialPart extends Item {
 
     public ItemsEnum getPart() {
         return part;
+    }
+
+    @Override
+    public void onUpdate(ItemStack itemStack, World world, Entity entity, int slotIndex, boolean isCurrentItem)  {
+        final ModernMaterial material = ModernMaterial.getMaterialFromItemStack(itemStack);
+
+        for (IEffect effect : material.getEffects()) {
+            effect.apply(itemStack, world, entity, slotIndex, isCurrentItem);
+        }
     }
 }
