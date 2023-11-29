@@ -1,9 +1,5 @@
 package gregtech.api.recipe.maps;
 
-import static gregtech.api.recipe.check.FindRecipeResult.NOT_FOUND;
-
-import java.util.function.Predicate;
-
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -14,29 +10,27 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
-import gregtech.api.recipe.check.FindRecipeResult;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class UnboxinatorBackend extends RecipeMapBackend {
+public class UnpackagerBackend extends RecipeMapBackend {
 
-    public UnboxinatorBackend(RecipeMapBackendPropertiesBuilder propertiesBuilder) {
+    public UnpackagerBackend(RecipeMapBackendPropertiesBuilder propertiesBuilder) {
         super(propertiesBuilder);
     }
 
     @Override
-    protected FindRecipeResult findFallback(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot,
-        Predicate<GT_Recipe> recipeValidator) {
+    protected GT_Recipe findFallback(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot) {
         if (items.length == 0 || !ItemList.IC2_Scrapbox.isStackEqual(items[0], false, true)) {
-            return NOT_FOUND;
+            return null;
         }
 
         ItemStack output = GT_ModHandler.getRandomScrapboxDrop();
         if (output == null) {
-            return NOT_FOUND;
+            return null;
         }
         return GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.IC2_Scrapbox.get(1))
@@ -48,7 +42,8 @@ public class UnboxinatorBackend extends RecipeMapBackend {
             // Due to its randomness it is not good if there are Items in the Output Slot, because those Items could
             // manipulate the outcome.
             .needsEmptyOutput()
-            .buildAndGetResult(recipeValidator);
+            .build()
+            .orElse(null);
     }
 
     @Override

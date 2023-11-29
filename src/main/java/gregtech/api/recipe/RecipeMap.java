@@ -4,10 +4,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -21,7 +21,6 @@ import org.jetbrains.annotations.Unmodifiable;
 
 import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
-import gregtech.api.recipe.check.FindRecipeResult;
 import gregtech.api.util.FieldsAreNonnullByDefault;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_RecipeBuilder;
@@ -324,51 +323,18 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
 
     // region find recipe
 
-    /**
-     * While this method is not deprecated, using either of {@link #findRecipeWithResult} is recommended,
-     * especially if you use it for actual machine logic, as it can show more detailed info to player.
-     */
     @Nullable
     public GT_Recipe findRecipe(@Nullable IHasWorldObjectAndCoords aTileEntity, boolean aNotUnificated, long aVoltage,
         @Nullable FluidStack[] aFluids, @Nullable ItemStack... aInputs) {
         return findRecipe(aTileEntity, null, aNotUnificated, aVoltage, aFluids, null, aInputs);
     }
 
-    /**
-     * While this method is not deprecated, using either of {@link #findRecipeWithResult} is recommended,
-     * especially if you use it for actual machine logic, as it can show more detailed info to player.
-     */
     @Nullable
     public GT_Recipe findRecipe(@Nullable IHasWorldObjectAndCoords aTileEntity, boolean aNotUnificated,
         boolean aDontCheckStackSizes, long aVoltage, @Nullable FluidStack[] aFluids, @Nullable ItemStack... aInputs) {
         return findRecipe(aTileEntity, null, aNotUnificated, aDontCheckStackSizes, aVoltage, aFluids, null, aInputs);
     }
 
-    /**
-     * While this method is not deprecated, using either of {@link #findRecipeWithResult} is recommended,
-     * especially if you use it for actual machine logic, as it can show more detailed info to player.
-     */
-    @Nullable
-    public GT_Recipe findRecipe(@Nullable IHasWorldObjectAndCoords aTileEntity, @Nullable GT_Recipe aRecipe,
-        boolean aNotUnificated, long aVoltage, @Nullable FluidStack[] aFluids, @Nullable ItemStack... aInputs) {
-        return findRecipe(aTileEntity, aRecipe, aNotUnificated, aVoltage, aFluids, null, aInputs);
-    }
-
-    /**
-     * While this method is not deprecated, using either of {@link #findRecipeWithResult} is recommended,
-     * especially if you use it for actual machine logic, as it can show more detailed info to player.
-     */
-    @Nullable
-    public GT_Recipe findRecipe(@Nullable IHasWorldObjectAndCoords aTileEntity, @Nullable GT_Recipe aRecipe,
-        boolean aNotUnificated, boolean aDontCheckStackSizes, long aVoltage, @Nullable FluidStack[] aFluids,
-        @Nullable ItemStack... aInputs) {
-        return findRecipe(aTileEntity, aRecipe, aNotUnificated, aDontCheckStackSizes, aVoltage, aFluids, null, aInputs);
-    }
-
-    /**
-     * While this method is not deprecated, using either of {@link #findRecipeWithResult} is recommended,
-     * especially if you use it for actual machine logic, as it can show more detailed info to player.
-     */
     @Nullable
     public GT_Recipe findRecipe(@Nullable IHasWorldObjectAndCoords aTileEntity, @Nullable GT_Recipe aRecipe,
         boolean aNotUnificated, long aVoltage, @Nullable FluidStack[] aFluids, @Nullable ItemStack aSpecialSlot,
@@ -376,15 +342,11 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
         return findRecipe(aTileEntity, aRecipe, aNotUnificated, false, aVoltage, aFluids, aSpecialSlot, aInputs);
     }
 
-    /**
-     * While this method is not deprecated, using either of {@link #findRecipeWithResult} is recommended,
-     * especially if you use it for actual machine logic, as it can show more detailed info to player.
-     */
     @Nullable
     public GT_Recipe findRecipe(@Nullable IHasWorldObjectAndCoords aTileEntity, @Nullable GT_Recipe aRecipe,
         boolean aNotUnificated, boolean aDontCheckStackSizes, long aVoltage, @Nullable FluidStack[] aFluids,
         @Nullable ItemStack aSpecialSlot, @Nullable ItemStack... aInputs) {
-        FindRecipeResult result = findRecipeWithResult(
+        return findRecipeFirst(
             aInputs != null ? aInputs : new ItemStack[0],
             aFluids != null ? aFluids : new FluidStack[0],
             aSpecialSlot,
@@ -392,11 +354,10 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
             aRecipe,
             aNotUnificated,
             aDontCheckStackSizes);
-        return result.isSuccessful() ? result.getRecipe() : null;
     }
 
     /**
-     * Finds a matching recipe from given requirements.
+     * Finds the first matched recipe from given requirements, or null if not found.
      *
      * @param items               Item inputs.
      * @param fluids              Fluid inputs.
@@ -410,10 +371,10 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
      *                            for the matched recipe.
      * @return Result of the recipe search
      */
-    public FindRecipeResult findRecipeWithResult(ItemStack[] items, FluidStack[] fluids,
-        @Nullable ItemStack specialSlot, long voltage, @Nullable GT_Recipe cachedRecipe, boolean notUnificated,
-        boolean dontCheckStackSizes) {
-        return findRecipeWithResult(
+    @Nullable
+    public GT_Recipe findRecipeFirst(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot,
+        long voltage, @Nullable GT_Recipe cachedRecipe, boolean notUnificated, boolean dontCheckStackSizes) {
+        return backend.findRecipe(
             items,
             fluids,
             specialSlot,
@@ -424,32 +385,21 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
     }
 
     /**
-     * Finds a matching recipe from given requirements. With this version, you can set custom logic to execute
-     * additional check for matched recipes.
+     * Returns all the matched recipes in the form of Stream, without any additional check for matches.
      *
      * @param items               Item inputs.
      * @param fluids              Fluid inputs.
      * @param specialSlot         Content of the special slot. Normal recipemaps don't need this, but some do.
      *                            Set {@link RecipeMapBuilder#specialSlotSensitive} to make it actually functional.
-     * @param recipeValidator     Matched recipe will be tested by this function. If it returns false,
-     *                            this method tries to find next recipe.
      * @param cachedRecipe        If this is not null, this method tests it before all other recipes.
      * @param notUnificated       If this is set to true, item inputs will be unificated.
      * @param dontCheckStackSizes If this is set to false, this method won't check item count and fluid amount
      *                            for the matched recipe.
-     * @return Result of the recipe search
+     * @return Stream of matches recipes.
      */
-    public FindRecipeResult findRecipeWithResult(ItemStack[] items, FluidStack[] fluids,
-        @Nullable ItemStack specialSlot, Predicate<GT_Recipe> recipeValidator, @Nullable GT_Recipe cachedRecipe,
-        boolean notUnificated, boolean dontCheckStackSizes) {
-        return backend.findRecipeWithResult(
-            items,
-            fluids,
-            specialSlot,
-            recipeValidator,
-            cachedRecipe,
-            notUnificated,
-            dontCheckStackSizes);
+    public Stream<GT_Recipe> findRecipeMatches(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot,
+        @Nullable GT_Recipe cachedRecipe, boolean notUnificated, boolean dontCheckStackSizes) {
+        return backend.matchRecipeStream(items, fluids, specialSlot, cachedRecipe, notUnificated, dontCheckStackSizes);
     }
 
     // endregion

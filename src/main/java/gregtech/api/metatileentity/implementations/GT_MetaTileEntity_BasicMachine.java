@@ -14,6 +14,8 @@ import static gregtech.api.metatileentity.BaseTileEntity.STALLED_STUTTERING_TOOL
 import static gregtech.api.metatileentity.BaseTileEntity.STALLED_VENT_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.metatileentity.BaseTileEntity.UNUSED_SLOT_TOOLTIP;
+import static gregtech.api.util.GT_RecipeConstants.EXPLODE;
+import static gregtech.api.util.GT_RecipeConstants.ON_FIRE;
 import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
 import static net.minecraftforge.common.util.ForgeDirection.DOWN;
 import static net.minecraftforge.common.util.ForgeDirection.UNKNOWN;
@@ -73,7 +75,6 @@ import gregtech.api.objects.overclockdescriber.EUOverclockDescriber;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.recipe.check.FindRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ClientPreference;
 import gregtech.api.util.GT_CoverBehaviorBase;
@@ -1058,7 +1059,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     public int checkRecipe(boolean skipOC) {
         RecipeMap<?> tMap = getRecipeMap();
         if (tMap == null) return DID_NOT_FIND_RECIPE;
-        FindRecipeResult result = tMap.findRecipeWithResult(
+        GT_Recipe tRecipe = tMap.findRecipeFirst(
             getAllInputs(),
             new FluidStack[] { getFillableStack() },
             getSpecialSlot(),
@@ -1066,16 +1067,17 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
             mLastRecipe,
             false,
             false);
-        if (result.getState() == FindRecipeResult.State.EXPLODE && getBaseMetaTileEntity() != null) {
+        if (tRecipe == null) {
+            return DID_NOT_FIND_RECIPE;
+        }
+        if (tRecipe.getMetadata(EXPLODE, false) && getBaseMetaTileEntity() != null) {
             getBaseMetaTileEntity().doExplosion(V[mTier] * 4);
             return DID_NOT_FIND_RECIPE;
         }
-        if (result.getState() == FindRecipeResult.State.ON_FIRE && getBaseMetaTileEntity() != null) {
+        if (tRecipe.getMetadata(ON_FIRE, false) && getBaseMetaTileEntity() != null) {
             getBaseMetaTileEntity().setOnFire();
             return DID_NOT_FIND_RECIPE;
         }
-        if (!result.isSuccessful()) return DID_NOT_FIND_RECIPE;
-        GT_Recipe tRecipe = result.getRecipeNonNull();
 
         if (GT_Mod.gregtechproxy.mLowGravProcessing && (tRecipe.mSpecialValue == -100 || tRecipe.mSpecialValue == -300)
             && !isValidForLowGravity(tRecipe, getBaseMetaTileEntity().getWorld().provider.dimensionId))

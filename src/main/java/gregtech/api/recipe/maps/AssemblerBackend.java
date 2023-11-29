@@ -9,7 +9,6 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.ItemList;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
-import gregtech.api.recipe.check.FindRecipeResult;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 
@@ -22,9 +21,8 @@ public class AssemblerBackend extends RecipeMapBackend {
     }
 
     @Override
-    protected FindRecipeResult modifyFoundRecipe(FindRecipeResult result, ItemStack[] items, FluidStack[] fluids,
+    protected GT_Recipe modifyFoundRecipe(GT_Recipe recipe, ItemStack[] items, FluidStack[] fluids,
         @Nullable ItemStack specialSlot) {
-        GT_Recipe recipe = result.getRecipeNonNull();
         for (ItemStack item : items) {
             if (ItemList.Paper_Printed_Pages.isStackEqual(item, false, true)) {
                 recipe = recipe.copy();
@@ -32,6 +30,6 @@ public class AssemblerBackend extends RecipeMapBackend {
                 recipe.mOutputs[0].setTagCompound(item.getTagCompound());
             }
         }
-        return FindRecipeResult.ofSuccess(recipe);
+        return recipe;
     }
 }

@@ -1,6 +1,5 @@
 package gregtech.api.util;
 
-import static gregtech.api.recipe.check.FindRecipeResult.NOT_FOUND;
 import static gregtech.api.util.GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES;
 import static gregtech.api.util.GT_Utility.copyFluidArray;
 import static gregtech.api.util.GT_Utility.copyItemArray;
@@ -11,7 +10,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Predicate;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -26,7 +24,6 @@ import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.recipe.RecipeCategory;
 import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.recipe.RecipeMetadataStorage;
-import gregtech.api.recipe.check.FindRecipeResult;
 import gregtech.api.util.extensions.ArrayExt;
 
 @SuppressWarnings({ "unused", "UnusedReturnValue" })
@@ -706,15 +703,6 @@ public class GT_RecipeBuilder {
                     neiDesc,
                     metadataStorage,
                     recipeCategory)));
-    }
-
-    /**
-     * Util method for custom recipe search logic to build recipe and construct {@link FindRecipeResult}.
-     */
-    public FindRecipeResult buildAndGetResult(Predicate<GT_Recipe> validator) {
-        return build().filter(validator)
-            .map(FindRecipeResult::ofSuccess)
-            .orElse(NOT_FOUND);
     }
 
     public GT_RecipeBuilder forceOreDictInput() {

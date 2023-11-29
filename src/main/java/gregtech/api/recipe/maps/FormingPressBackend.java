@@ -1,9 +1,5 @@
 package gregtech.api.recipe.maps;
 
-import static gregtech.api.recipe.check.FindRecipeResult.NOT_FOUND;
-
-import java.util.function.Predicate;
-
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -15,7 +11,6 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
-import gregtech.api.recipe.check.FindRecipeResult;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
@@ -32,7 +27,7 @@ public class FormingPressBackend extends RecipeMapBackend {
     }
 
     @Override
-    protected FindRecipeResult modifyFoundRecipe(FindRecipeResult result, ItemStack[] items, FluidStack[] fluids,
+    protected GT_Recipe modifyFoundRecipe(GT_Recipe recipe, ItemStack[] items, FluidStack[] fluids,
         @Nullable ItemStack specialSlot) {
         for (ItemStack mold : items) {
             if (ItemList.Shape_Mold_Credit.isStackEqual(mold, false, true)) {
@@ -41,32 +36,31 @@ public class FormingPressBackend extends RecipeMapBackend {
                 if (!nbt.hasKey("credit_security_id")) nbt.setLong("credit_security_id", System.nanoTime());
                 mold.setTagCompound(nbt);
 
-                GT_Recipe recipe = result.getRecipeNonNull();
                 recipe = recipe.copy();
                 recipe.mCanBeBuffered = false;
                 recipe.mOutputs[0].setTagCompound(nbt);
-                return FindRecipeResult.ofSuccess(recipe);
+                return recipe;
             }
         }
-        return result;
+        return recipe;
     }
 
     @Override
-    protected FindRecipeResult findFallback(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot,
-        Predicate<GT_Recipe> recipeValidator) {
+    protected GT_Recipe findFallback(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot) {
         if (items.length < 2) {
-            return NOT_FOUND;
+            return null;
         }
-        return findRenamingRecipe(items, recipeValidator);
+        return findRenamingRecipe(items);
     }
 
-    private FindRecipeResult findRenamingRecipe(ItemStack[] inputs, Predicate<GT_Recipe> recipeValidator) {
+    @Nullable
+    private GT_Recipe findRenamingRecipe(ItemStack[] inputs) {
         ItemStack mold = findNameMoldIndex(inputs);
-        if (mold == null) return NOT_FOUND;
+        if (mold == null) return null;
         ItemStack input = findStackToRename(inputs, mold);
-        if (input == null) return NOT_FOUND;
+        if (input == null) return null;
         ItemStack output = GT_Utility.copyAmount(1, input);
-        if (output == null) return NOT_FOUND;
+        if (output == null) return null;
         output.setStackDisplayName(mold.getDisplayName());
         return GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.copyAmount(0, mold), GT_Utility.copyAmount(1, input))
@@ -75,7 +69,8 @@ public class FormingPressBackend extends RecipeMapBackend {
             .eut(8)
             .noBuffer()
             .nbtSensitive()
-            .buildAndGetResult(recipeValidator);
+            .build()
+            .orElse(null);
     }
 
     @Nullable

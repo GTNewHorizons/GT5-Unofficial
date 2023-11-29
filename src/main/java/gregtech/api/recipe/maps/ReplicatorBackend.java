@@ -1,11 +1,8 @@
 package gregtech.api.recipe.maps;
 
-import static gregtech.api.recipe.check.FindRecipeResult.NOT_FOUND;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
-import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -20,7 +17,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
-import gregtech.api.recipe.check.FindRecipeResult;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_RecipeBuilder;
 import gregtech.api.util.GT_RecipeConstants;
@@ -42,28 +38,28 @@ public class ReplicatorBackend extends RecipeMapBackend {
     }
 
     @Override
-    protected FindRecipeResult overwriteFindRecipe(ItemStack[] items, FluidStack[] fluids,
-        @Nullable ItemStack specialSlot, Predicate<GT_Recipe> recipeValidator, @Nullable GT_Recipe cachedRecipe) {
+    protected GT_Recipe overwriteFindRecipe(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot,
+        @Nullable GT_Recipe cachedRecipe) {
         if (specialSlot == null) {
-            return NOT_FOUND;
+            return null;
         }
         Materials foundMaterial = getMaterialFromDataOrb(specialSlot);
         if (foundMaterial == null) {
-            return NOT_FOUND;
+            return null;
         }
         if (cachedRecipe != null) {
             Materials cachedRecipeMaterial = cachedRecipe.getMetadata(GT_RecipeConstants.MATERIAL);
-            if (foundMaterial == cachedRecipeMaterial && recipeValidator.test(cachedRecipe)) {
-                return FindRecipeResult.ofSuccess(cachedRecipe);
+            if (foundMaterial == cachedRecipeMaterial) {
+                return cachedRecipe;
             }
         }
         for (GT_Recipe recipe : getAllRecipes()) {
             Materials recipeMaterial = recipe.getMetadata(GT_RecipeConstants.MATERIAL);
-            if (foundMaterial == recipeMaterial && recipeValidator.test(recipe)) {
-                return FindRecipeResult.ofSuccess(recipe);
+            if (foundMaterial == recipeMaterial) {
+                return recipe;
             }
         }
-        return NOT_FOUND;
+        return null;
     }
 
     @Nullable

@@ -1,7 +1,5 @@
 package gregtech.api.recipe;
 
-import static gregtech.api.recipe.check.FindRecipeResult.NOT_FOUND;
-import static gregtech.api.recipe.check.FindRecipeResult.ofSuccess;
 import static gregtech.api.util.GT_RecipeBuilder.handleInvalidRecipe;
 import static gregtech.api.util.GT_RecipeBuilder.handleRecipeCollision;
 import static gregtech.api.util.GT_Utility.areStacksEqualOrNull;
@@ -12,9 +10,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+import java.util.Objects;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -31,11 +31,11 @@ import com.google.common.collect.SetMultimap;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.recipe.check.FindRecipeResult;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_RecipeBuilder;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
+import gregtech.api.util.StreamUtil;
 
 /**
  * Responsible for recipe addition / search for recipemap.
@@ -304,26 +304,14 @@ public class RecipeMapBackend {
      * This method is marked as final and package-private, so that any change to it won't break subclasses.
      * Use {@link #overwriteFindRecipe}, {@link #modifyFoundRecipe} or {@link #findFallback} to tweak behavior.
      */
-    final FindRecipeResult findRecipeWithResult(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot,
+    @Nullable
+    final GT_Recipe findRecipe(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot,
         Predicate<GT_Recipe> recipeValidator, @Nullable GT_Recipe cachedRecipe, boolean notUnificated,
         boolean dontCheckStackSizes) {
-        if (doesOverwriteFindRecipe()) {
-            return overwriteFindRecipe(items, fluids, specialSlot, recipeValidator, cachedRecipe);
-        }
-
-        FindRecipeResult result = doFind(
-            items,
-            fluids,
-            specialSlot,
-            recipeValidator,
-            cachedRecipe,
-            notUnificated,
-            dontCheckStackSizes,
-            false);
-        if (result.isSuccessful()) {
-            return modifyFoundRecipe(result, items, fluids, specialSlot);
-        }
-        return findFallback(items, fluids, specialSlot, recipeValidator);
+        return matchRecipeStream(items, fluids, specialSlot, cachedRecipe, notUnificated, dontCheckStackSizes, false)
+            .filter(recipeValidator)
+            .findFirst()
+            .orElse(null);
     }
 
     /**
@@ -331,16 +319,18 @@ public class RecipeMapBackend {
      *
      * @return True if collision is found.
      */
-    public boolean checkCollision(GT_Recipe recipe) {
-        return doFind(recipe.mInputs, recipe.mFluidInputs, null, ALWAYS, null, false, true, true).isSuccessful();
+    boolean checkCollision(GT_Recipe recipe) {
+        return matchRecipeStream(recipe.mInputs, recipe.mFluidInputs, null, null, false, true, true).findAny()
+            .isPresent();
     }
 
     /**
-     * Overwrites {@link #doFind} method. Also override {@link #doesOverwriteFindRecipe} to make it work.
+     * Overwrites {@link #matchRecipeStream} method. Also override {@link #doesOverwriteFindRecipe} to make it work.
      */
-    protected FindRecipeResult overwriteFindRecipe(ItemStack[] items, FluidStack[] fluids,
-        @Nullable ItemStack specialSlot, Predicate<GT_Recipe> recipeValidator, @Nullable GT_Recipe cachedRecipe) {
-        return NOT_FOUND;
+    @Nullable
+    protected GT_Recipe overwriteFindRecipe(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot,
+        @Nullable GT_Recipe cachedRecipe) {
+        return null;
     }
 
     /**
@@ -351,31 +341,45 @@ public class RecipeMapBackend {
     }
 
     /**
-     * Modifies successfully found recipe.
+     * Modifies successfully found recipe. Make sure not to mutate the found recipe but use copy!
      */
-    protected FindRecipeResult modifyFoundRecipe(FindRecipeResult result, ItemStack[] items, FluidStack[] fluids,
+    @Nullable
+    protected GT_Recipe modifyFoundRecipe(GT_Recipe recipe, ItemStack[] items, FluidStack[] fluids,
         @Nullable ItemStack specialSlot) {
-        return result;
+        return recipe;
     }
 
     /**
-     * Called when {@link #doFind} cannot find recipe.
+     * Called when {@link #matchRecipeStream} cannot find recipe.
      */
-    protected FindRecipeResult findFallback(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot,
-        Predicate<GT_Recipe> recipeValidator) {
-        return NOT_FOUND;
+    @Nullable
+    protected GT_Recipe findFallback(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot) {
+        return null;
     }
 
     /**
-     * Actual logic to find recipe.
+     * Returns all the matched recipes in the form of Stream, without any additional check for matches.
      *
-     * @param forCollisionCheck If this method is called to check collision with already registered recipes.
+     * @param rawItems            Item inputs.
+     * @param fluids              Fluid inputs.
+     * @param specialSlot         Content of the special slot. Normal recipemaps don't need this, but some do.
+     *                            Set {@link RecipeMapBuilder#specialSlotSensitive} to make it actually functional.
+     * @param cachedRecipe        If this is not null, this method tests it before all other recipes.
+     * @param notUnificated       If this is set to true, item inputs will be unificated.
+     * @param dontCheckStackSizes If this is set to false, this method won't check item count and fluid amount
+     *                            for the matched recipe.
+     * @param forCollisionCheck   If this method is called to check collision with already registered recipes.
+     * @return Stream of matches recipes.
      */
-    private FindRecipeResult doFind(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot,
-        Predicate<GT_Recipe> recipeValidator, @Nullable GT_Recipe cachedRecipe, boolean notUnificated,
-        boolean dontCheckStackSizes, boolean forCollisionCheck) {
+    Stream<GT_Recipe> matchRecipeStream(ItemStack[] rawItems, FluidStack[] fluids, @Nullable ItemStack specialSlot,
+        @Nullable GT_Recipe cachedRecipe, boolean notUnificated, boolean dontCheckStackSizes,
+        boolean forCollisionCheck) {
+        if (doesOverwriteFindRecipe()) {
+            return StreamUtil.ofNullable(overwriteFindRecipe(rawItems, fluids, specialSlot, cachedRecipe));
+        }
+
         if (recipesByCategory.isEmpty()) {
-            return NOT_FOUND;
+            return Stream.empty();
         }
 
         // Some recipe classes require a certain amount of inputs of certain kinds. Like "at least 1 fluid + 1 item"
@@ -388,109 +392,76 @@ public class RecipeMapBackend {
                 int count = 0;
                 for (FluidStack fluid : fluids) if (fluid != null) count++;
                 if (count < properties.minFluidInputs) {
-                    return NOT_FOUND;
+                    return Stream.empty();
                 }
             }
             if (properties.minItemInputs > 0) {
                 int count = 0;
-                for (ItemStack item : items) if (item != null) count++;
+                for (ItemStack item : rawItems) if (item != null) count++;
                 if (count < properties.minItemInputs) {
-                    return NOT_FOUND;
+                    return Stream.empty();
                 }
             }
         }
 
+        ItemStack[] items;
         // Unification happens here in case the item input isn't already unificated.
         if (notUnificated) {
-            items = GT_OreDictUnificator.getStackArray(true, (Object[]) items);
+            items = GT_OreDictUnificator.getStackArray(true, (Object[]) rawItems);
+        } else {
+            items = rawItems;
         }
 
-        // Check the recipe which has been used last time in order to not have to search for it again, if possible.
-        if (cachedRecipe != null) {
-            if (!cachedRecipe.mFakeRecipe && cachedRecipe.mCanBeBuffered
-                && cachedRecipe.isRecipeInputEqual(false, dontCheckStackSizes, fluids, items)) {
-                if (!properties.specialSlotSensitive
-                    || areStacksEqualOrNull((ItemStack) cachedRecipe.mSpecialItems, specialSlot)) {
-                    if (cachedRecipe.mEnabled && recipeValidator.test(cachedRecipe)) {
-                        return ofSuccess(cachedRecipe);
-                    }
-                }
-            }
-        }
-
-        // Now look for the recipes inside the item index, but only when the recipes actually can have items inputs.
-        if (!itemIndex.isEmpty()) {
-            for (ItemStack item : items) {
-                if (item == null) continue;
-                Collection<GT_Recipe> nonWildcardRecipes = itemIndex.get(new GT_ItemStack(item));
-                if (nonWildcardRecipes != null) {
-                    Optional<GT_Recipe> recipeCandidate = loopRecipes(
-                        nonWildcardRecipes,
-                        items,
-                        fluids,
-                        specialSlot,
-                        recipeValidator,
-                        dontCheckStackSizes);
-                    if (recipeCandidate.isPresent()) {
-                        return ofSuccess(recipeCandidate.get());
-                    }
-                }
-                Collection<GT_Recipe> wildcardRecipes = itemIndex.get(new GT_ItemStack(item, true));
-                if (wildcardRecipes != null) {
-                    Optional<GT_Recipe> recipeCandidate = loopRecipes(
-                        wildcardRecipes,
-                        items,
-                        fluids,
-                        specialSlot,
-                        recipeValidator,
-                        dontCheckStackSizes);
-                    if (recipeCandidate.isPresent()) {
-                        return ofSuccess(recipeCandidate.get());
-                    }
-                }
-            }
-        }
-
-        // If the minimum amount of items required for the recipes is 0, then it could match to fluid-only recipes,
-        // so check fluid index too.
-        if (properties.minItemInputs == 0) {
-            for (FluidStack fluid : fluids) {
-                if (fluid == null) continue;
-                Collection<GT_Recipe> recipes = fluidIndex.get(
-                    fluid.getFluid()
-                        .getName());
-                if (recipes != null) {
-                    Optional<GT_Recipe> recipeCandidate = loopRecipes(
-                        recipes,
-                        items,
-                        fluids,
-                        specialSlot,
-                        recipeValidator,
-                        dontCheckStackSizes);
-                    if (recipeCandidate.isPresent()) {
-                        return ofSuccess(recipeCandidate.get());
-                    }
-                }
-            }
-        }
-
-        // And nothing has been found.
-        return NOT_FOUND;
+        return Stream.<Stream<GT_Recipe>>of(
+            // Check the recipe which has been used last time in order to not have to search for it again, if possible.
+            StreamUtil.ofNullable(cachedRecipe)
+                .filter(recipe -> recipe.mCanBeBuffered)
+                .filter(recipe -> filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes))
+                .map(recipe -> modifyFoundRecipe(recipe, items, fluids, specialSlot))
+                .filter(Objects::nonNull),
+            // Now look for the recipes inside the item index, but only when the recipes actually can have items inputs.
+            StreamUtil.ofConditional(!itemIndex.isEmpty(), items)
+                .filter(Objects::nonNull)
+                .flatMap(item -> Stream.of(new GT_ItemStack(item), new GT_ItemStack(item, true)))
+                .map(itemIndex::get)
+                .flatMap(Collection::stream)
+                .filter(recipe -> filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes))
+                .map(recipe -> modifyFoundRecipe(recipe, items, fluids, specialSlot))
+                .filter(Objects::nonNull),
+            // If the minimum amount of items required for the recipes is 0, then it could match to fluid-only recipes,
+            // so check fluid index too.
+            StreamUtil.ofConditional(properties.minItemInputs == 0, fluids)
+                .filter(Objects::nonNull)
+                .map(
+                    fluidStack -> fluidIndex.get(
+                        fluidStack.getFluid()
+                            .getName()))
+                .flatMap(Collection::stream)
+                .filter(recipe -> filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes))
+                .map(recipe -> modifyFoundRecipe(recipe, items, fluids, specialSlot))
+                .filter(Objects::nonNull),
+            // Lastly, find fallback.
+            forCollisionCheck ? Stream.empty()
+                : StreamUtil.ofSupplier(() -> findFallback(items, fluids, specialSlot))
+                    .filter(Objects::nonNull))
+            .flatMap(Function.identity());
     }
 
-    private Optional<GT_Recipe> loopRecipes(Collection<GT_Recipe> recipes, ItemStack[] items, FluidStack[] fluids,
-        @Nullable ItemStack specialSlot, Predicate<GT_Recipe> recipeValidator, boolean dontCheckStackSizes) {
-        for (GT_Recipe recipe : recipes) {
-            if (!recipe.mFakeRecipe && recipe.isRecipeInputEqual(false, dontCheckStackSizes, fluids, items)) {
-                if (!properties.specialSlotSensitive
-                    || areStacksEqualOrNull((ItemStack) recipe.mSpecialItems, specialSlot)) {
-                    if (recipe.mEnabled && recipeValidator.test(recipe)) {
-                        return Optional.of(recipe);
-                    }
-                }
-            }
+    /**
+     * The minimum filter required for recipe match logic. You can override this to have custom validation.
+     * <p>
+     * Other checks like machine voltage will be done in another places.
+     * <p>
+     * Note that this won't be called if {@link #doesOverwriteFindRecipe} is true.
+     */
+    protected boolean filterFindRecipe(GT_Recipe recipe, ItemStack[] items, FluidStack[] fluids,
+        @Nullable ItemStack specialSlot, boolean dontCheckStackSizes) {
+        if (recipe.mEnabled && !recipe.mFakeRecipe
+            && recipe.isRecipeInputEqual(false, dontCheckStackSizes, fluids, items)) {
+            return !properties.specialSlotSensitive
+                || areStacksEqualOrNull((ItemStack) recipe.mSpecialItems, specialSlot);
         }
-        return Optional.empty();
+        return false;
     }
 
     // endregion

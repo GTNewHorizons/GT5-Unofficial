@@ -87,8 +87,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     /**
      * Holds a set of metadata for this recipe.
      */
-    @Nullable
-    private RecipeMetadataStorage metadataStorage;
+    private RecipeMetadataStorage metadataStorage = new RecipeMetadataStorage();
     /**
      * Category this recipe belongs to. Recipes belonging to recipemap are forced to have non-null category when added,
      * otherwise it can be null.
@@ -218,11 +217,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         reloadOwner();
     }
 
-    private static FluidStack[] tryGetFluidInputsFromCells(ItemStack aInput) {
-        FluidStack tFluid = GT_Utility.getFluidForFilledItem(aInput, true);
-        return tFluid == null ? null : new FluidStack[] { tFluid };
-    }
-
     // aSpecialValue = EU per Liter! If there is no Liquid for this Object, then it gets multiplied with 1000!
     public GT_Recipe(ItemStack aInput1, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4,
         int aSpecialValue, int aType) {
@@ -282,6 +276,13 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             aDuration,
             aEUt,
             aSpecialValue);
+    }
+
+    /**
+     * Creates empty recipe where everything is set to default.
+     */
+    public static GT_Recipe empty() {
+        return new GT_Recipe(false, null, null, null, null, null, null, 0, 0, 0);
     }
 
     /**
@@ -537,15 +538,17 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
     // region metadata
 
+    public <T> GT_Recipe setMetadata(RecipeMetadataKey<T> key, T value) {
+        metadataStorage.store(key, value);
+        return this;
+    }
+
     /**
      * Gets metadata associated with this recipe. Can return null. Use {@link #getMetadata(RecipeMetadataKey, Object)}
      * if you want to specify default value.
      */
     @Nullable
     public <T> T getMetadata(RecipeMetadataKey<T> key) {
-        if (metadataStorage == null) {
-            return null;
-        }
         return key.cast(metadataStorage.getMetadata(key));
     }
 
@@ -555,13 +558,9 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     @Contract("_, !null -> !null")
     @Nullable
     public <T> T getMetadata(RecipeMetadataKey<T> key, @Nullable T defaultValue) {
-        if (metadataStorage == null) {
-            return defaultValue;
-        }
         return key.cast(metadataStorage.getMetadata(key, defaultValue));
     }
 
-    @Nullable
     public RecipeMetadataStorage getMetadataStorage() {
         return metadataStorage;
     }

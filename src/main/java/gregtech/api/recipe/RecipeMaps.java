@@ -45,7 +45,7 @@ import gregtech.api.recipe.maps.RecyclerBackend;
 import gregtech.api.recipe.maps.ReplicatorBackend;
 import gregtech.api.recipe.maps.SpaceProjectFrontend;
 import gregtech.api.recipe.maps.TranscendentPlasmaMixerFrontend;
-import gregtech.api.recipe.maps.UnboxinatorBackend;
+import gregtech.api.recipe.maps.UnpackagerBackend;
 import gregtech.api.recipe.metadata.PCBFactoryTierKey;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_ModHandler;
@@ -487,8 +487,8 @@ public final class RecipeMaps {
         })
         .recipeConfigFile("boxing", FIRST_ITEM_OUTPUT)
         .build();
-    public static final RecipeMap<UnboxinatorBackend> unpackagerRecipes = RecipeMapBuilder
-        .of("gt.recipe.unpackager", UnboxinatorBackend::new)
+    public static final RecipeMap<UnpackagerBackend> unpackagerRecipes = RecipeMapBuilder
+        .of("gt.recipe.unpackager", UnpackagerBackend::new)
         .maxIO(1, 2, 0, 0)
         .minInputs(1, 0)
         .slotOverlays((index, isFluid, isOutput, isSpecial) -> !isOutput ? GT_UITextures.OVERLAY_SLOT_BOXED : null)

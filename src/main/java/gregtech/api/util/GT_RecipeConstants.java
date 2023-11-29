@@ -88,6 +88,14 @@ public class GT_RecipeConstants {
      * Marker for {@link #UniversalArcFurnace} to tell that the recipe belongs to recycling category.
      */
     public static final RecipeMetadataKey<Boolean> RECYCLE = SimpleRecipeMetadataKey.create(Boolean.class, "recycle");
+    /**
+     * For Microwave.
+     */
+    public static final RecipeMetadataKey<Boolean> EXPLODE = SimpleRecipeMetadataKey.create(Boolean.class, "explode");
+    /**
+     * For Microwave.
+     */
+    public static final RecipeMetadataKey<Boolean> ON_FIRE = SimpleRecipeMetadataKey.create(Boolean.class, "on_fire");
 
     /**
      * Add a arc furnace recipe. Adds to both normal arc furnace and plasma arc furnace.

@@ -2,6 +2,7 @@ package gregtech.api.logic;
 
 import java.util.List;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -16,8 +17,6 @@ import gregtech.api.interfaces.tileentity.IVoidable;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.recipe.check.FindRecipeResult;
-import gregtech.api.recipe.check.RecipeValidator;
 import gregtech.api.recipe.check.SingleRecipeCheck;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_ParallelHelper;
@@ -294,55 +293,39 @@ public class ProcessingLogic {
                 return CheckRecipeResultRegistry.NO_RECIPE;
             }
 
-            return processRecipe(
+            return validateAndCalculateRecipe(
                 recipeLockableMachine.getSingleRecipeCheck()
-                    .getRecipe());
+                    .getRecipe()).checkRecipeResult;
         }
 
-        FindRecipeResult findRecipeResult = findRecipe(recipeMap);
-        // If processRecipe is not overridden, advanced recipe validation logic is used, and we can reuse calculations.
-        if (findRecipeResult.hasRecipeValidator()) {
-            RecipeValidator recipeValidator = findRecipeResult.getRecipeValidator();
-
-            // There are two cases:
-            // 1 - there are actually no matching recipes
-            // 2 - there are some matching recipes, but we rejected it due to our advanced validation (e.g. OUTPUT_FULL)
-            if (findRecipeResult.getState() == FindRecipeResult.State.NOT_FOUND
-                && recipeValidator.getFirstCheckResult() != null) {
-                // Here we're handling case 2
-                // If there are matching recipes but our validation rejected them,
-                // we should return a first one to display a proper error in the machine GUI
-                return recipeValidator.getFirstCheckResult();
+        Stream<GT_Recipe> matchedRecipes = findRecipeMatches(recipeMap);
+        Iterable<GT_Recipe> recipeIterable = matchedRecipes::iterator;
+        CheckRecipeResult checkRecipeResult = CheckRecipeResultRegistry.NO_RECIPE;
+        for (GT_Recipe matchedRecipe : recipeIterable) {
+            CalculationResult foundResult = validateAndCalculateRecipe(matchedRecipe);
+            if (foundResult.successfullyConsumedInputs) {
+                // Successfully found and set recipe, so return it
+                return foundResult.checkRecipeResult;
             }
-
-            // If everything is ok, reuse our calculations
-            if (recipeValidator.isExecutedAtLeastOnce() && findRecipeResult.isSuccessful()) {
-                return applyRecipe(
-                    findRecipeResult.getRecipeNonNull(),
-                    recipeValidator.getLastParallelHelper(),
-                    recipeValidator.getLastOverclockCalculator(),
-                    recipeValidator.getLastCheckResult());
+            if (foundResult.checkRecipeResult != CheckRecipeResultRegistry.NO_RECIPE) {
+                // Recipe failed in interesting way, so remember that and continue searching
+                checkRecipeResult = foundResult.checkRecipeResult;
             }
         }
-
-        if (!findRecipeResult.isSuccessful()) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
-        }
-
-        return processRecipe(findRecipeResult.getRecipeNonNull());
+        return checkRecipeResult;
     }
 
     /**
-     * Checks if supplied recipe is valid for process.
-     * If so, additionally performs input consumption, output calculation with parallel, and overclock calculation.
+     * Checks if supplied recipe is valid for process. This involves voltage check, output full check. If successful,
+     * additionally performs input consumption, output calculation with parallel, and overclock calculation.
      *
      * @param recipe The recipe which will be checked and processed
      */
     @Nonnull
-    protected CheckRecipeResult processRecipe(@Nonnull GT_Recipe recipe) {
+    private CalculationResult validateAndCalculateRecipe(@Nonnull GT_Recipe recipe) {
         CheckRecipeResult result = validateRecipe(recipe);
         if (!result.wasSuccessful()) {
-            return result;
+            return CalculationResult.ofFailure(result);
         }
 
         GT_ParallelHelper helper = createParallelHelper(recipe);
@@ -350,19 +333,19 @@ public class ProcessingLogic {
         helper.setCalculator(calculator);
         helper.build();
 
+        if (!helper.getResult()
+            .wasSuccessful()) {
+            return CalculationResult.ofFailure(helper.getResult());
+        }
+
         return applyRecipe(recipe, helper, calculator, result);
     }
 
     /**
-     * Applies the recipe and calculated parameters
+     * Check has been succeeded, so applies the recipe and calculated parameters.
      */
-    private CheckRecipeResult applyRecipe(@NotNull GT_Recipe recipe, GT_ParallelHelper helper,
+    private CalculationResult applyRecipe(@NotNull GT_Recipe recipe, GT_ParallelHelper helper,
         GT_OverclockCalculator calculator, CheckRecipeResult result) {
-        if (!helper.getResult()
-            .wasSuccessful()) {
-            return helper.getResult();
-        }
-
         if (recipe.mCanBeBuffered) {
             lastRecipe = recipe;
         } else {
@@ -371,24 +354,24 @@ public class ProcessingLogic {
         calculatedParallels = helper.getCurrentParallel();
 
         if (calculator.getConsumption() == Long.MAX_VALUE) {
-            return CheckRecipeResultRegistry.POWER_OVERFLOW;
+            return CalculationResult.ofSuccess(CheckRecipeResultRegistry.POWER_OVERFLOW);
         }
         if (calculator.getDuration() == Integer.MAX_VALUE) {
-            return CheckRecipeResultRegistry.DURATION_OVERFLOW;
+            return CalculationResult.ofSuccess(CheckRecipeResultRegistry.DURATION_OVERFLOW);
         }
 
         calculatedEut = calculator.getConsumption();
 
         double finalDuration = calculateDuration(recipe, helper, calculator);
         if (finalDuration >= Integer.MAX_VALUE) {
-            return CheckRecipeResultRegistry.DURATION_OVERFLOW;
+            return CalculationResult.ofSuccess(CheckRecipeResultRegistry.DURATION_OVERFLOW);
         }
         duration = (int) finalDuration;
 
         outputItems = helper.getItemOutputs();
         outputFluids = helper.getFluidOutputs();
 
-        return result;
+        return CalculationResult.ofSuccess(result);
     }
 
     /**
@@ -400,23 +383,26 @@ public class ProcessingLogic {
     }
 
     /**
-     * Override if you don't work with regular gt recipe maps
+     * Finds a list of matched recipes. At this point no additional check to the matched recipe has been done.
+     * <p>
+     * Override {@link #validateRecipe} to have custom check.
+     * <p>
+     * Override this method if it doesn't work with normal recipemaps.
      */
     @Nonnull
-    protected FindRecipeResult findRecipe(@Nullable RecipeMap<?> map) {
-        if (map == null) return FindRecipeResult.NOT_FOUND;
+    protected Stream<GT_Recipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
+        if (map == null) {
+            return Stream.empty();
+        }
+        return map.findRecipeMatches(inputItems, inputFluids, specialSlotItem, lastRecipe, false, false);
+    }
 
-        RecipeValidator recipeValidator = new RecipeValidator(
-            this::validateRecipe,
-            this::createParallelHelper,
-            this::createOverclockCalculator);
-
-        FindRecipeResult findRecipeResult = map
-            .findRecipeWithResult(inputItems, inputFluids, specialSlotItem, recipeValidator, lastRecipe, false, false);
-
-        findRecipeResult.setRecipeValidator(recipeValidator);
-
-        return findRecipeResult;
+    /**
+     * Override to do additional check for found recipe if needed.
+     */
+    @Nonnull
+    protected CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
+        return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     /**
@@ -435,24 +421,6 @@ public class ProcessingLogic {
             .enableBatchMode(batchSize)
             .setConsumption(true)
             .setOutputCalculation(true);
-    }
-
-    /**
-     * Override to do additional check for finding recipe if needed, mainly for special value of the recipe.
-     */
-    @Nonnull
-    protected CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
-        return CheckRecipeResultRegistry.SUCCESSFUL;
-    }
-
-    /**
-     * Use {@link #createOverclockCalculator(GT_Recipe)}
-     */
-    @Nonnull
-    @Deprecated
-    protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe,
-        @Nullable GT_ParallelHelper helper) {
-        return createOverclockCalculator(recipe);
     }
 
     /**
@@ -496,4 +464,28 @@ public class ProcessingLogic {
     }
 
     // endregion
+
+    /**
+     * Represents the status of check recipe calculation. {@link #successfullyConsumedInputs} does not necessarily mean
+     * {@link #checkRecipeResult} being successful, when duration or power is overflowed. Being failure means
+     * recipe cannot meet requirements and recipe search should be continued if possible.
+     */
+    protected final static class CalculationResult {
+
+        public final boolean successfullyConsumedInputs;
+        public final CheckRecipeResult checkRecipeResult;
+
+        public static CalculationResult ofSuccess(CheckRecipeResult checkRecipeResult) {
+            return new CalculationResult(true, checkRecipeResult);
+        }
+
+        public static CalculationResult ofFailure(CheckRecipeResult checkRecipeResult) {
+            return new CalculationResult(false, checkRecipeResult);
+        }
+
+        private CalculationResult(boolean successfullyConsumedInputs, CheckRecipeResult checkRecipeResult) {
+            this.successfullyConsumedInputs = successfullyConsumedInputs;
+            this.checkRecipeResult = checkRecipeResult;
+        }
+    }
 }

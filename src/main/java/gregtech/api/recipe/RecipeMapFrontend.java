@@ -233,11 +233,9 @@ public class RecipeMapFrontend {
 
     protected void drawMetadataInfo(RecipeDisplayInfo recipeInfo) {
         RecipeMetadataStorage metadataStorage = recipeInfo.recipe.getMetadataStorage();
-        if (metadataStorage != null) {
-            for (Map.Entry<RecipeMetadataKey<?>, Object> entry : metadataStorage.getEntries()) {
-                entry.getKey()
-                    .drawInfo(recipeInfo, entry.getValue());
-            }
+        for (Map.Entry<RecipeMetadataKey<?>, Object> entry : metadataStorage.getEntries()) {
+            entry.getKey()
+                .drawInfo(recipeInfo, entry.getValue());
         }
     }
 

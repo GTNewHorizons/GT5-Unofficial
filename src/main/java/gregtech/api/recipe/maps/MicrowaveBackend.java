@@ -1,9 +1,8 @@
 package gregtech.api.recipe.maps;
 
 import static gregtech.api.enums.GT_Values.W;
-import static gregtech.api.recipe.check.FindRecipeResult.*;
-
-import java.util.function.Predicate;
+import static gregtech.api.util.GT_RecipeConstants.EXPLODE;
+import static gregtech.api.util.GT_RecipeConstants.ON_FIRE;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -20,7 +19,6 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
-import gregtech.api.recipe.check.FindRecipeResult;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -40,14 +38,13 @@ public class MicrowaveBackend extends NonGTBackend {
     }
 
     @Override
-    protected FindRecipeResult overwriteFindRecipe(ItemStack[] items, FluidStack[] fluids,
-        @Nullable ItemStack specialSlot, Predicate<GT_Recipe> recipeValidator, @Nullable GT_Recipe cachedRecipe) {
+    protected GT_Recipe overwriteFindRecipe(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot,
+        @Nullable GT_Recipe cachedRecipe) {
         if (items.length == 0 || items[0] == null) {
-            return NOT_FOUND;
+            return null;
         }
-        if (cachedRecipe != null && cachedRecipe.isRecipeInputEqual(false, true, fluids, items)
-            && recipeValidator.test(cachedRecipe)) {
-            return FindRecipeResult.ofSuccess(cachedRecipe);
+        if (cachedRecipe != null && cachedRecipe.isRecipeInputEqual(false, true, fluids, items)) {
+            return cachedRecipe;
         }
 
         ItemStack output = GT_ModHandler.getSmeltingOutput(items[0], false, null);
@@ -59,7 +56,8 @@ public class MicrowaveBackend extends NonGTBackend {
                 .duration(32)
                 .eut(4)
                 .noOptimize()
-                .buildAndGetResult(recipeValidator);
+                .build()
+                .orElse(null);
         }
 
         // Check Container Item of Input since it is around the Input, then the Input itself, then Container Item of
@@ -75,7 +73,8 @@ public class MicrowaveBackend extends NonGTBackend {
                 || GT_Utility.areStacksEqual(item, new ItemStack(Items.fire_charge, 1, W), true)) {
                 GT_Log.exp
                     .println("Microwave Explosion due to TNT || EGG || FIREWORKCHARGE || FIREWORK || FIRE CHARGE");
-                return EXPLODE;
+                return GT_Recipe.empty()
+                    .setMetadata(EXPLODE, true);
             }
 
             ItemData itemData = GT_OreDictUnificator.getItemData(item);
@@ -84,11 +83,13 @@ public class MicrowaveBackend extends NonGTBackend {
                     if (itemData.mMaterial.mMaterial.contains(SubTag.METAL)
                         || itemData.mMaterial.mMaterial.contains(SubTag.EXPLOSIVE)) {
                         GT_Log.exp.println("Microwave Explosion due to METAL insertion");
-                        return EXPLODE;
+                        return GT_Recipe.empty()
+                            .setMetadata(EXPLODE, true);
                     }
                     if (itemData.mMaterial.mMaterial.contains(SubTag.FLAMMABLE)) {
                         GT_Log.exp.println("Microwave INFLAMMATION due to FLAMMABLE insertion");
-                        return ON_FIRE;
+                        return GT_Recipe.empty()
+                            .setMetadata(ON_FIRE, true);
                     }
                 }
                 for (MaterialStack materialStack : itemData.mByProducts) {
@@ -96,28 +97,32 @@ public class MicrowaveBackend extends NonGTBackend {
                     if (materialStack.mMaterial.contains(SubTag.METAL)
                         || materialStack.mMaterial.contains(SubTag.EXPLOSIVE)) {
                         GT_Log.exp.println("Microwave Explosion due to METAL insertion");
-                        return EXPLODE;
+                        return GT_Recipe.empty()
+                            .setMetadata(EXPLODE, true);
                     }
                     if (materialStack.mMaterial.contains(SubTag.FLAMMABLE)) {
                         GT_Log.exp.println("Microwave INFLAMMATION due to FLAMMABLE insertion");
-                        return ON_FIRE;
+                        return GT_Recipe.empty()
+                            .setMetadata(ON_FIRE, true);
                     }
                 }
             }
             if (TileEntityFurnace.getItemBurnTime(item) > 0) {
                 GT_Log.exp.println("Microwave INFLAMMATION due to BURNABLE insertion");
-                return ON_FIRE;
+                return GT_Recipe.empty()
+                    .setMetadata(ON_FIRE, true);
             }
         }
 
-        return output == null ? NOT_FOUND
+        return output == null ? null
             : GT_Values.RA.stdBuilder()
                 .itemInputs(GT_Utility.copyAmount(1, items[0]))
                 .itemOutputs(output)
                 .duration(32)
                 .eut(4)
                 .noOptimize()
-                .buildAndGetResult(recipeValidator);
+                .build()
+                .orElse(null);
     }
 
     @Override

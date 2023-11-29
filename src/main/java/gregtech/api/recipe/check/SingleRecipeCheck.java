@@ -35,7 +35,7 @@ import gregtech.api.util.GT_Utility.ItemId;
  * <ul>
  * Normal recipe check:
  * <ul>
- * {@link RecipeMap#findRecipeWithResult Find recipe from recipemap}: O(NCR)
+ * {@link RecipeMap#findRecipeFirst Find recipe from recipemap}: O(NCR)
  * where N = number of machine inputs, C = average amount of recipe candidates found for specific input,
  * R = computation time to {@link GT_Recipe#isRecipeInputEqual check if inputs match to recipe}
  * </ul>

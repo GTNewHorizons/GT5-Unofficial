@@ -1,10 +1,8 @@
 package gregtech.api.recipe.maps;
 
 import static gregtech.api.enums.Mods.Railcraft;
-import static gregtech.api.recipe.check.FindRecipeResult.NOT_FOUND;
 
 import java.util.List;
-import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -16,7 +14,6 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
-import gregtech.api.recipe.check.FindRecipeResult;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -32,10 +29,9 @@ public class MaceratorBackend extends RecipeMapBackend {
     }
 
     @Override
-    protected FindRecipeResult findFallback(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot,
-        Predicate<GT_Recipe> recipeValidator) {
+    protected GT_Recipe findFallback(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot) {
         if (items.length == 0 || items[0] == null) {
-            return NOT_FOUND;
+            return null;
         }
 
         if (Railcraft.isModLoaded()) {
@@ -50,7 +46,8 @@ public class MaceratorBackend extends RecipeMapBackend {
                     .eut(2)
                     .noBuffer()
                     .needsEmptyOutput()
-                    .buildAndGetResult(recipeValidator);
+                    .build()
+                    .orElse(null);
             }
         }
 
@@ -70,9 +67,10 @@ public class MaceratorBackend extends RecipeMapBackend {
                 .duration(400)
                 .eut(2)
                 .noOptimize()
-                .buildAndGetResult(recipeValidator);
+                .build()
+                .orElse(null);
         }
-        return NOT_FOUND;
+        return null;
     }
 
     @Override
