@@ -19,6 +19,7 @@ import gregtech.api.modernmaterials.fluids.ModernMaterialFluid;
 import gregtech.api.modernmaterials.items.partproperties.customitemrenderers.UniversiumItemRenderer;
 import gregtech.api.modernmaterials.recipegenerators.Metal;
 import gregtech.api.enums.TierEU;
+import gregtech.api.modernmaterials.tooltips.CustomTooltips;
 
 public class ModernMaterialsRegistration {
 
@@ -70,6 +71,7 @@ public class ModernMaterialsRegistration {
                 new UniversiumBlockOfItemRenderer(),
                 new UniversiumBlockOfBlockRenderer())
             .setCustomItemRenderer(new UniversiumItemRenderer())
+            .addCustomTooltip(CustomTooltips::createRainbowText)
             .setRecipeGenerator(Metal::generateExtruderRecipesWithoutTools)
             .addAllParts()
             .addFluid(Gas, 1_000)

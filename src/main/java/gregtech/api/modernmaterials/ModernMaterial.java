@@ -9,7 +9,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import gregtech.api.modernmaterials.effects.IEffect;
+import gregtech.api.modernmaterials.effects.IMaterialEffect;
+import gregtech.api.modernmaterials.tooltips.IMaterialTooltip;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
@@ -28,7 +29,8 @@ public final class ModernMaterial {
     private final HashSet<IEnumPart> existingPartsForMaterial = new HashSet<>();
     private final HashSet<ModernMaterialFluid> existingFluids = new HashSet<>();
     private final HashSet<Consumer<ModernMaterial>> recipeGenerators = new HashSet<>();
-    private final HashSet<IEffect> heldItemEffect = new HashSet<>();
+    private final HashSet<IMaterialEffect> heldItemEffect = new HashSet<>();
+    private IMaterialTooltip customTooltipGenerator;
 
 
     private Color color;
@@ -114,6 +116,10 @@ public final class ModernMaterial {
         return textureType == TextureType.Custom;
     }
 
+    public IMaterialTooltip getCustomTooltipGenerator() {
+        return customTooltipGenerator;
+    }
+
     public static ModernMaterial getMaterialFromID(final int materialID) {
         return materialIDToMaterial.get(materialID);
     }
@@ -174,7 +180,7 @@ public final class ModernMaterial {
         return materialName;
     }
 
-    public HashSet<IEffect> getEffects() {
+    public HashSet<IMaterialEffect> getEffects() {
         return heldItemEffect;
     }
 
@@ -307,10 +313,14 @@ public final class ModernMaterial {
             return this;
         }
 
-        public ModernMaterialBuilder addPlayerEffect(@NotNull IEffect... effects) {
+        public ModernMaterialBuilder addPlayerEffect(@NotNull IMaterialEffect... effects) {
             materialToBuild.heldItemEffect.addAll(Arrays.asList(effects));
             return this;
         }
-    }
 
+        public ModernMaterialBuilder addCustomTooltip(@NotNull IMaterialTooltip tooltipGenerator) {
+            materialToBuild.customTooltipGenerator = tooltipGenerator;
+            return this;
+        }
+    }
 }

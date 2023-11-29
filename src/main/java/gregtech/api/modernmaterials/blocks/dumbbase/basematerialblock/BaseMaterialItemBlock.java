@@ -4,7 +4,7 @@ import static gregtech.api.modernmaterials.ModernMaterialUtilities.tooltipGenera
 
 import java.util.List;
 
-import gregtech.api.modernmaterials.effects.IEffect;
+import gregtech.api.modernmaterials.effects.IMaterialEffect;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -75,7 +75,7 @@ public class BaseMaterialItemBlock extends ItemBlock {
     public void onUpdate(ItemStack itemStack, World world, Entity entity, int slotIndex, boolean isCurrentItem)  {
         final ModernMaterial material = ModernMaterial.getMaterialFromItemStack(itemStack);
 
-        for (IEffect effect : material.getEffects()) {
+        for (IMaterialEffect effect : material.getEffects()) {
             effect.apply(itemStack, world, entity, slotIndex, isCurrentItem);
         }
     }
