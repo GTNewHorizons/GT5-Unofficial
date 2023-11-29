@@ -61,7 +61,8 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
     private final ArrayList<Chunk> mOilFieldChunks = new ArrayList<>();
     private int mOilId = 0;
     private int mOilFlow = 0;
-
+    private int batchMultiplier;
+    private int parallelFromOCUnderOneTick;
     private int chunkRangeConfig = getRangeInChunks();
 
     public GT_MetaTileEntity_OilDrillBase(int aID, String aName, String aNameRegional) {
@@ -181,10 +182,17 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
         this.mEfficiencyIncrease = 10000;
         int tier = Math.max(0, GT_Utility.getTier(getMaxInputVoltage()));
         this.mEUt = -7 << (tier << 1); // (1/4) A of current tier when at bottom (7/8) A of current tier while mining
-        this.mMaxProgresstime = Math.max(
-            1,
-            (workState == STATE_AT_BOTTOM ? (64 * (chunkRangeConfig * chunkRangeConfig)) >> (getMinTier() - 1) : 120)
-                >> tier);
+        if (workState == STATE_AT_BOTTOM) {
+            int baseProgressTime = (64 * (chunkRangeConfig * chunkRangeConfig)) >> (Math.min(getMinTier(), 5) - 1);
+            this.parallelFromOCUnderOneTick = Math.max(1, (1 << tier) / baseProgressTime);
+            this.mMaxProgresstime = Math.max(1, baseProgressTime >> tier);
+            if (batchMode) {
+                batchMultiplier = Math.max(getMaxBatchSize() / mMaxProgresstime, 1);
+                this.mMaxProgresstime *= batchMultiplier;
+            }
+        } else {
+            this.mMaxProgresstime = Math.max(1, 120 >> tier);
+        }
     }
 
     protected float computeSpeed() {
@@ -327,7 +335,10 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
         if (speed < 0) {
             throw new IllegalArgumentException("Don't pass negative speed");
         }
-
+        speed *= parallelFromOCUnderOneTick;
+        if (batchMode) {
+            speed *= batchMultiplier;
+        }
         ArrayList<Chunk> emptyChunks = new ArrayList<>();
         FluidStack returnOil = new FluidStack(FluidRegistry.getFluid(mOilId), 0);
 
@@ -499,6 +510,11 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
 
     @Override
     public boolean supportsVoidProtection() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
         return true;
     }
 }
