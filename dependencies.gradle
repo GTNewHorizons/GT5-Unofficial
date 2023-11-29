@@ -1,13 +1,13 @@
 // Add your dependencies here
 
 dependencies {
-    api('com.github.GTNewHorizons:GT5-Unofficial:5.09.44.88:dev')
-    api("com.github.GTNewHorizons:TecTech:5.3.14:dev")
+    api('com.github.GTNewHorizons:GT5-Unofficial:5.09.44.91:dev')
+    api("com.github.GTNewHorizons:TecTech:5.3.15:dev")
     api("com.github.GTNewHorizons:GalacticGregGT5:1.0.10:dev") {
         exclude group:"com.github.GTNewHorizons", module:"bartworks"
     }
     api("com.github.GTNewHorizons:Avaritia:1.46:dev")
-    implementation("com.github.GTNewHorizons:TinkersConstruct:1.10.11-GTNH:dev")
+    implementation("com.github.GTNewHorizons:TinkersConstruct:1.10.12-GTNH:dev")
 
     compileOnly("com.github.GTNewHorizons:TinkersGregworks:GTNH-1.0.24-pre:dev") {transitive = false}
     compileOnly("com.github.GTNewHorizons:OpenComputers:1.9.19-GTNH:api") {transitive = false}
