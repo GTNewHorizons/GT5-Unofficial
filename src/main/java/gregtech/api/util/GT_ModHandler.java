@@ -776,7 +776,7 @@ public class GT_ModHandler {
                     continue;
                 }
 
-                if (aAddGTRecipe && (aGTRecipeMap.findRecipe(null, false, Long.MAX_VALUE, null, tStack) == null)) {
+                if (aAddGTRecipe) {
                     try {
                         if (aExcludeGTIC2Items && ((tStack.getUnlocalizedName()
                             .contains("gt.metaitem.01")

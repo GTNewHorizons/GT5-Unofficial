@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -323,6 +322,13 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
 
     // region find recipe
 
+    /**
+     * @return Entrypoint for fluent API for finding recipe.
+     */
+    public FindRecipeQuery findRecipeQuery() {
+        return new FindRecipeQuery(this);
+    }
+
     @Nullable
     public GT_Recipe findRecipe(@Nullable IHasWorldObjectAndCoords aTileEntity, boolean aNotUnificated, long aVoltage,
         @Nullable FluidStack[] aFluids, @Nullable ItemStack... aInputs) {
@@ -346,60 +352,14 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
     public GT_Recipe findRecipe(@Nullable IHasWorldObjectAndCoords aTileEntity, @Nullable GT_Recipe aRecipe,
         boolean aNotUnificated, boolean aDontCheckStackSizes, long aVoltage, @Nullable FluidStack[] aFluids,
         @Nullable ItemStack aSpecialSlot, @Nullable ItemStack... aInputs) {
-        return findRecipeFirst(
-            aInputs != null ? aInputs : new ItemStack[0],
-            aFluids != null ? aFluids : new FluidStack[0],
-            aSpecialSlot,
-            aVoltage,
-            aRecipe,
-            aNotUnificated,
-            aDontCheckStackSizes);
-    }
-
-    /**
-     * Finds the first matched recipe from given requirements, or null if not found.
-     *
-     * @param items               Item inputs.
-     * @param fluids              Fluid inputs.
-     * @param specialSlot         Content of the special slot. Normal recipemaps don't need this, but some do.
-     *                            Set {@link RecipeMapBuilder#specialSlotSensitive} to make it actually functional.
-     * @param voltage             Recipes that exceed this voltage won't match. It will be automatically
-     *                            multiplied by amperage of this recipemap.
-     * @param cachedRecipe        If this is not null, this method tests it before all other recipes.
-     * @param notUnificated       If this is set to true, item inputs will be unificated.
-     * @param dontCheckStackSizes If this is set to false, this method won't check item count and fluid amount
-     *                            for the matched recipe.
-     * @return Result of the recipe search
-     */
-    @Nullable
-    public GT_Recipe findRecipeFirst(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot,
-        long voltage, @Nullable GT_Recipe cachedRecipe, boolean notUnificated, boolean dontCheckStackSizes) {
-        return backend.findRecipe(
-            items,
-            fluids,
-            specialSlot,
-            recipe -> voltage * getAmperage() >= recipe.mEUt,
-            cachedRecipe,
-            notUnificated,
-            dontCheckStackSizes);
-    }
-
-    /**
-     * Returns all the matched recipes in the form of Stream, without any additional check for matches.
-     *
-     * @param items               Item inputs.
-     * @param fluids              Fluid inputs.
-     * @param specialSlot         Content of the special slot. Normal recipemaps don't need this, but some do.
-     *                            Set {@link RecipeMapBuilder#specialSlotSensitive} to make it actually functional.
-     * @param cachedRecipe        If this is not null, this method tests it before all other recipes.
-     * @param notUnificated       If this is set to true, item inputs will be unificated.
-     * @param dontCheckStackSizes If this is set to false, this method won't check item count and fluid amount
-     *                            for the matched recipe.
-     * @return Stream of matches recipes.
-     */
-    public Stream<GT_Recipe> findRecipeMatches(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot,
-        @Nullable GT_Recipe cachedRecipe, boolean notUnificated, boolean dontCheckStackSizes) {
-        return backend.matchRecipeStream(items, fluids, specialSlot, cachedRecipe, notUnificated, dontCheckStackSizes);
+        return findRecipeQuery().items(aInputs != null ? aInputs : new ItemStack[0])
+            .fluids(aFluids != null ? aFluids : new FluidStack[0])
+            .specialSlot(aSpecialSlot)
+            .voltage(aVoltage)
+            .cachedRecipe(aRecipe)
+            .notUnificated(aNotUnificated)
+            .dontCheckStackSizes(aDontCheckStackSizes)
+            .find();
     }
 
     // endregion

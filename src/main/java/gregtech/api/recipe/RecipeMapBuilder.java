@@ -30,14 +30,13 @@ import gregtech.api.util.GT_RecipeBuilder;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.formatter.INEISpecialInfoFormatter;
 
+// spotless:off spotless likes formatting @code to &#64;code
 /**
  * Builder class for constructing {@link RecipeMap}. Instantiate this class and call {@link #build}
  * to retrieve RecipeMap. Smallest example:
  *
  * <pre>
- *
- * {
- *     &#64;code
+ * {@code
  *     RecipeMap<RecipeMapBackend> exampleRecipes = RecipeMapBuilder.of("example")
  *         .maxIO(9, 4, 1, 1)
  *         .build();
@@ -46,6 +45,7 @@ import gregtech.nei.formatter.INEISpecialInfoFormatter;
  *
  * Note that {@link #maxIO} is required to build.
  */
+// spotless:on
 @SuppressWarnings("unused")
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault

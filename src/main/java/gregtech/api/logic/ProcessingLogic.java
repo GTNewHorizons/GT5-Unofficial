@@ -394,7 +394,12 @@ public class ProcessingLogic {
         if (map == null) {
             return Stream.empty();
         }
-        return map.findRecipeMatches(inputItems, inputFluids, specialSlotItem, lastRecipe, false, false);
+        return map.findRecipeQuery()
+            .items(inputItems)
+            .fluids(inputFluids)
+            .specialSlot(specialSlotItem)
+            .cachedRecipe(lastRecipe)
+            .findAll();
     }
 
     /**

@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -44,8 +43,6 @@ import gregtech.api.util.StreamUtil;
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class RecipeMapBackend {
-
-    private static final Predicate<GT_Recipe> ALWAYS = r -> true;
 
     private RecipeMap<?> recipeMap;
 
@@ -299,22 +296,6 @@ public class RecipeMapBackend {
     // region find recipe
 
     /**
-     * Finds a matching recipe.
-     * <p>
-     * This method is marked as final and package-private, so that any change to it won't break subclasses.
-     * Use {@link #overwriteFindRecipe}, {@link #modifyFoundRecipe} or {@link #findFallback} to tweak behavior.
-     */
-    @Nullable
-    final GT_Recipe findRecipe(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot,
-        Predicate<GT_Recipe> recipeValidator, @Nullable GT_Recipe cachedRecipe, boolean notUnificated,
-        boolean dontCheckStackSizes) {
-        return matchRecipeStream(items, fluids, specialSlot, cachedRecipe, notUnificated, dontCheckStackSizes, false)
-            .filter(recipeValidator)
-            .findFirst()
-            .orElse(null);
-    }
-
-    /**
      * Checks if given recipe conflicts with already registered recipes.
      *
      * @return True if collision is found.
@@ -364,9 +345,10 @@ public class RecipeMapBackend {
      * @param fluids              Fluid inputs.
      * @param specialSlot         Content of the special slot. Normal recipemaps don't need this, but some do.
      *                            Set {@link RecipeMapBuilder#specialSlotSensitive} to make it actually functional.
+     *                            Alternatively overriding {@link #filterFindRecipe} will also work.
      * @param cachedRecipe        If this is not null, this method tests it before all other recipes.
      * @param notUnificated       If this is set to true, item inputs will be unificated.
-     * @param dontCheckStackSizes If this is set to false, this method won't check item count and fluid amount
+     * @param dontCheckStackSizes If this is set to true, this method won't check item count and fluid amount
      *                            for the matched recipe.
      * @param forCollisionCheck   If this method is called to check collision with already registered recipes.
      * @return Stream of matches recipes.
