@@ -417,6 +417,8 @@ GT5U.gui.button.ore_drill_cobblestone_on=§7Replace with cobblestone: §aON
 GT5U.gui.button.ore_drill_cobblestone_off=§7Replace with cobblestone: §4OFF
 GT5U.gui.button.drill_retract_pipes=§7Abort and retract mining pipes
 GT5U.gui.button.drill_retract_pipes_active=§4Cannot interrupt abort procedure
+GT5U.gui.button.setname=Set custom name for machine
+GT5U.gui.button.highlight=Highlight machine in the world
 GT5U.gui.text.success=§aProcessing recipe
 GT5U.gui.text.generating=§aGenerating power
 GT5U.gui.text.no_recipe=§7No valid recipe found
@@ -467,6 +469,8 @@ GT5U.gui.text.drill_offline_reason=Drill Offline: %s
 GT5U.gui.text.drill_offline_generic=Drill Offline
 GT5U.gui.text.stocking_bus_fail_extraction=§4Failed to extract expected amount of items from stocking bus. This can be caused by attaching multiple storage buses to the same inventory.
 GT5U.gui.text.stocking_hatch_fail_extraction=§4Failed to extract expected amount of fluids from stocking hatch. This can be caused by attaching multiple storage fluid buses to the same tank.
+GT5U.gui.text.noDrone=§4Can't find any drone in inputBuses!
+GT5U.gui.text.operating=§aDrone operating normally!
 
 GT5U.item.programmed_circuit.select.header=Reprogram Circuit
 
