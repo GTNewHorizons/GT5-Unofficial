@@ -133,7 +133,9 @@ public class RecipeMapFrontend {
             SteamVariant.NONE,
             windowOffset);
 
-        addProgressBar(builder, progressSupplier, windowOffset);
+        if (uiProperties.useProgressBar) {
+            addProgressBar(builder, progressSupplier, windowOffset);
+        }
         addGregTechLogo(builder, windowOffset);
 
         for (Pair<IDrawable, Pair<Size, Pos2d>> specialTexture : uiProperties.specialTextures) {

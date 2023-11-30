@@ -317,6 +317,14 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
     }
 
     /**
+     * Stops adding progressbar to the UI.
+     */
+    public RecipeMapBuilder<B> dontUseProgressBar() {
+        uiPropertiesBuilder.useProgressBar(false);
+        return this;
+    }
+
+    /**
      * Configures this recipemap to use special slot. This means special slot shows up on NEI and tooltip for
      * special slot on basic machine GUI indicates it has actual usage.
      */

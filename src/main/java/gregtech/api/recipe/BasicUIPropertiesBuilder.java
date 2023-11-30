@@ -47,6 +47,8 @@ public final class BasicUIPropertiesBuilder {
     private Size progressBarSize = new Size(20, 18);
     private Pos2d progressBarPos = new Pos2d(78, 24);
 
+    private boolean useProgressBar = true;
+
     private boolean useSpecialSlot;
 
     private final ImmutableList.Builder<Rectangle> neiTransferRect = ImmutableList.builder();
@@ -96,9 +98,10 @@ public final class BasicUIPropertiesBuilder {
             progressBarDirection,
             progressBarSize,
             progressBarPos,
+            useProgressBar,
+            useSpecialSlot,
             builtNEITransferRect,
             neiTransferRectId,
-            useSpecialSlot,
             specialTextures.build(),
             specialTexturesSteam.build(),
             logo,
@@ -166,6 +169,11 @@ public final class BasicUIPropertiesBuilder {
 
     public BasicUIPropertiesBuilder progressBarPos(Pos2d progressBarPos) {
         this.progressBarPos = progressBarPos;
+        return this;
+    }
+
+    public BasicUIPropertiesBuilder useProgressBar(boolean useProgressBar) {
+        this.useProgressBar = useProgressBar;
         return this;
     }
 

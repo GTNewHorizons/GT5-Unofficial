@@ -54,6 +54,7 @@ public final class BasicUIProperties {
             .progressBarDirection(progressBarDirection)
             .progressBarSize(progressBarSize)
             .progressBarPos(progressBarPos)
+            .useProgressBar(useProgressBar)
             .useSpecialSlot(useSpecialSlot)
             .neiTransferRect(neiTransferRect)
             .neiTransferRectId(neiTransferRectId)
@@ -122,6 +123,11 @@ public final class BasicUIProperties {
     public final int progressBarImageSize;
 
     /**
+     * If progressbar should be added.
+     */
+    public final boolean useProgressBar;
+
+    /**
      * If special slot has its usage for this GUI.
      */
     public final boolean useSpecialSlot;
@@ -173,8 +179,8 @@ public final class BasicUIProperties {
     BasicUIProperties(int maxItemInputs, int maxItemOutputs, int maxFluidInputs, int maxFluidOutputs,
         SlotOverlayGetter<IDrawable> slotOverlays, SlotOverlayGetter<SteamTexture> slotOverlaysSteam,
         @Nullable FallbackableUITexture progressBarTexture, @Nullable FallbackableSteamTexture progressBarTextureSteam,
-        ProgressBar.Direction progressBarDirection, Size progressBarSize, Pos2d progressBarPos,
-        List<Rectangle> neiTransferRect, @Nullable String neiTransferRectId, boolean useSpecialSlot,
+        ProgressBar.Direction progressBarDirection, Size progressBarSize, Pos2d progressBarPos, boolean useProgressBar,
+        boolean useSpecialSlot, List<Rectangle> neiTransferRect, @Nullable String neiTransferRectId,
         List<Pair<IDrawable, Pair<Size, Pos2d>>> specialTextures,
         List<Pair<SteamTexture, Pair<Size, Pos2d>>> specialTexturesSteam, IDrawable logo, Size logoSize, Pos2d logoPos,
         IntFunction<List<Pos2d>> itemInputPositionsGetter, IntFunction<List<Pos2d>> itemOutputPositionsGetter,
@@ -198,9 +204,10 @@ public final class BasicUIProperties {
         this.progressBarDirection = progressBarDirection;
         this.progressBarSize = progressBarSize;
         this.progressBarPos = progressBarPos;
+        this.useProgressBar = useProgressBar;
+        this.useSpecialSlot = useSpecialSlot;
         this.neiTransferRect = neiTransferRect;
         this.neiTransferRectId = neiTransferRectId;
-        this.useSpecialSlot = useSpecialSlot;
         this.specialTextures = specialTextures;
         this.specialTexturesSteam = specialTexturesSteam;
         this.logo = logo;
