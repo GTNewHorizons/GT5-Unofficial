@@ -315,7 +315,6 @@ public class GT_LanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_151.2", "Outputs 1 specific Fluid");
         addStringLocalization("Interaction_DESCRIPTION_Index_151.4", "Successfully locked Fluid to %s");
         addStringLocalization("Interaction_DESCRIPTION_Index_152", "Total: ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_152.1", "Max EU: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_153", "Usage: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_154", "Voltage: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_155", "Amperage: ");
