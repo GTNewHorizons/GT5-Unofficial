@@ -58,14 +58,10 @@ public class BWCore extends DummyModContainer {
     public void preInit(FMLPreInitializationEvent event) {
         shouldTransform[0] = ConfigHandler.enabledPatches[0];
         shouldTransform[1] = ConfigHandler.enabledPatches[1];
+        shouldTransform[2] = ConfigHandler.enabledPatches[2];
         shouldTransform[3] = ConfigHandler.enabledPatches[3];
-        shouldTransform[4] = false;
-        shouldTransform[5] = ConfigHandler.enabledPatches[5];
-        shouldTransform[6] = ConfigHandler.enabledPatches[6];
-        // shouldTransform[6] = true;
         BWCore.BWCORE_LOG.info("Extra Utilities found and ASM Patch enabled? " + shouldTransform[0]);
-        BWCore.BWCORE_LOG.info("Thaumcraft found and ASM Patch enabled? " + shouldTransform[3]);
-        BWCore.BWCORE_LOG.info("RWG found and ASM Patch enabled? " + shouldTransform[5]);
+        BWCore.BWCORE_LOG.info("Thaumcraft found and ASM Patch enabled? " + shouldTransform[2]);
     }
 
     @Override
