@@ -68,17 +68,7 @@ import gregtech.common.blocks.GT_Block_Reinforced;
 import gregtech.common.blocks.GT_Block_Stones;
 import gregtech.common.blocks.GT_Cyclotron_Coils;
 import gregtech.common.blocks.GT_TileEntity_Ores;
-import gregtech.common.items.GT_DepletetCell_Item;
-import gregtech.common.items.GT_FluidDisplayItem;
-import gregtech.common.items.GT_IntegratedCircuit_Item;
-import gregtech.common.items.GT_MetaGenerated_Item_01;
-import gregtech.common.items.GT_MetaGenerated_Item_02;
-import gregtech.common.items.GT_MetaGenerated_Item_03;
-import gregtech.common.items.GT_MetaGenerated_Item_98;
-import gregtech.common.items.GT_MetaGenerated_Item_99;
-import gregtech.common.items.GT_MetaGenerated_Tool_01;
-import gregtech.common.items.GT_NeutronReflector_Item;
-import gregtech.common.items.GT_VolumetricFlask;
+import gregtech.common.items.*;
 
 public class GT_Loader_Item_Block_And_Fluid implements Runnable {
 
@@ -2208,5 +2198,12 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .registerMachineBlock(GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("reinforcedGlass", 0)), 0);
 
         GregTech_API.sSolenoidCoilCasings = new GT_Cyclotron_Coils();
+        ItemList.TierdDrone0
+            .set(new GT_TierDrone("tierdDrone0", "Drone (Level 1)", "Quadcopter Stable Small Aircraft", 1));
+        ItemList.TierdDrone1
+            .set(new GT_TierDrone("tierdDrone1", "Drone (Level 2)", "Dual Turbo High-Ejection Medium Aircraft", 2));
+        ItemList.TierdDrone2
+            .set(new GT_TierDrone("tierdDrone2", "Drone (Level 3)", "Single Engine Anti-Gravity Large Aircraft", 3));
+
     }
 }
