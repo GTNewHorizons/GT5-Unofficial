@@ -913,7 +913,7 @@ public final class RecipeMaps {
             return GT_UITextures.OVERLAY_SLOT_ROD_1;
         })
         .progressBar(GT_UITextures.PROGRESSBAR_LATHE)
-        .addSpecialTexture(5, 18, 98, 24, GT_UITextures.PROGRESSBAR_LATHE_BASE)
+        .addSpecialTexture(98, 24, 5, 18, GT_UITextures.PROGRESSBAR_LATHE_BASE)
         .recipeConfigFile("lathe", FIRST_ITEM_INPUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> cutterRecipes = RecipeMapBuilder.of("gt.recipe.cuttingsaw")
@@ -988,11 +988,11 @@ public final class RecipeMaps {
         .slotOverlays(
             (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GT_UITextures.OVERLAY_SLOT_HAMMER : null)
         .progressBar(GT_UITextures.PROGRESSBAR_HAMMER, ProgressBar.Direction.DOWN)
-        .addSpecialTexture(20, 6, 78, 42, GT_UITextures.PROGRESSBAR_HAMMER_BASE)
+        .addSpecialTexture(78, 42, 20, 6, GT_UITextures.PROGRESSBAR_HAMMER_BASE)
         .slotOverlaysSteam(
             (index, isFluid, isOutput, isSpecial) -> !isOutput ? GT_UITextures.OVERLAY_SLOT_HAMMER_STEAM : null)
         .progressBarSteam(GT_UITextures.PROGRESSBAR_HAMMER_STEAM)
-        .addSpecialTextureSteam(20, 6, 78, 42, GT_UITextures.PROGRESSBAR_HAMMER_BASE_STEAM)
+        .addSpecialTextureSteam(78, 42, 20, 6, GT_UITextures.PROGRESSBAR_HAMMER_BASE_STEAM)
         // Avoid steam machine being used as handler icon
         .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.Machine_LV_Hammer.get(1)))
         .recipeConfigFile("forgehammer", FIRST_ITEM_OUTPUT)

@@ -354,7 +354,7 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
     /**
      * Adds additional textures shown on GUI.
      */
-    public RecipeMapBuilder<B> addSpecialTexture(int width, int height, int x, int y, IDrawable texture) {
+    public RecipeMapBuilder<B> addSpecialTexture(int x, int y, int width, int height, IDrawable texture) {
         uiPropertiesBuilder.addSpecialTexture(new Size(width, height), new Pos2d(x, y), texture);
         return this;
     }
@@ -362,7 +362,7 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
     /**
      * Adds additional textures shown on steam machine GUI.
      */
-    public RecipeMapBuilder<B> addSpecialTextureSteam(int width, int height, int x, int y, SteamTexture texture) {
+    public RecipeMapBuilder<B> addSpecialTextureSteam(int x, int y, int width, int height, SteamTexture texture) {
         uiPropertiesBuilder.addSpecialTextureSteam(new Size(width, height), new Pos2d(x, y), texture);
         return this;
     }
