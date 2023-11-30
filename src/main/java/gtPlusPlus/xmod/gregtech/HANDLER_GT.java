@@ -79,6 +79,9 @@ public class HANDLER_GT {
         new ProcessingAngleGrinder().run();
         new ProcessingElectricSnips().run();
 
+        // Add recipes
+        CokeAndPyrolyseOven.postInit();
+
         // Register custom singles to the PA
         AddCustomMachineToPA.register();
 
