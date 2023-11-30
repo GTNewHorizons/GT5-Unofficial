@@ -786,9 +786,13 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                     IDualInputInventory slot = it.next();
                     processingLogic.setInputItems(slot.getItemInputs());
                     processingLogic.setInputFluids(slot.getFluidInputs());
-                    result = processingLogic.process();
-                    if (result.wasSuccessful()) {
-                        return result;
+                    CheckRecipeResult foundResult = processingLogic.process();
+                    if (foundResult.wasSuccessful()) {
+                        return foundResult;
+                    }
+                    if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
+                        // Recipe failed in interesting way, so remember that and continue searching
+                        result = foundResult;
                     }
                 }
             }
@@ -809,9 +813,13 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                     inputItems.add(getControllerSlot());
                 }
                 processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
-                result = processingLogic.process();
-                if (result.wasSuccessful()) {
-                    return result;
+                CheckRecipeResult foundResult = processingLogic.process();
+                if (foundResult.wasSuccessful()) {
+                    return foundResult;
+                }
+                if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
+                    // Recipe failed in interesting way, so remember that and continue searching
+                    result = foundResult;
                 }
             }
         } else {
@@ -820,7 +828,14 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                 inputItems.add(getControllerSlot());
             }
             processingLogic.setInputItems(inputItems);
-            result = processingLogic.process();
+            CheckRecipeResult foundResult = processingLogic.process();
+            if (foundResult.wasSuccessful()) {
+                return foundResult;
+            }
+            if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
+                // Recipe failed in interesting way, so remember that
+                result = foundResult;
+            }
         }
         return result;
     }
