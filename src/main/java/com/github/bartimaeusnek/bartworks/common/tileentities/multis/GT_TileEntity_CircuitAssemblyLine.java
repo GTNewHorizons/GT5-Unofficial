@@ -493,6 +493,27 @@ public class GT_TileEntity_CircuitAssemblyLine extends
     }
 
     @Override
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+            float aX, float aY, float aZ) {
+        if (!aPlayer.isSneaking()) {
+            if (mode == 0) return false;
+            inputSeparation = !inputSeparation;
+            GT_Utility.sendChatToPlayer(
+                    aPlayer,
+                    StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + inputSeparation);
+            return true;
+        } else {
+            batchMode = !batchMode;
+            if (batchMode) {
+                GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+            } else {
+                GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+            }
+            return true;
+        }
+    }
+
+    @Override
     public boolean supportsInputSeparation() {
         return mode != 0;
     }
