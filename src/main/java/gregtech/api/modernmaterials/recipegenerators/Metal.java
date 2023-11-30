@@ -21,6 +21,11 @@ import static gregtech.api.enums.ItemList.Shape_Extruder_Small_Gear;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sExtruderRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.ToolDictNames;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.common.GT_Proxy;
 import net.minecraft.util.MathHelper;
 
 import gregtech.api.modernmaterials.ModernMaterial;
@@ -28,13 +33,6 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_Utility;
 
 public class Metal {
-
-    public static int generateEUForRecipe(int tier) {
-        int maxEU = (int) (tier * 0.95);
-        int minEU = (int) (tier / 4.0 * 1.05);
-
-        return MathHelper.clamp_int(tier, minEU, maxEU);
-    }
 
     public static void generateExtruderRecipesWithoutTools(ModernMaterial material) {
 
@@ -94,12 +92,23 @@ public class Metal {
             .eut(material.getMaterialTier() * 0.95)
             .addTo(sExtruderRecipes);
 
+        // Full block
         GT_Values.RA.stdBuilder()
             .itemInputs(Ingot.getPart(material, 9), Shape_Extruder_Block.get(0))
             .itemOutputs(SolidBlock.getPart(material, 1))
-            .duration(SECONDS * material.getHardness() * Bolt.percentageOfIngot)
+            .duration(SECONDS * material.getHardness() * 9)
             .eut(material.getMaterialTier() * 0.95)
             .addTo(sExtruderRecipes);
+
+    }
+
+    public static void metalCraftingRecipes(ModernMaterial material) {
+        GT_ModHandler.addShapelessCraftingRecipe(
+            Dust.getPart(material, 1),
+            GT_Proxy.tBits,
+            new Object[] { ToolDictNames.craftingToolMortar, Ingot.getPart(material, 1) });
+
+
 
     }
 
