@@ -17,6 +17,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 
 import gregtech.api.enums.GT_Values;
@@ -582,6 +583,8 @@ public final class RecipeMaps {
         .maxIO(12, 0, 4, 0)
         .neiSpecialInfoFormatter(new SimpleSpecialValueFormatter("GT5U.nei.stages"))
         .neiRecipeBackgroundOffset(3, 23)
+        .logo(UITexture.fullImage(GTNHIntergalactic.ID, "gui/picture/space_elevator_logo.png"))
+        .logoSize(18, 18)
         .logoPos(152, 83)
         .neiTransferRect(70, 28, 18, 72)
         .neiTransferRect(106, 28, 18, 72)
