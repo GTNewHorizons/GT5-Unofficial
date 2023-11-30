@@ -239,11 +239,11 @@ public class ConfigHandler {
         API_ConfigValues.debugLog = ConfigHandler.c
                 .get("System", "Enable Debug Log", false, "Enables or Disables the debug log.").getBoolean(false);
 
-        for (int i = 0; i < BWCoreTransformer.CLASSESBEEINGTRANSFORMED.length; i++)
+        for (int i = 0; i < BWCoreTransformer.CLASSESBEINGTRANSFORMED.length; i++)
             BWCoreTransformer.shouldTransform[i] = ConfigHandler.c.get(
                     "ASM fixes",
                     BWCoreTransformer.DESCRIPTIONFORCONFIG[i] + " in class: "
-                            + BWCoreTransformer.CLASSESBEEINGTRANSFORMED[i],
+                            + BWCoreTransformer.CLASSESBEINGTRANSFORMED[i],
                     true).getBoolean(true);
 
         ConfigHandler.enabledPatches = new boolean[BWCoreTransformer.shouldTransform.length];

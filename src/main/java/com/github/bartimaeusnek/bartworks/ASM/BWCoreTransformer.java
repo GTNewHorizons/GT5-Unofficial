@@ -18,21 +18,12 @@ import static org.objectweb.asm.Opcodes.ACONST_NULL;
 import static org.objectweb.asm.Opcodes.ALOAD;
 import static org.objectweb.asm.Opcodes.ARETURN;
 import static org.objectweb.asm.Opcodes.GETFIELD;
-import static org.objectweb.asm.Opcodes.GETSTATIC;
-import static org.objectweb.asm.Opcodes.GOTO;
 import static org.objectweb.asm.Opcodes.ICONST_0;
-import static org.objectweb.asm.Opcodes.IFEQ;
 import static org.objectweb.asm.Opcodes.IFNE;
-import static org.objectweb.asm.Opcodes.IF_ICMPGE;
-import static org.objectweb.asm.Opcodes.ILOAD;
-import static org.objectweb.asm.Opcodes.INSTANCEOF;
 import static org.objectweb.asm.Opcodes.INVOKESTATIC;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
-import static org.objectweb.asm.Opcodes.IREM;
 import static org.objectweb.asm.Opcodes.IRETURN;
-import static org.objectweb.asm.Opcodes.ISTORE;
 import static org.objectweb.asm.Opcodes.POP;
-import static org.objectweb.asm.Opcodes.SIPUSH;
 
 import java.util.Arrays;
 import java.util.List;
@@ -46,34 +37,25 @@ import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.InsnNode;
-import org.objectweb.asm.tree.IntInsnNode;
 import org.objectweb.asm.tree.JumpInsnNode;
 import org.objectweb.asm.tree.LabelNode;
-import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
-import org.objectweb.asm.tree.TypeInsnNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
 public class BWCoreTransformer implements IClassTransformer {
 
-    public static final String[] DESCRIPTIONFORCONFIG = { "REMOVING RAIN FROM LAST MILLENIUM (EXU)",
-            "REMVOING CREATURES FROM LAST MILLENIUM (EXU)", "PATCHING GLOBAL RENDERER FOR USE WITH MY GALACTIC DIMS",
+    public static final String[] DESCRIPTIONFORCONFIG = { "REMOVING RAIN FROM LAST MILLENNIUM (EXU)",
+            "REMOVING CREATURES FROM LAST MILLENNIUM (EXU)",
             "PATCHING THAUMCRAFT WAND PEDESTAL TO PREVENT VIS DUPLICATION",
-            "[UNUSED] PLACING MY GLASS-BLOCK RUNNABLE INTO THE GT_API", "DUCTTAPING RWG WORLDEN FAILS",
-            "PATCHING CRAFTING MANAGER FOR CACHING RECIPES"
-            // "REMOVING 12% BONUS OUTPUTS FROM GT++ SIFTER"
-    };
-    public static final String[] CLASSESBEEINGTRANSFORMED = {
+            "PATCHING CRAFTING MANAGER FOR CACHING RECIPES" };
+    public static final String[] CLASSESBEINGTRANSFORMED = {
             "com.rwtema.extrautils.worldgen.endoftime.WorldProviderEndOfTime",
             "com.rwtema.extrautils.worldgen.endoftime.ChunkProviderEndOfTime",
-            "net.minecraft.client.renderer.RenderGlobal", "thaumcraft.common.tiles.TileWandPedestal", "gregtech.GT_Mod",
-            "rwg.world.ChunkGeneratorRealistic", "net.minecraft.item.crafting.CraftingManager"
-            // "gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.GregtechMetaTileEntity_IndustrialSifter"
-    };
+            "thaumcraft.common.tiles.TileWandPedestal", "net.minecraft.item.crafting.CraftingManager" };
     static boolean obfs;
 
-    public static boolean[] shouldTransform = new boolean[BWCoreTransformer.CLASSESBEEINGTRANSFORMED.length];
+    public static boolean[] shouldTransform = new boolean[BWCoreTransformer.CLASSESBEINGTRANSFORMED.length];
 
     /**
      * Made by DarkShaddow44
@@ -121,7 +103,7 @@ public class BWCoreTransformer implements IClassTransformer {
             return basicClass;
         }
 
-        if (id < BWCoreTransformer.CLASSESBEEINGTRANSFORMED.length) {
+        if (id < BWCoreTransformer.CLASSESBEINGTRANSFORMED.length) {
             BWCore.BWCORE_LOG.info(BWCoreTransformer.DESCRIPTIONFORCONFIG[id]);
             ClassReader classReader = new ClassReader(basicClass);
             ClassNode classNode = new ClassNode();
@@ -129,7 +111,7 @@ public class BWCoreTransformer implements IClassTransformer {
             List<MethodNode> methods = classNode.methods;
             scase: switch (id) {
                 case 0: {
-                    BWCore.BWCORE_LOG.info("Could find: " + BWCoreTransformer.CLASSESBEEINGTRANSFORMED[id]);
+                    BWCore.BWCORE_LOG.info("Could find: " + BWCoreTransformer.CLASSESBEINGTRANSFORMED[id]);
                     String name_deObfs = "canDoRainSnowIce";
 
                     String dsc_deObfs = "(Lnet/minecraft/world/chunk/Chunk;)Z";
@@ -152,7 +134,7 @@ public class BWCoreTransformer implements IClassTransformer {
                     break;
                 }
                 case 1: {
-                    BWCore.BWCORE_LOG.info("Could find: " + BWCoreTransformer.CLASSESBEEINGTRANSFORMED[id]);
+                    BWCore.BWCORE_LOG.info("Could find: " + BWCoreTransformer.CLASSESBEINGTRANSFORMED[id]);
                     String name_deObfs = "getPossibleCreatures";
                     String name_src = "func_73155_a";
                     String name_Obfs = "a";
@@ -176,127 +158,7 @@ public class BWCoreTransformer implements IClassTransformer {
                     }
                 }
                 case 2: {
-                    String name_deObfs = "renderSky";
-                    String name_src = "func_72714_a";
-                    String name_Obfs = "a";
-                    String dsc_universal = "(F)V";
-                    String field_deObfs = "locationSunPng";
-                    String field_src = "field_110928_i";
-                    BWCore.BWCORE_LOG.info("Could find: " + BWCoreTransformer.CLASSESBEEINGTRANSFORMED[id]);
-                    for (MethodNode toPatch : methods) {
-                        if (ASMUtils.isCorrectMethod(toPatch, name_deObfs, name_Obfs, name_src)
-                                && ASMUtils.isCorrectMethod(toPatch, dsc_universal)) {
-                            BWCore.BWCORE_LOG.info("Found " + name_deObfs + "! Patching!");
-                            InsnList nu = new InsnList();
-                            LabelNode[] LabelNodes = { new LabelNode(), new LabelNode() };
-
-                            String theWorld_src = "field_72769_h";
-                            String renderEngine_src = "field_72770_i";
-                            String provider_src = "field_73011_w";
-                            String bindTexture_src = "func_110577_a";
-                            String nameFieldToPatch;
-
-                            for (int j = 0; j < toPatch.instructions.size(); j++) {
-                                if (toPatch.instructions.get(j) instanceof FieldInsnNode
-                                        && toPatch.instructions.get(j).getOpcode() == GETSTATIC
-                                        && !(nameFieldToPatch = ASMUtils.matchAny(
-                                                ((FieldInsnNode) toPatch.instructions.get(j)).name,
-                                                field_deObfs,
-                                                field_src)).isEmpty()) {
-                                    boolean useSrc = nameFieldToPatch.equals(field_src);
-                                    if (useSrc) BWCore.BWCORE_LOG.info(
-                                            "Found either Optifine or Fastcraft... this patch was annoying to make compatible to them...");
-
-                                    nu.add(new VarInsnNode(ALOAD, 0));
-                                    nu.add(
-                                            new FieldInsnNode(
-                                                    GETFIELD,
-                                                    "net/minecraft/client/renderer/RenderGlobal",
-                                                    useSrc ? theWorld_src : "theWorld",
-                                                    "Lnet/minecraft/client/multiplayer/WorldClient;"));
-                                    nu.add(
-                                            new FieldInsnNode(
-                                                    GETFIELD,
-                                                    "net/minecraft/client/multiplayer/WorldClient",
-                                                    useSrc ? provider_src : "provider",
-                                                    "Lnet/minecraft/world/WorldProvider;"));
-                                    nu.add(
-                                            new TypeInsnNode(
-                                                    INSTANCEOF,
-                                                    "com/github/bartimaeusnek/crossmod/galacticraft/planets/AbstractWorldProviderSpace"));
-                                    nu.add(new JumpInsnNode(IFEQ, LabelNodes[0]));
-                                    nu.add(new VarInsnNode(ALOAD, 0));
-                                    nu.add(
-                                            new FieldInsnNode(
-                                                    GETFIELD,
-                                                    "net/minecraft/client/renderer/RenderGlobal",
-                                                    useSrc ? renderEngine_src : "renderEngine",
-                                                    "Lnet/minecraft/client/renderer/texture/TextureManager;"));
-                                    nu.add(
-                                            new FieldInsnNode(
-                                                    GETSTATIC,
-                                                    "com/github/bartimaeusnek/crossmod/galacticraft/planets/ross128b/SkyProviderRoss128b",
-                                                    "sunTex",
-                                                    "Lnet/minecraft/util/ResourceLocation;"));
-                                    nu.add(
-                                            new MethodInsnNode(
-                                                    INVOKEVIRTUAL,
-                                                    "net/minecraft/client/renderer/texture/TextureManager",
-                                                    useSrc ? bindTexture_src : "bindTexture",
-                                                    "(Lnet/minecraft/util/ResourceLocation;)V",
-                                                    false));
-                                    nu.add(new JumpInsnNode(GOTO, LabelNodes[1]));
-                                    nu.add(LabelNodes[0]);
-                                    nu.add(new VarInsnNode(ALOAD, 0));
-                                    nu.add(
-                                            new FieldInsnNode(
-                                                    GETFIELD,
-                                                    "net/minecraft/client/renderer/RenderGlobal",
-                                                    useSrc ? renderEngine_src : "renderEngine",
-                                                    "Lnet/minecraft/client/renderer/texture/TextureManager;"));
-                                    nu.add(
-                                            new FieldInsnNode(
-                                                    GETSTATIC,
-                                                    "net/minecraft/client/renderer/RenderGlobal",
-                                                    useSrc ? field_src : "locationSunPng",
-                                                    "Lnet/minecraft/util/ResourceLocation;"));
-                                    nu.add(
-                                            new MethodInsnNode(
-                                                    INVOKEVIRTUAL,
-                                                    "net/minecraft/client/renderer/texture/TextureManager",
-                                                    useSrc ? bindTexture_src : "bindTexture",
-                                                    "(Lnet/minecraft/util/ResourceLocation;)V",
-                                                    false));
-                                    nu.add(LabelNodes[1]);
-                                    j++;
-
-                                } else {
-                                    if (j < toPatch.instructions.size() - 2) {
-                                        if (toPatch.instructions.get(j + 2) instanceof FieldInsnNode
-                                                && toPatch.instructions.get(j + 2).getOpcode() == GETSTATIC
-                                                && !ASMUtils.matchAny(
-                                                        ((FieldInsnNode) toPatch.instructions.get(j + 2)).name,
-                                                        field_deObfs,
-                                                        field_src).isEmpty())
-                                            continue;
-                                        if (toPatch.instructions.get(j + 1) instanceof FieldInsnNode
-                                                && toPatch.instructions.get(j + 1).getOpcode() == GETSTATIC
-                                                && !ASMUtils.matchAny(
-                                                        ((FieldInsnNode) toPatch.instructions.get(j + 1)).name,
-                                                        field_deObfs,
-                                                        field_src).isEmpty())
-                                            continue;
-                                    }
-                                    nu.add(toPatch.instructions.get(j));
-                                }
-                            }
-                            toPatch.instructions = nu;
-                            break scase;
-                        }
-                    }
-                }
-                case 3: {
-                    BWCore.BWCORE_LOG.info("Could find: " + BWCoreTransformer.CLASSESBEEINGTRANSFORMED[id]);
+                    BWCore.BWCORE_LOG.info("Could find: " + BWCoreTransformer.CLASSESBEINGTRANSFORMED[id]);
                     String name_deObfs = "updateEntity";
                     String name_src = "func_145845_h";
                     String name_Obfs = "h";
@@ -311,47 +173,8 @@ public class BWCoreTransformer implements IClassTransformer {
                         }
                     }
                 }
-                case 4: {
-                    break;
-                }
-                case 5: {
-                    BWCore.BWCORE_LOG.info("Could find: " + BWCoreTransformer.CLASSESBEEINGTRANSFORMED[id]);
-                    String name_deObfs = "getNewNoise";
-                    for (MethodNode toPatch : methods) {
-                        if (ASMUtils.isCorrectMethod(toPatch, name_deObfs)) {
-                            BWCore.BWCORE_LOG.info("Found " + name_deObfs + "! Patching!");
-                            LabelNode[] LabelNodes = { new LabelNode(), new LabelNode() };
-                            InsnList nu = new InsnList();
-                            // if (x < -28675) x %= -28675;
-                            nu.add(new VarInsnNode(ILOAD, 2));
-                            nu.add(new IntInsnNode(SIPUSH, -28675));
-                            nu.add(new JumpInsnNode(IF_ICMPGE, LabelNodes[0]));
-                            nu.add(new VarInsnNode(ILOAD, 2));
-                            nu.add(new LdcInsnNode(-28675));
-                            nu.add(new InsnNode(IREM));
-                            nu.add(new VarInsnNode(ISTORE, 2));
-                            nu.add(LabelNodes[0]);
-                            // if (y < -28675) y %= -28675;
-                            nu.add(new VarInsnNode(ILOAD, 3));
-                            nu.add(new IntInsnNode(SIPUSH, -28675));
-                            nu.add(new JumpInsnNode(IF_ICMPGE, LabelNodes[1]));
-                            nu.add(new VarInsnNode(ILOAD, 3));
-                            nu.add(new LdcInsnNode(-28675));
-                            nu.add(new InsnNode(IREM));
-                            nu.add(new VarInsnNode(ISTORE, 3));
-                            nu.add(LabelNodes[1]);
-
-                            for (int j = 1; j < toPatch.instructions.size(); j++) {
-                                nu.add(toPatch.instructions.get(j));
-                            }
-
-                            toPatch.instructions = nu;
-                            break scase;
-                        }
-                    }
-                }
-                case 6: {
-                    BWCore.BWCORE_LOG.info("Could find: " + BWCoreTransformer.CLASSESBEEINGTRANSFORMED[id]);
+                case 3: {
+                    BWCore.BWCORE_LOG.info("Could find: " + BWCoreTransformer.CLASSESBEINGTRANSFORMED[id]);
                     String name_deObfs = "findMatchingRecipe";
                     String name_Obfs = "a";
                     String name_src = "func_82787_a";
@@ -377,7 +200,7 @@ public class BWCoreTransformer implements IClassTransformer {
                 }
 
                 default: {
-                    BWCore.BWCORE_LOG.info("Could not find: " + BWCoreTransformer.CLASSESBEEINGTRANSFORMED[id]);
+                    BWCore.BWCORE_LOG.info("Could not find: " + BWCoreTransformer.CLASSESBEINGTRANSFORMED[id]);
                     return basicClass;
                 }
             }
@@ -387,7 +210,7 @@ public class BWCoreTransformer implements IClassTransformer {
             classNode.accept(classWriter);
             byte[] ret = classWriter.toByteArray();
             if (Arrays.hashCode(basicClass) == Arrays.hashCode(ret))
-                BWCore.BWCORE_LOG.warn("Could not patch: " + BWCoreTransformer.CLASSESBEEINGTRANSFORMED[id]);
+                BWCore.BWCORE_LOG.warn("Could not patch: " + BWCoreTransformer.CLASSESBEINGTRANSFORMED[id]);
             return ret;
         }
         return basicClass;
@@ -395,9 +218,9 @@ public class BWCoreTransformer implements IClassTransformer {
 
     @Override
     public byte[] transform(String name, String transformedName, byte[] basicClass) {
-        for (int i = 0; i < BWCoreTransformer.CLASSESBEEINGTRANSFORMED.length; i++) {
-            if (name.equalsIgnoreCase(BWCoreTransformer.CLASSESBEEINGTRANSFORMED[i])
-                    || transformedName.equalsIgnoreCase(BWCoreTransformer.CLASSESBEEINGTRANSFORMED[i]))
+        for (int i = 0; i < BWCoreTransformer.CLASSESBEINGTRANSFORMED.length; i++) {
+            if (name.equalsIgnoreCase(BWCoreTransformer.CLASSESBEINGTRANSFORMED[i])
+                    || transformedName.equalsIgnoreCase(BWCoreTransformer.CLASSESBEINGTRANSFORMED[i]))
                 return BWCoreTransformer.transform(i, basicClass);
         }
         return basicClass;
