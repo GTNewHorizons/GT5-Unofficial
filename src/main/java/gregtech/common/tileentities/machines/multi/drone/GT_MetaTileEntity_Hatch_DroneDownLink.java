@@ -1,6 +1,10 @@
 package gregtech.common.tileentities.machines.multi.drone;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import net.minecraft.client.renderer.texture.IIconRegister;

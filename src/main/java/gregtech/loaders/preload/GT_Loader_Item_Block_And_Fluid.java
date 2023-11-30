@@ -68,7 +68,18 @@ import gregtech.common.blocks.GT_Block_Reinforced;
 import gregtech.common.blocks.GT_Block_Stones;
 import gregtech.common.blocks.GT_Cyclotron_Coils;
 import gregtech.common.blocks.GT_TileEntity_Ores;
-import gregtech.common.items.*;
+import gregtech.common.items.GT_DepletetCell_Item;
+import gregtech.common.items.GT_FluidDisplayItem;
+import gregtech.common.items.GT_IntegratedCircuit_Item;
+import gregtech.common.items.GT_MetaGenerated_Item_01;
+import gregtech.common.items.GT_MetaGenerated_Item_02;
+import gregtech.common.items.GT_MetaGenerated_Item_03;
+import gregtech.common.items.GT_MetaGenerated_Item_98;
+import gregtech.common.items.GT_MetaGenerated_Item_99;
+import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.common.items.GT_NeutronReflector_Item;
+import gregtech.common.items.GT_TierDrone;
+import gregtech.common.items.GT_VolumetricFlask;
 
 public class GT_Loader_Item_Block_And_Fluid implements Runnable {
 
