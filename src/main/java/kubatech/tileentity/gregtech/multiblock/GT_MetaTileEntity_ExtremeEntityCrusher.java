@@ -133,8 +133,8 @@ import kubatech.client.effect.EntityRenderer;
 import kubatech.loaders.MobHandlerLoader;
 import kubatech.network.CustomTileEntityPacket;
 
-public class GT_MetaTileEntity_ExtremeExterminationChamber
-    extends KubaTechGTMultiBlockBase<GT_MetaTileEntity_ExtremeExterminationChamber>
+public class GT_MetaTileEntity_ExtremeEntityCrusher
+    extends KubaTechGTMultiBlockBase<GT_MetaTileEntity_ExtremeEntityCrusher>
     implements CustomTileEntityPacketHandler, ISurvivalConstructable {
 
     public static final double DIAMOND_SPIKES_DAMAGE = 9d;
@@ -143,11 +143,11 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
     public final Random rand = new FastRandom();
 
     @SuppressWarnings("unused")
-    public GT_MetaTileEntity_ExtremeExterminationChamber(int aID, String aName, String aNameRegional) {
+    public GT_MetaTileEntity_ExtremeEntityCrusher(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public GT_MetaTileEntity_ExtremeExterminationChamber(String aName) {
+    public GT_MetaTileEntity_ExtremeEntityCrusher(String aName) {
         super(aName);
         if (LoaderReference.BloodMagic) MinecraftForge.EVENT_BUS.register(this);
     }
@@ -170,8 +170,8 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
     private static final Item poweredSpawnerItem = Item.getItemFromBlock(EnderIO.blockPoweredSpawner);
     private static final int CASING_INDEX = 16;
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final IStructureDefinition<GT_MetaTileEntity_ExtremeExterminationChamber> STRUCTURE_DEFINITION = StructureDefinition
-        .<GT_MetaTileEntity_ExtremeExterminationChamber>builder()
+    private static final IStructureDefinition<GT_MetaTileEntity_ExtremeEntityCrusher> STRUCTURE_DEFINITION = StructureDefinition
+        .<GT_MetaTileEntity_ExtremeEntityCrusher>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
             transpose(
@@ -187,7 +187,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
         .addElement('c', onElementPass(t -> t.mCasing++, ofBlock(GregTech_API.sBlockCasings2, 0)))
         .addElement(
             'C',
-            buildHatchAdder(GT_MetaTileEntity_ExtremeExterminationChamber.class)
+            buildHatchAdder(GT_MetaTileEntity_ExtremeEntityCrusher.class)
                 .atLeast(InputBus, OutputBus, OutputHatch, Energy, Maintenance)
                 .casingIndex(CASING_INDEX)
                 .dot(1)
@@ -246,7 +246,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
     }
 
     @Override
-    public IStructureDefinition<GT_MetaTileEntity_ExtremeExterminationChamber> getStructureDefinition() {
+    public IStructureDefinition<GT_MetaTileEntity_ExtremeEntityCrusher> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
@@ -258,10 +258,10 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Powered Spawner")
-            .addInfo("Controller block for the Extreme Extermination Chamber")
+        tt.addMachineType("Powered Spawner, EEC")
+            .addInfo("Controller block for the Extreme Entity Crusher")
             .addInfo(Author)
-            .addInfo("Spawns and exterminates monsters for you.")
+            .addInfo("Spawns and kills monsters for you.")
             .addInfo("You have to insert the powered spawner in the controller.")
             .addInfo("Base energy usage: 2,000 EU/t")
             .addInfo("Supports perfect OC, minimum time: 20 ticks, after that multiplies the outputs.")
@@ -270,8 +270,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
             .addInfo("It will speed up the process and apply the looting level from the weapon (maximum 4 levels).")
             .addInfo(EnumChatFormatting.RED + "Enchanting the spikes inside does nothing!")
             .addInfo("Also produces 120 Liquid XP per operation.")
-            .addInfo("If the mob spawns infernal,")
-            .addInfo("it will drain 8 times more power.")
+            .addInfo("If the mob spawns infernal, it will drain 8 times more power.")
             .addInfo("You can prevent infernal spawns by shift clicking with a screwdriver.")
             .addInfo("Note: If the mob has forced infernal spawn, it will do it anyway.")
             .addInfo("You can enable ritual mode with a screwdriver.")
@@ -311,7 +310,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_ExtremeExterminationChamber(this.mName);
+        return new GT_MetaTileEntity_ExtremeEntityCrusher(this.mName);
     }
 
     @Override
@@ -861,10 +860,10 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
 
     private static class EECFakePlayer extends FakePlayer {
 
-        GT_MetaTileEntity_ExtremeExterminationChamber mte;
+        GT_MetaTileEntity_ExtremeEntityCrusher mte;
         ItemStack currentWeapon;
 
-        public EECFakePlayer(GT_MetaTileEntity_ExtremeExterminationChamber mte) {
+        public EECFakePlayer(GT_MetaTileEntity_ExtremeEntityCrusher mte) {
             super(
                 (WorldServer) mte.getBaseMetaTileEntity()
                     .getWorld(),

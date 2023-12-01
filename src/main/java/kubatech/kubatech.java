@@ -104,8 +104,7 @@ public class kubatech {
         @Override
         public void displayAllReleventItems(List p_78018_1_) {
             super.displayAllReleventItems(p_78018_1_);
-            if (ItemList.ExtremeExterminationChamber.hasBeenSet())
-                p_78018_1_.add(ItemList.ExtremeExterminationChamber.get(1));
+            if (ItemList.ExtremeEntityCrusher.hasBeenSet()) p_78018_1_.add(ItemList.ExtremeEntityCrusher.get(1));
             if (ItemList.ExtremeIndustrialApiary.hasBeenSet()) p_78018_1_.add(ItemList.ExtremeIndustrialApiary.get(1));
             if (ItemList.ExtremeIndustrialGreenhouse.hasBeenSet())
                 p_78018_1_.add(ItemList.ExtremeIndustrialGreenhouse.get(1));

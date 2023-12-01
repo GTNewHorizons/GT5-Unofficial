@@ -35,7 +35,7 @@ import static kubatech.api.enums.ItemList.BlackTeaLeaf;
 import static kubatech.api.enums.ItemList.BruisedTeaLeaf;
 import static kubatech.api.enums.ItemList.DraconicEvolutionFusionCrafter;
 import static kubatech.api.enums.ItemList.EarlGrayTea;
-import static kubatech.api.enums.ItemList.ExtremeExterminationChamber;
+import static kubatech.api.enums.ItemList.ExtremeEntityCrusher;
 import static kubatech.api.enums.ItemList.ExtremeIndustrialApiary;
 import static kubatech.api.enums.ItemList.ExtremeIndustrialGreenhouse;
 import static kubatech.api.enums.ItemList.FermentedTeaLeaf;
@@ -81,7 +81,7 @@ import gtPlusPlus.core.lib.CORE;
 import kubatech.api.LoaderReference;
 import kubatech.api.enums.ItemList;
 import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_DEFusionCrafter;
-import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeExterminationChamber;
+import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeEntityCrusher;
 import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeIndustrialGreenhouse;
 import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_MegaIndustrialApiary;
 
@@ -96,13 +96,13 @@ public class RecipeLoader {
 
     public static void addRecipes() {
         if (registerMTE(
-            ExtremeExterminationChamber,
-            GT_MetaTileEntity_ExtremeExterminationChamber.class,
-            "multimachine.exterminationchamber",
-            "Extreme Extermination Chamber",
+            ExtremeEntityCrusher,
+            GT_MetaTileEntity_ExtremeEntityCrusher.class,
+            "multimachine.entitycrusher",
+            "Extreme Entity Crusher",
             LoaderReference.EnderIO)) {
             GT_ModHandler.addCraftingRecipe(
-                ItemList.ExtremeExterminationChamber.get(1),
+                ItemList.ExtremeEntityCrusher.get(1),
                 bitsd,
                 new Object[] { "RCR", "CHC", "VVV", 'R', gregtech.api.enums.ItemList.Robot_Arm_EV, 'C',
                     OrePrefixes.circuit.get(Materials.Data), 'H', gregtech.api.enums.ItemList.Hull_EV, 'V',

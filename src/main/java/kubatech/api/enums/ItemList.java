@@ -17,7 +17,7 @@ import gregtech.api.util.GT_Utility;
 
 public enum ItemList implements IItemContainer {
 
-    ExtremeExterminationChamber,
+    ExtremeEntityCrusher,
     ExtremeIndustrialApiary,
     ExtremeIndustrialGreenhouse,
     DraconicEvolutionFusionCrafter,

@@ -20,8 +20,8 @@
 
 package kubatech.loaders;
 
-import static kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeExterminationChamber.DIAMOND_SPIKES_DAMAGE;
-import static kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeExterminationChamber.MOB_SPAWN_INTERVAL;
+import static kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeEntityCrusher.DIAMOND_SPIKES_DAMAGE;
+import static kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeEntityCrusher.MOB_SPAWN_INTERVAL;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -62,7 +62,7 @@ import kubatech.Tags;
 import kubatech.api.LoaderReference;
 import kubatech.api.helpers.ReflectionHelper;
 import kubatech.config.Config;
-import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeExterminationChamber;
+import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeEntityCrusher;
 
 public class MobHandlerLoader {
 
@@ -99,8 +99,8 @@ public class MobHandlerLoader {
             mDuration = Math.max(MOB_SPAWN_INTERVAL, (int) ((recipe.maxEntityHealth / DIAMOND_SPIKES_DAMAGE) * 10d));
         }
 
-        public ItemStack[] generateOutputs(Random rnd, GT_MetaTileEntity_ExtremeExterminationChamber MTE,
-            double attackDamage, int lootinglevel, boolean preferInfernalDrops) {
+        public ItemStack[] generateOutputs(Random rnd, GT_MetaTileEntity_ExtremeEntityCrusher MTE, double attackDamage,
+            int lootinglevel, boolean preferInfernalDrops) {
             MTE.lEUt = mEUt;
             MTE.mMaxProgresstime = Math.max(MOB_SPAWN_INTERVAL, (int) ((recipe.maxEntityHealth / attackDamage) * 10d));
             ArrayList<ItemStack> stacks = new ArrayList<>(this.mOutputs.size());
