@@ -321,17 +321,6 @@ public interface IGT_RecipeAdder {
         boolean hidden);
 
     /**
-     * Adds a CNC-Machine Recipe
-     *
-     * @param aInput1   must be != null
-     * @param aOutput1  must be != null
-     * @param aDuration must be > 0
-     * @param aEUt      should be > 0
-     */
-    @Deprecated
-    boolean addCNCRecipe(ItemStack aInput1, ItemStack aOutput1, int aDuration, int aEUt);
-
-    /**
      * Adds an Assembler Recipe
      *
      * @param aInput1   must be != null

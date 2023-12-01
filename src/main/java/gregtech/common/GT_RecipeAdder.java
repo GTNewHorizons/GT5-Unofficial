@@ -811,15 +811,6 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
 
     @Override
     @Deprecated
-    public boolean addCNCRecipe(ItemStack aInput1, ItemStack aOutput1, int aDuration, int aEUt) {
-        if ((aInput1 == null) || (aOutput1 == null)) {
-            return false;
-        }
-        return GregTech_API.sRecipeFile.get("cnc", aOutput1, aDuration) > 0;
-    }
-
-    @Override
-    @Deprecated
     public boolean addLatheRecipe(ItemStack aInput1, ItemStack aOutput1, ItemStack aOutput2, int aDuration, int aEUt) {
         if ((aInput1 == null) || (aOutput1 == null)) {
             return false;
