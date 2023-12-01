@@ -338,13 +338,14 @@ public class ProcessingLogic {
             return CalculationResult.ofFailure(helper.getResult());
         }
 
-        return applyRecipe(recipe, helper, calculator, result);
+        return CalculationResult.ofSuccess(applyRecipe(recipe, helper, calculator, result));
     }
 
     /**
-     * Check has been succeeded, so applies the recipe and calculated parameters.
+     * Check has been succeeded, so it applies the recipe and calculated parameters.
+     * At this point, inputs have been already consumed.
      */
-    private CalculationResult applyRecipe(@NotNull GT_Recipe recipe, GT_ParallelHelper helper,
+    private CheckRecipeResult applyRecipe(@NotNull GT_Recipe recipe, GT_ParallelHelper helper,
         GT_OverclockCalculator calculator, CheckRecipeResult result) {
         if (recipe.mCanBeBuffered) {
             lastRecipe = recipe;
@@ -354,24 +355,24 @@ public class ProcessingLogic {
         calculatedParallels = helper.getCurrentParallel();
 
         if (calculator.getConsumption() == Long.MAX_VALUE) {
-            return CalculationResult.ofSuccess(CheckRecipeResultRegistry.POWER_OVERFLOW);
+            return CheckRecipeResultRegistry.POWER_OVERFLOW;
         }
         if (calculator.getDuration() == Integer.MAX_VALUE) {
-            return CalculationResult.ofSuccess(CheckRecipeResultRegistry.DURATION_OVERFLOW);
+            return CheckRecipeResultRegistry.DURATION_OVERFLOW;
         }
 
         calculatedEut = calculator.getConsumption();
 
         double finalDuration = calculateDuration(recipe, helper, calculator);
         if (finalDuration >= Integer.MAX_VALUE) {
-            return CalculationResult.ofSuccess(CheckRecipeResultRegistry.DURATION_OVERFLOW);
+            return CheckRecipeResultRegistry.DURATION_OVERFLOW;
         }
         duration = (int) finalDuration;
 
         outputItems = helper.getItemOutputs();
         outputFluids = helper.getFluidOutputs();
 
-        return CalculationResult.ofSuccess(result);
+        return result;
     }
 
     /**
