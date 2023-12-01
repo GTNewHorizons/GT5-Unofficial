@@ -623,10 +623,4 @@ public class GTNH_ExtraMaterials implements IMaterialHandler {
     public void onMaterialsInit() {
         initSubTags();
     }
-
-    @Override
-    public void onComponentInit() {}
-
-    @Override
-    public void onComponentIteration(Materials aMaterial) {}
 }

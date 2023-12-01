@@ -330,6 +330,8 @@ public class GT_Client extends GT_Proxy implements Runnable {
         GL11.glVertex3d(-.25D, .0D, -.50D);
         GL11.glVertex3d(-.25D, .0D, +.50D);
         final TileEntity tTile = player.worldObj.getTileEntity(target.blockX, target.blockY, target.blockZ);
+        final Block block = player.worldObj.getBlock(target.blockX, target.blockY, target.blockZ);
+        final int meta = player.worldObj.getBlockMetadata(target.blockX, target.blockY, target.blockZ);
 
         // draw connection indicators
         int tConnections = 0;
@@ -339,6 +341,10 @@ public class GT_Client extends GT_Proxy implements Runnable {
                     if (iCoverable.getCoverIDAtSide(tSide) != 0) tConnections |= tSide.flag;
                 }
             } else if (tTile instanceof BaseMetaPipeEntity) tConnections = ((BaseMetaPipeEntity) tTile).mConnections;
+        } else if (tTile instanceof IWrenchable wrenchable) {
+            tConnections |= ForgeDirection.getOrientation(wrenchable.getFacing()).flag;
+        } else if (ROTATABLE_VANILLA_BLOCKS.contains(block)) {
+            tConnections |= ForgeDirection.getOrientation(meta).flag;
         }
 
         if (tConnections != 0) {

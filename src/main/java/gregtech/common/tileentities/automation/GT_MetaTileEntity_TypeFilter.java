@@ -143,7 +143,7 @@ public class GT_MetaTileEntity_TypeFilter extends GT_MetaTileEntity_SpecialFilte
             return;
         }
         this.mInventory[FILTER_SLOT_INDEX] = GT_Utility.copyAmount(
-            1L,
+            1,
             this.mPrefix.mPrefixedItems
                 .get(this.mRotationIndex = (this.mRotationIndex + 1) % this.mPrefix.mPrefixedItems.size()));
         if (this.mInventory[FILTER_SLOT_INDEX] == null) return;

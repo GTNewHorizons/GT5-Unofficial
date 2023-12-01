@@ -648,10 +648,10 @@ public final class RecipeMaps {
                 && (aOutput1 == null || aOutput1.stackSize <= 6)
                 && (aOutput2 == null || aOutput2.stackSize <= 6)) {
                 // we don't use GT_Utility.mul() here. It does not have the truncating we need here.
-                aInput1 = multiplyStack(10L, aInput1);
-                aInput2 = multiplyStack(10L, aInput2);
-                aOutput1 = multiplyStack(10L, aOutput1);
-                aOutput2 = multiplyStack(10L, aOutput2);
+                aInput1 = multiplyStack(10, aInput1);
+                aInput2 = multiplyStack(10, aInput2);
+                aOutput1 = multiplyStack(10, aOutput1);
+                aOutput2 = multiplyStack(10, aOutput2);
                 for (Materials coal : new Materials[] { Materials.Coal, Materials.Charcoal }) {
                     coll.derive()
                         .setInputs(aInput1, aInput2, coal.getBlocks(aCoalAmount))

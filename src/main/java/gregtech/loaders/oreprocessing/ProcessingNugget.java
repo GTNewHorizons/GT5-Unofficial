@@ -33,7 +33,7 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
         if (aMaterial.contains(SubTag.SMELTING_TO_GEM)
             && GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial.mSmeltInto, 1L) != null) {
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_Utility.copyAmount(9L, aStack), ItemList.Shape_Mold_Ball.get(0L))
+                .itemInputs(GT_Utility.copyAmount(9, aStack), ItemList.Shape_Mold_Ball.get(0L))
                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial.mSmeltInto, 1L))
                 .duration(10 * SECONDS)
                 .eut(calculateRecipeEU(aMaterial, 2))
@@ -43,7 +43,7 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
         if ((!aMaterial.contains(SubTag.SMELTING_TO_GEM))
             && GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial.mSmeltInto, 1L) != null) {
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_Utility.copyAmount(9L, aStack), ItemList.Shape_Mold_Ingot.get(0L))
+                .itemInputs(GT_Utility.copyAmount(9, aStack), ItemList.Shape_Mold_Ingot.get(0L))
                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial.mSmeltInto, 1L))
                 .duration(10 * SECONDS)
                 .eut(calculateRecipeEU(aMaterial, 2))
@@ -72,7 +72,7 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
                 .itemInputs(
                     GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L),
                     ItemList.Shape_Mold_Nugget.get(0L))
-                .itemOutputs(GT_Utility.copyAmount(9L, aStack))
+                .itemOutputs(GT_Utility.copyAmount(9, aStack))
                 .duration(5 * SECONDS)
                 .eut(calculateRecipeEU(aMaterial, 1))
                 .recipeCategory(RecipeCategories.alloySmelterMolding)

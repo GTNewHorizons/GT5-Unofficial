@@ -162,14 +162,14 @@ public class GT_Block_Stones_Abstract extends GT_Generic_Block implements IOreRe
         if (aOreDictName.equals(OreDictNames.craftingLensWhite.toString())) {
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(new ItemStack(this, 1, 7), GT_Utility.copyAmount(0L, aStack))
+                .itemInputs(new ItemStack(this, 1, 7), GT_Utility.copyAmount(0, aStack))
                 .itemOutputs(new ItemStack(this, 1, 6))
                 .duration(2 * SECONDS + 10 * TICKS)
                 .eut(16)
                 .addTo(laserEngraverRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(new ItemStack(this, 1, 15), GT_Utility.copyAmount(0L, aStack))
+                .itemInputs(new ItemStack(this, 1, 15), GT_Utility.copyAmount(0, aStack))
                 .itemOutputs(new ItemStack(this, 1, 14))
                 .duration(2 * SECONDS + 10 * TICKS)
                 .eut(16)

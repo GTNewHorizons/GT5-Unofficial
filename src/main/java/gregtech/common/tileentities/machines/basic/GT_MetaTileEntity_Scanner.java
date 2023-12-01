@@ -174,7 +174,7 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
                     this.mEUt = 1;
                 }
                 aStack.stackSize -= 1;
-                this.mOutputItems[0] = GT_Utility.copyAmount(1L, aStack);
+                this.mOutputItems[0] = GT_Utility.copyAmount(1, aStack);
                 assert this.mOutputItems[0] != null;
                 this.mOutputItems[0].setTagCompound(tNBT);
                 return 2;
@@ -182,7 +182,7 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
             if (ItemList.Tool_DataOrb.isStackEqual(getSpecialSlot(), false, true)) {
                 if (ItemList.Tool_DataOrb.isStackEqual(aStack, false, true)) {
                     aStack.stackSize -= 1;
-                    this.mOutputItems[0] = GT_Utility.copyAmount(1L, getSpecialSlot());
+                    this.mOutputItems[0] = GT_Utility.copyAmount(1, getSpecialSlot());
                     calculateOverclockedNess(30, 512);
                     // In case recipe is too OP for that machine
                     if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
@@ -211,7 +211,7 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
             if (ItemList.Tool_DataStick.isStackEqual(getSpecialSlot(), false, true)) {
                 if (ItemList.Tool_DataStick.isStackEqual(aStack, false, true)) {
                     aStack.stackSize -= 1;
-                    this.mOutputItems[0] = GT_Utility.copyAmount(1L, getSpecialSlot());
+                    this.mOutputItems[0] = GT_Utility.copyAmount(1, getSpecialSlot());
                     calculateOverclockedNess(30, 128);
                     // In case recipe is too OP for that machine
                     if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
@@ -222,7 +222,7 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
                     getSpecialSlot().stackSize -= 1;
                     aStack.stackSize -= 1;
 
-                    this.mOutputItems[0] = GT_Utility.copyAmount(1L, getSpecialSlot());
+                    this.mOutputItems[0] = GT_Utility.copyAmount(1, getSpecialSlot());
                     assert this.mOutputItems[0] != null;
                     this.mOutputItems[0].setTagCompound(aStack.getTagCompound());
                     calculateOverclockedNess(30, 128);
@@ -235,7 +235,7 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
                     getSpecialSlot().stackSize -= 1;
                     aStack.stackSize -= 1;
 
-                    this.mOutputItems[0] = GT_Utility.copyAmount(1L, getSpecialSlot());
+                    this.mOutputItems[0] = GT_Utility.copyAmount(1, getSpecialSlot());
                     assert this.mOutputItems[0] != null;
                     this.mOutputItems[0].setTagCompound(
                         GT_Utility
@@ -319,7 +319,7 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
                     getSpecialSlot().stackSize -= 1;
                     aStack.stackSize -= 1;
 
-                    this.mOutputItems[0] = GT_Utility.copyAmount(1L, getSpecialSlot());
+                    this.mOutputItems[0] = GT_Utility.copyAmount(1, getSpecialSlot());
                     assert this.mOutputItems[0] != null;
                     this.mOutputItems[0].setTagCompound(
                         GT_Utility.getNBTContainingShort(new NBTTagCompound(), "rocket_tier", Short.parseShort(sTier)));
@@ -338,7 +338,7 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
                     GT_Utility.ItemNBT.convertProspectionData(aStack);
                     aStack.stackSize -= 1;
 
-                    this.mOutputItems[0] = GT_Utility.copyAmount(1L, aStack);
+                    this.mOutputItems[0] = GT_Utility.copyAmount(1, aStack);
                     calculateOverclockedNess(30, 1000);
                     // In case recipe is too OP for that machine
                     if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
@@ -360,7 +360,7 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
                             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
                         }
 
-                        this.mOutputItems[0] = GT_Utility.copyAmount(1L, getSpecialSlot());
+                        this.mOutputItems[0] = GT_Utility.copyAmount(1, getSpecialSlot());
 
                         // Use Assline Utils
                         if (GT_AssemblyLineUtils.setAssemblyLineRecipeOnDataStick(this.mOutputItems[0], tRecipe)) {

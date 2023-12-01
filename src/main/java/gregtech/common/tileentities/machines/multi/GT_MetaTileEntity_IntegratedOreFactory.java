@@ -578,16 +578,15 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
             }
             int tChance = aRecipe.getOutputChance(i);
             if (tChance == 10000) {
-                tOutput.add(
-                    GT_Utility.copyAmountUnsafe((long) aTime * aRecipe.getOutput(i).stackSize, aRecipe.getOutput(i)));
+                tOutput.add(GT_Utility.copyAmountUnsafe(aTime * aRecipe.getOutput(i).stackSize, aRecipe.getOutput(i)));
             } else {
                 // Use Normal Distribution
                 double u = aTime * (tChance / 10000D);
                 double e = aTime * (tChance / 10000D) * (1 - (tChance / 10000D));
                 Random random = new Random();
                 int tAmount = (int) Math.ceil(Math.sqrt(e) * random.nextGaussian() + u);
-                tOutput.add(
-                    GT_Utility.copyAmountUnsafe((long) tAmount * aRecipe.getOutput(i).stackSize, aRecipe.getOutput(i)));
+                tOutput
+                    .add(GT_Utility.copyAmountUnsafe(tAmount * aRecipe.getOutput(i).stackSize, aRecipe.getOutput(i)));
             }
         }
         return tOutput.stream()

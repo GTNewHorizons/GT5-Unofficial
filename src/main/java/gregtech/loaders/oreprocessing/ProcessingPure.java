@@ -24,14 +24,14 @@ public class ProcessingPure implements gregtech.api.interfaces.IOreRecipeRegistr
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.copyAmount(1L, aStack))
+            .itemInputs(GT_Utility.copyAmount(1, aStack))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustPure, aMaterial.mMacerateInto, 1L))
             .duration(10)
             .eut(16)
             .addTo(hammerRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.copyAmount(1L, aStack))
+            .itemInputs(GT_Utility.copyAmount(1, aStack))
             .itemOutputs(
                 GT_OreDictUnificator.get(
                     OrePrefixes.dustPure,

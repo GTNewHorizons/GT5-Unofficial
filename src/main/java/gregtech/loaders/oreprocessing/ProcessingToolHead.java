@@ -63,7 +63,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
                         GT_Values.RA.stdBuilder()
                             .itemInputs(ItemList.Shape_Mold_Arrow.get(0L))
-                            .itemOutputs(GT_Utility.copyAmount(1L, aStack))
+                            .itemOutputs(GT_Utility.copyAmount(1, aStack))
                             .fluidInputs(aMaterial.getMolten(36L))
                             .duration(16 * TICKS)
                             .eut(8)

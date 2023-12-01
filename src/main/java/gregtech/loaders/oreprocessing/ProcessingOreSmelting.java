@@ -42,7 +42,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                         && GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L) != null) {
                             GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
                             recipeBuilder
-                                .itemInputs(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(1));
+                                .itemInputs(GT_Utility.copyAmount(1, aStack), GT_Utility.getIntegratedCircuit(1));
                             if (aMaterial.mBlastFurnaceTemp > 1750) {
                                 recipeBuilder.itemOutputs(
                                     GT_OreDictUnificator.get(

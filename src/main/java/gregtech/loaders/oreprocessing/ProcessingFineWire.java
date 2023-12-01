@@ -25,7 +25,7 @@ public class ProcessingFineWire implements gregtech.api.interfaces.IOreRecipeReg
         if ((aMaterial.mUnificatable) && (aMaterial.mMaterialInto == aMaterial)
             && !aMaterial.contains(SubTag.NO_WORKING)) {
             GT_ModHandler.addCraftingRecipe(
-                GT_Utility.copyAmount(1L, aStack),
+                GT_Utility.copyAmount(1, aStack),
                 GT_Proxy.tBits,
                 new Object[] { "Xx", 'X', OrePrefixes.foil.get(aMaterial) });
         }

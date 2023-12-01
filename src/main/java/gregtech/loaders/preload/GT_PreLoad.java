@@ -50,6 +50,7 @@ import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_RecipeBuilder;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.machines.long_distance.GT_MetaTileEntity_LongDistancePipelineBase;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Cleanroom;
@@ -122,8 +123,6 @@ public class GT_PreLoad {
             new Configuration(new File(new File(configDir, "GregTech"), "WorldGeneration.cfg")));
         GregTech_API.sMaterialProperties = new GT_Config(
             new Configuration(new File(new File(configDir, "GregTech"), "MaterialProperties.cfg")));
-        GregTech_API.sMaterialComponents = new GT_Config(
-            new Configuration(new File(new File(configDir, "GregTech"), "MaterialComponents.cfg")));
         GregTech_API.sUnification = new GT_Config(
             new Configuration(new File(new File(configDir, "GregTech"), "Unification.cfg")));
         GregTech_API.sSpecialFile = new GT_Config(
@@ -528,8 +527,6 @@ public class GT_PreLoad {
             .getBoolean(true);
         GT_Mod.gregtechproxy.mEnableAllMaterials = tMainConfig.get("general", "EnableAllMaterials", false)
             .getBoolean(false);
-        GT_Mod.gregtechproxy.mEnableAllComponents = tMainConfig.get("general", "EnableAllComponents", false)
-            .getBoolean(false);
 
         // Pollution: edit GT_Proxy.java to change default values
         GT_Mod.gregtechproxy.mPollution = tMainConfig
@@ -716,6 +713,8 @@ public class GT_PreLoad {
         GT_Mod.gregtechproxy.costlyCableConnection = tMainConfig
             .get("general", "CableConnectionRequiresSolderingMaterial", false)
             .getBoolean(false);
+        GT_Mod.gregtechproxy.crashOnNullRecipeInput = tMainConfig.get("general", "crashOnNullRecipeInput", false)
+            .getBoolean(false);
         GT_LanguageManager.i18nPlaceholder = tMainConfig
             .get("general", "EnablePlaceholderForMaterialNamesInLangFile", true)
             .getBoolean(true);
@@ -809,6 +808,8 @@ public class GT_PreLoad {
             Arrays.asList(
                 tMainConfig.get("general", "ctm_block_blacklist", new String[] { "team.chisel.block.BlockRoadLine" })
                     .getStringList()));
+
+        GT_RecipeBuilder.onConfigLoad();
     }
 
     public static void loadClientConfig() {

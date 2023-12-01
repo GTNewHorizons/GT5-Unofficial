@@ -44,7 +44,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                 } else {
                     if (aMaterial.mFuelPower > 0) {
                         GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
-                        recipeBuilder.itemInputs(GT_Utility.copyAmount(1L, aStack));
+                        recipeBuilder.itemInputs(GT_Utility.copyAmount(1, aStack));
                         if (GT_Utility.getFluidForFilledItem(aStack, true) == null
                             && GT_Utility.getContainerItem(aStack, true) != null) {
                             recipeBuilder.itemOutputs(GT_Utility.getContainerItem(aStack, true));
@@ -98,7 +98,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                                 : tList.size() < 6)
                             && (tCapsuleCount + GT_ModHandler.getCapsuleCellContainerCount(tStack) * 64L <= 64L)) {
                             tCapsuleCount += GT_ModHandler.getCapsuleCellContainerCount(tStack) * 64L;
-                            tList.add(GT_Utility.copyAmount(64L, tStack));
+                            tList.add(GT_Utility.copyAmount(64, tStack));
                             tStack.stackSize -= 64;
                         }
                         int tThisCapsuleCount = GT_ModHandler
@@ -181,7 +181,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                     GT_ModHandler.removeRecipeByOutputDelayed(aStack);
                 } else {
                     GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
-                    recipeBuilder.itemInputs(GT_Utility.copyAmount(1L, aStack));
+                    recipeBuilder.itemInputs(GT_Utility.copyAmount(1, aStack));
                     if (GT_Utility.getFluidForFilledItem(aStack, true) == null
                         && GT_Utility.getContainerItem(aStack, true) != null) {
                         recipeBuilder.itemOutputs(GT_Utility.getContainerItem(aStack, true));
@@ -200,7 +200,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                     }
                     if (GT_OreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L) != null) {
                         GT_Values.RA.stdBuilder()
-                            .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                            .itemInputs(GT_Utility.copyAmount(1, aStack))
                             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L))
                             .duration(((int) Math.max(aMaterial.getMass() * 2L, 1L)) * TICKS)
                             .eut(TierEU.RECIPE_MV)

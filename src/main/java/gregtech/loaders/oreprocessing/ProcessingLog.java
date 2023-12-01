@@ -38,7 +38,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
         ItemStack aStack) {
         if (aOreDictName.equals("logRubber")) {
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(2))
+                .itemInputs(GT_Utility.copyAmount(1, aStack), GT_Utility.getIntegratedCircuit(2))
                 .itemOutputs(
                     ItemList.IC2_Resin.get(1L),
                     GT_ModHandler.getIC2Item("plantBall", 1L),
@@ -51,14 +51,14 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                 .addTo(centrifugeRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                .itemInputs(GT_Utility.copyAmount(1, aStack))
                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.RawRubber, 1L))
                 .duration(15 * SECONDS)
                 .eut(2)
                 .addTo(extractorRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                .itemInputs(GT_Utility.copyAmount(1, aStack))
                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 6L), ItemList.IC2_Resin.get(1L))
                 .outputChances(10000, 3300)
                 .duration(20 * SECONDS)
@@ -66,14 +66,14 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                 .addTo(maceratorRecipes);
         } else {
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(1))
+                .itemInputs(GT_Utility.copyAmount(1, aStack), GT_Utility.getIntegratedCircuit(1))
                 .fluidOutputs(Materials.Methane.getGas(60L))
                 .duration(10 * SECONDS)
                 .eut(20)
                 .addTo(centrifugeRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                .itemInputs(GT_Utility.copyAmount(1, aStack))
                 .itemOutputs(
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 6L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
@@ -87,10 +87,10 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
             GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Wood, 2L),
             gregtech.api.util.GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                 | gregtech.api.util.GT_ModHandler.RecipeBits.BUFFERED,
-            new Object[] { "sLf", 'L', GT_Utility.copyAmount(1L, aStack) });
+            new Object[] { "sLf", 'L', GT_Utility.copyAmount(1, aStack) });
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.copyAmount(1L, aStack))
+            .itemInputs(GT_Utility.copyAmount(1, aStack))
             .itemOutputs(
                 GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Wood, 4L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
@@ -99,7 +99,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
             .addTo(latheRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(2))
+            .itemInputs(GT_Utility.copyAmount(1, aStack), GT_Utility.getIntegratedCircuit(2))
             .itemOutputs(ItemList.FR_Stick.get(1L))
             .fluidInputs(Materials.SeedOil.getFluid(50L))
             .duration(16 * TICKS)
@@ -107,7 +107,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
             .addTo(assemblerRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.copyAmount(8L, aStack), GT_Utility.getIntegratedCircuit(8))
+            .itemInputs(GT_Utility.copyAmount(8, aStack), GT_Utility.getIntegratedCircuit(8))
             .itemOutputs(ItemList.FR_Casing_Impregnated.get(1L))
             .fluidInputs(Materials.SeedOil.getFluid(250L))
             .duration(3 * SECONDS + 4 * TICKS)
@@ -115,7 +115,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
             .addTo(assemblerRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.copyAmount(1L, aStack))
+            .itemInputs(GT_Utility.copyAmount(1, aStack))
             .itemOutputs(GT_ModHandler.getModItem(Railcraft.ID, "cube", 1L, 8))
             .fluidInputs(Materials.Creosote.getFluid(750L))
             .duration(16 * TICKS)
@@ -126,12 +126,12 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
 
         if (aMeta == Short.MAX_VALUE) {
             if ((GT_Utility.areStacksEqual(
-                GT_ModHandler.getSmeltingOutput(GT_Utility.copyAmount(1L, aStack), false, null),
+                GT_ModHandler.getSmeltingOutput(GT_Utility.copyAmount(1, aStack), false, null),
                 new ItemStack(Items.coal, 1, 1)))) {
                 addPyrolyeOvenRecipes(aStack);
                 if (GregTech_API.sRecipeFile
                     .get(ConfigCategories.Recipes.disabledrecipes, "wood2charcoalsmelting", true)) {
-                    GT_ModHandler.removeFurnaceSmelting(GT_Utility.copyAmount(1L, aStack));
+                    GT_ModHandler.removeFurnaceSmelting(GT_Utility.copyAmount(1, aStack));
                 }
             }
             for (int i = 0; i < 32767; i++) {
@@ -166,8 +166,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                             .itemInputs(new ItemStack(aStack.getItem(), 1, i))
                             .itemOutputs(
                                 GT_Utility.copyAmount(
-                                    GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize
-                                        : tStack.stackSize * 5L / 4,
+                                    GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
                                     tStack),
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
                             .fluidInputs(Materials.Water.getFluid(Math.min(1000, 200 * 8 / 320)))
@@ -178,8 +177,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                             .itemInputs(new ItemStack(aStack.getItem(), 1, i))
                             .itemOutputs(
                                 GT_Utility.copyAmount(
-                                    GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize
-                                        : tStack.stackSize * 5L / 4,
+                                    GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
                                     tStack),
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
                             .fluidInputs(GT_ModHandler.getDistilledWater(3))
@@ -190,8 +188,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                             .itemInputs(new ItemStack(aStack.getItem(), 1, i))
                             .itemOutputs(
                                 GT_Utility.copyAmount(
-                                    GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize
-                                        : tStack.stackSize * 5L / 4,
+                                    GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
                                     tStack),
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
                             .fluidInputs(Materials.Lubricant.getFluid(1))
@@ -203,14 +200,12 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                             tPlanks,
                             GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L));
                         GT_ModHandler.removeRecipeDelayed(new ItemStack(aStack.getItem(), 1, i));
-                        GT_ModHandler
-                            .addCraftingRecipe(
-                                GT_Utility.copyAmount(
-                                    GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize
-                                        : tStack.stackSize * 5L / 4,
-                                    tStack),
-                                GT_ModHandler.RecipeBits.BUFFERED,
-                                new Object[] { "s", "L", 'L', new ItemStack(aStack.getItem(), 1, i) });
+                        GT_ModHandler.addCraftingRecipe(
+                            GT_Utility.copyAmount(
+                                GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
+                                tStack),
+                            GT_ModHandler.RecipeBits.BUFFERED,
+                            new Object[] { "s", "L", 'L', new ItemStack(aStack.getItem(), 1, i) });
                         GT_ModHandler.addShapelessCraftingRecipe(
                             GT_Utility
                                 .copyAmount(tStack.stackSize / (GT_Mod.gregtechproxy.mNerfedWoodPlank ? 2 : 1), tStack),
@@ -221,21 +216,21 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
             }
         } else {
             if ((GT_Utility.areStacksEqual(
-                GT_ModHandler.getSmeltingOutput(GT_Utility.copyAmount(1L, aStack), false, null),
+                GT_ModHandler.getSmeltingOutput(GT_Utility.copyAmount(1, aStack), false, null),
                 new ItemStack(Items.coal, 1, 1)))) {
                 addPyrolyeOvenRecipes(aStack);
                 if (GregTech_API.sRecipeFile
                     .get(ConfigCategories.Recipes.disabledrecipes, "wood2charcoalsmelting", true)) {
-                    GT_ModHandler.removeFurnaceSmelting(GT_Utility.copyAmount(1L, aStack));
+                    GT_ModHandler.removeFurnaceSmelting(GT_Utility.copyAmount(1, aStack));
                 }
             }
-            ItemStack tStack = GT_ModHandler.getRecipeOutput(GT_Utility.copyAmount(1L, aStack));
+            ItemStack tStack = GT_ModHandler.getRecipeOutput(GT_Utility.copyAmount(1, aStack));
             if (tStack != null) {
                 ItemStack tPlanks = GT_Utility.copyOrNull(tStack);
                 if (tPlanks != null) {
                     tPlanks.stackSize = (tPlanks.stackSize * 3 / 2);
                     GT_Values.RA.stdBuilder()
-                        .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                        .itemInputs(GT_Utility.copyAmount(1, aStack))
                         .itemOutputs(
                             GT_Utility.copyOrNull(tPlanks),
                             GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
@@ -244,10 +239,10 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                         .eut(8)
                         .addTo(cutterRecipes);
                     GT_Values.RA.stdBuilder()
-                        .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                        .itemInputs(GT_Utility.copyAmount(1, aStack))
                         .itemOutputs(
                             GT_Utility.copyAmount(
-                                GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5L / 4,
+                                GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
                                 tStack),
                             GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
                         .fluidInputs(Materials.Water.getFluid(Math.min(1000, 200 * 8 / 320)))
@@ -255,10 +250,10 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                         .eut(8)
                         .addTo(cutterRecipes);
                     GT_Values.RA.stdBuilder()
-                        .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                        .itemInputs(GT_Utility.copyAmount(1, aStack))
                         .itemOutputs(
                             GT_Utility.copyAmount(
-                                GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5L / 4,
+                                GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
                                 tStack),
                             GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
                         .fluidInputs(GT_ModHandler.getDistilledWater(3))
@@ -266,10 +261,10 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                         .eut(8)
                         .addTo(cutterRecipes);
                     GT_Values.RA.stdBuilder()
-                        .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                        .itemInputs(GT_Utility.copyAmount(1, aStack))
                         .itemOutputs(
                             GT_Utility.copyAmount(
-                                GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5L / 4,
+                                GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
                                 tStack),
                             GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
                         .fluidInputs(Materials.Lubricant.getFluid(1))
@@ -277,35 +272,35 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                         .eut(8)
                         .addTo(cutterRecipes);
                     GT_ModHandler.addSawmillRecipe(
-                        GT_Utility.copyAmount(1L, aStack),
+                        GT_Utility.copyAmount(1, aStack),
                         tPlanks,
                         GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L));
-                    GT_ModHandler.removeRecipeDelayed(GT_Utility.copyAmount(1L, aStack));
+                    GT_ModHandler.removeRecipeDelayed(GT_Utility.copyAmount(1, aStack));
                     GT_ModHandler.addCraftingRecipe(
                         GT_Utility.copyAmount(
-                            GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5L / 4,
+                            GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
                             tStack),
-                        new Object[] { "s", "L", 'L', GT_Utility.copyAmount(1L, aStack) });
+                        new Object[] { "s", "L", 'L', GT_Utility.copyAmount(1, aStack) });
                     GT_ModHandler.addShapelessCraftingRecipe(
                         GT_Utility
                             .copyAmount(tStack.stackSize / (GT_Mod.gregtechproxy.mNerfedWoodPlank ? 2 : 1), tStack),
-                        new Object[] { GT_Utility.copyAmount(1L, aStack) });
+                        new Object[] { GT_Utility.copyAmount(1, aStack) });
                 }
             }
         }
 
         if ((GT_Utility.areStacksEqual(
-            GT_ModHandler.getSmeltingOutput(GT_Utility.copyAmount(1L, aStack), false, null),
+            GT_ModHandler.getSmeltingOutput(GT_Utility.copyAmount(1, aStack), false, null),
             new ItemStack(Items.coal, 1, 1)))) {
             addPyrolyeOvenRecipes(aStack);
             if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "wood2charcoalsmelting", true))
-                GT_ModHandler.removeFurnaceSmelting(GT_Utility.copyAmount(1L, aStack));
+                GT_ModHandler.removeFurnaceSmelting(GT_Utility.copyAmount(1, aStack));
         }
     }
 
     public static void addPyrolyeOvenRecipes(ItemStack logStack) {
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.copyAmount(16L, logStack), GT_Utility.getIntegratedCircuit(1))
+            .itemInputs(GT_Utility.copyAmount(16, logStack), GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(Materials.Charcoal.getGems(20))
             .fluidOutputs(Materials.Creosote.getFluid(4000))
             .duration(32 * SECONDS)
@@ -313,7 +308,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
             .noOptimize()
             .addTo(pyrolyseRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.copyAmount(16L, logStack), GT_Utility.getIntegratedCircuit(2))
+            .itemInputs(GT_Utility.copyAmount(16, logStack), GT_Utility.getIntegratedCircuit(2))
             .itemOutputs(Materials.Charcoal.getGems(20))
             .fluidInputs(Materials.Nitrogen.getGas(1000))
             .fluidOutputs(Materials.Creosote.getFluid(4000))
@@ -322,7 +317,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
             .noOptimize()
             .addTo(pyrolyseRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.copyAmount(16L, logStack), GT_Utility.getIntegratedCircuit(3))
+            .itemInputs(GT_Utility.copyAmount(16, logStack), GT_Utility.getIntegratedCircuit(3))
             .itemOutputs(Materials.Charcoal.getGems(20))
             .fluidOutputs(Materials.CharcoalByproducts.getGas(4000))
             .duration(32 * SECONDS)
@@ -330,7 +325,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
             .noOptimize()
             .addTo(pyrolyseRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.copyAmount(16L, logStack), GT_Utility.getIntegratedCircuit(4))
+            .itemInputs(GT_Utility.copyAmount(16, logStack), GT_Utility.getIntegratedCircuit(4))
             .itemOutputs(Materials.Charcoal.getGems(20))
             .fluidInputs(Materials.Nitrogen.getGas(1000))
             .fluidOutputs(Materials.CharcoalByproducts.getGas(4000))
@@ -339,7 +334,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
             .noOptimize()
             .addTo(pyrolyseRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.copyAmount(16L, logStack), GT_Utility.getIntegratedCircuit(5))
+            .itemInputs(GT_Utility.copyAmount(16, logStack), GT_Utility.getIntegratedCircuit(5))
             .itemOutputs(Materials.Charcoal.getGems(20))
             .fluidOutputs(Materials.WoodGas.getGas(1500))
             .duration(32 * SECONDS)
@@ -347,7 +342,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
             .noOptimize()
             .addTo(pyrolyseRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.copyAmount(16L, logStack), GT_Utility.getIntegratedCircuit(6))
+            .itemInputs(GT_Utility.copyAmount(16, logStack), GT_Utility.getIntegratedCircuit(6))
             .itemOutputs(Materials.Charcoal.getGems(20))
             .fluidInputs(Materials.Nitrogen.getGas(1000))
             .fluidOutputs(Materials.WoodGas.getGas(1500))
@@ -356,7 +351,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
             .noOptimize()
             .addTo(pyrolyseRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.copyAmount(16L, logStack), GT_Utility.getIntegratedCircuit(7))
+            .itemInputs(GT_Utility.copyAmount(16, logStack), GT_Utility.getIntegratedCircuit(7))
             .itemOutputs(Materials.Charcoal.getGems(20))
             .fluidOutputs(Materials.WoodVinegar.getFluid(3000))
             .duration(32 * SECONDS)
@@ -364,7 +359,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
             .noOptimize()
             .addTo(pyrolyseRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.copyAmount(16L, logStack), GT_Utility.getIntegratedCircuit(8))
+            .itemInputs(GT_Utility.copyAmount(16, logStack), GT_Utility.getIntegratedCircuit(8))
             .itemOutputs(Materials.Charcoal.getGems(20))
             .fluidInputs(Materials.Nitrogen.getGas(1000))
             .fluidOutputs(Materials.WoodVinegar.getFluid(3000))
@@ -373,7 +368,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
             .noOptimize()
             .addTo(pyrolyseRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.copyAmount(16L, logStack), GT_Utility.getIntegratedCircuit(9))
+            .itemInputs(GT_Utility.copyAmount(16, logStack), GT_Utility.getIntegratedCircuit(9))
             .itemOutputs(Materials.Charcoal.getGems(20))
             .fluidOutputs(Materials.WoodTar.getFluid(1500))
             .duration(32 * SECONDS)
@@ -381,7 +376,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
             .noOptimize()
             .addTo(pyrolyseRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.copyAmount(16L, logStack), GT_Utility.getIntegratedCircuit(10))
+            .itemInputs(GT_Utility.copyAmount(16, logStack), GT_Utility.getIntegratedCircuit(10))
             .itemOutputs(Materials.Charcoal.getGems(20))
             .fluidInputs(Materials.Nitrogen.getGas(1000))
             .fluidOutputs(Materials.WoodTar.getFluid(1500))
@@ -390,7 +385,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
             .noOptimize()
             .addTo(pyrolyseRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.copyAmount(16L, logStack), GT_Utility.getIntegratedCircuit(11))
+            .itemInputs(GT_Utility.copyAmount(16, logStack), GT_Utility.getIntegratedCircuit(11))
             .itemOutputs(Materials.Ash.getDust(4))
             .fluidOutputs(Materials.OilHeavy.getFluid(200))
             .duration(16 * SECONDS)

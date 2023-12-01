@@ -17,13 +17,8 @@ import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofCoil;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
-import static java.lang.Math.floor;
-import static java.lang.Math.log;
-import static java.lang.Math.pow;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -51,6 +46,8 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.objects.GT_ChunkManager;
@@ -59,15 +56,14 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_ExoticEnergyInputHelper;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_OverclockCalculator;
+import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.tileentities.machines.IDualInputHatch;
-import gregtech.common.tileentities.machines.IDualInputInventory;
 
-public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMultiFurnace<GT_MetaTileEntity_PlasmaForge>
-    implements ISurvivalConstructable {
+public class GT_MetaTileEntity_PlasmaForge extends
+    GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_PlasmaForge> implements ISurvivalConstructable {
 
     // 3600 seconds in an hour, 8 hours, 20 ticks in a second.
     private static final double max_efficiency_time_in_ticks = 3600d * 8d * 20d;
@@ -77,9 +73,6 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
     private static final FluidStack[] valid_fuels = { MaterialsUEVplus.ExcitedDTEC.getFluid(1L),
         MaterialsUEVplus.ExcitedDTRC.getFluid(1L), MaterialsUEVplus.ExcitedDTPC.getFluid(1L),
         MaterialsUEVplus.ExcitedDTCC.getFluid(1L), MaterialsUEVplus.ExcitedDTSC.getFluid(1L) };
-
-    // Saves recomputing this every recipe check for overclocking.
-    private static final double log4 = log(4);
 
     private static final int min_input_hatch = 0;
     private static final int max_input_hatch = 7;
@@ -96,6 +89,7 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
     private long running_time = 0;
     // Custom long EU per tick value given that mEUt is an int. Required to overclock beyond MAX voltage.
     private long EU_per_tick = 0;
+    private HeatingCoilLevel mCoilLevel;
 
     @SuppressWarnings("SpellCheckingInspection")
     private static final String[][] structure_string = new String[][] { { "                                 ",
@@ -516,12 +510,6 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
         .addElement('s', ofBlock(GregTech_API.sBlockCasings1, DIM_BRIDGE_CASING))
         .build();
 
-    @Override
-    protected boolean addBottomHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        boolean exotic = addExoticEnergyInputToMachineList(aTileEntity, aBaseCasingIndex);
-        return super.addBottomHatch(aTileEntity, aBaseCasingIndex) || exotic;
-    }
-
     public GT_MetaTileEntity_PlasmaForge(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -656,6 +644,16 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
     }
 
     @Override
+    public int getDamageToComponent(ItemStack aStack) {
+        return 0;
+    }
+
+    @Override
+    public boolean explodesOnComponentBreak(ItemStack aStack) {
+        return false;
+    }
+
+    @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.plasmaForgeRecipes;
     }
@@ -673,84 +671,58 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
     @Override
     @NotNull
     public CheckRecipeResult checkProcessing() {
-        CheckRecipeResult recipe_process = processRecipe(getCompactedInputs(), getCompactedFluids());
-        if (recipe_process.wasSuccessful()) return recipe_process;
-
-        // If not successful, then try crafting input buffers
-        for (IDualInputHatch hatch : mDualInputHatches) {
-            for (Iterator<? extends IDualInputInventory> it = hatch.inventories(); it.hasNext();) {
-                IDualInputInventory inventory = it.next();
-                recipe_process = processRecipe(inventory.getItemInputs(), inventory.getFluidInputs());
-                if (recipe_process.wasSuccessful()) {
-                    return recipe_process;
-                }
-            }
+        CheckRecipeResult recipe_process = super.checkProcessing();
+        if (!recipe_process.wasSuccessful()) {
+            resetDiscount();
+        } else {
+            running_time += mMaxProgresstime;
         }
-
-        // If recipe cannot be found then continuity is broken and reset running time to 0.
-        resetDiscount();
-
         return recipe_process;
     }
 
-    protected CheckRecipeResult processRecipe(ItemStack[] tItems, FluidStack[] tFluids) {
+    @Override
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
 
-        // Gets the EU input of the
-        long tTotalEU = GT_ExoticEnergyInputHelper.getTotalEuMulti(getExoticAndNormalEnergyHatchList());
+            @Nonnull
+            @Override
+            protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
+                return super.createOverclockCalculator(recipe).setRecipeHeat(recipe.mSpecialValue)
+                    .setMachineHeat(mHeatingCapacity);
+            }
 
-        // Look up recipe. If not found it will return null.
-        GT_Recipe tRecipe_0 = RecipeMaps.plasmaForgeRecipes
-            .findRecipe(getBaseMetaTileEntity(), false, tTotalEU, tFluids, tItems);
+            @NotNull
+            @Override
+            protected GT_ParallelHelper createParallelHelper(@Nonnull GT_Recipe recipe) {
+                return super.createParallelHelper(recipeAfterDiscount(recipe));
+            }
 
-        // Check if recipe found.
-        if (tRecipe_0 == null) return CheckRecipeResultRegistry.NO_RECIPE;
+            @Override
+            protected @Nonnull CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
+                return recipe.mSpecialValue <= mHeatingCapacity ? CheckRecipeResultRegistry.SUCCESSFUL
+                    : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
+            }
+        };
+    }
 
-        // If coil heat capacity is too low, refuse to start recipe.
-        if (mHeatingCapacity <= tRecipe_0.mSpecialValue)
-            return CheckRecipeResultRegistry.insufficientHeat(tRecipe_0.mSpecialValue);
-
-        // Reduce fuel quantity if machine has been running for long enough.
-        GT_Recipe tRecipe_1 = tRecipe_0.copy();
-
-        // Break out to the outermost for loop when fuel found and discounted. Only 1 fuel per recipe is intended.
-        outside: for (int i = 0; i < tRecipe_0.mFluidInputs.length; i++) {
+    @Nonnull
+    protected GT_Recipe recipeAfterDiscount(@Nonnull GT_Recipe recipe) {
+        GT_Recipe tRecipe = recipe.copy();
+        outside: for (int i = 0; i < recipe.mFluidInputs.length; i++) {
             for (FluidStack fuel : valid_fuels) {
-                if (tRecipe_1.mFluidInputs[i].isFluidEqual(fuel)) {
+                if (tRecipe.mFluidInputs[i].isFluidEqual(fuel)) {
                     // If running for max_efficiency_time_in_ticks then discount is at maximum.
                     double time_percentage = running_time / max_efficiency_time_in_ticks;
                     time_percentage = Math.min(time_percentage, 1.0d);
                     // Multiplied by 0.5 because that is the maximum achievable discount
                     discount = 1 - time_percentage * 0.5;
                     discount = Math.max(maximum_discount, discount);
-                    tRecipe_1.mFluidInputs[i].amount = (int) Math.round(tRecipe_1.mFluidInputs[i].amount * discount);
+                    tRecipe.mFluidInputs[i].amount = (int) Math.round(tRecipe.mFluidInputs[i].amount * discount);
                     break outside;
                 }
             }
         }
-
-        if (!canOutputAll(tRecipe_1)) return CheckRecipeResultRegistry.OUTPUT_FULL;
-        // Takes items/fluids from hatches/busses.
-        if (!tRecipe_1.isRecipeInputEqual(true, tFluids, tItems)) return CheckRecipeResultRegistry.NO_RECIPE;
-
-        // Logic for overclocking calculations.
-        double EU_input_tier = log(tTotalEU) / log4;
-        double EU_recipe_tier = log(tRecipe_0.mEUt) / log4;
-        long overclock_count = (long) floor(EU_input_tier - EU_recipe_tier);
-
-        // Vital recipe info. Calculate overclocks here if necessary.
-        EU_per_tick = (long) -(tRecipe_0.mEUt * pow(4, overclock_count));
-
-        mMaxProgresstime = (int) (tRecipe_0.mDuration / pow(2, overclock_count));
-        mMaxProgresstime = Math.max(1, mMaxProgresstime);
-
-        // Output items/fluids.
-        mOutputItems = tRecipe_0.mOutputs.clone();
-        mOutputFluids = tRecipe_0.mFluidOutputs.clone();
-        updateSlots();
-
-        // All conditions met so increment running_time.
-        running_time += mMaxProgresstime;
-        return CheckRecipeResultRegistry.SUCCESSFUL;
+        return tRecipe;
     }
 
     @Override
@@ -813,6 +785,11 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
     }
 
     @Override
+    public int getMaxEfficiency(ItemStack aStack) {
+        return 10000;
+    }
+
+    @Override
     public void clearHatches() {
         super.clearHatches();
         mExoticEnergyHatches.clear();
@@ -824,11 +801,6 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
         FluidStack tLiquid = aLiquid.copy();
 
         return dumpFluid(mOutputHatches, tLiquid, true) || dumpFluid(mOutputHatches, tLiquid, false);
-    }
-
-    @Override
-    public boolean drainEnergyInput(long aEU) {
-        return GT_ExoticEnergyInputHelper.drainEnergy(aEU, getExoticAndNormalEnergyHatchList());
     }
 
     @Override
@@ -857,6 +829,8 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
             maxEnergy += tHatch.getBaseMetaTileEntity()
                 .getEUCapacity();
         }
+        long voltage = getAverageInputVoltage();
+        long amps = getMaxInputAmps();
 
         return new String[] { "------------ Critical Information ------------",
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
@@ -879,25 +853,22 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
                 + " EU",
             StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
                 + EnumChatFormatting.RED
-                + GT_Utility.formatNumbers(-EU_per_tick)
+                + GT_Utility.formatNumbers(getActualEnergyUsage())
                 + EnumChatFormatting.RESET
                 + " EU/t",
             StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(
-                    GT_ExoticEnergyInputHelper.getAverageInputVoltageMulti(getExoticAndNormalEnergyHatchList()))
+                + GT_Utility.formatNumbers(voltage)
                 + EnumChatFormatting.RESET
                 + " EU/t(*"
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(
-                    GT_ExoticEnergyInputHelper.getMaxWorkingInputAmpsMulti(getExoticAndNormalEnergyHatchList()))
+                + amps
                 + EnumChatFormatting.RESET
                 + "A) "
                 + StatCollector.translateToLocal("GT5U.machines.tier")
                 + ": "
                 + EnumChatFormatting.YELLOW
-                + VN[GT_Utility
-                    .getTier(GT_ExoticEnergyInputHelper.getTotalEuMulti(getExoticAndNormalEnergyHatchList()))]
+                + VN[GT_Utility.getTier(voltage)]
                 + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("GT5U.EBF.heat") + ": "
                 + EnumChatFormatting.GREEN
@@ -913,13 +884,6 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
                 + EnumChatFormatting.RESET
                 + "%",
             "-----------------------------------------" };
-    }
-
-    public List<GT_MetaTileEntity_Hatch> getExoticAndNormalEnergyHatchList() {
-        List<GT_MetaTileEntity_Hatch> tHatches = new ArrayList<>();
-        tHatches.addAll(mExoticEnergyHatches);
-        tHatches.addAll(mEnergyHatches);
-        return tHatches;
     }
 
     // Reset running time and discount.
@@ -1011,8 +975,21 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
         super.loadNBTData(aNBT);
     }
 
+    public HeatingCoilLevel getCoilLevel() {
+        return mCoilLevel;
+    }
+
+    public void setCoilLevel(HeatingCoilLevel aCoilLevel) {
+        mCoilLevel = aCoilLevel;
+    }
+
     @Override
     public boolean supportsVoidProtection() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
         return true;
     }
 }

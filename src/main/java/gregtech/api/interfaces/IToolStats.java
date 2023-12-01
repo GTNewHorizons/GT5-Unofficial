@@ -2,12 +2,16 @@ package gregtech.api.interfaces;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
@@ -30,6 +34,20 @@ public interface IToolStats {
      * Called when this gets added to a Tool Item
      */
     void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID);
+
+    /**
+     *
+     * @param player   The player
+     * @param x        Block pos
+     * @param y        Block pos
+     * @param z        Block pos
+     * @param block    the block
+     * @param metadata block metadata
+     * @param tile     TileEntity of the block if exist
+     * @param event    the event, cancel it to prevent the block from being broken
+     */
+    default void onBreakBlock(@Nonnull EntityPlayer player, int x, int y, int z, @Nonnull Block block, byte metadata,
+        @Nullable TileEntity tile, @Nonnull BlockEvent.BreakEvent event) {}
 
     /**
      * @return Damage the Tool receives when breaking a Block. 100 is one Damage Point (or 100 EU).

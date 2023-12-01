@@ -28,7 +28,7 @@ public class GT_EffectTreeTwister extends GT_AlleleEffect {
 
     private static final ItemStack TF_TRANS_SAPLING = GT_ModHandler
         .getModItem(TwilightForest.ID, "tile.TFSapling", 1, 6);
-    private static final ItemStack BARN_SAPLING = GT_ModHandler.getModItem(GalaxySpace.ID, "barnardaCsapling", 1, 0);
+    private static final ItemStack BARN_SAPLING = GT_ModHandler.getModItem(GalaxySpace.ID, "barnardaCsapling", 1, 1);
 
     static {
         if (TF_TRANS_SAPLING == null) {

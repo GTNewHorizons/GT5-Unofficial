@@ -578,10 +578,11 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
                         .getItemHandler() == itemOutputsInventory) {
                             int i = widget.getMcSlot()
                                 .getSlotIndex();
-                            if (aRecipe.mOutputs.length > i && aRecipe.mOutputs[i] != null) {
+                            ItemStack output = aRecipe.getRepresentativeOutput(i);
+                            if (output != null) {
                                 mOutputs.add(
                                     new FixedPositionedStack(
-                                        aRecipe.mOutputs[i],
+                                        output,
                                         GT_NEI_DefaultHandler.this.neiProperties.renderRealStackSizes,
                                         widget.getPos().x + 1,
                                         widget.getPos().y + 1,
@@ -598,6 +599,7 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
                                             widget.getPos().x + 1,
                                             widget.getPos().y + 1));
                                 }
+
                             } else if (widget.getMcSlot()
                                 .getItemHandler() == fluidInputsInventory) {
                                     int i = widget.getMcSlot()

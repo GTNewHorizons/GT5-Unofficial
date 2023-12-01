@@ -24,7 +24,7 @@ public class ProcessingSand implements gregtech.api.interfaces.IOreRecipeRegistr
         ItemStack aStack) {
         if (aOreDictName.equals("sandOil")) {
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_Utility.copyAmount(2L, aStack), ItemList.Cell_Empty.get(1))
+                .itemInputs(GT_Utility.copyAmount(2, aStack), ItemList.Cell_Empty.get(1))
                 .itemOutputs(
                     GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Oil, 1L),
                     new ItemStack(Blocks.sand, 1, 0))

@@ -138,7 +138,7 @@ public class GT_Tool_HardHammer extends GT_Tool {
         if ((tRecipe == null) || (aBlock.hasTileEntity(aMetaData))) {
             for (ItemStack tDrop : aDrops) {
                 tRecipe = RecipeMaps.hammerRecipes
-                    .findRecipe(null, true, MAX_IC2, null, GT_Utility.copyAmount(1L, tDrop));
+                    .findRecipe(null, true, MAX_IC2, null, GT_Utility.copyAmount(1, tDrop));
                 if (tRecipe != null) {
                     ItemStack tHammeringOutput = tRecipe.getOutput(0);
                     if (tHammeringOutput != null) {

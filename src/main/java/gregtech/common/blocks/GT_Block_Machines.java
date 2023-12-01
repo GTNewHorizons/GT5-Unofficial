@@ -159,7 +159,18 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
 
     @Override
     public boolean canConnectRedstone(IBlockAccess aWorld, int aX, int aY, int aZ, int ordinalSide) {
-        return true;
+        ForgeDirection forgeSide = switch (ordinalSide) {
+            case (-2) -> ForgeDirection.DOWN;
+            case (-1) -> ForgeDirection.UP;
+            case (0) -> ForgeDirection.NORTH;
+            case (2) -> ForgeDirection.SOUTH;
+            case (3) -> ForgeDirection.WEST;
+            case (1) -> ForgeDirection.EAST;
+            default -> ForgeDirection.UNKNOWN;
+        };
+        final TileEntity machineEntity = aWorld.getTileEntity(aX, aY, aZ);
+        return machineEntity instanceof CoverableTileEntity cte && cte.getCoverInfoAtSide(forgeSide)
+            .getCoverID() != 0;
     }
 
     @Override

@@ -700,10 +700,10 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         if ((aInput1 == null || aInput1.stackSize <= 6) && (aInput2 == null || aInput2.stackSize <= 6)
             && (aOutput1 == null || aOutput1.stackSize <= 6)
             && (aOutput2 == null || aOutput2.stackSize <= 6)) {
-            aInput1 = aInput1 == null ? null : GT_Utility.copyAmount(aInput1.stackSize * 10L, aInput1);
-            aInput2 = aInput2 == null ? null : GT_Utility.copyAmount(aInput2.stackSize * 10L, aInput2);
-            aOutput1 = aOutput1 == null ? null : GT_Utility.copyAmount(aOutput1.stackSize * 10L, aOutput1);
-            aOutput2 = aOutput2 == null ? null : GT_Utility.copyAmount(aOutput2.stackSize * 10L, aOutput2);
+            aInput1 = aInput1 == null ? null : GT_Utility.copyAmount(aInput1.stackSize * 10, aInput1);
+            aInput2 = aInput2 == null ? null : GT_Utility.copyAmount(aInput2.stackSize * 10, aInput2);
+            aOutput1 = aOutput1 == null ? null : GT_Utility.copyAmount(aOutput1.stackSize * 10, aOutput1);
+            aOutput2 = aOutput2 == null ? null : GT_Utility.copyAmount(aOutput2.stackSize * 10, aOutput2);
             for (Materials coal : coals) {
                 RecipeMaps.primitiveBlastRecipes.addRecipe(
                     true,

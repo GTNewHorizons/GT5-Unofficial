@@ -83,7 +83,7 @@ public class GT_Tool_JackHammer extends GT_Tool_Drill_LV {
         if ((tRecipe == null) || (aBlock.hasTileEntity(aMetaData))) {
             for (ItemStack tDrop : aDrops) {
                 tRecipe = RecipeMaps.hammerRecipes
-                    .findRecipe(null, true, 2147483647L, null, GT_Utility.copyAmount(1L, tDrop));
+                    .findRecipe(null, true, 2147483647L, null, GT_Utility.copyAmount(1, tDrop));
                 if (tRecipe != null) {
                     ItemStack tHammeringOutput = tRecipe.getOutput(0);
                     if (tHammeringOutput != null) {

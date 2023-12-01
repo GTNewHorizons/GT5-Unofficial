@@ -561,7 +561,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                             getMcSlot().putStack(null);
                         } else {
                             if (containsSuchStack(cursorStack)) return;
-                            getMcSlot().putStack(GT_Utility.copyAmount(1L, cursorStack));
+                            getMcSlot().putStack(GT_Utility.copyAmount(1, cursorStack));
                         }
                         if (getBaseMetaTileEntity().isServerSide()) {
                             final ItemStack newInfo = updateInformationSlot(aSlotIndex, cursorStack);

@@ -40,7 +40,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                 || aMaterial == MaterialsBotania.Dreamwood) {
 
                 GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(3))
+                    .itemInputs(GT_Utility.copyAmount(1, aStack), GT_Utility.getIntegratedCircuit(3))
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
                     .fluidInputs(
                         Materials.Water.getFluid(
@@ -52,7 +52,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                     .addTo(cutterRecipes);
 
                 GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(3))
+                    .itemInputs(GT_Utility.copyAmount(1, aStack), GT_Utility.getIntegratedCircuit(3))
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
                     .fluidInputs(
                         GT_ModHandler.getDistilledWater(
@@ -64,7 +64,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                     .addTo(cutterRecipes);
 
                 GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(3))
+                    .itemInputs(GT_Utility.copyAmount(1, aStack), GT_Utility.getIntegratedCircuit(3))
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
                     .fluidInputs(
                         Materials.Lubricant.getFluid(
@@ -80,7 +80,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
             else if (aMaterial != Materials.Clay && aMaterial != Materials.Basalt) {
 
                 GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                    .itemInputs(GT_Utility.copyAmount(1, aStack))
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
                     .fluidInputs(
                         Materials.Water.getFluid(
@@ -92,7 +92,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                     .addTo(cutterRecipes);
 
                 GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                    .itemInputs(GT_Utility.copyAmount(1, aStack))
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
                     .fluidInputs(
                         GT_ModHandler.getDistilledWater(
@@ -104,7 +104,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                     .addTo(cutterRecipes);
 
                 GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                    .itemInputs(GT_Utility.copyAmount(1, aStack))
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
                     .fluidInputs(
                         Materials.Lubricant.getFluid(
@@ -121,7 +121,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         ItemStack tStack2 = GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L);
         ItemStack tStack3 = GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L);
 
-        GT_ModHandler.removeRecipeDelayed(GT_Utility.copyAmount(1L, aStack));
+        GT_ModHandler.removeRecipeDelayed(GT_Utility.copyAmount(1, aStack));
 
         if (tStack1 != null) GT_ModHandler
             .removeRecipeDelayed(tStack1, tStack1, tStack1, tStack1, tStack1, tStack1, tStack1, tStack1, tStack1);
@@ -203,7 +203,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
             case "Mercury" -> System.err.println(
                 "'blockQuickSilver'?, In which Ice Desert can you actually place this as a solid Block? On Pluto Greg :)");
             case "Iron", "WroughtIron", "Steel" -> GT_Values.RA.stdBuilder()
-                .itemInputs(ItemList.IC2_Compressed_Coal_Ball.get(8L), GT_Utility.copyAmount(1L, aStack))
+                .itemInputs(ItemList.IC2_Compressed_Coal_Ball.get(8L), GT_Utility.copyAmount(1, aStack))
                 .itemOutputs(ItemList.IC2_Compressed_Coal_Chunk.get(1L))
                 .duration(20 * SECONDS)
                 .eut(4)
