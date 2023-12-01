@@ -1339,6 +1339,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         }
     }
 
+    public void onLoadComplete() {}
+
     public void onServerAboutToStart() {
         dimensionWisePollution.clear(); // !!! IMPORTANT for map switching...
         GT_ChunkAssociatedData.clearAll();

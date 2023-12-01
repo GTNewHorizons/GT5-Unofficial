@@ -40,6 +40,8 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.lwjgl.opengl.GL11;
 
+import com.glodblock.github.nei.recipes.FluidRecipe;
+import com.glodblock.github.nei.recipes.extractor.GregTech5RecipeExtractor;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 
@@ -68,6 +70,7 @@ import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.multitileentity.multiblock.base.MultiBlockPart;
 import gregtech.api.net.GT_Packet_ClientPreference;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.recipe.RecipeCategory;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.ColorsMetadataSection;
 import gregtech.api.util.ColorsMetadataSectionSerializer;
@@ -626,6 +629,21 @@ public class GT_Client extends GT_Proxy implements Runnable {
                         .forEach(GT_CoverBehaviorBase::reloadColorOverride);
                 }
             });
+    }
+
+    @Override
+    public void onLoadComplete() {
+        super.onLoadComplete();
+        for (RecipeCategory category : RecipeCategory.ALL_RECIPE_CATEGORIES.values()) {
+            if (category.recipeMap.getFrontend()
+                .getNEIProperties().registerNEI) {
+                FluidRecipe.addRecipeMap(
+                    category.unlocalizedName,
+                    new GregTech5RecipeExtractor(
+                        category.unlocalizedName.equals("gt.recipe.scanner")
+                            || category.unlocalizedName.equals("gt.recipe.fakeAssemblylineProcess")));
+            }
+        }
     }
 
     @Override

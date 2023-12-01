@@ -579,6 +579,7 @@ public class GT_Mod implements IGT_Mod {
 
     @Mod.EventHandler
     public void onLoadComplete(FMLLoadCompleteEvent aEvent) {
+        gregtechproxy.onLoadComplete();
         for (Runnable tRunnable : GregTech_API.sGTCompleteLoad) {
             try {
                 tRunnable.run();
