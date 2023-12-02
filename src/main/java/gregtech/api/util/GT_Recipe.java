@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
@@ -27,7 +28,8 @@ import gregtech.api.recipe.RecipeCategory;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.RecipeMetadataKey;
-import gregtech.api.recipe.RecipeMetadataStorage;
+import gregtech.api.recipe.metadata.EmptyRecipeMetadataStorage;
+import gregtech.api.recipe.metadata.IRecipeMetadataStorage;
 import gregtech.api.util.extensions.ArrayExt;
 import ic2.core.Ic2Items;
 
@@ -90,7 +92,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     /**
      * Holds a set of metadata for this recipe.
      */
-    private RecipeMetadataStorage metadataStorage = new RecipeMetadataStorage();
+    @Nonnull
+    private final IRecipeMetadataStorage metadataStorage;
     /**
      * Category this recipe belongs to. Recipes belonging to recipemap are forced to have non-null category when added,
      * otherwise it can be null.
@@ -122,6 +125,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         mFakeRecipe = aRecipe.mFakeRecipe;
         mEnabled = aRecipe.mEnabled;
         mHidden = aRecipe.mHidden;
+        metadataStorage = EmptyRecipeMetadataStorage.INSTANCE;
         owners = new ArrayList<>(aRecipe.owners);
         reloadOwner();
     }
@@ -132,7 +136,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     GT_Recipe(ItemStack[] mInputs, ItemStack[] mOutputs, FluidStack[] mFluidInputs, FluidStack[] mFluidOutputs,
         int[] mChances, Object mSpecialItems, int mDuration, int mEUt, int mSpecialValue, boolean mEnabled,
         boolean mHidden, boolean mFakeRecipe, boolean mCanBeBuffered, boolean mNeedsEmptyOutput, boolean nbtSensitive,
-        String[] neiDesc, RecipeMetadataStorage metadataStorage, RecipeCategory recipeCategory) {
+        String[] neiDesc, @Nullable IRecipeMetadataStorage metadataStorage, RecipeCategory recipeCategory) {
         this.mInputs = mInputs;
         this.mOutputs = mOutputs;
         this.mFluidInputs = mFluidInputs;
@@ -149,7 +153,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         this.mNeedsEmptyOutput = mNeedsEmptyOutput;
         this.isNBTSensitive = nbtSensitive;
         this.neiDesc = neiDesc;
-        this.metadataStorage = metadataStorage;
+        this.metadataStorage = metadataStorage == null ? EmptyRecipeMetadataStorage.INSTANCE : metadataStorage.copy();
         this.recipeCategory = recipeCategory;
 
         reloadOwner();
@@ -216,6 +220,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         mDuration = aDuration;
         mSpecialValue = aSpecialValue;
         mEUt = aEUt;
+        metadataStorage = EmptyRecipeMetadataStorage.INSTANCE;
         // checkCellBalance();
         reloadOwner();
     }
@@ -279,13 +284,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             aDuration,
             aEUt,
             aSpecialValue);
-    }
-
-    /**
-     * Creates empty recipe where everything is set to default.
-     */
-    public static GT_Recipe empty() {
-        return new GT_Recipe(false, null, null, null, null, null, null, 0, 0, 0);
     }
 
     /**
@@ -586,13 +584,11 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
     // region metadata
 
-    public <T> GT_Recipe setMetadata(RecipeMetadataKey<T> key, T value) {
-        metadataStorage.store(key, value);
-        return this;
-    }
+    // Don't try implementing setMetadata, as metadataStorage can be EmptyRecipeMetadataStorage
 
     /**
-     * Gets metadata associated with this recipe. Can return null. Use {@link #getMetadata(RecipeMetadataKey, Object)}
+     * Gets metadata associated with this recipe. Can return null. Use
+     * {@link #getMetadataOrDefault(RecipeMetadataKey, Object)}
      * if you want to specify default value.
      */
     @Nullable
@@ -605,11 +601,12 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
      */
     @Contract("_, !null -> !null")
     @Nullable
-    public <T> T getMetadata(RecipeMetadataKey<T> key, @Nullable T defaultValue) {
-        return key.cast(metadataStorage.getMetadata(key, defaultValue));
+    public <T> T getMetadataOrDefault(RecipeMetadataKey<T> key, @Nullable T defaultValue) {
+        return key.cast(metadataStorage.getMetadataOrDefault(key, defaultValue));
     }
 
-    public RecipeMetadataStorage getMetadataStorage() {
+    @Nonnull
+    public IRecipeMetadataStorage getMetadataStorage() {
         return metadataStorage;
     }
 
@@ -923,8 +920,9 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         GT_Recipe_WithAlt(ItemStack[] mInputs, ItemStack[] mOutputs, FluidStack[] mFluidInputs,
             FluidStack[] mFluidOutputs, int[] mChances, Object mSpecialItems, int mDuration, int mEUt,
             int mSpecialValue, boolean mEnabled, boolean mHidden, boolean mFakeRecipe, boolean mCanBeBuffered,
-            boolean mNeedsEmptyOutput, boolean nbtSensitive, String[] neiDesc, RecipeMetadataStorage metadataStorage,
-            RecipeCategory recipeCategory, ItemStack[][] mOreDictAlt) {
+            boolean mNeedsEmptyOutput, boolean nbtSensitive, String[] neiDesc,
+            @Nullable IRecipeMetadataStorage metadataStorage, RecipeCategory recipeCategory,
+            ItemStack[][] mOreDictAlt) {
             super(
                 mInputs,
                 mOutputs,

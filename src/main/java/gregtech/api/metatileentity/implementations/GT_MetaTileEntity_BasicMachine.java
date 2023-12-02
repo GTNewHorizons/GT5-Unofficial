@@ -1069,11 +1069,11 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         if (tRecipe == null) {
             return DID_NOT_FIND_RECIPE;
         }
-        if (tRecipe.getMetadata(EXPLODE, false) && getBaseMetaTileEntity() != null) {
+        if (tRecipe.getMetadataOrDefault(EXPLODE, false) && getBaseMetaTileEntity() != null) {
             getBaseMetaTileEntity().doExplosion(V[mTier] * 4);
             return DID_NOT_FIND_RECIPE;
         }
-        if (tRecipe.getMetadata(ON_FIRE, false) && getBaseMetaTileEntity() != null) {
+        if (tRecipe.getMetadataOrDefault(ON_FIRE, false) && getBaseMetaTileEntity() != null) {
             getBaseMetaTileEntity().setOnFire();
             return DID_NOT_FIND_RECIPE;
         }

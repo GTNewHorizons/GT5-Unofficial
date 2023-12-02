@@ -8,12 +8,13 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import org.jetbrains.annotations.Contract;
 
+import gregtech.api.recipe.metadata.IRecipeMetadataStorage;
 import gregtech.api.util.FieldsAreNonnullByDefault;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.RecipeDisplayInfo;
 
 /**
- * Unique key for the {@link RecipeMetadataStorage}. It's also responsible for drawing metadata info on NEI.
+ * Unique key for the {@link IRecipeMetadataStorage}. It's also responsible for drawing metadata info on NEI.
  * <p>
  * You can use {@link gregtech.api.recipe.metadata.SimpleRecipeMetadataKey} if your metadata does not need NEI handling.
  *

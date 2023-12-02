@@ -24,7 +24,8 @@ import gregtech.GT_Mod;
 import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.recipe.RecipeCategory;
 import gregtech.api.recipe.RecipeMetadataKey;
-import gregtech.api.recipe.RecipeMetadataStorage;
+import gregtech.api.recipe.metadata.IRecipeMetadataStorage;
+import gregtech.api.recipe.metadata.RecipeMetadataStorage;
 import gregtech.api.util.extensions.ArrayExt;
 
 @SuppressWarnings({ "unused", "UnusedReturnValue" })
@@ -93,19 +94,18 @@ public class GT_RecipeBuilder {
     protected String[] neiDesc;
     protected RecipeCategory recipeCategory;
     protected boolean optimize = true;
-    protected final RecipeMetadataStorage metadataStorage;
+    @Nullable
+    protected IRecipeMetadataStorage metadataStorage;
     protected boolean checkForCollision = true;
     protected boolean valid = true;
 
-    GT_RecipeBuilder() {
-        this.metadataStorage = new RecipeMetadataStorage();
-    }
+    GT_RecipeBuilder() {}
 
     private GT_RecipeBuilder(ItemStack[] inputsBasic, Object[] inputsOreDict, ItemStack[] outputs, ItemStack[][] alts,
         FluidStack[] fluidInputs, FluidStack[] fluidOutputs, int[] chances, Object special, int duration, int eut,
         int specialValue, boolean enabled, boolean hidden, boolean fakeRecipe, boolean mCanBeBuffered,
         boolean mNeedsEmptyOutput, boolean nbtSensitive, String[] neiDesc, RecipeCategory recipeCategory,
-        boolean optimize, RecipeMetadataStorage metadataStorage, boolean checkForCollision, boolean valid) {
+        boolean optimize, @Nullable IRecipeMetadataStorage metadataStorage, boolean checkForCollision, boolean valid) {
         this.inputsBasic = inputsBasic;
         this.inputsOreDict = inputsOreDict;
         this.outputs = outputs;
@@ -127,6 +127,9 @@ public class GT_RecipeBuilder {
         this.recipeCategory = recipeCategory;
         this.optimize = optimize;
         this.metadataStorage = metadataStorage;
+        if (this.metadataStorage != null) {
+            this.metadataStorage = this.metadataStorage.copy();
+        }
         this.checkForCollision = checkForCollision;
         this.valid = valid;
     }
@@ -146,6 +149,14 @@ public class GT_RecipeBuilder {
 
     public static GT_RecipeBuilder builder() {
         return new GT_RecipeBuilder();
+    }
+
+    /**
+     * Creates empty builder where only duration and EU/t are set to 0.
+     */
+    public static GT_RecipeBuilder empty() {
+        return new GT_RecipeBuilder().duration(0)
+            .eut(0);
     }
 
     private static boolean containsNull(Object[] arr) {
@@ -404,19 +415,26 @@ public class GT_RecipeBuilder {
      * Sets metadata of the recipe. It can be used for recipe emitter to do special things, or for being stored in the
      * built recipe and used for actual recipe processing.
      * <p>
-     * {@link GT_RecipeConstants} has a series of metadata keys. Or you can create one yourself.
+     * {@link GT_RecipeConstants} has a series of metadata keys. Or you can create one by yourself.
      */
     public <T> GT_RecipeBuilder metadata(RecipeMetadataKey<T> key, T value) {
+        if (metadataStorage == null) {
+            metadataStorage = new RecipeMetadataStorage();
+        }
         metadataStorage.store(key, value);
         return this;
     }
 
     /**
-     * Gets metadata already set for this builder. Can return null. Use {@link #getMetadata(RecipeMetadataKey, Object)}
+     * Gets metadata already set for this builder. Can return null. Use
+     * {@link #getMetadataOrDefault(RecipeMetadataKey, Object)}
      * if you want to specify default value.
      */
     @Nullable
     public <T> T getMetadata(RecipeMetadataKey<T> key) {
+        if (metadataStorage == null) {
+            return null;
+        }
         return key.cast(metadataStorage.getMetadata(key));
     }
 
@@ -425,8 +443,11 @@ public class GT_RecipeBuilder {
      */
     @Contract("_, !null -> !null")
     @Nullable
-    public <T> T getMetadata(RecipeMetadataKey<T> key, T defaultValue) {
-        return key.cast(metadataStorage.getMetadata(key, defaultValue));
+    public <T> T getMetadataOrDefault(RecipeMetadataKey<T> key, T defaultValue) {
+        if (metadataStorage == null) {
+            return defaultValue;
+        }
+        return key.cast(metadataStorage.getMetadataOrDefault(key, defaultValue));
     }
 
     public GT_RecipeBuilder requiresCleanRoom() {
@@ -475,7 +496,7 @@ public class GT_RecipeBuilder {
             copy(neiDesc),
             recipeCategory,
             optimize,
-            metadataStorage.copy(),
+            metadataStorage,
             checkForCollision,
             valid);
     }
@@ -505,7 +526,7 @@ public class GT_RecipeBuilder {
             copy(neiDesc),
             recipeCategory,
             optimize,
-            new RecipeMetadataStorage(),
+            null,
             checkForCollision,
             valid);
     }
@@ -816,10 +837,10 @@ public class GT_RecipeBuilder {
         if (recipe.mSpecialValue != 0) return;
 
         int specialValue = 0;
-        if (getMetadata(GT_RecipeConstants.LOW_GRAVITY, false)) specialValue -= 100;
-        if (getMetadata(GT_RecipeConstants.CLEANROOM, false)) specialValue -= 200;
+        if (getMetadataOrDefault(GT_RecipeConstants.LOW_GRAVITY, false)) specialValue -= 100;
+        if (getMetadataOrDefault(GT_RecipeConstants.CLEANROOM, false)) specialValue -= 200;
         for (RecipeMetadataKey<Integer> ident : SPECIAL_VALUE_ALIASES) {
-            Integer metadata = getMetadata(ident, null);
+            Integer metadata = getMetadataOrDefault(ident, null);
             if (metadata != null) {
                 specialValue = metadata;
                 break;
@@ -833,7 +854,7 @@ public class GT_RecipeBuilder {
     }
 
     public GT_RecipeBuilder reset() {
-        metadataStorage.clear();
+        metadataStorage = null;
         alts = null;
         chances = null;
         duration = -1;

@@ -552,7 +552,7 @@ public class GT_MetaTileEntity_PCBFactory extends
                 if (requiredUpgrade == PCBFactoryUpgrade.BIO && !mBioUpgrade)
                     return SimpleCheckRecipeResult.ofFailure("bio_upgrade_missing");
 
-                int requiredPCBTier = recipe.getMetadata(PCBFactoryTierKey.INSTANCE, 1);
+                int requiredPCBTier = recipe.getMetadataOrDefault(PCBFactoryTierKey.INSTANCE, 1);
                 if (requiredPCBTier > mTier) return CheckRecipeResultRegistry.insufficientMachineTier(requiredPCBTier);
 
                 return CheckRecipeResultRegistry.SUCCESSFUL;

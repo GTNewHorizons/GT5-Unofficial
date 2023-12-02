@@ -34,6 +34,7 @@ import gregtech.GT_Mod;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.GT_GUIColorOverride;
 import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.recipe.metadata.IRecipeMetadataStorage;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
@@ -234,7 +235,7 @@ public class RecipeMapFrontend {
     }
 
     protected void drawMetadataInfo(RecipeDisplayInfo recipeInfo) {
-        RecipeMetadataStorage metadataStorage = recipeInfo.recipe.getMetadataStorage();
+        IRecipeMetadataStorage metadataStorage = recipeInfo.recipe.getMetadataStorage();
         for (Map.Entry<RecipeMetadataKey<?>, Object> entry : metadataStorage.getEntries()) {
             entry.getKey()
                 .drawInfo(recipeInfo, entry.getValue());

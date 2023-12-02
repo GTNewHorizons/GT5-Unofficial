@@ -109,7 +109,7 @@ public class GT_RecipeConstants {
             return Collections.emptyList();
         }
         builder.duration(aDuration);
-        boolean recycle = builder.getMetadata(RECYCLE, false);
+        boolean recycle = builder.getMetadataOrDefault(RECYCLE, false);
         Collection<GT_Recipe> ret = new ArrayList<>();
         for (Materials mat : new Materials[] { Materials.Argon, Materials.Nitrogen }) {
             int tPlasmaAmount = (int) Math.max(1L, aDuration / (mat.getMass() * 16L));
@@ -216,7 +216,7 @@ public class GT_RecipeConstants {
             if (fluidInput == null) continue;
             tPersistentHash = tPersistentHash * 31 + GT_Utility.persistentHash(fluidInput, true, false);
         }
-        int aResearchTime = builder.getMetadata(RESEARCH_TIME, 0);
+        int aResearchTime = builder.getMetadataOrDefault(RESEARCH_TIME, 0);
         tPersistentHash = tPersistentHash * 31 + aResearchTime;
         tPersistentHash = tPersistentHash * 31 + r.mDuration;
         tPersistentHash = tPersistentHash * 31 + r.mEUt;
@@ -294,7 +294,7 @@ public class GT_RecipeConstants {
         builder.metadata(
             FUEL_VALUE,
             GregTech_API.sRecipeFile
-                .get("fuel_" + fuelType, builder.getItemInputBasic(0), builder.getMetadata(FUEL_VALUE, 0)));
+                .get("fuel_" + fuelType, builder.getItemInputBasic(0), builder.getMetadataOrDefault(FUEL_VALUE, 0)));
         return FuelType.get(fuelType)
             .getTarget()
             .doAdd(builder);
