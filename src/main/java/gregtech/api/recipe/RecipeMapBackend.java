@@ -33,8 +33,8 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_RecipeBuilder;
+import gregtech.api.util.GT_StreamUtil;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
-import gregtech.api.util.StreamUtil;
 
 /**
  * Responsible for recipe addition / search for recipemap.
@@ -357,7 +357,7 @@ public class RecipeMapBackend {
         @Nullable GT_Recipe cachedRecipe, boolean notUnificated, boolean dontCheckStackSizes,
         boolean forCollisionCheck) {
         if (doesOverwriteFindRecipe()) {
-            return StreamUtil.ofNullable(overwriteFindRecipe(rawItems, fluids, specialSlot, cachedRecipe));
+            return GT_StreamUtil.ofNullable(overwriteFindRecipe(rawItems, fluids, specialSlot, cachedRecipe));
         }
 
         if (recipesByCategory.isEmpty()) {
@@ -396,13 +396,13 @@ public class RecipeMapBackend {
 
         return Stream.<Stream<GT_Recipe>>of(
             // Check the recipe which has been used last time in order to not have to search for it again, if possible.
-            StreamUtil.ofNullable(cachedRecipe)
+            GT_StreamUtil.ofNullable(cachedRecipe)
                 .filter(recipe -> recipe.mCanBeBuffered)
                 .filter(recipe -> filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes))
                 .map(recipe -> modifyFoundRecipe(recipe, items, fluids, specialSlot))
                 .filter(Objects::nonNull),
             // Now look for the recipes inside the item index, but only when the recipes actually can have items inputs.
-            StreamUtil.ofConditional(!itemIndex.isEmpty(), items)
+            GT_StreamUtil.ofConditional(!itemIndex.isEmpty(), items)
                 .filter(Objects::nonNull)
                 .flatMap(item -> Stream.of(new GT_ItemStack(item), new GT_ItemStack(item, true)))
                 .map(itemIndex::get)
@@ -412,7 +412,7 @@ public class RecipeMapBackend {
                 .filter(Objects::nonNull),
             // If the minimum amount of items required for the recipes is 0, then it could match to fluid-only recipes,
             // so check fluid index too.
-            StreamUtil.ofConditional(properties.minItemInputs == 0, fluids)
+            GT_StreamUtil.ofConditional(properties.minItemInputs == 0, fluids)
                 .filter(Objects::nonNull)
                 .map(
                     fluidStack -> fluidIndex.get(
@@ -424,7 +424,7 @@ public class RecipeMapBackend {
                 .filter(Objects::nonNull),
             // Lastly, find fallback.
             forCollisionCheck ? Stream.empty()
-                : StreamUtil.ofSupplier(() -> findFallback(items, fluids, specialSlot))
+                : GT_StreamUtil.ofSupplier(() -> findFallback(items, fluids, specialSlot))
                     .filter(Objects::nonNull))
             .flatMap(Function.identity());
     }

@@ -9,7 +9,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public final class StreamUtil {
+public final class GT_StreamUtil {
 
     /**
      * Backport of {@link Stream#ofNullable}.
