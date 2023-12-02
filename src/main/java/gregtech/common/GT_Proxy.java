@@ -576,6 +576,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
     public int mGraniteHavestLevel = 3;
     public int mMaxHarvestLevel = 7;
     public int mWireHeatingTicks = 4;
+    public double replicatorExponent = 1.2D;
     public int mPollutionSmogLimit = 550000;
     public int mPollutionPoisonLimit = 750000;
     public int mPollutionVegetationLimit = 1000000;
@@ -829,6 +830,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         GregTech_API.sPreloadStarted = true;
         this.mIgnoreTcon = GregTech_API.sOPStuff.get(ConfigCategories.general, "ignoreTConstruct", true);
         this.mWireHeatingTicks = GregTech_API.sOPStuff.get(ConfigCategories.general, "WireHeatingTicks", 4);
+        this.replicatorExponent = GregTech_API.sOPStuff.get("Replicator", "Nerf Exponent", 1.2D);
         NetworkRegistry.INSTANCE.registerGuiHandler(GT_Values.GT, this);
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
             .getRegisteredFluidContainerData()) {

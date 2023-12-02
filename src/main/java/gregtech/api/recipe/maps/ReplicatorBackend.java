@@ -10,7 +10,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.GregTech_API;
+import gregtech.GT_Mod;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -93,9 +93,7 @@ public class ReplicatorBackend extends RecipeMapBackend {
             .orElse(Collections.emptyList());
     }
 
-    private static final double EXPONENT = GregTech_API.sOPStuff.get("Replicator", "Nerf Exponent", 1.2D);
-
     private static int getUUMAmountFromMass(long mass) {
-        return GT_Utility.safeInt((long) Math.pow(mass, EXPONENT), 1);
+        return GT_Utility.safeInt((long) Math.pow(mass, GT_Mod.gregtechproxy.replicatorExponent), 1);
     }
 }
