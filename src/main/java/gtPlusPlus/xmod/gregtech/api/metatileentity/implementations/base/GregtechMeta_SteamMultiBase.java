@@ -24,6 +24,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_HatchElementBuilder;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
@@ -305,6 +306,25 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
     @Override
     public boolean supportsBatchMode() {
         return false;
+    }
+
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+        mSteamInputFluids.clear();
+        mSteamInputs.clear();
+        mSteamOutputs.clear();
+    }
+
+    @Override
+    public boolean resetRecipeMapForAllInputHatches(GT_Recipe.GT_Recipe_Map aMap) {
+        boolean ret = super.resetRecipeMapForAllInputHatches(aMap);
+        for (GT_MetaTileEntity_Hatch_Steam_BusInput hatch : mSteamInputs) {
+            if (resetRecipeMapForHatch(hatch, aMap)) {
+                ret = true;
+            }
+        }
+        return ret;
     }
 
     protected static <T extends GregtechMeta_SteamMultiBase<T>> GT_HatchElementBuilder<T> buildSteamInput(

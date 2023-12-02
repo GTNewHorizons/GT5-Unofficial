@@ -204,19 +204,13 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends
     }
 
     @Override
+    public void clearHatches() {
+        super.clearHatches();
+        mTurbineRotorHatches.clear();
+    }
+
+    @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        this.mDynamoHatches.clear();
-        this.mTecTechDynamoHatches.clear();
-        this.mTurbineRotorHatches.clear();
-        this.mMaintenanceHatches.clear();
-        if (requiresMufflers()) {
-            this.mMufflerHatches.clear();
-        }
-        this.mInputBusses.clear();
-        this.mInputHatches.clear();
-        if (requiresOutputHatch()) {
-            this.mOutputHatches.clear();
-        }
         // we do not check for casing count here. the bare minimal is 372 but we only require 360
         boolean aStructure = checkPiece(STRUCTURE_PIECE_MAIN, 3, 3, 0);
         log("Structure Check: " + aStructure);

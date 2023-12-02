@@ -582,6 +582,18 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
                 && (this.getPollutionPerSecond(null) > 0 ? !mMufflerHatches.isEmpty() : true);
     }
 
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+        this.mChargeHatches.clear();
+        this.mDischargeHatches.clear();
+        this.mAirIntakes.clear();
+        this.mTecTechEnergyHatches.clear();
+        this.mTecTechDynamoHatches.clear();
+        this.mAllEnergyHatches.clear();
+        this.mAllDynamoHatches.clear();
+    }
+
     public <E> boolean addToMachineListInternal(ArrayList<E> aList, final IGregTechTileEntity aTileEntity,
             final int aBaseCasingIndex) {
         return addToMachineListInternal(aList, getMetaTileEntity(aTileEntity), aBaseCasingIndex);
