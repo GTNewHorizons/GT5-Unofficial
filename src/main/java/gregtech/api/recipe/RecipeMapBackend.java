@@ -122,7 +122,7 @@ public class RecipeMapBackend {
     // region add recipe
 
     /**
-     * Adds the supplied to recipe without any check.
+     * Adds the supplied recipe to the recipe list and index, without any check.
      *
      * @return Supplied recipe.
      */
