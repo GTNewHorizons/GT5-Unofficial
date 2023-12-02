@@ -102,7 +102,6 @@ import gregtech.loaders.postload.GT_BlockResistanceLoader;
 import gregtech.loaders.postload.GT_BookAndLootLoader;
 import gregtech.loaders.postload.GT_CraftingRecipeLoader;
 import gregtech.loaders.postload.GT_CropLoader;
-import gregtech.loaders.postload.GT_ExtremeDieselFuelLoader;
 import gregtech.loaders.postload.GT_FakeRecipeLoader;
 import gregtech.loaders.postload.GT_ItemMaxStacksizeLoader;
 import gregtech.loaders.postload.GT_MachineRecipeLoader;
@@ -522,7 +521,6 @@ public class GT_Mod implements IGT_Mod {
             .forEach(GT_ModHandler::removeRecipeByOutputDelayed);
 
         GT_PostLoad.nerfVanillaTools();
-        new GT_ExtremeDieselFuelLoader().run();
 
         /*
          * Until this point most crafting recipe additions, and removals, have been buffered. Go through, execute the

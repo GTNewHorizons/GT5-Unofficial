@@ -2,6 +2,7 @@ package gregtech.api.recipe;
 
 import static gregtech.api.enums.Mods.*;
 import static gregtech.api.util.GT_RecipeConstants.ADDITIVE_AMOUNT;
+import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GT_RecipeMapUtil.*;
 import static gregtech.api.util.GT_Utility.*;
 
@@ -1160,6 +1161,10 @@ public final class RecipeMaps {
                             .addDieselRecipe(r))
                     .map(Collections::singletonList)
                     .orElse(Collections.emptyList())));
+        RecipeMaps.dieselFuels.addDownstream(IRecipeMap.newRecipeMap(b -> {
+            if (b.getMetadataOrDefault(FUEL_VALUE, 0) < 1500) return Collections.emptyList();
+            return b.addTo(RecipeMaps.extremeDieselFuels);
+        }));
         RecipeMaps.denseLiquidFuels.addDownstream(
             IRecipeMap.newRecipeMap(
                 b -> b.build()
