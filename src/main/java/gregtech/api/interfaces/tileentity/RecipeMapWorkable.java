@@ -26,7 +26,10 @@ public interface RecipeMapWorkable {
     ItemStack getStackForm(long amount);
 
     /**
-     * @return List of possible RecipeMaps this machine can handle. Must not contain null element.
+     * If the machine supports multiple recipemaps by switching mode, override this method so that it will be displayed
+     * as NEI recipe catalyst on all the supported recipemaps.
+     *
+     * @return List of possible {@link RecipeMap}s this machine can execute. Must not contain null element.
      */
     @Nonnull
     default Collection<RecipeMap<?>> getAvailableRecipeMaps() {
