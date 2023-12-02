@@ -38,7 +38,6 @@ import gregtech.api.recipe.maps.FurnaceBackend;
 import gregtech.api.recipe.maps.LargeBoilerFuelBackend;
 import gregtech.api.recipe.maps.LargeBoilerFuelFrontend;
 import gregtech.api.recipe.maps.LargeNEIFrontend;
-import gregtech.api.recipe.maps.MaceratorBackend;
 import gregtech.api.recipe.maps.MicrowaveBackend;
 import gregtech.api.recipe.maps.OilCrackerBackend;
 import gregtech.api.recipe.maps.PrinterBackend;
@@ -323,8 +322,7 @@ public final class RecipeMaps {
         .progressBar(GT_UITextures.PROGRESSBAR_MAGNET)
         .recipeConfigFile("polarizer", FIRST_ITEM_INPUT)
         .build();
-    public static final RecipeMap<MaceratorBackend> maceratorRecipes = RecipeMapBuilder
-        .of("gt.recipe.macerator", MaceratorBackend::new)
+    public static final RecipeMap<RecipeMapBackend> maceratorRecipes = RecipeMapBuilder.of("gt.recipe.macerator")
         .maxIO(1, 4, 0, 0)
         .minInputs(1, 0)
         .slotOverlays(
