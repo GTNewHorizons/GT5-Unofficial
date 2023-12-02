@@ -38,8 +38,7 @@ public final class StreamUtil {
      * @return the new stream
      */
     public static <T> Stream<T> ofSupplier(Supplier<T> supplier) {
-        // Maybe not a good way, but it works
-        return Stream.of(0)
-            .map(v -> supplier.get());
+        return Stream.generate(supplier)
+            .limit(1);
     }
 }
