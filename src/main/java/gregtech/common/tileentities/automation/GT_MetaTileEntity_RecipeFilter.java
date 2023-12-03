@@ -263,11 +263,7 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
                 NetworkUtils.writeStringSafe(buffer, recipeMap != null ? recipeMap.mUniqueIdentifier : null);
                 buffer.writeVarIntToBuffer(filteredMachines.size());
                 for (ItemStack filteredMachine : filteredMachines) {
-                    try {
-                        buffer.writeItemStackToBuffer(filteredMachine);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    NetworkUtils.writeItemStack(buffer, filteredMachine);
                 }
             });
         }
@@ -311,7 +307,7 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
                 int filteredMachineSize = buf.readVarIntFromBuffer();
                 filteredMachineSize = Math.min(filteredMachineSize, 256); // Prevent storing too many items
                 for (int i = 0; i < filteredMachineSize; i++) {
-                    ItemStack stack = buf.readItemStackFromBuffer();
+                    ItemStack stack = NetworkUtils.readItemStack(buf);
                     if (stack != null) {
                         filteredMachines.add(stack);
                     }

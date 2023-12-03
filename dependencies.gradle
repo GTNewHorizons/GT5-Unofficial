@@ -38,7 +38,7 @@ dependencies {
     api("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
     api("com.github.GTNewHorizons:NotEnoughItems:2.4.12-GTNH:dev")
     api("com.github.GTNewHorizons:GTNHLib:0.0.13:dev")
-    api("com.github.GTNewHorizons:ModularUI:1.1.23:dev")
+    api("com.github.GTNewHorizons:ModularUI:1.1.24:dev")
     api("com.github.GTNewHorizons:waila:1.6.5:dev")
     api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-288-GTNH:dev")
     api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.1.67-gtnh:dev")

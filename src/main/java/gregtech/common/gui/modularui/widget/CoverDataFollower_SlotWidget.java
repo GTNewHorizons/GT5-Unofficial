@@ -1,6 +1,5 @@
 package gregtech.common.gui.modularui.widget;
 
-import java.io.IOException;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -8,6 +7,7 @@ import net.minecraft.item.ItemStack;
 
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.widget.Interactable;
+import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
@@ -90,12 +90,8 @@ public class CoverDataFollower_SlotWidget<T extends ISerializableObject> extends
         if (!isPhantom()) return false;
         ClickData clickData = ClickData.create(button, false);
         syncToServer(5, buffer -> {
-            try {
-                clickData.writeToPacket(buffer);
-                buffer.writeItemStackToBuffer(draggedStack);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            clickData.writeToPacket(buffer);
+            NetworkUtils.writeItemStack(buffer, draggedStack);
         });
         phantomClick(clickData, draggedStack);
         dataSetter.accept(getMcSlot().getStack());
