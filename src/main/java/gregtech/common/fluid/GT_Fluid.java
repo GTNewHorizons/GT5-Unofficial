@@ -201,4 +201,9 @@ public class GT_Fluid extends Fluid implements IGT_Fluid, IGT_RegisteredFluid, R
             }
         }
     }
+
+    @Override
+    public String toString() {
+        return "GT_Fluid{" + "fluidName='" + fluidName + '\'' + '}';
+    }
 }
