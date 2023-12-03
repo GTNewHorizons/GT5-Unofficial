@@ -50,6 +50,7 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.collect.ImmutableSet;
+import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
@@ -63,7 +64,6 @@ import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
@@ -110,6 +110,7 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
+import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ApiaryModifier;
 import gregtech.api.util.GT_ApiaryUpgrade;
@@ -1178,17 +1179,12 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         super.addUIWidgets(builder, buildContext);
 
         builder.widget(
-            new ProgressBar().setProgress(() -> (float) getProgresstime() / Math.max(maxProgresstime(), 1))
-                .setTexture(GT_UITextures.PROGRESSBAR_ARROW, 20)
-                .setPos(70, 3)
-                .setSize(20, 18))
-            .widget(
-                new ButtonWidget().setOnClick((clickData, widget) -> cancelProcess())
-                    .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_CROSS)
-                    .setGTTooltip(() -> mTooltipCache.getData(CANCEL_PROCESS_TOOLTIP))
-                    .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                    .setPos(7, 26)
-                    .setSize(18, 18))
+            new ButtonWidget().setOnClick((clickData, widget) -> cancelProcess())
+                .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_CROSS)
+                .setGTTooltip(() -> mTooltipCache.getData(CANCEL_PROCESS_TOOLTIP))
+                .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                .setPos(7, 26)
+                .setSize(18, 18))
             .widget(
                 new CycleButtonWidget().setToggle(() -> mAutoQueen, x -> mAutoQueen = x)
                     .setTextureGetter(
@@ -1284,6 +1280,17 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                     .setSynced(false)
                     .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(26, 72));
+    }
+
+    private static final FallbackableUITexture progressBarTexture = GT_UITextures
+        .fallbackableProgressbar("iapiary", GT_UITextures.PROGRESSBAR_ARROW);
+
+    @Override
+    protected BasicUIProperties getUIProperties() {
+        return super.getUIProperties().toBuilder()
+            .progressBarTexture(progressBarTexture)
+            .progressBarPos(new Pos2d(70, 3))
+            .build();
     }
 
     @Override

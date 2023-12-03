@@ -10,8 +10,8 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.interfaces.tileentity.IVoidable;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.XSTR;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SingleRecipeCheck;
@@ -124,27 +124,6 @@ public class GT_ParallelHelper {
     public GT_ParallelHelper() {}
 
     /**
-     * Sets MetaTE controller, with current configuration for void protection mode.
-     *
-     * @deprecated Use {@link #setMachine(IVoidable)}
-     */
-    @Deprecated
-    public GT_ParallelHelper setController(GT_MetaTileEntity_MultiBlockBase machineMeta) {
-        return setMachine(machineMeta, machineMeta.protectsExcessItem(), machineMeta.protectsExcessFluid());
-    }
-
-    /**
-     * Sets MetaTE controller, with void protection mode forcibly.
-     *
-     * @deprecated Use {@link #setMachine(IVoidable, boolean, boolean)}
-     */
-    @Deprecated
-    public GT_ParallelHelper setController(GT_MetaTileEntity_MultiBlockBase machineMeta, boolean protectExcessItem,
-        boolean protectExcessFluid) {
-        return setMachine(machineMeta, protectExcessItem, protectExcessFluid);
-    }
-
-    /**
      * Sets machine, with current configuration for void protection mode.
      */
     public GT_ParallelHelper setMachine(IVoidable machine) {
@@ -213,14 +192,6 @@ public class GT_ParallelHelper {
     }
 
     /**
-     * Use {@link #setConsumption(boolean)}
-     */
-    @Deprecated
-    public GT_ParallelHelper enableConsumption() {
-        return setConsumption(true);
-    }
-
-    /**
      * Set if we should consume inputs or not when trying for parallels
      *
      * @param consume Should we consume inputs
@@ -246,14 +217,6 @@ public class GT_ParallelHelper {
         this.batchMode = batchModifier > 1;
         this.batchModifier = batchModifier;
         return this;
-    }
-
-    /**
-     * Use {@link #setOutputCalculation(boolean)}
-     */
-    @Deprecated
-    public GT_ParallelHelper enableOutputCalculation() {
-        return setOutputCalculation(true);
     }
 
     /**
@@ -339,14 +302,6 @@ public class GT_ParallelHelper {
     }
 
     /**
-     * @deprecated Use {@link #getDurationMultiplierDouble()}
-     */
-    @Deprecated
-    public float getDurationMultiplier() {
-        return (float) getDurationMultiplierDouble();
-    }
-
-    /**
      * @return The ItemOutputs from the recipe
      */
     @Nonnull
@@ -379,23 +334,6 @@ public class GT_ParallelHelper {
             throw new IllegalStateException("Tried to get recipe result before building");
         }
         return result;
-    }
-
-    /**
-     * @deprecated Use {@link #setMaxParallelCalculator} and {@link #setInputConsumer}
-     */
-    @Deprecated
-    protected boolean tryConsumeRecipeInputs(GT_Recipe recipe, FluidStack[] fluids, ItemStack[] items) {
-        return false;
-    }
-
-    /**
-     * @deprecated Use {@link #setMaxParallelCalculator} and {@link #setInputConsumer}
-     */
-    @Deprecated
-    protected boolean tryConsumeRecipeInputs(GT_Recipe recipe, FluidStack[] fluids, ItemStack[] items,
-        int minParallel) {
-        return false;
     }
 
     /**
@@ -446,7 +384,7 @@ public class GT_ParallelHelper {
             if (recipeCheck == null) {
                 // Machine is configured to lock to a single recipe, but haven't built the recipe checker yet.
                 // Build the checker on next successful recipe.
-                GT_Recipe.GT_Recipe_Map recipeMap = singleRecipeMachine.getRecipeMap();
+                RecipeMap<?> recipeMap = singleRecipeMachine.getRecipeMap();
                 if (recipeMap != null) {
                     tSingleRecipeCheckBuilder = SingleRecipeCheck.builder(recipeMap)
                         .setBefore(itemInputs, fluidInputs);

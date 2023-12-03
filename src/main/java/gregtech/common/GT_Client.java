@@ -40,6 +40,8 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.lwjgl.opengl.GL11;
 
+import com.glodblock.github.nei.recipes.FluidRecipe;
+import com.glodblock.github.nei.recipes.extractor.GregTech5RecipeExtractor;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 
@@ -68,6 +70,8 @@ import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.multitileentity.multiblock.base.MultiBlockPart;
 import gregtech.api.net.GT_Packet_ClientPreference;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.recipe.RecipeCategory;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.ColorsMetadataSection;
 import gregtech.api.util.ColorsMetadataSectionSerializer;
 import gregtech.api.util.GT_ClientPreference;
@@ -75,7 +79,6 @@ import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_PlayedSound;
-import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.blocks.GT_Item_Machines;
@@ -94,6 +97,7 @@ import gregtech.common.tileentities.debug.GT_MetaTileEntity_AdvDebugStructureWri
 import gregtech.loaders.ExtraIcons;
 import gregtech.loaders.misc.GT_Bees;
 import gregtech.loaders.preload.GT_PreLoad;
+import gregtech.nei.NEI_GT_Config;
 import ic2.api.tile.IWrenchable;
 
 // Referenced classes of package gregtech.common:
@@ -593,6 +597,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
         new GT_Renderer_Entity_Arrow(GT_Entity_Arrow_Potion.class, "arrow_potions");
         new GT_FlaskRenderer();
         new GT_FluidDisplayStackRenderer();
+        MinecraftForge.EVENT_BUS.register(new NEI_GT_Config());
     }
 
     @Override
@@ -630,6 +635,21 @@ public class GT_Client extends GT_Proxy implements Runnable {
                         .forEach(GT_CoverBehaviorBase::reloadColorOverride);
                 }
             });
+    }
+
+    @Override
+    public void onLoadComplete() {
+        super.onLoadComplete();
+        for (RecipeCategory category : RecipeCategory.ALL_RECIPE_CATEGORIES.values()) {
+            if (category.recipeMap.getFrontend()
+                .getNEIProperties().registerNEI) {
+                FluidRecipe.addRecipeMap(
+                    category.unlocalizedName,
+                    new GregTech5RecipeExtractor(
+                        category.unlocalizedName.equals("gt.recipe.scanner")
+                            || category.unlocalizedName.equals("gt.recipe.fakeAssemblylineProcess")));
+            }
+        }
     }
 
     @Override
@@ -672,7 +692,12 @@ public class GT_Client extends GT_Proxy implements Runnable {
     }
 
     @Override
-    public int getReloadCount() {
+    public void reloadNEICache() {
+        mReloadCount++;
+    }
+
+    @Override
+    public int getNEIReloadCount() {
         return mReloadCount;
     }
 
@@ -693,31 +718,31 @@ public class GT_Client extends GT_Proxy implements Runnable {
                     // Check for more IC2 recipes to also catch MineTweaker additions
                     GT_ModHandler.addIC2RecipesToGT(
                         GT_ModHandler.getMaceratorRecipeList(),
-                        GT_Recipe.GT_Recipe_Map.sMaceratorRecipes,
+                        RecipeMaps.maceratorRecipes,
                         true,
                         true,
                         true);
                     GT_ModHandler.addIC2RecipesToGT(
                         GT_ModHandler.getCompressorRecipeList(),
-                        GT_Recipe.GT_Recipe_Map.sCompressorRecipes,
+                        RecipeMaps.compressorRecipes,
                         true,
                         true,
                         true);
                     GT_ModHandler.addIC2RecipesToGT(
                         GT_ModHandler.getExtractorRecipeList(),
-                        GT_Recipe.GT_Recipe_Map.sExtractorRecipes,
+                        RecipeMaps.extractorRecipes,
                         true,
                         true,
                         true);
                     GT_ModHandler.addIC2RecipesToGT(
                         GT_ModHandler.getOreWashingRecipeList(),
-                        GT_Recipe.GT_Recipe_Map.sOreWasherRecipes,
+                        RecipeMaps.oreWasherRecipes,
                         false,
                         true,
                         true);
                     GT_ModHandler.addIC2RecipesToGT(
                         GT_ModHandler.getThermalCentrifugeRecipeList(),
-                        GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes,
+                        RecipeMaps.thermalCentrifugeRecipes,
                         true,
                         true,
                         true);
@@ -726,9 +751,6 @@ public class GT_Client extends GT_Proxy implements Runnable {
             afterSomeTime++;
             if (afterSomeTime >= 100L) {
                 afterSomeTime = 0;
-                for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes.mRecipeList) {
-                    recipe.mHidden = false;
-                }
             }
             for (Iterator<Map.Entry<GT_PlayedSound, Integer>> iterator = GT_Utility.sPlayedSoundMap.entrySet()
                 .iterator(); iterator.hasNext();) {

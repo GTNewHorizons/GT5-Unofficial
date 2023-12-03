@@ -2,8 +2,8 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GalacticraftMars;
+import static gregtech.api.recipe.RecipeMaps.implosionRecipes;
 import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sImplosionRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import net.minecraft.item.ItemStack;
@@ -28,7 +28,7 @@ public class ImplosionCompressorRecipes implements Runnable {
             .metadata(GT_RecipeConstants.ADDITIVE_AMOUNT, 8)
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .addTo(sImplosionRecipes);
+            .addTo(implosionRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Ingot_IridiumAlloy.get(1L))
@@ -38,7 +38,7 @@ public class ImplosionCompressorRecipes implements Runnable {
             .metadata(GT_RecipeConstants.ADDITIVE_AMOUNT, 8)
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .addTo(sImplosionRecipes);
+            .addTo(implosionRecipes);
 
         if (GalacticraftMars.isModLoaded()) {
 
@@ -50,7 +50,7 @@ public class ImplosionCompressorRecipes implements Runnable {
                 .metadata(GT_RecipeConstants.ADDITIVE_AMOUNT, 8)
                 .duration(1 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
-                .addTo(sImplosionRecipes);
+                .addTo(implosionRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(ItemList.Ingot_Heavy2.get(1L))
@@ -60,7 +60,7 @@ public class ImplosionCompressorRecipes implements Runnable {
                 .metadata(GT_RecipeConstants.ADDITIVE_AMOUNT, 16)
                 .duration(1 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
-                .addTo(sImplosionRecipes);
+                .addTo(implosionRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(ItemList.Ingot_Heavy3.get(1L))
@@ -70,7 +70,7 @@ public class ImplosionCompressorRecipes implements Runnable {
                 .metadata(GT_RecipeConstants.ADDITIVE_AMOUNT, 24)
                 .duration(1 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
-                .addTo(sImplosionRecipes);
+                .addTo(implosionRecipes);
         }
     }
 
@@ -82,6 +82,6 @@ public class ImplosionCompressorRecipes implements Runnable {
             .metadata(GT_RecipeConstants.ADDITIVE_AMOUNT, explosiveAmount)
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .addTo(sImplosionRecipes);
+            .addTo(implosionRecipes);
     }
 }

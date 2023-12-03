@@ -36,6 +36,7 @@ import net.minecraft.world.World;
 
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
+import com.google.common.collect.SetMultimap;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -107,6 +108,7 @@ public class GregTech_API {
      * Fixes the HashMap Mappings for ItemStacks once the Server started
      */
     public static final Collection<Map<? extends GT_ItemStack, ?>> sItemStackMappings = new ArrayList<>();
+    public static final Collection<SetMultimap<? extends GT_ItemStack, ?>> itemStackMultiMaps = new ArrayList<>();
 
     /**
      * The MetaTileEntity-ID-List-Length
@@ -121,17 +123,36 @@ public class GregTech_API {
     /**
      * A List of all registered MetaTileEntities
      * <p/>
-     * 0 - 749 are used by GregTech. 750 - 999 are reserved for Alkalus. 1000 - 2047 are used by GregTech. 2048 - 2559
-     * are reserved for OvermindDL. 2560 - 3071 are reserved for Immibis. 3072 - 3583 are reserved for LinusPhoenix.
-     * 3584 - 4095 are reserved for BloodyAsp. 4096 - 5095 are used for GregTech Frames. 5096 - 6099 are used for
-     * GregTech Pipes. 6100 - 8191 are used for GregTech Decoration Blocks. 8192 - 8703 are reserved for ZL123. 8704 -
-     * 9215 are reserved for Mr10Movie. 9216 - 9727 are used for GregTech Automation Machines. 9728 - 10239 are reserved
-     * for 28Smiles. 10240 - 10751 are reserved for VirMan. 10752 - 11263 are reserved for Briareos81. 11264 - 12000 are
-     * reserved for Quantum64. 12001 - 12500 are reserved for RedMage17. 12501 - 13000 are reserved for bartimaeusnek.
-     * 13001 - 13100 are reserved for Techlone 13101 - 13500 are reserved for kekzdealer 13501 - 14000 are reserved for
-     * glee8e. 14001 - 14100 are reserved for glowredman 14101 - 14200 are reserved for MuXiu1997. 14201 - 14300 are
-     * reserved for kuba6000. 14301 - 14999 are currently free. 15000 - 16999 are reserved for TecTech. 17000 - 29999
-     * are currently free. 30000 - 31999 are reserved for Alkalus. 32001 - 32766 are reserved for Glod.
+     * 0 - 749 are used by GregTech.
+     * 750 - 999 are reserved for Alkalus.
+     * 1000 - 2047 are used by GregTech.
+     * 2048 - 2559 are reserved for OvermindDL.
+     * 2560 - 3071 are reserved for Immibis.
+     * 3072 - 3583 are reserved for LinusPhoenix.
+     * 3584 - 4095 are reserved for BloodyAsp.
+     * 4096 - 5095 are used for GregTech Frames.
+     * 5096 - 6099 are used for GregTech Pipes.
+     * 6100 - 8191 are used for GregTech Decoration Blocks.
+     * 8192 - 8703 are reserved for ZL123.
+     * 8704 - 9215 are reserved for Mr10Movie.
+     * 9216 - 9727 are used for GregTech Automation Machines.
+     * 9728 - 10239 are reserved for 28Smiles.
+     * 10240 - 10751 are reserved for VirMan.
+     * 10752 - 11263 are reserved for Briareos81.
+     * 11264 - 12000 are reserved for Quantum64.
+     * 12001 - 12500 are reserved for RedMage17.
+     * 12501 - 13000 are reserved for bartimaeusnek.
+     * 13001 - 13100 are reserved for Techlone.
+     * 13101 - 13500 are reserved for kekzdealer.
+     * 13501 - 14000 are reserved for glee8e.
+     * 14001 - 14100 are reserved for glowredman.
+     * 14101 - 14200 are reserved for MuXiu1997.
+     * 14201 - 14300 are reserved for kuba6000.
+     * 14301 - 14999 are currently free.
+     * 15000 - 16999 are reserved for TecTech.
+     * 17000 - 29999 are currently free.
+     * 30000 - 31999 are reserved for Alkalus.
+     * 32001 - 32766 are reserved for Glod.
      * <p/>
      * Contact me if you need a free ID-Range, which doesn't conflict with other Addons. You could make an ID-Config,
      * but we all know what "stupid" customers think about conflicting ID's

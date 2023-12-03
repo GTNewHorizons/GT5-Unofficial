@@ -56,6 +56,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
@@ -417,7 +418,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
             for (ItemStack aStack : sMidProduct) {
                 int tID = GT_Utility.stackToInt(aStack);
                 if (checkTypes(tID, aTables)) {
-                    GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes
+                    GT_Recipe tRecipe = RecipeMaps.maceratorRecipes
                         .findRecipe(getBaseMetaTileEntity(), false, GT_Values.V[15], null, aStack);
                     if (tRecipe != null) {
                         tProduct.addAll(getOutputStack(tRecipe, aStack.stackSize));
@@ -439,7 +440,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
             for (ItemStack aStack : sMidProduct) {
                 int tID = GT_Utility.stackToInt(aStack);
                 if (checkTypes(tID, aTables)) {
-                    GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sOreWasherRecipes.findRecipe(
+                    GT_Recipe tRecipe = RecipeMaps.oreWasherRecipes.findRecipe(
                         getBaseMetaTileEntity(),
                         false,
                         GT_Values.V[15],
@@ -465,7 +466,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
             for (ItemStack aStack : sMidProduct) {
                 int tID = GT_Utility.stackToInt(aStack);
                 if (checkTypes(tID, aTables)) {
-                    GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes
+                    GT_Recipe tRecipe = RecipeMaps.thermalCentrifugeRecipes
                         .findRecipe(getBaseMetaTileEntity(), false, GT_Values.V[15], null, aStack);
                     if (tRecipe != null) {
                         tProduct.addAll(getOutputStack(tRecipe, aStack.stackSize));
@@ -487,7 +488,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
             for (ItemStack aStack : sMidProduct) {
                 int tID = GT_Utility.stackToInt(aStack);
                 if (checkTypes(tID, aTables)) {
-                    GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes
+                    GT_Recipe tRecipe = RecipeMaps.centrifugeRecipes
                         .findRecipe(getBaseMetaTileEntity(), false, GT_Values.V[15], null, aStack);
                     if (tRecipe != null) {
                         tProduct.addAll(getOutputStack(tRecipe, aStack.stackSize));
@@ -509,7 +510,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
             for (ItemStack aStack : sMidProduct) {
                 int tID = GT_Utility.stackToInt(aStack);
                 if (checkTypes(tID, aTables)) {
-                    GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sSifterRecipes
+                    GT_Recipe tRecipe = RecipeMaps.sifterRecipes
                         .findRecipe(getBaseMetaTileEntity(), false, GT_Values.V[15], null, aStack);
                     if (tRecipe != null) {
                         tProduct.addAll(getOutputStack(tRecipe, aStack.stackSize));
@@ -531,7 +532,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
             for (ItemStack aStack : sMidProduct) {
                 int tID = GT_Utility.stackToInt(aStack);
                 if (checkTypes(tID, aTables)) {
-                    GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sChemicalBathRecipes.findRecipe(
+                    GT_Recipe tRecipe = RecipeMaps.chemicalBathRecipes.findRecipe(
                         getBaseMetaTileEntity(),
                         false,
                         GT_Values.V[15],

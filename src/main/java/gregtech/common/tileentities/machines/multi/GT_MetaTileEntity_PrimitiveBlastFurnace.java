@@ -40,8 +40,11 @@ import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
@@ -49,7 +52,7 @@ import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 import gregtech.common.GT_Pollution;
 
 public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEntity
-    implements IAlignment, ISurvivalConstructable, IAddUIWidgets, IGetTitleColor {
+    implements IAlignment, ISurvivalConstructable, RecipeMapWorkable, IAddUIWidgets, IGetTitleColor {
 
     public static final int INPUT_SLOTS = 3, OUTPUT_SLOTS = 3;
     private static final ClassValue<IStructureDefinition<GT_MetaTileEntity_PrimitiveBlastFurnace>> STRUCTURE_DEFINITION = new ClassValue<>() {
@@ -335,8 +338,9 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
         }
     }
 
-    protected GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return GT_Recipe.GT_Recipe_Map.sPrimitiveBlastRecipes;
+    @Override
+    public RecipeMap<?> getRecipeMap() {
+        return RecipeMaps.primitiveBlastRecipes;
     }
 
     private void addOutputProducts() {
@@ -509,7 +513,9 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
             .widget(
                 new ProgressBar().setTexture(GT_UITextures.PROGRESSBAR_ARROW_2_STEAM.get(getSteamVariant()), 20)
                     .setProgress(() -> (float) mProgresstime / mMaxProgresstime)
-                    .setNEITransferRect(getRecipeMap().mNEIName)
+                    .setNEITransferRect(
+                        getRecipeMap().getFrontend()
+                            .getUIProperties().neiTransferRectId)
                     .setPos(58, 24)
                     .setSize(20, 18));
     }

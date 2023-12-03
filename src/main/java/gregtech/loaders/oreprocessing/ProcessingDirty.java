@@ -1,9 +1,9 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sChemicalBathRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sHammerRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMaceratorRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
+import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
+import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
+import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import net.minecraft.item.ItemStack;
@@ -33,7 +33,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustImpure, aMaterial.mMacerateInto, 1L))
             .duration(10)
             .eut(16)
-            .addTo(sHammerRecipes);
+            .addTo(hammerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.copyAmount(1, aStack))
@@ -50,7 +50,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
             .outputChances(10000, 1000)
             .duration(20 * SECONDS)
             .eut(2)
-            .addTo(sMaceratorRecipes);
+            .addTo(maceratorRecipes);
 
         GT_ModHandler.addOreWasherRecipe(
             GT_Utility.copyAmount(1, aStack),
@@ -80,7 +80,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
             .outputChances(10000, 1111, 10000)
             .duration(25 * SECONDS)
             .eut(48)
-            .addTo(sThermalCentrifugeRecipes);
+            .addTo(thermalCentrifugeRecipes);
 
         addChemicalBathRecipes(aMaterial, aMaterial, aStack, aPrefix);
 
@@ -104,7 +104,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                 .fluidInputs(Materials.Mercury.getFluid(1000L))
                 .duration(40 * SECONDS)
                 .eut(8)
-                .addTo(sChemicalBathRecipes);
+                .addTo(chemicalBathRecipes);
         }
         if (byproduct.contains(SubTag.WASHING_MERCURY_99_PERCENT)) {
             GT_Values.RA.stdBuilder()
@@ -117,7 +117,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                 .fluidInputs(Materials.Mercury.getFluid(1000L))
                 .duration(40 * SECONDS)
                 .eut(8)
-                .addTo(sChemicalBathRecipes);
+                .addTo(chemicalBathRecipes);
         }
         if (byproduct.contains(SubTag.WASHING_SODIUMPERSULFATE)) {
             GT_Values.RA.stdBuilder()
@@ -130,7 +130,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                 .fluidInputs(Materials.SodiumPersulfate.getFluid(100L))
                 .duration(40 * SECONDS)
                 .eut(8)
-                .addTo(sChemicalBathRecipes);
+                .addTo(chemicalBathRecipes);
         }
     }
 }

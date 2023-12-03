@@ -30,23 +30,22 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ClientPreference;
 import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_TooltipDataCache;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.extensions.ArrayExt;
-import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 
 public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch
-    implements IConfigurationCircuitSupport, IAddUIWidgets, IRecipeProcessingAwareHatch {
+    implements IConfigurationCircuitSupport, IAddUIWidgets {
 
     private static final String SORTING_MODE_TOOLTIP = "GT5U.machines.sorting_mode.tooltip";
     private static final String ONE_STACK_LIMIT_TOOLTIP = "GT5U.machines.one_stack_limit.tooltip";
     private static final int BUTTON_SIZE = 18;
 
-    public GT_Recipe_Map mRecipeMap = null;
+    public RecipeMap<?> mRecipeMap = null;
     public boolean disableSort;
     public boolean disableFilter = true;
     public boolean disableLimited = true;
@@ -204,7 +203,9 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch
         aNBT.setBoolean("disableSort", disableSort);
         aNBT.setBoolean("disableFilter", disableFilter);
         aNBT.setBoolean("disableLimited", disableLimited);
-        if (mRecipeMap != null) aNBT.setString("recipeMap", mRecipeMap.mUniqueIdentifier);
+        if (mRecipeMap != null) {
+            aNBT.setString("recipeMap", mRecipeMap.unlocalizedName);
+        }
     }
 
     @Override
@@ -212,8 +213,10 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch
         super.loadNBTData(aNBT);
         disableSort = aNBT.getBoolean("disableSort");
         disableFilter = aNBT.getBoolean("disableFilter");
-        if (aNBT.hasKey("disableLimited")) disableLimited = aNBT.getBoolean("disableLimited");
-        mRecipeMap = GT_Recipe_Map.sIndexedMappings.getOrDefault(aNBT.getString("recipeMap"), null);
+        if (aNBT.hasKey("disableLimited")) {
+            disableLimited = aNBT.getBoolean("disableLimited");
+        }
+        mRecipeMap = RecipeMap.getFromOldIdentifier(aNBT.getString("recipeMap"));
     }
 
     @Override

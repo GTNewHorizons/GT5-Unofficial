@@ -1,6 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAmplifiers;
+import static gregtech.api.recipe.RecipeMaps.amplifierRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import gregtech.api.enums.GT_Values;
@@ -17,13 +17,13 @@ public class MatterAmplifierRecipes implements Runnable {
             .fluidOutputs(Materials.UUAmplifier.getFluid(1))
             .duration(9 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .addTo(sAmplifiers);
+            .addTo(amplifierRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.IC2_Scrapbox.get(1L))
             .fluidOutputs(Materials.UUAmplifier.getFluid(1))
             .duration(9 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .addTo(sAmplifiers);
+            .addTo(amplifierRecipes);
     }
 }

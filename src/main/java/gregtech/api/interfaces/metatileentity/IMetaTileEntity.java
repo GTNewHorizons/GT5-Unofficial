@@ -38,7 +38,6 @@ import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_Util;
-import gregtech.common.power.Power;
 
 /**
  * Warning, this Interface has just been made to be able to add multiple kinds of MetaTileEntities (Cables, Pipes,
@@ -364,13 +363,6 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * In case the Output Voltage varies.
      */
     String getSpecialVoltageToolTip();
-
-    /**
-     * @return Power object used for displaying in NEI
-     */
-    default Power getPower() {
-        return null;
-    }
 
     /**
      * Icon of the Texture. If this returns null then it falls back to getTextureIndex.

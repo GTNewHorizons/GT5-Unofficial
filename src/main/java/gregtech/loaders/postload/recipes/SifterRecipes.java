@@ -1,6 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sSifterRecipes;
+import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import net.minecraft.init.Blocks;
@@ -28,7 +28,7 @@ public class SifterRecipes implements Runnable {
             .outputChances(10000, 9000, 8000, 6000, 3300, 2500)
             .duration(30 * SECONDS)
             .eut(16)
-            .addTo(sSifterRecipes);
+            .addTo(sifterRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Coal, 1L))
@@ -42,6 +42,6 @@ public class SifterRecipes implements Runnable {
             .outputChances(10000, 9000, 8000, 7000, 6000, 5000)
             .duration(30 * SECONDS)
             .eut(16)
-            .addTo(sSifterRecipes);
+            .addTo(sifterRecipes);
     }
 }

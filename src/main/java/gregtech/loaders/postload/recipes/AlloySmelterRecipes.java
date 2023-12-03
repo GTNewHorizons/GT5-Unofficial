@@ -1,6 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAlloySmelterRecipes;
+import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import net.minecraft.item.ItemStack;
@@ -73,14 +73,14 @@ public class AlloySmelterRecipes implements Runnable {
                         .itemOutputs(outputIngot)
                         .duration((int) materials[2].mAmount * 50)
                         .eut(16)
-                        .addTo(sAlloySmelterRecipes);
+                        .addTo(alloySmelterRecipes);
                     if (ingot2 != null) {
                         GT_Values.RA.stdBuilder()
                             .itemInputs(ingot1, ingot2)
                             .itemOutputs(outputIngot)
                             .duration((int) materials[2].mAmount * 50)
                             .eut(16)
-                            .addTo(sAlloySmelterRecipes);
+                            .addTo(alloySmelterRecipes);
                     }
                 }
 
@@ -90,7 +90,7 @@ public class AlloySmelterRecipes implements Runnable {
                         .itemOutputs(outputIngot)
                         .duration((int) materials[2].mAmount * 50)
                         .eut(16)
-                        .addTo(sAlloySmelterRecipes);
+                        .addTo(alloySmelterRecipes);
                 }
 
                 GT_Values.RA.stdBuilder()
@@ -98,7 +98,7 @@ public class AlloySmelterRecipes implements Runnable {
                     .itemOutputs(outputIngot)
                     .duration((int) materials[2].mAmount * 50)
                     .eut(16)
-                    .addTo(sAlloySmelterRecipes);
+                    .addTo(alloySmelterRecipes);
 
             }
         }
@@ -111,6 +111,6 @@ public class AlloySmelterRecipes implements Runnable {
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Rubber, 1L))
             .duration(10 * SECONDS)
             .eut(8)
-            .addTo(sAlloySmelterRecipes);
+            .addTo(alloySmelterRecipes);
     }
 }

@@ -20,7 +20,11 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_MASSFAB_GLOW;
 
 import java.util.Arrays;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraftforge.fluids.FluidStack;
+
+import com.google.common.primitives.Ints;
 
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.ItemList;
@@ -30,12 +34,16 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
+import gregtech.api.objects.overclockdescriber.EUOverclockDescriber;
+import gregtech.api.objects.overclockdescriber.OverclockDescriber;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Config;
+import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.power.BasicMachineEUPower;
-import gregtech.common.power.Power;
+import gregtech.api.util.MethodsReturnNonnullByDefault;
 
 public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMachine {
 
@@ -43,7 +51,9 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
     public static int sUUASpeedBonus = 4;
     public static int sDurationMultiplier = 3215;
     public static boolean sRequiresUUA = false;
-    protected final long EUt;
+    public static int BASE_EUT = 256;
+    public static GT_Recipe nonUUARecipe;
+    public static GT_Recipe uuaRecipe;
 
     public GT_MetaTileEntity_Massfabricator(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -51,7 +61,7 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
             aName,
             aNameRegional,
             aTier,
-            1,
+            8,
             MachineType.MATTER_FABRICATOR.tooltipDescription(),
             1,
             1,
@@ -103,12 +113,10 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
                     .addIcon(OVERLAY_BOTTOM_MASSFAB_GLOW)
                     .glow()
                     .build()));
-        EUt = V[1] * (long) Math.pow(2, mTier + 2);
     }
 
     public GT_MetaTileEntity_Massfabricator(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 1, aDescription, aTextures, 1, 1);
-        EUt = V[1] * (long) Math.pow(2, mTier + 2);
     }
 
     @Override
@@ -122,8 +130,8 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
     }
 
     @Override
-    protected Power buildPower() {
-        return new MassfabricatorPower(mTier, mAmperage);
+    protected OverclockDescriber createOverclockDescriber() {
+        return new MassfabricatorOverclockDescriber(mTier, mAmperage);
     }
 
     @Override
@@ -152,9 +160,7 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
         FluidStack tFluid = getDrainableStack();
         if ((tFluid == null) || (tFluid.amount < getCapacity())) {
             this.mOutputFluid = Materials.UUMatter.getFluid(1L);
-            calculateOverclockedNess(
-                (int) EUt,
-                containsUUA(getFillableStack()) ? sDurationMultiplier / sUUASpeedBonus : sDurationMultiplier);
+            calculateCustomOverclock(containsUUA(getFillableStack()) ? uuaRecipe : nonUUARecipe);
             // In case recipe is too OP for that machine
             if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
                 return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
@@ -171,8 +177,8 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
     }
 
     @Override
-    public GT_Recipe.GT_Recipe_Map getRecipeList() {
-        return GT_Recipe.GT_Recipe_Map.sMassFabFakeRecipes;
+    public RecipeMap<?> getRecipeMap() {
+        return RecipeMaps.massFabFakeRecipes;
     }
 
     @Override
@@ -189,64 +195,37 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
         return aFluid != null && aFluid.amount >= sUUAperUUM && aFluid.isFluidEqual(Materials.UUAmplifier.getFluid(1L));
     }
 
-    protected class MassfabricatorPower extends BasicMachineEUPower {
+    @ParametersAreNonnullByDefault
+    @MethodsReturnNonnullByDefault
+    protected class MassfabricatorOverclockDescriber extends EUOverclockDescriber {
 
-        protected MassfabricatorPower(byte tier, int amperage) {
+        protected MassfabricatorOverclockDescriber(byte tier, int amperage) {
             super(tier, amperage);
         }
 
         @Override
-        public void computePowerUsageAndDuration(int euPerTick, int duration) {
-            originalVoltage = computeVoltageForEuRate(euPerTick);
-
-            if (mTier == 0) {
-                // Long time calculation
-                long xMaxProgresstime = ((long) duration) << 1;
-                if (xMaxProgresstime > Integer.MAX_VALUE - 1) {
-                    // make impossible if too long
-                    recipeEuPerTick = Integer.MAX_VALUE - 1;
-                    recipeDuration = Integer.MAX_VALUE - 1;
-                } else {
-                    recipeEuPerTick = (int) (V[1] << 2); // 2^2=4 so shift <<2
-                    recipeDuration = (int) xMaxProgresstime;
-                }
-            } else {
-                // Long EUt calculation
-                long xEUt = EUt;
-
-                long tempEUt = V[1];
-
-                recipeDuration = duration;
-
-                while (tempEUt <= V[mTier - 1]) {
-                    tempEUt <<= 2; // this actually controls overclocking
-                    recipeDuration >>= 1; // this is effect of overclocking
-                    if (recipeDuration == 0) xEUt = (long) (xEUt / 1.1D); // U know, if the time is less than 1 tick
-                                                                          // make the machine use less power
-                }
-                if (xEUt > Integer.MAX_VALUE - 1) {
-                    recipeEuPerTick = Integer.MAX_VALUE - 1;
-                    recipeDuration = Integer.MAX_VALUE - 1;
-                } else {
-                    recipeEuPerTick = (int) xEUt;
-                    if (recipeEuPerTick == 0) recipeEuPerTick = 1;
-                    if (recipeDuration == 0) recipeDuration = 1; // set time to 1 tick
-                }
-            }
-            wasOverclocked = checkIfOverclocked();
+        public GT_OverclockCalculator createCalculator(GT_OverclockCalculator template, GT_Recipe recipe) {
+            return super.createCalculator(template, recipe).setEUt(Ints.saturatedCast(V[tier] * amperage))
+                .setEUtIncreasePerOC(1)
+                .limitOverclockCount(tier - 1)
+                .setOneTickDiscount(false);
         }
 
         @Override
-        public String getVoltageString() {
-            long voltage = V[1];
-            String voltageDescription = GT_Utility.formatNumbers(voltage) + " EU";
-            voltageDescription += GT_Utility.getTierNameWithParentheses(voltage);
-            return voltageDescription;
+        protected boolean shouldShowAmperage(GT_OverclockCalculator calculator) {
+            return true;
         }
 
         @Override
-        public String getAmperageString() {
-            long amperage = originalVoltage / V[1];
+        protected String getVoltageString(GT_OverclockCalculator calculator) {
+            // standard amperage calculation doesn't work here
+            return decorateWithOverclockLabel(GT_Utility.formatNumbers(V[mTier]) + " EU/t", calculator)
+                + GT_Utility.getTierNameWithParentheses(V[mTier]);
+        }
+
+        @Override
+        protected String getAmperageString(GT_OverclockCalculator calculator) {
+            int amperage = this.amperage;
             int denominator = 1;
             for (int i = 1; i < mTier; i++) {
                 amperage >>= 1;

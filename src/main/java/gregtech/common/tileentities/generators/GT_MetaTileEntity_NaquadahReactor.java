@@ -29,8 +29,9 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicGenerator;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Recipe;
 
 public class GT_MetaTileEntity_NaquadahReactor extends GT_MetaTileEntity_BasicGenerator {
 
@@ -67,14 +68,14 @@ public class GT_MetaTileEntity_NaquadahReactor extends GT_MetaTileEntity_BasicGe
     }
 
     @Override
-    public GT_Recipe.GT_Recipe_Map getRecipes() {
-        GT_Recipe.GT_Recipe_Map ret;
+    public RecipeMap<?> getRecipeMap() {
+        RecipeMap<?> ret;
         switch (mTier) {
-            case 4 -> ret = GT_Recipe.GT_Recipe_Map.sSmallNaquadahReactorFuels;
-            case 5 -> ret = GT_Recipe.GT_Recipe_Map.sLargeNaquadahReactorFuels;
-            case 6 -> ret = GT_Recipe.GT_Recipe_Map.sHugeNaquadahReactorFuels;
-            case 7 -> ret = GT_Recipe.GT_Recipe_Map.sExtremeNaquadahReactorFuels;
-            case 8 -> ret = GT_Recipe.GT_Recipe_Map.sUltraHugeNaquadahReactorFuels;
+            case 4 -> ret = RecipeMaps.smallNaquadahReactorFuels;
+            case 5 -> ret = RecipeMaps.largeNaquadahReactorFuels;
+            case 6 -> ret = RecipeMaps.hugeNaquadahReactorFuels;
+            case 7 -> ret = RecipeMaps.extremeNaquadahReactorFuels;
+            case 8 -> ret = RecipeMaps.ultraHugeNaquadahReactorFuels;
             default -> ret = null;
         }
         return ret;
@@ -82,7 +83,8 @@ public class GT_MetaTileEntity_NaquadahReactor extends GT_MetaTileEntity_BasicGe
 
     @Override
     public int getCapacity() {
-        return getRecipes() != null ? getRecipes().mMinimalInputFluids > 0 ? 8000 * (mTier + 1) : 0 : 0;
+        return getRecipeMap() != null ? getRecipeMap().getBackend()
+            .getProperties().minFluidInputs > 0 ? 8000 * (mTier + 1) : 0 : 0;
     }
 
     @Override

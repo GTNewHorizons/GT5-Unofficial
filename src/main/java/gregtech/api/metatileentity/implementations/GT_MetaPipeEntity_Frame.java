@@ -1,6 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
+import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
@@ -54,7 +54,7 @@ public class GT_MetaPipeEntity_Frame extends MetaPipeEntity {
                 .itemOutputs(getStackForm(1))
                 .duration(3 * SECONDS + 4 * TICKS)
                 .eut(calculateRecipeEU(aMaterial, 7))
-                .addTo(sAssemblerRecipes);
+                .addTo(assemblerRecipes);
         }
     }
 

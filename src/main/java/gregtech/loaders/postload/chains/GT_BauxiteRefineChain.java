@@ -1,10 +1,10 @@
 package gregtech.loaders.postload.chains;
 
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sChemicalBathRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCrackingRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMixerRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes;
+import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
+import static gregtech.api.recipe.RecipeMaps.crackingRecipes;
+import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
+import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
@@ -34,7 +34,7 @@ public class GT_BauxiteRefineChain {
             .fluidOutputs(MaterialsOreAlum.BauxiteSlurry.getFluid(8000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -46,7 +46,7 @@ public class GT_BauxiteRefineChain {
             .fluidOutputs(MaterialsOreAlum.BauxiteSlurry.getFluid(8000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(1))
@@ -54,7 +54,7 @@ public class GT_BauxiteRefineChain {
             .fluidOutputs(MaterialsOreAlum.HeatedBauxiteSlurry.getFluid(32000))
             .duration(8 * SECONDS)
             .eut(400)
-            .addTo(sCrackingRecipes);
+            .addTo(crackingRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(Materials.Aluminiumhydroxide.getDust(1))
@@ -68,7 +68,7 @@ public class GT_BauxiteRefineChain {
             .fluidOutputs(MaterialsOreAlum.SluiceJuice.getFluid(5000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
-            .addTo(sMultiblockChemicalRecipes);
+            .addTo(multiblockChemicalReactorRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(MaterialsOreAlum.BauxiteSlag.getDust(1))
@@ -81,7 +81,7 @@ public class GT_BauxiteRefineChain {
             .outputChances(10000, 3000, 2000, 9000, 8000)
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(sCentrifugeRecipes);
+            .addTo(centrifugeRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Ilmenite, 1))
@@ -91,7 +91,7 @@ public class GT_BauxiteRefineChain {
             .fluidOutputs(new FluidStack(ItemList.sGreenVitriol, 2000))
             .duration(21 * SECONDS)
             .eut(1000)
-            .addTo(sChemicalBathRecipes);
+            .addTo(chemicalBathRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.Ilmenite, 1))
@@ -101,7 +101,7 @@ public class GT_BauxiteRefineChain {
             .fluidOutputs(new FluidStack(ItemList.sGreenVitriol, 2000))
             .duration(21 * SECONDS)
             .eut(1000)
-            .addTo(sChemicalBathRecipes);
+            .addTo(chemicalBathRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(MaterialsOreAlum.IlmeniteSlag.getDust(1))
@@ -114,7 +114,7 @@ public class GT_BauxiteRefineChain {
             .outputChances(8000, 500, 2000, 5000, 6000)
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(sCentrifugeRecipes);
+            .addTo(centrifugeRecipes);
 
         OrePrefixes[] washable = new OrePrefixes[] { OrePrefixes.crushed, OrePrefixes.crushedPurified,
             OrePrefixes.dustImpure, OrePrefixes.dustPure };
@@ -129,7 +129,7 @@ public class GT_BauxiteRefineChain {
                 .fluidOutputs(MaterialsOreAlum.SapphireJuice.getFluid(1000))
                 .duration(2 * SECONDS)
                 .eut(100)
-                .addTo(sMixerRecipes);
+                .addTo(mixerRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(
@@ -140,7 +140,7 @@ public class GT_BauxiteRefineChain {
                 .fluidOutputs(MaterialsOreAlum.GreenSapphireJuice.getFluid(1000))
                 .duration(2 * SECONDS)
                 .eut(100)
-                .addTo(sMixerRecipes);
+                .addTo(mixerRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(
@@ -151,7 +151,7 @@ public class GT_BauxiteRefineChain {
                 .fluidOutputs(MaterialsOreAlum.RubyJuice.getFluid(1000))
                 .duration(2 * SECONDS)
                 .eut(100)
-                .addTo(sMixerRecipes);
+                .addTo(mixerRecipes);
         }
 
         GT_Values.RA.stdBuilder()
@@ -166,7 +166,7 @@ public class GT_BauxiteRefineChain {
             .fluidOutputs(Materials.HydrochloricAcid.getFluid(1000))
             .duration(2 * SECONDS + 5 * TICKS)
             .eut(100)
-            .addTo(sCentrifugeRecipes);
+            .addTo(centrifugeRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(1))
@@ -181,7 +181,7 @@ public class GT_BauxiteRefineChain {
             .fluidOutputs(Materials.HydrochloricAcid.getFluid(1000))
             .duration(2 * SECONDS + 5 * TICKS)
             .eut(100)
-            .addTo(sCentrifugeRecipes);
+            .addTo(centrifugeRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(1))
@@ -196,7 +196,7 @@ public class GT_BauxiteRefineChain {
             .fluidOutputs(Materials.HydrochloricAcid.getFluid(1000))
             .duration(2 * SECONDS + 5 * TICKS)
             .eut(100)
-            .addTo(sCentrifugeRecipes);
+            .addTo(centrifugeRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(Materials.Pyrope.getDust(1))
@@ -212,7 +212,7 @@ public class GT_BauxiteRefineChain {
             .fluidOutputs(MaterialsOreAlum.SluiceJuice.getFluid(10))
             .duration(2 * SECONDS + 5 * TICKS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(sCentrifugeRecipes);
+            .addTo(centrifugeRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(Materials.Almandine.getDust(1))
@@ -228,7 +228,7 @@ public class GT_BauxiteRefineChain {
             .fluidOutputs(MaterialsOreAlum.SluiceJuice.getFluid(10))
             .duration(2 * SECONDS + 5 * TICKS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(sCentrifugeRecipes);
+            .addTo(centrifugeRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(Materials.Spessartine.getDust(1))
@@ -244,7 +244,7 @@ public class GT_BauxiteRefineChain {
             .fluidOutputs(MaterialsOreAlum.SluiceJuice.getFluid(10))
             .duration(2 * SECONDS + 5 * TICKS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(sCentrifugeRecipes);
+            .addTo(centrifugeRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(Materials.Andradite.getDust(1))
@@ -260,7 +260,7 @@ public class GT_BauxiteRefineChain {
             .fluidOutputs(MaterialsOreAlum.SluiceJuice.getFluid(10))
             .duration(2 * SECONDS + 5 * TICKS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(sCentrifugeRecipes);
+            .addTo(centrifugeRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(Materials.Uvarovite.getDust(1))
@@ -276,7 +276,7 @@ public class GT_BauxiteRefineChain {
             .fluidOutputs(MaterialsOreAlum.SluiceJuice.getFluid(10))
             .duration(2 * SECONDS + 5 * TICKS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(sCentrifugeRecipes);
+            .addTo(centrifugeRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(Materials.Grossular.getDust(1))
@@ -292,6 +292,6 @@ public class GT_BauxiteRefineChain {
             .fluidOutputs(MaterialsOreAlum.SluiceJuice.getFluid(10))
             .duration(2 * SECONDS + 5 * TICKS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(sCentrifugeRecipes);
+            .addTo(centrifugeRecipes);
     }
 }

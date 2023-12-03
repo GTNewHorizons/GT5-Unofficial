@@ -41,7 +41,7 @@ dependencies {
     api("com.github.GTNewHorizons:ModularUI:1.1.24:dev")
     api("com.github.GTNewHorizons:waila:1.6.5:dev")
     api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-288-GTNH:dev")
-    api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.1.67-gtnh:dev")
+    api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.1.68-gtnh-pre:dev")
 
     implementation("com.github.GTNewHorizons:Avaritia:1.46:dev")
 
@@ -67,6 +67,9 @@ dependencies {
 
     compileOnly("com.google.auto.value:auto-value-annotations:1.10.1") { transitive = false }
     annotationProcessor("com.google.auto.value:auto-value:1.10.1")
+
+    // For testing iApiary
+    //runtimeOnlyNonPublishable("com.github.GTNewHorizons:ForestryMC:4.6.14:dev")
 
     testImplementation(platform('org.junit:junit-bom:5.9.2'))
     testImplementation('org.junit.jupiter:junit-jupiter')

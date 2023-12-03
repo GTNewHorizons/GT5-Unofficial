@@ -31,9 +31,9 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicGenerator;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Recipe;
 
 public class GT_MetaTileEntity_SteamTurbine extends GT_MetaTileEntity_BasicGenerator {
 
@@ -70,7 +70,7 @@ public class GT_MetaTileEntity_SteamTurbine extends GT_MetaTileEntity_BasicGener
     }
 
     @Override
-    public GT_Recipe.GT_Recipe_Map getRecipes() {
+    public RecipeMap<?> getRecipeMap() {
         return null;
     }
 

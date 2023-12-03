@@ -40,6 +40,8 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
@@ -145,8 +147,8 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
     long mWirelessEUt = 0;
 
     @Override
-    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return GT_Recipe.GT_Recipe_Map.sTranscendentPlasmaMixerRecipes;
+    public RecipeMap<?> getRecipeMap() {
+        return RecipeMaps.transcendentPlasmaMixerRecipes;
     }
 
     @Override

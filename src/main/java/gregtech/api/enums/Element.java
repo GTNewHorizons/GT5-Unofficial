@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
 /**
  * This is some kind of Periodic Table, which I use to determine Properties of the Materials.
  */
@@ -308,6 +310,7 @@ public enum Element {
         Companion.VALUES.put(name(), this);
     }
 
+    @Nonnull
     public static Element get(String aMaterialName) {
         return Companion.VALUES.getOrDefault(aMaterialName, _NULL);
     }

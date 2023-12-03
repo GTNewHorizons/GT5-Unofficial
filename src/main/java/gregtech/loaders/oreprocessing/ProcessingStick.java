@@ -1,9 +1,9 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBenderRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCutterRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sHammerRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sLatheRecipes;
+import static gregtech.api.recipe.RecipeMaps.benderRecipes;
+import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
+import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
+import static gregtech.api.recipe.RecipeMaps.latheRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
@@ -49,7 +49,7 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
                         GT_OreDictUnificator.get(OrePrefixes.dustSmall, aMaterial.mMacerateInto, 2L))
                     .duration(((int) Math.max(aMaterial.getMass() * 5L, 1L)) * TICKS)
                     .eut(calculateRecipeEU(aMaterial, 16))
-                    .addTo(sLatheRecipes);
+                    .addTo(latheRecipes);
             }
 
             if (GT_OreDictUnificator.get(OrePrefixes.bolt, aMaterial, 1L) != null) {
@@ -68,7 +68,7 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
                                         / 320))))
                     .duration(2 * ((int) Math.max(aMaterial.getMass() * 2L, 1L)) * TICKS)
                     .eut(calculateRecipeEU(aMaterial, 4))
-                    .addTo(sCutterRecipes);
+                    .addTo(cutterRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1, aStack))
@@ -84,7 +84,7 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
                                         / 426))))
                     .duration(2 * ((int) Math.max(aMaterial.getMass() * 2L, 1L)) * TICKS)
                     .eut(calculateRecipeEU(aMaterial, 4))
-                    .addTo(sCutterRecipes);
+                    .addTo(cutterRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1, aStack))
@@ -99,7 +99,7 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
                                         / 1280))))
                     .duration(((int) Math.max(aMaterial.getMass() * 2L, 1L)) * TICKS)
                     .eut(calculateRecipeEU(aMaterial, 4))
-                    .addTo(sCutterRecipes);
+                    .addTo(cutterRecipes);
             }
 
             if ((aMaterial.mUnificatable) && (aMaterial.mMaterialInto == aMaterial)) {
@@ -124,7 +124,7 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.springSmall, aMaterial, 2L))
                         .duration(5 * SECONDS)
                         .eut(calculateRecipeEU(aMaterial, 8))
-                        .addTo(sBenderRecipes);
+                        .addTo(benderRecipes);
                 }
             }
 
@@ -134,7 +134,7 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L))
                     .duration(Math.max(aMaterial.getMass(), 1L))
                     .eut(calculateRecipeEU(aMaterial, 16))
-                    .addTo(sHammerRecipes);
+                    .addTo(hammerRecipes);
             }
         }
     }

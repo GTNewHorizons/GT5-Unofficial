@@ -32,14 +32,12 @@ import codechicken.nei.recipe.RecipeCatalysts;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.tileentity.IRecipeLockable;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicGenerator;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
+import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_SpecialFilter;
 import gregtech.api.multitileentity.MultiTileEntityContainer;
 import gregtech.api.multitileentity.MultiTileEntityItemInternal;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Item_Machines;
 import gregtech.loaders.preload.GT_Loader_MultiTileEntities;
@@ -49,7 +47,7 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
     private static final String TT_machineType = "GT5U.MBTT.MachineType";
     private static final String REPRESENTATION_SLOT_TOOLTIP = "GT5U.recipe_filter.representation_slot.tooltip";
     private static final String EMPTY_REPRESENTATION_SLOT_TOOLTIP = "GT5U.recipe_filter.empty_representation_slot.tooltip";
-    public GT_Recipe.GT_Recipe_Map mRecipeMap;
+    public RecipeMap<?> mRecipeMap;
     private List<ItemStack> filteredMachines = new ArrayList<>();
     public int mRotationIndex = 0;
 
@@ -72,7 +70,7 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
-    private static GT_Recipe.GT_Recipe_Map getItemStackMachineRecipeMap(ItemStack stack) {
+    private static RecipeMap<?> getItemStackMachineRecipeMap(ItemStack stack) {
         if (stack != null) {
             IMetaTileEntity metaTileEntity = GT_Item_Machines.getMetaTileEntity(stack);
             if (metaTileEntity != null) {
@@ -84,28 +82,27 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
         return null;
     }
 
-    private static GT_Recipe.GT_Recipe_Map getMetaTileEntityRecipeMap(IMetaTileEntity metaTileEntity) {
-        if (metaTileEntity instanceof GT_MetaTileEntity_BasicMachine machine) {
-            return machine.getRecipeList();
-        } else if (metaTileEntity instanceof IRecipeLockable recipeLockable) {
-            return recipeLockable.getRecipeMap();
-        } else if (metaTileEntity instanceof GT_MetaTileEntity_BasicGenerator generator) {
-            return generator.getRecipes();
+    private static RecipeMap<?> getMetaTileEntityRecipeMap(IMetaTileEntity metaTileEntity) {
+        if (metaTileEntity instanceof RecipeMapWorkable recipeMapWorkable) {
+            return recipeMapWorkable.getRecipeMap();
         }
         return null;
     }
 
-    private static GT_Recipe.GT_Recipe_Map getMuTeRecipeMap(@NotNull ItemStack stack) {
+    private static RecipeMap<?> getMuTeRecipeMap(@NotNull ItemStack stack) {
         MultiTileEntityContainer muTeEntityContainer = GT_Loader_MultiTileEntities.MACHINE_REGISTRY
             .getNewTileEntityContainer(stack);
-        if (muTeEntityContainer != null && muTeEntityContainer.mTileEntity instanceof IRecipeLockable recipeLockable) {
-            return recipeLockable.getRecipeMap();
+        if (muTeEntityContainer != null
+            && muTeEntityContainer.mTileEntity instanceof RecipeMapWorkable recipeMapWorkable) {
+            return recipeMapWorkable.getRecipeMap();
         }
         return null;
     }
 
-    private static List<ItemStack> getFilteredMachines(GT_Recipe.GT_Recipe_Map recipeMap) {
-        return RecipeCatalysts.getRecipeCatalysts(recipeMap.mNEIName)
+    private static List<ItemStack> getFilteredMachines(RecipeMap<?> recipeMap) {
+        return RecipeCatalysts.getRecipeCatalysts(
+            recipeMap.getFrontend()
+                .getUIProperties().neiTransferRectId)
             .stream()
             .map(positionedStack -> positionedStack.item)
             .collect(Collectors.toList());
@@ -147,7 +144,9 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        if (mRecipeMap != null) aNBT.setString("mRecipeMap", this.mRecipeMap.mUniqueIdentifier);
+        if (mRecipeMap != null) {
+            aNBT.setString("mRecipeMap", this.mRecipeMap.unlocalizedName);
+        }
         NBTTagList tagList = new NBTTagList();
         for (ItemStack filteredMachine : filteredMachines) {
             tagList.appendTag(filteredMachine.writeToNBT(new NBTTagCompound()));
@@ -158,7 +157,7 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        this.mRecipeMap = GT_Recipe.GT_Recipe_Map.sIndexedMappings.getOrDefault(aNBT.getString("mRecipeMap"), null);
+        this.mRecipeMap = RecipeMap.getFromOldIdentifier(aNBT.getString("mRecipeMap"));
         filteredMachines.clear();
         NBTTagList tagList = aNBT.getTagList("filteredMachines", Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < tagList.tagCount(); i++) {
@@ -179,8 +178,8 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
         super.addUIWidgets(builder, buildContext);
         builder.widget(
             new FakeSyncWidget.StringSyncer(
-                () -> this.mRecipeMap == null ? "" : this.mRecipeMap.mUniqueIdentifier,
-                (id) -> this.mRecipeMap = GT_Recipe.GT_Recipe_Map.sIndexedMappings.getOrDefault(id, null)));
+                () -> this.mRecipeMap == null ? "" : this.mRecipeMap.unlocalizedName,
+                id -> this.mRecipeMap = RecipeMap.ALL_RECIPE_MAPS.get(id)));
     }
 
     @Override
@@ -198,15 +197,17 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
     }
 
     @NotNull
-    private List<String> assembleItemStackReplacementTooltip(GT_Recipe.GT_Recipe_Map recipeMap) {
+    private List<String> assembleItemStackReplacementTooltip(RecipeMap<?> recipeMap) {
         List<String> tooltip = new ArrayList<>();
         tooltip.add(
             StatCollector.translateToLocal(TT_machineType) + ": "
                 + EnumChatFormatting.YELLOW
-                + StatCollector.translateToLocal(recipeMap.mUnlocalizedName)
+                + StatCollector.translateToLocal(recipeMap.unlocalizedName)
                 + EnumChatFormatting.RESET);
-        if (recipeMap.mRecipeItemMap.size() > 0) {
-            tooltip.add("Filter size: §e" + recipeMap.mRecipeItemMap.size() + "§r");
+        int recipeSize = recipeMap.getAllRecipes()
+            .size();
+        if (recipeSize > 0) {
+            tooltip.add("Filter size: §e" + recipeSize + "§r");
         }
         tooltip.addAll(mTooltipCache.getData(REPRESENTATION_SLOT_TOOLTIP).text);
         return tooltip;
@@ -251,7 +252,7 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
             updateAndSendRecipeMapToServer(mRecipeMap);
         }
 
-        private void updateAndSendRecipeMapToServer(GT_Recipe.GT_Recipe_Map recipeMap) {
+        private void updateAndSendRecipeMapToServer(RecipeMap<?> recipeMap) {
             if (recipeMap != null) {
                 filteredMachines = getFilteredMachines(recipeMap);
             } else {
@@ -260,7 +261,7 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
             }
             mRotationIndex = -1;
             syncToServer(SYNC_RECIPEMAP_C2S, buffer -> {
-                NetworkUtils.writeStringSafe(buffer, recipeMap != null ? recipeMap.mUniqueIdentifier : null);
+                NetworkUtils.writeStringSafe(buffer, recipeMap != null ? recipeMap.unlocalizedName : null);
                 buffer.writeVarIntToBuffer(filteredMachines.size());
                 for (ItemStack filteredMachine : filteredMachines) {
                     NetworkUtils.writeItemStack(buffer, filteredMachine);
@@ -276,9 +277,7 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
             }
 
             String recipeMapName = NetworkUtils.readStringSafe(buf);
-            mRecipeMap = recipeMapName != null
-                ? GT_Recipe.GT_Recipe_Map.sIndexedMappings.getOrDefault(recipeMapName, null)
-                : null;
+            mRecipeMap = recipeMapName != null ? RecipeMap.ALL_RECIPE_MAPS.get(recipeMapName) : null;
             if (mRecipeMap != null) {
                 updateAndSendRecipeMapToServer(mRecipeMap);
             }
@@ -296,9 +295,7 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
             }
 
             String recipeMapName = NetworkUtils.readStringSafe(buf);
-            mRecipeMap = recipeMapName != null
-                ? GT_Recipe.GT_Recipe_Map.sIndexedMappings.getOrDefault(recipeMapName, null)
-                : null;
+            mRecipeMap = recipeMapName != null ? RecipeMap.getFromOldIdentifier(recipeMapName) : null;
             mRotationIndex = -1;
             mInventory[FILTER_SLOT_INDEX] = null;
             filteredMachines.clear();
@@ -322,7 +319,7 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
                 // backward compatibility: This machine used to store only mRecipeMap, not filteredMachines
                 syncToClient(
                     REQUEST_FILTERED_MACHINES_S2C,
-                    buffer -> NetworkUtils.writeStringSafe(buffer, mRecipeMap.mUniqueIdentifier));
+                    buffer -> NetworkUtils.writeStringSafe(buffer, mRecipeMap.unlocalizedName));
             }
         }
 
