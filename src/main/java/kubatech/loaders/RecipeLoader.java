@@ -20,9 +20,9 @@
 
 package kubatech.loaders;
 
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBenderRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCutterRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMixerRecipes;
+import static gregtech.api.recipe.RecipeMaps.benderRecipes;
+import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
+import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
@@ -226,7 +226,7 @@ public class RecipeLoader {
                 .fluidInputs(FluidRegistry.getFluidStack("water", 50))
                 .eut(32)
                 .duration(5 * SECONDS)
-                .addTo(sMixerRecipes);
+                .addTo(mixerRecipes);
             CORE.RA.addDehydratorRecipe(
                 new ItemStack[] { SteamedTeaLeaf.get(1) },
                 null,
@@ -240,7 +240,7 @@ public class RecipeLoader {
                 .itemOutputs(RolledTeaLeaf.get(1))
                 .eut(32)
                 .duration(5 * SECONDS)
-                .addTo(sBenderRecipes);
+                .addTo(benderRecipes);
             CORE.RA.addDehydratorRecipe(
                 new ItemStack[] { RolledTeaLeaf.get(1) },
                 null,
@@ -282,7 +282,7 @@ public class RecipeLoader {
                 .itemOutputs(BruisedTeaLeaf.get(1))
                 .eut(32)
                 .duration(5 * SECONDS)
-                .addTo(sCutterRecipes);
+                .addTo(cutterRecipes);
             GT_Values.RA.stdBuilder()
                 .itemInputs(BruisedTeaLeaf.get(1), GT_Utility.getIntegratedCircuit(1))
                 .itemOutputs(PartiallyOxidizedTeaLeaf.get(1))
@@ -305,7 +305,7 @@ public class RecipeLoader {
                 .itemOutputs(EarlGrayTea.get(1))
                 .eut(32)
                 .duration(5 * SECONDS)
-                .addTo(sMixerRecipes);
+                .addTo(mixerRecipes);
             GameRegistry.addSmelting(GreenTeaLeaf.get(1), GreenTea.get(1), 10);
             GT_Values.RA.stdBuilder()
                 .itemInputs(BlackTea.get(1))
@@ -313,14 +313,14 @@ public class RecipeLoader {
                 .fluidInputs(FluidRegistry.getFluidStack("potion.lemonjuice", 1000))
                 .eut(32)
                 .duration(5 * SECONDS)
-                .addTo(sMixerRecipes);
+                .addTo(mixerRecipes);
             GT_Values.RA.stdBuilder()
                 .itemInputs(BlackTea.get(1))
                 .itemOutputs(MilkTea.get(1))
                 .fluidInputs(FluidRegistry.getFluidStack("milk", 1000))
                 .eut(32)
                 .duration(5 * SECONDS)
-                .addTo(sMixerRecipes);
+                .addTo(mixerRecipes);
             GameRegistry.addSmelting(OolongTeaLeaf.get(1), OolongTea.get(1), 10);
             GT_Values.RA.stdBuilder()
                 .itemInputs(GameRegistry.findItemStack("harvestcraft", "peppermintItem", 1))
@@ -328,7 +328,7 @@ public class RecipeLoader {
                 .fluidInputs(FluidRegistry.getFluidStack("water", 1000))
                 .eut(32)
                 .duration(5 * SECONDS)
-                .addTo(sMixerRecipes);
+                .addTo(mixerRecipes);
             GameRegistry.addSmelting(PuerhTeaLeaf.get(1), PuerhTea.get(1), 10);
             GameRegistry.addSmelting(WhiteTeaLeaf.get(1), WhiteTea.get(1), 10);
             GameRegistry.addSmelting(YellowTeaLeaf.get(1), YellowTea.get(1), 10);

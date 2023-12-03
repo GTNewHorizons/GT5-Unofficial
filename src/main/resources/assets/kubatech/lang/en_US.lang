@@ -1,6 +1,10 @@
 #This file is a translation file for KubaTech
 
+#RecipeMaps
+kubatech.defusioncrafter=Draconic Evolution Fusion Crafter
+
 #NEI
+kubatech.defusioncrafter.tier=Tier Casing: %s
 kubatech.mobhandler.eec_chance=§5Chance to drop in EEC: %.2f%%
 kubatech.mobhandler.eec_disabled=§5Does not drop in EEC
 
