@@ -692,12 +692,12 @@ public class GT_Client extends GT_Proxy implements Runnable {
     }
 
     @Override
-    public void reload() {
+    public void reloadNEICache() {
         mReloadCount++;
     }
 
     @Override
-    public int getReloadCount() {
+    public int getNEIReloadCount() {
         return mReloadCount;
     }
 

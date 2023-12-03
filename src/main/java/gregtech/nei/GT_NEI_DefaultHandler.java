@@ -152,7 +152,7 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
     public List<CachedDefaultRecipe> getCache() {
         SortedRecipeListCache cacheHolder = getCacheHolder();
         List<CachedDefaultRecipe> cache;
-        if (cacheHolder.getCachedRecipesVersion() != GT_Mod.gregtechproxy.getReloadCount()
+        if (cacheHolder.getCachedRecipesVersion() != GT_Mod.gregtechproxy.getNEIReloadCount()
             || (cache = cacheHolder.getCachedRecipes()) == null) {
             RecipeCategory defaultCategory = recipeMap.getDefaultRecipeCategory();
             Collection<GT_Recipe> recipes;
@@ -194,7 +194,7 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
             // so we do not need any synchronization here
             // even if it does break, at worst case it's just recreating the cache multiple times, which should be fine
             cacheHolder.setCachedRecipes(cache);
-            cacheHolder.setCachedRecipesVersion(GT_Mod.gregtechproxy.getReloadCount());
+            cacheHolder.setCachedRecipesVersion(GT_Mod.gregtechproxy.getNEIReloadCount());
         }
         return cache;
     }

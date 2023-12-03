@@ -879,7 +879,7 @@ public class GT_PreLoad {
             GT_Mod.gregtechproxy.mCircuitsOrder.putIfAbsent(Circuits[i], i);
         }
 
-        GT_Mod.gregtechproxy.reload();
+        GT_Mod.gregtechproxy.reloadNEICache();
     }
 
     private static List<RecipeCategory> findRecipeCategories() {

@@ -1425,9 +1425,15 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
     @SubscribeEvent
     public void onClientConnectedToServerEvent(FMLNetworkEvent.ClientConnectedToServerEvent aEvent) {}
 
-    public void reload() {}
+    /**
+     * Tells {@link gregtech.nei.GT_NEI_DefaultHandler} to reload recipes.
+     */
+    public void reloadNEICache() {}
 
-    public int getReloadCount() {
+    /**
+     * Logging in to server or {@link #reloadNEICache} being called increases the count.
+     */
+    public int getNEIReloadCount() {
         return 0;
     }
 
