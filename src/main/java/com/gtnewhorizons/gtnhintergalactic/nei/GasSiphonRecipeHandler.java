@@ -13,7 +13,6 @@ import net.minecraftforge.fluids.FluidStack;
 import com.gtnewhorizons.gtnhintergalactic.gui.IG_UITextures;
 import com.gtnewhorizons.gtnhintergalactic.recipe.GasSiphonRecipes;
 import com.gtnewhorizons.modularui.api.GlStateManager;
-import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.UIInfos;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
@@ -24,6 +23,7 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.util.GT_Utility;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
@@ -39,7 +39,7 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
     /** Modular window used to display the recipes */
     protected final ModularWindow modularWindow;
     /** Offsets of the recipe window */
-    private static final Pos2d WINDOW_OFFSET = new Pos2d(-3, -8);
+    private static final Pos2d WINDOW_OFFSET = new Pos2d(-2, -8);
 
     /** X coordinate of the category titles */
     private static final int CATEGORY_TITLE_X = 30;
@@ -58,7 +58,7 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
      * Initialize the handler for gas siphons recipes
      */
     public GasSiphonRecipeHandler() {
-        modularWindow = ModularWindow.builder(172, 82).setBackground(ModularUITextures.VANILLA_BACKGROUND)
+        modularWindow = ModularWindow.builder(170, 82).setBackground(GT_UITextures.BACKGROUND_NEI_SINGLE_RECIPE)
                 .widget(
                         new DrawableWidget().setDrawable(IG_UITextures.PICTURE_ELEVATOR_LOGO).setSize(17, 17)
                                 .setPos(new Pos2d(147, 52)))

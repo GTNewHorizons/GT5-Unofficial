@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,8 +31,8 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.gtnewhorizons.gtnhintergalactic.Tags;
 import com.gtnewhorizons.gtnhintergalactic.gui.IG_UITextures;
+import com.gtnewhorizons.gtnhintergalactic.recipe.IGRecipeMaps;
 import com.gtnewhorizons.gtnhintergalactic.recipe.IG_Recipe;
-import com.gtnewhorizons.gtnhintergalactic.recipe.IG_RecipeAdder;
 import com.gtnewhorizons.gtnhintergalactic.spaceprojects.ProjectAsteroidOutpost;
 import com.gtnewhorizons.gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
@@ -55,7 +56,10 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
 import gregtech.api.objects.XSTR;
+import gregtech.api.objects.overclockdescriber.OverclockDescriber;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
@@ -64,11 +68,9 @@ import gregtech.api.util.GT_ParallelHelper;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.misc.spaceprojects.enums.SolarSystem;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
-import gregtech.common.power.BasicMachineEUPower;
-import gregtech.common.power.Power;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
-public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
+public abstract class TileEntityModuleMiner extends TileEntityModuleBase implements IOverclockDescriptionProvider {
 
     /** Base chance to get a bonus stack from space mining, will be multiplied with other factors */
     protected static int BONUS_STACK_BASE_CHANCE = 5000;
@@ -151,7 +153,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
     // endregion
 
     /** Power object used for displaying in NEI */
-    protected final Power power;
+    protected final OverclockDescriber overclockDescriber;
 
     /** Asteroid outpost that the player can additionally build */
     protected ProjectAsteroidOutpost asteroidOutpost;
@@ -176,7 +178,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
     public TileEntityModuleMiner(int aID, String aName, String aNameRegional, int tTier, int tModuleTier,
             int tMinMotorTier) {
         super(aID, aName, aNameRegional, tTier, tModuleTier, tMinMotorTier);
-        power = new MinerPower((byte) tTier, tModuleTier);
+        overclockDescriber = new ModuleOverclockDescriber((byte) tTier, tModuleTier);
     }
 
     /**
@@ -189,15 +191,12 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
      */
     public TileEntityModuleMiner(String aName, int tTier, int tModuleTier, int tMinMotorTier) {
         super(aName, tTier, tModuleTier, tMinMotorTier);
-        power = new MinerPower((byte) tTier, tModuleTier);
+        overclockDescriber = new ModuleOverclockDescriber((byte) tTier, tModuleTier);
     }
 
-    /**
-     * @return Power object used for displaying in NEI
-     */
     @Override
-    public Power getPower() {
-        return power;
+    public OverclockDescriber getOverclockDescriber() {
+        return overclockDescriber;
     }
 
     /**
@@ -227,6 +226,11 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
         if (whiteListHandler != null) {
             aNBT.setTag(WHITELIST_NBT_TAG, whiteListHandler.serializeNBT());
         }
+    }
+
+    @Override
+    public RecipeMap<?> getRecipeMap() {
+        return IGRecipeMaps.spaceMiningRecipes;
     }
 
     /**
@@ -291,20 +295,18 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
 
         // Get all asteroid pools that this drone can pull from
         long tVoltage = getMaxInputVoltage();
-        List<IG_Recipe.IG_SpaceMiningRecipe> recipes = IG_RecipeAdder.instance.sSpaceMiningRecipes.findRecipes(
-                getBaseMetaTileEntity(),
-                null,
-                false,
-                false,
-                tVoltage,
-                fluidInputs,
-                null,
-                (int) distanceDisplay.get(),
-                tModuleTier,
-                inputs);
+        int distance = (int) distanceDisplay.get();
+        List<IG_Recipe.IG_SpaceMiningRecipe> recipes = IGRecipeMaps.spaceMiningRecipes.findRecipeQuery().items(inputs)
+                .fluids(fluidInputs).voltage(tVoltage).findAll()
+                .filter(IG_Recipe.IG_SpaceMiningRecipe.class::isInstance)
+                .map(IG_Recipe.IG_SpaceMiningRecipe.class::cast)
+                .filter(
+                        recipe -> recipe.minDistance <= distance && recipe.maxDistance >= distance
+                                && recipe.mSpecialValue <= tModuleTier)
+                .collect(Collectors.toList());
 
         // Return if no recipe was found
-        if (recipes == null || recipes.size() <= 0) {
+        if (recipes.isEmpty()) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
@@ -342,7 +344,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
         // Check how many parallels we can actually do, return if none
         GT_ParallelHelper helper = new GT_ParallelHelper().setMaxParallel(maxParallels).setRecipe(tRecipe)
                 .setFluidInputs(fluidInputs).setItemInputs(inputs).setAvailableEUt(GT_Values.V[tTier])
-                .setMachine(this, false, false).enableConsumption().build();
+                .setMachine(this, false, false).setConsumption(true).build();
         int parallels = helper.getCurrentParallel();
         if (parallels <= 0) {
             return CheckRecipeResultRegistry.NO_RECIPE;
@@ -735,43 +737,6 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
             }
         }
         return true;
-    }
-
-    /**
-     * Power object used to display the miners in NEI
-     */
-    private static class MinerPower extends BasicMachineEUPower {
-
-        /**
-         * Create a new power object for mining modules
-         *
-         * @param tier       Voltage tier of the miner
-         * @param moduleTier Module tier of the miner
-         */
-        public MinerPower(byte tier, int moduleTier) {
-            super(tier, 1, moduleTier);
-        }
-
-        /**
-         * Calculate the power usage for a given recipe with the specific miner tier
-         *
-         * @param euPerTick EU consumption of the recipe
-         * @param duration  Duration of the recipe
-         */
-        @Override
-        public void computePowerUsageAndDuration(int euPerTick, int duration) {
-            originalVoltage = computeVoltageForEuRate(euPerTick);
-            recipeEuPerTick = euPerTick;
-            recipeDuration = duration;
-        }
-
-        /**
-         * @return Tiered string which will be displayed, if this module tier is selected
-         */
-        @Override
-        public String getTierString() {
-            return GT_Values.TIER_COLORS[tier] + "MK " + specialValue + EnumChatFormatting.RESET;
-        }
     }
 
     /**

@@ -16,26 +16,26 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.gtnewhorizons.gtnhintergalactic.Tags;
+import com.gtnewhorizons.gtnhintergalactic.recipe.IGRecipeMaps;
 import com.gtnewhorizons.gtnhintergalactic.recipe.IG_Recipe;
-import com.gtnewhorizons.gtnhintergalactic.recipe.IG_RecipeAdder;
 import com.gtnewhorizons.gtnhintergalactic.recipe.ResultNoSpaceProject;
 import com.gtnewhorizons.gtnhintergalactic.tile.multi.elevator.ElevatorUtil;
 import com.gtnewhorizons.gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.objects.overclockdescriber.OverclockDescriber;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
-import gregtech.common.power.BasicMachineEUPower;
-import gregtech.common.power.Power;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
 /**
@@ -43,7 +43,7 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
  *
  * @author minecraft7771
  */
-public abstract class TileEntityModuleAssembler extends TileEntityModuleBase {
+public abstract class TileEntityModuleAssembler extends TileEntityModuleBase implements IOverclockDescriptionProvider {
 
     /** Name of the parallel setting */
     private static final INameFunction<TileEntityModuleAssembler> PARALLEL_SETTING_NAME = (base, p) -> GCCoreUtil
@@ -53,7 +53,7 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase {
             .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 100, base.getMaxParallels());
 
     /** Power object used for displaying in NEI */
-    protected final Power power;
+    protected final OverclockDescriber overclockDescriber;
     /** Input parameters */
     Parameters.Group.ParameterIn parallelSetting;
 
@@ -71,7 +71,7 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase {
     public TileEntityModuleAssembler(int aID, String aName, String aNameRegional, int tTier, int tModuleTier,
             int tMinMotorTier, int bufferSizeMultiplier) {
         super(aID, aName, aNameRegional, tTier, tModuleTier, tMinMotorTier, bufferSizeMultiplier);
-        power = new AssemblerPower((byte) tTier, tModuleTier);
+        overclockDescriber = new ModuleOverclockDescriber((byte) tTier, tModuleTier);
     }
 
     /**
@@ -86,7 +86,7 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase {
     public TileEntityModuleAssembler(String aName, int tTier, int tModuleTier, int tMinMotorTier,
             int bufferSizeMultiplier) {
         super(aName, tTier, tModuleTier, tMinMotorTier, bufferSizeMultiplier);
-        power = new AssemblerPower((byte) tTier, tModuleTier);
+        overclockDescriber = new ModuleOverclockDescriber((byte) tTier, tModuleTier);
     }
 
     /**
@@ -98,16 +98,16 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase {
      * @return Power object used for displaying in NEI
      */
     @Override
-    public Power getPower() {
-        return power;
+    public OverclockDescriber getOverclockDescriber() {
+        return overclockDescriber;
     }
 
     /**
      * @return The recipe map of this machine
      */
     @Override
-    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return IG_RecipeAdder.instance.sSpaceAssemblerRecipes;
+    public RecipeMap<?> getRecipeMap() {
+        return IGRecipeMaps.spaceAssemblerRecipes;
     }
 
     /**
@@ -202,30 +202,6 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase {
     @Override
     public boolean protectsExcessFluid() {
         return !eSafeVoid;
-    }
-
-    /**
-     * Power object used to display the assembler in NEI
-     */
-    private static class AssemblerPower extends BasicMachineEUPower {
-
-        /**
-         * Create a new power object for assembler modules
-         *
-         * @param tier       Voltage tier of the miner
-         * @param moduleTier Module tier of the miner
-         */
-        public AssemblerPower(byte tier, int moduleTier) {
-            super(tier, 1, moduleTier);
-        }
-
-        /**
-         * @return Tiered string which will be displayed, if this module tier is selected
-         */
-        @Override
-        public String getTierString() {
-            return GT_Values.TIER_COLORS[tier] + "MK " + specialValue + EnumChatFormatting.RESET;
-        }
     }
 
     /**

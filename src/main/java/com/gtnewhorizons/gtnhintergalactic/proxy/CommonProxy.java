@@ -7,7 +7,6 @@ import com.gtnewhorizons.gtnhintergalactic.config.Config;
 import com.gtnewhorizons.gtnhintergalactic.item.IGItems;
 import com.gtnewhorizons.gtnhintergalactic.loader.MachineLoader;
 import com.gtnewhorizons.gtnhintergalactic.loader.RecipeLoader;
-import com.gtnewhorizons.gtnhintergalactic.nei.IMCForNEI;
 import com.gtnewhorizons.gtnhintergalactic.recipe.IG_RecipeAdder;
 import com.gtnewhorizons.gtnhintergalactic.recipe.MachineRecipes;
 import com.gtnewhorizons.gtnhintergalactic.recipe.ResultNoSpaceProject;
@@ -37,7 +36,6 @@ public class CommonProxy {
 
     // load "Do your mod setup. Build whatever data structures you care about. Register recipes." (Remove if not needed)
     public void init(FMLInitializationEvent event) {
-        IMCForNEI.IMCSender();
         if (Textures.BlockIcons.casingTexturePages[32] == null) {
             Textures.BlockIcons.casingTexturePages[32] = new ITexture[128];
         }

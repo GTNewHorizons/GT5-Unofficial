@@ -45,6 +45,8 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
@@ -146,6 +148,11 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new TileEntityModuleManager(mName);
+    }
+
+    @Override
+    public RecipeMap<?> getRecipeMap() {
+        return RecipeMaps.spaceProjectFakeRecipes;
     }
 
     @Override
@@ -816,7 +823,7 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
     private void generateUpgradeCost(MultiChildWidget projectDetails) {
         final DynamicPositionedColumn activeUpgradeItemsAndFluids = new DynamicPositionedColumn();
         final DynamicPositionedColumn activeUpgradeCosts = new DynamicPositionedColumn();
-        for (int i = 0; i < GT_Recipe.GT_Recipe_Map.sFakeSpaceProjectRecipes.mUsualInputCount; i++) {
+        for (int i = 0; i < RecipeMaps.spaceProjectFakeRecipes.getFrontend().getUIProperties().maxItemInputs; i++) {
             int index = i;
             activeUpgradeItemsAndFluids.addChild(
                     new ItemDrawable(() -> selectedUpgrade != null ? selectedUpgrade.getItemCostPerStage(index) : null)
@@ -840,7 +847,7 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
                                     widget -> selectedUpgrade != null
                                             && selectedUpgrade.getItemCostPerStage(index) != null));
         }
-        for (int i = 0; i < GT_Recipe.GT_Recipe_Map.sFakeSpaceProjectRecipes.getUsualFluidInputCount(); i++) {
+        for (int i = 0; i < RecipeMaps.spaceProjectFakeRecipes.getFrontend().getUIProperties().maxFluidInputs; i++) {
             int index = i;
             activeUpgradeItemsAndFluids.addChild(
                     new FluidDrawable()
@@ -860,7 +867,7 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
                                     widget -> selectedUpgrade != null
                                             && selectedUpgrade.getFluidCostPerStage(index) != null));
         }
-        for (int i = 0; i < GT_Recipe.GT_Recipe_Map.sFakeSpaceProjectRecipes.mUsualInputCount; i++) {
+        for (int i = 0; i < RecipeMaps.spaceProjectFakeRecipes.getFrontend().getUIProperties().maxItemInputs; i++) {
             int index = i;
             activeUpgradeCosts.addChild(
                     TextWidget.dynamicString(

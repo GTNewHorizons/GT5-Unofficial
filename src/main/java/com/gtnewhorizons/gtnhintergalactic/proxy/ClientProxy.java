@@ -1,10 +1,12 @@
 package com.gtnewhorizons.gtnhintergalactic.proxy;
 
 import net.minecraft.util.IIcon;
+import net.minecraftforge.common.MinecraftForge;
 
 import com.gtnewhorizons.gtnhintergalactic.block.BlockSpaceElevatorCable;
 import com.gtnewhorizons.gtnhintergalactic.client.IGTextures;
 import com.gtnewhorizons.gtnhintergalactic.client.TooltipUtil;
+import com.gtnewhorizons.gtnhintergalactic.nei.NEI_IG_Config;
 import com.gtnewhorizons.gtnhintergalactic.render.RenderSpaceElevatorCable;
 import com.gtnewhorizons.gtnhintergalactic.tile.TileEntitySpaceElevatorCable;
 import com.mitchej123.hodgepodge.textures.IPatchedTextureAtlasSprite;
@@ -52,6 +54,7 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry
                 .bindTileEntitySpecialRenderer(TileEntitySpaceElevatorCable.class, new RenderSpaceElevatorCable());
         new IGTextures().run();
+        MinecraftForge.EVENT_BUS.register(new NEI_IG_Config());
     }
 
     /**

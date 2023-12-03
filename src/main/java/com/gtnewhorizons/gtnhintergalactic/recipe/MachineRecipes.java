@@ -2,7 +2,7 @@ package com.gtnewhorizons.gtnhintergalactic.recipe;
 
 import static gregtech.api.enums.GT_Values.RA;
 import static gregtech.api.enums.TickTime.MINUTE;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
+import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -135,7 +135,7 @@ public class MachineRecipes implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Graphene, 64))
                 .itemOutputs(new ItemStack(IGItems.SpaceElevatorItems, 1, 0))
                 .fluidInputs(Materials.AdvancedGlue.getFluid(720)).duration(1 * MINUTE).eut(TierEU.RECIPE_ZPM)
-                .requiresCleanRoom().noOptimize().addTo(sAssemblerRecipes);
+                .requiresCleanRoom().noOptimize().addTo(assemblerRecipes);
 
         // Space Elevator Cable
         TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -352,7 +352,7 @@ public class MachineRecipes implements Runnable {
                         metaStableOgScrew_64,
                         GT_OreDictUnificator.get(OrePrefixes.plateDouble, MaterialsUEVplus.TranscendentMetal, 16))
                 .itemOutputs(IGItems.SpaceElevatorModulePumpT2).fluidInputs(new FluidStack(solderUEV, 4608))
-                .duration(2 * MINUTE).eut(TierEU.RECIPE_UIV).noOptimize().addTo(sAssemblerRecipes);
+                .duration(2 * MINUTE).eut(TierEU.RECIPE_UIV).noOptimize().addTo(assemblerRecipes);
 
         // Pump Module MK-III
         TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -383,7 +383,7 @@ public class MachineRecipes implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.screw, MaterialsUEVplus.WhiteDwarfMatter, 64),
                         GT_OreDictUnificator.get(OrePrefixes.plateDouble, MaterialsUEVplus.Eternity, 16))
                 .itemOutputs(IGItems.SpaceElevatorModulePumpT3).fluidInputs(new FluidStack(solderUEV, 9216))
-                .duration(2 * MINUTE).eut(TierEU.RECIPE_UIV).noOptimize().addTo(sAssemblerRecipes);
+                .duration(2 * MINUTE).eut(TierEU.RECIPE_UIV).noOptimize().addTo(assemblerRecipes);
 
         // Assembler Module MK-I
         TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -568,7 +568,7 @@ public class MachineRecipes implements Runnable {
                         ItemList.Sensor_LV.get(8))
                 .itemOutputs(new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.LV.ordinal()))
                 .fluidInputs(Materials.SolderingAlloy.getMolten(720)).duration(1 * MINUTE).eut(TierEU.RECIPE_LV)
-                .addTo(sAssemblerRecipes);
+                .addTo(assemblerRecipes);
 
         // MV
         RA.stdBuilder()
@@ -582,7 +582,7 @@ public class MachineRecipes implements Runnable {
                         ItemList.Sensor_MV.get(8))
                 .itemOutputs(new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.MV.ordinal()))
                 .fluidInputs(Materials.SolderingAlloy.getMolten(1440)).duration(1 * MINUTE).eut(TierEU.RECIPE_MV)
-                .addTo(sAssemblerRecipes);
+                .addTo(assemblerRecipes);
 
         // HV
         RA.stdBuilder()
@@ -596,7 +596,7 @@ public class MachineRecipes implements Runnable {
                         ItemList.Sensor_HV.get(8))
                 .itemOutputs(new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.HV.ordinal()))
                 .fluidInputs(Materials.SolderingAlloy.getMolten(1440)).duration(1 * MINUTE).eut(TierEU.RECIPE_HV)
-                .addTo(sAssemblerRecipes);
+                .addTo(assemblerRecipes);
 
         // EV
         TT_recipeAdder.addResearchableAssemblylineRecipe(

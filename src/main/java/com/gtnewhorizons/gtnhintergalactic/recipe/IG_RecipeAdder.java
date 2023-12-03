@@ -1,33 +1,15 @@
 package com.gtnewhorizons.gtnhintergalactic.recipe;
 
-import java.awt.Rectangle;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.function.Supplier;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.gtnewhorizons.gtnhintergalactic.gui.IG_UITextures;
-import com.gtnewhorizons.modularui.api.math.Pos2d;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.ProgressBar;
-
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_RecipeAdder;
-import gregtech.common.gui.modularui.UIHelper;
-import gregtech.common.misc.spaceprojects.SpaceProjectManager;
-import gregtech.nei.NEIRecipeInfo;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
 /**
  * GT recipe adder of GTNH-Intergalactic
@@ -71,7 +53,7 @@ public class IG_RecipeAdder extends GT_RecipeAdder {
             aFluidInputs = nullFluid;
         }
 
-        return instance.sSpaceResearchRecipes.add(
+        IGRecipeMaps.spaceResearchRecipes.add(
                 new IG_Recipe(
                         false,
                         aItemInputs,
@@ -84,8 +66,8 @@ public class IG_RecipeAdder extends GT_RecipeAdder {
                         EUt,
                         computationRequiredPerSec,
                         neededSpaceProject,
-                        neededSpaceProjectLocation))
-                != null;
+                        neededSpaceProjectLocation));
+        return true;
     }
 
     /**
@@ -111,7 +93,7 @@ public class IG_RecipeAdder extends GT_RecipeAdder {
             aFluidInputs = nullFluid;
         }
 
-        return instance.sSpaceAssemblerRecipes.add(
+        IGRecipeMaps.spaceAssemblerRecipes.add(
                 new IG_Recipe(
                         false,
                         aItemInputs,
@@ -124,8 +106,8 @@ public class IG_RecipeAdder extends GT_RecipeAdder {
                         EUt,
                         requiredModuleTier,
                         neededSpaceProject,
-                        neededSpaceProjectLocation))
-                != null;
+                        neededSpaceProjectLocation));
+        return true;
     }
 
     /**
@@ -191,7 +173,7 @@ public class IG_RecipeAdder extends GT_RecipeAdder {
             outputs[i] = GT_OreDictUnificator.get(orePrefixes, ores[i], 64);
         }
 
-        instance.sSpaceMiningRecipes.add(
+        IGRecipeMaps.spaceMiningRecipes.add(
                 new IG_Recipe.IG_SpaceMiningRecipe(
                         false,
                         aItemInputs,
@@ -247,7 +229,7 @@ public class IG_RecipeAdder extends GT_RecipeAdder {
             aFluidInputs = nullFluid;
         }
 
-        instance.sSpaceMiningRecipes.add(
+        IGRecipeMaps.spaceMiningRecipes.add(
                 new IG_Recipe.IG_SpaceMiningRecipe(
                         false,
                         aItemInputs,
@@ -266,228 +248,4 @@ public class IG_RecipeAdder extends GT_RecipeAdder {
 
         return true;
     }
-
-    /** Recipe map for recipes in the Space Research Module */
-    public IG_Recipe_Map sSpaceResearchRecipes = (IG_Recipe_Map) new IG_Recipe_Map(
-            new HashSet<>(32),
-            "gt.recipe.spaceResearch",
-            GCCoreUtil.translate("ig.nei.spaceresearch.name"),
-            null,
-            "gregtech:textures/gui/FakeAssemblyline",
-            7,
-            1,
-            1,
-            0,
-            1,
-            GCCoreUtil.translate("ig.nei.spacemining.computationPrefix") + " ",
-            1,
-            " " + GCCoreUtil.translate("ig.nei.spacemining.computationSuffix"),
-            true,
-            true) {
-
-        @Override
-        public List<Pos2d> getItemOutputPositions(int itemOutputCount) {
-            return Collections.singletonList(new Pos2d(142, 35));
-        }
-
-        @Override
-        public List<Pos2d> getItemInputPositions(int itemInputCount) {
-            List<Pos2d> inputPositions = new ArrayList<>();
-            inputPositions.add(new Pos2d(80, 35));
-            inputPositions.add(new Pos2d(62, 8));
-            inputPositions.add(new Pos2d(80, 8));
-            inputPositions.add(new Pos2d(98, 8));
-            inputPositions.add(new Pos2d(62, 60));
-            inputPositions.add(new Pos2d(80, 60));
-            inputPositions.add(new Pos2d(98, 60));
-            return inputPositions;
-        }
-
-        @Override
-        public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
-            return UIHelper.getGridPositions(fluidInputCount, 34, 17, 1);
-        }
-    }.setUsualFluidInputCount(3).setLogo(IG_UITextures.PICTURE_ELEVATOR_LOGO).setLogoSize(18, 18)
-            .setNEITransferRect(new Rectangle(110, 35, 18, 18)).setProgressBarPos(110, 35)
-            .setNEISpecialInfoFormatter((recipeInfo, applyPrefixAndSuffix) -> {
-                List<String> specialInfo = new ArrayList<>();
-                specialInfo.add(applyPrefixAndSuffix.apply(recipeInfo.recipe.mSpecialValue));
-                if (recipeInfo.recipe instanceof IG_Recipe) {
-                    IG_Recipe recipe = (IG_Recipe) recipeInfo.recipe;
-                    String neededProject = recipe.getNeededSpaceProject();
-                    String neededProjectLocation = recipe.getNeededSpaceProjectLocation();
-                    if (neededProject != null && !neededProject.equals("")) {
-                        specialInfo.add(
-                                String.format(
-                                        GCCoreUtil.translate("ig.nei.spaceassembler.project"),
-                                        SpaceProjectManager.getProject(neededProject).getLocalizedName()));
-                        specialInfo.add(
-                                String.format(
-                                        GCCoreUtil.translate("ig.nei.spaceassembler.projectAt"),
-                                        neededProjectLocation == null || neededProjectLocation.equals("")
-                                                ? GCCoreUtil.translate("ig.nei.spaceassembler.projectAnyLocation")
-                                                : GCCoreUtil.translate(
-                                                        SpaceProjectManager.getLocation(neededProjectLocation)
-                                                                .getUnlocalizedName())));
-                    }
-                }
-                return specialInfo;
-            });
-
-    /** Recipe map for recipes in the Space Assembler Module */
-    public IG_Recipe_Map sSpaceAssemblerRecipes = (IG_Recipe_Map) new IG_Recipe_Map(
-            new HashSet<>(32),
-            "gt.recipe.spaceAssembler",
-            GCCoreUtil.translate("ig.nei.spaceassembler.name"),
-            null,
-            "gregtech:textures/gui/FakeAssemblyline",
-            16,
-            1,
-            1,
-            0,
-            1,
-            GCCoreUtil.translate("ig.nei.spacemining.specialValue.0"),
-            1,
-            GCCoreUtil.translate("ig.nei.spacemining.specialValue.1"),
-            true,
-            true) {
-
-        @Override
-        public List<Pos2d> getItemInputPositions(int itemInputCount) {
-            return UIHelper.getGridPositions(itemInputCount, 16, 8, 4);
-        }
-
-        @Override
-        public List<Pos2d> getItemOutputPositions(int itemOutputCount) {
-            return Collections.singletonList(new Pos2d(142, 8));
-        }
-
-        @Override
-        public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
-            return UIHelper.getGridPositions(fluidInputCount, 106, 8, 1);
-        }
-
-        @Override
-        public void addProgressBarUI(ModularWindow.Builder builder, Supplier<Float> progressSupplier,
-                Pos2d windowOffset) {
-            int bar1Width = 17;
-            int bar2Width = 18;
-            builder.widget(
-                    new ProgressBar().setTexture(GT_UITextures.PROGRESSBAR_ASSEMBLY_LINE_1, 17)
-                            .setDirection(ProgressBar.Direction.RIGHT)
-                            .setProgress(() -> progressSupplier.get() * ((float) (bar1Width + bar2Width) / bar1Width))
-                            .setSynced(false, false).setPos(new Pos2d(88, 8).add(windowOffset)).setSize(bar1Width, 72));
-            builder.widget(
-                    new ProgressBar().setTexture(GT_UITextures.PROGRESSBAR_ASSEMBLY_LINE_2, 18)
-                            .setDirection(ProgressBar.Direction.RIGHT)
-                            .setProgress(
-                                    () -> (progressSupplier.get() - ((float) bar1Width / (bar1Width + bar2Width)))
-                                            * ((float) (bar1Width + bar2Width) / bar2Width))
-                            .setSynced(false, false).setPos(new Pos2d(124, 8).add(windowOffset))
-                            .setSize(bar2Width, 72));
-        }
-    }.setUsualFluidInputCount(4).setLogo(IG_UITextures.PICTURE_ELEVATOR_LOGO).setLogoSize(18, 18)
-            .setNEITransferRect(new Rectangle(124, 8, 16, 16)).useComparatorForNEI(true)
-            .setNEISpecialInfoFormatter((recipeInfo, applyPrefixAndSuffix) -> {
-                List<String> specialInfo = new ArrayList<>();
-                specialInfo.add(applyPrefixAndSuffix.apply(recipeInfo.recipe.mSpecialValue));
-                if (recipeInfo.recipe instanceof IG_Recipe) {
-                    IG_Recipe recipe = (IG_Recipe) recipeInfo.recipe;
-                    String neededProject = recipe.getNeededSpaceProject();
-                    String neededProjectLocation = recipe.getNeededSpaceProjectLocation();
-                    if (neededProject != null && !neededProject.equals("")) {
-                        specialInfo.add(
-                                String.format(
-                                        GCCoreUtil.translate("ig.nei.spaceassembler.project"),
-                                        SpaceProjectManager.getProject(neededProject).getLocalizedName()));
-                        specialInfo.add(
-                                String.format(
-                                        GCCoreUtil.translate("ig.nei.spaceassembler.projectAt"),
-                                        neededProjectLocation == null || neededProjectLocation.equals("")
-                                                ? GCCoreUtil.translate("ig.nei.spaceassembler.projectAnyLocation")
-                                                : GCCoreUtil.translate(
-                                                        SpaceProjectManager.getLocation(neededProjectLocation)
-                                                                .getUnlocalizedName())));
-                    }
-                }
-                return specialInfo;
-            });
-
-    /** Recipe map for recipes in the Space Mining Module */
-    public IG_Recipe_Map sSpaceMiningRecipes = (IG_Recipe_Map) new IG_Recipe_Map(
-            new HashSet<>(32),
-            "gt.recipe.spaceMining",
-            GCCoreUtil.translate("ig.nei.spacemining.name"),
-            null,
-            "gregtech:textures/gui/FakeSpaceMiningModule",
-            5,
-            16,
-            1,
-            0,
-            1,
-            GCCoreUtil.translate("ig.nei.spacemining.specialValue.0"),
-            1,
-            GCCoreUtil.translate("ig.nei.spacemining.specialValue.1"),
-            true,
-            true) {
-
-        @Override
-        public List<Pos2d> getItemInputPositions(int itemInputCount) {
-            List<Pos2d> results = new ArrayList<>();
-            // assume drones are present on first input
-            results.add(new Pos2d(143, 15));
-            results.addAll(UIHelper.getGridPositions(itemInputCount - 1, 10, 6, 2));
-            return results;
-        }
-
-        @Override
-        public List<Pos2d> getItemOutputPositions(int itemOutputCount) {
-            return UIHelper.getGridPositions(itemOutputCount, 69, 6, 4);
-        }
-
-        @Override
-        public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
-            return UIHelper.getGridPositions(fluidInputCount, 10, 51, fluidInputCount);
-        }
-
-        @Override
-        public void addProgressBarUI(ModularWindow.Builder builder, Supplier<Float> progressSupplier,
-                Pos2d windowOffset) {
-            builder.widget(
-                    new DrawableWidget().setDrawable(IG_UITextures.PROGRESSBAR_SPACE_MINING_MODULE_ARROW)
-                            .setPos(new Pos2d(46, 6).add(windowOffset)).setSize(23, 63));
-        }
-
-        @Override
-        protected void drawNEISpecialInfo(NEIRecipeInfo recipeInfo) {
-            recipeInfo.yPos -= 1;
-            super.drawNEISpecialInfo(recipeInfo);
-        }
-    }.setUsualFluidInputCount(2).useComparatorForNEI(true).setLogo(IG_UITextures.PICTURE_ELEVATOR_LOGO)
-            .setLogoPos(151, 58).setLogoSize(18, 18).setNEIBackgroundSize(172, 78)
-            .setNEITransferRect(new Rectangle(46, 6, 23, 63))
-            .setNEISpecialInfoFormatter((recipeInfo, applyPrefixAndSuffix) -> {
-                List<String> result = new ArrayList<>();
-                result.add(applyPrefixAndSuffix.apply(recipeInfo.recipe.mSpecialValue));
-                if (recipeInfo.recipe instanceof IG_Recipe.IG_SpaceMiningRecipe) {
-                    IG_Recipe.IG_SpaceMiningRecipe miningRecipe = (IG_Recipe.IG_SpaceMiningRecipe) recipeInfo.recipe;
-                    result.add(
-                            GCCoreUtil.translate("ig.nei.spacemining.distance") + " "
-                                    + miningRecipe.minDistance
-                                    + "-"
-                                    + miningRecipe.maxDistance);
-                    result.add(
-                            GCCoreUtil.translate("ig.nei.spacemining.size") + " "
-                                    + miningRecipe.minSize
-                                    + "-"
-                                    + miningRecipe.maxSize);
-                    result.add(
-                            GCCoreUtil.translate("ig.nei.spacemining.computationPrefix") + " "
-                                    + GT_Utility.formatNumbers(miningRecipe.computation)
-                                    + " "
-                                    + GCCoreUtil.translate("ig.nei.spacemining.computationSuffix"));
-                    result.add(GCCoreUtil.translate("ig.nei.spacemining.weight") + " " + miningRecipe.recipeWeight);
-                }
-                return result;
-            });
 }

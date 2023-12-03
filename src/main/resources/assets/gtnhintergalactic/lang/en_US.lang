@@ -246,19 +246,18 @@ gt.blockmachines.multimachine.project.ig.research.t1.name=Space Research Module
 gt.blockmachines.multimachine.project.ig.research.desc0=Module that allows you to research stellar objects
 gt.blockmachines.multimachine.project.ig.research.desc1=Don't look directly into the sun
 
+# RecipeMaps
+gt.recipe.spaceMining=Space Mining
+gt.recipe.spaceAssembler=Space Assembler
+gt.recipe.spaceResearch=Space Research
+
 # NEI
-ig.nei.spacemining.name=Space Mining
-ig.nei.spaceassembler.name=Space Assembler
-ig.nei.spaceresearch.name=Space Research
 ig.nei.spaceassembler.project=Needs %s
 ig.nei.spaceassembler.projectAt=at %s
 ig.nei.spaceassembler.projectAnyLocation=any location
-ig.nei.spacemining.specialValue.0=Needs MK-
-ig.nei.spacemining.specialValue.1= Module
+ig.nei.module=Needs MK-%s Module
 ig.nei.spacemining.distance=Distance:
 ig.nei.spacemining.size=Size:
-ig.nei.spacemining.computationPrefix=Min Computation:
-ig.nei.spacemining.computationSuffix=/s
 ig.nei.spacemining.weight=Weight:
 ig.nei.elevatorpump.name=Space Pumping Module
 ig.nei.elevatorpump.planettype=Planet
