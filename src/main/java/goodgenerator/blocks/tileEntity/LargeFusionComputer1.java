@@ -21,7 +21,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.power.FusionPower;
 
 public class LargeFusionComputer1 extends LargeFusionComputer {
 
@@ -31,12 +30,10 @@ public class LargeFusionComputer1 extends LargeFusionComputer {
 
     public LargeFusionComputer1(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
-        power = new FusionPower((byte) 6, 160_000_000);
     }
 
     public LargeFusionComputer1(String name) {
         super(name);
-        power = new FusionPower((byte) 6, 160_000_000);
     }
 
     @Override
@@ -71,8 +68,18 @@ public class LargeFusionComputer1 extends LargeFusionComputer {
     }
 
     @Override
+    public int tier() {
+        return 6;
+    }
+
+    @Override
     public long maxEUStore() {
         return 160008000L * (Math.min(32, this.mEnergyHatches.size() + this.eEnergyMulti.size())) / 32L;
+    }
+
+    @Override
+    public long capableStartupCanonical() {
+        return 160_000_000;
     }
 
     @Override

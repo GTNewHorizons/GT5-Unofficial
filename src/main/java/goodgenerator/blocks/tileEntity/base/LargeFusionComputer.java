@@ -5,6 +5,8 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -37,6 +39,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
@@ -44,6 +47,10 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.objects.GT_ChunkManager;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.objects.overclockdescriber.FusionOverclockDescriber;
+import gregtech.api.objects.overclockdescriber.OverclockDescriber;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
@@ -52,16 +59,15 @@ import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.power.FusionPower;
 
 public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
-        implements IConstructable, ISurvivalConstructable {
+        implements IConstructable, ISurvivalConstructable, IOverclockDescriptionProvider {
 
     public static final String MAIN_NAME = "largeFusion";
     private boolean isLoadedChunk;
     public GT_Recipe mLastRecipe;
     public int para;
-    protected FusionPower power;
+    protected OverclockDescriber overclockDescriber;
     private static final ClassValue<IStructureDefinition<LargeFusionComputer>> STRUCTURE_DEFINITION = new ClassValue<IStructureDefinition<LargeFusionComputer>>() {
 
         @Override
@@ -101,20 +107,35 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
     public LargeFusionComputer(String name) {
         super(name);
         useLongPower = true;
+        this.overclockDescriber = createOverclockDescriber();
     }
 
     public LargeFusionComputer(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
         useLongPower = true;
+        this.overclockDescriber = createOverclockDescriber();
     }
 
-    @Override
-    public FusionPower getPower() {
-        return power;
+    protected OverclockDescriber createOverclockDescriber() {
+        return new FusionOverclockDescriber((byte) tier(), capableStartupCanonical());
     }
+
+    @Nullable
+    @Override
+    public OverclockDescriber getOverclockDescriber() {
+        return overclockDescriber;
+    }
+
+    public abstract int tier();
 
     @Override
     public abstract long maxEUStore();
+
+    /**
+     * Unlike {@link #maxEUStore()}, this provides theoretical limit of startup EU, without considering the amount of
+     * hatches nor the room for extra energy. Intended for simulation.
+     */
+    public abstract long capableStartupCanonical();
 
     public abstract Block getCasingBlock();
 
@@ -406,8 +427,14 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
                         : ((mStartEnergy <= 640000000) ? 2 : (mStartEnergy <= 1280000000) ? 1 : 0));
     }
 
-    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return GT_Recipe.GT_Recipe_Map.sFusionRecipes;
+    @Override
+    public RecipeMap<?> getRecipeMap() {
+        return RecipeMaps.fusionRecipes;
+    }
+
+    @Override
+    public int getRecipeCatalystPriority() {
+        return -2;
     }
 
     @Override

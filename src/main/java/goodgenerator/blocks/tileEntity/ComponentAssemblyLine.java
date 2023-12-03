@@ -23,8 +23,8 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.loader.Loaders;
-import goodgenerator.util.MyRecipeAdder;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
@@ -34,6 +34,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
@@ -324,8 +325,8 @@ public class ComponentAssemblyLine extends GT_MetaTileEntity_ExtendedPowerMultiB
     }
 
     @Override
-    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return MyRecipeAdder.instance.COMPASSLINE_RECIPES;
+    public RecipeMap<?> getRecipeMap() {
+        return GoodGeneratorRecipeMaps.componentAssemblyLineRecipes;
     }
 
     @Override

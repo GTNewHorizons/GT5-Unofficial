@@ -8,19 +8,19 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import org.jetbrains.annotations.NotNull;
 
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
@@ -33,10 +33,10 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
 
+import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.client.GUI.GG_UITextures;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
-import goodgenerator.util.MyRecipeAdder;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
@@ -58,15 +58,15 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maint
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.recipe.check.FindRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_HatchElementBuilder;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 
@@ -221,34 +221,23 @@ public class PreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlockB
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
-            @NotNull
+            @Nonnull
             @Override
-            protected CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
+            protected CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
                 if (mode == 0) {
                     if (recipe.mSpecialValue > (casingTier + 1)) {
                         return CheckRecipeResultRegistry.insufficientMachineTier(recipe.mSpecialValue);
                     }
                 }
+                if (availableVoltage < recipe.mEUt) {
+                    return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
+                }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
 
-            @NotNull
+            @Nonnull
             @Override
-            protected FindRecipeResult findRecipe(@Nullable GT_Recipe_Map map) {
-                if (map == null) return FindRecipeResult.NOT_FOUND;
-                return map.findRecipeWithResult(
-                        lastRecipe,
-                        false,
-                        false,
-                        availableVoltage,
-                        inputFluids,
-                        specialSlotItem,
-                        inputItems);
-            }
-
-            @NotNull
-            @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
+            protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
                 return super.createOverclockCalculator(recipe).setSpeedBoost(mode == 0 ? 1 : 0.5F);
             }
         }.setMaxParallelSupplier(() -> mode == 0 ? 1 : (int) Math.pow(2, 4 + (casingTier + 1)));
@@ -256,7 +245,7 @@ public class PreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlockB
 
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
-        boolean useSingleAmp = mEnergyHatches.size() == 1 && mExoticEnergyHatches.size() == 0;
+        boolean useSingleAmp = mEnergyHatches.size() == 1 && mExoticEnergyHatches.isEmpty();
         logic.setAvailableVoltage(getMachineVoltageLimit());
         logic.setAvailableAmperage(useSingleAmp ? 1 : getMaxInputAmps());
         logic.setAmperageOC(true);
@@ -274,9 +263,15 @@ public class PreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlockB
     }
 
     @Override
-    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        if (this.mode == 0) return MyRecipeAdder.instance.PA;
-        else return GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
+    public RecipeMap<?> getRecipeMap() {
+        if (this.mode == 0) return GoodGeneratorRecipeMaps.preciseAssemblerRecipes;
+        else return RecipeMaps.assemblerRecipes;
+    }
+
+    @Nonnull
+    @Override
+    public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
+        return Arrays.asList(GoodGeneratorRecipeMaps.preciseAssemblerRecipes, RecipeMaps.assemblerRecipes);
     }
 
     @Override

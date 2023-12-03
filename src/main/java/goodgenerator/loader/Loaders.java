@@ -43,7 +43,6 @@ import goodgenerator.blocks.tileEntity.YottaFluidTank;
 import goodgenerator.client.render.BlockRenderHandler;
 import goodgenerator.crossmod.LoadedList;
 import goodgenerator.crossmod.ic2.CropsLoader;
-import goodgenerator.crossmod.nei.IMCForNEI;
 import goodgenerator.crossmod.nei.NEI_Config;
 import goodgenerator.crossmod.thaumcraft.LargeEssentiaEnergyData;
 import goodgenerator.items.MyItemBlocks;
@@ -468,7 +467,6 @@ public class Loaders {
         }
         GTMetaTileRegister();
         initLoadRecipes();
-        IMCForNEI.IMCSender();
         CropsLoader.registerCrops();
     }
 

@@ -27,6 +27,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.objects.ItemData;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -371,7 +372,7 @@ public class ComponentAssemblyLineRecipeLoader {
                 if (currentComponent.hasBeenSet()) {
                     if (t < 6) {
                         ArrayList<GT_Recipe> foundRecipes = new ArrayList<>();
-                        for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sAssemblerRecipes.mRecipeList) {
+                        for (GT_Recipe recipe : RecipeMaps.assemblerRecipes.getAllRecipes()) {
                             if (GT_Utility.areStacksEqual(currentComponent.get(1), recipe.mOutputs[0])) {
                                 foundRecipes.add(recipe);
                             }

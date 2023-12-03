@@ -67,13 +67,14 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GTPP_Recipe;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GT_Bees;
+import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.item.chemistry.GenericChem;
 import gtPlusPlus.core.lib.CORE;
 
@@ -567,7 +568,7 @@ public class NaquadahReworkRecipeLoader {
 
         GT_Recipe tRecipe;
 
-        tRecipe = GT_Recipe.GT_Recipe_Map.sChemicalRecipes.findRecipe(
+        tRecipe = RecipeMaps.chemicalReactorRecipes.findRecipe(
                 null,
                 false,
                 1 << 30,
@@ -575,15 +576,15 @@ public class NaquadahReworkRecipeLoader {
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Platinum, 16),
                 ItemList.Empty_Board_Elite.get(2));
         if (tRecipe != null) {
-            GT_Recipe.GT_Recipe_Map.sChemicalRecipes.mRecipeList.remove(tRecipe);
+            RecipeMaps.chemicalReactorRecipes.getBackend().removeRecipe(tRecipe);
             GT_Recipe tRecipe2 = tRecipe.copy();
             tRecipe2.mInputs = new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Naquadah, 8),
                     ItemList.Empty_Board_Elite.get(2) };
-            GT_Recipe.GT_Recipe_Map.sChemicalRecipes.mRecipeList.add(tRecipe2);
-            GT_Recipe.GT_Recipe_Map.sChemicalRecipes.reInit();
+            RecipeMaps.chemicalReactorRecipes.add(tRecipe2);
+            RecipeMaps.chemicalReactorRecipes.getBackend().reInit();
         }
 
-        tRecipe = GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes.findRecipe(
+        tRecipe = RecipeMaps.multiblockChemicalReactorRecipes.findRecipe(
                 null,
                 false,
                 1 << 30,
@@ -591,15 +592,15 @@ public class NaquadahReworkRecipeLoader {
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Platinum, 16),
                 ItemList.Empty_Board_Elite.get(2));
         if (tRecipe != null) {
-            GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes.mRecipeList.remove(tRecipe);
+            RecipeMaps.multiblockChemicalReactorRecipes.getBackend().removeRecipe(tRecipe);
             GT_Recipe tRecipe2 = tRecipe.copy();
             tRecipe2.mInputs = new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Naquadah, 8),
                     ItemList.Empty_Board_Elite.get(2) };
-            GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes.mRecipeList.add(tRecipe2);
-            GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes.reInit();
+            RecipeMaps.multiblockChemicalReactorRecipes.add(tRecipe2);
+            RecipeMaps.multiblockChemicalReactorRecipes.getBackend().reInit();
         }
 
-        tRecipe = GT_Recipe.GT_Recipe_Map.sAssemblerRecipes.findRecipe(
+        tRecipe = RecipeMaps.assemblerRecipes.findRecipe(
                 null,
                 false,
                 1 << 30,
@@ -608,13 +609,13 @@ public class NaquadahReworkRecipeLoader {
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.HSSS, 1),
                 GT_Utility.getIntegratedCircuit(1));
         if (tRecipe != null) {
-            GT_Recipe.GT_Recipe_Map.sAssemblerRecipes.mRecipeList.remove(tRecipe);
+            RecipeMaps.assemblerRecipes.getBackend().removeRecipe(tRecipe);
             GT_Recipe tRecipe2 = tRecipe.copy();
             tRecipe2.mInputs = new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole, 2),
                     GT_OreDictUnificator.get(OrePrefixes.foil, Materials.NaquadahEnriched, 1) };
-            GT_Recipe.GT_Recipe_Map.sAssemblerRecipes.mRecipeList.add(tRecipe2);
-            GT_Recipe.GT_Recipe_Map.sAssemblerRecipes.reInit();
+            RecipeMaps.assemblerRecipes.add(tRecipe2);
+            RecipeMaps.assemblerRecipes.getBackend().reInit();
         }
     }
 
@@ -628,7 +629,7 @@ public class NaquadahReworkRecipeLoader {
         HashSet<GT_Recipe> reAdd = new HashSet<>(5000);
 
         // For Crusher
-        for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.mRecipeList) {
+        for (GT_Recipe recipe : RecipeMaps.maceratorRecipes.getAllRecipes()) {
             ItemStack input = recipe.mInputs[0];
             if (GT_Utility.isStackValid(input)) {
                 int[] oreDict = OreDictionary.getOreIDs(input);
@@ -666,9 +667,9 @@ public class NaquadahReworkRecipeLoader {
                 }
             }
         }
-        GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.mRecipeList.removeAll(remove);
-        GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.mRecipeList.addAll(reAdd);
-        GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.reInit();
+        RecipeMaps.maceratorRecipes.getBackend().removeRecipes(remove);
+        reAdd.forEach(RecipeMaps.maceratorRecipes::add);
+        RecipeMaps.maceratorRecipes.getBackend().reInit();
 
         GT_Log.out.print(GoodGenerator.MOD_ID + ": Replace " + remove.size() + "! ");
 
@@ -678,7 +679,7 @@ public class NaquadahReworkRecipeLoader {
         GT_Log.out.print("Crusher done!\n");
 
         // For Washer
-        for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sOreWasherRecipes.mRecipeList) {
+        for (GT_Recipe recipe : RecipeMaps.oreWasherRecipes.getAllRecipes()) {
             ItemStack input = recipe.mInputs[0];
             if (GT_Utility.isStackValid(input)) {
                 int[] oreDict = OreDictionary.getOreIDs(input);
@@ -715,9 +716,9 @@ public class NaquadahReworkRecipeLoader {
                 }
             }
         }
-        GT_Recipe.GT_Recipe_Map.sOreWasherRecipes.mRecipeList.removeAll(remove);
-        GT_Recipe.GT_Recipe_Map.sOreWasherRecipes.mRecipeList.addAll(reAdd);
-        GT_Recipe.GT_Recipe_Map.sOreWasherRecipes.reInit();
+        RecipeMaps.oreWasherRecipes.getBackend().removeRecipes(remove);
+        reAdd.forEach(RecipeMaps.oreWasherRecipes::add);
+        RecipeMaps.oreWasherRecipes.getBackend().reInit();
 
         GT_Log.out.print(GoodGenerator.MOD_ID + ": Replace " + remove.size() + "! ");
 
@@ -727,7 +728,7 @@ public class NaquadahReworkRecipeLoader {
         GT_Log.out.print("Washer done!\n");
 
         // For Thermal Centrifuge
-        for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes.mRecipeList) {
+        for (GT_Recipe recipe : RecipeMaps.thermalCentrifugeRecipes.getAllRecipes()) {
             ItemStack input = recipe.mInputs[0];
             if (GT_Utility.isStackValid(input)) {
                 int[] oreDict = OreDictionary.getOreIDs(input);
@@ -764,9 +765,9 @@ public class NaquadahReworkRecipeLoader {
                 }
             }
         }
-        GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes.mRecipeList.removeAll(remove);
-        GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes.mRecipeList.addAll(reAdd);
-        GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes.reInit();
+        RecipeMaps.thermalCentrifugeRecipes.getBackend().removeRecipes(remove);
+        reAdd.forEach(RecipeMaps.thermalCentrifugeRecipes::add);
+        RecipeMaps.thermalCentrifugeRecipes.getBackend().reInit();
 
         GT_Log.out.print(GoodGenerator.MOD_ID + ": Replace " + remove.size() + "! ");
 
@@ -776,7 +777,7 @@ public class NaquadahReworkRecipeLoader {
         GT_Log.out.print("Thermal Centrifuge done!\n");
 
         // For Centrifuge
-        for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.mRecipeList) {
+        for (GT_Recipe recipe : RecipeMaps.centrifugeRecipes.getAllRecipes()) {
             ItemStack input = null;
             if (recipe.mInputs.length > 0) input = recipe.mInputs[0];
             if (GT_Utility.isStackValid(input)) {
@@ -862,9 +863,9 @@ public class NaquadahReworkRecipeLoader {
                 }
             }
         }
-        GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.mRecipeList.removeAll(remove);
-        GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.mRecipeList.addAll(reAdd);
-        GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.reInit();
+        RecipeMaps.centrifugeRecipes.getBackend().removeRecipes(remove);
+        reAdd.forEach(RecipeMaps.centrifugeRecipes::add);
+        RecipeMaps.centrifugeRecipes.getBackend().reInit();
 
         GT_Log.out.print(GoodGenerator.MOD_ID + ": Replace " + remove.size() + "! ");
 
@@ -874,7 +875,7 @@ public class NaquadahReworkRecipeLoader {
         GT_Log.out.print("Centrifuge done!\n");
 
         // For Centrifuge (PA)
-        for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sMultiblockCentrifugeRecipes.mRecipeList) {
+        for (GT_Recipe recipe : RecipeMaps.centrifugeNonCellRecipes.getAllRecipes()) {
             ItemStack input = null;
             if (recipe.mInputs.length > 0) input = recipe.mInputs[0];
             if (GT_Utility.isStackValid(input)) {
@@ -960,9 +961,9 @@ public class NaquadahReworkRecipeLoader {
                 }
             }
         }
-        GT_Recipe.GT_Recipe_Map.sMultiblockCentrifugeRecipes.mRecipeList.removeAll(remove);
-        GT_Recipe.GT_Recipe_Map.sMultiblockCentrifugeRecipes.mRecipeList.addAll(reAdd);
-        GT_Recipe.GT_Recipe_Map.sMultiblockCentrifugeRecipes.reInit();
+        RecipeMaps.centrifugeNonCellRecipes.getBackend().removeRecipes(remove);
+        reAdd.forEach(RecipeMaps.centrifugeNonCellRecipes::add);
+        RecipeMaps.centrifugeNonCellRecipes.getBackend().reInit();
 
         GT_Log.out.print(GoodGenerator.MOD_ID + ": Replace " + remove.size() + "! ");
 
@@ -972,7 +973,7 @@ public class NaquadahReworkRecipeLoader {
         GT_Log.out.print("Centrifuge (PA) done!\n");
 
         // For Hammer
-        for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sHammerRecipes.mRecipeList) {
+        for (GT_Recipe recipe : RecipeMaps.hammerRecipes.getAllRecipes()) {
             ItemStack input = recipe.mInputs[0];
             if (GT_Utility.isStackValid(input)) {
                 int[] oreDict = OreDictionary.getOreIDs(input);
@@ -1009,9 +1010,9 @@ public class NaquadahReworkRecipeLoader {
                 }
             }
         }
-        GT_Recipe.GT_Recipe_Map.sHammerRecipes.mRecipeList.removeAll(remove);
-        GT_Recipe.GT_Recipe_Map.sHammerRecipes.mRecipeList.addAll(reAdd);
-        GT_Recipe.GT_Recipe_Map.sHammerRecipes.reInit();
+        RecipeMaps.hammerRecipes.getBackend().removeRecipes(remove);
+        reAdd.forEach(RecipeMaps.hammerRecipes::add);
+        RecipeMaps.hammerRecipes.getBackend().reInit();
 
         GT_Log.out.print(GoodGenerator.MOD_ID + ": Replace " + remove.size() + "! ");
 
@@ -1021,7 +1022,7 @@ public class NaquadahReworkRecipeLoader {
         GT_Log.out.print("Hammer done!\n");
 
         // For Chemical Reactor
-        for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sChemicalRecipes.mRecipeList) {
+        for (GT_Recipe recipe : RecipeMaps.chemicalReactorRecipes.getAllRecipes()) {
             if (recipe.mFluidOutputs == null) continue;
             boolean isAny = false;
             for (int i = 0; i < recipe.mFluidOutputs.length; i++) {
@@ -1054,9 +1055,9 @@ public class NaquadahReworkRecipeLoader {
                 remove.add(recipe);
             }
         }
-        GT_Recipe.GT_Recipe_Map.sChemicalRecipes.mRecipeList.removeAll(remove);
-        GT_Recipe.GT_Recipe_Map.sChemicalRecipes.mRecipeList.addAll(reAdd);
-        GT_Recipe.GT_Recipe_Map.sChemicalRecipes.reInit();
+        RecipeMaps.chemicalReactorRecipes.getBackend().removeRecipes(remove);
+        reAdd.forEach(RecipeMaps.chemicalReactorRecipes::add);
+        RecipeMaps.chemicalReactorRecipes.getBackend().reInit();
 
         GT_Log.out.print(GoodGenerator.MOD_ID + ": Replace " + remove.size() + "! ");
 
@@ -1066,7 +1067,7 @@ public class NaquadahReworkRecipeLoader {
         GT_Log.out.print("Chemical Reactor done!\n");
 
         // For Multi Chemical Reactor
-        for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes.mRecipeList) {
+        for (GT_Recipe recipe : RecipeMaps.multiblockChemicalReactorRecipes.getAllRecipes()) {
             if (recipe.mFluidOutputs == null) continue;
             boolean isAny = false;
             for (int i = 0; i < recipe.mFluidOutputs.length; i++) {
@@ -1099,9 +1100,9 @@ public class NaquadahReworkRecipeLoader {
                 remove.add(recipe);
             }
         }
-        GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes.mRecipeList.removeAll(remove);
-        GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes.mRecipeList.addAll(reAdd);
-        GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes.reInit();
+        RecipeMaps.multiblockChemicalReactorRecipes.getBackend().removeRecipes(remove);
+        reAdd.forEach(RecipeMaps.multiblockChemicalReactorRecipes::add);
+        RecipeMaps.multiblockChemicalReactorRecipes.getBackend().reInit();
 
         GT_Log.out.print(GoodGenerator.MOD_ID + ": Replace " + remove.size() + "! ");
 
@@ -1115,12 +1116,12 @@ public class NaquadahReworkRecipeLoader {
             // Apparently NEI will break down if one modifies the hash list directly.
             // GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.mRecipeList.clear();
             // RecipeGen_MultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
-            // GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes,
+            // RecipeMaps.centrifugeRecipes,
             // GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT);
             // GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.reInit();
 
             // For Simple Washer
-            for (GT_Recipe recipe : GTPP_Recipe.GTPP_Recipe_Map.sSimpleWasherRecipes.mRecipeList) {
+            for (GT_Recipe recipe : GTPPRecipeMaps.simpleWasherRecipes.getAllRecipes()) {
                 ItemStack input = recipe.mInputs[0];
                 if (GT_Utility.isStackValid(input)) {
                     int[] oreDict = OreDictionary.getOreIDs(input);
@@ -1156,9 +1157,9 @@ public class NaquadahReworkRecipeLoader {
                     }
                 }
             }
-            GTPP_Recipe.GTPP_Recipe_Map.sSimpleWasherRecipes.mRecipeList.removeAll(remove);
-            GTPP_Recipe.GTPP_Recipe_Map.sSimpleWasherRecipes.mRecipeList.addAll(reAdd);
-            GTPP_Recipe.GTPP_Recipe_Map.sSimpleWasherRecipes.reInit();
+            GTPPRecipeMaps.simpleWasherRecipes.getBackend().removeRecipes(remove);
+            reAdd.forEach(GTPPRecipeMaps.simpleWasherRecipes::add);
+            GTPPRecipeMaps.simpleWasherRecipes.getBackend().reInit();
 
             GT_Log.out.print(GoodGenerator.MOD_ID + ": Replace " + remove.size() + "! ");
 

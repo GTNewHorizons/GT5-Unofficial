@@ -57,7 +57,6 @@ componentAssemblyLineCasing.11.name=Component Assembly Line Casing (UMV)
 componentAssemblyLineCasing.12.name=Component Assembly Line Casing (UXV)
 componentAssemblyLineCasing.13.name=Component Assembly Line Casing (MAX)
 
-
 #Items
 item.radiationProtectionPlate.name=Radiation Proof Plate
 item.wrappedUraniumIngot.name=Wrapped Uranium Ingot
@@ -312,15 +311,17 @@ gui.YOTTank.button.locking=Fluid locking
 gui.LargeFusion.0=Energy Capacity:
 gui.LargeFusion.1=Stored Energy:
 
+# RecipeMaps
+gg.recipe.naquadah_reactor=Large Naquadah Reactor
+gg.recipe.naquadah_fuel_refine_factory=Naquadah Fuel Refine Factory
+gg.recipe.neutron_activator=Neutron Activator
+gg.recipe.extreme_heat_exchanger=Extreme Heat Exchanger
+gg.recipe.precise_assembler=Precise Assembler
+gg.recipe.componentassemblyline=Component Assembly Line
+
 #NEI Info
-tile.recipe.naquadah_reactor=Large Naquadah Reactor
-tile.naquadah_fuel_refine_factory=Naquadah Fuel Refine Factory
-tile.neutron_activator=Neutron Activator
-tile.extreme_heat_exchanger=Extreme Heat Exchanger
-tile.precise_assembler=Precise Assembler
-value.naquadah_reactor=Basic Output Voltage:
-value.naquadah_fuel_refine_factory.0=Need Tier
-value.naquadah_fuel_refine_factory.1= Coil
+value.naquadah_reactor=Basic Output Voltage: %s EU/t
+value.naquadah_fuel_refine_factory=Need Tier %s Coil
 value.neutron_activator.0=Minimum Neutron Kinetic Energy:
 value.neutron_activator.1=Maximum Neutron Kinetic Energy:
 value.neutron_activator.2= MeV
@@ -328,8 +329,8 @@ value.extreme_heat_exchanger.0=Max Hot Fluid Input:
 value.extreme_heat_exchanger.1=Max Distilled Water Input(Normal):
 value.extreme_heat_exchanger.2=Max Distilled Water Input(OverHeated):
 value.extreme_heat_exchanger.4=Threshold:
-value.precise_assembler.0=Need MK-
-value.precise_assembler.1= Casing
+value.precise_assembler=Need MK-%s Casing
+value.component_assembly_line=Casing Tier: %s
 
 #TecTech Structure Info
 FuelRefineFactory.hint.0=8x Field Restriction Glasses

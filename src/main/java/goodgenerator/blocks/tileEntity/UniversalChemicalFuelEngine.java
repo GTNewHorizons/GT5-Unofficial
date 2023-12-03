@@ -7,7 +7,6 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
@@ -39,13 +38,14 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynam
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 
 public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         implements IConstructable, ISurvivalConstructable {
@@ -205,12 +205,9 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_TooltipMultiB
 
         ArrayList<FluidStack> tFluids = getStoredFluids();
 
-        Collection<GT_Recipe> tDieselFuels = GT_Recipe.GT_Recipe_Map.sDieselFuels.mRecipeList;
-        Collection<GT_Recipe> tGasFuels = GT_Recipe.GT_Recipe_Map.sTurbineFuels.mRecipeList;
-
         int PromoterAmount = findLiquidAmount(getPromoter(), tFluids);
 
-        for (GT_Recipe recipe : tDieselFuels) {
+        for (GT_Recipe recipe : RecipeMaps.dieselFuels.getAllRecipes()) {
             FluidStack tFuel = findFuel(recipe);
             if (tFuel == null) continue;
             int FuelAmount = findLiquidAmount(tFuel, tFluids);
@@ -226,7 +223,7 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_TooltipMultiB
             return CheckRecipeResultRegistry.GENERATING;
         }
 
-        for (GT_Recipe recipe : tGasFuels) {
+        for (GT_Recipe recipe : RecipeMaps.gasTurbineFuels.getAllRecipes()) {
             FluidStack tFuel = findFuel(recipe);
             if (tFuel == null) continue;
             int FuelAmount = findLiquidAmount(tFuel, tFluids);
@@ -243,8 +240,7 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_TooltipMultiB
         }
 
         if (LoadedList.GTPP) {
-            Collection<GT_Recipe> tRocketFuels = GTPP_Recipe.GTPP_Recipe_Map.sRocketFuels.mRecipeList;
-            for (GT_Recipe recipe : tRocketFuels) {
+            for (GT_Recipe recipe : GTPPRecipeMaps.rocketFuels.getAllRecipes()) {
                 FluidStack tFuel = findFuel(recipe);
                 if (tFuel == null) continue;
                 int FuelAmount = findLiquidAmount(tFuel, tFluids);

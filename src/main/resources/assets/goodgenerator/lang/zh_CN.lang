@@ -266,25 +266,24 @@ gui.YOTTank.2=已存储：
 gui.LargeFusion.0=能量容量：
 gui.LargeFusion.1=储存能量：
 
+# RecipeMaps
+gg.recipe.naquadah_reactor=大型硅岩反应堆
+gg.recipe.naquadah_fuel_refine_factory=硅岩燃料精炼厂
+gg.recipe.neutron_activator=中子活化器
+gg.recipe.extreme_heat_exchanger=超级热交换机
+gg.recipe.precise_assembler=精密组装机
+
 #NEI Info
-tile.recipe.naquadah_reactor=大型硅岩反应堆
-tile.naquadah_fuel_refine_factory=硅岩燃料精炼厂
-tile.neutron_activator=中子活化器
-tile.extreme_heat_exchanger=超级热交换机
-tile.precise_assembler=精密组装机
-value.naquadah_reactor=基础输出电压：
-value.naquadah_fuel_refine_factory.0=要求等级
-value.naquadah_fuel_refine_factory.1=线圈
+value.naquadah_reactor=基础输出电压： %s EU/t
+value.naquadah_fuel_refine_factory=要求等级 %s 线圈
 value.neutron_activator.0=最低中子动能：
 value.neutron_activator.1=最高中子动能：
 value.neutron_activator.2= MeV
 value.extreme_heat_exchanger.0=最大热流体输入：
 value.extreme_heat_exchanger.1=最大工质输入：
 value.extreme_heat_exchanger.2=最大热工质输出：
-value.extreme_heat_exchanger.3=最大过热工质输出：
 value.extreme_heat_exchanger.4=阈值：
-value.precise_assembler.0=要求 MK-
-value.precise_assembler.1= 机械方块
+value.precise_assembler=要求 MK-%s 机械方块
 
 #TecTech Structure Info
 FuelRefineFactory.hint.0=8x力场约束玻璃

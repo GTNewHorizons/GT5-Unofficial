@@ -13,10 +13,11 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicGenerator;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 
 public class DieselGenerator extends GT_MetaTileEntity_BasicGenerator {
@@ -51,8 +52,8 @@ public class DieselGenerator extends GT_MetaTileEntity_BasicGenerator {
     }
 
     @Override
-    public GT_Recipe.GT_Recipe_Map getRecipes() {
-        return GT_Recipe.GT_Recipe_Map.sDieselFuels;
+    public RecipeMap<?> getRecipeMap() {
+        return RecipeMaps.dieselFuels;
     }
 
     @Override
@@ -67,7 +68,7 @@ public class DieselGenerator extends GT_MetaTileEntity_BasicGenerator {
 
     @Override
     public int getFuelValue(ItemStack aStack) {
-        if (GT_Utility.isStackInvalid(aStack) || getRecipes() == null) return 0;
+        if (GT_Utility.isStackInvalid(aStack) || getRecipeMap() == null) return 0;
         long rValue = Math.max(GT_ModHandler.getFuelCanValue(aStack) * 6 / 5, super.getFuelValue(aStack));
         if (ItemList.Fuel_Can_Plastic_Filled.isStackEqual(aStack, false, true)) {
             rValue = Math.max(rValue, GameRegistry.getFuelValue(aStack) * 3L);

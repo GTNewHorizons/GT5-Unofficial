@@ -22,10 +22,10 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.blocks.tileEntity.base.GT_MetaTileEntity_TooltipMultiBlockBase_EM;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
-import goodgenerator.util.MyRecipeAdder;
 import gregtech.api.enums.GT_HatchElement;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -38,6 +38,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
@@ -206,8 +207,8 @@ public class FuelRefineFactory extends GT_MetaTileEntity_TooltipMultiBlockBase_E
     }
 
     @Override
-    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return MyRecipeAdder.instance.FRF;
+    public RecipeMap<?> getRecipeMap() {
+        return GoodGeneratorRecipeMaps.naquadahFuelRefineFactoryRecipes;
     }
 
     @Override
