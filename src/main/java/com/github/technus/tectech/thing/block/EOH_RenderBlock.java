@@ -15,9 +15,9 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class EyeOfHarmonyBlock extends Block {
+public class EOH_RenderBlock extends Block {
 
-    public EyeOfHarmonyBlock() {
+    public EOH_RenderBlock() {
         super(Material.iron);
         this.setResistance(20f);
         this.setHardness(-1.0f);
@@ -66,6 +66,11 @@ public class EyeOfHarmonyBlock extends Block {
     @Override
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int meta, int fortune) {
         return new ArrayList<>();
+    }
+
+    @Override
+    public boolean isCollidable() {
+        return false;
     }
 
 }

@@ -15,11 +15,11 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.github.technus.tectech.Reference;
+import com.github.technus.tectech.rendering.EOH.EOH_ItemRenderer;
+import com.github.technus.tectech.rendering.EOH.EOH_TESR;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.block.QuantumGlassRender;
-import com.github.technus.tectech.thing.block.RenderEyeOfHarmony;
 import com.github.technus.tectech.thing.block.TileEyeOfHarmony;
-import com.github.technus.tectech.thing.item.RenderEyeOfHarmonyItem;
 import com.gtnewhorizon.structurelib.entity.fx.WeightlessParticleFX;
 
 import cpw.mods.fml.client.FMLClientHandler;
@@ -35,9 +35,9 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerBlockHandler(QuantumGlassBlock.renderID, new QuantumGlassRender());
 
         MinecraftForgeClient
-                .registerItemRenderer(Item.getItemFromBlock(eyeOfHarmonyRenderBlock), new RenderEyeOfHarmonyItem());
+                .registerItemRenderer(Item.getItemFromBlock(eyeOfHarmonyRenderBlock), new EOH_ItemRenderer());
 
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEyeOfHarmony.class, new RenderEyeOfHarmony());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEyeOfHarmony.class, new EOH_TESR());
     }
 
     @Override

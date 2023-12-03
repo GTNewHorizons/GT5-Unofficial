@@ -1,9 +1,9 @@
-package com.github.technus.tectech.thing.item;
+package com.github.technus.tectech.rendering.EOH;
 
-import static com.github.technus.tectech.thing.block.RenderEyeOfHarmony.STAR_LAYER_0;
-import static com.github.technus.tectech.thing.block.RenderEyeOfHarmony.STAR_LAYER_1;
-import static com.github.technus.tectech.thing.block.RenderEyeOfHarmony.STAR_LAYER_2;
-import static com.github.technus.tectech.thing.block.RenderEyeOfHarmony.starModel;
+import static com.github.technus.tectech.rendering.EOH.EOH_TESR.STAR_LAYER_0;
+import static com.github.technus.tectech.rendering.EOH.EOH_TESR.STAR_LAYER_1;
+import static com.github.technus.tectech.rendering.EOH.EOH_TESR.STAR_LAYER_2;
+import static com.github.technus.tectech.rendering.EOH.EOH_TESR.starModel;
 import static java.lang.Math.pow;
 
 import net.minecraft.item.ItemStack;
@@ -14,7 +14,7 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
 
-public class RenderEyeOfHarmonyItem implements IItemRenderer {
+public class EOH_ItemRenderer implements IItemRenderer {
 
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
@@ -74,15 +74,9 @@ public class RenderEyeOfHarmonyItem implements IItemRenderer {
         GL11.glScalef(scale, scale, scale);
 
         switch (layer) {
-            case 0:
-                GL11.glRotatef(130 + (System.currentTimeMillis() / 64) % 360, 0F, 1F, 1F);
-                break;
-            case 1:
-                GL11.glRotatef(-49 + (System.currentTimeMillis() / 64) % 360, 1F, 1F, 0F);
-                break;
-            case 2:
-                GL11.glRotatef(67 + (System.currentTimeMillis() / 64) % 360, 1F, 0F, 1F);
-                break;
+            case 0 -> GL11.glRotatef(130 + (System.currentTimeMillis() / 64) % 360, 0F, 1F, 1F);
+            case 1 -> GL11.glRotatef(-49 + (System.currentTimeMillis() / 64) % 360, 1F, 1F, 0F);
+            case 2 -> GL11.glRotatef(67 + (System.currentTimeMillis() / 64) % 360, 1F, 0F, 1F);
         }
 
         // Set colour and alpha (transparency) of the star layer.
@@ -93,6 +87,7 @@ public class RenderEyeOfHarmonyItem implements IItemRenderer {
         GL11.glDepthMask(true);
         GL11.glEnable(GL11.GL_LIGHTING);
 
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         // Finish animation.
         GL11.glPopMatrix();
     }

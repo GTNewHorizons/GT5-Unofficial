@@ -4,7 +4,11 @@ import static com.github.technus.tectech.mechanics.tesla.ITeslaConnectable.Tesla
 import static com.github.technus.tectech.mechanics.tesla.ITeslaConnectable.TeslaUtil.powerTeslaNodeMap;
 import static com.github.technus.tectech.mechanics.tesla.ITeslaConnectable.TeslaUtil.teslaSimpleNodeSetAdd;
 import static com.github.technus.tectech.mechanics.tesla.ITeslaConnectable.TeslaUtil.teslaSimpleNodeSetRemove;
-import static com.github.technus.tectech.thing.metaTileEntity.Textures.*;
+import static com.github.technus.tectech.thing.metaTileEntity.Textures.MACHINE_CASINGS_TT;
+import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_OUT_MULTI_TT;
+import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_OUT_POWER_TT;
+import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_OUT_TT;
+import static com.github.technus.tectech.thing.metaTileEntity.Textures.TESLA_TRANSCEIVER_TOP_BA;
 import static com.github.technus.tectech.util.CommonValues.V;
 import static java.lang.Math.round;
 import static net.minecraft.util.StatCollector.translateToLocal;
