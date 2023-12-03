@@ -30,12 +30,12 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.objects.ItemData;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_AssemblyLine;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Shaped_Recipe;
 import gregtech.api.util.GT_Utility;
 
@@ -83,8 +83,8 @@ public class ZPMRubberChanges implements Runnable {
             }
         }
 
-        for (GT_Recipe_Map map : GT_Recipe_Map.sMappings) {
-            for (GT_Recipe recipe : map.mRecipeList) {
+        for (RecipeMap<?> map : RecipeMap.ALL_RECIPE_MAPS.values()) {
+            for (GT_Recipe recipe : map.getAllRecipes()) {
                 for (ItemStack stack : ZPMPlusComponents) {
                     rewriteMachineRecipes(stack, RubberGenerated, recipe);
                 }

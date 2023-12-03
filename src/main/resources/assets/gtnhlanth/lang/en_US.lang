@@ -1,7 +1,9 @@
-tile.recipe.digester=Digester
-tile.recipe.disstank=Dissolution Tank
-value.digester=Heat Capacity
-value.disstank=Ratio
+# RecipeMaps
+gtnhlanth.recipe.digester=Digester
+gtnhlanth.recipe.disstank=Dissolution Tank
+
+# NEI
+value.disstank=Ratio: %s:1
 
 DissolutionTank.hint.0=Dot 1: Clean Stainless Steel Machine Casing
 DissolutionTank.hint.1=24x Borosilicate Glass

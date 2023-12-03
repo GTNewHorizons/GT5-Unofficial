@@ -3,12 +3,12 @@ package com.elisis.gtnhlanth.loader;
 import static com.elisis.gtnhlanth.common.register.BotWerkstoffMaterialPool.*;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.OrePrefixes.*;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sChemicalRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalReactorRecipes;
+import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 
-import java.util.Collection;
 import java.util.HashSet;
 
 import net.minecraft.item.ItemStack;
@@ -141,14 +141,14 @@ public class BotRecipes {
 
         GT_Values.RA.stdBuilder().itemInputs(Materials.CarbonMonoxide.getCells(1), GT_Utility.getIntegratedCircuit(12))
                 .itemOutputs(Phosgene.get(cell, 1)).fluidInputs(Materials.Chlorine.getGas(2000))
-                .duration(2 * SECONDS + 10 * TICKS).eut(TierEU.RECIPE_HV).addTo(sChemicalRecipes);
+                .duration(2 * SECONDS + 10 * TICKS).eut(TierEU.RECIPE_HV).addTo(chemicalReactorRecipes);
         GT_Values.RA.stdBuilder().itemInputs(Materials.Chlorine.getCells(2), GT_Utility.getIntegratedCircuit(12))
                 .itemOutputs(Phosgene.get(cell, 1), Materials.Empty.getCells(1))
                 .fluidInputs(Materials.CarbonMonoxide.getGas(1000)).duration(2 * SECONDS + 10 * TICKS)
-                .eut(TierEU.RECIPE_HV).addTo(sChemicalRecipes);
+                .eut(TierEU.RECIPE_HV).addTo(chemicalReactorRecipes);
         GT_Values.RA.stdBuilder().itemInputs(Materials.CarbonMonoxide.getCells(1), Materials.Chlorine.getCells(2))
                 .itemOutputs(Phosgene.get(cell, 1), Materials.Empty.getCells(2)).duration(2 * SECONDS + 10 * TICKS)
-                .eut(TierEU.RECIPE_HV).addTo(sChemicalRecipes);
+                .eut(TierEU.RECIPE_HV).addTo(chemicalReactorRecipes);
         GT_Values.RA.stdBuilder().itemInputs(Materials.Chlorine.getCells(2), GT_Utility.getIntegratedCircuit(2))
                 .itemOutputs(Materials.Empty.getCells(2)).fluidInputs(Materials.CarbonMonoxide.getGas(1000))
                 .fluidOutputs(BotWerkstoffMaterialPool.Phosgene.getFluidOrGas(1000)).duration(2 * SECONDS + 10 * TICKS)
@@ -255,11 +255,10 @@ public class BotRecipes {
     }
 
     public static void removeTungstenElectro() {
-        Collection<GT_Recipe> electroRecipeMap = GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes.mRecipeList;
         HashSet<GT_Recipe> toDel = new HashSet<>();
         ItemStack[] toRemove = { Materials.Scheelite.getDust(1), Materials.Tungstate.getDust(1),
                 WerkstoffLoader.Ferberite.get(dust, 1), WerkstoffLoader.Huebnerit.get(dust, 1) };
-        for (GT_Recipe tRecipe : electroRecipeMap) {
+        for (GT_Recipe tRecipe : electrolyzerRecipes.getAllRecipes()) {
             if (tRecipe.mFakeRecipe) continue;
             for (int i = 0; i < tRecipe.mInputs.length; i++) {
                 ItemStack tItem = tRecipe.mInputs[i];
@@ -272,7 +271,7 @@ public class BotRecipes {
                 }
             }
         }
-        electroRecipeMap.removeAll(toDel);
-        GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes.reInit();
+        electrolyzerRecipes.getBackend().removeRecipes(toDel);
+        electrolyzerRecipes.getBackend().reInit();
     }
 }

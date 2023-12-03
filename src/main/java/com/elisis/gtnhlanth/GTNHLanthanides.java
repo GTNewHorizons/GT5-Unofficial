@@ -32,8 +32,7 @@ import gregtech.api.util.GT_Log;
         dependencies = "required-after:IC2; " + "required-after:gregtech; "
                 + "required-after:bartworks; "
                 + "required-after:GoodGenerator; "
-                + "before:miscutils; "
-                + "required-after:dreamcraft; ")
+                + "before:miscutils; ")
 public class GTNHLanthanides {
 
     public static Logger LOG = Logger.getLogger("GTNH:Lanthanides");
