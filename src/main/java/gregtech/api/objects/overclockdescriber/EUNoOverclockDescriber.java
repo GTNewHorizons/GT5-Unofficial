@@ -39,9 +39,7 @@ public class EUNoOverclockDescriber extends OverclockDescriber {
 
     @Override
     public final void drawEnergyInfo(RecipeDisplayInfo recipeInfo) {
-        if (recipeInfo.calculator.getConsumption() <= 0) return;
-
-        if (recipeInfo.calculator.getDuration() > 0) {
+        if (recipeInfo.calculator.getDuration() > 0 && recipeInfo.calculator.getConsumption() > 0) {
             recipeInfo.drawText(trans("152", "Total: ") + getTotalPowerString(recipeInfo.calculator));
         }
         drawEnergyInfoImpl(recipeInfo);
@@ -52,6 +50,9 @@ public class EUNoOverclockDescriber extends OverclockDescriber {
      * power usage.
      */
     protected void drawEnergyInfoImpl(RecipeDisplayInfo recipeInfo) {
+        if (recipeInfo.calculator.getConsumption() <= 0) {
+            return;
+        }
         recipeInfo.drawText(trans("153", "Usage: ") + getEUtDisplay(recipeInfo.calculator));
         if (shouldShowAmperage(recipeInfo.calculator)) {
             recipeInfo.drawText(trans("154", "Voltage: ") + getVoltageString(recipeInfo.calculator));
