@@ -40,7 +40,9 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -152,9 +154,14 @@ public class GT_MetaTileEntity_DieselEngine
         return getMaxEfficiency(aStack) > 0;
     }
 
-    // can't use getRecipeMap() or else the fluid hatch will reject oxygen
-    protected FuelBackend getFuelMap() {
-        return RecipeMaps.dieselFuels.getBackend();
+    @Override
+    public RecipeMap<FuelBackend> getRecipeMap() {
+        return RecipeMaps.dieselFuels;
+    }
+
+    @Override
+    protected void setHatchRecipeMap(GT_MetaTileEntity_Hatch_Input hatch) {
+        // Prevent fluid hatch rejecting oxygen
     }
 
     /**
@@ -201,7 +208,8 @@ public class GT_MetaTileEntity_DieselEngine
             double boostedOutput = 0;
             double extraFuelFraction = 0;
             for (FluidStack tFluid : tFluids) {
-                GT_Recipe tRecipe = getFuelMap().findFuel(tFluid);
+                GT_Recipe tRecipe = getRecipeMap().getBackend()
+                    .findFuel(tFluid);
                 if (tRecipe == null) continue;
                 fuelValue = tRecipe.mSpecialValue;
 

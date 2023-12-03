@@ -1213,7 +1213,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public boolean depleteInput(FluidStack aLiquid, boolean simulate) {
         if (aLiquid == null) return false;
         for (GT_MetaTileEntity_Hatch_Input tHatch : filterValidMTEs(mInputHatches)) {
-            tHatch.mRecipeMap = getRecipeMap();
+            setHatchRecipeMap(tHatch);
             FluidStack tLiquid = tHatch.drain(ForgeDirection.UNKNOWN, aLiquid, false);
             if (tLiquid != null && tLiquid.amount >= aLiquid.amount) {
                 if (simulate) {
@@ -1253,7 +1253,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         FluidStack aLiquid = GT_Utility.getFluidForFilledItem(aStack, true);
         if (aLiquid != null) return depleteInput(aLiquid);
         for (GT_MetaTileEntity_Hatch_Input tHatch : filterValidMTEs(mInputHatches)) {
-            tHatch.mRecipeMap = getRecipeMap();
+            setHatchRecipeMap(tHatch);
             if (GT_Utility.areStacksEqual(
                 aStack,
                 tHatch.getBaseMetaTileEntity()
@@ -1315,7 +1315,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
         ArrayList<FluidStack> rList = new ArrayList<>();
         for (GT_MetaTileEntity_Hatch_Input tHatch : filterValidMTEs(mInputHatches)) {
-            tHatch.mRecipeMap = getRecipeMap();
+            setHatchRecipeMap(tHatch);
             if (tHatch instanceof GT_MetaTileEntity_Hatch_MultiInput) {
                 for (FluidStack tFluid : ((GT_MetaTileEntity_Hatch_MultiInput) tHatch).getStoredFluid()) {
                     if (tFluid != null) {
@@ -1436,7 +1436,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             return mDualInputHatches.add(hatch);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-            ((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = getRecipeMap();
+            setHatchRecipeMap((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
             return mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
@@ -1570,7 +1570,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
-            hatch.mRecipeMap = getRecipeMap();
+            setHatchRecipeMap(hatch);
             return mInputHatches.add(hatch);
         }
         return false;
@@ -1586,6 +1586,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             return mOutputHatches.add(hatch);
         }
         return false;
+    }
+
+    protected void setHatchRecipeMap(GT_MetaTileEntity_Hatch_Input hatch) {
+        hatch.mRecipeMap = getRecipeMap();
     }
 
     @Override
