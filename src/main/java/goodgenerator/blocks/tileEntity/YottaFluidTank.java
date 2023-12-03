@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
@@ -28,9 +27,9 @@ import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.thing.gui.TecTechUITextures;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
@@ -54,7 +53,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
@@ -190,11 +188,16 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     }
 
     @Override
+    protected void clearHatches_EM() {
+        super.clearHatches_EM();
+        mYottaHatch.clear();
+    }
+
+    @Override
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mStorage = BigInteger.ZERO;
         glassMeta = 0;
         maxCell = 0;
-        mYottaHatch.clear();
         if (!structureCheck_EM(YOTTANK_BOTTOM, 2, 0, 0)) return false;
         int cnt = 0;
         while (structureCheck_EM(YOTTANK_MID, 2, cnt + 1, 0)) {
@@ -248,27 +251,20 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
                                             Byte.MAX_VALUE,
                                             YottaFluidTank::setMeta,
                                             te -> (byte) te.getMeta())))
-                    .addElement('R', ofChain(cells(10))).addElement(
-                            'F',
-                            ofFrame(Materials.Steel))
+                    .addElement('R', ofChain(cells(10))).addElement('F', ofFrame(Materials.Steel))
                     .addElement(
                             'I',
-                            ofChain(
-                                    buildHatchAdder(YottaFluidTank.class).atLeast(GT_HatchElement.InputHatch)
-                                            .adder(YottaFluidTank::addInput).casingIndex(1537).dot(1).build(),
-                                    ofBlock(Loaders.yottaFluidTankCasing, 0)))
+                            buildHatchAdder(YottaFluidTank.class).atLeast(GT_HatchElement.InputHatch).casingIndex(1537)
+                                    .dot(1).buildAndChain(Loaders.yottaFluidTankCasing, 0))
                     .addElement(
                             'M',
-                            ofChain(
-                                    buildHatchAdder(YottaFluidTank.class).atLeast(GT_HatchElement.Maintenance)
-                                            .casingIndex(1537).dot(2).build(),
-                                    ofBlock(Loaders.yottaFluidTankCasing, 0)))
+                            buildHatchAdder(YottaFluidTank.class).atLeast(GT_HatchElement.Maintenance).casingIndex(1537)
+                                    .dot(2).buildAndChain(Loaders.yottaFluidTankCasing, 0))
                     .addElement(
                             'O',
-                            ofChain(
-                                    buildHatchAdder(YottaFluidTank.class).atLeast(GT_HatchElement.OutputHatch)
-                                            .adder(YottaFluidTank::addOutput).casingIndex(1537).dot(1).build(),
-                                    ofBlock(Loaders.yottaFluidTankCasing, 0)))
+                            buildHatchAdder(YottaFluidTank.class).atLeast(GT_HatchElement.OutputHatch)
+                                    .adder(YottaFluidTank::addOutput).casingIndex(1537).dot(1)
+                                    .buildAndChain(Loaders.yottaFluidTankCasing, 0))
                     .build();
         }
         return multiDefinition;
@@ -284,23 +280,6 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
             }, ofBlock(Loaders.yottaFluidTankCell, i)));
         }
         return out;
-    }
-
-    public final boolean addInput(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) {
-            return false;
-        } else {
-            IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity == null) {
-                return false;
-            } else {
-                if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-                    ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                    return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
-                }
-            }
-        }
-        return false;
     }
 
     public final boolean addOutput(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -519,35 +498,15 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     }
 
     @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         int built = 0;
-        built += survivialBuildPiece(YOTTANK_BOTTOM, stackSize, 2, 0, 0, elementBudget, source, actor, false, true);
+        built += survivialBuildPiece(YOTTANK_BOTTOM, stackSize, 2, 0, 0, elementBudget, env, false, true);
         int height = stackSize.stackSize;
         if (height > 15) height = 15;
-        built += survivialBuildPiece(
-                YOTTANK_TOP,
-                stackSize,
-                2,
-                height + 2,
-                0,
-                elementBudget - built,
-                source,
-                actor,
-                false,
-                true);
+        built += survivialBuildPiece(YOTTANK_TOP, stackSize, 2, height + 2, 0, elementBudget - built, env, false, true);
         while (height > 0) {
-            built += survivialBuildPiece(
-                    YOTTANK_MID,
-                    stackSize,
-                    2,
-                    height,
-                    0,
-                    elementBudget - built,
-                    source,
-                    actor,
-                    false,
-                    true);
+            built += survivialBuildPiece(YOTTANK_MID, stackSize, 2, height, 0, elementBudget - built, env, false, true);
             height--;
         }
         return built;

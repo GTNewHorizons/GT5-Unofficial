@@ -4,14 +4,12 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.enums.Textures.BlockIcons.*;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -23,8 +21,8 @@ import org.jetbrains.annotations.NotNull;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import goodgenerator.blocks.tileEntity.base.GT_MetaTileEntity_TooltipMultiBlockBase_EM;
@@ -141,22 +139,10 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_TooltipMultiB
                                     { "TTWTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT",
                                             "TTTTT" } }))
                     .addElement('T', ofBlock(GregTech_API.sBlockCasings4, 2))
-                    .addElement(
-                            'W',
-                            buildHatchAdder(UniversalChemicalFuelEngine.class).atLeast(GT_HatchElement.Maintenance)
-                                    .casingIndex(50).dot(1).build())
-                    .addElement(
-                            'M',
-                            buildHatchAdder(UniversalChemicalFuelEngine.class).atLeast(GT_HatchElement.Muffler)
-                                    .casingIndex(50).dot(2).build())
-                    .addElement(
-                            'S',
-                            buildHatchAdder(UniversalChemicalFuelEngine.class).atLeast(GT_HatchElement.InputHatch)
-                                    .casingIndex(50).dot(3).build())
-                    .addElement(
-                            'E',
-                            buildHatchAdder(UniversalChemicalFuelEngine.class).atLeast(GT_HatchElement.Dynamo)
-                                    .casingIndex(50).dot(4).build())
+                    .addElement('W', GT_HatchElement.Maintenance.newAny(50, 1))
+                    .addElement('M', GT_HatchElement.Muffler.newAny(50, 2))
+                    .addElement('S', GT_HatchElement.InputHatch.newAny(50, 3))
+                    .addElement('E', GT_HatchElement.Dynamo.newAny(50, 4))
                     .addElement('P', ofBlock(GregTech_API.sBlockCasings2, 14))
                     .addElement('C', ofBlock(Loaders.titaniumPlatedCylinder, 0))
                     .addElement('G', ofBlock(GregTech_API.sBlockCasings2, 4))
@@ -378,8 +364,8 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_TooltipMultiB
     }
 
     @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 2, 2, 0, elementBudget, source, actor, false, true);
+        return survivialBuildPiece(mName, stackSize, 2, 2, 0, elementBudget, env, false, true);
     }
 }

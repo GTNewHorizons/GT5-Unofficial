@@ -8,11 +8,9 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -23,8 +21,8 @@ import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_H
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import goodgenerator.blocks.tileEntity.base.GT_MetaTileEntity_TooltipMultiBlockBase_EM;
@@ -110,6 +108,12 @@ public class LargeEssentiaSmeltery extends GT_MetaTileEntity_TooltipMultiBlockBa
     }
 
     @Override
+    protected void clearHatches_EM() {
+        super.clearHatches_EM();
+        mEssentiaOutputHatches.clear();
+    }
+
+    @Override
     protected boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         this.mCasing = 0;
         this.mParallel = 0;
@@ -117,7 +121,6 @@ public class LargeEssentiaSmeltery extends GT_MetaTileEntity_TooltipMultiBlockBa
         this.nodePower = 0;
         this.nodePurificationEfficiency = 0;
         this.nodeIncrease = 0;
-        this.mEssentiaOutputHatches.clear();
 
         if (!structureCheck_EM(STRUCTURE_PIECE_FIRST, 2, 2, 0)) return false;
         if (!structureCheck_EM(STRUCTURE_PIECE_LATER, 2, 2, -1)) return false;
@@ -171,18 +174,15 @@ public class LargeEssentiaSmeltery extends GT_MetaTileEntity_TooltipMultiBlockBa
                                             GT_HatchElement.Maintenance,
                                             GT_HatchElement.Energy,
                                             GT_HatchElement.InputBus).casingIndex(CASING_INDEX).dot(1).build(),
-                                    ofTileAdder(
+                                    ofSpecificTileAdder(
                                             LargeEssentiaSmeltery::addEssentiaOutputHatchToMachineList,
-                                            Loaders.magicCasing,
+                                            EssentiaOutputHatch.class,
+                                            Loaders.essentiaOutputHatch,
                                             0),
                                     onElementPass(
                                             LargeEssentiaSmeltery::onCasingFound,
                                             ofBlock(Loaders.magicCasing, 0))))
-                    .addElement(
-                            'B',
-                            buildHatchAdder(LargeEssentiaSmeltery.class).atLeast(GT_HatchElement.Muffler)
-                                    .casingIndex(CASING_INDEX).dot(2).build())
-                    .build();
+                    .addElement('B', GT_HatchElement.Muffler.newAny(CASING_INDEX, 2)).build();
         }
         return this.multiDefinition;
     }
@@ -271,7 +271,7 @@ public class LargeEssentiaSmeltery extends GT_MetaTileEntity_TooltipMultiBlockBa
         }
     }
 
-    private boolean addEssentiaOutputHatchToMachineList(TileEntity aTileEntity) {
+    private boolean addEssentiaOutputHatchToMachineList(EssentiaOutputHatch aTileEntity) {
         if (aTileEntity instanceof EssentiaOutputHatch) {
             return this.mEssentiaOutputHatches.add((EssentiaOutputHatch) aTileEntity);
         }
@@ -520,47 +520,16 @@ public class LargeEssentiaSmeltery extends GT_MetaTileEntity_TooltipMultiBlockBa
     }
 
     @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        int built = 0;
-        built += survivialBuildPiece(
-                STRUCTURE_PIECE_FIRST,
-                stackSize,
-                2,
-                2,
-                0,
-                elementBudget,
-                source,
-                actor,
-                false,
-                true);
+        int built = survivialBuildPiece(STRUCTURE_PIECE_FIRST, stackSize, 2, 2, 0, elementBudget, env, false, true);
+        if (built >= 0) return built;
         int length = stackSize.stackSize + 2;
         if (length > MAX_CONFIGURABLE_LENGTH) length = MAX_CONFIGURABLE_LENGTH + 2;
-        built += survivialBuildPiece(
-                STRUCTURE_PIECE_LAST,
-                stackSize,
-                2,
-                2,
-                -length - 1,
-                elementBudget - built,
-                source,
-                actor,
-                false,
-                true);
-        while (length > 0) {
-            built += survivialBuildPiece(
-                    STRUCTURE_PIECE_LATER,
-                    stackSize,
-                    2,
-                    2,
-                    -length,
-                    elementBudget - built,
-                    source,
-                    actor,
-                    false,
-                    true);
-            length--;
+        for (int i = 1; i <= length; i++) {
+            built = survivialBuildPiece(STRUCTURE_PIECE_LATER, stackSize, 2, 2, -i, elementBudget, env, false, true);
+            if (built >= 0) return built;
         }
-        return built;
+        return survivialBuildPiece(STRUCTURE_PIECE_LAST, stackSize, 2, 2, -length - 1, elementBudget, env, false, true);
     }
 }

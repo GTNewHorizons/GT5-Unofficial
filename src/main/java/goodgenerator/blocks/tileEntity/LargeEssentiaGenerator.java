@@ -7,10 +7,8 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import java.util.ArrayList;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -23,8 +21,8 @@ import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_H
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoTunnel;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import goodgenerator.blocks.tileEntity.base.GT_MetaTileEntity_TooltipMultiBlockBase_EM;
@@ -42,7 +40,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -79,9 +76,14 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_TooltipMultiBlockB
     }
 
     @Override
+    protected void clearHatches_EM() {
+        super.clearHatches_EM();
+        mEssentiaHatch.clear();
+    }
+
+    @Override
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mStableValue = 0;
-        mEssentiaHatch.clear();
         return structureCheck_EM(mName, 4, 0, 4) && (mDynamoHatches.size() + eDynamoMulti.size()) == 1
                 && checkHatchTier()
                 && checkNoLaser()
@@ -183,7 +185,8 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_TooltipMultiBlockB
                                                     "TCCCXCCCT", " TCCXCCT ", "  TCXCT  ", "T  TXT  T" } }))
                     .addElement('A', ofBlock(ConfigBlocks.blockCosmeticOpaque, 1))
                     .addElement('T', ofBlock(ConfigBlocks.blockCosmeticSolid, 7))
-                    .addElement('C', ofBlock(Loaders.magicCasing, 0)).addElement('E', ofChain(onElementPass(x -> {
+                    .addElement('C', ofBlock(Loaders.magicCasing, 0)) //
+                    .addElement('E', ofChain(onElementPass(x -> {
                         ++x.mStableValue;
                         x.mTierLimit = Math.max(x.mTierLimit, 4);
                     }, ofBlock(Loaders.essentiaCell, 0)), onElementPass(x -> {
@@ -205,39 +208,18 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_TooltipMultiBlockB
                                             GT_HatchElement.Maintenance,
                                             GT_HatchElement.InputHatch).casingIndex(1536).dot(1).build(),
                                     ofBlock(Loaders.magicCasing, 0),
-                                    ofTileAdder(LargeEssentiaGenerator::addEssentiaHatch, Loaders.magicCasing, 0)))
+                                    ofSpecificTileAdder(
+                                            LargeEssentiaGenerator::addEssentiaHatch,
+                                            EssentiaHatch.class,
+                                            Loaders.magicCasing,
+                                            0)))
                     .build();
         }
         return multiDefinition;
     }
 
-    public final boolean addEssentiaHatch(TileEntity aTileEntity) {
-        if (aTileEntity instanceof EssentiaHatch) {
-            return this.mEssentiaHatch.add((EssentiaHatch) aTileEntity);
-        }
-        return false;
-    }
-
-    public final boolean addLargeEssentiaGeneratorList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) {
-            return false;
-        } else {
-            IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-                ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
-            } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance) {
-                ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                return this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance) aMetaTileEntity);
-            } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo) {
-                ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                return this.mDynamoHatches.add((GT_MetaTileEntity_Hatch_Dynamo) aMetaTileEntity);
-            } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DynamoMulti) {
-                ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                return this.eDynamoMulti.add((GT_MetaTileEntity_Hatch_DynamoMulti) aMetaTileEntity);
-            }
-        }
-        return false;
+    public final boolean addEssentiaHatch(EssentiaHatch aTileEntity) {
+        return this.mEssentiaHatch.add(aTileEntity);
     }
 
     @Override
@@ -499,10 +481,9 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_TooltipMultiBlockB
                 .addInfo("Supports normal Dynamo Hatches or TecTech ones for up to 64A, but no Laser Hatches.")
                 .addInfo("You can find more information about this generator in the Thaumonomicon.")
                 .addInfo("The structure is too complex!").addInfo(BLUE_PRINT_INFO).addSeparator()
-                .addMaintenanceHatch("Hint block with dot 1").addInputHatch("Hint block with dot 1")
-                .addDynamoHatch("Hint block with dot 1")
-                .addOtherStructurePart("Essentia Input Hatch", "Hint block with dot 1")
-                .toolTipFinisher("Good Generator");
+                .addMaintenanceHatch("Hint block with dot 1", 1).addInputHatch("Hint block with dot 1", 1)
+                .addDynamoHatch("Hint block with dot 1", 1)
+                .addOtherStructurePart("Essentia Input Hatch", "Essentia Input", 1).toolTipFinisher("Good Generator");
         return tt;
     }
 
@@ -526,8 +507,8 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_TooltipMultiBlockB
     }
 
     @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 4, 0, 4, elementBudget, source, actor, false, true);
+        return survivialBuildPiece(mName, stackSize, 4, 0, 4, elementBudget, env, false, true);
     }
 }

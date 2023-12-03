@@ -15,7 +15,6 @@ import java.util.stream.IntStream;
 import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -26,8 +25,8 @@ import org.jetbrains.annotations.NotNull;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -49,6 +48,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
@@ -285,12 +285,9 @@ public class PreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlockB
     }
 
     @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
-        if (mMachine) {
-            return -1;
-        } else {
-            return survivialBuildPiece(mName, stackSize, 4, 4, 0, elementBudget, source, actor, false, true);
-        }
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        if (mMachine) return -1;
+        return survivialBuildPiece(mName, stackSize, 4, 4, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -388,10 +385,14 @@ public class PreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlockB
 
     public void reUpdate(int texture) {
         for (IDualInputHatch hatch : mDualInputHatches) {
-            hatch.updateTexture(texture);
+            if (isValidMetaTileEntity((MetaTileEntity) hatch)) {
+                hatch.updateTexture(texture);
+            }
         }
         for (GT_MetaTileEntity_Hatch hatch : mInputHatches) {
-            hatch.updateTexture(texture);
+            if (isValidMetaTileEntity(hatch)) {
+                hatch.updateTexture(texture);
+            }
         }
         for (GT_MetaTileEntity_Hatch hatch : mInputBusses) {
             hatch.updateTexture(texture);

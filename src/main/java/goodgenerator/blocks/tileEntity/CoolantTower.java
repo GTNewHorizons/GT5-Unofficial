@@ -6,7 +6,6 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_StructureUtility.*;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -16,8 +15,8 @@ import org.jetbrains.annotations.NotNull;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import goodgenerator.blocks.tileEntity.base.GT_MetaTileEntity_TooltipMultiBlockBase_EM;
@@ -28,10 +27,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_MultiInput;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
@@ -104,33 +101,13 @@ public class CoolantTower extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
                     .addElement('C', ofFrame(Materials.TungstenCarbide))
                     .addElement(
                             'H',
-                            ofChain(
-                                    buildHatchAdder(CoolantTower.class)
-                                            .atLeast(GT_HatchElement.InputHatch, GT_HatchElement.OutputHatch)
-                                            .casingIndex(CASING_INDEX).dot(1)
-                                            .buildAndChain(ofBlockAnyMeta(GregTech_API.sBlockConcretes, 8))))
+                            buildHatchAdder(CoolantTower.class)
+                                    .atLeast(GT_HatchElement.InputHatch, GT_HatchElement.OutputHatch)
+                                    .casingIndex(CASING_INDEX).dot(1)
+                                    .buildAndChain(ofBlockAnyMeta(GregTech_API.sBlockConcretes, 8)))
                     .build();
         }
         return multiDefinition;
-    }
-
-    public final boolean addIOFluidToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) {
-            return false;
-        } else {
-            IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity == null) {
-                return false;
-            } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-                ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
-            } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-                ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                return this.mOutputHatches.add((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity);
-            } else {
-                return false;
-            }
-        }
     }
 
     @Override
@@ -238,8 +215,8 @@ public class CoolantTower extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     }
 
     @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 5, 11, 0, elementBudget, source, actor, false, true);
+        return survivialBuildPiece(mName, stackSize, 5, 11, 0, elementBudget, env, false, true);
     }
 }

@@ -11,7 +11,6 @@ import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -22,8 +21,8 @@ import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
@@ -244,10 +243,15 @@ public class NeutronActivator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        this.casingAmount = 0;
+    protected void clearHatches_EM() {
+        super.clearHatches_EM();
         this.mNeutronAccelerator.clear();
         this.mNeutronSensor.clear();
+    }
+
+    @Override
+    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        this.casingAmount = 0;
         if (!structureCheck_EM(NA_BOTTOM, 2, 0, 0)) return false;
         height = 0;
         while (structureCheck_EM(NA_MID, 2, height + 1, 0)) {
@@ -439,38 +443,17 @@ public class NeutronActivator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     }
 
     @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
 
-        int built = 0;
-        built += survivialBuildPiece(NA_BOTTOM, stackSize, 2, 0, 0, elementBudget, source, actor, false, true);
+        int built = survivialBuildPiece(NA_BOTTOM, stackSize, 2, 0, 0, elementBudget, env, false, true);
+        if (built >= 0) return built;
         int heights = stackSize.stackSize + 3;
-        built += survivialBuildPiece(
-                NA_TOP,
-                stackSize,
-                2,
-                heights + 1,
-                0,
-                elementBudget - built,
-                source,
-                actor,
-                false,
-                true);
-        while (heights > 0) {
-            built += survivialBuildPiece(
-                    NA_MID,
-                    stackSize,
-                    2,
-                    heights,
-                    0,
-                    elementBudget - built,
-                    source,
-                    actor,
-                    false,
-                    true);
-            heights--;
+        for (int i = 1; i <= heights; i++) {
+            built = survivialBuildPiece(NA_MID, stackSize, 2, i, 0, elementBudget, env, false, true);
+            if (built >= 0) return built;
         }
-        return built;
+        return survivialBuildPiece(NA_TOP, stackSize, 2, heights + 1, 0, elementBudget, env, false, true);
     }
 
     protected void onCasingFound() {

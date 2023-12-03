@@ -5,7 +5,6 @@ import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -18,9 +17,9 @@ import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_H
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import goodgenerator.blocks.tileEntity.base.GT_MetaTileEntity_TooltipMultiBlockBase_EM;
@@ -163,9 +162,9 @@ public class FuelRefineFactory extends GT_MetaTileEntity_TooltipMultiBlockBase_E
                 .addInfo("Use higher tier coils to unlock more fuel types and reduce the processing times.")
                 .addInfo("The structure is too complex!").addInfo(BLUE_PRINT_INFO).addSeparator()
                 .beginStructureBlock(3, 15, 15, false).addInputHatch("The casings adjoin the field restriction glass.")
-                .addInputBus("The casings adjoin the field restriction glass.")
-                .addOutputHatch("The casings adjoin the field restriction glass.")
-                .addEnergyHatch("The casings adjoin the field restriction glass.").toolTipFinisher("Good Generator");
+                .addInputBus("The casings adjoin the field restriction glass.", 1)
+                .addOutputHatch("The casings adjoin the field restriction glass.", 1)
+                .addEnergyHatch("The casings adjoin the field restriction glass.", 1).toolTipFinisher("Good Generator");
         return tt;
     }
 
@@ -332,8 +331,8 @@ public class FuelRefineFactory extends GT_MetaTileEntity_TooltipMultiBlockBase_E
     }
 
     @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 7, 12, 1, elementBudget, source, actor, false, true);
+        return survivialBuildPiece(mName, stackSize, 7, 12, 1, elementBudget, env, false, true);
     }
 }

@@ -5,13 +5,11 @@ import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -25,8 +23,8 @@ import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import goodgenerator.blocks.tileEntity.base.GT_MetaTileEntity_TooltipMultiBlockBase_EM;
@@ -102,24 +100,15 @@ public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBas
                             ofChain(
                                     buildHatchAdder(ExtremeHeatExchanger.class)
                                             .atLeast(GT_HatchElement.OutputHatch, GT_HatchElement.Maintenance)
-                                            .casingIndex(48).dot(1).build(),
+                                            .casingIndex(48).dot(2).build(),
                                     onElementPass(x -> x.casingAmount++, ofBlock(GregTech_API.sBlockCasings4, 0))))
-                    .addElement(
-                            'F',
-                            buildHatchAdder(ExtremeHeatExchanger.class).atLeast(EHEHatches.HotInputHatch)
-                                    .casingIndex(48).dot(3).build())
-                    .addElement(
-                            'E',
-                            buildHatchAdder(ExtremeHeatExchanger.class).atLeast(EHEHatches.ColdOutputHatch)
-                                    .casingIndex(48).dot(4).build())
+                    .addElement('F', EHEHatches.HotInputHatch.newAny(48, 3))
+                    .addElement('E', EHEHatches.ColdOutputHatch.newAny(48, 4))
                     .addElement(
                             'C',
                             ofChain(
-                                    ofHatchAdder(
-                                            ExtremeHeatExchanger::addMaintenanceToMachineList,
-                                            48,
-                                            GregTech_API.sBlockCasings4,
-                                            0),
+                                    buildHatchAdder(ExtremeHeatExchanger.class).atLeast(GT_HatchElement.Maintenance)
+                                            .casingIndex(48).dot(5).build(),
                                     onElementPass(x -> x.casingAmount++, ofBlock(GregTech_API.sBlockCasings4, 0))))
                     .addElement('G', Glasses.chainAllGlasses())
                     .addElement('P', ofBlock(GregTech_API.sBlockCasings2, 15))
@@ -173,10 +162,15 @@ public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBas
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        this.casingAmount = 0;
+    protected void clearHatches_EM() {
+        super.clearHatches_EM();
         mCooledFluidHatch = null;
         mHotFluidHatch = null;
+    }
+
+    @Override
+    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        this.casingAmount = 0;
         return structureCheck_EM(mName, 2, 5, 0) && mMaintenanceHatches.size() == 1 && casingAmount >= 25;
     }
 
@@ -187,13 +181,11 @@ public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBas
                 .addInfo("Controller block for the Extreme Heat Exchanger.")
                 .addInfo("Accept Hot fluid like lava, hot coolant or plasma.")
                 .addInfo("Output SC Steam/SH Steam/Steam.").addInfo("Check NEI for more info.").addInfo(BLUE_PRINT_INFO)
-                .addSeparator().addController("Front bottom")
-                .addOtherStructurePart("Input Hatch: distilled water", "Hint block with dot 1")
-                .addOtherStructurePart("Output Hatch: SC Steam/SH Steam/Steam", "Hint block with dot 2")
-                .addOtherStructurePart("Input Hatch: Hot fluid or plasma", "Hint block with dot 3")
-                .addOtherStructurePart("Output Hatch: Cold fluid", "Hint block with dot 4")
-                .addMaintenanceHatch("Any Casing").addCasingInfo("Robust Tungstensteel Machine Casings", 25)
-                .toolTipFinisher("Good Generator");
+                .addSeparator().addController("Front bottom").addOtherStructurePart("Input Hatch", "distilled water", 1)
+                .addOtherStructurePart("Output Hatch", "SC Steam/SH Steam/Steam", 2)
+                .addOtherStructurePart("Input Hatch", "Hot fluid or plasma", 3)
+                .addOtherStructurePart("Output Hatch", "Cold fluid", 4).addMaintenanceHatch("Any Casing", 1, 2, 5)
+                .addCasingInfoMin("Robust Tungstensteel Machine Casings", 25, false).toolTipFinisher("Good Generator");
         return tt;
     }
 
@@ -337,9 +329,9 @@ public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBas
     }
 
     @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 2, 5, 0, elementBudget, source, actor, false, true);
+        return survivialBuildPiece(mName, stackSize, 2, 5, 0, elementBudget, env, false, true);
     }
 
     private enum EHEHatches implements IHatchElement<ExtremeHeatExchanger> {

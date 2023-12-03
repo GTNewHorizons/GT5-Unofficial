@@ -138,7 +138,7 @@ public class ComponentAssemblyLine extends GT_MetaTileEntity_ExtendedPowerMultiB
                             (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta : -1,
                             IntStream.range(0, 14).mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
                                     .collect(Collectors.toList()),
-                            -1,
+                            -2,
                             (t, meta) -> t.casingTier = meta,
                             t -> t.casingTier))
             .addElement(
@@ -284,13 +284,14 @@ public class ComponentAssemblyLine extends GT_MetaTileEntity_ExtendedPowerMultiB
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        if (mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
         return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 4, 2, 0, realBudget, env, false, true);
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        casingTier = -1;
+        casingTier = -2;
         return checkPiece(STRUCTURE_PIECE_MAIN, 4, 2, 0);
     }
 
