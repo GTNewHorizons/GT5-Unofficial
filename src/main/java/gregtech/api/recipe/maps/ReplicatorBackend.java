@@ -2,6 +2,8 @@ package gregtech.api.recipe.maps;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.annotation.Nullable;
@@ -28,8 +30,19 @@ import gregtech.common.items.behaviors.Behaviour_DataOrb;
 @MethodsReturnNonnullByDefault
 public class ReplicatorBackend extends RecipeMapBackend {
 
+    private final Map<Materials, GT_Recipe> recipesByMaterial = new HashMap<>();
+
     public ReplicatorBackend(RecipeMapBackendPropertiesBuilder propertiesBuilder) {
         super(propertiesBuilder.recipeEmitter(ReplicatorBackend::replicatorRecipeEmitter));
+    }
+
+    @Override
+    public GT_Recipe compileRecipe(GT_Recipe recipe) {
+        super.compileRecipe(recipe);
+        Materials material = recipe.getMetadata(GT_RecipeConstants.MATERIAL);
+        assert material != null; // checked by replicatorRecipeEmitter
+        recipesByMaterial.put(material, recipe);
+        return recipe;
     }
 
     @Override
@@ -47,19 +60,7 @@ public class ReplicatorBackend extends RecipeMapBackend {
         if (foundMaterial == null) {
             return null;
         }
-        if (cachedRecipe != null) {
-            Materials cachedRecipeMaterial = cachedRecipe.getMetadata(GT_RecipeConstants.MATERIAL);
-            if (foundMaterial == cachedRecipeMaterial) {
-                return cachedRecipe;
-            }
-        }
-        for (GT_Recipe recipe : getAllRecipes()) {
-            Materials recipeMaterial = recipe.getMetadata(GT_RecipeConstants.MATERIAL);
-            if (foundMaterial == recipeMaterial) {
-                return recipe;
-            }
-        }
-        return null;
+        return recipesByMaterial.getOrDefault(foundMaterial, null);
     }
 
     @Nullable
