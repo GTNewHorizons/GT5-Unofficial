@@ -16,7 +16,6 @@ import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
@@ -25,7 +24,6 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 public abstract class GT_MetaTileEntity_Hatch_NbtConsumable extends GT_MetaTileEntity_Hatch
         implements IAddGregtechLogo {
 
-    public GT_Recipe_Map mRecipeMap = null;
     private final int mInputslotCount;
     private final int mTotalSlotCount;
     private final boolean mAllowDuplicateUsageTypes;

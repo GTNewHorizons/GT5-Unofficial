@@ -37,9 +37,9 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffl
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
+import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 
@@ -123,7 +123,7 @@ public class GregtechMetaTileEntity_LargeSemifluidGenerator extends
         }
 
         for (FluidStack hatchFluid : tFluids) { // Loops through hatches
-            GT_Recipe aFuel = GTPP_Recipe_Map.sSemiFluidLiquidFuels.findFuel(hatchFluid);
+            GT_Recipe aFuel = GTPPRecipeMaps.semiFluidFuels.getBackend().findFuel(hatchFluid);
             if (aFuel == null) {
                 // Not a valid semi-fluid fuel.
                 continue;

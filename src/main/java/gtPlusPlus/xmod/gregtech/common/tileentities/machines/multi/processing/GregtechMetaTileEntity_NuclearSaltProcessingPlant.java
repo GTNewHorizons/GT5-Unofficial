@@ -26,9 +26,11 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
@@ -184,8 +186,8 @@ public class GregtechMetaTileEntity_NuclearSaltProcessingPlant
     }
 
     @Override
-    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map.sNuclearSaltProcessingPlantRecipes;
+    public RecipeMap<?> getRecipeMap() {
+        return GTPPRecipeMaps.nuclearSaltProcessingPlantRecipes;
     }
 
     @Override

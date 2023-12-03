@@ -35,13 +35,13 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.chemistry.RocketFuels;
 import gtPlusPlus.core.lib.CORE;
@@ -232,8 +232,8 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends
     }
 
     @Override
-    public GT_Recipe_Map getRecipeMap() {
-        return GTPP_Recipe.GTPP_Recipe_Map.sRocketFuels;
+    public RecipeMap<?> getRecipeMap() {
+        return GTPPRecipeMaps.rocketFuels;
     }
 
     @Override
@@ -283,7 +283,7 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends
                     continue;
                 }
                 if (this.freeFuelTicks == 0) {
-                    for (final GT_Recipe aFuel : getRecipeMap().mRecipeList) {
+                    for (final GT_Recipe aFuel : getRecipeMap().getAllRecipes()) {
                         final FluidStack tLiquid;
                         tLiquid = aFuel.mFluidInputs[0];
                         if (hatchFluid1.isFluidEqual(tLiquid)) {

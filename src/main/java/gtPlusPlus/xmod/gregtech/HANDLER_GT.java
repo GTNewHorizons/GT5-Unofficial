@@ -5,27 +5,12 @@ import static gregtech.api.enums.Mods.AdvancedSolarPanel;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
-
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.Element;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.items.GT_MetaGenerated_Tool;
-import gregtech.api.util.GTPP_Recipe;
-import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map;
 import gregtech.api.util.GT_Config;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.items.behaviors.Behaviour_DataOrb;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.handler.COMPAT_HANDLER;
 import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.everglades.gen.gt.WorldGen_GT;
 import gtPlusPlus.recipes.CokeAndPyrolyseOven;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -34,7 +19,6 @@ import gtPlusPlus.xmod.gregtech.api.util.GTPP_Config;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.blocks.fluid.GregtechFluidHandler;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GregtechMTE_ElementalDuplicator;
 import gtPlusPlus.xmod.gregtech.loaders.Gregtech_Blocks;
 import gtPlusPlus.xmod.gregtech.loaders.ProcessingAngleGrinder;
 import gtPlusPlus.xmod.gregtech.loaders.ProcessingElectricSnips;
@@ -103,68 +87,10 @@ public class HANDLER_GT {
 
     public static void onLoadComplete(FMLLoadCompleteEvent event) {
         CokeAndPyrolyseOven.onLoadComplete();
-        generateElementalDuplicatorRecipes();
         Meta_GT_Proxy.fixIC2FluidNames();
         RecipeLoader_AlgaeFarm.generateRecipes();
         if (AdvancedSolarPanel.isModLoaded()) {
             RecipeLoader_MolecularTransformer.run();
         }
-    }
-
-    private static void generateElementalDuplicatorRecipes() {
-        for (GT_Recipe aRecipe : GT_Recipe_Map.sReplicatorFakeRecipes.mRecipeList) {
-            Object aDataOrb = aRecipe.mSpecialItems;
-            if (aDataOrb != null) {
-                ItemStack aOutput = aRecipe.mOutputs[0];
-                if (aOutput != null) {
-                    FluidStack aFluid = aRecipe.mFluidInputs[0];
-                    if (aFluid != null && aFluid.amount > 0) {
-                        ItemStack tDataOrb = GregtechMTE_ElementalDuplicator.getSpecialSlotStack(aRecipe);
-                        Materials tMaterial = Element.get(Behaviour_DataOrb.getDataName(tDataOrb)).mLinkedMaterials
-                                .get(0);
-                        FluidStack aOutputFluid = null;
-                        ItemStack aOutputItem = null;
-                        if (tMaterial != null) {
-                            boolean aUsingFluid = false;
-                            if ((aOutputItem = GT_OreDictUnificator.get(OrePrefixes.dust, tMaterial, 1L)) == null) {
-                                if ((aOutputItem = GT_OreDictUnificator.get(OrePrefixes.cell, tMaterial, 1L)) != null) {
-                                    aOutputFluid = GT_Utility.getFluidForFilledItem(aOutputItem, true);
-                                    aUsingFluid = true;
-                                }
-                            }
-                            GTPP_Recipe aNewRecipe = new GTPP_Recipe(
-                                    false,
-                                    new ItemStack[] {},
-                                    new ItemStack[] { !aUsingFluid ? aOutputItem : null },
-                                    aRecipe.mSpecialItems,
-                                    null,
-                                    aRecipe.mFluidInputs,
-                                    new FluidStack[] { aUsingFluid ? aOutputFluid : null },
-                                    aRecipe.mDuration,
-                                    aRecipe.mEUt,
-                                    aRecipe.mFluidInputs[0].amount);
-                            GTPP_Recipe_Map.sElementalDuplicatorRecipes.add(aNewRecipe);
-
-                            Logger.INFO(
-                                    "[EM] Generated recipe for " + tMaterial.mLocalizedName
-                                            + ", Outputs "
-                                            + (aUsingFluid ? "Fluid" : "Dust"));
-                        }
-                    } else {
-                        Logger.INFO("[EM] Bad UU Requirement. " + RecipeUtils.getRecipeInfo(aRecipe));
-                    }
-                } else {
-                    Logger.INFO("[EM] Bad Output. " + RecipeUtils.getRecipeInfo(aRecipe));
-                }
-            } else {
-                Logger.INFO("[EM] Bad Data Orb. " + RecipeUtils.getRecipeInfo(aRecipe));
-            }
-        }
-        int aSize = GTPP_Recipe_Map.sElementalDuplicatorRecipes.mRecipeList.size();
-        Logger.INFO(
-                "[EM] Generated " + aSize
-                        + "/"
-                        + GT_Recipe_Map.sReplicatorFakeRecipes.mRecipeList.size()
-                        + " Replicator recipes.");
     }
 }

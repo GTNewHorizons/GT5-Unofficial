@@ -123,19 +123,7 @@ public class TOOL_Gregtech_AngleGrinder extends GT_Tool {
     public int convertBlockDrops(final List<ItemStack> aDrops, final ItemStack aStack, final EntityPlayer aPlayer,
             final Block aBlock, final int aX, final int aY, final int aZ, final byte aMetaData, final int aFortune,
             final boolean aSilkTouch, final BlockEvent.HarvestDropsEvent aEvent) {
-        int rConversions = 0;
-        /*
-         * GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sHammerRecipes.findRecipe(null, true, 2147483647L, null, new
-         * ItemStack[]{new ItemStack(aBlock, 1, aMetaData)}); if ((tRecipe == null) ||
-         * (aBlock.hasTileEntity(aMetaData))) { for (final ItemStack tDrop : aDrops) { tRecipe =
-         * GT_Recipe.GT_Recipe_Map.sHammerRecipes.findRecipe(null, true, 2147483647L, null, new
-         * ItemStack[]{GT_Utility.copyAmount(1L, new Object[]{tDrop})}); if (tRecipe != null) { final ItemStack
-         * tHammeringOutput = tRecipe.getOutput(0); if (tHammeringOutput != null) { rConversions += tDrop.stackSize;
-         * tDrop.stackSize *= tHammeringOutput.stackSize; tHammeringOutput.stackSize = tDrop.stackSize;
-         * GT_Utility.setStack(tDrop, tHammeringOutput); } } } } else { aDrops.clear();
-         * aDrops.add(tRecipe.getOutput(0)); rConversions++; }
-         */
-        return rConversions;
+        return 0;
     }
 
     @Override

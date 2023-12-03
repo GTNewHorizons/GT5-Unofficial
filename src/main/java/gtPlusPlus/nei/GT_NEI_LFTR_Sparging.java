@@ -43,7 +43,7 @@ public class GT_NEI_LFTR_Sparging extends TemplateRecipeHandler {
                         new Rectangle(65, 13, 36, 18),
                         this.getOverlayIdentifier(),
                         new Object[0]));
-        if (!NEI_GT_Config.sIsAdded) {
+        if (!NEI_GTPP_Config.sIsAdded) {
             FMLInterModComms.sendRuntimeMessage(
                     GT_Values.GT,
                     "NEIPlugins",

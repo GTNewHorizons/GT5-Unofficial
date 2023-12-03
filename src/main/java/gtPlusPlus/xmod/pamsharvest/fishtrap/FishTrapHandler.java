@@ -1,8 +1,8 @@
 package gtPlusPlus.xmod.pamsharvest.fishtrap;
 
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMaceratorRecipes;
+import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
+import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
@@ -27,13 +27,13 @@ public class FishTrapHandler {
                         .itemOutputs(
                                 ItemUtils.getItemStackOfAmountFromOreDict("dustMeatRaw", 1),
                                 ItemUtils.getItemStackOfAmountFromOreDict("dustTinyBone", 1))
-                        .outputChances(10000, 1000).duration(20 * SECONDS).eut(2).addTo(sMaceratorRecipes);
+                        .outputChances(10000, 1000).duration(20 * SECONDS).eut(2).addTo(maceratorRecipes);
                 GT_Values.RA.stdBuilder().itemInputs(ItemUtils.getItemStackOfAmountFromOreDict(itemName, 1))
                         .fluidOutputs(FluidUtils.getFluidStack("methane", 96)).duration(19 * SECONDS).eut(5)
-                        .addTo(sCentrifugeRecipes);
+                        .addTo(centrifugeRecipes);
                 GT_Values.RA.stdBuilder().itemInputs(ItemUtils.getItemStackOfAmountFromOreDict(itemName, 1))
                         .fluidOutputs(FluidUtils.getFluidStack("fishoil", 50)).duration(16 * TICKS).eut(4)
-                        .addTo(sFluidExtractionRecipes);
+                        .addTo(fluidExtractionRecipes);
             }
         }
         if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken(greenheartFish, 1) != null) {
@@ -41,13 +41,13 @@ public class FishTrapHandler {
                     .itemOutputs(
                             ItemUtils.getItemStackOfAmountFromOreDict("dustMeatRaw", 1),
                             ItemUtils.getItemStackOfAmountFromOreDict("dustTinyBone", 1))
-                    .outputChances(10000, 1000).duration(20 * SECONDS).eut(2).addTo(sMaceratorRecipes);
+                    .outputChances(10000, 1000).duration(20 * SECONDS).eut(2).addTo(maceratorRecipes);
             GT_Values.RA.stdBuilder().itemInputs(ItemUtils.getItemStackOfAmountFromOreDict(greenheartFish, 1))
                     .fluidOutputs(FluidUtils.getFluidStack("methane", 96)).duration(19 * SECONDS).eut(5)
-                    .addTo(sCentrifugeRecipes);
+                    .addTo(centrifugeRecipes);
             GT_Values.RA.stdBuilder().itemInputs(ItemUtils.getItemStackOfAmountFromOreDict(greenheartFish, 1))
                     .fluidOutputs(FluidUtils.getFluidStack("fishoil", 50)).duration(16 * TICKS).eut(4)
-                    .addTo(sFluidExtractionRecipes);
+                    .addTo(fluidExtractionRecipes);
         }
     }
 }

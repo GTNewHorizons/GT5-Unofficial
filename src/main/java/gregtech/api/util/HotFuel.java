@@ -3,11 +3,13 @@ package gregtech.api.util;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import gtPlusPlus.api.recipe.GTPPRecipeMaps;
+
 public class HotFuel {
 
     public static void addNewHotFuel(FluidStack aInput1, FluidStack aOutput1, ItemStack[] outputItems, int[] chances,
             int aSpecialValue) {
-        GTPP_Recipe.GTPP_Recipe_Map.sThermalFuels.addRecipe(
+        GTPPRecipeMaps.thermalBoilerRecipes.addRecipe(
                 true,
                 null,
                 outputItems,
@@ -22,7 +24,7 @@ public class HotFuel {
     }
 
     public static void addNewHotFuel(FluidStack aInput1, FluidStack aOutput1, FluidStack aOutput2, int aSpecialValue) {
-        GTPP_Recipe.GTPP_Recipe_Map.sThermalFuels.addRecipe(
+        GTPPRecipeMaps.thermalBoilerRecipes.addRecipe(
                 false,
                 null,
                 null,

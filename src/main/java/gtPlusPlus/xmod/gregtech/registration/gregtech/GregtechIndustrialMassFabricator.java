@@ -5,9 +5,9 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
-import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -38,7 +38,7 @@ public class GregtechIndustrialMassFabricator {
         // Generate Scrap->UUA Recipes
 
         // Basic UUA1
-        GT_Recipe UUA_From_Scrap = new GTPP_Recipe(
+        GT_Recipe UUA_From_Scrap = new GT_Recipe(
                 false,
                 new ItemStack[] { CI.getNumberedCircuit(9), ItemUtils.getSimpleStack(getScrapPile(), 9) },
                 new ItemStack[] { GT_Values.NI },
@@ -50,7 +50,7 @@ public class GregtechIndustrialMassFabricator {
                 32,
                 0);
         // Basic UUA2
-        GT_Recipe UUA_From_ScrapBoxes = new GTPP_Recipe(
+        GT_Recipe UUA_From_ScrapBoxes = new GT_Recipe(
                 false,
                 new ItemStack[] { CI.getNumberedCircuit(19), ItemUtils.getSimpleStack(getScrapBox(), 1) },
                 new ItemStack[] { GT_Values.NI },
@@ -62,11 +62,11 @@ public class GregtechIndustrialMassFabricator {
                 32,
                 0);
 
-        GTPP_Recipe.GTPP_Recipe_Map.sMatterFab2Recipes.add(UUA_From_Scrap);
-        GTPP_Recipe.GTPP_Recipe_Map.sMatterFab2Recipes.add(UUA_From_ScrapBoxes);
+        GTPPRecipeMaps.multiblockMassFabricatorRecipes.add(UUA_From_Scrap);
+        GTPPRecipeMaps.multiblockMassFabricatorRecipes.add(UUA_From_ScrapBoxes);
 
         // Basic UUM
-        GT_Recipe generateUUM_LV = new GTPP_Recipe(
+        GT_Recipe generateUUM_LV = new GT_Recipe(
                 false,
                 new ItemStack[] { CI.getNumberedCircuit(1) },
                 new ItemStack[] { GT_Values.NI },
@@ -79,7 +79,7 @@ public class GregtechIndustrialMassFabricator {
                 0);
 
         // Basic UUM
-        GT_Recipe generateUUMFromUUA_LV = new GTPP_Recipe(
+        GT_Recipe generateUUMFromUUA_LV = new GT_Recipe(
                 false,
                 new ItemStack[] { CI.getNumberedCircuit(2) },
                 new ItemStack[] { GT_Values.NI },
@@ -92,8 +92,8 @@ public class GregtechIndustrialMassFabricator {
                 0);
 
         // Advanced UUM
-        GTPP_Recipe.GTPP_Recipe_Map.sMatterFab2Recipes.add(
-                new GTPP_Recipe(
+        GTPPRecipeMaps.multiblockMassFabricatorRecipes.add(
+                new GT_Recipe(
                         false,
                         new ItemStack[] { CI.getNumberedCircuit(3) },
                         new ItemStack[] { GT_Values.NI },
@@ -106,8 +106,8 @@ public class GregtechIndustrialMassFabricator {
                         0));
 
         // Advanced UUM
-        GTPP_Recipe.GTPP_Recipe_Map.sMatterFab2Recipes.add(
-                new GTPP_Recipe(
+        GTPPRecipeMaps.multiblockMassFabricatorRecipes.add(
+                new GT_Recipe(
                         false,
                         new ItemStack[] { CI.getNumberedCircuit(4) },
                         new ItemStack[] { GT_Values.NI },
@@ -119,11 +119,11 @@ public class GregtechIndustrialMassFabricator {
                         65536,
                         0));
 
-        GTPP_Recipe.GTPP_Recipe_Map.sMatterFab2Recipes.add(generateUUM_LV);
-        GTPP_Recipe.GTPP_Recipe_Map.sMatterFab2Recipes.add(generateUUMFromUUA_LV);
+        GTPPRecipeMaps.multiblockMassFabricatorRecipes.add(generateUUM_LV);
+        GTPPRecipeMaps.multiblockMassFabricatorRecipes.add(generateUUMFromUUA_LV);
 
         Logger.INFO(
-                "Generated " + GTPP_Recipe.GTPP_Recipe_Map.sMatterFab2Recipes.mRecipeList.size()
+                "Generated " + GTPPRecipeMaps.multiblockMassFabricatorRecipes.getAllRecipes().size()
                         + " Matter Fabricator recipes.");
     }
 

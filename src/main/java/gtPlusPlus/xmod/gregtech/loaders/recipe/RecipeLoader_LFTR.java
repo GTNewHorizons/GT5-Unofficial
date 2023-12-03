@@ -5,9 +5,9 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.Materials;
-import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GasSpargingRecipeMap;
 import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.material.nuclear.NUCLIDE;
@@ -56,7 +56,7 @@ public class RecipeLoader_LFTR {
         FluidStack Li2BeF4 = NUCLIDE.Li2BeF4.getFluidStack(200);
 
         // LiFBeF2ThF4UF4 - T3
-        GTPP_Recipe.GTPP_Recipe_Map.sLiquidFluorineThoriumReactorRecipes.addRecipe(
+        GTPPRecipeMaps.liquidFluorineThoriumReactorRecipes.addRecipe(
                 false,
                 new ItemStack[] {},
                 new ItemStack[] {},
@@ -72,7 +72,7 @@ public class RecipeLoader_LFTR {
         );
 
         // LiFBeF2ZrF4UF4 - T2
-        GTPP_Recipe.GTPP_Recipe_Map.sLiquidFluorineThoriumReactorRecipes.addRecipe(
+        GTPPRecipeMaps.liquidFluorineThoriumReactorRecipes.addRecipe(
                 false,
                 new ItemStack[] {},
                 new ItemStack[] {},
@@ -88,7 +88,7 @@ public class RecipeLoader_LFTR {
         );
 
         // LiFBeF2ZrF4U235 - T1
-        GTPP_Recipe.GTPP_Recipe_Map.sLiquidFluorineThoriumReactorRecipes.addRecipe(
+        GTPPRecipeMaps.liquidFluorineThoriumReactorRecipes.addRecipe(
                 false,
                 new ItemStack[] {},
                 new ItemStack[] {},

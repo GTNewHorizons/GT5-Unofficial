@@ -5,8 +5,8 @@ import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.GoodGenerator;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import net.minecraft.item.ItemStack;
@@ -497,7 +497,7 @@ public class RecipeLoader_ChemicalSkips {
                         MaterialsUEVplus.TranscendentMetal.getNanite(1))
                 .itemOutputs(ItemUtils.getSimpleStack(GenericChem.mAlgagenicGrowthPromoterCatalyst, 1))
                 .fluidInputs(FluidUtils.getFluidStack("molten.shirabon", 92_160)).duration(60 * SECONDS)
-                .eut(TierEU.RECIPE_UMV).addTo(sAssemblerRecipes);
+                .eut(TierEU.RECIPE_UMV).addTo(assemblerRecipes);
     }
 
     private static void tieredCasingRecipes() {

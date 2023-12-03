@@ -9,7 +9,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.recipe.RecipeMaps;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
@@ -195,7 +195,7 @@ public class RecipeGen_Plates extends RecipeGen_Base {
         if ((aDuration = GregTech_API.sRecipeFile.get("extruder", aOutput, aDuration)) <= 0) {
             return false;
         }
-        GT_Recipe.GT_Recipe_Map.sExtruderRecipes.addRecipe(
+        RecipeMaps.extruderRecipes.addRecipe(
                 true,
                 new ItemStack[] { aInput, aShape },
                 new ItemStack[] { aOutput },
@@ -216,7 +216,7 @@ public class RecipeGen_Plates extends RecipeGen_Base {
         if (!GregTech_API.sRecipeFile.get("forgehammer", aOutput1, true)) {
             return false;
         }
-        GT_Recipe.GT_Recipe_Map.sHammerRecipes.addRecipe(
+        RecipeMaps.hammerRecipes.addRecipe(
                 true,
                 new ItemStack[] { aInput1 },
                 new ItemStack[] { aOutput1 },

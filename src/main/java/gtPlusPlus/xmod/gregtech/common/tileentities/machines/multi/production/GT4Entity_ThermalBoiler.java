@@ -32,13 +32,14 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.general.ItemLavaFilter;
 import gtPlusPlus.core.lib.CORE;
@@ -83,6 +84,11 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
         return (aStack != null && aStack.getItem() == mLavaFilter) ? 1 : 0;
     }
 
+    @Override
+    public RecipeMap<?> getRecipeMap() {
+        return GTPPRecipeMaps.thermalBoilerRecipes;
+    }
+
     private static Item mLavaFilter;
     private static Fluid mLava = null;
     private static Fluid mPahoehoe = null;
@@ -115,7 +121,7 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
             }
         }
 
-        for (GT_Recipe tRecipe : GTPP_Recipe.GTPP_Recipe_Map.sThermalFuels.mRecipeList) {
+        for (GT_Recipe tRecipe : GTPPRecipeMaps.thermalBoilerRecipes.getAllRecipes()) {
             FluidStack tFluid = tRecipe.mFluidInputs[0];
             if (tFluid != null) {
 

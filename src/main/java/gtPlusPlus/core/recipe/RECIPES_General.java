@@ -2,7 +2,7 @@ package gtPlusPlus.core.recipe;
 
 import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.enums.Mods.Thaumcraft;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
+import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gtPlusPlus.core.recipe.common.CI.bitsd;
@@ -177,7 +177,7 @@ public class RECIPES_General {
                         CI.getNumberedAdvancedCircuit(4))
                 .itemOutputs(VolumetricFlaskHelper.getLargeVolumetricFlask(2))
                 .fluidInputs(FluidUtils.getFluidStack("molten.borosilicateglass", 2000)).duration(15 * SECONDS)
-                .eut(TierEU.RECIPE_HV).addTo(sAssemblerRecipes);
+                .eut(TierEU.RECIPE_HV).addTo(assemblerRecipes);
 
         GT_Values.RA.stdBuilder()
                 .itemInputs(
@@ -187,7 +187,7 @@ public class RECIPES_General {
                         CI.getNumberedAdvancedCircuit(5))
                 .itemOutputs(VolumetricFlaskHelper.getGiganticVolumetricFlask(2))
                 .fluidInputs(FluidUtils.getFluidStack("molten.borosilicateglass", 8000)).duration(15 * SECONDS)
-                .eut(TierEU.RECIPE_IV).addTo(sAssemblerRecipes);
+                .eut(TierEU.RECIPE_IV).addTo(assemblerRecipes);
 
         // Mining Explosive
         Logger.RECIPE("[Inspection] Explosives");
@@ -256,7 +256,7 @@ public class RECIPES_General {
                         ItemUtils.getSimpleStack(Blocks.gold_block, 32))
                 .itemOutputs(ItemUtils.getSimpleStack(ModItems.itemMagicFeather, 1))
                 .fluidInputs(Materials.Silver.getMolten(32 * 144)).duration(2 * MINUTES).eut(TierEU.RECIPE_EV)
-                .addTo(sAssemblerRecipes);
+                .addTo(assemblerRecipes);
 
         // Pest Killer
         GT_Values.RA.stdBuilder()
@@ -268,7 +268,7 @@ public class RECIPES_General {
                         CI.getNumberedCircuit(16))
                 .itemOutputs(ItemUtils.getSimpleStack(ModBlocks.blockPestKiller))
                 .fluidInputs(FluidUtils.getHotWater(500)).duration(1 * MINUTES).eut(TierEU.RECIPE_LV / 2)
-                .addTo(sAssemblerRecipes);
+                .addTo(assemblerRecipes);
     }
 
     private static boolean addCompressedObsidian() {

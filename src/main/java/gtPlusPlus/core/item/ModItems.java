@@ -4,7 +4,7 @@ import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.Thaumcraft;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
 
@@ -673,7 +673,7 @@ public final class ModItems {
                         null,
                         true);
                 GT_Values.RA.stdBuilder().itemInputs(temp2).fluidOutputs(new FluidStack(fluidFertBasic, 36))
-                        .duration(5 * TICKS).eut(16).addTo(sFluidExtractionRecipes);
+                        .duration(5 * TICKS).eut(16).addTo(fluidExtractionRecipes);
             }
             fluidFertUN32 = FluidUtils.generateFluidNonMolten(
                     "UN32Fertiliser",

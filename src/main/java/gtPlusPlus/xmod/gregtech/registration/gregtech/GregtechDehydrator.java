@@ -3,7 +3,7 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
+import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import net.minecraft.item.ItemStack;
@@ -15,9 +15,9 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TierEU;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects;
-import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.ALLOY;
@@ -44,22 +44,22 @@ public class GregtechDehydrator {
                 .itemInputs(
                         new ItemStack(ModItems.itemDehydratorCoilWire, 4, 0),
                         GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Bronze, 1))
-                .itemOutputs(coilT1).duration(8 * SECONDS).eut(TierEU.RECIPE_MV).addTo(sAssemblerRecipes);
+                .itemOutputs(coilT1).duration(8 * SECONDS).eut(TierEU.RECIPE_MV).addTo(assemblerRecipes);
         GT_Values.RA.stdBuilder()
                 .itemInputs(
                         new ItemStack(ModItems.itemDehydratorCoilWire, 4, 1),
                         GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Steel, 1))
-                .itemOutputs(coilT2).duration(8 * SECONDS).eut(TierEU.RECIPE_HV / 2).addTo(sAssemblerRecipes);
+                .itemOutputs(coilT2).duration(8 * SECONDS).eut(TierEU.RECIPE_HV / 2).addTo(assemblerRecipes);
         GT_Values.RA.stdBuilder()
                 .itemInputs(
                         new ItemStack(ModItems.itemDehydratorCoilWire, 4, 2),
                         GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.StainlessSteel, 1))
-                .itemOutputs(coilT3).duration(8 * SECONDS).eut(TierEU.RECIPE_HV).addTo(sAssemblerRecipes);
+                .itemOutputs(coilT3).duration(8 * SECONDS).eut(TierEU.RECIPE_HV).addTo(assemblerRecipes);
         GT_Values.RA.stdBuilder()
                 .itemInputs(
                         new ItemStack(ModItems.itemDehydratorCoilWire, 4, 3),
                         GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Titanium, 1))
-                .itemOutputs(coilT4).duration(8 * SECONDS).eut(TierEU.RECIPE_EV / 2).addTo(sAssemblerRecipes);
+                .itemOutputs(coilT4).duration(8 * SECONDS).eut(TierEU.RECIPE_EV / 2).addTo(assemblerRecipes);
 
         // Basic
         GregtechItemList.GT_Dehydrator_MV.set(
@@ -69,19 +69,18 @@ public class GregtechDehydrator {
                         "Basic Dehydrator I",
                         2,
                         new String[] { "This dehydrates your Grapes into Raisins.", CORE.GT_Tooltip.get() },
-                        GTPP_Recipe.GTPP_Recipe_Map.sChemicalDehydratorRecipes,
+                        GTPPRecipeMaps.chemicalDehydratorRecipes,
                         2,
                         9,
                         true,
                         SoundResource.NONE,
-                        false,
-                        false,
                         SpecialEffects.NONE,
                         "DEHYDRATOR",
                         new Object[] { "ECE", "WMW", "GPG", 'M', HULL, 'P', ROBOT_ARM, 'E',
                                 OrePrefixes.wireFine.get(Materials.RedAlloy), 'C', CIRCUIT, 'W',
                                 OrePrefixes.cableGt04.get(Materials.Copper), 'G',
-                                OrePrefixes.gearGt.get(Materials.Steel) }).getStackForm(1L));
+                                OrePrefixes.gearGt.get(Materials.Steel) }).setRecipeCatalystPriority(6)
+                                        .getStackForm(1L));
 
         GregtechItemList.GT_Dehydrator_HV.set(
                 new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -90,19 +89,17 @@ public class GregtechDehydrator {
                         "Basic Dehydrator II",
                         3,
                         new String[] { "This dehydrates your Grapes into Raisins.", CORE.GT_Tooltip.get() },
-                        GTPP_Recipe.GTPP_Recipe_Map.sChemicalDehydratorRecipes,
+                        GTPPRecipeMaps.chemicalDehydratorRecipes,
                         2,
                         9,
                         true,
                         SoundResource.NONE,
-                        false,
-                        false,
                         SpecialEffects.NONE,
                         "DEHYDRATOR",
                         new Object[] { "ECE", "WMW", "GPG", 'M', HULL, 'P', ROBOT_ARM, 'E',
                                 OrePrefixes.wireFine.get(Materials.Electrum), 'C', CIRCUIT, 'W',
                                 OrePrefixes.cableGt04.get(Materials.Silver), 'G', ALLOY.POTIN.getGear(1) })
-                                        .getStackForm(1L));
+                                        .setRecipeCatalystPriority(5).getStackForm(1L));
 
         // Chemical
         GregtechItemList.GT_Dehydrator_EV.set(
@@ -113,18 +110,16 @@ public class GregtechDehydrator {
                         4,
                         new String[] { "A hangover is the way your body reacts to dehydration.",
                                 CORE.GT_Tooltip.get() },
-                        GTPP_Recipe.GTPP_Recipe_Map.sChemicalDehydratorRecipes,
+                        GTPPRecipeMaps.chemicalDehydratorRecipes,
                         2,
                         9,
                         true,
                         SoundResource.NONE,
-                        false,
-                        false,
                         SpecialEffects.NONE,
                         "DEHYDRATOR",
                         new Object[] { "ECE", "WMW", "GPG", 'M', HULL, 'P', ROBOT_ARM, 'E', coilT1, 'C', CIRCUIT, 'W',
                                 OrePrefixes.cableGt04.get(Materials.Aluminium), 'G', ALLOY.TUMBAGA.getGear(1) })
-                                        .getStackForm(1L));
+                                        .setRecipeCatalystPriority(4).getStackForm(1L));
 
         GregtechItemList.GT_Dehydrator_IV.set(
                 new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -134,18 +129,16 @@ public class GregtechDehydrator {
                         5,
                         new String[] { "A hangover is the way your body reacts to dehydration.",
                                 CORE.GT_Tooltip.get() },
-                        GTPP_Recipe.GTPP_Recipe_Map.sChemicalDehydratorRecipes,
+                        GTPPRecipeMaps.chemicalDehydratorRecipes,
                         2,
                         9,
                         true,
                         SoundResource.NONE,
-                        false,
-                        false,
                         SpecialEffects.NONE,
                         "DEHYDRATOR",
                         new Object[] { "ECE", "WMW", "GPG", 'M', HULL, 'P', ROBOT_ARM, 'E', coilT2, 'C', CIRCUIT, 'W',
                                 OrePrefixes.cableGt04.get(Materials.Tungsten), 'G', ALLOY.INCONEL_690.getGear(1) })
-                                        .getStackForm(1L));
+                                        .setRecipeCatalystPriority(3).getStackForm(1L));
 
         GregtechItemList.GT_Dehydrator_LuV.set(
                 new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -154,18 +147,16 @@ public class GregtechDehydrator {
                         "Chemical Dehydrator III",
                         6,
                         new String[] { "You could probably make space icecream with this..", CORE.GT_Tooltip.get() },
-                        GTPP_Recipe.GTPP_Recipe_Map.sChemicalDehydratorRecipes,
+                        GTPPRecipeMaps.chemicalDehydratorRecipes,
                         2,
                         9,
                         true,
                         SoundResource.NONE,
-                        false,
-                        false,
                         SpecialEffects.NONE,
                         "DEHYDRATOR",
                         new Object[] { "ECE", "WMW", "GPG", 'M', HULL, 'P', ROBOT_ARM, 'E', coilT3, 'C', CIRCUIT, 'W',
                                 OrePrefixes.cableGt04.get(Materials.Naquadah), 'G', ALLOY.HASTELLOY_N.getGear(1) })
-                                        .getStackForm(1L));
+                                        .setRecipeCatalystPriority(2).getStackForm(1L));
 
         GregtechItemList.GT_Dehydrator_ZPM.set(
                 new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -174,18 +165,16 @@ public class GregtechDehydrator {
                         "Chemical Dehydrator IV",
                         7,
                         new String[] { "You can definitely make space icecream with this..", CORE.GT_Tooltip.get() },
-                        GTPP_Recipe.GTPP_Recipe_Map.sChemicalDehydratorRecipes,
+                        GTPPRecipeMaps.chemicalDehydratorRecipes,
                         2,
                         9,
                         true,
                         SoundResource.NONE,
-                        false,
-                        false,
                         SpecialEffects.NONE,
                         "DEHYDRATOR",
                         new Object[] { "ECE", "WMW", "GPG", 'M', HULL, 'P', ROBOT_ARM, 'E', coilT4, 'C', CIRCUIT, 'W',
                                 OrePrefixes.cableGt04.get(Materials.Osmium), 'G', ALLOY.ZERON_100.getGear(1) })
-                                        .getStackForm(1L));
+                                        .setRecipeCatalystPriority(1).getStackForm(1L));
 
         // Advanced
         GregtechItemList.Controller_Vacuum_Furnace.set(

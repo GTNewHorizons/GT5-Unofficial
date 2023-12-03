@@ -6,7 +6,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GT_Values;
-import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
@@ -92,7 +91,7 @@ public class RecipeLoader_AlgaeFarm {
         // We set these elsewhere
         ItemStack[] aOutputs = getOutputsForTier(aTier);
 
-        GT_Recipe tRecipe = new GTPP_Recipe(
+        GT_Recipe tRecipe = new GT_Recipe(
                 false,
                 aInputs,
                 aOutputs,

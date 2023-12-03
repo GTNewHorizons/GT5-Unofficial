@@ -64,6 +64,62 @@ GTPP.core.GT_Tooltip=Added by: §2Alkalus §7- §c[GT++]
 GTPP.core.GT_Tooltip_Builder=§2Alkalus §7- §c[GT++]
 GTPP.core.GT_Tooltip_Radioactive=§7Warning: §aRadioactive! §6 Avoid direct handling without hazmat protection.
 
+# RecipeMaps
+gtpp.recipe.cokeoven=Coke Oven
+gtpp.recipe.matterfab2=Matter Fabricator
+gtpp.recipe.rocketenginefuel=Rocket Engine Fuel
+gtpp.recipe.quantumforcesmelter=Quantum Force Transformer
+gtpp.recipe.chemicaldehydrator=Dehydrator
+gtpp.recipe.vacfurnace=Vacuum Furnace
+gtpp.recipe.alloyblastsmelter=Alloy Blast Smelter
+gtpp.recipe.lftr=Liquid Fluoride Thorium Reactor
+gtpp.recipe.nuclearsaltprocessingplant=Nuclear Salt Processing Plant
+gtpp.recipe.oremill=Milling
+gtpp.recipe.fissionfuel=Nuclear Fuel Processing
+gtpp.recipe.coldtrap=Cold Trap
+gtpp.recipe.reactorprocessingunit=Reactor Processing Unit
+gtpp.recipe.simplewasher=Simple Dust Washer
+gtpp.recipe.moleculartransformer=Molecular Transformer
+gtpp.recipe.fluidchemicaleactor=Chemical Plant
+gtpp.recipe.RTGgenerators=RTG
+gtpp.recipe.thermalgeneratorfuel=Thermal Generator Fuel
+gtpp.recipe.solartower=Solar Tower
+gtpp.recipe.cyclotron=COMET - Compact Cyclotron
+gtpp.recipe.fishpond=Zhuhai - Fishing Port
+gtpp.recipe.cryogenicfreezer=Cryogenic Freezer
+gtpp.recipe.multicentrifuge=Multiblock Centrifuge
+gtpp.recipe.multielectro=Multiblock Electrolyzer
+gtpp.recipe.multimixer=Multiblock Mixer
+gtpp.recipe.multidehydrator=Multiblock Dehydrator
+gtpp.recipe.semifluidgeneratorfuels=Semifluid Generator Fuels
+gtpp.recipe.flotationcell=Flotation Cell
+gtpp.recipe.treefarm=Tree Growth Simulator
+
+# Recipe categories
+gtpp.recipe.category.abs_non_alloy_recipes=ABS Non-Alloy Recipes
+
+# NEI
+gtpp.nei.lftr.power=Power: %s EU/t per Dynamo
+gtpp.nei.lftr.dynamo=Dynamo: %s EU
+gtpp.nei.lftr.total=Total: %s EU
+gtpp.nei.milling.not_consumed=Does not always get consumed in the process
+gtpp.nei.chemplant.tier.1=Bronze
+gtpp.nei.chemplant.tier.2=Steel
+gtpp.nei.chemplant.tier.3=Aluminium
+gtpp.nei.chemplant.tier.4=Stainless Steel
+gtpp.nei.chemplant.tier.5=Titanium
+gtpp.nei.chemplant.tier.6=Tungsten Steel
+gtpp.nei.chemplant.tier.7=Laurenium
+gtpp.nei.chemplant.tier.8=Botmium
+gtpp.nei.rtg.days=Fuel Value: %s Minecraft Days
+gtpp.nei.solar_tower.1=Solar Heater rings boost tier
+gtpp.nei.solar_tower.2=R1:T1, R2:T2, R3:T4, R4:T8, R5:T16
+gtpp.nei.solar_tower.3=Input Amount = 1000 x T
+gtpp.nei.tgs.1=The sapling is not consumed.
+gtpp.nei.tgs.2=If %s is provided,
+gtpp.nei.tgs.3=Saplings are made instead.
+gtpp.nei.tgs.sapling=Outputted if %s is provided
+
 //Thermal Foundation Stuff
 item.MiscUtils.bucket.bucketPyrotheum.name=Blazing Pyrotheum Bucket
 item.MiscUtils.bucket.bucketCryotheum.name=Gelid Cryotheum Bucket

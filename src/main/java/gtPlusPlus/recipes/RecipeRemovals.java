@@ -6,7 +6,6 @@ import java.util.Collection;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -14,7 +13,7 @@ import advsolar.common.AdvancedSolarPanel;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.items.GT_MetaGenerated_Tool;
-import gregtech.api.util.GTPP_Recipe;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_Recipe;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gtPlusPlus.api.objects.Logger;
@@ -32,7 +31,6 @@ public class RecipeRemovals {
 
     public static void onLoadComplete() {
         removeCrudeTurbineRotors();
-        removeGTRareEarthRecipe();
     }
 
     // Doesn't actually remove recipes, just hide them
@@ -40,7 +38,7 @@ public class RecipeRemovals {
         int aRemoved = 0;
         int CUT = CORE.turbineCutoffBase;
         Item aU;
-        Collection<GT_Recipe> aAssRecipes = GT_Recipe.GT_Recipe_Map.sAssemblerRecipes.mRecipeList;
+        Collection<GT_Recipe> aAssRecipes = RecipeMaps.assemblerRecipes.getAllRecipes();
         // 170, 172, 174, 176
         if (aAssRecipes.size() > 0) {
             for (GT_Recipe aG : aAssRecipes) {
@@ -105,28 +103,5 @@ public class RecipeRemovals {
         }
 
         Logger.INFO("Removed " + aRemoved + " useless Turbines.");
-    }
-
-    private static void removeGTRareEarthRecipe() {
-
-        Logger.INFO("Processing Gregtech recipe maps, removing recipes to suit GT++.");
-        // Remove Rare Earth Centrifuging
-        // 1 Rare Earth Dust - 25% chance for small piles of: neodymium, yttrium, lanthanum, cerium, cadmium, and
-        // caesium
-        // Replaced by advanced sifting recipe.
-        GT_Recipe aRareEarthCentrifuging = GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.findRecipe(
-                null,
-                false,
-                20,
-                new FluidStack[] {},
-                new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustRareEarth", 1) });
-        if (aRareEarthCentrifuging != null && aRareEarthCentrifuging.mEnabled) {
-            aRareEarthCentrifuging.mEnabled = false;
-            aRareEarthCentrifuging.mHidden = true;
-            GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.mRecipeList.remove(aRareEarthCentrifuging);
-            GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.mRecipeList.remove(aRareEarthCentrifuging);
-            Logger.INFO("Removed vanilla GT Rare Earth processing.");
-        }
-
     }
 }

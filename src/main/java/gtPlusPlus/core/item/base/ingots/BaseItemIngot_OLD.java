@@ -1,7 +1,7 @@
 package gtPlusPlus.core.item.base.ingots;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCompressorRecipes;
+import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import net.minecraft.entity.Entity;
@@ -81,7 +81,7 @@ public class BaseItemIngot_OLD extends Item {
                 tempOutput = ItemUtils.getItemStackOfAmountFromOreDict(temp, 1);
                 if (tempOutput != null) {
                     GT_Values.RA.stdBuilder().itemInputs(tempStack).itemOutputs(tempOutput).duration(15 * SECONDS)
-                            .eut(2).addTo(sCompressorRecipes);
+                            .eut(2).addTo(compressorRecipes);
                 }
             }
         } else if (this.unlocalName.contains("itemHotIngot")) {

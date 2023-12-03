@@ -18,8 +18,9 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energ
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.AdvFusionPower;
+import gregtech.api.util.AdvancedFusionOverclockDescriber;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FusionComputer;
 import gtPlusPlus.core.block.ModBlocks;
@@ -36,14 +37,16 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK5 extends GT_MetaTileEntity_Fus
     }
 
     public GregtechMetaTileEntity_Adv_Fusion_MK5(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, 10);
-        // Theoretically this fusion reactor has higher startup power, but special value only uses integer
-        power = new AdvFusionPower((byte) 10, Integer.MAX_VALUE);
+        super(aID, aName, aNameRegional);
     }
 
     public GregtechMetaTileEntity_Adv_Fusion_MK5(String aName) {
         super(aName);
-        power = new AdvFusionPower((byte) 10, Integer.MAX_VALUE);
+    }
+
+    @Override
+    protected OverclockDescriber createOverclockDescriber() {
+        return new AdvancedFusionOverclockDescriber((byte) tier(), capableStartupCanonical());
     }
 
     @Override
@@ -75,6 +78,16 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK5 extends GT_MetaTileEntity_Fus
     }
 
     @Override
+    public long capableStartupCanonical() {
+        return 20_480_000_000L;
+    }
+
+    @Override
+    public int getRecipeCatalystPriority() {
+        return -1;
+    }
+
+    @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GregtechMetaTileEntity_Adv_Fusion_MK5(mName);
     }
@@ -100,20 +113,8 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK5 extends GT_MetaTileEntity_Fus
     }
 
     @Override
-    public int tierOverclock() {
-        return 16;
-    }
-
-    @Override
     protected ProcessingLogic createProcessingLogic() {
         return super.createProcessingLogic().setOverclock(2, 2);
-    }
-
-    @Override
-    public int overclock(int mStartEnergy) {
-        return (mStartEnergy <= 160_000_000) ? 4
-                : ((mStartEnergy <= 320_000_000) ? 3
-                        : ((mStartEnergy <= 640_000_000) ? 2 : ((mStartEnergy <= 1_280_000_000) ? 1 : 0)));
     }
 
     @Override

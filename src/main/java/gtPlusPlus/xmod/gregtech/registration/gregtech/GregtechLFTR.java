@@ -3,8 +3,8 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects;
-import gregtech.api.util.GTPP_Recipe;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.GregtechMetaTileEntity_SpargeTower;
@@ -32,13 +32,11 @@ public class GregtechLFTR {
                         "Reactor Processing Unit I",
                         5,
                         new String[] { "Processes Nuclear things", CORE.GT_Tooltip.get() },
-                        GTPP_Recipe.GTPP_Recipe_Map.sReactorProcessingUnitRecipes,
+                        GTPPRecipeMaps.reactorProcessingUnitRecipes,
                         2,
                         9,
                         true,
                         SoundResource.NONE,
-                        false,
-                        false,
                         SpecialEffects.NONE,
                         "REACTOR_PROCESSING_UNIT",
                         null).getStackForm(1L));
@@ -49,13 +47,11 @@ public class GregtechLFTR {
                         "Reactor Processing Unit II",
                         7,
                         new String[] { "Processes Nuclear things", CORE.GT_Tooltip.get() },
-                        GTPP_Recipe.GTPP_Recipe_Map.sReactorProcessingUnitRecipes,
+                        GTPPRecipeMaps.reactorProcessingUnitRecipes,
                         2,
                         9,
                         true,
                         SoundResource.NONE,
-                        false,
-                        false,
                         SpecialEffects.NONE,
                         "REACTOR_PROCESSING_UNIT",
                         null).getStackForm(1L));
@@ -67,13 +63,11 @@ public class GregtechLFTR {
                         "Cold Trap I",
                         5,
                         new String[] { "Just like the Arctic", "Does not require ice cubes", CORE.GT_Tooltip.get() },
-                        GTPP_Recipe.GTPP_Recipe_Map.sColdTrapRecipes,
+                        GTPPRecipeMaps.coldTrapRecipes,
                         2,
                         9,
                         true,
                         SoundResource.NONE,
-                        false,
-                        false,
                         SpecialEffects.NONE,
                         "COLD_TRAP",
                         null).getStackForm(1L));
@@ -84,13 +78,11 @@ public class GregtechLFTR {
                         "Cold Trap II",
                         7,
                         new String[] { "Just like the Arctic", "Does not require ice cubes", CORE.GT_Tooltip.get() },
-                        GTPP_Recipe.GTPP_Recipe_Map.sColdTrapRecipes,
+                        GTPPRecipeMaps.coldTrapRecipes,
                         2,
                         9,
                         true,
                         SoundResource.NONE,
-                        false,
-                        false,
                         SpecialEffects.NONE,
                         "COLD_TRAP",
                         null).getStackForm(1L));

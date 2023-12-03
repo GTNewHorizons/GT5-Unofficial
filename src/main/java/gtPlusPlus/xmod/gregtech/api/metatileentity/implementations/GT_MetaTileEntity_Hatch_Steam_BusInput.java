@@ -19,14 +19,14 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
 
 public class GT_MetaTileEntity_Hatch_Steam_BusInput extends GT_MetaTileEntity_Hatch {
 
-    public GT_Recipe_Map mRecipeMap = null;
+    public RecipeMap<?> mRecipeMap = null;
     public boolean disableSort;
 
     public GT_MetaTileEntity_Hatch_Steam_BusInput(int aID, String aName, String aNameRegional, int aTier) {

@@ -16,15 +16,16 @@ import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 
-public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_BasicTank {
+public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_BasicTank implements RecipeMapWorkable {
 
     private boolean useFuel = false;
     protected int pollMin, pollMax;
@@ -295,7 +296,8 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
         return MathUtils.randInt(pollMin, pollMax);
     }
 
-    public abstract GT_Recipe_Map getRecipes();
+    @Override
+    public abstract RecipeMap<?> getRecipeMap();
 
     public abstract int getEfficiency();
 
@@ -304,11 +306,11 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
     }
 
     public int getFuelValue(final FluidStack aLiquid) {
-        if ((aLiquid == null) || (this.getRecipes() == null)) {
+        if ((aLiquid == null) || (this.getRecipeMap() == null)) {
             return 0;
         }
         FluidStack tLiquid;
-        final Collection<GT_Recipe> tRecipeList = this.getRecipes().mRecipeList;
+        final Collection<GT_Recipe> tRecipeList = this.getRecipeMap().getAllRecipes();
         if (tRecipeList != null) {
             // Logger.INFO("Step A");
             for (final GT_Recipe tFuel : tRecipeList) {
@@ -329,10 +331,10 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
     }
 
     public int getFuelValue(final ItemStack aStack) {
-        if (GT_Utility.isStackInvalid(aStack) || (this.getRecipes() == null)) {
+        if (GT_Utility.isStackInvalid(aStack) || (this.getRecipeMap() == null)) {
             return 0;
         }
-        final GT_Recipe tFuel = this.getRecipes()
+        final GT_Recipe tFuel = this.getRecipeMap()
                 .findRecipe(this.getBaseMetaTileEntity(), false, Long.MAX_VALUE, null, aStack);
         if (tFuel != null) {
             return (int) ((tFuel.mSpecialValue * 1000L * this.getEfficiency()) / 100);
@@ -341,10 +343,10 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
     }
 
     public ItemStack getEmptyContainer(final ItemStack aStack) {
-        if (GT_Utility.isStackInvalid(aStack) || (this.getRecipes() == null)) {
+        if (GT_Utility.isStackInvalid(aStack) || (this.getRecipeMap() == null)) {
             return null;
         }
-        final GT_Recipe tFuel = this.getRecipes()
+        final GT_Recipe tFuel = this.getRecipeMap()
                 .findRecipe(this.getBaseMetaTileEntity(), false, Long.MAX_VALUE, null, aStack);
         if (tFuel != null) {
             return GT_Utility.copy(tFuel.getOutput(0));

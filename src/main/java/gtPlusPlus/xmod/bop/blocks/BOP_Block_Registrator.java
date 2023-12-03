@@ -1,6 +1,6 @@
 package gtPlusPlus.xmod.bop.blocks;
 
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCutterRecipes;
+import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.loaders.oreprocessing.ProcessingLog.addPyrolyeOvenRecipes;
 
@@ -126,7 +126,7 @@ public class BOP_Block_Registrator {
                                                     : (((long) tStack.stackSize) * 5L / 4),
                                             tStack),
                                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
-                            .duration(10 * SECONDS).eut(8).addTo(sCutterRecipes);
+                            .duration(10 * SECONDS).eut(8).addTo(cutterRecipes);
                     GT_ModHandler.removeRecipe(new ItemStack(aStack.getItem(), 1, i));
                     GT_ModHandler.addCraftingRecipe(
                             GT_Utility.copyAmount(
@@ -153,7 +153,7 @@ public class BOP_Block_Registrator {
                                                 : (((long) tStack2.stackSize) * 5L / 4),
                                         tStack2),
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
-                        .duration(10 * SECONDS).eut(8).addTo(sCutterRecipes);
+                        .duration(10 * SECONDS).eut(8).addTo(cutterRecipes);
                 GT_ModHandler.removeRecipe(GT_Utility.copyAmount(1L, aStack));
                 GT_ModHandler.addCraftingRecipe(
                         GT_Utility.copyAmount(

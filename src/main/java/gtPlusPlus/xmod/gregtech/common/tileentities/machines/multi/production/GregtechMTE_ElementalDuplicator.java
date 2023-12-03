@@ -14,16 +14,11 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -31,24 +26,15 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.Element;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.recipe.check.FindRecipeResult;
-import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.items.behaviors.Behaviour_DataOrb;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_ElementalDataOrbHolder;
@@ -252,7 +238,6 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
             }
             if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_ElementalDataOrbHolder) {
                 try {
-                    ((GT_MetaTileEntity_Hatch_ElementalDataOrbHolder) aMetaTileEntity).mRecipeMap = getRecipeMap();
                     return addToMachineListInternal(mReplicatorDataOrbHatches, aMetaTileEntity, aBaseCasingIndex);
                 } catch (Throwable t) {
                     t.printStackTrace();
@@ -283,8 +268,8 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
     }
 
     @Override
-    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return GTPP_Recipe_Map.sElementalDuplicatorRecipes;
+    public RecipeMap<?> getRecipeMap() {
+        return RecipeMaps.replicatorRecipes;
     }
 
     @Override
@@ -294,49 +279,18 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
+        return new ProcessingLogic().setSpeedBonus(1F / 2F).enablePerfectOverclock()
+                .setMaxParallelSupplier(this::getMaxParallelRecipes);
+    }
 
-            @NotNull
-            @Override
-            protected FindRecipeResult findRecipe(@Nullable GT_Recipe_Map map) {
-                if (map == null) {
-                    return FindRecipeResult.NOT_FOUND;
-                }
-                try {
-                    ItemStack aDataOrbStack = null;
-                    recipe: for (GT_Recipe nRecipe : map.mRecipeList) {
-                        ItemStack aTempStack = getSpecialSlotStack(nRecipe);
-                        if (aTempStack != null) {
-                            for (ItemStack aItem : inputItems) {
-                                if (nRecipe.mSpecialItems != null) {
-                                    if (GT_Utility.areStacksEqual(aTempStack, aItem, false)) {
-                                        aDataOrbStack = aTempStack;
-                                        break recipe;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    if (aDataOrbStack != null) {
-                        GT_Recipe recipe = GregtechMTE_ElementalDuplicator.this.findRecipe(
-                                getBaseMetaTileEntity(),
-                                mLastRecipe,
-                                false,
-                                false,
-                                availableVoltage,
-                                inputFluids,
-                                aDataOrbStack,
-                                inputItems);
-                        if (recipe != null) {
-                            return FindRecipeResult.ofSuccess(recipe);
-                        }
-                    }
-                } catch (Throwable t) {
-                    t.printStackTrace();
-                }
-                return FindRecipeResult.NOT_FOUND;
-            }
-        }.setSpeedBonus(1F / 2F).enablePerfectOverclock().setMaxParallelSupplier(this::getMaxParallelRecipes);
+    @Override
+    protected void setupProcessingLogic(ProcessingLogic logic) {
+        super.setupProcessingLogic(logic);
+        for (GT_MetaTileEntity_Hatch_ElementalDataOrbHolder hatch : filterValidMTEs(mReplicatorDataOrbHatches)) {
+            ItemStack orb = hatch.getOrbByCircuit();
+            logic.setSpecialSlotItem(orb);
+            break;
+        }
     }
 
     @Override
@@ -378,145 +332,10 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
     public ArrayList<ItemStack> getStoredInputs() {
         ArrayList<ItemStack> tItems = super.getStoredInputs();
         for (GT_MetaTileEntity_Hatch_ElementalDataOrbHolder tHatch : filterValidMTEs(mReplicatorDataOrbHatches)) {
-            tHatch.mRecipeMap = getRecipeMap();
             tItems.add(tHatch.getOrbByCircuit());
         }
         tItems.removeAll(Collections.singleton(null));
         return tItems;
-    }
-
-    /**
-     * finds a Recipe matching the aFluid and ItemStack Inputs.
-     *
-     * @param aTileEntity          an Object representing the current coordinates of the executing
-     *                             Block/Entity/Whatever. This may be null, especially during Startup.
-     * @param aRecipe              in case this is != null it will try to use this Recipe first when looking things up.
-     * @param aNotUnificated       if this is T the Recipe searcher will unificate the ItemStack Inputs
-     * @param aDontCheckStackSizes if set to false will only return recipes that can be executed at least once with the
-     *                             provided input
-     * @param aVoltage             Voltage of the Machine or Long.MAX_VALUE if it has no Voltage
-     * @param aFluids              the Fluid Inputs
-     * @param aSpecialSlot         the content of the Special Slot, the regular Manager doesn't do anything with this,
-     *                             but some custom ones do.
-     * @param aInputs              the Item Inputs
-     * @return the Recipe it has found or null for no matching Recipe
-     */
-    public GT_Recipe findRecipe(IHasWorldObjectAndCoords aTileEntity, GT_Recipe aRecipe, boolean aNotUnificated,
-            boolean aDontCheckStackSizes, long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot,
-            ItemStack... aInputs) {
-
-        GT_Recipe_Map mRecipeMap = this.getRecipeMap();
-        // No Recipes? Well, nothing to be found then.
-        if (mRecipeMap.mRecipeList.isEmpty()) {
-            return null;
-        }
-
-        // Some Recipe Classes require a certain amount of Inputs of certain kinds. Like "at least 1 Fluid + 1 Stack" or
-        // "at least 2 Stacks" before they start searching for Recipes.
-        // This improves Performance massively, especially if people leave things like Circuits, Molds or Shapes in
-        // their Machines to select Sub Recipes.
-        if (GregTech_API.sPostloadFinished) {
-            if (mRecipeMap.mMinimalInputFluids > 0) {
-                if (aFluids == null) return null;
-                int tAmount = 0;
-                for (FluidStack aFluid : aFluids) if (aFluid != null) tAmount++;
-                if (tAmount < mRecipeMap.mMinimalInputFluids) return null;
-            }
-            if (mRecipeMap.mMinimalInputItems > 0) {
-                if (aInputs == null) return null;
-                int tAmount = 0;
-                for (ItemStack aInput : aInputs) if (aInput != null) tAmount++;
-                if (tAmount < mRecipeMap.mMinimalInputItems) return null;
-            }
-        }
-
-        // Unification happens here in case the Input isn't already unificated.
-        if (aNotUnificated) {
-            aInputs = GT_OreDictUnificator.getStackArray(true, (Object[]) aInputs);
-        }
-
-        // Check the Recipe which has been used last time in order to not have to search for it again, if possible.
-        if (aRecipe != null) {
-            ItemStack aRecipeSpecial = getSpecialSlotStack(aRecipe);
-            if (!aRecipe.mFakeRecipe && aRecipe.mCanBeBuffered
-                    && aRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)
-                    && GT_Utility.areStacksEqual(aRecipeSpecial, aSpecialSlot, false)
-                    && areDataOrbsEqual(aRecipeSpecial, aSpecialSlot)) {
-                return aRecipe.mEnabled && aVoltage * mRecipeMap.mAmperage >= aRecipe.mEUt ? aRecipe : null;
-            }
-        }
-
-        // Now look for the Recipes inside the Item HashMaps, but only when the Recipes usually have Items.
-        if (mRecipeMap.mUsualInputCount > 0 && aInputs != null) for (ItemStack tStack : aInputs) if (tStack != null) {
-            Collection<GT_Recipe> tRecipes = mRecipeMap.mRecipeItemMap.get(new GT_ItemStack(tStack));
-            if (tRecipes != null) {
-                for (GT_Recipe tRecipe : tRecipes) {
-                    if (!tRecipe.mFakeRecipe
-                            && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
-                        ItemStack aRecipeSpecial = getSpecialSlotStack(tRecipe);
-                        if (GT_Utility.areStacksEqual(aRecipeSpecial, aSpecialSlot, false)
-                                && areDataOrbsEqual(aRecipeSpecial, aSpecialSlot)) {
-                            return tRecipe.mEnabled && aVoltage * mRecipeMap.mAmperage >= tRecipe.mEUt ? tRecipe : null;
-                        }
-                    }
-                    tRecipes = mRecipeMap.mRecipeItemMap.get(new GT_ItemStack(tStack, true));
-                }
-            }
-            if (tRecipes != null) {
-                for (GT_Recipe tRecipe : tRecipes) {
-                    if (!tRecipe.mFakeRecipe
-                            && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
-                        ItemStack aRecipeSpecial = getSpecialSlotStack(tRecipe);
-                        if (GT_Utility.areStacksEqual(aRecipeSpecial, aSpecialSlot, false)
-                                && areDataOrbsEqual(aRecipeSpecial, aSpecialSlot)) {
-                            return tRecipe.mEnabled && aVoltage * mRecipeMap.mAmperage >= tRecipe.mEUt ? tRecipe : null;
-                        }
-                    }
-                }
-            }
-        }
-
-        // If the minimal Amount of Items for the Recipe is 0, then it could be a Fluid-Only Recipe, so check that Map
-        // too.
-        if (mRecipeMap.mMinimalInputItems == 0 && aFluids != null)
-            for (FluidStack aFluid : aFluids) if (aFluid != null) {
-                Collection<GT_Recipe> tRecipes = mRecipeMap.mRecipeFluidMap.get(aFluid.getFluid().getName());
-                if (tRecipes != null) for (GT_Recipe tRecipe : tRecipes) {
-                    if (!tRecipe.mFakeRecipe
-                            && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
-                        ItemStack aRecipeSpecial = getSpecialSlotStack(tRecipe);
-                        if (GT_Utility.areStacksEqual(aRecipeSpecial, aSpecialSlot, false)
-                                && areDataOrbsEqual(aRecipeSpecial, aSpecialSlot)) {
-                            return tRecipe.mEnabled && aVoltage * mRecipeMap.mAmperage >= tRecipe.mEUt ? tRecipe : null;
-                        }
-                    }
-                }
-            }
-
-        // And nothing has been found.
-        return null;
-    }
-
-    public static ItemStack getSpecialSlotStack(GT_Recipe aRecipe) {
-        ItemStack aStack = null;
-        if (aRecipe.mSpecialItems != null) {
-            if (aRecipe.mSpecialItems instanceof ItemStack[]aTempStackArray) {
-                aStack = aTempStackArray[0];
-            }
-        }
-        return aStack;
-    }
-
-    private static boolean areDataOrbsEqual(ItemStack aOrb1, ItemStack aOrb2) {
-        if (aOrb1 != null && aOrb2 != null) {
-            Materials tMaterial1 = Element.get(Behaviour_DataOrb.getDataName(aOrb1)).mLinkedMaterials.get(0);
-            Materials tMaterial2 = Element.get(Behaviour_DataOrb.getDataName(aOrb2)).mLinkedMaterials.get(0);
-            if (tMaterial1.equals(tMaterial2)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     @Override

@@ -17,8 +17,9 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicGenerator;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -162,8 +163,8 @@ public class GregtechMetaTileEntityGeothermalGenerator extends GT_MetaTileEntity
     }
 
     @Override
-    public GT_Recipe_Map getRecipes() {
-        return GT_Recipe_Map.sHotFuels;
+    public RecipeMap<?> getRecipeMap() {
+        return RecipeMaps.hotFuels;
     }
 
     @Override

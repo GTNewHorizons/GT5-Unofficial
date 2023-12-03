@@ -35,17 +35,18 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.FishPondFakeRecipe;
-import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
@@ -168,8 +169,8 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends
     }
 
     @Override
-    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return null;
+    public RecipeMap<?> getRecipeMap() {
+        return GTPPRecipeMaps.fishPondRecipes;
     }
 
     @Override
@@ -205,7 +206,7 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends
 
             ItemStack[] mFishOutput = generateLoot(this.mMode);
             mFishOutput = removeNulls(mFishOutput);
-            GT_Recipe g = new GTPP_Recipe(
+            GT_Recipe g = new GT_Recipe(
                     true,
                     new ItemStack[] {},
                     mFishOutput,

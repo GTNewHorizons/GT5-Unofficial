@@ -1,12 +1,12 @@
 dependencies {
-    api('com.github.GTNewHorizons:GT5-Unofficial:5.09.44.91:dev')
-    api("com.github.GTNewHorizons:bartworks:0.8.13:dev")
+    api('com.github.GTNewHorizons:GT5-Unofficial:5.09.44.96:dev')
+    api("com.github.GTNewHorizons:bartworks:0.8.19:dev")
 
     implementation('curse.maven:cofh-core-69162:2388751')
     // https://www.curseforge.com/minecraft/mc-mods/advancedsolarpanels
     implementation('curse.maven:advsolar-362768:2885953')
 
-    compileOnly('com.github.GTNewHorizons:Baubles:1.0.1.16:dev') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:Baubles:1.0.3:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:EnderCore:0.2.18:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:SC2:2.0.2:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:Binnie:2.2.3:dev') {transitive = false}

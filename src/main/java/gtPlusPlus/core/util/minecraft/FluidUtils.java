@@ -1,7 +1,7 @@
 package gtPlusPlus.core.util.minecraft;
 
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sFluidCannerRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import java.util.HashMap;
@@ -366,7 +366,7 @@ public class FluidUtils {
                         aFullContainer,
                         aEmptyContainer)) {
             GT_Values.RA.stdBuilder().itemInputs(ItemList.Cell_Empty.get(1L)).itemOutputs(aFullContainer)
-                    .fluidInputs(new FluidStack(rFluid, aFluidAmount)).duration(4).eut(1).addTo(sFluidCannerRecipes);
+                    .fluidInputs(new FluidStack(rFluid, aFluidAmount)).duration(4).eut(1).addTo(fluidCannerRecipes);
         }
         return rFluid;
     }
@@ -514,12 +514,12 @@ public class FluidUtils {
             if (dustStack != null) {
                 GT_Values.RA.stdBuilder().itemInputs(dustStack)
                         .fluidOutputs(FluidUtils.getFluidStack(gtFluid, amountPerItem)).duration(1 * SECONDS).eut(16)
-                        .addTo(sFluidExtractionRecipes);
+                        .addTo(fluidExtractionRecipes);
             }
             if (dustStack2 != null) {
                 GT_Values.RA.stdBuilder().itemInputs(dustStack2)
                         .fluidOutputs(FluidUtils.getFluidStack(gtFluid, amountPerItem)).duration(1 * SECONDS).eut(16)
-                        .addTo(sFluidExtractionRecipes);
+                        .addTo(fluidExtractionRecipes);
             }
 
             return gtFluid;

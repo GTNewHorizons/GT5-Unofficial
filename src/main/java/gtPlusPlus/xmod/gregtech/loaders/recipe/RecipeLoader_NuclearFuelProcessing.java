@@ -1,7 +1,7 @@
 package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBlastRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sDistillationRecipes;
+import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
+import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
@@ -196,7 +196,7 @@ public class RecipeLoader_NuclearFuelProcessing {
         // Reactor Core step 2B - Distillation
         GT_Values.RA.stdBuilder().fluidInputs(FluidUtils.getFluidStack(NuclearChem.Impure_LiFBeF2, 1000))
                 .fluidOutputs(NUCLIDE.LiFBeF2.getFluidStack(250)).duration(7 * MINUTES + 30 * SECONDS)
-                .eut(TierEU.RECIPE_IV).addTo(sDistillationRecipes);
+                .eut(TierEU.RECIPE_IV).addTo(distillationTowerRecipes);
 
         // UF6 -> UF4 reduction
         // UF6 + LiFBeF2 + H2 -> LiFBeF2UF4 + HF
@@ -204,7 +204,7 @@ public class RecipeLoader_NuclearFuelProcessing {
                 .fluidInputs(Materials.Hydrogen.getGas(2000L))
                 .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 2))
                 .fluidOutputs(NUCLIDE.LiFBeF2UF4.getFluidStack(3000)).duration(2 * MINUTES + 30 * SECONDS)
-                .eut(TierEU.RECIPE_IV).metadata(COIL_HEAT, 5400).addTo(sBlastRecipes);
+                .eut(TierEU.RECIPE_IV).metadata(COIL_HEAT, 5400).addTo(blastFurnaceRecipes);
         // Alternative recipe to the above, for chemplant, to not use cells
 
         CORE.RA.addChemicalPlantRecipe(

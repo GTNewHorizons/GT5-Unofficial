@@ -12,6 +12,13 @@ import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.stream.Stream;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -32,17 +39,17 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.recipe.check.FindRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -212,9 +219,14 @@ public class GregtechMetaTileEntity_MassFabricator
      * Special Recipe Handling
      */
     @Override
-    public GT_Recipe_Map getRecipeMap() {
-        return this.mMode == MODE_SCRAP ? GT_Recipe_Map.sRecyclerRecipes
-                : GTPP_Recipe.GTPP_Recipe_Map.sMatterFab2Recipes;
+    public RecipeMap<?> getRecipeMap() {
+        return this.mMode == MODE_SCRAP ? RecipeMaps.recyclerRecipes : GTPPRecipeMaps.multiblockMassFabricatorRecipes;
+    }
+
+    @Nonnull
+    @Override
+    public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
+        return Arrays.asList(RecipeMaps.recyclerRecipes, GTPPRecipeMaps.multiblockMassFabricatorRecipes);
     }
 
     @Override
@@ -239,16 +251,16 @@ public class GregtechMetaTileEntity_MassFabricator
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
 
-            @NotNull
+            @Nonnull
             @Override
-            protected FindRecipeResult findRecipe(GT_Recipe_Map map) {
+            protected Stream<GT_Recipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
                 if (mMode == MODE_SCRAP) {
                     if (inputItems != null) {
                         for (ItemStack item : inputItems) {
                             if (item == null || item.stackSize == 0) continue;
                             ItemStack aPotentialOutput = GT_ModHandler
                                     .getRecyclerOutput(GT_Utility.copyAmount(1, item), 0);
-                            GT_Recipe recipe = new GTPP_Recipe(
+                            GT_Recipe recipe = new GT_Recipe(
                                     false,
                                     new ItemStack[] { GT_Utility.copyAmount(1, item) },
                                     aPotentialOutput == null ? null : new ItemStack[] { aPotentialOutput },
@@ -259,12 +271,12 @@ public class GregtechMetaTileEntity_MassFabricator
                                     40,
                                     MaterialUtils.getVoltageForTier(1),
                                     0);
-                            return FindRecipeResult.ofSuccess(recipe);
+                            return Stream.of(recipe);
                         }
                     }
-                    return FindRecipeResult.NOT_FOUND;
+                    return Stream.empty();
                 }
-                return super.findRecipe(map);
+                return super.findRecipeMatches(map);
             }
         }.setEuModifier(0.8F).setMaxParallelSupplier(this::getMaxParallelRecipes);
     }

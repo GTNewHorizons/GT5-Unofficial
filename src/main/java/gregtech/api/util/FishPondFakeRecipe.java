@@ -9,6 +9,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
@@ -59,7 +60,7 @@ public class FishPondFakeRecipe {
     }
 
     public static void addNewFishPondLoot(int circuit, ItemStack[] outputItems, int[] chances) {
-        GTPP_Recipe x = new GTPP_Recipe(
+        GT_Recipe x = new GT_Recipe(
                 true,
                 new ItemStack[] { CI.getNumberedCircuit(circuit) },
                 outputItems,
@@ -71,6 +72,6 @@ public class FishPondFakeRecipe {
                 0, // No Eu produced
                 0);
         Logger.INFO("Fishing [" + circuit + "]: " + ItemUtils.getArrayStackNames(outputItems));
-        GTPP_Recipe.GTPP_Recipe_Map.sFishPondRecipes.addRecipe(x, false, false, false);
+        GTPPRecipeMaps.fishPondRecipes.addRecipe(x, false, false, false);
     }
 }

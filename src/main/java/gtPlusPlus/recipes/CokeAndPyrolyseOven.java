@@ -7,6 +7,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
@@ -62,7 +63,7 @@ public class CokeAndPyrolyseOven {
 
     private static void convertPyroToCokeOven() {
         int aCount = 0;
-        for (GT_Recipe g : GT_Recipe.GT_Recipe_Map.sPyrolyseRecipes.mRecipeList) {
+        for (GT_Recipe g : RecipeMaps.pyrolyseRecipes.getAllRecipes()) {
             if (AddGregtechRecipe.importPyroRecipe(g)) {
                 aCount++;
             }

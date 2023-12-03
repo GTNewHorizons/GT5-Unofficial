@@ -14,7 +14,12 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Stream;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -26,8 +31,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -38,7 +41,8 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.recipe.check.FindRecipeResult;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
@@ -72,9 +76,9 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
 
     static {
         for (int id = 0; id < 9; id++) {
-            GT_Recipe.GT_Recipe_Map recipeMap = getRecipeMap(id);
+            RecipeMap<?> recipeMap = getRecipeMap(id);
             if (recipeMap != null) {
-                String aNEI = GT_LanguageManager.getTranslation(getRecipeMap(id).mNEIName);
+                String aNEI = GT_LanguageManager.getTranslation(getRecipeMap(id).unlocalizedName);
                 aToolTipNames[id] = aNEI != null ? aNEI : "BAD NEI NAME (Report to Github)";
             }
         }
@@ -231,29 +235,49 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
     }
 
     @Override
-    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+    public RecipeMap<?> getRecipeMap() {
         return null;
     }
 
-    private static GT_Recipe.GT_Recipe_Map getRecipeMap(int aMode) {
+    @Nonnull
+    @Override
+    public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
+        return Arrays.asList(
+                RecipeMaps.compressorRecipes,
+                RecipeMaps.latheRecipes,
+                RecipeMaps.polarizerRecipes,
+                RecipeMaps.fermentingRecipes,
+                RecipeMaps.fluidExtractionRecipes,
+                RecipeMaps.extractorRecipes,
+                RecipeMaps.laserEngraverRecipes,
+                RecipeMaps.autoclaveRecipes,
+                RecipeMaps.fluidSolidifierRecipes);
+    }
+
+    @Override
+    public int getRecipeCatalystPriority() {
+        return -10;
+    }
+
+    private static RecipeMap<?> getRecipeMap(int aMode) {
         if (aMode == MODE_COMPRESSOR) {
-            return GT_Recipe.GT_Recipe_Map.sCompressorRecipes;
+            return RecipeMaps.compressorRecipes;
         } else if (aMode == MODE_LATHE) {
-            return GT_Recipe.GT_Recipe_Map.sLatheRecipes;
+            return RecipeMaps.latheRecipes;
         } else if (aMode == MODE_MAGNETIC) {
-            return GT_Recipe.GT_Recipe_Map.sPolarizerRecipes;
+            return RecipeMaps.polarizerRecipes;
         } else if (aMode == MODE_FERMENTER) {
-            return GT_Recipe.GT_Recipe_Map.sFermentingRecipes;
+            return RecipeMaps.fermentingRecipes;
         } else if (aMode == MODE_FLUIDEXTRACT) {
-            return GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes;
+            return RecipeMaps.fluidExtractionRecipes;
         } else if (aMode == MODE_EXTRACTOR) {
-            return GT_Recipe.GT_Recipe_Map.sExtractorRecipes;
+            return RecipeMaps.extractorRecipes;
         } else if (aMode == MODE_LASER) {
-            return GT_Recipe.GT_Recipe_Map.sLaserEngraverRecipes;
+            return RecipeMaps.laserEngraverRecipes;
         } else if (aMode == MODE_AUTOCLAVE) {
-            return GT_Recipe.GT_Recipe_Map.sAutoclaveRecipes;
+            return RecipeMaps.autoclaveRecipes;
         } else if (aMode == MODE_FLUIDSOLIDIFY) {
-            return GT_Recipe.GT_Recipe_Map.sFluidSolidficationRecipes;
+            return RecipeMaps.fluidSolidifierRecipes;
         } else {
             return null;
         }
@@ -265,22 +289,22 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
 
             private ItemStack lastCircuit = null;
 
-            @NotNull
+            @Nonnull
             @Override
-            protected FindRecipeResult findRecipe(GT_Recipe.GT_Recipe_Map map) {
+            protected Stream<GT_Recipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
                 ItemStack circuit = getCircuit(inputItems);
                 if (circuit == null) {
-                    return FindRecipeResult.NOT_FOUND;
+                    return Stream.empty();
                 }
                 if (!GT_Utility.areStacksEqual(circuit, lastCircuit)) {
                     lastRecipe = null;
                     lastCircuit = circuit;
                 }
-                GT_Recipe.GT_Recipe_Map foundMap = getRecipeMap(getCircuitID(circuit));
+                RecipeMap<?> foundMap = getRecipeMap(getCircuitID(circuit));
                 if (foundMap == null) {
-                    return FindRecipeResult.NOT_FOUND;
+                    return Stream.empty();
                 }
-                return super.findRecipe(foundMap);
+                return super.findRecipeMatches(foundMap);
             }
         }.setSpeedBonus(1F / 3.5F).setEuModifier(0.8F).setMaxParallelSupplier(this::getMaxParallelRecipes);
     }

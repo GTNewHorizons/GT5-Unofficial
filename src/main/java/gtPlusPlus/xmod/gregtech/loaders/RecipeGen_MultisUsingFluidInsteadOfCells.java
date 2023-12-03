@@ -7,9 +7,8 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.util.GTPP_Recipe;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
@@ -62,14 +61,14 @@ public class RecipeGen_MultisUsingFluidInsteadOfCells {
         return GT_Utility.getFluidForFilledItem(ingot, true);
     }
 
-    public static synchronized int generateRecipesNotUsingCells(GT_Recipe_Map aInputs, GT_Recipe_Map aOutputs) {
+    public static synchronized int generateRecipesNotUsingCells(RecipeMap<?> aInputs, RecipeMap<?> aOutputs) {
         init();
         int aRecipesHandled = 0;
         int aInvalidRecipesToConvert = 0;
-        int aOriginalCount = aInputs.mRecipeList.size();
+        int aOriginalCount = aInputs.getAllRecipes().size();
         ArrayList<GT_Recipe> deDuplicationInputArray = new ArrayList<>();
 
-        recipe: for (GT_Recipe x : aInputs.mRecipeList) {
+        recipe: for (GT_Recipe x : aInputs.getAllRecipes()) {
             if (x != null) {
 
                 ItemStack[] aInputItems = x.mInputs.clone();
@@ -145,7 +144,7 @@ public class RecipeGen_MultisUsingFluidInsteadOfCells {
                     aInvalidRecipesToConvert++;
                     continue; // Skip this recipe entirely if we find an item we don't like
                 }
-                GT_Recipe aNewRecipe = new GTPP_Recipe(
+                GT_Recipe aNewRecipe = new GT_Recipe(
                         false,
                         aNewItemInputs,
                         aNewItemOutputs,
@@ -168,12 +167,12 @@ public class RecipeGen_MultisUsingFluidInsteadOfCells {
         }
         // cast arraylist of input to a regular array and pass it to a duplicate recipe remover.
         List<GT_Recipe> deDuplicationOutputArray = GT_RecipeUtils
-                .removeDuplicates(deDuplicationInputArray, aOutputs.mNEIName);
+                .removeDuplicates(deDuplicationInputArray, aOutputs.unlocalizedName);
         // add each recipe from the above output to the intended recipe map
         for (GT_Recipe recipe : deDuplicationOutputArray) {
             aOutputs.add(recipe);
         }
-        Logger.INFO("Generated Recipes for " + aOutputs.mNEIName);
+        Logger.INFO("Generated Recipes for " + aOutputs.unlocalizedName);
         Logger.INFO("Original Map contains " + aOriginalCount + " recipes.");
         Logger.INFO("Output Map contains " + aRecipesHandled + " recipes.");
         Logger.INFO("There were " + aInvalidRecipesToConvert + " invalid recipes.");

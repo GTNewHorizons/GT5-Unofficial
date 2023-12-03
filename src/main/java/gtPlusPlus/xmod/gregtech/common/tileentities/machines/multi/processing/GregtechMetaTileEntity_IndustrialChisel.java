@@ -11,13 +11,15 @@ import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import java.util.List;
+import java.util.stream.Stream;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
-
-import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -30,10 +32,10 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
-import gregtech.api.recipe.check.FindRecipeResult;
-import gregtech.api.util.GTPP_Recipe;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_StreamUtil;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
@@ -52,7 +54,7 @@ public class GregtechMetaTileEntity_IndustrialChisel
     private static IStructureDefinition<GregtechMetaTileEntity_IndustrialChisel> STRUCTURE_DEFINITION = null;
     private ItemStack mInputCache;
     private ItemStack mOutputCache;
-    private GTPP_Recipe mCachedRecipe;
+    private GT_Recipe mCachedRecipe;
 
     public GregtechMetaTileEntity_IndustrialChisel(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -146,11 +148,6 @@ public class GregtechMetaTileEntity_IndustrialChisel
     }
 
     @Override
-    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return null;
-    }
-
-    @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
         return true;
     }
@@ -171,7 +168,7 @@ public class GregtechMetaTileEntity_IndustrialChisel
         return false;
     }
 
-    private void cacheItem(ItemStack aInputItem, ItemStack aOutputItem, GTPP_Recipe aRecipe) {
+    private void cacheItem(ItemStack aInputItem, ItemStack aOutputItem, GT_Recipe aRecipe) {
         mInputCache = aInputItem.copy();
         mOutputCache = aOutputItem.copy();
         mCachedRecipe = aRecipe;
@@ -210,7 +207,7 @@ public class GregtechMetaTileEntity_IndustrialChisel
         return tOutput;
     }
 
-    private GTPP_Recipe generateChiselRecipe(ItemStack aInput) {
+    private GT_Recipe generateChiselRecipe(ItemStack aInput) {
         boolean tIsCached = hasValidCache(aInput, this.target, true);
         if (tIsCached || aInput != null && hasChiselResults(aInput)) {
             ItemStack tOutput = tIsCached ? mOutputCache.copy() : getChiselOutput(aInput, this.target);
@@ -220,7 +217,7 @@ public class GregtechMetaTileEntity_IndustrialChisel
                     return mCachedRecipe;
                 }
                 // We can chisel this
-                GTPP_Recipe aRecipe = new GTPP_Recipe(
+                GT_Recipe aRecipe = new GT_Recipe(
                         false,
                         new ItemStack[] { ItemUtils.getSimpleStack(aInput, 1) },
                         new ItemStack[] { ItemUtils.getSimpleStack(tOutput, 1) },
@@ -276,14 +273,10 @@ public class GregtechMetaTileEntity_IndustrialChisel
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
-            @NotNull
+            @Nonnull
             @Override
-            protected FindRecipeResult findRecipe(GT_Recipe.GT_Recipe_Map map) {
-                GT_Recipe recipe = getRecipe();
-                if (recipe == null) {
-                    return FindRecipeResult.NOT_FOUND;
-                }
-                return FindRecipeResult.ofSuccess(recipe);
+            protected Stream<GT_Recipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
+                return GT_StreamUtil.ofNullable(getRecipe());
             }
         }.setSpeedBonus(1F / 3F).setEuModifier(0.75F).setMaxParallelSupplier(this::getMaxParallelRecipes);
     }

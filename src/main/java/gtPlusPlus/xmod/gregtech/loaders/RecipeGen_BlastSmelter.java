@@ -11,6 +11,8 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.recipe.GTPPRecipeCategories;
+import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.Material;
@@ -131,27 +133,10 @@ public class RecipeGen_BlastSmelter extends RecipeGen_Base {
             // Generate Recipes for all singular materials that can be made molten.
             if (hasMoreInputThanACircuit) {
                 if (M.requiresBlastFurnace()) {
-                    if (CORE.RA.addBlastSmelterRecipe(
-                            tItemStackTest,
-                            M.getFluidStack(fluidAmount),
-                            100,
-                            (duration / (mTotalPartsCounter > 0 ? mTotalPartsCounter : 1)),
-                            (int) aVoltage)) {
-                        Logger.WARNING("[BAS] Success.");
-                        Logger.WARNING("[BAS] Success, Also added a Fluid solidifier recipe.");
-                        /*
-                         * if (GT_Values.RA.addFluidExtractionRecipe(M.getIngot(1), null, M.getFluidStack(144), 100,
-                         * duration, 120)){ Logger.WARNING("[BAS] Success, Also added a Fluid Extractor recipe."); } if
-                         * (GT_Values.RA.addFluidExtractionRecipe(M.getNugget(1), null, M.getFluidStack(16), 100,
-                         * duration/9, 120)){ Logger.WARNING("[BAS] Success, Also added a Fluid Extractor recipe."); }
-                         */
-                        /*
-                         * if (GT_Values.RA.addFluidExtractionRecipe(M.getSmallDust(1), null, M.getFluid(36), 100,
-                         * duration/4, 120)){ Logger.WARNING("[BAS] Success, Also added a Fluid Extractor recipe."); }
-                         * if (GT_Values.RA.addFluidExtractionRecipe(M.getTinyDust(1), null, M.getFluid(16), 100,
-                         * duration/9, 120)){ Logger.WARNING("[BAS] Success, Also added a Fluid Extractor recipe."); }
-                         */
-                    }
+                    GT_Values.RA.stdBuilder().itemInputs(tItemStackTest).fluidOutputs(M.getFluidStack(fluidAmount))
+                            .duration(duration / (mTotalPartsCounter > 0 ? mTotalPartsCounter : 1)).eut(aVoltage)
+                            .recipeCategory(GTPPRecipeCategories.absNonAlloyRecipes)
+                            .addTo(GTPPRecipeMaps.alloyBlastSmelterRecipes);
                 } else {
                     Logger.WARNING("[BAS] Failed.");
                 }
