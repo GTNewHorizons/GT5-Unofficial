@@ -15,8 +15,7 @@ package com.github.bartimaeusnek.bartworks.common.tileentities.multis;
 
 import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS;
 import static com.github.bartimaeusnek.bartworks.util.BW_Util.ofGlassTieredMixed;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GT_HatchElement.Energy;
 import static gregtech.api.enums.GT_HatchElement.InputBus;
 import static gregtech.api.enums.GT_HatchElement.InputHatch;
@@ -90,6 +89,8 @@ public class GT_TileEntity_CircuitAssemblyLine extends
 
     private static final String STRUCTURE_PIECE_FIRST = "first";
     private static final String STRUCTURE_PIECE_NEXT = "next";
+    private static final String STRUCTURE_PIECE_NEXT_HINT = "next_hint";
+    private static final String STRUCTURE_PIECE_LAST = "last";
 
     private static final int MINIMUM_CIRCUIT_ASSEMBLER_LENGTH = 5;
     protected static final String IMPRINT_KEY = "Type";
@@ -109,6 +110,12 @@ public class GT_TileEntity_CircuitAssemblyLine extends
             .addShape(
                     STRUCTURE_PIECE_NEXT,
                     transpose(new String[][] { { "G", "G", "G" }, { "g", "l", "g" }, { "b", "I", "b" }, }))
+            .addShape(
+                    STRUCTURE_PIECE_NEXT_HINT,
+                    transpose(new String[][] { { "G", "G", "G" }, { "g", "l", "g" }, { "b", "i", "b" }, }))
+            .addShape(
+                    STRUCTURE_PIECE_LAST,
+                    transpose(new String[][] { { "G", "G", "G" }, { "g", "l", "g" }, { "b", "o", "b" }, }))
             .addElement(
                     'G',
                     buildHatchAdder(GT_TileEntity_CircuitAssemblyLine.class).atLeast(Energy).casingIndex(CASING_INDEX)
@@ -118,13 +125,15 @@ public class GT_TileEntity_CircuitAssemblyLine extends
             .addElement(
                     'b',
                     buildHatchAdder(GT_TileEntity_CircuitAssemblyLine.class).atLeast(InputHatch, Maintenance)
-                            .casingIndex(CASING_INDEX).dot(2).buildAndChain(GregTech_API.sBlockCasings2, 0))
-            .addElement('i', InputBus.newAny(CASING_INDEX, 3))
+                            .casingIndex(CASING_INDEX).dot(2).disallowOnly(ForgeDirection.EAST, ForgeDirection.WEST)
+                            .buildAndChain(GregTech_API.sBlockCasings2, 0))
+            .addElement('i', InputBus.newAny(CASING_INDEX, 3, ForgeDirection.DOWN))
             .addElement(
                     'I',
                     buildHatchAdder(GT_TileEntity_CircuitAssemblyLine.class).atLeast(InputHatch, InputBus, OutputBus)
-                            .casingIndex(CASING_INDEX).dot(2).buildAndChain(GregTech_API.sBlockCasings2, 0))
-            .build();
+                            .casingIndex(CASING_INDEX).dot(2).disallowOnly(ForgeDirection.EAST, ForgeDirection.WEST)
+                            .buildAndChain(GregTech_API.sBlockCasings2, 0))
+            .addElement('o', OutputBus.newAny(CASING_INDEX, 2, ForgeDirection.DOWN)).build();
 
     @Override
     public IStructureDefinition<GT_TileEntity_CircuitAssemblyLine> getStructureDefinition() {
@@ -440,16 +449,33 @@ public class GT_TileEntity_CircuitAssemblyLine extends
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
         int built;
-        built = this.survivialBuildPiece(STRUCTURE_PIECE_FIRST, stackSize, 0, 0, 0, elementBudget, env, false, true);
+        built = survivialBuildPiece(STRUCTURE_PIECE_FIRST, stackSize, 0, 0, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
         int tLength = Math.min(stackSize.stackSize + 1, 7);
 
-        for (int i = 1; i < tLength; ++i) {
-            built = this
-                    .survivialBuildPiece(STRUCTURE_PIECE_NEXT, stackSize, -i, 0, 0, elementBudget, env, false, true);
+        for (int i = 1; i < tLength - 1; ++i) {
+            built = survivialBuildPiece(
+                    STRUCTURE_PIECE_NEXT_HINT,
+                    stackSize,
+                    -i,
+                    0,
+                    0,
+                    elementBudget,
+                    env,
+                    false,
+                    true);
             if (built >= 0) return built;
         }
-        return -1;
+        return survivialBuildPiece(
+                STRUCTURE_PIECE_LAST,
+                stackSize,
+                -(tLength - 1),
+                0,
+                0,
+                elementBudget,
+                env,
+                false,
+                true);
     }
 
     @Override
