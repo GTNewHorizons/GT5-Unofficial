@@ -773,8 +773,8 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                     .setOnScrollNumbers(1, 4, 64)
                     .setTextAlignment(Alignment.Center)
                     .setTextColor(Color.WHITE.normal)
-                    .setSize(36, 18)
-                    .setPos(19, 18)
+                    .setSize(70, 18)
+                    .setPos(3, 18)
                     .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD));
         return builder.build();
     }
