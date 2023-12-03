@@ -1,6 +1,6 @@
 package common.recipeLoaders;
 
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sPressRecipes;
+import static gregtech.api.recipe.RecipeMaps.formingPressRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import common.items.MetaItem_CraftingComponent;
@@ -22,6 +22,6 @@ public class FormingPress implements Runnable {
                         craftingItem.getStackOfAmountFromDamage(Items.GDCCeramicDust.getMetaID(), 10),
                         ItemList.Shape_Mold_Plate.get(0))
                 .itemOutputs(craftingItem.getStackOfAmountFromDamage(Items.GDCCeramicPlate.getMetaID(), 1))
-                .duration(40 * SECONDS).eut(TierEU.RECIPE_HV).addTo(sPressRecipes);
+                .duration(40 * SECONDS).eut(TierEU.RECIPE_HV).addTo(formingPressRecipes);
     }
 }

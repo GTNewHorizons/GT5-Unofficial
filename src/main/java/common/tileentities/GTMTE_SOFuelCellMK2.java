@@ -13,7 +13,8 @@ import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
+
+import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -31,10 +32,12 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
+import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 
 public class GTMTE_SOFuelCellMK2 extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_SOFuelCellMK2> {
@@ -96,7 +99,7 @@ public class GTMTE_SOFuelCellMK2 extends GT_MetaTileEntity_EnhancedMultiBlockBas
                 .addInfo("Outputs " + EU_PER_TICK + "EU/t and " + STEAM_PER_SEC + "L/s Steam")
                 .addInfo("Additionally, requires " + OXYGEN_PER_SEC + "L/s Oxygen gas").addSeparator()
                 .beginStructureBlock(3, 3, 5, false).addController("Front center")
-                .addCasingInfo("Robust Tungstensteel Machine Casing", 12)
+                .addCasingInfoMin("Robust Tungstensteel Machine Casing", 12, false)
                 .addOtherStructurePart("GDC Ceramic Electrolyte Unit", "3x, Center 1x1x3")
                 .addOtherStructurePart("Reinforced Glass", "6x, touching the electrolyte units on the horizontal sides")
                 .addDynamoHatch("Back center", 1).addMaintenanceHatch("Any casing").addInputHatch("Fuel, any casing")
@@ -125,44 +128,35 @@ public class GTMTE_SOFuelCellMK2 extends GT_MetaTileEntity_EnhancedMultiBlockBas
         return true;
     }
 
+    @Nonnull
     @Override
-    public boolean checkRecipe(ItemStack stack) {
+    public CheckRecipeResult checkProcessing() {
         final ArrayList<FluidStack> storedFluids = super.getStoredFluids();
-        Collection<GT_Recipe> recipeList = GT_Recipe_Map.sTurbineFuels.mRecipeList;
+        Collection<GT_Recipe> recipeList = RecipeMaps.gasTurbineFuels.getAllRecipes();
 
-        if ((storedFluids.size() > 0 && recipeList != null)) {
+        for (FluidStack hatchFluid : storedFluids) {
+            for (GT_Recipe aFuel : recipeList) {
+                FluidStack liquid;
+                if ((liquid = GT_Utility.getFluidForFilledItem(aFuel.getRepresentativeInput(0), true)) != null
+                        && hatchFluid.isFluidEqual(liquid)) {
 
-            final Iterator<FluidStack> fluidsIterator = storedFluids.iterator();
-            while (fluidsIterator.hasNext()) {
+                    liquid.amount = (EU_PER_TICK * 20) / aFuel.mSpecialValue / Math.max(1, aFuel.mSpecialValue / 1000);
 
-                final FluidStack hatchFluid = fluidsIterator.next();
-                final Iterator<GT_Recipe> recipeIterator = recipeList.iterator();
-                while (recipeIterator.hasNext()) {
+                    if (super.depleteInput(liquid)) {
 
-                    final GT_Recipe aFuel = recipeIterator.next();
-                    FluidStack liquid;
-                    if ((liquid = GT_Utility.getFluidForFilledItem(aFuel.getRepresentativeInput(0), true)) != null
-                            && hatchFluid.isFluidEqual(liquid)) {
-
-                        liquid.amount = (int) (Math.floor((EU_PER_TICK * 20) / aFuel.mSpecialValue)
-                                / Math.max(1, aFuel.mSpecialValue / 1000));
-
-                        if (super.depleteInput(liquid)) {
-
-                            if (!super.depleteInput(Materials.Oxygen.getGas(OXYGEN_PER_SEC))) {
-                                super.mEUt = 0;
-                                super.mEfficiency = 0;
-                                return false;
-                            }
-
-                            super.mEUt = EU_PER_TICK;
-                            super.mMaxProgresstime = 20;
-                            super.mEfficiencyIncrease = 80;
-                            if (super.mEfficiency == getMaxEfficiency(null)) {
-                                super.addOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", STEAM_PER_SEC));
-                            }
-                            return true;
+                        if (!super.depleteInput(Materials.Oxygen.getGas(OXYGEN_PER_SEC))) {
+                            super.mEUt = 0;
+                            super.mEfficiency = 0;
+                            return CheckRecipeResultRegistry.NO_FUEL_FOUND;
                         }
+
+                        super.mEUt = EU_PER_TICK;
+                        super.mMaxProgresstime = 20;
+                        super.mEfficiencyIncrease = 80;
+                        if (super.mEfficiency == getMaxEfficiency(null)) {
+                            super.addOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", STEAM_PER_SEC));
+                        }
+                        return CheckRecipeResultRegistry.GENERATING;
                     }
                 }
             }
@@ -170,7 +164,7 @@ public class GTMTE_SOFuelCellMK2 extends GT_MetaTileEntity_EnhancedMultiBlockBas
 
         super.mEUt = 0;
         super.mEfficiency = 0;
-        return false;
+        return CheckRecipeResultRegistry.NO_FUEL_FOUND;
     }
 
     @Override
