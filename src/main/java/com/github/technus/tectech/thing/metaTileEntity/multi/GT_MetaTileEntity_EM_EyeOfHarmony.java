@@ -775,7 +775,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         double hydrogenExcessPercentage = hydrogenStored / hydrogenRecipeRequirement - 1;
         double heliumExcessPercentage = heliumStored / heliumRecipeRequirement - 1;
         double stellarPlasmaExcessPercentage = stellarPlasmaStored
-                / (heliumRecipeRequirement * (9 / 1_000_000f) * parallelAmount) - 1;
+                / (heliumRecipeRequirement * (12.4 / 1_000_000f) * parallelAmount) - 1;
 
         hydrogenOverflowProbabilityAdjustment = 1 - exp(-pow(30 * hydrogenExcessPercentage, 2));
         heliumOverflowProbabilityAdjustment = 1 - exp(-pow(30 * heliumExcessPercentage, 2));
@@ -1013,7 +1013,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                 .addInfo("instead of helium and hydrogen. Overflow penalties still apply.")
                 .addInfo(
                         "The required amount of fluid to start a recipe is " + GREEN
-                                + "9 / 10^6 * heliumAmount * parallel"
+                                + "12.4 / 10^6 * heliumAmount * parallel"
                                 + GRAY
                                 + ".")
                 .addInfo("All item & fluid outputs including failure fluid are multiplied by the amount of parallel.")
@@ -1192,7 +1192,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         // Debug mode, overwrites the required fluids to initiate the recipe to 100L of each.
         if (parallelAmount > 1) {
             if ((EOH_DEBUG_MODE && getStellarPlasmaStored() < 100) || (!EOH_DEBUG_MODE && getStellarPlasmaStored()
-                    < currentRecipe.getHeliumRequirement() * (9 / 1_000_000f) * parallelAmount)) {
+                    < currentRecipe.getHeliumRequirement() * (12.4 / 1_000_000f) * parallelAmount)) {
                 return SimpleCheckRecipeResult.ofFailure("no_stellarPlasma");
             }
         }
