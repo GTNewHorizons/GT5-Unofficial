@@ -44,6 +44,8 @@ import gregtech.nei.RecipeDisplayInfo;
 /**
  * Responsible for managing GUI tied to recipemap. It has two property objects, {@link NEIRecipeProperties} and
  * {@link BasicUIProperties}. The former is only for NEI display, while the latter is for both NEI and basic machine.
+ * <p>
+ * In order to bind custom frontend to recipemap, use {@link RecipeMapBuilder#frontend}.
  */
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault

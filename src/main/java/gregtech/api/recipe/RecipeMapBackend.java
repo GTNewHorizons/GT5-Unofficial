@@ -38,6 +38,8 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
 
 /**
  * Responsible for recipe addition / search for recipemap.
+ * <p>
+ * In order to bind custom backend to recipemap, use {@link RecipeMapBuilder#of(String, BackendCreator)}.
  */
 @SuppressWarnings("unused")
 @ParametersAreNonnullByDefault
