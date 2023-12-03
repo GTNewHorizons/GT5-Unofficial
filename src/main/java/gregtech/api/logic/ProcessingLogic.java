@@ -378,6 +378,11 @@ public class ProcessingLogic {
         }
         duration = (int) finalDuration;
 
+        CheckRecipeResult hookResult = onRecipeStart(recipe);
+        if (!hookResult.wasSuccessful()) {
+            return hookResult;
+        }
+
         outputItems = helper.getItemOutputs();
         outputFluids = helper.getFluidOutputs();
 
@@ -469,6 +474,19 @@ public class ProcessingLogic {
             .setAmperageOC(amperageOC)
             .setDurationDecreasePerOC(overClockTimeReduction)
             .setEUtIncreasePerOC(overClockPowerIncrease);
+    }
+
+    /**
+     * Override to perform additional logic when recipe starts.
+     *
+     * This is called when the recipe processing logic has finished all
+     * checks, consumed all inputs, but has not yet set the outputs to
+     * be produced. Returning a result other than SUCCESSFUL will void
+     * all inputs!
+     */
+    @Nonnull
+    protected CheckRecipeResult onRecipeStart(@Nonnull GT_Recipe recipe) {
+        return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     // endregion
