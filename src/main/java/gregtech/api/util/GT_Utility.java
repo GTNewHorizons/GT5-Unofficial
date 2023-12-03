@@ -112,7 +112,6 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import com.google.auto.value.AutoValue;
 import com.google.common.base.Suppliers;
-import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
@@ -3132,9 +3131,13 @@ public class GT_Utility {
      * re-maps all Keys of a Map after the Keys were weakened.
      */
     public static <X, Y> SetMultimap<X, Y> reMap(SetMultimap<X, Y> aMap) {
-        SetMultimap<X, Y> tMap = HashMultimap.create(aMap);
+        @SuppressWarnings("unchecked")
+        Map.Entry<X, Y>[] entries = aMap.entries()
+            .toArray(new Map.Entry[0]);
         aMap.clear();
-        aMap.putAll(tMap);
+        for (Map.Entry<X, Y> entry : entries) {
+            aMap.put(entry.getKey(), entry.getValue());
+        }
         return aMap;
     }
 
