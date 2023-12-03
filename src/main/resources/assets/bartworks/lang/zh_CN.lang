@@ -127,9 +127,15 @@ tooltip.tile.radhatch.8.name=m
 tooltip.tile.radhatch.9.name=h
 tooltip.tile.acidgen.0.name=酸性发电机
 tooltip.tile.acidgen.1.name=用化学势能产生电力.
-nei.biovat.0.name=需要玻璃等级:
-nei.biovat.1.name=精确剂量
-nei.biovat.2.name=最小剂量
+
+# RecipeMap
+bw.recipe.biolab=生物实验室
+bw.recipe.BacteriaVat=生物培养缸
+bw.fuels.acidgens=酸性发电机
+
+nei.biovat.0.name=需要玻璃等级: %s
+nei.biovat.1.name=精确剂量 Sievert: %s Sv
+nei.biovat.2.name=最小剂量 Sievert: %s Sv
 
 tile.diode.name=线缆二极管
 tile.energydistributor.name=能量分配器

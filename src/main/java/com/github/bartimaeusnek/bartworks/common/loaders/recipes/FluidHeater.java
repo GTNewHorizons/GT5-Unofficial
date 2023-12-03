@@ -1,6 +1,6 @@
 package com.github.bartimaeusnek.bartworks.common.loaders.recipes;
 
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sFluidHeaterRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidHeaterRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
@@ -19,6 +19,6 @@ public class FluidHeater implements Runnable {
         GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(10))
                 .fluidInputs(new FluidStack(FluidLoader.fulvicAcid, 1000))
                 .fluidOutputs(new FluidStack(FluidLoader.heatedfulvicAcid, 1000)).duration(4 * SECONDS + 10 * TICKS)
-                .eut(TierEU.RECIPE_MV).addTo(sFluidHeaterRecipes);
+                .eut(TierEU.RECIPE_MV).addTo(fluidHeaterRecipes);
     }
 }

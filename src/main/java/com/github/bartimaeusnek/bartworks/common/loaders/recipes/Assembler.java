@@ -1,7 +1,7 @@
 package com.github.bartimaeusnek.bartworks.common.loaders.recipes;
 
 import static gregtech.api.enums.Mods.GregTech;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
+import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.HOURS;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
@@ -47,7 +47,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(17))
                 .itemOutputs(new ItemStack(ItemRegistry.BW_BLOCKS[0], 1, 1))
                 .fluidInputs(FluidRegistry.getFluidStack("ic2coolant", 1000)).duration(5 * SECONDS)
-                .eut(TierEU.RECIPE_HV).addTo(sAssemblerRecipes);
+                .eut(TierEU.RECIPE_HV).addTo(assemblerRecipes);
 
         GT_Values.RA.stdBuilder()
                 .itemInputs(
@@ -55,42 +55,42 @@ public class Assembler implements Runnable {
                         Materials.Lapis.getBlocks(8),
                         GT_Utility.getIntegratedCircuit(17))
                 .itemOutputs(new ItemStack(ItemRegistry.BW_BLOCKS[1])).duration(5 * SECONDS).eut(TierEU.RECIPE_HV)
-                .addTo(sAssemblerRecipes);
+                .addTo(assemblerRecipes);
 
         GT_Values.RA.stdBuilder()
                 .itemInputs(
                         GT_ModHandler.getModItem(GregTech.ID, "gt.blockmachines", 64, 1000),
                         GT_Utility.getIntegratedCircuit(17))
                 .itemOutputs(ItemRegistry.megaMachines[0]).fluidInputs(Materials.SolderingAlloy.getMolten(9216))
-                .duration(1 * HOURS).eut(TierEU.RECIPE_HV).addTo(sAssemblerRecipes);
+                .duration(1 * HOURS).eut(TierEU.RECIPE_HV).addTo(assemblerRecipes);
 
         GT_Values.RA.stdBuilder()
                 .itemInputs(
                         GT_ModHandler.getModItem(GregTech.ID, "gt.blockmachines", 64, 1002),
                         GT_Utility.getIntegratedCircuit(17))
                 .itemOutputs(ItemRegistry.megaMachines[1]).fluidInputs(Materials.SolderingAlloy.getMolten(9216))
-                .duration(1 * HOURS).eut(TierEU.RECIPE_HV).addTo(sAssemblerRecipes);
+                .duration(1 * HOURS).eut(TierEU.RECIPE_HV).addTo(assemblerRecipes);
 
         GT_Values.RA.stdBuilder()
                 .itemInputs(
                         GT_ModHandler.getModItem(GregTech.ID, "gt.blockmachines", 64, 1126),
                         GT_Utility.getIntegratedCircuit(17))
                 .itemOutputs(ItemRegistry.megaMachines[2]).fluidInputs(Materials.SolderingAlloy.getMolten(9216))
-                .duration(1 * HOURS).eut(TierEU.RECIPE_HV).addTo(sAssemblerRecipes);
+                .duration(1 * HOURS).eut(TierEU.RECIPE_HV).addTo(assemblerRecipes);
 
         GT_Values.RA.stdBuilder()
                 .itemInputs(
                         GT_ModHandler.getModItem(GregTech.ID, "gt.blockmachines", 64, 1169),
                         GT_Utility.getIntegratedCircuit(17))
                 .itemOutputs(ItemRegistry.megaMachines[3]).fluidInputs(Materials.SolderingAlloy.getMolten(9216))
-                .duration(1 * HOURS).eut(TierEU.RECIPE_HV).addTo(sAssemblerRecipes);
+                .duration(1 * HOURS).eut(TierEU.RECIPE_HV).addTo(assemblerRecipes);
 
         GT_Values.RA.stdBuilder()
                 .itemInputs(
                         GT_ModHandler.getModItem(GregTech.ID, "gt.blockmachines", 64, 1160),
                         GT_Utility.getIntegratedCircuit(17))
                 .itemOutputs(ItemRegistry.megaMachines[4]).fluidInputs(Materials.SolderingAlloy.getMolten(9216))
-                .duration(1 * HOURS).eut(TierEU.RECIPE_HV).addTo(sAssemblerRecipes);
+                .duration(1 * HOURS).eut(TierEU.RECIPE_HV).addTo(assemblerRecipes);
 
         GT_Values.RA.stdBuilder()
                 .itemInputs(
@@ -98,7 +98,7 @@ public class Assembler implements Runnable {
                         GT_Utility.getIntegratedCircuit(17))
                 .itemOutputs(new ItemStack(ItemRegistry.BW_BLOCKS[2], 1, 1))
                 .fluidInputs(Materials.Plastic.getMolten(1152L)).duration(1 * TICKS).eut(TierEU.RECIPE_HV)
-                .addTo(sAssemblerRecipes);
+                .addTo(assemblerRecipes);
 
         GT_Values.RA.stdBuilder()
                 .itemInputs(
@@ -108,7 +108,7 @@ public class Assembler implements Runnable {
                         ItemList.Battery_RE_LV_Lithium.get(1L))
                 .itemOutputs(new ItemStack(ItemRegistry.CIRCUIT_PROGRAMMER))
                 .fluidInputs(Materials.SolderingAlloy.getMolten(288L)).duration(30 * SECONDS).eut(TierEU.RECIPE_MV)
-                .addTo(sAssemblerRecipes);
+                .addTo(assemblerRecipes);
 
         GT_Values.RA.stdBuilder()
                 .itemInputs(
@@ -121,7 +121,7 @@ public class Assembler implements Runnable {
                                 1,
                                 ItemRegistry.TecTechPipeEnergyLowPower.getItemDamage()))
                 .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(72)).duration(10 * SECONDS)
-                .eut(TierEU.RECIPE_EV).addTo(sAssemblerRecipes);
+                .eut(TierEU.RECIPE_EV).addTo(assemblerRecipes);
 
         ItemStack[][] converters = ItemRegistry.TecTechLaserAdditions[0];
         ItemStack[][] input = ItemRegistry.TecTechLaserAdditions[1];
@@ -172,7 +172,7 @@ public class Assembler implements Runnable {
                         sensors[i].get(2 * (j + 1)),
                         ItemList.TRANSFORMERS[4 + i].get(2 * (j + 1))).itemOutputs(converter)
                         .fluidInputs(Materials.SolderingAlloy.getMolten(solderingAmount))
-                        .duration((10 * (j + 1)) * SECONDS).eut(recipeConsumption).addTo(sAssemblerRecipes);
+                        .duration((10 * (j + 1)) * SECONDS).eut(recipeConsumption).addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                         .itemInputs(
                                 new ItemStack(
@@ -185,8 +185,7 @@ public class Assembler implements Runnable {
                                 sensors[i].get(2 * (j + 1)),
                                 ItemList.TRANSFORMERS[4 + i].get(2 * (j + 1)))
                         .itemOutputs(converter).fluidInputs(Materials.SolderingAlloy.getMolten(solderingAmount))
-                        .noFluidOutputs().duration((10 * (j + 1)) * SECONDS).eut(recipeConsumption)
-                        .addTo(sAssemblerRecipes);
+                        .duration((10 * (j + 1)) * SECONDS).eut(recipeConsumption).addTo(assemblerRecipes);
 
                 GT_Values.RA.stdBuilder()
                         .itemInputs(
@@ -199,7 +198,7 @@ public class Assembler implements Runnable {
                                 sensors[i].get(2 * (j + 1)),
                                 ItemList.HATCHES_ENERGY[4 + i].get(2 * (j + 1)))
                         .itemOutputs(eInput).fluidInputs(Materials.SolderingAlloy.getMolten(solderingAmount))
-                        .duration((10 * (j + 1)) * SECONDS).eut(recipeConsumption).addTo(sAssemblerRecipes);
+                        .duration((10 * (j + 1)) * SECONDS).eut(recipeConsumption).addTo(assemblerRecipes);
 
                 GT_Values.RA.stdBuilder()
                         .itemInputs(
@@ -212,7 +211,7 @@ public class Assembler implements Runnable {
                                 emitters[i].get(2 * (j + 1)),
                                 ItemList.HATCHES_DYNAMO[4 + i].get(2 * (j + 1)))
                         .itemOutputs(eDynamo).fluidInputs(Materials.SolderingAlloy.getMolten(solderingAmount))
-                        .duration((10 * (j + 1) * SECONDS)).eut(recipeConsumption).addTo(sAssemblerRecipes);
+                        .duration((10 * (j + 1) * SECONDS)).eut(recipeConsumption).addTo(assemblerRecipes);
             }
         }
 
@@ -222,11 +221,11 @@ public class Assembler implements Runnable {
                         Materials.LiquidAir.getCells(1),
                         GT_Utility.getIntegratedCircuit(17))
                 .itemOutputs(ItemRegistry.compressedHatch.copy()).duration(15 * SECONDS).eut(TierEU.RECIPE_HV)
-                .addTo(sAssemblerRecipes);
+                .addTo(assemblerRecipes);
 
         GT_Values.RA.stdBuilder().itemInputs(ItemList.Hatch_Output_HV.get(64), GT_Utility.getIntegratedCircuit(17))
                 .itemOutputs(ItemRegistry.giantOutputHatch.copy()).duration(15 * SECONDS).eut(TierEU.RECIPE_HV)
-                .addTo(sAssemblerRecipes);
+                .addTo(assemblerRecipes);
 
         GT_Values.RA.stdBuilder()
                 .itemInputs(
@@ -234,7 +233,7 @@ public class Assembler implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1))
                 .itemOutputs(new ItemStack(GregTech_API.sBlockCasings3, 1, 12))
                 .fluidInputs(Materials.Concrete.getMolten(1296)).duration(2 * SECONDS).eut(TierEU.RECIPE_IV)
-                .addTo(sAssemblerRecipes);
+                .addTo(assemblerRecipes);
 
         GT_Values.RA.stdBuilder()
                 .itemInputs(
@@ -243,6 +242,6 @@ public class Assembler implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Europium, 24))
                 .itemOutputs(new ItemStack(GregTech_API.sBlockCasings8, 1, 5))
                 .fluidInputs(Materials.Lead.getMolten(864)).duration(10 * SECONDS).eut(TierEU.RECIPE_LuV)
-                .addTo(sAssemblerRecipes);
+                .addTo(assemblerRecipes);
     }
 }

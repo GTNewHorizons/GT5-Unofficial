@@ -22,13 +22,13 @@ import codechicken.nei.recipe.GuiUsageRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.recipe.RecipeCategory;
 import gregtech.nei.GT_NEI_DefaultHandler;
 
 public class BW_NEI_BioLabHandler extends GT_NEI_DefaultHandler {
 
-    public BW_NEI_BioLabHandler(GT_Recipe.GT_Recipe_Map aRecipeMap) {
-        super(aRecipeMap);
+    public BW_NEI_BioLabHandler(RecipeCategory recipeCategory) {
+        super(recipeCategory);
         if (!NEI_BW_Config.sIsAdded) {
             FMLInterModComms.sendRuntimeMessage(
                     GT_Values.GT,
@@ -42,7 +42,7 @@ public class BW_NEI_BioLabHandler extends GT_NEI_DefaultHandler {
 
     @Override
     public TemplateRecipeHandler newInstance() {
-        return new BW_NEI_BioLabHandler(this.mRecipeMap);
+        return new BW_NEI_BioLabHandler(this.recipeCategory);
     }
 
     @Override

@@ -123,46 +123,4 @@ public final class BioRecipeAdder {
                 aSpecialValue,
                 exactSv);
     }
-
-    // public static boolean addBacterialVatRecipe(ItemStack[] aInputs, ItemStack[] aOutputs, FluidStack[]
-    // aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSievert) {
-    // return BWRecipes.instance.addBacterialVatRecipe(aInputs, aOutputs, aFluidInputs, aFluidOutputs, aDuration,
-    // aEUt, aSievert);
-    // }
-
-    // @Deprecated
-    // public static boolean addBioLabRecipeDNAExtraction(ItemStack[] aInputs, ItemStack aOutput, int[] aChances,
-    // FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue){
-    // return BWRecipes.instance.addBioLabRecipeDNAExtraction(aInputs, aOutput, aChances, aFluidInputs,
-    // aFluidOutputs, aDuration, aEUt, aSpecialValue);
-    // }
-    //
-    // @Deprecated
-    // public static boolean addBioLabRecipePCRThermoclycling(ItemStack[] aInputs, ItemStack aOutput, int[] aChances,
-    // FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue){
-    // return BWRecipes.instance.addBioLabRecipePCRThermoclycling(aInputs, aOutput, aChances, aFluidInputs,
-    // aFluidOutputs, aDuration, aEUt, aSpecialValue);
-    // }
-    //
-    // @Deprecated
-    // public static boolean addBioLabRecipePlasmidSynthesis(ItemStack[] aInputs, ItemStack aOutput, int[] aChances,
-    // FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue){
-    // return BWRecipes.instance.addBioLabRecipePlasmidSynthesis(aInputs, aOutput, aChances, aFluidInputs,
-    // aFluidOutputs, aDuration, aEUt, aSpecialValue);
-    // }
-    //
-    // @Deprecated
-    // public static boolean addBioLabRecipeTransformation(ItemStack[] aInputs, ItemStack aOutput, int[] aChances,
-    // FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue){
-    // return BWRecipes.instance.addBioLabRecipeTransformation(aInputs, aOutput, aChances, aFluidInputs,
-    // aFluidOutputs, aDuration, aEUt, aSpecialValue);
-    // }
-    //
-    // @Deprecated
-    // public static boolean addBioLabRecipeClonalCellularSynthesis(ItemStack[] aInputs, ItemStack aOutput, int[]
-    // aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue){
-    // return BWRecipes.instance.addBioLabRecipeClonalCellularSynthesis(aInputs, aOutput, aChances, aFluidInputs,
-    // aFluidOutputs, aDuration, aEUt, aSpecialValue);
-    // }
-
 }

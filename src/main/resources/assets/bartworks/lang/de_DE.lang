@@ -55,9 +55,16 @@ labModule.item.PCRThermoclyclingModule.name=PCR Thermozykler
 labModule.item.PlasmidSynthesisModule.name=Plasmid Synthese Modul
 labModule.item.TransformationModule.name=Transformations Modul
 moon.Ross128ba=Ross128ba
-nei.biovat.0.name=Braucht Glass Tier:
-nei.biovat.1.name=Braucht genau
-nei.biovat.2.name=Braucht mindestens
+
+# RecipeMap
+bw.recipe.biolab=Bio Labor
+bw.recipe.BacteriaVat=Bacterien Tank
+bw.fuels.acidgens=Säure Generator
+
+nei.biovat.0.name=Braucht Glass Tier: %s
+nei.biovat.1.name=Braucht genau Sievert: %s Sv
+nei.biovat.2.name=Braucht mindestens Sievert: %s Sv
+
 planet.Ross128b=Ross128b
 solarsystem.Ross128System=Ross128-System
 star.Ross128=Ross128

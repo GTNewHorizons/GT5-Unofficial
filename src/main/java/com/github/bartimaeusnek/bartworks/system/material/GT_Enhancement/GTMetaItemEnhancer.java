@@ -14,7 +14,7 @@
 package com.github.bartimaeusnek.bartworks.system.material.GT_Enhancement;
 
 import static gregtech.api.enums.Mods.Forestry;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sFluidCannerRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
 import java.util.List;
@@ -63,10 +63,10 @@ public class GTMetaItemEnhancer {
 
                 GT_Values.RA.stdBuilder().itemInputs(GT_ModHandler.getModItem(Forestry.ID, "refractoryEmpty", 1))
                         .itemOutputs(new ItemStack(moltenCapsuls, 1, i)).fluidInputs(m.getMolten(144))
-                        .duration(2 * TICKS).eut(2).addTo(sFluidCannerRecipes);
+                        .duration(2 * TICKS).eut(2).addTo(fluidCannerRecipes);
 
                 GT_Values.RA.stdBuilder().itemInputs(new ItemStack(moltenCapsuls, 1, i)).fluidOutputs(m.getMolten(144))
-                        .duration(2 * TICKS).eut(2).addTo(sFluidCannerRecipes);
+                        .duration(2 * TICKS).eut(2).addTo(fluidCannerRecipes);
 
             }
             if (m.getFluid(1) == null && m.getGas(1) == null || OreDictionary.doesOreNameExist("capsule" + m.mName))
@@ -93,10 +93,10 @@ public class GTMetaItemEnhancer {
         GT_Utility.addFluidContainerData(emptyData);
 
         GT_Values.RA.stdBuilder().itemInputs(container).itemOutputs(new ItemStack(filled, 1, it))
-                .fluidInputs(new FluidStack(f, amount)).duration(amount / 62).eut(2).addTo(sFluidCannerRecipes);
+                .fluidInputs(new FluidStack(f, amount)).duration(amount / 62).eut(2).addTo(fluidCannerRecipes);
 
         GT_Values.RA.stdBuilder().itemInputs(new ItemStack(filled, 1, it)).fluidOutputs(new FluidStack(f, amount))
-                .duration(amount / 62).eut(2).addTo(sFluidCannerRecipes);
+                .duration(amount / 62).eut(2).addTo(fluidCannerRecipes);
 
     }
 

@@ -52,7 +52,6 @@ import com.github.bartimaeusnek.bartworks.common.loaders.RecipeLoader;
 import com.github.bartimaeusnek.bartworks.common.loaders.RegisterServerCommands;
 import com.github.bartimaeusnek.bartworks.common.loaders.StaticRecipeChangeLoaders;
 import com.github.bartimaeusnek.bartworks.common.net.BW_Network;
-import com.github.bartimaeusnek.bartworks.neiHandler.IMCForNEI;
 import com.github.bartimaeusnek.bartworks.server.EventHandler.ServerEventHandler;
 import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.CircuitImprintLoader;
 import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.CircuitPartLoader;
@@ -76,9 +75,9 @@ import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Mods;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Recipe;
 
 @Mod(modid = MainMod.MOD_ID, name = MainMod.NAME, version = API_REFERENCE.VERSION, dependencies = """
         required-after:IC2;\
@@ -155,7 +154,6 @@ public final class MainMod {
         WerkstoffLoader.runInit();
 
         ItemRegistry.run();
-        IMCForNEI.IMCSender();
     }
 
     @Mod.EventHandler
@@ -224,6 +222,6 @@ public final class MainMod {
         // StaticRecipeChangeLoaders.synchroniseCircuitUseMulti();
 
         // Accept recipe map changes into Buffers
-        GT_Recipe.GT_Recipe_Map.sMappings.forEach(GT_Recipe.GT_Recipe_Map::reInit);
+        RecipeMap.ALL_RECIPE_MAPS.values().forEach(map -> map.getBackend().reInit());
     }
 }

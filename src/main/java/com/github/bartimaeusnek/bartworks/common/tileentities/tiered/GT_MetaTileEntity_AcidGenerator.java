@@ -16,7 +16,7 @@ package com.github.bartimaeusnek.bartworks.common.tileentities.tiered;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.github.bartimaeusnek.bartworks.util.BWRecipes;
+import com.github.bartimaeusnek.bartworks.API.recipe.BartWorksRecipeMaps;
 import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 
@@ -26,8 +26,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicGenerator;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Recipe;
 
 public class GT_MetaTileEntity_AcidGenerator extends GT_MetaTileEntity_BasicGenerator {
 
@@ -46,8 +46,8 @@ public class GT_MetaTileEntity_AcidGenerator extends GT_MetaTileEntity_BasicGene
     }
 
     @Override
-    public GT_Recipe.GT_Recipe_Map getRecipes() {
-        return BWRecipes.instance.getMappingsFor((byte) 2);
+    public RecipeMap<?> getRecipeMap() {
+        return BartWorksRecipeMaps.acidGenFuels;
     }
 
     @Override

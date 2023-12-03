@@ -20,23 +20,24 @@ import java.util.Set;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.StreamUtils;
 
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_Recipe;
 
 public class DownTierLoader {
 
     public static void run() {
-        GT_Recipe.GT_Recipe_Map.sMappings.stream()
-                .filter(map -> StreamUtils.filterVisualMaps(map) && map != GT_Recipe.GT_Recipe_Map.sFusionRecipes)
-                .forEach(map -> {
+        RecipeMap.ALL_RECIPE_MAPS.values().stream()
+                .filter(map -> StreamUtils.filterVisualMaps(map) && map != RecipeMaps.fusionRecipes).forEach(map -> {
                     Set<GT_Recipe> newRecipes = new HashSet<>();
                     Set<GT_Recipe> toRem = new HashSet<>();
-                    map.mRecipeList.stream().filter(recipe -> Objects.nonNull(recipe) && recipe.mEUt > 128)
+                    map.getAllRecipes().stream().filter(recipe -> Objects.nonNull(recipe) && recipe.mEUt > 128)
                             .forEach(recipe -> {
                                 toRem.add(recipe);
                                 newRecipes.add(BW_Util.copyAndSetTierToNewRecipe(recipe, (byte) 2));
                             });
-                    map.mRecipeList.removeAll(toRem);
-                    map.mRecipeList.addAll(newRecipes);
+                    map.getBackend().removeRecipes(toRem);
+                    newRecipes.forEach(map::add);
                 });
     }
 }

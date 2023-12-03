@@ -15,7 +15,7 @@ package com.github.bartimaeusnek.bartworks.common.loaders;
 
 import static gregtech.api.enums.Mods.Gendustry;
 import static gregtech.api.enums.Mods.GregTech;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import java.awt.Color;
@@ -96,7 +96,7 @@ public class FluidLoader {
 
                 GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(10))
                         .fluidInputs(new FluidStack(B.getFluid(), 1000)).fluidOutputs(dnaFluid).duration(25 * SECONDS)
-                        .eut(TierEU.RECIPE_MV).addTo(sCentrifugeRecipes);
+                        .eut(TierEU.RECIPE_MV).addTo(centrifugeRecipes);
             }
         }
 

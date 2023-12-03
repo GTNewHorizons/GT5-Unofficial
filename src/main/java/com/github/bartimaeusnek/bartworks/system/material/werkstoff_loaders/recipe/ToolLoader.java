@@ -28,10 +28,10 @@ import static gregtech.api.enums.OrePrefixes.toolHeadHammer;
 import static gregtech.api.enums.OrePrefixes.toolHeadSaw;
 import static gregtech.api.enums.OrePrefixes.toolHeadWrench;
 import static gregtech.api.enums.OrePrefixes.turbineBlade;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sExtruderRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sFluidSolidficationRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sPressRecipes;
+import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
+import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
+import static gregtech.api.recipe.RecipeMaps.formingPressRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
@@ -434,17 +434,17 @@ public class ToolLoader implements IWerkstoffRunnable {
 
             GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(ingot, 6), ItemList.Shape_Extruder_Turbine_Blade.get(0))
                     .itemOutputs(werkstoff.get(turbineBlade, 1)).duration((int) werkstoff.getStats().getMass() / 2 * 20)
-                    .eut(TierEU.RECIPE_MV).addTo(sExtruderRecipes);
+                    .eut(TierEU.RECIPE_MV).addTo(extruderRecipes);
 
             GT_Values.RA.stdBuilder().itemInputs(ItemList.Shape_Mold_Turbine_Blade.get(0))
                     .itemOutputs(werkstoff.get(turbineBlade, 1)).fluidInputs(werkstoff.getMolten(864))
                     .duration((int) werkstoff.getStats().getMass() * 20).eut(TierEU.RECIPE_MV)
-                    .addTo(sFluidSolidficationRecipes);
+                    .addTo(fluidSolidifierRecipes);
 
             GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(plateDouble, 3), werkstoff.get(screw, 2))
                     .itemOutputs(werkstoff.get(turbineBlade, 1))
                     .duration((werkstoff.getStats().getMass() / 4) * SECONDS).eut(TierEU.RECIPE_LV)
-                    .addTo(sPressRecipes);
+                    .addTo(formingPressRecipes);
 
             GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -457,7 +457,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                                     werkstoff.getBridgeMaterial(),
                                     Materials.Magnalium,
                                     null))
-                    .duration(8 * SECONDS).eut(100).addTo(sAssemblerRecipes);
+                    .duration(8 * SECONDS).eut(100).addTo(assemblerRecipes);
 
             GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -470,7 +470,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                                     werkstoff.getBridgeMaterial(),
                                     Materials.Titanium,
                                     null))
-                    .duration(16 * SECONDS).eut(400).addTo(sAssemblerRecipes);
+                    .duration(16 * SECONDS).eut(400).addTo(assemblerRecipes);
 
             GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -483,7 +483,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                                     werkstoff.getBridgeMaterial(),
                                     Materials.TungstenSteel,
                                     null))
-                    .duration(32 * SECONDS).eut(1600).addTo(sAssemblerRecipes);
+                    .duration(32 * SECONDS).eut(1600).addTo(assemblerRecipes);
 
             GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -496,7 +496,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                                     werkstoff.getBridgeMaterial(),
                                     Materials.Americium,
                                     null))
-                    .duration(1 * MINUTES + 4 * SECONDS).eut(6400).addTo(sAssemblerRecipes);
+                    .duration(1 * MINUTES + 4 * SECONDS).eut(6400).addTo(assemblerRecipes);
         }
 
         if (!werkstoff.hasItemType(gem)) {

@@ -20,7 +20,6 @@ import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,6 +29,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.github.bartimaeusnek.bartworks.API.recipe.BartWorksRecipeMaps;
 import com.github.bartimaeusnek.bartworks.common.items.SimpleSubItemClass;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
@@ -51,10 +51,10 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 
 public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_TileEntity_HTGR> {
@@ -121,22 +121,6 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
             // GregTech_API.sBlockCasings8, 5))
             .build();
 
-    public static final GT_Recipe.GT_Recipe_Map fakeRecipeMap = new GT_Recipe.GT_Recipe_Map(
-            new HashSet<>(),
-            "bw.recipe.htgr",
-            "High Temperature Gas-cooled Reactor",
-            null,
-            "gregtech:textures/gui/basicmachines/Default",
-            1,
-            1,
-            1,
-            0,
-            1,
-            "",
-            1,
-            "",
-            false,
-            true).useModularUI(true);
     private static final int HELIUM_NEEDED = 730000;
     public static final int powerUsage = (int) TierEU.RECIPE_LuV;
     private static final int maxcapacity = 720000;
@@ -268,6 +252,12 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
             }
             if (updateneeded) this.updateSlots();
         }
+    }
+
+    @Override
+    public RecipeMap<?> getRecipeMap() {
+        // Only for visual
+        return BartWorksRecipeMaps.htgrFakeRecipes;
     }
 
     @Override
@@ -604,7 +594,7 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
             for (@SuppressWarnings("unused")
             Fuel_ fuel : sHTGR_Fuel) {
 
-                fakeRecipeMap.addFakeRecipe(
+                BartWorksRecipeMaps.htgrFakeRecipes.addFakeRecipe(
                         false,
                         new ItemStack[] { new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 64, i + 4) },
                         new ItemStack[] { new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 5) },

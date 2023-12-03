@@ -127,9 +127,15 @@ tooltip.tile.radhatch.8.name=m
 tooltip.tile.radhatch.9.name=h
 tooltip.tile.acidgen.0.name=Un générateur à acide
 tooltip.tile.acidgen.1.name=Crée de l'énergie à partir de potentiels chimiques.
-nei.biovat.0.name=A besoin du tier de verre:
-nei.biovat.1.name=A besoin du montant exact
-nei.biovat.2.name=A besoin d'un minimum
+
+# RecipeMap
+bw.recipe.biolab=Bio Lab
+bw.recipe.BacteriaVat=Bio Cuve
+bw.fuels.acidgens=Générateur à Acide
+
+nei.biovat.0.name=A besoin du tier de verre: %s
+nei.biovat.1.name=A besoin du montant exact Sievert: %s Sv
+nei.biovat.2.name=A besoin d'un minimum Sievert: %s Sv
 
 tile.diode.name=Diode câble
 tile.energydistributor.name=Distributeur d'énergie

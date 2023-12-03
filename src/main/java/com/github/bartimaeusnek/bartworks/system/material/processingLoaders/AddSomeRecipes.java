@@ -15,7 +15,7 @@ package com.github.bartimaeusnek.bartworks.system.material.processingLoaders;
 
 import static gregtech.api.enums.OrePrefixes.dust;
 import static gregtech.api.enums.OrePrefixes.dustSmall;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
@@ -43,7 +43,7 @@ public class AddSomeRecipes implements Runnable {
                         GT_OreDictUnificator.get(dust, Materials.Platinum, 1L))
                 .outputChances(100_00, 50_00, 50_00, 25_00, 100_00, 100_00)
                 .fluidOutputs(WerkstoffLoader.Xenon.getFluidOrGas(1)).duration(12 * SECONDS + 10 * TICKS)
-                .eut(TierEU.RECIPE_EV).addTo(sCentrifugeRecipes);
+                .eut(TierEU.RECIPE_EV).addTo(centrifugeRecipes);
 
         GT_Values.RA.stdBuilder().itemInputs(BW_NonMeta_MaterialItems.Depleted_Tiberium_2.get(1))
                 .itemOutputs(
@@ -55,7 +55,7 @@ public class AddSomeRecipes implements Runnable {
                         GT_OreDictUnificator.get(dust, Materials.Platinum, 2L))
                 .outputChances(100_00, 50_00, 50_00, 25_00, 100_00, 100_00)
                 .fluidOutputs(WerkstoffLoader.Xenon.getFluidOrGas(2)).duration(12 * SECONDS + 10 * TICKS)
-                .eut(TierEU.RECIPE_EV).addTo(sCentrifugeRecipes);
+                .eut(TierEU.RECIPE_EV).addTo(centrifugeRecipes);
 
         GT_Values.RA.stdBuilder().itemInputs(BW_NonMeta_MaterialItems.Depleted_Tiberium_4.get(1))
                 .itemOutputs(
@@ -67,7 +67,7 @@ public class AddSomeRecipes implements Runnable {
                         GT_OreDictUnificator.get(dust, Materials.Platinum, 4L))
                 .outputChances(100_00, 50_00, 50_00, 25_00, 100_00, 100_00)
                 .fluidOutputs(WerkstoffLoader.Xenon.getFluidOrGas(4)).duration(50 * SECONDS).eut(TierEU.RECIPE_EV)
-                .addTo(sCentrifugeRecipes);
+                .addTo(centrifugeRecipes);
 
         GT_Values.RA.stdBuilder().itemInputs(BW_NonMeta_MaterialItems.Depleted_TheCoreCell.get(1))
                 .itemOutputs(
@@ -78,7 +78,7 @@ public class AddSomeRecipes implements Runnable {
                         GT_OreDictUnificator.get(dust, Materials.TungstenSteel, 64L),
                         GT_OreDictUnificator.get(dust, Materials.TungstenSteel, 48L))
                 .outputChances(100_00, 50_00, 50_00, 100_00, 100_00, 100_00).duration(1 * MINUTES + 40 * SECONDS)
-                .eut(TierEU.RECIPE_IV).addTo(sCentrifugeRecipes);
+                .eut(TierEU.RECIPE_IV).addTo(centrifugeRecipes);
 
     }
 }

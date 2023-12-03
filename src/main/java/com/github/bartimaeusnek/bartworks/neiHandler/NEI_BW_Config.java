@@ -15,11 +15,11 @@ package com.github.bartimaeusnek.bartworks.neiHandler;
 
 import net.minecraft.item.ItemStack;
 
+import com.github.bartimaeusnek.bartworks.API.recipe.BartWorksRecipeMaps;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.loaders.FluidLoader;
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
-import com.github.bartimaeusnek.bartworks.util.BWRecipes;
 
 import codechicken.nei.PositionedStack;
 import codechicken.nei.api.API;
@@ -66,10 +66,11 @@ public class NEI_BW_Config implements IConfigureNEI {
             stack.setItemDamage(Short.MAX_VALUE);
             API.hideItem(stack);
         }
+
         NEI_BW_Config.sIsAdded = false;
         new BW_NEI_OreHandler();
-        new BW_NEI_BioVatHandler(BWRecipes.instance.getMappingsFor(BWRecipes.BACTERIALVATBYTE));
-        new BW_NEI_BioLabHandler(BWRecipes.instance.getMappingsFor(BWRecipes.BIOLABBYTE));
+        new BW_NEI_BioVatHandler(BartWorksRecipeMaps.bacterialVatRecipes.getDefaultRecipeCategory());
+        new BW_NEI_BioLabHandler(BartWorksRecipeMaps.bioLabRecipes.getDefaultRecipeCategory());
         NEI_BW_Config.sIsAdded = true;
     }
 

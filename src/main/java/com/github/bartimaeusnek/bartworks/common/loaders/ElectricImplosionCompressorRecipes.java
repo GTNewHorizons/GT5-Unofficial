@@ -11,7 +11,7 @@ import static gregtech.api.util.GT_ModHandler.getModItem;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.github.bartimaeusnek.bartworks.util.BWRecipes;
+import com.github.bartimaeusnek.bartworks.API.recipe.BartWorksRecipeMaps;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -26,7 +26,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
     private static void addElectricImplosionRecipe(final ItemStack[] inputItems, final FluidStack[] inputFluids,
             final ItemStack[] outputItems, final FluidStack[] outputFluids, final int durationInTicks,
             final int EUPerTick) {
-        BWRecipes.instance.eicMap.addRecipe(
+        BartWorksRecipeMaps.electricImplosionCompressorRecipes.addRecipe(
                 false,
                 inputItems,
                 outputItems,

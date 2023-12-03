@@ -17,17 +17,17 @@ import static gregtech.api.enums.OrePrefixes.dust;
 import static gregtech.api.enums.OrePrefixes.ingot;
 import static gregtech.api.enums.OrePrefixes.plateDense;
 import static gregtech.api.enums.OrePrefixes.plateDouble;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMaceratorRecipes;
+import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
 import net.minecraft.item.ItemStack;
 
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
-import com.github.bartimaeusnek.bartworks.util.BWRecipes;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -37,8 +37,8 @@ public class MultipleMetalLoader implements IWerkstoffRunnable {
     @Override
     public void run(Werkstoff werkstoff) {
         if (werkstoff.hasItemType(plateDense)) {
-            GT_Recipe.GT_Recipe_Map.sBenderRecipes.add(
-                    new BWRecipes.DynamicGTRecipe(
+            RecipeMaps.benderRecipes.add(
+                    new GT_Recipe(
                             true,
                             new ItemStack[] { werkstoff.get(ingot, 2), GT_Utility.getIntegratedCircuit(2) },
                             new ItemStack[] { werkstoff.get(plateDouble) },
@@ -55,7 +55,7 @@ public class MultipleMetalLoader implements IWerkstoffRunnable {
                     null);
 
             GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(plateDouble)).itemOutputs(werkstoff.get(dust, 2))
-                    .duration(2 * TICKS).eut(8).addTo(sMaceratorRecipes);
+                    .duration(2 * TICKS).eut(8).addTo(maceratorRecipes);
 
         }
     }

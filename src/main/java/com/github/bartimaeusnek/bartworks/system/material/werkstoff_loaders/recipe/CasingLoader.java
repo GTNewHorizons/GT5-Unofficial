@@ -21,7 +21,7 @@ import static gregtech.api.enums.OrePrefixes.plank;
 import static gregtech.api.enums.OrePrefixes.plate;
 import static gregtech.api.enums.OrePrefixes.plateDouble;
 import static gregtech.api.enums.OrePrefixes.screw;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
+import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import com.github.bartimaeusnek.bartworks.system.material.BW_GT_MaterialReference;
@@ -60,7 +60,7 @@ public class CasingLoader implements IWerkstoffRunnable {
         GT_Values.RA.stdBuilder()
                 .itemInputs(werkstoff.get(plate, 6), werkstoff.get(screw, 2), werkstoff.get(gearGtSmall))
                 .itemOutputs(werkstoff.get(blockCasing)).duration(10 * SECONDS).eut(TierEU.RECIPE_LV)
-                .addTo(sAssemblerRecipes);
+                .addTo(assemblerRecipes);
 
         GT_ModHandler.addCraftingRecipe(
                 werkstoff.get(blockCasingAdvanced),
@@ -70,6 +70,6 @@ public class CasingLoader implements IWerkstoffRunnable {
         GT_Values.RA.stdBuilder()
                 .itemInputs(werkstoff.get(reboltedCasingsOuterStuff, 6), werkstoff.get(screw, 2), werkstoff.get(gearGt))
                 .itemOutputs(werkstoff.get(blockCasingAdvanced)).duration(10 * SECONDS).eut(TierEU.RECIPE_LV)
-                .addTo(sAssemblerRecipes);
+                .addTo(assemblerRecipes);
     }
 }

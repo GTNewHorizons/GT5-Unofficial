@@ -21,22 +21,16 @@ import static gregtech.api.enums.OrePrefixes.values;
 
 import java.util.ArrayList;
 
-import net.minecraft.item.ItemStack;
-
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
-import com.github.bartimaeusnek.bartworks.util.BWRecipes;
 
 import gregtech.api.enchants.Enchantment_Radioactivity;
 import gregtech.api.enums.Element;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Recipe;
-import gregtech.common.items.behaviors.Behaviour_DataOrb;
 
 public class BridgeMaterialsLoader implements IWerkstoffRunnable {
 
@@ -79,7 +73,7 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
                     boolean ElementSet = false;
                     for (Element e : Element.values()) {
                         if (e.toString().equals(werkstoff.getToolTip())) {
-                            if (e.mLinkedMaterials.size() > 0) break;
+                            if (!e.mLinkedMaterials.isEmpty()) break;
                             werkstoffBridgeMaterial = werkstoff.getBridgeMaterial() != null
                                     ? werkstoff.getBridgeMaterial()
                                     : Materials.get(werkstoff.getVarName()) != Materials._NULL
@@ -123,25 +117,6 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
                     if (!ElementSet) {
                         continue;
                     }
-
-                    if (werkstoff.hasItemType(dust)) {
-                        ItemStack scannerOutput = ItemList.Tool_DataOrb.get(1L);
-                        Behaviour_DataOrb.setDataTitle(scannerOutput, "Elemental-Scan");
-                        Behaviour_DataOrb.setDataName(scannerOutput, werkstoff.getToolTip());
-                        GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(
-                                false,
-                                new BWRecipes.DynamicGTRecipe(
-                                        false,
-                                        new ItemStack[] { werkstoff.get(prefixes) },
-                                        new ItemStack[] { scannerOutput },
-                                        ItemList.Tool_DataOrb.get(1L),
-                                        null,
-                                        null,
-                                        null,
-                                        (int) (werkstoffBridgeMaterial.getMass() * 8192L),
-                                        30,
-                                        0));
-                    }
                 }
 
                 if (werkstoff.hasItemType(cell)) {
@@ -179,7 +154,6 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
                             werkstoff.getStats().getEnchantmentlvl());
                 }
                 werkstoff.setBridgeMaterial(werkstoffBridgeMaterial);
-                // if (WerkstoffLoader.items.get(prefixes) != null)
             }
         }
     }

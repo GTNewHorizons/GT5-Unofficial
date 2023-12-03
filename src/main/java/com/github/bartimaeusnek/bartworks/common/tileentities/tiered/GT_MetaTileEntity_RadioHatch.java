@@ -25,8 +25,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.github.bartimaeusnek.bartworks.API.modularUI.BW_UITextures;
+import com.github.bartimaeusnek.bartworks.API.recipe.BartWorksRecipeMaps;
 import com.github.bartimaeusnek.bartworks.MainMod;
-import com.github.bartimaeusnek.bartworks.util.BWRecipes;
 import com.github.bartimaeusnek.bartworks.util.BW_ColorUtil;
 import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.bartimaeusnek.bartworks.util.MathUtils;
@@ -56,16 +56,19 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.ItemData;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 
-public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch implements IAddGregtechLogo {
+public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch
+        implements RecipeMapWorkable, IAddGregtechLogo {
 
     private final int cap;
     public int sievert;
@@ -94,11 +97,6 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch implem
                                         : StatCollector.translateToLocal("tooltip.bw.kg.0.name")),
                         StatCollector.translateToLocal("tooltip.tile.radhatch.1.name"),
                         BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get() });
-        this.cap = aTier - 2;
-    }
-
-    public GT_MetaTileEntity_RadioHatch(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 1, aDescription, aTextures);
         this.cap = aTier - 2;
     }
 
@@ -214,7 +212,7 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch implem
                 }
 
                 if (this.lastRecipe == null || this.lastFail) {
-                    this.lastRecipe = BWRecipes.instance.getMappingsFor(BWRecipes.RADHATCH).findRecipe(
+                    this.lastRecipe = BartWorksRecipeMaps.radioHatchRecipes.findRecipe(
                             this.getBaseMetaTileEntity(),
                             false,
                             Integer.MAX_VALUE - 7,
@@ -304,7 +302,7 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch implem
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
             ItemStack aStack) {
         return side == this.getBaseMetaTileEntity().getFrontFacing()
-                && BWRecipes.instance.getMappingsFor(BWRecipes.RADHATCH).containsInput(aStack);
+                && BartWorksRecipeMaps.radioHatchRecipes.containsInput(aStack);
     }
 
     @Override
@@ -338,6 +336,12 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch implem
         if (aIndex == 1) {
             GT_Utility.doSoundAtClient(rl, 10, 1.0F, aX, aY, aZ);
         }
+    }
+
+    @Override
+    public RecipeMap<?> getRecipeMap() {
+        // Only for visual
+        return BartWorksRecipeMaps.radioHatchRecipes;
     }
 
     private static final int RADIATION_SHUTTER_WINDOW_ID = 999;

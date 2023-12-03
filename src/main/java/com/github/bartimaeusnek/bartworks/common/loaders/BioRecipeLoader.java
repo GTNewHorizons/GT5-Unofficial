@@ -28,8 +28,8 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 
 public class BioRecipeLoader {
@@ -180,7 +180,7 @@ public class BioRecipeLoader {
     }
 
     public static void runOnServerStarted() {
-        GT_Recipe.GT_Recipe_Map.sFermentingRecipes.mRecipeList.forEach(
+        RecipeMaps.fermentingRecipes.getAllRecipes().forEach(
                 recipe -> BWRecipes.instance.addBacterialVatRecipe(
                         new ItemStack[] { null },
                         BioCultureLoader.generalPurposeFermentingBacteria,

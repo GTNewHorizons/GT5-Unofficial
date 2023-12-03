@@ -16,7 +16,6 @@ package com.github.bartimaeusnek.bartworks.system.material.processingLoaders;
 import static com.github.bartimaeusnek.bartworks.util.BW_Util.CLEANROOM;
 import static gregtech.api.enums.Mods.Gendustry;
 import static gregtech.api.enums.OrePrefixes.bolt;
-import static gregtech.api.enums.OrePrefixes.cell;
 import static gregtech.api.enums.OrePrefixes.crushed;
 import static gregtech.api.enums.OrePrefixes.crushedPurified;
 import static gregtech.api.enums.OrePrefixes.dust;
@@ -27,17 +26,17 @@ import static gregtech.api.enums.OrePrefixes.gemExquisite;
 import static gregtech.api.enums.OrePrefixes.gemFlawed;
 import static gregtech.api.enums.OrePrefixes.stick;
 import static gregtech.api.enums.OrePrefixes.stickLong;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAutoclaveRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sPrimitiveBlastRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sSifterRecipes;
+import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
+import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.primitiveBlastRecipes;
+import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.ADDITIVE_AMOUNT;
 
-import java.lang.reflect.Field;
-import java.util.Map;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 import net.minecraft.init.Items;
@@ -46,8 +45,10 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import org.apache.commons.lang3.reflect.FieldUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
+import com.github.bartimaeusnek.bartworks.API.recipe.BartWorksRecipeMaps;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.common.loaders.BioCultureLoader;
 import com.github.bartimaeusnek.bartworks.common.loaders.BioItemList;
@@ -55,9 +56,7 @@ import com.github.bartimaeusnek.bartworks.common.loaders.FluidLoader;
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.bartimaeusnek.bartworks.system.material.BW_NonMeta_MaterialItems;
 import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.BW_Meta_Items;
-import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
-import com.github.bartimaeusnek.bartworks.util.BWRecipes;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.BioCulture;
 import com.github.bartimaeusnek.bartworks.util.BioDNA;
@@ -65,25 +64,20 @@ import com.github.bartimaeusnek.bartworks.util.BioData;
 import com.github.bartimaeusnek.bartworks.util.BioPlasmid;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.Element;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_RecipeConstants;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
 
 public class AdditionalRecipes {
-
-    private static BWRecipes.BW_Recipe_Map_LiquidFuel sAcidGenFuels = (BWRecipes.BW_Recipe_Map_LiquidFuel) BWRecipes.instance
-            .getMappingsFor((byte) 2);
-    private static BWRecipes.BacteriaVatRecipeMap sBacteriaVat = (BWRecipes.BacteriaVatRecipeMap) BWRecipes.instance
-            .getMappingsFor((byte) 1);
-    private static GT_Recipe.GT_Recipe_Map sBiolab = BWRecipes.instance.getMappingsFor((byte) 0);
 
     private static void runBWRecipes() {
 
@@ -97,7 +91,7 @@ public class AdditionalRecipes {
                     ItemStack Detergent = BioItemList.getOther(1);
                     ItemStack DNAFlask = BioItemList.getDNASampleFlask(null);
                     ItemStack EthanolCell = Materials.Ethanol.getCells(1);
-                    sBiolab.addFakeRecipe(
+                    BartWorksRecipeMaps.bioLabRecipes.addFakeRecipe(
                             false,
                             new ItemStack[] { stack, DNAFlask, Detergent, EthanolCell },
                             new ItemStack[] { BioItemList.getDNASampleFlask(BioDNA.convertDataToDNA(DNA)),
@@ -120,7 +114,7 @@ public class AdditionalRecipes {
                     Behaviour_DataOrb.setDataTitle(Outp, "DNA Sample");
                     Behaviour_DataOrb.setDataName(Outp, DNA.getName());
 
-                    sBiolab.addFakeRecipe(
+                    BartWorksRecipeMaps.bioLabRecipes.addFakeRecipe(
                             false,
                             new ItemStack[] { stack, FluidLoader.BioLabFluidCells[0], FluidLoader.BioLabFluidCells[3],
                                     ItemList.Tool_DataOrb.get(1L) },
@@ -146,7 +140,7 @@ public class AdditionalRecipes {
                     Behaviour_DataOrb.setDataTitle(inp2, "DNA Sample");
                     Behaviour_DataOrb.setDataName(inp2, BioCultureLoader.BIO_DATA_BETA_LACMATASE.getName());
 
-                    sBiolab.addFakeRecipe(
+                    BartWorksRecipeMaps.bioLabRecipes.addFakeRecipe(
                             false,
                             new ItemStack[] { FluidLoader.BioLabFluidCells[1], BioItemList.getPlasmidCell(null), inp,
                                     inp2 },
@@ -165,7 +159,7 @@ public class AdditionalRecipes {
                 BioData DNA = BioData.getBioDataFromNBTTag(stack.getTagCompound().getCompoundTag("DNA"));
                 BioData Plasmid = BioData.getBioDataFromNBTTag(stack.getTagCompound().getCompoundTag("Plasmid"));
                 if (!Objects.equals(DNA.getName(), Plasmid.getName())) {
-                    sBiolab.addFakeRecipe(
+                    BartWorksRecipeMaps.bioLabRecipes.addFakeRecipe(
                             true,
                             new ItemStack[] { BioItemList.getPetriDish(BioCulture.getBioCulture(DNA.getName())),
                                     BioItemList.getPlasmidCell(BioPlasmid.convertDataToPlasmid(Plasmid)),
@@ -185,7 +179,7 @@ public class AdditionalRecipes {
             Behaviour_DataOrb.setDataTitle(Outp, "DNA Sample");
             Behaviour_DataOrb.setDataName(Outp, "Any DNA");
             // Clonal Cellular Synthesis- [Liquid DNA] + Medium Petri Dish + Plasma Membrane + Stem Cells + Genome Data
-            sBiolab.addFakeRecipe(
+            BartWorksRecipeMaps.bioLabRecipes.addFakeRecipe(
                     false,
                     new ItemStack[] { BioItemList.getPetriDish(null), BioItemList.getOther(4),
                             ItemList.Circuit_Chip_Stemcell.get(2L), Outp },
@@ -204,11 +198,11 @@ public class AdditionalRecipes {
             for (FluidStack fluidStack : easyFluids) {
                 for (BioCulture bioCulture : BioCulture.BIO_CULTURE_ARRAY_LIST) {
                     if (bioCulture.isBreedable() && bioCulture.getTier() == 0) {
-                        sBacteriaVat.addRecipe(
+                        BartWorksRecipeMaps.bacterialVatRecipes.addRecipe(
                                 // boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems,
                                 // int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration,
                                 // int aEUt, int aSpecialValue
-                                new BWRecipes.BacteriaVatRecipe(
+                                new GT_Recipe(
                                         true,
                                         new ItemStack[] { GT_Utility.getIntegratedCircuit(1),
                                                 new ItemStack(Items.sugar, 64) },
@@ -219,12 +213,11 @@ public class AdditionalRecipes {
                                         new FluidStack[] { new FluidStack(bioCulture.getFluid(), 10) },
                                         1000,
                                         (int) TierEU.RECIPE_HV,
-                                        BW_Util.STANDART),
-                                true);
+                                        BW_Util.STANDART));
                         // aOptimize, aInputs, aOutputs, aSpecialItems, aChances, aFluidInputs, aFluidOutputs,
                         // aDuration, aEUt, aSpecialValue
-                        sBiolab.addRecipe(
-                                new BWRecipes.DynamicGTRecipe(
+                        BartWorksRecipeMaps.bioLabRecipes.addRecipe(
+                                new GT_Recipe(
                                         false,
                                         new ItemStack[] { BioItemList.getPetriDish(null),
                                                 fluidStack.equals(Materials.Water.getFluid(1000L))
@@ -245,17 +238,25 @@ public class AdditionalRecipes {
             }
         }
 
-        sAcidGenFuels.addLiquidFuel(Materials.PhosphoricAcid, 36);
-        sAcidGenFuels.addLiquidFuel(Materials.DilutedHydrochloricAcid, 14);
-        sAcidGenFuels.addLiquidFuel(Materials.HypochlorousAcid, 30);
-        sAcidGenFuels.addLiquidFuel(Materials.HydrofluoricAcid, 40);
-        sAcidGenFuels.addLiquidFuel(Materials.HydrochloricAcid, 28);
-        sAcidGenFuels.addLiquidFuel(Materials.NitricAcid, 24);
-        sAcidGenFuels.addLiquidFuel(Materials.Mercury, 32);
-        sAcidGenFuels.addLiquidFuel(Materials.DilutedSulfuricAcid, 9);
-        sAcidGenFuels.addLiquidFuel(Materials.SulfuricAcid, 18);
-        sAcidGenFuels.addLiquidFuel(Materials.AceticAcid, 11);
-        sAcidGenFuels.addMoltenFuel(Materials.Redstone, 10);
+        List<Pair<Materials, Integer>> liquidFuels = Arrays.asList(
+                ImmutablePair.of(Materials.PhosphoricAcid, 36),
+                ImmutablePair.of(Materials.DilutedHydrochloricAcid, 14),
+                ImmutablePair.of(Materials.HypochlorousAcid, 30),
+                ImmutablePair.of(Materials.HydrofluoricAcid, 40),
+                ImmutablePair.of(Materials.HydrochloricAcid, 28),
+                ImmutablePair.of(Materials.NitricAcid, 24),
+                ImmutablePair.of(Materials.Mercury, 32),
+                ImmutablePair.of(Materials.DilutedSulfuricAcid, 9),
+                ImmutablePair.of(Materials.SulfuricAcid, 18),
+                ImmutablePair.of(Materials.AceticAcid, 11),
+                ImmutablePair.of(WerkstoffLoader.FormicAcid.getBridgeMaterial(), 40));
+        for (Pair<Materials, Integer> fuel : liquidFuels) {
+            GT_Values.RA.stdBuilder().itemInputs(fuel.getLeft().getCells(1)).itemOutputs(Materials.Empty.getCells(1))
+                    .metadata(GT_RecipeConstants.FUEL_VALUE, fuel.getRight()).addTo(BartWorksRecipeMaps.acidGenFuels);
+        }
+        GT_Values.RA.stdBuilder().itemInputs(GT_OreDictUnificator.get(OrePrefixes.cellMolten, Materials.Redstone, 1))
+                .itemOutputs(Materials.Empty.getCells(1)).metadata(GT_RecipeConstants.FUEL_VALUE, 10)
+                .addTo(BartWorksRecipeMaps.acidGenFuels);
     }
 
     @SuppressWarnings("deprecation")
@@ -266,8 +267,6 @@ public class AdditionalRecipes {
                 4,
                 WerkstoffLoader.AdemicSteel.get(dust),
                 null);
-        ((BWRecipes.BW_Recipe_Map_LiquidFuel) BWRecipes.instance.getMappingsFor((byte) 2))
-                .addLiquidFuel(WerkstoffLoader.FormicAcid.getBridgeMaterial(), 40);
         // Thorium/Yttrium Glas
         GT_Values.RA.addBlastRecipe(
                 WerkstoffLoader.YttriumOxide.get(dustSmall, 2),
@@ -289,7 +288,7 @@ public class AdditionalRecipes {
                         Materials.Thorium.getDust(1),
                         WerkstoffLoader.Thorium232.get(dust))
                 .outputChances(7000, 1300, 700, 600, 300, 100).duration(20 * SECONDS).eut((int) TierEU.RECIPE_IV)
-                .addTo(sSifterRecipes);
+                .addTo(sifterRecipes);
 
         // 3ThO2 + 4Al = 3Th + 2Al2O3
         GT_Values.RA.addChemicalRecipe(
@@ -332,7 +331,7 @@ public class AdditionalRecipes {
 
         GT_Values.RA.stdBuilder().itemInputs(GT_OreDictUnificator.get(dust, Materials.Quartzite, 40L))
                 .itemOutputs(Materials.Amethyst.getDust(10)).duration(40 * SECONDS).eut(0).metadata(ADDITIVE_AMOUNT, 6)
-                .addTo(sPrimitiveBlastRecipes);
+                .addTo(primitiveBlastRecipes);
 
         // Cubic Circonia
         // 2Y + 3O = Y2O3
@@ -345,7 +344,7 @@ public class AdditionalRecipes {
                 4096,
                 (int) TierEU.RECIPE_LV);
         // Zr + 2O =Y22O3= ZrO2
-        GT_Recipe.GT_Recipe_Map.sBlastRecipes.addRecipe(
+        RecipeMaps.blastFurnaceRecipes.addRecipe(
                 false,
                 new ItemStack[] { WerkstoffLoader.Zirconium.get(dust, 10), WerkstoffLoader.YttriumOxide.get(dust, 0) },
                 new ItemStack[] { WerkstoffLoader.CubicZirconia.get(gemFlawed, 40) },
@@ -395,12 +394,12 @@ public class AdditionalRecipes {
         GT_Values.RA.stdBuilder().itemInputs(WerkstoffLoader.MagnetoResonaticDust.get(dust))
                 .itemOutputs(WerkstoffLoader.MagnetoResonaticDust.get(gemChipped, 9)).outputChances(90_00)
                 .fluidInputs(WerkstoffLoader.Neon.getFluidOrGas(1000)).duration(3 * MINUTES + 45 * SECONDS)
-                .eut(TierEU.RECIPE_IV).addTo(sAutoclaveRecipes);
+                .eut(TierEU.RECIPE_IV).addTo(autoclaveRecipes);
 
         GT_Values.RA.stdBuilder().itemInputs(WerkstoffLoader.MagnetoResonaticDust.get(dust))
                 .itemOutputs(WerkstoffLoader.MagnetoResonaticDust.get(gem))
                 .fluidInputs(WerkstoffLoader.Krypton.getFluidOrGas(1000)).duration(3 * MINUTES + 45 * SECONDS)
-                .eut(TierEU.RECIPE_IV).addTo(sAutoclaveRecipes);
+                .eut(TierEU.RECIPE_IV).addTo(autoclaveRecipes);
 
         // Milk
 
@@ -414,7 +413,7 @@ public class AdditionalRecipes {
                         Materials.Phosphor.getDustTiny(1))
                 .outputChances(100_00, 100_00, 10_00, 100_00, 10_00, 10_00).fluidInputs(Materials.Milk.getFluid(10000))
                 .fluidOutputs(Materials.Water.getFluid(8832)).duration(2 * SECONDS + 10 * TICKS).eut(TierEU.RECIPE_MV)
-                .addTo(sCentrifugeRecipes);
+                .addTo(centrifugeRecipes);
 
         // Magneto Resonatic Circuits
 
@@ -426,8 +425,8 @@ public class AdditionalRecipes {
                 ? FluidRegistry.getFluid("molten.mutatedlivingsolder")
                 : FluidRegistry.getFluid("molten.solderingalloy");
         // ULV
-        GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes.add(
-                new BWRecipes.DynamicGTRecipe(
+        RecipeMaps.circuitAssemblerRecipes.add(
+                new GT_Recipe(
                         false,
                         new ItemStack[] { BW_Meta_Items.getNEWCIRCUITS().getStack(3),
                                 WerkstoffLoader.MagnetoResonaticDust.get(gem), ItemList.NandChip.get(1),
@@ -443,8 +442,8 @@ public class AdditionalRecipes {
                         CLEANROOM));
         // LV-EV
         for (int i = 1; i <= 4; i++) {
-            GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes.add(
-                    new BWRecipes.DynamicGTRecipe(
+            RecipeMaps.circuitAssemblerRecipes.add(
+                    new GT_Recipe(
                             false,
                             new ItemStack[] { BW_Meta_Items.getNEWCIRCUITS().getStack(3),
                                     WerkstoffLoader.MagnetoResonaticDust.get(gem),
@@ -463,8 +462,8 @@ public class AdditionalRecipes {
         }
         // IV-LuV
         for (int i = 5; i <= 6; i++) {
-            GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes.add(
-                    new BWRecipes.DynamicGTRecipe(
+            RecipeMaps.circuitAssemblerRecipes.add(
+                    new GT_Recipe(
                             false,
                             new ItemStack[] { BW_Meta_Items.getNEWCIRCUITS().getStack(3),
                                     WerkstoffLoader.MagnetoResonaticDust.get(gem),
@@ -482,8 +481,8 @@ public class AdditionalRecipes {
                             CLEANROOM));
         }
         // ZPM
-        GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes.add(
-                new BWRecipes.DynamicGTRecipe(
+        RecipeMaps.circuitAssemblerRecipes.add(
+                new GT_Recipe(
                         false,
                         new ItemStack[] { BW_Meta_Items.getNEWCIRCUITS().getStack(3),
                                 WerkstoffLoader.MagnetoResonaticDust.get(gemExquisite, 1),
@@ -500,8 +499,8 @@ public class AdditionalRecipes {
                         BW_Util.getMachineVoltageFromTier(7 + 1),
                         CLEANROOM));
         // UV
-        GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes.add(
-                new BWRecipes.DynamicGTRecipe(
+        RecipeMaps.circuitAssemblerRecipes.add(
+                new GT_Recipe(
                         false,
                         new ItemStack[] { BW_Meta_Items.getNEWCIRCUITS().getStack(3),
                                 WerkstoffLoader.MagnetoResonaticDust.get(gemExquisite, 1),
@@ -519,8 +518,8 @@ public class AdditionalRecipes {
                         CLEANROOM));
         // UHV-UEV
         for (int i = 9; i <= 10; i++) {
-            GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes.add(
-                    new BWRecipes.DynamicGTRecipe(
+            RecipeMaps.circuitAssemblerRecipes.add(
+                    new GT_Recipe(
                             false,
                             new ItemStack[] { BW_Meta_Items.getNEWCIRCUITS().getStack(3),
                                     WerkstoffLoader.MagnetoResonaticDust.get(gemExquisite, 1),
@@ -537,7 +536,7 @@ public class AdditionalRecipes {
                             BW_Util.getMachineVoltageFromTier(i + 1),
                             CLEANROOM));
         }
-        GT_Recipe.GT_Recipe_Map.sSmallNaquadahReactorFuels.addRecipe(
+        RecipeMaps.smallNaquadahReactorFuels.addRecipe(
                 true,
                 new ItemStack[] { WerkstoffLoader.Tiberium.get(bolt) },
                 new ItemStack[] {},
@@ -547,7 +546,7 @@ public class AdditionalRecipes {
                 0,
                 0,
                 12500);
-        GT_Recipe.GT_Recipe_Map.sLargeNaquadahReactorFuels.addRecipe(
+        RecipeMaps.largeNaquadahReactorFuels.addRecipe(
                 true,
                 new ItemStack[] { WerkstoffLoader.Tiberium.get(stick) },
                 new ItemStack[] {},
@@ -558,45 +557,36 @@ public class AdditionalRecipes {
                 0,
                 62500);
 
-        try {
-            Class<GT_Recipe.GT_Recipe_Map> map = GT_Recipe.GT_Recipe_Map.class;
-            GT_Recipe.GT_Recipe_Map sHugeNaquadahReactorFuels = (GT_Recipe.GT_Recipe_Map) FieldUtils
-                    .getField(map, "sHugeNaquadahReactorFuels").get(null);
-            GT_Recipe.GT_Recipe_Map sExtremeNaquadahReactorFuels = (GT_Recipe.GT_Recipe_Map) FieldUtils
-                    .getField(map, "sExtremeNaquadahReactorFuels").get(null);
-            GT_Recipe.GT_Recipe_Map sUltraHugeNaquadahReactorFuels = (GT_Recipe.GT_Recipe_Map) FieldUtils
-                    .getField(map, "sUltraHugeNaquadahReactorFuels").get(null);
-            sHugeNaquadahReactorFuels.addRecipe(
-                    true,
-                    new ItemStack[] { WerkstoffLoader.Tiberium.get(stickLong) },
-                    new ItemStack[] {},
-                    null,
-                    null,
-                    null,
-                    0,
-                    0,
-                    125000);
-            sExtremeNaquadahReactorFuels.addRecipe(
-                    true,
-                    new ItemStack[] { WerkstoffLoader.Tiberium.get(stick) },
-                    new ItemStack[] {},
-                    null,
-                    null,
-                    null,
-                    0,
-                    0,
-                    31250);
-            sUltraHugeNaquadahReactorFuels.addRecipe(
-                    true,
-                    new ItemStack[] { WerkstoffLoader.Tiberium.get(stickLong) },
-                    new ItemStack[] {},
-                    null,
-                    null,
-                    null,
-                    0,
-                    0,
-                    125000);
-        } catch (NullPointerException | IllegalAccessException ignored) {}
+        RecipeMaps.hugeNaquadahReactorFuels.addRecipe(
+                true,
+                new ItemStack[] { WerkstoffLoader.Tiberium.get(stickLong) },
+                new ItemStack[] {},
+                null,
+                null,
+                null,
+                0,
+                0,
+                125000);
+        RecipeMaps.extremeNaquadahReactorFuels.addRecipe(
+                true,
+                new ItemStack[] { WerkstoffLoader.Tiberium.get(stick) },
+                new ItemStack[] {},
+                null,
+                null,
+                null,
+                0,
+                0,
+                31250);
+        RecipeMaps.ultraHugeNaquadahReactorFuels.addRecipe(
+                true,
+                new ItemStack[] { WerkstoffLoader.Tiberium.get(stickLong) },
+                new ItemStack[] {},
+                null,
+                null,
+                null,
+                0,
+                0,
+                125000);
 
         LoadItemContainers.run();
 
@@ -638,73 +628,5 @@ public class AdditionalRecipes {
                 (int) TierEU.RECIPE_LuV);
 
         GregTech_API.sAfterGTPostload.add(new AddSomeRecipes());
-        AdditionalRecipes.oldGThelperMethod();
-    }
-
-    @SuppressWarnings("unchecked")
-    private static void oldGThelperMethod() {
-        // manual override for older GT
-        Werkstoff werkstoff = WerkstoffLoader.Oganesson;
-        Materials werkstoffBridgeMaterial = null;
-        boolean aElementSet = false;
-        for (Element e : Element.values()) {
-            if ("Uuo".equals(e.toString())) {
-                werkstoffBridgeMaterial = werkstoff.getBridgeMaterial() != null ? werkstoff.getBridgeMaterial()
-                        : new Materials(
-                                -1,
-                                werkstoff.getTexSet(),
-                                0,
-                                0,
-                                0,
-                                false,
-                                werkstoff.getDefaultName(),
-                                werkstoff.getDefaultName());
-                werkstoffBridgeMaterial.mElement = e;
-                e.mLinkedMaterials.add(werkstoffBridgeMaterial);
-                aElementSet = true;
-                werkstoff.setBridgeMaterial(werkstoffBridgeMaterial);
-                break;
-            }
-        }
-        if (!aElementSet) return;
-
-        GT_OreDictUnificator.addAssociation(cell, werkstoffBridgeMaterial, werkstoff.get(cell), false);
-        try {
-            Field f = Materials.class.getDeclaredField("MATERIALS_MAP");
-            f.setAccessible(true);
-            Map<String, Materials> MATERIALS_MAP = (Map<String, Materials>) f.get(null);
-            MATERIALS_MAP.remove(werkstoffBridgeMaterial.mName);
-        } catch (NoSuchFieldException | IllegalAccessException | ClassCastException e) {
-            e.printStackTrace();
-        }
-        ItemStack scannerOutput = ItemList.Tool_DataOrb.get(1L);
-        Behaviour_DataOrb.setDataTitle(scannerOutput, "Elemental-Scan");
-        Behaviour_DataOrb.setDataName(scannerOutput, werkstoff.getToolTip());
-        GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(
-                false,
-                new BWRecipes.DynamicGTRecipe(
-                        false,
-                        new ItemStack[] { werkstoff.get(cell) },
-                        new ItemStack[] { scannerOutput },
-                        ItemList.Tool_DataOrb.get(1L),
-                        null,
-                        null,
-                        null,
-                        (int) (werkstoffBridgeMaterial.getMass() * 8192L),
-                        30,
-                        0));
-        GT_Recipe.GT_Recipe_Map.sReplicatorFakeRecipes.addFakeRecipe(
-                false,
-                new BWRecipes.DynamicGTRecipe(
-                        false,
-                        new ItemStack[] { Materials.Empty.getCells(1) },
-                        new ItemStack[] { werkstoff.get(cell) },
-                        scannerOutput,
-                        null,
-                        new FluidStack[] { Materials.UUMatter.getFluid(werkstoffBridgeMaterial.getMass()) },
-                        null,
-                        (int) (werkstoffBridgeMaterial.getMass() * 512L),
-                        30,
-                        0));
     }
 }
