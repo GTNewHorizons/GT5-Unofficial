@@ -24,13 +24,13 @@ public class OilCrackerBackend extends RecipeMapBackend {
 
     @Override
     public GT_Recipe compileRecipe(GT_Recipe recipe) {
-        GT_Recipe ret = super.compileRecipe(recipe);
-        if (ret.mFluidInputs != null && ret.mFluidInputs.length > 1 && ret.mFluidInputs[1] != null) {
+        super.compileRecipe(recipe);
+        if (recipe.mFluidInputs != null && recipe.mFluidInputs.length > 1 && recipe.mFluidInputs[1] != null) {
             validCatalystFluidNames.add(
-                ret.mFluidInputs[1].getFluid()
+                recipe.mFluidInputs[1].getFluid()
                     .getName());
         }
-        return ret;
+        return recipe;
     }
 
     public boolean isValidCatalystFluid(FluidStack fluid) {
