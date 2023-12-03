@@ -1,7 +1,7 @@
 package com.github.technus.tectech.recipe;
 
 import static com.github.technus.tectech.recipe.EyeOfHarmonyRecipe.processHelper;
-import static com.github.technus.tectech.recipe.TT_recipe.GT_Recipe_MapTT.sEyeofHarmonyRecipes;
+import static com.github.technus.tectech.recipe.TecTechRecipeMaps.eyeOfHarmonyRecipes;
 import static java.lang.Math.pow;
 
 import java.util.ArrayList;
@@ -109,7 +109,7 @@ public class EyeOfHarmonyRecipeStorage {
             ItemStack planetItem = recipe.getRecipeTriggerItem().copy();
             planetItem.stackSize = 0;
 
-            sEyeofHarmonyRecipes.addRecipe(
+            eyeOfHarmonyRecipes.addRecipe(
                     false,
                     new ItemStack[] { planetItem },
                     outputItems.toArray(new ItemStack[0]),

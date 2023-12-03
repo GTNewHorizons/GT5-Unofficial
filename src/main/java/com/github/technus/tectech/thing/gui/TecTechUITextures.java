@@ -8,6 +8,7 @@ import java.util.stream.IntStream;
 import com.gtnewhorizons.modularui.api.drawable.AdaptableUITexture;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 
+@SuppressWarnings("SimplifyStreamApiCallChains")
 public class TecTechUITextures {
 
     public static final AdaptableUITexture BACKGROUND_SCREEN_BLUE = AdaptableUITexture
@@ -63,6 +64,13 @@ public class TecTechUITextures {
 
     public static final UITexture OVERLAY_SLOT_RACK = UITexture.fullImage(MODID, "gui/overlay_slot/rack");
     public static final UITexture OVERLAY_SLOT_MESH = UITexture.fullImage(MODID, "gui/overlay_slot/mesh");
+
+    public static final UITexture PROGRESSBAR_RESEARCH_STATION_1 = UITexture
+            .fullImage(MODID, "gui/progressbar/research_station_1");
+    public static final UITexture PROGRESSBAR_RESEARCH_STATION_2 = UITexture
+            .fullImage(MODID, "gui/progressbar/research_station_2");
+    public static final UITexture PROGRESSBAR_RESEARCH_STATION_3 = UITexture
+            .fullImage(MODID, "gui/progressbar/research_station_3");
 
     public static final UITexture PICTURE_TECTECH_LOGO = UITexture.fullImage(MODID, "gui/picture/tectech_logo");
     public static final UITexture PICTURE_TECTECH_LOGO_DARK = UITexture

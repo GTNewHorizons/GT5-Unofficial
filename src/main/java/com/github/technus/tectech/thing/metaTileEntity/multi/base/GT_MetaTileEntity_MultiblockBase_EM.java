@@ -99,7 +99,6 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_HatchElementBuilder;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
 import gregtech.common.GT_Pollution;
@@ -856,14 +855,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
         for (int i = 0; i < parametrization.eParamsOutStatus.length; i++) {
             parametrization.eParamsOutStatus[i] = LedStatus.getStatus(paramOs.getByte(Integer.toString(i)));
         }
-    }
-
-    /**
-     * If you want to use GT recipe maps.
-     */
-    @Override
-    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return null;
     }
 
     /**

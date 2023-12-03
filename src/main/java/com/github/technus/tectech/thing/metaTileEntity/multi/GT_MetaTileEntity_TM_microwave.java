@@ -42,6 +42,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -179,7 +180,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
                 if (entity instanceof Entity) {
                     if (tickedStuff.add((Entity) entity)) {
                         if (inside && entity instanceof EntityItem) {
-                            GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMicrowaveRecipes.findRecipe(
+                            GT_Recipe tRecipe = RecipeMaps.microwaveRecipes.findRecipe(
                                     mte,
                                     null,
                                     true,

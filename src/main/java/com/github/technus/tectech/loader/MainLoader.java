@@ -28,6 +28,7 @@ import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_Recipe;
 
 @SuppressWarnings("deprecation")
@@ -146,7 +147,7 @@ public final class MainLoader {
                 }
             }
         }
-        for (GT_Recipe r : GT_Recipe.GT_Recipe_Map.sFusionRecipes.mRecipeList) {
+        for (GT_Recipe r : RecipeMaps.fusionRecipes.getAllRecipes()) {
             Fluid fluid = binds.get(r.mFluidOutputs[0].getFluid());
             if (fluid != null) {
                 if (DEBUG_MODE) {
