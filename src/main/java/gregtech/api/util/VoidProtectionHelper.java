@@ -13,7 +13,6 @@ import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.tileentity.IVoidable;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 
 /**
  * Helper class to calculate how many parallels of items / fluids can fit in the output buses / hatches.
@@ -50,27 +49,6 @@ public class VoidProtectionHelper {
     private boolean built;
 
     public VoidProtectionHelper() {}
-
-    /**
-     * Sets MetaTE controller, with current configuration for void protection mode.
-     *
-     * @deprecated Use {@link #setMachine(IVoidable)}
-     */
-    @Deprecated
-    public VoidProtectionHelper setController(GT_MetaTileEntity_MultiBlockBase machineMeta) {
-        return setMachine(machineMeta, machineMeta.protectsExcessItem(), machineMeta.protectsExcessFluid());
-    }
-
-    /**
-     * Sets MetaTE controller, with void protection mode forcibly.
-     *
-     * @deprecated Use {@link #setMachine(IVoidable, boolean, boolean)}
-     */
-    @Deprecated
-    public VoidProtectionHelper setController(GT_MetaTileEntity_MultiBlockBase machineMeta, boolean protectExcessItem,
-        boolean protectExcessFluid) {
-        return setMachine(machineMeta, protectExcessItem, protectExcessFluid);
-    }
 
     /**
      * Sets machine, with current configuration for void protection mode.

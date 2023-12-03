@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.PrintStream;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -33,6 +34,8 @@ import org.apache.commons.lang3.StringUtils;
 import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
+import cpw.mods.fml.common.discovery.ASMDataTable;
+import cpw.mods.fml.common.discovery.ModDiscoverer;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
@@ -40,6 +43,9 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.recipe.RecipeCategory;
+import gregtech.api.recipe.RecipeCategoryHolder;
+import gregtech.api.recipe.RecipeCategorySetting;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
@@ -516,8 +522,6 @@ public class GT_PreLoad {
             .getBoolean(true);
         GT_Mod.gregtechproxy.mHideUnusedOres = tMainConfig.get(GT_Mod.aTextGeneral, "HideUnusedOres", true)
             .getBoolean(true);
-        GT_Mod.gregtechproxy.mHideRecyclingRecipes = tMainConfig.get(GT_Mod.aTextGeneral, "HideRecyclingRecipes", true)
-            .getBoolean(true);
         GT_Mod.gregtechproxy.mArcSmeltIntoAnnealed = tMainConfig
             .get(GT_Mod.aTextGeneral, "ArcSmeltIntoAnnealedWrought", true)
             .getBoolean(true);
@@ -853,6 +857,18 @@ public class GT_PreLoad {
             .get("nei", "RecipeOwnerStackTrace", false);
         GT_Mod.gregtechproxy.mNEIOriginalVoltage = GregTech_API.sClientDataFile.get("nei", "OriginalVoltage", false);
 
+        GT_Mod.gregtechproxy.recipeCategorySettings.clear();
+        for (RecipeCategory recipeCategory : findRecipeCategories()) {
+            RecipeCategorySetting setting = RecipeCategorySetting.find(
+                GregTech_API.sClientDataFile.getWithValidValues(
+                    "nei.recipe_categories",
+                    recipeCategory.unlocalizedName,
+                    RecipeCategorySetting.NAMES,
+                    RecipeCategorySetting.getDefault()
+                        .toName()));
+            GT_Mod.gregtechproxy.recipeCategorySettings.put(recipeCategory, setting);
+        }
+
         GT_Mod.gregtechproxy.mWailaTransformerVoltageTier = GregTech_API.sClientDataFile
             .get("waila", "WailaTransformerVoltageTier", true);
         GT_Mod.gregtechproxy.wailaAverageNS = GregTech_API.sClientDataFile.get("waila", "WailaAverageNS", false);
@@ -862,5 +878,38 @@ public class GT_PreLoad {
         for (int i = 0; i < Circuits.length; i++) {
             GT_Mod.gregtechproxy.mCircuitsOrder.putIfAbsent(Circuits[i], i);
         }
+
+        GT_Mod.gregtechproxy.reloadNEICache();
+    }
+
+    private static List<RecipeCategory> findRecipeCategories() {
+        List<RecipeCategory> ret = new ArrayList<>();
+        try {
+            Field discovererField = Loader.class.getDeclaredField("discoverer");
+            discovererField.setAccessible(true);
+            ModDiscoverer discoverer = (ModDiscoverer) discovererField.get(Loader.instance());
+            for (ASMDataTable.ASMData asmData : discoverer.getASMTable()
+                .getAll(RecipeCategoryHolder.class.getName())) {
+                try {
+                    Object obj = Class.forName(asmData.getClassName())
+                        .getDeclaredField(asmData.getObjectName())
+                        .get(null);
+                    if (obj instanceof RecipeCategory recipeCategory) {
+                        ret.add(recipeCategory);
+                    } else {
+                        GT_FML_LOGGER.error(
+                            "{}#{} is not an instance of RecipeCategory",
+                            asmData.getClassName(),
+                            asmData.getObjectName());
+                    }
+                } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
+                    GT_FML_LOGGER.error("Failed to find RecipeCategory");
+                    GT_FML_LOGGER.catching(e);
+                }
+            }
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+        return ret;
     }
 }

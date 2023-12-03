@@ -9,10 +9,10 @@ import static gregtech.api.enums.Mods.PamsHarvestCraft;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Mods.TwilightForest;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sFluidCannerRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMaceratorRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
+import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
+import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeBuilder.WILDCARD;
@@ -276,7 +276,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1L))
             .duration(25 * SECONDS)
             .eut(48)
-            .addTo(sThermalCentrifugeRecipes);
+            .addTo(thermalCentrifugeRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Depleted_Thorium_2.get(1))
@@ -286,7 +286,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 3L))
             .duration(25 * SECONDS)
             .eut(48)
-            .addTo(sThermalCentrifugeRecipes);
+            .addTo(thermalCentrifugeRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Depleted_Thorium_4.get(1))
@@ -296,7 +296,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 6L))
             .duration(25 * SECONDS)
             .eut(48)
-            .addTo(sThermalCentrifugeRecipes);
+            .addTo(thermalCentrifugeRecipes);
 
         ItemList.Depleted_Naquadah_1
             .set(new GT_DepletetCell_Item("NaquadahcellDep", "Fuel Rod (Depleted Naquadah)", 1));
@@ -350,7 +350,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
             .duration(25 * SECONDS)
             .eut(2000)
-            .addTo(sCentrifugeRecipes);
+            .addTo(centrifugeRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Depleted_Naquadah_2.get(1))
@@ -364,7 +364,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
             .duration(50 * SECONDS)
             .eut(2000)
-            .addTo(sCentrifugeRecipes);
+            .addTo(centrifugeRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Depleted_Naquadah_4.get(1))
@@ -378,7 +378,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
             .duration(100 * SECONDS)
             .eut(2000)
-            .addTo(sCentrifugeRecipes);
+            .addTo(centrifugeRecipes);
 
         ItemList.Depleted_MNq_1.set(new GT_DepletetCell_Item("MNqCellDep", "Fuel Rod (Depleted Nq*)", 1));
         ItemList.Depleted_MNq_2.set(new GT_DepletetCell_Item("Double_MNqCellDep", "Dual Fuel Rod (Depleted Nq*)", 1));
@@ -429,7 +429,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
             .duration(25 * SECONDS)
             .eut(2000)
-            .addTo(sCentrifugeRecipes);
+            .addTo(centrifugeRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Depleted_MNq_2.get(1))
@@ -443,7 +443,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
             .duration(50 * SECONDS)
             .eut(2000)
-            .addTo(sCentrifugeRecipes);
+            .addTo(centrifugeRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Depleted_MNq_4.get(1))
@@ -457,7 +457,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
             .duration(100 * SECONDS)
             .eut(2000)
-            .addTo(sCentrifugeRecipes);
+            .addTo(centrifugeRecipes);
 
         ItemList.Uraniumcell_1.set(
             new GT_RadioactiveCellIC_Item(
@@ -828,7 +828,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .fluidInputs(GT_ModHandler.getSteam(1000))
             .duration(16 * TICKS)
             .eut(1)
-            .addTo(sFluidCannerRecipes);
+            .addTo(fluidCannerRecipes);
 
         Materials.Ice.mGas = Materials.Water.mGas;
         Materials.Water.mGas.setTemperature(375)
@@ -2073,7 +2073,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L))
             .duration(20 * SECONDS)
             .eut(2)
-            .addTo(sMaceratorRecipes);
+            .addTo(maceratorRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.gravel, 1, WILDCARD))
@@ -2081,21 +2081,21 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .outputChances(10000, 1000)
             .duration(20 * SECONDS)
             .eut(2)
-            .addTo(sMaceratorRecipes);
+            .addTo(maceratorRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.furnace, 1, WILDCARD))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 8L))
             .duration(20 * SECONDS)
             .eut(2)
-            .addTo(sMaceratorRecipes);
+            .addTo(maceratorRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.lit_furnace, 1, WILDCARD))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 8L))
             .duration(20 * SECONDS)
             .eut(2)
-            .addTo(sMaceratorRecipes);
+            .addTo(maceratorRecipes);
 
         GT_OreDictUnificator.set(
             OrePrefixes.ingot,

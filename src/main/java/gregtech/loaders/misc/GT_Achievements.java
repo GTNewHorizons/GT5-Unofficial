@@ -27,6 +27,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.objects.ItemData;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -48,8 +49,9 @@ public class GT_Achievements {
         this.achievementList = new ConcurrentHashMap<>();
         this.issuedAchievements = new ConcurrentHashMap<>();
 
-        for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes.mRecipeList)
+        for (GT_Recipe recipe : RecipeMaps.assemblylineVisualRecipes.getAllRecipes()) {
             registerAssAchievement(recipe);
+        }
 
         registerAchievement(
             "flintpick",
@@ -954,14 +956,8 @@ public class GT_Achievements {
                                                     issueAchievement(player, "conducting");
                                                 }
         if (player.capabilities.isCreativeMode && stack.getUnlocalizedName()
-            .equals("gt.metaitem.01.32761")) { // Debug
-                                               // Scanner
-                                               // pickup
-                                               // shows
-                                               // all
-                                               // assline
-                                               // recipes.
-            for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes.mRecipeList) {
+            .equals("gt.metaitem.01.32761")) { // Debug Scanner pickup shows all assline recipes.
+            for (GT_Recipe recipe : RecipeMaps.assemblylineVisualRecipes.getAllRecipes()) {
                 issueAchievement(
                     player,
                     recipe.getOutput(0)
@@ -969,7 +965,7 @@ public class GT_Achievements {
                 recipe.mHidden = false;
             }
         }
-        for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes.mRecipeList) {
+        for (GT_Recipe recipe : RecipeMaps.assemblylineVisualRecipes.getAllRecipes()) {
             if (recipe.getOutput(0)
                 .getUnlocalizedName()
                 .equals(stack.getUnlocalizedName())) {

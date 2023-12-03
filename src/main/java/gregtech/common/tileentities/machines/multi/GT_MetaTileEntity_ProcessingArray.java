@@ -65,6 +65,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
@@ -73,7 +74,6 @@ import gregtech.api.util.GT_ExoticEnergyInputHelper;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_ProcessingArray_Manager;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Item_Machines;
@@ -104,7 +104,7 @@ public class GT_MetaTileEntity_ProcessingArray extends
 
     private int mCasingAmount = 0;
 
-    private GT_Recipe_Map mLastRecipeMap;
+    private RecipeMap<?> mLastRecipeMap;
     private ItemStack lastControllerStack;
     private int tTier = 0;
     private int mMult = 0;
@@ -181,7 +181,7 @@ public class GT_MetaTileEntity_ProcessingArray extends
         return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][48] };
     }
 
-    private GT_Recipe_Map fetchRecipeMap() {
+    private RecipeMap<?> fetchRecipeMap() {
         if (isCorrectMachinePart(getControllerSlot())) {
             // Gets the recipe map for the given machine through its unlocalized name
             return GT_ProcessingArray_Manager
@@ -191,7 +191,7 @@ public class GT_MetaTileEntity_ProcessingArray extends
     }
 
     @Override
-    public GT_Recipe_Map getRecipeMap() {
+    public RecipeMap<?> getRecipeMap() {
         return mLastRecipeMap;
     }
 
@@ -261,7 +261,7 @@ public class GT_MetaTileEntity_ProcessingArray extends
 
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
-        logic.setAvailableVoltage(GT_Values.V[tTier] * (mLastRecipeMap != null ? mLastRecipeMap.mAmperage : 1));
+        logic.setAvailableVoltage(GT_Values.V[tTier] * (mLastRecipeMap != null ? mLastRecipeMap.getAmperage() : 1));
         logic.setAvailableAmperage(getMaxParallel());
         logic.setAmperageOC(false);
     }

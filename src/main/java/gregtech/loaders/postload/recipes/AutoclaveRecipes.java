@@ -1,8 +1,8 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
+import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAutoclaveRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
@@ -27,7 +27,7 @@ public class AutoclaveRecipes implements Runnable {
             .fluidInputs(Materials.EnergeticAlloy.getMolten(288))
             .duration(30 * SECONDS)
             .eut(256)
-            .addTo(sAutoclaveRecipes);
+            .addTo(autoclaveRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.IC2_Energium_Dust.get(9L))
@@ -36,7 +36,7 @@ public class AutoclaveRecipes implements Runnable {
             .fluidInputs(Materials.ConductiveIron.getMolten(576))
             .duration(60 * SECONDS)
             .eut(256)
-            .addTo(sAutoclaveRecipes);
+            .addTo(autoclaveRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(getModItem(AppliedEnergistics2.ID, "item.ItemCrystalSeed", 1L, 0))
@@ -45,7 +45,7 @@ public class AutoclaveRecipes implements Runnable {
             .fluidInputs(Materials.Water.getFluid(200L))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(24)
-            .addTo(sAutoclaveRecipes);
+            .addTo(autoclaveRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(getModItem(AppliedEnergistics2.ID, "item.ItemCrystalSeed", 1L, 600))
@@ -54,7 +54,7 @@ public class AutoclaveRecipes implements Runnable {
             .fluidInputs(Materials.Water.getFluid(200L))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(24)
-            .addTo(sAutoclaveRecipes);
+            .addTo(autoclaveRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(getModItem(AppliedEnergistics2.ID, "item.ItemCrystalSeed", 1L, 1200))
@@ -63,7 +63,7 @@ public class AutoclaveRecipes implements Runnable {
             .fluidInputs(Materials.Water.getFluid(200L))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(24)
-            .addTo(sAutoclaveRecipes);
+            .addTo(autoclaveRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(getModItem(AppliedEnergistics2.ID, "item.ItemCrystalSeed", 1L, 0))
@@ -72,7 +72,7 @@ public class AutoclaveRecipes implements Runnable {
             .fluidInputs(GT_ModHandler.getDistilledWater(100L))
             .duration(50 * SECONDS)
             .eut(24)
-            .addTo(sAutoclaveRecipes);
+            .addTo(autoclaveRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(getModItem(AppliedEnergistics2.ID, "item.ItemCrystalSeed", 1L, 600))
@@ -81,7 +81,7 @@ public class AutoclaveRecipes implements Runnable {
             .fluidInputs(GT_ModHandler.getDistilledWater(100L))
             .duration(50 * SECONDS)
             .eut(24)
-            .addTo(sAutoclaveRecipes);
+            .addTo(autoclaveRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(getModItem(AppliedEnergistics2.ID, "item.ItemCrystalSeed", 1L, 1200))
@@ -90,7 +90,7 @@ public class AutoclaveRecipes implements Runnable {
             .fluidInputs(GT_ModHandler.getDistilledWater(100L))
             .duration(50 * SECONDS)
             .eut(24)
-            .addTo(sAutoclaveRecipes);
+            .addTo(autoclaveRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(getModItem(AppliedEnergistics2.ID, "item.ItemCrystalSeed", 1L, 0))
@@ -99,7 +99,7 @@ public class AutoclaveRecipes implements Runnable {
             .fluidInputs(Materials.Void.getMolten(36L))
             .duration(25 * SECONDS)
             .eut(24)
-            .addTo(sAutoclaveRecipes);
+            .addTo(autoclaveRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(getModItem(AppliedEnergistics2.ID, "item.ItemCrystalSeed", 1L, 600))
@@ -108,7 +108,7 @@ public class AutoclaveRecipes implements Runnable {
             .fluidInputs(Materials.Void.getMolten(36L))
             .duration(25 * SECONDS)
             .eut(24)
-            .addTo(sAutoclaveRecipes);
+            .addTo(autoclaveRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(getModItem(AppliedEnergistics2.ID, "item.ItemCrystalSeed", 1L, 1200))
@@ -117,7 +117,7 @@ public class AutoclaveRecipes implements Runnable {
             .fluidInputs(Materials.Void.getMolten(36L))
             .duration(25 * SECONDS)
             .eut(24)
-            .addTo(sAutoclaveRecipes);
+            .addTo(autoclaveRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 32))
@@ -126,7 +126,7 @@ public class AutoclaveRecipes implements Runnable {
             .fluidInputs(Materials.Polybenzimidazole.getMolten(36L))
             .duration(7 * SECONDS + 10 * TICKS)
             .eut((int) TierEU.RECIPE_EV)
-            .addTo(sAutoclaveRecipes);
+            .addTo(autoclaveRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 64))
@@ -135,7 +135,7 @@ public class AutoclaveRecipes implements Runnable {
             .fluidInputs(Materials.Epoxid.getMolten(144L))
             .duration(15 * SECONDS)
             .eut((int) TierEU.RECIPE_HV)
-            .addTo(sAutoclaveRecipes);
+            .addTo(autoclaveRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 64))
@@ -144,7 +144,7 @@ public class AutoclaveRecipes implements Runnable {
             .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(288L))
             .duration(20 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
-            .addTo(sAutoclaveRecipes);
+            .addTo(autoclaveRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 64))
@@ -153,7 +153,7 @@ public class AutoclaveRecipes implements Runnable {
             .fluidInputs(Materials.Plastic.getMolten(576L))
             .duration(30 * SECONDS)
             .eut((int) TierEU.RECIPE_LV)
-            .addTo(sAutoclaveRecipes);
+            .addTo(autoclaveRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.NetherStar, 1))
@@ -162,7 +162,7 @@ public class AutoclaveRecipes implements Runnable {
             .fluidInputs(Materials.UUMatter.getFluid(576L))
             .duration(60 * MINUTES)
             .eut((int) TierEU.RECIPE_HV)
-            .addTo(sAutoclaveRecipes);
+            .addTo(autoclaveRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_OreDictUnificator.get(ItemList.QuantumStar.get(1L)))
@@ -171,7 +171,7 @@ public class AutoclaveRecipes implements Runnable {
             .fluidInputs(Materials.Neutronium.getMolten(288))
             .duration(24 * SECONDS)
             .eut((int) TierEU.RECIPE_IV)
-            .addTo(sAutoclaveRecipes);
+            .addTo(autoclaveRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_OreDictUnificator.get(ItemList.Gravistar.get(16L)))
@@ -180,7 +180,7 @@ public class AutoclaveRecipes implements Runnable {
             .fluidInputs(Materials.Infinity.getMolten(288))
             .duration(24 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
-            .addTo(sAutoclaveRecipes);
+            .addTo(autoclaveRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(Materials.SiliconDioxide.getDust(1))
@@ -189,7 +189,7 @@ public class AutoclaveRecipes implements Runnable {
             .fluidInputs(Materials.Water.getFluid(200L))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(24)
-            .addTo(sAutoclaveRecipes);
+            .addTo(autoclaveRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(Materials.SiliconDioxide.getDust(1))
@@ -198,7 +198,7 @@ public class AutoclaveRecipes implements Runnable {
             .fluidInputs(GT_ModHandler.getDistilledWater(100L))
             .duration(1 * MINUTES + 15 * SECONDS)
             .eut(24)
-            .addTo(sAutoclaveRecipes);
+            .addTo(autoclaveRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(Materials.SiliconDioxide.getDust(1))
@@ -207,7 +207,7 @@ public class AutoclaveRecipes implements Runnable {
             .fluidInputs(Materials.Void.getMolten(36L))
             .duration(50 * SECONDS)
             .eut(24)
-            .addTo(sAutoclaveRecipes);
+            .addTo(autoclaveRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -218,7 +218,7 @@ public class AutoclaveRecipes implements Runnable {
             .fluidInputs(Materials.Water.getFluid(1000L))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .addTo(sAutoclaveRecipes);
+            .addTo(autoclaveRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -229,6 +229,6 @@ public class AutoclaveRecipes implements Runnable {
             .fluidInputs(GT_ModHandler.getDistilledWater(1000L))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .addTo(sAutoclaveRecipes);
+            .addTo(autoclaveRecipes);
     }
 }

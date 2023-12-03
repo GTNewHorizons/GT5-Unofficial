@@ -15,6 +15,8 @@ import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -50,6 +52,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
@@ -57,6 +60,10 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energ
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.objects.overclockdescriber.FusionOverclockDescriber;
+import gregtech.api.objects.overclockdescriber.OverclockDescriber;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
@@ -65,14 +72,12 @@ import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.power.FusionPower;
-import gregtech.common.power.Power;
 
 public abstract class GT_MetaTileEntity_FusionComputer
     extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_FusionComputer>
-    implements ISurvivalConstructable, IAddUIWidgets {
+    implements ISurvivalConstructable, IAddUIWidgets, IOverclockDescriptionProvider {
 
-    protected FusionPower power;
+    private final OverclockDescriber overclockDescriber;
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
     private static final ClassValue<IStructureDefinition<GT_MetaTileEntity_FusionComputer>> STRUCTURE_DEFINITION = new ClassValue<>() {
@@ -147,23 +152,36 @@ public abstract class GT_MetaTileEntity_FusionComputer
                     .build()));
     }
 
-    public GT_MetaTileEntity_FusionComputer(int aID, String aName, String aNameRegional, int tier) {
+    public GT_MetaTileEntity_FusionComputer(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
+        this.overclockDescriber = createOverclockDescriber();
     }
 
     public GT_MetaTileEntity_FusionComputer(String aName) {
         super(aName);
+        this.overclockDescriber = createOverclockDescriber();
     }
 
+    protected OverclockDescriber createOverclockDescriber() {
+        return new FusionOverclockDescriber((byte) tier(), capableStartupCanonical());
+    }
+
+    @Nonnull
     @Override
-    public Power getPower() {
-        return power;
+    public OverclockDescriber getOverclockDescriber() {
+        return overclockDescriber;
     }
 
     public abstract int tier();
 
     @Override
     public abstract long maxEUStore();
+
+    /**
+     * Unlike {@link #maxEUStore()}, this provides theoretical limit of startup EU, without considering the amount of
+     * hatches nor the room for extra energy. Intended for simulation.
+     */
+    public abstract long capableStartupCanonical();
 
     @Override
     public abstract MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity);
@@ -277,23 +295,9 @@ public abstract class GT_MetaTileEntity_FusionComputer
         return true;
     }
 
-    public int overclock(int mStartEnergy) {
-        if (tierOverclock() == 1) {
-            return 0;
-        }
-        if (tierOverclock() == 2) {
-            return mStartEnergy <= 160000000 ? 1 : 0;
-        }
-        if (this.tierOverclock() == 4) {
-            return (mStartEnergy <= 160000000 ? 2 : (mStartEnergy <= 320000000 ? 1 : 0));
-        }
-        return (mStartEnergy <= 160000000) ? 3
-            : ((mStartEnergy <= 320000000) ? 2 : (mStartEnergy <= 640000000) ? 1 : 0);
-    }
-
     @Override
-    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return GT_Recipe.GT_Recipe_Map.sFusionRecipes;
+    public RecipeMap<?> getRecipeMap() {
+        return RecipeMaps.fusionRecipes;
     }
 
     @Override
@@ -310,7 +314,7 @@ public abstract class GT_MetaTileEntity_FusionComputer
             @NotNull
             @Override
             protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
-                return super.createOverclockCalculator(recipe).limitOverclockCount(overclock(recipe.mSpecialValue));
+                return overclockDescriber.createCalculator(super.createOverclockCalculator(recipe), recipe);
             }
 
             @NotNull
@@ -344,8 +348,6 @@ public abstract class GT_MetaTileEntity_FusionComputer
         logic.setAvailableAmperage(1);
         logic.setAmperageOC(false);
     }
-
-    public abstract int tierOverclock();
 
     public boolean turnCasingActive(boolean status) {
         if (this.mEnergyHatches != null) {
@@ -625,7 +627,9 @@ public abstract class GT_MetaTileEntity_FusionComputer
                 .setDefaultColor(COLOR_TEXT_RED.get())
                 .setPos(50, 155))
             .widget(
-                new ButtonWidget().setNEITransferRect(GT_Recipe.GT_Recipe_Map.sFusionRecipes.mNEIName)
+                new ButtonWidget().setNEITransferRect(
+                    RecipeMaps.fusionRecipes.getFrontend()
+                        .getUIProperties().neiTransferRectId)
                     .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_NEI)
                     .setPos(154, 4)
                     .setSize(18, 18));

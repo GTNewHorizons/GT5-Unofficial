@@ -22,8 +22,9 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_Bronze;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 
 public class GT_MetaTileEntity_AlloySmelter_Bronze extends GT_MetaTileEntity_BasicMachine_Bronze {
@@ -47,8 +48,8 @@ public class GT_MetaTileEntity_AlloySmelter_Bronze extends GT_MetaTileEntity_Bas
     }
 
     @Override
-    public GT_Recipe.GT_Recipe_Map getRecipeList() {
-        return GT_Recipe.GT_Recipe_Map.sAlloySmelterRecipes;
+    public RecipeMap<?> getRecipeMap() {
+        return RecipeMaps.alloySmelterRecipes;
     }
 
     @Override

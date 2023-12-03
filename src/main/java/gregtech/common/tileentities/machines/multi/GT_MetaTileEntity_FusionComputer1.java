@@ -11,7 +11,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.common.power.FusionPower;
 
 public class GT_MetaTileEntity_FusionComputer1 extends GT_MetaTileEntity_FusionComputer {
 
@@ -27,13 +26,11 @@ public class GT_MetaTileEntity_FusionComputer1 extends GT_MetaTileEntity_FusionC
             .build());
 
     public GT_MetaTileEntity_FusionComputer1(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, 6);
-        power = new FusionPower((byte) 6, 160_000_000);
+        super(aID, aName, aNameRegional);
     }
 
     public GT_MetaTileEntity_FusionComputer1(String aName) {
         super(aName);
-        power = new FusionPower((byte) 6, 160_000_000);
     }
 
     @Override
@@ -44,6 +41,11 @@ public class GT_MetaTileEntity_FusionComputer1 extends GT_MetaTileEntity_FusionC
     @Override
     public long maxEUStore() {
         return 160003000L * (Math.min(16, this.mEnergyHatches.size())) / 16L;
+    }
+
+    @Override
+    public long capableStartupCanonical() {
+        return 160_000_000;
     }
 
     @Override
@@ -97,10 +99,5 @@ public class GT_MetaTileEntity_FusionComputer1 extends GT_MetaTileEntity_FusionC
     @Override
     public ITexture getTextureOverlay() {
         return textureOverlay;
-    }
-
-    @Override
-    public int tierOverclock() {
-        return 1;
     }
 }
