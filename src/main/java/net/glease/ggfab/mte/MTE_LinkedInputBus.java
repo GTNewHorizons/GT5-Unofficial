@@ -40,10 +40,14 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 
-public class MTE_LinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus {
+public class MTE_LinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus implements IRecipeProcessingAwareHatch {
 
     public static final int SIZE_INVENTORY = 18;
     private SharedInventory mRealInventory;
@@ -202,12 +206,13 @@ public class MTE_LinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus {
     }
 
     @Override
-    public void endRecipeProcessing() {
+    public CheckRecipeResult endRecipeProcessing(GT_MetaTileEntity_MultiBlockBase controller) {
         if (mState == State.Activated) {
             assert mRealInventory != null;
             mRealInventory.used = false;
         }
         mState = State.Default;
+        return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     @Override

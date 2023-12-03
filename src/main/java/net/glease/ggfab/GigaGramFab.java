@@ -2,7 +2,6 @@ package net.glease.ggfab;
 
 import net.glease.ggfab.mte.MTE_AdvAssLine;
 import net.glease.ggfab.mte.MTE_LinkedInputBus;
-import net.glease.ggfab.nei.IMCForNEI;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -38,9 +37,7 @@ public class GigaGramFab {
     }
 
     @Mod.EventHandler
-    public void init(FMLInitializationEvent event) {
-        IMCForNEI.IMCSender();
-    }
+    public void init(FMLInitializationEvent event) {}
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {}
