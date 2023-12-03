@@ -174,6 +174,7 @@ public class Behaviour_Wrench extends Behaviour_None {
                 ((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts);
             }
             GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1.0F, aX, aY, aZ);
+            return true;
         }
         return false;
     }

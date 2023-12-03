@@ -453,6 +453,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.transformer_UHV_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.transformer_UV_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.transformer_ZPM_LuV;
 import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 
 import net.minecraft.util.EnumChatFormatting;
 
@@ -3759,6 +3760,36 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 true).getStackForm(1L));
         generateFluidPipes(Materials.Plastic, Materials.Plastic.mName, "Plastic", 5170, 360, 350, true);
         generateFluidMultiPipes(Materials.Plastic, Materials.Plastic.mName, "Plastic", 5175, 360, 350, true);
+        generateFluidPipes(Materials.NiobiumTitanium, Materials.NiobiumTitanium.mName, 5180, 900, 2900, true);
+        generateFluidMultiPipes(Materials.NiobiumTitanium, Materials.NiobiumTitanium.mName, 5185, 900, 2900, true);
+        generateFluidPipes(Materials.Enderium, Materials.Enderium.mName, 5190, 1800, 15000, true);
+        generateFluidMultiPipes(Materials.Enderium, Materials.Enderium.mName, 5195, 1800, 15000, true);
+        generateFluidPipes(Materials.Naquadah, Materials.Naquadah.mName, 5200, 9000, 19000, true);
+        generateFluidMultiPipes(Materials.Naquadah, Materials.Naquadah.mName, 5205, 9000, 19000, true);
+        generateFluidPipes(Materials.Neutronium, Materials.Neutronium.mName, 5210, 16800, 1000000, true);
+        generateFluidMultiPipes(Materials.Neutronium, Materials.Neutronium.mName, 5215, 16800, 1000000, true);
+        generateFluidPipes(Materials.NetherStar, Materials.NetherStar.mName, 5220, 19200, 1000000, true);
+        generateFluidMultiPipes(Materials.NetherStar, Materials.NetherStar.mName, 5225, 19200, 1000000, true);
+        generateFluidPipes(Materials.MysteriousCrystal, Materials.MysteriousCrystal.mName, 5230, 24000, 1000000, true);
+        generateFluidMultiPipes(
+            Materials.MysteriousCrystal,
+            Materials.MysteriousCrystal.mName,
+            5235,
+            24000,
+            1000000,
+            true);
+        generateFluidPipes(Materials.DraconiumAwakened, Materials.DraconiumAwakened.mName, 5240, 45000, 10000000, true);
+        generateFluidMultiPipes(
+            Materials.DraconiumAwakened,
+            Materials.DraconiumAwakened.mName,
+            5245,
+            45000,
+            10000000,
+            true);
+        generateFluidPipes(Materials.Infinity, Materials.Infinity.mName, 5250, 60000, 10000000, true);
+        generateFluidMultiPipes(Materials.Infinity, Materials.Infinity.mName, 5255, 60000, 10000000, true);
+        generateFluidPipes(Materials.WroughtIron, Materials.WroughtIron.mName, 5260, 180, 2250, true);
+        generateFluidMultiPipes(Materials.WroughtIron, Materials.WroughtIron.mName, 5265, 180, 2250, true);
         generateFluidPipes(
             Materials.Polytetrafluoroethylene,
             Materials.Polytetrafluoroethylene.mName,
@@ -3812,6 +3843,9 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         generateItemPipes(Materials.Nickel, Materials.Nickel.mName, 5700, 1);
         generateItemPipes(Materials.Cobalt, Materials.Cobalt.mName, 5710, 2);
         generateItemPipes(Materials.Aluminium, Materials.Aluminium.mName, 5720, 2);
+        if (NewHorizonsCoreMod.isModLoaded()) {
+            generateFluidPipes(Materials.get("RadoxPoly"), "RadoxPoly", 5760, 5000, 1500, true);
+        }
     }
 
     @SuppressWarnings("PointlessArithmeticExpression")

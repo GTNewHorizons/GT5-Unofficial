@@ -607,7 +607,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
     private World mUniverse = null;
     public boolean mTEMachineRecipes = false;
     public boolean mEnableAllMaterials = false;
-    public boolean mEnableAllComponents = false;
     public boolean mEnableCleanroom = true;
     public boolean mLowGravProcessing = false;
     public boolean mAprilFool = false;
