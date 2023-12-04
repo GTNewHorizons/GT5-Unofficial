@@ -413,7 +413,8 @@ public class GT_ParallelHelper {
         maxParallelBeforeBatchMode = Math.min(maxParallel, maxParallelBeforeBatchMode);
 
         // determine normal parallel
-        int actualMaxParallel = (int) Math.min(maxParallelBeforeBatchMode, availableEUt / tRecipeEUt);
+        int actualMaxParallel = tRecipeEUt > 0 ? (int) Math.min(maxParallelBeforeBatchMode, availableEUt / tRecipeEUt)
+            : maxParallelBeforeBatchMode;
         if (recipeCheck != null) {
             currentParallel = recipeCheck.checkRecipeInputs(true, actualMaxParallel, itemInputs, fluidInputs);
         } else {
