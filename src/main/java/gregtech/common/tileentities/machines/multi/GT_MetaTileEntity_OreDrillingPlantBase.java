@@ -729,6 +729,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
                 .orElseGet(() -> StatCollector.translateToLocalFormatted("GT5U.gui.text.drill_offline_generic")));
     }
 
+    @Override
     public boolean supportsVoidProtection() {
         return true;
     }
