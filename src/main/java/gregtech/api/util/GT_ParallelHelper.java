@@ -1,5 +1,6 @@
 package gregtech.api.util;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -377,6 +378,13 @@ public class GT_ParallelHelper {
             maxParallel *= batchModifier;
         }
 
+        final ItemStack[] truncatedItemOutputs = recipe.mOutputs != null
+            ? Arrays.copyOfRange(recipe.mOutputs, 0, Math.min(machine.getItemOutputLimit(), recipe.mOutputs.length))
+            : new ItemStack[0];
+        final FluidStack[] truncatedFluidOutputs = recipe.mFluidOutputs != null ? Arrays
+            .copyOfRange(recipe.mFluidOutputs, 0, Math.min(machine.getFluidOutputLimit(), recipe.mFluidOutputs.length))
+            : new FluidStack[0];
+
         SingleRecipeCheck recipeCheck = null;
         SingleRecipeCheck.Builder tSingleRecipeCheckBuilder = null;
         if (isRecipeLocked && singleRecipeMachine != null) {
@@ -399,8 +407,8 @@ public class GT_ParallelHelper {
             }
             VoidProtectionHelper voidProtectionHelper = new VoidProtectionHelper();
             voidProtectionHelper.setMachine(machine)
-                .setItemOutputs(recipe.mOutputs)
-                .setFluidOutputs(recipe.mFluidOutputs)
+                .setItemOutputs(truncatedItemOutputs)
+                .setFluidOutputs(truncatedFluidOutputs)
                 .setMaxParallel(maxParallel)
                 .build();
             maxParallel = Math.min(voidProtectionHelper.getMaxParallel(), maxParallel);
@@ -466,11 +474,11 @@ public class GT_ParallelHelper {
 
         // If we want to calculate outputs we do it here
         if (calculateOutputs && currentParallel > 0) {
-            if (recipe.mOutputs != null) {
-                calculateItemOutputs();
+            if (truncatedItemOutputs.length > 0) {
+                calculateItemOutputs(truncatedItemOutputs);
             }
-            if (recipe.mFluidOutputs != null) {
-                calculateFluidOutputs();
+            if (truncatedFluidOutputs.length > 0) {
+                calculateFluidOutputs(truncatedFluidOutputs);
             }
         }
         result = CheckRecipeResultRegistry.SUCCESSFUL;
@@ -491,13 +499,13 @@ public class GT_ParallelHelper {
         fluidInputs = fluidInputsToUse;
     }
 
-    protected void calculateItemOutputs() {
+    private void calculateItemOutputs(ItemStack[] truncatedItemOutputs) {
         if (customItemOutputCalculation != null) {
             itemOutputs = customItemOutputCalculation.apply(currentParallel);
             return;
         }
-        itemOutputs = new ItemStack[recipe.mOutputs.length];
-        for (int i = 0; i < recipe.mOutputs.length; i++) {
+        itemOutputs = new ItemStack[truncatedItemOutputs.length];
+        for (int i = 0; i < truncatedItemOutputs.length; i++) {
             if (recipe.getOutputChance(i) >= 10000) {
                 ItemStack item = recipe.getOutput(i)
                     .copy();
@@ -523,13 +531,13 @@ public class GT_ParallelHelper {
         }
     }
 
-    protected void calculateFluidOutputs() {
+    private void calculateFluidOutputs(FluidStack[] truncatedFluidOutputs) {
         if (customFluidOutputCalculation != null) {
             fluidOutputs = customFluidOutputCalculation.apply(currentParallel);
             return;
         }
-        fluidOutputs = new FluidStack[recipe.mFluidOutputs.length];
-        for (int i = 0; i < recipe.mFluidOutputs.length; i++) {
+        fluidOutputs = new FluidStack[truncatedFluidOutputs.length];
+        for (int i = 0; i < truncatedFluidOutputs.length; i++) {
             if (recipe.getFluidOutput(i) == null) {
                 fluidOutputs[i] = null;
             } else {
