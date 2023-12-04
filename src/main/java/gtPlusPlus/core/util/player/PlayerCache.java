@@ -19,17 +19,13 @@ public class PlayerCache {
 
     public static void initCache() {
         if (CORE.PlayerCache == null) {
-            try {
-
-                if (cache != null) {
-                    CORE.PlayerCache = PlayerCache.readPropertiesFileAsMap();
-                    Logger.INFO("Loaded PlayerCache.dat");
-                }
-
-            } catch (final Exception e) {
-                Logger.INFO("Failed to initialise PlayerCache.dat");
+            if (cache.exists()) {
+                CORE.PlayerCache = PlayerCache.readPropertiesFileAsMap();
+                Logger.INFO("Loaded PlayerCache.dat");
+            }
+            if (CORE.PlayerCache == null) {
+                Logger.INFO("Failed to load PlayerCache.dat");
                 PlayerCache.createPropertiesFile("PLAYER_", "DATA");
-                // e.printStackTrace();
             }
         }
     }
