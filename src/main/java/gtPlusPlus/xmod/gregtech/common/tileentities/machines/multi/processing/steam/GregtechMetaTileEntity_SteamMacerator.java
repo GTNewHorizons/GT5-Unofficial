@@ -7,8 +7,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.GregTech_API.sBlockCasings1;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
-import java.util.ArrayList;
-
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
@@ -26,12 +24,10 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_SteamMultiBase;
@@ -141,24 +137,15 @@ public class GregtechMetaTileEntity_SteamMacerator
 
             @Override
             @Nonnull
-            public GT_ParallelHelper createParallelHelper(@Nonnull GT_Recipe recipe) {
-                return super.createParallelHelper(recipe).setCustomItemOutputCalculation(parallel -> {
-                    ArrayList<ItemStack> items = new ArrayList<>();
-                    for (int i = 0; i < parallel; i++) {
-                        if (recipe.getOutputChance(0) > XSTR.XSTR_INSTANCE.nextInt(10000)) {
-                            items.add(recipe.getOutput(0));
-                        }
-                    }
-                    return items.toArray(new ItemStack[0]);
-                });
-            }
-
-            @Override
-            @Nonnull
             protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
                 return GT_OverclockCalculator.ofNoOverclock(recipe);
             }
 
         }.setMaxParallel(getMaxParallelRecipes());
+    }
+
+    @Override
+    public int getItemOutputLimit() {
+        return 1;
     }
 }
