@@ -36,6 +36,9 @@
 
 dependencies {
     api('com.github.GTNewHorizons:GT5-Unofficial:5.09.44.97:dev')
+    {
+        exclude group:"com.github.GTNewHorizons", module:"ModularUI"
+    }
     api("com.github.GTNewHorizons:EnderCore:0.2.18:dev")
     api("com.github.GTNewHorizons:EnderIO:2.5.6:dev")
     api("com.github.GTNewHorizons:ForestryMC:4.7.0:dev")

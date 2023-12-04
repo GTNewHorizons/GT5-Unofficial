@@ -45,7 +45,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFlower;
@@ -81,31 +80,23 @@ import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
-import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.drawable.shapes.Rectangle;
 import com.gtnewhorizons.modularui.api.math.Color;
-import com.gtnewhorizons.modularui.api.math.Pos2d;
+import com.gtnewhorizons.modularui.api.math.MainAxisAlignment;
 import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.builder.UIInfo;
 import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.ChangeableWidget;
 import com.gtnewhorizons.modularui.common.widget.Column;
 import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
-import com.gtnewhorizons.modularui.common.widget.DynamicTextWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.kuba6000.mobsinfo.api.utils.ItemID;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -124,6 +115,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_MultiInput;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
@@ -136,10 +128,9 @@ import ic2.api.crops.Crops;
 import ic2.core.Ic2Items;
 import ic2.core.crop.TileEntityCrop;
 import kubatech.Tags;
+import kubatech.api.DynamicInventory;
 import kubatech.api.LoaderReference;
-import kubatech.api.helpers.GTHelper;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
-import kubatech.api.utils.ModUtils;
 import kubatech.client.effect.CropRenderer;
 
 @SuppressWarnings("unused")
@@ -150,6 +141,7 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
     private static final int EIG_MATH_VERSION = 0;
     private static final int CONFIGURATION_WINDOW_ID = 999;
 
+    public final List<GreenHouseSlot> mStorage = new ArrayList<>();
     private int oldVersion = 0;
     private int mCasing = 0;
     public int mMaxSlots = 0;
@@ -445,7 +437,7 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
             this.mEfficiencyIncrease = 10000;
             return CheckRecipeResultRegistry.SUCCESSFUL;
         }
-        if (mStorage.size() > mMaxSlots) return CheckRecipeResultRegistry.NO_RECIPE;
+        if (mStorage.size() > mMaxSlots) return SimpleCheckRecipeResult.ofFailure("EIG_slotoverflow");
         if (mStorage.isEmpty()) return CheckRecipeResultRegistry.NO_RECIPE;
 
         waterusage = 0;
@@ -474,7 +466,7 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
             fluidsToUse.add(i);
             if (watercheck <= 0) break;
         }
-        if (watercheck > 0 && !debug) return CheckRecipeResultRegistry.NO_RECIPE;
+        if (watercheck > 0 && !debug) return SimpleCheckRecipeResult.ofFailure("EIG_missingwater");
         watercheck = waterusage;
         for (GT_MetaTileEntity_Hatch_Input i : fluidsToUse) {
             int used = i.drain(watercheck, true).amount;
@@ -515,12 +507,12 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
         double multiplier = 1.d + (((double) boost / (double) maxboost) * 4d);
 
         if (isIC2Mode) {
-            if (glasTier < 6) return CheckRecipeResultRegistry.NO_RECIPE;
+            if (glasTier < 6) return SimpleCheckRecipeResult.ofFailure("EIG_ic2glass");
             this.mMaxProgresstime = 100;
             List<ItemStack> outputs = new ArrayList<>();
             for (int i = 0; i < Math.min(mMaxSlots, mStorage.size()); i++) outputs.addAll(
                 mStorage.get(i)
-                    .getIC2Drops(((double) this.mMaxProgresstime * 32d) * multiplier));
+                    .getIC2Drops(this, ((double) this.mMaxProgresstime * 32d) * multiplier));
             this.mOutputItems = outputs.toArray(new ItemStack[0]);
         } else {
             this.mMaxProgresstime = Math.max(20, 100 / (tier - 3)); // Min 1 s
@@ -559,30 +551,6 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
         if (valid) updateMaxSlots();
 
         return valid;
-    }
-
-    @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
-    @Override
-    public int getGUIHeight() {
-        return 166;
-    }
-
-    @Override
-    public int getGUIWidth() {
-        return 176;
-    }
-
-    @Override
-    public void bindPlayerInventoryUI(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.bindPlayerInventory(
-            buildContext.getPlayer(),
-            new Pos2d(7, 83),
-            this.getGUITextureSet()
-                .getItemSlot());
     }
 
     private static final UIInfo<?, ?> GreenhouseUI = createKTMetaTileEntityUI(
@@ -625,7 +593,7 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
                 GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.RED + "Can't insert while running !");
                 return super.transferStackInSlot(aPlayer, aSlotIndex);
             }
-            if (mte.addCrop(aStack)) {
+            if (mte.addCrop(aStack) != null) {
                 if (aStack.stackSize == 0) s.putStack(null);
                 else s.putStack(aStack);
                 detectAndSendChanges();
@@ -635,281 +603,98 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
         }
     }
 
-    List<GTHelper.StackableItemSlot> drawables = new ArrayList<>();
-    private int usedSlots = 0; // mStorage.size()
+    @Override
+    protected void addConfigurationWidgets(DynamicPositionedColumn configurationElements, UIBuildContext buildContext) {
+        buildContext.addSyncedWindow(CONFIGURATION_WINDOW_ID, this::createConfigurationWindow);
+        configurationElements.setSynced(false);
+        configurationElements.widget(
+            new ButtonWidget().setOnClick(
+                (clickData, widget) -> {
+                    if (!widget.isClient()) widget.getContext()
+                        .openSyncedWindow(CONFIGURATION_WINDOW_ID);
+                })
+                .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+                .addTooltip("Configuration")
+                .setSize(16, 16));
+    }
 
-    @SuppressWarnings("UnstableApiUsage")
+    DynamicInventory<GreenHouseSlot> dynamicInventory = new DynamicInventory<>(
+        128,
+        60,
+        () -> mMaxSlots,
+        mStorage,
+        s -> s.input).allowInventoryInjection(this::addCrop)
+            .allowInventoryExtraction(mStorage::remove)
+            .allowInventoryReplace((i, stack) -> {
+                if (!isIC2Mode) {
+                    GreenHouseSlot slot = mStorage.get(i);
+                    if (GT_Utility.areStacksEqual(stack, slot.input)) {
+                        if (slot.input.stackSize < 64) {
+                            slot.addAll(
+                                this.getBaseMetaTileEntity()
+                                    .getWorld(),
+                                stack);
+                            return stack;
+                        }
+                        return null;
+                    }
+                    if (!addCrop(stack, i, true)) return null;
+                    slot = mStorage.remove(i);
+                    addCrop(stack, i, false);
+                    return slot.input;
+                } else {
+                    if (stack.stackSize != 1) return null;
+                    if (!addCrop(stack, i, true)) return null;
+                    GreenHouseSlot slot = mStorage.remove(i);
+                    addCrop(stack, i, false);
+                    return slot.input;
+                }
+            })
+            .setEnabled(() -> this.mMaxProgresstime == 0);
+
+    @Override
+    public void createInventorySlots() {
+
+    }
+
+    private boolean isInInventory = true;
+
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        isInInventory = !getBaseMetaTileEntity().isActive();
         builder.widget(
             new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
-                .setPos(7, 4)
-                .setSize(143, 75)
-                .setEnabled(widget -> !isFixed.apply(widget)));
-
-        buildContext.addSyncedWindow(CONFIGURATION_WINDOW_ID, this::createConfigurationWindow);
-        EntityPlayer player = buildContext.getPlayer();
-
-        // Slot is not needed
-
+                .setPos(4, 4)
+                .setSize(190, 85)
+                .setEnabled(w -> !isInInventory));
         builder.widget(
-            new DynamicPositionedColumn().setSynced(false)
-                .widget(new CycleButtonWidget().setToggle(() -> getBaseMetaTileEntity().isAllowedToWork(), works -> {
-                    if (works) getBaseMetaTileEntity().enableWorking();
-                    else getBaseMetaTileEntity().disableWorking();
-
-                    if (!(player instanceof EntityPlayerMP)) return;
-                    String tChat = GT_Utility.trans("090", "Machine Processing: ")
-                        + (works ? GT_Utility.trans("088", "Enabled") : GT_Utility.trans("087", "Disabled"));
-                    if (hasAlternativeModeText()) tChat = getAlternativeModeText();
-                    GT_Utility.sendChatToPlayer(player, tChat);
-                })
-                    .addTooltip(0, new Text("Disabled").color(Color.RED.dark(3)))
-                    .addTooltip(1, new Text("Enabled").color(Color.GREEN.dark(3)))
-                    .setTextureGetter(toggleButtonTextureGetter)
-                    .setBackground(GT_UITextures.BUTTON_STANDARD)
-                    .setSize(18, 18)
-                    .addTooltip("Working status"))
-                .widget(
-                    new ButtonWidget().setOnClick(
-                        (clickData, widget) -> {
-                            if (!widget.isClient()) widget.getContext()
-                                .openSyncedWindow(CONFIGURATION_WINDOW_ID);
-                        })
-                        .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_CYCLIC)
-                        .addTooltip("Configuration")
-                        .setSize(18, 18))
-                .setPos(151, 4));
-
-        ChangeableWidget cropsContainer = new ChangeableWidget(() -> createCropsContainerWidget(player));
-
-        AtomicInteger lastMaxSlots = new AtomicInteger();
-        AtomicInteger lastUsedSlots = new AtomicInteger();
-        builder.widget(cropsContainer.attachSyncer(new FakeSyncWidget.IntegerSyncer(() -> {
-            if (lastMaxSlots.get() != mMaxSlots) {
-                lastMaxSlots.set(mMaxSlots);
-                cropsContainer.notifyChangeNoSync();
-            }
-            return mMaxSlots;
-        }, i -> {
-            if (mMaxSlots != i) {
-                mMaxSlots = i;
-                cropsContainer.notifyChangeNoSync();
-            }
-        }), builder)
-            .attachSyncer(new FakeSyncWidget.IntegerSyncer(() -> {
-                if (lastUsedSlots.get() != mStorage.size()) {
-                    lastUsedSlots.set(mStorage.size());
-                    cropsContainer.notifyChangeNoSync();
-                }
-                return mStorage.size();
-            }, i -> {
-                if (usedSlots != i) {
-                    usedSlots = i;
-                    cropsContainer.notifyChangeNoSync();
-                }
-            }), builder)
-            .attachSyncer(new FakeSyncWidget.ListSyncer<>(() -> {
-                HashMap<ItemID, Integer> itemMap = new HashMap<>();
-                HashMap<ItemID, ItemStack> stackMap = new HashMap<>();
-                HashMap<ItemID, ArrayList<Integer>> realSlotMap = new HashMap<>();
-                for (int i = 0, mStorageSize = mStorage.size(); i < mStorageSize; i++) {
-                    GreenHouseSlot slot = mStorage.get(i);
-                    ItemID id = ItemID.createNoCopy(slot.input, false);
-                    itemMap.merge(id, 1, Integer::sum);
-                    stackMap.putIfAbsent(id, slot.input);
-                    realSlotMap.computeIfAbsent(id, unused -> new ArrayList<>())
-                        .add(i);
-                }
-                List<GTHelper.StackableItemSlot> newDrawables = new ArrayList<>();
-                for (Map.Entry<ItemID, Integer> entry : itemMap.entrySet()) {
-                    newDrawables.add(
-                        new GTHelper.StackableItemSlot(
-                            entry.getValue(),
-                            stackMap.get(entry.getKey()),
-                            realSlotMap.get(entry.getKey())));
-                }
-                if (!Objects.equals(newDrawables, drawables)) {
-                    drawables = newDrawables;
-                    cropsContainer.notifyChangeNoSync();
-                }
-                return drawables;
-            }, l -> {
-                drawables.clear();
-                drawables.addAll(l);
-                cropsContainer.notifyChangeNoSync();
-            }, (buffer, i) -> {
-                try {
-                    i.write(buffer);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }, buffer -> {
-                try {
-                    return GTHelper.StackableItemSlot.read(buffer);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }), builder));
+            dynamicInventory.asWidget(builder, buildContext)
+                .setPos(10, 16)
+                .setBackground(new Rectangle().setColor(Color.rgb(163, 163, 198)))
+                .setEnabled(w -> isInInventory));
+        builder.widget(
+            new CycleButtonWidget().setToggle(() -> isInInventory, i -> isInInventory = i)
+                .setTextureGetter(i -> i == 0 ? new Text("Inventory") : new Text("Status"))
+                .setBackground(GT_UITextures.BUTTON_STANDARD)
+                .setPos(140, 4)
+                .setSize(55, 16));
 
         final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
         drawTexts(screenElements, null);
-        builder.widget(screenElements);
-    }
+        builder.widget(screenElements.setEnabled(w -> !isInInventory));
 
-    protected Widget createCropsContainerWidget(EntityPlayer player) {
-        Scrollable cropsContainer = new Scrollable().setVerticalScroll();
+        builder.widget(createPowerSwitchButton(builder))
+            .widget(createVoidExcessButton(builder))
+            .widget(createInputSeparationButton(builder))
+            .widget(createBatchModeButton(builder))
+            .widget(createLockToSingleRecipeButton(builder));
 
-        ArrayList<Widget> buttons = new ArrayList<>();
+        DynamicPositionedColumn configurationElements = new DynamicPositionedColumn();
+        addConfigurationWidgets(configurationElements, buildContext);
 
-        if (!ModUtils.isClientThreaded()) {
-            HashMap<ItemID, Integer> itemMap = new HashMap<>();
-            HashMap<ItemID, ItemStack> stackMap = new HashMap<>();
-            HashMap<ItemID, ArrayList<Integer>> realSlotMap = new HashMap<>();
-            for (int i = 0, mStorageSize = mStorage.size(); i < mStorageSize; i++) {
-                GreenHouseSlot slot = mStorage.get(i);
-                ItemID id = ItemID.createNoCopy(slot.input, false);
-                itemMap.merge(id, 1, Integer::sum);
-                stackMap.putIfAbsent(id, slot.input);
-                realSlotMap.computeIfAbsent(id, unused -> new ArrayList<>())
-                    .add(i);
-            }
-            drawables = new ArrayList<>();
-            for (Map.Entry<ItemID, Integer> entry : itemMap.entrySet()) {
-                drawables.add(
-                    new GTHelper.StackableItemSlot(
-                        entry.getValue(),
-                        stackMap.get(entry.getKey()),
-                        realSlotMap.get(entry.getKey())));
-            }
-        }
-
-        for (int ID = 0; ID < drawables.size(); ID++) {
-            final int finalID = ID;
-            buttons.add(new ButtonWidget().setOnClick((clickData, widget) -> {
-                if (!(player instanceof EntityPlayerMP)) return;
-                if (!clickData.shift) {
-                    ItemStack input = player.inventory.getItemStack();
-                    if (input != null) {
-                        if (this.mMaxProgresstime > 0) {
-                            GT_Utility
-                                .sendChatToPlayer(player, EnumChatFormatting.RED + "Can't replace while running !");
-                            return;
-                        }
-                        if (addCrop(input, -1, true)) {
-                            if (drawables.size() > finalID) {
-                                int realID = drawables.get(finalID).realSlots.get(0);
-                                GreenHouseSlot removed = mStorage.remove(realID);
-                                addCrop(input, realID, false);
-                                player.inventory.setItemStack(removed.input);
-                                // force widget update??
-                            } else {
-                                if (input.stackSize == 0) addCrop(input);
-                                player.inventory.setItemStack(null);
-                            }
-                            ((EntityPlayerMP) player).isChangingQuantityOnly = false;
-                            ((EntityPlayerMP) player).updateHeldItem();
-                        }
-                        return;
-                    }
-                }
-                if (drawables.size() <= finalID) return;
-                if (this.mMaxProgresstime > 0) {
-                    GT_Utility.sendChatToPlayer(player, EnumChatFormatting.RED + "Can't eject while running !");
-                    return;
-                }
-                int realID = drawables.get(finalID).realSlots.get(0);
-                GreenHouseSlot removed = mStorage.remove(realID);
-                if (clickData.shift) {
-                    if (player.inventory.addItemStackToInventory(removed.input)) {
-                        player.inventoryContainer.detectAndSendChanges();
-                        return;
-                    }
-                }
-                if (clickData.mouseButton == 1) {
-                    if (player.inventory.getItemStack() == null) {
-                        player.inventory.setItemStack(removed.input);
-                        ((EntityPlayerMP) player).isChangingQuantityOnly = false;
-                        ((EntityPlayerMP) player).updateHeldItem();
-                        return;
-                    }
-                }
-                addOutput(removed.input);
-                GT_Utility.sendChatToPlayer(player, "Crop ejected !");
-            })
-                .setBackground(
-                    () -> new IDrawable[] { getBaseMetaTileEntity().getGUITextureSet()
-                        .getItemSlot(),
-                        new ItemDrawable(drawables.size() > finalID ? drawables.get(finalID).stack : null)
-                            .withFixedSize(16, 16, 1, 1),
-                        new Text(
-                            drawables.size() > finalID ? (drawables.get(finalID).count > 99 ? "+99"
-                                : String.valueOf(drawables.get(finalID).count)) : "").color(Color.PURPLE.normal)
-                                    .alignment(Alignment.TopRight),
-                        new Text(
-                            drawables.size() > finalID ? String.valueOf(drawables.get(finalID).stack.stackSize) : "")
-                                .color(Color.WHITE.normal)
-                                .shadow()
-                                .alignment(Alignment.BottomRight) })
-                .dynamicTooltip(() -> {
-                    if (drawables.size() > finalID) return Arrays.asList(
-                        "x" + drawables.get(finalID).stack.stackSize
-                            + " "
-                            + drawables.get(finalID).stack.getDisplayName(),
-                        EnumChatFormatting.DARK_PURPLE + "There are "
-                            + drawables.get(finalID).count
-                            + " identical slots",
-                        EnumChatFormatting.GRAY + "Left click to eject into input bus",
-                        EnumChatFormatting.GRAY + "Right click to get into mouse",
-                        EnumChatFormatting.GRAY + "Shift click to get into inventory",
-                        EnumChatFormatting.GRAY + "Click with other crop in mouse to replace");
-                    return Collections.emptyList();
-                })
-                .setSize(18, 18));
-        }
-
-        buttons.add(new ButtonWidget().setOnClick((clickData, widget) -> {
-            if (!(player instanceof EntityPlayerMP)) return;
-            ItemStack input = player.inventory.getItemStack();
-            if (input != null) {
-                if (this.mMaxProgresstime > 0) {
-                    GT_Utility.sendChatToPlayer(player, EnumChatFormatting.RED + "Can't insert while running !");
-                    return;
-                }
-                if (addCrop(input)) {
-                    if (input.stackSize == 0) player.inventory.setItemStack(null);
-                    ((EntityPlayerMP) player).isChangingQuantityOnly = false;
-                    ((EntityPlayerMP) player).updateHeldItem();
-                }
-            }
-        })
-            .setBackground(
-                () -> new IDrawable[] { getBaseMetaTileEntity().getGUITextureSet()
-                    .getItemSlot(),
-                    new Text(String.valueOf((mMaxSlots - usedSlots) > 99 ? "+99" : (mMaxSlots - usedSlots)))
-                        .color(Color.PURPLE.normal)
-                        .alignment(Alignment.TopRight) })
-            .dynamicTooltip(
-                () -> Arrays.asList(
-                    EnumChatFormatting.GRAY + "Empty slot",
-                    EnumChatFormatting.DARK_PURPLE + "There are " + (mMaxSlots - usedSlots) + " identical slots",
-                    EnumChatFormatting.GRAY + "Click with crop in mouse to insert",
-                    EnumChatFormatting.GRAY + "Shift click a crop in your inventory to insert"))
-            .setSize(18, 18));
-
-        final int perRow = 7;
-        for (int i = 0, imax = ((buttons.size() - 1) / perRow); i <= imax; i++) {
-            DynamicPositionedRow row = new DynamicPositionedRow().setSynced(false);
-            for (int j = 0, jmax = (i == imax ? (buttons.size() - 1) % perRow : (perRow - 1)); j <= jmax; j++) {
-                final int finalI = i * perRow;
-                final int finalJ = j;
-                final int ID = finalI + finalJ;
-                row.widget(buttons.get(ID));
-            }
-            cropsContainer.widget(row.setPos(0, i * 18));
-        }
-        return cropsContainer.setPos(10, 16)
-            .setSize(128, 60);
+        builder.widget(
+            configurationElements.setAlignment(MainAxisAlignment.END)
+                .setPos(getPowerSwitchButtonPos().subtract(0, 18)));
     }
 
     protected ModularWindow createConfigurationWindow(final EntityPlayer player) {
@@ -1027,61 +812,75 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
         return builder.build();
     }
 
+    private HashMap<ItemStack, Double> GUIDropProgress = new HashMap<>();
+
+    @Override
+    protected String generateCurrentRecipeInfoString() {
+        if (!isIC2Mode) return super.generateCurrentRecipeInfoString();
+        StringBuilder ret = new StringBuilder(EnumChatFormatting.WHITE + "Progress: ")
+            .append(String.format("%,.2f", (double) mProgresstime / 20))
+            .append("s / ")
+            .append(String.format("%,.2f", (double) mMaxProgresstime / 20))
+            .append("s (")
+            .append(String.format("%,.1f", (double) mProgresstime / mMaxProgresstime * 100))
+            .append("%)\n");
+
+        for (Map.Entry<ItemStack, Double> drop : GUIDropProgress.entrySet()) {
+            ret.append(
+                drop.getKey()
+                    .getDisplayName())
+                .append(": ")
+                .append(
+                    String.format(
+                        "%.2f (+%d)\n",
+                        drop.getValue(),
+                        Arrays.stream(mOutputItems)
+                            .filter(s -> s.isItemEqual(drop.getKey()))
+                            .mapToInt(i -> i.stackSize)
+                            .sum()));
+        }
+
+        return ret.toString();
+    }
+
     @Override
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        screenElements.setSynced(false)
-            .setSpace(0)
-            .setPos(10, 7);
+        screenElements.widget(new FakeSyncWidget.BooleanSyncer(() -> isIC2Mode, b -> isIC2Mode = b));
+        screenElements.widget(new FakeSyncWidget<>(() -> {
+            HashMap<ItemStack, Double> ret = new HashMap<>();
+            HashMap<String, Double> dropProgress = new HashMap<>();
 
-        screenElements.widget(
-            new DynamicPositionedRow().setSynced(false)
-                .widget(new TextWidget("Status: ").setDefaultColor(COLOR_TEXT_GRAY.get()))
-                .widget(new DynamicTextWidget(() -> {
-                    if (getBaseMetaTileEntity().isActive()) return new Text("Working !").color(Color.GREEN.dark(3));
-                    else if (getBaseMetaTileEntity().isAllowedToWork())
-                        return new Text("Enabled").color(Color.GREEN.dark(3));
-                    else if (getBaseMetaTileEntity().wasShutdown())
-                        return new Text("Shutdown (CRITICAL)").color(Color.RED.dark(3));
-                    else return new Text("Disabled").color(Color.RED.dark(3));
-                }))
-                .setEnabled(isFixed));
+            for (Map.Entry<String, Double> drop : dropprogress.entrySet()) {
+                dropProgress.merge(drop.getKey(), drop.getValue(), Double::sum);
+            }
 
-        screenElements
-            .widget(
-                new TextWidget(GT_Utility.trans("132", "Pipe is loose.")).setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> !mWrench))
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> mWrench, val -> mWrench = val));
-        screenElements
-            .widget(
-                new TextWidget(GT_Utility.trans("133", "Screws are loose.")).setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> !mScrewdriver))
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> mScrewdriver, val -> mScrewdriver = val));
-        screenElements
-            .widget(
-                new TextWidget(GT_Utility.trans("134", "Something is stuck.")).setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> !mSoftHammer))
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> mSoftHammer, val -> mSoftHammer = val));
-        screenElements
-            .widget(
-                new TextWidget(GT_Utility.trans("135", "Platings are dented.")).setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> !mHardHammer))
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> mHardHammer, val -> mHardHammer = val));
-        screenElements
-            .widget(
-                new TextWidget(GT_Utility.trans("136", "Circuitry burned out.")).setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> !mSolderingTool))
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> mSolderingTool, val -> mSolderingTool = val));
-        screenElements
-            .widget(
-                new TextWidget(GT_Utility.trans("137", "That doesn't belong there."))
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> !mCrowbar))
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> mCrowbar, val -> mCrowbar = val));
-        screenElements
-            .widget(
-                new TextWidget(GT_Utility.trans("138", "Incomplete Structure.")).setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> !mMachine))
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
+            for (Map.Entry<String, Double> drop : dropProgress.entrySet()) {
+                ret.put(GreenHouseSlot.dropstacks.get(drop.getKey()), drop.getValue());
+            }
+            return ret;
+        }, h -> GUIDropProgress = h, (buffer, h) -> {
+            buffer.writeVarIntToBuffer(h.size());
+            for (Map.Entry<ItemStack, Double> itemStackDoubleEntry : h.entrySet()) {
+                try {
+                    buffer.writeItemStackToBuffer(itemStackDoubleEntry.getKey());
+                    buffer.writeDouble(itemStackDoubleEntry.getValue());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }, buffer -> {
+            int len = buffer.readVarIntFromBuffer();
+            HashMap<ItemStack, Double> ret = new HashMap<>(len);
+            for (int i = 0; i < len; i++) {
+                try {
+                    ret.put(buffer.readItemStackFromBuffer(), buffer.readDouble());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            return ret;
+        }));
+        super.drawTexts(screenElements, inventorySlot);
     }
 
     @Override
@@ -1147,8 +946,6 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
     }
 
-    public final List<GreenHouseSlot> mStorage = new ArrayList<>();
-
     private boolean addCrop(ItemStack input, int slot, boolean simulate) {
         if (!isIC2Mode && !simulate)
             for (GreenHouseSlot g : mStorage) if (g.input.stackSize < 64 && GT_Utility.areStacksEqual(g.input, input)) {
@@ -1169,9 +966,12 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
         return false;
     }
 
-    private boolean addCrop(ItemStack input) {
-        return addCrop(input, -1, false);
+    private ItemStack addCrop(ItemStack input) {
+        if (addCrop(input, -1, false)) return input;
+        return null;
     }
+
+    final Map<String, Double> dropprogress = new HashMap<>();
 
     private static class GreenHouseSlot extends InventoryCrafting {
 
@@ -1526,10 +1326,10 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
             return drops;
         }
 
-        final Map<String, Double> dropprogress = new HashMap<>();
         static final Map<String, ItemStack> dropstacks = new HashMap<>();
 
-        public List<ItemStack> getIC2Drops(double timeelapsed) {
+        public List<ItemStack> getIC2Drops(GT_MetaTileEntity_ExtremeIndustrialGreenhouse tileEntity,
+            double timeelapsed) {
             int r = rn.nextInt(10);
             if (generations.size() <= r) return new ArrayList<>();
             double growthPercent = (timeelapsed / (double) growthticks);
@@ -1539,13 +1339,11 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
             for (ItemStack s : copied) {
                 double pro = ((double) s.stackSize * growthPercent);
                 s.stackSize = 1;
-                if (dropprogress.containsKey(s.toString()))
-                    dropprogress.put(s.toString(), dropprogress.get(s.toString()) + pro);
-                else dropprogress.put(s.toString(), pro);
+                tileEntity.dropprogress.merge(s.toString(), pro, Double::sum);
                 if (!dropstacks.containsKey(s.toString())) dropstacks.put(s.toString(), s.copy());
             }
             copied.clear();
-            for (Map.Entry<String, Double> entry : dropprogress.entrySet()) if (entry.getValue() >= 1d) {
+            for (Map.Entry<String, Double> entry : tileEntity.dropprogress.entrySet()) if (entry.getValue() >= 1d) {
                 copied.add(
                     dropstacks.get(entry.getKey())
                         .copy());

@@ -26,6 +26,15 @@ kubatech.command.tea.success_set=Player %s now has %d Tea
 kubatech.command.tea.success_add=Player %s now has %d Tea
 kubatech.command.tea.usage=<username> get/set/add (<amount>)
 
+#GUI
+GT5U.gui.text.EEC_nospawner=No powered spawner!
+GT5U.gui.text.EEC_invalidspawner=Invalid spawner!
+GT5U.gui.text.EEC_peaceful=Inserted mob cannot spawn on peaceful mode!
+GT5U.gui.text.MegaApiary_slotoverflow=Too much bees inside!
+GT5U.gui.text.MegaApiary_noflowers=Missing flowers!
+GT5U.gui.text.EIG_slotoverflow=Too much crops inside!
+GT5U.gui.text.EIG_missingwater=No water!
+GT5U.gui.text.EIG_ic2glass=Insufficient glass tier!
 
 #Blocks
 kubablock.tea_acceptor.name=§4§lTea Acceptor

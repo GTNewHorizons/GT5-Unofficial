@@ -165,15 +165,22 @@ public class RecipeLoader {
     }
 
     private static boolean registerMTE(ItemList item, Class<? extends MetaTileEntity> mte, String aName,
-        String aNameRegional, boolean dep) {
+        String aNameRegional, boolean... deps) {
         if (MTEID > MTEIDMax) throw new RuntimeException("MTE ID's");
-        registerMTEUsingID(MTEID, item, mte, aName, aNameRegional, dep);
+        boolean dep = registerMTEUsingID(MTEID, item, mte, aName, aNameRegional, deps);
         MTEID++;
         return dep;
     }
 
     private static boolean registerMTEUsingID(int ID, ItemList item, Class<? extends MetaTileEntity> mte, String aName,
-        String aNameRegional, boolean dep) {
+        String aNameRegional, boolean... deps) {
+        boolean dep = true;
+        for (boolean b : deps) {
+            if (!b) {
+                dep = false;
+                break;
+            }
+        }
         if (dep) {
             try {
                 item.set(
