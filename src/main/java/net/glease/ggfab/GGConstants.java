@@ -5,6 +5,7 @@ import net.minecraft.util.EnumChatFormatting;
 public class GGConstants {
 
     public static final String MODID = "ggfab";
+    public static final String RES_PATH_ITEM = MODID + ":";
     public static final String MODNAME = "GigaGramFab";
     public static final String VERSION = "GRADLETOKEN_VERSION";
 

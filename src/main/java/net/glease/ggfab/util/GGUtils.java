@@ -47,4 +47,29 @@ public class GGUtils {
         sj.add(String.valueOf(tile.getZCoord()));
         return sj.toString();
     }
+
+    /**
+     * convert lowerCamelCase to any of snake case or normal sentence
+     */
+    public static String processSentence(String src, Character separator, boolean capitalize, boolean firstCapitalize) {
+        if (src == null) throw new IllegalArgumentException();
+        if (src.isEmpty()) return "";
+        StringBuilder out = new StringBuilder(src.length());
+        if (firstCapitalize) out.append(Character.toUpperCase(src.charAt(0)));
+        else out.append(src.charAt(0));
+        for (int i = 1; i < src.length(); i++) {
+            char ch = src.charAt(i);
+            if (Character.isUpperCase(ch)) {
+                if (separator != null) out.append(separator.charValue());
+                if (capitalize) {
+                    out.append(ch);
+                } else {
+                    out.append(Character.toLowerCase(ch));
+                }
+            } else {
+                out.append(ch);
+            }
+        }
+        return out.toString();
+    }
 }

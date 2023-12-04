@@ -1,3 +1,5 @@
+ggfab.recipe.toolcast=Tool Casting Machine
+
 ggfab.info.advassline.0=Advanced Assembly Line Help
 ggfab.info.advassline.1=This is advanced assembly line from §6GigaGram§rFab.
 ggfab.info.advassline.2=It supports item pipelining. That is, it will mimic a real assembly line by consuming ingredients one by one instead of all at start. In effect, it offers a parallelism up to however many item input this recipe requires.
