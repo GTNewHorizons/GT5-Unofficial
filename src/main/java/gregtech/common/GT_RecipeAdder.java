@@ -33,8 +33,9 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_AssemblyLine;
 import gregtech.api.util.GT_RecipeBuilder;
+import gregtech.api.util.GT_RecipeConstants;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.items.GT_IntegratedCircuit_Item;
+import gregtech.api.util.extensions.ArrayExt;
 import ic2.core.init.MainConfig;
 import ic2.core.util.ConfigUtil;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
@@ -416,33 +417,15 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         if (!GT_Mod.gregtechproxy.mEnableCleanroom) {
             aCleanroom = false;
         }
-        RecipeMaps.chemicalReactorRecipes.addRecipe(
-            true,
-            new ItemStack[] { aInput1, aInput2 },
-            new ItemStack[] { aOutput, aOutput2 },
-            null,
-            null,
-            new FluidStack[] { aFluidInput },
-            new FluidStack[] { aFluidOutput },
-            aDuration,
-            aEUtick,
-            aCleanroom ? -200 : 0);
-        if (!(aInput1 != null && aInput1.getItem() instanceof GT_IntegratedCircuit_Item
-            && aInput1.getItemDamage() >= 10)
-            && !(aInput2 != null && aInput2.getItem() instanceof GT_IntegratedCircuit_Item
-                && aInput2.getItemDamage() >= 10)) {
-            RecipeMaps.multiblockChemicalReactorRecipes.addRecipe(
-                false,
-                new ItemStack[] { aInput1, aInput2 },
-                new ItemStack[] { aOutput, aOutput2 },
-                null,
-                null,
-                new FluidStack[] { aFluidInput },
-                new FluidStack[] { aFluidOutput },
-                aDuration,
-                aEUtick,
-                0);
-        }
+        GT_RecipeBuilder builder = stdBuilder()
+            .itemInputs(ArrayExt.withoutNulls(new ItemStack[] { aInput1, aInput2 }, ItemStack[]::new))
+            .itemOutputs(ArrayExt.withoutNulls(new ItemStack[] { aOutput, aOutput2 }, ItemStack[]::new));
+        if (aFluidInput != null) builder.fluidInputs(aFluidInput);
+        if (aFluidOutput != null) builder.fluidOutputs(aFluidOutput);
+        builder.duration(aDuration)
+            .eut(aEUtick)
+            .metadata(GT_RecipeConstants.CLEANROOM, aCleanroom)
+            .addTo(GT_RecipeConstants.UniversalChemical);
         return true;
     }
 
