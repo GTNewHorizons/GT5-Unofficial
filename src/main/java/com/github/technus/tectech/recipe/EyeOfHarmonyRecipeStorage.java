@@ -19,6 +19,7 @@ import com.github.technus.tectech.util.ItemStackLong;
 import com.google.common.math.LongMath;
 
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 import pers.gwyog.gtneioreplugin.plugin.block.BlockDimensionDisplay;
@@ -115,7 +116,8 @@ public class EyeOfHarmonyRecipeStorage {
                     outputItems.toArray(new ItemStack[0]),
                     recipe,
                     null,
-                    null,
+                    new FluidStack[] { Materials.Hydrogen.getGas(0), Materials.Helium.getGas(0),
+                            MaterialsUEVplus.RawStarMatter.getFluid(0) },
                     outputFluids.toArray(new FluidStack[0]),
                     (int) recipe.getRecipeTimeInTicks(),
                     0,
