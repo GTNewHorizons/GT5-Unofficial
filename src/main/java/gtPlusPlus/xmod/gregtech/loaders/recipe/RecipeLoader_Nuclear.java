@@ -260,15 +260,6 @@ public class RecipeLoader_Nuclear {
                 20 * 20,
                 30);
 
-        // Technetium
-        GT_Values.RA.addChemicalRecipe(
-                CI.getNumberedAdvancedCircuit(22),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustTechnetium99", 1),
-                FluidUtils.getFluidStack("sulfuricacid", 1000),
-                FluidUtils.getFluidStack("sulfuricacid", 144 * 2),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustTechnetium", 1),
-                100 * 20);
-
         // Sodium Hydroxide
         GT_Values.RA.addChemicalRecipe(
                 CI.getNumberedBioCircuit(15),
