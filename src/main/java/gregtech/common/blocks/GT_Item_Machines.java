@@ -42,7 +42,8 @@ import gregtech.api.util.GT_ItsNotMyFaultException;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalTankBase;
-import gregtech.common.tileentities.storage.GT_MetaTileEntity_QuantumChest;
+import gregtech.common.tileentities.storage.GT_MetaTileEntity_SuperChest;
+import gregtech.common.tileentities.storage.GT_MetaTileEntity_SuperTank;
 
 public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
 
@@ -331,8 +332,8 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
         super.onUpdate(aStack, aWorld, aPlayer, aTimer, aIsInHand);
         final short tDamage = (short) getDamage(aStack);
         final EntityLivingBase tPlayer = (EntityPlayer) aPlayer;
-        if (GregTech_API.METATILEENTITIES[tDamage] instanceof GT_MetaTileEntity_QuantumChest
-            || GregTech_API.METATILEENTITIES[tDamage] instanceof GT_MetaTileEntity_DigitalTankBase) {
+        if (GregTech_API.METATILEENTITIES[tDamage] instanceof GT_MetaTileEntity_SuperChest
+            || GregTech_API.METATILEENTITIES[tDamage] instanceof GT_MetaTileEntity_SuperTank) {
             final NBTTagCompound tNBT = aStack.stackTagCompound;
             if (tNBT == null) return;
             if (tNBT.hasNoTags()) {
