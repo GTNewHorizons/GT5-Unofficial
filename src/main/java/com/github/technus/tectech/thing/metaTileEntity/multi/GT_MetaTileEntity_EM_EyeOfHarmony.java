@@ -1496,7 +1496,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                                 + " L");
             }
             BigInteger euPerTick = (outputEU_BigInt.subtract(usedEU.abs()))
-                    .divide(BigInteger.valueOf(maxProgresstime()));
+                    .divide(BigInteger.valueOf(Math.max(maxProgresstime(), 1)));
             if (abs(euPerTick.longValue()) < LongMath.pow(10, 12)) {
                 str.add("Estimated EU/t: " + RED + formatNumbers(euPerTick) + RESET + " EU/t");
             } else {
