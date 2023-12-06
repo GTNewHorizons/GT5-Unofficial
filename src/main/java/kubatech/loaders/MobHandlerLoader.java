@@ -162,7 +162,7 @@ public class MobHandlerLoader {
 
             if (LoaderReference.InfernalMobs) {
                 InfernalMobsCore infernalMobsCore = InfernalMobsCore.instance();
-                if (recipe.infernalityAllowed && mEUt * 8 < MTE.getMaxInputVoltage()
+                if (recipe.infernalityAllowed && mEUt * 8 <= MTE.getMaxInputEu()
                     && !infernalMobsCore.getDimensionBlackList()
                         .contains(
                             MTE.getBaseMetaTileEntity()
