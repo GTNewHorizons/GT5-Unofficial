@@ -50,7 +50,7 @@ public class LargeFusionComputer4 extends LargeFusionComputerPP {
                 .addInfo("Make sure the whole structure is built in the 3x3")
                 .addInfo("chunk area of the ring center (not controller).").addInfo("Performs 4/4 overclock.")
                 .addInfo("Startup < 160,000,000 EU: 256x Parallel").addInfo("Startup < 320,000,000 EU: 192x Parallel")
-                .addInfo("Startup < 640,000,000 EU: 128x Parallel").addInfo("Startup < 1,200,000,000 EU: 64x Parallel")
+                .addInfo("Startup < 640,000,000 EU: 128x Parallel").addInfo("Startup >= 640,000,000 EU: 64x Parallel")
                 .addInfo(
                         "Support" + EnumChatFormatting.BLUE
                                 + " Tec"
