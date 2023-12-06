@@ -10,6 +10,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_RecipeBuilder;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 
@@ -33,11 +34,14 @@ public class RecyclerBackend extends NonGTBackend {
         if (cachedRecipe != null && cachedRecipe.isRecipeInputEqual(false, true, fluids, items)) {
             return cachedRecipe;
         }
-        return GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.copyAmount(1, items[0]))
-            .itemOutputs(GT_ModHandler.getRecyclerOutput(items[0], 0))
-            .outputChances(1250)
-            .duration(45)
+        GT_RecipeBuilder builder = GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.copyAmount(1, items[0]));
+        ItemStack output = GT_ModHandler.getRecyclerOutput(items[0], 0);
+        if (output != null) {
+            builder.itemOutputs(output)
+                .outputChances(1250);
+        }
+        return builder.duration(45)
             .eut(1)
             .noOptimize()
             .build()

@@ -29,6 +29,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
@@ -2061,6 +2063,7 @@ public class GT_ModHandler {
      * Only produces Scrap if aScrapChance == 0. aScrapChance is usually the random Number I give to the Function If you
      * directly insert 0 as aScrapChance then you can check if its Recycler-Blacklisted or similar
      */
+    @Nullable
     public static ItemStack getRecyclerOutput(ItemStack aInput, int aScrapChance) {
         if (aInput == null || aScrapChance != 0) return null;
         if (recyclerWhitelist == null) {
