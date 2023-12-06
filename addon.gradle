@@ -39,3 +39,43 @@ minecraft {
     injectedTags.put 'VERSION_PATCH', vPatch
     project.logger.log(logLevel, 'Using ({}, {}, {}) as NBT version', vMajor, vMinor, vPatch)
 }
+
+SourceSet functionalTestSet = null
+
+sourceSets {
+    functionalTestSet = create("functionalTest") {
+        java {
+            srcDir("src/functionalTest/java")
+            compileClasspath += sourceSets.patchedMc.output + sourceSets.main.output
+        }
+    }
+}
+
+configurations { configs ->
+    // Keep all dependencies from the main mod in the functional test mod
+    named(functionalTestSet.compileClasspathConfigurationName).configure {it.extendsFrom(named("compileClasspath").get())}
+    named(functionalTestSet.runtimeClasspathConfigurationName).configure {it.extendsFrom(named("runtimeClasspath").get())}
+    named(functionalTestSet.annotationProcessorConfigurationName).configure {it.extendsFrom(named("annotationProcessor").get())}
+}
+
+tasks.register(functionalTestSet.jarTaskName, Jar) {
+    from(functionalTestSet.output)
+    archiveClassifier.set("functionalTests")
+    // we don't care about the version number here, keep it stable to avoid polluting the tmp directory
+    archiveVersion.set("1.0")
+    destinationDirectory.set(new File(buildDir, "tmp"))
+}
+tasks.named("assemble").configure {
+    dependsOn(functionalTestSet.jarTaskName)
+}
+
+// Run tests in the default runServer/runClient configurations
+tasks.named("runServer", JavaExec).configure {
+    dependsOn(functionalTestSet.jarTaskName)
+    classpath(configurations.named(functionalTestSet.runtimeClasspathConfigurationName), tasks.named(functionalTestSet.jarTaskName))
+}
+
+tasks.named("runClient", JavaExec).configure {
+    dependsOn(functionalTestSet.jarTaskName)
+    classpath(configurations.named(functionalTestSet.runtimeClasspathConfigurationName), tasks.named(functionalTestSet.jarTaskName))
+}
