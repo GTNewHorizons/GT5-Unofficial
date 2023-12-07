@@ -300,6 +300,7 @@ public final class ModItems {
             MaterialGenerator.generate(ELEMENT.getInstance().RHODIUM);
             MaterialGenerator.generate(ELEMENT.getInstance().RHENIUM);
             MaterialGenerator.generate(ELEMENT.getInstance().THALLIUM);
+            MaterialGenerator.generate(ELEMENT.getInstance().GERMANIUM);
 
             // RADIOACTIVE ELEMENTS
             MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().POLONIUM, false);
@@ -865,13 +866,6 @@ public final class ModItems {
                     "Lanthanum",
                     Materials.Lanthanum.mElement.name(),
                     Utils.rgbtoHexValue(106, 127, 163));
-        }
-        if (!ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGermanium", 1))) {
-            ItemUtils.generateSpecialUseDusts(
-                    "Germanium",
-                    "Germanium",
-                    "Ge",
-                    ELEMENT.getInstance().GERMANIUM.getRgbAsHex());
         }
 
         // Just an unusual plate needed for some black magic.
