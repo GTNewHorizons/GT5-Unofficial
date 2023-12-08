@@ -46,7 +46,7 @@ public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_Basi
 
     @Override
     public int getCapacity() {
-        return 4000 * this.mTier;
+        return 16000;
     }
 
     public void onConfigLoad() {
