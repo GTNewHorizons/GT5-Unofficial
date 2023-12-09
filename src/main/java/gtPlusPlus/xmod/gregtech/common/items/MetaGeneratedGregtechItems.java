@@ -272,21 +272,22 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
                         "Wood's Glass Lens",
                         "Allows UV & IF to pass through, blocks visible light spectrums"));
 
-        int aStartID = 141;
+        // 141 now unused, was the ulv transmission component
+        int aStartID = 142;
         GregtechItemList[] aTransParts = new GregtechItemList[] { GregtechItemList.TransmissionComponent_LV,
                 GregtechItemList.TransmissionComponent_MV, GregtechItemList.TransmissionComponent_HV,
                 GregtechItemList.TransmissionComponent_EV, GregtechItemList.TransmissionComponent_IV,
                 GregtechItemList.TransmissionComponent_LuV, GregtechItemList.TransmissionComponent_ZPM,
                 GregtechItemList.TransmissionComponent_UV, GregtechItemList.TransmissionComponent_UHV, };
-        for (int aIndex = 0; aIndex < aTransParts.length; aIndex++) {
-            aTransParts[aIndex].set(
+        for (int tier = 1; tier < aTransParts.length + 1; tier++) {
+            aTransParts[tier - 1].set(
                     this.addItem(
                             aStartID++,
-                            "Transmission Component (" + GT_Values.VN[aIndex] + ")",
+                            "Transmission Component (" + GT_Values.VN[tier] + ")",
                             "",
-                            getTcAspectStack(TC_Aspects.ELECTRUM, aIndex),
-                            getTcAspectStack(TC_Aspects.MACHINA, aIndex),
-                            getTcAspectStack(TC_Aspects.MAGNETO, aIndex)));
+                            getTcAspectStack(TC_Aspects.ELECTRUM, tier),
+                            getTcAspectStack(TC_Aspects.MACHINA, tier),
+                            getTcAspectStack(TC_Aspects.MAGNETO, tier)));
         }
 
         // Distillus Chip

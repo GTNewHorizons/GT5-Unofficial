@@ -881,7 +881,7 @@ public class CI {
 
     public static ItemStack getFieldGenerator(int aTier, int aSize) {
         ItemStack aType;
-        int aLazyTier = 0;
+        int aLazyTier = 1;
         if (aTier == aLazyTier++) {
             aType = CI.fieldGenerator_LV;
         } else if (aTier == aLazyTier++) {
@@ -963,7 +963,7 @@ public class CI {
     }
 
     public static ItemStack getTransmissionComponent(int aTier, int aAmount) {
-        GregtechItemList[] aTransParts = new GregtechItemList[] { GregtechItemList.TransmissionComponent_LV,
+        GregtechItemList[] aTransParts = new GregtechItemList[] { null, GregtechItemList.TransmissionComponent_LV,
                 GregtechItemList.TransmissionComponent_MV, GregtechItemList.TransmissionComponent_HV,
                 GregtechItemList.TransmissionComponent_EV, GregtechItemList.TransmissionComponent_IV,
                 GregtechItemList.TransmissionComponent_LuV, GregtechItemList.TransmissionComponent_ZPM,

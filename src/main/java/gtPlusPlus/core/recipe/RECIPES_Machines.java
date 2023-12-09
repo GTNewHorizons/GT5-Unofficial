@@ -753,14 +753,14 @@ public class RECIPES_Machines {
                 GregtechItemList.Cover_Overflow_MV.get(1L), GregtechItemList.Cover_Overflow_HV.get(1L),
                 GregtechItemList.Cover_Overflow_EV.get(1L), GregtechItemList.Cover_Overflow_IV.get(1L), };
 
-        for (int i = 1; i < aOutputs.length; i++) {
+        for (int tier = 1; tier < aOutputs.length + 1; tier++) {
             CORE.RA.addSixSlotAssemblingRecipe(
-                    new ItemStack[] { CI.getNumberedBioCircuit(19), CI.getElectricPump(i, 2), CI.getElectricMotor(i, 2),
-                            CI.getPlate(i, 4) },
-                    Materials.SolderingAlloy.getFluid(i * (144)),
-                    aOutputs[i].copy(),
+                    new ItemStack[] { CI.getNumberedBioCircuit(19), CI.getElectricPump(tier, 2),
+                            CI.getElectricMotor(tier, 2), CI.getPlate(tier, 4) },
+                    Materials.SolderingAlloy.getFluid(tier * (144)),
+                    aOutputs[tier - 1].copy(),
                     20 * 20,
-                    MaterialUtils.getVoltageForTier(i));
+                    MaterialUtils.getVoltageForTier(tier));
         }
     }
 
@@ -2715,17 +2715,17 @@ public class RECIPES_Machines {
                 GregtechItemList.Charger_LuV.get(1), GregtechItemList.Charger_ZPM.get(1),
                 GregtechItemList.Charger_UV.get(1), GregtechItemList.Charger_UHV.get(1) };
 
-        for (int tier = 1; tier < aChargers.length; tier++) {
+        for (int tier = 1; tier < aChargers.length + 1; tier++) {
 
             ItemStack[] aInputs = new ItemStack[] { CI.getTieredMachineHull(tier, 1),
                     CI.getTransmissionComponent(tier, 2), CI.getFieldGenerator(tier, 1),
-                    CI.getTieredComponent(OrePrefixes.plate, tier, 4),
-                    CI.getTieredComponent(OrePrefixes.circuit, tier, 2), };
+                    CI.getTieredComponent(OrePrefixes.plate, tier + 1, 4),
+                    CI.getTieredComponent(OrePrefixes.circuit, tier + 1, 2), };
             CORE.RA.addSixSlotAssemblingRecipe(
                     aInputs,
-                    CI.getAlternativeTieredFluid(tier, (144 * 2 * tier)), // Input Fluid
-                    aChargers[tier],
-                    45 * 10 * (tier),
+                    CI.getAlternativeTieredFluid(tier, (144 * 2 * (tier + 1))), // Input Fluid
+                    aChargers[tier - 1],
+                    45 * 10 * (tier + 1),
                     MaterialUtils.getVoltageForTier(tier));
         }
     }
