@@ -252,6 +252,11 @@ public abstract class GT_MetaTileEntity_LargeBoiler
     }
 
     @Override
+    protected boolean filtersFluid() {
+        return false;
+    }
+
+    @Override
     @NotNull
     public CheckRecipeResult checkProcessing() {
         if (!isFuelValid()) return CheckRecipeResultRegistry.NO_FUEL_FOUND;
