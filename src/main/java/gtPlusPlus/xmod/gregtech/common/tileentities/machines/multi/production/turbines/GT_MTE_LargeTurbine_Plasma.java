@@ -87,6 +87,11 @@ public class GT_MTE_LargeTurbine_Plasma extends GregtechMetaTileEntity_LargerTur
     }
 
     @Override
+    protected boolean filtersFluid() {
+        return false;
+    }
+
+    @Override
     public @NotNull CheckRecipeResult checkProcessing() {
 
         try {

@@ -91,6 +91,11 @@ public class GT_MTE_LargeTurbine_Gas extends GregtechMetaTileEntity_LargerTurbin
     }
 
     @Override
+    protected boolean filtersFluid() {
+        return false;
+    }
+
+    @Override
     public @NotNull CheckRecipeResult checkProcessing() {
         List<FluidStack> fluids = getStoredFluids();
         for (FluidStack fluid : fluids) {

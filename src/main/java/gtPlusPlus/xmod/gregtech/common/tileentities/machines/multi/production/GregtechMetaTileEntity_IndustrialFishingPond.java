@@ -174,6 +174,11 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends
     }
 
     @Override
+    protected boolean filtersFluid() {
+        return false;
+    }
+
+    @Override
     public @NotNull CheckRecipeResult checkProcessing() {
         ItemStack controllerStack = getControllerSlot();
         if (controllerStack != null) {

@@ -157,6 +157,11 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends
     }
 
     @Override
+    protected boolean filtersFluid() {
+        return false;
+    }
+
+    @Override
     public boolean isCorrectMachinePart(final ItemStack aStack) {
         return true;
     }
