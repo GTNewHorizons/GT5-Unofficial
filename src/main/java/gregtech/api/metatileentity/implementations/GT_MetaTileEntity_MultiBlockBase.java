@@ -1589,7 +1589,16 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     protected void setHatchRecipeMap(GT_MetaTileEntity_Hatch_Input hatch) {
-        hatch.mRecipeMap = getRecipeMap();
+        if (filtersFluid()) {
+            hatch.mRecipeMap = getRecipeMap();
+        }
+    }
+
+    /**
+     * @return If this multi filters fluid input for hatches based on recipemap.
+     */
+    protected boolean filtersFluid() {
+        return true;
     }
 
     @Override
