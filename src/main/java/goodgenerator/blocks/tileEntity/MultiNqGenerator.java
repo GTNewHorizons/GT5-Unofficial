@@ -197,6 +197,11 @@ public class MultiNqGenerator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     }
 
     @Override
+    protected boolean filtersFluid() {
+        return false;
+    }
+
+    @Override
     public @NotNull CheckRecipeResult checkProcessing_EM() {
 
         ArrayList<FluidStack> tFluids = getStoredFluids();
