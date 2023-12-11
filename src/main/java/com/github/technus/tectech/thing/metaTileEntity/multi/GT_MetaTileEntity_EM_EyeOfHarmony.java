@@ -1503,7 +1503,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             } else {
                 str.add(
                         "Estimated EU/t: " + RED
-                                + toStandardForm(euPerTick)
+                                + toStandardForm(euPerTick.longValue())
                                 + RESET
                                 + " EU/t");
             }
