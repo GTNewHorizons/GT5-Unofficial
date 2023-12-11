@@ -5,6 +5,7 @@ import static com.github.technus.tectech.thing.CustomItemList.astralArrayFabrica
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.eyeOfHarmonyRenderBlock;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsBA0;
+import static com.github.technus.tectech.util.TT_Utility.toStandardForm;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -1502,7 +1503,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             } else {
                 str.add(
                         "Estimated EU/t: " + RED
-                                + ReadableNumberConverter.INSTANCE.toWideReadableForm(euPerTick.longValue())
+                                + toStandardForm(euPerTick)
                                 + RESET
                                 + " EU/t");
             }

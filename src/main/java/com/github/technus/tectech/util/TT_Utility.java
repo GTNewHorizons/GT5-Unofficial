@@ -32,6 +32,21 @@ public final class TT_Utility {
         return getFormatter().format("%+.5E", value).toString();
     }
 
+    // Formats to standard form.
+    public static String toStandardForm(long number) {
+        if (number == 0) {
+            return "0";
+        }
+
+        int exponent = (int) Math.floor(Math.log10(Math.abs(number)));
+        double mantissa = number / Math.pow(10, exponent);
+
+        // Round the mantissa to two decimal places
+        mantissa = Math.round(mantissa * 100.0) / 100.0;
+
+        return mantissa + "*10^" + exponent;
+    }
+
     public static int bitStringToInt(String bits) {
         if (bits == null) {
             return 0;
