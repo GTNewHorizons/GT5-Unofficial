@@ -68,7 +68,6 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
-import appeng.util.ReadableNumberConverter;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
@@ -1501,11 +1500,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             if (abs(euPerTick.longValue()) < LongMath.pow(10, 12)) {
                 str.add("Estimated EU/t: " + RED + formatNumbers(euPerTick) + RESET + " EU/t");
             } else {
-                str.add(
-                        "Estimated EU/t: " + RED
-                                + toStandardForm(euPerTick.longValue())
-                                + RESET
-                                + " EU/t");
+                str.add("Estimated EU/t: " + RED + toStandardForm(euPerTick.longValue()) + RESET + " EU/t");
             }
             str.add(GOLD + "-----------------------------------------------------");
         }
