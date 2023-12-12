@@ -89,6 +89,11 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
         return GTPPRecipeMaps.thermalBoilerRecipes;
     }
 
+    @Override
+    protected boolean filtersFluid() {
+        return false;
+    }
+
     private static Item mLavaFilter;
     private static Fluid mLava = null;
     private static Fluid mPahoehoe = null;
