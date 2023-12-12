@@ -320,6 +320,11 @@ public abstract class TileEntityModuleBase extends GT_MetaTileEntity_EnhancedMul
         structureBuild_EM(STRUCTURE_PIECE_MAIN, 0, 1, 0, stackSize, hintsOnly);
     }
 
+    @Override
+    protected boolean filtersFluid() {
+        return false;
+    }
+
     /**
      * Check if the structure of this machine is valid
      *
