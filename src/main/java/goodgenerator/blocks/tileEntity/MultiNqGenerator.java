@@ -246,7 +246,7 @@ public class MultiNqGenerator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
                 // If there's no startRecipeProcessing, ME input hatch wouldn't work
                 startRecipeProcessing();
                 FluidStack[] input = getStoredFluids().toArray(new FluidStack[0]);
-                int eff = 100, time = 1;
+                int time = 1;
                 if (LiquidAirConsumptionPerSecond != 0
                         && !consumeFuel(Materials.LiquidAir.getFluid(LiquidAirConsumptionPerSecond), input)) {
                     this.mEUt = 0;
@@ -255,7 +255,7 @@ public class MultiNqGenerator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
                     endRecipeProcessing();
                     return true;
                 }
-                if (getCoolant(input, true) != null) eff = getCoolant(input, false).getValue();
+                int eff = consumeCoolant(input);
                 if (consumeFuel(lockedFluid, input)) time = times;
                 this.mEUt = basicOutput * eff * time / 100;
                 this.trueEff = eff;
@@ -309,17 +309,23 @@ public class MultiNqGenerator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         return null;
     }
 
-    public Pair<FluidStack, Integer> getCoolant(FluidStack[] input, boolean isConsume) {
+    /**
+     * Finds valid coolant from given inputs and consumes if found.
+     *
+     * @param input Fluid inputs.
+     * @return Efficiency of the coolant. 100 if not found.
+     */
+    private int consumeCoolant(FluidStack[] input) {
         for (Pair<FluidStack, Integer> fluidPair : coolant) {
             FluidStack tFluid = fluidPair.getKey();
             for (FluidStack inFluid : input) {
                 if (inFluid != null && inFluid.isFluidEqual(tFluid) && inFluid.amount >= tFluid.amount) {
-                    if (isConsume) inFluid.amount -= tFluid.amount;
-                    return fluidPair;
+                    inFluid.amount -= tFluid.amount;
+                    return fluidPair.getValue();
                 }
             }
         }
-        return null;
+        return 100;
     }
 
     public void addAutoEnergy(long outputPower) {
