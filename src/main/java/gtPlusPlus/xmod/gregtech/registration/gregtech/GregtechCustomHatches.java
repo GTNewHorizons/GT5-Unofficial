@@ -196,7 +196,7 @@ public class GregtechCustomHatches {
         /*
          * Super Output Busses
          */
-        aStartID = 30031;
+        aStartID = 30032;
         GregtechItemList.Hatch_SuperBus_Output_LV.set(
                 ((IMetaTileEntity) makeOutputBus(aStartID++, "hatch.superbus.output.tier.01", "Super Bus (O) (LV)", 1))
                         .getStackForm(1L));
