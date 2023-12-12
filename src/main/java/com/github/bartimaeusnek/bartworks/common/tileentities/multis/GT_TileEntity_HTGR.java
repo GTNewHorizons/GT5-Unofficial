@@ -261,6 +261,11 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
     }
 
     @Override
+    protected boolean filtersFluid() {
+        return false;
+    }
+
+    @Override
     public boolean checkRecipe(ItemStack controllerStack) {
 
         if (this.empty) {
