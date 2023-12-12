@@ -4,14 +4,11 @@ import static gregtech.api.enums.ToolDictNames.*;
 import static gregtech.common.items.GT_MetaGenerated_Tool_01.*;
 import static net.glease.ggfab.api.GGFabRecipeMaps.toolCastRecipes;
 
-import java.util.stream.IntStream;
-
 import net.glease.ggfab.api.GigaGramFabAPI;
 import net.glease.ggfab.items.GGMetaItem_DumbItems;
 import net.glease.ggfab.mte.MTE_AdvAssLine;
 import net.glease.ggfab.mte.MTE_LinkedInputBus;
 import net.glease.ggfab.util.GGUtils;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 import cpw.mods.fml.common.Mod;
@@ -19,15 +16,11 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.TierEU;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe;
 import gregtech.api.util.GT_ProcessingArray_Manager;
-import gregtech.api.util.GT_RecipeConstants;
 
 @Mod(
         modid = GGConstants.MODID,
@@ -136,14 +129,7 @@ public class GigaGramFab {
     public void init(FMLInitializationEvent event) {}
 
     @Mod.EventHandler
-    public void postInit(FMLPostInitializationEvent event) {
-        GT_Values.RA.stdBuilder().itemInputs(
-                IntStream.range(0, 16).mapToObj(ignored -> new ItemStack(Items.diamond)).toArray(ItemStack[]::new))
-                .fluidInputs(Materials.SolderingAlloy.getMolten(1)).itemOutputs(ItemList.Pump_EV.get(1L))
-                .metadata(GT_RecipeConstants.RESEARCH_ITEM, ItemList.Pump_LV.get(1))
-                .metadata(GT_RecipeConstants.RESEARCH_TIME, 1).eut(TierEU.RECIPE_IV).duration(160000)
-                .addTo(GT_RecipeConstants.AssemblyLine);
-    }
+    public void postInit(FMLPostInitializationEvent event) {}
 
     private void initDumbItem1() {
         GGMetaItem_DumbItems i1 = new GGMetaItem_DumbItems("ggfab.d1");
