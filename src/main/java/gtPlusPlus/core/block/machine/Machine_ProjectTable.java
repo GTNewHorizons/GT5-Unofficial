@@ -102,7 +102,7 @@ public class Machine_ProjectTable extends BlockContainer implements ITileTooltip
         }
 
         final TileEntity te = world.getTileEntity(x, y, z);
-        if ((te != null) && (te instanceof TileEntityProjectTable)) {
+        if (te instanceof TileEntityProjectTable) {
             if (!holdingWrench) {
                 player.openGui(GTplusplus.instance, 0, world, x, y, z);
                 return true;
@@ -130,7 +130,6 @@ public class Machine_ProjectTable extends BlockContainer implements ITileTooltip
         return false;
     }
 
-    @Optional.Method(modid = Mods.Names.ENDER_I_O)
     private static boolean checkEnderIOWrench(final ItemStack item) {
         if (ReflectionUtils.doesClassExist("crazypants.enderio.api.tool.ITool")) {
             Class<?> wrenchClass;
@@ -142,7 +141,6 @@ public class Machine_ProjectTable extends BlockContainer implements ITileTooltip
         return false;
     }
 
-    @Optional.Method(modid = "Buildcraft")
     private static boolean checkBuildcraftWrench(final ItemStack item) {
         if (ReflectionUtils.doesClassExist("buildcraft.api.tools.IToolWrench")) {
             Class<?> wrenchClass;
