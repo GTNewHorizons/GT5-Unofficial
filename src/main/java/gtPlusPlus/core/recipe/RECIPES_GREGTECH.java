@@ -853,7 +853,7 @@ public class RECIPES_GREGTECH {
                 .itemInputs(
                         ItemUtils.simpleMetaStack(ModItems.itemHalfCompleteCasings, 0, 2),
                         GT_OreDictUnificator.get(OrePrefixes.plate, Materials.VanadiumGallium, 8L))
-                .itemOutputs(ItemUtils.simpleMetaStack(ModItems.itemHalfCompleteCasings, 0, 4))
+                .itemOutputs(ItemUtils.simpleMetaStack(ModItems.itemHalfCompleteCasings, 1, 8))
                 .fluidInputs(Materials.Tantalum.getMolten(4 * INGOTS)).duration(32 * SECONDS).eut(TierEU.RECIPE_MV)
                 .addTo(assemblerRecipes);
 
