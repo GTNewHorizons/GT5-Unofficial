@@ -50,6 +50,7 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -477,7 +478,6 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
 
                 doFermium = false;
                 doNeptunium = false;
-                final ItemStack controllerStack = getControllerSlot();
 
                 if (recipe.mSpecialValue <= getFocusingTier()) {
                     if (mFermiumHatch != null && mFermiumHatch.getFluid() != null
@@ -492,9 +492,7 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
                     }
                 }
 
-                chances = GetChanceOutputs(
-                        recipe,
-                        doNeptunium && controllerStack != null ? controllerStack.getItemDamage() - 1 : -1);
+                chances = getOutputChances(recipe, doNeptunium ? findProgrammedCircuitNumber() : -1);
 
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
@@ -604,6 +602,20 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
                     return fluids.toArray(new FluidStack[0]);
                 });
             }
+
+            private int findProgrammedCircuitNumber() {
+                if (isInputSeparationEnabled()) {
+                    for (ItemStack stack : inputItems) {
+                        if (ItemList.Circuit_Integrated.isStackEqual(stack)) {
+                            return stack.getItemDamage() - 1;
+                        }
+                    }
+                    return -1;
+                } else {
+                    final ItemStack controllerStack = getControllerSlot();
+                    return controllerStack != null ? controllerStack.getItemDamage() - 1 : -1;
+                }
+            }
         };
     }
 
@@ -670,7 +682,7 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
         return false;
     }
 
-    private int[] GetChanceOutputs(GT_Recipe tRecipe, int aChanceIncreased) {
+    private int[] getOutputChances(GT_Recipe tRecipe, int aChanceIncreased) {
         int difference = getFocusingTier() - tRecipe.mSpecialValue;
         int aOutputsAmount = tRecipe.mOutputs.length + tRecipe.mFluidOutputs.length;
         int aChancePerOutput = 10000 / aOutputsAmount;
