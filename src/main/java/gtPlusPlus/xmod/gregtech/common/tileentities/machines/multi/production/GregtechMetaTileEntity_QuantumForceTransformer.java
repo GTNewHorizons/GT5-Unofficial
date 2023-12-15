@@ -694,7 +694,7 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
                 for (int i = 0; i < tChances.length; i++) {
                     if (doNeptunium) {
                         if (i == aChanceIncreased) {
-                            tChances[i] = aChancePerOutput / 2 * (aOutputsAmount - 1);
+                            tChances[i] += aChancePerOutput / 2 * (aOutputsAmount - 1);
                         } else {
                             tChances[i] /= 2;
                         }
@@ -709,7 +709,7 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
                 for (int i = 0; i < tChances.length; i++) {
                     if (doNeptunium) {
                         if (i == aChanceIncreased) {
-                            tChances[i] = aChancePerOutput * 3 / 4 * (aOutputsAmount - 1);
+                            tChances[i] += aChancePerOutput * 3 / 4 * (aOutputsAmount - 1);
                         } else {
                             tChances[i] /= 4;
                         }
