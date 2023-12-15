@@ -600,7 +600,7 @@ public class GTMTE_LapotronicSuperCapacitor
         }
 
         // Check if enough (more than 50%) non-empty caps
-        if (capacitors[8] > capacitors[0] + capacitors[1]
+        if (capacitors[5] > capacitors[0] + capacitors[1]
                 + capacitors[2]
                 + capacitors[3]
                 + getUHVCapacitorCount()
