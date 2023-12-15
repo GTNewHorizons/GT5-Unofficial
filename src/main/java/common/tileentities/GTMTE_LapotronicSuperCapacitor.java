@@ -1013,7 +1013,11 @@ public class GTMTE_LapotronicSuperCapacitor
      */
     @Override
     public long maxEUInput() {
-        return mMaxEUIn;
+        if (wireless_mode) {
+            return Long.MAX_VALUE;
+        } else {
+            return mMaxEUIn;
+        }
     }
 
     @Override
@@ -1023,7 +1027,11 @@ public class GTMTE_LapotronicSuperCapacitor
 
     @Override
     public long maxEUOutput() {
-        return mMaxEUOut;
+        if (wireless_mode) {
+            return Long.MAX_VALUE;
+        } else {
+            return mMaxEUOut;
+        }
     }
 
     @Override
