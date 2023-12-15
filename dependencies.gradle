@@ -42,7 +42,8 @@ dependencies {
     api("com.github.GTNewHorizons:waila:1.6.2:dev")
     api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-280-GTNH:dev")
     api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.1.63-gtnh:dev")
-//    api("com.github.GTNewHorizons:NotEnoughIds:1.5.1:dev")
+    api('com.github.GTNewHorizons:Postea-GTNH:master-packages')
+    api('com.github.GTNewHorizons:NotEnoughIds:1.5.1-metadatav2.2+a20bd8c0f6')
 
     implementation("com.github.GTNewHorizons:Avaritia:1.46:dev")
 

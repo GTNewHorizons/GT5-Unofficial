@@ -55,6 +55,8 @@ public class ModernMaterialItemRenderer implements IItemRenderer {
 
         ModernMaterial material = ModernMaterial.getMaterialFromItemStack(itemStack);
 
+        if (material == null) return;
+
         // Branch off to custom logic.
         if (material.getCustomItemRenderer() != null) {
             material.getCustomItemRenderer()

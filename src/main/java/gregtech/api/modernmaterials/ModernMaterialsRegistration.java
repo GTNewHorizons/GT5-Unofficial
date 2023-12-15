@@ -23,19 +23,19 @@ import gregtech.api.modernmaterials.tooltips.CustomTooltips;
 
 public class ModernMaterialsRegistration {
 
-    public void run() {
+    public static final ModernMaterial Copper = new ModernMaterial.ModernMaterialBuilder("Copper").setMaterialID(35)
+        .setColor(120, 100, 0)
+        .setTextureMode(Metal_Dull)
+        .addAllParts()
+        .addFluid(Gas, 100_000)
+        .addFluid(NoPrefix, 3_000)
+        .addFluid(Molten, 10_000)
+        .addFluid(Plasma, 100_000)
+        .addCustomFluid(new ModernMaterialFluid.Builder("Zebra % Fluid %").setTemperature(120_000_000), false)
+        .setMaterialTier(TierEU.MAX)
+        .build();
 
-        new ModernMaterial.ModernMaterialBuilder("Copper").setMaterialID(1)
-            .setColor(120, 100, 0)
-            .setTextureMode(Metal_Dull)
-            .addAllParts()
-            .addFluid(Gas, 100_000)
-            .addFluid(NoPrefix, 3_000)
-            .addFluid(Molten, 10_000)
-            .addFluid(Plasma, 100_000)
-            .addCustomFluid(new ModernMaterialFluid.Builder("Zebra % Fluid %").setTemperature(120_000_000), false)
-            .setMaterialTier(TierEU.MAX)
-            .build();
+    public void run() {
 
         new ModernMaterial.ModernMaterialBuilder("GERE").setMaterialID(2)
             .setColor(3, 100, 97)
@@ -58,7 +58,7 @@ public class ModernMaterialsRegistration {
             .build();
 
         new ModernMaterial.ModernMaterialBuilder("Universium").setColor(255, 255, 255)
-            .setMaterialID(17)
+            .setMaterialID(139)
             .setTextureMode(Custom)
             .setMaterialTier(TierEU.MAX)
             .addPlayerEffect(Effects::radiation)

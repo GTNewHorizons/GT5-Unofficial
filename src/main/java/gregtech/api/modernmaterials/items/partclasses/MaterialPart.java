@@ -46,6 +46,8 @@ public class MaterialPart extends Item {
 
         ModernMaterial material = ModernMaterial.getMaterialFromItemStack(itemStack);
 
+        if (material == null) return "ERROR: Null Material";
+
         String trueName = partName.replace("%", material.getMaterialName());
 
         // Localise the material name.
@@ -68,6 +70,8 @@ public class MaterialPart extends Item {
     @Override
     public void onUpdate(ItemStack itemStack, World world, Entity entity, int slotIndex, boolean isCurrentItem)  {
         final ModernMaterial material = ModernMaterial.getMaterialFromItemStack(itemStack);
+
+        if (material == null) return;
 
         for (IMaterialEffect effect : material.getEffects()) {
             effect.apply(itemStack, world, entity, slotIndex, isCurrentItem);

@@ -121,7 +121,7 @@ public final class ModernMaterial {
     }
 
     public static ModernMaterial getMaterialFromID(final int materialID) {
-        return materialIDToMaterial.get(materialID);
+        return materialIDToMaterial.getOrDefault(materialID, null);
     }
 
     public static void registerMaterial(ModernMaterial material) {
@@ -192,7 +192,7 @@ public final class ModernMaterial {
             materialToBuild = new ModernMaterial(materialName);
         }
 
-        void build() {
+        ModernMaterial build() {
             ModernMaterial builtMaterial = materialToBuild;
 
             for (IEnumPart part : materialToBuild.existingPartsForMaterial) {
@@ -206,6 +206,8 @@ public final class ModernMaterial {
 
             safeguardChecks(builtMaterial);
             registerMaterial(builtMaterial);
+
+            return builtMaterial;
         }
 
         public ModernMaterialBuilder setColor(int red, int green, int blue) {
