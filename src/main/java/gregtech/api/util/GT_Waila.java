@@ -2,23 +2,22 @@ package gregtech.api.util;
 
 public abstract class GT_Waila {
 
-    public static String getMachineProgressString(boolean isActive, int maxProgress, int progress) {
-        return getMachineProgressString(isActive, (long) maxProgress, (long) progress);
+    public static String getMachineProgressString(boolean mIsActive, int mMaxProgresstime, int mProgresstime) {
+        return getMachineProgressString(mIsActive, (long) mMaxProgresstime, (long) mProgresstime);
     }
 
-    public static String getMachineProgressString(boolean isActive, long maxProgress, long progress) {
-        final String result;
+    public static String getMachineProgressString(boolean mIsActive, long mMaxProgresstime, long mProgresstime) {
 
-        if (isActive) {
-            if (maxProgress < 20) {
-                result = String.format("Progress: %d ticks remaining", maxProgress);
-            } else {
-                result = String.format("Progress: %d s / %d s", progress / 20, maxProgress / 20);
-            }
-        } else {
-            result = "Idle";
-        }
+        if (!mIsActive) return "Idle";
 
-        return result;
+        StringBuilder ret = new StringBuilder("In progress: ")
+            .append(String.format("%,.2f", (double) mProgresstime / 20))
+            .append("s / ")
+            .append(String.format("%,.2f", (double) mMaxProgresstime / 20))
+            .append("s (")
+            .append(GT_Utility.formatNumbers((Math.round((double) mProgresstime / mMaxProgresstime * 1000) / 10.0)))
+            .append("%)");
+
+        return ret.toString();
     }
 }
