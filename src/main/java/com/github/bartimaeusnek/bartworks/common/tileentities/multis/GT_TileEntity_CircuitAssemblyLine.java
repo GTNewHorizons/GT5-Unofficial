@@ -437,7 +437,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends
             if (!this.checkPiece(STRUCTURE_PIECE_NEXT, leftToRight ? -i : i, 0, 0)) {
                 return false;
             }
-            length = i;
+            length = i + 1;
 
             if (!this.mOutputBusses.isEmpty()) {
                 return this.mEnergyHatches.size() == 1 && this.mMaintenanceHatches.size() == 1;
