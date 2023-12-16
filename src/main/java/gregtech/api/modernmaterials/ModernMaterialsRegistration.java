@@ -35,17 +35,19 @@ public class ModernMaterialsRegistration {
         .setMaterialTier(TierEU.MAX)
         .build();
 
+    public static final ModernMaterial damascusSteel = new ModernMaterial.ModernMaterialBuilder("GERE").setMaterialID(335)
+        .setColor(3, 100, 97)
+        .setTextureMode(Metal_Shiny)
+        .addAllParts()
+        .addFluid(Gas, 1_000)
+        .addFluid(NoPrefix, 3_000)
+        .addFluid(Molten, 10_000)
+        .addFluid(Plasma, 100_000)
+        .build();
+
     public void run() {
 
-        new ModernMaterial.ModernMaterialBuilder("GERE").setMaterialID(2)
-            .setColor(3, 100, 97)
-            .setTextureMode(Metal_Shiny)
-            .addAllParts()
-            .addFluid(Gas, 1_000)
-            .addFluid(NoPrefix, 3_000)
-            .addFluid(Molten, 10_000)
-            .addFluid(Plasma, 100_000)
-            .build();
+
 
         new ModernMaterial.ModernMaterialBuilder("EWAD").setMaterialID(16)
             .setColor(120, 100, 123)
