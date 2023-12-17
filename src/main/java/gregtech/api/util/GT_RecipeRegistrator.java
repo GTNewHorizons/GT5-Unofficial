@@ -188,11 +188,13 @@ public class GT_RecipeRegistrator {
             aData.mMaterial.mMaterial,
             aData.mMaterial.mAmount,
             true);
-        registerReverseFluidSmelting(
-            GT_Utility.copyAmount(1, aStack),
-            aData.mMaterial.mMaterial,
-            aData.mMaterial.mAmount,
-            aData.getByProduct(0));
+        if (!GT_Utility.areStacksEqual(GT_ModHandler.getIC2Item("iridiumOre", 1L), aStack)) {
+            registerReverseFluidSmelting(
+                GT_Utility.copyAmount(1, aStack),
+                aData.mMaterial.mMaterial,
+                aData.mMaterial.mAmount,
+                aData.getByProduct(0));
+        }
         registerReverseArcSmelting(GT_Utility.copyAmount(1, aStack), aData);
     }
 
