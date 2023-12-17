@@ -177,7 +177,10 @@ public class GT_MTE_LargeTurbine_Plasma extends GregtechMetaTileEntity_LargerTur
             // Reduce produced power depending on the ratio between fuel value and turbine EU/t with the following
             // formula:
             // EU/t = EU/t * MIN(1, ( ( (FuelValue / 200) ^ 2 ) / EUPerTurbine))
-            int fuelValue = getFuelValue(new FluidStack(tFluids.get(0), 0));
+            int fuelValue = 0;
+            if (tFluids.size() > 0) {
+                fuelValue = getFuelValue(new FluidStack(tFluids.get(0), 0));
+            }
             float magicValue = (fuelValue * 0.005f) * (fuelValue * 0.005f);
             float efficiencyLoss = Math.min(1.0f, magicValue / euPerTurbine);
             newPower *= efficiencyLoss;
