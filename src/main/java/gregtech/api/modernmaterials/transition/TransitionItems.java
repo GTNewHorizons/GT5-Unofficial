@@ -333,6 +333,8 @@ public abstract class TransitionItems {
 
     private static BlocksEnum getPrefixFromIDGroupOres(int metadata) {
         switch (metadata / 1000) {
+
+            // Normal ores
             case 0 -> {
                 return BlocksEnum.EarthNormalOre;
             }
@@ -353,6 +355,29 @@ public abstract class TransitionItems {
             }
             case 6 -> {
                 return BlocksEnum.BasaltNormalOre;
+            }
+
+            // Small ores
+            case 16 -> {
+                return BlocksEnum.EarthSmallOre;
+            }
+            case 17 -> {
+                return BlocksEnum.NetherSmallOre;
+            }
+            case 18 -> {
+                return BlocksEnum.EndSmallOre;
+            }
+            case 19 -> {
+                return BlocksEnum.BlackGraniteSmallOre;
+            }
+            case 20 -> {
+                return BlocksEnum.RedGraniteSmallOre;
+            }
+            case 21 -> {
+                return BlocksEnum.MarbleSmallOre;
+            }
+            case 22 -> {
+                return BlocksEnum.BasaltSmallOre;
             }
         }
         return null;
