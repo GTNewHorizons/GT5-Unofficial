@@ -94,8 +94,8 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<
                 .addInfo("Constructed exactly the same as a normal EBF").addPollutionAmount(getPollutionPerSecond(null))
                 .addSeparator().addController("Bottom center").addCasingInfoMin(mCasingName, 8, false)
                 .addInputHatch("Any Casing", 1).addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1)
-                .addOutputHatch("Any Casing", 1).addStructureHint(mHatchName, 1).addEnergyHatch("Any Casing", 1)
-                .addMufflerHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1)
+                .addOutputHatch("Any Casing", 1).addEnergyHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
+                .addMaintenanceHatch("Any Casing", 1).addOtherStructurePart(mHatchName, "Any Casing", 1)
                 .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
