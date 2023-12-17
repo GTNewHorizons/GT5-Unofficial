@@ -1,5 +1,4 @@
-package gregtech.api.modernmaterials.blocks.blocktypes.orenormal;
-
+package gregtech.api.modernmaterials.blocks.blocktypes.ore;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.modernmaterials.blocks.dumbbase.basematerialblock.BaseMaterialBlock;
@@ -12,9 +11,9 @@ import net.minecraft.world.IBlockAccess;
 import java.awt.*;
 import java.util.HashSet;
 
-public class NormalBaseMaterialBlock extends BaseMaterialBlock {
+public abstract class BaseOreBlock extends BaseMaterialBlock {
 
-    public NormalBaseMaterialBlock(BlocksEnum blockEnum, HashSet<ModernMaterial> validIDs) {
+    public BaseOreBlock(BlocksEnum blockEnum, HashSet<ModernMaterial> validIDs) {
         super(blockEnum, validIDs);
     }
 
@@ -31,11 +30,6 @@ public class NormalBaseMaterialBlock extends BaseMaterialBlock {
     @Override
     public boolean isOpaqueCube() {
         return false;
-    }
-
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister reg) {
-        blockIcon = reg.registerIcon("gregtech:ModernMaterialsIcons/Blocks/ore");
     }
 
     @SideOnly(Side.CLIENT)

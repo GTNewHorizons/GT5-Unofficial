@@ -3,8 +3,10 @@ package gregtech.api.modernmaterials.blocks.registration;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import gregtech.api.GregTech_API;
 import gregtech.api.modernmaterials.blocks.blocktypes.blockof.BlockOfBaseMaterialBlock;
 import gregtech.api.modernmaterials.blocks.blocktypes.blockof.BlockOfSimpleBlockRenderer;
+import gregtech.api.modernmaterials.blocks.blocktypes.ore.smallore.SmallOreBlock;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -17,8 +19,8 @@ import org.jetbrains.annotations.NotNull;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import gregtech.api.modernmaterials.blocks.blocktypes.framebox.FrameBoxBaseMaterialBlock;
 import gregtech.api.modernmaterials.blocks.blocktypes.framebox.FrameBoxSimpleBlockRenderer;
-import gregtech.api.modernmaterials.blocks.blocktypes.orenormal.NormalBaseMaterialBlock;
-import gregtech.api.modernmaterials.blocks.blocktypes.orenormal.NormalOreSimpleBlockRenderer;
+import gregtech.api.modernmaterials.blocks.blocktypes.ore.normalore.NormalOreBlock;
+import gregtech.api.modernmaterials.blocks.blocktypes.ore.OreBlockRenderer;
 import gregtech.api.modernmaterials.blocks.dumbbase.basematerialblock.BaseMaterialBlock;
 import gregtech.api.modernmaterials.blocks.dumbbase.basematerialblock.BaseMaterialTileEntity;
 import gregtech.api.modernmaterials.items.partclasses.IEnumPart;
@@ -29,12 +31,30 @@ import gregtech.api.modernmaterials.ModernMaterial;
  */
 public enum BlocksEnum implements IEnumPart {
 
+
     // Define new blocks here.
     FrameBox("% Frame Box", FrameBoxBaseMaterialBlock.class, new FrameBoxSimpleBlockRenderer()),
     SolidBlock("Block of %", BlockOfBaseMaterialBlock.class, new BlockOfSimpleBlockRenderer()),
-    EarthOreNormal("% Ore", NormalBaseMaterialBlock.class, new NormalOreSimpleBlockRenderer(Blocks.stone, 0)),
-    MoonOreNormal("% Ore", NormalBaseMaterialBlock.class, new NormalOreSimpleBlockRenderer(Blocks.end_stone, 0)),
-    MarsOreNormal("% Ore", NormalBaseMaterialBlock.class, new NormalOreSimpleBlockRenderer(Blocks.netherrack, 0));
+
+
+    EarthNormalOre("% Ore", NormalOreBlock.class, new OreBlockRenderer(Blocks.stone, 0)),
+    NetherNormalOre("% Nether Ore", NormalOreBlock.class, new OreBlockRenderer(Blocks.netherrack, 0)),
+    EndNormalOre("% End Ore", NormalOreBlock.class, new OreBlockRenderer(Blocks.end_stone, 0)),
+    BlackGraniteNormalOre("% Black Granite Ore", NormalOreBlock.class, new OreBlockRenderer(GregTech_API.sBlockGranites, 0)),
+    RedGraniteNormalOre("% Red Granite Ore", NormalOreBlock.class, new OreBlockRenderer(GregTech_API.sBlockGranites, 8)),
+    MarbleNormalOre("% Marble Ore", NormalOreBlock.class, new OreBlockRenderer(GregTech_API.sBlockStones, 0)),
+    BasaltNormalOre("% Basalt Ore", NormalOreBlock.class, new OreBlockRenderer(GregTech_API.sBlockStones, 8)),
+
+
+    EarthSmallOre("Small % Ore", SmallOreBlock.class, new OreBlockRenderer(Blocks.stone, 0)),
+    NetherSmallOre("Small % Nether Ore", SmallOreBlock.class, new OreBlockRenderer(Blocks.netherrack, 0)),
+    EndSmallOre("Small % End Ore", SmallOreBlock.class, new OreBlockRenderer(Blocks.end_stone, 0)),
+    BlackGraniteSmallOre("Small % Black Granite Ore", SmallOreBlock.class, new OreBlockRenderer(GregTech_API.sBlockGranites, 0)),
+    RedGraniteSmallOre("Small % Red Granite Ore", SmallOreBlock.class, new OreBlockRenderer(GregTech_API.sBlockGranites, 8)),
+    MarbleSmallOre("Small % Marble Ore", SmallOreBlock.class, new OreBlockRenderer(GregTech_API.sBlockStones, 0)),
+    BasaltSmallOre("Small % Basalt Ore", SmallOreBlock.class, new OreBlockRenderer(GregTech_API.sBlockStones, 8));
+
+
 
     private final String unlocalizedName;
     private final Class<? extends BaseMaterialBlock> blockClass;
@@ -49,6 +69,7 @@ public enum BlocksEnum implements IEnumPart {
     private final HashMap<Integer, TileEntitySpecialRenderer> tileEntitySpecialRendererHashMap = new HashMap<>();
 
     private final HashMap<ModernMaterial, Item> materialIDToItem = new HashMap<>();
+    private Item item;
 
     /**
      * Constructs an instance of the enum with the given parameters.
@@ -108,7 +129,7 @@ public enum BlocksEnum implements IEnumPart {
     }
 
     public Item getItem(@NotNull ModernMaterial material) {
-        return materialIDToItem.get(material);
+        return materialIDToItem.getOrDefault(material, null);
     }
 
     @Override

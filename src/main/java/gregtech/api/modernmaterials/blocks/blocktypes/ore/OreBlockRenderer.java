@@ -1,4 +1,4 @@
-package gregtech.api.modernmaterials.blocks.blocktypes.orenormal;
+package gregtech.api.modernmaterials.blocks.blocktypes.ore;
 
 import static gregtech.api.modernmaterials.render.Utilities.drawBlock;
 
@@ -17,13 +17,13 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 import gregtech.api.modernmaterials.blocks.dumbbase.basematerialblock.BaseMaterialBlock;
 import gregtech.api.modernmaterials.ModernMaterial;
 
-public class NormalOreSimpleBlockRenderer implements ISimpleBlockRenderingHandler {
+public class OreBlockRenderer implements ISimpleBlockRenderingHandler {
 
     public final int renderID = RenderingRegistry.getNextAvailableRenderId();
     private final Block underlyingBlock;
     private final int underlyingBlockMeta;
 
-    public NormalOreSimpleBlockRenderer(@NotNull Block underlyingBlock, int meta) {
+    public OreBlockRenderer(@NotNull Block underlyingBlock, int meta) {
         RenderingRegistry.registerBlockHandler(renderID, this);
         this.underlyingBlock = underlyingBlock;
         this.underlyingBlockMeta = meta;

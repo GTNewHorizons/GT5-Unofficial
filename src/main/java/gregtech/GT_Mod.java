@@ -190,8 +190,6 @@ public class GT_Mod implements IGT_Mod {
     @Mod.EventHandler
     public void onPreLoad(FMLPreInitializationEvent aEvent) {
 
-        new ModernMaterialsRegistration().run();
-
         Locale.setDefault(Locale.ENGLISH);
         if (GregTech_API.sPreloadStarted) {
             return;
@@ -272,6 +270,8 @@ public class GT_Mod implements IGT_Mod {
         if (FMLCommonHandler.instance()
             .getEffectiveSide()
             .isServer()) GT_Assemblyline_Server.fillMap(aEvent);
+
+        new ModernMaterialsRegistration().run();
 
     }
 
