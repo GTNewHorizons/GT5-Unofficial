@@ -194,59 +194,56 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends
         if (!hasGenerateRecipes) {
             generateRecipes();
         }
-        if (hasGenerateRecipes) {
-            if (!checkForWater()) {
-                return SimpleCheckRecipeResult.ofFailure("no_water");
-            }
-            ItemStack[] tItemInputs = getStoredInputs().toArray(new ItemStack[0]);
-            FluidStack[] tFluidInputs = getStoredFluids().toArray(new FluidStack[0]);
-
-            if (!isUsingControllerCircuit && tItemInputs.length == 0) {
-                return CheckRecipeResultRegistry.NO_RECIPE;
-            }
-
-            long tEnergy = getMaxInputEnergy();
-
-            getCircuit(tItemInputs);
-
-            ItemStack[] mFishOutput = generateLoot(this.mMode);
-            mFishOutput = removeNulls(mFishOutput);
-            GT_Recipe g = new GT_Recipe(
-                    true,
-                    new ItemStack[] {},
-                    mFishOutput,
-                    null,
-                    new int[] {},
-                    tFluidInputs,
-                    mOutputFluids,
-                    200,
-                    16,
-                    0);
-            GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(g.mEUt).setEUt(tEnergy)
-                    .setDuration(g.mDuration);
-            GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(g).setItemInputs(tItemInputs)
-                    .setFluidInputs(tFluidInputs).setAvailableEUt(tEnergy).setMaxParallel(getMaxParallelRecipes())
-                    .setConsumption(true).setOutputCalculation(true).setMachine(this)
-                    .enableBatchMode(batchMode ? 128 : 1).setCalculator(calculator);
-
-            helper.build();
-
-            if (helper.getCurrentParallel() == 0) {
-                return CheckRecipeResultRegistry.OUTPUT_FULL;
-            }
-
-            this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-            this.mEfficiencyIncrease = 10000;
-
-            lEUt = -calculator.getConsumption();
-            mMaxProgresstime = (int) Math.ceil(calculator.getDuration() * helper.getDurationMultiplierDouble());
-
-            mOutputItems = helper.getItemOutputs();
-            mOutputFluids = helper.getFluidOutputs();
-            updateSlots();
-
-            return CheckRecipeResultRegistry.SUCCESSFUL;
+        if (!checkForWater()) {
+            return SimpleCheckRecipeResult.ofFailure("no_water");
         }
+        ItemStack[] tItemInputs = getStoredInputs().toArray(new ItemStack[0]);
+        FluidStack[] tFluidInputs = getStoredFluids().toArray(new FluidStack[0]);
+
+        if (!isUsingControllerCircuit && tItemInputs.length == 0) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
+
+        long tEnergy = getMaxInputEnergy();
+
+        getCircuit(tItemInputs);
+
+        ItemStack[] mFishOutput = generateLoot(this.mMode);
+        mFishOutput = removeNulls(mFishOutput);
+        GT_Recipe g = new GT_Recipe(
+                true,
+                new ItemStack[] {},
+                mFishOutput,
+                null,
+                new int[] {},
+                tFluidInputs,
+                null,
+                200,
+                16,
+                0);
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(g.mEUt).setEUt(tEnergy)
+                .setDuration(g.mDuration);
+        GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(g).setItemInputs(tItemInputs)
+                .setFluidInputs(tFluidInputs).setAvailableEUt(tEnergy).setMaxParallel(getMaxParallelRecipes())
+                .setConsumption(true).setOutputCalculation(true).setMachine(this).enableBatchMode(batchMode ? 128 : 1)
+                .setCalculator(calculator);
+
+        helper.build();
+
+        if (helper.getCurrentParallel() == 0) {
+            return CheckRecipeResultRegistry.ITEM_OUTPUT_FULL;
+        }
+
+        this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+        this.mEfficiencyIncrease = 10000;
+
+        lEUt = -calculator.getConsumption();
+        mMaxProgresstime = (int) Math.ceil(calculator.getDuration() * helper.getDurationMultiplierDouble());
+
+        mOutputItems = helper.getItemOutputs();
+        mOutputFluids = null;
+        updateSlots();
+
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
@@ -356,25 +353,22 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends
     private int mMode = 14;
     private int mMax = 8;
 
-    private boolean generateRecipes() {
-        if (!hasGenerateRecipes) {
-            categories.put(categoryFish);
-            categories.put(categoryJunk);
-            categories.put(categoryLoot);
-            for (WeightedRandomFishable h : FishPondFakeRecipe.fish) {
-                categoryFish.put(h);
-            }
-            for (WeightedRandomFishable h : FishPondFakeRecipe.junk) {
-                categoryJunk.put(h);
-            }
-            for (WeightedRandomFishable h : FishPondFakeRecipe.treasure) {
-                categoryLoot.put(h);
-            }
-            hasGenerateRecipes = true;
-            return true;
-        } else {
-            return true;
+    private void generateRecipes() {
+        if (hasGenerateRecipes) return;
+
+        categories.put(categoryFish);
+        categories.put(categoryJunk);
+        categories.put(categoryLoot);
+        for (WeightedRandomFishable h : FishPondFakeRecipe.fish) {
+            categoryFish.put(h);
         }
+        for (WeightedRandomFishable h : FishPondFakeRecipe.junk) {
+            categoryJunk.put(h);
+        }
+        for (WeightedRandomFishable h : FishPondFakeRecipe.treasure) {
+            categoryLoot.put(h);
+        }
+        hasGenerateRecipes = true;
     }
 
     private int getCircuit(ItemStack[] t) {

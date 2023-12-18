@@ -210,99 +210,99 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
         ArrayList<FluidStack> aFluids = this.getStoredFluids();
-        if (!aFluids.isEmpty()) {
-            boolean aHasWater = false;
-            boolean aHasLava = false;
-            for (FluidStack aFluid : aFluids) {
-                if (aFluid.getFluid() == FluidRegistry.WATER) {
-                    aHasWater = true;
-                } else if (aFluid.getFluid() == FluidRegistry.LAVA) {
-                    aHasLava = true;
-                }
-            }
-            ArrayList<ItemStack> aItems = this.getStoredInputs();
-            boolean aHasRedstone = false;
-            if (!aItems.isEmpty()) {
-                for (ItemStack aItem : aItems) {
-                    if (GT_Utility.areStacksEqual(
-                            aItem,
-                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L))) {
-                        aHasRedstone = true;
-                        break;
-                    }
-                }
-            }
-
-            if (!aHasWater) {
-                return SimpleCheckRecipeResult.ofFailure("no_water");
-            }
-            if (!aHasLava) {
-                return SimpleCheckRecipeResult.ofFailure("no_lava");
-            }
-            ItemStack aGuiCircuit = this.getControllerSlot();
-            if (!ItemUtils.isControlCircuit(aGuiCircuit)) {
-                return CheckRecipeResultRegistry.NO_RECIPE;
-            }
-
-            if (sRecipe_Cobblestone == null || sRecipe_SmoothStone == null || sRecipe_Redstone == null) {
-                generateRecipes();
-            }
-
-            int aCircuit = aGuiCircuit.getItemDamage();
-
-            GT_Recipe tRecipe = null;
-            switch (aCircuit) {
-                case 1 -> tRecipe = sRecipe_Cobblestone;
-                case 2 -> tRecipe = sRecipe_SmoothStone;
-                case 3 -> {
-                    if (aHasRedstone) {
-                        tRecipe = sRecipe_Redstone;
-                    }
-                }
-            }
-
-            if (tRecipe == null) {
-                return CheckRecipeResultRegistry.NO_RECIPE;
-            }
-
-            ItemStack[] aItemInputs = aItems.toArray(new ItemStack[0]);
-            FluidStack[] aFluidInputs = new FluidStack[] {};
-
-            long tEnergy = getMaxInputEnergy();
-            // Remember last recipe - an optimization for findRecipe()
-            this.mLastRecipe = tRecipe;
-
-            GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe).setItemInputs(aItemInputs)
-                    .setFluidInputs(aFluidInputs).setAvailableEUt(tEnergy).setMaxParallel(getMaxParallelRecipes())
-                    .setConsumption(true).setOutputCalculation(true).setEUtModifier(0.75F).setMachine(this);
-
-            if (batchMode) {
-                helper.enableBatchMode(128);
-            }
-
-            helper.build();
-
-            if (helper.getCurrentParallel() == 0) {
-                return CheckRecipeResultRegistry.OUTPUT_FULL;
-            }
-
-            this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-            this.mEfficiencyIncrease = 10000;
-
-            GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(tRecipe.mEUt).setEUt(tEnergy)
-                    .setDuration(tRecipe.mDuration).setEUtDiscount(0.75F).setSpeedBoost(1F / 3F)
-                    .setParallel((int) Math.floor(helper.getCurrentParallel() / helper.getDurationMultiplierDouble()))
-                    .calculate();
-            lEUt = -calculator.getConsumption();
-            mMaxProgresstime = (int) Math.ceil(calculator.getDuration() * helper.getDurationMultiplierDouble());
-
-            mOutputItems = helper.getItemOutputs();
-            mOutputFluids = helper.getFluidOutputs();
-            updateSlots();
-            return CheckRecipeResultRegistry.SUCCESSFUL;
+        if (aFluids.isEmpty()) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
-        return CheckRecipeResultRegistry.NO_RECIPE;
+        boolean aHasWater = false;
+        boolean aHasLava = false;
+        for (FluidStack aFluid : aFluids) {
+            if (aFluid.getFluid() == FluidRegistry.WATER) {
+                aHasWater = true;
+            } else if (aFluid.getFluid() == FluidRegistry.LAVA) {
+                aHasLava = true;
+            }
+        }
+        ArrayList<ItemStack> aItems = this.getStoredInputs();
+        boolean aHasRedstone = false;
+        if (!aItems.isEmpty()) {
+            for (ItemStack aItem : aItems) {
+                if (GT_Utility
+                        .areStacksEqual(aItem, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L))) {
+                    aHasRedstone = true;
+                    break;
+                }
+            }
+        }
+
+        if (!aHasWater) {
+            return SimpleCheckRecipeResult.ofFailure("no_water");
+        }
+        if (!aHasLava) {
+            return SimpleCheckRecipeResult.ofFailure("no_lava");
+        }
+        ItemStack aGuiCircuit = this.getControllerSlot();
+        if (!ItemUtils.isControlCircuit(aGuiCircuit)) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
+
+        if (sRecipe_Cobblestone == null || sRecipe_SmoothStone == null || sRecipe_Redstone == null) {
+            generateRecipes();
+        }
+
+        int aCircuit = aGuiCircuit.getItemDamage();
+
+        GT_Recipe tRecipe = null;
+        switch (aCircuit) {
+            case 1 -> tRecipe = sRecipe_Cobblestone;
+            case 2 -> tRecipe = sRecipe_SmoothStone;
+            case 3 -> {
+                if (aHasRedstone) {
+                    tRecipe = sRecipe_Redstone;
+                }
+            }
+        }
+
+        if (tRecipe == null) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
+
+        ItemStack[] aItemInputs = aItems.toArray(new ItemStack[0]);
+        FluidStack[] aFluidInputs = new FluidStack[] {};
+
+        long tEnergy = getMaxInputEnergy();
+        // Remember last recipe - an optimization for findRecipe()
+        this.mLastRecipe = tRecipe;
+
+        GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe).setItemInputs(aItemInputs)
+                .setFluidInputs(aFluidInputs).setAvailableEUt(tEnergy).setMaxParallel(getMaxParallelRecipes())
+                .setConsumption(true).setOutputCalculation(true).setEUtModifier(0.75F).setMachine(this);
+
+        if (batchMode) {
+            helper.enableBatchMode(128);
+        }
+
+        helper.build();
+
+        if (helper.getCurrentParallel() == 0) {
+            return CheckRecipeResultRegistry.ITEM_OUTPUT_FULL;
+        }
+
+        this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+        this.mEfficiencyIncrease = 10000;
+
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(tRecipe.mEUt).setEUt(tEnergy)
+                .setDuration(tRecipe.mDuration).setEUtDiscount(0.75F).setSpeedBoost(1F / 3F)
+                .setParallel((int) Math.floor(helper.getCurrentParallel() / helper.getDurationMultiplierDouble()))
+                .calculate();
+        lEUt = -calculator.getConsumption();
+        mMaxProgresstime = (int) Math.ceil(calculator.getDuration() * helper.getDurationMultiplierDouble());
+
+        mOutputItems = helper.getItemOutputs();
+        mOutputFluids = helper.getFluidOutputs();
+        updateSlots();
+        return CheckRecipeResultRegistry.SUCCESSFUL;
+
     }
 
     @Override

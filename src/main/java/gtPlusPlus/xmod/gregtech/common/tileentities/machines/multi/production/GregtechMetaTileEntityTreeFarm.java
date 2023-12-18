@@ -210,8 +210,8 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
         VoidProtectionHelper voidProtection = new VoidProtectionHelper().setMachine(this).setItemOutputs(toOutput)
                 .build();
 
-        if (voidProtection.getMaxParallel() == 0) {
-            return CheckRecipeResultRegistry.OUTPUT_FULL;
+        if (voidProtection.isItemFull()) {
+            return CheckRecipeResultRegistry.ITEM_OUTPUT_FULL;
         }
 
         if (aFert > 0 && aFert >= aOutputAmount) {
