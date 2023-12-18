@@ -69,16 +69,6 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
         return new Config(machineconfig + ".boiler.solar.bronze", 1080000, 40, 120, 45);
     }
 
-    /**
-     * for WAILA
-     *
-     * @deprecated replaced by {@link #getMaxOutputPerSecond()}
-     */
-    @Deprecated
-    public int getBasicOutput() {
-        return (int) (getMaxOutputPerSecond() * 1.25F);
-    }
-
     public int getMaxOutputPerSecond() {
         return mConfig.getMaxOutputPerSecond();
     }
