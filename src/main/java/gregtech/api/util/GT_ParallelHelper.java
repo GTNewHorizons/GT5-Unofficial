@@ -341,6 +341,9 @@ public class GT_ParallelHelper {
      * Called by build(). Determines the parallels and everything else that needs to be done at build time
      */
     protected void determineParallel() {
+        if (maxParallel <= 0) {
+            return;
+        }
         if (itemInputs == null) {
             itemInputs = new ItemStack[0];
         }
@@ -412,8 +415,12 @@ public class GT_ParallelHelper {
                 .setMaxParallel(maxParallel)
                 .build();
             maxParallel = Math.min(voidProtectionHelper.getMaxParallel(), maxParallel);
-            if (maxParallel <= 0) {
-                result = CheckRecipeResultRegistry.OUTPUT_FULL;
+            if (voidProtectionHelper.isItemFull()) {
+                result = CheckRecipeResultRegistry.ITEM_OUTPUT_FULL;
+                return;
+            }
+            if (voidProtectionHelper.isFluidFull()) {
+                result = CheckRecipeResultRegistry.FLUID_OUTPUT_FULL;
                 return;
             }
         }
