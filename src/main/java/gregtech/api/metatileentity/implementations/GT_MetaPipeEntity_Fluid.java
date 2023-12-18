@@ -37,6 +37,7 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import org.apache.commons.lang3.tuple.MutableTriple;
+import org.lwjgl.input.Keyboard;
 
 import cpw.mods.fml.common.Optional;
 import gregtech.GT_Mod;
@@ -474,31 +475,101 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
         }
     }
 
+    public void connectPipeOnSide(ForgeDirection side, EntityPlayer entityPlayer) {
+        if (!isConnectedAtSide(side)) {
+            if (connect(side) > 0) GT_Utility.sendChatToPlayer(entityPlayer, GT_Utility.trans("214", "Connected"));
+        } else {
+            disconnect(side);
+            GT_Utility.sendChatToPlayer(entityPlayer, GT_Utility.trans("215", "Disconnected"));
+        }
+    }
+
+    public void blockPipeOnSide(ForgeDirection side, EntityPlayer entityPlayer, byte tMask) {
+        if (isInputDisabledAtSide(side)) {
+            mDisableInput &= ~tMask;
+            GT_Utility.sendChatToPlayer(entityPlayer, GT_Utility.trans("212", "Input enabled"));
+            if (!isConnectedAtSide(side)) connect(side);
+        } else {
+            mDisableInput |= tMask;
+            GT_Utility.sendChatToPlayer(entityPlayer, GT_Utility.trans("213", "Input disabled"));
+        }
+    }
+
     @Override
     public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
         float aX, float aY, float aZ) {
+
         if (GT_Mod.gregtechproxy.gt6Pipe) {
+            IGregTechTileEntity currentPipeBase = getBaseMetaTileEntity();
+            GT_MetaPipeEntity_Fluid currentPipe = (GT_MetaPipeEntity_Fluid) currentPipeBase.getMetaTileEntity();
             final ForgeDirection tSide = GT_Utility.determineWrenchingSide(side, aX, aY, aZ);
             final byte tMask = (byte) (tSide.flag);
-            if (entityPlayer.isSneaking()) {
-                if (isInputDisabledAtSide(tSide)) {
-                    mDisableInput &= ~tMask;
-                    GT_Utility.sendChatToPlayer(entityPlayer, GT_Utility.trans("212", "Input enabled"));
-                    if (!isConnectedAtSide(tSide)) connect(tSide);
-                } else {
-                    mDisableInput |= tMask;
-                    GT_Utility.sendChatToPlayer(entityPlayer, GT_Utility.trans("213", "Input disabled"));
-                }
-            } else {
-                if (!isConnectedAtSide(tSide)) {
-                    if (connect(tSide) > 0)
-                        GT_Utility.sendChatToPlayer(entityPlayer, GT_Utility.trans("214", "Connected"));
-                } else {
-                    disconnect(tSide);
-                    GT_Utility.sendChatToPlayer(entityPlayer, GT_Utility.trans("215", "Disconnected"));
-                }
+
+            /*
+             * The difference between action with and without ctrl is that with ctrl it will first check if connection
+             * is possible
+             * with ctrl it won`t connect to empty space for example
+             */
+
+            if (!Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+                if (entityPlayer.isSneaking()) {
+                    currentPipe.blockPipeOnSide(tSide, entityPlayer, tMask);
+                } else currentPipe.connectPipeOnSide(tSide, entityPlayer);
+                return true;
             }
-            return true;
+
+            boolean initialState = entityPlayer.isSneaking() ? currentPipe.isInputDisabledAtSide(tSide)
+                : currentPipe.isConnectedAtSide(tSide);
+
+            boolean wasActionPerformed = false;
+
+            while (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+
+                TileEntity nextPipeBaseTile = currentPipeBase.getTileEntityAtSide(tSide);
+
+                // if next tile doesn't exist
+                if (nextPipeBaseTile == null) {
+                    return wasActionPerformed;
+                }
+
+                // if next tile is wrong color
+                if (!currentPipe.connectableColor(nextPipeBaseTile)) {
+                    return wasActionPerformed;
+                }
+
+                IGregTechTileEntity nextPipeBase = (IGregTechTileEntity) nextPipeBaseTile;
+
+                GT_MetaPipeEntity_Fluid nextPipe = nextPipeBase.getMetaTileEntity() instanceof GT_MetaPipeEntity_Fluid
+                    ? (GT_MetaPipeEntity_Fluid) nextPipeBase.getMetaTileEntity()
+                    : null;
+
+                // if next tile entity is not a pipe
+                if (nextPipe == null) {
+                    return wasActionPerformed;
+                }
+
+                boolean currentState = entityPlayer.isSneaking() ? currentPipe.isInputDisabledAtSide(tSide)
+                    : currentPipe.isConnectedAtSide(tSide);
+
+                /*
+                 * Making sure next pipe will have same action applied to it
+                 * e.g. Connecting pipe won`t trigger disconnect if next pipe is already connected
+                 */
+                if (currentState != initialState) {
+                    return wasActionPerformed;
+                }
+
+                if (entityPlayer.isSneaking()) {
+                    currentPipe.blockPipeOnSide(tSide, entityPlayer, tMask);
+                } else currentPipe.connectPipeOnSide(tSide, entityPlayer);
+
+                wasActionPerformed = true;
+
+                currentPipeBase = (IGregTechTileEntity) nextPipeBase;
+                currentPipe = nextPipe;
+
+            }
+            return wasActionPerformed;
         }
         return false;
     }
