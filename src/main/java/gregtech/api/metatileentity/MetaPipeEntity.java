@@ -92,14 +92,14 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
      * <p>
      * The constructor can be overloaded as follows:
      * <blockquote>
-     * 
+     *
      * <pre>
-     * 
+     *
      * public GT_MetaTileEntity_EBench(int id, String name, String nameRegional) {
      *     super(id, name, nameRegional);
      * }
      * </pre>
-     * 
+     *
      * </blockquote>
      *
      * @param aID the machine ID
@@ -845,7 +845,7 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
         return GT_Utility.trans(aKey, aEnglish);
     }
 
-    private boolean connectableColor(TileEntity tTileEntity) {
+    protected boolean connectableColor(TileEntity tTileEntity) {
         // Determine if two entities are connectable based on their colorization:
         // Uncolored can connect to anything
         // If both are colored they must be the same color to connect.
