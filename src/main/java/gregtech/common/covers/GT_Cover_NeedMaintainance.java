@@ -23,14 +23,6 @@ import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget
 
 public class GT_Cover_NeedMaintainance extends GT_CoverBehavior {
 
-    /**
-     * @deprecated use {@link #GT_Cover_NeedMaintainance(ITexture coverTexture)} instead
-     */
-    @Deprecated
-    public GT_Cover_NeedMaintainance() {
-        this(null);
-    }
-
     public GT_Cover_NeedMaintainance(ITexture coverTexture) {
         super(coverTexture);
     }
