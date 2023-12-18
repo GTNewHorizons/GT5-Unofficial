@@ -420,7 +420,10 @@ GT5U.gui.button.drill_retract_pipes_active=§4Cannot interrupt abort procedure
 GT5U.gui.text.success=§aProcessing recipe
 GT5U.gui.text.generating=§aGenerating power
 GT5U.gui.text.no_recipe=§7No valid recipe found
+#deprecated
 GT5U.gui.text.output_full=§7Not enough output space
+GT5U.gui.text.item_output_full=§7Not enough item output space
+GT5U.gui.text.fluid_output_full=§7Not enough fluid output space
 GT5U.gui.text.none=
 GT5U.gui.text.crash=§4Machine turned off due to crash
 GT5U.gui.text.no_fuel=§7No valid fuel found
