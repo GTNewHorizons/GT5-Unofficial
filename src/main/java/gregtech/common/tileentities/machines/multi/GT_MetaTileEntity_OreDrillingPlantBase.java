@@ -248,7 +248,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
             }
             ItemStack[] toOutput = getOutputByDrops(oreBlockDrops);
             if (simulate && !canOutputAll(toOutput)) {
-                setRuntimeFailureReason(CheckRecipeResultRegistry.OUTPUT_FULL);
+                setRuntimeFailureReason(CheckRecipeResultRegistry.ITEM_OUTPUT_FULL);
                 return false;
             }
             mOutputItems = toOutput;
