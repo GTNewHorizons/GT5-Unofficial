@@ -312,7 +312,7 @@ public class TileEntityPlanetaryGasSiphon extends GT_MetaTileEntity_EnhancedMult
             return SimpleCheckRecipeResult.ofFailure("invalid_depth");
         }
         if (!canOutputAll(new FluidStack[] { recipeFluid })) {
-            return CheckRecipeResultRegistry.OUTPUT_FULL;
+            return CheckRecipeResultRegistry.FLUID_OUTPUT_FULL;
         }
 
         // calculate overclockedness
