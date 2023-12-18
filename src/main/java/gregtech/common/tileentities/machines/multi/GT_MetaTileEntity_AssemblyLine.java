@@ -56,6 +56,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_AssemblyLineUtils;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe.GT_Recipe_AssemblyLine;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
@@ -304,7 +305,16 @@ public class GT_MetaTileEntity_AssemblyLine
             if (GT_Values.D1) {
                 GT_FML_LOGGER.info("Check overclock");
             }
-            calculateOverclockedNessMultiInternal(tRecipe.mEUt, tRecipe.mDuration, 1, getMaxInputVoltage(), false);
+
+            GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(tRecipe.mEUt)
+                .setEUt(getAverageInputVoltage())
+                .setAmperage(getMaxInputAmps())
+                .setAmperageOC(mEnergyHatches.size() != 1)
+                .setDuration(tRecipe.mDuration)
+                .calculate();
+            mEUt = (int) calculator.getConsumption();
+            mMaxProgresstime = calculator.getDuration();
+
             // In case recipe is too OP for that machine
             if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1) {
                 if (GT_Values.D1) {
