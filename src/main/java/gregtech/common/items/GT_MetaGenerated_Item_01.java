@@ -69,7 +69,6 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.MathHelper;
-import net.minecraftforge.oredict.OreDictionary;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
@@ -1688,8 +1687,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 "batteryLV"));
         setElectricStats(32000 + tLastID, 75000L, GT_Values.V[1], 1L, -3L, true);
         registerTieredTooltip(ItemList.Battery_RE_LV_Cadmium.get(1), LV);
-        // Annoying backwards compat
-        OreDictionary.registerOre("calclavia:ADVANCED_BATTERY", ItemList.Battery_RE_LV_Cadmium.get(1));
 
         ItemList.Battery_RE_LV_Lithium.set(
             addItem(
@@ -1702,8 +1699,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 "batteryLV"));
         setElectricStats(32000 + tLastID, 100000L, GT_Values.V[1], 1L, -3L, true);
         registerTieredTooltip(ItemList.Battery_RE_LV_Lithium.get(1), LV);
-        // Annoying backwards compat
-        OreDictionary.registerOre("calclavia:ADVANCED_BATTERY", ItemList.Battery_RE_LV_Lithium.get(1));
 
         ItemList.Battery_RE_LV_Sodium.set(
             addItem(
@@ -1713,11 +1708,9 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L),
-                "calclavia:ADVANCED_BATTERY"));
+                "batteryLV"));
         setElectricStats(32000 + tLastID, 50000L, GT_Values.V[1], 1L, -3L, true);
         registerTieredTooltip(ItemList.Battery_RE_LV_Sodium.get(1), LV);
-        // Annoying backwards compat
-        OreDictionary.registerOre("calclavia:ADVANCED_BATTERY", ItemList.Battery_RE_LV_Sodium.get(1));
 
         // MV Batteries
         ItemList.Battery_SU_MV_SulfuricAcid.set(
