@@ -100,8 +100,8 @@ gt.recipe.assembler=Assembler
 gt.recipe.assembler.description=Avengers, Assemble!
 gt.recipe.autoclave=Autoclave
 gt.recipe.autoclave.description=Crystallizing your Dusts
-gt.recipe.brewery=Brewery
-gt.recipe.brewery.description=Brewing your Drinks
+gt.recipe.brewer=Brewery
+gt.recipe.brewer.description=Brewing your Drinks
 gt.recipe.metalbender=Bending Machine
 gt.recipe.metalbender.description=Boo, he's bad! We want BENDER!!!
 gt.recipe.canner=Canner
@@ -190,6 +190,47 @@ gt.recipe.unpackager=Unpackager
 gt.recipe.unpackager.description=Grabs things out of Boxes
 gt.recipe.wiremill=Wiremill
 gt.recipe.wiremill.description=Produces Wires more efficiently
+
+# RecipeMaps that are not listed on MachineType enum
+gt.recipe.fakeAssemblylineProcess=Assemblyline Process
+gt.recipe.fusionreactor=Fusion Reactor
+gt.recipe.blastfurnace=Blast Furnace
+gt.recipe.plasmaforge=DTPF
+gt.recipe.transcendentplasmamixerrecipes=Transcendent Plasma Mixer
+gt.recipe.fakespaceprojects=Space Projects
+gt.recipe.primitiveblastfurnace=Primitive Blast Furnace
+gt.recipe.implosioncompressor=Implosion Compressor
+gt.recipe.vacuumfreezer=Vacuum Freezer
+gt.recipe.largechemicalreactor=Large Chemical Reactor
+gt.recipe.distillationtower=Distillation Tower
+gt.recipe.craker=Oil Cracker
+gt.recipe.pyro=Pyrolyse Oven
+gt.recipe.dieselgeneratorfuel=Combustion Generator Fuels
+gt.recipe.extremedieselgeneratorfuel=Extreme Diesel Engine Fuel
+gt.recipe.gasturbinefuel=Gas Turbine Fuel
+gt.recipe.thermalgeneratorfuel=Thermal Generator Fuels
+gt.recipe.semifluidboilerfuels=Semifluid Boiler Fuels
+gt.recipe.plasmageneratorfuels=Plasma Generator Fuels
+gt.recipe.magicfuels=Magic Energy Absorber Fuels
+gt.recipe.smallnaquadahreactor=Naquadah Reactor MkI
+gt.recipe.largenaquadahreactor=Naquadah Reactor MkII
+gt.recipe.fluidnaquadahreactor=Naquadah Reactor MkIII
+gt.recipe.hugenaquadahreactor=Naquadah Reactor MkIV
+gt.recipe.extrahugenaquadahreactor=Naquadah Reactor MkV
+gt.recipe.fluidfuelnaquadahreactor=Fluid Naquadah Reactor
+gt.recipe.largeboilerfakefuels=Large Boiler
+gt.recipe.nanoforge=Nano Forge
+gt.recipe.pcbfactory=PCB Factory
+gt.recipe.ic2nuke=Nuclear Fission
+
+# Recipe categories
+gt.recipe.category.arc_furnace_recycling=Arc Furnace Recycling
+gt.recipe.category.plasma_arc_furnace_recycling=Plasma Arc Furnace Recycling
+gt.recipe.category.macerator_recycling=Macerator Recycling
+gt.recipe.category.fluid_extractor_recycling=Fluid Extractor Recycling
+gt.recipe.category.alloy_smelter_recycling=Alloy Smelter Recycling
+gt.recipe.category.alloy_smelter_molding=Alloy Smelter Molding
+gt.recipe.category.forge_hammer_recycling=Forge Hammer Recycling
 
 GT5U.machines.tier=Tier
 GT5U.machines.workarea=Work Area
@@ -470,6 +511,13 @@ GT5U.multiblock.usage=Probably uses
 GT5U.multiblock.parallelism=Max parallelism
 GT5U.multiblock.curparallelism=Current parallelism
 
+# NEI recipe handlers
+GT5U.nei.heat_capacity=Heat Capacity: %s K (%s)
+GT5U.nei.tier=Tier: %s
+GT5U.nei.start_eu=Start: %s EU (MK %s)
+GT5U.nei.stages=Stages: %s
+GT5U.nei.fuel=Fuel Value: %s EU
+
 GT5U.config.colormodulation=Color Modulator
 GT5U.config.colormodulation.cable_insulation=Cable Insulation
 GT5U.config.colormodulation.cable_insulation.B=Blue
@@ -518,6 +566,7 @@ GT5U.config.nei.RecipeOwner=Show which mod added the recipe
 GT5U.config.nei.RecipeOwnerStackTrace=[debug] Show stack traces of recipe addition
 GT5U.config.nei.RecipeOwnerStackTrace.tooltip=[requires reboot]
 GT5U.config.nei.OriginalVoltage=Show original voltage when overclocked
+GT5U.config.nei.recipe_categories=Recipe Categories
 GT5U.config.waila=Waila
 GT5U.config.waila.WailaTransformerVoltageTier=Show voltage tier of transformer
 GT5U.config.waila.WailaAverageNS=Show average ns of multiblocks on waila
@@ -530,7 +579,10 @@ GT5U.interface.coverTabs.south=South
 GT5U.interface.coverTabs.west=West
 GT5U.interface.coverTabs.east=East
 
-# NEI
+GT5U.steam_variant.bronze=Bronze
+GT5U.steam_variant.steel=Steel
+
+# NEI options
 nei.options.tools.dump.gt5u=GT5u
 nei.options.tools.dump.gt5u.metatileentity=MetaTileEntity
 nei.options.tools.dump.gt5u.metatileentitys=MetaTileEntities
@@ -1379,7 +1431,6 @@ gt.solar.system.nereid=Nereid
 gt.solar.system.mercury=Mercury
 gt.solar.system.titan=Titan
 gt.solar.system.phobos=Phobos
-gt.specialvalue.stages=Stages:
 
 gt.multiBlock.controller.cokeOven=Coke Oven
 

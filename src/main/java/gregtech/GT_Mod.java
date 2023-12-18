@@ -31,6 +31,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.common.base.Stopwatch;
+import com.google.common.collect.SetMultimap;
 
 import appeng.api.AEApi;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -63,6 +64,7 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
 import gregtech.api.util.GT_Assemblyline_Server;
 import gregtech.api.util.GT_Forestry_Compat;
@@ -100,7 +102,6 @@ import gregtech.loaders.postload.GT_BlockResistanceLoader;
 import gregtech.loaders.postload.GT_BookAndLootLoader;
 import gregtech.loaders.postload.GT_CraftingRecipeLoader;
 import gregtech.loaders.postload.GT_CropLoader;
-import gregtech.loaders.postload.GT_ExtremeDieselFuelLoader;
 import gregtech.loaders.postload.GT_FakeRecipeLoader;
 import gregtech.loaders.postload.GT_ItemMaxStacksizeLoader;
 import gregtech.loaders.postload.GT_MachineRecipeLoader;
@@ -118,7 +119,6 @@ import gregtech.loaders.preload.GT_Loader_MultiTileEntities;
 import gregtech.loaders.preload.GT_Loader_OreDictionary;
 import gregtech.loaders.preload.GT_Loader_OreProcessing;
 import gregtech.loaders.preload.GT_PreLoad;
-import gregtech.nei.IMCForNEI;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
 
@@ -362,7 +362,6 @@ public class GT_Mod implements IGT_Mod {
         if (Mods.HoloInventory.isModLoaded()) {
             HoloInventory.init();
         }
-        IMCForNEI.IMCSender();
         GregTech_API.sLoadFinished = true;
         GT_Log.out.println("GT_Mod: Load-Phase finished!");
         GT_Log.ore.println("GT_Mod: Load-Phase finished!");
@@ -522,7 +521,6 @@ public class GT_Mod implements IGT_Mod {
             .forEach(GT_ModHandler::removeRecipeByOutputDelayed);
 
         GT_PostLoad.nerfVanillaTools();
-        new GT_ExtremeDieselFuelLoader().run();
 
         /*
          * Until this point most crafting recipe additions, and removals, have been buffered. Go through, execute the
@@ -579,6 +577,7 @@ public class GT_Mod implements IGT_Mod {
 
     @Mod.EventHandler
     public void onLoadComplete(FMLLoadCompleteEvent aEvent) {
+        gregtechproxy.onLoadComplete();
         for (Runnable tRunnable : GregTech_API.sGTCompleteLoad) {
             try {
                 tRunnable.run();
@@ -612,33 +611,17 @@ public class GT_Mod implements IGT_Mod {
 
         gregtechproxy.onServerStarting();
         // Check for more IC2 recipes on ServerStart to also catch MineTweaker additions
-        GT_ModHandler.addIC2RecipesToGT(
-            GT_ModHandler.getMaceratorRecipeList(),
-            GT_Recipe.GT_Recipe_Map.sMaceratorRecipes,
-            true,
-            true,
-            true);
-        GT_ModHandler.addIC2RecipesToGT(
-            GT_ModHandler.getCompressorRecipeList(),
-            GT_Recipe.GT_Recipe_Map.sCompressorRecipes,
-            true,
-            true,
-            true);
-        GT_ModHandler.addIC2RecipesToGT(
-            GT_ModHandler.getExtractorRecipeList(),
-            GT_Recipe.GT_Recipe_Map.sExtractorRecipes,
-            true,
-            true,
-            true);
-        GT_ModHandler.addIC2RecipesToGT(
-            GT_ModHandler.getOreWashingRecipeList(),
-            GT_Recipe.GT_Recipe_Map.sOreWasherRecipes,
-            false,
-            true,
-            true);
+        GT_ModHandler
+            .addIC2RecipesToGT(GT_ModHandler.getMaceratorRecipeList(), RecipeMaps.maceratorRecipes, true, true, true);
+        GT_ModHandler
+            .addIC2RecipesToGT(GT_ModHandler.getCompressorRecipeList(), RecipeMaps.compressorRecipes, true, true, true);
+        GT_ModHandler
+            .addIC2RecipesToGT(GT_ModHandler.getExtractorRecipeList(), RecipeMaps.extractorRecipes, true, true, true);
+        GT_ModHandler
+            .addIC2RecipesToGT(GT_ModHandler.getOreWashingRecipeList(), RecipeMaps.oreWasherRecipes, false, true, true);
         GT_ModHandler.addIC2RecipesToGT(
             GT_ModHandler.getThermalCentrifugeRecipeList(),
-            GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes,
+            RecipeMaps.thermalCentrifugeRecipes,
             true,
             true,
             true);
@@ -812,6 +795,9 @@ public class GT_Mod implements IGT_Mod {
         GT_Recipe.reInit();
         try {
             for (Map<? extends GT_ItemStack, ?> gt_itemStackMap : GregTech_API.sItemStackMappings) {
+                GT_Utility.reMap(gt_itemStackMap);
+            }
+            for (SetMultimap<? extends GT_ItemStack, ?> gt_itemStackMap : GregTech_API.itemStackMultiMaps) {
                 GT_Utility.reMap(gt_itemStackMap);
             }
         } catch (Throwable e) {

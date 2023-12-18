@@ -1,7 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.IndustrialCraft2;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCannerRecipes;
+import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
@@ -27,7 +27,7 @@ public class CannerRecipes implements Runnable {
                 .itemOutputs(GT_ModHandler.getIC2Item("reactorLithiumCell", 1, 1))
                 .duration(16 * TICKS)
                 .eut(64)
-                .addTo(sCannerRecipes);
+                .addTo(cannerRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(
@@ -36,21 +36,21 @@ public class CannerRecipes implements Runnable {
                 .itemOutputs(ItemList.ThoriumCell_1.get(1L))
                 .duration(1 * SECONDS + 10 * TICKS)
                 .eut(16)
-                .addTo(sCannerRecipes);
+                .addTo(cannerRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_ModHandler.getIC2Item("fuelRod", 1), GT_ModHandler.getIC2Item("UranFuel", 1))
                 .itemOutputs(ItemList.Uraniumcell_1.get(1))
                 .duration(1 * SECONDS + 10 * TICKS)
                 .eut(16)
-                .addTo(sCannerRecipes);
+                .addTo(cannerRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_ModHandler.getIC2Item("fuelRod", 1), GT_ModHandler.getIC2Item("MOXFuel", 1))
                 .itemOutputs(ItemList.Moxcell_1.get(1))
                 .duration(1 * SECONDS + 10 * TICKS)
                 .eut(16)
-                .addTo(sCannerRecipes);
+                .addTo(cannerRecipes);
         }
 
         GT_Values.RA.stdBuilder()
@@ -60,7 +60,7 @@ public class CannerRecipes implements Runnable {
             .itemOutputs(ItemList.NaquadahCell_1.get(1L))
             .duration(1 * SECONDS + 10 * TICKS)
             .eut(16)
-            .addTo(sCannerRecipes);
+            .addTo(cannerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -69,6 +69,6 @@ public class CannerRecipes implements Runnable {
             .itemOutputs(ItemList.MNqCell_1.get(1L))
             .duration(1 * SECONDS + 10 * TICKS)
             .eut(16)
-            .addTo(sCannerRecipes);
+            .addTo(cannerRecipes);
     }
 }

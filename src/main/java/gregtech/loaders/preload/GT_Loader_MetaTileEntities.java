@@ -65,7 +65,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.BREWERY_IV;
 import static gregtech.api.enums.MetaTileEntityIDs.BREWERY_LV;
 import static gregtech.api.enums.MetaTileEntityIDs.BREWERY_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.BRICKED_BLAST_FURNACE_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.BRONZE_BLAST_FURNACE_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.CHARCOAL_PILE_IGNITER_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.CHEST_BUFFER_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.CHEST_BUFFER_HV;
@@ -538,7 +537,6 @@ import gregtech.common.tileentities.machines.long_distance.GT_MetaTileEntity_Lon
 import gregtech.common.tileentities.machines.long_distance.GT_MetaTileEntity_LongDistancePipelineItem;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_AssemblyLine;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_BrickedBlastFurnace;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_BronzeBlastFurnace;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Charcoal_Pit;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Cleanroom;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ConcreteBackfiller1;
@@ -818,13 +816,6 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 BRICKED_BLAST_FURNACE_CONTROLLER.ID,
                 "multimachine.brickedblastfurnace",
                 "Bricked Blast Furnace").getStackForm(1L));
-
-        // deprecated since ages, maybe time to remove it from the game?
-        ItemList.Machine_Bronze_BlastFurnace.set(
-            new GT_MetaTileEntity_BronzeBlastFurnace(
-                BRONZE_BLAST_FURNACE_CONTROLLER.ID,
-                "bronzemachine.blastfurnace",
-                "Bronze Plated Blast Furnace").getStackForm(1L));
 
         ItemList.Machine_Multi_BlastFurnace.set(
             new GT_MetaTileEntity_ElectricBlastFurnace(

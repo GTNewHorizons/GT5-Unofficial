@@ -31,12 +31,13 @@ import static gregtech.api.enums.Mods.ThaumicBoots;
 import static gregtech.api.enums.Mods.ThaumicTinkerer;
 import static gregtech.api.enums.Mods.TwilightForest;
 import static gregtech.api.enums.Mods.WitchingGadgets;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCrackingRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCutterRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sWiremillRecipes;
+import static gregtech.api.recipe.RecipeMaps.crackingRecipes;
+import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
+import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 import static gregtech.api.util.GT_Util.LAST_BROKEN_TILEENTITY;
+import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import java.io.File;
 import java.text.DateFormat;
@@ -151,6 +152,8 @@ import gregtech.api.objects.GT_ChunkManager;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_UO_DimensionList;
 import gregtech.api.objects.ItemData;
+import gregtech.api.recipe.RecipeCategory;
+import gregtech.api.recipe.RecipeCategorySetting;
 import gregtech.api.util.GT_BlockMap;
 import gregtech.api.util.GT_CLS_Compat;
 import gregtech.api.util.GT_ChunkAssociatedData;
@@ -563,7 +566,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
     public boolean mNerfedCrops = true;
     public boolean mGTBees = true;
     public boolean mHideUnusedOres = true;
-    public boolean mHideRecyclingRecipes = true;
     public boolean mPollution = true;
     public boolean mExplosionItemDrop = false;
     public boolean mUseGreatlyShrukenReplacementList = true;
@@ -576,6 +578,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
     public int mGraniteHavestLevel = 3;
     public int mMaxHarvestLevel = 7;
     public int mWireHeatingTicks = 4;
+    public double replicatorExponent = 1.2D;
     public int mPollutionSmogLimit = 550000;
     public int mPollutionPoisonLimit = 750000;
     public int mPollutionVegetationLimit = 1000000;
@@ -720,6 +723,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
      */
     public boolean mRenderItemChargeBar = true;
 
+    public final Map<RecipeCategory, RecipeCategorySetting> recipeCategorySettings = new HashMap<>();
+
     /**
      * This enables showing voltage tier of transformer for Waila, instead of raw voltage number
      */
@@ -827,6 +832,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         GregTech_API.sPreloadStarted = true;
         this.mIgnoreTcon = GregTech_API.sOPStuff.get(ConfigCategories.general, "ignoreTConstruct", true);
         this.mWireHeatingTicks = GregTech_API.sOPStuff.get(ConfigCategories.general, "WireHeatingTicks", 4);
+        this.replicatorExponent = GregTech_API.sOPStuff.get("Replicator", "Nerf Exponent", 1.2D);
         NetworkRegistry.INSTANCE.registerGuiHandler(GT_Values.GT, this);
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
             .getRegisteredFluidContainerData()) {
@@ -1339,6 +1345,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         }
     }
 
+    public void onLoadComplete() {}
+
     public void onServerAboutToStart() {
         dimensionWisePollution.clear(); // !!! IMPORTANT for map switching...
         GT_ChunkAssociatedData.clearAll();
@@ -1421,7 +1429,15 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
     @SubscribeEvent
     public void onClientConnectedToServerEvent(FMLNetworkEvent.ClientConnectedToServerEvent aEvent) {}
 
-    public int getReloadCount() {
+    /**
+     * Tells {@link gregtech.nei.GT_NEI_DefaultHandler} to reload recipes.
+     */
+    public void reloadNEICache() {}
+
+    /**
+     * Logging in to server or {@link #reloadNEICache} being called increases the count.
+     */
+    public int getNEIReloadCount() {
         return 0;
     }
 
@@ -2025,13 +2041,13 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                                                             .itemOutputs(new ItemStack(aEvent.Ore.getItem(), 1, 8))
                                                             .duration(20 * SECONDS)
                                                             .eut(1)
-                                                            .addTo(sWiremillRecipes);
+                                                            .addTo(wiremillRecipes);
                                                         GT_Values.RA.stdBuilder()
                                                             .itemInputs(GT_ModHandler.getIC2Item("ironCableItem", 6L))
                                                             .itemOutputs(new ItemStack(aEvent.Ore.getItem(), 1, 9))
                                                             .duration(20 * SECONDS)
                                                             .eut(2)
-                                                            .addTo(sWiremillRecipes);
+                                                            .addTo(wiremillRecipes);
                                                     }
 
                                                     GT_Values.RA.stdBuilder()
@@ -2039,7 +2055,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                                                         .itemOutputs(new ItemStack(aEvent.Ore.getItem(), 16, 4))
                                                         .duration(20 * SECONDS)
                                                         .eut(8)
-                                                        .addTo(sCutterRecipes);
+                                                        .addTo(cutterRecipes);
                                                 }
                                     }
                                     default -> {}
@@ -2625,7 +2641,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                 .fluidOutputs(new FluidStack(crackedFluids[i], 1000))
                 .duration((1 + i) * SECONDS)
                 .eut(240)
-                .addTo(sCrackingRecipes);
+                .addTo(crackingRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(Materials.Hydrogen.getCells(hydrogenAmount), GT_Utility.getIntegratedCircuit(i + 1))
@@ -2677,7 +2693,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                 .fluidOutputs(new FluidStack(crackedFluids[i], 1200))
                 .duration((1 + i) * SECONDS)
                 .eut(240)
-                .addTo(sCrackingRecipes);
+                .addTo(crackingRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_ModHandler.getIC2Item("steamCell", 1L), GT_Utility.getIntegratedCircuit(i + 1))
@@ -2692,6 +2708,15 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                 .itemInputs(aMaterial.getCells(1), GT_Utility.getIntegratedCircuit(i + 1))
                 .itemOutputs(Materials.Empty.getCells(1))
                 .fluidInputs(GT_ModHandler.getSteam(1000))
+                .fluidOutputs(new FluidStack(crackedFluids[i], 800))
+                .duration((8 + 4 * i) * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(UniversalChemical);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(aMaterial.getCells(1), GT_Utility.getIntegratedCircuit(i + 1))
+                .itemOutputs(Materials.Empty.getCells(1))
+                .fluidInputs(getFluidStack("ic2steam", 1000))
                 .fluidOutputs(new FluidStack(crackedFluids[i], 800))
                 .duration((8 + 4 * i) * SECONDS)
                 .eut(TierEU.RECIPE_LV)

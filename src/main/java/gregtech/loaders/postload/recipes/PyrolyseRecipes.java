@@ -2,8 +2,8 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.Railcraft;
+import static gregtech.api.recipe.RecipeMaps.pyrolyseRecipes;
 import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sPyrolyseRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
@@ -32,7 +32,7 @@ public class PyrolyseRecipes implements Runnable {
                 .fluidOutputs(Materials.Creosote.getFluid(8000))
                 .duration(32 * SECONDS)
                 .eut(64)
-                .addTo(sPyrolyseRecipes);
+                .addTo(pyrolyseRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(
@@ -43,7 +43,7 @@ public class PyrolyseRecipes implements Runnable {
                 .fluidOutputs(Materials.Creosote.getFluid(8000))
                 .duration(16 * SECONDS)
                 .eut(96)
-                .addTo(sPyrolyseRecipes);
+                .addTo(pyrolyseRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(
@@ -53,7 +53,7 @@ public class PyrolyseRecipes implements Runnable {
                 .fluidOutputs(Materials.Creosote.getFluid(32000))
                 .duration(2 * MINUTES + 8 * SECONDS)
                 .eut(64)
-                .addTo(sPyrolyseRecipes);
+                .addTo(pyrolyseRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(
@@ -64,7 +64,7 @@ public class PyrolyseRecipes implements Runnable {
                 .fluidOutputs(Materials.Creosote.getFluid(32000))
                 .duration(1 * MINUTES + 4 * SECONDS)
                 .eut(96)
-                .addTo(sPyrolyseRecipes);
+                .addTo(pyrolyseRecipes);
         }
 
         if (Forestry.isModLoaded()) {
@@ -74,7 +74,7 @@ public class PyrolyseRecipes implements Runnable {
                 .fluidOutputs(Materials.Biomass.getFluid(5000))
                 .duration(45 * SECONDS)
                 .eut(10)
-                .addTo(sPyrolyseRecipes);
+                .addTo(pyrolyseRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(getModItem(Forestry.ID, "mulch", 32), GT_Utility.getIntegratedCircuit(1))
@@ -82,7 +82,7 @@ public class PyrolyseRecipes implements Runnable {
                 .fluidOutputs(Materials.Biomass.getFluid(5000))
                 .duration(45 * SECONDS)
                 .eut(10)
-                .addTo(sPyrolyseRecipes);
+                .addTo(pyrolyseRecipes);
         }
 
         GT_Values.RA.stdBuilder()
@@ -91,7 +91,7 @@ public class PyrolyseRecipes implements Runnable {
             .fluidOutputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 5000))
             .duration(45 * SECONDS)
             .eut(10)
-            .addTo(sPyrolyseRecipes);
+            .addTo(pyrolyseRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_ModHandler.getIC2Item("biochaff", 1), GT_Utility.getIntegratedCircuit(2))
@@ -99,7 +99,7 @@ public class PyrolyseRecipes implements Runnable {
             .fluidOutputs(Materials.FermentedBiomass.getFluid(1500))
             .duration(10 * SECONDS)
             .eut(10)
-            .addTo(sPyrolyseRecipes);
+            .addTo(pyrolyseRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(2))
@@ -107,7 +107,7 @@ public class PyrolyseRecipes implements Runnable {
             .fluidOutputs(Materials.FermentedBiomass.getFluid(1000))
             .duration(5 * SECONDS)
             .eut(10)
-            .addTo(sPyrolyseRecipes);
+            .addTo(pyrolyseRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(2))
@@ -115,7 +115,7 @@ public class PyrolyseRecipes implements Runnable {
             .fluidOutputs(Materials.FermentedBiomass.getFluid(1000))
             .duration(5 * SECONDS)
             .eut(10)
-            .addTo(sPyrolyseRecipes);
+            .addTo(pyrolyseRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(Materials.Sugar.getDust(23), GT_Utility.getIntegratedCircuit(1))
@@ -123,7 +123,7 @@ public class PyrolyseRecipes implements Runnable {
             .fluidOutputs(Materials.Water.getFluid(1500))
             .duration(16 * SECONDS)
             .eut(64)
-            .addTo(sPyrolyseRecipes);
+            .addTo(pyrolyseRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(Materials.Sugar.getDust(23), GT_Utility.getIntegratedCircuit(2))
@@ -132,6 +132,6 @@ public class PyrolyseRecipes implements Runnable {
             .fluidOutputs(Materials.Water.getFluid(1500))
             .duration(8 * SECONDS)
             .eut(96)
-            .addTo(sPyrolyseRecipes);
+            .addTo(pyrolyseRecipes);
     }
 }

@@ -35,13 +35,13 @@ import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.objects.overclockdescriber.OverclockDescriber;
+import gregtech.api.objects.overclockdescriber.SteamOverclockDescriber;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
-import gregtech.common.power.Power;
-import gregtech.common.power.SteamPower;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -70,8 +70,8 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
     }
 
     @Override
-    public Power buildPower() {
-        return new SteamPower(mTier, 1, 2);
+    public OverclockDescriber createOverclockDescriber() {
+        return new SteamOverclockDescriber(SteamVariant.BRONZE, 1, 2);
     }
 
     @Override
@@ -189,11 +189,11 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
 
     @Override
     public int checkRecipe() {
-        GT_Recipe tRecipe = getRecipeList().findRecipe(getBaseMetaTileEntity(), false, TierEU.LV, null, getAllInputs());
+        GT_Recipe tRecipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(), false, TierEU.LV, null, getAllInputs());
         if ((tRecipe != null) && (canOutput(tRecipe.mOutputs))
             && (tRecipe.isRecipeInputEqual(true, null, getAllInputs()))) {
             this.mOutputItems[0] = tRecipe.getOutput(0);
-            calculateOverclockedNess(tRecipe);
+            calculateCustomOverclock(tRecipe);
             return FOUND_AND_SUCCESSFULLY_USED_RECIPE;
         }
         return DID_NOT_FIND_RECIPE;
@@ -380,7 +380,7 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
         String[] description = Arrays.copyOf(mDescriptionArray, mDescriptionArray.length + 1);
         description[mDescriptionArray.length] = StatCollector.translateToLocal(TT_machineType) + ": "
             + EnumChatFormatting.YELLOW
-            + StatCollector.translateToLocal(this.getRecipeList().mUnlocalizedName)
+            + StatCollector.translateToLocal(this.getRecipeMap().unlocalizedName)
             + EnumChatFormatting.RESET;
         return description;
     }

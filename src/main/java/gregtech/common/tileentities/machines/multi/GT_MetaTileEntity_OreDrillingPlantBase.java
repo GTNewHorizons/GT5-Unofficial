@@ -50,6 +50,7 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.metatileentity.IMetricsExporter;
 import gregtech.api.objects.GT_ChunkManager;
 import gregtech.api.objects.ItemData;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -464,7 +465,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
                 outputItems.add(multiplyStackSize(currentItem));
                 return;
             }
-            GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes
+            GT_Recipe tRecipe = RecipeMaps.maceratorRecipes
                 .findRecipe(getBaseMetaTileEntity(), false, voltage, null, currentItem);
             if (tRecipe == null) {
                 outputItems.add(currentItem);
@@ -728,6 +729,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
                 .orElseGet(() -> StatCollector.translateToLocalFormatted("GT5U.gui.text.drill_offline_generic")));
     }
 
+    @Override
     public boolean supportsVoidProtection() {
         return true;
     }

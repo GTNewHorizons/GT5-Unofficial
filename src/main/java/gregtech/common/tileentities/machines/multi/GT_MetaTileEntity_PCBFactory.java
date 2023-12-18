@@ -75,9 +75,14 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.objects.ItemData;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.recipe.metadata.PCBFactoryTierKey;
+import gregtech.api.recipe.metadata.PCBFactoryUpgrade;
+import gregtech.api.recipe.metadata.PCBFactoryUpgradeKey;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -518,8 +523,8 @@ public class GT_MetaTileEntity_PCBFactory extends
     }
 
     @Override
-    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return GT_Recipe.GT_Recipe_Map.sPCBFactory;
+    public RecipeMap<?> getRecipeMap() {
+        return RecipeMaps.pcbFactoryRecipes;
     }
 
     @Override
@@ -543,16 +548,11 @@ public class GT_MetaTileEntity_PCBFactory extends
                 maxParallel = (int) Math.max(Math.ceil(Math.log(numberOfNanites) / Math.log(2) + 0.00001), 1);
                 mMaxParallel = maxParallel;
 
-                int recipeBitMap = recipe.mSpecialValue;
-
-                if (((recipeBitMap & mBioBitMap) == mBioBitMap && !mBioUpgrade))
+                PCBFactoryUpgrade requiredUpgrade = recipe.getMetadata(PCBFactoryUpgradeKey.INSTANCE);
+                if (requiredUpgrade == PCBFactoryUpgrade.BIO && !mBioUpgrade)
                     return SimpleCheckRecipeResult.ofFailure("bio_upgrade_missing");
 
-                int requiredPCBTier = 0;
-                if ((recipeBitMap & mTier3BitMap) == mTier3BitMap) requiredPCBTier = 3;
-                if ((recipeBitMap & mTier2BitMap) == mTier2BitMap) requiredPCBTier = 2;
-                if ((recipeBitMap & mTier1BitMap) == mTier1BitMap) requiredPCBTier = 1;
-
+                int requiredPCBTier = recipe.getMetadataOrDefault(PCBFactoryTierKey.INSTANCE, 1);
                 if (requiredPCBTier > mTier) return CheckRecipeResultRegistry.insufficientMachineTier(requiredPCBTier);
 
                 return CheckRecipeResultRegistry.SUCCESSFUL;

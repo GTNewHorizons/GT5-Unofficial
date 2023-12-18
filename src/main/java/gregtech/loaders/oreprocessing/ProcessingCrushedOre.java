@@ -1,9 +1,9 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sHammerRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMaceratorRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sSifterRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
+import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
+import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
+import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
@@ -32,7 +32,7 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L))
                     .duration(10 * TICKS)
                     .eut(16)
-                    .addTo(sHammerRecipes);
+                    .addTo(hammerRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1, aStack))
@@ -45,7 +45,7 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
                     .outputChances(10000, 1000)
                     .duration(20 * SECONDS)
                     .eut(2)
-                    .addTo(sMaceratorRecipes);
+                    .addTo(maceratorRecipes);
             }
             case crushedPurified -> {
                 GT_Values.RA.stdBuilder()
@@ -63,7 +63,7 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
                     .outputChances(10000, 1111)
                     .duration(25 * SECONDS)
                     .eut(48)
-                    .addTo(sThermalCentrifugeRecipes);
+                    .addTo(thermalCentrifugeRecipes);
 
                 ItemStack tGem = GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L);
                 if (tGem == null) {
@@ -84,7 +84,7 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
                         .outputChances(300, 1200, 4500, 1400, 2800, 3500)
                         .duration(40 * SECONDS)
                         .eut(16)
-                        .addTo(sSifterRecipes);
+                        .addTo(sifterRecipes);
                     default -> GT_Values.RA.stdBuilder()
                         .itemInputs(GT_Utility.copyAmount(1, aStack))
                         .itemOutputs(
@@ -97,7 +97,7 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
                         .outputChances(100, 400, 1500, 2000, 4000, 5000)
                         .duration(40 * SECONDS)
                         .eut(16)
-                        .addTo(sSifterRecipes);
+                        .addTo(sifterRecipes);
                 }
 
             }

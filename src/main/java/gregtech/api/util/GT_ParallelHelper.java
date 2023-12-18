@@ -1,5 +1,6 @@
 package gregtech.api.util;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -10,8 +11,8 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.interfaces.tileentity.IVoidable;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.XSTR;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SingleRecipeCheck;
@@ -124,27 +125,6 @@ public class GT_ParallelHelper {
     public GT_ParallelHelper() {}
 
     /**
-     * Sets MetaTE controller, with current configuration for void protection mode.
-     *
-     * @deprecated Use {@link #setMachine(IVoidable)}
-     */
-    @Deprecated
-    public GT_ParallelHelper setController(GT_MetaTileEntity_MultiBlockBase machineMeta) {
-        return setMachine(machineMeta, machineMeta.protectsExcessItem(), machineMeta.protectsExcessFluid());
-    }
-
-    /**
-     * Sets MetaTE controller, with void protection mode forcibly.
-     *
-     * @deprecated Use {@link #setMachine(IVoidable, boolean, boolean)}
-     */
-    @Deprecated
-    public GT_ParallelHelper setController(GT_MetaTileEntity_MultiBlockBase machineMeta, boolean protectExcessItem,
-        boolean protectExcessFluid) {
-        return setMachine(machineMeta, protectExcessItem, protectExcessFluid);
-    }
-
-    /**
      * Sets machine, with current configuration for void protection mode.
      */
     public GT_ParallelHelper setMachine(IVoidable machine) {
@@ -213,14 +193,6 @@ public class GT_ParallelHelper {
     }
 
     /**
-     * Use {@link #setConsumption(boolean)}
-     */
-    @Deprecated
-    public GT_ParallelHelper enableConsumption() {
-        return setConsumption(true);
-    }
-
-    /**
      * Set if we should consume inputs or not when trying for parallels
      *
      * @param consume Should we consume inputs
@@ -246,14 +218,6 @@ public class GT_ParallelHelper {
         this.batchMode = batchModifier > 1;
         this.batchModifier = batchModifier;
         return this;
-    }
-
-    /**
-     * Use {@link #setOutputCalculation(boolean)}
-     */
-    @Deprecated
-    public GT_ParallelHelper enableOutputCalculation() {
-        return setOutputCalculation(true);
     }
 
     /**
@@ -339,14 +303,6 @@ public class GT_ParallelHelper {
     }
 
     /**
-     * @deprecated Use {@link #getDurationMultiplierDouble()}
-     */
-    @Deprecated
-    public float getDurationMultiplier() {
-        return (float) getDurationMultiplierDouble();
-    }
-
-    /**
      * @return The ItemOutputs from the recipe
      */
     @Nonnull
@@ -379,23 +335,6 @@ public class GT_ParallelHelper {
             throw new IllegalStateException("Tried to get recipe result before building");
         }
         return result;
-    }
-
-    /**
-     * @deprecated Use {@link #setMaxParallelCalculator} and {@link #setInputConsumer}
-     */
-    @Deprecated
-    protected boolean tryConsumeRecipeInputs(GT_Recipe recipe, FluidStack[] fluids, ItemStack[] items) {
-        return false;
-    }
-
-    /**
-     * @deprecated Use {@link #setMaxParallelCalculator} and {@link #setInputConsumer}
-     */
-    @Deprecated
-    protected boolean tryConsumeRecipeInputs(GT_Recipe recipe, FluidStack[] fluids, ItemStack[] items,
-        int minParallel) {
-        return false;
     }
 
     /**
@@ -439,6 +378,13 @@ public class GT_ParallelHelper {
             maxParallel *= batchModifier;
         }
 
+        final ItemStack[] truncatedItemOutputs = recipe.mOutputs != null
+            ? Arrays.copyOfRange(recipe.mOutputs, 0, Math.min(machine.getItemOutputLimit(), recipe.mOutputs.length))
+            : new ItemStack[0];
+        final FluidStack[] truncatedFluidOutputs = recipe.mFluidOutputs != null ? Arrays
+            .copyOfRange(recipe.mFluidOutputs, 0, Math.min(machine.getFluidOutputLimit(), recipe.mFluidOutputs.length))
+            : new FluidStack[0];
+
         SingleRecipeCheck recipeCheck = null;
         SingleRecipeCheck.Builder tSingleRecipeCheckBuilder = null;
         if (isRecipeLocked && singleRecipeMachine != null) {
@@ -446,7 +392,7 @@ public class GT_ParallelHelper {
             if (recipeCheck == null) {
                 // Machine is configured to lock to a single recipe, but haven't built the recipe checker yet.
                 // Build the checker on next successful recipe.
-                GT_Recipe.GT_Recipe_Map recipeMap = singleRecipeMachine.getRecipeMap();
+                RecipeMap<?> recipeMap = singleRecipeMachine.getRecipeMap();
                 if (recipeMap != null) {
                     tSingleRecipeCheckBuilder = SingleRecipeCheck.builder(recipeMap)
                         .setBefore(itemInputs, fluidInputs);
@@ -461,8 +407,8 @@ public class GT_ParallelHelper {
             }
             VoidProtectionHelper voidProtectionHelper = new VoidProtectionHelper();
             voidProtectionHelper.setMachine(machine)
-                .setItemOutputs(recipe.mOutputs)
-                .setFluidOutputs(recipe.mFluidOutputs)
+                .setItemOutputs(truncatedItemOutputs)
+                .setFluidOutputs(truncatedFluidOutputs)
                 .setMaxParallel(maxParallel)
                 .build();
             maxParallel = Math.min(voidProtectionHelper.getMaxParallel(), maxParallel);
@@ -475,7 +421,8 @@ public class GT_ParallelHelper {
         maxParallelBeforeBatchMode = Math.min(maxParallel, maxParallelBeforeBatchMode);
 
         // determine normal parallel
-        int actualMaxParallel = (int) Math.min(maxParallelBeforeBatchMode, availableEUt / tRecipeEUt);
+        int actualMaxParallel = tRecipeEUt > 0 ? (int) Math.min(maxParallelBeforeBatchMode, availableEUt / tRecipeEUt)
+            : maxParallelBeforeBatchMode;
         if (recipeCheck != null) {
             currentParallel = recipeCheck.checkRecipeInputs(true, actualMaxParallel, itemInputs, fluidInputs);
         } else {
@@ -527,11 +474,11 @@ public class GT_ParallelHelper {
 
         // If we want to calculate outputs we do it here
         if (calculateOutputs && currentParallel > 0) {
-            if (recipe.mOutputs != null) {
-                calculateItemOutputs();
+            if (truncatedItemOutputs.length > 0) {
+                calculateItemOutputs(truncatedItemOutputs);
             }
-            if (recipe.mFluidOutputs != null) {
-                calculateFluidOutputs();
+            if (truncatedFluidOutputs.length > 0) {
+                calculateFluidOutputs(truncatedFluidOutputs);
             }
         }
         result = CheckRecipeResultRegistry.SUCCESSFUL;
@@ -552,13 +499,13 @@ public class GT_ParallelHelper {
         fluidInputs = fluidInputsToUse;
     }
 
-    protected void calculateItemOutputs() {
+    private void calculateItemOutputs(ItemStack[] truncatedItemOutputs) {
         if (customItemOutputCalculation != null) {
             itemOutputs = customItemOutputCalculation.apply(currentParallel);
             return;
         }
-        itemOutputs = new ItemStack[recipe.mOutputs.length];
-        for (int i = 0; i < recipe.mOutputs.length; i++) {
+        itemOutputs = new ItemStack[truncatedItemOutputs.length];
+        for (int i = 0; i < truncatedItemOutputs.length; i++) {
             if (recipe.getOutputChance(i) >= 10000) {
                 ItemStack item = recipe.getOutput(i)
                     .copy();
@@ -584,13 +531,13 @@ public class GT_ParallelHelper {
         }
     }
 
-    protected void calculateFluidOutputs() {
+    private void calculateFluidOutputs(FluidStack[] truncatedFluidOutputs) {
         if (customFluidOutputCalculation != null) {
             fluidOutputs = customFluidOutputCalculation.apply(currentParallel);
             return;
         }
-        fluidOutputs = new FluidStack[recipe.mFluidOutputs.length];
-        for (int i = 0; i < recipe.mFluidOutputs.length; i++) {
+        fluidOutputs = new FluidStack[truncatedFluidOutputs.length];
+        for (int i = 0; i < truncatedFluidOutputs.length; i++) {
             if (recipe.getFluidOutput(i) == null) {
                 fluidOutputs[i] = null;
             } else {

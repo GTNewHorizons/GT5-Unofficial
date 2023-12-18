@@ -1,6 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sChemicalBathRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import net.minecraft.enchantment.Enchantment;
@@ -40,7 +40,7 @@ public class ProcessingArrows implements gregtech.api.interfaces.IOreRecipeRegis
             .fluidInputs(Materials.HolyWater.getFluid(25L))
             .duration(5 * SECONDS)
             .eut(2)
-            .addTo(sChemicalBathRecipes);
+            .addTo(chemicalBathRecipes);
 
         tOutput = GT_Utility.copyAmount(1, aStack);
         GT_Utility.updateItemStack(tOutput);
@@ -55,7 +55,7 @@ public class ProcessingArrows implements gregtech.api.interfaces.IOreRecipeRegis
             .fluidInputs(Materials.FierySteel.getFluid(25L))
             .duration(5 * SECONDS)
             .eut(2)
-            .addTo(sChemicalBathRecipes);
+            .addTo(chemicalBathRecipes);
 
         tOutput = GT_Utility.copyAmount(1, aStack);
         GT_Utility.updateItemStack(tOutput);
@@ -70,7 +70,7 @@ public class ProcessingArrows implements gregtech.api.interfaces.IOreRecipeRegis
             .fluidInputs(Materials.Blaze.getMolten(18L))
             .duration(5 * SECONDS)
             .eut(2)
-            .addTo(sChemicalBathRecipes);
+            .addTo(chemicalBathRecipes);
 
         tOutput = GT_Utility.copyAmount(1, aStack);
         GT_Utility.updateItemStack(tOutput);
@@ -85,7 +85,7 @@ public class ProcessingArrows implements gregtech.api.interfaces.IOreRecipeRegis
             .fluidInputs(Materials.Rubber.getMolten(18L))
             .duration(5 * SECONDS)
             .eut(2)
-            .addTo(sChemicalBathRecipes);
+            .addTo(chemicalBathRecipes);
 
         tOutput = GT_Utility.copyAmount(1, aStack);
         GT_Utility.updateItemStack(tOutput);
@@ -101,7 +101,7 @@ public class ProcessingArrows implements gregtech.api.interfaces.IOreRecipeRegis
             .fluidInputs(Materials.Mercury.getFluid(25L))
             .duration(5 * SECONDS)
             .eut(2)
-            .addTo(sChemicalBathRecipes);
+            .addTo(chemicalBathRecipes);
 
         if (!aMaterial.mUnificatable) {
             return;

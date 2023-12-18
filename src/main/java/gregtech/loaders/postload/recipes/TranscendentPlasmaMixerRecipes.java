@@ -1,6 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sTranscendentPlasmaMixerRecipes;
+import static gregtech.api.recipe.RecipeMaps.transcendentPlasmaMixerRecipes;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
@@ -31,7 +31,7 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             .duration(100)
             .eut(CRUDE_EU_PER_L)
             .noOptimize()
-            .addTo(sTranscendentPlasmaMixerRecipes);
+            .addTo(transcendentPlasmaMixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(2))
@@ -48,7 +48,7 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             .duration(100)
             .eut(PROSAIC_EU_PER_L)
             .noOptimize()
-            .addTo(sTranscendentPlasmaMixerRecipes);
+            .addTo(transcendentPlasmaMixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(3))
@@ -69,7 +69,7 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             .duration(100)
             .eut(RESPLENDENT_EU_PER_L)
             .noOptimize()
-            .addTo(sTranscendentPlasmaMixerRecipes);
+            .addTo(transcendentPlasmaMixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(4))
@@ -94,7 +94,7 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             .duration(100)
             .eut(EXOTIC_EU_PER_L)
             .noOptimize()
-            .addTo(sTranscendentPlasmaMixerRecipes);
+            .addTo(transcendentPlasmaMixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(5))
@@ -123,7 +123,7 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             .duration(200)
             .eut(STELLAR_EU_PER_HALF_L)
             .noOptimize()
-            .addTo(sTranscendentPlasmaMixerRecipes);
+            .addTo(transcendentPlasmaMixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(24))
@@ -136,7 +136,7 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             .duration(100)
             .eut(PRIMORDIAL_MATTER)
             .noOptimize()
-            .addTo(sTranscendentPlasmaMixerRecipes);
+            .addTo(transcendentPlasmaMixerRecipes);
 
     }
 }

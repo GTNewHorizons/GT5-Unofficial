@@ -1,6 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes;
+import static gregtech.api.recipe.RecipeMaps.packagerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
@@ -19,7 +19,7 @@ public class PackagerRecipes implements Runnable {
             .itemOutputs(ItemList.IC2_Scrapbox.get(1))
             .duration(16 * TICKS)
             .eut(1)
-            .addTo(sBoxinatorRecipes);
+            .addTo(packagerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -28,7 +28,7 @@ public class PackagerRecipes implements Runnable {
             .itemOutputs(ItemList.Food_Packaged_Fries.get(1))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(16)
-            .addTo(sBoxinatorRecipes);
+            .addTo(packagerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -37,7 +37,7 @@ public class PackagerRecipes implements Runnable {
             .itemOutputs(ItemList.Food_Packaged_PotatoChips.get(1))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(16)
-            .addTo(sBoxinatorRecipes);
+            .addTo(packagerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -46,6 +46,6 @@ public class PackagerRecipes implements Runnable {
             .itemOutputs(ItemList.Food_Packaged_ChiliChips.get(1))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(16)
-            .addTo(sBoxinatorRecipes);
+            .addTo(packagerRecipes);
     }
 }

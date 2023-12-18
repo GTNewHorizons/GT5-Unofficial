@@ -19,7 +19,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_SCANNER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_SCANNER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_SCANNER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_SCANNER_GLOW;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes;
+import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
 
 import java.util.Objects;
 
@@ -42,6 +42,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.objects.ItemData;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_AssemblyLineUtils;
 import gregtech.api.util.GT_Log;
@@ -114,15 +115,6 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
     }
 
     public GT_MetaTileEntity_Scanner(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 1, aDescription, aTextures, 1, 1);
-    }
-
-    /**
-     * @deprecated Use {@link #GT_MetaTileEntity_Scanner(String, int, String[], ITexture[][][])}
-     */
-    @Deprecated
-    public GT_MetaTileEntity_Scanner(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
-        String aGUIName, String aNEIName) {
         super(aName, aTier, 1, aDescription, aTextures, 1, 1);
     }
 
@@ -358,7 +350,7 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
                 for (GT_Recipe.GT_Recipe_AssemblyLine tRecipe : GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes) {
                     if (GT_Utility.areStacksEqual(tRecipe.mResearchItem, aStack, true)) {
                         boolean failScanner = true;
-                        for (GT_Recipe scannerRecipe : sScannerFakeRecipes.mRecipeList) {
+                        for (GT_Recipe scannerRecipe : scannerFakeRecipes.getAllRecipes()) {
                             if (GT_Utility.areStacksEqual(scannerRecipe.mInputs[0], aStack, true)) {
                                 failScanner = false;
                                 break;
@@ -402,8 +394,8 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
     }
 
     @Override
-    public GT_Recipe.GT_Recipe_Map getRecipeList() {
-        return sScannerFakeRecipes;
+    public RecipeMap<?> getRecipeMap() {
+        return scannerFakeRecipes;
     }
 
     @Override
@@ -415,7 +407,7 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
     protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, side, aStack)
-            && getRecipeList().containsInput(aStack);
+            && getRecipeMap().containsInput(aStack);
     }
 
     @Override

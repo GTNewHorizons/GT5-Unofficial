@@ -2,7 +2,6 @@ package gregtech.common.tileentities.machines.basic;
 
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.debugBlockMiner;
-import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.ArrayList;
 
@@ -19,12 +18,6 @@ import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.math.Pos2d;
-import com.gtnewhorizons.modularui.api.math.Size;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GT_UITextures;
@@ -33,6 +26,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
+import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
@@ -429,19 +423,13 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine
         return true;
     }
 
-    private static final FallbackableUITexture progressBarTexture = new FallbackableUITexture(
-        UITexture.fullImage(GregTech.ID, "gui/progressbar/miner"),
-        GT_UITextures.PROGRESSBAR_CANNER);
+    private static final FallbackableUITexture progressBarTexture = GT_UITextures
+        .fallbackableProgressbar("miner", GT_UITextures.PROGRESSBAR_CANNER);
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
-        builder.widget(
-            createProgressBar(
-                progressBarTexture.get(),
-                20,
-                ProgressBar.Direction.RIGHT,
-                new Pos2d(78, 24),
-                new Size(20, 18)));
+    protected BasicUIProperties getUIProperties() {
+        return super.getUIProperties().toBuilder()
+            .progressBarTexture(progressBarTexture)
+            .build();
     }
 }

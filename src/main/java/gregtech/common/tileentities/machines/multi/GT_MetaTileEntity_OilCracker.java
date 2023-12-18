@@ -37,10 +37,12 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMul
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_MultiInput;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.maps.OilCrackerBackend;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
 
 public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_OilCracker>
     implements ISurvivalConstructable {
@@ -167,8 +169,8 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
     }
 
     @Override
-    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return GT_Recipe.GT_Recipe_Map.sCrackingRecipes;
+    public RecipeMap<OilCrackerBackend> getRecipeMap() {
+        return RecipeMaps.crackingRecipes;
     }
 
     @Override
@@ -324,14 +326,15 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
             tHatch.mRecipeMap = getRecipeMap();
             if (tHatch instanceof GT_MetaTileEntity_Hatch_MultiInput) {
                 for (final FluidStack tFluid : ((GT_MetaTileEntity_Hatch_MultiInput) tHatch).getStoredFluid()) {
-                    if (tFluid != null && !GT_Recipe.GT_Recipe_Map.sCrackingRecipes.isValidCatalystFluid(tFluid)) {
+                    if (tFluid != null && !getRecipeMap().getBackend()
+                        .isValidCatalystFluid(tFluid)) {
                         rList.add(tFluid);
                     }
                 }
             } else {
                 if (tHatch.getFillableStack() != null) {
-                    if (!GT_Recipe.GT_Recipe_Map.sCrackingRecipes.isValidCatalystFluid(tHatch.getFillableStack()))
-                        rList.add(tHatch.getFillableStack());
+                    if (!getRecipeMap().getBackend()
+                        .isValidCatalystFluid(tHatch.getFillableStack())) rList.add(tHatch.getFillableStack());
                 }
             }
         }
@@ -339,14 +342,16 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
             tHatch.mRecipeMap = getRecipeMap();
             if (tHatch instanceof GT_MetaTileEntity_Hatch_MultiInput) {
                 for (final FluidStack tFluid : ((GT_MetaTileEntity_Hatch_MultiInput) tHatch).getStoredFluid()) {
-                    if (tFluid != null && GT_Recipe.GT_Recipe_Map.sCrackingRecipes.isValidCatalystFluid(tFluid)) {
+                    if (tFluid != null && getRecipeMap().getBackend()
+                        .isValidCatalystFluid(tFluid)) {
                         rList.add(tFluid);
                     }
                 }
             } else {
                 if (tHatch.getFillableStack() != null) {
                     final FluidStack tStack = tHatch.getFillableStack();
-                    if (GT_Recipe.GT_Recipe_Map.sCrackingRecipes.isValidCatalystFluid(tStack)) {
+                    if (getRecipeMap().getBackend()
+                        .isValidCatalystFluid(tStack)) {
                         rList.add(tStack);
                     }
                 }

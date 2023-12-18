@@ -46,8 +46,9 @@ import gregtech.api.logic.ComplexParallelProcessingLogic;
 import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
 import gregtech.api.multitileentity.multiblock.base.ComplexParallelController;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.common.tileentities.casings.upgrade.Inventory;
 
@@ -82,8 +83,8 @@ public class AdvChemicalReactor extends ComplexParallelController<AdvChemicalRea
     }
 
     @Override
-    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return GT_Recipe.GT_Recipe_Map_LargeChemicalReactor.sChemicalRecipes;
+    public RecipeMap<?> getRecipeMap() {
+        return RecipeMaps.chemicalReactorRecipes;
     }
 
     @Override

@@ -1,7 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sHammerRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMaceratorRecipes;
+import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
+import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import net.minecraft.item.ItemStack;
@@ -28,7 +28,7 @@ public class ProcessingPure implements gregtech.api.interfaces.IOreRecipeRegistr
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustPure, aMaterial.mMacerateInto, 1L))
             .duration(10)
             .eut(16)
-            .addTo(sHammerRecipes);
+            .addTo(hammerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.copyAmount(1, aStack))
@@ -45,6 +45,6 @@ public class ProcessingPure implements gregtech.api.interfaces.IOreRecipeRegistr
             .outputChances(10000, 1000)
             .duration(20 * SECONDS)
             .eut(2)
-            .addTo(sMaceratorRecipes);
+            .addTo(maceratorRecipes);
     }
 }

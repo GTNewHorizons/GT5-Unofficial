@@ -25,8 +25,6 @@ public class ProcessingWax implements gregtech.api.interfaces.IOreRecipeRegistra
                 .itemInputs(GT_Utility.copyAmount(1, aStack))
                 .metadata(FUEL_VALUE, 6)
                 .metadata(FUEL_TYPE, 5)
-                .duration(0)
-                .eut(0)
                 .addTo(GT_RecipeConstants.Fuel);
         }
     }

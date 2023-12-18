@@ -1,7 +1,7 @@
 package gregtech.loaders.load;
 
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCannerRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMaceratorRecipes;
+import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
+import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.WILDCARD;
 import static gregtech.api.util.GT_RecipeConstants.FUEL_TYPE;
@@ -47,7 +47,7 @@ public class GT_ItemIterator implements Runnable {
                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Bronze, 8L))
                 .duration(20 * SECONDS)
                 .eut(2)
-                .addTo(sMaceratorRecipes);
+                .addTo(maceratorRecipes);
 
             GT_ModHandler.addSmeltingRecipe(tStack, GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 8L));
         }
@@ -63,7 +63,7 @@ public class GT_ItemIterator implements Runnable {
                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Bronze, 8L))
                 .duration(20 * SECONDS)
                 .eut(2)
-                .addTo(sMaceratorRecipes);
+                .addTo(maceratorRecipes);
             GT_ModHandler.addSmeltingRecipe(tStack, GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 8L));
         }
 
@@ -89,7 +89,7 @@ public class GT_ItemIterator implements Runnable {
                 .outputChances(10000, 1000)
                 .duration(20 * SECONDS)
                 .eut(2)
-                .addTo(sMaceratorRecipes);
+                .addTo(maceratorRecipes);
         }
 
         tStack2 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 1L);
@@ -113,7 +113,7 @@ public class GT_ItemIterator implements Runnable {
                 .outputChances(10000, 1000)
                 .duration(20 * SECONDS)
                 .eut(2)
-                .addTo(sMaceratorRecipes);
+                .addTo(maceratorRecipes);
         }
         GT_Log.out.println("GT_Mod: Registering various Tools to be usable on GregTech Machines");
         GregTech_API.registerScrewdriver(
@@ -130,31 +130,31 @@ public class GT_ItemIterator implements Runnable {
             .itemOutputs(ItemList.IC2_Food_Can_Spoiled.get(1L))
             .duration(10 * SECONDS)
             .eut(1)
-            .addTo(sCannerRecipes);
+            .addTo(cannerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.spider_eye, 2, WILDCARD), ItemList.IC2_Food_Can_Empty.get(1L))
             .itemOutputs(ItemList.IC2_Food_Can_Spoiled.get(1L))
             .duration(5 * SECONDS)
             .eut(1)
-            .addTo(sCannerRecipes);
+            .addTo(cannerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Food_Poisonous_Potato.get(2L), ItemList.IC2_Food_Can_Empty.get(1L))
             .itemOutputs(ItemList.IC2_Food_Can_Spoiled.get(1L))
             .duration(5 * SECONDS)
             .eut(1)
-            .addTo(sCannerRecipes);
+            .addTo(cannerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.cake, 1, WILDCARD), ItemList.IC2_Food_Can_Empty.get(12L))
             .itemOutputs(ItemList.IC2_Food_Can_Filled.get(12L))
             .duration(30 * SECONDS)
             .eut(1)
-            .addTo(sCannerRecipes);
+            .addTo(cannerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.mushroom_stew, 1, WILDCARD), ItemList.IC2_Food_Can_Empty.get(6L))
             .itemOutputs(ItemList.IC2_Food_Can_Filled.get(6L), new ItemStack(Items.bowl, 1))
             .duration(15 * SECONDS)
             .eut(1)
-            .addTo(sCannerRecipes);
+            .addTo(cannerRecipes);
 
         GT_Log.out.println("GT_Mod: Scanning ItemList.");
 
@@ -225,7 +225,7 @@ public class GT_ItemIterator implements Runnable {
                         }
                         recipeBuilder.duration(tFoodValue * 5 * SECONDS)
                             .eut(1)
-                            .addTo(sCannerRecipes);
+                            .addTo(cannerRecipes);
                     }
                 }
                 if ((tItem instanceof IFluidContainerItem)) {
@@ -238,8 +238,6 @@ public class GT_ItemIterator implements Runnable {
                         .itemInputs(new ItemStack(tItem, 1, 0))
                         .metadata(FUEL_VALUE, 2048)
                         .metadata(FUEL_TYPE, 5)
-                        .duration(0)
-                        .eut(0)
                         .addTo(GT_RecipeConstants.Fuel);
 
                     // twilight forest
@@ -250,7 +248,7 @@ public class GT_ItemIterator implements Runnable {
                             .outputChances(10000, 3000)
                             .duration(20 * SECONDS)
                             .eut(2)
-                            .addTo(sMaceratorRecipes);
+                            .addTo(maceratorRecipes);
                         GT_ModHandler.addSawmillRecipe(
                             new ItemStack(tItem, 1, 0),
                             new ItemStack(Items.stick, 4),
@@ -260,8 +258,6 @@ public class GT_ItemIterator implements Runnable {
                             .itemOutputs(new ItemStack(Items.stick, 4))
                             .metadata(FUEL_VALUE, 32)
                             .metadata(FUEL_TYPE, 5)
-                            .duration(0)
-                            .eut(0)
                             .addTo(GT_RecipeConstants.Fuel);
                     }
 

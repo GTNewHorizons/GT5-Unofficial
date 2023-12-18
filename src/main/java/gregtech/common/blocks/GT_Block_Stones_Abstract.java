@@ -1,8 +1,8 @@
 package gregtech.common.blocks;
 
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sHammerRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sLaserEngraverRecipes;
+import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
+import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
+import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
@@ -74,13 +74,13 @@ public class GT_Block_Stones_Abstract extends GT_Generic_Block implements IOreRe
             .itemOutputs(new ItemStack(this, 1, 3))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(4)
-            .addTo(sAssemblerRecipes);
+            .addTo(assemblerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(this, 1, 8), GT_Utility.getIntegratedCircuit(4))
             .itemOutputs(new ItemStack(this, 1, 11))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(4)
-            .addTo(sAssemblerRecipes);
+            .addTo(assemblerRecipes);
     }
 
     private void registerCraftingRecipes() {
@@ -132,28 +132,28 @@ public class GT_Block_Stones_Abstract extends GT_Generic_Block implements IOreRe
             .itemOutputs(new ItemStack(this, 1, 4))
             .duration(16 * TICKS)
             .eut(10)
-            .addTo(sHammerRecipes);
+            .addTo(hammerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(this, 1, 11))
             .itemOutputs(new ItemStack(this, 1, 12))
             .duration(16 * TICKS)
             .eut(10)
-            .addTo(sHammerRecipes);
+            .addTo(hammerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(this, 1, 0))
             .itemOutputs(new ItemStack(this, 1, 1))
             .duration(16 * TICKS)
             .eut(10)
-            .addTo(sHammerRecipes);
+            .addTo(hammerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(this, 1, 8))
             .itemOutputs(new ItemStack(this, 1, 9))
             .duration(16 * TICKS)
             .eut(10)
-            .addTo(sHammerRecipes);
+            .addTo(hammerRecipes);
     }
 
     @Override
@@ -166,14 +166,14 @@ public class GT_Block_Stones_Abstract extends GT_Generic_Block implements IOreRe
                 .itemOutputs(new ItemStack(this, 1, 6))
                 .duration(2 * SECONDS + 10 * TICKS)
                 .eut(16)
-                .addTo(sLaserEngraverRecipes);
+                .addTo(laserEngraverRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(new ItemStack(this, 1, 15), GT_Utility.copyAmount(0, aStack))
                 .itemOutputs(new ItemStack(this, 1, 14))
                 .duration(2 * SECONDS + 10 * TICKS)
                 .eut(16)
-                .addTo(sLaserEngraverRecipes);
+                .addTo(laserEngraverRecipes);
 
         }
     }

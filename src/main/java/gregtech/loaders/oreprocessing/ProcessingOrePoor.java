@@ -1,7 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sHammerRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMaceratorRecipes;
+import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
+import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import net.minecraft.item.ItemStack;
@@ -48,7 +48,7 @@ public class ProcessingOrePoor implements gregtech.api.interfaces.IOreRecipeRegi
                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, aMultiplier))
                 .duration(10)
                 .eut(16)
-                .addTo(sHammerRecipes);
+                .addTo(hammerRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_Utility.copyAmount(1, aStack))
@@ -62,7 +62,7 @@ public class ProcessingOrePoor implements gregtech.api.interfaces.IOreRecipeRegi
                 .outputChances(10000, 100 * 5 * aMultiplier, 10000)
                 .duration(20 * SECONDS)
                 .eut(2)
-                .addTo(sMaceratorRecipes);
+                .addTo(maceratorRecipes);
 
             if (aMaterial.contains(SubTag.NO_SMELTING)) GT_ModHandler.addSmeltingRecipe(
                 GT_Utility.copyAmount(1, aStack),
