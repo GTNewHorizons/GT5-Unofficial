@@ -380,34 +380,32 @@ public class PreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlockB
 
     public void reUpdate(int texture) {
         for (IDualInputHatch hatch : mDualInputHatches) {
-            if (isValidMetaTileEntity((MetaTileEntity) hatch)) {
+            if (((MetaTileEntity) hatch).isValid()) {
                 hatch.updateTexture(texture);
             }
         }
-        for (GT_MetaTileEntity_Hatch hatch : mInputHatches) {
-            if (isValidMetaTileEntity(hatch)) {
-                hatch.updateTexture(texture);
-            }
-        }
-        for (GT_MetaTileEntity_Hatch hatch : mInputBusses) {
+        for (GT_MetaTileEntity_Hatch hatch : filterValidMTEs(mInputHatches)) {
             hatch.updateTexture(texture);
         }
-        for (GT_MetaTileEntity_Hatch hatch : mOutputHatches) {
+        for (GT_MetaTileEntity_Hatch hatch : filterValidMTEs(mInputBusses)) {
             hatch.updateTexture(texture);
         }
-        for (GT_MetaTileEntity_Hatch hatch : mOutputBusses) {
+        for (GT_MetaTileEntity_Hatch hatch : filterValidMTEs(mOutputHatches)) {
             hatch.updateTexture(texture);
         }
-        for (GT_MetaTileEntity_Hatch hatch : mEnergyHatches) {
+        for (GT_MetaTileEntity_Hatch hatch : filterValidMTEs(mOutputBusses)) {
             hatch.updateTexture(texture);
         }
-        for (GT_MetaTileEntity_Hatch hatch : mMaintenanceHatches) {
+        for (GT_MetaTileEntity_Hatch hatch : filterValidMTEs(mEnergyHatches)) {
             hatch.updateTexture(texture);
         }
-        for (GT_MetaTileEntity_Hatch hatch : mMufflerHatches) {
+        for (GT_MetaTileEntity_Hatch hatch : filterValidMTEs(mMaintenanceHatches)) {
             hatch.updateTexture(texture);
         }
-        for (GT_MetaTileEntity_Hatch hatch : mExoticEnergyHatches) {
+        for (GT_MetaTileEntity_Hatch hatch : filterValidMTEs(mMufflerHatches)) {
+            hatch.updateTexture(texture);
+        }
+        for (GT_MetaTileEntity_Hatch hatch : filterValidMTEs(mExoticEnergyHatches)) {
             hatch.updateTexture(texture);
         }
     }
