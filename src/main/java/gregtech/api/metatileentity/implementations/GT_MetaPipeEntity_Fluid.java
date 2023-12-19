@@ -548,7 +548,10 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
                     return wasActionPerformed;
                 }
 
-
+                // if pipes are same size
+                if (mPipeAmount != nextPipe.mPipeAmount) {
+                    return wasActionPerformed;
+                }
 
                 // making sure next pipe has same fluid
                 for (int i = 0; i < mPipeAmount; i++) {
