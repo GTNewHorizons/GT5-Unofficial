@@ -484,13 +484,13 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
         }
     }
 
-    public void blockPipeOnSide(ForgeDirection side, EntityPlayer entityPlayer, byte tMask) {
+    public void blockPipeOnSide(ForgeDirection side, EntityPlayer entityPlayer, byte mask) {
         if (isInputDisabledAtSide(side)) {
-            mDisableInput &= ~tMask;
+            mDisableInput &= ~mask;
             GT_Utility.sendChatToPlayer(entityPlayer, GT_Utility.trans("212", "Input enabled"));
             if (!isConnectedAtSide(side)) connect(side);
         } else {
-            mDisableInput |= tMask;
+            mDisableInput |= mask;
             GT_Utility.sendChatToPlayer(entityPlayer, GT_Utility.trans("213", "Input disabled"));
         }
     }
@@ -529,6 +529,11 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
 
                 // if next tile doesn't exist
                 if (nextPipeBaseTile == null) {
+                    return wasActionPerformed;
+                }
+
+                // if next tile is GT tile
+                if (!(nextPipeBaseTile instanceof IGregTechTileEntity)) {
                     return wasActionPerformed;
                 }
 
