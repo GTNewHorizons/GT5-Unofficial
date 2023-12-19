@@ -121,6 +121,8 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import ic2.core.init.BlocksItems;
+import ic2.core.init.InternalName;
 import kubatech.Tags;
 import kubatech.api.DynamicInventory;
 import kubatech.api.LoaderReference;
@@ -217,7 +219,9 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
         .addElement('N', ofBlock(PluginApiculture.blocks.alveary, BlockAlveary.Type.STABILIZER.ordinal()))
         .addElement('O', ofBlock(PluginApiculture.blocks.alveary, BlockAlveary.Type.HEATER.ordinal()))
         .addElement('P', ofBlock(PluginApiculture.blocks.alveary, BlockAlveary.Type.FAN.ordinal()))
-        .addElement('W', ofBlock(Blocks.water, 0))
+        .addElement(
+            'W',
+            ofChain(ofBlock(Blocks.water, 0), ofBlock(BlocksItems.getFluidBlock(InternalName.fluidDistilledWater), 0)))
         .addElement('F', new IStructureElementNoPlacement<GT_MetaTileEntity_MegaIndustrialApiary>() {
 
             @Override
@@ -333,6 +337,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
             .addCasingInfoMin("Bronze Plated Bricks", 190, false)
             .addOtherStructurePart("Borosilicate Glass", "Look at the hologram")
             .addStructureInfo("The glass tier limits the Energy Input tier")
+            .addStructureInfo("Regular water and IC2 Distilled Water are accepted")
             .addOtherStructurePart("Flowers", "On dirt/grass", 2)
             .addInputBus("Any casing", 1)
             .addOutputBus("Any casing", 1)

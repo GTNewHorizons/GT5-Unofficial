@@ -127,6 +127,8 @@ import ic2.api.crops.CropCard;
 import ic2.api.crops.Crops;
 import ic2.core.Ic2Items;
 import ic2.core.crop.TileEntityCrop;
+import ic2.core.init.BlocksItems;
+import ic2.core.init.InternalName;
 import kubatech.Tags;
 import kubatech.api.DynamicInventory;
 import kubatech.api.LoaderReference;
@@ -200,7 +202,9 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
                 LoaderReference.RandomThings ? Block.getBlockFromName("RandomThings:fertilizedDirt_tilled")
                     : Blocks.farmland,
                 0))
-        .addElement('w', ofBlock(Blocks.water, 0))
+        .addElement(
+            'w',
+            ofChain(ofBlock(Blocks.water, 0), ofBlock(BlocksItems.getFluidBlock(InternalName.fluidDistilledWater), 0)))
         .build();
 
     public GT_MetaTileEntity_ExtremeIndustrialGreenhouse(int aID, String aName, String aNameRegional) {
@@ -320,6 +324,7 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
             .addOtherStructurePart("Borosilicate Glass", "Hollow two middle layers")
             .addStructureInfo("The glass tier limits the Energy Input tier")
             .addStructureInfo("The dirt is from RandomThings, must be tilled")
+            .addStructureInfo("Regular water and IC2 Distilled Water are accepted")
             .addStructureInfo("Purple lamps are from ProjectRedIllumination. They can be powered and/or inverted")
             .addMaintenanceHatch("Any casing (Except inner bottom ones)", 1)
             .addInputBus("Any casing (Except inner bottom ones)", 1)
