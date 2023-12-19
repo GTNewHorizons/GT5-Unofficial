@@ -663,7 +663,7 @@ public class RecipeLoader {
                 Materials.Europium.getDust(1),
                 null,
                 null,
-                WerkstoffMaterialPool.EuropiumOxide.get(OrePrefixes.dust, 4),
+                WerkstoffMaterialPool.EuropiumOxide.get(OrePrefixes.dust, 6),
                 300,
                 8400);
 
