@@ -974,6 +974,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
         public BeeSimulator(ItemStack queenStack, World world, float t) {
             isValid = false;
             this.queenStack = queenStack.copy();
+            this.queenStack.stackSize = 1;
             generate(world, t);
             isValid = true;
             queenStack.stackSize--;
