@@ -548,6 +548,19 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
                     return wasActionPerformed;
                 }
 
+
+
+                // making sure next pipe has same fluid
+                for (int i = 0; i < mPipeAmount; i++) {
+                    if (mFluids[i] != null && nextPipe.mFluids[i] != null) {
+                        if (!mFluids[i].isFluidEqual(nextPipe.mFluids[i])) {
+                            return wasActionPerformed;
+                        }
+                    } else if (mFluids[i] != nextPipe.mFluids[i]) {
+                        return wasActionPerformed;
+                    }
+                }
+
                 boolean currentState = entityPlayer.isSneaking() ? currentPipe.isInputDisabledAtSide(tSide)
                     : currentPipe.isConnectedAtSide(tSide);
 
