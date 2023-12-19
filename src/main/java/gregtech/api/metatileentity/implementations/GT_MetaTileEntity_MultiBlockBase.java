@@ -1130,13 +1130,14 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
      * @param aEUt            - recipe EUt
      * @param aDuration       - recipe Duration
      * @param mAmperage       - should be 1 ?
-     * @param maxInputVoltage - Multiblock Max input voltage
+     * @param maxInputVoltage - Multiblock Max input voltage. Voltage is rounded up to higher tier voltage.
      * @param perfectOC       - If the Multiblock OCs perfectly, i.e. the large Chemical Reactor
      */
     protected void calculateOverclockedNessMultiInternal(long aEUt, int aDuration, int mAmperage, long maxInputVoltage,
         boolean perfectOC) {
+        byte tier = (byte) Math.max(0, GT_Utility.getTier(maxInputVoltage));
         GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(aEUt)
-            .setEUt(maxInputVoltage * mAmperage)
+            .setEUt(V[tier] * mAmperage)
             .setDuration(aDuration)
             .setDurationDecreasePerOC(perfectOC ? 2 : 1)
             .calculate();
