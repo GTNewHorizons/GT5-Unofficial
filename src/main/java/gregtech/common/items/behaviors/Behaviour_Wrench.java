@@ -33,7 +33,7 @@ public class Behaviour_Wrench extends Behaviour_None {
     @Override
     public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
         int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
-        if (aWorld.isRemote) {
+        if (aWorld.isRemote || aPlayer.isSneaking()) {
             return false;
         }
         final Block aBlock = aWorld.getBlock(aX, aY, aZ);

@@ -36,6 +36,14 @@ public class VoidProtectionHelper {
      */
     private int maxParallel = 1;
     /**
+     * If item output is full.
+     */
+    private boolean isItemFull;
+    /**
+     * If fluid output is full.
+     */
+    private boolean isFluidFull;
+    /**
      * The item outputs to check
      */
     private ItemStack[] itemOutputs;
@@ -111,6 +119,26 @@ public class VoidProtectionHelper {
     }
 
     /**
+     * @return If the calculation resulted in item output being full.
+     */
+    public boolean isItemFull() {
+        if (!built) {
+            throw new IllegalStateException("Tried to get isItemFull before building");
+        }
+        return isItemFull;
+    }
+
+    /**
+     * @return If the calculation resulted in fluid output being full.
+     */
+    public boolean isFluidFull() {
+        if (!built) {
+            throw new IllegalStateException("Tried to get isFluidFull before building");
+        }
+        return isFluidFull;
+    }
+
+    /**
      * Called by {@link #build()}. Determines the parallels and everything else that needs to be done at build time
      */
     private void determineParallel() {
@@ -125,9 +153,16 @@ public class VoidProtectionHelper {
         // to allow more involved setting for void protections (see ComplexParallelProcessingLogic)
         if (protectExcessItem && itemOutputs.length > 0 && !machine.canDumpItemToME()) {
             maxParallel = Math.min(calculateMaxItemParallels(), maxParallel);
+            if (maxParallel <= 0) {
+                isItemFull = true;
+                return;
+            }
         }
         if (protectExcessFluid && fluidOutputs.length > 0 && !machine.canDumpFluidToME()) {
             maxParallel = Math.min(calculateMaxFluidParallels(), maxParallel);
+            if (maxParallel <= 0) {
+                isFluidFull = true;
+            }
         }
     }
 
