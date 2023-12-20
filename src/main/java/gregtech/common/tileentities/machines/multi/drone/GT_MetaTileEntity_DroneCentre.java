@@ -149,10 +149,10 @@ public class GT_MetaTileEntity_DroneCentre extends
             .addInfo("Monitors multiblock machines in range.")
             .addInfo("Replace maintenance hatch on other multi with drone downlink module.")
             .addInfo("Provides maintenance, power control, monitoring and etc.")
-            .addInfo("Range is determined by drone tier: T1-64, T2-256, T3-1024")
+            .addInfo("Range is determined by drone tier: T1-32, T2-128, T3-512")
             .addInfo("Place drones in input bus; only one needed to operate.")
             .addInfo("Automatically upgrade based on the drone level in the input bus.")
-            .addInfo("There is a 0.028%*(3-N) chance per second that the drone will crash.")
+            .addInfo("There is a 1/3600(3N-2) chance per second that the drone will crash.")
             .addInfo("If there is no backup drone, it will shut down!")
             .addInfo(
                 "Once the maintenance center shuts down, all multi-block machines within the range will malfunction.")
@@ -213,11 +213,11 @@ public class GT_MetaTileEntity_DroneCentre extends
         if (aBaseMetaTileEntity.isServerSide()) {
             fixAll();
             if (aTick % 200 == 0 && (droneLevel == 1 || droneLevel == 2)
-                && getBaseMetaTileEntity().getRandomNumber(360 * (3 - droneLevel)) == 0) {
+                && getBaseMetaTileEntity().getRandomNumber(3600*(3*droneLevel-2)) == 0) {
                 droneLevel = 0;
                 if (!tryConsumeDrone()) criticalStopMachine();
             }
-            // Clean list every 4 second
+            // Clean invalid connections every 4 seconds
             if (aTick % 80 == 0) connectionList.removeIf(v -> !v.isValid());
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
@@ -295,9 +295,9 @@ public class GT_MetaTileEntity_DroneCentre extends
 
     public int getRange() {
         return switch (droneLevel) {
-            case 1 -> 64;
-            case 2 -> 256;
-            case 3 -> 1024;
+            case 1 -> 32;
+            case 2 -> 128;
+            case 3 -> 512;
             default -> 0;
         };
     }
