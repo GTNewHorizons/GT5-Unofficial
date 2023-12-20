@@ -89,6 +89,7 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
                 .atLeast(
                     GT_HatchElement.InputHatch.withAdder(GT_MetaTileEntity_OilCracker::addMiddleInputToMachineList)
                         .withCount(t -> t.mMiddleInputHatches.size()),
+                    GT_HatchElement.InputBus,
                     GT_HatchElement.Energy,
                     GT_HatchElement.Maintenance)
                 .dot(1)
@@ -137,6 +138,7 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
             .addInputHatch("Any left/right side casing", 2, 3)
             .addOutputHatch("Any right/left side casing", 2, 3)
             .addStructureInfo("Input/Output Hatches must be on opposite sides!")
+            .addInputBus("Any middle ring casing, optional for programmed circuit automation")
             .addStructureHint("GT5U.cracker.io_side")
             .toolTipFinisher("Gregtech");
         return tt;
