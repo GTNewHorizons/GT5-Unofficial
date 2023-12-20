@@ -237,8 +237,8 @@ public class GT_TileEntity_CircuitAssemblyLine extends
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         this.type = aNBT.getCompoundTag(IMPRINT_KEY);
-        this.imprintedItemName = GT_LanguageManager
-                .getTranslateableItemStackName(ItemStack.loadItemStackFromNBT(this.type));
+        this.imprintedItemName = this.type == null ? ""
+                : GT_LanguageManager.getTranslateableItemStackName(ItemStack.loadItemStackFromNBT(this.type));
         mode = aNBT.getInteger(RUNNING_MODE_KEY);
         length = aNBT.getInteger(LENGTH_KEY);
         super.loadNBTData(aNBT);
@@ -562,7 +562,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends
 
     @Override
     public boolean isRecipeLockingEnabled() {
-        return this.imprintedItemName != null && !"".equals(this.imprintedItemName);
+        return this.mode == 0 && this.imprintedItemName != null && !"".equals(this.imprintedItemName);
     }
 
     @Override
