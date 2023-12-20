@@ -114,8 +114,9 @@ public class GT_TileEntity_MegaOilCracker extends GT_TileEntity_MegaMultiBlockBa
                             .newAny(CASING_INDEX, 3))
             .addElement(
                     'm',
-                    buildHatchAdder(GT_TileEntity_MegaOilCracker.class).atLeast(Energy.or(ExoticEnergy), Maintenance)
-                            .casingIndex(CASING_INDEX).dot(1).buildAndChain(GregTech_API.sBlockCasings4, 1))
+                    buildHatchAdder(GT_TileEntity_MegaOilCracker.class)
+                            .atLeast(Energy.or(ExoticEnergy), Maintenance, InputBus).casingIndex(CASING_INDEX).dot(1)
+                            .buildAndChain(GregTech_API.sBlockCasings4, 1))
             .addElement(
                     'M',
                     InputHatch.withAdder(GT_TileEntity_MegaOilCracker::addMiddleInputToMachineList)
@@ -155,12 +156,13 @@ public class GT_TileEntity_MegaOilCracker extends GT_TileEntity_MegaMultiBlockBa
                 .addInfo("Hydro - Consumes 20% less Hydrogen and outputs 25% more cracked fluid")
                 .addInfo("Steam - Outputs 50% more cracked fluid")
                 .addInfo("(Values compared to cracking in the Chemical Reactor)")
-                .addInfo("Place the appropriate circuit in the controller").addSeparator()
+                .addInfo("Place the appropriate circuit in the controller or an input bus").addSeparator()
                 .beginStructureBlock(13, 7, 9, true).addController("Front bottom")
                 .addStructureInfo("The glass tier limits the Energy Input tier")
                 .addInfo("Gets 10% EU/t reduction per coil tier, up to a maximum of 50%")
                 .addEnergyHatch("Hint block", 1).addMaintenanceHatch("Hint block", 1).addInputHatch("Hint block", 2, 3)
                 .addOutputHatch("Hint block", 2, 3).addInputHatch("Steam/Hydrogen ONLY, Hint block", 4)
+                .addInputBus("Optional, for programmed circuit automation. Hint block", 1)
                 .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTWORKS);
         return tt;
     }
