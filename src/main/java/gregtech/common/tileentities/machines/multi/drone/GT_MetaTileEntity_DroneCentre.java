@@ -13,6 +13,7 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -73,7 +74,6 @@ public class GT_MetaTileEntity_DroneCentre extends
 
     private static final IIconContainer Active = new Textures.BlockIcons.CustomIcon("iconsets/droneCentre");
     private static final IIconContainer Inactive = new Textures.BlockIcons.CustomIcon("iconsets/droneCentre");
-    public double rotation = 0;
     public Vec3Impl vec3;
     public int range;
     public int droneLevel = 0;
@@ -210,7 +210,6 @@ public class GT_MetaTileEntity_DroneCentre extends
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        rotation = (rotation + 50) % 360d;
         if (aBaseMetaTileEntity.isServerSide()) {
             fixAll();
             if (aTick % 200 == 0 && (droneLevel == 1 || droneLevel == 2)
@@ -272,6 +271,7 @@ public class GT_MetaTileEntity_DroneCentre extends
         }
         if (droneLevel == 1 || droneLevel == 2) tryUpdateDrone();
         mMaxProgresstime = 200 * droneLevel;
+        createRenderBlock();
         return SimpleCheckRecipeResult.ofSuccess("operating");
     }
 
@@ -328,6 +328,23 @@ public class GT_MetaTileEntity_DroneCentre extends
                 return;
             }
         }
+    }
+
+    public void createRenderBlock() {
+        int x = getBaseMetaTileEntity().getXCoord();
+        int y = getBaseMetaTileEntity().getYCoord();
+        int z = getBaseMetaTileEntity().getZCoord();
+
+        double xOffset = 2 * getExtendedFacing().getRelativeBackInWorld().offsetX;
+        double zOffset = 2 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
+        double yOffset = 2 * getExtendedFacing().getRelativeBackInWorld().offsetY;
+
+        this.getBaseMetaTileEntity()
+            .getWorld()
+            .setBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset), Blocks.air);
+        this.getBaseMetaTileEntity()
+            .getWorld()
+            .setBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset), GregTech_API.sDroneRender);
     }
 
     public void fixAll() {
