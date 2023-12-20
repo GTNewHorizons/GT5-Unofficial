@@ -213,7 +213,7 @@ public class GT_MetaTileEntity_DroneCentre extends
         if (aBaseMetaTileEntity.isServerSide()) {
             fixAll();
             if (aTick % 200 == 0 && (droneLevel == 1 || droneLevel == 2)
-                && getBaseMetaTileEntity().getRandomNumber(3600*(3*droneLevel-2)) == 0) {
+                && getBaseMetaTileEntity().getRandomNumber(3600 * (3 * droneLevel - 2)) == 0) {
                 droneLevel = 0;
                 if (!tryConsumeDrone()) criticalStopMachine();
             }
