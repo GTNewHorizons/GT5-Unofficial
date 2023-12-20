@@ -90,6 +90,7 @@ import gregtech.common.render.GT_FluidDisplayStackRenderer;
 import gregtech.common.render.GT_MetaGenerated_Tool_Renderer;
 import gregtech.common.render.GT_MultiTile_Renderer;
 import gregtech.common.render.GT_PollutionRenderer;
+import gregtech.common.render.GT_RenderDrone;
 import gregtech.common.render.GT_Renderer_Block;
 import gregtech.common.render.GT_Renderer_Entity_Arrow;
 import gregtech.common.render.items.GT_MetaGenerated_Item_Renderer;
@@ -585,6 +586,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
         super.onLoad();
         new GT_Renderer_Block();
         new GT_MultiTile_Renderer();
+        new GT_RenderDrone();
         metaGeneratedItemRenderer = new GT_MetaGenerated_Item_Renderer();
         for (GT_MetaGenerated_Item item : GT_MetaGenerated_Item.sInstances.values()) {
             metaGeneratedItemRenderer.registerItem(item);
