@@ -125,7 +125,7 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
             .addInfo("Hydro - Consumes 20% less Hydrogen and outputs 25% more cracked fluid")
             .addInfo("Steam - Outputs 50% more cracked fluid")
             .addInfo("(Values compared to cracking in the Chemical Reactor)")
-            .addInfo("Place the appropriate circuit in the controller")
+            .addInfo("Place the appropriate circuit in the controller or an input bus")
             .addSeparator()
             .beginStructureBlock(5, 3, 3, true)
             .addController("Front center")
