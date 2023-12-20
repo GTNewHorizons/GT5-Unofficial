@@ -11,10 +11,10 @@ import net.minecraftforge.client.model.IModelCustom;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_DroneCentre;
+import gregtech.common.tileentities.render.TileDrone;
 
 @SideOnly(Side.CLIENT)
 public class GT_RenderDrone extends TileEntitySpecialRenderer {
@@ -23,30 +23,19 @@ public class GT_RenderDrone extends TileEntitySpecialRenderer {
     private static final IModelCustom Drone = AdvancedModelLoader
         .loadModel(new ResourceLocation(GregTech.ID, "textures/model/drone.obj"));
 
-    public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float timeSinceLastTick) {
-        if (!(tile instanceof IGregTechTileEntity te
-            && te.getMetaTileEntity() instanceof GT_MetaTileEntity_DroneCentre centre)) return;
-        if (!centre.getBaseMetaTileEntity()
-            .isActive()) return;
-        final float size = 1.0f;
-        GL11.glPushMatrix();
-        addDircetion(centre, x, y, z);
-        renderDrone(size);
-        GL11.glPopMatrix();
-        GL11.glPushMatrix();
-        addDircetion(centre, x, y, z);
-        renderBlade(centre, size);
-        GL11.glPopMatrix();
+    public GT_RenderDrone() {
+        ClientRegistry.bindTileEntitySpecialRenderer(TileDrone.class, this);
     }
 
-    private void addDircetion(GT_MetaTileEntity_DroneCentre centre, double x, double y, double z) {
-        switch (centre.getBaseMetaTileEntity()
-            .getFrontFacing()) {
-            case EAST -> GL11.glTranslated(x - 1.5, y + 1, z + 0.5);
-            case WEST -> GL11.glTranslated(x + 2.5, y + 1, z + 0.5);
-            case NORTH -> GL11.glTranslated(x + 0.5, y + 1, z + 2.5);
-            case SOUTH -> GL11.glTranslated(x + 0.5, y + 1, z - 1.5);
-        }
+    @Override
+    public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float timeSinceLastTick) {
+        if (!(tile instanceof TileDrone drone)) return;
+        final float size = 1.0f;
+        GL11.glPushMatrix();
+        GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);
+        renderDrone(size);
+        renderBlade(drone, size);
+        GL11.glPopMatrix();
     }
 
     private void renderDrone(double size) {
@@ -64,7 +53,7 @@ public class GT_RenderDrone extends TileEntitySpecialRenderer {
         GL11.glEnable(GL11.GL_LIGHTING);
     }
 
-    private void renderBlade(GT_MetaTileEntity_DroneCentre centre, double size) {
+    private void renderBlade(TileDrone drone, double size) {
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_CULL_FACE);
         GL11.glEnable(GL11.GL_BLEND);
@@ -74,25 +63,25 @@ public class GT_RenderDrone extends TileEntitySpecialRenderer {
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240f, 240f);
         GL11.glPushMatrix();
         GL11.glTranslated(-0.7d * size, -1 * size, -0.7 * size);
-        GL11.glRotated(centre.rotation, 0, 1, 0);
+        GL11.glRotated(drone.rotation, 0, 1, 0);
         GL11.glTranslated(0.7d * size, 1 * size, 0.7 * size);
         Drone.renderOnly("blade2");
         GL11.glPopMatrix();
         GL11.glPushMatrix();
         GL11.glTranslated(-0.7d * size, -1 * size, 0.7 * size);
-        GL11.glRotated(centre.rotation, 0, 1, 0);
+        GL11.glRotated(drone.rotation, 0, 1, 0);
         GL11.glTranslated(0.7d * size, 1 * size, -0.7 * size);
         Drone.renderOnly("blade3");
         GL11.glPopMatrix();
         GL11.glPushMatrix();
         GL11.glTranslated(0.7d * size, -1 * size, -0.7 * size);
-        GL11.glRotated(centre.rotation, 0, 1, 0);
+        GL11.glRotated(drone.rotation, 0, 1, 0);
         GL11.glTranslated(-0.7d * size, 1 * size, 0.7 * size);
         Drone.renderOnly("blade1");
         GL11.glPopMatrix();
         GL11.glPushMatrix();
         GL11.glTranslated(0.7d * size, -1 * size, 0.7 * size);
-        GL11.glRotated(centre.rotation, 0, 1, 0);
+        GL11.glRotated(drone.rotation, 0, 1, 0);
         GL11.glTranslated(-0.7d * size, 1 * size, -0.7 * size);
         Drone.renderOnly("blade4");
         GL11.glPopMatrix();
