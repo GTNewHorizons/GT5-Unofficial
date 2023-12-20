@@ -1,6 +1,7 @@
 package gregtech.api.modernmaterials.transition;
 
 import akka.japi.Pair;
+import com.colen.postea.API.BlockReplacementManager;
 import com.colen.postea.API.ItemStackReplacementManager;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.modernmaterials.ModernMaterial;
@@ -269,7 +270,7 @@ public abstract class TransitionItems {
         return tag;
     }
 
-    public static void fixWorld() {
+    public static void fixWorldItems() {
         // Register replacers.
 
         // This is all major material parts, gears, plates etc.
@@ -278,12 +279,14 @@ public abstract class TransitionItems {
         ItemStackReplacementManager.addItemReplacement("gregtech:gt.metaitem.03", TransitionItems::convertMeta03);
 
         // E.g. frames
-        ItemStackReplacementManager.addItemReplacement("gregtech:gt.blockmachines", TransitionItems::convertItemBlocks);
+        ItemStackReplacementManager.addItemReplacement("gregtech:gt.blockmachines", TransitionItems::convertMachineItemBlocks);
 
+        // All normal and small ores.
         ItemStackReplacementManager.addItemReplacement("gregtech:gt.blockores", TransitionItems::convertOreItemBlocks);
+
     }
 
-    private static NBTTagCompound convertItemBlocks(NBTTagCompound tag) {
+    private static NBTTagCompound convertMachineItemBlocks(NBTTagCompound tag) {
 
         int metadata = tag.getShort("Damage");
 

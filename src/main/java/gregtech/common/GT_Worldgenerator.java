@@ -1,6 +1,5 @@
 package gregtech.common;
 
-import com.colen.postea.API.ItemStackReplacementManager;
 import cpw.mods.fml.common.IWorldGenerator;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
@@ -8,9 +7,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.modernmaterials.ModernMaterial;
-import gregtech.api.modernmaterials.items.partclasses.ItemsEnum;
+import gregtech.api.modernmaterials.transition.TransitionBlocks;
 import gregtech.api.modernmaterials.transition.TransitionItems;
 import gregtech.api.net.GT_Packet_SendOregenPattern;
 import gregtech.api.objects.XSTR;
@@ -19,7 +16,6 @@ import gregtech.api.world.GT_Worldgen;
 import gregtech.common.blocks.GT_TileEntity_Ores;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -33,15 +29,12 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Random;
-import java.util.function.Function;
 
 import static gregtech.api.enums.GT_Values.debugOrevein;
 import static gregtech.api.enums.GT_Values.debugWorldGen;
 import static gregtech.api.enums.GT_Values.oreveinAttempts;
 import static gregtech.api.enums.GT_Values.oreveinMaxPlacementAttempts;
 import static gregtech.api.enums.GT_Values.oreveinPercentage;
-import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.Dust;
-import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.Ingot;
 
 public class GT_Worldgenerator implements IWorldGenerator {
 
@@ -183,7 +176,8 @@ public class GT_Worldgenerator implements IWorldGenerator {
         public void onWorldLoad(WorldEvent.Load event) {
 
             // todo Move this somewhere better!
-            TransitionItems.fixWorld();
+            TransitionItems.fixWorldItems();
+            TransitionBlocks.fixWorldBlocks();
 
             final World world = event.world;
             if (!world.isRemote && world.provider.dimensionId == 0) {
