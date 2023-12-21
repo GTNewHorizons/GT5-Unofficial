@@ -73,17 +73,6 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
         return mConfig.getMaxOutputPerSecond();
     }
 
-    /**
-     * for WAILA
-     *
-     * @deprecated replaced by {@link #getProductionPerSecond()}
-     */
-    @SuppressWarnings("unused")
-    @Deprecated
-    public int getCalcificationOutput() {
-        return (int) (getProductionPerSecond() * 1.25F);
-    }
-
     @Override
     public String[] getDescription() {
         return String
