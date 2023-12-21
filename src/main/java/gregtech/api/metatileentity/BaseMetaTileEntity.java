@@ -718,24 +718,6 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
         receiveClientEvent(GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT, aRedstoneData);
     }
 
-    @Deprecated
-    public final void receiveMetaTileEntityData(short aID, int aCover0, int aCover1, int aCover2, int aCover3,
-        int aCover4, int aCover5, byte aTextureData, byte aUpdateData, byte aRedstoneData, byte aColorData) {
-        receiveMetaTileEntityData(
-            aID,
-            aCover0,
-            aCover1,
-            aCover2,
-            aCover3,
-            aCover4,
-            aCover5,
-            aTextureData,
-            (byte) 0,
-            aUpdateData,
-            aRedstoneData,
-            aColorData);
-    }
-
     @Override
     public boolean receiveClientEvent(int aEventID, int aValue) {
         super.receiveClientEvent(aEventID, aValue);
