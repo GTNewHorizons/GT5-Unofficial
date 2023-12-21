@@ -22,7 +22,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.gui.modularui.widget.FluidDisplaySlotWidget;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -342,10 +341,5 @@ public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_Tier
 
     protected FluidSlotWidget createFluidSlot() {
         return new FluidSlotWidget(fluidTank);
-    }
-
-    @Deprecated
-    protected FluidDisplaySlotWidget createDrainableFluidSlot() {
-        return null;
     }
 }
