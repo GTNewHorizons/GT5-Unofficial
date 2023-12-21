@@ -503,7 +503,7 @@ public final class RecipeMaps {
         .neiRecipeComparator(
             Comparator
                 .<GT_Recipe, Integer>comparing(
-                    recipe -> FusionSpecialValueFormatter.getFusionTier(recipe.mSpecialValue, recipe.mEUt))
+                    recipe -> FusionSpecialValueFormatter.getFusionStartupTier(recipe.mSpecialValue))
                 .thenComparing(GT_Recipe::compareTo))
         .frontend(FluidOnlyFrontend::new)
         .recipeConfigFile("fusion", FIRST_FLUID_OUTPUT)
