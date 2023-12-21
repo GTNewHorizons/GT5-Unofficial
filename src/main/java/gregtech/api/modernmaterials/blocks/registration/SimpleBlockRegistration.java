@@ -41,34 +41,4 @@ public abstract class SimpleBlockRegistration {
         }
     }
 
-    public static List<List<Integer>> generateIDGroups(List<Integer> sortedIDs) {
-
-        List<List<Integer>> groupedIDs = new ArrayList<>();
-
-        // Process each ID from the sorted list
-        for (int currentID : sortedIDs) {
-            int groupIndex = calculateGroupIndex(currentID);
-
-            // Ensure the groupedIDs list has a list initialized for this groupIndex
-            ensureGroupExists(groupedIDs, groupIndex);
-
-            groupedIDs.get(groupIndex)
-                .add(currentID);
-        }
-
-        return groupedIDs;
-    }
-
-    // Calculate the group index for the given ID
-    private static int calculateGroupIndex(int id) {
-        return id / 16;
-    }
-
-    // Ensure that the groupedIDs list has a list initialized for the given groupIndex
-    private static void ensureGroupExists(List<List<Integer>> groupedIDs, int groupIndex) {
-        while (groupedIDs.size() <= groupIndex) {
-            groupedIDs.add(new ArrayList<>());
-        }
-    }
-
 }
