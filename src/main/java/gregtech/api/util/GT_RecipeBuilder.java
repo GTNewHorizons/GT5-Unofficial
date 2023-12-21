@@ -7,9 +7,11 @@ import static gregtech.api.util.GT_Utility.copyItemArray;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -21,6 +23,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.Contract;
 
 import gregtech.GT_Mod;
+import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.recipe.RecipeCategory;
 import gregtech.api.recipe.RecipeMetadataKey;
@@ -97,6 +100,10 @@ public class GT_RecipeBuilder {
     @Nullable
     protected IRecipeMetadataStorage metadataStorage;
     protected boolean checkForCollision = true;
+    /**
+     * If recipe addition should be skipped.
+     */
+    protected boolean skip = false;
     protected boolean valid = true;
 
     GT_RecipeBuilder() {}
@@ -105,7 +112,8 @@ public class GT_RecipeBuilder {
         FluidStack[] fluidInputs, FluidStack[] fluidOutputs, int[] chances, Object special, int duration, int eut,
         int specialValue, boolean enabled, boolean hidden, boolean fakeRecipe, boolean mCanBeBuffered,
         boolean mNeedsEmptyOutput, boolean nbtSensitive, String[] neiDesc, RecipeCategory recipeCategory,
-        boolean optimize, @Nullable IRecipeMetadataStorage metadataStorage, boolean checkForCollision, boolean valid) {
+        boolean optimize, @Nullable IRecipeMetadataStorage metadataStorage, boolean checkForCollision, boolean skip,
+        boolean valid) {
         this.inputsBasic = inputsBasic;
         this.inputsOreDict = inputsOreDict;
         this.outputs = outputs;
@@ -131,6 +139,7 @@ public class GT_RecipeBuilder {
             this.metadataStorage = this.metadataStorage.copy();
         }
         this.checkForCollision = checkForCollision;
+        this.skip = skip;
         this.valid = valid;
     }
 
@@ -216,6 +225,7 @@ public class GT_RecipeBuilder {
      * Non-OreDicted item inputs. Assumes input is unified.
      */
     public GT_RecipeBuilder itemInputsUnified(ItemStack... inputs) {
+        if (skip) return this;
         if (debugNull() && containsNull(inputs)) handleNullRecipeComponents("itemInputUnified");
         inputsBasic = ArrayExt.withoutTrailingNulls(inputs, ItemStack[]::new);
         inputsOreDict = null;
@@ -227,6 +237,7 @@ public class GT_RecipeBuilder {
      * Non-OreDicted item inputs. Assumes input is not unified.
      */
     public GT_RecipeBuilder itemInputs(ItemStack... inputs) {
+        if (skip) return this;
         if (debugNull() && containsNull(inputs)) handleNullRecipeComponents("itemInputs");
         inputsBasic = fix(inputs);
         inputsOreDict = null;
@@ -238,6 +249,7 @@ public class GT_RecipeBuilder {
      * OreDicted item inputs. Currently only used for assline recipes adder.
      */
     public GT_RecipeBuilder itemInputs(Object... inputs) {
+        if (skip) return this;
         inputsOreDict = inputs;
         alts = new ItemStack[inputs.length][];
         for (int i = 0, inputsLength = inputs.length; i < inputsLength; i++) {
@@ -270,6 +282,7 @@ public class GT_RecipeBuilder {
     }
 
     public GT_RecipeBuilder itemOutputs(ItemStack... outputs) {
+        if (skip) return this;
         if (debugNull() && containsNull(outputs)) handleNullRecipeComponents("itemOutputs");
         this.outputs = outputs;
         if (chances != null && chances.length != outputs.length) {
@@ -283,6 +296,7 @@ public class GT_RecipeBuilder {
      * Intended for recipe rewrite middlewares.
      */
     public GT_RecipeBuilder itemOutputs(ItemStack[] outputs, int[] chances) {
+        if (skip) return this;
         if (debugNull() && containsNull(outputs)) handleNullRecipeComponents("itemOutputs");
         this.outputs = outputs;
         this.chances = chances;
@@ -293,18 +307,21 @@ public class GT_RecipeBuilder {
     }
 
     public GT_RecipeBuilder fluidInputs(FluidStack... fluidInputs) {
+        if (skip) return this;
         if (debugNull() && containsNull(fluidInputs)) handleNullRecipeComponents("fluidInputs");
         this.fluidInputs = fix(fluidInputs);
         return this;
     }
 
     public GT_RecipeBuilder fluidOutputs(FluidStack... fluidOutputs) {
+        if (skip) return this;
         if (debugNull() && containsNull(fluidOutputs)) handleNullRecipeComponents("fluidOutputs");
         this.fluidOutputs = fix(fluidOutputs);
         return this;
     }
 
     public GT_RecipeBuilder outputChances(int... chances) {
+        if (skip) return this;
         if (outputs != null && chances.length != outputs.length) {
             throw new IllegalArgumentException("Output chances array and items array length differs");
         }
@@ -418,6 +435,7 @@ public class GT_RecipeBuilder {
      * {@link GT_RecipeConstants} has a series of metadata keys. Or you can create one by yourself.
      */
     public <T> GT_RecipeBuilder metadata(RecipeMetadataKey<T> key, T value) {
+        if (skip) return this;
         if (metadataStorage == null) {
             metadataStorage = new RecipeMetadataStorage();
         }
@@ -448,6 +466,18 @@ public class GT_RecipeBuilder {
             return defaultValue;
         }
         return key.cast(metadataStorage.getMetadataOrDefault(key, defaultValue));
+    }
+
+    /**
+     * Specifies mods required to add the recipe. If any of the mods is not loaded, all the operations for this builder
+     * will be ignored.
+     *
+     * @param mods Mod(s) required for the recipe.
+     */
+    public GT_RecipeBuilder requireMods(Mods... mods) {
+        skip = Stream.of(mods)
+            .anyMatch(mod -> !mod.isModLoaded());
+        return this;
     }
 
     public GT_RecipeBuilder requiresCleanRoom() {
@@ -498,6 +528,7 @@ public class GT_RecipeBuilder {
             optimize,
             metadataStorage,
             checkForCollision,
+            skip,
             valid);
     }
 
@@ -528,6 +559,7 @@ public class GT_RecipeBuilder {
             optimize,
             null,
             checkForCollision,
+            skip,
             valid);
     }
 
@@ -628,6 +660,7 @@ public class GT_RecipeBuilder {
      * unset. Both bound inclusive. Only supposed to be called by IRecipeMap and not client code.
      */
     public GT_RecipeBuilder validateNoInput() {
+        if (skip) return this;
         return GT_Utility.isArrayEmptyOrNull(inputsBasic) ? this : invalidate();
     }
 
@@ -636,6 +669,7 @@ public class GT_RecipeBuilder {
      * unset. Both bound inclusive. Only supposed to be called by IRecipeMap and not client code.
      */
     public GT_RecipeBuilder validateNoInputFluid() {
+        if (skip) return this;
         return GT_Utility.isArrayEmptyOrNull(fluidInputs) ? this : invalidate();
     }
 
@@ -644,6 +678,7 @@ public class GT_RecipeBuilder {
      * unset. Both bound inclusive. Only supposed to be called by IRecipeMap and not client code.
      */
     public GT_RecipeBuilder validateNoOutput() {
+        if (skip) return this;
         return GT_Utility.isArrayEmptyOrNull(outputs) ? this : invalidate();
     }
 
@@ -652,6 +687,7 @@ public class GT_RecipeBuilder {
      * unset. Both bound inclusive. Only supposed to be called by IRecipeMap and not client code.
      */
     public GT_RecipeBuilder validateNoOutputFluid() {
+        if (skip) return this;
         return GT_Utility.isArrayEmptyOrNull(fluidOutputs) ? this : invalidate();
     }
 
@@ -660,6 +696,7 @@ public class GT_RecipeBuilder {
      * unset. Both bound inclusive. Only supposed to be called by IRecipeMap and not client code.
      */
     public GT_RecipeBuilder validateInputCount(int min, int max) {
+        if (skip) return this;
         if (inputsBasic == null) return min < 0 ? this : invalidate();
         return isArrayValid(inputsBasic, min, max) ? this : invalidate();
     }
@@ -669,6 +706,7 @@ public class GT_RecipeBuilder {
      * unset. Both bound inclusive. Only supposed to be called by IRecipeMap and not client code.
      */
     public GT_RecipeBuilder validateInputFluidCount(int min, int max) {
+        if (skip) return this;
         if (fluidInputs == null) return min < 0 ? this : invalidate();
         return isArrayValid(fluidInputs, min, max) ? this : invalidate();
     }
@@ -678,6 +716,7 @@ public class GT_RecipeBuilder {
      * unset. Both bound inclusive. Only supposed to be called by IRecipeMap and not client code.
      */
     public GT_RecipeBuilder validateOutputCount(int min, int max) {
+        if (skip) return this;
         if (outputs == null) return min < 0 ? this : invalidate();
         return isArrayValid(outputs, min, max) ? this : invalidate();
     }
@@ -687,11 +726,13 @@ public class GT_RecipeBuilder {
      * unset. Both bound inclusive. Only supposed to be called by IRecipeMap and not client code.
      */
     public GT_RecipeBuilder validateOutputFluidCount(int min, int max) {
+        if (skip) return this;
         if (fluidOutputs == null) return min < 0 ? this : invalidate();
         return isArrayValid(fluidOutputs, min, max) ? this : invalidate();
     }
 
     public GT_RecipeBuilder validateAnyInput() {
+        if (skip) return this;
         if (fluidInputs != null && isArrayValid(fluidInputs, 1, Integer.MAX_VALUE)) {
             return this;
         }
@@ -702,6 +743,7 @@ public class GT_RecipeBuilder {
     }
 
     public GT_RecipeBuilder validateAnyOutput() {
+        if (skip) return this;
         if (fluidOutputs != null && isArrayValid(fluidOutputs, 1, Integer.MAX_VALUE)) {
             return this;
         }
@@ -720,6 +762,9 @@ public class GT_RecipeBuilder {
      * @return Built recipe. Returns empty if failed to build.
      */
     public Optional<GT_Recipe> build() {
+        if (skip) {
+            return Optional.empty();
+        }
         if (!valid) {
             handleInvalidRecipe();
             return Optional.empty();
@@ -755,6 +800,9 @@ public class GT_RecipeBuilder {
     }
 
     public Optional<GT_Recipe.GT_Recipe_WithAlt> buildWithAlt() {
+        if (skip) {
+            return Optional.empty();
+        }
         if (inputsOreDict == null) {
             throw new UnsupportedOperationException();
         }
@@ -850,6 +898,9 @@ public class GT_RecipeBuilder {
     }
 
     public Collection<GT_Recipe> addTo(IRecipeMap recipeMap) {
+        if (skip) {
+            return Collections.emptyList();
+        }
         return recipeMap.doAdd(this);
     }
 
@@ -875,6 +926,7 @@ public class GT_RecipeBuilder {
         outputs = null;
         special = null;
         specialValue = 0;
+        skip = false;
         valid = true;
         return this;
     }
