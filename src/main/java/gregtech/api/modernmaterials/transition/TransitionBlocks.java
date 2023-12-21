@@ -24,7 +24,7 @@ public class TransitionBlocks {
 
         // Get the item/block for retrieving the ID in this world.
         ModernMaterial material = ModernMaterial.getMaterialFromID(materialID);
-        if (material == null) throw new RuntimeException("Transition blocks in ModernMaterials failed to map GT ore with meta " + metadata + " to its new version. No material with ID + " + materialID + " exists.");
+        if (material == null) throw new RuntimeException("Transition blocks in ModernMaterials failed to map GT ore with meta " + metadata + " to its new version. This implies that no material with ID + " + materialID + " exists.");
         Item item = blocksEnum.getItem(material);
         Block block = Block.getBlockFromItem(item);
 
