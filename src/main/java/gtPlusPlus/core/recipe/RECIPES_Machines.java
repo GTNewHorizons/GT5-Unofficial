@@ -3008,24 +3008,26 @@ public class RECIPES_Machines {
                 GregtechItemList.Hatch_SuperBus_Output_EV.get(1), };
 
         // Input Buses
-        for (int i = 1; i < mSuperBusesInput.length; i++) {
+        for (int tier = 1; tier < mSuperBusesInput.length + 1; tier++) {
             CORE.RA.addSixSlotAssemblingRecipe(
-                    new ItemStack[] { CI.getNumberedCircuit(17), mInputHatch[i], CI.getElectricMotor(i, 2),
-                            CI.getConveyor(i, 5), CI.getBolt(i, 16), CI.getTieredComponent(OrePrefixes.circuit, i, 2) },
-                    CI.getAlternativeTieredFluid(i, 144 * 8),
-                    mSuperBusesInput[i - 1].get(1),
+                    new ItemStack[] { CI.getNumberedCircuit(17), mInputHatch[tier - 1], CI.getElectricMotor(tier, 2),
+                            CI.getConveyor(tier, 5), CI.getBolt(tier, 16),
+                            CI.getTieredComponent(OrePrefixes.circuit, tier, 2) },
+                    CI.getAlternativeTieredFluid(tier, 144 * 8),
+                    mSuperBusesInput[tier - 1].get(1),
                     20 * 30 * 2,
-                    (int) GT_Values.V[i]);
+                    (int) GT_Values.V[tier]);
         }
         // Output Buses
-        for (int i = 1; i < mSuperBusesOutput.length; i++) {
+        for (int tier = 1; tier < mSuperBusesOutput.length + 1; tier++) {
             CORE.RA.addSixSlotAssemblingRecipe(
-                    new ItemStack[] { CI.getNumberedCircuit(18), mOutputHatch[i], CI.getElectricPiston(i, 2),
-                            CI.getConveyor(i, 5), CI.getGear(i, 3), CI.getTieredComponent(OrePrefixes.circuit, i, 2) },
-                    CI.getTertiaryTieredFluid(i, 144 * 8),
-                    mSuperBusesOutput[i - 1].get(1),
+                    new ItemStack[] { CI.getNumberedCircuit(18), mOutputHatch[tier - 1], CI.getElectricPiston(tier, 2),
+                            CI.getConveyor(tier, 5), CI.getGear(tier, 3),
+                            CI.getTieredComponent(OrePrefixes.circuit, tier, 2) },
+                    CI.getTertiaryTieredFluid(tier, 144 * 8),
+                    mSuperBusesOutput[tier - 1].get(1),
                     20 * 30 * 2,
-                    (int) GT_Values.V[i]);
+                    (int) GT_Values.V[tier]);
         }
     }
 

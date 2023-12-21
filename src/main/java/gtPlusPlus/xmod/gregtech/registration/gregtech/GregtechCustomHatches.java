@@ -154,7 +154,7 @@ public class GregtechCustomHatches {
                 (new GT_MetaTileEntity_Hatch_Muffler_Adv(
                         30009,
                         "hatch.muffler.adv.tier.09",
-                        "Advanced Muffler Hatch (MAX)",
+                        "Advanced Muffler Hatch (UHV)",
                         9)).getStackForm(1L));
     }
 
@@ -190,7 +190,7 @@ public class GregtechCustomHatches {
                 ((IMetaTileEntity) makeInputBus(aStartID++, "hatch.superbus.input.tier.08", "Super Bus (I) (UV)", 8))
                         .getStackForm(1L));
         GregtechItemList.Hatch_SuperBus_Input_MAX.set(
-                ((IMetaTileEntity) makeInputBus(aStartID, "hatch.superbus.input.tier.09", "Super Bus (I) (MAX)", 9))
+                ((IMetaTileEntity) makeInputBus(aStartID, "hatch.superbus.input.tier.09", "Super Bus (I) (UHV)", 9))
                         .getStackForm(1L));
 
         /*
@@ -222,7 +222,7 @@ public class GregtechCustomHatches {
                 ((IMetaTileEntity) makeOutputBus(aStartID++, "hatch.superbus.output.tier.08", "Super Bus (O) (UV)", 8))
                         .getStackForm(1L));
         GregtechItemList.Hatch_SuperBus_Output_MAX.set(
-                ((IMetaTileEntity) makeOutputBus(aStartID, "hatch.superbus.output.tier.09", "Super Bus (O) (MAX)", 9))
+                ((IMetaTileEntity) makeOutputBus(aStartID, "hatch.superbus.output.tier.09", "Super Bus (O) (UHV)", 9))
                         .getStackForm(1L));
     }
 
