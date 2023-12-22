@@ -508,7 +508,7 @@ public final class RecipeMaps {
         .frontend(FluidOnlyFrontend::new)
         .neiHandlerInfo(
             builder -> builder.setDisplayStack(ItemList.FusionComputer_LuV.get(1))
-                .setHeight(147))
+                .setHeight(157))
         .recipeConfigFile("fusion", FIRST_FLUID_OUTPUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> centrifugeRecipes = RecipeMapBuilder.of("gt.recipe.centrifuge")

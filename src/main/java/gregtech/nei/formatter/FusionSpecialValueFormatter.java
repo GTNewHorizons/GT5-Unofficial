@@ -21,38 +21,43 @@ public class FusionSpecialValueFormatter implements INEISpecialInfoFormatter {
 
     @Override
     public List<String> format(RecipeDisplayInfo recipeInfo) {
-        List<String> specialInfo = new ArrayList<>(3);
+        List<String> specialInfo = new ArrayList<>();
 
         int euToStart = recipeInfo.recipe.mSpecialValue;
         int voltage = recipeInfo.recipe.mEUt;
 
         int voltageTier = getFusionVoltageTier(voltage);
-        int overclockTimes = overclock(euToStart);
+        int startupTierForOverclock = getFusionStartupTierForOverclock(euToStart);
         int startupTier = getFusionStartupTier(euToStart);
+        int overclockLimit = 5 - startupTierForOverclock;
 
         specialInfo.add(StatCollector.translateToLocalFormatted("GT5U.nei.fusion_voltage", voltageTier));
         specialInfo.add(
             StatCollector
                 .translateToLocalFormatted("GT5U.nei.start_eu", GT_Utility.formatNumbers(euToStart), startupTier));
-        if (overclockTimes <= 0) {
+        if (overclockLimit <= 0) {
             specialInfo.add(StatCollector.translateToLocalFormatted("GT5U.nei.fusion_no_overclock"));
         } else {
-            specialInfo.add(StatCollector.translateToLocalFormatted("GT5U.nei.fusion_overclock", overclockTimes));
+            specialInfo.add(StatCollector.translateToLocalFormatted("GT5U.nei.fusion_overclockLimit", overclockLimit));
+            // Overclock in MK {startupTierForOverclock + 1} or higher
+            specialInfo
+                .add(StatCollector.translateToLocalFormatted("GT5U.nei.fusion_overclock", startupTierForOverclock + 1));
         }
         return specialInfo;
     }
 
-    protected int overclock(int startEnergy) {
+    protected int getFusionStartupTierForOverclock(int startEnergy) {
+        // The same startup power data used in overclock calculation.
         if (startEnergy <= 160_000_000) {
-            return 4;
-        } else if (startEnergy <= 320_000_000) {
-            return 3;
-        } else if (startEnergy <= 640_000_000) {
-            return 2;
-        } else if (startEnergy <= 1_280_000_000) {
             return 1;
+        } else if (startEnergy <= 320_000_000) {
+            return 2;
+        } else if (startEnergy <= 640_000_000) {
+            return 3;
+        } else if (startEnergy <= 1_280_000_000) {
+            return 4;
         } else {
-            return 0;
+            return 5;
         }
     }
 
