@@ -27,32 +27,32 @@ public class FusionSpecialValueFormatter implements INEISpecialInfoFormatter {
         int voltage = recipeInfo.recipe.mEUt;
 
         int voltageTier = getFusionVoltageTier(voltage);
-        int startupTierForOverclock = getFusionStartupTierForOverclock(euToStart);
+        int overclockTimes = overclock(euToStart);
         int startupTier = getFusionStartupTier(euToStart);
 
         specialInfo.add(StatCollector.translateToLocalFormatted("GT5U.nei.fusion_voltage", voltageTier));
         specialInfo.add(
-            StatCollector.translateToLocalFormatted(
-                "GT5U.nei.start_eu",
-                GT_Utility.formatNumbers(euToStart),
-                startupTierForOverclock));
-        specialInfo.add(StatCollector.translateToLocalFormatted("GT5U.nei.fusion_capable", startupTier));
-
+            StatCollector
+                .translateToLocalFormatted("GT5U.nei.start_eu", GT_Utility.formatNumbers(euToStart), startupTier));
+        if (overclockTimes <= 0) {
+            specialInfo.add(StatCollector.translateToLocalFormatted("GT5U.nei.fusion_no_overclock"));
+        } else {
+            specialInfo.add(StatCollector.translateToLocalFormatted("GT5U.nei.fusion_overclock", overclockTimes));
+        }
         return specialInfo;
     }
 
-    public static int getFusionStartupTierForOverclock(long startupPower) {
-        // The same startup power data used in overclock calculation.
-        if (startupPower <= 160000000) {
-            return 1;
-        } else if (startupPower <= 320000000) {
-            return 2;
-        } else if (startupPower <= 640000000) {
-            return 3;
-        } else if (startupPower <= 1280000000) {
+    protected int overclock(int startEnergy) {
+        if (startEnergy <= 160_000_000) {
             return 4;
+        } else if (startEnergy <= 320_000_000) {
+            return 3;
+        } else if (startEnergy <= 640_000_000) {
+            return 2;
+        } else if (startEnergy <= 1_280_000_000) {
+            return 1;
         } else {
-            return 5;
+            return 0;
         }
     }
 

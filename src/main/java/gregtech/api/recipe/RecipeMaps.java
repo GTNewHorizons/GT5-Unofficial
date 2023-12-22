@@ -506,6 +506,9 @@ public final class RecipeMaps {
                     recipe -> FusionSpecialValueFormatter.getFusionStartupTier(recipe.mSpecialValue))
                 .thenComparing(GT_Recipe::compareTo))
         .frontend(FluidOnlyFrontend::new)
+        .neiHandlerInfo(
+            builder -> builder.setDisplayStack(ItemList.FusionComputer_LuV.get(1))
+                .setHeight(147))
         .recipeConfigFile("fusion", FIRST_FLUID_OUTPUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> centrifugeRecipes = RecipeMapBuilder.of("gt.recipe.centrifuge")
