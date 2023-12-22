@@ -7,6 +7,7 @@ import net.minecraft.util.EnumChatFormatting;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 
 @ParametersAreNonnullByDefault
@@ -14,11 +15,9 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
 public class FusionOverclockDescriber extends EUOverclockDescriber {
 
     protected final long capableStartup;
-    protected final int tier;
 
     public FusionOverclockDescriber(byte energyTier, long capableStartup) {
         super(energyTier, 1);
-        this.tier = energyTier;
         this.capableStartup = capableStartup;
     }
 
@@ -30,14 +29,10 @@ public class FusionOverclockDescriber extends EUOverclockDescriber {
     }
 
     protected int getEUtIncreasePerOC() {
-        // MK4 & MK5 perform 4/4 OC
-        if (tier > 8) return 2;
         return 1;
     }
 
     protected int getDurationDecreasePerOC() {
-        // MK4 & MK5 perform 4/4 OC
-        if (tier > 8) return 2;
         return 1;
     }
 
@@ -48,6 +43,10 @@ public class FusionOverclockDescriber extends EUOverclockDescriber {
 
     @Override
     public boolean canHandle(GT_Recipe recipe) {
+        byte tier = GT_Utility.getTier(recipe.mEUt);
+        if (this.tier < tier) {
+            return false;
+        }
         return this.capableStartup >= recipe.mSpecialValue;
     }
 
