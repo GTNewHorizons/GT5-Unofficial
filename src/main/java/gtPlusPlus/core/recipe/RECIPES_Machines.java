@@ -1276,17 +1276,7 @@ public class RECIPES_Machines {
                     GregtechItemList.GT_FluidTank_LV, GregtechItemList.GT_FluidTank_MV,
                     GregtechItemList.GT_FluidTank_HV };
             for (GregtechItemList aTank : aTanks) {
-                RecipeUtils.addShapedGregtechRecipe(
-                        aTank.get(1),
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        aTank.get(1));
+                RecipeUtils.addShapelessGregtechRecipe(new Object[] { aTank.get(1) }, aTank.get(1));
             }
 
             RecipeUtils.addShapedGregtechRecipe(
