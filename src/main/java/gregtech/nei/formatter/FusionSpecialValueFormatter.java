@@ -29,20 +29,14 @@ public class FusionSpecialValueFormatter implements INEISpecialInfoFormatter {
         int voltageTier = getFusionVoltageTier(voltage);
         int startupTierForOverclock = getFusionStartupTierForOverclock(euToStart);
         int startupTier = getFusionStartupTier(euToStart);
-        int overclockLimit = 5 - startupTierForOverclock;
 
         specialInfo.add(StatCollector.translateToLocalFormatted("GT5U.nei.fusion_voltage", voltageTier));
         specialInfo.add(
             StatCollector
                 .translateToLocalFormatted("GT5U.nei.start_eu", GT_Utility.formatNumbers(euToStart), startupTier));
-        if (overclockLimit <= 0) {
-            specialInfo.add(StatCollector.translateToLocalFormatted("GT5U.nei.fusion_no_overclock"));
-        } else {
-            specialInfo.add(StatCollector.translateToLocalFormatted("GT5U.nei.fusion_overclockLimit", overclockLimit));
-            // Overclock in MK {startupTierForOverclock + 1} or higher
-            specialInfo
-                .add(StatCollector.translateToLocalFormatted("GT5U.nei.fusion_overclock", startupTierForOverclock + 1));
-        }
+        specialInfo
+            .add(StatCollector.translateToLocalFormatted("GT5U.nei.fusion_recipe_tier", startupTierForOverclock));
+
         return specialInfo;
     }
 

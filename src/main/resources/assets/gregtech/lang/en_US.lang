@@ -515,9 +515,7 @@ GT5U.nei.heat_capacity=Heat Capacity: %s K (%s)
 GT5U.nei.tier=Tier: %s
 GT5U.nei.fusion_voltage=Voltage Tier: MK %s
 GT5U.nei.start_eu=Start: %s EU (MK %s)
-GT5U.nei.fusion_overclockLimit=Overclock amount limit: %s
-GT5U.nei.fusion_no_overclock=Cannot be overclocked
-GT5U.nei.fusion_overclock=Overclock in MK %s or higher
+GT5U.nei.fusion_recipe_tier=Recipe Tier (for OC): MK %s
 GT5U.nei.stages=Stages: %s
 GT5U.nei.fuel=Fuel Value: %s EU
 
