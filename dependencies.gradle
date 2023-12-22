@@ -80,4 +80,6 @@ dependencies {
     functionalTestImplementation('org.junit.platform:junit-platform-engine')
     functionalTestImplementation('org.junit.platform:junit-platform-launcher')
     functionalTestImplementation('org.junit.platform:junit-platform-reporting')
+
+    runtimeOnlyNonPublishable("com.github.GTNewHorizons:DuraDisplay:1.1.7:dev")
 }
