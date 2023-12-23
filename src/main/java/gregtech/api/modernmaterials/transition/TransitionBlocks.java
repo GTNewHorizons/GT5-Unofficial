@@ -13,6 +13,24 @@ public class TransitionBlocks {
 
     public static void fixWorldBlocks() {
         TileEntityReplacementManager.tileEntityTransformer("GT_TileEntity_Ores", TransitionBlocks::fixTileEntityGTOres);
+        TileEntityReplacementManager.tileEntityTransformer("BaseMetaPipeEntity", TransitionBlocks::fixFrameBoxGT);
+    }
+
+    private static BlockInfo fixFrameBoxGT(NBTTagCompound nbtTagCompound, World world) {
+        short metadata = nbtTagCompound.getShort("mID");
+
+        int materialID = metadata - 4096;
+
+        // Get the item/block for retrieving the ID in this world.
+        ModernMaterial material = ModernMaterial.getMaterialFromID(materialID);
+        if (material == null) throw new RuntimeException("Transition blocks in ModernMaterials failed to map GT framebox with meta " + metadata + " to its new version. This implies that no material with ID + " + materialID + " exists.");
+        Item item = BlocksEnum.FrameBox.getItem(material);
+        Block block = Block.getBlockFromItem(item);
+
+        // null tile transformer indicates that we will remove this tile entity
+        // and replace it with a "dumb block".
+        return new BlockInfo(block, materialID, null);
+
     }
 
     private static BlockInfo fixTileEntityGTOres(NBTTagCompound nbtTagCompound, World world) {
