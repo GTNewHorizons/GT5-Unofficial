@@ -1524,7 +1524,8 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                             aPlayer,
                             aX,
                             aY,
-                            aZ)) {
+                            aZ,
+                            tCurrentItem)) {
                                 GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);
                                 GT_Utility.sendSoundToPlayers(
                                     worldObj,
@@ -1552,7 +1553,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                                     aX,
                                     aY,
                                     aZ));
-                            mMetaTileEntity.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
+                            mMetaTileEntity.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, tCurrentItem);
                             GT_Utility.sendSoundToPlayers(
                                 worldObj,
                                 SoundResource.IC2_TOOLS_WRENCH,
@@ -1614,7 +1615,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
 
                     if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sSolderingToolList)) {
                         final ForgeDirection tSide = GT_Utility.determineWrenchingSide(side, aX, aY, aZ);
-                        if (mMetaTileEntity.onSolderingToolRightClick(side, tSide, aPlayer, aX, aY, aZ)) {
+                        if (mMetaTileEntity.onSolderingToolRightClick(side, tSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
                             // logic handled internally
                             GT_Utility.sendSoundToPlayers(
                                 worldObj,
@@ -1649,7 +1650,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
 
                     if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sWireCutterList)) {
                         final ForgeDirection tSide = GT_Utility.determineWrenchingSide(side, aX, aY, aZ);
-                        if (mMetaTileEntity.onWireCutterRightClick(side, tSide, aPlayer, aX, aY, aZ)) {
+                        if (mMetaTileEntity.onWireCutterRightClick(side, tSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
                             // logic handled internally
                             GT_Utility.sendSoundToPlayers(
                                 worldObj,

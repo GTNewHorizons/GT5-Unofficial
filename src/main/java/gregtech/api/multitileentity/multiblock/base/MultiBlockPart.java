@@ -420,7 +420,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
 
     @Override
     public boolean onMalletRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, ForgeDirection wrenchSide, float aX,
-        float aY, float aZ) {
+        float aY, float aZ, ItemStack aTool) {
         if (mAllowedModes == NOTHING) return true;
         if (mMode == NOTHING) {
             facing = wrenchSide;

@@ -92,14 +92,14 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
      * <p>
      * The constructor can be overloaded as follows:
      * <blockquote>
-     * 
+     *
      * <pre>
-     * 
+     *
      * public GT_MetaTileEntity_EBench(int id, String name, String nameRegional) {
      *     super(id, name, nameRegional);
      * }
      * </pre>
-     * 
+     *
      * </blockquote>
      *
      * @param aID the machine ID
@@ -260,27 +260,51 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
         return true;
     }
 
-    @Override
+    @Deprecated
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         /* Do nothing */
     }
 
-    @Override
+    @Deprecated
     public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
         float aX, float aY, float aZ) {
         return false;
     }
 
-    @Override
+    @Deprecated
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ) {
         return false;
     }
 
-    @Override
+    @Deprecated
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ) {
         return false;
+    }
+
+    @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
+    }
+
+    @Override
+    public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer, float aX,
+        float aY, float aZ, ItemStack aTool) {
+        return onWrenchRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ);
+    }
+
+    @Override
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ, ItemStack aTool) {
+        return onWireCutterRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ);
+    }
+
+    @Override
+    public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ, ItemStack aTool) {
+        return onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ);
     }
 
     @Override
