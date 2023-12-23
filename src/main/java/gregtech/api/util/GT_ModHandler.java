@@ -2311,6 +2311,7 @@ public class GT_ModHandler {
                 }
             }
         }
+        GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("094.1", "Not enough soldering material!"));
         return false;
     }
 

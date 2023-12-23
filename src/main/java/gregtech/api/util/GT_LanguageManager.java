@@ -249,6 +249,7 @@ public class GT_LanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_092", " set to: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_093", "Strong");
         addStringLocalization("Interaction_DESCRIPTION_Index_094", "Weak");
+        addStringLocalization("Interaction_DESCRIPTION_Index_094.1", "Not enough soldering material!");
         addStringLocalization("Interaction_DESCRIPTION_Index_095", "Input from Output Side allowed");
         addStringLocalization("Interaction_DESCRIPTION_Index_096", "Input from Output Side forbidden");
         addStringLocalization("Interaction_DESCRIPTION_Index_098", "Do not regulate Item Stack Size");
