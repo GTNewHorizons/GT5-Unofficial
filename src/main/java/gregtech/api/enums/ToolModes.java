@@ -7,8 +7,8 @@ public enum ToolModes {
 
     private final byte modeValue;
 
-    ToolModes(byte modeValue) {
-        this.modeValue = modeValue;
+    ToolModes(int modeValue) {
+        this.modeValue = (byte) modeValue;
     }
 
     public byte get() {
