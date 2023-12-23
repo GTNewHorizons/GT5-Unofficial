@@ -20,7 +20,7 @@ public class FusionOverclockDescriber extends EUOverclockDescriber {
     /**
      * The values of {@link GT_MetaTileEntity_FusionComputer#capableStartupCanonical()} from MK1 ~ MK5
      */
-    public long getCapableStartupCanonical(int tier) {
+    public static long getCapableStartupCanonical(int tier) {
         return switch (tier) {
             case 1 -> 160_000_000L;
             case 2 -> 320_000_000L;
