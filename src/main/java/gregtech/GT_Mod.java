@@ -2,6 +2,7 @@ package gregtech;
 
 import appeng.api.AEApi;
 import com.google.common.base.Stopwatch;
+import com.google.common.collect.SetMultimap;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;

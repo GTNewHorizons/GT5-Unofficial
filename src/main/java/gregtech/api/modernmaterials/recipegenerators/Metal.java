@@ -1,5 +1,20 @@
 package gregtech.api.modernmaterials.recipegenerators;
 
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ToolDictNames;
+import gregtech.api.modernmaterials.ModernMaterial;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Utility;
+import gregtech.common.GT_Proxy;
+
+import static gregtech.api.enums.ItemList.Shape_Extruder_Block;
+import static gregtech.api.enums.ItemList.Shape_Extruder_Bolt;
+import static gregtech.api.enums.ItemList.Shape_Extruder_Casing;
+import static gregtech.api.enums.ItemList.Shape_Extruder_Gear;
+import static gregtech.api.enums.ItemList.Shape_Extruder_Plate;
+import static gregtech.api.enums.ItemList.Shape_Extruder_Ring;
+import static gregtech.api.enums.ItemList.Shape_Extruder_Rod;
+import static gregtech.api.enums.ItemList.Shape_Extruder_Small_Gear;
 import static gregtech.api.modernmaterials.blocks.registration.BlocksEnum.SolidBlock;
 import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.Bolt;
 import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.Dust;
@@ -10,27 +25,8 @@ import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.Plate;
 import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.Ring;
 import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.Rod;
 import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.SmallGear;
-import static gregtech.api.enums.ItemList.Shape_Extruder_Block;
-import static gregtech.api.enums.ItemList.Shape_Extruder_Bolt;
-import static gregtech.api.enums.ItemList.Shape_Extruder_Casing;
-import static gregtech.api.enums.ItemList.Shape_Extruder_Gear;
-import static gregtech.api.enums.ItemList.Shape_Extruder_Plate;
-import static gregtech.api.enums.ItemList.Shape_Extruder_Ring;
-import static gregtech.api.enums.ItemList.Shape_Extruder_Rod;
-import static gregtech.api.enums.ItemList.Shape_Extruder_Small_Gear;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sExtruderRecipes;
+import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.ToolDictNames;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.common.GT_Proxy;
-import net.minecraft.util.MathHelper;
-
-import gregtech.api.modernmaterials.ModernMaterial;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.util.GT_Utility;
 
 public class Metal {
 
@@ -42,7 +38,7 @@ public class Metal {
             .itemOutputs(SmallGear.getPart(material, 1))
             .duration(SECONDS * material.getHardness() * SmallGear.percentageOfIngot)
             .eut(material.getMaterialTier() * 0.95)
-            .addTo(sExtruderRecipes);
+            .addTo(extruderRecipes);
 
         // Gear
         GT_Values.RA.stdBuilder()
@@ -50,7 +46,7 @@ public class Metal {
             .itemOutputs(Gear.getPart(material, 1))
             .duration(SECONDS * material.getHardness() * Gear.percentageOfIngot)
             .eut(material.getMaterialTier() * 0.95)
-            .addTo(sExtruderRecipes);
+            .addTo(extruderRecipes);
 
         // Plate
         GT_Values.RA.stdBuilder()
@@ -58,7 +54,7 @@ public class Metal {
             .itemOutputs(Plate.getPart(material, 1))
             .duration(SECONDS * material.getHardness() * Plate.percentageOfIngot)
             .eut(material.getMaterialTier() * 0.95)
-            .addTo(sExtruderRecipes);
+            .addTo(extruderRecipes);
 
         // Item Casing
         GT_Values.RA.stdBuilder()
@@ -66,7 +62,7 @@ public class Metal {
             .itemOutputs(ItemCasing.getPart(material, 2))
             .duration(SECONDS * material.getHardness() * ItemCasing.percentageOfIngot)
             .eut(material.getMaterialTier() * 0.95)
-            .addTo(sExtruderRecipes);
+            .addTo(extruderRecipes);
 
         // Ring
         GT_Values.RA.stdBuilder()
@@ -74,7 +70,7 @@ public class Metal {
             .itemOutputs(Ring.getPart(material, 4))
             .duration(SECONDS * material.getHardness() * Ring.percentageOfIngot)
             .eut(material.getMaterialTier() * 0.95)
-            .addTo(sExtruderRecipes);
+            .addTo(extruderRecipes);
 
         // Rod
         GT_Values.RA.stdBuilder()
@@ -82,7 +78,7 @@ public class Metal {
             .itemOutputs(Rod.getPart(material, 2))
             .duration(SECONDS * material.getHardness() * Rod.percentageOfIngot)
             .eut(material.getMaterialTier() * 0.95)
-            .addTo(sExtruderRecipes);
+            .addTo(extruderRecipes);
 
         // Bolt
         GT_Values.RA.stdBuilder()
@@ -90,7 +86,7 @@ public class Metal {
             .itemOutputs(Bolt.getPart(material, 8))
             .duration(SECONDS * material.getHardness() * Bolt.percentageOfIngot)
             .eut(material.getMaterialTier() * 0.95)
-            .addTo(sExtruderRecipes);
+            .addTo(extruderRecipes);
 
         // Full block
         GT_Values.RA.stdBuilder()
@@ -98,7 +94,7 @@ public class Metal {
             .itemOutputs(SolidBlock.getPart(material, 1))
             .duration(SECONDS * material.getHardness() * 9)
             .eut(material.getMaterialTier() * 0.95)
-            .addTo(sExtruderRecipes);
+            .addTo(extruderRecipes);
 
     }
 
@@ -119,7 +115,7 @@ public class Metal {
             .itemOutputs(Bolt.getPart(material, 8))
             .duration(SECONDS * material.getHardness() * Bolt.percentageOfIngot)
             .eut(material.getMaterialTier() * 0.95)
-            .addTo(sExtruderRecipes);
+            .addTo(extruderRecipes);
 
     }
 }

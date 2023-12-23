@@ -8,7 +8,6 @@ import gregtech.api.modernmaterials.blocks.blocktypes.framebox.special.Universiu
 import gregtech.api.modernmaterials.blocks.registration.BlocksEnum;
 import gregtech.api.modernmaterials.effects.Effects;
 import gregtech.api.modernmaterials.fluids.ModernMaterialFluid;
-import gregtech.api.modernmaterials.generators.WireBuilder;
 import gregtech.api.modernmaterials.items.partproperties.customitemrenderers.UniversiumItemRenderer;
 import gregtech.api.modernmaterials.recipegenerators.Metal;
 import gregtech.api.modernmaterials.tooltips.CustomTooltips;
