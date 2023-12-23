@@ -1,7 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sUnboxinatorRecipes;
+import static gregtech.api.recipe.RecipeMaps.packagerRecipes;
+import static gregtech.api.recipe.RecipeMaps.unpackagerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import net.minecraft.item.ItemStack;
@@ -39,7 +39,7 @@ public class ProcessingCrate implements gregtech.api.interfaces.IOreRecipeRegist
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.crateGtDust, aMaterial, 1L))
                         .duration(5 * SECONDS)
                         .eut(8)
-                        .addTo(sBoxinatorRecipes);
+                        .addTo(packagerRecipes);
                     GT_Values.RA.stdBuilder()
                         .itemInputs(GT_OreDictUnificator.get(OrePrefixes.crateGtDust, aMaterial, 1L))
                         .itemOutputs(
@@ -47,7 +47,7 @@ public class ProcessingCrate implements gregtech.api.interfaces.IOreRecipeRegist
                             ItemList.Crate_Empty.get(1L))
                         .duration(40 * SECONDS)
                         .eut(1)
-                        .addTo(sUnboxinatorRecipes);
+                        .addTo(unpackagerRecipes);
                 }
                 if (aSpecialRecipeReq2) GT_ModHandler.addCraftingRecipe(
                     GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 16L),
@@ -63,7 +63,7 @@ public class ProcessingCrate implements gregtech.api.interfaces.IOreRecipeRegist
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.crateGtIngot, aMaterial, 1L))
                         .duration(5 * SECONDS)
                         .eut(8)
-                        .addTo(sBoxinatorRecipes);
+                        .addTo(packagerRecipes);
                     GT_Values.RA.stdBuilder()
                         .itemInputs(GT_OreDictUnificator.get(OrePrefixes.crateGtIngot, aMaterial, 1L))
                         .itemOutputs(
@@ -71,7 +71,7 @@ public class ProcessingCrate implements gregtech.api.interfaces.IOreRecipeRegist
                             ItemList.Crate_Empty.get(1L))
                         .duration(40 * SECONDS)
                         .eut(1)
-                        .addTo(sUnboxinatorRecipes);
+                        .addTo(unpackagerRecipes);
                 }
                 if (aSpecialRecipeReq2) GT_ModHandler.addCraftingRecipe(
                     GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 16L),
@@ -87,7 +87,7 @@ public class ProcessingCrate implements gregtech.api.interfaces.IOreRecipeRegist
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.crateGtGem, aMaterial, 1L))
                         .duration(5 * SECONDS)
                         .eut(8)
-                        .addTo(sBoxinatorRecipes);
+                        .addTo(packagerRecipes);
                     GT_Values.RA.stdBuilder()
                         .itemInputs(GT_OreDictUnificator.get(OrePrefixes.crateGtGem, aMaterial, 1L))
                         .itemOutputs(
@@ -95,7 +95,7 @@ public class ProcessingCrate implements gregtech.api.interfaces.IOreRecipeRegist
                             ItemList.Crate_Empty.get(1L))
                         .duration(40 * SECONDS)
                         .eut(1)
-                        .addTo(sUnboxinatorRecipes);
+                        .addTo(unpackagerRecipes);
                 }
                 if (aSpecialRecipeReq2) GT_ModHandler.addCraftingRecipe(
                     GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 16L),
@@ -111,7 +111,7 @@ public class ProcessingCrate implements gregtech.api.interfaces.IOreRecipeRegist
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.crateGtPlate, aMaterial, 1L))
                         .duration(5 * SECONDS)
                         .eut(8)
-                        .addTo(sBoxinatorRecipes);
+                        .addTo(packagerRecipes);
                     GT_Values.RA.stdBuilder()
                         .itemInputs(GT_OreDictUnificator.get(OrePrefixes.crateGtPlate, aMaterial, 1L))
                         .itemOutputs(
@@ -119,7 +119,7 @@ public class ProcessingCrate implements gregtech.api.interfaces.IOreRecipeRegist
                             ItemList.Crate_Empty.get(1L))
                         .duration(40 * SECONDS)
                         .eut(1)
-                        .addTo(sUnboxinatorRecipes);
+                        .addTo(unpackagerRecipes);
                 }
                 if (aSpecialRecipeReq2) GT_ModHandler.addCraftingRecipe(
                     GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 16L),

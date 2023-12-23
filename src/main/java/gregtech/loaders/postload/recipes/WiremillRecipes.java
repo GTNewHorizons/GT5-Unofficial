@@ -1,6 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sWiremillRecipes;
+import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeRegistrator.registerWiremillRecipes;
@@ -31,14 +31,14 @@ public class WiremillRecipes implements Runnable {
             .itemOutputs(new ItemStack(Items.string, 32))
             .duration(4 * SECONDS)
             .eut(48)
-            .addTo(sWiremillRecipes);
+            .addTo(wiremillRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Steel, 1))
             .itemOutputs(GT_ModHandler.getIC2Item("miningPipe", 1))
             .duration(10 * SECONDS)
             .eut(16)
-            .addTo(sWiremillRecipes);
+            .addTo(wiremillRecipes);
 
         if (!GT_Mod.gregtechproxy.mDisableIC2Cables) {
             GT_Values.RA.stdBuilder()
@@ -46,42 +46,42 @@ public class WiremillRecipes implements Runnable {
                 .itemOutputs(GT_ModHandler.getIC2Item("copperCableItem", 3L))
                 .duration(5 * SECONDS)
                 .eut(2)
-                .addTo(sWiremillRecipes);
+                .addTo(wiremillRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.AnnealedCopper, 1L))
                 .itemOutputs(GT_ModHandler.getIC2Item("copperCableItem", 3L))
                 .duration(5 * SECONDS)
                 .eut(2)
-                .addTo(sWiremillRecipes);
+                .addTo(wiremillRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Tin, 1L))
                 .itemOutputs(GT_ModHandler.getIC2Item("tinCableItem", 4L))
                 .duration(7 * SECONDS + 10 * TICKS)
                 .eut(1)
-                .addTo(sWiremillRecipes);
+                .addTo(wiremillRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L))
                 .itemOutputs(GT_ModHandler.getIC2Item("ironCableItem", 6L))
                 .duration(10 * SECONDS)
                 .eut(2)
-                .addTo(sWiremillRecipes);
+                .addTo(wiremillRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1L))
                 .itemOutputs(GT_ModHandler.getIC2Item("ironCableItem", 6L))
                 .duration(10 * SECONDS)
                 .eut(2)
-                .addTo(sWiremillRecipes);
+                .addTo(wiremillRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Gold, 1L))
                 .itemOutputs(GT_ModHandler.getIC2Item("goldCableItem", 6L))
                 .duration(10 * SECONDS)
                 .eut(1)
-                .addTo(sWiremillRecipes);
+                .addTo(wiremillRecipes);
         }
     }
 }

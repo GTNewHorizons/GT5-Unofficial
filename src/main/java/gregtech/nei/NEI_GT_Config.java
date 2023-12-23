@@ -1,21 +1,31 @@
 package gregtech.nei;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
-import java.util.List;
+import java.util.Map;
 
+import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ListMultimap;
 
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
+import codechicken.nei.event.NEIRegisterHandlerInfosEvent;
 import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.GuiUsageRecipe;
+import codechicken.nei.recipe.HandlerInfo;
 import codechicken.nei.recipe.TemplateRecipeHandler;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInterModComms;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
+import gregtech.api.recipe.RecipeCategory;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.common.items.GT_MetaGenerated_Item_01;
 import gregtech.common.items.GT_MetaGenerated_Item_02;
 import gregtech.common.items.GT_MetaGenerated_Item_03;
@@ -36,13 +46,16 @@ public class NEI_GT_Config implements IConfigureNEI {
      * Handlers will be displayed in ascending order of integer value. Any recipe map that is not present in this map
      * will be assigned a value of 0. Negative values are fine.
      */
-    private static final ImmutableMap<GT_Recipe.GT_Recipe_Map, Integer> RECIPE_MAP_ORDERING = ImmutableMap.<GT_Recipe.GT_Recipe_Map, Integer>builder()
-        .put(GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes, 1)
-        .put(GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes, 2)
+    private static final ImmutableMap<RecipeMap<?>, Integer> RECIPE_MAP_ORDERING = ImmutableMap
+        .<RecipeMap<?>, Integer>builder()
+        .put(RecipeMaps.assemblylineVisualRecipes, 1)
+        .put(RecipeMaps.scannerFakeRecipes, 2)
         .build();
 
-    private static final Comparator<RecipeMapHandler> RECIPE_MAP_HANDLER_COMPARATOR = Comparator
+    private static final Comparator<GT_NEI_DefaultHandler> RECIPE_MAP_HANDLER_COMPARATOR = Comparator
         .comparingInt(handler -> RECIPE_MAP_ORDERING.getOrDefault(handler.getRecipeMap(), 0));
+
+    private static ListMultimap<RecipeCategory, RecipeMapWorkable> RECIPE_CATALYST_INDEX;
 
     public static boolean sIsAdded = true;
 
@@ -59,33 +72,107 @@ public class NEI_GT_Config implements IConfigureNEI {
     @Override
     public void loadConfig() {
         sIsAdded = false;
-        if (FMLCommonHandler.instance()
-            .getEffectiveSide()
-            .isClient()) {
-            List<RecipeMapHandler> handlers = new ArrayList<>();
+        registerHandlers();
+        registerCatalysts();
+        registerItemEntries();
+        registerDumpers();
+        sIsAdded = true;
+    }
 
-            for (GT_Recipe.GT_Recipe_Map tMap : GT_Recipe.GT_Recipe_Map.sMappings) {
-                if (tMap.mNEIAllowed) {
-                    handlers.add(new GT_NEI_DefaultHandler(tMap));
+    private void registerHandlers() {
+        RecipeCategory.ALL_RECIPE_CATEGORIES.values()
+            .stream()
+            .filter(
+                recipeCategory -> recipeCategory.recipeMap.getFrontend()
+                    .getNEIProperties().registerNEI)
+            .map(GT_NEI_DefaultHandler::new)
+            .sorted(RECIPE_MAP_HANDLER_COMPARATOR)
+            .forEach(NEI_GT_Config::addHandler);
+    }
+
+    private void registerCatalysts() {
+        for (Map.Entry<RecipeCategory, Collection<RecipeMapWorkable>> entry : RECIPE_CATALYST_INDEX.asMap()
+            .entrySet()) {
+            entry.getValue()
+                .forEach(
+                    recipeMapWorkable -> API.addRecipeCatalyst(
+                        recipeMapWorkable.getStackForm(1),
+                        entry.getKey().unlocalizedName,
+                        recipeMapWorkable.getRecipeCatalystPriority()));
+        }
+        API.addRecipeCatalyst(
+            GT_ModHandler.getIC2Item("nuclearReactor", 1, null),
+            RecipeMaps.ic2NuclearFakeRecipes.unlocalizedName);
+        // Bronze Blast Furnace
+        API.removeRecipeCatalyst(
+            GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 1, 108),
+            RecipeMaps.primitiveBlastRecipes.unlocalizedName);
+    }
+
+    private void registerItemEntries() {
+        API.addItemListEntry(ItemList.VOLUMETRIC_FLASK.get(1));
+    }
+
+    private void registerDumpers() {
+        API.addOption(new MetaTileEntityDumper());
+        API.addOption(new MaterialDumper());
+        API.addOption(new MetaItemDumper(GT_MetaGenerated_Item_01.INSTANCE, "metaitem01"));
+        API.addOption(new MetaItemDumper(GT_MetaGenerated_Item_02.INSTANCE, "metaitem02"));
+        API.addOption(new MetaItemDumper(GT_MetaGenerated_Item_03.INSTANCE, "metaitem03"));
+        API.addOption(new VoidProtectionSupportDumper());
+        API.addOption(new InputSeparationSupportDumper());
+        API.addOption(new BatchModeSupportDumper());
+        API.addOption(new RecipeLockingSupportDumper());
+    }
+
+    @SubscribeEvent
+    public void registerHandlerInfo(NEIRegisterHandlerInfosEvent event) {
+        if (RECIPE_CATALYST_INDEX == null) {
+            // This method will be called earlier than #loadConfig
+            generateRecipeCatalystIndex();
+        }
+        RecipeCategory.ALL_RECIPE_CATEGORIES.values()
+            .forEach(recipeCategory -> {
+                HandlerInfo.Builder builder = createHandlerInfoBuilderTemplate(recipeCategory);
+                HandlerInfo handlerInfo;
+                if (recipeCategory.handlerInfoCreator != null) {
+                    handlerInfo = recipeCategory.handlerInfoCreator.apply(builder)
+                        .build();
+                } else {
+                    // Infer icon from recipe catalysts
+                    RECIPE_CATALYST_INDEX.get(recipeCategory)
+                        .stream()
+                        .findFirst()
+                        .ifPresent(catalyst -> builder.setDisplayStack(catalyst.getStackForm(1)));
+                    handlerInfo = builder.build();
+                }
+                event.registerHandlerInfo(handlerInfo);
+            });
+    }
+
+    private HandlerInfo.Builder createHandlerInfoBuilderTemplate(RecipeCategory recipeCategory) {
+        return new HandlerInfo.Builder(
+            recipeCategory.unlocalizedName,
+            recipeCategory.ownerMod.getName(),
+            recipeCategory.ownerMod.getModId()).setShiftY(6)
+                .setHeight(135)
+                .setMaxRecipesPerPage(2);
+    }
+
+    private static void generateRecipeCatalystIndex() {
+        ImmutableListMultimap.Builder<RecipeCategory, RecipeMapWorkable> builder = new ImmutableListMultimap.Builder<>();
+        builder
+            .orderValuesBy(Comparator.comparing(recipeMapWorkable -> -recipeMapWorkable.getRecipeCatalystPriority()));
+        for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
+            IMetaTileEntity mte = GregTech_API.METATILEENTITIES[i];
+            if (!(mte instanceof RecipeMapWorkable recipeMapWorkable)) continue;
+            for (RecipeMap<?> recipeMap : recipeMapWorkable.getAvailableRecipeMaps()) {
+                for (RecipeCategory recipeCategory : recipeMap.getAssociatedCategories()) {
+                    builder.put(recipeCategory, recipeMapWorkable);
                 }
             }
-
-            handlers.sort(RECIPE_MAP_HANDLER_COMPARATOR);
-            handlers.forEach(NEI_GT_Config::addHandler);
-
-            API.addItemListEntry(ItemList.VOLUMETRIC_FLASK.get(1));
-
-            API.addOption(new MetaTileEntityDumper());
-            API.addOption(new MaterialDumper());
-            API.addOption(new MetaItemDumper(GT_MetaGenerated_Item_01.INSTANCE, "metaitem01"));
-            API.addOption(new MetaItemDumper(GT_MetaGenerated_Item_02.INSTANCE, "metaitem02"));
-            API.addOption(new MetaItemDumper(GT_MetaGenerated_Item_03.INSTANCE, "metaitem03"));
-            API.addOption(new VoidProtectionSupportDumper());
-            API.addOption(new InputSeparationSupportDumper());
-            API.addOption(new BatchModeSupportDumper());
-            API.addOption(new RecipeLockingSupportDumper());
         }
-        sIsAdded = true;
+        RECIPE_CATALYST_INDEX = builder.build();
     }
 
     @Override

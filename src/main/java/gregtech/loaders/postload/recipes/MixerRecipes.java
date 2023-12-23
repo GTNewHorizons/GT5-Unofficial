@@ -7,8 +7,8 @@ import static gregtech.api.enums.Mods.Natura;
 import static gregtech.api.enums.Mods.PamsHarvestCraft;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.Thaumcraft;
+import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMixerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
@@ -48,7 +48,7 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(GT_OreDictUnificator.getDust(Materials.EnderEye, OrePrefixes.dust.mMaterialAmount))
             .duration(5 * SECONDS)
             .eut(48)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -58,7 +58,7 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(GT_OreDictUnificator.getDust(Materials.Electrum, 2L * OrePrefixes.dust.mMaterialAmount))
             .duration(10 * SECONDS)
             .eut(8)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -68,7 +68,7 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(GT_OreDictUnificator.getDust(Materials.Invar, 3L * OrePrefixes.dust.mMaterialAmount))
             .duration(15 * SECONDS)
             .eut(8)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -80,7 +80,7 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(GT_OreDictUnificator.getDust(Materials.StainlessSteel, 9L * OrePrefixes.dust.mMaterialAmount))
             .duration(45 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -91,7 +91,7 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(GT_OreDictUnificator.getDust(Materials.Kanthal, 3L * OrePrefixes.dust.mMaterialAmount))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -101,7 +101,7 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(GT_OreDictUnificator.getDust(Materials.Brass, 4L * OrePrefixes.dust.mMaterialAmount))
             .duration(2 * SECONDS)
             .eut(8)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -111,7 +111,7 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(GT_OreDictUnificator.getDust(Materials.Bronze, 4L * OrePrefixes.dust.mMaterialAmount))
             .duration(2 * SECONDS)
             .eut(8)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -121,7 +121,7 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(GT_OreDictUnificator.getDust(Materials.Cupronickel, 2L * OrePrefixes.dust.mMaterialAmount))
             .duration(10 * SECONDS)
             .eut(24)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -131,7 +131,7 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(GT_OreDictUnificator.getDust(Materials.SterlingSilver, 5L * OrePrefixes.dust.mMaterialAmount))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -141,7 +141,7 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(GT_OreDictUnificator.getDust(Materials.BlackBronze, 5L * OrePrefixes.dust.mMaterialAmount))
             .duration(25 * SECONDS)
             .eut(8)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -151,7 +151,7 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(GT_OreDictUnificator.getDust(Materials.BismuthBronze, 5L * OrePrefixes.dust.mMaterialAmount))
             .duration(25 * SECONDS)
             .eut(8)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -162,7 +162,7 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(GT_OreDictUnificator.getDust(Materials.BlackSteel, 5L * OrePrefixes.dust.mMaterialAmount))
             .duration(25 * SECONDS)
             .eut(8)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -174,7 +174,7 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(GT_OreDictUnificator.getDust(Materials.RedSteel, 8L * OrePrefixes.dust.mMaterialAmount))
             .duration(40 * SECONDS)
             .eut(8)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -186,7 +186,7 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(GT_OreDictUnificator.getDust(Materials.BlueSteel, 8L * OrePrefixes.dust.mMaterialAmount))
             .duration(40 * SECONDS)
             .eut(8)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -199,7 +199,7 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(GT_OreDictUnificator.getDust(Materials.BlackSteel, 25L * OrePrefixes.dust.mMaterialAmount))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_HV)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -213,7 +213,7 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(GT_OreDictUnificator.getDust(Materials.RedSteel, 40L * OrePrefixes.dust.mMaterialAmount))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_HV)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -230,7 +230,7 @@ public class MixerRecipes implements Runnable {
                 GT_OreDictUnificator.getDust(Materials.BlueSteel, 32L * OrePrefixes.dust.mMaterialAmount))
             .duration(3 * MINUTES)
             .eut(TierEU.RECIPE_HV)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -242,7 +242,7 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(GT_OreDictUnificator.getDust(Materials.Ultimet, 9L * OrePrefixes.dust.mMaterialAmount))
             .duration(45 * SECONDS)
             .eut(500)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -253,7 +253,7 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(GT_OreDictUnificator.getDust(Materials.CobaltBrass, 9L * OrePrefixes.dust.mMaterialAmount))
             .duration(45 * SECONDS)
             .eut(8)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -264,7 +264,7 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(GT_OreDictUnificator.getDust(Materials.Gunpowder, 6L * OrePrefixes.dust.mMaterialAmount))
             .duration(30 * SECONDS)
             .eut(8)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -275,7 +275,7 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(GT_OreDictUnificator.getDust(Materials.Gunpowder, 6L * OrePrefixes.dust.mMaterialAmount))
             .duration(30 * SECONDS)
             .eut(8)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -286,7 +286,7 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(GT_OreDictUnificator.getDust(Materials.Gunpowder, 6L * OrePrefixes.dust.mMaterialAmount))
             .duration(30 * SECONDS)
             .eut(8)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -298,7 +298,7 @@ public class MixerRecipes implements Runnable {
                 GT_OreDictUnificator.getDust(Materials.IndiumGalliumPhosphide, 3L * OrePrefixes.dust.mMaterialAmount))
             .duration(10 * SECONDS)
             .eut(8)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -307,7 +307,7 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(GT_OreDictUnificator.getDust(Materials.Fireclay, 2L * OrePrefixes.dust.mMaterialAmount))
             .duration(10 * SECONDS)
             .eut(8)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -317,7 +317,7 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(GT_OreDictUnificator.getDust(Materials.Nichrome, 5L * OrePrefixes.dust.mMaterialAmount))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_HV)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -327,7 +327,7 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(GT_OreDictUnificator.getDust(Materials.Osmiridium, 4L * OrePrefixes.dust.mMaterialAmount))
             .duration(2 * SECONDS)
             .eut(2000)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -337,7 +337,7 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(GT_OreDictUnificator.getDust(Materials.NiobiumTitanium, 2L * OrePrefixes.dust.mMaterialAmount))
             .duration(10 * SECONDS)
             .eut(2000)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -347,7 +347,7 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(GT_OreDictUnificator.getDust(Materials.VanadiumGallium, 4L * OrePrefixes.dust.mMaterialAmount))
             .duration(2 * SECONDS)
             .eut(2000)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -357,7 +357,7 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(GT_OreDictUnificator.getDust(Materials.TungstenCarbide, 2L * OrePrefixes.dust.mMaterialAmount))
             .duration(10 * SECONDS)
             .eut(500)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -367,7 +367,7 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(GT_OreDictUnificator.getDust(Materials.TungstenSteel, 2L * OrePrefixes.dust.mMaterialAmount))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_EV)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -378,7 +378,7 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(GT_OreDictUnificator.getDust(Materials.TPV, 7L * OrePrefixes.dust.mMaterialAmount))
             .duration(8 * SECONDS + 15 * TICKS)
             .eut(TierEU.RECIPE_EV)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -390,7 +390,7 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(GT_OreDictUnificator.getDust(Materials.HSSG, 9L * OrePrefixes.dust.mMaterialAmount))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_EV)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -402,7 +402,7 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(GT_OreDictUnificator.getDust(Materials.HSSE, 9L * OrePrefixes.dust.mMaterialAmount))
             .duration(35 * SECONDS)
             .eut(4096)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -413,17 +413,18 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(GT_OreDictUnificator.getDust(Materials.HSSS, 9L * OrePrefixes.dust.mMaterialAmount))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_IV)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Nickel, 1),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Zinc, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 4))
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 4),
+                GT_Utility.getIntegratedCircuit(3))
             .itemOutputs(GT_OreDictUnificator.getDust(Materials.FerriteMixture, 6L * OrePrefixes.dust.mMaterialAmount))
             .duration(10 * SECONDS)
             .eut(8)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -433,7 +434,7 @@ public class MixerRecipes implements Runnable {
                 GT_OreDictUnificator.getDust(Materials.BorosilicateGlass, 8L * OrePrefixes.dust.mMaterialAmount))
             .duration(10 * SECONDS)
             .eut(8)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -446,7 +447,7 @@ public class MixerRecipes implements Runnable {
             .fluidOutputs(getFluidStack("sludge", 1000))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(24)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 1))
@@ -454,7 +455,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.Water.getFluid(1000))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(8)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -463,7 +464,7 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(ItemList.Food_ChiliChips.get(1))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(8)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -472,7 +473,7 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(ItemList.IC2_Energium_Dust.get(1))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -481,7 +482,7 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(ItemList.IC2_Energium_Dust.get(9))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -491,7 +492,7 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(new ItemStack(Items.fermented_spider_eye, 1))
             .duration(5 * SECONDS)
             .eut(8)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -501,7 +502,7 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.IronWood, 2))
             .duration(5 * SECONDS)
             .eut(8)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -511,7 +512,7 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.IronWood, 18))
             .duration(45 * SECONDS)
             .eut(8)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -522,7 +523,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.Water.getFluid(500))
             .duration(20 * TICKS)
             .eut(16)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -533,7 +534,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(GT_ModHandler.getDistilledWater(500))
             .duration(20 * TICKS)
             .eut(16)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -544,7 +545,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.Water.getFluid(1000))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(16)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -555,7 +556,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.Water.getFluid(1000))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(16)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -566,7 +567,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.Water.getFluid(1000))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(16)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -577,7 +578,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.Water.getFluid(1000))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(16)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -588,7 +589,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.Water.getFluid(250))
             .duration(16 * TICKS)
             .eut(16)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -597,7 +598,7 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Fuel, 6))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -608,7 +609,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.HeavyFuel.getFluid(1000))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -619,7 +620,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.LightFuel.getFluid(5000))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -630,7 +631,7 @@ public class MixerRecipes implements Runnable {
             .fluidOutputs(Materials.Fuel.getFluid(6000))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -641,7 +642,7 @@ public class MixerRecipes implements Runnable {
             .fluidOutputs(Materials.Fuel.getFluid(6000))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -652,7 +653,7 @@ public class MixerRecipes implements Runnable {
             .fluidOutputs(new FluidStack(ItemList.sDrillingFluid, 5000))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(16)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -662,7 +663,7 @@ public class MixerRecipes implements Runnable {
             .fluidOutputs(getFluidStack("ic2coolant", 125))
             .duration(12 * SECONDS + 16 * TICKS)
             .eut(48)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -672,7 +673,7 @@ public class MixerRecipes implements Runnable {
             .fluidOutputs(getFluidStack("ic2coolant", 1000))
             .duration(12 * SECONDS + 16 * TICKS)
             .eut(48)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -684,7 +685,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.AdvancedGlue.getFluid(200))
             .duration(40 * SECONDS)
             .eut(16)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -696,7 +697,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.AdvancedGlue.getFluid(200))
             .duration(40 * SECONDS)
             .eut(16)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -708,7 +709,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.AdvancedGlue.getFluid(200))
             .duration(40 * SECONDS)
             .eut(16)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -720,7 +721,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.McGuffium239.getFluid(12))
             .duration(20 * SECONDS)
             .eut(16)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -732,7 +733,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.McGuffium239.getFluid(8))
             .duration(20 * SECONDS)
             .eut(16)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -744,7 +745,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.McGuffium239.getFluid(4))
             .duration(20 * SECONDS)
             .eut(16)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.SFMixture.get(2), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.EnderEye, 1))
@@ -752,7 +753,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.Mercury.getFluid(1000))
             .duration(15 * SECONDS)
             .eut(64)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.SFMixture.get(1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Blaze, 1))
@@ -760,7 +761,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.Mercury.getFluid(500))
             .duration(15 * SECONDS)
             .eut(64)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -772,7 +773,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.NitroFuel.getFluid(4000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -784,7 +785,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.NitroFuel.getFluid(3000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -796,7 +797,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.NitroFuel.getFluid(2000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -808,7 +809,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.GasolinePremium.getFluid(1600))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -820,7 +821,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.GasolinePremium.getFluid(1200))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -832,7 +833,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.GasolinePremium.getFluid(800))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         if (Thaumcraft.isModLoaded()) {
             GT_Values.RA.stdBuilder()
@@ -844,7 +845,7 @@ public class MixerRecipes implements Runnable {
                 .fluidInputs(Materials.FierySteel.getFluid(50))
                 .duration(10 * SECONDS)
                 .eut(64)
-                .addTo(sMixerRecipes);
+                .addTo(mixerRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(
@@ -855,7 +856,7 @@ public class MixerRecipes implements Runnable {
                 .fluidInputs(Materials.FierySteel.getFluid(50))
                 .duration(10 * SECONDS)
                 .eut(64)
-                .addTo(sMixerRecipes);
+                .addTo(mixerRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(
@@ -866,7 +867,7 @@ public class MixerRecipes implements Runnable {
                 .fluidInputs(Materials.FierySteel.getFluid(50))
                 .duration(10 * SECONDS)
                 .eut(64)
-                .addTo(sMixerRecipes);
+                .addTo(mixerRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(
@@ -877,7 +878,7 @@ public class MixerRecipes implements Runnable {
                 .fluidInputs(Materials.FierySteel.getFluid(50))
                 .duration(10 * SECONDS)
                 .eut(64)
-                .addTo(sMixerRecipes);
+                .addTo(mixerRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(
@@ -888,7 +889,7 @@ public class MixerRecipes implements Runnable {
                 .fluidInputs(Materials.FierySteel.getFluid(50))
                 .duration(10 * SECONDS)
                 .eut(64)
-                .addTo(sMixerRecipes);
+                .addTo(mixerRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(
@@ -899,7 +900,7 @@ public class MixerRecipes implements Runnable {
                 .fluidInputs(Materials.FierySteel.getFluid(50))
                 .duration(10 * SECONDS)
                 .eut(64)
-                .addTo(sMixerRecipes);
+                .addTo(mixerRecipes);
 
             FluidStack tFD = getFluidStack("fluiddeath", 30);
             if (tFD != null && tFD.getFluid() != null && tFD.amount > 0) {
@@ -912,7 +913,7 @@ public class MixerRecipes implements Runnable {
                     .fluidInputs(tFD)
                     .duration(10 * SECONDS)
                     .eut(64)
-                    .addTo(sMixerRecipes);
+                    .addTo(mixerRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -923,7 +924,7 @@ public class MixerRecipes implements Runnable {
                     .fluidInputs(tFD)
                     .duration(10 * SECONDS)
                     .eut(64)
-                    .addTo(sMixerRecipes);
+                    .addTo(mixerRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -934,7 +935,7 @@ public class MixerRecipes implements Runnable {
                     .fluidInputs(tFD)
                     .duration(10 * SECONDS)
                     .eut(64)
-                    .addTo(sMixerRecipes);
+                    .addTo(mixerRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -945,7 +946,7 @@ public class MixerRecipes implements Runnable {
                     .fluidInputs(tFD)
                     .duration(10 * SECONDS)
                     .eut(64)
-                    .addTo(sMixerRecipes);
+                    .addTo(mixerRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -956,7 +957,7 @@ public class MixerRecipes implements Runnable {
                     .fluidInputs(tFD)
                     .duration(10 * SECONDS)
                     .eut(64)
-                    .addTo(sMixerRecipes);
+                    .addTo(mixerRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -967,7 +968,7 @@ public class MixerRecipes implements Runnable {
                     .fluidInputs(tFD)
                     .duration(10 * SECONDS)
                     .eut(64)
-                    .addTo(sMixerRecipes);
+                    .addTo(mixerRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -979,7 +980,7 @@ public class MixerRecipes implements Runnable {
                     .fluidInputs(Materials.NitroFuel.getFluid(1000))
                     .duration(7 * SECONDS)
                     .eut(TierEU.RECIPE_HV)
-                    .addTo(sMixerRecipes);
+                    .addTo(mixerRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -991,7 +992,7 @@ public class MixerRecipes implements Runnable {
                     .fluidInputs(Materials.NitroFuel.getFluid(750))
                     .duration(6 * SECONDS)
                     .eut(TierEU.RECIPE_HV)
-                    .addTo(sMixerRecipes);
+                    .addTo(mixerRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1003,7 +1004,7 @@ public class MixerRecipes implements Runnable {
                     .fluidInputs(Materials.NitroFuel.getFluid(500))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_HV)
-                    .addTo(sMixerRecipes);
+                    .addTo(mixerRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1015,7 +1016,7 @@ public class MixerRecipes implements Runnable {
                     .fluidInputs(Materials.GasolinePremium.getFluid(400))
                     .duration(7 * SECONDS)
                     .eut(TierEU.RECIPE_HV)
-                    .addTo(sMixerRecipes);
+                    .addTo(mixerRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1027,7 +1028,7 @@ public class MixerRecipes implements Runnable {
                     .fluidInputs(Materials.GasolinePremium.getFluid(300))
                     .duration(6 * SECONDS)
                     .eut(TierEU.RECIPE_HV)
-                    .addTo(sMixerRecipes);
+                    .addTo(mixerRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -1039,7 +1040,7 @@ public class MixerRecipes implements Runnable {
                     .fluidInputs(Materials.GasolinePremium.getFluid(200))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_HV)
-                    .addTo(sMixerRecipes);
+                    .addTo(mixerRecipes);
             }
         }
 
@@ -1052,7 +1053,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.NitroFuel.getFluid(1000))
             .duration(7 * SECONDS)
             .eut(250)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -1063,7 +1064,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.NitroFuel.getFluid(750))
             .duration(6 * SECONDS)
             .eut(250)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -1074,7 +1075,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.NitroFuel.getFluid(500))
             .duration(5 * SECONDS)
             .eut(250)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -1085,7 +1086,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.GasolinePremium.getFluid(400))
             .duration(7 * SECONDS)
             .eut(250)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -1096,7 +1097,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.GasolinePremium.getFluid(300))
             .duration(6 * SECONDS)
             .eut(250)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -1107,7 +1108,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.GasolinePremium.getFluid(200))
             .duration(5 * SECONDS)
             .eut(250)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -1118,7 +1119,7 @@ public class MixerRecipes implements Runnable {
             .fluidOutputs(new FluidStack(ItemList.sNitrationMixture, 2000))
             .duration(24 * SECONDS)
             .eut(2)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -1128,7 +1129,7 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.NitrationMixture, 2))
             .duration(24 * SECONDS)
             .eut(2)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -1139,7 +1140,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.Water.getFluid(100))
             .duration(10 * SECONDS)
             .eut(16)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -1150,7 +1151,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.Water.getFluid(100))
             .duration(10 * SECONDS)
             .eut(16)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -1161,7 +1162,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.Water.getFluid(100))
             .duration(10 * SECONDS)
             .eut(16)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -1172,7 +1173,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.Water.getFluid(100))
             .duration(10 * SECONDS)
             .eut(16)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -1183,7 +1184,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.Water.getFluid(100))
             .duration(10 * SECONDS)
             .eut(16)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -1194,7 +1195,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.Water.getFluid(100))
             .duration(10 * SECONDS)
             .eut(16)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -1205,7 +1206,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.Water.getFluid(100))
             .duration(10 * SECONDS)
             .eut(16)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -1216,7 +1217,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.Water.getFluid(100))
             .duration(10 * SECONDS)
             .eut(16)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -1227,7 +1228,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.Water.getFluid(100))
             .duration(10 * SECONDS)
             .eut(16)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -1238,7 +1239,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.Water.getFluid(100))
             .duration(10 * SECONDS)
             .eut(16)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -1249,7 +1250,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.Water.getFluid(100))
             .duration(10 * SECONDS)
             .eut(16)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -1260,7 +1261,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.Water.getFluid(100))
             .duration(10 * SECONDS)
             .eut(16)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -1271,7 +1272,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.Water.getFluid(100))
             .duration(10 * SECONDS)
             .eut(16)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -1282,7 +1283,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.Water.getFluid(100))
             .duration(10 * SECONDS)
             .eut(16)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         // radiation manufacturing
 
@@ -1292,7 +1293,7 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.Helium.getGas(250))
             .duration(1 * SECONDS + 10 * TICKS)
             .eut(16)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(MaterialsOreAlum.SluiceSand.getDust(1))
@@ -1300,7 +1301,7 @@ public class MixerRecipes implements Runnable {
             .fluidOutputs(MaterialsOreAlum.SluiceJuice.getFluid(1000))
             .duration(5 * SECONDS)
             .eut(16)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         // NaCl + H2O = (NaCl·H2O)
 
@@ -1310,7 +1311,7 @@ public class MixerRecipes implements Runnable {
             .fluidOutputs(Materials.SaltWater.getFluid(1000))
             .duration(5 * SECONDS)
             .eut(8)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         // CaCO3 + 2 CH3COOH = Ca(CH3COO)2 + H2O + CO2
 
@@ -1321,7 +1322,7 @@ public class MixerRecipes implements Runnable {
             .fluidOutputs(Materials.CalciumAcetateSolution.getFluid(1000))
             .duration(12 * SECONDS)
             .eut(16)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(Materials.Calcite.getDust(5), Materials.Empty.getCells(2), GT_Utility.getIntegratedCircuit(11))
@@ -1330,7 +1331,7 @@ public class MixerRecipes implements Runnable {
             .fluidOutputs(Materials.Water.getFluid(1000))
             .duration(12 * SECONDS)
             .eut(16)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(Materials.Calcite.getDust(5), Materials.Empty.getCells(2), GT_Utility.getIntegratedCircuit(21))
@@ -1339,7 +1340,7 @@ public class MixerRecipes implements Runnable {
             .fluidOutputs(Materials.CarbonDioxide.getGas(1000))
             .duration(12 * SECONDS)
             .eut(16)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(Materials.Calcite.getDust(5), Materials.Empty.getCells(1), GT_Utility.getIntegratedCircuit(4))
@@ -1348,7 +1349,7 @@ public class MixerRecipes implements Runnable {
             .fluidOutputs(Materials.CalciumAcetateSolution.getFluid(1000))
             .duration(12 * SECONDS)
             .eut(16)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(Materials.Calcite.getDust(5), Materials.Empty.getCells(1), GT_Utility.getIntegratedCircuit(14))
@@ -1357,7 +1358,7 @@ public class MixerRecipes implements Runnable {
             .fluidOutputs(Materials.CarbonDioxide.getGas(1000))
             .duration(12 * SECONDS)
             .eut(16)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         // Ca + 2 CH3COOH = Ca(CH3COO)2 + 2H
 
@@ -1368,7 +1369,7 @@ public class MixerRecipes implements Runnable {
             .fluidOutputs(Materials.CalciumAcetateSolution.getFluid(1000))
             .duration(4 * SECONDS)
             .eut(16)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(Materials.Calcium.getDust(1), Materials.Empty.getCells(1), GT_Utility.getIntegratedCircuit(11))
@@ -1377,7 +1378,7 @@ public class MixerRecipes implements Runnable {
             .fluidOutputs(Materials.Hydrogen.getGas(2000))
             .duration(4 * SECONDS)
             .eut(16)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         // CaO + 2 CH3COOH = Ca(CH3COO)2 + H2O
 
@@ -1388,7 +1389,7 @@ public class MixerRecipes implements Runnable {
             .fluidOutputs(Materials.CalciumAcetateSolution.getFluid(1000))
             .duration(4 * SECONDS)
             .eut(16)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -1400,7 +1401,7 @@ public class MixerRecipes implements Runnable {
             .fluidOutputs(Materials.Water.getFluid(1000))
             .duration(4 * SECONDS)
             .eut(16)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         // 2CH3COOCH3 + 3CH3COCH3/(C4H6O2)n = 5Glue
 
@@ -1411,7 +1412,7 @@ public class MixerRecipes implements Runnable {
             .fluidOutputs(Materials.AdvancedGlue.getFluid(5000))
             .duration(5 * SECONDS)
             .eut(8)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(Materials.PolyvinylAcetate.getCells(2))
@@ -1420,7 +1421,7 @@ public class MixerRecipes implements Runnable {
             .fluidOutputs(Materials.AdvancedGlue.getFluid(5000))
             .duration(5 * SECONDS)
             .eut(8)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(Materials.MethylAcetate.getCells(3))
@@ -1429,7 +1430,7 @@ public class MixerRecipes implements Runnable {
             .fluidOutputs(Materials.AdvancedGlue.getFluid(5000))
             .duration(5 * SECONDS)
             .eut(8)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(Materials.PolyvinylAcetate.getCells(2))
@@ -1438,7 +1439,7 @@ public class MixerRecipes implements Runnable {
             .fluidOutputs(Materials.AdvancedGlue.getFluid(5000))
             .duration(5 * SECONDS)
             .eut(8)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(Materials.Sugar.getDust(4))
@@ -1447,7 +1448,7 @@ public class MixerRecipes implements Runnable {
             .fluidOutputs(Materials.DilutedSulfuricAcid.getFluid(1000))
             .duration(60 * SECONDS)
             .eut(2)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(Materials.Wood.getDust(4))
@@ -1456,7 +1457,7 @@ public class MixerRecipes implements Runnable {
             .fluidOutputs(Materials.DilutedSulfuricAcid.getFluid(1000))
             .duration(60 * SECONDS)
             .eut(2)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(Materials.Fuel.getCells(1))
@@ -1465,7 +1466,7 @@ public class MixerRecipes implements Runnable {
             .fluidOutputs(Materials.NitroFuel.getFluid(1000))
             .duration(20 * TICKS)
             .eut(TierEU.RECIPE_HV)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(Materials.BioDiesel.getCells(1))
@@ -1474,7 +1475,7 @@ public class MixerRecipes implements Runnable {
             .fluidOutputs(Materials.NitroFuel.getFluid(900))
             .duration(20 * TICKS)
             .eut(TierEU.RECIPE_HV)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         // CH4O + C4H8 = C5H12O
 
@@ -1483,7 +1484,7 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(Materials.MTBEMixture.getCells(1), Materials.Empty.getCells(1))
             .duration(20 * TICKS)
             .eut(TierEU.RECIPE_HV)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -1494,7 +1495,7 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(Materials.GasolineRaw.getCells(20))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -1507,7 +1508,7 @@ public class MixerRecipes implements Runnable {
             .fluidOutputs(Materials.GasolinePremium.getFluid(32000))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_EV)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         if (Railcraft.isModLoaded()) {
             GT_Values.RA.stdBuilder()
@@ -1519,7 +1520,7 @@ public class MixerRecipes implements Runnable {
                 .fluidInputs(Materials.NitroFuel.getFluid(300))
                 .duration(5 * SECONDS)
                 .eut(250)
-                .addTo(sMixerRecipes);
+                .addTo(mixerRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(
@@ -1530,7 +1531,7 @@ public class MixerRecipes implements Runnable {
                 .fluidInputs(Materials.GasolinePremium.getFluid(120))
                 .duration(5 * SECONDS)
                 .eut(250)
-                .addTo(sMixerRecipes);
+                .addTo(mixerRecipes);
         }
 
         if (Thaumcraft.isModLoaded() && Railcraft.isModLoaded()) {
@@ -1544,7 +1545,7 @@ public class MixerRecipes implements Runnable {
                 .fluidInputs(Materials.NitroFuel.getFluid(300))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
-                .addTo(sMixerRecipes);
+                .addTo(mixerRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(
@@ -1556,7 +1557,7 @@ public class MixerRecipes implements Runnable {
                 .fluidInputs(Materials.GasolinePremium.getFluid(120))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
-                .addTo(sMixerRecipes);
+                .addTo(mixerRecipes);
         }
     }
 
@@ -1575,7 +1576,7 @@ public class MixerRecipes implements Runnable {
             .fluidOutputs(new FluidStack(FluidRegistry.getFluid("potion." + aName + ".splash"), 750))
             .duration(10 * SECONDS)
             .eut(24)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         if (splashStrong) GT_Values.RA.stdBuilder()
             .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gunpowder, 1))
@@ -1583,7 +1584,7 @@ public class MixerRecipes implements Runnable {
             .fluidOutputs(new FluidStack(FluidRegistry.getFluid("potion." + aName + ".strong.splash"), 750))
             .duration(10 * SECONDS)
             .eut(24)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         if (splashLong) GT_Values.RA.stdBuilder()
             .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gunpowder, 1))
@@ -1591,7 +1592,7 @@ public class MixerRecipes implements Runnable {
             .fluidOutputs(new FluidStack(FluidRegistry.getFluid("potion." + aName + ".long.splash"), 750))
             .duration(10 * SECONDS)
             .eut(24)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
     }
 
     public void registerSingleBlockAndMulti() {
@@ -1603,7 +1604,7 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(Materials.EnrichedHolmium.getDust(10))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         // Catalysts for Plasma Forge.
         {
@@ -1618,7 +1619,7 @@ public class MixerRecipes implements Runnable {
                 .duration(41 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)
                 .noOptimize()
-                .addTo(sMixerRecipes);
+                .addTo(mixerRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_Utility.getIntegratedCircuit(10))
@@ -1632,7 +1633,7 @@ public class MixerRecipes implements Runnable {
                 .duration(41 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_UV)
                 .noOptimize()
-                .addTo(sMixerRecipes);
+                .addTo(mixerRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_Utility.getIntegratedCircuit(11))
@@ -1646,7 +1647,7 @@ public class MixerRecipes implements Runnable {
                 .duration(41 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_UHV)
                 .noOptimize()
-                .addTo(sMixerRecipes);
+                .addTo(mixerRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_Utility.getIntegratedCircuit(12))
@@ -1660,7 +1661,7 @@ public class MixerRecipes implements Runnable {
                 .duration(41 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_UEV)
                 .noOptimize()
-                .addTo(sMixerRecipes);
+                .addTo(mixerRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_Utility.getIntegratedCircuit(13))
@@ -1674,7 +1675,7 @@ public class MixerRecipes implements Runnable {
                 .duration(41 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_UIV)
                 .noOptimize()
-                .addTo(sMixerRecipes);
+                .addTo(mixerRecipes);
         }
 
         GT_Values.RA.stdBuilder()
@@ -1683,6 +1684,6 @@ public class MixerRecipes implements Runnable {
             .fluidOutputs(Materials.WeedEX9000.getFluid(750))
             .duration(5 * SECONDS)
             .eut(100)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
     }
 }

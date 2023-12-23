@@ -72,15 +72,16 @@ import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SingleRecipeCheck;
 import gregtech.api.util.GT_ClientPreference;
 import gregtech.api.util.GT_ExoticEnergyInputHelper;
 import gregtech.api.util.GT_Log;
+import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GT_Waila;
 import gregtech.api.util.OutputHatchWrapper;
@@ -785,9 +786,13 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                     IDualInputInventory slot = it.next();
                     processingLogic.setInputItems(slot.getItemInputs());
                     processingLogic.setInputFluids(slot.getFluidInputs());
-                    result = processingLogic.process();
-                    if (result.wasSuccessful()) {
-                        return result;
+                    CheckRecipeResult foundResult = processingLogic.process();
+                    if (foundResult.wasSuccessful()) {
+                        return foundResult;
+                    }
+                    if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
+                        // Recipe failed in interesting way, so remember that and continue searching
+                        result = foundResult;
                     }
                 }
             }
@@ -808,9 +813,13 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                     inputItems.add(getControllerSlot());
                 }
                 processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
-                result = processingLogic.process();
-                if (result.wasSuccessful()) {
-                    return result;
+                CheckRecipeResult foundResult = processingLogic.process();
+                if (foundResult.wasSuccessful()) {
+                    return foundResult;
+                }
+                if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
+                    // Recipe failed in interesting way, so remember that and continue searching
+                    result = foundResult;
                 }
             }
         } else {
@@ -819,7 +828,14 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                 inputItems.add(getControllerSlot());
             }
             processingLogic.setInputItems(inputItems);
-            result = processingLogic.process();
+            CheckRecipeResult foundResult = processingLogic.process();
+            if (foundResult.wasSuccessful()) {
+                return foundResult;
+            }
+            if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
+                // Recipe failed in interesting way, so remember that
+                result = foundResult;
+            }
         }
         return result;
     }
@@ -1114,55 +1130,19 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
      * @param aEUt            - recipe EUt
      * @param aDuration       - recipe Duration
      * @param mAmperage       - should be 1 ?
-     * @param maxInputVoltage - Multiblock Max input voltage
+     * @param maxInputVoltage - Multiblock Max input voltage. Voltage is rounded up to higher tier voltage.
      * @param perfectOC       - If the Multiblock OCs perfectly, i.e. the large Chemical Reactor
      */
     protected void calculateOverclockedNessMultiInternal(long aEUt, int aDuration, int mAmperage, long maxInputVoltage,
         boolean perfectOC) {
-        byte mTier = (byte) Math.max(0, GT_Utility.getTier(maxInputVoltage));
-        if (mTier == 0) {
-            // Long time calculation
-            long xMaxProgresstime = ((long) aDuration) << 1;
-            if (xMaxProgresstime > Integer.MAX_VALUE - 1) {
-                // make impossible if too long
-                mEUt = Integer.MAX_VALUE - 1;
-                mMaxProgresstime = Integer.MAX_VALUE - 1;
-            } else {
-                mEUt = GT_Utility.safeInt(aEUt >> 2);
-                mMaxProgresstime = (int) xMaxProgresstime;
-            }
-        } else {
-            // Long EUt calculation
-            long xEUt = aEUt;
-            // Isnt too low EUt check?
-            long tempEUt = Math.max(xEUt, V[1]);
-
-            mMaxProgresstime = aDuration;
-
-            final int ocTimeShift = perfectOC ? 2 : 1;
-
-            while (tempEUt <= V[mTier - 1] * mAmperage) {
-                tempEUt <<= 2; // this actually controls overclocking
-                // xEUt *= 4;//this is effect of everclocking
-                int oldTime = mMaxProgresstime;
-                mMaxProgresstime >>= ocTimeShift; // this is effect of overclocking
-                if (mMaxProgresstime < 1) {
-                    if (oldTime == 1) break;
-                    xEUt *= (long) oldTime * (perfectOC ? 1 : 2);
-                    break;
-                } else {
-                    xEUt <<= 2;
-                }
-            }
-            if (xEUt > Integer.MAX_VALUE - 1) {
-                mEUt = Integer.MAX_VALUE - 1;
-                mMaxProgresstime = Integer.MAX_VALUE - 1;
-            } else {
-                mEUt = (int) xEUt;
-                if (mEUt == 0) mEUt = 1;
-                if (mMaxProgresstime == 0) mMaxProgresstime = 1; // set time to 1 tick
-            }
-        }
+        byte tier = (byte) Math.max(0, GT_Utility.getTier(maxInputVoltage));
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(aEUt)
+            .setEUt(V[tier] * mAmperage)
+            .setDuration(aDuration)
+            .setDurationDecreasePerOC(perfectOC ? 2 : 1)
+            .calculate();
+        mEUt = (int) calculator.getConsumption();
+        mMaxProgresstime = calculator.getDuration();
     }
 
     @Deprecated
@@ -1234,7 +1214,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public boolean depleteInput(FluidStack aLiquid, boolean simulate) {
         if (aLiquid == null) return false;
         for (GT_MetaTileEntity_Hatch_Input tHatch : filterValidMTEs(mInputHatches)) {
-            tHatch.mRecipeMap = getRecipeMap();
+            setHatchRecipeMap(tHatch);
             FluidStack tLiquid = tHatch.drain(ForgeDirection.UNKNOWN, aLiquid, false);
             if (tLiquid != null && tLiquid.amount >= aLiquid.amount) {
                 if (simulate) {
@@ -1274,7 +1254,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         FluidStack aLiquid = GT_Utility.getFluidForFilledItem(aStack, true);
         if (aLiquid != null) return depleteInput(aLiquid);
         for (GT_MetaTileEntity_Hatch_Input tHatch : filterValidMTEs(mInputHatches)) {
-            tHatch.mRecipeMap = getRecipeMap();
+            setHatchRecipeMap(tHatch);
             if (GT_Utility.areStacksEqual(
                 aStack,
                 tHatch.getBaseMetaTileEntity()
@@ -1336,7 +1316,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
         ArrayList<FluidStack> rList = new ArrayList<>();
         for (GT_MetaTileEntity_Hatch_Input tHatch : filterValidMTEs(mInputHatches)) {
-            tHatch.mRecipeMap = getRecipeMap();
+            setHatchRecipeMap(tHatch);
             if (tHatch instanceof GT_MetaTileEntity_Hatch_MultiInput) {
                 for (FluidStack tFluid : ((GT_MetaTileEntity_Hatch_MultiInput) tHatch).getStoredFluid()) {
                     if (tFluid != null) {
@@ -1393,7 +1373,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     @Override
-    public GT_Recipe_Map getRecipeMap() {
+    public RecipeMap<?> getRecipeMap() {
         return null;
     }
 
@@ -1414,7 +1394,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
     protected void startRecipeProcessing() {
         for (GT_MetaTileEntity_Hatch_InputBus hatch : filterValidMTEs(mInputBusses)) {
-            hatch.startRecipeProcessing();
+            if (hatch instanceof IRecipeProcessingAwareHatch aware) {
+                aware.startRecipeProcessing();
+            }
         }
         for (GT_MetaTileEntity_Hatch_Input hatch : filterValidMTEs(mInputHatches)) {
             if (hatch instanceof IRecipeProcessingAwareHatch aware) {
@@ -1431,7 +1413,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         };
 
         for (GT_MetaTileEntity_Hatch_InputBus hatch : filterValidMTEs(mInputBusses)) {
-            setResultIfFailure.accept(hatch.endRecipeProcessing(this));
+            if (hatch instanceof IRecipeProcessingAwareHatch aware) {
+                setResultIfFailure.accept(aware.endRecipeProcessing(this));
+            }
         }
         for (GT_MetaTileEntity_Hatch_Input hatch : filterValidMTEs(mInputHatches)) {
             if (hatch instanceof IRecipeProcessingAwareHatch aware) {
@@ -1453,7 +1437,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             return mDualInputHatches.add(hatch);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-            ((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = getRecipeMap();
+            setHatchRecipeMap((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
             return mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
@@ -1587,7 +1571,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
-            hatch.mRecipeMap = getRecipeMap();
+            setHatchRecipeMap(hatch);
             return mInputHatches.add(hatch);
         }
         return false;
@@ -1603,6 +1587,19 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             return mOutputHatches.add(hatch);
         }
         return false;
+    }
+
+    protected void setHatchRecipeMap(GT_MetaTileEntity_Hatch_Input hatch) {
+        if (filtersFluid()) {
+            hatch.mRecipeMap = getRecipeMap();
+        }
+    }
+
+    /**
+     * @return If this multi filters fluid input for hatches based on recipemap.
+     */
+    protected boolean filtersFluid() {
+        return true;
     }
 
     @Override

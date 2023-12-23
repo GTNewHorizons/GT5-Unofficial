@@ -1,6 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sLatheRecipes;
+import static gregtech.api.recipe.RecipeMaps.latheRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
 import net.minecraft.item.ItemStack;
@@ -31,7 +31,7 @@ public class ProcessingRound implements gregtech.api.interfaces.IOreRecipeRegist
                     .itemOutputs(GT_Utility.copyAmount(1, aStack))
                     .duration(((int) Math.max(aMaterial.getMass() / 4L, 1L)) * TICKS)
                     .eut(8)
-                    .addTo(sLatheRecipes);
+                    .addTo(latheRecipes);
             }
 
             if ((aMaterial.mUnificatable) && (aMaterial.mMaterialInto == aMaterial)) {

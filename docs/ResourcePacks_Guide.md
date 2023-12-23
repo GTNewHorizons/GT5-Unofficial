@@ -8,7 +8,7 @@ You might want to change color of text displayed on GUI. You can place mcmeta fi
 - `gregtech/textures/gui/background/steel.png.mcmeta` (steam steel machines)
 - `gregtech/textures/gui/background/primitive.png.mcmeta` (steam primitive machines)
 - `gregtech/textures/gui/background/fusion_computer.png.mcmeta` (fusion reactor controller)
-- `modularui/textures/gui/background/vanilla_background.png.mcmeta` (NEI)
+- `gregtech/textures/gui/background/nei_single_recipe.png.mcmeta` (NEI recipe border)
 
 (and there might be more in the future, but currently these are exhaustive.)
 You also need to place png file corresponding to mcmeta file, even if it's unchanged from the mod's default one.

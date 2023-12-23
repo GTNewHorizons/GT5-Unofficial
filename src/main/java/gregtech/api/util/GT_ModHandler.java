@@ -9,9 +9,9 @@ import static gregtech.api.enums.GT_Values.M;
 import static gregtech.api.enums.GT_Values.RA;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.W;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAlloySmelterRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sExtractorRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sOreWasherRecipes;
+import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
+import static gregtech.api.recipe.RecipeMaps.extractorRecipes;
+import static gregtech.api.recipe.RecipeMaps.oreWasherRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
@@ -28,6 +28,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
@@ -70,6 +72,8 @@ import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.objects.GT_HashSet;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.ItemData;
+import gregtech.api.recipe.RecipeCategories;
+import gregtech.api.recipe.RecipeMap;
 import ic2.api.item.IBoxable;
 import ic2.api.item.IC2Items;
 import ic2.api.item.IElectricItem;
@@ -77,6 +81,7 @@ import ic2.api.reactor.IReactorComponent;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeOutput;
+import ic2.core.item.ItemToolbox;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -569,11 +574,12 @@ public class GT_ModHandler {
         }
         recipeBuilder.itemOutputs(aOutput)
             .duration(duration * TICKS)
-            .eut(3);
+            .eut(3)
+            .recipeCategory(RecipeCategories.alloySmelterRecycling);
         if (hidden) {
             recipeBuilder.hidden();
         }
-        recipeBuilder.addTo(sAlloySmelterRecipes);
+        recipeBuilder.addTo(alloySmelterRecipes);
         return true;
     }
 
@@ -617,7 +623,7 @@ public class GT_ModHandler {
             .itemOutputs(aOutput)
             .duration(15 * SECONDS)
             .eut(2)
-            .addTo(sExtractorRecipes);
+            .addTo(extractorRecipes);
         return true;
     }
 
@@ -733,7 +739,7 @@ public class GT_ModHandler {
             .itemOutputs(aOutput1)
             .duration(aDuration)
             .eut(aEUt)
-            .addTo(sAlloySmelterRecipes);
+            .addTo(alloySmelterRecipes);
         return true;
     }
 
@@ -759,9 +765,8 @@ public class GT_ModHandler {
     /**
      * Adds GT versions of the IC2 recipes from the supplied IC2RecipeList.
      */
-    public static void addIC2RecipesToGT(Map<IRecipeInput, RecipeOutput> aIC2RecipeList,
-        GT_Recipe.GT_Recipe_Map aGTRecipeMap, boolean aAddGTRecipe, boolean aRemoveIC2Recipe,
-        boolean aExcludeGTIC2Items) {
+    public static void addIC2RecipesToGT(Map<IRecipeInput, RecipeOutput> aIC2RecipeList, RecipeMap<?> aGTRecipeMap,
+        boolean aAddGTRecipe, boolean aRemoveIC2Recipe, boolean aExcludeGTIC2Items) {
         Map<ItemStack, ItemStack> aRecipesToRemove = new HashMap<>();
         for (Entry<IRecipeInput, RecipeOutput> iRecipeInputRecipeOutputEntry : aIC2RecipeList.entrySet()) {
             if (iRecipeInputRecipeOutputEntry.getValue().items.isEmpty()) {
@@ -773,7 +778,7 @@ public class GT_ModHandler {
                     continue;
                 }
 
-                if (aAddGTRecipe && (aGTRecipeMap.findRecipe(null, false, Long.MAX_VALUE, null, tStack) == null)) {
+                if (aAddGTRecipe) {
                     try {
                         if (aExcludeGTIC2Items && ((tStack.getUnlocalizedName()
                             .contains("gt.metaitem.01")
@@ -784,7 +789,7 @@ public class GT_ModHandler {
                             || tStack.getUnlocalizedName()
                                 .contains("ic2.itemPurifiedCrushed"))))
                             continue;
-                        switch (aGTRecipeMap.mUnlocalizedName) {
+                        switch (aGTRecipeMap.unlocalizedName) {
                             case "gt.recipe.macerator", "gt.recipe.extractor", "gt.recipe.compressor" -> aGTRecipeMap
                                 .addRecipe(
                                     true,
@@ -928,7 +933,7 @@ public class GT_ModHandler {
             .fluidInputs(GT_ModHandler.getWater(aWaterAmount))
             .duration(25 * SECONDS)
             .eut(16)
-            .addTo(sOreWasherRecipes);
+            .addTo(oreWasherRecipes);
 
         RA.stdBuilder()
             .itemInputs(aInput)
@@ -937,7 +942,7 @@ public class GT_ModHandler {
             .fluidInputs(GT_ModHandler.getDistilledWater(aWaterAmount / 5))
             .duration(15 * SECONDS)
             .eut(16)
-            .addTo(sOreWasherRecipes);
+            .addTo(oreWasherRecipes);
         return true;
     }
 
@@ -950,7 +955,7 @@ public class GT_ModHandler {
             .fluidInputs(GT_ModHandler.getWater(aWaterAmount))
             .duration(25 * SECONDS)
             .eut(16)
-            .addTo(sOreWasherRecipes);
+            .addTo(oreWasherRecipes);
 
         RA.stdBuilder()
             .itemInputs(aInput)
@@ -958,7 +963,7 @@ public class GT_ModHandler {
             .fluidInputs(GT_ModHandler.getDistilledWater(aWaterAmount / 5))
             .duration(15 * SECONDS)
             .eut(16)
-            .addTo(sOreWasherRecipes);
+            .addTo(oreWasherRecipes);
         return true;
     }
 
@@ -2059,6 +2064,7 @@ public class GT_ModHandler {
      * Only produces Scrap if aScrapChance == 0. aScrapChance is usually the random Number I give to the Function If you
      * directly insert 0 as aScrapChance then you can check if its Recycler-Blacklisted or similar
      */
+    @Nullable
     public static ItemStack getRecyclerOutput(ItemStack aInput, int aScrapChance) {
         if (aInput == null || aScrapChance != 0) return null;
         if (recyclerWhitelist == null) {
@@ -2285,12 +2291,27 @@ public class GT_ModHandler {
 
     public static boolean consumeSolderingMaterial(EntityPlayer aPlayer) {
         if (aPlayer.capabilities.isCreativeMode) return true;
-        if (consumeSolderingMaterial(aPlayer.inventory)) {
+        IInventory tInventory = aPlayer.inventory;
+        if (consumeSolderingMaterial(tInventory)) {
             if (aPlayer.inventoryContainer != null) {
                 aPlayer.inventoryContainer.detectAndSendChanges();
             }
             return true;
         }
+        for (int i = 0; i < tInventory.getSizeInventory(); i++) {
+            ItemStack tStack = tInventory.getStackInSlot(i);
+            if (tStack != null && tStack.getItem() instanceof ItemToolbox) {
+                IInventory tToolboxInventory = ((ItemToolbox) tStack.getItem()).getInventory(aPlayer, tStack);
+                if (consumeSolderingMaterial(tToolboxInventory)) {
+                    tInventory.markDirty();
+                    if (aPlayer.inventoryContainer != null) {
+                        aPlayer.inventoryContainer.detectAndSendChanges();
+                    }
+                    return true;
+                }
+            }
+        }
+        GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("094.1", "Not enough soldering material!"));
         return false;
     }
 

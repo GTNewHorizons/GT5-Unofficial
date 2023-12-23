@@ -3,7 +3,7 @@ package gregtech.api.items;
 import static gregtech.api.enums.GT_Values.D1;
 import static gregtech.api.enums.Mods.AppleCore;
 import static gregtech.api.enums.Mods.GregTech;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCannerRecipes;
+import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
@@ -153,7 +153,7 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
                                         : ItemList.IC2_Food_Can_Filled.get(tFoodValue))
                                 .duration(tFoodValue * 5 * SECONDS)
                                 .eut(1)
-                                .addTo(sCannerRecipes);
+                                .addTo(cannerRecipes);
                         }
                     }
                     tUseOreDict = false;

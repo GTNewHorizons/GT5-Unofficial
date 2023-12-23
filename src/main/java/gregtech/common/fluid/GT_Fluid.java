@@ -1,6 +1,6 @@
 package gregtech.common.fluid;
 
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sFluidCannerRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
 
 import javax.annotation.Nonnull;
 
@@ -129,7 +129,7 @@ public class GT_Fluid extends Fluid implements IGT_Fluid, IGT_RegisteredFluid, R
                     .fluidOutputs(fluidStack)
                     .duration(fluidStack.amount / 62)
                     .eut(1)
-                    .addTo(sFluidCannerRecipes);
+                    .addTo(fluidCannerRecipes);
             }
         }
         return this;
@@ -200,5 +200,10 @@ public class GT_Fluid extends Fluid implements IGT_Fluid, IGT_RegisteredFluid, R
                 flowingIcon = GregTech_API.sBlockIcons.registerIcon(flowingIconResourceLocation.toString());
             }
         }
+    }
+
+    @Override
+    public String toString() {
+        return "GT_Fluid{" + "fluidName='" + fluidName + '\'' + '}';
     }
 }

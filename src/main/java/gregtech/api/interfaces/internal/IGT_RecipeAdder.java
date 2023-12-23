@@ -321,17 +321,6 @@ public interface IGT_RecipeAdder {
         boolean hidden);
 
     /**
-     * Adds a CNC-Machine Recipe
-     *
-     * @param aInput1   must be != null
-     * @param aOutput1  must be != null
-     * @param aDuration must be > 0
-     * @param aEUt      should be > 0
-     */
-    @Deprecated
-    boolean addCNCRecipe(ItemStack aInput1, ItemStack aOutput1, int aDuration, int aEUt);
-
-    /**
      * Adds an Assembler Recipe
      *
      * @param aInput1   must be != null
@@ -1045,21 +1034,6 @@ public interface IGT_RecipeAdder {
     @Deprecated
     boolean addNanoForgeRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack[] aOutputs,
         FluidStack[] aFluidOutputs, int[] aChances, int aDuration, int aEUt, int aSpecialValue);
-
-    /**
-     * Add a Board Manufacturer Recipe. The Board Manufacturer's main use is to make the circuit boards needed to make
-     * circuits.
-     *
-     * @param aInputs       must not be null
-     * @param aFluidInputs  must not be null
-     * @param aOutputs      must not be null
-     * @param aDuration     recipe duration
-     * @param aEUt          recipe EU/t expenditure
-     * @param aSpecialValue defines the tier of the board manufacturer required.
-     */
-    @Deprecated
-    boolean addPCBFactoryRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack[] aOutputs, int aDuration,
-        int aEUt, int aSpecialValue);
 
     /**
      * Add a breeder cell.

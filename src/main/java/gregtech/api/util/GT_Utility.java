@@ -115,6 +115,7 @@ import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
+import com.google.common.collect.SetMultimap;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.mojang.authlib.GameProfile;
@@ -158,6 +159,7 @@ import gregtech.api.objects.CollectorUtils;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_ItemStack2;
 import gregtech.api.objects.ItemData;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.GT_Runnable_Sound;
 import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.GT_Pollution;
@@ -497,14 +499,6 @@ public class GT_Utility {
 
     public static long getAmperageForTier(long voltage, byte tier) {
         return ceilDiv(voltage, GT_Values.V[tier]);
-    }
-
-    /**
-     * Do not use. It is rounding up voltage
-     */
-    @Deprecated
-    public static long roundDownVoltage(long voltage) {
-        return roundUpVoltage(voltage);
     }
 
     /**
@@ -3133,6 +3127,20 @@ public class GT_Utility {
         return aMap;
     }
 
+    /**
+     * re-maps all Keys of a Map after the Keys were weakened.
+     */
+    public static <X, Y> SetMultimap<X, Y> reMap(SetMultimap<X, Y> aMap) {
+        @SuppressWarnings("unchecked")
+        Map.Entry<X, Y>[] entries = aMap.entries()
+            .toArray(new Map.Entry[0]);
+        aMap.clear();
+        for (Map.Entry<X, Y> entry : entries) {
+            aMap.put(entry.getKey(), entry.getValue());
+        }
+        return aMap;
+    }
+
     public static <X, Y extends Comparable<Y>> LinkedHashMap<X, Y> sortMapByValuesAcending(Map<X, Y> map) {
         return map.entrySet()
             .stream()
@@ -4866,7 +4874,8 @@ public class GT_Utility {
 
     public static int getPlasmaFuelValueInEUPerLiterFromFluid(FluidStack aLiquid) {
         if (aLiquid == null) return 0;
-        GT_Recipe tFuel = GT_Recipe.GT_Recipe_Map.sPlasmaFuels.findFuel(aLiquid);
+        GT_Recipe tFuel = RecipeMaps.plasmaFuels.getBackend()
+            .findFuel(aLiquid);
         if (tFuel != null) return tFuel.mSpecialValue;
         return 0;
     }

@@ -3,8 +3,8 @@ package gregtech.loaders.postload.recipes;
 import static gregtech.api.enums.Mods.BuildCraftTransport;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.TinkerConstruct;
+import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCutterRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
@@ -235,7 +235,7 @@ public class CuttingRecipes implements Runnable {
                 .duration(2 * duration)
                 .eut(eut)
                 .requiresCleanRoom()
-                .addTo(sCutterRecipes);
+                .addTo(cutterRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(inputs)
@@ -244,7 +244,7 @@ public class CuttingRecipes implements Runnable {
                 .duration(2 * duration)
                 .eut(eut)
                 .requiresCleanRoom()
-                .addTo(sCutterRecipes);
+                .addTo(cutterRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(inputs)
@@ -253,7 +253,7 @@ public class CuttingRecipes implements Runnable {
                 .duration(duration)
                 .eut(eut)
                 .requiresCleanRoom()
-                .addTo(sCutterRecipes);
+                .addTo(cutterRecipes);
         } else {
             GT_Values.RA.stdBuilder()
                 .itemInputs(inputs)
@@ -261,7 +261,7 @@ public class CuttingRecipes implements Runnable {
                 .fluidInputs(Materials.Water.getFluid(Math.max(4, Math.min(1000, duration * eut / 320))))
                 .duration(2 * duration)
                 .eut(eut)
-                .addTo(sCutterRecipes);
+                .addTo(cutterRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(inputs)
@@ -269,7 +269,7 @@ public class CuttingRecipes implements Runnable {
                 .fluidInputs(GT_ModHandler.getDistilledWater(Math.max(3, Math.min(750, duration * eut / 426))))
                 .duration(2 * duration)
                 .eut(eut)
-                .addTo(sCutterRecipes);
+                .addTo(cutterRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(inputs)
@@ -277,7 +277,7 @@ public class CuttingRecipes implements Runnable {
                 .fluidInputs(Materials.Lubricant.getFluid(Math.max(1, Math.min(250, duration * eut / 1280))))
                 .duration(duration)
                 .eut(eut)
-                .addTo(sCutterRecipes);
+                .addTo(cutterRecipes);
         }
     }
 }

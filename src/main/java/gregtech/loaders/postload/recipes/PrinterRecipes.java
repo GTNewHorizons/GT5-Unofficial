@@ -1,6 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sPrinterRecipes;
+import static gregtech.api.recipe.RecipeMaps.printerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
@@ -24,7 +24,7 @@ public class PrinterRecipes implements Runnable {
             .fluidInputs(getFluidStack("squidink", 36))
             .duration(5 * SECONDS)
             .eut(2)
-            .addTo(sPrinterRecipes);
+            .addTo(printerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Paper_Punch_Card_Empty.get(1L))
@@ -33,7 +33,7 @@ public class PrinterRecipes implements Runnable {
             .fluidInputs(getFluidStack("squidink", 36))
             .duration(5 * SECONDS)
             .eut(2)
-            .addTo(sPrinterRecipes);
+            .addTo(printerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Paper, 3L))
@@ -42,7 +42,7 @@ public class PrinterRecipes implements Runnable {
             .fluidInputs(getFluidStack("squidink", 144))
             .duration(20 * SECONDS)
             .eut(2)
-            .addTo(sPrinterRecipes);
+            .addTo(printerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.map, 1, 32767))
@@ -51,7 +51,7 @@ public class PrinterRecipes implements Runnable {
             .fluidInputs(getFluidStack("squidink", 144))
             .duration(20 * SECONDS)
             .eut(2)
-            .addTo(sPrinterRecipes);
+            .addTo(printerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.book, 1, 32767))
@@ -59,6 +59,6 @@ public class PrinterRecipes implements Runnable {
             .fluidInputs(getFluidStack("squidink", 144))
             .duration(20 * SECONDS)
             .eut(2)
-            .addTo(sPrinterRecipes);
+            .addTo(printerRecipes);
     }
 }

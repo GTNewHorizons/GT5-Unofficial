@@ -1,8 +1,8 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sVacuumRecipes;
+import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
+import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
@@ -51,8 +51,6 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                         }
                         recipeBuilder.metadata(FUEL_VALUE, aMaterial.mFuelPower)
                             .metadata(FUEL_TYPE, aMaterial.mFuelType)
-                            .duration(0)
-                            .eut(0)
                             .addTo(GT_RecipeConstants.Fuel);
                     }
                     if (!((aMaterial.mMaterialList.size() > 0) && ((aMaterial.mExtraData & 0x3) != 0))) {
@@ -139,7 +137,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                             recipeBuilder.itemOutputs(outputsArray)
                                 .duration(Math.max(1L, Math.abs(aMaterial.getProtons() * 2L * tItemAmount)))
                                 .eut(Math.min(4, tList.size()) * 30)
-                                .addTo(sElectrolyzerRecipes);
+                                .addTo(electrolyzerRecipes);
                         } else {
                             long tCellBalance = tCapsuleCount + tItemAmount - 1;
                             GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
@@ -155,7 +153,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                             recipeBuilder.itemOutputs(outputsArray)
                                 .duration(Math.max(1L, Math.abs(aMaterial.getProtons() * 8L * tItemAmount)))
                                 .eut(Math.min(4, tList.size()) * 30)
-                                .addTo(sElectrolyzerRecipes);
+                                .addTo(electrolyzerRecipes);
                         }
                     }
                     if ((aMaterial.mExtraData & 0x2) != 0) {
@@ -174,7 +172,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                         recipeBuilder.itemOutputs(outputsArray)
                             .duration(Math.max(1L, Math.abs(aMaterial.getMass() * 2L * tItemAmount)))
                             .eut(5)
-                            .addTo(sCentrifugeRecipes);
+                            .addTo(centrifugeRecipes);
                     }
                 }
             }
@@ -194,14 +192,10 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                         case "Tin":
                             recipeBuilder.metadata(FUEL_VALUE, 150_000)
                                 .metadata(FUEL_TYPE, 4)
-                                .duration(0)
-                                .eut(0)
                                 .addTo(GT_RecipeConstants.Fuel);
                         default:
                             recipeBuilder.metadata(FUEL_VALUE, (int) Math.max(1024L, 1024L * aMaterial.getMass()))
                                 .metadata(FUEL_TYPE, 4)
-                                .duration(0)
-                                .eut(0)
                                 .addTo(GT_RecipeConstants.Fuel);
                     }
                     if (GT_OreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L) != null) {
@@ -210,7 +204,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L))
                             .duration(((int) Math.max(aMaterial.getMass() * 2L, 1L)) * TICKS)
                             .eut(TierEU.RECIPE_MV)
-                            .addTo(sVacuumRecipes);
+                            .addTo(vacuumFreezerRecipes);
                     }
                 }
             }

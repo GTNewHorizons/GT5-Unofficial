@@ -5,7 +5,6 @@ import static gregtech.api.enums.Mods.RotaryCraft;
 import static gregtech.api.enums.Mods.UndergroundBiomes;
 
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 
 public class ProcessingModSupport implements gregtech.api.interfaces.IMaterialHandler {
 
@@ -53,23 +52,5 @@ public class ProcessingModSupport implements gregtech.api.interfaces.IMaterialHa
             Materials.HSLA.mHasParentMod = false;
         }
 
-    }
-
-    @Override
-    public void onComponentInit() {
-
-        OrePrefixes.ring.enableComponent(Materials.RedAlloy);
-        OrePrefixes.ring.enableComponent(Materials.NiobiumTitanium);
-        OrePrefixes.foil.enableComponent(Materials.StainlessSteel);
-        OrePrefixes.foil.enableComponent(Materials.ChromiumDioxide);
-        OrePrefixes.foil.enableComponent(Materials.Iron);
-        OrePrefixes.plate.enableComponent(Materials.ChromiumDioxide);
-        OrePrefixes.screw.enableComponent(Materials.Copper);
-
-    }
-
-    @Override
-    public void onComponentIteration(Materials aMaterial) {
-        // NOP
     }
 }

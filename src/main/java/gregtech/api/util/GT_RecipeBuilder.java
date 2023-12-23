@@ -1,30 +1,34 @@
 package gregtech.api.util;
 
+import static gregtech.api.util.GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES;
 import static gregtech.api.util.GT_Utility.copyFluidArray;
 import static gregtech.api.util.GT_Utility.copyItemArray;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Function;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.Contract;
+
 import gregtech.GT_Mod;
-import gregtech.api.interfaces.IGT_RecipeMap;
+import gregtech.api.interfaces.IRecipeMap;
+import gregtech.api.recipe.RecipeCategory;
+import gregtech.api.recipe.RecipeMetadataKey;
+import gregtech.api.recipe.metadata.IRecipeMetadataStorage;
+import gregtech.api.recipe.metadata.RecipeMetadataStorage;
 import gregtech.api.util.extensions.ArrayExt;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({ "unused", "UnusedReturnValue" })
 public class GT_RecipeBuilder {
 
     // debug mode expose problems. panic mode help you check nothing is wrong-ish without you actively monitoring
@@ -86,9 +90,13 @@ public class GT_RecipeBuilder {
     protected boolean fakeRecipe = false;
     protected boolean mCanBeBuffered = true;
     protected boolean mNeedsEmptyOutput = false;
+    protected boolean nbtSensitive = false;
     protected String[] neiDesc;
+    protected RecipeCategory recipeCategory;
     protected boolean optimize = true;
-    protected Map<MetadataIdentifier<?>, Object> additionalData = new HashMap<>();
+    @Nullable
+    protected IRecipeMetadataStorage metadataStorage;
+    protected boolean checkForCollision = true;
     protected boolean valid = true;
 
     GT_RecipeBuilder() {}
@@ -96,8 +104,8 @@ public class GT_RecipeBuilder {
     private GT_RecipeBuilder(ItemStack[] inputsBasic, Object[] inputsOreDict, ItemStack[] outputs, ItemStack[][] alts,
         FluidStack[] fluidInputs, FluidStack[] fluidOutputs, int[] chances, Object special, int duration, int eut,
         int specialValue, boolean enabled, boolean hidden, boolean fakeRecipe, boolean mCanBeBuffered,
-        boolean mNeedsEmptyOutput, String[] neiDesc, boolean optimize,
-        Map<MetadataIdentifier<?>, Object> additionalData, boolean valid) {
+        boolean mNeedsEmptyOutput, boolean nbtSensitive, String[] neiDesc, RecipeCategory recipeCategory,
+        boolean optimize, @Nullable IRecipeMetadataStorage metadataStorage, boolean checkForCollision, boolean valid) {
         this.inputsBasic = inputsBasic;
         this.inputsOreDict = inputsOreDict;
         this.outputs = outputs;
@@ -114,9 +122,15 @@ public class GT_RecipeBuilder {
         this.fakeRecipe = fakeRecipe;
         this.mCanBeBuffered = mCanBeBuffered;
         this.mNeedsEmptyOutput = mNeedsEmptyOutput;
+        this.nbtSensitive = nbtSensitive;
         this.neiDesc = neiDesc;
+        this.recipeCategory = recipeCategory;
         this.optimize = optimize;
-        this.additionalData.putAll(additionalData);
+        this.metadataStorage = metadataStorage;
+        if (this.metadataStorage != null) {
+            this.metadataStorage = this.metadataStorage.copy();
+        }
+        this.checkForCollision = checkForCollision;
         this.valid = valid;
     }
 
@@ -135,6 +149,14 @@ public class GT_RecipeBuilder {
 
     public static GT_RecipeBuilder builder() {
         return new GT_RecipeBuilder();
+    }
+
+    /**
+     * Creates empty builder where only duration and EU/t are set to 0.
+     */
+    public static GT_RecipeBuilder empty() {
+        return new GT_RecipeBuilder().duration(0)
+            .eut(0);
     }
 
     private static boolean containsNull(Object[] arr) {
@@ -156,7 +178,7 @@ public class GT_RecipeBuilder {
         return DEBUG_MODE_NULL || PANIC_MODE_NULL;
     }
 
-    private static void handleInvalidRecipe() {
+    public static void handleInvalidRecipe() {
         if (!DEBUG_MODE_INVALID && !PANIC_MODE_INVALID) {
             return;
         }
@@ -247,14 +269,6 @@ public class GT_RecipeBuilder {
         return noOptimize();
     }
 
-    /**
-     * @deprecated You don't need to call this method, RecipeBuilder now takes empty item input array by default.
-     */
-    @Deprecated
-    public GT_RecipeBuilder noItemInputs() {
-        return this;
-    }
-
     public GT_RecipeBuilder itemOutputs(ItemStack... outputs) {
         if (debugNull() && containsNull(outputs)) handleNullRecipeComponents("itemOutputs");
         this.outputs = outputs;
@@ -278,47 +292,15 @@ public class GT_RecipeBuilder {
         return this;
     }
 
-    /**
-     * @deprecated You don't need to call this method, RecipeBuilder now takes empty item output array by default.
-     */
-    @Deprecated
-    public GT_RecipeBuilder noItemOutputs() {
-        return this;
-    }
-
     public GT_RecipeBuilder fluidInputs(FluidStack... fluidInputs) {
         if (debugNull() && containsNull(fluidInputs)) handleNullRecipeComponents("fluidInputs");
         this.fluidInputs = fix(fluidInputs);
         return this;
     }
 
-    /**
-     * @deprecated You don't need to call this method, RecipeBuilder now takes empty fluid input array by default.
-     */
-    @Deprecated
-    public GT_RecipeBuilder noFluidInputs() {
-        return this;
-    }
-
     public GT_RecipeBuilder fluidOutputs(FluidStack... fluidOutputs) {
         if (debugNull() && containsNull(fluidOutputs)) handleNullRecipeComponents("fluidOutputs");
         this.fluidOutputs = fix(fluidOutputs);
-        return this;
-    }
-
-    /**
-     * @deprecated You don't need to call this method, RecipeBuilder now takes empty fluid output array by default.
-     */
-    @Deprecated
-    public GT_RecipeBuilder noFluidOutputs() {
-        return this;
-    }
-
-    /**
-     * @deprecated You don't need to call this method, RecipeBuilder now takes empty arrays by default.
-     */
-    @Deprecated
-    public GT_RecipeBuilder noOutputs() {
         return this;
     }
 
@@ -408,8 +390,18 @@ public class GT_RecipeBuilder {
         return this;
     }
 
+    public GT_RecipeBuilder nbtSensitive() {
+        this.nbtSensitive = true;
+        return this;
+    }
+
     public GT_RecipeBuilder setNEIDesc(String... neiDesc) {
         this.neiDesc = neiDesc;
+        return this;
+    }
+
+    public GT_RecipeBuilder recipeCategory(RecipeCategory recipeCategory) {
+        this.recipeCategory = recipeCategory;
         return this;
     }
 
@@ -421,17 +413,51 @@ public class GT_RecipeBuilder {
         return this;
     }
 
-    public <T> GT_RecipeBuilder metadata(MetadataIdentifier<T> key, T value) {
-        additionalData.put(key, value);
+    /**
+     * Prevents checking collision with existing recipes when adding the built recipe.
+     */
+    public GT_RecipeBuilder ignoreCollision() {
+        this.checkForCollision = false;
         return this;
     }
 
-    public <T> T getMetadata(MetadataIdentifier<T> key) {
-        return key.cast(additionalData.get(key));
+    /**
+     * Sets metadata of the recipe. It can be used for recipe emitter to do special things, or for being stored in the
+     * built recipe and used for actual recipe processing.
+     * <p>
+     * {@link GT_RecipeConstants} has a series of metadata keys. Or you can create one by yourself.
+     */
+    public <T> GT_RecipeBuilder metadata(RecipeMetadataKey<T> key, T value) {
+        if (metadataStorage == null) {
+            metadataStorage = new RecipeMetadataStorage();
+        }
+        metadataStorage.store(key, value);
+        return this;
     }
 
-    public <T> T getMetadata(MetadataIdentifier<T> key, T defaultValue) {
-        return key.cast(additionalData.getOrDefault(key, defaultValue));
+    /**
+     * Gets metadata already set for this builder. Can return null. Use
+     * {@link #getMetadataOrDefault(RecipeMetadataKey, Object)}
+     * if you want to specify default value.
+     */
+    @Nullable
+    public <T> T getMetadata(RecipeMetadataKey<T> key) {
+        if (metadataStorage == null) {
+            return null;
+        }
+        return key.cast(metadataStorage.getMetadata(key));
+    }
+
+    /**
+     * Gets metadata already set for this builder with default value. Does not return null unless default value is null.
+     */
+    @Contract("_, !null -> !null")
+    @Nullable
+    public <T> T getMetadataOrDefault(RecipeMetadataKey<T> key, T defaultValue) {
+        if (metadataStorage == null) {
+            return defaultValue;
+        }
+        return key.cast(metadataStorage.getMetadataOrDefault(key, defaultValue));
     }
 
     public GT_RecipeBuilder requiresCleanRoom() {
@@ -476,9 +502,12 @@ public class GT_RecipeBuilder {
             fakeRecipe,
             mCanBeBuffered,
             mNeedsEmptyOutput,
+            nbtSensitive,
             copy(neiDesc),
+            recipeCategory,
             optimize,
-            additionalData,
+            metadataStorage,
+            checkForCollision,
             valid);
     }
 
@@ -503,9 +532,12 @@ public class GT_RecipeBuilder {
             fakeRecipe,
             mCanBeBuffered,
             mNeedsEmptyOutput,
+            nbtSensitive,
             copy(neiDesc),
+            recipeCategory,
             optimize,
-            Collections.emptyMap(),
+            null,
+            checkForCollision,
             valid);
     }
 
@@ -563,6 +595,18 @@ public class GT_RecipeBuilder {
         return eut;
     }
 
+    public RecipeCategory getRecipeCategory() {
+        return recipeCategory;
+    }
+
+    public boolean isOptimize() {
+        return optimize;
+    }
+
+    public boolean isCheckForCollision() {
+        return checkForCollision;
+    }
+
     // endregion
 
     // region validator
@@ -591,7 +635,7 @@ public class GT_RecipeBuilder {
 
     /**
      * Validate if input item match requirement. Return as invalidated if fails prereq. Specify -1 as min to allow
-     * unset. Both bound inclusive. Only supposed to be called by IGT_RecipeMap and not client code.
+     * unset. Both bound inclusive. Only supposed to be called by IRecipeMap and not client code.
      */
     public GT_RecipeBuilder validateNoInput() {
         return GT_Utility.isArrayEmptyOrNull(inputsBasic) ? this : invalidate();
@@ -599,7 +643,7 @@ public class GT_RecipeBuilder {
 
     /**
      * Validate if input fluid match requirement. Return as invalidated if fails prereq. Specify -1 as min to allow
-     * unset. Both bound inclusive. Only supposed to be called by IGT_RecipeMap and not client code.
+     * unset. Both bound inclusive. Only supposed to be called by IRecipeMap and not client code.
      */
     public GT_RecipeBuilder validateNoInputFluid() {
         return GT_Utility.isArrayEmptyOrNull(fluidInputs) ? this : invalidate();
@@ -607,7 +651,7 @@ public class GT_RecipeBuilder {
 
     /**
      * Validate if output item match requirement. Return as invalidated if fails prereq. Specify -1 as min to allow
-     * unset. Both bound inclusive. Only supposed to be called by IGT_RecipeMap and not client code.
+     * unset. Both bound inclusive. Only supposed to be called by IRecipeMap and not client code.
      */
     public GT_RecipeBuilder validateNoOutput() {
         return GT_Utility.isArrayEmptyOrNull(outputs) ? this : invalidate();
@@ -615,7 +659,7 @@ public class GT_RecipeBuilder {
 
     /**
      * Validate if output fluid match requirement. Return as invalidated if fails prereq. Specify -1 as min to allow
-     * unset. Both bound inclusive. Only supposed to be called by IGT_RecipeMap and not client code.
+     * unset. Both bound inclusive. Only supposed to be called by IRecipeMap and not client code.
      */
     public GT_RecipeBuilder validateNoOutputFluid() {
         return GT_Utility.isArrayEmptyOrNull(fluidOutputs) ? this : invalidate();
@@ -623,7 +667,7 @@ public class GT_RecipeBuilder {
 
     /**
      * Validate if input item match requirement. Return as invalidated if fails prereq. Specify -1 as min to allow
-     * unset. Both bound inclusive. Only supposed to be called by IGT_RecipeMap and not client code.
+     * unset. Both bound inclusive. Only supposed to be called by IRecipeMap and not client code.
      */
     public GT_RecipeBuilder validateInputCount(int min, int max) {
         if (inputsBasic == null) return min < 0 ? this : invalidate();
@@ -632,7 +676,7 @@ public class GT_RecipeBuilder {
 
     /**
      * Validate if input fluid match requirement. Return as invalidated if fails prereq. Specify -1 as min to allow
-     * unset. Both bound inclusive. Only supposed to be called by IGT_RecipeMap and not client code.
+     * unset. Both bound inclusive. Only supposed to be called by IRecipeMap and not client code.
      */
     public GT_RecipeBuilder validateInputFluidCount(int min, int max) {
         if (fluidInputs == null) return min < 0 ? this : invalidate();
@@ -641,7 +685,7 @@ public class GT_RecipeBuilder {
 
     /**
      * Validate if output item match requirement. Return as invalidated if fails prereq. Specify -1 as min to allow
-     * unset. Both bound inclusive. Only supposed to be called by IGT_RecipeMap and not client code.
+     * unset. Both bound inclusive. Only supposed to be called by IRecipeMap and not client code.
      */
     public GT_RecipeBuilder validateOutputCount(int min, int max) {
         if (outputs == null) return min < 0 ? this : invalidate();
@@ -650,7 +694,7 @@ public class GT_RecipeBuilder {
 
     /**
      * Validate if output fluid match requirement. Return as invalidated if fails prereq. Specify -1 as min to allow
-     * unset. Both bound inclusive. Only supposed to be called by IGT_RecipeMap and not client code.
+     * unset. Both bound inclusive. Only supposed to be called by IRecipeMap and not client code.
      */
     public GT_RecipeBuilder validateOutputFluidCount(int min, int max) {
         if (fluidOutputs == null) return min < 0 ? this : invalidate();
@@ -679,6 +723,12 @@ public class GT_RecipeBuilder {
 
     // endregion
 
+    /**
+     * Builds new recipe, without custom behavior of recipemaps. For adding recipe to recipemap,
+     * use {@link #addTo} instead.
+     *
+     * @return Built recipe. Returns empty if failed to build.
+     */
     public Optional<GT_Recipe> build() {
         if (!valid) {
             handleInvalidRecipe();
@@ -703,7 +753,10 @@ public class GT_RecipeBuilder {
                     fakeRecipe,
                     mCanBeBuffered,
                     mNeedsEmptyOutput,
-                    neiDesc)));
+                    nbtSensitive,
+                    neiDesc,
+                    metadataStorage,
+                    recipeCategory)));
     }
 
     public GT_RecipeBuilder forceOreDictInput() {
@@ -738,7 +791,10 @@ public class GT_RecipeBuilder {
                     fakeRecipe,
                     mCanBeBuffered,
                     mNeedsEmptyOutput,
+                    nbtSensitive,
                     neiDesc,
+                    metadataStorage,
+                    recipeCategory,
                     alts)));
     }
 
@@ -779,18 +835,36 @@ public class GT_RecipeBuilder {
         r.mHidden = hidden;
         r.mCanBeBuffered = mCanBeBuffered;
         r.mNeedsEmptyOutput = mNeedsEmptyOutput;
+        r.isNBTSensitive = nbtSensitive;
         r.mFakeRecipe = fakeRecipe;
         r.mEnabled = enabled;
         if (neiDesc != null) r.setNeiDesc(neiDesc);
+        applyDefaultSpecialValues(r);
         return r;
     }
 
-    public Collection<GT_Recipe> addTo(IGT_RecipeMap recipeMap) {
+    private void applyDefaultSpecialValues(GT_Recipe recipe) {
+        if (recipe.mSpecialValue != 0) return;
+
+        int specialValue = 0;
+        if (getMetadataOrDefault(GT_RecipeConstants.LOW_GRAVITY, false)) specialValue -= 100;
+        if (getMetadataOrDefault(GT_RecipeConstants.CLEANROOM, false)) specialValue -= 200;
+        for (RecipeMetadataKey<Integer> ident : SPECIAL_VALUE_ALIASES) {
+            Integer metadata = getMetadataOrDefault(ident, null);
+            if (metadata != null) {
+                specialValue = metadata;
+                break;
+            }
+        }
+        recipe.mSpecialValue = specialValue;
+    }
+
+    public Collection<GT_Recipe> addTo(IRecipeMap recipeMap) {
         return recipeMap.doAdd(this);
     }
 
     public GT_RecipeBuilder reset() {
-        additionalData.clear();
+        metadataStorage = null;
         alts = null;
         chances = null;
         duration = -1;
@@ -804,53 +878,14 @@ public class GT_RecipeBuilder {
         inputsOreDict = null;
         mCanBeBuffered = true;
         mNeedsEmptyOutput = false;
+        nbtSensitive = false;
         neiDesc = null;
+        recipeCategory = null;
         optimize = true;
         outputs = null;
         special = null;
         specialValue = 0;
         valid = true;
         return this;
-    }
-
-    public final static class MetadataIdentifier<T> {
-
-        private static final Map<MetadataIdentifier<?>, MetadataIdentifier<?>> allIdentifiers = Collections
-            .synchronizedMap(new HashMap<>());
-        private final Class<T> clazz;
-        private final String identifier;
-
-        private MetadataIdentifier(Class<T> clazz, String identifier) {
-            this.clazz = clazz;
-            this.identifier = identifier;
-        }
-
-        public static <T> MetadataIdentifier<T> create(Class<T> clazz, String identifier) {
-            MetadataIdentifier<T> key = new MetadataIdentifier<>(clazz, identifier);
-            // noinspection unchecked // The class uses type T to fill allIdentifiers
-            return (MetadataIdentifier<T>) allIdentifiers.computeIfAbsent(key, Function.identity());
-        }
-
-        public T cast(Object o) {
-            return clazz.cast(o);
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            MetadataIdentifier<?> that = (MetadataIdentifier<?>) o;
-
-            if (!clazz.equals(that.clazz)) return false;
-            return identifier.equals(that.identifier);
-        }
-
-        @Override
-        public int hashCode() {
-            int result = clazz.hashCode();
-            result = 31 * result + identifier.hashCode();
-            return result;
-        }
     }
 }
