@@ -30,6 +30,7 @@ import net.minecraft.stats.StatList;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -932,6 +933,21 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
         }
         EnchantmentHelper.setEnchantments(tResult, aStack);
         return true;
+    }
+
+    @Override
+    public String getItemStackDisplayName(ItemStack aStack) {
+
+        String result = super.getItemStackDisplayName(aStack);
+        IToolStats toolStats = getToolStats(aStack);
+        if (toolStats != null) {
+            String key = "gt." + toolStats.getToolTypeName() + ".mode." + getToolMode(aStack);
+            if (StatCollector.canTranslate(key)) {
+                result += " (" + StatCollector.translateToLocal(key) + ")";
+            }
+        }
+        return result;
+
     }
 
     @Override

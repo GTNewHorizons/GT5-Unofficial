@@ -195,5 +195,7 @@ public interface IToolStats {
     float getMiningSpeed(Block aBlock, byte aMetaData, float aDefault, EntityPlayer aPlayer, World worldObj, int aX,
         int aY, int aZ);
 
+    String getToolTypeName();
+
     int getMaxMode();
 }

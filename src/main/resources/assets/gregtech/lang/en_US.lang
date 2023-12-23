@@ -1463,3 +1463,7 @@ gt.time.tick.singular=tick
 gt.time.tick.plural=ticks
 gt.time.second.singular=second
 gt.time.second.plural=seconds
+
+#Tool modes
+gt.wrench.mode.1=Line Mode
+
