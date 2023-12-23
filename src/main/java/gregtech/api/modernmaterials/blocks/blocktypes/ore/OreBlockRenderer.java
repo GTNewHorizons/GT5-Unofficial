@@ -7,6 +7,7 @@ import java.awt.*;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.init.Blocks;
 import net.minecraft.world.IBlockAccess;
 
 import org.jetbrains.annotations.NotNull;
@@ -27,6 +28,17 @@ public class OreBlockRenderer implements ISimpleBlockRenderingHandler {
         RenderingRegistry.registerBlockHandler(renderID, this);
         this.underlyingBlock = underlyingBlock;
         this.underlyingBlockMeta = meta;
+    }
+
+    private static Block getBlockFromNameNonNull(String blockName) {
+        Block block = Block.getBlockFromName(blockName);
+        if (block == null) block = Blocks.command_block;
+
+        return block;
+    }
+
+    public OreBlockRenderer(String blockName, int meta) {
+        this(getBlockFromNameNonNull(blockName), meta);
     }
 
     @Override
