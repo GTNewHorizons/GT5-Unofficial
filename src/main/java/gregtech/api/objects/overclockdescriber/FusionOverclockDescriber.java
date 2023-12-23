@@ -9,12 +9,26 @@ import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FusionComputer;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class FusionOverclockDescriber extends EUOverclockDescriber {
 
     protected final long capableStartup;
+
+    /**
+     * The values of {@link GT_MetaTileEntity_FusionComputer#capableStartupCanonical()} from MK1 ~ MK5
+     */
+    public long getCapableStartupCanonical(int tier) {
+        return switch (tier) {
+            case 1 -> 160_000_000L;
+            case 2 -> 320_000_000L;
+            case 3 -> 640_000_000L;
+            case 4 -> 5_120_000_000L;
+            default -> 20_480_000_000L;
+        };
+    }
 
     public FusionOverclockDescriber(byte energyTier, long capableStartup) {
         super(energyTier, 1);
@@ -50,15 +64,19 @@ public class FusionOverclockDescriber extends EUOverclockDescriber {
         return this.capableStartup >= recipe.mSpecialValue;
     }
 
-    protected int overclock(int startEnergy) {
+    protected int overclock(long startEnergy) {
         return switch (getFusionTier()) {
             case 1 -> 0;
-            case 2 -> (startEnergy <= 160000000) ? 1 : 0;
-            case 3 -> (startEnergy <= 160000000) ? 2 : ((startEnergy <= 320000000) ? 1 : 0);
-            case 4 -> (startEnergy <= 160000000) ? 3
-                : (startEnergy <= 320000000) ? 2 : (startEnergy <= 640000000) ? 1 : 0;
-            case 5 -> (startEnergy <= 160000000) ? 4
-                : (startEnergy <= 320000000) ? 3 : (startEnergy <= 640000000) ? 2 : (startEnergy <= 1280000000) ? 1 : 0;
+            case 2 -> (startEnergy <= getCapableStartupCanonical(1)) ? 1 : 0;
+            case 3 -> (startEnergy <= getCapableStartupCanonical(1)) ? 2
+                : ((startEnergy <= getCapableStartupCanonical(2)) ? 1 : 0);
+            case 4 -> (startEnergy <= getCapableStartupCanonical(1)) ? 3
+                : (startEnergy <= getCapableStartupCanonical(2)) ? 2
+                    : (startEnergy <= getCapableStartupCanonical(3)) ? 1 : 0;
+            case 5 -> (startEnergy <= getCapableStartupCanonical(1)) ? 4
+                : (startEnergy <= getCapableStartupCanonical(2)) ? 3
+                    : (startEnergy <= getCapableStartupCanonical(3)) ? 2
+                        : (startEnergy <= getCapableStartupCanonical(4)) ? 1 : 0;
             default -> throw new IllegalStateException("Unexpected fusion tier: " + getFusionTier());
         };
     }
