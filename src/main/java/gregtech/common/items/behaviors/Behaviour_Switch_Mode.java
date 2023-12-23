@@ -4,43 +4,36 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.items.GT_MetaGenerated_Tool;
-import gregtech.api.util.GT_Util;
+import gregtech.api.util.GT_Utility;
 
 public class Behaviour_Switch_Mode extends Behaviour_None {
 
     public Behaviour_Switch_Mode() {}
 
     @Override
-    public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-        int aY, int aZ, ForgeDirection side, float aHitX, float aHitY, float aHitZ) {
+    public ItemStack onItemRightClick(GT_MetaBase_Item aItem, ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
         if (aStack != null && (aPlayer == null || aPlayer.isSneaking()) && !aWorld.isRemote) {
-
-            if (GT_Util.getTileEntity(aWorld, aX, aY, aZ, true) != null) {
-                return false;
-            }
-
-            if (!(aItem instanceof GT_MetaGenerated_Tool)) {
-                return false;
-            }
 
             GT_MetaGenerated_Tool itemTool = (GT_MetaGenerated_Tool) aItem;
             final byte maxMode = itemTool.getToolMaxMode(aStack);
             if (maxMode == 1) {
-                return false;
+                return aStack;
             }
 
-            byte currentMode = itemTool.getToolMode(aStack);
-            currentMode = (byte) ((currentMode + 1) % maxMode);
-            itemTool.setToolMode(aStack, currentMode);
-            System.out.println(currentMode);
-            return true;
+            MovingObjectPosition mop = GT_Utility.getPlayerLookingTarget();
+            if (mop == null) {
+                byte currentMode = itemTool.getToolMode(aStack);
+                currentMode = (byte) ((currentMode + 1) % maxMode);
+                itemTool.setToolMode(aStack, currentMode);
+            }
+            return aStack;
         }
-        return false;
+        return aStack;
     }
 
     @Override

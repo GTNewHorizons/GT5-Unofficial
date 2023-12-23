@@ -55,6 +55,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -83,12 +84,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
@@ -4878,5 +4874,20 @@ public class GT_Utility {
             .findFuel(aLiquid);
         if (tFuel != null) return tFuel.mSpecialValue;
         return 0;
+    }
+
+    public static MovingObjectPosition getPlayerLookingTarget() {
+        // Basically copied from waila, thanks Caedis for such challenge
+        Minecraft mc = Minecraft.getMinecraft();
+        EntityLivingBase viewpoint = mc.renderViewEntity;
+        if (viewpoint == null) return null;
+
+        float reachDistance = mc.playerController.getBlockReachDistance();
+        Vec3 posVec = viewpoint.getPosition(0);
+        Vec3 lookVec = viewpoint.getLook(0);
+        Vec3 modifiedPosVec = posVec
+            .addVector(lookVec.xCoord * reachDistance, lookVec.yCoord * reachDistance, lookVec.zCoord * reachDistance);
+
+        return viewpoint.worldObj.rayTraceBlocks(posVec, modifiedPosVec);
     }
 }
