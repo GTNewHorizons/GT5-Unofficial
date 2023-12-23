@@ -149,23 +149,23 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
         return false;
     }
 
-    public static final boolean setToolMode(ItemStack aStack, int aMode) {
+    public static final boolean setToolMode(ItemStack aStack, byte aMode) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("GT.ToolStats");
             if (aNBT != null) {
-                aNBT.setLong("Mode", aMode);
+                aNBT.setByte("Mode", aMode);
                 return true;
             }
         }
         return false;
     }
 
-    public static final int getToolMode(ItemStack aStack) {
+    public static final byte getToolMode(ItemStack aStack) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("GT.ToolStats");
-            if (aNBT != null) return aNBT.getInteger("Mode");
+            if (aNBT != null) return aNBT.getByte("Mode");
         }
         return 0;
     }
@@ -226,7 +226,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
         IToolStats tToolStats = getToolStats(rStack);
         if (tToolStats != null) {
             NBTTagCompound tMainNBT = new NBTTagCompound(), tToolNBT = new NBTTagCompound();
-            tToolNBT.setInteger("Mode", 0);
+            tToolNBT.setByte("Mode", 0);
             if (aPrimaryMaterial != null) {
                 tToolNBT.setString("PrimaryMaterial", aPrimaryMaterial.mName);
                 tToolNBT.setLong(
@@ -742,7 +742,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
         return getToolStatsInternal(aStack);
     }
 
-    public int getToolMaxMode(ItemStack aStack) {
+    public byte getToolMaxMode(ItemStack aStack) {
         IToolStats stats = getToolStats(aStack);
         if (stats != null) {
             return stats.getMaxMode();

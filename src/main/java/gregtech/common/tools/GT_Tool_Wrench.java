@@ -197,7 +197,7 @@ public class GT_Tool_Wrench extends GT_Tool {
     }
 
     @Override
-    public int getMaxMode() {
+    public byte getMaxMode() {
         return 2;
     }
 }

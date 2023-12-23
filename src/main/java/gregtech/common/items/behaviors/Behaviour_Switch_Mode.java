@@ -29,12 +29,12 @@ public class Behaviour_Switch_Mode extends Behaviour_None {
             }
 
             GT_MetaGenerated_Tool itemTool = (GT_MetaGenerated_Tool) aItem;
-            final int maxMode = itemTool.getToolMaxMode(aStack);
+            final byte maxMode = itemTool.getToolMaxMode(aStack);
             if (maxMode == 1) {
                 return false;
             }
 
-            int currentMode = itemTool.getToolMode(aStack);
+            byte currentMode = itemTool.getToolMode(aStack);
             currentMode = (currentMode + 1) % maxMode;
             itemTool.setToolMode(aStack, currentMode);
             System.out.println(currentMode);

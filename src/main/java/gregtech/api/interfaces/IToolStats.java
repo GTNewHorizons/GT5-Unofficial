@@ -197,5 +197,5 @@ public interface IToolStats {
 
     String getToolTypeName();
 
-    int getMaxMode();
+    byte getMaxMode();
 }
