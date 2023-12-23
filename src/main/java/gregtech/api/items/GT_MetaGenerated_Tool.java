@@ -226,7 +226,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
         IToolStats tToolStats = getToolStats(rStack);
         if (tToolStats != null) {
             NBTTagCompound tMainNBT = new NBTTagCompound(), tToolNBT = new NBTTagCompound();
-            tToolNBT.setByte("Mode", 0);
+            tToolNBT.setByte("Mode", (byte) 0);
             if (aPrimaryMaterial != null) {
                 tToolNBT.setString("PrimaryMaterial", aPrimaryMaterial.mName);
                 tToolNBT.setLong(

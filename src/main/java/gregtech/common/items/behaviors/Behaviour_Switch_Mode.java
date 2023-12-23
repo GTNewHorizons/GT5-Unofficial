@@ -35,7 +35,7 @@ public class Behaviour_Switch_Mode extends Behaviour_None {
             }
 
             byte currentMode = itemTool.getToolMode(aStack);
-            currentMode = (currentMode + 1) % maxMode;
+            currentMode = (byte) ((currentMode + 1) % maxMode);
             itemTool.setToolMode(aStack, currentMode);
             System.out.println(currentMode);
             return true;
