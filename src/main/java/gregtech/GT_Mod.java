@@ -1,60 +1,50 @@
 package gregtech;
 
-import static gregtech.GT_Version.*;
-import static gregtech.api.GregTech_API.registerCircuitProgrammer;
-import static gregtech.api.modernmaterials.ModernMaterialUtilities.registerAllMaterialsBlocks;
-import static gregtech.api.modernmaterials.ModernMaterialUtilities.registerAllMaterialsFluids;
-import static gregtech.api.modernmaterials.recipegenerators.Utility.registerAllMaterialsRecipes;
-import static gregtech.api.enums.Mods.Forestry;
-
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Locale;
-import java.util.Map;
-import java.util.function.Predicate;
-
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.util.WeightedRandomChestContent;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ChestGenHooks;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.oredict.OreDictionary;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import com.google.common.base.Stopwatch;
-
 import appeng.api.AEApi;
+import com.google.common.base.Stopwatch;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
+import cpw.mods.fml.common.event.FMLModIdMappingEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerAboutToStartEvent;
+import cpw.mods.fml.common.event.FMLServerStartedEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import gregtech.api.GregTech_API;
-import gregtech.api.modernmaterials.ModernMaterialsRegistration;
-import gregtech.api.modernmaterials.ModernMaterialsTextureRegister;
 import gregtech.api.enchants.Enchantment_EnderDamage;
 import gregtech.api.enchants.Enchantment_Hazmat;
 import gregtech.api.enchants.Enchantment_Radioactivity;
-import gregtech.api.enums.*;
+import gregtech.api.enums.ConfigCategories;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.internal.IGT_Mod;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
+import gregtech.api.modernmaterials.ModernMaterialsRegistration;
+import gregtech.api.modernmaterials.ModernMaterialsTextureRegister;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
 import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
-import gregtech.api.util.*;
+import gregtech.api.util.GT_Assemblyline_Server;
+import gregtech.api.util.GT_Forestry_Compat;
+import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_Log;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_RecipeRegistrator;
+import gregtech.api.util.GT_SpawnEventHandler;
+import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_DummyWorld;
 import gregtech.common.GT_Network;
 import gregtech.common.GT_Proxy;
@@ -70,15 +60,72 @@ import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalChestBase;
 import gregtech.crossmod.holoinventory.HoloInventory;
 import gregtech.crossmod.waila.Waila;
 import gregtech.loaders.ExtraIcons;
-import gregtech.loaders.load.*;
+import gregtech.loaders.load.GT_CoverBehaviorLoader;
+import gregtech.loaders.load.GT_FuelLoader;
+import gregtech.loaders.load.GT_ItemIterator;
+import gregtech.loaders.load.GT_Loader_MetaTileEntities_Recipes;
+import gregtech.loaders.load.GT_SonictronLoader;
 import gregtech.loaders.misc.GT_Achievements;
 import gregtech.loaders.misc.GT_Bees;
 import gregtech.loaders.misc.GT_CoverLoader;
-import gregtech.loaders.postload.*;
-import gregtech.loaders.preload.*;
+import gregtech.loaders.postload.GT_BlockResistanceLoader;
+import gregtech.loaders.postload.GT_BookAndLootLoader;
+import gregtech.loaders.postload.GT_CraftingRecipeLoader;
+import gregtech.loaders.postload.GT_CropLoader;
+import gregtech.loaders.postload.GT_ExtremeDieselFuelLoader;
+import gregtech.loaders.postload.GT_FakeRecipeLoader;
+import gregtech.loaders.postload.GT_ItemMaxStacksizeLoader;
+import gregtech.loaders.postload.GT_MachineRecipeLoader;
+import gregtech.loaders.postload.GT_MachineTooltipsLoader;
+import gregtech.loaders.postload.GT_MinableRegistrator;
+import gregtech.loaders.postload.GT_PostLoad;
+import gregtech.loaders.postload.GT_RecyclerBlacklistLoader;
+import gregtech.loaders.postload.GT_ScrapboxDropLoader;
+import gregtech.loaders.postload.GT_Worldgenloader;
+import gregtech.loaders.preload.GT_Loader_CircuitBehaviors;
+import gregtech.loaders.preload.GT_Loader_ItemData;
+import gregtech.loaders.preload.GT_Loader_Item_Block_And_Fluid;
+import gregtech.loaders.preload.GT_Loader_MetaTileEntities;
+import gregtech.loaders.preload.GT_Loader_MultiTileEntities;
+import gregtech.loaders.preload.GT_Loader_OreDictionary;
+import gregtech.loaders.preload.GT_Loader_OreProcessing;
+import gregtech.loaders.preload.GT_PreLoad;
 import gregtech.nei.IMCForNEI;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.WeightedRandomChestContent;
+import net.minecraft.world.World;
+import net.minecraftforge.common.ChestGenHooks;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.oredict.OreDictionary;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Locale;
+import java.util.Map;
+import java.util.function.Predicate;
+
+import static gregtech.GT_Version.VERSION_MAJOR;
+import static gregtech.GT_Version.VERSION_MINOR;
+import static gregtech.GT_Version.VERSION_PATCH;
+import static gregtech.api.GregTech_API.registerCircuitProgrammer;
+import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.modernmaterials.ModernMaterialUtilities.registerAllMaterialsBlocks;
+import static gregtech.api.modernmaterials.ModernMaterialUtilities.registerAllMaterialsFluids;
+import static gregtech.api.modernmaterials.ModernMaterialUtilities.registerAllMaterialsItems;
+import static gregtech.api.modernmaterials.recipegenerators.Utility.registerAllMaterialsRecipes;
 
 @Mod(
     modid = Mods.Names.GREG_TECH,
@@ -272,7 +319,6 @@ public class GT_Mod implements IGT_Mod {
             .isServer()) GT_Assemblyline_Server.fillMap(aEvent);
 
         new ModernMaterialsRegistration().run();
-
     }
 
     @Mod.EventHandler
@@ -285,9 +331,10 @@ public class GT_Mod implements IGT_Mod {
             return;
         }
 
-        // --- Modern Materials fluid registration ---
-        registerAllMaterialsFluids();
+        // --- Modern Materials registration ---
+        registerAllMaterialsItems();
         registerAllMaterialsBlocks();
+        registerAllMaterialsFluids();
         // -------------------------------------------
 
         for (Runnable tRunnable : GregTech_API.sBeforeGTLoad) {

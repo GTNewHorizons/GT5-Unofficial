@@ -1,14 +1,6 @@
 package gregtech.api.modernmaterials;
 
-import static gregtech.api.modernmaterials.fluids.FluidEnum.Gas;
-import static gregtech.api.modernmaterials.fluids.FluidEnum.Molten;
-import static gregtech.api.modernmaterials.fluids.FluidEnum.NoPrefix;
-import static gregtech.api.modernmaterials.fluids.FluidEnum.Plasma;
-import static gregtech.api.modernmaterials.items.partproperties.TextureType.Custom;
-import static gregtech.api.modernmaterials.items.partproperties.TextureType.Metal_Dull;
-import static gregtech.api.modernmaterials.items.partproperties.TextureType.Metal_Shiny;
-import static gregtech.api.modernmaterials.ModernMaterialUtilities.registerAllMaterialsItems;
-
+import gregtech.api.enums.TierEU;
 import gregtech.api.modernmaterials.blocks.blocktypes.blockof.special.UniversiumBlockOfBlockRenderer;
 import gregtech.api.modernmaterials.blocks.blocktypes.blockof.special.UniversiumBlockOfItemRenderer;
 import gregtech.api.modernmaterials.blocks.blocktypes.framebox.special.UniversiumFrameBlockRenderer;
@@ -16,10 +8,18 @@ import gregtech.api.modernmaterials.blocks.blocktypes.framebox.special.Universiu
 import gregtech.api.modernmaterials.blocks.registration.BlocksEnum;
 import gregtech.api.modernmaterials.effects.Effects;
 import gregtech.api.modernmaterials.fluids.ModernMaterialFluid;
+import gregtech.api.modernmaterials.generators.WireBuilder;
 import gregtech.api.modernmaterials.items.partproperties.customitemrenderers.UniversiumItemRenderer;
 import gregtech.api.modernmaterials.recipegenerators.Metal;
-import gregtech.api.enums.TierEU;
 import gregtech.api.modernmaterials.tooltips.CustomTooltips;
+
+import static gregtech.api.modernmaterials.fluids.FluidEnum.Gas;
+import static gregtech.api.modernmaterials.fluids.FluidEnum.Molten;
+import static gregtech.api.modernmaterials.fluids.FluidEnum.NoPrefix;
+import static gregtech.api.modernmaterials.fluids.FluidEnum.Plasma;
+import static gregtech.api.modernmaterials.items.partproperties.TextureType.Custom;
+import static gregtech.api.modernmaterials.items.partproperties.TextureType.Metal_Dull;
+import static gregtech.api.modernmaterials.items.partproperties.TextureType.Metal_Shiny;
 
 public class ModernMaterialsRegistration {
 
@@ -47,8 +47,6 @@ public class ModernMaterialsRegistration {
 
     public void run() {
 
-
-
         new ModernMaterial.ModernMaterialBuilder("EWAD").setMaterialID(16)
             .setColor(120, 100, 123)
             .setTextureMode(Metal_Shiny)
@@ -64,6 +62,7 @@ public class ModernMaterialsRegistration {
             .setTextureMode(Custom)
             .setMaterialTier(TierEU.MAX)
             .addPlayerEffect(Effects::radiation)
+//            .addWires(new WireBuilder().build())
             .setCustomBlockRenderer(
                 BlocksEnum.FrameBox,
                 new UniversiumFrameItemRenderer(),
@@ -125,8 +124,6 @@ public class ModernMaterialsRegistration {
         // new ModernMaterialFluid.Builder("Zebra % Fluid %")
         // .setTemperature(120_000_000)
         // )
-
-        registerAllMaterialsItems();
 
     }
 
