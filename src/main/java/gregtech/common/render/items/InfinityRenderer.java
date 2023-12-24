@@ -14,6 +14,8 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.api.util.GT_Utility;
 
+// TODO: Render effects outside inventory.
+
 public class InfinityRenderer extends GT_GeneratedMaterial_Renderer {
 
     public Random rand = new Random();
