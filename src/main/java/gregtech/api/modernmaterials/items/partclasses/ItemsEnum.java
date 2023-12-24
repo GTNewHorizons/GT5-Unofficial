@@ -13,10 +13,10 @@ public enum ItemsEnum implements IEnumPart {
 
     HotIngot("Hot % Ingot", 1),
     Ingot("% Ingot", 1),
-    // DoubleIngot("Double % Ingot"),
-    // TripleIngot("Triple % Ingot"),
-    // QuadrupleIngot("Quadruple % Ingot"),
-    // QuintupleIngot("Quintuple % Ingot"),
+    DoubleIngot("Double % Ingot"),
+    TripleIngot("Triple % Ingot"),
+    QuadrupleIngot("Quadruple % Ingot"),
+    QuintupleIngot("Quintuple % Ingot"),
     Nugget("% Nugget", 1 / 9.0),
 
     // Gears
@@ -27,10 +27,10 @@ public enum ItemsEnum implements IEnumPart {
     DensePlate("Dense % Plate", 9),
     Foil("% Foil", 4),
     Plate("% Plate", 1),
-    // DoublePlate("Double % Plate"),
-    // TriplePlate("Triple % Plate"),
-    // QuadruplePlate("Quadruple % Plate"),
-    // QuintuplePlate("Quintuple % Plate"),
+    DoublePlate("Double % Plate"),
+    TriplePlate("Triple % Plate"),
+    QuadruplePlate("Quadruple % Plate"),
+    QuintuplePlate("Quintuple % Plate"),
 
     // Gems.
     Lens("% Lens", 1),
@@ -71,24 +71,24 @@ public enum ItemsEnum implements IEnumPart {
     Nanites("% Nanites"),
 
     // Tool Parts.
-    // ArrowHead("% Arrow Head"),
-    // AxeHead("% Axe Head"),
+    ArrowHead("% Arrow Head"),
+    AxeHead("% Axe Head"),
     BuzzSaw("% Buzz Saw"),
     ChainSaw("% Chainsaw"),
     DrillTip("% Drill Tip"),
     FileHead("% File Head"),
     HammerHead("% Hammer Head"),
-    // HoeHead("% Hoe Head"),
+    HoeHead("% Hoe Head"),
     MalletHead("% Mallet Head"),
-    // PickaxeHead("% Pickaxe Head"),
-    // PlowHead("% Plow Head"),
+    PickaxeHead("% Pickaxe Head"),
+    PlowHead("% Plow Head"),
     SawBlade("% Saw Blade"),
     ItemCasing("% Item Casing"),
     ScrewdriverHead("% Screwdriver Head"),
-    // SenseHead("% Sense Head"),
-    // ShovelHead("% Shovel Head"),
+    SenseHead("% Sense Head"),
+    ShovelHead("% Shovel Head"),
     SolderingHead("% Soldering Head"),
-    // SwordBlade("% Sword Blade"),
+    SwordBlade("% Sword Blade"),
     ElectricWrenchHead("% Electric Wrench Head");
 
     public final String partName;

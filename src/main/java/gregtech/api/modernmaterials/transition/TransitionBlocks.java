@@ -9,6 +9,23 @@ import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
+import static gregtech.api.modernmaterials.blocks.registration.BlocksEnum.BasaltNormalOre;
+import static gregtech.api.modernmaterials.blocks.registration.BlocksEnum.BasaltSmallOre;
+import static gregtech.api.modernmaterials.blocks.registration.BlocksEnum.BlackGraniteNormalOre;
+import static gregtech.api.modernmaterials.blocks.registration.BlocksEnum.BlackGraniteSmallOre;
+import static gregtech.api.modernmaterials.blocks.registration.BlocksEnum.EarthNormalOre;
+import static gregtech.api.modernmaterials.blocks.registration.BlocksEnum.EarthSmallOre;
+import static gregtech.api.modernmaterials.blocks.registration.BlocksEnum.EndNormalOre;
+import static gregtech.api.modernmaterials.blocks.registration.BlocksEnum.EndSmallOre;
+import static gregtech.api.modernmaterials.blocks.registration.BlocksEnum.MarbleNormalOre;
+import static gregtech.api.modernmaterials.blocks.registration.BlocksEnum.MarbleSmallOre;
+import static gregtech.api.modernmaterials.blocks.registration.BlocksEnum.MoonNormalOre;
+import static gregtech.api.modernmaterials.blocks.registration.BlocksEnum.MoonSmallOre;
+import static gregtech.api.modernmaterials.blocks.registration.BlocksEnum.NetherNormalOre;
+import static gregtech.api.modernmaterials.blocks.registration.BlocksEnum.NetherSmallOre;
+import static gregtech.api.modernmaterials.blocks.registration.BlocksEnum.RedGraniteNormalOre;
+import static gregtech.api.modernmaterials.blocks.registration.BlocksEnum.RedGraniteSmallOre;
+
 public class TransitionBlocks {
 
     public static void fixWorldBlocks() {
@@ -56,22 +73,22 @@ public class TransitionBlocks {
         // Normal ores are 0-6000
         // Small ores are 16000-22000
         if (metadata > 10000) {
-            if (dimID == 1) {
-                if (metadata / 1000 == 16) return BlocksEnum.EarthSmallOre;
-                if (metadata / 1000 == 19) return BlocksEnum.BlackGraniteSmallOre;
-                if (metadata / 1000 == 20) return BlocksEnum.RedGraniteSmallOre;
-                if (metadata / 1000 == 21) return BlocksEnum.MarbleSmallOre;
-                if (metadata / 1000 == 22) return BlocksEnum.BasaltSmallOre;
+            if (dimID == 0) {
+                if (metadata / 1000 == 16) return EarthSmallOre;
+                if (metadata / 1000 == 19) return BlackGraniteSmallOre;
+                if (metadata / 1000 == 20) return RedGraniteSmallOre;
+                if (metadata / 1000 == 21) return MarbleSmallOre;
+                if (metadata / 1000 == 22) return BasaltSmallOre;
             }
             // Other dimensions. Defaults to Earth if none found.
             return smallOreWorldConverter(dimID);
         } else {
-            if (dimID == 1) {
-                if (metadata / 1000 == 0) return BlocksEnum.EarthNormalOre;
-                if (metadata / 1000 == 3) return BlocksEnum.BlackGraniteNormalOre;
-                if (metadata / 1000 == 4) return BlocksEnum.RedGraniteNormalOre;
-                if (metadata / 1000 == 5) return BlocksEnum.MarbleNormalOre;
-                if (metadata / 1000 == 6) return BlocksEnum.BasaltNormalOre;
+            if (dimID == 0) {
+                if (metadata / 1000 == 0) return EarthNormalOre;
+                if (metadata / 1000 == 3) return BlackGraniteNormalOre;
+                if (metadata / 1000 == 4) return RedGraniteNormalOre;
+                if (metadata / 1000 == 5) return MarbleNormalOre;
+                if (metadata / 1000 == 6) return BasaltNormalOre;
             }
             // Other dimensions. Defaults to Earth if none found.
             return normalOreWorldConverter(dimID);
@@ -82,32 +99,38 @@ public class TransitionBlocks {
 
         switch (dimensionId) {
             case -1 -> {
-                return BlocksEnum.NetherSmallOre;
+                return NetherSmallOre;
             }
             case 0 -> {
-                return BlocksEnum.EarthSmallOre;
+                return EarthSmallOre;
             }
             case 1 -> {
-                return BlocksEnum.EndSmallOre;
+                return EndSmallOre;
+            }
+            case 28 -> {
+                return MoonSmallOre;
             }
         }
 
-        return BlocksEnum.EarthSmallOre;
+        return EarthSmallOre;
     }
 
     private static BlocksEnum normalOreWorldConverter(int dimID) {
         switch (dimID) {
             case -1 -> {
-                return BlocksEnum.NetherNormalOre;
+                return NetherNormalOre;
             }
             case 0 -> {
-                return BlocksEnum.EarthNormalOre;
+                return EarthNormalOre;
             }
             case 1 -> {
-                return BlocksEnum.EndNormalOre;
+                return EndNormalOre;
+            }
+            case 28 -> {
+                return MoonNormalOre;
             }
         }
 
-        return BlocksEnum.EarthNormalOre;
+        return EarthNormalOre;
     }
 }

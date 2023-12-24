@@ -16,6 +16,7 @@ import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.Bolt;
 import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.CrushedCentrifugedOre;
 import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.CrushedOre;
 import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.DensePlate;
+import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.DoublePlate;
 import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.Dust;
 import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.Foil;
 import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.Gem;
@@ -26,18 +27,22 @@ import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.Nugget;
 import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.Plate;
 import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.PurifiedDust;
 import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.PurifiedOre;
+import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.QuadruplePlate;
+import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.QuintuplePlate;
 import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.Ring;
 import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.Rod;
 import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.Round;
 import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.Screw;
 import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.SmallDust;
+import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.TinyDust;
+import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.TriplePlate;
 
 public abstract class TransitionItems {
 
     private static Pair<OrePrefixes, ItemsEnum> getPrefixFromIDGroup01(int metadata) {
         switch (metadata / 1000) {
             case 0 -> {
-                return new Pair<>(OrePrefixes.dustTiny, ItemsEnum.TinyDust);
+                return new Pair<>(OrePrefixes.dustTiny, TinyDust);
             }
             case 1 -> {
                 return new Pair<>(OrePrefixes.dustSmall, SmallDust);
@@ -73,16 +78,16 @@ public abstract class TransitionItems {
                 return new Pair<>(OrePrefixes.plate, Plate);
             }
             case 18 -> {
-                return new Pair<>(OrePrefixes.plateDouble, null); // Todo review.
+                return new Pair<>(OrePrefixes.plateDouble, DoublePlate);
             }
             case 19 -> {
-                return new Pair<>(OrePrefixes.plateTriple, null); // Todo review.
+                return new Pair<>(OrePrefixes.plateTriple, TriplePlate);
             }
             case 20 -> {
-                return new Pair<>(OrePrefixes.plateQuadruple, null); // Todo review.
+                return new Pair<>(OrePrefixes.plateQuadruple, QuadruplePlate);
             }
             case 21 -> {
-                return new Pair<>(OrePrefixes.plateQuintuple, null); // Todo review.
+                return new Pair<>(OrePrefixes.plateQuintuple, QuintuplePlate);
             }
             case 22 -> {
                 return new Pair<>(OrePrefixes.plateDense, DensePlate);
@@ -179,7 +184,7 @@ public abstract class TransitionItems {
 
     private static NBTTagCompound convertMeta01(NBTTagCompound tag) {
         short metadata = tag.getShort("Damage");
-        if (metadata < 2000 || metadata >= 32000) return tag; // Do nothing, this is not a valid material part.
+        if (metadata >= 32000) return tag; // Do nothing, this is not a valid material part.
 
         int materialID = metadata % 1000;
 

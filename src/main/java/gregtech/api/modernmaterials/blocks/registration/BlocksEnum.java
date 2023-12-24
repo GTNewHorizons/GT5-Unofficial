@@ -44,6 +44,7 @@ public enum BlocksEnum implements IEnumPart {
     RedGraniteNormalOre("% Red Granite Ore", NormalOreBlock.class, new OreBlockRenderer(GregTech_API.sBlockGranites, 8)),
     MarbleNormalOre("% Marble Ore", NormalOreBlock.class, new OreBlockRenderer(GregTech_API.sBlockStones, 0)),
     BasaltNormalOre("% Basalt Ore", NormalOreBlock.class, new OreBlockRenderer(GregTech_API.sBlockStones, 8)),
+    MoonNormalOre("% Moon Ore", SmallOreBlock.class, new OreBlockRenderer("GalacticraftCore:tile.moonBlock", 4)), // Repeat for other planets, proof of concept.
 
 
     EarthSmallOre("Small % Ore", SmallOreBlock.class, new OreBlockRenderer(Blocks.stone, 0)),
