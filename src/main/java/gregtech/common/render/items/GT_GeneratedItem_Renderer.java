@@ -14,8 +14,6 @@ import static gregtech.api.enums.Mods.HodgePodge;
 import javax.annotation.Nullable;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -44,7 +42,8 @@ public class GT_GeneratedItem_Renderer implements IItemRenderer {
 
     @Override
     public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-        return type == ItemRenderType.ENTITY;
+        return type == ItemRenderType.ENTITY && helper == ItemRendererHelper.ENTITY_BOBBING
+            || (helper == ItemRendererHelper.ENTITY_ROTATION && Minecraft.getMinecraft().gameSettings.fancyGraphics);
     }
 
     @Override
@@ -90,19 +89,7 @@ public class GT_GeneratedItem_Renderer implements IItemRenderer {
 
         Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationItemsTexture);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
-            GT_RenderUtil.renderItemIcon(tIcon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
-        } else {
-            ItemRenderer.renderItemIn2D(
-                Tessellator.instance,
-                tIcon.getMaxU(),
-                tIcon.getMinV(),
-                tIcon.getMinU(),
-                tIcon.getMaxV(),
-                tIcon.getIconWidth(),
-                tIcon.getIconHeight(),
-                0.0625F);
-        }
+        GT_RenderUtil.renderItem(type, tIcon);
         GL11.glDisable(GL11.GL_BLEND);
     }
 
@@ -137,18 +124,10 @@ public class GT_GeneratedItem_Renderer implements IItemRenderer {
         // Empty inner side
         Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationItemsTexture);
         markNeedsAnimationUpdate(inner);
-        if (type.equals(ItemRenderType.INVENTORY)) {
+        if (type == ItemRenderType.INVENTORY) {
             GT_RenderUtil.renderItemIcon(inner, 16.0D, -0.001D, 0.0F, 0.0F, -1.0F);
         } else {
-            ItemRenderer.renderItemIn2D(
-                Tessellator.instance,
-                inner.getMaxU(),
-                inner.getMinV(),
-                inner.getMinU(),
-                inner.getMaxV(),
-                inner.getIconWidth(),
-                inner.getIconHeight(),
-                0.0625F);
+            GT_RenderUtil.renderItem(type, inner);
         }
 
         FluidStack fluidStack = GT_Utility.getFluidForFilledItem(stack, true);
@@ -167,18 +146,10 @@ public class GT_GeneratedItem_Renderer implements IItemRenderer {
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             GL11.glDepthFunc(GL11.GL_EQUAL);
             GL11.glColor3ub((byte) (fluidColor >> 16), (byte) (fluidColor >> 8), (byte) fluidColor);
-            if (type.equals(ItemRenderType.INVENTORY)) {
-                GT_RenderUtil.renderItemIcon(fluidIcon, 16.0D, -0.001D, 0.0F, 0.0F, -1.0F);
+            if (type == ItemRenderType.INVENTORY) {
+                GT_RenderUtil.renderItemIcon(inner, 16.0D, -0.001D, 0.0F, 0.0F, -1.0F);
             } else {
-                ItemRenderer.renderItemIn2D(
-                    Tessellator.instance,
-                    fluidIcon.getMaxU(),
-                    fluidIcon.getMinV(),
-                    fluidIcon.getMinU(),
-                    fluidIcon.getMaxV(),
-                    fluidIcon.getIconWidth(),
-                    fluidIcon.getIconHeight(),
-                    0.0625F);
+                GT_RenderUtil.renderItem(type, inner);
             }
 
             GL11.glColor3ub((byte) -1, (byte) -1, (byte) -1);
