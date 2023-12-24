@@ -49,7 +49,7 @@ dependencies {
     compileOnlyApi("com.github.GTNewHorizons:BuildCraft:7.1.38:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.6.0:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:ForestryMC:4.8.0:dev") { transitive = false }
-    compileOnlyApi("com.github.GTNewHorizons:ProjectRed:4.8.0-GTNH:dev") { transitive = false }
+    compileOnlyApi("com.github.GTNewHorizons:ProjectRed:4.9.0-GTNH:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:Railcraft:9.15.3:dev") { transitive = false }
 
     compileOnly("com.github.GTNewHorizons:EnderCore:0.3.0:dev") { transitive = false }
@@ -80,4 +80,6 @@ dependencies {
     functionalTestImplementation('org.junit.platform:junit-platform-engine')
     functionalTestImplementation('org.junit.platform:junit-platform-launcher')
     functionalTestImplementation('org.junit.platform:junit-platform-reporting')
+
+    runtimeOnlyNonPublishable("com.github.GTNewHorizons:DuraDisplay:1.1.7:dev")
 }
