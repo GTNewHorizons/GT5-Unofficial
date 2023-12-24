@@ -309,6 +309,10 @@ public class GT_Client extends GT_Proxy implements Runnable {
 
         GL11.glPushMatrix();
 
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+
         // pause shader
         int program = GL11.glGetInteger(GL20.GL_CURRENT_PROGRAM);
         GL20.glUseProgram(0);
