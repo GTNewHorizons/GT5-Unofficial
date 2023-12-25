@@ -2939,7 +2939,9 @@ public class RecipeLoader {
                     int[] oreDict = OreDictionary.getOreIDs(input);
                     for (int oreDictID : oreDict) {
                         if (OreDictionary.getOreName(oreDictID).startsWith("dustImpureCerium")
-                                || OreDictionary.getOreName(oreDictID).startsWith("dustImpureSamarium")) {
+                                || OreDictionary.getOreName(oreDictID).startsWith("dustImpureSamarium")
+                                || OreDictionary.getOreName(oreDictID).startsWith("dustPureSamarium")
+                                || OreDictionary.getOreName(oreDictID).startsWith("dustPureCerium")) {
                             GT_Recipe tRecipe = recipe.copy();
                             for (int i = 0; i < tRecipe.mOutputs.length; i++) {
                                 if (!GT_Utility.isStackValid(tRecipe.mOutputs[i])) continue;
