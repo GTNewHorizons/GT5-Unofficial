@@ -473,6 +473,7 @@ GT5U.gui.text.stocking_bus_fail_extraction=§4Failed to extract expected amount 
 GT5U.gui.text.stocking_hatch_fail_extraction=§4Failed to extract expected amount of fluids from stocking hatch. This can be caused by attaching multiple storage fluid buses to the same tank.
 GT5U.gui.text.noDrone=§4Can't find any drone in inputBuses!
 GT5U.gui.text.operating=§aDrone operating normally!
+GT5U.gui.text.outofrange=§4Machine is too far, drone control system not available!
 
 GT5U.item.programmed_circuit.select.header=Reprogram Circuit
 
@@ -617,6 +618,10 @@ GT5U.waila.stocking_bus.auto_pull.enabled=Auto-Pull from ME: Enabled
 GT5U.waila.stocking_bus.auto_pull.disabled=Auto-Pull from ME: Disabled
 GT5U.waila.stocking_bus.min_stack_size=Minimum Stack Size: %s
 GT5U.waila.stocking_hatch.min_amount=Minimum Amount: %s
+GT5U.waila.drone_downlink.noConnection=Not connected
+GT5U.waila.drone_downlink.connection=Connect to centre:
+GT5U.waila.drone_downlink.connectionCount=Connection Count:
+GT5U.waila.drone_downlink.droneLevel=Drone Level:
 
 achievement.flintpick=First Tools
 achievement.flintpick.desc=Craft a flint pick
