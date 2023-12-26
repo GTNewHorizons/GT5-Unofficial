@@ -19,18 +19,21 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class AESlotWidget extends SlotWidget {
 
-    static ItemRenderHook SKIP_ITEM_STACK_SIZE_HOOK = new ItemRenderHook() {
+    private static class HookHolder {
 
-        @Override
-        public boolean renderOverlay(FontRenderer fr, TextureManager tm, ItemStack is, int x, int y) {
-            return true;
-        }
+        static ItemRenderHook SKIP_ITEM_STACK_SIZE_HOOK = new ItemRenderHook() {
 
-        @Override
-        public boolean showStackSize(ItemStack is) {
-            return false;
-        }
-    };
+            @Override
+            public boolean renderOverlay(FontRenderer fr, TextureManager tm, ItemStack is, int x, int y) {
+                return true;
+            }
+
+            @Override
+            public boolean showStackSize(ItemStack is) {
+                return false;
+            }
+        };
+    }
 
     public AESlotWidget(BaseSlot slot) {
         super(slot);
@@ -40,7 +43,7 @@ public class AESlotWidget extends SlotWidget {
     @SideOnly(Side.CLIENT)
     protected void drawSlot(Slot slotIn) {
         final AppEngRenderItem aeRenderItem = new AppEngRenderItem();
-        AppEngRenderItem.POST_HOOKS.add(SKIP_ITEM_STACK_SIZE_HOOK);
+        AppEngRenderItem.POST_HOOKS.add(HookHolder.SKIP_ITEM_STACK_SIZE_HOOK);
         final RenderItem pIR = this.setItemRender(aeRenderItem);
         try {
             aeRenderItem.setAeStack(Platform.getAEStackInSlot(slotIn));
@@ -48,7 +51,7 @@ public class AESlotWidget extends SlotWidget {
         } catch (final Exception err) {
             AELog.warn("[AppEng] AE prevented crash while drawing slot: " + err);
         }
-        AppEngRenderItem.POST_HOOKS.remove(SKIP_ITEM_STACK_SIZE_HOOK);
+        AppEngRenderItem.POST_HOOKS.remove(HookHolder.SKIP_ITEM_STACK_SIZE_HOOK);
         this.setItemRender(pIR);
     }
 
