@@ -98,7 +98,9 @@ public abstract class TT_Abstract_LowPowerLaserThingy extends GT_MetaTileEntity_
 
     @Override
     public void loadNBTData(NBTTagCompound nbtTagCompound) {
-        Optional.ofNullable(nbtTagCompound).ifPresent(tag -> this.AMPERES = tag.getLong("AMPERES"));
+        if (nbtTagCompound != null && nbtTagCompound.hasKey("AMPERES")) {
+            this.AMPERES = nbtTagCompound.getLong("AMPERES");
+        }
     }
 
     @Override
