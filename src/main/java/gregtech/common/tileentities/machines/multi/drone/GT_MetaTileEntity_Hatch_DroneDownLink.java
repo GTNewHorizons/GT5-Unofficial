@@ -9,10 +9,13 @@ import java.util.stream.Collectors;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -30,6 +33,8 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.render.TextureFactory;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hatch_Maintenance {
 
@@ -89,20 +94,6 @@ public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hat
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-        if (hasConnection()) aNBT.setTag("conn", connection.transConnectionToNBT());
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-        if (aNBT.hasKey("conn")) {
-            connection = new droneConnection(aNBT.getCompoundTag("conn"));
-        }
-    }
-
-    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             if (hasConnection()) {
@@ -118,7 +109,7 @@ public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hat
                 // Find connection every 10 second
                 if (aTick % 200 == 0) {
                     connection = null;
-                    tryFindConnection();
+                    if (tryFindConnection()) return;
                     // Let's have some "surprise".
                     if (this.machine != null && this.machine.isValid()) {
                         doRandomIssue();
@@ -162,7 +153,7 @@ public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hat
         return connection.reCheckConnection();
     }
 
-    public void tryFindConnection() {
+    public boolean tryFindConnection() {
         if (GT_MetaTileEntity_DroneCentre.getCentreMap()
             .containsKey(getBaseMetaTileEntity().getWorld().provider.dimensionId)) {
             List<GT_MetaTileEntity_DroneCentre> target = GT_MetaTileEntity_DroneCentre.getCentreMap()
@@ -177,11 +168,12 @@ public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hat
                         this.machine = machine;
                         connection = new droneConnection(machine, DMC);
                         connection.centre.connectionList.add(connection);
-                        return;
+                        return true;
                     }
                 }
             }
         }
+        return false;
     }
 
     private void doRandomIssue() {
@@ -243,5 +235,33 @@ public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hat
             }
         }
         return null;
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setBoolean("connection", connection == null);
+        if (connection != null) {
+            tag.setInteger("x", connection.centreCoord.posX);
+            tag.setInteger("y", connection.centreCoord.posY);
+            tag.setInteger("z", connection.centreCoord.posZ);
+        }
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        NBTTagCompound tag = accessor.getNBTData();
+        currenttip.add(
+            tag.getBoolean("connection")
+                ? EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.waila.drone_downlink.noConnection")
+                : EnumChatFormatting.AQUA + StatCollector.translateToLocal("GT5U.waila.drone_downlink.connection")
+                    + tag.getInteger("x")
+                    + " "
+                    + tag.getInteger("y")
+                    + " "
+                    + tag.getInteger("z"));
+        super.getWailaBody(itemStack, currenttip, accessor, config);
     }
 }

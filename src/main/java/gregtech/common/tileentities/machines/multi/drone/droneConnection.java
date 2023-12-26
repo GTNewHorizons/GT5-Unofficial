@@ -1,5 +1,11 @@
 package gregtech.common.tileentities.machines.multi.drone;
 
+import static gregtech.GT_Mod.gregtechproxy;
+
+import java.util.Optional;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
@@ -15,15 +21,15 @@ public class droneConnection {
 
     String customName;
     GT_MetaTileEntity_MultiBlockBase machine;
+    ItemStack machineItem;
     ChunkCoordinates machineCoord;
     GT_MetaTileEntity_DroneCentre centre;
     ChunkCoordinates centreCoord;
     World world;
-    private static int COUNT = 0;
-    int id;
 
     public droneConnection(GT_MetaTileEntity_MultiBlockBase machine, GT_MetaTileEntity_DroneCentre centre) {
         this.machine = machine;
+        this.machineItem = machine.getStackForm(1);
         machineCoord = machine.getBaseMetaTileEntity()
             .getCoords();
         this.centre = centre;
@@ -31,25 +37,29 @@ public class droneConnection {
             .getCoords();
         this.world = centre.getBaseMetaTileEntity()
             .getWorld();
-        customName = machine.getLocalName();
-        id = COUNT++;
+        customName = Optional.ofNullable(centre.tempNameList.remove(machineCoord.toString()))
+            .orElse(machine.getLocalName());
     }
 
     public droneConnection(NBTTagCompound aNBT) {
         NBTTagCompound machineTag = aNBT.getCompoundTag("machine");
         NBTTagCompound centreTag = aNBT.getCompoundTag("centre");
-        this.world = DimensionManager.getWorld(aNBT.getInteger("worldID"));
+        if (!gregtechproxy.isClientSide()) {
+            this.world = DimensionManager.getWorld(aNBT.getInteger("worldID"));
+        } else {
+            this.world = Minecraft.getMinecraft().theWorld;
+        }
+        machineItem = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("item"));
         machineCoord = new ChunkCoordinates(
             machineTag.getInteger("x"),
             machineTag.getInteger("y"),
             machineTag.getInteger("z"));
-        this.machine = getGT_BaseMachineAt(machineCoord, world);
+        this.machine = getLoadedGT_BaseMachineAt(machineCoord, world, true);
         centreCoord = new ChunkCoordinates(
             centreTag.getInteger("x"),
             centreTag.getInteger("y"),
             centreTag.getInteger("z"));
-        this.centre = (GT_MetaTileEntity_DroneCentre) getGT_BaseMachineAt(centreCoord, world);
-        this.id = aNBT.getInteger("id");
+        this.centre = (GT_MetaTileEntity_DroneCentre) getLoadedGT_BaseMachineAt(centreCoord, world, true);
         this.customName = aNBT.getString("name");
     }
 
@@ -58,8 +68,9 @@ public class droneConnection {
     }
 
     public boolean reCheckConnection() {
-        if (machine == null) this.machine = getGT_BaseMachineAt(machineCoord, world);
-        if (centre == null) this.centre = (GT_MetaTileEntity_DroneCentre) getGT_BaseMachineAt(centreCoord, world);
+        if (machine == null) this.machine = getLoadedGT_BaseMachineAt(machineCoord, world, true);
+        if (centre == null)
+            this.centre = (GT_MetaTileEntity_DroneCentre) getLoadedGT_BaseMachineAt(centreCoord, world, true);
         if (machine != null && centre != null && !centre.connectionList.contains(this)) centre.connectionList.add(this);
         return isValid();
     }
@@ -77,17 +88,18 @@ public class droneConnection {
         if (!this.isValid()) return aNBT;
         aNBT.setTag("machine", transGT_BaseMachineToNBT(machine));
         aNBT.setTag("centre", transGT_BaseMachineToNBT(centre));
+        aNBT.setTag("item", machineItem.writeToNBT(new NBTTagCompound()));
         aNBT.setInteger(
             "worldID",
             machine.getBaseMetaTileEntity()
                 .getWorld().provider.dimensionId);
-        aNBT.setInteger("id", id);
         aNBT.setString("name", getCustomName());
         return aNBT;
     }
 
-    public GT_MetaTileEntity_MultiBlockBase getGT_BaseMachineAt(ChunkCoordinates coords, World world) {
-        TileEntity te = GT_Util.getTileEntity(world, coords, false);
+    public GT_MetaTileEntity_MultiBlockBase getLoadedGT_BaseMachineAt(ChunkCoordinates coords, World world,
+        boolean isLoaded) {
+        TileEntity te = GT_Util.getTileEntity(world, coords, isLoaded);
         if (te == null) return null;
         return (GT_MetaTileEntity_MultiBlockBase) ((IGregTechTileEntity) te).getMetaTileEntity();
     }
