@@ -6504,10 +6504,10 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 ItemList.Sensor_IV.get(2),
                 ItemList.Energy_LapotronicOrb.get(4),
                 ItemList.Cover_WirelessNeedsMaintainance.get(1),
-                GalacticraftCore.isModLoaded() ? GT_ModHandler.getModItem(GalacticraftCore.ID, "item.BasicItem", 1, 19)
+                GalacticraftCore.isModLoaded() ? GT_ModHandler.getModItem(GalacticraftCore.ID, "item.basicItem", 1, 19)
                     : ItemList.Sensor_EV.get(4))
             .itemOutputs(ItemList.Machine_Multi_DroneCentre.get(1L))
-            .fluidInputs(Materials.AdvancedGlue.getMolten(8000L))
+            .fluidInputs(Materials.AdvancedGlue.getFluid(8000L))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
