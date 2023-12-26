@@ -514,6 +514,7 @@ public class GT_ParallelHelper {
             return;
         }
         ArrayList<ItemStack> itemOutputsList = new ArrayList<>();
+        Random rand = new Random();
         for (int i = 0; i < truncatedItemOutputs.length; i++) {
             if (recipe.getOutput(i) == null) continue;
             long items = 0;
@@ -524,17 +525,19 @@ public class GT_ParallelHelper {
             if (recipe.getOutputChance(i) >= 10000) {
                 items = itemStackSize * currentParallel;
             } else {
-                // If currentParallel is big enough, use Normal Distribution to fit the chanced outputs
                 double chance = (double) recipe.getOutputChance(i) / 10000;
-                boolean isSuitableForFittingWithNormalDistribution = (currentParallel * chance > 5)
-                    && (currentParallel * (1 - chance) > 5);
+                double mean = currentParallel * chance;
+                double stdDev = Math.sqrt(currentParallel * chance * (1 - chance));
+                // Check if everything within 3 standard deviations of mean is within the range
+                // of possible values (0 ~ currentParallel)
+                boolean isSuitableForFittingWithNormalDistribution = mean - 3 * stdDev >= 0
+                    && mean + 3 * stdDev <= currentParallel;
                 if (isSuitableForFittingWithNormalDistribution) {
-                    double mean = currentParallel * chance;
-                    double stdDev = Math.sqrt(currentParallel * chance * (1 - chance));
-                    Random rand = new Random();
+                    // Use Normal Distribution to fit Binomial Distribution
                     items = (long) Math.ceil(itemStackSize * (stdDev * rand.nextGaussian() + mean));
                     items = Math.max(Math.min(items, itemStackSize * currentParallel), 0);
                 } else {
+                    // Do Binomial Distribution by loop
                     for (int roll = 0; roll < currentParallel; roll++) {
                         if (recipe.getOutputChance(i) > XSTR.XSTR_INSTANCE.nextInt(10000)) {
                             items += itemStackSize;
