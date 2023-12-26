@@ -816,7 +816,8 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                 }
                 final ForgeDirection tSide = GT_Utility.determineWrenchingSide(side, aX, aY, aZ);
                 if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sWrenchList)) {
-                    if (mMetaTileEntity.onWrenchRightClick(side, tSide, aPlayer, aX, aY, aZ)) {
+
+                    if (mMetaTileEntity.onWrenchRightClick(side, tSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
                         mMetaTileEntity.markDirty();
                         GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);
                         GT_Utility.sendSoundToPlayers(
@@ -836,7 +837,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                             setCoverDataAtSide(
                                 tSide,
                                 getCoverInfoAtSide(tSide).onCoverScrewdriverClick(aPlayer, 0.5F, 0.5F, 0.5F));
-                            mMetaTileEntity.onScrewdriverRightClick(tSide, aPlayer, aX, aY, aZ);
+                            mMetaTileEntity.onScrewdriverRightClick(tSide, aPlayer, aX, aY, aZ, tCurrentItem);
                             mMetaTileEntity.markDirty();
                             GT_Utility.sendSoundToPlayers(
                                 worldObj,
@@ -852,7 +853,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                             setCoverDataAtSide(
                                 side,
                                 getCoverInfoAtSide(side).onCoverScrewdriverClick(aPlayer, aX, aY, aZ));
-                            mMetaTileEntity.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
+                            mMetaTileEntity.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, tCurrentItem);
                             mMetaTileEntity.markDirty();
                             GT_Utility.sendSoundToPlayers(
                                 worldObj,
@@ -894,7 +895,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                 }
 
                 if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sWireCutterList)) {
-                    if (mMetaTileEntity.onWireCutterRightClick(side, tSide, aPlayer, aX, aY, aZ)) {
+                    if (mMetaTileEntity.onWireCutterRightClick(side, tSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
                         mMetaTileEntity.markDirty();
                         // logic handled internally
                         GT_Utility.sendSoundToPlayers(
@@ -911,7 +912,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                 }
 
                 if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sSolderingToolList)) {
-                    if (mMetaTileEntity.onSolderingToolRightClick(side, tSide, aPlayer, aX, aY, aZ)) {
+                    if (mMetaTileEntity.onSolderingToolRightClick(side, tSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
                         mMetaTileEntity.markDirty();
                         // logic handled internally
                         GT_Utility.sendSoundToPlayers(

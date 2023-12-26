@@ -650,7 +650,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
 
     @Override
     public boolean onWrenchRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, ForgeDirection wrenchSide, float aX,
-        float aY, float aZ) {
+        float aY, float aZ, ItemStack aTool) {
         if (wrenchSide != getFrontFacing())
             return super.onWrenchRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ);
         if (aPlayer.isSneaking()) {
