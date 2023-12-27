@@ -492,6 +492,11 @@ public class GT_Values {
      */
     public static boolean debugWorldData = false;
     /**
+     * Parameter if multi tile entities (MuTEs) should be enabled in the pack. Turned off by default until
+     * implementation is done.
+     */
+    public static boolean enableMultiTileEntities = false;
+    /**
      * Number of ticks between sending sound packets to clients for electric machines. Default is 1.5 seconds. Trying to
      * mitigate lag and FPS drops.
      */
