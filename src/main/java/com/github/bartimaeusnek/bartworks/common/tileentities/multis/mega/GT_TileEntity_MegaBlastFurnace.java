@@ -344,7 +344,7 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_TileEntity_MegaMultiBlock
                 pollutionReduction = 100 - tHatch.calculatePollutionReduction(100);
                 break;
             }
-            tLiquid.amount = tLiquid.amount * (pollutionReduction + 5) / 100;
+            tLiquid.amount = tLiquid.amount * pollutionReduction / 100;
         } else {
             tOutputHatches = this.mOutputHatches;
         }
