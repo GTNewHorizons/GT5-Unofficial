@@ -941,7 +941,10 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
         String result = super.getItemStackDisplayName(aStack);
         IToolStats toolStats = getToolStats(aStack);
         if (toolStats != null) {
-            String key = "gt." + toolStats.getToolTypeName() + ".mode." + getToolMode(aStack);
+            String toolName = toolStats.getToolTypeName();
+            if (toolName == null) return result;
+
+            String key = "gt." + toolName + ".mode." + getToolMode(aStack);
             if (StatCollector.canTranslate(key)) {
                 result += " (" + StatCollector.translateToLocal(key) + ")";
             }
