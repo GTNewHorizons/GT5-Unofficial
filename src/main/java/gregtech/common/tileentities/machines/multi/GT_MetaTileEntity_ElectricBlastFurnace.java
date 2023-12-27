@@ -285,7 +285,7 @@ public class GT_MetaTileEntity_ElectricBlastFurnace extends
     }
 
     protected void multiplyPollutionFluidAmount(@Nonnull FluidStack fluid) {
-        fluid.amount = fluid.amount * Math.min(100 - getPollutionReduction() + 5, 100) / 100;
+        fluid.amount = fluid.amount * Math.min(100 - getPollutionReduction(), 100) / 100;
     }
 
     @Override
