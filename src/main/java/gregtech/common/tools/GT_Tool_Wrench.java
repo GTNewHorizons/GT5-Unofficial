@@ -29,6 +29,7 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.util.GT_ToolHarvestHelper;
+import gregtech.common.items.behaviors.Behaviour_Switch_Mode;
 import gregtech.common.items.behaviors.Behaviour_Wrench;
 import ic2.api.tile.IWrenchable;
 
@@ -145,6 +146,7 @@ public class GT_Tool_Wrench extends GT_Tool {
 
     @Override
     public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
+        aItem.addItemBehavior(aID, new Behaviour_Switch_Mode());
         aItem.addItemBehavior(aID, new Behaviour_Wrench(100));
     }
 
@@ -187,5 +189,15 @@ public class GT_Tool_Wrench extends GT_Tool {
             world.setBlockToAir(x, y, z);
             world.spawnEntityInWorld(new EntityItem(world, x, y, z, drop));
         }
+    }
+
+    @Override
+    public String getToolTypeName() {
+        return "wrench";
+    }
+
+    @Override
+    public byte getMaxMode() {
+        return 2;
     }
 }

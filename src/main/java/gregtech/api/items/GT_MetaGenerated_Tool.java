@@ -30,6 +30,7 @@ import net.minecraft.stats.StatList;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -148,6 +149,27 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
         return false;
     }
 
+    public static final boolean setToolMode(ItemStack aStack, byte aMode) {
+        NBTTagCompound aNBT = aStack.getTagCompound();
+        if (aNBT != null) {
+            aNBT = aNBT.getCompoundTag("GT.ToolStats");
+            if (aNBT != null) {
+                aNBT.setByte("Mode", aMode);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static final byte getToolMode(ItemStack aStack) {
+        NBTTagCompound aNBT = aStack.getTagCompound();
+        if (aNBT != null) {
+            aNBT = aNBT.getCompoundTag("GT.ToolStats");
+            if (aNBT != null) return aNBT.getByte("Mode");
+        }
+        return 0;
+    }
+
     /**
      * This adds a Custom Item to the ending Range.
      *
@@ -204,6 +226,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
         IToolStats tToolStats = getToolStats(rStack);
         if (tToolStats != null) {
             NBTTagCompound tMainNBT = new NBTTagCompound(), tToolNBT = new NBTTagCompound();
+            tToolNBT.setByte("Mode", (byte) 0);
             if (aPrimaryMaterial != null) {
                 tToolNBT.setString("PrimaryMaterial", aPrimaryMaterial.mName);
                 tToolNBT.setLong(
@@ -719,6 +742,14 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
         return getToolStatsInternal(aStack);
     }
 
+    public byte getToolMaxMode(ItemStack aStack) {
+        IToolStats stats = getToolStats(aStack);
+        if (stats != null) {
+            return stats.getMaxMode();
+        }
+        return 1;
+    }
+
     private IToolStats getToolStatsInternal(ItemStack aStack) {
         return aStack == null ? null : mToolStats.get((short) aStack.getItemDamage());
     }
@@ -902,6 +933,24 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
         }
         EnchantmentHelper.setEnchantments(tResult, aStack);
         return true;
+    }
+
+    @Override
+    public String getItemStackDisplayName(ItemStack aStack) {
+
+        String result = super.getItemStackDisplayName(aStack);
+        IToolStats toolStats = getToolStats(aStack);
+        if (toolStats != null) {
+            String toolName = toolStats.getToolTypeName();
+            if (toolName == null) return result;
+
+            String key = "gt." + toolName + ".mode." + getToolMode(aStack);
+            if (StatCollector.canTranslate(key)) {
+                result += " (" + StatCollector.translateToLocal(key) + ")";
+            }
+        }
+        return result;
+
     }
 
     @Override

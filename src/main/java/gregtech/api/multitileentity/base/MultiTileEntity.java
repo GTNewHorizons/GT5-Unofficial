@@ -761,18 +761,19 @@ public abstract class MultiTileEntity extends CoverableTileEntity
                         && GT_Utility.areStacksEqual(new ItemStack(Items.water_bucket, 1), tCurrentItem)) {
                         // TODO (Colorization)
                     }
+
                     if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sWrenchList))
-                        return onWrenchRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ);
+                        return onWrenchRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ, tCurrentItem);
                     if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sScrewdriverList))
-                        return onScrewdriverRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ);
+                        return onScrewdriverRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ, tCurrentItem);
                     if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sHardHammerList))
-                        return onHammerRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ);
+                        return onHammerRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ, tCurrentItem);
                     if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sSoftHammerList))
-                        return onMalletRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ);
+                        return onMalletRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ, tCurrentItem);
                     if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sSolderingToolList))
-                        return onSolderingRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ);
+                        return onSolderingRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ, tCurrentItem);
                     if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sWireCutterList))
-                        return onWireCutterRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ);
+                        return onWireCutterRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ, tCurrentItem);
 
                     final ForgeDirection coverSide = getCoverIDAtSide(side) == 0 ? wrenchSide : side;
 
@@ -857,16 +858,16 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     }
 
     public boolean onWrenchRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, ForgeDirection wrenchSide, float aX,
-        float aY, float aZ) {
+        float aY, float aZ, ItemStack aTool) {
         if (setMainFacing(wrenchSide)) {
             GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);
             GT_Utility.sendSoundToPlayers(worldObj, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1, xCoord, yCoord, zCoord);
         }
-        return true;
+        return onWrenchRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ);
     }
 
     public boolean onScrewdriverRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, ForgeDirection wrenchSide,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         if (GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 200, aPlayer)) {
             setCoverDataAtSide(
                 wrenchSide,
@@ -882,30 +883,66 @@ public abstract class MultiTileEntity extends CoverableTileEntity
             // TODO: Update connections!
             GT_Utility.sendSoundToPlayers(worldObj, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1, xCoord, yCoord, zCoord);
         }
-        return true;
+        return onScrewdriverRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ);
     }
 
     public boolean onHammerRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, ForgeDirection wrenchSide, float aX,
-        float aY, float aZ) {
+        float aY, float aZ, ItemStack aTool) {
 
-        return true;
+        return onHammerRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ);
     }
 
     public boolean onMalletRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, ForgeDirection wrenchSide, float aX,
-        float aY, float aZ) {
+        float aY, float aZ, ItemStack aTool) {
 
-        return true;
+        return onMalletRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ);
     }
 
     public boolean onSolderingRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, ForgeDirection wrenchSide,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
 
-        return true;
+        return onSolderingRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ);
     }
 
     public boolean onWireCutterRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, ForgeDirection wrenchSide,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
 
+        return onWireCutterRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ);
+    }
+
+    @Deprecated
+    public boolean onHammerRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, ForgeDirection wrenchSide, float aX,
+        float aY, float aZ) {
+        return true;
+    }
+
+    @Deprecated
+    public boolean onSolderingRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, ForgeDirection wrenchSide,
+        float aX, float aY, float aZ) {
+        return true;
+    }
+
+    @Deprecated
+    public boolean onMalletRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, ForgeDirection wrenchSide, float aX,
+        float aY, float aZ) {
+        return true;
+    }
+
+    @Deprecated
+    public boolean onWireCutterRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, ForgeDirection wrenchSide,
+        float aX, float aY, float aZ) {
+        return true;
+    }
+
+    @Deprecated
+    public boolean onWrenchRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, ForgeDirection wrenchSide, float aX,
+        float aY, float aZ) {
+        return true;
+    }
+
+    @Deprecated
+    public boolean onScrewdriverRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, ForgeDirection wrenchSide,
+        float aX, float aY, float aZ) {
         return true;
     }
 
