@@ -193,9 +193,4 @@ public abstract class GT_Tool implements IToolStats {
     public String getToolTypeName() {
         return "tool";
     }
-
-    @Override
-    public byte getMaxMode() {
-        return 1;
-    }
 }
