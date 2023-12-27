@@ -199,5 +199,7 @@ public interface IToolStats {
         return null;
     };
 
-    byte getMaxMode();
+    default byte getMaxMode() {
+        return 1;
+    }
 }
