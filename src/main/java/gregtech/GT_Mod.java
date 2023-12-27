@@ -34,7 +34,6 @@ import com.google.common.base.Stopwatch;
 import com.google.common.collect.SetMultimap;
 
 import appeng.api.AEApi;
-import appeng.helpers.InterfaceTerminalSupportedClassProvider;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
@@ -798,7 +797,7 @@ public class GT_Mod implements IGT_Mod {
             for (Map<? extends ItemHolder, ?> gt_itemStackMap : GregTech_API.sItemStackMappings) {
                 GT_Utility.reMap(gt_itemStackMap);
             }
-            for (SetMultimap<? extends GT_ItemStack, ?> gt_itemStackMap : GregTech_API.itemStackMultiMaps) {
+            for (SetMultimap<? extends ItemHolder, ?> gt_itemStackMap : GregTech_API.itemStackMultiMaps) {
                 GT_Utility.reMap(gt_itemStackMap);
             }
         } catch (Throwable e) {

@@ -12,8 +12,6 @@ import gregtech.api.interfaces.tileentity.IVoidable;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.recipe.check.FindRecipeResult;
-import gregtech.api.recipe.check.RecipeValidator;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
@@ -232,51 +230,10 @@ public abstract class AbstractProcessingLogic<P extends AbstractProcessingLogic<
     }
 
     /**
-     * {@link FindRecipeResult} can have special validator to check as many recipes as possible to match.
-     * This method tries to reuse result from the recipe checks.
-     *
-     * @return CheckRecipeResult that has meaningful context. Otherwise, null.
-     */
-    @Nullable
-    protected CheckRecipeResult processRecipeValidator(FindRecipeResult findRecipeResult) {
-        // If processRecipe is not overridden, advanced recipe validation logic is used, and we can reuse calculations.
-        if (!findRecipeResult.hasRecipeValidator()) {
-            return null;
-        }
-
-        RecipeValidator recipeValidator = findRecipeResult.getRecipeValidator();
-        if (!recipeValidator.isExecutedAtLeastOnce()) {
-            // We don't have anything to look for.
-            return null;
-        }
-
-        // There are two cases:
-        // 1 - there are actually no matching recipes
-        // 2 - there are some matching recipes, but we rejected it due to our advanced validation (e.g. OUTPUT_FULL)
-        if (findRecipeResult.getState() == FindRecipeResult.State.NOT_FOUND) {
-            // Here we're handling case 2
-            // If there are matching recipes but our validation rejected them,
-            // we should return a first one to display a proper error in the machine GUI
-            return recipeValidator.getFirstCheckResult();
-        }
-
-        // If everything is ok, reuse our calculations
-        if (findRecipeResult.isSuccessful()) {
-            return applyRecipe(
-                findRecipeResult.getRecipeNonNull(),
-                recipeValidator.getLastParallelHelper(),
-                recipeValidator.getLastOverclockCalculator(),
-                recipeValidator.getLastCheckResult());
-        }
-
-        return null;
-    }
-
-    /**
      * Applies the recipe and calculated parameters
      */
     @Nonnull
-    protected CheckRecipeResult applyRecipe(@Nonnull GT_Recipe recipe, @Nonnull GT_ParallelHelper helper,
+    protected CheckRecipeResult applyRecipeR(@Nonnull GT_Recipe recipe, @Nonnull GT_ParallelHelper helper,
         @Nonnull GT_OverclockCalculator calculator, @Nonnull CheckRecipeResult result) {
         if (!helper.getResult()
             .wasSuccessful()) {

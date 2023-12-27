@@ -36,10 +36,6 @@ public interface IMultiBlockController
 
     void unregisterCaseWithPurpose(MultiTileCasingPurpose purpose, IMultiBlockPart part);
 
-    ModularWindow createWindowGUI(UIBuildContext buildContext);
-
-    PowerLogic getPowerLogic();
-
     UUID registerItemInventory(int slots, int tier, @Nonnull InventoryType type, boolean isUpgradeInventory);
 
     ItemInventoryLogic unregisterItemInventory(@Nonnull UUID id, @Nonnull InventoryType type);

@@ -43,17 +43,7 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
-import com.gtnewhorizons.modularui.api.ModularUITextures;
-import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
-import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.api.widget.IWidgetBuilder;
-import com.gtnewhorizons.modularui.api.widget.Widget;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
-import com.gtnewhorizons.modularui.common.widget.TabButton;
-import com.gtnewhorizons.modularui.common.widget.TabContainer;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.api.enums.GT_Values.NBT;
@@ -867,6 +857,7 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
 
     // #region Energy
 
+    @Nonnull
     @Override
     public PowerLogic getPowerLogic() {
         return getPowerLogic(ForgeDirection.UNKNOWN);

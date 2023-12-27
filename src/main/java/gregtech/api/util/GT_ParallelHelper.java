@@ -320,6 +320,7 @@ public class GT_ParallelHelper {
         this.inputConsumer = inputConsumer;
         return this;
     }
+
     @Nonnull
     public GT_ParallelHelper setItemOutputInventory(ItemInventoryLogic itemOutputInventory) {
         this.itemOutputInventory = itemOutputInventory;

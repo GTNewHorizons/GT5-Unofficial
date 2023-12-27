@@ -32,16 +32,20 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.GT_Values.NBT;
+import gregtech.api.enums.InventoryType;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons.CustomIcon;
+import gregtech.api.enums.TickTime;
+import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.GUIHost;
 import gregtech.api.gui.GUIProvider;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.logic.FluidInventoryLogic;
 import gregtech.api.logic.ItemInventoryLogic;
 import gregtech.api.logic.MuTEProcessingLogic;
+import gregtech.api.logic.NullPowerLogic;
 import gregtech.api.logic.PowerLogic;
 import gregtech.api.logic.interfaces.PowerLogicHost;
 import gregtech.api.logic.interfaces.ProcessingLogicHost;
@@ -759,9 +763,9 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
     }
 
     @Override
-    @Nullable
+    @Nonnull
     public PowerLogic getPowerLogic(@Nonnull ForgeDirection side) {
-        if (side == facing) return null;
+        if (side == facing) return new NullPowerLogic();
         return power;
     }
 

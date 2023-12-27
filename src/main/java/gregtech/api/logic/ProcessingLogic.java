@@ -1,37 +1,19 @@
 package gregtech.api.logic;
 
-import static net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND;
-
 import java.util.List;
-import java.util.Map.Entry;
-import java.util.Objects;
 import java.util.UUID;
-import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.fluids.FluidStack;
 
-import org.jetbrains.annotations.NotNull;
-
 import gregtech.api.interfaces.tileentity.IRecipeLockable;
-import gregtech.api.interfaces.tileentity.IVoidable;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.enums.InventoryType;
-import gregtech.api.interfaces.tileentity.IRecipeLockable;
-import gregtech.api.interfaces.tileentity.IVoidable;
-import gregtech.api.logic.interfaces.ProcessingLogicHost;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.recipe.check.FindRecipeResult;
-import gregtech.api.recipe.check.RecipeValidator;
 import gregtech.api.recipe.check.SingleRecipeCheck;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_ParallelHelper;
@@ -43,33 +25,11 @@ import gregtech.api.util.GT_Recipe;
 @SuppressWarnings({ "unused", "UnusedReturnValue" })
 public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
 
-    protected IVoidable machine;
     protected IRecipeLockable recipeLockableMachine;
-    protected Supplier<RecipeMap<?>> recipeMapSupplier;
-    protected GT_Recipe lastRecipe;
-    protected RecipeMap<?> lastRecipeMap;
     protected ItemStack specialSlotItem;
     protected ItemStack[] inputItems;
-    protected ItemStack[] outputItems;
     protected FluidStack[] inputFluids;
-    protected FluidStack[] outputFluids;
-    protected long calculatedEut;
-    protected int duration;
-    protected long availableVoltage;
-    protected long availableAmperage;
-    protected int overClockTimeReduction = 1;
-    protected int overClockPowerIncrease = 2;
-    protected boolean protectItems;
-    protected boolean protectFluids;
     protected boolean isRecipeLocked;
-    protected int maxParallel = 1;
-    protected int calculatedParallels = 0;
-    protected Supplier<Integer> maxParallelSupplier;
-    protected int batchSize = 1;
-    protected float euModifier = 1.0f;
-    protected float speedBoost = 1.0f;
-    protected boolean amperageOC = true;
-    protected boolean isCleanroom;
     // MuTE Section, do not use for MTEs
     protected boolean hasWork;
     protected int progress;
@@ -115,163 +75,11 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
     }
 
     /**
-     * Overwrites item output result of the calculation.
-     */
-    public ProcessingLogic setOutputItems(ItemStack... itemOutputs) {
-        this.outputItems = itemOutputs;
-        return getThis();
-    }
-
-    /**
-     * Overwrites fluid output result of the calculation.
-     */
-    public ProcessingLogic setOutputFluids(FluidStack... fluidOutputs) {
-        this.outputFluids = fluidOutputs;
-        return getThis();
-    }
-
-    /**
      * Enables single recipe locking mode.
      */
     public ProcessingLogic setRecipeLocking(IRecipeLockable recipeLockableMachine, boolean isRecipeLocked) {
         this.recipeLockableMachine = recipeLockableMachine;
         this.isRecipeLocked = isRecipeLocked;
-        return getThis();
-    }
-
-    public ProcessingLogic setIsCleanroom(boolean isCleanroom) {
-        this.isCleanroom = isCleanroom;
-        return getThis();
-    }
-
-    /**
-     * Sets max amount of parallel.
-     */
-    public ProcessingLogic setMaxParallel(int maxParallel) {
-        this.maxParallel = maxParallel;
-        return getThis();
-    }
-
-    /**
-     * Sets method to get max amount of parallel.
-     */
-    public ProcessingLogic setMaxParallelSupplier(Supplier<Integer> supplier) {
-        this.maxParallelSupplier = supplier;
-        return getThis();
-    }
-
-    /**
-     * Sets batch size for batch mode.
-     */
-    public ProcessingLogic setBatchSize(int size) {
-        this.batchSize = size;
-        return getThis();
-    }
-
-    public ProcessingLogic setRecipeMap(RecipeMap<?> recipeMap) {
-        return setRecipeMapSupplier(() -> recipeMap);
-    }
-
-    public ProcessingLogic setRecipeMapSupplier(Supplier<RecipeMap<?>> supplier) {
-        this.recipeMapSupplier = supplier;
-        return getThis();
-    }
-
-    public ProcessingLogic setEuModifier(float modifier) {
-        this.euModifier = modifier;
-        return getThis();
-    }
-
-    public ProcessingLogic setSpeedBonus(float speedModifier) {
-        this.speedBoost = speedModifier;
-        return getThis();
-    }
-
-    /**
-     * Sets machine used for void protection logic.
-     */
-    public ProcessingLogic setMachine(IVoidable machine) {
-        this.machine = machine;
-        return getThis();
-    }
-
-    /**
-     * Overwrites duration result of the calculation.
-     */
-
-    public ProcessingLogic setDuration(int duration) {
-        this.duration = duration;
-        return getThis();
-    }
-
-    /**
-     * Overwrites EU/t result of the calculation.
-     */
-    @Nonnull
-    public ProcessingLogic setCalculatedEut(long calculatedEut) {
-        this.calculatedEut = calculatedEut;
-        return getThis();
-    }
-
-    /**
-     * Sets voltage of the machine. It doesn't need to be actual voltage (excluding amperage) of the machine;
-     * For example, most of the multiblock machines set maximum possible input power (including amperage) as voltage
-     * and 1 as amperage. That way recipemap search will be executed with overclocked voltage.
-     */
-    @Nonnull
-    public ProcessingLogic setAvailableVoltage(long voltage) {
-        availableVoltage = voltage;
-        return getThis();
-    }
-
-    /**
-     * Sets amperage of the machine. This amperage doesn't involve in EU/t when searching recipemap.
-     * Useful for preventing tier skip but still considering amperage for parallel.
-     */
-    @Nonnull
-    public ProcessingLogic setAvailableAmperage(long amperage) {
-        availableAmperage = amperage;
-        return getThis();
-    }
-
-    @Nonnull
-    public ProcessingLogic setVoidProtection(boolean protectItems, boolean protectFluids) {
-        this.protectItems = protectItems;
-        this.protectFluids = protectFluids;
-        return getThis();
-    }
-
-    /**
-     * Sets custom overclock ratio. 2/4 by default.
-     * Parameters represent number of bit shift, so 1 -> 2x, 2 -> 4x.
-     */
-    @Nonnull
-    public ProcessingLogic setOverclock(int timeReduction, int powerIncrease) {
-        this.overClockTimeReduction = timeReduction;
-        this.overClockPowerIncrease = powerIncrease;
-        return getThis();
-    }
-
-    /**
-     * Sets overclock ratio to 4/4.
-     */
-    @Nonnull
-    public ProcessingLogic enablePerfectOverclock() {
-        return this.setOverclock(2, 2);
-    }
-
-    /**
-     * Sets wether the multi should use amperage to OC or not
-     */
-    @Nonnull
-    public ProcessingLogic setAmperageOC(boolean amperageOC) {
-        this.amperageOC = amperageOC;
-        return getThis();
-    }
-
-    @Nonnull
-    public ProcessingLogic setMuTEMode(boolean muteMode) {
-        this.muteMode = muteMode;
         return getThis();
     }
 
@@ -300,20 +108,7 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
      */
     @Nonnull
     public CheckRecipeResult process() {
-        RecipeMap<?> recipeMap;
-        if (recipeMapSupplier == null) {
-            recipeMap = null;
-        } else {
-            recipeMap = recipeMapSupplier.get();
-        }
-        if (lastRecipeMap != recipeMap) {
-            lastRecipe = null;
-            lastRecipeMap = recipeMap;
-        }
-
-        if (maxParallelSupplier != null) {
-            maxParallel = maxParallelSupplier.get();
-        }
+        RecipeMap<?> recipeMap = preProcess();
 
         if (inputItems == null) {
             inputItems = new ItemStack[0];
@@ -381,7 +176,7 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
     protected CalculationResult processRecipe(@Nonnull GT_Recipe recipe) {
         CheckRecipeResult result = validateRecipe(recipe);
         if (!result.wasSuccessful()) {
-            return result;
+            return CalculationResult.ofFailure(result);
         }
 
         GT_ParallelHelper helper = createParallelHelper(recipe);
@@ -390,24 +185,6 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
         helper.build();
 
         return applyRecipe(recipe, helper, calculator, result);
-    }
-
-    @Nonnull
-    protected CheckRecipeResult processRecipe(@Nonnull List<GT_Recipe> recipes, @Nonnull ItemInventoryLogic itemInput,
-        @Nonnull FluidInventoryLogic fluidInput) {
-        CheckRecipeResult result = CheckRecipeResultRegistry.INTERNAL_ERROR;
-        for (GT_Recipe recipe : recipes) {
-            Objects.requireNonNull(recipe);
-            GT_ParallelHelper helper = createParallelHelper(recipe, itemInput, fluidInput);
-            GT_OverclockCalculator calculator = createOverclockCalculator(recipe);
-            helper.setCalculator(calculator);
-            helper.build();
-            result = helper.getResult();
-            if (result.wasSuccessful()) {
-                return applyRecipe(recipe, helper, calculator, result);
-            }
-        }
-        return result;
     }
 
     /**
@@ -421,7 +198,7 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
             return CalculationResult.ofFailure(helper.getResult());
         }
 
-        return CalculationResult.ofSuccess(applyRecipe(recipe, helper, calculator, result));
+        return CalculationResult.ofSuccess(applyRecipeR(recipe, helper, calculator, result));
     }
 
     /**
@@ -573,4 +350,3 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
         }
     }
 }
-

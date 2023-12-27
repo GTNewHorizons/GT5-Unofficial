@@ -3,7 +3,6 @@ package gregtech.api.logic.interfaces;
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -18,9 +17,9 @@ public interface PowerLogicHost {
     /**
      * 
      * @param side Side being access to try and get the power logic from
-     * @return Can return null if the side doesn't allow the return of the logic.
+     * @return Can return NullPowerLogic if the side doesn't allow the return of the logic. That power logic is unusable
      */
-    @Nullable
+    @Nonnull
     PowerLogic getPowerLogic(@Nonnull ForgeDirection side);
 
     /**

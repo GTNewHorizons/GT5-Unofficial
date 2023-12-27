@@ -3,6 +3,8 @@ package gregtech.api.multitileentity.multiblock.base;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -96,14 +98,14 @@ public abstract class ComplexParallelController<C extends ComplexParallelControl
     }
 
     @Override
-    public void setProcessingLogicPower(P processingLogic) {
+    public void setProcessingLogicPower(@Nonnull P processingLogic) {
         processingLogic.setAmperageOC(true);
         processingLogic.setAvailableAmperage(getPowerLogic().getMaxAmperage() / maxComplexParallels);
         processingLogic.setAvailableVoltage(getPowerLogic().getVoltage() / maxComplexParallels);
     }
 
     @Override
-    public void updateProcessingLogic(P processingLogic) {
+    public void updateProcessingLogic(@Nonnull P processingLogic) {
         processingLogic.setMaxComplexParallel(maxComplexParallels);
     }
 }

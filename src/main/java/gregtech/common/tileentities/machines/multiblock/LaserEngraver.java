@@ -31,8 +31,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
 import gregtech.api.multitileentity.multiblock.base.ComplexParallelController;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.common.tileentities.machines.multiblock.logic.LaserEngraverProcessingLogic;
 
@@ -54,7 +54,7 @@ public class LaserEngraver extends ComplexParallelController<LaserEngraver, Lase
     protected static final Vec3Impl STRUCTURE_OFFSET_T5 = new Vec3Impl(-18, 0, 9);
     protected static final Vec3Impl STRUCTURE_OFFSET_T6 = new Vec3Impl(18, 0, 0);
     protected static final int MAX_PROCESSES = 6;
-    protected GT_Recipe.GT_Recipe_Map recipeMap;
+    protected RecipeMap<?> recipeMap;
     private UUID LaserEngraver;
 
     @Override

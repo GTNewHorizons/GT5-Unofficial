@@ -21,9 +21,9 @@ import com.gtnewhorizons.modularui.common.widget.Scrollable;
 
 import gregtech.api.enums.InventoryType;
 import gregtech.api.logic.interfaces.ProcessingLogicHost;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.recipe.check.FindRecipeResult;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
@@ -54,9 +54,8 @@ public class MuTEProcessingLogic<P extends MuTEProcessingLogic<P>> extends Abstr
     @Nonnull
     @Override
     public CheckRecipeResult process() {
-        GT_Recipe.GT_Recipe_Map recipeMap = preProcess();
+        RecipeMap<?> recipeMap = preProcess();
 
-        FindRecipeResult findRecipeResult = FindRecipeResult.NOT_FOUND;
         ItemInventoryLogic itemInput = null;
         FluidInventoryLogic fluidInput = null;
         if (machineHost.isInputSeparated()) {
@@ -67,28 +66,18 @@ public class MuTEProcessingLogic<P extends MuTEProcessingLogic<P>> extends Abstr
                 fluidInput = Objects.requireNonNull(
                     machineHost.getFluidLogic(InventoryType.Input, itemInput.getConnectedFluidInventoryID()));
                 fluidOutputID = itemInput.getConnectedFluidInventoryID();
-                findRecipeResult = findRecipe(recipeMap, itemInput, fluidInput);
-                if (findRecipeResult.isSuccessful()) break;
             }
         } else {
             itemInput = Objects.requireNonNull(machineHost.getItemLogic(InventoryType.Input, null));
             fluidInput = Objects.requireNonNull(machineHost.getFluidLogic(InventoryType.Input, null));
-            findRecipeResult = findRecipe(recipeMap, itemInput, fluidInput);
         }
 
-        CheckRecipeResult recipeValidatorResult = processRecipeValidator(findRecipeResult);
+        CheckRecipeResult recipeValidatorResult = null;
         if (recipeValidatorResult != null) {
             return recipeValidatorResult;
         }
 
-        if (!findRecipeResult.isSuccessful()) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
-        }
-
-        return processRecipe(
-            findRecipeResult.getRecipesPossible(),
-            Objects.requireNonNull(itemInput),
-            Objects.requireNonNull(fluidInput));
+        return processRecipe(null, Objects.requireNonNull(itemInput), Objects.requireNonNull(fluidInput));
     }
 
     @Nonnull
@@ -103,7 +92,7 @@ public class MuTEProcessingLogic<P extends MuTEProcessingLogic<P>> extends Abstr
             helper.build();
             result = helper.getResult();
             if (result.wasSuccessful()) {
-                return applyRecipe(recipe, helper, calculator, result);
+                return applyRecipeR(recipe, helper, calculator, result);
             }
         }
         return result;
@@ -113,13 +102,13 @@ public class MuTEProcessingLogic<P extends MuTEProcessingLogic<P>> extends Abstr
      * Override if you don't work with regular gt recipe maps
      */
     @Nonnull
-    protected FindRecipeResult findRecipe(@Nullable GT_Recipe.GT_Recipe_Map map, @Nonnull ItemInventoryLogic itemInput,
+    protected Object findRecipe(@Nullable RecipeMap<?> map, @Nonnull ItemInventoryLogic itemInput,
         @Nonnull FluidInventoryLogic fluidInput) {
         if (map == null) {
-            return FindRecipeResult.NOT_FOUND;
+            return false;
         }
 
-        return map.findRecipeWithResult(lastRecipe, availableVoltage, itemInput, fluidInput);
+        return true;
     }
 
     @Nonnull

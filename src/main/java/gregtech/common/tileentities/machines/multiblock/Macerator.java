@@ -11,19 +11,12 @@ import static gregtech.api.util.GT_StructureUtilityMuTE.*;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.util.ResourceLocation;
-
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.SoundResource;
 import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
 import gregtech.api.multitileentity.multiblock.base.StackableController;
-import gregtech.api.recipe.RecipeMap;
-import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.common.tileentities.machines.multiblock.logic.MaceratorProcessingLogic;
 
@@ -129,11 +122,6 @@ public class Macerator extends StackableController<Macerator, MaceratorProcessin
     @Override
     public Vec3Impl getAfterLastStackOffset() {
         return new Vec3Impl(-1, 0, 0);
-    }
-
-    @Override
-    protected boolean checkRecipe() {
-        if (isSeparateInputs()) {
     }
 
     @Override

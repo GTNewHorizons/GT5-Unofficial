@@ -12,7 +12,12 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_IN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 
 import java.math.RoundingMode;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -30,12 +35,6 @@ import net.minecraftforge.fluids.Fluid;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow.Builder;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.DropDownWidget;
-import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
-import com.gtnewhorizons.modularui.common.widget.Scrollable;
-import com.gtnewhorizons.modularui.common.widget.SlotGroup;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.enums.GT_Values.NBT;
 import gregtech.api.enums.InventoryType;
@@ -45,6 +44,7 @@ import gregtech.api.gui.GUIProvider;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.logic.FluidInventoryLogic;
 import gregtech.api.logic.ItemInventoryLogic;
+import gregtech.api.logic.NullPowerLogic;
 import gregtech.api.logic.PowerLogic;
 import gregtech.api.logic.interfaces.PowerLogicHost;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
@@ -514,19 +514,19 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     // #region Energy - Depending on the part type - proxy to the multiblock controller, if we have one
 
     @Override
-    @Nullable
+    @Nonnull
     public PowerLogic getPowerLogic(@Nonnull ForgeDirection side) {
         if (side != facing && side != ForgeDirection.UNKNOWN) {
-            return null;
+            return new NullPowerLogic();
         }
 
         if (!modeSelected(ENERGY_IN, ENERGY_OUT)) {
-            return null;
+            return new NullPowerLogic();
         }
 
         final IMultiBlockController controller = getTarget(true);
         if (controller == null) {
-            return null;
+            return new NullPowerLogic();
         }
         return controller.getPowerLogic();
     }
