@@ -18,6 +18,40 @@ public interface ProcessingLogicHost<P extends MuTEProcessingLogic<P>>
 
     boolean isInputSeparated();
 
+    void setInputSeparation(Boolean inputSeparation);
+
+    default boolean supportsInputSeparation() {
+        return true;
+    }
+
+    default boolean getDefaultInputSeparationMode() {
+        return false;
+    }
+
+    boolean isRecipeLockingEnabled();
+
+    void setRecipeLocking(Boolean recipeLocked);
+
+    default boolean supportsSingleRecipeLocking() {
+        return true;
+    }
+
+    default boolean getDefaultRecipeLockingMode() {
+        return false;
+    }
+
+    default boolean supportsBatchMode() {
+        return true;
+    }
+
+    void setBatchMode(Boolean batchMode);
+
+    boolean isBatchModeEnabled();
+
+    default boolean getDefaultBatchMode() {
+        return false;
+    }
+
     /**
      * Get what the machine can void or not
      */

@@ -15,6 +15,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.widget.Widget;
+import com.gtnewhorizons.modularui.common.widget.Scrollable;
+
 import gregtech.api.enums.InventoryType;
 import gregtech.api.logic.interfaces.ProcessingLogicHost;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -249,6 +253,14 @@ public class MuTEProcessingLogic<P extends MuTEProcessingLogic<P>> extends Abstr
         if (logicNBT.hasKey("fluidOutputID")) {
             fluidOutputID = UUID.fromString(logicNBT.getString("fluidOutputID"));
         }
+    }
+
+    /**
+     * Returns a gui part, which will be displayed in a separate tab on the machine's gui.
+     */
+    @Nonnull
+    public Widget getGUIPart(ModularWindow.Builder builder) {
+        return new Scrollable();
     }
 
     // #endregion

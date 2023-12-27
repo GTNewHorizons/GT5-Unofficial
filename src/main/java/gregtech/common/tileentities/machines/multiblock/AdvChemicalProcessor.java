@@ -99,11 +99,6 @@ public class AdvChemicalProcessor
     }
 
     @Override
-    public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.chemicalReactorRecipes;
-    }
-
-    @Override
     public void readMultiTileNBT(NBTTagCompound nbt) {
         super.readMultiTileNBT(nbt);
         setMaxComplexParallels(nbt.getInteger("processors"), false);
@@ -380,9 +375,8 @@ public class AdvChemicalProcessor
         onStructureChange();
     }
 
-    @Override
     protected MultiChildWidget createMainPage(IWidgetBuilder<?> builder) {
-        MultiChildWidget child = super.createMainPage(builder);
+        MultiChildWidget child = new MultiChildWidget();
         for (int i = 0; i < MAX_PROCESSES; i++) {
             final int processIndex = i;
             child.addChild(

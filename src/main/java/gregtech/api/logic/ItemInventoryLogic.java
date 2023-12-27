@@ -239,11 +239,17 @@ public class ItemInventoryLogic {
         }
     }
 
+    /**
+     * Return a scrollable widget with only the inventory.
+     */
     @Nonnull
     public Widget getGuiPart() {
         return getGUIPart(DEFAULT_COLUMNS_PER_ROW);
     }
 
+    /**
+     * Return a scrollable widget with only the inventory.
+     */
     @Nonnull
     public Widget getGUIPart(int columnsPerRow) {
         final Scrollable scrollable = new Scrollable();
