@@ -288,7 +288,7 @@ public class GT_Mod implements IGT_Mod {
         new GT_Loader_MetaTileEntities().run();
         if (GT_Values.enableMultiTileEntities) {
             new GT_Loader_MultiTileEntities().run();
-        }        
+        }
 
         new GT_Loader_CircuitBehaviors().run();
         new GT_CoverBehaviorLoader().run();
