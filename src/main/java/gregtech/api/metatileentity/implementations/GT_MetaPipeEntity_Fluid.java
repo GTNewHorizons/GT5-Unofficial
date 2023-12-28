@@ -524,7 +524,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
                 boolean wasActionPerformed = false;
 
                 int limit = GregTech_API.sSpecialFile.get(ConfigCategories.general, "PipeWrenchingChainRange", 64);
-                for (int painted = 0; painted < limit; painted++) {
+                for (int connected = 0; connected < limit; connected++) {
 
                     TileEntity nextPipeBaseTile = currentPipeBase.getTileEntityAtSide(tSide);
 
