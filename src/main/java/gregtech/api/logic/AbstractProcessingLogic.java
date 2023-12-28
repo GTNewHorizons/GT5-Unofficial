@@ -229,7 +229,8 @@ public abstract class AbstractProcessingLogic<P extends AbstractProcessingLogic<
     }
 
     /**
-     * Applies the recipe and calculated parameters
+     * Check has been succeeded, so it applies the recipe and calculated parameters.
+     * At this point, inputs have been already consumed.
      */
     @Nonnull
     protected CheckRecipeResult applyRecipe(@Nonnull GT_Recipe recipe, @Nonnull GT_ParallelHelper helper,
@@ -256,6 +257,11 @@ public abstract class AbstractProcessingLogic<P extends AbstractProcessingLogic<
         }
         duration = (int) finalDuration;
 
+        CheckRecipeResult hookResult = onRecipeStart(recipe);
+        if (!hookResult.wasSuccessful()) {
+            return hookResult;
+        }
+
         outputItems = helper.getItemOutputs();
         outputFluids = helper.getFluidOutputs();
 
@@ -275,6 +281,19 @@ public abstract class AbstractProcessingLogic<P extends AbstractProcessingLogic<
      */
     @Nonnull
     protected CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
+        return CheckRecipeResultRegistry.SUCCESSFUL;
+    }
+
+    /**
+     * Override to perform additional logic when recipe starts.
+     *
+     * This is called when the recipe processing logic has finished all
+     * checks, consumed all inputs, but has not yet set the outputs to
+     * be produced. Returning a result other than SUCCESSFUL will void
+     * all inputs!
+     */
+    @Nonnull
+    protected CheckRecipeResult onRecipeStart(@Nonnull GT_Recipe recipe) {
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
