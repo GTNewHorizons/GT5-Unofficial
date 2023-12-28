@@ -869,7 +869,7 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
         return GT_Utility.trans(aKey, aEnglish);
     }
 
-    private boolean connectableColor(TileEntity tTileEntity) {
+    protected boolean connectableColor(TileEntity tTileEntity) {
         // Determine if two entities are connectable based on their colorization:
         // Uncolored can connect to anything
         // If both are colored they must be the same color to connect.
