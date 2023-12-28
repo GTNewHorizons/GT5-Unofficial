@@ -3,7 +3,6 @@ package gregtech.api.logic;
 import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -241,22 +240,22 @@ public abstract class AbstractProcessingLogic<P extends AbstractProcessingLogic<
             lastRecipe = null;
         }
         calculatedParallels = helper.getCurrentParallel();
-    
+
         if (calculator.getConsumption() == Long.MAX_VALUE) {
             return CheckRecipeResultRegistry.POWER_OVERFLOW;
         }
         if (calculator.getDuration() == Integer.MAX_VALUE) {
             return CheckRecipeResultRegistry.DURATION_OVERFLOW;
         }
-    
+
         calculatedEut = calculator.getConsumption();
-    
+
         double finalDuration = calculateDuration(recipe, helper, calculator);
         if (finalDuration >= Integer.MAX_VALUE) {
             return CheckRecipeResultRegistry.DURATION_OVERFLOW;
         }
         duration = (int) finalDuration;
-    
+
         outputItems = helper.getItemOutputs();
         outputFluids = helper.getFluidOutputs();
 

@@ -1,7 +1,6 @@
 package gregtech.api.logic;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
