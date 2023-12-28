@@ -92,7 +92,7 @@ public class MuTEProcessingLogic<P extends MuTEProcessingLogic<P>> extends Abstr
             helper.build();
             result = helper.getResult();
             if (result.wasSuccessful()) {
-                return applyRecipeR(recipe, helper, calculator, result);
+                return applyRecipe(recipe, helper, calculator, result);
             }
         }
         return result;

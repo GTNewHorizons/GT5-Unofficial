@@ -40,7 +40,7 @@ public class FusionSpecialValueFormatter implements INEISpecialInfoFormatter {
         } else if (startupPower <= 320 * M * 16) {
             tier = 4;
         } else {
-            tier = 4;
+            tier = 5;
         }
 
         if (voltage <= GT_Values.V[6]) {

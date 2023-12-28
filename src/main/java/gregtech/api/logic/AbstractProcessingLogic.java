@@ -233,35 +233,30 @@ public abstract class AbstractProcessingLogic<P extends AbstractProcessingLogic<
      * Applies the recipe and calculated parameters
      */
     @Nonnull
-    protected CheckRecipeResult applyRecipeR(@Nonnull GT_Recipe recipe, @Nonnull GT_ParallelHelper helper,
+    protected CheckRecipeResult applyRecipe(@Nonnull GT_Recipe recipe, @Nonnull GT_ParallelHelper helper,
         @Nonnull GT_OverclockCalculator calculator, @Nonnull CheckRecipeResult result) {
-        if (!helper.getResult()
-            .wasSuccessful()) {
-            return helper.getResult();
-        }
-
         if (recipe.mCanBeBuffered) {
             lastRecipe = recipe;
         } else {
             lastRecipe = null;
         }
         calculatedParallels = helper.getCurrentParallel();
-
+    
         if (calculator.getConsumption() == Long.MAX_VALUE) {
             return CheckRecipeResultRegistry.POWER_OVERFLOW;
         }
         if (calculator.getDuration() == Integer.MAX_VALUE) {
             return CheckRecipeResultRegistry.DURATION_OVERFLOW;
         }
-
+    
         calculatedEut = calculator.getConsumption();
-
+    
         double finalDuration = calculateDuration(recipe, helper, calculator);
         if (finalDuration >= Integer.MAX_VALUE) {
             return CheckRecipeResultRegistry.DURATION_OVERFLOW;
         }
         duration = (int) finalDuration;
-
+    
         outputItems = helper.getItemOutputs();
         outputFluids = helper.getFluidOutputs();
 
@@ -277,7 +272,7 @@ public abstract class AbstractProcessingLogic<P extends AbstractProcessingLogic<
     }
 
     /**
-     * Override to do additional check for finding recipe if needed, mainly for special value of the recipe.
+     * Override to do additional check for found recipe if needed.
      */
     @Nonnull
     protected CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
@@ -299,17 +294,6 @@ public abstract class AbstractProcessingLogic<P extends AbstractProcessingLogic<
             .setDurationDecreasePerOC(overClockTimeReduction)
             .setEUtIncreasePerOC(overClockPowerIncrease);
     }
-
-    /**
-     * Use {@link #createOverclockCalculator(GT_Recipe)}
-     */
-    @Nonnull
-    @Deprecated
-    protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe,
-        @Nullable GT_ParallelHelper helper) {
-        return createOverclockCalculator(recipe);
-    }
-
     // #endregion
 
     // #region Getters

@@ -30,16 +30,6 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
     protected ItemStack[] inputItems;
     protected FluidStack[] inputFluids;
     protected boolean isRecipeLocked;
-    // MuTE Section, do not use for MTEs
-    protected boolean hasWork;
-    protected int progress;
-    @Nonnull
-    protected CheckRecipeResult recipeResult = CheckRecipeResultRegistry.NONE;
-    @Nullable
-    protected UUID itemOutputID;
-    @Nullable
-    protected UUID fluidOutputID;
-    protected boolean muteMode;
 
     public ProcessingLogic() {}
 
@@ -130,7 +120,6 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
                 recipeLockableMachine.getSingleRecipeCheck()
                     .getRecipe()).checkRecipeResult;
         }
-        // If processRecipe is not overridden, advanced recipe validation logic is used, and we can reuse calculations.
         Stream<GT_Recipe> matchedRecipes = findRecipeMatches(recipeMap);
         Iterable<GT_Recipe> recipeIterable = matchedRecipes::iterator;
         CheckRecipeResult checkRecipeResult = CheckRecipeResultRegistry.NO_RECIPE;
@@ -161,52 +150,17 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
             return CalculationResult.ofFailure(result);
         }
 
-        return processRecipe(recipe);
-    }
-
-    /**
-     * Checks if supplied recipe is valid for process.
-     * If so, additionally performs input consumption, output calculation with parallel, and overclock calculation.
-     *
-     * Use {@link #processRecipe(GT_Recipe, ItemInventoryLogic, FluidInventoryLogic)} for MuTEs
-     * 
-     * @param recipe The recipe which will be checked and processed
-     */
-    @Nonnull
-    protected CalculationResult processRecipe(@Nonnull GT_Recipe recipe) {
-        CheckRecipeResult result = validateRecipe(recipe);
-        if (!result.wasSuccessful()) {
-            return CalculationResult.ofFailure(result);
-        }
-
         GT_ParallelHelper helper = createParallelHelper(recipe);
         GT_OverclockCalculator calculator = createOverclockCalculator(recipe);
         helper.setCalculator(calculator);
         helper.build();
 
-        return applyRecipe(recipe, helper, calculator, result);
-    }
-
-    /**
-     * Applies the recipe and calculated parameters
-     */
-    @Nonnull
-    protected CalculationResult applyRecipe(@Nonnull GT_Recipe recipe, @Nonnull GT_ParallelHelper helper,
-        @Nonnull GT_OverclockCalculator calculator, @Nonnull CheckRecipeResult result) {
         if (!helper.getResult()
             .wasSuccessful()) {
             return CalculationResult.ofFailure(helper.getResult());
         }
 
-        return CalculationResult.ofSuccess(applyRecipeR(recipe, helper, calculator, result));
-    }
-
-    /**
-     * Override to tweak final duration that will be set as a result of this logic class.
-     */
-    protected double calculateDuration(@Nonnull GT_Recipe recipe, @Nonnull GT_ParallelHelper helper,
-        @Nonnull GT_OverclockCalculator calculator) {
-        return calculator.getDuration() * helper.getDurationMultiplierDouble();
+        return CalculationResult.ofSuccess(applyRecipe(recipe, helper, calculator, result));
     }
 
     /**
@@ -230,16 +184,7 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
     }
 
     /**
-     * Override to do additional check for found recipe if needed.
-     */
-    @Nonnull
-    protected CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
-        return CheckRecipeResultRegistry.SUCCESSFUL;
-    }
-
-    /**
      * Override to tweak parallel logic if needed.
-     * Use {@link #createParallelHelper(GT_Recipe, ItemInventoryLogic, FluidInventoryLogic)} for MuTEs
      */
     @Nonnull
     protected GT_ParallelHelper createParallelHelper(@Nonnull GT_Recipe recipe) {
@@ -256,37 +201,6 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
             .setOutputCalculation(true);
     }
 
-    @Nonnull
-    protected GT_ParallelHelper createParallelHelper(@Nonnull GT_Recipe recipe, @Nonnull ItemInventoryLogic itemInput,
-        @Nonnull FluidInventoryLogic fluidInput) {
-        return new GT_ParallelHelper().setRecipe(recipe)
-            .setItemInputInventory(itemInput)
-            .setFluidInputInventory(fluidInput)
-            .setAvailableEUt(availableVoltage * availableAmperage)
-            .setMaxParallel(maxParallel)
-            .setEUtModifier(euModifier)
-            .enableBatchMode(batchSize)
-            .setConsumption(true)
-            .setOutputCalculation(true)
-            .setMuTEMode(muteMode);
-    }
-
-    /**
-     * Override to tweak overclock logic if needed.
-     */
-    @Nonnull
-    protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
-        return new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
-            .setAmperage(availableAmperage)
-            .setEUt(availableVoltage)
-            .setDuration(recipe.mDuration)
-            .setSpeedBoost(speedBoost)
-            .setEUtDiscount(euModifier)
-            .setAmperageOC(amperageOC)
-            .setDurationDecreasePerOC(overClockTimeReduction)
-            .setEUtIncreasePerOC(overClockPowerIncrease);
-    }
-
     /**
      * Override to perform additional logic when recipe starts.
      *
@@ -300,31 +214,7 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
-    // endregion
-
-    // #region Getters
-
-    public ItemStack[] getOutputItems() {
-        return outputItems;
-    }
-
-    public FluidStack[] getOutputFluids() {
-        return outputFluids;
-    }
-
-    public int getDuration() {
-        return duration;
-    }
-
-    public long getCalculatedEut() {
-        return calculatedEut;
-    }
-
-    public int getCurrentParallels() {
-        return calculatedParallels;
-    }
-
-    // endregion
+    // #endregion
 
     /**
      * Represents the status of check recipe calculation. {@link #successfullyConsumedInputs} does not necessarily mean
