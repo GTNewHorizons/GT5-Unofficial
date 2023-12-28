@@ -912,7 +912,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
     public static class GT_Recipe_WithAlt extends GT_Recipe {
 
-        ItemStack[][] mOreDictAlt;
+        public ItemStack[][] mOreDictAlt;
 
         /**
          * Only for {@link GT_RecipeBuilder}.
