@@ -523,18 +523,13 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
 
                 boolean wasActionPerformed = false;
 
-                int limit = GregTech_API.sSpecialFile.get(ConfigCategories.general, "PipeLineChainRange", 64);
+                int limit = GregTech_API.sSpecialFile.get(ConfigCategories.general, "PipeLineConnectionMaxRange", 64);
                 for (int painted = 0; painted < limit; painted++) {
 
                     TileEntity nextPipeBaseTile = currentPipeBase.getTileEntityAtSide(tSide);
 
-                    // if next tile doesn't exist
-                    if (nextPipeBaseTile == null) {
-                        return wasActionPerformed;
-                    }
-
-                    // if next tile is GT tile
-                    if (!(nextPipeBaseTile instanceof IGregTechTileEntity)) {
+                    // if next tile doesn't exist or if next tile is not GT tile
+                    if (!(nextPipeBaseTile instanceof IGregTechTileEntity nextPipeBase)) {
                         return wasActionPerformed;
                     }
 
@@ -542,8 +537,6 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
                     if (!currentPipe.connectableColor(nextPipeBaseTile)) {
                         return wasActionPerformed;
                     }
-
-                    IGregTechTileEntity nextPipeBase = (IGregTechTileEntity) nextPipeBaseTile;
 
                     GT_MetaPipeEntity_Fluid nextPipe = nextPipeBase
                         .getMetaTileEntity() instanceof GT_MetaPipeEntity_Fluid
