@@ -422,8 +422,6 @@ GT5U.gui.button.highlight=Highlight machine in the world
 GT5U.gui.text.success=§aProcessing recipe
 GT5U.gui.text.generating=§aGenerating power
 GT5U.gui.text.no_recipe=§7No valid recipe found
-#deprecated
-GT5U.gui.text.output_full=§7Not enough output space
 GT5U.gui.text.item_output_full=§7Not enough item output space
 GT5U.gui.text.fluid_output_full=§7Not enough fluid output space
 GT5U.gui.text.none=

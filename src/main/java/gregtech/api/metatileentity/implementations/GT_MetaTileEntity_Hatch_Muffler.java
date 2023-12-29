@@ -194,15 +194,6 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
     }
 
     /**
-     * @return pollution success
-     * @deprecated replaced by {@link .polluteEnvironment(MetaTileEntity)}
-     */
-    @Deprecated
-    public boolean polluteEnvironment() {
-        return polluteEnvironment(null);
-    }
-
-    /**
      * @param mte The multi-block controller's {@link MetaTileEntity} MetaTileEntity is passed so newer muffler hatches
      *            can do wacky things with the multis
      * @return pollution success

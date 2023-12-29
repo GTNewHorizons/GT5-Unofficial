@@ -10,7 +10,6 @@ import static mcp.mobius.waila.api.SpecialChars.RESET;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -173,22 +172,6 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             .get(ConfigCategories.machineconfig, "MultiBlockMachines.damageFactorLow", 5);
         this.damageFactorHigh = (float) GregTech_API.sMachineFile
             .get(ConfigCategories.machineconfig, "MultiBlockMachines.damageFactorHigh", 0.6f);
-    }
-
-    /**
-     * @deprecated Use {@link MetaTileEntity#isValid()}
-     */
-    @Deprecated
-    public static boolean isValidMetaTileEntity(MetaTileEntity aMetaTileEntity) {
-        return aMetaTileEntity.isValid();
-    }
-
-    /**
-     * @deprecated Use {@link GT_Utility#filterValidMTEs}
-     */
-    @Deprecated
-    public static <T extends MetaTileEntity> List<T> filterValidMetaTileEntities(Collection<T> metaTileEntities) {
-        return new ArrayList<>(filterValidMTEs(metaTileEntities));
     }
 
     @Override
