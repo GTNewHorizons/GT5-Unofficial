@@ -45,14 +45,6 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
     private final int ANY_INPUT_FILTER_OUTPUT = 6; // 110
     private final int ANY_INPUT_INVERT_OUTPUT = 7; // 111
 
-    /**
-     * @deprecated use {@link #GT_Cover_Fluidfilter(ITexture coverTexture)} instead
-     */
-    @Deprecated
-    GT_Cover_Fluidfilter() {
-        this(null);
-    }
-
     public GT_Cover_Fluidfilter(ITexture coverTexture) {
         super(FluidFilterData.class, coverTexture);
     }

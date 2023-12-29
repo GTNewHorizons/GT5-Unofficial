@@ -61,14 +61,6 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
     public final int mTransferRate;
     private boolean allowFluid = false;
 
-    /**
-     * @deprecated use {@link #GT_Cover_FluidRegulator(int aTransferRate, ITexture coverTexture)} instead
-     */
-    @Deprecated
-    public GT_Cover_FluidRegulator(int aTransferRate) {
-        this(aTransferRate, null);
-    }
-
     public GT_Cover_FluidRegulator(int aTransferRate, ITexture coverTexture) {
         super(FluidRegulatorData.class, coverTexture);
         if (aTransferRate > (-1 >>> (Integer.SIZE - SPEED_LENGTH)))

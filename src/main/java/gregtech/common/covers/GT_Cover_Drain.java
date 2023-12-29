@@ -18,14 +18,6 @@ import gregtech.api.util.GT_Utility;
 
 public class GT_Cover_Drain extends GT_CoverBehavior {
 
-    /**
-     * @deprecated use {@link #GT_Cover_Drain(ITexture coverTexture)} instead
-     */
-    @Deprecated
-    public GT_Cover_Drain() {
-        this(null);
-    }
-
     public GT_Cover_Drain(ITexture coverTexture) {
         super(coverTexture);
     }

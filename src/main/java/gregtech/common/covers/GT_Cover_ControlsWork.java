@@ -22,14 +22,6 @@ import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget
 
 public class GT_Cover_ControlsWork extends GT_CoverBehavior implements IControlsWorkCover {
 
-    /**
-     * @deprecated use {@link #GT_Cover_ControlsWork(ITexture coverTexture)} instead
-     */
-    @Deprecated
-    public GT_Cover_ControlsWork() {
-        this(null);
-    }
-
     public GT_Cover_ControlsWork(ITexture coverTexture) {
         super(coverTexture);
     }
