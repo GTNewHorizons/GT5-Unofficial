@@ -58,6 +58,7 @@ import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Sodiumsulfate;
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.ZincSulfate;
 import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.OrePrefixes.cell;
 import static gregtech.api.enums.OrePrefixes.crateGtDust;
@@ -940,9 +941,20 @@ public class PlatinumSludgeOverHaul {
                 e.printStackTrace();
             }
         }
-
-        if (!BW_Util.checkStackAndPrefix(stack)) return false;
-
+        if (GalaxySpace.isModLoaded()) {
+            if (stack.getItem() == GT_ModHandler.getModItem(GalaxySpace.ID, "metalsblock", 1L, 7).getItem()) {
+                return true;
+            }
+        }
+        if (NewHorizonsCoreMod.isModLoaded()) {
+            if (stack.getItem()
+                    == GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.IndustryFrame", 1L).getItem()) {
+                return true;
+            }
+        }
+        if (!BW_Util.checkStackAndPrefix(stack)) {
+            return false;
+        }
         return Arrays.asList(PlatinumSludgeOverHaul.BLACKLIST)
                 .contains(GT_OreDictUnificator.getAssociation(stack).mMaterial.mMaterial);
     }
