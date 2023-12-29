@@ -21,7 +21,9 @@ import net.minecraftforge.fluids.FluidStack;
 import com.elisis.gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 import com.elisis.gtnhlanth.util.DescTextLocalization;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTech_API;
@@ -35,7 +37,8 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 
-public class Digester extends GT_MetaTileEntity_EnhancedMultiBlockBase<Digester> implements IConstructable {
+public class Digester extends GT_MetaTileEntity_EnhancedMultiBlockBase<Digester>
+        implements IConstructable, ISurvivalConstructable {
 
     protected int casingAmount = 0;
     protected int height = 0;
@@ -149,6 +152,12 @@ public class Digester extends GT_MetaTileEntity_EnhancedMultiBlockBase<Digester>
     @Override
     public void construct(ItemStack itemStack, boolean b) {
         buildPiece(mName, itemStack, b, 3, 3, 0);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        if (mMachine) return -1;
+        return survivialBuildPiece(mName, stackSize, 3, 3, 0, elementBudget, env, false, true);
     }
 
     @Override
