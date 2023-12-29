@@ -101,19 +101,18 @@ public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hat
                     .isActive()) {
                     doNormalMaintain();
                 } else {
-                    // Centre offline?
-                    doRandomIssue();
+                    // Centre offline? ...do nothing.
+                    // doRandomIssue();
                 }
             } else {
                 // If the connection invalid, set it to null.
                 // Find connection every 10 second
                 if (aTick % 200 == 0) {
                     connection = null;
-                    if (tryFindConnection()) return;
-                    // Let's have some "surprise".
-                    if (this.machine != null && this.machine.isValid()) {
-                        doRandomIssue();
-                    }
+                    tryFindConnection();
+                    // Let's have some "surprise". Sorry, surprise party is over.
+                    //if (this.machine != null && this.machine.isValid()) {
+                    // doRandomIssue();
                 }
             }
         }

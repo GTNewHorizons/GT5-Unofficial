@@ -156,7 +156,7 @@ public class GT_MetaTileEntity_DroneCentre extends
             .addInfo("Range is determined by drone tier: T1-32, T2-128, T3-512")
             .addInfo("Place drones in input bus; only one needed to operate.")
             .addInfo("Automatically upgrade based on the drone level in the input bus.")
-            .addInfo("There is a 1/3600(3N-2) chance per second that the drone will crash.")
+            .addInfo("There is a 1/36000(3N-2) chance per second that the drone will crash.")
             .addInfo("If there is no backup drone, it will shut down!")
             .addInfo(
                 "Once the maintenance center shuts down, all multi-block machines within the range will malfunction.")
@@ -217,7 +217,7 @@ public class GT_MetaTileEntity_DroneCentre extends
         if (aBaseMetaTileEntity.isServerSide()) {
             fixAll();
             if (aTick % 200 == 0 && (droneLevel == 1 || droneLevel == 2)
-                && getBaseMetaTileEntity().getRandomNumber(3600 * (3 * droneLevel - 2)) == 0) {
+                && getBaseMetaTileEntity().getRandomNumber(36000 * (3 * droneLevel - 2)) == 0) {
                 droneLevel = 0;
                 if (!tryConsumeDrone()) criticalStopMachine();
             }
@@ -392,7 +392,8 @@ public class GT_MetaTileEntity_DroneCentre extends
                     return UI.toArray(new IDrawable[0]);
                 })
                 .addTooltip("Open Machine List")
-                .setPos(94, 91))
+                .setPos(94, 91)
+                .setEnabled(getBaseMetaTileEntity().isActive()))
             .widget(// Turn on ALL machines
                 new ButtonWidget().setOnClick((clickData, widget) -> {
                     if (!widget.isClient()) {
@@ -410,7 +411,8 @@ public class GT_MetaTileEntity_DroneCentre extends
                         return UI.toArray(new IDrawable[0]);
                     })
                     .addTooltip("Turn ON all machines connected to centre")
-                    .setPos(146, 91))
+                    .setPos(146, 91)
+                    .setEnabled(getBaseMetaTileEntity().isActive()))
             .widget(// Turn off ALL machines
                 new ButtonWidget().setOnClick((clickData, widget) -> {
                     if (!widget.isClient()) {
@@ -428,7 +430,8 @@ public class GT_MetaTileEntity_DroneCentre extends
                         return UI.toArray(new IDrawable[0]);
                     })
                     .addTooltip("Turn OFF all machines connected to centre")
-                    .setPos(120, 91))
+                    .setPos(120, 91)
+                    .setEnabled(getBaseMetaTileEntity().isActive()))
             .widget(new FakeSyncWidget.ListSyncer<>(() -> connectionList, var1 -> {
                 connectionList.clear();
                 connectionList.addAll(var1);
