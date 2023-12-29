@@ -39,6 +39,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20;
 
 import com.glodblock.github.nei.recipes.FluidRecipe;
 import com.glodblock.github.nei.recipes.extractor.GregTech5RecipeExtractor;
@@ -307,6 +308,15 @@ public class GT_Client extends GT_Proxy implements Runnable {
         }
 
         GL11.glPushMatrix();
+
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+
+        // pause shader
+        int program = GL11.glGetInteger(GL20.GL_CURRENT_PROGRAM);
+        GL20.glUseProgram(0);
+
         MovingObjectPosition target = aEvent.target;
         EntityPlayer player = aEvent.player;
         double camX = player.lastTickPosX + (player.posX - player.lastTickPosX) * (double) aEvent.partialTicks;
@@ -425,6 +435,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
                     }
             }
         }
+        GL20.glUseProgram(program); // resume shader
         GL11.glPopMatrix(); // get back to player center
     }
 
