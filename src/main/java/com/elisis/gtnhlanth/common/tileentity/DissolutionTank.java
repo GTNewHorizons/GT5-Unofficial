@@ -23,7 +23,9 @@ import com.elisis.gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 import com.elisis.gtnhlanth.util.DescTextLocalization;
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTech_API;
@@ -38,7 +40,7 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 
 public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<DissolutionTank>
-        implements IConstructable, ISecondaryDescribable {
+        implements IConstructable, ISurvivalConstructable, ISecondaryDescribable {
 
     private final IStructureDefinition<DissolutionTank> multiDefinition = StructureDefinition.<DissolutionTank>builder()
             .addShape(
@@ -186,6 +188,12 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
     @Override
     public void construct(ItemStack itemStack, boolean b) {
         buildPiece(mName, itemStack, b, 2, 3, 0);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        if (mMachine) return -1;
+        return survivialBuildPiece(mName, stackSize, 2, 3, 0, elementBudget, env, false, true);
     }
 
     @Override
