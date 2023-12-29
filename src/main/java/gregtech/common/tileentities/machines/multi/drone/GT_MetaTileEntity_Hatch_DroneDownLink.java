@@ -111,7 +111,7 @@ public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hat
                     connection = null;
                     tryFindConnection();
                     // Let's have some "surprise". Sorry, surprise party is over.
-                    //if (this.machine != null && this.machine.isValid()) {
+                    // if (this.machine != null && this.machine.isValid()) {
                     // doRandomIssue();
                 }
             }
