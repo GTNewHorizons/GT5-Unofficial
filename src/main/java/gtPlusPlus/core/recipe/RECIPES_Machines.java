@@ -3029,14 +3029,14 @@ public class RECIPES_Machines {
                 GregtechItemList.GT_MetaTileEntity_ChiselBus_MV.get(1),
                 GregtechItemList.GT_MetaTileEntity_ChiselBus_HV.get(1), };
 
-        for (int i = 1; i < mChiselBuses.length; i++) {
+        for (int tier = 1; tier < mChiselBuses.length + 1; tier++) {
             CORE.RA.addSixSlotAssemblingRecipe(
-                    new ItemStack[] { CI.getNumberedCircuit(17), mSuperBusesInput[i], CI.getSensor(i, 1),
-                            CI.getRobotArm(i, 2), CI.getBolt(i, 16), ItemUtils.getSimpleStack(Blocks.chest) },
-                    CI.getAlternativeTieredFluid(i, 144 * 2),
-                    mChiselBuses[i - 1],
+                    new ItemStack[] { CI.getNumberedCircuit(17), mSuperBusesInput[tier - 1], CI.getSensor(tier, 1),
+                            CI.getRobotArm(tier, 2), CI.getBolt(tier, 16), ItemUtils.getSimpleStack(Blocks.chest) },
+                    CI.getAlternativeTieredFluid(tier, 144 * 2),
+                    mChiselBuses[tier - 1],
                     20 * 30 * 2,
-                    (int) GT_Values.VP[i + 1]);
+                    (int) GT_Values.VP[tier + 1]);
         }
     }
 

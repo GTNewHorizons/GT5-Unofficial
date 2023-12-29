@@ -25,7 +25,7 @@ public class GregtechCustomHatches {
             run2();
         }
         run3();
-        run5(); // Chisel buses
+        run4(); // Chisel buses
     }
 
     private static void run1() {
@@ -241,15 +241,15 @@ public class GregtechCustomHatches {
         return new GT_MetaTileEntity_ChiselBus(id, unlocalizedName, localizedName, tier);
     }
 
-    private static void run5() {
+    private static void run4() {
         int aID = 31778;
 
         GregtechItemList.GT_MetaTileEntity_ChiselBus_LV
-                .set((makeChiselBus(aID++, "hatch.chisel.tier.01", "Chisel Bus II", 1)).getStackForm(1L));
+                .set((makeChiselBus(aID++, "hatch.chisel.tier.01", "Chisel Bus I", 1)).getStackForm(1L));
         GregtechItemList.GT_MetaTileEntity_ChiselBus_MV
-                .set((makeChiselBus(aID++, "hatch.chisel.tier.02", "Chisel Bus III", 2)).getStackForm(1L));
+                .set((makeChiselBus(aID++, "hatch.chisel.tier.02", "Chisel Bus II", 2)).getStackForm(1L));
         GregtechItemList.GT_MetaTileEntity_ChiselBus_HV
-                .set((makeChiselBus(aID++, "hatch.chisel.tier.03", "Chisel Bus IV", 3)).getStackForm(1L));
+                .set((makeChiselBus(aID++, "hatch.chisel.tier.03", "Chisel Bus III", 3)).getStackForm(1L));
 
     }
 }
