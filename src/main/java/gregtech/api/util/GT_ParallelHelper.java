@@ -375,12 +375,12 @@ public class GT_ParallelHelper {
         double tickTimeAfterOC = calculator.setParallel(originalMaxParallel)
             .calculateDurationUnderOneTick();
         if (tickTimeAfterOC < 1) {
-            maxParallel = GT_Utility.safeInt((long) (maxParallel / tickTimeAfterOC), 1);
+            maxParallel = GT_Utility.safeInt((long) (maxParallel / tickTimeAfterOC), 0);
         }
 
         int maxParallelBeforeBatchMode = maxParallel;
         if (batchMode) {
-            maxParallel = GT_Utility.safeInt((long) maxParallel * batchModifier, 1);
+            maxParallel = GT_Utility.safeInt((long) maxParallel * batchModifier, 0);
         }
 
         final ItemStack[] truncatedItemOutputs = recipe.mOutputs != null
