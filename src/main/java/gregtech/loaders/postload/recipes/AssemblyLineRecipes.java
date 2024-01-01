@@ -855,7 +855,7 @@ public class AssemblyLineRecipes implements Runnable {
                 NewHorizonsCoreMod.isModLoaded()
                     ? GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.HeavyDutyRocketEngineTier3", 4)
                     : ItemList.Casing_Firebox_TungstenSteel.get(16),
-                ItemList.Large_Fluid_Cell_Osmium.get(4),
+                ItemList.Large_Fluid_Cell_Osmium.get(1),
                 GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, Materials.MysteriousCrystal, 1),
                 ItemList.Emitter_ZPM.get(4),
                 ItemList.Energy_Module.get(1),
