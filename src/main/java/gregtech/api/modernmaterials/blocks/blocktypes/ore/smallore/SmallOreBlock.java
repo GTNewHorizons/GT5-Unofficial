@@ -6,6 +6,7 @@ import gregtech.api.modernmaterials.ModernMaterial;
 import gregtech.api.modernmaterials.blocks.blocktypes.ore.BaseOreBlock;
 import gregtech.api.modernmaterials.blocks.registration.BlocksEnum;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.util.IIcon;
 
 import java.util.HashSet;
 
@@ -16,8 +17,11 @@ public class SmallOreBlock extends BaseOreBlock {
     }
 
     @SideOnly(Side.CLIENT)
+    @Override
     public void registerBlockIcons(IIconRegister reg) {
-        blockIcon = reg.registerIcon("gregtech:ModernMaterialsIcons/Blocks/smallOre");
+        metalOreTexture = reg.registerIcon("gregtech:ModernMaterialsIcons/Blocks/metalOreSmall");
+        gemOreTexture = reg.registerIcon("gregtech:ModernMaterialsIcons/Blocks/gemOreSmall");
+        dustOreTexture = reg.registerIcon("gregtech:ModernMaterialsIcons/Blocks/dustOreSmall");
     }
 
 }
