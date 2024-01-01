@@ -115,7 +115,7 @@ public class GTPPRecipeMaps {
             .of("gtpp.recipe.RTGgenerators", FuelBackend::new).maxIO(1, 0, 0, 0)
             .neiSpecialInfoFormatter(new SimpleSpecialValueFormatter("gtpp.nei.rtg.days", 365)).build();
     public static final RecipeMap<RecipeMapBackend> thermalBoilerRecipes = RecipeMapBuilder
-            .of("gtpp.recipe.thermalgeneratorfuel").maxIO(9, 9, 3, 3).frontend(LargeNEIFrontend::new).build();
+            .of("gtpp.recipe.thermalgeneratorfuel").maxIO(0, 9, 2, 3).frontend(ThermalBoilerFrontend::new).build();
     public static final RecipeMap<RecipeMapBackend> solarTowerRecipes = RecipeMapBuilder.of("gtpp.recipe.solartower")
             .maxIO(0, 0, 1, 1)
             .neiSpecialInfoFormatter(

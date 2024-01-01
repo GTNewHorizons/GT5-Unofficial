@@ -8,7 +8,6 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
@@ -26,7 +25,7 @@ public class ItemLavaFilter extends CoreItem {
                 "itemLavaFilter",
                 AddToCreativeTab.tabMachines,
                 1,
-                100,
+                99,
                 new String[] { "Lava Filter" },
                 EnumRarity.common,
                 EnumChatFormatting.BLACK,
@@ -50,74 +49,36 @@ public class ItemLavaFilter extends CoreItem {
         return this.mIcon[0];
     }
 
-    private static boolean createNBT(ItemStack rStack) {
-        final NBTTagCompound tagMain = new NBTTagCompound();
-        final NBTTagCompound tagNBT = new NBTTagCompound();
-        tagNBT.setLong("Damage", 0);
-        tagMain.setTag("LavaFilter", tagNBT);
-        rStack.setTagCompound(tagMain);
-        return true;
-    }
-
-    public static final long getFilterDamage(final ItemStack aStack) {
-        NBTTagCompound aNBT = aStack.getTagCompound();
-        if (aNBT != null) {
-            aNBT = aNBT.getCompoundTag("LavaFilter");
-            if (aNBT != null) {
-                return aNBT.getLong("Damage");
-            }
-        } else {
-            createNBT(aStack);
-        }
-        return 0L;
-    }
-
-    public static final boolean setFilterDamage(final ItemStack aStack, final long aDamage) {
-        NBTTagCompound aNBT = aStack.getTagCompound();
-        if (aNBT != null) {
-            aNBT = aNBT.getCompoundTag("LavaFilter");
-            if (aNBT != null) {
-                aNBT.setLong("Damage", aDamage);
-                return true;
-            }
-        } else {
-            createNBT(aStack);
-        }
-        return false;
-    }
-
-    @Override
-    public double getDurabilityForDisplay(ItemStack stack) {
-        if (stack.getTagCompound() == null) {
-            createNBT(stack);
-        }
-        double currentDamage = getFilterDamage(stack);
-        double durabilitypercent = currentDamage / 100;
-        return durabilitypercent;
-    }
-
     @SuppressWarnings("unchecked")
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
         list.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("item.itemLavaFilter.tooltip"));
-        EnumChatFormatting durability = EnumChatFormatting.GRAY;
-        if (100 - getFilterDamage(stack) > 80) {
-            durability = EnumChatFormatting.GRAY;
-        } else if (100 - getFilterDamage(stack) > 60) {
-            durability = EnumChatFormatting.GREEN;
-        } else if (100 - getFilterDamage(stack) > 40) {
-            durability = EnumChatFormatting.YELLOW;
-        } else if (100 - getFilterDamage(stack) > 20) {
-            durability = EnumChatFormatting.GOLD;
-        } else if (100 - getFilterDamage(stack) > 0) {
-            durability = EnumChatFormatting.RED;
+
+        int maxDurability = stack.getMaxDamage() + 1;
+        int durability = maxDurability - stack.getItemDamage();
+
+        EnumChatFormatting formatting = EnumChatFormatting.GRAY;
+        if (durability > maxDurability * 0.8) {
+            formatting = EnumChatFormatting.GRAY;
+        } else if (durability > maxDurability * 0.6) {
+            formatting = EnumChatFormatting.GREEN;
+        } else if (durability > maxDurability * 0.4) {
+            formatting = EnumChatFormatting.YELLOW;
+        } else if (durability > maxDurability * 0.2) {
+            formatting = EnumChatFormatting.GOLD;
+        } else if (durability > 0) {
+            formatting = EnumChatFormatting.RED;
         }
-        list.add(durability + "" + (100 - getFilterDamage(stack)) + EnumChatFormatting.GRAY + " / " + 100);
-        // super.addInformation(stack, player, list, bool);
+        list.add("Uses remaining: " + formatting + durability + EnumChatFormatting.GRAY + " / " + maxDurability);
     }
 
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
         return true;
+    }
+
+    @Override
+    public boolean isRepairable() {
+        return false;
     }
 }

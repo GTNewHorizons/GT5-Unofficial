@@ -35,6 +35,7 @@ import static gregtech.api.util.GT_RecipeConstants.FUSION_THRESHOLD;
 import static gregtech.api.util.GT_RecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GT_RecipeConstants.RESEARCH_TIME;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.thermalBoilerRecipes;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -50,7 +51,6 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_RecipeConstants;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.HotFuel;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
@@ -106,6 +106,7 @@ public class RECIPES_GREGTECH {
         fluidHeaterRecipes();
         chemplantRecipes();
         alloySmelterRecipes();
+        thermalBoilerRecipes();
 
         /*
          * Special Recipe handlers
@@ -1101,38 +1102,64 @@ public class RECIPES_GREGTECH {
                 .eut(TierEU.RECIPE_MV / 2).addTo(distillationTowerRecipes);
     }
 
+    private static void thermalBoilerRecipes() {
+        Logger.INFO("Registering Thermal Boiler Recipes.");
+
+        // Recipes with special value -1 display additional tooltip in NEI about lava filters.
+
+        // Lava
+
+        GT_Values.RA.stdBuilder()
+                .fluidInputs(FluidUtils.getLava(1000), FluidUtils.getWater(16_000 / GT_Values.STEAM_PER_WATER))
+                .fluidOutputs(FluidUtils.getPahoehoeLava(1000), FluidUtils.getSteam(16_000))
+                .itemOutputs(
+                        GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Copper, 1),
+                        GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Tin, 1),
+                        GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Gold, 1),
+                        GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Silver, 1),
+                        GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Tantalum, 1),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Tungstate, 1),
+                        new ItemStack(Blocks.obsidian, 1, 0))
+                .outputChances(444, 222, 56, 56, 56, 125, 1000).specialValue(-1).duration(1 * SECONDS).eut(0)
+                .addTo(thermalBoilerRecipes);
+
+        // Pahoehoe Lava
+
+        GT_Values.RA.stdBuilder()
+                .fluidInputs(FluidUtils.getPahoehoeLava(1000), FluidUtils.getWater(16_000 / GT_Values.STEAM_PER_WATER))
+                .fluidOutputs(FluidUtils.getSteam(16_000))
+                .itemOutputs(
+                        GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 1),
+                        GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Electrum, 1),
+                        GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Tantalum, 1),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Tungstate, 1),
+                        new ItemStack(Blocks.obsidian, 1, 0))
+                .outputChances(167, 56, 56, 125, 3700).specialValue(-1).duration(1 * SECONDS).eut(0)
+                .addTo(thermalBoilerRecipes);
+
+        // Hot Coolant
+
+        GT_Values.RA.stdBuilder()
+                .fluidInputs(
+                        FluidUtils.getFluidStack("ic2hotcoolant", 500),
+                        FluidUtils.getWater(100_000 / GT_Values.STEAM_PER_WATER))
+                .fluidOutputs(FluidUtils.getFluidStack("ic2coolant", 500), FluidUtils.getSuperHeatedSteam(100_000))
+                .duration(1 * SECONDS).eut(0).addTo(thermalBoilerRecipes);
+
+        // Solar Salt (Hot)
+
+        GT_Values.RA.stdBuilder()
+                .fluidInputs(
+                        MISC_MATERIALS.SOLAR_SALT_HOT.getFluidStack(100),
+                        FluidUtils.getWater(100_000 / GT_Values.STEAM_PER_WATER))
+                .fluidOutputs(
+                        MISC_MATERIALS.SOLAR_SALT_COLD.getFluidStack(100),
+                        FluidUtils.getSuperHeatedSteam(100_000))
+                .duration(1 * SECONDS).eut(0).addTo(thermalBoilerRecipes);
+    }
+
     private static void addFuels() {
         Logger.INFO("Registering New Fuels.");
-
-        HotFuel.addNewHotFuel(
-                FluidUtils.getLava(83),
-                FluidUtils.getPahoehoeLava(83),
-                new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("nuggetCopper", 1),
-                        ItemUtils.getItemStackOfAmountFromOreDict("nuggetTin", 1),
-                        ItemUtils.getItemStackOfAmountFromOreDict("nuggetGold", 1),
-                        ItemUtils.getItemStackOfAmountFromOreDict("nuggetSilver", 1),
-                        ItemUtils.getItemStackOfAmountFromOreDict("nuggetTantalum", 1),
-                        ItemUtils.getItemStackOfAmountFromOreDict("dustSmallTungstate", 1),
-                        ItemUtils.getSimpleStack(Blocks.obsidian) },
-                new int[] { 2000, 1000, 250, 250, 250, 250, 500 },
-                0);
-
-        HotFuel.addNewHotFuel(
-                FluidUtils.getPahoehoeLava(83),
-                GT_Values.NF,
-                new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("nuggetBronze", 1),
-                        ItemUtils.getItemStackOfAmountFromOreDict("nuggetElectrum", 1),
-                        ItemUtils.getItemStackOfAmountFromOreDict("nuggetTantalum", 1),
-                        ItemUtils.getItemStackOfAmountFromOreDict("dustSmallTungstate", 1),
-                        ItemUtils.getSimpleStack(Blocks.obsidian) },
-                new int[] { 750, 250, 250, 250, 1850 },
-                0);
-
-        HotFuel.addNewHotFuel(
-                MISC_MATERIALS.SOLAR_SALT_HOT.getFluidStack(100),
-                MISC_MATERIALS.SOLAR_SALT_COLD.getFluidStack(100),
-                FluidUtils.getSuperHeatedSteam(100000),
-                0);
 
         GT_Values.RA.stdBuilder().itemInputs(ItemUtils.getSimpleStack(Items.lava_bucket)).metadata(FUEL_VALUE, 32)
                 .metadata(FUEL_TYPE, 2).duration(0).eut(0).addTo(GT_RecipeConstants.Fuel);

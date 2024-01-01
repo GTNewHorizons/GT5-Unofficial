@@ -12,6 +12,12 @@ import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import java.util.stream.Stream;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -25,25 +31,22 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.item.general.ItemLavaFilter;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.material.MISC_MATERIALS;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -53,7 +56,17 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
 
     private int mCasing;
     private static IStructureDefinition<GT4Entity_ThermalBoiler> STRUCTURE_DEFINITION = null;
-    private int mSuperEfficencyIncrease = 0;
+
+    private static final int lavaFilterResilience = 30; // Damage lava filter with 1/n probability every operation.
+    private int dryHeatCounter = 0; // Counts up to dryHeatMaximum to check for explosion conditions.
+    private static final int dryHeatMaximum = 10; // 10 consecutive operations without water = BOOM
+
+    private static final Item itemLavaFilter = ItemList.Component_LavaFilter.getItem();
+    private static final Item itemObsidian = Item.getItemFromBlock(Blocks.obsidian);
+    private static final Fluid fluidWater = FluidRegistry.WATER;
+    private static final Fluid fluidDistilledWater = FluidUtils.getDistilledWater(1).getFluid();
+    private static final Fluid fluidSteam = FluidUtils.getSteam(1).getFluid();
+    private static final Fluid fluidSHSteam = FluidUtils.getSuperHeatedSteam(1).getFluid();
 
     public GT4Entity_ThermalBoiler(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -69,19 +82,13 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public String getMachineType() {
         return "Boiler";
     }
 
     @Override
     public int getDamageToComponent(ItemStack aStack) {
-        // log("Trying to damage component.");
-        return (aStack != null && aStack.getItem() == mLavaFilter) ? 1 : 0;
+        return (aStack != null && aStack.getItem() == itemLavaFilter) ? 1 : 0;
     }
 
     @Override
@@ -94,112 +101,156 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
         return false;
     }
 
-    private static Item mLavaFilter;
-    private static Fluid mLava = null;
-    private static Fluid mPahoehoe = null;
-    private static Fluid mSolarSaltHot = null;
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
+        return false;
+    }
+
+    @Override
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
+
+            // Only test against the first fluid input in the recipe.
+            // We still want to run if we lack water (and subsequently explode).
+            @NotNull
+            @Override
+            protected Stream<GT_Recipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
+                if (lastRecipe != null && depleteInput(lastRecipe.mFluidInputs[0], true)) {
+                    return Stream.of(lastRecipe);
+                }
+                if (map == null) {
+                    return Stream.empty();
+                }
+                return map.getAllRecipes().stream().filter(recipe -> depleteInput(recipe.mFluidInputs[0], true));
+            }
+
+            @NotNull
+            @Override
+            protected GT_ParallelHelper createParallelHelper(@Nonnull GT_Recipe recipe) {
+                GT_Recipe adjustedRecipe = recipe.copy();
+
+                // Hack the recipe logic to not consume water, so that we can explode.
+                for (FluidStack inputFluid : adjustedRecipe.mFluidInputs) {
+                    if (inputFluid != null
+                            && (inputFluid.getFluid() == fluidWater || inputFluid.getFluid() == fluidDistilledWater)) {
+                        inputFluid.amount = 0;
+                    }
+                }
+
+                // If we don't have a lava filter, remove non-obsidian outputs
+                // so that output space for them is not required if void protection is on.
+                if (!findLavaFilter()) {
+                    for (ItemStack outputItem : adjustedRecipe.mOutputs) {
+                        if (outputItem != null && outputItem.getItem() != itemObsidian) {
+                            outputItem.stackSize = 0;
+                        }
+                    }
+                }
+                return super.createParallelHelper(adjustedRecipe);
+            }
+        };
+    }
 
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
-        ItemStack controllerStack = getControllerSlot();
-        this.mSuperEfficencyIncrease = 0;
+        // super.checkProcessing() instantly sets efficiency to maximum, override this.
+        int efficiency = mEfficiency;
+        CheckRecipeResult result = super.checkProcessing();
+        if (result.wasSuccessful()) {
+            mEfficiency = efficiency;
+            mEfficiencyIncrease = mMaxProgresstime * getEfficiencyIncrease();
 
-        if (mLavaFilter == null) {
-            mLavaFilter = ItemList.Component_LavaFilter.getItem();
-        }
-        if (mLava == null) {
-            mLava = FluidRegistry.LAVA;
-        }
-        if (mPahoehoe == null) {
-            mPahoehoe = FluidUtils.getPahoehoeLava(1).getFluid();
-        }
-        if (mSolarSaltHot == null) {
-            mSolarSaltHot = MISC_MATERIALS.SOLAR_SALT_HOT.getFluid();
-        }
+            // Adjust steam output based on efficiency.
+            if (mOutputFluids != null) {
+                for (FluidStack outputFluid : mOutputFluids) {
+                    if (outputFluid != null
+                            && (outputFluid.getFluid() == fluidSteam || outputFluid.getFluid() == fluidSHSteam)) {
 
-        // Try reload new Lava Filter
-        if (controllerStack == null) {
-            ItemStack uStack = this.findItemInInventory(mLavaFilter);
-            if (uStack != null) {
-                this.setGUIItemStack(uStack);
-                controllerStack = this.getControllerSlot();
-            }
-        }
-
-        for (GT_Recipe tRecipe : GTPPRecipeMaps.thermalBoilerRecipes.getAllRecipes()) {
-            FluidStack tFluid = tRecipe.mFluidInputs[0];
-            if (tFluid != null) {
-
-                if (tFluid.getFluid() == mLava || tFluid.getFluid() == mPahoehoe) {
-                    if (depleteInput(tFluid)) {
-                        this.mMaxProgresstime = Math.max(1, runtimeBoost(tRecipe.mSpecialValue * 2));
-                        this.lEUt = getEUt();
-                        this.mEfficiencyIncrease = (this.mMaxProgresstime * getEfficiencyIncrease());
-
-                        int loot_MAXCHANCE = 100000;
-                        if (controllerStack != null && controllerStack.getItem() == mLavaFilter) {
-                            if ((tRecipe.getOutput(0) != null)
-                                    && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE)
-                                            < tRecipe.getOutputChance(0))) {
-                                this.mOutputItems = new ItemStack[] { GT_Utility.copy(tRecipe.getOutput(0)) };
-                            }
-                            if ((tRecipe.getOutput(1) != null)
-                                    && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE)
-                                            < tRecipe.getOutputChance(1))) {
-                                this.mOutputItems = new ItemStack[] { GT_Utility.copy(tRecipe.getOutput(1)) };
-                            }
-                            if ((tRecipe.getOutput(2) != null)
-                                    && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE)
-                                            < tRecipe.getOutputChance(2))) {
-                                this.mOutputItems = new ItemStack[] { GT_Utility.copy(tRecipe.getOutput(2)) };
-                            }
-                            if ((tRecipe.getOutput(3) != null)
-                                    && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE)
-                                            < tRecipe.getOutputChance(3))) {
-                                this.mOutputItems = new ItemStack[] { GT_Utility.copy(tRecipe.getOutput(3)) };
-                            }
-                            if ((tRecipe.getOutput(4) != null)
-                                    && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE)
-                                            < tRecipe.getOutputChance(4))) {
-                                this.mOutputItems = new ItemStack[] { GT_Utility.copy(tRecipe.getOutput(4)) };
-                            }
-                            if ((tRecipe.getOutput(5) != null)
-                                    && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE)
-                                            < tRecipe.getOutputChance(5))) {
-                                this.mOutputItems = new ItemStack[] { GT_Utility.copy(tRecipe.getOutput(5)) };
-                            }
+                        // Purely for display reasons, we don't actually make any EU.
+                        if (outputFluid.getFluid() == fluidSteam) {
+                            lEUt = outputFluid.amount / mMaxProgresstime / 2;
+                        } else {
+                            lEUt = outputFluid.amount / mMaxProgresstime;
                         }
-                        final FluidStack[] mFluidOutputs = tRecipe.mFluidOutputs;
-                        this.mOutputFluids = new FluidStack[mFluidOutputs.length];
-                        for (int i = 0, mFluidOutputsLength = mFluidOutputs.length; i < mFluidOutputsLength; i++) {
-                            this.mOutputFluids[i] = mFluidOutputs[i].copy();
+
+                        // Adjust steam output based on efficiency.
+                        // TODO: This is not reflected in the GUI while the player has it open??
+                        if (mEfficiency < getMaxEfficiency(null)) {
+                            outputFluid.amount = Math
+                                    .max(1, (outputFluid.amount * mEfficiency) / getMaxEfficiency(null));
                         }
-                        // Give Obsidian without Lava Filter
-                        if (tFluid.getFluid() == mLava) {
-                            if ((tRecipe.getOutput(6) != null)
-                                    && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE)
-                                            < tRecipe.getOutputChance(6))) {
-                                this.mOutputItems = new ItemStack[] { GT_Utility.copy(tRecipe.getOutput(6)) };
-                            }
+
+                        // Consume water to run recipe.
+                        if (!useWater(outputFluid.amount)) {
+                            outputFluid.amount = 0;
+                            lEUt = 0;
                         }
-                        return CheckRecipeResultRegistry.SUCCESSFUL;
                     }
-                } else if (tFluid.getFluid() == mSolarSaltHot) {
-                    if (depleteInput(tFluid)) {
-                        this.mMaxProgresstime = tRecipe.mDuration;
-                        this.lEUt = 0;
-                        this.mEfficiency = 10000;
-                        for (FluidStack aOutput : tRecipe.mFluidOutputs) {
-                            this.addOutput(FluidUtils.getFluidStack(aOutput, aOutput.amount));
+                }
+            }
+
+            // Remove non-obsidian outputs if we can't damage lava filter.
+            if (mOutputItems != null && mOutputItems.length > 0) {
+                if (!damageLavaFilter()) {
+                    for (ItemStack outputItem : mOutputItems) {
+                        if (outputItem != null && outputItem.getItem() != itemObsidian) {
+                            outputItem.stackSize = 0;
                         }
-                        return CheckRecipeResultRegistry.SUCCESSFUL;
                     }
                 }
             }
         }
-        this.mMaxProgresstime = 0;
-        this.lEUt = 0;
-        return CheckRecipeResultRegistry.NO_RECIPE;
+        return result;
+    }
+
+    private boolean findLavaFilter() {
+        if (getControllerSlot() == null) {
+            for (var bus : mInputBusses) {
+                for (ItemStack stack : bus.mInventory) {
+                    if (stack != null && stack.getItem() == itemLavaFilter) {
+                        setGUIItemStack(stack);
+                        return true;
+                    }
+                }
+            }
+            return false;
+        } else {
+            return getControllerSlot().getItem() == itemLavaFilter;
+        }
+    }
+
+    private boolean damageLavaFilter() {
+        if (!findLavaFilter()) return false;
+        if (getBaseMetaTileEntity().getRandomNumber(lavaFilterResilience) > 0) return true;
+
+        ItemStack filter = getControllerSlot();
+        if (filter.attemptDamageItem(1, getBaseMetaTileEntity().getWorld().rand)) {
+            mInventory[1] = null;
+        }
+        return true;
+    }
+
+    private boolean useWater(int steamAmount) {
+        // Round up to not dupe decimal amounts of water.
+        int waterAmount = Math.floorDiv(steamAmount + GT_Values.STEAM_PER_WATER - 1, GT_Values.STEAM_PER_WATER);
+        if (depleteInput(FluidUtils.getWater(waterAmount)) || depleteInput(FluidUtils.getDistilledWater(waterAmount))) {
+            dryHeatCounter = 0;
+            return true;
+        } else {
+            // Add some leniency with explosions.
+            if (dryHeatCounter < dryHeatMaximum) {
+                ++dryHeatCounter;
+            } else {
+                GT_Log.exp.println(this.mName + " was too hot and had no more Water!");
+                explodeMultiblock(); // Generate crater
+            }
+            return false;
+        }
     }
 
     @Override
@@ -207,42 +258,8 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
         return 1;
     }
 
-    @Override
-    public boolean onRunningTick(ItemStack aStack) {
-        if (this.lEUt > 0) {
-            if (this.mSuperEfficencyIncrease > 0) {
-                this.mEfficiency = Math.min(10000, this.mEfficiency + this.mSuperEfficencyIncrease);
-            }
-            int tGeneratedEU = (int) (this.lEUt * 2L * this.mEfficiency / 10000L);
-            if (tGeneratedEU > 0) {
-                long amount = (tGeneratedEU + 160) / 160;
-                if (depleteInput(Materials.Water.getFluid(amount))
-                        || depleteInput(GT_ModHandler.getDistilledWater(amount))) {
-                    addOutput(GT_ModHandler.getSteam(tGeneratedEU));
-                } else {
-                    explodeMultiblock();
-                }
-            }
-            return true;
-        }
-        return true;
-    }
-
-    public int getEUt() {
-        return 400;
-    }
-
     public int getEfficiencyIncrease() {
         return 12;
-    }
-
-    int runtimeBoost(int mTime) {
-        return mTime * 150 / 100;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     @Override
@@ -259,12 +276,12 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType(getMachineType()).addInfo("Thermal Boiler Controller")
-                .addInfo("Converts Water & Heat into Steam").addInfo("Explodes if water is not supplied")
-                .addInfo("Consult user manual for more information").addPollutionAmount(getPollutionPerSecond(null))
-                .addSeparator().beginStructureBlock(3, 3, 3, true).addController("Front Center")
-                .addCasingInfoMin("Thermal Containment Casings", 10, false).addInputBus("Any Casing", 1)
-                .addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1).addOutputHatch("Any Casing", 1)
-                .addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
+                .addInfo("Converts Water & Heat into Steam").addInfo("Filters raw materials from lava")
+                .addInfo("Explodes if water is not supplied").addInfo("Consult user manual for more information")
+                .addPollutionAmount(getPollutionPerSecond(null)).beginStructureBlock(3, 3, 3, true)
+                .addController("Front Center").addCasingInfoMin("Thermal Containment Casings", 10, false)
+                .addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1)
+                .addOutputHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
                 .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
@@ -319,48 +336,5 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
         return checkPiece(mName, 1, 1, 0) && mCasing >= 10 && checkHatch();
-    }
-
-    public void damageFilter() {
-        ItemStack filter = this.mInventory[1];
-        if (filter != null) {
-            if (filter.getItem() instanceof ItemLavaFilter) {
-
-                long currentUse = ItemLavaFilter.getFilterDamage(filter);
-
-                // Remove broken Filter
-                if (currentUse >= 100 - 1) {
-                    this.mInventory[1] = null;
-                } else {
-                    // Do Damage
-                    ItemLavaFilter.setFilterDamage(filter, currentUse + 1);
-                }
-            }
-        }
-    }
-
-    @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isServerSide()) {
-            // Reload Lava Filter
-            if (this.getControllerSlot() == null) {
-                if (this.mInputBusses.size() > 0) {
-                    for (GT_MetaTileEntity_Hatch_InputBus aBus : this.mInputBusses) {
-                        for (ItemStack aStack : aBus.mInventory) {
-                            if (aStack != null && aStack.getItem() instanceof ItemLavaFilter) {
-                                this.setGUIItemStack(aStack);
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (this.lEUt > 0) {
-                if (aTick % 600L == 0L) {
-                    damageFilter();
-                }
-            }
-        }
-        super.onPostTick(aBaseMetaTileEntity, aTick);
     }
 }
