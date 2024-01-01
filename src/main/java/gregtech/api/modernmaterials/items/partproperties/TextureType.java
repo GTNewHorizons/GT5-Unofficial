@@ -14,8 +14,10 @@ public enum TextureType {
 
     Metal_Shiny,
     Metal_Dull,
-    Custom;
-    // Stone;
+    Custom,
+    Stone,
+    Dust,
+    Gem;
 
     private static final HashSet<ModernMaterial> customTextureMaterials = new HashSet<>();
     private final HashMap<ItemsEnum, ArrayList<IconWrapper>> standardTextureStorage = new HashMap<>();

@@ -17,6 +17,7 @@ import static gregtech.api.modernmaterials.fluids.FluidEnum.Molten;
 import static gregtech.api.modernmaterials.fluids.FluidEnum.NoPrefix;
 import static gregtech.api.modernmaterials.fluids.FluidEnum.Plasma;
 import static gregtech.api.modernmaterials.items.partproperties.TextureType.Custom;
+import static gregtech.api.modernmaterials.items.partproperties.TextureType.Gem;
 import static gregtech.api.modernmaterials.items.partproperties.TextureType.Metal_Dull;
 import static gregtech.api.modernmaterials.items.partproperties.TextureType.Metal_Shiny;
 
@@ -48,7 +49,7 @@ public class ModernMaterialsRegistration {
 
         new ModernMaterial.ModernMaterialBuilder("EWAD").setMaterialID(16)
             .setColor(120, 100, 123)
-            .setTextureMode(Metal_Shiny)
+            .setTextureMode(Gem)
             .addAllParts()
             .addFluid(Gas, 1_000)
             .addFluid(NoPrefix, 3_000)

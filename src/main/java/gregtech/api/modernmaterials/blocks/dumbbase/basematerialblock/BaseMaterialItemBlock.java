@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
@@ -76,6 +77,13 @@ public class BaseMaterialItemBlock extends ItemBlock {
         for (IMaterialEffect effect : material.getEffects()) {
             effect.apply(itemStack, world, entity, slotIndex, isCurrentItem);
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public IIcon getIconFromDamage(int metadata)
+    {
+        // field_150939_a is the underlying block of this ItemBlock.
+        return this.field_150939_a.getIcon(0, metadata);
     }
 
 }

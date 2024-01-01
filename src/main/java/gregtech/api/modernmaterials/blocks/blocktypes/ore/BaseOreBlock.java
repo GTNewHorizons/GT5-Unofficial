@@ -17,15 +17,6 @@ public abstract class BaseOreBlock extends BaseMaterialBlock {
         super(blockEnum, validIDs);
     }
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public IIcon getIcon(int side, int meta) {
-        // Todo this particle is used to spawn the breaking effect. We should probably change it to something else, like
-        // the underlying stone texture, however this has issues because changing it here will cause the colour
-        // multiplier function to apply to that later. Non-critical.
-        return blockIcon;
-    }
-
     // Make block see through.
     @Override
     public boolean isOpaqueCube() {
@@ -44,9 +35,5 @@ public abstract class BaseOreBlock extends BaseMaterialBlock {
             .getRGB();
     }
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public IIcon getIcon(IBlockAccess worldIn, int x, int y, int z, int side) {
-        return this.getIcon(side, 0);
-    }
+
 }

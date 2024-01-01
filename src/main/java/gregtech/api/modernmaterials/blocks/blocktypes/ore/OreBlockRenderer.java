@@ -64,7 +64,7 @@ public class OreBlockRenderer implements ISimpleBlockRenderingHandler {
         GL11.glColor3f(red / 255.0f, green / 255.0f, blue / 255.0f);
 
         tessellator.startDrawingQuads();
-        drawBlock(block, 0, renderer);
+        drawBlock(block, metadata, renderer);
         tessellator.draw();
 
         GL11.glPopMatrix();
