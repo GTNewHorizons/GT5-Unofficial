@@ -47,7 +47,7 @@ public class droneConnection {
         if (!gregtechproxy.isClientSide()) {
             this.world = DimensionManager.getWorld(aNBT.getInteger("worldID"));
         } else {
-            this.world = Minecraft.getMinecraft().theWorld;
+            this.world = Minecraft.getMinecraft().thePlayer.worldObj;
         }
         machineItem = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("item"));
         machineCoord = new ChunkCoordinates(
