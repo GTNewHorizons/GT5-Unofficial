@@ -690,7 +690,8 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
 
     @Override
     public final boolean canHarvestBlock(Block aBlock, ItemStack aStack) {
-        return getDigSpeed(aStack, aBlock, (byte) 0) > 0.0F;
+        IToolStats tStats = getToolStats(aStack);
+        return tStats.isMinableBlock(aBlock, (byte) 0) && getDigSpeed(aStack, aBlock, (byte) 0) > 0.0F;
     }
 
     @Override
