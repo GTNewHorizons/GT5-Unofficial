@@ -2139,7 +2139,7 @@ public class RecipeLoader {
                 .itemOutputs(
                         Materials.Samarium.getDust(9),
                         Materials.Sodium.getDust(9),
-                        RarestEarthResidue.get(OrePrefixes.dust, 1))
+                        RarestEarthResidue.get(OrePrefixes.dust, 2))
                 .fluidOutputs(Materials.Chlorine.getGas(36000)).eut(30720).duration(2 * SECONDS)
                 .addTo(electrolyzerRecipes);
 
