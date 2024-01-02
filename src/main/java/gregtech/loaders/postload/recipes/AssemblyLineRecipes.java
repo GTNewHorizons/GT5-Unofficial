@@ -885,7 +885,7 @@ public class AssemblyLineRecipes implements Runnable {
             .itemOutputs(ItemList.TierdDrone2.get(1))
             .fluidInputs(
                 new FluidStack(solderIndalloy, 144000),
-                GTPlusPlus.isModLoaded() ? FluidRegistry.getFluidStack("molten.cyanoacrylatepolymer", 2000)
+                GTPlusPlus.isModLoaded() ? FluidRegistry.getFluidStack("molten.ethylcyanoacrylatesuperglue", 2000)
                     : Materials.AdvancedGlue.getFluid(256000))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
