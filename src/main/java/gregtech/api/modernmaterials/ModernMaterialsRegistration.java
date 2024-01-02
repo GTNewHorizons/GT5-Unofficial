@@ -5,6 +5,7 @@ import static gregtech.api.modernmaterials.fluids.FluidEnum.Molten;
 import static gregtech.api.modernmaterials.fluids.FluidEnum.NoPrefix;
 import static gregtech.api.modernmaterials.fluids.FluidEnum.Plasma;
 import static gregtech.api.modernmaterials.items.partproperties.TextureType.Custom;
+import static gregtech.api.modernmaterials.items.partproperties.TextureType.Dust;
 import static gregtech.api.modernmaterials.items.partproperties.TextureType.Gem;
 import static gregtech.api.modernmaterials.items.partproperties.TextureType.Metal_Dull;
 import static gregtech.api.modernmaterials.items.partproperties.TextureType.Metal_Shiny;
@@ -101,7 +102,7 @@ public class ModernMaterialsRegistration {
 
         new ModernMaterial.ModernMaterialBuilder("TEST2").setColor(120, 200, 0)
             .setMaterialID(61)
-            .setTextureMode(Metal_Shiny)
+            .setTextureMode(Dust)
             .setMaterialTier(TierEU.MAX)
             .addAllParts()
             .addFluid(Gas, 1_000)
