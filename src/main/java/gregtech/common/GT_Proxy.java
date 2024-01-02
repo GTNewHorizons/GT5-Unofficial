@@ -420,7 +420,15 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
             "shardEarth",
             "ingotRefinedIron",
             "blockMarble",
-            "ingotUnstable"));
+            "ingotUnstable",
+            "obsidian",
+            "dirt",
+            "gravel",
+            "grass",
+            "soulsand",
+            "paper",
+            "brick",
+            "chest"));
     private final Collection<String> mInvalidNames = new HashSet<>(
         Arrays.asList(
             "diamondShard",
