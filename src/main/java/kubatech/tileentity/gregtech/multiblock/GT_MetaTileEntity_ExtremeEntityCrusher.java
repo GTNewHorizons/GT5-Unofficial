@@ -415,10 +415,11 @@ public class GT_MetaTileEntity_ExtremeEntityCrusher
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ) {
-        if (super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ)) return true;
-        mAnimationEnabled = !mAnimationEnabled;
-        GT_Utility.sendChatToPlayer(aPlayer, "Animations are " + (mAnimationEnabled ? "enabled" : "disabled"));
-        return true;
+        if (wrenchingSide == getBaseMetaTileEntity().getFrontFacing()) {
+            mAnimationEnabled = !mAnimationEnabled;
+            GT_Utility.sendChatToPlayer(aPlayer, "Animations are " + (mAnimationEnabled ? "enabled" : "disabled"));
+            return true;
+        } else return super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ);
     }
 
     @SuppressWarnings("unused")
