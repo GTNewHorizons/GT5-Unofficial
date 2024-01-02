@@ -1,5 +1,14 @@
 package gregtech.api.modernmaterials;
 
+import static gregtech.api.modernmaterials.fluids.FluidEnum.Gas;
+import static gregtech.api.modernmaterials.fluids.FluidEnum.Molten;
+import static gregtech.api.modernmaterials.fluids.FluidEnum.NoPrefix;
+import static gregtech.api.modernmaterials.fluids.FluidEnum.Plasma;
+import static gregtech.api.modernmaterials.items.partproperties.TextureType.Custom;
+import static gregtech.api.modernmaterials.items.partproperties.TextureType.Gem;
+import static gregtech.api.modernmaterials.items.partproperties.TextureType.Metal_Dull;
+import static gregtech.api.modernmaterials.items.partproperties.TextureType.Metal_Shiny;
+
 import gregtech.api.enums.TierEU;
 import gregtech.api.modernmaterials.blocks.blocktypes.blockof.special.UniversiumBlockOfBlockRenderer;
 import gregtech.api.modernmaterials.blocks.blocktypes.blockof.special.UniversiumBlockOfItemRenderer;
@@ -11,15 +20,6 @@ import gregtech.api.modernmaterials.fluids.ModernMaterialFluid;
 import gregtech.api.modernmaterials.items.partproperties.customitemrenderers.UniversiumItemRenderer;
 import gregtech.api.modernmaterials.recipegenerators.Metal;
 import gregtech.api.modernmaterials.tooltips.CustomTooltips;
-
-import static gregtech.api.modernmaterials.fluids.FluidEnum.Gas;
-import static gregtech.api.modernmaterials.fluids.FluidEnum.Molten;
-import static gregtech.api.modernmaterials.fluids.FluidEnum.NoPrefix;
-import static gregtech.api.modernmaterials.fluids.FluidEnum.Plasma;
-import static gregtech.api.modernmaterials.items.partproperties.TextureType.Custom;
-import static gregtech.api.modernmaterials.items.partproperties.TextureType.Gem;
-import static gregtech.api.modernmaterials.items.partproperties.TextureType.Metal_Dull;
-import static gregtech.api.modernmaterials.items.partproperties.TextureType.Metal_Shiny;
 
 public class ModernMaterialsRegistration {
 
@@ -35,7 +35,8 @@ public class ModernMaterialsRegistration {
         .setMaterialTier(TierEU.MAX)
         .build();
 
-    public static final ModernMaterial damascusSteel = new ModernMaterial.ModernMaterialBuilder("GERE").setMaterialID(335)
+    public static final ModernMaterial damascusSteel = new ModernMaterial.ModernMaterialBuilder("GERE")
+        .setMaterialID(335)
         .setColor(3, 100, 97)
         .setTextureMode(Metal_Shiny)
         .addAllParts()
@@ -62,7 +63,7 @@ public class ModernMaterialsRegistration {
             .setTextureMode(Custom)
             .setMaterialTier(TierEU.MAX)
             .addPlayerEffect(Effects::radiation)
-//            .addWires(new WireBuilder().build())
+            // .addWires(new WireBuilder().build())
             .setCustomBlockRenderer(
                 BlocksEnum.FrameBox,
                 new UniversiumFrameItemRenderer(),
@@ -81,7 +82,9 @@ public class ModernMaterialsRegistration {
             .addFluid(Plasma, 100_000)
             .addCustomFluid(new ModernMaterialFluid.Builder("Hydro-Cracked %").setTemperature(121_000_000), true)
             .addCustomFluid(new ModernMaterialFluid.Builder("Steam-Cracked %").setTemperature(122_000_000), true)
-            .addCustomFluid(new ModernMaterialFluid.Builder("Extremely Hydro-Cracked %").setTemperature(123_000_000), false)
+            .addCustomFluid(
+                new ModernMaterialFluid.Builder("Extremely Hydro-Cracked %").setTemperature(123_000_000),
+                false)
             .build();
 
         new ModernMaterial.ModernMaterialBuilder("TEST3232").setColor(120, 2, 0)

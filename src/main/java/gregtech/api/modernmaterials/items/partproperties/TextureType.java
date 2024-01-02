@@ -7,8 +7,8 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import gregtech.api.modernmaterials.items.partclasses.ItemsEnum;
 import gregtech.api.modernmaterials.ModernMaterial;
+import gregtech.api.modernmaterials.items.partclasses.ItemsEnum;
 
 public enum TextureType {
 

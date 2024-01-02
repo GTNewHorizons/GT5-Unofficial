@@ -2,9 +2,9 @@ package gregtech.api.modernmaterials;
 
 import static gregtech.api.modernmaterials.fluids.FluidEnum.Molten;
 import static gregtech.api.modernmaterials.fluids.FluidEnum.Plasma;
-import static gregtech.api.modernmaterials.items.partproperties.TextureType.Metal_Shiny;
 import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.Ingot;
 import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.Plate;
+import static gregtech.api.modernmaterials.items.partproperties.TextureType.Metal_Shiny;
 
 import java.awt.Color;
 

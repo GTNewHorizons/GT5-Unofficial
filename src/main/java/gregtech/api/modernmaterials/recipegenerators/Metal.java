@@ -1,12 +1,5 @@
 package gregtech.api.modernmaterials.recipegenerators;
 
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ToolDictNames;
-import gregtech.api.modernmaterials.ModernMaterial;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.GT_Proxy;
-
 import static gregtech.api.enums.ItemList.Shape_Extruder_Block;
 import static gregtech.api.enums.ItemList.Shape_Extruder_Bolt;
 import static gregtech.api.enums.ItemList.Shape_Extruder_Casing;
@@ -27,6 +20,13 @@ import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.Rod;
 import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.SmallGear;
 import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ToolDictNames;
+import gregtech.api.modernmaterials.ModernMaterial;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Utility;
+import gregtech.common.GT_Proxy;
 
 public class Metal {
 
@@ -103,8 +103,6 @@ public class Metal {
             Dust.getPart(material, 1),
             GT_Proxy.tBits,
             new Object[] { ToolDictNames.craftingToolMortar, Ingot.getPart(material, 1) });
-
-
 
     }
 

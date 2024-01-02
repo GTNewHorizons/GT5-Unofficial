@@ -15,8 +15,8 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import gregtech.api.modernmaterials.blocks.dumbbase.basematerialblock.BaseMaterialBlock;
 import gregtech.api.modernmaterials.ModernMaterial;
+import gregtech.api.modernmaterials.blocks.dumbbase.basematerialblock.BaseMaterialBlock;
 
 public class OreBlockRenderer implements ISimpleBlockRenderingHandler {
 

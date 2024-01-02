@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL11;
 
 import fox.spiteful.avaritia.render.CosmicRenderShenanigans;
 
-public class  UniversiumFrameBlockRenderer extends TileEntitySpecialRenderer {
+public class UniversiumFrameBlockRenderer extends TileEntitySpecialRenderer {
 
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float timeSinceLastTick) {

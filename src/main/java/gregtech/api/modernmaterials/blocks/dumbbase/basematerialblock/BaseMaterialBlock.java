@@ -15,8 +15,8 @@ import net.minecraft.world.World;
 
 import org.jetbrains.annotations.NotNull;
 
-import gregtech.api.modernmaterials.blocks.registration.BlocksEnum;
 import gregtech.api.modernmaterials.ModernMaterial;
+import gregtech.api.modernmaterials.blocks.registration.BlocksEnum;
 
 public abstract class BaseMaterialBlock extends Block {
 
@@ -83,8 +83,7 @@ public abstract class BaseMaterialBlock extends Block {
     }
 
     @Override
-    public int damageDropped(int meta)
-    {
+    public int damageDropped(int meta) {
         return meta;
     }
 }

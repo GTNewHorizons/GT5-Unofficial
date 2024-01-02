@@ -1,14 +1,5 @@
 package gregtech.api.modernmaterials.transition;
 
-import com.colen.postea.API.TileEntityReplacementManager;
-import com.colen.postea.Utility.BlockInfo;
-import gregtech.api.modernmaterials.ModernMaterial;
-import gregtech.api.modernmaterials.blocks.registration.BlocksEnum;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
-
 import static gregtech.api.modernmaterials.blocks.registration.BlocksEnum.BasaltNormalOre;
 import static gregtech.api.modernmaterials.blocks.registration.BlocksEnum.BasaltSmallOre;
 import static gregtech.api.modernmaterials.blocks.registration.BlocksEnum.BlackGraniteNormalOre;
@@ -26,6 +17,17 @@ import static gregtech.api.modernmaterials.blocks.registration.BlocksEnum.Nether
 import static gregtech.api.modernmaterials.blocks.registration.BlocksEnum.RedGraniteNormalOre;
 import static gregtech.api.modernmaterials.blocks.registration.BlocksEnum.RedGraniteSmallOre;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+
+import com.colen.postea.API.TileEntityReplacementManager;
+import com.colen.postea.Utility.BlockInfo;
+
+import gregtech.api.modernmaterials.ModernMaterial;
+import gregtech.api.modernmaterials.blocks.registration.BlocksEnum;
+
 public class TransitionBlocks {
 
     public static void fixWorldBlocks() {
@@ -40,7 +42,11 @@ public class TransitionBlocks {
 
         // Get the item/block for retrieving the ID in this world.
         ModernMaterial material = ModernMaterial.getMaterialFromID(materialID);
-        if (material == null) throw new RuntimeException("Transition blocks in ModernMaterials failed to map GT framebox with meta " + metadata + " to its new version. This implies that no material with ID + " + materialID + " exists.");
+        if (material == null) throw new RuntimeException(
+            "Transition blocks in ModernMaterials failed to map GT framebox with meta " + metadata
+                + " to its new version. This implies that no material with ID + "
+                + materialID
+                + " exists.");
         Item item = BlocksEnum.FrameBox.getItem(material);
         Block block = Block.getBlockFromItem(item);
 
@@ -59,7 +65,11 @@ public class TransitionBlocks {
 
         // Get the item/block for retrieving the ID in this world.
         ModernMaterial material = ModernMaterial.getMaterialFromID(materialID);
-        if (material == null) throw new RuntimeException("Transition blocks in ModernMaterials failed to map GT ore with meta " + metadata + " to its new version. This implies that no material with ID + " + materialID + " exists.");
+        if (material == null) throw new RuntimeException(
+            "Transition blocks in ModernMaterials failed to map GT ore with meta " + metadata
+                + " to its new version. This implies that no material with ID + "
+                + materialID
+                + " exists.");
         Item item = blocksEnum.getItem(material);
         Block block = Block.getBlockFromItem(item);
 

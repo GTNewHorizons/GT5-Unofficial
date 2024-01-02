@@ -1,7 +1,7 @@
 package gregtech.api.modernmaterials;
 
-import static gregtech.api.modernmaterials.items.partproperties.TextureType.Custom;
 import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.modernmaterials.items.partproperties.TextureType.Custom;
 
 import java.io.File;
 import java.nio.file.Paths;
@@ -18,9 +18,9 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.modernmaterials.blocks.blocktypes.framebox.special.CustomTextureRegister;
 import gregtech.api.modernmaterials.fluids.FluidEnum;
 import gregtech.api.modernmaterials.fluids.ModernMaterialFluid;
+import gregtech.api.modernmaterials.items.partclasses.ItemsEnum;
 import gregtech.api.modernmaterials.items.partproperties.IconWrapper;
 import gregtech.api.modernmaterials.items.partproperties.TextureType;
-import gregtech.api.modernmaterials.items.partclasses.ItemsEnum;
 
 public class ModernMaterialsTextureRegister {
 

@@ -12,14 +12,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fluids.FluidRegistry;
 
+import org.jetbrains.annotations.NotNull;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.modernmaterials.blocks.dumbbase.basematerialblock.BaseMaterialItemBlock;
 import gregtech.api.modernmaterials.blocks.registration.BlocksEnum;
 import gregtech.api.modernmaterials.fluids.ModernMaterialFluid;
-import gregtech.api.modernmaterials.items.partproperties.ModernMaterialItemRenderer;
 import gregtech.api.modernmaterials.items.partclasses.ItemsEnum;
 import gregtech.api.modernmaterials.items.partclasses.MaterialPart;
-import org.jetbrains.annotations.NotNull;
+import gregtech.api.modernmaterials.items.partproperties.ModernMaterialItemRenderer;
 
 public class ModernMaterialUtilities {
 
@@ -27,7 +28,8 @@ public class ModernMaterialUtilities {
 
         for (ItemsEnum part : ItemsEnum.values()) {
 
-            if (part.getAssociatedMaterials().isEmpty()) return;
+            if (part.getAssociatedMaterials()
+                .isEmpty()) return;
 
             MaterialPart materialPart = new MaterialPart(part);
             materialPart.setUnlocalizedName(part.partName);
@@ -60,7 +62,8 @@ public class ModernMaterialUtilities {
         }
     }
 
-    public static ArrayList<String> tooltipGenerator(@NotNull ItemStack itemStack, EntityPlayer player, List<String> tooltipList, boolean F3_H) {
+    public static ArrayList<String> tooltipGenerator(@NotNull ItemStack itemStack, EntityPlayer player,
+        List<String> tooltipList, boolean F3_H) {
         // Todo, this is just temporary as a proof of concept/debug info.
         // Probably will put radioactive warning here. Not sure what else yet, if any.
 
@@ -68,7 +71,8 @@ public class ModernMaterialUtilities {
         ArrayList<String> tooltip = new ArrayList<>();
 
         if (material.getCustomTooltipGenerator() != null) {
-            return material.getCustomTooltipGenerator().apply(itemStack, player, tooltipList, F3_H);
+            return material.getCustomTooltipGenerator()
+                .apply(itemStack, player, tooltipList, F3_H);
         }
 
         // Default handling, no custom tooltip.
@@ -76,6 +80,7 @@ public class ModernMaterialUtilities {
 
         tooltip.add("Generic Tooltip");
         tooltip.add("Material Name: " + material.getMaterialName());
+        tooltip.add("Texture Type: " + material.getTextureType());
 
         // Todo interface? There was some reason this was impractical before...
         if (part instanceof BaseMaterialItemBlock blockPart) {

@@ -6,8 +6,8 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
-import gregtech.api.modernmaterials.blocks.dumbbase.basematerialblock.BaseMaterialBlock;
 import gregtech.api.modernmaterials.ModernMaterial;
+import gregtech.api.modernmaterials.blocks.dumbbase.basematerialblock.BaseMaterialBlock;
 
 public class MasterItemBlockRenderer implements IItemRenderer {
 

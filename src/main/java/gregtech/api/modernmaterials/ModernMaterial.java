@@ -9,8 +9,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import gregtech.api.modernmaterials.effects.IMaterialEffect;
-import gregtech.api.modernmaterials.tooltips.IMaterialTooltip;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
@@ -18,11 +16,13 @@ import net.minecraftforge.client.IItemRenderer;
 import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.modernmaterials.blocks.registration.BlocksEnum;
+import gregtech.api.modernmaterials.effects.IMaterialEffect;
 import gregtech.api.modernmaterials.fluids.FluidEnum;
 import gregtech.api.modernmaterials.fluids.ModernMaterialFluid;
-import gregtech.api.modernmaterials.items.partproperties.TextureType;
 import gregtech.api.modernmaterials.items.partclasses.IEnumPart;
 import gregtech.api.modernmaterials.items.partclasses.ItemsEnum;
+import gregtech.api.modernmaterials.items.partproperties.TextureType;
+import gregtech.api.modernmaterials.tooltips.IMaterialTooltip;
 
 public final class ModernMaterial {
 
@@ -32,7 +32,6 @@ public final class ModernMaterial {
     private final HashSet<IMaterialEffect> heldItemEffect = new HashSet<>();
     private IMaterialTooltip customTooltipGenerator;
 
-
     private Color color;
     private int materialID = -1;
     private String materialName;
@@ -41,12 +40,9 @@ public final class ModernMaterial {
     private TextureType textureType;
     private IItemRenderer customItemRenderer;
 
-
     private static final HashSet<ModernMaterial> allMaterials = new HashSet<>();
     private static final HashMap<Integer, ModernMaterial> materialIDToMaterial = new HashMap<>();
     private static final HashMap<String, ModernMaterial> materialNameToMaterialMap = new HashMap<>();
-
-
 
     public ModernMaterial(final String materialName) {
         this.materialName = materialName;
@@ -298,7 +294,8 @@ public final class ModernMaterial {
             @NotNull final TileEntitySpecialRenderer tileEntitySpecialRenderer) {
             blocksEnum.addSpecialBlockRenderAssociatedMaterial(materialToBuild);
 
-            if (materialToBuild.materialID == -1) throw new RuntimeException("Material ID for " + materialToBuild + " must be set before you can call setCustomBlockRenderer.");
+            if (materialToBuild.materialID == -1) throw new RuntimeException(
+                "Material ID for " + materialToBuild + " must be set before you can call setCustomBlockRenderer.");
 
             blocksEnum.setItemRenderer(materialToBuild.materialID, itemRenderer);
             blocksEnum.setBlockRenderer(materialToBuild.materialID, tileEntitySpecialRenderer);

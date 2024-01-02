@@ -4,19 +4,19 @@ import static gregtech.api.modernmaterials.ModernMaterialUtilities.tooltipGenera
 
 import java.util.List;
 
-import gregtech.api.modernmaterials.effects.IMaterialEffect;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-
 import net.minecraft.world.World;
+
 import org.jetbrains.annotations.NotNull;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.modernmaterials.ModernMaterial;
+import gregtech.api.modernmaterials.effects.IMaterialEffect;
 import gregtech.api.util.GT_LanguageManager;
 
 public class MaterialPart extends Item {
@@ -59,7 +59,8 @@ public class MaterialPart extends Item {
     // Tooltip information.
     @SideOnly(Side.CLIENT)
     @Override
-    public void addInformation(@NotNull ItemStack itemStack, EntityPlayer player, List<String> tooltipList, boolean F3_H) {
+    public void addInformation(@NotNull ItemStack itemStack, EntityPlayer player, List<String> tooltipList,
+        boolean F3_H) {
         tooltipList.addAll(tooltipGenerator(itemStack, player, tooltipList, F3_H));
     }
 
@@ -68,7 +69,7 @@ public class MaterialPart extends Item {
     }
 
     @Override
-    public void onUpdate(ItemStack itemStack, World world, Entity entity, int slotIndex, boolean isCurrentItem)  {
+    public void onUpdate(ItemStack itemStack, World world, Entity entity, int slotIndex, boolean isCurrentItem) {
         final ModernMaterial material = ModernMaterial.getMaterialFromItemStack(itemStack);
 
         if (material == null) return;

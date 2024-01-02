@@ -1,16 +1,5 @@
 package gregtech.api.modernmaterials.transition;
 
-import akka.japi.Pair;
-import com.colen.postea.API.BlockReplacementManager;
-import com.colen.postea.API.ItemStackReplacementManager;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.modernmaterials.ModernMaterial;
-import gregtech.api.modernmaterials.blocks.registration.BlocksEnum;
-import gregtech.api.modernmaterials.items.partclasses.ItemsEnum;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.nbt.NBTTagCompound;
-
 import static gregtech.api.modernmaterials.blocks.registration.BlocksEnum.FrameBox;
 import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.Bolt;
 import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.CrushedCentrifugedOre;
@@ -36,6 +25,18 @@ import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.Screw;
 import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.SmallDust;
 import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.TinyDust;
 import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.TriplePlate;
+
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.nbt.NBTTagCompound;
+
+import com.colen.postea.API.ItemStackReplacementManager;
+
+import akka.japi.Pair;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.modernmaterials.ModernMaterial;
+import gregtech.api.modernmaterials.blocks.registration.BlocksEnum;
+import gregtech.api.modernmaterials.items.partclasses.ItemsEnum;
 
 public abstract class TransitionItems {
 
@@ -173,6 +174,7 @@ public abstract class TransitionItems {
         }
         return null; // Not yet set-up
     }
+
     private static Pair<OrePrefixes, ItemsEnum> getPrefixFromIDGroup03(int metadata) {
         switch (metadata / 1000) {
             case 4 -> {
@@ -198,7 +200,8 @@ public abstract class TransitionItems {
         }
 
         { // Conversion occurs
-            Item underlyingItem = prefix.second().getItem();
+            Item underlyingItem = prefix.second()
+                .getItem();
 
             ModernMaterial material = ModernMaterial.getMaterialFromID(materialID);
             if (material == null) return tag;
@@ -226,7 +229,8 @@ public abstract class TransitionItems {
         }
 
         { // Conversion occurs
-            Item underlyingItem = prefix.second().getItem();
+            Item underlyingItem = prefix.second()
+                .getItem();
 
             ModernMaterial material = ModernMaterial.getMaterialFromID(materialID);
             if (material == null) return tag;
@@ -254,7 +258,8 @@ public abstract class TransitionItems {
         }
 
         { // Conversion occurs
-            Item underlyingItem = prefix.second().getItem();
+            Item underlyingItem = prefix.second()
+                .getItem();
 
             ModernMaterial material = ModernMaterial.getMaterialFromID(materialID);
             if (material == null) return tag;
@@ -267,6 +272,7 @@ public abstract class TransitionItems {
     }
 
     private static final short cobbleStoneID = (short) Item.getIdFromItem(Item.getItemFromBlock(Blocks.cobblestone));
+
     private static NBTTagCompound convertToCobblestone(NBTTagCompound tag) {
         tag.setShort("id", cobbleStoneID);
         tag.setShort("Damage", (short) 0);
@@ -284,7 +290,8 @@ public abstract class TransitionItems {
         ItemStackReplacementManager.addItemReplacement("gregtech:gt.metaitem.03", TransitionItems::convertMeta03);
 
         // E.g. frames
-        ItemStackReplacementManager.addItemReplacement("gregtech:gt.blockmachines", TransitionItems::convertMachineItemBlocks);
+        ItemStackReplacementManager
+            .addItemReplacement("gregtech:gt.blockmachines", TransitionItems::convertMachineItemBlocks);
 
         // All normal and small ores.
         ItemStackReplacementManager.addItemReplacement("gregtech:gt.blockores", TransitionItems::convertOreItemBlocks);

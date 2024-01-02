@@ -13,9 +13,9 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
+import gregtech.api.modernmaterials.ModernMaterial;
 import gregtech.api.modernmaterials.items.partclasses.ItemsEnum;
 import gregtech.api.modernmaterials.items.partclasses.MaterialPart;
-import gregtech.api.modernmaterials.ModernMaterial;
 import gregtech.common.render.GT_RenderUtil;
 
 public class ModernMaterialItemRenderer implements IItemRenderer {

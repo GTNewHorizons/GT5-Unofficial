@@ -10,11 +10,11 @@ import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 
 import fox.spiteful.avaritia.render.CosmicRenderShenanigans;
-import gregtech.api.modernmaterials.items.partproperties.IconWrapper;
-import gregtech.api.modernmaterials.items.partproperties.ModernMaterialItemRenderer;
+import gregtech.api.modernmaterials.ModernMaterial;
 import gregtech.api.modernmaterials.items.partclasses.ItemsEnum;
 import gregtech.api.modernmaterials.items.partclasses.MaterialPart;
-import gregtech.api.modernmaterials.ModernMaterial;
+import gregtech.api.modernmaterials.items.partproperties.IconWrapper;
+import gregtech.api.modernmaterials.items.partproperties.ModernMaterialItemRenderer;
 
 public class UniversiumItemRenderer implements IItemRenderer {
 

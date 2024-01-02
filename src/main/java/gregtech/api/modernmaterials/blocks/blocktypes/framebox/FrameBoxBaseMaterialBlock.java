@@ -9,9 +9,9 @@ import net.minecraft.world.IBlockAccess;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.modernmaterials.ModernMaterial;
 import gregtech.api.modernmaterials.blocks.dumbbase.basematerialblock.BaseMaterialBlock;
 import gregtech.api.modernmaterials.blocks.registration.BlocksEnum;
-import gregtech.api.modernmaterials.ModernMaterial;
 
 public class FrameBoxBaseMaterialBlock extends BaseMaterialBlock {
 

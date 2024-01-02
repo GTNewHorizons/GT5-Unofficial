@@ -1,14 +1,12 @@
 package gregtech.api.modernmaterials.blocks.registration;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 
-import gregtech.api.modernmaterials.ModernMaterial;
 import net.minecraft.item.Item;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.modernmaterials.ModernMaterial;
 import gregtech.api.modernmaterials.blocks.dumbbase.basematerialblock.BaseMaterialBlock;
 import gregtech.api.modernmaterials.blocks.dumbbase.basematerialblock.BaseMaterialItemBlock;
 

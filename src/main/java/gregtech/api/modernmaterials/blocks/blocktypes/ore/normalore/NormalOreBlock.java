@@ -1,16 +1,14 @@
 package gregtech.api.modernmaterials.blocks.blocktypes.ore.normalore;
 
+import java.util.HashSet;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.modernmaterials.ModernMaterial;
 import gregtech.api.modernmaterials.blocks.blocktypes.ore.BaseOreBlock;
 import gregtech.api.modernmaterials.blocks.registration.BlocksEnum;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
-
-import java.util.HashSet;
 
 public class NormalOreBlock extends BaseOreBlock {
 

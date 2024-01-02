@@ -1,15 +1,17 @@
 package gregtech.api.modernmaterials.blocks.blocktypes.blockof.special;
 
-import fox.spiteful.avaritia.render.CosmicRenderShenanigans;
+import static gregtech.api.modernmaterials.blocks.blocktypes.framebox.special.CustomTextureRegister.universiumSolidBlockTexutre;
+import static gregtech.api.modernmaterials.render.Utilities.renderBlock;
+
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.client.IItemRenderer;
+
 import org.lwjgl.opengl.GL11;
 
-import static gregtech.api.modernmaterials.blocks.blocktypes.framebox.special.CustomTextureRegister.universiumSolidBlockTexutre;
-import static gregtech.api.modernmaterials.render.Utilities.renderBlock;
+import fox.spiteful.avaritia.render.CosmicRenderShenanigans;
 
 public class UniversiumBlockOfItemRenderer implements IItemRenderer {
 

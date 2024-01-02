@@ -1,18 +1,23 @@
 package gregtech.api.modernmaterials.blocks.blocktypes.ore;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.modernmaterials.blocks.dumbbase.basematerialblock.BaseMaterialBlock;
-import gregtech.api.modernmaterials.blocks.registration.BlocksEnum;
-import gregtech.api.modernmaterials.ModernMaterial;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
 
 import java.awt.*;
 import java.util.HashSet;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.modernmaterials.ModernMaterial;
+import gregtech.api.modernmaterials.blocks.dumbbase.basematerialblock.BaseMaterialBlock;
+import gregtech.api.modernmaterials.blocks.registration.BlocksEnum;
+
 public abstract class BaseOreBlock extends BaseMaterialBlock {
+
+    public BaseOreBlock(BlocksEnum blockEnum, HashSet<ModernMaterial> validIDs) {
+        super(blockEnum, validIDs);
+    }
 
     protected IIcon metalOreTexture;
     protected IIcon gemOreTexture;
@@ -44,10 +49,6 @@ public abstract class BaseOreBlock extends BaseMaterialBlock {
         return null;
     }
 
-    public BaseOreBlock(BlocksEnum blockEnum, HashSet<ModernMaterial> validIDs) {
-        super(blockEnum, validIDs);
-    }
-
     // Make block see through.
     @Override
     public boolean isOpaqueCube() {
@@ -65,6 +66,5 @@ public abstract class BaseOreBlock extends BaseMaterialBlock {
         return material.getColor()
             .getRGB();
     }
-
 
 }

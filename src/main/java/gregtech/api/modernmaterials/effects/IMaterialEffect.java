@@ -6,5 +6,6 @@ import net.minecraft.world.World;
 
 @FunctionalInterface
 public interface IMaterialEffect {
+
     void apply(ItemStack itemStack, World world, Entity player, int slotIndex, boolean isCurrentItem);
 }

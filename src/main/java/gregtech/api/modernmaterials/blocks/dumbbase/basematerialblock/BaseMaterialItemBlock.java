@@ -4,22 +4,22 @@ import static gregtech.api.modernmaterials.ModernMaterialUtilities.tooltipGenera
 
 import java.util.List;
 
-import gregtech.api.modernmaterials.effects.IMaterialEffect;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+
 import org.jetbrains.annotations.NotNull;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
-import gregtech.api.modernmaterials.blocks.registration.BlocksEnum;
 import gregtech.api.modernmaterials.ModernMaterial;
+import gregtech.api.modernmaterials.blocks.registration.BlocksEnum;
+import gregtech.api.modernmaterials.effects.IMaterialEffect;
 
 public class BaseMaterialItemBlock extends ItemBlock {
 
@@ -71,7 +71,7 @@ public class BaseMaterialItemBlock extends ItemBlock {
     }
 
     @Override
-    public void onUpdate(ItemStack itemStack, World world, Entity entity, int slotIndex, boolean isCurrentItem)  {
+    public void onUpdate(ItemStack itemStack, World world, Entity entity, int slotIndex, boolean isCurrentItem) {
         final ModernMaterial material = ModernMaterial.getMaterialFromItemStack(itemStack);
 
         for (IMaterialEffect effect : material.getEffects()) {
@@ -80,8 +80,7 @@ public class BaseMaterialItemBlock extends ItemBlock {
     }
 
     @SideOnly(Side.CLIENT)
-    public IIcon getIconFromDamage(int metadata)
-    {
+    public IIcon getIconFromDamage(int metadata) {
         // field_150939_a is the underlying block of this ItemBlock.
         return this.field_150939_a.getIcon(0, metadata);
     }

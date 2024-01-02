@@ -1,5 +1,27 @@
 package gregtech.common;
 
+import static gregtech.api.enums.GT_Values.debugOrevein;
+import static gregtech.api.enums.GT_Values.debugWorldGen;
+import static gregtech.api.enums.GT_Values.oreveinAttempts;
+import static gregtech.api.enums.GT_Values.oreveinMaxPlacementAttempts;
+import static gregtech.api.enums.GT_Values.oreveinPercentage;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Random;
+
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldSavedData;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraftforge.event.world.WorldEvent;
+
 import cpw.mods.fml.common.IWorldGenerator;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
@@ -14,27 +36,6 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_Log;
 import gregtech.api.world.GT_Worldgen;
 import gregtech.common.blocks.GT_TileEntity_Ores;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldSavedData;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraftforge.event.world.WorldEvent;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Random;
-
-import static gregtech.api.enums.GT_Values.debugOrevein;
-import static gregtech.api.enums.GT_Values.debugWorldGen;
-import static gregtech.api.enums.GT_Values.oreveinAttempts;
-import static gregtech.api.enums.GT_Values.oreveinMaxPlacementAttempts;
-import static gregtech.api.enums.GT_Values.oreveinPercentage;
 
 public class GT_Worldgenerator implements IWorldGenerator {
 
