@@ -459,6 +459,7 @@ public class GT_MetaTileEntity_DroneCentre extends
         ModularWindow.Builder builder = ModularWindow.builder(260, 215);
         builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         builder.setGuiTint(getGUIColorization());
+        builder.widget(ButtonWidget.closeWindowButton(true).setPos(245,3));
         builder.widget(
             new TextWidget(EnumChatFormatting.BOLD + StatCollector.translateToLocal("GT5U.gui.text.drone_title"))
                 .setScale(2)
@@ -565,7 +566,8 @@ public class GT_MetaTileEntity_DroneCentre extends
         ModularWindow.Builder builder = ModularWindow.builder(150, 40);
         builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         builder.setGuiTint(getGUIColorization());
-        return builder.widget(
+        return builder.widget(ButtonWidget.closeWindowButton(true).setPos(135,3))
+            .widget(
             new TextWidget("Custom Machine Name").setTextAlignment(Alignment.Center)
                 .setPos(0, 5)
                 .setSize(150, 8))
