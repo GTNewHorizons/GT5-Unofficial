@@ -156,10 +156,9 @@ public class GT_MetaTileEntity_DroneCentre extends
             .addInfo("Range is determined by drone tier: T1-32, T2-128, T3-512")
             .addInfo("Place drones in input bus; only one needed to operate.")
             .addInfo("Automatically upgrade based on the drone level in the input bus.")
-            .addInfo("There is a 1/36000(3N-2) chance per second that the drone will crash.")
-            .addInfo("If there is no backup drone, it will shut down!")
-            .addInfo(
-                "Once the maintenance center shuts down, all multi-block machines within the range will malfunction.")
+            .addInfo("There is a chance per second that the drone will crash.")
+            .addInfo("Chance is determined by drone tier: T1-1/28800, T2-1/172800, T3-0")
+            .addInfo("If machine is too far, remote control would not available")
             .addInfo(AuthorSilverMoon)
             .addSeparator()
             .beginStructureBlock(5, 6, 9, false)
@@ -216,10 +215,15 @@ public class GT_MetaTileEntity_DroneCentre extends
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             fixAll();
-            if (aTick % 200 == 0 && (droneLevel == 1 || droneLevel == 2)
-                && getBaseMetaTileEntity().getRandomNumber(36000 * (3 * droneLevel - 2)) == 0) {
-                droneLevel = 0;
-                if (!tryConsumeDrone()) criticalStopMachine();
+            if (aTick % 200 == 0) {
+                if (switch (droneLevel) {
+                    case 1 -> getBaseMetaTileEntity().getRandomNumber(28800);
+                    case 2 -> getBaseMetaTileEntity().getRandomNumber(172800);
+                    default -> 1;
+                } == 0) {
+                    droneLevel = 0;
+                    if (!tryConsumeDrone()) criticalStopMachine();
+                }
             }
             // Clean invalid connections every 4 seconds
             if (aTick % 80 == 0) connectionList.removeIf(v -> !v.isValid());
@@ -275,12 +279,12 @@ public class GT_MetaTileEntity_DroneCentre extends
     @NotNull
     public CheckRecipeResult checkProcessing() {
         if (droneLevel == 0) {
-            if (!tryConsumeDrone()) return SimpleCheckRecipeResult.ofFailure("noDrone");
+            if (!tryConsumeDrone()) return SimpleCheckRecipeResult.ofFailure("drone_noDrone");
         }
         if (droneLevel == 1 || droneLevel == 2) tryUpdateDrone();
         mMaxProgresstime = 200 * droneLevel;
         createRenderBlock();
-        return SimpleCheckRecipeResult.ofSuccess("operating");
+        return SimpleCheckRecipeResult.ofSuccess("drone_operating");
     }
 
     @Override
@@ -391,7 +395,7 @@ public class GT_MetaTileEntity_DroneCentre extends
                     UI.add(GT_UITextures.OVERLAY_BUTTON_WHITELIST);
                     return UI.toArray(new IDrawable[0]);
                 })
-                .addTooltip("Open Machine List")
+                .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_open_list"))
                 .setPos(94, 91)
                 .setEnabled(getBaseMetaTileEntity().isActive()))
             .widget(// Turn on ALL machines
@@ -410,7 +414,7 @@ public class GT_MetaTileEntity_DroneCentre extends
                         UI.add(GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_ON);
                         return UI.toArray(new IDrawable[0]);
                     })
-                    .addTooltip("Turn ON all machines connected to centre")
+                    .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_poweron_all"))
                     .setPos(146, 91)
                     .setEnabled(getBaseMetaTileEntity().isActive()))
             .widget(// Turn off ALL machines
@@ -429,7 +433,7 @@ public class GT_MetaTileEntity_DroneCentre extends
                         UI.add(GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF);
                         return UI.toArray(new IDrawable[0]);
                     })
-                    .addTooltip("Turn OFF all machines connected to centre")
+                    .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_poweroff_all"))
                     .setPos(120, 91)
                     .setEnabled(getBaseMetaTileEntity().isActive()))
             .widget(new FakeSyncWidget.ListSyncer<>(() -> connectionList, var1 -> {
@@ -456,7 +460,8 @@ public class GT_MetaTileEntity_DroneCentre extends
         builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         builder.setGuiTint(getGUIColorization());
         builder.widget(
-            new TextWidget(EnumChatFormatting.BOLD + "Drone Control Centre").setScale(2)
+            new TextWidget(EnumChatFormatting.BOLD + StatCollector.translateToLocal("GT5U.gui.text.drone_title"))
+                .setScale(2)
                 .setTextAlignment(Alignment.Center)
                 .setPos(0, 10)
                 .setSize(260, 8));
@@ -477,7 +482,7 @@ public class GT_MetaTileEntity_DroneCentre extends
                     if (!widget.isClient()) widget.getContext()
                         .openSyncedWindow(11);
                 })
-                    .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.setname"))
+                    .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_setname"))
                     .setBackground(
                         () -> new IDrawable[] { GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_PRINT })
                     .setSize(16, 16));
@@ -519,7 +524,7 @@ public class GT_MetaTileEntity_DroneCentre extends
                         builder)
                     .addTooltip(
                         coreMachine != null ? StatCollector.translateToLocal("GT5U.gui.button.power_switch")
-                            : StatCollector.translateToLocal("GT5U.gui.text.outofrange"))
+                            : StatCollector.translateToLocal("GT5U.gui.button.drone_outofrange"))
                     .setSize(16, 16))
                 .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
                     if (widget.isClient()) {
@@ -531,8 +536,8 @@ public class GT_MetaTileEntity_DroneCentre extends
                     }
                 })
                     .addTooltip(
-                        coreMachine != null ? StatCollector.translateToLocal("GT5U.gui.button.highlight")
-                            : StatCollector.translateToLocal("GT5U.gui.text.outofrange"))
+                        coreMachine != null ? StatCollector.translateToLocal("GT5U.gui.button.drone_highlight")
+                            : StatCollector.translateToLocal("GT5U.gui.button.drone_outofrange"))
                     .setBackground(
                         () -> Optional.ofNullable(coreMachine)
                             .map(
