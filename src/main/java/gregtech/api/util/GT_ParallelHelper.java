@@ -1,7 +1,9 @@
 package gregtech.api.util;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Random;
 import java.util.function.Function;
 
 import javax.annotation.Nonnull;
@@ -373,12 +375,12 @@ public class GT_ParallelHelper {
         double tickTimeAfterOC = calculator.setParallel(originalMaxParallel)
             .calculateDurationUnderOneTick();
         if (tickTimeAfterOC < 1) {
-            maxParallel = (int) (maxParallel / tickTimeAfterOC);
+            maxParallel = GT_Utility.safeInt((long) (maxParallel / tickTimeAfterOC), 0);
         }
 
         int maxParallelBeforeBatchMode = maxParallel;
         if (batchMode) {
-            maxParallel *= batchModifier;
+            maxParallel = GT_Utility.safeInt((long) maxParallel * batchModifier, 0);
         }
 
         final ItemStack[] truncatedItemOutputs = recipe.mOutputs != null
@@ -511,31 +513,42 @@ public class GT_ParallelHelper {
             itemOutputs = customItemOutputCalculation.apply(currentParallel);
             return;
         }
-        itemOutputs = new ItemStack[truncatedItemOutputs.length];
+        ArrayList<ItemStack> itemOutputsList = new ArrayList<>();
+        Random rand = new Random();
         for (int i = 0; i < truncatedItemOutputs.length; i++) {
+            if (recipe.getOutput(i) == null) continue;
+            long items = 0;
+            ItemStack origin = recipe.getOutput(i)
+                .copy();
+            final long itemStackSize = origin.stackSize;
+
             if (recipe.getOutputChance(i) >= 10000) {
-                ItemStack item = recipe.getOutput(i)
-                    .copy();
-                item.stackSize *= currentParallel;
-                itemOutputs[i] = item;
-                continue;
-            }
-            int items = 0;
-            int itemStackSize = recipe.getOutput(i).stackSize;
-            for (int roll = 0; roll < currentParallel; roll++) {
-                if (recipe.getOutputChance(i) > XSTR.XSTR_INSTANCE.nextInt(10000)) {
-                    items += itemStackSize;
+                items = itemStackSize * currentParallel;
+            } else {
+                double chance = (double) recipe.getOutputChance(i) / 10000;
+                double mean = currentParallel * chance;
+                double stdDev = Math.sqrt(currentParallel * chance * (1 - chance));
+                // Check if everything within 3 standard deviations of mean is within the range
+                // of possible values (0 ~ currentParallel)
+                boolean isSuitableForFittingWithNormalDistribution = mean - 3 * stdDev >= 0
+                    && mean + 3 * stdDev <= currentParallel;
+                if (isSuitableForFittingWithNormalDistribution) {
+                    // Use Normal Distribution to fit Binomial Distribution
+                    items = (long) Math.ceil(itemStackSize * (stdDev * rand.nextGaussian() + mean));
+                    items = Math.max(Math.min(items, itemStackSize * currentParallel), 0);
+                } else {
+                    // Do Binomial Distribution by loop
+                    for (int roll = 0; roll < currentParallel; roll++) {
+                        if (recipe.getOutputChance(i) > XSTR.XSTR_INSTANCE.nextInt(10000)) {
+                            items += itemStackSize;
+                        }
+                    }
                 }
             }
-            ItemStack item = recipe.getOutput(i)
-                .copy();
-            if (items == 0) {
-                item = null;
-            } else {
-                item.stackSize = items;
-            }
-            itemOutputs[i] = item;
+
+            addItemsLong(itemOutputsList, origin, items);
         }
+        itemOutputs = itemOutputsList.toArray(new ItemStack[0]);
     }
 
     private void calculateFluidOutputs(FluidStack[] truncatedFluidOutputs) {
@@ -543,16 +556,43 @@ public class GT_ParallelHelper {
             fluidOutputs = customFluidOutputCalculation.apply(currentParallel);
             return;
         }
-        fluidOutputs = new FluidStack[truncatedFluidOutputs.length];
+        ArrayList<FluidStack> fluidOutputsList = new ArrayList<>();
         for (int i = 0; i < truncatedFluidOutputs.length; i++) {
-            if (recipe.getFluidOutput(i) == null) {
-                fluidOutputs[i] = null;
-            } else {
-                FluidStack tFluid = recipe.getFluidOutput(i)
-                    .copy();
-                tFluid.amount *= currentParallel;
-                fluidOutputs[i] = tFluid;
+            if (recipe.getFluidOutput(i) == null) continue;
+            FluidStack origin = recipe.getFluidOutput(i)
+                .copy();
+            long fluids = (long) origin.amount * currentParallel;
+
+            addFluidsLong(fluidOutputsList, origin, fluids);
+        }
+        fluidOutputs = fluidOutputsList.toArray(new FluidStack[0]);
+    }
+
+    public static void addItemsLong(ArrayList<ItemStack> itemList, ItemStack origin, long amount) {
+        if (amount >= 0) {
+            while (amount > Integer.MAX_VALUE) {
+                ItemStack item = origin.copy();
+                item.stackSize = Integer.MAX_VALUE;
+                itemList.add(item);
+                amount -= Integer.MAX_VALUE;
             }
+            ItemStack item = origin.copy();
+            item.stackSize = (int) amount;
+            itemList.add(item);
+        }
+    }
+
+    public static void addFluidsLong(ArrayList<FluidStack> fluidList, FluidStack origin, long amount) {
+        if (amount >= 0) {
+            while (amount > Integer.MAX_VALUE) {
+                FluidStack fluid = origin.copy();
+                fluid.amount = Integer.MAX_VALUE;
+                fluidList.add(fluid);
+                amount -= Integer.MAX_VALUE;
+            }
+            FluidStack fluid = origin.copy();
+            fluid.amount = (int) amount;
+            fluidList.add(fluid);
         }
     }
 
