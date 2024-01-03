@@ -16,6 +16,7 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+import org.lwjgl.opengl.GL20;
 
 import codechicken.lib.render.TextureUtils;
 import fox.spiteful.avaritia.render.CosmicRenderShenanigans;
@@ -111,7 +112,7 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
                 mc.getTextureManager()
                     .bindTexture(resourcelocation);
             } else {
-                r.renderItemIntoGUI(mc.fontRenderer, mc.getTextureManager(), aStack, 0, 0, true);
+                GT_RenderUtil.renderItem(type, tIcon);
             }
 
             GL11.glEnable(GL11.GL_BLEND);
@@ -132,12 +133,7 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
             GL11.glColor4d(1, 1, 1, 1);
 
             // Draw cosmic overlay
-            t.startDrawingQuads();
-            t.addVertexWithUV(0, 0, 0, minU, minV);
-            t.addVertexWithUV(0, 16, 0, minU, maxV);
-            t.addVertexWithUV(16, 16, 0, maxU, maxV);
-            t.addVertexWithUV(16, 0, 0, maxU, minV);
-            t.draw();
+            GT_RenderUtil.renderItem(type, tIcon);
 
             CosmicRenderShenanigans.releaseShader();
             CosmicRenderShenanigans.inventoryRender = false;
@@ -146,6 +142,8 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
         } else {
             // RENDER ITEM
             GT_RenderUtil.renderItem(type, tIcon);
+
+            int program = GL11.glGetInteger(GL20.GL_CURRENT_PROGRAM);
 
             GL11.glDisable(GL11.GL_ALPHA_TEST);
             GL11.glDepthFunc(GL11.GL_EQUAL);
@@ -156,6 +154,8 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
             GT_RenderUtil.renderItem(type, tIcon);
             CosmicRenderShenanigans.releaseShader();
             GL11.glDepthFunc(GL11.GL_LEQUAL);
+
+            GL20.glUseProgram(program);
         }
 
         GL11.glEnable(GL11.GL_DEPTH_TEST);
