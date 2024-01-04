@@ -417,15 +417,19 @@ public class GT_Client extends GT_Proxy implements Runnable {
         GL11.glEnd();
         // draw turning indicator
         Function<ForgeDirection, Transformation[]> getTransform = (ForgeDirection direction) -> {
-            if (direction.ordinal() == tSideHit) return new Transformation[] { ROTATION_MARKER_TRANSFORM_CENTER };
-            else if (direction.getOpposite()
-                .ordinal() == tSideHit) {
-                    return ROTATION_MARKER_TRANSFORMS_CORNER;
-                } else {
-                    return new Transformation[] {
-                        ROTATION_MARKER_TRANSFORMS_SIDES_TRANSFORMS[ROTATION_MARKER_TRANSFORMS_SIDES[tSideHit * 6
-                            + direction.ordinal()]] };
-                }
+            try {
+                if (direction.ordinal() == tSideHit) return new Transformation[] { ROTATION_MARKER_TRANSFORM_CENTER };
+                else if (direction.getOpposite()
+                    .ordinal() == tSideHit) {
+                        return ROTATION_MARKER_TRANSFORMS_CORNER;
+                    } else {
+                        return new Transformation[] {
+                            ROTATION_MARKER_TRANSFORMS_SIDES_TRANSFORMS[ROTATION_MARKER_TRANSFORMS_SIDES[tSideHit * 6
+                                + direction.ordinal()]] };
+                    }
+            } catch (ArrayIndexOutOfBoundsException e) {
+                return new Transformation[] {};
+            }
 
         };
 
