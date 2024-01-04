@@ -36,9 +36,6 @@ public class Behaviour_Wrench extends Behaviour_None {
     @Override
     public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
         int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
-        if (aWorld.isRemote) {
-            return false;
-        }
         final Block aBlock = aWorld.getBlock(aX, aY, aZ);
         if (aBlock == null) {
             return false;
@@ -82,6 +79,68 @@ public class Behaviour_Wrench extends Behaviour_None {
     private static class WrenchHandler {
 
         boolean handle() {
+            ForgeDirection direction = ForgeDirection.getOrientation(targetSideOrdinal);
+
+            // AE2 logic
+            // default to change the up facing
+            // sneak to change the forward facing
+            if (tileEntity instanceof IOrientable orientable) {
+                if (!orientable.canBeRotated()) return false;
+                ForgeDirection front = orientable.getForward();
+                ForgeDirection up = orientable.getUp();
+
+                // mainly for me-interfaces, whose initial orientation is UNKNOWN
+                if (front == ForgeDirection.UNKNOWN) {
+                    if (direction == ForgeDirection.UP || direction == ForgeDirection.DOWN)
+                        front = ForgeDirection.NORTH;
+                    else front = ForgeDirection.UP;
+                }
+
+                ForgeDirection back = front.getOpposite();
+                ForgeDirection down = up.getOpposite();
+
+                if (tileEntity instanceof TileInterface) {
+                    if (player.isSneaking()) return false;
+                    if (direction == down) {
+                        return doWrenchOperation(costs, () -> {
+                            orientable.setOrientation(ForgeDirection.UNKNOWN, ForgeDirection.UNKNOWN);
+                            return true;
+                        });
+                    }
+                    // interface's up-side is opposite to the arrow on texture
+                    // make it intuitive by rotating it to the opposite side.
+                    direction = direction.getOpposite();
+                    up = up.getOpposite();
+                } else if (direction == up || direction == front) {
+                    // rotate around the direction axis
+                    final var tempFront = front;
+                    final var tempUp = up;
+                    if (!player.isSneaking() && direction == up) return doWrenchOperation(costs, () -> {
+                        orientable.setOrientation(tempFront.getRotation(tempUp), tempUp);
+                        return true;
+                    });
+                    if (player.isSneaking() && direction == front) return doWrenchOperation(costs, () -> {
+                        orientable.setOrientation(
+                            tempFront,
+                            tempUp.getRotation(tempFront)
+                                .getRotation(tempFront));
+                        return true;
+                    });
+                }
+
+                if (player.isSneaking()) {
+                    if (direction == up || direction == down) {
+                        orientable.setOrientation(direction, down.getRotation(front.getRotation(direction)));
+                    } else orientable.setOrientation(direction, up);
+                } else {
+                    if (direction == front || direction == back) {
+                        orientable.setOrientation(back.getRotation(up.getRotation(direction)), direction);
+                    } else orientable.setOrientation(front, direction);
+                }
+
+                return damageWrench(costs);
+            }
+            if (world.isRemote) return false;
             // IC2 Wrenchable
             if (tileEntity instanceof IWrenchable wrenchable) {
                 if (wrenchable.wrenchCanSetFacing(player, targetSideOrdinal)) {
@@ -108,64 +167,6 @@ public class Behaviour_Wrench extends Behaviour_None {
                 else return false;
             }
             if (tileEntity instanceof IPartHost) return false;
-
-            ForgeDirection direction = ForgeDirection.getOrientation(targetSideOrdinal);
-
-            // AE2 logic
-            // default to change the up facing
-            // sneak to change the forward facing
-            if (tileEntity instanceof IOrientable orientable) {
-                if (!orientable.canBeRotated()) return false;
-                ForgeDirection front = orientable.getForward();
-                ForgeDirection up = orientable.getUp();
-
-                // mainly for me-interfaces, whose initial orientation is UNKNOWN
-                if (front == ForgeDirection.UNKNOWN) {
-                    if (direction == ForgeDirection.UP || direction == ForgeDirection.DOWN)
-                        front = ForgeDirection.NORTH;
-                    else front = ForgeDirection.UP;
-                }
-
-                ForgeDirection back = front.getOpposite();
-                ForgeDirection down = up.getOpposite();
-
-                if (tileEntity instanceof TileInterface) {
-                    if (player.isSneaking()) {
-                        return doWrenchOperation(costs, () -> {
-                            orientable.setOrientation(ForgeDirection.UNKNOWN, ForgeDirection.UNKNOWN);
-                            return true;
-                        });
-                    }
-                    // interface's up-side is opposite to the arrow on texture
-                    // make it intuitive by rotating it to the opposite side.
-                    direction = direction.getOpposite();
-                    up = up.getOpposite();
-                } else if (direction == up || direction == front) {
-                    // rotate around the direction axis
-                    final var tempFront = front;
-                    final var tempUp = up;
-                    if (direction == up && !player.isSneaking()) return doWrenchOperation(costs, () -> {
-                        orientable.setOrientation(tempFront.getRotation(tempUp), tempUp);
-                        return true;
-                    });
-                    else if (direction == front) return doWrenchOperation(costs, () -> {
-                        orientable.setOrientation(tempFront, tempUp.getRotation(tempFront));
-                        return true;
-                    });
-                }
-
-                if (player.isSneaking()) {
-                    if (direction == up || direction == down) {
-                        orientable.setOrientation(direction, down.getRotation(front.getRotation(direction)));
-                    } else orientable.setOrientation(direction, up);
-                } else {
-                    if (direction == front || direction == back) {
-                        orientable.setOrientation(back.getRotation(up.getRotation(direction)), direction);
-                    } else orientable.setOrientation(front, direction);
-                }
-
-                return damageWrench(costs);
-            }
 
             final int logWoodId = OreDictionary.getOreID("logWood");
             if (Arrays.stream(OreDictionary.getOreIDs(new ItemStack(block)))

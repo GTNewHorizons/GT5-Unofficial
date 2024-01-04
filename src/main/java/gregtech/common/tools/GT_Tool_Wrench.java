@@ -30,6 +30,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.util.GT_ToolHarvestHelper;
+import gregtech.common.items.behaviors.Behaviour_Switch_Mode;
 import gregtech.common.items.behaviors.Behaviour_Wrench;
 import ic2.api.tile.IWrenchable;
 
