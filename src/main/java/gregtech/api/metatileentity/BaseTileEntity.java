@@ -51,6 +51,8 @@ import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
 import gregtech.GT_Mod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
@@ -175,13 +177,18 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     @Override
     public final boolean isServerSide() {
         if (worldObj == null) {
-            return false;
+            return FMLCommonHandler.instance()
+                .getEffectiveSide() == Side.SERVER;
         }
         return !worldObj.isRemote;
     }
 
     @Override
     public final boolean isClientSide() {
+        if (worldObj == null) {
+            return FMLCommonHandler.instance()
+                .getEffectiveSide() == Side.CLIENT;
+        }
         return worldObj.isRemote;
     }
 
@@ -607,29 +614,6 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
     public boolean useModularUI() {
         return false;
-    }
-
-    @Override
-    public ModularWindow createWindow(UIBuildContext buildContext) {
-        if (!useModularUI()) return null;
-
-        buildContext.setValidator(getValidator());
-        final ModularWindow.Builder builder = ModularWindow.builder(getGUIWidth(), getGUIHeight());
-        builder.setBackground(getGUITextureSet().getMainBackground());
-        builder.setGuiTint(getGUIColorization());
-        if (doesBindPlayerInventory()) {
-            bindPlayerInventoryUI(builder, buildContext);
-        }
-        addUIWidgets(builder, buildContext);
-        addTitleToUI(builder);
-        addCoverTabs(builder, buildContext);
-        final IConfigurationCircuitSupport csc = getConfigurationCircuitSupport();
-        if (csc != null && csc.allowSelectCircuit()) {
-            addConfigurationCircuitSlot(builder);
-        } else {
-            addGregTechLogo(builder);
-        }
-        return builder.build();
     }
 
     /*

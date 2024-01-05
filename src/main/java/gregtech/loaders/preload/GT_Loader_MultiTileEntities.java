@@ -1,124 +1,15 @@
 package gregtech.loaders.preload;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
-import static gregtech.api.multitileentity.enums.GT_MultiTileCasing.Chemical;
-import static gregtech.api.multitileentity.enums.GT_MultiTileCasing.CokeOven;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.EV_Conveyor;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.EV_Emitter;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.EV_FieldGenerator;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.EV_Motor;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.EV_Piston;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.EV_Pump;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.EV_RobotArm;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.EV_Sensor;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.HV_Conveyor;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.HV_Emitter;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.HV_FieldGenerator;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.HV_Motor;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.HV_Piston;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.HV_Pump;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.HV_RobotArm;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.HV_Sensor;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.IV_Conveyor;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.IV_Emitter;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.IV_FieldGenerator;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.IV_Motor;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.IV_Piston;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.IV_Pump;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.IV_RobotArm;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.IV_Sensor;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.LV_Conveyor;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.LV_Emitter;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.LV_FieldGenerator;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.LV_Motor;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.LV_Piston;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.LV_Pump;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.LV_RobotArm;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.LV_Sensor;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.LuV_Conveyor;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.LuV_Emitter;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.LuV_FieldGenerator;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.LuV_Motor;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.LuV_Piston;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.LuV_Pump;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.LuV_RobotArm;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.LuV_Sensor;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.MAX_Emitter;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.MAX_FieldGenerator;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.MAX_Motor;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.MAX_Piston;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.MAX_Pump;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.MAX_RobotArm;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.MAX_Sensor;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.MV_Conveyor;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.MV_Emitter;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.MV_FieldGenerator;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.MV_Motor;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.MV_Piston;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.MV_Pump;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.MV_RobotArm;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.MV_Sensor;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UEV_Conveyor;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UEV_Emitter;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UEV_FieldGenerator;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UEV_Motor;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UEV_Piston;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UEV_Pump;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UEV_RobotArm;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UEV_Sensor;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UHV_Conveyor;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UHV_Emitter;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UHV_FieldGenerator;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UHV_Motor;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UHV_Piston;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UHV_Pump;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UHV_RobotArm;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UHV_Sensor;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UIV_Conveyor;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UIV_Emitter;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UIV_FieldGenerator;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UIV_Motor;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UIV_Piston;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UIV_Pump;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UIV_RobotArm;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UIV_Sensor;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UMV_Emitter;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UMV_FieldGenerator;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UMV_Motor;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UMV_Piston;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UMV_Pump;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UMV_RobotArm;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UMV_Sensor;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UV_Conveyor;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UV_Emitter;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UV_FieldGenerator;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UV_Motor;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UV_Piston;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UV_Pump;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UV_RobotArm;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UV_Sensor;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UXV_Emitter;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UXV_FieldGenerator;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UXV_Motor;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UXV_Piston;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UXV_Pump;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UXV_RobotArm;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.UXV_Sensor;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.ZPM_Conveyor;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.ZPM_Emitter;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.ZPM_FieldGenerator;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.ZPM_Motor;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.ZPM_Piston;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.ZPM_Pump;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.ZPM_RobotArm;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.ZPM_Sensor;
+import static gregtech.api.multitileentity.enums.GT_MultiTileCasing.*;
+import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.*;
+import static gregtech.api.multitileentity.enums.GT_MultiTileUpgradeCasing.*;
+import static gregtech.api.multitileentity.enums.GT_MultiTileUpgradeCasing.Insulator_OmegaType;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
-import gregtech.api.enums.Mods;
 import gregtech.api.multitileentity.MultiTileEntityBlock;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.multiblock.base.WallShareablePart;
@@ -131,14 +22,25 @@ import gregtech.common.tileentities.casings.functional.Piston;
 import gregtech.common.tileentities.casings.functional.Pump;
 import gregtech.common.tileentities.casings.functional.RobotArm;
 import gregtech.common.tileentities.casings.functional.Sensor;
+import gregtech.common.tileentities.casings.upgrade.Ampere;
+import gregtech.common.tileentities.casings.upgrade.Cleanroom;
+import gregtech.common.tileentities.casings.upgrade.Heater;
+import gregtech.common.tileentities.casings.upgrade.Insulator;
 import gregtech.common.tileentities.casings.upgrade.Inventory;
-import gregtech.common.tileentities.machines.multiblock.AdvChemicalReactor;
+import gregtech.common.tileentities.casings.upgrade.Laser;
+import gregtech.common.tileentities.casings.upgrade.Tank;
+import gregtech.common.tileentities.casings.upgrade.Wireless;
+import gregtech.common.tileentities.machines.multiblock.AdvChemicalProcessor;
 import gregtech.common.tileentities.machines.multiblock.CokeOven;
+import gregtech.common.tileentities.machines.multiblock.DistillationTower;
+import gregtech.common.tileentities.machines.multiblock.LaserEngraver;
+import gregtech.common.tileentities.machines.multiblock.LayeredCokeBattery;
 import gregtech.common.tileentities.machines.multiblock.Macerator;
 
 public class GT_Loader_MultiTileEntities implements Runnable {
 
     public static final String COMPONENT_CASING_REGISTRY_NAME = "gt.multitileentity.component.casings";
+    public static final String UPGRADE_CASING_REGISTRY_NAME = "gt.multitileentity.upgrade.casings";
     public static final String CASING_REGISTRY_NAME = "gt.multitileentity.casings";
     public static final String MACHINE_REGISTRY_NAME = "gt.multitileentity.controllers";
     public static final MultiTileEntityRegistry MACHINE_REGISTRY = new MultiTileEntityRegistry(MACHINE_REGISTRY_NAME);
@@ -149,6 +51,10 @@ public class GT_Loader_MultiTileEntities implements Runnable {
         .getOrCreate("GregTech", "casing", Material.iron, Block.soundTypeMetal, "wrench", 0, 0, 15, true, true);
     public static final MultiTileEntityRegistry COMPONENT_CASING_REGISTRY = new MultiTileEntityRegistry(
         COMPONENT_CASING_REGISTRY_NAME);
+
+    public static final MultiTileEntityRegistry UPGRADE_CASING_REGISTRY = new MultiTileEntityRegistry(
+        UPGRADE_CASING_REGISTRY_NAME);
+
     public static final MultiTileEntityBlock COMPONENT_CASING_BLOCK = MultiTileEntityBlock.getOrCreate(
         "GregTech",
         "componentCasing",
@@ -163,9 +69,6 @@ public class GT_Loader_MultiTileEntities implements Runnable {
 
     @Override
     public void run() {
-        if (Mods.NewHorizonsCoreMod.isModLoaded()) {
-            return;
-        }
         GT_FML_LOGGER.info("GT_Mod: Registering MultiTileEntities");
         registerMachines();
         registerCasings();
@@ -192,12 +95,40 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .inputInventorySize(1)
             .outputInventorySize(1)
             .register();
-        MACHINE_REGISTRY.create(1, AdvChemicalReactor.class)
-            .name("Advanced Chemical Reactor")
+        MACHINE_REGISTRY.create(1, AdvChemicalProcessor.class)
+            .name("Advanced Chemical Processor")
             .category("MultiblockController")
             .setBlock(MACHINE_BLOCK)
             // TODO: Texture
-            .textureFolder("advChemicalReactor")
+            .textureFolder("advChemicalProcessor")
+            .inputInventorySize(16)
+            .outputInventorySize(16)
+            .tankCapacity(128000L)
+            .register();
+        MACHINE_REGISTRY.create(2, DistillationTower.class)
+            .name("Distillation Tower")
+            .category("MultiblockController")
+            .setBlock(MACHINE_BLOCK)
+            .textureFolder("distillationTower")
+            .inputInventorySize(16)
+            .outputInventorySize(16)
+            .tankCapacity(128000L)
+            .register();
+        MACHINE_REGISTRY.create(3, LayeredCokeBattery.class)
+            .name("Layered Coke Battery")
+            .category("Multiblock Controller")
+            .setBlock(MACHINE_BLOCK)
+            .material(Materials.Iron)
+            .textureFolder("macerator")
+            .tankCapacity(128000L)
+            .inputInventorySize(16)
+            .outputInventorySize(16)
+            .register();
+        MACHINE_REGISTRY.create(4, LaserEngraver.class)
+            .name("Big Laser Engraver")
+            .category("Multiblock Controller")
+            .setBlock(MACHINE_BLOCK)
+            .textureFolder("BigLaserEngraver")
             .inputInventorySize(16)
             .outputInventorySize(16)
             .tankCapacity(128000L)
@@ -216,7 +147,13 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .name("Chemical Casing")
             .category("MultiBlock Casing")
             .setBlock(CASING_BLOCK)
-            .textureFolder("advChemicalReactor")
+            .textureFolder("advChemicalProcessor")
+            .register();
+        CASING_REGISTRY.create(Distillation.getId(), BasicCasing.class)
+            .name("Distillation Casing")
+            .category("MultiBlock Casing")
+            .setBlock(CASING_BLOCK)
+            .textureFolder("distillationTower")
             .register();
         CASING_REGISTRY.create(18000, BasicCasing.class)
             .name("Test Casing")
@@ -224,6 +161,48 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .setBlock(CASING_BLOCK)
             .material(Materials.Cobalt)
             .textureFolder("macerator")
+            .register();
+        CASING_REGISTRY.create(LaserEngraver.getId(), BasicCasing.class)
+            .name("Laser Engraver Casing")
+            .category("MultiBlock Casing")
+            .setBlock(CASING_BLOCK)
+            .textureFolder("BigLaserEngraver")
+            .register();
+        CASING_REGISTRY.create(Mirror.getId(), BasicCasing.class)
+            .name("Mirror")
+            .category("MultiBlock Casing")
+            .setBlock(CASING_BLOCK)
+            .textureFolder("Laserblock")
+            .register();
+        CASING_REGISTRY.create(BlackLaserEngraverCasing.getId(), BasicCasing.class)
+            .name("Black Laser Engraver Casing")
+            .category("MultiBlock Casing")
+            .setBlock(CASING_BLOCK)
+            .textureFolder("BlackLaserEngraver")
+            .register();
+        CASING_REGISTRY.create(LaserEngraverUpgrade1.getId(), BasicCasing.class)
+            .name("Crude Laser Engraving Casing")
+            .category("MultiBlock Casing")
+            .setBlock(CASING_BLOCK)
+            .textureFolder("laserengraverupgrade1")
+            .register();
+        CASING_REGISTRY.create(LaserEngraverUpgrade2.getId(), BasicCasing.class)
+            .name("Advanced Laser Engraving Casing")
+            .category("MultiBlock Casing")
+            .setBlock(CASING_BLOCK)
+            .textureFolder("laserengraverupgrade2")
+            .register();
+        CASING_REGISTRY.create(LaserEngraverUpgrade3.getId(), BasicCasing.class)
+            .name("Ultimate Laser Engraving Casing")
+            .category("MultiBlock Casing")
+            .setBlock(CASING_BLOCK)
+            .textureFolder("laserengraverupgrade3")
+            .register();
+        CASING_REGISTRY.create(LaserEngraverUpgrade4.getId(), BasicCasing.class)
+            .name("Superb Laser Engraving Casing")
+            .category("MultiBlock Casing")
+            .setBlock(CASING_BLOCK)
+            .textureFolder("laserengraverupgrade4")
             .register();
 
     }
@@ -239,23 +218,436 @@ public class GT_Loader_MultiTileEntities implements Runnable {
         registerSensorCasings();
         registerFieldGeneratorCasings();
 
-        COMPONENT_CASING_REGISTRY.create(20001, Inventory.class)
+        UPGRADE_CASING_REGISTRY.create(ULV_Inventory.getId(), Inventory.class)
+            .name("Inventory Upgrade ULV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("inventory")
+            .upgradeInventorySize(1)
+            .tier(0)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(LV_Inventory.getId(), Inventory.class)
             .name("Inventory Upgrade LV")
             .category("MultiBlock Upgrade Casing")
             .setBlock(COMPONENT_CASING_BLOCK)
-            .material(MaterialsUEVplus.SpaceTime)
-            .textureFolder("macerator")
-            .upgradeInventorySize(16)
+            .textureFolder("inventory")
+            .upgradeInventorySize(4)
             .tier(1)
             .register();
-        COMPONENT_CASING_REGISTRY.create(20002, Inventory.class)
+        UPGRADE_CASING_REGISTRY.create(MV_Inventory.getId(), Inventory.class)
             .name("Inventory Upgrade MV")
             .category("MultiBlock Upgrade Casing")
             .setBlock(COMPONENT_CASING_BLOCK)
-            .material(Materials.Neutronium)
-            .textureFolder("macerator")
-            .upgradeInventorySize(24)
+            .textureFolder("inventory")
+            .upgradeInventorySize(8)
             .tier(2)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(HV_Inventory.getId(), Inventory.class)
+            .name("Inventory Upgrade HV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("inventory")
+            .upgradeInventorySize(16)
+            .tier(3)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(EV_Inventory.getId(), Inventory.class)
+            .name("Inventory Upgrade EV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("inventory")
+            .upgradeInventorySize(32)
+            .tier(4)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(IV_Inventory.getId(), Inventory.class)
+            .name("Inventory Upgrade IV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("inventory")
+            .upgradeInventorySize(64)
+            .tier(5)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(LuV_Inventory.getId(), Inventory.class)
+            .name("Inventory Upgrade LuV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("inventory")
+            .upgradeInventorySize(128)
+            .tier(6)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(ZPM_Inventory.getId(), Inventory.class)
+            .name("Inventory Upgrade ZPM")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("inventory")
+            .upgradeInventorySize(256)
+            .tier(7)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(UV_Inventory.getId(), Inventory.class)
+            .name("Inventory Upgrade UV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("inventory")
+            .upgradeInventorySize(256)
+            .tier(8)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(UHV_Inventory.getId(), Inventory.class)
+            .name("Inventory Upgrade UHV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("inventory")
+            .upgradeInventorySize(256)
+            .tier(9)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(UEV_Inventory.getId(), Inventory.class)
+            .name("Inventory Upgrade UEV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("inventory")
+            .upgradeInventorySize(256)
+            .tier(10)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(UIV_Inventory.getId(), Inventory.class)
+            .name("Inventory Upgrade UIV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("inventory")
+            .upgradeInventorySize(256)
+            .tier(11)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(UMV_Inventory.getId(), Inventory.class)
+            .name("Inventory Upgrade UMV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("inventory")
+            .upgradeInventorySize(256)
+            .tier(12)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(UXV_Inventory.getId(), Inventory.class)
+            .name("Inventory Upgrade UXV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("inventory")
+            .upgradeInventorySize(256)
+            .tier(13)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(MAX_Inventory.getId(), Inventory.class)
+            .name("Inventory Upgrade MAX")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("inventory")
+            .upgradeInventorySize(256)
+            .tier(14)
+            .register();
+
+        UPGRADE_CASING_REGISTRY.create(ULV_Tank.getId(), Tank.class)
+            .name("Tank Upgrade ULV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("tank")
+            .upgradeTankCapacity(8_000L)
+            .upgradeTankCount(1)
+            .tier(0)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(LV_Tank.getId(), Tank.class)
+            .name("Tank Upgrade LV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("tank")
+            .upgradeTankCapacity(16_000L)
+            .upgradeTankCount(2)
+            .tier(1)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(MV_Tank.getId(), Tank.class)
+            .name("Tank Upgrade MV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("tank")
+            .upgradeTankCapacity(32_000L)
+            .upgradeTankCount(4)
+            .tier(2)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(HV_Tank.getId(), Tank.class)
+            .name("Tank Upgrade HV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("tank")
+            .upgradeTankCapacity(64_000L)
+            .upgradeTankCount(6)
+            .tier(3)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(EV_Tank.getId(), Tank.class)
+            .name("Tank Upgrade EV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("tank")
+            .upgradeTankCapacity(128_000L)
+            .upgradeTankCount(8)
+            .tier(4)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(IV_Tank.getId(), Tank.class)
+            .name("Tank Upgrade IV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("tank")
+            .upgradeTankCapacity(256_000L)
+            .upgradeTankCount(10)
+            .tier(5)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(LuV_Tank.getId(), Tank.class)
+            .name("Tank Upgrade LuV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("tank")
+            .upgradeTankCapacity(512_000L)
+            .upgradeTankCount(12)
+            .tier(6)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(ZPM_Tank.getId(), Tank.class)
+            .name("Tank Upgrade ZPM")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("tank")
+            .upgradeTankCapacity(1_024_000L)
+            .upgradeTankCount(14)
+            .tier(7)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(UV_Tank.getId(), Tank.class)
+            .name("Tank Upgrade UV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("tank")
+            .upgradeTankCapacity(2_048_000L)
+            .upgradeTankCount(16)
+            .tier(8)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(UHV_Tank.getId(), Tank.class)
+            .name("Tank Upgrade UHV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("tank")
+            .upgradeTankCapacity(4_096_000L)
+            .upgradeTankCount(16)
+            .tier(9)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(UEV_Tank.getId(), Tank.class)
+            .name("Tank Upgrade UEV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("tank")
+            .upgradeTankCapacity(8_192_000L)
+            .upgradeTankCount(16)
+            .tier(10)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(UIV_Tank.getId(), Tank.class)
+            .name("Tank Upgrade UIV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("tank")
+            .upgradeTankCapacity(16_384_000L)
+            .upgradeTankCount(16)
+            .tier(11)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(UMV_Tank.getId(), Tank.class)
+            .name("Tank Upgrade UMV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("tank")
+            .upgradeTankCapacity(32_768_000L)
+            .upgradeTankCount(16)
+            .tier(12)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(UXV_Tank.getId(), Tank.class)
+            .name("Tank Upgrade UXV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("tank")
+            .upgradeTankCapacity(65_536_000L)
+            .upgradeTankCount(16)
+            .tier(13)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(MAX_Tank.getId(), Tank.class)
+            .name("Tank Upgrade MAX")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("tank")
+            .upgradeTankCapacity(131_072_000L)
+            .upgradeTankCount(16)
+            .tier(14)
+            .register();
+
+        UPGRADE_CASING_REGISTRY.create(Amp_4.getId(), Ampere.class)
+            .name("Amperage Upgrade (4 A)")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("amperage")
+            .upgradeAmperage(4)
+            .tier(1)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(Amp_16.getId(), Ampere.class)
+            .name("Amperage Upgrade (16 A)")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("amperage")
+            .upgradeAmperage(16)
+            .tier(2)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(Amp_64.getId(), Ampere.class)
+            .name("Amperage Upgrade (64 A)")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("amperage")
+            .upgradeAmperage(64)
+            .tier(3)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(Amp_256.getId(), Ampere.class)
+            .name("Amperage Upgrade (256 A)")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("amperage")
+            .upgradeAmperage(256)
+            .tier(4)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(Amp_1_024.getId(), Ampere.class)
+            .name("Amperage Upgrade (1,024 A)")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("amperage")
+            .upgradeAmperage(1_024)
+            .tier(5)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(Amp_4_096.getId(), Ampere.class)
+            .name("Amperage Upgrade (4,096 A)")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("amperage")
+            .upgradeAmperage(4_096)
+            .tier(6)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(Amp_16_384.getId(), Ampere.class)
+            .name("Amperage Upgrade (16,384 A)")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("amperage")
+            .upgradeAmperage(16_384)
+            .tier(7)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(Amp_65_536.getId(), Ampere.class)
+            .name("Amperage Upgrade (65,536 A)")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("amperage")
+            .upgradeAmperage(65_536)
+            .tier(8)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(Amp_262_144.getId(), Ampere.class)
+            .name("Amperage Upgrade (262,144 A)")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("amperage")
+            .upgradeAmperage(262_144)
+            .tier(9)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(Amp_1_048_576.getId(), Ampere.class)
+            .name("Amperage Upgrade (1,048,576 A)")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("amperage")
+            .upgradeAmperage(1_048_576)
+            .tier(10)
+            .register();
+
+        UPGRADE_CASING_REGISTRY.create(Cleanroom.getId(), Cleanroom.class)
+            .name("Cleanroom Upgrade")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("cleanroom")
+            .tier(1)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(Laser.getId(), Laser.class)
+            .name("Laser Upgrade")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("laser")
+            .tier(8)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(Wireless.getId(), Wireless.class)
+            .name("Wireless Upgrade")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("wireless")
+            .tier(11)
+            .register();
+
+        UPGRADE_CASING_REGISTRY.create(Heater_Prototype.getId(), Heater.class)
+            .name("Prototype Heater Upgrade")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("heater")
+            .tier(1)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(Heater_IndustrialGrade.getId(), Heater.class)
+            .name("Industrial-Grade Heater Upgrade")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("heater")
+            .tier(4)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(Heater_NextGen.getId(), Heater.class)
+            .name("Next-Gen Heater Upgrade")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("heater")
+            .tier(7)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(Heater_Omnipotent.getId(), Heater.class)
+            .name("Omnipotent Heater Upgrade")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("heater")
+            .tier(10)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(Heater_OmegaType.getId(), Heater.class)
+            .name("OMEGA-Type Heater Upgrade")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("heater")
+            .tier(12)
+            .register();
+
+        UPGRADE_CASING_REGISTRY.create(Insulator_Prototype.getId(), Insulator.class)
+            .name("Prototype Insulator Upgrade")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("insulator")
+            .tier(1)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(Insulator_IndustrialGrade.getId(), Insulator.class)
+            .name("Industrial-Grade Insulator Upgrade")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("insulator")
+            .tier(4)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(Insulator_NextGen.getId(), Insulator.class)
+            .name("Next-Gen Insulator Upgrade")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("insulator")
+            .tier(7)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(Insulator_Omnipotent.getId(), Insulator.class)
+            .name("Omnipotent Insulator Upgrade")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("insulator")
+            .tier(10)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(Insulator_OmegaType.getId(), Insulator.class)
+            .name("OMEGA-Type Insulator Upgrade")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("insulator")
+            .tier(12)
             .register();
     }
 

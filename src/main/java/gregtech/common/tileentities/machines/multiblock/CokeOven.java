@@ -2,8 +2,11 @@ package gregtech.common.tileentities.machines.multiblock;
 
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_IN;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_OUT;
+import static gregtech.api.util.GT_StructureUtilityMuTE.ofMuTECasings;
 
 import java.util.List;
+
+import javax.annotation.Nonnull;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -16,34 +19,29 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.logic.PollutionLogic;
-import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.logic.interfaces.PollutionLogicHost;
-import gregtech.api.logic.interfaces.ProcessingLogicHost;
 import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
 import gregtech.api.multitileentity.multiblock.base.Controller;
+import gregtech.api.task.tasks.PollutionTask;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.common.tileentities.machines.multiblock.logic.CokeOvenProcessingLogic;
 
-public class CokeOven extends Controller<CokeOven> implements PollutionLogicHost, ProcessingLogicHost {
+public class CokeOven extends Controller<CokeOven, CokeOvenProcessingLogic> {
 
     private static IStructureDefinition<CokeOven> STRUCTURE_DEFINITION = null;
     private static final Vec3Impl OFFSET = new Vec3Impl(1, 1, 0);
     private static final String MAIN = "Main";
-    private static final PollutionLogic POLLUTION_LOGIC = new PollutionLogic().setPollutionAmount(10);
-    private final ProcessingLogic PROCESSING_LOGIC = new CokeOvenProcessingLogic();
+    private static final int POLLUTION_AMOUNT = 10;
 
     public CokeOven() {
         super();
         setElectric(false);
+        new PollutionTask<>(this).setPollutionPerSecond(POLLUTION_AMOUNT);
     }
 
     @Override
@@ -81,7 +79,7 @@ public class CokeOven extends Controller<CokeOven> implements PollutionLogicHost
             .addInfo("Used for charcoal")
             .beginStructureBlock(3, 3, 3, true)
             .addCasingInfoExactly("Coke Oven Bricks", 25, false)
-            .addPollutionAmount(POLLUTION_LOGIC.getPollutionAmount())
+            .addPollutionAmount(POLLUTION_AMOUNT)
             .toolTipFinisher(GT_Values.AuthorBlueWeabo);
         return tt;
     }
@@ -98,26 +96,15 @@ public class CokeOven extends Controller<CokeOven> implements PollutionLogicHost
                 .addShape(
                     MAIN,
                     new String[][] { { "AAA", "A~A", "AAA" }, { "AAA", "A-A", "AAA" }, { "AAA", "AAA", "AAA" } })
-                .addElement('A', addMultiTileCasing("gt.multitileentity.casings", getCasingMeta(), ITEM_IN | ITEM_OUT))
+                .addElement('A', ofMuTECasings(ITEM_IN | ITEM_OUT, GT_MultiTileCasing.CokeOven.getCasing()))
                 .build();
         }
         return STRUCTURE_DEFINITION;
     }
 
     @Override
-    protected boolean hasFluidInput() {
+    public boolean hasFluidInput() {
         return false;
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            new SlotWidget(inputInventory, 0).setPos(18, 18)
-                .setSize(18, 18));
-        builder.widget(
-            new SlotWidget(outputInventory, 0).setPos(36, 36)
-                .setSize(18, 18));
-        builder.widget(createButtons(builder));
     }
 
     @Override
@@ -159,12 +146,8 @@ public class CokeOven extends Controller<CokeOven> implements PollutionLogicHost
     }
 
     @Override
-    public PollutionLogic getPollutionLogic() {
-        return POLLUTION_LOGIC;
-    }
-
-    @Override
-    public ProcessingLogic getProcessingLogic() {
-        return PROCESSING_LOGIC;
+    @Nonnull
+    protected CokeOvenProcessingLogic createProcessingLogic() {
+        return new CokeOvenProcessingLogic();
     }
 }
