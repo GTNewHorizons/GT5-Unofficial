@@ -322,8 +322,8 @@ public final class ModernMaterial {
             return this;
         }
 
-        public ModernMaterialBuilder addCustomRenderers(RendererRegistration rendererRegisteration) {
-            rendererRegisteration.initRenderersSafely(this);
+        public ModernMaterialBuilder addCustomRenderers(Consumer<ModernMaterialBuilder> rendererRegistration) {
+            rendererRegistration.accept(this);
             return this;
         }
     }

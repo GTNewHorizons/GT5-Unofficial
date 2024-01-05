@@ -64,7 +64,7 @@ public class ModernMaterialsRegistration {
             .setTextureMode(Custom)
             .setMaterialTier(TierEU.MAX)
             .addPlayerEffect(Effects::radiation)
-            .addCustomRenderers(new UniversiumRendererRegistration())
+            .addCustomRenderers(UniversiumRendererRegistration::initRenderersSafely)
             // .addWires(new WireBuilder().build())
 
             .setCustomItemRenderer(new UniversiumItemRenderer())
