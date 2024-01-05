@@ -321,5 +321,10 @@ public final class ModernMaterial {
             materialToBuild.customTooltipGenerator = tooltipGenerator;
             return this;
         }
+
+        public ModernMaterialBuilder addCustomRenderers(RendererRegistration rendererRegisteration) {
+            rendererRegisteration.initRenderersSafely(this);
+            return this;
+        }
     }
 }

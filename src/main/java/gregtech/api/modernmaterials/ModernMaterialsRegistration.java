@@ -64,15 +64,9 @@ public class ModernMaterialsRegistration {
             .setTextureMode(Custom)
             .setMaterialTier(TierEU.MAX)
             .addPlayerEffect(Effects::radiation)
+            .addCustomRenderers(new UniversiumRendererRegistration())
             // .addWires(new WireBuilder().build())
-            .setCustomBlockRenderer(
-                BlocksEnum.FrameBox,
-                new UniversiumFrameItemRenderer(),
-                new UniversiumFrameBlockRenderer())
-            .setCustomBlockRenderer(
-                BlocksEnum.SolidBlock,
-                new UniversiumBlockOfItemRenderer(),
-                new UniversiumBlockOfBlockRenderer())
+
             .setCustomItemRenderer(new UniversiumItemRenderer())
             .addCustomTooltip(CustomTooltips::createRainbowText)
             .setRecipeGenerator(Metal::generateExtruderRecipesWithoutTools)
