@@ -26,14 +26,6 @@ public class GT_Cover_Pump extends GT_CoverBehavior {
 
     public final int mTransferRate;
 
-    /**
-     * @deprecated use {@link #GT_Cover_Pump(int aTransferRate, ITexture coverTexture)} instead
-     */
-    @Deprecated
-    public GT_Cover_Pump(int aTransferRate) {
-        this(aTransferRate, null);
-    }
-
     public GT_Cover_Pump(int aTransferRate, ITexture coverTexture) {
         super(coverTexture);
         this.mTransferRate = aTransferRate;
@@ -286,7 +278,7 @@ public class GT_Cover_Pump extends GT_CoverBehavior {
                             })
                             .setPos(startX, startY))
                 .widget(
-                    new TextWidget(GT_Utility.trans("229", "Import/Export")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                    new TextWidget(GT_Utility.trans("229", "Export/Import")).setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(3 + startX + spaceX * 3, 4 + startY + spaceY * 0))
                 .widget(
                     new TextWidget(GT_Utility.trans("230", "Conditional")).setDefaultColor(COLOR_TEXT_GRAY.get())

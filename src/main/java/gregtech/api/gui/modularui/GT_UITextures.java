@@ -109,6 +109,8 @@ public class GT_UITextures {
     public static final UITexture OVERLAY_SLOT_LENS = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/lens");
     public static final UITexture OVERLAY_SLOT_MICROSCOPE = UITexture
         .fullImage(GregTech.ID, "gui/overlay_slot/microscope");
+    public static final UITexture OVERLAY_SLOT_MINING_PIPE = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_slot/mining_pipe");
     public static final UITexture OVERLAY_SLOT_MOLD = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/mold");
     public static final UITexture OVERLAY_SLOT_MOLECULAR_1 = UITexture
         .fullImage(GregTech.ID, "gui/overlay_slot/molecular_1");

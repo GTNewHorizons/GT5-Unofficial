@@ -97,6 +97,11 @@ public class GT_MetaTileEntity_LargeTurbine_GasAdvanced extends GT_MetaTileEntit
     }
 
     @Override
+    protected boolean filtersFluid() {
+        return false;
+    }
+
+    @Override
     public Block getCasingBlock() {
         return GregTech_API.sBlockCasings8;
     }

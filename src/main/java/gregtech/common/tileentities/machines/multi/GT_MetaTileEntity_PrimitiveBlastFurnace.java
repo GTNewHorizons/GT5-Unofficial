@@ -81,12 +81,6 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
 
     public ItemStack[] mOutputItems = new ItemStack[OUTPUT_SLOTS];
 
-    @Deprecated
-    public ItemStack mOutputItem1;
-
-    @Deprecated
-    public ItemStack mOutputItem2;
-
     public GT_MetaTileEntity_PrimitiveBlastFurnace(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, INPUT_SLOTS + OUTPUT_SLOTS);
     }

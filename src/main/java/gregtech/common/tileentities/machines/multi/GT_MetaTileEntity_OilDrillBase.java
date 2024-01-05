@@ -217,7 +217,7 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
             if (pumpResult.getType() != ValidationType.VALID) {
                 mEUt = 0;
                 mMaxProgresstime = 0;
-                setRuntimeFailureReason(CheckRecipeResultRegistry.OUTPUT_FULL);
+                setRuntimeFailureReason(CheckRecipeResultRegistry.FLUID_OUTPUT_FULL);
                 return false;
             }
             FluidStack tFluid = pumpResult.getResult();

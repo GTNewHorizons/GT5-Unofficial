@@ -37,6 +37,7 @@ import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 import static gregtech.api.util.GT_Util.LAST_BROKEN_TILEENTITY;
+import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import java.io.File;
 import java.text.DateFormat;
@@ -419,7 +420,15 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
             "shardEarth",
             "ingotRefinedIron",
             "blockMarble",
-            "ingotUnstable"));
+            "ingotUnstable",
+            "obsidian",
+            "dirt",
+            "gravel",
+            "grass",
+            "soulsand",
+            "paper",
+            "brick",
+            "chest"));
     private final Collection<String> mInvalidNames = new HashSet<>(
         Arrays.asList(
             "diamondShard",
@@ -2704,6 +2713,15 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                 .itemInputs(aMaterial.getCells(1), GT_Utility.getIntegratedCircuit(i + 1))
                 .itemOutputs(Materials.Empty.getCells(1))
                 .fluidInputs(GT_ModHandler.getSteam(1000))
+                .fluidOutputs(new FluidStack(crackedFluids[i], 800))
+                .duration((8 + 4 * i) * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(UniversalChemical);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(aMaterial.getCells(1), GT_Utility.getIntegratedCircuit(i + 1))
+                .itemOutputs(Materials.Empty.getCells(1))
+                .fluidInputs(getFluidStack("ic2steam", 1000))
                 .fluidOutputs(new FluidStack(crackedFluids[i], 800))
                 .duration((8 + 4 * i) * SECONDS)
                 .eut(TierEU.RECIPE_LV)

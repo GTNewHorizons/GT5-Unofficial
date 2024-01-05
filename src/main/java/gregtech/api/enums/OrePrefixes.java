@@ -180,7 +180,6 @@ public enum OrePrefixes {
         B[1], M * 3, 64, 19),
     plateDouble("2x Plates", "Double ", " Plate", true, true, false, false, false, false, true, true, false, false,
         B[1], M * 2, 64, 18),
-    /** Regular Plate made of one Ingot/Dust. Introduced by Calclavia */
     plate("Plates", "", " Plate", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M * 1,
         64, 17),
     /** Casing made of 1/2 Ingot/Dust */
@@ -245,7 +244,6 @@ public enum OrePrefixes {
     /** Hot Cell full of molten stuff, which can be used in the Plasma Generator. */
     cellMolten("Cells of Molten stuff", "Molten ", " Cell", true, true, true, true, false, false, false, true, false,
         false, 0, M * 1, 64, 31),
-    /** Regular Gas/Fluid Cell. Introduced by Calclavia */
     cell("Cells", "", " Cell", true, true, true, true, false, false, true, true, false, false, B[4] | B[8], M * 1, 64,
         30),
     /** A vanilla Iron Bucket filled with the Material. */
@@ -517,10 +515,8 @@ public enum OrePrefixes {
      */
     batterySingleuse("Single Use Batteries", "", "", false, true, false, false, false, false, false, false, false,
         false, 0, -1, 64, -1),
-    /** Introduced by Calclavia */
     battery("Reusable Batteries", "", "", false, true, false, false, false, false, false, false, false, false, 0, -1,
         64, -1),
-    /** Introduced by Calclavia */
     circuit("Circuits", "", "", true, true, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
     /** Introduced by Buildcraft */
     chipset("Chipsets", "", "", true, true, false, false, false, false, false, false, false, false, 0, -1, 64, -1),

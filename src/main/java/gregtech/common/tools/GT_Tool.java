@@ -188,4 +188,9 @@ public abstract class GT_Tool implements IToolStats {
         int aX, int aY, int aZ) {
         return aDefault;
     }
+
+    @Override
+    public String getToolTypeName() {
+        return "tool";
+    }
 }

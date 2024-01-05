@@ -415,12 +415,12 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     public void consumeInput(int amountMultiplier, FluidStack[] aFluidInputs, ItemStack... aInputs) {
         if (amountMultiplier <= 0) return;
 
-        int remainingCost;
+        long remainingCost;
 
         if (aFluidInputs != null) {
             for (FluidStack recipeFluidCost : mFluidInputs) {
                 if (recipeFluidCost != null) {
-                    remainingCost = recipeFluidCost.amount * amountMultiplier;
+                    remainingCost = (long) recipeFluidCost.amount * amountMultiplier;
 
                     for (FluidStack providedFluid : aFluidInputs) {
                         if (providedFluid != null && providedFluid.isFluidEqual(recipeFluidCost)) {
@@ -441,7 +441,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             for (ItemStack recipeItemCost : mInputs) {
                 ItemStack unifiedItemCost = GT_OreDictUnificator.get_nocopy(true, recipeItemCost);
                 if (unifiedItemCost != null) {
-                    remainingCost = recipeItemCost.stackSize * amountMultiplier;
+                    remainingCost = (long) recipeItemCost.stackSize * amountMultiplier;
 
                     for (ItemStack providedItem : aInputs) {
                         if (isNBTSensitive && !GT_Utility.areStacksEqual(providedItem, unifiedItemCost, false)) {
@@ -484,23 +484,23 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         if (aFluidInputs != null) {
             // Create map for fluid -> stored amount
-            Map<Fluid, Integer> fluidMap = new HashMap<>();
-            Map<Fluid, Integer> fluidCost = new HashMap<>();
+            Map<Fluid, Long> fluidMap = new HashMap<>();
+            Map<Fluid, Long> fluidCost = new HashMap<>();
             for (FluidStack fluidStack : aFluidInputs) {
                 if (fluidStack == null) continue;
-                fluidMap.merge(fluidStack.getFluid(), fluidStack.amount, Integer::sum);
+                fluidMap.merge(fluidStack.getFluid(), (long) fluidStack.amount, Long::sum);
             }
             for (FluidStack fluidStack : mFluidInputs) {
                 if (fluidStack == null) continue;
-                fluidCost.merge(fluidStack.getFluid(), fluidStack.amount, Integer::sum);
+                fluidCost.merge(fluidStack.getFluid(), (long) fluidStack.amount, Long::sum);
             }
 
             // Check how many parallels can it perform for each fluid
-            for (Map.Entry<Fluid, Integer> costEntry : fluidCost.entrySet()) {
+            for (Map.Entry<Fluid, Long> costEntry : fluidCost.entrySet()) {
                 if (costEntry.getValue() > 0) {
                     currentParallel = Math.min(
                         currentParallel,
-                        (double) fluidMap.getOrDefault(costEntry.getKey(), 0) / costEntry.getValue());
+                        (double) fluidMap.getOrDefault(costEntry.getKey(), 0L) / costEntry.getValue());
                 }
                 if (currentParallel <= 0) {
                     return 0;
@@ -509,7 +509,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         }
 
         double remainingCost;
-        int providedAmount;
+        long providedAmount;
         if (aInputs != null) {
             nextRecipeItemCost: for (ItemStack recipeItemCost : mInputs) {
 
@@ -912,7 +912,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
     public static class GT_Recipe_WithAlt extends GT_Recipe {
 
-        ItemStack[][] mOreDictAlt;
+        public ItemStack[][] mOreDictAlt;
 
         /**
          * Only for {@link GT_RecipeBuilder}.

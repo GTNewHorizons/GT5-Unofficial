@@ -14,7 +14,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkPosition;
-import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
@@ -390,28 +389,6 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine
     @Override
     public int getMachineSpeed() {
         return mSpeed;
-    }
-
-    /**
-     * @deprecated This method are obsolete, and may be removed in further updates. Please use
-     *             'this.getPipe().descent()' access!
-     */
-    @Deprecated
-    public boolean moveOneDown(IGregTechTileEntity tileEntity) {
-        boolean descends = pipe.descent(tileEntity);
-        if (descends) {
-            fillOreList(tileEntity);
-        }
-        return descends;
-    }
-
-    /**
-     * @deprecated This method are obsolete, and may be removed in further updates. Please use
-     *             'this.getPipe().getFakePlayer(te)' access!
-     */
-    @Deprecated
-    protected FakePlayer getFakePlayer(IGregTechTileEntity aBaseTile) {
-        return pipe.getFakePlayer(aBaseTile);
     }
 
     public GT_DrillingLogicDelegate getPipe() {

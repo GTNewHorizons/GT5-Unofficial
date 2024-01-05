@@ -733,6 +733,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
      */
     protected void calculateOverclockedNess(int eut, int duration) {
         GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(eut)
+            .setEUt(V[mTier] * mAmperage)
             .setDuration(duration)
             .setOneTickDiscount(true)
             .calculate();

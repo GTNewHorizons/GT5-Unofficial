@@ -249,6 +249,7 @@ public class GT_LanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_092", " set to: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_093", "Strong");
         addStringLocalization("Interaction_DESCRIPTION_Index_094", "Weak");
+        addStringLocalization("Interaction_DESCRIPTION_Index_094.1", "Not enough soldering material!");
         addStringLocalization("Interaction_DESCRIPTION_Index_095", "Input from Output Side allowed");
         addStringLocalization("Interaction_DESCRIPTION_Index_096", "Input from Output Side forbidden");
         addStringLocalization("Interaction_DESCRIPTION_Index_098", "Do not regulate Item Stack Size");
@@ -394,7 +395,7 @@ public class GT_LanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_226", "Inactive with Redstone Signal");
         addStringLocalization("Interaction_DESCRIPTION_Index_227", "Allow Input");
         addStringLocalization("Interaction_DESCRIPTION_Index_228", "Block Input");
-        addStringLocalization("Interaction_DESCRIPTION_Index_229", "Import/Export");
+        addStringLocalization("Interaction_DESCRIPTION_Index_229", "Export/Import");
         addStringLocalization("Interaction_DESCRIPTION_Index_230", "Conditional");
         addStringLocalization("Interaction_DESCRIPTION_Index_231", "Enable Input");
         addStringLocalization("Interaction_DESCRIPTION_Index_232", "Filter Input");

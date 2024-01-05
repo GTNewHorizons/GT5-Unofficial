@@ -39,22 +39,6 @@ public class GT_MetaTileEntity_GasTurbine extends GT_MetaTileEntity_BasicGenerat
 
     public int mEfficiency;
 
-    @Deprecated
-    public GT_MetaTileEntity_GasTurbine(int aID, String aName, String aNameRegional, int aTier) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            new String[] { "Requires flammable Gasses",
-                "Causes "
-                    + (int) (GT_Mod.gregtechproxy.mPollutionBaseGasTurbinePerSecond
-                        * GT_Mod.gregtechproxy.mPollutionGasTurbineReleasedByTier[aTier])
-                    + " Pollution per second" });
-        this.mEfficiency = 100 - aTier * 5;
-        onConfigLoad();
-    }
-
     public GT_MetaTileEntity_GasTurbine(int aID, String aName, String aNameRegional, int aTier, int mEfficiency) {
         super(
             aID,
@@ -67,20 +51,6 @@ public class GT_MetaTileEntity_GasTurbine extends GT_MetaTileEntity_BasicGenerat
                         * GT_Mod.gregtechproxy.mPollutionGasTurbineReleasedByTier[aTier])
                     + " Pollution per second" });
         this.mEfficiency = mEfficiency;
-        onConfigLoad();
-    }
-
-    @Deprecated
-    public GT_MetaTileEntity_GasTurbine(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aDescription, aTextures);
-        this.mEfficiency = 100 - aTier * 5;
-        onConfigLoad();
-    }
-
-    @Deprecated
-    public GT_MetaTileEntity_GasTurbine(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aDescription, aTextures);
-        this.mEfficiency = 100 - aTier * 5;
         onConfigLoad();
     }
 

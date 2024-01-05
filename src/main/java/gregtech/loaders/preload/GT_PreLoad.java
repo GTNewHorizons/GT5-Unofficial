@@ -164,19 +164,17 @@ public class GT_PreLoad {
                     GT_Log.mOreDictLogFile.createNewFile();
                 } catch (Throwable ignored) {}
             }
+            List<String> tList = ((GT_Log.LogBuffer) GT_Log.ore).mBufferedOreDictLog;
             try {
                 GT_Log.ore = new PrintStream(GT_Log.mOreDictLogFile);
             } catch (Throwable ignored) {}
-            try {
-                List<String> tList = ((GT_Log.LogBuffer) GT_Log.ore).mBufferedOreDictLog;
-                GT_Log.ore.println("******************************************************************************");
-                GT_Log.ore.println("* This is the complete log of the GT5-Unofficial OreDictionary Handler. It   *");
-                GT_Log.ore.println("* processes all OreDictionary entries and can sometimes cause errors. All    *");
-                GT_Log.ore.println("* entries and errors are being logged. If you see an error please raise an   *");
-                GT_Log.ore.println("* issue at https://github.com/Blood-Asp/GT5-Unofficial.                      *");
-                GT_Log.ore.println("******************************************************************************");
-                tList.forEach(GT_Log.ore::println);
-            } catch (Throwable ignored) {}
+            GT_Log.ore.println("******************************************************************************");
+            GT_Log.ore.println("* This is the complete log of the GT5-Unofficial OreDictionary Handler. It   *");
+            GT_Log.ore.println("* processes all OreDictionary entries and can sometimes cause errors. All    *");
+            GT_Log.ore.println("* entries and errors are being logged. If you see an error please raise an   *");
+            GT_Log.ore.println("* issue at https://github.com/GTNewHorizons/GT-New-Horizons-Modpack/issues.  *");
+            GT_Log.ore.println("******************************************************************************");
+            tList.forEach(GT_Log.ore::println);
         }
         if (tMainConfig.get(GT_Mod.aTextGeneral, "LoggingExplosions", true)
             .getBoolean(true)) {

@@ -61,14 +61,6 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
     public final int mTransferRate;
     private boolean allowFluid = false;
 
-    /**
-     * @deprecated use {@link #GT_Cover_FluidRegulator(int aTransferRate, ITexture coverTexture)} instead
-     */
-    @Deprecated
-    public GT_Cover_FluidRegulator(int aTransferRate) {
-        this(aTransferRate, null);
-    }
-
     public GT_Cover_FluidRegulator(int aTransferRate, ITexture coverTexture) {
         super(FluidRegulatorData.class, coverTexture);
         if (aTransferRate > (-1 >>> (Integer.SIZE - SPEED_LENGTH)))
@@ -381,7 +373,7 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
                             .setSize(spaceX * 2 - 3, 12))
                     .setPos(startX, startY))
                 .widget(
-                    new TextWidget(GT_Utility.trans("229", "Import/Export")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                    new TextWidget(GT_Utility.trans("229", "Export/Import")).setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(3 + startX + spaceX * 4, 4 + startY + spaceY * 0))
                 .widget(
                     new TextWidget(GT_Utility.trans("230", "Conditional")).setDefaultColor(COLOR_TEXT_GRAY.get())

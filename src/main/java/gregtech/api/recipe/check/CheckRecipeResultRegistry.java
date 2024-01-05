@@ -49,9 +49,13 @@ public final class CheckRecipeResultRegistry {
      */
     public static final CheckRecipeResult NO_RECIPE = SimpleCheckRecipeResult.ofFailure("no_recipe");
     /**
-     * Cannot process recipe because output is full.
+     * Cannot process recipe because item output is full.
      */
-    public static final CheckRecipeResult OUTPUT_FULL = SimpleCheckRecipeResult.ofFailure("output_full");
+    public static final CheckRecipeResult ITEM_OUTPUT_FULL = SimpleCheckRecipeResult.ofFailure("item_output_full");
+    /**
+     * Cannot process recipe because fluid output is full.
+     */
+    public static final CheckRecipeResult FLUID_OUTPUT_FULL = SimpleCheckRecipeResult.ofFailure("fluid_output_full");
     /**
      * Default unknown state.
      */

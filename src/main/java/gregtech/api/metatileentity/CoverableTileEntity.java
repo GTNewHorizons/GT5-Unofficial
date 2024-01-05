@@ -85,22 +85,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     protected boolean mRedstone = false;
     protected byte mStrongRedstone = 0;
 
-    /* Deprecated Cover Variables */
-    @Deprecated
-    protected final GT_CoverBehaviorBase<?>[] mCoverBehaviors = new GT_CoverBehaviorBase<?>[] {
-        GregTech_API.sNoBehavior, GregTech_API.sNoBehavior, GregTech_API.sNoBehavior, GregTech_API.sNoBehavior,
-        GregTech_API.sNoBehavior, GregTech_API.sNoBehavior };
-
-    @Deprecated
-    protected int[] mCoverSides = new int[] { 0, 0, 0, 0, 0, 0 };
-
-    @Deprecated
-    protected ISerializableObject[] mCoverData = new ISerializableObject[6];
-
-    @Deprecated
-    protected final boolean[] mCoverNeedUpdate = new boolean[] { false, false, false, false, false, false };
-    /* End Deprecated Cover Variables */
-
     protected short mID = 0;
     public long mTickTimer = 0;
     private Map<ForgeDirection, ISerializableObject> clientCoverData = new HashMap<>();
