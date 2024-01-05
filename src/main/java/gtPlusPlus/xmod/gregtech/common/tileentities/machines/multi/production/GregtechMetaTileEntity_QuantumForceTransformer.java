@@ -264,6 +264,9 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
                 .addInfo("If separate input busses are enabled put the circuit in the circuit slot of the bus")
                 .addInfo("Uses FocusTier*4*sqrt(parallels) Neptunium Plasma if focusing")
                 .addInfo("Can use FocusTier*4*sqrt(parallels) Fermium Plasma for additional chance output")
+                .addInfo("Use a screwdriver to enable Fluid mode")
+                .addInfo(
+                        "Fluid mode turns all possible outputs into their fluid variant, those which can't are left as they were.")
                 .addInfo("This multi gets improved when all casings of some types are upgraded")
                 .addInfo("Casing functions:")
                 .addInfo("Pulse Manipulators: Recipe Tier Allowed (check NEI for the tier of each recipe)")
