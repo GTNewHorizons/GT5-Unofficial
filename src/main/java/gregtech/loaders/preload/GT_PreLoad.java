@@ -27,7 +27,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import net.minecraft.init.Blocks;
-import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.common.config.Configuration;
 
 import org.apache.commons.lang3.StringUtils;
@@ -417,14 +416,6 @@ public class GT_PreLoad {
         GT_Values.disableDigitalChestsExternalAccess = tMainConfig
             .get("machines", "disableDigitalChestsExternalAccess", false)
             .getBoolean(false);
-        GT_Values.enableMultiTileEntities = tMainConfig.get(
-            "machines",
-            "enableMultiTileEntities",
-            false,
-            "This enabled MuTEs(multitile entities) to be added to the game. MuTEs are in the start of development and its not recommended to enable them unless you know what you are doing.")
-            .getBoolean(false)
-            // Make sure MuTEs are enabled in development
-            || (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
         GregTech_API.TICKS_FOR_LAG_AVERAGING = tMainConfig
             .get(GT_Mod.aTextGeneral, "TicksForLagAveragingWithScanner", 25)
             .getInt(25);

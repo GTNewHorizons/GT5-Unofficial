@@ -2,8 +2,6 @@ package gregtech.api.recipe.check;
 
 import java.util.Objects;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.StatCollector;
 
@@ -35,26 +33,24 @@ public class SimpleCheckRecipeResult implements CheckRecipeResult {
     }
 
     @Override
-    @Nonnull
     public String getDisplayString() {
-        return Objects.requireNonNull(StatCollector.translateToLocal("GT5U.gui.text." + key));
+        return StatCollector.translateToLocal("GT5U.gui.text." + key);
     }
 
     @Override
-    @Nonnull
     public CheckRecipeResult newInstance() {
         return new SimpleCheckRecipeResult(false, "", false);
     }
 
     @Override
-    public void encode(@Nonnull PacketBuffer buffer) {
+    public void encode(PacketBuffer buffer) {
         buffer.writeBoolean(success);
         NetworkUtils.writeStringSafe(buffer, key);
         buffer.writeBoolean(persistsOnShutdown);
     }
 
     @Override
-    public void decode(@Nonnull PacketBuffer buffer) {
+    public void decode(PacketBuffer buffer) {
         success = buffer.readBoolean();
         key = NetworkUtils.readStringSafe(buffer);
         persistsOnShutdown = buffer.readBoolean();
@@ -78,7 +74,6 @@ public class SimpleCheckRecipeResult implements CheckRecipeResult {
      * Creates new result with successful state. Add your localized description with `GT5U.gui.text.{key}`.
      * This is already registered to registry.
      */
-    @Nonnull
     public static CheckRecipeResult ofSuccess(String key) {
         return new SimpleCheckRecipeResult(true, key, false);
     }
@@ -87,7 +82,6 @@ public class SimpleCheckRecipeResult implements CheckRecipeResult {
      * Creates new result with failed state. Add your localized description with `GT5U.gui.text.{key}`.
      * This is already registered to registry.
      */
-    @Nonnull
     public static CheckRecipeResult ofFailure(String key) {
         return new SimpleCheckRecipeResult(false, key, false);
     }

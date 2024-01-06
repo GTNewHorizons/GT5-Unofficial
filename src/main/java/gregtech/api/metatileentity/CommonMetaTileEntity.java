@@ -314,27 +314,4 @@ public abstract class CommonMetaTileEntity extends CoverableTileEntity
     public ItemStack getMachineCraftingIcon() {
         return getMetaTileEntity() != null ? getMetaTileEntity().getMachineCraftingIcon() : null;
     }
-
-    @Override
-    public ModularWindow createWindow(UIBuildContext buildContext) {
-        if (!useModularUI()) return null;
-
-        buildContext.setValidator(getValidator());
-        final ModularWindow.Builder builder = ModularWindow.builder(getGUIWidth(), getGUIHeight());
-        builder.setBackground(getGUITextureSet().getMainBackground());
-        builder.setGuiTint(getGUIColorization());
-        if (doesBindPlayerInventory()) {
-            bindPlayerInventoryUI(builder, buildContext);
-        }
-        addUIWidgets(builder, buildContext);
-        addTitleToUI(builder);
-        addCoverTabs(builder, buildContext);
-        final IConfigurationCircuitSupport csc = getConfigurationCircuitSupport();
-        if (csc != null && csc.allowSelectCircuit()) {
-            addConfigurationCircuitSlot(builder);
-        } else {
-            addGregTechLogo(builder);
-        }
-        return builder.build();
-    }
 }

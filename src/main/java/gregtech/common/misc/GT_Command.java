@@ -1,13 +1,5 @@
 package gregtech.common.misc;
 
-import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
-import static gregtech.common.misc.WirelessNetworkManager.getRawUUIDFromUsername;
-import static gregtech.common.misc.WirelessNetworkManager.getUUIDFromUsername;
-import static gregtech.common.misc.WirelessNetworkManager.getUserEU;
-import static gregtech.common.misc.WirelessNetworkManager.getUsernameFromUUID;
-import static gregtech.common.misc.WirelessNetworkManager.joinUserNetwork;
-import static gregtech.common.misc.WirelessNetworkManager.setUserEU;
-
 import java.lang.reflect.Field;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -24,11 +16,12 @@ import com.gtnewhorizon.structurelib.StructureLib;
 
 import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.interfaces.IGlobalWirelessEnergy;
 import gregtech.api.objects.GT_ChunkManager;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Pollution;
 
-public final class GT_Command extends CommandBase {
+public final class GT_Command extends CommandBase implements IGlobalWirelessEnergy {
 
     @Override
     public String getCommandName() {
@@ -362,7 +355,7 @@ public final class GT_Command extends CommandBase {
                         "User " + formatted_username
                             + " is currently in network of "
                             + EnumChatFormatting.BLUE
-                            + getUsernameFromUUID(uuidTeam)
+                            + GetUsernameFromUUID(uuidTeam)
                             + EnumChatFormatting.RESET
                             + "."));
 

@@ -289,7 +289,7 @@ public class GT_Values {
         public static final String COLOR = "gt.color", // Integer
             COVERS = "gt.covers", // String
             CUSTOM_NAME = "name", // String
-            DISPLAY = "gt.display", // String
+            DISPAY = "gt.display", // String
             TIER = "gt.tier", // Number
             FACING = "gt.facing", // Byte
             LOCK_UPGRADE = "gt.locked", // Boolean
@@ -322,7 +322,6 @@ public class GT_Values {
             BURN_TIME_LEFT = "gt.burn.time.left", // Number
             TOTAL_BURN_TIME = "gt.total.burn.time", // Number
             ALLOWED_WORK = "gt.allowed.work", // Boolean
-            TASKS = "gt.tasks", // Compound
 
             // MultiBlock
             STRUCTURE_OK = "gt.structure.ok", ROTATION = "gt.eRotation", FLIP = "gt.eFlip", TARGET = "gt.target", // Boolean
@@ -338,14 +337,13 @@ public class GT_Values {
             UPGRADE_INVENTORIES_INPUT = "gt.invlist.upg.in", // NBT List
             UPGRADE_INVENTORIES_OUTPUT = "gt.invlist.upg.out", // NBT List
             UPGRADE_TANK_CAPACITY = "gt.tank.cap.upg", // Long
-            UPGRADE_TANK_COUNT = "gt.tank.ct.upg", // Int
             UPGRADE_TANK_CAPACITY_MULTIPLIER = "gt.tank.cap.mult.upg", // Long
             UPGRADE_TANK_UUID = "gt.tankuuid.upg", // String
             UPGRADE_TANK_NAME = "gt.tankname.upg", // String
             UPGRADE_TANKS_INPUT = "gt.tanklist.upg.in", // NBT List
             UPGRADE_TANKS_OUTPUT = "gt.tanklist.upg.out", // NBT List
+            UPGRADE_TANKS_COUNT = "gt.tankcount.upg", // Int
             UPGRADE_TANKS_PREFIX = "gt.tank.upg", // NBT Tag
-            UPGRADE_AMPERAGE = "gt.amp.upg", // Long
             SEPARATE_INPUTS = "gt.separate.inputs", // Boolean
             VOIDING_MODE = "gt.voiding.mode", // String
             BATCH_MODE = "gt.batch.mode", // Boolean
@@ -491,11 +489,6 @@ public class GT_Values {
      * Debug parameter for {@link gregtech.api.util.GT_ChunkAssociatedData}
      */
     public static boolean debugWorldData = false;
-    /**
-     * Parameter if multi tile entities (MuTEs) should be enabled in the pack. Turned off by default until
-     * implementation is done.
-     */
-    public static boolean enableMultiTileEntities = false;
     /**
      * Number of ticks between sending sound packets to clients for electric machines. Default is 1.5 seconds. Trying to
      * mitigate lag and FPS drops.

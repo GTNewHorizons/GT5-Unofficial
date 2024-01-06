@@ -2,8 +2,6 @@ package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GT_Values.AuthorColen;
 import static gregtech.api.enums.GT_Values.V;
-import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
-import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
 import static java.lang.Long.min;
 
 import java.math.BigInteger;
@@ -14,13 +12,14 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IGlobalWirelessEnergy;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IWirelessEnergyHatchInformation;
 import gregtech.api.metatileentity.MetaTileEntity;
 
 public class GT_MetaTileEntity_Wireless_Hatch extends GT_MetaTileEntity_Hatch_Energy
-    implements IWirelessEnergyHatchInformation {
+    implements IGlobalWirelessEnergy, IWirelessEnergyHatchInformation {
 
     private final BigInteger eu_transferred_per_operation = BigInteger
         .valueOf(2 * V[mTier] * ticks_between_energy_addition);

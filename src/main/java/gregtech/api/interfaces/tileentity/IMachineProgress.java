@@ -16,7 +16,7 @@ public interface IMachineProgress extends IHasWorldObjectAndCoords {
     int getMaxProgress();
 
     /**
-     * Manually increases the Progress of the Machine by vent cover.
+     * increases the Progress of the Machine
      */
     boolean increaseProgress(int aProgressAmountInTicks);
 
@@ -45,14 +45,6 @@ public interface IMachineProgress extends IHasWorldObjectAndCoords {
      * if the Machine is allowed to Work
      */
     boolean isAllowedToWork();
-
-    default void setAllowedToWork(Boolean allowedToWork) {
-        if (allowedToWork) {
-            enableWorking();
-        } else {
-            disableWorking();
-        }
-    }
 
     /**
      * used to control Machines via Redstone Signal Strength by special Covers In case of 0 the Machine is very likely

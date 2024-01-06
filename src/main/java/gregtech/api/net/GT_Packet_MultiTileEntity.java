@@ -21,7 +21,7 @@ import io.netty.buffer.ByteBuf;
 public class GT_Packet_MultiTileEntity extends GT_Packet_New {
 
     public static final int COVERS = B[0], REDSTONE = B[1], MODES = B[2], CONTROLLER = B[3], INVENTORY_INDEX = B[4],
-        INVENTORY_NAME_ID = B[5], BOOLEANS = B[6], SOUND = B[7];
+        INVENTORY_NAME = B[5], BOOLEANS = B[6], SOUND = B[7];
 
     private int features = 0;
 
@@ -32,14 +32,14 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
     private ChunkCoordinates mTargetPos = null;
     private int mLockedInventoryIndex;
     private String mInventoryName;
-    private String inventoryID;
+    private int mInventoryLength;
     private int booleans;
     private byte soundEvent;
     private int soundEventValue;
 
     // MultiBlockPart
-    private int mode;
-    private int allowedModes;
+    private byte mMode;
+    private int mAllowedModes;
 
     public GT_Packet_MultiTileEntity() {
         super(true);
@@ -77,10 +77,10 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
         mRedstone = aRedstoneData;
     }
 
-    public void setModes(int mode, int allowedModes) {
+    public void setModes(byte aMode, int aAllowedModes) {
         features |= MODES;
-        this.mode = mode;
-        this.allowedModes = allowedModes;
+        mMode = aMode;
+        mAllowedModes = aAllowedModes;
     }
 
     public void setTargetPos(int aX, short aY, int aZ) {
@@ -94,10 +94,9 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
 
     }
 
-    public void setInventoryName(String aInventoryName, String inventoryID) {
-        features |= INVENTORY_NAME_ID;
+    public void setInventoryName(String aInventoryName) {
+        features |= INVENTORY_NAME;
         mInventoryName = aInventoryName;
-        this.inventoryID = inventoryID;
     }
 
     /**
@@ -141,8 +140,8 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
             aOut.writeByte(mRedstone);
         }
         if ((features & MODES) == MODES) {
-            aOut.writeInt(mode);
-            aOut.writeInt(allowedModes);
+            aOut.writeByte(mMode);
+            aOut.writeInt(mAllowedModes);
         }
         if ((features & CONTROLLER) == CONTROLLER) {
             aOut.writeInt(mTargetPos.posX);
@@ -152,20 +151,16 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
         if ((features & INVENTORY_INDEX) == INVENTORY_INDEX) {
             aOut.writeInt(mLockedInventoryIndex);
         }
-        if ((features & INVENTORY_NAME_ID) == INVENTORY_NAME_ID) {
+        if ((features & INVENTORY_NAME) == INVENTORY_NAME) {
             if (mInventoryName != null && mInventoryName.length() > 0) {
-                byte[] bytes = mInventoryName.getBytes();
-                aOut.writeInt(bytes.length);
-                aOut.writeBytes(bytes);
+                mInventoryLength = mInventoryName.length();
+                aOut.writeInt(mInventoryLength);
+                for (char tChar : mInventoryName.toCharArray()) {
+                    aOut.writeChar(tChar);
+                }
             } else {
-                aOut.writeInt(0);
-            }
-            if (inventoryID != null && inventoryID.length() > 0) {
-                byte[] bytes = inventoryID.getBytes();
-                aOut.writeInt(bytes.length);
-                aOut.writeBytes(bytes);
-            } else {
-                aOut.writeInt(0);
+                mInventoryLength = 0;
+                aOut.writeInt(mInventoryLength);
             }
         }
 
@@ -208,7 +203,7 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
             packet.setRedstoneData(aData.readByte());
         }
         if ((packetFeatures & MODES) == MODES) {
-            packet.setModes(aData.readInt(), aData.readInt());
+            packet.setModes(aData.readByte(), aData.readInt());
         }
         if ((packetFeatures & CONTROLLER) == CONTROLLER) {
             packet.setTargetPos(aData.readInt(), aData.readShort(), aData.readInt());
@@ -216,30 +211,19 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
         if ((packetFeatures & INVENTORY_INDEX) == INVENTORY_INDEX) {
             packet.setInventoryIndex(aData.readInt());
         }
-        if ((packetFeatures & INVENTORY_NAME_ID) == INVENTORY_NAME_ID) {
-            int nameLength = aData.readInt();
-            String inventoryName;
-            if (nameLength > 0) {
-                byte[] bytes = new byte[nameLength];
-                for (int i = 0; i < nameLength; i++) {
-                    bytes[i] = aData.readByte();
+        if ((packetFeatures & INVENTORY_NAME) == INVENTORY_NAME) {
+            int tLength = aData.readInt();
+            String tName;
+            if (tLength > 0) {
+                StringBuilder tNameBuilder = new StringBuilder();
+                for (int i = 0; i < tLength; i++) {
+                    tNameBuilder.append(aData.readChar());
                 }
-                inventoryName = new String(bytes);
+                tName = tNameBuilder.toString();
             } else {
-                inventoryName = null;
+                tName = null;
             }
-            int idLength = aData.readInt();
-            String inventoryID;
-            if (idLength > 0) {
-                byte[] bytes = new byte[idLength];
-                for (int i = 0; i < idLength; i++) {
-                    bytes[i] = aData.readByte();
-                }
-                inventoryID = new String(bytes);
-            } else {
-                inventoryID = null;
-            }
-            packet.setInventoryName(inventoryName, inventoryID);
+            packet.setInventoryName(tName);
         }
 
         if ((packetFeatures & BOOLEANS) == BOOLEANS) {
@@ -262,24 +246,19 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
             if (tBlock instanceof MultiTileEntityBlock mteBlock) {
                 final IMultiTileEntity mte = mteBlock.receiveMultiTileEntityData(aWorld, mX, mY, mZ, mRID, mID);
                 if (mte == null) return;
-                mte.receiveClientData(GregTechTileClientEvents.CHANGE_COMMON_DATA, mCommonData);
-                mte.receiveClientData(GregTechTileClientEvents.CHANGE_COLOR, mColor);
+                mte.receiveClientEvent(GregTechTileClientEvents.CHANGE_COMMON_DATA, mCommonData);
+                mte.receiveClientEvent(GregTechTileClientEvents.CHANGE_COLOR, mColor);
 
                 if ((features & COVERS) == COVERS) {
                     mteBlock.receiveCoverData(mte, mC0, mC1, mC2, mC3, mC4, mC5);
                 }
                 if ((features & REDSTONE) == REDSTONE) {
-                    mte.receiveClientData(GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT, mRedstone);
+                    mte.receiveClientEvent(GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT, mRedstone);
                 }
 
                 if ((features & MODES) == MODES && mte instanceof IMultiTileEntity.IMTE_HasModes mteModes) {
-                    mteModes.setMode(mode);
-                    mteModes.setAllowedModes(allowedModes);
-                }
-
-                if ((features & INVENTORY_NAME_ID) == INVENTORY_NAME_ID && mte instanceof Inventory invUpg) {
-                    invUpg.setInventoryName(mInventoryName);
-                    invUpg.setInventoryId(inventoryID);
+                    mteModes.setMode(mMode);
+                    mteModes.setAllowedModes(mAllowedModes);
                 }
 
                 if ((features & CONTROLLER) == CONTROLLER && mte instanceof IMultiBlockPart) {
@@ -290,6 +269,10 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
                 if ((features & INVENTORY_INDEX) == INVENTORY_INDEX && mte instanceof IMultiBlockPart) {
                     final IMultiBlockPart mtePart = (IMultiBlockPart) mte;
                     mtePart.setLockedInventoryIndex(mLockedInventoryIndex);
+                }
+
+                if ((features & INVENTORY_NAME) == INVENTORY_NAME && mte instanceof Inventory invUpg) {
+                    invUpg.setInventoryName(mInventoryName);
                 }
 
                 if ((features & BOOLEANS) == BOOLEANS && mte instanceof IMultiTileMachine) {
@@ -304,7 +287,6 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
 
             }
         } catch (Exception e) {
-            e.printStackTrace();
             GT_Mod.GT_FML_LOGGER.error(
                 "Exception setting tile entity data for tile entity {} at ({}, {}, {})",
                 tTileEntity,

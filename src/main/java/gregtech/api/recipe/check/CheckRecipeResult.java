@@ -1,7 +1,5 @@
 package gregtech.api.recipe.check;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.network.PacketBuffer;
 
 /**
@@ -15,7 +13,6 @@ public interface CheckRecipeResult {
     /**
      * @return Unique registry ID
      */
-    @Nonnull
     String getID();
 
     /**
@@ -26,19 +23,17 @@ public interface CheckRecipeResult {
     /**
      * @return Actual text to show on client GUI
      */
-    @Nonnull
     String getDisplayString();
 
     /**
      * Create new instance to receive packet.
      */
-    @Nonnull
     CheckRecipeResult newInstance();
 
     /**
      * Encode value to sync.
      */
-    void encode(@Nonnull PacketBuffer buffer);
+    void encode(PacketBuffer buffer);
 
     /**
      * Decode synced value.

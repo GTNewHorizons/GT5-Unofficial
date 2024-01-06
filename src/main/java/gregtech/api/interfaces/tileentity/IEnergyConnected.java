@@ -1,9 +1,5 @@
 package gregtech.api.interfaces.tileentity;
 
-import java.util.Objects;
-
-import javax.annotation.Nonnull;
-
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -57,25 +53,24 @@ public interface IEnergyConnected extends IColoredTileEntity {
      */
     final class Util {
 
-        // TODO: Deduplicate code by rewokring the Enet system using the GTCEu one as inspiration - BlueWeabo
         /**
          * Emits Energy to the E-net. Also compatible with adjacent IC2 TileEntities.
          *
          * @return the used Amperage.
          */
-        public static long emitEnergyToNetwork(long voltage, long amperage, IEnergyConnected emitter) {
-            long usedAmperes = 0;
-            if (!(emitter instanceof IHasWorldObjectAndCoords emitterTile)) {
+        public static long emitEnergyToNetwork(long aVoltage, long aAmperage, IEnergyConnected aEmitter) {
+            long rUsedAmperes = 0;
+            if (!(aEmitter instanceof IHasWorldObjectAndCoords emitterTile)) {
                 return 0;
             }
 
             for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                if (usedAmperes > amperage) break;
-                if (!emitter.outputsEnergyTo(side)) {
+                if (rUsedAmperes > aAmperage) break;
+                if (!aEmitter.outputsEnergyTo(side)) {
                     continue;
                 }
 
-                final ForgeDirection oppositeSide = Objects.requireNonNull(side.getOpposite());
+                final ForgeDirection oppositeSide = side.getOpposite();
                 final TileEntity tTileEntity = emitterTile.getTileEntityAtSide(side);
                 if (tTileEntity instanceof PowerLogicHost host) {
 
@@ -84,95 +79,28 @@ public interface IEnergyConnected extends IColoredTileEntity {
                         continue;
                     }
 
-                    usedAmperes += logic.injectEnergy(voltage, amperage - usedAmperes);
+                    rUsedAmperes += logic.injectEnergy(aVoltage, aAmperage - rUsedAmperes);
                 } else if (tTileEntity instanceof IEnergyConnected energyConnected) {
-                    if (emitter.getColorization() >= 0) {
+                    if (aEmitter.getColorization() >= 0) {
                         final byte tColor = energyConnected.getColorization();
-                        if (tColor >= 0 && tColor != emitter.getColorization()) continue;
+                        if (tColor >= 0 && tColor != aEmitter.getColorization()) continue;
                     }
-                    usedAmperes += energyConnected.injectEnergyUnits(oppositeSide, voltage, amperage - usedAmperes);
+                    rUsedAmperes += energyConnected.injectEnergyUnits(oppositeSide, aVoltage, aAmperage - rUsedAmperes);
 
                 } else if (tTileEntity instanceof IEnergySink sink) {
-                    if (sink.acceptsEnergyFrom((TileEntity) emitter, oppositeSide)) {
-                        while (amperage > usedAmperes && sink.getDemandedEnergy() > 0
-                            && sink.injectEnergy(oppositeSide, voltage, voltage) < voltage) usedAmperes++;
+                    if (sink.acceptsEnergyFrom((TileEntity) aEmitter, oppositeSide)) {
+                        while (aAmperage > rUsedAmperes && sink.getDemandedEnergy() > 0
+                            && sink.injectEnergy(oppositeSide, aVoltage, aVoltage) < aVoltage) rUsedAmperes++;
                     }
                 } else if (GregTech_API.mOutputRF && tTileEntity instanceof IEnergyReceiver receiver) {
-                    final int rfOut = GT_Utility.safeInt(voltage * GregTech_API.mEUtoRF / 100);
+                    final int rfOut = GT_Utility.safeInt(aVoltage * GregTech_API.mEUtoRF / 100);
                     if (receiver.receiveEnergy(oppositeSide, rfOut, true) == rfOut) {
                         receiver.receiveEnergy(oppositeSide, rfOut, false);
-                        usedAmperes++;
+                        rUsedAmperes++;
                     }
                 }
             }
-            return usedAmperes;
-        }
-
-        /**
-         * Same as {@link #emitEnergyToNetwork(long, long, IEnergyConnected)}, but instead we remove the energy directly from the logic itself.
-         * @param emitter The host, which is trying to emit energy in the network
-         * @param outputSide side from where energy is being outputted to. If its {@link ForgeDirection#UNKNOWN} then it doesn't emit energy to the network
-         */
-        public static void emitEnergyToNetwork(@Nonnull final PowerLogicHost emitter, @Nonnull final ForgeDirection outputSide) {
-            if (outputSide == ForgeDirection.UNKNOWN) return;
-            final PowerLogic emitterLogic = emitter.getPowerLogic();
-            long usedAmperes = 0;
-            long voltage = emitterLogic.getVoltage();
-            long amperage = emitterLogic.getMaxAmperage();
-            if (!(emitter instanceof final IHasWorldObjectAndCoords emitterTile)) {
-                return;
-            }
-            // We need to make sure we can actually output energy on this side. This is more of a safety check.
-            if (emitter.getPowerLogic(outputSide) == null) {
-                return;
-            }
-
-            final ForgeDirection oppositeSide = Objects.requireNonNull(outputSide.getOpposite());
-            final TileEntity tileEntity = emitterTile.getTileEntityAtSide(outputSide);
-            if (tileEntity instanceof PowerLogicHost host) {
-
-                final PowerLogic logic = host.getPowerLogic(oppositeSide);
-                if (logic == null || logic.isEnergyReceiver()) {
-                    return;
-                }
-
-                usedAmperes += logic.injectEnergy(voltage, amperage);
-                emitterLogic.removeEnergyUnsafe(usedAmperes * voltage);
-                return;
-            }
-
-            if (tileEntity instanceof IEnergyConnected energyConnected) {
-                if (emitter instanceof IColoredTileEntity coloredEmitter && coloredEmitter.getColorization() >= 0) {
-                    final byte tColor = energyConnected.getColorization();
-                    if (tColor >= 0 && tColor != coloredEmitter.getColorization()) {
-                        return;
-                    }
-                }
-                usedAmperes += energyConnected.injectEnergyUnits(oppositeSide, voltage, amperage - usedAmperes);
-                emitterLogic.removeEnergyUnsafe(usedAmperes * voltage);
-                return;
-            }
-    
-            if (tileEntity instanceof IEnergySink sink) {
-                if (sink.acceptsEnergyFrom((TileEntity) emitter, oppositeSide)) {
-                    while (amperage > usedAmperes && sink.getDemandedEnergy() > 0
-                        && sink.injectEnergy(oppositeSide, voltage, voltage) < voltage) {
-                            usedAmperes++;
-                        }
-                    emitterLogic.removeEnergyUnsafe(usedAmperes * voltage);
-                    return;
-                }
-            }
-
-            if (GregTech_API.mOutputRF && tileEntity instanceof IEnergyReceiver receiver) {
-                final int rfOut = GT_Utility.safeInt(voltage * GregTech_API.mEUtoRF / 100);
-                if (receiver.receiveEnergy(oppositeSide, rfOut, true) == rfOut) {
-                    receiver.receiveEnergy(oppositeSide, rfOut, false);
-                    usedAmperes++;
-                    emitterLogic.removeEnergyUnsafe(usedAmperes * voltage);
-                    return;
-                }
-            }
+            return rUsedAmperes;
         }
     }
 }

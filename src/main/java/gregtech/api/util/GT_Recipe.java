@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -24,8 +23,6 @@ import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.logic.FluidInventoryLogic;
-import gregtech.api.logic.ItemInventoryLogic;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.recipe.RecipeCategory;
 import gregtech.api.recipe.RecipeMap;
@@ -34,7 +31,6 @@ import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.recipe.metadata.EmptyRecipeMetadataStorage;
 import gregtech.api.recipe.metadata.IRecipeMetadataStorage;
 import gregtech.api.util.extensions.ArrayExt;
-import gregtech.api.util.item.ItemHolder;
 import ic2.core.Ic2Items;
 
 public class GT_Recipe implements Comparable<GT_Recipe> {
@@ -552,60 +548,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         return currentParallel;
     }
 
-    public boolean isRecipePossible(@Nullable ItemInventoryLogic itemInput, @Nullable FluidInventoryLogic fluidInput) {
-        return getAmountOfRecipesDone(itemInput, fluidInput, 1, true) > 0;
-    }
-
-    public long getAmountOfRecipesDone(@Nullable ItemInventoryLogic itemInput, @Nullable FluidInventoryLogic fluidInput,
-        long maxParallel, boolean simulate) {
-        if (itemInput == null) {
-            itemInput = new ItemInventoryLogic(0);
-        }
-
-        if (fluidInput == null) {
-            fluidInput = new FluidInventoryLogic(0, 0);
-        }
-
-        itemInput.startRecipeCheck();
-        Map<ItemHolder, Long> recipeItems = getItemInputsAsItemMap();
-        for (Entry<ItemHolder, Long> entry : recipeItems.entrySet()) {
-            maxParallel = Math
-                .min(maxParallel, itemInput.calculateAmountOfTimesItemCanBeTaken(entry.getKey(), entry.getValue()));
-        }
-
-        for (FluidStack fluid : mFluidInputs) {
-            if (fluid == null) continue;
-            maxParallel = Math
-                .min(maxParallel, fluidInput.calculateAmountOfTimesFluidCanBeTaken(fluid.getFluid(), fluid.amount));
-        }
-
-        if (simulate) {
-            itemInput.stopRecipeCheck();
-            return maxParallel;
-        }
-
-        for (Entry<ItemHolder, Long> entry : recipeItems.entrySet()) {
-            itemInput.subtractItemAmount(entry.getKey(), entry.getValue() * maxParallel, false);
-        }
-
-        for (FluidStack fluid : mFluidInputs) {
-            if (fluid == null) continue;
-            fluidInput.drain(fluid.getFluid(), fluid.amount * maxParallel, false);
-        }
-        itemInput.stopRecipeCheck();
-        return maxParallel;
-    }
-
-    private Map<ItemHolder, Long> getItemInputsAsItemMap() {
-        Map<ItemHolder, Long> items = new HashMap<>();
-        for (ItemStack item : mInputs) {
-            if (item == null) continue;
-            ItemHolder itemHolder = new ItemHolder(item);
-            items.put(itemHolder, items.getOrDefault(itemHolder, 0L) + item.stackSize);
-        }
-        return items;
-    }
-
     @Override
     public int compareTo(GT_Recipe recipe) {
         // first lowest tier recipes
@@ -776,25 +718,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     public GT_Recipe setEUt(int aEUt) {
         this.mEUt = aEUt;
         return this;
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        if (other == this) return true;
-        if (!(other instanceof GT_Recipe recipe)) return false;
-        for (int i = 0; i < Math.min(mInputs.length, recipe.mInputs.length); i++) {
-            if (mInputs[i] == null && recipe.mInputs[i] == null) continue;
-            if (mInputs[i] == null || recipe.mInputs[i] == null) return false;
-            ItemHolder currentIH = new ItemHolder(mInputs[i]);
-            ItemHolder otherIH = new ItemHolder(recipe.mInputs[i]);
-            if (!currentIH.equals(otherIH)) return false;
-        }
-        for (int i = 0; i < Math.min(mFluidInputs.length, recipe.mFluidInputs.length); i++) {
-            if (mFluidInputs[i] == null && recipe.mFluidInputs[i] == null) continue;
-            if (mFluidInputs[i] == null || recipe.mFluidInputs[i] == null) return false;
-            if (!FluidStack.areFluidStackTagsEqual(mFluidInputs[i], recipe.mFluidInputs[i])) return false;
-        }
-        return mDuration == recipe.mDuration && mEUt == recipe.mEUt && mSpecialValue == recipe.mSpecialValue;
     }
 
     public static class GT_Recipe_AssemblyLine {

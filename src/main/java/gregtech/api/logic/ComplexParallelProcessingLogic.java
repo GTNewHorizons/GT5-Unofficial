@@ -5,20 +5,167 @@ import java.util.stream.LongStream;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-public class ComplexParallelProcessingLogic<P extends ComplexParallelProcessingLogic<P>>
-    extends MuTEProcessingLogic<P> {
+import gregtech.api.multitileentity.multiblock.base.Controller;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.util.GT_OverclockCalculator;
+import gregtech.api.util.GT_ParallelHelper;
+import gregtech.api.util.GT_Recipe;
 
-    protected int maxComplexParallels;
-    protected ItemStack[][] outputItems;
-    protected FluidStack[][] outputFluids;
-    protected long[] calculatedEutValues;
-    protected int[] durations;
-    protected int[] progresses;
+public class ComplexParallelProcessingLogic {
 
-    public P setMaxComplexParallel(int maxComplexParallels) {
+    protected Controller<?> tileEntity;
+    protected RecipeMap<?> recipeMap;
+    protected boolean hasPerfectOverclock;
+    protected final int maxComplexParallels;
+    protected final ItemStack[][] outputItems;
+    protected final ItemStack[][] inputItems;
+    protected final FluidStack[][] inputFluids;
+    protected final FluidStack[][] outputFluids;
+    protected final long[] availableEut;
+    protected final long[] eut;
+    protected final long[] durations;
+    protected final boolean[] isItemVoidProtected;
+    protected final boolean[] isFluidVoidProtected;
+
+    public ComplexParallelProcessingLogic(int maxComplexParallels) {
+        this(null, maxComplexParallels);
+    }
+
+    public ComplexParallelProcessingLogic(RecipeMap<?> recipeMap, int maxComplexParallels) {
         this.maxComplexParallels = maxComplexParallels;
-        reinitializeProcessingArrays();
-        return getThis();
+        this.recipeMap = recipeMap;
+        inputItems = new ItemStack[maxComplexParallels][];
+        outputItems = new ItemStack[maxComplexParallels][];
+        inputFluids = new FluidStack[maxComplexParallels][];
+        outputFluids = new FluidStack[maxComplexParallels][];
+        eut = new long[maxComplexParallels];
+        availableEut = new long[maxComplexParallels];
+        durations = new long[maxComplexParallels];
+        isItemVoidProtected = new boolean[maxComplexParallels];
+        isFluidVoidProtected = new boolean[maxComplexParallels];
+    }
+
+    public ComplexParallelProcessingLogic setRecipeMap(RecipeMap<?> recipeMap) {
+        this.recipeMap = recipeMap;
+        return this;
+    }
+
+    public ComplexParallelProcessingLogic setInputItems(int index, ItemStack... itemInputs) {
+        if (index >= 0 && index < maxComplexParallels) {
+            inputItems[index] = itemInputs;
+        }
+        return this;
+    }
+
+    public ComplexParallelProcessingLogic setInputFluids(int index, FluidStack... inputFluids) {
+        if (index >= 0 && index < maxComplexParallels) {
+            this.inputFluids[index] = inputFluids;
+        }
+        return this;
+    }
+
+    public ComplexParallelProcessingLogic setTileEntity(Controller<?> tileEntity) {
+        this.tileEntity = tileEntity;
+        return this;
+    }
+
+    public ComplexParallelProcessingLogic setEut(int index, long eut) {
+        if (index >= 0 && index < maxComplexParallels) {
+            availableEut[index] = eut;
+        }
+        return this;
+    }
+
+    public ComplexParallelProcessingLogic setVoidProtection(int index, boolean protectItem, boolean protectFluid) {
+        if (index >= 0 && index < maxComplexParallels) {
+            isItemVoidProtected[index] = protectItem;
+            isFluidVoidProtected[index] = protectFluid;
+        }
+        return this;
+    }
+
+    public ComplexParallelProcessingLogic setPerfectOverclock(boolean shouldOverclockPerfectly) {
+        this.hasPerfectOverclock = shouldOverclockPerfectly;
+        return this;
+    }
+
+    public ComplexParallelProcessingLogic clear() {
+        for (int i = 0; i < maxComplexParallels; i++) {
+            outputItems[i] = null;
+            outputFluids[i] = null;
+            durations[i] = 0;
+            eut[i] = 0;
+        }
+        return this;
+    }
+
+    public ComplexParallelProcessingLogic clear(int index) {
+        if (index >= 0 && index < maxComplexParallels) {
+            inputItems[index] = null;
+            inputFluids[index] = null;
+            outputItems[index] = null;
+            outputFluids[index] = null;
+            durations[index] = 0;
+            availableEut[index] = 0;
+            eut[index] = 0;
+        }
+        return this;
+    }
+
+    public boolean process(int index) {
+        if (recipeMap == null) {
+            return false;
+        }
+        GT_Recipe recipe = recipeMap
+            .findRecipe(tileEntity, false, false, availableEut[index], inputFluids[index], inputItems[index]);
+        if (recipe == null) {
+            return false;
+        }
+
+        GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(recipe)
+            .setItemInputs(inputItems[index])
+            .setFluidInputs(inputFluids[index])
+            .setAvailableEUt(availableEut[index])
+            .setMachine(tileEntity, isItemVoidProtected[index], isFluidVoidProtected[index])
+            .setConsumption(true)
+            .setOutputCalculation(true);
+
+        helper.build();
+
+        if (helper.getCurrentParallel() <= 0) {
+            return false;
+        }
+
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
+            .setDuration(recipe.mDuration)
+            .setEUt(availableEut[index]);
+
+        if (hasPerfectOverclock) {
+            calculator.enablePerfectOC();
+        }
+
+        if (calculator.getConsumption() == Long.MAX_VALUE - 1 || calculator.getDuration() == Integer.MAX_VALUE - 1) {
+            return false;
+        }
+
+        durations[index] = calculator.getDuration();
+        eut[index] = calculator.getConsumption();
+        outputItems[index] = helper.getItemOutputs();
+        outputFluids[index] = helper.getFluidOutputs();
+
+        return true;
+    }
+
+    public long getDuration(int index) {
+        if (index >= 0 && index < maxComplexParallels) {
+            return durations[index];
+        }
+        return 0;
+    }
+
+    public long getTotalEU() {
+        return LongStream.of(eut)
+            .sum();
     }
 
     public ItemStack[] getOutputItems(int index) {
@@ -33,89 +180,5 @@ public class ComplexParallelProcessingLogic<P extends ComplexParallelProcessingL
             return outputFluids[index];
         }
         return null;
-    }
-
-    @Override
-    public boolean canWork() {
-        for (int i = 0; i < maxComplexParallels; i++) {
-            if (progresses[i] >= durations[i]) {
-                return machineHost.isAllowedToWork();
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public long getCalculatedEut() {
-        return LongStream.of(this.calculatedEutValues)
-            .sum();
-    }
-
-    public int getDuration(int index) {
-        return durations[index];
-    }
-
-    public int getProgress(int index) {
-        return progresses[index];
-    }
-
-    @Override
-    public void progress() {
-        for (int i = 0; i < maxComplexParallels; i++) {
-            if (progresses[i] == durations[i]) {
-                progresses[i] = 0;
-                durations[i] = 0;
-                output(i);
-                continue;
-            }
-            progresses[i] = progresses[i] + 1;
-        }
-    }
-
-    @Override
-    public void startCheck() {
-        for (int i = 0; i < maxComplexParallels; i++) {
-            if (durations[i] > 0) continue;
-            recipeResult = process();
-            calculatedEutValues[i] = calculatedEut;
-            durations[i] = duration;
-            progresses[i] = 0;
-            outputItems[i] = getOutputItems();
-            outputFluids[i] = getOutputFluids();
-        }
-    }
-
-    protected void output(int index) {
-        setOutputItems(getOutputItems(index));
-        setOutputFluids(getOutputFluids(index));
-        output();
-    }
-
-    protected void reinitializeProcessingArrays() {
-        ItemStack[][] oldOutputItems = outputItems;
-        FluidStack[][] oldOutputFluids = outputFluids;
-        long[] oldCalculatedEutValues = calculatedEutValues;
-        int[] oldDurations = durations;
-        int[] oldProgresses = progresses;
-        outputItems = new ItemStack[maxComplexParallels][];
-        outputFluids = new FluidStack[maxComplexParallels][];
-        calculatedEutValues = new long[maxComplexParallels];
-        durations = new int[maxComplexParallels];
-        progresses = new int[maxComplexParallels];
-        for (int i = 0; i < oldOutputItems.length; i++) {
-            outputItems[i] = oldOutputItems[i];
-        }
-        for (int i = 0; i < oldOutputFluids.length; i++) {
-            outputFluids[i] = oldOutputFluids[i];
-        }
-        for (int i = 0; i < oldCalculatedEutValues.length; i++) {
-            calculatedEutValues[i] = oldCalculatedEutValues[i];
-        }
-        for (int i = 0; i < oldDurations[i]; i++) {
-            durations[i] = oldDurations[i];
-        }
-        for (int i = 0; i < oldProgresses.length; i++) {
-            progresses[i] = oldProgresses[i];
-        }
     }
 }

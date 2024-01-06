@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multiblock;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ENERGY_IN;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.FLUID_IN;
@@ -7,20 +8,27 @@ import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.FLUID_
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_IN;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_OUT;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.NOTHING;
-import static gregtech.api.util.GT_StructureUtilityMuTE.*;
 
-import javax.annotation.Nonnull;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
-import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.TierEU;
 import gregtech.api.multitileentity.multiblock.base.StackableController;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.common.tileentities.machines.multiblock.logic.MaceratorProcessingLogic;
+import gregtech.api.util.GT_Recipe;
 
-public class Macerator extends StackableController<Macerator, MaceratorProcessingLogic> {
+public class Macerator extends StackableController<Macerator> {
 
     private static IStructureDefinition<Macerator> STRUCTURE_DEFINITION = null;
 
@@ -37,23 +45,25 @@ public class Macerator extends StackableController<Macerator, MaceratorProcessin
     public IStructureDefinition<Macerator> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<Macerator>builder()
-                .addShape(
-                    STACKABLE_STOP,
-                    transpose(new String[][] { { " CCC ", "CCCCC", "CCCCC", "CCCCC", " CCC " }, }))
+                .addShape(STACKABLE_TOP, transpose(new String[][] { { " CCC ", "CCCCC", "CCCCC", "CCCCC", " CCC " }, }))
                 .addShape(
                     STACKABLE_MIDDLE,
                     transpose(new String[][] { { "  BBB  ", " B---B ", "DC---CD", " B---B ", "  BBB  " }, }))
                 .addShape(
-                    STACKABLE_START,
+                    STACKABLE_BOTTOM,
                     transpose(new String[][] { { " G~F ", "AAAAA", "AAAAA", "AAAAA", " AAA " }, }))
-                .addElement('A', ofMuTECasings(ENERGY_IN, GT_MultiTileCasing.Macerator.getCasing()))
+                .addElement('A', ofChain(addMultiTileCasing("gt.multitileentity.casings", getCasingMeta(), ENERGY_IN)))
                 .addElement(
                     'B',
-                    ofMuTECasings(FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT, GT_MultiTileCasing.Macerator.getCasing()))
-                .addElement('C', ofMuTECasings(NOTHING, GT_MultiTileCasing.Macerator.getCasing()))
-                .addElement('D', ofMuTECasings(NOTHING, GT_MultiTileCasing.Macerator.getCasing()))
-                .addElement('F', ofMuTECasings(NOTHING, MOTOR_CASINGS))
-                .addElement('G', ofMuTECasings(NOTHING, INVENTORY_CASINGS))
+                    ofChain(
+                        addMultiTileCasing(
+                            "gt.multitileentity.casings",
+                            getCasingMeta(),
+                            FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT)))
+                .addElement('C', addMultiTileCasing("gt.multitileentity.casings", getCasingMeta(), NOTHING))
+                .addElement('D', addMultiTileCasing("gt.multitileentity.casings", getCasingMeta(), NOTHING))
+                .addElement('F', addMotorCasings(NOTHING))
+                .addElement('G', addMultiTileCasing("gt.multitileentity.component.casings", 10000, NOTHING))
                 .build();
         }
         return STRUCTURE_DEFINITION;
@@ -125,8 +135,42 @@ public class Macerator extends StackableController<Macerator, MaceratorProcessin
     }
 
     @Override
-    @Nonnull
-    protected MaceratorProcessingLogic createProcessingLogic() {
-        return new MaceratorProcessingLogic();
+    protected boolean checkRecipe() {
+        if (isSeparateInputs()) {
+            for (Pair<ItemStack[], String> tItemInputs : getItemInputsForEachInventory()) {
+                if (processRecipe(tItemInputs.getLeft(), tItemInputs.getRight())) {
+                    return true;
+                }
+            }
+            return false;
+        } else {
+            ItemStack[] tItemInputs = getInventoriesForInput().getStacks()
+                .toArray(new ItemStack[0]);
+            return processRecipe(tItemInputs, null);
+        }
+    }
+
+    private boolean processRecipe(ItemStack[] aItemInputs, String aInventory) {
+        RecipeMap<?> tRecipeMap = RecipeMaps.maceratorRecipes;
+        GT_Recipe tRecipe = tRecipeMap.findRecipe(this, false, TierEU.IV, null, aItemInputs);
+        if (tRecipe == null) {
+            return false;
+        }
+
+        if (!tRecipe.isRecipeInputEqual(true, false, 1, null, aItemInputs)) {
+            return false;
+        }
+
+        setDuration(tRecipe.mDuration);
+        setEut(tRecipe.mEUt);
+
+        setItemOutputs(aInventory, tRecipe.mOutputs);
+        return true;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected ResourceLocation getActivitySoundLoop() {
+        return SoundResource.IC2_MACHINES_MACERATOR_OP.resourceLocation;
     }
 }

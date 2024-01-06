@@ -17,11 +17,18 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.IFluidHandler;
 
 import cpw.mods.fml.common.Optional;
 import gregtech.api.enums.Mods;
+import gregtech.api.interfaces.tileentity.IBasicEnergyContainer;
+import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
+import gregtech.api.interfaces.tileentity.IEnergyConnected;
+import gregtech.api.interfaces.tileentity.IHasInventory;
+import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
+import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
 import gregtech.api.interfaces.tileentity.ITurnable;
 import gregtech.api.multitileentity.MultiTileEntityBlockInternal;
 import gregtech.api.multitileentity.MultiTileEntityItemInternal;
@@ -30,7 +37,9 @@ import gregtech.api.multitileentity.MultiTileEntityRegistry;
 /*
  * Heavily inspired by GT6
  */
-public interface IMultiTileEntity extends ICoverable, ITurnable, IDebugableTileEntity {
+public interface IMultiTileEntity
+    extends IHasWorldObjectAndCoords, ICoverable, ITurnable, IHasInventory, IEnergyConnected, IBasicEnergyContainer,
+    IFluidHandler, ITexturedTileEntity, IDebugableTileEntity, IColoredTileEntity {
 
     /**
      * Those two IDs HAVE to be saved inside the NBT of the TileEntity itself. They get set by the Registry itself, when
@@ -79,7 +88,7 @@ public interface IMultiTileEntity extends ICoverable, ITurnable, IDebugableTileE
 
     void sendClientData(EntityPlayerMP aPlayer);
 
-    boolean receiveClientData(int aEventID, int aValue);
+    boolean receiveClientEvent(int aEventID, int aValue);
 
     void setShouldRefresh(boolean aShouldRefresh);
 
@@ -282,12 +291,12 @@ public interface IMultiTileEntity extends ICoverable, ITurnable, IDebugableTileE
 
     interface IMTE_HasModes extends IMultiTileEntity {
 
-        int getMode();
+        byte getMode();
 
-        void setMode(int mode);
+        void setMode(byte aMode);
 
         int getAllowedModes();
 
-        void setAllowedModes(int allowedModes);
+        void setAllowedModes(int aAllowedModes);
     }
 }
