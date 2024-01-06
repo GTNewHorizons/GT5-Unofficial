@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import gregtech.api.modernmaterials.ModernMaterialsTextureRegister;
+import gregtech.loaders.ExtraIcons;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GLAllocation;
@@ -542,6 +544,9 @@ public class GT_Client extends GT_Proxy implements Runnable {
     @Override
     public void onPreLoad() {
         super.onPreLoad();
+
+        MinecraftForge.EVENT_BUS.register(new ExtraIcons());
+        MinecraftForge.EVENT_BUS.register(new ModernMaterialsTextureRegister());
 
         Minecraft.getMinecraft()
             .getResourcePackRepository().rprMetadataSerializer

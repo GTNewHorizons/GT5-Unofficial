@@ -3,6 +3,10 @@ package gregtech.api.modernmaterials.blocks.registration;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.MinecraftForgeClient;
 
@@ -16,9 +20,6 @@ import gregtech.api.modernmaterials.blocks.dumbbase.special.MasterTESR;
 
 public class SpecialBlockRegistration {
 
-    private static final MasterItemBlockRenderer masterItemBlockRenderer = new MasterItemBlockRenderer();
-    private static final MasterTESR masterTESR = new MasterTESR();
-
     public static void registerTESRBlock(BlocksEnum blockType) {
 
         final HashSet<ModernMaterial> validMaterials = blockType.getSpecialBlockRenderAssociatedMaterials();
@@ -26,19 +27,22 @@ public class SpecialBlockRegistration {
         if (validMaterials.isEmpty()) return;
 
         GameRegistry.registerTileEntity(blockType.getTileEntityClass(), "TileEntity." + blockType);
-        ClientRegistry.bindTileEntitySpecialRenderer(blockType.getTileEntityClass(), masterTESR);
 
         BaseMaterialBlock block;
+        Item itemBlock;
 
         try {
             block = blockType.getBlockClass()
                 .getDeclaredConstructor(BlocksEnum.class, HashSet.class)
                 .newInstance(blockType, validMaterials);
 
+            itemBlock = Item.getItemFromBlock(block);
+
             GameRegistry.registerBlock(block, BaseMaterialItemBlock.class, "Special." + blockType);
 
             for (ModernMaterial material : blockType.getSpecialBlockRenderAssociatedMaterials()) {
-                blockType.setItem(material, Item.getItemFromBlock(block));
+                itemBlock = Item.getItemFromBlock(block);
+                blockType.setItem(material, itemBlock);
             }
 
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException
@@ -46,7 +50,26 @@ public class SpecialBlockRegistration {
             throw new RuntimeException("Failed to instantiate " + blockType, e);
         }
 
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(block), masterItemBlockRenderer);
+        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
+            registerTESRRenderer(blockType, itemBlock);
+        }
+    }
 
+    // We must do all of this on the client only or it will crash in multiplayer.
+    @SideOnly(Side.CLIENT)
+    private static MasterTESR masterTESR;
+
+    @SideOnly(Side.CLIENT)
+    private static MasterItemBlockRenderer masterItemBlockRenderer;
+
+    @SideOnly(Side.CLIENT)
+    private static void registerTESRRenderer(BlocksEnum blockType, Item itemBlock) {
+
+        // This is needed to stop instantiation on server side.
+        if (masterTESR == null) masterTESR = new MasterTESR();
+        if (masterItemBlockRenderer == null) masterItemBlockRenderer = new MasterItemBlockRenderer();
+
+        ClientRegistry.bindTileEntitySpecialRenderer(blockType.getTileEntityClass(), masterTESR);
+        MinecraftForgeClient.registerItemRenderer(itemBlock, masterItemBlockRenderer);
     }
 }

@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
@@ -323,7 +325,9 @@ public final class ModernMaterial {
         }
 
         public ModernMaterialBuilder addCustomRenderers(Consumer<ModernMaterialBuilder> rendererRegistration) {
-            rendererRegistration.accept(this);
+            if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
+                rendererRegistration.accept(this);
+            }
             return this;
         }
     }

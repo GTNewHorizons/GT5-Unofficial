@@ -1,5 +1,12 @@
 package gregtech.api.modernmaterials;
 
+import gregtech.api.enums.TierEU;
+import gregtech.api.modernmaterials.effects.Effects;
+import gregtech.api.modernmaterials.fluids.ModernMaterialFluid;
+import gregtech.api.modernmaterials.items.partproperties.customitemrenderers.UniversiumItemRenderer;
+import gregtech.api.modernmaterials.recipegenerators.Metal;
+import gregtech.api.modernmaterials.tooltips.CustomTooltips;
+
 import static gregtech.api.modernmaterials.fluids.FluidEnum.Gas;
 import static gregtech.api.modernmaterials.fluids.FluidEnum.Molten;
 import static gregtech.api.modernmaterials.fluids.FluidEnum.NoPrefix;
@@ -9,18 +16,6 @@ import static gregtech.api.modernmaterials.items.partproperties.TextureType.Dust
 import static gregtech.api.modernmaterials.items.partproperties.TextureType.Gem;
 import static gregtech.api.modernmaterials.items.partproperties.TextureType.Metal_Dull;
 import static gregtech.api.modernmaterials.items.partproperties.TextureType.Metal_Shiny;
-
-import gregtech.api.enums.TierEU;
-import gregtech.api.modernmaterials.blocks.blocktypes.blockof.special.UniversiumBlockOfBlockRenderer;
-import gregtech.api.modernmaterials.blocks.blocktypes.blockof.special.UniversiumBlockOfItemRenderer;
-import gregtech.api.modernmaterials.blocks.blocktypes.framebox.special.UniversiumFrameBlockRenderer;
-import gregtech.api.modernmaterials.blocks.blocktypes.framebox.special.UniversiumFrameItemRenderer;
-import gregtech.api.modernmaterials.blocks.registration.BlocksEnum;
-import gregtech.api.modernmaterials.effects.Effects;
-import gregtech.api.modernmaterials.fluids.ModernMaterialFluid;
-import gregtech.api.modernmaterials.items.partproperties.customitemrenderers.UniversiumItemRenderer;
-import gregtech.api.modernmaterials.recipegenerators.Metal;
-import gregtech.api.modernmaterials.tooltips.CustomTooltips;
 
 public class ModernMaterialsRegistration {
 
@@ -65,8 +60,6 @@ public class ModernMaterialsRegistration {
             .setMaterialTier(TierEU.MAX)
             .addPlayerEffect(Effects::radiation)
             .addCustomRenderers(UniversiumRendererRegistration::initRenderersSafely)
-            // .addWires(new WireBuilder().build())
-
             .setCustomItemRenderer(new UniversiumItemRenderer())
             .addCustomTooltip(CustomTooltips::createRainbowText)
             .setRecipeGenerator(Metal::generateExtruderRecipesWithoutTools)

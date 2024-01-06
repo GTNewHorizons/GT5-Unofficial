@@ -327,9 +327,6 @@ public class GT_Mod implements IGT_Mod {
     @Mod.EventHandler
     public void onLoad(FMLInitializationEvent aEvent) {
 
-        MinecraftForge.EVENT_BUS.register(new ExtraIcons());
-        MinecraftForge.EVENT_BUS.register(new ModernMaterialsTextureRegister());
-
         if (GregTech_API.sLoadStarted) {
             return;
         }
