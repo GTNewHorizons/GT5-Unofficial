@@ -2,6 +2,7 @@ package gregtech.api.multitileentity.multiblock.base;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
@@ -12,50 +13,39 @@ import gregtech.api.multitileentity.interfaces.IMultiBlockController;
 public class WallShareablePart extends MultiBlockPart {
 
     protected List<ChunkCoordinates> targetPositions = new ArrayList<>();
-    protected List<IMultiBlockController> targets = new ArrayList<>();
 
     @Override
     public void setTarget(IMultiBlockController aTarget, int aAllowedModes) {
-        if (targets.size() > 1 || targetPositions.size() > 1) {
-            mAllowedModes = 0;
-            mMode = 0;
+        if (targetPositions.size() >= 1) {
+            allowedModes = 0;
+            setMode((byte) 0);
+            targetPosition = null;
         } else {
-            mAllowedModes = aAllowedModes;
+            allowedModes = aAllowedModes;
         }
 
         if (aTarget == null) {
             return;
         }
 
-        targets.add(aTarget);
         targetPositions.add(aTarget.getCoords());
     }
 
     @Override
-    public String getLockedInventory() {
-        issueClientUpdate();
-        if (targets.size() > 1 || targetPositions.size() > 1) {
+    public UUID getLockedInventory() {
+        if (targetPositions.size() > 1) {
             return null;
         }
-
-        IMultiBlockController controller = getTarget(false);
-        if (!getNameOfInventoryFromIndex(controller, mLockedInventoryIndex).equals(mLockedInventory)) {
-            mLockedInventory = getNameOfInventoryFromIndex(controller, mLockedInventoryIndex);
-            if (mLockedInventory.equals("all")) {
-                mLockedInventory = "";
-            }
-        }
-        return mLockedInventory.equals("") ? null : mLockedInventory;
+        return super.getLockedInventory();
     }
 
     @Override
     public IMultiBlockController getTarget(boolean aCheckValidity) {
-        if (targets.size() > 1 || targetPositions.size() > 1 || targets.size() <= 0 || targetPositions.size() <= 0) {
+        if (targetPositions.size() != 1) {
             return null;
         }
 
-        target = targets.get(0);
-        mTargetPos = targetPositions.get(0);
+        targetPosition = targetPositions.get(0);
         return super.getTarget(aCheckValidity);
     }
 

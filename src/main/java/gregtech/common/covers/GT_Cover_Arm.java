@@ -38,14 +38,6 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
     // among players doesn't make sense.
     private static final String ANY_TEXT = "Any";
 
-    /**
-     * @deprecated use {@link #GT_Cover_Arm(int aTickRate, ITexture coverTexture)} instead
-     */
-    @Deprecated
-    public GT_Cover_Arm(int aTickRate) {
-        this(aTickRate, null);
-    }
-
     public GT_Cover_Arm(int aTickRate, ITexture coverTexture) {
         super(coverTexture);
         this.mTickRate = aTickRate;

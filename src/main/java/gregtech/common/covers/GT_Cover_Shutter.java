@@ -20,14 +20,6 @@ import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget
 
 public class GT_Cover_Shutter extends GT_CoverBehavior {
 
-    /**
-     * @deprecated use {@link #GT_Cover_Shutter(ITexture coverTexture)} instead
-     */
-    @Deprecated
-    public GT_Cover_Shutter() {
-        this(null);
-    }
-
     public GT_Cover_Shutter(ITexture coverTexture) {
         super(coverTexture);
     }

@@ -1,10 +1,27 @@
 package gregtech.api.recipe;
 
-import static gregtech.api.enums.Mods.*;
+import static gregtech.api.enums.Mods.GTNHIntergalactic;
+import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.enums.Mods.NEICustomDiagrams;
+import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.util.GT_RecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
-import static gregtech.api.util.GT_RecipeMapUtil.*;
-import static gregtech.api.util.GT_Utility.*;
+import static gregtech.api.util.GT_RecipeMapUtil.FIRST_FLUIDSTACK_INPUT;
+import static gregtech.api.util.GT_RecipeMapUtil.FIRST_FLUIDSTACK_OUTPUT;
+import static gregtech.api.util.GT_RecipeMapUtil.FIRST_FLUID_OUTPUT;
+import static gregtech.api.util.GT_RecipeMapUtil.FIRST_ITEM_INPUT;
+import static gregtech.api.util.GT_RecipeMapUtil.FIRST_ITEM_OR_FLUID_INPUT;
+import static gregtech.api.util.GT_RecipeMapUtil.FIRST_ITEM_OR_FLUID_OUTPUT;
+import static gregtech.api.util.GT_RecipeMapUtil.FIRST_ITEM_OUTPUT;
+import static gregtech.api.util.GT_RecipeMapUtil.GT_RecipeTemplate;
+import static gregtech.api.util.GT_RecipeMapUtil.asTemplate;
+import static gregtech.api.util.GT_RecipeMapUtil.buildOrEmpty;
+import static gregtech.api.util.GT_Utility.clamp;
+import static gregtech.api.util.GT_Utility.copyAmount;
+import static gregtech.api.util.GT_Utility.getFluidForFilledItem;
+import static gregtech.api.util.GT_Utility.isArrayEmptyOrNull;
+import static gregtech.api.util.GT_Utility.isArrayOfLength;
+import static gregtech.api.util.GT_Utility.multiplyStack;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -13,14 +13,6 @@ import gregtech.api.util.ISerializableObject;
 
 public class GT_Cover_Crafting extends GT_CoverBehavior {
 
-    /**
-     * @deprecated use {@link #GT_Cover_Crafting(ITexture coverTexture)} instead
-     */
-    @Deprecated
-    public GT_Cover_Crafting() {
-        this(null);
-    }
-
     public GT_Cover_Crafting(ITexture coverTexture) {
         super(coverTexture);
     }

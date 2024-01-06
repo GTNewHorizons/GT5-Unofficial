@@ -51,14 +51,14 @@ public class MultiTileEntityItemInternal extends ItemBlock implements IFluidCont
     @SuppressWarnings("unchecked")
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         final MultiTileEntityContainer tTileEntityContainer = mBlock.mMultiTileEntityRegistry
-            .getNewTileEntityContainer(aStack);
+            .getCachedTileEntityContainer(aStack);
         if (tTileEntityContainer == null) {
             aList.add("INVALID ITEM!");
             return;
         }
-        if (tTileEntityContainer.mTileEntity instanceof IMTE_AddToolTips) {
+        if (tTileEntityContainer.mTileEntity instanceof IMTE_AddToolTips mte) {
             try {
-                ((IMTE_AddToolTips) tTileEntityContainer.mTileEntity).addToolTips(aList, aStack, aF3_H);
+                mte.addToolTips(aList, aStack, aF3_H);
             } catch (Throwable e) {
                 GT_FML_LOGGER.error("addInformation", e);
             }
@@ -73,11 +73,9 @@ public class MultiTileEntityItemInternal extends ItemBlock implements IFluidCont
     @SuppressWarnings("unchecked")
     public void getSubItems(Item aItem, CreativeTabs aTab, List<ItemStack> aList) {
         for (MultiTileEntityClassContainer tClass : mBlock.mMultiTileEntityRegistry.mRegistrations) {
-            if (!tClass.mHidden) {
-                if (((IMultiTileEntity) tClass.mCanonicalTileEntity)
-                    .getSubItems(mBlock, aItem, aTab, aList, tClass.mID)) {
-                    aList.add(mBlock.mMultiTileEntityRegistry.getItem(tClass.mID));
-                }
+            if (!tClass.mHidden && ((IMultiTileEntity) tClass.mCanonicalTileEntity)
+                .getSubItems(mBlock, aItem, aTab, aList, tClass.mID)) {
+                aList.add(mBlock.mMultiTileEntityRegistry.getItem(tClass.mID));
             }
         }
     }
@@ -85,10 +83,15 @@ public class MultiTileEntityItemInternal extends ItemBlock implements IFluidCont
     @Override
     public boolean onItemUse(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
         int ordinalSide, float aHitX, float aHitY, float aHitZ) {
+
         if (aY < 0 || aY > aWorld.getHeight()) return false;
+
+        if (aPlayer == null) return false;
+
         try {
             ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
             final Block tClickedBlock = aWorld.getBlock(aX, aY, aZ);
+
             if (tClickedBlock instanceof BlockSnow && (aWorld.getBlockMetadata(aX, aY, aZ) & 7) < 1) {
                 ordinalSide = SIDE_TOP;
                 side = ForgeDirection.UP;
@@ -102,79 +105,86 @@ public class MultiTileEntityItemInternal extends ItemBlock implements IFluidCont
             final Block tReplacedBlock = aWorld.getBlock(aX, aY, aZ);
 
             if (!tReplacedBlock.isReplaceable(aWorld, aX, aY, aZ)
-                || !mBlock.canReplace(aWorld, aX, aY, aZ, ordinalSide, aStack)) return false;
-            if (aStack.stackSize == 0 || (aPlayer != null && !aPlayer.canPlayerEdit(aX, aY, aZ, ordinalSide, aStack)))
+                || !mBlock.canReplace(aWorld, aX, aY, aZ, ordinalSide, aStack)) {
                 return false;
+            }
+
+            if (aStack.stackSize == 0 || (!aPlayer.canPlayerEdit(aX, aY, aZ, ordinalSide, aStack))) {
+                return false;
+            }
 
             final MultiTileEntityContainer aMTEContainer = mBlock.mMultiTileEntityRegistry
                 .getNewTileEntityContainer(aWorld, aX, aY, aZ, aStack);
 
-            if (aMTEContainer != null
-                && (aPlayer == null || aPlayer.isSneaking()
-                    || !(aMTEContainer.mTileEntity instanceof IMTE_OnlyPlaceableWhenSneaking mteSNeaking)
-                    || !mteSNeaking.onlyPlaceableWhenSneaking())
-                && (aWorld.checkNoEntityCollision(AxisAlignedBB.getBoundingBox(aX, aY, aZ, aX + 1, aY + 1, aZ + 1))
-                    || (aMTEContainer.mTileEntity instanceof IMTE_IgnoreEntityCollisionWhenPlacing mteIgnoreCollision
-                        && mteIgnoreCollision.ignoreEntityCollisionWhenPlacing(
-                            aStack,
-                            aPlayer,
-                            aWorld,
-                            aX,
-                            aY,
-                            aZ,
-                            side,
-                            aHitX,
-                            aHitY,
-                            aHitZ)))
-                && (!(aMTEContainer.mTileEntity instanceof IMTE_CanPlace mteCanPlace)
-                    || mteCanPlace.canPlace(aStack, aPlayer, aWorld, aX, aY, aZ, side, aHitX, aHitY, aHitZ))
-                && aWorld.setBlock(aX, aY, aZ, aMTEContainer.mBlock, 15 - aMTEContainer.mBlockMetaData, 2)) {
-                aMTEContainer.setMultiTile(aWorld, aX, aY, aZ);
+            if (aMTEContainer == null) return false;
 
-                try {
-                    if (((IMultiTileEntity) aMTEContainer.mTileEntity)
-                        .onPlaced(aStack, aPlayer, aWorld, aX, aY, aZ, side, aHitX, aHitY, aHitZ)) {
-                        aWorld.playSoundEffect(
-                            aX + 0.5,
-                            aY + 0.5,
-                            aZ + 0.5,
-                            aMTEContainer.mBlock.stepSound.func_150496_b(),
-                            (aMTEContainer.mBlock.stepSound.getVolume() + 1) / 2,
-                            aMTEContainer.mBlock.stepSound.getPitch() * 0.8F);
-                    }
-                } catch (Throwable e) {
-                    GT_FML_LOGGER.error("onPlaced", e);
-                }
-                try {
-                    if (aMTEContainer.mTileEntity instanceof IMTE_HasMultiBlockMachineRelevantData mteData
-                        && (mteData.hasMultiBlockMachineRelevantData())) {
-                        GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
-                    }
-                } catch (Throwable e) {
-                    GT_FML_LOGGER.error("causeMachineUpdate", e);
-                }
-                try {
-                    if (!aWorld.isRemote) {
-                        aWorld.notifyBlockChange(aX, aY, aZ, tReplacedBlock);
-                        aWorld.func_147453_f /* updateNeighborsAboutBlockChange */(aX, aY, aZ, aMTEContainer.mBlock);
-                    }
-                } catch (Throwable e) {
-                    GT_FML_LOGGER.error("notifyBlockChange", e);
-                }
-                try {
-                    ((IMultiTileEntity) aMTEContainer.mTileEntity).onTileEntityPlaced();
-                } catch (Throwable e) {
-                    GT_FML_LOGGER.error("onTileEntityPlaced", e);
-                }
-                try {
-                    aWorld.func_147451_t /* updateAllLightTypes */(aX, aY, aZ);
-                } catch (Throwable e) {
-                    GT_FML_LOGGER.error("updateAllLightTypes", e);
-                }
-
-                aStack.stackSize--;
-                return true;
+            if (!aPlayer.isSneaking() && aMTEContainer.mTileEntity instanceof IMTE_OnlyPlaceableWhenSneaking mteSNeaking
+                && mteSNeaking.onlyPlaceableWhenSneaking()) {
+                return false;
             }
+
+            if ((!(aMTEContainer.mTileEntity instanceof IMTE_IgnoreEntityCollisionWhenPlacing mteIgnoreCollision)
+                || !mteIgnoreCollision
+                    .ignoreEntityCollisionWhenPlacing(aStack, aPlayer, aWorld, aX, aY, aZ, side, aHitX, aHitY, aHitZ))
+                && !aWorld.checkNoEntityCollision(AxisAlignedBB.getBoundingBox(aX, aY, aZ, aX + 1, aY + 1, aZ + 1))) {
+                return false;
+            }
+
+            if (aMTEContainer.mTileEntity instanceof IMTE_CanPlace mteCanPlace
+                && !mteCanPlace.canPlace(aStack, aPlayer, aWorld, aX, aY, aZ, side, aHitX, aHitY, aHitZ)) {
+                return false;
+            }
+
+            if (!aWorld.setBlock(aX, aY, aZ, aMTEContainer.mBlock, 15 - aMTEContainer.mBlockMetaData, 2)) {
+                return false;
+            }
+
+            aMTEContainer.setMultiTile(aWorld, aX, aY, aZ);
+
+            try {
+                if (((IMultiTileEntity) aMTEContainer.mTileEntity)
+                    .onPlaced(aStack, aPlayer, aWorld, aX, aY, aZ, side, aHitX, aHitY, aHitZ)) {
+                    aWorld.playSoundEffect(
+                        aX + 0.5,
+                        aY + 0.5,
+                        aZ + 0.5,
+                        aMTEContainer.mBlock.stepSound.func_150496_b(),
+                        (aMTEContainer.mBlock.stepSound.getVolume() + 1) / 2,
+                        aMTEContainer.mBlock.stepSound.getPitch() * 0.8F);
+                }
+            } catch (Throwable e) {
+                GT_FML_LOGGER.error("onPlaced", e);
+            }
+            try {
+                if (aMTEContainer.mTileEntity instanceof IMTE_HasMultiBlockMachineRelevantData mteData
+                    && (mteData.hasMultiBlockMachineRelevantData())) {
+                    GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
+                }
+            } catch (Throwable e) {
+                GT_FML_LOGGER.error("causeMachineUpdate", e);
+            }
+            try {
+                if (!aWorld.isRemote) {
+                    aWorld.notifyBlockChange(aX, aY, aZ, tReplacedBlock);
+                    aWorld.func_147453_f /* updateNeighborsAboutBlockChange */(aX, aY, aZ, aMTEContainer.mBlock);
+                }
+            } catch (Throwable e) {
+                GT_FML_LOGGER.error("notifyBlockChange", e);
+            }
+            try {
+                ((IMultiTileEntity) aMTEContainer.mTileEntity).onTileEntityPlaced();
+            } catch (Throwable e) {
+                GT_FML_LOGGER.error("onTileEntityPlaced", e);
+            }
+            try {
+                aWorld.func_147451_t /* updateAllLightTypes */(aX, aY, aZ);
+            } catch (Throwable e) {
+                GT_FML_LOGGER.error("updateAllLightTypes", e);
+            }
+
+            aStack.stackSize--;
+            return true;
+
         } catch (Throwable e) {
             GT_FML_LOGGER.error("onItemUse", e);
         }
@@ -186,7 +196,7 @@ public class MultiTileEntityItemInternal extends ItemBlock implements IFluidCont
         final MultiTileEntityClassContainer tContainer = mBlock.mMultiTileEntityRegistry.getClassContainer(aStack);
         if (tContainer == null) return;
         final MultiTileEntityContainer tTileEntityContainer = mBlock.mMultiTileEntityRegistry
-            .getNewTileEntityContainer(aStack);
+            .getCachedTileEntityContainer(aStack);
         if (tTileEntityContainer != null && tTileEntityContainer.mTileEntity instanceof IItemUpdatable itemUpdatable) {
             itemUpdatable.updateItemStack(aStack);
         }
@@ -197,7 +207,7 @@ public class MultiTileEntityItemInternal extends ItemBlock implements IFluidCont
         final MultiTileEntityClassContainer tContainer = mBlock.mMultiTileEntityRegistry.getClassContainer(aStack);
         if (tContainer == null) return;
         final MultiTileEntityContainer tTileEntityContainer = mBlock.mMultiTileEntityRegistry
-            .getNewTileEntityContainer(aStack);
+            .getCachedTileEntityContainer(aStack);
         if (tTileEntityContainer != null && tTileEntityContainer.mTileEntity instanceof IItemUpdatable itemUpdatable) {
             itemUpdatable.updateItemStack(aStack, aWorld, aX, aY, aZ);
         }
@@ -208,7 +218,7 @@ public class MultiTileEntityItemInternal extends ItemBlock implements IFluidCont
         final MultiTileEntityClassContainer tContainer = mBlock.mMultiTileEntityRegistry.getClassContainer(aStack);
         if (tContainer == null) return 1;
         final MultiTileEntityContainer tTileEntityContainer = mBlock.mMultiTileEntityRegistry
-            .getNewTileEntityContainer(aStack);
+            .getCachedTileEntityContainer(aStack);
         if (tTileEntityContainer != null
             && tTileEntityContainer.mTileEntity instanceof IMTE_GetMaxStackSize maxStackSize) {
             return maxStackSize.getMaxStackSize(aStack, tContainer.mStackSize);
@@ -224,7 +234,7 @@ public class MultiTileEntityItemInternal extends ItemBlock implements IFluidCont
     @Override
     public FluidStack getFluid(ItemStack aStack) {
         final MultiTileEntityContainer tTileEntityContainer = mBlock.mMultiTileEntityRegistry
-            .getNewTileEntityContainer(aStack);
+            .getCachedTileEntityContainer(aStack);
         if (tTileEntityContainer != null
             && tTileEntityContainer.mTileEntity instanceof IFluidContainerItem fluidContainerItem) {
             final FluidStack rFluid = fluidContainerItem.getFluid(aStack);
@@ -237,7 +247,7 @@ public class MultiTileEntityItemInternal extends ItemBlock implements IFluidCont
     @Override
     public int getCapacity(ItemStack aStack) {
         final MultiTileEntityContainer tTileEntityContainer = mBlock.mMultiTileEntityRegistry
-            .getNewTileEntityContainer(aStack);
+            .getCachedTileEntityContainer(aStack);
         if (tTileEntityContainer != null
             && tTileEntityContainer.mTileEntity instanceof IFluidContainerItem fluidContainerItem) {
             final int rCapacity = fluidContainerItem.getCapacity(aStack);
@@ -250,7 +260,7 @@ public class MultiTileEntityItemInternal extends ItemBlock implements IFluidCont
     @Override
     public int fill(ItemStack aStack, FluidStack aFluid, boolean aDoFill) {
         final MultiTileEntityContainer tTileEntityContainer = mBlock.mMultiTileEntityRegistry
-            .getNewTileEntityContainer(aStack);
+            .getCachedTileEntityContainer(aStack);
         if (tTileEntityContainer != null
             && tTileEntityContainer.mTileEntity instanceof IFluidContainerItem fluidContainerItem) {
             final int tFilled = fluidContainerItem.fill(aStack, aFluid, aDoFill);
@@ -263,7 +273,7 @@ public class MultiTileEntityItemInternal extends ItemBlock implements IFluidCont
     @Override
     public FluidStack drain(ItemStack aStack, int aMaxDrain, boolean aDoDrain) {
         final MultiTileEntityContainer tTileEntityContainer = mBlock.mMultiTileEntityRegistry
-            .getNewTileEntityContainer(aStack);
+            .getCachedTileEntityContainer(aStack);
         if (tTileEntityContainer != null
             && tTileEntityContainer.mTileEntity instanceof IFluidContainerItem fluidContainerItem) {
             final FluidStack rFluid = fluidContainerItem.drain(aStack, aMaxDrain, aDoDrain);

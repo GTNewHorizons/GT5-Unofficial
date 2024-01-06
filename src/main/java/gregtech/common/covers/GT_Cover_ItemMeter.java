@@ -40,14 +40,6 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
     private static final int CONVERTED_BIT = 0x80000000;
     private static final int INVERT_BIT = 0x40000000;
 
-    /**
-     * @deprecated use {@link #GT_Cover_ItemMeter(ITexture coverTexture)} instead
-     */
-    @Deprecated
-    public GT_Cover_ItemMeter() {
-        this(null);
-    }
-
     public GT_Cover_ItemMeter(ITexture coverTexture) {
         super(ItemMeterData.class, coverTexture);
     }

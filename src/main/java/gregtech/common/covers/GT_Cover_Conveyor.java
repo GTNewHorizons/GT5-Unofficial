@@ -28,22 +28,6 @@ public class GT_Cover_Conveyor extends GT_CoverBehavior {
     public final int mTickRate;
     private final int mMaxStacks;
 
-    /**
-     * @deprecated use {@link #GT_Cover_Conveyor(int aTickRate, int maxStacks, ITexture coverTexture)} instead
-     */
-    @Deprecated
-    public GT_Cover_Conveyor(int aTickRate) {
-        this(aTickRate, 1, null);
-    }
-
-    /**
-     * @deprecated use {@link #GT_Cover_Conveyor(int aTickRate, int maxStacks, ITexture coverTexture)} instead
-     */
-    @Deprecated
-    public GT_Cover_Conveyor(int aTickRate, int maxStacks) {
-        this(aTickRate, maxStacks, null);
-    }
-
     public GT_Cover_Conveyor(int aTickRate, int maxStacks, ITexture coverTexture) {
         super(coverTexture);
         this.mTickRate = aTickRate;

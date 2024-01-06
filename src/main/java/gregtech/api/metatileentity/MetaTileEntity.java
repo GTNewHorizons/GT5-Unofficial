@@ -236,13 +236,19 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        /* Do nothing */
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
     }
 
     @Override
     public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
+
+        // glue
+        if (onWrenchRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ)) {
+            return true;
+        }
         if (getBaseMetaTileEntity().isValidFacing(wrenchingSide)) {
             getBaseMetaTileEntity().setFrontFacing(wrenchingSide);
             return true;
@@ -252,32 +258,67 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
+        // glue
+        if (onWrenchRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ)) {
+            return true;
+        }
         if (!aPlayer.isSneaking()) return false;
         final ForgeDirection oppositeSide = wrenchingSide.getOpposite();
         final TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityAtSide(wrenchingSide);
         if ((tTileEntity instanceof IGregTechTileEntity gtTE)
             && (gtTE.getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable)) {
+
             // The tile entity we're facing is a cable, let's try to connect to it
             return gtTE.getMetaTileEntity()
-                .onWireCutterRightClick(wrenchingSide, oppositeSide, aPlayer, aX, aY, aZ);
+                .onWireCutterRightClick(wrenchingSide, oppositeSide, aPlayer, aX, aY, aZ, aTool);
         }
         return false;
     }
 
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
+
+        // glue
+        if (onWrenchRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ)) {
+            return true;
+        }
+
         if (!aPlayer.isSneaking()) return false;
         final ForgeDirection oppositeSide = wrenchingSide.getOpposite();
         TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityAtSide(wrenchingSide);
         if ((tTileEntity instanceof IGregTechTileEntity gtTE)
             && (gtTE.getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable)) {
+
             // The tile entity we're facing is a cable, let's try to connect to it
             return gtTE.getMetaTileEntity()
-                .onSolderingToolRightClick(wrenchingSide, oppositeSide, aPlayer, aX, aY, aZ);
+                .onSolderingToolRightClick(wrenchingSide, oppositeSide, aPlayer, aX, aY, aZ, aTool);
         }
         return false;
+    }
+
+    @Deprecated
+    public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ) {
+        return false;
+    }
+
+    @Deprecated
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ) {
+        return false;
+    }
+
+    @Deprecated
+    public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer, float aX,
+        float aY, float aZ) {
+        return false;
+    }
+
+    @Deprecated
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+
     }
 
     @Override

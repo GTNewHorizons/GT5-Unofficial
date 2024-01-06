@@ -36,7 +36,6 @@ import gregtech.api.gui.widgets.GT_CoverTickRateButton;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.net.GT_Packet_TileEntityCoverGUI;
-import gregtech.api.objects.GT_ItemStack;
 import gregtech.common.covers.CoverInfo;
 
 /**
@@ -800,15 +799,6 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
      * Checks if the Cover can be placed on this.
      */
     public boolean isCoverPlaceable(ForgeDirection side, ItemStack aStack, ICoverable aTileEntity) {
-        return isCoverPlaceable(side, new GT_ItemStack(aStack), aTileEntity);
-    }
-
-    /**
-     * Checks if the Cover can be placed on this. You will probably want to call
-     * {@link #isCoverPlaceable(ForgeDirection, ItemStack, ICoverable)} instead.
-     */
-    @Deprecated
-    public boolean isCoverPlaceable(ForgeDirection side, GT_ItemStack aStack, ICoverable aTileEntity) {
         return true;
     }
 
@@ -838,11 +828,6 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
      */
     public void placeCover(ForgeDirection side, ItemStack aCover, ICoverable aTileEntity) {
         aTileEntity.setCoverIDAtSide(side, GT_Utility.stackToInt(aCover));
-    }
-
-    @Deprecated
-    public String trans(String aNr, String aEnglish) {
-        return GT_Utility.trans(aNr, aEnglish);
     }
 
     public boolean allowsCopyPasteTool() {

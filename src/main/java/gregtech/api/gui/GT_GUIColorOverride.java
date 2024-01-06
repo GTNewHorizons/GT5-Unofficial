@@ -60,14 +60,6 @@ public class GT_GUIColorOverride {
         cmSection = null;
     }
 
-    /**
-     * @deprecated use {@link #get(String)} instead.
-     */
-    @Deprecated
-    public GT_GUIColorOverride(String guiTexturePath) {
-        this(new ResourceLocation(guiTexturePath));
-    }
-
     private GT_GUIColorOverride(ResourceLocation resourceLocation) {
         try {
             Object metadata = cache.get(resourceLocation);

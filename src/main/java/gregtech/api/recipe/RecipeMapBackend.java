@@ -152,6 +152,15 @@ public class RecipeMapBackend {
             if (item == null) continue;
             itemIndex.put(new GT_ItemStack(item), recipe);
         }
+        if (recipe instanceof GT_Recipe.GT_Recipe_WithAlt recipeWithAlt) {
+            for (ItemStack[] itemStacks : recipeWithAlt.mOreDictAlt) {
+                if (itemStacks == null) continue;
+                for (ItemStack item : itemStacks) {
+                    if (item == null) continue;
+                    itemIndex.put(new GT_ItemStack(item), recipe);
+                }
+            }
+        }
         return recipe;
     }
 

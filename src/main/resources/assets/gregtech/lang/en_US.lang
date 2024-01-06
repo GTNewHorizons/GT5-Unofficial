@@ -420,8 +420,6 @@ GT5U.gui.button.drill_retract_pipes_active=§4Cannot interrupt abort procedure
 GT5U.gui.text.success=§aProcessing recipe
 GT5U.gui.text.generating=§aGenerating power
 GT5U.gui.text.no_recipe=§7No valid recipe found
-#deprecated
-GT5U.gui.text.output_full=§7Not enough output space
 GT5U.gui.text.item_output_full=§7Not enough item output space
 GT5U.gui.text.fluid_output_full=§7Not enough fluid output space
 GT5U.gui.text.none=
@@ -1463,3 +1461,7 @@ gt.time.tick.singular=tick
 gt.time.tick.plural=ticks
 gt.time.second.singular=second
 gt.time.second.plural=seconds
+
+#Tool modes
+gt.wrench.mode.1=Line Mode
+
