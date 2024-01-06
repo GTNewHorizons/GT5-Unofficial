@@ -100,7 +100,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                         GT_Proxy.tBits,
                         new Object[] { ToolDictNames.craftingToolMortar, OrePrefixes.ingot.get(aMaterial) });
                 }
-                if (!aNoSmashing || aStretchy) {
+                if (!aNoSmashing) {
                     // Forge hammer recipes
                     if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV
                         && GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L) != null) {
@@ -111,6 +111,8 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                             .eut(calculateRecipeEU(aMaterial, 16))
                             .addTo(hammerRecipes);
                     }
+                }
+                if (!aNoSmashing || aStretchy) {
 
                     // Bender recipes
                     {

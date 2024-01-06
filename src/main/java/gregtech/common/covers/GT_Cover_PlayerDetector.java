@@ -23,14 +23,6 @@ public class GT_Cover_PlayerDetector extends GT_CoverBehavior {
     private String placer = "";
     private int range = 8;
 
-    /**
-     * @deprecated use {@link #GT_Cover_PlayerDetector(ITexture coverTexture)} instead
-     */
-    @Deprecated
-    public GT_Cover_PlayerDetector() {
-        this(null);
-    }
-
     public GT_Cover_PlayerDetector(ITexture coverTexture) {
         super(coverTexture);
     }

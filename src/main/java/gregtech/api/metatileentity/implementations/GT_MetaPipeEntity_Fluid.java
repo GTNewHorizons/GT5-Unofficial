@@ -40,6 +40,8 @@ import org.apache.commons.lang3.tuple.MutableTriple;
 
 import cpw.mods.fml.common.Optional;
 import gregtech.GT_Mod;
+import gregtech.api.GregTech_API;
+import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
@@ -47,11 +49,13 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.ToolModes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
@@ -474,31 +478,115 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
         }
     }
 
+    public void connectPipeOnSide(ForgeDirection side, EntityPlayer entityPlayer) {
+        if (!isConnectedAtSide(side)) {
+            if (connect(side) > 0) GT_Utility.sendChatToPlayer(entityPlayer, GT_Utility.trans("214", "Connected"));
+        } else {
+            disconnect(side);
+            GT_Utility.sendChatToPlayer(entityPlayer, GT_Utility.trans("215", "Disconnected"));
+        }
+    }
+
+    public void blockPipeOnSide(ForgeDirection side, EntityPlayer entityPlayer, byte mask) {
+        if (isInputDisabledAtSide(side)) {
+            mDisableInput &= ~mask;
+            GT_Utility.sendChatToPlayer(entityPlayer, GT_Utility.trans("212", "Input enabled"));
+            if (!isConnectedAtSide(side)) connect(side);
+        } else {
+            mDisableInput |= mask;
+            GT_Utility.sendChatToPlayer(entityPlayer, GT_Utility.trans("213", "Input disabled"));
+        }
+    }
+
     @Override
     public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
+
         if (GT_Mod.gregtechproxy.gt6Pipe) {
+            final int mode = GT_MetaGenerated_Tool.getToolMode(aTool);
+            IGregTechTileEntity currentPipeBase = getBaseMetaTileEntity();
+            GT_MetaPipeEntity_Fluid currentPipe = (GT_MetaPipeEntity_Fluid) currentPipeBase.getMetaTileEntity();
             final ForgeDirection tSide = GT_Utility.determineWrenchingSide(side, aX, aY, aZ);
             final byte tMask = (byte) (tSide.flag);
-            if (entityPlayer.isSneaking()) {
-                if (isInputDisabledAtSide(tSide)) {
-                    mDisableInput &= ~tMask;
-                    GT_Utility.sendChatToPlayer(entityPlayer, GT_Utility.trans("212", "Input enabled"));
-                    if (!isConnectedAtSide(tSide)) connect(tSide);
-                } else {
-                    mDisableInput |= tMask;
-                    GT_Utility.sendChatToPlayer(entityPlayer, GT_Utility.trans("213", "Input disabled"));
-                }
-            } else {
-                if (!isConnectedAtSide(tSide)) {
-                    if (connect(tSide) > 0)
-                        GT_Utility.sendChatToPlayer(entityPlayer, GT_Utility.trans("214", "Connected"));
-                } else {
-                    disconnect(tSide);
-                    GT_Utility.sendChatToPlayer(entityPlayer, GT_Utility.trans("215", "Disconnected"));
-                }
+
+            if (mode == ToolModes.REGULAR.get()) {
+                if (entityPlayer.isSneaking()) {
+                    currentPipe.blockPipeOnSide(tSide, entityPlayer, tMask);
+                } else currentPipe.connectPipeOnSide(tSide, entityPlayer);
+                return true;
             }
-            return true;
+
+            if (mode == ToolModes.WRENCH_LINE.get()) {
+
+                boolean initialState = entityPlayer.isSneaking() ? currentPipe.isInputDisabledAtSide(tSide)
+                    : currentPipe.isConnectedAtSide(tSide);
+
+                boolean wasActionPerformed = false;
+
+                int limit = GregTech_API.sSpecialFile.get(ConfigCategories.general, "PipeWrenchingChainRange", 64);
+                for (int connected = 0; connected < limit; connected++) {
+
+                    TileEntity nextPipeBaseTile = currentPipeBase.getTileEntityAtSide(tSide);
+
+                    // if next tile doesn't exist or if next tile is not GT tile
+                    if (!(nextPipeBaseTile instanceof IGregTechTileEntity nextPipeBase)) {
+                        return wasActionPerformed;
+                    }
+
+                    // if next tile is wrong color
+                    if (!currentPipe.connectableColor(nextPipeBaseTile)) {
+                        return wasActionPerformed;
+                    }
+
+                    GT_MetaPipeEntity_Fluid nextPipe = nextPipeBase
+                        .getMetaTileEntity() instanceof GT_MetaPipeEntity_Fluid
+                            ? (GT_MetaPipeEntity_Fluid) nextPipeBase.getMetaTileEntity()
+                            : null;
+
+                    // if next tile entity is not a pipe
+                    if (nextPipe == null) {
+                        return wasActionPerformed;
+                    }
+
+                    // if pipes are same size
+                    if (mPipeAmount != nextPipe.mPipeAmount) {
+                        return wasActionPerformed;
+                    }
+
+                    // making sure next pipe has same fluid
+                    for (int i = 0; i < mPipeAmount; i++) {
+                        if (mFluids[i] != null && nextPipe.mFluids[i] != null) {
+                            if (!mFluids[i].isFluidEqual(nextPipe.mFluids[i])) {
+                                return wasActionPerformed;
+                            }
+                        } else if (mFluids[i] != nextPipe.mFluids[i]) {
+                            return wasActionPerformed;
+                        }
+                    }
+
+                    boolean currentState = entityPlayer.isSneaking() ? currentPipe.isInputDisabledAtSide(tSide)
+                        : currentPipe.isConnectedAtSide(tSide);
+
+                    /*
+                     * Making sure next pipe will have same action applied to it
+                     * e.g. Connecting pipe won`t trigger disconnect if next pipe is already connected
+                     */
+                    if (currentState != initialState) {
+                        return wasActionPerformed;
+                    }
+
+                    if (entityPlayer.isSneaking()) {
+                        currentPipe.blockPipeOnSide(tSide, entityPlayer, tMask);
+                    } else currentPipe.connectPipeOnSide(tSide, entityPlayer);
+
+                    wasActionPerformed = true;
+
+                    currentPipeBase = (IGregTechTileEntity) nextPipeBase;
+                    currentPipe = nextPipe;
+
+                }
+                return wasActionPerformed;
+            }
         }
         return false;
     }

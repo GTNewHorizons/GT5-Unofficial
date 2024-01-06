@@ -11,14 +11,6 @@ import gregtech.api.util.ISerializableObject;
 
 public class GT_Cover_RedstoneTransmitterExternal extends GT_Cover_RedstoneWirelessBase {
 
-    /**
-     * @deprecated use {@link #GT_Cover_RedstoneTransmitterExternal(ITexture coverTexture)} instead
-     */
-    @Deprecated
-    public GT_Cover_RedstoneTransmitterExternal() {
-        this(null);
-    }
-
     public GT_Cover_RedstoneTransmitterExternal(ITexture coverTexture) {
         super(coverTexture);
     }

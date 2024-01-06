@@ -81,6 +81,7 @@ import ic2.api.reactor.IReactorComponent;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeOutput;
+import ic2.core.item.ItemToolbox;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -2290,12 +2291,27 @@ public class GT_ModHandler {
 
     public static boolean consumeSolderingMaterial(EntityPlayer aPlayer) {
         if (aPlayer.capabilities.isCreativeMode) return true;
-        if (consumeSolderingMaterial(aPlayer.inventory)) {
+        IInventory tInventory = aPlayer.inventory;
+        if (consumeSolderingMaterial(tInventory)) {
             if (aPlayer.inventoryContainer != null) {
                 aPlayer.inventoryContainer.detectAndSendChanges();
             }
             return true;
         }
+        for (int i = 0; i < tInventory.getSizeInventory(); i++) {
+            ItemStack tStack = tInventory.getStackInSlot(i);
+            if (tStack != null && tStack.getItem() instanceof ItemToolbox) {
+                IInventory tToolboxInventory = ((ItemToolbox) tStack.getItem()).getInventory(aPlayer, tStack);
+                if (consumeSolderingMaterial(tToolboxInventory)) {
+                    tInventory.markDirty();
+                    if (aPlayer.inventoryContainer != null) {
+                        aPlayer.inventoryContainer.detectAndSendChanges();
+                    }
+                    return true;
+                }
+            }
+        }
+        GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("094.1", "Not enough soldering material!"));
         return false;
     }
 

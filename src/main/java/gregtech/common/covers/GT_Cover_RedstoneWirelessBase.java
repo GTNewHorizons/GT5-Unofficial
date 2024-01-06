@@ -26,14 +26,6 @@ public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
     private static final int PUBLIC_MASK = 0x0000FFFF;
     private static final int CHECKBOX_MASK = 0x00010000;
 
-    /**
-     * @deprecated use {@link #GT_Cover_RedstoneWirelessBase(ITexture coverTexture)} instead
-     */
-    @Deprecated
-    public GT_Cover_RedstoneWirelessBase() {
-        this(null);
-    }
-
     public GT_Cover_RedstoneWirelessBase(ITexture coverTexture) {
         super(coverTexture);
     }

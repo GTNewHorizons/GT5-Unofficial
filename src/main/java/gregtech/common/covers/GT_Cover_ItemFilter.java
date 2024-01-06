@@ -40,14 +40,6 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
 
     private final boolean mExport;
 
-    /**
-     * @deprecated use {@link #GT_Cover_ItemFilter(boolean isExport, ITexture coverTexture)} instead
-     */
-    @Deprecated
-    public GT_Cover_ItemFilter(boolean isExport) {
-        this(isExport, null);
-    }
-
     public GT_Cover_ItemFilter(boolean isExport, ITexture coverTexture) {
         super(ItemFilterData.class, coverTexture);
         this.mExport = isExport;

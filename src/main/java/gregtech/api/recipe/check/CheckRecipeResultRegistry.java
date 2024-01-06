@@ -3,6 +3,8 @@ package gregtech.api.recipe.check;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
 public final class CheckRecipeResultRegistry {
 
     private static final Map<String, CheckRecipeResult> registry = new HashMap<>();
@@ -39,20 +41,18 @@ public final class CheckRecipeResultRegistry {
     /**
      * Successfully found recipe.
      */
+    @Nonnull
     public static final CheckRecipeResult SUCCESSFUL = SimpleCheckRecipeResult.ofSuccess("success");
     /**
      * All requirements met to generator power.
      */
+    @Nonnull
     public static final CheckRecipeResult GENERATING = SimpleCheckRecipeResult.ofSuccess("generating");
     /**
      * Cannot find recipe.
      */
+    @Nonnull
     public static final CheckRecipeResult NO_RECIPE = SimpleCheckRecipeResult.ofFailure("no_recipe");
-    /**
-     * @deprecated Use either of {@link #ITEM_OUTPUT_FULL} or {@link #FLUID_OUTPUT_FULL}.
-     */
-    @Deprecated
-    public static final CheckRecipeResult OUTPUT_FULL = SimpleCheckRecipeResult.ofFailure("output_full");
     /**
      * Cannot process recipe because item output is full.
      */
@@ -64,6 +64,7 @@ public final class CheckRecipeResultRegistry {
     /**
      * Default unknown state.
      */
+    @Nonnull
     public static final CheckRecipeResult NONE = SimpleCheckRecipeResult.ofFailure("none");
     /**
      * Code crashed.
@@ -72,26 +73,32 @@ public final class CheckRecipeResultRegistry {
     /**
      * Cannot find valid fuel for generator.
      */
+    @Nonnull
     public static final CheckRecipeResult NO_FUEL_FOUND = SimpleCheckRecipeResult.ofFailure("no_fuel");
     /**
      * Cannot find valid turbine.
      */
+    @Nonnull
     public static final CheckRecipeResult NO_TURBINE_FOUND = SimpleCheckRecipeResult.ofFailure("no_turbine");
     /**
      * No data sticks found for Assembly Line.
      */
+    @Nonnull
     public static final CheckRecipeResult NO_DATA_STICKS = SimpleCheckRecipeResult.ofFailure("no_data_sticks");
     /**
      * EU/t overflowed.
      */
+    @Nonnull
     public static final CheckRecipeResult POWER_OVERFLOW = SimpleCheckRecipeResult.ofFailure("power_overflow");
     /**
      * Progress time overflowed.
      */
+    @Nonnull
     public static final CheckRecipeResult DURATION_OVERFLOW = SimpleCheckRecipeResult.ofFailure("duration_overflow");
     /**
      * Machine had an internal error
      */
+    @Nonnull
     public static final CheckRecipeResult INTERNAL_ERROR = SimpleCheckRecipeResult.ofFailure("internal_error");
     /** Multiblock ore drill has no drilling fluid */
     public static final CheckRecipeResult NO_DRILLING_FLUID = SimpleCheckRecipeResult.ofFailure("no_drilling_fluid");
@@ -104,6 +111,7 @@ public final class CheckRecipeResultRegistry {
     /**
      * Cannot process recipe because the machine cannot handle required EUt.
      */
+    @Nonnull
     public static CheckRecipeResult insufficientPower(long required) {
         return new ResultInsufficientPower(required);
     }
@@ -111,6 +119,7 @@ public final class CheckRecipeResultRegistry {
     /**
      * Cannot process recipe because the machine cannot handle its heat.
      */
+    @Nonnull
     public static CheckRecipeResult insufficientHeat(int required) {
         return new ResultInsufficientHeat(required);
     }
@@ -118,6 +127,7 @@ public final class CheckRecipeResultRegistry {
     /**
      * Cannot process recipe because the machine is tiered and its tier is too low.
      */
+    @Nonnull
     public static CheckRecipeResult insufficientMachineTier(int required) {
         return new ResultInsufficientMachineTier(required);
     }
@@ -125,6 +135,7 @@ public final class CheckRecipeResultRegistry {
     /**
      * Cannot process recipe because the machine doesn't have enough startup power.
      */
+    @Nonnull
     public static CheckRecipeResult insufficientStartupPower(int required) {
         return new ResultInsufficientStartupPower(required);
     }

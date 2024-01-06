@@ -718,24 +718,6 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
         receiveClientEvent(GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT, aRedstoneData);
     }
 
-    @Deprecated
-    public final void receiveMetaTileEntityData(short aID, int aCover0, int aCover1, int aCover2, int aCover3,
-        int aCover4, int aCover5, byte aTextureData, byte aUpdateData, byte aRedstoneData, byte aColorData) {
-        receiveMetaTileEntityData(
-            aID,
-            aCover0,
-            aCover1,
-            aCover2,
-            aCover3,
-            aCover4,
-            aCover5,
-            aTextureData,
-            (byte) 0,
-            aUpdateData,
-            aRedstoneData,
-            aColorData);
-    }
-
     @Override
     public boolean receiveClientEvent(int aEventID, int aValue) {
         super.receiveClientEvent(aEventID, aValue);
@@ -1524,7 +1506,8 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                             aPlayer,
                             aX,
                             aY,
-                            aZ)) {
+                            aZ,
+                            tCurrentItem)) {
                                 GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);
                                 GT_Utility.sendSoundToPlayers(
                                     worldObj,
@@ -1552,7 +1535,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                                     aX,
                                     aY,
                                     aZ));
-                            mMetaTileEntity.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
+                            mMetaTileEntity.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, tCurrentItem);
                             GT_Utility.sendSoundToPlayers(
                                 worldObj,
                                 SoundResource.IC2_TOOLS_WRENCH,
@@ -1614,7 +1597,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
 
                     if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sSolderingToolList)) {
                         final ForgeDirection tSide = GT_Utility.determineWrenchingSide(side, aX, aY, aZ);
-                        if (mMetaTileEntity.onSolderingToolRightClick(side, tSide, aPlayer, aX, aY, aZ)) {
+                        if (mMetaTileEntity.onSolderingToolRightClick(side, tSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
                             // logic handled internally
                             GT_Utility.sendSoundToPlayers(
                                 worldObj,
@@ -1649,7 +1632,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
 
                     if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sWireCutterList)) {
                         final ForgeDirection tSide = GT_Utility.determineWrenchingSide(side, aX, aY, aZ);
-                        if (mMetaTileEntity.onWireCutterRightClick(side, tSide, aPlayer, aX, aY, aZ)) {
+                        if (mMetaTileEntity.onWireCutterRightClick(side, tSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
                             // logic handled internally
                             GT_Utility.sendSoundToPlayers(
                                 worldObj,
