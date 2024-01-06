@@ -39,7 +39,7 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine
     implements GT_IDrillingLogicDelegateOwner, IAddUIWidgets {
 
     static final int[] RADIUS = { 8, 8, 16, 24, 32 }; // Miner radius per tier
-    static final int[] SPEED = { 160, 160, 80, 40, 20 }; // Miner cycle time per tier
+    static final int[] SPEED = { 160, 20, 20, 20, 20 }; // Miner cycle time per tier
     static final int[] ENERGY = { 8, 8, 32, 128, 512 }; // Miner energy consumption per tier
 
     /** Miner configured radius */
