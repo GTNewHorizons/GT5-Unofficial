@@ -545,9 +545,6 @@ public class GT_Client extends GT_Proxy implements Runnable {
     public void onPreLoad() {
         super.onPreLoad();
 
-        MinecraftForge.EVENT_BUS.register(new ExtraIcons());
-        MinecraftForge.EVENT_BUS.register(new ModernMaterialsTextureRegister());
-
         Minecraft.getMinecraft()
             .getResourcePackRepository().rprMetadataSerializer
                 .registerMetadataSectionType(new ColorsMetadataSectionSerializer(), ColorsMetadataSection.class);
@@ -586,6 +583,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
     @Override
     public void onLoad() {
         super.onLoad();
+
         new GT_Renderer_Block();
         new GT_MultiTile_Renderer();
         metaGeneratedItemRenderer = new GT_MetaGenerated_Item_Renderer();

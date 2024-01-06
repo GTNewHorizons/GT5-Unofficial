@@ -44,7 +44,7 @@ public class TransitionBlocks {
         ModernMaterial material = ModernMaterial.getMaterialFromID(materialID);
         if (material == null) throw new RuntimeException(
             "Transition blocks in ModernMaterials failed to map GT framebox with meta " + metadata
-                + " to its new version. This implies that no material with ID + "
+                + " to its new version. This implies that no material with ID "
                 + materialID
                 + " exists.");
         Item item = BlocksEnum.FrameBox.getItem(material);
@@ -67,7 +67,7 @@ public class TransitionBlocks {
         ModernMaterial material = ModernMaterial.getMaterialFromID(materialID);
         if (material == null) throw new RuntimeException(
             "Transition blocks in ModernMaterials failed to map GT ore with meta " + metadata
-                + " to its new version. This implies that no material with ID + "
+                + " to its new version. This implies that no material with ID "
                 + materialID
                 + " exists.");
         Item item = blocksEnum.getItem(material);

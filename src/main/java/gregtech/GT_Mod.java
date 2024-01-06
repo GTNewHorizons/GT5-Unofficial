@@ -18,6 +18,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.function.Predicate;
 
+import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -326,6 +327,11 @@ public class GT_Mod implements IGT_Mod {
 
     @Mod.EventHandler
     public void onLoad(FMLInitializationEvent aEvent) {
+
+        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
+            MinecraftForge.EVENT_BUS.register(new ExtraIcons());
+            MinecraftForge.EVENT_BUS.register(new ModernMaterialsTextureRegister());
+        }
 
         if (GregTech_API.sLoadStarted) {
             return;

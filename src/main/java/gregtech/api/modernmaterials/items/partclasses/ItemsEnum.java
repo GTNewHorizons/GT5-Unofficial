@@ -13,11 +13,11 @@ public enum ItemsEnum implements IEnumPart {
 
     HotIngot("Hot % Ingot", 1),
     Ingot("% Ingot", 1),
-    DoubleIngot("Double % Ingot"),
-    TripleIngot("Triple % Ingot"),
-    QuadrupleIngot("Quadruple % Ingot"),
-    QuintupleIngot("Quintuple % Ingot"),
-    Nugget("% Nugget", 1 / 9.0),
+    DoubleIngot("Double % Ingot", 2.0),
+    TripleIngot("Triple % Ingot", 3.0),
+    QuadrupleIngot("Quadruple % Ingot", 4.0),
+    QuintupleIngot("Quintuple % Ingot", 5.0),
+    Nugget("% Nugget", 1.0 / 9.0),
 
     // Gears
     Gear("% Gear", 4),
@@ -25,24 +25,25 @@ public enum ItemsEnum implements IEnumPart {
 
     // Plates
     DensePlate("Dense % Plate", 9),
-    Foil("% Foil", 4),
+    Foil("% Foil", 1.0/4.0),
+
     Plate("% Plate", 1),
-    DoublePlate("Double % Plate"),
-    TriplePlate("Triple % Plate"),
-    QuadruplePlate("Quadruple % Plate"),
-    QuintuplePlate("Quintuple % Plate"),
+    DoublePlate("Double % Plate", 2),
+    TriplePlate("Triple % Plate", 3),
+    QuadruplePlate("Quadruple % Plate", 4),
+    QuintuplePlate("Quintuple % Plate", 5),
 
     // Gems.
     Lens("% Lens", 1),
     ExquisiteGem("Exquisite %", 9),
     FlawlessGem("Flawless %", 3),
     Gem("% Gem", 1),
-    FlawedGem("Flawed %", 1 / 3.0),
-    ChippedGem("Chipped %", 1 / 9.0),
+    FlawedGem("Flawed %", 1.0 / 3.0),
+    ChippedGem("Chipped %", 1.0 / 9.0),
 
     // Misc.
-    Ring("% Ring", 1 / 4.0),
-    Rotor("% Rotor", 612 / 144.0),
+    Ring("% Ring", 1.0 / 4.0),
+    Rotor("% Rotor", 612.0 / 144.0),
     Round("% Round", 9),
 
     LongRod("% Long Rod", 1),

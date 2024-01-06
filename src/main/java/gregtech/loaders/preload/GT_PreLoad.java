@@ -363,7 +363,7 @@ public class GT_PreLoad {
                 e.printStackTrace(GT_Log.err);
             }
         }
-        GT_Log.out.println("GT_Mod: Adding Scrap with a Weight of 200.0F to the Scrapbox Drops.");
+        GT_Log.out .println("GT_Mod: Adding Scrap with a Weight of 200.0F to the Scrapbox Drops.");
         GT_ModHandler.addScrapboxDrop(200.0F, GT_ModHandler.getIC2Item("scrap", 1L));
     }
 
