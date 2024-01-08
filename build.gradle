@@ -1,4 +1,4 @@
-//version: 1691351470
+//version: 1704650211
 /*
  DO NOT CHANGE THIS FILE!
  Also, you may replace this file at any time if there is an update available.
@@ -28,27 +28,11 @@ import java.util.concurrent.TimeUnit
 
 buildscript {
     repositories {
-        mavenCentral()
-
-        maven {
-            name 'forge'
-            url 'https://maven.minecraftforge.net'
-        }
         maven {
             // GTNH RetroFuturaGradle and ASM Fork
             name "GTNH Maven"
-            url "http://jenkins.usrv.eu:8081/nexus/content/groups/public/"
-            allowInsecureProtocol = true
+            url "https://nexus.gtnewhorizons.com/repository/public/"
         }
-        maven {
-            name 'sonatype'
-            url 'https://oss.sonatype.org/content/repositories/snapshots/'
-        }
-        maven {
-            name 'Scala CI dependencies'
-            url 'https://repo1.maven.org/maven2/'
-        }
-
         mavenLocal()
     }
 }
@@ -64,12 +48,12 @@ plugins {
     id 'org.ajoberstar.grgit' version '4.1.1' // 4.1.1 is the last jvm8 supporting version, unused, available for addon.gradle
     id 'com.github.johnrengelman.shadow' version '8.1.1' apply false
     id 'com.palantir.git-version' version '3.0.0' apply false
-    id 'de.undercouch.download' version '5.4.0'
+    id 'de.undercouch.download' version '5.5.0'
     id 'com.github.gmazzo.buildconfig' version '3.1.0' apply false // Unused, available for addon.gradle
     id 'com.diffplug.spotless' version '6.13.0' apply false // 6.13.0 is the last jvm8 supporting version
     id 'com.modrinth.minotaur' version '2.+' apply false
     id 'com.matthewprenger.cursegradle' version '1.4.0' apply false
-    id 'com.gtnewhorizons.retrofuturagradle' version '1.3.24'
+    id 'com.gtnewhorizons.retrofuturagradle' version '1.3.27'
 }
 
 print("You might want to check out './gradlew :faq' if your build fails.\n")
@@ -89,6 +73,23 @@ def out = services.get(StyledTextOutputFactory).create('an-output')
 def projectJavaVersion = JavaLanguageVersion.of(8)
 
 boolean disableSpotless = project.hasProperty("disableSpotless") ? project.disableSpotless.toBoolean() : false
+boolean disableCheckstyle = project.hasProperty("disableCheckstyle") ? project.disableCheckstyle.toBoolean() : false
+
+final String CHECKSTYLE_CONFIG = """
+<!DOCTYPE module PUBLIC
+  "-//Puppy Crawl//DTD Check Configuration 1.3//EN"
+  "http://www.puppycrawl.com/dtds/configuration_1_3.dtd">
+<module name="Checker">
+  <module name="TreeWalker">
+    <!-- Use CHECKSTYLE:OFF and CHECKSTYLE:ON comments to suppress checkstyle lints in a block -->
+    <module name="SuppressionCommentFilter"/>
+    <module name="AvoidStarImport">
+      <!-- Allow static wildcard imports for cases like Opcodes and LWJGL classes, these don't get created accidentally by the IDE -->
+      <property name="allowStaticMemberImports" value="true"/>
+    </module>
+  </module>
+</module>
+"""
 
 checkPropertyExists("modName")
 checkPropertyExists("modId")
@@ -116,7 +117,7 @@ propertyDefaultIfUnset("forceEnableMixins", false)
 propertyDefaultIfUnset("channel", "stable")
 propertyDefaultIfUnset("mappingsVersion", "12")
 propertyDefaultIfUnset("usesMavenPublishing", true)
-propertyDefaultIfUnset("mavenPublishUrl", "http://jenkins.usrv.eu:8081/nexus/content/repositories/releases")
+propertyDefaultIfUnset("mavenPublishUrl", "https://nexus.gtnewhorizons.com/repository/releases/")
 propertyDefaultIfUnset("modrinthProjectId", "")
 propertyDefaultIfUnset("modrinthRelations", "")
 propertyDefaultIfUnset("curseForgeProjectId", "")
@@ -138,6 +139,17 @@ project.extensions.add(com.diffplug.blowdryer.Blowdryer, "Blowdryer", com.diffpl
 if (!disableSpotless) {
     apply plugin: 'com.diffplug.spotless'
     apply from: Blowdryer.file('spotless.gradle')
+}
+
+if (!disableCheckstyle) {
+    apply plugin: 'checkstyle'
+    tasks.named("checkstylePatchedMc") { enabled = false }
+    tasks.named("checkstyleMcLauncher") { enabled = false }
+    tasks.named("checkstyleIdeVirtualMain") { enabled = false }
+    tasks.named("checkstyleInjectedTags") { enabled = false }
+    checkstyle {
+        config = resources.text.fromString(CHECKSTYLE_CONFIG)
+    }
 }
 
 String javaSourceDir = "src/main/java/"
@@ -274,7 +286,7 @@ if (apiPackage) {
 }
 
 if (accessTransformersFile) {
-    for (atFile in accessTransformersFile.split(",")) {
+    for (atFile in accessTransformersFile.split(" ")) {
         String targetFile = "src/main/resources/META-INF/" + atFile.trim()
         if (!getFile(targetFile).exists()) {
             throw new GradleException("Could not resolve \"accessTransformersFile\"! Could not find " + targetFile)
@@ -560,16 +572,15 @@ afterEvaluate {
 
 repositories {
     maven {
-        name 'Overmind forge repo mirror'
-        url 'https://gregtech.overminddl1.com/'
-        mavenContent {
-            excludeGroup("net.minecraftforge") // missing the `universal` artefact
-        }
+        name = "GTNH Maven"
+        url = "https://nexus.gtnewhorizons.com/repository/public/"
+        // Links for convenience:
+        // Simple HTML browsing: https://nexus.gtnewhorizons.com/service/rest/repository/browse/releases/
+        // Rich web UI browsing: https://nexus.gtnewhorizons.com/#browse/browse:releases
     }
     maven {
-        name = "GTNH Maven"
-        url = "http://jenkins.usrv.eu:8081/nexus/content/groups/public/"
-        allowInsecureProtocol = true
+        name 'Overmind forge repo mirror'
+        url 'https://gregtech.overminddl1.com/'
     }
     maven {
         name 'sonatype'
@@ -603,15 +614,10 @@ repositories {
         }
         maven {
             name = "ic2"
-            url = "https://maven.ic2.player.to/"
-            metadataSources {
-                mavenPom()
-                artifact()
+            url = getURL("https://maven2.ic2.player.to/", "https://maven.ic2.player.to/")
+            content {
+                includeGroup "net.industrial-craft"
             }
-        }
-        maven {
-            name = "ic2-mirror"
-            url = "https://maven2.ic2.player.to/"
             metadataSources {
                 mavenPom()
                 artifact()
@@ -626,7 +632,7 @@ repositories {
 
 def mixinProviderGroup = "io.github.legacymoddingmc"
 def mixinProviderModule = "unimixins"
-def mixinProviderVersion = "0.1.7.1"
+def mixinProviderVersion = "0.1.13"
 def mixinProviderSpecNoClassifer = "${mixinProviderGroup}:${mixinProviderModule}:${mixinProviderVersion}"
 def mixinProviderSpec = "${mixinProviderSpecNoClassifer}:dev"
 ext.mixinProviderSpec = mixinProviderSpec
@@ -667,6 +673,8 @@ configurations.all {
         substitute module('com.github.GTNewHorizons:SpongePoweredMixin') using module(mixinProviderSpecNoClassifer) withClassifier("dev") because("Unimixins replaces other mixin mods")
         substitute module('com.github.GTNewHorizons:SpongeMixins') using module(mixinProviderSpecNoClassifer) withClassifier("dev") because("Unimixins replaces other mixin mods")
         substitute module('io.github.legacymoddingmc:unimixins') using module(mixinProviderSpecNoClassifer) withClassifier("dev") because("Our previous unimixins upload was missing the dev classifier")
+
+        substitute module('org.scala-lang:scala-library:2.11.1') using module('org.scala-lang:scala-library:2.11.5') because('To allow mixing with Java 8 targets')
     }
 }
 
@@ -773,23 +781,14 @@ ext.java17PatchDependenciesCfg = configurations.create("java17PatchDependencies"
 }
 
 dependencies {
-    def lwjgl3ifyVersion = '1.4.0'
-    def asmVersion = '9.4'
+    def lwjgl3ifyVersion = '1.5.7'
     if (modId != 'lwjgl3ify') {
         java17Dependencies("com.github.GTNewHorizons:lwjgl3ify:${lwjgl3ifyVersion}")
     }
     if (modId != 'hodgepodge') {
-        java17Dependencies('com.github.GTNewHorizons:Hodgepodge:2.2.26')
+        java17Dependencies('com.github.GTNewHorizons:Hodgepodge:2.3.35')
     }
 
-    java17PatchDependencies('net.minecraft:launchwrapper:1.17.2') {transitive = false}
-    java17PatchDependencies("org.ow2.asm:asm:${asmVersion}")
-    java17PatchDependencies("org.ow2.asm:asm-commons:${asmVersion}")
-    java17PatchDependencies("org.ow2.asm:asm-tree:${asmVersion}")
-    java17PatchDependencies("org.ow2.asm:asm-analysis:${asmVersion}")
-    java17PatchDependencies("org.ow2.asm:asm-util:${asmVersion}")
-    java17PatchDependencies('org.ow2.asm:asm-deprecated:7.1')
-    java17PatchDependencies("org.apache.commons:commons-lang3:3.12.0")
     java17PatchDependencies("com.github.GTNewHorizons:lwjgl3ify:${lwjgl3ifyVersion}:forgePatches") {transitive = false}
 }
 
@@ -962,8 +961,7 @@ if (usesShadowedDependencies.toBoolean()) {
     configurations.runtimeElements.outgoing.artifact(tasks.named("shadowJar", ShadowJar))
     configurations.apiElements.outgoing.artifact(tasks.named("shadowJar", ShadowJar))
     tasks.named("jar", Jar) {
-        enabled = false
-        finalizedBy(tasks.shadowJar)
+        archiveClassifier.set('dev-preshadow')
     }
     tasks.named("reobfJar", ReobfuscatedJar) {
         inputJar.set(tasks.named("shadowJar", ShadowJar).flatMap({it.archiveFile}))
@@ -971,11 +969,6 @@ if (usesShadowedDependencies.toBoolean()) {
     AdhocComponentWithVariants javaComponent = (AdhocComponentWithVariants) project.components.findByName("java")
     javaComponent.withVariantsFromConfiguration(configurations.shadowRuntimeElements) {
         skip()
-    }
-    for (runTask in ["runClient", "runServer", "runClient17", "runServer17"]) {
-        tasks.named(runTask).configure {
-            dependsOn("shadowJar")
-        }
     }
 }
 ext.publishableDevJar = usesShadowedDependencies.toBoolean() ? tasks.shadowJar : tasks.jar
@@ -1176,12 +1169,11 @@ publishing {
             version = System.getenv("RELEASE_VERSION") ?: identifiedVersion
         }
     }
-
     repositories {
-        if (usesMavenPublishing.toBoolean()) {
+        if (usesMavenPublishing.toBoolean() && System.getenv("MAVEN_USER") != null) {
             maven {
                 url = mavenPublishUrl
-                allowInsecureProtocol = mavenPublishUrl.startsWith("http://") // Mostly for the GTNH maven
+                allowInsecureProtocol = mavenPublishUrl.startsWith("http://")
                 credentials {
                     username = System.getenv("MAVEN_USER") ?: "NONE"
                     password = System.getenv("MAVEN_PASSWORD") ?: "NONE"
@@ -1300,7 +1292,7 @@ def addCurseForgeRelation(String type, String name) {
 
 // Updating
 
-def buildscriptGradleVersion = "8.2.1"
+def buildscriptGradleVersion = "8.5"
 
 tasks.named('wrapper', Wrapper).configure {
     gradleVersion = buildscriptGradleVersion
@@ -1577,6 +1569,25 @@ def getSecondaryArtifacts() {
     if (!noPublishedSources) secondaryArtifacts += [sourcesJar]
     if (apiPackage) secondaryArtifacts += [apiJar]
     return secondaryArtifacts
+}
+
+def getURL(String main, String fallback) {
+    return pingURL(main, 10000) ? main : fallback
+}
+
+// credit: https://stackoverflow.com/a/3584332
+def pingURL(String url, int timeout) {
+    url = url.replaceFirst("^https", "http") // Otherwise an exception may be thrown on invalid SSL certificates.
+    try {
+        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection()
+        connection.setConnectTimeout(timeout)
+        connection.setReadTimeout(timeout)
+        connection.setRequestMethod("HEAD")
+        int responseCode = connection.getResponseCode()
+        return 200 <= responseCode && responseCode <= 399
+    } catch (IOException ignored) {
+        return false
+    }
 }
 
 // For easier scripting of things that require variables defined earlier in the buildscript
