@@ -2212,10 +2212,10 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L)));
-        ItemList.Crop_Drop_Rape.set(
+        ItemList.Crop_Drop_Canola.set(
             addItem(
                 tLastID = 557,
-                "Rape",
+                "Canola",
                 "Time to oil up!",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L),
@@ -2615,7 +2615,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 .addTo(compressorRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(ItemList.Crop_Drop_Rape.get(4L))
+                .itemInputs(ItemList.Crop_Drop_Canola.get(4L))
                 .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
                 .duration(15 * SECONDS)
                 .eut(2)
