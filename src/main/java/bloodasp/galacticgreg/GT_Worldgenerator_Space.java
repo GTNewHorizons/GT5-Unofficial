@@ -12,10 +12,16 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.common.ChestGenHooks;
 
-import bloodasp.galacticgreg.api.*;
+import bloodasp.galacticgreg.api.AsteroidBlockComb;
+import bloodasp.galacticgreg.api.BlockMetaComb;
 import bloodasp.galacticgreg.api.Enums.DimensionType;
 import bloodasp.galacticgreg.api.Enums.SpaceObjectType;
 import bloodasp.galacticgreg.api.Enums.TargetBlockPosition;
+import bloodasp.galacticgreg.api.GTOreTypes;
+import bloodasp.galacticgreg.api.ISpaceObjectGenerator;
+import bloodasp.galacticgreg.api.ModDimensionDef;
+import bloodasp.galacticgreg.api.SpecialBlockComb;
+import bloodasp.galacticgreg.api.StructureInformation;
 import bloodasp.galacticgreg.auxiliary.GTOreGroup;
 import bloodasp.galacticgreg.bartworks.BW_Worldgen_Ore_Layer_Space;
 import bloodasp.galacticgreg.bartworks.BW_Worldgen_Ore_SmallOre_Space;

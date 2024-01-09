@@ -7,9 +7,15 @@ import java.util.List;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.gen.ChunkProviderEnd;
 
-import bloodasp.galacticgreg.api.*;
+import bloodasp.galacticgreg.api.AsteroidBlockComb;
+import bloodasp.galacticgreg.api.Enums;
 import bloodasp.galacticgreg.api.Enums.AllowedBlockPosition;
 import bloodasp.galacticgreg.api.Enums.DimensionType;
+import bloodasp.galacticgreg.api.GTOreTypes;
+import bloodasp.galacticgreg.api.ModContainer;
+import bloodasp.galacticgreg.api.ModDBMDef;
+import bloodasp.galacticgreg.api.ModDimensionDef;
+import bloodasp.galacticgreg.api.SpecialBlockComb;
 
 /**
  * In this class, you'll find everything you need in order to tell GGreg what to do and where. Everything is done in
