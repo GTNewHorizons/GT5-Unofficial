@@ -662,6 +662,10 @@ public class GT_PreLoad {
         }
 
         GT_Mod.gregtechproxy.mUndergroundOil.getConfig(tMainConfig, "undergroundfluid");
+        GT_Mod.gregtechproxy.enableUndergroundGravelGen = GregTech_API.sWorldgenFile
+            .get("general", "enableUndergroundGravelGen", GT_Mod.gregtechproxy.enableUndergroundGravelGen);
+        GT_Mod.gregtechproxy.enableUndergroundDirtGen = GregTech_API.sWorldgenFile
+            .get("general", "enableUndergroundDirtGen", GT_Mod.gregtechproxy.enableUndergroundDirtGen);
         GT_Mod.gregtechproxy.mEnableCleanroom = tMainConfig.get("general", "EnableCleanroom", true)
             .getBoolean(true);
         if (GT_Mod.gregtechproxy.mEnableCleanroom) GT_MetaTileEntity_Cleanroom.loadConfig(tMainConfig);
