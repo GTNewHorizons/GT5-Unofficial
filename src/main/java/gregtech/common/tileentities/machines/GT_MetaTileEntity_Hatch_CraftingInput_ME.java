@@ -160,7 +160,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
             return newPattern == null
                 || (!ItemStack.areItemStacksEqual(pattern, newPattern) && !this.patternDetails.equals(
                     ((ICraftingPatternItem) Objects.requireNonNull(pattern.getItem()))
-                        .getPatternForItem(pattern, world)));
+                        .getPatternForItem(newPattern, world)));
         }
 
         private boolean isEmpty() {
