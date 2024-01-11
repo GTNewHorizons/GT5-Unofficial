@@ -438,4 +438,9 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
     public boolean supportsInputSeparation() {
         return true;
     }
+
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
+    }
 }
