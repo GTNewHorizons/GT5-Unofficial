@@ -1,10 +1,10 @@
 // Add your dependencies here
 
 dependencies {
-    api('com.github.GTNewHorizons:GT5-Unofficial:5.09.43.24:dev')
+    api('com.github.GTNewHorizons:GT5-Unofficial:5.09.45.25:dev')
 
-    compileOnly('com.github.GTNewHorizons:NewHorizonsCoreMod:2.1.13:dev') {transitive=false}
-    compileOnly('com.github.GTNewHorizons:bartworks:0.7.6:dev') {transitive=false}
-    compileOnly('com.github.GTNewHorizons:GTplusplus:1.9.5:dev') {transitive=false}
-    compileOnly('com.github.GTNewHorizons:VisualProspecting:1.1.1:dev') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:NewHorizonsCoreMod:2.3.11:dev') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:bartworks:0.9.4:dev') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:GTplusplus:1.11.13:dev') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:VisualProspecting:1.2.4:dev') {transitive=false}
 }
