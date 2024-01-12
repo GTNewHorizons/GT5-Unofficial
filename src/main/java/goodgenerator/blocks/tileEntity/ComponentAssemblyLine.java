@@ -310,6 +310,11 @@ public class ComponentAssemblyLine extends GT_MetaTileEntity_ExtendedPowerMultiB
     }
 
     @Override
+    public boolean supportsBatchMode() {
+        return true;
+    }
+
+    @Override
     public int getMaxEfficiency(ItemStack aStack) {
         return 10000;
     }
