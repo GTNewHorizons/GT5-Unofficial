@@ -7,7 +7,7 @@ KubaTech is a GregTech addon that adds a bunch of new multiblocks and nice addit
 ## License
 
 KubaTech - Gregtech addon
-Copyright (C) 2022 - 2023  kuba6000
+Copyright (C) 2022 - 2024  kuba6000
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
