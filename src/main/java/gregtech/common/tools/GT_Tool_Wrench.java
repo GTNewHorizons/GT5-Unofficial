@@ -11,7 +11,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -23,13 +22,14 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
 
+import appeng.api.parts.IPartHost;
+import appeng.block.AEBaseTileBlock;
+import appeng.parts.PartPlacement;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.util.GT_ToolHarvestHelper;
-import gregtech.common.items.behaviors.Behaviour_Switch_Mode;
 import gregtech.common.items.behaviors.Behaviour_Wrench;
 import ic2.api.tile.IWrenchable;
 
@@ -123,10 +123,13 @@ public class GT_Tool_Wrench extends GT_Tool {
     }
 
     @Override
-    public boolean isMinableBlock(Block aBlock, byte aMetaData) {
-        return GT_ToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "wrench")
-            || GT_ToolHarvestHelper.isAppropriateMaterial(aBlock, Material.piston)
-            || GT_ToolHarvestHelper.isSpecialBlock(aBlock, Blocks.hopper, Blocks.dispenser, Blocks.dropper);
+    public boolean isMinableBlock(Block block, byte aMetaData) {
+        return GT_ToolHarvestHelper.isAppropriateTool(block, aMetaData, "wrench")
+            || GT_ToolHarvestHelper.isAppropriateMaterial(block, Material.piston)
+            || block instanceof AEBaseTileBlock
+            || GT_ToolHarvestHelper.isSpecialBlock(block, Blocks.crafting_table, Blocks.bookshelf)
+            || Behaviour_Wrench.isVanillaRotatable(block)
+            || GT_ToolHarvestHelper.isIC2Wrenchable(block);
     }
 
     @Override
@@ -146,7 +149,6 @@ public class GT_Tool_Wrench extends GT_Tool {
 
     @Override
     public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
-        aItem.addItemBehavior(aID, new Behaviour_Switch_Mode());
         aItem.addItemBehavior(aID, new Behaviour_Wrench(100));
     }
 
@@ -161,43 +163,97 @@ public class GT_Tool_Wrench extends GT_Tool {
                 + EnumChatFormatting.WHITE);
     }
 
-    @Override
-    public float getMiningSpeed(Block block, byte metadata, float mineSpeed, EntityPlayer player, World world, int x,
-        int y, int z) {
-        ItemStack holding = player.getCurrentEquippedItem();
-        if (holding == null || !(holding.getItem() instanceof GT_MetaGenerated_Tool tool)) return mineSpeed;
+    /**
+     * <p>
+     * holding drop from {@link IWrenchable#getWrenchDrop(EntityPlayer)}
+     * </p>
+     * Since no tile available during
+     * {@link #convertBlockDrops(List, ItemStack, EntityPlayer, Block, int, int, int, byte, int, boolean, BlockEvent.HarvestDropsEvent)},
+     * this is filled during
+     * {@link #onBreakBlock(EntityPlayer, int, int, int, Block, byte, TileEntity, BlockEvent.BreakEvent)}
+     */
+    private ItemStack wrenchableDrop = null;
+    /**
+     * <p>
+     * drop rate from {@link IWrenchable#getWrenchDropRate()}
+     * </p>
+     * see {@link #wrenchableDrop}
+     */
+    private float wrenchableDropRate = 0.0f;
 
-        IToolStats stats = tool.getToolStats(holding);
-        if (stats == null) return mineSpeed;
-
-        TileEntity tile = world.getTileEntity(x, y, z);
-        if (tile == null) return mineSpeed;
-
-        float newSpeed = Math.max(Float.MIN_NORMAL, getSpeedMultiplier() * getPrimaryMaterial(holding).mToolSpeed);
-
-        if (tile instanceof IWrenchable) return newSpeed;
-
-        return mineSpeed;
-    }
+    /**
+     * <p>
+     * prevent recursion from
+     * {@link AEBaseTileBlock#onBlockActivated(World, int, int, int, EntityPlayer, int, float, float, float)}
+     * </p>
+     */
+    private boolean LastEventFromThis = false;
 
     @Override
     public void onBreakBlock(@Nonnull EntityPlayer player, int x, int y, int z, @Nonnull Block block, byte metadata,
         TileEntity tile, @Nonnull BlockEvent.BreakEvent event) {
-        final World world = player.worldObj;
         if (tile instanceof IWrenchable wrenchable) {
-            ItemStack drop = wrenchable.getWrenchDrop(player);
-            world.setBlockToAir(x, y, z);
-            world.spawnEntityInWorld(new EntityItem(world, x, y, z, drop));
+            if (!wrenchable.wrenchCanRemove(player)) {
+                event.setCanceled(true);
+                return;
+            }
+            wrenchableDrop = wrenchable.getWrenchDrop(player);
+            wrenchableDropRate = wrenchable.getWrenchDropRate();
+        }
+        if (block instanceof AEBaseTileBlock aeBaseTileBlock) {
+            if (LastEventFromThis) {
+                return;
+            }
+            final boolean sneak = player.isSneaking();
+            try {
+                LastEventFromThis = true;
+                player.setSneaking(true);
+                final int sideHit = player.rayTrace(5, 1.0f).sideHit;
+                if (tile instanceof IPartHost) {
+                    if (sneak && PartPlacement.place(
+                        player.getHeldItem(),
+                        x,
+                        y,
+                        z,
+                        sideHit,
+                        player,
+                        player.worldObj,
+                        PartPlacement.PlaceType.INTERACT_FIRST_PASS,
+                        0)) {
+                        event.setCanceled(true);
+                    }
+                    return;
+                }
+                if (aeBaseTileBlock.onBlockActivated(event.world, x, y, z, player, sideHit, x, y, z)) {
+                    event.setCanceled(true);
+                }
+            } finally {
+                LastEventFromThis = false;
+                player.setSneaking(sneak);
+            }
         }
     }
 
     @Override
-    public String getToolTypeName() {
-        return "wrench";
-    }
+    public int convertBlockDrops(List<ItemStack> drops, ItemStack Stack, EntityPlayer player, Block block, int x, int y,
+        int z, byte metaData, int fortune, boolean silkTouch, BlockEvent.HarvestDropsEvent event) {
+        ItemStack drop = null;
+        int modified = 0;
+        if (wrenchableDrop != null) {
+            drop = wrenchableDrop;
+            wrenchableDrop = null;
+            modified = wrenchableDropRate == 1.0f ? 3 : 10;
+            wrenchableDropRate = 0.0f;
+        } else if (block == Blocks.bookshelf || block == Blocks.ender_chest) {
+            drop = new ItemStack(block);
+            modified = 1;
+        }
 
-    @Override
-    public byte getMaxMode() {
-        return 2;
+        if (drop != null) {
+            event.dropChance = 1.0f;
+            drops.clear();
+            drops.add(drop);
+        }
+        return modified;
     }
 }
