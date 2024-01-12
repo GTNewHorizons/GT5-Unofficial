@@ -15,6 +15,7 @@ import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+import static gregtech.api.util.GT_Utility.filterValidMTEs;
 import static net.glease.ggfab.BlockIcons.OVERLAY_FRONT_ADV_ASSLINE;
 import static net.glease.ggfab.BlockIcons.OVERLAY_FRONT_ADV_ASSLINE_ACTIVE;
 import static net.glease.ggfab.BlockIcons.OVERLAY_FRONT_ADV_ASSLINE_ACTIVE_GLOW;
@@ -181,16 +182,22 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
     private boolean stuck;
 
     private final List<GT_MetaTileEntity_Hatch_DataAccess> mDataAccessHatches = new ArrayList<>();
-    private final ItemStack[] itemInputsCurTick = new ItemStack[16];
+    // items to use in current startRecipeProcessing()/endRecipeProcessing() batch
+    // calling get stack multiple times in the same batch might cause problems with certain hatches
+    private final ItemStack[] itemInputsCurBatch = new ItemStack[16];
+    private final boolean[] sortHatches = new boolean[16];
+    private boolean sortFluidHatches;
     private int currentInputLength;
     private String lastStopReason = "";
 
     public MTE_AdvAssLine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
+        Arrays.fill(itemInputsCurBatch, NOT_CHECKED);
     }
 
     public MTE_AdvAssLine(String aName) {
         super(aName);
+        Arrays.fill(itemInputsCurBatch, NOT_CHECKED);
     }
 
     @Override
@@ -474,6 +481,9 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
     @Override
     protected void startRecipeProcessing() {
         if (!processing) {
+            Arrays.fill(itemInputsCurBatch, NOT_CHECKED);
+            Arrays.fill(sortHatches, false);
+            sortFluidHatches = false;
             super.startRecipeProcessing();
             processing = true;
         }
@@ -482,6 +492,16 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
     @Override
     protected void endRecipeProcessing() {
         if (!processing) return;
+        if (sortFluidHatches) {
+            for (GT_MetaTileEntity_Hatch_Input tHatch : filterValidMTEs(mInputHatches)) tHatch.updateSlots();
+            sortFluidHatches = false;
+        }
+        for (int i = 0; i < sortHatches.length; i++) {
+            if (sortHatches[i]) {
+                sortHatches[i] = false;
+                mInputBusses.get(i).updateSlots();
+            }
+        }
         super.endRecipeProcessing();
         processing = false;
     }
@@ -530,12 +550,6 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
     @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.assemblylineVisualRecipes;
-    }
-
-    @Override
-    public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        Arrays.fill(itemInputsCurTick, NOT_CHECKED);
-        super.onPreTick(aBaseMetaTileEntity, aTick);
     }
 
     @Override
@@ -602,7 +616,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
 
     private ItemStack getInputBusContent(int index) {
         // compare by identity is on purpose. the content of NOT_CHECKED is not significant.
-        if (itemInputsCurTick[index] == NOT_CHECKED) {
+        if (itemInputsCurBatch[index] == NOT_CHECKED) {
             ItemStack stuff = null;
             if (index < mInputBusses.size()) {
                 GT_MetaTileEntity_Hatch_InputBus bus = mInputBusses.get(index);
@@ -610,9 +624,9 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
                     stuff = bus.getStackInSlot(0);
                 }
             }
-            itemInputsCurTick[index] = stuff;
+            itemInputsCurBatch[index] = stuff;
         }
-        return itemInputsCurTick[index];
+        return itemInputsCurBatch[index];
     }
 
     private GT_Recipe.GT_Recipe_AssemblyLine findRecipe(ItemStack tDataStick) {
@@ -798,7 +812,6 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
         baseEUt = lEUt;
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
-        updateSlots();
 
         if (GT_Values.D1) {
             GT_FML_LOGGER.info("Recipe successful");
@@ -895,6 +908,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
         for (int i = 0; i < recipe.mFluidInputs.length; i++) {
             mInputHatches.get(i).drain(ForgeDirection.UNKNOWN, recipe.mFluidInputs[i], true);
         }
+        sortFluidHatches = true;
     }
 
     @Override
@@ -1012,7 +1026,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
             if (size < 0) return false;
             progress = mMaxProgresstime / currentInputLength;
             stack.stackSize -= size;
-            mInputBusses.get(id).updateSlots();
+            sortHatches[id] = true;
             return true;
         }
 
