@@ -52,6 +52,7 @@ import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
 import com.gtnewhorizons.modularui.common.widget.Column;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.api.enums.GT_Values;
@@ -314,15 +315,16 @@ public abstract class KubaTechGTMultiBlockBase<T extends GT_MetaTileEntity_Exten
             .widget(createBatchModeButton(builder))
             .widget(createLockToSingleRecipeButton(builder));
 
-        DynamicPositionedColumn configurationElements = new DynamicPositionedColumn();
+        DynamicPositionedRow configurationElements = new DynamicPositionedRow();
         addConfigurationWidgets(configurationElements, buildContext);
 
         builder.widget(
-            configurationElements.setAlignment(MainAxisAlignment.END)
-                .setPos(getPowerSwitchButtonPos().subtract(0, 18)));
+            configurationElements.setSpace(2)
+                .setAlignment(MainAxisAlignment.SPACE_BETWEEN)
+                .setPos(getRecipeLockingButtonPos().add(18, 0)));
     }
 
-    protected void addConfigurationWidgets(DynamicPositionedColumn configurationElements, UIBuildContext buildContext) {
+    protected void addConfigurationWidgets(DynamicPositionedRow configurationElements, UIBuildContext buildContext) {
 
     }
 

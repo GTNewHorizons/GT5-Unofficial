@@ -100,7 +100,7 @@ public class MobHandlerLoader {
         }
 
         public ItemStack[] generateOutputs(Random rnd, GT_MetaTileEntity_ExtremeEntityCrusher MTE, double attackDamage,
-            int lootinglevel, boolean preferInfernalDrops) {
+            int lootinglevel, boolean preferInfernalDrops, boolean voidAllDamagedAndEnchantedItems) {
             MTE.lEUt = mEUt;
             MTE.mMaxProgresstime = Math.max(MOB_SPAWN_INTERVAL, (int) ((recipe.maxEntityHealth / attackDamage) * 10d));
             ArrayList<ItemStack> stacks = new ArrayList<>(this.mOutputs.size());
@@ -112,6 +112,7 @@ public class MobHandlerLoader {
                 MTE.getBaseMetaTileEntity()
                     .getZCoord());
             for (MobDrop o : this.mOutputs) {
+                if (voidAllDamagedAndEnchantedItems && (o.damages != null || o.enchantable != null)) continue;
                 int chance = o.chance;
 
                 double dChance = (double) chance / 100d;

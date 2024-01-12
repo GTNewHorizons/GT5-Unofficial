@@ -94,6 +94,7 @@ import com.gtnewhorizons.modularui.common.widget.Column;
 import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
@@ -609,7 +610,7 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
     }
 
     @Override
-    protected void addConfigurationWidgets(DynamicPositionedColumn configurationElements, UIBuildContext buildContext) {
+    protected void addConfigurationWidgets(DynamicPositionedRow configurationElements, UIBuildContext buildContext) {
         buildContext.addSyncedWindow(CONFIGURATION_WINDOW_ID, this::createConfigurationWindow);
         configurationElements.setSynced(false);
         configurationElements.widget(
@@ -694,12 +695,13 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
             .widget(createBatchModeButton(builder))
             .widget(createLockToSingleRecipeButton(builder));
 
-        DynamicPositionedColumn configurationElements = new DynamicPositionedColumn();
+        DynamicPositionedRow configurationElements = new DynamicPositionedRow();
         addConfigurationWidgets(configurationElements, buildContext);
 
         builder.widget(
-            configurationElements.setAlignment(MainAxisAlignment.END)
-                .setPos(getPowerSwitchButtonPos().subtract(0, 18)));
+            configurationElements.setSpace(2)
+                .setAlignment(MainAxisAlignment.SPACE_BETWEEN)
+                .setPos(getRecipeLockingButtonPos().add(18, 0)));
     }
 
     protected ModularWindow createConfigurationWindow(final EntityPlayer player) {

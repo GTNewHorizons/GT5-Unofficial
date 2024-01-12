@@ -86,7 +86,7 @@ import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.kuba6000.mobsinfo.api.utils.FastRandom;
 import com.mojang.authlib.GameProfile;
@@ -206,6 +206,7 @@ public class GT_MetaTileEntity_ExtremeEntityCrusher
     private byte mGlassTier = 0;
     private boolean mAnimationEnabled = true;
     private boolean mIsProducingInfernalDrops = true;
+    private boolean voidAllDamagedAndEnchantedItems = false;
 
     private EntityRenderer entityRenderer = null;
     private boolean renderEntity = false;
@@ -218,6 +219,7 @@ public class GT_MetaTileEntity_ExtremeEntityCrusher
         aNBT.setBoolean("mAnimationEnabled", mAnimationEnabled);
         aNBT.setByte("mGlassTier", mGlassTier);
         aNBT.setBoolean("mIsProducingInfernalDrops", mIsProducingInfernalDrops);
+        aNBT.setBoolean("voidAllDamagedAndEnchantedItems", voidAllDamagedAndEnchantedItems);
         if (weaponCache.getStackInSlot(0) != null) aNBT.setTag(
             "weaponCache",
             weaponCache.getStackInSlot(0)
@@ -232,6 +234,7 @@ public class GT_MetaTileEntity_ExtremeEntityCrusher
         mGlassTier = aNBT.getByte("mGlassTier");
         mIsProducingInfernalDrops = !aNBT.hasKey("mIsProducingInfernalDrops")
             || aNBT.getBoolean("mIsProducingInfernalDrops");
+        voidAllDamagedAndEnchantedItems = aNBT.getBoolean("voidAllDamagedAndEnchantedItems");
         if (aNBT.hasKey("weaponCache"))
             weaponCache.setStackInSlot(0, ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("weaponCache")));
     }
@@ -543,7 +546,8 @@ public class GT_MetaTileEntity_ExtremeEntityCrusher
         if (isInRitualMode && isRitualValid()) {
             if (getMaxInputEu() < recipe.mEUt / 4) return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt / 4);
             this.mOutputFluids = new FluidStack[] { FluidRegistry.getFluidStack("xpjuice", 5000) };
-            this.mOutputItems = recipe.generateOutputs(rand, this, 3, 0, mIsProducingInfernalDrops);
+            this.mOutputItems = recipe
+                .generateOutputs(rand, this, 3, 0, mIsProducingInfernalDrops, voidAllDamagedAndEnchantedItems);
             this.lEUt /= 4L;
             this.mMaxProgresstime = 400;
         } else {
@@ -575,7 +579,8 @@ public class GT_MetaTileEntity_ExtremeEntityCrusher
                 this,
                 attackDamage,
                 weaponCache.isValid ? weaponCache.looting : 0,
-                mIsProducingInfernalDrops);
+                mIsProducingInfernalDrops,
+                voidAllDamagedAndEnchantedItems);
 
             EECPlayer.currentWeapon = null;
 
@@ -666,6 +671,9 @@ public class GT_MetaTileEntity_ExtremeEntityCrusher
         info.add(
             "Is allowed to produce infernal drops: " + EnumChatFormatting.YELLOW
                 + (mIsProducingInfernalDrops ? "Yes" : "No"));
+        info.add(
+            "Void all damaged and enchanted items: " + EnumChatFormatting.YELLOW
+                + (voidAllDamagedAndEnchantedItems ? "Yes" : "No"));
         info.add("Is in ritual mode: " + EnumChatFormatting.YELLOW + (isInRitualMode ? "Yes" : "No"));
         if (isInRitualMode) info.add(
             "Is connected to ritual: "
@@ -684,7 +692,7 @@ public class GT_MetaTileEntity_ExtremeEntityCrusher
     }
 
     @Override
-    protected void addConfigurationWidgets(DynamicPositionedColumn configurationElements, UIBuildContext buildContext) {
+    protected void addConfigurationWidgets(DynamicPositionedRow configurationElements, UIBuildContext buildContext) {
         configurationElements.setSynced(true);
         configurationElements.widget(new CycleButtonWidget().setToggle(() -> isInRitualMode, v -> {
             if (this.mMaxProgresstime > 0) {
@@ -727,6 +735,26 @@ public class GT_MetaTileEntity_ExtremeEntityCrusher
             .setSize(16, 16)
             .addTooltip("Is allowed to spawn infernal mobs")
             .addTooltip(new Text("Does not affect mobs that are always infernal !").color(Color.GRAY.normal))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY));
+        configurationElements.widget(new CycleButtonWidget().setToggle(() -> voidAllDamagedAndEnchantedItems, v -> {
+            if (this.mMaxProgresstime > 0) {
+                GT_Utility.sendChatToPlayer(buildContext.getPlayer(), "Can't change mode when running !");
+                return;
+            }
+
+            voidAllDamagedAndEnchantedItems = v;
+
+            if (!(buildContext.getPlayer() instanceof EntityPlayerMP)) return;
+            if (!voidAllDamagedAndEnchantedItems) GT_Utility.sendChatToPlayer(buildContext.getPlayer(), "Void nothing");
+            else GT_Utility.sendChatToPlayer(buildContext.getPlayer(), "Void all damaged and enchanted items");
+        })
+            .setTextureGetter(toggleButtonTextureGetter)
+            .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
+            .setSize(16, 16)
+            .addTooltip("Void all damaged and enchanted items")
+            .addTooltip(
+                new Text("Does not affect infernal drops and some special drops like Sticky Sword!")
+                    .color(Color.GRAY.normal))
             .setTooltipShowUpDelay(TOOLTIP_DELAY));
     }
 
