@@ -492,7 +492,9 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
         minAutoPullAmount = aNBT.getInteger("minAmount");
         autoPullFluidList = aNBT.getBoolean("autoPull");
         additionalConnection = aNBT.getBoolean("additionalConnection");
-        autoPullRefreshTime = aNBT.getInteger("refreshTime");
+        if (aNBT.getTag("refreshTime") != null) {
+            autoPullRefreshTime = aNBT.getInteger("refreshTime");
+        }
         getProxy().readFromNBT(aNBT);
     }
 
