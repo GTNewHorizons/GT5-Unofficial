@@ -36,6 +36,7 @@ import net.minecraftforge.common.IShearable;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
 
+import appeng.api.implementations.items.IAEWrench;
 import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Optional;
@@ -71,7 +72,7 @@ import mrtjp.projectred.api.IScrewdriver;
         @Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = "EnderIOAPI|Tools"),
         @Optional.Interface(iface = "mrtjp.projectred.api.IScrewdriver", modid = "ProjRed|Core"), })
 public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
-    implements IDamagableItem, IToolGrafter, IToolCrowbar, IToolWrench, ITool, IScrewdriver {
+    implements IDamagableItem, IToolGrafter, IToolCrowbar, IToolWrench, ITool, IScrewdriver, IAEWrench {
 
     /**
      * All instances of this Item Class are listed here. This gets used to register the Renderer to all Items of this
@@ -777,8 +778,13 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
     @Override
     public boolean canWrench(EntityPlayer player, int x, int y, int z) {
         if (player == null) return false;
-        if (player.getCurrentEquippedItem() == null) return false;
-        if (!isItemStackUsable(player.getCurrentEquippedItem())) return false;
+        return canWrench(player.getHeldItem(), player, x, y, z);
+    }
+
+    @Override
+    public boolean canWrench(ItemStack wrench, EntityPlayer player, int x, int y, int z) {
+        if (wrench == null) return false;
+        if (!isItemStackUsable(wrench)) return false;
         IToolStats tStats = getToolStats(player.getCurrentEquippedItem());
         return tStats != null && tStats.isWrench();
     }
