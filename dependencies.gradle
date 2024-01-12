@@ -35,24 +35,24 @@
  */
 
 dependencies {
-    api('com.github.GTNewHorizons:GT5-Unofficial:5.09.45.15:dev')
+    api('com.github.GTNewHorizons:GT5-Unofficial:5.09.45.27:dev')
     {
         exclude group:"com.github.GTNewHorizons", module:"ModularUI"
     }
-    api("com.github.GTNewHorizons:EnderCore:0.2.19:dev")
-    api("com.github.GTNewHorizons:EnderIO:2.6.2:dev")
-    api("com.github.GTNewHorizons:ForestryMC:4.8.1:dev")
-    api("com.github.GTNewHorizons:ModularUI:1.1.24:dev")
-    api("com.github.GTNewHorizons:Mobs-Info:0.2.1-GTNH:dev")
-    devOnlyNonPublishable("com.github.GTNewHorizons:Infernal-Mobs:1.7.9-GTNH:dev")
+    api("com.github.GTNewHorizons:EnderCore:0.3.1:dev")
+    api("com.github.GTNewHorizons:EnderIO:2.6.3:dev")
+    api("com.github.GTNewHorizons:ForestryMC:4.8.2:dev")
+    api("com.github.GTNewHorizons:ModularUI:1.1.25:dev")
+    api("com.github.GTNewHorizons:Mobs-Info:0.2.3-GTNH:dev")
+    devOnlyNonPublishable("com.github.GTNewHorizons:Infernal-Mobs:1.8.0-GTNH:dev")
     //compileOnly("curse.maven:extrautilities-225561:2264384") {
     //    transitive = false
     //}
-    compileOnly("com.github.GTNewHorizons:GTplusplus:1.11.9:dev")
+    compileOnly("com.github.GTNewHorizons:GTplusplus:1.11.13:dev")
     {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:BloodMagic:1.4.3:dev")
+    compileOnly("com.github.GTNewHorizons:BloodMagic:1.5.0:dev")
     {
         transitive = false
     }
@@ -60,23 +60,23 @@ dependencies {
     {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:CraftTweaker:3.2.13:dev")
+    compileOnly("com.github.GTNewHorizons:CraftTweaker:3.3.0:dev")
     {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:bartworks:0.9.3:dev")
+    compileOnly("com.github.GTNewHorizons:bartworks:0.9.4:dev")
     {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:NewHorizonsCoreMod:2.3.4:dev")
+    compileOnly("com.github.GTNewHorizons:NewHorizonsCoreMod:2.3.13:dev")
     {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:BetterLoadingScreen:1.5.3-GTNH:dev")
+    compileOnly("com.github.GTNewHorizons:BetterLoadingScreen:1.6.0-GTNH:dev")
     {
         transitive = false
     }
-    runtimeOnly("com.github.GTNewHorizons:Baubles:1.0.3:dev")
+    runtimeOnly("com.github.GTNewHorizons:Baubles:1.0.4:dev")
     runtimeOnly("curse.maven:cofh-core-69162:2388751")
     /*
     {
@@ -86,18 +86,18 @@ dependencies {
     */
 
     // For testing
-    //runtimeOnly("com.github.GTNewHorizons:BetterLoadingScreen:1.5.3-GTNH:dev")
-    //runtimeOnly("com.github.GTNewHorizons:GTplusplus:1.11.9:dev")
-    //runtimeOnly("com.github.GTNewHorizons:harvestcraft:1.1.4-GTNH:dev")
-    //runtimeOnly("com.github.GTNewHorizons:NewHorizonsCoreMod:2.3.4:dev")
-    //runtimeOnly("com.github.GTNewHorizons:OpenBlocks:1.8.3-GTNH:dev")
-    //runtimeOnly("com.github.GTNewHorizons:bartworks:0.9.3:dev")
-    //runtimeOnly("com.github.GTNewHorizons:CraftTweaker:3.2.13:dev")
-    //api("com.github.GTNewHorizons:SpecialMobs:3.4.3:dev")
+    //runtimeOnly("com.github.GTNewHorizons:BetterLoadingScreen:1.6.0-GTNH:dev")
+    //runtimeOnly("com.github.GTNewHorizons:GTplusplus:1.11.13:dev")
+    //runtimeOnly("com.github.GTNewHorizons:harvestcraft:1.1.5-GTNH:dev")
+    //runtimeOnly("com.github.GTNewHorizons:NewHorizonsCoreMod:2.3.13:dev")
+    //runtimeOnly("com.github.GTNewHorizons:OpenBlocks:1.9.1-GTNH:dev")
+    //runtimeOnly("com.github.GTNewHorizons:bartworks:0.9.4:dev")
+    //runtimeOnly("com.github.GTNewHorizons:CraftTweaker:3.3.0:dev")
+    //api("com.github.GTNewHorizons:SpecialMobs:3.5.0:dev")
     //api("com.github.GTNewHorizons:twilightforest:2.5.1:dev")
-    //api("com.github.GTNewHorizons:EnderZoo:1.0.23:dev")
-    runtimeOnly("com.github.GTNewHorizons:Draconic-Evolution:1.2.2-GTNH:dev")
+    //api("com.github.GTNewHorizons:EnderZoo:1.1.0:dev")
+    runtimeOnly("com.github.GTNewHorizons:Draconic-Evolution:1.3.0-GTNH:dev")
     //runtimeOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev")
-    //runtimeOnly("com.github.GTNewHorizons:BloodMagic:1.4.3:dev")
+    //runtimeOnly("com.github.GTNewHorizons:BloodMagic:1.5.0:dev")
     //api("curse.maven:witchery-69673:2234410")
 }
