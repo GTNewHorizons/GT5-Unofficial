@@ -33,8 +33,8 @@ public final class CoverInfo {
     public static final CoverInfo EMPTY_INFO = new CoverInfo(ForgeDirection.UNKNOWN, null);
     private final ForgeDirection coverSide;
     private int coverID = 0;
-    private GT_CoverBehaviorBase<?> coverBehavior = null;
-    private ISerializableObject coverData = null;
+    private GT_CoverBehaviorBase<?> coverBehavior;
+    private ISerializableObject coverData;
     private final WeakReference<ICoverable> coveredTile;
     private boolean needsUpdate = false;
 
@@ -43,6 +43,7 @@ public final class CoverInfo {
     public CoverInfo(ForgeDirection side, ICoverable aTile) {
         coverSide = side;
         coveredTile = new WeakReference<>(aTile);
+        coverBehavior = GregTech_API.sNoBehavior;
     }
 
     public CoverInfo(ForgeDirection side, int aID, ICoverable aTile, ISerializableObject aCoverData) {
@@ -89,8 +90,7 @@ public final class CoverInfo {
     }
 
     public GT_CoverBehaviorBase<?> getCoverBehavior() {
-        if (coverBehavior != null) return coverBehavior;
-        return GregTech_API.sNoBehavior;
+        return coverBehavior;
     }
 
     public ISerializableObject getCoverData() {
