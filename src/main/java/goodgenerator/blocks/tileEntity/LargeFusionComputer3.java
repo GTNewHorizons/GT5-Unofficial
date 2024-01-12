@@ -60,7 +60,7 @@ public class LargeFusionComputer3 extends LargeFusionComputer {
                 .addCasingInfo("Neutronium Frame Box", 128)
                 .addCasingInfo("Osmium Reinforced Borosilicate Glass Block", 63)
                 .addEnergyHatch("1-32, Hint block with dot 2", 2).addInputHatch("1-16, Hint block with dot 1", 1)
-                .addOutputHatch("1-16, Hint block with dot 1", 1)
+                .addOutputHatch("1-16, Hint block with dot 1", 1).addStructureInfo("Supports Crafting Input Buffer")
                 .addStructureInfo(
                         "ALL Hatches must be " + GT_Utility.getColoredTierNameFromTier((byte) hatchTier())
                                 + EnumChatFormatting.GRAY

@@ -26,6 +26,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Outpu
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.tileentities.machines.IDualInputHatch;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -64,7 +65,7 @@ public class LargeFusionComputer4 extends LargeFusionComputerPP {
                 .addCasingInfo("Infinity Catalyst Frame Box", 128)
                 .addCasingInfo("Neutronium Reinforced Borosilicate Glass Block", 63)
                 .addEnergyHatch("1-32, Hint block with dot 2", 2).addInputHatch("1-16, Hint block with dot 1", 1)
-                .addOutputHatch("1-16, Hint block with dot 1", 1)
+                .addOutputHatch("1-16, Hint block with dot 1", 1).addStructureInfo("Supports Crafting Input Buffer")
                 .addStructureInfo(
                         "ALL Hatches must be " + GT_Utility.getColoredTierNameFromTier((byte) hatchTier())
                                 + EnumChatFormatting.GRAY
@@ -178,6 +179,11 @@ public class LargeFusionComputer4 extends LargeFusionComputerPP {
         }
         if (this.mInputHatches != null) {
             for (GT_MetaTileEntity_Hatch_Input hatch : this.mInputHatches) {
+                hatch.updateTexture(status ? TAE.getIndexFromPage(2, 14) : 53);
+            }
+        }
+        if (this.mDualInputHatches != null) {
+            for (IDualInputHatch hatch : this.mDualInputHatches) {
                 hatch.updateTexture(status ? TAE.getIndexFromPage(2, 14) : 53);
             }
         }

@@ -41,7 +41,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
@@ -59,6 +58,7 @@ import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.tileentities.machines.IDualInputHatch;
 
 public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         implements IConstructable, ISurvivalConstructable, IOverclockDescriptionProvider {
@@ -81,7 +81,10 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
                             'I',
                             lazy(
                                     x -> GT_HatchElementBuilder.<LargeFusionComputer>builder()
-                                            .atLeast(GT_HatchElement.InputHatch, GT_HatchElement.OutputHatch)
+                                            .atLeast(
+                                                    GT_HatchElement.InputHatch,
+                                                    GT_HatchElement.OutputHatch,
+                                                    GT_HatchElement.InputBus)
                                             .adder(LargeFusionComputer::addFluidIO).casingIndex(x.textureIndex()).dot(1)
                                             .buildAndChain(x.getGlassBlock(), x.getGlassMeta())))
                     .addElement(
@@ -180,7 +183,7 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         this.eEnergyMulti.clear();
-        if (structureCheck_EM(MAIN_NAME, 23, 3, 40) && !mInputHatches.isEmpty()
+        if (structureCheck_EM(MAIN_NAME, 23, 3, 40) && mInputHatches.size() + mDualInputHatches.size() != 0
                 && !mOutputHatches.isEmpty()
                 && (mEnergyHatches.size() + eEnergyMulti.size()) != 0) {
             fixAllIssue();
@@ -371,6 +374,11 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
                 hatch.updateTexture(status ? 52 : 53);
             }
         }
+        if (this.mDualInputHatches != null) {
+            for (IDualInputHatch hatch : this.mDualInputHatches) {
+                hatch.updateTexture(status ? 52 : 53);
+            }
+        }
         return true;
     }
 
@@ -510,21 +518,20 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
     private boolean addFluidIO(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
         IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch tHatch) {
-            if (tHatch.getTierForStructure() < hatchTier()) {
-                return false;
-            }
-        } else {
-            return false;
-        }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input tInput) {
+            if (tInput.getTierForStructure() < hatchTier()) return false;
             tInput.updateTexture(aBaseCasingIndex);
             tInput.mRecipeMap = getRecipeMap();
             return mInputHatches.add(tInput);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output tOutput) {
+            if (tOutput.getTierForStructure() < hatchTier()) return false;
             tOutput.updateTexture(aBaseCasingIndex);
             return mOutputHatches.add(tOutput);
+        }
+        if (aMetaTileEntity instanceof IDualInputHatch tInput) {
+            tInput.updateTexture(aBaseCasingIndex);
+            return mDualInputHatches.add(tInput);
         }
         return false;
     }
