@@ -123,6 +123,7 @@ import cpw.mods.fml.common.network.FMLNetworkEvent;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Dyes;
@@ -612,6 +613,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public int mPollutionBaseGasTurbinePerSecond = 200;
     public double[] mPollutionGasTurbineReleasedByTier = new double[] { 0.1, 1.0, 0.9, 0.8, 0.7, 0.6 };
     public final GT_UO_DimensionList mUndergroundOil = new GT_UO_DimensionList();
+    public boolean enableUndergroundGravelGen = true;
+    public boolean enableUndergroundDirtGen = true;
     public int mTicksUntilNextCraftSound = 0;
     public double mMagneticraftBonusOutputPercent = 0d;
     private World mUniverse = null;
@@ -1114,6 +1117,11 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                     GT_OreDictUnificator.get(OrePrefixes.bucketClay, Materials.Milk, 1L),
                     GT_OreDictUnificator.get(OrePrefixes.bucketClay, Materials.Empty, 1L)));
         }
+
+        if (!GT_Mod.gregtechproxy.enableUndergroundGravelGen)
+            PREVENTED_ORES.add(OreGenEvent.GenerateMinable.EventType.GRAVEL);
+        if (!GT_Mod.gregtechproxy.enableUndergroundDirtGen)
+            PREVENTED_ORES.add(OreGenEvent.GenerateMinable.EventType.DIRT);
 
         MinecraftForge.EVENT_BUS.register(new GlobalEnergyWorldSavedData(""));
         MinecraftForge.EVENT_BUS.register(new SpaceProjectWorldSavedData());
