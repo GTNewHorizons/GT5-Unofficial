@@ -48,6 +48,8 @@ public class GT_Cover_Pump extends GT_CoverBehavior {
 
         if (aTileEntity instanceof IFluidHandler current) {
             final IFluidHandler toAccess = aTileEntity.getITankContainerAtSide(side);
+            if (toAccess == null) return aCoverVariable;
+
             transferFluid(current, toAccess, side, aCoverVariable % 2);
         }
         return aCoverVariable;
