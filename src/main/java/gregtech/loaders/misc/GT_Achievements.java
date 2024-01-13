@@ -550,8 +550,7 @@ public class GT_Achievements {
                 issueAchievement(player, "bronze");
             }
         }
-        if (stack.getUnlocalizedName()
-            .startsWith("gt.metaitem.")) {
+        if (stack.getUnlocalizedName().startsWith("gt.metaitem.")) {
             switch (stack.getUnlocalizedName()) {
                 case "gt.metaitem.01.2300" -> issueAchievement(player, "bronze");
                 case "gt.metaitem.01.32700" -> issueAchievement(player, "smallparts");
@@ -566,262 +565,109 @@ public class GT_Achievements {
                 case "gt.metaitem.01.32650" -> issueAchievement(player, "complexmachines");
                 case "gt.metaitem.01.32670" -> issueAchievement(player, "hightech");
             }
-        } else if (stack.getUnlocalizedName()
-            .equals("ic2.blockCrop")) {
+        } else if (stack.getUnlocalizedName().equals("ic2.blockCrop")) {
                 issueAchievement(player, "crops");
-            } else if (stack.getUnlocalizedName()
-                .equals("ic2.itemPartCircuit")) {
-                    issueAchievement(player, "gtbasiccircuit");
-                } else if (stack.getUnlocalizedName()
-                    .equals("ic2.itemPartCircuitAdv")) {
-                        issueAchievement(player, "stepforward");
-                    } else if (stack.getUnlocalizedName()
-                        .startsWith("gt.blockmachines.")) {
-                            if (stack.getUnlocalizedName()
-                                .startsWith("gt.blockmachines.basicmachine.arcfurnace.tier.")) {
-                                issueAchievement(player, "recycling");
-                            } else if (stack.getUnlocalizedName()
-                                .startsWith("gt.blockmachines.basicmachine.disassembler.tier.")) {
-                                    issueAchievement(player, "repair");
-                                } else if (stack.getUnlocalizedName()
-                                    .equals("gt.blockmachines.boiler.solar")) {
-                                        issueAchievement(player, "simplyeco");
-                                    } else if (stack.getUnlocalizedName()
-                                        .equals("gt.blockmachines.boiler.bronze")) {
-                                            issueAchievement(player, "firststeam");
-                                        } else if (stack.getUnlocalizedName()
-                                            .equals("gt.blockmachines.boiler.steel")) {
-                                                issueAchievement(player, "highpressure");
-                                            } else if (stack.getUnlocalizedName()
-                                                .equals("gt.blockmachines.bronzemachine.macerator")) {
-                                                    issueAchievement(player, "macerator");
-                                                    issueAchievement(player, "buildMacerator");
-                                                } else if (stack.getUnlocalizedName()
-                                                    .equals("gt.blockmachines.bronzemachine.alloysmelter")) {
-                                                        issueAchievement(player, "alloysmelter");
-                                                        issueAchievement(player, "buildElecFurnace");
-                                                        if (stack.getUnlocalizedName()
-                                                            .equals(
-                                                                "gt.blockmachines.bronzemachine.alloysmelter.tier.3")) {
-                                                            issueAchievement(player, "buildIndFurnace");
-                                                        }
-                                                    } else if (stack.getUnlocalizedName()
-                                                        .equals("gt.blockmachines.bronzemachine.extractor")) {
-                                                            issueAchievement(player, "extract");
-                                                            issueAchievement(player, "buildCompressor");
-                                                            issueAchievement(player, "buildExtractor");
-                                                        } else if (stack.getUnlocalizedName()
-                                                            .startsWith(
-                                                                "gt.blockmachines.automation.superbuffer.tier.")) {
-                                                                    issueAchievement(player, "superbuffer");
-                                                                } else
-                                                            if (stack.getUnlocalizedName()
-                                                                .startsWith("gt.blockmachines.quantum.tank.tier.")) {
-                                                                    issueAchievement(player, "whereistheocean");
-                                                                } else if (stack.getUnlocalizedName()
-                                                                    .startsWith(
-                                                                        "gt.blockmachines.quantum.chest.tier.")) {
-                                                                            issueAchievement(player, "newstorage");
-                                                                        } else
-                                                                    if (stack.getUnlocalizedName()
-                                                                        .startsWith(
-                                                                            "gt.blockmachines.basicmachine.hammer.tier.")) {
-                                                                                issueAchievement(player, "cheapermac");
-                                                                            } else
-                                                                        if (stack.getUnlocalizedName()
-                                                                            .startsWith(
-                                                                                "gt.blockmachines.automation.chestbuffer.tier.")) {
-                                                                                    issueAchievement(player, "buffer");
-                                                                                    issueAchievement(
-                                                                                        player,
-                                                                                        "buildBatBox");
-                                                                                    if (stack.getUnlocalizedName()
-                                                                                        .startsWith(
-                                                                                            "gt.blockmachines.automation.chestbuffer.tier.3")) {
-                                                                                        issueAchievement(
-                                                                                            player,
-                                                                                            "buildMFE");
-                                                                                    }
-                                                                                } else
-                                                                            if (stack.getUnlocalizedName()
-                                                                                .startsWith(
-                                                                                    "gt.blockmachines.basicgenerator.steamturbine.tier.")) {
-                                                                                        issueAchievement(
-                                                                                            player,
-                                                                                            "steampower");
-                                                                                        issueAchievement(
-                                                                                            player,
-                                                                                            "buildGenerator");
-                                                                                    } else
-                                                                                if (stack.getUnlocalizedName()
-                                                                                    .equals(
-                                                                                        "gt.blockmachines.basicmachine.pump.tier.03")) {
-                                                                                            issueAchievement(
-                                                                                                player,
-                                                                                                "slurp");
-                                                                                        } else
-                                                                                    if (stack.getUnlocalizedName()
-                                                                                        .startsWith(
-                                                                                            "gt.blockmachines.basicmachine.assembler.tier.")) {
-                                                                                                issueAchievement(
-                                                                                                    player,
-                                                                                                    "avengers");
-                                                                                            } else
-                                                                                        if (stack.getUnlocalizedName()
-                                                                                            .equals(
-                                                                                                "gt.blockmachines.multimachine.blastfurnace")) {
-                                                                                                    issueAchievement(
-                                                                                                        player,
-                                                                                                        "ebf");
-                                                                                                } else
-                                                                                            if (stack
-                                                                                                .getUnlocalizedName()
-                                                                                                .startsWith(
-                                                                                                    "gt.blockmachines.batterybuffer.")) {
-                                                                                                        issueAchievement(
-                                                                                                            player,
-                                                                                                            "batterys");
-                                                                                                    } else
-                                                                                                if (stack
-                                                                                                    .getUnlocalizedName()
-                                                                                                    .equals(
-                                                                                                        "gt.blockmachines.hatch.energy.tier.02")) {
-                                                                                                            issueAchievement(
-                                                                                                                player,
-                                                                                                                "upgradeebf");
-                                                                                                        } else
-                                                                                                    if (stack
-                                                                                                        .getUnlocalizedName()
-                                                                                                        .equals(
-                                                                                                            "gt.blockmachines.multimachine.multifurnace")) {
-                                                                                                                issueAchievement(
-                                                                                                                    player,
-                                                                                                                    "highpowersmelt");
-                                                                                                            } else
-                                                                                                        if (stack
-                                                                                                            .getUnlocalizedName()
-                                                                                                            .equals(
-                                                                                                                "gt.blockmachines.hatch.energy.tier.01")) {
-                                                                                                                    issueAchievement(
-                                                                                                                        player,
-                                                                                                                        "energyhatch");
-                                                                                                                } else
-                                                                                                            if (stack
-                                                                                                                .getUnlocalizedName()
-                                                                                                                .equals(
-                                                                                                                    "gt.blockmachines.multimachine.processingarray")) {
-                                                                                                                        issueAchievement(
-                                                                                                                            player,
-                                                                                                                            "factory");
-                                                                                                                    } else
-                                                                                                                if (stack
-                                                                                                                    .getUnlocalizedName()
-                                                                                                                    .equals(
-                                                                                                                        "gt.blockmachines.basicgenerator.magicenergyconverter.tier.01")) {
-                                                                                                                            issueAchievement(
-                                                                                                                                player,
-                                                                                                                                "magic");
-                                                                                                                        } else
-                                                                                                                    if (stack
-                                                                                                                        .getUnlocalizedName()
-                                                                                                                        .equals(
-                                                                                                                            "gt.blockmachines.basicgenerator.magicenergyabsorber.tier.03")) {
-                                                                                                                                issueAchievement(
-                                                                                                                                    player,
-                                                                                                                                    "highmage");
-                                                                                                                            } else
-                                                                                                                        if (stack
-                                                                                                                            .getUnlocalizedName()
-                                                                                                                            .startsWith(
-                                                                                                                                "gt.blockmachines.basicmachine.amplifab.tier.")) {
-                                                                                                                                    issueAchievement(
-                                                                                                                                        player,
-                                                                                                                                        "amplifier");
-                                                                                                                                } else
-                                                                                                                            if (stack
-                                                                                                                                .getUnlocalizedName()
-                                                                                                                                .startsWith(
-                                                                                                                                    "gt.blockmachines.basicmachine.massfab.tier.")) {
-                                                                                                                                        issueAchievement(
-                                                                                                                                            player,
-                                                                                                                                            "universal");
-                                                                                                                                        issueAchievement(
-                                                                                                                                            player,
-                                                                                                                                            "buildMassFab");
-                                                                                                                                    } else
-                                                                                                                                if (stack
-                                                                                                                                    .getUnlocalizedName()
-                                                                                                                                    .startsWith(
-                                                                                                                                        "gt.blockmachines.basicgenerator.naquadah.tier.")) {
-                                                                                                                                            issueAchievement(
-                                                                                                                                                player,
-                                                                                                                                                "alienpower");
-                                                                                                                                        } else
-                                                                                                                                    if (stack
-                                                                                                                                        .getUnlocalizedName()
-                                                                                                                                        .startsWith(
-                                                                                                                                            "gt.blockmachines.basicmachine.replicator.tier.")) {
-                                                                                                                                                issueAchievement(
-                                                                                                                                                    player,
-                                                                                                                                                    "replication");
-                                                                                                                                            } else
-                                                                                                                                        if (stack
-                                                                                                                                            .getUnlocalizedName()
-                                                                                                                                            .equals(
-                                                                                                                                                "gt.blockmachines.basicgenerator.plasmagenerator.tier.07")) {
-                                                                                                                                                    issueAchievement(
-                                                                                                                                                        player,
-                                                                                                                                                        "fullefficiency");
-                                                                                                                                                } else
-                                                                                                                                            if (stack
-                                                                                                                                                .getUnlocalizedName()
-                                                                                                                                                .equals(
-                                                                                                                                                    "gt.blockmachines.multimachine.largeturbine")) {
-                                                                                                                                                        issueAchievement(
-                                                                                                                                                            player,
-                                                                                                                                                            "muchsteam");
-                                                                                                                                                    } else
-                                                                                                                                                if (stack
-                                                                                                                                                    .getUnlocalizedName()
-                                                                                                                                                    .equals(
-                                                                                                                                                        "gt.blockmachines.multimachine.largehpturbine")) {
-                                                                                                                                                            issueAchievement(
-                                                                                                                                                                player,
-                                                                                                                                                                "efficientsteam");
-                                                                                                                                                        } else
-                                                                                                                                                    if (stack
-                                                                                                                                                        .getUnlocalizedName()
-                                                                                                                                                        .equals(
-                                                                                                                                                            "gt.blockmachines.multimachine.cleanroom")) {
-                                                                                                                                                                issueAchievement(
-                                                                                                                                                                    player,
-                                                                                                                                                                    "gtcleanroom");
-                                                                                                                                                            }
-                        } else if (stack.getUnlocalizedName()
-                            .equals("gt.neutronreflector")) {
-                                issueAchievement(player, "reflect");
-                            } else if (stack.getUnlocalizedName()
-                                .equals("gt.blockcasings5.1")) {
-                                    issueAchievement(player, "upgrade");
-                                } else if (stack.getUnlocalizedName()
-                                    .equals("gt.blockcasings5.2")) {
-                                        issueAchievement(player, "upgrade2");
-                                    } else if (stack.getUnlocalizedName()
-                                        .equals("gt.blockcasings5.3")) {
-                                            issueAchievement(player, "upgrade3");
-                                        } else if (stack.getUnlocalizedName()
-                                            .equals("gt.blockcasings5.4")) {
-                                                issueAchievement(player, "upgrade4");
-                                            } else if (stack.getUnlocalizedName()
-                                                .equals("gt.blockcasings5.5")) {
-                                                    issueAchievement(player, "upgrade5");
-                                                } else if (stack.getUnlocalizedName()
-                                                    .equals("gt.blockcasings5.6")) {
-                                                        issueAchievement(player, "over9000");
-                                                    } else if (stack.getUnlocalizedName()
-                                                        .equals("gt.blockcasings.15")) {
-                                                            issueAchievement(player, "conducting");
-                                                        }
+        } else if (stack.getUnlocalizedName().equals("ic2.itemPartCircuit")) {
+            issueAchievement(player, "gtbasiccircuit");
+        } else if (stack.getUnlocalizedName().equals("ic2.itemPartCircuitAdv")) {
+            issueAchievement(player, "stepforward");
+        }
+        else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.")) {
+            if (stack.getUnlocalizedName().startsWith("gt.blockmachines.basicmachine.arcfurnace.tier.")) {
+                issueAchievement(player, "recycling");
+            } else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.basicmachine.disassembler.tier.")) {
+                issueAchievement(player, "repair");
+            } else if (stack.getUnlocalizedName().equals("gt.blockmachines.boiler.solar")) {
+                issueAchievement(player, "simplyeco");
+            } else if (stack.getUnlocalizedName().equals("gt.blockmachines.boiler.bronze")) {
+                issueAchievement(player, "firststeam");
+            } else if (stack.getUnlocalizedName().equals("gt.blockmachines.boiler.steel")) {
+                issueAchievement(player, "highpressure");
+            } else if (stack.getUnlocalizedName() .equals("gt.blockmachines.bronzemachine.macerator")) {
+                issueAchievement(player, "macerator");
+                issueAchievement(player, "buildMacerator");
+            } else if (stack.getUnlocalizedName().equals("gt.blockmachines.bronzemachine.alloysmelter")) {
+                issueAchievement(player, "alloysmelter");
+                issueAchievement(player, "buildElecFurnace");
+                if (stack.getUnlocalizedName().equals("gt.blockmachines.bronzemachine.alloysmelter.tier.3")) {
+                    issueAchievement(player, "buildIndFurnace");
+                }
+            } else if (stack.getUnlocalizedName().equals("gt.blockmachines.bronzemachine.extractor")) {
+                issueAchievement(player, "extract");
+                issueAchievement(player, "buildCompressor");
+                issueAchievement(player, "buildExtractor");
+            } else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.automation.superbuffer.tier.")) {
+                issueAchievement(player, "superbuffer");
+            } else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.quantum.tank.tier.")) {
+                issueAchievement(player, "whereistheocean");
+            } else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.quantum.chest.tier.")) {
+                issueAchievement(player, "newstorage");
+            } else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.basicmachine.hammer.tier.")) {
+                issueAchievement(player, "cheapermac");
+            } else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.automation.chestbuffer.tier.")) {
+                issueAchievement(player, "buffer");
+                issueAchievement(player,"buildBatBox");
+                if (stack.getUnlocalizedName().startsWith("gt.blockmachines.automation.chestbuffer.tier.3")) {
+                    issueAchievement(player,"buildMFE");
+                }
+            } else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.basicgenerator.steamturbine.tier.")) {
+                issueAchievement(player,"steampower");
+                issueAchievement(player,"buildGenerator");
+            } else if (stack.getUnlocalizedName().equals("gt.blockmachines.basicmachine.pump.tier.03")) {
+                issueAchievement(player,"slurp");
+            } else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.basicmachine.assembler.tier.")) {
+                issueAchievement(player,"avengers");
+            } else if (stack.getUnlocalizedName().equals("gt.blockmachines.multimachine.blastfurnace")) {
+                issueAchievement(player,"ebf");
+            } else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.batterybuffer.")) {
+                issueAchievement(player,"batterys");
+            } else if (stack.getUnlocalizedName().equals("gt.blockmachines.hatch.energy.tier.02")) {
+                issueAchievement(player,"upgradeebf");
+            } else if (stack.getUnlocalizedName().equals("gt.blockmachines.multimachine.multifurnace")) {
+                issueAchievement(player,"highpowersmelt");
+            } else if (stack.getUnlocalizedName().equals("gt.blockmachines.hatch.energy.tier.01")) {
+                    issueAchievement(player,"energyhatch");
+            } else if (stack.getUnlocalizedName().equals("gt.blockmachines.multimachine.processingarray")) {
+                    issueAchievement(player,"factory");
+            } else if (stack.getUnlocalizedName().equals("gt.blockmachines.basicgenerator.magicenergyconverter.tier.01")) {
+                    issueAchievement(player,"magic");
+            } else if (stack.getUnlocalizedName().equals("gt.blockmachines.basicgenerator.magicenergyabsorber.tier.03")) {
+                issueAchievement(player,"highmage");
+            } else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.basicmachine.amplifab.tier.")) {
+                issueAchievement(player,"amplifier");
+            } else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.basicmachine.massfab.tier.")) {
+                issueAchievement(player,"universal");
+                issueAchievement(player,"buildMassFab");
+            } else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.basicgenerator.naquadah.tier.")) {
+                issueAchievement(player,"alienpower");
+            } else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.basicmachine.replicator.tier.")) {
+                issueAchievement(player,"replication");
+            } else if (stack.getUnlocalizedName().equals("gt.blockmachines.basicgenerator.plasmagenerator.tier.07")) {
+                issueAchievement(player,"fullefficiency");
+            } else if (stack.getUnlocalizedName().equals("gt.blockmachines.multimachine.largeturbine")) {
+                issueAchievement(player,"muchsteam");
+            } else if (stack.getUnlocalizedName().equals("gt.blockmachines.multimachine.largehpturbine")) {
+                issueAchievement(player,"efficientsteam");
+            } else if (stack.getUnlocalizedName().equals("gt.blockmachines.multimachine.cleanroom")) {
+                    issueAchievement(player,"gtcleanroom");
+            }
+        } else if (stack.getUnlocalizedName().equals("gt.neutronreflector")) {
+            issueAchievement(player, "reflect");
+        } else if (stack.getUnlocalizedName().equals("gt.blockcasings5.1")) {
+            issueAchievement(player, "upgrade");
+        } else if (stack.getUnlocalizedName().equals("gt.blockcasings5.2")) {
+            issueAchievement(player, "upgrade2");
+        } else if (stack.getUnlocalizedName().equals("gt.blockcasings5.3")) {
+            issueAchievement(player, "upgrade3");
+        } else if (stack.getUnlocalizedName().equals("gt.blockcasings5.4")) {
+            issueAchievement(player, "upgrade4");
+        } else if (stack.getUnlocalizedName().equals("gt.blockcasings5.5")) {
+            issueAchievement(player, "upgrade5");
+        } else if (stack.getUnlocalizedName().equals("gt.blockcasings5.6")) {
+            issueAchievement(player, "over9000");
+        } else if (stack.getUnlocalizedName().equals("gt.blockcasings.15")) {
+            issueAchievement(player, "conducting");
+        }
     }
 
     @SubscribeEvent
