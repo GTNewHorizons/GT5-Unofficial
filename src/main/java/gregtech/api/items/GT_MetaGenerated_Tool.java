@@ -686,13 +686,12 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
         if (tStats == null || Math.max(0, getHarvestLevel(aStack, "")) < aBlock.getHarvestLevel(aMetaData)) return 0.0F;
         return tStats.isMinableBlock(aBlock, (byte) aMetaData)
             ? Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed)
-            : 1.0F;
+            : 0.0F;
     }
 
     @Override
     public final boolean canHarvestBlock(Block aBlock, ItemStack aStack) {
-        IToolStats tStats = getToolStats(aStack);
-        return tStats.isMinableBlock(aBlock, (byte) 0) && getDigSpeed(aStack, aBlock, (byte) 0) > 0.0F;
+        return getDigSpeed(aStack, aBlock, (byte) 0) > 0.0F;
     }
 
     @Override
