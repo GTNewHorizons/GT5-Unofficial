@@ -1331,6 +1331,49 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         return rList;
     }
 
+    /**
+     * Drains fluid from the given hatch, including {@link IDualInputHatch}.
+     *
+     * @param doDrain If false, fluid will not actually be consumed
+     * @return Whether the hatch contains enough fluid to drain
+     */
+    public boolean drain(GT_MetaTileEntity_Hatch hatch, FluidStack fluid, boolean doDrain) {
+        if (fluid == null || hatch == null) return false;
+        if (supportsCraftingMEBuffer() && hatch instanceof IDualInputHatch tHatch && tHatch.supportsFluids()) {
+            Optional<IDualInputInventory> inventory = tHatch.getFirstNonEmptyInventory();
+            if (inventory.isPresent()) {
+                for (FluidStack storedFluid : Lists.newArrayList(
+                    inventory.get()
+                        .getFluidInputs())) {
+                    if (fluid.isFluidEqual(storedFluid)) {
+                        if (doDrain) storedFluid.amount = Math.max(storedFluid.amount - fluid.amount, 0);
+                        return storedFluid.amount >= fluid.amount;
+                    }
+                }
+            }
+        }
+
+        if (hatch instanceof GT_MetaTileEntity_Hatch_Input tHatch && tHatch.isValid()) {
+            setHatchRecipeMap(tHatch);
+            if (tHatch instanceof GT_MetaTileEntity_Hatch_Input_ME meHatch) {
+                meHatch.startRecipeProcessing();
+                for (FluidStack fluidStack : meHatch.getStoredFluids()) {
+                    if (fluid.isFluidEqual(fluidStack)) {
+                        if (doDrain) fluidStack.amount = Math.max(fluidStack.amount - fluid.amount, 0);
+                        meHatch.endRecipeProcessing(this);
+                        return fluidStack.amount >= fluid.amount;
+                    }
+                }
+                meHatch.endRecipeProcessing(this);
+            } else {
+                FluidStack tFluid = tHatch.drain(ForgeDirection.UNKNOWN, fluid, doDrain);
+                return tFluid != null && tFluid.amount >= fluid.amount;
+            }
+        }
+
+        return false;
+    }
+
     public ArrayList<ItemStack> getStoredInputs() {
         if (supportsCraftingMEBuffer()) {
             for (IDualInputHatch tHatch : mDualInputHatches) {
