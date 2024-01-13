@@ -617,8 +617,7 @@ public class GT_MetaTileEntity_PCBFactory extends
                     return false;
                 }
                 FluidStack tFluid = GT_ModHandler.getDistilledWater(COOLANT_CONSUMED_PER_SEC);
-                FluidStack tLiquid = mCoolantInputHatch.drain(tFluid.amount, true);
-                if (tLiquid == null || tLiquid.amount < tFluid.amount || !tLiquid.equals(tFluid)) {
+                if (!drain(mCoolantInputHatch, tFluid, true)) {
                     criticalStopMachine();
                     return false;
                 }
@@ -631,8 +630,7 @@ public class GT_MetaTileEntity_PCBFactory extends
                 }
                 Fluid superCoolant = FluidRegistry.getFluid("supercoolant");
                 FluidStack tFluid = new FluidStack(superCoolant, COOLANT_CONSUMED_PER_SEC);
-                FluidStack tLiquid = mCoolantInputHatch.drain(tFluid.amount, true);
-                if (tLiquid == null || tLiquid.amount < tFluid.amount || !tLiquid.equals(tFluid)) {
+                if (!drain(mCoolantInputHatch, tFluid, true)) {
                     criticalStopMachine();
                     return false;
                 }
