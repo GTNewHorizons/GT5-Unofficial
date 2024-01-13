@@ -49,7 +49,7 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
             tIsRich = (aPrefix == OrePrefixes.oreNetherrack) || (aPrefix == OrePrefixes.oreNether);
         }
         // EndOre
-        if (GT_Mod.gregtechproxy.mNetherOreYieldMultiplier && !tIsRich) {
+        if (GT_Mod.gregtechproxy.mEndOreYieldMultiplier && !tIsRich) {
             tIsRich = (aPrefix == OrePrefixes.oreEndstone) || (aPrefix == OrePrefixes.oreEnd);
         }
 
