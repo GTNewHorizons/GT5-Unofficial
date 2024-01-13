@@ -160,7 +160,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
             return newPattern == null
                 || (!ItemStack.areItemStacksEqual(pattern, newPattern) && !this.patternDetails.equals(
                     ((ICraftingPatternItem) Objects.requireNonNull(pattern.getItem()))
-                        .getPatternForItem(pattern, world)));
+                        .getPatternForItem(newPattern, world)));
         }
 
         private boolean isEmpty() {
@@ -476,7 +476,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         if (getCrafterIcon() != null) {
             name.append(getCrafterIcon().getDisplayName());
         } else {
-            name.append(getInventoryName());
+            name.append(getLocalName());
         }
 
         if (mInventory[SLOT_CIRCUIT] != null) {
@@ -776,6 +776,8 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         NBTTagCompound tag = accessor.getNBTData();
+        if (tag.hasKey("name"))
+            currenttip.add(EnumChatFormatting.AQUA + tag.getString("name") + EnumChatFormatting.RESET);
         if (tag.hasKey("inventory")) {
             var inventory = tag.getTagList("inventory", Constants.NBT.TAG_COMPOUND);
             for (int i = 0; i < inventory.tagCount(); ++i) {
@@ -823,7 +825,9 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         }
 
         tag.setTag("inventory", inventory);
-        tag.setString("name", getName());
+        if (!Objects.equals(getName(), getLocalName())) {
+            tag.setString("name", getName());
+        }
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
     }
 
