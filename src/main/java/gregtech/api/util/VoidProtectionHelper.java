@@ -80,7 +80,7 @@ public class VoidProtectionHelper {
      */
     private double chanceMultiplier = 1;
 
-    private Function<Integer, Integer> chanceGetter;
+    private Function<Integer, Integer> chanceGetter = i -> 10000;
 
     public VoidProtectionHelper() {}
 
