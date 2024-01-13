@@ -703,6 +703,12 @@ public class GT_PreLoad {
         GT_Mod.gregtechproxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre = tMainConfig
             .get("general", "MixedOreOnlyYieldsTwoThirdsOfPureOre", false)
             .getBoolean(false);
+        GT_Mod.gregtechproxy.mRichOreYieldMultiplier = tMainConfig.get("general", "RichOreYieldMultiplier", true)
+            .getBoolean(false);
+        GT_Mod.gregtechproxy.mNetherOreYieldMultiplier = tMainConfig.get("general", "NetherOreYieldMultiplier", true)
+            .getBoolean(false);
+        GT_Mod.gregtechproxy.mEndOreYieldMultiplier = tMainConfig.get("general", "EndOreYieldMultiplier", true)
+            .getBoolean(false);
         GT_Mod.gregtechproxy.enableBlackGraniteOres = GregTech_API.sWorldgenFile
             .get("general", "enableBlackGraniteOres", GT_Mod.gregtechproxy.enableBlackGraniteOres);
         GT_Mod.gregtechproxy.enableRedGraniteOres = GregTech_API.sWorldgenFile
