@@ -584,18 +584,20 @@ public class GT_Achievements {
                 issueAchievement(player, "buildCompressor");
                 issueAchievement(player, "buildExtractor");
             }
-            case "gt.blockmachines.basicmachine.pump.tier.03" -> issueAchievement(player,"slurp");
-            case "gt.blockmachines.multimachine.blastfurnace" -> issueAchievement(player,"ebf");
-            case "gt.blockmachines.hatch.energy.tier.02" -> issueAchievement(player,"upgradeebf");
-            case "gt.blockmachines.multimachine.multifurnace" -> issueAchievement(player,"highpowersmelt");
-            case "gt.blockmachines.hatch.energy.tier.01" -> issueAchievement(player,"energyhatch");
-            case "gt.blockmachines.multimachine.processingarray" -> issueAchievement(player,"factory");
-            case "gt.blockmachines.basicgenerator.magicenergyconverter.tier.01" -> issueAchievement(player,"magic");
-            case "gt.blockmachines.basicgenerator.magicenergyabsorber.tier.03" -> issueAchievement(player,"highmage");
-            case "gt.blockmachines.basicgenerator.plasmagenerator.tier.07" -> issueAchievement(player,"fullefficiency");
-            case "gt.blockmachines.multimachine.largeturbine" -> issueAchievement(player,"muchsteam");
-            case "gt.blockmachines.multimachine.largehpturbine" -> issueAchievement(player,"efficientsteam");
-            case "gt.blockmachines.multimachine.cleanroom" -> issueAchievement(player,"gtcleanroom");
+            case "gt.blockmachines.basicmachine.pump.tier.03" -> issueAchievement(player, "slurp");
+            case "gt.blockmachines.multimachine.blastfurnace" -> issueAchievement(player, "ebf");
+            case "gt.blockmachines.hatch.energy.tier.02" -> issueAchievement(player, "upgradeebf");
+            case "gt.blockmachines.multimachine.multifurnace" -> issueAchievement(player, "highpowersmelt");
+            case "gt.blockmachines.hatch.energy.tier.01" -> issueAchievement(player, "energyhatch");
+            case "gt.blockmachines.multimachine.processingarray" -> issueAchievement(player, "factory");
+            case "gt.blockmachines.basicgenerator.magicenergyconverter.tier.01" -> issueAchievement(player, "magic");
+            case "gt.blockmachines.basicgenerator.magicenergyabsorber.tier.03" -> issueAchievement(player, "highmage");
+            case "gt.blockmachines.basicgenerator.plasmagenerator.tier.07" -> issueAchievement(
+                player,
+                "fullefficiency");
+            case "gt.blockmachines.multimachine.largeturbine" -> issueAchievement(player, "muchsteam");
+            case "gt.blockmachines.multimachine.largehpturbine" -> issueAchievement(player, "efficientsteam");
+            case "gt.blockmachines.multimachine.cleanroom" -> issueAchievement(player, "gtcleanroom");
             case "gt.neutronreflector" -> issueAchievement(player, "reflect");
             case "gt.blockcasings5.1" -> issueAchievement(player, "upgrade");
             case "gt.blockcasings5.2" -> issueAchievement(player, "upgrade2");
@@ -606,57 +608,62 @@ public class GT_Achievements {
             case "gt.blockcasings.15" -> issueAchievement(player, "conducting");
         }
 
-        if (stack.getUnlocalizedName().startsWith("gt.blockmachines.")) {
-            if (stack.getUnlocalizedName().startsWith("gt.blockmachines.basicmachine.arcfurnace.tier.")) {
+        if (stack.getUnlocalizedName()
+            .startsWith("gt.blockmachines.")) {
+            if (stack.getUnlocalizedName()
+                .startsWith("gt.blockmachines.basicmachine.arcfurnace.tier.")) {
                 issueAchievement(player, "recycling");
-            }
-            else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.basicmachine.disassembler.tier.")) {
-                issueAchievement(player, "repair");
+            } else if (stack.getUnlocalizedName()
+                .startsWith("gt.blockmachines.basicmachine.disassembler.tier.")) {
+                    issueAchievement(player, "repair");
 
-            }
-
-            else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.automation.superbuffer.tier.")) {
-                issueAchievement(player, "superbuffer");
-            }
-            else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.quantum.tank.tier.")) {
-                issueAchievement(player, "whereistheocean");
-            }
-            else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.quantum.chest.tier.")) {
-                issueAchievement(player, "newstorage");
-            }
-            else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.basicmachine.hammer.tier.")) {
-                issueAchievement(player, "cheapermac");
-            }
-            else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.automation.chestbuffer.tier.")) {
-                issueAchievement(player, "buffer");
-                issueAchievement(player,"buildBatBox");
-                if (stack.getUnlocalizedName().startsWith("gt.blockmachines.automation.chestbuffer.tier.3")) {
-                    issueAchievement(player,"buildMFE");
                 }
-            }
-            else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.basicgenerator.steamturbine.tier.")) {
-                issueAchievement(player,"steampower");
-                issueAchievement(player,"buildGenerator");
-            }
-            else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.basicmachine.assembler.tier.")) {
-                issueAchievement(player,"avengers");
-            }
-            else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.batterybuffer.")) {
-                issueAchievement(player,"batterys");
-            }
-            else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.basicmachine.amplifab.tier.")) {
-                issueAchievement(player,"amplifier");
-            }
-            else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.basicmachine.massfab.tier.")) {
-                issueAchievement(player,"universal");
-                issueAchievement(player,"buildMassFab");
-            }
-            else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.basicgenerator.naquadah.tier.")) {
-                issueAchievement(player,"alienpower");
-            }
-            else if (stack.getUnlocalizedName().startsWith("gt.blockmachines.basicmachine.replicator.tier.")) {
-                issueAchievement(player,"replication");
-            }
+
+            else if (stack.getUnlocalizedName()
+                .startsWith("gt.blockmachines.automation.superbuffer.tier.")) {
+                    issueAchievement(player, "superbuffer");
+                } else if (stack.getUnlocalizedName()
+                    .startsWith("gt.blockmachines.quantum.tank.tier.")) {
+                        issueAchievement(player, "whereistheocean");
+                    } else if (stack.getUnlocalizedName()
+                        .startsWith("gt.blockmachines.quantum.chest.tier.")) {
+                            issueAchievement(player, "newstorage");
+                        } else if (stack.getUnlocalizedName()
+                            .startsWith("gt.blockmachines.basicmachine.hammer.tier.")) {
+                                issueAchievement(player, "cheapermac");
+                            } else if (stack.getUnlocalizedName()
+                                .startsWith("gt.blockmachines.automation.chestbuffer.tier.")) {
+                                    issueAchievement(player, "buffer");
+                                    issueAchievement(player, "buildBatBox");
+                                    if (stack.getUnlocalizedName()
+                                        .startsWith("gt.blockmachines.automation.chestbuffer.tier.3")) {
+                                        issueAchievement(player, "buildMFE");
+                                    }
+                                } else if (stack.getUnlocalizedName()
+                                    .startsWith("gt.blockmachines.basicgenerator.steamturbine.tier.")) {
+                                        issueAchievement(player, "steampower");
+                                        issueAchievement(player, "buildGenerator");
+                                    } else if (stack.getUnlocalizedName()
+                                        .startsWith("gt.blockmachines.basicmachine.assembler.tier.")) {
+                                            issueAchievement(player, "avengers");
+                                        } else if (stack.getUnlocalizedName()
+                                            .startsWith("gt.blockmachines.batterybuffer.")) {
+                                                issueAchievement(player, "batterys");
+                                            } else if (stack.getUnlocalizedName()
+                                                .startsWith("gt.blockmachines.basicmachine.amplifab.tier.")) {
+                                                    issueAchievement(player, "amplifier");
+                                                } else if (stack.getUnlocalizedName()
+                                                    .startsWith("gt.blockmachines.basicmachine.massfab.tier.")) {
+                                                        issueAchievement(player, "universal");
+                                                        issueAchievement(player, "buildMassFab");
+                                                    } else if (stack.getUnlocalizedName()
+                                                        .startsWith("gt.blockmachines.basicgenerator.naquadah.tier.")) {
+                                                            issueAchievement(player, "alienpower");
+                                                        } else if (stack.getUnlocalizedName()
+                                                            .startsWith(
+                                                                "gt.blockmachines.basicmachine.replicator.tier.")) {
+                                                                    issueAchievement(player, "replication");
+                                                                }
         }
     }
 
@@ -755,19 +762,22 @@ public class GT_Achievements {
             case "gt.metaitem.03.32089" -> issueAchievement(player, "gtcrystalprocessor");
             case "gt.metaitem.03.32092" -> issueAchievement(player, "gtwetware");
             case "gt.metaitem.03.32095" -> issueAchievement(player, "gtwetmain");
-            case "gt.Thoriumcell" ->  issueAchievement(player, "newfuel");
-            case "ic2.itemPartCircuitAdv" ->  issueAchievement(player, "stepforward");
-            case "gt.blockcasings5.1" ->  issueAchievement(player, "upgrade");
-            case "gt.blockcasings5.2" ->  issueAchievement(player, "upgrade2");
-            case "gt.blockcasings5.3" ->  issueAchievement(player, "upgrade3");
-            case "gt.blockcasings5.4" ->  issueAchievement(player, "upgrade4");
-            case "gt.blockcasings5.5" ->  issueAchievement(player, "upgrade5");
-            case "gt.blockcasings5.6" ->  issueAchievement(player, "over9000");
-            case "gt.blockcasings.15" ->  issueAchievement(player, "conducting");
+            case "gt.Thoriumcell" -> issueAchievement(player, "newfuel");
+            case "ic2.itemPartCircuitAdv" -> issueAchievement(player, "stepforward");
+            case "gt.blockcasings5.1" -> issueAchievement(player, "upgrade");
+            case "gt.blockcasings5.2" -> issueAchievement(player, "upgrade2");
+            case "gt.blockcasings5.3" -> issueAchievement(player, "upgrade3");
+            case "gt.blockcasings5.4" -> issueAchievement(player, "upgrade4");
+            case "gt.blockcasings5.5" -> issueAchievement(player, "upgrade5");
+            case "gt.blockcasings5.6" -> issueAchievement(player, "over9000");
+            case "gt.blockcasings.15" -> issueAchievement(player, "conducting");
             case "gt.metaitem.01.32761" -> { // Debug Scanner pickup shows all assline recipes.
-                if (player.capabilities.isCreativeMode){
+                if (player.capabilities.isCreativeMode) {
                     for (GT_Recipe recipe : RecipeMaps.assemblylineVisualRecipes.getAllRecipes()) {
-                        issueAchievement(player,recipe.getOutput(0).getUnlocalizedName());
+                        issueAchievement(
+                            player,
+                            recipe.getOutput(0)
+                                .getUnlocalizedName());
                         recipe.mHidden = false;
                     }
                 }
@@ -778,8 +788,8 @@ public class GT_Achievements {
             || (stack.getItem() == Ic2Items.quantumBoots.getItem())
             || (stack.getItem() == Ic2Items.quantumHelmet.getItem())
             || (stack.getItem() == Ic2Items.quantumLeggings.getItem())) {
-                issueAchievement(player, "buildQArmor");
-            }
+            issueAchievement(player, "buildQArmor");
+        }
 
         for (GT_Recipe recipe : RecipeMaps.assemblylineVisualRecipes.getAllRecipes()) {
             if (recipe.getOutput(0)
