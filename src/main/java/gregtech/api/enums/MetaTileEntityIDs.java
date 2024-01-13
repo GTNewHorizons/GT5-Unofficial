@@ -676,7 +676,9 @@ public enum MetaTileEntityIDs {
     RECIPE_FILTER_ZPM(9337),
     RECIPE_FILTER_UV(9338),
     RECIPE_FILTER_UHV(9339),
-    INDUSTRIAL_APIARY(9399);
+    INDUSTRIAL_APIARY(9399),
+    Drone_Centre(9400),
+    DroneDownLink(9401);
 
     public final int ID;
 

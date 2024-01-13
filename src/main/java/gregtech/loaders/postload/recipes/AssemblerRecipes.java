@@ -99,6 +99,21 @@ public class AssemblerRecipes implements Runnable {
             .eut(48)
             .addTo(assemblerRecipes);
 
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.TungstenSteel, 16),
+                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Data), 4),
+                ItemList.Electric_Motor_IV.get(16),
+                ItemList.Emitter_EV.get(4),
+                ItemList.Duct_Tape.get(64),
+                ItemList.Energy_LapotronicOrb.get(1),
+                GT_Utility.getIntegratedCircuit(4))
+            .itemOutputs(ItemList.TierdDrone0.get(4))
+            .fluidInputs(Materials.AdvancedGlue.getFluid(144))
+            .duration(10 * SECONDS)
+            .eut(48)
+            .addTo(assemblerRecipes);
+
         for (byte i = 0; i < 16; i = (byte) (i + 1)) {
             for (int j = 0; j < Dyes.VALUES[i].getSizeOfFluidList(); j++) {
 
