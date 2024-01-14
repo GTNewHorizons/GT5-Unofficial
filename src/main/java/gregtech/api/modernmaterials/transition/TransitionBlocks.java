@@ -83,23 +83,23 @@ public class TransitionBlocks {
         // Normal ores are 0-6000
         // Small ores are 16000-22000
         if (metadata > 10000) {
-            if (dimID == 0) {
-                if (metadata / 1000 == 16) return EarthSmallOre;
-                if (metadata / 1000 == 19) return BlackGraniteSmallOre;
-                if (metadata / 1000 == 20) return RedGraniteSmallOre;
-                if (metadata / 1000 == 21) return MarbleSmallOre;
-                if (metadata / 1000 == 22) return BasaltSmallOre;
-            }
+            if (metadata / 1000 == 17) return NetherSmallOre;
+            if (metadata / 1000 == 18) return EndSmallOre;
+            if (metadata / 1000 == 19) return BlackGraniteSmallOre;
+            if (metadata / 1000 == 20) return RedGraniteSmallOre;
+            if (metadata / 1000 == 21) return MarbleSmallOre;
+            if (metadata / 1000 == 22) return BasaltSmallOre;
+
             // Other dimensions. Defaults to Earth if none found.
             return smallOreWorldConverter(dimID);
         } else {
-            if (dimID == 0) {
-                if (metadata / 1000 == 0) return EarthNormalOre;
-                if (metadata / 1000 == 3) return BlackGraniteNormalOre;
-                if (metadata / 1000 == 4) return RedGraniteNormalOre;
-                if (metadata / 1000 == 5) return MarbleNormalOre;
-                if (metadata / 1000 == 6) return BasaltNormalOre;
-            }
+            if (metadata / 1000 == 1) return NetherNormalOre;
+            if (metadata / 1000 == 2) return EndNormalOre;
+            if (metadata / 1000 == 3) return BlackGraniteNormalOre;
+            if (metadata / 1000 == 4) return RedGraniteNormalOre;
+            if (metadata / 1000 == 5) return MarbleNormalOre;
+            if (metadata / 1000 == 6) return BasaltNormalOre;
+
             // Other dimensions. Defaults to Earth if none found.
             return normalOreWorldConverter(dimID);
         }
