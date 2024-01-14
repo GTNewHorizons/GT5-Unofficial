@@ -281,7 +281,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
         float aX, float aY, float aZ, ItemStack aTool) {
 
         // glue
-        if (onWrenchRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ)) {
+        if (onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ)) {
             return true;
         }
 
