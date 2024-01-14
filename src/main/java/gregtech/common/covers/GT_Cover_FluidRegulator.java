@@ -108,14 +108,8 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
             }
             if (tTank1 != null && tTank2 != null) {
                 allowFluid = true;
-                FluidStack tLiquid = tTank1.drain(directionFrom, Math.abs(aCoverVariable.speed), false);
-                if (tLiquid != null && this.canTransferFluid(tLiquid)) {
-                    tLiquid = tLiquid.copy();
-                    tLiquid.amount = tTank2.fill(directionTo, tLiquid, false);
-                    if (tLiquid.amount > 0) {
-                        tTank2.fill(directionTo, tTank1.drain(directionFrom, tLiquid.amount, true), true);
-                    }
-                }
+                GT_Utility
+                    .moveFluid(tTank1, tTank2, directionFrom, Math.abs(aCoverVariable.speed), this::canTransferFluid);
                 allowFluid = false;
             }
         }
