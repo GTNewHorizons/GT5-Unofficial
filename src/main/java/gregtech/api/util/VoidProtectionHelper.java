@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.function.Function;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -70,6 +71,16 @@ public class VoidProtectionHelper {
      * Is this helper working for a MuTE?
      */
     private boolean muteMode;
+    /**
+     * Multiplier by which the output will be multiplied
+     */
+    private int outputMultiplier = 1;
+    /**
+     * Multiplier that is applied on the output chances
+     */
+    private double chanceMultiplier = 1;
+
+    private Function<Integer, Integer> chanceGetter = i -> 10000;
 
     public VoidProtectionHelper() {}
 
@@ -120,6 +131,21 @@ public class VoidProtectionHelper {
 
     public VoidProtectionHelper setMuTEMode(boolean muteMode) {
         this.muteMode = muteMode;
+        return this;
+    }
+
+    public VoidProtectionHelper setOutputMultiplier(int outputMultiplier) {
+        this.outputMultiplier = outputMultiplier;
+        return this;
+    }
+
+    public VoidProtectionHelper setChanceMultiplier(double chanceMultiplier) {
+        this.chanceMultiplier = chanceMultiplier;
+        return this;
+    }
+
+    public VoidProtectionHelper setChangeGetter(Function<Integer, Integer> getter) {
+        this.chanceGetter = getter;
         return this;
     }
 
@@ -288,10 +314,10 @@ public class VoidProtectionHelper {
 
         // Iterate over the outputs, calculating require stack spacing they will require.
         for (FluidStack aY : fluidOutputs) {
-            if (aY == null || aY.amount <= 0) {
-                continue;
-            }
-            tFluidOutputMap.merge(aY, aY.amount, Integer::sum);
+            if (aY == null) continue;
+            int fluidAmount = aY.amount * outputMultiplier;
+            if (fluidAmount <= 0) continue;
+            tFluidOutputMap.merge(aY, fluidAmount, Integer::sum);
             tParallels.put(aY, new ParallelData(0, 0));
         }
 
@@ -369,12 +395,14 @@ public class VoidProtectionHelper {
         // issues with floating point math not being completely accurate when summing.
         Map<ItemStack, ParallelData> tParallels = new ItemStackMap<>();
         int tSlotsFree = 0;
+        int index = 0;
         for (ItemStack tItem : itemOutputs) {
             // GT_RecipeBuilder doesn't handle null item output
-            if (tItem == null || tItem.stackSize <= 0) {
-                continue;
-            }
-            tItemOutputMap.merge(tItem, tItem.stackSize, Integer::sum);
+            if (tItem == null) continue;
+            int itemStackSize = (int) (tItem.stackSize * outputMultiplier
+                * Math.ceil(chanceMultiplier * chanceGetter.apply(index++) / 10000));
+            if (itemStackSize <= 0) continue;
+            tItemOutputMap.merge(tItem, itemStackSize, Integer::sum);
             tParallels.put(tItem, new ParallelData(0, 0));
         }
 
