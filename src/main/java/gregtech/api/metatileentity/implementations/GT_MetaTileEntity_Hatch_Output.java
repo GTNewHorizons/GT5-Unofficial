@@ -131,17 +131,12 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch
             IFluidHandler tTileEntity = aBaseMetaTileEntity
                 .getITankContainerAtSide(aBaseMetaTileEntity.getFrontFacing());
             if (tTileEntity != null) {
-                FluidStack tDrained = aBaseMetaTileEntity
-                    .drain(aBaseMetaTileEntity.getFrontFacing(), Math.max(1, mFluid.amount), false);
-                if (tDrained != null) {
-                    int tFilledAmount = tTileEntity.fill(aBaseMetaTileEntity.getBackFacing(), tDrained, false);
-                    if (tFilledAmount > 0) {
-                        tTileEntity.fill(
-                            aBaseMetaTileEntity.getBackFacing(),
-                            aBaseMetaTileEntity.drain(aBaseMetaTileEntity.getFrontFacing(), tFilledAmount, true),
-                            true);
-                    }
-                }
+                GT_Utility.moveFluid(
+                    aBaseMetaTileEntity,
+                    tTileEntity,
+                    aBaseMetaTileEntity.getFrontFacing(),
+                    Math.max(1, mFluid.amount),
+                    null);
             }
         }
     }

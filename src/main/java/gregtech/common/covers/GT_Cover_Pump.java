@@ -50,32 +50,16 @@ public class GT_Cover_Pump extends GT_CoverBehavior {
             final IFluidHandler toAccess = aTileEntity.getITankContainerAtSide(side);
             if (toAccess == null) return aCoverVariable;
 
-            transferFluid(current, toAccess, side, aCoverVariable % 2);
+            transferFluid(current, toAccess, side, aCoverVariable % 2 == 0);
         }
         return aCoverVariable;
     }
 
-    protected void transferFluid(IFluidHandler current, IFluidHandler toAccess, ForgeDirection side,
-        int exportOrImport) {
-        if (exportOrImport == 0) {
-            FluidStack liquid = current.drain(side, this.mTransferRate, false);
-            if (liquid != null) {
-                liquid = liquid.copy();
-                liquid.amount = toAccess.fill(side.getOpposite(), liquid, false);
-                if (liquid.amount > 0 && canTransferFluid(liquid)) {
-                    toAccess.fill(side.getOpposite(), current.drain(side, liquid.amount, true), true);
-                }
-            }
-            return;
-        }
-        FluidStack liquid = toAccess.drain(side.getOpposite(), this.mTransferRate, false);
-        if (liquid != null) {
-            liquid = liquid.copy();
-            liquid.amount = current.fill(side, liquid, false);
-            if (liquid.amount > 0 && canTransferFluid(liquid)) {
-                current.fill(side, toAccess.drain(side.getOpposite(), liquid.amount, true), true);
-            }
-        }
+    protected void transferFluid(IFluidHandler current, IFluidHandler toAccess, ForgeDirection side, boolean export) {
+        IFluidHandler source = export ? current : toAccess;
+        IFluidHandler dest = export ? toAccess : current;
+        ForgeDirection drainSide = export ? side : side.getOpposite();
+        GT_Utility.moveFluid(source, dest, drainSide, mTransferRate, this::canTransferFluid);
     }
 
     protected boolean canTransferFluid(FluidStack fluid) {
