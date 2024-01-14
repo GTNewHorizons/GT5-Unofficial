@@ -260,7 +260,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
         // glue
-        if (onWrenchRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ)) {
+        if (onWireCutterRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ)) {
             return true;
         }
         if (!aPlayer.isSneaking()) return false;
