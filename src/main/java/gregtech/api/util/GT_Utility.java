@@ -1717,9 +1717,9 @@ public class GT_Utility {
         FluidStack liquid = source.drain(drainSide, maxAmount, false);
         if (liquid == null) return;
         liquid = liquid.copy();
-        liquid.amount = dest.fill(drainSide.getOpposite(), liquid, false);
+        liquid.amount = dest.fill(fillSide, liquid, false);
         if (liquid.amount > 0 && (allowMove == null || allowMove.test(liquid))) {
-            dest.fill(fillSide, dest.drain(drainSide.getOpposite(), liquid.amount, true), true);
+            dest.fill(fillSide, source.drain(drainSide, liquid.amount, true), true);
         }
     }
 
