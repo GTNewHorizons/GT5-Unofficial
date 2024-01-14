@@ -123,6 +123,14 @@ public class GT_ParallelHelper {
      */
     private float eutModifier = 1;
     /**
+     * Multiplier that is applied on the output chances
+     */
+    private double chanceMultiplier = 1;
+    /**
+     * Multiplier by which the output will be multiplied
+     */
+    private int outputMultiplier = 1;
+    /**
      * Method for calculating max parallel from given inputs.
      */
     private MaxParallelCalculator maxParallelCalculator = GT_Recipe::maxParallelCalculatedByInputs;
@@ -218,6 +226,25 @@ public class GT_ParallelHelper {
     @Nonnull
     public GT_ParallelHelper setEUtModifier(float aEUtModifier) {
         this.eutModifier = aEUtModifier;
+        return this;
+    }
+
+    /**
+     * Sets the multiplier that is applied on output chances. 1 does nothing. 0.9 is 10% less. 1.1 is 10% more.
+     * Only useful for item outputs for sure.
+     */
+    @Nonnull
+    public GT_ParallelHelper setChanceMultiplier(double chanceMultiplier) {
+        this.chanceMultiplier = chanceMultiplier;
+        return this;
+    }
+
+    /**
+     * Sets the item/fluid output multiplier. 1 does nothing. 2 doubles the item and fluid outputs.
+     */
+    @Nonnull
+    public GT_ParallelHelper setOutputMultiplier(int outputMultiplier) {
+        this.outputMultiplier = outputMultiplier;
         return this;
     }
 
@@ -484,6 +511,9 @@ public class GT_ParallelHelper {
             voidProtectionHelper.setMachine(machine)
                 .setItemOutputs(truncatedItemOutputs)
                 .setFluidOutputs(truncatedFluidOutputs)
+                .setChangeGetter(recipe::getOutputChance)
+                .setOutputMultiplier(outputMultiplier)
+                .setChanceMultiplier(chanceMultiplier)
                 .setMaxParallel(maxParallel)
                 .setItemOutputInventory(itemOutputInventory)
                 .setFluidOutputInventory(fluidOutputInventory)
@@ -589,8 +619,10 @@ public class GT_ParallelHelper {
             ItemStack origin = recipe.getOutput(i)
                 .copy();
             final long itemStackSize = origin.stackSize;
-            double outputMultiplier = calculateChancedOutputMultiplier(recipe.getOutputChance(i), currentParallel);
-            long items = (long) Math.ceil(itemStackSize * outputMultiplier);
+            double chancedOutputMultiplier = calculateChancedOutputMultiplier(
+                (int) (recipe.getOutputChance(i) * chanceMultiplier),
+                currentParallel);
+            long items = (long) Math.ceil(itemStackSize * chancedOutputMultiplier * outputMultiplier);
             addItemsLong(itemOutputsList, origin, items);
         }
         itemOutputs = itemOutputsList.toArray(new ItemStack[0]);
@@ -607,7 +639,7 @@ public class GT_ParallelHelper {
             if (recipe.getFluidOutput(i) == null) continue;
             FluidStack origin = recipe.getFluidOutput(i)
                 .copy();
-            long fluids = (long) origin.amount * currentParallel;
+            long fluids = (long) this.outputMultiplier * origin.amount * currentParallel;
 
             addFluidsLong(fluidOutputsList, origin, fluids);
         }
@@ -617,9 +649,12 @@ public class GT_ParallelHelper {
     private static final Random rand = new Random();
 
     public static double calculateChancedOutputMultiplier(int chanceInt, int parallel) {
-        if (chanceInt >= 10000) return parallel;
-        double multiplier = 0;
-        double chance = (double) chanceInt / 10000;
+        // Multiply the integer part of the chance directly with parallel
+        double multiplier = Math.floorDiv(chanceInt, 10000) * parallel;
+        int transformedChanceInt = chanceInt % 10000;
+        if (transformedChanceInt == 0) return multiplier;
+        // Calculation of the Decimal Part of chance
+        double chance = transformedChanceInt / 10000.0;
         double mean = parallel * chance;
         double stdDev = Math.sqrt(parallel * chance * (1 - chance));
         // Check if everything within 3 standard deviations of mean is within the range
@@ -627,12 +662,12 @@ public class GT_ParallelHelper {
         boolean isSuitableForFittingWithNormalDistribution = mean - 3 * stdDev >= 0 && mean + 3 * stdDev <= parallel;
         if (isSuitableForFittingWithNormalDistribution) {
             // Use Normal Distribution to fit Binomial Distribution
-            multiplier = stdDev * rand.nextGaussian() + mean;
-            multiplier = Math.max(Math.min(multiplier, parallel), 0);
+            double tMultiplier = stdDev * rand.nextGaussian() + mean;
+            multiplier += Math.max(Math.min(tMultiplier, parallel), 0);
         } else {
             // Do Binomial Distribution by loop
             for (int roll = 0; roll < parallel; roll++) {
-                if (chanceInt > XSTR.XSTR_INSTANCE.nextInt(10000)) {
+                if (transformedChanceInt > XSTR.XSTR_INSTANCE.nextInt(10000)) {
                     multiplier += 1;
                 }
             }

@@ -572,23 +572,7 @@ public class GT_MetaTileEntity_PCBFactory extends
             protected GT_ParallelHelper createParallelHelper(@Nonnull GT_Recipe recipe) {
                 return super.createParallelHelper(recipe)
                     .setEUtModifier((float) Math.sqrt(mUpgradesInstalled == 0 ? 1 : mUpgradesInstalled))
-                    .setCustomItemOutputCalculation(currentParallel -> {
-                        ArrayList<ItemStack> chancedOutputs = new ArrayList<>();
-                        for (int i = 0; i < currentParallel; i++) {
-                            for (ItemStack item : recipe.mOutputs) {
-                                int remainingEfficiency = getMaxEfficiency(getControllerSlot());
-                                while (remainingEfficiency > 0) {
-                                    if (getBaseMetaTileEntity().getRandomNumber(10000) >= remainingEfficiency) {
-                                        remainingEfficiency -= 10000;
-                                        continue;
-                                    }
-                                    chancedOutputs.add(item);
-                                    remainingEfficiency -= 10000;
-                                }
-                            }
-                        }
-                        return chancedOutputs.toArray(new ItemStack[0]);
-                    });
+                    .setChanceMultiplier(mRoughnessMultiplier);
             }
         };
     }
