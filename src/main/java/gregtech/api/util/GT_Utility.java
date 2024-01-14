@@ -1689,31 +1689,30 @@ public class GT_Utility {
      *
      * this overload will assume the fill side is the opposite of drainSide
      *
-     * @param source tank to drain from. method become noop if this is null
-     * @param dest tank to fill to. method become noop if this is null
+     * @param source    tank to drain from. method become noop if this is null
+     * @param dest      tank to fill to. method become noop if this is null
      * @param drainSide side used during draining operation
      * @param maxAmount max amount of fluid to transfer. method become noop if this is not a positive integer
      * @param allowMove filter. can be null to signal all fluids are accepted
      */
     public static void moveFluid(IFluidHandler source, IFluidHandler dest, ForgeDirection drainSide, int maxAmount,
-                                 @Nullable Predicate<FluidStack> allowMove) {
+        @Nullable Predicate<FluidStack> allowMove) {
         moveFluid(source, dest, drainSide, drainSide.getOpposite(), maxAmount, allowMove);
     }
-
 
     /**
      * Move up to maxAmount amount of fluid from source to dest, with optional filtering via allowMove. note that this
      * filter cannot bypass filtering done by IFluidHandlers themselves.
      *
-     * @param source tank to drain from. method become noop if this is null
-     * @param dest tank to fill to. method become noop if this is null
+     * @param source    tank to drain from. method become noop if this is null
+     * @param dest      tank to fill to. method become noop if this is null
      * @param drainSide side used during draining operation
      * @param fillSide  side used during filling operation
      * @param maxAmount max amount of fluid to transfer. method become noop if this is not a positive integer
      * @param allowMove filter. can be null to signal all fluids are accepted
      */
     public static void moveFluid(IFluidHandler source, IFluidHandler dest, ForgeDirection drainSide,
-                                 ForgeDirection fillSide, int maxAmount, @Nullable Predicate<FluidStack> allowMove) {
+        ForgeDirection fillSide, int maxAmount, @Nullable Predicate<FluidStack> allowMove) {
         if (source == null || dest == null || maxAmount <= 0) return;
         FluidStack liquid = source.drain(drainSide, maxAmount, false);
         if (liquid == null) return;
