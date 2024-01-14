@@ -778,25 +778,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         return this;
     }
 
-    @Override
-    public boolean equals(Object other) {
-        if (other == this) return true;
-        if (!(other instanceof GT_Recipe recipe)) return false;
-        for (int i = 0; i < Math.min(mInputs.length, recipe.mInputs.length); i++) {
-            if (mInputs[i] == null && recipe.mInputs[i] == null) continue;
-            if (mInputs[i] == null || recipe.mInputs[i] == null) return false;
-            ItemHolder currentIH = new ItemHolder(mInputs[i]);
-            ItemHolder otherIH = new ItemHolder(recipe.mInputs[i]);
-            if (!currentIH.equals(otherIH)) return false;
-        }
-        for (int i = 0; i < Math.min(mFluidInputs.length, recipe.mFluidInputs.length); i++) {
-            if (mFluidInputs[i] == null && recipe.mFluidInputs[i] == null) continue;
-            if (mFluidInputs[i] == null || recipe.mFluidInputs[i] == null) return false;
-            if (!FluidStack.areFluidStackTagsEqual(mFluidInputs[i], recipe.mFluidInputs[i])) return false;
-        }
-        return mDuration == recipe.mDuration && mEUt == recipe.mEUt && mSpecialValue == recipe.mSpecialValue;
-    }
-
     public static class GT_Recipe_AssemblyLine {
 
         public static final ArrayList<GT_Recipe_AssemblyLine> sAssemblylineRecipes = new ArrayList<>();
