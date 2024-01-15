@@ -503,7 +503,7 @@ public class FluidExtractorRecipes implements Runnable {
             .addTo(fluidExtractionRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_Canola.get(1))
+            .itemInputs(ItemList.Crop_Drop_Rape.get(1))
             .fluidOutputs(Materials.SeedOil.getFluid(125))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(2)
