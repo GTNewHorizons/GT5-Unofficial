@@ -41,7 +41,7 @@ public class MaterialPart extends Item {
     public String getItemStackDisplayName(ItemStack itemStack) {
         ModernMaterial material = ModernMaterial.getMaterialFromItemStack(itemStack);
         if (material == null) return "ERROR: Null Material";
-        return part.partName.replace("%", material.getLocalizedName());
+        return part.getLocalizedName(material);
     }
 
     // Tooltip information.
