@@ -796,7 +796,7 @@ public class GT_Mod implements IGT_Mod {
         GT_Utility.reInit();
         GT_Recipe.reInit();
         try {
-            for (Map<? extends ItemHolder, ?> gt_itemStackMap : GregTech_API.sItemStackMappings) {
+            for (Map<?, ?> gt_itemStackMap : GregTech_API.sItemStackMappings) {
                 GT_Utility.reMap(gt_itemStackMap);
             }
             for (SetMultimap<? extends ItemHolder, ?> gt_itemStackMap : GregTech_API.itemStackMultiMaps) {

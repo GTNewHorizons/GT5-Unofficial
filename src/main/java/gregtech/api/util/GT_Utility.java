@@ -3137,6 +3137,18 @@ public class GT_Utility {
         return aList[aIndex];
     }
 
+    public static boolean isStackInStackSet(ItemStack aStack, Set<ItemStack> aSet) {
+        if (aStack == null) return false;
+        if (aSet.contains(aStack)) return true;
+
+        // Modifying the parameter avoids allocating a new ItemStack
+        int oldDamage = aStack.getItemDamage();
+        Items.feather.setDamage(aStack, W);
+        boolean contains = aSet.contains(aStack);
+        Items.feather.setDamage(aStack, oldDamage);
+        return contains;
+    }
+
     public static boolean isStackInList(ItemStack aStack, Collection<GT_ItemStack> aList) {
         if (aStack == null) {
             return false;
@@ -3165,7 +3177,25 @@ public class GT_Utility {
      * re-maps all Keys of a Map after the Keys were weakened.
      */
     public static <X, Y> Map<X, Y> reMap(Map<X, Y> aMap) {
-        Map<X, Y> tMap = new HashMap<>(aMap);
+        Map<X, Y> tMap = null;
+        // We try to clone the Map first (most Maps are Cloneable) in order to retain as much state of the Map as
+        // possible when rehashing. For example, "Custom" HashMaps from fastutil may have a custom hash function which
+        // would not be used to rehash if we just create a new HashMap.
+        if (aMap instanceof Cloneable) {
+            try {
+                tMap = (Map<X, Y>) aMap.getClass()
+                    .getMethod("clone")
+                    .invoke(aMap);
+            } catch (Throwable e) {
+                GT_Log.err.println("Failed to clone Map of type " + aMap.getClass());
+                e.printStackTrace(GT_Log.err);
+            }
+        }
+
+        if (tMap == null) {
+            tMap = new HashMap<>(aMap);
+        }
+
         aMap.clear();
         aMap.putAll(tMap);
         return aMap;
