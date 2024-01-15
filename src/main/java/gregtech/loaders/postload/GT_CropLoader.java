@@ -1012,7 +1012,7 @@ public class GT_CropLoader implements Runnable {
                 null);
             new GT_BaseCrop(
                 178,
-                "Canola",
+                "Rape",
                 "unknown",
                 null,
                 4,
@@ -1026,7 +1026,7 @@ public class GT_CropLoader implements Runnable {
                 2,
                 0,
                 new String[] { "Food", "Yellow", "Oil" },
-                ItemList.Crop_Drop_Canola.get(1),
+                ItemList.Crop_Drop_Rape.get(1),
                 null);
             new GT_BaseCrop(
                 179,
