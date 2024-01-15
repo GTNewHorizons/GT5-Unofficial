@@ -25,7 +25,7 @@ public enum ItemsEnum implements IEnumPart {
 
     // Plates
     DensePlate("Dense % Plate", 9),
-    Foil("% Foil", 1.0/4.0),
+    Foil("% Foil", 1.0 / 4.0),
 
     Plate("% Plate", 1),
     DoublePlate("Double % Plate", 2),

@@ -104,8 +104,8 @@ public enum BlocksEnum implements IEnumPart {
      * @param material The material for which to get the localized name.
      * @return The localized name.
      */
-    public String getLocalisedName(final ModernMaterial material) {
-        return unlocalizedName.replace("%", material.getMaterialName());
+    public String getLocalizedName(final ModernMaterial material) {
+        return unlocalizedName.replace("%", material.getLocalizedName());
     }
 
     @Override

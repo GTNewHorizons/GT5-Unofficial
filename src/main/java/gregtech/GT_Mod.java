@@ -18,7 +18,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.function.Predicate;
 
-import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -53,6 +52,7 @@ import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.registry.EntityRegistry;
+import cpw.mods.fml.relauncher.Side;
 import gregtech.api.GregTech_API;
 import gregtech.api.enchants.Enchantment_EnderDamage;
 import gregtech.api.enchants.Enchantment_Hazmat;
@@ -328,7 +328,8 @@ public class GT_Mod implements IGT_Mod {
     @Mod.EventHandler
     public void onLoad(FMLInitializationEvent aEvent) {
 
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
+        if (FMLCommonHandler.instance()
+            .getEffectiveSide() == Side.CLIENT) {
             MinecraftForge.EVENT_BUS.register(new ExtraIcons());
             MinecraftForge.EVENT_BUS.register(new ModernMaterialsTextureRegister());
         }

@@ -9,14 +9,15 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.client.IItemRenderer;
 
 import org.jetbrains.annotations.NotNull;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
 import gregtech.api.modernmaterials.blocks.registration.BlocksEnum;
 import gregtech.api.modernmaterials.effects.IMaterialEffect;
 import gregtech.api.modernmaterials.fluids.FluidEnum;
@@ -46,7 +47,7 @@ public final class ModernMaterial {
     private static final HashMap<Integer, ModernMaterial> materialIDToMaterial = new HashMap<>();
     private static final HashMap<String, ModernMaterial> materialNameToMaterialMap = new HashMap<>();
 
-    public ModernMaterial(final String materialName) {
+    private ModernMaterial(final String materialName) {
         this.materialName = materialName;
     }
 
@@ -66,8 +67,25 @@ public final class ModernMaterial {
         return materialID;
     }
 
+    /**
+     * @return Registered material name.
+     */
     public String getMaterialName() {
         return materialName;
+    }
+
+    /**
+     * @return Unlocalized name for this material.
+     */
+    public String getTranslationKey() {
+        return "gt.material." + materialName;
+    }
+
+    /**
+     * @return Translated name for this material.
+     */
+    public String getLocalizedName() {
+        return StatCollector.translateToLocal(getTranslationKey());
     }
 
     public static Set<ModernMaterial> getAllMaterials() {
@@ -127,16 +145,16 @@ public final class ModernMaterial {
             throw new IllegalArgumentException("Material with ID " + material.getMaterialID() + " already exists.");
         }
 
-        if (materialNameToMaterialMap.containsKey(material.getMaterialName())) {
+        if (materialNameToMaterialMap.containsKey(material.materialName)) {
             throw new IllegalArgumentException(
-                "Material with name " + material.getMaterialName()
+                "Material with name " + material.materialName
                     + " already exists. Material was registered with ID "
                     + material.getMaterialID()
                     + ".");
         }
 
         materialIDToMaterial.put(material.getMaterialID(), material);
-        materialNameToMaterialMap.put(material.getMaterialName(), material);
+        materialNameToMaterialMap.put(material.materialName, material);
     }
 
     private static void safeguardChecks(ModernMaterial material) {
@@ -184,28 +202,30 @@ public final class ModernMaterial {
 
     public static class ModernMaterialBuilder {
 
-        public ModernMaterial materialToBuild;
+        private final ModernMaterial materialToBuild;
 
+        /**
+         * Entry point for building new material. Add lang entry for {@code gt.material.<materialName>}
+         * to make translated item name show up in the game.
+         *
+         * @param materialName Name for the material to build, should be snakecase by convention.
+         */
         public ModernMaterialBuilder(String materialName) {
             materialToBuild = new ModernMaterial(materialName);
         }
 
         ModernMaterial build() {
-            ModernMaterial builtMaterial = materialToBuild;
-
             for (IEnumPart part : materialToBuild.existingPartsForMaterial) {
                 part.addAssociatedMaterial(materialToBuild);
             }
 
             // Complete set of all materials.
-            allMaterials.add(builtMaterial);
+            allMaterials.add(materialToBuild);
 
-            materialToBuild = new ModernMaterial();
+            safeguardChecks(materialToBuild);
+            registerMaterial(materialToBuild);
 
-            safeguardChecks(builtMaterial);
-            registerMaterial(builtMaterial);
-
-            return builtMaterial;
+            return materialToBuild;
         }
 
         public ModernMaterialBuilder setColor(int red, int green, int blue) {
@@ -325,7 +345,8 @@ public final class ModernMaterial {
         }
 
         public ModernMaterialBuilder addCustomRenderers(Consumer<ModernMaterialBuilder> rendererRegistration) {
-            if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
+            if (FMLCommonHandler.instance()
+                .getEffectiveSide() == Side.CLIENT) {
                 rendererRegistration.accept(this);
             }
             return this;

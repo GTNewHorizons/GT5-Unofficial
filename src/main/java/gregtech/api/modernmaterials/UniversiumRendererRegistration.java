@@ -1,7 +1,5 @@
 package gregtech.api.modernmaterials;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.modernmaterials.blocks.blocktypes.blockof.special.UniversiumBlockOfBlockRenderer;
@@ -18,10 +16,11 @@ public class UniversiumRendererRegistration extends RendererRegistration {
 
     @SideOnly(Side.CLIENT)
     public static void registerRenderers(ModernMaterial.ModernMaterialBuilder builder) {
-        builder.setCustomBlockRenderer(
-            BlocksEnum.FrameBox,
-            new UniversiumFrameItemRenderer(),
-            new UniversiumFrameBlockRenderer())
+        builder
+            .setCustomBlockRenderer(
+                BlocksEnum.FrameBox,
+                new UniversiumFrameItemRenderer(),
+                new UniversiumFrameBlockRenderer())
             .setCustomBlockRenderer(
                 BlocksEnum.SolidBlock,
                 new UniversiumBlockOfItemRenderer(),

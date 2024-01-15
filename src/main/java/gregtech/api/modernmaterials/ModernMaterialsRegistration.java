@@ -1,12 +1,5 @@
 package gregtech.api.modernmaterials;
 
-import gregtech.api.enums.TierEU;
-import gregtech.api.modernmaterials.effects.Effects;
-import gregtech.api.modernmaterials.fluids.ModernMaterialFluid;
-import gregtech.api.modernmaterials.items.partproperties.customitemrenderers.UniversiumItemRenderer;
-import gregtech.api.modernmaterials.recipegenerators.Metal;
-import gregtech.api.modernmaterials.tooltips.CustomTooltips;
-
 import static gregtech.api.modernmaterials.fluids.FluidEnum.Gas;
 import static gregtech.api.modernmaterials.fluids.FluidEnum.Molten;
 import static gregtech.api.modernmaterials.fluids.FluidEnum.NoPrefix;
@@ -17,9 +10,16 @@ import static gregtech.api.modernmaterials.items.partproperties.TextureType.Gem;
 import static gregtech.api.modernmaterials.items.partproperties.TextureType.Metal_Dull;
 import static gregtech.api.modernmaterials.items.partproperties.TextureType.Metal_Shiny;
 
+import gregtech.api.enums.TierEU;
+import gregtech.api.modernmaterials.effects.Effects;
+import gregtech.api.modernmaterials.fluids.ModernMaterialFluid;
+import gregtech.api.modernmaterials.items.partproperties.customitemrenderers.UniversiumItemRenderer;
+import gregtech.api.modernmaterials.recipegenerators.Metal;
+import gregtech.api.modernmaterials.tooltips.CustomTooltips;
+
 public class ModernMaterialsRegistration {
 
-    public static final ModernMaterial Copper = new ModernMaterial.ModernMaterialBuilder("Copper").setMaterialID(35)
+    public static final ModernMaterial Copper = new ModernMaterial.ModernMaterialBuilder("copper").setMaterialID(35)
         .setColor(120, 100, 0)
         .setTextureMode(Metal_Dull)
         .addAllParts()
@@ -54,7 +54,7 @@ public class ModernMaterialsRegistration {
             .addFluid(Plasma, 100_000)
             .build();
 
-        new ModernMaterial.ModernMaterialBuilder("Universium").setColor(255, 255, 255)
+        new ModernMaterial.ModernMaterialBuilder("universium").setColor(255, 255, 255)
             .setMaterialID(139)
             .setTextureMode(Custom)
             .setMaterialTier(TierEU.MAX)
