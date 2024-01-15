@@ -4,11 +4,8 @@ import static org.lwjgl.opengl.GL11.GL_CURRENT_BIT;
 
 import java.awt.Color;
 
-import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
@@ -50,7 +47,6 @@ public class ModernMaterialItemRenderer implements IItemRenderer {
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack itemStack, Object... objects) {
-
         if (!(itemStack.getItem() instanceof MaterialPart materialPart)) return;
 
         ModernMaterial material = ModernMaterial.getMaterialFromItemStack(itemStack);
@@ -89,29 +85,11 @@ public class ModernMaterialItemRenderer implements IItemRenderer {
                     materialColor.getBlue() / 255.0f);
             }
 
-            renderLayer(iconWrapper.icon, type);
+            GT_RenderUtil.renderItemIcon(iconWrapper.icon, type);
 
             GL11.glPopAttrib();
-
         }
 
         GL11.glPopMatrix();
-    }
-
-    public static void renderLayer(IIcon icon, ItemRenderType renderType) {
-        if (renderType.equals(ItemRenderType.INVENTORY)) {
-            GT_RenderUtil.renderItemIcon(icon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
-        } else {
-            // Render when held in hand, on floor etc.
-            ItemRenderer.renderItemIn2D(
-                Tessellator.instance,
-                icon.getMaxU(),
-                icon.getMinV(),
-                icon.getMinU(),
-                icon.getMaxV(),
-                icon.getIconWidth(),
-                icon.getIconHeight(),
-                0.0625F);
-        }
     }
 }

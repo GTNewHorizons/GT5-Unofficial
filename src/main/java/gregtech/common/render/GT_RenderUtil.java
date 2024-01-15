@@ -1,13 +1,19 @@
 package gregtech.common.render;
 
+import static gregtech.api.enums.Mods.HodgePodge;
+
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
+
+import com.mitchej123.hodgepodge.textures.IPatchedTextureAtlasSprite;
 
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 
@@ -35,6 +41,24 @@ public class GT_RenderUtil {
         }
     }
 
+    public static void renderItemIcon(IIcon icon, IItemRenderer.ItemRenderType renderType) {
+        markNeedsAnimationUpdate(icon);
+        if (renderType.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
+            renderItemIcon(icon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
+        } else {
+            // Render when held in hand, on floor etc.
+            ItemRenderer.renderItemIn2D(
+                Tessellator.instance,
+                icon.getMaxU(),
+                icon.getMinV(),
+                icon.getMinU(),
+                icon.getMaxV(),
+                icon.getIconWidth(),
+                icon.getIconHeight(),
+                0.0625F);
+        }
+    }
+
     public static void renderItemIcon(IIcon icon, double size, double z, float nx, float ny, float nz) {
         renderItemIcon(icon, 0.0D, 0.0D, size, size, z, nx, ny, nz);
     }
@@ -58,5 +82,11 @@ public class GT_RenderUtil {
             Tessellator.instance.addVertexWithUV(xStart, yStart, z, icon.getMinU(), icon.getMinV());
         }
         Tessellator.instance.draw();
+    }
+
+    public static void markNeedsAnimationUpdate(IIcon icon) {
+        if (HodgePodge.isModLoaded() && icon instanceof IPatchedTextureAtlasSprite texture) {
+            texture.markNeedsAnimationUpdate();
+        }
     }
 }
