@@ -1012,7 +1012,7 @@ public class GT_CropLoader implements Runnable {
                 null);
             new GT_BaseCrop(
                 178,
-                "Canola",
+                "Rape",
                 "unknown",
                 null,
                 4,

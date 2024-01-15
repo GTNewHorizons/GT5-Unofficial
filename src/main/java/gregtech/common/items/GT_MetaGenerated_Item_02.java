@@ -2215,7 +2215,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
         ItemList.Crop_Drop_Rape.set(
             addItem(
                 tLastID = 557,
-                "Canola",
+                "Rape",
                 "Time to oil up!",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L),
