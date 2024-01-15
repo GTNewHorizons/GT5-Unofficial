@@ -36,6 +36,8 @@ import gregtech.api.recipe.metadata.IRecipeMetadataStorage;
 import gregtech.api.util.extensions.ArrayExt;
 import gregtech.api.util.item.ItemHolder;
 import ic2.core.Ic2Items;
+import it.unimi.dsi.fastutil.objects.Reference2LongArrayMap;
+import it.unimi.dsi.fastutil.objects.Reference2LongMap;
 
 public class GT_Recipe implements Comparable<GT_Recipe> {
 
@@ -486,25 +488,27 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         double currentParallel = maxParallel;
 
-        if (aFluidInputs != null) {
+        // We need to have any fluids inputs, otherwise the code below does nothing. The second check is always true
+        // because of early exit condition above.
+        if (mFluidInputs.length > 0 /* && aFluidInputs != null */) {
             // Create map for fluid -> stored amount
-            Map<Fluid, Long> fluidMap = new HashMap<>();
-            Map<Fluid, Long> fluidCost = new HashMap<>();
+            Reference2LongMap<Fluid> fluidMap = new Reference2LongArrayMap<>(4);
+            Reference2LongMap<Fluid> fluidCost = new Reference2LongArrayMap<>(4);
             for (FluidStack fluidStack : aFluidInputs) {
                 if (fluidStack == null) continue;
-                fluidMap.merge(fluidStack.getFluid(), (long) fluidStack.amount, Long::sum);
+                fluidMap.mergeLong(fluidStack.getFluid(), fluidStack.amount, Long::sum);
             }
             for (FluidStack fluidStack : mFluidInputs) {
                 if (fluidStack == null) continue;
-                fluidCost.merge(fluidStack.getFluid(), (long) fluidStack.amount, Long::sum);
+                fluidCost.mergeLong(fluidStack.getFluid(), fluidStack.amount, Long::sum);
             }
 
             // Check how many parallels can it perform for each fluid
-            for (Map.Entry<Fluid, Long> costEntry : fluidCost.entrySet()) {
-                if (costEntry.getValue() > 0) {
+            for (Reference2LongMap.Entry<Fluid> costEntry : fluidCost.reference2LongEntrySet()) {
+                if (costEntry.getLongValue() > 0) {
                     currentParallel = Math.min(
                         currentParallel,
-                        (double) fluidMap.getOrDefault(costEntry.getKey(), 0L) / costEntry.getValue());
+                        (double) fluidMap.getOrDefault(costEntry.getKey(), 0L) / costEntry.getLongValue());
                 }
                 if (currentParallel <= 0) {
                     return 0;
