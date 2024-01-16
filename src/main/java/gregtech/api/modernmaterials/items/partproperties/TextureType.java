@@ -5,10 +5,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
 import gregtech.api.modernmaterials.ModernMaterial;
+import gregtech.api.modernmaterials.PartTextureConfig;
 import gregtech.api.modernmaterials.items.partclasses.ItemsEnum;
 
 public enum TextureType {
@@ -23,6 +25,7 @@ public enum TextureType {
     private static final HashSet<ModernMaterial> customTextureMaterials = new HashSet<>();
     private final HashMap<ItemsEnum, List<IconWrapper>> standardTextureStorage = new HashMap<>();
     private static final HashMap<Integer, List<IconWrapper>> customTextureStorage = new HashMap<>();
+    public Map<String, PartTextureConfig> textureConfigs;
 
     // Standard texture retrieval.
     public void addStandardTexture(ItemsEnum part, IconWrapper iconWrapper) {
@@ -57,4 +60,11 @@ public enum TextureType {
         return Collections.unmodifiableSet(customTextureMaterials);
     }
 
+    HashMap<ModernMaterial, Map<String, PartTextureConfig>> customPartMap = new HashMap<>();
+
+    public void setCustomJson(ModernMaterial material, Map<String, PartTextureConfig> textureConfigs) {
+        if (this != Custom) throw new RuntimeException("Invalid registration.");
+
+        customPartMap.put(material, textureConfigs);
+    }
 }

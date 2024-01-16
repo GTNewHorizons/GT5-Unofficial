@@ -15,7 +15,7 @@ import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.Lens;
 import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.Nugget;
 import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.Plate;
 import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.PurifiedDust;
-import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.PurifiedOre;
+import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.PurifiedCrushedOre;
 import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.QuadruplePlate;
 import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.QuintuplePlate;
 import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.Ring;
@@ -61,7 +61,7 @@ public abstract class TransitionItems {
                 return new Pair<>(OrePrefixes.crushed, CrushedOre);
             }
             case 6 -> {
-                return new Pair<>(OrePrefixes.crushedPurified, PurifiedOre);
+                return new Pair<>(OrePrefixes.crushedPurified, PurifiedCrushedOre);
             }
             case 7 -> {
                 return new Pair<>(OrePrefixes.crushedCentrifuged, CrushedCentrifugedOre);

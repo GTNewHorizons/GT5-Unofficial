@@ -12,103 +12,97 @@ import gregtech.api.modernmaterials.ModernMaterial;
 
 public enum ItemsEnum implements IEnumPart {
 
-    HotIngot("ingotHot", 1),
-    Ingot("ingot", 1),
-    DoubleIngot("ingotDouble", 2.0),
-    TripleIngot("ingotTriple", 3.0),
-    QuadrupleIngot("ingotQuadruple", 4.0),
-    QuintupleIngot("ingotQuintuple", 5.0),
-    Nugget("nugget", 1.0 / 9.0),
+    HotIngot(1),
+    Ingot(1),
+    DoubleIngot(2.0),
+    TripleIngot(3.0),
+    QuadrupleIngot(4.0),
+    QuintupleIngot(5.0),
+    Nugget(1.0 / 9.0),
 
     // Gears
-    Gear("gearGt", 4),
-    SmallGear("gearGtSmall", 1),
+    Gear(4),
+    SmallGear(1),
 
     // Plates
-    DensePlate("plateDense", 9),
-    Foil("foil", 1.0 / 4.0),
+    DensePlate(9),
+    Foil(1.0 / 4.0),
 
-    Plate("plate", 1),
-    DoublePlate("plateDouble", 2),
-    TriplePlate("plateTriple", 3),
-    QuadruplePlate("plateQuadruple", 4),
-    QuintuplePlate("plateQuintuple", 5),
+    Plate(1),
+    DoublePlate(2),
+    TriplePlate(3),
+    QuadruplePlate(4),
+    QuintuplePlate(5),
 
     // Gems.
-    Lens("lens", 1),
-    ExquisiteGem("gemExquisite", 9),
-    FlawlessGem("gemFlawless", 3),
-    Gem("gem", 1),
-    FlawedGem("gemFlawed", 1.0 / 3.0),
-    ChippedGem("gemChipped", 1.0 / 9.0),
+    Lens(1),
+    ExquisiteGem(9),
+    FlawlessGem(3),
+    Gem(1),
+    FlawedGem(1.0 / 3.0),
+    ChippedGem(1.0 / 9.0),
 
     // Misc.
-    Ring("ring", 1.0 / 4.0),
-    Rotor("rotor", 612.0 / 144.0),
-    Round("round", 9),
+    Ring(1.0 / 4.0),
+    Rotor(612.0 / 144.0),
+    Round(9),
 
-    LongRod("stickLong", 1),
-    Rod("stick", 1 / 2.0),
-    Bolt("bolt", 1 / 4.0),
-    Screw("screw", 1 / 8.0),
+    LongRod(1),
+    Rod(1 / 2.0),
+    Bolt(1 / 4.0),
+    Screw(1 / 8.0),
 
-    TurbineBlade("turbineBlade", 6),
-    FineWire("wireFine", 1 / 8.0),
-    ItemCasing("itemCasing"),
+    TurbineBlade(6),
+    FineWire(1 / 8.0),
+    ItemCasing(),
 
     // Springs
-    Spring("spring", 1),
-    SmallSpring("springSmall", 1 / 4.0),
+    Spring(1),
+    SmallSpring(1 / 4.0),
 
     // Dusts.
-    ImpureDust("dustImpure", 1),
-    PurifiedDust("dustPure", 1),
-    Dust("dust", 1),
-    SmallDust("dustSmall", 1 / 4.0),
-    TinyDust("dustTiny", 1 / 9.0),
+    ImpureDust(1),
+    PurifiedDust(1),
+    Dust(1),
+    SmallDust(1 / 4.0),
+    TinyDust(1 / 9.0),
 
     // Ore stuff.
-    CrushedCentrifugedOre("crushedCentrifuged"),
-    PurifiedOre("crushedPurified"),
-    CrushedOre("crushed"),
-    Nanites("nanite"),
+    CrushedCentrifugedOre(),
+    PurifiedCrushedOre(),
+    CrushedOre(),
+    Nanites(),
 
     // Tool Parts.
-    MalletHandle("handleMallet"),
-    ArrowHead("toolHeadArrow"),
-    AxeHead("toolHeadAxe"),
-    BuzzSawHead("toolHeadBuzzSaw"),
-    ChainSawHead("toolHeadChainsaw"),
-    DrillHead("toolHeadDrill"),
-    FileHead("toolHeadFile"),
-    HammerHead("toolHeadHammer"),
-    HoeHead("toolHeadHoe"),
-    MalletHead("toolHeadMallet"),
-    PickaxeHead("toolHeadPickaxe"),
-    PlowHead("toolHeadPlow"),
-    SawHead("toolHeadSaw"),
-    ScrewdriverHead("toolHeadScrewdriver"),
-    SenseHead("toolHeadSense"),
-    ShovelHead("toolHeadShovel"),
-    SolderingHead("toolHeadSoldering"),
-    SwordHead("toolHeadSword"),
-    ElectricWrenchHead("toolHeadWrench");
-
-    public final String partName;
+    MalletHandle(),
+    ArrowHead(),
+    AxeHead(),
+    BuzzSawHead(),
+    ChainSawHead(),
+    DrillHead(),
+    FileHead(),
+    HammerHead(),
+    HoeHead(),
+    MalletHead(),
+    PickaxeHead(),
+    PlowHead(),
+    SawHead(),
+    ScrewdriverHead(),
+    SenseHead(),
+    ShovelHead(),
+    SolderingHead(),
+    SwordHead(),
+    ElectricWrenchHead();
 
     public double percentageOfIngot;
 
     private final HashSet<ModernMaterial> associatedMaterials = new HashSet<>();
 
-    ItemsEnum(final String partName, double percentageOfIngot) {
-        this.partName = partName;
+    ItemsEnum(double percentageOfIngot) {
         this.percentageOfIngot = percentageOfIngot;
     }
 
-    ItemsEnum(final String partName) {
-        this.partName = partName;
-    }
-
+    ItemsEnum() {}
     @Override
     public @NotNull ItemStack getPart(@NotNull ModernMaterial material, int stackSize) {
         return new ItemStack(getItem(), stackSize, material.getMaterialID());
@@ -126,11 +120,11 @@ public enum ItemsEnum implements IEnumPart {
     }
 
     public String getUnlocalizedNameForItem() {
-        return partName;
+        return this.toString();
     }
 
     public String getLocalizedName(ModernMaterial material) {
-        return StatCollector.translateToLocalFormatted("gt.part.item." + partName, material.getLocalizedName());
+        return StatCollector.translateToLocalFormatted("gt.part.item." + this, material.getLocalizedName());
     }
 
     @Override

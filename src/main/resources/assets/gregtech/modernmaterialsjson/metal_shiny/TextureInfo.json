@@ -1,0 +1,585 @@
+{
+  "HotIngot": {
+    "layers": [
+      {
+        "file": "ingotHot_0",
+        "isColored": true,
+        "isAnimated": false
+      },
+      {
+        "file": "ingotHot_1",
+        "isColored": false,
+        "isAnimated": false
+      }
+    ]
+  },
+  "Ingot": {
+    "layers": [
+      {
+        "file": "ingot_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "DoubleIngot": {
+    "layers": [
+      {
+        "file": "doubleIngot_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "TripleIngot": {
+    "layers": [
+      {
+        "file": "tripleIngot_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "QuadrupleIngot": {
+    "layers": [
+      {
+        "file": "quadrupleIngot_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "QuintupleIngot": {
+    "layers": [
+      {
+        "file": "quintupleIngot_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "Nugget": {
+    "layers": [
+      {
+        "file": "nugget_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "Gear": {
+    "layers": [
+      {
+        "file": "gear_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "SmallGear": {
+    "layers": [
+      {
+        "file": "smallGear_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "DensePlate": {
+    "layers": [
+      {
+        "file": "densePlate_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "Foil": {
+    "layers": [
+      {
+        "file": "foil_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "Plate": {
+    "layers": [
+      {
+        "file": "plate_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "DoublePlate": {
+    "layers": [
+      {
+        "file": "doublePlate_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "TriplePlate": {
+    "layers": [
+      {
+        "file": "triplePlate_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "QuadruplePlate": {
+    "layers": [
+      {
+        "file": "quadruplePlate_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "QuintuplePlate": {
+    "layers": [
+      {
+        "file": "quintuplePlate_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "Lens": {
+    "layers": [
+      {
+        "file": "lens_0",
+        "isColored": true,
+        "isAnimated": false
+      },
+      {
+        "file": "lens_1",
+        "isColored": false,
+        "isAnimated": false
+      }
+    ]
+  },
+  "ExquisiteGem": {
+    "layers": [
+      {
+        "file": "exquisiteGem_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "FlawlessGem": {
+    "layers": [
+      {
+        "file": "flawlessGem_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "Gem": {
+    "layers": [
+      {
+        "file": "gem_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "FlawedGem": {
+    "layers": [
+      {
+        "file": "flawedGem_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "ChippedGem": {
+    "layers": [
+      {
+        "file": "chippedGem_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "Ring": {
+    "layers": [
+      {
+        "file": "ring_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "Rotor": {
+    "layers": [
+      {
+        "file": "rotor_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "Round": {
+    "layers": [
+      {
+        "file": "round_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "LongRod": {
+    "layers": [
+      {
+        "file": "longRod_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "Rod": {
+    "layers": [
+      {
+        "file": "rod_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "Bolt": {
+    "layers": [
+      {
+        "file": "bolt_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "Screw": {
+    "layers": [
+      {
+        "file": "screw_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "TurbineBlade": {
+    "layers": [
+      {
+        "file": "turbineBlade_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "FineWire": {
+    "layers": [
+      {
+        "file": "fineWire_0",
+        "isColored": true,
+        "isAnimated": false
+      },
+      {
+        "file": "fineWire_1",
+        "isColored": false,
+        "isAnimated": false
+      }
+    ]
+  },
+  "ItemCasing": {
+    "layers": [
+      {
+        "file": "itemCasing_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "Spring": {
+    "layers": [
+      {
+        "file": "spring_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "SmallSpring": {
+    "layers": [
+      {
+        "file": "smallSpring_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "ImpureDust": {
+    "layers": [
+      {
+        "file": "impureDust_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "PurifiedDust": { 
+    "layers": [
+      {
+        "file": "purifiedDust_0",
+        "isColored": true,
+        "isAnimated": false
+      },
+      {
+        "file": "purifiedDust_1",
+        "isColored": false,
+        "isAnimated": false
+      }
+    ]
+  },
+  "Dust": {
+    "layers": [
+      {
+        "file": "dust_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "SmallDust": {
+    "layers": [
+      {
+        "file": "smallDust_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "TinyDust": {
+    "layers": [
+      {
+        "file": "tinyDust_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "CrushedCentrifugedOre": {
+    "layers": [
+      {
+        "file": "crushedCentrifugedOre_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "PurifiedCrushedOre": {
+    "layers": [
+      {
+        "file": "purifiedCrushedOre_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "CrushedOre": {
+    "layers": [
+      {
+        "file": "crushedOre_0",
+        "isColored": true,
+        "isAnimated": false
+      },
+      {
+        "file": "crushedOre_1",
+        "isColored": false,
+        "isAnimated": false
+      }
+    ]
+  },
+  "Nanites": {
+    "layers": [
+      {
+        "file": "nanites_0",
+        "isColored": true,
+        "isAnimated": true
+      }
+    ]
+  },
+  "MalletHandle": {
+    "layers": [
+      {
+        "file": "malletHandle_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "ArrowHead": {
+    "layers": [
+      {
+        "file": "arrowHead_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "AxeHead": {
+    "layers": [
+      {
+        "file": "axeHead_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "BuzzSawHead": {
+    "layers": [
+      {
+        "file": "buzzSawHead_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "ChainSawHead": {
+    "layers": [
+      {
+        "file": "chainSawHead_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "DrillHead": {
+    "layers": [
+      {
+        "file": "drillHead_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "FileHead": {
+    "layers": [
+      {
+        "file": "fileHead_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "HammerHead": {
+    "layers": [
+      {
+        "file": "hammerHead_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "HoeHead": {
+    "layers": [
+      {
+        "file": "hoeHead_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "MalletHead": {
+    "layers": [
+      {
+        "file": "malletHead_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "PickaxeHead": {
+    "layers": [
+      {
+        "file": "pickaxeHead_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "PlowHead": {
+    "layers": [
+      {
+        "file": "plowHead_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "SawHead": {
+    "layers": [
+      {
+        "file": "sawHead_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "ScrewdriverHead": {
+    "layers": [
+      {
+        "file": "screwdriverHead_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "SenseHead": {
+    "layers": [
+      {
+        "file": "senseHead_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "ShovelHead": {
+    "layers": [
+      {
+        "file": "shovelHead_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "SolderingHead": {
+    "layers": [
+      {
+        "file": "solderingHead_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "SwordHead": {
+    "layers": [
+      {
+        "file": "swordHead_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  },
+  "ElectricWrenchHead": {
+    "layers": [
+      {
+        "file": "electricWrenchHead_0",
+        "isColored": true,
+        "isAnimated": false
+      }
+    ]
+  }
+}
