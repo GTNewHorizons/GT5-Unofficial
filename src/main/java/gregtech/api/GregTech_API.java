@@ -107,8 +107,12 @@ public class GregTech_API {
     public static final long FLUID_MATERIAL_UNIT = L;
     /**
      * Fixes the HashMap Mappings for ItemStacks once the Server started
+     * <br>
+     * <br>
+     * NOTE: We use wildcards generics for the key because it could be for example {@link ItemStack} or
+     * {@link GT_ItemStack}
      */
-    public static final Collection<Map<? extends ItemHolder, ?>> sItemStackMappings = new ArrayList<>();
+    public static final Collection<Map<?, ?>> sItemStackMappings = new ArrayList<>();
     public static final Collection<SetMultimap<? extends ItemHolder, ?>> itemStackMultiMaps = new ArrayList<>();
 
     /**
