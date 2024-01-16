@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -20,31 +21,31 @@ public enum TextureType {
     Gem;
 
     private static final HashSet<ModernMaterial> customTextureMaterials = new HashSet<>();
-    private final HashMap<ItemsEnum, ArrayList<IconWrapper>> standardTextureStorage = new HashMap<>();
-    private static final HashMap<Integer, ArrayList<IconWrapper>> customTextureStorage = new HashMap<>();
+    private final HashMap<ItemsEnum, List<IconWrapper>> standardTextureStorage = new HashMap<>();
+    private static final HashMap<Integer, List<IconWrapper>> customTextureStorage = new HashMap<>();
 
     // Standard texture retrieval.
     public void addStandardTexture(ItemsEnum part, IconWrapper iconWrapper) {
-        ArrayList<IconWrapper> iconList = standardTextureStorage.getOrDefault(part, new ArrayList<>());
+        List<IconWrapper> iconList = standardTextureStorage.getOrDefault(part, new ArrayList<>());
         iconList.add(iconWrapper);
 
         standardTextureStorage.put(part, iconList);
     }
 
-    public ArrayList<IconWrapper> getStandardTextureArray(ItemsEnum part) {
-        return standardTextureStorage.get(part);
+    public List<IconWrapper> getStandardTextureArray(ItemsEnum part) {
+        return standardTextureStorage.getOrDefault(part, Collections.emptyList());
     }
 
     // Custom texture retrieval.
     public static void addCustomTexture(ModernMaterial material, ItemsEnum part, IconWrapper iconWrapper) {
-        ArrayList<IconWrapper> iconList = customTextureStorage
+        List<IconWrapper> iconList = customTextureStorage
             .getOrDefault(Objects.hash(material.getMaterialID(), part), new ArrayList<>());
         iconList.add(iconWrapper);
 
         customTextureStorage.put(Objects.hash(material.getMaterialID(), part), iconList);
     }
 
-    public ArrayList<IconWrapper> getCustomTextures(ModernMaterial material, ItemsEnum part) {
+    public List<IconWrapper> getCustomTextures(ModernMaterial material, ItemsEnum part) {
         return customTextureStorage.get(Objects.hash(material.getMaterialID(), part));
     }
 

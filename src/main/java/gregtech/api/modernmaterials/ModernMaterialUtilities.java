@@ -32,10 +32,10 @@ public class ModernMaterialUtilities {
                 .isEmpty()) return;
 
             MaterialPart materialPart = new MaterialPart(part);
-            materialPart.setUnlocalizedName(part.partName);
+            materialPart.setUnlocalizedName(part.getUnlocalizedNameForItem());
 
             // Registers the item with the game, only available in preInit.
-            GameRegistry.registerItem(materialPart, part.partName);
+            GameRegistry.registerItem(materialPart, part.getUnlocalizedNameForItem());
 
             // Registers the renderer which allows for part colouring.
             MinecraftForgeClient.registerItemRenderer(materialPart, new ModernMaterialItemRenderer());

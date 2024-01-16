@@ -7,7 +7,7 @@ import net.minecraft.util.IIcon;
 
 import org.lwjgl.opengl.GL11;
 
-public abstract class Utilities {
+public final class ModernMaterialRenderUtil {
 
     public static void drawBlock(Block block, int meta, RenderBlocks renderer) {
         Tessellator tessellator = Tessellator.instance;

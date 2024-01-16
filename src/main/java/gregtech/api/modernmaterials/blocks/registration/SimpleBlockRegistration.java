@@ -27,7 +27,7 @@ public abstract class SimpleBlockRegistration {
             BaseMaterialBlock block = blockType.getBlockClass()
                 .getDeclaredConstructor(BlocksEnum.class, HashSet.class)
                 .newInstance(blockType, validMaterials);
-            GameRegistry.registerBlock(block, BaseMaterialItemBlock.class, String.valueOf(blockType));
+            GameRegistry.registerBlock(block, BaseMaterialItemBlock.class, blockType.getPartName());
 
             for (ModernMaterial material : blockType.getSimpleBlockRenderAssociatedMaterials()) {
                 blockType.setItem(material, Item.getItemFromBlock(block));

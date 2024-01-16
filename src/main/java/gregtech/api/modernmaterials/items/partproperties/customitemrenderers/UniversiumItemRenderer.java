@@ -14,7 +14,7 @@ import gregtech.api.modernmaterials.ModernMaterial;
 import gregtech.api.modernmaterials.items.partclasses.ItemsEnum;
 import gregtech.api.modernmaterials.items.partclasses.MaterialPart;
 import gregtech.api.modernmaterials.items.partproperties.IconWrapper;
-import gregtech.api.modernmaterials.items.partproperties.ModernMaterialItemRenderer;
+import gregtech.common.render.GT_RenderUtil;
 
 public class UniversiumItemRenderer implements IItemRenderer {
 
@@ -55,7 +55,6 @@ public class UniversiumItemRenderer implements IItemRenderer {
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack itemStack, Object... data) {
-
         ModernMaterial material = ModernMaterial.getMaterialFromItemStack(itemStack);
         MaterialPart materialPart = (MaterialPart) itemStack.getItem();
 
@@ -78,16 +77,14 @@ public class UniversiumItemRenderer implements IItemRenderer {
                 CosmicRenderShenanigans.useShader();
             }
 
-            ModernMaterialItemRenderer.renderLayer(iconWrapper.icon, type);
+            GT_RenderUtil.renderItemIcon(iconWrapper.icon, type);
 
             CosmicRenderShenanigans.releaseShader();
             CosmicRenderShenanigans.inventoryRender = false;
 
             GL11.glPopAttrib();
-
         }
 
         GL11.glPopMatrix();
-
     }
 }

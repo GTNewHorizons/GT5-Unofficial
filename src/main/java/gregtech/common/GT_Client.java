@@ -19,8 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import gregtech.api.modernmaterials.ModernMaterialsTextureRegister;
-import gregtech.loaders.ExtraIcons;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GLAllocation;
