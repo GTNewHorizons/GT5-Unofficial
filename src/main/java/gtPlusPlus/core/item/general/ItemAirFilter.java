@@ -88,6 +88,10 @@ public class ItemAirFilter extends Item {
         return true;
     }
 
+    public static final long getFilterMaxDamage(final ItemStack aStack) {
+        return aStack.getItemDamage() == 0 ? 50 : 2500;
+    }
+
     public static final long getFilterDamage(final ItemStack aStack) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
@@ -119,7 +123,7 @@ public class ItemAirFilter extends Item {
             createNBT(stack);
         }
         double currentDamage = getFilterDamage(stack);
-        double meta = stack.getItemDamage() == 0 ? 50 : 2500;
+        double meta = getFilterMaxDamage(stack);
         double durabilitypercent = currentDamage / meta;
         return durabilitypercent;
     }
@@ -127,7 +131,7 @@ public class ItemAirFilter extends Item {
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
         list.add(EnumChatFormatting.GRAY + "An Air filter for Atmospheric Reconditioning.");
-        int maxDamage = (stack.getItemDamage() == 0 ? 50 : 2500);
+        long maxDamage = getFilterMaxDamage(stack);
         list.add(EnumChatFormatting.GRAY + "" + (maxDamage - getFilterDamage(stack)) + "/" + maxDamage + " uses left.");
         super.addInformation(stack, player, list, bool);
     }

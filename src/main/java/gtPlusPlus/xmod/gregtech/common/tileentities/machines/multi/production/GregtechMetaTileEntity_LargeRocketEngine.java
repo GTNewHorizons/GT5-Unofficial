@@ -48,7 +48,6 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.MISC_MATERIALS;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_AirIntake;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler_Adv;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -426,28 +425,6 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends
             }
         }
         return injected > 0;
-    }
-
-    @Override
-    public boolean onRunningTick(ItemStack aStack) {
-        if (this.mRuntime % 20 == 0) {
-            if (this.mMufflerHatches.size() == 1
-                    && this.mMufflerHatches.get(0) instanceof GT_MetaTileEntity_Hatch_Muffler_Adv tMuffler) {
-                if (!tMuffler.hasValidFilter()) {
-                    ArrayList<ItemStack> tInputs = getStoredInputs();
-                    for (ItemStack tItem : tInputs) {
-                        if (tMuffler.isAirFilter(tItem)) {
-                            tMuffler.mInventory[0] = tItem.copy();
-                            depleteInput(tItem);
-                            updateSlots();
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-        super.onRunningTick(aStack);
-        return true;
     }
 
     public Block getCasingBlock() {

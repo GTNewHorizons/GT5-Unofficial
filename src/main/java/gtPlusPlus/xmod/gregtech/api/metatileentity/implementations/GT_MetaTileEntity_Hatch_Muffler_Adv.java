@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -10,7 +11,6 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.GT_Mod;
-import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
@@ -18,9 +18,10 @@ import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Config;
-import gtPlusPlus.api.objects.Logger;
+import gregtech.common.GT_Pollution;
 import gtPlusPlus.core.item.general.ItemAirFilter;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
@@ -55,20 +56,17 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
         super(aName, aTier, 1, aDescription, aTextures);
     }
 
+    final String[] mDescription = new String[] { "Outputs pollution from a multiblock", "DO NOT OBSTRUCT THE OUTPUT!",
+            "Requires 3 Air Blocks in front of the exhaust face",
+            mTier < 5 ? "Requires an Air Filter"
+                    : "Requires an Air Filter " + EnumChatFormatting.WHITE + "[Tier 2]" + EnumChatFormatting.GRAY,
+            "Can take Air Filters from an input bus of the multiblock",
+            "Reduces Pollution to " + calculatePollutionReduction(100, true) + "%",
+            "Recovers " + (100 - calculatePollutionReduction(100, true)) + "% of CO2/CO/SO2", CORE.GT_Tooltip.get() };
+
     @Override
     public String[] getDescription() {
-        String[] desc = new String[mDescriptionArray.length + 7];
-        System.arraycopy(mDescriptionArray, 0, desc, 0, mDescriptionArray.length);
-        desc[mDescriptionArray.length] = "DO NOT OBSTRUCT THE OUTPUT!";
-        desc[mDescriptionArray.length + 1] = "Requires 3 Air on the exhaust face";
-        desc[mDescriptionArray.length + 2] = "Requires Air Filters";
-        desc[mDescriptionArray.length + 3] = "Mufflers require T2 Filters from IV-" + GT_Values.VN[9];
-        desc[mDescriptionArray.length + 4] = "Reduces Pollution to " + this.calculatePollutionReductionForTooltip(100)
-                + "%";
-        desc[mDescriptionArray.length + 5] = "Recovers " + (105 - this.calculatePollutionReductionForTooltip(100))
-                + "% of CO2/CO/SO2";
-        desc[mDescriptionArray.length + 6] = CORE.GT_Tooltip.get();
-        return desc;
+        return mDescription;
     }
 
     @Override
@@ -87,6 +85,12 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
     }
 
     @Override
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+            ItemStack aStack) {
+        return (aIndex == this.SLOT_FILTER && isAirFilter(aStack));
+    }
+
+    @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_Hatch_Muffler_Adv(this.mName, this.mTier, mDescriptionArray, this.mTextures);
     }
@@ -97,151 +101,164 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
         return true;
     }
 
-    private boolean airCheck() {
-        if (this.getBaseMetaTileEntity().getAirAtSide(this.getBaseMetaTileEntity().getFrontFacing())
-                && this.getBaseMetaTileEntity()
-                        .getAirAtSideAndDistance(this.getBaseMetaTileEntity().getFrontFacing(), 1)
-                && this.getBaseMetaTileEntity()
-                        .getAirAtSideAndDistance(this.getBaseMetaTileEntity().getFrontFacing(), 2)) {
-            return true;
-        }
-        return false;
-    }
-
     @Override
-    public boolean polluteEnvironment(MetaTileEntity unused) {
-        if (airCheck() && damageAirFilter()) {
-            int aEmission = this.calculatePollutionReduction(10000);
-            PollutionUtils.addPollution(this.getBaseMetaTileEntity(), aEmission);
-            // Logger.INFO("Outputting "+aEmission+"gbl");
-            return true;
-        } else {
-            // Logger.INFO("Failed to output pollution");
-            return false;
-        }
-    }
+    public boolean polluteEnvironment(MetaTileEntity parentTileEntity) {
+        if (!airCheck()) return false; // Muffler obstructed.
 
-    public int calculatePollutionReductionForTooltip(int aPollution) {
-        return (int) (aPollution * Math.pow(0.64D, (double) (this.mTier - 1)));
+        int emission = 10000;
+        if (damageAirFilter(parentTileEntity)) {
+            // damageAirFilter already checks that we have a valid filter.
+            emission = calculatePollutionReduction(emission, true);
+        } else {
+            // Revert to reduction of the basic muffler.
+            emission = super.calculatePollutionReduction(emission);
+        }
+        GT_Pollution.addPollution(getBaseMetaTileEntity(), emission);
+        return true;
     }
 
     @Override
     public int calculatePollutionReduction(int aPollution) {
-        double aVal1 = aPollution * Math.pow(0.64D, (double) (this.mTier - 1));
-        int aVal2 = (int) aVal1;
-        if (!hasValidFilter()) {
-            aVal2 = (int) ((double) aPollution * Math.pow(0.7D, (double) (this.mTier - 1)));;
-        }
-        return aVal2;
+        // This is called by EBF to calculate exhaust gas amounts, we need to check the filter.
+        return calculatePollutionReduction(aPollution, false);
     }
 
-    @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
-        if (aIndex == this.SLOT_FILTER) {
-            if (isAirFilter(aStack)) {
-                return true;
+    /**
+     * Calculates pollution reduction.
+     *
+     * @param aPollution   Amount of pollution to be reduced.
+     * @param ignoreFilter If this is true, assumes that a valid filter is present without checking (for example, to
+     *                     build tooltips).
+     * @return Amount of pollution after reduction.
+     */
+    protected int calculatePollutionReduction(int aPollution, boolean ignoreFilter) {
+        if (!ignoreFilter && !hasAirFilter()) {
+            // Without a filter, downgrade to basic muffler reduction.
+            return super.calculatePollutionReduction(aPollution);
+        }
+
+        // Special case to be always better than a basic muffler.
+        if (mTier < 2) return (int) (aPollution * 0.95);
+        if (mTier > 8) return 0;
+
+        return (int) (aPollution * Math.pow(0.64D, mTier - 1));
+    }
+
+    /**
+     *
+     * @return True if enough blocks in front of the muffler are air.
+     */
+    private boolean airCheck() {
+        IGregTechTileEntity bmte = getBaseMetaTileEntity();
+        ForgeDirection facing = bmte.getFrontFacing();
+        return bmte.getAirAtSide(facing) && bmte.getAirAtSideAndDistance(facing, 1)
+                && bmte.getAirAtSideAndDistance(facing, 2);
+    }
+
+    /**
+     * Try to damage an air filter. Will first try to find a valid filter in the hatch's own inventory, then in the
+     * input buses of the parent multiblock. If the filter is destroyed, will try to replace it from the parent
+     * multiblock's input buses again.
+     *
+     * @param parentTileEntity Which multiblock this hatch is a part of. If this is null, only checks inventory of the
+     *                         muffler.
+     * @return True if the filter has been successfully damaged.
+     */
+    private boolean damageAirFilter(MetaTileEntity parentTileEntity) {
+        if (!findAirFilter(parentTileEntity)) return false; // No filter available.
+
+        ItemStack filter = mInventory[SLOT_FILTER];
+        if (filter == null) return false; // This should never happen if findAirFilter() above succeeded.
+
+        long currentDamage = ItemAirFilter.getFilterDamage(filter);
+        if (currentDamage < ItemAirFilter.getFilterMaxDamage(filter) - 1) {
+            // Damage filter by one step.
+            ItemAirFilter.setFilterDamage(filter, currentDamage + 1);
+            return true;
+        } else {
+            // Destroy the filter.
+            mInventory[SLOT_FILTER] = null;
+
+            // Try to find a new one.
+            findAirFilter(parentTileEntity);
+
+            // Regardless of whether we have a new filter or not, *this* operation succeeded.
+            return true;
+        }
+    }
+
+    /**
+     * Try to find a valid air filter in the input buses of the parent multiblock.
+     *
+     * @param parentTileEntity Which multiblock this hatch is a part of. If this is null, only checks inventory of the
+     *                         muffler.
+     * @return True if the inventory of the muffler already contains an air filter, or if one was retrieved from the
+     *         parent multiblock.
+     */
+    private boolean findAirFilter(MetaTileEntity parentTileEntity) {
+        if (hasAirFilter()) return true; // Has a filter in inventory.
+        if (mInventory[SLOT_FILTER] != null) return false; // Has a non-filter item in inventory.
+        if (parentTileEntity == null) return false; // Unknown parent multiblock.
+
+        if (parentTileEntity instanceof GT_MetaTileEntity_MultiBlockBase GTMultiBase) {
+            for (var inputBus : GTMultiBase.mInputBusses) {
+                for (ItemStack stack : inputBus.mInventory) {
+                    if (isAirFilter(stack)) {
+                        ItemStack stackCopy = stack.copy();
+                        if (GTMultiBase.depleteInput(stack)) {
+                            mInventory[SLOT_FILTER] = stackCopy;
+                            return true;
+                        }
+                    }
+                }
             }
         }
+
         return false;
     }
 
-    private ItemStack getInventoryStack() {
-        if (this.mInventory != null && this.mInventory.length > 0) {
-            if (this.mInventory.length - 1 >= this.SLOT_FILTER) {
-                return this.mInventory[this.SLOT_FILTER];
-            }
-        }
-        return null;
+    /**
+     *
+     * @return True if the item currently in the inventory is an air filter valid for this tier of muffler hatch.
+     */
+    private boolean hasAirFilter() {
+        return isAirFilter(mInventory[SLOT_FILTER]);
     }
 
-    private void breakAirFilter() {
-        if (this.mInventory != null && this.mInventory.length > 0) {
-            if (this.mInventory.length - 1 >= this.SLOT_FILTER) {
-                Logger.INFO("Breaking Filter");
-                this.mInventory[this.SLOT_FILTER] = null;
+    /**
+     *
+     * @param filter
+     * @return True if the argument is an air filter valid for this tier of muffler hatch.
+     */
+    public boolean isAirFilter(ItemStack filter) {
+        if (filter == null) return false;
+        if (filter.getItem() instanceof ItemAirFilter) {
+            if (mTier < 5) {
+                // Accept any filter.
+                return true;
+            } else {
+                // Accept only T2 filter.
+                return filter.getItemDamage() == 1;
             }
         }
-    }
-
-    public boolean hasValidFilter() {
-        return isAirFilter(getInventoryStack());
+        return false;
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-
-        // Logger.INFO("A1");
-
         super.onPostTick(aBaseMetaTileEntity, aTick);
 
-        // Logger.INFO("A2");
-
-        String aParticleName;
-        if ((aTick % 2) == 0) {
-            aParticleName = "cloud";
-        } else {
-            aParticleName = "smoke";
-        }
-
-        // Logger.INFO("A3");
-
         if (aBaseMetaTileEntity.isClientSide()) {
-            // Logger.INFO("B1");
             if (this.getBaseMetaTileEntity().isActive()) {
-                // Logger.INFO("C1");
+                String aParticleName;
+                if ((aTick % 2) == 0) {
+                    aParticleName = "cloud";
+                } else {
+                    aParticleName = "smoke";
+                }
                 this.pollutionParticles(this.getBaseMetaTileEntity().getWorld(), aParticleName);
             }
-            // return;
-        } else {
-            // Logger.INFO("B2");
-            if (this.getInventoryStack() == null) {} else {
-                // Logger.INFO("D2");
-            }
         }
-        // Logger.INFO("A4");
-
-    }
-
-    public boolean isAirFilter(ItemStack filter) {
-        if (filter == null) {
-            return false;
-        }
-        if (filter.getItem() instanceof ItemAirFilter) {
-
-            if (this.mTier < 5) {
-                return true;
-            } else {
-                if (filter.getItemDamage() == 1) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    public boolean damageAirFilter() {
-        ItemStack filter = getInventoryStack();
-        if (filter == null) {
-            return false;
-        }
-
-        if (isAirFilter(filter)) {
-            long currentUse = ItemAirFilter.getFilterDamage(filter);
-            Logger.INFO("Filter Damage: " + currentUse);
-            // Remove broken Filter
-            if ((filter.getItemDamage() == 0 && currentUse >= 50 - 1)
-                    || (filter.getItemDamage() == 1 && currentUse >= 2500 - 1)) {
-                breakAirFilter();
-                return true;
-            } else {
-                // Do Damage
-                ItemAirFilter.setFilterDamage(filter, currentUse + 1);
-                Logger.INFO("Filter Damage now: " + currentUse);
-                return true;
-            }
-        }
-        return false;
     }
 
     @Override
