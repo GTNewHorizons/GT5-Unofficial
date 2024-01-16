@@ -17,13 +17,13 @@ import static gregtech.api.modernmaterials.blocks.registration.BlocksEnum.Nether
 import static gregtech.api.modernmaterials.blocks.registration.BlocksEnum.RedGraniteNormalOre;
 import static gregtech.api.modernmaterials.blocks.registration.BlocksEnum.RedGraniteSmallOre;
 
+import com.gtnewhorizons.postea.api.TileEntityReplacementManager;
+import com.gtnewhorizons.postea.utility.BlockInfo;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-import com.colen.postea.API.TileEntityReplacementManager;
-import com.colen.postea.Utility.BlockInfo;
 
 import gregtech.api.modernmaterials.ModernMaterial;
 import gregtech.api.modernmaterials.blocks.registration.BlocksEnum;

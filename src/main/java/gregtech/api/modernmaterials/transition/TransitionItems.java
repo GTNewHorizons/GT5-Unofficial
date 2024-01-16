@@ -26,11 +26,11 @@ import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.SmallDust
 import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.TinyDust;
 import static gregtech.api.modernmaterials.items.partclasses.ItemsEnum.TriplePlate;
 
+import com.gtnewhorizons.postea.api.ItemStackReplacementManager;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 
-import com.colen.postea.API.ItemStackReplacementManager;
 
 import akka.japi.Pair;
 import gregtech.api.enums.OrePrefixes;
