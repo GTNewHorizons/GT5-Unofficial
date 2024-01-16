@@ -8,6 +8,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.client.IItemRenderer;
 
 import org.jetbrains.annotations.NotNull;
@@ -32,44 +33,32 @@ import gregtech.api.modernmaterials.items.partclasses.IEnumPart;
 public enum BlocksEnum implements IEnumPart {
 
     // Define new blocks here.
-    FrameBox("% Frame Box", FrameBoxBaseMaterialBlock.class, new FrameBoxSimpleBlockRenderer()),
-    SolidBlock("Block of %", BlockOfBaseMaterialBlock.class, new BlockOfSimpleBlockRenderer()),
+    FrameBox("frameBox", FrameBoxBaseMaterialBlock.class, new FrameBoxSimpleBlockRenderer()),
+    SolidBlock("solidBlock", BlockOfBaseMaterialBlock.class, new BlockOfSimpleBlockRenderer()),
 
-    EarthNormalOre("% Ore", NormalOreBlock.class, new OreBlockRenderer(Blocks.stone, 0)),
-    NetherNormalOre("% Nether Ore", NormalOreBlock.class, new OreBlockRenderer(Blocks.netherrack, 0)),
-    EndNormalOre("% End Ore", NormalOreBlock.class, new OreBlockRenderer(Blocks.end_stone, 0)),
-    BlackGraniteNormalOre("% Black Granite Ore", NormalOreBlock.class,
+    EarthNormalOre("oreEarth", NormalOreBlock.class, new OreBlockRenderer(Blocks.stone, 0)),
+    NetherNormalOre("oreNetherrack", NormalOreBlock.class, new OreBlockRenderer(Blocks.netherrack, 0)),
+    EndNormalOre("oreEndstone", NormalOreBlock.class, new OreBlockRenderer(Blocks.end_stone, 0)),
+    BlackGraniteNormalOre("oreBlackgranite", NormalOreBlock.class,
         new OreBlockRenderer(GregTech_API.sBlockGranites, 0)),
-    RedGraniteNormalOre("% Red Granite Ore", NormalOreBlock.class,
-        new OreBlockRenderer(GregTech_API.sBlockGranites, 8)),
-    MarbleNormalOre("% Marble Ore", NormalOreBlock.class, new OreBlockRenderer(GregTech_API.sBlockStones, 0)),
-    BasaltNormalOre("% Basalt Ore", NormalOreBlock.class, new OreBlockRenderer(GregTech_API.sBlockStones, 8)),
-    MoonNormalOre("% Moon Ore", NormalOreBlock.class, new OreBlockRenderer("GalacticraftCore:tile.moonBlock", 4)), // Repeat
-                                                                                                                   // for
-                                                                                                                   // other
-                                                                                                                   // planets,
-                                                                                                                   // proof
-                                                                                                                   // of
-                                                                                                                   // concept.
+    RedGraniteNormalOre("oreRedgranite", NormalOreBlock.class, new OreBlockRenderer(GregTech_API.sBlockGranites, 8)),
+    MarbleNormalOre("oreMarble", NormalOreBlock.class, new OreBlockRenderer(GregTech_API.sBlockStones, 0)),
+    BasaltNormalOre("oreBasalt", NormalOreBlock.class, new OreBlockRenderer(GregTech_API.sBlockStones, 8)),
+    MoonNormalOre("oreMoon", NormalOreBlock.class, new OreBlockRenderer("GalacticraftCore:tile.moonBlock", 4)),
+    // Repeat for other planets, proof of concept.
 
-    EarthSmallOre("Small % Ore", SmallOreBlock.class, new OreBlockRenderer(Blocks.stone, 0)),
-    NetherSmallOre("Small % Nether Ore", SmallOreBlock.class, new OreBlockRenderer(Blocks.netherrack, 0)),
-    EndSmallOre("Small % End Ore", SmallOreBlock.class, new OreBlockRenderer(Blocks.end_stone, 0)),
-    BlackGraniteSmallOre("Small % Black Granite Ore", SmallOreBlock.class,
+    EarthSmallOre("oreSmallEarth", SmallOreBlock.class, new OreBlockRenderer(Blocks.stone, 0)),
+    NetherSmallOre("oreSmallNetherrack", SmallOreBlock.class, new OreBlockRenderer(Blocks.netherrack, 0)),
+    EndSmallOre("oreSmallEndstone", SmallOreBlock.class, new OreBlockRenderer(Blocks.end_stone, 0)),
+    BlackGraniteSmallOre("oreSmallBlackgranite", SmallOreBlock.class,
         new OreBlockRenderer(GregTech_API.sBlockGranites, 0)),
-    RedGraniteSmallOre("Small % Red Granite Ore", SmallOreBlock.class,
-        new OreBlockRenderer(GregTech_API.sBlockGranites, 8)),
-    MarbleSmallOre("Small % Marble Ore", SmallOreBlock.class, new OreBlockRenderer(GregTech_API.sBlockStones, 0)),
-    BasaltSmallOre("Small % Basalt Ore", SmallOreBlock.class, new OreBlockRenderer(GregTech_API.sBlockStones, 8)),
-    MoonSmallOre("Small % Moon Ore", SmallOreBlock.class, new OreBlockRenderer("GalacticraftCore:tile.moonBlock", 4)); // Repeat
-                                                                                                                       // for
-                                                                                                                       // other
-                                                                                                                       // planets,
-                                                                                                                       // proof
-                                                                                                                       // of
-                                                                                                                       // concept.
+    RedGraniteSmallOre("oreSmallRedgranite", SmallOreBlock.class, new OreBlockRenderer(GregTech_API.sBlockGranites, 8)),
+    MarbleSmallOre("oreSmallMarble", SmallOreBlock.class, new OreBlockRenderer(GregTech_API.sBlockStones, 0)),
+    BasaltSmallOre("oreSmallBasalt", SmallOreBlock.class, new OreBlockRenderer(GregTech_API.sBlockStones, 8)),
+    MoonSmallOre("oreSmallMoon", SmallOreBlock.class, new OreBlockRenderer("GalacticraftCore:tile.moonBlock", 4));
+    // Repeat for other planets, proof of concept.
 
-    private final String unlocalizedName;
+    private final String partName;
     private final Class<? extends BaseMaterialBlock> blockClass;
     private final ISimpleBlockRenderingHandler simpleBlockRenderingHandler;
 
@@ -82,18 +71,17 @@ public enum BlocksEnum implements IEnumPart {
     private final HashMap<Integer, TileEntitySpecialRenderer> tileEntitySpecialRendererHashMap = new HashMap<>();
 
     private final HashMap<ModernMaterial, Item> materialIDToItem = new HashMap<>();
-    private Item item;
 
     /**
      * Constructs an instance of the enum with the given parameters.
      *
-     * @param unlocalizedName             The unlocalized name for the block.
+     * @param partName                    The internal name for the block.
      * @param blockClass                  The class representing the block.
      * @param simpleBlockRenderingHandler The rendering handler for the block.
      */
-    BlocksEnum(@NotNull final String unlocalizedName, @NotNull final Class<? extends BaseMaterialBlock> blockClass,
+    BlocksEnum(@NotNull final String partName, @NotNull final Class<? extends BaseMaterialBlock> blockClass,
         @NotNull ISimpleBlockRenderingHandler simpleBlockRenderingHandler) {
-        this.unlocalizedName = unlocalizedName;
+        this.partName = partName;
         this.blockClass = blockClass;
         this.simpleBlockRenderingHandler = simpleBlockRenderingHandler;
     }
@@ -105,7 +93,11 @@ public enum BlocksEnum implements IEnumPart {
      * @return The localized name.
      */
     public String getLocalizedName(final ModernMaterial material) {
-        return unlocalizedName.replace("%", material.getLocalizedName());
+        return StatCollector.translateToLocalFormatted("gt.part.block." + partName, material.getLocalizedName());
+    }
+
+    public String getPartName() {
+        return partName;
     }
 
     @Override

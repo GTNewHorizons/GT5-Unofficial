@@ -34,13 +34,10 @@ public class SpecialBlockRegistration {
             block = blockType.getBlockClass()
                 .getDeclaredConstructor(BlocksEnum.class, HashSet.class)
                 .newInstance(blockType, validMaterials);
-
+            GameRegistry.registerBlock(block, BaseMaterialItemBlock.class, "special." + blockType.getPartName());
             itemBlock = Item.getItemFromBlock(block);
 
-            GameRegistry.registerBlock(block, BaseMaterialItemBlock.class, "Special." + blockType);
-
             for (ModernMaterial material : blockType.getSpecialBlockRenderAssociatedMaterials()) {
-                itemBlock = Item.getItemFromBlock(block);
                 blockType.setItem(material, itemBlock);
             }
 

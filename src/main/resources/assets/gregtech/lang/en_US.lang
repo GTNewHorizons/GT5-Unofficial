@@ -77,6 +77,25 @@ gt.part.item.toolHeadSoldering=%s Soldering Head
 gt.part.item.toolHeadSword=%s Sword Blade
 gt.part.item.toolHeadWrench=%s Wrench Tip
 
+gt.part.block.frameBox=%s Frame Box
+gt.part.block.solidBlock=Block of %s
+gt.part.block.oreEarth=%s Ore
+gt.part.block.oreNetherrack=%s Nether Ore
+gt.part.block.oreEndstone=%s End Ore
+gt.part.block.oreBlackgranite=%s Black Granite Ore
+gt.part.block.oreRedgranite=%s Red Granite Ore
+gt.part.block.oreMarble=%s Marble Ore
+gt.part.block.oreBasalt=%s Basalt Ore
+gt.part.block.oreMoon=%s Moon Ore
+gt.part.block.oreSmallEarth=Small %s Ore
+gt.part.block.oreSmallNetherrack=Small %s Nether Ore
+gt.part.block.oreSmallEndstone=Small %s End Ore
+gt.part.block.oreSmallBlackgranite=Small %s Black Granite Ore
+gt.part.block.oreSmallRedgranite=Small %s Red Granite Ore
+gt.part.block.oreSmallMarble=Small %s Marble Ore
+gt.part.block.oreSmallBasalt=Small %s Basalt Ore
+gt.part.block.oreSmallMoon=Small %s Moon Ore
+
 GT5U.autoplace.error.no_hatch=§cSuggested to place hatch §4%s§c but none was found
 GT5U.autoplace.error.no_mte.id=§cSuggested to place machine with meta ID §4%s§c but none was found
 GT5U.autoplace.error.no_mte.class_name=§cSuggested to place machine with class name §4%d§c but none was found
