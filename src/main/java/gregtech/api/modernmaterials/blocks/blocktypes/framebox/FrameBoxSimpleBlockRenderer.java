@@ -1,6 +1,6 @@
 package gregtech.api.modernmaterials.blocks.blocktypes.framebox;
 
-import static gregtech.api.modernmaterials.render.Utilities.drawBlock;
+import static gregtech.api.modernmaterials.render.ModernMaterialRenderUtil.drawBlock;
 
 import java.awt.*;
 

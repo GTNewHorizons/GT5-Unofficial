@@ -3,15 +3,14 @@ package gregtech.api.modernmaterials.blocks.registration;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.MinecraftForgeClient;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.modernmaterials.ModernMaterial;
 import gregtech.api.modernmaterials.blocks.dumbbase.basematerialblock.BaseMaterialBlock;
 import gregtech.api.modernmaterials.blocks.dumbbase.basematerialblock.BaseMaterialItemBlock;
@@ -35,13 +34,10 @@ public class SpecialBlockRegistration {
             block = blockType.getBlockClass()
                 .getDeclaredConstructor(BlocksEnum.class, HashSet.class)
                 .newInstance(blockType, validMaterials);
-
+            GameRegistry.registerBlock(block, BaseMaterialItemBlock.class, "special." + blockType.getPartName());
             itemBlock = Item.getItemFromBlock(block);
 
-            GameRegistry.registerBlock(block, BaseMaterialItemBlock.class, "Special." + blockType);
-
             for (ModernMaterial material : blockType.getSpecialBlockRenderAssociatedMaterials()) {
-                itemBlock = Item.getItemFromBlock(block);
                 blockType.setItem(material, itemBlock);
             }
 
@@ -50,7 +46,8 @@ public class SpecialBlockRegistration {
             throw new RuntimeException("Failed to instantiate " + blockType, e);
         }
 
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
+        if (FMLCommonHandler.instance()
+            .getEffectiveSide() == Side.CLIENT) {
             registerTESRRenderer(blockType, itemBlock);
         }
     }

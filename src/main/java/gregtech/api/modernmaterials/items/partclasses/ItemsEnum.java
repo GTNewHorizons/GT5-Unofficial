@@ -4,6 +4,7 @@ import java.util.HashSet;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -11,86 +12,87 @@ import gregtech.api.modernmaterials.ModernMaterial;
 
 public enum ItemsEnum implements IEnumPart {
 
-    HotIngot("Hot % Ingot", 1),
-    Ingot("% Ingot", 1),
-    DoubleIngot("Double % Ingot", 2.0),
-    TripleIngot("Triple % Ingot", 3.0),
-    QuadrupleIngot("Quadruple % Ingot", 4.0),
-    QuintupleIngot("Quintuple % Ingot", 5.0),
-    Nugget("% Nugget", 1.0 / 9.0),
+    HotIngot("ingotHot", 1),
+    Ingot("ingot", 1),
+    DoubleIngot("ingotDouble", 2.0),
+    TripleIngot("ingotTriple", 3.0),
+    QuadrupleIngot("ingotQuadruple", 4.0),
+    QuintupleIngot("ingotQuintuple", 5.0),
+    Nugget("nugget", 1.0 / 9.0),
 
     // Gears
-    Gear("% Gear", 4),
-    SmallGear("Small % Gear", 1),
+    Gear("gearGt", 4),
+    SmallGear("gearGtSmall", 1),
 
     // Plates
-    DensePlate("Dense % Plate", 9),
-    Foil("% Foil", 1.0/4.0),
+    DensePlate("plateDense", 9),
+    Foil("foil", 1.0 / 4.0),
 
-    Plate("% Plate", 1),
-    DoublePlate("Double % Plate", 2),
-    TriplePlate("Triple % Plate", 3),
-    QuadruplePlate("Quadruple % Plate", 4),
-    QuintuplePlate("Quintuple % Plate", 5),
+    Plate("plate", 1),
+    DoublePlate("plateDouble", 2),
+    TriplePlate("plateTriple", 3),
+    QuadruplePlate("plateQuadruple", 4),
+    QuintuplePlate("plateQuintuple", 5),
 
     // Gems.
-    Lens("% Lens", 1),
-    ExquisiteGem("Exquisite %", 9),
-    FlawlessGem("Flawless %", 3),
-    Gem("% Gem", 1),
-    FlawedGem("Flawed %", 1.0 / 3.0),
-    ChippedGem("Chipped %", 1.0 / 9.0),
+    Lens("lens", 1),
+    ExquisiteGem("gemExquisite", 9),
+    FlawlessGem("gemFlawless", 3),
+    Gem("gem", 1),
+    FlawedGem("gemFlawed", 1.0 / 3.0),
+    ChippedGem("gemChipped", 1.0 / 9.0),
 
     // Misc.
-    Ring("% Ring", 1.0 / 4.0),
-    Rotor("% Rotor", 612.0 / 144.0),
-    Round("% Round", 9),
+    Ring("ring", 1.0 / 4.0),
+    Rotor("rotor", 612.0 / 144.0),
+    Round("round", 9),
 
-    LongRod("% Long Rod", 1),
-    Rod("% Rod", 1 / 2.0),
-    Bolt("% Bolt", 1 / 4.0),
-    Screw("% Screw", 1 / 8.0),
+    LongRod("stickLong", 1),
+    Rod("stick", 1 / 2.0),
+    Bolt("bolt", 1 / 4.0),
+    Screw("screw", 1 / 8.0),
 
-    TurbineBlade("% Turbine Blade", 6),
-    FineWire("Fine % Wire", 1 / 8.0),
+    TurbineBlade("turbineBlade", 6),
+    FineWire("wireFine", 1 / 8.0),
+    ItemCasing("itemCasing"),
 
     // Springs
-    Spring("% Spring", 1),
-    SmallSpring("Small % Spring", 1 / 4.0),
+    Spring("spring", 1),
+    SmallSpring("springSmall", 1 / 4.0),
 
     // Dusts.
-    ImpureDust("Impure % Dust", 1),
-    PurifiedDust("Purified % Dust", 1),
-    Dust("% Dust", 1),
-    SmallDust("Small % Dust", 1 / 4.0),
-    TinyDust("Tiny % Dust", 1 / 9.0),
+    ImpureDust("dustImpure", 1),
+    PurifiedDust("dustPure", 1),
+    Dust("dust", 1),
+    SmallDust("dustSmall", 1 / 4.0),
+    TinyDust("dustTiny", 1 / 9.0),
 
     // Ore stuff.
-    CrushedCentrifugedOre("Centrifuged % Ore"),
-    PurifiedOre("Purified % Ore"),
-    CrushedOre("Crushed % Ore"),
-    Nanites("% Nanites"),
+    CrushedCentrifugedOre("crushedCentrifuged"),
+    PurifiedOre("crushedPurified"),
+    CrushedOre("crushed"),
+    Nanites("nanite"),
 
     // Tool Parts.
-    ArrowHead("% Arrow Head"),
-    AxeHead("% Axe Head"),
-    BuzzSaw("% Buzz Saw"),
-    ChainSaw("% Chainsaw"),
-    DrillTip("% Drill Tip"),
-    FileHead("% File Head"),
-    HammerHead("% Hammer Head"),
-    HoeHead("% Hoe Head"),
-    MalletHead("% Mallet Head"),
-    PickaxeHead("% Pickaxe Head"),
-    PlowHead("% Plow Head"),
-    SawBlade("% Saw Blade"),
-    ItemCasing("% Item Casing"),
-    ScrewdriverHead("% Screwdriver Head"),
-    SenseHead("% Sense Head"),
-    ShovelHead("% Shovel Head"),
-    SolderingHead("% Soldering Head"),
-    SwordBlade("% Sword Blade"),
-    ElectricWrenchHead("% Electric Wrench Head");
+    MalletHandle("handleMallet"),
+    ArrowHead("toolHeadArrow"),
+    AxeHead("toolHeadAxe"),
+    BuzzSawHead("toolHeadBuzzSaw"),
+    ChainSawHead("toolHeadChainsaw"),
+    DrillHead("toolHeadDrill"),
+    FileHead("toolHeadFile"),
+    HammerHead("toolHeadHammer"),
+    HoeHead("toolHeadHoe"),
+    MalletHead("toolHeadMallet"),
+    PickaxeHead("toolHeadPickaxe"),
+    PlowHead("toolHeadPlow"),
+    SawHead("toolHeadSaw"),
+    ScrewdriverHead("toolHeadScrewdriver"),
+    SenseHead("toolHeadSense"),
+    ShovelHead("toolHeadShovel"),
+    SolderingHead("toolHeadSoldering"),
+    SwordHead("toolHeadSword"),
+    ElectricWrenchHead("toolHeadWrench");
 
     public final String partName;
 
@@ -121,6 +123,14 @@ public enum ItemsEnum implements IEnumPart {
     public void setItem(Item setItem) {
         if (this.item != null) throw new RuntimeException(this + " already has a set item.");
         this.item = setItem;
+    }
+
+    public String getUnlocalizedNameForItem() {
+        return partName;
+    }
+
+    public String getLocalizedName(ModernMaterial material) {
+        return StatCollector.translateToLocalFormatted("gt.part.item." + partName, material.getLocalizedName());
     }
 
     @Override

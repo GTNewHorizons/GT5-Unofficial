@@ -17,18 +17,14 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.modernmaterials.ModernMaterial;
 import gregtech.api.modernmaterials.effects.IMaterialEffect;
-import gregtech.api.util.GT_LanguageManager;
 
 public class MaterialPart extends Item {
 
-    private final String partName;
     private final ItemsEnum part;
 
     public MaterialPart(final ItemsEnum part) {
         setCreativeTab(CreativeTabs.tabMaterials);
         setHasSubtypes(true);
-
-        partName = part.partName;
         this.part = part;
     }
 
@@ -42,18 +38,10 @@ public class MaterialPart extends Item {
     }
 
     @Override
-    public String getUnlocalizedName(ItemStack itemStack) {
-
+    public String getItemStackDisplayName(ItemStack itemStack) {
         ModernMaterial material = ModernMaterial.getMaterialFromItemStack(itemStack);
-
         if (material == null) return "ERROR: Null Material";
-
-        String trueName = partName.replace("%", material.getMaterialName());
-
-        // Localise the material name.
-        GT_LanguageManager.addStringLocalization(trueName + ".name", trueName);
-
-        return trueName;
+        return part.getLocalizedName(material);
     }
 
     // Tooltip information.

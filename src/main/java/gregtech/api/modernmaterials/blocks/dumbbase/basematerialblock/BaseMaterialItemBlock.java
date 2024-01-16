@@ -59,7 +59,7 @@ public class BaseMaterialItemBlock extends ItemBlock {
         BaseMaterialBlock block = (BaseMaterialBlock) Block.getBlockFromItem(itemStack.getItem());
         BlocksEnum blockEnum = block.getBlockEnum();
 
-        return blockEnum.getLocalisedName(material);
+        return blockEnum.getLocalizedName(material);
     }
 
     public BlocksEnum getPart() {
