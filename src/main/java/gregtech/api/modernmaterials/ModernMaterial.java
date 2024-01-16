@@ -214,7 +214,7 @@ public final class ModernMaterial {
             materialToBuild = new ModernMaterial(materialName);
         }
 
-        ModernMaterial build() {
+        public ModernMaterial build() {
             for (IEnumPart part : materialToBuild.existingPartsForMaterial) {
                 part.addAssociatedMaterial(materialToBuild);
             }
