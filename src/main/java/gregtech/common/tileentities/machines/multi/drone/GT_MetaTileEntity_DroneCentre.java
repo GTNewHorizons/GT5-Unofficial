@@ -561,6 +561,7 @@ public class GT_MetaTileEntity_DroneCentre extends
         return builder.widget(
             MachineContainer.setPos(10, 30)
                 .setSize(240, 160))
+            .setDraggable(false)
             .build();
     }
 
