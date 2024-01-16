@@ -1,6 +1,9 @@
 package gregtech.api.modernmaterials.fluids;
 
+import java.util.function.Supplier;
+
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -9,20 +12,21 @@ import gregtech.api.modernmaterials.ModernMaterial;
 final public class ModernMaterialFluid extends Fluid {
 
     private final ModernMaterial associatedMaterial;
-    private final String localisedName;
+    private final Supplier<String> localizedNameGetter;
     private FluidEnum fluidEnum;
 
     public ModernMaterialFluid(FluidEnum fluidEnum, ModernMaterial modernMaterial) {
-        super(fluidEnum.format(modernMaterial));
+        super(fluidEnum.getUnlocalizedName(modernMaterial));
         this.fluidEnum = fluidEnum;
-        this.localisedName = fluidEnum.format(modernMaterial);
+        this.localizedNameGetter = () -> fluidEnum.getLocalizedName(modernMaterial);
         this.associatedMaterial = modernMaterial;
         this.temperature = fluidEnum.getTemperature();
     }
 
-    public ModernMaterialFluid(String unformattedString, ModernMaterial modernMaterial) {
-        super(unformattedString.replace("%", modernMaterial.getMaterialName()));
-        this.localisedName = unformattedString.replace("%", modernMaterial.getMaterialName());
+    public ModernMaterialFluid(String internalName, String prefix, ModernMaterial modernMaterial) {
+        super(prefix + modernMaterial.getMaterialName());
+        this.localizedNameGetter = () -> StatCollector
+            .translateToLocalFormatted("gt.fluid.custom." + internalName, modernMaterial.getLocalizedName());
         this.associatedMaterial = modernMaterial;
     }
 
@@ -43,7 +47,7 @@ final public class ModernMaterialFluid extends Fluid {
 
     @Override
     public String getLocalizedName(FluidStack stack) {
-        return localisedName;
+        return localizedNameGetter.get();
     }
 
     public void setFluidEnum(FluidEnum fluidEnum) {
@@ -64,26 +68,30 @@ final public class ModernMaterialFluid extends Fluid {
 
     @Override
     public String toString() {
-        return localisedName;
+        return fluidName;
     }
 
     public static class Builder {
 
+        private final String internalName;
+        private final String prefix;
         private ModernMaterial associatedMaterial;
         private int temperature = -1;
         private boolean isGas = false;
-        private final String unformattedString;
         private IIcon stillIcon;
         private IIcon flowingIcon;
 
-        // Unformatted string example: "Molten % Stuff" -> "Molten Test Stuff" as fluid name if
-        // material is called "Test". You can use no % signs or multiple.
-        public Builder(String unformatedString) {
-            this.unformattedString = unformatedString;
+        public Builder(String internalName, String prefix) {
+            this.internalName = internalName;
+            this.prefix = prefix;
+        }
+
+        public Builder(String internalName) {
+            this(internalName, "");
         }
 
         public ModernMaterialFluid build() {
-            return new ModernMaterialFluid(unformattedString, associatedMaterial);
+            return new ModernMaterialFluid(internalName, prefix, associatedMaterial);
         }
 
         public ModernMaterialFluid.Builder setMaterial(ModernMaterial material) {

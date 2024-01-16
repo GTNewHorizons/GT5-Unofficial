@@ -96,6 +96,17 @@ gt.part.block.oreSmallMarble=Small %s Marble Ore
 gt.part.block.oreSmallBasalt=Small %s Basalt Ore
 gt.part.block.oreSmallMoon=Small %s Moon Ore
 
+gt.part.fluid.molten=Molten %s
+gt.part.fluid.gas=%s Gas
+gt.part.fluid.plasma=%s Plasma
+gt.part.fluid.none=%s
+
+# TODO remove before release
+gt.fluid.custom.zebra=Zebra %1$s Fluid %1$s
+gt.fluid.custom.hydro_cracked=Hydro-Cracked %s
+gt.fluid.custom.steam_cracked=Steam-Cracked %s
+gt.fluid.custom.extremely_hydro_cracked=Extremely Hydro-Cracked %s
+
 GT5U.autoplace.error.no_hatch=§cSuggested to place hatch §4%s§c but none was found
 GT5U.autoplace.error.no_mte.id=§cSuggested to place machine with meta ID §4%s§c but none was found
 GT5U.autoplace.error.no_mte.class_name=§cSuggested to place machine with class name §4%d§c but none was found

@@ -27,7 +27,7 @@ public class ModernMaterialsRegistration {
         .addFluid(NoPrefix, 3_000)
         .addFluid(Molten, 10_000)
         .addFluid(Plasma, 100_000)
-        .addCustomFluid(new ModernMaterialFluid.Builder("Zebra % Fluid %").setTemperature(120_000_000), false)
+        .addCustomFluid(new ModernMaterialFluid.Builder("zebra", "zebra.").setTemperature(120_000_000), false)
         .setMaterialTier(TierEU.MAX)
         .build();
 
@@ -68,10 +68,15 @@ public class ModernMaterialsRegistration {
             .addFluid(NoPrefix, 3_000)
             .addFluid(Molten, 10_000)
             .addFluid(Plasma, 100_000)
-            .addCustomFluid(new ModernMaterialFluid.Builder("Hydro-Cracked %").setTemperature(121_000_000), true)
-            .addCustomFluid(new ModernMaterialFluid.Builder("Steam-Cracked %").setTemperature(122_000_000), true)
             .addCustomFluid(
-                new ModernMaterialFluid.Builder("Extremely Hydro-Cracked %").setTemperature(123_000_000),
+                new ModernMaterialFluid.Builder("hydro_cracked", "hydrocracked.").setTemperature(121_000_000),
+                true)
+            .addCustomFluid(
+                new ModernMaterialFluid.Builder("steam_cracked", "steamcracked.").setTemperature(122_000_000),
+                true)
+            .addCustomFluid(
+                new ModernMaterialFluid.Builder("extremely_hydro_cracked", "extremelyhydrocracked.")
+                    .setTemperature(123_000_000),
                 false)
             .build();
 
