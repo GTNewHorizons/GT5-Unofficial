@@ -1,0 +1,58 @@
+{
+  "FrameBox": {
+    "UP" : {
+      "layers": [
+        {
+          "file": "ingotHot_0",
+          "isColored": true,
+          "isAnimated": false
+        }
+      ]
+    },
+    "DOWN" : {
+      "layers": [
+        {
+          "file": "ingotHot_0",
+          "isColored": true,
+          "isAnimated": false
+        }
+      ]
+    },
+    "NORTH" : {
+      "layers": [
+        {
+          "file": "ingotHot_0",
+          "isColored": true,
+          "isAnimated": false
+        }
+      ]
+    },
+    "EAST" : {
+      "layers": [
+        {
+          "file": "ingotHot_0",
+          "isColored": true,
+          "isAnimated": false
+        }
+      ]
+    },
+    "SOUTH" : {
+      "layers": [
+        {
+          "file": "ingotHot_0",
+          "isColored": true,
+          "isAnimated": false
+        }
+      ]
+    },
+    "WEST" : {
+      "layers": [
+        {
+          "file": "ingotHot_0",
+          "isColored": true,
+          "isAnimated": false
+        }
+      ]
+    }
+  }
+}
