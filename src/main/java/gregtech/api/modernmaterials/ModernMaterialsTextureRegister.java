@@ -34,7 +34,7 @@ public class ModernMaterialsTextureRegister {
     private Map<String, PartTextureConfig> loadJson(String jsonLocation) {
         Gson gson = new Gson();
         Type type = new TypeToken<Map<String, PartTextureConfig>>(){}.getType();
-        ;
+
         InputStream is = getClass().getResourceAsStream(jsonLocation);
         if (is == null) {
             throw new RuntimeException("Missing files at " + jsonLocation);
@@ -141,57 +141,28 @@ public class ModernMaterialsTextureRegister {
 
     private void customItemTextures(TextureMap map) {
 
-//        // Pre sort this by part name not enum name to save computation later.
-//        ItemsEnum[] partsEnum = ItemsEnum.values();
-//        Arrays.sort(partsEnum, Comparator.comparing(part -> part.partName));
-//
-//        // Iterate over all texture types and their associated item textures to register them and any
-//        // additional layers. A file can be identified as PartName_0_c.png, the 0 indicates the layer and c indicates if
-//        // the part should have standard GT colouring applied to it for this material.
-//
-//        // PartName_1 for example is layer 1 and has no colouring. This can be useful for e.g. fine wire
-//        // where you want the lower layer to be coloured but not the overlay.
-//
-//        HashMap<String, ItemsEnum> partNameToEnumMap = new HashMap<>();
-//        for (ItemsEnum part : partsEnum) {
-//            partNameToEnumMap.put(part.partName, part);
-//        }
-//
-//        for (ModernMaterial material : TextureType.getCustomTextureMaterials()) {
-//
-//            ArrayList<String> fileList = new ArrayList<>();
-//
-//            int priority = 0;
-//
-//            for (String filename : fileList) {
-//
-//                boolean isColoured;
-//
-//                ItemsEnum itemEnum = partNameToEnumMap.getOrDefault(partName, null);
-//
-//                if (itemEnum == null) continue;
-//
-//                IIcon icon = map.registerIcon(
-//                    GregTech.getResourcePath() + "ModernMaterialsIcons/"
-//                        + Custom
-//                        + "/"
-//                        + material.getMaterialName()
-//                        + "/"
-//                        + partName
-//                        + "_"
-//                        + priority
-//                        + "_"
-//                        + (isColoured ? "c" : "n"));
-//
-//                // textures/items
-//
-//                IconWrapper iconWrapper = new IconWrapper(priority, isColoured, icon);
-//                TextureType.addCustomTexture(material, itemEnum, iconWrapper);
-//
-//                priority++;
-//            }
-//        }
+        for (ModernMaterial material : TextureType.getCustomTextureMaterials()) {
 
+            Map<String, PartTextureConfig> textureConfigs = loadJson("/assets/gregtech/modernmaterialsjson/custom/" + material.getMaterialName() + "/TextureInfo.json");
+
+            for (Map.Entry<String, PartTextureConfig> entry : textureConfigs.entrySet()) {
+
+                String enumString = entry.getKey();
+                PartTextureConfig textureConfig = entry.getValue();
+
+                int priority = 0;
+                for (PartTextureConfig.Layer textureLayer : textureConfig.getLayers()) {
+                    IIcon icon = map.registerIcon(
+                        GregTech.getResourcePath() + "ModernMaterialsIcons/Custom/" + material.getMaterialName()
+                            + "/"
+                            + textureLayer.getFile()
+                    );
+
+                    IconWrapper iconWrapper = new IconWrapper(priority++, textureLayer.isColored(), icon);
+                    TextureType.addCustomTexture(material, Enum.valueOf(ItemsEnum.class, enumString), iconWrapper);
+                }
+            }
+        }
     }
 
     private void standardItemTextures(TextureMap map) {

@@ -326,6 +326,11 @@
         "file": "impureDust_0",
         "isColored": true,
         "isAnimated": false
+      },
+      {
+        "file": "impureDust_1",
+        "isColored": false,
+        "isAnimated": false
       }
     ]
   },
@@ -334,6 +339,11 @@
       {
         "file": "purifiedDust_0",
         "isColored": true,
+        "isAnimated": false
+      },
+      {
+        "file": "purifiedDust_1",
+        "isColored": false,
         "isAnimated": false
       }
     ]
