@@ -3141,12 +3141,7 @@ public class GT_Utility {
         if (aStack == null) return false;
         if (aSet.contains(aStack)) return true;
 
-        // Modifying the parameter avoids allocating a new ItemStack
-        int oldDamage = aStack.getItemDamage();
-        Items.feather.setDamage(aStack, W);
-        boolean contains = aSet.contains(aStack);
-        Items.feather.setDamage(aStack, oldDamage);
-        return contains;
+        return aSet.contains(GT_ItemStack.internalCopyStack(aStack, true));
     }
 
     public static boolean isStackInList(ItemStack aStack, Collection<GT_ItemStack> aList) {

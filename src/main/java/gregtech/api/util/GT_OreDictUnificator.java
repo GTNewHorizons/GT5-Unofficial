@@ -396,11 +396,7 @@ public class GT_OreDictUnificator {
         if (GT_Utility.isStackInvalid(aStack)) return null;
         ItemData rData = sItemStack2DataMap.get(aStack);
         if (rData == null) { // Try the lookup again but with wildcard damage value
-            // Modifying the parameter avoids allocating a new ItemStack
-            int oldDamage = aStack.getItemDamage();
-            Items.feather.setDamage(aStack, W);
-            rData = sItemStack2DataMap.get(aStack);
-            Items.feather.setDamage(aStack, oldDamage);
+            rData = sItemStack2DataMap.get(GT_ItemStack.internalCopyStack(aStack, true));
         }
         return rData;
     }
