@@ -116,7 +116,7 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
     }
 
     public GT_MetaTileEntity_Massfabricator(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 1, aDescription, aTextures, 1, 1);
+        super(aName, aTier, 8, aDescription, aTextures, 1, 1);
     }
 
     @Override
