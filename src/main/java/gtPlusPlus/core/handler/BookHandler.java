@@ -10,10 +10,10 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 
@@ -431,10 +431,11 @@ public class BookHandler {
                 new ItemStack[] { ItemUtils.getSimpleStack(Items.writable_book),
                         ItemUtils.getSimpleStack(Items.lava_bucket) },
                 ItemBookWritten_ThermalBoiler);
-        RecipeUtils.addShapelessGregtechRecipe(
-                new ItemStack[] { ItemUtils.getSimpleStack(Items.writable_book),
-                        ItemUtils.getItemStackOfAmountFromOreDict(CI.craftingToolWrench, 1) },
-                ItemBookWritten_MultiMachineManual);
+        GT_ModHandler.addCraftingRecipe(
+                ItemBookWritten_MultiMachineManual,
+                GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE
+                        | GT_ModHandler.RecipeBits.BUFFERED,
+                new Object[] { "Xw", 'X', ItemUtils.getSimpleStack(Items.writable_book) });
         RecipeUtils.addShapelessGregtechRecipe(
                 new ItemStack[] { ItemUtils.getSimpleStack(Items.writable_book),
                         ItemUtils.getItemStackOfAmountFromOreDict("wireGt01Tin", 1) },
