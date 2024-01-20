@@ -20,13 +20,14 @@ import gregtech.api.interfaces.ICondition;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.GT_ArrayList;
-import gregtech.api.objects.GT_HashSet;
-import gregtech.api.objects.GT_ItemStack2;
+import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import gregtech.loaders.materialprocessing.ProcessingModSupport;
+import it.unimi.dsi.fastutil.objects.ObjectOpenCustomHashSet;
+import it.unimi.dsi.fastutil.objects.ObjectSet;
 
 public enum OrePrefixes {
 
@@ -1015,7 +1016,10 @@ public enum OrePrefixes {
     public MaterialStack mSecondaryMaterial = null;
     public OrePrefixes mPrefixInto = this;
     public float mHeatDamage = 0.0F; // Negative for Frost Damage
-    private final GT_HashSet<GT_ItemStack2> mContainsTestCache = new GT_HashSet<>(512, 0.5f);
+    private final ObjectSet<ItemStack> mContainsTestCache = new ObjectOpenCustomHashSet<>(
+        512,
+        0.5f,
+        GT_ItemStack.ITEMSTACK_HASH_STRATEGY2);
     public static final List<OrePrefixes> mPreventableComponents = new LinkedList<>(
         Arrays.asList(
             OrePrefixes.gem,
@@ -1205,13 +1209,13 @@ public enum OrePrefixes {
         if (!contains(aStack)) {
             mPrefixedItems.add(aStack);
             // It's now in there... so update the cache
-            mContainsTestCache.add(new GT_ItemStack2(aStack));
+            mContainsTestCache.add(aStack);
         }
         return true;
     }
 
     public boolean contains(ItemStack aStack) {
-        return !GT_Utility.isStackInvalid(aStack) && mContainsTestCache.contains(new GT_ItemStack2(aStack));
+        return !GT_Utility.isStackInvalid(aStack) && mContainsTestCache.contains(aStack);
     }
 
     public boolean containsUnCached(ItemStack aStack) {
