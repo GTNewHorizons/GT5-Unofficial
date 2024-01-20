@@ -1354,17 +1354,11 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         }
 
         if (hatch instanceof GT_MetaTileEntity_Hatch_Input tHatch && tHatch.isValid()) {
-            setHatchRecipeMap(tHatch);
             if (tHatch instanceof GT_MetaTileEntity_Hatch_Input_ME meHatch) {
                 meHatch.startRecipeProcessing();
-                for (FluidStack fluidStack : meHatch.getStoredFluids()) {
-                    if (fluid.isFluidEqual(fluidStack)) {
-                        if (doDrain) fluidStack.amount = Math.max(fluidStack.amount - fluid.amount, 0);
-                        meHatch.endRecipeProcessing(this);
-                        return fluidStack.amount >= fluid.amount;
-                    }
-                }
+                FluidStack tFluid = meHatch.drain(ForgeDirection.UNKNOWN, fluid, doDrain);
                 meHatch.endRecipeProcessing(this);
+                return tFluid != null && tFluid.amount >= fluid.amount;
             } else {
                 FluidStack tFluid = tHatch.drain(ForgeDirection.UNKNOWN, fluid, doDrain);
                 return tFluid != null && tFluid.amount >= fluid.amount;
