@@ -48,6 +48,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
@@ -424,6 +425,14 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends
                 }
             }
         }
+    }
+
+    @Override
+    public boolean canDumpFluidToME() {
+        // All fluids can be dumped to ME only if each layer contains a ME Output Hatch.
+        return this.mOutputHatchesByLayer.stream().allMatch(
+                tLayerOutputHatches -> tLayerOutputHatches.stream()
+                        .anyMatch(tHatch -> tHatch instanceof GT_MetaTileEntity_Hatch_Output_ME));
     }
 
     @Override
