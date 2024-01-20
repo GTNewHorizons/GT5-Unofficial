@@ -14,7 +14,9 @@ import static gregtech.api.util.GT_StructureUtility.ofCoil;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -61,6 +63,7 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.tileentities.machines.IDualInputHatch;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Triplet;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
@@ -351,13 +354,14 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
             mCoilTier = checkCoil.getTier();
             getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
             updateHatchTexture();
-            return mMachineCasingTier >= 9 || mMachineCasingTier >= maxTierOfHatch;
+            return (mMachineCasingTier >= 9 || mMachineCasingTier >= maxTierOfHatch) && mCatalystBuses.size() <= 1;
         }
         return false;
     }
 
     public void updateHatchTexture() {
         for (GT_MetaTileEntity_Hatch h : mCatalystBuses) h.updateTexture(getCasingTextureID());
+        for (IDualInputHatch h : mDualInputHatches) h.updateTexture(getCasingTextureID());
         for (GT_MetaTileEntity_Hatch h : mInputBusses) h.updateTexture(getCasingTextureID());
         for (GT_MetaTileEntity_Hatch h : mMaintenanceHatches) h.updateTexture(getCasingTextureID());
         for (GT_MetaTileEntity_Hatch h : mEnergyHatches) h.updateTexture(getCasingTextureID());
@@ -573,21 +577,19 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
                     return CheckRecipeResultRegistry.insufficientMachineTier(recipe.mSpecialValue);
                 }
                 // checks if it has a catalyst
-
-                boolean needsCalayst = false;
+                ItemStack catalyst = null;
                 for (ItemStack item : recipe.mInputs) {
                     if (ItemUtils.isCatalyst(item)) {
-                        needsCalayst = true;
+                        catalyst = item;
                         break;
                     }
                 }
-                if (needsCalayst) {
-                    catalystRecipe = findCatalyst(inputItems, recipe.mInputs);
-                    if (catalystRecipe == null || mCatalystBuses.size() != 1) {
+
+                if (catalyst != null) {
+                    catalystRecipe = findCatalyst(getCatalystInputs().toArray(new ItemStack[0]), catalyst);
+                    if (catalystRecipe == null) {
                         return SimpleCheckRecipeResult.ofFailure("no_catalyst");
                     }
-                } else {
-                    catalystRecipe = null;
                 }
 
                 // checks if it has enough catalyst durability
@@ -641,18 +643,12 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
         return 0;
     }
 
-    private ItemStack findCatalyst(ItemStack[] aItemInputs, ItemStack[] aRecipeInputs) {
+    private ItemStack findCatalyst(ItemStack[] aItemInputs, ItemStack catalyst) {
         if (aItemInputs != null) {
-            for (final ItemStack aInput : aItemInputs) {
-                if (aInput != null) {
-                    if (ItemUtils.isCatalyst(aInput)) {
-                        for (ItemStack aRecipeInput : aRecipeInputs) {
-                            if (GT_Utility.areStacksEqual(aRecipeInput, aInput, true)) {
-                                return aInput;
-                            }
-                        }
-                    }
-                }
+            Optional<ItemStack> foundCatalyst = Arrays.stream(aItemInputs)
+                    .filter(i -> GT_Utility.areStacksEqual(i, catalyst, true)).findFirst();
+            if (foundCatalyst.isPresent()) {
+                return foundCatalyst.get();
             }
         }
         return null;
@@ -675,6 +671,12 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
         if (this.getControllerSlot() != null) {
             tItems.add(this.getControllerSlot());
         }
+        tItems.addAll(getCatalystInputs());
+        return tItems;
+    }
+
+    public ArrayList<ItemStack> getCatalystInputs() {
+        ArrayList<ItemStack> tItems = new ArrayList<>();
         for (GT_MetaTileEntity_Hatch_Catalysts tHatch : filterValidMTEs(mCatalystBuses)) {
             AutoMap<ItemStack> aHatchContent = tHatch.getContentUsageSlots();
             if (!aHatchContent.isEmpty()) {
