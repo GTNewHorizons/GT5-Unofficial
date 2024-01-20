@@ -1,7 +1,6 @@
 package com.elisis.gtnhlanth.loader;
 
 import static com.elisis.gtnhlanth.common.register.BotWerkstoffMaterialPool.*;
-import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.OrePrefixes.*;
 import static gregtech.api.recipe.RecipeMaps.chemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
@@ -12,7 +11,6 @@ import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 import java.util.HashSet;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.elisis.gtnhlanth.common.register.BotWerkstoffMaterialPool;
@@ -224,30 +222,6 @@ public class BotRecipes {
                 Nitromethane.getFluidOrGas(2000),
                 300,
                 1920);
-
-        if (GTPlusPlus.isModLoaded()) {
-            // N2H4 + C2H4O2 =C2H6O= C2H6N2O + H2O
-            GT_Values.RA.addMultiblockChemicalRecipe(
-                    new ItemStack[] { C2 },
-                    new FluidStack[] { Materials.AceticAcid.getFluid(1000), Materials.Ethanol.getFluid(1000),
-                            new FluidStack(FluidRegistry.getFluid("fluid.hydrazine"), 1000) },
-                    new FluidStack[] { Acetylhydrazine.getFluidOrGas(1000), Materials.Ethanol.getFluid(1000) },
-                    null,
-                    40,
-                    30_720);
-
-            // C2H6N2O + 2CH2O + 4H = C2H8N2 + C2H4O2 + H2O
-            GT_Values.RA.addMultiblockChemicalRecipe(
-                    new ItemStack[] { C2 },
-                    new FluidStack[] { Acetylhydrazine.getFluidOrGas(1000),
-                            new FluidStack(FluidRegistry.getFluid("fluid.formaldehyde"), 2000),
-                            Materials.Hydrogen.getGas(4000) },
-                    new FluidStack[] { UnsymmetricalDimethylhydrazine.getFluidOrGas(1000),
-                            Materials.AceticAcid.getFluid(1000), Materials.Water.getFluid(1000) },
-                    null,
-                    20,
-                    122_880);
-        }
     }
 
     public static void removeRecipes() {

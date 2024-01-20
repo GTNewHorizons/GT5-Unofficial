@@ -74,24 +74,6 @@ public class BotWerkstoffMaterialPool implements Runnable {
             new Werkstoff.GenerationFeatures().disable().addCells(),
             29915,
             SET_FINE);
-    public static final Werkstoff Acetylhydrazine = new Werkstoff(
-            new short[] { 0xd1, 0x5c, 0x5c },
-            "Acetylhydrazine",
-            subscriptNumbers("C2H6N2O"),
-            new Werkstoff.Stats(),
-            COMPOUND,
-            new Werkstoff.GenerationFeatures().disable().addCells(),
-            29927,
-            SET_METALLIC);
-    public static final Werkstoff UnsymmetricalDimethylhydrazine = new Werkstoff(
-            new short[] { 0x80, 0x06, 0x00 },
-            "Unsymmetrical Dimethylhydrazine",
-            subscriptNumbers("H2NN(CH3)2"),
-            new Werkstoff.Stats(),
-            COMPOUND,
-            new Werkstoff.GenerationFeatures().disable().addCells(),
-            29928,
-            SET_METALLIC);
     public static final Werkstoff Nitromethane = new Werkstoff(
             new short[] { 0x87, 0x7d, 0x60 },
             "Nitromethane",
