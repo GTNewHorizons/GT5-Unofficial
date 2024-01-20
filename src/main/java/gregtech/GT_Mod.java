@@ -128,7 +128,7 @@ import ic2.api.recipe.RecipeOutput;
     version = "MC1710",
     guiFactory = "gregtech.client.GT_GuiFactory",
     dependencies = " required-after:IC2;" + " required-after:structurelib;"
-        + " required-after:gtnhlib@[0.0.8,);"
+        + " required-after:gtnhlib@[0.2.1,);"
         + " required-after:modularui@[1.1.12,);"
         + " required-after:appliedenergistics2@[rv3-beta-258,);"
         + " after:dreamcraft;"
@@ -796,7 +796,7 @@ public class GT_Mod implements IGT_Mod {
         GT_Utility.reInit();
         GT_Recipe.reInit();
         try {
-            for (Map<? extends ItemHolder, ?> gt_itemStackMap : GregTech_API.sItemStackMappings) {
+            for (Map<?, ?> gt_itemStackMap : GregTech_API.sItemStackMappings) {
                 GT_Utility.reMap(gt_itemStackMap);
             }
             for (SetMultimap<? extends ItemHolder, ?> gt_itemStackMap : GregTech_API.itemStackMultiMaps) {
