@@ -3,14 +3,20 @@ package com.elisis.gtnhlanth.common.tileentity;
 import static com.elisis.gtnhlanth.util.DescTextLocalization.BLUEPRINT_INFO;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAdder;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GT_HatchElement.Energy;
+import static gregtech.api.enums.GT_HatchElement.InputBus;
+import static gregtech.api.enums.GT_HatchElement.InputHatch;
+import static gregtech.api.enums.GT_HatchElement.Maintenance;
+import static gregtech.api.enums.GT_HatchElement.Muffler;
+import static gregtech.api.enums.GT_HatchElement.OutputBus;
+import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import java.util.List;
 
@@ -22,7 +28,6 @@ import net.minecraftforge.fluids.FluidStack;
 import com.elisis.gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 import com.elisis.gtnhlanth.util.DescTextLocalization;
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -40,7 +45,7 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 
 public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<DissolutionTank>
-        implements IConstructable, ISurvivalConstructable, ISecondaryDescribable {
+        implements ISurvivalConstructable, ISecondaryDescribable {
 
     private final IStructureDefinition<DissolutionTank> multiDefinition = StructureDefinition.<DissolutionTank>builder()
             .addShape(
@@ -53,13 +58,9 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
                                     { "s   s", "     ", "     ", "     ", "s   s" } }))
             .addElement(
                     's',
-                    ofChain(
-                            ofHatchAdder(DissolutionTank::addInputToMachineList, 49, 1),
-                            ofHatchAdder(DissolutionTank::addOutputToMachineList, 49, 1),
-                            ofHatchAdder(DissolutionTank::addEnergyInputToMachineList, 49, 1),
-                            ofHatchAdder(DissolutionTank::addMaintenanceToMachineList, 49, 1),
-                            ofHatchAdder(DissolutionTank::addMufflerToMachineList, 49, 1),
-                            ofBlock(GregTech_API.sBlockCasings4, 1)))
+                    buildHatchAdder(DissolutionTank.class)
+                            .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy, Muffler)
+                            .casingIndex(49).dot(1).buildAndChain(GregTech_API.sBlockCasings4, 1))
             .addElement('h', ofBlock(GregTech_API.sBlockCasings1, 11))
             .addElement('g', ofBlockAdder(DissolutionTank::addGlass, ItemRegistry.bw_glasses[0], 1)).build();
 
