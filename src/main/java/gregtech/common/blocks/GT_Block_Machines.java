@@ -37,14 +37,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IDebugableBlock;
-import gregtech.api.interfaces.IToolStats;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_Generic_Block;
-import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
@@ -72,19 +70,6 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
         this.isBlockContainer = true;
         this.renderAsNormalBlock = true;
         this.useNeighborBrightness = true;
-    }
-
-    @Override
-    public boolean canHarvestBlock(EntityPlayer player, int meta) {
-
-        ItemStack stack = player.inventory.getCurrentItem();
-        if (stack != null && stack.getItem() instanceof GT_MetaGenerated_Tool gTool) {
-            IToolStats tStats = gTool.getToolStats(stack);
-            if (tStats == null) return false;
-            return tStats.isMinableBlock(this, (byte) meta);
-        }
-
-        return super.canHarvestBlock(player, meta);
     }
 
     @Override
