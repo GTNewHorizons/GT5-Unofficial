@@ -249,6 +249,7 @@ public class GT_MetaTileEntity_ProcessingArray extends
                     && !isValidForLowGravity(recipe, getBaseMetaTileEntity().getWorld().provider.dimensionId)) {
                     return SimpleCheckRecipeResult.ofFailure("high_gravity");
                 }
+                if (recipe.mEUt > availableVoltage) return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
         }.setMaxParallelSupplier(this::getMaxParallel);
