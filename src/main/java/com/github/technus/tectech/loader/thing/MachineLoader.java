@@ -287,6 +287,7 @@ import static com.github.technus.tectech.thing.CustomItemList.eM_energyWirelessT
 import static com.github.technus.tectech.thing.CustomItemList.eM_energyWirelessTunnel7_UXV;
 import static com.github.technus.tectech.thing.CustomItemList.hatch_CreativeData;
 import static com.github.technus.tectech.thing.CustomItemList.hatch_CreativeMaintenance;
+import static com.github.technus.tectech.thing.CustomItemList.hatch_CreativeUncertainty;
 import static com.github.technus.tectech.thing.CustomItemList.holder_Hatch;
 import static com.github.technus.tectech.thing.CustomItemList.rack_Hatch;
 import static com.github.technus.tectech.util.CommonValues.V;
@@ -297,6 +298,7 @@ import net.minecraft.item.ItemStack;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Capacitor;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_CreativeData;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_CreativeMaintenance;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_CreativeUncertainty;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoTunnel;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
@@ -2234,6 +2236,9 @@ public class MachineLoader implements Runnable {
                 new GT_MetaTileEntity_DebugStructureWriter(15499, "debug.tt.writer", "Debug Structure Writer", 14)
                         .getStackForm(1L));
         UnusedStuff.set(new ItemStack(Blocks.air));
+        hatch_CreativeUncertainty.set(
+                new GT_MetaTileEntity_Hatch_CreativeUncertainty(15510, "debug.tt.certain", "Uncertainty Resolution", 14)
+                        .getStackForm(1));
 
         // ===================================================================================================
         // MetaTE init

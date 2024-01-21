@@ -963,6 +963,8 @@ gt.blockmachines.debug.tt.writer.name=Debug Structure Writer
 gt.blockmachines.debug.tt.writer.desc.0=Scans Blocks Around
 gt.blockmachines.debug.tt.writer.desc.1=Prints Multiblock NonTE structure check code
 gt.blockmachines.debug.tt.writer.desc.2=ABC axises aligned to machine front
+gt.blockmachines.debug.tt.certain.desc.0=Feeling certain, for sure
+gt.blockmachines.debug.tt.certain.desc.1=Schrödinger's cat escaped the box
 
 GT5U.gui.text.computing=§aComputing
 GT5U.gui.text.providing_data=§aProviding Data
