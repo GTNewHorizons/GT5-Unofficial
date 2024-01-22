@@ -138,9 +138,9 @@ public class GT_MetaTileEntity_ElectricBlastFurnace extends
             .addInputBus("Any bottom layer casing", 3)
             .addInputHatch("Any bottom layer casing", 3)
             .addOutputBus("Any bottom layer casing", 3)
-            .addOutputHatch("Liquid form of fluids, Any bottom layer casing")
-            .addOutputHatch("Gas form of fluids, Any top layer casing", 1)
-            .addStructureInfo("Recovery amount scales with Muffler Hatch tier")
+            .addOutputHatch("Fluid outputs, Any bottom layer casing")
+            .addOutputHatch("Pollution gases (CO2/CO/SO2), Any top layer casing", 1)
+            .addStructureInfo("Pollution gas output amount scales with Muffler Hatch tier")
             .toolTipFinisher("Gregtech");
         return tt;
     }
