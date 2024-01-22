@@ -131,6 +131,15 @@ public class BlastFurnaceRecipes implements Runnable {
             .addTo(blastFurnaceRecipes);
 
         GT_Values.RA.stdBuilder()
+            .itemInputs(Materials.BandedIron.getDust(2), Materials.Carbon.getDust(1))
+            .itemOutputs(Materials.Iron.getIngots(outputIngotAmount), Materials.Ash.getDustTiny(2))
+            .fluidOutputs(Materials.CarbonDioxide.getGas(1000))
+            .duration(12 * SECONDS)
+            .eut((int) TierEU.RECIPE_MV)
+            .metadata(COIL_HEAT, 1200)
+            .addTo(blastFurnaceRecipes);
+
+        GT_Values.RA.stdBuilder()
             .itemInputs(Materials.Magnetite.getDust(2), Materials.Carbon.getDust(1))
             .itemOutputs(Materials.Iron.getIngots(outputIngotAmount), Materials.Ash.getDustTiny(2))
             .fluidOutputs(Materials.CarbonDioxide.getGas(1000))
