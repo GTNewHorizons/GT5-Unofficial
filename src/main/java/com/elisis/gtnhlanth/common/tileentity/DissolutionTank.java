@@ -8,7 +8,6 @@ import static gregtech.api.enums.GT_HatchElement.Energy;
 import static gregtech.api.enums.GT_HatchElement.InputBus;
 import static gregtech.api.enums.GT_HatchElement.InputHatch;
 import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.Muffler;
 import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER;
@@ -59,8 +58,8 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
             .addElement(
                     's',
                     buildHatchAdder(DissolutionTank.class)
-                            .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy, Muffler)
-                            .casingIndex(49).dot(1).buildAndChain(GregTech_API.sBlockCasings4, 1))
+                            .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy).casingIndex(49)
+                            .dot(1).buildAndChain(GregTech_API.sBlockCasings4, 1))
             .addElement('h', ofBlock(GregTech_API.sBlockCasings1, 11))
             .addElement('g', ofBlockAdder(DissolutionTank::addGlass, ItemRegistry.bw_glasses[0], 1)).build();
 
