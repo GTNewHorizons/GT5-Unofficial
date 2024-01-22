@@ -12,6 +12,9 @@ import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.util.GT_OreDictUnificator.getAssociation;
+import static gregtech.api.util.GT_ParallelHelper.addFluidsLong;
+import static gregtech.api.util.GT_ParallelHelper.addItemsLong;
+import static gregtech.api.util.GT_ParallelHelper.calculateChancedOutputMultiplier;
 import static gregtech.api.util.GT_RecipeBuilder.BUCKETS;
 import static gregtech.api.util.GT_RecipeBuilder.INGOTS;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
@@ -86,6 +89,7 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
     private int mCasing;
     protected int mCraftingTier = 0;
     protected int mFocusingTier = 0;
+    protected int mMaxParallel = 0;
     private boolean mFluidMode = false, doFermium = false, doNeptunium = false;
     private static final Fluid mNeptunium = ELEMENT.getInstance().NEPTUNIUM.getPlasma();
     private static final Fluid mFermium = ELEMENT.getInstance().FERMIUM.getPlasma();
@@ -276,11 +280,35 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
                 .addCasingInfoMin("Quantum Force Conductor", 177, false)
                 .addCasingInfoMin("Force Field Glass", 224, false)
                 .addCasingInfoMin("Neutron Pulse Manipulators", 233, false)
-                .addCasingInfoMin("Neutron Shielding Cores", 142, false).addInputBus("Bottom Layer", 4)
-                .addInputHatch("Bottom Layer", 4).addOutputHatch("Top Layer", 5).addOutputBus("Top Layer", 5)
-                .addEnergyHatch("Bottom Layer", 4).addMaintenanceHatch("Bottom Layer", 4)
-                .addStructureInfo("Neptunium Plasma Hatch: Left side of Controller")
-                .addStructureInfo("Fermium Plasma Hatch: Right side of Controller").toolTipFinisher(
+                .addCasingInfoMin("Neutron Shielding Cores", 142, false)
+                .addInputBus(EnumChatFormatting.BLUE + "Bottom" + EnumChatFormatting.GRAY + " Layer", 4)
+                .addInputHatch(EnumChatFormatting.BLUE + "Bottom" + EnumChatFormatting.GRAY + " Layer", 4)
+                .addOutputHatch(EnumChatFormatting.AQUA + "Top" + EnumChatFormatting.GRAY + " Layer", 5)
+                .addOutputBus(EnumChatFormatting.AQUA + "Top" + EnumChatFormatting.GRAY + " Layer", 5)
+                .addEnergyHatch(EnumChatFormatting.BLUE + "Bottom" + EnumChatFormatting.GRAY + " Layer", 4)
+                .addMaintenanceHatch(
+                        EnumChatFormatting.BLUE + "Bottom"
+                                + EnumChatFormatting.GRAY
+                                + " or "
+                                + EnumChatFormatting.AQUA
+                                + "Top"
+                                + EnumChatFormatting.GRAY
+                                + " Layer",
+                        4,
+                        5)
+                .addStructureInfo(
+                        EnumChatFormatting.WHITE + "Neptunium Plasma Hatch: "
+                                + EnumChatFormatting.GREEN
+                                + "Left"
+                                + EnumChatFormatting.GRAY
+                                + " side of Controller")
+                .addStructureInfo(
+                        EnumChatFormatting.WHITE + "Fermium Plasma Hatch: "
+                                + EnumChatFormatting.DARK_GREEN
+                                + "Right"
+                                + EnumChatFormatting.GRAY
+                                + " side of Controller")
+                .toolTipFinisher(
                         GT_Values.AuthorBlueWeabo + EnumChatFormatting.RESET
                                 + EnumChatFormatting.GREEN
                                 + " + Steelux"
@@ -297,34 +325,17 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         this.mCasing = 0;
+        this.mCraftingTier = 0;
+        this.mFocusingTier = 0;
         if (!checkPiece(MAIN_PIECE, 7, 20, 4)) {
             return false;
         }
 
-        if (mMaintenanceHatches.size() != 1 || mOutputBusses.size() < 1
-                || mInputBusses.size() < 1
-                || mInputHatches.size() < 1
-                || mOutputHatches.size() < 1) {
+        if (mMaintenanceHatches.size() != 1 || mOutputBusses.isEmpty() || mOutputHatches.isEmpty()) {
             return false;
         }
 
-        // Makes sure that the multi can accept only 1 TT Energy Hatch OR up to 2 Normal Energy Hatches. Deform if both
-        // present or more than 1 TT Hatch.
-        if (mExoticEnergyHatches.isEmpty() && mEnergyHatches.isEmpty()) {
-            return false;
-        }
-
-        if (mExoticEnergyHatches.size() >= 1) {
-            if (!mEnergyHatches.isEmpty()) {
-                return false;
-            }
-
-            if (mExoticEnergyHatches.size() != 1) {
-                return false;
-            }
-        }
-
-        return mEnergyHatches.size() <= 2;
+        return checkExoticAndNormalEnergyHatches();
     }
 
     @Override
@@ -453,6 +464,7 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
         return new ProcessingLogic() {
 
             private int[] chances;
+            private FluidStack[] fluidModeItems;
 
             @NotNull
             @Override
@@ -479,23 +491,39 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
                     }
                 }
 
+                mMaxParallel = maxParallel;
                 doFermium = false;
                 doNeptunium = false;
 
                 if (recipe.mSpecialValue <= getFocusingTier()) {
-                    if (mFermiumHatch != null && mFermiumHatch.getFluid() != null
-                            && mFermiumHatch.getFluid().getFluid() != null
-                            && mFermiumHatch.getFluid().getFluid().equals(mFermium)) {
+                    if (drain(mFermiumHatch, new FluidStack(mFermium, 1), false)) {
                         doFermium = true;
                     }
-                    if (mNeptuniumHatch != null && mNeptuniumHatch.getFluid() != null
-                            && mNeptuniumHatch.getFluid().getFluid() != null
-                            && mNeptuniumHatch.getFluid().getFluid().equals(mNeptunium)) {
+                    if (drain(mNeptuniumHatch, new FluidStack(mNeptunium, 1), false)) {
                         doNeptunium = true;
                     }
                 }
 
                 chances = getOutputChances(recipe, doNeptunium ? findProgrammedCircuitNumber() : -1);
+
+                // Handle Fluid Mode. Add fluid that item can be turned into to fluidModeItems.
+                // null if Fluid Mode is disabled or item cannot be turned into fluid.
+                fluidModeItems = new FluidStack[recipe.mOutputs.length];
+                if (mFluidMode) {
+                    for (int i = 0; i < recipe.mOutputs.length; i++) {
+                        ItemStack item = recipe.getOutput(i);
+                        if (item == null) continue;
+                        ItemData data = getAssociation(item);
+                        Materials mat = data == null ? null : data.mMaterial.mMaterial;
+                        if (mat != null) {
+                            if (mat.mStandardMoltenFluid != null) {
+                                fluidModeItems[i] = mat.getMolten(INGOTS);
+                            } else if (mat.mFluid != null) {
+                                fluidModeItems[i] = mat.getFluid(BUCKETS);
+                            }
+                        }
+                    }
+                }
 
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
@@ -505,84 +533,29 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
             public GT_ParallelHelper createParallelHelper(@Nonnull GT_Recipe recipe) {
                 return super.createParallelHelper(recipe).setCustomItemOutputCalculation(parallel -> {
                     ArrayList<ItemStack> items = new ArrayList<>();
-                    if (mFluidMode) {
-                        for (int i = 0; i < recipe.mOutputs.length; i++) {
-                            ItemStack item = recipe.getOutput(i);
-                            if (item == null) continue;
-                            ItemData data = getAssociation(item);
-                            Materials mat = data == null ? null : data.mMaterial.mMaterial;
-                            if (mat != null) {
-                                if (mat.getMolten(0) != null) {
-                                    continue;
-                                } else if (mat.getFluid(0) != null) {
-                                    continue;
-                                }
-                            }
-                            ItemStack itemToAdd = item.copy();
-                            itemToAdd.stackSize = 0;
-                            for (int j = 0; j < parallel; j++) {
-                                if (getBaseMetaTileEntity().getRandomNumber(10000) < chances[i]) {
-                                    itemToAdd.stackSize += item.stackSize;
-                                }
-                            }
-                            if (itemToAdd.stackSize == 0) {
-                                continue;
-                            }
-                            items.add(itemToAdd);
-                        }
-                    } else {
-                        for (int i = 0; i < recipe.mOutputs.length; i++) {
-                            ItemStack item = recipe.getOutput(i);
-                            if (item == null) continue;
-                            ItemStack itemToAdd = item.copy();
-                            itemToAdd.stackSize = 0;
-                            for (int j = 0; j < parallel; j++) {
-                                if (getBaseMetaTileEntity().getRandomNumber(10000) < chances[i]) {
-                                    itemToAdd.stackSize += item.stackSize;
-                                }
-                            }
-                            if (itemToAdd.stackSize == 0) {
-                                continue;
-                            }
-                            items.add(itemToAdd);
-                        }
+
+                    for (int i = 0; i < recipe.mOutputs.length; i++) {
+                        ItemStack item = recipe.getOutput(i);
+                        if (item == null || fluidModeItems[i] != null) continue;
+                        ItemStack itemToAdd = item.copy();
+                        double outputMultiplier = calculateChancedOutputMultiplier(chances[i], parallel);
+                        long itemAmount = (long) (item.stackSize * outputMultiplier);
+                        addItemsLong(items, itemToAdd, itemAmount);
                     }
 
                     return items.toArray(new ItemStack[0]);
                 }).setCustomFluidOutputCalculation(parallel -> {
                     ArrayList<FluidStack> fluids = new ArrayList<>();
+
                     if (mFluidMode) {
                         for (int i = 0; i < recipe.mOutputs.length; i++) {
-                            ItemStack item = recipe.getOutput(i);
-                            if (item == null) continue;
-                            ItemData data = getAssociation(item);
-                            Materials mat = data == null ? null : data.mMaterial.mMaterial;
-                            if (mat == null) {
-                                continue;
-                            }
-                            if (mat.getMolten(0) != null) {
-                                FluidStack fluid = mat.getMolten(0);
-                                for (int j = 0; j < parallel; j++) {
-                                    if (getBaseMetaTileEntity().getRandomNumber(10000) < chances[i]) {
-                                        fluid.amount += item.stackSize * INGOTS;
-                                    }
-                                }
-                                if (fluid.amount == 0) {
-                                    continue;
-                                }
-                                fluids.add(fluid);
-                            } else if (mat.getFluid(0) != null) {
-                                FluidStack fluid = mat.getFluid(0);
-                                for (int j = 0; j < parallel; j++) {
-                                    if (getBaseMetaTileEntity().getRandomNumber(10000) < chances[i]) {
-                                        fluid.amount += item.stackSize * BUCKETS;
-                                    }
-                                }
-                                if (fluid.amount == 0) {
-                                    continue;
-                                }
-                                fluids.add(fluid);
-                            }
+                            FluidStack fluid = fluidModeItems[i];
+                            if (fluid == null) continue;
+                            FluidStack fluidToAdd = fluid.copy();
+                            double outputMultiplier = calculateChancedOutputMultiplier(chances[i], parallel);
+                            int itemAmount = recipe.mOutputs[i].stackSize;
+                            long fluidAmount = (long) (fluidToAdd.amount * outputMultiplier * itemAmount);
+                            addFluidsLong(fluids, fluidToAdd, fluidAmount);
                         }
                     }
 
@@ -590,16 +563,11 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
                         FluidStack fluid = recipe.getFluidOutput(i);
                         if (fluid == null) continue;
                         FluidStack fluidToAdd = fluid.copy();
-                        fluidToAdd.amount = 0;
-                        for (int j = 0; j < parallel; j++) {
-                            if (getBaseMetaTileEntity().getRandomNumber(10000) < chances[i + recipe.mOutputs.length]) {
-                                fluidToAdd.amount += fluid.amount;
-                            }
-                        }
-                        if (fluidToAdd.amount == 0) {
-                            continue;
-                        }
-                        fluids.add(fluidToAdd);
+                        double outputMultiplier = calculateChancedOutputMultiplier(
+                                chances[i + recipe.mOutputs.length],
+                                parallel);
+                        long fluidAmount = (long) (fluidToAdd.amount * outputMultiplier);
+                        addFluidsLong(fluids, fluidToAdd, fluidAmount);
                     }
 
                     return fluids.toArray(new FluidStack[0]);
@@ -609,7 +577,7 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
             private int findProgrammedCircuitNumber() {
                 if (isInputSeparationEnabled()) {
                     for (ItemStack stack : inputItems) {
-                        if (ItemList.Circuit_Integrated.isStackEqual(stack)) {
+                        if (ItemList.Circuit_Integrated.isStackEqual(stack, true, false)) {
                             return stack.getItemDamage() - 1;
                         }
                     }
@@ -638,10 +606,10 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
         }
 
         if (runningTick % 20 == 0) {
-            int amount = (int) (getFocusingTier() * 4 * Math.sqrt(processingLogic.getCurrentParallels()));
+            int amount = (int) (getFocusingTier() * 4
+                    * Math.sqrt(Math.min(mMaxParallel, processingLogic.getCurrentParallels())));
             if (doFermium) {
-                FluidStack tLiquid = mFermiumHatch.drain(amount, true);
-                if (tLiquid == null || tLiquid.amount < amount) {
+                if (!drain(mFermiumHatch, new FluidStack(mFermium, amount), true)) {
                     doFermium = false;
                     criticalStopMachine();
                     return false;
@@ -649,8 +617,7 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
             }
 
             if (doNeptunium) {
-                FluidStack tLiquid = mNeptuniumHatch.drain(amount, true);
-                if (tLiquid == null || tLiquid.amount < amount) {
+                if (!drain(mNeptuniumHatch, new FluidStack(mNeptunium, amount), true)) {
                     doNeptunium = false;
                     criticalStopMachine();
                     return false;
@@ -663,6 +630,16 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
         }
 
         return true;
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (aBaseMetaTileEntity.isServerSide()) {
+            // TODO: Look for proper fix
+            // Updates every 30 sec
+            if (mUpdate <= -550) mUpdate = 50;
+        }
     }
 
     @Override
@@ -785,15 +762,11 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
     }
 
     @Override
-    public boolean supportsBatchMode() {
-        return true;
-    }
-
-    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setBoolean("mFluidMode", mFluidMode);
         aNBT.setBoolean("doFermium", doFermium);
         aNBT.setBoolean("doNeptunium", doNeptunium);
+        aNBT.setInteger("mMaxParallel", mMaxParallel);
         super.saveNBTData(aNBT);
     }
 
@@ -809,6 +782,7 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
         mFluidMode = aNBT.getBoolean("mFluidMode");
         doFermium = aNBT.getBoolean("doFermium");
         doNeptunium = aNBT.getBoolean("doNeptunium");
+        mMaxParallel = aNBT.getInteger("mMaxParallel");
     }
 
     @Override
@@ -964,6 +938,11 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
 
     @Override
     public boolean supportsInputSeparation() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
         return true;
     }
 }
