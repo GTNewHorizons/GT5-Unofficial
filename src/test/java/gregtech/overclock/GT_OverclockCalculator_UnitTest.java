@@ -126,6 +126,18 @@ class GT_OverclockCalculator_UnitTest {
     }
 
     @Test
+    void doubleEnergyHatchOCForULV_Test() {
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[0])
+            .setEUt(V[6])
+            .setAmperage(4)
+            .setDuration(1024)
+            .setAmperageOC(true)
+            .calculate();
+        assertEquals(1024 >> 6, calculator.getDuration(), messageDuration);
+        assertEquals(VP[0] << 12, calculator.getConsumption(), messageEUt);
+    }
+
+    @Test
     void multiAmpHatchOC_Test() {
         GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[1])
             .setEUt(V[6])
