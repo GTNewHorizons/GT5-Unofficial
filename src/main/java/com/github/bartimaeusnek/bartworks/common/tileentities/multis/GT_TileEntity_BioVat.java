@@ -80,6 +80,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 
@@ -258,24 +259,18 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
 
             @NotNull
             @Override
-            public CheckRecipeResult process() {
-                CheckRecipeResult result = super.process();
-                if (!result.wasSuccessful()) {
-                    return result;
-                }
-                // We already made sure the recipe runs. Now the vat looks for as many "parallels" as it can do
-                GT_TileEntity_BioVat.this.mExpectedMultiplier = GT_TileEntity_BioVat.this
-                        .getExpectedMultiplier(this.lastRecipe.getFluidOutput(0), true);
-                GT_TileEntity_BioVat.this.mTimes = 1;
-                for (int i = 1; i < GT_TileEntity_BioVat.this.mExpectedMultiplier; i++) {
-                    if (GT_TileEntity_BioVat.this.depleteInput(this.lastRecipe.mFluidInputs[0])) {
-                        GT_TileEntity_BioVat.this.mTimes++;
-                    }
-                }
-                this.outputFluids[0].amount *= GT_TileEntity_BioVat.this.mTimes;
-                return result;
+            protected GT_ParallelHelper createParallelHelper(@NotNull GT_Recipe recipe) {
+                return super.createParallelHelper(recipeWithMultiplier(recipe));
             }
         };
+    }
+
+    protected GT_Recipe recipeWithMultiplier(GT_Recipe recipe) {
+        GT_Recipe tRecipe = recipe.copy();
+        int multiplier = getExpectedMultiplier(recipe.getFluidOutput(0), true);
+        tRecipe.mFluidInputs[0].amount *= multiplier;
+        tRecipe.mFluidOutputs[0].amount *= multiplier;
+        return tRecipe;
     }
 
     @Override
