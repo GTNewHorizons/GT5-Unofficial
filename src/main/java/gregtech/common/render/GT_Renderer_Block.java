@@ -27,6 +27,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.particle.EntityDiggingFX;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.tileentity.TileEntity;
@@ -107,6 +108,13 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
 
     public static boolean renderStandardBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock,
         RenderBlocks aRenderer, ITexture[][] aTextures) {
+        Tessellator tessellator = Tessellator.instance;
+        tessellator.draw();
+        tessellator.startDrawingQuads();
+        GL11.glPushAttrib(GL11.GL_COLOR_BUFFER_BIT);
+        GL11.glEnable(GL11.GL_BLEND);
+        OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
+        GL11.glDisable(GL11.GL_ALPHA_TEST);
         aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
         aRenderer.setRenderBoundsFromBlock(aBlock);
 
@@ -116,6 +124,9 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[SIDE_SOUTH], true);
         renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[SIDE_WEST], true);
         renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[SIDE_EAST], true);
+        tessellator.draw();
+        GL11.glPopAttrib();
+        tessellator.startDrawingQuads();
         return true;
     }
 
