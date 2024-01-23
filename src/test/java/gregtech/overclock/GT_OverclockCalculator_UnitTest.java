@@ -116,8 +116,8 @@ class GT_OverclockCalculator_UnitTest {
     @Test
     void doubleEnergyHatchOC_Test() {
         GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[1])
-            .setEUt(V[6] + V[6])
-            .setAmperage(2)
+            .setEUt(V[6])
+            .setAmperage(4)
             .setDuration(1024)
             .setAmperageOC(true)
             .calculate();
