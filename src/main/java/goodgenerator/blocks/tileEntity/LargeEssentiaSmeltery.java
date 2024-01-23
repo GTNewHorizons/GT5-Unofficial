@@ -2,6 +2,7 @@ package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
+import static gregtech.api.enums.Mods.ThaumicBases;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
@@ -26,7 +27,6 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import goodgenerator.blocks.tileEntity.base.GT_MetaTileEntity_TooltipMultiBlockBase_EM;
-import goodgenerator.crossmod.LoadedList;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
 import gregtech.api.enums.GT_HatchElement;
@@ -158,7 +158,8 @@ public class LargeEssentiaSmeltery extends GT_MetaTileEntity_TooltipMultiBlockBa
                     .addElement('D', ofBlock(ConfigBlocks.blockCosmeticOpaque, 2))
                     .addElement(
                             'F',
-                            LoadedList.THAUMIC_BASES ? ofBlock(Block.getBlockFromName("thaumicbases:advAlchFurnace"), 0)
+                            ThaumicBases.isModLoaded()
+                                    ? ofBlock(Block.getBlockFromName("thaumicbases:advAlchFurnace"), 0)
                                     : ofBlock(ConfigBlocks.blockStoneDevice, 0))
                     .addElement(
                             'E',

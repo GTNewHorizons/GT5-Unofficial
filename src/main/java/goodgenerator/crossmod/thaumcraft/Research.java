@@ -1,5 +1,11 @@
 package goodgenerator.crossmod.thaumcraft;
 
+import static gregtech.api.enums.Mods.Automagy;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.enums.Mods.ThaumicBases;
+import static gregtech.api.enums.Mods.ThaumicEnergistics;
+import static gregtech.api.enums.Mods.ThaumicTinkerer;
+import static gregtech.api.enums.Mods.WitchingGadgets;
 import static thaumcraft.api.ThaumcraftApi.addArcaneCraftingRecipe;
 
 import java.util.Arrays;
@@ -12,7 +18,6 @@ import net.minecraft.item.ItemStack;
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 
-import goodgenerator.crossmod.LoadedList;
 import goodgenerator.util.DescTextLocalization;
 import goodgenerator.util.ItemRefer;
 import gregtech.api.GregTech_API;
@@ -186,7 +191,7 @@ public class Research {
                                         new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 256),
                                         new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 128))) });
         ItemStack broad = new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 6);
-        if (LoadedList.GTNH_CORE) broad = GT_ModHandler.getModItem("dreamcraft", "item.ArcaneSlate", 1);
+        if (NewHorizonsCoreMod.isModLoaded()) broad = GT_ModHandler.getModItem("dreamcraft", "item.ArcaneSlate", 1);
         GregTech_API.sThaumcraftCompat
                 .addResearch(
                         "ESSENTIA_UPGRADE_BLANK",
@@ -332,7 +337,7 @@ public class Research {
                                         new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 128))),
                         "research.ESSENTIA_UPGRADE_UNSTABLE.page.1", "research.ESSENTIA_UPGRADE_UNSTABLE.page.2" });
         ItemStack meatDust = GT_OreDictUnificator.get(OrePrefixes.dust, Materials.MeatRaw, 1);
-        if (LoadedList.GTNH_CORE) meatDust = GT_ModHandler.getModItem("dreamcraft", "GTNHBioItems", 1, 2);
+        if (NewHorizonsCoreMod.isModLoaded()) meatDust = GT_ModHandler.getModItem("dreamcraft", "GTNHBioItems", 1, 2);
         GregTech_API.sThaumcraftCompat.addResearch(
                 "ESSENTIA_UPGRADE_VICTUS",
                 "Essentia: VICTUS",
@@ -537,19 +542,21 @@ public class Research {
                                 Collections.singletonList(new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 32768))),
                         "research.ESSENTIA_UPGRADE_ELECTRIC.page.1" });
 
-        ItemStack nodeLinkDevice = LoadedList.THAUMIC_BASES
+        ItemStack nodeLinkDevice = ThaumicBases.isModLoaded()
                 ? GT_ModHandler.getModItem("thaumicbases", "nodeLinker", 1, 0)
                 : new ItemStack(ConfigBlocks.blockStoneDevice, 1, 11);
-        ItemStack alchemicalFurnace = LoadedList.THAUMIC_BASES
+        ItemStack alchemicalFurnace = ThaumicBases.isModLoaded()
                 ? GT_ModHandler.getModItem("thaumicbases", "advAlchFurnace", 1, 0)
                 : new ItemStack(ConfigBlocks.blockStoneDevice, 1, 0);
-        ItemStack nitor = LoadedList.THAUMIC_TINKERER ? GT_ModHandler.getModItem("ThaumicTinkerer", "brightNitor", 1, 0)
+        ItemStack nitor = ThaumicTinkerer.isModLoaded()
+                ? GT_ModHandler.getModItem("ThaumicTinkerer", "brightNitor", 1, 0)
                 : new ItemStack(ConfigItems.itemResource, 1, 1);
-        ItemStack alchemicalBoiler = LoadedList.AUTOMAGY ? GT_ModHandler.getModItem("Automagy", "blockBoiler", 1, 0)
+        ItemStack alchemicalBoiler = Automagy.isModLoaded() ? GT_ModHandler.getModItem("Automagy", "blockBoiler", 1, 0)
                 : new ItemStack(ConfigBlocks.blockStoneDevice, 1, 1);
-        ItemStack essentiaLocus = LoadedList.AUTOMAGY ? GT_ModHandler.getModItem("Automagy", "blockEssentiaLocus", 1, 0)
+        ItemStack essentiaLocus = Automagy.isModLoaded()
+                ? GT_ModHandler.getModItem("Automagy", "blockEssentiaLocus", 1, 0)
                 : new ItemStack(ConfigBlocks.blockJar, 1, 1);
-        ItemStack thauminiteBlock = LoadedList.THAUMIC_BASES
+        ItemStack thauminiteBlock = ThaumicBases.isModLoaded()
                 ? GT_ModHandler.getModItem("thaumicbases", "thauminiteBlock", 1, 0)
                 : new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 4);
         GregTech_API.sThaumcraftCompat.addResearch(
@@ -627,11 +634,11 @@ public class Research {
                                 'F',
                                 thauminiteBlock) });
 
-        if (LoadedList.THAUMIC_ENERGISTICS) {
-            ItemStack essentiaPump = LoadedList.WITCHING_GADGETS
+        if (ThaumicEnergistics.isModLoaded()) {
+            ItemStack essentiaPump = WitchingGadgets.isModLoaded()
                     ? GT_ModHandler.getModItem("WitchingGadgets", "WG_MetalDevice", 1, 0)
                     : new ItemStack(ConfigBlocks.blockTube, 1, 4);
-            ItemStack inter = LoadedList.THAUMIC_TINKERER
+            ItemStack inter = ThaumicTinkerer.isModLoaded()
                     ? GT_ModHandler.getModItem("ThaumicTinkerer", "interface", 1, 0)
                     : new ItemStack(ConfigItems.itemResource, 1, 15);
             GregTech_API.sThaumcraftCompat.addResearch(

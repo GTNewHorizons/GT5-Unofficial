@@ -252,7 +252,7 @@ public class MyMaterial implements Runnable {
             new short[] { 0xe8, 0x5e, 0x0c },
             "Atomic Separation Catalyst",
             "the melting core...",
-            new Werkstoff.Stats().setMeltingPoint(5000).setBlastFurnace(true),
+            new Werkstoff.Stats().setMeltingPoint(5000),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().onlyDust().addMolten().addMetalItems()
                     .addSimpleMetalWorkingItems().addCraftingMetalWorkingItems().addMultipleIngotMetalWorkingItems(),
@@ -1252,8 +1252,8 @@ public class MyMaterial implements Runnable {
             new short[] { 0xe0, 0x15, 0x6d },
             "Shirabon",
             "Sh" + CharExchanger.shifter(9191),
-            new Werkstoff.Stats().setBlastFurnace(true).setProtons(500).setMass(750).setMeltingPoint(13000)
-                    .setSpeedOverride(640.0F).setDurOverride(15728640).setQualityOverride((byte) 26),
+            new Werkstoff.Stats().setProtons(500).setMass(750).setMeltingPoint(13000).setSpeedOverride(640.0F)
+                    .setDurOverride(15728640).setQualityOverride((byte) 26),
             Werkstoff.Types.ELEMENT,
             new Werkstoff.GenerationFeatures().onlyDust().addMolten().addMetalItems().addCraftingMetalWorkingItems()
                     .addSimpleMetalWorkingItems().addMultipleIngotMetalWorkingItems()

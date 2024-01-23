@@ -1,6 +1,7 @@
 package goodgenerator.loader;
 
 import static goodgenerator.util.DescTextLocalization.addText;
+import static gregtech.api.enums.Mods.GTPlusPlus;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -41,7 +42,6 @@ import goodgenerator.blocks.tileEntity.SupercriticalFluidTurbine;
 import goodgenerator.blocks.tileEntity.UniversalChemicalFuelEngine;
 import goodgenerator.blocks.tileEntity.YottaFluidTank;
 import goodgenerator.client.render.BlockRenderHandler;
-import goodgenerator.crossmod.LoadedList;
 import goodgenerator.crossmod.ic2.CropsLoader;
 import goodgenerator.crossmod.nei.NEI_Config;
 import goodgenerator.crossmod.thaumcraft.LargeEssentiaEnergyData;
@@ -308,7 +308,7 @@ public class Loaders {
                 IDOffset + 20,
                 "LargeFusionComputer3",
                 "Compact Fusion Computer MK-III").getStackForm(1L);
-        if (LoadedList.GTPP) {
+        if (GTPlusPlus.isModLoaded()) {
             Loaders.LFC[3] = new LargeFusionComputer4(
                     IDOffset + 21,
                     "LargeFusionComputer4",
@@ -458,7 +458,6 @@ public class Loaders {
         compactMod();
         FluidsBuilder.Register();
         FuelRodLoader.RegisterRod();
-        LoadedList.init();
     }
 
     public static void initLoad() {

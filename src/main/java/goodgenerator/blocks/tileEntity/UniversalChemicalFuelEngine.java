@@ -3,6 +3,7 @@ package goodgenerator.blocks.tileEntity;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
+import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
@@ -25,7 +26,6 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import goodgenerator.blocks.tileEntity.base.GT_MetaTileEntity_TooltipMultiBlockBase_EM;
-import goodgenerator.crossmod.LoadedList;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
 import gregtech.api.GregTech_API;
@@ -239,7 +239,7 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_TooltipMultiB
             return CheckRecipeResultRegistry.GENERATING;
         }
 
-        if (LoadedList.GTPP) {
+        if (GTPlusPlus.isModLoaded()) {
             for (GT_Recipe recipe : GTPPRecipeMaps.rocketFuels.getAllRecipes()) {
                 FluidStack tFuel = findFuel(recipe);
                 if (tFuel == null) continue;
