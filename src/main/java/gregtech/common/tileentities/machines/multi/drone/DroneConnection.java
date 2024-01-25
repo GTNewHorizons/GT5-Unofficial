@@ -71,7 +71,11 @@ public class DroneConnection {
         if (machine == null) this.machine = getLoadedGT_BaseMachineAt(machineCoord, world, true);
         if (centre == null)
             this.centre = (GT_MetaTileEntity_DroneCentre) getLoadedGT_BaseMachineAt(centreCoord, world, true);
-        if (machine != null && centre != null && !centre.connectionList.contains(this)) centre.connectionList.add(this);
+        if (machine != null && centre != null
+            && !centre.getConnectionList()
+                .contains(this))
+            centre.getConnectionList()
+                .add(this);
         return isValid();
     }
 
@@ -104,7 +108,7 @@ public class DroneConnection {
         return (GT_MetaTileEntity_MultiBlockBase) ((IGregTechTileEntity) te).getMetaTileEntity();
     }
 
-    public NBTTagCompound transGT_BaseMachineToNBT(GT_MetaTileEntity_MultiBlockBase machine) {
+    private NBTTagCompound transGT_BaseMachineToNBT(GT_MetaTileEntity_MultiBlockBase machine) {
         IHasWorldObjectAndCoords baseCoord = machine.getBaseMetaTileEntity();
         NBTTagCompound tag = new NBTTagCompound();
         tag.setInteger("x", baseCoord.getXCoord());
