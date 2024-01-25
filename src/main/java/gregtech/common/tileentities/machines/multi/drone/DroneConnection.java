@@ -17,7 +17,7 @@ import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.GT_Util;
 
-public class droneConnection {
+public class DroneConnection {
 
     String customName;
     GT_MetaTileEntity_MultiBlockBase machine;
@@ -27,7 +27,7 @@ public class droneConnection {
     ChunkCoordinates centreCoord;
     World world;
 
-    public droneConnection(GT_MetaTileEntity_MultiBlockBase machine, GT_MetaTileEntity_DroneCentre centre) {
+    public DroneConnection(GT_MetaTileEntity_MultiBlockBase machine, GT_MetaTileEntity_DroneCentre centre) {
         this.machine = machine;
         this.machineItem = machine.getStackForm(1);
         machineCoord = machine.getBaseMetaTileEntity()
@@ -41,7 +41,7 @@ public class droneConnection {
             .orElse(machine.getLocalName());
     }
 
-    public droneConnection(NBTTagCompound aNBT) {
+    public DroneConnection(NBTTagCompound aNBT) {
         NBTTagCompound machineTag = aNBT.getCompoundTag("machine");
         NBTTagCompound centreTag = aNBT.getCompoundTag("centre");
         if (!gregtechproxy.isClientSide()) {
