@@ -38,8 +38,8 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hatch_Maintenance {
 
-    public Vec3Impl vec3;
-    private droneConnection connection;
+    private Vec3Impl downlinkCoord;
+    private DroneConnection connection;
     // This has to be existed for doing random damage.
     private GT_MetaTileEntity_MultiBlockBase machine;
     private static final IIconContainer moduleActive = new Textures.BlockIcons.CustomIcon("iconsets/moduleActive");
@@ -87,7 +87,7 @@ public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hat
 
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        vec3 = new Vec3Impl(
+        downlinkCoord = new Vec3Impl(
             getBaseMetaTileEntity().getXCoord(),
             getBaseMetaTileEntity().getYCoord(),
             getBaseMetaTileEntity().getZCoord());
@@ -146,33 +146,37 @@ public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hat
         if (hasConnection()) connection.machine = null;
     }
 
-    public boolean hasConnection() {
+    private boolean hasConnection() {
         if (connection == null) return false;
         if (connection.isValid()) return true;
         return connection.reCheckConnection();
     }
 
-    public boolean tryFindConnection() {
+    /**
+     * Find a drone connection. This will search for all DC in the same dimension, then find one in range.
+     */
+    private void tryFindConnection() {
         if (GT_MetaTileEntity_DroneCentre.getCentreMap()
             .containsKey(getBaseMetaTileEntity().getWorld().provider.dimensionId)) {
             List<GT_MetaTileEntity_DroneCentre> target = GT_MetaTileEntity_DroneCentre.getCentreMap()
                 .get(getBaseMetaTileEntity().getWorld().provider.dimensionId)
                 .stream()
                 .collect(Collectors.toList());
-            for (GT_MetaTileEntity_DroneCentre DMC : target) {
-                if (DMC.vec3.withinDistance(this.vec3, DMC.getRange()) && DMC.getBaseMetaTileEntity()
-                    .isActive()) {
+            for (GT_MetaTileEntity_DroneCentre centre : target) {
+                if (centre.getCoords()
+                    .withinDistance(this.downlinkCoord, centre.getRange())
+                    && centre.getBaseMetaTileEntity()
+                        .isActive()) {
                     GT_MetaTileEntity_MultiBlockBase machine = tryFindCoreGTMultiBlock();
                     if (machine != null && machine.isValid()) {
                         this.machine = machine;
-                        connection = new droneConnection(machine, DMC);
-                        connection.centre.connectionList.add(connection);
-                        return true;
+                        connection = new DroneConnection(machine, centre);
+                        connection.centre.getConnectionList()
+                            .add(connection);
                     }
                 }
             }
         }
-        return false;
     }
 
     private void doRandomIssue() {
@@ -187,7 +191,7 @@ public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hat
     }
 
     // Find mainframe. Mainly from a method in GT_API——This will cause performance issue! Do not call it frequently.
-    public GT_MetaTileEntity_MultiBlockBase tryFindCoreGTMultiBlock() {
+    private GT_MetaTileEntity_MultiBlockBase tryFindCoreGTMultiBlock() {
         Queue<ChunkCoordinates> tQueue = new LinkedList<>();
         Set<ChunkCoordinates> visited = new HashSet<>(80);
         tQueue.add(
@@ -211,7 +215,7 @@ public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hat
 
             // Now see if we should add the nearby blocks to the queue:
             // 1) If we've visited less than 5 blocks, then yes
-            // 2) If the tile says we should recursively updated (pipes don't, machine blocks do)
+            // 2) If the tile says we should recursively update (pipes don't, machine blocks do)
             // 3) If the block at the coordinates is marked as a machine block
             if (visited.size() < 5
                 || (tTileEntity instanceof IMachineBlockUpdateable

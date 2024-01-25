@@ -77,12 +77,10 @@ public class GT_MetaTileEntity_DroneCentre extends
     GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_DroneCentre> implements ISurvivalConstructable {
 
     private static final IIconContainer Active = new Textures.BlockIcons.CustomIcon("iconsets/droneCentre");
-    private static final IIconContainer Inactive = new Textures.BlockIcons.CustomIcon("iconsets/droneCentre");
-    public Vec3Impl vec3;
-    public int range;
-    public int droneLevel = 0;
-    public int buttonID;
-    public List<droneConnection> connectionList = new ArrayList<>();
+    private Vec3Impl centreCoord;
+    private int droneLevel = 0;
+    private int buttonID;
+    private final List<DroneConnection> connectionList = new ArrayList<>();
     public HashMap<String, String> tempNameList = new HashMap<>();
     // Save centre by dimID
     private static final HashMultimap<Integer, GT_MetaTileEntity_DroneCentre> droneMap = HashMultimap.create();
@@ -128,12 +126,8 @@ public class GT_MetaTileEntity_DroneCentre extends
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(59), TextureFactory.builder()
-                .addIcon(Active)
-                .extFacing()
-                .build() };
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(59), TextureFactory.builder()
-                .addIcon(Inactive)
+                .addIcon(Active)
                 .extFacing()
                 .build() };
         }
@@ -248,7 +242,7 @@ public class GT_MetaTileEntity_DroneCentre extends
         super.saveNBTData(aNBT);
         aNBT.setInteger("drone", droneLevel);
         NBTTagCompound conList = new NBTTagCompound();
-        for (droneConnection con : connectionList) {
+        for (DroneConnection con : connectionList) {
             if (!Objects.equals(con.customName, con.machine.getLocalName()))
                 conList.setString(con.machineCoord.toString(), con.customName);
         }
@@ -293,7 +287,7 @@ public class GT_MetaTileEntity_DroneCentre extends
         super.onFirstTick(aBaseMetaTileEntity);
         if (aBaseMetaTileEntity.isServerSide()) {
             if (droneMap.containsValue(this)) return;
-            vec3 = new Vec3Impl(
+            centreCoord = new Vec3Impl(
                 getBaseMetaTileEntity().getXCoord(),
                 getBaseMetaTileEntity().getYCoord(),
                 getBaseMetaTileEntity().getZCoord());
@@ -306,6 +300,10 @@ public class GT_MetaTileEntity_DroneCentre extends
         droneMap.remove(getBaseMetaTileEntity().getWorld().provider.dimensionId, this);
     }
 
+    public List<DroneConnection> getConnectionList() {
+        return connectionList;
+    }
+
     public int getRange() {
         return switch (droneLevel) {
             case 1 -> 32;
@@ -315,7 +313,11 @@ public class GT_MetaTileEntity_DroneCentre extends
         };
     }
 
-    public boolean tryConsumeDrone() {
+    public Vec3Impl getCoords() {
+        return centreCoord;
+    }
+
+    private boolean tryConsumeDrone() {
         List<ItemStack> inputs = getStoredInputs();
         if (inputs.isEmpty()) return false;
         for (ItemStack item : inputs) {
@@ -329,7 +331,7 @@ public class GT_MetaTileEntity_DroneCentre extends
         return false;
     }
 
-    public void tryUpdateDrone() {
+    private void tryUpdateDrone() {
         List<ItemStack> inputs = getStoredInputs();
         if (inputs.isEmpty()) return;
         for (ItemStack item : inputs) {
@@ -343,7 +345,7 @@ public class GT_MetaTileEntity_DroneCentre extends
         }
     }
 
-    public void createRenderBlock() {
+    private void createRenderBlock() {
         int x = getBaseMetaTileEntity().getXCoord();
         int y = getBaseMetaTileEntity().getYCoord();
         int z = getBaseMetaTileEntity().getZCoord();
@@ -360,7 +362,7 @@ public class GT_MetaTileEntity_DroneCentre extends
             .setBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset), GregTech_API.sDroneRender);
     }
 
-    public void destroyRenderBlock() {
+    private void destroyRenderBlock() {
         int x = getBaseMetaTileEntity().getXCoord();
         int y = getBaseMetaTileEntity().getYCoord();
         int z = getBaseMetaTileEntity().getZCoord();
@@ -374,7 +376,7 @@ public class GT_MetaTileEntity_DroneCentre extends
             .setBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset), Blocks.air);
     }
 
-    public void fixAll() {
+    private void fixAll() {
         this.mWrench = this.mScrewdriver = this.mSoftHammer = this.mHardHammer = this.mCrowbar = this.mSolderingTool = true;
     }
 
@@ -409,7 +411,7 @@ public class GT_MetaTileEntity_DroneCentre extends
                                 GT_Utility.trans("350", "You cannot control machine when drone centre shut down!"));
                             return;
                         }
-                        for (droneConnection mte : connectionList) {
+                        for (DroneConnection mte : connectionList) {
                             mte.machine.getBaseMetaTileEntity()
                                 .enableWorking();
                         }
@@ -442,7 +444,7 @@ public class GT_MetaTileEntity_DroneCentre extends
                                 GT_Utility.trans("350", "You cannot control machine when drone centre shut down!"));
                             return;
                         }
-                        for (droneConnection mte : connectionList) {
+                        for (DroneConnection mte : connectionList) {
                             mte.machine.getBaseMetaTileEntity()
                                 .disableWorking();
                         }
@@ -476,7 +478,7 @@ public class GT_MetaTileEntity_DroneCentre extends
                 }
             }, buffer -> {
                 try {
-                    return new droneConnection(buffer.readNBTTagCompoundFromBuffer());
+                    return new DroneConnection(buffer.readNBTTagCompoundFromBuffer());
                 } catch (IOException e) {
                     GT_Log.err.println(e.getCause());
                 }
@@ -499,7 +501,7 @@ public class GT_MetaTileEntity_DroneCentre extends
                 .setSize(260, 8));
         Scrollable MachineContainer = new Scrollable().setVerticalScroll();
         for (int i = 0; i < connectionList.size(); i++) {
-            droneConnection connection = connectionList.get(i);
+            DroneConnection connection = connectionList.get(i);
             ItemStackHandler drawitem = new ItemStackHandler(1);
             drawitem.setStackInSlot(0, connection.machineItem);
             DynamicPositionedRow row = new DynamicPositionedRow().setSynced(false);
