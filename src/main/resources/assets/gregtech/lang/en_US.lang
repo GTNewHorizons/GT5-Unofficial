@@ -418,6 +418,12 @@ GT5U.gui.button.ore_drill_cobblestone_on=§7Replace with cobblestone: §aON
 GT5U.gui.button.ore_drill_cobblestone_off=§7Replace with cobblestone: §4OFF
 GT5U.gui.button.drill_retract_pipes=§7Abort and retract mining pipes
 GT5U.gui.button.drill_retract_pipes_active=§4Cannot interrupt abort procedure
+GT5U.gui.button.drone_setname=Set custom name for machine
+GT5U.gui.button.drone_highlight=Highlight machine in the world
+GT5U.gui.button.drone_outofrange=§4Machine is too far, drone control system not available!
+GT5U.gui.button.drone_open_list=Open Machine List
+GT5U.gui.button.drone_poweron_all=Turn ON ALL machines, no matter how remote
+GT5U.gui.button.drone_poweroff_all=Turn OFF ALL machines, no matter how remote
 GT5U.gui.text.success=§aProcessing recipe
 GT5U.gui.text.generating=§aGenerating power
 GT5U.gui.text.no_recipe=§7No valid recipe found
@@ -468,6 +474,9 @@ GT5U.gui.text.drill_offline_reason=Drill Offline: %s
 GT5U.gui.text.drill_offline_generic=Drill Offline
 GT5U.gui.text.stocking_bus_fail_extraction=§4Failed to extract expected amount of items from stocking bus. This can be caused by attaching multiple storage buses to the same inventory.
 GT5U.gui.text.stocking_hatch_fail_extraction=§4Failed to extract expected amount of fluids from stocking hatch. This can be caused by attaching multiple storage fluid buses to the same tank.
+GT5U.gui.text.drone_noDrone=§4Can't find any drone in inputBuses!
+GT5U.gui.text.drone_operating=§aDrone operating normally!
+GT5U.gui.text.drone_title=Drone Control Centre
 
 GT5U.item.programmed_circuit.select.header=Reprogram Circuit
 
@@ -612,6 +621,10 @@ GT5U.waila.stocking_bus.auto_pull.enabled=Auto-Pull from ME: Enabled
 GT5U.waila.stocking_bus.auto_pull.disabled=Auto-Pull from ME: Disabled
 GT5U.waila.stocking_bus.min_stack_size=Minimum Stack Size: %s
 GT5U.waila.stocking_hatch.min_amount=Minimum Amount: %s
+GT5U.waila.drone_downlink.noConnection=Not connected
+GT5U.waila.drone_downlink.connection=Connect to centre:
+GT5U.waila.drone_downlink.connectionCount=Connection Count:
+GT5U.waila.drone_downlink.droneLevel=Drone Level:
 
 achievement.flintpick=First Tools
 achievement.flintpick.desc=Craft a flint pick
