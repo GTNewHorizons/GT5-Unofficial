@@ -38,7 +38,7 @@ dependencies {
     api("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
     api("com.github.GTNewHorizons:NotEnoughItems:2.5.4-GTNH:dev")
     api("com.github.GTNewHorizons:GTNHLib:0.2.1:dev")
-    api("com.github.GTNewHorizons:ModularUI:1.1.25:dev")
+    api("com.github.GTNewHorizons:ModularUI:1.1.26:dev")
     api("com.github.GTNewHorizons:waila:1.7.0:dev")
     api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-312-GTNH:dev")
     api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.2.13-gtnh:dev")
@@ -47,7 +47,7 @@ dependencies {
 
     compileOnlyApi("com.github.GTNewHorizons:AppleCore:3.3.0:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:BuildCraft:7.1.39:dev") { transitive = false }
-    compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.6.3:dev") { transitive = false }
+    compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.6.4:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:ProjectRed:4.9.3-GTNH:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:ForestryMC:4.8.2:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:Railcraft:9.15.5:dev") { transitive = false }
@@ -62,7 +62,7 @@ dependencies {
     compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Hodgepodge:2.4.12:dev") { transitive = false }
     compileOnly('com.github.GTNewHorizons:Botania:1.10.5-GTNH:dev') { transitive = false }
-    compileOnly('com.github.GTNewHorizons:HoloInventory:2.4.1-GTNH:dev') { transitive = false }
+    compileOnly('com.github.GTNewHorizons:HoloInventory:2.4.2-GTNH:dev') { transitive = false }
     compileOnly('curse.maven:minefactory-reloaded-66672:2366150') { transitive = false }
 
     compileOnly("com.google.auto.value:auto-value-annotations:1.10.1") { transitive = false }
