@@ -71,6 +71,7 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.item.ItemHolder;
 import gregtech.api.world.GT_Worldgen;
 import gregtech.common.GT_DummyWorld;
 import gregtech.common.items.GT_IntegratedCircuit_Item;
@@ -106,9 +107,13 @@ public class GregTech_API {
     public static final long FLUID_MATERIAL_UNIT = L;
     /**
      * Fixes the HashMap Mappings for ItemStacks once the Server started
+     * <br>
+     * <br>
+     * NOTE: We use wildcards generics for the key because it could be for example {@link ItemStack} or
+     * {@link GT_ItemStack}
      */
-    public static final Collection<Map<? extends GT_ItemStack, ?>> sItemStackMappings = new ArrayList<>();
-    public static final Collection<SetMultimap<? extends GT_ItemStack, ?>> itemStackMultiMaps = new ArrayList<>();
+    public static final Collection<Map<?, ?>> sItemStackMappings = new ArrayList<>();
+    public static final Collection<SetMultimap<? extends ItemHolder, ?>> itemStackMultiMaps = new ArrayList<>();
 
     /**
      * The MetaTileEntity-ID-List-Length

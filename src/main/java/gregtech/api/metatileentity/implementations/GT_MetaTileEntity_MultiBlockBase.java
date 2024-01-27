@@ -10,9 +10,10 @@ import static mcp.mobius.waila.api.SpecialChars.RESET;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -33,6 +34,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.ApiStatus;
@@ -90,6 +92,7 @@ import gregtech.client.GT_SoundLoop;
 import gregtech.common.GT_Pollution;
 import gregtech.common.gui.modularui.widget.CheckRecipeResultSyncer;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_InputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Input_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
@@ -169,22 +172,6 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             .get(ConfigCategories.machineconfig, "MultiBlockMachines.damageFactorLow", 5);
         this.damageFactorHigh = (float) GregTech_API.sMachineFile
             .get(ConfigCategories.machineconfig, "MultiBlockMachines.damageFactorHigh", 0.6f);
-    }
-
-    /**
-     * @deprecated Use {@link MetaTileEntity#isValid()}
-     */
-    @Deprecated
-    public static boolean isValidMetaTileEntity(MetaTileEntity aMetaTileEntity) {
-        return aMetaTileEntity.isValid();
-    }
-
-    /**
-     * @deprecated Use {@link GT_Utility#filterValidMTEs}
-     */
-    @Deprecated
-    public static <T extends MetaTileEntity> List<T> filterValidMetaTileEntities(Collection<T> metaTileEntities) {
-        return new ArrayList<>(filterValidMTEs(metaTileEntities));
     }
 
     @Override
@@ -1315,32 +1302,70 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         }
 
         ArrayList<FluidStack> rList = new ArrayList<>();
+        Map<Fluid, FluidStack> inputsFromME = new HashMap<>();
         for (GT_MetaTileEntity_Hatch_Input tHatch : filterValidMTEs(mInputHatches)) {
             setHatchRecipeMap(tHatch);
-            if (tHatch instanceof GT_MetaTileEntity_Hatch_MultiInput) {
-                for (FluidStack tFluid : ((GT_MetaTileEntity_Hatch_MultiInput) tHatch).getStoredFluid()) {
+            if (tHatch instanceof GT_MetaTileEntity_Hatch_MultiInput multiInputHatch) {
+                for (FluidStack tFluid : multiInputHatch.getStoredFluid()) {
                     if (tFluid != null) {
-                        // GT_Log.out.print("mf: " + tFluid + "\n");
                         rList.add(tFluid);
                     }
                 }
-            } else if (tHatch instanceof GT_MetaTileEntity_Hatch_Input_ME) {
-                if (isValidMetaTileEntity(tHatch)) {
-                    for (FluidStack fluidStack : ((GT_MetaTileEntity_Hatch_Input_ME) tHatch).getStoredFluids()) {
-                        if (fluidStack == null) continue;
-
-                        rList.add(fluidStack);
+            } else if (tHatch instanceof GT_MetaTileEntity_Hatch_Input_ME meHatch) {
+                for (FluidStack fluidStack : meHatch.getStoredFluids()) {
+                    if (fluidStack != null) {
+                        // Prevent the same fluid from different ME hatches from being recognized
+                        inputsFromME.put(fluidStack.getFluid(), fluidStack);
                     }
                 }
             } else {
                 if (tHatch.getFillableStack() != null) {
-                    // GT_Log.out.print("sf: " + tHatch.getFillableStack() + "\n");
                     rList.add(tHatch.getFillableStack());
                 }
             }
         }
 
+        if (!inputsFromME.isEmpty()) {
+            rList.addAll(inputsFromME.values());
+        }
         return rList;
+    }
+
+    /**
+     * Drains fluid from the given hatch, including {@link IDualInputHatch}.
+     *
+     * @param doDrain If false, fluid will not actually be consumed
+     * @return Whether the hatch contains enough fluid to drain
+     */
+    public boolean drain(GT_MetaTileEntity_Hatch hatch, FluidStack fluid, boolean doDrain) {
+        if (fluid == null || hatch == null) return false;
+        if (supportsCraftingMEBuffer() && hatch instanceof IDualInputHatch tHatch && tHatch.supportsFluids()) {
+            Optional<IDualInputInventory> inventory = tHatch.getFirstNonEmptyInventory();
+            if (inventory.isPresent()) {
+                for (FluidStack storedFluid : Lists.newArrayList(
+                    inventory.get()
+                        .getFluidInputs())) {
+                    if (fluid.isFluidEqual(storedFluid)) {
+                        if (doDrain) storedFluid.amount = Math.max(storedFluid.amount - fluid.amount, 0);
+                        return storedFluid.amount >= fluid.amount;
+                    }
+                }
+            }
+        }
+
+        if (hatch instanceof GT_MetaTileEntity_Hatch_Input tHatch && tHatch.isValid()) {
+            if (tHatch instanceof GT_MetaTileEntity_Hatch_Input_ME meHatch) {
+                meHatch.startRecipeProcessing();
+                FluidStack tFluid = meHatch.drain(ForgeDirection.UNKNOWN, fluid, doDrain);
+                meHatch.endRecipeProcessing(this);
+                return tFluid != null && tFluid.amount >= fluid.amount;
+            } else {
+                FluidStack tFluid = tHatch.drain(ForgeDirection.UNKNOWN, fluid, doDrain);
+                return tFluid != null && tFluid.amount >= fluid.amount;
+            }
+        }
+
+        return false;
     }
 
     public ArrayList<ItemStack> getStoredInputs() {
@@ -1356,19 +1381,29 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         }
 
         ArrayList<ItemStack> rList = new ArrayList<>();
+        Map<GT_Utility.ItemId, ItemStack> inputsFromME = new HashMap<>();
         for (GT_MetaTileEntity_Hatch_InputBus tHatch : filterValidMTEs(mInputBusses)) {
             tHatch.mRecipeMap = getRecipeMap();
             IGregTechTileEntity tileEntity = tHatch.getBaseMetaTileEntity();
+            boolean isMEBus = tHatch instanceof GT_MetaTileEntity_Hatch_InputBus_ME;
             for (int i = tileEntity.getSizeInventory() - 1; i >= 0; i--) {
                 ItemStack itemStack = tileEntity.getStackInSlot(i);
                 if (itemStack != null) {
-                    rList.add(itemStack);
+                    if (isMEBus) {
+                        // Prevent the same item from different ME buses from being recognized
+                        inputsFromME.put(GT_Utility.ItemId.createNoCopy(itemStack), itemStack);
+                    } else {
+                        rList.add(itemStack);
+                    }
                 }
             }
         }
 
         if (getStackInSlot(1) != null && getStackInSlot(1).getUnlocalizedName()
             .startsWith("gt.integrated_circuit")) rList.add(getStackInSlot(1));
+        if (!inputsFromME.isEmpty()) {
+            rList.addAll(inputsFromME.values());
+        }
         return rList;
     }
 

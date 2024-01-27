@@ -572,23 +572,7 @@ public class GT_MetaTileEntity_PCBFactory extends
             protected GT_ParallelHelper createParallelHelper(@Nonnull GT_Recipe recipe) {
                 return super.createParallelHelper(recipe)
                     .setEUtModifier((float) Math.sqrt(mUpgradesInstalled == 0 ? 1 : mUpgradesInstalled))
-                    .setCustomItemOutputCalculation(currentParallel -> {
-                        ArrayList<ItemStack> chancedOutputs = new ArrayList<>();
-                        for (int i = 0; i < currentParallel; i++) {
-                            for (ItemStack item : recipe.mOutputs) {
-                                int remainingEfficiency = getMaxEfficiency(getControllerSlot());
-                                while (remainingEfficiency > 0) {
-                                    if (getBaseMetaTileEntity().getRandomNumber(10000) >= remainingEfficiency) {
-                                        remainingEfficiency -= 10000;
-                                        continue;
-                                    }
-                                    chancedOutputs.add(item);
-                                    remainingEfficiency -= 10000;
-                                }
-                            }
-                        }
-                        return chancedOutputs.toArray(new ItemStack[0]);
-                    });
+                    .setChanceMultiplier(mRoughnessMultiplier);
             }
         };
     }
@@ -617,8 +601,7 @@ public class GT_MetaTileEntity_PCBFactory extends
                     return false;
                 }
                 FluidStack tFluid = GT_ModHandler.getDistilledWater(COOLANT_CONSUMED_PER_SEC);
-                FluidStack tLiquid = mCoolantInputHatch.drain(tFluid.amount, true);
-                if (tLiquid == null || tLiquid.amount < tFluid.amount || !tLiquid.equals(tFluid)) {
+                if (!drain(mCoolantInputHatch, tFluid, true)) {
                     criticalStopMachine();
                     return false;
                 }
@@ -631,8 +614,7 @@ public class GT_MetaTileEntity_PCBFactory extends
                 }
                 Fluid superCoolant = FluidRegistry.getFluid("supercoolant");
                 FluidStack tFluid = new FluidStack(superCoolant, COOLANT_CONSUMED_PER_SEC);
-                FluidStack tLiquid = mCoolantInputHatch.drain(tFluid.amount, true);
-                if (tLiquid == null || tLiquid.amount < tFluid.amount || !tLiquid.equals(tFluid)) {
+                if (!drain(mCoolantInputHatch, tFluid, true)) {
                     criticalStopMachine();
                     return false;
                 }

@@ -98,6 +98,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
     private final boolean autoPullAvailable;
     protected boolean autoPullFluidList = false;
     protected int minAutoPullAmount = 1;
+    private int autoPullRefreshTime = 100;
     protected boolean processingRecipe = false;
 
     protected static final int CONFIG_WINDOW_ID = 10;
@@ -133,7 +134,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         if (getBaseMetaTileEntity().isServerSide()) {
-            if (aTimer % 100 == 0 && autoPullFluidList) {
+            if (aTimer % autoPullRefreshTime == 0 && autoPullFluidList) {
                 refreshFluidList();
             }
             if (aTimer % 20 == 0) {
@@ -466,6 +467,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
         aNBT.setBoolean("autoPull", autoPullFluidList);
         aNBT.setInteger("minAmount", minAutoPullAmount);
         aNBT.setBoolean("additionalConnection", additionalConnection);
+        aNBT.setInteger("refreshTime", autoPullRefreshTime);
         getProxy().writeToNBT(aNBT);
     }
 
@@ -490,6 +492,9 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
         minAutoPullAmount = aNBT.getInteger("minAmount");
         autoPullFluidList = aNBT.getBoolean("autoPull");
         additionalConnection = aNBT.getBoolean("additionalConnection");
+        if (aNBT.hasKey("refreshTime")) {
+            autoPullRefreshTime = aNBT.getInteger("refreshTime");
+        }
         getProxy().readFromNBT(aNBT);
     }
 
@@ -521,6 +526,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
         if (autoPullAvailable) {
             setAutoPullFluidList(nbt.getBoolean("autoPull"));
             minAutoPullAmount = nbt.getInteger("minAmount");
+            autoPullRefreshTime = nbt.getInteger("refreshTime");
         }
         additionalConnection = nbt.getBoolean("additionalConnection");
 
@@ -548,6 +554,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
         tag.setBoolean("autoPull", autoPullFluidList);
         tag.setInteger("minAmount", minAutoPullAmount);
         tag.setBoolean("additionalConnection", additionalConnection);
+        tag.setInteger("refreshTime", autoPullRefreshTime);
 
         NBTTagList stockingFluids = new NBTTagList();
         if (!autoPullFluidList) {
@@ -750,7 +757,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
 
     protected ModularWindow createStackSizeConfigurationWindow(final EntityPlayer player) {
         final int WIDTH = 78;
-        final int HEIGHT = 40;
+        final int HEIGHT = 80;
         final int PARENT_WIDTH = getGUIWidth();
         final int PARENT_HEIGHT = getGUIHeight();
         ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
@@ -775,6 +782,20 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                     .setTextColor(Color.WHITE.normal)
                     .setSize(70, 18)
                     .setPos(3, 18)
+                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD));
+        builder.widget(
+            TextWidget.localised("GT5U.machines.stocking_bus.refresh_time")
+                .setPos(3, 42)
+                .setSize(74, 14))
+            .widget(
+                new TextFieldWidget().setSetterInt(val -> autoPullRefreshTime = val)
+                    .setGetterInt(() -> autoPullRefreshTime)
+                    .setNumbers(1, Integer.MAX_VALUE)
+                    .setOnScrollNumbers(1, 4, 64)
+                    .setTextAlignment(Alignment.Center)
+                    .setTextColor(Color.WHITE.normal)
+                    .setSize(70, 18)
+                    .setPos(3, 58)
                     .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD));
         return builder.build();
     }
@@ -832,7 +853,8 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
             strings.add(
                 "Auto-Pull from ME mode will automatically stock the first 16 fluid in the ME system, updated every 5 seconds.");
             strings.add("Toggle by right-clicking with screwdriver, or use the GUI.");
-            strings.add("Use the GUI to limit the minimum stack size for Auto-Pulling.");
+            strings
+                .add("Use the GUI to limit the minimum stack size for Auto-Pulling and adjust the slot refresh timer.");
         }
 
         strings.add("Change ME connection behavior by right-clicking with wire cutter.");

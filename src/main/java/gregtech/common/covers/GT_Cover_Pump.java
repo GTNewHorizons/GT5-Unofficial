@@ -26,14 +26,6 @@ public class GT_Cover_Pump extends GT_CoverBehavior {
 
     public final int mTransferRate;
 
-    /**
-     * @deprecated use {@link #GT_Cover_Pump(int aTransferRate, ITexture coverTexture)} instead
-     */
-    @Deprecated
-    public GT_Cover_Pump(int aTransferRate) {
-        this(aTransferRate, null);
-    }
-
     public GT_Cover_Pump(int aTransferRate, ITexture coverTexture) {
         super(coverTexture);
         this.mTransferRate = aTransferRate;
@@ -53,33 +45,21 @@ public class GT_Cover_Pump extends GT_CoverBehavior {
                 return aCoverVariable;
             }
         }
-        if ((aTileEntity instanceof IFluidHandler)) {
-            final IFluidHandler tTank2 = aTileEntity.getITankContainerAtSide(side);
-            if (tTank2 != null) {
-                // aTileEntity.decreaseStoredEnergyUnits(GT_Utility.getTier(this.mTransferRate), true);
-                final IFluidHandler tTank1 = (IFluidHandler) aTileEntity;
-                if (aCoverVariable % 2 == 0) {
-                    FluidStack tLiquid = tTank1.drain(side, this.mTransferRate, false);
-                    if (tLiquid != null) {
-                        tLiquid = tLiquid.copy();
-                        tLiquid.amount = tTank2.fill(side.getOpposite(), tLiquid, false);
-                        if (tLiquid.amount > 0 && canTransferFluid(tLiquid)) {
-                            tTank2.fill(side.getOpposite(), tTank1.drain(side, tLiquid.amount, true), true);
-                        }
-                    }
-                } else {
-                    FluidStack tLiquid = tTank2.drain(side.getOpposite(), this.mTransferRate, false);
-                    if (tLiquid != null) {
-                        tLiquid = tLiquid.copy();
-                        tLiquid.amount = tTank1.fill(side, tLiquid, false);
-                        if (tLiquid.amount > 0 && canTransferFluid(tLiquid)) {
-                            tTank1.fill(side, tTank2.drain(side.getOpposite(), tLiquid.amount, true), true);
-                        }
-                    }
-                }
-            }
+
+        if (aTileEntity instanceof IFluidHandler current) {
+            final IFluidHandler toAccess = aTileEntity.getITankContainerAtSide(side);
+            if (toAccess == null) return aCoverVariable;
+
+            transferFluid(current, toAccess, side, aCoverVariable % 2 == 0);
         }
         return aCoverVariable;
+    }
+
+    protected void transferFluid(IFluidHandler current, IFluidHandler toAccess, ForgeDirection side, boolean export) {
+        IFluidHandler source = export ? current : toAccess;
+        IFluidHandler dest = export ? toAccess : current;
+        ForgeDirection drainSide = export ? side : side.getOpposite();
+        GT_Utility.moveFluid(source, dest, drainSide, mTransferRate, this::canTransferFluid);
     }
 
     protected boolean canTransferFluid(FluidStack fluid) {

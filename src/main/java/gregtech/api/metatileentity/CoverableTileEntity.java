@@ -80,26 +80,11 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     // New Cover Information
     protected final CoverInfo[] coverInfos = new CoverInfo[] { null, null, null, null, null, null };
+    private byte validCoversMask;
 
     protected byte[] mSidedRedstone = new byte[] { 15, 15, 15, 15, 15, 15 };
     protected boolean mRedstone = false;
     protected byte mStrongRedstone = 0;
-
-    /* Deprecated Cover Variables */
-    @Deprecated
-    protected final GT_CoverBehaviorBase<?>[] mCoverBehaviors = new GT_CoverBehaviorBase<?>[] {
-        GregTech_API.sNoBehavior, GregTech_API.sNoBehavior, GregTech_API.sNoBehavior, GregTech_API.sNoBehavior,
-        GregTech_API.sNoBehavior, GregTech_API.sNoBehavior };
-
-    @Deprecated
-    protected int[] mCoverSides = new int[] { 0, 0, 0, 0, 0, 0 };
-
-    @Deprecated
-    protected ISerializableObject[] mCoverData = new ISerializableObject[6];
-
-    @Deprecated
-    protected final boolean[] mCoverNeedUpdate = new boolean[] { false, false, false, false, false, false };
-    /* End Deprecated Cover Variables */
 
     protected short mID = 0;
     public long mTickTimer = 0;
@@ -198,9 +183,14 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     public abstract boolean isStillValid();
 
     protected boolean doCoverThings() {
-        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-            if (!tickCoverAtSide(side)) return false;
+        byte validCoversMask = this.validCoversMask;
+        if (validCoversMask == 0) return true;
+
+        for (int i = Integer.numberOfTrailingZeros(validCoversMask); i < 6; i++) {
+            if (((validCoversMask >>> i) & 1) == 0) continue;
+            if (!tickCoverAtSide(ForgeDirection.VALID_DIRECTIONS[i])) return false;
         }
+
         return true;
     }
 
@@ -365,16 +355,22 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         return getCoverInfoAtSide(side).getCoverBehavior();
     }
 
-    public void setCoverInfoAtSide(ForgeDirection side, CoverInfo coverInfo) {
-        if (side != ForgeDirection.UNKNOWN) coverInfos[side.ordinal()] = coverInfo;
+    public final void setCoverInfoAtSide(ForgeDirection side, CoverInfo coverInfo) {
+        if (side != ForgeDirection.UNKNOWN) {
+            coverInfos[side.ordinal()] = coverInfo;
+
+            validCoversMask &= (byte) ~side.flag;
+            if (coverInfo.isValid()) validCoversMask |= side.flag;
+        }
     }
 
     @Override
-    public CoverInfo getCoverInfoAtSide(ForgeDirection side) {
+    public final CoverInfo getCoverInfoAtSide(ForgeDirection side) {
         final int ordinalSide = side.ordinal();
         if (side != ForgeDirection.UNKNOWN) {
-            if (coverInfos[ordinalSide] == null) coverInfos[ordinalSide] = new CoverInfo(side, this);
-            return coverInfos[side.ordinal()];
+            CoverInfo coverInfo = coverInfos[ordinalSide];
+            if (coverInfo == null) coverInfo = (coverInfos[ordinalSide] = new CoverInfo(side, this));
+            return coverInfo;
         }
         return CoverInfo.EMPTY_INFO;
     }

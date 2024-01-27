@@ -27,6 +27,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.common.config.Configuration;
 
 import org.apache.commons.lang3.StringUtils;
@@ -164,19 +165,17 @@ public class GT_PreLoad {
                     GT_Log.mOreDictLogFile.createNewFile();
                 } catch (Throwable ignored) {}
             }
+            List<String> tList = ((GT_Log.LogBuffer) GT_Log.ore).mBufferedOreDictLog;
             try {
                 GT_Log.ore = new PrintStream(GT_Log.mOreDictLogFile);
             } catch (Throwable ignored) {}
-            try {
-                List<String> tList = ((GT_Log.LogBuffer) GT_Log.ore).mBufferedOreDictLog;
-                GT_Log.ore.println("******************************************************************************");
-                GT_Log.ore.println("* This is the complete log of the GT5-Unofficial OreDictionary Handler. It   *");
-                GT_Log.ore.println("* processes all OreDictionary entries and can sometimes cause errors. All    *");
-                GT_Log.ore.println("* entries and errors are being logged. If you see an error please raise an   *");
-                GT_Log.ore.println("* issue at https://github.com/Blood-Asp/GT5-Unofficial.                      *");
-                GT_Log.ore.println("******************************************************************************");
-                tList.forEach(GT_Log.ore::println);
-            } catch (Throwable ignored) {}
+            GT_Log.ore.println("******************************************************************************");
+            GT_Log.ore.println("* This is the complete log of the GT5-Unofficial OreDictionary Handler. It   *");
+            GT_Log.ore.println("* processes all OreDictionary entries and can sometimes cause errors. All    *");
+            GT_Log.ore.println("* entries and errors are being logged. If you see an error please raise an   *");
+            GT_Log.ore.println("* issue at https://github.com/GTNewHorizons/GT-New-Horizons-Modpack/issues.  *");
+            GT_Log.ore.println("******************************************************************************");
+            tList.forEach(GT_Log.ore::println);
         }
         if (tMainConfig.get(GT_Mod.aTextGeneral, "LoggingExplosions", true)
             .getBoolean(true)) {
@@ -418,6 +417,14 @@ public class GT_PreLoad {
         GT_Values.disableDigitalChestsExternalAccess = tMainConfig
             .get("machines", "disableDigitalChestsExternalAccess", false)
             .getBoolean(false);
+        GT_Values.enableMultiTileEntities = tMainConfig.get(
+            "machines",
+            "enableMultiTileEntities",
+            false,
+            "This enabled MuTEs(multitile entities) to be added to the game. MuTEs are in the start of development and its not recommended to enable them unless you know what you are doing.")
+            .getBoolean(false)
+            // Make sure MuTEs are enabled in development
+            || (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
         GregTech_API.TICKS_FOR_LAG_AVERAGING = tMainConfig
             .get(GT_Mod.aTextGeneral, "TicksForLagAveragingWithScanner", 25)
             .getInt(25);
@@ -664,6 +671,10 @@ public class GT_PreLoad {
         }
 
         GT_Mod.gregtechproxy.mUndergroundOil.getConfig(tMainConfig, "undergroundfluid");
+        GT_Mod.gregtechproxy.enableUndergroundGravelGen = GregTech_API.sWorldgenFile
+            .get("general", "enableUndergroundGravelGen", GT_Mod.gregtechproxy.enableUndergroundGravelGen);
+        GT_Mod.gregtechproxy.enableUndergroundDirtGen = GregTech_API.sWorldgenFile
+            .get("general", "enableUndergroundDirtGen", GT_Mod.gregtechproxy.enableUndergroundDirtGen);
         GT_Mod.gregtechproxy.mEnableCleanroom = tMainConfig.get("general", "EnableCleanroom", true)
             .getBoolean(true);
         if (GT_Mod.gregtechproxy.mEnableCleanroom) GT_MetaTileEntity_Cleanroom.loadConfig(tMainConfig);

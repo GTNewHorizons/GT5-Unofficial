@@ -6,8 +6,6 @@ import static gregtech.api.recipe.RecipeMaps.implosionRecipes;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
-import net.minecraft.item.ItemStack;
-
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -72,16 +70,5 @@ public class ImplosionCompressorRecipes implements Runnable {
                 .eut(TierEU.RECIPE_LV)
                 .addTo(implosionRecipes);
         }
-    }
-
-    @Deprecated
-    public void addImplosionRecipe(ItemStack input, int explosiveAmount, ItemStack[] outputs) {
-        GT_Values.RA.stdBuilder()
-            .itemInputs(input)
-            .itemOutputs(outputs)
-            .metadata(GT_RecipeConstants.ADDITIVE_AMOUNT, explosiveAmount)
-            .duration(1 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(implosionRecipes);
     }
 }

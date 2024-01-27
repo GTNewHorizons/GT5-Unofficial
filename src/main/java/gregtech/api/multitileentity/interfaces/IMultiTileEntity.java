@@ -17,18 +17,11 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.IFluidHandler;
 
 import cpw.mods.fml.common.Optional;
 import gregtech.api.enums.Mods;
-import gregtech.api.interfaces.tileentity.IBasicEnergyContainer;
-import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
-import gregtech.api.interfaces.tileentity.IEnergyConnected;
-import gregtech.api.interfaces.tileentity.IHasInventory;
-import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
-import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
 import gregtech.api.interfaces.tileentity.ITurnable;
 import gregtech.api.multitileentity.MultiTileEntityBlockInternal;
 import gregtech.api.multitileentity.MultiTileEntityItemInternal;
@@ -37,9 +30,7 @@ import gregtech.api.multitileentity.MultiTileEntityRegistry;
 /*
  * Heavily inspired by GT6
  */
-public interface IMultiTileEntity
-    extends IHasWorldObjectAndCoords, ICoverable, ITurnable, IHasInventory, IEnergyConnected, IBasicEnergyContainer,
-    IFluidHandler, ITexturedTileEntity, IDebugableTileEntity, IColoredTileEntity {
+public interface IMultiTileEntity extends ICoverable, ITurnable, IDebugableTileEntity {
 
     /**
      * Those two IDs HAVE to be saved inside the NBT of the TileEntity itself. They get set by the Registry itself, when
@@ -88,7 +79,7 @@ public interface IMultiTileEntity
 
     void sendClientData(EntityPlayerMP aPlayer);
 
-    boolean receiveClientEvent(int aEventID, int aValue);
+    boolean receiveClientData(int aEventID, int aValue);
 
     void setShouldRefresh(boolean aShouldRefresh);
 
@@ -291,12 +282,12 @@ public interface IMultiTileEntity
 
     interface IMTE_HasModes extends IMultiTileEntity {
 
-        byte getMode();
+        int getMode();
 
-        void setMode(byte aMode);
+        void setMode(int mode);
 
         int getAllowedModes();
 
-        void setAllowedModes(int aAllowedModes);
+        void setAllowedModes(int allowedModes);
     }
 }

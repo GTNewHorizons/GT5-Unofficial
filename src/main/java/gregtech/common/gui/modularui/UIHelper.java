@@ -164,15 +164,6 @@ public class UIHelper {
         return getGridPositions(totalCount, xOrigin, yOrigin, xDirMaxCount, 100);
     }
 
-    /**
-     * @deprecated Renamed to {@link #getGridPositions}
-     */
-    @Deprecated
-    public static List<Pos2d> getItemGridPositions(int itemCount, int xOrigin, int yOrigin, int xDirMaxCount,
-        int yDirMaxCount) {
-        return getGridPositions(itemCount, xOrigin, yOrigin, xDirMaxCount, yDirMaxCount);
-    }
-
     private static IDrawable[] getBackgroundsForSlot(IDrawable base, BasicUIProperties uiProperties, boolean isFluid,
         boolean isOutput, int index, boolean isSpecial, SteamVariant steamVariant) {
         IDrawable overlay = getOverlay(uiProperties, isFluid, isOutput, index, isSpecial, steamVariant);

@@ -8,14 +8,6 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 
 public class GT_Cover_RedstoneTransmitterInternal extends GT_Cover_RedstoneWirelessBase {
 
-    /**
-     * @deprecated use {@link #GT_Cover_RedstoneTransmitterInternal(ITexture coverTexture)} instead
-     */
-    @Deprecated
-    public GT_Cover_RedstoneTransmitterInternal() {
-        this(null);
-    }
-
     public GT_Cover_RedstoneTransmitterInternal(ITexture coverTexture) {
         super(coverTexture);
     }

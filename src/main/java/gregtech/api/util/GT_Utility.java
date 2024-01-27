@@ -45,6 +45,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.IntFunction;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -55,6 +56,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -88,7 +90,9 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
@@ -1679,6 +1683,46 @@ public class GT_Utility {
             true);
     }
 
+    /**
+     * Move up to maxAmount amount of fluid from source to dest, with optional filtering via allowMove. note that this
+     * filter cannot bypass filtering done by IFluidHandlers themselves.
+     *
+     * this overload will assume the fill side is the opposite of drainSide
+     *
+     * @param source    tank to drain from. method become noop if this is null
+     * @param dest      tank to fill to. method become noop if this is null
+     * @param drainSide side used during draining operation
+     * @param maxAmount max amount of fluid to transfer. method become noop if this is not a positive integer
+     * @param allowMove filter. can be null to signal all fluids are accepted
+     */
+    public static void moveFluid(IFluidHandler source, IFluidHandler dest, ForgeDirection drainSide, int maxAmount,
+        @Nullable Predicate<FluidStack> allowMove) {
+        moveFluid(source, dest, drainSide, drainSide.getOpposite(), maxAmount, allowMove);
+    }
+
+    /**
+     * Move up to maxAmount amount of fluid from source to dest, with optional filtering via allowMove. note that this
+     * filter cannot bypass filtering done by IFluidHandlers themselves.
+     *
+     * @param source    tank to drain from. method become noop if this is null
+     * @param dest      tank to fill to. method become noop if this is null
+     * @param drainSide side used during draining operation
+     * @param fillSide  side used during filling operation
+     * @param maxAmount max amount of fluid to transfer. method become noop if this is not a positive integer
+     * @param allowMove filter. can be null to signal all fluids are accepted
+     */
+    public static void moveFluid(IFluidHandler source, IFluidHandler dest, ForgeDirection drainSide,
+        ForgeDirection fillSide, int maxAmount, @Nullable Predicate<FluidStack> allowMove) {
+        if (source == null || dest == null || maxAmount <= 0) return;
+        FluidStack liquid = source.drain(drainSide, maxAmount, false);
+        if (liquid == null) return;
+        liquid = liquid.copy();
+        liquid.amount = dest.fill(fillSide, liquid, false);
+        if (liquid.amount > 0 && (allowMove == null || allowMove.test(liquid))) {
+            dest.fill(fillSide, source.drain(drainSide, liquid.amount, true), true);
+        }
+    }
+
     public static boolean listContainsItem(Collection<ItemStack> aList, ItemStack aStack, boolean aTIfListEmpty,
         boolean aInvertFilter) {
         if (aStack == null || aStack.stackSize < 1) return false;
@@ -3093,6 +3137,13 @@ public class GT_Utility {
         return aList[aIndex];
     }
 
+    public static boolean isStackInStackSet(ItemStack aStack, Set<ItemStack> aSet) {
+        if (aStack == null) return false;
+        if (aSet.contains(aStack)) return true;
+
+        return aSet.contains(GT_ItemStack.internalCopyStack(aStack, true));
+    }
+
     public static boolean isStackInList(ItemStack aStack, Collection<GT_ItemStack> aList) {
         if (aStack == null) {
             return false;
@@ -3121,7 +3172,25 @@ public class GT_Utility {
      * re-maps all Keys of a Map after the Keys were weakened.
      */
     public static <X, Y> Map<X, Y> reMap(Map<X, Y> aMap) {
-        Map<X, Y> tMap = new HashMap<>(aMap);
+        Map<X, Y> tMap = null;
+        // We try to clone the Map first (most Maps are Cloneable) in order to retain as much state of the Map as
+        // possible when rehashing. For example, "Custom" HashMaps from fastutil may have a custom hash function which
+        // would not be used to rehash if we just create a new HashMap.
+        if (aMap instanceof Cloneable) {
+            try {
+                tMap = (Map<X, Y>) aMap.getClass()
+                    .getMethod("clone")
+                    .invoke(aMap);
+            } catch (Throwable e) {
+                GT_Log.err.println("Failed to clone Map of type " + aMap.getClass());
+                e.printStackTrace(GT_Log.err);
+            }
+        }
+
+        if (tMap == null) {
+            tMap = new HashMap<>(aMap);
+        }
+
         aMap.clear();
         aMap.putAll(tMap);
         return aMap;
@@ -4878,5 +4947,20 @@ public class GT_Utility {
             .findFuel(aLiquid);
         if (tFuel != null) return tFuel.mSpecialValue;
         return 0;
+    }
+
+    public static MovingObjectPosition getPlayerLookingTarget() {
+        // Basically copied from waila, thanks Caedis for such challenge
+        Minecraft mc = Minecraft.getMinecraft();
+        EntityLivingBase viewpoint = mc.renderViewEntity;
+        if (viewpoint == null) return null;
+
+        float reachDistance = mc.playerController.getBlockReachDistance();
+        Vec3 posVec = viewpoint.getPosition(0);
+        Vec3 lookVec = viewpoint.getLook(0);
+        Vec3 modifiedPosVec = posVec
+            .addVector(lookVec.xCoord * reachDistance, lookVec.yCoord * reachDistance, lookVec.zCoord * reachDistance);
+
+        return viewpoint.worldObj.rayTraceBlocks(posVec, modifiedPosVec);
     }
 }

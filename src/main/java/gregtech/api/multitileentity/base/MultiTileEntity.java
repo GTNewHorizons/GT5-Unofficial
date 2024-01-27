@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
@@ -16,6 +18,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
@@ -28,9 +31,6 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidTank;
 
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
@@ -90,6 +90,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     protected boolean needsUpdate = false;
     protected boolean hasInventoryChanged = false;
     protected boolean isPainted = false;
+    @Nonnull
     protected ForgeDirection facing = ForgeDirection.WEST; // Default to WEST, so it renders facing Left in the
                                                            // inventory
     protected byte color;
@@ -203,12 +204,6 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     }
 
     @Override
-    public ITexture[] getTexture(Block ignoredBlock, ForgeDirection ignoredSide) {
-        // We are not going to be using this
-        return null;
-    }
-
-    @Override
     public void readFromNBT(NBTTagCompound nbt) {
         // Check if it is a World/Chunk-Loading Process calling readFromNBT
         if (mteID == GT_Values.W || mteRegistry == GT_Values.W) {
@@ -231,7 +226,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity
         if (nbt.hasKey("y")) yCoord = nbt.getInteger("y");
         if (nbt.hasKey("z")) zCoord = nbt.getInteger("z");
         // read the custom Name.
-        if (nbt.hasKey(NBT.DISPAY)) customName = nbt.getCompoundTag(NBT.DISPAY)
+        if (nbt.hasKey(NBT.DISPLAY)) customName = nbt.getCompoundTag(NBT.DISPLAY)
             .getString(NBT.CUSTOM_NAME);
 
         // And now everything else.
@@ -249,6 +244,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity
             if (nbt.hasKey(NBT.FACING)) facing = ForgeDirection.getOrientation(nbt.getInteger(NBT.FACING));
 
             readCoverNBT(nbt);
+            readTasksNBT(nbt);
             readMultiTileNBT(nbt);
 
             if (NetworkUtils.isDedicatedClient()) {
@@ -272,6 +268,8 @@ public abstract class MultiTileEntity extends CoverableTileEntity
         /* Do Nothing */
     }
 
+    protected void readTasksNBT(NBTTagCompound nbt) {}
+
     @Override
     public final void writeToNBT(NBTTagCompound aNBT) {
         super.writeToNBT(aNBT);
@@ -281,11 +279,11 @@ public abstract class MultiTileEntity extends CoverableTileEntity
         // write the Custom Name
         if (GT_Utility.isStringValid(customName)) {
             final NBTTagCompound displayNBT;
-            if (aNBT.hasKey(NBT.DISPAY)) {
-                displayNBT = aNBT.getCompoundTag(NBT.DISPAY);
+            if (aNBT.hasKey(NBT.DISPLAY)) {
+                displayNBT = aNBT.getCompoundTag(NBT.DISPLAY);
             } else {
                 displayNBT = new NBTTagCompound();
-                aNBT.setTag(NBT.DISPAY, displayNBT);
+                aNBT.setTag(NBT.DISPLAY, displayNBT);
             }
             displayNBT.setString(NBT.CUSTOM_NAME, customName);
         }
@@ -298,6 +296,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity
             aNBT.setInteger(NBT.FACING, facing.ordinal());
 
             writeCoverNBT(aNBT, false);
+            writeTasksNBT(aNBT);
             writeMultiTileNBT(aNBT);
         } catch (Throwable e) {
             GT_FML_LOGGER.error("writeToNBT", e);
@@ -308,10 +307,13 @@ public abstract class MultiTileEntity extends CoverableTileEntity
         /* Do Nothing */
     }
 
+    protected void writeTasksNBT(NBTTagCompound aNBT) {}
+
     @Override
     public NBTTagCompound writeItemNBT(NBTTagCompound aNBT) {
         writeCoverNBT(aNBT, true);
         if (shouldSaveNBTToItemStack()) {
+            writeTasksNBT(aNBT);
             writeMultiTileNBT(aNBT);
         }
         return aNBT;
@@ -711,6 +713,8 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     public boolean onPlaced(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
         ForgeDirection side, float aHitX, float aHitY, float aHitZ) {
         facing = getSideForPlayerPlacing(aPlayer, facing, getValidFacings());
+        setOwnerUuid(aPlayer.getUniqueID());
+        setOwnerName(aPlayer.getDisplayName());
         onFacingChange();
         return true;
     }
@@ -749,8 +753,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity
             }
 
             if (!getCoverInfoAtSide(side).isGUIClickable()) return false;
-        }
-        if (isServerSide()) {
+        } else { // server side
             if (!privateAccess() || aPlayer.getDisplayName()
                 .equalsIgnoreCase(getOwnerName())) {
                 final ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
@@ -761,18 +764,19 @@ public abstract class MultiTileEntity extends CoverableTileEntity
                         && GT_Utility.areStacksEqual(new ItemStack(Items.water_bucket, 1), tCurrentItem)) {
                         // TODO (Colorization)
                     }
+
                     if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sWrenchList))
-                        return onWrenchRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ);
+                        return onWrenchRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ, tCurrentItem);
                     if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sScrewdriverList))
-                        return onScrewdriverRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ);
+                        return onScrewdriverRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ, tCurrentItem);
                     if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sHardHammerList))
-                        return onHammerRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ);
+                        return onHammerRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ, tCurrentItem);
                     if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sSoftHammerList))
-                        return onMalletRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ);
+                        return onMalletRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ, tCurrentItem);
                     if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sSolderingToolList))
-                        return onSolderingRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ);
+                        return onSolderingRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ, tCurrentItem);
                     if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sWireCutterList))
-                        return onWireCutterRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ);
+                        return onWireCutterRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ, tCurrentItem);
 
                     final ForgeDirection coverSide = getCoverIDAtSide(side) == 0 ? wrenchSide : side;
 
@@ -835,6 +839,11 @@ public abstract class MultiTileEntity extends CoverableTileEntity
 
                 if (!getCoverInfoAtSide(side).isGUIClickable()) return false;
 
+                if (aPlayer.getHeldItem() != null && aPlayer.getHeldItem()
+                    .getItem() instanceof ItemBlock) {
+                    return false;
+                }
+
                 return openModularUi(aPlayer, side);
             }
         }
@@ -857,16 +866,16 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     }
 
     public boolean onWrenchRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, ForgeDirection wrenchSide, float aX,
-        float aY, float aZ) {
+        float aY, float aZ, ItemStack aTool) {
         if (setMainFacing(wrenchSide)) {
             GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);
             GT_Utility.sendSoundToPlayers(worldObj, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1, xCoord, yCoord, zCoord);
         }
-        return true;
+        return onWrenchRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ);
     }
 
     public boolean onScrewdriverRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, ForgeDirection wrenchSide,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         if (GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 200, aPlayer)) {
             setCoverDataAtSide(
                 wrenchSide,
@@ -882,30 +891,66 @@ public abstract class MultiTileEntity extends CoverableTileEntity
             // TODO: Update connections!
             GT_Utility.sendSoundToPlayers(worldObj, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1, xCoord, yCoord, zCoord);
         }
-        return true;
+        return onScrewdriverRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ);
     }
 
     public boolean onHammerRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, ForgeDirection wrenchSide, float aX,
-        float aY, float aZ) {
+        float aY, float aZ, ItemStack aTool) {
 
-        return true;
+        return onHammerRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ);
     }
 
     public boolean onMalletRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, ForgeDirection wrenchSide, float aX,
-        float aY, float aZ) {
+        float aY, float aZ, ItemStack aTool) {
 
-        return true;
+        return onMalletRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ);
     }
 
     public boolean onSolderingRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, ForgeDirection wrenchSide,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
 
-        return true;
+        return onSolderingRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ);
     }
 
     public boolean onWireCutterRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, ForgeDirection wrenchSide,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
 
+        return onWireCutterRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ);
+    }
+
+    @Deprecated
+    public boolean onHammerRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, ForgeDirection wrenchSide, float aX,
+        float aY, float aZ) {
+        return true;
+    }
+
+    @Deprecated
+    public boolean onSolderingRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, ForgeDirection wrenchSide,
+        float aX, float aY, float aZ) {
+        return true;
+    }
+
+    @Deprecated
+    public boolean onMalletRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, ForgeDirection wrenchSide, float aX,
+        float aY, float aZ) {
+        return true;
+    }
+
+    @Deprecated
+    public boolean onWireCutterRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, ForgeDirection wrenchSide,
+        float aX, float aY, float aZ) {
+        return true;
+    }
+
+    @Deprecated
+    public boolean onWrenchRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, ForgeDirection wrenchSide, float aX,
+        float aY, float aZ) {
+        return true;
+    }
+
+    @Deprecated
+    public boolean onScrewdriverRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, ForgeDirection wrenchSide,
+        float aX, float aY, float aZ) {
         return true;
     }
 
@@ -1023,7 +1068,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     }
 
     @Override
-    public boolean receiveClientEvent(int aEventID, int aValue) {
+    public boolean receiveClientData(int aEventID, int aValue) {
         super.receiveClientEvent(aEventID, aValue);
         if (isClientSide()) {
             issueTextureUpdate();
@@ -1090,11 +1135,6 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     }
 
     @Override
-    public boolean hasCustomInventoryName() {
-        return false;
-    }
-
-    @Override
     public ArrayList<String> getDebugInfo(EntityPlayer aPlayer, int aLogLevel) {
         final ArrayList<String> tList = new ArrayList<>();
         if (aLogLevel > 2) {
@@ -1115,82 +1155,6 @@ public abstract class MultiTileEntity extends CoverableTileEntity
 
     protected void addDebugInfo(EntityPlayer aPlayer, int aLogLevel, ArrayList<String> tList) {
         /* Do nothing */
-    }
-
-    /**
-     * Fluid - A Default implementation of the Fluid Tank behaviour, so that every TileEntity can use this to simplify
-     * its Code.
-     */
-    protected IFluidTank getFluidTankFillable(ForgeDirection side, FluidStack aFluidToFill) {
-        return null;
-    }
-
-    protected IFluidTank getFluidTankDrainable(ForgeDirection side, FluidStack aFluidToDrain) {
-        return null;
-    }
-
-    protected IFluidTank[] getFluidTanks(ForgeDirection side) {
-        return GT_Values.emptyFluidTank;
-    }
-
-    public boolean isLiquidInput(ForgeDirection side) {
-        return true;
-    }
-
-    public boolean isLiquidOutput(ForgeDirection side) {
-        return true;
-    }
-
-    @Override
-    public int fill(ForgeDirection aDirection, FluidStack aFluid, boolean aDoFill) {
-        if (aFluid == null || aFluid.amount <= 0) return 0;
-        final IFluidTank tTank = getFluidTankFillable(aDirection, aFluid);
-        return (tTank == null) ? 0 : tTank.fill(aFluid, aDoFill);
-    }
-
-    @Override
-    public FluidStack drain(ForgeDirection aDirection, FluidStack aFluid, boolean aDoDrain) {
-        if (aFluid == null || aFluid.amount <= 0) return null;
-        final IFluidTank tTank = getFluidTankDrainable(aDirection, aFluid);
-        if (tTank == null || tTank.getFluid() == null
-            || tTank.getFluidAmount() == 0
-            || !tTank.getFluid()
-                .isFluidEqual(aFluid))
-            return null;
-        return tTank.drain(aFluid.amount, aDoDrain);
-    }
-
-    @Override
-    public FluidStack drain(ForgeDirection aDirection, int aAmountToDrain, boolean aDoDrain) {
-        if (aAmountToDrain <= 0) return null;
-        final IFluidTank tTank = getFluidTankDrainable(aDirection, null);
-        if (tTank == null || tTank.getFluid() == null || tTank.getFluidAmount() == 0) return null;
-        return tTank.drain(aAmountToDrain, aDoDrain);
-    }
-
-    @Override
-    public boolean canFill(ForgeDirection aDirection, Fluid aFluid) {
-        if (aFluid == null) return false;
-        final IFluidTank tTank = getFluidTankFillable(aDirection, new FluidStack(aFluid, 0));
-        return tTank != null && (tTank.getFluid() == null || tTank.getFluid()
-            .getFluid() == aFluid);
-    }
-
-    @Override
-    public boolean canDrain(ForgeDirection aDirection, Fluid aFluid) {
-        if (aFluid == null) return false;
-        final IFluidTank tTank = getFluidTankDrainable(aDirection, new FluidStack(aFluid, 0));
-        return tTank != null && (tTank.getFluid() != null && tTank.getFluid()
-            .getFluid() == aFluid);
-    }
-
-    @Override
-    public FluidTankInfo[] getTankInfo(ForgeDirection aDirection) {
-        final IFluidTank[] tTanks = getFluidTanks(aDirection);
-        if (tTanks == null || tTanks.length <= 0) return GT_Values.emptyFluidTankInfo;
-        final FluidTankInfo[] rInfo = new FluidTankInfo[tTanks.length];
-        for (int i = 0; i < tTanks.length; i++) rInfo[i] = new FluidTankInfo(tTanks[i]);
-        return rInfo;
     }
 
     /**
@@ -1284,17 +1248,6 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     /**
      * Inventory - Do nothing by default
      */
-    @Override
-    public void openInventory() {
-        System.out.println("Open Inventory");
-        /* Do nothing */
-    }
-
-    @Override
-    public void closeInventory() {
-        System.out.println("Close Inventory");
-        /* Do nothing */
-    }
 
     @Override
     public boolean hasInventoryBeenModified() {
@@ -1313,56 +1266,6 @@ public abstract class MultiTileEntity extends CoverableTileEntity
 
     @Override
     public boolean addStackToSlot(int aIndex, ItemStack aStack, int aAmount) {
-        return false;
-    }
-
-    @Override
-    public int[] getAccessibleSlotsFromSide(int ordinalSide) {
-        return GT_Values.emptyIntArray;
-    }
-
-    @Override
-    public boolean canInsertItem(int aSlot, ItemStack aStack, int ordinalSide) {
-        return false;
-    }
-
-    @Override
-    public boolean canExtractItem(int aSlot, ItemStack aStack, int ordinalSide) {
-        return false;
-    }
-
-    @Override
-    public int getSizeInventory() {
-        return 0;
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int aSlot) {
-        return null;
-    }
-
-    @Override
-    public ItemStack decrStackSize(int aSlot, int aDecrement) {
-        return null;
-    }
-
-    @Override
-    public ItemStack getStackInSlotOnClosing(int aSlot) {
-        return null;
-    }
-
-    @Override
-    public void setInventorySlotContents(int aSlot, ItemStack aStack) {
-        /* Do nothing */
-    }
-
-    @Override
-    public int getInventoryStackLimit() {
-        return 0;
-    }
-
-    @Override
-    public boolean isItemValidForSlot(int aSlot, ItemStack aStack) {
         return false;
     }
 

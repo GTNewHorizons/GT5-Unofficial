@@ -61,7 +61,6 @@ import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.internal.IGT_Mod;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
-import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMaps;
@@ -76,6 +75,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_RecipeRegistrator;
 import gregtech.api.util.GT_SpawnEventHandler;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.item.ItemHolder;
 import gregtech.common.GT_DummyWorld;
 import gregtech.common.GT_Network;
 import gregtech.common.GT_Proxy;
@@ -128,7 +128,7 @@ import ic2.api.recipe.RecipeOutput;
     version = "MC1710",
     guiFactory = "gregtech.client.GT_GuiFactory",
     dependencies = " required-after:IC2;" + " required-after:structurelib;"
-        + " required-after:gtnhlib@[0.0.8,);"
+        + " required-after:gtnhlib@[0.2.1,);"
         + " required-after:modularui@[1.1.12,);"
         + " required-after:appliedenergistics2@[rv3-beta-258,);"
         + " after:dreamcraft;"
@@ -286,7 +286,9 @@ public class GT_Mod implements IGT_Mod {
         new GT_Loader_ItemData().run();
         new GT_Loader_Item_Block_And_Fluid().run();
         new GT_Loader_MetaTileEntities().run();
-        new GT_Loader_MultiTileEntities().run();
+        if (GT_Values.enableMultiTileEntities) {
+            new GT_Loader_MultiTileEntities().run();
+        }
 
         new GT_Loader_CircuitBehaviors().run();
         new GT_CoverBehaviorLoader().run();
@@ -794,10 +796,10 @@ public class GT_Mod implements IGT_Mod {
         GT_Utility.reInit();
         GT_Recipe.reInit();
         try {
-            for (Map<? extends GT_ItemStack, ?> gt_itemStackMap : GregTech_API.sItemStackMappings) {
+            for (Map<?, ?> gt_itemStackMap : GregTech_API.sItemStackMappings) {
                 GT_Utility.reMap(gt_itemStackMap);
             }
-            for (SetMultimap<? extends GT_ItemStack, ?> gt_itemStackMap : GregTech_API.itemStackMultiMaps) {
+            for (SetMultimap<? extends ItemHolder, ?> gt_itemStackMap : GregTech_API.itemStackMultiMaps) {
                 GT_Utility.reMap(gt_itemStackMap);
             }
         } catch (Throwable e) {

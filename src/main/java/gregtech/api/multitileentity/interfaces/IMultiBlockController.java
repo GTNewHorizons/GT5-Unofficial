@@ -1,16 +1,24 @@
 package gregtech.api.multitileentity.interfaces;
 
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import gregtech.api.enums.InventoryType;
+import gregtech.api.gui.GUIHost;
+import gregtech.api.logic.FluidInventoryLogic;
+import gregtech.api.logic.ItemInventoryLogic;
+import gregtech.api.logic.interfaces.FluidInventoryLogicHost;
+import gregtech.api.logic.interfaces.ItemInventoryLogicHost;
+import gregtech.api.logic.interfaces.PowerLogicHost;
+import gregtech.api.multitileentity.enums.MultiTileCasingPurpose;
 
-import gregtech.api.logic.PowerLogic;
-
-public interface IMultiBlockController extends IMultiTileEntity, IMultiBlockFluidHandler, IMultiBlockInventory {
+public interface IMultiBlockController
+    extends IMultiTileEntity, FluidInventoryLogicHost, ItemInventoryLogicHost, UpgradableMuTE, PowerLogicHost, GUIHost {
 
     boolean checkStructure(boolean aForceReset);
 
@@ -20,25 +28,24 @@ public interface IMultiBlockController extends IMultiTileEntity, IMultiBlockFlui
     @Override
     ChunkCoordinates getCoords();
 
-    FluidStack getDrainableFluid(ForgeDirection side);
-
-    FluidStack getDrainableFluid(ForgeDirection side, Fluid fluid);
-
-    boolean isLiquidInput(ForgeDirection side);
-
-    boolean isLiquidOutput(ForgeDirection side);
-
     void registerCoveredPartOnSide(final ForgeDirection side, IMultiBlockPart part);
 
     void unregisterCoveredPartOnSide(final ForgeDirection side, IMultiBlockPart part);
 
-    void registerInventory(String aName, String aID, int aInventorySize, int aType);
+    void registerCaseWithPurpose(MultiTileCasingPurpose purpose, IMultiBlockPart part);
 
-    void unregisterInventory(String aName, String aID, int aType);
+    void unregisterCaseWithPurpose(MultiTileCasingPurpose purpose, IMultiBlockPart part);
 
-    void changeInventoryName(String aName, String aID, int aType);
+    UUID registerItemInventory(int slots, int tier, @Nonnull InventoryType type, boolean isUpgradeInventory);
 
-    PowerLogic getPowerLogic(IMultiBlockPart part, ForgeDirection side);
+    ItemInventoryLogic unregisterItemInventory(@Nonnull UUID id, @Nonnull InventoryType type);
 
-    ModularWindow createWindowGUI(UIBuildContext buildContext);
+    void changeItemInventoryDisplayName(@Nonnull UUID id, @Nullable String displayName, @Nonnull InventoryType type);
+
+    UUID registerFluidInventory(int tanks, long capacity, int tier, @Nonnull InventoryType type,
+        boolean isUpgradeInventory);
+
+    FluidInventoryLogic unregisterFluidInventory(@Nonnull UUID id, @Nonnull InventoryType type);
+
+    void changeFluidInventoryDisplayName(@Nonnull UUID id, @Nullable String displayName, @Nonnull InventoryType type);
 }

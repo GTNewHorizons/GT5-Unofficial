@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.function.Function;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -39,12 +40,15 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20;
 
 import com.glodblock.github.nei.recipes.FluidRecipe;
 import com.glodblock.github.nei.recipes.extractor.GregTech5RecipeExtractor;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 
+import appeng.api.util.IOrientable;
+import appeng.tile.misc.TileInterface;
 import codechicken.lib.vec.Rotation;
 import codechicken.lib.vec.Scale;
 import codechicken.lib.vec.Transformation;
@@ -66,7 +70,9 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ITurnable;
 import gregtech.api.items.GT_MetaGenerated_Item;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
+import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.multitileentity.multiblock.base.MultiBlockPart;
 import gregtech.api.net.GT_Packet_ClientPreference;
 import gregtech.api.objects.GT_ItemStack;
@@ -307,6 +313,15 @@ public class GT_Client extends GT_Proxy implements Runnable {
         }
 
         GL11.glPushMatrix();
+
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+
+        // pause shader
+        int program = GL11.glGetInteger(GL20.GL_CURRENT_PROGRAM);
+        GL20.glUseProgram(0);
+
         MovingObjectPosition target = aEvent.target;
         EntityPlayer player = aEvent.player;
         double camX = player.lastTickPosX + (player.posX - player.lastTickPosX) * (double) aEvent.partialTicks;
@@ -340,12 +355,18 @@ public class GT_Client extends GT_Proxy implements Runnable {
                 for (final ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
                     if (iCoverable.getCoverIDAtSide(tSide) != 0) tConnections |= tSide.flag;
                 }
-            } else if (tTile instanceof BaseMetaPipeEntity) tConnections = ((BaseMetaPipeEntity) tTile).mConnections;
+            } else if (tTile instanceof BaseMetaTileEntity baseMetaTile && baseMetaTile.getAlignment() == null) {
+                if (!aIsSneaking) tConnections |= baseMetaTile.getFrontFacing().flag;
+                else if (baseMetaTile.getMetaTileEntity() instanceof GT_MetaTileEntity_BasicMachine basicMachine) {
+                    tConnections |= basicMachine.mMainFacing.flag;
+                }
+            } else if (tTile instanceof BaseMetaPipeEntity pipeEntity) tConnections = pipeEntity.mConnections;
         } else if (tTile instanceof IWrenchable wrenchable) {
             tConnections |= ForgeDirection.getOrientation(wrenchable.getFacing()).flag;
         } else if (ROTATABLE_VANILLA_BLOCKS.contains(block)) {
             tConnections |= ForgeDirection.getOrientation(meta).flag;
-        }
+        } else if (tTile instanceof TileInterface tileInterface) tConnections |= tileInterface.getUp()
+            .getOpposite().flag;
 
         if (tConnections != 0) {
             for (ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
@@ -405,26 +426,39 @@ public class GT_Client extends GT_Proxy implements Runnable {
         }
         GL11.glEnd();
         // draw turning indicator
+        Function<ForgeDirection, Transformation[]> getTransform = (ForgeDirection direction) -> {
+            try {
+                if (direction.ordinal() == tSideHit) return new Transformation[] { ROTATION_MARKER_TRANSFORM_CENTER };
+                else if (direction.getOpposite()
+                    .ordinal() == tSideHit) {
+                        return ROTATION_MARKER_TRANSFORMS_CORNER;
+                    } else {
+                        return new Transformation[] {
+                            ROTATION_MARKER_TRANSFORMS_SIDES_TRANSFORMS[ROTATION_MARKER_TRANSFORMS_SIDES[tSideHit * 6
+                                + direction.ordinal()]] };
+                    }
+            } catch (ArrayIndexOutOfBoundsException e) {
+                return new Transformation[] {};
+            }
+
+        };
+
         if (aIsWrench && tTile instanceof IAlignmentProvider) {
             final IAlignment tAlignment = ((IAlignmentProvider) (tTile)).getAlignment();
             if (tAlignment != null) {
-                final ForgeDirection direction = tAlignment.getDirection();
-                if (direction.ordinal() == tSideHit)
-                    drawExtendedRotationMarker(ROTATION_MARKER_TRANSFORM_CENTER, aIsSneaking, tAlignment);
-                else if (direction.getOpposite()
-                    .ordinal() == tSideHit) {
-                        for (Transformation t : ROTATION_MARKER_TRANSFORMS_CORNER) {
-                            drawExtendedRotationMarker(t, aIsSneaking, tAlignment);
-                        }
-                    } else {
-                        drawExtendedRotationMarker(
-                            ROTATION_MARKER_TRANSFORMS_SIDES_TRANSFORMS[ROTATION_MARKER_TRANSFORMS_SIDES[tSideHit * 6
-                                + direction.ordinal()]],
-                            aIsSneaking,
-                            tAlignment);
-                    }
+                for (var transform : getTransform.apply(tAlignment.getDirection())) {
+                    drawExtendedRotationMarker(transform, aIsSneaking, tAlignment);
+                }
             }
         }
+        if (aIsWrench && tTile instanceof IOrientable orientable
+            && !(tTile instanceof TileInterface)
+            && orientable.canBeRotated()) {
+            for (var transform : getTransform.apply(aIsSneaking ? orientable.getForward() : orientable.getUp())) {
+                drawExtendedRotationMarker(transform, aIsSneaking, orientable);
+            }
+        }
+        GL20.glUseProgram(program); // resume shader
         GL11.glPopMatrix(); // get back to player center
     }
 
@@ -438,6 +472,10 @@ public class GT_Client extends GT_Proxy implements Runnable {
                 drawRotationMarker(transform);
             }
         }
+    }
+
+    private static void drawExtendedRotationMarker(Transformation transform, boolean sneaking, IOrientable orientable) {
+        drawRotationMarker(transform);
     }
 
     private static void drawRotationMarker(Transformation transform) {
@@ -785,7 +823,9 @@ public class GT_Client extends GT_Proxy implements Runnable {
 
         if (GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sWrenchList)) {
             if (aTileEntity instanceof ITurnable || ROTATABLE_VANILLA_BLOCKS.contains(aBlock)
-                || aTileEntity instanceof IWrenchable) drawGrid(aEvent, false, true, aEvent.player.isSneaking());
+                || aTileEntity instanceof IWrenchable
+                || (aTileEntity instanceof IOrientable orientable && orientable.canBeRotated()))
+                drawGrid(aEvent, false, true, aEvent.player.isSneaking());
             return;
         }
 

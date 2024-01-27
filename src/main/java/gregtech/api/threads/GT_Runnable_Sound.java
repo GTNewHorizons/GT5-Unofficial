@@ -26,39 +26,6 @@ public class GT_Runnable_Sound implements Runnable {
         mSoundModulation = aSoundModulation;
     }
 
-    /**
-     * @deprecated Use {@link #GT_Runnable_Sound(World, double, double, double, int, ResourceLocation, float, float)}
-     */
-    public GT_Runnable_Sound(World aWorld, int aX, int aY, int aZ, int aTimeUntilNextSound,
-        ResourceLocation aSoundResourceLocation, float aSoundStrength, float aSoundModulation) {
-        this(
-            aWorld,
-            (double) aX + 0.5D,
-            (double) aY + 0.5D,
-            (double) aZ + 0.5D,
-            aTimeUntilNextSound,
-            aSoundResourceLocation,
-            aSoundStrength,
-            aSoundModulation);
-    }
-
-    /**
-     * @deprecated Use {@link #GT_Runnable_Sound(World, double, double, double, int, ResourceLocation, float, float)}
-     */
-    @Deprecated
-    public GT_Runnable_Sound(World aWorld, int aX, int aY, int aZ, int aTimeUntilNextSound, String aSoundName,
-        float aSoundStrength, float aSoundModulation) {
-        this(
-            aWorld,
-            (double) aX + 0.5D,
-            (double) aY + 0.5D,
-            (double) aZ + 0.5D,
-            aTimeUntilNextSound,
-            new ResourceLocation(aSoundName),
-            aSoundStrength,
-            aSoundModulation);
-    }
-
     @Override
     public void run() {
         try {

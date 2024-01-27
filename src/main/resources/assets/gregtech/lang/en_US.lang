@@ -377,12 +377,13 @@ GT5U.machines.ignore_nbt.tooltip=Ignore item NBT
 GT5U.machines.ignore_nbt.tooltip.extended=§7By default, item NBT must match.
 GT5U.machines.stocking_bus.cannot_set_slot=§8Cannot set slot while auto-pull mode is enabled
 GT5U.machines.stocking_bus.auto_pull.tooltip.1=Click to toggle automatic item pulling from ME.
-GT5U.machines.stocking_bus.auto_pull.tooltip.2=Right-Click to edit minimum stack size for item pulling.
+GT5U.machines.stocking_bus.auto_pull.tooltip.2=Right-Click to edit additional parameters.
 GT5U.machines.stocking_bus.min_stack_size=Min Stack Size
+GT5U.machines.stocking_bus.refresh_time=Slot Refresh Time (Ticks)
 GT5U.machines.stocking_bus.auto_pull_toggle.enabled=Automatic Item Pull Enabled
 GT5U.machines.stocking_bus.auto_pull_toggle.disabled=Automatic Item Pull Disabled
 GT5U.machines.stocking_hatch.auto_pull.tooltip.1=Click to toggle automatic fluid pulling from ME.
-GT5U.machines.stocking_hatch.auto_pull.tooltip.2=Right-Click to edit minimum amount for fluid pulling.
+GT5U.machines.stocking_hatch.auto_pull.tooltip.2=Right-Click to edit additional parameters.
 GT5U.machines.stocking_hatch.min_amount=Min Amount
 GT5U.machines.stocking_hatch.auto_pull_toggle.enabled=Automatic Fluid Pull Enabled
 GT5U.machines.stocking_hatch.auto_pull_toggle.disabled=Automatic Fluid Pull Disabled
@@ -420,8 +421,6 @@ GT5U.gui.button.drill_retract_pipes_active=§4Cannot interrupt abort procedure
 GT5U.gui.text.success=§aProcessing recipe
 GT5U.gui.text.generating=§aGenerating power
 GT5U.gui.text.no_recipe=§7No valid recipe found
-#deprecated
-GT5U.gui.text.output_full=§7Not enough output space
 GT5U.gui.text.item_output_full=§7Not enough item output space
 GT5U.gui.text.fluid_output_full=§7Not enough fluid output space
 GT5U.gui.text.none=
@@ -1463,3 +1462,7 @@ gt.time.tick.singular=tick
 gt.time.tick.plural=ticks
 gt.time.second.singular=second
 gt.time.second.plural=seconds
+
+#Tool modes
+gt.wrench.mode.1=Line Mode
+

@@ -1,5 +1,9 @@
 package gregtech.api.recipe.check;
 
+import java.util.Objects;
+
+import javax.annotation.Nonnull;
+
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.StatCollector;
 
@@ -15,6 +19,7 @@ public class ResultInsufficientHeat implements CheckRecipeResult {
     }
 
     @Override
+    @Nonnull
     public String getID() {
         return "insufficient_heat";
     }
@@ -25,25 +30,28 @@ public class ResultInsufficientHeat implements CheckRecipeResult {
     }
 
     @Override
+    @Nonnull
     public String getDisplayString() {
-        return StatCollector.translateToLocalFormatted(
-            "GT5U.gui.text.insufficient_heat",
-            GT_Utility.formatNumbers(required),
-            HeatingCoilLevel.getDisplayNameFromHeat(required, true));
+        return Objects.requireNonNull(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.gui.text.insufficient_heat",
+                GT_Utility.formatNumbers(required),
+                HeatingCoilLevel.getDisplayNameFromHeat(required, true)));
     }
 
     @Override
+    @Nonnull
     public CheckRecipeResult newInstance() {
         return new ResultInsufficientHeat(0);
     }
 
     @Override
-    public void encode(PacketBuffer buffer) {
+    public void encode(@Nonnull PacketBuffer buffer) {
         buffer.writeVarIntToBuffer(required);
     }
 
     @Override
-    public void decode(PacketBuffer buffer) {
+    public void decode(@Nonnull PacketBuffer buffer) {
         required = buffer.readVarIntFromBuffer();
     }
 

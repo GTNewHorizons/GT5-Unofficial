@@ -30,11 +30,13 @@ import net.minecraft.stats.StatList;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
 
+import appeng.api.implementations.items.IAEWrench;
 import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Optional;
@@ -70,7 +72,7 @@ import mrtjp.projectred.api.IScrewdriver;
         @Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = "EnderIOAPI|Tools"),
         @Optional.Interface(iface = "mrtjp.projectred.api.IScrewdriver", modid = "ProjRed|Core"), })
 public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
-    implements IDamagableItem, IToolGrafter, IToolCrowbar, IToolWrench, ITool, IScrewdriver {
+    implements IDamagableItem, IToolGrafter, IToolCrowbar, IToolWrench, ITool, IScrewdriver, IAEWrench {
 
     /**
      * All instances of this Item Class are listed here. This gets used to register the Renderer to all Items of this
@@ -148,6 +150,27 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
         return false;
     }
 
+    public static final boolean setToolMode(ItemStack aStack, byte aMode) {
+        NBTTagCompound aNBT = aStack.getTagCompound();
+        if (aNBT != null) {
+            aNBT = aNBT.getCompoundTag("GT.ToolStats");
+            if (aNBT != null) {
+                aNBT.setByte("Mode", aMode);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static final byte getToolMode(ItemStack aStack) {
+        NBTTagCompound aNBT = aStack.getTagCompound();
+        if (aNBT != null) {
+            aNBT = aNBT.getCompoundTag("GT.ToolStats");
+            if (aNBT != null) return aNBT.getByte("Mode");
+        }
+        return 0;
+    }
+
     /**
      * This adds a Custom Item to the ending Range.
      *
@@ -204,6 +227,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
         IToolStats tToolStats = getToolStats(rStack);
         if (tToolStats != null) {
             NBTTagCompound tMainNBT = new NBTTagCompound(), tToolNBT = new NBTTagCompound();
+            tToolNBT.setByte("Mode", (byte) 0);
             if (aPrimaryMaterial != null) {
                 tToolNBT.setString("PrimaryMaterial", aPrimaryMaterial.mName);
                 tToolNBT.setLong(
@@ -662,12 +686,13 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
         if (tStats == null || Math.max(0, getHarvestLevel(aStack, "")) < aBlock.getHarvestLevel(aMetaData)) return 0.0F;
         return tStats.isMinableBlock(aBlock, (byte) aMetaData)
             ? Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed)
-            : 0.0F;
+            : 1.0F;
     }
 
     @Override
     public final boolean canHarvestBlock(Block aBlock, ItemStack aStack) {
-        return getDigSpeed(aStack, aBlock, (byte) 0) > 0.0F;
+        IToolStats tStats = getToolStats(aStack);
+        return tStats.isMinableBlock(aBlock, (byte) 0) && getDigSpeed(aStack, aBlock, (byte) 0) > 0.0F;
     }
 
     @Override
@@ -719,6 +744,14 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
         return getToolStatsInternal(aStack);
     }
 
+    public byte getToolMaxMode(ItemStack aStack) {
+        IToolStats stats = getToolStats(aStack);
+        if (stats != null) {
+            return stats.getMaxMode();
+        }
+        return 1;
+    }
+
     private IToolStats getToolStatsInternal(ItemStack aStack) {
         return aStack == null ? null : mToolStats.get((short) aStack.getItemDamage());
     }
@@ -746,8 +779,13 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
     @Override
     public boolean canWrench(EntityPlayer player, int x, int y, int z) {
         if (player == null) return false;
-        if (player.getCurrentEquippedItem() == null) return false;
-        if (!isItemStackUsable(player.getCurrentEquippedItem())) return false;
+        return canWrench(player.getHeldItem(), player, x, y, z);
+    }
+
+    @Override
+    public boolean canWrench(ItemStack wrench, EntityPlayer player, int x, int y, int z) {
+        if (wrench == null) return false;
+        if (!isItemStackUsable(wrench)) return false;
         IToolStats tStats = getToolStats(player.getCurrentEquippedItem());
         return tStats != null && tStats.isWrench();
     }
@@ -902,6 +940,24 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
         }
         EnchantmentHelper.setEnchantments(tResult, aStack);
         return true;
+    }
+
+    @Override
+    public String getItemStackDisplayName(ItemStack aStack) {
+
+        String result = super.getItemStackDisplayName(aStack);
+        IToolStats toolStats = getToolStats(aStack);
+        if (toolStats != null) {
+            String toolName = toolStats.getToolTypeName();
+            if (toolName == null) return result;
+
+            String key = "gt." + toolName + ".mode." + getToolMode(aStack);
+            if (StatCollector.canTranslate(key)) {
+                result += " (" + StatCollector.translateToLocal(key) + ")";
+            }
+        }
+        return result;
+
     }
 
     @Override

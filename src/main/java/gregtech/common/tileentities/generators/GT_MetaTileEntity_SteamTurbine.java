@@ -101,6 +101,11 @@ public class GT_MetaTileEntity_SteamTurbine extends GT_MetaTileEntity_BasicGener
     }
 
     @Override
+    public long getFuelValue(FluidStack aLiquid, boolean aLong) {
+        return getFuelValue(aLiquid);
+    }
+
+    @Override
     public int getFuelValue(FluidStack aLiquid) {
         if (aLiquid == null) return 0;
         return GT_ModHandler.isAnySteam(aLiquid) ? 3 : 0;

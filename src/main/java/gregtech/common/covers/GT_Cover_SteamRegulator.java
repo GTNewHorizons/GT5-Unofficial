@@ -7,14 +7,6 @@ import gregtech.api.util.GT_ModHandler;
 
 public class GT_Cover_SteamRegulator extends GT_Cover_FluidRegulator {
 
-    /**
-     * @deprecated use {@link #GT_Cover_SteamRegulator(int aTransferRate, ITexture coverTexture)} instead
-     */
-    @Deprecated
-    public GT_Cover_SteamRegulator(int aTransferRate) {
-        this(aTransferRate, null);
-    }
-
     public GT_Cover_SteamRegulator(int aTransferRate, ITexture coverTexture) {
         super(aTransferRate, coverTexture);
     }
