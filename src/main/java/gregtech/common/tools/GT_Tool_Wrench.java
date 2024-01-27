@@ -25,6 +25,7 @@ import net.minecraftforge.event.world.BlockEvent;
 import appeng.api.parts.IPartHost;
 import appeng.block.AEBaseTileBlock;
 import appeng.parts.PartPlacement;
+import appeng.util.Platform;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -210,7 +211,7 @@ public class GT_Tool_Wrench extends GT_Tool {
             try {
                 LastEventFromThis = true;
                 player.setSneaking(true);
-                final int sideHit = player.rayTrace(5, 1.0f).sideHit;
+                final int sideHit = Platform.rayTrace(player, true, false).sideHit;
                 if (tile instanceof IPartHost) {
                     if (sneak && PartPlacement.place(
                         player.getHeldItem(),
