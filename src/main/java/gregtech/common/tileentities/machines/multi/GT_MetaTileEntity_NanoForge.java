@@ -262,21 +262,20 @@ public class GT_MetaTileEntity_NanoForge extends
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mSpecialTier = 0;
-        if (aStack == null) return false;
-        if (aStack.isItemEqual(Materials.Carbon.getNanite(1)) && checkPiece(STRUCTURE_PIECE_MAIN, 4, 37, 1)) {
-            mSpecialTier = 1;
-        }
+        if (checkPiece(STRUCTURE_PIECE_MAIN, 4, 37, 1) && aStack != null) {
+            if (aStack.isItemEqual(Materials.Carbon.getNanite(1))) {
+                mSpecialTier = 1;
+            }
 
-        if (aStack.isItemEqual(Materials.Neutronium.getNanite(1)) && checkPiece(STRUCTURE_PIECE_MAIN, 4, 37, 1)
-            && checkPiece(STRUCTURE_PIECE_TIER2, -7, 14, 4)) {
-            mSpecialTier = 2;
-        }
+            if (aStack.isItemEqual(Materials.Neutronium.getNanite(1)) && checkPiece(STRUCTURE_PIECE_TIER2, -7, 14, 4)) {
+                mSpecialTier = 2;
+            }
 
-        if (aStack.isItemEqual(MaterialsUEVplus.TranscendentMetal.getNanite(1))
-            && checkPiece(STRUCTURE_PIECE_MAIN, 4, 37, 1)
-            && checkPiece(STRUCTURE_PIECE_TIER2, -7, 14, 4)
-            && checkPiece(STRUCTURE_PIECE_TIER3, 14, 26, 4)) {
-            mSpecialTier = 3;
+            if (aStack.isItemEqual(MaterialsUEVplus.TranscendentMetal.getNanite(1))
+                && checkPiece(STRUCTURE_PIECE_TIER2, -7, 14, 4)
+                && checkPiece(STRUCTURE_PIECE_TIER3, 14, 26, 4)) {
+                mSpecialTier = 3;
+            }
         }
 
         if (mMaintenanceHatches.size() != 1 || mInputBusses.isEmpty()
@@ -310,8 +309,8 @@ public class GT_MetaTileEntity_NanoForge extends
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        int built = 0;
-        built += survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 4, 37, 1, elementBudget, env, false, true);
+        int built = survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 4, 37, 1, elementBudget, env, false, true);
+        if (built >= 0) return built;
         if (stackSize.stackSize > 1) {
             built += survivialBuildPiece(STRUCTURE_PIECE_TIER2, stackSize, -7, 14, 4, elementBudget, env, false, true);
         }
