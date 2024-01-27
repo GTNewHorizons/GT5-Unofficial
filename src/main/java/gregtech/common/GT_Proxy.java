@@ -632,6 +632,9 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     @Deprecated
     public boolean mEasierIVPlusCables = false;
     public boolean mMixedOreOnlyYieldsTwoThirdsOfPureOre = false;
+    public boolean mRichOreYieldMultiplier = true;
+    public boolean mNetherOreYieldMultiplier = true;
+    public boolean mEndOreYieldMultiplier = true;
     public boolean enableBlackGraniteOres = true;
     public boolean enableRedGraniteOres = true;
     public boolean enableMarbleOres = true;
