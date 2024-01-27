@@ -126,11 +126,7 @@ public class GT_GeneratedItem_Renderer implements IItemRenderer {
         // Empty inner side
         Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationItemsTexture);
         markNeedsAnimationUpdate(inner);
-        if (type == ItemRenderType.INVENTORY) {
-            GT_RenderUtil.renderItemIcon(inner, 16.0D, -0.001D, 0.0F, 0.0F, -1.0F);
-        } else {
-            GT_RenderUtil.renderItem(type, inner);
-        }
+        GT_RenderUtil.renderItem(type, inner);
 
         FluidStack fluidStack = GT_Utility.getFluidForFilledItem(stack, true);
 
@@ -148,11 +144,7 @@ public class GT_GeneratedItem_Renderer implements IItemRenderer {
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             GL11.glDepthFunc(GL11.GL_EQUAL);
             GL11.glColor3ub((byte) (fluidColor >> 16), (byte) (fluidColor >> 8), (byte) fluidColor);
-            if (type == ItemRenderType.INVENTORY) {
-                GT_RenderUtil.renderItemIcon(fluidIcon, 16.0D, -0.001D, 0.0F, 0.0F, -1.0F);
-            } else {
-                GT_RenderUtil.renderItem(type, fluidIcon);
-            }
+            GT_RenderUtil.renderItem(type, fluidIcon);
 
             GL11.glColor3ub((byte) -1, (byte) -1, (byte) -1);
             GL11.glDepthFunc(GL11.GL_LEQUAL);
