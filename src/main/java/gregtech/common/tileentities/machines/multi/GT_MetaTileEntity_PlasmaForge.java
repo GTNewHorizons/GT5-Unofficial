@@ -88,7 +88,6 @@ public class GT_MetaTileEntity_PlasmaForge extends
     private int mHeatingCapacity = 0;
     private long running_time = 0;
     // Custom long EU per tick value given that mEUt is an int. Required to overclock beyond MAX voltage.
-    private long EU_per_tick = 0;
     private HeatingCoilLevel mCoilLevel;
 
     @SuppressWarnings("SpellCheckingInspection")
@@ -805,15 +804,17 @@ public class GT_MetaTileEntity_PlasmaForge extends
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        if (EU_per_tick < 0) {
-            if (!drainEnergyInput(-EU_per_tick)) {
+        if (this.lEUt > 0) {
+            addEnergyOutput((this.lEUt * mEfficiency) / 10000);
+            return true;
+        }
+        if (this.lEUt < 0) {
+            if (!drainEnergyInput(getActualEnergyUsage())) {
                 resetDiscount();
-                EU_per_tick = 0;
                 criticalStopMachine();
                 return false;
             }
         }
-
         return true;
     }
 
@@ -963,7 +964,6 @@ public class GT_MetaTileEntity_PlasmaForge extends
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setLong("eRunningTime", running_time);
         aNBT.setDouble("eLongDiscountValue", discount);
-        aNBT.setLong("eLongEUPerTick", EU_per_tick);
         super.saveNBTData(aNBT);
     }
 
@@ -971,7 +971,6 @@ public class GT_MetaTileEntity_PlasmaForge extends
     public void loadNBTData(final NBTTagCompound aNBT) {
         running_time = aNBT.getLong("eRunningTime");
         discount = aNBT.getDouble("eLongDiscountValue");
-        EU_per_tick = aNBT.getLong("eLongEUPerTick");
         super.loadNBTData(aNBT);
     }
 
