@@ -110,25 +110,23 @@ public class GT_GeneratedItem_Renderer implements IItemRenderer {
 
     private void renderLargeFluidCellExtraParts(IItemRenderer.ItemRenderType type, ItemList item, ItemStack stack) {
 
-        IIcon inner;
-        if (item == Large_Fluid_Cell_Steel) inner = ExtraIcons.steelLargeCellInner;
-        else if (item == Large_Fluid_Cell_Aluminium) inner = ExtraIcons.aluminiumLargeCellInner;
-        else if (item == Large_Fluid_Cell_StainlessSteel) inner = ExtraIcons.stainlesssteelLargeCellInner;
-        else if (item == Large_Fluid_Cell_Titanium) inner = ExtraIcons.titaniumLargeCellInner;
-        else if (item == Large_Fluid_Cell_TungstenSteel) inner = ExtraIcons.tungstensteelLargeCellInner;
-        else if (item == Large_Fluid_Cell_Iridium) inner = ExtraIcons.iridiumLargeCellInner;
-        else if (item == Large_Fluid_Cell_Osmium) inner = ExtraIcons.osmiumLargeCellInner;
-        else if (item == Large_Fluid_Cell_Chrome) inner = ExtraIcons.chromiumLargeCellInner;
-        else inner = ExtraIcons.neutroniumLargeCellInner;
+        IIcon inner = switch (item) {
+            case Large_Fluid_Cell_Steel -> ExtraIcons.steelLargeCellInner;
+            case Large_Fluid_Cell_Aluminium -> ExtraIcons.aluminiumLargeCellInner;
+            case Large_Fluid_Cell_StainlessSteel -> ExtraIcons.stainlesssteelLargeCellInner;
+            case Large_Fluid_Cell_Titanium -> ExtraIcons.titaniumLargeCellInner;
+            case Large_Fluid_Cell_TungstenSteel -> ExtraIcons.tungstensteelLargeCellInner;
+            case Large_Fluid_Cell_Iridium -> ExtraIcons.iridiumLargeCellInner;
+            case Large_Fluid_Cell_Osmium -> ExtraIcons.osmiumLargeCellInner;
+            case Large_Fluid_Cell_Chrome -> ExtraIcons.chromiumLargeCellInner;
+            case Large_Fluid_Cell_Neutronium -> ExtraIcons.neutroniumLargeCellInner;
+            default -> Textures.ItemIcons.RENDERING_ERROR.getIcon();
+        };
 
         // Empty inner side
         Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationItemsTexture);
         markNeedsAnimationUpdate(inner);
-        if (type == ItemRenderType.INVENTORY) {
-            GT_RenderUtil.renderItemIcon(inner, 16.0D, -0.001D, 0.0F, 0.0F, -1.0F);
-        } else {
-            GT_RenderUtil.renderItem(type, inner);
-        }
+        GT_RenderUtil.renderItem(type, inner);
 
         FluidStack fluidStack = GT_Utility.getFluidForFilledItem(stack, true);
 
@@ -146,11 +144,7 @@ public class GT_GeneratedItem_Renderer implements IItemRenderer {
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             GL11.glDepthFunc(GL11.GL_EQUAL);
             GL11.glColor3ub((byte) (fluidColor >> 16), (byte) (fluidColor >> 8), (byte) fluidColor);
-            if (type == ItemRenderType.INVENTORY) {
-                GT_RenderUtil.renderItemIcon(inner, 16.0D, -0.001D, 0.0F, 0.0F, -1.0F);
-            } else {
-                GT_RenderUtil.renderItem(type, inner);
-            }
+            GT_RenderUtil.renderItem(type, fluidIcon);
 
             GL11.glColor3ub((byte) -1, (byte) -1, (byte) -1);
             GL11.glDepthFunc(GL11.GL_LEQUAL);
