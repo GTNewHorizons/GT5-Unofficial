@@ -11,6 +11,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -107,6 +108,10 @@ public class Behaviour_Spray_Color extends Behaviour_None {
         } else {
             lookSide = look.zCoord > 0 ? ForgeDirection.SOUTH : ForgeDirection.NORTH;
         }
+        Block currentBlock = aWorld.getBlock(aX, aY, aZ);
+        int currentBlockMeta = aWorld.getBlockMetadata(aX, aY, aZ);
+        Class<? extends TileEntity> currentTE = aWorld.getTileEntity(aX, aY, aZ)
+            .getClass();
         while ((GT_Utility.areStacksEqual(aStack, this.mUsed, true)) && (colorize(aWorld, aX, aY, aZ, side, aPlayer))) {
             GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_PAINTER, 1.0F, 1.0F, aX, aY, aZ);
             if (!aPlayer.capabilities.isCreativeMode) {
@@ -125,6 +130,10 @@ public class Behaviour_Spray_Color extends Behaviour_None {
                 case EAST -> aX += 1;
                 default -> throw new IllegalArgumentException("Unexpected value: " + lookSide);
             }
+
+            if (aWorld.getBlock(aX, aY, aZ) != currentBlock) break;
+            if (aWorld.getBlockMetadata(aX, aY, aZ) != currentBlockMeta) break;
+            if (!currentTE.isInstance(aWorld.getTileEntity(aX, aY, aZ))) break;
         }
         tNBT.removeTag("GT.RemainingPaint");
         if (tUses > 0L) {
