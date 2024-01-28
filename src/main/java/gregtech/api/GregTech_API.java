@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
-import gregtech.common.blocks.GT_TileEntity_Ores;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -75,6 +74,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.item.ItemHolder;
 import gregtech.api.world.GT_Worldgen;
 import gregtech.common.GT_DummyWorld;
+import gregtech.common.blocks.GT_TileEntity_Ores;
 import gregtech.common.items.GT_IntegratedCircuit_Item;
 
 /**
@@ -1084,7 +1084,8 @@ public class GregTech_API {
         return teCreators[meta].apply(meta);
     }
 
-    public static boolean setOreBlock(World aWorld, int aX, int aY, int aZ, int aMetaData, boolean isSmallOre, boolean air) {
+    public static boolean setOreBlock(World aWorld, int aX, int aY, int aZ, int aMetaData, boolean isSmallOre,
+        boolean air) {
         return GT_TileEntity_Ores.setOreBlock(aWorld, aX, aY, aZ, aMetaData, isSmallOre, air);
     }
 }
