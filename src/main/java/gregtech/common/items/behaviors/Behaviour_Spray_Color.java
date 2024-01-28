@@ -131,8 +131,7 @@ public class Behaviour_Spray_Color extends Behaviour_None {
                 default -> throw new IllegalArgumentException("Unexpected value: " + lookSide);
             }
 
-            Block targetBlock = aWorld.getBlock(aX, aY, aZ);
-            if (targetBlock != initialBlock) break;
+            if (aWorld.getBlock(aX, aY, aZ) != initialBlock) break;
             if (aWorld.getBlockMetadata(aX, aY, aZ) != initialBlockMeta) break;
 
             /*
