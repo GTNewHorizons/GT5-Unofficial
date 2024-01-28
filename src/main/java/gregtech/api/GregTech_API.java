@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
+import gregtech.common.blocks.GT_TileEntity_Ores;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -1081,5 +1082,9 @@ public class GregTech_API {
         meta = GT_Utility.clamp(meta, 0, 15);
         if (teCreators[meta] == null) return null;
         return teCreators[meta].apply(meta);
+    }
+
+    public static boolean setOreBlock(World aWorld, int aX, int aY, int aZ, int aMetaData, boolean isSmallOre, boolean air) {
+        return GT_TileEntity_Ores.setOreBlock(aWorld, aX, aY, aZ, aMetaData, isSmallOre, air);
     }
 }
