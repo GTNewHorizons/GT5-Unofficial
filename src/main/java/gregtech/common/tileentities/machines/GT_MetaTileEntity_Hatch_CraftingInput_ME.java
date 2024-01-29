@@ -1,5 +1,7 @@
 package gregtech.common.tileentities.machines;
 
+import static gregtech.api.enums.GT_Values.TIER_COLORS;
+import static gregtech.api.enums.GT_Values.VN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_CRAFTING_INPUT_BUFFER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_CRAFTING_INPUT_BUS;
 
@@ -340,9 +342,11 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
             aID,
             aName,
             aNameRegional,
-            6,
+            supportFluids ? 11 : 6,
             MAX_INV_COUNT,
-            new String[] { "Advanced item input for Multiblocks", "Processes patterns directly from ME",
+            new String[] { "Advanced item input for Multiblocks",
+                "Hatch Tier: " + TIER_COLORS[supportFluids ? 11 : 6] + VN[supportFluids ? 11 : 6],
+                "Processes patterns directly from ME",
                 supportFluids ? "It supports patterns including fluids"
                     : "It does not support patterns including fluids",
                 "Change ME connection behavior by right-clicking with wire cutter" });
