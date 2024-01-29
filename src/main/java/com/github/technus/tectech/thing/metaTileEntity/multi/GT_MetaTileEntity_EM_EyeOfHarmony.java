@@ -14,13 +14,13 @@ import static gregtech.api.enums.GT_HatchElement.InputHatch;
 import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.GT_Values.AuthorColen;
+import static gregtech.api.util.GT_ParallelHelper.calculateChancedOutputMultiplier;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_Utility.formatNumbers;
 import static java.lang.Math.abs;
 import static java.lang.Math.exp;
 import static java.lang.Math.max;
 import static java.lang.Math.pow;
-import static java.lang.Math.random;
 import static net.minecraft.util.EnumChatFormatting.BLUE;
 import static net.minecraft.util.EnumChatFormatting.DARK_RED;
 import static net.minecraft.util.EnumChatFormatting.GOLD;
@@ -47,6 +47,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -77,7 +78,6 @@ import gregtech.api.interfaces.IGlobalWirelessEnergy;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -768,9 +768,9 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     private void calculateInputFluidExcessValues(final long hydrogenRecipeRequirement,
             final long heliumRecipeRequirement) {
 
-        double hydrogenStored = validFluidMap.get(Materials.Hydrogen.getGas(1L));
-        double heliumStored = validFluidMap.get(Materials.Helium.getGas(1L));
-        double stellarPlasmaStored = validFluidMap.get(MaterialsUEVplus.RawStarMatter.getFluid(1L));
+        double hydrogenStored = getHydrogenStored();
+        double heliumStored = getHeliumStored();
+        double stellarPlasmaStored = getStellarPlasmaStored();
 
         double hydrogenExcessPercentage = hydrogenStored / hydrogenRecipeRequirement - 1;
         double heliumExcessPercentage = heliumStored / heliumRecipeRequirement - 1;
@@ -851,6 +851,11 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
         // Check structure of multi.
         if (!structureCheck_EM(STRUCTURE_PIECE_MAIN, 16, 16, 0)) {
+            return false;
+        }
+
+        // Make sure there are no Crafting Input Buffers/Buses/Slaves.
+        if (!mDualInputHatches.isEmpty()) {
             return false;
         }
 
@@ -1075,33 +1080,26 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         structureBuild_EM(STRUCTURE_PIECE_MAIN, 16, 16, 0, stackSize, hintsOnly);
     }
 
-    private final Map<FluidStack, Long> validFluidMap = new HashMap<>() {
+    private final Map<Fluid, Long> validFluidMap = new HashMap<>() {
 
         private static final long serialVersionUID = -8452610443191188130L;
 
         {
-            put(Materials.Hydrogen.getGas(1), 0L);
-            put(Materials.Helium.getGas(1), 0L);
-            put(MaterialsUEVplus.RawStarMatter.getFluid(1), 0L);
+            put(Materials.Hydrogen.mGas, 0L);
+            put(Materials.Helium.mGas, 0L);
+            put(MaterialsUEVplus.RawStarMatter.mFluid, 0L);
         }
     };
 
     private void drainFluidFromHatchesAndStoreInternally() {
-        for (GT_MetaTileEntity_Hatch_Input inputHatch : mInputHatches) {
-            FluidStack fluidInHatch = inputHatch.getFluid();
-
-            if (fluidInHatch == null) {
-                continue;
-            }
-
-            // Iterate over valid fluids and store them in a hashmap.
-            for (FluidStack validFluid : validFluidMap.keySet()) {
-                if (fluidInHatch.isFluidEqual(validFluid)) {
-                    validFluidMap.put(validFluid, validFluidMap.get(validFluid) + (long) fluidInHatch.amount);
-                    inputHatch.setFillableStack(null);
-                }
+        List<FluidStack> fluidStacks = getStoredFluids();
+        for (FluidStack fluidStack : fluidStacks) {
+            if (validFluidMap.containsKey(fluidStack.getFluid())) {
+                validFluidMap.merge(fluidStack.getFluid(), (long) fluidStack.amount, Long::sum);
+                fluidStack.amount = 0;
             }
         }
+        updateSlots();
     }
 
     @Override
@@ -1120,6 +1118,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     private long currentCircuitMultiplier = 0;
     private long astralArrayAmount = 0;
     private long parallelAmount = 1;
+    private long successfulParallelAmount = 0;
     private BigInteger usedEU = BigInteger.ZERO;
 
     @Override
@@ -1140,31 +1139,28 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                 return CheckRecipeResultRegistry.NO_RECIPE;
             }
             CheckRecipeResult result = processRecipe(currentRecipe);
-
-            if (result.wasSuccessful()) {
-                return result;
-            }
-
-            currentRecipe = null;
+            if (!result.wasSuccessful()) currentRecipe = null;
+            return result;
         }
         return CheckRecipeResultRegistry.NO_RECIPE;
     }
 
     private long getHydrogenStored() {
-        return validFluidMap.get(Materials.Hydrogen.getGas(1));
+        return validFluidMap.get(Materials.Hydrogen.mGas);
     }
 
     private long getHeliumStored() {
-        return validFluidMap.get(Materials.Helium.getGas(1));
+        return validFluidMap.get(Materials.Helium.mGas);
     }
 
     private long getStellarPlasmaStored() {
-        return validFluidMap.get(MaterialsUEVplus.RawStarMatter.getFluid(1));
+        return validFluidMap.get(MaterialsUEVplus.RawStarMatter.mFluid);
     }
 
     public CheckRecipeResult processRecipe(EyeOfHarmonyRecipe recipeObject) {
 
         // Get circuit damage, clamp it and then use it later for overclocking.
+        currentCircuitMultiplier = 0;
         for (ItemStack itemStack : mInputBusses.get(0).getRealInventory()) {
             if (GT_Utility.isAnyIntegratedCircuit(itemStack)) {
                 currentCircuitMultiplier = MathHelper.clamp_int(itemStack.getItemDamage(), 0, 24);
@@ -1193,7 +1189,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         if (parallelAmount > 1) {
             if ((EOH_DEBUG_MODE && getStellarPlasmaStored() < 100) || (!EOH_DEBUG_MODE && getStellarPlasmaStored()
                     < currentRecipe.getHeliumRequirement() * (12.4 / 1_000_000f) * parallelAmount)) {
-                return SimpleCheckRecipeResult.ofFailure("no_stellarPlasma");
+                return SimpleCheckRecipeResult.ofFailure("no_stellar_plasma");
             }
         }
 
@@ -1228,19 +1224,19 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         startEU = recipeObject.getEUStartCost();
 
         // Determine EU recipe output
-        outputEU_BigInt = BigInteger.valueOf(recipeObject.getEUOutput());
+        outputEU_BigInt = BigInteger.valueOf(recipeObject.getEUOutput())
+                .multiply(
+                        BigInteger.valueOf(
+                                (long) (1 - ((TOTAL_CASING_TIERS_WITH_POWER_PENALTY - stabilisationFieldMetadata)
+                                        * STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER)) * 100))
+                .divide(BigInteger.valueOf(100));
 
         double multiplier = 1;
 
         // Calculate actual EU values
         if (parallelAmount > 1) {
             multiplier = PARALLEL_MULTIPLIER_CONSTANT / POWER_DIVISION_CONSTANT;
-            outputEU_BigInt = outputEU_BigInt
-                    .multiply(
-                            BigInteger.valueOf(
-                                    (long) (1 - ((TOTAL_CASING_TIERS_WITH_POWER_PENALTY - stabilisationFieldMetadata)
-                                            * STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER)) * 100))
-                    .divide(BigInteger.valueOf(9 * 100))
+            outputEU_BigInt = outputEU_BigInt.divide(BigInteger.valueOf(9))
                     .multiply(BigInteger.valueOf((long) (powerMultiplier * precisionMultiplier)))
                     .divide(BigInteger.valueOf(precisionMultiplier));
         }
@@ -1271,9 +1267,12 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         currentRecipeRocketTier = currentRecipe.getRocketTier();
 
         // Reduce internal storage by input fluid quantity required for recipe.
-        validFluidMap.put(Materials.Hydrogen.getGas(1), 0L);
-        validFluidMap.put(Materials.Helium.getGas(1), 0L);
-        validFluidMap.put(MaterialsUEVplus.RawStarMatter.getFluid(1), 0L);
+        if (parallelAmount > 1) {
+            validFluidMap.put(MaterialsUEVplus.RawStarMatter.mFluid, 0L);
+        } else {
+            validFluidMap.put(Materials.Hydrogen.mGas, 0L);
+            validFluidMap.put(Materials.Helium.mGas, 0L);
+        }
 
         double yield = recipeYieldCalculator();
         if (EOH_DEBUG_MODE) {
@@ -1284,14 +1283,17 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         outputFluids = recipeObject.getOutputFluids();
         outputItems = recipeObject.getOutputItems();
 
-        // Iterate over item output list and apply yield & parallel values.
+        successfulParallelAmount = (long) calculateChancedOutputMultiplier(
+                (int) (10000 * successChance),
+                (int) parallelAmount);
+        // Iterate over item output list and apply yield & successful parallel values.
         for (ItemStackLong itemStackLong : outputItems) {
-            itemStackLong.stackSize *= yield * parallelAmount;
+            itemStackLong.stackSize *= yield * successfulParallelAmount;
         }
 
-        // Iterate over fluid output list and apply yield & parallel values.
+        // Iterate over fluid output list and apply yield & successful parallel values.
         for (FluidStackLong fluidStackLong : outputFluids) {
-            fluidStackLong.amount *= yield * parallelAmount;
+            fluidStackLong.amount *= yield * successfulParallelAmount;
         }
 
         updateSlots();
@@ -1339,11 +1341,14 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     private long currentRecipeRocketTier;
 
     private void outputFailedChance() {
-        // 2^Tier spacetime released upon recipe failure.
-        outputFluidToAENetwork(
-                MaterialsUEVplus.SpaceTime.getMolten(1),
-                (long) (successChance * MOLTEN_SPACETIME_PER_FAILURE_TIER
-                        * pow(SPACETIME_FAILURE_BASE, currentRecipeRocketTier + 1)) * parallelAmount);
+        long failedParallelAmount = parallelAmount - successfulParallelAmount;
+        if (failedParallelAmount > 0) {
+            // 2^Tier spacetime released upon recipe failure.
+            outputFluidToAENetwork(
+                    MaterialsUEVplus.SpaceTime.getMolten(1),
+                    (long) ((successChance * MOLTEN_SPACETIME_PER_FAILURE_TIER
+                            * pow(SPACETIME_FAILURE_BASE, currentRecipeRocketTier + 1)) * failedParallelAmount));
+        }
         super.outputAfterRecipe_EM();
     }
 
@@ -1380,18 +1385,16 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         startEU = 0;
         outputEU_BigInt = BigInteger.ZERO;
 
-        if (successChance < random()) {
-            outputFailedChance();
-            outputItems = new ArrayList<>();
-            return;
-        }
+        outputFailedChance();
 
-        for (ItemStackLong itemStack : outputItems) {
-            outputItemToAENetwork(itemStack.itemStack, itemStack.stackSize);
-        }
+        if (successfulParallelAmount > 0) {
+            for (ItemStackLong itemStack : outputItems) {
+                outputItemToAENetwork(itemStack.itemStack, itemStack.stackSize);
+            }
 
-        for (FluidStackLong fluidStack : outputFluids) {
-            outputFluidToAENetwork(fluidStack.fluidStack, fluidStack.amount);
+            for (FluidStackLong fluidStack : outputFluids) {
+                outputFluidToAENetwork(fluidStack.fluidStack, fluidStack.amount);
+            }
         }
 
         // Clear the array list for new recipes.
@@ -1412,7 +1415,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             strongCheckOrAddUser(userUUID, userName);
         }
 
-        if (!recipeRunning) {
+        if (!recipeRunning && mMachine) {
             if ((aTick % TICKS_BETWEEN_HATCH_DRAIN) == 0) {
                 drainFluidFromHatchesAndStoreInternally();
             }
@@ -1525,6 +1528,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     private static final String ANIMATIONS_ENABLED = EYE_OF_HARMONY + "animationsEnabled";
     private static final String CALCULATED_EU_OUTPUT_NBT_TAG = EYE_OF_HARMONY + "outputEU_BigInt";
     private static final String PARALLEL_AMOUNT_NBT_TAG = EYE_OF_HARMONY + "parallelAmount";
+    private static final String SUCCESSFUL_PARALLEL_AMOUNT_NBT_TAG = EYE_OF_HARMONY + "successfulParallelAmount";
     private static final String ASTRAL_ARRAY_AMOUNT_NBT_TAG = EYE_OF_HARMONY + "astralArrayAmount";
 
     // Sub tags, less specific names required.
@@ -1544,6 +1548,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         aNBT.setLong(CURRENT_CIRCUIT_MULTIPLIER_TAG, currentCircuitMultiplier);
         aNBT.setBoolean(ANIMATIONS_ENABLED, animationsEnabled);
         aNBT.setLong(PARALLEL_AMOUNT_NBT_TAG, parallelAmount);
+        aNBT.setLong(SUCCESSFUL_PARALLEL_AMOUNT_NBT_TAG, successfulParallelAmount);
         aNBT.setLong(ASTRAL_ARRAY_AMOUNT_NBT_TAG, astralArrayAmount);
         aNBT.setByteArray(CALCULATED_EU_OUTPUT_NBT_TAG, outputEU_BigInt.toByteArray());
 
@@ -1598,6 +1603,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         currentCircuitMultiplier = aNBT.getLong(CURRENT_CIRCUIT_MULTIPLIER_TAG);
         animationsEnabled = aNBT.getBoolean(ANIMATIONS_ENABLED);
         parallelAmount = aNBT.getLong(PARALLEL_AMOUNT_NBT_TAG);
+        successfulParallelAmount = aNBT.getLong(SUCCESSFUL_PARALLEL_AMOUNT_NBT_TAG);
         astralArrayAmount = aNBT.getLong(ASTRAL_ARRAY_AMOUNT_NBT_TAG);
         outputEU_BigInt = new BigInteger(aNBT.getByteArray(CALCULATED_EU_OUTPUT_NBT_TAG));
 
