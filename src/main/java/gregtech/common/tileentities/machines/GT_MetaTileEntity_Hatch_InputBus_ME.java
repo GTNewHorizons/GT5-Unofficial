@@ -1,5 +1,7 @@
 package gregtech.common.tileentities.machines;
 
+import static gregtech.api.enums.GT_Values.TIER_COLORS;
+import static gregtech.api.enums.GT_Values.VN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH_ACTIVE;
 
@@ -767,6 +769,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     private static String[] getDescriptionArray(boolean autoPullAvailable) {
         List<String> strings = new ArrayList<>(8);
         strings.add("Advanced item input for Multiblocks");
+        strings.add("Hatch Tier: " + TIER_COLORS[autoPullAvailable ? 6 : 3] + VN[autoPullAvailable ? 6 : 3]);
         strings.add("Retrieves directly from ME");
         strings.add("Keeps 16 item types in stock");
 

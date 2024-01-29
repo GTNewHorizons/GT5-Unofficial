@@ -132,6 +132,11 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_Slave extends GT_MetaTileEnti
     }
 
     @Override
+    public byte getTierForStructure() {
+        return getMaster() == null ? super.getTierForStructure() : getMaster().getTierForStructure();
+    }
+
+    @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return false;
