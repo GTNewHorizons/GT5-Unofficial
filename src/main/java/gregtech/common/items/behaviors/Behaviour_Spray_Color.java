@@ -23,6 +23,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
@@ -108,10 +109,9 @@ public class Behaviour_Spray_Color extends Behaviour_None {
         } else {
             lookSide = look.zCoord > 0 ? ForgeDirection.SOUTH : ForgeDirection.NORTH;
         }
-        Block currentBlock = aWorld.getBlock(aX, aY, aZ);
-        int currentBlockMeta = aWorld.getBlockMetadata(aX, aY, aZ);
-        Class<? extends TileEntity> currentTE = aWorld.getTileEntity(aX, aY, aZ)
-            .getClass();
+        Block initialBlock = aWorld.getBlock(aX, aY, aZ);
+        int initialBlockMeta = aWorld.getBlockMetadata(aX, aY, aZ);
+        TileEntity initialTE = aWorld.getTileEntity(aX, aY, aZ);
         while ((GT_Utility.areStacksEqual(aStack, this.mUsed, true)) && (colorize(aWorld, aX, aY, aZ, side, aPlayer))) {
             GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_PAINTER, 1.0F, 1.0F, aX, aY, aZ);
             if (!aPlayer.capabilities.isCreativeMode) {
@@ -131,9 +131,24 @@ public class Behaviour_Spray_Color extends Behaviour_None {
                 default -> throw new IllegalArgumentException("Unexpected value: " + lookSide);
             }
 
-            if (aWorld.getBlock(aX, aY, aZ) != currentBlock) break;
-            if (aWorld.getBlockMetadata(aX, aY, aZ) != currentBlockMeta) break;
-            if (!currentTE.isInstance(aWorld.getTileEntity(aX, aY, aZ))) break;
+            if (aWorld.getBlock(aX, aY, aZ) != initialBlock) break;
+            if (aWorld.getBlockMetadata(aX, aY, aZ) != initialBlockMeta) break;
+
+            /*
+             * Check if the initial block had a TE and if the next one does, check if its the same kind.
+             * else one does and the other doesnt, thus stop checking.
+             */
+            TileEntity targetTE = aWorld.getTileEntity(aX, aY, aZ);
+            if (initialTE == null ^ targetTE == null) break;
+            if (initialTE != null && targetTE != null) {
+                if (!initialTE.getClass()
+                    .isInstance(targetTE)) break;
+
+                if (initialTE instanceof IGregTechTileEntity currentGTTile
+                    && targetTE instanceof IGregTechTileEntity targetGTTile) {
+                    if (currentGTTile.getMetaTileID() != targetGTTile.getMetaTileID()) break;
+                }
+            }
         }
         tNBT.removeTag("GT.RemainingPaint");
         if (tUses > 0L) {
