@@ -626,6 +626,16 @@ public class GT_MetaTileEntity_PCBFactory extends
     }
 
     @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (aBaseMetaTileEntity.isServerSide()) {
+            // TODO: Look for proper fix
+            // Updates every 30 sec
+            if (mUpdate <= -550) mUpdate = 50;
+        }
+    }
+
+    @Override
     public int getMaxEfficiency(ItemStack aStack) {
         return (int) (10000f * mRoughnessMultiplier);
     }
