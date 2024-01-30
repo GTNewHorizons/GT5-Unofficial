@@ -1279,4 +1279,14 @@ public class GT_MetaTileEntity_PCBFactory extends
     public boolean supportsInputSeparation() {
         return true;
     }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
+    }
 }
