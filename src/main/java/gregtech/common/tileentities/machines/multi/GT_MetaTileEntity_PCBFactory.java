@@ -509,9 +509,7 @@ public class GT_MetaTileEntity_PCBFactory extends
 
         getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
 
-        if (mMaintenanceHatches.size() != 1 || mOutputBusses.isEmpty()
-            || mInputBusses.isEmpty()
-            || mInputHatches.isEmpty()) {
+        if (mMaintenanceHatches.size() != 1) {
             return false;
         }
 
@@ -625,6 +623,16 @@ public class GT_MetaTileEntity_PCBFactory extends
         ticker++;
 
         return true;
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (aBaseMetaTileEntity.isServerSide()) {
+            // TODO: Look for proper fix
+            // Updates every 30 sec
+            if (mUpdate <= -550) mUpdate = 50;
+        }
     }
 
     @Override
@@ -869,14 +877,14 @@ public class GT_MetaTileEntity_PCBFactory extends
                     + EnumChatFormatting.GRAY
                     + " TT energy hatch.",
                 1)
-            .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
-            .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
-            .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
+            .addInputBus(EnumChatFormatting.GOLD + "0" + EnumChatFormatting.GRAY + "+", 1)
+            .addOutputBus(EnumChatFormatting.GOLD + "0" + EnumChatFormatting.GRAY + "+", 1)
+            .addInputHatch(EnumChatFormatting.GOLD + "0" + EnumChatFormatting.GRAY + "+", 1)
             .addStructureInfo(
                 "Coolant Hatch (Input Hatch): " + EnumChatFormatting.GOLD
                     + "1"
                     + EnumChatFormatting.GRAY
-                    + "Center of the Liquid Cooling/Thermosink")
+                    + " Center of the Liquid Cooling/Thermosink")
             .addStructureInfo(
                 EnumChatFormatting.BLUE + "Base Multi (Tier "
                     + EnumChatFormatting.DARK_PURPLE
@@ -1128,6 +1136,7 @@ public class GT_MetaTileEntity_PCBFactory extends
                         .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                     .widget(new MultiChildWidget().addChild(new CycleButtonWidget().setToggle(() -> mOCTier1, val -> {
                         mOCTier1 = val;
+                        mOCTier2 = false;
                         if (!mOCTier1) {
                             GT_Utility.sendChatToPlayer(player, GT_Utility.trans("341.1", "Tier 1 cooling disabled"));
                         } else {
@@ -1147,6 +1156,7 @@ public class GT_MetaTileEntity_PCBFactory extends
                         .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                     .widget(new MultiChildWidget().addChild(new CycleButtonWidget().setToggle(() -> mOCTier2, val -> {
                         mOCTier2 = val;
+                        mOCTier1 = false;
                         if (!mOCTier2) {
                             GT_Utility.sendChatToPlayer(player, GT_Utility.trans("342.1", "Tier 2 cooling disabled"));
                         } else {
@@ -1269,6 +1279,16 @@ public class GT_MetaTileEntity_PCBFactory extends
 
     @Override
     public boolean supportsInputSeparation() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
         return true;
     }
 }
