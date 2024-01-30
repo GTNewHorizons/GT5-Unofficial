@@ -509,9 +509,7 @@ public class GT_MetaTileEntity_PCBFactory extends
 
         getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
 
-        if (mMaintenanceHatches.size() != 1 || mOutputBusses.isEmpty()
-            || mInputBusses.isEmpty()
-            || mInputHatches.isEmpty()) {
+        if (mMaintenanceHatches.size() != 1) {
             return false;
         }
 
@@ -869,14 +867,14 @@ public class GT_MetaTileEntity_PCBFactory extends
                     + EnumChatFormatting.GRAY
                     + " TT energy hatch.",
                 1)
-            .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
-            .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
-            .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
+            .addInputBus(EnumChatFormatting.GOLD + "0" + EnumChatFormatting.GRAY + "+", 1)
+            .addOutputBus(EnumChatFormatting.GOLD + "0" + EnumChatFormatting.GRAY + "+", 1)
+            .addInputHatch(EnumChatFormatting.GOLD + "0" + EnumChatFormatting.GRAY + "+", 1)
             .addStructureInfo(
                 "Coolant Hatch (Input Hatch): " + EnumChatFormatting.GOLD
                     + "1"
                     + EnumChatFormatting.GRAY
-                    + "Center of the Liquid Cooling/Thermosink")
+                    + " Center of the Liquid Cooling/Thermosink")
             .addStructureInfo(
                 EnumChatFormatting.BLUE + "Base Multi (Tier "
                     + EnumChatFormatting.DARK_PURPLE
