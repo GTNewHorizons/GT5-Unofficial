@@ -1136,6 +1136,7 @@ public class GT_MetaTileEntity_PCBFactory extends
                         .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                     .widget(new MultiChildWidget().addChild(new CycleButtonWidget().setToggle(() -> mOCTier1, val -> {
                         mOCTier1 = val;
+                        mOCTier2 = false;
                         if (!mOCTier1) {
                             GT_Utility.sendChatToPlayer(player, GT_Utility.trans("341.1", "Tier 1 cooling disabled"));
                         } else {
@@ -1155,6 +1156,7 @@ public class GT_MetaTileEntity_PCBFactory extends
                         .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                     .widget(new MultiChildWidget().addChild(new CycleButtonWidget().setToggle(() -> mOCTier2, val -> {
                         mOCTier2 = val;
+                        mOCTier1 = false;
                         if (!mOCTier2) {
                             GT_Utility.sendChatToPlayer(player, GT_Utility.trans("342.1", "Tier 2 cooling disabled"));
                         } else {
