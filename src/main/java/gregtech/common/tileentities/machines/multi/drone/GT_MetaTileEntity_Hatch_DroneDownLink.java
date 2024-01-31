@@ -42,7 +42,8 @@ public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hat
     private DroneConnection connection;
     // This has to be existed for doing random damage.
     private GT_MetaTileEntity_MultiBlockBase machine;
-    private static final IIconContainer moduleActive = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_DRONE_MODULE_ACTIVE");
+    private static final IIconContainer moduleActive = new Textures.BlockIcons.CustomIcon(
+        "iconsets/OVERLAY_DRONE_MODULE_ACTIVE");
 
     public GT_MetaTileEntity_Hatch_DroneDownLink(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
@@ -66,7 +67,7 @@ public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hat
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(moduleActive)};
+        return new ITexture[] { aBaseTexture, TextureFactory.of(moduleActive) };
     }
 
     @Override

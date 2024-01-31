@@ -128,18 +128,18 @@ public class GT_MetaTileEntity_DroneCentre extends
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
-            if(getBaseMetaTileEntity().isActive()) {
+            if (getBaseMetaTileEntity().isActive()) {
                 return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(59), TextureFactory.builder()
                     .addIcon(ACTIVE)
                     .extFacing()
                     .build() };
-            }else {
+            } else {
                 return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(59), TextureFactory.builder()
                     .addIcon(INACTIVE)
                     .extFacing()
                     .build() };
             }
-        } else if(side == aFacing.getOpposite()){
+        } else if (side == aFacing.getOpposite()) {
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(59), TextureFactory.builder()
                 .addIcon(FACE)
                 .extFacing()
