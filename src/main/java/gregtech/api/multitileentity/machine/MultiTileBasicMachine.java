@@ -271,16 +271,6 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
 
         return TextureFactory.of(texture, getCoverTexture(side));
     }
-
-    @Override
-    public GT_Packet_MultiTileEntity getClientDataPacket() {
-        final GT_Packet_MultiTileEntity packet = super.getClientDataPacket();
-        int booleans = getBooleans();
-        packet.setBooleans(booleans);
-        packet.setSoundEvent(soundEvent, soundEventValue);
-        return packet;
-    }
-
     /*
      * Fluids
      */

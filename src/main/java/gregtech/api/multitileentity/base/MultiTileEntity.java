@@ -51,8 +51,12 @@ import gregtech.api.multitileentity.MultiTileEntityBlockInternal;
 import gregtech.api.multitileentity.MultiTileEntityClassContainer;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
+import gregtech.api.multitileentity.interfaces.SyncedMultiTileEntity;
 import gregtech.api.net.GT_Packet_MultiTileEntity;
 import gregtech.api.net.GT_Packet_New;
+import gregtech.api.net.data.CommonData;
+import gregtech.api.net.data.CoordinateData;
+import gregtech.api.net.data.MultiTileEntityData;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
@@ -65,7 +69,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class MultiTileEntity extends CoverableTileEntity
-    implements IMultiTileEntity.IMTE_BreakBlock, MultiTileBasicRender {
+    implements IMultiTileEntity.IMTE_BreakBlock, MultiTileBasicRender, SyncedMultiTileEntity {
 
     private ITexture baseTexture = null;
     private ITexture topOverlayTexture = null;
@@ -100,6 +104,10 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     private String ownerName = "";
     private UUID ownerUUID = GT_Utility.defaultUuid;
     private boolean lockUpgrade = false;
+
+    private final GT_Packet_MultiTileEntity fullPacket = new GT_Packet_MultiTileEntity(false);
+    private final GT_Packet_MultiTileEntity timedPacket = new GT_Packet_MultiTileEntity(false);
+    private final GT_Packet_MultiTileEntity graphicPacket = new GT_Packet_MultiTileEntity(false);
 
     public MultiTileEntity(boolean isTicking) {
         this.isTicking = isTicking;
@@ -1028,30 +1036,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity
      */
     public GT_Packet_MultiTileEntity getClientDataPacket() {
 
-        final GT_Packet_MultiTileEntity packet = new GT_Packet_MultiTileEntity(
-            0,
-            xCoord,
-            (short) yCoord,
-            zCoord,
-            getMultiTileEntityRegistryID(),
-            getMultiTileEntityID(),
-            (byte) ((facing.ordinal() & 7) | (mRedstone ? 16 : 0)),
-            color);
-
-        packet.setCoverData(
-            getCoverInfoAtSide(ForgeDirection.DOWN).getCoverID(),
-            getCoverInfoAtSide(ForgeDirection.UP).getCoverID(),
-            getCoverInfoAtSide(ForgeDirection.NORTH).getCoverID(),
-            getCoverInfoAtSide(ForgeDirection.SOUTH).getCoverID(),
-            getCoverInfoAtSide(ForgeDirection.WEST).getCoverID(),
-            getCoverInfoAtSide(ForgeDirection.EAST).getCoverID());
-
-        packet.setRedstoneData(
-            (byte) (((mSidedRedstone[0] > 0) ? 1 : 0) | ((mSidedRedstone[1] > 0) ? 2 : 0)
-                | ((mSidedRedstone[2] > 0) ? 4 : 0)
-                | ((mSidedRedstone[3] > 0) ? 8 : 0)
-                | ((mSidedRedstone[4] > 0) ? 16 : 0)
-                | ((mSidedRedstone[5] > 0) ? 32 : 0)));
+        final GT_Packet_MultiTileEntity packet = new GT_Packet_MultiTileEntity(false);
         return packet;
     }
 
@@ -1352,5 +1337,44 @@ public abstract class MultiTileEntity extends CoverableTileEntity
         public boolean hasGlow() {
             return hasGlow;
         }
+    }
+
+    @Override
+    public void getFullPacketData(GT_Packet_MultiTileEntity packet) {
+        packet.addData(new CoordinateData(getCoords()));
+        packet.addData(new CommonData(mStrongRedstone, color, (byte)0));
+        packet.addData(new MultiTileEntityData(mteRegistry, blockMetadata));
+    }
+
+    @Override
+    public void getGraphicPacketData(GT_Packet_MultiTileEntity packet) {
+        packet.addData(new CoordinateData(getCoords()));
+    }
+
+    @Override
+    public void getTimedPacketData(GT_Packet_MultiTileEntity packet) {
+        packet.addData(new CoordinateData(getCoords()));
+        packet.addData(new MultiTileEntityData(mteRegistry, blockMetadata));
+    }
+
+    @Override
+    public void sendFullPacket(@Nonnull EntityPlayerMP player) {
+        fullPacket.clearData();
+        getFullPacketData(fullPacket);
+        GT_Values.NW.sendToPlayer(fullPacket, player);
+    }
+
+    @Override
+    public void sendGraphicPacket() {
+        graphicPacket.clearData();
+        getGraphicPacketData(graphicPacket);
+        GT_Values.NW.sendPacketToAllPlayersInRange(worldObj, graphicPacket, getXCoord(), getZCoord());
+    }
+
+    @Override
+    public void sendTimedPacket() {
+        timedPacket.clearData();
+        getTimedPacketData(timedPacket);
+        GT_Values.NW.sendPacketToAllPlayersInRange(worldObj, timedPacket, getXCoord(), getZCoord());
     }
 }

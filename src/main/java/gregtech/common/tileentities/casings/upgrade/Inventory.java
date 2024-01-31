@@ -111,14 +111,6 @@ public class Inventory extends UpgradeCasing {
     }
 
     @Override
-    public GT_Packet_MultiTileEntity getClientDataPacket() {
-        final GT_Packet_MultiTileEntity packet = super.getClientDataPacket();
-        String name = getCustomInventoryName();
-        packet.setInventoryName(name, inventoryID.toString());
-        return packet;
-    }
-
-    @Override
     public void addToolTips(List<String> list, ItemStack stack, boolean f3_h) {
         super.addToolTips(list, stack, f3_h);
         list.add("Adds another item inventory");

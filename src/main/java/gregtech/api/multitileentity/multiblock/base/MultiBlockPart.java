@@ -277,18 +277,6 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     }
 
     @Override
-    public GT_Packet_MultiTileEntity getClientDataPacket() {
-        final GT_Packet_MultiTileEntity packet = super.getClientDataPacket();
-        packet.setModes(getMode(), getAllowedModes());
-        if (getTargetPos() != null) {
-            final ChunkCoordinates aTarget = getTargetPos();
-            packet.setTargetPos(aTarget.posX, (short) aTarget.posY, aTarget.posZ);
-        }
-        packet.setInventoryIndex(getLockedInventoryIndex());
-        return packet;
-    }
-
-    @Override
     public void setLockedInventoryIndex(int aIndex) {
         mLockedInventoryIndex = aIndex;
     }
