@@ -175,6 +175,7 @@ import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.misc.GlobalEnergyWorldSavedData;
 import gregtech.common.misc.GlobalMetricsCoverDatabase;
 import gregtech.common.misc.spaceprojects.SpaceProjectWorldSavedData;
+import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_DroneCentre;
 
 public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 
@@ -1397,6 +1398,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 
     public void onServerStarted() {
         GregTech_API.sWirelessRedstone.clear();
+        GT_MetaTileEntity_DroneCentre.getCentreMap()
+            .clear();
         GT_Log.out.println(
             "GT_Mod: Cleaning up all OreDict Crafting Recipes, which have an empty List in them, since they are never meeting any Condition.");
         List<IRecipe> tList = CraftingManager.getInstance()
