@@ -76,7 +76,9 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class GT_MetaTileEntity_DroneCentre extends
     GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_DroneCentre> implements ISurvivalConstructable {
 
-    private static final IIconContainer Active = new Textures.BlockIcons.CustomIcon("iconsets/droneCentre");
+    private static final IIconContainer ACTIVE = new Textures.BlockIcons.CustomIcon("iconsets/DRONE_CENTRE_ACTIVE");
+    private static final IIconContainer FACE = new Textures.BlockIcons.CustomIcon("iconsets/DRONE_CENTRE_FACE");
+    private static final IIconContainer INACTIVE = new Textures.BlockIcons.CustomIcon("iconsets/DRONE_CENTRE_INACTIVE");
     private Vec3Impl centreCoord;
     private int droneLevel = 0;
     private int buttonID;
@@ -126,8 +128,20 @@ public class GT_MetaTileEntity_DroneCentre extends
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
+            if(getBaseMetaTileEntity().isActive()) {
+                return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(59), TextureFactory.builder()
+                    .addIcon(ACTIVE)
+                    .extFacing()
+                    .build() };
+            }else {
+                return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(59), TextureFactory.builder()
+                    .addIcon(INACTIVE)
+                    .extFacing()
+                    .build() };
+            }
+        } else if(side == aFacing.getOpposite()){
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(59), TextureFactory.builder()
-                .addIcon(Active)
+                .addIcon(FACE)
                 .extFacing()
                 .build() };
         }
