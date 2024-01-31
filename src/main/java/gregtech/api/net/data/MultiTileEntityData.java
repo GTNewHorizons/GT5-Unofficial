@@ -14,6 +14,7 @@ public class MultiTileEntityData extends PacketData<MultiTileEntityProcess> {
     private int metaId;
 
     public MultiTileEntityData() {}
+
     public MultiTileEntityData(int registryId, int metaId) {
         this.registryId = registryId;
         this.metaId = metaId;
@@ -25,16 +26,14 @@ public class MultiTileEntityData extends PacketData<MultiTileEntityProcess> {
     }
 
     @Override
-    public void encode(@Nonnull ByteBuf out) {
-}
+    public void encode(@Nonnull ByteBuf out) {}
 
     @Override
-    public void decode(@Nonnull ByteArrayDataInput in) {
-    }
+    public void decode(@Nonnull ByteArrayDataInput in) {}
 
     @Override
     public void process(MultiTileEntityProcess processData) {
         processData.giveMultiTileEntityData(registryId, metaId);
     }
-    
+
 }

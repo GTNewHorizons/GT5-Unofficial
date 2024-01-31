@@ -2,14 +2,15 @@ package gregtech.api.net.data;
 
 import javax.annotation.Nonnull;
 
-import gregtech.api.multitileentity.MultiTileEntityBlock;
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.IBlockAccess;
 
+import gregtech.api.multitileentity.MultiTileEntityBlock;
+import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
+
 public class MultiTileEntityProcess extends Process {
-    
+
     @Nonnull
     private final IBlockAccess world;
     private ChunkCoordinates coords;
@@ -18,6 +19,7 @@ public class MultiTileEntityProcess extends Process {
     private byte redstone;
     private byte color;
     private byte commonData;
+
     public MultiTileEntityProcess(@Nonnull IBlockAccess world) {
         this.world = world;
     }
@@ -29,7 +31,8 @@ public class MultiTileEntityProcess extends Process {
         if (!(block instanceof MultiTileEntityBlock muteBlock)) {
             return;
         }
-        IMultiTileEntity mute = muteBlock.receiveMultiTileEntityData(world, coords.posX, coords.posY, coords.posZ, registryId, metaId);
+        IMultiTileEntity mute = muteBlock
+            .receiveMultiTileEntityData(world, coords.posX, coords.posY, coords.posZ, registryId, metaId);
         if (mute == null) return;
         mute.setColorization(color);
     }

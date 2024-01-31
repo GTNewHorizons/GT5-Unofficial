@@ -6,11 +6,11 @@ import com.google.common.io.ByteArrayDataInput;
 
 import io.netty.buffer.ByteBuf;
 
-
 public abstract class PacketData<T extends Process> implements Comparable<PacketData<T>> {
-    
+
     /**
-     * This should return the Id of the packet. The Id is is used to bit-shift to be added a header for the packet its used in 
+     * This should return the Id of the packet. The Id is is used to bit-shift to be added a header for the packet its
+     * used in
      */
     public abstract int getId();
 

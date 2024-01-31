@@ -1342,7 +1342,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     @Override
     public void getFullPacketData(GT_Packet_MultiTileEntity packet) {
         packet.addData(new CoordinateData(getCoords()));
-        packet.addData(new CommonData(mStrongRedstone, color, (byte)0));
+        packet.addData(new CommonData(mStrongRedstone, color, (byte) 0));
         packet.addData(new MultiTileEntityData(mteRegistry, blockMetadata));
     }
 

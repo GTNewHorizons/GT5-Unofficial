@@ -15,7 +15,6 @@ import gregtech.api.enums.GT_Values.NBT;
 import gregtech.api.enums.InventoryType;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
 import gregtech.api.multitileentity.multiblock.casing.UpgradeCasing;
-import gregtech.api.net.GT_Packet_MultiTileEntity;
 
 public class Inventory extends UpgradeCasing {
 

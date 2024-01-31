@@ -2,16 +2,18 @@ package gregtech.api.net.data;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.util.ChunkCoordinates;
+
 import com.google.common.io.ByteArrayDataInput;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.util.ChunkCoordinates;
 
 public class CoordinateData extends PacketData<MultiTileEntityProcess> {
 
     public final static int COORDINATE_DATA_ID = 0;
 
     private ChunkCoordinates coords;
+
     public CoordinateData(ChunkCoordinates coords) {
         this.coords = coords;
     }
@@ -36,7 +38,7 @@ public class CoordinateData extends PacketData<MultiTileEntityProcess> {
 
     @Override
     public void decode(@Nonnull ByteArrayDataInput in) {
-        coords = new ChunkCoordinates(in.readInt(), in.readInt(), in.readInt());        
+        coords = new ChunkCoordinates(in.readInt(), in.readInt(), in.readInt());
     }
 
     @Override
@@ -44,6 +46,5 @@ public class CoordinateData extends PacketData<MultiTileEntityProcess> {
         if (coords == null) return;
         processData.giveCoordinates(coords);
     }
-    
-    
+
 }

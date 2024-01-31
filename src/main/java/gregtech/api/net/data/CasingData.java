@@ -2,10 +2,11 @@ package gregtech.api.net.data;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.util.ChunkCoordinates;
+
 import com.google.common.io.ByteArrayDataInput;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.util.ChunkCoordinates;
 
 public class CasingData extends PacketData<MultiTileEntityProcess> {
 
@@ -14,7 +15,7 @@ public class CasingData extends PacketData<MultiTileEntityProcess> {
     private int currentMode;
     private int allowedModes;
     private ChunkCoordinates controllerCoords;
-    
+
     public CasingData() {}
 
     public CasingData(int currentMode, int allowedModes, ChunkCoordinates controllerCoords) {
@@ -22,7 +23,7 @@ public class CasingData extends PacketData<MultiTileEntityProcess> {
         this.allowedModes = allowedModes;
         this.controllerCoords = controllerCoords;
     }
-    
+
     @Override
     public void decode(@Nonnull ByteArrayDataInput in) {
         currentMode = in.readInt();
@@ -46,7 +47,7 @@ public class CasingData extends PacketData<MultiTileEntityProcess> {
 
     @Override
     public void process(MultiTileEntityProcess processData) {
-        
+
     }
-    
+
 }
