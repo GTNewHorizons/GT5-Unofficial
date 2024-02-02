@@ -122,9 +122,8 @@ public class GT_MetaTileEntity_ElectricBlastFurnace extends
             .addInfo("Controller block for the Electric Blast Furnace")
             .addInfo("You can use some fluids to reduce recipe time. Place the circuit in the Input Bus")
             .addInfo("Each 900K over the min. Heat required reduces power consumption by 5% (multiplicatively)")
-            .addInfo("Each 1800K over the min. Heat required grants one perfect overclock")
-            .addInfo(
-                "For each perfect overclock the EBF will reduce recipe time 4 times (instead of 2) (100% efficiency)")
+            .addInfo("Each 1800K over the min. Heat allows for an overclock to be upgraded to a perfect overclock.")
+            .addInfo("That means the EBF will reduce recipe time by a factor 4 instead of 2 (giving 100% efficiency).")
             .addInfo("Additionally gives +100K for every tier past MV")
             .addPollutionAmount(getPollutionPerSecond(null))
             .addSeparator()
