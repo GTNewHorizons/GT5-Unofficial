@@ -12,6 +12,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -605,14 +608,15 @@ public class MultiTileEntityBlock extends Block implements IDebugableBlock, ITil
         return aTileEntity instanceof IMultiTileEntity mte ? mte.getPickBlock(aTarget) : null;
     }
 
-    public final IMultiTileEntity receiveMultiTileEntityData(IBlockAccess aWorld, int aX, short aY, int aZ, short aRID,
-        short aID) {
+    @Nullable
+    public final IMultiTileEntity receiveMultiTileEntityData(@Nonnull IBlockAccess aWorld, int aX, int aY, int aZ,
+        int registryId, int aID) {
         if (!(aWorld instanceof World)) return null;
         TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
 
-        if (!(aTileEntity instanceof IMultiTileEntity mte) || mte.getMultiTileEntityRegistryID() != aRID
+        if (!(aTileEntity instanceof IMultiTileEntity mte) || mte.getMultiTileEntityRegistryID() != registryId
             || mte.getMultiTileEntityID() != aID) {
-            final MultiTileEntityRegistry tRegistry = MultiTileEntityRegistry.getRegistry(aRID);
+            final MultiTileEntityRegistry tRegistry = MultiTileEntityRegistry.getRegistry(registryId);
             if (tRegistry == null) return null;
 
             aTileEntity = tRegistry.getNewTileEntity((World) aWorld, aX, aY, aZ, aID);
