@@ -12,15 +12,15 @@ public interface IMultiBlockPart extends IMultiTileEntity, ItemInventoryLogicHos
 
     ChunkCoordinates getTargetPos();
 
-    void setTargetPos(ChunkCoordinates aTargetPos);
+    void setTargetPos(ChunkCoordinates targetPos);
 
-    void setLockedInventoryIndex(int aIndex);
+    void setLockedInventoryIndex(int index);
 
     int getLockedInventoryIndex();
 
     UUID getLockedInventory();
 
-    boolean tickCoverAtSide(ForgeDirection side, long aTickTimer);
+    boolean tickCoverAtSide(ForgeDirection side, long timer);
 
     boolean shouldTick(long tickTimer);
 }

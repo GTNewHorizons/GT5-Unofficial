@@ -10,13 +10,13 @@ public class CommonData extends PacketData<MultiTileEntityProcess> {
 
     public static final int COMMON_DATA_ID = 2;
 
-    private byte redstone;
-    private byte color;
-    private byte commonData;
+    private int redstone;
+    private int color;
+    private int commonData;
 
     public CommonData() {}
 
-    public CommonData(byte redstone, byte color, byte commonData) {
+    public CommonData(int redstone, int color, int commonData) {
         this.redstone = redstone;
         this.color = color;
         this.commonData = commonData;

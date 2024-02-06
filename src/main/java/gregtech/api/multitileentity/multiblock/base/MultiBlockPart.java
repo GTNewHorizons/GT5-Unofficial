@@ -10,6 +10,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ENERGY_IN_MULTI;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ENERGY_OUT_MULTI;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_IN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
+import static gregtech.api.enums.Textures.BlockIcons.VOID;
 
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -38,6 +39,7 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 
 import gregtech.api.enums.GT_Values.NBT;
 import gregtech.api.enums.InventoryType;
+import gregtech.api.enums.Textures;
 import gregtech.api.fluid.FluidTankGT;
 import gregtech.api.gui.GUIHost;
 import gregtech.api.gui.GUIProvider;
@@ -66,6 +68,10 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
 
     public static final int NOTHING = 0, ENERGY_IN = B[0], ENERGY_OUT = B[1], FLUID_IN = B[2], FLUID_OUT = B[3],
         ITEM_IN = B[4], ITEM_OUT = B[5];
+    @Nonnull
+    private static final ITexture OVERLAY_PIPE_IN_TEXTURE = TextureFactory.of(OVERLAY_PIPE_IN);
+    @Nonnull
+    private static final ITexture OVERLAY_PIPE_OUT_TEXTURE = TextureFactory.of(OVERLAY_PIPE_OUT);
 
     protected final List<Integer> BASIC_MODES = new ArrayList<>(
         Arrays.asList(NOTHING, ENERGY_IN, ENERGY_OUT, FLUID_IN, FLUID_OUT, ITEM_IN, ITEM_OUT));
@@ -129,7 +135,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     }
 
     @Override
-    protected void addDebugInfo(EntityPlayer aPlayer, int aLogLevel, ArrayList<String> tList) {
+    protected void addDebugInfo(EntityPlayer player, int aLogLevel, ArrayList<String> tList) {
         final IMultiBlockController controller = getTarget(false);
         if (controller != null) {
             tList.add("Has controller");
@@ -157,7 +163,8 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         }
     }
 
-    public IMultiBlockController getTarget(boolean aCheckValidity) {
+    @Nullable
+    public IMultiBlockController getTarget(boolean checkValidity) {
         if (targetPosition == null) {
             return null;
         }
@@ -174,13 +181,13 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
             return null;
         }
 
-        if (aCheckValidity) {
+        if (checkValidity) {
             return target != null && target.checkStructure(false) ? target : null;
         }
         return target;
     }
 
-    public void registerCovers(IMultiBlockController controller) {
+    protected void registerCovers(@Nonnull IMultiBlockController controller) {
         for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             final CoverInfo coverInfo = getCoverInfoAtSide(side);
             if (coverInfo.isValid() && coverInfo.getTickRate() > 0) {
@@ -196,8 +203,8 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     }
 
     @Override
-    public void setCoverItemAtSide(ForgeDirection side, ItemStack aCover) {
-        super.setCoverItemAtSide(side, aCover);
+    public void setCoverItemAtSide(ForgeDirection side, ItemStack cover) {
+        super.setCoverItemAtSide(side, cover);
         // TODO: Filter on tickable covers
         final IMultiBlockController tTarget = getTarget(true);
         if (tTarget == null) {
@@ -211,7 +218,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
 
     }
 
-    public void unregisterCovers(IMultiBlockController controller) {
+    protected void unregisterCovers(@Nonnull IMultiBlockController controller) {
         for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             if (getCoverInfoAtSide(side).isValid()) {
                 controller.unregisterCoveredPartOnSide(side, this);
@@ -230,7 +237,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     }
 
     @Override
-    public void readMultiTileNBT(NBTTagCompound aNBT) {
+    public void readFromNBT(NBTTagCompound aNBT) {
         if (aNBT.hasKey(NBT.ALLOWED_MODES)) allowedModes = aNBT.getInteger(NBT.ALLOWED_MODES);
         if (aNBT.hasKey(NBT.MODE)) setMode(aNBT.getByte(NBT.MODE));
         if (aNBT.hasKey(NBT.TARGET)) {
@@ -257,7 +264,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     }
 
     @Override
-    public void writeMultiTileNBT(NBTTagCompound aNBT) {
+    public void writeToNBT(NBTTagCompound aNBT) {
         if (allowedModes != NOTHING) aNBT.setInteger(NBT.ALLOWED_MODES, allowedModes);
         if (mode != 0) aNBT.setInteger(NBT.MODE, mode);
         if (targetPosition != null) {
@@ -331,19 +338,19 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     }
 
     /**
-     * True if `aMode` is one of the allowed modes
+     * True if `mode` is one of the allowed modes
      */
-    public boolean hasMode(int aMode) {
+    public boolean hasMode(int mode) {
         // This is not sent to the client
-        return (allowedModes & aMode) != 0;
+        return (allowedModes & mode) != 0;
     }
 
     /**
      * Returns true if the part has any of the modes provided, and that mode is the currently selected mode
      */
     public boolean modeSelected(int... aModes) {
-        for (int aMode : aModes) {
-            if (hasMode(aMode) && mode == getModeOrdinal(aMode)) return true;
+        for (int mode : aModes) {
+            if (hasMode(mode) && mode == getModeOrdinal(mode)) return true;
         }
         return false;
     }
@@ -361,7 +368,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     @Override
     public void onBlockAdded() {
         for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-            final TileEntity te = getTileEntityAtSide(side);
+            final TileEntity te = getWorldObj().getTileEntity(getXCoord() + side.offsetX, getYCoord() + side.offsetY, getZCoord() + side.offsetZ);
             if (te instanceof MultiBlockPart part) {
                 final IMultiBlockController tController = part.getTarget(false);
                 if (tController != null) tController.onStructureChange();
@@ -371,72 +378,52 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         }
     }
 
+    // MultiTileBasicRender methods
     @Override
-    public ITexture getTexture(ForgeDirection side) {
-        ITexture texture = super.getTexture(side);
-        if (mode != 0 && side == facing) {
-            if (mode == getModeOrdinal(ITEM_IN)) {
-                return TextureFactory.of(
-                    texture,
-                    TextureFactory.of(OVERLAY_PIPE_IN),
-                    TextureFactory.of(ITEM_IN_SIGN),
-                    getCoverTexture(side));
-            }
-            if (mode == getModeOrdinal(ITEM_OUT)) {
-                return TextureFactory.of(
-                    texture,
-                    TextureFactory.of(OVERLAY_PIPE_OUT),
-                    TextureFactory.of(ITEM_OUT_SIGN),
-                    getCoverTexture(side));
-            }
-            if (mode == getModeOrdinal(FLUID_IN)) {
-                return TextureFactory.of(
-                    texture,
-                    TextureFactory.of(OVERLAY_PIPE_IN),
-                    TextureFactory.of(FLUID_IN_SIGN),
-                    getCoverTexture(side));
-            }
-            if (mode == getModeOrdinal(FLUID_OUT)) {
-                return TextureFactory.of(
-                    texture,
-                    TextureFactory.of(OVERLAY_PIPE_OUT),
-                    TextureFactory.of(FLUID_OUT_SIGN),
-                    getCoverTexture(side));
-            }
-            if (mode == getModeOrdinal(ENERGY_IN)) {
-                return TextureFactory.of(texture, TextureFactory.of(OVERLAY_ENERGY_IN_MULTI), getCoverTexture(side));
-            }
-            if (mode == getModeOrdinal(ENERGY_OUT)) {
-                return TextureFactory.of(texture, TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI), getCoverTexture(side));
-            }
-        }
-
-        return TextureFactory.of(texture, getCoverTexture(side));
+    @Nonnull
+    protected ITexture getFrontTexture() {
+        return TextureFactory.of(super.getFrontTexture(), getModeTexture());
     }
 
-    protected String getModeName(int aMode) {
-        if (aMode == NOTHING) return "Nothing";
-        if (aMode == getModeOrdinal(ITEM_IN)) return "Item Input";
-        if (aMode == getModeOrdinal(ITEM_OUT)) return "Item Output";
-        if (aMode == getModeOrdinal(FLUID_IN)) return "Fluid Input";
-        if (aMode == getModeOrdinal(FLUID_OUT)) return "Fluid Output";
-        if (aMode == getModeOrdinal(ENERGY_IN)) return "Energy Input";
-        if (aMode == getModeOrdinal(ENERGY_OUT)) return "Energy Output";
+    @Nonnull
+    protected ITexture getModeTexture() {
+        return switch (getMode()) {
+            case getModeOrdinal(ITEM_IN) -> TextureFactory.of(OVERLAY_PIPE_IN_TEXTURE, TextureFactory.of(ITEM_IN_SIGN));
+            case getModeOrdinal(ITEM_OUT) -> TextureFactory.of(OVERLAY_PIPE_OUT_TEXTURE, TextureFactory.of(ITEM_OUT_SIGN));
+            case getModeOrdinal(FLUID_IN) -> TextureFactory.of(OVERLAY_PIPE_IN_TEXTURE, TextureFactory.of(FLUID_IN_SIGN));
+            case getModeOrdinal(FLUID_OUT) -> TextureFactory.of(OVERLAY_PIPE_OUT_TEXTURE, TextureFactory.of(FLUID_OUT_SIGN));
+            case getModeOrdinal(ENERGY_IN) -> TextureFactory.of(OVERLAY_ENERGY_IN_MULTI);
+            case getModeOrdinal(ENERGY_OUT) -> TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI);
+            default -> TextureFactory.of(VOID);
+        };
+    }
+
+    protected String getModeName(int mode) {
+        if (mode == NOTHING) return "Nothing";
+        if (mode == getModeOrdinal(ITEM_IN)) return "Item Input";
+        if (mode == getModeOrdinal(ITEM_OUT)) return "Item Output";
+        if (mode == getModeOrdinal(FLUID_IN)) return "Fluid Input";
+        if (mode == getModeOrdinal(FLUID_OUT)) return "Fluid Output";
+        if (mode == getModeOrdinal(ENERGY_IN)) return "Energy Input";
+        if (mode == getModeOrdinal(ENERGY_OUT)) return "Energy Output";
         return "Unknown";
     }
 
-    protected byte getModeOrdinal(int aMode) {
+    /**
+     * @param mode Must be a power of two or it won't work
+     */
+    protected int getModeOrdinal(int mode) {
         // log2 returns the bit position of the only bit set, add 1 to account for 0 being NOTHING
         // NOTE: Must be a power of 2 (single bit)
-        return (byte) (log2(aMode, RoundingMode.UNNECESSARY) + 1);
+        return log2(mode, RoundingMode.UNNECESSARY) + 1;
     }
 
-    protected byte getNextAllowedMode(List<Integer> allowedModes) {
+    protected int getNextAllowedMode(List<Integer> allowedModes) {
         if (this.allowedModes == NOTHING) return NOTHING;
 
         final int numModes = allowedModes.size();
-        for (byte i = 1; i <= numModes; i++) {
-            final byte curMode = (byte) ((mode + i) % numModes);
+        for (int i = 1; i <= numModes; i++) {
+            final int curMode = ((mode + i) % numModes);
             if (curMode == NOTHING || hasMode(1 << (curMode - 1))) return curMode;
         }
         // Nothing valid found
@@ -444,27 +431,19 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     }
 
     @Override
-    public boolean onMalletRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, ForgeDirection wrenchSide, float aX,
-        float aY, float aZ) {
+    public boolean onMalletRightClick(EntityPlayer player, ItemStack currentItem, ForgeDirection wrenchSide, float x,
+        float y, float z) {
         if (allowedModes == NOTHING) return true;
         if (mode == NOTHING) {
             facing = wrenchSide;
         }
         setMode(getNextAllowedMode(BASIC_MODES));
-        if (aPlayer.isSneaking()) {
+        if (player.isSneaking()) {
             facing = wrenchSide;
         }
-        GT_Utility.sendChatToPlayer(aPlayer, "Mode set to `" + getModeName(mode) + "' (" + mode + ")");
-        sendClientData((EntityPlayerMP) aPlayer);
+        GT_Utility.sendChatToPlayer(player, "Mode set to `" + getModeName(mode) + "' (" + mode + ")");
+        sendClientData((EntityPlayerMP) player);
         return true;
-    }
-
-    @Override
-    public void setLightValue(byte aLightValue) {}
-
-    @Override
-    public byte getComparatorValue(ForgeDirection side) {
-        return 0;
     }
 
     @Override
@@ -503,7 +482,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     @Override
     @Nonnull
     public PowerLogic getPowerLogic(@Nonnull ForgeDirection side) {
-        if (side != facing && side != ForgeDirection.UNKNOWN) {
+        if (side != getFrontFacing() && side != ForgeDirection.UNKNOWN) {
             return new NullPowerLogic();
         }
 
@@ -518,16 +497,6 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         return controller.getPowerLogic();
     }
 
-    @Override
-    public boolean isEnetInput() {
-        return modeSelected(ENERGY_IN);
-    }
-
-    @Override
-    public boolean isEnetOutput() {
-        return modeSelected(ENERGY_OUT);
-    }
-
     // #endregion Energy
 
     // #region Item - Depending on the part type - proxy to the multiblock controller, if we have one
@@ -535,7 +504,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     @Override
     @Nullable
     public ItemInventoryLogic getItemLogic(@Nonnull ForgeDirection side, @Nonnull InventoryType unused) {
-        if (side != facing && side != ForgeDirection.UNKNOWN) return null;
+        if (side != getFrontFacing() && side != ForgeDirection.UNKNOWN) return null;
 
         if (!modeSelected(ITEM_IN, ITEM_OUT)) return null;
 
@@ -573,7 +542,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
 
     @Override
     public boolean hasGui(ForgeDirection side) {
-        if (modeSelected(ENERGY_IN, ENERGY_OUT) && facing == side) {
+        if (modeSelected(ENERGY_IN, ENERGY_OUT) && getFrontFacing() == side) {
             return false;
         }
         return getTarget(true) != null;
@@ -599,56 +568,8 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         return null;
     }
 
-    @Override
-    public void addUIWidgets(Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
-        IMultiBlockController controller = getTarget(false);
-        if (controller == null) {
-            return;
-        }
-        if ((modeSelected(ITEM_IN, ITEM_OUT))) {
-            builder.widget(
-                controller
-                    .getItemLogic(modeSelected(ITEM_IN) ? InventoryType.Input : InventoryType.Output, lockedInventory)
-                    .getGuiPart()
-                    .setSize(18 * 4 + 4, 18 * 5)
-                    .setPos(52, 7));
-        }
-
-        if ((modeSelected(FLUID_IN, FLUID_OUT))) {
-            builder.widget(
-                controller
-                    .getFluidLogic(modeSelected(FLUID_IN) ? InventoryType.Input : InventoryType.Output, lockedInventory)
-                    .getGuiPart()
-                    .setSize(18 * 4 + 4, 18 * 5)
-                    .setPos(52, 7));
-        }
-    }
-
     protected boolean canOpenControllerGui() {
         return true;
-    }
-
-    @Override
-    protected int getGUIHeight() {
-        return super.getGUIHeight() + 20;
-    }
-
-    @Override
-    public void addGregTechLogo(Builder builder) {
-        if (modeSelected(ITEM_IN, ITEM_OUT)) {
-            builder.widget(
-                new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
-                    .setSize(17, 17)
-                    .setPos(152, 74));
-        } else if (modeSelected(FLUID_IN, FLUID_OUT)) {
-            builder.widget(
-                new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
-                    .setSize(17, 17)
-                    .setPos(152, 82));
-        } else {
-            super.addGregTechLogo(builder);
-        }
     }
 
     @Override
@@ -676,7 +597,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     @Nonnull
     public ForgeDirection getPowerOutputSide() {
         if (!modeSelected(ENERGY_OUT)) return ForgeDirection.UNKNOWN;
-        return facing;
+        return getFrontFacing();
     }
 
     @Nonnull
@@ -707,5 +628,4 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     public String getMachineName() {
         return StatCollector.translateToLocal(getAsItem().getUnlocalizedName());
     }
-
 }
