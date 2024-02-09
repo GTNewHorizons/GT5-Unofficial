@@ -163,6 +163,7 @@ public abstract class TickableMultiTileEntity extends MultiTileEntity implements
     @Override
     public void issueClientUpdate() {
         sendClientData = true;
+        sendGraphicPacket();
     }
 
     @Override

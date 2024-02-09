@@ -26,10 +26,16 @@ public class MultiTileEntityData extends PacketData<MultiTileEntityProcess> {
     }
 
     @Override
-    public void encode(@Nonnull ByteBuf out) {}
+    public void encode(@Nonnull ByteBuf out) {
+        out.writeInt(registryId);
+        out.writeInt(metaId);
+    }
 
     @Override
-    public void decode(@Nonnull ByteArrayDataInput in) {}
+    public void decode(@Nonnull ByteArrayDataInput in) {
+        registryId = in.readInt();
+        metaId = in.readInt();
+    }
 
     @Override
     public void process(MultiTileEntityProcess processData) {
