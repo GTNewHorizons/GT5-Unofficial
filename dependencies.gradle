@@ -1,8 +1,8 @@
 // Add your dependencies here
 
 dependencies {
-    api('com.github.GTNewHorizons:GT5-Unofficial:5.09.45.58:dev')
-    api("com.github.GTNewHorizons:TecTech:5.3.30:dev")
+    api('com.github.GTNewHorizons:GT5-Unofficial:5.09.45.62:dev')
+    api("com.github.GTNewHorizons:TecTech:5.3.31:dev")
     api("com.github.GTNewHorizons:GalacticGregGT5:1.1.0:dev") {
         exclude group:"com.github.GTNewHorizons", module:"bartworks"
     }
