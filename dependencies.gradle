@@ -40,7 +40,7 @@ dependencies {
     api("com.github.GTNewHorizons:GTNHLib:0.2.3:dev")
     api("com.github.GTNewHorizons:ModularUI:1.1.26:dev")
     api("com.github.GTNewHorizons:waila:1.7.0:dev")
-    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-315-GTNH:dev")
+    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-317-GTNH:dev")
     api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.2.13-gtnh:dev")
 
     implementation("com.github.GTNewHorizons:Avaritia:1.49:dev")
