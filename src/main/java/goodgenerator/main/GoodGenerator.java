@@ -13,6 +13,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import goodgenerator.Tags;
 import goodgenerator.common.CommonProxy;
 import goodgenerator.crossmod.thaumcraft.Research;
 import goodgenerator.items.MyMaterial;
@@ -32,9 +33,9 @@ import goodgenerator.tabs.MyTabs;
                 + "after:dreamcraft;")
 public final class GoodGenerator {
 
-    public static final String MOD_ID = "GRADLETOKEN_MODID";
-    public static final String MOD_NAME = "GRADLETOKEN_MODNAME";
-    public static final String VERSION = "GRADLETOKEN_VERSION";
+    public static final String MOD_ID = "GoodGenerator";
+    public static final String MOD_NAME = "Good Generator";
+    public static final String VERSION = Tags.VERSION;
 
     public static final CreativeTabs GG = new MyTabs("Good Generator");
 

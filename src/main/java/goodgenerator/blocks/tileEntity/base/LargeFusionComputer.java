@@ -2,6 +2,7 @@ package goodgenerator.blocks.tileEntity.base;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.util.GT_StructureUtility.filterByMTETier;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
@@ -85,17 +86,20 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
                             lazy(
                                     x -> GT_HatchElementBuilder.<LargeFusionComputer>builder()
                                             .atLeast(
-                                                    GT_HatchElement.InputHatch,
-                                                    GT_HatchElement.OutputHatch,
-                                                    GT_HatchElement.InputBus)
+                                                    GT_HatchElement.InputHatch.or(GT_HatchElement.InputBus),
+                                                    GT_HatchElement.OutputHatch)
                                             .adder(LargeFusionComputer::addFluidIO).casingIndex(x.textureIndex()).dot(1)
+                                            .hatchItemFilterAnd(
+                                                    x2 -> filterByMTETier(x2.hatchTier(), Integer.MAX_VALUE))
                                             .buildAndChain(x.getGlassBlock(), x.getGlassMeta())))
                     .addElement(
                             'E',
                             lazy(
                                     x -> GT_HatchElementBuilder.<LargeFusionComputer>builder()
-                                            .atLeast(HatchElement.EnergyMulti.or(GT_HatchElement.Energy))
+                                            .anyOf(HatchElement.EnergyMulti.or(GT_HatchElement.Energy))
                                             .adder(LargeFusionComputer::addEnergyInjector).casingIndex(x.textureIndex())
+                                            .hatchItemFilterAnd(
+                                                    x2 -> filterByMTETier(x2.hatchTier(), Integer.MAX_VALUE))
                                             .dot(2).buildAndChain(x.getCasingBlock(), x.getCasingMeta())))
                     .addElement('F', lazy(x -> ofFrame(x.getFrameBox()))).build();
         }
