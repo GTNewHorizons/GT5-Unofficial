@@ -512,6 +512,6 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<
                 }
                 return result;
             }
-        };
+        }.enablePerfectOverclock();
     }
 }

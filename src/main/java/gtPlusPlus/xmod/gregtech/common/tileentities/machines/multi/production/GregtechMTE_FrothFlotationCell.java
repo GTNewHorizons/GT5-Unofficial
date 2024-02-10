@@ -213,7 +213,7 @@ public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase<
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
-        };
+        }.enablePerfectOverclock();
     }
 
     /*
