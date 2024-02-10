@@ -5,7 +5,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Textures.BlockIcons.*;
-import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,9 +37,11 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynam
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
@@ -205,58 +206,39 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_TooltipMultiB
 
         ArrayList<FluidStack> tFluids = getStoredFluids();
 
-        int PromoterAmount = findLiquidAmount(getPromoter(), tFluids);
+        long PromoterAmount = findLiquidAmount(getPromoter(), tFluids);
 
-        for (GT_Recipe recipe : RecipeMaps.dieselFuels.getAllRecipes()) {
-            FluidStack tFuel = findFuel(recipe);
-            if (tFuel == null) continue;
-            int FuelAmount = findLiquidAmount(tFuel, tFluids);
-            if (FuelAmount == 0) continue;
-            calculateEfficiency(FuelAmount, PromoterAmount, DIESEL_EFFICIENCY_COEFFICIENT);
+        CheckRecipeResult result;
 
-            consumeAllLiquid(tFuel);
-            consumeAllLiquid(getPromoter());
+        result = processFuel(tFluids, RecipeMaps.dieselFuels, PromoterAmount, DIESEL_EFFICIENCY_COEFFICIENT, 1);
+        if (result.wasSuccessful()) return result;
 
-            this.setPowerFlow((long) ((long) FuelAmount * recipe.mSpecialValue / 20.0D));
-            this.mMaxProgresstime = 20;
-            this.updateSlots();
-            return CheckRecipeResultRegistry.GENERATING;
-        }
-
-        for (GT_Recipe recipe : RecipeMaps.gasTurbineFuels.getAllRecipes()) {
-            FluidStack tFuel = findFuel(recipe);
-            if (tFuel == null) continue;
-            int FuelAmount = findLiquidAmount(tFuel, tFluids);
-            if (FuelAmount == 0) continue;
-            calculateEfficiency(FuelAmount, PromoterAmount, GAS_EFFICIENCY_COEFFICIENT);
-
-            consumeAllLiquid(tFuel);
-            consumeAllLiquid(getPromoter());
-
-            this.setPowerFlow((long) ((long) FuelAmount * recipe.mSpecialValue / 20.0D));
-            this.mMaxProgresstime = 20;
-            this.updateSlots();
-            return CheckRecipeResultRegistry.GENERATING;
-        }
+        result = processFuel(tFluids, RecipeMaps.gasTurbineFuels, PromoterAmount, GAS_EFFICIENCY_COEFFICIENT, 1);
+        if (result.wasSuccessful()) return result;
 
         if (GTPlusPlus.isModLoaded()) {
-            for (GT_Recipe recipe : GTPPRecipeMaps.rocketFuels.getAllRecipes()) {
-                FluidStack tFuel = findFuel(recipe);
-                if (tFuel == null) continue;
-                int FuelAmount = findLiquidAmount(tFuel, tFluids);
-                if (FuelAmount == 0) continue;
-                calculateEfficiency(FuelAmount, PromoterAmount, ROCKET_EFFICIENCY_COEFFICIENT);
-
-                consumeAllLiquid(tFuel);
-                consumeAllLiquid(getPromoter());
-
-                this.setPowerFlow((long) ((long) FuelAmount * recipe.mSpecialValue * 3 / 20.0D));
-                this.mMaxProgresstime = 20;
-                this.updateSlots();
-                return CheckRecipeResultRegistry.GENERATING;
-            }
+            result = processFuel(tFluids, GTPPRecipeMaps.rocketFuels, PromoterAmount, ROCKET_EFFICIENCY_COEFFICIENT, 3);
+            if (result.wasSuccessful()) return result;
         }
 
+        return CheckRecipeResultRegistry.NO_FUEL_FOUND;
+    }
+
+    protected CheckRecipeResult processFuel(ArrayList<FluidStack> tFluids, RecipeMap<FuelBackend> recipeMap,
+            long PromoterAmount, double efficiencyCoefficient, double FuelsValueBonus) {
+        for (GT_Recipe recipe : recipeMap.getAllRecipes()) {
+            FluidStack tFuel = findFuel(recipe);
+            if (tFuel == null) continue;
+            long FuelAmount = findLiquidAmount(tFuel, tFluids);
+            if (FuelAmount == 0) continue;
+            calculateEfficiency(FuelAmount, PromoterAmount, efficiencyCoefficient);
+            consumeAllLiquid(tFuel, tFluids);
+            consumeAllLiquid(getPromoter(), tFluids);
+            this.setPowerFlow((long) (FuelAmount * recipe.mSpecialValue * FuelsValueBonus / 20.0D));
+            this.mMaxProgresstime = 20;
+            this.updateSlots();
+            return CheckRecipeResultRegistry.GENERATING;
+        }
         return CheckRecipeResultRegistry.NO_FUEL_FOUND;
     }
 
@@ -313,7 +295,7 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_TooltipMultiB
         else return aFuel.mFluidInputs[0];
     }
 
-    public void calculateEfficiency(int aFuel, int aPromoter, double coefficient) {
+    public void calculateEfficiency(long aFuel, long aPromoter, double coefficient) {
         if (aPromoter == 0) {
             this.tEff = 0;
             return;
@@ -321,8 +303,8 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_TooltipMultiB
         this.tEff = (int) (Math.exp(-coefficient * (double) aFuel / (double) aPromoter) * EFFICIENCY_CEILING * 10000);
     }
 
-    public int findLiquidAmount(FluidStack liquid, List<FluidStack> input) {
-        int cnt = 0;
+    public long findLiquidAmount(FluidStack liquid, List<FluidStack> input) {
+        long cnt = 0;
         for (FluidStack fluid : input) {
             if (fluid.isFluidEqual(liquid)) {
                 cnt += fluid.amount;
@@ -332,12 +314,9 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_TooltipMultiB
         return cnt;
     }
 
-    public void consumeAllLiquid(FluidStack liquid) {
-        for (GT_MetaTileEntity_Hatch_Input tHatch : filterValidMTEs(mInputHatches)) {
-            FluidStack tLiquid = tHatch.getFluid();
-            if (tLiquid != null && tLiquid.isFluidEqual(liquid)) {
-                tHatch.drain(tLiquid.amount, true);
-            }
+    public void consumeAllLiquid(FluidStack liquid, List<FluidStack> input) {
+        for (FluidStack fluid : input) {
+            if (fluid.isFluidEqual(liquid)) fluid.amount = 0;
         }
     }
 
