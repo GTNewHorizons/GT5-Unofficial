@@ -1343,18 +1343,19 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     public void getFullPacketData(GT_Packet_MultiTileEntity packet) {
         packet.addData(new CoordinateData(getCoords()));
         packet.addData(new CommonData(mStrongRedstone, color, (byte) 0));
-        packet.addData(new MultiTileEntityData(mteRegistry, blockMetadata));
+        packet.addData(new MultiTileEntityData(mteRegistry, mteID));
     }
 
     @Override
     public void getGraphicPacketData(GT_Packet_MultiTileEntity packet) {
         packet.addData(new CoordinateData(getCoords()));
+        packet.addData(new MultiTileEntityData(mteRegistry, mteID));
     }
 
     @Override
     public void getTimedPacketData(GT_Packet_MultiTileEntity packet) {
         packet.addData(new CoordinateData(getCoords()));
-        packet.addData(new MultiTileEntityData(mteRegistry, blockMetadata));
+        packet.addData(new MultiTileEntityData(mteRegistry, mteID));
     }
 
     @Override
