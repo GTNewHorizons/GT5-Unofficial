@@ -34,22 +34,25 @@ public class GT_Cover_DoesWork extends GT_CoverBehavior {
     public int doCoverThings(ForgeDirection side, byte aInputRedstone, int aCoverID, int aCoverVariable,
         ICoverable aTileEntity, long aTimer) {
         if ((aTileEntity instanceof IMachineProgress)) {
-            if (aCoverVariable < 2) {
-                int tScale = ((IMachineProgress) aTileEntity).getMaxProgress() / 15;
-                if ((tScale > 0) && (((IMachineProgress) aTileEntity).hasThingsToDo())) {
-                    aTileEntity.setOutputRedstoneSignal(
-                        side,
-                        aCoverVariable % 2 == 0 ? (byte) (((IMachineProgress) aTileEntity).getProgress() / tScale)
-                            : (byte) (15 - ((IMachineProgress) aTileEntity).getProgress() / tScale));
-                } else {
-                    aTileEntity.setOutputRedstoneSignal(side, (byte) (aCoverVariable % 2 == 0 ? 0 : 15));
-                }
+            IMachineProgress mProgress = (IMachineProgress) aTileEntity;
+            boolean inverted = isFlagSet(aCoverVariable, 0x1);
+            int signal = 0;
+
+            if (isFlagSet(aCoverVariable, 0x4)) {
+                signal = inverted == mProgress.isAllowedToWork() ? 0 : 15;
+            } else if (isFlagSet(aCoverVariable, 0x2)) {
+                signal = inverted == (mProgress.getMaxProgress() == 0) ? 0 : 15;
             } else {
-                aTileEntity.setOutputRedstoneSignal(
-                    side,
-                    (byte) ((aCoverVariable % 2 == 0 ? 1 : 0)
-                        != (((IMachineProgress) aTileEntity).getMaxProgress() == 0 ? 1 : 0) ? 0 : 15));
+                int tScale = mProgress.getMaxProgress() / 15;
+
+                if (tScale > 0 && mProgress.hasThingsToDo()) {
+                    signal = inverted ? (15 - mProgress.getProgress() / tScale) : (mProgress.getProgress() / tScale);
+                } else {
+                    signal = inverted ? 15 : 0;
+                }
             }
+
+            aTileEntity.setOutputRedstoneSignal(side, (byte) signal);
         } else {
             aTileEntity.setOutputRedstoneSignal(side, (byte) 0);
         }
@@ -59,9 +62,9 @@ public class GT_Cover_DoesWork extends GT_CoverBehavior {
     @Override
     public int onCoverScrewdriverclick(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
         EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        aCoverVariable = (aCoverVariable + (aPlayer.isSneaking() ? -1 : 1)) % 4;
+        aCoverVariable = (aCoverVariable + (aPlayer.isSneaking() ? -1 : 1)) % 6;
         if (aCoverVariable < 0) {
-            aCoverVariable = 3;
+            aCoverVariable = 5;
         }
         switch (aCoverVariable) {
             case 0 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("018", "Normal"));
@@ -72,6 +75,10 @@ public class GT_Cover_DoesWork extends GT_CoverBehavior {
             // Not Running
             case 3 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("021", "Not ready to work"));
             // Running
+            case 4 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("028", "Power On"));
+            // Power On
+            case 5 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("029", "Power Off"));
+            // Power Off
         }
         return aCoverVariable;
     }
@@ -138,6 +145,10 @@ public class GT_Cover_DoesWork extends GT_CoverBehavior {
         return new DoesWorkUIFactory(buildContext).createWindow();
     }
 
+    private static boolean isFlagSet(int coverVariable, int flag) {
+        return (coverVariable & flag) == flag;
+    }
+
     private class DoesWorkUIFactory extends UIFactory {
 
         private static final int startX = 10;
@@ -173,17 +184,29 @@ public class GT_Cover_DoesWork extends GT_CoverBehavior {
                                         .setPos(spaceX * 1, spaceY * 0))
                                 .addToggleButton(
                                     2,
+                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF)
+                                        .setPos(spaceX * 2, spaceY * 0))
+                                .addToggleButton(
+                                    3,
                                     CoverDataFollower_ToggleButtonWidget.ofRedstone(),
                                     widget -> widget.setPos(spaceX * 0, spaceY * 1))
                                 .setPos(startX, startY))
-                .widget(
-                    TextWidget
-                        .dynamicString(
-                            () -> ((convert(getCoverData()) & 0x2) > 0) ? GT_Utility.trans("242", "Machine idle")
-                                : GT_Utility.trans("241", "Recipe progress"))
-                        .setSynced(false)
-                        .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 3, 4 + startY + spaceY * 0))
+                .widget(TextWidget.dynamicString(() -> {
+                    int coverVariable = convert(getCoverData());
+
+                    if (isFlagSet(coverVariable, 0x4)) {
+                        return GT_Utility.trans("271", "Power");
+                    } else if (isFlagSet(coverVariable, 0x2)) {
+                        return GT_Utility.trans("242", "Machine idle");
+                    } else {
+                        return GT_Utility.trans("241", "Recipe progress");
+                    }
+
+                })
+                    .setSynced(false)
+                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setPos(startX + spaceX * 3, 4 + startY + spaceY * 0))
                 .widget(
                     TextWidget
                         .dynamicString(
@@ -197,14 +220,20 @@ public class GT_Cover_DoesWork extends GT_CoverBehavior {
         private int getNewCoverVariable(int id, int coverVariable) {
             switch (id) {
                 case 0 -> {
-                    return coverVariable & ~0x2;
+                    return (coverVariable & ~0x4) & ~0x2;
                 }
                 case 1 -> {
-                    return coverVariable | 0x2;
+                    return (coverVariable & ~0x4) | 0x2;
                 }
                 case 2 -> {
-                    if ((coverVariable & 0x1) > 0) return coverVariable & ~0x1;
-                    return coverVariable | 0x1;
+                    return (coverVariable & ~0x2) | 0x4;
+                }
+                case 3 -> {
+                    if (isFlagSet(coverVariable, 0x1)) {
+                        return coverVariable & ~0x1;
+                    } else {
+                        return coverVariable | 0x1;
+                    }
                 }
             }
             return coverVariable;
@@ -212,9 +241,10 @@ public class GT_Cover_DoesWork extends GT_CoverBehavior {
 
         private boolean isEnabled(int id, int coverVariable) {
             return switch (id) {
-                case 0 -> (coverVariable & 0x2) == 0;
-                case 1 -> (coverVariable & 0x2) > 0;
-                case 2 -> (coverVariable & 0x1) > 0;
+                case 0 -> !isFlagSet(coverVariable, 0x2) && !isFlagSet(coverVariable, 0x4);
+                case 1 -> isFlagSet(coverVariable, 0x2);
+                case 2 -> isFlagSet(coverVariable, 0x4);
+                case 3 -> isFlagSet(coverVariable, 0x1);
                 default -> true;
             };
         }

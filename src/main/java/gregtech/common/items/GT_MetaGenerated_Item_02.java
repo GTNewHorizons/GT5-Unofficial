@@ -4,6 +4,7 @@ import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ADVANCED_REDSTONE_RECEIVER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ADVANCED_REDSTONE_TRANSMITTER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_WIRELESS_ACTIVITYDETECTOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_WIRELESS_FLUID_DETECTOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_WIRELESS_ITEM_DETECTOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_WIRELESS_MAINTENANCE_DETECTOR;
@@ -51,6 +52,7 @@ import gregtech.common.covers.redstone.GT_Cover_AdvancedRedstoneReceiverExternal
 import gregtech.common.covers.redstone.GT_Cover_AdvancedRedstoneReceiverInternal;
 import gregtech.common.covers.redstone.GT_Cover_AdvancedRedstoneTransmitterExternal;
 import gregtech.common.covers.redstone.GT_Cover_AdvancedRedstoneTransmitterInternal;
+import gregtech.common.covers.redstone.GT_Cover_WirelessDoesWorkDetector;
 import gregtech.common.covers.redstone.GT_Cover_WirelessFluidDetector;
 import gregtech.common.covers.redstone.GT_Cover_WirelessItemDetector;
 import gregtech.common.covers.redstone.GT_Cover_WirelessMaintenanceDetector;
@@ -2424,6 +2426,16 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 4L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 3L)));
 
+        ItemList.Cover_WirelessActivityDetector.set(
+            addItem(
+                tLastID = 584,
+                "Wireless Activity Detector Cover",
+                "Transfers Activity as Redstone wirelessly/n Can only connect with advanced wireless covers",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 2L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.TERRA, 1L)));
+
         GregTech_API.registerCover(
             ItemList.Cover_AdvancedRedstoneTransmitterExternal.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_TRANSMITTER)),
@@ -2453,6 +2465,11 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             ItemList.Cover_WirelessItemDetector.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_WIRELESS_ITEM_DETECTOR)),
             new GT_Cover_WirelessItemDetector(TextureFactory.of(OVERLAY_WIRELESS_ITEM_DETECTOR)));
+
+        GregTech_API.registerCover(
+            ItemList.Cover_WirelessActivityDetector.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_WIRELESS_ACTIVITYDETECTOR)),
+            new GT_Cover_WirelessDoesWorkDetector(TextureFactory.of(OVERLAY_WIRELESS_ACTIVITYDETECTOR)));
 
         GregTech_API.registerCover(
             ItemList.Cover_WirelessNeedsMaintainance.get(1L),
@@ -2504,7 +2521,15 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
-
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Cover_ActivityDetector.get(1L),
+                ItemList.Emitter_EV.get(1L),
+                GT_Utility.getIntegratedCircuit(1))
+            .itemOutputs(ItemList.Cover_WirelessActivityDetector.get(1L))
+            .duration(2 * MINUTES + 40 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(assemblerRecipes);
         GT_ModHandler.addShapelessCraftingRecipe(
             ItemList.Cover_AdvancedRedstoneReceiverExternal.get(1L),
             new Object[] { ItemList.Cover_AdvancedRedstoneReceiverInternal.get(1L) });
