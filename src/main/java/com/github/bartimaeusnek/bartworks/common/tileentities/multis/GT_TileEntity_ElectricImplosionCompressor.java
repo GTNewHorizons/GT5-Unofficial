@@ -24,6 +24,8 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -68,6 +70,8 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OverclockCalculator;
@@ -267,21 +271,23 @@ public class GT_TileEntity_ElectricImplosionCompressor
 
             @NotNull
             @Override
+            protected CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
+                long voltage = GT_TileEntity_ElectricImplosionCompressor.this.getAverageInputVoltage();
+                // Only allow a minimum of T-1 energy hatch
+                if (recipe.mEUt > voltage * 4) {
+                    return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
+                }
+                return CheckRecipeResultRegistry.SUCCESSFUL;
+            }
+
+            @NotNull
+            @Override
             protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
                 // For overclocking we'll allow all power to be used
                 return super.createOverclockCalculator(recipe)
                         .setEUt(GT_TileEntity_ElectricImplosionCompressor.this.getMaxInputEu()).setAmperage(1);
             }
         }.setMaxParallelSupplier(() -> (int) Math.pow(4, Math.max(this.mBlockTier - 1, 0)));
-    }
-
-    @Override
-    protected void setProcessingLogicPower(ProcessingLogic logic) {
-        long amperage = this.getMaxInputAmps();
-        long voltage = this.getAverageInputVoltage();
-        // We allow one OC, if there is enough amperage, no matter which type of hatch is used
-        logic.setAvailableVoltage(amperage >= 4 ? voltage * 4 : voltage);
-        logic.setAvailableAmperage(amperage >= 4 ? amperage / 4 : amperage);
     }
 
     private void updateChunkCoordinates() {
