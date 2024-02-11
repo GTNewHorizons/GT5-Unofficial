@@ -18,7 +18,9 @@ import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
+import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.covers.redstone.GT_Cover_WirelessDoesWorkDetector.ActivityMode;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
@@ -48,7 +50,7 @@ public class GT_Cover_WirelessDoesWorkDetector
             int signal = 0;
 
             switch (coverVariable.mode) {
-                case POWER -> signal = inverted == mProgress.isAllowedToWork() ? 0 : 15;
+                case MACHINE_ENABLED -> signal = inverted == mProgress.isAllowedToWork() ? 0 : 15;
                 case MACHINE_IDLE -> signal = inverted == (mProgress.getMaxProgress() == 0) ? 0 : 15;
                 case RECIPE_PROGRESS -> {
                     int tScale = mProgress.getMaxProgress() / 15;
@@ -100,7 +102,7 @@ public class GT_Cover_WirelessDoesWorkDetector
     public enum ActivityMode {
         RECIPE_PROGRESS,
         MACHINE_IDLE,
-        POWER,
+        MACHINE_ENABLED,
     }
 
     public static class ActivityTransmitterData extends GT_Cover_AdvancedRedstoneTransmitterBase.TransmitterData {
@@ -156,9 +158,6 @@ public class GT_Cover_WirelessDoesWorkDetector
         }
     }
 
-    // GUI stuff
-    private static final String[] extraTexts = new String[] { "Recipe progress", "Machine idle", "Power" };
-
     @Override
     public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
         return new WirelessActivityDetectorUIFactory(buildContext).createWindow();
@@ -172,7 +171,7 @@ public class GT_Cover_WirelessDoesWorkDetector
 
         @Override
         protected int getGUIHeight() {
-            return 143;
+            return 107;
         }
 
         @Override
@@ -188,28 +187,58 @@ public class GT_Cover_WirelessDoesWorkDetector
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
             super.addUIWidgets(builder);
-            for (int i = 0; i < 3; i++) {
-                builder.widget(
-                    new TextWidget(extraTexts[i]).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * (i % 2 == 0 ? 1 : 7), 4 + startY + spaceY * (2 + i / 2)));
-            }
+            builder.widget(TextWidget.dynamicString(() -> {
+
+                ActivityMode mode = getCoverData().mode;
+
+                if (mode == ActivityMode.MACHINE_ENABLED) {
+                    return GT_Utility.trans("271", "Machine enabled");
+                } else if (mode == ActivityMode.MACHINE_IDLE) {
+                    return GT_Utility.trans("242", "Machine idle");
+                } else {
+                    return GT_Utility.trans("241", "Recipe progress");
+                }
+
+            })
+                .setSynced(false)
+                .setDefaultColor(COLOR_TEXT_GRAY.get())
+                .setPos(startX + spaceX * 3, 4 + startY + spaceY * 2));
         }
 
         @Override
         protected void addUIForDataController(CoverDataControllerWidget<ActivityTransmitterData> controller) {
             super.addUIForDataController(controller);
-            for (int i = 0; i < 3; i++) {
-                final int index = i;
-                controller.addFollower(
+
+            controller.addFollower(
+                CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                coverData -> coverData.mode == ActivityMode.RECIPE_PROGRESS,
+                (coverData, state) -> {
+                    coverData.mode = ActivityMode.RECIPE_PROGRESS;
+                    return coverData;
+                },
+                widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_PROGRESS)
+                    .addTooltip(GT_Utility.trans("241", "Recipe progress"))
+                    .setPos(spaceX * 0, spaceY * 2))
+                .addFollower(
                     CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                    coverData -> coverData.mode == ActivityMode.values()[index],
+                    coverData -> coverData.mode == ActivityMode.MACHINE_IDLE,
                     (coverData, state) -> {
-                        coverData.mode = ActivityMode.values()[index];
+                        coverData.mode = ActivityMode.MACHINE_IDLE;
                         return coverData;
                     },
-                    widget -> widget.setToggleTexture(GT_UITextures.OVERLAY_BUTTON_CHECKMARK, GT_UITextures.TRANSPARENT)
-                        .setPos(spaceX * (index % 2 == 0 ? 0 : 6), spaceY * (2 + index / 2)));
-            }
+                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_CHECKMARK)
+                        .addTooltip(GT_Utility.trans("242", "Machine idle"))
+                        .setPos(spaceX * 1, spaceY * 2))
+                .addFollower(
+                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                    coverData -> coverData.mode == ActivityMode.MACHINE_ENABLED,
+                    (coverData, state) -> {
+                        coverData.mode = ActivityMode.MACHINE_ENABLED;
+                        return coverData;
+                    },
+                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_ON)
+                        .addTooltip(GT_Utility.trans("271", "Machine enabled"))
+                        .setPos(spaceX * 2, spaceY * 2));
         }
     }
 

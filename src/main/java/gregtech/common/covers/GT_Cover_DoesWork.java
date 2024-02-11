@@ -20,6 +20,10 @@ import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget
 
 public class GT_Cover_DoesWork extends GT_CoverBehavior {
 
+    private static int FLAG_INVERTED = 0x1;
+    private static int FLAG_PROGRESS = 0x2;
+    private static int FLAG_ENABLED = 0x4;
+
     public GT_Cover_DoesWork(ITexture coverTexture) {
         super(coverTexture);
     }
@@ -35,12 +39,12 @@ public class GT_Cover_DoesWork extends GT_CoverBehavior {
         ICoverable aTileEntity, long aTimer) {
         if ((aTileEntity instanceof IMachineProgress)) {
             IMachineProgress mProgress = (IMachineProgress) aTileEntity;
-            boolean inverted = isFlagSet(aCoverVariable, 0x1);
+            boolean inverted = isFlagSet(aCoverVariable, FLAG_INVERTED);
             int signal = 0;
 
-            if (isFlagSet(aCoverVariable, 0x4)) {
+            if (isFlagSet(aCoverVariable, FLAG_ENABLED)) {
                 signal = inverted == mProgress.isAllowedToWork() ? 0 : 15;
-            } else if (isFlagSet(aCoverVariable, 0x2)) {
+            } else if (isFlagSet(aCoverVariable, FLAG_PROGRESS)) {
                 signal = inverted == (mProgress.getMaxProgress() == 0) ? 0 : 15;
             } else {
                 int tScale = mProgress.getMaxProgress() / 15;
@@ -75,10 +79,10 @@ public class GT_Cover_DoesWork extends GT_CoverBehavior {
             // Not Running
             case 3 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("021", "Not ready to work"));
             // Running
-            case 4 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("028", "Power On"));
-            // Power On
-            case 5 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("029", "Power Off"));
-            // Power Off
+            case 4 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("028", "Machine Enabled"));
+            // Enabled
+            case 5 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("029", "Machine Disabled"));
+            // Disabled
         }
         return aCoverVariable;
     }
@@ -185,7 +189,7 @@ public class GT_Cover_DoesWork extends GT_CoverBehavior {
                                 .addToggleButton(
                                     2,
                                     CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF)
+                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_ON)
                                         .setPos(spaceX * 2, spaceY * 0))
                                 .addToggleButton(
                                     3,
@@ -195,9 +199,9 @@ public class GT_Cover_DoesWork extends GT_CoverBehavior {
                 .widget(TextWidget.dynamicString(() -> {
                     int coverVariable = convert(getCoverData());
 
-                    if (isFlagSet(coverVariable, 0x4)) {
-                        return GT_Utility.trans("271", "Power");
-                    } else if (isFlagSet(coverVariable, 0x2)) {
+                    if (isFlagSet(coverVariable, FLAG_ENABLED)) {
+                        return GT_Utility.trans("271", "Machine enabled");
+                    } else if (isFlagSet(coverVariable, FLAG_PROGRESS)) {
                         return GT_Utility.trans("242", "Machine idle");
                     } else {
                         return GT_Utility.trans("241", "Recipe progress");
@@ -210,7 +214,8 @@ public class GT_Cover_DoesWork extends GT_CoverBehavior {
                 .widget(
                     TextWidget
                         .dynamicString(
-                            () -> ((convert(getCoverData()) & 0x1) > 0) ? GT_Utility.trans("INVERTED", "Inverted")
+                            () -> isFlagSet(convert(getCoverData()), FLAG_INVERTED)
+                                ? GT_Utility.trans("INVERTED", "Inverted")
                                 : GT_Utility.trans("NORMAL", "Normal"))
                         .setSynced(false)
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
@@ -220,19 +225,19 @@ public class GT_Cover_DoesWork extends GT_CoverBehavior {
         private int getNewCoverVariable(int id, int coverVariable) {
             switch (id) {
                 case 0 -> {
-                    return (coverVariable & ~0x4) & ~0x2;
+                    return (coverVariable & ~FLAG_ENABLED) & ~FLAG_PROGRESS;
                 }
                 case 1 -> {
-                    return (coverVariable & ~0x4) | 0x2;
+                    return (coverVariable & ~FLAG_ENABLED) | FLAG_PROGRESS;
                 }
                 case 2 -> {
-                    return (coverVariable & ~0x2) | 0x4;
+                    return (coverVariable & ~FLAG_PROGRESS) | FLAG_ENABLED;
                 }
                 case 3 -> {
-                    if (isFlagSet(coverVariable, 0x1)) {
-                        return coverVariable & ~0x1;
+                    if (isFlagSet(coverVariable, FLAG_INVERTED)) {
+                        return coverVariable & ~FLAG_INVERTED;
                     } else {
-                        return coverVariable | 0x1;
+                        return coverVariable | FLAG_INVERTED;
                     }
                 }
             }
@@ -241,10 +246,10 @@ public class GT_Cover_DoesWork extends GT_CoverBehavior {
 
         private boolean isEnabled(int id, int coverVariable) {
             return switch (id) {
-                case 0 -> !isFlagSet(coverVariable, 0x2) && !isFlagSet(coverVariable, 0x4);
-                case 1 -> isFlagSet(coverVariable, 0x2);
-                case 2 -> isFlagSet(coverVariable, 0x4);
-                case 3 -> isFlagSet(coverVariable, 0x1);
+                case 0 -> !isFlagSet(coverVariable, FLAG_PROGRESS) && !isFlagSet(coverVariable, FLAG_ENABLED);
+                case 1 -> isFlagSet(coverVariable, FLAG_PROGRESS);
+                case 2 -> isFlagSet(coverVariable, FLAG_ENABLED);
+                case 3 -> isFlagSet(coverVariable, FLAG_INVERTED);
                 default -> true;
             };
         }
