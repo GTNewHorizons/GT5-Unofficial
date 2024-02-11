@@ -649,7 +649,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             new Materials[] { Materials.Cryolite, Materials.SiliconSG, MaterialsKevlar.NickelAluminide,
                 MaterialsUEVplus.SpaceTime, MaterialsUEVplus.TranscendentMetal, Materials.Oriharukon,
                 MaterialsUEVplus.WhiteDwarfMatter, MaterialsUEVplus.BlackDwarfMatter, MaterialsUEVplus.Universium,
-                MaterialsUEVplus.Eternity },
+                MaterialsUEVplus.Eternity, MaterialsUEVplus.MagMatter },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS12);
 
@@ -1242,6 +1242,15 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .configureMaterials(MaterialsUEVplus.PrimordialMatter)
             .registerBContainers(
                 GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.PrimordialMatter, 1L),
+                ItemList.Cell_Empty.get(1L));
+
+        GT_FluidFactory.builder("QuarkGluonPlasma")
+            .withLocalizedName(MaterialsUEVplus.QuarkGluonPlasma.mLocalizedName)
+            .withStateAndTemperature(LIQUID, 2_000_000_000)
+            .buildAndRegister()
+            .configureMaterials(MaterialsUEVplus.QuarkGluonPlasma)
+            .registerBContainers(
+                GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.QuarkGluonPlasma, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GT_FluidFactory.builder("fieryblood")
