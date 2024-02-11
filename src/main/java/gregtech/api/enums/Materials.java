@@ -2175,7 +2175,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             EnrichedHolmium,
             TengamPurified,
             TengamAttuned,
-            MaterialsUEVplus.Eternity);
+            MaterialsUEVplus.Eternity,
+            MaterialsUEVplus.MagMatter);
 
         SubTag.FOOD.addTo(
             MeatRaw,
@@ -2449,6 +2450,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         CosmicNeutronium.renderer = new CosmicNeutroniumRenderer();
         MaterialsUEVplus.Universium.renderer = new UniversiumRenderer();
         MaterialsUEVplus.Eternity.renderer = new InfinityRenderer();
+        MaterialsUEVplus.MagMatter.renderer = new InfinityRenderer();
     }
 
     private static void fillGeneratedMaterialsMap() {
@@ -2545,6 +2547,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
         if (aMaterial == MaterialsUEVplus.Eternity) {
             aMaterial.mHandleMaterial = MaterialsUEVplus.SpaceTime;
+        }
+
+        if (aMaterial == MaterialsUEVplus.MagMatter) {
+            aMaterial.mHandleMaterial = MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter;
         }
     }
 

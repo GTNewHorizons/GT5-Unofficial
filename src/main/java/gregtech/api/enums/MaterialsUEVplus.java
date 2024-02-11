@@ -540,6 +540,32 @@ public class MaterialsUEVplus {
         1,
         Dyes.dyeBlue);
 
+    public static Materials MagMatter = new Materials(
+        143,
+        new TextureSet("magmatter", true),
+        1.0F,
+        64 * 2621440,
+        26,
+        1 | 2 | 64 | 128,
+        255,
+        255,
+        255,
+        0,
+        "Magmatter",
+        "Magmatter",
+        -1,
+        -1,
+        0,
+        25000,
+        true,
+        false,
+        2,
+        1,
+        1,
+        Dyes._NULL,
+        Collections.singletonList(new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1)))
+        .setProcessingMaterialTierEU(TierEU.RECIPE_UMV);
+
     /**
      * called by Materials. Can be safely called multiple times. exists to allow Materials ensure this class is
      * initialized
