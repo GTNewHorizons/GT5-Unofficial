@@ -451,4 +451,9 @@ public class GT_MetaTileEntity_NanoForge extends
     public boolean supportsInputSeparation() {
         return true;
     }
+
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
+    }
 }
