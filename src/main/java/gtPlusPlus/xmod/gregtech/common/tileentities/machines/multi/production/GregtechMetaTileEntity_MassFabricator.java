@@ -284,7 +284,7 @@ public class GregtechMetaTileEntity_MassFabricator
     @Override
     protected void setupProcessingLogic(ProcessingLogic logic) {
         super.setupProcessingLogic(logic);
-        logic.setOverclock(mMode == MODE_SCRAP ? 1 : 2, 2);
+        logic.enablePerfectOverclock();
     }
 
     @Override
