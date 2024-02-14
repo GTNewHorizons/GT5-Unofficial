@@ -232,7 +232,7 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
             if (aCrop == null) continue;
 
             if (this.mModeAlternative) processSecondaryFunctions(tCrop);
-            if (!this.mHarvestEnabled) break;
+            if (!this.mHarvestEnabled) continue;
 
             if (aCrop.canBeHarvested(tCrop) && tCrop.getSize() == aCrop.getOptimalHavestSize(tCrop)) {
                 if (!getBaseMetaTileEntity().decreaseStoredEnergyUnits(powerUsage(), true)) continue;
