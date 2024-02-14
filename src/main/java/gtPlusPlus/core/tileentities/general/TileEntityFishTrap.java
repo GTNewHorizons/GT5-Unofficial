@@ -26,19 +26,19 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 
     private int tickCount = 0;
-    private boolean isInWater = false;
     private final InventoryFishTrap inventoryContents;
     private String customName;
-    private int waterSides = 0;
-    private int baseTickRate = 600 * 5;
+    // The number of water blocks is used as an index to get the tick rate.
+    private final static short[] waterBlocksToTickRate = new short[] { 0, 0, 5600, 4400, 3200, 2000, 1750 };
+    private int surroundingWaterBlocks = 0;
 
     public TileEntityFishTrap() {
         this.inventoryContents = new InventoryFishTrap();
     }
 
-    private boolean isSurroundedByWater() {
+    private int getNumberOfSurroundingWater() {
         if (!this.hasWorldObj() || this.getWorldObj().isRemote) {
-            return false;
+            return 0;
         }
         final Block[] surroundingBlocks = new Block[6];
         surroundingBlocks[0] = this.worldObj.getBlock(this.xCoord, this.yCoord + 1, this.zCoord); // Above
@@ -50,23 +50,18 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
         int waterCount = 0;
         int trapCount = 0;
         for (final Block checkBlock : surroundingBlocks) {
-            if ((checkBlock == Blocks.water) || (checkBlock == Blocks.flowing_water)
-                    || checkBlock.getUnlocalizedName().toLowerCase().contains("water")
-                    || (checkBlock == ModBlocks.blockFishTrap)) {
-                if (checkBlock != ModBlocks.blockFishTrap) {
-                    waterCount++;
-                } else {
-                    waterCount++;
-                    trapCount++;
-                }
+            if (checkBlock == ModBlocks.blockFishTrap) {
+                trapCount++;
+            } else if ((checkBlock == Blocks.water) || (checkBlock == Blocks.flowing_water)) {
+                waterCount++;
             }
         }
-        if ((waterCount >= 2) && (trapCount <= 4)) {
-            int aCheck = trapCount + waterCount;
-            this.waterSides = MathUtils.balance(aCheck, 0, 6);
-            return true;
+        // Explicitly check for at least 2 water blocks.
+        if (waterCount < 2) {
+            return 0;
         }
-        return false;
+        // Only allow the first four traps to count towards valid neighbor blocks.
+        return waterCount + Math.min(trapCount, 4);
     }
 
     public InventoryFishTrap getInventory() {
@@ -102,7 +97,7 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
     @Nullable
     private ItemStack generateLootForFishTrap() {
         final int lootWeight = MathUtils.randInt(0, 100);
-        ItemStack loot;
+        ItemStack loot = null;
         if (lootWeight <= 5) {
             loot = ItemUtils.getSimpleStack(Items.slime_ball);
         } else if (lootWeight <= 10) {
@@ -135,8 +130,6 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
             } else {
                 loot = ItemUtils.getSimpleStack(Items.diamond);
             }
-        } else {
-            loot = ItemUtils.getSimpleStack(Blocks.diamond_ore);
         }
         if (loot != null) {
             loot.stackSize = 1;
@@ -151,47 +144,24 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
         }
 
         this.tickCount++;
+        // Only recalculate the amount of neighboring water/trap blocks every 20 ticks.
         if ((this.tickCount % 20) == 0) {
-            this.isInWater = this.isSurroundedByWater();
+            this.surroundingWaterBlocks = getNumberOfSurroundingWater();
         }
 
-        if (this.isInWater) {
-            this.calculateTickrate();
-        }
-
-        if (this.tickCount >= this.baseTickRate) {
-            if (this.isInWater) {
-                int aExtraLootChance = MathUtils.randInt(1, 1000);
-                if (aExtraLootChance >= 999) {
-                    this.tryAddLoot();
-                    this.tryAddLoot();
-                    this.tryAddLoot();
-                } else {
-                    this.tryAddLoot();
-                }
-                this.markDirty();
+        if ((waterBlocksToTickRate[this.surroundingWaterBlocks] != 0)
+                && this.tickCount > waterBlocksToTickRate[this.surroundingWaterBlocks]) {
+            int aExtraLootChance = MathUtils.randInt(1, 1000);
+            if (aExtraLootChance >= 999) {
+                this.tryAddLoot();
+                this.tryAddLoot();
+                this.tryAddLoot();
+            } else {
+                this.tryAddLoot();
             }
-            this.tickCount = 0;
-        }
-        if (this.tickCount >= (this.baseTickRate + 500)) {
-            this.tickCount = 0;
-        }
-    }
+            this.markDirty();
 
-    public void calculateTickrate() {
-        int water = this.waterSides;
-        if (water <= 1) {
-            this.baseTickRate = 0;
-        } else if (water == 2) {
-            this.baseTickRate = 6800;
-        } else if (water == 3) {
-            this.baseTickRate = 5600;
-        } else if (water == 4) {
-            this.baseTickRate = 4400;
-        } else if (water == 5) {
-            this.baseTickRate = 3200;
-        } else {
-            this.baseTickRate = 1750;
+            this.tickCount = 0;
         }
     }
 
