@@ -53,7 +53,6 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -278,9 +277,8 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(15, 21, 15, true)
                 .addController("Bottom Center").addCasingInfoMin("Bulk Production Frame", 80, false)
                 .addCasingInfoMin("Quantum Force Conductor", 177, false)
-                .addCasingInfoMin("Force Field Glass", 224, false)
-                .addCasingInfoMin("Neutron Pulse Manipulators", 233, false)
-                .addCasingInfoMin("Neutron Shielding Cores", 142, false)
+                .addCasingInfoMin("Force Field Glass", 224, false).addCasingInfoMin("Pulse Manipulators", 236, true)
+                .addCasingInfoMin("Shielding Cores", 142, true)
                 .addInputBus(EnumChatFormatting.BLUE + "Bottom" + EnumChatFormatting.GRAY + " Layer", 4)
                 .addInputHatch(EnumChatFormatting.BLUE + "Bottom" + EnumChatFormatting.GRAY + " Layer", 4)
                 .addOutputHatch(EnumChatFormatting.AQUA + "Top" + EnumChatFormatting.GRAY + " Layer", 5)
@@ -577,14 +575,15 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
             private int findProgrammedCircuitNumber() {
                 if (isInputSeparationEnabled()) {
                     for (ItemStack stack : inputItems) {
-                        if (ItemList.Circuit_Integrated.isStackEqual(stack, true, false)) {
+                        if (GT_Utility.isAnyIntegratedCircuit(stack)) {
                             return stack.getItemDamage() - 1;
                         }
                     }
                     return -1;
                 } else {
                     final ItemStack controllerStack = getControllerSlot();
-                    return controllerStack != null ? controllerStack.getItemDamage() - 1 : -1;
+                    return GT_Utility.isAnyIntegratedCircuit(controllerStack) ? controllerStack.getItemDamage() - 1
+                            : -1;
                 }
             }
         };
