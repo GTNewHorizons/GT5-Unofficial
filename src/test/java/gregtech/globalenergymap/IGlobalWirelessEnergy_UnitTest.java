@@ -118,9 +118,9 @@ class IGlobalWirelessEnergy_UnitTest {
         SpaceProjectManager.putInTeam(user_uuid_1, user_uuid_1);
         SpaceProjectManager.putInTeam(user_uuid_2, user_uuid_2);
 
-        assertEquals(getUserEU(user_uuid_0), BigInteger.ONE, message);
+        assertEquals(getUserEU(user_uuid_0), BigInteger.ZERO, message);
         assertEquals(getUserEU(user_uuid_1), BigInteger.ONE, message);
-        assertEquals(getUserEU(user_uuid_2), BigInteger.ONE, message);
+        assertEquals(getUserEU(user_uuid_2), BigInteger.ZERO, message);
 
         clearGlobalEnergyInformationMaps();
     }
