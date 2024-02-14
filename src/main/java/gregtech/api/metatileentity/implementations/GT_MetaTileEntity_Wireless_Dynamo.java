@@ -5,6 +5,8 @@ import static gregtech.api.enums.GT_Values.V;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
 
+import java.util.UUID;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -19,8 +21,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 public class GT_MetaTileEntity_Wireless_Dynamo extends GT_MetaTileEntity_Hatch_Dynamo
     implements IWirelessEnergyHatchInformation {
 
-    private String owner_uuid;
-    private String owner_name;
+    private UUID owner_uuid;
 
     public GT_MetaTileEntity_Wireless_Dynamo(String aName, byte aTier, String[] aDescription,
         ITexture[][][] aTextures) {
@@ -130,11 +131,9 @@ public class GT_MetaTileEntity_Wireless_Dynamo extends GT_MetaTileEntity_Hatch_D
             if (aTick == 1) {
 
                 // UUID and username of the owner.
-                owner_uuid = aBaseMetaTileEntity.getOwnerUuid()
-                    .toString();
-                owner_name = aBaseMetaTileEntity.getOwnerName();
+                owner_uuid = aBaseMetaTileEntity.getOwnerUuid();
 
-                strongCheckOrAddUser(owner_uuid, owner_name);
+                strongCheckOrAddUser(owner_uuid);
             }
 
             // Every ticks_between_energy_addition ticks change the energy content of the machine.

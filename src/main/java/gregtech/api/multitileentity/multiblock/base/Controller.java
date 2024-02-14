@@ -1066,7 +1066,7 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
     @Override
     public void setWirelessSupport(boolean canUse) {
         if (canUse) {
-            strongCheckOrAddUser(getOwnerUuid(), getOwnerName());
+            strongCheckOrAddUser(getOwnerUuid());
         }
         power.setCanUseWireless(canUse, getOwnerUuid());
     }

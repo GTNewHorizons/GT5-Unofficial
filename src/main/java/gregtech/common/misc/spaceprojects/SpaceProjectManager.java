@@ -141,6 +141,10 @@ public class SpaceProjectManager {
         SpaceProjectWorldSavedData.INSTANCE.markDirty();
     }
 
+    public static boolean isInTeam(UUID member) {
+        return spaceTeams.containsKey(member);
+    }
+
     /**
      * Will give back all the projects a team has made or is making.
      *
