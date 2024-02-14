@@ -70,7 +70,11 @@ public class GlobalEnergyWorldSavedData extends WorldSavedData {
             Object data = objectInputStream.readObject();
             HashMap<Object, BigInteger> hashData = (HashMap<Object, BigInteger>) data;
             for (Map.Entry<Object, BigInteger> entry : hashData.entrySet()) {
-                GlobalEnergy.put(UUID.fromString(entry.getKey().toString()), entry.getValue());
+                GlobalEnergy.put(
+                    UUID.fromString(
+                        entry.getKey()
+                            .toString()),
+                    entry.getValue());
             }
         } catch (IOException | ClassNotFoundException exception) {
             System.out.println(GlobalEnergyNBTTag + " FAILED");

@@ -77,7 +77,6 @@ public class WirelessNetworkManager {
         GlobalEnergy.put(SpaceProjectManager.getLeader(user_uuid), EU);
     }
 
-
     public static void clearGlobalEnergyInformationMaps() {
         // Do not use this unless you are 100% certain you know what you are doing.
         GlobalEnergy.clear();

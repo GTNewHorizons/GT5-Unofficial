@@ -25,8 +25,7 @@ public interface IGlobalWirelessEnergy {
     // tick of a machine being placed only.
 
     default void strongCheckOrAddUser(EntityPlayer user) {
-        WirelessNetworkManager.strongCheckOrAddUser(
-                user.getUniqueID());
+        WirelessNetworkManager.strongCheckOrAddUser(user.getUniqueID());
     }
 
     default void strongCheckOrAddUser(UUID user_uuid, String user_name) {
@@ -85,7 +84,8 @@ public interface IGlobalWirelessEnergy {
     }
 
     default String getUUIDFromUsername(String username) {
-        return SpaceProjectManager.getPlayerUUIDFromName(username).toString();
+        return SpaceProjectManager.getPlayerUUIDFromName(username)
+            .toString();
     }
 
     static void clearGlobalEnergyInformationMaps() {
