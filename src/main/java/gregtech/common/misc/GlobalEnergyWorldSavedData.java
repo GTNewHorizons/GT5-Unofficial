@@ -20,6 +20,7 @@ import net.minecraft.world.storage.MapStorage;
 import net.minecraftforge.event.world.WorldEvent;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 
 public class GlobalEnergyWorldSavedData extends WorldSavedData {
 
@@ -28,6 +29,7 @@ public class GlobalEnergyWorldSavedData extends WorldSavedData {
     private static final String DATA_NAME = "GregTech_WirelessEUWorldSavedData";
 
     private static final String GlobalEnergyNBTTag = "GregTech_GlobalEnergy_MapNBTTag";
+    private static final String GlobalEnergyTeamNBTTag = "GregTech_GlobalEnergyTeam_MapNBTTag";
 
     private static void loadInstance(World world) {
 
@@ -71,13 +73,29 @@ public class GlobalEnergyWorldSavedData extends WorldSavedData {
             HashMap<Object, BigInteger> hashData = (HashMap<Object, BigInteger>) data;
             for (Map.Entry<Object, BigInteger> entry : hashData.entrySet()) {
                 GlobalEnergy.put(
-                    UUID.fromString(
-                        entry.getKey()
-                            .toString()),
-                    entry.getValue());
+                        UUID.fromString(
+                                entry.getKey()
+                                        .toString()),
+                        entry.getValue());
             }
         } catch (IOException | ClassNotFoundException exception) {
             System.out.println(GlobalEnergyNBTTag + " FAILED");
+            exception.printStackTrace();
+        }
+        try {
+            if (!nbtTagCompound.hasKey(GlobalEnergyTeamNBTTag)) return;
+            byte[] ba = nbtTagCompound.getByteArray(GlobalEnergyTeamNBTTag);
+            InputStream byteArrayInputStream = new ByteArrayInputStream(ba);
+            ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
+            Object data = objectInputStream.readObject();
+            HashMap<String, String> oldTeams = (HashMap<String, String>) data;
+            oldTeams.entrySet().stream().forEach((entry) -> {
+                UUID member = UUID.fromString(entry.getKey());
+                UUID leader = UUID.fromString(entry.getValue());
+                SpaceProjectManager.putInTeam(member, leader);
+            });
+        } catch (IOException | ClassNotFoundException exception) {
+            System.out.println(GlobalEnergyTeamNBTTag + " FAILED");
             exception.printStackTrace();
         }
     }
