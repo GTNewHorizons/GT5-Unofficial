@@ -298,6 +298,7 @@ public class GregTech_API {
         sBlockCasings8, sBlockCasings9, sSolenoidCoilCasings;
     public static Block sBlockLongDistancePipes;
     public static Block sDroneRender;
+    public static Block sBlockRaw;
     /**
      * Getting assigned by the Config
      */
