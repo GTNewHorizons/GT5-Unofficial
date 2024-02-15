@@ -93,7 +93,7 @@ public enum OrePrefixes {
         true, B[3], -1, 64, 6),
     crushed("Crushed Ores", "Crushed ", " Ore", true, true, false, false, false, false, false, true, false, true, B[3],
         -1, 64, 5),
-    oreRaw("Raw Ore", "Raw ", " Ore", true, true, false, false, false, false, false, true, false, true, B[3],
+    rawOre("Raw Ore", "Raw ", " Ore", true, true, false, false, false, false, false, false, false, true, B[3],
         -1, 64, 64),
     blockRaw("Raw Ore Block", "Raw ", " Ore Block", true, true, false, false, false, true, false, true, false, true, B[3],
         -1, 64, 65),

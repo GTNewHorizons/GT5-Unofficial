@@ -163,7 +163,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             OrePrefixes.crushedCentrifuged,
             OrePrefixes.gem,
             OrePrefixes.nugget,
-            OrePrefixes.oreRaw,
+            OrePrefixes.rawOre,
             null,
             OrePrefixes.ingot,
             OrePrefixes.ingotHot,

@@ -42,6 +42,7 @@ public class GT_MetaTileEntity_TypeFilter extends GT_MetaTileEntity_SpecialFilte
         OrePrefixes.oreNether,
         OrePrefixes.oreNetherrack,
         OrePrefixes.oreNormal,
+        OrePrefixes.rawOre,
         OrePrefixes.orePoor,
         OrePrefixes.oreRedgranite,
         OrePrefixes.oreRich,
