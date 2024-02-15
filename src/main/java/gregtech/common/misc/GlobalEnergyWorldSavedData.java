@@ -73,10 +73,10 @@ public class GlobalEnergyWorldSavedData extends WorldSavedData {
             HashMap<Object, BigInteger> hashData = (HashMap<Object, BigInteger>) data;
             for (Map.Entry<Object, BigInteger> entry : hashData.entrySet()) {
                 GlobalEnergy.put(
-                        UUID.fromString(
-                                entry.getKey()
-                                        .toString()),
-                        entry.getValue());
+                    UUID.fromString(
+                        entry.getKey()
+                            .toString()),
+                    entry.getValue());
             }
         } catch (IOException | ClassNotFoundException exception) {
             System.out.println(GlobalEnergyNBTTag + " FAILED");
@@ -89,11 +89,13 @@ public class GlobalEnergyWorldSavedData extends WorldSavedData {
             ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
             Object data = objectInputStream.readObject();
             HashMap<String, String> oldTeams = (HashMap<String, String>) data;
-            oldTeams.entrySet().stream().forEach((entry) -> {
-                UUID member = UUID.fromString(entry.getKey());
-                UUID leader = UUID.fromString(entry.getValue());
-                SpaceProjectManager.putInTeam(member, leader);
-            });
+            oldTeams.entrySet()
+                .stream()
+                .forEach((entry) -> {
+                    UUID member = UUID.fromString(entry.getKey());
+                    UUID leader = UUID.fromString(entry.getValue());
+                    SpaceProjectManager.putInTeam(member, leader);
+                });
         } catch (IOException | ClassNotFoundException exception) {
             System.out.println(GlobalEnergyTeamNBTTag + " FAILED");
             exception.printStackTrace();
