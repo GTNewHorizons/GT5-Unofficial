@@ -41,8 +41,6 @@ public class RecipeGen_Plasma extends RecipeGen_Base {
                     : CI.emptyCells(1);
             if (ItemUtils.checkForInvalidItems(new ItemStack[] { aPlasmaCell, aContainerItem })) {
                 switch (material.getUnlocalizedName()) {
-                    case "Force":
-                        GT_Values.RA.addFuel(GT_Utility.copyAmount(1L, aPlasmaCell), aContainerItem, 150_000, 4);
                     case "Runite":
                         GT_Values.RA.addFuel(GT_Utility.copyAmount(1L, aPlasmaCell), aContainerItem, 350_000, 4);
                     case "CelestialTungsten":
