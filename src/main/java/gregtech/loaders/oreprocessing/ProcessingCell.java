@@ -193,6 +193,10 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                             recipeBuilder.metadata(FUEL_VALUE, 150_000)
                                 .metadata(FUEL_TYPE, 4)
                                 .addTo(GT_RecipeConstants.Fuel);
+                        case "Force":
+                            recipeBuilder.metadata(FUEL_VALUE, 150_000)
+                                .metadata(FUEL_TYPE, 4)
+                                .addTo(GT_RecipeConstants.Fuel);
                         default:
                             recipeBuilder.metadata(FUEL_VALUE, (int) Math.max(1024L, 1024L * aMaterial.getMass()))
                                 .metadata(FUEL_TYPE, 4)
