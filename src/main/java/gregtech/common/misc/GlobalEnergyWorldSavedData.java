@@ -89,13 +89,10 @@ public class GlobalEnergyWorldSavedData extends WorldSavedData {
             ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
             Object data = objectInputStream.readObject();
             HashMap<String, String> oldTeams = (HashMap<String, String>) data;
-            oldTeams.entrySet()
-                .stream()
-                .forEach((entry) -> {
-                    UUID member = UUID.fromString(entry.getKey());
-                    UUID leader = UUID.fromString(entry.getValue());
-                    SpaceProjectManager.putInTeam(member, leader);
-                });
+            for (String member : oldTeams.keySet()) {
+                String leader = oldTeams.get(member);
+                SpaceProjectManager.putInTeam(UUID.fromString(member), UUID.fromString(leader));
+            }
         } catch (IOException | ClassNotFoundException exception) {
             System.out.println(GlobalEnergyTeamNBTTag + " FAILED");
             exception.printStackTrace();
