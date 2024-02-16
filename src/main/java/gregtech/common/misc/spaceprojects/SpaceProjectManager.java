@@ -76,7 +76,9 @@ public class SpaceProjectManager {
 
         project.setProjectLocation(location);
         map.put(Pair.of(location, projectName), project);
-        SpaceProjectWorldSavedData.INSTANCE.markDirty();
+        if (SpaceProjectWorldSavedData.INSTANCE != null) {
+            SpaceProjectWorldSavedData.INSTANCE.markDirty();
+        }
         return true;
     }
 
@@ -113,7 +115,9 @@ public class SpaceProjectManager {
                 spaceTeams.put(teamMember, teamLeader);
             }
 
-        SpaceProjectWorldSavedData.INSTANCE.markDirty();
+        if (SpaceProjectWorldSavedData.INSTANCE != null) {
+            SpaceProjectWorldSavedData.INSTANCE.markDirty();
+        }
     }
 
     /**
@@ -138,7 +142,13 @@ public class SpaceProjectManager {
         }
 
         spaceTeams.put(teamMember, teamMember);
-        SpaceProjectWorldSavedData.INSTANCE.markDirty();
+        if (SpaceProjectWorldSavedData.INSTANCE != null) {
+            SpaceProjectWorldSavedData.INSTANCE.markDirty();
+        }
+    }
+
+    public static boolean isInTeam(UUID member) {
+        return spaceTeams.containsKey(member);
     }
 
     /**

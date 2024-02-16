@@ -1,12 +1,18 @@
 package gregtech.common.misc.spaceprojects.commands;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.WeakHashMap;
+import java.util.stream.Collectors;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumChatFormatting;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -111,6 +117,50 @@ public class SP_Command extends CommandBase {
             GT_Utility.sendChatToPlayer(player, message);
             confirm.remove(player);
         }
+    }
+
+    @Override
+    public List<String> addTabCompletionOptions(ICommandSender sender, String[] arguments) {
+        List<String> autoComplete = new ArrayList<>();
+        String filter = arguments.length == 0 ? "" : arguments[0].trim();
+        switch (arguments.length) {
+            case 1 -> autoComplete.addAll(Arrays.asList(getSubCommands()));
+            case 2 -> {
+                filter = arguments[1].trim();
+                if (arguments[0].equals(INVITE)) {
+                    autoComplete.addAll(Arrays.asList(getPlayers()));
+                    break;
+                }
+
+                if (arguments[0].equals(CONFIRM)) {
+                    Optional<Pair<EntityPlayerMP, EntityPlayerMP>> pairOpt = invite.stream()
+                        .filter(
+                            (e) -> e.getKey()
+                                .getUniqueID() == getCommandSenderAsPlayer(sender).getUniqueID())
+                        .findFirst();
+                    if (pairOpt.isPresent()) {
+                        autoComplete.add(
+                            SpaceProjectManager.getPlayerNameFromUUID(
+                                pairOpt.get()
+                                    .getRight()
+                                    .getUniqueID()));
+                    }
+                }
+            }
+        }
+        String finalFilter = filter;
+        return autoComplete.stream()
+            .filter(s -> finalFilter.isEmpty() || s.startsWith(finalFilter))
+            .collect(Collectors.toList());
+    }
+
+    private String[] getPlayers() {
+        return MinecraftServer.getServer()
+            .getAllUsernames();
+    }
+
+    private String[] getSubCommands() {
+        return new String[] { INVITE, ACCEPT, LEAVE, CONFIRM };
     }
 
 }
