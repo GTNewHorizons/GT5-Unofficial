@@ -299,27 +299,29 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
         }
         Materials aOreMaterial = GregTech_API.sGeneratedMaterials[(this.mMetaData % 1000)];
         if (this.mMetaData < 16000) {
+            boolean tIsRich = false;
+
+            // For Sake of god of balance!
+
+            // Dense ore
+
+            // NetherOre
+            if (GT_Mod.gregtechproxy.mNetherOreYieldMultiplier && !tIsRich) {
+                tIsRich = (this.mMetaData >= 1000 && this.mMetaData < 2000);
+            }
+            // EndOre
+            if (GT_Mod.gregtechproxy.mEndOreYieldMultiplier && !tIsRich) {
+                tIsRich = (this.mMetaData >= 2000 && this.mMetaData < 3000);
+            }
+
             if (aFortune > 0) {
-                boolean tIsRich = false;
-
-                // For Sake of god of balance!
-
-                // Dense ore
-
-                // NetherOre
-                if (GT_Mod.gregtechproxy.mNetherOreYieldMultiplier && !tIsRich) {
-                    tIsRich = (this.mMetaData >= 1000 && this.mMetaData < 2000);
-                }
-                // EndOre
-                if (GT_Mod.gregtechproxy.mEndOreYieldMultiplier && !tIsRich) {
-                    tIsRich = (this.mMetaData >= 2000 && this.mMetaData < 3000);
-                }
 
                 Random tRandom = new XSTR(this.xCoord ^ this.yCoord ^ this.zCoord);
                 long amount =(long) Math.max((tIsRich ? 2 : 1),tRandom.nextInt(1 +  aFortune * (tIsRich ? 2 : 1)));
                 rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial , amount));
             }else {
-                rList.add(new ItemStack(aDroppedOre, 1, this.mMetaData));
+                rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial , (tIsRich ? 2 : 1)));
+                //rList.add(new ItemStack(aDroppedOre, 1, this.mMetaData));
             }
             return rList;
         }
