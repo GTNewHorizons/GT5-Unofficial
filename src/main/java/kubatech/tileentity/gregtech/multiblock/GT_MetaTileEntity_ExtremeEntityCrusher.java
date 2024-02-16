@@ -136,14 +136,17 @@ public class GT_MetaTileEntity_ExtremeEntityCrusher
     // Powered spawner with octadic capacitor spawns ~22/min ~= 0.366/sec ~= 2.72s/spawn ~= 54.54t/spawn
     public static final int MOB_SPAWN_INTERVAL = 55;
     public final Random rand = new FastRandom();
+    private final WeaponCache weaponCache;
 
     @SuppressWarnings("unused")
     public GT_MetaTileEntity_ExtremeEntityCrusher(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
+        weaponCache = new WeaponCache(mInventory);
     }
 
     public GT_MetaTileEntity_ExtremeEntityCrusher(String aName) {
         super(aName);
+        weaponCache = new WeaponCache(mInventory);
         if (LoaderReference.BloodMagic) MinecraftForge.EVENT_BUS.register(this);
     }
 
@@ -485,8 +488,8 @@ public class GT_MetaTileEntity_ExtremeEntityCrusher
         int looting = 0;
         double attackDamage = 0;
 
-        public WeaponCache() {
-            super(1);
+        public WeaponCache(ItemStack[] inventory) {
+            super(inventory);
         }
 
         @Override
@@ -516,7 +519,10 @@ public class GT_MetaTileEntity_ExtremeEntityCrusher
         }
     }
 
-    private final WeaponCache weaponCache = new WeaponCache();
+    @Override
+    public boolean isValidSlot(int aIndex) {
+        return aIndex >= 0;
+    }
 
     @SuppressWarnings("unlikely-arg-type")
     @Override
