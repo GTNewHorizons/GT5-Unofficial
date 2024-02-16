@@ -158,6 +158,10 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
                     aOreStack,
                     GT_Utility.copyAmount(aMultiplier * aMaterial.mSmeltingMultiplier, tSmeltInto));
             }
+            if ((aMaterial.mBlastFurnaceRequired) || (aMaterial.mDirectSmelting.mBlastFurnaceRequired)) {
+                GT_ModHandler.removeFurnaceSmelting(tOreRaw);
+            } else {
+                GT_ModHandler.addSmeltingRecipe(tOreRaw, GT_Utility.copyAmount(aMaterial.mSmeltingMultiplier, tSmeltInto));
             }
 
             if (aMaterial.contains(SubTag.BLASTFURNACE_CALCITE_TRIPLE)) {
