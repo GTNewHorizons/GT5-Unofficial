@@ -1891,6 +1891,12 @@ public class GT_Utility {
     public static ItemStack fillFluidContainer(FluidStack aFluid, ItemStack aStack, boolean aRemoveFluidDirectly,
         boolean aCheckIFluidContainerItems) {
         if (isStackInvalid(aStack) || aFluid == null) return null;
+        if (GT_ModHandler.isWater(aFluid) && ItemList.Bottle_Empty.isStackEqual(aStack)) {
+            if (aFluid.amount >= 1000) {
+                return new ItemStack(Items.potionitem, 1, 0);
+            }
+            return null;
+        }
         if (aCheckIFluidContainerItems && aStack.getItem() instanceof IFluidContainerItem
             && ((IFluidContainerItem) aStack.getItem()).getFluid(aStack) == null
             && ((IFluidContainerItem) aStack.getItem()).getCapacity(aStack) <= aFluid.amount) {
