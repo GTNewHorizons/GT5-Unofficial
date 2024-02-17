@@ -243,7 +243,7 @@ public class RecipeLoader {
                 100,
                 32);
             GT_Values.RA.stdBuilder()
-                .itemInputs(TeaLeafDehydrated.get(1))
+                .itemInputs(TeaLeafDehydrated.get(1), GT_Utility.getIntegratedCircuit(1))
                 .itemOutputs(RolledTeaLeaf.get(1))
                 .eut(32)
                 .duration(5 * SECONDS)
