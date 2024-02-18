@@ -51,3 +51,5 @@ fluid.Dinitrotoluene=Dinitrotoluene
 fluid.Diaminotoluene=Diaminotoluene
 fluid.Toluene Tetramethyl Diisocyanate=Toluene Tetramethyl Diisocyanate
 fluid.Diluted Acetone=Diluted Acetone
+
+GT5U.gui.text.dissolution_ratio=§7Wrong fluid input ratio

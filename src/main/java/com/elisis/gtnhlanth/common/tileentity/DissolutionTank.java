@@ -17,12 +17,17 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_G
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import java.util.Arrays;
 import java.util.List;
+
+import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.elisis.gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 import com.elisis.gtnhlanth.util.DescTextLocalization;
@@ -37,8 +42,12 @@ import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
@@ -96,36 +105,39 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
     }
 
     @Override
-    public boolean checkRecipe(ItemStack itemStack) {
-        // GT_Log.out.print("in checkRecipe");
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
 
-        List<FluidStack> tFluidInputs = this.getStoredFluids();
-        FluidStack[] tFluidInputArray = tFluidInputs.toArray(new FluidStack[0]);
-        ItemStack[] tItems = this.getStoredInputs().toArray(new ItemStack[0]);
-        long tVoltage = this.getMaxInputVoltage();
+            @NotNull
+            @Override
+            protected CheckRecipeResult onRecipeStart(@Nonnull GT_Recipe recipe) {
+                if (!checkRatio(recipe, Arrays.asList(inputFluids))) {
+                    criticalStopMachine();
+                    return SimpleCheckRecipeResult.ofFailurePersistOnShutdown("dissolution_ratio");
+                }
+                return CheckRecipeResultRegistry.SUCCESSFUL;
+            }
 
-        GT_Recipe tRecipe = LanthanidesRecipeMaps.dissolutionTankRecipes
-                .findRecipe(getBaseMetaTileEntity(), false, tVoltage, tFluidInputArray, tItems);
+        };
+    }
 
-        if (tRecipe == null || !tRecipe.isRecipeInputEqual(true, tFluidInputArray, tItems)) return false;
-        // GT_Log.out.print("Recipe not null\n");
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
+    }
 
-        this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
-        this.mEfficiencyIncrease = 10000;
-        this.calculateOverclockedNessMulti(tRecipe.mEUt, tRecipe.mDuration, 1, tVoltage);
+    @Override
+    public boolean supportsInputSeparation() {
+        return true;
+    }
 
-        if (mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1) return false;
-        if (this.mEUt > 0) this.mEUt = (-this.mEUt);
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
+    }
 
-        this.updateSlots();
-
-        if (!checkRatio(tRecipe, tFluidInputs)) {
-            stopMachine();
-            return false;
-        }
-
-        this.mOutputFluids = new FluidStack[] { tRecipe.getFluidOutput(0) };
-        this.mOutputItems = tRecipe.mOutputs;
+    @Override
+    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 

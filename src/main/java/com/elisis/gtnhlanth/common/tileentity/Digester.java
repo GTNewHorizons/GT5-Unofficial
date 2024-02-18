@@ -18,11 +18,10 @@ import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofCoil;
 
-import java.util.ArrayList;
+import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 import com.elisis.gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 import com.elisis.gtnhlanth.util.DescTextLocalization;
@@ -36,10 +35,14 @@ import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 
 public class Digester extends GT_MetaTileEntity_EnhancedMultiBlockBase<Digester> implements ISurvivalConstructable {
@@ -101,37 +104,42 @@ public class Digester extends GT_MetaTileEntity_EnhancedMultiBlockBase<Digester>
     }
 
     @Override
-    public boolean checkRecipe(ItemStack itemStack) {
-        // GT_Log.out.print("Digester: in checkRecipe\n");
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
 
-        ArrayList<FluidStack> tFluidInputs = this.getStoredFluids();
-        FluidStack[] tFluidInputArray = tFluidInputs.toArray(new FluidStack[0]);
-        ItemStack[] tItems = this.getStoredInputs().toArray(new ItemStack[0]);
-        long tVoltage = this.getMaxInputVoltage();
+            @Nonnull
+            @Override
+            protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
+                return super.createOverclockCalculator(recipe).enablePerfectOC();
+            }
 
-        // GT_Log.out.print("Digester: " + Arrays.toString(mInventory));
+            @Override
+            protected @Nonnull CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
+                return recipe.mSpecialValue <= Digester.this.getCoilLevel().getHeat()
+                        ? CheckRecipeResultRegistry.SUCCESSFUL
+                        : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
+            }
 
-        GT_Recipe tRecipe = LanthanidesRecipeMaps.digesterRecipes
-                .findRecipe(getBaseMetaTileEntity(), false, tVoltage, tFluidInputArray, tItems);
+        };
+    }
 
-        if (tRecipe == null || !tRecipe.isRecipeInputEqual(true, tFluidInputArray, tItems)) return false;
-        // GT_Log.out.print("Recipe not null\n");
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
+    }
 
-        this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
-        this.mEfficiencyIncrease = 10000;
-        this.calculateOverclockedNessMultiInternal(tRecipe.mEUt, tRecipe.mDuration, 1, tVoltage, true);
+    @Override
+    public boolean supportsInputSeparation() {
+        return true;
+    }
 
-        if (mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1) return false;
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
+    }
 
-        if (this.mEUt > 0) this.mEUt = (-this.mEUt);
-        // GT_Log.out.print("valid values");
-
-        if (tRecipe.mSpecialValue > this.getCoilLevel().getHeat()) return false;
-        // GT_Log.out.print("Coils good\n");
-        // GT_Log.out.print(tRecipe.getFluidOutput(0).getLocalizedName());
-        this.mOutputFluids = tRecipe.mFluidOutputs;
-        this.mOutputItems = tRecipe.mOutputs;
-        this.updateSlots();
+    @Override
+    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 
