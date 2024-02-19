@@ -248,6 +248,7 @@ public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hat
             tag.setInteger("x", connection.centreCoord.posX);
             tag.setInteger("y", connection.centreCoord.posY);
             tag.setInteger("z", connection.centreCoord.posZ);
+            tag.setString("name", connection.customName);
         }
     }
 
@@ -255,15 +256,19 @@ public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hat
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         NBTTagCompound tag = accessor.getNBTData();
-        currenttip.add(
-            tag.getBoolean("connection")
-                ? EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.waila.drone_downlink.noConnection")
-                : EnumChatFormatting.AQUA + StatCollector.translateToLocal("GT5U.waila.drone_downlink.connection")
+        if (tag.getBoolean("connection")) {
+            currenttip
+                .add(EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.waila.drone_downlink.noConnection"));
+        } else {
+            currenttip.add(
+                EnumChatFormatting.AQUA + StatCollector.translateToLocal("GT5U.waila.drone_downlink.connection")
                     + tag.getInteger("x")
                     + " "
                     + tag.getInteger("y")
                     + " "
                     + tag.getInteger("z"));
+            currenttip.add(EnumChatFormatting.YELLOW + tag.getString("name"));
+        }
         super.getWailaBody(itemStack, currenttip, accessor, config);
     }
 }
