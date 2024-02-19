@@ -127,7 +127,12 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
         final long inputVoltage = getMaxInputVoltage();
         // use the standard overclock mechanism to determine duration and estimate a maximum consumption
         // if the cleanroom is powered by an LV energy hatch, it will actually accept 2A instead of just 1A.
-        calculateOverclockedNessMultiInternal(40, 45 * Math.max(1, mHeight - 1), inputVoltage == 32 ? 2 : 1, inputVoltage, false);
+        calculateOverclockedNessMultiInternal(
+            40,
+            45 * Math.max(1, mHeight - 1),
+            inputVoltage == 32 ? 2 : 1,
+            inputVoltage,
+            false);
         // negate it to trigger the special energy consumption function. divide by 10 to get the actual final
         // consumption.
         mEUt /= -10;
