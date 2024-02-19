@@ -36,6 +36,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicHull;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TooltipMultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
@@ -125,6 +126,12 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
     public CheckRecipeResult checkProcessing() {
         mEfficiencyIncrease = 100;
         final long inputVoltage = getMaxInputVoltage();
+
+        // only allow LV+ energy hatches
+        if (inputVoltage < 32) {
+            return CheckRecipeResultRegistry.insufficientPower(40);
+        }
+
         // use the standard overclock mechanism to determine duration and estimate a maximum consumption
         // if the cleanroom is powered by an LV energy hatch, it will actually accept 2A instead of just 1A.
         calculateOverclockedNessMultiInternal(
