@@ -14,7 +14,6 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
-import gregtech.api.enums.TierEU;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -28,6 +27,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ICleanroom;
 import gregtech.api.interfaces.ICleanroomReceiver;
 import gregtech.api.interfaces.ISecondaryDescribable;
