@@ -19,6 +19,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -82,6 +83,7 @@ public class GT_MetaTileEntity_DroneCentre extends
     private Vec3Impl centreCoord;
     private int droneLevel = 0;
     private int buttonID;
+    private String searchFilter = "";
     private final List<DroneConnection> connectionList = new ArrayList<>();
     public HashMap<String, String> tempNameList = new HashMap<>();
     // Save centre by dimID
@@ -513,9 +515,64 @@ public class GT_MetaTileEntity_DroneCentre extends
                 .setTextAlignment(Alignment.Center)
                 .setPos(0, 10)
                 .setSize(260, 8));
+        // SearchBar
+        builder.widget(new TextFieldWidget() {
+
+            @Override
+            public void onRemoveFocus() {
+                super.onRemoveFocus();
+                syncToServer(2, buffer -> buffer.writeInt(10));
+            }
+
+            @Override
+            public ClickResult onClick(int buttonId, boolean doubleClick) {
+                super.onClick(buttonId, doubleClick);
+                if (buttonId == 1) handler.getText()
+                    .clear();
+                return ClickResult.SUCCESS;
+            }
+
+            // Support CJKV Unified Ideographs
+            @Override
+            public boolean onKeyPressed(char character, int keyCode) {
+                if (!isFocused()) return false;
+                if (Character.isIdeographic(character)) {
+                    if (handler.hasTextMarked()) {
+                        handler.delete();
+                    }
+                    handler.insert(String.valueOf(character));
+                    return true;
+                }
+                return super.onKeyPressed(character, keyCode);
+            }
+
+            // Refresh
+            @Override
+            public void readOnServer(int id, PacketBuffer buf) {
+                switch (id) {
+                    case 1 -> super.readOnServer(id, buf);
+                    case 2 -> {
+                        int windowsID = buf.readInt();
+                        getContext().closeWindow(windowsID);
+                        getContext().openSyncedWindow(windowsID);
+                    }
+                }
+            }
+        }.setGetter(() -> searchFilter)
+            .setSetter(var -> searchFilter = var)
+            .setTextAlignment(Alignment.CenterLeft)
+            .setTextColor(Color.WHITE.dark(1))
+            .setFocusOnGuiOpen(false)
+            .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD_LIGHT_GRAY.withOffset(-1, -1, 2, 2))
+            .addTooltip(StatCollector.translateToLocal("Search machine name"))
+            .setPos(10, 30)
+            .setSize(240, 16));
         Scrollable MachineContainer = new Scrollable().setVerticalScroll();
+        int posY = 0;
         for (int i = 0; i < connectionList.size(); i++) {
             DroneConnection connection = connectionList.get(i);
+            if (!connection.customName.toLowerCase()
+                .contains(searchFilter.toLowerCase())) continue;
             ItemStackHandler drawitem = new ItemStackHandler(1);
             drawitem.setStackInSlot(0, connection.machineItem);
             DynamicPositionedRow row = new DynamicPositionedRow().setSynced(false);
@@ -607,10 +664,11 @@ public class GT_MetaTileEntity_DroneCentre extends
             MachineContainer.widget(
                 row.setAlignment(MainAxisAlignment.SPACE_BETWEEN)
                     .setSpace(4)
-                    .setPos(0, i * 20));
+                    .setPos(0, posY));
+            posY += 20;
         }
         return builder.widget(
-            MachineContainer.setPos(10, 30)
+            MachineContainer.setPos(10, 50)
                 .setSize(240, 160))
             .setDraggable(false)
             .build();
@@ -627,19 +685,40 @@ public class GT_MetaTileEntity_DroneCentre extends
                 new TextWidget("Custom Machine Name").setTextAlignment(Alignment.Center)
                     .setPos(0, 5)
                     .setSize(150, 8))
-            .widget(
-                new TextFieldWidget().setGetter(
-                    () -> connectionList.get(buttonID)
-                        .getCustomName())
-                    .setSetter(
-                        var -> connectionList.get(buttonID)
-                            .setCustomName(var))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setTextColor(Color.WHITE.dark(1))
-                    .setFocusOnGuiOpen(true)
-                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD_LIGHT_GRAY.withOffset(-1, -1, 2, 2))
-                    .setPos(10, 16)
-                    .setSize(130, 16))
+            .widget(new TextFieldWidget() {
+
+                @Override
+                public void onDestroy() {
+                    if (isClient()) return;
+                    getContext().closeWindow(10);
+                    getContext().openSyncedWindow(10);
+                }
+
+                // Support CJKV Unified Ideographs
+                @Override
+                public boolean onKeyPressed(char character, int keyCode) {
+                    if (!isFocused()) return false;
+                    if (Character.isIdeographic(character)) {
+                        if (handler.hasTextMarked()) {
+                            handler.delete();
+                        }
+                        handler.insert(String.valueOf(character));
+                        return true;
+                    }
+                    return super.onKeyPressed(character, keyCode);
+                }
+            }.setGetter(
+                () -> connectionList.get(buttonID)
+                    .getCustomName())
+                .setSetter(
+                    var -> connectionList.get(buttonID)
+                        .setCustomName(var))
+                .setTextAlignment(Alignment.CenterLeft)
+                .setTextColor(Color.WHITE.dark(1))
+                .setFocusOnGuiOpen(true)
+                .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD_LIGHT_GRAY.withOffset(-1, -1, 2, 2))
+                .setPos(10, 16)
+                .setSize(130, 16))
             .build();
     }
 
