@@ -14,6 +14,7 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.enums.TierEU;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -128,7 +129,7 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
         final long inputVoltage = getMaxInputVoltage();
 
         // only allow LV+ energy hatches
-        if (inputVoltage < 32) {
+        if (inputVoltage < TierEU.LV) {
             return CheckRecipeResultRegistry.insufficientPower(40);
         }
 
@@ -137,7 +138,7 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
         calculateOverclockedNessMultiInternal(
             40,
             45 * Math.max(1, mHeight - 1),
-            inputVoltage == 32 ? 2 : 1,
+            inputVoltage == TierEU.LV ? 2 : 1,
             inputVoltage,
             false);
         // negate it to trigger the special energy consumption function. divide by 10 to get the actual final
