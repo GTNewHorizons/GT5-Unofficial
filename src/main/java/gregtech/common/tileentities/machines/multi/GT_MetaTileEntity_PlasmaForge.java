@@ -66,7 +66,7 @@ public class GT_MetaTileEntity_PlasmaForge extends
     GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_PlasmaForge> implements ISurvivalConstructable {
 
     // 3600 seconds in an hour, 8 hours, 20 ticks in a second.
-    private static final double max_efficiency_time_in_ticks = 3600d * 8d * 20d;
+    private static final double max_efficiency_time_in_ticks = 3600d * 1d * 20d;
     private static final double maximum_discount = 0.5d;
 
     // Valid fuels which the discount will get applied to.
