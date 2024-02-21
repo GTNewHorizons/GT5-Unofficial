@@ -675,6 +675,7 @@ public enum OrePrefixes {
     static {
         pulp.mPrefixInto = dust;
         oreGem.mPrefixInto = ore;
+        rawOre.mPrefixInto = ore;
         leaves.mPrefixInto = treeLeaves;
         sapling.mPrefixInto = treeSapling;
         itemDust.mPrefixInto = dust;
@@ -981,6 +982,7 @@ public enum OrePrefixes {
         orePoor.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.mMaterialAmount * 2);
         oreSmall.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.mMaterialAmount * 2);
         oreNormal.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.mMaterialAmount * 2);
+        rawOre.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.mMaterialAmount * 2);
         oreRich.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.mMaterialAmount * 2);
         ore.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.mMaterialAmount);
         crushed.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.mMaterialAmount);

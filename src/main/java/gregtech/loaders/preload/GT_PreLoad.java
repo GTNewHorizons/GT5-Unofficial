@@ -257,7 +257,7 @@ public class GT_PreLoad {
                                     null, "ingot", "ingotHot", "ingotDouble", "ingotTriple", "ingotQuadruple",
                                     "ingotQuintuple", "plate", "plateDouble", "plateTriple", "plateQuadruple",
                                     "plateQuintuple", "plateDense", "stick", "lens", "round", "bolt", "screw", "ring",
-                                    "foil", "cell", "cellPlasma", "cellMolten", "oreRaw", "blockRaw" };
+                                    "foil", "cell", "cellPlasma", "cellMolten", "rawOre" };
                                 if (mIt == 2) tags = new String[] { "toolHeadSword", "toolHeadPickaxe",
                                     "toolHeadShovel", "toolHeadAxe", "toolHeadHoe", "toolHeadHammer", "toolHeadFile",
                                     "toolHeadSaw", "toolHeadDrill", "toolHeadChainsaw", "toolHeadWrench",
@@ -290,7 +290,7 @@ public class GT_PreLoad {
             "toolHeadUniversalSpade", "toolHeadSense", "toolHeadPlow", "toolHeadArrow", "toolHeadBuzzSaw",
             "turbineBlade", "wireFine", "gearGtSmall", "rotor", "stickLong", "springSmall", "spring", "arrowGtWood",
             "arrowGtPlastic", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gearGt", "crateGtDust",
-            "crateGtIngot", "crateGtGem", "crateGtPlate", "nanite", "cellMolten", "oreRaw", "blockRaw" };
+            "crateGtIngot", "crateGtGem", "crateGtPlate", "nanite", "cellMolten", "rawOre" };
 
         List<String> mMTTags = new ArrayList<>();
         oreTags.stream()

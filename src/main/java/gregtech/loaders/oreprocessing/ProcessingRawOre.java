@@ -1,6 +1,5 @@
 package gregtech.loaders.oreprocessing;
 
-import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -8,14 +7,11 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_RecipeBuilder;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 import static gregtech.api.recipe.RecipeMaps.*;
 import static gregtech.api.util.GT_RecipeBuilder.*;
-import static gregtech.api.util.GT_RecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
 
 public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegistrator {
