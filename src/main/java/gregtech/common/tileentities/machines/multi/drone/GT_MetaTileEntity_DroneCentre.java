@@ -564,7 +564,7 @@ public class GT_MetaTileEntity_DroneCentre extends
             .setTextColor(Color.WHITE.dark(1))
             .setFocusOnGuiOpen(false)
             .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD_LIGHT_GRAY.withOffset(-1, -1, 2, 2))
-            .addTooltip(StatCollector.translateToLocal("Search machine name"))
+            .addTooltip(StatCollector.translateToLocal("GT5U.gui.text.drone_search"))
             .setPos(10, 30)
             .setSize(240, 16));
         Scrollable MachineContainer = new Scrollable().setVerticalScroll();

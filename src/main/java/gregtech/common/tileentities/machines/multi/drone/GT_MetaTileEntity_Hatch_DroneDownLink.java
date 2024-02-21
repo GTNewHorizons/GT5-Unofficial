@@ -17,14 +17,24 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.math.Color;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -33,6 +43,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_Utility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -125,6 +136,16 @@ public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hat
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
         float aX, float aY, float aZ) {
+        if (aBaseMetaTileEntity.isClientSide()) return true;
+        if (side == aBaseMetaTileEntity.getFrontFacing()) {
+            if (aPlayer instanceof FakePlayer) return false;
+            if (connection == null || !connection.isValid()) {
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("351", "No valid connection"));
+                return false;
+            }
+            GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+            return true;
+        }
         return false;
     }
 
@@ -237,6 +258,58 @@ public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hat
             }
         }
         return null;
+    }
+
+    @Override
+    public boolean doesBindPlayerInventory() {
+        return false;
+    }
+
+    @Override
+    public int getGUIWidth() {
+        return 150;
+    }
+
+    @Override
+    public int getGUIHeight() {
+        return 40;
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setGuiTint(getGUIColorization());
+        builder.widget(
+            ButtonWidget.closeWindowButton(true)
+                .setPos(135, 3))
+            .widget(
+                new TextWidget("Custom Machine Name").setTextAlignment(Alignment.Center)
+                    .setPos(0, 5)
+                    .setSize(150, 8))
+            .widget(new TextFieldWidget() {
+
+                // Support CJKV Unified Ideographs
+                @Override
+                public boolean onKeyPressed(char character, int keyCode) {
+                    if (!isFocused()) return false;
+                    if (Character.isIdeographic(character)) {
+                        if (handler.hasTextMarked()) {
+                            handler.delete();
+                        }
+                        handler.insert(String.valueOf(character));
+                        return true;
+                    }
+                    return super.onKeyPressed(character, keyCode);
+                }
+            }.setGetter(() -> connection == null ? "" : connection.getCustomName())
+                .setSetter(var -> { if (connection != null) connection.setCustomName(var); })
+                .setTextAlignment(Alignment.CenterLeft)
+                .setTextColor(Color.WHITE.dark(1))
+                .setFocusOnGuiOpen(true)
+                .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD_LIGHT_GRAY.withOffset(-1, -1, 2, 2))
+                .setPos(10, 16)
+                .setSize(130, 16))
+            .build();
     }
 
     @Override
