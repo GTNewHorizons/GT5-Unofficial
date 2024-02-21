@@ -80,6 +80,8 @@ public class GT_MetaTileEntity_DroneCentre extends
     private static final IIconContainer ACTIVE = new Textures.BlockIcons.CustomIcon("iconsets/DRONE_CENTRE_ACTIVE");
     private static final IIconContainer FACE = new Textures.BlockIcons.CustomIcon("iconsets/DRONE_CENTRE_FACE");
     private static final IIconContainer INACTIVE = new Textures.BlockIcons.CustomIcon("iconsets/DRONE_CENTRE_INACTIVE");
+    private final int MACHINE_LIST_WINDOW_ID = 10;
+    private final int CUSTOM_NAME_WINDOW_ID = 11;
     private Vec3Impl centreCoord;
     private int droneLevel = 0;
     private int buttonID;
@@ -399,13 +401,13 @@ public class GT_MetaTileEntity_DroneCentre extends
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
-        buildContext.addSyncedWindow(10, this::createMachineListWindow);
-        buildContext.addSyncedWindow(11, this::createCustomNameWindow);
+        buildContext.addSyncedWindow(MACHINE_LIST_WINDOW_ID, this::createMachineListWindow);
+        buildContext.addSyncedWindow(CUSTOM_NAME_WINDOW_ID, this::createCustomNameWindow);
         builder.widget(// Machine List
             new ButtonWidget().setOnClick(
                 (clickData, widget) -> {
                     if (!widget.isClient()) widget.getContext()
-                        .openSyncedWindow(10);
+                        .openSyncedWindow(MACHINE_LIST_WINDOW_ID);
                 })
                 .setSize(16, 16)
                 .setBackground(() -> {
@@ -521,7 +523,7 @@ public class GT_MetaTileEntity_DroneCentre extends
             @Override
             public void onRemoveFocus() {
                 super.onRemoveFocus();
-                syncToServer(2, buffer -> buffer.writeInt(10));
+                syncToServer(2, buffer -> {});
             }
 
             @Override
@@ -552,9 +554,8 @@ public class GT_MetaTileEntity_DroneCentre extends
                 switch (id) {
                     case 1 -> super.readOnServer(id, buf);
                     case 2 -> {
-                        int windowsID = buf.readInt();
-                        getContext().closeWindow(windowsID);
-                        getContext().openSyncedWindow(windowsID);
+                        getContext().closeWindow(MACHINE_LIST_WINDOW_ID);
+                        getContext().openSyncedWindow(MACHINE_LIST_WINDOW_ID);
                     }
                 }
             }
@@ -585,7 +586,7 @@ public class GT_MetaTileEntity_DroneCentre extends
                 .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
                     buttonID = finalI;
                     if (!widget.isClient()) widget.getContext()
-                        .openSyncedWindow(11);
+                        .openSyncedWindow(CUSTOM_NAME_WINDOW_ID);
                 })
                     .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_setname"))
                     .setBackground(
@@ -690,8 +691,8 @@ public class GT_MetaTileEntity_DroneCentre extends
                 @Override
                 public void onDestroy() {
                     if (isClient()) return;
-                    getContext().closeWindow(10);
-                    getContext().openSyncedWindow(10);
+                    getContext().closeWindow(MACHINE_LIST_WINDOW_ID);
+                    getContext().openSyncedWindow(MACHINE_LIST_WINDOW_ID);
                 }
 
                 // Support CJKV Unified Ideographs
