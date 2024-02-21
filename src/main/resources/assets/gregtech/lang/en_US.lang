@@ -477,6 +477,7 @@ GT5U.gui.text.stocking_hatch_fail_extraction=§4Failed to extract expected amoun
 GT5U.gui.text.drone_noDrone=§4Can't find any drone in inputBuses!
 GT5U.gui.text.drone_operating=§aDrone operating normally!
 GT5U.gui.text.drone_title=Drone Control Centre
+GT5U.gui.text.drone_search=Search machine name
 
 GT5U.item.programmed_circuit.select.header=Reprogram Circuit
 
