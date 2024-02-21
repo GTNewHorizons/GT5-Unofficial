@@ -23,7 +23,7 @@ import gregtech.api.util.GT_Utility;
 
 public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
-    private final OrePrefixes[] mSmeltingPrefixes = { OrePrefixes.rawOre, OrePrefixes.crushed, OrePrefixes.crushedPurified,
+    private final OrePrefixes[] mSmeltingPrefixes = { OrePrefixes.crushed, OrePrefixes.crushedPurified,
         OrePrefixes.crushedCentrifuged, OrePrefixes.dust, OrePrefixes.dustImpure, OrePrefixes.dustPure,
         OrePrefixes.dustRefined };
 
