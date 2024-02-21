@@ -208,7 +208,7 @@ public class GT_MetaTileEntity_AssemblyLine extends
         int[] tStack = new int[0];
         FluidStack[] tFluids = new FluidStack[0];
         long averageVoltage = getAverageInputVoltage();
-        long maxPower = getMaxInputEu();
+        long maxAmp = mEnergyHatches.size() <= 1 ? 1 : getMaxInputAmps();
         CheckRecipeResult result = CheckRecipeResultRegistry.NO_DATA_STICKS;
 
         nextDataStick: for (ItemStack tDataStick : tDataStickList) {
@@ -234,18 +234,6 @@ public class GT_MetaTileEntity_AssemblyLine extends
             // Void protection check.
             if (!canOutputAll(new ItemStack[] { tRecipe.mOutput })) {
                 result = CheckRecipeResultRegistry.ITEM_OUTPUT_FULL;
-                continue;
-            }
-
-            // Recipe tier is limited to hatch tier + 1.
-            if (tRecipe.mEUt > averageVoltage * 4) {
-                result = CheckRecipeResultRegistry.NO_RECIPE;
-                continue;
-            }
-
-            // Insufficient power check.
-            if (tRecipe.mEUt > maxPower) {
-                result = CheckRecipeResultRegistry.NO_RECIPE;
                 continue;
             }
 
@@ -309,15 +297,37 @@ public class GT_MetaTileEntity_AssemblyLine extends
             if (GT_Values.D1) {
                 GT_FML_LOGGER.info("Check overclock");
             }
-            calculateOverclockedNessMultiInternal(tRecipe.mEUt, tRecipe.mDuration, 1, maxPower, false);
+
+            // Recipe tier is limited to hatch tier + 1.
+            if (tRecipe.mEUt > averageVoltage * 4) {
+                result = CheckRecipeResultRegistry.insufficientPower(tRecipe.mEUt);
+                continue;
+            }
+
+            // Insufficient power check.
+            if (tRecipe.mEUt > maxAmp * averageVoltage) {
+                result = CheckRecipeResultRegistry.insufficientPower(tRecipe.mEUt);
+                continue;
+            }
+
+            calculateOverclockedNessMultiInternal(tRecipe.mEUt, tRecipe.mDuration, (int) maxAmp, averageVoltage, false);
             // In case recipe is too OP for that machine
-            if (mMaxProgresstime == Integer.MAX_VALUE && lEUt == Long.MAX_VALUE) {
+            if (lEUt == Long.MAX_VALUE) {
                 if (GT_Values.D1) {
                     GT_FML_LOGGER.info("Recipe too OP");
                 }
                 result = CheckRecipeResultRegistry.POWER_OVERFLOW;
                 continue;
             }
+
+            if (mMaxProgresstime == Integer.MAX_VALUE) {
+                if (GT_Values.D1) {
+                    GT_FML_LOGGER.info("Recipe too OP");
+                }
+                result = CheckRecipeResultRegistry.DURATION_OVERFLOW;
+                continue;
+            }
+
             if (GT_Values.D1) {
                 GT_FML_LOGGER.info("Find available recipe");
             }
