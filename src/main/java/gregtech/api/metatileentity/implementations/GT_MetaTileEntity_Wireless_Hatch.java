@@ -3,10 +3,10 @@ package gregtech.api.metatileentity.implementations;
 import static gregtech.api.enums.GT_Values.AuthorColen;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
-import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
 import static java.lang.Long.min;
 
 import java.math.BigInteger;
+import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -18,6 +18,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IWirelessEnergyHatchInformation;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 
 public class GT_MetaTileEntity_Wireless_Hatch extends GT_MetaTileEntity_Hatch_Energy
     implements IWirelessEnergyHatchInformation {
@@ -26,8 +27,7 @@ public class GT_MetaTileEntity_Wireless_Hatch extends GT_MetaTileEntity_Hatch_En
         .valueOf(2 * V[mTier] * ticks_between_energy_addition);
     private final long eu_transferred_per_operation_long = eu_transferred_per_operation.longValue();
 
-    private String owner_uuid;
-    private String owner_name;
+    private UUID owner_uuid;
 
     public GT_MetaTileEntity_Wireless_Hatch(String aName, byte aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
@@ -132,12 +132,10 @@ public class GT_MetaTileEntity_Wireless_Hatch extends GT_MetaTileEntity_Hatch_En
 
         if (!aBaseMetaTileEntity.isServerSide()) return;
 
-        // UUID and username of the owner.
-        owner_uuid = aBaseMetaTileEntity.getOwnerUuid()
-            .toString();
-        owner_name = aBaseMetaTileEntity.getOwnerName();
+        // UUID of the owner.
+        owner_uuid = aBaseMetaTileEntity.getOwnerUuid();
 
-        strongCheckOrAddUser(owner_uuid, owner_name);
+        SpaceProjectManager.checkOrCreateTeam(owner_uuid);;
 
         tryFetchingEnergy();
     }

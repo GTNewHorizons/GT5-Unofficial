@@ -850,7 +850,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
             .getRegisteredFluidContainerData()) {
             if ((tData.filledContainer.getItem() == Items.potionitem) && (tData.filledContainer.getItemDamage() == 0)) {
-                tData.fluid.amount = 250;
+                tData.fluid.amount = 0;
                 break;
             }
         }
@@ -1127,8 +1127,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         if (!GT_Mod.gregtechproxy.enableUndergroundDirtGen)
             PREVENTED_ORES.add(OreGenEvent.GenerateMinable.EventType.DIRT);
 
-        MinecraftForge.EVENT_BUS.register(new GlobalEnergyWorldSavedData(""));
         MinecraftForge.EVENT_BUS.register(new SpaceProjectWorldSavedData());
+        MinecraftForge.EVENT_BUS.register(new GlobalEnergyWorldSavedData(""));
         MinecraftForge.EVENT_BUS.register(new GT_Worldgenerator.OregenPatternSavedData(""));
         MinecraftForge.EVENT_BUS.register(new GlobalMetricsCoverDatabase());
         FMLCommonHandler.instance()
@@ -1252,7 +1252,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
             .getRegisteredFluidContainerData()) {
             if ((tData.filledContainer.getItem() == Items.potionitem) && (tData.filledContainer.getItemDamage() == 0)) {
-                tData.fluid.amount = 250;
+                tData.fluid.amount = 0;
                 break;
             }
         }
@@ -1284,7 +1284,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
             .getRegisteredFluidContainerData()) {
             if ((tData.filledContainer.getItem() == Items.potionitem) && (tData.filledContainer.getItemDamage() == 0)) {
-                tData.fluid.amount = 250;
+                tData.fluid.amount = 0;
                 break;
             }
         }
@@ -1379,7 +1379,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
             .getRegisteredFluidContainerData()) {
             if ((tData.filledContainer.getItem() == Items.potionitem) && (tData.filledContainer.getItemDamage() == 0)) {
-                tData.fluid.amount = 250;
+                tData.fluid.amount = 0;
                 break;
             }
         }
@@ -2210,7 +2210,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public void onFluidContainerRegistration(FluidContainerRegistry.FluidContainerRegisterEvent aFluidEvent) {
         if ((aFluidEvent.data.filledContainer.getItem() == Items.potionitem)
             && (aFluidEvent.data.filledContainer.getItemDamage() == 0)) {
-            aFluidEvent.data.fluid.amount = 250;
+            aFluidEvent.data.fluid.amount = 0;
         }
         GT_OreDictUnificator.addToBlacklist(aFluidEvent.data.emptyContainer);
         GT_OreDictUnificator.addToBlacklist(aFluidEvent.data.filledContainer);

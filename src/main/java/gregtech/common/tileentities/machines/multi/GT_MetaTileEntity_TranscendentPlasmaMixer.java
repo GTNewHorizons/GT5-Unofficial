@@ -22,6 +22,7 @@ import static net.minecraft.util.EnumChatFormatting.GOLD;
 import static net.minecraft.util.EnumChatFormatting.GRAY;
 
 import java.math.BigInteger;
+import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
@@ -78,7 +79,7 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
         .addElement('C', ofBlock(GregTech_API.sBlockCasings1, DIM_BRIDGE_CASING))
         .build();
 
-    private String ownerUUID;
+    private UUID ownerUUID;
 
     public GT_MetaTileEntity_TranscendentPlasmaMixer(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
