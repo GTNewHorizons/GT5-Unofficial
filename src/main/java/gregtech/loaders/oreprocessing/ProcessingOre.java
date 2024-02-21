@@ -30,8 +30,7 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
             .startsWith("ore")) && (tPrefix != OrePrefixes.orePoor)
             && (tPrefix != OrePrefixes.oreSmall)
             && (tPrefix != OrePrefixes.oreRich)
-            && (tPrefix != OrePrefixes.oreNormal))
-            tPrefix.add(this);
+            && (tPrefix != OrePrefixes.oreNormal)) tPrefix.add(this);
     }
 
     @Override
@@ -112,7 +111,8 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
 
         ItemStack tDust = GT_OreDictUnificator.get(OrePrefixes.dust, tMaterial, tGem, 1L);
         ItemStack tCleaned = GT_OreDictUnificator.get(OrePrefixes.crushedPurified, tMaterial, tDust, 1L);
-        ItemStack tCrushed = GT_OreDictUnificator.get(OrePrefixes.crushed, tMaterial, (long) aMaterial.mOreMultiplier * aMultiplier);
+        ItemStack tCrushed = GT_OreDictUnificator
+            .get(OrePrefixes.crushed, tMaterial, (long) aMaterial.mOreMultiplier * aMultiplier);
         ItemStack tPrimaryByProduct = null;
 
         if (tCrushed == null) {
@@ -233,7 +233,7 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
                             .get(OrePrefixes.gem, tPrimaryByMaterial, GT_Utility.copyAmount(1, tPrimaryByProduct), 1L),
                         1L)
                         : GT_OreDictUnificator
-                        .get(OrePrefixes.gem, tPrimaryByMaterial, GT_Utility.copyAmount(1, tPrimaryByProduct), 1L),
+                            .get(OrePrefixes.gem, tPrimaryByMaterial, GT_Utility.copyAmount(1, tPrimaryByProduct), 1L),
                     GT_OreDictUnificator.getDust(aPrefix.mSecondaryMaterial))
                 .outputChances(10000, chanceOre2, 5000)
                 .duration(20 * SECONDS)

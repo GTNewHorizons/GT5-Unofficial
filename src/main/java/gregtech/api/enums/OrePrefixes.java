@@ -93,8 +93,8 @@ public enum OrePrefixes {
         true, B[3], -1, 64, 6),
     crushed("Crushed Ores", "Crushed ", " Ore", true, true, false, false, false, false, false, true, false, true, B[3],
         -1, 64, 5),
-    rawOre("Raw Ore", "Raw ", " Ore", true, true, false, false, false, false, false, false, false, true, B[3],
-        -1, 64, 64),
+    rawOre("Raw Ore", "Raw ", " Ore", true, true, false, false, false, false, false, false, false, true, B[3], -1, 64,
+        64),
 
     /** Introduced by Mekanism */
     shard("Crystallised Shards", "", "", true, true, false, false, false, false, false, false, false, true, B[3], -1,
