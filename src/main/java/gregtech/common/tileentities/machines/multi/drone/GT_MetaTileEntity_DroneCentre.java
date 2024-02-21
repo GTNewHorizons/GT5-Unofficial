@@ -21,6 +21,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -69,7 +70,6 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Utility;
 import gregtech.common.items.GT_TierDrone;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -423,20 +423,19 @@ public class GT_MetaTileEntity_DroneCentre extends
                 new ButtonWidget().setOnClick((clickData, widget) -> {
                     if (!widget.isClient()) {
                         if (!getBaseMetaTileEntity().isActive()) {
-                            GT_Utility.sendChatToPlayer(
-                                widget.getContext()
-                                    .getPlayer(),
-                                GT_Utility.trans("350", "You cannot control machine when drone centre shut down!"));
+                            widget.getContext()
+                                .getPlayer()
+                                .addChatComponentMessage(
+                                    new ChatComponentTranslation("GT5U.machines.dronecentre.shutdown"));
                             return;
                         }
                         for (DroneConnection mte : connectionList) {
                             mte.machine.getBaseMetaTileEntity()
                                 .enableWorking();
                         }
-                        GT_Utility.sendChatToPlayer(
-                            widget.getContext()
-                                .getPlayer(),
-                            GT_Utility.trans("351", "Successfully turn on all machines!"));
+                        widget.getContext()
+                            .getPlayer()
+                            .addChatComponentMessage(new ChatComponentTranslation("GT5U.machines.dronecentre.turnon"));
                         widget.getContext()
                             .getPlayer()
                             .closeScreen();
@@ -456,20 +455,19 @@ public class GT_MetaTileEntity_DroneCentre extends
                 new ButtonWidget().setOnClick((clickData, widget) -> {
                     if (!widget.isClient()) {
                         if (!getBaseMetaTileEntity().isActive()) {
-                            GT_Utility.sendChatToPlayer(
-                                widget.getContext()
-                                    .getPlayer(),
-                                GT_Utility.trans("350", "You cannot control machine when drone centre shut down!"));
+                            widget.getContext()
+                                .getPlayer()
+                                .addChatComponentMessage(
+                                    new ChatComponentTranslation("GT5U.machines.dronecentre.shutdown"));
                             return;
                         }
                         for (DroneConnection mte : connectionList) {
                             mte.machine.getBaseMetaTileEntity()
                                 .disableWorking();
                         }
-                        GT_Utility.sendChatToPlayer(
-                            widget.getContext()
-                                .getPlayer(),
-                            GT_Utility.trans("352", "Successfully turn off all machines!"));
+                        widget.getContext()
+                            .getPlayer()
+                            .addChatComponentMessage(new ChatComponentTranslation("GT5U.machines.dronecentre.turnoff"));
                         widget.getContext()
                             .getPlayer()
                             .closeScreen();
@@ -598,9 +596,8 @@ public class GT_MetaTileEntity_DroneCentre extends
                     (clickData, widget) -> Optional.ofNullable(coreMachine)
                         .ifPresent(machine -> {
                             if (!getBaseMetaTileEntity().isActive()) {
-                                GT_Utility.sendChatToPlayer(
-                                    player,
-                                    GT_Utility.trans("350", "You cannot control machine when drone centre shut down!"));
+                                player.addChatComponentMessage(
+                                    new ChatComponentTranslation("GT5U.machines.dronecentre.shutdown"));
                                 return;
                             }
                             if (machine.isAllowedToWork()) {
@@ -683,7 +680,8 @@ public class GT_MetaTileEntity_DroneCentre extends
             ButtonWidget.closeWindowButton(true)
                 .setPos(135, 3))
             .widget(
-                new TextWidget("Custom Machine Name").setTextAlignment(Alignment.Center)
+                new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.drone_custom_name"))
+                    .setTextAlignment(Alignment.Center)
                     .setPos(0, 5)
                     .setSize(150, 8))
             .widget(new TextFieldWidget() {
