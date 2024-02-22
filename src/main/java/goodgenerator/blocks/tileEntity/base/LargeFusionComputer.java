@@ -5,6 +5,7 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_StructureUtility.filterByMTETier;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
+import static gregtech.api.util.GT_Utility.roundUpVoltage;
 
 import java.util.List;
 
@@ -449,13 +450,18 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
             @NotNull
             @Override
             protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
-                return super.createOverclockCalculator(recipe).limitOverclockCount(overclock(recipe.mSpecialValue));
+                int overclockCount = overclock(recipe.mSpecialValue);
+                if (GT_Values.VP[LargeFusionComputer.this.tier()] <= roundUpVoltage(recipe.mEUt)) {
+                    overclockCount = 0;
+                }
+                return super.createOverclockCalculator(recipe).limitOverclockCount(overclockCount);
             }
 
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
-                if (!mRunningOnLoad && recipe.mSpecialValue > maxEUStore()) {
+                if (!mRunningOnLoad && recipe.mSpecialValue > maxEUStore()
+                        || GT_Values.VP[LargeFusionComputer.this.tier()] < recipe.mEUt) {
                     return CheckRecipeResultRegistry.insufficientStartupPower(recipe.mSpecialValue);
                 }
                 maxParallel = getMaxPara() * extraPara(recipe.mSpecialValue);
@@ -588,7 +594,7 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
                         + EnumChatFormatting.RESET,
                 StatCollector.translateToLocal("GT5U.fusion.req") + ": "
                         + EnumChatFormatting.RED
-                        + GT_Utility.formatNumbers(lEUt)
+                        + GT_Utility.formatNumbers(-lEUt)
                         + EnumChatFormatting.RESET
                         + "EU/t",
                 StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
