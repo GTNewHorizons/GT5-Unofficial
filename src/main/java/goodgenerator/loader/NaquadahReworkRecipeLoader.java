@@ -437,7 +437,7 @@ public class NaquadahReworkRecipeLoader {
                 .eut(TierEU.RECIPE_EV).addTo(UniversalChemical);
 
         GT_Values.RA.stdBuilder().itemInputs(naquadahEarth.get(OrePrefixes.dust, 2), GT_Utility.getIntegratedCircuit(2))
-                .fluidInputs(Materials.Nitrogen.getGas(1000)).itemOutputs(ItemList.Circuit_Silicon_Ingot3.get(1))
+                .fluidInputs(Materials.Nitrogen.getGas(1000)).itemOutputs(Materials.Naquadah.getNuggets(1))
                 .duration(2 * MINUTES).eut(TierEU.RECIPE_IV).metadata(COIL_HEAT, 5000).addTo(blastFurnaceRecipes);
 
         // C2H4 + H2O(g) = C2H6O
