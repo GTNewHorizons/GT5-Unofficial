@@ -328,8 +328,13 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
                         rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, amount));
                     }
                 }
-                case Block -> {
+                case UnifiedBlock -> {
+                    // Unified ore
                     rList.add(new ItemStack(aDroppedOre, (tIsRich ? 2 : 1), this.mMetaData % 1000));
+                }
+                case Block -> {
+                    // Regular ore
+                    rList.add(new ItemStack(aDroppedOre, 1, this.mMetaData));
                 }
             }
             return rList;
