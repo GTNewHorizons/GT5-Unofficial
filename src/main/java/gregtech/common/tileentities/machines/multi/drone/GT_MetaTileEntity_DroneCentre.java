@@ -523,6 +523,7 @@ public class GT_MetaTileEntity_DroneCentre extends
                 super.onRemoveFocus();
                 syncToServer(2, buffer -> {});
             }
+
             // Refresh
             @Override
             public void readOnServer(int id, PacketBuffer buf) {
