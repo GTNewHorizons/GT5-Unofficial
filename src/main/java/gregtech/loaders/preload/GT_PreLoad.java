@@ -53,6 +53,7 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_RecipeBuilder;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.GT_Proxy;
 import gregtech.common.tileentities.machines.long_distance.GT_MetaTileEntity_LongDistancePipelineBase;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Cleanroom;
 
@@ -738,6 +739,21 @@ public class GT_PreLoad {
         GT_MetaTileEntity_LongDistancePipelineBase.minimalDistancePoints = tMainConfig
             .get("general", "LongDistancePipelineMinimalDistancePoints", 64)
             .getInt(64);
+        try {
+            String setting_string = tMainConfig.get(
+                "OreDropBehaviour",
+                "general",
+                "FortuneItem",
+                "Settings: \n'Block': Sets the drop to the stone variant of the ore block, \n'FortuneItem': Sets the drop to the new ore item and makes it affected by fortune, \n'Item': Sets the drop to the new ore item, \nDefaults to: FortuneItem")
+                .getString();
+            GT_Log.out.println("Trying to set it to: " + setting_string);
+            GT_Proxy.OreDropSystem setting = GT_Proxy.OreDropSystem.valueOf(setting_string);
+            GT_Mod.gregtechproxy.oreDropSystem = setting;
+
+        } catch (IllegalArgumentException e) {
+            GT_Log.err.println(e);
+            GT_Mod.gregtechproxy.oreDropSystem = GT_Proxy.OreDropSystem.FortuneItem;
+        }
 
         GregTech_API.mUseOnlyGoodSolderingMaterials = GregTech_API.sRecipeFile.get(
             ConfigCategories.Recipes.harderrecipes,

@@ -646,6 +646,14 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public boolean costlyCableConnection = false;
     public boolean crashOnNullRecipeInput = false;
 
+    public enum OreDropSystem {
+        Block,
+        FortuneItem,
+        Item
+    }
+
+    public OreDropSystem oreDropSystem = OreDropSystem.FortuneItem;
+
     /**
      * This enables ambient-occlusion smooth lighting on tiles
      */

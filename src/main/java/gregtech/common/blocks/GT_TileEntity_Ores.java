@@ -16,7 +16,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -315,15 +314,23 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
                 tIsRich = (this.mMetaData >= 2000 && this.mMetaData < 3000);
             }
 
-            if (aFortune > 0
-                && GregTech_API.sSpecialFile.get(ConfigCategories.general, "EnableOreFortuneMineBonus", false)) {
-
-                Random tRandom = new XSTR(this.xCoord ^ this.yCoord ^ this.zCoord);
-                long amount = (long) Math.max((tIsRich ? 2 : 1), tRandom.nextInt(1 + aFortune * (tIsRich ? 2 : 1)));
-                rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, amount));
-            } else {
-                rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, (tIsRich ? 2 : 1)));
-                // rList.add(new ItemStack(aDroppedOre, 1, this.mMetaData));
+            switch (GT_Mod.gregtechproxy.oreDropSystem) {
+                case Item -> {
+                    rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, (tIsRich ? 2 : 1)));
+                }
+                case FortuneItem -> {
+                    if (!this.mNatural) {
+                        rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, (tIsRich ? 2 : 1)));
+                    } else {
+                        Random tRandom = new XSTR(this.xCoord ^ this.yCoord ^ this.zCoord);
+                        long amount = (long) Math
+                            .max((tIsRich ? 2 : 1), tRandom.nextInt((1 + Math.min(3, aFortune)) * (tIsRich ? 2 : 1)));
+                        rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, amount));
+                    }
+                }
+                case Block -> {
+                    rList.add(new ItemStack(aDroppedOre, (tIsRich ? 2 : 1), this.mMetaData % 1000));
+                }
             }
             return rList;
         }
