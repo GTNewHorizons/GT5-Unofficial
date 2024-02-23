@@ -523,29 +523,6 @@ public class GT_MetaTileEntity_DroneCentre extends
                 super.onRemoveFocus();
                 syncToServer(2, buffer -> {});
             }
-
-            @Override
-            public ClickResult onClick(int buttonId, boolean doubleClick) {
-                super.onClick(buttonId, doubleClick);
-                if (buttonId == 1) handler.getText()
-                    .clear();
-                return ClickResult.SUCCESS;
-            }
-
-            // Support CJKV Unified Ideographs
-            @Override
-            public boolean onKeyPressed(char character, int keyCode) {
-                if (!isFocused()) return false;
-                if (Character.isIdeographic(character)) {
-                    if (handler.hasTextMarked()) {
-                        handler.delete();
-                    }
-                    handler.insert(String.valueOf(character));
-                    return true;
-                }
-                return super.onKeyPressed(character, keyCode);
-            }
-
             // Refresh
             @Override
             public void readOnServer(int id, PacketBuffer buf) {
@@ -691,20 +668,6 @@ public class GT_MetaTileEntity_DroneCentre extends
                     if (isClient()) return;
                     getContext().closeWindow(MACHINE_LIST_WINDOW_ID);
                     getContext().openSyncedWindow(MACHINE_LIST_WINDOW_ID);
-                }
-
-                // Support CJKV Unified Ideographs
-                @Override
-                public boolean onKeyPressed(char character, int keyCode) {
-                    if (!isFocused()) return false;
-                    if (Character.isIdeographic(character)) {
-                        if (handler.hasTextMarked()) {
-                            handler.delete();
-                        }
-                        handler.insert(String.valueOf(character));
-                        return true;
-                    }
-                    return super.onKeyPressed(character, keyCode);
                 }
             }.setGetter(
                 () -> connectionList.get(buttonID)
