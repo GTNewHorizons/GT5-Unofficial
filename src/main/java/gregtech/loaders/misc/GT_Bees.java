@@ -4,6 +4,14 @@ import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.TwilightForest;
 
+import forestry.api.apiculture.IBeeHousing;
+import forestry.core.utils.BlockUtil;
+import gregtech.api.metatileentity.BaseMetaTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
+import gregtech.loaders.misc.bees.GT_EffectMachineBoost;
+import gregtech.loaders.misc.bees.GT_Flowers;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 
@@ -47,6 +55,7 @@ public class GT_Bees {
     public static IAlleleInteger superLife;
 
     public static IAlleleBeeEffect treetwisterEffect;
+    public static IAlleleBeeEffect machineBoostEffect;
 
     public static ItemPropolis propolis;
     public static ItemPollen pollen;
@@ -57,7 +66,7 @@ public class GT_Bees {
         if (!(Forestry.isModLoaded() && GT_Mod.gregtechproxy.mGTBees)) {
             return;
         }
-
+        GT_Flowers.doInit();
         GT_AlleleHelper.initialisation();
         setupGTAlleles();
         propolis = new ItemPropolis();
@@ -91,6 +100,7 @@ public class GT_Bees {
 
         blinkLife = new AlleleInteger("lifeBlink", 2, false, EnumBeeChromosome.LIFESPAN);
         superLife = new AlleleInteger("lifeEon", 600, false, EnumBeeChromosome.LIFESPAN);
+        machineBoostEffect = new GT_EffectMachineBoost();
 
         if (GalaxySpace.isModLoaded() && TwilightForest.isModLoaded()) {
             GT_Mod.GT_FML_LOGGER.info("treetwisterEffect: GalaxySpace and TwilightForest loaded, using default impl");
@@ -196,6 +206,29 @@ public class GT_Bees {
                 return StringUtil.localizeAndFormat("mutation.condition.biomeid") + " " + biomeName;
             }
             return "";
+        }
+    }
+
+    public static class ActiveGTMachineMutationCondition implements IMutationCondition {
+        public ActiveGTMachineMutationCondition() {
+
+        }
+
+        @Override
+        public float getChance(World world, int x, int y, int z, IAllele allele0, IAllele allele1, IGenome genome0,
+                               IGenome genome1, IClimateProvider climate) {
+            TileEntity tileEntity = world.getTileEntity(x, y - 1, z);
+            if (tileEntity instanceof BaseMetaTileEntity machine) {
+                if (machine.isActive()) {
+                    return 1;
+                }
+            }
+            return 0;
+        }
+
+        @Override
+        public String getDescription() {
+            return "Needs a running GT Machine below to breed";
         }
     }
 }

@@ -4,14 +4,7 @@ import static gregtech.api.enums.GT_Values.L;
 import static gregtech.api.enums.GT_Values.NF;
 import static gregtech.api.enums.GT_Values.NI;
 import static gregtech.api.enums.GT_Values.V;
-import static gregtech.api.enums.Mods.AE2FluidCraft;
-import static gregtech.api.enums.Mods.ExtraUtilities;
-import static gregtech.api.enums.Mods.GalaxySpace;
-import static gregtech.api.enums.Mods.GregTech;
-import static gregtech.api.enums.Mods.MagicBees;
-import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
-import static gregtech.api.enums.Mods.Thaumcraft;
-import static gregtech.api.enums.Mods.ThaumicBases;
+import static gregtech.api.enums.Mods.*;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
@@ -1311,6 +1304,18 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
                 new int[] { 100 * 100 },
                 Voltage.LV);
         }
+        addCentrifugeToItemStack(
+            CombType.DIDDY,
+            new ItemStack[] {
+                GT_ModHandler.getModItem(Forestry.ID, "royalJelly", 1L, 0),
+                GT_ModHandler.getModItem(Forestry.ID, "pollen", 1L, 0),
+                GT_ModHandler.getModItem(Forestry.ID, "honeyDrop", 1L, 0),
+                GT_ModHandler.getModItem(ExtraBees.ID, "honeyDrop", 1L, 6),
+                GT_ModHandler.getModItem(Forestry.ID, "beeswax", 1L, 0),
+            },
+            new int[] {10 * 100, 10 * 100, 20 * 100, 10 * 100, 20 * 100},
+            Voltage.ULV
+        );
         // Space Line
         addCentrifugeToItemStack(
             CombType.SPACE,
