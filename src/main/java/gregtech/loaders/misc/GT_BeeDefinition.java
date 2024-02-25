@@ -58,12 +58,11 @@ import static gregtech.loaders.misc.GT_BeeDefinitionReference.GENDUSTRY;
 import static gregtech.loaders.misc.GT_BeeDefinitionReference.GREGTECH;
 import static gregtech.loaders.misc.GT_BeeDefinitionReference.MAGICBEES;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.function.Consumer;
 
-import gregtech.loaders.misc.bees.GT_Flowers;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -103,6 +102,7 @@ import gregtech.common.bees.GT_Bee_Mutation;
 import gregtech.common.items.CombType;
 import gregtech.common.items.DropType;
 import gregtech.common.items.PropolisType;
+import gregtech.loaders.misc.bees.GT_Flowers;
 
 /**
  * Bride Class for Lambdas
@@ -1675,7 +1675,8 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         AlleleHelper.instance.set(template, FERTILITY, Fertility.MAXIMUM);
         AlleleHelper.instance.set(template, EFFECT, getEffect(GREGTECH, "MachineBoost"));
     }, dis -> {
-        IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORESTRY, "Industrious"), getSpecies(FORESTRY, "Imperial"), 1);
+        IBeeMutationCustom tMutation = dis
+            .registerMutation(getSpecies(FORESTRY, "Industrious"), getSpecies(FORESTRY, "Imperial"), 1);
         tMutation.addMutationCondition(new GT_Bees.ActiveGTMachineMutationCondition());
     }),
     // Space Bees

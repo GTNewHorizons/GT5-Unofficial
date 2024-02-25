@@ -4,13 +4,6 @@ import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.TwilightForest;
 
-import forestry.api.apiculture.IBeeHousing;
-import forestry.core.utils.BlockUtil;
-import gregtech.api.metatileentity.BaseMetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
-import gregtech.loaders.misc.bees.GT_EffectMachineBoost;
-import gregtech.loaders.misc.bees.GT_Flowers;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -28,13 +21,16 @@ import forestry.api.genetics.IMutationCondition;
 import forestry.core.genetics.alleles.Allele;
 import forestry.core.utils.StringUtil;
 import gregtech.GT_Mod;
+import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.common.bees.GT_AlleleHelper;
 import gregtech.common.items.ItemComb;
 import gregtech.common.items.ItemDrop;
 import gregtech.common.items.ItemPollen;
 import gregtech.common.items.ItemPropolis;
 import gregtech.loaders.misc.bees.GT_AlleleEffect;
+import gregtech.loaders.misc.bees.GT_EffectMachineBoost;
 import gregtech.loaders.misc.bees.GT_EffectTreeTwister;
+import gregtech.loaders.misc.bees.GT_Flowers;
 
 public class GT_Bees {
 
@@ -210,13 +206,14 @@ public class GT_Bees {
     }
 
     public static class ActiveGTMachineMutationCondition implements IMutationCondition {
+
         public ActiveGTMachineMutationCondition() {
 
         }
 
         @Override
         public float getChance(World world, int x, int y, int z, IAllele allele0, IAllele allele1, IGenome genome0,
-                               IGenome genome1, IClimateProvider climate) {
+            IGenome genome1, IClimateProvider climate) {
             TileEntity tileEntity = world.getTileEntity(x, y - 1, z);
             if (tileEntity instanceof BaseMetaTileEntity machine) {
                 if (machine.isActive()) {

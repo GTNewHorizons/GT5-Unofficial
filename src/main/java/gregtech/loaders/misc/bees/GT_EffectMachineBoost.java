@@ -1,5 +1,9 @@
 package gregtech.loaders.misc.bees;
 
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.world.World;
+
 import forestry.api.apiculture.BeeManager;
 import forestry.api.apiculture.IBeeGenome;
 import forestry.api.apiculture.IBeeHousing;
@@ -7,11 +11,7 @@ import forestry.api.apiculture.IBeeModifier;
 import forestry.api.genetics.IEffectData;
 import forestry.core.genetics.EffectData;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
-import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.world.World;
 
 public class GT_EffectMachineBoost extends GT_AlleleEffect {
 

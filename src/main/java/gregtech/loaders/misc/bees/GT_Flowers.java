@@ -1,22 +1,36 @@
 package gregtech.loaders.misc.bees;
 
-import forestry.api.apiculture.FlowerManager;
-import forestry.api.genetics.*;
-import gregtech.api.util.GT_LanguageManager;
+import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.Set;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 
-import java.util.*;
+import forestry.api.apiculture.FlowerManager;
+import forestry.api.genetics.AlleleManager;
+import forestry.api.genetics.IAllele;
+import forestry.api.genetics.IAlleleFlowers;
+import forestry.api.genetics.IChromosomeType;
+import forestry.api.genetics.IFlower;
+import forestry.api.genetics.IFlowerProvider;
+import forestry.api.genetics.IIndividual;
+import forestry.api.genetics.IPollinatable;
+import forestry.api.genetics.ISpeciesRoot;
+import gregtech.api.util.GT_LanguageManager;
 
 public enum GT_Flowers implements IFlowerProvider, IAlleleFlowers, IChromosomeType {
+
     FLAMING;
 
     protected boolean dominant;
 
-    GT_Flowers() { dominant = true; }
+    GT_Flowers() {
+        dominant = true;
+    }
 
     public static void doInit() {
         for (GT_Flowers effect : values()) {
