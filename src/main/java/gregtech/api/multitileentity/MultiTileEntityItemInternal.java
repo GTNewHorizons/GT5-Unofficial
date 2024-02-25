@@ -29,12 +29,6 @@ import gregtech.api.GregTech_API;
 import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.multitileentity.interfaces.IItemUpdatable;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_AddToolTips;
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_CanPlace;
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_GetMaxStackSize;
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_HasMultiBlockMachineRelevantData;
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_IgnoreEntityCollisionWhenPlacing;
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_OnlyPlaceableWhenSneaking;
 
 public class MultiTileEntityItemInternal extends ItemBlock implements IFluidContainerItem, IItemUpdatable {
 
@@ -56,13 +50,6 @@ public class MultiTileEntityItemInternal extends ItemBlock implements IFluidCont
             aList.add("INVALID ITEM!");
             return;
         }
-        if (tTileEntityContainer.mTileEntity instanceof IMTE_AddToolTips mte) {
-            try {
-                mte.addToolTips(aList, aStack, aF3_H);
-            } catch (Throwable e) {
-                GT_FML_LOGGER.error("addInformation", e);
-            }
-        }
         final NBTTagCompound aNBT = aStack.getTagCompound();
         CoverableTileEntity.addInstalledCoversInformation(aNBT, aList);
         // TODO: Add anything else relevant
@@ -73,10 +60,10 @@ public class MultiTileEntityItemInternal extends ItemBlock implements IFluidCont
     @SuppressWarnings("unchecked")
     public void getSubItems(Item aItem, CreativeTabs aTab, List<ItemStack> aList) {
         for (MultiTileEntityClassContainer tClass : mBlock.mMultiTileEntityRegistry.mRegistrations) {
-            if (!tClass.mHidden && ((IMultiTileEntity) tClass.mCanonicalTileEntity)
-                .getSubItems(mBlock, aItem, aTab, aList, tClass.mID)) {
-                aList.add(mBlock.mMultiTileEntityRegistry.getItem(tClass.mID));
-            }
+            //if (!tClass.mHidden && ((IMultiTileEntity) tClass.mCanonicalTileEntity)
+             //   .getSubItems(mBlock, aItem, aTab, aList, tClass.mID)) {
+              //  aList.add(mBlock.mMultiTileEntityRegistry.getItem(tClass.mID));
+            //}
         }
     }
 
@@ -118,23 +105,6 @@ public class MultiTileEntityItemInternal extends ItemBlock implements IFluidCont
 
             if (aMTEContainer == null) return false;
 
-            if (!aPlayer.isSneaking() && aMTEContainer.mTileEntity instanceof IMTE_OnlyPlaceableWhenSneaking mteSNeaking
-                && mteSNeaking.onlyPlaceableWhenSneaking()) {
-                return false;
-            }
-
-            if ((!(aMTEContainer.mTileEntity instanceof IMTE_IgnoreEntityCollisionWhenPlacing mteIgnoreCollision)
-                || !mteIgnoreCollision
-                    .ignoreEntityCollisionWhenPlacing(aStack, aPlayer, aWorld, aX, aY, aZ, side, aHitX, aHitY, aHitZ))
-                && !aWorld.checkNoEntityCollision(AxisAlignedBB.getBoundingBox(aX, aY, aZ, aX + 1, aY + 1, aZ + 1))) {
-                return false;
-            }
-
-            if (aMTEContainer.mTileEntity instanceof IMTE_CanPlace mteCanPlace
-                && !mteCanPlace.canPlace(aStack, aPlayer, aWorld, aX, aY, aZ, side, aHitX, aHitY, aHitZ)) {
-                return false;
-            }
-
             if (!aWorld.setBlock(aX, aY, aZ, aMTEContainer.mBlock, 15 - aMTEContainer.mBlockMetaData, 2)) {
                 return false;
             }
@@ -142,39 +112,12 @@ public class MultiTileEntityItemInternal extends ItemBlock implements IFluidCont
             aMTEContainer.setMultiTile(aWorld, aX, aY, aZ);
 
             try {
-                if (((IMultiTileEntity) aMTEContainer.mTileEntity)
-                    .onPlaced(aStack, aPlayer, aWorld, aX, aY, aZ, side, aHitX, aHitY, aHitZ)) {
-                    aWorld.playSoundEffect(
-                        aX + 0.5,
-                        aY + 0.5,
-                        aZ + 0.5,
-                        aMTEContainer.mBlock.stepSound.func_150496_b(),
-                        (aMTEContainer.mBlock.stepSound.getVolume() + 1) / 2,
-                        aMTEContainer.mBlock.stepSound.getPitch() * 0.8F);
-                }
-            } catch (Throwable e) {
-                GT_FML_LOGGER.error("onPlaced", e);
-            }
-            try {
-                if (aMTEContainer.mTileEntity instanceof IMTE_HasMultiBlockMachineRelevantData mteData
-                    && (mteData.hasMultiBlockMachineRelevantData())) {
-                    GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
-                }
-            } catch (Throwable e) {
-                GT_FML_LOGGER.error("causeMachineUpdate", e);
-            }
-            try {
                 if (!aWorld.isRemote) {
                     aWorld.notifyBlockChange(aX, aY, aZ, tReplacedBlock);
                     aWorld.func_147453_f /* updateNeighborsAboutBlockChange */(aX, aY, aZ, aMTEContainer.mBlock);
                 }
             } catch (Throwable e) {
                 GT_FML_LOGGER.error("notifyBlockChange", e);
-            }
-            try {
-                ((IMultiTileEntity) aMTEContainer.mTileEntity).onTileEntityPlaced();
-            } catch (Throwable e) {
-                GT_FML_LOGGER.error("onTileEntityPlaced", e);
             }
             try {
                 aWorld.func_147451_t /* updateAllLightTypes */(aX, aY, aZ);
@@ -219,10 +162,6 @@ public class MultiTileEntityItemInternal extends ItemBlock implements IFluidCont
         if (tContainer == null) return 1;
         final MultiTileEntityContainer tTileEntityContainer = mBlock.mMultiTileEntityRegistry
             .getCachedTileEntityContainer(aStack);
-        if (tTileEntityContainer != null
-            && tTileEntityContainer.mTileEntity instanceof IMTE_GetMaxStackSize maxStackSize) {
-            return maxStackSize.getMaxStackSize(aStack, tContainer.mStackSize);
-        }
         return tContainer.mStackSize;
     }
 

@@ -56,7 +56,7 @@ public class MultiTileEntityClassContainer {
         } catch (Throwable e) {
             throw new IllegalArgumentException(e);
         }
-        mCanonicalTileEntity.initFromNBT(mParameters, mID, (short) -1);
+        //mCanonicalTileEntity.initFromNBT(mParameters, mID, (short) -1);
 
         return registry != null && registry.add(this.mLocalized, this.mCategoryName, this) != null;
     }

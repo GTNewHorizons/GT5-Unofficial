@@ -58,8 +58,8 @@ public class Inventory extends UpgradeCasing {
     }
 
     @Override
-    public void readMultiTileNBT(NBTTagCompound aNBT) {
-        super.readMultiTileNBT(aNBT);
+    public void readFromNBT(NBTTagCompound aNBT) {
+        super.readFromNBT(aNBT);
         if (aNBT.hasKey(NBT.UPGRADE_INVENTORY_NAME)) {
             inventoryName = aNBT.getString(NBT.UPGRADE_INVENTORY_NAME);
         } else {
@@ -69,8 +69,8 @@ public class Inventory extends UpgradeCasing {
     }
 
     @Override
-    public void writeMultiTileNBT(NBTTagCompound aNBT) {
-        super.writeMultiTileNBT(aNBT);
+    public void writeToNBT(NBTTagCompound aNBT) {
+        super.writeToNBT(aNBT);
         aNBT.setString(NBT.UPGRADE_INVENTORY_UUID, inventoryID.toString());
         aNBT.setString(NBT.UPGRADE_INVENTORY_NAME, inventoryName);
     }
@@ -84,12 +84,6 @@ public class Inventory extends UpgradeCasing {
         return super.breakBlock();
     }
 
-    @Override
-    public boolean hasGui(ForgeDirection side) {
-        return true;
-    }
-
-    @Override
     public void addUIWidgets(Builder builder, UIBuildContext buildContext) {
         builder.widget(
             new TextFieldWidget().setGetter(() -> inventoryName)

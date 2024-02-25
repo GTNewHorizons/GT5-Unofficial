@@ -90,7 +90,7 @@ public class GT_Util {
     public static TileEntity getTileEntity(World aWorld, int aX, int aY, int aZ, boolean aLoadUnloadedChunks) {
         if (aLoadUnloadedChunks || aWorld.blockExists(aX, aY, aZ)) {
             TileEntity rTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-            if (rTileEntity instanceof IMultiTileEntity && ((IMultiTileEntity) rTileEntity).isDead()) return null;
+            if (rTileEntity instanceof IMultiTileEntity && rTileEntity.isInvalid()) return null;
             if (rTileEntity != null) return rTileEntity;
             rTileEntity = LAST_BROKEN_TILEENTITY.get();
             if (rTileEntity != null && rTileEntity.xCoord == aX && rTileEntity.yCoord == aY && rTileEntity.zCoord == aZ)

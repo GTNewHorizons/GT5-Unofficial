@@ -7,8 +7,9 @@ import java.util.UUID;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.common.util.ForgeDirection;
-
+import gregtech.api.multitileentity.enums.PartMode;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
+import gregtech.api.util.WorldHelper;
 
 public class WallShareablePart extends MultiBlockPart {
 
@@ -18,7 +19,7 @@ public class WallShareablePart extends MultiBlockPart {
     public void setTarget(IMultiBlockController aTarget, int aAllowedModes) {
         if (targetPositions.size() >= 1) {
             allowedModes = 0;
-            setMode((byte) 0);
+            setMode(PartMode.NOTHING);
             targetPosition = null;
         } else {
             allowedModes = aAllowedModes;
@@ -69,7 +70,7 @@ public class WallShareablePart extends MultiBlockPart {
     @Override
     public void onBlockAdded() {
         for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-            final TileEntity te = getTileEntityAtSide(side);
+            final TileEntity te = WorldHelper.getTileEntityAtSide(side, getWorldObj(), getCoords());
             if (te instanceof MultiBlockPart part) {
                 final IMultiBlockController tController = part.getTarget(false);
                 if (tController != null) tController.onStructureChange();

@@ -2,6 +2,8 @@ package gregtech.common.tileentities.casings.upgrade;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -20,8 +22,8 @@ public class Ampere extends UpgradeCasing {
     }
 
     @Override
-    public void readMultiTileNBT(NBTTagCompound aNBT) {
-        super.readMultiTileNBT(aNBT);
+    public void readFromNBT(@Nonnull NBTTagCompound aNBT) {
+        super.readFromNBT(aNBT);
         amperage = aNBT.getInteger(GT_Values.NBT.UPGRADE_AMPERAGE);
     }
 

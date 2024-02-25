@@ -25,9 +25,6 @@ public interface IMultiBlockController
     /** Set the structure as having changed, and trigger an update */
     void onStructureChange();
 
-    @Override
-    ChunkCoordinates getCoords();
-
     void registerCoveredPartOnSide(final ForgeDirection side, IMultiBlockPart part);
 
     void unregisterCoveredPartOnSide(final ForgeDirection side, IMultiBlockPart part);

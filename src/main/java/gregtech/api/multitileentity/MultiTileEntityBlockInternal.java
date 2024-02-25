@@ -14,7 +14,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_HasMultiBlockMachineRelevantData;
 import gregtech.common.render.GT_MultiTile_Renderer;
 
 public class MultiTileEntityBlockInternal extends Block {
@@ -64,13 +63,11 @@ public class MultiTileEntityBlockInternal extends Block {
             return false;
         }
         // TileEntity should not refresh yet! -Greg
-        ((IMultiTileEntity) aMTEContainer.mTileEntity).setShouldRefresh(false);
         // Fake-Set the TileEntity first, bypassing a lot of checks. -Greg
         setTileEntity(aWorld, aX, aY, aZ, aMTEContainer.mTileEntity, false);
         // Now set the Block with the REAL MetaData. -Greg
         setTileEntity(aWorld, aX, aY, aZ, aMTEContainer.mBlock, aMTEContainer.mBlockMetaData, 0, false);
         // When the TileEntity is set now it SHOULD refresh! -Greg
-        ((IMultiTileEntity) aMTEContainer.mTileEntity).setShouldRefresh(true);
         // But make sure again that the Block we have set was actually set properly, because 0.0001%! -Greg
         if (aWorld.getBlock(aX, aY, aZ) != aMTEContainer.mBlock) {
             aWorld.setBlock(aX, aY, aZ, Blocks.air, 0, 0);
@@ -81,27 +78,12 @@ public class MultiTileEntityBlockInternal extends Block {
         // Yep, all this just to set one Block and its TileEntity properly... -Greg
 
         try {
-            if (aMTEContainer.mTileEntity instanceof IMTE_HasMultiBlockMachineRelevantData) {
-                if (((IMTE_HasMultiBlockMachineRelevantData) aMTEContainer.mTileEntity)
-                    .hasMultiBlockMachineRelevantData()) GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
-            }
-        } catch (Throwable e) {
-            GT_FML_LOGGER.error("causeMachineUpdate", e);
-        }
-
-        try {
             if (!aWorld.isRemote && aCauseBlockUpdates) {
                 aWorld.notifyBlockChange(aX, aY, aZ, tReplacedBlock);
                 aWorld.func_147453_f(aX, aY, aZ, aMTEContainer.mBlock);
             }
         } catch (Throwable e) {
             GT_FML_LOGGER.error("aCauseBlockUpdates", e);
-        }
-
-        try {
-            ((IMultiTileEntity) aMTEContainer.mTileEntity).onTileEntityPlaced();
-        } catch (Throwable e) {
-            GT_FML_LOGGER.error("onTileEntityPlaced", e);
         }
 
         try {

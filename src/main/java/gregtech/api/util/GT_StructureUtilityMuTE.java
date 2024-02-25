@@ -161,7 +161,7 @@ public class GT_StructureUtilityMuTE {
                 if (!(tileEntity instanceof MultiBlockPart part)) return false;
 
                 for (MuTEStructureCasing casing : allowedCasings) {
-                    if (casing.isCasingValid(part.getMultiTileEntityRegistryID(), part.getMultiTileEntityID())) {
+                    if (casing.isCasingValid(part.getRegistryId(), part.getMetaId())) {
                         final IMultiBlockController tTarget = part.getTarget(false);
                         if (tTarget != null && tTarget != t) return false;
 

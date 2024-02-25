@@ -153,7 +153,7 @@ public class MultiTileEntityRegistry {
         mRegistrations.add(aClassContainer);
 
         if (sRegisteredTileEntities.add(aClassContainer.mCanonicalTileEntity.getClass())) {
-            aClassContainer.mCanonicalTileEntity.onRegistrationFirst(this, aClassContainer.mID);
+            GameRegistry.registerTileEntity(aClassContainer.mCanonicalTileEntity.getClass(), aClassContainer.mCanonicalTileEntity.getTileEntityName());
         }
         // // TODO: Recipe
         // if (aRecipe != null && aRecipe.length > 1) {
@@ -197,7 +197,7 @@ public class MultiTileEntityRegistry {
         if (aNBT == null || aNBT.hasNoTags()) {
             aNBT = new NBTTagCompound();
             final MultiTileEntityContainer tTileEntityContainer = getNewTileEntityContainer(aID, aNBT);
-            if (tTileEntityContainer != null) ((IMultiTileEntity) tTileEntityContainer.mTileEntity).writeItemNBT(aNBT);
+            //if (tTileEntityContainer != null) ((IMultiTileEntity) tTileEntityContainer.mTileEntity).writeItemNBT(aNBT);
         }
         rStack.setTagCompound(aNBT);
         return rStack;
@@ -232,11 +232,11 @@ public class MultiTileEntityRegistry {
         rContainer.mTileEntity.setWorldObj(aWorld);
         rContainer.mTileEntity.xCoord = aX;
         rContainer.mTileEntity.yCoord = aY;
-        rContainer.mTileEntity.zCoord = aZ;
+        rContainer.mTileEntity.zCoord = aZ;/*
         ((IMultiTileEntity) rContainer.mTileEntity).initFromNBT(
             aNBT == null || aNBT.hasNoTags() ? tClass.mParameters : GT_Util.fuseNBT(aNBT, tClass.mParameters),
             (short) aID,
-            (short) Block.getIdFromBlock(mBlock));
+            (short) Block.getIdFromBlock(mBlock));*/
         return rContainer;
     }
 
