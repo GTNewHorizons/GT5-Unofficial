@@ -313,7 +313,7 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
             if (GT_Mod.gregtechproxy.mEndOreYieldMultiplier && !tIsRich) {
                 tIsRich = (this.mMetaData >= 2000 && this.mMetaData < 3000);
             }
-
+            // TODO: Silk Touch?
             switch (GT_Mod.gregtechproxy.oreDropSystem) {
                 case Item -> {
                     rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, (tIsRich ? 2 : 1)));
