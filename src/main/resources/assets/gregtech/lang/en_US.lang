@@ -392,6 +392,7 @@ GT5U.machines.stocking_bus.loaded=Loaded Config From Data Stick
 GT5U.machines.dronecentre.shutdown=You cannot control machine when drone centre shut down!
 GT5U.machines.dronecentre.turnon=Successfully turn on all machines!
 GT5U.machines.dronecentre.turnoff=Successfully turn off all machines!
+GT5U.machines.dronecentre.noconnection=No valid connection
 
 GT5U.recipe_filter.empty_representation_slot.tooltip=§7Click with a machine to set filter
 GT5U.recipe_filter.representation_slot.tooltip=§7Click to clear

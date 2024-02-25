@@ -13,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -43,7 +44,6 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Utility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -140,7 +140,7 @@ public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hat
         if (side == aBaseMetaTileEntity.getFrontFacing()) {
             if (aPlayer instanceof FakePlayer) return false;
             if (connection == null || !connection.isValid()) {
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("351", "No valid connection"));
+                aPlayer.addChatComponentMessage(new ChatComponentTranslation("GT5U.machines.dronecentre.noconnection"));
                 return false;
             }
             GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
@@ -283,32 +283,19 @@ public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hat
             ButtonWidget.closeWindowButton(true)
                 .setPos(135, 3))
             .widget(
-                new TextWidget("Custom Machine Name").setTextAlignment(Alignment.Center)
+                new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.drone_custom_name"))
+                    .setTextAlignment(Alignment.Center)
                     .setPos(0, 5)
                     .setSize(150, 8))
-            .widget(new TextFieldWidget() {
-
-                // Support CJKV Unified Ideographs
-                @Override
-                public boolean onKeyPressed(char character, int keyCode) {
-                    if (!isFocused()) return false;
-                    if (Character.isIdeographic(character)) {
-                        if (handler.hasTextMarked()) {
-                            handler.delete();
-                        }
-                        handler.insert(String.valueOf(character));
-                        return true;
-                    }
-                    return super.onKeyPressed(character, keyCode);
-                }
-            }.setGetter(() -> connection == null ? "" : connection.getCustomName())
-                .setSetter(var -> { if (connection != null) connection.setCustomName(var); })
-                .setTextAlignment(Alignment.CenterLeft)
-                .setTextColor(Color.WHITE.dark(1))
-                .setFocusOnGuiOpen(true)
-                .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD_LIGHT_GRAY.withOffset(-1, -1, 2, 2))
-                .setPos(10, 16)
-                .setSize(130, 16))
+            .widget(
+                new TextFieldWidget().setGetter(() -> connection == null ? "" : connection.getCustomName())
+                    .setSetter(var -> { if (connection != null) connection.setCustomName(var); })
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setTextColor(Color.WHITE.dark(1))
+                    .setFocusOnGuiOpen(true)
+                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD_LIGHT_GRAY.withOffset(-1, -1, 2, 2))
+                    .setPos(10, 16)
+                    .setSize(130, 16))
             .build();
     }
 
