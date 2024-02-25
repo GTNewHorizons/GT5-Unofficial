@@ -1319,8 +1319,9 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
                 GT_ModHandler.getModItem(Forestry.ID, "pollen", 1L, 0),
                 GT_ModHandler.getModItem(Forestry.ID, "honeyDrop", 1L, 0),
                 GT_ModHandler.getModItem(ExtraBees.ID, "honeyDrop", 1L, 6),
-                GT_ModHandler.getModItem(Forestry.ID, "beeswax", 1L, 0), },
-            new int[] { 10 * 100, 10 * 100, 20 * 100, 10 * 100, 20 * 100 },
+                GT_ModHandler.getModItem(Forestry.ID, "beeswax", 1L, 0),
+                ItemList.ElectronicsLump.get(1) },
+            new int[] { 10 * 100, 10 * 100, 20 * 100, 10 * 100, 20 * 100, 5 * 100 },
             Voltage.ULV);
         // Space Line
         addCentrifugeToItemStack(
