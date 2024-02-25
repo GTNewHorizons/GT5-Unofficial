@@ -389,6 +389,10 @@ GT5U.machines.stocking_hatch.auto_pull_toggle.enabled=Automatic Fluid Pull Enabl
 GT5U.machines.stocking_hatch.auto_pull_toggle.disabled=Automatic Fluid Pull Disabled
 GT5U.machines.stocking_bus.saved=Saved Config to Data Stick
 GT5U.machines.stocking_bus.loaded=Loaded Config From Data Stick
+GT5U.machines.dronecentre.shutdown=You cannot control machine when drone centre shut down!
+GT5U.machines.dronecentre.turnon=Successfully turn on all machines!
+GT5U.machines.dronecentre.turnoff=Successfully turn off all machines!
+GT5U.machines.dronecentre.noconnection=No valid connection
 
 GT5U.recipe_filter.empty_representation_slot.tooltip=§7Click with a machine to set filter
 GT5U.recipe_filter.representation_slot.tooltip=§7Click to clear
@@ -477,6 +481,8 @@ GT5U.gui.text.stocking_hatch_fail_extraction=§4Failed to extract expected amoun
 GT5U.gui.text.drone_noDrone=§4Can't find any drone in inputBuses!
 GT5U.gui.text.drone_operating=§aDrone operating normally!
 GT5U.gui.text.drone_title=Drone Control Centre
+GT5U.gui.text.drone_custom_name=Custom Machine Name
+GT5U.gui.text.drone_search=Search machine name
 
 GT5U.item.programmed_circuit.select.header=Reprogram Circuit
 

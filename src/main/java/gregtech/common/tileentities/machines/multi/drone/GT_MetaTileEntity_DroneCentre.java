@@ -19,7 +19,9 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -68,7 +70,6 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Utility;
 import gregtech.common.items.GT_TierDrone;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -79,9 +80,12 @@ public class GT_MetaTileEntity_DroneCentre extends
     private static final IIconContainer ACTIVE = new Textures.BlockIcons.CustomIcon("iconsets/DRONE_CENTRE_ACTIVE");
     private static final IIconContainer FACE = new Textures.BlockIcons.CustomIcon("iconsets/DRONE_CENTRE_FACE");
     private static final IIconContainer INACTIVE = new Textures.BlockIcons.CustomIcon("iconsets/DRONE_CENTRE_INACTIVE");
+    private final int MACHINE_LIST_WINDOW_ID = 10;
+    private final int CUSTOM_NAME_WINDOW_ID = 11;
     private Vec3Impl centreCoord;
     private int droneLevel = 0;
     private int buttonID;
+    private String searchFilter = "";
     private final List<DroneConnection> connectionList = new ArrayList<>();
     public HashMap<String, String> tempNameList = new HashMap<>();
     // Save centre by dimID
@@ -397,13 +401,13 @@ public class GT_MetaTileEntity_DroneCentre extends
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
-        buildContext.addSyncedWindow(10, this::createMachineListWindow);
-        buildContext.addSyncedWindow(11, this::createCustomNameWindow);
+        buildContext.addSyncedWindow(MACHINE_LIST_WINDOW_ID, this::createMachineListWindow);
+        buildContext.addSyncedWindow(CUSTOM_NAME_WINDOW_ID, this::createCustomNameWindow);
         builder.widget(// Machine List
             new ButtonWidget().setOnClick(
                 (clickData, widget) -> {
                     if (!widget.isClient()) widget.getContext()
-                        .openSyncedWindow(10);
+                        .openSyncedWindow(MACHINE_LIST_WINDOW_ID);
                 })
                 .setSize(16, 16)
                 .setBackground(() -> {
@@ -419,20 +423,19 @@ public class GT_MetaTileEntity_DroneCentre extends
                 new ButtonWidget().setOnClick((clickData, widget) -> {
                     if (!widget.isClient()) {
                         if (!getBaseMetaTileEntity().isActive()) {
-                            GT_Utility.sendChatToPlayer(
-                                widget.getContext()
-                                    .getPlayer(),
-                                GT_Utility.trans("350", "You cannot control machine when drone centre shut down!"));
+                            widget.getContext()
+                                .getPlayer()
+                                .addChatComponentMessage(
+                                    new ChatComponentTranslation("GT5U.machines.dronecentre.shutdown"));
                             return;
                         }
                         for (DroneConnection mte : connectionList) {
                             mte.machine.getBaseMetaTileEntity()
                                 .enableWorking();
                         }
-                        GT_Utility.sendChatToPlayer(
-                            widget.getContext()
-                                .getPlayer(),
-                            GT_Utility.trans("351", "Successfully turn on all machines!"));
+                        widget.getContext()
+                            .getPlayer()
+                            .addChatComponentMessage(new ChatComponentTranslation("GT5U.machines.dronecentre.turnon"));
                         widget.getContext()
                             .getPlayer()
                             .closeScreen();
@@ -452,20 +455,19 @@ public class GT_MetaTileEntity_DroneCentre extends
                 new ButtonWidget().setOnClick((clickData, widget) -> {
                     if (!widget.isClient()) {
                         if (!getBaseMetaTileEntity().isActive()) {
-                            GT_Utility.sendChatToPlayer(
-                                widget.getContext()
-                                    .getPlayer(),
-                                GT_Utility.trans("350", "You cannot control machine when drone centre shut down!"));
+                            widget.getContext()
+                                .getPlayer()
+                                .addChatComponentMessage(
+                                    new ChatComponentTranslation("GT5U.machines.dronecentre.shutdown"));
                             return;
                         }
                         for (DroneConnection mte : connectionList) {
                             mte.machine.getBaseMetaTileEntity()
                                 .disableWorking();
                         }
-                        GT_Utility.sendChatToPlayer(
-                            widget.getContext()
-                                .getPlayer(),
-                            GT_Utility.trans("352", "Successfully turn off all machines!"));
+                        widget.getContext()
+                            .getPlayer()
+                            .addChatComponentMessage(new ChatComponentTranslation("GT5U.machines.dronecentre.turnoff"));
                         widget.getContext()
                             .getPlayer()
                             .closeScreen();
@@ -513,9 +515,41 @@ public class GT_MetaTileEntity_DroneCentre extends
                 .setTextAlignment(Alignment.Center)
                 .setPos(0, 10)
                 .setSize(260, 8));
+        // SearchBar
+        builder.widget(new TextFieldWidget() {
+
+            @Override
+            public void onRemoveFocus() {
+                super.onRemoveFocus();
+                syncToServer(2, buffer -> {});
+            }
+
+            // Refresh
+            @Override
+            public void readOnServer(int id, PacketBuffer buf) {
+                switch (id) {
+                    case 1 -> super.readOnServer(id, buf);
+                    case 2 -> {
+                        getContext().closeWindow(MACHINE_LIST_WINDOW_ID);
+                        getContext().openSyncedWindow(MACHINE_LIST_WINDOW_ID);
+                    }
+                }
+            }
+        }.setGetter(() -> searchFilter)
+            .setSetter(var -> searchFilter = var)
+            .setTextAlignment(Alignment.CenterLeft)
+            .setTextColor(Color.WHITE.dark(1))
+            .setFocusOnGuiOpen(false)
+            .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD_LIGHT_GRAY.withOffset(-1, -1, 2, 2))
+            .addTooltip(StatCollector.translateToLocal("GT5U.gui.text.drone_search"))
+            .setPos(10, 30)
+            .setSize(240, 16));
         Scrollable MachineContainer = new Scrollable().setVerticalScroll();
+        int posY = 0;
         for (int i = 0; i < connectionList.size(); i++) {
             DroneConnection connection = connectionList.get(i);
+            if (!connection.customName.toLowerCase()
+                .contains(searchFilter.toLowerCase())) continue;
             ItemStackHandler drawitem = new ItemStackHandler(1);
             drawitem.setStackInSlot(0, connection.machineItem);
             DynamicPositionedRow row = new DynamicPositionedRow().setSynced(false);
@@ -528,7 +562,7 @@ public class GT_MetaTileEntity_DroneCentre extends
                 .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
                     buttonID = finalI;
                     if (!widget.isClient()) widget.getContext()
-                        .openSyncedWindow(11);
+                        .openSyncedWindow(CUSTOM_NAME_WINDOW_ID);
                 })
                     .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_setname"))
                     .setBackground(
@@ -540,9 +574,8 @@ public class GT_MetaTileEntity_DroneCentre extends
                     (clickData, widget) -> Optional.ofNullable(coreMachine)
                         .ifPresent(machine -> {
                             if (!getBaseMetaTileEntity().isActive()) {
-                                GT_Utility.sendChatToPlayer(
-                                    player,
-                                    GT_Utility.trans("350", "You cannot control machine when drone centre shut down!"));
+                                player.addChatComponentMessage(
+                                    new ChatComponentTranslation("GT5U.machines.dronecentre.shutdown"));
                                 return;
                             }
                             if (machine.isAllowedToWork()) {
@@ -607,10 +640,11 @@ public class GT_MetaTileEntity_DroneCentre extends
             MachineContainer.widget(
                 row.setAlignment(MainAxisAlignment.SPACE_BETWEEN)
                     .setSpace(4)
-                    .setPos(0, i * 20));
+                    .setPos(0, posY));
+            posY += 20;
         }
         return builder.widget(
-            MachineContainer.setPos(10, 30)
+            MachineContainer.setPos(10, 50)
                 .setSize(240, 160))
             .setDraggable(false)
             .build();
@@ -624,22 +658,30 @@ public class GT_MetaTileEntity_DroneCentre extends
             ButtonWidget.closeWindowButton(true)
                 .setPos(135, 3))
             .widget(
-                new TextWidget("Custom Machine Name").setTextAlignment(Alignment.Center)
+                new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.drone_custom_name"))
+                    .setTextAlignment(Alignment.Center)
                     .setPos(0, 5)
                     .setSize(150, 8))
-            .widget(
-                new TextFieldWidget().setGetter(
-                    () -> connectionList.get(buttonID)
-                        .getCustomName())
-                    .setSetter(
-                        var -> connectionList.get(buttonID)
-                            .setCustomName(var))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setTextColor(Color.WHITE.dark(1))
-                    .setFocusOnGuiOpen(true)
-                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD_LIGHT_GRAY.withOffset(-1, -1, 2, 2))
-                    .setPos(10, 16)
-                    .setSize(130, 16))
+            .widget(new TextFieldWidget() {
+
+                @Override
+                public void onDestroy() {
+                    if (isClient()) return;
+                    getContext().closeWindow(MACHINE_LIST_WINDOW_ID);
+                    getContext().openSyncedWindow(MACHINE_LIST_WINDOW_ID);
+                }
+            }.setGetter(
+                () -> connectionList.get(buttonID)
+                    .getCustomName())
+                .setSetter(
+                    var -> connectionList.get(buttonID)
+                        .setCustomName(var))
+                .setTextAlignment(Alignment.CenterLeft)
+                .setTextColor(Color.WHITE.dark(1))
+                .setFocusOnGuiOpen(true)
+                .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD_LIGHT_GRAY.withOffset(-1, -1, 2, 2))
+                .setPos(10, 16)
+                .setSize(130, 16))
             .build();
     }
 
