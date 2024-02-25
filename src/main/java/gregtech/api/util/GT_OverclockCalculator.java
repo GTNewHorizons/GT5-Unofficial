@@ -44,8 +44,8 @@ public class GT_OverclockCalculator {
      */
     private int machineHeat = 0;
     /**
-     * How much the bits should be moved to the right for each 1800 above recipe
-     * heat (Used for duration)
+     * How much the duration should be divided by for each 1800K above recipe
+     * heat
      */
     private double durationDecreasePerHeatOC = 4;
     /**
@@ -75,14 +75,11 @@ public class GT_OverclockCalculator {
     private double speedBoost = 1;
 
     /**
-     * How much the bits should be moved to the left when it is overclocking (Going
-     * up, 2 meaning it is multiplied with
-     * 4x)
+     * How much the energy would be multiplied by per overclock available
      */
     private double eutIncreasePerOC = 4;
     /**
-     * How much the bits should be moved to the right when its overclocking (Going
-     * down, 1 meaning it is halved)
+     * How much the duration would be divided by per overclock made that isn't an overclock from HEAT
      */
     private double durationDecreasePerOC = 2;
     /**
@@ -321,7 +318,7 @@ public class GT_OverclockCalculator {
     }
 
     /**
-     * Sets the amount that the eut would increase per overclock. Do not set as
+     * Sets the amount that the eut would be multiplied by per overclock. Do not set as
      * 1(ONE) if the duration decrease is also
      * 1(ONE)!
      */
@@ -344,9 +341,9 @@ public class GT_OverclockCalculator {
     }
 
     /**
-     * Sets the amount that the duration decreases per overclock. This uses
-     * BitShifting! Default is 1, which halves the
-     * duration
+     * Sets the amount that the duration would be divided by per overclock. Do not set as
+     * 1(ONE) if the eut increase is also
+     * 1(ONE)!
      */
     @Nonnull
     public GT_OverclockCalculator setDurationDecreasePerOC(double durationDecreasePerOC) {
