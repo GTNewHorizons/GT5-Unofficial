@@ -58,7 +58,7 @@ import static gregtech.loaders.misc.GT_BeeDefinitionReference.GENDUSTRY;
 import static gregtech.loaders.misc.GT_BeeDefinitionReference.GREGTECH;
 import static gregtech.loaders.misc.GT_BeeDefinitionReference.MAGICBEES;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.function.Consumer;
