@@ -3,15 +3,15 @@ package gregtech.loaders.postload.recipes;
 import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_ModHandler.getModItem;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
-import gregtech.api.enums.ItemList;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -48,8 +48,7 @@ public class SifterRecipes implements Runnable {
             .eut(16)
             .addTo(sifterRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                ItemList.ElectronicsLump.get(1))
+            .itemInputs(ItemList.ElectronicsLump.get(1))
             .itemOutputs(
                 ItemList.Electric_Motor_LV.get(1),
                 getModItem(Forestry.ID, "thermionicTubes", 1L, 5),
