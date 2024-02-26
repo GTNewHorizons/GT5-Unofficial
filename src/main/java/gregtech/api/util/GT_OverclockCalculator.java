@@ -44,13 +44,11 @@ public class GT_OverclockCalculator {
      */
     private int machineHeat = 0;
     /**
-     * How much the duration should be divided by for each 1800K above recipe
-     * heat
+     * How much the duration should be divided by for each 1800K above recipe heat
      */
     private double durationDecreasePerHeatOC = 4;
     /**
-     * Whether to enable overclocking with heat like the EBF every 1800 heat
-     * difference
+     * Whether to enable overclocking with heat like the EBF every 1800 heat difference
      */
     private boolean heatOC;
     /**
@@ -63,14 +61,11 @@ public class GT_OverclockCalculator {
     private double heatDiscountExponent = 0.95;
 
     /**
-     * Discount for EUt at the beginning of calculating overclocks, like GT++
-     * machines
+     * Discount for EUt at the beginning of calculating overclocks, like GT++ machines
      */
     private double eutDiscount = 1;
     /**
-     * Speeding/Slowing up/down the duration of a recipe at the beginning of
-     * calculating overclocks, like
-     * GT++ machines
+     * Speeding/Slowing up/down the duration of a recipe at the beginning of calculating overclocks, like GT++ machines
      */
     private double speedBoost = 1;
 
@@ -87,23 +82,19 @@ public class GT_OverclockCalculator {
      */
     private boolean oneTickDiscount;
     /**
-     * Whether the multi should use amperage to overclock with an exponent.
-     * Incompatible with amperageOC
+     * Whether the multi should use amperage to overclock with an exponent. Incompatible with amperageOC
      */
     private boolean laserOC;
     /**
-     * Laser OC's penalty for using high amp lasers for overclocking. Like what the
-     * Adv. Assline is doing
+     * Laser OC's penalty for using high amp lasers for overclocking. Like what the Adv. Assline is doing
      */
     private double laserOCPenalty = 0.3;
     /**
-     * Whether the multi should use amperage to overclock normally. Incompatible
-     * with laserOC
+     * Whether the multi should use amperage to overclock normally. Incompatible with laserOC
      */
     private boolean amperageOC;
     /**
-     * If the OC calculator should only do a given amount of overclocks. Mainly used
-     * in fusion reactors
+     * If the OC calculator should only do a given amount of overclocks. Mainly used in fusion reactors
      */
     private boolean limitOverclocks;
     /**
@@ -119,8 +110,7 @@ public class GT_OverclockCalculator {
      */
     private int heatOverclockCount;
     /**
-     * A supplier, which is used for machines which have a custom way of calculating
-     * duration, like Neutron Activator
+     * A supplier, which is used for machines which have a custom way of calculating duration, like Neutron Activator
      */
     private Supplier<Double> durationUnderOneTickSupplier;
     /**
@@ -167,8 +157,7 @@ public class GT_OverclockCalculator {
     }
 
     /**
-     * @param machineVoltage Sets the EUt that the machine can use. This is the
-     *                       voltage of the machine
+     * @param machineVoltage Sets the EUt that the machine can use. This is the voltage of the machine
      */
     @Nonnull
     public GT_OverclockCalculator setEUt(long machineVoltage) {
@@ -222,8 +211,7 @@ public class GT_OverclockCalculator {
     }
 
     /**
-     * Sets if we should add a heat discount at the end of calculating an overclock,
-     * just like the EBF
+     * Sets if we should add a heat discount at the end of calculating an overclock, just like the EBF
      */
     @Nonnull
     public GT_OverclockCalculator setHeatDiscount(boolean heatDiscount) {
@@ -277,8 +265,7 @@ public class GT_OverclockCalculator {
     }
 
     /**
-     * Sets the heat discount during OC calculation if HeatOC is used. Default: 0.95
-     * = 5% discount Used like a EU/t
+     * Sets the heat discount during OC calculation if HeatOC is used. Default: 0.95 = 5% discount Used like a EU/t
      * Discount
      */
     @Nonnull
@@ -288,10 +275,10 @@ public class GT_OverclockCalculator {
     }
 
     /**
-     * Sets the Overclock that should be calculated when a heatOC is applied. Calls
-     * {@link #setHeatPerfectOC(double)}
+     * Sets the Overclock that should be calculated when a heatOC is applied. Calls {@link #setHeatPerfectOC(double)}
      * where the given value is 2^heatPerfectOC
      */
+    @Deprecated
     @Nonnull
     public GT_OverclockCalculator setHeatPerfectOC(int heatPerfectOC) {
         return setHeatPerfectOC(Math.pow(2, heatPerfectOC));
@@ -308,19 +295,18 @@ public class GT_OverclockCalculator {
     }
 
     /**
-     * Sets the amount that the EUt increases per overclock. Calls
-     * {@link #setEUtIncreasePerOC(double)} where the given
+     * Sets the amount that the EUt increases per overclock. Calls {@link #setEUtIncreasePerOC(double)} where the given
      * value is 2^eutIncreasePerOC
      */
+    @Deprecated
     @Nonnull
     public GT_OverclockCalculator setEUtIncreasePerOC(int eutIncreasePerOC) {
         return setEUtIncreasePerOC(Math.pow(2, eutIncreasePerOC));
     }
 
     /**
-     * Sets the amount that the eut would be multiplied by per overclock. Do not set as
-     * 1(ONE) if the duration decrease is also
-     * 1(ONE)!
+     * Sets the amount that the eut would be multiplied by per overclock. Do not set as 1(ONE) if the duration decrease
+     * is also 1(ONE)!
      */
     @Nonnull
     public GT_OverclockCalculator setEUtIncreasePerOC(double eutIncreasePerOC) {
@@ -331,19 +317,18 @@ public class GT_OverclockCalculator {
     }
 
     /**
-     * Sets the amount that the duration decreases per overclock. Calls
-     * {@link #setEUtIncreasePerOC(double)} where the
+     * Sets the amount that the duration decreases per overclock. Calls {@link #setEUtIncreasePerOC(double)} where the
      * given value is 2^durationDecreasePerOC
      */
+    @Deprecated
     @Nonnull
     public GT_OverclockCalculator setDurationDecreasePerOC(int durationDecreasePerOC) {
         return setDurationDecreasePerOC(Math.pow(2, durationDecreasePerOC));
     }
 
     /**
-     * Sets the amount that the duration would be divided by per overclock. Do not set as
-     * 1(ONE) if the eut increase is also
-     * 1(ONE)!
+     * Sets the amount that the duration would be divided by per overclock. Do not set as 1(ONE) if the eut increase is
+     * also 1(ONE)!
      */
     @Nonnull
     public GT_OverclockCalculator setDurationDecreasePerOC(double durationDecreasePerOC) {
@@ -354,9 +339,7 @@ public class GT_OverclockCalculator {
     }
 
     /**
-     * Set One Tick Discount on EUt based on Duration Decrease Per Overclock. This
-     * functions the same as single
-     * blocks.
+     * Set One Tick Discount on EUt based on Duration Decrease Per Overclock. This functions the same as single blocks.
      */
     @Nonnull
     public GT_OverclockCalculator setOneTickDiscount(boolean oneTickDiscount) {
@@ -365,8 +348,7 @@ public class GT_OverclockCalculator {
     }
 
     /**
-     * Limit the amount of overclocks that can be performed, regardless of how much
-     * power is available. Mainly used for
+     * Limit the amount of overclocks that can be performed, regardless of how much power is available. Mainly used for
      * fusion reactors.
      */
     @Nonnull
@@ -395,8 +377,7 @@ public class GT_OverclockCalculator {
     }
 
     /**
-     * Set a supplier for calculating custom duration for when its needed under one
-     * tick
+     * Set a supplier for calculating custom duration for when its needed under one tick
      */
     @Nonnull
     public GT_OverclockCalculator setDurationUnderOneTickSupplier(Supplier<Double> supplier) {
@@ -508,8 +489,7 @@ public class GT_OverclockCalculator {
     }
 
     /**
-     * Calculate maximum possible overclocks ignoring if we are going to go under 1
-     * tick
+     * Calculate maximum possible overclocks ignoring if we are going to go under 1 tick
      */
     private int calculateAmountOfOverclocks(double machinePowerTier, double recipePowerTier) {
         return (int) (machinePowerTier - recipePowerTier);
@@ -518,8 +498,8 @@ public class GT_OverclockCalculator {
     /**
      * Calculates the amount of overclocks needed to reach 1 ticking
      *
-     * Here we limit "the tier difference overclock" amount to a number
-     * of overclocks needed to reach 1 tick duration, for example:
+     * Here we limit "the tier difference overclock" amount to a number of overclocks needed to reach 1 tick duration,
+     * for example:
      *
      * recipe initial duration = 250 ticks (12,5 seconds LV(1))
      * we have LCR with IV(5) energy hatch, which overclocks at 4/4 rate
@@ -585,9 +565,8 @@ public class GT_OverclockCalculator {
     }
 
     /**
-     * Returns duration as a double to show how much it is overclocking too much to
-     * determine extra parallel.
-     * This doesn't count as calculating
+     * Returns duration as a double to show how much it is overclocking too much to determine extra parallel. This
+     * doesn't count as calculating
      */
     public double calculateDurationUnderOneTick() {
         if (durationUnderOneTickSupplier != null) return durationUnderOneTickSupplier.get();
@@ -605,28 +584,23 @@ public class GT_OverclockCalculator {
      * Returns the EUt consumption one would get from overclocking under 1 tick
      * This Doesn't count as calculating
      *
-     * @param originalMaxParallel Parallels which are of the actual machine before
-     *                            the overclocking extra ones
+     * @param originalMaxParallel Parallels which are of the actual machine before the overclocking extra ones
      */
     public long calculateEUtConsumptionUnderOneTick(int originalMaxParallel, int currentParallel) {
         if (noOverclock) return recipeVoltage;
         double heatDiscountMultiplier = calculateHeatDiscountMultiplier();
         // So what we need to do here is as follows:
-        // - First we need to figure out what out parallel multiplier for getting to
-        // that OC was
+        // - First we need to figure out what out parallel multiplier for getting to that OC was
         // - Second we need to find how many of those were from heat overclocks
         // - Third we need to find how many were from normal overclocking.
-        // = For that we need to find how much better heat overclocks are compared to
-        // normal ones
+        // = For that we need to find how much better heat overclocks are compared to normal ones
         // = Then remove that many from our normal overclocks
         // - Fourth we find how many total overclocks we have
         // - Fifth we find how many of those are needed to one tick
         // - Finally we calculate the formula
         // = The energy increase from our overclocks for parallel
-        // = The energy increase from our overclock to reach maximum under one tick
-        // potential
-        // =- NOTE: This will always cause machine to use full power no matter what.
-        // Otherwise it creates many
+        // = The energy increase from our overclock to reach maximum under one tick potential
+        // =- NOTE: This will always cause machine to use full power no matter what. Otherwise it creates many
         // anomalies.
         // = Everything else for recipe voltage is also calculated here.
 
