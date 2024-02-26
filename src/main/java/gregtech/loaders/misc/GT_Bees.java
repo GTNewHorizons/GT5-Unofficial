@@ -28,7 +28,6 @@ import gregtech.common.items.ItemDrop;
 import gregtech.common.items.ItemPollen;
 import gregtech.common.items.ItemPropolis;
 import gregtech.loaders.misc.bees.GT_AlleleEffect;
-import gregtech.loaders.misc.bees.GT_EffectMachineBoost;
 import gregtech.loaders.misc.bees.GT_EffectTreeTwister;
 import gregtech.loaders.misc.bees.GT_Flowers;
 
@@ -51,7 +50,6 @@ public class GT_Bees {
     public static IAlleleInteger superLife;
 
     public static IAlleleBeeEffect treetwisterEffect;
-    public static IAlleleBeeEffect machineBoostEffect;
 
     public static ItemPropolis propolis;
     public static ItemPollen pollen;
@@ -96,7 +94,6 @@ public class GT_Bees {
 
         blinkLife = new AlleleInteger("lifeBlink", 2, false, EnumBeeChromosome.LIFESPAN);
         superLife = new AlleleInteger("lifeEon", 600, false, EnumBeeChromosome.LIFESPAN);
-        machineBoostEffect = new GT_EffectMachineBoost();
 
         if (GalaxySpace.isModLoaded() && TwilightForest.isModLoaded()) {
             GT_Mod.GT_FML_LOGGER.info("treetwisterEffect: GalaxySpace and TwilightForest loaded, using default impl");

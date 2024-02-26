@@ -47,8 +47,7 @@ public class GT_EffectTreeTwister extends GT_AlleleEffect {
         return storedData; // unused for this effect
     }
 
-    @Override
-    protected IEffectData doEffectThrottled(IBeeGenome genome, IEffectData storedData, IBeeHousing housing) {
+    public IEffectData doEffect(IBeeGenome genome, IEffectData storedData, IBeeHousing housing) {
         if (TF_TRANS_SAPLING == null || BARN_SAPLING == null) {
             return storedData;
         }
