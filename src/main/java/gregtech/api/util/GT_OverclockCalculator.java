@@ -275,8 +275,8 @@ public class GT_OverclockCalculator {
     }
 
     /**
-     * Sets the Overclock that should be calculated when a heatOC is applied. Calls {@link #setHeatPerfectOC(double)}
-     * where the given value is 2^heatPerfectOC
+     * @deprecated Deprecated in favor of {@link #setHeatPerfectOC(double)}. Calls {@link #setHeatPerfectOC(double)}
+     *             where the given value is 2^heatPerfectOC
      */
     @Deprecated
     @Nonnull
@@ -295,8 +295,8 @@ public class GT_OverclockCalculator {
     }
 
     /**
-     * Sets the amount that the EUt increases per overclock. Calls {@link #setEUtIncreasePerOC(double)} where the given
-     * value is 2^eutIncreasePerOC
+     * @deprecated Deprecated in favor of {@link #setEUtIncreasePerOC(double)}. Calls
+     *             {@link #setEUtIncreasePerOC(double)} where the given value is 2^eutIncreasePerOC
      */
     @Deprecated
     @Nonnull
@@ -317,8 +317,8 @@ public class GT_OverclockCalculator {
     }
 
     /**
-     * Sets the amount that the duration decreases per overclock. Calls {@link #setEUtIncreasePerOC(double)} where the
-     * given value is 2^durationDecreasePerOC
+     * @deprecated Deprecated in favor of {@link #setDurationDecreasePerOC(double)}. Calls
+     *             {@link #setDurationDecreasePerOC(double)} where the given value is 2^durationDecreasePerOC
      */
     @Deprecated
     @Nonnull
