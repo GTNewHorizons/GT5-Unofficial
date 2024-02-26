@@ -231,6 +231,8 @@ gt.recipe.category.fluid_extractor_recycling=Fluid Extractor Recycling
 gt.recipe.category.alloy_smelter_recycling=Alloy Smelter Recycling
 gt.recipe.category.alloy_smelter_molding=Alloy Smelter Molding
 gt.recipe.category.forge_hammer_recycling=Forge Hammer Recycling
+gt.recipe.category.tic_part_extruding=TiC part extruding
+gt.recipe.category.tic_bolt_molding=TiC bolt molding
 
 GT5U.machines.tier=Tier
 GT5U.machines.workarea=Work Area
