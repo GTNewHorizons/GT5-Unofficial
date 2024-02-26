@@ -3,6 +3,7 @@ package gregtech.api.recipe;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.recipe.RecipeCategory.createIcon;
 
+@SuppressWarnings("unused")
 public final class RecipeCategories {
 
     @RecipeCategoryHolder
@@ -53,4 +54,18 @@ public final class RecipeCategories {
         RecipeMaps.hammerRecipes,
         builder -> builder.setDisplayImage(
             createIcon(GregTech.getResourcePath("textures", "gui", "picture", "forge_hammer_recycling.png"))));
+
+    @RecipeCategoryHolder
+    public static final RecipeCategory ticPartExtruding = new RecipeCategory(
+        "gt.recipe.category.tic_part_extruding",
+        RecipeMaps.extruderRecipes,
+        builder -> builder.setDisplayImage(
+            createIcon(GregTech.getResourcePath("textures", "gui", "picture", "tic_part_extruding.png"))));
+
+    @RecipeCategoryHolder
+    public static final RecipeCategory ticBoltMolding = new RecipeCategory(
+        "gt.recipe.category.tic_bolt_molding",
+        RecipeMaps.fluidSolidifierRecipes,
+        builder -> builder.setDisplayImage(
+            createIcon(GregTech.getResourcePath("textures", "gui", "picture", "tic_bolt_molding.png"))));
 }

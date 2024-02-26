@@ -16,7 +16,7 @@ import gregtech.api.util.FieldsAreNonnullByDefault;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 
 /**
- * Used to display recipes on NEI on different tabs.
+ * Allows certain recipes to be displayed on different tabs on NEI.
  * <p>
  * Also apply {@link RecipeCategoryHolder} annotation to each instance to be picked up by GT config.
  */
@@ -69,7 +69,7 @@ public final class RecipeCategory {
     }
 
     /**
-     * Creates icon for recipe category. Size is 16px.
+     * Util method for creating icon for recipe category. Size is 16px.
      */
     public static DrawableResource createIcon(String resourceLocation) {
         return new DrawableBuilder(resourceLocation, 0, 0, 16, 16)
