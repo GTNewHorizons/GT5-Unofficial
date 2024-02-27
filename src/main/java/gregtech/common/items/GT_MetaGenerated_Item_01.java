@@ -2216,6 +2216,14 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 OrePrefixes.stick.get(Materials.TungstenSteel), 'W', OrePrefixes.wireGt04.get(Materials.Graphene), 'C',
                 OrePrefixes.cableGt02.get(Materials.Tungsten) });
 
+        ItemList.ElectronicsLump.set(
+            addItem(
+                414,
+                "Lump of Electronics",
+                "How did they even produce this?",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 1L)));
         ItemList.Tesseract.set(
             addItem(
                 415,

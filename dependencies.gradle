@@ -43,6 +43,12 @@ dependencies {
     api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-328-GTNH:dev")
     api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.2.17-gtnh:dev")
 
+    runtimeOnlyNonPublishable('com.github.GTNewHorizons:ForestryMC:4.8.4:dev')
+    runtimeOnlyNonPublishable('com.github.GTNewHorizons:neiaddons:1.15.0:dev')
+    runtimeOnlyNonPublishable('com.github.GTNewHorizons:MagicBees:2.7.14-GTNH:dev')
+    runtimeOnlyNonPublishable('com.github.GTNewHorizons:Binnie:2.3.3:dev')
+    runtimeOnlyNonPublishable('com.github.GTNewHorizons:EnderIO:2.7.1:dev')
+
     implementation("com.github.GTNewHorizons:Avaritia:1.49:dev")
 
     compileOnlyApi("com.github.GTNewHorizons:AppleCore:3.3.0:dev") { transitive = false }
