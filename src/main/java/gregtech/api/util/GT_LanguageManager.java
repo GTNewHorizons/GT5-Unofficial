@@ -19,12 +19,31 @@ import gregtech.api.GregTech_API;
 
 public class GT_LanguageManager {
 
-    public static final HashMap<String, String> TEMPMAP = new HashMap<>(), BUFFERMAP = new HashMap<>(),
-        LANGMAP = new HashMap<>();
+    /**
+     * Buffer to reduce memory allocation when injecting data to LanguageRegistry.
+     */
+    private static final HashMap<String, String> TEMPMAP = new HashMap<>();
+    /**
+     * Buffer used when something is trying to add new lang entry while config file is not set up yet.
+     */
+    public static final Map<String, String> BUFFERMAP = new HashMap<>();
+    /**
+     * Map containing all the translation data coming into this class.
+     */
+    private static final Map<String, String> LANGMAP = new HashMap<>();
+    /**
+     * Config file handler bound to GregTech.lang or GregTech_(locale_name).lang. Even though it says English file,
+     * it's not necessarily English, but on system it's always treated as English (as in, "default" language.)
+     */
     public static Configuration sEnglishFile;
-    public static String sLanguage = "en_US";
-    public static boolean sUseEnglishFile = false;
+    /**
+     * If placeholder like %material should be used for writing lang entries to file.
+     */
     public static boolean i18nPlaceholder = true;
+    /**
+     * If there's any lang entry that is not found on lang file and waiting to be written.
+     */
+    private static boolean hasUnsavedEntry = false;
 
     // TODO: convert to enum
     public static String FACE_ANY = "gt.lang.face.any", FACE_BOTTOM = "gt.lang.face.bottom",
@@ -33,7 +52,10 @@ public class GT_LanguageManager {
 
     public static String[] FACES = { FACE_BOTTOM, FACE_TOP, FACE_LEFT, FACE_FRONT, FACE_RIGHT, FACE_BACK, FACE_NONE };
 
-    private static Map<String, String> stringTranslateLanguageList = null;
+    /**
+     * Map referencing private field of StringTranslate, used by StatCollector. Used to inject lang entries there.
+     */
+    private static final Map<String, String> stringTranslateLanguageList;
 
     static {
         try {
@@ -45,7 +67,7 @@ public class GT_LanguageManager {
             stringTranslateLanguageList = (Map<String, String>) fieldStringTranslateLanguageList
                 .get(fieldStringTranslateInstance.get(null));
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -54,79 +76,70 @@ public class GT_LanguageManager {
     }
 
     public static synchronized String addStringLocalization(String aKey, String aEnglish, boolean aWriteIntoLangFile) {
-        if (aKey == null) return E;
-        if (aWriteIntoLangFile && (!LANGMAP.containsKey(aKey) || (sEnglishFile != null && !BUFFERMAP.isEmpty()))) {
-            aEnglish = writeToLangFile(aKey, aEnglish);
-            if (!LANGMAP.containsKey(aKey)) {
-                LANGMAP.put(aKey, aEnglish);
-                addToMCLangList(aKey, aEnglish);
+        String trimmedKey = aKey != null ? aKey.trim() : "";
+        if (trimmedKey.isEmpty()) return E; // RIP cascading class loading, don't use GT_Utility here
+        if (sEnglishFile == null) {
+            // Lang file is not set up yet
+            BUFFERMAP.put(trimmedKey, aEnglish);
+            return aEnglish;
+        }
+        if (!BUFFERMAP.isEmpty()) {
+            // Lang file is now set up, resolve all the buffers
+            // This won't be visited twice
+            for (Entry<String, String> tEntry : BUFFERMAP.entrySet()) {
+                writeToLangFile(tEntry.getKey(), tEntry.getValue());
             }
+            BUFFERMAP.clear();
         }
-        TEMPMAP.put(aKey.trim(), aEnglish);
-        LanguageRegistry.instance()
-            .injectLanguage(sLanguage, TEMPMAP);
-        TEMPMAP.clear();
-        if (sUseEnglishFile && !aWriteIntoLangFile) {
-            if (!LANGMAP.containsKey(aKey)) {
-                Property tProperty = sEnglishFile.get("LanguageFile", aKey, aEnglish);
-                aEnglish = tProperty.getString();
-                LANGMAP.put(aKey, aEnglish);
-                addToMCLangList(aKey, aEnglish);
-            } else aEnglish = LANGMAP.get(aKey);
+
+        if (!LANGMAP.containsKey(trimmedKey)) {
+            String translation = writeToLangFile(trimmedKey, aEnglish);
+            LANGMAP.put(trimmedKey, translation);
+            addToMCLangList(trimmedKey, translation);
+            TEMPMAP.put(trimmedKey, translation);
+            LanguageRegistry.instance()
+                // If we use the actual user configured locale here, switching lang to others while running game
+                // turns everything into unlocalized string. So we make it "default" and call it a day.
+                .injectLanguage("en_US", TEMPMAP);
+            TEMPMAP.clear();
+            return translation;
         }
-        return aEnglish;
+        return LANGMAP.get(trimmedKey);
     }
 
-    private static synchronized String writeToLangFile(String aKey, String aEnglish) {
-        if (aKey == null) return E;
-        if (sEnglishFile == null) {
-            BUFFERMAP.put(aKey.trim(), aEnglish);
-        } else {
-            if (!BUFFERMAP.isEmpty()) {
-                for (Entry<String, String> tEntry : BUFFERMAP.entrySet()) {
-                    Property tProperty = sEnglishFile.get("LanguageFile", tEntry.getKey(), tEntry.getValue());
-                    if (!tProperty.wasRead() && GregTech_API.sPostloadFinished) sEnglishFile.save();
-                }
-                BUFFERMAP.clear();
-            }
-            Property tProperty = sEnglishFile.get("LanguageFile", aKey.trim(), aEnglish);
-            if (!tProperty.wasRead() && GregTech_API.sPostloadFinished) sEnglishFile.save();
-            if (sEnglishFile.get("EnableLangFile", "UseThisFileAsLanguageFile", false)
-                .getBoolean(false)) {
-                aEnglish = tProperty.getString();
-                sUseEnglishFile = true;
+    private static synchronized String writeToLangFile(String trimmedKey, String aEnglish) {
+        Property tProperty = sEnglishFile.get("LanguageFile", trimmedKey, aEnglish);
+        if (hasUnsavedEntry && GregTech_API.sPostloadFinished) {
+            sEnglishFile.save();
+            hasUnsavedEntry = false;
+        }
+        if (!tProperty.wasRead()) {
+            if (GregTech_API.sPostloadFinished) {
+                sEnglishFile.save();
+            } else {
+                hasUnsavedEntry = true;
             }
         }
-        return aEnglish;
+        return tProperty.getString();
     }
 
     public static String getTranslation(String aKey) {
-        if (aKey == null) return E;
-        String tTrimmedKey = aKey.trim(), rTranslation;
-        if (sUseEnglishFile) {
-            rTranslation = LanguageRegistry.instance()
-                .getStringLocalization(tTrimmedKey);
+        String tTrimmedKey = aKey != null ? aKey.trim() : "";
+        if (tTrimmedKey.isEmpty()) return E;
+
+        if (StatCollector.canTranslate(tTrimmedKey)) {
+            return StatCollector.translateToLocal(tTrimmedKey);
+        }
+        String anotherKeyToTry;
+        if (tTrimmedKey.endsWith(".name")) {
+            anotherKeyToTry = tTrimmedKey.substring(0, tTrimmedKey.length() - 5);
         } else {
-            rTranslation = StatCollector.translateToLocal(tTrimmedKey);
+            anotherKeyToTry = tTrimmedKey + ".name";
         }
-        if (GT_Utility.isStringInvalid(rTranslation)) {
-            rTranslation = StatCollector.translateToLocal(tTrimmedKey);
-            if (GT_Utility.isStringInvalid(rTranslation) || tTrimmedKey.equals(rTranslation)) {
-                if (aKey.endsWith(".name")) {
-                    String trimmedKeyNoName = tTrimmedKey.substring(0, tTrimmedKey.length() - 5);
-                    rTranslation = StatCollector.translateToLocal(trimmedKeyNoName);
-                    if (GT_Utility.isStringInvalid(rTranslation) || trimmedKeyNoName.equals(rTranslation)) {
-                        return aKey;
-                    }
-                } else {
-                    rTranslation = StatCollector.translateToLocal(tTrimmedKey + ".name");
-                    if (GT_Utility.isStringInvalid(rTranslation) || (tTrimmedKey + ".name").equals(rTranslation)) {
-                        return aKey;
-                    }
-                }
-            }
+        if (StatCollector.canTranslate(anotherKeyToTry)) {
+            return StatCollector.translateToLocal(anotherKeyToTry);
         }
-        return rTranslation;
+        return tTrimmedKey;
     }
 
     public static String getTranslation(String aKey, String aSeperator) {
@@ -140,6 +153,7 @@ public class GT_LanguageManager {
         return rTranslation;
     }
 
+    @SuppressWarnings("unused")
     public static String getTranslateableItemStackName(ItemStack aStack) {
         if (GT_Utility.isStackInvalid(aStack)) return "null";
         NBTTagCompound tNBT = aStack.getTagCompound();
@@ -550,9 +564,9 @@ public class GT_LanguageManager {
         addStringLocalization(FACE_NONE, "None");
     }
 
-    private static void addToMCLangList(String aKey, String aEnglish) {
+    private static void addToMCLangList(String aKey, String translation) {
         if (stringTranslateLanguageList != null) {
-            stringTranslateLanguageList.put(aKey, aEnglish);
+            stringTranslateLanguageList.put(aKey, translation);
         }
     }
 }

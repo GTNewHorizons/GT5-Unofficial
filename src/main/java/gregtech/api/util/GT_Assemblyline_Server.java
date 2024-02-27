@@ -1,6 +1,5 @@
 package gregtech.api.util;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -22,24 +21,13 @@ public class GT_Assemblyline_Server {
     private static HashMap<String, Property> internal = new HashMap<>();
 
     public static void fillMap(FMLPreInitializationEvent aEvent) {
-
-        String s = aEvent.getModConfigurationDirectory()
-            .getAbsolutePath();
-        s = s.substring(
-            0,
-            aEvent.getModConfigurationDirectory()
-                .getAbsolutePath()
-                .length() - 6);
-        s = s + "GregTech.lang";
-        File f = new File(s);
-        s = "";
-        Configuration conf = new Configuration(f);
+        Configuration conf = GT_LanguageManager.sEnglishFile;
 
         ConfigCategory cat = conf.getCategory("languagefile");
         internal.putAll(cat.getValues());
         for (Map.Entry<String, Property> entry : internal.entrySet()) {
             try {
-                s = entry.getValue()
+                String s = entry.getValue()
                     .getString()
                     .replaceAll("%", "");
 
