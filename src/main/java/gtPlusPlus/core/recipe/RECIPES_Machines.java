@@ -251,6 +251,7 @@ public class RECIPES_Machines {
         thermicFluidHeater();
         advHeatExchanger();
         chiselBuses();
+        solidifierHatches();
 
         gt4FarmManager();
         gt4Inventory();
@@ -3040,4 +3041,26 @@ public class RECIPES_Machines {
         }
     }
 
+    private static void solidifierHatches() {
+        ItemStack[] mSuperBusesInput = new ItemStack[] { ItemList.Hatch_Input_IV.get(1),
+                ItemList.Hatch_Input_LuV.get(1), ItemList.Hatch_Input_ZPM.get(1), ItemList.Hatch_Input_UV.get(1), };
+
+        ItemStack[] mSolidifierHatches = new ItemStack[] { GregtechItemList.GT_MetaTileEntity_Solidifier_I.get(1),
+                GregtechItemList.GT_MetaTileEntity_Solidifier_II.get(1),
+                GregtechItemList.GT_MetaTileEntity_Solidifier_III.get(1),
+                GregtechItemList.GT_MetaTileEntity_Solidifier_IV.get(1), };
+
+        for (int i = 0; i < 4; i++) {
+            int componentTier = i + 5;
+            CORE.RA.addSixSlotAssemblingRecipe(
+                    new ItemStack[] { CI.getNumberedCircuit(17), mSuperBusesInput[i], CI.getSensor(componentTier, 1),
+                            CI.getFluidRegulator(componentTier, 1),
+                            CI.getTieredComponent(OrePrefixes.circuit, componentTier + 1, 4),
+                            ItemUtils.getSimpleStack(Blocks.chest) },
+                    CI.getTieredFluid(componentTier, 144 * 2),
+                    mSolidifierHatches[i],
+                    20 * 30,
+                    (int) GT_Values.VP[componentTier]);
+        }
+    }
 }

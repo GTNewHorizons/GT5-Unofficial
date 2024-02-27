@@ -11,11 +11,13 @@ import static gregtech.api.enums.GT_HatchElement.Muffler;
 import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
@@ -30,7 +32,9 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 
+import com.google.common.collect.Lists;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -41,16 +45,26 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_MultiInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Input_ME;
+import gregtech.common.tileentities.machines.IDualInputHatch;
+import gregtech.common.tileentities.machines.IDualInputInventory;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Solidifier;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -127,6 +141,9 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
                                 + aBuiltStrings[2]
                                 + EnumChatFormatting.RESET)
                 .addInfo("Read Multi-Machine Manual for extra information")
+                .addInfo(
+                        EnumChatFormatting.AQUA + "You can use Solidifier Hatch to solidify multiple liquids."
+                                + EnumChatFormatting.RESET)
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 3, true)
                 .addController("Front Center").addCasingInfoMin("Multi-Use Casings", 6, false)
                 .addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1)
@@ -360,6 +377,130 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
             int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("mode", mInternalMode);
+    }
+
+    @Override
+    protected CheckRecipeResult doCheckRecipe() {
+
+        if (mInternalMode != 2 || !isInputSeparationEnabled()) {
+            return super.doCheckRecipe();
+        } else {
+            CheckRecipeResult result = CheckRecipeResultRegistry.NO_RECIPE;
+
+            // check crafting input hatches first
+            if (supportsCraftingMEBuffer()) {
+                for (IDualInputHatch dualInputHatch : mDualInputHatches) {
+                    for (var it = dualInputHatch.inventories(); it.hasNext();) {
+                        IDualInputInventory slot = it.next();
+                        processingLogic.setInputItems(slot.getItemInputs());
+                        processingLogic.setInputFluids(slot.getFluidInputs());
+                        CheckRecipeResult foundResult = processingLogic.process();
+                        if (foundResult.wasSuccessful()) {
+                            return foundResult;
+                        }
+                        if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
+                            // Recipe failed in interesting way, so remember that and continue searching
+                            result = foundResult;
+                        }
+                    }
+                }
+            }
+
+            // Logic for GT_MetaTileEntity_Hatch_Solidifier
+            for (GT_MetaTileEntity_Hatch_Input solidifierHatch : mInputHatches) {
+                if (solidifierHatch instanceof GT_MetaTileEntity_Hatch_Solidifier) {
+                    ItemStack mold = ((GT_MetaTileEntity_Hatch_Solidifier) solidifierHatch).getMold();
+                    FluidStack fluid = solidifierHatch.getFluid();
+
+                    if (mold != null && fluid != null) {
+                        List<ItemStack> inputItems = new ArrayList<>();
+                        inputItems.add(mold);
+                        inputItems.add(ItemUtils.getGregtechCircuit(22));
+
+                        processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
+                        processingLogic.setInputFluids(fluid);
+
+                        CheckRecipeResult foundResult = processingLogic.process();
+                        if (foundResult.wasSuccessful()) {
+                            return foundResult;
+                        }
+                        if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
+                            // Recipe failed in interesting way, so remember that and continue searching
+                            result = foundResult;
+                        }
+                    }
+                }
+            }
+            processingLogic.clear();
+            processingLogic.setInputFluids(getStoredFluids());
+            // Default logic
+            for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
+                List<ItemStack> inputItems = new ArrayList<>();
+                for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
+                    ItemStack stored = bus.getStackInSlot(i);
+                    if (stored != null) {
+                        inputItems.add(stored);
+                    }
+                }
+                if (canUseControllerSlotForRecipe() && getControllerSlot() != null) {
+                    inputItems.add(getControllerSlot());
+                }
+                processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
+                CheckRecipeResult foundResult = processingLogic.process();
+                if (foundResult.wasSuccessful()) {
+                    return foundResult;
+                }
+                if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
+                    // Recipe failed in interesting way, so remember that and continue searching
+                    result = foundResult;
+                }
+            }
+
+            return result;
+        }
+    }
+
+    @Override
+    public ArrayList<FluidStack> getStoredFluids() {
+        if (supportsCraftingMEBuffer()) {
+            for (IDualInputHatch tHatch : mDualInputHatches) {
+                if (tHatch.supportsFluids()) {
+                    Optional<IDualInputInventory> inventory = tHatch.getFirstNonEmptyInventory();
+                    if (inventory.isPresent()) {
+                        return Lists.newArrayList(inventory.get().getFluidInputs());
+                    }
+                }
+            }
+        }
+
+        ArrayList<FluidStack> rList = new ArrayList<>();
+        for (GT_MetaTileEntity_Hatch_Input tHatch : filterValidMTEs(mInputHatches)) {
+            if (tHatch instanceof GT_MetaTileEntity_Hatch_Solidifier) {
+                continue;
+            }
+
+            setHatchRecipeMap(tHatch);
+            if (tHatch instanceof GT_MetaTileEntity_Hatch_MultiInput) {
+                for (FluidStack tFluid : ((GT_MetaTileEntity_Hatch_MultiInput) tHatch).getStoredFluid()) {
+                    if (tFluid != null) {
+                        rList.add(tFluid);
+                    }
+                }
+            } else if (tHatch instanceof GT_MetaTileEntity_Hatch_Input_ME) {
+                if (isValidMetaTileEntity(tHatch)) {
+                    for (FluidStack fluidStack : ((GT_MetaTileEntity_Hatch_Input_ME) tHatch).getStoredFluids()) {
+                        if (fluidStack == null) continue;
+                        rList.add(fluidStack);
+                    }
+                }
+            } else {
+                if (tHatch.getFillableStack() != null) {
+                    rList.add(tHatch.getFillableStack());
+                }
+            }
+        }
+
+        return rList;
     }
 
     @Override
