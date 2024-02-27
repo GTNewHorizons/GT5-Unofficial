@@ -1673,6 +1673,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         AlleleHelper.instance.set(template, NOCTURNAL, true);
         AlleleHelper.instance.set(template, FLOWER_PROVIDER, GT_Flowers.FLAMING);
         AlleleHelper.instance.set(template, FERTILITY, Fertility.MAXIMUM);
+        AlleleHelper.instance.set(template, EFFECT, getEffect(GREGTECH, "MachineBoost"));
     }, dis -> {
         IBeeMutationCustom tMutation = dis
             .registerMutation(getSpecies(FORESTRY, "Industrious"), getSpecies(FORESTRY, "Imperial"), 1);
