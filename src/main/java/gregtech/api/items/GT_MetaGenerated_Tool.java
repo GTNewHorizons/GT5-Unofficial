@@ -529,7 +529,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
                 aList.add(
                     tOffset + 10,
                     EnumChatFormatting.WHITE + String.format(
-                        transItem("900", "Energy from Optimal Steam Flow: %s EU/t"),
+                        transItem("900", "Energy from Optimal SC Steam Flow: %s EU/t"),
                         "" + EnumChatFormatting.GOLD
                             + formatNumbers(
                                 GT_Utility.safeInt(
