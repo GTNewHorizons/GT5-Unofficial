@@ -487,7 +487,7 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
                     }
                 }
             } else if (tHatch instanceof GT_MetaTileEntity_Hatch_Input_ME) {
-                if (isValidMetaTileEntity(tHatch)) {
+                if (tHatch.isValid()) {
                     for (FluidStack fluidStack : ((GT_MetaTileEntity_Hatch_Input_ME) tHatch).getStoredFluids()) {
                         if (fluidStack == null) continue;
                         rList.add(fluidStack);
