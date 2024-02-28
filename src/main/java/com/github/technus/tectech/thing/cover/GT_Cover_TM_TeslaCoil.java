@@ -52,8 +52,8 @@ public class GT_Cover_TM_TeslaCoil extends GT_CoverBehavior {
 
     @Override
     public int getTickRate(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
-        // It updates once every 200 ticks, so once every 10 seconds
-        return 200;
+        // It updates once every 10 ticks, so once every 0.5 second
+        return 10;
     }
 
     public byte getTeslaReceptionCapability() {
