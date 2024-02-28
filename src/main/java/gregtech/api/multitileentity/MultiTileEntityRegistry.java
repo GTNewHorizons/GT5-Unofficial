@@ -147,8 +147,7 @@ public class MultiTileEntityRegistry {
             return null;
         }
 
-        GT_LanguageManager
-            .addStringLocalization(mNameInternal + "." + aClassContainer.mID + ".name", aLocalised, false);
+        GT_LanguageManager.addStringLocalization(mNameInternal + "." + aClassContainer.mID + ".name", aLocalised);
         mRegistry.put(aClassContainer.mID, aClassContainer);
         mLastRegisteredID = aClassContainer.mID;
         mRegistrations.add(aClassContainer);

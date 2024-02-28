@@ -170,8 +170,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             false,
             new Object[] { "sensorcard", "GregTech Sensor Card" });
         ItemList.NC_SensorCard.set(
-            tItem == null
-                ? new GT_Generic_Item("sensorcard", "GregTech Sensor Card", "Nuclear Control not installed", false)
+            tItem == null ? new GT_Generic_Item("sensorcard", "GregTech Sensor Card", "Nuclear Control not installed")
                 : tItem);
 
         Item advSensorCard = (Item) GT_Utility
@@ -181,8 +180,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 ? new GT_Generic_Item(
                     "advancedsensorcard",
                     "GregTech Advanced Sensor Card",
-                    "Nuclear Control not installed",
-                    false)
+                    "Nuclear Control not installed")
                 : advSensorCard);
 
         ItemList.Neutron_Reflector

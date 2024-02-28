@@ -71,11 +71,19 @@ public class GT_LanguageManager {
         }
     }
 
-    public static String addStringLocalization(String aKey, String aEnglish) {
-        return addStringLocalization(aKey, aEnglish, true);
+    /**
+     * @deprecated Parameter aWriteIntoLangFile is no longer used,
+     *             use {@link #addStringLocalization(String, String)} or consider migrating to MC lang system instead.
+     */
+    @Deprecated
+    public static synchronized String addStringLocalization(String aKey, String aEnglish, boolean aWriteIntoLangFile) {
+        return addStringLocalization(aKey, aEnglish);
     }
 
-    public static synchronized String addStringLocalization(String aKey, String aEnglish, boolean aWriteIntoLangFile) {
+    /**
+     * If you newly use this method, please consider using MC lang system instead.
+     */
+    public static synchronized String addStringLocalization(String aKey, String aEnglish) {
         String trimmedKey = aKey != null ? aKey.trim() : "";
         if (trimmedKey.isEmpty()) return E; // RIP cascading class loading, don't use GT_Utility here
         if (sEnglishFile == null) {
