@@ -5,7 +5,9 @@ import static gregtech.api.enums.GT_Values.NF;
 import static gregtech.api.enums.GT_Values.NI;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.Mods.AE2FluidCraft;
+import static gregtech.api.enums.Mods.ExtraBees;
 import static gregtech.api.enums.Mods.ExtraUtilities;
+import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.MagicBees;
@@ -1311,6 +1313,15 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
                 new int[] { 100 * 100 },
                 Voltage.LV);
         }
+        addCentrifugeToItemStack(
+            CombType.DIDDY,
+            new ItemStack[] { GT_ModHandler.getModItem(Forestry.ID, "royalJelly", 1L, 0),
+                GT_ModHandler.getModItem(Forestry.ID, "pollen", 1L, 0),
+                GT_ModHandler.getModItem(Forestry.ID, "honeyDrop", 1L, 0),
+                GT_ModHandler.getModItem(ExtraBees.ID, "honeyDrop", 1L, 6),
+                GT_ModHandler.getModItem(Forestry.ID, "beeswax", 1L, 0), ItemList.ElectronicsLump.get(1) },
+            new int[] { 10 * 100, 10 * 100, 20 * 100, 10 * 100, 20 * 100, 5 * 100 },
+            Voltage.ULV);
         // Space Line
         addCentrifugeToItemStack(
             CombType.SPACE,
