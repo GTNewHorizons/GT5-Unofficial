@@ -18,6 +18,5 @@ public class GregtechIndustrialTreeFarm {
         GregtechItemList.Industrial_TreeFarm.set(
                 new GregtechMetaTileEntityTreeFarm(836, "treefarm.controller.tier.single", "Tree Growth Simulator")
                         .getStackForm(1L));
-        GregtechMetaTileEntityTreeFarm.loadMapWoodFromSapling();
     }
 }

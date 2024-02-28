@@ -120,6 +120,21 @@ gtpp.nei.tgs.2=If %s is provided,
 gtpp.nei.tgs.3=Saplings are made instead.
 gtpp.nei.tgs.sapling=Outputted if %s is provided
 
+gtpp.nei.tgs.tooltip.sapling=Place in machine controller slot
+gtpp.nei.tgs.tooltip.saw=Place in an input bus to harvest logs
+gtpp.nei.tgs.tooltip.needsSaw=Requires a Saw to harvest
+gtpp.nei.tgs.tooltip.cutter=Place in an input bus to harvest saplings
+gtpp.nei.tgs.tooltip.needsCutter=Requires a Branch Cutter to harvest
+gtpp.nei.tgs.tooltip.shears=Place in an input bus to harvest leaves
+gtpp.nei.tgs.tooltip.needsShears=Requires Shears to harvest
+gtpp.nei.tgs.tooltip.knife=Place in an input bus to harvest fruit
+gtpp.nei.tgs.tooltip.needsKnife=Requires a Knife to harvest
+gtpp.nei.tgs.tooltip.multiplier=Output multiplier:
+gtpp.nei.tgs.info-1=Output is further boosted
+gtpp.nei.tgs.info-2=by machine energy tier
+gtpp.nei.tgs.info-3=and tool type
+
+
 //Thermal Foundation Stuff
 item.MiscUtils.bucket.bucketPyrotheum.name=Blazing Pyrotheum Bucket
 item.MiscUtils.bucket.bucketCryotheum.name=Gelid Cryotheum Bucket

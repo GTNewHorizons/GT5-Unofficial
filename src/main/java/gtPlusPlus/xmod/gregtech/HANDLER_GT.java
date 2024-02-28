@@ -25,6 +25,7 @@ import gtPlusPlus.xmod.gregtech.loaders.ProcessingElectricSnips;
 import gtPlusPlus.xmod.gregtech.loaders.misc.AddCustomMachineToPA;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoader_AlgaeFarm;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoader_MolecularTransformer;
+import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoader_TreeFarm;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits;
 
 public class HANDLER_GT {
@@ -89,6 +90,7 @@ public class HANDLER_GT {
         CokeAndPyrolyseOven.onLoadComplete();
         Meta_GT_Proxy.fixIC2FluidNames();
         RecipeLoader_AlgaeFarm.generateRecipes();
+        RecipeLoader_TreeFarm.generateRecipes();
         if (AdvancedSolarPanel.isModLoaded()) {
             RecipeLoader_MolecularTransformer.run();
         }

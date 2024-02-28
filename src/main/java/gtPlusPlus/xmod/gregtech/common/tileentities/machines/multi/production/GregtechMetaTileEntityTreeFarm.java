@@ -10,88 +10,71 @@ import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.enums.GT_HatchElement.Muffler;
 import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
-import static gregtech.api.enums.Mods.BiomesOPlenty;
-import static gregtech.api.enums.Mods.ForbiddenMagic;
-import static gregtech.api.enums.Mods.GTPlusPlus;
-import static gregtech.api.enums.Mods.GalaxySpace;
-import static gregtech.api.enums.Mods.IndustrialCraft2;
-import static gregtech.api.enums.Mods.Natura;
-import static gregtech.api.enums.Mods.PamsHarvestCraft;
-import static gregtech.api.enums.Mods.PamsHarvestTheNether;
-import static gregtech.api.enums.Mods.TaintedMagic;
-import static gregtech.api.enums.Mods.Thaumcraft;
-import static gregtech.api.enums.Mods.ThaumicBases;
-import static gregtech.api.enums.Mods.TinkerConstruct;
-import static gregtech.api.enums.Mods.TwilightForest;
-import static gregtech.api.enums.Mods.Witchery;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.GT_Utility.filterValidMTEs;
 import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase.GTPPHatchElement.TTEnergy;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-
-import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import forestry.api.arboriculture.EnumTreeChromosome;
+import forestry.api.arboriculture.IToolGrafter;
 import forestry.api.arboriculture.ITree;
 import forestry.api.arboriculture.TreeManager;
-import forestry.api.genetics.IAlleleBoolean;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.VoidProtectionHelper;
+import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_InputBus_ME;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import gtPlusPlus.xmod.gregtech.common.helpers.TreeFarmHelper;
-import gtPlusPlus.xmod.gregtech.common.helpers.TreeFarmHelper.SAWTOOL;
+import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 
 public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntityTreeFarm>
         implements ISurvivalConstructable {
 
     public static int CASING_TEXTURE_ID;
-    public static String mCasingName = "Sterile Farm Casing";
-    public static HashMap<String, ItemStack> sLogCache = new HashMap<>();
     private static final int TICKS_PER_OPERATION = 100;
+    private static final int TOOL_DAMAGE_PER_OPERATION = 1;
+    private static final int TOOL_CHARGE_PER_OPERATION = 32;
 
     private int mCasing;
+    public static String mCasingName = "Sterile Farm Casing";
     private static IStructureDefinition<GregtechMetaTileEntityTreeFarm> STRUCTURE_DEFINITION = null;
-
-    private SAWTOOL mToolType;
-    private ItemStack mSapling;
-    private ItemStack mWood;
-    private float heightModifier = 1.0f;
-    private float saplingsModifier = 1.0f;
-    private int girthModifier = 1;
 
     public GregtechMetaTileEntityTreeFarm(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -116,20 +99,20 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType()).addInfo("Converts EU to Logs").addInfo("Eu Usage: 100% | Parallel: 1")
-                .addInfo("Requires a Saw or Chainsaw in GUI slot").addInfo("Output multiplier:").addInfo("Saw = 1x")
-                .addInfo("Buzzsaw = 2x").addInfo("Chainsaw = 4x")
-                .addInfo("Add a sapling in the input bus to select wood type output")
-                .addInfo("The sapling is not consumed").addInfo("Tools can also be fed to the controller via input bus")
-                .addInfo("The working speed is fixed for 5s")
-                .addInfo("Production Formula: (2 * tier^2 - 2 * tier + 5) * 5 * saw boost")
-                .addInfo("When fertilizer is supplied, produces saplings instead of logs")
-                .addInfo("Forestry saplings can get increased production")
+        tt.addMachineType(getMachineType()).addInfo("Controller block for the Tree Growth Simulator")
+                .addInfo("Farms and harvests trees using EU").addInfo("Place a sapling in the controller slot")
+                .addInfo("Place a tool in an input bus").addInfo("Different tools are required for different outputs")
+                .addInfo("Advanced tools multiply output amount")
+                .addInfo("  Logs: Saw (1x), Buzzsaw (2x), Chainsaw (4x)")
+                .addInfo("  Saplings: Branch Cutter (1x), Grafter (3x)")
+                .addInfo("  Leaves: Shears (1x), Wire Cutter (2x), Automatic Snips (4x)").addInfo("  Fruit: Knife (1x)")
+                .addInfo("Multiple tools can be used at the same time").addSeparator()
+                .addInfo("Work time is fixed at 5 seconds").addInfo("Energy input tier multiplies output further")
+                .addInfo("Output multiplier is equal to: 2*tier^2 - 2*tier + 5")
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 3, true)
-                .addController("Front center").addCasingInfoMin("Sterile Farm Casing", 8, false)
-                .addInputBus("Any casing", 1).addOutputBus("Any casing", 1).addEnergyHatch("Any casing", 1)
-                .addMaintenanceHatch("Any casing", 1).addMufflerHatch("Any casing", 1)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+                .addController("Front center").addCasingInfoMin(mCasingName, 8, false).addInputBus("Any casing", 1)
+                .addOutputBus("Any casing", 1).addEnergyHatch("Any casing", 1).addMaintenanceHatch("Any casing", 1)
+                .addMufflerHatch("Any casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
@@ -149,101 +132,58 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
     }
 
     @Override
-    public boolean isCorrectMachinePart(final ItemStack aStack) {
-        // is correct part && either not powered tool or have enough power
-        if (TreeFarmHelper.isValidForGUI(aStack)
-                && GT_MetaGenerated_Tool.getToolDamage(aStack) < GT_MetaGenerated_Tool.getToolMaxDamage(aStack)) {
-            return GT_ModHandler.isElectricItem(aStack) ? GT_ModHandler.canUseElectricItem(aStack, 32) : true;
-        }
-        return false;
-    }
-
-    /**
-     * Method used to get the boost based on the ordinal of the saw
-     * 
-     * @param sawType type of the saw
-     * @return an int corresponding to the boost
-     */
-    public int getSawBoost(SAWTOOL sawType) {
-        return switch (sawType) {
-            case SAW -> 1;
-            case BUZZSAW -> 2;
-            case CHAINSAW -> 4;
-            default -> 1;
-        };
-    }
-
-    @Override
-    public RecipeMap<?> getRecipeMap() {
-        // Only for visual
-        return GTPPRecipeMaps.treeGrowthSimulatorFakeRecipes;
-    }
-
-    @Override
-    public @NotNull CheckRecipeResult checkProcessing() {
-        final ItemStack controllerStack = getControllerSlot();
-        if (!isCorrectMachinePart(controllerStack) && !replaceTool())
-            return SimpleCheckRecipeResult.ofFailure("no_saw");
-        if (!checkSapling()) return SimpleCheckRecipeResult.ofFailure("no_sapling");
-
-        this.mToolType = TreeFarmHelper.isCorrectMachinePart(controllerStack);
-
-        long tVoltage = getMaxInputVoltage();
-        byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-
-        int aOutputAmount = ((2 * (tTier * tTier)) - (2 * tTier) + 5) * (TICKS_PER_OPERATION / 20)
-                * getSawBoost(mToolType);
-        int aFert = hasLiquidFert();
-        ItemStack[] toOutput;
-
-        if (aFert > 0) { // Sapling
-            if (aFert < aOutputAmount) {
-                aOutputAmount /= 10;
-            }
-            int amplifiedOutputAmount = (int) (aOutputAmount * saplingsModifier);
-            toOutput = new ItemStack[] { ItemUtils.getSimpleStack(mSapling, amplifiedOutputAmount) };
-        } else { // Log
-            int amplifiedOutputAmount = (int) (aOutputAmount * heightModifier * girthModifier);
-            toOutput = new ItemStack[] { ItemUtils.getSimpleStack(mWood, amplifiedOutputAmount) };
-        }
-
-        VoidProtectionHelper voidProtection = new VoidProtectionHelper().setMachine(this).setItemOutputs(toOutput)
-                .build();
-
-        if (voidProtection.isItemFull()) {
-            return CheckRecipeResultRegistry.ITEM_OUTPUT_FULL;
-        }
-
-        if (aFert > 0 && aFert >= aOutputAmount) {
-            tryConsumeLiquidFert(aOutputAmount);
-        }
-
-        this.mOutputItems = toOutput;
-
-        this.mMaxProgresstime = TICKS_PER_OPERATION;
-        this.lEUt = MaterialUtils.getVoltageForTier(tTier);
-
-        this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-        this.mEfficiencyIncrease = 10000;
-
-        if (this.lEUt > 0) {
-            this.lEUt = (-this.lEUt);
-        }
-
-        this.tryDamageTool();
-        this.updateSlots();
-        return SimpleCheckRecipeResult.ofSuccess("growing_trees");
-    }
-
-    @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
         return checkPiece(mName, 1, 1, 0) && mCasing >= 8 && checkHatch();
     }
 
     @Override
+    public boolean checkHatch() {
+        // Tools from a stocking inout bus can not be damaged, this would cause an infinite durability exploit.
+        // Therefore disallow ME input bus.
+        if (!super.checkHatch()) return false;
+        for (GT_MetaTileEntity_Hatch_InputBus inputBus : mInputBusses) {
+            if (inputBus instanceof GT_MetaTileEntity_Hatch_InputBus_ME) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean supportsCraftingMEBuffer() {
+        return false;
+    }
+
+    @Override
     public int getMaxParallelRecipes() {
         return 1;
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
+        // Batch mode would not do anything, processing time is fixed at 100 ticks.
+        return false;
+    }
+
+    @Override
+    public boolean isBatchModeEnabled() {
+        return false;
+    }
+
+    @Override
+    public int getMaxEfficiency(final ItemStack aStack) {
+        return 10000;
+    }
+
+    @Override
+    public int getPollutionPerSecond(final ItemStack aStack) {
+        return CORE.ConfigSwitches.pollutionPerSecondMultiTreeFarm;
+    }
+
+    @Override
+    public boolean explodesOnComponentBreak(final ItemStack aStack) {
+        return false;
     }
 
     @Override
@@ -272,268 +212,6 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
     }
 
     @Override
-    public int getMaxEfficiency(final ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getPollutionPerSecond(final ItemStack aStack) {
-        return CORE.ConfigSwitches.pollutionPerSecondMultiTreeFarm;
-    }
-
-    @Override
-    public int getDamageToComponent(final ItemStack aStack) {
-        return MathUtils.balance((int) (75 - ((GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).getMass()))), 5, 120);
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
-    }
-
-    private boolean tryDamageTool() {
-        GT_ModHandler.damageOrDechargeItem(this.mInventory[1], 1, 32, null);
-        return replaceTool();
-    }
-
-    public boolean replaceTool() {
-        ItemStack invItem = this.mInventory[1];
-        if (isCorrectMachinePart(invItem)) return true;
-        else {
-            if (invItem != null) {
-                this.mInventory[1] = null;
-                this.addOutput(invItem);
-            }
-
-            for (ItemStack aStack : getStoredInputs()) {
-                if (isCorrectMachinePart(aStack)) {
-                    this.mInventory[1] = aStack.copy();
-                    this.depleteInput(aStack);
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    public boolean checkSapling() {
-        for (ItemStack uStack : this.getStoredInputs()) {
-
-            if (uStack != null) {
-                String registryName = Item.itemRegistry.getNameForObject(uStack.getItem());
-                ItemStack aWood = sLogCache.get(registryName + ":" + uStack.getItemDamage());
-
-                if (aWood != null) {
-                    this.heightModifier = 1.0f;
-                    this.saplingsModifier = 1.0f;
-                    this.girthModifier = 1;
-
-                    this.mSapling = uStack;
-                    this.mWood = aWood;
-                    return true;
-                } else {
-                    if (registryName.equals("Forestry:sapling")) {
-
-                        ITree tree = TreeManager.treeRoot.getMember(uStack);
-
-                        this.heightModifier = Math.max(3 * (tree.getGenome().getHeight() - 1), 0) + 1;
-                        this.saplingsModifier = Math.max(tree.getGenome().getFertility() * 20, 1);
-                        this.girthModifier = tree.getGenome().getGirth();
-                        boolean fireproof = ((IAlleleBoolean) tree.getGenome()
-                                .getChromosomes()[EnumTreeChromosome.FIREPROOF.ordinal()].getActiveAllele()).getValue();
-
-                        aWood = sLogCache.get(tree.getIdent() + (fireproof ? "fireproof" : ""));
-
-                        this.mSapling = uStack;
-                        this.mWood = aWood;
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-    public static void loadMapWoodFromSapling() {
-
-        // galaxySpace
-        mapSaplingToLog("GalaxySpace:barnardaCsapling:1", GT_ModHandler.getModItem(GalaxySpace.ID, "barnardaClog", 1)); // barnarda
-                                                                                                                        // c
-
-        // minecraft
-        mapSaplingToLog("minecraft:sapling:0", new ItemStack(Blocks.log, 1, 0)); // oak
-        mapSaplingToLog("minecraft:sapling:1", new ItemStack(Blocks.log, 1, 1)); // spruce
-        mapSaplingToLog("minecraft:sapling:2", new ItemStack(Blocks.log, 1, 2)); // birch
-        mapSaplingToLog("minecraft:sapling:3", new ItemStack(Blocks.log, 1, 3)); // jungle
-        mapSaplingToLog("minecraft:sapling:4", new ItemStack(Blocks.log2, 1, 0)); // acacia
-        mapSaplingToLog("minecraft:sapling:5", new ItemStack(Blocks.log2, 1, 1)); // dark oak
-
-        // ic2
-        mapSaplingToLog("IC2:blockRubSapling:0", GT_ModHandler.getModItem(IndustrialCraft2.ID, "blockRubWood", 1)); // rubber
-
-        // natura
-        mapSaplingToLog("Natura:florasapling:0", GT_ModHandler.getModItem(Natura.ID, "redwood", 1, 1)); // redwood
-        mapSaplingToLog("Natura:florasapling:1", GT_ModHandler.getModItem(Natura.ID, "tree", 1, 0)); // eucalyptus
-        mapSaplingToLog("Natura:florasapling:2", GT_ModHandler.getModItem(Natura.ID, "tree", 1, 3)); // hopseed
-        mapSaplingToLog("Natura:florasapling:3", GT_ModHandler.getModItem(Natura.ID, "tree", 1, 1)); // sakura
-        mapSaplingToLog("Natura:florasapling:4", GT_ModHandler.getModItem(Natura.ID, "tree", 1, 2)); // ghostwood
-        mapSaplingToLog("Natura:florasapling:5", GT_ModHandler.getModItem(Natura.ID, "bloodwood", 1, 0)); // bloodwood
-        mapSaplingToLog("Natura:florasapling:6", GT_ModHandler.getModItem(Natura.ID, "Dark Tree", 1, 0)); // darkwood
-        mapSaplingToLog("Natura:florasapling:7", GT_ModHandler.getModItem(Natura.ID, "Dark Tree", 1, 1)); // fusewood
-
-        mapSaplingToLog("Natura:Rare Sapling:0", GT_ModHandler.getModItem(Natura.ID, "Rare Tree", 1, 0)); // maple
-        mapSaplingToLog("Natura:Rare Sapling:1", GT_ModHandler.getModItem(Natura.ID, "Rare Tree", 1, 1)); // silverbell
-        mapSaplingToLog("Natura:Rare Sapling:2", GT_ModHandler.getModItem(Natura.ID, "Rare Tree", 1, 2)); // amaranth
-        mapSaplingToLog("Natura:Rare Sapling:3", GT_ModHandler.getModItem(Natura.ID, "Rare Tree", 1, 3)); // tigerwood
-        mapSaplingToLog("Natura:Rare Sapling:4", GT_ModHandler.getModItem(Natura.ID, "willow", 1, 0)); // willow
-
-        // BOP
-        mapSaplingToLog("BiomesOPlenty:colorizedSaplings:0", GT_ModHandler.getModItem(BiomesOPlenty.ID, "logs1", 1, 0)); // Sacred
-                                                                                                                         // Oak
-        mapSaplingToLog("BiomesOPlenty:colorizedSaplings:1", GT_ModHandler.getModItem(BiomesOPlenty.ID, "logs2", 1, 2)); // Mangrove
-        mapSaplingToLog("BiomesOPlenty:colorizedSaplings:2", GT_ModHandler.getModItem(BiomesOPlenty.ID, "logs2", 1, 3)); // Palm
-        mapSaplingToLog("BiomesOPlenty:colorizedSaplings:3", GT_ModHandler.getModItem(BiomesOPlenty.ID, "logs3", 1, 0)); // Redwood
-        mapSaplingToLog("BiomesOPlenty:colorizedSaplings:4", GT_ModHandler.getModItem(BiomesOPlenty.ID, "logs3", 1, 1)); // Willow
-        mapSaplingToLog("BiomesOPlenty:colorizedSaplings:5", GT_ModHandler.getModItem(BiomesOPlenty.ID, "logs4", 1, 0)); // Pine
-        mapSaplingToLog("BiomesOPlenty:colorizedSaplings:6", GT_ModHandler.getModItem(BiomesOPlenty.ID, "logs4", 1, 3)); // Mahogany
-        mapSaplingToLog("BiomesOPlenty:saplings:2", GT_ModHandler.getModItem(BiomesOPlenty.ID, "bamboo", 1, 0)); // Bamboo
-        mapSaplingToLog("BiomesOPlenty:saplings:3", GT_ModHandler.getModItem(BiomesOPlenty.ID, "logs2", 1, 1)); // Magic
-        mapSaplingToLog("BiomesOPlenty:saplings:4", GT_ModHandler.getModItem(BiomesOPlenty.ID, "logs1", 1, 2)); // Dark
-        mapSaplingToLog("BiomesOPlenty:saplings:5", GT_ModHandler.getModItem(BiomesOPlenty.ID, "logs3", 1, 2)); // Dying/Dead
-        mapSaplingToLog("BiomesOPlenty:saplings:6", GT_ModHandler.getModItem(BiomesOPlenty.ID, "logs1", 1, 3)); // Fir
-        mapSaplingToLog("BiomesOPlenty:saplings:7", GT_ModHandler.getModItem(BiomesOPlenty.ID, "logs2", 1, 0)); // Ethereal
-        mapSaplingToLog("BiomesOPlenty:saplings:10", GT_ModHandler.getModItem(BiomesOPlenty.ID, "logs1", 1, 1)); // Pink
-                                                                                                                 // Cherry
-        mapSaplingToLog("BiomesOPlenty:saplings:12", GT_ModHandler.getModItem(BiomesOPlenty.ID, "logs1", 1, 1)); // White
-                                                                                                                 // Cherry
-        mapSaplingToLog("BiomesOPlenty:saplings:13", GT_ModHandler.getModItem(BiomesOPlenty.ID, "logs4", 1, 1)); // Hellbark
-        mapSaplingToLog("BiomesOPlenty:saplings:14", GT_ModHandler.getModItem(BiomesOPlenty.ID, "logs4", 1, 2)); // Jacaranda
-        mapSaplingToLog("minecraft:yellow_flower:0", GT_ModHandler.getModItem(BiomesOPlenty.ID, "logs3", 1, 3)); // Giant
-                                                                                                                 // Flower
-                                                                                                                 // Stem
-        mapSaplingToLog("minecraft:red_flower:0", GT_ModHandler.getModItem(BiomesOPlenty.ID, "logs3", 1, 3)); // Giant
-                                                                                                              // Flower
-                                                                                                              // Stem
-
-        // Witchery
-        mapSaplingToLog("witchery:witchsapling:0", GT_ModHandler.getModItem(Witchery.ID, "witchlog", 1, 0)); // Rowan
-        mapSaplingToLog("witchery:witchsapling:1", GT_ModHandler.getModItem(Witchery.ID, "witchlog", 1, 1)); // Alder
-        mapSaplingToLog("witchery:witchsapling:2", GT_ModHandler.getModItem(Witchery.ID, "witchlog", 1, 2)); // Hawthorn
-
-        // TConstruct
-        mapSaplingToLog("TConstruct:slime.sapling:0", GT_ModHandler.getModItem(TinkerConstruct.ID, "slime.gel", 1)); // green
-        // slime
-        // blocks
-
-        // TaintedMagic
-        mapSaplingToLog(
-                "TaintedMagic:BlockWarpwoodSapling:0",
-                GT_ModHandler.getModItem(TaintedMagic.ID, "BlockWarpwoodLog", 1)); // warpwood
-
-        // Thaumcraft
-        mapSaplingToLog(
-                "Thaumcraft:blockCustomPlant:0",
-                GT_ModHandler.getModItem(Thaumcraft.ID, "blockMagicalLog", 1, 0)); // greatwood
-        mapSaplingToLog(
-                "Thaumcraft:blockCustomPlant:1",
-                GT_ModHandler.getModItem(Thaumcraft.ID, "blockMagicalLog", 1, 1)); // silverwood
-
-        // gt++
-        mapSaplingToLog(
-                "miscutils:blockRainforestOakSapling:0",
-                GT_ModHandler.getModItem(GTPlusPlus.ID, "blockRainforestOakLog", 1)); // rainforest
-        mapSaplingToLog("miscutils:blockPineSapling:0", GT_ModHandler.getModItem(GTPlusPlus.ID, "blockPineLogLog", 1)); // pine
-
-        // Harvestcraft
-        mapSaplingToLog("harvestcraft:pampistachioSapling:0", new ItemStack(Blocks.log, 1, 3)); // Pistachio
-        mapSaplingToLog("harvestcraft:pampapayaSapling:0", new ItemStack(Blocks.log, 1, 3)); // Papaya
-        mapSaplingToLog("harvestcraft:pammapleSapling:0", GT_ModHandler.getModItem(PamsHarvestCraft.ID, "pamMaple", 1)); // Maple
-        mapSaplingToLog("harvestcraft:pamappleSapling:0", new ItemStack(Blocks.log, 1, 0)); // Apple
-        mapSaplingToLog("harvestcraft:pamdateSapling:0", new ItemStack(Blocks.log, 1, 3)); // Date
-        mapSaplingToLog("harvestcraft:pamorangeSapling:0", new ItemStack(Blocks.log, 1, 3)); // Orange
-        mapSaplingToLog("harvestcraft:pamdragonfruitSapling:0", new ItemStack(Blocks.log, 1, 3)); // Dragon fruit
-        mapSaplingToLog("harvestcraft:pamnutmegSapling:0", new ItemStack(Blocks.log, 1, 0)); // NutMeg
-        mapSaplingToLog(
-                "harvestcraft:pampaperbarkSapling:0",
-                GT_ModHandler.getModItem(PamsHarvestCraft.ID, "pamPaperbark", 1)); // Paperbark
-        mapSaplingToLog("harvestcraft:pammangoSapling:0", new ItemStack(Blocks.log, 1, 3)); // Mango
-        mapSaplingToLog("harvestcraft:pamavocadoSapling:0", new ItemStack(Blocks.log, 1, 0)); // Avocado
-        mapSaplingToLog("harvestcraft:pamchestnutSapling:0", new ItemStack(Blocks.log, 1, 0)); // Chestnut
-        mapSaplingToLog("harvestcraft:pampeppercornSapling:0", new ItemStack(Blocks.log, 1, 3)); // Peppercorn
-        mapSaplingToLog("harvestcraft:pampecanSapling:0", new ItemStack(Blocks.log, 1, 3)); // Pecan
-        mapSaplingToLog("harvestcraft:pamcashewSapling:0", new ItemStack(Blocks.log, 1, 3)); // Cashew
-        mapSaplingToLog("harvestcraft:pamfigSapling:0", new ItemStack(Blocks.log, 1, 3)); // Fig
-        mapSaplingToLog("harvestcraft:pamoliveSapling:0", new ItemStack(Blocks.log, 1, 3)); // Olive
-        mapSaplingToLog(
-                "harvestcraft:pamcinnamonSapling:0",
-                GT_ModHandler.getModItem(PamsHarvestCraft.ID, "pamCinnamon", 1)); // Cinnamon
-        mapSaplingToLog("harvestcraft:pampeachSapling:0", new ItemStack(Blocks.log, 1, 3)); // Peach
-        mapSaplingToLog("harvestcraft:pamlemonSapling:0", new ItemStack(Blocks.log, 1, 3)); // Lemon
-        mapSaplingToLog("harvestcraft:pamvanillabeanSapling:0", new ItemStack(Blocks.log, 1, 3)); // Vanilla
-        mapSaplingToLog("harvestcraft:pamalmondSapling:0", new ItemStack(Blocks.log, 1, 3)); // Almond
-        mapSaplingToLog("harvestcraft:pambananaSapling:0", new ItemStack(Blocks.log, 1, 3)); // Banana
-        mapSaplingToLog("harvestcraft:pamdurianSapling:0", new ItemStack(Blocks.log, 1, 3)); // Durian
-        mapSaplingToLog("harvestcraft:pamplumSapling:0", new ItemStack(Blocks.log, 1, 0)); // Plum
-        mapSaplingToLog("harvestcraft:pamlimeSapling:0", new ItemStack(Blocks.log, 1, 3)); // Lime
-        mapSaplingToLog("harvestcraft:pampearSapling:0", new ItemStack(Blocks.log, 1, 0)); // Pear
-        mapSaplingToLog("harvestcraft:pamgooseberrySapling:0", new ItemStack(Blocks.log, 1, 0)); // Gooseberry
-        mapSaplingToLog("harvestcraft:pamcherrySapling:0", new ItemStack(Blocks.log, 1, 0)); // Cherry
-        mapSaplingToLog("harvestcraft:pampomegranateSapling:0", new ItemStack(Blocks.log, 1, 3)); // Pomegranate
-        mapSaplingToLog("harvestcraft:pamwalnutSapling:0", new ItemStack(Blocks.log, 1, 0)); // Walnut
-        mapSaplingToLog("harvestcraft:pampersimmonSapling:0", new ItemStack(Blocks.log, 1, 3)); // Persimmon
-        mapSaplingToLog("harvestcraft:pamapricotSapling:0", new ItemStack(Blocks.log, 1, 3)); // Apricot
-        mapSaplingToLog("harvestcraft:pamcoconutSapling:0", new ItemStack(Blocks.log, 1, 3)); // Coconut
-        mapSaplingToLog("harvestcraft:pamgrapefruitSapling:0", new ItemStack(Blocks.log, 1, 3)); // Grapefruit
-        mapSaplingToLog("harvestcraft:pamstarfruitSapling:0", new ItemStack(Blocks.log, 1, 3)); // Starfruit
-
-        // Harvest The Nether
-        mapSaplingToLog(
-                "harvestthenether:netherSapling:0",
-                GT_ModHandler.getModItem(PamsHarvestTheNether.ID, "netherLog", 1)); // Nether
-
-        // The Twilight Forest
-        mapSaplingToLog(
-                "TwilightForest:tile.TFSapling:0",
-                GT_ModHandler.getModItem(TwilightForest.ID, "tile.TFLog", 1, 0)); // Sickly Twilight Oak
-        mapSaplingToLog(
-                "TwilightForest:tile.TFSapling:1",
-                GT_ModHandler.getModItem(TwilightForest.ID, "tile.TFLog", 1, 1)); // Canopy Tree
-        mapSaplingToLog(
-                "TwilightForest:tile.TFSapling:2",
-                GT_ModHandler.getModItem(TwilightForest.ID, "tile.TFLog", 1, 2)); // Twilight Mangrove
-        mapSaplingToLog(
-                "TwilightForest:tile.TFSapling:3",
-                GT_ModHandler.getModItem(TwilightForest.ID, "tile.TFLog", 1, 3)); // Darkwood
-        mapSaplingToLog(
-                "TwilightForest:tile.TFSapling:4",
-                GT_ModHandler.getModItem(TwilightForest.ID, "tile.TFLog", 1, 0)); // Robust Twilight Oad
-        mapSaplingToLog(
-                "TwilightForest:tile.TFSapling:5",
-                GT_ModHandler.getModItem(TwilightForest.ID, "tile.TFMagicLog", 1, 0)); // Tree of Time
-        mapSaplingToLog(
-                "TwilightForest:tile.TFSapling:6",
-                GT_ModHandler.getModItem(TwilightForest.ID, "tile.TFMagicLog", 1, 1)); // Tree of Trasformation
-        mapSaplingToLog(
-                "TwilightForest:tile.TFSapling:7",
-                GT_ModHandler.getModItem(TwilightForest.ID, "tile.TFMagicLog", 1, 2)); // Miner's Tree
-        mapSaplingToLog(
-                "TwilightForest:tile.TFSapling:8",
-                GT_ModHandler.getModItem(TwilightForest.ID, "tile.TFMagicLog", 1, 3)); // Sorting Tree
-        mapSaplingToLog(
-                "TwilightForest:tile.TFSapling:9",
-                GT_ModHandler.getModItem(TwilightForest.ID, "tile.TFLog", 1, 0)); // Rainbow Oak
-
-        // Thaumic Bases
-        mapSaplingToLog("thaumicbases:goldenOakSapling:0", new ItemStack(Blocks.log, 1, 0)); // Golden Oak
-        mapSaplingToLog("thaumicbases:goldenOakSapling:1", GT_ModHandler.getModItem(ThaumicBases.ID, "genLogs", 1, 0)); // Peaceful
-        mapSaplingToLog("thaumicbases:goldenOakSapling:2", GT_ModHandler.getModItem(ThaumicBases.ID, "genLogs", 1, 1)); // Nether
-        mapSaplingToLog("thaumicbases:goldenOakSapling:3", GT_ModHandler.getModItem(ThaumicBases.ID, "genLogs", 1, 2)); // Ender
-
-        // Forbidden Magic
-        mapSaplingToLog("ForbiddenMagic:TaintSapling:0", GT_ModHandler.getModItem(ForbiddenMagic.ID, "TaintLog", 1)); // Tainted
-    }
-
-    @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(mName, stackSize, hintsOnly, 1, 1, 0);
     }
@@ -544,54 +222,564 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
         return survivialBuildPiece(mName, stackSize, 1, 1, 0, elementBudget, env, false, true);
     }
 
-    public static void mapSaplingToLog(String aSapling, ItemStack aLog) {
-        ItemStack aSaplingStack = ItemUtils.getItemStackFromFQRN(aSapling, 1);
-        if (aSaplingStack != null && aLog != null) {
-            sLogCache.put(aSapling, aLog);
-            addFakeRecipeToNEI(aSaplingStack, aLog);
-        } else {
-            Logger.INFO("Unable to add Tree Growth Simulation for " + aSapling);
+    /* Processing logic. */
+
+    @Override
+    public boolean isCorrectMachinePart(final ItemStack aStack) {
+        if (aStack == null) return false;
+        if (isValidSapling(aStack)) return true;
+        /*
+         * In previous versions, a saw used to go in the controller slot. We do not want an update to stop processing of
+         * a machine set up like this. Instead, a sapling is placed in this slot at the start of the next operation.
+         */
+        if (aStack.getItem() instanceof GT_MetaGenerated_Tool_01) return true;
+        return false;
+    }
+
+    @Override
+    public RecipeMap<?> getRecipeMap() {
+        // Only for NEI, not used in processing logic.
+        return GTPPRecipeMaps.treeGrowthSimulatorFakeRecipes;
+    }
+
+    /**
+     * Valid processing modes (types of output) for the Tree Growth Simulator.
+     */
+    public enum Mode {
+        LOG,
+        SAPLING,
+        LEAVES,
+        FRUIT
+    }
+
+    /**
+     * Edit this to change relative yields for different modes. For example, logs are output at 5 times the rate of
+     * saplings.
+     */
+    private static final EnumMap<Mode, Integer> modeMultiplier = new EnumMap<>(Mode.class);
+    static {
+        modeMultiplier.put(Mode.LOG, 5);
+        modeMultiplier.put(Mode.SAPLING, 1);
+        modeMultiplier.put(Mode.LEAVES, 2);
+        modeMultiplier.put(Mode.FRUIT, 1);
+    }
+
+    /**
+     * Return the output multiplier for a given power tier.
+     * 
+     * @param tier Power tier the machine runs on.
+     * @return Factor to multiply all outputs by.
+     */
+    private static int getTierMultiplier(int tier) {
+        /*
+         * Where does this formula come from? [12:57 AM] boubou_19: i did. Basically Pandoro measured the output of a
+         * WA-ed farming station for each tier of WA, then i computed the Lagrange interpolating polynomial of his
+         * dataset, which gave this
+         */
+        return (2 * (tier * tier)) - (2 * tier) + 5;
+    }
+
+    /**
+     * Key of this map is the registry name of the sapling, followed by ":", and the sapling's metadata value.
+     * <p>
+     * The value of the map is a list of products by {@link Mode}. Products for some modes can be null if the tree does
+     * not produce anything in that mode (for example, it has no fruit).
+     */
+    public static final HashMap<String, EnumMap<Mode, ItemStack>> treeProductsMap = new HashMap<>();
+
+    @Override
+    public ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
+
+            @Override
+            @Nonnull
+            public CheckRecipeResult process() {
+                if (inputItems == null) {
+                    inputItems = new ItemStack[0];
+                }
+                if (inputFluids == null) {
+                    inputFluids = new FluidStack[0];
+                }
+
+                ItemStack sapling = findSapling();
+                if (sapling == null) return SimpleCheckRecipeResult.ofFailure("no_sapling");
+
+                EnumMap<Mode, ItemStack> outputPerMode = getOutputsForSapling(sapling);
+                if (outputPerMode == null) {
+                    // This should usually not be possible, outputs for all valid saplings should be defined.
+                    Logger.INFO("No output found for sapling: " + sapling.getDisplayName());
+                    return SimpleCheckRecipeResult.ofFailure("no_output_for_sapling");
+                }
+
+                int tier = Math.max(1, GT_Utility.getTier(availableVoltage * availableAmperage));
+                int tierMultiplier = getTierMultiplier(tier);
+
+                List<ItemStack> outputs = new ArrayList<>();
+                for (Mode mode : Mode.values()) {
+                    ItemStack output = outputPerMode.get(mode);
+                    if (output == null) continue; // This sapling has no output in this mode.
+
+                    // Find a tool to use in this mode.
+                    int toolMultiplier = useToolForMode(mode);
+                    if (toolMultiplier < 0) continue; // No valid tool for this mode found.
+
+                    // Increase output by the relevant multipliers.
+                    ItemStack out = output.copy();
+                    out.stackSize *= tierMultiplier * modeMultiplier.get(mode) * toolMultiplier;
+                    outputs.add(out);
+                }
+
+                if (outputs.isEmpty()) {
+                    // No outputs can be produced using the tools we have available.
+                    return SimpleCheckRecipeResult.ofFailure("no_tools");
+                }
+
+                outputItems = outputs.toArray(new ItemStack[0]);
+
+                VoidProtectionHelper voidProtection = new VoidProtectionHelper().setMachine(machine)
+                        .setItemOutputs(outputItems).build();
+                if (voidProtection.isItemFull()) {
+                    return CheckRecipeResultRegistry.ITEM_OUTPUT_FULL;
+                }
+
+                duration = TICKS_PER_OPERATION;
+                calculatedEut = GT_Values.VP[tier];
+
+                return SimpleCheckRecipeResult.ofSuccess("growing_trees");
+            }
+        };
+    }
+
+    /* Handling tools. */
+
+    /**
+     * Attempts to find a tool appropriate for the given mode, and damage/discharge it by one use.
+     * 
+     * @param mode The mode to use. This specifies which tools are valid.
+     * @return Production multiplier based on the tool used, or -1 if no appropriate tool was found.
+     */
+    private int useToolForMode(Mode mode) {
+        for (ItemStack stack : getStoredInputs()) {
+            int toolMultiplier = getToolMultiplier(stack, mode);
+            if (toolMultiplier < 0) continue;
+            boolean canDamage = GT_ModHandler
+                    .damageOrDechargeItem(stack, TOOL_DAMAGE_PER_OPERATION, TOOL_CHARGE_PER_OPERATION, null);
+            if (canDamage) {
+                // Tool was used.
+                if (GT_ModHandler.isElectricItem(stack)
+                        && !GT_ModHandler.canUseElectricItem(stack, TOOL_CHARGE_PER_OPERATION)) {
+                    // Tool is out of charge, move it to output.
+                    depleteInput(stack);
+                    addOutput(stack);
+                }
+                return toolMultiplier;
+            } else {
+                // Correct item type, but the tool could not be used.
+                depleteInput(stack);
+                addOutput(stack);
+            }
+
         }
+        return -1;
     }
 
-    private static int sRecipeID = 0;
+    /**
+     * Calculate output multiplier for a given tool and mode.
+     * 
+     * @param toolStack The tool to use.
+     * @param mode      The mode to use.
+     * @return Output multiplier for the given tool used in the given mode. If the tool is not appropriate for this
+     *         mode, returns -1.
+     */
+    public static int getToolMultiplier(ItemStack toolStack, Mode mode) {
+        Item tool = toolStack.getItem();
+        switch (mode) {
+            case LOG:
+                if (tool instanceof GT_MetaGenerated_Tool_01) {
+                    switch (toolStack.getItemDamage()) {
+                        case GT_MetaGenerated_Tool_01.SAW:
+                        case GT_MetaGenerated_Tool_01.POCKET_SAW:
+                        case GT_MetaGenerated_Tool_01.POCKET_MULTITOOL:
+                            return 1;
+                        case GT_MetaGenerated_Tool_01.BUZZSAW_LV:
+                        case GT_MetaGenerated_Tool_01.BUZZSAW_MV:
+                        case GT_MetaGenerated_Tool_01.BUZZSAW_HV:
+                            return 2;
+                        case GT_MetaGenerated_Tool_01.CHAINSAW_LV:
+                        case GT_MetaGenerated_Tool_01.CHAINSAW_MV:
+                        case GT_MetaGenerated_Tool_01.CHAINSAW_HV:
+                            return 4;
+                    }
+                }
+                break;
 
-    public static boolean addFakeRecipeToNEI(@Nonnull ItemStack aSapling, ItemStack aLog) {
-        int aRecipes = GTPPRecipeMaps.treeGrowthSimulatorFakeRecipes.getAllRecipes().size();
-        Logger.INFO(
-                "Adding Tree Growth Simulation for " + aSapling.getDisplayName()
-                        + " -> "
-                        + (aLog == null ? "NULL" : aLog.getDisplayName()));
-        ItemStack[] aOutput = new ItemStack[] { aLog, aSapling };
-        String aOutputs = ItemUtils.getArrayStackNames(aOutput);
-        Logger.INFO("" + aOutputs);
-        ItemStack inputStack = aSapling.copy();
-        inputStack.stackSize = 0;
-        GTPPRecipeMaps.treeGrowthSimulatorFakeRecipes.addFakeRecipe(
-                false,
-                new ItemStack[] { inputStack },
-                aOutput,
-                null,
-                new int[] { 10000, 1000 },
-                new FluidStack[] { FluidUtils.getFluidStack(ModItems.fluidFertBasic, 1) },
-                new FluidStack[] {},
-                1,
-                sRecipeID++,
-                0);
-        return GTPPRecipeMaps.treeGrowthSimulatorFakeRecipes.getAllRecipes().size() > aRecipes;
+            case SAPLING:
+                if (tool instanceof GT_MetaGenerated_Tool_01) {
+                    switch (toolStack.getItemDamage()) {
+                        case GT_MetaGenerated_Tool_01.BRANCHCUTTER:
+                        case GT_MetaGenerated_Tool_01.POCKET_BRANCHCUTTER:
+                        case GT_MetaGenerated_Tool_01.POCKET_MULTITOOL:
+                            return 1;
+                    }
+                }
+                if (tool instanceof IToolGrafter && tool.isDamageable()) {
+                    return 3;
+                }
+                break;
+
+            case LEAVES:
+                // Do not allow unbreakable tools. Operation should have a running cost.
+                if (tool instanceof ItemShears && tool.isDamageable()) {
+                    return 1;
+                }
+                if (tool instanceof GT_MetaGenerated_Tool_01) {
+                    switch (toolStack.getItemDamage()) {
+                        case GT_MetaGenerated_Tool_01.POCKET_MULTITOOL:
+                            return 1;
+                        case GT_MetaGenerated_Tool_01.WIRECUTTER:
+                        case GT_MetaGenerated_Tool_01.POCKET_WIRECUTTER:
+                            return 2;
+                    }
+                }
+                if (tool instanceof MetaGeneratedGregtechTools) {
+                    if (toolStack.getItemDamage() == MetaGeneratedGregtechTools.ELECTRIC_SNIPS) {
+                        return 4;
+                    }
+                }
+                break;
+
+            case FRUIT:
+                if (tool instanceof GT_MetaGenerated_Tool_01) {
+                    switch (toolStack.getItemDamage()) {
+                        case GT_MetaGenerated_Tool_01.KNIFE:
+                        case GT_MetaGenerated_Tool_01.POCKET_KNIFE:
+                        case GT_MetaGenerated_Tool_01.POCKET_MULTITOOL:
+                            return 1;
+                    }
+                }
+                break;
+        }
+
+        // No valid tool was found.
+        return -1;
     }
 
-    public int hasLiquidFert() {
-        ArrayList<FluidStack> aFluids = this.getStoredFluids();
-        for (FluidStack aFluid : aFluids) {
-            if (aFluid.getFluid().equals(ModItems.fluidFertBasic)) {
-                return aFluid.amount;
+    /* Handling saplings. */
+
+    /**
+     * Finds a valid sapling from input buses, and places it into the controller slot.
+     *
+     * @return The sapling that was found (now in the controller slot).
+     */
+    private ItemStack findSapling() {
+        ItemStack controllerSlot = getControllerSlot();
+
+        if (isValidSapling(controllerSlot)) {
+            return controllerSlot;
+        }
+
+        if (controllerSlot != null) {
+            // Non-sapling item in controller slot. This could be a saw from an older version of the TGS.
+            // We first try to swap it with a sapling from an input bus to not interrupt existing setups.
+            if (!legacyToolSwap()) {
+                // Swap failed, output whatever is blocking the slot.
+                addOutput(controllerSlot);
+                mInventory[1] = null;
             }
         }
-        return 0;
+
+        // Here controller slot is empty, find a valid sapling to use.
+        for (ItemStack stack : getStoredInputs()) {
+            if (isValidSapling(stack)) {
+                mInventory[1] = stack.splitStack(1);
+                return mInventory[1];
+            }
+        }
+
+        // No saplings were found.
+        return null;
     }
 
-    public boolean tryConsumeLiquidFert(int aFluidAmount) {
-        return this.depleteInput(FluidUtils.getFluidStack(ModItems.fluidFertBasic, aFluidAmount));
+    /**
+     * In previous versions, the saw used to be placed in the controller slot and the sapling into an input bus. We do
+     * not want to break existing setups like this, so we attempt to swap the two if possible.
+     *
+     * @return True on success, false otherwise.
+     */
+    private boolean legacyToolSwap() {
+        ItemStack controllerSlot = getControllerSlot();
+        if (controllerSlot == null || !(controllerSlot.getItem() instanceof GT_MetaGenerated_Tool_01)) return false;
+
+        for (GT_MetaTileEntity_Hatch_InputBus inputBus : filterValidMTEs(mInputBusses)) {
+            ItemStack[] inventory = inputBus.getRealInventory();
+            for (int slot = 0; slot < inventory.length; ++slot) {
+                if (isValidSapling(inventory[slot])) {
+                    // Do the swap.
+                    mInventory[1] = inventory[slot];
+                    inventory[slot] = controllerSlot;
+                    inputBus.updateSlots();
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Check if an ItemStack is a sapling that can be farmed.
+     *
+     * @param stack An ItemStack.
+     * @return True if stack is a valid sapling that can be farmed.
+     */
+    private boolean isValidSapling(ItemStack stack) {
+        if (stack == null) return false;
+        String registryName = Item.itemRegistry.getNameForObject(stack.getItem());
+        return treeProductsMap.containsKey(registryName + ":" + stack.getItemDamage())
+                || "Forestry:sapling".equals(registryName);
+    }
+
+    /**
+     * Get a list of possible outputs for a sapling, for each mode. This is either recovered from
+     * {@link #treeProductsMap}, or generated from stats of Forestry saplings.
+     *
+     * @param sapling A sapling to farm.
+     * @return A map of outputs for each mode. Outputs for some modes might be null.
+     */
+    private static EnumMap<Mode, ItemStack> getOutputsForSapling(ItemStack sapling) {
+        String registryName = Item.itemRegistry.getNameForObject(sapling.getItem());
+        if ("Forestry:sapling".equals(registryName)) {
+            return getOutputsForForestrySapling(sapling);
+        } else {
+            return treeProductsMap.get(registryName + ":" + sapling.getItemDamage());
+        }
+    }
+
+    /**
+     * Calculate outputs for Forestry saplings. Default amounts stored in {@link #treeProductsMap} are adjusted based
+     * the genetics of the input sapling.
+     * <p>
+     * Relevant stats:
+     * <ul>
+     * <li>height, girth: Affects log output.</li>
+     * <li>fertility (called Saplings in game): Affects sapling output.</li>
+     * <li>yield: Affects fruit output.</li>
+     * </ul>
+     * See {@link forestry.core.genetics.alleles.EnumAllele} for detailed numeric values for each allele.
+     * 
+     * @param sapling A sapling to farm. Must be a Forestry sapling with a valid genome.
+     * @return A map of outputs for each mode. Outputs for some modes might be null.
+     */
+    private static EnumMap<Mode, ItemStack> getOutputsForForestrySapling(ItemStack sapling) {
+        ITree tree = TreeManager.treeRoot.getMember(sapling);
+        if (tree == null) return null;
+
+        String speciesUUID = tree.getIdent();
+
+        EnumMap<Mode, ItemStack> defaultMap = treeProductsMap.get("Forestry:sapling:" + speciesUUID);
+        if (defaultMap == null) return null;
+
+        // We need to make a new map so that we don't modify the stored amounts of outputs.
+        EnumMap<Mode, ItemStack> adjustedMap = new EnumMap<>(Mode.class);
+
+        ItemStack log = defaultMap.get(Mode.LOG);
+        if (log != null) {
+            double height = Math.max(3 * (tree.getGenome().getHeight() - 1), 0) + 1;
+            double girth = tree.getGenome().getGirth();
+
+            log = log.copy();
+            log.stackSize = (int) (log.stackSize * height * girth);
+            adjustedMap.put(Mode.LOG, log);
+        }
+
+        ItemStack saplingOut = defaultMap.get(Mode.SAPLING);
+        if (saplingOut != null) {
+            // Lowest = 0.01 ... Average = 0.05 ... Highest = 0.3
+            double fertility = tree.getGenome().getFertility() * 10;
+
+            // Return a copy of the *input* sapling, retaining its genetics.
+            int stackSize = Math.max(1, (int) (saplingOut.stackSize * fertility));
+            saplingOut = sapling.copy();
+            saplingOut.stackSize = stackSize;
+            adjustedMap.put(Mode.SAPLING, saplingOut);
+        }
+
+        ItemStack leaves = defaultMap.get(Mode.LEAVES);
+        if (leaves != null) {
+            adjustedMap.put(Mode.LEAVES, leaves.copy());
+        }
+
+        ItemStack fruit = defaultMap.get(Mode.FRUIT);
+        if (fruit != null) {
+            // Lowest = 0.025 ... Average = 0.2 ... Highest = 0.4
+            double yield = tree.getGenome().getYield() * 10;
+
+            fruit = fruit.copy();
+            fruit.stackSize = (int) (fruit.stackSize * yield);
+            adjustedMap.put(Mode.FRUIT, fruit);
+        }
+
+        return adjustedMap;
+    }
+
+    /* Recipe registration. */
+
+    /**
+     * Registers outputs for a sapling. This method assumes that output in mode SAPLING is the same as the input
+     * sapling. Output amount is further modified by mode, machine tier, and tool used. Recipes are added in
+     * {@link gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoader_TreeFarm}.
+     * 
+     * @param sapling The input sapling to farm, and also the output in mode SAPLING.
+     * @param log     ItemStack to output in mode LOG.
+     * @param leaves  ItemStack to output in mode LEAVES.
+     * @param fruit   ItemStack to output in mode FRUIT.
+     */
+    public static void registerTreeProducts(ItemStack sapling, ItemStack log, ItemStack leaves, ItemStack fruit) {
+        registerTreeProducts(sapling, log, sapling, leaves, fruit);
+    }
+
+    /**
+     * Registers outputs for a sapling. Output amount is further modified by mode, machine tier, and tool used. Recipes
+     * are added in {@link gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoader_TreeFarm}.
+     *
+     * @param saplingIn  The input sapling to farm.
+     * @param log        ItemStack to output in mode LOG.
+     * @param saplingOut ItemStack to output in mode SAPLING.
+     * @param leaves     ItemStack to output in mode LEAVES.
+     * @param fruit      ItemStack to output in mode FRUIT.
+     */
+    public static void registerTreeProducts(ItemStack saplingIn, ItemStack log, ItemStack saplingOut, ItemStack leaves,
+            ItemStack fruit) {
+        String key = Item.itemRegistry.getNameForObject(saplingIn.getItem()) + ":" + saplingIn.getItemDamage();
+        EnumMap<Mode, ItemStack> map = new EnumMap<>(Mode.class);
+        if (log != null) map.put(Mode.LOG, log);
+        if (saplingOut != null) map.put(Mode.SAPLING, saplingOut);
+        if (leaves != null) map.put(Mode.LEAVES, leaves);
+        if (fruit != null) map.put(Mode.FRUIT, fruit);
+        treeProductsMap.put(key, map);
+
+        if (!addFakeRecipeToNEI(saplingIn, log, saplingOut, leaves, fruit)) {
+            Logger.INFO("Registering NEI fake recipe for " + key + " failed!");
+        }
+    }
+
+    /**
+     * For Forestry trees, the output amounts depend on the genetics of the sapling. Here we register only the types of
+     * items to output. In {@link #getOutputsForForestrySapling(ItemStack)} these outputs are then multiplied according
+     * to the stats of the real sapling that is in the controller slot.
+     */
+    public static void registerForestryTree(String speciesUID, ItemStack sapling, ItemStack log, ItemStack leaves,
+            ItemStack fruit) {
+        String key = "Forestry:sapling:" + speciesUID;
+        EnumMap<Mode, ItemStack> map = new EnumMap<>(Mode.class);
+        map.put(Mode.LOG, log);
+        map.put(Mode.SAPLING, sapling);
+        map.put(Mode.LEAVES, leaves);
+        map.put(Mode.FRUIT, fruit);
+        treeProductsMap.put(key, map);
+
+        // In the NEI recipe we want to display outputs adjusted for the default genetics of this tree type.
+        // To do this we use the same method as when calculating real outputs.
+        map = getOutputsForForestrySapling(sapling);
+        if (map == null) {
+            Logger.INFO("Could not create Forestry tree output map for " + speciesUID);
+            return;
+        }
+        addFakeRecipeToNEI(
+                sapling,
+                map.get(Mode.LOG),
+                map.get(Mode.SAPLING),
+                map.get(Mode.LEAVES),
+                map.get(Mode.FRUIT));
+    }
+
+    /**
+     * This array is used to get the rotating display of items in NEI showing all possible tools for a given mode.
+     */
+    private static final ItemStack[][] altToolsForNEI;
+    static {
+        GT_MetaGenerated_Tool toolInstance = GT_MetaGenerated_Tool_01.INSTANCE;
+        altToolsForNEI = new ItemStack[][] {
+                // Mode.LOG
+                { toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.SAW, 1, null, null, null),
+                        toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.POCKET_SAW, 1, null, null, null),
+                        toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.BUZZSAW_LV, 1, null, null, null),
+                        toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.CHAINSAW_LV, 1, null, null, null),
+                        toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.BUZZSAW_MV, 1, null, null, null),
+                        toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.CHAINSAW_MV, 1, null, null, null),
+                        toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.BUZZSAW_HV, 1, null, null, null),
+                        toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.CHAINSAW_HV, 1, null, null, null), },
+                // Mode.SAPLING
+                { toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.BRANCHCUTTER, 1, null, null, null),
+                        toolInstance
+                                .getToolWithStats(GT_MetaGenerated_Tool_01.POCKET_BRANCHCUTTER, 1, null, null, null),
+                        GT_ModHandler.getModItem(Mods.Forestry.ID, "grafter", 1, 0), },
+                // Mode.LEAVES
+                { new ItemStack(Items.shears),
+                        toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.WIRECUTTER, 1, null, null, null),
+                        toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.POCKET_WIRECUTTER, 1, null, null, null),
+                        MetaGeneratedGregtechTools.getInstance()
+                                .getToolWithStats(MetaGeneratedGregtechTools.ELECTRIC_SNIPS, 1, null, null, null), },
+                // Mode.FRUIT
+                { toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.KNIFE, 1, null, null, null),
+                        toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.POCKET_KNIFE, 1, null, null, null), } };
+    }
+
+    /**
+     * Add a recipe for this tree to NEI. These recipes are only used in NEI, they are never used for processing logic.
+     * 
+     * @return True if the recipe was added successfully.
+     */
+    public static boolean addFakeRecipeToNEI(ItemStack saplingIn, ItemStack log, ItemStack saplingOut, ItemStack leaves,
+            ItemStack fruit) {
+        int recipeCount = GTPPRecipeMaps.treeGrowthSimulatorFakeRecipes.getAllRecipes().size();
+
+        // Sapling goes into the "special" slot.
+        ItemStack specialStack = saplingIn.copy();
+        specialStack.stackSize = 0;
+
+        /*
+         * Calculate the correct amount of outputs for each mode. The amount displayed in NEI should take into account
+         * the mode multiplier, but not tool/tier multipliers as those can change dynamically. If the sapling has an
+         * output in this mode, also add the tools usable for this mode as inputs.
+         */
+        ItemStack[][] inputStacks = new ItemStack[Mode.values().length][];
+        ItemStack[] outputStacks = new ItemStack[Mode.values().length];
+
+        for (Mode mode : Mode.values()) {
+            ItemStack output = switch (mode) {
+                case LOG -> log;
+                case SAPLING -> saplingOut;
+                case LEAVES -> leaves;
+                case FRUIT -> fruit;
+            };
+            if (output != null) {
+                int ordinal = mode.ordinal();
+                inputStacks[ordinal] = altToolsForNEI[ordinal];
+                outputStacks[ordinal] = output.copy();
+                outputStacks[ordinal].stackSize *= modeMultiplier.get(mode);
+            }
+        }
+
+        Logger.INFO(
+                "Adding Tree Growth Simulation NEI recipe for " + specialStack.getDisplayName()
+                        + " -> "
+                        + ItemUtils.getArrayStackNames(outputStacks));
+
+        GTPPRecipeMaps.treeGrowthSimulatorFakeRecipes.addFakeRecipe(
+                false,
+                new GT_Recipe.GT_Recipe_WithAlt(
+                        false,
+                        null, // All inputs are taken from aAtl argument.
+                        outputStacks,
+                        specialStack,
+                        null,
+                        null,
+                        null,
+                        TICKS_PER_OPERATION,
+                        0,
+                        recipeCount, // special value, also sorts recipes correctly in order of addition.
+                        inputStacks));
+
+        return GTPPRecipeMaps.treeGrowthSimulatorFakeRecipes.getAllRecipes().size() > recipeCount;
     }
 }

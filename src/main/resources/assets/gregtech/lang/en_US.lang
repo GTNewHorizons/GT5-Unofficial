@@ -17,6 +17,8 @@ GT5U.gui.text.managing_power=§aManaging power
 GT5U.gui.text.no_scrap=§aInput too low quality
 GT5U.gui.text.warm_up=§aWarming up
 GT5U.gui.text.machine_locked_to_different_recipe=§7Machine is already locked to a different recipe
+GT5U.gui.text.no_output_for_sapling=§7This sapling yields no outputs
+GT5U.gui.text.no_tools=§7Missing applicable tools
 
 GTPP.EBF.heat=Heat capacity
 

@@ -21,6 +21,7 @@ import gregtech.nei.formatter.SimpleSpecialValueFormatter;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPP_UITextures;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GregtechMetaTileEntityTreeFarm;
 
 public class GTPPRecipeMaps {
 
@@ -153,5 +154,11 @@ public class GTPPRecipeMaps {
     public static final RecipeMap<RecipeMapBackend> flotationCellRecipes = RecipeMapBuilder
             .of("gtpp.recipe.flotationcell").maxIO(6, 0, 1, 1).build();
     public static final RecipeMap<RecipeMapBackend> treeGrowthSimulatorFakeRecipes = RecipeMapBuilder
-            .of("gtpp.recipe.treefarm").maxIO(1, 2, 1, 0).minInputs(1, 0).frontend(TGSFrontend::new).build();
+            .of("gtpp.recipe.treefarm")
+            .maxIO(
+                    GregtechMetaTileEntityTreeFarm.Mode.values().length,
+                    GregtechMetaTileEntityTreeFarm.Mode.values().length,
+                    0,
+                    0)
+            .minInputs(1, 0).useSpecialSlot().frontend(TGSFrontend::new).build();
 }
