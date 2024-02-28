@@ -107,7 +107,7 @@ public class GT_MTE_LargeTurbine_Gas extends GregtechMetaTileEntity_LargerTurbin
     }
 
     @Override
-    int fluidIntoPower(ArrayList<FluidStack> aFluids, long aOptFlow, int aBaseEff, float[] flowMultipliers) {
+    long fluidIntoPower(ArrayList<FluidStack> aFluids, long aOptFlow, int aBaseEff, float[] flowMultipliers) {
         if (aFluids.size() >= 1) {
             int tEU = 0;
             int actualOptimalFlow = 0;

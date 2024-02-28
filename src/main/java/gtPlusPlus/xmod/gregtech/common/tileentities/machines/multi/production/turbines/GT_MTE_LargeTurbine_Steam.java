@@ -73,7 +73,7 @@ public class GT_MTE_LargeTurbine_Steam extends GregtechMetaTileEntity_LargerTurb
     }
 
     @Override
-    int fluidIntoPower(ArrayList<FluidStack> aFluids, long aOptFlow, int aBaseEff, float[] flowMultipliers) {
+    long fluidIntoPower(ArrayList<FluidStack> aFluids, long aOptFlow, int aBaseEff, float[] flowMultipliers) {
         if (looseFit) {
             aOptFlow *= 4;
             if (aBaseEff > 10000) {
@@ -86,13 +86,19 @@ public class GT_MTE_LargeTurbine_Steam extends GregtechMetaTileEntity_LargerTurb
                 aBaseEff *= 0.75f;
             }
         }
-        int tEU = 0;
+        // prevent overflow like that in SC Steam
+        long tEU = 0;
         int totalFlow = 0; // Byproducts are based on actual flow
         int flow = 0;
-        int remainingFlow = MathUtils.safeInt((long) (aOptFlow * 1.25f)); // Allowed to use up to 125% of optimal flow.
-                                                                          // Variable required outside of loop for
+
+        // Variable required outside of loop for
         // multi-hatch scenarios.
-        this.realOptFlow = (double) aOptFlow * (double) flowMultipliers[0];
+        this.realOptFlow = aOptFlow * flowMultipliers[0];
+
+        int remainingFlow = MathUtils.safeInt((long) (realOptFlow * 1.25f)); // Allowed to
+        // use up to
+        // 125% of
+        // optimal flow.
 
         storedFluid = 0;
         for (int i = 0; i < aFluids.size() && remainingFlow > 0; i++) { // loop through each hatch; extract inputs and
@@ -120,13 +126,13 @@ public class GT_MTE_LargeTurbine_Steam extends GregtechMetaTileEntity_LargerTurb
         tEU = totalFlow;
         int waterToOutput = useWater(totalFlow / 160.0f);
         addOutput(GT_ModHandler.getDistilledWater(waterToOutput));
-        if (totalFlow != aOptFlow) {
-            float efficiency = 1.0f - Math.abs((totalFlow - aOptFlow) / (float) aOptFlow);
+        if (totalFlow != realOptFlow) {
+            float efficiency = 1.0f - Math.abs((totalFlow - (float) realOptFlow) / (float) realOptFlow);
             // if(totalFlow>aOptFlow){efficiency = 1.0f;}
             tEU *= efficiency;
-            tEU = Math.max(1, MathUtils.safeInt((long) tEU * (long) aBaseEff / 20000L));
+            tEU = Math.max(1L, tEU * aBaseEff / 20000L);
         } else {
-            tEU = MathUtils.safeInt((long) tEU * (long) aBaseEff / 20000L);
+            tEU = tEU * aBaseEff / 20000L;
         }
 
         return tEU;

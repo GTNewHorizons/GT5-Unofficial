@@ -483,7 +483,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends
             }
 
             // How much the turbine should be producing with this flow
-            int newPower = fluidIntoPower(tFluids, optFlow, baseEff, flowMultipliers);
+            long newPower = fluidIntoPower(tFluids, optFlow, baseEff, flowMultipliers);
             long difference = newPower - this.lEUt; // difference between current output and new output
 
             // Magic numbers: can always change by at least 10 eu/t, but otherwise by at most 1 percent of the
@@ -553,7 +553,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends
         return (getFullTurbineAssemblies().size());
     }
 
-    abstract int fluidIntoPower(ArrayList<FluidStack> aFluids, long aOptFlow, int aBaseEff, float[] flowMultipliers);
+    abstract long fluidIntoPower(ArrayList<FluidStack> aFluids, long aOptFlow, int aBaseEff, float[] flowMultipliers);
 
     @Override
     public int getDamageToComponent(ItemStack aStack) {
