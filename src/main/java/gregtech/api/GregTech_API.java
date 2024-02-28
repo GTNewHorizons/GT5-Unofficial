@@ -481,8 +481,7 @@ public class GregTech_API {
         return new gregtech.api.items.GT_Generic_Item(
             aUnlocalized,
             aEnglish,
-            "Doesn't work as intended, this is a Bug",
-            false);
+            "Doesn't work as intended, this is a Bug");
     }
 
     /**
@@ -528,8 +527,7 @@ public class GregTech_API {
         return new gregtech.api.items.GT_Generic_Item(
             aUnlocalized,
             aEnglish,
-            "Doesn't work as intended, this is a Bug",
-            false);
+            "Doesn't work as intended, this is a Bug");
     }
 
     /**
@@ -552,8 +550,7 @@ public class GregTech_API {
         return new gregtech.api.items.GT_Generic_Item(
             aUnlocalized,
             aEnglish,
-            "Doesn't work as intended, this is a Bug",
-            false);
+            "Doesn't work as intended, this is a Bug");
     }
 
     /**

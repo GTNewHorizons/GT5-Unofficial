@@ -31,11 +31,7 @@ public class GT_Tool_Item extends GT_Generic_Item {
 
     public GT_Tool_Item(String aUnlocalized, String aEnglish, String aTooltip, int aMaxDamage, int aEntityDamage,
         boolean aSwingIfUsed, int aChargedGTID, int aDisChargedGTID, int aToolQuality, float aToolStrength) {
-        super(
-            aUnlocalized,
-            aEnglish,
-            aTooltip,
-            aTooltip != null && !aTooltip.equals("Doesn't work as intended, this is a Bug"));
+        super(aUnlocalized, aEnglish, aTooltip);
         setMaxDamage(aMaxDamage);
         setMaxStackSize(1);
         setNoRepair();
