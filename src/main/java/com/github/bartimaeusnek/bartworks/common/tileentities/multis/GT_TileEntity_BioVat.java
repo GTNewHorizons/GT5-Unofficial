@@ -260,14 +260,26 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
             @NotNull
             @Override
             protected GT_ParallelHelper createParallelHelper(@NotNull GT_Recipe recipe) {
-                return super.createParallelHelper(recipeWithMultiplier(recipe));
+                return super.createParallelHelper(recipeWithMultiplier(recipe, inputFluids));
             }
         };
     }
 
-    protected GT_Recipe recipeWithMultiplier(GT_Recipe recipe) {
+    protected GT_Recipe recipeWithMultiplier(GT_Recipe recipe, FluidStack[] fluidInputs) {
         GT_Recipe tRecipe = recipe.copy();
         int multiplier = getExpectedMultiplier(recipe.getFluidOutput(0), true);
+        mExpectedMultiplier = multiplier;
+        // Calculate max multiplier limited by input fluids
+        long fluidAmount = 0;
+        for (FluidStack fluid : fluidInputs) {
+            if (recipe.mFluidInputs[0].isFluidEqual(fluid)) {
+                fluidAmount += fluid.amount;
+            }
+        }
+        multiplier = (int) Math.min(multiplier, fluidAmount / recipe.mFluidInputs[0].amount);
+        // In case multiplier is 0
+        multiplier = Math.max(multiplier, 1);
+        mTimes = multiplier;
         tRecipe.mFluidInputs[0].amount *= multiplier;
         tRecipe.mFluidOutputs[0].amount *= multiplier;
         return tRecipe;
