@@ -18,6 +18,8 @@ import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GT_RecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -443,15 +445,11 @@ public class BioRecipes {
                 60,
                 1);
 
-        CORE.RA.addDehydratorRecipe(
-                new ItemStack[] { CI.getNumberedBioCircuit(14), CI.emptyCells(1) },
-                FluidUtils.getFluidStack(mFermentationBase, 1000),
-                null,
-                new ItemStack[] { ItemUtils.getSimpleStack(AgriculturalChem.mCompost, 2),
-                        ItemUtils.getItemStackOfAmountFromOreDict("cellAceticAcid", 1) },
-                new int[] { 10000, 10000 },
-                60 * 20,
-                16);
+        GT_Values.RA.stdBuilder().itemInputs(CI.getNumberedBioCircuit(14))
+                .fluidInputs(FluidUtils.getFluidStack(mFermentationBase, 1000))
+                .fluidOutputs(FluidUtils.getFluidStack(mAceticAcid, 1000))
+                .itemOutputs(ItemUtils.getSimpleStack(AgriculturalChem.mCompost, 2)).duration(60 * SECONDS).eut(16)
+                .noOptimize().addTo(chemicalDehydratorRecipes);
     }
 
     public static final HashSet<GT_ItemStack> mFruits = new HashSet<>();
@@ -581,18 +579,17 @@ public class BioRecipes {
         }
 
         // Produce Acetone, Butanol and Ethanol
-        CORE.RA.addChemicalPlantRecipe(
-                new ItemStack[] { getBioChip(5), ItemUtils.getItemStackOfAmountFromOreDict("cellFermentationBase", 48),
+        GT_Values.RA.stdBuilder()
+                .itemInputs(
+                        getBioChip(5),
                         ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownCelluloseFiber, 6),
-                        ItemUtils.getSimpleStack(AgriculturalChem.mRedCelluloseFiber, 16), },
-                new FluidStack[] {},
-                new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellButanol", 18),
-                        ItemUtils.getItemStackOfAmountFromOreDict("cellAcetone", 9),
-                        ItemUtils.getItemStackOfAmountFromOreDict("cellEthanol", 3), CI.emptyCells(18) },
-                new FluidStack[] {},
-                100 * 20,
-                32,
-                1);
+                        ItemUtils.getSimpleStack(AgriculturalChem.mRedCelluloseFiber, 16))
+                .fluidInputs(FluidUtils.getFluidStack(BioRecipes.mFermentationBase, 48000))
+                .fluidOutputs(
+                        FluidUtils.getFluidStack(BioRecipes.mButanol, 18000),
+                        FluidUtils.getFluidStack(BioRecipes.mAcetone, 9000),
+                        FluidUtils.getFluidStack(BioRecipes.mEthanol, 3000))
+                .duration(100 * SECONDS).eut(32).specialValue(1).noOptimize().addTo(chemicalPlantRecipes);
     }
 
     private static void recipePropionicAcid() {

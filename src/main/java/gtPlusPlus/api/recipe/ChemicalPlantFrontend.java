@@ -32,7 +32,7 @@ public class ChemicalPlantFrontend extends RecipeMapFrontend {
 
     @Override
     public List<Pos2d> getItemOutputPositions(int itemOutputCount) {
-        return UIHelper.getGridPositions(itemOutputCount, 106, 15, 2);
+        return UIHelper.getGridPositions(itemOutputCount, 106, 6, 2);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class ChemicalPlantFrontend extends RecipeMapFrontend {
 
     @Override
     public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
-        return UIHelper.getGridPositions(fluidOutputCount, 142, 15, 1, fluidOutputCount);
+        return UIHelper.getGridPositions(fluidOutputCount, 142, 6, 1, fluidOutputCount);
     }
 
     @Override

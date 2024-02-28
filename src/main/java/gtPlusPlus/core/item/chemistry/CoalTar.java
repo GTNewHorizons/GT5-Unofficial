@@ -1,10 +1,15 @@
 package gtPlusPlus.core.item.chemistry;
 
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -30,22 +35,15 @@ public class CoalTar extends ItemPackage {
     public static Fluid Naphthalene;
 
     private static void recipeEthylBenzineFuelsIntoHeavyFuel() {
-        CORE.RA.addChemicalRecipe(
-                ItemUtils.getItemStackOfAmountFromOreDict("cellFuel", 9),
-                ItemUtils.getItemStackOfAmountFromOreDict("cellEthylbenzene", 2),
-                null,
-                FluidUtils.getFluidStack("nitrofuel", 7500),
-                ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 11),
-                100,
-                1000);
-        CORE.RA.addChemicalRecipe(
-                ItemUtils.getItemStackOfAmountFromOreDict("cellBioDiesel", 9),
-                ItemUtils.getItemStackOfAmountFromOreDict("cellEthylbenzene", 2),
-                null,
-                FluidUtils.getFluidStack("nitrofuel", 3000),
-                ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 11),
-                300,
-                1000);
+        GT_Values.RA.stdBuilder().itemInputs(Materials.Fuel.getCells(9))
+                .fluidInputs(FluidUtils.getFluidStack(Ethylbenzene, 2000)).itemOutputs(ItemList.Cell_Empty.get(9L))
+                .fluidOutputs(Materials.NitroFuel.getFluid(7500)).duration(5 * SECONDS).eut(1000).noOptimize()
+                .addTo(UniversalChemical);
+
+        GT_Values.RA.stdBuilder().itemInputs(Materials.BioDiesel.getCells(9))
+                .fluidInputs(FluidUtils.getFluidStack(Ethylbenzene, 4000)).itemOutputs(ItemList.Cell_Empty.get(9L))
+                .fluidOutputs(Materials.NitroFuel.getFluid(6000)).duration(5 * SECONDS).eut(1000).noOptimize()
+                .addTo(UniversalChemical);
     }
 
     public static void recipeCreateEthylene() {
@@ -81,16 +79,9 @@ public class CoalTar extends ItemPackage {
 
     public static void recipeCreateBenzene() {
         // C7H8 + 2H = CH4 + C6H6
-        CORE.RA.addDehydratorRecipe(
-                new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellToluene", 1),
-                        ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 2) },
-                null,
-                null,
-                new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellMethane", 1),
-                        ItemUtils.getItemStackOfAmountFromOreDict("cellBenzene", 1), Materials.Empty.getCells(1) },
-                new int[] { 10000, 10000, 10000 },
-                20 * 10,
-                90);
+        GT_Values.RA.stdBuilder().itemInputs(Materials.Toluene.getCells(1)).itemOutputs(Materials.Benzene.getCells(1))
+                .fluidInputs(Materials.Hydrogen.getGas(2000)).fluidOutputs(Materials.Methane.getGas(1000))
+                .duration(10 * SECONDS).eut(90).noOptimize().addTo(chemicalDehydratorRecipes);
     }
 
     public static void recipeCreateEthylbenzene() {
@@ -231,13 +222,10 @@ public class CoalTar extends ItemPackage {
 
     private static void recipeNaphthaleneToPhthalicAcid() {
         // SulfuricCoalTarOil
-        GT_Values.RA.addChemicalRecipe(
-                ItemUtils.getItemStackOfAmountFromOreDict("cellNaphthalene", 2),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustLithium", 5),
-                null,
-                Materials.PhthalicAcid.getFluid(2500),
-                ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 2),
-                20 * 16);
+        GT_Values.RA.stdBuilder().itemInputs(Materials.Lithium.getDust(5))
+                .fluidInputs(FluidUtils.getFluidStack(Naphthalene, 2000))
+                .fluidOutputs(Materials.PhthalicAcid.getFluid(2500)).eut(30).duration(16 * SECONDS).noOptimize()
+                .addTo(UniversalChemical);
     }
 
     private static void recipePhthalicAcidToPhthalicAnhydride() {

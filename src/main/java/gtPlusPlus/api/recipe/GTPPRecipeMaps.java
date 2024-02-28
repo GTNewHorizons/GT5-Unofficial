@@ -93,7 +93,7 @@ public class GTPPRecipeMaps {
                             ItemUtils.getItemStackFromFQRN("AdvancedSolarPanel:BlockMolecularTransformer", 1)))
             .build();
     public static final RecipeMap<RecipeMapBackend> chemicalPlantRecipes = RecipeMapBuilder
-            .of("gtpp.recipe.fluidchemicaleactor").maxIO(4, 4, 4, 2)
+            .of("gtpp.recipe.fluidchemicaleactor").maxIO(4, 6, 4, 3)
             .slotOverlays((index, isFluid, isOutput, isSpecial) -> {
                 if (isFluid) {
                     if (isOutput) {

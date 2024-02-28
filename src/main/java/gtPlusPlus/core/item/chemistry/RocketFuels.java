@@ -138,16 +138,6 @@ public class RocketFuels extends ItemPackage {
         GT_Values.RA.stdBuilder().itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 1))
                 .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("cellLiquidHydrogen", 1)).duration(16 * SECONDS)
                 .eut(TierEU.RECIPE_MV).addTo(vacuumFreezerRecipes);
-
-        CORE.RA.addAdvancedFreezerRecipe(
-                new ItemStack[] {},
-                new FluidStack[] { FluidUtils.getFluidStack("hydrogen", 300) },
-                new FluidStack[] { FluidUtils.getFluidStack(Liquid_Hydrogen, 300) },
-                new ItemStack[] {},
-                new int[] {},
-                20 * 4,
-                540,
-                0);
     }
 
     private static void createHydratedAmmoniumNitrateSlurry() {

@@ -6,6 +6,7 @@ import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.FUSION_THRESHOLD;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -293,19 +294,15 @@ public class RecipeLoader_Nuclear {
     private static void dehydratorRecipes() {
 
         // Makes 7-Lithium
-        CORE.RA.addDehydratorRecipe(
-                new ItemStack[] { CI.getNumberedAdvancedCircuit(14),
-                        ItemUtils.getItemStackOfAmountFromOreDict("cellSulfuricLithium", 1) },
-                FluidUtils.getFluidStack("sulfuriclithium", 440),
-                null,
-                new ItemStack[] { CI.emptyCells(1), ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 3),
+        GT_Values.RA.stdBuilder().itemInputs(CI.getNumberedAdvancedCircuit(14))
+                .fluidInputs(FluidUtils.getFluidStack("sulfuriclithium", 1440))
+                .itemOutputs(
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 3),
                         ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 1),
                         ItemUtils.getItemStackOfAmountFromOreDict("dustSodium", 1),
                         ItemUtils.getItemStackOfAmountFromOreDict("dustCarbon", 1),
-                        ItemUtils.getItemStackOfAmountFromOreDict("dustLithium7", 4) },
-                new int[] { 10000, 10000, 10000, 10000, 10000 },
-                30 * 20,
-                30);
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustLithium7", 4))
+                .duration(30 * SECONDS).eut(30).addTo(chemicalDehydratorRecipes);
 
         // Makes Lithium Carbonate
         CORE.RA.addDehydratorRecipe(

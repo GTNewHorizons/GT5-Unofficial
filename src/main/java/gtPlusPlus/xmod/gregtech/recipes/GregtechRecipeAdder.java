@@ -34,15 +34,17 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
     @Override
     public boolean addCokeOvenRecipe(final ItemStack aInput1, final ItemStack aInput2, final FluidStack aFluidInput,
             final FluidStack aFluidOutput, final ItemStack aOutput, int aDuration, final int aEUt) {
-        if (aInput1 == null || (aOutput == null || aFluidOutput == null)) {
+        if (aInput1 == null || (aOutput == null && aFluidOutput == null)) {
             Logger.WARNING("Something was null, returning false");
             return false;
         }
-        if ((aDuration = GregTech_API.sRecipeFile.get("cokeoven", aOutput, aDuration)) <= 0) {
+        if (aOutput != null && (aDuration = GregTech_API.sRecipeFile.get("cokeoven", aOutput, aDuration)) <= 0) {
             Logger.WARNING("Something was null, returning false");
             return false;
         }
-        if ((aDuration = GregTech_API.sRecipeFile.get("cokeoven", aFluidOutput.getFluid().getName(), aDuration)) <= 0) {
+        if (aFluidOutput != null
+                && (aDuration = GregTech_API.sRecipeFile.get("cokeoven", aFluidOutput.getFluid().getName(), aDuration))
+                        <= 0) {
             Logger.WARNING("Something was null, returning false");
             return false;
         }
@@ -857,7 +859,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
     @Override
     public boolean addChemicalPlantRecipe(ItemStack[] aInputs, FluidStack[] aInputFluids, ItemStack[] aOutputs,
             FluidStack[] aFluidOutputs, int[] aChances, int time, long eu, int aTier) {
-        if (aInputs.length > 4 || aInputFluids.length > 4 || aOutputs.length > 4 || aFluidOutputs.length > 2) {
+        if (aInputs.length > 4 || aInputFluids.length > 4 || aOutputs.length > 6 || aFluidOutputs.length > 3) {
             Logger.INFO("Inputs: " + ItemUtils.getArrayStackNames(aInputs));
             Logger.INFO("Fluid Inputs: " + ItemUtils.getArrayStackNames(aInputFluids));
             Logger.INFO("Outputs: " + ItemUtils.getArrayStackNames(aOutputs));

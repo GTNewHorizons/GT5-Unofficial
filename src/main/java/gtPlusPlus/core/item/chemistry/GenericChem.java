@@ -7,6 +7,7 @@ import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GT_RecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -741,16 +742,10 @@ public class GenericChem extends ItemPackage {
 
     private void recipeLithiumPeroxide() {
         // 2HLiO2 = Li2O2 + H2O2
-        CORE.RA.addDehydratorRecipe(
-                new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroperoxide", 8),
-                        ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 1) },
-                null,
-                null,
-                new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumPeroxide", 4),
-                        ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogenPeroxide", 1), },
-                new int[] { 10000, 10000 },
-                20 * 100,
-                120);
+        GT_Values.RA.stdBuilder().itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroperoxide", 8))
+                .fluidOutputs(FluidUtils.getFluidStack("fluid.hydrogenperoxide", 1000))
+                .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumPeroxide", 4))
+                .duration(100 * SECONDS).eut(120).noOptimize().addTo(chemicalDehydratorRecipes);
     }
 
     private void recipeLithiumHydroperoxide() {

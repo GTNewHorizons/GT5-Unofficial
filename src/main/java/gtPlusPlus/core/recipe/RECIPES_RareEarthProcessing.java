@@ -8,6 +8,7 @@ import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gtPlusPlus.core.material.MISC_MATERIALS.BRINE;
 import static gtPlusPlus.core.material.MISC_MATERIALS.HYDROGEN_CHLORIDE;
+import static gtPlusPlus.core.material.MISC_MATERIALS.HYDROGEN_CHLORIDE_MIX;
 import static gtPlusPlus.core.material.MISC_MATERIALS.RARE_EARTH_HIGH;
 import static gtPlusPlus.core.material.MISC_MATERIALS.RARE_EARTH_LOW;
 import static gtPlusPlus.core.material.MISC_MATERIALS.RARE_EARTH_MID;
@@ -76,12 +77,10 @@ public class RECIPES_RareEarthProcessing {
                 .itemOutputs(ItemUtils.getSimpleStack(ModItems.cellHydrogenChlorideMix, 2)).duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_HV).addTo(mixerRecipes);
 
-        GT_Values.RA.stdBuilder()
-                .itemInputs(
-                        ItemUtils.getSimpleStack(ModItems.cellHydrogenChlorideMix, 4),
-                        GregtechItemList.Laser_Lens_WoodsGlass.get(0))
-                .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogenChloride", 4))
-                .duration(30 * SECONDS).eut(TierEU.RECIPE_HV).noOptimize().addTo(laserEngraverRecipes);
+        GT_Values.RA.stdBuilder().itemInputs(GregtechItemList.Laser_Lens_WoodsGlass.get(0))
+                .fluidInputs(HYDROGEN_CHLORIDE_MIX.getFluidStack(4000))
+                .fluidOutputs(HYDROGEN_CHLORIDE.getFluidStack(4000)).duration(30 * SECONDS).eut(TierEU.RECIPE_HV)
+                .noOptimize().addTo(laserEngraverRecipes);
 
         // Set Material Tiers correctly
         ORES.GREENOCKITE.vTier = 1;
