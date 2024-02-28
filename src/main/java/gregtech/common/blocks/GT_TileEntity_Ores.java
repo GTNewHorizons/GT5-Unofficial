@@ -297,11 +297,48 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
             rList.add(new ItemStack(Blocks.cobblestone, 1, 0));
             return rList;
         }
+        Materials aOreMaterial = GregTech_API.sGeneratedMaterials[(this.mMetaData % 1000)];
         if (this.mMetaData < 16000) {
-            rList.add(new ItemStack(aDroppedOre, 1, this.mMetaData));
+            boolean tIsRich = false;
+
+            // For Sake of god of balance!
+
+            // Dense ore
+
+            // NetherOre
+            if (GT_Mod.gregtechproxy.mNetherOreYieldMultiplier && !tIsRich) {
+                tIsRich = (this.mMetaData >= 1000 && this.mMetaData < 2000);
+            }
+            // EndOre
+            if (GT_Mod.gregtechproxy.mEndOreYieldMultiplier && !tIsRich) {
+                tIsRich = (this.mMetaData >= 2000 && this.mMetaData < 3000);
+            }
+            // TODO: Silk Touch?
+            switch (GT_Mod.gregtechproxy.oreDropSystem) {
+                case Item -> {
+                    rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, (tIsRich ? 2 : 1)));
+                }
+                case FortuneItem -> {
+                    if (!this.mNatural) {
+                        rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, (tIsRich ? 2 : 1)));
+                    } else {
+                        Random tRandom = new XSTR(this.xCoord ^ this.yCoord ^ this.zCoord);
+                        long amount = (long) Math
+                            .max((tIsRich ? 2 : 1), tRandom.nextInt((1 + Math.min(3, aFortune)) * (tIsRich ? 2 : 1)));
+                        rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, amount));
+                    }
+                }
+                case UnifiedBlock -> {
+                    // Unified ore
+                    rList.add(new ItemStack(aDroppedOre, (tIsRich ? 2 : 1), this.mMetaData % 1000));
+                }
+                case Block -> {
+                    // Regular ore
+                    rList.add(new ItemStack(aDroppedOre, 1, this.mMetaData));
+                }
+            }
             return rList;
         }
-        Materials aOreMaterial = GregTech_API.sGeneratedMaterials[(this.mMetaData % 1000)];
 
         // Everyone gets a free small fortune boost
         aFortune += 1;
