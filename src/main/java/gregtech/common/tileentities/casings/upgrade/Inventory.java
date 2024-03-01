@@ -70,7 +70,9 @@ public class Inventory extends UpgradeCasing {
     @Override
     public void writeToNBT(NBTTagCompound aNBT) {
         super.writeToNBT(aNBT);
-        aNBT.setString(NBT.UPGRADE_INVENTORY_UUID, inventoryID.toString());
+        if (inventoryID != null) {
+            aNBT.setString(NBT.UPGRADE_INVENTORY_UUID, inventoryID.toString());
+        }
         aNBT.setString(NBT.UPGRADE_INVENTORY_NAME, inventoryName);
     }
 

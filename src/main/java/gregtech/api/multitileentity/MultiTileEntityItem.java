@@ -31,6 +31,7 @@ public class MultiTileEntityItem extends ItemBlock implements IFluidContainerIte
 
     public MultiTileEntityItem(Block block) {
         super(block);
+        setMaxDamage(0);
         setHasSubtypes(true);
         this.block = (MultiTileEntityBlock) block;
     }

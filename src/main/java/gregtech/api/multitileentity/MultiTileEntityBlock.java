@@ -6,17 +6,21 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cricketcraft.chisel.api.IFacade;
+import com.gtnewhorizons.modularui.api.UIInfos;
 
 import cpw.mods.fml.common.Optional;
+import gregtech.api.gui.GUIHost;
 import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
 import gregtech.common.covers.CoverInfo;
@@ -39,12 +43,12 @@ public class MultiTileEntityBlock extends BlockContainer implements IFacade {
         return registry;
     }
 
-    public MultiTileEntityBlock setRegistry(MultiTileEntityRegistry registry) {
+    public MultiTileEntityBlock setRegistry(final MultiTileEntityRegistry registry) {
         this.registry = registry;
         return this;
     }
 
-    public MultiTileEntityBlock setTool(String toolName) {
+    public MultiTileEntityBlock setTool(final String toolName) {
         this.toolName = toolName;
         return this;
     }
@@ -56,28 +60,48 @@ public class MultiTileEntityBlock extends BlockContainer implements IFacade {
     }
 
     @Override
-    public void onNeighborBlockChange(World worldIn, int x, int y, int z, Block neighbor) {
+    public void onNeighborBlockChange(final World worldIn, final int x, final int y, final int z, final Block neighbor) {
         super.onNeighborBlockChange(worldIn, x, y, z, neighbor);
-        TileEntity te = worldIn.getTileEntity(x, y, z);
-        if (!(te instanceof IMultiTileEntity mute)) {
+        final TileEntity te = worldIn.getTileEntity(x, y, z);
+        if (!(te instanceof final IMultiTileEntity mute)) {
             return;
         }
     }
 
     @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta) {
+    public TileEntity createNewTileEntity(final World worldIn, final int meta) {
         return registry.getNewTileEntity(meta);
     }
 
     @Override
-    public String getHarvestTool(int metadata) {
+    public ItemStack getPickBlock(final MovingObjectPosition target, final World world, final int x, final int y, final int z, final EntityPlayer player) {
+        final TileEntity te = world.getTileEntity(x,y,z);
+        if (!(te instanceof final IMultiTileEntity mute)) return null;
+        return registry.getItem(mute.getMetaId());
+    }
+
+    @Override
+    public boolean onBlockActivated(World worldIn, int x, int y, int z, EntityPlayer player, int side, float subX,
+        float subY, float subZ) {
+        TileEntity te = worldIn.getTileEntity(x, y, z);
+        if (!(te instanceof IMultiTileEntity mute)) return false;
+
+        if (mute instanceof GUIHost gui) {
+            UIInfos.openClientUI(player, gui::createWindow);
+        }
+
+        return true;
+    }
+
+    @Override
+    public String getHarvestTool(final int metadata) {
         return toolName;
     }
 
     @Override
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
-        for(MultiTileEntityClassContainer container : registry.registrations) {
-            list.add(new ItemStack(container.block));
+    public void getSubBlocks(final Item itemIn, final CreativeTabs tab, final List<ItemStack> list) {
+        for (final MultiTileEntityClassContainer container : registry.registrations) {
+            list.add(new ItemStack(container.block, 0, container.metaId));
         }
     }
 

@@ -2,11 +2,8 @@ package gregtech.api.multitileentity.base;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 
 import javax.annotation.Nonnull;
-
-import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -15,11 +12,14 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GT_Values.NBT;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.GT_Values.NBT;
 import gregtech.api.enums.Textures.BlockIcons.CustomIcon;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.multitileentity.MultiTileEntityClassContainer;
@@ -38,8 +38,8 @@ public abstract class MultiTileEntity extends TileEntity
 
     // MultTileEntity variables
     private final boolean isTicking; // If this TileEntity is ticking at all
-    private int metaId; // The MuTE ID of the entity inside the registry
-    private int registryId; // The registry ID of the entity
+    private int metaId = -1; // The MuTE ID of the entity inside the registry
+    private int registryId = -1; // The registry ID of the entity
     @Nonnull
     private ForgeDirection facing = ForgeDirection.WEST; // Default to WEST, so it renders facing Left in the
     @Nonnull
@@ -72,31 +72,33 @@ public abstract class MultiTileEntity extends TileEntity
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
-        facing = ForgeDirection.getOrientation(nbt.getInteger("facing"));
-        if (getMetaId() == GT_Values.W || getRegistryId() == GT_Values.W) {
+        if (nbt.hasKey("facing")) facing = ForgeDirection.getOrientation(nbt.getInteger("facing"));
+        if (getMetaId() == -1 || getRegistryId() == -1) {
             metaId = nbt.getInteger(NBT.MTE_ID);
             registryId = nbt.getInteger(NBT.MTE_REG);
-                MultiTileEntityRegistry registry = MultiTileEntityRegistry.getRegistry(registryId);
+            MultiTileEntityRegistry registry = MultiTileEntityRegistry.getRegistry(registryId);
             MultiTileEntityClassContainer clazz = registry.getClassContainer(metaId);
             nbt = GT_Util.fuseNBT(nbt, clazz.parameters);
         }
         if (nbt.hasKey("x")) xCoord = nbt.getInteger("x");
         if (nbt.hasKey("y")) yCoord = nbt.getInteger("y");
         if (nbt.hasKey("z")) zCoord = nbt.getInteger("z");
-            if (nbt.hasKey(NBT.FACING)) facing = ForgeDirection.getOrientation(nbt.getInteger(NBT.FACING));
-            if (NetworkUtils.isDedicatedClient()) {
-                if (GregTech_API.sBlockIcons == null && nbt.hasKey(NBT.TEXTURE_FOLDER)) {
-                    loadTextures(nbt.getString(NBT.TEXTURE_FOLDER));
-                } else {
-                    copyTextures();
-                }
+        if (nbt.hasKey(NBT.FACING)) facing = ForgeDirection.getOrientation(nbt.getInteger(NBT.FACING));
+        if (NetworkUtils.isDedicatedClient()) {
+            if (GregTech_API.sBlockIcons == null && nbt.hasKey(NBT.TEXTURE_FOLDER)) {
+                loadTextures(nbt.getString(NBT.TEXTURE_FOLDER));
+            } else {
+                copyTextures();
             }
+        }
     }
 
     @Override
     public void writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
         nbt.setInteger("facing", facing.ordinal());
+        nbt.setInteger(NBT.MTE_ID, getMetaId());
+        nbt.setInteger(NBT.MTE_REG, getRegistryId());
     }
 
     // MultiTileEntity methods
@@ -165,7 +167,8 @@ public abstract class MultiTileEntity extends TileEntity
 
     protected void copyTextures() {
         // Loading an instance
-        MultiTileEntity canonicalEntity = MultiTileEntityRegistry.getRegistry(registryId).getCachedTileEntity(metaId);
+        MultiTileEntity canonicalEntity = MultiTileEntityRegistry.getRegistry(registryId)
+            .getCachedTileEntity(metaId);
         baseTexture = canonicalEntity.baseTexture;
         topOverlayTexture = canonicalEntity.topOverlayTexture;
         bottomOverlayTexture = canonicalEntity.bottomOverlayTexture;
@@ -181,7 +184,7 @@ public abstract class MultiTileEntity extends TileEntity
 
     @Override
     public void initFromNBT(@Nonnull final NBTTagCompound nbt, final int registryId, final int metaId) {
-    if (this.registryId == registryId && this.metaId == metaId) {
+        if (this.registryId == registryId && this.metaId == metaId) {
             return;
         }
         this.registryId = registryId;
