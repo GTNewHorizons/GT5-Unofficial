@@ -4,6 +4,8 @@ import static gregtech.api.enums.GT_Values.NBT;
 
 import java.lang.ref.WeakReference;
 
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Tuple;
 
@@ -17,57 +19,57 @@ import gregtech.common.tileentities.casings.upgrade.Tank;
 
 public class MultiTileEntityClassContainer {
 
-    private final WeakReference<MultiTileEntityRegistry> mRegistry;
-    private String mLocalized;
-    private String mCategoryName;
+    private final WeakReference<MultiTileEntityRegistry> registry;
+    private String unlocalizedName;
+    private String categoryName;
 
-    public final short mID;
-    public Class<? extends MultiTileEntity> mClass;
-    public MultiTileEntityBlock mBlock;
-    public MultiTileEntity mCanonicalTileEntity;
-    public NBTTagCompound mParameters;
+    public final int metaId;
+    public Class<? extends MultiTileEntity> clazz;
+    public MultiTileEntityBlock block;
+    public MultiTileEntity originalTileEntity;
+    public NBTTagCompound parameters;
 
     // These have defaults
     public byte mBlockMetaData = 1;
     public byte mStackSize = 64;
     public boolean mHidden = false;
 
-    public MultiTileEntityClassContainer(MultiTileEntityRegistry aRegistry, int aID,
-        Class<? extends MultiTileEntity> aClass) {
+    public MultiTileEntityClassContainer(MultiTileEntityRegistry registry, int metaId,
+        Class<? extends MultiTileEntity> clazz) {
         /* Start the Builder */
-        mRegistry = new WeakReference<>(aRegistry);
-        mID = (short) aID;
-        mClass = aClass;
-        mParameters = new NBTTagCompound();
+        this.registry = new WeakReference<>(registry);
+        this.metaId = metaId;
+        this.clazz = clazz;
+        this.parameters = new NBTTagCompound();
     }
 
     public boolean register() {
         /* End and register the Builder with the registry */
-        final MultiTileEntityRegistry registry = mRegistry.get();
+        final MultiTileEntityRegistry registry = this.registry.get();
 
-        if (mParameters.hasKey(NBT.MATERIAL) && !mParameters.hasKey(NBT.COLOR)) mParameters.setInteger(
+        if (parameters.hasKey(NBT.MATERIAL) && !parameters.hasKey(NBT.COLOR)) parameters.setInteger(
             NBT.COLOR,
             GT_Util.getRGBInt(
-                Materials.get(mParameters.getString(NBT.MATERIAL))
+                Materials.get(parameters.getString(NBT.MATERIAL))
                     .getRGBA()));
 
         try {
-            mCanonicalTileEntity = mClass.newInstance();
+            originalTileEntity = clazz.newInstance();
         } catch (Throwable e) {
             throw new IllegalArgumentException(e);
         }
-        //mCanonicalTileEntity.initFromNBT(mParameters, mID, (short) -1);
+        originalTileEntity.initFromNBT(parameters, Block.getIdFromBlock(block), metaId);
 
-        return registry != null && registry.add(this.mLocalized, this.mCategoryName, this) != null;
+        return registry != null && registry.add(this.categoryName, this) != null;
     }
 
-    public MultiTileEntityClassContainer name(String aName) {
-        mLocalized = aName;
+    public MultiTileEntityClassContainer unlocalizedName(String unlocalized) {
+        unlocalizedName = unlocalized;
         return this;
     }
 
     public MultiTileEntityClassContainer category(String aCategoryName) {
-        mCategoryName = aCategoryName;
+        categoryName = aCategoryName;
         return this;
     }
 
@@ -87,7 +89,7 @@ public class MultiTileEntityClassContainer {
     }
 
     public MultiTileEntityClassContainer setBlock(MultiTileEntityBlock aBlock) {
-        mBlock = aBlock;
+        block = aBlock;
         return this;
     }
 
@@ -97,68 +99,68 @@ public class MultiTileEntityClassContainer {
 
     public MultiTileEntityClassContainer material(Materials material) {
         // Sets the material, and the color from the material, if not already set
-        mParameters.setString(NBT.MATERIAL, material.toString());
-        if (!mParameters.hasKey(NBT.COLOR)) mParameters.setInteger(NBT.COLOR, GT_Util.getRGBInt(material.getRGBA()));
+        parameters.setString(NBT.MATERIAL, material.toString());
+        if (!parameters.hasKey(NBT.COLOR)) parameters.setInteger(NBT.COLOR, GT_Util.getRGBInt(material.getRGBA()));
         return this;
     }
 
     public MultiTileEntityClassContainer color(int rbg) {
-        mParameters.setInteger(NBT.COLOR, rbg);
+        parameters.setInteger(NBT.COLOR, rbg);
         return this;
     }
 
     public MultiTileEntityClassContainer color(short[] rgba) {
-        mParameters.setInteger(NBT.COLOR, GT_Util.getRGBInt(rgba));
+        parameters.setInteger(NBT.COLOR, GT_Util.getRGBInt(rgba));
         return this;
     }
 
     public MultiTileEntityClassContainer textureFolder(String texture) {
-        mParameters.setString(NBT.TEXTURE_FOLDER, texture);
+        parameters.setString(NBT.TEXTURE_FOLDER, texture);
         return this;
     }
 
     public MultiTileEntityClassContainer inputInventorySize(int aSize) {
-        mParameters.setInteger(NBT.INV_INPUT_SIZE, aSize);
+        parameters.setInteger(NBT.INV_INPUT_SIZE, aSize);
         return this;
     }
 
     public MultiTileEntityClassContainer outputInventorySize(int aSize) {
-        mParameters.setInteger(NBT.INV_OUTPUT_SIZE, aSize);
+        parameters.setInteger(NBT.INV_OUTPUT_SIZE, aSize);
         return this;
     }
 
     public MultiTileEntityClassContainer tankCapacity(Long aCapacity) {
-        mParameters.setLong(NBT.TANK_CAPACITY, aCapacity);
+        parameters.setLong(NBT.TANK_CAPACITY, aCapacity);
         return this;
     }
 
     public MultiTileEntityClassContainer tier(int aTier) {
         verifyDescendentOfMultiple(true, UpgradeCasing.class, FunctionalCasing.class);
-        mParameters.setInteger(NBT.TIER, aTier);
+        parameters.setInteger(NBT.TIER, aTier);
         return this;
     }
 
     public MultiTileEntityClassContainer upgradeInventorySize(int aSize) {
         verifyDescendentOf(Inventory.class);
 
-        mParameters.setInteger(NBT.UPGRADE_INVENTORY_SIZE, aSize);
+        parameters.setInteger(NBT.UPGRADE_INVENTORY_SIZE, aSize);
         return this;
     }
 
     public MultiTileEntityClassContainer upgradeTankCount(int count) {
         verifyDescendentOf(Tank.class);
 
-        mParameters.setInteger(NBT.UPGRADE_TANK_COUNT, count);
+        parameters.setInteger(NBT.UPGRADE_TANK_COUNT, count);
         return this;
     }
 
     public MultiTileEntityClassContainer upgradeTankCapacity(Long aCapacity) {
-        mParameters.setLong(NBT.UPGRADE_TANK_CAPACITY, aCapacity);
+        parameters.setLong(NBT.UPGRADE_TANK_CAPACITY, aCapacity);
         return this;
     }
 
     public MultiTileEntityClassContainer upgradeAmperage(long amperage) {
-        mParameters.setLong(NBT.UPGRADE_AMPERAGE, amperage);
+        parameters.setLong(NBT.UPGRADE_AMPERAGE, amperage);
         return this;
     }
 
@@ -172,15 +174,15 @@ public class MultiTileEntityClassContainer {
          * Merge in arbitrary NBT tuples of (key, value). Useful for anything for which a custom method has not yet been
          * exposed
          */
-        mParameters = GT_Util.fuseNBT(mParameters, GT_Util.makeNBT(aTags));
+        parameters = GT_Util.fuseNBT(parameters, GT_Util.makeNBT(aTags));
         return this;
     }
 
     private void verifyDescendentOf(Class<?> cls) {
         // Check if cls is extended by mClass
-        if (!cls.isAssignableFrom(mClass)) {
+        if (!cls.isAssignableFrom(clazz)) {
             throw new IllegalArgumentException(
-                "Expected a descendent of " + cls.getName() + " got " + mClass.getName() + " instead.");
+                "Expected a descendent of " + cls.getName() + " got " + clazz.getName() + " instead.");
         }
     }
 
@@ -192,14 +194,14 @@ public class MultiTileEntityClassContainer {
             if (!onlyOne) {
                 verifyDescendentOf(cls);
                 atLeastOne = true;
-            } else if (cls.isAssignableFrom(mClass)) {
+            } else if (cls.isAssignableFrom(clazz)) {
                 atLeastOne = true;
             }
         }
 
         if (!atLeastOne) {
             throw new IllegalArgumentException(
-                "Expected a descendent of any of these " + classNames + " got " + mClass.getName() + " instead.");
+                "Expected a descendent of any of these " + classNames + " got " + clazz.getName() + " instead.");
         }
     }
 }

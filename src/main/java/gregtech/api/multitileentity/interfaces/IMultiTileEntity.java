@@ -1,5 +1,7 @@
 package gregtech.api.multitileentity.interfaces;
 
+import java.util.List;
+
 import javax.annotation.Nonnull;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -18,11 +20,13 @@ public interface IMultiTileEntity {
     @Nonnull
     ForgeDirection getFrontFacing();
 
-    void initFromNBT(@Nonnull NBTTagCompound nbt);
+    void initFromNBT(@Nonnull NBTTagCompound nbt, final int registryId, final int metaId);
 
     @Nonnull
     ChunkCoordinates getCoords();
 
     @Nonnull
     String getTileEntityName();
+
+    void addToolTip(@Nonnull final List<String> toolTips);
 }

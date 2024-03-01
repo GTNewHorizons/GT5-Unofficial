@@ -1,21 +1,37 @@
 package gregtech.api.multitileentity.base;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.UUID;
+
 import javax.annotation.Nonnull;
 
+import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.util.ForgeDirection;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.Mods;
+import gregtech.api.enums.Textures;
+import gregtech.api.enums.GT_Values.NBT;
+import gregtech.api.enums.Textures.BlockIcons.CustomIcon;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.multitileentity.MultiTileEntityClassContainer;
+import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
 import gregtech.api.multitileentity.interfaces.SyncedMultiTileEntity;
 import gregtech.api.net.GT_Packet_MultiTileEntity;
 import gregtech.api.net.data.CoordinateData;
 import gregtech.api.net.data.MultiTileEntityData;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_Util;
 import gregtech.common.render.MultiTileBasicRender;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class MultiTileEntity extends TileEntity
     implements MultiTileBasicRender, SyncedMultiTileEntity, IMultiTileEntity {
@@ -57,6 +73,24 @@ public abstract class MultiTileEntity extends TileEntity
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
         facing = ForgeDirection.getOrientation(nbt.getInteger("facing"));
+        if (getMetaId() == GT_Values.W || getRegistryId() == GT_Values.W) {
+            metaId = nbt.getInteger(NBT.MTE_ID);
+            registryId = nbt.getInteger(NBT.MTE_REG);
+                MultiTileEntityRegistry registry = MultiTileEntityRegistry.getRegistry(registryId);
+            MultiTileEntityClassContainer clazz = registry.getClassContainer(metaId);
+            nbt = GT_Util.fuseNBT(nbt, clazz.parameters);
+        }
+        if (nbt.hasKey("x")) xCoord = nbt.getInteger("x");
+        if (nbt.hasKey("y")) yCoord = nbt.getInteger("y");
+        if (nbt.hasKey("z")) zCoord = nbt.getInteger("z");
+            if (nbt.hasKey(NBT.FACING)) facing = ForgeDirection.getOrientation(nbt.getInteger(NBT.FACING));
+            if (NetworkUtils.isDedicatedClient()) {
+                if (GregTech_API.sBlockIcons == null && nbt.hasKey(NBT.TEXTURE_FOLDER)) {
+                    loadTextures(nbt.getString(NBT.TEXTURE_FOLDER));
+                } else {
+                    copyTextures();
+                }
+            }
     }
 
     @Override
@@ -102,10 +136,43 @@ public abstract class MultiTileEntity extends TileEntity
         return cachedCoordinates;
     }
 
-    protected void loadTextures(@Nonnull String texture) {
+    protected void loadTextures(@Nonnull String folder) {
+        // Loading the registry
+        for (SidedTextureNames textureName : SidedTextureNames.TEXTURES) {
+            ITexture texture;
+            try {
+                Minecraft.getMinecraft()
+                    .getResourceManager()
+                    .getResource(
+                        new ResourceLocation(
+                            Mods.GregTech.ID,
+                            "textures/blocks/multitileentity/" + folder + "/" + textureName.getName() + ".png"));
+                texture = TextureFactory.of(new CustomIcon("multitileentity/" + folder + "/" + textureName.getName()));
+            } catch (IOException ignored) {
+                texture = TextureFactory.of(Textures.BlockIcons.VOID);
+            }
+            switch (textureName) {
+                case Top -> topOverlayTexture = texture;
+                case Bottom -> bottomOverlayTexture = texture;
+                case Back -> backOverlayTexture = texture;
+                case Front -> frontOverlayTexture = texture;
+                case Left -> leftOverlayTexture = texture;
+                case Right -> rightOverlayTexture = texture;
+                case Base -> baseTexture = texture;
+            }
+        }
     }
 
     protected void copyTextures() {
+        // Loading an instance
+        MultiTileEntity canonicalEntity = MultiTileEntityRegistry.getRegistry(registryId).getCachedTileEntity(metaId);
+        baseTexture = canonicalEntity.baseTexture;
+        topOverlayTexture = canonicalEntity.topOverlayTexture;
+        bottomOverlayTexture = canonicalEntity.bottomOverlayTexture;
+        leftOverlayTexture = canonicalEntity.leftOverlayTexture;
+        rightOverlayTexture = canonicalEntity.rightOverlayTexture;
+        backOverlayTexture = canonicalEntity.backOverlayTexture;
+        frontOverlayTexture = canonicalEntity.frontOverlayTexture;
     }
 
     protected boolean isServerSide() {
@@ -113,9 +180,17 @@ public abstract class MultiTileEntity extends TileEntity
     }
 
     @Override
-    public void initFromNBT(@Nonnull final NBTTagCompound nbt) {
-        readFromNBT(nbt);
+    public void initFromNBT(@Nonnull final NBTTagCompound nbt, final int registryId, final int metaId) {
+    if (this.registryId == registryId && this.metaId == metaId) {
+            return;
+        }
+        this.registryId = registryId;
+        this.metaId = metaId;
+        if (nbt != null) readFromNBT(nbt);
     }
+
+    @Override
+    public void addToolTip(@Nonnull final List<String> toolTips) {}
 
     // MultiTileBasicRender methods
     @Override
@@ -182,7 +257,7 @@ public abstract class MultiTileEntity extends TileEntity
     @Override
     public void getFullPacketData(GT_Packet_MultiTileEntity packet) {
         packet.addData(new CoordinateData(getCoords()));
-        //packet.addData(new CommonData(mStrongRedstone, color, (byte) 0));
+        // packet.addData(new CommonData(mStrongRedstone, color, (byte) 0));
         packet.addData(new MultiTileEntityData(registryId, metaId));
     }
 

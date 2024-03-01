@@ -6,6 +6,9 @@ import static gregtech.api.util.GT_StructureUtilityMuTE.ofMuTECasings;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
+
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
@@ -17,8 +20,6 @@ import gregtech.api.multitileentity.multiblock.base.Controller;
 import gregtech.api.task.tasks.PollutionTask;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.common.tileentities.machines.multiblock.logic.CokeOvenProcessingLogic;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 
 public class CokeOven extends Controller<CokeOven, CokeOvenProcessingLogic> {
 
@@ -85,7 +86,11 @@ public class CokeOven extends Controller<CokeOven, CokeOvenProcessingLogic> {
                 .addShape(
                     MAIN,
                     new String[][] { { "AAA", "A~A", "AAA" }, { "AAA", "A-A", "AAA" }, { "AAA", "AAA", "AAA" } })
-                .addElement('A', ofMuTECasings(ITEM_INPUT.getValue() | ITEM_OUTPUT.getValue(), GT_MultiTileCasing.CokeOven.getCasing()))
+                .addElement(
+                    'A',
+                    ofMuTECasings(
+                        ITEM_INPUT.getValue() | ITEM_OUTPUT.getValue(),
+                        GT_MultiTileCasing.CokeOven.getCasing()))
                 .build();
         }
         return STRUCTURE_DEFINITION;

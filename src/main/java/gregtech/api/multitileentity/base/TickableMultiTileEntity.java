@@ -8,11 +8,7 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.task.TaskHost;
@@ -62,10 +58,12 @@ public abstract class TickableMultiTileEntity extends MultiTileEntity implements
             }
             onPreTick(timer, isServerSide);
             super.updateEntity();
-            /*if (!isServerSide && needsUpdate) {
-                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-                needsUpdate = false;
-            }*/
+            /*
+             * if (!isServerSide && needsUpdate) {
+             * worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+             * needsUpdate = false;
+             * }
+             */
             onTick(timer, isServerSide);
             for (TickableTask<?> task : tasks.values()) {
                 task.update(timer, isServerSide);

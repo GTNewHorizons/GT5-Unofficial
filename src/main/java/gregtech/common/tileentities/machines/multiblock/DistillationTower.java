@@ -1,12 +1,12 @@
 package gregtech.common.tileentities.machines.multiblock;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.multitileentity.enums.PartMode.NOTHING;
-import static gregtech.api.multitileentity.enums.PartMode.ITEM_INPUT;
-import static gregtech.api.multitileentity.enums.PartMode.ITEM_OUTPUT;
+import static gregtech.api.multitileentity.enums.PartMode.ENERGY_INPUT;
 import static gregtech.api.multitileentity.enums.PartMode.FLUID_INPUT;
 import static gregtech.api.multitileentity.enums.PartMode.FLUID_OUTPUT;
-import static gregtech.api.multitileentity.enums.PartMode.ENERGY_INPUT;
+import static gregtech.api.multitileentity.enums.PartMode.ITEM_INPUT;
+import static gregtech.api.multitileentity.enums.PartMode.ITEM_OUTPUT;
+import static gregtech.api.multitileentity.enums.PartMode.NOTHING;
 import static gregtech.api.util.GT_StructureUtilityMuTE.MOTOR_CASINGS;
 import static gregtech.api.util.GT_StructureUtilityMuTE.ofMuTECasings;
 
@@ -114,7 +114,10 @@ public class DistillationTower extends StackableController<DistillationTower, Di
                 .addElement(
                     'C',
                     ofMuTECasings(
-                        FLUID_INPUT.getValue() | ITEM_INPUT.getValue() | FLUID_OUTPUT.getValue() | ITEM_OUTPUT.getValue() | ENERGY_INPUT.getValue(),
+                        FLUID_INPUT.getValue() | ITEM_INPUT.getValue()
+                            | FLUID_OUTPUT.getValue()
+                            | ITEM_OUTPUT.getValue()
+                            | ENERGY_INPUT.getValue(),
                         GT_MultiTileCasing.Distillation.getCasing()))
                 .addElement('E', GT_StructureUtility.ofFrame(Materials.StainlessSteel))
                 .addElement('A', ofBlock(GregTech_API.sBlockCasings2, 0))

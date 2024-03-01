@@ -142,12 +142,18 @@ public class LayeredCokeBattery
                 .addElement(
                     'A',
                     ofMuTECasings(
-                        FLUID_INPUT.getValue() | ITEM_INPUT.getValue() | FLUID_OUTPUT.getValue() | ITEM_OUTPUT.getValue() | ENERGY_INPUT.getValue(),
+                        FLUID_INPUT.getValue() | ITEM_INPUT.getValue()
+                            | FLUID_OUTPUT.getValue()
+                            | ITEM_OUTPUT.getValue()
+                            | ENERGY_INPUT.getValue(),
                         GT_MultiTileCasing.Chemical.getCasing()))
                 .addElement(
                     'B',
                     ofMuTECasings(
-                        FLUID_INPUT.getValue() | ITEM_INPUT.getValue() | FLUID_OUTPUT.getValue() | ITEM_OUTPUT.getValue() | ENERGY_INPUT.getValue(),
+                        FLUID_INPUT.getValue() | ITEM_INPUT.getValue()
+                            | FLUID_OUTPUT.getValue()
+                            | ITEM_OUTPUT.getValue()
+                            | ENERGY_INPUT.getValue(),
                         GT_MultiTileCasing.Distillation.getCasing()))
                 .addElement('C', ofBlock(GregTech_API.sBlockCasings4, 1))
                 .addElement('D', GT_StructureUtility.ofFrame(Materials.Steel))

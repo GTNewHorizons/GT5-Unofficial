@@ -4,19 +4,16 @@ import static gregtech.api.enums.GT_Values.*;
 import static gregtech.api.enums.TickTime.MINUTE;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -61,7 +58,7 @@ import gregtech.client.GT_SoundLoop;
 import gregtech.common.gui.MachineGUIProvider;
 
 public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> extends TickableMultiTileEntity
-        implements IMultiTileMachine, ProcessingLogicHost<P>, PowerLogicHost, GUIHost, MachineProgress {
+    implements IMultiTileMachine, ProcessingLogicHost<P>, PowerLogicHost, GUIHost, MachineProgress {
 
     protected static final int ACTIVE = B[0];
     protected static final int TICKS_BETWEEN_RECIPE_CHECKS = 5 * TickTime.SECOND;
@@ -202,8 +199,8 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
     public boolean checkTexture(String modID, String resourcePath) {
         try {
             Minecraft.getMinecraft()
-                    .getResourceManager()
-                    .getResource(new ResourceLocation(modID, resourcePath));
+                .getResourceManager()
+                .getResource(new ResourceLocation(modID, resourcePath));
             return true;
         } catch (IOException ignored) {
             return false;
@@ -221,12 +218,12 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
             } else {
                 if (textureName.hasGlow()) {
                     texture = TextureFactory.builder()
-                            .addIcon(new CustomIcon("multitileentity/" + folder + "/" + textureName.getName()))
-                            .glow()
-                            .build();
+                        .addIcon(new CustomIcon("multitileentity/" + folder + "/" + textureName.getName()))
+                        .glow()
+                        .build();
                 } else {
                     texture = TextureFactory
-                            .of(new CustomIcon("multitileentity/" + folder + "/" + textureName.getName()));
+                        .of(new CustomIcon("multitileentity/" + folder + "/" + textureName.getName()));
                 }
             }
             switch (textureName) {
@@ -242,7 +239,7 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
     public void copyTextures() {
         super.copyTextures();
         final TileEntity tCanonicalTileEntity = MultiTileEntityRegistry
-                .getCanonicalTileEntity(getRegistryId(), getMetaId());
+            .getCachedTileEntity(getRegistryId(), getMetaId());
         if (!(tCanonicalTileEntity instanceof MultiTileBasicMachine)) {
             return;
         }
@@ -320,8 +317,7 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
             return;
         }
 
-        if ((tick % TICKS_BETWEEN_RECIPE_CHECKS == 0)
-             && isAllowedToWork()) {
+        if ((tick % TICKS_BETWEEN_RECIPE_CHECKS == 0) && isAllowedToWork()) {
             wasEnabled = false;
             if (checkRecipe()) {
                 setActive(true);
@@ -369,7 +365,7 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
                     GT_Utility.doSoundAtClient(getProcessStartSound(), getTimeBetweenProcessSounds(), 1.0F, aX, aY, aZ);
             }
             case INTERRUPT_SOUND_INDEX -> GT_Utility
-                    .doSoundAtClient(SoundResource.IC2_MACHINES_INTERRUPT_ONE, 100, 1.0F, aX, aY, aZ);
+                .doSoundAtClient(SoundResource.IC2_MACHINES_INTERRUPT_ONE, 100, 1.0F, aX, aY, aZ);
         }
     }
 
@@ -392,8 +388,8 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
         if (activitySound != null && activitySoundLoop == null) {
             activitySoundLoop = new GT_SoundLoop(activitySound, this, false, true);
             Minecraft.getMinecraft()
-                    .getSoundHandler()
-                    .playSound(activitySoundLoop);
+                .getSoundHandler()
+                .playSound(activitySoundLoop);
             return;
         }
 
@@ -441,16 +437,13 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
     }
 
     protected boolean consumeFuel() {
-        if (isElectric() || isSteam())
-            return false;
+        if (isElectric() || isSteam()) return false;
         if (true && burnTime <= 0) {
             for (int i = 0; i < itemInput.getSlots(); i++) {
                 ItemStack item = itemInput.getItemInSlot(i);
-                if (item == null)
-                    continue;
+                if (item == null) continue;
                 int checkBurnTime = TileEntityFurnace.getItemBurnTime(item) / 10;
-                if (checkBurnTime <= 0)
-                    continue;
+                if (checkBurnTime <= 0) continue;
                 item.stackSize--;
                 burnTime = checkBurnTime;
                 totalBurnTime = checkBurnTime;
@@ -466,7 +459,6 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
         }
         return false;
     }
-
 
     protected void stopMachine(boolean powerShutDown) {
         setActive(false);
@@ -524,30 +516,28 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
 
         switch (soundEventValue) {
             case PROCESS_START_SOUND_INDEX -> {
-                if (getProcessStartSound() != null)
-                    GT_Utility.doSoundAtClient(
-                            getProcessStartSound(),
-                            getTimeBetweenProcessSounds(),
-                            1.0F,
-                            getXCoord(),
-                            getYCoord(),
-                            getZCoord());
-            }
-            case INTERRUPT_SOUND_INDEX -> GT_Utility.doSoundAtClient(
-                    SoundResource.IC2_MACHINES_INTERRUPT_ONE,
-                    100,
+                if (getProcessStartSound() != null) GT_Utility.doSoundAtClient(
+                    getProcessStartSound(),
+                    getTimeBetweenProcessSounds(),
                     1.0F,
                     getXCoord(),
                     getYCoord(),
                     getZCoord());
+            }
+            case INTERRUPT_SOUND_INDEX -> GT_Utility.doSoundAtClient(
+                SoundResource.IC2_MACHINES_INTERRUPT_ONE,
+                100,
+                1.0F,
+                getXCoord(),
+                getYCoord(),
+                getZCoord());
         }
 
     }
 
     @Nullable
     public ItemInventoryLogic getItemLogic(@Nonnull ForgeDirection side, @Nonnull InventoryType type) {
-        if (side == getFrontFacing())
-            return null;
+        if (side == getFrontFacing()) return null;
         return switch (type) {
             case Input -> itemInput;
             case Output -> itemOutput;
@@ -557,8 +547,7 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
 
     @Nullable
     public FluidInventoryLogic getFluidLogic(@Nonnull ForgeDirection side, @Nonnull InventoryType type) {
-        if (side == getFrontFacing())
-            return null;
+        if (side == getFrontFacing()) return null;
         return switch (type) {
             case Input -> fluidInput;
             case Output -> fluidOutput;
@@ -603,8 +592,7 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
     @Override
     @Nonnull
     public PowerLogic getPowerLogic(@Nonnull ForgeDirection side) {
-        if (side == getFrontFacing())
-            return new NullPowerLogic();
+        if (side == getFrontFacing()) return new NullPowerLogic();
         return power;
     }
 
@@ -623,7 +611,7 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
     @Nonnull
     protected PowerLogic createPowerLogic() {
         return new PowerLogic().setMaxAmperage(1)
-                .setType(PowerLogic.RECEIVER);
+            .setType(PowerLogic.RECEIVER);
     }
 
     @Nonnull
@@ -639,7 +627,7 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
     @Override
     public ItemStack getAsItem() {
         return MultiTileEntityRegistry.getRegistry(getRegistryId())
-                .getItem(getMetaId());
+            .getItem(getMetaId());
     }
 
     @Override

@@ -34,13 +34,11 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_SpecialFilter;
-import gregtech.api.multitileentity.MultiTileEntityContainer;
-import gregtech.api.multitileentity.MultiTileEntityItemInternal;
+import gregtech.api.multitileentity.MultiTileEntityItem;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Item_Machines;
-import gregtech.loaders.preload.GT_Loader_MultiTileEntities;
 
 public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFilter {
 
@@ -75,7 +73,7 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
             IMetaTileEntity metaTileEntity = GT_Item_Machines.getMetaTileEntity(stack);
             if (metaTileEntity != null) {
                 return getMetaTileEntityRecipeMap(metaTileEntity);
-            } else if (stack.getItem() instanceof MultiTileEntityItemInternal) {
+            } else if (stack.getItem() instanceof MultiTileEntityItem) {
                 return getMuTeRecipeMap(stack);
             }
         }
@@ -90,12 +88,6 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
     }
 
     private static RecipeMap<?> getMuTeRecipeMap(@NotNull ItemStack stack) {
-        MultiTileEntityContainer muTeEntityContainer = GT_Loader_MultiTileEntities.MACHINE_REGISTRY
-            .getNewTileEntityContainer(stack);
-        if (muTeEntityContainer != null
-            && muTeEntityContainer.mTileEntity instanceof RecipeMapWorkable recipeMapWorkable) {
-            return recipeMapWorkable.getRecipeMap();
-        }
         return null;
     }
 

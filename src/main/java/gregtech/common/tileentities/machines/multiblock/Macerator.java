@@ -49,7 +49,11 @@ public class Macerator extends StackableController<Macerator, MaceratorProcessin
                 .addElement('A', ofMuTECasings(ENERGY_INPUT.getValue(), GT_MultiTileCasing.Macerator.getCasing()))
                 .addElement(
                     'B',
-                    ofMuTECasings(FLUID_INPUT.getValue() | ITEM_INPUT.getValue() | FLUID_OUTPUT.getValue() | ITEM_OUTPUT.getValue(), GT_MultiTileCasing.Macerator.getCasing()))
+                    ofMuTECasings(
+                        FLUID_INPUT.getValue() | ITEM_INPUT.getValue()
+                            | FLUID_OUTPUT.getValue()
+                            | ITEM_OUTPUT.getValue(),
+                        GT_MultiTileCasing.Macerator.getCasing()))
                 .addElement('C', ofMuTECasings(NOTHING.getValue(), GT_MultiTileCasing.Macerator.getCasing()))
                 .addElement('D', ofMuTECasings(NOTHING.getValue(), GT_MultiTileCasing.Macerator.getCasing()))
                 .addElement('F', ofMuTECasings(NOTHING.getValue(), MOTOR_CASINGS))

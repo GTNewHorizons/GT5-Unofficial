@@ -176,7 +176,7 @@ public class MuTEProcessingLogic<P extends MuTEProcessingLogic<P>> extends Abstr
     }
 
     public boolean canWork() {
-        return !hasWork ;//&& machineHost.isAllowedToWork();
+        return !hasWork;// && machineHost.isAllowedToWork();
     }
 
     /**

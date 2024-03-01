@@ -346,7 +346,10 @@ public class AdvChemicalProcessor
                 .addElement(
                     'C',
                     ofMuTECasings(
-                        FLUID_INPUT.getValue() | ITEM_INPUT.getValue() | FLUID_OUTPUT.getValue() | ITEM_OUTPUT.getValue() | ENERGY_INPUT.getValue(),
+                        FLUID_INPUT.getValue() | ITEM_INPUT.getValue()
+                            | FLUID_OUTPUT.getValue()
+                            | ITEM_OUTPUT.getValue()
+                            | ENERGY_INPUT.getValue(),
                         GT_MultiTileCasing.Chemical.getCasing()))
                 .addElement('P', ofBlock(GregTech_API.sBlockCasings8, 1))
                 .addElement('T', ofMuTECasings(NOTHING.getValue(), MOTOR_CASINGS))
@@ -359,7 +362,10 @@ public class AdvChemicalProcessor
                 .addElement(
                     'U',
                     ofMuTECasings(
-                        FLUID_INPUT.getValue() | ITEM_INPUT.getValue() | FLUID_OUTPUT.getValue() | ITEM_OUTPUT.getValue() | ENERGY_INPUT.getValue(),
+                        FLUID_INPUT.getValue() | ITEM_INPUT.getValue()
+                            | FLUID_OUTPUT.getValue()
+                            | ITEM_OUTPUT.getValue()
+                            | ENERGY_INPUT.getValue(),
                         GT_MultiTileCasing.Chemical.getCasing(),
                         GT_StructureUtilityMuTE.INVENTORY_CASINGS))
                 .build();

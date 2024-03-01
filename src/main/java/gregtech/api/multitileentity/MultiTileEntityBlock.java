@@ -1,49 +1,26 @@
 package gregtech.api.multitileentity;
 
-import static gregtech.api.util.GT_Util.LAST_BROKEN_TILEENTITY;
-import static gregtech.api.util.GT_Util.getTileEntity;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import javax.annotation.Nonnull;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockContainer;
+import net.minecraft.block.material.Material;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cricketcraft.chisel.api.IFacade;
 
 import cpw.mods.fml.common.Optional;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IDebugableBlock;
-import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
-import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
-import gregtech.api.util.GT_Util;
-import gregtech.api.util.WorldHelper;
 import gregtech.common.covers.CoverInfo;
 import gregtech.common.render.GT_MultiTile_Renderer;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 /*
  * MultiTileEntityBlock ported from GT6
@@ -51,31 +28,41 @@ import net.minecraftforge.common.util.ForgeDirection;
 @Optional.Interface(iface = "com.cricketcraft.chisel.api.IFacade", modid = "ChiselAPI")
 public class MultiTileEntityBlock extends BlockContainer implements IFacade {
 
-    private final String toolName;
-    private final MultiTileEntityRegistry registry;
+    private String toolName;
+    private MultiTileEntityRegistry registry;
 
-    public MultiTileEntityBlock(@Nonnull final MultiTileEntityRegistry registry, @Nonnull final Material material, @Nonnull final String toolName, @Nonnull final String blockName) {
-        super(material);
-        this.toolName = toolName;
+    public MultiTileEntityBlock() {
+        super(Material.anvil);
+    }
+
+    public MultiTileEntityRegistry getRegistry() {
+        return registry;
+    }
+
+    public MultiTileEntityBlock setRegistry(MultiTileEntityRegistry registry) {
         this.registry = registry;
-        setBlockName("gt.multitileentity.block."+blockName);
+        return this;
+    }
+
+    public MultiTileEntityBlock setTool(String toolName) {
+        this.toolName = toolName;
+        return this;
     }
 
     @Override
     public int getRenderType() {
         return GT_MultiTile_Renderer.INSTANCE == null ? super.getRenderType()
-        : GT_MultiTile_Renderer.INSTANCE.getRenderId();
+            : GT_MultiTile_Renderer.INSTANCE.getRenderId();
     }
 
     @Override
     public void onNeighborBlockChange(World worldIn, int x, int y, int z, Block neighbor) {
         super.onNeighborBlockChange(worldIn, x, y, z, neighbor);
-        TileEntity te = worldIn.getTileEntity(x,y,z);
+        TileEntity te = worldIn.getTileEntity(x, y, z);
         if (!(te instanceof IMultiTileEntity mute)) {
             return;
         }
     }
-
 
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
@@ -89,7 +76,9 @@ public class MultiTileEntityBlock extends BlockContainer implements IFacade {
 
     @Override
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
-
+        for(MultiTileEntityClassContainer container : registry.registrations) {
+            list.add(new ItemStack(container.block));
+        }
     }
 
     @Override

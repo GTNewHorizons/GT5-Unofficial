@@ -1,6 +1,7 @@
 package gregtech.api.multitileentity.enums;
 
 public enum PartMode {
+
     NOTHING,
     ITEM_INPUT,
     ITEM_OUTPUT,

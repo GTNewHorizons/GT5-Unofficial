@@ -1,8 +1,8 @@
 package gregtech.api.multitileentity.multiblock.casing;
 
-import net.minecraft.nbt.NBTTagCompound;
-
 import javax.annotation.Nonnull;
+
+import net.minecraft.nbt.NBTTagCompound;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;

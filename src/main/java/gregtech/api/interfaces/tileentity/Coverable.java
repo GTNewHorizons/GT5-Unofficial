@@ -2,10 +2,11 @@ package gregtech.api.interfaces.tileentity;
 
 import javax.annotation.Nonnull;
 
-import gregtech.api.util.ISerializableObject;
-import gregtech.common.covers.CoverInfo;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import gregtech.api.util.ISerializableObject;
+import gregtech.common.covers.CoverInfo;
 
 public interface Coverable {
 
@@ -25,7 +26,4 @@ public interface Coverable {
     @Nonnull
     ISerializableObject getComplexCoverData(@Nonnull ForgeDirection side);
 
-
 }
-
-

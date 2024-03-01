@@ -25,7 +25,7 @@ public class GT_Util {
         if (aNBT1 == null) return aNBT2 == null ? new NBTTagCompound() : (NBTTagCompound) aNBT2.copy();
         final NBTTagCompound rNBT = (NBTTagCompound) aNBT1.copy();
         if (aNBT2 == null) return rNBT;
-        for (Object tKey : aNBT2.func_150296_c /* getKeySet */())
+        for (Object tKey : aNBT2.func_150296_c()/* getKeySet */)
             if (!rNBT.hasKey(tKey.toString())) rNBT.setTag(tKey.toString(), aNBT2.getTag(tKey.toString()));
         return rNBT;
     }

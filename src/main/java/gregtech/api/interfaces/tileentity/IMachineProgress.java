@@ -26,7 +26,6 @@ public interface IMachineProgress extends IHasWorldObjectAndCoords, MachineProgr
      */
     boolean hasWorkJustBeenEnabled();
 
-
     /**
      * used to control Machines via Redstone Signal Strength by special Covers In case of 0 the Machine is very likely
      * doing nothing, or is just not being controlled at all.

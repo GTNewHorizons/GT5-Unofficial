@@ -199,17 +199,25 @@ public class LaserEngraver extends ComplexParallelController<LaserEngraver, Lase
                 .addElement(
                     'A',
                     ofMuTECasings(
-                        FLUID_INPUT.getValue() | ITEM_INPUT.getValue() | FLUID_OUTPUT.getValue() | ITEM_OUTPUT.getValue() | ENERGY_INPUT.getValue(),
+                        FLUID_INPUT.getValue() | ITEM_INPUT.getValue()
+                            | FLUID_OUTPUT.getValue()
+                            | ITEM_OUTPUT.getValue()
+                            | ENERGY_INPUT.getValue(),
                         GT_MultiTileCasing.LaserEngraver.getCasing()))
                 .addElement(
                     'B',
                     ofMuTECasings(
-                        FLUID_INPUT.getValue() | ITEM_INPUT.getValue() | FLUID_OUTPUT.getValue() | ITEM_OUTPUT.getValue() | ENERGY_INPUT.getValue(),
+                        FLUID_INPUT.getValue() | ITEM_INPUT.getValue()
+                            | FLUID_OUTPUT.getValue()
+                            | ITEM_OUTPUT.getValue()
+                            | ENERGY_INPUT.getValue(),
                         GT_MultiTileCasing.BlackLaserEngraverCasing.getCasing()))
                 .addElement(
                     'C',
                     ofMuTECasings(NOTHING.getValue(), CLEANROOM_CASINGS, GT_MultiTileCasing.LaserEngraver.getCasing()))
-                .addElement('D', ofMuTECasings(NOTHING.getValue(), WIRELESS_CASINGS, GT_MultiTileCasing.LaserEngraver.getCasing()))
+                .addElement(
+                    'D',
+                    ofMuTECasings(NOTHING.getValue(), WIRELESS_CASINGS, GT_MultiTileCasing.LaserEngraver.getCasing()))
                 .addElement('E', ofMuTECasings(NOTHING.getValue(), MOTOR_CASINGS))
                 .addElement('F', GT_StructureUtility.ofFrame(Materials.Naquadah)
 
@@ -226,10 +234,18 @@ public class LaserEngraver extends ComplexParallelController<LaserEngraver, Lase
                 .addElement('I', ofMuTECasings(NOTHING.getValue(), EMITTER_CASINGS))
                 .addElement('K', ofBlock(GregTech_API.sBlockCasings3, 11))
                 .addElement('L', ofMuTECasings(NOTHING.getValue(), ROBOT_ARM_CASINGS))
-                .addElement('M', ofMuTECasings(NOTHING.getValue(), GT_MultiTileCasing.LaserEngraverUpgrade1.getCasing()))
-                .addElement('N', ofMuTECasings(NOTHING.getValue(), GT_MultiTileCasing.LaserEngraverUpgrade2.getCasing()))
-                .addElement('O', ofMuTECasings(NOTHING.getValue(), GT_MultiTileCasing.LaserEngraverUpgrade3.getCasing()))
-                .addElement('P', ofMuTECasings(NOTHING.getValue(), GT_MultiTileCasing.LaserEngraverUpgrade4.getCasing()))
+                .addElement(
+                    'M',
+                    ofMuTECasings(NOTHING.getValue(), GT_MultiTileCasing.LaserEngraverUpgrade1.getCasing()))
+                .addElement(
+                    'N',
+                    ofMuTECasings(NOTHING.getValue(), GT_MultiTileCasing.LaserEngraverUpgrade2.getCasing()))
+                .addElement(
+                    'O',
+                    ofMuTECasings(NOTHING.getValue(), GT_MultiTileCasing.LaserEngraverUpgrade3.getCasing()))
+                .addElement(
+                    'P',
+                    ofMuTECasings(NOTHING.getValue(), GT_MultiTileCasing.LaserEngraverUpgrade4.getCasing()))
                 .build();
             buildState.stopBuilding();
         }

@@ -1,7 +1,6 @@
 package gregtech.api.multitileentity.multiblock.base;
 
 import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
-import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
 import static mcp.mobius.waila.api.SpecialChars.*;
 
 import java.lang.ref.WeakReference;
@@ -20,14 +19,9 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -43,7 +37,6 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.api.enums.GT_Values.NBT;
@@ -63,21 +56,14 @@ import gregtech.api.multitileentity.interfaces.IMultiBlockPart;
 import gregtech.api.multitileentity.machine.MultiTileBasicMachine;
 import gregtech.api.multitileentity.multiblock.casing.FunctionalCasing;
 import gregtech.api.multitileentity.multiblock.casing.UpgradeCasing;
-import gregtech.api.net.GT_Packet_MultiTileEntity;
-import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Utility;
-import gregtech.api.util.GT_Waila;
 import gregtech.api.util.WorldHelper;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
 
 /**
  * Multi Tile Entities - or MuTEs - don't have dedicated hatches, but their casings can become hatches.
  */
-public abstract class Controller<C extends Controller<C, P>, P extends MuTEProcessingLogic<P>>
-    extends MultiTileBasicMachine<P>
-    implements IAlignment, IMultiBlockController, IDescribable, ISurvivalConstructable {
+public abstract class Controller<C extends Controller<C, P>, P extends MuTEProcessingLogic<P>> extends
+    MultiTileBasicMachine<P> implements IAlignment, IMultiBlockController, IDescribable, ISurvivalConstructable {
 
     public static final String ALL_INVENTORIES_NAME = "all";
     protected static final int AUTO_OUTPUT_FREQUENCY_TICK = 20;
@@ -466,7 +452,7 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
                     it.remove();
                     continue;
                 }
-                //if (!part.tickCoverAtSide(side, timer)) it.remove();
+                // if (!part.tickCoverAtSide(side, timer)) it.remove();
             }
         }
 
@@ -519,7 +505,8 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
                 continue;
             }
 
-            final IInventory facingInventory = WorldHelper.getIInventoryAtSide(part.getFrontFacing(), getWorldObj(), part.getCoords());
+            final IInventory facingInventory = WorldHelper
+                .getIInventoryAtSide(part.getFrontFacing(), getWorldObj(), part.getCoords());
             if (facingInventory == null) {
                 continue;
             }
@@ -528,7 +515,8 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
                 part,
                 facingInventory,
                 part.getFrontFacing(),
-                part.getFrontFacing().getOpposite(),
+                part.getFrontFacing()
+                    .getOpposite(),
                 null,
                 false,
                 (byte) 64,
@@ -934,8 +922,7 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
     }
 
     @Override
-    public void setWirelessSupport(boolean canUse) {
-    }
+    public void setWirelessSupport(boolean canUse) {}
 
     @Override
     public void setLaserSupport(boolean canUse) {

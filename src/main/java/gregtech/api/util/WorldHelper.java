@@ -16,7 +16,8 @@ public class WorldHelper {
     private WorldHelper() {}
 
     @Nullable
-    public static TileEntity getTileEntityAtSide(@Nonnull final ForgeDirection side, @Nonnull final IBlockAccess world, @Nonnull final ChunkCoordinates origin) {
+    public static TileEntity getTileEntityAtSide(@Nonnull final ForgeDirection side, @Nonnull final IBlockAccess world,
+        @Nonnull final ChunkCoordinates origin) {
         Objects.requireNonNull(side);
         Objects.requireNonNull(world);
         Objects.requireNonNull(origin);
@@ -29,7 +30,8 @@ public class WorldHelper {
     }
 
     @Nullable
-    public static IInventory getIInventoryAtSide(@Nonnull final ForgeDirection side, @Nonnull final IBlockAccess world, @Nonnull final ChunkCoordinates origin) {
+    public static IInventory getIInventoryAtSide(@Nonnull final ForgeDirection side, @Nonnull final IBlockAccess world,
+        @Nonnull final ChunkCoordinates origin) {
         TileEntity te = getTileEntityAtSide(side, world, origin);
         if (te instanceof IInventory teii) return teii;
         return null;
