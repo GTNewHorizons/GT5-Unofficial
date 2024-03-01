@@ -4883,7 +4883,7 @@ public class GT_Utility {
                 nbt = (NBTTagCompound) nbt.copy();
             }
 
-            return new AutoValue_GT_Utility_ItemId(itemStack.getItem(), itemStack.getItemDamage(), nbt);
+            return new AutoValue_GT_Utility_ItemId(itemStack.getItem(), Items.feather.getDamage(itemStack), nbt);
         }
 
         /**
@@ -4907,7 +4907,7 @@ public class GT_Utility {
          * This method stores NBT as null.
          */
         public static ItemId createWithoutNBT(ItemStack itemStack) {
-            return new AutoValue_GT_Utility_ItemId(itemStack.getItem(), itemStack.getItemDamage(), null);
+            return new AutoValue_GT_Utility_ItemId(itemStack.getItem(), Items.feather.getDamage(itemStack), null);
         }
 
         /**
@@ -4916,7 +4916,7 @@ public class GT_Utility {
         public static ItemId createNoCopy(ItemStack itemStack) {
             return new AutoValue_GT_Utility_ItemId(
                 itemStack.getItem(),
-                itemStack.getItemDamage(),
+                Items.feather.getDamage(itemStack),
                 itemStack.getTagCompound());
         }
 
@@ -4940,6 +4940,12 @@ public class GT_Utility {
             tag.setShort("meta", (short) metaData());
             if (nbt() != null) tag.setTag("tag", nbt());
             return tag;
+        }
+
+        public ItemStack getItemStack() {
+            ItemStack itemStack = new ItemStack(item(), 1, metaData());
+            itemStack.setTagCompound(nbt());
+            return itemStack;
         }
     }
 

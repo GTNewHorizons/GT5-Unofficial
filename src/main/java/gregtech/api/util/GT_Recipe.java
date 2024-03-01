@@ -492,8 +492,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         // because of early exit condition above.
         if (mFluidInputs.length > 0 /* && aFluidInputs != null */) {
             // Create map for fluid -> stored amount
-            Reference2LongMap<Fluid> fluidMap = new Reference2LongArrayMap<>(4);
-            Reference2LongMap<Fluid> fluidCost = new Reference2LongArrayMap<>(4);
+            Reference2LongMap<Fluid> fluidMap = new Reference2LongArrayMap<>(2);
+            Reference2LongMap<Fluid> fluidCost = new Reference2LongArrayMap<>(2);
             for (FluidStack fluidStack : aFluidInputs) {
                 if (fluidStack == null) continue;
                 fluidMap.mergeLong(fluidStack.getFluid(), fluidStack.amount, Long::sum);
@@ -516,44 +516,70 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             }
         }
 
-        double remainingCost;
-        long providedAmount;
-        if (aInputs != null) {
-            nextRecipeItemCost: for (ItemStack recipeItemCost : mInputs) {
+        if (mInputs.length > 0) {
+            double remainingCost;
+            long providedAmount;
+            Map<GT_Utility.ItemId, Long> itemCostMap = new HashMap<>(4);
 
-                ItemStack unifiedItemCost = GT_OreDictUnificator.get_nocopy(true, recipeItemCost);
+            for (ItemStack itemStack : mInputs) {
+                if (itemStack == null) continue;
+                if (shouldCheckNBT(itemStack)) {
+                    GT_Utility.ItemId itemId = GT_Utility.ItemId.createNoCopy(itemStack);
+                    itemCostMap.merge(itemId, (long) itemStack.stackSize, Long::sum);
+                    continue;
+                }
+                ItemStack unifiedItem = GT_OreDictUnificator.get_nocopy(true, itemStack);
+                if (unifiedItem != null) {
+                    GT_Utility.ItemId unifiedId;
+                    if (isNBTSensitive) unifiedId = GT_Utility.ItemId.createNoCopy(unifiedItem);
+                    else unifiedId = GT_Utility.ItemId.createWithoutNBT(unifiedItem);
+                    itemCostMap.merge(unifiedId, (long) itemStack.stackSize, Long::sum);
+                }
+            }
+
+            ItemStack unifiedItemCost;
+            nextRecipeItemCost: for (Map.Entry<GT_Utility.ItemId, Long> costEntry : itemCostMap.entrySet()) {
+                unifiedItemCost = costEntry.getKey()
+                    .getItemStack();
                 if (unifiedItemCost != null) {
-                    remainingCost = recipeItemCost.stackSize * currentParallel;
+                    remainingCost = costEntry.getValue() * currentParallel;
                     providedAmount = 0;
 
                     for (ItemStack providedItem : aInputs) {
-                        if (isNBTSensitive && !GT_Utility.areStacksEqual(providedItem, unifiedItemCost, false)) {
-                            continue;
-                        } else if (!isNBTSensitive
-                            && !GT_OreDictUnificator.isInputStackEqual(providedItem, unifiedItemCost)) {
-                                continue;
-                            }
-
-                        if (GTppRecipeHelper) { // Please see JavaDoc on GTppRecipeHelper for why this is here.
-                            if (GT_Utility.areStacksEqual(providedItem, Ic2Items.FluidCell.copy(), true)
-                                || GT_Utility.areStacksEqual(providedItem, ItemList.Tool_DataStick.get(1L), true)
-                                || GT_Utility.areStacksEqual(providedItem, ItemList.Tool_DataOrb.get(1L), true)) {
-                                if (!GT_Utility.areStacksEqual(providedItem, recipeItemCost, false)) continue;
-                            }
-                        }
+                        if (!areInputStackAndRecipeCostMatched(providedItem, unifiedItemCost)) continue;
                         // for non-consumed input
-                        if (recipeItemCost.stackSize == 0) continue nextRecipeItemCost;
+                        if (costEntry.getValue() == 0) continue nextRecipeItemCost;
 
                         providedAmount += providedItem.stackSize;
 
                         if (providedAmount >= remainingCost) continue nextRecipeItemCost;
                     }
                     if (providedAmount == 0) return 0;
-                    currentParallel = Math.min(currentParallel, (double) providedAmount / recipeItemCost.stackSize);
+                    currentParallel = Math.min(currentParallel, (double) providedAmount / costEntry.getValue());
                 }
             }
         }
         return currentParallel;
+    }
+
+    private boolean areInputStackAndRecipeCostMatched(ItemStack providedItem, ItemStack unifiedItemCost) {
+        if (isNBTSensitive || shouldCheckNBT(providedItem)) {
+            return GT_Utility.areStacksEqual(providedItem, unifiedItemCost, false);
+        } else {
+            return GT_OreDictUnificator.isInputStackEqual(providedItem, unifiedItemCost);
+        }
+    }
+
+    /**
+     * Please see JavaDoc on {@link #GTppRecipeHelper} for why this is here.
+     */
+    private boolean shouldCheckNBT(ItemStack item) {
+        if (GTppRecipeHelper) {
+            return GT_Utility.areStacksEqual(item, Ic2Items.FluidCell.copy(), true)
+                || GT_Utility.areStacksEqual(item, ItemList.Tool_DataStick.get(1L), true)
+                || GT_Utility.areStacksEqual(item, ItemList.Tool_DataOrb.get(1L), true);
+        }
+        return false;
     }
 
     public boolean isRecipePossible(@Nullable ItemInventoryLogic itemInput, @Nullable FluidInventoryLogic fluidInput) {
