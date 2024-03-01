@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -503,7 +504,8 @@ public class GT_MetaTileEntity_DroneCentre extends
     }
 
     protected ModularWindow createMachineListWindow(final EntityPlayer player) {
-        ModularWindow.Builder builder = ModularWindow.builder(260, 215);
+        double heightCoff = getBaseMetaTileEntity().isServerSide() ? 0 : Minecraft.getMinecraft().displayHeight / 480.0;
+        ModularWindow.Builder builder = ModularWindow.builder(260, (int) (215 * heightCoff));
         builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         builder.setGuiTint(getGUIColorization());
         builder.widget(
@@ -645,7 +647,7 @@ public class GT_MetaTileEntity_DroneCentre extends
         }
         return builder.widget(
             MachineContainer.setPos(10, 50)
-                .setSize(240, 160))
+                .setSize(240, (int) (215 * heightCoff) - 60))
             .setDraggable(false)
             .build();
     }
