@@ -13,6 +13,7 @@ public abstract class GT_AlleleEffect extends Allele implements IAlleleBeeEffect
 
     public static final IAlleleBeeEffect FORESTRY_BASE_EFFECT = (IAlleleBeeEffect) AlleleManager.alleleRegistry
         .getAllele("forestry.effectNone");
+    protected int throttle;
     protected boolean combinable;
 
     public GT_AlleleEffect(String id, boolean isDominant) {
@@ -35,7 +36,17 @@ public abstract class GT_AlleleEffect extends Allele implements IAlleleBeeEffect
     public abstract IEffectData validateStorage(IEffectData storedData);
 
     @Override
-    public abstract IEffectData doEffect(IBeeGenome genome, IEffectData storedData, IBeeHousing housing);
+    public final IEffectData doEffect(IBeeGenome genome, IEffectData storedData, IBeeHousing housing) {
+        int count = storedData.getInteger(0);
+        if (count >= this.throttle) {
+            storedData = this.doEffectThrottled(genome, storedData, housing);
+        } else {
+            storedData.setInteger(0, count + 1);
+        }
+        return storedData;
+    }
+
+    protected abstract IEffectData doEffectThrottled(IBeeGenome genome, IEffectData storedData, IBeeHousing housing);
 
     @Override
     public IEffectData doFX(IBeeGenome genome, IEffectData storedData, IBeeHousing housing) {
