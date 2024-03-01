@@ -504,7 +504,7 @@ public class GT_MetaTileEntity_DroneCentre extends
     }
 
     protected ModularWindow createMachineListWindow(final EntityPlayer player) {
-        double heightCoff = Minecraft.getMinecraft().displayHeight / 480.0;
+        double heightCoff = getBaseMetaTileEntity().isServerSide() ? 0 : Minecraft.getMinecraft().displayHeight / 480.0;
         ModularWindow.Builder builder = ModularWindow.builder(260, (int) (215 * heightCoff));
         builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         builder.setGuiTint(getGUIColorization());
