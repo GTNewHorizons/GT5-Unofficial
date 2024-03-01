@@ -19,6 +19,9 @@ import static net.minecraft.init.Blocks.iron_ore;
 import static net.minecraft.init.Blocks.lapis_block;
 import static net.minecraft.init.Blocks.log;
 import static net.minecraft.init.Blocks.planks;
+import static net.minecraft.init.Blocks.stone;
+import static net.minecraft.init.Blocks.stone_slab;
+import static net.minecraft.init.Items.glass_bottle;
 import static net.minecraft.init.Items.iron_ingot;
 import static net.minecraftforge.oredict.OreDictionary.WILDCARD_VALUE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -32,6 +35,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import gregtech.api.enums.ItemList;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBuilder;
 import gregtech.api.util.GT_Recipe;
@@ -75,6 +79,36 @@ class GTRecipeTest {
             .duration(0)
             .eut(0)
             .addTo(recipeMap);
+
+        RA.stdBuilder()
+            .itemInputs(new ItemStack(stone_slab, 64), new ItemStack(stone_slab, 64))
+            .itemOutputs(new ItemStack(stone, 2))
+            .duration(0)
+            .eut(0)
+            .addTo(recipeMap);
+
+        ItemStack dataStick = ItemList.Tool_DataStick.get(0);
+        NBTTagCompound dataStickTag = new NBTTagCompound();
+        dataStickTag.setInteger("integer", 123456);
+        dataStick.setTagCompound(dataStickTag);
+        RA.stdBuilder()
+            .itemInputs(dataStick)
+            .itemOutputs(new ItemStack(chest, 1))
+            .duration(0)
+            .eut(0)
+            .addTo(recipeMap);
+
+        ItemStack glass = new ItemStack(glass_bottle, 2);
+        NBTTagCompound glassTag = new NBTTagCompound();
+        glassTag.setInteger("integer", 123456);
+        glass.setTagCompound(glassTag);
+        RA.stdBuilder()
+            .itemInputs(glass)
+            .itemOutputs(new ItemStack(chest, 1))
+            .duration(0)
+            .eut(0)
+            .nbtSensitive()
+            .addTo(recipeMap);
     }
 
     @Test
@@ -82,7 +116,7 @@ class GTRecipeTest {
         assertEquals(
             recipeMap.getAllRecipes()
                 .size(),
-            4);
+            7);
     }
 
     @Test
@@ -91,6 +125,11 @@ class GTRecipeTest {
             .items(new ItemStack(lapis_block, 1), get(circuit, Advanced, 1))
             .find();
         assertNotNull(recipe);
+
+        GT_Recipe stoneRecipe = recipeMap.findRecipeQuery()
+            .items(new ItemStack(stone_slab, 128))
+            .find();
+        assertNotNull(stoneRecipe);
     }
 
     @Test
@@ -126,6 +165,26 @@ class GTRecipeTest {
             .items(lapisBlock, get(circuit, Advanced, 1))
             .find();
         assertNotNull(recipe);
+
+        // For NBT sensitive recipes
+        ItemStack glass = new ItemStack(glass_bottle, 2);
+        NBTTagCompound glassTag = new NBTTagCompound();
+        glassTag.setInteger("integer", 123456);
+        glass.setTagCompound(glassTag);
+        GT_Recipe nbtSensitiveRecipe = recipeMap.findRecipeQuery()
+            .items(glass)
+            .find();
+        assertNotNull(nbtSensitiveRecipe);
+
+        // For items that need to check NBT, e.g. data sticks
+        ItemStack dataStick = ItemList.Tool_DataStick.get(0);
+        NBTTagCompound dataStickTag = new NBTTagCompound();
+        dataStickTag.setInteger("integer", 123456);
+        dataStick.setTagCompound(dataStickTag);
+        GT_Recipe checkNBTRecipe = recipeMap.findRecipeQuery()
+            .items(dataStick)
+            .find();
+        assertNotNull(checkNBTRecipe);
     }
 
     @Test
@@ -134,6 +193,11 @@ class GTRecipeTest {
             .items(new ItemStack(log, 1, 0), new ItemStack(planks, 1, 0))
             .find();
         assertNull(recipe);
+
+        GT_Recipe stoneRecipe = recipeMap.findRecipeQuery()
+            .items(new ItemStack(stone_slab, 127))
+            .find();
+        assertNull(stoneRecipe);
     }
 
     @Test
@@ -144,6 +208,21 @@ class GTRecipeTest {
             .cachedRecipe(lapotronChipRecipe)
             .find();
         assertNull(recipe);
+    }
+
+    @Test
+    void rejectWithoutCorrectNBT() {
+        // For NBT sensitive recipes
+        GT_Recipe nbtSensitiveRecipe = recipeMap.findRecipeQuery()
+            .items(new ItemStack(glass_bottle, 2))
+            .find();
+        assertNull(nbtSensitiveRecipe);
+
+        // For items that need to check NBT, e.g. data sticks
+        GT_Recipe checkNBTRecipe = recipeMap.findRecipeQuery()
+            .items(ItemList.Tool_DataStick.get(0))
+            .find();
+        assertNull(checkNBTRecipe);
     }
 
     @Test
