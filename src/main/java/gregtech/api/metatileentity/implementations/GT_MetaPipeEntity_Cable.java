@@ -64,6 +64,8 @@ import ic2.api.energy.tile.IEnergySink;
 import ic2.api.energy.tile.IEnergySource;
 import ic2.api.energy.tile.IEnergyTile;
 import ic2.api.reactor.IReactorChamber;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTileEntityCable {
 
@@ -648,5 +650,30 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
                 pipe.removeFromLock(pipe, DOWN);
             }
         }
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+
+        currenttip.add(
+            StatCollector.translateToLocal("GT5U.item.cable.max_voltage") + ": "
+                + EnumChatFormatting.GREEN
+                + GT_Utility.formatNumbers(mVoltage)
+                + " ("
+                + GT_Utility.getColoredTierNameFromVoltage(mVoltage)
+                + EnumChatFormatting.GREEN
+                + ")");
+        currenttip.add(
+            StatCollector.translateToLocal("GT5U.item.cable.max_amperage") + ": "
+                + EnumChatFormatting.YELLOW
+                + GT_Utility.formatNumbers(mAmperage));
+        currenttip.add(
+            StatCollector.translateToLocal("GT5U.item.cable.loss") + ": "
+                + EnumChatFormatting.RED
+                + GT_Utility.formatNumbers(mCableLossPerMeter)
+                + EnumChatFormatting.RESET
+                + " "
+                + StatCollector.translateToLocal("GT5U.item.cable.eu_volt"));
     }
 }
