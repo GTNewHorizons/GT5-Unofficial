@@ -1309,6 +1309,8 @@ for.bees.species.silverfish=Silverfish
 for.mutation.condition.biomeid=Required Biome
 for.mutation.condition.dim=Required Dimension
 
+for.flowers.flaming=Fire
+
 itemGroup.GTtools=Prebuild Tools
 
 gregtech.fertilitySterile=Sterile
