@@ -36,6 +36,8 @@ import gregtech.api.recipe.metadata.IRecipeMetadataStorage;
 import gregtech.api.util.extensions.ArrayExt;
 import gregtech.api.util.item.ItemHolder;
 import ic2.core.Ic2Items;
+import it.unimi.dsi.fastutil.objects.Object2LongArrayMap;
+import it.unimi.dsi.fastutil.objects.Object2LongMap;
 import it.unimi.dsi.fastutil.objects.Reference2LongArrayMap;
 import it.unimi.dsi.fastutil.objects.Reference2LongMap;
 
@@ -519,13 +521,13 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         if (mInputs.length > 0) {
             double remainingCost;
             long providedAmount;
-            Map<GT_Utility.ItemId, Long> itemCostMap = new HashMap<>(4);
+            Object2LongMap<GT_Utility.ItemId> itemCostMap = new Object2LongArrayMap<>(2);
 
             for (ItemStack itemStack : mInputs) {
                 if (itemStack == null) continue;
                 if (shouldCheckNBT(itemStack)) {
                     GT_Utility.ItemId itemId = GT_Utility.ItemId.createNoCopy(itemStack);
-                    itemCostMap.merge(itemId, (long) itemStack.stackSize, Long::sum);
+                    itemCostMap.mergeLong(itemId, itemStack.stackSize, Long::sum);
                     continue;
                 }
                 ItemStack unifiedItem = GT_OreDictUnificator.get_nocopy(true, itemStack);
@@ -533,7 +535,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     GT_Utility.ItemId unifiedId;
                     if (isNBTSensitive) unifiedId = GT_Utility.ItemId.createNoCopy(unifiedItem);
                     else unifiedId = GT_Utility.ItemId.createWithoutNBT(unifiedItem);
-                    itemCostMap.merge(unifiedId, (long) itemStack.stackSize, Long::sum);
+                    itemCostMap.mergeLong(unifiedId, itemStack.stackSize, Long::sum);
                 }
             }
 

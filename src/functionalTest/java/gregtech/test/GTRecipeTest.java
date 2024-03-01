@@ -81,7 +81,7 @@ class GTRecipeTest {
             .addTo(recipeMap);
 
         RA.stdBuilder()
-            .itemInputs(new ItemStack(stone_slab, 2), new ItemStack(stone_slab, 2))
+            .itemInputs(new ItemStack(stone_slab, 64), new ItemStack(stone_slab, 64))
             .itemOutputs(new ItemStack(stone, 2))
             .duration(0)
             .eut(0)
@@ -127,7 +127,7 @@ class GTRecipeTest {
         assertNotNull(recipe);
 
         GT_Recipe stoneRecipe = recipeMap.findRecipeQuery()
-            .items(new ItemStack(stone_slab, 4))
+            .items(new ItemStack(stone_slab, 128))
             .find();
         assertNotNull(stoneRecipe);
     }
@@ -181,10 +181,10 @@ class GTRecipeTest {
         NBTTagCompound dataStickTag = new NBTTagCompound();
         dataStickTag.setInteger("integer", 123456);
         dataStick.setTagCompound(dataStickTag);
-        GT_Recipe CheckNBTRecipe = recipeMap.findRecipeQuery()
+        GT_Recipe checkNBTRecipe = recipeMap.findRecipeQuery()
             .items(dataStick)
             .find();
-        assertNotNull(CheckNBTRecipe);
+        assertNotNull(checkNBTRecipe);
     }
 
     @Test
@@ -195,7 +195,7 @@ class GTRecipeTest {
         assertNull(recipe);
 
         GT_Recipe stoneRecipe = recipeMap.findRecipeQuery()
-            .items(new ItemStack(stone_slab, 3))
+            .items(new ItemStack(stone_slab, 127))
             .find();
         assertNull(stoneRecipe);
     }
@@ -219,10 +219,10 @@ class GTRecipeTest {
         assertNull(nbtSensitiveRecipe);
 
         // For items that need to check NBT, e.g. data sticks
-        GT_Recipe CheckNBTRecipe = recipeMap.findRecipeQuery()
+        GT_Recipe checkNBTRecipe = recipeMap.findRecipeQuery()
             .items(ItemList.Tool_DataStick.get(0))
             .find();
-        assertNull(CheckNBTRecipe);
+        assertNull(checkNBTRecipe);
     }
 
     @Test
