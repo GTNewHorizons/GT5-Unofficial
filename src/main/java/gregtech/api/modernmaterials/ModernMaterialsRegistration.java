@@ -23,10 +23,10 @@ public class ModernMaterialsRegistration {
         .setColor(120, 100, 0)
         .setTextureMode(Metal_Dull)
         .addAllParts()
-        .addFluid(Gas, 100_000)
-        .addFluid(NoPrefix, 3_000)
-        .addFluid(Molten, 10_000)
-        .addFluid(Plasma, 100_000)
+        .addPremadeFluid(Gas, 100_000)
+        .addPremadeFluid(NoPrefix, 3_000)
+        .addPremadeFluid(Molten, 10_000)
+        .addPremadeFluid(Plasma, 100_000)
         .addCustomFluid(new ModernMaterialFluid.Builder("zebra", "zebra.").setTemperature(120_000_000), false)
         .setMaterialTier(TierEU.MAX)
         .build();
@@ -36,10 +36,10 @@ public class ModernMaterialsRegistration {
         .setColor(3, 100, 97)
         .setTextureMode(Metal_Shiny)
         .addAllParts()
-        .addFluid(Gas, 1_000)
-        .addFluid(NoPrefix, 3_000)
-        .addFluid(Molten, 10_000)
-        .addFluid(Plasma, 100_000)
+        .addPremadeFluid(Gas, 1_000)
+        .addPremadeFluid(NoPrefix, 3_000)
+        .addPremadeFluid(Molten, 10_000)
+        .addPremadeFluid(Plasma, 100_000)
         .build();
 
     public void run() {
@@ -48,10 +48,10 @@ public class ModernMaterialsRegistration {
             .setColor(120, 100, 123)
             .setTextureMode(Gem)
             .addAllParts()
-            .addFluid(Gas, 1_000)
-            .addFluid(NoPrefix, 3_000)
-            .addFluid(Molten, 10_000)
-            .addFluid(Plasma, 100_000)
+            .addPremadeFluid(Gas, 1_000)
+            .addPremadeFluid(NoPrefix, 3_000)
+            .addPremadeFluid(Molten, 10_000)
+            .addPremadeFluid(Plasma, 100_000)
             .build();
 
         new ModernMaterial.ModernMaterialBuilder("universium").setColor(255, 255, 255)
@@ -64,10 +64,10 @@ public class ModernMaterialsRegistration {
             .addCustomTooltip(CustomTooltips::createRainbowText)
             .setRecipeGenerator(Metal::generateExtruderRecipesWithoutTools)
             .addAllParts()
-            .addFluid(Gas, 1_000)
-            .addFluid(NoPrefix, 3_000)
-            .addFluid(Molten, 10_000)
-            .addFluid(Plasma, 100_000)
+            .addPremadeFluid(Gas, 1_000)
+            .addPremadeFluid(NoPrefix, 3_000)
+            .addPremadeFluid(Molten, 10_000)
+            .addPremadeFluid(Plasma, 100_000)
             .addCustomFluid(
                 new ModernMaterialFluid.Builder("hydro_cracked", "hydrocracked.").setTemperature(121_000_000),
                 true)
@@ -86,10 +86,10 @@ public class ModernMaterialsRegistration {
             .setMaterialTier(TierEU.MAX)
             .addAllParts()
             .setRecipeGenerator(Metal::generateExtruderRecipesWithoutTools)
-            .addFluid(Gas, 1_000)
-            .addFluid(NoPrefix, 3_000)
-            .addFluid(Molten, 10_000)
-            .addFluid(Plasma, 100_000)
+            .addPremadeFluid(Gas, 1_000)
+            .addPremadeFluid(NoPrefix, 3_000)
+            .addPremadeFluid(Molten, 10_000)
+            .addPremadeFluid(Plasma, 100_000)
             .build();
 
         new ModernMaterial.ModernMaterialBuilder("TEST2").setColor(120, 200, 0)
@@ -97,10 +97,10 @@ public class ModernMaterialsRegistration {
             .setTextureMode(Dust)
             .setMaterialTier(TierEU.MAX)
             .addAllParts()
-            .addFluid(Gas, 1_000)
-            .addFluid(NoPrefix, 3_000)
-            .addFluid(Molten, 10_000)
-            .addFluid(Plasma, 100_000)
+            .addPremadeFluid(Gas, 1_000)
+            .addPremadeFluid(NoPrefix, 3_000)
+            .addPremadeFluid(Molten, 10_000)
+            .addPremadeFluid(Plasma, 100_000)
             .build();
 
         // int[] test = new SplittableRandom().ints(100, 0, Short.MAX_VALUE).parallel().toArray();

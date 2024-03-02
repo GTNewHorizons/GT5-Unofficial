@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.client.IItemRenderer;
 
+import net.minecraftforge.fluids.FluidRegistry;
 import org.jetbrains.annotations.NotNull;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -261,25 +262,34 @@ public final class ModernMaterial {
             return this;
         }
 
-        public ModernMaterialBuilder addFluid(FluidEnum fluidEnum, int temperature) {
+        public ModernMaterialBuilder addPremadeFluid(FluidEnum fluidEnum, int temperature) {
+
+            if (temperature <= 0) throw new IllegalArgumentException("Invalid temperature provided.");
 
             ModernMaterialFluid modernMaterialFluid = new ModernMaterialFluid(fluidEnum, materialToBuild);
             modernMaterialFluid.setTemperature(temperature);
             modernMaterialFluid.setGaseous(fluidEnum.isGas());
             modernMaterialFluid.setFluidEnum(fluidEnum);
 
+            FluidRegistry.registerFluid(modernMaterialFluid);
+
             // Add fluid to list in material.
-            materialToBuild.existingFluids.add(new ModernMaterialFluid(fluidEnum, materialToBuild));
+            materialToBuild.existingFluids.add(modernMaterialFluid);
 
             return this;
         }
 
-        public ModernMaterialBuilder addCustomFluid(ModernMaterialFluid.Builder modernMaterialFluidBuilder,
-            boolean useMaterialColouringForFluid) {
+        public ModernMaterialBuilder addPremadeFluid(FluidEnum fluidEnum) {
+            addPremadeFluid(fluidEnum, fluidEnum.getTemperature());
+            return this;
+        }
 
-            ModernMaterialFluid modernMaterialFluid = modernMaterialFluidBuilder.setMaterial(materialToBuild)
-                .build();
+        public ModernMaterialBuilder addCustomFluid(ModernMaterialFluid.Builder modernMaterialFluidBuilder, boolean useMaterialColouringForFluid) {
+
+            ModernMaterialFluid modernMaterialFluid = modernMaterialFluidBuilder.setMaterial(materialToBuild).build();
             materialToBuild.existingFluids.add(modernMaterialFluid);
+
+            FluidRegistry.registerFluid(modernMaterialFluid);
 
             if (!useMaterialColouringForFluid) {
                 modernMaterialFluid.disableFluidColouring();

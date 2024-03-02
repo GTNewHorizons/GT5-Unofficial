@@ -54,12 +54,6 @@ public class ModernMaterialUtilities {
 
     public static void registerAllMaterialsFluids() {
 
-        // Register the fluids with forge.
-        for (ModernMaterial material : ModernMaterial.getAllMaterials()) {
-            for (ModernMaterialFluid fluid : material.getAssociatedFluids()) {
-                FluidRegistry.registerFluid(fluid);
-            }
-        }
     }
 
     public static ArrayList<String> tooltipGenerator(@NotNull ItemStack itemStack, EntityPlayer player,

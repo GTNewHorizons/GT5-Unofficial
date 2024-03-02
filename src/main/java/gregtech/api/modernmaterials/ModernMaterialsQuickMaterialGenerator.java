@@ -21,7 +21,7 @@ public class ModernMaterialsQuickMaterialGenerator {
             .setTextureMode(Metal_Shiny)
             .setRecipeGenerator(Metal::generateExtruderRecipesWithoutTools, Metal::EBFRecipeGeneratorWithFreezer)
             .addPart(Ingot, Plate)
-            .addFluid(Molten, 10_000)
-            .addFluid(Plasma, 100_000);
+            .addPremadeFluid(Molten, 10_000)
+            .addPremadeFluid(Plasma, 100_000);
     }
 }
