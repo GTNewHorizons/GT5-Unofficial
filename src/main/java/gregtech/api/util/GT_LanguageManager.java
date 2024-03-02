@@ -95,24 +95,28 @@ public class GT_LanguageManager {
             // Lang file is now set up, resolve all the buffers
             // This won't be visited twice
             for (Entry<String, String> tEntry : BUFFERMAP.entrySet()) {
-                writeToLangFile(tEntry.getKey(), tEntry.getValue());
+                storeTranslation(tEntry.getKey(), tEntry.getValue());
             }
             BUFFERMAP.clear();
         }
 
         if (!LANGMAP.containsKey(trimmedKey)) {
-            String translation = writeToLangFile(trimmedKey, aEnglish);
-            LANGMAP.put(trimmedKey, translation);
-            addToMCLangList(trimmedKey, translation);
-            TEMPMAP.put(trimmedKey, translation);
-            LanguageRegistry.instance()
-                // If we use the actual user configured locale here, switching lang to others while running game
-                // turns everything into unlocalized string. So we make it "default" and call it a day.
-                .injectLanguage("en_US", TEMPMAP);
-            TEMPMAP.clear();
-            return translation;
+            return storeTranslation(trimmedKey, aEnglish);
         }
         return LANGMAP.get(trimmedKey);
+    }
+
+    private static synchronized String storeTranslation(String trimmedKey, String english) {
+        String translation = writeToLangFile(trimmedKey, english);
+        LANGMAP.put(trimmedKey, translation);
+        addToMCLangList(trimmedKey, translation);
+        TEMPMAP.put(trimmedKey, translation);
+        LanguageRegistry.instance()
+            // If we use the actual user configured locale here, switching lang to others while running game
+            // turns everything into unlocalized string. So we make it "default" and call it a day.
+            .injectLanguage("en_US", TEMPMAP);
+        TEMPMAP.clear();
+        return translation;
     }
 
     private static synchronized String writeToLangFile(String trimmedKey, String aEnglish) {
