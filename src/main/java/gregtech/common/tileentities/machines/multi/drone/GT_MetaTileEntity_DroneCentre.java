@@ -226,10 +226,16 @@ public class GT_MetaTileEntity_DroneCentre extends
     }
 
     @Override
+    public void stopMachine() {
+        destroyRenderBlock();
+        super.stopMachine();
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             fixAll();
-            if (aTick % 200 == 0) {
+            if (aTick % 20 == 0) {
                 if (switch (droneLevel) {
                     case 1 -> getBaseMetaTileEntity().getRandomNumber(28800);
                     case 2 -> getBaseMetaTileEntity().getRandomNumber(172800);
@@ -312,6 +318,12 @@ public class GT_MetaTileEntity_DroneCentre extends
                 getBaseMetaTileEntity().getZCoord());
             droneMap.put(getBaseMetaTileEntity().getWorld().provider.dimensionId, this);
         }
+    }
+
+    @Override
+    public void onBlockDestroyed() {
+        destroyRenderBlock();
+        super.onBlockDestroyed();
     }
 
     @Override
