@@ -76,6 +76,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -248,7 +249,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                     .extractAEPower(toExtract, Actionable.MODULATE, PowerMultiplier.CONFIG);
 
                 if (extractionResult == null || extractionResult.getStackSize() != toExtract) {
-                    controller.criticalStopMachine();
+                    controller.stopMachine(ShutDownReasonRegistry.CRITICAL_NONE);
                     checkRecipeResult = SimpleCheckRecipeResult
                         .ofFailurePersistOnShutdown("stocking_hatch_fail_extraction");
                 }

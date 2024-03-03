@@ -405,11 +405,11 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                     checkMaintenance();
                     if (getRepairStatus() > 0) {
                         runMachine(aBaseMetaTileEntity, aTick);
-                    } else {
-                        stopMachine();
+                    } else if (aBaseMetaTileEntity.isAllowedToWork()) {
+                        stopMachine(ShutDownReasonRegistry.NO_REPAIR);
                     }
-                } else {
-                    stopMachine();
+                } else if (aBaseMetaTileEntity.isAllowedToWork()) {
+                    stopMachine(ShutDownReasonRegistry.STRUCTURE_INCOMPLETE);
                 }
             }
             aBaseMetaTileEntity.setErrorDisplayID(
@@ -523,7 +523,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             if (onRunningTick(mInventory[1])) {
                 markDirty();
                 if (!polluteEnvironment(getPollutionPerTick(mInventory[1]))) {
-                    stopMachine();
+                    stopMachine(ShutDownReasonRegistry.POLLUTION_FAIL);
                 }
                 if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) {
                     if (mOutputItems != null) {
@@ -671,7 +671,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         }
         if (mEUt < 0) {
             if (!drainEnergyInput(getActualEnergyUsage())) {
-                criticalStopMachine();
+                stopMachine(ShutDownReasonRegistry.POWER_LOSS);
                 return false;
             }
         }
@@ -955,6 +955,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         if (!isCorrectMachinePart(mInventory[1])) {
             stopMachine(ShutDownReasonRegistry.NO_MACHINE_PART);
             return false;
+        }
+        if (getRepairStatus() == 0) {
+            stopMachine(ShutDownReasonRegistry.NO_REPAIR);
             return false;
         }
         if (mRuntime++ > 1000) {

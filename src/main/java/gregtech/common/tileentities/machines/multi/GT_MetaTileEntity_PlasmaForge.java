@@ -804,18 +804,11 @@ public class GT_MetaTileEntity_PlasmaForge extends
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        if (this.lEUt > 0) {
-            addEnergyOutput((this.lEUt * mEfficiency) / 10000);
-            return true;
+        boolean result = super.onRunningTick(aStack);
+        if (!result) {
+            resetDiscount();
         }
-        if (this.lEUt < 0) {
-            if (!drainEnergyInput(getActualEnergyUsage())) {
-                resetDiscount();
-                criticalStopMachine();
-                return false;
-            }
-        }
-        return true;
+        return result;
     }
 
     @Override

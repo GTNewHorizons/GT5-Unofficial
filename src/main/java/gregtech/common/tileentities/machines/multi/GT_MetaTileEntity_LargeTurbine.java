@@ -51,6 +51,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.LightingHelper;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.render.GT_RenderUtil;
 
@@ -262,7 +263,7 @@ public abstract class GT_MetaTileEntity_LargeTurbine
             && (controllerSlot == null || !(controllerSlot.getItem() instanceof GT_MetaGenerated_Tool)
                 || controllerSlot.getItemDamage() < 170
                 || controllerSlot.getItemDamage() > 179)) {
-            stopMachine();
+            stopMachine(ShutDownReasonRegistry.NO_TURBINE);
             return CheckRecipeResultRegistry.NO_TURBINE_FOUND;
         }
         ArrayList<FluidStack> tFluids = getStoredFluids();
@@ -293,7 +294,7 @@ public abstract class GT_MetaTileEntity_LargeTurbine
                 flowMultipliers[2] = GT_MetaGenerated_Tool.getPrimaryMaterial(controllerSlot).mPlasmaMultiplier;
 
                 if (optFlow <= 0 || baseEff <= 0) {
-                    stopMachine(); // in case the turbine got removed
+                    stopMachine(ShutDownReasonRegistry.NONE); // in case the turbine got removed
                     return CheckRecipeResultRegistry.NO_FUEL_FOUND;
                 }
             } else {

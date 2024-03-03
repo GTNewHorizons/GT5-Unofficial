@@ -16,12 +16,16 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import org.jetbrains.annotations.NotNull;
+
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.util.GT_ExoticEnergyInputHelper;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 
 /**
  * Multiblock base class that allows machine to use power over int.
@@ -72,7 +76,7 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
         }
         if (this.lEUt < 0) {
             if (!drainEnergyInput(getActualEnergyUsage())) {
-                criticalStopMachine();
+                stopMachine(ShutDownReasonRegistry.POWER_LOSS);
                 return false;
             }
         }
@@ -80,9 +84,9 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
     }
 
     @Override
-    public void stopMachine() {
+    public void stopMachine(@NotNull ShutDownReason reason) {
         this.lEUt = 0;
-        super.stopMachine();
+        super.stopMachine(reason);
     }
 
     @Override
