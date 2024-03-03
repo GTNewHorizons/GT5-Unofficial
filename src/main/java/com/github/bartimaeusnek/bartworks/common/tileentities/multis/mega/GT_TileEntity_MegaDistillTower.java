@@ -290,12 +290,17 @@ public class GT_TileEntity_MegaDistillTower extends GT_TileEntity_MegaMultiBlock
         if (!this.checkPiece(STRUCTURE_PIECE_BASE, 7, 0, 0)) return false;
 
         // check each layer
-        while (this.mHeight < 12 && this.checkPiece(STRUCTURE_PIECE_LAYER, 7, this.mHeight * 5, 0)
-                && !this.mTopLayerFound) {
+        while (this.mHeight < 12) {
+            if (!checkPiece(STRUCTURE_PIECE_LAYER, 7, mHeight * 5, 0)) {
+                return false;
+            }
             if (this.mOutputHatchesByLayer.size() < this.mHeight
                     || this.mOutputHatchesByLayer.get(this.mHeight - 1).isEmpty())
                 // layer without output hatch
                 return false;
+            if (mTopLayerFound) {
+                break;
+            }
             this.mTopState = -1;
             // not top
             this.mHeight++;
