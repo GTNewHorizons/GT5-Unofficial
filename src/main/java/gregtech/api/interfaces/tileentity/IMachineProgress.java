@@ -1,5 +1,10 @@
 package gregtech.api.interfaces.tileentity;
 
+import javax.annotation.Nonnull;
+
+import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+
 /**
  * For Machines which have Progress
  */
@@ -82,5 +87,10 @@ public interface IMachineProgress extends IHasWorldObjectAndCoords {
      */
     default boolean wasShutdown() {
         return false;
+    }
+
+    @Nonnull
+    default ShutDownReason getLastShutDownReason() {
+        return ShutDownReasonRegistry.NONE;
     }
 }
