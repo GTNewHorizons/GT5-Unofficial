@@ -173,12 +173,13 @@ public class MultiTileEntityItem extends ItemBlock implements IFluidContainerIte
 
     @Override
     public final String getUnlocalizedName() {
+        super.getUnlocalizedName();
         return block.getRegistry().internalName;
     }
 
     @Override
     public final String getUnlocalizedName(ItemStack aStack) {
-        return block.getRegistry().internalName + "." + getDamage(aStack);
+        return block.getRegistry().getClassContainer(Items.feather.getDamage(aStack)).getUnlocalizedName();
     }
 
     @Override

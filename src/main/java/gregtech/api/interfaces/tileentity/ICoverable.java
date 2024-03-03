@@ -4,14 +4,26 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import javax.annotation.Nonnull;
+
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.CoverInfo;
 
-public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEnergyContainer {
+public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEnergyContainer, Coverable {
+
+    @Override
+default boolean canPlaceCover(ForgeDirection side, int id) {
+        return canPlaceCoverIDAtSide(side, id);
+}
 
     boolean canPlaceCoverIDAtSide(ForgeDirection side, int aID);
+
+    @Override
+default boolean canPlaceCover(ForgeDirection side, ItemStack itemCover) {
+        return canPlaceCover(side, itemCover);
+}
 
     boolean canPlaceCoverItemAtSide(ForgeDirection side, ItemStack aCover);
 
@@ -25,6 +37,16 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
             setCoverDataAtSide(side, ((ISerializableObject.LegacyCoverData) aData).get());
     }
 
+    @Override
+    default void setCover(@Nonnull ForgeDirection side, int id, @Nonnull ISerializableObject data) {
+        setCoverIdAndDataAtSide(side, id, data);
+    }
+
+    @Override
+    default void setCover(ForgeDirection side, ItemStack item) {
+        setCoverItemAtSide(side, item);
+    }
+
     void setCoverIdAndDataAtSide(ForgeDirection side, int aId, ISerializableObject aData);
 
     void setCoverIDAtSide(ForgeDirection side, int aID);
@@ -36,6 +58,10 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
     @Deprecated
     int getCoverDataAtSide(ForgeDirection side);
 
+    @Override
+default CoverInfo getCoverInfo(ForgeDirection side) {
+        return getCoverInfoAtSide(side);
+}
     default CoverInfo getCoverInfoAtSide(ForgeDirection side) {
         return null;
     }
@@ -83,6 +109,7 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
      * @param coverSide cover side
      * @param aPlayer   the player who made the change
      */
+    @Override
     default void receiveCoverData(ForgeDirection coverSide, int aCoverID, ISerializableObject aCoverData,
         EntityPlayerMP aPlayer) {
         if (aCoverData instanceof ISerializableObject.LegacyCoverData)

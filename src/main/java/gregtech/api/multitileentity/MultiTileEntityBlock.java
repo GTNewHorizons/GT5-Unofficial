@@ -66,6 +66,8 @@ public class MultiTileEntityBlock extends BlockContainer implements IFacade {
         if (!(te instanceof final IMultiTileEntity mute)) {
             return;
         }
+
+        mute.onNeighborBlockChange(worldIn, neighbor);
     }
 
     @Override
@@ -74,7 +76,7 @@ public class MultiTileEntityBlock extends BlockContainer implements IFacade {
     }
 
     @Override
-    public ItemStack getPickBlock(final MovingObjectPosition target, final World world, final int x, final int y, final int z, final EntityPlayer player) {
+    public ItemStack getPickBlock(final MovingObjectPosition target, final World world, final int x, final int y, final int z) {
         final TileEntity te = world.getTileEntity(x,y,z);
         if (!(te instanceof final IMultiTileEntity mute)) return null;
         return registry.getItem(mute.getMetaId());
@@ -86,12 +88,10 @@ public class MultiTileEntityBlock extends BlockContainer implements IFacade {
         TileEntity te = worldIn.getTileEntity(x, y, z);
         if (!(te instanceof IMultiTileEntity mute)) return false;
 
-        if (mute instanceof GUIHost gui) {
-            UIInfos.openClientUI(player, gui::createWindow);
-        }
-
-        return true;
+        return mute.onBlockActivated(player, ForgeDirection.getOrientation(side), subX, subY, subZ);
     }
+
+
 
     @Override
     public String getHarvestTool(final int metadata) {
@@ -101,7 +101,7 @@ public class MultiTileEntityBlock extends BlockContainer implements IFacade {
     @Override
     public void getSubBlocks(final Item itemIn, final CreativeTabs tab, final List<ItemStack> list) {
         for (final MultiTileEntityClassContainer container : registry.registrations) {
-            list.add(new ItemStack(container.block, 0, container.metaId));
+            list.add(new ItemStack(this, 0, container.getMetaId()));
         }
     }
 

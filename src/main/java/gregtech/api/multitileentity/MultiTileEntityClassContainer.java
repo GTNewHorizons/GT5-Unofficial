@@ -22,24 +22,52 @@ public class MultiTileEntityClassContainer {
     private String unlocalizedName;
     private String categoryName;
 
-    public final int metaId;
-    public Class<? extends MultiTileEntity> clazz;
-    public MultiTileEntityBlock block;
-    public MultiTileEntity originalTileEntity;
-    public NBTTagCompound parameters;
+    private final int metaId;
+    private Class<? extends MultiTileEntity> clazz;
+    private MultiTileEntityBlock block;
+    private MultiTileEntity originalTileEntity;
+    private NBTTagCompound parameters;
 
     // These have defaults
-    public byte mBlockMetaData = 1;
-    public byte mStackSize = 64;
-    public boolean mHidden = false;
+    private int stackSize = 64;
+    private boolean hidden = false;
 
-    public MultiTileEntityClassContainer(MultiTileEntityRegistry registry, int metaId,
+    public MultiTileEntityClassContainer(MultiTileEntityRegistry registry, MultiTileEntityBlock block, int metaId,
         Class<? extends MultiTileEntity> clazz) {
         /* Start the Builder */
         this.registry = new WeakReference<>(registry);
+        this.block = block;
         this.metaId = metaId;
         this.clazz = clazz;
         this.parameters = new NBTTagCompound();
+    }
+
+    public boolean isHidden() {
+        return hidden;
+    }
+
+    public int getMetaId() {
+        return metaId;
+    }
+
+    public int getStackSize() {
+        return stackSize;
+    }
+
+    public Class<? extends MultiTileEntity> getClazz() {
+        return clazz;
+    }
+
+    public MultiTileEntity getOriginalTileEntity() {
+        return originalTileEntity;
+    }
+
+    public String getUnlocalizedName() {
+        return unlocalizedName;
+    }
+
+    public NBTTagCompound getParameters() {
+        return parameters;
     }
 
     public boolean register() {
@@ -72,23 +100,13 @@ public class MultiTileEntityClassContainer {
         return this;
     }
 
-    public MultiTileEntityClassContainer meta(int aMeta) {
-        mBlockMetaData = (byte) aMeta;
-        return this;
-    }
-
     public MultiTileEntityClassContainer stackSize(int aStackSize) {
-        mStackSize = (byte) aStackSize;
+        stackSize = aStackSize;
         return this;
     }
 
     public MultiTileEntityClassContainer hide() {
-        mHidden = true;
-        return this;
-    }
-
-    public MultiTileEntityClassContainer setBlock(MultiTileEntityBlock aBlock) {
-        block = aBlock;
+        hidden = true;
         return this;
     }
 

@@ -96,8 +96,8 @@ public class MultiTileEntityRegistry {
         return NAMED_REGISTRIES.get(aRegistryName);
     }
 
-    public MultiTileEntityClassContainer create(int aID, Class<? extends MultiTileEntity> aClass) {
-        return new MultiTileEntityClassContainer(this, aID, aClass).setBlock(block);
+    public MultiTileEntityClassContainer create(int metaId, Class<? extends MultiTileEntity> clazz) {
+        return new MultiTileEntityClassContainer(this, block, metaId, clazz);
     }
 
     /**
@@ -110,21 +110,21 @@ public class MultiTileEntityRegistry {
             GT_FML_LOGGER.error("MULTI-TILE REGISTRY ERROR: Class Container is null!");
             tFailed = true;
         } else {
-            if (classContainer.clazz == null) {
+            if (classContainer.getClazz() == null) {
                 GT_FML_LOGGER.error("MULTI-TILE REGISTRY ERROR: Class inside Class Container is null!");
                 tFailed = true;
             }
-            if (classContainer.metaId == GT_Values.W) {
+            if (classContainer.getMetaId() == GT_Values.W) {
                 GT_FML_LOGGER.error("MULTI-TILE REGISTRY ERROR: Class Container uses Wildcard MetaData!");
                 tFailed = true;
             }
-            if (classContainer.metaId < 0) {
+            if (classContainer.getMetaId() < 0) {
                 GT_FML_LOGGER.error("MULTI-TILE REGISTRY ERROR: Class Container uses negative MetaData!");
                 tFailed = true;
             }
-            if (registry.containsKey(classContainer.metaId)) {
+            if (registry.containsKey(classContainer.getMetaId())) {
                 GT_FML_LOGGER.error(
-                    "MULTI-TILE REGISTRY ERROR: Class Container uses occupied MetaData! (" + classContainer.metaId
+                    "MULTI-TILE REGISTRY ERROR: Class Container uses occupied MetaData! (" + classContainer.getMetaId()
                         + ")");
                 tFailed = true;
             }
@@ -139,16 +139,16 @@ public class MultiTileEntityRegistry {
             return null;
         }
 
-        registry.put(classContainer.metaId, classContainer);
+        registry.put(classContainer.getMetaId(), classContainer);
         registrations.add(classContainer);
-        lastRegisteredId = classContainer.metaId;
+        lastRegisteredId = classContainer.getMetaId();
 
-        if (registeredTileEntities.add(classContainer.originalTileEntity.getClass())) {
+        if (registeredTileEntities.add(classContainer.getClazz())) {
             GameRegistry.registerTileEntity(
-                classContainer.originalTileEntity.getClass(),
-                classContainer.originalTileEntity.getTileEntityName());
+                classContainer.getClazz(),
+                classContainer.getOriginalTileEntity().getTileEntityName());
         }
-        return getItem(classContainer.metaId);
+        return getItem(classContainer.getMetaId());
     }
 
     public int lastRegisteredId = GT_Values.W;
@@ -186,7 +186,7 @@ public class MultiTileEntityRegistry {
     public MultiTileEntity getCachedTileEntity(int metaId) {
         MultiTileEntityClassContainer clazz = registry.get(metaId);
         if (clazz == null) return null;
-        return clazz.originalTileEntity;
+        return clazz.getOriginalTileEntity();
     }
 
     public MultiTileEntity getNewTileEntity(@Nonnull final ItemStack stack) {
@@ -196,8 +196,8 @@ public class MultiTileEntityRegistry {
     public MultiTileEntity getNewTileEntity(final int metaId) {
         MultiTileEntityClassContainer clazz = registry.get(metaId);
         if (clazz == null) return null;
-        MultiTileEntity te = (MultiTileEntity) GT_Utility.callConstructor(clazz.clazz, 0, null, true);
-        te.initFromNBT(clazz.parameters, Block.getIdFromBlock(block), metaId);
+        MultiTileEntity te = (MultiTileEntity) GT_Utility.callConstructor(clazz.getClazz(), 0, null, true);
+        te.initFromNBT(clazz.getParameters(), Block.getIdFromBlock(block), metaId);
         return te;
     }
 
