@@ -36,11 +36,11 @@
 dependencies {
     api("com.github.GTNewHorizons:StructureLib:1.3.0:dev")
     api("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
-    api("com.github.GTNewHorizons:NotEnoughItems:2.5.21-GTNH:dev")
+    api("com.github.GTNewHorizons:NotEnoughItems:2.5.23-GTNH:dev")
     api("com.github.GTNewHorizons:GTNHLib:0.2.10:dev")
     api("com.github.GTNewHorizons:ModularUI:1.1.35:dev")
     api("com.github.GTNewHorizons:waila:1.7.1:dev")
-    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-328-GTNH:dev")
+    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-332-GTNH:dev")
     api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.2.19-gtnh:dev")
 
     implementation("com.github.GTNewHorizons:Avaritia:1.49:dev")
@@ -48,11 +48,11 @@ dependencies {
     compileOnlyApi("com.github.GTNewHorizons:AppleCore:3.3.0:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:BuildCraft:7.1.39:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.7.1:dev") { transitive = false }
-    compileOnlyApi("com.github.GTNewHorizons:ProjectRed:4.9.4-GTNH:dev") { transitive = false }
-    compileOnlyApi("com.github.GTNewHorizons:ForestryMC:4.8.4:dev") { transitive = false }
+    compileOnlyApi("com.github.GTNewHorizons:ProjectRed:4.9.5-GTNH:dev") { transitive = false }
+    compileOnlyApi("com.github.GTNewHorizons:ForestryMC:4.8.5:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:Railcraft:9.15.6:dev") { transitive = false }
 
-    compileOnly("com.github.GTNewHorizons:EnderCore:0.4.5:dev") { transitive = false }
+    compileOnly("com.github.GTNewHorizons:EnderCore:0.4.6:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Galacticraft:3.1.3-GTNH:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:TinkersConstruct:1.11.11-GTNH:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Chisel:2.14.1-GTNH:dev") { transitive = false }
@@ -69,7 +69,7 @@ dependencies {
     annotationProcessor("com.google.auto.value:auto-value:1.10.1")
 
     // For testing iApiary
-    //runtimeOnlyNonPublishable("com.github.GTNewHorizons:ForestryMC:4.8.4:dev")
+    //runtimeOnlyNonPublishable("com.github.GTNewHorizons:ForestryMC:4.8.5:dev")
 
     testImplementation(platform('org.junit:junit-bom:5.9.2'))
     testImplementation('org.junit.jupiter:junit-jupiter')
