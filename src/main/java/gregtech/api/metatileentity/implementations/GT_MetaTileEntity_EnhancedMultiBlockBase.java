@@ -22,6 +22,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 
 /**
  * Enhanced multiblock base class, featuring following improvement over {@link GT_MetaTileEntity_MultiBlockBase}
@@ -53,7 +54,7 @@ public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase<T extends GT_Meta
     @Override
     public void setExtendedFacing(ExtendedFacing newExtendedFacing) {
         if (mExtendedFacing != newExtendedFacing) {
-            if (mMachine) stopMachine();
+            if (mMachine) stopMachine(ShutDownReasonRegistry.STRUCTURE_INCOMPLETE);
             mExtendedFacing = newExtendedFacing;
             final IGregTechTileEntity base = getBaseMetaTileEntity();
             mMachine = false;
