@@ -115,7 +115,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
     protected final long[] mAverageEUOutput = new long[] { 0, 0, 0, 0, 0 };
     private boolean mHasEnoughEnergy = true, mRunningThroughTick = false, mInputDisabled = false,
         mOutputDisabled = false, mMuffler = false, mLockUpgrade = false;
-    private boolean mActive = false, mWorkUpdate = false, mSteamConverter = false, mWorks = false;
+    private boolean mActive = false, mWorkUpdate = false, mSteamConverter = false, mWorks = true;
     private boolean oRedstone = false;
     private byte mColor = 0, oColor = 0, oStrongRedstone = 0, oRedstoneData = 63, oTextureData = 0, oUpdateData = 0,
         oTexturePage = 0;

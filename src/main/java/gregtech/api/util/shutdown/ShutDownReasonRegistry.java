@@ -58,12 +58,12 @@ public class ShutDownReasonRegistry {
      * Shut down due to incomplete structure.
      */
     @Nonnull
-    public static final ShutDownReason STRUCTURE_INCOMPLETE = SimpleShutDownReason.ofCritical("structure_incomplete");
+    public static final ShutDownReason STRUCTURE_INCOMPLETE = SimpleShutDownReason.ofNormal("structure_incomplete");
     /**
      * Shut down due to machine damage.
      */
     @Nonnull
-    public static final ShutDownReason NO_REPAIR = SimpleShutDownReason.ofCritical("no_repair");
+    public static final ShutDownReason NO_REPAIR = SimpleShutDownReason.ofNormal("no_repair");
     /**
      * No valid turbine found.
      */
