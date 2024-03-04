@@ -191,9 +191,8 @@ public class GT_Runnable_MachineBlockUpdate implements Runnable {
                     for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
                         final ForgeDirection side = ForgeDirection.VALID_DIRECTIONS[i];
                         final long tCoords = asLong(posX + side.offsetX, posY + side.offsetY, posZ + side.offsetZ);
-                        if (!visited.contains(tCoords)) {
+                        if (visited.add(tCoords)) {
                             tQueue.enqueue(tCoords);
-                            visited.add(tCoords);
                         }
                     }
                 }

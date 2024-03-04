@@ -59,9 +59,8 @@ public class GT_Runnable_Cable_Update extends GT_Runnable_MachineBlockUpdate {
                         final ForgeDirection side = ForgeDirection.VALID_DIRECTIONS[i];
                         if (cable.isConnectedAtSide(side)) {
                             final long tCoords = asLong(posX + side.offsetX, posY + side.offsetY, posZ + side.offsetZ);
-                            if (!visited.contains(tCoords)) {
+                            if (visited.add(tCoords)) {
                                 tQueue.enqueue(tCoords);
-                                visited.add(tCoords);
                             }
                         }
                     }
