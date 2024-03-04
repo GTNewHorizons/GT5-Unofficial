@@ -71,6 +71,8 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.items.GT_TierDrone;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -226,9 +228,9 @@ public class GT_MetaTileEntity_DroneCentre extends
     }
 
     @Override
-    public void stopMachine() {
+    public void stopMachine(@NotNull ShutDownReason reason) {
         destroyRenderBlock();
-        super.stopMachine();
+        super.stopMachine(reason);
     }
 
     @Override
@@ -242,7 +244,7 @@ public class GT_MetaTileEntity_DroneCentre extends
                     default -> 1;
                 } == 0) {
                     droneLevel = 0;
-                    if (!tryConsumeDrone()) criticalStopMachine();
+                    if (!tryConsumeDrone()) stopMachine(ShutDownReasonRegistry.outOfStuff("Any Drone", 1));
                 }
             }
             // Clean invalid connections every 4 seconds

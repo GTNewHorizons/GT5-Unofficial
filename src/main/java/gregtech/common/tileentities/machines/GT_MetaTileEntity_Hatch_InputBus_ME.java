@@ -72,6 +72,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.widget.AESlotWidget;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -489,7 +490,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                             .extractAEPower(request.getStackSize(), Actionable.MODULATE, PowerMultiplier.CONFIG);
                         setInventorySlotContents(i + SLOT_COUNT, oldStack);
                         if (result == null || result.getStackSize() != toExtract) {
-                            controller.criticalStopMachine();
+                            controller.stopMachine(ShutDownReasonRegistry.CRITICAL_NONE);
                             checkRecipeResult = SimpleCheckRecipeResult
                                 .ofFailurePersistOnShutdown("stocking_bus_fail_extraction");
                         }

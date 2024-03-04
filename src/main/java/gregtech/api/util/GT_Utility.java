@@ -3720,11 +3720,15 @@ public class GT_Utility {
         int rEUAmount = 0;
         try {
             if (tTileEntity instanceof IMachineProgress progress) {
-                if (progress.isAllowedToWork()) {
+                if (progress.isAllowedToWork() && !progress.hasThingsToDo()) {
                     tList.add(EnumChatFormatting.RED + "Disabled." + EnumChatFormatting.RESET);
                 }
-                if (progress.wasShutdown()) {
-                    tList.add(EnumChatFormatting.RED + "Shut down due to power loss." + EnumChatFormatting.RESET);
+                if (progress.wasShutdown() && isStringValid(
+                    progress.getLastShutDownReason()
+                        .getDisplayString())) {
+                    tList.add(
+                        progress.getLastShutDownReason()
+                            .getDisplayString());
                 }
                 rEUAmount += 400;
                 int tValue = 0;
