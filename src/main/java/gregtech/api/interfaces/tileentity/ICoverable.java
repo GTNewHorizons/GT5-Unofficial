@@ -11,19 +11,9 @@ import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.CoverInfo;
 
-public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEnergyContainer, Coverable {
-
-    @Override
-default boolean canPlaceCover(ForgeDirection side, int id) {
-        return canPlaceCoverIDAtSide(side, id);
-}
+public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEnergyContainer {
 
     boolean canPlaceCoverIDAtSide(ForgeDirection side, int aID);
-
-    @Override
-default boolean canPlaceCover(ForgeDirection side, ItemStack itemCover) {
-        return canPlaceCover(side, itemCover);
-}
 
     boolean canPlaceCoverItemAtSide(ForgeDirection side, ItemStack aCover);
 
@@ -37,16 +27,6 @@ default boolean canPlaceCover(ForgeDirection side, ItemStack itemCover) {
             setCoverDataAtSide(side, ((ISerializableObject.LegacyCoverData) aData).get());
     }
 
-    @Override
-    default void setCover(@Nonnull ForgeDirection side, int id, @Nonnull ISerializableObject data) {
-        setCoverIdAndDataAtSide(side, id, data);
-    }
-
-    @Override
-    default void setCover(ForgeDirection side, ItemStack item) {
-        setCoverItemAtSide(side, item);
-    }
-
     void setCoverIdAndDataAtSide(ForgeDirection side, int aId, ISerializableObject aData);
 
     void setCoverIDAtSide(ForgeDirection side, int aID);
@@ -58,10 +38,6 @@ default boolean canPlaceCover(ForgeDirection side, ItemStack itemCover) {
     @Deprecated
     int getCoverDataAtSide(ForgeDirection side);
 
-    @Override
-default CoverInfo getCoverInfo(ForgeDirection side) {
-        return getCoverInfoAtSide(side);
-}
     default CoverInfo getCoverInfoAtSide(ForgeDirection side) {
         return null;
     }
@@ -109,7 +85,6 @@ default CoverInfo getCoverInfo(ForgeDirection side) {
      * @param coverSide cover side
      * @param aPlayer   the player who made the change
      */
-    @Override
     default void receiveCoverData(ForgeDirection coverSide, int aCoverID, ISerializableObject aCoverData,
         EntityPlayerMP aPlayer) {
         if (aCoverData instanceof ISerializableObject.LegacyCoverData)

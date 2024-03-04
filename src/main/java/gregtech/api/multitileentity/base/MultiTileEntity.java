@@ -78,7 +78,7 @@ public abstract class MultiTileEntity extends TileEntity
             registryId = nbt.getInteger(NBT.MTE_REG);
             MultiTileEntityRegistry registry = MultiTileEntityRegistry.getRegistry(registryId);
             MultiTileEntityClassContainer clazz = registry.getClassContainer(metaId);
-            nbt = GT_Util.fuseNBT(nbt, clazz.parameters);
+            nbt = GT_Util.fuseNBT(nbt, clazz.getParameters());
         }
         if (nbt.hasKey("x")) xCoord = nbt.getInteger("x");
         if (nbt.hasKey("y")) yCoord = nbt.getInteger("y");
