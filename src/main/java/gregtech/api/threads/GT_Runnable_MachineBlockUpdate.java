@@ -24,7 +24,7 @@ import it.unimi.dsi.fastutil.longs.LongSet;
 public class GT_Runnable_MachineBlockUpdate implements Runnable {
 
     // Borrowed from Angelica until moving to GTNHLib or something
-    final static int SIZE_BITS_X = 1 + log2(MathHelper.roundUpToPowerOfTwo(30000000), RoundingMode.UNNECESSARY);
+    final static int SIZE_BITS_X = 26; // 1 + log2(MathHelper.roundUpToPowerOfTwo(30000000), RoundingMode.UNNECESSARY);
     final static int SIZE_BITS_Z = SIZE_BITS_X;
     final static int SIZE_BITS_Y = 64 - SIZE_BITS_X - SIZE_BITS_Z;
     final static long BITS_X = (1L << SIZE_BITS_X) - 1L;
