@@ -744,7 +744,7 @@ public class GT_PreLoad {
                 "OreDropBehaviour",
                 "general",
                 "FortuneItem",
-                "Settings: \n'UnifiedBlock': Sets the drop to the stone variant of the ore block, \n'Block': Sets the drop to the ore  mined, \n'FortuneItem': Sets the drop to the new ore item and makes it affected by fortune, \n'Item': Sets the drop to the new ore item, \nDefaults to: 'FortuneItem'")
+                "Settings: \n'PerDimBlock': Sets the drop to the block variant of the ore block based on dimension, defaults to stone type, \n'UnifiedBlock': Sets the drop to the stone variant of the ore block, \n'Block': Sets the drop to the ore  mined, \n'FortuneItem': Sets the drop to the new ore item and makes it affected by fortune, \n'Item': Sets the drop to the new ore item, \nDefaults to: 'FortuneItem'")
                 .getString();
             GT_Log.out.println("Trying to set it to: " + setting_string);
             GT_Proxy.OreDropSystem setting = GT_Proxy.OreDropSystem.valueOf(setting_string);

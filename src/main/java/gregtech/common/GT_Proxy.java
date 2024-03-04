@@ -648,6 +648,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 
     public enum OreDropSystem {
         Block,
+        PerDimBlock,
         UnifiedBlock,
         FortuneItem,
         Item

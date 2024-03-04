@@ -332,6 +332,14 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
                     // Unified ore
                     rList.add(new ItemStack(aDroppedOre, (tIsRich ? 2 : 1), this.mMetaData % 1000));
                 }
+                case PerDimBlock -> {
+                    // Per Dimension ore
+                    if (tIsRich) {
+                        rList.add(new ItemStack(aDroppedOre, 1, this.mMetaData));
+                    } else {
+                        rList.add(new ItemStack(aDroppedOre, 1, this.mMetaData % 1000));
+                    }
+                }
                 case Block -> {
                     // Regular ore
                     rList.add(new ItemStack(aDroppedOre, 1, this.mMetaData));
