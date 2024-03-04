@@ -4,12 +4,14 @@ import static gregtech.GT_Mod.GT_FML_LOGGER;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.nbt.NBTTagCompound;
 
+import gregtech.api.objects.XSTR;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.task.TaskHost;
 import gregtech.api.task.TickableTask;
@@ -19,13 +21,10 @@ import gregtech.api.util.GT_Util;
 public abstract class TickableMultiTileEntity extends MultiTileEntity implements TaskHost {
 
     /** Variable for seeing if the Tick Function is called right now. */
-    public boolean isRunningTick = false;
-    /** Gets set to true when the Block received a Block Update. */
-    public boolean blockUpdated = false;
+    private boolean isRunningTick = false;
     /** Timer Value */
-    protected long timer = 0;
-    /** Variable for updating Data to the Client */
-    private boolean sendClientData = false;
+    private final long startingTime = XSTR.XSTR_INSTANCE.nextInt(20);
+    private long timer = startingTime;
 
     private final Map<String, TickableTask<?>> tasks = new HashMap<>();
 
@@ -49,9 +48,9 @@ public abstract class TickableMultiTileEntity extends MultiTileEntity implements
     @Override
     public final void updateEntity() {
         isRunningTick = true;
-        final boolean isServerSide = !worldObj.isRemote;
+        final boolean isServerSide = isServerSide();
         try {
-            if (timer++ == 0) {
+            if (timer++ == startingTime) {
                 markDirty();
                 GT_Util.markChunkDirty(this);
                 onFirstTick(isServerSide);
@@ -79,7 +78,6 @@ public abstract class TickableMultiTileEntity extends MultiTileEntity implements
                 GT_FML_LOGGER.error("UpdateEntity:onTickFailed Failed", e);
             }
         }
-
         isRunningTick = false;
     }
 
