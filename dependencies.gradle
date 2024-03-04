@@ -45,6 +45,7 @@ dependencies {
 
     implementation("com.github.GTNewHorizons:Avaritia:1.49:dev")
 
+    compileOnlyApi('com.github.GTNewHorizons:Angelica:1.0.0-alpha33:api') { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:AppleCore:3.3.0:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:BuildCraft:7.1.39:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.7.1:dev") { transitive = false }
