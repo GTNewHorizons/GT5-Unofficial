@@ -46,7 +46,9 @@ public abstract class GT_AlleleEffect extends Allele implements IAlleleBeeEffect
         }
         return storedData;
     }
-    protected abstract IEffectData doEffectTickThrottled(IBeeGenome genome, IEffectData storedData, IBeeHousing housing);
+
+    protected abstract IEffectData doEffectTickThrottled(IBeeGenome genome, IEffectData storedData,
+        IBeeHousing housing);
 
     @Override
     public IEffectData doFX(IBeeGenome genome, IEffectData storedData, IBeeHousing housing) {

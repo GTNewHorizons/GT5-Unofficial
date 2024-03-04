@@ -4,7 +4,6 @@ import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.TwilightForest;
 
-import gregtech.loaders.misc.bees.GT_EffectMachineBoost;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -29,6 +28,7 @@ import gregtech.common.items.ItemDrop;
 import gregtech.common.items.ItemPollen;
 import gregtech.common.items.ItemPropolis;
 import gregtech.loaders.misc.bees.GT_AlleleEffect;
+import gregtech.loaders.misc.bees.GT_EffectMachineBoost;
 import gregtech.loaders.misc.bees.GT_EffectTreeTwister;
 import gregtech.loaders.misc.bees.GT_Flowers;
 

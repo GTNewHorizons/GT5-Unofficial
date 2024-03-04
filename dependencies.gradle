@@ -43,7 +43,7 @@ dependencies {
     api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-332-GTNH:dev")
     api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.2.19-gtnh:dev")
 
-    runtimeOnlyNonPublishable('com.github.GTNewHorizons:ForestryMC:4.8.4:dev')
+    runtimeOnlyNonPublishable('com.github.GTNewHorizons:ForestryMC:4.8.5:dev')
     runtimeOnlyNonPublishable('com.github.GTNewHorizons:neiaddons:1.15.0:dev')
     runtimeOnlyNonPublishable('com.github.GTNewHorizons:MagicBees:2.7.14-GTNH:dev')
     runtimeOnlyNonPublishable('com.github.GTNewHorizons:Binnie:2.3.3:dev')
