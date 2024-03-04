@@ -41,7 +41,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
-import org.lwjgl.opengl.GL11;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -901,10 +900,6 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
             double maxV = forceField.getMaxV();
             double xBaseOffset = 3 * getExtendedFacing().getRelativeBackInWorld().offsetX;
             double zBaseOffset = 3 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
-            GL11.glPushMatrix();
-            GL11.glDisable(GL11.GL_CULL_FACE);
-            GL11.glDisable(GL11.GL_ALPHA_TEST);
-            GL11.glEnable(GL11.GL_BLEND);
             tes.setColorOpaque_F(1f, 1f, 1f);
             tes.setBrightness(15728880);
             //Center O:  0,  0         1 ------- 8
@@ -924,11 +919,6 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
             renderForceField(x + xBaseOffset + 0.5, y, z + zBaseOffset + 0.5, 5, minU, maxU, minV, maxV);
             renderForceField(x + xBaseOffset + 0.5, y, z + zBaseOffset + 0.5, 6, minU, maxU, minV, maxV);
             renderForceField(x + xBaseOffset + 0.5, y, z + zBaseOffset + 0.5, 7, minU, maxU, minV, maxV);
-            GL11.glDisable(GL11.GL_BLEND);
-            GL11.glEnable(GL11.GL_ALPHA_TEST);
-            GL11.glEnable(GL11.GL_CULL_FACE);
-            GL11.glPopMatrix();
-            
         }
         // Needs to be false to render the controller
         return false;
