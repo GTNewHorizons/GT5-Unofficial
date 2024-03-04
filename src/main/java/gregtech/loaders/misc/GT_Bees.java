@@ -4,6 +4,7 @@ import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.TwilightForest;
 
+import gregtech.loaders.misc.bees.GT_EffectMachineBoost;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -50,6 +51,7 @@ public class GT_Bees {
     public static IAlleleInteger superLife;
 
     public static IAlleleBeeEffect treetwisterEffect;
+    public static IAlleleBeeEffect machineBoostEffect;
 
     public static ItemPropolis propolis;
     public static ItemPollen pollen;
@@ -94,6 +96,7 @@ public class GT_Bees {
 
         blinkLife = new AlleleInteger("lifeBlink", 2, false, EnumBeeChromosome.LIFESPAN);
         superLife = new AlleleInteger("lifeEon", 600, false, EnumBeeChromosome.LIFESPAN);
+        machineBoostEffect = new GT_EffectMachineBoost();
 
         if (GalaxySpace.isModLoaded() && TwilightForest.isModLoaded()) {
             GT_Mod.GT_FML_LOGGER.info("treetwisterEffect: GalaxySpace and TwilightForest loaded, using default impl");
