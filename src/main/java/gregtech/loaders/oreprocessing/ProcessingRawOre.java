@@ -189,7 +189,7 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                 .addTo(hammerRecipes);
 
             int chanceOre2 = tPrimaryByProduct == null ? 0
-                : tPrimaryByProduct.stackSize * 10 * aMaterial.mByProductMultiplier;
+                : tPrimaryByProduct.stackSize * 5 * aMaterial.mByProductMultiplier;
             chanceOre2 = 100 * chanceOre2; // converting to the GT format, 100% is 10000
             GT_Values.RA.stdBuilder()
                 .itemInputs(aOreStack)

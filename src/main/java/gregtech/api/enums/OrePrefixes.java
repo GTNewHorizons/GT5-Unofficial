@@ -675,7 +675,6 @@ public enum OrePrefixes {
     static {
         pulp.mPrefixInto = dust;
         oreGem.mPrefixInto = ore;
-        rawOre.mPrefixInto = ore;
         leaves.mPrefixInto = treeLeaves;
         sapling.mPrefixInto = treeSapling;
         itemDust.mPrefixInto = dust;
