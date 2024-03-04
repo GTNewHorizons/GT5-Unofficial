@@ -31,7 +31,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
 import com.google.common.collect.Multimap;
@@ -408,7 +407,7 @@ public class GregTech_API {
      */
     public static boolean causeMachineUpdate(World aWorld, int aX, int aY, int aZ) {
         if (aWorld != null && !aWorld.isRemote && !isDummyWorld(aWorld)) { // World might be null during World-gen
-            GT_Runnable_MachineBlockUpdate.setMachineUpdateValues(aWorld, new ChunkCoordinates(aX, aY, aZ));
+            GT_Runnable_MachineBlockUpdate.setMachineUpdateValues(aWorld, aX, aY, aZ);
             return true;
         }
         return false;
@@ -419,7 +418,7 @@ public class GregTech_API {
         if (aWorld == null || aWorld.isRemote || isDummyWorld(aWorld)) {
             return false;
         } // World might be null during World-gen
-        GT_Runnable_Cable_Update.setCableUpdateValues(aWorld, new ChunkCoordinates(aX, aY, aZ));
+        GT_Runnable_Cable_Update.setCableUpdateValues(aWorld, aX, aY, aZ);
         return true;
     }
 
@@ -481,8 +480,7 @@ public class GregTech_API {
         return new gregtech.api.items.GT_Generic_Item(
             aUnlocalized,
             aEnglish,
-            "Doesn't work as intended, this is a Bug",
-            false);
+            "Doesn't work as intended, this is a Bug");
     }
 
     /**
@@ -528,8 +526,7 @@ public class GregTech_API {
         return new gregtech.api.items.GT_Generic_Item(
             aUnlocalized,
             aEnglish,
-            "Doesn't work as intended, this is a Bug",
-            false);
+            "Doesn't work as intended, this is a Bug");
     }
 
     /**
@@ -552,8 +549,7 @@ public class GregTech_API {
         return new gregtech.api.items.GT_Generic_Item(
             aUnlocalized,
             aEnglish,
-            "Doesn't work as intended, this is a Bug",
-            false);
+            "Doesn't work as intended, this is a Bug");
     }
 
     /**

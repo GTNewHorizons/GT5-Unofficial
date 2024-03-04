@@ -138,7 +138,7 @@ public class GT_Values {
         "UMV", // 12
         "UXV", // 13
         "MAX", // 14
-        "ERROR VOLTAGE" // 15
+        "MAX+" // 15
     };
 
     /**
@@ -177,7 +177,9 @@ public class GT_Values {
         EnumChatFormatting.RED.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.UNDERLINE, // UMV, 12
         EnumChatFormatting.DARK_RED.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.UNDERLINE, // UXV, 13
         EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.UNDERLINE, // MAX, 14
-        EnumChatFormatting.OBFUSCATED.toString() // ~~~, 15
+        EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD
+            + EnumChatFormatting.UNDERLINE
+            + EnumChatFormatting.ITALIC, // MAX+, 15
     };
 
     /**

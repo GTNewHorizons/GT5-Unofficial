@@ -1068,7 +1068,7 @@ public final class RecipeMaps {
     public static final RecipeMap<FuelBackend> denseLiquidFuels = RecipeMapBuilder
         .of("gt.recipe.semifluidboilerfuels", FuelBackend::new)
         .maxIO(1, 1, 0, 0)
-        .neiSpecialInfoFormatter(FuelSpecialValueFormatter.INSTANCE)
+        .disableRegisterNEI()
         .build();
     public static final RecipeMap<FuelBackend> plasmaFuels = RecipeMapBuilder
         .of("gt.recipe.plasmageneratorfuels", FuelBackend::new)

@@ -1,30 +1,59 @@
 package gregtech.api.threads;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
 import gregtech.common.GT_Proxy;
+import it.unimi.dsi.fastutil.longs.LongArrayFIFOQueue;
+import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
+import it.unimi.dsi.fastutil.longs.LongSet;
 
 public class GT_Runnable_MachineBlockUpdate implements Runnable {
 
+    // Borrowed from Angelica until moving to GTNHLib or something
+    final static int SIZE_BITS_X = 26; // 1 + log2(MathHelper.roundUpToPowerOfTwo(30000000), RoundingMode.UNNECESSARY);
+    final static int SIZE_BITS_Z = SIZE_BITS_X;
+    final static int SIZE_BITS_Y = 64 - SIZE_BITS_X - SIZE_BITS_Z;
+    final static long BITS_X = (1L << SIZE_BITS_X) - 1L;
+    final static long BITS_Y = (1L << SIZE_BITS_Y) - 1L;
+    final static long BITS_Z = (1L << SIZE_BITS_Z) - 1L;
+    final static int BIT_SHIFT_Z = SIZE_BITS_Y;
+    final static int BIT_SHIFT_X = SIZE_BITS_Y + SIZE_BITS_Z;
+
+    static long asLong(int x, int y, int z) {
+        long l = 0L;
+        l |= ((long) x & BITS_X) << BIT_SHIFT_X;
+        l |= ((long) y & BITS_Y) << 0;
+        l |= ((long) z & BITS_Z) << BIT_SHIFT_Z;
+        return l;
+    }
+
+    public static int unpackLongX(long packedPos) {
+        return (int) (packedPos << 64 - BIT_SHIFT_X - SIZE_BITS_X >> 64 - SIZE_BITS_X);
+    }
+
+    public static int unpackLongY(long packedPos) {
+        return (int) (packedPos << 64 - SIZE_BITS_Y >> 64 - SIZE_BITS_Y);
+    }
+
+    public static int unpackLongZ(long packedPos) {
+        return (int) (packedPos << 64 - BIT_SHIFT_Z - SIZE_BITS_Z >> 64 - SIZE_BITS_Z);
+    }
+
     // used by runner thread
-    protected final ChunkCoordinates mCoords;
+    protected final int initialX, initialY, initialZ;
     protected final World world;
-    protected final Set<ChunkCoordinates> visited = new HashSet<>(80);
-    protected final Queue<ChunkCoordinates> tQueue = new LinkedList<>();
+    protected final LongSet visited = new LongOpenHashSet();
+    protected final LongArrayFIFOQueue tQueue = new LongArrayFIFOQueue();
 
     // Threading
     private static final ThreadFactory THREAD_FACTORY = r -> {
@@ -35,11 +64,14 @@ public class GT_Runnable_MachineBlockUpdate implements Runnable {
     protected static ExecutorService EXECUTOR_SERVICE;
 
     // This class should never be initiated outside of this class!
-    protected GT_Runnable_MachineBlockUpdate(World aWorld, ChunkCoordinates aCoords) {
+    protected GT_Runnable_MachineBlockUpdate(World aWorld, int posX, int posY, int posZ) {
         this.world = aWorld;
-        this.mCoords = aCoords;
-        visited.add(aCoords);
-        tQueue.add(aCoords);
+        this.initialX = posX;
+        this.initialY = posY;
+        this.initialZ = posZ;
+        final long coords = asLong(posX, posY, posZ);
+        visited.add(coords);
+        tQueue.enqueue(coords);
     }
 
     public static boolean isEnabled() {
@@ -69,9 +101,9 @@ public class GT_Runnable_MachineBlockUpdate implements Runnable {
     protected static boolean isEnabled = true;
     protected static final ThreadLocal<Boolean> perThreadEnable = ThreadLocal.withInitial(() -> true);
 
-    public static void setMachineUpdateValues(World aWorld, ChunkCoordinates aCoords) {
+    public static void setMachineUpdateValues(World aWorld, int posX, int posY, int posZ) {
         if (isEnabled() && isCurrentThreadEnabled()) {
-            EXECUTOR_SERVICE.submit(new GT_Runnable_MachineBlockUpdate(aWorld, aCoords));
+            EXECUTOR_SERVICE.submit(new GT_Runnable_MachineBlockUpdate(aWorld, posX, posY, posZ));
         }
     }
 
@@ -116,9 +148,14 @@ public class GT_Runnable_MachineBlockUpdate implements Runnable {
 
     @Override
     public void run() {
+        int posX, posY, posZ;
         try {
             while (!tQueue.isEmpty()) {
-                final ChunkCoordinates aCoords = tQueue.poll();
+                final long packedCoords = tQueue.dequeueLong();
+                posX = unpackLongX(packedCoords);
+                posY = unpackLongY(packedCoords);
+                posZ = unpackLongZ(packedCoords);
+
                 final TileEntity tTileEntity;
                 final boolean isMachineBlock;
 
@@ -128,10 +165,9 @@ public class GT_Runnable_MachineBlockUpdate implements Runnable {
                 // ConcurrentModificationException. So, lock that shit.
                 GT_Proxy.TICK_LOCK.lock();
                 try {
-                    tTileEntity = world.getTileEntity(aCoords.posX, aCoords.posY, aCoords.posZ);
-                    isMachineBlock = GregTech_API.isMachineBlock(
-                        world.getBlock(aCoords.posX, aCoords.posY, aCoords.posZ),
-                        world.getBlockMetadata(aCoords.posX, aCoords.posY, aCoords.posZ));
+                    tTileEntity = world.getTileEntity(posX, posY, posZ);
+                    isMachineBlock = GregTech_API
+                        .isMachineBlock(world.getBlock(posX, posY, posZ), world.getBlockMetadata(posX, posY, posZ));
                 } finally {
                     GT_Proxy.TICK_LOCK.unlock();
                 }
@@ -148,25 +184,22 @@ public class GT_Runnable_MachineBlockUpdate implements Runnable {
                     || (tTileEntity instanceof IMachineBlockUpdateable
                         && ((IMachineBlockUpdateable) tTileEntity).isMachineBlockUpdateRecursive())
                     || isMachineBlock) {
-                    ChunkCoordinates tCoords;
-
-                    if (visited.add(tCoords = new ChunkCoordinates(aCoords.posX + 1, aCoords.posY, aCoords.posZ)))
-                        tQueue.add(tCoords);
-                    if (visited.add(tCoords = new ChunkCoordinates(aCoords.posX - 1, aCoords.posY, aCoords.posZ)))
-                        tQueue.add(tCoords);
-                    if (visited.add(tCoords = new ChunkCoordinates(aCoords.posX, aCoords.posY + 1, aCoords.posZ)))
-                        tQueue.add(tCoords);
-                    if (visited.add(tCoords = new ChunkCoordinates(aCoords.posX, aCoords.posY - 1, aCoords.posZ)))
-                        tQueue.add(tCoords);
-                    if (visited.add(tCoords = new ChunkCoordinates(aCoords.posX, aCoords.posY, aCoords.posZ + 1)))
-                        tQueue.add(tCoords);
-                    if (visited.add(tCoords = new ChunkCoordinates(aCoords.posX, aCoords.posY, aCoords.posZ - 1)))
-                        tQueue.add(tCoords);
+                    for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
+                        final ForgeDirection side = ForgeDirection.VALID_DIRECTIONS[i];
+                        final long tCoords = asLong(posX + side.offsetX, posY + side.offsetY, posZ + side.offsetZ);
+                        if (visited.add(tCoords)) {
+                            tQueue.enqueue(tCoords);
+                        }
+                    }
                 }
             }
         } catch (Exception e) {
             GT_Mod.GT_FML_LOGGER.error(
-                "Well this update was broken... " + mCoords
+                "Well this update was broken... " + initialX
+                    + ", "
+                    + initialY
+                    + ", "
+                    + initialZ
                     + ", mWorld={"
                     + world.getProviderName()
                     + " @dimId "

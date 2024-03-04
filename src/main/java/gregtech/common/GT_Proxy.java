@@ -2368,8 +2368,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                         aEvent.player,
                         GT_LanguageManager.addStringLocalization(
                             "Interaction_DESCRIPTION_Index_097",
-                            "It's dangerous to go alone! Take this.",
-                            false));
+                            "It's dangerous to go alone! Take this."));
                     aEvent.player.worldObj.spawnEntityInWorld(
                         new EntityItem(
                             aEvent.player.worldObj,
