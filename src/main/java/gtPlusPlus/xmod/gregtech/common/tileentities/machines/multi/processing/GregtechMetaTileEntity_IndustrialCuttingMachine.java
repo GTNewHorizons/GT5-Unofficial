@@ -177,6 +177,11 @@ public class GregtechMetaTileEntity_IndustrialCuttingMachine extends
         return false;
     }
 
+    @Override
+    public boolean isInputSeparationEnabled() {
+        return true;
+    }
+
     public Block getCasingBlock() {
         return ModBlocks.blockCasings2Misc;
     }
