@@ -131,12 +131,12 @@ public class GT_Block_Ores extends GT_Block_Ores_Abstract {
 
     @Override
     public void harvestBlock(World worldIn, EntityPlayer player, int x, int y, int z, int meta) {
-                if (!(player instanceof FakePlayer)){
-                        GT_TileEntity_Ores.shouldFortune = true;
-                    }
-                super.harvestBlock(worldIn, player, x, y, z, meta);
-                if (GT_TileEntity_Ores.shouldFortune){
-                        GT_TileEntity_Ores.shouldFortune = false;
-                    }
-            }
+        if (!(player instanceof FakePlayer)) {
+            GT_TileEntity_Ores.shouldFortune = true;
+        }
+        super.harvestBlock(worldIn, player, x, y, z, meta);
+        if (GT_TileEntity_Ores.shouldFortune) {
+            GT_TileEntity_Ores.shouldFortune = false;
+        }
+    }
 }
