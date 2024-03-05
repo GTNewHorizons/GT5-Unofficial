@@ -29,6 +29,7 @@ import gregtech.api.util.GT_Utility;
 public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntity {
 
     public short mMetaData = 0;
+    protected static boolean shouldFortune = false;
     public boolean mNatural = false;
     public boolean mBlocked = true;
     public boolean mBlockedChecked = false;
@@ -319,13 +320,13 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
                     rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, (tIsRich ? 2 : 1)));
                 }
                 case FortuneItem -> {
-                    if (!this.mNatural) {
-                        rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, (tIsRich ? 2 : 1)));
-                    } else {
+                    if (this.mNatural && shouldFortune) {
                         Random tRandom = new XSTR(this.xCoord ^ this.yCoord ^ this.zCoord);
                         long amount = (long) Math
                             .max((tIsRich ? 2 : 1), tRandom.nextInt((1 + Math.min(3, aFortune)) * (tIsRich ? 2 : 1)));
                         rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, amount));
+                    } else {
+                        rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, (tIsRich ? 2 : 1)));
                     }
                 }
                 case UnifiedBlock -> {
