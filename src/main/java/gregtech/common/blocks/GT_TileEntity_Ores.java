@@ -320,7 +320,11 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
                     rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, (tIsRich ? 2 : 1)));
                 }
                 case FortuneItem -> {
-                    if (this.mNatural && shouldFortune) {
+                    // if shouldFortune and isNatural then get fortune drops
+                    // if not shouldFortune or not isNatural then get normal drops
+                    // if not shouldFortune and isNatural then get normal drops
+                    // if shouldFortune and not isNatural then get normal drops
+                    if (shouldFortune && this.mNatural) {
                         Random tRandom = new XSTR(this.xCoord ^ this.yCoord ^ this.zCoord);
                         long amount = (long) Math
                             .max((tIsRich ? 2 : 1), tRandom.nextInt((1 + Math.min(3, aFortune)) * (tIsRich ? 2 : 1)));
