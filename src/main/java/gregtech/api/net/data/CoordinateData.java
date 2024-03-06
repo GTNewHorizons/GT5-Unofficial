@@ -2,8 +2,6 @@ package gregtech.api.net.data;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.util.ChunkCoordinates;
-
 import com.google.common.io.ByteArrayDataInput;
 
 import io.netty.buffer.ByteBuf;
@@ -12,14 +10,12 @@ public class CoordinateData extends PacketData<MultiTileEntityProcess> {
 
     public final static int COORDINATE_DATA_ID = 0;
 
-    private ChunkCoordinates coords;
-
-    public CoordinateData(ChunkCoordinates coords) {
-        this.coords = coords;
-    }
+    private int x, y, z;
 
     public CoordinateData(int x, int y, int z) {
-        this(new ChunkCoordinates(x, y, z));
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
 
     public CoordinateData() {}
@@ -31,20 +27,21 @@ public class CoordinateData extends PacketData<MultiTileEntityProcess> {
 
     @Override
     public void encode(@Nonnull ByteBuf out) {
-        out.writeInt(coords.posX);
-        out.writeInt(coords.posY);
-        out.writeInt(coords.posZ);
+        out.writeInt(x);
+        out.writeInt(y);
+        out.writeInt(z);
     }
 
     @Override
     public void decode(@Nonnull ByteArrayDataInput in) {
-        coords = new ChunkCoordinates(in.readInt(), in.readInt(), in.readInt());
+        x = in.readInt();
+        y = in.readInt();
+        z = in.readInt();
     }
 
     @Override
     public void process(MultiTileEntityProcess processData) {
-        if (coords == null) return;
-        processData.giveCoordinates(coords);
+        processData.giveCoordinates(x, y, z);
     }
 
 }

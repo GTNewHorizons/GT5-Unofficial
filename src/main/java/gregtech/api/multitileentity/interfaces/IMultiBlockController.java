@@ -44,4 +44,6 @@ public interface IMultiBlockController
     FluidInventoryLogic unregisterFluidInventory(@Nonnull UUID id, @Nonnull InventoryType type);
 
     void changeFluidInventoryDisplayName(@Nonnull UUID id, @Nullable String displayName, @Nonnull InventoryType type);
+
+    void registerSpecialCasings(@Nonnull IMultiBlockPart part);
 }

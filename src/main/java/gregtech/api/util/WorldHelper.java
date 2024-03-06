@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -17,22 +16,21 @@ public class WorldHelper {
 
     @Nullable
     public static TileEntity getTileEntityAtSide(@Nonnull final ForgeDirection side, @Nonnull final IBlockAccess world,
-        @Nonnull final ChunkCoordinates origin) {
+        final int x, final int y, final int z) {
         Objects.requireNonNull(side);
         Objects.requireNonNull(world);
-        Objects.requireNonNull(origin);
 
-        final int x = origin.posX + side.offsetX;
-        final int y = origin.posY + side.offsetY;
-        final int z = origin.posZ + side.offsetZ;
+        final int newX = x + side.offsetX;
+        final int newY = y + side.offsetY;
+        final int newZ = z + side.offsetZ;
 
-        return world.getTileEntity(x, y, z);
+        return world.getTileEntity(newX, newY, newZ);
     }
 
     @Nullable
     public static IInventory getIInventoryAtSide(@Nonnull final ForgeDirection side, @Nonnull final IBlockAccess world,
-        @Nonnull final ChunkCoordinates origin) {
-        TileEntity te = getTileEntityAtSide(side, world, origin);
+        final int x, final int y, final int z) {
+        final TileEntity te = getTileEntityAtSide(side, world, x, y, z);
         if (te instanceof IInventory teii) return teii;
         return null;
     }

@@ -13,6 +13,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -24,6 +25,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.multitileentity.base.MultiTileEntity;
 import gregtech.api.multitileentity.interfaces.IItemUpdatable;
+import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
+import gregtech.api.util.GT_Utility;
 
 public class MultiTileEntityItem extends ItemBlock implements IFluidContainerItem, IItemUpdatable {
 
@@ -48,57 +51,61 @@ public class MultiTileEntityItem extends ItemBlock implements IFluidContainerIte
     }
 
     @Override
-    public boolean onItemUse(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
-        int ordinalSide, float aHitX, float aHitY, float aHitZ) {
+    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int ordinalSide,
+        float aHitX, float aHitY, float aHitZ) {
 
-        if (aY < 0 || aY > aWorld.getHeight()) return false;
+        if (y < 0 || y > world.getHeight()) return false;
 
-        if (aPlayer == null) return false;
+        if (player == null) return false;
 
         try {
             ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
-            final Block tClickedBlock = aWorld.getBlock(aX, aY, aZ);
+            final Block clickedBlock = world.getBlock(x, y, z);
 
-            if (tClickedBlock instanceof BlockSnow && (aWorld.getBlockMetadata(aX, aY, aZ) & 7) < 1) {
+            if (clickedBlock instanceof BlockSnow && (world.getBlockMetadata(x, y, z) & 7) < 1) {
                 ordinalSide = SIDE_TOP;
                 side = ForgeDirection.UP;
-            } else if (tClickedBlock != Blocks.vine && tClickedBlock != Blocks.tallgrass
-                && tClickedBlock != Blocks.deadbush
-                && !tClickedBlock.isReplaceable(aWorld, aX, aY, aZ)) {
-                    aX += side.offsetX;
-                    aY += side.offsetY;
-                    aZ += side.offsetZ;
+            } else if (clickedBlock != Blocks.vine && clickedBlock != Blocks.tallgrass
+                && clickedBlock != Blocks.deadbush
+                && !clickedBlock.isReplaceable(world, x, y, z)) {
+                    x += side.offsetX;
+                    y += side.offsetY;
+                    z += side.offsetZ;
                 }
-            final Block tReplacedBlock = aWorld.getBlock(aX, aY, aZ);
+            final Block replacedBlock = world.getBlock(x, y, z);
 
-            if (!tReplacedBlock.isReplaceable(aWorld, aX, aY, aZ)
-                || !block.canReplace(aWorld, aX, aY, aZ, ordinalSide, aStack)) {
+            if (!replacedBlock.isReplaceable(world, x, y, z) || !block.canReplace(world, x, y, z, ordinalSide, stack)) {
                 return false;
             }
 
-            if (aStack.stackSize == 0 || (!aPlayer.canPlayerEdit(aX, aY, aZ, ordinalSide, aStack))) {
+            if (stack.stackSize == 0 || (!player.canPlayerEdit(x, y, z, ordinalSide, stack))) {
                 return false;
             }
 
-            if (!aWorld.setBlock(aX, aY, aZ, block, Items.feather.getDamage(aStack), 2)) {
+            if (!world.setBlock(x, y, z, block, Items.feather.getDamage(stack), 2)) {
                 return false;
+            }
+
+            TileEntity te = world.getTileEntity(x, y, z);
+            if (te instanceof IMultiTileEntity mute) {
+                mute.setFacing(GT_Utility.getSideFromPlayerFacing(player));
             }
 
             try {
-                if (!aWorld.isRemote) {
-                    aWorld.notifyBlockChange(aX, aY, aZ, tReplacedBlock);
-                    aWorld.func_147453_f(aX, aY, aZ, block);/* updateNeighborsAboutBlockChange */
+                if (!world.isRemote) {
+                    world.notifyBlockChange(x, y, z, replacedBlock);
+                    world.func_147453_f(x, y, z, block);/* updateNeighborsAboutBlockChange */
                 }
             } catch (Throwable e) {
                 GT_FML_LOGGER.error("notifyBlockChange", e);
             }
             try {
-                aWorld.func_147451_t /* updateAllLightTypes */(aX, aY, aZ);
+                world.func_147451_t /* updateAllLightTypes */(x, y, z);
             } catch (Throwable e) {
                 GT_FML_LOGGER.error("updateAllLightTypes", e);
             }
 
-            aStack.stackSize--;
+            stack.stackSize--;
             return true;
 
         } catch (Throwable e) {
@@ -173,13 +180,12 @@ public class MultiTileEntityItem extends ItemBlock implements IFluidContainerIte
 
     @Override
     public final String getUnlocalizedName() {
-        super.getUnlocalizedName();
         return block.getRegistry().internalName;
     }
 
     @Override
-    public final String getUnlocalizedName(ItemStack aStack) {
-        return block.getRegistry().getClassContainer(Items.feather.getDamage(aStack)).getUnlocalizedName();
+    public final String getUnlocalizedName(ItemStack stack) {
+        return block.getRegistry().internalName + "." + Items.feather.getDamage(stack);
     }
 
     @Override

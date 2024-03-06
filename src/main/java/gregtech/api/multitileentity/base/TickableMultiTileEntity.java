@@ -4,15 +4,14 @@ import static gregtech.GT_Mod.GT_FML_LOGGER;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-import gregtech.api.objects.XSTR;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.objects.XSTR;
 import gregtech.api.task.TaskHost;
 import gregtech.api.task.TickableTask;
 import gregtech.api.util.GT_Log;
@@ -32,19 +31,7 @@ public abstract class TickableMultiTileEntity extends MultiTileEntity implements
         super(true);
     }
 
-    @Override
-    public final void registerTask(@Nonnull TickableTask<?> task) {
-        if (tasks.containsKey(task.getName())) {
-            throw new IllegalStateException(String.format("Task with name %s is already registered", task.getName()));
-        }
-        tasks.put(task.getName(), task);
-    }
-
-    @Nullable
-    public TickableTask<?> getTask(@Nonnull String name) {
-        return tasks.get(name);
-    }
-
+    // Ticking methods
     @Override
     public final void updateEntity() {
         isRunningTick = true;
@@ -53,9 +40,9 @@ public abstract class TickableMultiTileEntity extends MultiTileEntity implements
             if (timer++ == startingTime) {
                 markDirty();
                 GT_Util.markChunkDirty(this);
-                onFirstTick(isServerSide);
+                onFirstTick();
             }
-            onPreTick(timer, isServerSide);
+            onPreTick(timer);
             super.updateEntity();
             /*
              * if (!isServerSide && needsUpdate) {
@@ -63,17 +50,17 @@ public abstract class TickableMultiTileEntity extends MultiTileEntity implements
              * needsUpdate = false;
              * }
              */
-            onTick(timer, isServerSide);
+            onTick(timer);
             for (TickableTask<?> task : tasks.values()) {
                 task.update(timer, isServerSide);
             }
-            onPostTick(timer, isServerSide);
+            onPostTick(timer);
 
         } catch (Throwable e) {
             GT_FML_LOGGER.error("UpdateEntity Failed", e);
             e.printStackTrace(GT_Log.err);
             try {
-                onTickFailed(timer, isServerSide);
+                onTickFailed(timer);
             } catch (Throwable e2) {
                 GT_FML_LOGGER.error("UpdateEntity:onTickFailed Failed", e);
             }
@@ -84,28 +71,29 @@ public abstract class TickableMultiTileEntity extends MultiTileEntity implements
     /**
      * The very first Tick happening to this TileEntity.
      */
-    protected void onFirstTick(boolean isServerSide) {}
+    protected void onFirstTick() {}
 
     /**
      * The first part of the Tick, before block update.
      */
-    protected void onPreTick(long tick, boolean isServerSide) {}
+    protected void onPreTick(long tick) {}
 
     /**
      * The regular Tick. After block update, before sending data to client.
      */
-    protected void onTick(long tick, boolean isServerSide) {}
+    protected void onTick(long tick) {}
 
     /**
      * The absolute last part of the Tick, after sending data to client.
      */
-    protected void onPostTick(long tick, boolean isServerSide) {}
+    protected void onPostTick(long tick) {}
 
     /**
      * Gets called when there is an Exception/Error happening during one of the Tick methods.
      */
-    protected void onTickFailed(long tick, boolean isServerSide) {}
+    protected void onTickFailed(long tick) {}
 
+    // WorldSaving methods
     protected final void readTasksNBT(NBTTagCompound nbt) {
         if (nbt.hasKey(GT_Values.NBT.TASKS)) {
             NBTTagCompound tasksTag = nbt.getCompoundTag(GT_Values.NBT.TASKS);
@@ -125,5 +113,19 @@ public abstract class TickableMultiTileEntity extends MultiTileEntity implements
             tasksTag.setTag(task.getName(), tag);
         }
         aNBT.setTag(GT_Values.NBT.TASKS, tasksTag);
+    }
+
+    // TaskHost methods
+    @Override
+    public final void registerTask(@Nonnull TickableTask<?> task) {
+        if (tasks.containsKey(task.getName())) {
+            throw new IllegalStateException(String.format("Task with name %s is already registered", task.getName()));
+        }
+        tasks.put(task.getName(), task);
+    }
+
+    @Nullable
+    public TickableTask<?> getTask(@Nonnull String name) {
+        return tasks.get(name);
     }
 }

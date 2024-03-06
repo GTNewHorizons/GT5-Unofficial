@@ -17,10 +17,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cricketcraft.chisel.api.IFacade;
-import com.gtnewhorizons.modularui.api.UIInfos;
 
 import cpw.mods.fml.common.Optional;
-import gregtech.api.gui.GUIHost;
 import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
 import gregtech.common.covers.CoverInfo;
@@ -67,7 +65,7 @@ public class MultiTileEntityBlock extends BlockContainer implements IFacade {
             return;
         }
 
-        mute.onNeighborBlockChange(worldIn, neighbor);
+        mute.onNeighborBlockChange(neighbor);
     }
 
     @Override
@@ -90,8 +88,6 @@ public class MultiTileEntityBlock extends BlockContainer implements IFacade {
 
         return mute.onBlockActivated(player, ForgeDirection.getOrientation(side), subX, subY, subZ);
     }
-
-
 
     @Override
     public String getHarvestTool(final int metadata) {
@@ -151,5 +147,22 @@ public class MultiTileEntityBlock extends BlockContainer implements IFacade {
             }
         }
         return 0;
+    }
+
+    @Override
+    public void breakBlock(World worldIn, int x, int y, int z, Block blockBroken, int meta) {
+        final TileEntity te = worldIn.getTileEntity(x, y, z);
+        if (te instanceof IMultiTileEntity mute) {
+            mute.onBlockBroken();
+        }
+        super.breakBlock(worldIn, x, y, z, blockBroken, meta);
+    }
+
+    @Override
+    public void onBlockAdded(World worldIn, int x, int y, int z) {
+        super.onBlockAdded(worldIn, x, y, z);
+        final TileEntity te = worldIn.getTileEntity(x,y,z);
+        if (!(te instanceof final IMultiTileEntity mute)) return;
+        mute.onBlockPlaced();
     }
 }

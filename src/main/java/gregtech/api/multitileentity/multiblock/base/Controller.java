@@ -22,6 +22,7 @@ import javax.annotation.Nullable;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -200,7 +201,7 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
 
         structureOkay = nbt.getBoolean(NBT.STRUCTURE_OK);
         extendedFacing = ExtendedFacing
-            .of(getFrontFacing(), Rotation.byIndex(nbt.getByte(NBT.ROTATION)), Flip.byIndex(nbt.getByte(NBT.FLIP)));
+            .of(getFacing(), Rotation.byIndex(nbt.getByte(NBT.ROTATION)), Flip.byIndex(nbt.getByte(NBT.FLIP)));
 
         voidingMode = VoidingMode.fromName(nbt.getString(NBT.VOIDING_MODE));
         separateInputs = nbt.getBoolean(NBT.SEPARATE_INPUTS);
@@ -431,9 +432,9 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
     }
 
     @Override
-    public void onFirstTick(boolean isServerSide) {
-        super.onFirstTick(isServerSide);
-        if (isServerSide) {
+    public void onFirstTick() {
+        super.onFirstTick();
+        if (isServerSide()) {
             checkStructure(true);
         } else {
             StructureLibAPI.queryAlignment(this);
@@ -460,15 +461,17 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
     }
 
     @Override
-    public void onTick(long tick, boolean isServerSide) {
+    public void onTick(long tick) {
+        if (!isServerSide()) return;
+
         if (!tickCovers()) {
             return;
         }
     }
 
     @Override
-    public void onPostTick(long tick, boolean isServerSide) {
-        if (!isServerSide) { // client side
+    public void onPostTick(long tick) {
+        if (!isServerSide()) { // client side
             doActivitySound(getActivitySoundLoop());
             return;
         }
@@ -500,13 +503,14 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
                 itemOutputIterator.remove();
                 continue;
             }
-            if (!part.shouldTick(timer)) {
+            if (!part.shouldTick(tick)) {
                 itemOutputIterator.remove();
                 continue;
             }
 
+            final ChunkCoordinates coords = part.getCoords();
             final IInventory facingInventory = WorldHelper
-                .getIInventoryAtSide(part.getFrontFacing(), getWorldObj(), part.getCoords());
+                .getIInventoryAtSide(part.getFacing(), getWorldObj(), coords.posX, coords.posY, coords.posZ);
             if (facingInventory == null) {
                 continue;
             }
@@ -514,8 +518,8 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
             moveMultipleItemStacks(
                 part,
                 facingInventory,
-                part.getFrontFacing(),
-                part.getFrontFacing()
+                part.getFacing(),
+                part.getFacing()
                     .getOpposite(),
                 null,
                 false,
@@ -544,7 +548,7 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
                 fluidOutputIterator.remove();
                 continue;
             }
-            if (!part.shouldTick(timer)) {
+            if (!part.shouldTick(tick)) {
                 fluidOutputIterator.remove();
             }
         }
@@ -635,7 +639,8 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
         }
     }
 
-    public void registerSpecialCasings(MultiBlockPart part) {
+    @Override
+    public void registerSpecialCasings(IMultiBlockPart part) {
         if (part instanceof UpgradeCasing) {
             upgradeCasings.add((UpgradeCasing) part);
         }
@@ -649,7 +654,7 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
     @Override
     @Nullable
     public FluidInventoryLogic getFluidLogic(@Nonnull ForgeDirection side, @Nonnull InventoryType type) {
-        if (side == getFrontFacing()) return null;
+        if (side == getFacing()) return null;
         return switch (type) {
             case Input -> controllerFluidInput.getAllInventoryLogics();
             case Output -> controllerFluidOutput.getAllInventoryLogics();
@@ -727,7 +732,7 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
     @Override
     @Nullable
     public ItemInventoryLogic getItemLogic(@Nonnull ForgeDirection side, @Nonnull InventoryType type) {
-        if (side == getFrontFacing()) return null;
+        if (side == getFacing()) return null;
         return switch (type) {
             case Input -> controllerItemInput.getAllInventoryLogics();
             case Output -> controllerItemOutput.getAllInventoryLogics();

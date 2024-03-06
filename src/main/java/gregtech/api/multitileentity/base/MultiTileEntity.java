@@ -6,7 +6,10 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
@@ -22,16 +25,25 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons.CustomIcon;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.IToolStats;
+import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.multitileentity.MultiTileEntityClassContainer;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
 import gregtech.api.multitileentity.interfaces.SyncedMultiTileEntity;
 import gregtech.api.net.GT_Packet_MultiTileEntity;
 import gregtech.api.net.data.CoordinateData;
-import gregtech.api.net.data.MultiTileEntityData;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Util;
+import gregtech.api.util.GT_Utility;
 import gregtech.common.render.MultiTileBasicRender;
+import gregtech.common.tools.GT_Tool_Crowbar;
+import gregtech.common.tools.GT_Tool_HardHammer;
+import gregtech.common.tools.GT_Tool_Screwdriver;
+import gregtech.common.tools.GT_Tool_SoftHammer;
+import gregtech.common.tools.GT_Tool_Soldering_Iron;
+import gregtech.common.tools.GT_Tool_WireCutter;
+import gregtech.common.tools.GT_Tool_Wrench;
 
 public abstract class MultiTileEntity extends TileEntity
     implements MultiTileBasicRender, SyncedMultiTileEntity, IMultiTileEntity {
@@ -72,7 +84,7 @@ public abstract class MultiTileEntity extends TileEntity
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
-        if (nbt.hasKey("facing")) facing = ForgeDirection.getOrientation(nbt.getInteger("facing"));
+        if (nbt.hasKey("facing")) setFacing(ForgeDirection.getOrientation(nbt.getInteger("facing")));
         if (getMetaId() == -1 || getRegistryId() == -1) {
             metaId = nbt.getInteger(NBT.MTE_ID);
             registryId = nbt.getInteger(NBT.MTE_REG);
@@ -114,8 +126,13 @@ public abstract class MultiTileEntity extends TileEntity
 
     @Override
     @Nonnull
-    public ForgeDirection getFrontFacing() {
+    public ForgeDirection getFacing() {
         return facing;
+    }
+
+    @Override
+    public void setFacing(ForgeDirection facing) {
+        this.facing = facing;
     }
 
     protected int getXCoord() {
@@ -195,31 +212,87 @@ public abstract class MultiTileEntity extends TileEntity
     @Override
     public void addToolTip(@Nonnull final List<String> toolTips) {}
 
+    @Override
+    public final boolean onBlockActivated(EntityPlayer player, ForgeDirection side, float subX, float subY,
+        float subZ) {
+        final ItemStack heldItem = player.getHeldItem();
+        final ForgeDirection wrenchSide = GT_Utility.determineWrenchingSide(side, subX, subY, subZ);
+        if (heldItem == null) return onRightClick(player, side, wrenchSide);
+
+        if (heldItem.getItem() instanceof ItemBlock) return false;
+
+        if (heldItem.getItem() instanceof GT_MetaGenerated_Tool toolItem) {
+            IToolStats tool = toolItem.getToolStats(heldItem);
+            if (tool instanceof GT_Tool_Wrench) return onRightClickWithWrench(player, side, wrenchSide);
+            if (tool instanceof GT_Tool_HardHammer) return onRightClickWithHammer(player, side, wrenchSide);
+            if (tool instanceof GT_Tool_SoftHammer) return onRightClickWithMallet(player, side, wrenchSide);
+            if (tool instanceof GT_Tool_Screwdriver) return onRightClickWithScrewdriver(player, side, wrenchSide);
+            if (tool instanceof GT_Tool_Soldering_Iron) return onRightClickWithSolderinIron(player, side, wrenchSide);
+            if (tool instanceof GT_Tool_WireCutter) return onRightClickWithWireCutters(player, side, wrenchSide);
+            if (tool instanceof GT_Tool_Crowbar) return onRightClickWithCrowbar(player, side, wrenchSide);
+        }
+
+        return onRightClick(player, side, wrenchSide);
+    }
+
+    protected boolean onRightClick(EntityPlayer player, ForgeDirection side, ForgeDirection wrenchSide) {
+        return false;
+    }
+
+    protected boolean onRightClickWithHammer(EntityPlayer player, ForgeDirection side, ForgeDirection wrenchSide) {
+        return false;
+    }
+
+    protected boolean onRightClickWithMallet(EntityPlayer player, ForgeDirection side, ForgeDirection wrenchSide) {
+        return false;
+    }
+
+    protected boolean onRightClickWithWrench(EntityPlayer player, ForgeDirection side, ForgeDirection wrenchSide) {
+        return false;
+    }
+
+    protected boolean onRightClickWithScrewdriver(EntityPlayer player, ForgeDirection side, ForgeDirection wrenchSide) {
+        return false;
+    }
+
+    protected boolean onRightClickWithWireCutters(EntityPlayer player, ForgeDirection side, ForgeDirection wrenchSide) {
+        return false;
+    }
+
+    protected boolean onRightClickWithSolderinIron(EntityPlayer player, ForgeDirection side,
+        ForgeDirection wrenchSide) {
+        return false;
+    }
+
+    protected boolean onRightClickWithCrowbar(EntityPlayer player, ForgeDirection side, ForgeDirection wrenchSide) {
+        return false;
+    }
+
     // MultiTileBasicRender methods
     @Override
     @Nonnull
     public final ITexture getTexture(@Nonnull ForgeDirection side) {
-        if (getFrontFacing() == side) {
+        if (getFacing() == side) {
             return getFrontTexture();
         }
 
-        if (getFrontFacing().getOpposite() == side) {
+        if (getFacing().getOpposite() == side) {
             return getBackTexture();
         }
 
-        if (getFrontFacing().getRotation(getFrontFacing().getRotation(ForgeDirection.UP)) == side) {
+        if (getFacing().getRotation(getFacing().getRotation(ForgeDirection.UP)) == side) {
             return getTopTexture();
         }
 
-        if (getFrontFacing().getRotation(getFrontFacing().getRotation(ForgeDirection.DOWN)) == side) {
+        if (getFacing().getRotation(getFacing().getRotation(ForgeDirection.DOWN)) == side) {
             return getBottomTexture();
         }
 
-        if (getFrontFacing().getRotation(getFrontFacing().getRotation(ForgeDirection.EAST)) == side) {
+        if (getFacing().getRotation(getFacing().getRotation(ForgeDirection.EAST)) == side) {
             return getRightTexture();
         }
 
-        if (getFrontFacing().getRotation(getFrontFacing().getRotation(ForgeDirection.WEST)) == side) {
+        if (getFacing().getRotation(getFacing().getRotation(ForgeDirection.WEST)) == side) {
             return getLeftTexture();
         }
 
@@ -259,21 +332,18 @@ public abstract class MultiTileEntity extends TileEntity
     // SyncedMultiTileEntity methods
     @Override
     public void getFullPacketData(GT_Packet_MultiTileEntity packet) {
-        packet.addData(new CoordinateData(getCoords()));
+        packet.addData(new CoordinateData(getXCoord(), getYCoord(), getZCoord()));
         // packet.addData(new CommonData(mStrongRedstone, color, (byte) 0));
-        packet.addData(new MultiTileEntityData(registryId, metaId));
     }
 
     @Override
     public void getTimedPacketData(GT_Packet_MultiTileEntity packet) {
-        packet.addData(new CoordinateData(getCoords()));
-        packet.addData(new MultiTileEntityData(registryId, metaId));
+        packet.addData(new CoordinateData(getXCoord(), getYCoord(), getZCoord()));
     }
 
     @Override
     public void getGraphicPacketData(GT_Packet_MultiTileEntity packet) {
-        packet.addData(new CoordinateData(getCoords()));
-        packet.addData(new MultiTileEntityData(registryId, metaId));
+        packet.addData(new CoordinateData(getXCoord(), getYCoord(), getZCoord()));
     }
 
     @Override

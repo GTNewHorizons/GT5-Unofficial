@@ -6,24 +6,23 @@ import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.multitileentity.MultiTileEntityBlock;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
+import gregtech.api.multitileentity.enums.PartMode;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
-import gregtech.api.util.WorldHelper;
+import gregtech.api.multitileentity.multiblock.base.MultiBlockPart;
 
 public class MultiTileEntityProcess extends Process {
 
     @Nonnull
     private final IBlockAccess world;
-    private ChunkCoordinates coords;
+    private int x, y, z;
     private int registryId;
     private int metaId;
-    private byte redstone;
-    private byte color;
-    private byte commonData;
+    private int allowedModes;
+    private int currentMode;
+    private int controllerX, controllerY, controllerZ;
 
     public MultiTileEntityProcess(@Nonnull IBlockAccess world) {
         this.world = world;
@@ -31,13 +30,11 @@ public class MultiTileEntityProcess extends Process {
 
     @Override
     public void process() {
-        if (coords == null) return;
-        if (!(world instanceof World ww)) return;
-        Block block = world.getBlock(coords.posX, coords.posY, coords.posZ);
+        Block block = world.getBlock(x, y, z);
         if (!(block instanceof MultiTileEntityBlock)) {
             return;
         }
-        TileEntity te = WorldHelper.getTileEntityAtSide(ForgeDirection.UNKNOWN, world, coords);
+        TileEntity te = world.getTileEntity(x, y, z);
         if (!(te instanceof IMultiTileEntity mte) || mte.getRegistryId() != registryId || mte.getMetaId() != metaId) {
             final MultiTileEntityRegistry registry = MultiTileEntityRegistry.getRegistry(registryId);
             if (registry == null) return;
@@ -45,20 +42,24 @@ public class MultiTileEntityProcess extends Process {
 
         final IMultiTileEntity mute = (IMultiTileEntity) te;
 
+        if (mute instanceof MultiBlockPart part) {
+            part.setTargetPos(new ChunkCoordinates(controllerX, controllerY, controllerZ));
+            part.setAllowedModes(allowedModes);
+            part.setMode(PartMode.values()[currentMode]);
+        }
     }
 
-    public void giveCoordinates(@Nonnull ChunkCoordinates coords) {
-        this.coords = coords;
+    public void giveCoordinates(int x, int y, int z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
 
-    public void giveMultiTileEntityData(int registryId, int metaId) {
-        this.registryId = registryId;
-        this.metaId = metaId;
-    }
-
-    public void giveCommonData(byte redstone, byte color, byte commonData) {
-        this.redstone = redstone;
-        this.color = color;
-        this.commonData = commonData;
+    public void giveCasingData(int allowedModes, int currentMode, int controllerX, int controllerY, int controllerZ) {
+        this.allowedModes = allowedModes;
+        this.currentMode = currentMode;
+        this.controllerX = controllerX;
+        this.controllerY = controllerY;
+        this.controllerZ = controllerZ;
     }
 }

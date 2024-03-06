@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -18,7 +20,9 @@ public interface IMultiTileEntity {
     int getRegistryId();
 
     @Nonnull
-    ForgeDirection getFrontFacing();
+    ForgeDirection getFacing();
+
+    void setFacing(ForgeDirection facing);
 
     void initFromNBT(@Nonnull NBTTagCompound nbt, final int registryId, final int metaId);
 
@@ -29,4 +33,19 @@ public interface IMultiTileEntity {
     String getTileEntityName();
 
     void addToolTip(@Nonnull final List<String> toolTips);
+
+    default void onNeighborBlockChange(@Nonnull final Block block) {
+        onBlockPlaced();
+    }
+
+    default boolean onBlockActivated(@Nonnull EntityPlayer player, ForgeDirection side, float subX, float subY,
+        float subZ) {
+        return false;
+    }
+
+    default void onBlockPlaced() {}
+
+    default void onBlockBroken() {}
+
+    default void setOwnder(EntityPlayer player) {}
 }

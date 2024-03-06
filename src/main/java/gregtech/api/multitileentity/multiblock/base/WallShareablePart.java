@@ -6,11 +6,9 @@ import java.util.UUID;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.multitileentity.enums.PartMode;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
-import gregtech.api.util.WorldHelper;
 
 public class WallShareablePart extends MultiBlockPart {
 
@@ -56,31 +54,6 @@ public class WallShareablePart extends MultiBlockPart {
         return "gt.multiTileEntity.casing.wallSharable";
     }
 
-    @Override
-    public boolean breakBlock() {
-        for (final ChunkCoordinates coordinates : targetPositions) {
-            IMultiBlockController target = getTarget(coordinates, false);
-            if (target == null) {
-                continue;
-            }
-            target.onStructureChange();
-        }
-        return false;
-    }
-
-    @Override
-    public void onBlockAdded() {
-        for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-            final TileEntity te = WorldHelper.getTileEntityAtSide(side, getWorldObj(), getCoords());
-            if (te instanceof MultiBlockPart part) {
-                final IMultiBlockController tController = part.getTarget(false);
-                if (tController != null) tController.onStructureChange();
-            } else if (te instanceof IMultiBlockController controller) {
-                controller.onStructureChange();
-            }
-        }
-    }
-
     public IMultiBlockController getTarget(ChunkCoordinates coordinates, boolean aCheckValidity) {
         IMultiBlockController target = null;
         if (coordinates == null) return null;
@@ -94,5 +67,10 @@ public class WallShareablePart extends MultiBlockPart {
             return target != null && target.checkStructure(false) ? target : null;
         }
         return target;
+    }
+
+    @Override
+    public boolean shouldOpen() {
+        return !(targetPositions.size() > 1);
     }
 }

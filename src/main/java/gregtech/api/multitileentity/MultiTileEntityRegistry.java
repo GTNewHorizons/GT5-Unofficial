@@ -146,7 +146,8 @@ public class MultiTileEntityRegistry {
         if (registeredTileEntities.add(classContainer.getClazz())) {
             GameRegistry.registerTileEntity(
                 classContainer.getClazz(),
-                classContainer.getOriginalTileEntity().getTileEntityName());
+                classContainer.getOriginalTileEntity()
+                    .getTileEntityName());
         }
         return getItem(classContainer.getMetaId());
     }
@@ -203,5 +204,9 @@ public class MultiTileEntityRegistry {
 
     public MultiTileEntityClassContainer getClassContainer(int metaId) {
         return registry.get(metaId);
+    }
+
+    public MultiTileEntityBlock getBlock() {
+        return block;
     }
 }

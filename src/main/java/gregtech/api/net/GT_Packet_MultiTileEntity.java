@@ -13,7 +13,6 @@ import com.google.common.io.ByteArrayDataInput;
 import gregtech.api.net.data.CasingData;
 import gregtech.api.net.data.CommonData;
 import gregtech.api.net.data.CoordinateData;
-import gregtech.api.net.data.MultiTileEntityData;
 import gregtech.api.net.data.MultiTileEntityProcess;
 import gregtech.api.net.data.PacketData;
 import io.netty.buffer.ByteBuf;
@@ -105,9 +104,6 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
 
         if (containsBit(packetFeatures, CoordinateData.COORDINATE_DATA_ID)) {
             packet.addData(new CoordinateData());
-        }
-        if (containsBit(packetFeatures, MultiTileEntityData.MULTI_TILE_ENTITY_DATA_ID)) {
-            packet.addData(new MultiTileEntityData());
         }
         if (containsBit(packetFeatures, CommonData.COMMON_DATA_ID)) {
             packet.addData(new CommonData());

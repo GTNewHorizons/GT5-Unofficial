@@ -19,10 +19,10 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.multitileentity.MultiTileEntityBlock;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.enums.GT_MultiTileUpgradeCasing;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
-import gregtech.api.multitileentity.multiblock.base.Controller;
 import gregtech.api.multitileentity.multiblock.base.MultiBlockPart;
 
 public class GT_StructureUtilityMuTE {
@@ -143,7 +143,8 @@ public class GT_StructureUtilityMuTE {
      * @return Structure Element
      * @param <T> Multiblock class
      */
-    public static <T> IStructureElement<T> ofMuTECasings(int modes, MuTEStructureCasing... validCasings) {
+    public static <T extends IMultiBlockController> IStructureElement<T> ofMuTECasings(int modes,
+        MuTEStructureCasing... validCasings) {
         if (validCasings == null || validCasings.length == 0) {
             throw new IllegalArgumentException();
         }
@@ -163,9 +164,9 @@ public class GT_StructureUtilityMuTE {
                         final IMultiBlockController tTarget = part.getTarget(false);
                         if (tTarget != null && tTarget != t) return false;
 
-                        part.setTarget((IMultiBlockController) t, modes);
+                        part.setTarget(t, modes);
 
-                        ((Controller<?, ?>) t).registerSpecialCasings(part);
+                        t.registerSpecialCasings(part);
                         return true;
                     }
                 }
@@ -193,7 +194,15 @@ public class GT_StructureUtilityMuTE {
                     GT_FML_LOGGER.error("NULL REGISTRY");
                     return false;
                 }
-                return false;
+                MultiTileEntityBlock block = tRegistry.getBlock();
+                if (!world.setBlock(x, y, z, block, allowedCasings[0].getDefaultMeta(), 2)) {
+                    return false;
+                }
+
+                final TileEntity te = world.getTileEntity(x, y, z);
+                if (!(te instanceof MultiBlockPart part)) return false;
+                part.setTarget(t, modes);
+                return true;
             }
         };
     }

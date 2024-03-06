@@ -10,6 +10,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -21,6 +22,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.ApiStatus.OverrideOnly;
 
+import com.gtnewhorizons.modularui.api.UIInfos;
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -39,7 +41,6 @@ import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.GUIHost;
 import gregtech.api.gui.GUIProvider;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.tileentity.MachineProgress;
 import gregtech.api.logic.FluidInventoryLogic;
 import gregtech.api.logic.ItemInventoryLogic;
 import gregtech.api.logic.MuTEProcessingLogic;
@@ -58,7 +59,7 @@ import gregtech.client.GT_SoundLoop;
 import gregtech.common.gui.MachineGUIProvider;
 
 public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> extends TickableMultiTileEntity
-    implements IMultiTileMachine, ProcessingLogicHost<P>, PowerLogicHost, GUIHost, MachineProgress {
+    implements IMultiTileMachine, ProcessingLogicHost<P>, PowerLogicHost, GUIHost {
 
     protected static final int ACTIVE = B[0];
     protected static final int TICKS_BETWEEN_RECIPE_CHECKS = 5 * TickTime.SECOND;
@@ -68,10 +69,10 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
 
     protected static final IItemHandlerModifiable EMPTY_INVENTORY = new ItemStackHandler(0);
 
-    public ITexture activeOverlayTexture = null;
-    public ITexture activeOverlayGlowTexture = null;
-    public ITexture inactiveOverlayTexture = null;
-    public ITexture inactiveOverlayGlowTexture = null;
+    private ITexture activeOverlayTexture = null;
+    private ITexture activeOverlayGlowTexture = null;
+    private ITexture inactiveOverlayTexture = null;
+    private ITexture inactiveOverlayGlowTexture = null;
 
     protected int maxParallel = 1;
     protected boolean active = false;
@@ -292,8 +293,8 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
     // #region Machine
 
     @Override
-    public void onPostTick(long tick, boolean isServerSide) {
-        if (isServerSide) {
+    public void onPostTick(long tick) {
+        if (isServerSide()) {
             runMachine(tick);
         } else {
             doActivitySound(getActivitySoundLoop());
@@ -537,7 +538,7 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
 
     @Nullable
     public ItemInventoryLogic getItemLogic(@Nonnull ForgeDirection side, @Nonnull InventoryType type) {
-        if (side == getFrontFacing()) return null;
+        if (side == getFacing()) return null;
         return switch (type) {
             case Input -> itemInput;
             case Output -> itemOutput;
@@ -547,7 +548,7 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
 
     @Nullable
     public FluidInventoryLogic getFluidLogic(@Nonnull ForgeDirection side, @Nonnull InventoryType type) {
-        if (side == getFrontFacing()) return null;
+        if (side == getFacing()) return null;
         return switch (type) {
             case Input -> fluidInput;
             case Output -> fluidOutput;
@@ -592,14 +593,14 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
     @Override
     @Nonnull
     public PowerLogic getPowerLogic(@Nonnull ForgeDirection side) {
-        if (side == getFrontFacing()) return new NullPowerLogic();
+        if (side == getFacing()) return new NullPowerLogic();
         return power;
     }
 
     @Override
     @Nonnull
     public ForgeDirection getPowerOutputSide() {
-        return Objects.requireNonNull(getFrontFacing().getOpposite());
+        return Objects.requireNonNull(getFacing().getOpposite());
     }
 
     protected void updatePowerLogic() {
@@ -660,4 +661,11 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
 
     @Override
     public void disableWorking() {}
+
+    @Override
+    protected boolean onRightClick(EntityPlayer player, ForgeDirection side, ForgeDirection wrenchSide) {
+        if (!shouldOpen()) return false;
+        UIInfos.openClientUI(player, this::createWindow);
+        return true;
+    }
 }

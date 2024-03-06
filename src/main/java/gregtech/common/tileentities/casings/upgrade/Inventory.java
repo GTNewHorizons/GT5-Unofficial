@@ -77,12 +77,12 @@ public class Inventory extends UpgradeCasing {
     }
 
     @Override
-    public boolean breakBlock() {
+    public void onBlockBroken() {
         final IMultiBlockController controller = getTarget(false);
         if (controller != null) {
             controller.unregisterItemInventory(inventoryID, type);
         }
-        return super.breakBlock();
+        super.onBlockBroken();
     }
 
     public void addUIWidgets(Builder builder, UIBuildContext buildContext) {
