@@ -32,6 +32,7 @@ import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
 import gregtech.api.multitileentity.interfaces.SyncedMultiTileEntity;
 import gregtech.api.net.GT_Packet_MultiTileEntity;
+import gregtech.api.net.data.CommonData;
 import gregtech.api.net.data.CoordinateData;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Util;
@@ -248,6 +249,11 @@ public abstract class MultiTileEntity extends TileEntity
     }
 
     protected boolean onRightClickWithWrench(EntityPlayer player, ForgeDirection side, ForgeDirection wrenchSide) {
+        if (player.isSneaking()) {
+            setFacing(wrenchSide);
+            sendGraphicPacket();
+            return true;
+        }
         return false;
     }
 
@@ -333,17 +339,19 @@ public abstract class MultiTileEntity extends TileEntity
     @Override
     public void getFullPacketData(GT_Packet_MultiTileEntity packet) {
         packet.addData(new CoordinateData(getXCoord(), getYCoord(), getZCoord()));
-        // packet.addData(new CommonData(mStrongRedstone, color, (byte) 0));
+        packet.addData(new CommonData(facing));
     }
 
     @Override
     public void getTimedPacketData(GT_Packet_MultiTileEntity packet) {
         packet.addData(new CoordinateData(getXCoord(), getYCoord(), getZCoord()));
+        packet.addData(new CommonData(facing));
     }
 
     @Override
     public void getGraphicPacketData(GT_Packet_MultiTileEntity packet) {
         packet.addData(new CoordinateData(getXCoord(), getYCoord(), getZCoord()));
+        packet.addData(new CommonData(facing));
     }
 
     @Override

@@ -306,16 +306,16 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     @Override
     @Nonnull
     protected ITexture getFrontTexture() {
-        return TextureFactory.of(super.getFrontTexture(), getModeTexture());
+        return TextureFactory.of(getModeTexture());
     }
 
     @Nonnull
     protected ITexture getModeTexture() {
         return switch (getMode()) {
-            case ITEM_INPUT -> TextureFactory.of(OVERLAY_PIPE_IN_TEXTURE, TextureFactory.of(ITEM_IN_SIGN));
-            case ITEM_OUTPUT -> TextureFactory.of(OVERLAY_PIPE_OUT_TEXTURE, TextureFactory.of(ITEM_OUT_SIGN));
-            case FLUID_INPUT -> TextureFactory.of(OVERLAY_PIPE_IN_TEXTURE, TextureFactory.of(FLUID_IN_SIGN));
-            case FLUID_OUTPUT -> TextureFactory.of(OVERLAY_PIPE_OUT_TEXTURE, TextureFactory.of(FLUID_OUT_SIGN));
+            case ITEM_INPUT -> TextureFactory.of(TextureFactory.of(ITEM_IN_SIGN));
+            case ITEM_OUTPUT -> TextureFactory.of(TextureFactory.of(ITEM_OUT_SIGN));
+            case FLUID_INPUT -> TextureFactory.of(TextureFactory.of(FLUID_IN_SIGN), OVERLAY_PIPE_IN_TEXTURE);
+            case FLUID_OUTPUT -> TextureFactory.of(TextureFactory.of(FLUID_OUT_SIGN), OVERLAY_PIPE_OUT_TEXTURE);
             case ENERGY_INPUT -> TextureFactory.of(OVERLAY_ENERGY_IN_MULTI);
             case ENERGY_OUTPUT -> TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI);
             default -> TextureFactory.of(VOID);
@@ -350,7 +350,9 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         if (allowedModes == NOTHING.getValue()) return true;
         if (mode == NOTHING) {}
         setMode(getNextAllowedMode(BASIC_MODES));
-        if (player.isSneaking()) {}
+        if (player.isSneaking()) {
+            setFacing(wrenchSide);
+        }
         GT_Utility.sendChatToPlayer(player, "Mode set to `" + getModeName(mode) + "' (" + mode + ")");
         sendGraphicPacket();
         return true;
@@ -551,7 +553,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
                 true,
                 true);
         }
-        sendGraphicPacket();
+        issueClientUpdate();
         return true;
     }
 
