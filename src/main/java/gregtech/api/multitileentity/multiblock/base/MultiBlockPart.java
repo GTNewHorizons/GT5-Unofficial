@@ -44,6 +44,7 @@ import com.gtnewhorizon.gtnhlib.GTNHLib;
 import com.gtnewhorizons.modularui.api.UIInfos;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
+import cpw.mods.fml.common.FMLLog;
 import gregtech.api.enums.GT_Values.NBT;
 import gregtech.api.enums.InventoryType;
 import gregtech.api.fluid.FluidTankGT;
@@ -236,6 +237,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
             unregisterPurpose(MultiTileCasingPurpose.ItemOutput);
         }
         this.mode = mode;
+        markDirty();
         if (modeSelected(FLUID_OUTPUT)) {
             registerPurpose(MultiTileCasingPurpose.FluidOutput);
         }
@@ -306,16 +308,16 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     @Override
     @Nonnull
     protected ITexture getFrontTexture() {
-        return TextureFactory.of(getModeTexture());
+        return TextureFactory.of(super.getFrontTexture(), getModeTexture());
     }
 
     @Nonnull
     protected ITexture getModeTexture() {
         return switch (getMode()) {
-            case ITEM_INPUT -> TextureFactory.of(TextureFactory.of(ITEM_IN_SIGN));
-            case ITEM_OUTPUT -> TextureFactory.of(TextureFactory.of(ITEM_OUT_SIGN));
-            case FLUID_INPUT -> TextureFactory.of(TextureFactory.of(FLUID_IN_SIGN), OVERLAY_PIPE_IN_TEXTURE);
-            case FLUID_OUTPUT -> TextureFactory.of(TextureFactory.of(FLUID_OUT_SIGN), OVERLAY_PIPE_OUT_TEXTURE);
+            case ITEM_INPUT -> TextureFactory.of(OVERLAY_PIPE_IN_TEXTURE, TextureFactory.of(ITEM_IN_SIGN));
+            case ITEM_OUTPUT -> TextureFactory.of(OVERLAY_PIPE_IN_TEXTURE, TextureFactory.of(ITEM_OUT_SIGN));
+            case FLUID_INPUT -> TextureFactory.of(OVERLAY_PIPE_IN_TEXTURE, TextureFactory.of(FLUID_IN_SIGN));
+            case FLUID_OUTPUT -> TextureFactory.of(OVERLAY_PIPE_IN_TEXTURE,TextureFactory.of(FLUID_OUT_SIGN));
             case ENERGY_INPUT -> TextureFactory.of(OVERLAY_ENERGY_IN_MULTI);
             case ENERGY_OUTPUT -> TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI);
             default -> TextureFactory.of(VOID);
@@ -343,19 +345,6 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         }
         // Nothing valid found
         return NOTHING;
-    }
-
-    public boolean onMalletRightClick(final EntityPlayer player, final ItemStack currentItem,
-        final ForgeDirection wrenchSide, final float x, final float y, final float z) {
-        if (allowedModes == NOTHING.getValue()) return true;
-        if (mode == NOTHING) {}
-        setMode(getNextAllowedMode(BASIC_MODES));
-        if (player.isSneaking()) {
-            setFacing(wrenchSide);
-        }
-        GT_Utility.sendChatToPlayer(player, "Mode set to `" + getModeName(mode) + "' (" + mode + ")");
-        sendGraphicPacket();
-        return true;
     }
 
     @Override
@@ -545,9 +534,9 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
             GTNHLib.proxy.sendMessageAboveHotbar(
                 mpPlayer,
                 new ChatComponentText(
-                    EnumChatFormatting.GOLD + StatCollector.translateToLocal("gt.multiblockpart.setmode.text")
+                    EnumChatFormatting.WHITE + StatCollector.translateToLocal("gt.multiblockpart.setmode.text")
                         + " "
-                        + EnumChatFormatting.WHITE
+                        + EnumChatFormatting.GOLD
                         + getMode().getTranslated()),
                 100,
                 true,
@@ -562,10 +551,10 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         super.getGraphicPacketData(packet);
         packet.addData(
             new CasingData(
-                getMode().ordinal(),
+                getMode() != null ? getMode().ordinal() : NOTHING.ordinal(),
                 getAllowedModes(),
-                targetPosition.posX,
-                targetPosition.posY,
-                targetPosition.posZ));
+                targetPosition != null ? targetPosition.posX : 0,
+                targetPosition != null ? targetPosition.posY : 0,
+                targetPosition != null ? targetPosition.posZ : 0));
     }
 }

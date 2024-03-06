@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 
 import com.google.common.io.ByteArrayDataInput;
 
+import gregtech.api.multitileentity.enums.PartMode;
 import io.netty.buffer.ByteBuf;
 
 public class CasingData extends PacketData<MultiTileEntityProcess> {

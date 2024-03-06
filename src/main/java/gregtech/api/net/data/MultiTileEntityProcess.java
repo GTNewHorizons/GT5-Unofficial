@@ -2,16 +2,19 @@ package gregtech.api.net.data;
 
 import javax.annotation.Nonnull;
 
+import cpw.mods.fml.common.FMLLog;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
+import gregtech.api.GregTech_API;
 import gregtech.api.multitileentity.MultiTileEntityBlock;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.enums.PartMode;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
 import gregtech.api.multitileentity.multiblock.base.MultiBlockPart;
+import gregtech.api.util.GT_Log;
 
 public class MultiTileEntityProcess extends Process {
 
@@ -36,12 +39,7 @@ public class MultiTileEntityProcess extends Process {
             return;
         }
         TileEntity te = world.getTileEntity(x, y, z);
-        if (!(te instanceof IMultiTileEntity mte) || mte.getRegistryId() != registryId || mte.getMetaId() != metaId) {
-            final MultiTileEntityRegistry registry = MultiTileEntityRegistry.getRegistry(registryId);
-            if (registry == null) return;
-        }
-
-        final IMultiTileEntity mute = (IMultiTileEntity) te;
+        if (!(te instanceof IMultiTileEntity mute)) return;
 
         mute.setFacing(facing);
 

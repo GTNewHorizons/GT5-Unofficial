@@ -40,16 +40,16 @@ public abstract class TickableMultiTileEntity extends MultiTileEntity implements
             if (timer++ == startingTime) {
                 markDirty();
                 GT_Util.markChunkDirty(this);
+                sendGraphicPacket();
                 onFirstTick();
+            }
+
+            if (timer % 100 == 0 && isServerSide) {
+                sendGraphicPacket();
             }
             onPreTick(timer);
             super.updateEntity();
-            /*
-             * if (!isServerSide && needsUpdate) {
-             * worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-             * needsUpdate = false;
-             * }
-             */
+
             onTick(timer);
             for (TickableTask<?> task : tasks.values()) {
                 task.update(timer, isServerSide);

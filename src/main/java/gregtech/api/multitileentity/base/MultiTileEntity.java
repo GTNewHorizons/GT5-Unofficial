@@ -11,13 +11,16 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
+import cpw.mods.fml.common.FMLLog;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.GT_Values.NBT;
@@ -83,9 +86,14 @@ public abstract class MultiTileEntity extends TileEntity
     }
 
     @Override
+    public Packet getDescriptionPacket() {
+        sendGraphicPacket();
+        return super.getDescriptionPacket();
+    }
+
+    @Override
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
-        if (nbt.hasKey("facing")) setFacing(ForgeDirection.getOrientation(nbt.getInteger("facing")));
         if (getMetaId() == -1 || getRegistryId() == -1) {
             metaId = nbt.getInteger(NBT.MTE_ID);
             registryId = nbt.getInteger(NBT.MTE_REG);
@@ -93,10 +101,7 @@ public abstract class MultiTileEntity extends TileEntity
             MultiTileEntityClassContainer clazz = registry.getClassContainer(metaId);
             nbt = GT_Util.fuseNBT(nbt, clazz.getParameters());
         }
-        if (nbt.hasKey("x")) xCoord = nbt.getInteger("x");
-        if (nbt.hasKey("y")) yCoord = nbt.getInteger("y");
-        if (nbt.hasKey("z")) zCoord = nbt.getInteger("z");
-        if (nbt.hasKey(NBT.FACING)) facing = ForgeDirection.getOrientation(nbt.getInteger(NBT.FACING));
+        if (nbt.hasKey(NBT.FACING)) setFacing(ForgeDirection.getOrientation(nbt.getInteger(NBT.FACING)));
         if (NetworkUtils.isDedicatedClient()) {
             if (GregTech_API.sBlockIcons == null && nbt.hasKey(NBT.TEXTURE_FOLDER)) {
                 loadTextures(nbt.getString(NBT.TEXTURE_FOLDER));
@@ -109,7 +114,7 @@ public abstract class MultiTileEntity extends TileEntity
     @Override
     public void writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
-        nbt.setInteger("facing", facing.ordinal());
+        nbt.setInteger(NBT.FACING, facing.ordinal());
         nbt.setInteger(NBT.MTE_ID, getMetaId());
         nbt.setInteger(NBT.MTE_REG, getRegistryId());
     }
@@ -205,6 +210,7 @@ public abstract class MultiTileEntity extends TileEntity
         if (this.registryId == registryId && this.metaId == metaId) {
             return;
         }
+
         this.registryId = registryId;
         this.metaId = metaId;
         if (nbt != null) readFromNBT(nbt);
@@ -252,6 +258,7 @@ public abstract class MultiTileEntity extends TileEntity
         if (player.isSneaking()) {
             setFacing(wrenchSide);
             sendGraphicPacket();
+            markDirty();
             return true;
         }
         return false;

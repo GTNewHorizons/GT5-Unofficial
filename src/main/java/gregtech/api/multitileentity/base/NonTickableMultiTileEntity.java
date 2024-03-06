@@ -9,22 +9,4 @@ public abstract class NonTickableMultiTileEntity extends MultiTileEntity {
     public NonTickableMultiTileEntity() {
         super(false);
     }
-
-    @Override
-    public void issueClientUpdate() {
-        if (worldObj != null && !worldObj.isRemote) {
-            sendGraphicPacket();
-        }
-    }
-
-    @Override
-    public Packet getDescriptionPacket() {
-        // We should have a world object and have been constructed by this point
-        mConstructed = true;
-
-        super.getDescriptionPacket();
-        // We don't get ticked, so if we have any cover data that needs to be sent, send it now
-        // sendCoverDataIfNeeded();
-        return null;
-    }
 }
