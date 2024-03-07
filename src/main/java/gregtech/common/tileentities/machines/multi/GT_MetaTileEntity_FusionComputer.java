@@ -339,7 +339,7 @@ public abstract class GT_MetaTileEntity_FusionComputer
                 }
                 return result;
             }
-        }.setOverclock(1, 1);
+        };
     }
 
     @Override
