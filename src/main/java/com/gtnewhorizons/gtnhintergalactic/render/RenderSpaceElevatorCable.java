@@ -140,10 +140,8 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
         GL11.glDepthMask(true);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         // Draw the cable
-        tessellator.startDrawingQuads();
         tessellator.setColorOpaque_F(1F, 1F, 1F);
         renderFullHelix(tessellator, x, y, z);
-        tessellator.draw();
         // Reset open GL
         GL11.glDisable(GL11.GL_BLEND);
         OpenGlHelper.glBlendFunc(770, 771, 1, 0);
@@ -318,7 +316,7 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
 
         double sectionHeight = 8 * side;
         int sections = (int) Math.ceil(CABLE_HEIGHT / sectionHeight);
-
+        // spotless:off
         for (int i = 0; i < 8 * sections; i++) {
             int j = (i + offset) % 8;
             int k = (i + 1 + offset) % 8;
@@ -331,33 +329,13 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
                 double lightMinV = cableLight.getMinV();
                 double lightMaxV = cableLight.getMaxV();
 
-                tes.addVertexWithUV(
-                        x + 0.5f + edgeX[k],
-                        y + side * i + side,
-                        z + 0.5f + edgeZ[k],
-                        lightMinU,
-                        lightMaxV);
-                tes.addVertexWithUV(
-                        x + 0.5f + edgeX[k],
-                        y + side * i + (side + width),
-                        z + 0.5f + edgeZ[k],
-                        lightMinU,
-                        lightMinV);
-                tes.addVertexWithUV(
-                        x + 0.5f + edgeX[j],
-                        y + side * i + width,
-                        z + 0.5f + edgeZ[j],
-                        lightMaxU,
-                        lightMinV);
+                tes.addVertexWithUV(x + 0.5f + edgeX[k], y + side * i + side, z + 0.5f + edgeZ[k], lightMinU, lightMaxV);
+                tes.addVertexWithUV(x + 0.5f + edgeX[k], y + side * i + (side + width), z + 0.5f + edgeZ[k], lightMinU, lightMinV);
+                tes.addVertexWithUV(x + 0.5f + edgeX[j], y + side * i + width, z + 0.5f + edgeZ[j], lightMaxU, lightMinV);
                 tes.addVertexWithUV(x + 0.5f + edgeX[j], y + side * i, z + 0.5f + edgeZ[j], lightMaxU, lightMaxV);
             } else {
                 tes.addVertexWithUV(x + 0.5f + edgeX[k], y + side * i + side, z + 0.5f + edgeZ[k], minU, maxV);
-                tes.addVertexWithUV(
-                        x + 0.5f + edgeX[k],
-                        y + side * i + (side + width),
-                        z + 0.5f + edgeZ[k],
-                        minU,
-                        minV);
+                tes.addVertexWithUV(x + 0.5f + edgeX[k], y + side * i + (side + width), z + 0.5f + edgeZ[k], minU, minV);
                 tes.addVertexWithUV(x + 0.5f + edgeX[j], y + side * i + width, z + 0.5f + edgeZ[j], maxU, minV);
                 tes.addVertexWithUV(x + 0.5f + edgeX[j], y + side * i, z + 0.5f + edgeZ[j], maxU, maxV);
             }
@@ -368,6 +346,7 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
             tes.addVertexWithUV(x + 0.5f + edgeX[k], y + side * i + (side + width), z + 0.5f + edgeZ[k], minU, minV);
             tes.addVertexWithUV(x + 0.5f + edgeX[k], y + side * i + side, z + 0.5f + edgeZ[k], minU, maxV);
         }
+        // spotless:on
     }
 
     /**
@@ -392,12 +371,22 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
         double motorGlowMinV = motorGlow.getMinV();
         double motorGlowMaxV = motorGlow.getMaxV();
 
+        tes.startDrawingQuads();
         clockwiseHelixPart(tes, x, y - 23.0, z, 0, 2.0 / 5.4, 0.75, minU, maxU, minV, maxV);
+        tes.draw();
+        tes.startDrawingQuads();
         clockwiseHelixPart(tes, x, y - 23.0, z, 2, 2.0 / 5.4, 0.75, minU, maxU, minV, maxV);
+        tes.draw();
+        tes.startDrawingQuads();
         clockwiseHelixPart(tes, x, y - 23.0, z, 4, 2.0 / 5.4, 0.75, minU, maxU, minV, maxV);
+        tes.draw();
+        tes.startDrawingQuads();
         clockwiseHelixPart(tes, x, y - 23.0, z, 6, 2.0 / 5.4, 0.75, minU, maxU, minV, maxV);
+        tes.draw();
 
+        tes.startDrawingQuads();
         motorGlow(tes, x, y, z, motorGlowMinU, motorGlowMaxU, motorGlowMinV, motorGlowMaxV);
+        tes.draw();
     }
 
     /**
