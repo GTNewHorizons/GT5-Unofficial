@@ -48,7 +48,6 @@ import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_H
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Param;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Uncertainty;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
-import com.github.technus.tectech.util.TT_Utility;
 import com.google.common.collect.Iterables;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
@@ -56,6 +55,7 @@ import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
+import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.Alignment;
@@ -71,7 +71,7 @@ import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -204,6 +204,13 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
 
     /** Flag if the new long power variable should be used */
     protected boolean useLongPower = false;
+
+    // Locale-aware formatting of numbers.
+    protected static NumberFormatMUI numberFormat;
+    static {
+        numberFormat = new NumberFormatMUI();
+        numberFormat.setMaximumFractionDigits(8);
+    }
 
     // endregion
 
@@ -342,7 +349,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
         list.add(
                 EnumChatFormatting.WHITE + "Value: "
                         + EnumChatFormatting.AQUA
-                        + TT_Utility.doubleToString(parametrization.getIn(hatchNo, paramID)));
+                        + numberFormat.format(parametrization.getIn(hatchNo, paramID)));
         try {
             list.add(parametrization.groups[hatchNo].parameterIn[paramID].getBrief());
         } catch (NullPointerException | IndexOutOfBoundsException e) {
@@ -369,7 +376,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
         list.add(
                 EnumChatFormatting.WHITE + "Value: "
                         + EnumChatFormatting.AQUA
-                        + TT_Utility.doubleToString(parametrization.getOut(hatchNo, paramID)));
+                        + numberFormat.format(parametrization.getOut(hatchNo, paramID)));
         try {
             list.add(parametrization.groups[hatchNo].parameterOut[paramID].getBrief());
         } catch (NullPointerException | IndexOutOfBoundsException e) {
@@ -2564,15 +2571,11 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
                                 (screenSize.height / 2 - mainWindow.getSize().height / 2)))
                 .widget(ButtonWidget.closeWindowButton(true).setPos(85, 3))
                 .widget(
-                        new TextFieldWidget().setTextColor(Color.LIGHT_BLUE.normal).setNumbersDouble((val) -> val)
-                                .setGetter(() -> Double.toString(parametrization.iParamsIn[ledID])).setSetter(val -> {
-                                    try {
-                                        parametrization.iParamsIn[ledID] = Double.parseDouble(val);
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                }).setTextAlignment(Alignment.CenterLeft).setFocusOnGuiOpen(true)
-                                .setMaximumFractionDigits(8).setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                        new NumericWidget().setGetter(() -> parametrization.iParamsIn[ledID])
+                                .setSetter(val -> parametrization.iParamsIn[ledID] = val).setIntegerOnly(false)
+                                .modifyNumberFormat(format -> format.setMaximumFractionDigits(8))
+                                .setTextColor(Color.LIGHT_BLUE.normal).setTextAlignment(Alignment.CenterLeft)
+                                .setFocusOnGuiOpen(true).setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
                                 .setPos(5, 20).setSize(90, 15))
                 .widget(
                         new TextWidget((ledID % 10) + ":" + (ledID / 10) + ":I").setDefaultColor(Color.WHITE.normal)

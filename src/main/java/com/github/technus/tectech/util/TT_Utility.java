@@ -168,12 +168,4 @@ public final class TT_Utility {
         }
         return previousValue;
     }
-
-    public static String doubleToString(double value) {
-        if (value == (long) value) {
-            return Long.toString((long) value);
-        }
-        return Double.toString(value);
-    }
-
 }

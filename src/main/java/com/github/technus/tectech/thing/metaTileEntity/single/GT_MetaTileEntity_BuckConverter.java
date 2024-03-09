@@ -17,6 +17,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.util.TT_Utility;
+import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -42,6 +43,7 @@ public class GT_MetaTileEntity_BuckConverter extends GT_MetaTileEntity_TieredMac
 
     private static GT_RenderedTexture BUCK, BUCK_ACTIVE;
     public int EUT = 0, AMP = 0;
+    private static NumberFormatMUI numberFormat = new NumberFormatMUI();
 
     public GT_MetaTileEntity_BuckConverter(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -217,16 +219,16 @@ public class GT_MetaTileEntity_BuckConverter extends GT_MetaTileEntity_TieredMac
         builder.widget(
                 new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK).setSize(90, 72).setPos(43, 4))
                 .widget(
-                        TextWidget.dynamicString(() -> "EUT: " + EUT).setDefaultColor(COLOR_TEXT_WHITE.get())
-                                .setPos(46, 8))
+                        new TextWidget().setStringSupplier(() -> "EUT: " + numberFormat.format(EUT))
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 8))
                 .widget(
-                        TextWidget.dynamicString(() -> "TIER: " + VN[TT_Utility.getTier(Math.abs(EUT))])
+                        new TextWidget().setStringSupplier(() -> "TIER: " + VN[TT_Utility.getTier(Math.abs(EUT))])
                                 .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 16))
                 .widget(
-                        TextWidget.dynamicString(() -> "AMP: " + AMP).setDefaultColor(COLOR_TEXT_WHITE.get())
-                                .setPos(46, 24))
+                        new TextWidget().setStringSupplier(() -> "AMP: " + numberFormat.format(AMP))
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 24))
                 .widget(
-                        TextWidget.dynamicString(() -> "SUM: " + (long) AMP * EUT)
+                        new TextWidget().setStringSupplier(() -> "SUM: " + numberFormat.format((long) AMP * EUT))
                                 .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 32));
 
         addChangeNumberButton(builder, GT_UITextures.OVERLAY_BUTTON_MINUS_LARGE, val -> EUT -= val, 512, 64, 7, 4);

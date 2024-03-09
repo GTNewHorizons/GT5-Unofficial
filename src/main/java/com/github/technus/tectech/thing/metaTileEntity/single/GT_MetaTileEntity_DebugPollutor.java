@@ -16,6 +16,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.util.TT_Utility;
+import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -45,6 +46,7 @@ public class GT_MetaTileEntity_DebugPollutor extends GT_MetaTileEntity_TieredMac
 
     private static GT_RenderedTexture POLLUTOR;
     public int pollution = 0;
+    private static final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
     public GT_MetaTileEntity_DebugPollutor(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -170,7 +172,7 @@ public class GT_MetaTileEntity_DebugPollutor extends GT_MetaTileEntity_TieredMac
         builder.widget(
                 new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK).setSize(90, 72).setPos(43, 4))
                 .widget(
-                        TextWidget.dynamicString(() -> "Pollution: " + pollution)
+                        new TextWidget().setStringSupplier(() -> "Pollution: " + numberFormat.format(pollution))
                                 .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 8));
 
         addChangeNumberButton(

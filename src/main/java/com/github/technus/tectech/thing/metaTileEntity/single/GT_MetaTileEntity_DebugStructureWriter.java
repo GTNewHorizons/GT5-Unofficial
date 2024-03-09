@@ -224,19 +224,19 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
         builder.widget(
                 new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK).setSize(90, 72).setPos(43, 4))
                 .widget(
-                        TextWidget.dynamicString(() -> size ? "Structure size" : "My position")
+                        new TextWidget().setStringSupplier(() -> size ? "Structure size" : "My position")
                                 .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 8))
                 .widget(
-                        TextWidget.dynamicString(() -> size ? "(Changing scan size)" : "(Moving origin)")
+                        new TextWidget().setStringSupplier(() -> size ? "(Changing scan size)" : "(Moving origin)")
                                 .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 16))
                 .widget(
-                        TextWidget.dynamicString(() -> "A: " + numbers[size ? 3 : 0])
+                        new TextWidget().setStringSupplier(() -> "A: " + numbers[size ? 3 : 0])
                                 .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 24))
                 .widget(
-                        TextWidget.dynamicString(() -> "B: " + numbers[size ? 4 : 1])
+                        new TextWidget().setStringSupplier(() -> "B: " + numbers[size ? 4 : 1])
                                 .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 32))
                 .widget(
-                        TextWidget.dynamicString(() -> "C: " + numbers[size ? 5 : 2])
+                        new TextWidget().setStringSupplier(() -> "C: " + numbers[size ? 5 : 2])
                                 .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 40));
 
         addChangeNumberButtons(builder, GT_UITextures.OVERLAY_BUTTON_MINUS_LARGE, -512, -64, 7);

@@ -10,7 +10,8 @@ import static com.github.technus.tectech.util.CommonValues.VN;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.function.Consumer;
-import java.util.function.Supplier;
+import java.util.function.IntConsumer;
+import java.util.function.IntSupplier;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,13 +26,14 @@ import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_H
 import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_Energy;
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.util.TT_Utility;
+import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -58,6 +60,7 @@ public class GT_MetaTileEntity_DebugPowerGenerator extends GT_MetaTileEntity_Tie
     private boolean LASER = false;
     public int EUT = 0, AMP = 0;
     public boolean producing = true;
+    private static final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
     public GT_MetaTileEntity_DebugPowerGenerator(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -325,11 +328,11 @@ public class GT_MetaTileEntity_DebugPowerGenerator extends GT_MetaTileEntity_Tie
                 new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK).setSize(90, 72).setPos(43, 4))
 
                 .widget(
-                        TextWidget.dynamicString(() -> "TIER: " + VN[TT_Utility.getTier(Math.abs(EUT))])
+                        new TextWidget().setStringSupplier(() -> "TIER: " + VN[TT_Utility.getTier(Math.abs(EUT))])
                                 .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 22))
 
                 .widget(
-                        TextWidget.dynamicString(() -> "SUM: " + (long) AMP * EUT)
+                        new TextWidget().setStringSupplier(() -> "SUM: " + numberFormat.format((long) AMP * EUT))
                                 .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 46));
 
         addLabelledIntegerTextField(builder, "EUT: ", 24, this::getEUT, this::setEUT, 46, 8);
@@ -357,11 +360,10 @@ public class GT_MetaTileEntity_DebugPowerGenerator extends GT_MetaTileEntity_Tie
     }
 
     private void addLabelledIntegerTextField(ModularWindow.Builder builder, String label, int labelWidth,
-            Supplier<Integer> getter, Consumer<Integer> setter, int xPos, int yPos) {
-        TextFieldWidget itfw = new TextFieldWidget();
-        TextWidget ltw = new TextWidget(label);
-        builder.widget(ltw.setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(xPos, yPos)).widget(
-                itfw.setSetterInt(setter).setGetterInt(getter).setTextColor(COLOR_TEXT_WHITE.get())
+            IntSupplier getter, IntConsumer setter, int xPos, int yPos) {
+        builder.widget(new TextWidget(label).setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(xPos, yPos)).widget(
+                new NumericWidget().setGetter(getter::getAsInt).setSetter(val -> setter.accept((int) val))
+                        .setTextColor(COLOR_TEXT_WHITE.get())
                         .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
                         .setPos(xPos + labelWidth, yPos - 1).setSize(56, 10));
     }

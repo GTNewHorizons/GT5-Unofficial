@@ -392,7 +392,7 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
                 .widget(new FakeSyncWidget.ByteSyncer(() -> status, val -> status = val));
 
         builder.widget(
-                TextWidget.dynamicString(() -> "Status: " + (status == 0 ? "OK" : "NG")).setSynced(false)
+                new TextWidget().setStringSupplier(() -> "Status: " + (status == 0 ? "OK" : "NG"))
                         .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 7));
 
         for (int i = 0; i < 9; i++) {
