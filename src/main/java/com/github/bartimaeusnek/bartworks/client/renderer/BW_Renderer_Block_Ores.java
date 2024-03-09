@@ -30,17 +30,25 @@ import org.lwjgl.opengl.GL11;
 
 import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_Block_TE;
 import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_Blocks;
+import com.gtnewhorizons.angelica.api.ThreadSafeISBRH;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import gregtech.GT_Mod;
 
+@ThreadSafeISBRH(perThread = true)
 public class BW_Renderer_Block_Ores implements ISimpleBlockRenderingHandler {
 
-    public static BW_Renderer_Block_Ores INSTANCE = new BW_Renderer_Block_Ores();
-    public final int mRenderID = RenderingRegistry.getNextAvailableRenderId();
+    public static BW_Renderer_Block_Ores INSTANCE;
+    public static int renderID;
     public static final float blockMin = 0.0F;
     public static final float blockMax = 1.0F;
+
+    public static void register() {
+        renderID = RenderingRegistry.getNextAvailableRenderId();
+        INSTANCE = new BW_Renderer_Block_Ores();
+        RenderingRegistry.registerBlockHandler(INSTANCE);
+    }
 
     @Override
     public void renderInventoryBlock(Block aBlock, int aMeta, int modelId, RenderBlocks aRenderer) {
@@ -112,71 +120,32 @@ public class BW_Renderer_Block_Ores implements ISimpleBlockRenderingHandler {
         aRenderer.useInventoryTint = false;
     }
 
+    // spotless:off
     @Override
-    public boolean renderWorldBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, int modelId,
-            RenderBlocks aRenderer) {
-        BW_MetaGenerated_Block_TE tTileEntity = ((BW_MetaGenerated_Blocks) aBlock).getProperTileEntityForRendering();
-        tTileEntity.mMetaData = ((BW_MetaGenerated_Block_TE) aWorld.getTileEntity(aX, aY, aZ)).mMetaData;
+    public boolean renderWorldBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, int modelId, RenderBlocks aRenderer) {
+        BW_MetaGenerated_Blocks tBlock = (BW_MetaGenerated_Blocks) aBlock;
+        if(tBlock == null) return false;
+
+        BW_MetaGenerated_Block_TE fakeTileEntity = tBlock.getProperTileEntityForRendering(); // meh
+        if(fakeTileEntity == null) return false;
+
+        BW_MetaGenerated_Block_TE actualTileEntity = (BW_MetaGenerated_Block_TE) aWorld.getTileEntity(aX, aY, aZ);
+        if(actualTileEntity == null) return false;
+
+        fakeTileEntity.mMetaData = actualTileEntity.mMetaData;
         aRenderer.useInventoryTint = false;
         aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
         aRenderer.enableAO = Minecraft.isAmbientOcclusionEnabled() && GT_Mod.gregtechproxy.mRenderTileAmbientOcclusion;
         aRenderer.setRenderBoundsFromBlock(aBlock);
-        renderNegativeYFacing(
-                aWorld,
-                aRenderer,
-                aBlock,
-                aX,
-                aY,
-                aZ,
-                tTileEntity.getTexture(aBlock, ForgeDirection.DOWN),
-                true);
-        renderPositiveYFacing(
-                aWorld,
-                aRenderer,
-                aBlock,
-                aX,
-                aY,
-                aZ,
-                tTileEntity.getTexture(aBlock, ForgeDirection.UP),
-                true);
-        renderNegativeZFacing(
-                aWorld,
-                aRenderer,
-                aBlock,
-                aX,
-                aY,
-                aZ,
-                tTileEntity.getTexture(aBlock, ForgeDirection.NORTH),
-                true);
-        renderPositiveZFacing(
-                aWorld,
-                aRenderer,
-                aBlock,
-                aX,
-                aY,
-                aZ,
-                tTileEntity.getTexture(aBlock, ForgeDirection.SOUTH),
-                true);
-        renderNegativeXFacing(
-                aWorld,
-                aRenderer,
-                aBlock,
-                aX,
-                aY,
-                aZ,
-                tTileEntity.getTexture(aBlock, ForgeDirection.WEST),
-                true);
-        renderPositiveXFacing(
-                aWorld,
-                aRenderer,
-                aBlock,
-                aX,
-                aY,
-                aZ,
-                tTileEntity.getTexture(aBlock, ForgeDirection.EAST),
-                true);
+        renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, fakeTileEntity.getTexture(aBlock, ForgeDirection.DOWN), true);
+        renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, fakeTileEntity.getTexture(aBlock, ForgeDirection.UP), true);
+        renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, fakeTileEntity.getTexture(aBlock, ForgeDirection.NORTH), true);
+        renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, fakeTileEntity.getTexture(aBlock, ForgeDirection.SOUTH), true);
+        renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, fakeTileEntity.getTexture(aBlock, ForgeDirection.WEST), true);
+        renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, fakeTileEntity.getTexture(aBlock, ForgeDirection.EAST), true);
         return true;
     }
+    // spotless:on
 
     @Override
     public boolean shouldRender3DInInventory(int modelId) {
@@ -185,6 +154,6 @@ public class BW_Renderer_Block_Ores implements ISimpleBlockRenderingHandler {
 
     @Override
     public int getRenderId() {
-        return this.mRenderID;
+        return renderID;
     }
 }

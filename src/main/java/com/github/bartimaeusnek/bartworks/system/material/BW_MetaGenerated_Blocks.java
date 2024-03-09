@@ -87,7 +87,7 @@ public abstract class BW_MetaGenerated_Blocks extends BW_TileEntityContainer {
     @Override
     public int getRenderType() {
         if (BW_Renderer_Block_Ores.INSTANCE == null) return super.getRenderType();
-        return BW_Renderer_Block_Ores.INSTANCE.mRenderID;
+        return BW_Renderer_Block_Ores.INSTANCE.renderID;
     }
 
     @Override

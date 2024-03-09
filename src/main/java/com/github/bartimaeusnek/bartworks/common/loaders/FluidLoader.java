@@ -104,8 +104,8 @@ public class FluidLoader {
         GameRegistry.registerBlock(bioFluidBlock, "coloredFluidBlock");
         GameRegistry.registerTileEntity(BWTileEntityDimIDBridge.class, "bwTEDimIDBridge");
         if (SideReference.Side.Client) {
-            RenderingRegistry.registerBlockHandler(RendererSwitchingColorFluid.instance);
-            RenderingRegistry.registerBlockHandler(RendererGlasBlock.instance);
+            RendererSwitchingColorFluid.register();
+            RendererGlasBlock.register();
         }
     }
 

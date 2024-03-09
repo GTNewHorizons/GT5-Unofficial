@@ -23,6 +23,7 @@ import org.lwjgl.opengl.GL11;
 import com.github.bartimaeusnek.bartworks.common.blocks.BW_GlasBlocks;
 import com.github.bartimaeusnek.bartworks.common.blocks.BW_GlasBlocks2;
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
+import com.gtnewhorizons.angelica.api.ThreadSafeISBRH;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -30,10 +31,17 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
+@ThreadSafeISBRH(perThread = false)
 public class RendererGlasBlock implements ISimpleBlockRenderingHandler {
 
-    public static final int RID = RenderingRegistry.getNextAvailableRenderId();
-    public static final RendererGlasBlock instance = new RendererGlasBlock();
+    public static int renderID;
+    public static RendererGlasBlock INSTANCE;
+
+    public static void register() {
+        renderID = RenderingRegistry.getNextAvailableRenderId();
+        INSTANCE = new RendererGlasBlock();
+        RenderingRegistry.registerBlockHandler(INSTANCE);
+    }
 
     @Override
     public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
@@ -69,33 +77,27 @@ public class RendererGlasBlock implements ISimpleBlockRenderingHandler {
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);
     }
 
+    // spotless:off
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
-            RenderBlocks renderer) {
+                                    RenderBlocks renderer) {
         if (block instanceof BW_GlasBlocks) {
             renderer.renderStandardBlock(ItemRegistry.bw_fake_glasses, x, y, z);
-            renderer.renderStandardBlockWithColorMultiplier(
-                    block,
-                    x,
-                    y,
-                    z,
-                    ((BW_GlasBlocks) block).getColor(world.getBlockMetadata(x, y, z))[0] / 255f,
-                    ((BW_GlasBlocks) block).getColor(world.getBlockMetadata(x, y, z))[1] / 255f,
-                    ((BW_GlasBlocks) block).getColor(world.getBlockMetadata(x, y, z))[2] / 255f);
+            renderer.renderStandardBlockWithColorMultiplier(block, x, y, z,
+                ((BW_GlasBlocks) block).getColor(world.getBlockMetadata(x, y, z))[0] / 255f,
+                ((BW_GlasBlocks) block).getColor(world.getBlockMetadata(x, y, z))[1] / 255f,
+                ((BW_GlasBlocks) block).getColor(world.getBlockMetadata(x, y, z))[2] / 255f);
         }
         if (block instanceof BW_GlasBlocks2) {
             renderer.renderStandardBlock(ItemRegistry.bw_fake_glasses2, x, y, z);
-            renderer.renderStandardBlockWithColorMultiplier(
-                    block,
-                    x,
-                    y,
-                    z,
-                    ((BW_GlasBlocks2) block).getColor(world.getBlockMetadata(x, y, z))[0] / 255f,
-                    ((BW_GlasBlocks2) block).getColor(world.getBlockMetadata(x, y, z))[1] / 255f,
-                    ((BW_GlasBlocks2) block).getColor(world.getBlockMetadata(x, y, z))[2] / 255f);
+            renderer.renderStandardBlockWithColorMultiplier(block, x, y, z,
+                ((BW_GlasBlocks2) block).getColor(world.getBlockMetadata(x, y, z))[0] / 255f,
+                ((BW_GlasBlocks2) block).getColor(world.getBlockMetadata(x, y, z))[1] / 255f,
+                ((BW_GlasBlocks2) block).getColor(world.getBlockMetadata(x, y, z))[2] / 255f);
         }
         return true;
     }
+    // spotless:on
 
     @Override
     public boolean shouldRender3DInInventory(int modelId) {
@@ -104,6 +106,6 @@ public class RendererGlasBlock implements ISimpleBlockRenderingHandler {
 
     @Override
     public int getRenderId() {
-        return RendererGlasBlock.RID;
+        return RendererGlasBlock.renderID;
     }
 }

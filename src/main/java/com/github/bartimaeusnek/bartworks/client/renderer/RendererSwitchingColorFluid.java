@@ -28,12 +28,14 @@ import com.github.bartimaeusnek.bartworks.common.blocks.BioFluidBlock;
 import com.github.bartimaeusnek.bartworks.common.loaders.FluidLoader;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_BioVat;
 import com.github.bartimaeusnek.bartworks.util.Coords;
+import com.gtnewhorizons.angelica.api.ThreadSafeISBRH;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
+@ThreadSafeISBRH(perThread = false)
 public class RendererSwitchingColorFluid implements ISimpleBlockRenderingHandler {
 
     private static final float LIGHT_Y_NEG = 0.5f;
@@ -43,7 +45,11 @@ public class RendererSwitchingColorFluid implements ISimpleBlockRenderingHandler
     private static final float THREE_QUARTERS_FILLED = 0.875f;
     private static final double RENDER_OFFSET = 0.0010000000474974513;
 
-    public static RendererSwitchingColorFluid instance = new RendererSwitchingColorFluid();
+    public static RendererSwitchingColorFluid instance;
+
+    public static void register() {
+        instance = new RendererSwitchingColorFluid();
+    }
 
     private float getFluidHeightAverage(float[] flow) {
         float total = 0.0f;
