@@ -540,7 +540,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
                 new TextWidget(Text.localised("ggfab.gui.advassline.shutdown"))
                         .setEnabled(this::hasAbnormalStopReason));
         screenElements.widget(
-                TextWidget.dynamicText(() -> Text.localised(lastStopReason)).setSynced(false)
+                new TextWidget().setTextSupplier(() -> Text.localised(lastStopReason))
                         .attachSyncer(
                                 new FakeSyncWidget.StringSyncer(() -> lastStopReason, r -> this.lastStopReason = r),
                                 screenElements)
