@@ -217,9 +217,9 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
                             .setSize(spaceX * 4 + 5, 12))
                     .setPos(startX, startY))
                 .widget(
-                    TextWidget
-                        .dynamicString(() -> getCoverData() != null ? getCoverData().inverted ? INVERTED : NORMAL : "")
-                        .setSynced(false)
+                    new TextWidget()
+                        .setStringSupplier(
+                            () -> getCoverData() != null ? getCoverData().inverted ? INVERTED : NORMAL : "")
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(startX + spaceX * 1, 4 + startY + spaceY * 0))
                 .widget(

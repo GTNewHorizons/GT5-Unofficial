@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.function.Function;
+import java.util.function.IntConsumer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -43,6 +43,7 @@ import org.lwjgl.input.Keyboard;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -2184,27 +2185,33 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         return true;
     }
 
-    protected String generateCurrentRecipeInfoString() {
-        StringBuilder ret = new StringBuilder(EnumChatFormatting.WHITE + "Progress: ")
-            .append(String.format("%,.2f", (double) mProgresstime / 20))
-            .append("s / ")
-            .append(String.format("%,.2f", (double) mMaxProgresstime / 20))
-            .append("s (")
-            .append(String.format("%,.1f", (double) mProgresstime / mMaxProgresstime * 100))
-            .append("%)\n");
+    protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
-        Function<Integer, Void> appendRate = (Integer amount) -> {
+    protected String generateCurrentRecipeInfoString() {
+        StringBuffer ret = new StringBuffer(EnumChatFormatting.WHITE + "Progress: ");
+
+        numberFormat.setMinimumFractionDigits(2);
+        numberFormat.setMaximumFractionDigits(2);
+        numberFormat.format((double) mProgresstime / 20, ret);
+        ret.append("s / ");
+        numberFormat.format((double) mMaxProgresstime / 20, ret);
+        ret.append("s (");
+        numberFormat.setMinimumFractionDigits(0);
+        numberFormat.setMaximumFractionDigits(1);
+        numberFormat.format((double) mProgresstime / mMaxProgresstime * 100, ret);
+        ret.append("%)\n");
+
+        IntConsumer appendRate = (amount) -> {
             double processPerTick = (double) amount / mMaxProgresstime * 20;
             if (processPerTick > 1) {
-                ret.append(" (")
-                    .append(formatNumbers(Math.round(processPerTick * 10) / 10.0))
-                    .append("/s)");
+                ret.append(" (");
+                numberFormat.format(Math.round(processPerTick * 10) / 10.0, ret);
+                ret.append("/s)");
             } else {
-                ret.append(" (")
-                    .append(formatNumbers(Math.round(1 / processPerTick * 10) / 10.0))
-                    .append("s/ea)");
+                ret.append(" (");
+                numberFormat.format(Math.round(1 / processPerTick * 10) / 10.0, ret);
+                ret.append("s/ea)");
             }
-            return null;
         };
 
         int lines = 0;
@@ -2222,10 +2229,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                     .append(item.getDisplayName())
                     .append(EnumChatFormatting.WHITE)
                     .append(" x ")
-                    .append(EnumChatFormatting.GOLD)
-                    .append(formatNumbers(item.stackSize))
-                    .append(EnumChatFormatting.WHITE);
-                appendRate.apply(item.stackSize);
+                    .append(EnumChatFormatting.GOLD);
+                numberFormat.format(item.stackSize, ret);
+                ret.append(EnumChatFormatting.WHITE);
+                appendRate.accept(item.stackSize);
                 ret.append('\n');
             }
         }
@@ -2241,11 +2248,11 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                     .append(fluid.getLocalizedName())
                     .append(EnumChatFormatting.WHITE)
                     .append(" x ")
-                    .append(EnumChatFormatting.GOLD)
-                    .append(formatNumbers(fluid.amount))
-                    .append("L")
+                    .append(EnumChatFormatting.GOLD);
+                numberFormat.format(fluid.amount, ret);
+                ret.append("L")
                     .append(EnumChatFormatting.WHITE);
-                appendRate.apply(fluid.amount);
+                appendRate.accept(fluid.amount);
                 ret.append('\n');
             }
         }

@@ -36,6 +36,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
+import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
@@ -401,7 +402,7 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
                 builder.add(
                     StatCollector.translateToLocalFormatted(
                         "GT5U.gui.text.pump_rate.1",
-                        EnumChatFormatting.AQUA + getFlowRatePerTick())
+                        EnumChatFormatting.AQUA + numberFormat.format(getFlowRatePerTick()))
                         + StatCollector.translateToLocal("GT5U.gui.text.pump_rate.2"),
                     getReservoirContents() + StatCollector.translateToLocal("GT5U.gui.text.pump_recovery.2"));
             } else {
@@ -423,9 +424,8 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
         return ImmutableList.of(failureReason);
     }
 
-    @NotNull
-    protected String getFlowRatePerTick() {
-        return GT_Utility.formatNumbers(this.mMaxProgresstime > 0 ? (mOilFlow / this.mMaxProgresstime) : 0);
+    protected int getFlowRatePerTick() {
+        return this.mMaxProgresstime > 0 ? (mOilFlow / this.mMaxProgresstime) : 0;
     }
 
     @NotNull
@@ -438,7 +438,7 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
     }
 
     private @NotNull String clientFluidType = "";
-    private @NotNull String clientPumpRate = "";
+    private int clientPumpRate = 0;
     private @NotNull String clientReservoirContents = "";
 
     @NotNull
@@ -455,42 +455,41 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
             .translateToLocalFormatted("GT5U.gui.text.pump_recovery.1", GT_Utility.formatNumbers(amount));
     }
 
+    protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
+
     @Override
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
         super.drawTexts(screenElements, inventorySlot);
         screenElements
             .widget(
-                TextWidget
-                    .dynamicString(
+                new TextWidget()
+                    .setStringSupplier(
                         () -> EnumChatFormatting.GRAY
                             + StatCollector.translateToLocalFormatted("GT5U.gui.text.pump_fluid_type", clientFluidType))
-                    .setSynced(false)
                     .setTextAlignment(Alignment.CenterLeft)
                     .setEnabled(widget -> getBaseMetaTileEntity().isActive() && workState == STATE_AT_BOTTOM))
             .widget(
-                TextWidget
-                    .dynamicString(
+                new TextWidget()
+                    .setStringSupplier(
                         () -> EnumChatFormatting.GRAY
                             + StatCollector.translateToLocalFormatted(
                                 "GT5U.gui.text.pump_rate.1",
-                                EnumChatFormatting.AQUA + clientPumpRate)
+                                EnumChatFormatting.AQUA + numberFormat.format(clientPumpRate))
                             + EnumChatFormatting.GRAY
                             + StatCollector.translateToLocal("GT5U.gui.text.pump_rate.2"))
-                    .setSynced(false)
                     .setTextAlignment(Alignment.CenterLeft)
                     .setEnabled(widget -> getBaseMetaTileEntity().isActive() && workState == STATE_AT_BOTTOM))
             .widget(
-                TextWidget
-                    .dynamicString(
+                new TextWidget()
+                    .setStringSupplier(
                         () -> EnumChatFormatting.GRAY + clientReservoirContents
                             + EnumChatFormatting.GRAY
                             + StatCollector.translateToLocal("GT5U.gui.text.pump_recovery.2"))
-                    .setSynced(false)
                     .setTextAlignment(Alignment.CenterLeft)
                     .setEnabled(widget -> getBaseMetaTileEntity().isActive() && workState == STATE_AT_BOTTOM))
             .widget(new FakeSyncWidget.IntegerSyncer(() -> workState, newInt -> workState = newInt))
             .widget(new FakeSyncWidget.StringSyncer(this::getFluidName, newString -> clientFluidType = newString))
-            .widget(new FakeSyncWidget.StringSyncer(this::getFlowRatePerTick, newString -> clientPumpRate = newString))
+            .widget(new FakeSyncWidget.IntegerSyncer(this::getFlowRatePerTick, newInt -> clientPumpRate = newInt))
             .widget(
                 new FakeSyncWidget.StringSyncer(
                     this::getReservoirContents,
