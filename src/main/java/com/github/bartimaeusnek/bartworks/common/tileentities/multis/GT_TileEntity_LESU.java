@@ -34,6 +34,7 @@ import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import com.github.bartimaeusnek.bartworks.util.ConnectedBlocksChecker;
+import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -41,6 +42,7 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
@@ -78,6 +80,8 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
         }
     };
     private long mStorage;
+
+    protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
     public GT_TileEntity_LESU(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -492,39 +496,53 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
                                 .setSize(116, 5));
     }
 
+    private long clientEU;
+    private long clientMaxEU;
+    private long clientMaxIn;
+    private long clientMaxOut;
+    private long clientAmps;
+
     private void drawTexts(DynamicPositionedColumn screenElements) {
         screenElements.setSpace(0).setPos(11, 8);
 
         screenElements
                 .widget(
-                        TextWidget.dynamicString(
-                                () -> "EU: " + GT_Utility.formatNumbers(this.getBaseMetaTileEntity().getStoredEU()))
+                        new TextWidget().setStringSupplier(() -> "EU: " + numberFormat.format(this.clientEU))
                                 .setDefaultColor(this.COLOR_TEXT_WHITE.get()))
                 .widget(
-                        TextWidget.dynamicString(
-                                () -> "MAX: " + (this.getBaseMetaTileEntity().isActive()
-                                        ? GT_Utility.formatNumbers(this.getBaseMetaTileEntity().getOutputVoltage())
-                                                + String.valueOf(ConfigHandler.energyPerCell).substring(1)
-                                        : Integer.toString(0)))
+                        new FakeSyncWidget.LongSyncer(
+                                () -> this.getBaseMetaTileEntity().getStoredEU(),
+                                val -> clientEU = val))
+                .widget(
+                        new TextWidget().setStringSupplier(() -> "MAX: " + numberFormat.format(clientMaxEU))
                                 .setDefaultColor(this.COLOR_TEXT_WHITE.get()))
                 .widget(
-                        TextWidget
-                                .dynamicString(
-                                        () -> "MAX EU/t IN: " + GT_Utility
-                                                .formatNumbers(this.getBaseMetaTileEntity().getInputVoltage()))
+                        new FakeSyncWidget.LongSyncer(
+                                () -> this.getBaseMetaTileEntity().isActive()
+                                        ? this.getBaseMetaTileEntity().getOutputVoltage() * ConfigHandler.energyPerCell
+                                        : 0,
+                                val -> clientMaxEU = val))
+                .widget(
+                        new TextWidget().setStringSupplier(() -> "MAX EU/t IN: " + numberFormat.format(clientMaxIn))
                                 .setDefaultColor(this.COLOR_TEXT_WHITE.get()))
                 .widget(
-                        TextWidget
-                                .dynamicString(
-                                        () -> "EU/t OUT: " + GT_Utility
-                                                .formatNumbers(this.getBaseMetaTileEntity().getOutputVoltage()))
+                        new FakeSyncWidget.LongSyncer(
+                                () -> this.getBaseMetaTileEntity().getInputVoltage(),
+                                val -> clientMaxIn = val))
+                .widget(
+                        new TextWidget().setStringSupplier(() -> "EU/t OUT: " + numberFormat.format(clientMaxOut))
                                 .setDefaultColor(this.COLOR_TEXT_WHITE.get()))
                 .widget(
-                        TextWidget
-                                .dynamicString(
-                                        () -> "AMP/t IN/OUT: " + GT_Utility
-                                                .formatNumbers(this.getBaseMetaTileEntity().getInputAmperage()))
+                        new FakeSyncWidget.LongSyncer(
+                                () -> this.getBaseMetaTileEntity().getOutputVoltage(),
+                                val -> clientMaxOut = val))
+                .widget(
+                        new TextWidget().setStringSupplier(() -> "AMP/t IN/OUT: " + numberFormat.format(clientAmps))
                                 .setDefaultColor(this.COLOR_TEXT_WHITE.get()))
+                .widget(
+                        new FakeSyncWidget.LongSyncer(
+                                () -> this.getBaseMetaTileEntity().getInputAmperage(),
+                                val -> clientAmps = val))
                 .widget(
                         new TextWidget(Text.localised("tooltip.LESU.0.name")).setDefaultColor(Color.YELLOW.getRGB())
                                 .setEnabled(widget -> this.maxEUStore() >= Long.MAX_VALUE - 1))

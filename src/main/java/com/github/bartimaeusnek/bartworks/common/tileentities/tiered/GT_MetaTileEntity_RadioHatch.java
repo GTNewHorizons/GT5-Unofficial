@@ -45,7 +45,7 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar.Direction;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -402,14 +402,16 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch
                         new DrawableWidget().setBackground(BW_UITextures.PICTURE_DECAY_TIME_CONTAINER).setPos(120, 14)
                                 .setSize(24, 56))
                 .widget(
-                        TextWidget.dynamicString(
+                        new TextWidget().setStringSupplier(
                                 () -> StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.1", this.mass))
                                 .setTextAlignment(Alignment.Center).setPos(65, 62))
+                .widget(new FakeSyncWidget.ByteSyncer(() -> this.mass, val -> this.mass = val))
                 .widget(
-                        TextWidget.dynamicString(
+                        new TextWidget().setStringSupplier(
                                 () -> StatCollector
                                         .translateToLocalFormatted("BW.NEI.display.radhatch.0", this.getSievert()))
                                 .setTextAlignment(Alignment.Center).setPos(60, 72))
+                .widget(new FakeSyncWidget.IntegerSyncer(() -> this.sievert, val -> this.sievert = val))
                 .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
                     if (!widget.isClient()) {
                         widget.getContext().openSyncedWindow(RADIATION_SHUTTER_WINDOW_ID);
@@ -442,9 +444,8 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch
                                         (widget, val) -> widget.setPos(16, 29 + this.coverage / 2)
                                                 .setSize(51, 50 - this.coverage / 2)))
                 .widget(
-                        new TextFieldWidget().setSetterInt(val -> this.coverage = val.byteValue())
-                                .setGetterInt(() -> (int) this.coverage).setNumbers(0, 100)
-                                .setTextColor(Color.WHITE.dark(1)).setOnScrollNumbers(1, 5, 50)
+                        new NumericWidget().setSetter(val -> this.coverage = (byte) val).setGetter(() -> this.coverage)
+                                .setBounds(0, 100).setScrollValues(1, 5, 50).setTextColor(Color.WHITE.dark(1))
                                 .setTextAlignment(Alignment.CenterLeft)
                                 .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
                                 .setPos(86, 27).setSize(30, 12))
