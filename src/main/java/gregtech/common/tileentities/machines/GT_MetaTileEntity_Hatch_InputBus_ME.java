@@ -440,6 +440,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     @Override
     public void startRecipeProcessing() {
         processingRecipe = true;
+        updateAllInformationSlots();
     }
 
     private void refreshItemList() {
