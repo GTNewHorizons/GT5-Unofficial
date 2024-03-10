@@ -3,6 +3,7 @@ package gregtech.common.gui.modularui.widget;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import com.gtnewhorizon.gtnhlib.util.parsing.MathExpressionParser;
 import net.minecraft.client.gui.GuiScreen;
 
 import com.gtnewhorizons.modularui.api.math.Alignment;
@@ -60,6 +61,10 @@ public class CoverDataFollower_TextFieldWidget<T extends ISerializableObject> ex
         setText(dataToStateGetter.apply(data));
     }
 
+    /**
+     * @deprecated Use {@link CoverDataFollower_NumericWidget}
+     */
+    @Deprecated
     public CoverDataFollower_TextFieldWidget<T> setOnScrollNumbers(int baseStep, int ctrlStep, int shiftStep) {
         setOnScrollNumbers((val, direction) -> {
             int step = (GuiScreen.isShiftKeyDown() ? shiftStep : GuiScreen.isCtrlKeyDown() ? ctrlStep : baseStep)
@@ -74,13 +79,21 @@ public class CoverDataFollower_TextFieldWidget<T extends ISerializableObject> ex
         return this;
     }
 
+    /**
+     * @deprecated Use {@link CoverDataFollower_NumericWidget}
+     */
+    @Deprecated
     public CoverDataFollower_TextFieldWidget<T> setOnScrollNumbers() {
         return setOnScrollNumbers(1, 50, 1000);
     }
 
+    /**
+     * @deprecated Use {@link CoverDataFollower_NumericWidget}
+     */
+    @Deprecated
     public CoverDataFollower_TextFieldWidget<T> setOnScrollText(int baseStep, int ctrlStep, int shiftStep) {
         setOnScroll((text, direction) -> {
-            int val = (int) MathExpression.parseMathExpression(text, -1);
+            int val = (int) MathExpressionParser.parse(text);
             int step = (GuiScreen.isShiftKeyDown() ? shiftStep : GuiScreen.isCtrlKeyDown() ? ctrlStep : baseStep)
                 * direction;
             try {
@@ -94,10 +107,18 @@ public class CoverDataFollower_TextFieldWidget<T extends ISerializableObject> ex
         return this;
     }
 
+    /**
+     * @deprecated Use {@link CoverDataFollower_NumericWidget}
+     */
+    @Deprecated
     public CoverDataFollower_TextFieldWidget<T> setOnScrollText() {
         return setOnScrollText(1, 5, 50);
     }
 
+    /**
+     * @deprecated Use {@link CoverDataFollower_NumericWidget}
+     */
+    @Deprecated
     public CoverDataFollower_TextFieldWidget<T> setOnScrollNumbersLong(long baseStep, long ctrlStep, long shiftStep) {
         setOnScrollNumbersLong((val, direction) -> {
             long step = (GuiScreen.isShiftKeyDown() ? shiftStep : GuiScreen.isCtrlKeyDown() ? ctrlStep : baseStep)
