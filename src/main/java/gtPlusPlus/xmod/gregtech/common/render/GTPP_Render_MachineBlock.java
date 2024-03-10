@@ -228,7 +228,7 @@ public class GTPP_Render_MachineBlock extends GT_Renderer_Block {
         }
     }
 
-    public static boolean renderStandardBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock,
+    public boolean renderStandardBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock,
             RenderBlocks aRenderer) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
 
@@ -249,7 +249,7 @@ public class GTPP_Render_MachineBlock extends GT_Renderer_Block {
                 : false;
     }
 
-    public static boolean renderStandardBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock,
+    public boolean renderStandardBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock,
             RenderBlocks aRenderer, ITexture[][] aTextures) {
         aBlock.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         aRenderer.setRenderBoundsFromBlock(aBlock);
@@ -262,7 +262,7 @@ public class GTPP_Render_MachineBlock extends GT_Renderer_Block {
         return true;
     }
 
-    public static boolean renderPipeBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock,
+    public boolean renderPipeBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock,
             IPipeRenderedTileEntity aTileEntity, RenderBlocks aRenderer) {
         final int aConnections = aTileEntity.getConnections();
         if ((aConnections & HAS_FOAM) != 0) {
