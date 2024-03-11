@@ -1498,7 +1498,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Utility.getIntegratedCircuit(9))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUMV, 33))
             .fluidInputs(MaterialsUEVplus.SpaceTime.getMolten(72))
-            .duration(1 * MINUTES + 20 * SECONDS)
+            .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_UMV)
             .addTo(assemblerRecipes);
 
