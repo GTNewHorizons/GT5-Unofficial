@@ -17,10 +17,16 @@ public class TecTechUITextures {
             .fullImage(MODID, "gui/background/screen_blue_parametrizer_txt");
     public static final UITexture BACKGROUND_SCREEN_BLUE_NO_INVENTORY = UITexture
             .fullImage(MODID, "gui/background/screen_blue_no_inventory");
+    public static final UITexture BACKGROUND_STAR = UITexture.fullImage(MODID, "gui/background/star");
+    public static final UITexture BACKGROUND_GLOW_ORANGE = UITexture.fullImage(MODID, "gui/background/orange_glow");
+    public static final UITexture BACKGROUND_GLOW_PURPLE = UITexture.fullImage(MODID, "gui/background/purple_glow");
+    public static final UITexture BACKGROUND_GLOW_BLUE = UITexture.fullImage(MODID, "gui/background/blue_glow");
+    public static final UITexture BACKGROUND_GLOW_GREEN = UITexture.fullImage(MODID, "gui/background/green_glow");
 
     public static final UITexture BUTTON_STANDARD_16x16 = UITexture.fullImage(MODID, "gui/button/standard_16x16");
     public static final UITexture BUTTON_STANDARD_LIGHT_16x16 = UITexture
             .fullImage(MODID, "gui/button/standard_light_16x16");
+    public static final UITexture BUTTON_CELESTIAL_32x32 = UITexture.fullImage(MODID, "gui/button/celestial");
 
     public static final UITexture OVERLAY_BUTTON_POWER_SWITCH_DISABLED = UITexture
             .fullImage(MODID, "gui/overlay_button/power_switch_disabled");
@@ -61,6 +67,8 @@ public class TecTechUITextures {
             .fullImage(MODID, "gui/overlay_button/parametrizer_c");
     public static final UITexture OVERLAY_BUTTON_PARAMETRIZER_IF = UITexture
             .fullImage(MODID, "gui/overlay_button/parametrizer_if");
+    public static final UITexture OVERLAY_BUTTON_ARROW_BLUE_UP = UITexture
+            .fullImage(MODID, "gui/overlay_button/arrow_blue_up");
 
     public static final UITexture OVERLAY_SLOT_RACK = UITexture.fullImage(MODID, "gui/overlay_slot/rack");
     public static final UITexture OVERLAY_SLOT_MESH = UITexture.fullImage(MODID, "gui/overlay_slot/mesh");
@@ -109,4 +117,10 @@ public class TecTechUITextures {
     public static final UITexture PICTURE_PARAMETER_GRAY = UITexture.fullImage(MODID, "gui/picture/parameter_gray");
     public static final UITexture PICTURE_UNCERTAINTY_MONITOR_MULTIMACHINE = UITexture
             .fullImage(MODID, "gui/picture/uncertainty/monitor_multimachine");
+    public static final UITexture PICTURE_UPGRADE_CONNECTOR_FULL = UITexture.fullImage(MODID, "gui/picture/connector");
+    public static final UITexture PICTURE_UPGRADE_CONNECTOR_EMPTY = UITexture
+            .fullImage(MODID, "gui/picture/connector_empty");
+    public static final UITexture PICTURE_UPGRADE_CONNECTOR_SWITCH = UITexture
+            .fullImage(MODID, "gui/picture/connector_switch");
+    public static final UITexture SLOT_OUTLINE_GREEN = UITexture.fullImage(MODID, "gui/picture/green_selector");
 }

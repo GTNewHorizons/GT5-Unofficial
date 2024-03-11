@@ -15,6 +15,7 @@ public final class CommonValues {
     public static final String TEC_MARK_EM = TEC_MARK_SHORT + EnumChatFormatting.BLUE + ": Elemental Matter";
     public static final String THETA_MOVEMENT = TEC_MARK_SHORT + EnumChatFormatting.BLUE + ": Theta Movement";
     public static final String COSMIC_MARK = TEC_MARK_SHORT + EnumChatFormatting.BLUE + ": Cosmic";
+    public static final String GODFORGE_MARK = TEC_MARK_SHORT + EnumChatFormatting.BLUE + ": Project Godforge";
 
     public static final byte MOVE_AT = 4; // move stuff around
     public static final byte RECIPE_AT = 6; // move stuff around

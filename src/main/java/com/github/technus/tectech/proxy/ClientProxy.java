@@ -2,6 +2,7 @@ package com.github.technus.tectech.proxy;
 
 import static com.github.technus.tectech.TecTech.RANDOM;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.eyeOfHarmonyRenderBlock;
+import static com.github.technus.tectech.thing.casing.TT_Container_Casings.forgeOfGodsRenderBlock;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiNewChat;
@@ -17,9 +18,14 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.rendering.EOH.EOH_ItemRenderer;
 import com.github.technus.tectech.rendering.EOH.EOH_TESR;
+import com.github.technus.tectech.thing.block.GodforgeGlassBlock;
+import com.github.technus.tectech.thing.block.GodforgeGlassRender;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.block.QuantumGlassRender;
+import com.github.technus.tectech.thing.block.RenderForgeOfGods;
 import com.github.technus.tectech.thing.block.TileEyeOfHarmony;
+import com.github.technus.tectech.thing.block.TileForgeOfGods;
+import com.github.technus.tectech.thing.item.RenderForgeOfGodsItem;
 import com.gtnewhorizon.structurelib.entity.fx.WeightlessParticleFX;
 
 import cpw.mods.fml.client.FMLClientHandler;
@@ -33,11 +39,16 @@ public class ClientProxy extends CommonProxy {
     public void registerRenderInfo() {
         QuantumGlassBlock.renderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(QuantumGlassBlock.renderID, new QuantumGlassRender());
+        GodforgeGlassBlock.renderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(GodforgeGlassBlock.renderID, new GodforgeGlassRender());
 
         MinecraftForgeClient
                 .registerItemRenderer(Item.getItemFromBlock(eyeOfHarmonyRenderBlock), new EOH_ItemRenderer());
+        MinecraftForgeClient
+                .registerItemRenderer(Item.getItemFromBlock(forgeOfGodsRenderBlock), new RenderForgeOfGodsItem());
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEyeOfHarmony.class, new EOH_TESR());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileForgeOfGods.class, new RenderForgeOfGods());
     }
 
     @Override

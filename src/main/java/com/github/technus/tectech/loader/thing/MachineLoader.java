@@ -19,9 +19,14 @@ import static com.github.technus.tectech.thing.CustomItemList.Machine_DebugWrite
 import static com.github.technus.tectech.thing.CustomItemList.Machine_Multi_Computer;
 import static com.github.technus.tectech.thing.CustomItemList.Machine_Multi_DataBank;
 import static com.github.technus.tectech.thing.CustomItemList.Machine_Multi_EyeOfHarmony;
+import static com.github.technus.tectech.thing.CustomItemList.Machine_Multi_ForgeOfGods;
 import static com.github.technus.tectech.thing.CustomItemList.Machine_Multi_Infuser;
 import static com.github.technus.tectech.thing.CustomItemList.Machine_Multi_Microwave;
+import static com.github.technus.tectech.thing.CustomItemList.Machine_Multi_MoltenModule;
+import static com.github.technus.tectech.thing.CustomItemList.Machine_Multi_PlasmaModule;
+import static com.github.technus.tectech.thing.CustomItemList.Machine_Multi_QuarkGluonPlasmaModule;
 import static com.github.technus.tectech.thing.CustomItemList.Machine_Multi_Research;
+import static com.github.technus.tectech.thing.CustomItemList.Machine_Multi_SmeltingModule;
 import static com.github.technus.tectech.thing.CustomItemList.Machine_Multi_Switch;
 import static com.github.technus.tectech.thing.CustomItemList.Machine_Multi_TeslaCoil;
 import static com.github.technus.tectech.thing.CustomItemList.Machine_Multi_Transformer;
@@ -314,6 +319,7 @@ import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_H
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Uncertainty;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_WirelessMulti;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_EyeOfHarmony;
+import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_ForgeOfGods;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_computer;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_dataBank;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_infuser;
@@ -322,6 +328,10 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_E
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_transformer;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_TM_microwave;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_TM_teslaCoil;
+import com.github.technus.tectech.thing.metaTileEntity.multi.godforge_modules.GT_MetaTileEntity_EM_ExoticModule;
+import com.github.technus.tectech.thing.metaTileEntity.multi.godforge_modules.GT_MetaTileEntity_EM_MoltenModule;
+import com.github.technus.tectech.thing.metaTileEntity.multi.godforge_modules.GT_MetaTileEntity_EM_PlasmaModule;
+import com.github.technus.tectech.thing.metaTileEntity.multi.godforge_modules.GT_MetaTileEntity_EM_SmeltingModule;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_PipeBlock_Data;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_PipeBlock_Energy;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_Data;
@@ -2024,6 +2034,21 @@ public class MachineLoader implements Runnable {
 
         Machine_Multi_EyeOfHarmony.set(
                 new GT_MetaTileEntity_EM_EyeOfHarmony(15410, "multimachine.em.eye_of_harmony", "Eye of Harmony")
+                        .getStackForm(1L));
+        Machine_Multi_ForgeOfGods.set(
+                new GT_MetaTileEntity_EM_ForgeOfGods(15411, "multimachine.em.forge_of_gods", "Forge of the Gods")
+                        .getStackForm(1L));
+        Machine_Multi_SmeltingModule.set(
+                new GT_MetaTileEntity_EM_SmeltingModule(15412, "multimachine.em.smelting_module", "Smelting Module")
+                        .getStackForm(1L));
+        Machine_Multi_MoltenModule.set(
+                new GT_MetaTileEntity_EM_MoltenModule(15413, "multimachine.em.molten_module", "Molten Module")
+                        .getStackForm(1L));
+        Machine_Multi_PlasmaModule.set(
+                new GT_MetaTileEntity_EM_PlasmaModule(15414, "multimachine.em.plasma_module", "Plasma Module")
+                        .getStackForm(1L));
+        Machine_Multi_QuarkGluonPlasmaModule.set(
+                new GT_MetaTileEntity_EM_ExoticModule(15415, "multimachine.em.exotic_module", "Exotic Matter Module")
                         .getStackForm(1L));
 
         // ===================================================================================================

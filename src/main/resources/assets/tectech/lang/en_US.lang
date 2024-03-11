@@ -10,6 +10,10 @@ tile.quantumGlass.name=Quantum Glass
 tile.quantumGlass.desc.0=Dense yet transparent
 tile.quantumGlass.desc.1=Glassy & Classy
 
+tile.spatiallyTranscendentGravitationalLens.name=Spatially Transcendent Gravitational Lens Block
+tile.godforgeGlass.desc.0=Gravitational lensing taken literal
+tile.godforgeGlass.desc.1=GraviLens 9000!
+
 tile.reactorSim.name=Reactor Simulator
 tile.reactorSim.desc.0=Fission Reaction Uncertainty Resolver 9001
 tile.reactorSim.desc.1=Explodes, but not as much...
@@ -864,6 +868,138 @@ achievement.gt.stabilisation_field_generator.6=Perfect Stabilisation Field Gener
 achievement.gt.stabilisation_field_generator.7=Tipler Stabilisation Field Generator
 achievement.gt.stabilisation_field_generator.8=Gallifreyan Stabilisation Field Generator
 
+# Forge of the Gods / Godforge
+fog.upgrade.confirm=Construct
+
+fog.upgrade.tt.0=upgrade start
+fog.upgrade.tt.1=upgrade 11
+fog.upgrade.tt.2=upgrade 21
+fog.upgrade.tt.3=upgrade 22
+fog.upgrade.tt.4=upgrade 31
+fog.upgrade.tt.5=upgrade 32
+fog.upgrade.tt.6=upgrade 33
+fog.upgrade.tt.7=upgrade 41
+fog.upgrade.tt.8=upgrade 51
+fog.upgrade.tt.9=upgrade 52
+fog.upgrade.tt.10=upgrade 53
+fog.upgrade.tt.11=upgrade 61
+fog.upgrade.tt.12=upgrade 71
+fog.upgrade.tt.13=upgrade 72
+fog.upgrade.tt.14=upgrade 73
+fog.upgrade.tt.15=upgrade 74
+fog.upgrade.tt.16=upgrade 80
+fog.upgrade.tt.17=upgrade 81
+fog.upgrade.tt.18=upgrade 82
+fog.upgrade.tt.19=upgrade 83
+fog.upgrade.tt.20=upgrade 91
+fog.upgrade.tt.21=upgrade 92
+fog.upgrade.tt.22=upgrade 93
+fog.upgrade.tt.23=upgrade 101
+fog.upgrade.tt.24=upgrade 111
+fog.upgrade.tt.25=upgrade 121
+fog.upgrade.tt.26=upgrade 131
+fog.upgrade.tt.27=upgrade 141
+fog.upgrade.tt.28=upgrade 151
+fog.upgrade.tt.29=upgrade 161
+fog.upgrade.tt.30=upgrade end
+
+fog.upgrade.lore.0=*insert lore here* upgrade start
+fog.upgrade.lore.1=*insert lore here* upgrade 11
+fog.upgrade.lore.2=*insert lore here* upgrade 21
+fog.upgrade.lore.3=*insert lore here* upgrade 22
+fog.upgrade.lore.4=*insert lore here* upgrade 31
+fog.upgrade.lore.5=*insert lore here* upgrade 32
+fog.upgrade.lore.6=*insert lore here* upgrade 33
+fog.upgrade.lore.7=*insert lore here* upgrade 41
+fog.upgrade.lore.8=*insert lore here* upgrade 51
+fog.upgrade.lore.9=*insert lore here* upgrade 52
+fog.upgrade.lore.10=*insert lore here* upgrade 53
+fog.upgrade.lore.11=*insert lore here* upgrade 61
+fog.upgrade.lore.12=*insert lore here* upgrade 71
+fog.upgrade.lore.13=*insert lore here* upgrade 72
+fog.upgrade.lore.14=*insert lore here* upgrade 73
+fog.upgrade.lore.15=*insert lore here* upgrade 74
+fog.upgrade.lore.16=*insert lore here* upgrade 80
+fog.upgrade.lore.17=*insert lore here* upgrade 81
+fog.upgrade.lore.18=*insert lore here* upgrade 82
+fog.upgrade.lore.19=*insert lore here* upgrade 83
+fog.upgrade.lore.20=*insert lore here* upgrade 91
+fog.upgrade.lore.21=*insert lore here* upgrade 92
+fog.upgrade.lore.22=*insert lore here* upgrade 93
+fog.upgrade.lore.23=*insert lore here* upgrade 101
+fog.upgrade.lore.24=*insert lore here* upgrade 111
+fog.upgrade.lore.25=*insert lore here* upgrade 121
+fog.upgrade.lore.26=*insert lore here* upgrade 131
+fog.upgrade.lore.27=*insert lore here* upgrade 141
+fog.upgrade.lore.28=*insert lore here* upgrade 151
+fog.upgrade.lore.29=*insert lore here* upgrade 161
+fog.upgrade.lore.30=*insert lore here* upgrade end
+
+fog.upgrade.text.0=Unlocks a recipe time reduction multiplier based on the current heat the multi is running at. This bonus is calculated via following formula: Multiplier = 1/(Heat^0.01)
+fog.upgrade.text.1=*insert text here* upgrade 11
+fog.upgrade.text.2=*insert text here* upgrade 21
+fog.upgrade.text.3=*insert text here* upgrade 22
+fog.upgrade.text.4=*insert text here* upgrade 31
+fog.upgrade.text.5=*insert text here* upgrade 32
+fog.upgrade.text.6=*insert text here* upgrade 33
+fog.upgrade.text.7=*insert text here* upgrade 41
+fog.upgrade.text.8=*insert text here* upgrade 51
+fog.upgrade.text.9=*insert text here* upgrade 52
+fog.upgrade.text.10=*insert text here* upgrade 53
+fog.upgrade.text.11=*insert text here* upgrade 61
+fog.upgrade.text.12=*insert text here* upgrade 71
+fog.upgrade.text.13=*insert text here* upgrade 72
+fog.upgrade.text.14=*insert text here* upgrade 73
+fog.upgrade.text.15=*insert text here* upgrade 74
+fog.upgrade.text.16=*insert text here* upgrade 80
+fog.upgrade.text.17=*insert text here* upgrade 81
+fog.upgrade.text.18=*insert text here* upgrade 82
+fog.upgrade.text.19=*insert text here* upgrade 83
+fog.upgrade.text.20=*insert text here* upgrade 91
+fog.upgrade.text.21=*insert text here* upgrade 92
+fog.upgrade.text.22=*insert text here* upgrade 93
+fog.upgrade.text.23=*insert text here* upgrade 101
+fog.upgrade.text.24=*insert text here* upgrade 111
+fog.upgrade.text.25=*insert text here* upgrade 121
+fog.upgrade.text.26=*insert text here* upgrade 131
+fog.upgrade.text.27=*insert text here* upgrade 141
+fog.upgrade.text.28=*insert text here* upgrade 151
+fog.upgrade.text.29=*insert text here* upgrade 161
+fog.upgrade.text.30=*insert text here* upgrade end
+
+fog.debug.resetbutton.text=Reset
+fog.debug.resetbutton.tooltip=Resets all upgrades to zero
+
+fog.button.fuelconfig.tooltip=Fuel Configuration Menu
+fog.button.furnacemode.tooltip=Toggle Furnace Mode
+fog.button.magmattermode.tooltip.01=Toggle Magmatter Mode
+fog.button.magmattermode.tooltip.02=Magmatter Mode Locked, missing upgrade
+
+
+achievement.gt.blockmachines.multimachine.em.forge_of_gods=Forge of the Gods
+achievement.gt.godforgecasing.0=Singularity Reinforced Stellar Shielding Casing
+achievement.gt.godforgecasing.1=Celestial Matter Guidance Casing
+achievement.gt.godforgecasing.2=Boundless Gravitationally Severed Structure Casing
+achievement.gt.godforgecasing.3=Transcendentally Amplified Magnetic Confinement Casing
+achievement.gt.godforgecasing.4=Stellar Energy Siphon Casing
+achievement.gt.godforgecasing.5=Remote Graviton Flow Modulator
+achievement.gt.godforgecasing.6=Medial Graviton Flow Modulator
+achievement.gt.godforgecasing.7=Central Graviton Flow Modulator
+
+gt.blockmachines.multimachine.FOG.parallel=Parallel
+gt.blockmachines.multimachine.FOG.batch=Batch Size
+gt.blockmachines.multimachine.FOG.fuelconsumption=Stellar Fuel Consumption Factor
+gt.blockmachines.multimachine.FOG.fuelinfo.0=The Stellar Fuel Consumption Factor is the main determining factor in calculating the total stellar fuel consumption per second. Each fuel type has different scaling, which is as follows:
+gt.blockmachines.multimachine.FOG.fuelinfo.1=Dimensionally Transcendent Residue: factor*300*1.15^factor
+gt.blockmachines.multimachine.FOG.fuelinfo.2=Condensed Raw Stellar Plasma Mixture: factor*2*1.08^factor
+gt.blockmachines.multimachine.FOG.fuelinfo.3=Magnetohydrodynamically Constrained Star Matter: factor/25
+gt.blockmachines.multimachine.FOG.fuelinfo.4=Upgrades can influence these formulas, the changes are listed in the respective upgrades' descriptions.
+gt.blockmachines.multimachine.FOG.fueltype=Click to Select Fuel Type
+gt.blockmachines.multimachine.FOG.fuelusage=Fuel Usage
+gt.blockmachines.multimachine.FOG.plasmamultistep=Multi-Step plasma
+gt.blockmachines.multimachine.FOG.plasmarecipetier=Fusion Tier
+gt.blockmachines.multimachine.FOG.storedfuel=Stored fuel amount:
+
 # Optical Circuits
 achievement.gt.metaitem.03.32155=Optical Assembly
 achievement.gt.metaitem.03.32156=Optical Computer
@@ -989,6 +1125,8 @@ GT5U.gui.text.invalid_current_setting=§7Invalid current setting
 GT5U.gui.text.invalid_time_setting=§7Invalid time setting
 GT5U.gui.text.invalid_overdrive_setting=§7Invalid overdrive setting
 GT5U.gui.text.insufficient_power_no_val=§7Insufficient power
+GT5U.gui.text.missing_upgrades=§7Missing upgrades
+GT5U.gui.text.waiting_for_inputs=§7Waiting for inputs
 
 # RecipeMaps
 gt.recipe.eyeofharmony=Eye of Harmony

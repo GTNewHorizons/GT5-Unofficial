@@ -227,4 +227,91 @@ public class TT_recipeAdder extends GT_RecipeAdder {
         return true;
     }
 
+    public static boolean addFOGPlasmaRecipe(ItemStack[] itemInputs, FluidStack[] fluidOutputs, int machineDuration,
+            int machineEUt, boolean multiStep, int recipeTier) {
+        if (itemInputs == null) {
+            itemInputs = nullItem;
+        }
+
+        TecTechRecipeMaps.godforgePlasmaRecipes.addRecipe(
+                false,
+                itemInputs,
+                null,
+                multiStep,
+                null,
+                fluidOutputs,
+                machineDuration,
+                machineEUt,
+                recipeTier);
+        return true;
+    }
+
+    public static boolean addFOGPlasmaRecipe(FluidStack[] fluidInputs, FluidStack[] fluidOutputs, int machineDuration,
+            int machineEUt, boolean multiStep, int recipeTier) {
+
+        if (fluidInputs == null) {
+            fluidInputs = nullFluid;
+        }
+
+        TecTechRecipeMaps.godforgePlasmaRecipes.addRecipe(
+                false,
+                null,
+                null,
+                multiStep,
+                fluidInputs,
+                fluidOutputs,
+                machineDuration,
+                machineEUt,
+                recipeTier);
+        return true;
+    }
+
+    public static boolean addFOGExoticFakeRecipe(Object[] itemInputs, Object[] fluidInputs, FluidStack[] fluidOutputs,
+            int machineDuration, int machineEUt, int recipeTier) {
+
+        if (itemInputs == null) {
+            itemInputs = nullItem;
+        }
+
+        if (fluidInputs == null) {
+            fluidInputs = nullFluid;
+        }
+
+        ItemStack[] inputItems = new ItemStack[itemInputs.length];
+        ItemStack[][] itemAlts = new ItemStack[itemInputs.length][];
+        for (int i = 0; i < itemInputs.length; i++) {
+            Object obj = itemInputs[i];
+            if (obj instanceof ItemStack) {
+                inputItems[i] = (ItemStack) obj;
+                itemAlts[i] = null;
+            } else if (obj instanceof ItemStack[]stacks) {
+                if (stacks.length > 0) {
+                    inputItems[i] = stacks[0];
+                    itemAlts[i] = Arrays.copyOf(stacks, stacks.length);
+                }
+            }
+        }
+
+        FluidStack[] inputFluids = new FluidStack[fluidInputs.length];
+        for (int i = 0; i < fluidInputs.length; i++) {
+            Object obj = fluidInputs[i];
+            if (obj instanceof FluidStack[]stacks) {
+                inputFluids[i] = stacks[0];
+            }
+        }
+
+        TecTechRecipeMaps.godforgeExoticMatterRecipes.addFakeRecipe(
+                false,
+                inputItems,
+                null,
+                null,
+                inputFluids,
+                fluidOutputs,
+                machineDuration,
+                machineEUt,
+                recipeTier,
+                itemAlts,
+                false);
+        return true;
+    }
 }

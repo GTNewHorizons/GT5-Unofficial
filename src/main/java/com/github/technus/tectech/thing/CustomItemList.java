@@ -353,6 +353,12 @@ public enum CustomItemList implements IItemContainer {
     Machine_Multi_Decay,
     Machine_Multi_Annihilation,
     Machine_Multi_EyeOfHarmony,
+    Machine_Multi_ForgeOfGods,
+    Machine_Multi_SmeltingModule,
+    Machine_Multi_MoltenModule,
+    Machine_Multi_PlasmaModule,
+    Machine_Multi_QuarkGluonPlasmaModule,
+
     hint_0,
     hint_1,
     hint_2,
@@ -431,6 +437,16 @@ public enum CustomItemList implements IItemContainer {
     StabilisationFieldGeneratorTier6,
     StabilisationFieldGeneratorTier7,
     StabilisationFieldGeneratorTier8,
+
+    Godforge_Gravitational_Lens,
+    Godforge_Singularity_Shielding_Casing,
+    Godforge_Guidance_Casing,
+    Godforge_Boundless_Structure_Casing,
+    Godforge_Magnetic_Confinement_Casing,
+    Godforge_Stellar_Energy_Siphon_Casing,
+    Godforge_GravitonFlowModulatorTier1,
+    Godforge_GravitonFlowModulatorTier2,
+    Godforge_GravitonFlowModulatorTier3,
 
     astralArrayFabricator;
 

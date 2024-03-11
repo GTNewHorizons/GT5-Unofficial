@@ -34,7 +34,7 @@ public class BaseRecipeLoader {
     }
 
     public void run() {
-
+        new Godforge().run();
         // todo: Move those recipes in NHCore
         if (NewHorizonsCoreMod.isModLoaded()) {
             new Assembler().run();
@@ -44,6 +44,5 @@ public class BaseRecipeLoader {
             new Extractor().run();
             new ResearchStationAssemblyLine().run();
         }
-
     }
 }
