@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -19,6 +21,7 @@ import gregtech.api.interfaces.IDescribable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddInventorySlots;
 import gregtech.api.interfaces.modularui.IGetGUITextureSet;
+import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.common.blocks.GT_Block_Machines;
 
 /**
@@ -178,6 +181,8 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, IGearEnergyTil
     }
 
     default void setShutdownStatus(boolean newStatus) {}
+
+    default void setShutDownReason(@Nonnull ShutDownReason reason) {}
 
     /**
      * A randomly called display update to be able to add particles or other items for display The event is proxied by
