@@ -102,7 +102,7 @@ public class GregtechMetaTileEntity_MassFabricator
                 .addInfo("Produces UU-A, UU-M & Scrap").addInfo("Change mode with screwdriver")
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(5, 4, 5, true)
                 .addController("Front Center").addCasingInfoMin(mCasingName3, 9, false)
-                .addCasingInfoMin(mCasingName2, 24, false).addCasingInfoMin(mCasingName1, 40, false)
+                .addCasingInfoMin(mCasingName2, 24, false).addCasingInfoMin(mCasingName1, 36, false)
                 .addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1)
                 .addOutputHatch("Any Casing", 1).addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1)
                 .addMufflerHatch("Any Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
@@ -192,7 +192,7 @@ public class GregtechMetaTileEntity_MassFabricator
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
-        return checkPiece(mName, 2, 3, 0) && mCasing >= 40 && checkHatch();
+        return checkPiece(mName, 2, 3, 0) && mCasing >= 36 && checkHatch();
     }
 
     @Override
