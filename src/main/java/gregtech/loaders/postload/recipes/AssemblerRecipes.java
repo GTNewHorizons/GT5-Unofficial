@@ -2435,13 +2435,6 @@ public class AssemblerRecipes implements Runnable {
             .eut(20)
             .addTo(assemblerRecipes);
 
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 8), new ItemStack(Items.flint, 1))
-            .itemOutputs(ItemList.IC2_Compressed_Coal_Ball.get(1))
-            .duration(20 * SECONDS)
-            .eut(4)
-            .addTo(assemblerRecipes);
-
         if (!GT_Mod.gregtechproxy.mDisableIC2Cables) {
             GT_Values.RA.stdBuilder()
                 .itemInputs(
