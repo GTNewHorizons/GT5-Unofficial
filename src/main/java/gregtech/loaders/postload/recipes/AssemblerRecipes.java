@@ -1369,6 +1369,141 @@ public class AssemblerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Pentacadmiummagnesiumhexaoxid, 3),
+                GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.StainlessSteel, 2),
+                ItemList.Electric_Pump_MV.get(1),
+                GT_Utility.getIntegratedCircuit(9))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorMV, 3))
+            .fluidInputs(MaterialsUEVplus.SpaceTime.getMolten(4))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(assemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Titaniumonabariumdecacoppereikosaoxid, 6),
+                GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Titanium, 4),
+                ItemList.Electric_Pump_HV.get(1),
+                GT_Utility.getIntegratedCircuit(9))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorHV, 6))
+            .fluidInputs(MaterialsUEVplus.SpaceTime.getMolten(8))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(assemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Uraniumtriplatinid, 9),
+                GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.TungstenSteel, 6),
+                ItemList.Electric_Pump_EV.get(1),
+                GT_Utility.getIntegratedCircuit(9))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorEV, 9))
+            .fluidInputs(MaterialsUEVplus.SpaceTime.getMolten(12))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(assemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Vanadiumtriindinid, 12),
+                GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.NiobiumTitanium, 8),
+                ItemList.Electric_Pump_IV.get(1),
+                GT_Utility.getIntegratedCircuit(9))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorIV, 12))
+            .fluidInputs(MaterialsUEVplus.SpaceTime.getMolten(16))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
+            .addTo(assemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(
+                    OrePrefixes.wireGt01,
+                    Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid,
+                    15),
+                GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Enderium, 10),
+                ItemList.Electric_Pump_LuV.get(1),
+                GT_Utility.getIntegratedCircuit(9))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 15))
+            .fluidInputs(MaterialsUEVplus.SpaceTime.getMolten(24))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_LuV)
+            .addTo(assemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Tetranaquadahdiindiumhexaplatiumosminid, 18),
+                GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Naquadah, 12),
+                ItemList.Electric_Pump_ZPM.get(1),
+                GT_Utility.getIntegratedCircuit(9))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorZPM, 18))
+            .fluidInputs(MaterialsUEVplus.SpaceTime.getMolten(32))
+            .duration(40 * SECONDS)
+            .eut(TierEU.RECIPE_ZPM)
+            .addTo(assemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Longasssuperconductornameforuvwire, 21),
+                GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Neutronium, 14),
+                ItemList.Electric_Pump_UV.get(1),
+                GT_Utility.getIntegratedCircuit(9))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUV, 21))
+            .fluidInputs(MaterialsUEVplus.SpaceTime.getMolten(40))
+            .duration(40 * SECONDS)
+            .eut(TierEU.RECIPE_UV)
+            .addTo(assemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Longasssuperconductornameforuhvwire, 24),
+                GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Bedrockium, 16),
+                ItemList.Electric_Pump_UHV.get(1),
+                GT_Utility.getIntegratedCircuit(9))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUHV, 24))
+            .fluidInputs(MaterialsUEVplus.SpaceTime.getMolten(48))
+            .duration(1 * MINUTES + 20 * SECONDS)
+            .eut(TierEU.RECIPE_UHV)
+            .addTo(assemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUEVBase, 27),
+                GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Infinity, 18),
+                ItemList.Electric_Pump_UEV.get(1),
+                GT_Utility.getIntegratedCircuit(9))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUEV, 27))
+            .fluidInputs(MaterialsUEVplus.SpaceTime.getMolten(56))
+            .duration(1 * MINUTES + 20 * SECONDS)
+            .eut(TierEU.RECIPE_UEV)
+            .addTo(assemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUIVBase, 30L),
+                GT_OreDictUnificator.get(OrePrefixes.pipeTiny, MaterialsUEVplus.TranscendentMetal, 20L),
+                ItemList.Electric_Pump_UIV.get(1L),
+                GT_Utility.getIntegratedCircuit(9))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUIV, 30L))
+            .fluidInputs(MaterialsUEVplus.SpaceTime.getMolten(68))
+            .duration(1 * MINUTES + 20 * SECONDS)
+            .eut(TierEU.RECIPE_UIV)
+            .addTo(assemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUMVBase, 33),
+                GT_OreDictUnificator.get(OrePrefixes.pipeTiny, MaterialsUEVplus.SpaceTime, 22),
+                ItemList.Electric_Pump_UMV.get(1),
+                GT_Utility.getIntegratedCircuit(9))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUMV, 33))
+            .fluidInputs(MaterialsUEVplus.SpaceTime.getMolten(72))
+            .duration(2 * MINUTES + 40 * SECONDS)
+            .eut(TierEU.RECIPE_UMV)
+            .addTo(assemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.stick, Materials.IronMagnetic, 1),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Lead, 16),
                 GT_Utility.getIntegratedCircuit(1))
