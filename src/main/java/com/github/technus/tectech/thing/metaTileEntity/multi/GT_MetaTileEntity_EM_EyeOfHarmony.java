@@ -9,6 +9,7 @@ import static com.github.technus.tectech.util.TT_Utility.toStandardForm;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static gregtech.api.enums.GT_HatchElement.InputBus;
 import static gregtech.api.enums.GT_HatchElement.InputHatch;
 import static gregtech.api.enums.GT_HatchElement.OutputBus;
@@ -699,39 +700,45 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                                             "                                 " } }))
             .addElement(
                     'A',
-                    ofBlocksTiered(
-                            (block, meta) -> block == TT_Container_Casings.SpacetimeCompressionFieldGenerators ? meta
-                                    : null,
-                            ImmutableList.of(
-                                    Pair.of(TT_Container_Casings.SpacetimeCompressionFieldGenerators, 0),
-                                    Pair.of(TT_Container_Casings.SpacetimeCompressionFieldGenerators, 1),
-                                    Pair.of(TT_Container_Casings.SpacetimeCompressionFieldGenerators, 2),
-                                    Pair.of(TT_Container_Casings.SpacetimeCompressionFieldGenerators, 3),
-                                    Pair.of(TT_Container_Casings.SpacetimeCompressionFieldGenerators, 4),
-                                    Pair.of(TT_Container_Casings.SpacetimeCompressionFieldGenerators, 5),
-                                    Pair.of(TT_Container_Casings.SpacetimeCompressionFieldGenerators, 6),
-                                    Pair.of(TT_Container_Casings.SpacetimeCompressionFieldGenerators, 7),
-                                    Pair.of(TT_Container_Casings.SpacetimeCompressionFieldGenerators, 8)),
-                            -1,
-                            (t, meta) -> t.spacetimeCompressionFieldMetadata = meta,
-                            t -> t.spacetimeCompressionFieldMetadata))
+                    withChannel(
+                            "spacetime compression",
+                            ofBlocksTiered(
+                                    (block, meta) -> block == TT_Container_Casings.SpacetimeCompressionFieldGenerators
+                                            ? meta
+                                            : null,
+                                    ImmutableList.of(
+                                            Pair.of(TT_Container_Casings.SpacetimeCompressionFieldGenerators, 0),
+                                            Pair.of(TT_Container_Casings.SpacetimeCompressionFieldGenerators, 1),
+                                            Pair.of(TT_Container_Casings.SpacetimeCompressionFieldGenerators, 2),
+                                            Pair.of(TT_Container_Casings.SpacetimeCompressionFieldGenerators, 3),
+                                            Pair.of(TT_Container_Casings.SpacetimeCompressionFieldGenerators, 4),
+                                            Pair.of(TT_Container_Casings.SpacetimeCompressionFieldGenerators, 5),
+                                            Pair.of(TT_Container_Casings.SpacetimeCompressionFieldGenerators, 6),
+                                            Pair.of(TT_Container_Casings.SpacetimeCompressionFieldGenerators, 7),
+                                            Pair.of(TT_Container_Casings.SpacetimeCompressionFieldGenerators, 8)),
+                                    -1,
+                                    (t, meta) -> t.spacetimeCompressionFieldMetadata = meta,
+                                    t -> t.spacetimeCompressionFieldMetadata)))
             .addElement(
                     'S',
-                    ofBlocksTiered(
-                            (block, meta) -> block == TT_Container_Casings.StabilisationFieldGenerators ? meta : null,
-                            ImmutableList.of(
-                                    Pair.of(TT_Container_Casings.StabilisationFieldGenerators, 0),
-                                    Pair.of(TT_Container_Casings.StabilisationFieldGenerators, 1),
-                                    Pair.of(TT_Container_Casings.StabilisationFieldGenerators, 2),
-                                    Pair.of(TT_Container_Casings.StabilisationFieldGenerators, 3),
-                                    Pair.of(TT_Container_Casings.StabilisationFieldGenerators, 4),
-                                    Pair.of(TT_Container_Casings.StabilisationFieldGenerators, 5),
-                                    Pair.of(TT_Container_Casings.StabilisationFieldGenerators, 6),
-                                    Pair.of(TT_Container_Casings.StabilisationFieldGenerators, 7),
-                                    Pair.of(TT_Container_Casings.StabilisationFieldGenerators, 8)),
-                            -1,
-                            (t, meta) -> t.stabilisationFieldMetadata = meta,
-                            t -> t.stabilisationFieldMetadata))
+                    withChannel(
+                            "stabilisation",
+                            ofBlocksTiered(
+                                    (block, meta) -> block == TT_Container_Casings.StabilisationFieldGenerators ? meta
+                                            : null,
+                                    ImmutableList.of(
+                                            Pair.of(TT_Container_Casings.StabilisationFieldGenerators, 0),
+                                            Pair.of(TT_Container_Casings.StabilisationFieldGenerators, 1),
+                                            Pair.of(TT_Container_Casings.StabilisationFieldGenerators, 2),
+                                            Pair.of(TT_Container_Casings.StabilisationFieldGenerators, 3),
+                                            Pair.of(TT_Container_Casings.StabilisationFieldGenerators, 4),
+                                            Pair.of(TT_Container_Casings.StabilisationFieldGenerators, 5),
+                                            Pair.of(TT_Container_Casings.StabilisationFieldGenerators, 6),
+                                            Pair.of(TT_Container_Casings.StabilisationFieldGenerators, 7),
+                                            Pair.of(TT_Container_Casings.StabilisationFieldGenerators, 8)),
+                                    -1,
+                                    (t, meta) -> t.stabilisationFieldMetadata = meta,
+                                    t -> t.stabilisationFieldMetadata)))
             .addElement('C', ofBlock(sBlockCasingsBA0, 11)).addElement('D', ofBlock(sBlockCasingsBA0, 10))
             .addElement(
                     'H',
@@ -740,21 +747,24 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                             .buildAndChain(sBlockCasingsBA0, 12))
             .addElement(
                     'E',
-                    ofBlocksTiered(
-                            (block, meta) -> block == TT_Container_Casings.TimeAccelerationFieldGenerator ? meta : null,
-                            ImmutableList.of(
-                                    Pair.of(TT_Container_Casings.TimeAccelerationFieldGenerator, 0),
-                                    Pair.of(TT_Container_Casings.TimeAccelerationFieldGenerator, 1),
-                                    Pair.of(TT_Container_Casings.TimeAccelerationFieldGenerator, 2),
-                                    Pair.of(TT_Container_Casings.TimeAccelerationFieldGenerator, 3),
-                                    Pair.of(TT_Container_Casings.TimeAccelerationFieldGenerator, 4),
-                                    Pair.of(TT_Container_Casings.TimeAccelerationFieldGenerator, 5),
-                                    Pair.of(TT_Container_Casings.TimeAccelerationFieldGenerator, 6),
-                                    Pair.of(TT_Container_Casings.TimeAccelerationFieldGenerator, 7),
-                                    Pair.of(TT_Container_Casings.TimeAccelerationFieldGenerator, 8)),
-                            -1,
-                            (t, meta) -> t.timeAccelerationFieldMetadata = meta,
-                            t -> t.timeAccelerationFieldMetadata))
+                    withChannel(
+                            "time dilation",
+                            ofBlocksTiered(
+                                    (block, meta) -> block == TT_Container_Casings.TimeAccelerationFieldGenerator ? meta
+                                            : null,
+                                    ImmutableList.of(
+                                            Pair.of(TT_Container_Casings.TimeAccelerationFieldGenerator, 0),
+                                            Pair.of(TT_Container_Casings.TimeAccelerationFieldGenerator, 1),
+                                            Pair.of(TT_Container_Casings.TimeAccelerationFieldGenerator, 2),
+                                            Pair.of(TT_Container_Casings.TimeAccelerationFieldGenerator, 3),
+                                            Pair.of(TT_Container_Casings.TimeAccelerationFieldGenerator, 4),
+                                            Pair.of(TT_Container_Casings.TimeAccelerationFieldGenerator, 5),
+                                            Pair.of(TT_Container_Casings.TimeAccelerationFieldGenerator, 6),
+                                            Pair.of(TT_Container_Casings.TimeAccelerationFieldGenerator, 7),
+                                            Pair.of(TT_Container_Casings.TimeAccelerationFieldGenerator, 8)),
+                                    -1,
+                                    (t, meta) -> t.timeAccelerationFieldMetadata = meta,
+                                    t -> t.timeAccelerationFieldMetadata)))
             .build();
 
     private double hydrogenOverflowProbabilityAdjustment;
