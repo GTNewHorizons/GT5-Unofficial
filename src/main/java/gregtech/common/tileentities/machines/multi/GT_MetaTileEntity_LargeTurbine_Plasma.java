@@ -34,6 +34,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 
 public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_LargeTurbine {
@@ -231,7 +232,7 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
             && (controllerSlot == null || !(controllerSlot.getItem() instanceof GT_MetaGenerated_Tool)
                 || controllerSlot.getItemDamage() < 170
                 || controllerSlot.getItemDamage() > 179)) {
-            stopMachine();
+            stopMachine(ShutDownReasonRegistry.NO_TURBINE);
             return CheckRecipeResultRegistry.NO_TURBINE_FOUND;
         }
         ArrayList<FluidStack> tFluids = getStoredFluids();
@@ -258,14 +259,14 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
                 flowMultipliers[0] = GT_MetaGenerated_Tool.getPrimaryMaterial(controllerSlot).mSteamMultiplier;
                 flowMultipliers[1] = GT_MetaGenerated_Tool.getPrimaryMaterial(controllerSlot).mGasMultiplier;
                 flowMultipliers[2] = GT_MetaGenerated_Tool.getPrimaryMaterial(controllerSlot).mPlasmaMultiplier;
+
+                if (optFlow <= 0 || baseEff <= 0) {
+                    stopMachine(ShutDownReasonRegistry.NONE); // in case the turbine got removed
+                    return CheckRecipeResultRegistry.NO_FUEL_FOUND;
+                }
             } else {
                 counter++;
             }
-        }
-
-        if (optFlow <= 0 || baseEff <= 0) {
-            stopMachine(); // in case the turbine got removed
-            return CheckRecipeResultRegistry.NO_FUEL_FOUND;
         }
 
         int newPower = fluidIntoPower(tFluids, optFlow, baseEff, overflowMultiplier, flowMultipliers); // How much the

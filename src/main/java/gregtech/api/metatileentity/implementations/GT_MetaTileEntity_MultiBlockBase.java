@@ -89,9 +89,12 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GT_Waila;
 import gregtech.api.util.OutputHatchWrapper;
 import gregtech.api.util.VoidProtectionHelper;
+import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.client.GT_SoundLoop;
 import gregtech.common.GT_Pollution;
 import gregtech.common.gui.modularui.widget.CheckRecipeResultSyncer;
+import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_InputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Input_ME;
@@ -403,11 +406,11 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                     checkMaintenance();
                     if (getRepairStatus() > 0) {
                         runMachine(aBaseMetaTileEntity, aTick);
-                    } else {
-                        stopMachine();
+                    } else if (aBaseMetaTileEntity.isAllowedToWork()) {
+                        stopMachine(ShutDownReasonRegistry.NO_REPAIR);
                     }
-                } else {
-                    stopMachine();
+                } else if (aBaseMetaTileEntity.isAllowedToWork()) {
+                    stopMachine(ShutDownReasonRegistry.STRUCTURE_INCOMPLETE);
                 }
             }
             aBaseMetaTileEntity.setErrorDisplayID(
@@ -521,7 +524,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             if (onRunningTick(mInventory[1])) {
                 markDirty();
                 if (!polluteEnvironment(getPollutionPerTick(mInventory[1]))) {
-                    stopMachine();
+                    stopMachine(ShutDownReasonRegistry.POLLUTION_FAIL);
                 }
                 if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) {
                     if (mOutputItems != null) {
@@ -669,7 +672,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         }
         if (mEUt < 0) {
             if (!drainEnergyInput(getActualEnergyUsage())) {
-                criticalStopMachine();
+                stopMachine(ShutDownReasonRegistry.POWER_LOSS);
                 return false;
             }
         }
@@ -897,7 +900,26 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
      */
     public abstract boolean explodesOnComponentBreak(ItemStack aStack);
 
+    /**
+     * @deprecated Use {@link #stopMachine(ShutDownReason)}
+     */
+    @Deprecated
     public void stopMachine() {
+        stopMachine(ShutDownReasonRegistry.NONE);
+    }
+
+    /**
+     * @deprecated Use {@link #stopMachine(ShutDownReason)}
+     */
+    @Deprecated
+    public void criticalStopMachine() {
+        stopMachine(ShutDownReasonRegistry.CRITICAL_NONE);
+    }
+
+    public void stopMachine(@Nonnull ShutDownReason reason) {
+        if (!ShutDownReasonRegistry.isRegistered(reason.getID())) {
+            throw new RuntimeException(String.format("Reason %s is not registered for registry", reason.getID()));
+        }
         mOutputItems = null;
         mOutputFluids = null;
         mEUt = 0;
@@ -906,12 +928,11 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         mMaxProgresstime = 0;
         mEfficiencyIncrease = 0;
         getBaseMetaTileEntity().disableWorking();
-    }
-
-    public void criticalStopMachine() {
-        stopMachine();
-        sendSound(INTERRUPT_SOUND_INDEX);
+        getBaseMetaTileEntity().setShutDownReason(reason);
         getBaseMetaTileEntity().setShutdownStatus(true);
+        if (reason.wasCritical()) {
+            sendSound(INTERRUPT_SOUND_INDEX);
+        }
     }
 
     public int getRepairStatus() {
@@ -932,8 +953,12 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     public boolean doRandomMaintenanceDamage() {
-        if (!isCorrectMachinePart(mInventory[1]) || getRepairStatus() == 0) {
-            stopMachine();
+        if (!isCorrectMachinePart(mInventory[1])) {
+            stopMachine(ShutDownReasonRegistry.NO_MACHINE_PART);
+            return false;
+        }
+        if (getRepairStatus() == 0) {
+            stopMachine(ShutDownReasonRegistry.NO_REPAIR);
             return false;
         }
         if (mRuntime++ > 1000) {
@@ -2186,6 +2211,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
+    protected boolean shouldDisplayShutDownReason() {
+        return true;
+    }
 
     protected String generateCurrentRecipeInfoString() {
         StringBuffer ret = new StringBuffer(EnumChatFormatting.WHITE + "Progress: ");
@@ -2331,6 +2359,28 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             new TextWidget(GT_Utility.trans("142", "Running perfectly.")).setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(
                     widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive()));
+
+        screenElements.widget(
+            TextWidget.dynamicString(
+                () -> getBaseMetaTileEntity().getLastShutDownReason()
+                    .getDisplayString())
+                .setSynced(false)
+                .setTextAlignment(Alignment.CenterLeft)
+                .setEnabled(
+                    widget -> shouldDisplayShutDownReason() && !getBaseMetaTileEntity().isActive()
+                        && GT_Utility.isStringValid(
+                            getBaseMetaTileEntity().getLastShutDownReason()
+                                .getDisplayString())
+                        && getBaseMetaTileEntity().wasShutdown()))
+            .widget(
+                new ShutDownReasonSyncer(
+                    () -> getBaseMetaTileEntity().getLastShutDownReason(),
+                    reason -> getBaseMetaTileEntity().setShutDownReason(reason)))
+            .widget(
+                new FakeSyncWidget.BooleanSyncer(
+                    () -> getBaseMetaTileEntity().wasShutdown(),
+                    wasShutDown -> getBaseMetaTileEntity().setShutdownStatus(wasShutDown)));
+
         screenElements.widget(
             TextWidget.dynamicString(() -> checkRecipeResult.getDisplayString())
                 .setSynced(false)

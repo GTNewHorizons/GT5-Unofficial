@@ -26,6 +26,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 
 public abstract class GT_MetaTileEntity_ConcreteBackfillerBase extends GT_MetaTileEntity_DrillerBase {
 
@@ -123,7 +124,7 @@ public abstract class GT_MetaTileEntity_ConcreteBackfillerBase extends GT_MetaTi
             return true;
         } else {
             workState = STATE_DOWNWARD;
-            stopMachine();
+            stopMachine(ShutDownReasonRegistry.NONE);
             setShutdownReason(StatCollector.translateToLocal("GT5U.gui.text.backfiller_finished"));
             return false;
         }

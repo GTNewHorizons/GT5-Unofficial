@@ -73,6 +73,8 @@ import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 
 public abstract class GT_MetaTileEntity_FusionComputer
     extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_FusionComputer>
@@ -398,7 +400,7 @@ public abstract class GT_MetaTileEntity_FusionComputer
                         }
                     }
                     if (this.mEUStore <= 0 && mMaxProgresstime > 0) {
-                        criticalStopMachine();
+                        stopMachine(ShutDownReasonRegistry.POWER_LOSS);
                     }
                     if (mMaxProgresstime > 0) {
                         this.getBaseMetaTileEntity()
@@ -433,7 +435,7 @@ public abstract class GT_MetaTileEntity_FusionComputer
                                 this.mEUStore = aBaseMetaTileEntity.getStoredEU();
                                 if (checkRecipe()) {
                                     if (this.mEUStore < this.mLastRecipe.mSpecialValue + this.mEUt) {
-                                        criticalStopMachine();
+                                        stopMachine(ShutDownReasonRegistry.POWER_LOSS);
                                     }
                                     aBaseMetaTileEntity
                                         .decreaseStoredEnergyUnits(this.mLastRecipe.mSpecialValue + this.mEUt, true);
@@ -442,9 +444,9 @@ public abstract class GT_MetaTileEntity_FusionComputer
                             if (mMaxProgresstime <= 0) mEfficiency = Math.max(0, mEfficiency - 1000);
                         }
                     }
-                } else {
+                } else if (aBaseMetaTileEntity.isAllowedToWork()) {
                     this.mLastRecipe = null;
-                    stopMachine();
+                    stopMachine(ShutDownReasonRegistry.STRUCTURE_INCOMPLETE);
                 }
             }
             aBaseMetaTileEntity
@@ -474,8 +476,8 @@ public abstract class GT_MetaTileEntity_FusionComputer
     }
 
     @Override
-    public void stopMachine() {
-        super.stopMachine();
+    public void stopMachine(@NotNull ShutDownReason reason) {
+        super.stopMachine(reason);
         turnCasingActive(false);
     }
 

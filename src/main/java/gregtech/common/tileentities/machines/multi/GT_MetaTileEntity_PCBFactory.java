@@ -29,8 +29,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
@@ -91,6 +89,7 @@ import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.blocks.GT_Block_Casings8;
 
 @SuppressWarnings("SpellCheckingInspection")
@@ -588,32 +587,15 @@ public class GT_MetaTileEntity_PCBFactory extends
     @Override
     public boolean onRunningTick(ItemStack aStack) {
         if (!super.onRunningTick(aStack)) {
-            criticalStopMachine();
             return false;
         }
 
         if (ticker % 20 == 0) {
-            if (mOCTier1) {
-                if (mCoolantInputHatch == null) {
-                    criticalStopMachine();
-                    return false;
-                }
-                FluidStack tFluid = GT_ModHandler.getDistilledWater(COOLANT_CONSUMED_PER_SEC);
+            if (!isNoOC()) {
+                FluidStack tFluid = mOCTier1 ? GT_ModHandler.getDistilledWater(COOLANT_CONSUMED_PER_SEC)
+                    : Materials.SuperCoolant.getFluid(COOLANT_CONSUMED_PER_SEC);
                 if (!drain(mCoolantInputHatch, tFluid, true)) {
-                    criticalStopMachine();
-                    return false;
-                }
-            }
-
-            if (mOCTier2) {
-                if (mCoolantInputHatch == null) {
-                    criticalStopMachine();
-                    return false;
-                }
-                Fluid superCoolant = FluidRegistry.getFluid("supercoolant");
-                FluidStack tFluid = new FluidStack(superCoolant, COOLANT_CONSUMED_PER_SEC);
-                if (!drain(mCoolantInputHatch, tFluid, true)) {
-                    criticalStopMachine();
+                    stopMachine(ShutDownReasonRegistry.outOfFluid(tFluid));
                     return false;
                 }
             }
