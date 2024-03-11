@@ -2211,7 +2211,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
-        
+
     protected boolean shouldDisplayShutDownReason() {
         return true;
     }
