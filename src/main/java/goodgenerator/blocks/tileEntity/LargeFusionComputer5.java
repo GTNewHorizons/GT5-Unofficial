@@ -45,9 +45,22 @@ public class LargeFusionComputer5 extends LargeFusionComputerPP {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Fusion Reactor").addInfo("Galaxy Collapse.")
                 .addInfo("Controller block for the Compact Fusion Reactor MK-V.")
-                .addInfo("167,772,160EU/t and 320M EU capacity per Energy Hatch")
+                .addInfo(
+                        EnumChatFormatting.AQUA + GT_Utility.formatNumbers(getSingleHatchPower())
+                                + EnumChatFormatting.GRAY
+                                + " EU/t and "
+                                + EnumChatFormatting.AQUA
+                                + GT_Utility.formatNumbers(capableStartupCanonical() / 32 / M)
+                                + "M"
+                                + EnumChatFormatting.GRAY
+                                + " EU capacity per Energy Hatch")
                 .addInfo("If the recipe has a startup cost greater than the")
                 .addInfo("number of energy hatches * cap, you can't do it")
+                .addInfo(
+                        "If the recipe requires a voltage tier over "
+                                + GT_Utility.getColoredTierNameFromTier((byte) tier())
+                                + EnumChatFormatting.GRAY
+                                + " , you can't do it either")
                 .addInfo("Make sure the whole structure is built in the 3x3")
                 .addInfo("chunk area of the ring center (not controller).").addInfo("Performs 4/4 overclock.")
                 .addInfo("Startup < 160,000,000 EU: 320x Parallel").addInfo("Startup < 320,000,000 EU: 256x Parallel")
@@ -80,13 +93,8 @@ public class LargeFusionComputer5 extends LargeFusionComputerPP {
     }
 
     @Override
-    public long maxEUStore() {
-        return 10240800000L * (Math.min(32, this.mEnergyHatches.size() + this.eEnergyMulti.size())) / 32L;
-    }
-
-    @Override
     public long capableStartupCanonical() {
-        return 10_240_800_000L;
+        return 20_480_000_000L;
     }
 
     @Override
@@ -140,11 +148,6 @@ public class LargeFusionComputer5 extends LargeFusionComputerPP {
     @Override
     public int getMaxPara() {
         return 64;
-    }
-
-    @Override
-    public int tierOverclock() {
-        return 16;
     }
 
     @Override

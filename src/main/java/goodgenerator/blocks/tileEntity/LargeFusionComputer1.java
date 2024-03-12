@@ -41,9 +41,22 @@ public class LargeFusionComputer1 extends LargeFusionComputer {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Fusion Reactor").addInfo("Millions of nuclear.")
                 .addInfo("Controller block for the Compact Fusion Reactor MK-I Prototype.")
-                .addInfo("131,072EU/t and 5M EU capacity per Energy Hatch")
+                .addInfo(
+                        EnumChatFormatting.AQUA + GT_Utility.formatNumbers(getSingleHatchPower())
+                                + EnumChatFormatting.GRAY
+                                + " EU/t and "
+                                + EnumChatFormatting.AQUA
+                                + GT_Utility.formatNumbers(capableStartupCanonical() / 32 / M)
+                                + "M"
+                                + EnumChatFormatting.GRAY
+                                + " EU capacity per Energy Hatch")
                 .addInfo("If the recipe has a startup cost greater than the")
                 .addInfo("number of energy hatches * cap, you can't do it")
+                .addInfo(
+                        "If the recipe requires a voltage tier over "
+                                + GT_Utility.getColoredTierNameFromTier((byte) tier())
+                                + EnumChatFormatting.GRAY
+                                + " , you can't do it either")
                 .addInfo("Make sure the whole structure is built in the 3x3")
                 .addInfo("chunk area of the ring center (not controller).").addInfo("It can run 64x recipes at most.")
                 .addInfo(
@@ -70,11 +83,6 @@ public class LargeFusionComputer1 extends LargeFusionComputer {
     @Override
     public int tier() {
         return 6;
-    }
-
-    @Override
-    public long maxEUStore() {
-        return 160008000L * (Math.min(32, this.mEnergyHatches.size() + this.eEnergyMulti.size())) / 32L;
     }
 
     @Override
@@ -135,11 +143,6 @@ public class LargeFusionComputer1 extends LargeFusionComputer {
     @Override
     public ITexture getTextureOverlay() {
         return textureOverlay;
-    }
-
-    @Override
-    public int tierOverclock() {
-        return 1;
     }
 
     @Override

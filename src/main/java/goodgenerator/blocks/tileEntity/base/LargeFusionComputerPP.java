@@ -7,7 +7,8 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunctio
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
 
-import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.objects.overclockdescriber.OverclockDescriber;
+import gregtech.api.util.AdvancedFusionOverclockDescriber;
 
 public abstract class LargeFusionComputerPP extends LargeFusionComputer {
 
@@ -29,14 +30,8 @@ public abstract class LargeFusionComputerPP extends LargeFusionComputer {
     }
 
     @Override
-    protected ProcessingLogic createProcessingLogic() {
-        return super.createProcessingLogic().setOverclock(2, 2);
-    }
-
-    @Override
-    protected long getSingleHatchPower() {
-        // Multiply by 8 so that we can have the original input power per hatch
-        return super.getSingleHatchPower() * 8;
+    protected OverclockDescriber createOverclockDescriber() {
+        return new AdvancedFusionOverclockDescriber((byte) tier(), capableStartupCanonical());
     }
 
     @Override
