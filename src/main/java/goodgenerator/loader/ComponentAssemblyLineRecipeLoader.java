@@ -176,6 +176,21 @@ public class ComponentAssemblyLineRecipeLoader {
                             recipe.mDuration * INPUT_MULTIPLIER, // Takes as long as this many
                             recipe.mEUt,
                             info.getRight()); // Casing tier
+
+                    // Add a second recipe using Styrene-Butadiene
+                    // Rubber instead of Silicone Rubber.
+                    // This relies on silicone rubber being first in
+                    // @allSyntheticRubber so it's quite fragile, but
+                    // it's also the least invasive change.
+                    if (swapSiliconeForStyreneButadiene(fixedFluids)) {
+                        MyRecipeAdder.instance.addComponentAssemblyLineRecipe(
+                                fixedInputs.toArray(new ItemStack[0]),
+                                fixedFluids.toArray(new FluidStack[0]),
+                                info.getLeft().get(OUTPUT_MULTIPLIER), // The component output
+                                recipe.mDuration * INPUT_MULTIPLIER, // Takes as long as this many
+                                recipe.mEUt,
+                                info.getRight()); // Casing tier
+                    }
                 }
             }
         });
@@ -441,5 +456,16 @@ public class ComponentAssemblyLineRecipeLoader {
             // in their assline recipes and each CoAl recipe has 48x recipe inputs
             fluidInputs.add(MaterialsUEVplus.Eternity.getMolten(mhdcsmAmount - 576 * 48));
         }
+    }
+
+    private static boolean swapSiliconeForStyreneButadiene(ArrayList<FluidStack> fluidInputs) {
+        for (int i = 0; i < fluidInputs.size(); i++) {
+            FluidStack fluidstack = fluidInputs.get(i);
+            if (fluidstack.getFluid().equals(FluidRegistry.getFluid("molten.silicone"))) {
+                fluidInputs.set(i, FluidRegistry.getFluidStack("molten.styrenebutadienerubber", fluidstack.amount));
+                return true;
+            }
+        }
+        return false;
     }
 }
