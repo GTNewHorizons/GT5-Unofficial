@@ -226,6 +226,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
     @Override
     public void startRecipeProcessing() {
         processingRecipe = true;
+        updateAllInformationSlots();
     }
 
     @Override
