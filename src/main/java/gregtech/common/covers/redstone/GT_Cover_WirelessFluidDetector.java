@@ -1,5 +1,6 @@
 package gregtech.common.covers.redstone;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
@@ -8,9 +9,10 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 
 import com.google.common.io.ByteArrayDataInput;
-import com.gtnewhorizons.modularui.api.math.MathExpression;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
@@ -21,7 +23,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.GT_Cover_LiquidMeter;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
-import gregtech.common.gui.modularui.widget.CoverDataFollower_TextFieldWidget;
+import gregtech.common.gui.modularui.widget.CoverDataFollower_NumericWidget;
 import io.netty.buffer.ByteBuf;
 
 public class GT_Cover_WirelessFluidDetector
@@ -127,42 +129,58 @@ public class GT_Cover_WirelessFluidDetector
 
     private class WirelessFluidDetectorUIFactory extends AdvancedRedstoneTransmitterBaseUIFactory {
 
+        private int maxCapacity;
+
         public WirelessFluidDetectorUIFactory(GT_CoverUIBuildContext buildContext) {
             super(buildContext);
         }
 
         @Override
         protected int getFrequencyRow() {
-            return 1;
+            return 0;
         }
 
         @Override
         protected int getButtonRow() {
-            return 2;
+            return 1;
         }
 
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
+            setMaxCapacity();
             super.addUIWidgets(builder);
             builder.widget(
                 new TextWidget(GT_Utility.trans("222", "Fluid threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setPos(startX + spaceX * 5, 4 + startY));
+                    .setPos(startX + spaceX * 5, 4 + startY + spaceY * 2));
         }
 
         @Override
         protected void addUIForDataController(CoverDataControllerWidget<FluidTransmitterData> controller) {
             super.addUIForDataController(controller);
             controller.addFollower(
-                new CoverDataFollower_TextFieldWidget<>(),
-                coverData -> String.valueOf(coverData.threshold),
+                new CoverDataFollower_NumericWidget<>(),
+                coverData -> (double) coverData.threshold,
                 (coverData, state) -> {
-                    coverData.threshold = (int) MathExpression.parseMathExpression(state);
+                    coverData.threshold = state.intValue();
                     return coverData;
                 },
-                widget -> widget.setOnScrollNumbers()
-                    .setNumbers(0, Integer.MAX_VALUE)
-                    .setPos(1, 2)
+                widget -> widget.setBounds(0, maxCapacity > 0 ? maxCapacity : Integer.MAX_VALUE)
+                    .setScrollValues(1000, 144, 100000)
+                    .setFocusOnGuiOpen(true)
+                    .setPos(1, 2 + spaceY * 2)
                     .setSize(spaceX * 5 - 4, 12));
+        }
+
+        private void setMaxCapacity() {
+            final ICoverable tile = getUIBuildContext().getTile();
+            if (!tile.isDead() && tile instanceof IFluidHandler) {
+                FluidTankInfo[] tanks = ((IFluidHandler) tile).getTankInfo(ForgeDirection.UNKNOWN);
+                maxCapacity = Arrays.stream(tanks)
+                    .mapToInt(tank -> tank.capacity)
+                    .sum();
+            } else {
+                maxCapacity = -1;
+            }
         }
     }
 }

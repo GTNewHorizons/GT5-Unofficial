@@ -18,6 +18,7 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -412,6 +413,8 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
         return true;
     }
 
+    protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
+
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
@@ -419,19 +422,19 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
                 .setSize(90, 72)
                 .setPos(43, 4))
             .widget(
-                TextWidget.dynamicString(() -> "X: " + GT_Utility.parseNumberToString(mTargetX))
+                new TextWidget().setStringSupplier(() -> "X: " + numberFormat.format(mTargetX))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(46, 8))
             .widget(
-                TextWidget.dynamicString(() -> "Y: " + GT_Utility.parseNumberToString(mTargetY))
+                new TextWidget().setStringSupplier(() -> "Y: " + numberFormat.format(mTargetY))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(46, 16))
             .widget(
-                TextWidget.dynamicString(() -> "Z: " + GT_Utility.parseNumberToString(mTargetZ))
+                new TextWidget().setStringSupplier(() -> "Z: " + numberFormat.format(mTargetZ))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(46, 24))
             .widget(
-                TextWidget.dynamicString(() -> "Dim: " + GT_Utility.parseNumberToString(mTargetD))
+                new TextWidget().setStringSupplier(() -> "Dim: " + numberFormat.format(mTargetD))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(46, 32))
             .widget(

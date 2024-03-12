@@ -13,8 +13,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
 import com.google.common.io.ByteArrayDataInput;
-import com.gtnewhorizons.modularui.api.math.MathExpression;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
@@ -29,7 +29,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollower_CycleButtonWidget;
-import gregtech.common.gui.modularui.widget.CoverDataFollower_TextFieldWidget;
+import gregtech.common.gui.modularui.widget.CoverDataFollower_NumericWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
 
@@ -199,6 +199,8 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
             final String INVERTED = GT_Utility.trans("INVERTED", "Inverted");
             final String NORMAL = GT_Utility.trans("NORMAL", "Normal");
 
+            final CoverDataFollower_NumericWidget<EUMeterData> numericWidget = new CoverDataFollower_NumericWidget<>();
+
             builder.widget(
                 new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, GT_Cover_EUMeter.this)
                     .addFollower(
@@ -224,33 +226,36 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
                         widget -> widget.addTooltip(0, NORMAL)
                             .addTooltip(1, INVERTED)
                             .setPos(spaceX * 0, spaceY * 1))
-                    .addFollower(
-                        new CoverDataFollower_TextFieldWidget<>(),
-                        coverData -> String.valueOf(coverData.threshold),
-                        (coverData, state) -> {
-                            coverData.threshold = (long) MathExpression.parseMathExpression(state);
-                            return coverData;
-                        },
-                        widget -> widget.setOnScrollNumbersLong(1000, 100, 100000)
-                            .setNumbersLong(() -> 0L, () -> Long.MAX_VALUE)
+                    .addFollower(numericWidget, coverData -> (double) coverData.threshold, (coverData, state) -> {
+                        coverData.threshold = state.longValue();
+                        return coverData;
+                    },
+                        widget -> widget.setScrollValues(1000, 100, 100000)
                             .setFocusOnGuiOpen(true)
                             .setPos(spaceX * 0, spaceY * 2 + 2)
                             .setSize(spaceX * 8, 12))
                     .setPos(startX, startY))
                 .widget(
-                    TextWidget.dynamicString(() -> getCoverData() != null ? getCoverData().type.getTitle() : "")
-                        .setSynced(false)
+                    new TextWidget()
+                        .setStringSupplier(() -> getCoverData() != null ? getCoverData().type.getTitle() : "")
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(startX + spaceX, 4 + startY))
                 .widget(
-                    TextWidget
-                        .dynamicString(() -> getCoverData() != null ? getCoverData().inverted ? INVERTED : NORMAL : "")
-                        .setSynced(false)
+                    new TextWidget()
+                        .setStringSupplier(
+                            () -> getCoverData() != null ? getCoverData().inverted ? INVERTED : NORMAL : "")
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(startX + spaceX, 4 + startY + spaceY))
                 .widget(
                     new TextWidget(GT_Utility.trans("222.1", "Energy threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX, startY + spaceY * 3 + 4));
+                        .setPos(startX, startY + spaceY * 3 + 4))
+
+                .widget(
+                    new FakeSyncWidget.LongSyncer(
+                        () -> getCoverData() != null
+                            ? getCoverData().type.getTileEntityEnergyCapacity(getUIBuildContext().getTile())
+                            : Long.MAX_VALUE,
+                        value -> numericWidget.setMaxValue(value)));
         }
     }
 
