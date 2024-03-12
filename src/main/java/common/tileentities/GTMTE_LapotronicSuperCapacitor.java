@@ -34,6 +34,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 import net.minecraft.block.Block;
@@ -75,7 +76,6 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.api.interfaces.IGlobalWirelessEnergy;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -89,10 +89,11 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
+import gregtech.common.misc.WirelessNetworkManager;
+import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 
-public class GTMTE_LapotronicSuperCapacitor
-        extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_LapotronicSuperCapacitor>
-        implements IGlobalWirelessEnergy, ISurvivalConstructable {
+public class GTMTE_LapotronicSuperCapacitor extends
+        GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_LapotronicSuperCapacitor> implements ISurvivalConstructable {
 
     private enum TopState {
         MayBeTop,
@@ -521,7 +522,7 @@ public class GTMTE_LapotronicSuperCapacitor
         return sTexture;
     }
 
-    private String global_energy_user_uuid;
+    private UUID global_energy_user_uuid;
 
     @Override
     public void onPreTick(IGregTechTileEntity tileEntity, long aTick) {
@@ -530,10 +531,10 @@ public class GTMTE_LapotronicSuperCapacitor
         // On first tick (aTick restarts from 0 upon world reload).
         if (not_processed_lsc && tileEntity.isServerSide()) {
             // Add user to wireless network.
-            strongCheckOrAddUser(tileEntity.getOwnerUuid(), tileEntity.getOwnerName());
+            WirelessNetworkManager.strongCheckOrAddUser(tileEntity.getOwnerUuid());
 
             // Get team UUID.
-            global_energy_user_uuid = getUUIDFromUsername(tileEntity.getOwnerName());
+            global_energy_user_uuid = SpaceProjectManager.getPlayerUUIDFromName(tileEntity.getOwnerName());
 
             not_processed_lsc = false;
         }
@@ -555,7 +556,7 @@ public class GTMTE_LapotronicSuperCapacitor
 
     @Override
     public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
-        strongCheckOrAddUser(thisController.getOwnerUuid(), thisController.getOwnerName());
+        WirelessNetworkManager.strongCheckOrAddUser(thisController.getOwnerUuid());
 
         // Reset capacitor counts
         Arrays.fill(capacitors, 0);
@@ -784,7 +785,7 @@ public class GTMTE_LapotronicSuperCapacitor
             }
 
             // If that difference can be added then do so.
-            if (addEUToGlobalEnergyMap(global_energy_user_uuid, transferred_eu)) {
+            if (WirelessNetworkManager.addEUToGlobalEnergyMap(global_energy_user_uuid, transferred_eu)) {
                 // If it succeeds there was sufficient energy so set the internal capacity as such.
                 stored = LSC_wireless_eu_cap.multiply(BigInteger.valueOf(getUHVCapacitorCount())).add(
                         UEV_wireless_eu_cap.multiply(BigInteger.valueOf(getUEVCapacitorCount()))
@@ -940,7 +941,7 @@ public class GTMTE_LapotronicSuperCapacitor
                         + getUMVCapacitorCount());
         ll.add(
                 "Total wireless EU: " + EnumChatFormatting.RED
-                        + GT_Utility.formatNumbers(getUserEU(global_energy_user_uuid)));
+                        + GT_Utility.formatNumbers(WirelessNetworkManager.getUserEU(global_energy_user_uuid)));
         ll.add("---------------------------------------------");
 
         final String[] a = new String[ll.size()];
