@@ -503,7 +503,16 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
         final int blockMeta = getBaseMetaTileEntity().getMetaID(posX, posY, posZ);
         if (oreBlock.canSilkHarvest(getBaseMetaTileEntity().getWorld(), null, posX, posY, posZ, blockMeta)) {
             return Collections.singleton(new ItemStack(oreBlock, 1, blockMeta));
-        } else return oreBlock.getDrops(getBaseMetaTileEntity().getWorld(), posX, posY, posZ, blockMeta, mTier + 3);
+        }
+        if (oreBlock instanceof GT_Block_Ores_Abstract) {
+            TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntity(posX, posY, posZ);
+            if (tTileEntity instanceof GT_TileEntity_Ores && ((GT_TileEntity_Ores) tTileEntity).mMetaData >= 16000) {
+                // GT_Log.out.println("Running Small Ore");
+                return oreBlock.getDrops(getBaseMetaTileEntity().getWorld(), posX, posY, posZ, blockMeta, mTier + 3);
+            }
+        }
+        // GT_Log.out.println("Running Normal Ore");
+        return oreBlock.getDrops(getBaseMetaTileEntity().getWorld(), posX, posY, posZ, blockMeta, 0);
     }
 
     private boolean tryConsumeDrillingFluid(boolean simulate) {
