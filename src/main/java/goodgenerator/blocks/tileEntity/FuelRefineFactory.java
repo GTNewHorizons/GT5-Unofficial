@@ -17,10 +17,12 @@ import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_H
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.blocks.tileEntity.base.GT_MetaTileEntity_TooltipMultiBlockBase_EM;
@@ -152,6 +154,28 @@ public class FuelRefineFactory extends GT_MetaTileEntity_TooltipMultiBlockBase_E
             @Override
             public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
                 return world.setBlock(x, y, z, coils[getIndex(trigger)], 0, 3);
+            }
+
+            @Override
+            public BlocksToPlace getBlocksToPlace(T t, World world, int x, int y, int z, ItemStack trigger,
+                    AutoPlaceEnvironment env) {
+                return BlocksToPlace.create(coils[getIndex(trigger)], 0);
+            }
+
+            @Override
+            public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
+                    AutoPlaceEnvironment env) {
+                if (check(t, world, x, y, z)) return PlaceResult.SKIP;
+                return StructureUtility.survivalPlaceBlock(
+                        coils[getIndex(trigger)],
+                        0,
+                        world,
+                        x,
+                        y,
+                        z,
+                        env.getSource(),
+                        env.getActor(),
+                        env.getChatter());
             }
         };
     }
