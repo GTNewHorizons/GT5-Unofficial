@@ -2210,11 +2210,11 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         return true;
     }
 
-    protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
-
     protected boolean shouldDisplayShutDownReason() {
         return true;
     }
+
+    protected final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
     protected String generateCurrentRecipeInfoString() {
         StringBuffer ret = new StringBuffer(EnumChatFormatting.WHITE + "Progress: ");
@@ -2225,10 +2225,12 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         ret.append("s / ");
         numberFormat.format((double) mMaxProgresstime / 20, ret);
         ret.append("s (");
-        numberFormat.setMinimumFractionDigits(0);
+        numberFormat.setMinimumFractionDigits(1);
         numberFormat.setMaximumFractionDigits(1);
         numberFormat.format((double) mProgresstime / mMaxProgresstime * 100, ret);
         ret.append("%)\n");
+        numberFormat.setMinimumFractionDigits(0);
+        numberFormat.setMaximumFractionDigits(2);
 
         IntConsumer appendRate = (amount) -> {
             double processPerTick = (double) amount / mMaxProgresstime * 20;
