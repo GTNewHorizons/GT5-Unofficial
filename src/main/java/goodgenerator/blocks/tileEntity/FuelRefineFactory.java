@@ -58,11 +58,13 @@ public class FuelRefineFactory extends GT_MetaTileEntity_TooltipMultiBlockBase_E
     public FuelRefineFactory(String name) {
         super(name);
         turnOffMaintenance();
+        useLongPower = true;
     }
 
     public FuelRefineFactory(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
         turnOffMaintenance();
+        useLongPower = true;
     }
 
     @Override
