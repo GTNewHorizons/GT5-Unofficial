@@ -13,7 +13,6 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import com.google.common.io.ByteArrayDataInput;
-import com.gtnewhorizons.modularui.api.math.MathExpression;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
@@ -24,7 +23,7 @@ import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
-import gregtech.common.gui.modularui.widget.CoverDataFollower_TextFieldWidget;
+import gregtech.common.gui.modularui.widget.CoverDataFollower_NumericWidget;
 import io.netty.buffer.ByteBuf;
 
 /***
@@ -190,13 +189,13 @@ public class GT_Cover_FluidLimiter extends GT_CoverBehaviorBase<GT_Cover_FluidLi
             builder.widget(
                 new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, GT_Cover_FluidLimiter.this)
                     .addFollower(
-                        new CoverDataFollower_TextFieldWidget<>(),
-                        coverData -> String.valueOf(Math.round(coverData.threshold * 100)),
+                        new CoverDataFollower_NumericWidget<>(),
+                        coverData -> (double) Math.round(coverData.threshold * 100),
                         (coverData, val) -> {
-                            coverData.threshold = (float) (MathExpression.parseMathExpression(val) / 100);
+                            coverData.threshold = val.floatValue() / 100;
                             return coverData;
                         },
-                        widget -> widget.setNumbers(0, 100)
+                        widget -> widget.setBounds(0, 100)
                             .setFocusOnGuiOpen(true)
                             .setPos(startX, startY + spaceY * 2 - 24)
                             .setSize(spaceX * 4 - 3, 12)))

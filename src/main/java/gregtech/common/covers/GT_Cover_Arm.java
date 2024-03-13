@@ -1,16 +1,16 @@
 package gregtech.common.covers;
 
-import net.minecraft.client.gui.GuiScreen;
+import java.text.FieldPosition;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
-import com.gtnewhorizons.modularui.api.math.MathExpression;
+import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.BaseTextFieldWidget;
 
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.gui.modularui.GT_UITextures;
@@ -21,7 +21,7 @@ import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
-import gregtech.common.gui.modularui.widget.CoverDataFollower_TextFieldWidget;
+import gregtech.common.gui.modularui.widget.CoverDataFollower_NumericWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 
 public class GT_Cover_Arm extends GT_CoverBehavior {
@@ -33,10 +33,6 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
     protected static final int SLOT_ID_MASK = 0x3FFF;
     protected static final int SLOT_ID_MIN = 0;
     protected static final int CONVERTED_BIT = 0x80000000;
-
-    // This used to be translatable, but now that cover GUI is synced with server, having conflicting texts
-    // among players doesn't make sense.
-    private static final String ANY_TEXT = "Any";
 
     public GT_Cover_Arm(int aTickRate, ITexture coverTexture) {
         super(coverTexture);
@@ -299,6 +295,21 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
 
         private int maxSlot;
 
+        /**
+         * Display the text "Any" instead of a number when the slot is set to -1.
+         */
+        protected static final NumberFormatMUI numberFormatAny = new NumberFormatMUI() {
+
+            @Override
+            public StringBuffer format(double number, StringBuffer toAppendTo, FieldPosition pos) {
+                if (number < 0) {
+                    return toAppendTo.append(GT_Utility.trans("ANY", "Any"));
+                } else {
+                    return super.format(number, toAppendTo, pos);
+                }
+            }
+        };
+
         protected ArmUIFactory(GT_CoverUIBuildContext buildContext) {
             super(buildContext);
         }
@@ -339,41 +350,34 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
                             .addTooltip(GT_Utility.trans("007", "Import"))
                             .setPos(spaceX * 1, spaceY * 0))
                     .addFollower(
-                        new CoverDataFollower_TextFieldWidget<>(),
-                        coverData -> getTextFieldContent(getFlagInternalSlot(convert(coverData)) - 1),
+                        new CoverDataFollower_NumericWidget<>(),
+                        coverData -> (double) (getFlagInternalSlot(convert(coverData)) - 1),
                         (coverData, state) -> {
                             final int coverVariable = convert(coverData);
                             return new ISerializableObject.LegacyCoverData(
-                                getFlagExport(coverVariable) | ((getIntFromText(state) + 1) & SLOT_ID_MASK)
+                                getFlagExport(coverVariable) | ((state.intValue() + 1) & SLOT_ID_MASK)
                                     | (getFlagAdjacentSlot(coverVariable) << 14)
                                     | CONVERTED_BIT);
                         },
-                        widget -> widget.setOnScrollText()
-                            .setValidator(val -> {
-                                final int valSlot = getIntFromText(val);
-                                if (valSlot > -1) {
-                                    return widget.getDecimalFormatter()
-                                        .format(Math.min(valSlot, maxSlot));
-                                } else {
-                                    return ANY_TEXT;
-                                }
-                            })
-                            .setPattern(BaseTextFieldWidget.NATURAL_NUMS)
-                            .setFocusOnGuiOpen(true)
+                        widget -> widget.setBounds(-1, maxSlot)
+                            .setDefaultValue(-1)
+                            .setScrollValues(1, 100, 10)
+                            .setNumberFormat(numberFormatAny)
                             .setPos(spaceX * 0, spaceY * 1 + 2)
                             .setSize(spaceX * 2 + 5, 12))
                     .addFollower(
-                        new CoverDataFollower_TextFieldWidget<>(),
-                        coverData -> getTextFieldContent(getFlagAdjacentSlot(convert(coverData)) - 1),
+                        new CoverDataFollower_NumericWidget<>(),
+                        coverData -> (double) (getFlagAdjacentSlot(convert(coverData)) - 1),
                         (coverData, state) -> {
                             final int coverVariable = convert(coverData);
                             return new ISerializableObject.LegacyCoverData(
                                 getFlagExport(coverVariable) | getFlagInternalSlot(coverVariable)
-                                    | (((getIntFromText(state) + 1) & SLOT_ID_MASK) << 14)
+                                    | (((state.intValue() + 1) & SLOT_ID_MASK) << 14)
                                     | CONVERTED_BIT);
                         },
                         widget -> widget.setValidator(val -> {
-                            final int valSlot = getIntFromText(val);
+                            // We need to check the adjacent inventory here, and can't simply set a maximum value,
+                            // because it can change while this cover is alive.
                             final int adjacentMaxSlot;
                             final ICoverable tile = getUIBuildContext().getTile();
                             if (tile instanceof TileEntity && !tile.isDead()) {
@@ -384,30 +388,20 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
                             } else {
                                 adjacentMaxSlot = -1;
                             }
-                            if (valSlot > -1) {
-                                return widget.getDecimalFormatter()
-                                    .format(Math.min(valSlot, adjacentMaxSlot));
-                            } else {
-                                return ANY_TEXT;
-                            }
+                            return Math.min(val, adjacentMaxSlot);
                         })
-                            .setOnScroll((text, direction) -> {
-                                final int val = getIntFromText(text);
-                                int step = (GuiScreen.isShiftKeyDown() ? 50 : GuiScreen.isCtrlKeyDown() ? 5 : 1)
-                                    * direction;
-                                return widget.getDecimalFormatter()
-                                    .format(val + step);
-                            })
-                            .setPattern(BaseTextFieldWidget.NATURAL_NUMS)
+                            .setMinValue(-1)
+                            .setDefaultValue(-1)
+                            .setScrollValues(1, 100, 10)
+                            .setNumberFormat(numberFormatAny)
                             .setPos(spaceX * 0, spaceY * 2 + 2)
                             .setSize(spaceX * 2 + 5, 12))
                     .setPos(startX, startY))
                 .widget(
-                    TextWidget
-                        .dynamicString(
+                    new TextWidget()
+                        .setStringSupplier(
                             () -> (convert(getCoverData()) & EXPORT_MASK) > 0 ? GT_Utility.trans("006", "Export")
                                 : GT_Utility.trans("007", "Import"))
-                        .setSynced(false)
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(startX + spaceX * 3, 4 + startY + spaceY * 0))
                 .widget(
@@ -423,18 +417,6 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
             if (tile instanceof TileEntity && !tile.isDead()) {
                 return tile.getSizeInventory() - 1;
             } else {
-                return -1;
-            }
-        }
-
-        private String getTextFieldContent(int val) {
-            return val < 0 ? ANY_TEXT : String.valueOf(val);
-        }
-
-        private int getIntFromText(String text) {
-            try {
-                return (int) MathExpression.parseMathExpression(text, -1);
-            } catch (Exception e) {
                 return -1;
             }
         }

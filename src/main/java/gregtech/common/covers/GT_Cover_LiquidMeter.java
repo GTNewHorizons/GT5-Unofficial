@@ -15,7 +15,6 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import com.google.common.io.ByteArrayDataInput;
-import com.gtnewhorizons.modularui.api.math.MathExpression;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
@@ -27,7 +26,7 @@ import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
-import gregtech.common.gui.modularui.widget.CoverDataFollower_TextFieldWidget;
+import gregtech.common.gui.modularui.widget.CoverDataFollower_NumericWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalTankBase;
 import io.netty.buffer.ByteBuf;
@@ -178,6 +177,7 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
         private static final int startY = 25;
         private static final int spaceX = 18;
         private static final int spaceY = 18;
+        private int maxCapacity;
 
         public LiquidMeterUIFactory(GT_CoverUIBuildContext buildContext) {
             super(buildContext);
@@ -188,17 +188,8 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
         protected void addUIWidgets(ModularWindow.Builder builder) {
             final String INVERTED = GT_Utility.trans("INVERTED", "Inverted");
             final String NORMAL = GT_Utility.trans("NORMAL", "Normal");
-            final int maxCapacity;
 
-            if (getUIBuildContext().getTile() instanceof IFluidHandler) {
-                FluidTankInfo[] tanks = ((IFluidHandler) getUIBuildContext().getTile())
-                    .getTankInfo(ForgeDirection.UNKNOWN);
-                maxCapacity = Arrays.stream(tanks)
-                    .mapToInt(tank -> tank.capacity)
-                    .sum();
-            } else {
-                maxCapacity = -1;
-            }
+            setMaxCapacity();
 
             builder.widget(
                 new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, GT_Cover_LiquidMeter.this)
@@ -213,27 +204,39 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
                             .addTooltip(1, INVERTED)
                             .setPos(spaceX * 0, spaceY * 0))
                     .addFollower(
-                        new CoverDataFollower_TextFieldWidget<>(),
-                        coverData -> String.valueOf(coverData.threshold),
+                        new CoverDataFollower_NumericWidget<>(),
+                        coverData -> (double) coverData.threshold,
                         (coverData, state) -> {
-                            coverData.threshold = (int) MathExpression.parseMathExpression(state);
+                            coverData.threshold = state.intValue();
                             return coverData;
                         },
-                        widget -> widget.setOnScrollNumbers(1000, 100, 100000)
-                            .setNumbers(0, maxCapacity > 0 ? maxCapacity : Integer.MAX_VALUE)
+                        widget -> widget.setBounds(0, maxCapacity > 0 ? maxCapacity : Integer.MAX_VALUE)
+                            .setScrollValues(1000, 144, 100000)
                             .setFocusOnGuiOpen(true)
                             .setPos(spaceX * 0, spaceY * 1 + 2)
                             .setSize(spaceX * 4 + 5, 12))
                     .setPos(startX, startY))
                 .widget(
-                    TextWidget
-                        .dynamicString(() -> getCoverData() != null ? getCoverData().inverted ? INVERTED : NORMAL : "")
-                        .setSynced(false)
+                    new TextWidget()
+                        .setStringSupplier(
+                            () -> getCoverData() != null ? getCoverData().inverted ? INVERTED : NORMAL : "")
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(startX + spaceX * 1, 4 + startY + spaceY * 0))
                 .widget(
                     new TextWidget(GT_Utility.trans("222", "Fluid threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(startX + spaceX * 5 - 10, startY + spaceY * 1 + 4));
+        }
+
+        private void setMaxCapacity() {
+            final ICoverable tile = getUIBuildContext().getTile();
+            if (!tile.isDead() && tile instanceof IFluidHandler) {
+                FluidTankInfo[] tanks = ((IFluidHandler) tile).getTankInfo(ForgeDirection.UNKNOWN);
+                maxCapacity = Arrays.stream(tanks)
+                    .mapToInt(tank -> tank.capacity)
+                    .sum();
+            } else {
+                maxCapacity = -1;
+            }
         }
     }
 

@@ -32,6 +32,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -565,6 +566,8 @@ public abstract class GT_MetaTileEntity_FusionComputer
         return 166;
     }
 
+    protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
+
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder
@@ -610,7 +613,7 @@ public abstract class GT_MetaTileEntity_FusionComputer
                     .setTexture(GT_UITextures.PROGRESSBAR_STORED_EU, 147)
                     .setPos(5, 156)
                     .setSize(147, 5))
-            .widget(TextWidget.dynamicString(() -> {
+            .widget(new TextWidget().setStringSupplier(() -> {
                 long energy = getBaseMetaTileEntity().getStoredEU();
                 if (energy > 160_000_000L && energy < 160_010_000L) {
                     energy = 160_000_000L;
@@ -624,7 +627,7 @@ public abstract class GT_MetaTileEntity_FusionComputer
                 if (energy > 5_120_000_000L && energy < 5_120_080_000L) {
                     energy = 5_120_000_000L;
                 }
-                return GT_Utility.formatNumbers(energy) + " EU";
+                return numberFormat.format(energy) + " EU";
             })
                 .setDefaultColor(COLOR_TEXT_RED.get())
                 .setPos(50, 155))
