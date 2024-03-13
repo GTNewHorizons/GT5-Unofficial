@@ -23,6 +23,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -46,6 +47,7 @@ import com.gtnewhorizons.modularui.api.math.MainAxisAlignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
@@ -71,8 +73,10 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_Utility;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
 import gregtech.common.items.GT_TierDrone;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -613,7 +617,7 @@ public class GT_MetaTileEntity_DroneCentre extends
                                         GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_ON }
                                     : new IDrawable[] { GT_UITextures.BUTTON_STANDARD,
                                         GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF })
-                            .orElse(new IDrawable[] { GT_UITextures.PICTURE_STALLED_ELECTRICITY }))
+                            .orElse(new IDrawable[] { GT_UITextures.OVERLAY_BUTTON_CROSS }))
                     .attachSyncer(
                         new FakeSyncWidget.BooleanSyncer(
                             () -> Optional.ofNullable(coreMachine)
@@ -635,9 +639,7 @@ public class GT_MetaTileEntity_DroneCentre extends
                         player.closeScreen();
                     }
                 })
-                    .addTooltip(
-                        coreMachine != null ? StatCollector.translateToLocal("GT5U.gui.button.drone_highlight")
-                            : StatCollector.translateToLocal("GT5U.gui.button.drone_outofrange"))
+                    .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_highlight"))
                     .setBackground(
                         () -> Optional.ofNullable(coreMachine)
                             .map(
@@ -699,16 +701,12 @@ public class GT_MetaTileEntity_DroneCentre extends
     }
 
     // Just like HIGHLIGHT_INTERFACE (and exactly from it)
-    private void highlightMachine(EntityPlayer player, GT_MetaTileEntity_MultiBlockBase machine) {
+    private void highlightMachine(EntityPlayer player, ChunkCoordinates machineCoord) {
         DimensionalCoord blockPos = new DimensionalCoord(
-            machine.getBaseMetaTileEntity()
-                .getXCoord(),
-            machine.getBaseMetaTileEntity()
-                .getYCoord(),
-            machine.getBaseMetaTileEntity()
-                .getZCoord(),
-            machine.getBaseMetaTileEntity()
-                .getWorld().provider.dimensionId);
+            machineCoord.posX,
+            machineCoord.posY,
+            machineCoord.posZ,
+            player.dimension);
         WorldCoord blockPos2 = new WorldCoord((int) player.posX, (int) player.posY, (int) player.posZ);
         BlockPosHighlighter.highlightBlock(
             blockPos,
