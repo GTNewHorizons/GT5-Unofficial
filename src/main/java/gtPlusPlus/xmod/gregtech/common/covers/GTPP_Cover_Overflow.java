@@ -8,11 +8,8 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import com.gtnewhorizons.modularui.api.drawable.Text;
-import com.gtnewhorizons.modularui.api.math.MathExpression;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.BaseTextFieldWidget;
 
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -20,7 +17,7 @@ import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
-import gregtech.common.gui.modularui.widget.CoverDataFollower_TextFieldWidget;
+import gregtech.common.gui.modularui.widget.CoverDataFollower_NumericWidget;
 
 public class GTPP_Cover_Overflow extends GT_CoverBehavior {
 
@@ -189,39 +186,17 @@ public class GTPP_Cover_Overflow extends GT_CoverBehavior {
             builder.widget(
                     new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, GTPP_Cover_Overflow.this)
                             .addFollower(
-                                    new CoverDataFollower_TextFieldWidget<>(),
-                                    coverData -> String.valueOf(convert(coverData)),
-                                    (coverData, state) -> new ISerializableObject.LegacyCoverData(
-                                            (int) MathExpression.parseMathExpression(state)),
-                                    widget -> widget.setOnScrollNumbersLong(1, 5, 50).setNumbersLong(val -> {
-                                        warn.set(false);
-                                        if (val > mMaxTransferRate) {
-                                            val = (long) mMaxTransferRate;
-                                            warn.set(true);
-                                        } else if (val < 0) {
-                                            val = 0L;
-                                        }
-                                        return val;
-                                    }).setPattern(BaseTextFieldWidget.NATURAL_NUMS).setFocusOnGuiOpen(true)
-                                            .setPos(startX + spaceX * 0, startY + spaceY * 0 + 8)
+                                    new CoverDataFollower_NumericWidget<>(),
+                                    coverData -> (double) convert(coverData),
+                                    (coverData, state) -> new ISerializableObject.LegacyCoverData(state.intValue()),
+                                    widget -> widget.setBounds(0, mMaxTransferRate).setScrollValues(1000, 144, 100000)
+                                            .setFocusOnGuiOpen(true)
+                                            .setPos(startX + spaceX * 0, startY + spaceY * 1 + 8)
                                             .setSize(spaceX * 4 - 3, 12)))
                     .widget(
-                            new TextWidget(GT_Utility.trans("323", "L")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                                    .setPos(startX + spaceX * 4, 4 + startY + spaceY * 0 + 8))
-                    .widget(
-                            TextWidget
-                                    .dynamicText(
-                                            () -> new Text(
-                                                    (warn.get() ? GT_Utility.trans("325", "Max")
-                                                            : GT_Utility.trans("324", "Now")) + ": "
-                                                            + convert(getCoverData())
-                                                            + " / "
-                                                            + GT_Utility.formatNumbers(mMaxTransferRate)
-                                                            + " "
-                                                            + GT_Utility.trans("323", "L")).color(
-                                                                    warn.get() ? COLOR_TEXT_WARN.get()
-                                                                            : COLOR_TEXT_GRAY.get()))
-                                    .setSynced(false).setPos(startX + spaceX * 0, 4 + startY + spaceY * 1 + 6));
+                            new TextWidget(GT_Utility.trans("322", "Overflow point: "))
+                                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                                    .setPos(startX, 4 + startY + spaceY * 0 + 8));
         }
     }
 }

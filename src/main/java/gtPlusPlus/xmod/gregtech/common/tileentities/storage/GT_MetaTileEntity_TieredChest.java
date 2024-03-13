@@ -7,6 +7,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
@@ -215,6 +216,8 @@ public class GT_MetaTileEntity_TieredChest extends GT_MetaTileEntity_TieredMachi
         return true;
     }
 
+    protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
+
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
@@ -231,7 +234,7 @@ public class GT_MetaTileEntity_TieredChest extends GT_MetaTileEntity_TieredMachi
                         SlotWidget.phantom(inventoryHandler, 2).disableInteraction()
                                 .setBackground(GT_UITextures.TRANSPARENT).setPos(59, 42))
                 .widget(new TextWidget("Item Amount").setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(10, 20)).widget(
-                        TextWidget.dynamicString(() -> GT_Utility.parseNumberToString(mItemCount))
+                        new TextWidget().setStringSupplier(() -> numberFormat.format(mItemCount))
                                 .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(10, 30));
     }
 }
