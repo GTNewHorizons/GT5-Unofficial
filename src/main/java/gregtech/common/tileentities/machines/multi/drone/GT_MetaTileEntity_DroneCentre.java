@@ -641,12 +641,51 @@ public class GT_MetaTileEntity_DroneCentre extends
                 })
                     .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_highlight"))
                     .setBackground(
+                        new IDrawable[] { GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_INVERT_REDSTONE })
+                    .setSize(16, 16));
+            // Show the reason why the machine shutdown
+            row.widget(
+                new DrawableWidget().addTooltip(
+                    Optional.ofNullable(coreMachine)
+                        .map(
+                            machine -> machine.getBaseMetaTileEntity()
+                                .getLastShutDownReason()
+                                .getDisplayString())
+                        .orElse(""))
+                    .setBackground(GT_UITextures.PICTURE_STALLED_ELECTRICITY)
+                    .setSize(16, 16)
+                    .setEnabled(
+                        coreMachine != null && coreMachine.shouldDisplayShutDownReason()
+                            && !coreMachine.getBaseMetaTileEntity()
+                                .isActive()
+                            && GT_Utility.isStringValid(
+                                coreMachine.getBaseMetaTileEntity()
+                                    .getLastShutDownReason()
+                                    .getDisplayString())
+                            && coreMachine.getBaseMetaTileEntity()
+                                .wasShutdown()))
+                .widget(
+                    new ShutDownReasonSyncer(
                         () -> Optional.ofNullable(coreMachine)
                             .map(
-                                machine -> new IDrawable[] { GT_UITextures.BUTTON_STANDARD,
-                                    GT_UITextures.OVERLAY_BUTTON_INVERT_REDSTONE })
-                            .orElse(new IDrawable[] { GT_UITextures.OVERLAY_BUTTON_REDSTONE_OFF }))
-                    .setSize(16, 16));
+                                var -> coreMachine.getBaseMetaTileEntity()
+                                    .getLastShutDownReason())
+                            .orElse(ShutDownReasonRegistry.NONE),
+                        reason -> Optional.ofNullable(coreMachine)
+                            .ifPresent(
+                                machine -> coreMachine.getBaseMetaTileEntity()
+                                    .setShutDownReason(reason))))
+                .widget(
+                    new FakeSyncWidget.BooleanSyncer(
+                        () -> Optional.ofNullable(coreMachine)
+                            .map(
+                                var -> coreMachine.getBaseMetaTileEntity()
+                                    .wasShutdown())
+                            .orElse(false),
+                        wasShutDown -> Optional.ofNullable(coreMachine)
+                            .ifPresent(
+                                machine -> coreMachine.getBaseMetaTileEntity()
+                                    .setShutdownStatus(wasShutDown))));
             row.widget(
                 new TextWidget(
                     connectionList.get(i)
