@@ -300,6 +300,7 @@ gui.NeutronSensor.0=Input the value of Neutron Kinetic Energy.
 gui.NeutronSensor.1=e.g. >5000KeV, <=30MeV . . .
 gui.NeutronSensor.2=Valid
 gui.NeutronSensor.3=Invalid
+gui.NeutronSensor.4=eV threshold
 gui.NeutronActivator.0=Current Neutron Kinetic Energy:
 gui.NeutronActivator.1=Input:
 gui.YOTTank.0=Capacity:

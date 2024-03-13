@@ -31,6 +31,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
@@ -82,6 +83,7 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     protected final String YOTTANK_BOTTOM = mName + "buttom";
     protected final String YOTTANK_MID = mName + "mid";
     protected final String YOTTANK_TOP = mName + "top";
+    protected final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
     protected boolean voidExcessEnabled = false;
 
@@ -523,34 +525,34 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
 
         screenElements
                 .widget(
-                        TextWidget
-                                .dynamicString(
+                        new TextWidget()
+                                .setStringSupplier(
                                         () -> StatCollector.translateToLocal("gui.YOTTank.0") + " "
-                                                + CharExchanger.formatNumber(mStorage.toString())
+                                                + numberFormat.format(mStorage)
                                                 + " L")
-                                .setSynced(false).setDefaultColor(COLOR_TEXT_WHITE.get())
+                                .setDefaultColor(COLOR_TEXT_WHITE.get())
                                 .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
                 .widget(new FakeSyncWidget.BigIntegerSyncer(() -> mStorage, val -> mStorage = val))
                 .widget(
-                        TextWidget
-                                .dynamicString(
+                        new TextWidget()
+                                .setStringSupplier(
                                         () -> StatCollector.translateToLocal("gui.YOTTank.1") + " " + getFluidName())
-                                .setSynced(false).setDefaultColor(COLOR_TEXT_WHITE.get())
+                                .setDefaultColor(COLOR_TEXT_WHITE.get())
                                 .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
                 .widget(new FakeSyncWidget.StringSyncer(() -> mFluidName, val -> mFluidName = val))
                 .widget(
-                        TextWidget
-                                .dynamicString(
+                        new TextWidget()
+                                .setStringSupplier(
                                         () -> StatCollector.translateToLocal("gui.YOTTank.2") + " "
-                                                + CharExchanger.formatNumber(mStorageCurrent.toString())
+                                                + numberFormat.format(mStorageCurrent)
                                                 + " L")
-                                .setSynced(false).setDefaultColor(COLOR_TEXT_WHITE.get())
+                                .setDefaultColor(COLOR_TEXT_WHITE.get())
                                 .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
                 .widget(new FakeSyncWidget.BigIntegerSyncer(() -> mStorageCurrent, val -> mStorageCurrent = val))
                 .widget(
-                        TextWidget.dynamicString(
+                        new TextWidget().setStringSupplier(
                                 () -> StatCollector.translateToLocal("gui.YOTTank.3") + " " + getLockedFluidName())
-                                .setSynced(false).setDefaultColor(COLOR_TEXT_WHITE.get())
+                                .setDefaultColor(COLOR_TEXT_WHITE.get())
                                 .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
                 .widget(new FakeSyncWidget.StringSyncer(() -> mLockedFluidName, val -> mLockedFluidName = val))
                 .widget(new FakeSyncWidget.BooleanSyncer(() -> isFluidLocked, val -> isFluidLocked = val))

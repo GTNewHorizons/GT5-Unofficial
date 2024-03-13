@@ -29,6 +29,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
@@ -590,6 +591,7 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
     }
 
     protected long energyStorageCache;
+    protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
     @Override
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
@@ -597,21 +599,21 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
 
         screenElements
                 .widget(
-                        TextWidget
-                                .dynamicString(
+                        new TextWidget()
+                                .setStringSupplier(
                                         () -> StatCollector.translateToLocal("gui.LargeFusion.0") + " "
-                                                + GT_Utility.formatNumbers(energyStorageCache)
+                                                + numberFormat.format(energyStorageCache)
                                                 + " EU")
-                                .setSynced(false).setDefaultColor(COLOR_TEXT_WHITE.get())
+                                .setDefaultColor(COLOR_TEXT_WHITE.get())
                                 .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
                 .widget(new FakeSyncWidget.LongSyncer(this::maxEUStore, val -> energyStorageCache = val))
                 .widget(
-                        TextWidget
-                                .dynamicString(
+                        new TextWidget()
+                                .setStringSupplier(
                                         () -> StatCollector.translateToLocal("gui.LargeFusion.1") + " "
-                                                + GT_Utility.formatNumbers(getEUVar())
+                                                + numberFormat.format(getEUVar())
                                                 + " EU")
-                                .setSynced(false).setDefaultColor(COLOR_TEXT_WHITE.get())
+                                .setDefaultColor(COLOR_TEXT_WHITE.get())
                                 .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
                 .widget(new FakeSyncWidget.LongSyncer(this::getEUVar, this::setEUVar));
     }
