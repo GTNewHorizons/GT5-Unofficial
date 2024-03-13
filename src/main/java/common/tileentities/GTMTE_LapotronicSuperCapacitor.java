@@ -574,6 +574,8 @@ public class GTMTE_LapotronicSuperCapacitor extends
 
         if (!checkPiece(STRUCTURE_PIECE_BASE, 2, 1, 0)) return false;
 
+        if (casingAmount < 17) return false;
+
         topState = TopState.NotTop; // need at least one layer of capacitor to form, obviously
         int layer = 2;
         while (true) {
