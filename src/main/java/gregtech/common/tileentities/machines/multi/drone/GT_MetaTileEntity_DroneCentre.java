@@ -631,11 +631,8 @@ public class GT_MetaTileEntity_DroneCentre extends
                     .setSize(16, 16))
                 .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
                     if (widget.isClient()) {
-                        Optional.ofNullable(coreMachine)
-                            .ifPresent(machine -> {
-                                highlightMachine(player, machine);
-                                player.closeScreen();
-                            });
+                        highlightMachine(player, connection.machineCoord);
+                        player.closeScreen();
                     }
                 })
                     .addTooltip(
