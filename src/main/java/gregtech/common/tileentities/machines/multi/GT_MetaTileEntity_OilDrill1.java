@@ -43,7 +43,7 @@ public class GT_MetaTileEntity_OilDrill1 extends GT_MetaTileEntity_OilDrillBase 
 
     @Override
     protected int getRangeInChunks() {
-        return 2;
+        return 4;
     }
 
     @Override
