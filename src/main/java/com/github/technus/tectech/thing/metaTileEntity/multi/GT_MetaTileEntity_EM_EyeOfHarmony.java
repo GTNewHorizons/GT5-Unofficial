@@ -5,6 +5,7 @@ import static com.github.technus.tectech.thing.CustomItemList.astralArrayFabrica
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.eyeOfHarmonyRenderBlock;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsBA0;
+import static com.github.technus.tectech.util.CommonValues.EOH_TIER_FANCY_NAMES;
 import static com.github.technus.tectech.util.TT_Utility.toStandardForm;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
@@ -18,18 +19,16 @@ import static gregtech.api.enums.GT_Values.AuthorColen;
 import static gregtech.api.util.GT_ParallelHelper.calculateChancedOutputMultiplier;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_Utility.formatNumbers;
-import static java.lang.Math.abs;
 import static java.lang.Math.exp;
 import static java.lang.Math.max;
 import static java.lang.Math.pow;
 import static net.minecraft.util.EnumChatFormatting.BLUE;
-import static net.minecraft.util.EnumChatFormatting.DARK_RED;
 import static net.minecraft.util.EnumChatFormatting.GOLD;
 import static net.minecraft.util.EnumChatFormatting.GRAY;
 import static net.minecraft.util.EnumChatFormatting.GREEN;
 import static net.minecraft.util.EnumChatFormatting.RED;
 import static net.minecraft.util.EnumChatFormatting.RESET;
-import static net.minecraft.util.EnumChatFormatting.UNDERLINE;
+import static net.minecraft.util.EnumChatFormatting.YELLOW;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -64,7 +63,6 @@ import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.util.FluidStackLong;
 import com.github.technus.tectech.util.ItemStackLong;
 import com.google.common.collect.ImmutableList;
-import com.google.common.math.LongMath;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
@@ -112,9 +110,10 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     // % Increase in recipe chance and % decrease in yield per tier.
     private static final double STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER = 0.05;
     private static final double LOG_CONSTANT = Math.log(1.7);
-    private static final double PARALLEL_MULTIPLIER_CONSTANT = 1.6 * 2 + 0.019 * Math.pow(2, 1.5);
-    private static final long POWER_DIVISION_CONSTANT = 18;
+    private static final double PARALLEL_MULTIPLIER_CONSTANT = 1.63;
+    private static final long POWER_DIVISION_CONSTANT = 9;
     private static final int TOTAL_CASING_TIERS_WITH_POWER_PENALTY = 8;
+    private static final long PRECISION_MULTIPLIER = 1_000_000;
 
     private String userUUID = "";
     private BigInteger outputEU_BigInt = BigInteger.ZERO;
@@ -970,7 +969,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                                 + " per tier (additive)")
                 .addInfo(BLUE + "Stabilisation Field Generator:")
                 .addInfo(
-                        "- Increases the power output and probability of a recipe succeeding by " + RED
+                        "- Increases the probability of a recipe succeeding by " + RED
                                 + formatNumbers(STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER * 100)
                                 + "%"
                                 + GRAY
@@ -981,29 +980,43 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                                 + "%"
                                 + GRAY
                                 + " per tier (additive). ")
+                .addInfo("  > Low tier stabilisation field generators have a power output penalty.")
+                .addInfo(
+                        "     The power output penalty for using Crude Stabilisation Field Generators is " + RED
+                                + formatNumbers(
+                                        STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER
+                                                * TOTAL_CASING_TIERS_WITH_POWER_PENALTY
+                                                * 100)
+                                + "%"
+                                + GRAY
+                                + ".")
+                .addInfo(
+                        "     This penalty decreases by " + RED
+                                + formatNumbers(STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER * 100)
+                                + "%"
+                                + GRAY
+                                + " per tier (additive).")
                 .addInfo(TOOLTIP_BAR)
                 .addInfo(
                         "Going over a recipe requirement on hydrogen or helium has a penalty on yield and recipe chance.")
                 .addInfo("All stored hydrogen and helium is consumed during a craft. The associated formulas are:")
-                .addInfo(GREEN + "percentageOverflow = fluidStored/recipeRequirement - 1")
-                .addInfo(GREEN + "adjustmentValue = 1 - exp(-(30 * percentageOverflow)^2)")
-                .addInfo("The value of adjustmentValue is then subtracted from the total yield and recipe chance.")
+                .addInfo(GREEN + "Overflow ratio = (Stored fluid / Recipe requirement) - 1")
+                .addInfo(GREEN + "Adjustment value = 1 - exp(-(30 * Overflow ratio)^2)")
+                .addInfo("The Adjustment value is then subtracted from the total yield and recipe chance.")
                 .addInfo(TOOLTIP_BAR)
                 .addInfo("It should be noted that base recipe chance is determined per recipe and yield always starts")
                 .addInfo("at 1 and subtracts depending on penalties. All fluid/item outputs are multiplied by the")
-                .addInfo("yield. Failure fluid is exempt. All power outputs start at 60% of what the recipes display.")
-                .addInfo(TOOLTIP_BAR)
-                .addInfo("This multiblock can only output to ME output buses/hatches. If no space in the network")
-                .addInfo(
-                        "is available the items/fluids will be " + UNDERLINE + DARK_RED + "voided" + RESET + GRAY + ".")
-                .addInfo(TOOLTIP_BAR)
+                .addInfo("yield. Failure fluid is exempt.").addInfo(TOOLTIP_BAR)
+                .addInfo("This multiblock can only output to ME output buses/hatches.").addInfo(TOOLTIP_BAR)
                 .addInfo("This multiblock can be overclocked by placing a programmed circuit into the input bus.")
                 .addInfo(
-                        "E.g. A circuit of 2 will provide 2 OCs, 16x EU consumed and 0.25x the time. All outputs are equal.")
-                .addInfo("All item and fluid output chances & amounts per recipe are unaffected.").addInfo(TOOLTIP_BAR)
+                        "E.g. A circuit of 2 will provide 2 OCs, 16x EU input and 0.25x the time. EU output is unaffected.")
+                .addInfo(
+                        "All outputs are equal. All item and fluid output chances & amounts per recipe are unaffected.")
+                .addInfo(TOOLTIP_BAR)
                 .addInfo(
                         "If a recipe fails the EOH will output " + GREEN
-                                + "successChance * "
+                                + "Success chance * "
                                 + formatNumbers(MOLTEN_SPACETIME_PER_FAILURE_TIER)
                                 + " * ("
                                 + SPACETIME_FAILURE_BASE
@@ -1016,24 +1029,24 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                 .addInfo(TOOLTIP_BAR)
                 .addInfo(
                         "This multiblock can perform parallel processing by placing Astral Array Fabricators into the input bus.")
-                .addInfo("The amount of parallel is calculated via this formula:")
-                .addInfo(GREEN + "parallel = 2^(floor(log(8 * astralArrayAmount) / log(1.7)))")
+                .addInfo("The amount of parallel is calculated via these formulas:")
+                .addInfo(GREEN + "Parallel exponent = floor(log(8 * Astral Array amount) / log(1.7))")
+                .addInfo(GREEN + "Parallel = 2^(Parallel exponent)")
                 .addInfo("If the EOH is running parallel recipes, the power calculation changes.")
                 .addInfo("The power needed for parallel processing is calculated as follows:")
-                .addInfo(
-                        GREEN + "total EU = ((powerOutput * 2 - powerInput * (3.2 + 0.019 * 2^(1.5))) / 18) * 2.3^(log2(parallel) - 1)")
+                .addInfo(GREEN + "total EU = ((EU output - EU input * 1.63) / 9) * 2.3^(Parallel exponent - 1)")
                 .addInfo(
                         "Furthermore, if parallel recipes are run, the recipes consume "
                                 + MaterialsUEVplus.RawStarMatter.getLocalizedNameForItem("%material"))
                 .addInfo("instead of helium and hydrogen. Overflow penalties still apply.")
                 .addInfo(
                         "The required amount of fluid to start a recipe is " + GREEN
-                                + "12.4 / 10^6 * heliumAmount * parallel"
+                                + "12.4 / 10^6 * Helium amount * Parallel"
                                 + GRAY
                                 + ".")
-                .addInfo("All item & fluid outputs including failure fluid are multiplied by the amount of parallel.")
-                .addInfo(TOOLTIP_BAR).addInfo("Animations can be disabled by using a screwdriver on the multiblock.")
-                .addSeparator().addStructureInfo("Eye of Harmony structure is too complex! See schematic for details.")
+                .addInfo("The success or failure of each parallel is determined independently.").addInfo(TOOLTIP_BAR)
+                .addInfo("Animations can be disabled by using a screwdriver on the multiblock.").addSeparator()
+                .addStructureInfo("Eye of Harmony structure is too complex! See schematic for details.")
                 .addStructureInfo(
                         EnumChatFormatting.GOLD + "896"
                                 + EnumChatFormatting.GRAY
@@ -1129,6 +1142,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     private long astralArrayAmount = 0;
     private long parallelAmount = 1;
     private long successfulParallelAmount = 0;
+    private double yield = 0;
     private BigInteger usedEU = BigInteger.ZERO;
 
     @Override
@@ -1171,10 +1185,12 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
         // Get circuit damage, clamp it and then use it later for overclocking.
         currentCircuitMultiplier = 0;
-        for (ItemStack itemStack : mInputBusses.get(0).getRealInventory()) {
-            if (GT_Utility.isAnyIntegratedCircuit(itemStack)) {
-                currentCircuitMultiplier = MathHelper.clamp_int(itemStack.getItemDamage(), 0, 24);
-                break;
+        if (!mInputBusses.isEmpty()) {
+            for (ItemStack itemStack : mInputBusses.get(0).getRealInventory()) {
+                if (GT_Utility.isAnyIntegratedCircuit(itemStack)) {
+                    currentCircuitMultiplier = MathHelper.clamp_int(itemStack.getItemDamage(), 0, 24);
+                    break;
+                }
             }
         }
 
@@ -1228,33 +1244,27 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
         // Calculate multipliers used in power calculations
         double powerMultiplier = Math.max(1, Math.pow(2.3, (parallelExponent - 1)));
-        long precisionMultiplier = (long) Math.pow(10, parallelExponent - 1);
 
         // Determine EU recipe input
         startEU = recipeObject.getEUStartCost();
 
-        // Determine EU recipe output
-        outputEU_BigInt = BigInteger.valueOf(recipeObject.getEUOutput())
-                .multiply(
-                        BigInteger.valueOf(
-                                (long) (1 - ((TOTAL_CASING_TIERS_WITH_POWER_PENALTY - stabilisationFieldMetadata)
-                                        * STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER)) * 100))
-                .divide(BigInteger.valueOf(100));
+        // Calculate normal EU values
+        double outputEUPenalty = (TOTAL_CASING_TIERS_WITH_POWER_PENALTY - stabilisationFieldMetadata)
+                * STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER;
+        outputEU_BigInt = BigInteger.valueOf((long) (recipeObject.getEUOutput() * (1 - outputEUPenalty)));
+        usedEU = BigInteger.valueOf(-startEU)
+                .multiply(BigInteger.valueOf((long) Math.pow(4, currentCircuitMultiplier)));
 
-        double multiplier = 1;
-
-        // Calculate actual EU values
+        // Calculate parallel EU values
         if (parallelAmount > 1) {
-            multiplier = PARALLEL_MULTIPLIER_CONSTANT / POWER_DIVISION_CONSTANT;
-            outputEU_BigInt = outputEU_BigInt.divide(BigInteger.valueOf(9))
-                    .multiply(BigInteger.valueOf((long) (powerMultiplier * precisionMultiplier)))
-                    .divide(BigInteger.valueOf(precisionMultiplier));
+            outputEU_BigInt = outputEU_BigInt
+                    .multiply(BigInteger.valueOf((long) (powerMultiplier * PRECISION_MULTIPLIER)))
+                    .divide(BigInteger.valueOf(PRECISION_MULTIPLIER * POWER_DIVISION_CONSTANT));
+
+            usedEU = usedEU.multiply(
+                    BigInteger.valueOf((long) (powerMultiplier * PARALLEL_MULTIPLIER_CONSTANT * PRECISION_MULTIPLIER)))
+                    .divide(BigInteger.valueOf(PRECISION_MULTIPLIER * POWER_DIVISION_CONSTANT));
         }
-        usedEU = BigInteger.valueOf((long) (-startEU * multiplier))
-                .multiply(
-                        BigInteger.valueOf((long) Math.pow(4, currentCircuitMultiplier))
-                                .multiply(BigInteger.valueOf((long) (powerMultiplier * precisionMultiplier))))
-                .divide(BigInteger.valueOf(precisionMultiplier));
 
         // Remove EU from the users network.
         if (!addEUToGlobalEnergyMap(userUUID, usedEU)) {
@@ -1284,7 +1294,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             validFluidMap.put(Materials.Helium.mGas, 0L);
         }
 
-        double yield = recipeYieldCalculator();
+        yield = recipeYieldCalculator();
         if (EOH_DEBUG_MODE) {
             successChance = 1; // Debug recipes, sets them to 100% output chance.
         }
@@ -1365,7 +1375,14 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     @Override
     public void stopMachine() {
         super.stopMachine();
+        destroyRenderBlock();
         recipeRunning = false;
+    }
+
+    @Override
+    public void onBlockDestroyed() {
+        super.onBlockDestroyed();
+        destroyRenderBlock();
     }
 
     private void destroyRenderBlock() {
@@ -1487,36 +1504,88 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     public String[] getInfoData() {
         ArrayList<String> str = new ArrayList<>(Arrays.asList(super.getInfoData()));
         str.add(GOLD + "---------------- Control Block Statistics ----------------");
-        str.add("Spacetime Compression Field Grade: " + BLUE + spacetimeCompressionFieldMetadata);
-        str.add("Time Dilation Field Grade: " + BLUE + timeAccelerationFieldMetadata);
-        str.add("Stabilisation Field Grade: " + BLUE + stabilisationFieldMetadata);
+        if (spacetimeCompressionFieldMetadata < 0) {
+            str.add("Spacetime Compression Field Grade: None");
+        } else {
+            str.add(
+                    "Spacetime Compression Field Grade: " + EOH_TIER_FANCY_NAMES[spacetimeCompressionFieldMetadata]
+                            + RESET
+                            + " ("
+                            + YELLOW
+                            + spacetimeCompressionFieldMetadata
+                            + RESET
+                            + ")");
+        }
+        if (timeAccelerationFieldMetadata < 0) {
+            str.add("Time Dilation Field Grade: None");
+        } else {
+            str.add(
+                    "Time Dilation Field Grade: " + EOH_TIER_FANCY_NAMES[timeAccelerationFieldMetadata]
+                            + RESET
+                            + " ("
+                            + YELLOW
+                            + timeAccelerationFieldMetadata
+                            + RESET
+                            + ")");
+        }
+        if (stabilisationFieldMetadata < 0) {
+            str.add("Stabilisation Field Grade: None");
+        } else {
+            str.add(
+                    "Stabilisation Field Grade: " + EOH_TIER_FANCY_NAMES[stabilisationFieldMetadata]
+                            + RESET
+                            + " ("
+                            + YELLOW
+                            + stabilisationFieldMetadata
+                            + RESET
+                            + ")");
+        }
         str.add(GOLD + "----------------- Internal Fluids Stored ----------------");
         validFluidMap.forEach(
                 (key, value) -> str.add(BLUE + key.getLocalizedName() + RESET + " : " + RED + formatNumbers(value)));
         if (recipeRunning) {
             str.add(GOLD + "---------------------- Other Stats ---------------");
             str.add("Recipe Success Chance: " + RED + formatNumbers(100 * successChance) + RESET + "%");
-            str.add("Recipe Yield: " + RED + formatNumbers(100 * recipeYieldCalculator()) + RESET + "%");
+            str.add("Recipe Yield: " + RED + formatNumbers(100 * yield) + RESET + "%");
             str.add("Astral Array Fabricators detected: " + RED + formatNumbers(astralArrayAmount));
             str.add("Total Parallel: " + RED + formatNumbers(parallelAmount));
-            str.add("EU Output: " + RED + formatNumbers(outputEU_BigInt) + RESET + " EU");
+            str.add("EU Output: " + RED + toStandardForm(outputEU_BigInt) + RESET + " EU");
+            str.add("EU Input:  " + RED + toStandardForm(usedEU.abs()) + RESET + " EU");
+            int currentMaxProgresstime = Math.max(maxProgresstime(), 1);
             if (outputFluids.size() > 0) {
                 // Star matter is always the last element in the array.
+                FluidStackLong starMatter = outputFluids.get(outputFluids.size() - 1);
                 str.add(
-                        "Estimated Star Matter Output: " + RED
-                                + formatNumbers(outputFluids.get(outputFluids.size() - 1).amount)
+                        "Estimated " + starMatter.fluidStack.getLocalizedName()
+                                + " Output: "
+                                + RED
+                                + formatNumbers(starMatter.amount)
                                 + RESET
-                                + " L");
+                                + " L, "
+                                + YELLOW
+                                + formatNumbers(starMatter.amount * 20.0 / currentMaxProgresstime)
+                                + RESET
+                                + " L/s");
+                // And stellar plasma is the second last.
+                FluidStackLong stellarPlasma = outputFluids.get(outputFluids.size() - 2);
+                str.add(
+                        "Estimated " + stellarPlasma.fluidStack.getLocalizedName()
+                                + " Output: "
+                                + RED
+                                + formatNumbers(stellarPlasma.amount)
+                                + RESET
+                                + " L, "
+                                + YELLOW
+                                + formatNumbers(stellarPlasma.amount * 20.0 / currentMaxProgresstime)
+                                + RESET
+                                + " L/s");
             }
             BigInteger euPerTick = (outputEU_BigInt.subtract(usedEU.abs()))
-                    .divide(BigInteger.valueOf(Math.max(maxProgresstime(), 1)));
-            if (abs(euPerTick.longValue()) < LongMath.pow(10, 12)) {
-                str.add("Estimated EU/t: " + RED + formatNumbers(euPerTick) + RESET + " EU/t");
-            } else {
-                str.add("Estimated EU/t: " + RED + toStandardForm(euPerTick.longValue()) + RESET + " EU/t");
-            }
-            str.add(GOLD + "-----------------------------------------------------");
+                    .divide(BigInteger.valueOf(currentMaxProgresstime));
+
+            str.add("Estimated EU/t: " + RED + toStandardForm(euPerTick) + RESET + " EU/t");
         }
+        str.add(GOLD + "-----------------------------------------------------");
         return str.toArray(new String[0]);
     }
 
@@ -1538,8 +1607,10 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     private static final String ANIMATIONS_ENABLED = EYE_OF_HARMONY + "animationsEnabled";
     private static final String CALCULATED_EU_OUTPUT_NBT_TAG = EYE_OF_HARMONY + "outputEU_BigInt";
     private static final String PARALLEL_AMOUNT_NBT_TAG = EYE_OF_HARMONY + "parallelAmount";
+    private static final String YIELD_NBT_TAG = EYE_OF_HARMONY + "yield";
     private static final String SUCCESSFUL_PARALLEL_AMOUNT_NBT_TAG = EYE_OF_HARMONY + "successfulParallelAmount";
     private static final String ASTRAL_ARRAY_AMOUNT_NBT_TAG = EYE_OF_HARMONY + "astralArrayAmount";
+    private static final String CALCULATED_EU_INPUT_NBT_TAG = EYE_OF_HARMONY + "usedEU";
 
     // Sub tags, less specific names required.
     private static final String STACK_SIZE = "stackSize";
@@ -1559,8 +1630,10 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         aNBT.setBoolean(ANIMATIONS_ENABLED, animationsEnabled);
         aNBT.setLong(PARALLEL_AMOUNT_NBT_TAG, parallelAmount);
         aNBT.setLong(SUCCESSFUL_PARALLEL_AMOUNT_NBT_TAG, successfulParallelAmount);
+        aNBT.setDouble(YIELD_NBT_TAG, yield);
         aNBT.setLong(ASTRAL_ARRAY_AMOUNT_NBT_TAG, astralArrayAmount);
         aNBT.setByteArray(CALCULATED_EU_OUTPUT_NBT_TAG, outputEU_BigInt.toByteArray());
+        aNBT.setByteArray(CALCULATED_EU_INPUT_NBT_TAG, usedEU.toByteArray());
 
         // Store damage values/stack sizes of GT items being outputted.
         NBTTagCompound itemStackListNBTTag = new NBTTagCompound();
@@ -1613,9 +1686,11 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         currentCircuitMultiplier = aNBT.getLong(CURRENT_CIRCUIT_MULTIPLIER_TAG);
         animationsEnabled = aNBT.getBoolean(ANIMATIONS_ENABLED);
         parallelAmount = aNBT.getLong(PARALLEL_AMOUNT_NBT_TAG);
+        yield = aNBT.getDouble(YIELD_NBT_TAG);
         successfulParallelAmount = aNBT.getLong(SUCCESSFUL_PARALLEL_AMOUNT_NBT_TAG);
         astralArrayAmount = aNBT.getLong(ASTRAL_ARRAY_AMOUNT_NBT_TAG);
         outputEU_BigInt = new BigInteger(aNBT.getByteArray(CALCULATED_EU_OUTPUT_NBT_TAG));
+        usedEU = new BigInteger(aNBT.getByteArray(CALCULATED_EU_INPUT_NBT_TAG));
 
         // Load damage values/stack sizes of GT items being outputted and convert back to items.
         NBTTagCompound tempItemTag = aNBT.getCompoundTag(ITEM_OUTPUT_NBT_TAG);

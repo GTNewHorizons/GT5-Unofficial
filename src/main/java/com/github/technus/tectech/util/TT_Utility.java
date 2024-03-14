@@ -1,6 +1,7 @@
 package com.github.technus.tectech.util;
 
 import java.lang.reflect.Field;
+import java.math.BigInteger;
 import java.util.Formatter;
 import java.util.HashMap;
 import java.util.Locale;
@@ -45,6 +46,17 @@ public final class TT_Utility {
         mantissa = Math.round(mantissa * 100.0) / 100.0;
 
         return mantissa + "*10^" + exponent;
+    }
+
+    public static String toStandardForm(BigInteger number) {
+        BigInteger abs = number.abs();
+        if (abs.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) < 0) {
+            return toStandardForm(number.longValue());
+        }
+        String strNum = abs.toString();
+        int exponent = strNum.length() - 1;
+        return (number.signum() == -1 ? "-" : "") + strNum.charAt(0) + "." + strNum.substring(1, 3) + "*10^" + exponent;
+
     }
 
     public static int bitStringToInt(String bits) {
