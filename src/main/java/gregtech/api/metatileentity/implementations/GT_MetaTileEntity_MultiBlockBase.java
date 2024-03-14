@@ -96,6 +96,7 @@ import gregtech.common.GT_Pollution;
 import gregtech.common.gui.modularui.widget.CheckRecipeResultSyncer;
 import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_CraftingInput_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_InputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Input_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
@@ -793,6 +794,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
         if (isInputSeparationEnabled()) {
             for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
+                if (bus instanceof GT_MetaTileEntity_Hatch_CraftingInput_ME) {
+                    continue;
+                }
                 List<ItemStack> inputItems = new ArrayList<>();
                 for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
                     ItemStack stored = bus.getStackInSlot(i);
@@ -1314,19 +1318,6 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     public ArrayList<FluidStack> getStoredFluids() {
-        if (supportsCraftingMEBuffer()) {
-            for (IDualInputHatch tHatch : mDualInputHatches) {
-                if (tHatch.supportsFluids()) {
-                    Optional<IDualInputInventory> inventory = tHatch.getFirstNonEmptyInventory();
-                    if (inventory.isPresent()) {
-                        return Lists.newArrayList(
-                            inventory.get()
-                                .getFluidInputs());
-                    }
-                }
-            }
-        }
-
         ArrayList<FluidStack> rList = new ArrayList<>();
         Map<Fluid, FluidStack> inputsFromME = new HashMap<>();
         for (GT_MetaTileEntity_Hatch_Input tHatch : filterValidMTEs(mInputHatches)) {
@@ -1395,20 +1386,12 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     public ArrayList<ItemStack> getStoredInputs() {
-        if (supportsCraftingMEBuffer()) {
-            for (IDualInputHatch tHatch : mDualInputHatches) {
-                Optional<IDualInputInventory> inventory = tHatch.getFirstNonEmptyInventory();
-                if (inventory.isPresent()) {
-                    return Lists.newArrayList(
-                        inventory.get()
-                            .getItemInputs());
-                }
-            }
-        }
-
         ArrayList<ItemStack> rList = new ArrayList<>();
         Map<GT_Utility.ItemId, ItemStack> inputsFromME = new HashMap<>();
         for (GT_MetaTileEntity_Hatch_InputBus tHatch : filterValidMTEs(mInputBusses)) {
+            if (tHatch instanceof GT_MetaTileEntity_Hatch_CraftingInput_ME) {
+                continue;
+            }
             tHatch.mRecipeMap = getRecipeMap();
             IGregTechTileEntity tileEntity = tHatch.getBaseMetaTileEntity();
             boolean isMEBus = tHatch instanceof GT_MetaTileEntity_Hatch_InputBus_ME;
