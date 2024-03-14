@@ -121,11 +121,20 @@ public class Metal {
         if (!material.partsExist(partList)) throw new RuntimeException("Recipe contained part that is not valid for " + material);
     }
 
-    public static void metalCraftingRecipes(ModernMaterial material) {
+    public static void metalHandCraftingRecipes(ModernMaterial material) {
+        HashSet<IEnumPart> partList = new HashSet<>();
+
+        // Ingot -> Dust via mortar
         GT_ModHandler.addShapelessCraftingRecipe(
             Dust.getPart(material, 1),
             GT_Proxy.tBits,
             new Object[] { ToolDictNames.craftingToolMortar, Ingot.getPart(material, 1) });
+        partList.add(Dust);
+        partList.add(Ingot);
+
+
+
+        if (!material.partsExist(partList)) throw new RuntimeException("Recipe contained part that is not valid for " + material);
     }
 
     public static void EBFRecipeGeneratorWithFreezer(ModernMaterial material) {

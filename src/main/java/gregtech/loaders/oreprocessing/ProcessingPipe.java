@@ -46,6 +46,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                         GT_OreDictUnificator.get(OrePrefixes.pipeTiny, aMaterial, 8L),
                         GT_ModHandler.RecipeBits.BUFFERED,
                         new Object[] { "PPP", "h w", "PPP", 'P', OrePrefixes.plate.get(aMaterial) });
+
                     GT_ModHandler.addCraftingRecipe(
                         GT_OreDictUnificator.get(OrePrefixes.pipeSmall, aMaterial, 6L),
                         GT_ModHandler.RecipeBits.BUFFERED,
@@ -57,6 +58,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                                 : ToolDictNames.craftingToolHardHammer,
                             'W', aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSaw
                                 : ToolDictNames.craftingToolWrench });
+
                     GT_ModHandler.addCraftingRecipe(
                         GT_OreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 2L),
                         GT_ModHandler.RecipeBits.BUFFERED,
@@ -68,6 +70,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                                 : ToolDictNames.craftingToolHardHammer,
                             'W', aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSaw
                                 : ToolDictNames.craftingToolWrench });
+
                     GT_ModHandler.addCraftingRecipe(
                         GT_OreDictUnificator.get(OrePrefixes.pipeLarge, aMaterial, 1L),
                         GT_ModHandler.RecipeBits.BUFFERED,
@@ -79,6 +82,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                                 : ToolDictNames.craftingToolHardHammer,
                             'W', aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSaw
                                 : ToolDictNames.craftingToolWrench });
+
                     GT_ModHandler.addCraftingRecipe(
                         GT_OreDictUnificator.get(OrePrefixes.pipeHuge, aMaterial, 1L),
                         GT_ModHandler.RecipeBits.BUFFERED,
