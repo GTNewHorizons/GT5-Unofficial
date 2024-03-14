@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -1387,6 +1388,61 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
     public ArrayList<ItemStack> getStoredInputs() {
         ArrayList<ItemStack> rList = new ArrayList<>();
+        Map<GT_Utility.ItemId, ItemStack> inputsFromME = new HashMap<>();
+        for (GT_MetaTileEntity_Hatch_InputBus tHatch : filterValidMTEs(mInputBusses)) {
+            if (tHatch instanceof GT_MetaTileEntity_Hatch_CraftingInput_ME) {
+                continue;
+            }
+            tHatch.mRecipeMap = getRecipeMap();
+            IGregTechTileEntity tileEntity = tHatch.getBaseMetaTileEntity();
+            boolean isMEBus = tHatch instanceof GT_MetaTileEntity_Hatch_InputBus_ME;
+            for (int i = tileEntity.getSizeInventory() - 1; i >= 0; i--) {
+                ItemStack itemStack = tileEntity.getStackInSlot(i);
+                if (itemStack != null) {
+                    if (isMEBus) {
+                        // Prevent the same item from different ME buses from being recognized
+                        inputsFromME.put(GT_Utility.ItemId.createNoCopy(itemStack), itemStack);
+                    } else {
+                        rList.add(itemStack);
+                    }
+                }
+            }
+        }
+
+        if (getStackInSlot(1) != null && getStackInSlot(1).getUnlocalizedName()
+            .startsWith("gt.integrated_circuit")) rList.add(getStackInSlot(1));
+        if (!inputsFromME.isEmpty()) {
+            rList.addAll(inputsFromME.values());
+        }
+        return rList;
+    }
+
+    /**
+     * Anything that is usually separated off in {@link #getStoredInputs()} (like crafting input bus/buffer) is also
+     * included here.
+     */
+    public ArrayList<ItemStack> getAllStoredInputs() {
+        ArrayList<ItemStack> rList = new ArrayList<>();
+
+        if (supportsCraftingMEBuffer()) {
+            for (IDualInputHatch dualInputHatch : mDualInputHatches) {
+                Iterator<? extends IDualInputInventory> inventoryIterator = dualInputHatch.inventories();
+                while (inventoryIterator.hasNext()) {
+                    ItemStack[] items = inventoryIterator.next()
+                        .getItemInputs();
+                    if (items == null) {
+                        continue;
+                    }
+                    for (int i = 0; i < items.length; i++) {
+                        ItemStack item = items[i];
+                        if (item != null) {
+                            rList.add(item);
+                        }
+                    }
+                }
+            }
+        }
+
         Map<GT_Utility.ItemId, ItemStack> inputsFromME = new HashMap<>();
         for (GT_MetaTileEntity_Hatch_InputBus tHatch : filterValidMTEs(mInputBusses)) {
             if (tHatch instanceof GT_MetaTileEntity_Hatch_CraftingInput_ME) {
