@@ -64,6 +64,7 @@ public enum BlocksEnum implements IEnumPart {
 
     private final HashSet<ModernMaterial> associatedMaterials = new HashSet<>();
     private final HashSet<ModernMaterial> specialBlockRenderAssociatedMaterials = new HashSet<>();
+    public int percentageOfIngot;
 
     private HashSet<ModernMaterial> simpleBlockRenderAssociatedMaterials;
 

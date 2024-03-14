@@ -201,6 +201,10 @@ public final class ModernMaterial {
         return heldItemEffect;
     }
 
+    public boolean partsExist(HashSet<IEnumPart> partList) {
+        return existingPartsForMaterial.containsAll(partList);
+    }
+
     public static class ModernMaterialBuilder {
 
         private final ModernMaterial materialToBuild;
