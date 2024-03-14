@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
@@ -34,7 +33,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.google.common.collect.Lists;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -56,6 +54,7 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_CraftingInput_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Input_ME;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.IDualInputInventory;
@@ -435,6 +434,9 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
             processingLogic.setInputFluids(getStoredFluids());
             // Default logic
             for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
+                if (bus instanceof GT_MetaTileEntity_Hatch_CraftingInput_ME) {
+                    continue;
+                }
                 List<ItemStack> inputItems = new ArrayList<>();
                 for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
                     ItemStack stored = bus.getStackInSlot(i);
@@ -462,17 +464,6 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
 
     @Override
     public ArrayList<FluidStack> getStoredFluids() {
-        if (supportsCraftingMEBuffer()) {
-            for (IDualInputHatch tHatch : mDualInputHatches) {
-                if (tHatch.supportsFluids()) {
-                    Optional<IDualInputInventory> inventory = tHatch.getFirstNonEmptyInventory();
-                    if (inventory.isPresent()) {
-                        return Lists.newArrayList(inventory.get().getFluidInputs());
-                    }
-                }
-            }
-        }
-
         ArrayList<FluidStack> rList = new ArrayList<>();
         for (GT_MetaTileEntity_Hatch_Input tHatch : filterValidMTEs(mInputHatches)) {
             if (tHatch instanceof GT_MetaTileEntity_Hatch_Solidifier) {
