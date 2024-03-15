@@ -438,7 +438,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 104,
                 "Potato Juice",
                 "Ever seen Potato Juice in stores? No? That has a reason.",
-                SubTag.INVISIBLE,
                 new GT_FoodStat(
                     3,
                     0.3F,
@@ -724,7 +723,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 116,
                 "Scotch",
                 "Technically this is just a Whisky",
-                SubTag.INVISIBLE,
                 new GT_FoodStat(
                     2,
                     0.1F,
@@ -753,7 +751,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 117,
                 "Glen McKenner",
                 "Don't hand to easily surprised people, they will shatter it.",
-                SubTag.INVISIBLE,
                 new GT_FoodStat(
                     2,
                     0.1F,
