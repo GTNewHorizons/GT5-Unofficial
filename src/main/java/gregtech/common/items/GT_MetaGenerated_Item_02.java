@@ -134,7 +134,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 1,
                 "Dark Coffee au lait",
                 "Keeping you awake the whole night",
-                SubTag.INVISIBLE,
                 new GT_FoodStat(
                     2,
                     0.2F,
@@ -210,7 +209,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 4,
                 "Lait au cafe",
                 "You want Coffee to your Sugar?",
-                SubTag.INVISIBLE,
                 new GT_FoodStat(
                     3,
                     0.4F,
@@ -298,7 +296,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 8,
                 "Sweet Tea",
                 "How about a Tea Party? In Boston?",
-                SubTag.INVISIBLE,
                 new GT_FoodStat(
                     2,
                     0.2F,
@@ -875,7 +872,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 122,
                 "Diabolo Sauce",
                 "As if the Devil made this Sauce",
-                SubTag.INVISIBLE,
                 new GT_FoodStat(
                     2,
                     0.1F,
@@ -900,7 +896,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 123,
                 "Diablo Sauce",
                 "Diablo always comes back!",
-                SubTag.INVISIBLE,
                 new GT_FoodStat(
                     2,
                     0.1F,
@@ -998,7 +993,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 127,
                 "Golden Apple Juice",
                 "A golden Apple in liquid form",
-                SubTag.INVISIBLE,
                 new GT_FoodStat(
                     4,
                     0.2F,
@@ -1027,7 +1021,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 128,
                 "Golden Cider",
                 "More Resistance, less Regeneration",
-                SubTag.INVISIBLE,
                 new GT_FoodStat(
                     4,
                     0.2F,
@@ -1056,7 +1049,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 129,
                 "Idun's Apple Juice",
                 "So you got the Idea of using Notch Apples for a drink?",
-                SubTag.INVISIBLE,
                 new GT_FoodStat(
                     4,
                     0.2F,
@@ -1089,7 +1081,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 130,
                 "Notches Brew",
                 "This is just overpowered",
-                SubTag.INVISIBLE,
                 new GT_FoodStat(
                     4,
                     0.2F,
@@ -1214,7 +1205,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 135,
                 "Cave Johnson's Grenade Juice",
                 "When life gives you Lemons, make Life take them Lemons back!",
-                SubTag.INVISIBLE,
                 new GT_FoodStat(
                     0,
                     0.0F,
