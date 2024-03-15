@@ -150,7 +150,7 @@ public class GT_MetaTileEntity_MultiFurnace
     @Override
     @NotNull
     public CheckRecipeResult checkProcessing() {
-        ArrayList<ItemStack> tInputList = getStoredInputs();
+        ArrayList<ItemStack> tInputList = getAllStoredInputs();
         if (tInputList.isEmpty()) return CheckRecipeResultRegistry.NO_RECIPE;
 
         int mVolatage = GT_Utility.safeInt(getMaxInputVoltage());
