@@ -644,6 +644,14 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
         return itemInputsCurBatch[index];
     }
 
+    private FluidStack getInputHatchContent(int index) {
+        GT_MetaTileEntity_Hatch_Input tInputHatch = mInputHatches.get(index);
+        if (!tInputHatch.isValid()) {
+            return null;
+        }
+        return tInputHatch.mFluid;
+    }
+
     private GT_Recipe.GT_Recipe_AssemblyLine findRecipe(ItemStack tDataStick) {
         GT_AssemblyLineUtils.LookupResult tLookupResult = GT_AssemblyLineUtils
                 .findAssemblyLineRecipeFromDataStick(tDataStick, false);
@@ -813,11 +821,19 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
                 // Note that we skip this entirely if the time for each slice is more than
                 // BATCH_MODE_DESIRED_TICKS_PER_SLICE ticks, since in this case the amount of batches will always be 1
                 if (super.isBatchModeEnabled() && timePerSlice < BATCH_MODE_DESIRED_TICKS_PER_SLICE) {
-                    // Calculate parallel based on time per slice, and the amount of items in the first slot.
-                    // If there is not enough fluid, no batching will be done.
+                    // Calculate parallel based on time per slice, and the amount of fluid in the first fluid slot.
+                    // We use fluid, since this way players can limit parallel by controlling how much fluid
+                    // ends up in each AAL. This way, batch mode will not slow down setups where multiple AAL
+                    // are connected to the same set of input items. Note that this will still suffer from the same
+                    // issue if using stocking hatch, but in this case increasing pattern size can help.
 
-                    ItemStack firstItemSlot = getInputBusContent(0);
-                    int recipesAvailable = Math.floorDiv(firstItemSlot.stackSize, recipe.mInputs[0].stackSize);
+                    // Note that every assline recipe has a fluid ingredient.
+                    FluidStack firstFluidSlot = getInputHatchContent(0);
+                    if (firstFluidSlot == null) {
+                        // No input hatch, no valid recipe - this should be impossible.
+                        break;
+                    }
+                    int recipesAvailable = Math.floorDiv(firstFluidSlot.amount, recipe.mFluidInputs[0].amount);
                     // Divide recipes available by the amount of slices in the recipe. This will prevent the AAL from
                     // batching instead of parallelizing, which would make it effectively slower.
                     recipesAvailable = Math.floorDiv(recipesAvailable, recipe.mInputs.length);
