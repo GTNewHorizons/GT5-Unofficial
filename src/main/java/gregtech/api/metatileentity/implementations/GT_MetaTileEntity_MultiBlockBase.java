@@ -2193,7 +2193,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         return true;
     }
 
-    protected boolean shouldDisplayShutDownReason() {
+    public boolean shouldDisplayShutDownReason() {
         return true;
     }
 
