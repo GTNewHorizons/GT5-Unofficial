@@ -709,8 +709,6 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
     }
 
     private boolean hasAllFluids(GT_Recipe.GT_Recipe_AssemblyLine tRecipe, int parallel) {
-        // TODO: Actually use the parallel parameter here, though this is already checked on recipe check,
-        // we may need to re-check
         int aFluidCount = tRecipe.mFluidInputs.length;
         if (mInputHatches.size() < aFluidCount) return false;
         for (int i = 0; i < aFluidCount; i++) {
@@ -718,7 +716,8 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
             if (!tInputHatch.isValid()) {
                 return false;
             }
-            FluidStack tFluidRequired = tRecipe.mFluidInputs[i];
+            FluidStack tFluidRequired = tRecipe.mFluidInputs[i].copy();
+            tFluidRequired.amount *= parallel;
             FluidStack drained;
             if (tInputHatch instanceof GT_MetaTileEntity_Hatch_Input_ME) {
                 GT_MetaTileEntity_Hatch_Input_ME me = (GT_MetaTileEntity_Hatch_Input_ME) tInputHatch;
@@ -844,9 +843,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
                     // of batches we want to run. The latter is done to prevent batch mode from ever going above
                     // BATCH_MODE_DESIRED_TICKS_PER_SLICE ticks per slice (see also where it is defined above).
                     int parallel = Math.min(recipesAvailable, desiredBatches);
-                    // We no longer need to check if we have enough items in the first slot, as this is
-                    // guaranteed by taking the minimum earlier.
-                    if (hasAllFluids(recipe, parallel)) {
+                    if (hasAllFluids(recipe, parallel) && hasAllItems(recipe, parallel)) {
                         this.currentRecipeParallel = parallel;
                         // Update recipe duration with final batch mode multiplier
                         mMaxProgresstime *= this.currentRecipeParallel;
