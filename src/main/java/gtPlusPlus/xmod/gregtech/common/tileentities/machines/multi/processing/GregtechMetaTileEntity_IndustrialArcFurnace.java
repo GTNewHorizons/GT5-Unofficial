@@ -89,58 +89,93 @@ public class GregtechMetaTileEntity_IndustrialArcFurnace extends
         return tt;
     }
 
+    /**
+     * The front part of multi. Used to determine the tier, or in other words, determine the size of multi.
+     */
+    private static final String STRUCTURE_PIECE_FRONT = "front";
+    /**
+     * The rest part of multi.
+     */
+    private static final String STRUCTURE_PIECE_REST = "rest";
+    private static final int MAX_TIER = 3;
+
     @Override
     public IStructureDefinition<GregtechMetaTileEntity_IndustrialArcFurnace> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialArcFurnace>builder().addShape(
-                    mName + "3",
-                    new String[][] { { "CCC", "C~C", "CCC" }, { "CCC", "C-C", "CCC" }, { "CCC", "CCC", "CCC" }, })
+            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialArcFurnace>builder()
+                    .addShape(STRUCTURE_PIECE_FRONT + 1, new String[][] { { "CCC", "C~C", "CCC" } })
                     .addShape(
-                            mName + "5",
-                            new String[][] { { "CCCCC", "CCCCC", "CC~CC", "CCCCC", "CCCCC" },
-                                    { "CCCCC", "C---C", "C---C", "C---C", "CCCCC" },
-                                    { "CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC" }, })
+                            STRUCTURE_PIECE_FRONT + 2,
+                            new String[][] { { "CCCCC", "C   C", "C   C", "C   C", "CCCCC" } })
                     .addShape(
-                            mName + "7",
+                            STRUCTURE_PIECE_FRONT + 3,
                             new String[][] {
-                                    { "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCC~CCC", "CCCCCCC", "CCCCCCC", "CCCCCCC" },
+                                    { "CCCCCCC", "C     C", "C     C", "C     C", "C     C", "C     C", "CCCCCCC" }, })
+                    .addShape(
+                            STRUCTURE_PIECE_REST + 1,
+                            new String[][] { { "CCC", "C-C", "CCC" }, { "CCC", "CCC", "CCC" } })
+                    .addShape(
+                            STRUCTURE_PIECE_REST + 2,
+                            new String[][] { { "CCCCC", "C---C", "C---C", "C---C", "CCCCC" },
+                                    { "CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC" } })
+                    .addShape(
+                            STRUCTURE_PIECE_REST + 3,
+                            new String[][] {
                                     { "CCCCCCC", "C-----C", "C-----C", "C-----C", "C-----C", "C-----C", "CCCCCCC" },
                                     { "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC" }, })
                     .addElement(
                             'C',
                             buildHatchAdder(GregtechMetaTileEntity_IndustrialArcFurnace.class)
                                     .atLeast(InputBus, InputHatch, OutputBus, OutputHatch, Maintenance, Energy, Muffler)
-                                    .casingIndex(getCasingTextureIndex()).dot(1).buildAndChain(
+                                    .casingIndex(getCasingTextureIndex()).dot(1).allowOnly(ForgeDirection.NORTH)
+                                    .buildAndChain(
                                             onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings4Misc, 3))))
                     .build();
         }
         return STRUCTURE_DEFINITION;
     }
 
-    private int getSizeFromHint(ItemStack stackSize) {
-        return switch (stackSize.stackSize) {
-            case 1 -> 3;
-            case 2 -> 5;
-            default -> 7;
-        };
+    private int getTierFromHint(ItemStack stackSize) {
+        if (stackSize.stackSize <= 0 || stackSize.stackSize >= MAX_TIER) {
+            return MAX_TIER;
+        }
+        return stackSize.stackSize;
     }
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        int size = getSizeFromHint(stackSize);
-        buildPiece(mName + size, stackSize, hintsOnly, (size - 1) / 2, (size - 1) / 2, 0);
+        int maxTier = getTierFromHint(stackSize);
+        for (int tier = 1; tier <= maxTier; tier++) {
+            buildPiece(STRUCTURE_PIECE_FRONT + tier, stackSize, hintsOnly, tier, tier, 0);
+        }
+        buildPiece(STRUCTURE_PIECE_REST + maxTier, stackSize, hintsOnly, maxTier, maxTier, -1);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        int size = getSizeFromHint(stackSize);
+        int maxTier = getTierFromHint(stackSize);
+        int built;
+        for (int tier = 1; tier <= maxTier; tier++) {
+            built = survivialBuildPiece(
+                    STRUCTURE_PIECE_FRONT + tier,
+                    stackSize,
+                    tier,
+                    tier,
+                    0,
+                    elementBudget,
+                    env,
+                    false,
+                    true);
+            if (built >= 0) return built;
+        }
+
         return survivialBuildPiece(
-                mName + size,
+                STRUCTURE_PIECE_REST + maxTier,
                 stackSize,
-                (size - 1) / 2,
-                (size - 1) / 2,
-                0,
+                maxTier,
+                maxTier,
+                -1,
                 elementBudget,
                 env,
                 false,
@@ -151,18 +186,13 @@ public class GregtechMetaTileEntity_IndustrialArcFurnace extends
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
         mSize = 0;
-        if (checkPiece(mName + "3", 1, 1, 0)) {
-            mSize = 3;
-            return mCasing >= 10 && checkHatch();
+        int tier = 0;
+        while (tier < MAX_TIER && checkPiece(STRUCTURE_PIECE_FRONT + (tier + 1), (tier + 1), (tier + 1), 0)) {
+            tier++;
         }
-        mCasing = 0;
-        if (checkPiece(mName + "5", 2, 2, 0)) {
-            mSize = 5;
-            return mCasing >= 10 && checkHatch();
-        }
-        mCasing = 0;
-        if (checkPiece(mName + "7", 3, 3, 0)) {
-            mSize = 7;
+        if (tier <= 0) return false;
+        if (checkPiece(STRUCTURE_PIECE_REST + tier, tier, tier, -1)) {
+            mSize = 2 * tier + 1;
             return mCasing >= 10 && checkHatch();
         }
         return false;
