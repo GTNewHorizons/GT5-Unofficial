@@ -840,10 +840,12 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends
             aAmpsToInject = (int) (leftToInject / aVoltage);
             aRemainder = (int) (leftToInject - (aAmpsToInject * aVoltage));
             ampsOnCurrentHatch = (int) Math.min(aDynamo.maxAmperesOut(), aAmpsToInject);
-            for (int i = 0; i < ampsOnCurrentHatch; i++) {
-                aDynamo.getBaseMetaTileEntity().increaseStoredEnergyUnits(aVoltage, false);
-            }
+
+            // add full amps
+            aDynamo.getBaseMetaTileEntity().increaseStoredEnergyUnits(aVoltage * ampsOnCurrentHatch, false);
             injected += aVoltage * ampsOnCurrentHatch;
+
+            // add reminder
             if (aRemainder > 0 && ampsOnCurrentHatch < aDynamo.maxAmperesOut()) {
                 aDynamo.getBaseMetaTileEntity().increaseStoredEnergyUnits(aRemainder, false);
                 injected += aRemainder;
