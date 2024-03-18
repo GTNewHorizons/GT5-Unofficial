@@ -567,6 +567,7 @@ public abstract class GT_MetaTileEntity_FusionComputer
     }
 
     protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
+    protected long clientEU;
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
@@ -614,23 +615,26 @@ public abstract class GT_MetaTileEntity_FusionComputer
                     .setPos(5, 156)
                     .setSize(147, 5))
             .widget(new TextWidget().setStringSupplier(() -> {
-                long energy = getBaseMetaTileEntity().getStoredEU();
-                if (energy > 160_000_000L && energy < 160_010_000L) {
-                    energy = 160_000_000L;
+                if (clientEU > 160_000_000L && clientEU < 160_010_000L) {
+                    clientEU = 160_000_000L;
                 }
-                if (energy > 320_000_000L && energy < 320_010_000L) {
-                    energy = 320_000_000L;
+                if (clientEU > 320_000_000L && clientEU < 320_010_000L) {
+                    clientEU = 320_000_000L;
                 }
-                if (energy > 640_000_000L && energy < 640_010_000L) {
-                    energy = 640_000_000L;
+                if (clientEU > 640_000_000L && clientEU < 640_010_000L) {
+                    clientEU = 640_000_000L;
                 }
-                if (energy > 5_120_000_000L && energy < 5_120_080_000L) {
-                    energy = 5_120_000_000L;
+                if (clientEU > 5_120_000_000L && clientEU < 5_120_080_000L) {
+                    clientEU = 5_120_000_000L;
                 }
-                return numberFormat.format(energy) + " EU";
+                return numberFormat.format(clientEU) + " EU";
             })
                 .setDefaultColor(COLOR_TEXT_RED.get())
-                .setPos(50, 155))
+                .setTextAlignment(Alignment.Center)
+                .setScale(0.5f)
+                .setPos(5, 157)
+                .setSize(147, 5))
+            .widget(new FakeSyncWidget.LongSyncer(() -> getBaseMetaTileEntity().getStoredEU(), val -> clientEU = val))
             .widget(
                 new ButtonWidget().setNEITransferRect(
                     RecipeMaps.fusionRecipes.getFrontend()
