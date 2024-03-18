@@ -618,7 +618,7 @@ public abstract class GT_MetaTileEntity_FusionComputer
                 if (clientEU > 160_000_000L && clientEU < 160_010_000L) {
                     clientEU = 160_000_000L;
                 }
-                if (this.clientEU > 320_000_000L && clientEU < 320_010_000L) {
+                if (clientEU > 320_000_000L && clientEU < 320_010_000L) {
                     clientEU = 320_000_000L;
                 }
                 if (clientEU > 640_000_000L && clientEU < 640_010_000L) {
