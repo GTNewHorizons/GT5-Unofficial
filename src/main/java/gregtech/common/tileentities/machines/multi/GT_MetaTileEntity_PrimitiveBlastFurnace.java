@@ -8,6 +8,9 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -237,15 +240,15 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
                             aBaseMetaTileEntity.getWorld()
                                 .getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()),
                             "steel");
+                    } else if (aTimer % 20L == 0L) {
+                        GT_Pollution.addPollution(
+                            this.getBaseMetaTileEntity(),
+                            GT_Mod.gregtechproxy.mPollutionPrimitveBlastFurnacePerSecond);
                     }
-                } else if (aBaseMetaTileEntity.isAllowedToWork()) {
+
+                } else if (aBaseMetaTileEntity.isAllowedToWork() && ((aTimer + 2) % 20L == 0L)) {
                     checkRecipe();
                 }
-            }
-            if (this.mMaxProgresstime > 0 && (aTimer % 20L == 0L)) {
-                GT_Pollution.addPollution(
-                    this.getBaseMetaTileEntity(),
-                    GT_Mod.gregtechproxy.mPollutionPrimitveBlastFurnacePerSecond);
             }
 
             aBaseMetaTileEntity.setActive((this.mMaxProgresstime > 0) && (this.mMachine));
@@ -368,6 +371,13 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
         if (!this.mMachine) {
             return false;
         }
+
+        if (Arrays.stream(mInventory)
+            .filter(Objects::nonNull)
+            .count() < 2) {
+            return false;
+        }
+
         ItemStack[] inputs = new ItemStack[INPUT_SLOTS];
         System.arraycopy(mInventory, 0, inputs, 0, INPUT_SLOTS);
         GT_Recipe recipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(), false, 0, null, inputs);
