@@ -73,6 +73,7 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.material.ELEMENT;
@@ -599,7 +600,6 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
     @Override
     public boolean onRunningTick(ItemStack aStack) {
         if (!super.onRunningTick(aStack)) {
-            criticalStopMachine();
             return false;
         }
 
@@ -607,17 +607,19 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
             int amount = (int) (getFocusingTier() * 4
                     * Math.sqrt(Math.min(mMaxParallel, processingLogic.getCurrentParallels())));
             if (doFermium) {
-                if (!drain(mFermiumHatch, new FluidStack(mFermium, amount), true)) {
+                FluidStack fermiumToConsume = new FluidStack(mFermium, amount);
+                if (!drain(mFermiumHatch, fermiumToConsume, true)) {
                     doFermium = false;
-                    criticalStopMachine();
+                    stopMachine(ShutDownReasonRegistry.outOfFluid(fermiumToConsume));
                     return false;
                 }
             }
 
             if (doNeptunium) {
-                if (!drain(mNeptuniumHatch, new FluidStack(mNeptunium, amount), true)) {
+                FluidStack neptuniumToConsume = new FluidStack(mNeptunium, amount);
+                if (!drain(mNeptuniumHatch, neptuniumToConsume, true)) {
                     doNeptunium = false;
-                    criticalStopMachine();
+                    stopMachine(ShutDownReasonRegistry.outOfFluid(neptuniumToConsume));
                     return false;
                 }
             }

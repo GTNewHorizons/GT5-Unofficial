@@ -16,6 +16,7 @@ import static gregtech.api.util.GT_StructureUtility.ofCoil;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -46,8 +47,10 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GT_MetaTileEntity_Hatch_CustomFluidBase;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -268,7 +271,9 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<
                     if (!this.depleteInputFromRestrictedHatches(this.mPyrotheumHatches, 5)) {
                         if (mGraceTimer-- == 0) {
                             this.causeMaintenanceIssue();
-                            this.stopMachine();
+                            this.stopMachine(
+                                    ShutDownReasonRegistry.outOfFluid(
+                                            Objects.requireNonNull(FluidUtils.getFluidStack("pyrotheum", 10))));
                             mGraceTimer = 2;
                         }
                     }

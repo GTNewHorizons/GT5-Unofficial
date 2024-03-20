@@ -27,6 +27,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GT_HatchElementBuilder;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Steam_BusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Steam_BusOutput;
@@ -135,7 +136,7 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
             long aSteamVal = ((-lEUt * 10000) / Math.max(1000, mEfficiency));
             // Logger.INFO("Trying to drain "+aSteamVal+" steam per tick.");
             if (!tryConsumeSteam((int) aSteamVal)) {
-                stopMachine();
+                stopMachine(ShutDownReasonRegistry.POWER_LOSS);
                 return false;
             }
         }
@@ -173,11 +174,6 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
         }
 
         return aDidAdd;
-    }
-
-    @Override
-    public void stopMachine() {
-        super.stopMachine();
     }
 
     /*

@@ -41,6 +41,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.chemistry.RocketFuels;
@@ -242,7 +243,7 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends
         int aircount = getAir();
         int aAirToConsume = this.euProduction / 100;
         if (aircount < aAirToConsume) {
-            criticalStopMachine();
+            stopMachine(ShutDownReasonRegistry.outOfFluid(new FluidStack(sAirFluid, aAirToConsume)));
             return SimpleCheckRecipeResult.ofFailure("no_air");
         } else {
             int aTotalAir = 0;

@@ -45,6 +45,8 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
@@ -438,7 +440,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends
             }
 
             if (getEmptyTurbineAssemblies().size() > 0 || !areAllTurbinesTheSame()) {
-                stopMachine();
+                stopMachine(ShutDownReasonRegistry.NO_TURBINE);
                 return CheckRecipeResultRegistry.NO_TURBINE_FOUND;
             }
 
@@ -474,7 +476,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends
                     baseEff = MathUtils.roundToClosestInt(aTotalBaseEff);
                     optFlow = MathUtils.roundToClosestInt(aTotalOptimalFlow);
                     if (optFlow <= 0 || baseEff <= 0) {
-                        stopMachine(); // in case the turbine got removed
+                        stopMachine(ShutDownReasonRegistry.NONE); // in case the turbine got removed
                         return CheckRecipeResultRegistry.NO_FUEL_FOUND;
                     }
                 } else {
@@ -518,10 +520,11 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends
 
     @Override
     public boolean doRandomMaintenanceDamage() {
-        if (getMaxParallelRecipes() == 0 || getRepairStatus() == 0) {
-            stopMachine();
+        if (getMaxParallelRecipes() == 0) {
+            stopMachine(ShutDownReasonRegistry.NO_TURBINE);
             return false;
         }
+
         if (mRuntime++ > 1000) {
             mRuntime = 0;
 
@@ -732,27 +735,23 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isServerSide()) {
-            if (mUpdate == 1 || mStartUpCheck == 1) {
-                log("Cleared Rotor Assemblies.");
-                this.mTurbineRotorHatches.clear();
-            }
-        }
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (this.maxProgresstime() > 0 || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled()) {
-            enableAllTurbineHatches();
-        }
-        if (this.maxProgresstime() <= 0) {
-            stopMachine();
+        if (aBaseMetaTileEntity.isServerSide()) {
+            if (this.maxProgresstime() > 0 || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled()) {
+                enableAllTurbineHatches();
+            }
+            if (this.maxProgresstime() <= 0) {
+                stopMachine(ShutDownReasonRegistry.NONE);
+            }
         }
     }
 
     @Override
-    public void stopMachine() {
+    public void stopMachine(@NotNull ShutDownReason reason) {
         baseEff = 0;
         optFlow = 0;
         disableAllTurbineHatches();
-        super.stopMachine();
+        super.stopMachine(reason);
     }
 
     @Override

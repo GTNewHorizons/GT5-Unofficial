@@ -45,6 +45,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
@@ -377,7 +378,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
     protected void resetMultiProcessing() {
         this.mEfficiency = 0;
         this.mLastRecipe = null;
-        stopMachine();
+        stopMachine(ShutDownReasonRegistry.NONE);
     }
 
     @Override

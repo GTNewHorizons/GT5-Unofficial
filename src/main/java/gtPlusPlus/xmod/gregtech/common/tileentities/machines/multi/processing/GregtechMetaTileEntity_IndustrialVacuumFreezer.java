@@ -15,6 +15,7 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -31,6 +32,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
@@ -80,7 +82,7 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType(getMachineType()).addInfo("Factory Grade Advanced Vacuum Freezer")
                 .addInfo("Speed: +100% | EU Usage: 100% | Parallel: 4")
-                .addInfo("Consumes 1L of " + mCryoFuelName + "/t during operation")
+                .addInfo("Consumes 20L of " + mCryoFuelName + "/s during operation")
                 .addInfo("Constructed exactly the same as a normal Vacuum Freezer")
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 3, true)
                 .addController("Front Center").addCasingInfoMin(mCasingName, 10, false).addInputBus("Any Casing", 1)
@@ -234,7 +236,9 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends
                     if (!this.depleteInputFromRestrictedHatches(this.mCryotheumHatches, 10)) {
                         if (mGraceTimer-- == 0) {
                             this.causeMaintenanceIssue();
-                            this.stopMachine();
+                            this.stopMachine(
+                                    ShutDownReasonRegistry.outOfFluid(
+                                            Objects.requireNonNull(FluidUtils.getFluidStack("cryotheum", 20))));
                             mGraceTimer = 2;
                         }
                     }

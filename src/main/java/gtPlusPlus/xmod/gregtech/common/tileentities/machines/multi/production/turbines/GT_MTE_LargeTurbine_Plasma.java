@@ -23,6 +23,7 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Turbine;
 
@@ -112,7 +113,7 @@ public class GT_MTE_LargeTurbine_Plasma extends GregtechMetaTileEntity_LargerTur
             }
 
             if (getEmptyTurbineAssemblies().size() > 0 || !areAllTurbinesTheSame()) {
-                stopMachine();
+                stopMachine(ShutDownReasonRegistry.NO_TURBINE);
                 return CheckRecipeResultRegistry.NO_TURBINE_FOUND;
             }
 
@@ -163,7 +164,7 @@ public class GT_MTE_LargeTurbine_Plasma extends GregtechMetaTileEntity_LargerTur
                     optFlow = MathUtils.roundToClosestInt(aTotalOptimalFlow);
                     euPerTurbine = MathUtils.roundToClosestInt(aEUPerTurbine);
                     if (optFlow <= 0 || baseEff <= 0) {
-                        stopMachine(); // in case the turbine got removed
+                        stopMachine(ShutDownReasonRegistry.NONE); // in case the turbine got removed
                         return CheckRecipeResultRegistry.NO_FUEL_FOUND;
                     }
                 } else {
