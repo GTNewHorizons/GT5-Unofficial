@@ -8,9 +8,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
-import java.util.Arrays;
-import java.util.Objects;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -372,9 +369,13 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
             return false;
         }
 
-        if (Arrays.stream(mInventory)
-            .filter(Objects::nonNull)
-            .count() < 2) {
+        int countItemsNonNull = 0;
+        for (int i = 0; i < mInventory.length; i++) {
+            if (mInventory[i] != null) {
+                countItemsNonNull++;
+            }
+        }
+        if (countItemsNonNull < 2) {
             return false;
         }
 
