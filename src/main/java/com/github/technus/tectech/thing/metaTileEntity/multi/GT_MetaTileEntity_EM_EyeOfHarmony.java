@@ -1144,6 +1144,8 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     private long successfulParallelAmount = 0;
     private double yield = 0;
     private BigInteger usedEU = BigInteger.ZERO;
+    private FluidStackLong stellarPlasma;
+    private FluidStackLong starMatter;
 
     @Override
     @NotNull
@@ -1302,6 +1304,12 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         // Return copies of the output objects.
         outputFluids = recipeObject.getOutputFluids();
         outputItems = recipeObject.getOutputItems();
+
+        // Star matter is always the last element in the array.
+        starMatter = new FluidStackLong(outputFluids.get(outputFluids.size() - 1));
+
+        // And stellar plasma is the second last.
+        stellarPlasma = new FluidStackLong(outputFluids.get(outputFluids.size() - 2));
 
         successfulParallelAmount = (long) calculateChancedOutputMultiplier(
                 (int) (10000 * successChance),
@@ -1553,30 +1561,33 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             str.add("EU Input:  " + RED + toStandardForm(usedEU.abs()) + RESET + " EU");
             int currentMaxProgresstime = Math.max(maxProgresstime(), 1);
             if (outputFluids.size() > 0) {
-                // Star matter is always the last element in the array.
-                FluidStackLong starMatter = outputFluids.get(outputFluids.size() - 1);
+                FluidStackLong starMatterOutput = new FluidStackLong(
+                        starMatter.fluidStack,
+                        (long) (starMatter.amount * yield * successChance * parallelAmount));
                 str.add(
-                        "Estimated " + starMatter.fluidStack.getLocalizedName()
+                        "Average " + starMatterOutput.fluidStack.getLocalizedName()
                                 + " Output: "
                                 + RED
-                                + formatNumbers(starMatter.amount)
+                                + formatNumbers(starMatterOutput.amount)
                                 + RESET
                                 + " L, "
                                 + YELLOW
-                                + formatNumbers(starMatter.amount * 20.0 / currentMaxProgresstime)
+                                + formatNumbers(starMatterOutput.amount * 20.0 / currentMaxProgresstime)
                                 + RESET
                                 + " L/s");
-                // And stellar plasma is the second last.
-                FluidStackLong stellarPlasma = outputFluids.get(outputFluids.size() - 2);
+
+                FluidStackLong stellarPlasmaOutput = new FluidStackLong(
+                        stellarPlasma.fluidStack,
+                        (long) (stellarPlasma.amount * yield * successChance * parallelAmount));
                 str.add(
-                        "Estimated " + stellarPlasma.fluidStack.getLocalizedName()
+                        "Average " + stellarPlasmaOutput.fluidStack.getLocalizedName()
                                 + " Output: "
                                 + RED
-                                + formatNumbers(stellarPlasma.amount)
+                                + formatNumbers(stellarPlasmaOutput.amount)
                                 + RESET
                                 + " L, "
                                 + YELLOW
-                                + formatNumbers(stellarPlasma.amount * 20.0 / currentMaxProgresstime)
+                                + formatNumbers(stellarPlasmaOutput.amount * 20.0 / currentMaxProgresstime)
                                 + RESET
                                 + " L/s");
             }
@@ -1601,6 +1612,9 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     private static final String ITEM_OUTPUT_NBT_TAG = EYE_OF_HARMONY + "itemOutput";
     private static final String FLUID_OUTPUT_NBT_TAG = EYE_OF_HARMONY + "fluidOutput";
     private static final String RECIPE_RUNNING_NBT_TAG = EYE_OF_HARMONY + "recipeRunning";
+    private static final String CURRENT_RECIPE_STAR_MATTER_TAG = EYE_OF_HARMONY + "recipeStarMatter";
+    private static final String CURRENT_RECIPE_STELLAR_PLASMA_TAG = EYE_OF_HARMONY + "recipeStellarPlasma";
+    private static final String CURRENT_RECIPE_FIXED_OUTPUTS_TAG = EYE_OF_HARMONY + "recipeFixedOutputs";
     private static final String RECIPE_SUCCESS_CHANCE_NBT_TAG = EYE_OF_HARMONY + "recipeSuccessChance";
     private static final String ROCKET_TIER_NBT_TAG = EYE_OF_HARMONY + "rocketTier";
     private static final String CURRENT_CIRCUIT_MULTIPLIER_TAG = EYE_OF_HARMONY + "currentCircuitMultiplier";
@@ -1652,7 +1666,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
         aNBT.setTag(ITEM_OUTPUT_NBT_TAG, itemStackListNBTTag);
 
-        // Store damage values/stack sizes of GT fluida being outputted.
+        // Store damage values/stack sizes of GT fluids being outputted.
         NBTTagCompound fluidStackListNBTTag = new NBTTagCompound();
         fluidStackListNBTTag.setLong(NUMBER_OF_FLUIDS_NBT_TAG, outputFluids.size());
 
@@ -1668,6 +1682,16 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         }
 
         aNBT.setTag(FLUID_OUTPUT_NBT_TAG, fluidStackListNBTTag);
+
+        NBTTagCompound fixedRecipeOutputs = new NBTTagCompound();
+
+        fixedRecipeOutputs.setLong(0 + FLUID_AMOUNT, starMatter.amount);
+        aNBT.setTag(CURRENT_RECIPE_STAR_MATTER_TAG, starMatter.fluidStack.writeToNBT(new NBTTagCompound()));
+
+        fixedRecipeOutputs.setLong(1 + FLUID_AMOUNT, stellarPlasma.amount);
+        aNBT.setTag(CURRENT_RECIPE_STELLAR_PLASMA_TAG, stellarPlasma.fluidStack.writeToNBT(new NBTTagCompound()));
+
+        aNBT.setTag(CURRENT_RECIPE_FIXED_OUTPUTS_TAG, fixedRecipeOutputs);
 
         super.saveNBTData(aNBT);
     }
@@ -1722,6 +1746,14 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
             outputFluids.add(new FluidStackLong(fluidStack, fluidAmount));
         }
+
+        tempFluidTag = aNBT.getCompoundTag(CURRENT_RECIPE_FIXED_OUTPUTS_TAG);
+        starMatter = new FluidStackLong(
+                FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag(CURRENT_RECIPE_STAR_MATTER_TAG)),
+                tempFluidTag.getLong(0 + FLUID_AMOUNT));
+        stellarPlasma = new FluidStackLong(
+                FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag(CURRENT_RECIPE_STELLAR_PLASMA_TAG)),
+                tempFluidTag.getLong(1 + FLUID_AMOUNT));
 
         super.loadNBTData(aNBT);
     }
