@@ -989,8 +989,11 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
     }
 
     public int fill_default(ForgeDirection side, FluidStack aFluid, boolean doFill) {
-        markDirty();
-        return fill(aFluid, doFill);
+        int filled = fill(aFluid, doFill);
+        if (filled > 0) {
+            markDirty();
+        }
+        return filled;
     }
 
     @Override
