@@ -709,6 +709,13 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     }
 
     @Override
+    public void onUnload() {
+        if (!getBaseMetaTileEntity().isClientSide()) {
+            teslaSimpleNodeSetRemove(this);
+        }
+    }
+
+    @Override
     protected void parametersInstantiation_EM() {
         Parameters.Group hatch_0 = parametrization.getGroup(0, true);
         Parameters.Group hatch_1 = parametrization.getGroup(1, true);

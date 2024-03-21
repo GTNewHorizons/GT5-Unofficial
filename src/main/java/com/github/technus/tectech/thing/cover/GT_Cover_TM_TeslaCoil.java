@@ -1,6 +1,7 @@
 package com.github.technus.tectech.thing.cover;
 
 import static com.github.technus.tectech.mechanics.tesla.ITeslaConnectable.TeslaUtil.teslaSimpleNodeSetAdd;
+import static com.github.technus.tectech.mechanics.tesla.ITeslaConnectable.TeslaUtil.teslaSimpleNodeSetRemove;
 import static ic2.api.info.Info.DMG_ELECTRIC;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,6 +29,16 @@ public class GT_Cover_TM_TeslaCoil extends GT_CoverBehavior {
                             getTeslaReceptionCapability()));
         }
         return super.doCoverThings(side, aInputRedstone, aCoverID, aCoverVariable, aTileEntity, aTimer);
+    }
+
+    @Override
+    public boolean onCoverRemoval(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+            boolean aForced) {
+        teslaSimpleNodeSetRemove(
+                new TeslaCoverConnection(
+                        aTileEntity.getIGregTechTileEntityOffset(0, 0, 0),
+                        getTeslaReceptionCapability()));
+        return super.onCoverRemoval(side, aCoverID, aCoverVariable, aTileEntity, aForced);
     }
 
     @Override
