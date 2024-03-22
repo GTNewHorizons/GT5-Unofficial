@@ -28,7 +28,6 @@ import gtPlusPlus.xmod.gregtech.common.helpers.ChargingHelper;
 
 public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 
-    private boolean mHasBeenMapped = false;
     private int mCurrentDimension = 0;
     public int mMode = 0;
     public boolean mLocked = true;
@@ -471,12 +470,13 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
                 this.mCurrentDimension = aBaseMetaTileEntity.getWorld().provider.dimensionId;
             }
 
-            if (!mHasBeenMapped && ChargingHelper.addEntry(getTileEntityPosition(), this)) {
-                mHasBeenMapped = true;
-            }
+            if (aTick % 20 == 0) {
+                boolean mHasBeenMapped = this.equals(ChargingHelper.getEntry(getTileEntityPosition()));
+                if (!mHasBeenMapped) {
+                    mHasBeenMapped = ChargingHelper.addEntry(getTileEntityPosition(), this);
+                }
 
-            if (aTick % 20 == 0 && mHasBeenMapped) {
-                if (!aBaseMetaTileEntity.getWorld().playerEntities.isEmpty()) {
+                if (mHasBeenMapped && !aBaseMetaTileEntity.getWorld().playerEntities.isEmpty()) {
                     for (Object mTempPlayer : aBaseMetaTileEntity.getWorld().playerEntities) {
                         if (mTempPlayer instanceof EntityPlayer || mTempPlayer instanceof EntityPlayerMP) {
                             EntityPlayer mTemp = (EntityPlayer) mTempPlayer;
@@ -654,15 +654,5 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
     public void doExplosion(long aExplosionPower) {
         ChargingHelper.removeEntry(getTileEntityPosition(), this);
         super.doExplosion(aExplosionPower);
-    }
-
-    @Override
-    public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isServerSide()) {
-            if (!mHasBeenMapped && ChargingHelper.addEntry(getTileEntityPosition(), this)) {
-                mHasBeenMapped = true;
-            }
-        }
-        super.onPreTick(aBaseMetaTileEntity, aTick);
     }
 }

@@ -1,6 +1,5 @@
 package gtPlusPlus.core.util.minecraft;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -36,6 +35,12 @@ public class PlayerUtils {
         }
     }
 
+    public static List<EntityPlayerMP> getOnlinePlayers() {
+        final List<EntityPlayerMP> onlinePlayers = MinecraftServer.getServer()
+                .getConfigurationManager().playerEntityList;
+        return onlinePlayers;
+    }
+
     public static void messagePlayer(final EntityPlayer P, final String S) {
         gregtech.api.util.GT_Utility.sendChatToPlayer(P, S);
     }
@@ -46,12 +51,7 @@ public class PlayerUtils {
 
     public static EntityPlayer getPlayer(final String name) {
         try {
-            final List<EntityPlayer> i = new ArrayList<>();
-            for (EntityPlayerMP playerMP : (Iterable<EntityPlayerMP>) MinecraftServer.getServer()
-                    .getConfigurationManager().playerEntityList) {
-                i.add(playerMP);
-            }
-            for (final EntityPlayer temp : i) {
+            for (final EntityPlayer temp : getOnlinePlayers()) {
                 if (temp.getDisplayName().toLowerCase().equals(name.toLowerCase())) {
                     return temp;
                 }
@@ -64,8 +64,7 @@ public class PlayerUtils {
         if (parUUID == null) {
             return null;
         }
-        final List<EntityPlayerMP> allPlayers = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
-        for (final EntityPlayerMP player : allPlayers) {
+        for (final EntityPlayerMP player : getOnlinePlayers()) {
             if (player.getUniqueID().equals(parUUID)) {
                 return player;
             }

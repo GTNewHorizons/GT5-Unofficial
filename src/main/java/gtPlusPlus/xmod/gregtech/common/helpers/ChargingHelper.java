@@ -14,12 +14,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 
 import baubles.api.BaublesApi;
 import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.common.items.GT_MetaGenerated_Item_01;
@@ -31,6 +31,7 @@ import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaWirelessCharger;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
@@ -42,81 +43,74 @@ public class ChargingHelper {
     private int mTickTimer = 0;
     private static final int mTickMultiplier = 20;
 
-    // Called whenever the player is updated or ticked.
     @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public void onServerTick(ServerTickEvent event) {
+        if (++mTickTimer % mTickMultiplier == 0) {
+            if (Utils.isServer()) {
+                for (EntityPlayer mPlayerMan : PlayerUtils.getOnlinePlayers()) {
+                    doPlayerChargeTick(mPlayerMan);
+                }
+            }
+        }
+    }
+
     @SuppressWarnings("unused")
-    public void onPlayerTick(LivingUpdateEvent event) {
+    private void doPlayerChargeTick(EntityPlayer mPlayerMan) {
         try {
-            if (event.entity != null && event.entityLiving != null) {
-                if (event.entityLiving instanceof EntityPlayer mPlayerMan) {
-                    if (Utils.isServer()) {
-                        mTickTimer++;
-                        if (mTickTimer % mTickMultiplier == 0) {
+            long mVoltage;
+            long mEuStored;
 
-                            long mVoltage;
-                            long mEuStored;
+            if (!mChargerMap.isEmpty() && mValidPlayers.containsKey(mPlayerMan.getDisplayName())) {
+                InventoryPlayer mPlayerInventory = mPlayerMan.inventory;
+                ItemStack[] mArmourContents = mPlayerInventory.armorInventory.clone();
+                ItemStack[] mInventoryContents = mPlayerInventory.mainInventory.clone();
+                ItemStack[] baubleSlots = null;
+                if (Baubles.isModLoaded()) {
+                    IInventory baubleInv = BaublesApi.getBaubles(mPlayerMan);
+                    if (baubleInv != null) {
+                        baubleSlots = new ItemStack[baubleInv.getSizeInventory()];
+                        for (int i = 0; i < baubleInv.getSizeInventory(); i++) {
+                            baubleSlots[i] = baubleInv.getStackInSlot(i);
+                        }
+                    }
+                }
 
-                            if (!mChargerMap.isEmpty() && mValidPlayers.containsKey(mPlayerMan.getDisplayName())) {
-                                InventoryPlayer mPlayerInventory = mPlayerMan.inventory;
-                                ItemStack[] mArmourContents = mPlayerInventory.armorInventory.clone();
-                                ItemStack[] mInventoryContents = mPlayerInventory.mainInventory.clone();
-                                ItemStack[] baubleSlots = null;
-                                if (Baubles.isModLoaded()) {
-                                    IInventory baubleInv = BaublesApi.getBaubles(mPlayerMan);
-                                    if (baubleInv != null) {
-                                        baubleSlots = new ItemStack[baubleInv.getSizeInventory()];
-                                        for (int i = 0; i < baubleInv.getSizeInventory(); i++) {
-                                            baubleSlots[i] = baubleInv.getStackInSlot(i);
-                                        }
-                                    }
+                for (GregtechMetaWirelessCharger mEntityTemp : mChargerMap.values()) {
+                    if (mEntityTemp != null) {
+                        if (mEntityTemp.getBaseMetaTileEntity() == null
+                                || !mEntityTemp.getBaseMetaTileEntity().isAllowedToWork())
+                            continue;
+                        if (mPlayerMan.getEntityWorld().provider.dimensionId == mEntityTemp.getDimensionID()) {
+                            mVoltage = mEntityTemp.maxEUInput();
+                            mEuStored = mEntityTemp.getEUVar();
+                            if (mVoltage > 0 && mEuStored >= mVoltage) {
+                                Map<String, UUID> LR = mEntityTemp.getLongRangeMap();
+                                Map<String, UUID> LO = mEntityTemp.getLocalMap();
+
+                                long mStartingEu = mEntityTemp.getEUVar();
+                                if (canCharge(mEntityTemp, mPlayerMan, LR, LO)) {
+                                    chargeItems(mEntityTemp, mArmourContents);
+                                    chargeItems(mEntityTemp, mInventoryContents);
+                                    chargeItems(mEntityTemp, baubleSlots);
                                 }
 
-                                for (GregtechMetaWirelessCharger mEntityTemp : mChargerMap.values()) {
-                                    if (mEntityTemp != null) {
-                                        if (mEntityTemp.getBaseMetaTileEntity() == null
-                                                || !mEntityTemp.getBaseMetaTileEntity().isAllowedToWork())
-                                            continue;
-                                        if (mPlayerMan.getEntityWorld().provider.dimensionId
-                                                == mEntityTemp.getDimensionID()) {
-                                            mVoltage = mEntityTemp.maxEUInput();
-                                            mEuStored = mEntityTemp.getEUVar();
-                                            if (mVoltage > 0 && mEuStored >= mVoltage) {
+                                if (mStartingEu - mEntityTemp.getEUVar() <= 0) {
+                                    long mMaxDistance;
+                                    if (mEntityTemp.getMode() == 0) {
+                                        mMaxDistance = (4 * GT_Values.V[mEntityTemp.getTier()]);
+                                    } else if (mEntityTemp.getMode() == 1) {
+                                        mMaxDistance = (mEntityTemp.getTier() * 10L);
+                                    } else {
+                                        mMaxDistance = (4 * GT_Values.V[mEntityTemp.getTier()] / 2);
+                                    }
+                                    double mDistance = calculateDistance(mEntityTemp, mPlayerMan);
+                                    long mVoltageCost = MathUtils.findPercentageOfInt(mMaxDistance, (float) mDistance);
 
-                                                Map<String, UUID> LR = mEntityTemp.getLongRangeMap();
-                                                Map<String, UUID> LO = mEntityTemp.getLocalMap();
-
-                                                long mStartingEu = mEntityTemp.getEUVar();
-                                                if (canCharge(mEntityTemp, mPlayerMan, LR, LO)) {
-                                                    chargeItems(mEntityTemp, mArmourContents);
-                                                    chargeItems(mEntityTemp, mInventoryContents);
-                                                    chargeItems(mEntityTemp, baubleSlots);
-                                                }
-
-                                                if (mStartingEu - mEntityTemp.getEUVar() <= 0) {
-                                                    long mMaxDistance;
-                                                    if (mEntityTemp.getMode() == 0) {
-                                                        mMaxDistance = (4 * GT_Values.V[mEntityTemp.getTier()]);
-                                                    } else if (mEntityTemp.getMode() == 1) {
-                                                        mMaxDistance = (mEntityTemp.getTier() * 10L);
-                                                    } else {
-                                                        mMaxDistance = (4 * GT_Values.V[mEntityTemp.getTier()] / 2);
-                                                    }
-                                                    double mDistance = calculateDistance(mEntityTemp, mPlayerMan);
-                                                    long mVoltageCost = MathUtils
-                                                            .findPercentageOfInt(mMaxDistance, (float) mDistance);
-
-                                                    if (mVoltageCost > 0) {
-                                                        if (mVoltageCost > mEntityTemp.maxEUInput()) {
-                                                            mEntityTemp.setEUVar(
-                                                                    (mEntityTemp.getEUVar()
-                                                                            - mEntityTemp.maxEUInput()));
-                                                        } else {
-                                                            mEntityTemp
-                                                                    .setEUVar((mEntityTemp.getEUVar() - mVoltageCost));
-                                                        }
-                                                    }
-                                                }
-                                            }
+                                    if (mVoltageCost > 0) {
+                                        if (mVoltageCost > mEntityTemp.maxEUInput()) {
+                                            mEntityTemp.setEUVar((mEntityTemp.getEUVar() - mEntityTemp.maxEUInput()));
+                                        } else {
+                                            mEntityTemp.setEUVar((mEntityTemp.getEUVar() - mVoltageCost));
                                         }
                                     }
                                 }
@@ -137,15 +131,16 @@ public class ChargingHelper {
         }
     }
 
+    public static GregtechMetaWirelessCharger getEntry(BlockPos mPos) {
+        return mChargerMap.get(mPos);
+    }
+
     public static boolean addEntry(BlockPos mPos, GregtechMetaWirelessCharger mEntity) {
         if (mEntity == null) {
             return false;
         }
-        if (!mChargerMap.containsKey(mPos)) {
-            return mChargerMap.put(mPos, mEntity) == null;
-        } else {
-            return true;
-        }
+        mChargerMap.put(mPos, mEntity);
+        return true;
     }
 
     public static boolean removeEntry(BlockPos mPos, GregtechMetaWirelessCharger mEntity) {
