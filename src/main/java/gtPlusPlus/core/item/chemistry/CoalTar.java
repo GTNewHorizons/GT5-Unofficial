@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.chemistry;
 
+import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
+import static gregtech.api.recipe.RecipeMaps.distilleryRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
@@ -13,6 +15,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
@@ -145,60 +148,19 @@ public class CoalTar extends ItemPackage {
     }
 
     private static void recipeCoalTarToCoalTarOil() {
-        // v - Distill (60% Tar oil/15% Naphtha/20% Ethylbenzene/5% Anthracene)
+        // v - Distill (60% Tar oil/15% Naphtha/20% Ethylbenzene/5% Anthracene) +60% Kerosene
         // Create Coal Tar Oil
-        GT_Values.RA.addDistilleryRecipe(
-                CI.getNumberedCircuit(1), // Circuit
-                FluidUtils.getFluidStack("fluid.coaltar", 1000), // aInput
-                FluidUtils.getFluidStack("fluid.coaltaroil", 600), // aOutput
-                600, // aDuration
-                64, // aEUt
-                false // Hidden?
-        );
-        GT_Values.RA.addDistilleryRecipe(
-                CI.getNumberedCircuit(2), // Circuit
-                FluidUtils.getFluidStack("fluid.coaltar", 1000), // aInput
-                FluidUtils.getFluidStack("liquid_naphtha", 150), // aOutput
-                300, // aDuration
-                30, // aEUt
-                false // Hidden?
-        );
-        GT_Values.RA.addDistilleryRecipe(
-                CI.getNumberedCircuit(3), // Circuit
-                FluidUtils.getFluidStack("fluid.coaltar", 1000), // aInput
-                FluidUtils.getFluidStack("fluid.ethylbenzene", 200), // aOutput
-                450, // aDuration
-                86, // aEUt
-                false // Hidden?
-        );
-        GT_Values.RA.addDistilleryRecipe(
-                CI.getNumberedCircuit(4), // Circuit
-                FluidUtils.getFluidStack("fluid.coaltar", 1000), // aInput
-                FluidUtils.getFluidStack("fluid.anthracene", 50), // aOutput
-                900, // aDuration
-                30, // aEUt
-                false // Hidden?
-        );
-        GT_Values.RA.addDistilleryRecipe(
-                CI.getNumberedCircuit(5), // Circuit
-                FluidUtils.getFluidStack("fluid.coaltar", 1500), // aInput
-                FluidUtils.getFluidStack("fluid.kerosene", 600), // aOutput
-                300, // aDuration
-                64, // aEUt
-                false // Hidden?
-        );
 
-        GT_Values.RA.addDistillationTowerRecipe(
-                FluidUtils.getFluidStack("fluid.coaltar", 1200),
-                new FluidStack[] { FluidUtils.getFluidStack("fluid.coaltaroil", 500), // aOutput
-                        FluidUtils.getFluidStack("liquid_naphtha", 100), // aOutput
-                        FluidUtils.getFluidStack("fluid.ethylbenzene", 150), // aOutput
-                        FluidUtils.getFluidStack("fluid.anthracene", 50), // aOutput
-                        FluidUtils.getFluidStack("fluid.kerosene", 400), // aOutput
-                },
-                null,
-                900,
-                60);
+        FluidStack[] distOutputs = new FluidStack[] { FluidUtils.getFluidStack("fluid.coaltaroil", 600),
+                FluidUtils.getFluidStack("liquid_naphtha", 150), FluidUtils.getFluidStack("fluid.ethylbenzene", 200),
+                FluidUtils.getFluidStack("fluid.anthracene", 50), FluidUtils.getFluidStack("fluid.kerosene", 600) };
+        for (int i = 0; i < distOutputs.length; i++) {
+            GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(i + 1))
+                    .fluidInputs(FluidUtils.getFluidStack("fluid.coaltar", 1000)).fluidOutputs(distOutputs[i])
+                    .duration(30 * SECONDS).eut(64).addTo(distilleryRecipes);
+        }
+        GT_Values.RA.stdBuilder().fluidInputs(FluidUtils.getFluidStack("fluid.coaltar", 1000)).fluidOutputs(distOutputs)
+                .duration(15 * SECONDS).eut(256).addTo(distillationTowerRecipes);
     }
 
     private static void recipeCoalTarOilToSulfuricOilToNaphthalene() {
