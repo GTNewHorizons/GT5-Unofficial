@@ -563,7 +563,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
                 if (recipe.mSpecialValue > mSolidCasingTier) {
-                    return CheckRecipeResultRegistry.insufficientMachineTier(recipe.mSpecialValue);
+                    return CheckRecipeResultRegistry.insufficientMachineTier(recipe.mSpecialValue + 1);
                 }
                 // checks if it has a catalyst
                 ItemStack catalystInRecipe = null;
