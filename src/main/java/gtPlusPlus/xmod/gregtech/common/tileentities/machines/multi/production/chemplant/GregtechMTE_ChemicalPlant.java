@@ -339,6 +339,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
         mMachineCasingTier = 0;
         mPipeCasingTier = 0;
         mCoilTier = 0;
+        maxTierOfHatch = 0;
         mCatalystBuses.clear();
         setCoilMeta(HeatingCoilLevel.None);
         if (checkPiece(mName, 3, 6, 0) && mCasing >= 70) {

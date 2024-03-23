@@ -431,7 +431,10 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<
     public ArrayList<ItemStack> getStoredInputs() {
         ArrayList<ItemStack> tItems = super.getStoredInputs();
         for (GT_MetaTileEntity_Hatch_MillingBalls tHatch : filterValidMTEs(mMillingBallBuses)) {
-            tItems.addAll(tHatch.getContentUsageSlots());
+            AutoMap<ItemStack> aHatchContent = tHatch.getContentUsageSlots();
+            if (!aHatchContent.isEmpty()) {
+                tItems.addAll(aHatchContent);
+            }
         }
         return tItems;
     }
