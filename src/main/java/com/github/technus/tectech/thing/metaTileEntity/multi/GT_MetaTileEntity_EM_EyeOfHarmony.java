@@ -1560,7 +1560,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             str.add("EU Output: " + RED + toStandardForm(outputEU_BigInt) + RESET + " EU");
             str.add("EU Input:  " + RED + toStandardForm(usedEU.abs()) + RESET + " EU");
             int currentMaxProgresstime = Math.max(maxProgresstime(), 1);
-            if (outputFluids.size() > 0) {
+            if (starMatter != null && starMatter.fluidStack != null) {
                 FluidStackLong starMatterOutput = new FluidStackLong(
                         starMatter.fluidStack,
                         (long) (starMatter.amount * yield * successChance * parallelAmount));
@@ -1577,7 +1577,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                                 + " L/s");
 
                 FluidStackLong stellarPlasmaOutput = new FluidStackLong(
-                        stellarPlasma.fluidStack,
+                        MaterialsUEVplus.RawStarMatter.getFluid(0),
                         (long) (stellarPlasma.amount * yield * successChance * parallelAmount));
                 str.add(
                         "Average " + stellarPlasmaOutput.fluidStack.getLocalizedName()
@@ -1683,15 +1683,18 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
         aNBT.setTag(FLUID_OUTPUT_NBT_TAG, fluidStackListNBTTag);
 
-        NBTTagCompound fixedRecipeOutputs = new NBTTagCompound();
+        if (starMatter != null && starMatter.fluidStack != null) {
 
-        fixedRecipeOutputs.setLong(0 + FLUID_AMOUNT, starMatter.amount);
-        aNBT.setTag(CURRENT_RECIPE_STAR_MATTER_TAG, starMatter.fluidStack.writeToNBT(new NBTTagCompound()));
+            NBTTagCompound fixedRecipeOutputs = new NBTTagCompound();
 
-        fixedRecipeOutputs.setLong(1 + FLUID_AMOUNT, stellarPlasma.amount);
-        aNBT.setTag(CURRENT_RECIPE_STELLAR_PLASMA_TAG, stellarPlasma.fluidStack.writeToNBT(new NBTTagCompound()));
+            fixedRecipeOutputs.setLong(0 + FLUID_AMOUNT, starMatter.amount);
+            aNBT.setTag(CURRENT_RECIPE_STAR_MATTER_TAG, starMatter.fluidStack.writeToNBT(new NBTTagCompound()));
 
-        aNBT.setTag(CURRENT_RECIPE_FIXED_OUTPUTS_TAG, fixedRecipeOutputs);
+            fixedRecipeOutputs.setLong(1 + FLUID_AMOUNT, stellarPlasma.amount);
+            aNBT.setTag(CURRENT_RECIPE_STELLAR_PLASMA_TAG, stellarPlasma.fluidStack.writeToNBT(new NBTTagCompound()));
+
+            aNBT.setTag(CURRENT_RECIPE_FIXED_OUTPUTS_TAG, fixedRecipeOutputs);
+        }
 
         super.saveNBTData(aNBT);
     }
