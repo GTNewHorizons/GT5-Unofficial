@@ -317,14 +317,8 @@ public class NeutronActivator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         super.onPostTick(aBaseMetaTileEntity, aTick);
         boolean anyWorking = false;
         if (aBaseMetaTileEntity.isServerSide()) {
-            startRecipeProcessing();
-            for (ItemStack input : getStoredInputs()) {
-                if (input.isItemEqual(Materials.Graphite.getDust(1))
-                        || input.isItemEqual(Materials.Beryllium.getDust(1))) {
-                    int consume = Math.min(this.eV / 10000000, input.stackSize);
-                    depleteInput(GT_Utility.copyAmount(consume, input));
-                    this.eV -= 10000000 * consume;
-                }
+            if (this.eV > 0 && (aTick % 20 == 0 || eV > mCeil)) {
+                tryUseModerator();
             }
 
             for (NeutronAccelerator tHatch : mNeutronAccelerator) {
@@ -354,8 +348,19 @@ public class NeutronActivator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
                 this.mOutputFluids = null;
                 this.mOutputItems = new ItemStack[] { ItemRefer.Radioactive_Waste.get(4) };
             }
-            endRecipeProcessing();
         }
+    }
+
+    private void tryUseModerator() {
+        startRecipeProcessing();
+        for (ItemStack input : getStoredInputs()) {
+            if (input.isItemEqual(Materials.Graphite.getDust(1)) || input.isItemEqual(Materials.Beryllium.getDust(1))) {
+                int consume = Math.min(this.eV / 10000000, input.stackSize);
+                depleteInput(GT_Utility.copyAmount(consume, input));
+                this.eV -= 10000000 * consume;
+            }
+        }
+        endRecipeProcessing();
     }
 
     @Override
