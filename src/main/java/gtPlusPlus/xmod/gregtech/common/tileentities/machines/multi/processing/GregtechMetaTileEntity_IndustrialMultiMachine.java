@@ -128,15 +128,15 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
                 .addInfo("250% faster than using single block machines of the same voltage")
                 .addInfo("Only uses 80% of the EU/t normally required").addInfo("Processes two items per voltage tier")
                 .addInfo(
-                        "Machine Type: [A] - " + EnumChatFormatting.YELLOW
+                        "Machine Type: Metal - " + EnumChatFormatting.YELLOW
                                 + aBuiltStrings[0]
                                 + EnumChatFormatting.RESET)
                 .addInfo(
-                        "Machine Type: [B] - " + EnumChatFormatting.YELLOW
+                        "Machine Type: Fluid - " + EnumChatFormatting.YELLOW
                                 + aBuiltStrings[1]
                                 + EnumChatFormatting.RESET)
                 .addInfo(
-                        "Machine Type: [C] - " + EnumChatFormatting.YELLOW
+                        "Machine Type: Misc - " + EnumChatFormatting.YELLOW
                                 + aBuiltStrings[2]
                                 + EnumChatFormatting.RESET)
                 .addInfo("Read Multi-Machine Manual for extra information")
