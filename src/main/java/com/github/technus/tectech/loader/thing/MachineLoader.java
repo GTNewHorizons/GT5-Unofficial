@@ -296,6 +296,7 @@ import static com.github.technus.tectech.thing.CustomItemList.hatch_CreativeUnce
 import static com.github.technus.tectech.thing.CustomItemList.holder_Hatch;
 import static com.github.technus.tectech.thing.CustomItemList.rack_Hatch;
 import static com.github.technus.tectech.util.CommonValues.V;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -2035,21 +2036,25 @@ public class MachineLoader implements Runnable {
         Machine_Multi_EyeOfHarmony.set(
                 new GT_MetaTileEntity_EM_EyeOfHarmony(15410, "multimachine.em.eye_of_harmony", "Eye of Harmony")
                         .getStackForm(1L));
-        Machine_Multi_ForgeOfGods.set(
-                new GT_MetaTileEntity_EM_ForgeOfGods(15411, "multimachine.em.forge_of_gods", "Forge of the Gods")
-                        .getStackForm(1L));
-        Machine_Multi_SmeltingModule.set(
-                new GT_MetaTileEntity_EM_SmeltingModule(15412, "multimachine.em.smelting_module", "Smelting Module")
-                        .getStackForm(1L));
-        Machine_Multi_MoltenModule.set(
-                new GT_MetaTileEntity_EM_MoltenModule(15413, "multimachine.em.molten_module", "Molten Module")
-                        .getStackForm(1L));
-        Machine_Multi_PlasmaModule.set(
-                new GT_MetaTileEntity_EM_PlasmaModule(15414, "multimachine.em.plasma_module", "Plasma Module")
-                        .getStackForm(1L));
-        Machine_Multi_QuarkGluonPlasmaModule.set(
-                new GT_MetaTileEntity_EM_ExoticModule(15415, "multimachine.em.exotic_module", "Exotic Matter Module")
-                        .getStackForm(1L));
+        if (!NewHorizonsCoreMod.isModLoaded()) {
+            Machine_Multi_ForgeOfGods.set(
+                    new GT_MetaTileEntity_EM_ForgeOfGods(15411, "multimachine.em.forge_of_gods", "Forge of the Gods")
+                            .getStackForm(1L));
+            Machine_Multi_SmeltingModule.set(
+                    new GT_MetaTileEntity_EM_SmeltingModule(15412, "multimachine.em.smelting_module", "Smelting Module")
+                            .getStackForm(1L));
+            Machine_Multi_MoltenModule.set(
+                    new GT_MetaTileEntity_EM_MoltenModule(15413, "multimachine.em.molten_module", "Molten Module")
+                            .getStackForm(1L));
+            Machine_Multi_PlasmaModule.set(
+                    new GT_MetaTileEntity_EM_PlasmaModule(15414, "multimachine.em.plasma_module", "Plasma Module")
+                            .getStackForm(1L));
+            Machine_Multi_QuarkGluonPlasmaModule.set(
+                    new GT_MetaTileEntity_EM_ExoticModule(
+                            15415,
+                            "multimachine.em.exotic_module",
+                            "Exotic Matter Module").getStackForm(1L));
+        }
 
         // ===================================================================================================
         // Hatches
