@@ -612,8 +612,8 @@ public class GT_MetaTileEntity_PCBFactory extends
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide()) {
             // TODO: Look for proper fix
-            // Updates every 30 sec
-            if (mUpdate <= -550) mUpdate = 50;
+            // Updates every 10 sec
+            if (mUpdate <= -150) mUpdate = 50;
         }
     }
 
