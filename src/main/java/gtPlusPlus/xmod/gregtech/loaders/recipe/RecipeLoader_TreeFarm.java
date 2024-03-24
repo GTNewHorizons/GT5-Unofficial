@@ -80,7 +80,7 @@ public class RecipeLoader_TreeFarm {
                 new ItemStack(Blocks.sapling, 1, 5),
                 new ItemStack(Blocks.log2, 1, 1),
                 new ItemStack(Blocks.leaves2, 1, 1),
-                null);
+                new ItemStack(Items.apple, 1, 0));
 
         GregtechMetaTileEntityTreeFarm.registerTreeProducts( // Brown Mushroom
                 new ItemStack(Blocks.brown_mushroom, 1, 0),
@@ -255,7 +255,7 @@ public class RecipeLoader_TreeFarm {
                 GT_ModHandler.getModItem(Mods.Natura.ID, "florasapling", 1, 5),
                 GT_ModHandler.getModItem(Mods.Natura.ID, "bloodwood", 1, 0),
                 GT_ModHandler.getModItem(Mods.Natura.ID, "floraleavesnocolor", 1, 2),
-                null);
+                new ItemStack(Items.redstone, 1, 0));
 
         GregtechMetaTileEntityTreeFarm.registerTreeProducts( // Darkwood
                 GT_ModHandler.getModItem(Mods.Natura.ID, "florasapling", 1, 6),
@@ -401,7 +401,7 @@ public class RecipeLoader_TreeFarm {
                 GT_ModHandler.getModItem(Mods.BiomesOPlenty.ID, "saplings", 1, 13),
                 GT_ModHandler.getModItem(Mods.BiomesOPlenty.ID, "logs4", 1, 1),
                 GT_ModHandler.getModItem(Mods.BiomesOPlenty.ID, "leaves4", 1, 0),
-                null);
+                GT_ModHandler.getModItem(Mods.BiomesOPlenty.ID, "food", 1, 8));
 
         GregtechMetaTileEntityTreeFarm.registerTreeProducts( // Jacaranda
                 GT_ModHandler.getModItem(Mods.BiomesOPlenty.ID, "saplings", 1, 14),
