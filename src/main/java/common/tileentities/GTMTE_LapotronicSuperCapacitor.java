@@ -23,6 +23,8 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.filterByMTEClass;
 import static java.lang.Math.min;
+import static util.Util.toPercentageFrom;
+import static util.Util.toStandardForm;
 
 import java.math.BigInteger;
 import java.text.NumberFormat;
@@ -907,8 +909,11 @@ public class GTMTE_LapotronicSuperCapacitor extends
 
         final ArrayList<String> ll = new ArrayList<>();
         ll.add(EnumChatFormatting.YELLOW + "Operational Data:" + EnumChatFormatting.RESET);
-        ll.add("Used Capacity: " + nf.format(stored) + "EU");
-        ll.add("Total Capacity: " + nf.format(capacity) + "EU");
+        ll.add("EU Stored (exact): " + nf.format(stored) + "EU");
+        ll.add("EU Stored: " + toStandardForm(stored) + "EU");
+        ll.add("Used Capacity: " + toPercentageFrom(stored, capacity));
+        ll.add("Total Capacity (exact): " + nf.format(capacity) + "EU");
+        ll.add("Total Capacity: " + toStandardForm(capacity) + "EU");
         ll.add("Passive Loss: " + nf.format(passiveDischargeAmount) + "EU/t");
         ll.add("EU IN: " + GT_Utility.formatNumbers(inputLastTick) + "EU/t");
         ll.add("EU OUT: " + GT_Utility.formatNumbers(outputLastTick) + "EU/t");
@@ -942,8 +947,12 @@ public class GTMTE_LapotronicSuperCapacitor extends
                         + " Capacitors detected: "
                         + getUMVCapacitorCount());
         ll.add(
-                "Total wireless EU: " + EnumChatFormatting.RED
+                "Total wireless EU (exact): " + EnumChatFormatting.RED
                         + GT_Utility.formatNumbers(WirelessNetworkManager.getUserEU(global_energy_user_uuid)));
+        ll.add(
+                "Total wireless EU: " + EnumChatFormatting.RED
+                        + toStandardForm(WirelessNetworkManager.getUserEU(global_energy_user_uuid)));
+
         ll.add("---------------------------------------------");
 
         final String[] a = new String[ll.size()];
