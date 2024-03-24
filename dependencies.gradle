@@ -40,7 +40,7 @@ dependencies {
     api("com.github.GTNewHorizons:GTNHLib:0.2.10:dev")
     api("com.github.GTNewHorizons:ModularUI:1.1.42:dev")
     api("com.github.GTNewHorizons:waila:1.7.1:dev")
-    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-345-GTNH:dev")
+    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-346-GTNH:dev")
     api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.2.25-gtnh:dev")
 
     implementation("com.github.GTNewHorizons:Avaritia:1.49:dev")
@@ -62,7 +62,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:Nuclear-Control:2.6.1:dev") { transitive = false }
     compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Hodgepodge:2.4.40:dev") { transitive = false }
-    compileOnly('com.github.GTNewHorizons:Botania:1.10.11-GTNH:dev') { transitive = false }
+    compileOnly('com.github.GTNewHorizons:Botania:1.10.12-GTNH:dev') { transitive = false }
     compileOnly('com.github.GTNewHorizons:HoloInventory:2.4.3-GTNH:dev') { transitive = false }
     compileOnly('curse.maven:minefactory-reloaded-66672:2366150') { transitive = false }
 
