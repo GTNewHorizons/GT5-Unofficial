@@ -3,6 +3,7 @@ package gregtech.client;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MovingSound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
@@ -33,15 +34,16 @@ public class GT_SoundLoop extends MovingSound {
         volume = VOLUME_RAMP;
     }
 
-    public GT_SoundLoop(ResourceLocation sound, MultiTileBasicMachine base, boolean stopWhenActive,
+    public GT_SoundLoop(ResourceLocation sound, MultiTileBasicMachine<?> base, boolean stopWhenActive,
         boolean stopWhenInactive) {
         super(sound);
         this.whileActive = stopWhenActive;
         this.whileInactive = stopWhenInactive;
-        xPosF = base.getXCoord();
-        yPosF = base.getYCoord();
-        zPosF = base.getZCoord();
-        worldID = base.getWorld().provider.dimensionId;
+        final ChunkCoordinates coords = base.getCoords();
+        xPosF = coords.posX;
+        yPosF = coords.posY;
+        zPosF = coords.posZ;
+        worldID = base.getWorldObj().provider.dimensionId;
         repeat = true;
         volume = VOLUME_RAMP;
     }
@@ -71,7 +73,7 @@ public class GT_SoundLoop extends MovingSound {
         }
 
         if ((tile instanceof MultiTileBasicMachine)) {
-            fadeMe |= ((MultiTileBasicMachine) tile).isActive() ? whileActive : whileInactive;
+            fadeMe |= ((MultiTileBasicMachine<?>) tile).isActive() ? whileActive : whileInactive;
             return;
         }
 

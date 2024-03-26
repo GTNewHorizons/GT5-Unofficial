@@ -2,12 +2,12 @@ package gregtech.common.tileentities.machines.multiblock;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.Mods.*;
-import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ENERGY_IN;
-import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.FLUID_IN;
-import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.FLUID_OUT;
-import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_IN;
-import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_OUT;
-import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.NOTHING;
+import static gregtech.api.multitileentity.enums.PartMode.ENERGY_INPUT;
+import static gregtech.api.multitileentity.enums.PartMode.FLUID_INPUT;
+import static gregtech.api.multitileentity.enums.PartMode.FLUID_OUTPUT;
+import static gregtech.api.multitileentity.enums.PartMode.ITEM_INPUT;
+import static gregtech.api.multitileentity.enums.PartMode.ITEM_OUTPUT;
+import static gregtech.api.multitileentity.enums.PartMode.NOTHING;
 import static gregtech.api.util.GT_StructureUtilityMuTE.AMPERAGE_CASINGS;
 import static gregtech.api.util.GT_StructureUtilityMuTE.HEATER_CASINGS;
 import static gregtech.api.util.GT_StructureUtilityMuTE.INSULATOR_CASINGS;
@@ -54,7 +54,6 @@ public class LayeredCokeBattery
         return "gt.multitileentity.multiblock.layeredcokebattery";
     }
 
-    @Override
     public String getLocalName() {
         return "Layered Coke Battery";
     }
@@ -143,16 +142,22 @@ public class LayeredCokeBattery
                 .addElement(
                     'A',
                     ofMuTECasings(
-                        FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT | ENERGY_IN,
+                        FLUID_INPUT.getValue() | ITEM_INPUT.getValue()
+                            | FLUID_OUTPUT.getValue()
+                            | ITEM_OUTPUT.getValue()
+                            | ENERGY_INPUT.getValue(),
                         GT_MultiTileCasing.Chemical.getCasing()))
                 .addElement(
                     'B',
                     ofMuTECasings(
-                        FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT | ENERGY_IN,
+                        FLUID_INPUT.getValue() | ITEM_INPUT.getValue()
+                            | FLUID_OUTPUT.getValue()
+                            | ITEM_OUTPUT.getValue()
+                            | ENERGY_INPUT.getValue(),
                         GT_MultiTileCasing.Distillation.getCasing()))
                 .addElement('C', ofBlock(GregTech_API.sBlockCasings4, 1))
                 .addElement('D', GT_StructureUtility.ofFrame(Materials.Steel))
-                .addElement('E', ofMuTECasings(NOTHING, MOTOR_CASINGS))
+                .addElement('E', ofMuTECasings(NOTHING.getValue(), MOTOR_CASINGS))
                 .addElement(
                     'F',
                     ofChain(
@@ -160,8 +165,8 @@ public class LayeredCokeBattery
                         ofBlockUnlocalizedName(BartWorks.ID, "BW_GlasBlocks", 0, true),
                         ofBlockUnlocalizedName(BartWorks.ID, "BW_GlasBlocks2", 0, true),
                         ofBlockUnlocalizedName(Thaumcraft.ID, "blockCosmeticOpaque", 2, false)))
-                .addElement('H', ofMuTECasings(NOTHING, HEATER_CASINGS, INSULATOR_CASINGS))
-                .addElement('P', ofMuTECasings(NOTHING, AMPERAGE_CASINGS))
+                .addElement('H', ofMuTECasings(NOTHING.getValue(), HEATER_CASINGS, INSULATOR_CASINGS))
+                .addElement('P', ofMuTECasings(NOTHING.getValue(), AMPERAGE_CASINGS))
                 .build();
         }
         return STRUCTURE_DEFINITION_MEGA;

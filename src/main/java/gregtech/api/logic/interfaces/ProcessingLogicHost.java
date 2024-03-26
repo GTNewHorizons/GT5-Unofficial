@@ -3,12 +3,12 @@ package gregtech.api.logic.interfaces;
 import javax.annotation.Nonnull;
 
 import gregtech.api.enums.VoidingMode;
-import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.interfaces.tileentity.IVoidable;
+import gregtech.api.interfaces.tileentity.MachineProgress;
 import gregtech.api.logic.MuTEProcessingLogic;
 
 public interface ProcessingLogicHost<P extends MuTEProcessingLogic<P>>
-    extends IVoidable, ItemInventoryLogicHost, FluidInventoryLogicHost, IMachineProgress {
+    extends IVoidable, ItemInventoryLogicHost, FluidInventoryLogicHost, MachineProgress {
 
     /**
      * Get the processing logic for the current machine

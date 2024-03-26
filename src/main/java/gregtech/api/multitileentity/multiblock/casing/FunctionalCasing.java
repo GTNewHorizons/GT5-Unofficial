@@ -1,5 +1,7 @@
 package gregtech.api.multitileentity.multiblock.casing;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.nbt.NBTTagCompound;
 
 import gregtech.api.enums.GT_Values;
@@ -17,13 +19,13 @@ public abstract class FunctionalCasing extends MultiBlockPart {
     public abstract float getPartModifier();
 
     @Override
-    public void readMultiTileNBT(NBTTagCompound nbt) {
-        super.readMultiTileNBT(nbt);
+    public void readFromNBT(@Nonnull NBTTagCompound nbt) {
+        super.readFromNBT(nbt);
         tier = nbt.getInteger(GT_Values.NBT.TIER);
     }
 
     @Override
-    public void writeMultiTileNBT(NBTTagCompound nbt) {
-        super.writeMultiTileNBT(nbt);
+    public void writeToNBT(@Nonnull NBTTagCompound nbt) {
+        super.writeToNBT(nbt);
     }
 }

@@ -3,7 +3,6 @@ package gregtech.api.logic;
 import static net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -54,30 +53,35 @@ public class MuTEProcessingLogic<P extends MuTEProcessingLogic<P>> extends Abstr
     @Nonnull
     @Override
     public CheckRecipeResult process() {
-        RecipeMap<?> recipeMap = preProcess();
-
-        ItemInventoryLogic itemInput = null;
-        FluidInventoryLogic fluidInput = null;
-        if (machineHost.isInputSeparated()) {
-            for (Map.Entry<UUID, ItemInventoryLogic> itemEntry : machineHost
-                .getAllItemInventoryLogics(InventoryType.Input)) {
-                itemOutputID = Objects.requireNonNull(itemEntry.getKey());
-                itemInput = Objects.requireNonNull(itemEntry.getValue());
-                fluidInput = Objects.requireNonNull(
-                    machineHost.getFluidLogic(InventoryType.Input, itemInput.getConnectedFluidInventoryID()));
-                fluidOutputID = itemInput.getConnectedFluidInventoryID();
-            }
-        } else {
-            itemInput = Objects.requireNonNull(machineHost.getItemLogic(InventoryType.Input, null));
-            fluidInput = Objects.requireNonNull(machineHost.getFluidLogic(InventoryType.Input, null));
-        }
-
-        CheckRecipeResult recipeValidatorResult = null;
-        if (recipeValidatorResult != null) {
-            return recipeValidatorResult;
-        }
-
-        return processRecipe(null, Objects.requireNonNull(itemInput), Objects.requireNonNull(fluidInput));
+        return CheckRecipeResultRegistry.NO_RECIPE;/*
+                                                    * RecipeMap<?> recipeMap = preProcess();
+                                                    * ItemInventoryLogic itemInput = null;
+                                                    * FluidInventoryLogic fluidInput = null;
+                                                    * if (machineHost.isInputSeparated()) {
+                                                    * for (Map.Entry<UUID, ItemInventoryLogic> itemEntry : machineHost
+                                                    * .getAllItemInventoryLogics(InventoryType.Input)) {
+                                                    * itemOutputID = Objects.requireNonNull(itemEntry.getKey());
+                                                    * itemInput = Objects.requireNonNull(itemEntry.getValue());
+                                                    * fluidInput = Objects.requireNonNull(
+                                                    * machineHost.getFluidLogic(InventoryType.Input,
+                                                    * itemInput.getConnectedFluidInventoryID()));
+                                                    * fluidOutputID = itemInput.getConnectedFluidInventoryID();
+                                                    * }
+                                                    * } else {
+                                                    * itemInput =
+                                                    * Objects.requireNonNull(machineHost.getItemLogic(InventoryType.
+                                                    * Input, null));
+                                                    * fluidInput =
+                                                    * Objects.requireNonNull(machineHost.getFluidLogic(InventoryType.
+                                                    * Input, null));
+                                                    * }
+                                                    * CheckRecipeResult recipeValidatorResult = null;
+                                                    * if (recipeValidatorResult != null) {
+                                                    * return recipeValidatorResult;
+                                                    * }
+                                                    * return processRecipe(null, Objects.requireNonNull(itemInput),
+                                                    * Objects.requireNonNull(fluidInput));
+                                                    */
     }
 
     @Nonnull
@@ -176,7 +180,7 @@ public class MuTEProcessingLogic<P extends MuTEProcessingLogic<P>> extends Abstr
     }
 
     public boolean canWork() {
-        return !hasWork && machineHost.isAllowedToWork();
+        return !hasWork;// && machineHost.isAllowedToWork();
     }
 
     /**

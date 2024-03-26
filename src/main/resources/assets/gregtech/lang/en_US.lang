@@ -1495,3 +1495,12 @@ gt.time.second.plural=seconds
 #Tool modes
 gt.wrench.mode.1=Line Mode
 
+#MutliTileEntities
+gt.multiblockpart.setmode.text=Mode set to
+gt.mode.name.nothing=Nothing
+gt.mode.name.item_input=Item Input
+gt.mode.name.item_output=Item Output
+gt.mode.name.fluid_input=Fluid Input
+gt.mode.name.fluid_output=Fluid Output
+gt.mode.name.energy_input=Energy Input
+gt.mode.name.energy_output=Energy Output

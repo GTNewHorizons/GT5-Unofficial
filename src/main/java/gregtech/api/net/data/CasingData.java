@@ -2,10 +2,9 @@ package gregtech.api.net.data;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.util.ChunkCoordinates;
-
 import com.google.common.io.ByteArrayDataInput;
 
+import gregtech.api.multitileentity.enums.PartMode;
 import io.netty.buffer.ByteBuf;
 
 public class CasingData extends PacketData<MultiTileEntityProcess> {
@@ -14,30 +13,36 @@ public class CasingData extends PacketData<MultiTileEntityProcess> {
 
     private int currentMode;
     private int allowedModes;
-    private ChunkCoordinates controllerCoords;
+    private int controllerX;
+    private int controllerY;
+    private int controllerZ;
 
     public CasingData() {}
 
-    public CasingData(int currentMode, int allowedModes, ChunkCoordinates controllerCoords) {
+    public CasingData(int currentMode, int allowedModes, int controllerX, int controllerY, int controllerZ) {
         this.currentMode = currentMode;
         this.allowedModes = allowedModes;
-        this.controllerCoords = controllerCoords;
+        this.controllerX = controllerX;
+        this.controllerY = controllerY;
+        this.controllerZ = controllerZ;
     }
 
     @Override
     public void decode(@Nonnull ByteArrayDataInput in) {
         currentMode = in.readInt();
         allowedModes = in.readInt();
-        controllerCoords = new ChunkCoordinates(in.readInt(), in.readInt(), in.readInt());
+        controllerX = in.readInt();
+        controllerY = in.readInt();
+        controllerZ = in.readInt();
     }
 
     @Override
     public void encode(@Nonnull ByteBuf out) {
         out.writeInt(currentMode);
         out.writeInt(allowedModes);
-        out.writeInt(controllerCoords.posX);
-        out.writeInt(controllerCoords.posY);
-        out.writeInt(controllerCoords.posZ);
+        out.writeInt(controllerX);
+        out.writeInt(controllerY);
+        out.writeInt(controllerZ);
     }
 
     @Override
@@ -47,7 +52,7 @@ public class CasingData extends PacketData<MultiTileEntityProcess> {
 
     @Override
     public void process(MultiTileEntityProcess processData) {
-
+        processData.giveCasingData(allowedModes, currentMode, controllerX, controllerY, controllerZ);
     }
 
 }

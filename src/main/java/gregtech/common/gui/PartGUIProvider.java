@@ -19,15 +19,9 @@ public class PartGUIProvider<T extends GUIHost & ItemInventoryLogicHost & PowerL
     }
 
     @Override
-    protected void attachSynchHandlers(@Nonnull Builder builder, @Nonnull UIBuildContext uiContext) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'attachSynchHandlers'");
-    }
+    protected void attachSynchHandlers(@Nonnull Builder builder, @Nonnull UIBuildContext uiContext) {}
 
     @Override
-    protected void addWidgets(@Nonnull Builder builder, @Nonnull UIBuildContext uiContext) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addWidgets'");
-    }
+    protected void addWidgets(@Nonnull Builder builder, @Nonnull UIBuildContext uiContext) {}
 
 }

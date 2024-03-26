@@ -25,7 +25,7 @@ public class GT_Util {
         if (aNBT1 == null) return aNBT2 == null ? new NBTTagCompound() : (NBTTagCompound) aNBT2.copy();
         final NBTTagCompound rNBT = (NBTTagCompound) aNBT1.copy();
         if (aNBT2 == null) return rNBT;
-        for (Object tKey : aNBT2.func_150296_c /* getKeySet */())
+        for (Object tKey : aNBT2.func_150296_c()/* getKeySet */)
             if (!rNBT.hasKey(tKey.toString())) rNBT.setTag(tKey.toString(), aNBT2.getTag(tKey.toString()));
         return rNBT;
     }
@@ -90,7 +90,7 @@ public class GT_Util {
     public static TileEntity getTileEntity(World aWorld, int aX, int aY, int aZ, boolean aLoadUnloadedChunks) {
         if (aLoadUnloadedChunks || aWorld.blockExists(aX, aY, aZ)) {
             TileEntity rTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-            if (rTileEntity instanceof IMultiTileEntity && ((IMultiTileEntity) rTileEntity).isDead()) return null;
+            if (rTileEntity instanceof IMultiTileEntity && rTileEntity.isInvalid()) return null;
             if (rTileEntity != null) return rTileEntity;
             rTileEntity = LAST_BROKEN_TILEENTITY.get();
             if (rTileEntity != null && rTileEntity.xCoord == aX && rTileEntity.yCoord == aY && rTileEntity.zCoord == aZ)

@@ -16,11 +16,11 @@ public class Wireless extends UpgradeCasing {
     }
 
     @Override
-    public boolean breakBlock() {
+    public void onBlockBroken() {
         final IMultiBlockController controller = getTarget(false);
         if (controller != null) {
             controller.setWirelessSupport(false);
         }
-        return super.breakBlock();
+        super.onBlockBroken();
     }
 }

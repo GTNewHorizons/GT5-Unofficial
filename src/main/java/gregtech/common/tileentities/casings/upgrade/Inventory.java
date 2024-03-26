@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow.Builder;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -58,8 +57,8 @@ public class Inventory extends UpgradeCasing {
     }
 
     @Override
-    public void readMultiTileNBT(NBTTagCompound aNBT) {
-        super.readMultiTileNBT(aNBT);
+    public void readFromNBT(NBTTagCompound aNBT) {
+        super.readFromNBT(aNBT);
         if (aNBT.hasKey(NBT.UPGRADE_INVENTORY_NAME)) {
             inventoryName = aNBT.getString(NBT.UPGRADE_INVENTORY_NAME);
         } else {
@@ -69,27 +68,23 @@ public class Inventory extends UpgradeCasing {
     }
 
     @Override
-    public void writeMultiTileNBT(NBTTagCompound aNBT) {
-        super.writeMultiTileNBT(aNBT);
-        aNBT.setString(NBT.UPGRADE_INVENTORY_UUID, inventoryID.toString());
+    public void writeToNBT(NBTTagCompound aNBT) {
+        super.writeToNBT(aNBT);
+        if (inventoryID != null) {
+            aNBT.setString(NBT.UPGRADE_INVENTORY_UUID, inventoryID.toString());
+        }
         aNBT.setString(NBT.UPGRADE_INVENTORY_NAME, inventoryName);
     }
 
     @Override
-    public boolean breakBlock() {
+    public void onBlockBroken() {
         final IMultiBlockController controller = getTarget(false);
         if (controller != null) {
             controller.unregisterItemInventory(inventoryID, type);
         }
-        return super.breakBlock();
+        super.onBlockBroken();
     }
 
-    @Override
-    public boolean hasGui(ForgeDirection side) {
-        return true;
-    }
-
-    @Override
     public void addUIWidgets(Builder builder, UIBuildContext buildContext) {
         builder.widget(
             new TextFieldWidget().setGetter(() -> inventoryName)

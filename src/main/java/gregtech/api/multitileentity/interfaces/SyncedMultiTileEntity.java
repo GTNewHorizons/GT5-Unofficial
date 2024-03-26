@@ -19,7 +19,7 @@ public interface SyncedMultiTileEntity {
     /**
      * Should always collect all the data that the controller or casing has and should send
      * Called by {@link #sendFullPacket()}
-     * 
+     *
      * @param packet The packet which will be sent
      */
     void getFullPacketData(GT_Packet_MultiTileEntity packet);
@@ -35,7 +35,7 @@ public interface SyncedMultiTileEntity {
      * Collects all the data that should be sent out at a certain period of time defined by
      * {@link #getTimedPacketPeriod()}
      * Called by {@link #sendTimedPacket()}
-     * 
+     *
      * @param packet The packet which will be sent
      */
     void getTimedPacketData(GT_Packet_MultiTileEntity packet);
@@ -49,15 +49,22 @@ public interface SyncedMultiTileEntity {
 
     /**
      * Will send a packet, which should only contain data about how the TileEntity should be rendered.
-     * !!! Warning !!! This is sent every single tick! Do not put a lot of data here!
+     * !!! Warning !!! This could be sent every tick if one is calling {@link #issueClientUpdate()} constantly
      */
     void sendGraphicPacket();
 
     /**
      * Collects all the data that is needed to be send every single tick
      * Called by {@link #sendGraphicPacket()}
-     * 
+     *
      * @param packet The packet which will be sent
      */
     void getGraphicPacketData(GT_Packet_MultiTileEntity packet);
+
+    /**
+     * Send a Graphic packet to the client to tell them something udpated
+     */
+    default void issueClientUpdate() {
+        sendGraphicPacket();
+    }
 }

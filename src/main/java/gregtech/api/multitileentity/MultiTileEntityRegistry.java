@@ -8,6 +8,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -16,7 +18,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 
 import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 
@@ -26,9 +27,6 @@ import cpw.mods.fml.common.LoaderState;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.multitileentity.base.MultiTileEntity;
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
 
 public class MultiTileEntityRegistry {
@@ -37,60 +35,57 @@ public class MultiTileEntityRegistry {
 
     // TODO: NBT sensitive or not? Starting with not for now
     private static final ItemStackMap<MultiTileEntityRegistry> REGISTRIES = new ItemStackMap<>(false);
-    private static final HashSet<Class<?>> sRegisteredTileEntities = new HashSet<>();
-    private final HashMap<Integer, MultiTileEntityContainer> cachedTileEntityContainers = new HashMap<>();
+    private static final HashSet<Class<?>> registeredTileEntities = new HashSet<>();
 
     public HashMap<Short, CreativeTab> mCreativeTabs = new HashMap<>();
-    public Map<Short, MultiTileEntityClassContainer> mRegistry = new HashMap<>();
-    public List<MultiTileEntityClassContainer> mRegistrations = new ArrayList<>();
+    public Map<Integer, MultiTileEntityClassContainer> registry = new HashMap<>();
+    public List<MultiTileEntityClassContainer> registrations = new ArrayList<>();
 
-    public final String mNameInternal;
-    public final MultiTileEntityBlockInternal mBlock;
+    public final String internalName;
+    public final MultiTileEntityBlock block;
 
-    private static MultiTileEntityBlockInternal regblock(String aNameInternal, MultiTileEntityBlockInternal aBlock,
-        Class<? extends ItemBlock> aItemClass) {
-        GameRegistry.registerBlock(aBlock, aItemClass == null ? ItemBlock.class : aItemClass, aNameInternal);
-        return aBlock;
+    private static MultiTileEntityBlock regblock(String internalName, MultiTileEntityBlock block,
+        Class<? extends ItemBlock> itemClass) {
+        GameRegistry.registerBlock(block, itemClass == null ? ItemBlock.class : itemClass, internalName);
+        return block;
     }
 
     /**
-     * @param aNameInternal the internal Name of the Item
+     * @param internalName the internal Name of the Item
      */
-    public MultiTileEntityRegistry(String aNameInternal) {
-        this(aNameInternal, new MultiTileEntityBlockInternal(), MultiTileEntityItemInternal.class);
+    public MultiTileEntityRegistry(String internalName) {
+        this(internalName, new MultiTileEntityBlock(), MultiTileEntityItem.class);
     }
 
     /**
-     * @param aNameInternal the internal Name of the Item
+     * @param internalName the internal Name of the Item
      */
-    public MultiTileEntityRegistry(String aNameInternal, MultiTileEntityBlockInternal aBlock,
-        Class<? extends ItemBlock> aItemClass) {
-        this(aNameInternal, regblock(aNameInternal, aBlock, aItemClass));
+    public MultiTileEntityRegistry(String internalName, MultiTileEntityBlock block,
+        Class<? extends ItemBlock> itemClass) {
+        this(internalName, regblock(internalName, block, itemClass));
     }
 
     /**
-     * @param aNameInternal the internal Name of the Item
+     * @param internalName the internal Name of the Item
      */
-    public MultiTileEntityRegistry(String aNameInternal, MultiTileEntityBlockInternal aBlock) {
+    public MultiTileEntityRegistry(String internalName, MultiTileEntityBlock block) {
         if (!Loader.instance()
             .isInState(LoaderState.PREINITIALIZATION)) {
             throw new IllegalStateException(
                 "The MultiTileEntity Registry must be initialized during Preload Phase and not before");
         }
-        mNameInternal = aNameInternal;
-        mBlock = aBlock;
-        GT_FML_LOGGER.info(aNameInternal + " " + Block.getIdFromBlock(aBlock) + "This is the answer");
-        mBlock.mMultiTileEntityRegistry = this;
-        REGISTRIES.put(new ItemStack(Item.getItemById(Block.getIdFromBlock(aBlock)), 1, GT_Values.W), this);
-        NAMED_REGISTRIES.put(mNameInternal, this);
+        this.internalName = internalName;
+        this.block = block;
+        GT_FML_LOGGER.info(internalName + " " + Block.getIdFromBlock(block) + "This is the answer");
+        this.block.setRegistry(this);
+        REGISTRIES.put(new ItemStack(Item.getItemById(Block.getIdFromBlock(block)), 1, GT_Values.W), this);
+        NAMED_REGISTRIES.put(internalName, this);
     }
 
-    public static TileEntity getCanonicalTileEntity(int aRegistryID, int aMultiTileEntityID) {
-        final MultiTileEntityRegistry tRegistry = getRegistry(aRegistryID);
-        if (tRegistry == null) return null;
-        final MultiTileEntityClassContainer tClassContainer = tRegistry.getClassContainer(aMultiTileEntityID);
-        if (tClassContainer == null) return null;
-        return tClassContainer.mCanonicalTileEntity;
+    public static TileEntity getCachedTileEntity(int registryId, int metaId) {
+        final MultiTileEntityRegistry registry = getRegistry(registryId);
+        if (registry == null) return null;
+        return registry.getCachedTileEntity(metaId);
     }
 
     public static MultiTileEntityRegistry getRegistry(int aRegistryID) {
@@ -101,39 +96,36 @@ public class MultiTileEntityRegistry {
         return NAMED_REGISTRIES.get(aRegistryName);
     }
 
-    public MultiTileEntityClassContainer create(int aID, Class<? extends MultiTileEntity> aClass) {
-        return new MultiTileEntityClassContainer(this, aID, aClass);
+    public MultiTileEntityClassContainer create(int metaId, Class<? extends MultiTileEntity> clazz) {
+        return new MultiTileEntityClassContainer(this, block, metaId, clazz);
     }
 
     /**
      * Adds a new MultiTileEntity. It is highly recommended to do this in either the PreInit or the Init Phase. PostInit
      * might not work well.
      */
-    public ItemStack add(String aLocalised, String aCategoricalName, MultiTileEntityClassContainer aClassContainer) {
+    public ItemStack add(String categoryName, MultiTileEntityClassContainer classContainer) {
         boolean tFailed = false;
-        if (GT_Utility.isStringInvalid(aLocalised)) {
-            GT_FML_LOGGER.error("MULTI-TILE REGISTRY ERROR: Localisation Missing!");
-            tFailed = true;
-        }
-        if (aClassContainer == null) {
+        if (classContainer == null) {
             GT_FML_LOGGER.error("MULTI-TILE REGISTRY ERROR: Class Container is null!");
             tFailed = true;
         } else {
-            if (aClassContainer.mClass == null) {
+            if (classContainer.getClazz() == null) {
                 GT_FML_LOGGER.error("MULTI-TILE REGISTRY ERROR: Class inside Class Container is null!");
                 tFailed = true;
             }
-            if (aClassContainer.mID == GT_Values.W) {
+            if (classContainer.getMetaId() == GT_Values.W) {
                 GT_FML_LOGGER.error("MULTI-TILE REGISTRY ERROR: Class Container uses Wildcard MetaData!");
                 tFailed = true;
             }
-            if (aClassContainer.mID < 0) {
+            if (classContainer.getMetaId() < 0) {
                 GT_FML_LOGGER.error("MULTI-TILE REGISTRY ERROR: Class Container uses negative MetaData!");
                 tFailed = true;
             }
-            if (mRegistry.containsKey(aClassContainer.mID)) {
+            if (registry.containsKey(classContainer.getMetaId())) {
                 GT_FML_LOGGER.error(
-                    "MULTI-TILE REGISTRY ERROR: Class Container uses occupied MetaData! (" + aClassContainer.mID + ")");
+                    "MULTI-TILE REGISTRY ERROR: Class Container uses occupied MetaData! (" + classContainer.getMetaId()
+                        + ")");
                 tFailed = true;
             }
         }
@@ -147,38 +139,20 @@ public class MultiTileEntityRegistry {
             return null;
         }
 
-        GT_LanguageManager.addStringLocalization(mNameInternal + "." + aClassContainer.mID + ".name", aLocalised);
-        mRegistry.put(aClassContainer.mID, aClassContainer);
-        mLastRegisteredID = aClassContainer.mID;
-        mRegistrations.add(aClassContainer);
+        registry.put(classContainer.getMetaId(), classContainer);
+        registrations.add(classContainer);
+        lastRegisteredId = classContainer.getMetaId();
 
-        if (sRegisteredTileEntities.add(aClassContainer.mCanonicalTileEntity.getClass())) {
-            aClassContainer.mCanonicalTileEntity.onRegistrationFirst(this, aClassContainer.mID);
+        if (registeredTileEntities.add(classContainer.getClazz())) {
+            GameRegistry.registerTileEntity(
+                classContainer.getClazz(),
+                classContainer.getOriginalTileEntity()
+                    .getTileEntityName());
         }
-        // // TODO: Recipe
-        // if (aRecipe != null && aRecipe.length > 1) {
-        // if (aRecipe[0] instanceof Object[]) aRecipe = (Object[])aRecipe[0];
-        // if (aRecipe.length > 2) CR.shaped(getItem(aClassContainer.mID), CR.DEF_REV_NCC, aRecipe);
-        // }
-        // // A simple special case to make it easier to add a Machine to Recipe Lists without having to worry
-        // about anything.
-        // String tRecipeMapName = aClassContainer.mParameters.getString(NBT_RECIPEMAP);
-        // if (GT_Utility.isStringValid(tRecipeMapName)) {RecipeMap tMap =
-        // RecipeMap.RECIPE_MAPS.get(tRecipeMapName); if (tMap != null)
-        // tMap.mRecipeMachineList.add(getItem(aClassContainer.mID));}
-        // tRecipeMapName = aClassContainer.mParameters.getString(NBT_FUELMAP);
-        // if (GT_Utility.isStringValid(tRecipeMapName)) {RecipeMap tMap =
-        // RecipeMap.RECIPE_MAPS.get(tRecipeMapName); if (tMap != null)
-        // tMap.mRecipeMachineList.add(getItem(aClassContainer.mID));}
-        //
-        return getItem(aClassContainer.mID);
+        return getItem(classContainer.getMetaId());
     }
 
-    public short mLastRegisteredID = GT_Values.W;
-
-    public ItemStack getItem() {
-        return getItem(mLastRegisteredID, 1, null);
-    }
+    public int lastRegisteredId = GT_Values.W;
 
     public ItemStack getItem(int aID) {
         return getItem(aID, 1, null);
@@ -192,99 +166,47 @@ public class MultiTileEntityRegistry {
         return getItem(aID, aAmount, null);
     }
 
-    public ItemStack getItem(int aID, long aAmount, NBTTagCompound aNBT) {
-        final ItemStack rStack = new ItemStack(mBlock, (int) aAmount, aID);
-        if (aNBT == null || aNBT.hasNoTags()) {
-            aNBT = new NBTTagCompound();
-            final MultiTileEntityContainer tTileEntityContainer = getNewTileEntityContainer(aID, aNBT);
-            if (tTileEntityContainer != null) ((IMultiTileEntity) tTileEntityContainer.mTileEntity).writeItemNBT(aNBT);
+    public ItemStack getItem(int metaId, long amount, NBTTagCompound nbt) {
+        final ItemStack stack = new ItemStack(block, (int) amount, metaId);
+        if (nbt == null || nbt.hasNoTags()) {
+            nbt = new NBTTagCompound();
+
         }
-        rStack.setTagCompound(aNBT);
-        return rStack;
+        stack.setTagCompound(nbt);
+        return stack;
     }
 
-    public String getLocal(int aID) {
-        return StatCollector.translateToLocal(mNameInternal + "." + aID + ".name");
+    public String getLocal(int metaId) {
+        return StatCollector.translateToLocal(internalName + "." + metaId + ".name");
     }
 
-    public MultiTileEntityClassContainer getClassContainer(int aID) {
-        return mRegistry.get((short) aID);
+    public MultiTileEntity getCachedTileEntity(ItemStack stack) {
+        return getCachedTileEntity(Items.feather.getDamage(stack));
     }
 
-    public MultiTileEntityClassContainer getClassContainer(ItemStack aStack) {
-        return mRegistry.get((short) Items.feather.getDamage(aStack));
+    public MultiTileEntity getCachedTileEntity(int metaId) {
+        MultiTileEntityClassContainer clazz = registry.get(metaId);
+        if (clazz == null) return null;
+        return clazz.getOriginalTileEntity();
     }
 
-    public TileEntity getNewTileEntity(int aID) {
-        final MultiTileEntityContainer tContainer = getNewTileEntityContainer(null, 0, 0, 0, aID, null);
-        return tContainer == null ? null : tContainer.mTileEntity;
+    public MultiTileEntity getNewTileEntity(@Nonnull final ItemStack stack) {
+        return getNewTileEntity(Items.feather.getDamage(stack));
     }
 
-    public MultiTileEntityContainer getNewTileEntityContainer(World aWorld, int aX, int aY, int aZ, int aID,
-        NBTTagCompound aNBT) {
-        final MultiTileEntityClassContainer tClass = mRegistry.get((short) aID);
-        if (tClass == null || tClass.mBlock == null) return null;
-        final MultiTileEntityContainer rContainer = new MultiTileEntityContainer(
-            (TileEntity) GT_Utility.callConstructor(tClass.mClass, -1, null, true),
-            tClass.mBlock,
-            tClass.mBlockMetaData);
-        if (rContainer.mTileEntity == null) return null;
-        rContainer.mTileEntity.setWorldObj(aWorld);
-        rContainer.mTileEntity.xCoord = aX;
-        rContainer.mTileEntity.yCoord = aY;
-        rContainer.mTileEntity.zCoord = aZ;
-        ((IMultiTileEntity) rContainer.mTileEntity).initFromNBT(
-            aNBT == null || aNBT.hasNoTags() ? tClass.mParameters : GT_Util.fuseNBT(aNBT, tClass.mParameters),
-            (short) aID,
-            (short) Block.getIdFromBlock(mBlock));
-        return rContainer;
+    public MultiTileEntity getNewTileEntity(final int metaId) {
+        MultiTileEntityClassContainer clazz = registry.get(metaId);
+        if (clazz == null) return null;
+        MultiTileEntity te = (MultiTileEntity) GT_Utility.callConstructor(clazz.getClazz(), 0, null, true);
+        te.initFromNBT(clazz.getParameters(), Block.getIdFromBlock(block), metaId);
+        return te;
     }
 
-    public TileEntity getNewTileEntity(World aWorld, int aX, int aY, int aZ, int aID) {
-        final MultiTileEntityContainer tContainer = getNewTileEntityContainer(aWorld, aX, aY, aZ, aID, null);
-        return tContainer == null ? null : tContainer.mTileEntity;
+    public MultiTileEntityClassContainer getClassContainer(int metaId) {
+        return registry.get(metaId);
     }
 
-    public TileEntity getNewTileEntity(ItemStack aStack) {
-        final MultiTileEntityContainer tContainer = getNewTileEntityContainer(
-            null,
-            0,
-            0,
-            0,
-            Items.feather.getDamage(aStack),
-            aStack.getTagCompound());
-        return tContainer == null ? null : tContainer.mTileEntity;
-    }
-
-    public TileEntity getNewTileEntity(World aWorld, int aX, int aY, int aZ, ItemStack aStack) {
-        final MultiTileEntityContainer tContainer = getNewTileEntityContainer(
-            aWorld,
-            aX,
-            aY,
-            aZ,
-            Items.feather.getDamage(aStack),
-            aStack.getTagCompound());
-        return tContainer == null ? null : tContainer.mTileEntity;
-    }
-
-    public MultiTileEntityContainer getCachedTileEntityContainer(ItemStack stack) {
-        MultiTileEntityContainer container = cachedTileEntityContainers.get(Items.feather.getDamage(stack));
-        if (container == null) {
-            container = getNewTileEntityContainer(stack);
-            cachedTileEntityContainers.put(Items.feather.getDamage(stack), container);
-        }
-        return container;
-    }
-
-    public MultiTileEntityContainer getNewTileEntityContainer(ItemStack aStack) {
-        return getNewTileEntityContainer(null, 0, 0, 0, Items.feather.getDamage(aStack), aStack.getTagCompound());
-    }
-
-    public MultiTileEntityContainer getNewTileEntityContainer(World aWorld, int aX, int aY, int aZ, ItemStack aStack) {
-        return getNewTileEntityContainer(aWorld, aX, aY, aZ, Items.feather.getDamage(aStack), aStack.getTagCompound());
-    }
-
-    public MultiTileEntityContainer getNewTileEntityContainer(int aID, NBTTagCompound aNBT) {
-        return getNewTileEntityContainer(null, 0, 0, 0, aID, aNBT);
+    public MultiTileEntityBlock getBlock() {
+        return block;
     }
 }

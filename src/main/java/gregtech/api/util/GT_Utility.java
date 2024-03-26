@@ -1,6 +1,7 @@
 package gregtech.api.util;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
+import static gregtech.api.enums.GT_Values.COMPASS_DIRECTIONS;
 import static gregtech.api.enums.GT_Values.D1;
 import static gregtech.api.enums.GT_Values.E;
 import static gregtech.api.enums.GT_Values.GT;
@@ -4978,5 +4979,14 @@ public class GT_Utility {
             .addVector(lookVec.xCoord * reachDistance, lookVec.yCoord * reachDistance, lookVec.zCoord * reachDistance);
 
         return viewpoint.worldObj.rayTraceBlocks(posVec, modifiedPosVec);
+    }
+
+    public static ForgeDirection getSideFromPlayerFacing(Entity player) {
+        if (player == null) return ForgeDirection.UNKNOWN;
+        if (player.rotationPitch >= 65) return ForgeDirection.UP;
+        if (player.rotationPitch <= -65) return ForgeDirection.DOWN;
+        final byte facing = COMPASS_DIRECTIONS[MathHelper.floor_double(0.5D + 4.0F * player.rotationYaw / 360.0F)
+            & 0x3];
+        return ForgeDirection.getOrientation(facing);
     }
 }
