@@ -18,7 +18,7 @@ public class TextureSet {
         TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
         TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
         TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK,
+        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK,
         TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK,
         TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK,
         TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK,
@@ -39,15 +39,15 @@ public class TextureSet {
         "/toolHeadChainsaw", "/toolHeadWrench", "/toolHeadUniversalSpade", "/toolHeadSense", "/toolHeadPlow",
         "/toolHeadArrow", "/toolHeadScrewdriver", "/toolHeadBuzzSaw", "/toolHeadSoldering", "/nanites", "/wireFine",
         "/gearGtSmall", "/rotor", "/stickLong", "/springSmall", "/spring", "/arrowGtWood", "/arrowGtPlastic",
-        "/gemChipped", "/gemFlawed", "/gemFlawless", "/gemExquisite", "/gearGt", aTextVoidDir, aTextVoidDir,
-        aTextVoidDir, "/oreSmall", "/ore", "/wire", "/foil", "/block1", "/block2", "/block3", "/block4", "/block5",
-        "/block6", "/pipeSide", "/pipeTiny", "/pipeSmall", "/pipeMedium", "/pipeLarge", "/pipeHuge", "/frameGt",
-        "/pipeQuadruple", "/pipeNonuple", aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
-        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, "/crateGtDust", "/crateGtIngot",
-        "/crateGtGem", "/crateGtPlate", "/turbineBlade", aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
+        "/gemChipped", "/gemFlawed", "/gemFlawless", "/gemExquisite", "/gearGt", "/oreRaw", aTextVoidDir, aTextVoidDir,
+        "/oreSmall", "/ore", "/wire", "/foil", "/block1", "/block2", "/block3", "/block4", "/block5", "/block6",
+        "/pipeSide", "/pipeTiny", "/pipeSmall", "/pipeMedium", "/pipeLarge", "/pipeHuge", "/frameGt", "/pipeQuadruple",
+        "/pipeNonuple", aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
+        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, "/crateGtDust", "/crateGtIngot", "/crateGtGem",
+        "/crateGtPlate", "/turbineBlade", aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
         aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
         aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
-        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, "/handleMallet", "/toolHeadMallet", };
+        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, "/handleMallet", "/toolHeadMallet", };
 
     public boolean is_custom = false;
 

@@ -34,6 +34,7 @@ import gregtech.loaders.oreprocessing.ProcessingPipe;
 import gregtech.loaders.oreprocessing.ProcessingPlank;
 import gregtech.loaders.oreprocessing.ProcessingPlate;
 import gregtech.loaders.oreprocessing.ProcessingPure;
+import gregtech.loaders.oreprocessing.ProcessingRawOre;
 import gregtech.loaders.oreprocessing.ProcessingRecycling;
 import gregtech.loaders.oreprocessing.ProcessingRotor;
 import gregtech.loaders.oreprocessing.ProcessingRound;
@@ -89,6 +90,7 @@ public class GT_Loader_OreProcessing implements Runnable {
         new ProcessingOre();
         new ProcessingOrePoor();
         new ProcessingOreSmelting();
+        new ProcessingRawOre();
         new ProcessingPipe();
         new ProcessingPlank();
         new ProcessingPlate();
