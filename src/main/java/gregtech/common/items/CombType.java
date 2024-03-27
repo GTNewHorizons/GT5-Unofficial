@@ -211,6 +211,7 @@ public enum CombType {
         ItemComb.Voltage.MV),
     PALLADIUM(164, "palladium", true, Materials.Palladium, 50, 0x8B8B8B, 0xF1D9D9, ItemComb.Voltage.MV),
     INFUSEDGOLD(165, "infusedgold", true, Materials.InfusedGold, 50, 0x80641E, 0xFFC83C, ItemComb.Voltage.IV),
+    DIDDY(166, "diddy", true, Materials._NULL, 100, 0x552582, 0xFDB927, ItemComb.Voltage.MV),
 
     // ALWAYS KEEP _NULL AT THE BOTTOM
     _NULL(-1, "INVALIDCOMB", false, Materials._NULL, 0, 0, 0);
