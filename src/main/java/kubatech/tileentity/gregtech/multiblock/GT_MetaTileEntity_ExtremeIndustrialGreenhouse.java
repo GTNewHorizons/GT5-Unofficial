@@ -140,7 +140,37 @@ import kubatech.client.effect.CropRenderer;
 public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
     extends KubaTechGTMultiBlockBase<GT_MetaTileEntity_ExtremeIndustrialGreenhouse> {
 
+    /***
+     * BALANCE OF THE IC2 MODE:
+     * (let T = EIG_BALANCE_IC2_ACCELERATOR_TIER)
+     * All IC2 crops are simulated and all drops are generated based on the real crop drops.
+     * T is a tick accelerator tier for the IC2 crops,
+     * Each crop in the EIG is accelerated using T tier accelerator
+     * (Accelerators in the game are defined as 2^T acceleration, 8*(4^T) voltage, 6 amps)
+     * IC2 mode is unlocked at T+1 tier (glass and power)
+     * And each amp of T gives one crop slot, EIG only consumes 1 AMP of a tier that it is at
+     * (EIG starts at 4 crops (T+1 tier) and each tier quadruples the amount of slots)
+     * Each crop is accelerated 2^T times
+     * Summary:
+     * Accelerators in EIG are a bit cheaper than on the crop field (4 amps instead of 6 amps)
+     * There are 4 crops touching the accelerator (1 AMP for 1 accelerated crop)
+     *
+     * Changing T one number down will buff the EIG twice, as well as changing it up will nerf the EIG twice
+     * (That is because accelerators are imperfectly scaled in game LV = 2x, MV = 4x, ...)
+     */
+    public static final int EIG_BALANCE_IC2_ACCELERATOR_TIER = 5; // IV
+
+    /***
+     * All crops above this threshold will die if WEED-EX 9000 isn't supplied.
+     * Consider changing this value after making changes to the EIG_BALANCE_IC2_ACCELERATOR_TIER.
+     */
+    private static final int EIG_CROP_LIMIT_FOR_WEEDEX9000_REQUIREMENT = 1000;
+
     private static final boolean debug = false;
+
+    /***
+     * Changing this variable will cause ALL EIGs in the world to regenerate their drop tables.
+     */
     private static final int EIG_MATH_VERSION = 0;
     private static final int CONFIGURATION_WINDOW_ID = 999;
 
@@ -288,7 +318,9 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
             .addInfo("Use screwdriver while sneaking to enable/disable IC2 mode")
             .addInfo("Use wire cutters to give incoming IC2 crops 0 humidity")
             .addInfo("Uses 1000L of water per crop per operation")
-            .addInfo("If there are >= 1000 crops -> Uses 1L of Weed-EX 9000 per crop per second")
+            .addInfo(
+                "If there are >= " + EIG_CROP_LIMIT_FOR_WEEDEX9000_REQUIREMENT
+                    + " crops -> Uses 1L of Weed-EX 9000 per crop per second")
             .addInfo("Otherwise, around 1% of crops will die each operation")
             .addInfo("You can insert fertilizer each operation to get more drops (max +400%)")
             .addInfo("-------------------- SETUP   MODE --------------------")
@@ -309,13 +341,15 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
             .addInfo("Will automatically craft seeds if they are not dropped")
             .addInfo("1 Fertilizer per 1 crop +200%")
             .addInfo("-------------------- IC2    CROPS --------------------")
-            .addInfo("Minimal tier: " + voltageTooltipFormatted(6))
-            .addInfo("Need " + voltageTooltipFormatted(6) + " glass tier")
+            .addInfo("Minimal tier: " + voltageTooltipFormatted(EIG_BALANCE_IC2_ACCELERATOR_TIER + 1))
+            .addInfo("Need " + voltageTooltipFormatted(EIG_BALANCE_IC2_ACCELERATOR_TIER + 1) + " glass tier")
             .addInfo("Starting with 4 slots")
             .addInfo("Every slot gives 1 crop")
-            .addInfo("Every tier past " + voltageTooltipFormatted(6) + ", slots are multiplied by 4")
+            .addInfo(
+                "Every tier past " + voltageTooltipFormatted(EIG_BALANCE_IC2_ACCELERATOR_TIER + 1)
+                    + ", slots are multiplied by 4")
             .addInfo("Process time: 5 sec")
-            .addInfo("All crops are accelerated by x32 times")
+            .addInfo("All crops are accelerated by x" + (1 << EIG_BALANCE_IC2_ACCELERATOR_TIER) + " times")
             .addInfo("1 Fertilizer per 1 crop +10%")
             .addInfo(StructureHologram)
             .addSeparator()
@@ -401,8 +435,8 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
 
     private void updateMaxSlots() {
         int tier = getVoltageTier();
-        if (tier < (isIC2Mode ? 6 : 4)) mMaxSlots = 0;
-        else if (isIC2Mode) mMaxSlots = 4 << (2 * (tier - 6));
+        if (tier < (isIC2Mode ? (EIG_BALANCE_IC2_ACCELERATOR_TIER + 1) : 4)) mMaxSlots = 0;
+        else if (isIC2Mode) mMaxSlots = 4 << (2 * (tier - (EIG_BALANCE_IC2_ACCELERATOR_TIER + 1)));
         else mMaxSlots = 1 << (tier - 4);
     }
 
@@ -418,7 +452,7 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
         }
 
         if (setupphase > 0) {
-            if ((mStorage.size() >= mMaxSlots && setupphase == 1) || (mStorage.size() == 0 && setupphase == 2))
+            if ((mStorage.size() >= mMaxSlots && setupphase == 1) || (mStorage.isEmpty() && setupphase == 2))
                 return CheckRecipeResultRegistry.NO_RECIPE;
 
             if (setupphase == 1) {
@@ -449,7 +483,7 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
         waterusage = 0;
         weedexusage = 0;
         for (GreenHouseSlot s : mStorage) waterusage += s.input.stackSize;
-        if (waterusage >= 1000) weedexusage = waterusage;
+        if (waterusage >= EIG_CROP_LIMIT_FOR_WEEDEX9000_REQUIREMENT) weedexusage = waterusage;
         waterusage *= 1000;
 
         List<GT_MetaTileEntity_Hatch_Input> fluids = mInputHatches;
@@ -513,12 +547,15 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
         double multiplier = 1.d + (((double) boost / (double) maxboost) * 4d);
 
         if (isIC2Mode) {
-            if (glasTier < 6) return SimpleCheckRecipeResult.ofFailure("EIG_ic2glass");
+            if (glasTier < (EIG_BALANCE_IC2_ACCELERATOR_TIER + 1))
+                return SimpleCheckRecipeResult.ofFailure("EIG_ic2glass");
             this.mMaxProgresstime = 100;
             List<ItemStack> outputs = new ArrayList<>();
             for (int i = 0; i < Math.min(mMaxSlots, mStorage.size()); i++) outputs.addAll(
                 mStorage.get(i)
-                    .getIC2Drops(this, ((double) this.mMaxProgresstime * 32d) * multiplier));
+                    .getIC2Drops(
+                        this,
+                        ((double) this.mMaxProgresstime * (1 << EIG_BALANCE_IC2_ACCELERATOR_TIER)) * multiplier));
             this.mOutputItems = outputs.toArray(new ItemStack[0]);
         } else {
             this.mMaxProgresstime = Math.max(20, 100 / (tier - 3)); // Min 1 s
@@ -552,7 +589,7 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
             for (GT_MetaTileEntity_Hatch_Energy hatchEnergy : this.mEnergyHatches)
                 if (this.glasTier < hatchEnergy.mTier) return false;
 
-        boolean valid = this.mMaintenanceHatches.size() == 1 && this.mEnergyHatches.size() >= 1 && this.mCasing >= 70;
+        boolean valid = this.mMaintenanceHatches.size() == 1 && !this.mEnergyHatches.isEmpty() && this.mCasing >= 70;
 
         if (valid) updateMaxSlots();
 
@@ -980,14 +1017,16 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
 
     final Map<String, Double> dropprogress = new HashMap<>();
 
-    private static class GreenHouseSlot extends InventoryCrafting {
+    public static class GreenHouseSlot extends InventoryCrafting {
+
+        private static final int NUMBER_OF_GENERATIONS_TO_MAKE = 10;
 
         final ItemStack input;
         Block crop;
         ArrayList<ItemStack> customDrops = null;
         ItemStack undercrop = null;
         List<ItemStack> drops;
-        boolean isValid;
+        public boolean isValid;
         boolean isIC2Crop;
         boolean noHumidity;
         int growthticks;
@@ -1259,6 +1298,14 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
                     te.setGain(ga);
                     te.setResistance(re);
 
+                    if (noHumidity) te.humidity = 0;
+                    else {
+                        te.waterStorage = 200;
+                        te.humidity = te.updateHumidity();
+                    }
+                    te.airQuality = te.updateAirQuality();
+                    te.nutrients = te.updateNutrients();
+
                     ItemStack tobeused = null;
 
                     if (undercrop != null) setBlock(undercrop, xyz[0], xyz[1] - 2, xyz[2], world);
@@ -1290,9 +1337,11 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
 
                     // GENERATE DROPS
                     generations = new ArrayList<>();
-                    out: for (int i = 0; i < 10; i++) // get 10 generations
+                    int afterHarvestCropSize = 0;
+                    out: for (int i = 0; i < NUMBER_OF_GENERATIONS_TO_MAKE; i++) // get 10 generations
                     {
                         ItemStack[] st = te.harvest_automated(false);
+                        afterHarvestCropSize = te.getSize();
                         te.setSize((byte) cc.maxSize());
                         if (st == null) continue;
                         if (st.length == 0) continue;
@@ -1303,15 +1352,21 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
                     rn = new Random();
 
                     // CHECK GROWTH SPEED
-                    te.humidity = (byte) (noHumidity ? 0 : 12); // humidity with full water storage or 0 humidity
-                    te.airQuality = 6; // air quality when sky is seen
-                    te.nutrients = 8; // nutrients with full nutrient storage
 
-                    int dur = cc.growthDuration(te);
-                    int rate = te.calcGrowthRate();
-                    if (rate == 0) return; // should not be possible with those stats
-                    growthticks = (int) Math.ceil(
-                        ((double) dur / (double) rate) * (double) cc.maxSize() * (double) TileEntityCrop.tickRate);
+                    growthticks = 0;
+
+                    for (int i = afterHarvestCropSize; i < cc.maxSize(); i++) {
+                        te.setSize((byte) i);
+                        int grown = 0;
+                        do {
+                            int rate = te.calcGrowthRate();
+                            if (rate == 0) return;
+                            growthticks++;
+                            grown += rate;
+                        } while (grown < cc.growthDuration(te));
+                    }
+
+                    growthticks *= TileEntityCrop.tickRate;
                     if (growthticks < 1) growthticks = 1;
 
                     if (tobeused != null) tobeused.stackSize--;
@@ -1337,7 +1392,7 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
 
         public List<ItemStack> getIC2Drops(GT_MetaTileEntity_ExtremeIndustrialGreenhouse tileEntity,
             double timeelapsed) {
-            int r = rn.nextInt(10);
+            int r = rn.nextInt(NUMBER_OF_GENERATIONS_TO_MAKE);
             if (generations.size() <= r) return new ArrayList<>();
             double growthPercent = (timeelapsed / (double) growthticks);
             List<ItemStack> generation = generations.get(r);
@@ -1365,7 +1420,7 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
 
         public int addDrops(World world, int count) {
             if (drops == null) drops = new ArrayList<>();
-            if (customDrops != null && customDrops.size() > 0) {
+            if (customDrops != null && !customDrops.isEmpty()) {
                 @SuppressWarnings("unchecked")
                 ArrayList<ItemStack> d = (ArrayList<ItemStack>) customDrops.clone();
                 for (ItemStack x : drops) {

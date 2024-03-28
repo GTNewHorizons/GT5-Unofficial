@@ -100,4 +100,11 @@ dependencies {
     //runtimeOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev")
     //runtimeOnly("com.github.GTNewHorizons:BloodMagic:1.5.1:dev")
     //api("curse.maven:witchery-69673:2234410")
+
+    testImplementation('junit:junit:4.12')
+    functionalTestImplementation(platform('org.junit:junit-bom:5.9.2'))
+    functionalTestImplementation('org.junit.jupiter:junit-jupiter')
+    functionalTestImplementation('org.junit.platform:junit-platform-engine')
+    functionalTestImplementation('org.junit.platform:junit-platform-launcher')
+    functionalTestImplementation('org.junit.platform:junit-platform-reporting')
 }
