@@ -37,6 +37,11 @@ public class GT_LanguageManager {
      */
     public static Configuration sEnglishFile;
     /**
+     * If the game is running with en_US language. This does not get updated when user changes language in game;
+     * GT lang system cannot handle that anyway.
+     */
+    public static boolean isEN_US;
+    /**
      * If placeholder like %material should be used for writing lang entries to file.
      */
     public static boolean i18nPlaceholder = true;
@@ -125,14 +130,25 @@ public class GT_LanguageManager {
             sEnglishFile.save();
             hasUnsavedEntry = false;
         }
-        if (!tProperty.wasRead()) {
-            if (GregTech_API.sPostloadFinished) {
-                sEnglishFile.save();
-            } else {
-                hasUnsavedEntry = true;
+        String translation = tProperty.getString();
+        if (tProperty.wasRead()) {
+            if (isEN_US && !aEnglish.equals(translation)) {
+                tProperty.set(aEnglish);
+                markFileDirty();
+                return aEnglish;
             }
+        } else {
+            markFileDirty();
         }
-        return tProperty.getString();
+        return translation;
+    }
+
+    private static synchronized void markFileDirty() {
+        if (GregTech_API.sPostloadFinished) {
+            sEnglishFile.save();
+        } else {
+            hasUnsavedEntry = true;
+        }
     }
 
     public static String getTranslation(String aKey) {
