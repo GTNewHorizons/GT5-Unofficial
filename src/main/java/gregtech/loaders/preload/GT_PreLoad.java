@@ -104,6 +104,7 @@ public class GT_PreLoad {
             GT_FML_LOGGER.info("User lang is " + userLang);
             if (userLang.equals("en_US")) {
                 GT_FML_LOGGER.info("Loading GregTech.lang");
+                GT_LanguageManager.isEN_US = true;
                 GT_LanguageManager.sEnglishFile = new Configuration(new File(languageDir, "GregTech.lang"));
             } else {
                 String l10nFileName = "GregTech_" + userLang + ".lang";
@@ -113,10 +114,12 @@ public class GT_PreLoad {
                     GT_LanguageManager.sEnglishFile = new Configuration(l10nFile);
                 } else {
                     GT_FML_LOGGER.info("Cannot find l10n file " + l10nFileName + ", fallback to GregTech.lang");
+                    GT_LanguageManager.isEN_US = true;
                     GT_LanguageManager.sEnglishFile = new Configuration(new File(languageDir, "GregTech.lang"));
                 }
             }
         } else {
+            GT_LanguageManager.isEN_US = true;
             GT_LanguageManager.sEnglishFile = new Configuration(new File(languageDir, "GregTech.lang"));
         }
         GT_LanguageManager.sEnglishFile.load();
