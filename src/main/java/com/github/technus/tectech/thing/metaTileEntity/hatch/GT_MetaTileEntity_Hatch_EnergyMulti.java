@@ -3,10 +3,10 @@ package com.github.technus.tectech.thing.metaTileEntity.hatch;
 import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_POWER_TT;
 import static com.github.technus.tectech.util.CommonValues.V;
 import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.github.technus.tectech.util.CommonValues;
@@ -16,7 +16,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.util.GT_Utility;
 
 /**
  * Created by danie_000 on 16.12.2016.
@@ -34,10 +33,8 @@ public class GT_MetaTileEntity_Hatch_EnergyMulti extends GT_MetaTileEntity_Hatch
                 0,
                 new String[] { CommonValues.TEC_MARK_GENERAL,
                         translateToLocal("gt.blockmachines.hatch.energymulti.desc.0"),
-                        translateToLocal("gt.blockmachines.hatch.energymulti.desc.1") + ": "
-                                + EnumChatFormatting.AQUA
-                                + GT_Utility.formatNumbers(aAmp)
-                                + " A" }); // Multiple Ampere Energy Injector for Multiblocks
+                        translateToLocalFormatted("gt.blockmachines.hatch.energymulti.desc.2", aAmp + (aAmp >> 2)),
+                        translateToLocalFormatted("gt.blockmachines.hatch.energymulti.desc.3", aAmp) });
         Amperes = aAmp;
         TT_Utility.setTier(aTier, this);
     }
