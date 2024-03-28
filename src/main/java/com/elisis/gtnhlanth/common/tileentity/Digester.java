@@ -82,7 +82,7 @@ public class Digester extends GT_MetaTileEntity_EnhancedMultiBlockBase<Digester>
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return checkPiece(mName, 3, 3, 0);
+        return checkPiece(mName, 3, 3, 0) && !mMufflerHatches.isEmpty() && mMaintenanceHatches.size() == 1;
     }
 
     @Override

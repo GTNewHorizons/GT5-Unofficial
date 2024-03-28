@@ -87,7 +87,7 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return checkPiece(mName, 2, 3, 0);
+        return checkPiece(mName, 2, 3, 0) && mMaintenanceHatches.size() == 1;
     }
 
     @Override
