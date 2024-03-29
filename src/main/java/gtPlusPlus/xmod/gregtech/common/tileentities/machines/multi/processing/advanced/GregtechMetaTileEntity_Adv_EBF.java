@@ -125,6 +125,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<
                             ofChain(
                                     buildHatchAdder(GregtechMetaTileEntity_Adv_EBF.class)
                                             .adder(GregtechMetaTileEntity_Adv_EBF::addPyrotheumHatch).hatchId(968)
+                                            .shouldReject(x -> !x.mPyrotheumHatches.isEmpty())
                                             .casingIndex(CASING_TEXTURE_ID).dot(1).build(),
                                     buildHatchAdder(GregtechMetaTileEntity_Adv_EBF.class).atLeast(
                                             InputBus,
