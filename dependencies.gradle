@@ -41,7 +41,7 @@ dependencies {
     api("com.github.GTNewHorizons:ModularUI:1.1.42:dev")
     api("com.github.GTNewHorizons:waila:1.7.1:dev")
     api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-346-GTNH:dev")
-    api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.2.25-gtnh:dev")
+    api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.2.26-gtnh:dev")
 
     runtimeOnlyNonPublishable('com.github.GTNewHorizons:ForestryMC:4.8.7:dev')
     runtimeOnlyNonPublishable('com.github.GTNewHorizons:neiaddons:1.15.0:dev')
@@ -56,12 +56,12 @@ dependencies {
     compileOnlyApi("com.github.GTNewHorizons:BuildCraft:7.1.39:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.7.1:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:ProjectRed:4.9.5-GTNH:dev") { transitive = false }
-    compileOnlyApi("com.github.GTNewHorizons:ForestryMC:4.8.7:dev") { transitive = false }
+    compileOnlyApi("com.github.GTNewHorizons:ForestryMC:4.8.8:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:Railcraft:9.15.7:dev") { transitive = false }
 
     compileOnly("com.github.GTNewHorizons:EnderCore:0.4.6:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Galacticraft:3.1.3-GTNH:dev") { transitive = false }
-    compileOnly("com.github.GTNewHorizons:TinkersConstruct:1.11.12-GTNH:dev") { transitive = false }
+    compileOnly("com.github.GTNewHorizons:TinkersConstruct:1.11.13-GTNH:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Chisel:2.14.1-GTNH:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Translocators:1.2.1:dev") { transitive = false }
     compileOnly("curse.maven:cofh-core-69162:2388751") { transitive = false }
@@ -76,7 +76,7 @@ dependencies {
     annotationProcessor("com.google.auto.value:auto-value:1.10.1")
 
     // For testing iApiary
-    //runtimeOnlyNonPublishable("com.github.GTNewHorizons:ForestryMC:4.8.7:dev")
+    //runtimeOnlyNonPublishable("com.github.GTNewHorizons:ForestryMC:4.8.8:dev")
 
     testImplementation(platform('org.junit:junit-bom:5.9.2'))
     testImplementation('org.junit.jupiter:junit-jupiter')
