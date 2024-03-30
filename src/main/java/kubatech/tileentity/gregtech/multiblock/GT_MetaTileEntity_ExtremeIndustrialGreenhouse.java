@@ -870,18 +870,28 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
             .append("%)\n");
 
         for (Map.Entry<ItemStack, Double> drop : GUIDropProgress.entrySet()) {
-            ret.append(
-                drop.getKey()
-                    .getDisplayName())
-                .append(": ")
+            int outputSize = Arrays.stream(mOutputItems)
+                .filter(s -> s.isItemEqual(drop.getKey()))
+                .mapToInt(i -> i.stackSize)
+                .sum();
+            ret.append(EnumChatFormatting.AQUA)
                 .append(
-                    String.format(
-                        "%.2f (+%d)\n",
-                        drop.getValue(),
-                        Arrays.stream(mOutputItems)
-                            .filter(s -> s.isItemEqual(drop.getKey()))
-                            .mapToInt(i -> i.stackSize)
-                            .sum()));
+                    drop.getKey()
+                        .getDisplayName())
+                .append(EnumChatFormatting.WHITE)
+                .append(": ");
+            if (outputSize == 0) {
+                ret.append(String.format("%.2f", drop.getValue() * 100))
+                    .append("%\n");
+            } else {
+                ret.append(EnumChatFormatting.GOLD)
+                    .append(
+                        String.format(
+                            "x%d %s(+%.2f/sec)\n",
+                            outputSize,
+                            EnumChatFormatting.WHITE,
+                            (double) outputSize / (mMaxProgresstime / 20)));
+            }
         }
 
         return ret.toString();
