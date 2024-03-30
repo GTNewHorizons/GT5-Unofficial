@@ -100,11 +100,10 @@ public class Research {
                         GregTech_API.sThaumcraftCompat.addInfusionRecipe(
                                 "ESSENTIA_GENERATOR",
                                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Thaumium, 1),
-                                new ItemStack[] {
-                                        GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.StainlessSteel, 1),
+                                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Titanium, 1),
                                         GT_OreDictUnificator.get(OrePrefixes.plate, Materials.ElectricalSteel, 1),
                                         GT_OreDictUnificator.get(OrePrefixes.plate, Materials.ElectricalSteel, 1),
-                                        ItemList.Electric_Pump_HV.get(1L), new ItemStack(ConfigBlocks.blockTube, 1, 4),
+                                        ItemList.Electric_Pump_EV.get(1L), new ItemStack(ConfigBlocks.blockTube, 1, 4),
                                         new ItemStack(ConfigBlocks.blockCosmeticOpaque, 1, 2), },
                                 ItemRefer.Essentia_Cell_T1.get(1),
                                 4,
