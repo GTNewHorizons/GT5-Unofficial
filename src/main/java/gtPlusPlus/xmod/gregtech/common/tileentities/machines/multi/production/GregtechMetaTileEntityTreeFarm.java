@@ -25,6 +25,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -111,6 +112,9 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
                 .addInfo("Output multiplier is equal to: 2*tier^2 - 2*tier + 5")
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 3, true)
                 .addController("Front center").addCasingInfoMin(mCasingName, 8, false).addInputBus("Any casing", 1)
+                .addStructureInfo(
+                        EnumChatFormatting.YELLOW
+                                + "Stocking Input Busses and Crafting Input Busses/Buffers are not allowed!")
                 .addOutputBus("Any casing", 1).addEnergyHatch("Any casing", 1).addMaintenanceHatch("Any casing", 1)
                 .addMufflerHatch("Any casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
@@ -138,16 +142,14 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
     }
 
     @Override
-    public boolean checkHatch() {
+    public boolean addInputBusToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         // Tools from a stocking inout bus can not be damaged, this would cause an infinite durability exploit.
         // Therefore disallow ME input bus.
-        if (!super.checkHatch()) return false;
-        for (GT_MetaTileEntity_Hatch_InputBus inputBus : mInputBusses) {
-            if (inputBus instanceof GT_MetaTileEntity_Hatch_InputBus_ME) {
-                return false;
-            }
-        }
-        return true;
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus_ME) return false;
+        return super.addInputBusToMachineList(aTileEntity, aBaseCasingIndex);
     }
 
     @Override
