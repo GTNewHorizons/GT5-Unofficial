@@ -2275,6 +2275,10 @@ public class GT_ModHandler {
                             (int) ic2.api.item.ElectricItem.manager.getCharge(aStack),
                             (EntityPlayer) aPlayer);
                         return false;
+                    } else {
+                        GT_Utility.sendChatToPlayer(
+                            (EntityPlayer) aPlayer,
+                            GT_Utility.trans("094.1", "Not enough soldering material!"));
                     }
                 }
             } else {
@@ -2311,7 +2315,6 @@ public class GT_ModHandler {
                 }
             }
         }
-        GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("094.1", "Not enough soldering material!"));
         return false;
     }
 
