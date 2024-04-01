@@ -39,7 +39,7 @@ dependencies {
     api("com.github.GTNewHorizons:NotEnoughItems:2.5.25-GTNH:dev")
     api("com.github.GTNewHorizons:GTNHLib:0.2.10:dev")
     api("com.github.GTNewHorizons:ModularUI:1.1.42:dev")
-    api("com.github.GTNewHorizons:waila:1.7.1:dev")
+    api("com.github.GTNewHorizons:waila:1.7.2:dev")
     api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-346-GTNH:dev")
     api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.2.26-gtnh:dev")
 
