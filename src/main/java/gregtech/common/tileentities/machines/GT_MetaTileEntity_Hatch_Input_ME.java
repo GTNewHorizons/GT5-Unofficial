@@ -229,14 +229,14 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
         CheckRecipeResult checkRecipeResult = CheckRecipeResultRegistry.SUCCESSFUL;
         AENetworkProxy proxy = getProxy();
 
-        try {
-            IMEMonitor<IAEFluidStack> sg = proxy.getStorage()
-                .getFluidInventory();
+        for (int i = 0; i < SLOT_COUNT; ++i) {
+            FluidStack oldStack = shadowStoredFluids[i];
+            int toExtract = savedStackSizes[i] - (oldStack != null ? oldStack.amount : 0);
+            if (toExtract <= 0) continue;
 
-            for (int i = 0; i < SLOT_COUNT; ++i) {
-                FluidStack oldStack = shadowStoredFluids[i];
-                int toExtract = savedStackSizes[i] - (oldStack != null ? oldStack.amount : 0);
-                if (toExtract <= 0) continue;
+            try {
+                IMEMonitor<IAEFluidStack> sg = proxy.getStorage()
+                    .getFluidInventory();
 
                 IAEFluidStack request = AEFluidStack.create(storedFluids[i]);
                 request.setStackSize(toExtract);
@@ -249,14 +249,16 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                     checkRecipeResult = SimpleCheckRecipeResult
                         .ofFailurePersistOnShutdown("stocking_hatch_fail_extraction");
                 }
-                shadowStoredFluids[i] = null;
-                savedStackSizes[i] = 0;
-                if (storedInformationFluids[i] != null && storedInformationFluids[i].amount <= 0) {
-                    storedInformationFluids[i] = null;
-                }
+            } catch (GridAccessException ignored) {
+                controller.stopMachine();
+                checkRecipeResult = SimpleCheckRecipeResult
+                    .ofFailurePersistOnShutdown("stocking_hatch_fail_extraction");
             }
-        } catch (GridAccessException e) {
-            throw new RuntimeException(e);
+            shadowStoredFluids[i] = null;
+            savedStackSizes[i] = 0;
+            if (storedInformationFluids[i] != null && storedInformationFluids[i].amount <= 0) {
+                storedInformationFluids[i] = null;
+            }
         }
 
         processingRecipe = false;
@@ -381,6 +383,11 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
 
     public FluidStack getMatchingFluidStack(FluidStack fluidStack) {
         if (fluidStack == null) return null;
+
+        AENetworkProxy proxy = getProxy();
+        if (proxy == null || !proxy.isActive()) {
+            return null;
+        }
 
         for (int i = 0; i < storedFluids.length; i++) {
             if (storedFluids[i] == null) {
