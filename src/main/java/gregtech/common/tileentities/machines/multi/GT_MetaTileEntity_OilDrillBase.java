@@ -404,7 +404,7 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
                         "GT5U.gui.text.pump_rate.1",
                         EnumChatFormatting.AQUA + numberFormat.format(getFlowRatePerTick()))
                         + StatCollector.translateToLocal("GT5U.gui.text.pump_rate.2"),
-                    getFlowRatePerOperation() + StatCollector.translateToLocal("GT5U.gui.text.pump_recovery.2"));
+                    mOilFlow + StatCollector.translateToLocal("GT5U.gui.text.pump_recovery.2"));
             } else {
                 builder.add(failureReason);
             }
@@ -426,11 +426,6 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
 
     protected int getFlowRatePerTick() {
         return this.mMaxProgresstime > 0 ? (mOilFlow / this.mMaxProgresstime) : 0;
-    }
-
-    protected int getFlowRatePerOperation() {
-        return (mOutputFluids != null && mOutputFluids.length > 0 && mOutputFluids[0] != null) ? mOutputFluids[0].amount
-            : 0;
     }
 
     @NotNull
@@ -484,10 +479,7 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
             .widget(new FakeSyncWidget.IntegerSyncer(() -> workState, newInt -> workState = newInt))
             .widget(new FakeSyncWidget.StringSyncer(this::getFluidName, newString -> clientFluidType = newString))
             .widget(new FakeSyncWidget.IntegerSyncer(this::getFlowRatePerTick, newInt -> clientFlowPerTick = newInt))
-            .widget(
-                new FakeSyncWidget.IntegerSyncer(
-                    this::getFlowRatePerOperation,
-                    newInt -> clientFlowPerOperation = newInt));
+            .widget(new FakeSyncWidget.IntegerSyncer(() -> mOilFlow, newInt -> clientFlowPerOperation = newInt));
     }
 
     @Override
