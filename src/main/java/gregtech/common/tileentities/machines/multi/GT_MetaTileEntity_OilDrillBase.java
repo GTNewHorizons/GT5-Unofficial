@@ -404,7 +404,7 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
                         "GT5U.gui.text.pump_rate.1",
                         EnumChatFormatting.AQUA + numberFormat.format(getFlowRatePerTick()))
                         + StatCollector.translateToLocal("GT5U.gui.text.pump_rate.2"),
-                    getReservoirContents() + StatCollector.translateToLocal("GT5U.gui.text.pump_recovery.2"));
+                    getFlowRatePerOperation() + StatCollector.translateToLocal("GT5U.gui.text.pump_recovery.2"));
             } else {
                 builder.add(failureReason);
             }
@@ -428,6 +428,11 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
         return this.mMaxProgresstime > 0 ? (mOilFlow / this.mMaxProgresstime) : 0;
     }
 
+    protected int getFlowRatePerOperation() {
+        return (mOutputFluids != null && mOutputFluids.length > 0 && mOutputFluids[0] != null) ? mOutputFluids[0].amount
+            : 0;
+    }
+
     @NotNull
     private String getFluidName() {
         if (mOilId > 0) {
@@ -438,22 +443,8 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
     }
 
     private @NotNull String clientFluidType = "";
-    private int clientPumpRate = 0;
-    private @NotNull String clientReservoirContents = "";
-
-    @NotNull
-    private String getReservoirContents() {
-        int amount = 0;
-        for (Chunk chunk : mOilFieldChunks) {
-            final FluidStack fluidStack = undergroundOil(chunk, -1);
-            if (fluidStack != null) {
-                amount += fluidStack.amount;
-            }
-        }
-
-        return StatCollector
-            .translateToLocalFormatted("GT5U.gui.text.pump_recovery.1", GT_Utility.formatNumbers(amount));
-    }
+    private int clientFlowPerTick = 0;
+    private int clientFlowPerOperation = 0;
 
     protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
@@ -474,7 +465,7 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
                         () -> EnumChatFormatting.GRAY
                             + StatCollector.translateToLocalFormatted(
                                 "GT5U.gui.text.pump_rate.1",
-                                EnumChatFormatting.AQUA + numberFormat.format(clientPumpRate))
+                                EnumChatFormatting.AQUA + numberFormat.format(clientFlowPerTick))
                             + EnumChatFormatting.GRAY
                             + StatCollector.translateToLocal("GT5U.gui.text.pump_rate.2"))
                     .setTextAlignment(Alignment.CenterLeft)
@@ -482,18 +473,21 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
             .widget(
                 new TextWidget()
                     .setStringSupplier(
-                        () -> EnumChatFormatting.GRAY + clientReservoirContents
+                        () -> EnumChatFormatting.GRAY
+                            + StatCollector.translateToLocalFormatted(
+                                "GT5U.gui.text.pump_recovery.1",
+                                EnumChatFormatting.AQUA + numberFormat.format(clientFlowPerOperation))
                             + EnumChatFormatting.GRAY
                             + StatCollector.translateToLocal("GT5U.gui.text.pump_recovery.2"))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setEnabled(widget -> getBaseMetaTileEntity().isActive() && workState == STATE_AT_BOTTOM))
             .widget(new FakeSyncWidget.IntegerSyncer(() -> workState, newInt -> workState = newInt))
             .widget(new FakeSyncWidget.StringSyncer(this::getFluidName, newString -> clientFluidType = newString))
-            .widget(new FakeSyncWidget.IntegerSyncer(this::getFlowRatePerTick, newInt -> clientPumpRate = newInt))
+            .widget(new FakeSyncWidget.IntegerSyncer(this::getFlowRatePerTick, newInt -> clientFlowPerTick = newInt))
             .widget(
-                new FakeSyncWidget.StringSyncer(
-                    this::getReservoirContents,
-                    newString -> clientReservoirContents = newString));
+                new FakeSyncWidget.IntegerSyncer(
+                    this::getFlowRatePerOperation,
+                    newInt -> clientFlowPerOperation = newInt));
     }
 
     @Override
