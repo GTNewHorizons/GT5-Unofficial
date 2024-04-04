@@ -20,4 +20,4 @@ GTNH changes are under the MIT License to maintain upstream compatibility.
 
 # Credit
 
-Original mod from Tecnus, link was broken with upstream due to multi year inactivity.
+Original mod from Technus, link was broken with upstream due to multi year inactivity.
