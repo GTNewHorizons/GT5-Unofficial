@@ -17,3 +17,7 @@ https://github.com/Technus/TecTech/blob/master/src/main/java/com/github/technus/
 Copyright (c) 2017-2022 TecTech and licensed under the MIT License
 
 GTNH changes are under the MIT License to maintain upstream compatibility.
+
+# Credit
+
+Original mod from Tecnus, link was broken with upstream due to multi year inactivity.
