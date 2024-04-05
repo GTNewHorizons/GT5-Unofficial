@@ -907,6 +907,10 @@ public class GTMTE_LapotronicSuperCapacitor extends
         NumberFormat nf = NumberFormat.getNumberInstance();
         int secInterval = DURATION_AVERAGE_TICKS / 20;
 
+        // Caching avgin and avgout
+        double avgIn = getAvgIn();
+        double avgOut = getAvgOut();
+
         final ArrayList<String> ll = new ArrayList<>();
         ll.add(EnumChatFormatting.YELLOW + "Operational Data:" + EnumChatFormatting.RESET);
         ll.add("EU Stored (exact): " + nf.format(stored) + "EU");
@@ -917,8 +921,27 @@ public class GTMTE_LapotronicSuperCapacitor extends
         ll.add("Passive Loss: " + nf.format(passiveDischargeAmount) + "EU/t");
         ll.add("EU IN: " + GT_Utility.formatNumbers(inputLastTick) + "EU/t");
         ll.add("EU OUT: " + GT_Utility.formatNumbers(outputLastTick) + "EU/t");
-        ll.add("Avg EU IN: " + nf.format(getAvgIn()) + " (last " + secInterval + " seconds)");
-        ll.add("Avg EU OUT: " + nf.format(getAvgOut()) + " (last " + secInterval + " seconds)");
+        ll.add("Avg EU IN: " + nf.format(avgIn) + " (last " + secInterval + " seconds)");
+        ll.add("Avg EU OUT: " + nf.format(avgOut) + " (last " + secInterval + " seconds)");
+
+        // Check if the system is charging or discharging
+        if (avgIn > avgOut) {
+            // Calculate time to full if charging
+            if (avgIn != 0) {
+                double timeToFull = (capacity.longValue() - stored.longValue()) / avgIn / 60;
+                ll.add("Time to Full: " + nf.format(timeToFull) + " minutes");
+            } else {
+                ll.add("Completely full");
+            }
+        } else {
+            // Calculate time to empty if discharging
+            if (avgOut != 0) {
+                double timeToEmpty = stored.longValue() / avgOut / 60;
+                ll.add("Time to Empty: " + nf.format(timeToEmpty) + " minutes");
+            } else {
+                ll.add("Completely empty");
+            }
+        }
         ll.add(
                 "Maintenance Status: " + ((super.getRepairStatus() == super.getIdealStatus())
                         ? EnumChatFormatting.GREEN + "Working perfectly" + EnumChatFormatting.RESET
