@@ -509,11 +509,6 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
         return false;
     }
 
-    // Same speed bonus as pyro oven
-    public int getSpeedBonus() {
-        return 50 * (this.mCoilTier + 1);
-    }
-
     public int getMaxCatalystDurability() {
         return 50;
     }
@@ -607,7 +602,8 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
     @Override
     protected void setupProcessingLogic(ProcessingLogic logic) {
         super.setupProcessingLogic(logic);
-        logic.setSpeedBonus(100F / (100F + getSpeedBonus()));
+        // Same speed bonus as pyro oven
+        logic.setSpeedBonus(2F / (1 + this.mCoilTier));
     }
 
     @Override
