@@ -928,18 +928,16 @@ public class GTMTE_LapotronicSuperCapacitor extends
         if (avgIn > avgOut) {
             // Calculate time to full if charging
             if (avgIn != 0) {
-                double timeToFull = (capacity.longValue() - stored.longValue()) / avgIn / 60;
-                ll.add("Time to Full: " + nf.format(timeToFull) + " minutes");
-            } else {
-                ll.add("Completely full");
+                double timeToFull = (capacity.longValue() - stored.longValue()) / avgIn;
+                String timeToFullString = formatTime(timeToFull);
+                ll.add("Time to Full: " + timeToFullString);
             }
         } else {
             // Calculate time to empty if discharging
             if (avgOut != 0) {
-                double timeToEmpty = stored.longValue() / avgOut / 60;
-                ll.add("Time to Empty: " + nf.format(timeToEmpty) + " minutes");
-            } else {
-                ll.add("Completely empty");
+                double timeToEmpty = stored.longValue() / avgOut;
+                String timeToEmptyString = formatTime(timeToEmpty);
+                ll.add("Time to Empty: " + timeToEmptyString);
             }
         }
         ll.add(
@@ -980,6 +978,23 @@ public class GTMTE_LapotronicSuperCapacitor extends
 
         final String[] a = new String[ll.size()];
         return ll.toArray(a);
+    }
+
+    // Method to format time in seconds, minutes, days, and years
+    private String formatTime(double time) {
+        if (time < 1) {
+            return "Completely " + (time < 0 ? "empty" : "full");
+        } else if (time < 60) {
+            return String.format("%.2f seconds", time);
+        } else if (time < 3600) {
+            return String.format("%.2f minutes", time / 60);
+        } else if (time < 86400) {
+            return String.format("%.2f hours", time / 3600);
+        } else if (time < 31536000) {
+            return String.format("%.2f days", time / 86400);
+        } else {
+            return String.format("%.2f years", time / 31536000);
+        }
     }
 
     @Override
