@@ -16,7 +16,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.function.IntConsumer;
 
 import javax.annotation.Nonnull;
@@ -1505,21 +1504,21 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         }
     }
 
-    protected void endRecipeProcessing() {
-        Consumer<CheckRecipeResult> setResultIfFailure = result -> {
-            if (!result.wasSuccessful()) {
-                this.checkRecipeResult = result;
-            }
-        };
+    public void setResultIfFailure(CheckRecipeResult result) {
+        if (!result.wasSuccessful()) {
+            this.checkRecipeResult = result;
+        }
+    }
 
+    protected void endRecipeProcessing() {
         for (GT_MetaTileEntity_Hatch_InputBus hatch : filterValidMTEs(mInputBusses)) {
             if (hatch instanceof IRecipeProcessingAwareHatch aware) {
-                setResultIfFailure.accept(aware.endRecipeProcessing(this));
+                setResultIfFailure(aware.endRecipeProcessing(this));
             }
         }
         for (GT_MetaTileEntity_Hatch_Input hatch : filterValidMTEs(mInputHatches)) {
             if (hatch instanceof IRecipeProcessingAwareHatch aware) {
-                setResultIfFailure.accept(aware.endRecipeProcessing(this));
+                setResultIfFailure(aware.endRecipeProcessing(this));
             }
         }
     }
