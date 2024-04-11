@@ -72,11 +72,15 @@ public class GlobalEnergyWorldSavedData extends WorldSavedData {
             Object data = objectInputStream.readObject();
             HashMap<Object, BigInteger> hashData = (HashMap<Object, BigInteger>) data;
             for (Map.Entry<Object, BigInteger> entry : hashData.entrySet()) {
-                GlobalEnergy.put(
-                    UUID.fromString(
-                        entry.getKey()
-                            .toString()),
-                    entry.getValue());
+                try {
+                    GlobalEnergy.put(
+                        UUID.fromString(
+                            entry.getKey()
+                                .toString()),
+                        entry.getValue());
+                } catch (RuntimeException ignored) {
+                    // probably a malformed uuid. in any case, try carry on with the load
+                }
             }
         } catch (IOException | ClassNotFoundException exception) {
             System.out.println(GlobalEnergyNBTTag + " FAILED");
@@ -91,7 +95,11 @@ public class GlobalEnergyWorldSavedData extends WorldSavedData {
             HashMap<String, String> oldTeams = (HashMap<String, String>) data;
             for (String member : oldTeams.keySet()) {
                 String leader = oldTeams.get(member);
-                SpaceProjectManager.putInTeam(UUID.fromString(member), UUID.fromString(leader));
+                try {
+                    SpaceProjectManager.putInTeam(UUID.fromString(member), UUID.fromString(leader));
+                } catch (RuntimeException ignored) {
+                    // probably a malformed uuid. in any case, try carry on with the load
+                }
             }
         } catch (IOException | ClassNotFoundException exception) {
             System.out.println(GlobalEnergyTeamNBTTag + " FAILED");
