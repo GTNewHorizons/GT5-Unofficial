@@ -2249,6 +2249,8 @@ public class GT_ModHandler {
                         aStack.setItemDamage(tStack.getItemDamage());
                         aStack.stackSize = tStack.stackSize;
                         aStack.setTagCompound(tStack.getTagCompound());
+                    } else if (aStack.stackSize > 0) {
+                        aStack.stackSize--;
                     }
                 }
                 return true;
