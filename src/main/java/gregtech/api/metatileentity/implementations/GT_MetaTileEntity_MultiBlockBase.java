@@ -1350,7 +1350,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     /**
-     * Drains fluid from the given hatch, including {@link IDualInputHatch}.
+     * Drains fluid from the given hatch, including {@link IDualInputHatch}. Should never be used during recipe check!
      *
      * @param doDrain If false, fluid will not actually be consumed
      * @return Whether the hatch contains enough fluid to drain
@@ -1470,6 +1470,41 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             rList.addAll(inputsFromME.values());
         }
         return rList;
+    }
+
+    public Map<GT_Utility.ItemId, ItemStack> getStoredInputsFromME() {
+        Map<GT_Utility.ItemId, ItemStack> inputsFromME = new HashMap<>();
+        for (GT_MetaTileEntity_Hatch_InputBus tHatch : filterValidMTEs(mInputBusses)) {
+            if (tHatch instanceof GT_MetaTileEntity_Hatch_InputBus_ME meBus) {
+                for (int i = meBus.getSizeInventory() - 1; i >= 0; i--) {
+                    ItemStack itemStack = meBus.getStackInSlot(i);
+                    if (itemStack != null) {
+
+                        // Prevent the same item from different ME buses from being recognized
+                        inputsFromME.put(GT_Utility.ItemId.createNoCopy(itemStack), itemStack);
+
+                    }
+                }
+            }
+        }
+        return inputsFromME;
+    }
+
+    public Map<Fluid, FluidStack> getStoredFluidsFromME() {
+        Map<Fluid, FluidStack> fluidsFromME = new HashMap<>();
+        for (GT_MetaTileEntity_Hatch_Input tHatch : filterValidMTEs(mInputHatches)) {
+            if (tHatch instanceof GT_MetaTileEntity_Hatch_Input_ME meHatch) {
+                for (FluidStack fluid : meHatch.getStoredFluids()) {
+                    if (fluid != null) {
+
+                        // Prevent the same item from different ME buses from being recognized
+                        fluidsFromME.put(fluid.getFluid(), fluid);
+
+                    }
+                }
+            }
+        }
+        return fluidsFromME;
     }
 
     @Override
