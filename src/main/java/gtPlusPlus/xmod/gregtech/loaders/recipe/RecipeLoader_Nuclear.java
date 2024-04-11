@@ -205,14 +205,6 @@ public class RecipeLoader_Nuclear {
                 600 * 20);
 
         GT_Values.RA.addChemicalRecipe(
-                ItemUtils.getItemStackOfAmountFromOreDict("dustLithium7", 1),
-                null,
-                FluidUtils.getFluidStack("sulfuricacid", 144 * 8),
-                FluidUtils.getFluidStack("sulfuriclithium", 144 * 2),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustSmallLithium7", 1),
-                20 * 20);
-
-        GT_Values.RA.addChemicalRecipe(
                 ItemUtils.getItemStackOfAmountFromOreDict("cellOxygen", 1),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustLithium7", 16),
                 FluidUtils.getFluidStack("water", 1000),
