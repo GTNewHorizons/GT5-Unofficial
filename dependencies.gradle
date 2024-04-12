@@ -41,7 +41,7 @@ dependencies {
     api("com.github.GTNewHorizons:ModularUI:1.1.42:dev")
     api("com.github.GTNewHorizons:waila:1.7.2:dev")
     api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-347-GTNH:dev")
-    api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.2.26-gtnh:dev")
+    api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.2.27-gtnh:dev")
 
     runtimeOnlyNonPublishable('com.github.GTNewHorizons:ForestryMC:4.8.8:dev')
     runtimeOnlyNonPublishable('com.github.GTNewHorizons:neiaddons:1.15.0:dev')
@@ -69,7 +69,7 @@ dependencies {
     compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Hodgepodge:2.4.40:dev") { transitive = false }
     compileOnly('com.github.GTNewHorizons:Botania:1.10.12-GTNH:dev') { transitive = false }
-    compileOnly('com.github.GTNewHorizons:HoloInventory:2.4.3-GTNH:dev') { transitive = false }
+    compileOnly('com.github.GTNewHorizons:HoloInventory:2.4.4-GTNH:dev') { transitive = false }
     compileOnly('curse.maven:minefactory-reloaded-66672:2366150') { transitive = false }
 
     compileOnly("com.google.auto.value:auto-value-annotations:1.10.1") { transitive = false }
