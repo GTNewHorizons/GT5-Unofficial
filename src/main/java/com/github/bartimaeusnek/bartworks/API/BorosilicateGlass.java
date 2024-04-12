@@ -103,8 +103,8 @@ public class BorosilicateGlass {
         return representatives;
     }
 
-    private static byte checkWithinBound(byte val, byte lo, byte hi) {
-        return val > hi || val < lo ? -1 : val;
+    private static Byte checkWithinBound(byte val, byte lo, byte hi) {
+        return val > hi || val < lo ? null : val;
     }
 
     /**

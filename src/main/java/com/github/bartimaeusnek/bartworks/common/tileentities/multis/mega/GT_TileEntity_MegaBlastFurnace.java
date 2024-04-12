@@ -365,11 +365,17 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_TileEntity_MegaMultiBlock
             return false;
 
         if (this.glassTier < 8) {
-            for (GT_MetaTileEntity_Hatch hatch : this.mExoticEnergyHatches) {
+            for (int i = 0; i < this.mExoticEnergyHatches.size(); ++i) {
+                GT_MetaTileEntity_Hatch hatch = this.mExoticEnergyHatches.get(i);
                 if (hatch.getConnectionType() == GT_MetaTileEntity_Hatch.ConnectionType.LASER) {
                     return false;
                 }
                 if (this.glassTier < hatch.mTier) {
+                    return false;
+                }
+            }
+            for (int i = 0; i < this.mEnergyHatches.size(); ++i) {
+                if (this.glassTier < this.mEnergyHatches.get(i).mTier) {
                     return false;
                 }
             }

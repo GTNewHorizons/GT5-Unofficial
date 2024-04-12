@@ -238,11 +238,17 @@ public class GT_TileEntity_MegaOilCracker extends GT_TileEntity_MegaMultiBlockBa
         if (!this.checkPiece(STRUCTURE_PIECE_MAIN, 6, 6, 0) || this.mMaintenanceHatches.size() != 1) return false;
 
         if (this.glassTier < 8) {
-            for (GT_MetaTileEntity_Hatch hatch : this.mExoticEnergyHatches) {
+            for (int i = 0; i < this.mExoticEnergyHatches.size(); ++i) {
+                GT_MetaTileEntity_Hatch hatch = this.mExoticEnergyHatches.get(i);
                 if (hatch.getConnectionType() == GT_MetaTileEntity_Hatch.ConnectionType.LASER) {
                     return false;
                 }
                 if (this.glassTier < hatch.mTier) {
+                    return false;
+                }
+            }
+            for (int i = 0; i < this.mEnergyHatches.size(); ++i) {
+                if (this.glassTier < this.mEnergyHatches.get(i).mTier) {
                     return false;
                 }
             }
