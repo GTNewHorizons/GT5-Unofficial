@@ -15,7 +15,6 @@ import gregtech.api.enums.GT_Values.NBT;
 import gregtech.api.enums.InventoryType;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
 import gregtech.api.multitileentity.multiblock.casing.UpgradeCasing;
-import gregtech.api.net.GT_Packet_MultiTileEntity;
 
 public class Inventory extends UpgradeCasing {
 
@@ -108,14 +107,6 @@ public class Inventory extends UpgradeCasing {
     @Override
     protected boolean canOpenControllerGui() {
         return false;
-    }
-
-    @Override
-    public GT_Packet_MultiTileEntity getClientDataPacket() {
-        final GT_Packet_MultiTileEntity packet = super.getClientDataPacket();
-        String name = getCustomInventoryName();
-        packet.setInventoryName(name, inventoryID.toString());
-        return packet;
     }
 
     @Override

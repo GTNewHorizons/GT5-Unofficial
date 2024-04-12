@@ -221,6 +221,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.WIREMILL_LV;
 import static gregtech.api.enums.MetaTileEntityIDs.WIREMILL_MV;
 import static gregtech.api.enums.Mods.BuildCraftFactory;
 import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.Gendustry;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.NotEnoughItems;
@@ -6485,6 +6486,31 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 OrePrefixes.rotor.get(Materials.StainlessSteel), 'P',
                 OrePrefixes.pipeLarge.get(Materials.Polytetrafluoroethylene), 'M', ItemList.Electric_Motor_HV, 'B',
                 ItemList.Hull_HV });
+
+        // Add Drone down link hatch
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Hatch_DroneDownLink.get(1L),
+            bits,
+            new Object[] { " S ", "CMC", "RRR", 'M', ItemList.Hatch_Maintenance, 'S', ItemList.Sensor_IV, 'R',
+                new ItemStack(GregTech_API.sBlockReinforced, 1, 9), 'C', ItemList.Conveyor_Module_EV });
+
+        // And Drone Centre
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Casing_Assembler.get(1),
+                ItemList.Cover_SolarPanel_HV.get(4),
+                ItemList.Conveyor_Module_IV.get(2),
+                ItemList.Robot_Arm_IV.get(2),
+                ItemList.Sensor_IV.get(2),
+                ItemList.Energy_LapotronicOrb.get(4),
+                ItemList.Cover_WirelessNeedsMaintainance.get(1),
+                GalacticraftCore.isModLoaded() ? GT_ModHandler.getModItem(GalacticraftCore.ID, "item.basicItem", 1, 19)
+                    : ItemList.Sensor_EV.get(4))
+            .itemOutputs(ItemList.Machine_Multi_DroneCentre.get(1L))
+            .fluidInputs(Materials.AdvancedGlue.getFluid(8000L))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
+            .addTo(assemblerRecipes);
     }
 
     private static void registerShapelessCraftingRecipes() {

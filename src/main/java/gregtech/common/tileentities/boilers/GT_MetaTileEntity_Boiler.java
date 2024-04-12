@@ -320,11 +320,7 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
         if (mSteam == null || mSteam.amount == 0) return;
         final IFluidHandler tTileEntity = aBaseMetaTileEntity.getITankContainerAtSide(side);
         if (tTileEntity == null) return;
-        final FluidStack tDrained = aBaseMetaTileEntity.drain(side, Math.max(1, this.mSteam.amount / 2), false);
-        if (tDrained == null) return;
-        final int tFilledAmount = tTileEntity.fill(side.getOpposite(), tDrained, false);
-        if (tFilledAmount <= 0) return;
-        tTileEntity.fill(side.getOpposite(), aBaseMetaTileEntity.drain(side, tFilledAmount, true), true);
+        GT_Utility.moveFluid(aBaseMetaTileEntity, tTileEntity, side, Math.max(1, this.mSteam.amount / 2), null);
     }
 
     /**

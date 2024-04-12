@@ -81,6 +81,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 
 public abstract class GT_MetaTileEntity_DrillerBase
     extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_DrillerBase>
@@ -460,7 +461,7 @@ public abstract class GT_MetaTileEntity_DrillerBase
             return true;
         } else {
             workState = STATE_DOWNWARD;
-            stopMachine();
+            stopMachine(ShutDownReasonRegistry.NONE);
             return false;
         }
     }
@@ -488,7 +489,7 @@ public abstract class GT_MetaTileEntity_DrillerBase
             return true;
         } else {
             workState = STATE_DOWNWARD;
-            stopMachine();
+            stopMachine(ShutDownReasonRegistry.NONE);
             return false;
         }
     }
@@ -516,10 +517,10 @@ public abstract class GT_MetaTileEntity_DrillerBase
         setElectricityStats();
         int oldYHead = yHead;
         if (!checkPipesAndSetYHead()) {
-            stopMachine();
+            stopMachine(ShutDownReasonRegistry.NONE);
             return SimpleCheckRecipeResult.ofFailure("no_mining_pipe");
         } else if (!isEnergyEnough()) {
-            stopMachine();
+            stopMachine(ShutDownReasonRegistry.NONE);
             return SimpleCheckRecipeResult.ofFailure("not_enough_energy");
         }
         putMiningPipesFromInputsInController();

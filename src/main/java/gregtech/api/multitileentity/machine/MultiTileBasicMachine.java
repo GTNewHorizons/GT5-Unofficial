@@ -53,7 +53,6 @@ import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.base.TickableMultiTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiTileMachine;
-import gregtech.api.net.GT_Packet_MultiTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.task.tasks.ProcessingTask;
 import gregtech.api.util.GT_Utility;
@@ -271,16 +270,6 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
 
         return TextureFactory.of(texture, getCoverTexture(side));
     }
-
-    @Override
-    public GT_Packet_MultiTileEntity getClientDataPacket() {
-        final GT_Packet_MultiTileEntity packet = super.getClientDataPacket();
-        int booleans = getBooleans();
-        packet.setBooleans(booleans);
-        packet.setSoundEvent(soundEvent, soundEventValue);
-        return packet;
-    }
-
     /*
      * Fluids
      */

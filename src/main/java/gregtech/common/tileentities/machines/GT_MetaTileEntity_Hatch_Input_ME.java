@@ -1,5 +1,7 @@
 package gregtech.common.tileentities.machines;
 
+import static gregtech.api.enums.GT_Values.TIER_COLORS;
+import static gregtech.api.enums.GT_Values.VN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_FLUID_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_FLUID_HATCH_ACTIVE;
 
@@ -43,7 +45,7 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
@@ -74,6 +76,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -98,6 +101,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
     private final boolean autoPullAvailable;
     protected boolean autoPullFluidList = false;
     protected int minAutoPullAmount = 1;
+    private int autoPullRefreshTime = 100;
     protected boolean processingRecipe = false;
 
     protected static final int CONFIG_WINDOW_ID = 10;
@@ -133,7 +137,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         if (getBaseMetaTileEntity().isServerSide()) {
-            if (aTimer % 100 == 0 && autoPullFluidList) {
+            if (aTimer % autoPullRefreshTime == 0 && autoPullFluidList) {
                 refreshFluidList();
             }
             if (aTimer % 20 == 0) {
@@ -222,6 +226,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
     @Override
     public void startRecipeProcessing() {
         processingRecipe = true;
+        updateAllInformationSlots();
     }
 
     @Override
@@ -229,14 +234,14 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
         CheckRecipeResult checkRecipeResult = CheckRecipeResultRegistry.SUCCESSFUL;
         AENetworkProxy proxy = getProxy();
 
-        try {
-            IMEMonitor<IAEFluidStack> sg = proxy.getStorage()
-                .getFluidInventory();
+        for (int i = 0; i < SLOT_COUNT; ++i) {
+            FluidStack oldStack = shadowStoredFluids[i];
+            int toExtract = savedStackSizes[i] - (oldStack != null ? oldStack.amount : 0);
+            if (toExtract <= 0) continue;
 
-            for (int i = 0; i < SLOT_COUNT; ++i) {
-                FluidStack oldStack = shadowStoredFluids[i];
-                int toExtract = savedStackSizes[i] - (oldStack != null ? oldStack.amount : 0);
-                if (toExtract <= 0) continue;
+            try {
+                IMEMonitor<IAEFluidStack> sg = proxy.getStorage()
+                    .getFluidInventory();
 
                 IAEFluidStack request = AEFluidStack.create(storedFluids[i]);
                 request.setStackSize(toExtract);
@@ -245,18 +250,20 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                     .extractAEPower(toExtract, Actionable.MODULATE, PowerMultiplier.CONFIG);
 
                 if (extractionResult == null || extractionResult.getStackSize() != toExtract) {
-                    controller.criticalStopMachine();
+                    controller.stopMachine(ShutDownReasonRegistry.CRITICAL_NONE);
                     checkRecipeResult = SimpleCheckRecipeResult
                         .ofFailurePersistOnShutdown("stocking_hatch_fail_extraction");
                 }
-                shadowStoredFluids[i] = null;
-                savedStackSizes[i] = 0;
-                if (storedInformationFluids[i] != null && storedInformationFluids[i].amount <= 0) {
-                    storedInformationFluids[i] = null;
-                }
+            } catch (GridAccessException ignored) {
+                controller.stopMachine(ShutDownReasonRegistry.CRITICAL_NONE);
+                checkRecipeResult = SimpleCheckRecipeResult
+                    .ofFailurePersistOnShutdown("stocking_hatch_fail_extraction");
             }
-        } catch (GridAccessException e) {
-            throw new RuntimeException(e);
+            shadowStoredFluids[i] = null;
+            savedStackSizes[i] = 0;
+            if (storedInformationFluids[i] != null && storedInformationFluids[i].amount <= 0) {
+                storedInformationFluids[i] = null;
+            }
         }
 
         processingRecipe = false;
@@ -382,6 +389,11 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
     public FluidStack getMatchingFluidStack(FluidStack fluidStack) {
         if (fluidStack == null) return null;
 
+        AENetworkProxy proxy = getProxy();
+        if (proxy == null || !proxy.isActive()) {
+            return null;
+        }
+
         for (int i = 0; i < storedFluids.length; i++) {
             if (storedFluids[i] == null) {
                 continue;
@@ -466,6 +478,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
         aNBT.setBoolean("autoPull", autoPullFluidList);
         aNBT.setInteger("minAmount", minAutoPullAmount);
         aNBT.setBoolean("additionalConnection", additionalConnection);
+        aNBT.setInteger("refreshTime", autoPullRefreshTime);
         getProxy().writeToNBT(aNBT);
     }
 
@@ -490,6 +503,9 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
         minAutoPullAmount = aNBT.getInteger("minAmount");
         autoPullFluidList = aNBT.getBoolean("autoPull");
         additionalConnection = aNBT.getBoolean("additionalConnection");
+        if (aNBT.hasKey("refreshTime")) {
+            autoPullRefreshTime = aNBT.getInteger("refreshTime");
+        }
         getProxy().readFromNBT(aNBT);
     }
 
@@ -521,6 +537,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
         if (autoPullAvailable) {
             setAutoPullFluidList(nbt.getBoolean("autoPull"));
             minAutoPullAmount = nbt.getInteger("minAmount");
+            autoPullRefreshTime = nbt.getInteger("refreshTime");
         }
         additionalConnection = nbt.getBoolean("additionalConnection");
 
@@ -548,6 +565,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
         tag.setBoolean("autoPull", autoPullFluidList);
         tag.setInteger("minAmount", minAutoPullAmount);
         tag.setBoolean("additionalConnection", additionalConnection);
+        tag.setInteger("refreshTime", autoPullRefreshTime);
 
         NBTTagList stockingFluids = new NBTTagList();
         if (!autoPullFluidList) {
@@ -750,7 +768,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
 
     protected ModularWindow createStackSizeConfigurationWindow(final EntityPlayer player) {
         final int WIDTH = 78;
-        final int HEIGHT = 40;
+        final int HEIGHT = 80;
         final int PARENT_WIDTH = getGUIWidth();
         final int PARENT_HEIGHT = getGUIHeight();
         ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
@@ -767,14 +785,28 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                 .setPos(3, 2)
                 .setSize(74, 14))
             .widget(
-                new TextFieldWidget().setSetterInt(val -> minAutoPullAmount = val)
-                    .setGetterInt(() -> minAutoPullAmount)
-                    .setNumbers(1, Integer.MAX_VALUE)
-                    .setOnScrollNumbers(1, 4, 64)
+                new NumericWidget().setSetter(val -> minAutoPullAmount = (int) val)
+                    .setGetter(() -> minAutoPullAmount)
+                    .setBounds(1, Integer.MAX_VALUE)
+                    .setScrollValues(1, 4, 64)
                     .setTextAlignment(Alignment.Center)
                     .setTextColor(Color.WHITE.normal)
                     .setSize(70, 18)
                     .setPos(3, 18)
+                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD));
+        builder.widget(
+            TextWidget.localised("GT5U.machines.stocking_bus.refresh_time")
+                .setPos(3, 42)
+                .setSize(74, 14))
+            .widget(
+                new NumericWidget().setSetter(val -> autoPullRefreshTime = (int) val)
+                    .setGetter(() -> autoPullRefreshTime)
+                    .setBounds(1, Integer.MAX_VALUE)
+                    .setScrollValues(1, 4, 64)
+                    .setTextAlignment(Alignment.Center)
+                    .setTextColor(Color.WHITE.normal)
+                    .setSize(70, 18)
+                    .setPos(3, 58)
                     .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD));
         return builder.build();
     }
@@ -825,6 +857,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
     private static String[] getDescriptionArray(boolean autoPullAvailable) {
         List<String> strings = new ArrayList<>(8);
         strings.add("Advanced fluid input for Multiblocks");
+        strings.add("Hatch Tier: " + TIER_COLORS[autoPullAvailable ? 10 : 8] + VN[autoPullAvailable ? 10 : 8]);
         strings.add("Retrieves directly from ME");
         strings.add("Keeps 16 fluid types in stock");
 
@@ -832,7 +865,8 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
             strings.add(
                 "Auto-Pull from ME mode will automatically stock the first 16 fluid in the ME system, updated every 5 seconds.");
             strings.add("Toggle by right-clicking with screwdriver, or use the GUI.");
-            strings.add("Use the GUI to limit the minimum stack size for Auto-Pulling.");
+            strings
+                .add("Use the GUI to limit the minimum stack size for Auto-Pulling and adjust the slot refresh timer.");
         }
 
         strings.add("Change ME connection behavior by right-clicking with wire cutter.");

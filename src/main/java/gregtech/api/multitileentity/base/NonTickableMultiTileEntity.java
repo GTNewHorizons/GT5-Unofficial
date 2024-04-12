@@ -20,7 +20,10 @@ public abstract class NonTickableMultiTileEntity extends MultiTileEntity {
 
     @Override
     public void issueClientUpdate() {
-        if (worldObj != null && !worldObj.isRemote) sendClientData(null);
+        if (worldObj != null && !worldObj.isRemote) {
+            sendClientData(null);
+            sendGraphicPacket();
+        }
     }
 
     @Override

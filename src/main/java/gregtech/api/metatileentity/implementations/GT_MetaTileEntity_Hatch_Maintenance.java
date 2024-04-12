@@ -208,6 +208,13 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
     }
 
     @Override
+    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        super.onFirstTick(aBaseMetaTileEntity);
+        if (aBaseMetaTileEntity.isClientSide())
+            StructureLibAPI.queryAlignment((IAlignmentProvider) aBaseMetaTileEntity);
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide() && mAuto && aTick % 100L == 0L) {

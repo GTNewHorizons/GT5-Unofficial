@@ -110,7 +110,8 @@ public class GT_Tool_Saw extends GT_Tool {
                 Material.wood,
                 Material.cactus,
                 Material.ice,
-                Material.packedIce);
+                Material.packedIce)
+            || GT_ToolHarvestHelper.isSpecialBlock(aBlock, Blocks.ladder);
     }
 
     @Override

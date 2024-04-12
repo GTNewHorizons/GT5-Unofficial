@@ -435,7 +435,7 @@ public class MaterialsKevlar {
             new MaterialStack(Materials.Hydrogen, 6),
             new MaterialStack(Materials.Oxygen, 4))
         .constructMaterial(); // C9H6O6
-    public static Materials IIIDimethylbenzene = new MaterialBuilder(763, TextureSet.SET_FLUID, "1,3-Dimethylbenzen")
+    public static Materials IIIDimethylbenzene = new MaterialBuilder(763, TextureSet.SET_FLUID, "1,3-Dimethylbenzene")
         .addCell()
         .addFluid()
         .setRGB(112, 146, 74)
@@ -444,7 +444,7 @@ public class MaterialsKevlar {
         .setMaterialList(new MaterialStack(Materials.Carbon, 8), new MaterialStack(Materials.Hydrogen, 10))
         .addElectrolyzerRecipe()
         .constructMaterial(); // C8H10
-    public static Materials IVDimethylbenzene = new MaterialBuilder(762, TextureSet.SET_FLUID, "1,4-Dimethylbenzen")
+    public static Materials IVDimethylbenzene = new MaterialBuilder(762, TextureSet.SET_FLUID, "1,4-Dimethylbenzene")
         .addCell()
         .addFluid()
         .setRGB(122, 136, 84)

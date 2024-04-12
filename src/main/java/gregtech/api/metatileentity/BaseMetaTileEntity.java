@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
@@ -35,6 +36,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
@@ -78,6 +81,8 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.GT_Pollution;
 import gregtech.common.covers.CoverInfo;
 import ic2.api.Direction;
@@ -101,6 +106,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
     private boolean hasTimeStatisticsStarted;
     public long mLastSoundTick = 0;
     public boolean mWasShutdown = false;
+    public @Nonnull ShutDownReason lastShutDownReason = ShutDownReasonRegistry.NONE;
     protected MetaTileEntity mMetaTileEntity;
     protected long mStoredEnergy = 0, mStoredSteam = 0;
     protected int mAverageEUInputIndex = 0, mAverageEUOutputIndex = 0;
@@ -943,7 +949,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
     @Override
     public boolean isUseableByPlayer(EntityPlayer aPlayer) {
         return canAccessData() && playerOwnsThis(aPlayer, false)
-            && mTickTimer > 40
+            && mTickTimer > 1
             && getTileEntityOffset(0, 0, 0) == this
             && aPlayer.getDistanceSq(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5) < 64
             && mMetaTileEntity.isAccessAllowed(aPlayer);
@@ -2466,6 +2472,16 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
     @Override
     public void setShutdownStatus(boolean newStatus) {
         mWasShutdown = newStatus;
+    }
+
+    @Override
+    public void setShutDownReason(@NotNull ShutDownReason reason) {
+        lastShutDownReason = reason;
+    }
+
+    @Override
+    public @NotNull ShutDownReason getLastShutDownReason() {
+        return lastShutDownReason;
     }
 
     @Override

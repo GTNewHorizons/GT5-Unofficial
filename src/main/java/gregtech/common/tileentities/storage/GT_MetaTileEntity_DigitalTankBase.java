@@ -26,6 +26,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -35,7 +36,6 @@ import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
@@ -125,17 +125,13 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
                 .loadFluidStackFromNBT(stack.stackTagCompound.getCompoundTag("mFluid"));
             if (tContents != null && tContents.amount > 0) {
                 tooltip.add(
-                    GT_LanguageManager.addStringLocalization(
-                        "TileEntity_TANK_INFO",
-                        "Contains Fluid: ",
-                        !GregTech_API.sPostloadFinished) + EnumChatFormatting.YELLOW
+                    GT_LanguageManager.addStringLocalization("TileEntity_TANK_INFO", "Contains Fluid: ")
+                        + EnumChatFormatting.YELLOW
                         + tContents.getLocalizedName()
                         + EnumChatFormatting.GRAY);
                 tooltip.add(
-                    GT_LanguageManager.addStringLocalization(
-                        "TileEntity_TANK_AMOUNT",
-                        "Fluid Amount: ",
-                        !GregTech_API.sPostloadFinished) + EnumChatFormatting.GREEN
+                    GT_LanguageManager.addStringLocalization("TileEntity_TANK_AMOUNT", "Fluid Amount: ")
+                        + EnumChatFormatting.GREEN
                         + formatNumbers(tContents.amount)
                         + " L"
                         + EnumChatFormatting.GRAY);
@@ -548,6 +544,8 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
         return true;
     }
 
+    protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
+
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         fluidTank.setAllowOverflow(allowOverflow());
@@ -575,7 +573,7 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(10, 20))
             .widget(
-                TextWidget.dynamicString(() -> GT_Utility.parseNumberToString(mFluid != null ? mFluid.amount : 0))
+                new TextWidget().setStringSupplier(() -> numberFormat.format(mFluid != null ? mFluid.amount : 0))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(10, 30))
             .widget(

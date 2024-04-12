@@ -107,7 +107,10 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
         }
 
         try (JsonReader reader = new JsonReader(new FileReader(spaceTeamsFile))) {
-            spaceTeams = GSON_TEAMS.fromJson(reader, spaceTeams.getClass());
+            HashMap<UUID, UUID> jsonMap = GSON_TEAMS.fromJson(reader, spaceTeams.getClass());
+            for (UUID member : jsonMap.keySet()) {
+                spaceTeams.put(member, jsonMap.get(member));
+            }
         } catch (Exception e) {
             System.out.print("FAILED TO LOAD: " + SPACE_TEAMS_JSON);
             e.printStackTrace();

@@ -123,6 +123,7 @@ import cpw.mods.fml.common.network.FMLNetworkEvent;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Dyes;
@@ -174,6 +175,7 @@ import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.misc.GlobalEnergyWorldSavedData;
 import gregtech.common.misc.GlobalMetricsCoverDatabase;
 import gregtech.common.misc.spaceprojects.SpaceProjectWorldSavedData;
+import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_DroneCentre;
 
 public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 
@@ -612,6 +614,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public int mPollutionBaseGasTurbinePerSecond = 200;
     public double[] mPollutionGasTurbineReleasedByTier = new double[] { 0.1, 1.0, 0.9, 0.8, 0.7, 0.6 };
     public final GT_UO_DimensionList mUndergroundOil = new GT_UO_DimensionList();
+    public boolean enableUndergroundGravelGen = true;
+    public boolean enableUndergroundDirtGen = true;
     public int mTicksUntilNextCraftSound = 0;
     public double mMagneticraftBonusOutputPercent = 0d;
     private World mUniverse = null;
@@ -629,6 +633,9 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     @Deprecated
     public boolean mEasierIVPlusCables = false;
     public boolean mMixedOreOnlyYieldsTwoThirdsOfPureOre = false;
+    public boolean mRichOreYieldMultiplier = true;
+    public boolean mNetherOreYieldMultiplier = true;
+    public boolean mEndOreYieldMultiplier = true;
     public boolean enableBlackGraniteOres = true;
     public boolean enableRedGraniteOres = true;
     public boolean enableMarbleOres = true;
@@ -843,7 +850,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
             .getRegisteredFluidContainerData()) {
             if ((tData.filledContainer.getItem() == Items.potionitem) && (tData.filledContainer.getItemDamage() == 0)) {
-                tData.fluid.amount = 250;
+                tData.fluid.amount = 0;
                 break;
             }
         }
@@ -1115,8 +1122,13 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                     GT_OreDictUnificator.get(OrePrefixes.bucketClay, Materials.Empty, 1L)));
         }
 
-        MinecraftForge.EVENT_BUS.register(new GlobalEnergyWorldSavedData(""));
+        if (!GT_Mod.gregtechproxy.enableUndergroundGravelGen)
+            PREVENTED_ORES.add(OreGenEvent.GenerateMinable.EventType.GRAVEL);
+        if (!GT_Mod.gregtechproxy.enableUndergroundDirtGen)
+            PREVENTED_ORES.add(OreGenEvent.GenerateMinable.EventType.DIRT);
+
         MinecraftForge.EVENT_BUS.register(new SpaceProjectWorldSavedData());
+        MinecraftForge.EVENT_BUS.register(new GlobalEnergyWorldSavedData(""));
         MinecraftForge.EVENT_BUS.register(new GT_Worldgenerator.OregenPatternSavedData(""));
         MinecraftForge.EVENT_BUS.register(new GlobalMetricsCoverDatabase());
         FMLCommonHandler.instance()
@@ -1240,7 +1252,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
             .getRegisteredFluidContainerData()) {
             if ((tData.filledContainer.getItem() == Items.potionitem) && (tData.filledContainer.getItemDamage() == 0)) {
-                tData.fluid.amount = 250;
+                tData.fluid.amount = 0;
                 break;
             }
         }
@@ -1272,7 +1284,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
             .getRegisteredFluidContainerData()) {
             if ((tData.filledContainer.getItem() == Items.potionitem) && (tData.filledContainer.getItemDamage() == 0)) {
-                tData.fluid.amount = 250;
+                tData.fluid.amount = 0;
                 break;
             }
         }
@@ -1367,7 +1379,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
             .getRegisteredFluidContainerData()) {
             if ((tData.filledContainer.getItem() == Items.potionitem) && (tData.filledContainer.getItemDamage() == 0)) {
-                tData.fluid.amount = 250;
+                tData.fluid.amount = 0;
                 break;
             }
         }
@@ -1386,6 +1398,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 
     public void onServerStarted() {
         GregTech_API.sWirelessRedstone.clear();
+        GT_MetaTileEntity_DroneCentre.getCentreMap()
+            .clear();
         GT_Log.out.println(
             "GT_Mod: Cleaning up all OreDict Crafting Recipes, which have an empty List in them, since they are never meeting any Condition.");
         List<IRecipe> tList = CraftingManager.getInstance()
@@ -2196,7 +2210,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public void onFluidContainerRegistration(FluidContainerRegistry.FluidContainerRegisterEvent aFluidEvent) {
         if ((aFluidEvent.data.filledContainer.getItem() == Items.potionitem)
             && (aFluidEvent.data.filledContainer.getItemDamage() == 0)) {
-            aFluidEvent.data.fluid.amount = 250;
+            aFluidEvent.data.fluid.amount = 0;
         }
         GT_OreDictUnificator.addToBlacklist(aFluidEvent.data.emptyContainer);
         GT_OreDictUnificator.addToBlacklist(aFluidEvent.data.filledContainer);
@@ -2354,8 +2368,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                         aEvent.player,
                         GT_LanguageManager.addStringLocalization(
                             "Interaction_DESCRIPTION_Index_097",
-                            "It's dangerous to go alone! Take this.",
-                            false));
+                            "It's dangerous to go alone! Take this."));
                     aEvent.player.worldObj.spawnEntityInWorld(
                         new EntityItem(
                             aEvent.player.worldObj,

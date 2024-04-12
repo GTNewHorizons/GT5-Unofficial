@@ -367,7 +367,7 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
                 && !GT_Utility.isStackInList(tCurrentItem, GregTech_API.sJackhammerList)) return false;
         }
         if (tTileEntity instanceof IGregTechTileEntity gtTE) {
-            if (gtTE.getTimer() < 50L) {
+            if (gtTE.getTimer() < 1L) {
                 return false;
             }
             if ((!aWorld.isRemote) && !gtTE.isUseableByPlayer(aPlayer)) {

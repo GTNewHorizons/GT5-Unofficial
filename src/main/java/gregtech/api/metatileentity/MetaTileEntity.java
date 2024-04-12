@@ -260,7 +260,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
         // glue
-        if (onWrenchRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ)) {
+        if (onWireCutterRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ)) {
             return true;
         }
         if (!aPlayer.isSneaking()) return false;
@@ -281,7 +281,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
         float aX, float aY, float aZ, ItemStack aTool) {
 
         // glue
-        if (onWrenchRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ)) {
+        if (onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ)) {
             return true;
         }
 
@@ -989,8 +989,11 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
     }
 
     public int fill_default(ForgeDirection side, FluidStack aFluid, boolean doFill) {
-        markDirty();
-        return fill(aFluid, doFill);
+        int filled = fill(aFluid, doFill);
+        if (filled > 0) {
+            markDirty();
+        }
+        return filled;
     }
 
     @Override

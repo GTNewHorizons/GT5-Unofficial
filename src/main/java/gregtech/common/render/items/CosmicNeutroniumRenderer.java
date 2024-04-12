@@ -2,7 +2,6 @@ package gregtech.common.render.items;
 
 import static gregtech.common.render.GT_RenderUtil.colorGTItem;
 
-import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
@@ -26,6 +25,7 @@ public class CosmicNeutroniumRenderer extends GT_GeneratedMaterial_Renderer {
     private static final Pos2d point3 = new Pos2d(0  - 10, 17 + 10);
     // spotless:on
 
+    // TODO: Render halo outside of inventory.
     private void drawHalo(ItemRenderType type) {
         // Because when this class is instantiated, making this a static field will cause it to set to null.
         final IIcon haloFuzzy = Textures.ItemIcons.HALO_FUZZY.getIcon();
@@ -93,15 +93,7 @@ public class CosmicNeutroniumRenderer extends GT_GeneratedMaterial_Renderer {
                 GT_RenderUtil.renderItemIcon(icon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
             } else {
                 GL11.glEnable(GL11.GL_DEPTH_TEST);
-                ItemRenderer.renderItemIn2D(
-                    Tessellator.instance,
-                    icon.getMaxU(),
-                    icon.getMinV(),
-                    icon.getMinU(),
-                    icon.getMaxV(),
-                    icon.getIconWidth(),
-                    icon.getIconHeight(),
-                    0.0625F);
+                GT_RenderUtil.renderItem(type, icon);
             }
             GL11.glPopMatrix();
         }

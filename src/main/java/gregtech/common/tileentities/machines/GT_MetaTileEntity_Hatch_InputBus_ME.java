@@ -1,5 +1,7 @@
 package gregtech.common.tileentities.machines;
 
+import static gregtech.api.enums.GT_Values.TIER_COLORS;
+import static gregtech.api.enums.GT_Values.VN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH_ACTIVE;
 
@@ -38,7 +40,7 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
@@ -70,6 +72,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.widget.AESlotWidget;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -86,6 +89,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     private final boolean autoPullAvailable;
     private boolean autoPullItemList = false;
     private int minAutoPullStackSize = 1;
+    private int autoPullRefreshTime = 100;
     private static final int CONFIG_WINDOW_ID = 10;
     private boolean additionalConnection = false;
 
@@ -126,7 +130,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         if (getBaseMetaTileEntity().isServerSide()) {
-            if (aTimer % 100 == 0 && autoPullItemList) {
+            if (aTimer % autoPullRefreshTime == 0 && autoPullItemList) {
                 refreshItemList();
             }
             if (aTimer % 20 == 0) {
@@ -209,6 +213,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         aNBT.setBoolean("autoStock", autoPullItemList);
         aNBT.setInteger("minAutoPullStackSize", minAutoPullStackSize);
         aNBT.setBoolean("additionalConnection", additionalConnection);
+        aNBT.setInteger("refreshTime", autoPullRefreshTime);
         getProxy().writeToNBT(aNBT);
     }
 
@@ -246,7 +251,11 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         autoPullItemList = aNBT.getBoolean("autoStock");
         minAutoPullStackSize = aNBT.getInteger("minAutoPullStackSize");
         additionalConnection = aNBT.getBoolean("additionalConnection");
+        if (aNBT.hasKey("refreshTime")) {
+            autoPullRefreshTime = aNBT.getInteger("refreshTime");
+        }
         getProxy().readFromNBT(aNBT);
+
     }
 
     @Override
@@ -310,6 +319,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         if (autoPullAvailable) {
             setAutoPullItemList(nbt.getBoolean("autoPull"));
             minAutoPullStackSize = nbt.getInteger("minStackSize");
+            autoPullRefreshTime = nbt.getInteger("refreshTime");
         }
 
         additionalConnection = nbt.getBoolean("additionalConnection");
@@ -336,6 +346,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         tag.setString("type", "stockingBus");
         tag.setBoolean("autoPull", autoPullItemList);
         tag.setInteger("minStackSize", minAutoPullStackSize);
+        tag.setInteger("refreshTime", autoPullRefreshTime);
         tag.setBoolean("additionalConnection", additionalConnection);
         tag.setTag("circuit", GT_Utility.saveItem(getStackInSlot(getCircuitSlot())));
 
@@ -386,7 +397,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         if (aIndex == getCircuitSlot() || aIndex == getManualSlot()) return mInventory[aIndex];
         if (mInventory[aIndex] != null) {
             AENetworkProxy proxy = getProxy();
-            if (proxy == null) {
+            if (proxy == null || !proxy.isActive()) {
                 return null;
             }
             try {
@@ -429,6 +440,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     @Override
     public void startRecipeProcessing() {
         processingRecipe = true;
+        updateAllInformationSlots();
     }
 
     private void refreshItemList() {
@@ -479,11 +491,15 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                             .extractAEPower(request.getStackSize(), Actionable.MODULATE, PowerMultiplier.CONFIG);
                         setInventorySlotContents(i + SLOT_COUNT, oldStack);
                         if (result == null || result.getStackSize() != toExtract) {
-                            controller.criticalStopMachine();
+                            controller.stopMachine(ShutDownReasonRegistry.CRITICAL_NONE);
                             checkRecipeResult = SimpleCheckRecipeResult
                                 .ofFailurePersistOnShutdown("stocking_bus_fail_extraction");
                         }
-                    } catch (final GridAccessException ignored) {}
+                    } catch (final GridAccessException ignored) {
+                        controller.stopMachine(ShutDownReasonRegistry.CRITICAL_NONE);
+                        checkRecipeResult = SimpleCheckRecipeResult
+                            .ofFailurePersistOnShutdown("stocking_hatch_fail_extraction");
+                    }
                 }
                 savedStackSizes[i] = 0;
                 shadowInventory[i] = null;
@@ -670,7 +686,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
 
     protected ModularWindow createStackSizeConfigurationWindow(final EntityPlayer player) {
         final int WIDTH = 78;
-        final int HEIGHT = 40;
+        final int HEIGHT = 80;
         final int PARENT_WIDTH = getGUIWidth();
         final int PARENT_HEIGHT = getGUIHeight();
         ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
@@ -687,14 +703,28 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                 .setPos(3, 2)
                 .setSize(74, 14))
             .widget(
-                new TextFieldWidget().setSetterInt(val -> minAutoPullStackSize = val)
-                    .setGetterInt(() -> minAutoPullStackSize)
-                    .setNumbers(1, Integer.MAX_VALUE)
-                    .setOnScrollNumbers(1, 4, 64)
+                new NumericWidget().setSetter(val -> minAutoPullStackSize = (int) val)
+                    .setGetter(() -> minAutoPullStackSize)
+                    .setBounds(1, Integer.MAX_VALUE)
+                    .setScrollValues(1, 4, 64)
                     .setTextAlignment(Alignment.Center)
                     .setTextColor(Color.WHITE.normal)
                     .setSize(70, 18)
                     .setPos(3, 18)
+                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD));
+        builder.widget(
+            TextWidget.localised("GT5U.machines.stocking_bus.refresh_time")
+                .setPos(3, 42)
+                .setSize(74, 14))
+            .widget(
+                new NumericWidget().setSetter(val -> autoPullRefreshTime = (int) val)
+                    .setGetter(() -> autoPullRefreshTime)
+                    .setBounds(1, Integer.MAX_VALUE)
+                    .setScrollValues(1, 4, 64)
+                    .setTextAlignment(Alignment.Center)
+                    .setTextColor(Color.WHITE.normal)
+                    .setSize(70, 18)
+                    .setPos(3, 58)
                     .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD));
         return builder.build();
     }
@@ -745,6 +775,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     private static String[] getDescriptionArray(boolean autoPullAvailable) {
         List<String> strings = new ArrayList<>(8);
         strings.add("Advanced item input for Multiblocks");
+        strings.add("Hatch Tier: " + TIER_COLORS[autoPullAvailable ? 6 : 3] + VN[autoPullAvailable ? 6 : 3]);
         strings.add("Retrieves directly from ME");
         strings.add("Keeps 16 item types in stock");
 
@@ -752,7 +783,8 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
             strings.add(
                 "Auto-Pull from ME mode will automatically stock the first 16 items in the ME system, updated every 5 seconds.");
             strings.add("Toggle by right-clicking with screwdriver, or use the GUI.");
-            strings.add("Use the GUI to limit the minimum stack size for Auto-Pulling.");
+            strings
+                .add("Use the GUI to limit the minimum stack size for Auto-Pulling and adjust the slot refresh timer.");
         }
 
         strings.add("Change ME connection behavior by right-clicking with wire cutter.");

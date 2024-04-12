@@ -2617,7 +2617,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         String uid = "gregtech.bee.species" + species;
         String description = "for.description." + species;
         String name = "for.bees.species." + lowercaseName;
-        GT_LanguageManager.addStringLocalization("for.bees.species." + lowercaseName, species, true);
+        GT_LanguageManager.addStringLocalization("for.bees.species." + lowercaseName, species);
 
         this.branch = branch;
         this.species = new GT_AlleleBeeSpecies(

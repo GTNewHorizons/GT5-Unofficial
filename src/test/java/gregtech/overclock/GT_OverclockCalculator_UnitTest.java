@@ -116,13 +116,25 @@ class GT_OverclockCalculator_UnitTest {
     @Test
     void doubleEnergyHatchOC_Test() {
         GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[1])
-            .setEUt(V[6] + V[6])
-            .setAmperage(2)
+            .setEUt(V[6])
+            .setAmperage(4)
             .setDuration(1024)
             .setAmperageOC(true)
             .calculate();
         assertEquals(1024 >> 6, calculator.getDuration(), messageDuration);
         assertEquals(VP[7], calculator.getConsumption(), messageEUt);
+    }
+
+    @Test
+    void doubleEnergyHatchOCForULV_Test() {
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[0])
+            .setEUt(V[6])
+            .setAmperage(4)
+            .setDuration(1024)
+            .setAmperageOC(true)
+            .calculate();
+        assertEquals(1024 >> 6, calculator.getDuration(), messageDuration);
+        assertEquals(VP[0] << 12, calculator.getConsumption(), messageEUt);
     }
 
     @Test
@@ -546,5 +558,29 @@ class GT_OverclockCalculator_UnitTest {
             .setAmperage(64)
             .setAmperageOC(false);
         assertEquals(TierEU.LuV * 64, calculator.calculateEUtConsumptionUnderOneTick(64, 64), messageEUt);
+    }
+
+    @Test
+    void overclockWithAbnormalEnergyIncrease_Test() {
+        long expectedEUt = (long) Math.floor(VP[1] * Math.pow(4.1, 5));
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[1])
+            .setEUt(V[6])
+            .setDuration(1024)
+            .setEUtIncreasePerOC(4.1)
+            .calculate();
+        assertEquals(1024 >> 5, calculator.getDuration(), messageDuration);
+        assertEquals(expectedEUt, calculator.getConsumption(), messageEUt);
+    }
+
+    @Test
+    void overclockWithAbnormalDurationDecrease_Test() {
+        int expectedDuration = (int) Math.floor(1024 / Math.pow(2.1, 5));
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[1])
+            .setEUt(V[6])
+            .setDuration(1024)
+            .setDurationDecreasePerOC(2.1)
+            .calculate();
+        assertEquals(expectedDuration, calculator.getDuration(), messageDuration);
+        assertEquals(VP[6], calculator.getConsumption(), messageEUt);
     }
 }

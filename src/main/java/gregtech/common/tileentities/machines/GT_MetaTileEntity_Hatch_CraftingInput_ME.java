@@ -1,5 +1,7 @@
 package gregtech.common.tileentities.machines;
 
+import static gregtech.api.enums.GT_Values.TIER_COLORS;
+import static gregtech.api.enums.GT_Values.VN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_CRAFTING_INPUT_BUFFER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_CRAFTING_INPUT_BUS;
 
@@ -160,7 +162,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
             return newPattern == null
                 || (!ItemStack.areItemStacksEqual(pattern, newPattern) && !this.patternDetails.equals(
                     ((ICraftingPatternItem) Objects.requireNonNull(pattern.getItem()))
-                        .getPatternForItem(pattern, world)));
+                        .getPatternForItem(newPattern, world)));
         }
 
         private boolean isEmpty() {
@@ -340,9 +342,11 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
             aID,
             aName,
             aNameRegional,
-            6,
+            supportFluids ? 11 : 6,
             MAX_INV_COUNT,
-            new String[] { "Advanced item input for Multiblocks", "Processes patterns directly from ME",
+            new String[] { "Advanced item input for Multiblocks",
+                "Hatch Tier: " + TIER_COLORS[supportFluids ? 11 : 6] + VN[supportFluids ? 11 : 6],
+                "Processes patterns directly from ME",
                 supportFluids ? "It supports patterns including fluids"
                     : "It does not support patterns including fluids",
                 "Change ME connection behavior by right-clicking with wire cutter" });
@@ -476,7 +480,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         if (getCrafterIcon() != null) {
             name.append(getCrafterIcon().getDisplayName());
         } else {
-            name.append(getInventoryName());
+            name.append(getLocalName());
         }
 
         if (mInventory[SLOT_CIRCUIT] != null) {
@@ -776,6 +780,8 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         NBTTagCompound tag = accessor.getNBTData();
+        if (tag.hasKey("name"))
+            currenttip.add(EnumChatFormatting.AQUA + tag.getString("name") + EnumChatFormatting.RESET);
         if (tag.hasKey("inventory")) {
             var inventory = tag.getTagList("inventory", Constants.NBT.TAG_COMPOUND);
             for (int i = 0; i < inventory.tagCount(); ++i) {
@@ -823,7 +829,9 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         }
 
         tag.setTag("inventory", inventory);
-        tag.setString("name", getName());
+        if (!Objects.equals(getName(), getLocalName())) {
+            tag.setString("name", getName());
+        }
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
     }
 
@@ -1014,5 +1022,18 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     @Override
     public boolean supportsFluids() {
         return this.supportFluids;
+    }
+
+    @Override
+    public List<ItemStack> getItemsForHoloGlasses() {
+        List<ItemStack> list = new ArrayList<>();
+        for (PatternSlot slot : internalInventory) {
+            if (slot == null) continue;
+
+            IAEItemStack[] outputs = slot.getPatternDetails()
+                .getCondensedOutputs();
+            list.add(outputs[0].getItemStack());
+        }
+        return list;
     }
 }

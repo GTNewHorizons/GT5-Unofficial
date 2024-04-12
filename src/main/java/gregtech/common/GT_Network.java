@@ -74,7 +74,7 @@ public class GT_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet>
             new GT_Packet_GtTileEntityGuiRequest(), // 15
             new GT_Packet_SendCoverData(), // 16
             new GT_Packet_RequestCoverData(), // 17
-            new GT_Packet_MultiTileEntity(), // 18
+            new GT_Packet_MultiTileEntity(true), // 18
             new GT_Packet_SendOregenPattern() // 19
         );
     }

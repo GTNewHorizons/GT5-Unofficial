@@ -15,11 +15,10 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import com.google.common.io.ByteArrayDataInput;
+import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.drawable.Text;
-import com.gtnewhorizons.modularui.api.math.MathExpression;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.BaseTextFieldWidget;
 
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.gui.modularui.GT_UITextures;
@@ -30,7 +29,7 @@ import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
-import gregtech.common.gui.modularui.widget.CoverDataFollower_TextFieldWidget;
+import gregtech.common.gui.modularui.widget.CoverDataFollower_NumericWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
 
@@ -108,14 +107,8 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
             }
             if (tTank1 != null && tTank2 != null) {
                 allowFluid = true;
-                FluidStack tLiquid = tTank1.drain(directionFrom, Math.abs(aCoverVariable.speed), false);
-                if (tLiquid != null && this.canTransferFluid(tLiquid)) {
-                    tLiquid = tLiquid.copy();
-                    tLiquid.amount = tTank2.fill(directionTo, tLiquid, false);
-                    if (tLiquid.amount > 0) {
-                        tTank2.fill(directionTo, tTank1.drain(directionFrom, tLiquid.amount, true), true);
-                    }
-                }
+                GT_Utility
+                    .moveFluid(tTank1, tTank2, directionFrom, Math.abs(aCoverVariable.speed), this::canTransferFluid);
                 allowFluid = false;
             }
         }
@@ -258,6 +251,12 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
         private static final int spaceX = 18;
         private static final int spaceY = 18;
 
+        private static final NumberFormatMUI numberFormat;
+        static {
+            numberFormat = new NumberFormatMUI();
+            numberFormat.setMaximumFractionDigits(2);
+        }
+
         public FluidRegulatorUIFactory(GT_CoverUIBuildContext buildContext) {
             super(buildContext);
         }
@@ -320,14 +319,14 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
                             .addTooltip(GT_Utility.trans("343.1", "Use Inverted Machine Processing State"))
                             .setPos(spaceX * 2, spaceY * 1))
                     .addFollower(
-                        new CoverDataFollower_TextFieldWidget<>(),
-                        coverData -> String.valueOf(coverData.speed),
+                        new CoverDataFollower_NumericWidget<>(),
+                        coverData -> (double) coverData.speed,
                         (coverData, state) -> {
-                            coverData.speed = (int) MathExpression.parseMathExpression(state);
+                            coverData.speed = state.intValue();
                             return coverData;
                         },
-                        widget -> widget.setOnScrollNumbersLong(1, 5, 50)
-                            .setNumbersLong(val -> {
+                        widget -> widget.setBounds(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY)
+                            .setValidator(val -> {
                                 final int tickRate = getCoverData() != null ? getCoverData().tickRate : 0;
                                 final long maxFlow = (long) mTransferRate
                                     * GT_Utility.clamp(tickRate, TICK_RATE_MIN, TICK_RATE_MAX);
@@ -341,19 +340,19 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
                                 }
                                 return val;
                             })
-                            .setPattern(BaseTextFieldWidget.WHOLE_NUMS)
+                            .setScrollValues(1, 144, 1000)
                             .setFocusOnGuiOpen(true)
                             .setPos(spaceX * 0, spaceY * 2 + 2)
                             .setSize(spaceX * 4 - 3, 12))
                     .addFollower(
-                        new CoverDataFollower_TextFieldWidget<>(),
-                        coverData -> String.valueOf(coverData.tickRate),
+                        new CoverDataFollower_NumericWidget<>(),
+                        coverData -> (double) coverData.tickRate,
                         (coverData, state) -> {
-                            coverData.tickRate = (int) MathExpression.parseMathExpression(state);
+                            coverData.tickRate = state.intValue();
                             return coverData;
                         },
-                        widget -> widget.setOnScrollNumbersLong(1, 5, 50)
-                            .setNumbersLong(val -> {
+                        widget -> widget.setBounds(0, TICK_RATE_MAX)
+                            .setValidator(val -> {
                                 final int speed = getCoverData() != null ? getCoverData().speed : 0;
                                 warn.set(false);
                                 if (val > TICK_RATE_MAX) {
@@ -368,7 +367,6 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
                                 }
                                 return val;
                             })
-                            .setPattern(BaseTextFieldWidget.WHOLE_NUMS)
                             .setPos(spaceX * 5, spaceY * 2 + 2)
                             .setSize(spaceX * 2 - 3, 12))
                     .setPos(startX, startY))
@@ -384,16 +382,17 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
                 .widget(
                     new TextWidget(GT_Utility.trans("209", " ticks")).setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(startX + spaceX * 7, 4 + startY + spaceY * 2))
-                .widget(TextWidget.dynamicText(() -> {
+                .widget(new TextWidget().setTextSupplier(() -> {
                     FluidRegulatorData coverVariable = getCoverData();
                     if (coverVariable == null) return new Text("");
                     return new Text(
-                        String.format(
-                            GT_Utility.trans("210", "Average: %.2f L/sec"),
-                            coverVariable.tickRate == 0 ? 0 : coverVariable.speed * 20d / coverVariable.tickRate))
+                        GT_Utility.trans("210.1", "Average:") + " "
+                            + numberFormat.format(
+                                coverVariable.tickRate == 0 ? 0 : coverVariable.speed * 20d / coverVariable.tickRate)
+                            + " "
+                            + GT_Utility.trans("210.2", "L/sec"))
                                 .color(warn.get() ? COLOR_TEXT_WARN.get() : COLOR_TEXT_GRAY.get());
                 })
-                    .setSynced(false)
                     .setPos(startX + spaceX * 0, 4 + startY + spaceY * 3));
         }
     }

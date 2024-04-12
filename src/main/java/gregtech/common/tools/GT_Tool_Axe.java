@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
@@ -94,7 +95,8 @@ public class GT_Tool_Axe extends GT_Tool {
     @Override
     public boolean isMinableBlock(Block aBlock, byte aMetaData) {
         return GT_ToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "axe")
-            || GT_ToolHarvestHelper.isAppropriateMaterial(aBlock, Material.wood);
+            || GT_ToolHarvestHelper.isAppropriateMaterial(aBlock, Material.wood)
+            || GT_ToolHarvestHelper.isSpecialBlock(aBlock, Blocks.ladder);
     }
 
     @Override
@@ -118,6 +120,7 @@ public class GT_Tool_Axe extends GT_Tool {
     @Override
     public float getMiningSpeed(Block aBlock, byte aMetaData, float aDefault, EntityPlayer aPlayer, World aWorld,
         int aX, int aY, int aZ) {
+
         if (aBlock.isWood(aPlayer.worldObj, aX, aY, aZ)
             && OrePrefixes.log.contains(new ItemStack(aBlock, 1, aMetaData))) {
             float rAmount = 1.0F;
@@ -132,6 +135,7 @@ public class GT_Tool_Axe extends GT_Tool {
             }
             return 2.0F * aDefault / rAmount;
         }
+
         return (aBlock.getMaterial() == Material.leaves) || (aBlock.getMaterial() == Material.vine)
             || (aBlock.getMaterial() == Material.plants)
             || (aBlock.getMaterial() == Material.gourd) ? aDefault / 4.0F : aDefault;

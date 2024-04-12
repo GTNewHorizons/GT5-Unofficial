@@ -29,8 +29,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
@@ -56,7 +54,7 @@ import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
 import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
@@ -91,6 +89,7 @@ import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.blocks.GT_Block_Casings8;
 
 @SuppressWarnings("SpellCheckingInspection")
@@ -509,9 +508,7 @@ public class GT_MetaTileEntity_PCBFactory extends
 
         getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
 
-        if (mMaintenanceHatches.size() != 1 || mOutputBusses.isEmpty()
-            || mInputBusses.isEmpty()
-            || mInputHatches.isEmpty()) {
+        if (mMaintenanceHatches.size() != 1) {
             return false;
         }
 
@@ -572,23 +569,7 @@ public class GT_MetaTileEntity_PCBFactory extends
             protected GT_ParallelHelper createParallelHelper(@Nonnull GT_Recipe recipe) {
                 return super.createParallelHelper(recipe)
                     .setEUtModifier((float) Math.sqrt(mUpgradesInstalled == 0 ? 1 : mUpgradesInstalled))
-                    .setCustomItemOutputCalculation(currentParallel -> {
-                        ArrayList<ItemStack> chancedOutputs = new ArrayList<>();
-                        for (int i = 0; i < currentParallel; i++) {
-                            for (ItemStack item : recipe.mOutputs) {
-                                int remainingEfficiency = getMaxEfficiency(getControllerSlot());
-                                while (remainingEfficiency > 0) {
-                                    if (getBaseMetaTileEntity().getRandomNumber(10000) >= remainingEfficiency) {
-                                        remainingEfficiency -= 10000;
-                                        continue;
-                                    }
-                                    chancedOutputs.add(item);
-                                    remainingEfficiency -= 10000;
-                                }
-                            }
-                        }
-                        return chancedOutputs.toArray(new ItemStack[0]);
-                    });
+                    .setChanceMultiplier(mRoughnessMultiplier);
             }
         };
     }
@@ -606,34 +587,15 @@ public class GT_MetaTileEntity_PCBFactory extends
     @Override
     public boolean onRunningTick(ItemStack aStack) {
         if (!super.onRunningTick(aStack)) {
-            criticalStopMachine();
             return false;
         }
 
         if (ticker % 20 == 0) {
-            if (mOCTier1) {
-                if (mCoolantInputHatch == null) {
-                    criticalStopMachine();
-                    return false;
-                }
-                FluidStack tFluid = GT_ModHandler.getDistilledWater(COOLANT_CONSUMED_PER_SEC);
-                FluidStack tLiquid = mCoolantInputHatch.drain(tFluid.amount, true);
-                if (tLiquid == null || tLiquid.amount < tFluid.amount || !tLiquid.equals(tFluid)) {
-                    criticalStopMachine();
-                    return false;
-                }
-            }
-
-            if (mOCTier2) {
-                if (mCoolantInputHatch == null) {
-                    criticalStopMachine();
-                    return false;
-                }
-                Fluid superCoolant = FluidRegistry.getFluid("supercoolant");
-                FluidStack tFluid = new FluidStack(superCoolant, COOLANT_CONSUMED_PER_SEC);
-                FluidStack tLiquid = mCoolantInputHatch.drain(tFluid.amount, true);
-                if (tLiquid == null || tLiquid.amount < tFluid.amount || !tLiquid.equals(tFluid)) {
-                    criticalStopMachine();
+            if (!isNoOC()) {
+                FluidStack tFluid = mOCTier1 ? GT_ModHandler.getDistilledWater(COOLANT_CONSUMED_PER_SEC)
+                    : Materials.SuperCoolant.getFluid(COOLANT_CONSUMED_PER_SEC);
+                if (!drain(mCoolantInputHatch, tFluid, true)) {
+                    stopMachine(ShutDownReasonRegistry.outOfFluid(tFluid));
                     return false;
                 }
             }
@@ -643,6 +605,16 @@ public class GT_MetaTileEntity_PCBFactory extends
         ticker++;
 
         return true;
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (aBaseMetaTileEntity.isServerSide()) {
+            // TODO: Look for proper fix
+            // Updates every 10 sec
+            if (mUpdate <= -150) mUpdate = 50;
+        }
     }
 
     @Override
@@ -887,14 +859,14 @@ public class GT_MetaTileEntity_PCBFactory extends
                     + EnumChatFormatting.GRAY
                     + " TT energy hatch.",
                 1)
-            .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
-            .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
-            .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
+            .addInputBus(EnumChatFormatting.GOLD + "0" + EnumChatFormatting.GRAY + "+", 1)
+            .addOutputBus(EnumChatFormatting.GOLD + "0" + EnumChatFormatting.GRAY + "+", 1)
+            .addInputHatch(EnumChatFormatting.GOLD + "0" + EnumChatFormatting.GRAY + "+", 1)
             .addStructureInfo(
                 "Coolant Hatch (Input Hatch): " + EnumChatFormatting.GOLD
                     + "1"
                     + EnumChatFormatting.GRAY
-                    + "Center of the Liquid Cooling/Thermosink")
+                    + " Center of the Liquid Cooling/Thermosink")
             .addStructureInfo(
                 EnumChatFormatting.BLUE + "Base Multi (Tier "
                     + EnumChatFormatting.DARK_PURPLE
@@ -1078,9 +1050,9 @@ public class GT_MetaTileEntity_PCBFactory extends
                     .setSize(20, 16)
                     .setPos(173, 98))
             .widget(
-                new TextFieldWidget().setGetterInt(() -> mSetTier)
-                    .setSetterInt(val -> mSetTier = val)
-                    .setNumbers(1, 3)
+                new NumericWidget().setGetter(() -> mSetTier)
+                    .setSetter(val -> mSetTier = (int) val)
+                    .setBounds(1, 3)
                     .setTextColor(Color.WHITE.normal)
                     .setTextAlignment(Alignment.Center)
                     .addTooltip("PCB Factory Tier")
@@ -1146,6 +1118,7 @@ public class GT_MetaTileEntity_PCBFactory extends
                         .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                     .widget(new MultiChildWidget().addChild(new CycleButtonWidget().setToggle(() -> mOCTier1, val -> {
                         mOCTier1 = val;
+                        mOCTier2 = false;
                         if (!mOCTier1) {
                             GT_Utility.sendChatToPlayer(player, GT_Utility.trans("341.1", "Tier 1 cooling disabled"));
                         } else {
@@ -1165,6 +1138,7 @@ public class GT_MetaTileEntity_PCBFactory extends
                         .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                     .widget(new MultiChildWidget().addChild(new CycleButtonWidget().setToggle(() -> mOCTier2, val -> {
                         mOCTier2 = val;
+                        mOCTier1 = false;
                         if (!mOCTier2) {
                             GT_Utility.sendChatToPlayer(player, GT_Utility.trans("342.1", "Tier 2 cooling disabled"));
                         } else {
@@ -1187,9 +1161,9 @@ public class GT_MetaTileEntity_PCBFactory extends
                             .setEnabled(widget -> !getBaseMetaTileEntity().isActive())
                             .setPos(0, 4))
                     .widget(
-                        new TextFieldWidget().setGetterInt(() -> (int) ((1f / mRoughnessMultiplier) * 100f))
-                            .setSetterInt(val -> mRoughnessMultiplier = 100f / val)
-                            .setNumbers(50, 200)
+                        new NumericWidget().setGetter(() -> (int) ((1f / mRoughnessMultiplier) * 100f))
+                            .setSetter(val -> mRoughnessMultiplier = 100f / (int) val)
+                            .setBounds(50, 200)
                             .setTextColor(Color.WHITE.normal)
                             .setTextAlignment(Alignment.Center)
                             .addTooltip(
@@ -1210,18 +1184,18 @@ public class GT_MetaTileEntity_PCBFactory extends
                     .widget(
                         new DynamicPositionedRow().setSynced(false)
                             .widget(
-                                new TextFieldWidget().setGetterInt(() -> mBioOffsets[0])
-                                    .setSetterInt(val -> mBioOffsets[0] = val)
-                                    .setNumbers(-16, 16)
+                                new NumericWidget().setGetter(() -> mBioOffsets[0])
+                                    .setSetter(val -> mBioOffsets[0] = (int) val)
+                                    .setBounds(-16, 16)
                                     .setTextColor(Color.WHITE.normal)
                                     .setTextAlignment(Alignment.Center)
                                     .addTooltip("X Offset")
                                     .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
                                     .setSize(36, 18))
                             .widget(
-                                new TextFieldWidget().setGetterInt(() -> mBioOffsets[1])
-                                    .setSetterInt(val -> mBioOffsets[1] = val)
-                                    .setNumbers(-16, 16)
+                                new NumericWidget().setGetter(() -> mBioOffsets[1])
+                                    .setSetter(val -> mBioOffsets[1] = (int) val)
+                                    .setBounds(-16, 16)
                                     .setTextColor(Color.WHITE.normal)
                                     .setTextAlignment(Alignment.Center)
                                     .addTooltip("Z Offset")
@@ -1234,18 +1208,18 @@ public class GT_MetaTileEntity_PCBFactory extends
                     .widget(
                         new DynamicPositionedRow().setSynced(false)
                             .widget(
-                                new TextFieldWidget().setGetterInt(() -> mOCTier1Offsets[0])
-                                    .setSetterInt(val -> mOCTier1Offsets[0] = val)
-                                    .setNumbers(-16, 16)
+                                new NumericWidget().setGetter(() -> mOCTier1Offsets[0])
+                                    .setSetter(val -> mOCTier1Offsets[0] = (int) val)
+                                    .setBounds(-16, 16)
                                     .setTextColor(Color.WHITE.normal)
                                     .setTextAlignment(Alignment.Center)
                                     .addTooltip("X Offset")
                                     .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
                                     .setSize(36, 18))
                             .widget(
-                                new TextFieldWidget().setGetterInt(() -> mOCTier1Offsets[1])
-                                    .setSetterInt(val -> mOCTier1Offsets[1] = val)
-                                    .setNumbers(-16, 16)
+                                new NumericWidget().setGetter(() -> mOCTier1Offsets[1])
+                                    .setSetter(val -> mOCTier1Offsets[1] = (int) val)
+                                    .setBounds(-16, 16)
                                     .setTextColor(Color.WHITE.normal)
                                     .setTextAlignment(Alignment.Center)
                                     .addTooltip("Z Offset")
@@ -1258,18 +1232,18 @@ public class GT_MetaTileEntity_PCBFactory extends
                     .widget(
                         new DynamicPositionedRow().setSynced(false)
                             .widget(
-                                new TextFieldWidget().setGetterInt(() -> mOCTier2Offsets[0])
-                                    .setSetterInt(val -> mOCTier2Offsets[0] = val)
-                                    .setNumbers(-16, 16)
+                                new NumericWidget().setGetter(() -> mOCTier2Offsets[0])
+                                    .setSetter(val -> mOCTier2Offsets[0] = (int) val)
+                                    .setBounds(-16, 16)
                                     .setTextColor(Color.WHITE.normal)
                                     .setTextAlignment(Alignment.Center)
                                     .addTooltip("X Offset")
                                     .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
                                     .setSize(36, 18))
                             .widget(
-                                new TextFieldWidget().setGetterInt(() -> mOCTier2Offsets[1])
-                                    .setSetterInt(val -> mOCTier2Offsets[1] = val)
-                                    .setNumbers(-16, 16)
+                                new NumericWidget().setGetter(() -> mOCTier2Offsets[1])
+                                    .setSetter(val -> mOCTier2Offsets[1] = (int) val)
+                                    .setBounds(-16, 16)
                                     .setTextColor(Color.WHITE.normal)
                                     .setTextAlignment(Alignment.Center)
                                     .addTooltip("Z Offset")
@@ -1287,6 +1261,16 @@ public class GT_MetaTileEntity_PCBFactory extends
 
     @Override
     public boolean supportsInputSeparation() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
         return true;
     }
 }

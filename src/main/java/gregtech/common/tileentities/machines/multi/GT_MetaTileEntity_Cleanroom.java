@@ -27,6 +27,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ICleanroom;
 import gregtech.api.interfaces.ICleanroomReceiver;
 import gregtech.api.interfaces.ISecondaryDescribable;
@@ -36,6 +37,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicHull;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TooltipMultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
@@ -124,8 +126,21 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
     @Override
     public CheckRecipeResult checkProcessing() {
         mEfficiencyIncrease = 100;
+        final long inputVoltage = getMaxInputVoltage();
+
+        // only allow LV+ energy hatches
+        if (inputVoltage < TierEU.LV) {
+            return CheckRecipeResultRegistry.insufficientPower(40);
+        }
+
         // use the standard overclock mechanism to determine duration and estimate a maximum consumption
-        calculateOverclockedNessMultiInternal(40, 45 * Math.max(1, mHeight - 1), 1, getMaxInputVoltage(), false);
+        // if the cleanroom is powered by an LV energy hatch, it will actually accept 2A instead of just 1A.
+        calculateOverclockedNessMultiInternal(
+            40,
+            45 * Math.max(1, mHeight - 1),
+            inputVoltage == TierEU.LV ? 2 : 1,
+            inputVoltage,
+            false);
         // negate it to trigger the special energy consumption function. divide by 10 to get the actual final
         // consumption.
         mEUt /= -10;

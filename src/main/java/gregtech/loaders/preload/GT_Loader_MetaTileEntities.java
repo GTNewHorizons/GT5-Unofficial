@@ -99,6 +99,8 @@ import static gregtech.api.enums.MetaTileEntityIDs.DYNAMO_HATCH_UHV;
 import static gregtech.api.enums.MetaTileEntityIDs.DYNAMO_HATCH_ULV;
 import static gregtech.api.enums.MetaTileEntityIDs.DYNAMO_HATCH_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.DYNAMO_HATCH_ZPM;
+import static gregtech.api.enums.MetaTileEntityIDs.DroneDownLink;
+import static gregtech.api.enums.MetaTileEntityIDs.Drone_Centre;
 import static gregtech.api.enums.MetaTileEntityIDs.EBF_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.ENERGY_HATCH_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.ENERGY_HATCH_HV;
@@ -577,6 +579,8 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ProcessingA
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_PyrolyseOven;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_TranscendentPlasmaMixer;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_VacuumFreezer;
+import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_DroneCentre;
+import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_Hatch_DroneDownLink;
 import gregtech.common.tileentities.machines.steam.GT_MetaTileEntity_AlloySmelter_Bronze;
 import gregtech.common.tileentities.machines.steam.GT_MetaTileEntity_AlloySmelter_Steel;
 import gregtech.common.tileentities.machines.steam.GT_MetaTileEntity_Compressor_Bronze;
@@ -859,7 +863,6 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 LARGE_TUNGSTENSTEEL_BOILER_CONTROLLER.ID,
                 "multimachine.boiler.tungstensteel",
                 "Large Tungstensteel Boiler").getStackForm(1L));
-
         ItemList.FusionComputer_LuV.set(
             new GT_MetaTileEntity_FusionComputer1(
                 FUSION_CONTROLLER_MKI.ID,
@@ -1029,7 +1032,9 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.NanoForge.set(
             new GT_MetaTileEntity_NanoForge(NANO_FORGE_CONTROLLER.ID, "multimachine.nanoforge", "Nano Forge")
                 .getStackForm(1));
-
+        ItemList.Machine_Multi_DroneCentre.set(
+            new GT_MetaTileEntity_DroneCentre(Drone_Centre.ID, "multimachine_DroneCentre", "Drone Centre")
+                .getStackForm(1));
     }
 
     private static void registerSteamMachines() {
@@ -4091,6 +4096,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "Auto Maintenance Hatch",
                 6,
                 true).getStackForm(1L));
+        ItemList.Hatch_DroneDownLink.set(
+            new GT_MetaTileEntity_Hatch_DroneDownLink(
+                DroneDownLink.ID,
+                "hatch.dronedownlink",
+                "Drone DownLink Module",
+                5).getStackForm(1));
         ItemList.Hatch_DataAccess_EV.set(
             new GT_MetaTileEntity_Hatch_DataAccess(DATA_ACCESS_HATCH.ID, "hatch.dataaccess", "Data Access Hatch", 4)
                 .getStackForm(1L));

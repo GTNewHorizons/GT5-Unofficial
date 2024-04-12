@@ -123,6 +123,14 @@ public class GT_ParallelHelper {
      */
     private float eutModifier = 1;
     /**
+     * Multiplier that is applied on the output chances
+     */
+    private double chanceMultiplier = 1;
+    /**
+     * Multiplier by which the output will be multiplied
+     */
+    private int outputMultiplier = 1;
+    /**
      * Method for calculating max parallel from given inputs.
      */
     private MaxParallelCalculator maxParallelCalculator = GT_Recipe::maxParallelCalculatedByInputs;
@@ -218,6 +226,25 @@ public class GT_ParallelHelper {
     @Nonnull
     public GT_ParallelHelper setEUtModifier(float aEUtModifier) {
         this.eutModifier = aEUtModifier;
+        return this;
+    }
+
+    /**
+     * Sets the multiplier that is applied on output chances. 1 does nothing. 0.9 is 10% less. 1.1 is 10% more.
+     * Only useful for item outputs for sure.
+     */
+    @Nonnull
+    public GT_ParallelHelper setChanceMultiplier(double chanceMultiplier) {
+        this.chanceMultiplier = chanceMultiplier;
+        return this;
+    }
+
+    /**
+     * Sets the item/fluid output multiplier. 1 does nothing. 2 doubles the item and fluid outputs.
+     */
+    @Nonnull
+    public GT_ParallelHelper setOutputMultiplier(int outputMultiplier) {
+        this.outputMultiplier = outputMultiplier;
         return this;
     }
 
@@ -484,6 +511,9 @@ public class GT_ParallelHelper {
             voidProtectionHelper.setMachine(machine)
                 .setItemOutputs(truncatedItemOutputs)
                 .setFluidOutputs(truncatedFluidOutputs)
+                .setChangeGetter(recipe::getOutputChance)
+                .setOutputMultiplier(outputMultiplier)
+                .setChanceMultiplier(chanceMultiplier)
                 .setMaxParallel(maxParallel)
                 .setItemOutputInventory(itemOutputInventory)
                 .setFluidOutputInventory(fluidOutputInventory)
@@ -556,12 +586,8 @@ public class GT_ParallelHelper {
 
         // If we want to calculate outputs we do it here
         if (calculateOutputs && currentParallel > 0) {
-            if (truncatedItemOutputs.length > 0) {
-                calculateItemOutputs(truncatedItemOutputs);
-            }
-            if (truncatedFluidOutputs.length > 0) {
-                calculateFluidOutputs(truncatedFluidOutputs);
-            }
+            calculateItemOutputs(truncatedItemOutputs);
+            calculateFluidOutputs(truncatedFluidOutputs);
         }
         result = CheckRecipeResultRegistry.SUCCESSFUL;
     }
@@ -586,39 +612,17 @@ public class GT_ParallelHelper {
             itemOutputs = customItemOutputCalculation.apply(currentParallel);
             return;
         }
+        if (truncatedItemOutputs.length == 0) return;
         ArrayList<ItemStack> itemOutputsList = new ArrayList<>();
-        Random rand = new Random();
         for (int i = 0; i < truncatedItemOutputs.length; i++) {
             if (recipe.getOutput(i) == null) continue;
-            long items = 0;
             ItemStack origin = recipe.getOutput(i)
                 .copy();
             final long itemStackSize = origin.stackSize;
-
-            if (recipe.getOutputChance(i) >= 10000) {
-                items = itemStackSize * currentParallel;
-            } else {
-                double chance = (double) recipe.getOutputChance(i) / 10000;
-                double mean = currentParallel * chance;
-                double stdDev = Math.sqrt(currentParallel * chance * (1 - chance));
-                // Check if everything within 3 standard deviations of mean is within the range
-                // of possible values (0 ~ currentParallel)
-                boolean isSuitableForFittingWithNormalDistribution = mean - 3 * stdDev >= 0
-                    && mean + 3 * stdDev <= currentParallel;
-                if (isSuitableForFittingWithNormalDistribution) {
-                    // Use Normal Distribution to fit Binomial Distribution
-                    items = (long) Math.ceil(itemStackSize * (stdDev * rand.nextGaussian() + mean));
-                    items = Math.max(Math.min(items, itemStackSize * currentParallel), 0);
-                } else {
-                    // Do Binomial Distribution by loop
-                    for (int roll = 0; roll < currentParallel; roll++) {
-                        if (recipe.getOutputChance(i) > XSTR.XSTR_INSTANCE.nextInt(10000)) {
-                            items += itemStackSize;
-                        }
-                    }
-                }
-            }
-
+            double chancedOutputMultiplier = calculateChancedOutputMultiplier(
+                (int) (recipe.getOutputChance(i) * chanceMultiplier),
+                currentParallel);
+            long items = (long) Math.ceil(itemStackSize * chancedOutputMultiplier * outputMultiplier);
             addItemsLong(itemOutputsList, origin, items);
         }
         itemOutputs = itemOutputsList.toArray(new ItemStack[0]);
@@ -629,20 +633,50 @@ public class GT_ParallelHelper {
             fluidOutputs = customFluidOutputCalculation.apply(currentParallel);
             return;
         }
+        if (truncatedFluidOutputs.length == 0) return;
         ArrayList<FluidStack> fluidOutputsList = new ArrayList<>();
         for (int i = 0; i < truncatedFluidOutputs.length; i++) {
             if (recipe.getFluidOutput(i) == null) continue;
             FluidStack origin = recipe.getFluidOutput(i)
                 .copy();
-            long fluids = (long) origin.amount * currentParallel;
+            long fluids = (long) this.outputMultiplier * origin.amount * currentParallel;
 
             addFluidsLong(fluidOutputsList, origin, fluids);
         }
         fluidOutputs = fluidOutputsList.toArray(new FluidStack[0]);
     }
 
+    private static final Random rand = new Random();
+
+    public static double calculateChancedOutputMultiplier(int chanceInt, int parallel) {
+        // Multiply the integer part of the chance directly with parallel
+        double multiplier = Math.floorDiv(chanceInt, 10000) * parallel;
+        int transformedChanceInt = chanceInt % 10000;
+        if (transformedChanceInt == 0) return multiplier;
+        // Calculation of the Decimal Part of chance
+        double chance = transformedChanceInt / 10000.0;
+        double mean = parallel * chance;
+        double stdDev = Math.sqrt(parallel * chance * (1 - chance));
+        // Check if everything within 3 standard deviations of mean is within the range
+        // of possible values (0 ~ currentParallel)
+        boolean isSuitableForFittingWithNormalDistribution = mean - 3 * stdDev >= 0 && mean + 3 * stdDev <= parallel;
+        if (isSuitableForFittingWithNormalDistribution) {
+            // Use Normal Distribution to fit Binomial Distribution
+            double tMultiplier = stdDev * rand.nextGaussian() + mean;
+            multiplier += Math.max(Math.min(tMultiplier, parallel), 0);
+        } else {
+            // Do Binomial Distribution by loop
+            for (int roll = 0; roll < parallel; roll++) {
+                if (transformedChanceInt > XSTR.XSTR_INSTANCE.nextInt(10000)) {
+                    multiplier += 1;
+                }
+            }
+        }
+        return multiplier;
+    }
+
     public static void addItemsLong(ArrayList<ItemStack> itemList, ItemStack origin, long amount) {
-        if (amount >= 0) {
+        if (amount > 0) {
             while (amount > Integer.MAX_VALUE) {
                 ItemStack item = origin.copy();
                 item.stackSize = Integer.MAX_VALUE;
@@ -656,7 +690,7 @@ public class GT_ParallelHelper {
     }
 
     public static void addFluidsLong(ArrayList<FluidStack> fluidList, FluidStack origin, long amount) {
-        if (amount >= 0) {
+        if (amount > 0) {
             while (amount > Integer.MAX_VALUE) {
                 FluidStack fluid = origin.copy();
                 fluid.amount = Integer.MAX_VALUE;

@@ -1,6 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.Railcraft;
+import static gregtech.api.recipe.RecipeMaps.arcFurnaceRecipes;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
@@ -470,7 +471,7 @@ public class ArcFurnaceRecipes implements Runnable {
             .fluidInputs(Materials.Oxygen.getGas(2000L))
             .duration(60 * SECONDS)
             .eut((int) TierEU.RECIPE_LV)
-            .addTo(UniversalArcFurnace);
+            .addTo(arcFurnaceRecipes);
 
     }
 }

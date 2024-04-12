@@ -1,12 +1,9 @@
 package gregtech.common.render.items;
 
-import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
-
-import org.lwjgl.opengl.GL11;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -14,6 +11,7 @@ import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.render.GT_RenderUtil;
 
 public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
 
@@ -48,15 +46,7 @@ public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack aStack, Object... data) {
-        if (type == IItemRenderer.ItemRenderType.ENTITY) {
-            if (RenderItem.renderInFrame) {
-                GL11.glScalef(0.85F, 0.85F, 0.85F);
-                GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
-                GL11.glTranslated(-0.5D, -0.42D, 0.0D);
-            } else {
-                GL11.glTranslated(-0.5D, -0.42D, 0.0D);
-            }
-        }
+        GT_RenderUtil.applyStandardItemTransform(type);
 
         IItemRenderer itemRenderer = getRendererForItemStack(aStack);
         itemRenderer.renderItem(type, aStack, data);

@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
+import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
 
 import gregtech.api.interfaces.IIconContainer;
@@ -39,27 +40,41 @@ public class GT_Tool_Sense extends GT_Tool {
     }
 
     @Override
+    public float getMiningSpeed(Block aBlock, byte aMetaData, float aDefault, EntityPlayer aPlayer, World worldObj,
+        int aX, int aY, int aZ) {
+        // Speed nerf for using AOE tools to break single block
+        if (aPlayer != null && aPlayer.isSneaking()) {
+            return aDefault / 2;
+        }
+        return super.getMiningSpeed(aBlock, aMetaData, aDefault, aPlayer, worldObj, aX, aY, aZ);
+    }
+
+    @Override
     public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX,
         int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
         int rConversions = 0;
         if ((this.sIsHarvestingRightNow.get() == null) && ((aPlayer instanceof EntityPlayerMP))) {
             this.sIsHarvestingRightNow.set(this);
-            for (int i = -2; i < 3; i++) {
-                for (int j = -2; j < 3; j++) {
-                    for (int k = -2; k < 3; k++) {
-                        if (((i != 0) || (j != 0) || (k != 0)) && (aStack.getItem()
-                            .getDigSpeed(
-                                aStack,
-                                aPlayer.worldObj.getBlock(aX + i, aY + j, aZ + k),
-                                aPlayer.worldObj.getBlockMetadata(aX + i, aY + j, aZ + k))
-                            > 0.0F)
-                            && (((EntityPlayerMP) aPlayer).theItemInWorldManager
-                                .tryHarvestBlock(aX + i, aY + j, aZ + k))) {
-                            rConversions++;
+
+            if (!aPlayer.isSneaking()) {
+                for (int i = -2; i < 3; i++) {
+                    for (int j = -2; j < 3; j++) {
+                        for (int k = -2; k < 3; k++) {
+                            if (((i != 0) || (j != 0) || (k != 0)) && (aStack.getItem()
+                                .getDigSpeed(
+                                    aStack,
+                                    aPlayer.worldObj.getBlock(aX + i, aY + j, aZ + k),
+                                    aPlayer.worldObj.getBlockMetadata(aX + i, aY + j, aZ + k))
+                                > 0.0F)
+                                && (((EntityPlayerMP) aPlayer).theItemInWorldManager
+                                    .tryHarvestBlock(aX + i, aY + j, aZ + k))) {
+                                rConversions++;
+                            }
                         }
                     }
                 }
             }
+
             this.sIsHarvestingRightNow.set(null);
         }
         return rConversions;
@@ -95,4 +110,5 @@ public class GT_Tool_Sense extends GT_Tool {
                 + aEntity.getCommandSenderName()
                 + EnumChatFormatting.WHITE);
     }
+
 }

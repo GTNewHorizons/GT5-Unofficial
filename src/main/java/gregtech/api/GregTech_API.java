@@ -31,7 +31,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
 import com.google.common.collect.Multimap;
@@ -107,8 +106,12 @@ public class GregTech_API {
     public static final long FLUID_MATERIAL_UNIT = L;
     /**
      * Fixes the HashMap Mappings for ItemStacks once the Server started
+     * <br>
+     * <br>
+     * NOTE: We use wildcards generics for the key because it could be for example {@link ItemStack} or
+     * {@link GT_ItemStack}
      */
-    public static final Collection<Map<? extends ItemHolder, ?>> sItemStackMappings = new ArrayList<>();
+    public static final Collection<Map<?, ?>> sItemStackMappings = new ArrayList<>();
     public static final Collection<SetMultimap<? extends ItemHolder, ?>> itemStackMultiMaps = new ArrayList<>();
 
     /**
@@ -295,6 +298,7 @@ public class GregTech_API {
     public static Block sBlockCasings1, sBlockCasings2, sBlockCasings3, sBlockCasings4, sBlockCasings5, sBlockCasings6,
         sBlockCasings8, sBlockCasings9, sSolenoidCoilCasings;
     public static Block sBlockLongDistancePipes;
+    public static Block sDroneRender;
     /**
      * Getting assigned by the Config
      */
@@ -406,7 +410,7 @@ public class GregTech_API {
      */
     public static boolean causeMachineUpdate(World aWorld, int aX, int aY, int aZ) {
         if (aWorld != null && !aWorld.isRemote && !isDummyWorld(aWorld)) { // World might be null during World-gen
-            GT_Runnable_MachineBlockUpdate.setMachineUpdateValues(aWorld, new ChunkCoordinates(aX, aY, aZ));
+            GT_Runnable_MachineBlockUpdate.setMachineUpdateValues(aWorld, aX, aY, aZ);
             return true;
         }
         return false;
@@ -417,7 +421,7 @@ public class GregTech_API {
         if (aWorld == null || aWorld.isRemote || isDummyWorld(aWorld)) {
             return false;
         } // World might be null during World-gen
-        GT_Runnable_Cable_Update.setCableUpdateValues(aWorld, new ChunkCoordinates(aX, aY, aZ));
+        GT_Runnable_Cable_Update.setCableUpdateValues(aWorld, aX, aY, aZ);
         return true;
     }
 
@@ -479,8 +483,7 @@ public class GregTech_API {
         return new gregtech.api.items.GT_Generic_Item(
             aUnlocalized,
             aEnglish,
-            "Doesn't work as intended, this is a Bug",
-            false);
+            "Doesn't work as intended, this is a Bug");
     }
 
     /**
@@ -526,8 +529,7 @@ public class GregTech_API {
         return new gregtech.api.items.GT_Generic_Item(
             aUnlocalized,
             aEnglish,
-            "Doesn't work as intended, this is a Bug",
-            false);
+            "Doesn't work as intended, this is a Bug");
     }
 
     /**
@@ -550,8 +552,7 @@ public class GregTech_API {
         return new gregtech.api.items.GT_Generic_Item(
             aUnlocalized,
             aEnglish,
-            "Doesn't work as intended, this is a Bug",
-            false);
+            "Doesn't work as intended, this is a Bug");
     }
 
     /**

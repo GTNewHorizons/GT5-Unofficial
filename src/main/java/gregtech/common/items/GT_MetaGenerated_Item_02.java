@@ -4,6 +4,7 @@ import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ADVANCED_REDSTONE_RECEIVER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ADVANCED_REDSTONE_TRANSMITTER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_WIRELESS_ACTIVITYDETECTOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_WIRELESS_FLUID_DETECTOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_WIRELESS_ITEM_DETECTOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_WIRELESS_MAINTENANCE_DETECTOR;
@@ -51,6 +52,7 @@ import gregtech.common.covers.redstone.GT_Cover_AdvancedRedstoneReceiverExternal
 import gregtech.common.covers.redstone.GT_Cover_AdvancedRedstoneReceiverInternal;
 import gregtech.common.covers.redstone.GT_Cover_AdvancedRedstoneTransmitterExternal;
 import gregtech.common.covers.redstone.GT_Cover_AdvancedRedstoneTransmitterInternal;
+import gregtech.common.covers.redstone.GT_Cover_WirelessDoesWorkDetector;
 import gregtech.common.covers.redstone.GT_Cover_WirelessFluidDetector;
 import gregtech.common.covers.redstone.GT_Cover_WirelessItemDetector;
 import gregtech.common.covers.redstone.GT_Cover_WirelessMaintenanceDetector;
@@ -132,7 +134,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 1,
                 "Dark Coffee au lait",
                 "Keeping you awake the whole night",
-                SubTag.INVISIBLE,
                 new GT_FoodStat(
                     2,
                     0.2F,
@@ -208,7 +209,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 4,
                 "Lait au cafe",
                 "You want Coffee to your Sugar?",
-                SubTag.INVISIBLE,
                 new GT_FoodStat(
                     3,
                     0.4F,
@@ -296,7 +296,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 8,
                 "Sweet Tea",
                 "How about a Tea Party? In Boston?",
-                SubTag.INVISIBLE,
                 new GT_FoodStat(
                     2,
                     0.2F,
@@ -436,7 +435,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 104,
                 "Potato Juice",
                 "Ever seen Potato Juice in stores? No? That has a reason.",
-                SubTag.INVISIBLE,
                 new GT_FoodStat(
                     3,
                     0.3F,
@@ -722,7 +720,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 116,
                 "Scotch",
                 "Technically this is just a Whisky",
-                SubTag.INVISIBLE,
                 new GT_FoodStat(
                     2,
                     0.1F,
@@ -751,7 +748,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 117,
                 "Glen McKenner",
                 "Don't hand to easily surprised people, they will shatter it.",
-                SubTag.INVISIBLE,
                 new GT_FoodStat(
                     2,
                     0.1F,
@@ -876,7 +872,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 122,
                 "Diabolo Sauce",
                 "As if the Devil made this Sauce",
-                SubTag.INVISIBLE,
                 new GT_FoodStat(
                     2,
                     0.1F,
@@ -901,7 +896,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 123,
                 "Diablo Sauce",
                 "Diablo always comes back!",
-                SubTag.INVISIBLE,
                 new GT_FoodStat(
                     2,
                     0.1F,
@@ -999,7 +993,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 127,
                 "Golden Apple Juice",
                 "A golden Apple in liquid form",
-                SubTag.INVISIBLE,
                 new GT_FoodStat(
                     4,
                     0.2F,
@@ -1028,7 +1021,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 128,
                 "Golden Cider",
                 "More Resistance, less Regeneration",
-                SubTag.INVISIBLE,
                 new GT_FoodStat(
                     4,
                     0.2F,
@@ -1057,7 +1049,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 129,
                 "Idun's Apple Juice",
                 "So you got the Idea of using Notch Apples for a drink?",
-                SubTag.INVISIBLE,
                 new GT_FoodStat(
                     4,
                     0.2F,
@@ -1090,7 +1081,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 130,
                 "Notches Brew",
                 "This is just overpowered",
-                SubTag.INVISIBLE,
                 new GT_FoodStat(
                     4,
                     0.2F,
@@ -1215,7 +1205,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 135,
                 "Cave Johnson's Grenade Juice",
                 "When life gives you Lemons, make Life take them Lemons back!",
-                SubTag.INVISIBLE,
                 new GT_FoodStat(
                     0,
                     0.0F,
@@ -2424,6 +2413,16 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 4L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 3L)));
 
+        ItemList.Cover_WirelessActivityDetector.set(
+            addItem(
+                tLastID = 584,
+                "Wireless Activity Detector Cover",
+                "Transfers Activity as Redstone wirelessly/n Can only connect with advanced wireless covers",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 2L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.TERRA, 1L)));
+
         GregTech_API.registerCover(
             ItemList.Cover_AdvancedRedstoneTransmitterExternal.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_TRANSMITTER)),
@@ -2453,6 +2452,11 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             ItemList.Cover_WirelessItemDetector.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_WIRELESS_ITEM_DETECTOR)),
             new GT_Cover_WirelessItemDetector(TextureFactory.of(OVERLAY_WIRELESS_ITEM_DETECTOR)));
+
+        GregTech_API.registerCover(
+            ItemList.Cover_WirelessActivityDetector.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_WIRELESS_ACTIVITYDETECTOR)),
+            new GT_Cover_WirelessDoesWorkDetector(TextureFactory.of(OVERLAY_WIRELESS_ACTIVITYDETECTOR)));
 
         GregTech_API.registerCover(
             ItemList.Cover_WirelessNeedsMaintainance.get(1L),
@@ -2504,7 +2508,15 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
-
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Cover_ActivityDetector.get(1L),
+                ItemList.Emitter_EV.get(1L),
+                GT_Utility.getIntegratedCircuit(1))
+            .itemOutputs(ItemList.Cover_WirelessActivityDetector.get(1L))
+            .duration(2 * MINUTES + 40 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(assemblerRecipes);
         GT_ModHandler.addShapelessCraftingRecipe(
             ItemList.Cover_AdvancedRedstoneReceiverExternal.get(1L),
             new Object[] { ItemList.Cover_AdvancedRedstoneReceiverInternal.get(1L) });

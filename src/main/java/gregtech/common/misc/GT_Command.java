@@ -1,17 +1,14 @@
 package gregtech.common.misc;
 
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
-import static gregtech.common.misc.WirelessNetworkManager.getRawUUIDFromUsername;
-import static gregtech.common.misc.WirelessNetworkManager.getUUIDFromUsername;
 import static gregtech.common.misc.WirelessNetworkManager.getUserEU;
-import static gregtech.common.misc.WirelessNetworkManager.getUsernameFromUUID;
-import static gregtech.common.misc.WirelessNetworkManager.joinUserNetwork;
 import static gregtech.common.misc.WirelessNetworkManager.setUserEU;
 
 import java.lang.reflect.Field;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 import net.minecraft.command.CommandBase;
@@ -27,6 +24,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.objects.GT_ChunkManager;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Pollution;
+import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 
 public final class GT_Command extends CommandBase {
 
@@ -196,17 +194,11 @@ public final class GT_Command extends CommandBase {
             case "global_energy_add" -> {
                 String username = strings[1];
                 String formatted_username = EnumChatFormatting.BLUE + username + EnumChatFormatting.RESET;
-                String uuid = getUUIDFromUsername(username);
+                UUID uuid = SpaceProjectManager.getPlayerUUIDFromName(username);
 
                 String EU_String = strings[2];
 
                 // Usage is /gt global_energy_add username EU
-
-                if (uuid.equals("")) {
-                    sender.addChatMessage(
-                        new ChatComponentText("User " + formatted_username + " has no global energy network."));
-                    break;
-                }
 
                 String EU_string_formatted = EnumChatFormatting.RED
                     + GT_Utility.formatNumbers(new BigInteger(EU_String))
@@ -240,13 +232,7 @@ public final class GT_Command extends CommandBase {
 
                 String username = strings[1];
                 String formatted_username = EnumChatFormatting.BLUE + username + EnumChatFormatting.RESET;
-                String uuid = getUUIDFromUsername(username);
-
-                if (uuid.equals("")) {
-                    sender.addChatMessage(
-                        new ChatComponentText("User " + formatted_username + " has no global energy network."));
-                    break;
-                }
+                UUID uuid = SpaceProjectManager.getPlayerUUIDFromName(username);
 
                 String EU_String_0 = strings[2];
 
@@ -278,23 +264,12 @@ public final class GT_Command extends CommandBase {
                 String formattedUsernameSubject = EnumChatFormatting.BLUE + usernameSubject + EnumChatFormatting.RESET;
                 String formattedUsernameTeam = EnumChatFormatting.BLUE + usernameTeam + EnumChatFormatting.RESET;
 
-                String uuidSubject = getRawUUIDFromUsername(usernameSubject);
-                String uuidTeam = getUUIDFromUsername(usernameTeam);
+                UUID uuidSubject = SpaceProjectManager.getPlayerUUIDFromName(usernameSubject);
+                UUID uuidTeam = SpaceProjectManager.getLeader(SpaceProjectManager.getPlayerUUIDFromName(usernameTeam));
 
-                if (usernameSubject.equals(usernameTeam)) {
+                if (uuidSubject.equals(uuidTeam)) {
                     // leave team
-                    if ("".equals(uuidSubject)) {
-                        sender.addChatMessage(
-                            new ChatComponentText(
-                                "User " + formattedUsernameSubject + " has no global energy network."));
-                        break;
-                    }
-                    if (uuidSubject.equals(uuidTeam)) {
-                        sender.addChatMessage(
-                            new ChatComponentText("User " + formattedUsernameSubject + " is already in his own team!"));
-                        break;
-                    }
-                    joinUserNetwork(uuidSubject, uuidSubject);
+                    SpaceProjectManager.putInTeam(uuidSubject, uuidSubject);
                     sender.addChatMessage(
                         new ChatComponentText(
                             "User " + formattedUsernameSubject + " has rejoined their own global energy network."));
@@ -303,24 +278,12 @@ public final class GT_Command extends CommandBase {
 
                 // join other's team
 
-                List<String> noNetPlayers = new ArrayList<>();
-
-                if ("".equals(uuidSubject)) noNetPlayers.add(usernameSubject);
-                if ("".equals(uuidTeam)) noNetPlayers.add(usernameTeam);
-
-                if (!noNetPlayers.isEmpty()) {
-                    sender.addChatMessage(
-                        new ChatComponentText(
-                            "User " + String.join(" and ", noNetPlayers) + " has no global energy network."));
-                    break;
-                }
-
                 if (uuidSubject.equals(uuidTeam)) {
                     sender.addChatMessage(new ChatComponentText("They are already in the same network!"));
                     break;
                 }
 
-                joinUserNetwork(uuidSubject, uuidTeam);
+                SpaceProjectManager.putInTeam(uuidSubject, uuidTeam);
 
                 sender.addChatMessage(
                     new ChatComponentText(
@@ -340,29 +303,29 @@ public final class GT_Command extends CommandBase {
 
                 String username = strings[1];
                 String formatted_username = EnumChatFormatting.BLUE + username + EnumChatFormatting.RESET;
-                String uuidTeam = getUUIDFromUsername(username);
-                String uuidSubject = getRawUUIDFromUsername(username);
+                UUID userUUID = SpaceProjectManager.getPlayerUUIDFromName(username);
 
-                if (uuidTeam.equals("")) {
+                if (!SpaceProjectManager.isInTeam(userUUID)) {
                     sender.addChatMessage(
                         new ChatComponentText("User " + formatted_username + " has no global energy network."));
                     break;
                 }
+                UUID teamUUID = SpaceProjectManager.getLeader(userUUID);
 
                 sender.addChatMessage(
                     new ChatComponentText(
                         "User " + formatted_username
                             + " has "
                             + EnumChatFormatting.RED
-                            + GT_Utility.formatNumbers(getUserEU(uuidTeam))
+                            + GT_Utility.formatNumbers(getUserEU(userUUID))
                             + EnumChatFormatting.RESET
                             + "EU in their network."));
-                if (!uuidTeam.equals(uuidSubject)) sender.addChatMessage(
+                if (!userUUID.equals(teamUUID)) sender.addChatMessage(
                     new ChatComponentText(
                         "User " + formatted_username
                             + " is currently in network of "
                             + EnumChatFormatting.BLUE
-                            + getUsernameFromUUID(uuidTeam)
+                            + SpaceProjectManager.getPlayerNameFromUUID(teamUUID)
                             + EnumChatFormatting.RESET
                             + "."));
 

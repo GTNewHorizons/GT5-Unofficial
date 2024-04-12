@@ -1,6 +1,9 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.enums.Mods.TecTech;
 import static gregtech.api.util.GT_RecipeBuilder.HOURS;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
@@ -19,6 +22,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.ExternalMaterials;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 
 public class AssemblyLineRecipes implements Runnable {
@@ -839,6 +843,52 @@ public class AssemblyLineRecipes implements Runnable {
             .fluidInputs(new FluidStack(solderIndalloy, 2880), Materials.Naquadria.getMolten(1440))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UV)
+            .addTo(AssemblyLine);
+
+        // Drone T2
+        GT_Values.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemList.TierdDrone0.get(1))
+            .metadata(RESEARCH_TIME, 2 * HOURS)
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.NaquadahAlloy, 16),
+                new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4 },
+                NewHorizonsCoreMod.isModLoaded()
+                    ? GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.HeavyDutyRocketEngineTier3", 4)
+                    : ItemList.Casing_Firebox_TungstenSteel.get(16),
+                ItemList.Large_Fluid_Cell_Osmium.get(1),
+                GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, Materials.MysteriousCrystal, 1),
+                ItemList.Emitter_ZPM.get(4),
+                ItemList.Energy_Module.get(1),
+                ItemList.Cover_WirelessNeedsMaintainance.get(1))
+            .itemOutputs(ItemList.TierdDrone1.get(4))
+            .fluidInputs(
+                new FluidStack(solderIndalloy, 576),
+                FluidRegistry.getFluidStack(GTPlusPlus.isModLoaded() ? "fluid.rocketfuelmixc" : "nitrofuel", 4000))
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_UV)
+            .addTo(AssemblyLine);
+
+        // Drone T3
+        GT_Values.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemList.TierdDrone1.get(1))
+            .metadata(RESEARCH_TIME, 8 * HOURS)
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Infinity, 16),
+                new Object[] { OrePrefixes.circuit.get(Materials.Bio), 4 },
+                ItemList.Field_Generator_UV.get(16),
+                ItemList.Gravistar.get(8),
+                ItemList.Emitter_UV.get(4),
+                TecTech.isModLoaded() ? GT_ModHandler.getModItem(GregTech.ID, "gt.blockmachines", 16, 15497)
+                    : ItemList.Hatch_AutoMaintenance.get(64),
+                ItemList.Energy_Cluster.get(8),
+                ItemList.Cover_WirelessNeedsMaintainance.get(1))
+            .itemOutputs(ItemList.TierdDrone2.get(1))
+            .fluidInputs(
+                new FluidStack(solderIndalloy, 144000),
+                GTPlusPlus.isModLoaded() ? FluidRegistry.getFluidStack("molten.ethylcyanoacrylatesuperglue", 2000)
+                    : Materials.AdvancedGlue.getFluid(256000))
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_UHV)
             .addTo(AssemblyLine);
     }
 }

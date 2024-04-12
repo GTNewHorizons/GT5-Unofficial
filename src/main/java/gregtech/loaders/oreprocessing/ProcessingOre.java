@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
 
+import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -35,11 +36,22 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
-        boolean tIsRich = (aPrefix == OrePrefixes.oreNetherrack) || (aPrefix == OrePrefixes.oreNether)
-            || (aPrefix == OrePrefixes.oreEndstone)
-            || (aPrefix == OrePrefixes.oreEnd)
-            || (aPrefix == OrePrefixes.oreRich)
-            || (aPrefix == OrePrefixes.oreDense);
+        boolean tIsRich = false;
+
+        // For Sake of god of balance!
+
+        // Dense ore
+        if (GT_Mod.gregtechproxy.mRichOreYieldMultiplier) {
+            tIsRich = (aPrefix == OrePrefixes.oreRich) || (aPrefix == OrePrefixes.oreDense);
+        }
+        // NetherOre
+        if (GT_Mod.gregtechproxy.mNetherOreYieldMultiplier && !tIsRich) {
+            tIsRich = (aPrefix == OrePrefixes.oreNetherrack) || (aPrefix == OrePrefixes.oreNether);
+        }
+        // EndOre
+        if (GT_Mod.gregtechproxy.mEndOreYieldMultiplier && !tIsRich) {
+            tIsRich = (aPrefix == OrePrefixes.oreEndstone) || (aPrefix == OrePrefixes.oreEnd);
+        }
 
         if (aMaterial == Materials.Oilsands) {
             GT_Values.RA.stdBuilder()

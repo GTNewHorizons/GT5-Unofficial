@@ -81,12 +81,12 @@ public class GT_ExoticEnergyInputHelper {
 
     public static long getAverageInputVoltageMulti(Collection<? extends GT_MetaTileEntity_Hatch> hatches) {
         long rVoltage = 0;
-        if (hatches.isEmpty()) {
-            return rVoltage;
-        }
         for (GT_MetaTileEntity_Hatch tHatch : filterValidMTEs(hatches)) {
             rVoltage += tHatch.getBaseMetaTileEntity()
                 .getInputVoltage();
+        }
+        if (hatches.isEmpty()) {
+            return 0;
         }
         return rVoltage / hatches.size();
     }
