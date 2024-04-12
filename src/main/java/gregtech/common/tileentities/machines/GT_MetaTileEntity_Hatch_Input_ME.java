@@ -88,6 +88,9 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
     protected final FluidStack[] storedFluids = new FluidStack[SLOT_COUNT];
     protected final FluidStack[] storedInformationFluids = new FluidStack[SLOT_COUNT];
 
+    // these two fields should ALWAYS be mutated simultaneously
+    // in most cases, you should call setSavedFluid() instead of trying to write to the array directly
+    // a desync of these two fields can lead to catastrophe
     protected final FluidStack[] shadowStoredFluids = new FluidStack[SLOT_COUNT];
     private final int[] savedStackSizes = new int[SLOT_COUNT];
 
@@ -180,6 +183,11 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
         return true;
     }
 
+    protected void setSavedFluid(int i, FluidStack stack) {
+        shadowStoredFluids[i] = stack;
+        savedStackSizes[i] = stack == null ? 0 : stack.amount;
+    }
+
     public FluidStack[] getStoredFluids() {
         if (!processingRecipe) {
             return EMPTY_FLUID_STACK;
@@ -194,7 +202,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
 
         for (int i = 0; i < SLOT_COUNT; i++) {
             if (storedFluids[i] == null) {
-                shadowStoredFluids[i] = null;
+                setSavedFluid(i, null);
                 continue;
             }
 
@@ -202,8 +210,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
             // Nothing in stock, no need to save anything
             if (fluidStackWithAmount == null) continue;
 
-            shadowStoredFluids[i] = fluidStackWithAmount;
-            savedStackSizes[i] = fluidStackWithAmount.amount;
+            setSavedFluid(i, fluidStackWithAmount);
         }
 
         return shadowStoredFluids;
@@ -259,8 +266,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                 checkRecipeResult = SimpleCheckRecipeResult
                     .ofFailurePersistOnShutdown("stocking_hatch_fail_extraction");
             }
-            shadowStoredFluids[i] = null;
-            savedStackSizes[i] = 0;
+            setSavedFluid(i, null);
             if (storedInformationFluids[i] != null && storedInformationFluids[i].amount <= 0) {
                 storedInformationFluids[i] = null;
             }
@@ -402,12 +408,11 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
             if (GT_Utility.areFluidsEqual(fluidStack, storedFluids[i], false)) {
                 updateInformationSlot(i);
                 if (storedInformationFluids[i] != null) {
-                    shadowStoredFluids[i] = storedInformationFluids[i];
-                    savedStackSizes[i] = storedInformationFluids[i].amount;
+                    setSavedFluid(i, storedInformationFluids[i]);
                     return shadowStoredFluids[i];
                 }
 
-                shadowStoredFluids[i] = null;
+                setSavedFluid(i, null);
                 return null;
             }
         }
