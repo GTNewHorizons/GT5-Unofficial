@@ -530,11 +530,14 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_BasicMachine {
 
         int x = getBaseMetaTileEntity().getXCoord(), z = getBaseMetaTileEntity().getZCoord();
 
-        if ((!consumeFluid(x, yHead - 1, z)) && (!getBaseMetaTileEntity().getBlock(x, yHead - 1, z)
-            .isAir(getBaseMetaTileEntity().getWorld(), x, yHead - 1, z))) {
-            // Either we didn't consume a fluid, or it's a non Air block
+        Block aBlock = getBaseMetaTileEntity().getBlock(x, yHead - 1, z);
+        boolean canReplaceBlock = aBlock.isAir(getBaseMetaTileEntity().getWorld(), x, yHead - 1, z)
+            || aBlock == Blocks.fire;
+
+        if (!canReplaceBlock && !consumeFluid(x, yHead - 1, z)) {
+            // Either we didn't consume a fluid, or it's a non-replaceable block
             if (debugBlockPump) {
-                GT_Log.out.println("PUMP: Did not consume fluid, or non-airblock found");
+                GT_Log.out.println("PUMP: Did not consume fluid, or non-replaceable block found");
             }
             return false;
         }
@@ -730,7 +733,7 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_BasicMachine {
             || aBlock == Blocks.lava
             || aBlock == Blocks.flowing_lava
             || aBlock instanceof IFluidBlock
-            || aBlock.isAir(getBaseMetaTileEntity().getWorld(), aX, aY, aZ));
+            || aBlock.isAir(getBaseMetaTileEntity().getWorld(), aX, aY, aZ)) || aBlock == Blocks.fire;
     }
 
     private boolean consumeFluid(int aX, int aY, int aZ) {
