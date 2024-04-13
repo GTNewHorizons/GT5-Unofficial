@@ -533,8 +533,10 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_BasicMachine {
         Block aBlock = getBaseMetaTileEntity().getBlock(x, yHead - 1, z);
         boolean canReplaceBlock = aBlock.isReplaceable(getBaseMetaTileEntity().getWorld(), x, yHead - 1, z);
 
+        // We specifically allow replacing water even if we can't consume it
+        // (e.g. pump holds a different fluid) to help avoid getting stuck on random water pockets.
         if (!canReplaceBlock || (isFluid(aBlock) && !consumeFluid(x, yHead - 1, z) && !isWater(aBlock))) {
-            // Either we didn't consume a fluid, or it's a non-replaceable block
+            // Either we didn't consume a fluid, or it's a non-replaceable block, or it's water.
             if (debugBlockPump) {
                 GT_Log.out.println("PUMP: Did not consume fluid, or non-replaceable block found");
             }
