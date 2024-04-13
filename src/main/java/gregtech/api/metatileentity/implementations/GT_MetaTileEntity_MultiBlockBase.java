@@ -106,6 +106,8 @@ import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.IDualInputInventory;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine;
+import it.unimi.dsi.fastutil.objects.Object2ReferenceOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -1473,16 +1475,14 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     public Map<GT_Utility.ItemId, ItemStack> getStoredInputsFromME() {
-        Map<GT_Utility.ItemId, ItemStack> inputsFromME = new HashMap<>();
+        Map<GT_Utility.ItemId, ItemStack> inputsFromME = new Object2ReferenceOpenHashMap<>();
         for (GT_MetaTileEntity_Hatch_InputBus tHatch : filterValidMTEs(mInputBusses)) {
             if (tHatch instanceof GT_MetaTileEntity_Hatch_InputBus_ME meBus) {
                 for (int i = meBus.getSizeInventory() - 1; i >= 0; i--) {
                     ItemStack itemStack = meBus.getStackInSlot(i);
                     if (itemStack != null) {
-
                         // Prevent the same item from different ME buses from being recognized
                         inputsFromME.put(GT_Utility.ItemId.createNoCopy(itemStack), itemStack);
-
                     }
                 }
             }
@@ -1491,15 +1491,13 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     public Map<Fluid, FluidStack> getStoredFluidsFromME() {
-        Map<Fluid, FluidStack> fluidsFromME = new HashMap<>();
+        Map<Fluid, FluidStack> fluidsFromME = new Reference2ReferenceOpenHashMap<>();
         for (GT_MetaTileEntity_Hatch_Input tHatch : filterValidMTEs(mInputHatches)) {
             if (tHatch instanceof GT_MetaTileEntity_Hatch_Input_ME meHatch) {
                 for (FluidStack fluid : meHatch.getStoredFluids()) {
                     if (fluid != null) {
-
-                        // Prevent the same item from different ME buses from being recognized
+                        // Prevent the same fluid from different ME hatches from being recognized
                         fluidsFromME.put(fluid.getFluid(), fluid);
-
                     }
                 }
             }

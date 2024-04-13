@@ -537,6 +537,16 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         return null;
     }
 
+    /**
+     * Used to avoid slot update.
+     */
+    public ItemStack getShadowItemStack(int index) {
+        if (index < 0 || index >= shadowInventory.length) {
+            return null;
+        }
+        return shadowInventory[index];
+    }
+
     @Override
     public boolean isValidSlot(int aIndex) {
         return aIndex == getManualSlot();

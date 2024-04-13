@@ -414,6 +414,9 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
         return null;
     }
 
+    /**
+     * Used to avoid slot update.
+     */
     public FluidStack getShadowFluidStack(int index) {
         if (index < 0 || index >= storedFluids.length) {
             return null;

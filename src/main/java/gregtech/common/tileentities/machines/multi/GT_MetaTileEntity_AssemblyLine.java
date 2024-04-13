@@ -48,9 +48,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_DataAccess;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_MultiInput;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -62,8 +59,6 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe.GT_Recipe_AssemblyLine;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_InputBus_ME;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Input_ME;
 
 public class GT_MetaTileEntity_AssemblyLine extends
     GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_AssemblyLine> implements ISurvivalConstructable {
@@ -266,16 +261,13 @@ public class GT_MetaTileEntity_AssemblyLine extends
             }
 
             // Check Inputs allign
-            int[] itemConsumptions = getItemConsumptionAmountArray(mInputBusses, tRecipe);
-            if (itemConsumptions == null) {
+            int[] itemConsumptions = GT_Recipe_AssemblyLine.getItemConsumptionAmountArray(mInputBusses, tRecipe);
+            if (itemConsumptions == null || itemConsumptions.length == 0) {
                 result = CheckRecipeResultRegistry.NO_RECIPE;
                 continue;
             }
-            maxParallel = (int) maxParallelCalculatedByInputItems(
-                mInputBusses,
-                maxParallel,
-                itemConsumptions,
-                inputsFromME);
+            maxParallel = (int) GT_Recipe_AssemblyLine
+                .maxParallelCalculatedByInputItems(mInputBusses, maxParallel, itemConsumptions, inputsFromME);
             if (maxParallel <= 0) {
                 result = CheckRecipeResultRegistry.NO_RECIPE;
                 continue;
@@ -288,11 +280,8 @@ public class GT_MetaTileEntity_AssemblyLine extends
 
             // Check Fluid Inputs allign
             if (tRecipe.mFluidInputs.length > 0) {
-                maxParallel = (int) maxParallelCalculatedByInputFluids(
-                    mInputHatches,
-                    maxParallel,
-                    tRecipe.mFluidInputs,
-                    fluidsFromME);
+                maxParallel = (int) GT_Recipe_AssemblyLine
+                    .maxParallelCalculatedByInputFluids(mInputHatches, maxParallel, tRecipe.mFluidInputs, fluidsFromME);
                 if (maxParallel <= 0) {
                     result = CheckRecipeResultRegistry.NO_RECIPE;
                     continue;
@@ -359,8 +348,8 @@ public class GT_MetaTileEntity_AssemblyLine extends
             GT_FML_LOGGER.info("All checked start consuming inputs");
         }
 
-        consumeInputItems(mInputBusses, maxParallel, tStacks, inputsFromME);
-        consumeInputFluids(mInputHatches, maxParallel, tFluids, fluidsFromME);
+        GT_Recipe_AssemblyLine.consumeInputItems(mInputBusses, maxParallel, tStacks, inputsFromME);
+        GT_Recipe_AssemblyLine.consumeInputFluids(mInputHatches, maxParallel, tFluids, fluidsFromME);
 
         if (this.lEUt > 0) {
             this.lEUt = -this.lEUt;
@@ -372,162 +361,6 @@ public class GT_MetaTileEntity_AssemblyLine extends
             GT_FML_LOGGER.info("Recipe successful");
         }
         return result;
-    }
-
-    public static int[] getItemConsumptionAmountArray(ArrayList<GT_MetaTileEntity_Hatch_InputBus> InputBusses,
-        GT_Recipe_AssemblyLine recipe) {
-        int itemCount = recipe.mInputs.length;
-        if (itemCount == 0) return null;
-        int[] tStacks = new int[itemCount];
-        for (int i = 0; i < itemCount; i++) {
-            GT_MetaTileEntity_Hatch_InputBus inputBus = InputBusses.get(i);
-            if (!inputBus.isValid()) {
-                return null;
-            }
-
-            ItemStack slotStack = inputBus.getStackInSlot(0);
-            if (slotStack == null) {
-                return null;
-            }
-
-            int amount = getMatchedIngredientAmount(slotStack, recipe.mInputs[i], recipe.mOreDictAlt[i]);
-            if (amount < 0) {
-                return null;
-            }
-            tStacks[i] = amount;
-        }
-        return tStacks;
-    }
-
-    public static int getMatchedIngredientAmount(ItemStack aSlotStack, ItemStack aIngredient, ItemStack[] alts) {
-        if (alts == null || alts.length == 0) {
-            if (GT_Utility.areStacksEqual(aSlotStack, aIngredient, true)) {
-                return aIngredient.stackSize;
-            }
-            return -1;
-        }
-        for (ItemStack tAltStack : alts) {
-            if (GT_Utility.areStacksEqual(aSlotStack, tAltStack, true)) {
-                return tAltStack.stackSize;
-            }
-        }
-        return -1;
-    }
-
-    public static double maxParallelCalculatedByInputItems(ArrayList<GT_MetaTileEntity_Hatch_InputBus> InputBusses,
-        int maxParallel, int[] itemConsumptions, Map<GT_Utility.ItemId, ItemStack> inputsFromME) {
-        double currentParallel = maxParallel;
-        for (int i = 0; i < itemConsumptions.length; i++) {
-            GT_MetaTileEntity_Hatch_InputBus inputBus = InputBusses.get(i);
-            if (!inputBus.isValid()) continue;
-            ItemStack item;
-            if (inputBus instanceof GT_MetaTileEntity_Hatch_InputBus_ME meBus) {
-                item = meBus.getStackInSlot(0);
-                if (item == null) {
-                    return 0;
-                } else {
-                    GT_Utility.ItemId id = GT_Utility.ItemId.createNoCopy(item);
-                    if (inputsFromME.containsKey(id)) {
-                        int stackSize = inputsFromME.get(id).stackSize;
-                        if (stackSize <= 0) {
-                            return 0;
-                        } else {
-                            currentParallel = Math
-                                .min(currentParallel, (double) inputsFromME.get(id).stackSize / itemConsumptions[i]);
-                        }
-                    } else {
-                        return 0;
-                    }
-                }
-            } else {
-                item = inputBus.getStackInSlot(0);
-                if (item == null || item.stackSize <= 0) {
-                    return 0;
-                }
-                currentParallel = Math.min(currentParallel, (double) item.stackSize / itemConsumptions[i]);
-            }
-        }
-
-        return currentParallel;
-    }
-
-    public static double maxParallelCalculatedByInputFluids(ArrayList<GT_MetaTileEntity_Hatch_Input> inputHatches,
-        int maxParallel, FluidStack[] fluidConsumptions, Map<Fluid, FluidStack> fluidsFromME) {
-        double currentParallel = maxParallel;
-        for (int i = 0; i < fluidConsumptions.length; i++) {
-            GT_MetaTileEntity_Hatch_Input inputHatch = inputHatches.get(i);
-            if (!inputHatch.isValid()) continue;
-            FluidStack fluid;
-            if (inputHatch instanceof GT_MetaTileEntity_Hatch_Input_ME meHatch) {
-                fluid = meHatch.getMatchingFluidStack(fluidConsumptions[i]);
-                if (fluid == null) {
-                    return 0;
-                } else {
-                    if (fluidsFromME.containsKey(fluid.getFluid())) {
-                        int amount = fluidsFromME.get(fluid.getFluid()).amount;
-                        if (amount <= 0) {
-                            return 0;
-                        } else {
-                            currentParallel = Math.min(currentParallel, (double) amount / fluidConsumptions[i].amount);
-                        }
-                    } else {
-                        return 0;
-                    }
-                }
-            } else if (inputHatch instanceof GT_MetaTileEntity_Hatch_MultiInput multiInput) {
-                fluid = multiInput.getFluid(multiInput.getFluidSlot(fluidConsumptions[i]));
-                currentParallel = Math.min(currentParallel, (double) fluid.amount / fluidConsumptions[i].amount);
-            } else {
-                fluid = inputHatch.getFillableStack();
-                currentParallel = Math.min(currentParallel, (double) fluid.amount / fluidConsumptions[i].amount);
-            }
-            if (currentParallel <= 0) {
-                return 0;
-            }
-        }
-
-        return currentParallel;
-    }
-
-    public static void consumeInputItems(ArrayList<GT_MetaTileEntity_Hatch_InputBus> inputBusses, int amountMultiplier,
-        int[] itemConsumptions, Map<GT_Utility.ItemId, ItemStack> inputsFromME) {
-
-        for (int i = 0; i < itemConsumptions.length; i++) {
-            GT_MetaTileEntity_Hatch_InputBus inputBus = inputBusses.get(i);
-            if (!inputBus.isValid()) continue;
-            ItemStack item;
-            if (inputBus instanceof GT_MetaTileEntity_Hatch_InputBus_ME meBus) {
-                item = meBus.getStackInSlot(0);
-                if (item != null) {
-                    inputsFromME.get(GT_Utility.ItemId.createNoCopy(item)).stackSize -= itemConsumptions[i]
-                        * amountMultiplier;
-                }
-            } else {
-                item = inputBus.getStackInSlot(0);
-                if (item != null) {
-                    item.stackSize -= itemConsumptions[i] * amountMultiplier;
-                }
-            }
-        }
-    }
-
-    public static void consumeInputFluids(ArrayList<GT_MetaTileEntity_Hatch_Input> inputHatches, int amountMultiplier,
-        FluidStack[] fluidConsumptions, Map<Fluid, FluidStack> fluidsFromME) {
-        for (int i = 0; i < fluidConsumptions.length; i++) {
-            GT_MetaTileEntity_Hatch_Input inputHatch = inputHatches.get(i);
-            if (!inputHatch.isValid()) continue;
-            FluidStack fluid;
-            if (inputHatch instanceof GT_MetaTileEntity_Hatch_Input_ME meHatch) {
-                fluid = meHatch.getMatchingFluidStack(fluidConsumptions[i]);
-                if (fluid != null) {
-                    fluidsFromME.get(fluid.getFluid()).amount -= fluidConsumptions[i].amount * amountMultiplier;
-                }
-            } else {
-                fluid = fluidConsumptions[i].copy();
-                fluid.amount *= amountMultiplier;
-                inputHatch.drain(ForgeDirection.UNKNOWN, fluid, true);
-            }
-        }
     }
 
     @Override
