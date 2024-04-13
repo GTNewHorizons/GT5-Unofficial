@@ -531,10 +531,9 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_BasicMachine {
         int x = getBaseMetaTileEntity().getXCoord(), z = getBaseMetaTileEntity().getZCoord();
 
         Block aBlock = getBaseMetaTileEntity().getBlock(x, yHead - 1, z);
-        boolean canReplaceBlock = aBlock.isAir(getBaseMetaTileEntity().getWorld(), x, yHead - 1, z)
-            || aBlock == Blocks.fire;
+        boolean canReplaceBlock = aBlock.isReplaceable(getBaseMetaTileEntity().getWorld(), x, yHead - 1, z);
 
-        if (!canReplaceBlock && !consumeFluid(x, yHead - 1, z)) {
+        if (!canReplaceBlock || (isFluid(aBlock) && !consumeFluid(x, yHead - 1, z) && !isWater(aBlock))) {
             // Either we didn't consume a fluid, or it's a non-replaceable block
             if (debugBlockPump) {
                 GT_Log.out.println("PUMP: Did not consume fluid, or non-replaceable block found");
@@ -703,12 +702,12 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_BasicMachine {
 
         Block aBlock = getBaseMetaTileEntity().getBlock(aX, aY, aZ);
         if (aBlock != null) {
-            if ((aBlock == Blocks.water) || (aBlock == Blocks.flowing_water)) {
+            if (isWater(aBlock)) {
                 this.mPrimaryPumpedBlock = Blocks.water;
                 this.mSecondaryPumpedBlock = Blocks.flowing_water;
                 return;
             }
-            if ((aBlock == Blocks.lava) || (aBlock == Blocks.flowing_lava)) {
+            if (isLava(aBlock)) {
                 this.mPrimaryPumpedBlock = Blocks.lava;
                 this.mSecondaryPumpedBlock = Blocks.flowing_lava;
                 return;
@@ -729,11 +728,7 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_BasicMachine {
 
         Block aBlock = getBaseMetaTileEntity().getBlock(aX, aY, aZ);
 
-        return aBlock != null && (aBlock == Blocks.water || aBlock == Blocks.flowing_water
-            || aBlock == Blocks.lava
-            || aBlock == Blocks.flowing_lava
-            || aBlock instanceof IFluidBlock
-            || aBlock.isAir(getBaseMetaTileEntity().getWorld(), aX, aY, aZ)) || aBlock == Blocks.fire;
+        return aBlock != null && aBlock.isReplaceable(getBaseMetaTileEntity().getWorld(), aX, aY, aZ);
     }
 
     private boolean consumeFluid(int aX, int aY, int aZ) {
@@ -742,6 +737,9 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_BasicMachine {
         if (!GT_Utility.eraseBlockByFakePlayer(getFakePlayer(getBaseMetaTileEntity()), aX, aY, aZ, true)) return false;
 
         Block aBlock = getBaseMetaTileEntity().getBlock(aX, aY, aZ);
+        if (!isFluid(aBlock)) {
+            return false;
+        }
 
         if (aBlock != null && ((this.mPrimaryPumpedBlock == aBlock) || (this.mSecondaryPumpedBlock == aBlock))) {
             boolean isWaterOrLava = ((this.mPrimaryPumpedBlock == Blocks.water
@@ -789,6 +787,18 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_BasicMachine {
             return true;
         }
         return false;
+    }
+
+    private static boolean isWater(Block aBlock) {
+        return aBlock == Blocks.water || aBlock == Blocks.flowing_water;
+    }
+
+    private static boolean isLava(Block aBlock) {
+        return aBlock == Blocks.lava || aBlock == Blocks.flowing_lava;
+    }
+
+    private static boolean isFluid(Block aBlock) {
+        return isWater(aBlock) || isLava(aBlock) || aBlock instanceof IFluidBlock;
     }
 
     @Override
