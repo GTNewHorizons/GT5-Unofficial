@@ -263,7 +263,9 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_TooltipMul
             .addOtherStructurePart("Dirt/Grass", "Top and middle layers, covering wood logs")
             .addOtherStructurePart("Bricks", "Bottom layer, under all wood logs")
             .addOtherStructurePart("Wood Logs", "Up to 5 layers, inside the previously mentioned blocks")
-            .addStructureInfo("No air between logs allowed. All logs must be within 6 x/z of the controller, so it must be dead-center for a full 11x11 square of wood.")
+            .addStructureInfo("No air between logs allowed.")
+            .addStructureInfo(
+                "All logs must be within 6 x/z of the controller, so it must be dead-center for a full 11x11 square of wood.")
             .toolTipFinisher("Gregtech");
         return tt;
     }
