@@ -479,13 +479,13 @@ public final class RecipeMaps {
                 : null)
         .progressBar(GT_UITextures.PROGRESSBAR_EXTRACT)
         .recipeTransformer(r -> {
-            if (ArrayUtils.isNotEmpty(r.mFluidInputs)) {
+            if (ArrayUtils.isNotEmpty(r.mFluidOutputs)) {
                 if (Materials.PhasedGold.getMolten(1)
-                    .isFluidEqual(r.mFluidInputs[0]))
-                    r.mFluidInputs = new FluidStack[] { Materials.VibrantAlloy.getMolten(r.mFluidInputs[0].amount) };
+                    .isFluidEqual(r.mFluidOutputs[0]))
+                    r.mFluidOutputs = new FluidStack[] { Materials.VibrantAlloy.getMolten(r.mFluidOutputs[0].amount) };
                 else if (Materials.PhasedIron.getMolten(1)
-                    .isFluidEqual(r.mFluidInputs[0]))
-                    r.mFluidInputs = new FluidStack[] { Materials.PulsatingIron.getMolten(r.mFluidInputs[0].amount) };
+                    .isFluidEqual(r.mFluidOutputs[0]))
+                    r.mFluidOutputs = new FluidStack[] { Materials.PulsatingIron.getMolten(r.mFluidOutputs[0].amount) };
             }
         })
         .recipeConfigFile("fluidextractor", FIRST_ITEM_INPUT)

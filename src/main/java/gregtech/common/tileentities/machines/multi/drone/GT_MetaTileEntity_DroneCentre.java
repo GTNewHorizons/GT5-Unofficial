@@ -9,6 +9,7 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -23,6 +24,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -46,6 +48,7 @@ import com.gtnewhorizons.modularui.api.math.MainAxisAlignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
@@ -71,6 +74,10 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_Utility;
+import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
 import gregtech.common.items.GT_TierDrone;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -226,9 +233,9 @@ public class GT_MetaTileEntity_DroneCentre extends
     }
 
     @Override
-    public void stopMachine() {
+    public void stopMachine(@NotNull ShutDownReason reason) {
         destroyRenderBlock();
-        super.stopMachine();
+        super.stopMachine(reason);
     }
 
     @Override
@@ -242,7 +249,7 @@ public class GT_MetaTileEntity_DroneCentre extends
                     default -> 1;
                 } == 0) {
                     droneLevel = 0;
-                    if (!tryConsumeDrone()) criticalStopMachine();
+                    if (!tryConsumeDrone()) stopMachine(ShutDownReasonRegistry.outOfStuff("Any Drone", 1));
                 }
             }
             // Clean invalid connections every 4 seconds
@@ -431,7 +438,7 @@ public class GT_MetaTileEntity_DroneCentre extends
                 })
                 .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_open_list"))
                 .setPos(94, 91)
-                .setEnabled(getBaseMetaTileEntity().isActive()))
+                .setEnabled(var -> getBaseMetaTileEntity().isActive()))
             .widget(// Turn on ALL machines
                 new ButtonWidget().setOnClick((clickData, widget) -> {
                     if (!widget.isClient()) {
@@ -463,7 +470,7 @@ public class GT_MetaTileEntity_DroneCentre extends
                     })
                     .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_poweron_all"))
                     .setPos(146, 91)
-                    .setEnabled(getBaseMetaTileEntity().isActive()))
+                    .setEnabled(var -> getBaseMetaTileEntity().isActive()))
             .widget(// Turn off ALL machines
                 new ButtonWidget().setOnClick((clickData, widget) -> {
                     if (!widget.isClient()) {
@@ -495,7 +502,7 @@ public class GT_MetaTileEntity_DroneCentre extends
                     })
                     .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_poweroff_all"))
                     .setPos(120, 91)
-                    .setEnabled(getBaseMetaTileEntity().isActive()))
+                    .setEnabled(var -> getBaseMetaTileEntity().isActive()))
             .widget(new FakeSyncWidget.ListSyncer<>(() -> connectionList, var1 -> {
                 connectionList.clear();
                 connectionList.addAll(var1);
@@ -516,8 +523,9 @@ public class GT_MetaTileEntity_DroneCentre extends
     }
 
     protected ModularWindow createMachineListWindow(final EntityPlayer player) {
-        double heightCoff = getBaseMetaTileEntity().isServerSide() ? 0 : Minecraft.getMinecraft().displayHeight / 480.0;
-        ModularWindow.Builder builder = ModularWindow.builder(260, (int) (215 * heightCoff));
+        int heightCoff = getBaseMetaTileEntity().isServerSide() ? 0
+            : Minecraft.getMinecraft().currentScreen.height - 40;
+        ModularWindow.Builder builder = ModularWindow.builder(260, heightCoff);
         builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         builder.setGuiTint(getGUIColorization());
         builder.widget(
@@ -611,7 +619,7 @@ public class GT_MetaTileEntity_DroneCentre extends
                                         GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_ON }
                                     : new IDrawable[] { GT_UITextures.BUTTON_STANDARD,
                                         GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF })
-                            .orElse(new IDrawable[] { GT_UITextures.PICTURE_STALLED_ELECTRICITY }))
+                            .orElse(new IDrawable[] { GT_UITextures.OVERLAY_BUTTON_CROSS }))
                     .attachSyncer(
                         new FakeSyncWidget.BooleanSyncer(
                             () -> Optional.ofNullable(coreMachine)
@@ -629,23 +637,60 @@ public class GT_MetaTileEntity_DroneCentre extends
                     .setSize(16, 16))
                 .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
                     if (widget.isClient()) {
-                        Optional.ofNullable(coreMachine)
-                            .ifPresent(machine -> {
-                                highlightMachine(player, machine);
-                                player.closeScreen();
-                            });
+                        highlightMachine(player, connection.machineCoord);
+                        player.closeScreen();
                     }
                 })
-                    .addTooltip(
-                        coreMachine != null ? StatCollector.translateToLocal("GT5U.gui.button.drone_highlight")
-                            : StatCollector.translateToLocal("GT5U.gui.button.drone_outofrange"))
+                    .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_highlight"))
                     .setBackground(
-                        () -> Optional.ofNullable(coreMachine)
-                            .map(
-                                machine -> new IDrawable[] { GT_UITextures.BUTTON_STANDARD,
-                                    GT_UITextures.OVERLAY_BUTTON_INVERT_REDSTONE })
-                            .orElse(new IDrawable[] { GT_UITextures.OVERLAY_BUTTON_REDSTONE_OFF }))
+                        new IDrawable[] { GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_INVERT_REDSTONE })
                     .setSize(16, 16));
+            // Show the reason why the machine shutdown
+            row.widget(
+                new DrawableWidget().dynamicTooltip(
+                    () -> Collections.singletonList(
+                        Optional.ofNullable(coreMachine)
+                            .map(
+                                machine -> machine.getBaseMetaTileEntity()
+                                    .getLastShutDownReason()
+                                    .getDisplayString())
+                            .orElse("")))
+                    .setBackground(GT_UITextures.PICTURE_STALLED_ELECTRICITY)
+                    .setSize(16, 16)
+                    .setEnabled(
+                        var -> coreMachine != null && coreMachine.shouldDisplayShutDownReason()
+                            && !coreMachine.getBaseMetaTileEntity()
+                                .isActive()
+                            && GT_Utility.isStringValid(
+                                coreMachine.getBaseMetaTileEntity()
+                                    .getLastShutDownReason()
+                                    .getDisplayString())
+                            && coreMachine.getBaseMetaTileEntity()
+                                .wasShutdown())
+                    .attachSyncer(
+                        new ShutDownReasonSyncer(
+                            () -> Optional.ofNullable(coreMachine)
+                                .map(
+                                    var -> coreMachine.getBaseMetaTileEntity()
+                                        .getLastShutDownReason())
+                                .orElse(ShutDownReasonRegistry.NONE),
+                            reason -> Optional.ofNullable(coreMachine)
+                                .ifPresent(
+                                    machine -> coreMachine.getBaseMetaTileEntity()
+                                        .setShutDownReason(reason))),
+                        builder)
+                    .attachSyncer(
+                        new FakeSyncWidget.BooleanSyncer(
+                            () -> Optional.ofNullable(coreMachine)
+                                .map(
+                                    var -> coreMachine.getBaseMetaTileEntity()
+                                        .wasShutdown())
+                                .orElse(false),
+                            wasShutDown -> Optional.ofNullable(coreMachine)
+                                .ifPresent(
+                                    machine -> coreMachine.getBaseMetaTileEntity()
+                                        .setShutdownStatus(wasShutDown))),
+                        builder));
             row.widget(
                 new TextWidget(
                     connectionList.get(i)
@@ -659,7 +704,7 @@ public class GT_MetaTileEntity_DroneCentre extends
         }
         return builder.widget(
             MachineContainer.setPos(10, 50)
-                .setSize(240, (int) (215 * heightCoff) - 60))
+                .setSize(240, heightCoff - 60))
             .setDraggable(false)
             .build();
     }
@@ -700,16 +745,12 @@ public class GT_MetaTileEntity_DroneCentre extends
     }
 
     // Just like HIGHLIGHT_INTERFACE (and exactly from it)
-    private void highlightMachine(EntityPlayer player, GT_MetaTileEntity_MultiBlockBase machine) {
+    private void highlightMachine(EntityPlayer player, ChunkCoordinates machineCoord) {
         DimensionalCoord blockPos = new DimensionalCoord(
-            machine.getBaseMetaTileEntity()
-                .getXCoord(),
-            machine.getBaseMetaTileEntity()
-                .getYCoord(),
-            machine.getBaseMetaTileEntity()
-                .getZCoord(),
-            machine.getBaseMetaTileEntity()
-                .getWorld().provider.dimensionId);
+            machineCoord.posX,
+            machineCoord.posY,
+            machineCoord.posZ,
+            player.dimension);
         WorldCoord blockPos2 = new WorldCoord((int) player.posX, (int) player.posY, (int) player.posZ);
         BlockPosHighlighter.highlightBlock(
             blockPos,

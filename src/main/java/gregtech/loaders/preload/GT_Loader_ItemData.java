@@ -320,12 +320,8 @@ public class GT_Loader_ItemData implements Runnable {
             .addItemData(new ItemStack(Items.wooden_door, 1, 32767), new ItemData(Materials.Wood, 21772800L));
         GT_OreDictUnificator
             .addItemData(new ItemStack(Blocks.chest, 1, 32767), new ItemData(Materials.Wood, 29030400L));
-        GT_OreDictUnificator.addItemData(
-            new ItemStack(Blocks.trapped_chest, 1, 32767),
-            new ItemData(
-                Materials.Wood,
-                32659200L,
-                new MaterialStack(Materials.Iron, OrePrefixes.ring.mMaterialAmount * 2L)));
+        GT_OreDictUnificator
+            .addItemData(new ItemStack(Blocks.trapped_chest, 1, 32767), new ItemData(Materials.Wood, 29030400L));
         GT_OreDictUnificator.addItemData(
             new ItemStack(Blocks.unlit_redstone_torch, 1, 32767),
             new ItemData(Materials.Wood, 1814400L, new MaterialStack(Materials.Redstone, 3628800L)));

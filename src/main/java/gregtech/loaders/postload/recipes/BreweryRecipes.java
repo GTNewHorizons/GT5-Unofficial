@@ -243,7 +243,6 @@ public class BreweryRecipes implements Runnable {
                     .fluidOutputs(getFluidStack("potion.poison.strong", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
                     .eut(4)
-                    .hidden()
                     .addTo(brewingRecipes);
 
                 GT_Values.RA.stdBuilder()
@@ -276,7 +275,6 @@ public class BreweryRecipes implements Runnable {
                     .fluidOutputs(getFluidStack("potion.goldenapplejuice", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
                     .eut(4)
-                    .hidden()
                     .addTo(brewingRecipes);
 
                 GT_Values.RA.stdBuilder()
@@ -285,7 +283,6 @@ public class BreweryRecipes implements Runnable {
                     .fluidOutputs(getFluidStack("potion.idunsapplejuice", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
                     .eut(4)
-                    .hidden()
                     .addTo(brewingRecipes);
 
                 GT_Values.RA.stdBuilder()
@@ -331,7 +328,6 @@ public class BreweryRecipes implements Runnable {
                 .fluidOutputs(getFluidStack("potion.diabolosauce", 750))
                 .duration(6 * SECONDS + 8 * TICKS)
                 .eut(4)
-                .hidden()
                 .addTo(brewingRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -340,7 +336,6 @@ public class BreweryRecipes implements Runnable {
                 .fluidOutputs(getFluidStack("potion.diablosauce", 750))
                 .duration(6 * SECONDS + 8 * TICKS)
                 .eut(4)
-                .hidden()
                 .addTo(brewingRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -381,7 +376,6 @@ public class BreweryRecipes implements Runnable {
                 .fluidOutputs(getFluidStack("potion.sweettea", 750))
                 .duration(6 * SECONDS + 8 * TICKS)
                 .eut(4)
-                .hidden()
                 .addTo(brewingRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -398,7 +392,6 @@ public class BreweryRecipes implements Runnable {
                 .fluidOutputs(getFluidStack("potion.laitaucafe", 750))
                 .duration(6 * SECONDS + 8 * TICKS)
                 .eut(4)
-                .hidden()
                 .addTo(brewingRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -415,7 +408,6 @@ public class BreweryRecipes implements Runnable {
                 .fluidOutputs(getFluidStack("potion.darkcafeaulait", 750))
                 .duration(6 * SECONDS + 8 * TICKS)
                 .eut(4)
-                .hidden()
                 .addTo(brewingRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -440,7 +432,6 @@ public class BreweryRecipes implements Runnable {
                 .fluidOutputs(getFluidStack("potion.cavejohnsonsgrenadejuice", 750))
                 .duration(6 * SECONDS + 8 * TICKS)
                 .eut(4)
-                .hidden()
                 .addTo(brewingRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -449,7 +440,6 @@ public class BreweryRecipes implements Runnable {
                 .fluidOutputs(getFluidStack("potion.purpledrink", 750))
                 .duration(6 * SECONDS + 8 * TICKS)
                 .eut(4)
-                .hidden()
                 .addTo(brewingRecipes);
 
             GT_Values.RA.stdBuilder()

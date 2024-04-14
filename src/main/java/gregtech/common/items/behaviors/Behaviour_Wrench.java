@@ -60,7 +60,7 @@ public class Behaviour_Wrench extends Behaviour_None {
             mCosts);
 
         try {
-            return handler.handle();
+            return handler.handle() && !aWorld.isRemote;
         } catch (Throwable ignored) {}
         return false;
     }

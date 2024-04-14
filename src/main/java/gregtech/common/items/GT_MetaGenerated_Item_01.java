@@ -3990,8 +3990,8 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 ItemList.Cover_Drain.get(1L),
                 GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Cover_Shutter.get(1L))
-            .duration(10 * SECONDS)
-            .eut(64)
+            .duration(40 * SECONDS)
+            .eut(16)
             .addTo(assemblerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -3999,8 +3999,8 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 ItemList.Cover_Drain.get(1L),
                 GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Cover_Shutter.get(1L))
-            .duration(10 * SECONDS)
-            .eut(64)
+            .duration(40 * SECONDS)
+            .eut(16)
             .addTo(assemblerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -4008,8 +4008,8 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 ItemList.Cover_Drain.get(1L),
                 GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Cover_Shutter.get(1L))
-            .duration(10 * SECONDS)
-            .eut(64)
+            .duration(40 * SECONDS)
+            .eut(16)
             .addTo(assemblerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -4017,8 +4017,8 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new ItemStack(Blocks.iron_bars, 2),
                 GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Cover_Drain.get(1L))
-            .duration(10 * SECONDS)
-            .eut(64)
+            .duration(40 * SECONDS)
+            .eut(16)
             .addTo(assemblerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -4026,8 +4026,8 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new ItemStack(Blocks.iron_bars, 2),
                 GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Cover_Drain.get(1L))
-            .duration(10 * SECONDS)
-            .eut(64)
+            .duration(40 * SECONDS)
+            .eut(16)
             .addTo(assemblerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -4035,8 +4035,8 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new ItemStack(Blocks.iron_bars, 2),
                 GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Cover_Drain.get(1L))
-            .duration(10 * SECONDS)
-            .eut(64)
+            .duration(40 * SECONDS)
+            .eut(16)
             .addTo(assemblerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -4044,8 +4044,8 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new ItemStack(Blocks.crafting_table, 1),
                 GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Cover_Crafting.get(1L))
-            .duration(10 * SECONDS)
-            .eut(64)
+            .duration(40 * SECONDS)
+            .eut(16)
             .addTo(assemblerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -4053,8 +4053,8 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new ItemStack(Blocks.crafting_table, 1),
                 GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Cover_Crafting.get(1L))
-            .duration(10 * SECONDS)
-            .eut(64)
+            .duration(40 * SECONDS)
+            .eut(16)
             .addTo(assemblerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -4062,8 +4062,8 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new ItemStack(Blocks.crafting_table, 1),
                 GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Cover_Crafting.get(1L))
-            .duration(10 * SECONDS)
-            .eut(64)
+            .duration(40 * SECONDS)
+            .eut(16)
             .addTo(assemblerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(
