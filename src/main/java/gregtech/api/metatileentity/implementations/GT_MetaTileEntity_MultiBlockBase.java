@@ -252,6 +252,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         aNBT.setInteger("mEfficiency", mEfficiency);
         aNBT.setInteger("mPollution", mPollution);
         aNBT.setInteger("mRuntime", mRuntime);
+        aNBT.setLong("mIdleTime", mIdleTime);
         if (supportsSingleRecipeLocking()) {
             aNBT.setBoolean("mLockedToSingleRecipe", mLockedToSingleRecipe);
             if (mLockedToSingleRecipe && mSingleRecipeCheck != null)
@@ -293,6 +294,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         mEfficiency = aNBT.getInteger("mEfficiency");
         mPollution = aNBT.getInteger("mPollution");
         mRuntime = aNBT.getInteger("mRuntime");
+        mIdleTime = aNBT.getLong("mIdleTime");
         if (supportsSingleRecipeLocking()) {
             mLockedToSingleRecipe = aNBT.getBoolean("mLockedToSingleRecipe");
             if (mLockedToSingleRecipe && aNBT.hasKey("mSingleRecipeCheck", Constants.NBT.TAG_COMPOUND)) {
