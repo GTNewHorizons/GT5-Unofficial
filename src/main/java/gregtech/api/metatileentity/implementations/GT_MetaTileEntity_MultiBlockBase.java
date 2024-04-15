@@ -155,6 +155,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
     private long mLastWorkingTick = 0;
 
+    private long mIdleTime = 0;
+
     protected static final byte INTERRUPT_SOUND_INDEX = 8;
     protected static final byte PROCESS_START_SOUND_INDEX = 1;
 
@@ -404,6 +406,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             if (--mUpdate == 0 || --mStartUpCheck == 0) {
                 checkStructure(true, aBaseMetaTileEntity);
             }
+
             if (mStartUpCheck < 0) {
                 if (mMachine) {
                     checkMaintenance();
@@ -424,6 +427,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                     | (mSolderingTool ? 0 : 16)
                     | (mCrowbar ? 0 : 32)
                     | (mMachine ? 0 : 64));
+            mIdleTime = (mMaxProgresstime > 0) ? 0 : mIdleTime + 1;
             aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
             boolean active = aBaseMetaTileEntity.isActive() && mPollution > 0;
             setMufflers(active);
@@ -2294,6 +2298,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
     public boolean shouldDisplayShutDownReason() {
         return true;
+    }
+
+    public long idleTime() {
+        return mIdleTime;
     }
 
     protected final NumberFormatMUI numberFormat = new NumberFormatMUI();

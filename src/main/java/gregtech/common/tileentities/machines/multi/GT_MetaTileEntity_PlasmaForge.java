@@ -67,6 +67,8 @@ public class GT_MetaTileEntity_PlasmaForge extends
 
     // 3600 seconds in an hour, 8 hours, 20 ticks in a second.
     private static final double max_efficiency_time_in_ticks = 3600d * 8d * 20d;
+    // Time it takes for efficiency to decay to zero. Set to 5 minutes.
+    private static final double efficiency_decay_time_in_ticks = 60d * 5d * 20d;
     private static final double maximum_discount = 0.5d;
 
     // Valid fuels which the discount will get applied to.
@@ -538,6 +540,15 @@ public class GT_MetaTileEntity_PlasmaForge extends
                     + "%"
                     + EnumChatFormatting.GRAY
                     + ". Supports overclocking beyond MAX voltage.")
+            .addInfo(
+                "When no recipe is running, fuel discount gradually decreases to " + EnumChatFormatting.RED
+                    + "0%"
+                    + EnumChatFormatting.GRAY
+                    + " in "
+                    + EnumChatFormatting.RED
+                    + GT_Utility.formatNumbers(efficiency_decay_time_in_ticks / (20 * 60))
+                    + EnumChatFormatting.GRAY
+                    + " minutes.")
             .addInfo(AuthorColen)
             .addSeparator()
             .beginStructureBlock(33, 24, 33, false)
@@ -877,6 +888,9 @@ public class GT_MetaTileEntity_PlasmaForge extends
                 + GT_Utility.formatNumbers(100 * (1 - discount))
                 + EnumChatFormatting.RESET
                 + "%",
+            "Ticks idle (Debug): " + EnumChatFormatting.GREEN
+                + GT_Utility.formatNumbers(idleTime())
+                + EnumChatFormatting.RESET,
             "-----------------------------------------" };
     }
 
