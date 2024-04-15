@@ -28,7 +28,9 @@ import static gregtech.api.util.GT_StructureUtility.ofCoil;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nonnull;
 
@@ -37,6 +39,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
@@ -59,9 +62,12 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Outpu
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.maps.OilCrackerBackend;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Input_ME;
+import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 
 public class GT_TileEntity_MegaOilCracker extends GT_TileEntity_MegaMultiBlockBase<GT_TileEntity_MegaOilCracker>
         implements ISurvivalConstructable {
@@ -188,7 +194,7 @@ public class GT_TileEntity_MegaOilCracker extends GT_TileEntity_MegaMultiBlockBa
     }
 
     @Override
-    public RecipeMap<?> getRecipeMap() {
+    public RecipeMap<OilCrackerBackend> getRecipeMap() {
         return RecipeMaps.crackingRecipes;
     }
 
@@ -340,37 +346,53 @@ public class GT_TileEntity_MegaOilCracker extends GT_TileEntity_MegaMultiBlockBa
     @Override
     public ArrayList<FluidStack> getStoredFluids() {
         final ArrayList<FluidStack> rList = new ArrayList<>();
+        Map<Fluid, FluidStack> inputsFromME = new HashMap<>();
         for (final GT_MetaTileEntity_Hatch_Input tHatch : filterValidMTEs(mInputHatches)) {
             tHatch.mRecipeMap = getRecipeMap();
-            if (tHatch instanceof GT_MetaTileEntity_Hatch_MultiInput) {
+            if (tHatch instanceof GT_MetaTileEntity_Hatch_Input_ME meHatch) {
+                for (FluidStack tFluid : meHatch.getStoredFluids()) {
+                    if (tFluid != null && !getRecipeMap().getBackend().isValidCatalystFluid(tFluid)) {
+                        inputsFromME.put(tFluid.getFluid(), tFluid);
+                    }
+                }
+            } else if (tHatch instanceof GT_MetaTileEntity_Hatch_MultiInput) {
                 for (final FluidStack tFluid : ((GT_MetaTileEntity_Hatch_MultiInput) tHatch).getStoredFluid()) {
-                    if (tFluid != null && !RecipeMaps.crackingRecipes.getBackend().isValidCatalystFluid(tFluid)) {
+                    if (tFluid != null && !getRecipeMap().getBackend().isValidCatalystFluid(tFluid)) {
                         rList.add(tFluid);
                     }
                 }
             } else {
                 if (tHatch.getFillableStack() != null) {
-                    if (!RecipeMaps.crackingRecipes.getBackend().isValidCatalystFluid(tHatch.getFillableStack()))
+                    if (!getRecipeMap().getBackend().isValidCatalystFluid(tHatch.getFillableStack()))
                         rList.add(tHatch.getFillableStack());
                 }
             }
         }
         for (final GT_MetaTileEntity_Hatch_Input tHatch : filterValidMTEs(mMiddleInputHatches)) {
             tHatch.mRecipeMap = getRecipeMap();
-            if (tHatch instanceof GT_MetaTileEntity_Hatch_MultiInput) {
+            if (tHatch instanceof GT_MetaTileEntity_Hatch_Input_ME meHatch) {
+                for (FluidStack tFluid : meHatch.getStoredFluids()) {
+                    if (tFluid != null && getRecipeMap().getBackend().isValidCatalystFluid(tFluid)) {
+                        inputsFromME.put(tFluid.getFluid(), tFluid);
+                    }
+                }
+            } else if (tHatch instanceof GT_MetaTileEntity_Hatch_MultiInput) {
                 for (final FluidStack tFluid : ((GT_MetaTileEntity_Hatch_MultiInput) tHatch).getStoredFluid()) {
-                    if (tFluid != null && RecipeMaps.crackingRecipes.getBackend().isValidCatalystFluid(tFluid)) {
+                    if (tFluid != null && getRecipeMap().getBackend().isValidCatalystFluid(tFluid)) {
                         rList.add(tFluid);
                     }
                 }
             } else {
                 if (tHatch.getFillableStack() != null) {
                     final FluidStack tStack = tHatch.getFillableStack();
-                    if (RecipeMaps.crackingRecipes.getBackend().isValidCatalystFluid(tStack)) {
+                    if (getRecipeMap().getBackend().isValidCatalystFluid(tStack)) {
                         rList.add(tStack);
                     }
                 }
             }
+        }
+        if (!inputsFromME.isEmpty()) {
+            rList.addAll(inputsFromME.values());
         }
         return rList;
     }
@@ -403,5 +425,25 @@ public class GT_TileEntity_MegaOilCracker extends GT_TileEntity_MegaMultiBlockBa
     @Override
     public boolean supportsVoidProtection() {
         return true;
+    }
+
+    @Override
+    protected void startRecipeProcessing() {
+        for (GT_MetaTileEntity_Hatch_Input hatch : filterValidMTEs(mMiddleInputHatches)) {
+            if (hatch instanceof IRecipeProcessingAwareHatch aware) {
+                aware.startRecipeProcessing();
+            }
+        }
+        super.startRecipeProcessing();
+    }
+
+    @Override
+    protected void endRecipeProcessing() {
+        super.endRecipeProcessing();
+        for (GT_MetaTileEntity_Hatch_Input hatch : filterValidMTEs(mMiddleInputHatches)) {
+            if (hatch instanceof IRecipeProcessingAwareHatch aware) {
+                setResultIfFailure(aware.endRecipeProcessing(this));
+            }
+        }
     }
 }
