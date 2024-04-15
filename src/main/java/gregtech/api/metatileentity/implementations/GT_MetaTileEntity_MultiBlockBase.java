@@ -795,21 +795,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         processingLogic.setInputFluids(getStoredFluids());
 
         if (isInputSeparationEnabled()) {
-            for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
-                if (bus instanceof GT_MetaTileEntity_Hatch_CraftingInput_ME) {
-                    continue;
-                }
-                List<ItemStack> inputItems = new ArrayList<>();
-                for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
-                    ItemStack stored = bus.getStackInSlot(i);
-                    if (stored != null) {
-                        inputItems.add(stored);
-                    }
-                }
-                if (canUseControllerSlotForRecipe() && getControllerSlot() != null) {
-                    inputItems.add(getControllerSlot());
-                }
-                processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
+            if (mInputBusses.isEmpty()) {
                 CheckRecipeResult foundResult = processingLogic.process();
                 if (foundResult.wasSuccessful()) {
                     return foundResult;
@@ -817,6 +803,31 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                 if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
                     // Recipe failed in interesting way, so remember that and continue searching
                     result = foundResult;
+                }
+            } else {
+                for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
+                    if (bus instanceof GT_MetaTileEntity_Hatch_CraftingInput_ME) {
+                        continue;
+                    }
+                    List<ItemStack> inputItems = new ArrayList<>();
+                    for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
+                        ItemStack stored = bus.getStackInSlot(i);
+                        if (stored != null) {
+                            inputItems.add(stored);
+                        }
+                    }
+                    if (canUseControllerSlotForRecipe() && getControllerSlot() != null) {
+                        inputItems.add(getControllerSlot());
+                    }
+                    processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
+                    CheckRecipeResult foundResult = processingLogic.process();
+                    if (foundResult.wasSuccessful()) {
+                        return foundResult;
+                    }
+                    if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
+                        // Recipe failed in interesting way, so remember that and continue searching
+                        result = foundResult;
+                    }
                 }
             }
         } else {
