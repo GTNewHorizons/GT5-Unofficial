@@ -89,6 +89,7 @@ public class GT_MetaTileEntity_PlasmaForge extends
     private double discount = 1;
     private int mHeatingCapacity = 0;
     private long running_time = 0;
+    private long idle_time = 0;
     // Custom long EU per tick value given that mEUt is an int. Required to overclock beyond MAX voltage.
     private HeatingCoilLevel mCoilLevel;
 
@@ -833,7 +834,7 @@ public class GT_MetaTileEntity_PlasmaForge extends
         long amps = getMaxInputAmps();
 
         // Calculate discount to make sure it is shown properly even when machine is off but decaying
-        if (idleTime() >= 0) {
+        if (idle_time >= 0) {
             recalculateDiscount();
         }
 
@@ -893,7 +894,7 @@ public class GT_MetaTileEntity_PlasmaForge extends
 
     private void recalculateDiscount() {
         // If running for max_efficiency_time_in_ticks then discount is at maximum.
-        if (idleTime() == 0 && running_time > 0) {
+        if (idle_time == 0 && running_time > 0) {
             double time_percentage = running_time / max_efficiency_time_in_ticks;
             time_percentage = Math.min(time_percentage, 1.0d);
             // Multiplied by 0.5 because that is the maximum achievable discount
@@ -916,7 +917,7 @@ public class GT_MetaTileEntity_PlasmaForge extends
             }
         } else {
             // If we had any idle time before this, use that time to set the discount instead
-            double idle_time_percentage = idleTime() / efficiency_decay_time_in_ticks;
+            double idle_time_percentage = idle_time / efficiency_decay_time_in_ticks;
             idle_time_percentage = Math.min(idle_time_percentage, 1.0d);
             double decayedDiscount = idle_time_percentage * 0.5 + 0.5;
             discount = Math.max(discount, decayedDiscount);
@@ -976,6 +977,10 @@ public class GT_MetaTileEntity_PlasmaForge extends
         }
 
         super.onPostTick(aBaseMetaTileEntity, aTick);
+
+        if (aBaseMetaTileEntity.isServerSide()) {
+            idle_time = mMaxProgresstime > 0 ? 0 : idle_time + 1;
+        }
     }
 
     @Override
@@ -999,6 +1004,7 @@ public class GT_MetaTileEntity_PlasmaForge extends
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setLong("eRunningTime", running_time);
+        aNBT.setLong("eIdleTime", idle_time);
         aNBT.setDouble("eLongDiscountValue", discount);
         super.saveNBTData(aNBT);
     }
@@ -1006,6 +1012,7 @@ public class GT_MetaTileEntity_PlasmaForge extends
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
         running_time = aNBT.getLong("eRunningTime");
+        idle_time = aNBT.getLong("eIdleTime");
         discount = aNBT.getDouble("eLongDiscountValue");
         super.loadNBTData(aNBT);
     }

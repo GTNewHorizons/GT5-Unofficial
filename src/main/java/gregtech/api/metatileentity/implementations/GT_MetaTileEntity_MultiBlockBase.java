@@ -155,8 +155,6 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
     private long mLastWorkingTick = 0;
 
-    private long mIdleTime = 0;
-
     protected static final byte INTERRUPT_SOUND_INDEX = 8;
     protected static final byte PROCESS_START_SOUND_INDEX = 1;
 
@@ -252,7 +250,6 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         aNBT.setInteger("mEfficiency", mEfficiency);
         aNBT.setInteger("mPollution", mPollution);
         aNBT.setInteger("mRuntime", mRuntime);
-        aNBT.setLong("mIdleTime", mIdleTime);
         if (supportsSingleRecipeLocking()) {
             aNBT.setBoolean("mLockedToSingleRecipe", mLockedToSingleRecipe);
             if (mLockedToSingleRecipe && mSingleRecipeCheck != null)
@@ -294,7 +291,6 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         mEfficiency = aNBT.getInteger("mEfficiency");
         mPollution = aNBT.getInteger("mPollution");
         mRuntime = aNBT.getInteger("mRuntime");
-        mIdleTime = aNBT.getLong("mIdleTime");
         if (supportsSingleRecipeLocking()) {
             mLockedToSingleRecipe = aNBT.getBoolean("mLockedToSingleRecipe");
             if (mLockedToSingleRecipe && aNBT.hasKey("mSingleRecipeCheck", Constants.NBT.TAG_COMPOUND)) {
@@ -429,7 +425,6 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                     | (mSolderingTool ? 0 : 16)
                     | (mCrowbar ? 0 : 32)
                     | (mMachine ? 0 : 64));
-            mIdleTime = (mMaxProgresstime > 0) ? 0 : mIdleTime + 1;
             aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
             boolean active = aBaseMetaTileEntity.isActive() && mPollution > 0;
             setMufflers(active);
@@ -2300,10 +2295,6 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
     public boolean shouldDisplayShutDownReason() {
         return true;
-    }
-
-    public long idleTime() {
-        return mIdleTime;
     }
 
     protected final NumberFormatMUI numberFormat = new NumberFormatMUI();
