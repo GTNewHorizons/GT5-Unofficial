@@ -4,7 +4,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.*;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 
-import gregtech.common.tileentities.machines.multi.*;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.GT_Mod;
@@ -84,6 +83,7 @@ import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Scanner;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Teleporter;
 import gregtech.common.tileentities.machines.long_distance.GT_MetaTileEntity_LongDistancePipelineFluid;
 import gregtech.common.tileentities.machines.long_distance.GT_MetaTileEntity_LongDistancePipelineItem;
+import gregtech.common.tileentities.machines.multi.*;
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_DroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_Hatch_DroneDownLink;
 import gregtech.common.tileentities.machines.steam.GT_MetaTileEntity_AlloySmelter_Bronze;
@@ -349,9 +349,9 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "Dimensionally Transcendent Plasma Forge").getStackForm(1L));
         ItemList.Machine_Multi_PurificationPlant.set(
             new GT_MetaTileEntity_PurificationPlant(
-               PURIFICATION_PLANT_CONTROLLER.ID,
-               "multimachine.purificationplant",
-               "Water Purification Plant").getStackForm(1L));
+                PURIFICATION_PLANT_CONTROLLER.ID,
+                "multimachine.purificationplant",
+                "Water Purification Plant").getStackForm(1L));
 
         ItemList.Machine_Multi_LargeBoiler_Bronze.set(
             new GT_MetaTileEntity_LargeBoiler_Bronze(

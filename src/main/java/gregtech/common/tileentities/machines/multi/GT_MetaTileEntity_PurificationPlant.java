@@ -1,24 +1,53 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_GLOW;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_StructureUtility;
 
 public class GT_MetaTileEntity_PurificationPlant
     extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_PurificationPlant> {
+
+    private static final String STRUCTURE_PIECE_MAIN = "main";
+
+    private int mCasingAmount;
+
+    private static final IStructureDefinition<GT_MetaTileEntity_PurificationPlant> STRUCTURE_DEFINITION = StructureDefinition
+        .<GT_MetaTileEntity_PurificationPlant>builder()
+        .addShape(
+            STRUCTURE_PIECE_MAIN,
+            new String[][] { { "AAA", "A~A", "AAA" }, { "AAA", "A A", "AAA" }, { "AAA", "AAA", "AAA" } })
+        .addElement(
+            'A',
+            ofChain(
+                lazy(
+                    t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationPlant>buildHatchAdder()
+                        .atLeastList(t.getAllowedHatches())
+                        .casingIndex(48)
+                        .dot(1)
+                        .build()),
+                onElementPass(t -> t.mCasingAmount++, ofBlock(GregTech_API.sBlockCasings4, 0))))
+        .build();
 
     public GT_MetaTileEntity_PurificationPlant(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -30,12 +59,12 @@ public class GT_MetaTileEntity_PurificationPlant
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 1, 1, 0);
     }
 
     @Override
     public IStructureDefinition<GT_MetaTileEntity_PurificationPlant> getStructureDefinition() {
-        return null;
+        return STRUCTURE_DEFINITION;
     }
 
     @Override
@@ -83,17 +112,21 @@ public class GT_MetaTileEntity_PurificationPlant
 
     @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
-        return false;
+        return true;
+    }
+
+    private List<IHatchElement<? super GT_MetaTileEntity_PurificationPlant>> getAllowedHatches() {
+        return ImmutableList.of(Maintenance, Energy, ExoticEnergy);
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return false;
+        return checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0);
     }
 
     @Override
     public int getMaxEfficiency(ItemStack aStack) {
-        return 0;
+        return 10000;
     }
 
     @Override
