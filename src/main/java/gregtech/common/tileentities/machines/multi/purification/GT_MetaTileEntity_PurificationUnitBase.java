@@ -1,16 +1,22 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 /// Base class for purification units. This class handles all shared behaviour between units.
 /// This includes
@@ -59,7 +65,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         super.onPostTick(aBaseMetaTileEntity, aTimer);
         // Try to re-link to controller periodically, for example on game load.
-        if (aTimer % 600 == 0 && controllerSet && getController() == null) {
+        if (aTimer % 100 == 0 && controllerSet && getController() == null) {
             trySetControllerFromCoord(controllerX, controllerY, controllerZ);
         }
     }
@@ -196,5 +202,41 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
                     + ".");
         } else ret.add("This Purification Unit is not linked to any Water Purification Plant.");
         return ret.toArray(new String[0]);
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        NBTTagCompound tag = accessor.getNBTData();
+
+        if (tag.getBoolean("linked")) {
+            currenttip.add(
+                EnumChatFormatting.AQUA + "Linked to Purification Plant at "
+                    + EnumChatFormatting.WHITE
+                    + tag.getInteger("controllerX")
+                    + ", "
+                    + tag.getInteger("controllerY")
+                    + ", "
+                    + tag.getInteger("controllerZ")
+                    + EnumChatFormatting.RESET);
+        } else {
+            currenttip.add(EnumChatFormatting.AQUA + "Unlinked");
+        }
+
+        super.getWailaBody(itemStack, currenttip, accessor, config);
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+
+        tag.setBoolean("linked", getController() != null);
+        if (getController() != null) {
+            tag.setInteger("controllerX", controllerX);
+            tag.setInteger("controllerY", controllerY);
+            tag.setInteger("controllerZ", controllerZ);
+        }
+
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
     }
 }
