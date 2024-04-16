@@ -195,7 +195,6 @@ public class GT_MetaTileEntity_Boiler_Bronze extends GT_MetaTileEntity_Boiler {
             || GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[2], "fuelSugarCoke")) {
             if ((TileEntityFurnace.getItemBurnTime(this.mInventory[2]) / 10) > 0) {
                 this.mProcessingEnergy += (TileEntityFurnace.getItemBurnTime(this.mInventory[2]) / 10);
-                aBaseMetaTileEntity.decrStackSize(2, 1);
                 if (XSTR.XSTR_INSTANCE.nextInt(
                     GT_Utility.isPartOfMaterials(this.mInventory[2], Materials.Coal)
                         || GT_Utility.isPartOfMaterials(this.mInventory[2], Materials.Charcoal) ? 3
@@ -210,6 +209,7 @@ public class GT_MetaTileEntity_Boiler_Bronze extends GT_MetaTileEntity_Boiler {
                                     : Materials.Ash,
                             1L));
                 }
+                aBaseMetaTileEntity.decrStackSize(2, 1);
             }
         } else if (
         // If its a block of the following materials
@@ -256,7 +256,6 @@ public class GT_MetaTileEntity_Boiler_Bronze extends GT_MetaTileEntity_Boiler {
                                 if ((TileEntityFurnace.getItemBurnTime(this.mInventory[2]) / 10) > 0) {
                                     this.mProcessingEnergy += (TileEntityFurnace.getItemBurnTime(this.mInventory[2])
                                         / 10);
-                                    aBaseMetaTileEntity.decrStackSize(2, 1);
                                     aBaseMetaTileEntity.addStackToSlot(
                                         3,
                                         GT_OreDictUnificator.get(
@@ -272,6 +271,7 @@ public class GT_MetaTileEntity_Boiler_Bronze extends GT_MetaTileEntity_Boiler {
                                                     .toLowerCase()
                                                     .contains("lignite")) ? Materials.DarkAsh : Materials.Ash,
                                             1L));
+                                    aBaseMetaTileEntity.decrStackSize(2, 1);
                                 }
                                 // enables every other fuel with at least 2000 burntime as a fuel,
                                 // i.e. peat, Magic/Solid Super Fuel, Coal
@@ -286,7 +286,6 @@ public class GT_MetaTileEntity_Boiler_Bronze extends GT_MetaTileEntity_Boiler {
                         .toLowerCase()
                         .contains("cell"))) {
                             this.mProcessingEnergy += (TileEntityFurnace.getItemBurnTime(this.mInventory[2]) / 10);
-                            aBaseMetaTileEntity.decrStackSize(2, 1);
                             // adds tiny pile of ash for burntime under 10k, small pile for
                             // under 100k and pile for
                             // bigger values
@@ -301,6 +300,7 @@ public class GT_MetaTileEntity_Boiler_Bronze extends GT_MetaTileEntity_Boiler {
                                             : OrePrefixes.dustTiny),
                                         Materials.Ash,
                                         1L));
+                            aBaseMetaTileEntity.decrStackSize(2, 1);
                         }
     }
 
