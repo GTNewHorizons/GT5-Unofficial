@@ -42,7 +42,7 @@ public class GT_MetaTileEntity_PurificationPlant
     // purification plant units.
     public static final int MAX_UNIT_DISTANCE = 16;
 
-    private List<GT_MetaTileEntity_PurificationUnitBase<?>> mLinkedUnits = new ArrayList<>();
+    private final List<GT_MetaTileEntity_PurificationUnitBase<?>> mLinkedUnits = new ArrayList<>();
 
     private static final IStructureDefinition<GT_MetaTileEntity_PurificationPlant> STRUCTURE_DEFINITION = StructureDefinition
         .<GT_MetaTileEntity_PurificationPlant>builder()

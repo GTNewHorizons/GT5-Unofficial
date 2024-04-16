@@ -1,5 +1,7 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
+import java.util.ArrayList;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -10,9 +12,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 /// Base class for purification units. This class handles all shared behaviour between units.
 /// This includes
 /// - Linking using data sticks and storing data about the linked purification plant controller
@@ -21,6 +20,12 @@ import java.util.Arrays;
 /// if you override these methods, or linking will break.
 public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T>>
     extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T> {
+
+    private enum LinkResult {
+        TOO_FAR,
+        NO_VALID_PLANT,
+        SUCCESS,
+    }
 
     private int controllerX, controllerY, controllerZ;
     private boolean controllerSet = false;
@@ -83,29 +88,34 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
         }
     }
 
-    private GT_MetaTileEntity_PurificationPlant trySetControllerFromCoord(int x, int y, int z) {
+    private LinkResult trySetControllerFromCoord(int x, int y, int z) {
         // Before testing anything, first see if the unit is within the allowed range
         IGregTechTileEntity ourBaseMetaTileEntity = this.getBaseMetaTileEntity();
         if (Math.abs(ourBaseMetaTileEntity.getXCoord() - x) > GT_MetaTileEntity_PurificationPlant.MAX_UNIT_DISTANCE)
-            return null;
+            return LinkResult.TOO_FAR;
         if (Math.abs(ourBaseMetaTileEntity.getYCoord() - y) > GT_MetaTileEntity_PurificationPlant.MAX_UNIT_DISTANCE)
-            return null;
+            return LinkResult.TOO_FAR;
         if (Math.abs(ourBaseMetaTileEntity.getZCoord() - z) > GT_MetaTileEntity_PurificationPlant.MAX_UNIT_DISTANCE)
-            return null;
+            return LinkResult.TOO_FAR;
 
         var tileEntity = getBaseMetaTileEntity().getWorld()
             .getTileEntity(x, y, z);
-        if (tileEntity == null) return null;
-        if (!(tileEntity instanceof IGregTechTileEntity gtTileEntity)) return null;
+        if (tileEntity == null) return LinkResult.NO_VALID_PLANT;
+        if (!(tileEntity instanceof IGregTechTileEntity gtTileEntity)) return LinkResult.NO_VALID_PLANT;
         var metaTileEntity = gtTileEntity.getMetaTileEntity();
-        if (!(metaTileEntity instanceof GT_MetaTileEntity_PurificationPlant)) return null;
+        if (!(metaTileEntity instanceof GT_MetaTileEntity_PurificationPlant)) return LinkResult.NO_VALID_PLANT;
+
+        // Before linking, unlink from current controller
+        this.unlinkController();
+
+        // Now link to new controller
         controllerX = x;
         controllerY = y;
         controllerZ = z;
         controllerSet = true;
         controller = (GT_MetaTileEntity_PurificationPlant) metaTileEntity;
         controller.registerLinkedUnit(this);
-        return controller;
+        return LinkResult.SUCCESS;
     }
 
     private boolean tryLinkDataStick(EntityPlayer aPlayer) {
@@ -123,11 +133,14 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
         int x = nbt.getInteger("x");
         int y = nbt.getInteger("y");
         int z = nbt.getInteger("z");
-        if (trySetControllerFromCoord(x, y, z) != null) {
+        LinkResult result = trySetControllerFromCoord(x, y, z);
+        if (result == LinkResult.SUCCESS) {
             aPlayer.addChatMessage(new ChatComponentText("Link successful"));
-            return true;
+        } else if (result == LinkResult.TOO_FAR) {
+            aPlayer.addChatMessage(new ChatComponentText("Link failed: Out of range."));
+        } else if (result == LinkResult.NO_VALID_PLANT) {
+            aPlayer.addChatMessage(new ChatComponentText("Link failed: No Purification Plant fount at link location"));
         }
-        aPlayer.addChatMessage(new ChatComponentText("Link failed"));
         return true;
     }
 
@@ -136,15 +149,12 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
         if (!(aPlayer instanceof EntityPlayerMP)) {
             return false;
         }
+
         if (tryLinkDataStick(aPlayer)) {
             return true;
         }
 
-        GT_MetaTileEntity_PurificationPlant controller = getController();
-        if (controller != null) {
-            return controller.onRightclick(controller.getBaseMetaTileEntity(), aPlayer);
-        }
-        return false;
+        return super.onRightclick(aBaseMetaTileEntity, aPlayer);
     }
 
     public GT_MetaTileEntity_PurificationPlant getController() {
