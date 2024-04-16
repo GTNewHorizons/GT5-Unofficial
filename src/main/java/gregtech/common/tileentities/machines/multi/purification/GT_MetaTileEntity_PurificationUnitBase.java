@@ -10,6 +10,9 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /// Base class for purification units. This class handles all shared behaviour between units.
 /// This includes
 /// - Linking using data sticks and storing data about the linked purification plant controller
@@ -48,6 +51,15 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
     }
 
     @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
+        super.onPostTick(aBaseMetaTileEntity, aTimer);
+        // Try to re-link to controller periodically, for example on game load.
+        if (aTimer % 600 == 0 && controllerSet && getController() == null) {
+            trySetControllerFromCoord(controllerX, controllerY, controllerZ);
+        }
+    }
+
+    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         if (aNBT.hasKey("controller")) {
@@ -72,6 +84,15 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
     }
 
     private GT_MetaTileEntity_PurificationPlant trySetControllerFromCoord(int x, int y, int z) {
+        // Before testing anything, first see if the unit is within the allowed range
+        IGregTechTileEntity ourBaseMetaTileEntity = this.getBaseMetaTileEntity();
+        if (Math.abs(ourBaseMetaTileEntity.getXCoord() - x) > GT_MetaTileEntity_PurificationPlant.MAX_UNIT_DISTANCE)
+            return null;
+        if (Math.abs(ourBaseMetaTileEntity.getYCoord() - y) > GT_MetaTileEntity_PurificationPlant.MAX_UNIT_DISTANCE)
+            return null;
+        if (Math.abs(ourBaseMetaTileEntity.getZCoord() - z) > GT_MetaTileEntity_PurificationPlant.MAX_UNIT_DISTANCE)
+            return null;
+
         var tileEntity = getBaseMetaTileEntity().getWorld()
             .getTileEntity(x, y, z);
         if (tileEntity == null) return null;
@@ -83,6 +104,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
         controllerZ = z;
         controllerSet = true;
         controller = (GT_MetaTileEntity_PurificationPlant) metaTileEntity;
+        controller.registerLinkedUnit(this);
         return controller;
     }
 
@@ -130,5 +152,39 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
         // Controller disappeared
         if (controller.getBaseMetaTileEntity() == null) return null;
         return controller;
+    }
+
+    // If the controller is broken this can be called to explicitly unlink the controller so we don't have any
+    // references lingering around
+    public void unlinkController() {
+        this.controllerSet = false;
+        this.controller = null;
+        this.controllerX = 0;
+        this.controllerY = 0;
+        this.controllerZ = 0;
+    }
+
+    @Override
+    public void onBlockDestroyed() {
+        GT_MetaTileEntity_PurificationPlant controller = getController();
+        if (controller != null) {
+            controller.unregisterLinkedUnit(this);
+        }
+        super.onBlockDestroyed();
+    }
+
+    @Override
+    public String[] getInfoData() {
+        var ret = new ArrayList<String>();
+        if (getController() != null) {
+            ret.add(
+                "This Purification Unit is linked to the Water Purification Plant at " + controllerX
+                    + ", "
+                    + controllerY
+                    + ", "
+                    + controllerZ
+                    + ".");
+        } else ret.add("This Purification Unit is not linked to any Water Purification Plant.");
+        return ret.toArray(new String[0]);
     }
 }

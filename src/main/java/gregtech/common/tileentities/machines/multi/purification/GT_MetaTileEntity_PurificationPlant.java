@@ -38,6 +38,10 @@ public class GT_MetaTileEntity_PurificationPlant
 
     private int mCasingAmount;
 
+    // Maximum distance between the purification plant main controller and the controller blocks of the
+    // purification plant units.
+    public static final int MAX_UNIT_DISTANCE = 16;
+
     private List<GT_MetaTileEntity_PurificationUnitBase<?>> mLinkedUnits = new ArrayList<>();
 
     private static final IStructureDefinition<GT_MetaTileEntity_PurificationPlant> STRUCTURE_DEFINITION = StructureDefinition
@@ -147,6 +151,14 @@ public class GT_MetaTileEntity_PurificationPlant
         return false;
     }
 
+    public void registerLinkedUnit(GT_MetaTileEntity_PurificationUnitBase<?> unit) {
+        this.mLinkedUnits.add(unit);
+    }
+
+    public void unregisterLinkedUnit(GT_MetaTileEntity_PurificationUnitBase<?> unit) {
+        this.mLinkedUnits.remove(unit);
+    }
+
     @Override
     public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (!(aPlayer instanceof EntityPlayerMP)) return;
@@ -165,5 +177,13 @@ public class GT_MetaTileEntity_PurificationPlant
             "Purification Plant Link Data Stick (" + aBaseMetaTileEntity
                 .getXCoord() + ", " + aBaseMetaTileEntity.getYCoord() + ", " + aBaseMetaTileEntity.getZCoord() + ")");
         aPlayer.addChatMessage(new ChatComponentText("Saved Link Data to Data Stick"));
+    }
+
+    @Override
+    public void onBlockDestroyed() {
+        for (GT_MetaTileEntity_PurificationUnitBase<?> unit : this.mLinkedUnits) {
+            unit.unlinkController();
+        }
+        super.onBlockDestroyed();
     }
 }
