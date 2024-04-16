@@ -4,8 +4,8 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
 
-public abstract class GT_MetaTileEntity_PurificationUnitBase
-    extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_PurificationUnitBase> {
+public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T>>
+    extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T> {
 
     protected GT_MetaTileEntity_PurificationUnitBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);

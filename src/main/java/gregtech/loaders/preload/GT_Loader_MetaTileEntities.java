@@ -357,7 +357,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Machine_Multi_PurificationUnitSifter.set(
             new GT_MetaTileEntity_PurificationUnitSifter(
                 PURIFICATION_UNIT_SIFTER.ID,
-                "multimachine.purificationunit.sifter",
+                "multimachine.purificationunitsifter",
                 "Sifter Purification Unit").getStackForm(1L));
         ItemList.Machine_Multi_LargeBoiler_Bronze.set(
             new GT_MetaTileEntity_LargeBoiler_Bronze(
