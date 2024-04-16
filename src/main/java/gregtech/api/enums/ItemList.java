@@ -1176,7 +1176,7 @@ public enum ItemList implements IItemContainer {
     Machine_Multi_ImplosionCompressor,
     Machine_Multi_VacuumFreezer,
     Machine_Multi_Furnace,
-
+    Machine_Multi_PurificationPlant,
     Machine_LV_AlloySmelter,
     Machine_MV_AlloySmelter,
     Machine_HV_AlloySmelter,
