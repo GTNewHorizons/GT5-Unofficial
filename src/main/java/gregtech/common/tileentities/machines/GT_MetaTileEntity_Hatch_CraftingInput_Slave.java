@@ -254,4 +254,9 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_Slave extends GT_MetaTileEnti
 
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
     }
+
+    @Override
+    public List<ItemStack> getItemsForHoloGlasses() {
+        return getMaster() != null ? getMaster().getItemsForHoloGlasses() : null;
+    }
 }

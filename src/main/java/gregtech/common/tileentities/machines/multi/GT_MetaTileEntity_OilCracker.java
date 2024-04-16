@@ -13,12 +13,15 @@ import static gregtech.api.util.GT_StructureUtility.ofCoil;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -43,6 +46,8 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.maps.OilCrackerBackend;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Input_ME;
+import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 
 public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_OilCracker>
     implements ISurvivalConstructable {
@@ -324,9 +329,17 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
     @Override
     public ArrayList<FluidStack> getStoredFluids() {
         final ArrayList<FluidStack> rList = new ArrayList<>();
+        Map<Fluid, FluidStack> inputsFromME = new HashMap<>();
         for (final GT_MetaTileEntity_Hatch_Input tHatch : filterValidMTEs(mInputHatches)) {
             tHatch.mRecipeMap = getRecipeMap();
-            if (tHatch instanceof GT_MetaTileEntity_Hatch_MultiInput) {
+            if (tHatch instanceof GT_MetaTileEntity_Hatch_Input_ME meHatch) {
+                for (FluidStack tFluid : meHatch.getStoredFluids()) {
+                    if (tFluid != null && !getRecipeMap().getBackend()
+                        .isValidCatalystFluid(tFluid)) {
+                        inputsFromME.put(tFluid.getFluid(), tFluid);
+                    }
+                }
+            } else if (tHatch instanceof GT_MetaTileEntity_Hatch_MultiInput) {
                 for (final FluidStack tFluid : ((GT_MetaTileEntity_Hatch_MultiInput) tHatch).getStoredFluid()) {
                     if (tFluid != null && !getRecipeMap().getBackend()
                         .isValidCatalystFluid(tFluid)) {
@@ -342,7 +355,14 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
         }
         for (final GT_MetaTileEntity_Hatch_Input tHatch : filterValidMTEs(mMiddleInputHatches)) {
             tHatch.mRecipeMap = getRecipeMap();
-            if (tHatch instanceof GT_MetaTileEntity_Hatch_MultiInput) {
+            if (tHatch instanceof GT_MetaTileEntity_Hatch_Input_ME meHatch) {
+                for (FluidStack tFluid : meHatch.getStoredFluids()) {
+                    if (tFluid != null && getRecipeMap().getBackend()
+                        .isValidCatalystFluid(tFluid)) {
+                        inputsFromME.put(tFluid.getFluid(), tFluid);
+                    }
+                }
+            } else if (tHatch instanceof GT_MetaTileEntity_Hatch_MultiInput) {
                 for (final FluidStack tFluid : ((GT_MetaTileEntity_Hatch_MultiInput) tHatch).getStoredFluid()) {
                     if (tFluid != null && getRecipeMap().getBackend()
                         .isValidCatalystFluid(tFluid)) {
@@ -358,6 +378,9 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
                     }
                 }
             }
+        }
+        if (!inputsFromME.isEmpty()) {
+            rList.addAll(inputsFromME.values());
         }
         return rList;
     }
@@ -376,5 +399,25 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
     @Override
     public boolean supportsVoidProtection() {
         return true;
+    }
+
+    @Override
+    protected void startRecipeProcessing() {
+        for (GT_MetaTileEntity_Hatch_Input hatch : filterValidMTEs(mMiddleInputHatches)) {
+            if (hatch instanceof IRecipeProcessingAwareHatch aware) {
+                aware.startRecipeProcessing();
+            }
+        }
+        super.startRecipeProcessing();
+    }
+
+    @Override
+    protected void endRecipeProcessing() {
+        super.endRecipeProcessing();
+        for (GT_MetaTileEntity_Hatch_Input hatch : filterValidMTEs(mMiddleInputHatches)) {
+            if (hatch instanceof IRecipeProcessingAwareHatch aware) {
+                setResultIfFailure(aware.endRecipeProcessing(this));
+            }
+        }
     }
 }

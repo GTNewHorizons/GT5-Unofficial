@@ -684,9 +684,9 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
         ItemList.GalliumArsenideCrystal.set(addItem(190, "Gallium Arsenide Crystal", "For making boules", o));
         ItemList.GalliumArsenideCrystalSmallPart
             .set(addItem(191, "Small Gallium Arsenide Crystal", "For making boules", o));
-        ItemList.KevlarFiber.set(addItem(192, "Kevlar Fiber", "For make Kevlar Plates", o));
-        ItemList.WovenKevlar.set(addItem(193, "Woven Kevlar", "For make Kevlar Plates", o));
-        ItemList.Spinneret.set(addItem(194, "Spinneret", "For make Kevlar Fiber", o));
+        ItemList.KevlarFiber.set(addItem(192, "Kevlar Fiber", "For making Kevlar Plates", o));
+        ItemList.WovenKevlar.set(addItem(193, "Woven Kevlar", "For making Kevlar Plates", o));
+        ItemList.Spinneret.set(addItem(194, "Spinneret", "For making Kevlar Fiber", o));
 
         ItemList.IndustrialApiary_Upgrade_Frame.set(addItem(199, "Upgrade Frame", "Crafting component", o));
 

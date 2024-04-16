@@ -30,6 +30,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
+import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -597,40 +598,39 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
         return tt;
     }
 
+    protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
+
     @Override
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
         super.drawTexts(screenElements, inventorySlot);
         screenElements
             .widget(
-                TextWidget
-                    .dynamicString(
+                new TextWidget()
+                    .setStringSupplier(
                         () -> EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
                             "GT5U.gui.text.drill_ores_left_chunk",
-                            GT_Utility.formatNumbers(clientOreListSize)))
-                    .setSynced(false)
+                            numberFormat.format(clientOreListSize)))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setEnabled(
                         widget -> getBaseMetaTileEntity().isActive() && clientOreListSize > 0
                             && workState == STATE_AT_BOTTOM))
             .widget(
-                TextWidget
-                    .dynamicString(
+                new TextWidget()
+                    .setStringSupplier(
                         () -> EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
                             "GT5U.gui.text.drill_ores_left_layer",
-                            GT_Utility.formatNumbers(clientYHead),
-                            GT_Utility.formatNumbers(clientOreListSize)))
-                    .setSynced(false)
+                            numberFormat.format(clientYHead),
+                            numberFormat.format(clientOreListSize)))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setEnabled(
                         widget -> getBaseMetaTileEntity().isActive() && clientYHead > 0 && workState == STATE_DOWNWARD))
             .widget(
-                TextWidget
-                    .dynamicString(
+                new TextWidget()
+                    .setStringSupplier(
                         () -> EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
                             "GT5U.gui.text.drill_chunks_left",
-                            GT_Utility.formatNumbers(clientCurrentChunk),
-                            GT_Utility.formatNumbers(clientTotalChunks)))
-                    .setSynced(false)
+                            numberFormat.format(clientCurrentChunk),
+                            numberFormat.format(clientTotalChunks)))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setEnabled(
                         widget -> getBaseMetaTileEntity().isActive() && clientCurrentChunk > 0

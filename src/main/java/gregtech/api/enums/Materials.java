@@ -2436,6 +2436,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         OrePrefixes.ingotHot.disableComponent(Materials.RedstoneAlloy);
         OrePrefixes.ingotHot.disableComponent(Materials.Ardite);
         OrePrefixes.ingotHot.disableComponent(Materials.DarkSteel);
+        OrePrefixes.ingotHot.disableComponent(Materials.BlackSteel);
         OrePrefixes.ingotHot.disableComponent(Materials.EnergeticAlloy);
         OrePrefixes.ingotHot.disableComponent(Materials.PulsatingIron);
         OrePrefixes.ingotHot.disableComponent(Materials.CrudeSteel);

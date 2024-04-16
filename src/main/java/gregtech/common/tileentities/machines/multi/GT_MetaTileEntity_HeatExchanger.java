@@ -70,7 +70,7 @@ public class GT_MetaTileEntity_HeatExchanger extends
                 .newAny(CASING_INDEX, 3))
         .addElement(
             'H',
-            OutputHatch.withAdder(GT_MetaTileEntity_HeatExchanger::addHotFluidInputToMachineList)
+            InputHatch.withAdder(GT_MetaTileEntity_HeatExchanger::addHotFluidInputToMachineList)
                 .withCount(t -> t.mInputHotFluidHatch.isValid() ? 1 : 0)
                 .newAny(CASING_INDEX, 3))
         .addElement(

@@ -1,5 +1,7 @@
 package gregtech.common.covers;
 
+import java.text.FieldPosition;
+
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,10 +14,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
 import com.google.common.io.ByteArrayDataInput;
-import com.gtnewhorizons.modularui.api.math.MathExpression;
+import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.BaseTextFieldWidget;
 
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
@@ -26,7 +27,7 @@ import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
-import gregtech.common.gui.modularui.widget.CoverDataFollower_TextFieldWidget;
+import gregtech.common.gui.modularui.widget.CoverDataFollower_NumericWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 import gregtech.common.gui.modularui.widget.ItemWatcherSlotWidget;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
@@ -204,7 +205,21 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
         private static final int startY = 25;
         private static final int spaceX = 18;
         private static final int spaceY = 18;
-        private static final String ALL_TEXT = "All";
+
+        /**
+         * Display the text "All" instead of a number when the slot is set to -1.
+         */
+        protected static final NumberFormatMUI numberFormatAll = new NumberFormatMUI() {
+
+            @Override
+            public StringBuffer format(double number, StringBuffer toAppendTo, FieldPosition pos) {
+                if (number < 0) {
+                    return toAppendTo.append(GT_Utility.trans("ALL", "All"));
+                } else {
+                    return super.format(number, toAppendTo, pos);
+                }
+            }
+        };
 
         private int maxSlot;
         private int maxThreshold;
@@ -234,53 +249,46 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
                             .addTooltip(1, INVERTED)
                             .setPos(0, 0))
                     .addFollower(
-                        new CoverDataFollower_TextFieldWidget<>(),
-                        coverData -> getSlotTextFieldContent(coverData.slot),
+                        new CoverDataFollower_NumericWidget<>(),
+                        coverData -> (double) coverData.threshold,
                         (coverData, state) -> {
-                            coverData.slot = getIntFromText(state);
+                            coverData.threshold = state.intValue();
                             return coverData;
                         },
-                        widget -> widget.setOnScrollText()
-                            .setValidator(val -> {
-                                final int valSlot = getIntFromText(val);
-                                if (valSlot > -1) {
-                                    return widget.getDecimalFormatter()
-                                        .format(Math.min(valSlot, maxSlot));
-                                } else {
-                                    return ALL_TEXT;
-                                }
-                            })
-                            .setPattern(BaseTextFieldWidget.NATURAL_NUMS)
+                        widget -> widget.setBounds(0, maxThreshold)
+                            .setScrollValues(1, 64, 1000)
                             .setFocusOnGuiOpen(true)
-                            .setPos(0, spaceY + 2)
-                            .setSize(spaceX * 2 + 5, 12))
+                            .setPos(0, 2 + spaceY)
+                            .setSize(spaceX * 4 + 5, 12))
                     .addFollower(
-                        new CoverDataFollower_TextFieldWidget<>(),
-                        coverData -> String.valueOf(coverData.threshold),
+                        new CoverDataFollower_NumericWidget<>(),
+                        coverData -> (double) coverData.slot,
                         (coverData, state) -> {
-                            coverData.threshold = (int) MathExpression.parseMathExpression(state);
+                            coverData.slot = state.intValue();
                             return coverData;
                         },
-                        widget -> widget.setOnScrollNumbers(1, 10, 64)
-                            .setNumbers(0, maxThreshold)
-                            .setPos(0, spaceY * 2 + 2)
-                            .setSize(spaceX * 4 + 5, 12))
+                        widget -> widget.setBounds(-1, maxSlot)
+                            .setDefaultValue(-1)
+                            .setScrollValues(1, 100, 10)
+                            .setNumberFormat(numberFormatAll)
+                            .setPos(0, 2 + spaceY * 2)
+                            .setSize(spaceX * 3 + 1, 12))
                     .setPos(startX, startY))
                 .widget(
                     new ItemWatcherSlotWidget().setGetter(this::getTargetItem)
-                        .setPos(startX + spaceX * 8 - 4, startY + spaceY))
+                        .setPos(startX + spaceX * 3 + 8, startY + spaceY * 2))
                 .widget(
-                    TextWidget
-                        .dynamicString(() -> getCoverData() != null ? getCoverData().inverted ? INVERTED : NORMAL : "")
-                        .setSynced(false)
+                    new TextWidget()
+                        .setStringSupplier(
+                            () -> getCoverData() != null ? getCoverData().inverted ? INVERTED : NORMAL : "")
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 3, 4 + startY))
+                        .setPos(startX + spaceX, 4 + startY))
                 .widget(
-                    new TextWidget(GT_Utility.trans("254", "Detect slot#")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 3, 4 + startY + spaceY))
+                    new TextWidget(GT_Utility.trans("254", "Detect slot #")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(startX + spaceX * 4 + 9, 4 + startY + spaceY * 2))
                 .widget(
                     new TextWidget(GT_Utility.trans("221", "Item threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 5 - 10, startY + spaceY * 2 + 4));
+                        .setPos(startX + spaceX * 4 + 9, 4 + startY + spaceY));
         }
 
         private void setMaxSlot() {
@@ -301,18 +309,6 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
             } else {
                 maxThreshold = maxSlot > 0 ? maxSlot * 64 : Integer.MAX_VALUE;
             }
-        }
-
-        private int getIntFromText(String text) {
-            try {
-                return (int) MathExpression.parseMathExpression(text, -1);
-            } catch (Exception e) {
-                return -1;
-            }
-        }
-
-        private String getSlotTextFieldContent(int val) {
-            return val < 0 ? ALL_TEXT : String.valueOf(val);
         }
 
         private ItemStack getTargetItem() {

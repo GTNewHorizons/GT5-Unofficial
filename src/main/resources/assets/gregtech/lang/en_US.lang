@@ -231,6 +231,8 @@ gt.recipe.category.fluid_extractor_recycling=Fluid Extractor Recycling
 gt.recipe.category.alloy_smelter_recycling=Alloy Smelter Recycling
 gt.recipe.category.alloy_smelter_molding=Alloy Smelter Molding
 gt.recipe.category.forge_hammer_recycling=Forge Hammer Recycling
+gt.recipe.category.tic_part_extruding=TiC Part Extruding
+gt.recipe.category.tic_bolt_molding=TiC Bolt Molding
 
 GT5U.machines.tier=Tier
 GT5U.machines.workarea=Work Area
@@ -389,6 +391,10 @@ GT5U.machines.stocking_hatch.auto_pull_toggle.enabled=Automatic Fluid Pull Enabl
 GT5U.machines.stocking_hatch.auto_pull_toggle.disabled=Automatic Fluid Pull Disabled
 GT5U.machines.stocking_bus.saved=Saved Config to Data Stick
 GT5U.machines.stocking_bus.loaded=Loaded Config From Data Stick
+GT5U.machines.dronecentre.shutdown=You cannot control machine when drone centre shut down!
+GT5U.machines.dronecentre.turnon=Successfully turn on all machines!
+GT5U.machines.dronecentre.turnoff=Successfully turn off all machines!
+GT5U.machines.dronecentre.noconnection=No valid connection
 
 GT5U.recipe_filter.empty_representation_slot.tooltip=§7Click with a machine to set filter
 GT5U.recipe_filter.representation_slot.tooltip=§7Click to clear
@@ -477,6 +483,16 @@ GT5U.gui.text.stocking_hatch_fail_extraction=§4Failed to extract expected amoun
 GT5U.gui.text.drone_noDrone=§4Can't find any drone in inputBuses!
 GT5U.gui.text.drone_operating=§aDrone operating normally!
 GT5U.gui.text.drone_title=Drone Control Centre
+GT5U.gui.text.drone_custom_name=Custom Machine Name
+GT5U.gui.text.drone_search=Search machine name
+GT5U.gui.text.out_of_fluid=§4No following fluids supplied: §b%s§f x §6%s L
+GT5U.gui.text.out_of_item=§4No following items supplied: §b%s§f x §6%s
+GT5U.gui.text.out_of_stuff=§4No following stuffs supplied: §b%s§f x §6%s
+GT5U.gui.text.power_loss=§4Shut down due to power loss.
+GT5U.gui.text.pollution_fail=§4Failed to output the pollution.
+GT5U.gui.text.structure_incomplete=§4Shut down due to incomplete structure.
+GT5U.gui.text.no_repair=§4Shut down due to machine damage.
+GT5U.gui.text.no_machine_part=No correct machine part in controller slot.
 
 GT5U.item.programmed_circuit.select.header=Reprogram Circuit
 

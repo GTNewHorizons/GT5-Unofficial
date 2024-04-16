@@ -13,6 +13,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizons.modularui.api.ModularUITextures;
+import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
@@ -58,6 +59,8 @@ public class MachineGUIProvider<T extends GUIHost & ProcessingLogicHost<? extend
     protected static final Pos2d BATCH_MODE_BUTTON_DEFAULT_POS = new Pos2d(18, 0);
     @Nonnull
     protected static final Pos2d RECIPE_LOCKING_BUTTON_DEFAULT_POS = new Pos2d(0, 0);
+
+    protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
     public MachineGUIProvider(@Nonnull T host) {
         super(host);
@@ -252,10 +255,19 @@ public class MachineGUIProvider<T extends GUIHost & ProcessingLogicHost<? extend
         @Nonnull UIBuildContext uiBuildContext) {
         PowerLogic power = host.getPowerLogic();
         tab.addChild(
-            TextWidget.dynamicString(() -> power.getStoredEnergy() + "/" + power.getCapacity() + " EU")
+            new TextWidget()
+                .setStringSupplier(
+                    () -> numberFormat.format(power.getStoredEnergy()) + "/"
+                        + numberFormat.format(power.getCapacity())
+                        + " EU")
                 .setPos(10, 30))
             .addChild(
-                TextWidget.dynamicString(() -> power.getVoltage() + " EU/t" + "(" + power.getMaxAmperage() + " A)")
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> numberFormat.format(power.getVoltage()) + " EU/t"
+                            + "("
+                            + numberFormat.format(power.getMaxAmperage())
+                            + " A)")
                     .setPos(10, 60));
     }
 

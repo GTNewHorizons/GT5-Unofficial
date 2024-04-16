@@ -124,8 +124,10 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
 
     public static final int beeCycleLength = 550;
     public static final int baseEUtUsage = 37;
-    static final int queen = 5;
-    static final int drone = 6;
+    private static final int queen = 5;
+    private static final int drone = 6;
+    private static final int upgradeSlot = drone + 1;
+    private static final int upgradeSlotCount = 4;
     private static Field AlleleBeeEffectThrottledField;
 
     final IBeeRoot beeRoot = (IBeeRoot) AlleleManager.alleleRegistry.getSpeciesRoot("rootBees");
@@ -706,7 +708,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         else if (aIndex == drone) return beeRoot.isMember(aStack, EnumBeeType.DRONE.ordinal());
         else if (aIndex < getOutputSlot()) {
             if (!GT_ApiaryUpgrade.isUpgrade(aStack)) return false;
-            for (int i = drone + 1; i < drone + 1 + 4; i++) {
+            for (int i = upgradeSlot; i < upgradeSlot + upgradeSlotCount; i++) {
                 if (aIndex == i) continue;
                 final ItemStack s = getStackInSlot(i);
                 if (s == null) continue;
@@ -993,8 +995,8 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
 
     public void updateModifiers() {
         final GT_ApiaryModifier mods = new GT_ApiaryModifier();
-        for (int i = 2; i < 2 + 4; i++) {
-            final ItemStack s = getInputAt(i);
+        for (int i = 0; i < upgradeSlotCount; i++) {
+            final ItemStack s = getStackInSlot(upgradeSlot + i);
             if (s == null) continue;
             if (GT_ApiaryUpgrade.isUpgrade(s)) {
                 final GT_ApiaryUpgrade upgrade = GT_ApiaryUpgrade.getUpgrade(s);
@@ -1022,6 +1024,57 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
 
         if (mLockedSpeed) mSpeed = maxspeed;
         else mSpeed = Math.min(mSpeed, maxspeed);
+    }
+
+    /** Tries to move as much of [stack] into a possible upgrade slot */
+    public void addUpgrade(ItemStack stack) {
+        if (stack == null || !GT_ApiaryUpgrade.isUpgrade(stack)) return;
+
+        int amount = stack.stackSize;
+        for (int i = upgradeSlot; i < upgradeSlot + upgradeSlotCount; i++) {
+            if (!isItemValidForSlot(i, stack)) continue;
+
+            int maxStackSize = GT_ApiaryUpgrade.getUpgrade(stack)
+                .getMaxNumber();
+            ItemStack stackInSlot = getStackInSlot(i);
+
+            // Push into empty slot
+            if (stackInSlot == null) {
+                amount = Math.min(amount, maxStackSize);
+                setInventorySlotContents(i, stack.splitStack(amount));
+                return;
+            }
+
+            if (!GT_Utility.areStacksEqual(stack, stackInSlot)) continue;
+            amount = Math.max(Math.min(amount, maxStackSize - stackInSlot.stackSize), 0);
+            if (amount == 0) return;
+            stackInSlot.stackSize += amount;
+            stack.stackSize -= amount;
+            return;
+        }
+    }
+
+    /** Returns installed upgrade in slot 0 <= [index] < getMaxUpgradeCount() */
+    public ItemStack getUpgrade(int index) {
+        if (index < 0 || index >= upgradeSlotCount) return null;
+        return getStackInSlot(upgradeSlot + index);
+    }
+
+    /** Tries to remove [amount] or less of the upgrade installed in slot [index]. Returns the removed ItemStack */
+    public ItemStack removeUpgrade(int index, int amount) {
+        if (index < 0 || index >= upgradeSlotCount || amount <= 0) return null;
+
+        ItemStack stackInSlot = getUpgrade(index);
+        if (stackInSlot == null) return null;
+
+        amount = Math.min(amount, stackInSlot.stackSize);
+        ItemStack result = stackInSlot.splitStack(amount);
+        if (stackInSlot.stackSize <= 0) setInventorySlotContents(upgradeSlot + index, null);
+        return result;
+    }
+
+    public static int getMaxUpgradeCount() {
+        return upgradeSlotCount;
     }
 
     @Override
