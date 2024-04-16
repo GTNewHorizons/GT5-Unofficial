@@ -721,12 +721,7 @@ public class GT_MetaTileEntity_PlasmaForge extends
         outside: for (int i = 0; i < recipe.mFluidInputs.length; i++) {
             for (FluidStack fuel : valid_fuels) {
                 if (tRecipe.mFluidInputs[i].isFluidEqual(fuel)) {
-                    // If running for max_efficiency_time_in_ticks then discount is at maximum.
-                    double time_percentage = running_time / max_efficiency_time_in_ticks;
-                    time_percentage = Math.min(time_percentage, 1.0d);
-                    // Multiplied by 0.5 because that is the maximum achievable discount
-                    discount = 1 - time_percentage * 0.5;
-                    discount = Math.max(maximum_discount, discount);
+                    recalculateDiscount();
                     tRecipe.mFluidInputs[i].amount = (int) Math.round(tRecipe.mFluidInputs[i].amount * discount);
                     break outside;
                 }
@@ -837,6 +832,11 @@ public class GT_MetaTileEntity_PlasmaForge extends
         long voltage = getAverageInputVoltage();
         long amps = getMaxInputAmps();
 
+        // Calculate discount to make sure it is shown properly even when machine is off but decaying
+        if (idleTime() >= 0) {
+            recalculateDiscount();
+        }
+
         return new String[] { "------------ Critical Information ------------",
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
                 + EnumChatFormatting.GREEN
@@ -888,16 +888,46 @@ public class GT_MetaTileEntity_PlasmaForge extends
                 + GT_Utility.formatNumbers(100 * (1 - discount))
                 + EnumChatFormatting.RESET
                 + "%",
-            "Ticks idle (Debug): " + EnumChatFormatting.GREEN
-                + GT_Utility.formatNumbers(idleTime())
-                + EnumChatFormatting.RESET,
             "-----------------------------------------" };
+    }
+
+    private void recalculateDiscount() {
+        // If running for max_efficiency_time_in_ticks then discount is at maximum.
+        if (idleTime() == 0 && running_time > 0) {
+            double time_percentage = running_time / max_efficiency_time_in_ticks;
+            time_percentage = Math.min(time_percentage, 1.0d);
+            // Multiplied by 0.5 because that is the maximum achievable discount
+            double proposedDiscount = 1 - time_percentage * 0.5;
+            proposedDiscount = Math.max(maximum_discount, proposedDiscount);
+
+            // If calculated discount is less effective than old discount, we need to
+            // 'recover' from previous decay by setting the running time appropriately.
+            // Otherwise, the fuel efficiency will just start counting from zero again.
+            // should note that a lower discount number is 'better', hence this seemingly inverted check.
+            if (discount < proposedDiscount) {
+                // Adjust running time for current discount (and add this recipe's progress to it)
+                double adjustedTimePercentage = 2.0 * (1.0 - discount);
+                running_time = Math.round(adjustedTimePercentage * max_efficiency_time_in_ticks) + mMaxProgresstime;
+                discount = 1 - adjustedTimePercentage * 0.5;
+                discount = Math.max(maximum_discount, discount);
+            } else {
+                // Otherwise simply accept the proposed discount value
+                discount = proposedDiscount;
+            }
+        }
+        else {
+            // If we had any idle time before this, use that time to set the discount instead
+            double idle_time_percentage = idleTime() / efficiency_decay_time_in_ticks;
+            idle_time_percentage = Math.min(idle_time_percentage, 1.0d);
+            double decayedDiscount = idle_time_percentage * 0.5 + 0.5;
+            discount = Math.max(discount, decayedDiscount);
+        }
     }
 
     // Reset running time and discount.
     public void resetDiscount() {
         running_time = 0;
-        discount = 1;
+        recalculateDiscount();
     }
 
     @Override
