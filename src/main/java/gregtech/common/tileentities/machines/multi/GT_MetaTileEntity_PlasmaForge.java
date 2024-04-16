@@ -914,8 +914,7 @@ public class GT_MetaTileEntity_PlasmaForge extends
                 // Otherwise simply accept the proposed discount value
                 discount = proposedDiscount;
             }
-        }
-        else {
+        } else {
             // If we had any idle time before this, use that time to set the discount instead
             double idle_time_percentage = idleTime() / efficiency_decay_time_in_ticks;
             idle_time_percentage = Math.min(idle_time_percentage, 1.0d);
