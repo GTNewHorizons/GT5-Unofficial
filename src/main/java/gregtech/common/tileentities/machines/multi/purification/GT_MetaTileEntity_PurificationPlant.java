@@ -5,9 +5,14 @@ import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_GLOW;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.collect.ImmutableList;
@@ -15,6 +20,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
@@ -31,6 +37,8 @@ public class GT_MetaTileEntity_PurificationPlant
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
     private int mCasingAmount;
+
+    private List<GT_MetaTileEntity_PurificationUnitBase<?>> mLinkedUnits = new ArrayList<>();
 
     private static final IStructureDefinition<GT_MetaTileEntity_PurificationPlant> STRUCTURE_DEFINITION = StructureDefinition
         .<GT_MetaTileEntity_PurificationPlant>builder()
@@ -137,5 +145,25 @@ public class GT_MetaTileEntity_PurificationPlant
     @Override
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
+    }
+
+    @Override
+    public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (!(aPlayer instanceof EntityPlayerMP)) return;
+
+        ItemStack dataStick = aPlayer.inventory.getCurrentItem();
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) return;
+
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("type", "PurificationPlant");
+        tag.setInteger("x", aBaseMetaTileEntity.getXCoord());
+        tag.setInteger("y", aBaseMetaTileEntity.getYCoord());
+        tag.setInteger("z", aBaseMetaTileEntity.getZCoord());
+
+        dataStick.stackTagCompound = tag;
+        dataStick.setStackDisplayName(
+            "Purification Plant Link Data Stick (" + aBaseMetaTileEntity
+                .getXCoord() + ", " + aBaseMetaTileEntity.getYCoord() + ", " + aBaseMetaTileEntity.getZCoord() + ")");
+        aPlayer.addChatMessage(new ChatComponentText("Saved Link Data to Data Stick"));
     }
 }
