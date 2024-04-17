@@ -61,6 +61,11 @@ public class GT_MetaTileEntity_PurificationPlant
     private static final int CYCLE_TIME_TICKS = 10 * 20; // TODO: Set to proper value after debugging
 
     /**
+     * Base power usage of the main controller.
+     */
+    private static final long CONTROLLER_BASE_EUT = 30720L; // TODO: Balance, does this even need to use power by itself?
+
+    /**
      * Stores all purification units linked to this controller.
      * Normally all units in this list should be valid and unique, if not then there is a bug where they are not being
      * unlinked properly on block destruction/relinking.
@@ -232,6 +237,8 @@ public class GT_MetaTileEntity_PurificationPlant
         this.startRecipeProcessing();
         mProgresstime = 0;
         mMaxProgresstime = CYCLE_TIME_TICKS;
+        // Actual power drain by onRunningTick() is multiplied by 10, why?
+        lEUt = -CONTROLLER_BASE_EUT / 10;
 
         // Find active units and notify them that the cycle started
         for (LinkedPurificationUnit unit : this.mLinkedUnits) {
@@ -247,7 +254,7 @@ public class GT_MetaTileEntity_PurificationPlant
 
     private void endCycle() {
         this.endRecipeProcessing();
-        this.mMaxProgresstime = 0;
+        mMaxProgresstime = 0;
 
         // Mark all units as inactive and reset their progress time
         for (LinkedPurificationUnit unit : this.mLinkedUnits) {
