@@ -33,6 +33,10 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
 
+        if (aMaterial == Materials.Ichorium) {
+            return;
+        }
+
         if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV
             && GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L) != null) {
 

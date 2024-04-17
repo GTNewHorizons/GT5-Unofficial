@@ -59,7 +59,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         .addTo(extruderRecipes);
 
                     // Allow creation of alloy smelter recipes for material recycling if < IV tier.
-                    if (tTrueVoltage < TierEU.IV) {
+                    if (tTrueVoltage < TierEU.IV && aMaterial != Materials.Ichorium) {
                         GT_Values.RA.stdBuilder()
                             .itemInputs(GT_Utility.copyAmount(9, aStack), ItemList.Shape_Mold_Block.get(0L))
                             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.block, aMaterial.mSmeltInto, tAmount))
