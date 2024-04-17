@@ -41,7 +41,8 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
         }
 
         if ((!aMaterial.contains(SubTag.SMELTING_TO_GEM))
-            && GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial.mSmeltInto, 1L) != null) {
+            && GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial.mSmeltInto, 1L) != null
+            && aMaterial != Materials.Aluminium) {
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_Utility.copyAmount(9, aStack), ItemList.Shape_Mold_Ingot.get(0L))
                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial.mSmeltInto, 1L))
