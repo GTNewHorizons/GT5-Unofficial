@@ -15,12 +15,11 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_AR
 
 import java.util.List;
 
-import gregtech.api.util.GT_Recipe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
-
 import net.minecraftforge.fluids.FluidStack;
+
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
@@ -39,6 +38,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_StructureUtility;
 
 public class GT_MetaTileEntity_PurificationUnitSifter
@@ -91,7 +91,9 @@ public class GT_MetaTileEntity_PurificationUnitSifter
         RecipeMap<?> recipeMap = this.getRecipeMap();
 
         GT_Recipe recipe = recipeMap.findRecipeQuery()
-            .fluids(this.getStoredFluids().toArray(new FluidStack[] {}))
+            .fluids(
+                this.getStoredFluids()
+                    .toArray(new FluidStack[] {}))
             .find();
 
         this.endRecipeProcessing();
