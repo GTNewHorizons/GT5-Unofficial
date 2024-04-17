@@ -256,7 +256,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         }
                     }
                 }
-                if (tAmount * 2 <= 64) {
+                if (tAmount * 2 <= 64 && aMaterial != Materials.Obsidian) {
                     if (!(aMaterial == Materials.Aluminium)) {
                         if (GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.mSmeltInto, 1L) != null) {
                             GT_Values.RA.stdBuilder()
