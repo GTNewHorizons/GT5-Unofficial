@@ -1156,7 +1156,8 @@ public final class RecipeMaps {
                 .<GT_Recipe, Integer>comparing(recipe -> recipe.getMetadataOrDefault(PCBFactoryTierKey.INSTANCE, 1))
                 .thenComparing(GT_Recipe::compareTo))
         .build();
-    public static final RecipeMap<RecipeMapBackend> purificationPlantGrade1Recipes = RecipeMapBuilder.of("gt.recipe.purificationplantgrade1")
+    public static final RecipeMap<RecipeMapBackend> purificationPlantGrade1Recipes = RecipeMapBuilder
+        .of("gt.recipe.purificationplantgrade1")
         .maxIO(2, 9, 3, 9)
         .minInputs(0, 1)
         .progressBar(GT_UITextures.PROGRESSBAR_SIFT)
