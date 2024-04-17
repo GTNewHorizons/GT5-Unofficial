@@ -999,25 +999,6 @@ public class AssemblerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                getModItem(Forestry.ID, "sturdyMachine", 1L, 0),
-                GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Diamond, 4))
-            .itemOutputs(ItemList.FR_Casing_Hardened.get(1))
-            .fluidInputs(Materials.Water.getFluid(5000))
-            .duration(3 * SECONDS + 4 * TICKS)
-            .eut(32)
-            .addTo(assemblerRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 8),
-                GT_Utility.getIntegratedCircuit(8))
-            .itemOutputs(ItemList.FR_Casing_Sturdy.get(1))
-            .duration(1 * SECONDS + 12 * TICKS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
                 new ItemStack(Blocks.wool, 1, 32767))
             .itemOutputs(new ItemStack(Blocks.torch, 6, 0))
