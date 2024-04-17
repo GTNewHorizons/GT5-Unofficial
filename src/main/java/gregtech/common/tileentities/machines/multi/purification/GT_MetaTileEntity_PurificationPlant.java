@@ -44,12 +44,16 @@ public class GT_MetaTileEntity_PurificationPlant
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
+    // Used to keep track of casing amount, so we can impose a minimum number of casings
     private int mCasingAmount;
 
-    // Maximum distance between the purification plant main controller and the controller blocks of the
+    // Maximum distance in each axis between the purification plant main controller and the controller blocks of the
     // purification plant units.
     public static final int MAX_UNIT_DISTANCE = 16;
 
+    // Stores all purification units linked to this controller.
+    // Normally all units in this list should be valid and unique, if not then there is a bug where they are not being
+    // unlinked properly on block destruction/relinking.
     private final List<LinkedPurificationUnit> mLinkedUnits = new ArrayList<>();
 
     private static final IStructureDefinition<GT_MetaTileEntity_PurificationPlant> STRUCTURE_DEFINITION = StructureDefinition
@@ -188,7 +192,7 @@ public class GT_MetaTileEntity_PurificationPlant
     }
 
     public void unregisterLinkedUnit(GT_MetaTileEntity_PurificationUnitBase<?> unit) {
-        this.mLinkedUnits.remove(unit);
+        this.mLinkedUnits.removeIf(link -> link.metaTileEntity() == unit);
     }
 
     @Override
@@ -216,6 +220,7 @@ public class GT_MetaTileEntity_PurificationPlant
     @Override
     public String[] getInfoData() {
         var ret = new ArrayList<String>();
+        // Show linked purification units and their status
         ret.add("Linked Purification Units: ");
         for (LinkedPurificationUnit unit : this.mLinkedUnits) {
             String text = EnumChatFormatting.AQUA + unit.metaTileEntity()
@@ -240,6 +245,7 @@ public class GT_MetaTileEntity_PurificationPlant
 
     @Override
     public void onBlockDestroyed() {
+        // When the controller is destroyed we want to notify all currently linked units
         for (LinkedPurificationUnit unit : this.mLinkedUnits) {
             unit.metaTileEntity()
                 .unlinkController();

@@ -132,6 +132,7 @@ public class GT_MetaTileEntity_PurificationUnitSifter
 
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         boolean result = checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0);
+        // Also call super.checkMachine() to fix maintenance issues.
         return result && super.checkMachine(aBaseMetaTileEntity, aStack);
     }
 }

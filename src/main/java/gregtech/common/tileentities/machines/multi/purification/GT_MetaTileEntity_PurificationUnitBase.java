@@ -24,19 +24,27 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 /// -
 /// When inheriting from this, make sure to call super.loadNBTData() and super.saveNBTData()
 /// if you override these methods, or linking will break.
-/// Also always call super.checkMachine() to fix maintenance issues.
 public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T>>
     extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T> {
 
+    // Small internal enum to report back the various error cases when linking purification units to the
+    // purification plant.
     private enum LinkResult {
+        // Link target was out of range of the main controller
         TOO_FAR,
+        // No valid GT_MetaTileEntity_PurificationPlant was found at the link target position.
         NO_VALID_PLANT,
+        // Link successful
         SUCCESS,
     }
 
+    // Coordinates of the main purification plant controller. These can be used to find the controller again
+    // on world load.
     private int controllerX, controllerY, controllerZ;
+    // Whether a controller was previously set.
     private boolean controllerSet = false;
 
+    // Pointer to the main purification plant controller.
     private GT_MetaTileEntity_PurificationPlant controller = null;
 
     protected GT_MetaTileEntity_PurificationUnitBase(int aID, String aName, String aNameRegional) {
@@ -64,7 +72,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
 
     @Override
     public boolean doRandomMaintenanceDamage() {
-        // This MTE cannot have maintenance issues, so do nothing.
+        // The individual purification unit structures cannot have maintenance issues, so do nothing.
         return true;
     }
 
@@ -72,14 +80,14 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         super.onPostTick(aBaseMetaTileEntity, aTimer);
         // Try to re-link to controller periodically, for example on game load.
-        if (aTimer % 100 == 0 && controllerSet && getController() == null) {
+        if (aTimer % 100 == 5 && controllerSet && getController() == null) {
             trySetControllerFromCoord(controllerX, controllerY, controllerZ);
         }
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        // Remove all maintenance issues
+        // The individual purification unit structures cannot have maintenance issues, so fix them all.
         this.mCrowbar = true;
         this.mWrench = true;
         this.mHardHammer = true;
@@ -92,6 +100,9 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
+        // If a linked controller was found, load its coordinates.
+        // The unit will try to link to the real controller block periodically in onPostTick()
+        // We cannot do this linking here yet because the controller block might not be loaded yet.
         if (aNBT.hasKey("controller")) {
             NBTTagCompound controllerNBT = aNBT.getCompoundTag("controller");
             controllerX = controllerNBT.getInteger("x");
@@ -114,8 +125,9 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
     }
 
     private LinkResult trySetControllerFromCoord(int x, int y, int z) {
-        // Before testing anything, first see if the unit is within the allowed range
         IGregTechTileEntity ourBaseMetaTileEntity = this.getBaseMetaTileEntity();
+        // First check whether the controller we try to link to is within range. The range is defined
+        // as a max distance in each axis.
         if (Math.abs(ourBaseMetaTileEntity.getXCoord() - x) > GT_MetaTileEntity_PurificationPlant.MAX_UNIT_DISTANCE)
             return LinkResult.TOO_FAR;
         if (Math.abs(ourBaseMetaTileEntity.getYCoord() - y) > GT_MetaTileEntity_PurificationPlant.MAX_UNIT_DISTANCE)
@@ -123,6 +135,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
         if (Math.abs(ourBaseMetaTileEntity.getZCoord() - z) > GT_MetaTileEntity_PurificationPlant.MAX_UNIT_DISTANCE)
             return LinkResult.TOO_FAR;
 
+        // Find the block at the requested coordinated and check if it is a purification plant controller.
         var tileEntity = getBaseMetaTileEntity().getWorld()
             .getTileEntity(x, y, z);
         if (tileEntity == null) return LinkResult.NO_VALID_PLANT;
@@ -130,7 +143,8 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
         var metaTileEntity = gtTileEntity.getMetaTileEntity();
         if (!(metaTileEntity instanceof GT_MetaTileEntity_PurificationPlant)) return LinkResult.NO_VALID_PLANT;
 
-        // Before linking, unlink from current controller
+        // Before linking, unlink from current controller so we don't end up with units linked to multiple
+        // controllers.
         this.unlinkController();
 
         // Now link to new controller
@@ -144,20 +158,25 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
     }
 
     private boolean tryLinkDataStick(EntityPlayer aPlayer) {
+        // Make sure the held item is a data stick
         ItemStack dataStick = aPlayer.inventory.getCurrentItem();
-
         if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) {
             return false;
         }
+
+        // Make sure this data stick is a proper purification plant link data stick.
         if (!dataStick.hasTagCompound() || !dataStick.stackTagCompound.getString("type")
             .equals("PurificationPlant")) {
             return false;
         }
 
+        // Now read link coordinates from the data stick.
         NBTTagCompound nbt = dataStick.stackTagCompound;
         int x = nbt.getInteger("x");
         int y = nbt.getInteger("y");
         int z = nbt.getInteger("z");
+
+        // Try to link, and report the result back to the player.
         LinkResult result = trySetControllerFromCoord(x, y, z);
         if (result == LinkResult.SUCCESS) {
             aPlayer.addChatMessage(new ChatComponentText("Link successful"));
@@ -166,6 +185,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
         } else if (result == LinkResult.NO_VALID_PLANT) {
             aPlayer.addChatMessage(new ChatComponentText("Link failed: No Purification Plant fount at link location"));
         }
+
         return true;
     }
 
@@ -175,6 +195,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
             return false;
         }
 
+        // Right-clicking could be a data stick linking action, so try this first.
         if (tryLinkDataStick(aPlayer)) {
             return true;
         }
@@ -189,7 +210,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
         return controller;
     }
 
-    // If the controller is broken this can be called to explicitly unlink the controller so we don't have any
+    // If the controller is broken this can be called to explicitly unlink the controller, so we don't have any
     // references lingering around
     public void unlinkController() {
         this.controllerSet = false;
@@ -201,6 +222,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
 
     @Override
     public void onBlockDestroyed() {
+        // When this block is destroyed, explicitly unlink it from the controller if there is any.
         GT_MetaTileEntity_PurificationPlant controller = getController();
         if (controller != null) {
             controller.unregisterLinkedUnit(this);
@@ -211,6 +233,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
     @Override
     public String[] getInfoData() {
         var ret = new ArrayList<String>();
+        // If this purification unit is linked to a controller, add this info to the scanner output.
         if (getController() != null) {
             ret.add(
                 "This Purification Unit is linked to the Water Purification Plant at " + controllerX
@@ -228,6 +251,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
         IWailaConfigHandler config) {
         NBTTagCompound tag = accessor.getNBTData();
 
+        // Display linked controller in Waila.
         if (tag.getBoolean("linked")) {
             currenttip.add(
                 EnumChatFormatting.AQUA + "Linked to Purification Plant at "
