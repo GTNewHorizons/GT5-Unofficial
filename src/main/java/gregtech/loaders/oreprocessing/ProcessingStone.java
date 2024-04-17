@@ -83,13 +83,6 @@ public class ProcessingStone implements IOreRecipeRegistrator {
                 if (aBlock != Blocks.air) aBlock.setResistance(20.0F);
 
                 GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_Utility.copyAmount(1, aStack), ItemList.IC2_Compressed_Coal_Ball.get(8L))
-                    .itemOutputs(ItemList.IC2_Compressed_Coal_Chunk.get(1L))
-                    .duration(20 * SECONDS)
-                    .eut(4)
-                    .addTo(assemblerRecipes);
-
-                GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1, aStack))
                     .itemOutputs(
                         GT_ModHandler.getModItem(Railcraft.ID, "cube", 1L, 4),

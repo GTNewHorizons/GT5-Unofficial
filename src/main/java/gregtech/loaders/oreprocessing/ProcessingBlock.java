@@ -206,12 +206,6 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         switch (aMaterial.mName) {
             case "Mercury" -> System.err.println(
                 "'blockQuickSilver'?, In which Ice Desert can you actually place this as a solid Block? On Pluto Greg :)");
-            case "Iron", "WroughtIron", "Steel" -> GT_Values.RA.stdBuilder()
-                .itemInputs(ItemList.IC2_Compressed_Coal_Ball.get(8L), GT_Utility.copyAmount(1, aStack))
-                .itemOutputs(ItemList.IC2_Compressed_Coal_Chunk.get(1L))
-                .duration(20 * SECONDS)
-                .eut(4)
-                .addTo(assemblerRecipes);
         }
     }
 }
