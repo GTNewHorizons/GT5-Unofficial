@@ -112,7 +112,6 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
     }
 
     public void startCycle(int cycleTime, int progressTime) {
-        this.startRecipeProcessing();
         this.mMaxProgresstime = cycleTime;
         this.mProgresstime = progressTime;
         this.mEfficiency = 10000;
@@ -123,7 +122,6 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
     }
 
     public void endCycle() {
-        this.endRecipeProcessing();
         this.mMaxProgresstime = 0;
         this.mProgresstime = 0;
         this.lEUt = 0;

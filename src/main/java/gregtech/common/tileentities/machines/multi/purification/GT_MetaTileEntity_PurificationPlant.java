@@ -15,6 +15,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_AR
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.recipe.check.CheckRecipeResult;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -59,7 +60,7 @@ public class GT_MetaTileEntity_PurificationPlant
     /**
      * Time in ticks for a full processing cycle to complete.
      */
-    private static final int CYCLE_TIME_TICKS = 10 * 20; // TODO: Set to proper value after debugging
+    public static final int CYCLE_TIME_TICKS = 10 * 20; // TODO: Set to proper value after debugging
 
     /**
      * Stores all purification units linked to this controller.
@@ -238,7 +239,6 @@ public class GT_MetaTileEntity_PurificationPlant
     }
 
     private void startCycle() {
-        this.startRecipeProcessing();
         mProgresstime = 0;
         mMaxProgresstime = CYCLE_TIME_TICKS;
         mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
@@ -249,8 +249,12 @@ public class GT_MetaTileEntity_PurificationPlant
             PurificationUnitStatus status = metaTileEntity.status();
             // Unit needs to be online to be considered active.
             if (status == PurificationUnitStatus.ONLINE) {
-                unit.setActive(true);
-                metaTileEntity.startCycle(mMaxProgresstime, mProgresstime);
+                // Perform recipe check for unit and start it if successful
+                CheckRecipeResult result = metaTileEntity.checkProcessing();
+                if (result.wasSuccessful()) {
+                    unit.setActive(true);
+                    metaTileEntity.startCycle(mMaxProgresstime, mProgresstime);
+                }
             }
         }
 
@@ -259,7 +263,6 @@ public class GT_MetaTileEntity_PurificationPlant
     }
 
     private void endCycle() {
-        this.endRecipeProcessing();
         mMaxProgresstime = 0;
 
         // Mark all units as inactive and reset their progress time

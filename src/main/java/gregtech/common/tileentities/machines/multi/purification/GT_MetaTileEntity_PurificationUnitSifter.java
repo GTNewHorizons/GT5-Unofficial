@@ -12,6 +12,10 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_AR
 
 import java.util.List;
 
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -29,6 +33,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_StructureUtility;
+import org.jetbrains.annotations.NotNull;
 
 public class GT_MetaTileEntity_PurificationUnitSifter
     extends GT_MetaTileEntity_PurificationUnitBase<GT_MetaTileEntity_PurificationUnitSifter> {
@@ -66,6 +71,17 @@ public class GT_MetaTileEntity_PurificationUnitSifter
     public long getActivePowerUsage() {
         // TODO: Balancing, etc.
         return 32720;
+    }
+
+    @Override
+    public RecipeMap<?> getRecipeMap() {
+        return RecipeMaps.purificationPlantGrade1Recipes;
+    }
+
+    @NotNull
+    @Override
+    public CheckRecipeResult checkProcessing() {
+        return CheckRecipeResultRegistry.NO_RECIPE;
     }
 
     @Override
