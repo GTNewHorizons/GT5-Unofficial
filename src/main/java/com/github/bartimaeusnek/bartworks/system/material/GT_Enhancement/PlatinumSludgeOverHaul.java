@@ -940,6 +940,12 @@ public class PlatinumSludgeOverHaul {
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
+            if (stack.getItem() == GT_ModHandler.getModItem(GTPlusPlus.ID, "itemDustHeLiCoPtEr", 1L).getItem()) {
+                return true;
+            }
+            if (stack.getItem() == GT_ModHandler.getModItem(GTPlusPlus.ID, "itemDustWhiteMetal", 1L).getItem()) {
+                return true;
+            }
         }
         if (GalaxySpace.isModLoaded()) {
             if (stack.getItem() == GT_ModHandler.getModItem(GalaxySpace.ID, "metalsblock", 1L, 7).getItem()) {
