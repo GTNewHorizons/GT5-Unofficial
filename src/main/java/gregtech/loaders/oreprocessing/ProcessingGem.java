@@ -113,7 +113,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     }
 
                     // Bender recipes
-                    {
+                    if (aMaterial != Materials.Iridium) {
                         if (GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L) != null) {
                             // Plate
                             GT_Values.RA.stdBuilder()

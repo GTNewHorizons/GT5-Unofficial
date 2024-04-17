@@ -194,8 +194,8 @@ public class GT_RecipeRegistrator {
                 aData.mMaterial.mMaterial,
                 aData.mMaterial.mAmount,
                 aData.getByProduct(0));
+            registerReverseArcSmelting(GT_Utility.copyAmount(1, aStack), aData);
         }
-        registerReverseArcSmelting(GT_Utility.copyAmount(1, aStack), aData);
     }
 
     /**
