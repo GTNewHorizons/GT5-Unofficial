@@ -1161,6 +1161,9 @@ public final class RecipeMaps {
         .maxIO(2, 9, 3, 9)
         .minInputs(0, 1)
         .progressBar(GT_UITextures.PROGRESSBAR_SIFT)
+        .neiHandlerInfo(
+            builder -> builder.setDisplayStack(ItemList.Machine_Multi_PurificationUnitSifter.get(1))
+                .setMaxRecipesPerPage(1))
         .disableOptimize()
         .build();
     public static final RecipeMap<RecipeMapBackend> ic2NuclearFakeRecipes = RecipeMapBuilder.of("gt.recipe.ic2nuke")
