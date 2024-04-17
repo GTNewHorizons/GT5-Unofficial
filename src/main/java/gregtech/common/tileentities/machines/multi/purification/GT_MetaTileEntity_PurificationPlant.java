@@ -87,7 +87,12 @@ public class GT_MetaTileEntity_PurificationPlant
             .addSeparator()
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")
-            .toolTipFinisher(EnumChatFormatting.WHITE + "Not" + EnumChatFormatting.DARK_AQUA + "A" + EnumChatFormatting.AQUA + "Penguin");
+            .toolTipFinisher(
+                EnumChatFormatting.WHITE + "Not"
+                    + EnumChatFormatting.DARK_AQUA
+                    + "A"
+                    + EnumChatFormatting.AQUA
+                    + "Penguin");
         return tt;
     }
 
