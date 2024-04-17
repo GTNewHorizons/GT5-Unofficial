@@ -13,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.collect.ImmutableList;
@@ -86,7 +87,7 @@ public class GT_MetaTileEntity_PurificationPlant
             .addSeparator()
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")
-            .toolTipFinisher("NotAPenguin");
+            .toolTipFinisher(EnumChatFormatting.WHITE + "Not" + EnumChatFormatting.DARK_AQUA + "A" + EnumChatFormatting.AQUA + "Penguin");
         return tt;
     }
 

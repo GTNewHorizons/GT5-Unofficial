@@ -24,6 +24,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 /// -
 /// When inheriting from this, make sure to call super.loadNBTData() and super.saveNBTData()
 /// if you override these methods, or linking will break.
+/// Also always call super.checkMachine() to fix maintenance issues.
 public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T>>
     extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T> {
 
@@ -62,12 +63,30 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
     }
 
     @Override
+    public boolean doRandomMaintenanceDamage() {
+        // This MTE cannot have maintenance issues, so do nothing.
+        return true;
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         super.onPostTick(aBaseMetaTileEntity, aTimer);
         // Try to re-link to controller periodically, for example on game load.
         if (aTimer % 100 == 0 && controllerSet && getController() == null) {
             trySetControllerFromCoord(controllerX, controllerY, controllerZ);
         }
+    }
+
+    @Override
+    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        // Remove all maintenance issues
+        this.mCrowbar = true;
+        this.mWrench = true;
+        this.mHardHammer = true;
+        this.mSoftHammer = true;
+        this.mSolderingTool = true;
+        this.mScrewdriver = true;
+        return true;
     }
 
     @Override
