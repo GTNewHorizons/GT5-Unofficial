@@ -1,7 +1,7 @@
 package gregtech.api.enums;
 
 public class GTVoltageIndex {
-    
+
     public final static int ULV = 0;
     public final static int LV = 1;
     public final static int MV = 2;
