@@ -63,6 +63,12 @@ public class GT_MetaTileEntity_PurificationUnitSifter
     }
 
     @Override
+    public long getActivePowerUsage() {
+        // TODO: Balancing, etc.
+        return 32720;
+    }
+
+    @Override
     public IStructureDefinition<GT_MetaTileEntity_PurificationUnitSifter> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }

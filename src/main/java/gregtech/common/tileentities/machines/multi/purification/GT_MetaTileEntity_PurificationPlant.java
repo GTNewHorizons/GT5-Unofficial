@@ -15,6 +15,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_AR
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -59,11 +60,6 @@ public class GT_MetaTileEntity_PurificationPlant
      * Time in ticks for a full processing cycle to complete.
      */
     private static final int CYCLE_TIME_TICKS = 10 * 20; // TODO: Set to proper value after debugging
-
-    /**
-     * Base power usage of the main controller.
-     */
-    private static final long CONTROLLER_BASE_EUT = 30720L; // TODO: Balance, does this even need to use power by itself?
 
     /**
      * Stores all purification units linked to this controller.
@@ -223,6 +219,13 @@ public class GT_MetaTileEntity_PurificationPlant
                     if (mProgresstime >= mMaxProgresstime) {
                         this.endCycle();
                     }
+                } else {
+                    // Power drain failed, shut down all other units due to power loss.
+                    for (LinkedPurificationUnit unit : mLinkedUnits) {
+                        if (unit.isActive()) {
+                            unit.metaTileEntity().stopMachine(ShutDownReasonRegistry.POWER_LOSS);
+                        }
+                    }
                 }
             }
 
@@ -237,8 +240,7 @@ public class GT_MetaTileEntity_PurificationPlant
         this.startRecipeProcessing();
         mProgresstime = 0;
         mMaxProgresstime = CYCLE_TIME_TICKS;
-        // Actual power drain by onRunningTick() is multiplied by 10, why?
-        lEUt = -CONTROLLER_BASE_EUT / 10;
+        mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
 
         // Find active units and notify them that the cycle started
         for (LinkedPurificationUnit unit : this.mLinkedUnits) {
@@ -250,6 +252,9 @@ public class GT_MetaTileEntity_PurificationPlant
                 metaTileEntity.startCycle(mMaxProgresstime, mProgresstime);
             }
         }
+
+        // After activating all units, calculate power usage
+        lEUt = -calculateEffectivePowerUsage();
     }
 
     private void endCycle() {
@@ -265,6 +270,19 @@ public class GT_MetaTileEntity_PurificationPlant
             }
             unit.setActive(false);
         }
+    }
+
+    /**
+     * Calculate power usage of all units
+     */
+    private long calculateEffectivePowerUsage() {
+        long euT = 0;
+        for (LinkedPurificationUnit unit : mLinkedUnits) {
+            if (unit.isActive()) {
+                euT += unit.metaTileEntity().getActivePowerUsage();
+            }
+        }
+        return euT;
     }
 
     @Override

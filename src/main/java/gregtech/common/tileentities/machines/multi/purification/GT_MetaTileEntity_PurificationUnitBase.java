@@ -115,13 +115,25 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
         this.startRecipeProcessing();
         this.mMaxProgresstime = cycleTime;
         this.mProgresstime = progressTime;
+        this.mEfficiency = 10000;
+        // Set this value, so it can be displayed in Waila. Note that the logic for the units is
+        // specifically overridden so setting this value does not actually drain power.
+        // Instead, power is drained by the main purification plant controller.
+        this.lEUt = -this.getActivePowerUsage();
     }
 
     public void endCycle() {
         this.endRecipeProcessing();
         this.mMaxProgresstime = 0;
         this.mProgresstime = 0;
+        this.lEUt = 0;
+        this.mEfficiency = 0;
     }
+
+    /**
+     * Get the EU/t usage of this unit while it is running.
+     */
+    public abstract long getActivePowerUsage();
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
