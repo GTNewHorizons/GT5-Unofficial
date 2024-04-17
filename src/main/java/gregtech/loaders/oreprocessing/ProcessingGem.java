@@ -1,9 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.recipe.RecipeMaps.benderRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
-import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.implosionRecipes;
 import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
@@ -273,17 +271,6 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                 new ItemStack(net.minecraft.init.Items.stick, 1, 0));
                         }
                         break;
-                    case "CertusQuartz":
-                    // Electrolyzer recipe
-                    {
-                        GT_Values.RA.stdBuilder()
-                            .itemInputs(aStack)
-                            .itemOutputs(
-                                GT_ModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 1))
-                            .duration(100 * SECONDS)
-                            .eut(TierEU.RECIPE_LV)
-                            .addTo(electrolyzerRecipes);
-                    }
                 }
 
                 for (ItemStack is : OreDictionary.getOres("craftingLens" + aMaterial.mColor.mName.replace(" ", ""))) { // Engraver
