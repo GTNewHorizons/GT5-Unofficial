@@ -56,6 +56,11 @@ public class GT_MetaTileEntity_PurificationPlant
     public static final int MAX_UNIT_DISTANCE = 16;
 
     /**
+     * Time in ticks for a full processing cycle to complete.
+     */
+    private static final int CYCLE_TIME_TICKS = 10 * 20; // TODO: Set to proper value after debugging
+
+    /**
      * Stores all purification units linked to this controller.
      * Normally all units in this list should be valid and unique, if not then there is a bug where they are not being
      * unlinked properly on block destruction/relinking.
@@ -161,7 +166,15 @@ public class GT_MetaTileEntity_PurificationPlant
             return false;
         }
 
+        if (!checkHatches()) {
+            return false;
+        }
+
         return true;
+    }
+
+    private boolean checkHatches() {
+        return mMaintenanceHatches.size() == 1;
     }
 
     @Override
@@ -169,12 +182,81 @@ public class GT_MetaTileEntity_PurificationPlant
         super.onPostTick(aBaseMetaTileEntity, aTick);
 
         if (aBaseMetaTileEntity.isServerSide()) {
-            // Only do slower checks every 100 ticks to avoid lag.
-            // This check tests if aTick mod 100 = 10 to avoid these checks happening in the same ticks
-            // as all other machines that do checks every 100 ticks, to spread out the workload further.
-            if (aTick % 100 == 10) {
-                // Currently nothing is here
+
+        }
+    }
+
+    @Override
+    protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        updateCycleProgress();
+        if (mMaxProgresstime > 0) {
+            mEfficiency = Math.max(
+                0,
+                Math.min(
+                    mEfficiency + mEfficiencyIncrease,
+                    getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000)));
+        }
+    }
+
+    private void updateCycleProgress() {
+        // Since the plant does not run recipes directly, we just continuously loop the base cycle
+        if (mMachine) {
+            // cycle is running, so simply advance it
+            if (mMaxProgresstime > 0) {
+                // onRunningTick is responsible for draining power
+                if (onRunningTick(mInventory[1])) {
+                    markDirty();
+                    mProgresstime += 1;
+                    // Update progress time for active units
+                    for (LinkedPurificationUnit unit : this.mLinkedUnits) {
+                        if (unit.isActive()) {
+                            GT_MetaTileEntity_PurificationUnitBase<?> metaTileEntity = unit.metaTileEntity();
+                            metaTileEntity.mProgresstime = mProgresstime;
+                        }
+                    }
+                    // Cycle finished
+                    if (mProgresstime >= mMaxProgresstime) {
+                        this.endCycle();
+                    }
+                }
             }
+
+            // No cycle running, start a new cycle if the machine is turned on
+            if (mMaxProgresstime == 0 && isAllowedToWork()) {
+                this.startCycle();
+            }
+        }
+    }
+
+    private void startCycle() {
+        this.startRecipeProcessing();
+        mProgresstime = 0;
+        mMaxProgresstime = CYCLE_TIME_TICKS;
+
+        // Find active units and notify them that the cycle started
+        for (LinkedPurificationUnit unit : this.mLinkedUnits) {
+            GT_MetaTileEntity_PurificationUnitBase<?> metaTileEntity = unit.metaTileEntity();
+            PurificationUnitStatus status = metaTileEntity.status();
+            // Unit needs to be online to be considered active.
+            if (status == PurificationUnitStatus.ONLINE) {
+                unit.setActive(true);
+                metaTileEntity.startCycle(mMaxProgresstime, mProgresstime);
+            }
+        }
+    }
+
+    private void endCycle() {
+        this.endRecipeProcessing();
+        this.mMaxProgresstime = 0;
+
+        // Mark all units as inactive and reset their progress time
+        for (LinkedPurificationUnit unit : this.mLinkedUnits) {
+            GT_MetaTileEntity_PurificationUnitBase<?> metaTileEntity = unit.metaTileEntity();
+            // If this unit was active, end the cycle
+            if (unit.isActive()) {
+                metaTileEntity.endCycle();
+            }
+            unit.setActive(false);
         }
     }
 

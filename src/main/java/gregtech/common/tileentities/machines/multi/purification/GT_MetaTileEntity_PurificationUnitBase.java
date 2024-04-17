@@ -99,6 +99,31 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
     }
 
     @Override
+    protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        // Main controller updates progress time. We can do I/O logic here.
+        if (mMaxProgresstime > 0) {
+            this.markDirty();
+            mEfficiency = Math.max(
+                0,
+                Math.min(
+                    mEfficiency + mEfficiencyIncrease,
+                    getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000)));
+        }
+    }
+
+    public void startCycle(int cycleTime, int progressTime) {
+        this.startRecipeProcessing();
+        this.mMaxProgresstime = cycleTime;
+        this.mProgresstime = progressTime;
+    }
+
+    public void endCycle() {
+        this.endRecipeProcessing();
+        this.mMaxProgresstime = 0;
+        this.mProgresstime = 0;
+    }
+
+    @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         // The individual purification unit structures cannot have maintenance issues, so fix them all.
         this.mCrowbar = true;
