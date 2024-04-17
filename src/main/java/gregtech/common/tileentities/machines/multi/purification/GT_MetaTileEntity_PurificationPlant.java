@@ -15,7 +15,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_AR
 import java.util.ArrayList;
 import java.util.List;
 
-import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -39,6 +38,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPow
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_StructureUtility;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 
 public class GT_MetaTileEntity_PurificationPlant
     extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_PurificationPlant> {
@@ -223,7 +223,8 @@ public class GT_MetaTileEntity_PurificationPlant
                     // Power drain failed, shut down all other units due to power loss.
                     for (LinkedPurificationUnit unit : mLinkedUnits) {
                         if (unit.isActive()) {
-                            unit.metaTileEntity().stopMachine(ShutDownReasonRegistry.POWER_LOSS);
+                            unit.metaTileEntity()
+                                .stopMachine(ShutDownReasonRegistry.POWER_LOSS);
                         }
                     }
                 }
@@ -279,7 +280,8 @@ public class GT_MetaTileEntity_PurificationPlant
         long euT = 0;
         for (LinkedPurificationUnit unit : mLinkedUnits) {
             if (unit.isActive()) {
-                euT += unit.metaTileEntity().getActivePowerUsage();
+                euT += unit.metaTileEntity()
+                    .getActivePowerUsage();
             }
         }
         return euT;
