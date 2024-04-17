@@ -43,7 +43,7 @@ public class GT_MetaTileEntity_PurificationPlant
     // purification plant units.
     public static final int MAX_UNIT_DISTANCE = 16;
 
-    private final List<GT_MetaTileEntity_PurificationUnitBase<?>> mLinkedUnits = new ArrayList<>();
+    private final List<LinkedPurificationUnit> mLinkedUnits = new ArrayList<>();
 
     private static final IStructureDefinition<GT_MetaTileEntity_PurificationPlant> STRUCTURE_DEFINITION = StructureDefinition
         .<GT_MetaTileEntity_PurificationPlant>builder()
@@ -139,7 +139,33 @@ public class GT_MetaTileEntity_PurificationPlant
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0);
+        // Check self
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+
+        if (aBaseMetaTileEntity.isServerSide()) {
+            // Only do slower checks every 100 ticks to avoid lag.
+            // This check tests if aTick mod 100 = 10 to avoid these checks happening in the same ticks
+            // as all other machines that do checks every 100 ticks, to spread out the workload further.
+            if (aTick % 100 == 10) {
+                // Update status of potentially deformed units
+                for (LinkedPurificationUnit unit : mLinkedUnits) {
+                    if (!unit.metaTileEntity().mMachine) {
+                        unit.setStatus(PurificationUnitStatus.INCOMPLETE_STRUCTURE);
+                    } else {
+                        unit.setStatus(PurificationUnitStatus.ONLINE);
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -158,7 +184,9 @@ public class GT_MetaTileEntity_PurificationPlant
     }
 
     public void registerLinkedUnit(GT_MetaTileEntity_PurificationUnitBase<?> unit) {
-        this.mLinkedUnits.add(unit);
+        PurificationUnitStatus status = unit.mMachine ? PurificationUnitStatus.ONLINE
+            : PurificationUnitStatus.INCOMPLETE_STRUCTURE;
+        this.mLinkedUnits.add(new LinkedPurificationUnit(unit, status));
     }
 
     public void unregisterLinkedUnit(GT_MetaTileEntity_PurificationUnitBase<?> unit) {
@@ -168,6 +196,8 @@ public class GT_MetaTileEntity_PurificationPlant
     @Override
     public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (!(aPlayer instanceof EntityPlayerMP)) return;
+
+        // Save link data to data stick, very similar to Crafting Input Buffer.
 
         ItemStack dataStick = aPlayer.inventory.getCurrentItem();
         if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) return;
@@ -186,9 +216,27 @@ public class GT_MetaTileEntity_PurificationPlant
     }
 
     @Override
+    public String[] getInfoData() {
+        var ret = new ArrayList<String>();
+        ret.add("Linked Purification Units: ");
+        for (LinkedPurificationUnit unit : this.mLinkedUnits) {
+            String text = EnumChatFormatting.AQUA + unit.metaTileEntity()
+                .getLocalName() + ": ";
+            if (unit.status() == PurificationUnitStatus.ONLINE) {
+                text = text + EnumChatFormatting.GREEN + "Online";
+            } else if (unit.status() == PurificationUnitStatus.INCOMPLETE_STRUCTURE) {
+                text = text + EnumChatFormatting.RED + "Incomplete Structure";
+            }
+            ret.add(text);
+        }
+        return ret.toArray(new String[0]);
+    }
+
+    @Override
     public void onBlockDestroyed() {
-        for (GT_MetaTileEntity_PurificationUnitBase<?> unit : this.mLinkedUnits) {
-            unit.unlinkController();
+        for (LinkedPurificationUnit unit : this.mLinkedUnits) {
+            unit.metaTileEntity()
+                .unlinkController();
         }
         super.onBlockDestroyed();
     }
