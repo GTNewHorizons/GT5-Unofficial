@@ -3,6 +3,7 @@ package gregtech.common.tileentities.machines.multi.purification;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.util.GT_Recipe;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -17,6 +18,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
+import net.minecraftforge.fluids.FluidStack;
 
 /**
  * Base class for purification units. This class handles all shared behaviour between units.
@@ -59,6 +61,8 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
      * Pointer to the main purification plant controller.
      */
     private GT_MetaTileEntity_PurificationPlant controller = null;
+
+    protected GT_Recipe currentRecipe = null;
 
     protected GT_MetaTileEntity_PurificationUnitBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -112,6 +116,9 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
     }
 
     public void startCycle(int cycleTime, int progressTime) {
+        for (FluidStack input : this.currentRecipe.mFluidInputs) {
+            this.depleteInput(input);
+        }
         this.mMaxProgresstime = cycleTime;
         this.mProgresstime = progressTime;
         this.mEfficiency = 10000;
@@ -122,10 +129,12 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
     }
 
     public void endCycle() {
+        this.addFluidOutputs(this.currentRecipe.mFluidOutputs);
         this.mMaxProgresstime = 0;
         this.mProgresstime = 0;
         this.lEUt = 0;
         this.mEfficiency = 0;
+        this.currentRecipe = null;
     }
 
     /**

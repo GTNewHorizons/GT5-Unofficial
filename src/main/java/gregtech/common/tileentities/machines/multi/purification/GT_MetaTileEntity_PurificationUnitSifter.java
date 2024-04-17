@@ -5,6 +5,9 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.GT_HatchElement.InputBus;
+import static gregtech.api.enums.GT_HatchElement.InputHatch;
+import static gregtech.api.enums.GT_HatchElement.OutputBus;
+import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW;
@@ -12,10 +15,12 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_AR
 
 import java.util.List;
 
+import gregtech.api.util.GT_Recipe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
@@ -82,7 +87,20 @@ public class GT_MetaTileEntity_PurificationUnitSifter
     @NotNull
     @Override
     public CheckRecipeResult checkProcessing() {
-        return CheckRecipeResultRegistry.NO_RECIPE;
+        this.startRecipeProcessing();
+        RecipeMap<?> recipeMap = this.getRecipeMap();
+
+        GT_Recipe recipe = recipeMap.findRecipeQuery()
+            .fluids(this.getStoredFluids().toArray(new FluidStack[] {}))
+            .find();
+
+        this.endRecipeProcessing();
+        if (recipe == null) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
+
+        this.currentRecipe = recipe;
+        return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     @Override
@@ -119,7 +137,7 @@ public class GT_MetaTileEntity_PurificationUnitSifter
     }
 
     private List<IHatchElement<? super GT_MetaTileEntity_PurificationUnitSifter>> getAllowedHatches() {
-        return ImmutableList.of(InputBus);
+        return ImmutableList.of(InputBus, InputHatch, OutputBus, OutputHatch);
     }
 
     @Override
