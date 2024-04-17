@@ -15,8 +15,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_AR
 import java.util.ArrayList;
 import java.util.List;
 
-import gregtech.api.recipe.RecipeMap;
-import gregtech.api.recipe.RecipeMaps;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
