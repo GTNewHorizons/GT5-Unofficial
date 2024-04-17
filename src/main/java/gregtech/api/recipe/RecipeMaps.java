@@ -1158,12 +1158,9 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> purificationPlantGrade1Recipes = RecipeMapBuilder
         .of("gt.recipe.purificationplantgrade1")
-        .maxIO(2, 9, 3, 9)
+        .maxIO(2, 9, 3, 3)
         .minInputs(0, 1)
         .progressBar(GT_UITextures.PROGRESSBAR_SIFT)
-        .neiHandlerInfo(
-            builder -> builder.setDisplayStack(ItemList.Machine_Multi_PurificationUnitSifter.get(1))
-                .setMaxRecipesPerPage(1))
         .disableOptimize()
         .build();
     public static final RecipeMap<RecipeMapBackend> ic2NuclearFakeRecipes = RecipeMapBuilder.of("gt.recipe.ic2nuke")
