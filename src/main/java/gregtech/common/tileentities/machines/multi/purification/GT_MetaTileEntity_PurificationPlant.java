@@ -220,7 +220,8 @@ public class GT_MetaTileEntity_PurificationPlant
         for (LinkedPurificationUnit unit : this.mLinkedUnits) {
             String text = EnumChatFormatting.AQUA + unit.metaTileEntity()
                 .getLocalName() + ": ";
-            PurificationUnitStatus status = unit.metaTileEntity().status();
+            PurificationUnitStatus status = unit.metaTileEntity()
+                .status();
             switch (status) {
                 case ONLINE -> {
                     text = text + EnumChatFormatting.GREEN + "Online";
