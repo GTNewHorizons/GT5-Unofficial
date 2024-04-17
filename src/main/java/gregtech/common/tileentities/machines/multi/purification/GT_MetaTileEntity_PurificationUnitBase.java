@@ -18,33 +18,46 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPow
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-/// Base class for purification units. This class handles all shared behaviour between units.
-/// This includes
-/// - Linking using data sticks and storing data about the linked purification plant controller
-/// -
-/// When inheriting from this, make sure to call super.loadNBTData() and super.saveNBTData()
-/// if you override these methods, or linking will break.
+/**
+ * Base class for purification units. This class handles all shared behaviour between units.
+ * When inheriting from this, make sure to call super.loadNBTData() and super.saveNBTData()
+ * if you override these methods, or linking will break.
+ */
 public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T>>
     extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T> {
 
-    // Small internal enum to report back the various error cases when linking purification units to the
-    // purification plant.
+    /**
+     * Small internal enum to report back the various error cases when linking purification units to the
+     * purification plant.
+     */
     private enum LinkResult {
-        // Link target was out of range of the main controller
+        /**
+         * Link target was out of range of the main controller
+         */
         TOO_FAR,
-        // No valid GT_MetaTileEntity_PurificationPlant was found at the link target position.
+        /**
+         * No valid GT_MetaTileEntity_PurificationPlant was found at the link target position.
+         */
         NO_VALID_PLANT,
-        // Link successful
+        /**
+         * Link successful
+         */
         SUCCESS,
     }
 
-    // Coordinates of the main purification plant controller. These can be used to find the controller again
-    // on world load.
+    /**
+     * Coordinates of the main purification plant controller. These can be used to find the controller again
+     * on world load.
+     */
     private int controllerX, controllerY, controllerZ;
-    // Whether a controller was previously set.
+    /**
+     * Whether a controller was previously set.
+     */
     private boolean controllerSet = false;
 
-    // Pointer to the main purification plant controller.
+    /**
+     * Pointer to the main purification plant controller.
+     */
     private GT_MetaTileEntity_PurificationPlant controller = null;
 
     protected GT_MetaTileEntity_PurificationUnitBase(int aID, String aName, String aNameRegional) {

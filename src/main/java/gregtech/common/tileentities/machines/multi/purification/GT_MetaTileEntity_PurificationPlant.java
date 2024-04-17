@@ -44,16 +44,22 @@ public class GT_MetaTileEntity_PurificationPlant
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
-    // Used to keep track of casing amount, so we can impose a minimum number of casings
+    /**
+     * Used to keep track of casing amount, so we can impose a minimum number of casings
+     */
     private int mCasingAmount;
 
-    // Maximum distance in each axis between the purification plant main controller and the controller blocks of the
-    // purification plant units.
+    /**
+     * Maximum distance in each axis between the purification plant main controller and the controller blocks of the
+     * purification plant units.
+     */
     public static final int MAX_UNIT_DISTANCE = 16;
 
-    // Stores all purification units linked to this controller.
-    // Normally all units in this list should be valid and unique, if not then there is a bug where they are not being
-    // unlinked properly on block destruction/relinking.
+    /**
+     * Stores all purification units linked to this controller.
+     * Normally all units in this list should be valid and unique, if not then there is a bug where they are not being
+     * unlinked properly on block destruction/relinking.
+     */
     private final List<LinkedPurificationUnit> mLinkedUnits = new ArrayList<>();
 
     private static final IStructureDefinition<GT_MetaTileEntity_PurificationPlant> STRUCTURE_DEFINITION = StructureDefinition
