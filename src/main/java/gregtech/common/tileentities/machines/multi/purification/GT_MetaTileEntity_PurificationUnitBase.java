@@ -258,4 +258,14 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
 
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
     }
+
+    public PurificationUnitStatus status() {
+        if (!this.mMachine) {
+            return PurificationUnitStatus.INCOMPLETE_STRUCTURE;
+        } else if (!this.isAllowedToWork()) {
+            return PurificationUnitStatus.DISABLED;
+        } else {
+            return PurificationUnitStatus.ONLINE;
+        }
+    }
 }

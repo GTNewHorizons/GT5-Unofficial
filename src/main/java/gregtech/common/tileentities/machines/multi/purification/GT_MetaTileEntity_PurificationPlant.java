@@ -163,14 +163,7 @@ public class GT_MetaTileEntity_PurificationPlant
             // This check tests if aTick mod 100 = 10 to avoid these checks happening in the same ticks
             // as all other machines that do checks every 100 ticks, to spread out the workload further.
             if (aTick % 100 == 10) {
-                // Update status of potentially deformed units
-                for (LinkedPurificationUnit unit : mLinkedUnits) {
-                    if (!unit.metaTileEntity().mMachine) {
-                        unit.setStatus(PurificationUnitStatus.INCOMPLETE_STRUCTURE);
-                    } else {
-                        unit.setStatus(PurificationUnitStatus.ONLINE);
-                    }
-                }
+                // Currently nothing is here
             }
         }
     }
@@ -191,9 +184,7 @@ public class GT_MetaTileEntity_PurificationPlant
     }
 
     public void registerLinkedUnit(GT_MetaTileEntity_PurificationUnitBase<?> unit) {
-        PurificationUnitStatus status = unit.mMachine ? PurificationUnitStatus.ONLINE
-            : PurificationUnitStatus.INCOMPLETE_STRUCTURE;
-        this.mLinkedUnits.add(new LinkedPurificationUnit(unit, status));
+        this.mLinkedUnits.add(new LinkedPurificationUnit(unit));
     }
 
     public void unregisterLinkedUnit(GT_MetaTileEntity_PurificationUnitBase<?> unit) {
@@ -229,10 +220,17 @@ public class GT_MetaTileEntity_PurificationPlant
         for (LinkedPurificationUnit unit : this.mLinkedUnits) {
             String text = EnumChatFormatting.AQUA + unit.metaTileEntity()
                 .getLocalName() + ": ";
-            if (unit.status() == PurificationUnitStatus.ONLINE) {
-                text = text + EnumChatFormatting.GREEN + "Online";
-            } else if (unit.status() == PurificationUnitStatus.INCOMPLETE_STRUCTURE) {
-                text = text + EnumChatFormatting.RED + "Incomplete Structure";
+            PurificationUnitStatus status = unit.metaTileEntity().status();
+            switch (status) {
+                case ONLINE -> {
+                    text = text + EnumChatFormatting.GREEN + "Online";
+                }
+                case DISABLED -> {
+                    text = text + EnumChatFormatting.YELLOW + "Disabled";
+                }
+                case INCOMPLETE_STRUCTURE -> {
+                    text = text + EnumChatFormatting.RED + "Incomplete Structure";
+                }
             }
             ret.add(text);
         }
