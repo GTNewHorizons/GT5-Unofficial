@@ -1698,15 +1698,6 @@ public class AssemblerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 6),
-                GT_Utility.getIntegratedCircuit(6))
-            .itemOutputs(new ItemStack(Items.iron_door, 1))
-            .duration(30 * SECONDS)
-            .eut(4)
-            .addTo(assemblerRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 7),
                 GT_Utility.getIntegratedCircuit(7))
             .itemOutputs(new ItemStack(Items.cauldron, 1))
@@ -1729,15 +1720,6 @@ public class AssemblerRecipes implements Runnable {
                 GT_Utility.getIntegratedCircuit(3))
             .itemOutputs(new ItemStack(Blocks.iron_bars, 4))
             .duration(15 * SECONDS)
-            .eut(4)
-            .addTo(assemblerRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 6),
-                GT_Utility.getIntegratedCircuit(6))
-            .itemOutputs(new ItemStack(Items.iron_door, 1))
-            .duration(30 * SECONDS)
             .eut(4)
             .addTo(assemblerRecipes);
 
