@@ -484,9 +484,7 @@ public class GT_Mod implements IGT_Mod {
                         .getDisplayName()));
         }
         new GT_CraftingRecipeLoader().run();
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "ic2forgehammer", true)) {
-            GT_ModHandler.removeRecipeByOutput(ItemList.IC2_ForgeHammer.getWildcard(1L));
-        }
+        GT_ModHandler.removeRecipeByOutput(ItemList.IC2_ForgeHammer.getWildcard(1L));
         GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("machine", 1L));
         GT_ModHandler.addCraftingRecipe(
             GT_ModHandler.getIC2Item("machine", 1L),
@@ -517,8 +515,6 @@ public class GT_Mod implements IGT_Mod {
                 new String[] { "blastfurnace", "blockcutter", "inductionFurnace", "generator", "windMill", "waterMill",
                     "solarPanel", "centrifuge", "electrolyzer", "compressor", "electroFurnace", "extractor",
                     "macerator", "recycler", "metalformer", "orewashingplant", "massFabricator", "replicator", })
-            .filter(
-                tName -> GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + tName, true))
             .map(tName -> GT_ModHandler.getIC2Item(tName, 1L))
             .forEach(GT_ModHandler::removeRecipeByOutputDelayed);
 

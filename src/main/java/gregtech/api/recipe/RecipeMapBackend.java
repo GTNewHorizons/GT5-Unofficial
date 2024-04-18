@@ -171,13 +171,8 @@ public class RecipeMapBackend {
         Iterable<? extends GT_Recipe> recipes = properties.recipeEmitter.apply(builder);
         Collection<GT_Recipe> ret = new ArrayList<>();
         for (GT_Recipe recipe : recipes) {
-            if (properties.recipeConfigCategory != null) {
-                assert properties.recipeConfigKeyConvertor != null;
-                String configKey = properties.recipeConfigKeyConvertor.apply(recipe);
-                if (configKey != null && (recipe.mDuration = GregTech_API.sRecipeFile
-                    .get(properties.recipeConfigCategory, configKey, recipe.mDuration)) <= 0) {
-                    continue;
-                }
+            if (recipe.mDuration <= 0) {
+                continue;
             }
             if (recipe.mFluidInputs.length < properties.minFluidInputs
                 || recipe.mInputs.length < properties.minItemInputs) {

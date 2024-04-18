@@ -38,8 +38,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -1648,16 +1646,14 @@ public class AssemblerRecipes implements Runnable {
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
 
-        if (!GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "torchesFromCoal", false)) {
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
-                    new ItemStack(Items.coal, 1, 32767))
-                .itemOutputs(new ItemStack(Blocks.torch, 4))
-                .duration(2 * SECONDS)
-                .eut(20)
-                .addTo(assemblerRecipes);
-        }
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
+                new ItemStack(Items.coal, 1, 32767))
+            .itemOutputs(new ItemStack(Blocks.torch, 4))
+            .duration(2 * SECONDS)
+            .eut(20)
+            .addTo(assemblerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(

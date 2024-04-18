@@ -17,8 +17,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -49,8 +47,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
         boolean aNoSmashing = aMaterial.contains(SubTag.NO_SMASHING);
         boolean aNoWorking = aMaterial.contains(SubTag.NO_WORKING);
         boolean aNoSmelting = aMaterial.contains(SubTag.NO_SMELTING);
-        boolean aSpecialRecipeReq = (aMaterial.contains(SubTag.MORTAR_GRINDABLE))
-            && (GregTech_API.sRecipeFile.get(ConfigCategories.Tools.mortar, aMaterial.mName, true));
+        boolean aSpecialRecipeReq = aMaterial.contains(SubTag.MORTAR_GRINDABLE);
         boolean aFuelPower = aMaterial.mFuelPower > 0;
 
         switch (aPrefix) {
@@ -256,21 +253,6 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                             }
                         }
                     }
-                }
-
-                switch (aMaterial.mName) {
-                    case "NULL":
-                        break;
-                    case "Coal", "Charcoal":
-                        if (GregTech_API.sRecipeFile
-                            .get(ConfigCategories.Recipes.disabledrecipes, "torchesFromCoal", false)) {
-                            GT_ModHandler.removeRecipeDelayed(
-                                GT_Utility.copyAmount(1, aStack),
-                                null,
-                                null,
-                                new ItemStack(net.minecraft.init.Items.stick, 1, 0));
-                        }
-                        break;
                 }
 
                 for (ItemStack is : OreDictionary.getOres("craftingLens" + aMaterial.mColor.mName.replace(" ", ""))) { // Engraver

@@ -728,20 +728,8 @@ public class GT_CraftingRecipeLoader implements Runnable {
                 null,
                 GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Copper, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Tin, 1L)),
-            GT_OreDictUnificator.get(
-                OrePrefixes.ingot,
-                Materials.Bronze,
-                GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "bronzeingotcrafting", true) ? 1L
-                    : 2L))) {
+            GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 1L))) {
             GT_Log.out.println("GT_Mod: Changed Forestrys Bronze Recipe");
-        }
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "enchantmenttable", false)) {
-            GT_Log.out.println(
-                "GT_Mod: Removing the Recipe of the Enchantment Table, to have more Fun at enchanting with the Anvil and Books from Dungeons.");
-            GT_ModHandler.removeRecipeByOutputDelayed(new ItemStack(Blocks.enchanting_table, 1));
-        }
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "enderchest", false)) {
-            GT_ModHandler.removeRecipeByOutputDelayed(new ItemStack(Blocks.ender_chest, 1));
         }
         tStack = GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 1L);
 
@@ -1982,9 +1970,6 @@ public class GT_CraftingRecipeLoader implements Runnable {
                         OrePrefixes.gear.get(Materials.Steel), 'P',
                         GT_ModHandler.getIC2Item("diamondDrill", 1L, 32767) });
             }
-            if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "quarry", false)) {
-                GT_ModHandler.removeRecipeByOutputDelayed(tStack);
-            }
         }
 
         if ((GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.harderrecipes, "sugarpaper", true))) {
@@ -2033,20 +2018,6 @@ public class GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getIC2Item("electricHoe", 1L));
 
         GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getIC2Item("electricTreetap", 1L));
-
-        GT_Log.out.println("GT_Mod: Removing Q-Armor Recipes if configured.");
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "QHelmet", false)) {
-            GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getIC2Item("quantumHelmet", 1L));
-        }
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "QPlate", false)) {
-            GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getIC2Item("quantumBodyarmor", 1L));
-        }
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "QLegs", false)) {
-            GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getIC2Item("quantumLeggings", 1L));
-        }
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "QBoots", false)) {
-            GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getIC2Item("quantumBoots", 1L));
-        }
 
         if (GraviSuite.isModLoaded()) {
             GT_ModHandler.removeRecipeByOutputDelayed(
