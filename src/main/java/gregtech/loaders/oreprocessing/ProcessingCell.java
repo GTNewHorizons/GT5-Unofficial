@@ -420,10 +420,10 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                         case "Zinc" -> recipeBuilder.metadata(FUEL_VALUE, 226_304)
                             .metadata(FUEL_TYPE, 4)
                             .addTo(GT_RecipeConstants.Fuel);
-                        default ->
-                            recipeBuilder.metadata(FUEL_VALUE, (int) Math.max(1024L, 1024L * aMaterial.getMass()))
-                                .metadata(FUEL_TYPE, 4)
-                                .addTo(GT_RecipeConstants.Fuel);
+                        default -> recipeBuilder
+                            .metadata(FUEL_VALUE, (int) Math.max(1024L, 1024L * aMaterial.getMass()))
+                            .metadata(FUEL_TYPE, 4)
+                            .addTo(GT_RecipeConstants.Fuel);
                     }
                     if (GT_OreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L) != null) {
                         GT_Values.RA.stdBuilder()
