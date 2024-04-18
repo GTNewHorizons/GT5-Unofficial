@@ -438,44 +438,13 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                             if (GregTech_API.sMachineRainExplosions) {
                                 if (mMetaTileEntity.willExplodeInRain()) {
                                     if (getRandomNumber(1000) == 0 && isRainPossible()) {
-                                        if (isRainExposed()) {
-                                            if (worldObj.isRaining()) {
-                                                if (getRandomNumber(10) == 0) {
-                                                    try {
-                                                        GT_Mod.achievements.issueAchievement(
-                                                            this.getWorldObj()
-                                                                .getPlayerEntityByName(mOwnerName),
-                                                            "badweather");
-                                                    } catch (Exception ignored) {}
-                                                    GT_Log.exp.println(
-                                                        "Machine at: " + this.getXCoord()
-                                                            + " | "
-                                                            + this.getYCoord()
-                                                            + " | "
-                                                            + this.getZCoord()
-                                                            + " DIMID: "
-                                                            + this.worldObj.provider.dimensionId
-                                                            + " explosion due to rain!");
-                                                    doEnergyExplosion();
-                                                } else {
-                                                    GT_Log.exp.println(
-                                                        "Machine at: " + this.getXCoord()
-                                                            + " | "
-                                                            + this.getYCoord()
-                                                            + " | "
-                                                            + this.getZCoord()
-                                                            + " DIMID: "
-                                                            + this.worldObj.provider.dimensionId
-                                                            + "  set to Fire due to rain!");
-                                                    setOnFire();
-                                                }
-                                            }
-                                            if (!hasValidMetaTileEntity()) {
-                                                mRunningThroughTick = false;
-                                                return;
-                                            }
-                                            if (GregTech_API.sMachineThunderExplosions && worldObj.isThundering()
-                                                && getRandomNumber(3) == 0) {
+                                        // Short-circuit so raincheck happens before isRainExposed,
+                                        // saves sme TPS since rain exposed check can be slow
+                                        // This logic can be compressed further by only checking for
+                                        // isRainExposed once IF we can guarantee it never thunders without
+                                        // raining, but I don't know if this is true or not.
+                                        if (worldObj.isRaining() && isRainExposed()) {
+                                            if (getRandomNumber(10) == 0) {
                                                 try {
                                                     GT_Mod.achievements.issueAchievement(
                                                         this.getWorldObj()
@@ -490,9 +459,44 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                                                         + this.getZCoord()
                                                         + " DIMID: "
                                                         + this.worldObj.provider.dimensionId
-                                                        + " explosion due to Thunderstorm!");
+                                                        + " explosion due to rain!");
                                                 doEnergyExplosion();
+                                            } else {
+                                                GT_Log.exp.println(
+                                                    "Machine at: " + this.getXCoord()
+                                                        + " | "
+                                                        + this.getYCoord()
+                                                        + " | "
+                                                        + this.getZCoord()
+                                                        + " DIMID: "
+                                                        + this.worldObj.provider.dimensionId
+                                                        + "  set to Fire due to rain!");
+                                                setOnFire();
                                             }
+                                        }
+                                        if (!hasValidMetaTileEntity()) {
+                                            mRunningThroughTick = false;
+                                            return;
+                                        }
+                                        if (GregTech_API.sMachineThunderExplosions && worldObj.isThundering()
+                                            && getRandomNumber(3) == 0
+                                            && isRainExposed()) {
+                                            try {
+                                                GT_Mod.achievements.issueAchievement(
+                                                    this.getWorldObj()
+                                                        .getPlayerEntityByName(mOwnerName),
+                                                    "badweather");
+                                            } catch (Exception ignored) {}
+                                            GT_Log.exp.println(
+                                                "Machine at: " + this.getXCoord()
+                                                    + " | "
+                                                    + this.getYCoord()
+                                                    + " | "
+                                                    + this.getZCoord()
+                                                    + " DIMID: "
+                                                    + this.worldObj.provider.dimensionId
+                                                    + " explosion due to Thunderstorm!");
+                                            doEnergyExplosion();
                                         }
                                     }
                                 }
