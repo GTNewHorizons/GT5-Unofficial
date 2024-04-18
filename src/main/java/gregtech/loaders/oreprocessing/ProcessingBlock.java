@@ -10,8 +10,6 @@ import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -149,23 +147,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                 }
             }
         }
-        if (GregTech_API.sRecipeFile.get(
-            ConfigCategories.Recipes.storageblockcrafting,
-            OrePrefixes.block.get(aMaterial)
-                .toString(),
-            false)) {
-            if ((tStack1 == null) && (tStack2 == null) && (tStack3 != null)) GT_ModHandler.addCraftingRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L),
-                new Object[] { "XXX", "XXX", "XXX", 'X', OrePrefixes.dust.get(aMaterial) });
-            if (tStack2 != null) GT_ModHandler.addCraftingRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L),
-                new Object[] { "XXX", "XXX", "XXX", 'X', OrePrefixes.gem.get(aMaterial) });
-            if (tStack1 != null) {
-                GT_ModHandler.addCraftingRecipe(
-                    GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L),
-                    new Object[] { "XXX", "XXX", "XXX", 'X', OrePrefixes.ingot.get(aMaterial) });
-            }
-        }
+
         if (tStack1 != null) tStack1.stackSize = 9;
         if (tStack2 != null) tStack2.stackSize = 9;
         if (tStack3 != null) tStack3.stackSize = 9;
@@ -179,15 +161,10 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                 .addTo(hammerRecipes);
         }
 
-        if (GregTech_API.sRecipeFile.get(
-            ConfigCategories.Recipes.storageblockdecrafting,
-            OrePrefixes.block.get(aMaterial)
-                .toString(),
-            tStack2 != null)) {
+        if (tStack2 != null && aMaterial != Materials.NetherQuartz) {
             if (tStack3 != null)
                 GT_ModHandler.addShapelessCraftingRecipe(tStack3, new Object[] { OrePrefixes.block.get(aMaterial) });
-            if (tStack2 != null)
-                GT_ModHandler.addShapelessCraftingRecipe(tStack2, new Object[] { OrePrefixes.block.get(aMaterial) });
+            GT_ModHandler.addShapelessCraftingRecipe(tStack2, new Object[] { OrePrefixes.block.get(aMaterial) });
             if (tStack1 != null)
                 GT_ModHandler.addShapelessCraftingRecipe(tStack1, new Object[] { OrePrefixes.block.get(aMaterial) });
         }

@@ -141,8 +141,6 @@ public class GT_PreLoad {
         GT_Config.sConfigFileIDs = new Configuration(tFile);
         GT_Config.sConfigFileIDs.load();
         GT_Config.sConfigFileIDs.save();
-        GregTech_API.sRecipeFile = new GT_Config(
-            new Configuration(new File(new File(configDir, "GregTech"), "Recipes.cfg")));
         GregTech_API.sMachineFile = new GT_Config(
             new Configuration(new File(new File(configDir, "GregTech"), "MachineStats.cfg")));
         GregTech_API.sWorldgenFile = new GT_Config(
@@ -764,10 +762,6 @@ public class GT_PreLoad {
             .get("general", "LongDistancePipelineMinimalDistancePoints", 64)
             .getInt(64);
 
-        GregTech_API.mUseOnlyGoodSolderingMaterials = GregTech_API.sRecipeFile.get(
-            ConfigCategories.Recipes.harderrecipes,
-            "useonlygoodsolderingmaterials",
-            GregTech_API.mUseOnlyGoodSolderingMaterials);
         GT_Mod.gregtechproxy.mChangeHarvestLevels = GregTech_API.sMaterialProperties
             .get("havestLevel", "activateHarvestLevelChange", false); // TODO CHECK
         if (GT_Mod.gregtechproxy.mChangeHarvestLevels) {

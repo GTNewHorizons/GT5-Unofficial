@@ -1,6 +1,5 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.enums.ConfigCategories.Recipes.harderrecipes;
 import static gregtech.api.enums.GT_Values.L;
 import static gregtech.api.enums.GT_Values.NI;
 import static gregtech.api.enums.GT_Values.W;
@@ -124,9 +123,8 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             new Object[] { "hX", 'X', OrePrefixes.plate.get(aMaterial) });
 
         if (aMaterial == Materials.Paper) {
-
             GT_ModHandler.addCraftingRecipe(
-                GT_Utility.copyAmount(GregTech_API.sRecipeFile.get(harderrecipes, aStack, true) ? 2 : 3, aStack),
+                GT_Utility.copyAmount(2, aStack),
                 BUFFERED,
                 new Object[] { "XXX", 'X', new ItemStack(Items.reeds, 1, W) });
         }

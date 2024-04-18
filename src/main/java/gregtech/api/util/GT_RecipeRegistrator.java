@@ -54,7 +54,6 @@ import com.google.common.collect.SetMultimap;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -604,30 +603,26 @@ public class GT_RecipeRegistrator {
 
                         if (aRecipeReplacing && aPlate != null && sShapesA[i] != null && sShapesA[i].length > 1) {
                             assert aItemData != null;
-                            if (GregTech_API.sRecipeFile.get(
-                                ConfigCategories.Recipes.recipereplacements,
-                                aItemData.mMaterial.mMaterial + "." + sShapesA[i][0],
-                                true)) {
-                                if (null != (tStack = GT_ModHandler.removeRecipe(tRecipe.shape))) {
-                                    switch (sShapesA[i].length) {
-                                        case 2 -> GT_ModHandler.addCraftingRecipe(
-                                            tStack,
-                                            GT_ModHandler.RecipeBits.BUFFERED,
-                                            new Object[] { sShapesA[i][1], s_P.charAt(0), aPlate, s_R.charAt(0),
-                                                OrePrefixes.stick.get(tMaterial), s_I.charAt(0), aItemData });
-                                        case 3 -> GT_ModHandler.addCraftingRecipe(
-                                            tStack,
-                                            GT_ModHandler.RecipeBits.BUFFERED,
-                                            new Object[] { sShapesA[i][1], sShapesA[i][2], s_P.charAt(0), aPlate,
-                                                s_R.charAt(0), OrePrefixes.stick.get(tMaterial), s_I.charAt(0),
-                                                aItemData });
-                                        default -> GT_ModHandler.addCraftingRecipe(
-                                            tStack,
-                                            GT_ModHandler.RecipeBits.BUFFERED,
-                                            new Object[] { sShapesA[i][1], sShapesA[i][2], sShapesA[i][3],
-                                                s_P.charAt(0), aPlate, s_R.charAt(0), OrePrefixes.stick.get(tMaterial),
-                                                s_I.charAt(0), aItemData });
-                                    }
+
+                            if (null != (tStack = GT_ModHandler.removeRecipe(tRecipe.shape))) {
+                                switch (sShapesA[i].length) {
+                                    case 2 -> GT_ModHandler.addCraftingRecipe(
+                                        tStack,
+                                        GT_ModHandler.RecipeBits.BUFFERED,
+                                        new Object[] { sShapesA[i][1], s_P.charAt(0), aPlate, s_R.charAt(0),
+                                            OrePrefixes.stick.get(tMaterial), s_I.charAt(0), aItemData });
+                                    case 3 -> GT_ModHandler.addCraftingRecipe(
+                                        tStack,
+                                        GT_ModHandler.RecipeBits.BUFFERED,
+                                        new Object[] { sShapesA[i][1], sShapesA[i][2], s_P.charAt(0), aPlate,
+                                            s_R.charAt(0), OrePrefixes.stick.get(tMaterial), s_I.charAt(0),
+                                            aItemData });
+                                    default -> GT_ModHandler.addCraftingRecipe(
+                                        tStack,
+                                        GT_ModHandler.RecipeBits.BUFFERED,
+                                        new Object[] { sShapesA[i][1], sShapesA[i][2], sShapesA[i][3], s_P.charAt(0),
+                                            aPlate, s_R.charAt(0), OrePrefixes.stick.get(tMaterial), s_I.charAt(0),
+                                            aItemData });
                                 }
                             }
                         }
