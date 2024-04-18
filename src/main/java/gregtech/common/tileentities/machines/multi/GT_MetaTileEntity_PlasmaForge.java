@@ -67,8 +67,8 @@ public class GT_MetaTileEntity_PlasmaForge extends
 
     // 3600 seconds in an hour, 8 hours, 20 ticks in a second.
     private static final double max_efficiency_time_in_ticks = 3600d * 8d * 20d;
-    // Time it takes for efficiency to decay to zero. Set to 5 minutes.
-    private static final double efficiency_decay_time_in_ticks = 60d * 5d * 20d;
+    // Multiplier for the efficiency decay rate
+    private static final double efficiency_decay_rate = 100;
     private static final double maximum_discount = 0.5d;
 
     // Valid fuels which the discount will get applied to.
@@ -89,8 +89,6 @@ public class GT_MetaTileEntity_PlasmaForge extends
     private double discount = 1;
     private int mHeatingCapacity = 0;
     private long running_time = 0;
-    private long idle_time = 0;
-    // Custom long EU per tick value given that mEUt is an int. Required to overclock beyond MAX voltage.
     private HeatingCoilLevel mCoilLevel;
 
     @SuppressWarnings("SpellCheckingInspection")
@@ -542,14 +540,10 @@ public class GT_MetaTileEntity_PlasmaForge extends
                     + EnumChatFormatting.GRAY
                     + ". Supports overclocking beyond MAX voltage.")
             .addInfo(
-                "When no recipe is running, fuel discount gradually decreases to " + EnumChatFormatting.RED
-                    + "0%"
+                "When no recipe is running, fuel discount decays x" + EnumChatFormatting.RED
+                    + GT_Utility.formatNumbers(efficiency_decay_rate)
                     + EnumChatFormatting.GRAY
-                    + " in "
-                    + EnumChatFormatting.RED
-                    + GT_Utility.formatNumbers(efficiency_decay_time_in_ticks / (20 * 60))
-                    + EnumChatFormatting.GRAY
-                    + " minutes.")
+                    + " as fast as it builds up.")
             .addInfo(AuthorColen)
             .addSeparator()
             .beginStructureBlock(33, 24, 33, false)
@@ -686,7 +680,7 @@ public class GT_MetaTileEntity_PlasmaForge extends
         if (!recipe_process.wasSuccessful()) {
             resetDiscount();
         } else {
-            running_time += mMaxProgresstime;
+            running_time = Math.min(running_time + mMaxProgresstime, (long) max_efficiency_time_in_ticks);
         }
         return recipe_process;
     }
@@ -834,9 +828,7 @@ public class GT_MetaTileEntity_PlasmaForge extends
         long amps = getMaxInputAmps();
 
         // Calculate discount to make sure it is shown properly even when machine is off but decaying
-        if (idle_time >= 0) {
-            recalculateDiscount();
-        }
+        recalculateDiscount();
 
         return new String[] { "------------ Critical Information ------------",
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
@@ -893,40 +885,15 @@ public class GT_MetaTileEntity_PlasmaForge extends
     }
 
     private void recalculateDiscount() {
-        // If running for max_efficiency_time_in_ticks then discount is at maximum.
-        if (idle_time == 0 && running_time > 0) {
-            double time_percentage = running_time / max_efficiency_time_in_ticks;
-            time_percentage = Math.min(time_percentage, 1.0d);
-            // Multiplied by 0.5 because that is the maximum achievable discount
-            double proposedDiscount = 1 - time_percentage * 0.5;
-            proposedDiscount = Math.max(maximum_discount, proposedDiscount);
-
-            // If calculated discount is less effective than old discount, we need to
-            // 'recover' from previous decay by setting the running time appropriately.
-            // Otherwise, the fuel efficiency will just start counting from zero again.
-            // should note that a lower discount number is 'better', hence this seemingly inverted check.
-            if (discount < proposedDiscount) {
-                // Adjust running time for current discount (and add this recipe's progress to it)
-                double adjustedTimePercentage = 2.0 * (1.0 - discount);
-                running_time = Math.round(adjustedTimePercentage * max_efficiency_time_in_ticks) + mMaxProgresstime;
-                discount = 1 - adjustedTimePercentage * 0.5;
-                discount = Math.max(maximum_discount, discount);
-            } else {
-                // Otherwise simply accept the proposed discount value
-                discount = proposedDiscount;
-            }
-        } else {
-            // If we had any idle time before this, use that time to set the discount instead
-            double idle_time_percentage = idle_time / efficiency_decay_time_in_ticks;
-            idle_time_percentage = Math.min(idle_time_percentage, 1.0d);
-            double decayedDiscount = idle_time_percentage * 0.5 + 0.5;
-            discount = Math.max(discount, decayedDiscount);
-        }
+        double time_percentage = running_time / max_efficiency_time_in_ticks;
+        time_percentage = Math.min(time_percentage, 1.0d);
+        // Multiplied by 0.5 because that is the maximum achievable discount
+        discount = 1 - time_percentage * 0.5;
+        discount = Math.max(maximum_discount, discount);
     }
 
     // Reset running time and discount.
     public void resetDiscount() {
-        running_time = 0;
         recalculateDiscount();
     }
 
@@ -979,7 +946,9 @@ public class GT_MetaTileEntity_PlasmaForge extends
         super.onPostTick(aBaseMetaTileEntity, aTick);
 
         if (aBaseMetaTileEntity.isServerSide()) {
-            idle_time = mMaxProgresstime > 0 ? 0 : idle_time + 1;
+            if (mMaxProgresstime == 0) {
+                running_time = Math.max(0, running_time - (long) efficiency_decay_rate);
+            }
         }
     }
 
@@ -1004,7 +973,6 @@ public class GT_MetaTileEntity_PlasmaForge extends
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setLong("eRunningTime", running_time);
-        aNBT.setLong("eIdleTime", idle_time);
         aNBT.setDouble("eLongDiscountValue", discount);
         super.saveNBTData(aNBT);
     }
@@ -1012,7 +980,6 @@ public class GT_MetaTileEntity_PlasmaForge extends
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
         running_time = aNBT.getLong("eRunningTime");
-        idle_time = aNBT.getLong("eIdleTime");
         discount = aNBT.getDouble("eLongDiscountValue");
         super.loadNBTData(aNBT);
     }
