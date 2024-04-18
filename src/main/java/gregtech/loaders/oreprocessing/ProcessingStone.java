@@ -1,6 +1,5 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
@@ -80,16 +79,6 @@ public class ProcessingStone implements IOreRecipeRegistrator {
                 break;
             case "Obsidian":
                 if (aBlock != Blocks.air) aBlock.setResistance(20.0F);
-
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_Utility.copyAmount(1, aStack))
-                    .itemOutputs(
-                        GT_ModHandler.getModItem(Railcraft.ID, "cube", 1L, 4),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L))
-                    .outputChances(10000, 1000)
-                    .duration(20 * SECONDS)
-                    .eut(2)
-                    .addTo(maceratorRecipes);
                 break;
             case "Concrete":
                 GT_Values.RA.stdBuilder()
