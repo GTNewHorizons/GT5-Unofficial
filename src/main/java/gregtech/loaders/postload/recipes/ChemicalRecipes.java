@@ -3330,7 +3330,7 @@ public class ChemicalRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(Materials.SodiumSulfide.getDust(3), ItemList.Cell_Air.get(8))
-            .itemOutputs(Materials.Salt.getDust(2), Materials.Empty.getCells(8))
+            .itemOutputs(Materials.Salt.getDust(4), Materials.Empty.getCells(8))
             .fluidInputs(Materials.Dichlorobenzene.getFluid(1000))
             .fluidOutputs(Materials.PolyphenyleneSulfide.getMolten(1000))
             .duration(12 * SECONDS)
@@ -3339,7 +3339,7 @@ public class ChemicalRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(Materials.SodiumSulfide.getDust(3), Materials.Oxygen.getCells(8))
-            .itemOutputs(Materials.Salt.getDust(2), Materials.Empty.getCells(8))
+            .itemOutputs(Materials.Salt.getDust(4), Materials.Empty.getCells(8))
             .fluidInputs(Materials.Dichlorobenzene.getFluid(1000))
             .fluidOutputs(Materials.PolyphenyleneSulfide.getMolten(1500))
             .duration(12 * SECONDS)

@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
 import com.google.common.collect.ImmutableList;
+import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
@@ -25,6 +26,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 
 public abstract class GT_MetaTileEntity_ConcreteBackfillerBase extends GT_MetaTileEntity_DrillerBase {
 
@@ -122,7 +124,7 @@ public abstract class GT_MetaTileEntity_ConcreteBackfillerBase extends GT_MetaTi
             return true;
         } else {
             workState = STATE_DOWNWARD;
-            stopMachine();
+            stopMachine(ShutDownReasonRegistry.NONE);
             setShutdownReason(StatCollector.translateToLocal("GT5U.gui.text.backfiller_finished"));
             return false;
         }
@@ -157,6 +159,8 @@ public abstract class GT_MetaTileEntity_ConcreteBackfillerBase extends GT_MetaTi
         return true;
     }
 
+    protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
+
     @Override
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
         super.drawTexts(screenElements, inventorySlot);
@@ -166,7 +170,7 @@ public abstract class GT_MetaTileEntity_ConcreteBackfillerBase extends GT_MetaTi
                     .dynamicString(
                         () -> StatCollector.translateToLocalFormatted(
                             "GT5U.gui.text.backfiller_current_area",
-                            GT_Utility.formatNumbers(clientYHead)))
+                            numberFormat.format(clientYHead)))
                     .setSynced(false)
                     .setTextAlignment(Alignment.CenterLeft)
                     .setEnabled(widget -> getBaseMetaTileEntity().isActive() && workState == STATE_UPWARD))

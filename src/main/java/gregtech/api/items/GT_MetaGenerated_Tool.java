@@ -516,6 +516,31 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
                 }
                 aList.add(
                     tOffset + 9,
+                    EnumChatFormatting.WHITE + String.format(
+                        transItem("902", "Optimal SC Steam flow: %s L/t"),
+                        "" + EnumChatFormatting.GOLD
+                            + formatNumbers(
+                                GT_Utility.safeInt(
+                                    (long) (Math.max(
+                                        Float.MIN_NORMAL,
+                                        tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed
+                                            * (1000f / 20f)))))
+                            + EnumChatFormatting.GRAY));
+                aList.add(
+                    tOffset + 10,
+                    EnumChatFormatting.WHITE + String.format(
+                        transItem("903", "Energy from Optimal SC Steam Flow: %s EU/t"),
+                        "" + EnumChatFormatting.GOLD
+                            + formatNumbers(
+                                GT_Utility.safeInt(
+                                    (long) (Math.max(
+                                        Float.MIN_NORMAL,
+                                        tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed
+                                            * (1000f / 20f))
+                                        * (50.0F + (10.0F * getToolCombatDamage(aStack))))))
+                            + EnumChatFormatting.GRAY));
+                aList.add(
+                    tOffset + 11,
                     EnumChatFormatting.LIGHT_PURPLE + String.format(
                         transItem("007", "Energy from Optimal Gas Flow: %s EU/t"),
                         "" + EnumChatFormatting.GOLD
@@ -530,7 +555,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
                                         / 100)))
                             + EnumChatFormatting.GRAY));
                 aList.add(
-                    tOffset + 10,
+                    tOffset + 12,
                     EnumChatFormatting.LIGHT_PURPLE + String.format(
                         transItem("008", "Energy from Optimal Plasma Flow: %s EU/t"),
                         "" + EnumChatFormatting.GOLD
@@ -545,7 +570,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
                                         * (1.05 / 100))))
                             + EnumChatFormatting.GRAY));
                 aList.add(
-                    tOffset + 12,
+                    tOffset + 14,
                     EnumChatFormatting.GRAY + "(EU/t values include efficiency and are not 100% accurate)");
                 int toolQualityLevel = GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mToolQuality;
                 int overflowMultiplier = 0;
@@ -557,7 +582,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
                     overflowMultiplier = 1;
                 }
                 aList.add(
-                    tOffset + 11,
+                    tOffset + 13,
                     EnumChatFormatting.LIGHT_PURPLE + String.format(
                         transItem("502", "Overflow Efficiency Tier: %s"),
                         "" + EnumChatFormatting.GOLD + overflowMultiplier + EnumChatFormatting.GRAY));

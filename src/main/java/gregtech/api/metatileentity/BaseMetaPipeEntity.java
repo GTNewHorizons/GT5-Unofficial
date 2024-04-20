@@ -46,6 +46,8 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.covers.CoverInfo;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -1403,5 +1405,12 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
     @Override
     public void startTimeStatistics() {
         hasTimeStatisticsStarted = true;
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currentTip, accessor, config);
+        mMetaTileEntity.getWailaBody(itemStack, currentTip, accessor, config);
     }
 }

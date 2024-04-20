@@ -3720,11 +3720,15 @@ public class GT_Utility {
         int rEUAmount = 0;
         try {
             if (tTileEntity instanceof IMachineProgress progress) {
-                if (progress.isAllowedToWork()) {
+                if (progress.isAllowedToWork() && !progress.hasThingsToDo()) {
                     tList.add(EnumChatFormatting.RED + "Disabled." + EnumChatFormatting.RESET);
                 }
-                if (progress.wasShutdown()) {
-                    tList.add(EnumChatFormatting.RED + "Shut down due to power loss." + EnumChatFormatting.RESET);
+                if (progress.wasShutdown() && isStringValid(
+                    progress.getLastShutDownReason()
+                        .getDisplayString())) {
+                    tList.add(
+                        progress.getLastShutDownReason()
+                            .getDisplayString());
                 }
                 rEUAmount += 400;
                 int tValue = 0;
@@ -3866,7 +3870,7 @@ public class GT_Utility {
     }
 
     public static String trans(String aKey, String aEnglish) {
-        return GT_LanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_" + aKey, aEnglish, false);
+        return GT_LanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_" + aKey, aEnglish);
     }
 
     public static String getTrans(String aKey) {
@@ -4883,7 +4887,7 @@ public class GT_Utility {
                 nbt = (NBTTagCompound) nbt.copy();
             }
 
-            return new AutoValue_GT_Utility_ItemId(itemStack.getItem(), itemStack.getItemDamage(), nbt);
+            return new AutoValue_GT_Utility_ItemId(itemStack.getItem(), Items.feather.getDamage(itemStack), nbt);
         }
 
         /**
@@ -4907,7 +4911,7 @@ public class GT_Utility {
          * This method stores NBT as null.
          */
         public static ItemId createWithoutNBT(ItemStack itemStack) {
-            return new AutoValue_GT_Utility_ItemId(itemStack.getItem(), itemStack.getItemDamage(), null);
+            return new AutoValue_GT_Utility_ItemId(itemStack.getItem(), Items.feather.getDamage(itemStack), null);
         }
 
         /**
@@ -4916,7 +4920,7 @@ public class GT_Utility {
         public static ItemId createNoCopy(ItemStack itemStack) {
             return new AutoValue_GT_Utility_ItemId(
                 itemStack.getItem(),
-                itemStack.getItemDamage(),
+                Items.feather.getDamage(itemStack),
                 itemStack.getTagCompound());
         }
 
@@ -4940,6 +4944,12 @@ public class GT_Utility {
             tag.setShort("meta", (short) metaData());
             if (nbt() != null) tag.setTag("tag", nbt());
             return tag;
+        }
+
+        public ItemStack getItemStack() {
+            ItemStack itemStack = new ItemStack(item(), 1, metaData());
+            itemStack.setTagCompound(nbt());
+            return itemStack;
         }
     }
 

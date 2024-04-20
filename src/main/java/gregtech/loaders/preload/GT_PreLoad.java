@@ -26,12 +26,14 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.common.config.Configuration;
 
 import org.apache.commons.lang3.StringUtils;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
@@ -92,13 +94,36 @@ public class GT_PreLoad {
 
     public static void initLocalization(File languageDir) {
         GT_FML_LOGGER.info("GT_Mod: Generating Lang-File");
-        GT_LanguageManager.sEnglishFile = new Configuration(new File(languageDir, "GregTech.lang"));
-        GT_LanguageManager.sEnglishFile.load();
-        if (GT_LanguageManager.sEnglishFile.get("EnableLangFile", "UseThisFileAsLanguageFile", false)
-            .getBoolean(false)) {
-            GT_LanguageManager.sLanguage = GT_LanguageManager.sEnglishFile.get("EnableLangFile", "Language", "en_US")
-                .getString();
+
+        if (FMLCommonHandler.instance()
+            .getEffectiveSide()
+            .isClient()) {
+            String userLang = Minecraft.getMinecraft()
+                .getLanguageManager()
+                .getCurrentLanguage()
+                .getLanguageCode();
+            GT_FML_LOGGER.info("User lang is " + userLang);
+            if (userLang.equals("en_US")) {
+                GT_FML_LOGGER.info("Loading GregTech.lang");
+                GT_LanguageManager.isEN_US = true;
+                GT_LanguageManager.sEnglishFile = new Configuration(new File(languageDir, "GregTech.lang"));
+            } else {
+                String l10nFileName = "GregTech_" + userLang + ".lang";
+                File l10nFile = new File(languageDir, l10nFileName);
+                if (l10nFile.isFile()) {
+                    GT_FML_LOGGER.info("Loading l10n file: " + l10nFileName);
+                    GT_LanguageManager.sEnglishFile = new Configuration(l10nFile);
+                } else {
+                    GT_FML_LOGGER.info("Cannot find l10n file " + l10nFileName + ", fallback to GregTech.lang");
+                    GT_LanguageManager.isEN_US = true;
+                    GT_LanguageManager.sEnglishFile = new Configuration(new File(languageDir, "GregTech.lang"));
+                }
+            }
+        } else {
+            GT_LanguageManager.isEN_US = true;
+            GT_LanguageManager.sEnglishFile = new Configuration(new File(languageDir, "GregTech.lang"));
         }
+        GT_LanguageManager.sEnglishFile.load();
 
         Materials.getMaterialsMap()
             .values()

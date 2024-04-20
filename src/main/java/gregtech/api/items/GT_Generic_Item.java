@@ -40,16 +40,11 @@ public class GT_Generic_Item extends Item implements IProjectileItem {
     protected IIcon mIcon;
 
     public GT_Generic_Item(String aUnlocalized, String aEnglish, String aEnglishTooltip) {
-        this(aUnlocalized, aEnglish, aEnglishTooltip, true);
-    }
-
-    public GT_Generic_Item(String aUnlocalized, String aEnglish, String aEnglishTooltip,
-        boolean aWriteToolTipIntoLangFile) {
         super();
         mName = "gt." + aUnlocalized;
         GT_LanguageManager.addStringLocalization(mName + ".name", aEnglish);
-        if (GT_Utility.isStringValid(aEnglishTooltip)) GT_LanguageManager
-            .addStringLocalization(mTooltip = mName + ".tooltip_main", aEnglishTooltip, aWriteToolTipIntoLangFile);
+        if (GT_Utility.isStringValid(aEnglishTooltip))
+            GT_LanguageManager.addStringLocalization(mTooltip = mName + ".tooltip_main", aEnglishTooltip);
         else mTooltip = null;
         setCreativeTab(GregTech_API.TAB_GREGTECH);
         GameRegistry.registerItem(this, mName, GregTech.ID);
@@ -154,7 +149,7 @@ public class GT_Generic_Item extends Item implements IProjectileItem {
     }
 
     public String transItem(String aKey, String aEnglish) {
-        return GT_LanguageManager.addStringLocalization("Item_DESCRIPTION_Index_" + aKey, aEnglish, false);
+        return GT_LanguageManager.addStringLocalization("Item_DESCRIPTION_Index_" + aKey, aEnglish);
     }
 
     public static class GT_Item_Dispense extends BehaviorProjectileDispense {

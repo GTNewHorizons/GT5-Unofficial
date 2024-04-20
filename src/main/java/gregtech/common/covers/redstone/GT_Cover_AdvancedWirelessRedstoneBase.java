@@ -13,7 +13,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
 import com.google.common.io.ByteArrayDataInput;
-import com.gtnewhorizons.modularui.api.math.MathExpression;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
@@ -25,7 +24,7 @@ import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
-import gregtech.common.gui.modularui.widget.CoverDataFollower_TextFieldWidget;
+import gregtech.common.gui.modularui.widget.CoverDataFollower_NumericWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
 
@@ -270,15 +269,14 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_A
 
         protected void addUIForDataController(CoverDataControllerWidget<T> controller) {
             controller.addFollower(
-                new CoverDataFollower_TextFieldWidget<>(),
-                coverData -> String.valueOf(coverData.frequency),
+                new CoverDataFollower_NumericWidget<>(),
+                coverData -> (double) coverData.frequency,
                 (coverData, state) -> {
-                    coverData.frequency = (int) MathExpression.parseMathExpression(state);
+                    coverData.frequency = state.intValue();
                     return coverData;
                 },
-                widget -> widget.setOnScrollNumbers()
-                    .setNumbers(0, Integer.MAX_VALUE)
-                    .setFocusOnGuiOpen(true)
+                widget -> widget.setScrollValues(1, 1000, 10)
+                    .setBounds(0, Integer.MAX_VALUE)
                     .setPos(1, 2 + spaceY * getFrequencyRow())
                     .setSize(spaceX * 5 - 4, 12))
                 .addFollower(

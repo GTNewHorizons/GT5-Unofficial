@@ -44,9 +44,9 @@ public class GT_OverclockCalculator {
      */
     private int machineHeat = 0;
     /**
-     * How much the bits should be moved to the right for each 1800 above recipe heat (Used for duration)
+     * How much the duration should be divided by for each 1800K above recipe heat
      */
-    private int durationDecreasePerHeatOC = 2;
+    private double durationDecreasePerHeatOC = 4;
     /**
      * Whether to enable overclocking with heat like the EBF every 1800 heat difference
      */
@@ -65,20 +65,18 @@ public class GT_OverclockCalculator {
      */
     private double eutDiscount = 1;
     /**
-     * Speeding/Slowing up/down the duration of a recipe at the beginning of calculating overclocks, like
-     * GT++ machines
+     * Speeding/Slowing up/down the duration of a recipe at the beginning of calculating overclocks, like GT++ machines
      */
     private double speedBoost = 1;
 
     /**
-     * How much the bits should be moved to the left when it is overclocking (Going up, 2 meaning it is multiplied with
-     * 4x)
+     * How much the energy would be multiplied by per overclock available
      */
-    private int eutIncreasePerOC = 2;
+    private double eutIncreasePerOC = 4;
     /**
-     * How much the bits should be moved to the right when its overclocking (Going down, 1 meaning it is halved)
+     * How much the duration would be divided by per overclock made that isn't an overclock from HEAT
      */
-    private int durationDecreasePerOC = 1;
+    private double durationDecreasePerOC = 2;
     /**
      * Whether to give EUt Discount when the duration goes below one tick
      */
@@ -199,7 +197,7 @@ public class GT_OverclockCalculator {
      */
     @Nonnull
     public GT_OverclockCalculator enablePerfectOC() {
-        this.durationDecreasePerOC = 2;
+        this.durationDecreasePerOC = 4;
         return this;
     }
 
@@ -277,37 +275,71 @@ public class GT_OverclockCalculator {
     }
 
     /**
-     * Sets the Overclock that should be calculated when one. This uses BitShifting! Default is 2, which is a 4x
-     * decrease
+     * @deprecated Deprecated in favor of {@link #setHeatPerfectOC(double)}. Calls {@link #setHeatPerfectOC(double)}
+     *             where the given value is 2^heatPerfectOC
      */
+    @Deprecated
     @Nonnull
     public GT_OverclockCalculator setHeatPerfectOC(int heatPerfectOC) {
+        return setHeatPerfectOC(Math.pow(2, heatPerfectOC));
+    }
+
+    /**
+     * Sets the Overclock that should be calculated when a heat OC is applied.
+     */
+    @Nonnull
+    public GT_OverclockCalculator setHeatPerfectOC(double heatPerfectOC) {
+        if (heatPerfectOC <= 0) throw new IllegalArgumentException("Heat OC can't be a negative number or zero");
         this.durationDecreasePerHeatOC = heatPerfectOC;
         return this;
     }
 
     /**
-     * Sets the amount that the EUt increases per overclock. This uses BitShifting! Default is 2, which is a 4x increase
+     * @deprecated Deprecated in favor of {@link #setEUtIncreasePerOC(double)}. Calls
+     *             {@link #setEUtIncreasePerOC(double)} where the given value is 2^eutIncreasePerOC
+     */
+    @Deprecated
+    @Nonnull
+    public GT_OverclockCalculator setEUtIncreasePerOC(int eutIncreasePerOC) {
+        return setEUtIncreasePerOC(Math.pow(2, eutIncreasePerOC));
+    }
+
+    /**
+     * Sets the amount that the eut would be multiplied by per overclock. Do not set as 1(ONE) if the duration decrease
+     * is also 1(ONE)!
      */
     @Nonnull
-    public GT_OverclockCalculator setEUtIncreasePerOC(int aEUtIncreasePerOC) {
-        this.eutIncreasePerOC = aEUtIncreasePerOC;
+    public GT_OverclockCalculator setEUtIncreasePerOC(double eutIncreasePerOC) {
+        if (eutIncreasePerOC <= 0)
+            throw new IllegalArgumentException("EUt increase can't be a negative number or zero");
+        this.eutIncreasePerOC = eutIncreasePerOC;
         return this;
     }
 
     /**
-     * Sets the amount that the duration decreases per overclock. This uses BitShifting! Default is 1, which halves the
-     * duration
+     * @deprecated Deprecated in favor of {@link #setDurationDecreasePerOC(double)}. Calls
+     *             {@link #setDurationDecreasePerOC(double)} where the given value is 2^durationDecreasePerOC
      */
+    @Deprecated
     @Nonnull
     public GT_OverclockCalculator setDurationDecreasePerOC(int durationDecreasePerOC) {
+        return setDurationDecreasePerOC(Math.pow(2, durationDecreasePerOC));
+    }
+
+    /**
+     * Sets the amount that the duration would be divided by per overclock. Do not set as 1(ONE) if the eut increase is
+     * also 1(ONE)!
+     */
+    @Nonnull
+    public GT_OverclockCalculator setDurationDecreasePerOC(double durationDecreasePerOC) {
+        if (durationDecreasePerOC <= 0)
+            throw new IllegalArgumentException("Duration decrease can't be a negative number or zero");
         this.durationDecreasePerOC = durationDecreasePerOC;
         return this;
     }
 
     /**
-     * Set One Tick Discount on EUt based on Duration Decrease Per Overclock. This functions the same as single
-     * blocks.
+     * Set One Tick Discount on EUt based on Duration Decrease Per Overclock. This functions the same as single blocks.
      */
     @Nonnull
     public GT_OverclockCalculator setOneTickDiscount(boolean oneTickDiscount) {
@@ -404,11 +436,13 @@ public class GT_OverclockCalculator {
 
         overclockCount = limitOverclocks ? Math.min(maxOverclocks, overclockCount) : overclockCount;
         heatOverclockCount = Math.min(heatOverclockCount, overclockCount);
-        recipeVoltage <<= eutIncreasePerOC * overclockCount;
-        duration >>= durationDecreasePerOC * (overclockCount - heatOverclockCount);
-        duration >>= durationDecreasePerHeatOC * heatOverclockCount;
+        recipeVoltage = (long) Math.floor(recipeVoltage * Math.pow(eutIncreasePerOC, overclockCount));
+        duration = (int) Math.floor(duration / Math.pow(durationDecreasePerOC, overclockCount - heatOverclockCount));
+        duration = (int) Math.floor(duration / Math.pow(durationDecreasePerHeatOC, heatOverclockCount));
         if (oneTickDiscount) {
-            recipeVoltage >>= durationDecreasePerOC * ((int) (machinePowerTier - recipePowerTier - overclockCount));
+            recipeVoltage = (long) Math.floor(
+                recipeVoltage
+                    / Math.pow(durationDecreasePerOC, ((int) (machinePowerTier - recipePowerTier - overclockCount))));
             if (recipeVoltage < 1) {
                 recipeVoltage = 1;
             }
@@ -464,8 +498,8 @@ public class GT_OverclockCalculator {
     /**
      * Calculates the amount of overclocks needed to reach 1 ticking
      *
-     * Here we limit "the tier difference overclock" amount to a number
-     * of overclocks needed to reach 1 tick duration, for example:
+     * Here we limit "the tier difference overclock" amount to a number of overclocks needed to reach 1 tick duration,
+     * for example:
      *
      * recipe initial duration = 250 ticks (12,5 seconds LV(1))
      * we have LCR with IV(5) energy hatch, which overclocks at 4/4 rate
@@ -482,7 +516,7 @@ public class GT_OverclockCalculator {
     private int calculateAmountOfNeededOverclocks(double machinePowerTier, double recipePowerTier) {
         return (int) Math.min(
             calculateAmountOfOverclocks(machinePowerTier, recipePowerTier),
-            Math.ceil(Math.log(duration) / Math.log(1 << durationDecreasePerOC)));
+            Math.ceil(Math.log(duration) / Math.log(durationDecreasePerOC)));
     }
 
     private double calculateHeatDiscountMultiplier() {
@@ -492,9 +526,9 @@ public class GT_OverclockCalculator {
 
     private void calculateLaserOC() {
         long inputEut = machineVoltage * machineAmperage;
-        double currentPenalty = (1 << eutIncreasePerOC) + laserOCPenalty;
+        double currentPenalty = eutIncreasePerOC + laserOCPenalty;
         while (inputEut > recipeVoltage * currentPenalty && recipeVoltage * currentPenalty > 0 && duration > 1) {
-            duration >>= durationDecreasePerOC;
+            duration /= durationDecreasePerOC;
             recipeVoltage *= currentPenalty;
             currentPenalty += laserOCPenalty;
         }
@@ -531,8 +565,8 @@ public class GT_OverclockCalculator {
     }
 
     /**
-     * Returns duration as a double to show how much it is overclocking too much to determine extra parallel.
-     * This doesn't count as calculating
+     * Returns duration as a double to show how much it is overclocking too much to determine extra parallel. This
+     * doesn't count as calculating
      */
     public double calculateDurationUnderOneTick() {
         if (durationUnderOneTickSupplier != null) return durationUnderOneTickSupplier.get();
@@ -542,8 +576,8 @@ public class GT_OverclockCalculator {
             calculateRecipePowerTier(calculateHeatDiscountMultiplier()));
         normalOverclocks = limitOverclocks ? Math.min(normalOverclocks, maxOverclocks) : normalOverclocks;
         int heatOverclocks = Math.min(calculateAmountOfHeatOverclocks(), normalOverclocks);
-        return (duration * speedBoost) / (Math.pow(1 << durationDecreasePerOC, normalOverclocks - heatOverclocks)
-            * Math.pow(1 << durationDecreasePerHeatOC, heatOverclocks));
+        return (duration * speedBoost) / (Math.pow(durationDecreasePerOC, normalOverclocks - heatOverclocks)
+            * Math.pow(durationDecreasePerHeatOC, heatOverclocks));
     }
 
     /**
@@ -572,21 +606,22 @@ public class GT_OverclockCalculator {
 
         double parallelMultiplierFromOverclocks = (double) currentParallel / originalMaxParallel;
         double amountOfParallelHeatOverclocks = Math.min(
-            Math.log(parallelMultiplierFromOverclocks) / Math.log(1 << durationDecreasePerHeatOC),
+            Math.log(parallelMultiplierFromOverclocks) / Math.log(durationDecreasePerHeatOC),
             calculateAmountOfHeatOverclocks());
-        double amountOfParallelOverclocks = Math.log(parallelMultiplierFromOverclocks)
-            / Math.log(1 << durationDecreasePerOC)
-            - amountOfParallelHeatOverclocks * (1 << durationDecreasePerHeatOC - durationDecreasePerOC);
+        double amountOfParallelOverclocks = Math.log(parallelMultiplierFromOverclocks) / Math.log(durationDecreasePerOC)
+            - amountOfParallelHeatOverclocks * (durationDecreasePerHeatOC - durationDecreasePerOC);
         double machineTier = calculateMachinePowerTier();
         double recipeTier = calculateRecipePowerTier(heatDiscountMultiplier);
         double amountOfTotalOverclocks = calculateAmountOfOverclocks(machineTier, recipeTier);
         if (recipeVoltage <= GT_Values.V[0]) {
             amountOfTotalOverclocks = Math.min(amountOfTotalOverclocks, calculateRecipeToMachineVoltageDifference());
         }
+        amountOfTotalOverclocks = limitOverclocks ? Math.min(amountOfTotalOverclocks, maxOverclocks)
+            : amountOfTotalOverclocks;
         return (long) Math.ceil(
-            recipeVoltage * Math.pow(1 << eutIncreasePerOC, amountOfParallelOverclocks + amountOfParallelHeatOverclocks)
+            recipeVoltage * Math.pow(eutIncreasePerOC, amountOfParallelOverclocks + amountOfParallelHeatOverclocks)
                 * Math.pow(
-                    1 << eutIncreasePerOC,
+                    eutIncreasePerOC,
                     amountOfTotalOverclocks - (amountOfParallelOverclocks + amountOfParallelHeatOverclocks))
                 * originalMaxParallel
                 * eutDiscount

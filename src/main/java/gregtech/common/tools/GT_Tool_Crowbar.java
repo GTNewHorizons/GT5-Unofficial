@@ -13,6 +13,7 @@ import com.google.common.base.Strings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.items.behaviors.Behaviour_Crowbar;
@@ -96,8 +97,8 @@ public class GT_Tool_Crowbar extends GT_Tool {
         }
         String tTool = aBlock.getHarvestTool(aMetaData);
         if (Strings.isNullOrEmpty(tTool)) {
-            for (var i : GT_MetaGenerated_Tool_01.INSTANCE.mToolStats.values()) {
-                if (i instanceof GT_Tool_Crowbar && !i.isMinableBlock(aBlock, aMetaData)) {
+            for (IToolStats i : GT_MetaGenerated_Tool_01.INSTANCE.mToolStats.values()) {
+                if (i instanceof GT_Tool_Crowbar && i != this && !i.isMinableBlock(aBlock, aMetaData)) {
                     return false;
                 }
             }

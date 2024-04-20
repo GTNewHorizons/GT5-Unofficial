@@ -19,9 +19,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
@@ -32,7 +34,6 @@ import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
 import appeng.util.item.AEItemStack;
 import appeng.util.item.ItemList;
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
@@ -98,17 +99,13 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
             final int tSize = stack.stackTagCompound.getInteger("mItemCount");
             if (tContents != null && tSize > 0) {
                 tooltip.add(
-                    GT_LanguageManager.addStringLocalization(
-                        "TileEntity_CHEST_INFO",
-                        "Contains Item: ",
-                        !GregTech_API.sPostloadFinished) + EnumChatFormatting.YELLOW
+                    GT_LanguageManager.addStringLocalization("TileEntity_CHEST_INFO", "Contains Item: ")
+                        + EnumChatFormatting.YELLOW
                         + tContents.getDisplayName()
                         + EnumChatFormatting.GRAY);
                 tooltip.add(
-                    GT_LanguageManager.addStringLocalization(
-                        "TileEntity_CHEST_AMOUNT",
-                        "Item Amount: ",
-                        !GregTech_API.sPostloadFinished) + EnumChatFormatting.GREEN
+                    GT_LanguageManager.addStringLocalization("TileEntity_CHEST_AMOUNT", "Item Amount: ")
+                        + EnumChatFormatting.GREEN
                         + GT_Utility.formatNumbers(tSize)
                         + EnumChatFormatting.GRAY);
             }
@@ -527,6 +524,9 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
         return true;
     }
 
+    protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
+    protected int clientItemCount;
+
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
@@ -550,13 +550,15 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
                 new TextWidget("Item Amount").setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(10, 20))
             .widget(
-                TextWidget
-                    .dynamicString(
-                        () -> GT_Utility.parseNumberToString(
-                            this instanceof GT_MetaTileEntity_QuantumChest
-                                ? ((GT_MetaTileEntity_QuantumChest) this).mItemCount
-                                : 0))
+                new TextWidget().setStringSupplier(() -> numberFormat.format(clientItemCount))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setPos(10, 30));
+                    .setPos(10, 30))
+            .widget(
+                new FakeSyncWidget.IntegerSyncer(
+                    () -> this instanceof GT_MetaTileEntity_QuantumChest
+                        ? ((GT_MetaTileEntity_QuantumChest) this).mItemCount
+                        : 0,
+                    value -> clientItemCount = value));
+
     }
 }

@@ -1,7 +1,6 @@
 package gregtech.api.util;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
 
 import net.minecraft.block.Block;
@@ -12,7 +11,7 @@ import gnu.trove.map.hash.TByteObjectHashMap;
 public class GT_BlockMap<V> {
 
     public static final byte WILDCARD = -1;
-    private final Map<Block, TByteObjectMap<V>> backing = new HashMap<>();
+    private final ConcurrentHashMap<Block, TByteObjectMap<V>> backing = new ConcurrentHashMap<>();
     private int size = 0;
 
     private TByteObjectMap<V> getSubmap(Block block) {

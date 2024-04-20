@@ -13,18 +13,29 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.math.Color;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -125,6 +136,16 @@ public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hat
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
         float aX, float aY, float aZ) {
+        if (aBaseMetaTileEntity.isClientSide()) return true;
+        if (side == aBaseMetaTileEntity.getFrontFacing()) {
+            if (aPlayer instanceof FakePlayer) return false;
+            if (connection == null || !connection.isValid()) {
+                aPlayer.addChatComponentMessage(new ChatComponentTranslation("GT5U.machines.dronecentre.noconnection"));
+                return false;
+            }
+            GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+            return true;
+        }
         return false;
     }
 
@@ -240,6 +261,45 @@ public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hat
     }
 
     @Override
+    public boolean doesBindPlayerInventory() {
+        return false;
+    }
+
+    @Override
+    public int getGUIWidth() {
+        return 150;
+    }
+
+    @Override
+    public int getGUIHeight() {
+        return 40;
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setGuiTint(getGUIColorization());
+        builder.widget(
+            ButtonWidget.closeWindowButton(true)
+                .setPos(135, 3))
+            .widget(
+                new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.drone_custom_name"))
+                    .setTextAlignment(Alignment.Center)
+                    .setPos(0, 5)
+                    .setSize(150, 8))
+            .widget(
+                new TextFieldWidget().setGetter(() -> connection == null ? "" : connection.getCustomName())
+                    .setSetter(var -> { if (connection != null) connection.setCustomName(var); })
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setTextColor(Color.WHITE.dark(1))
+                    .setFocusOnGuiOpen(true)
+                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD_LIGHT_GRAY.withOffset(-1, -1, 2, 2))
+                    .setPos(10, 16)
+                    .setSize(130, 16))
+            .build();
+    }
+
+    @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
@@ -248,6 +308,7 @@ public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hat
             tag.setInteger("x", connection.centreCoord.posX);
             tag.setInteger("y", connection.centreCoord.posY);
             tag.setInteger("z", connection.centreCoord.posZ);
+            tag.setString("name", connection.customName);
         }
     }
 
@@ -255,15 +316,19 @@ public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hat
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         NBTTagCompound tag = accessor.getNBTData();
-        currenttip.add(
-            tag.getBoolean("connection")
-                ? EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.waila.drone_downlink.noConnection")
-                : EnumChatFormatting.AQUA + StatCollector.translateToLocal("GT5U.waila.drone_downlink.connection")
+        if (tag.getBoolean("connection")) {
+            currenttip
+                .add(EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.waila.drone_downlink.noConnection"));
+        } else {
+            currenttip.add(
+                EnumChatFormatting.AQUA + StatCollector.translateToLocal("GT5U.waila.drone_downlink.connection")
                     + tag.getInteger("x")
                     + " "
                     + tag.getInteger("y")
                     + " "
                     + tag.getInteger("z"));
+            currenttip.add(EnumChatFormatting.YELLOW + tag.getString("name"));
+        }
         super.getWailaBody(itemStack, currenttip, accessor, config);
     }
 }

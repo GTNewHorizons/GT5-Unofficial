@@ -622,7 +622,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
     @Override
     public void onLoad() {
         super.onLoad();
-        new GT_Renderer_Block();
+        GT_Renderer_Block.register();
         new GT_MultiTile_Renderer();
         new GT_RenderDrone();
         metaGeneratedItemRenderer = new GT_MetaGenerated_Item_Renderer();

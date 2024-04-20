@@ -69,6 +69,7 @@ public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeT
             .addMaintenanceHatch("Side centered", 2)
             .addMufflerHatch("Side centered", 2)
             .addInputHatch("Gas Fuel, Side centered", 2)
+            .addOtherStructurePart("Air", "3x3 area in front of controller")
             .toolTipFinisher("Gregtech");
         return tt;
     }

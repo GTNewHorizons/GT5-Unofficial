@@ -91,7 +91,7 @@ public class GTParallelHelperTest {
             .setMachine(machine, false, false)
             .setItemInputs(inputItems)
             .setMaxParallel(10)
-            .setAvailableEUt(100)
+            .setAvailableEUt(10)
             .setConsumption(false)
             .setOutputCalculation(true)
             .setChanceMultiplier(10)
