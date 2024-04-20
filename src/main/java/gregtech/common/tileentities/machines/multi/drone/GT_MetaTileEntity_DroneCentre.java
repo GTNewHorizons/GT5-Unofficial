@@ -5,6 +5,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.GT_HatchElement.InputBus;
 import static gregtech.api.enums.GT_Values.AuthorSilverMoon;
 import static gregtech.api.multitileentity.multiblock.casing.Glasses.chainAllGlasses;
+import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import java.io.IOException;
@@ -16,6 +17,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -60,6 +62,7 @@ import appeng.api.util.DimensionalCoord;
 import appeng.api.util.WorldCoord;
 import appeng.client.render.BlockPosHighlighter;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GT_UITextures;
@@ -94,6 +97,7 @@ public class GT_MetaTileEntity_DroneCentre extends
     private int droneLevel = 0;
     private int buttonID;
     private String searchFilter = "";
+    private boolean useRender = true;
     private final List<DroneConnection> connectionList = new ArrayList<>();
     public HashMap<String, String> tempNameList = new HashMap<>();
     // Save centre by dimID
@@ -223,6 +227,20 @@ public class GT_MetaTileEntity_DroneCentre extends
     }
 
     @Override
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
+        useRender = !useRender;
+        aPlayer.addChatComponentMessage(
+            new ChatComponentTranslation(
+                "GT5U.machines.dronecentre." + (useRender ? "enableRender" : "disableRender")));
+        if (useRender) {
+            createRenderBlock();
+        } else {
+            destroyRenderBlock();
+        }
+    }
+
+    @Override
     public int getDamageToComponent(ItemStack aStack) {
         return 0;
     }
@@ -330,7 +348,33 @@ public class GT_MetaTileEntity_DroneCentre extends
     @Override
     public void onBlockDestroyed() {
         destroyRenderBlock();
+        connectionList.clear();
+        if (droneLevel != 0) spawnDroneItem();
         super.onBlockDestroyed();
+    }
+
+    private void spawnDroneItem() {
+        ItemStack insideDrone = new ItemStack(switch (droneLevel) {
+            case 1:
+                yield ItemList.TierdDrone0.getItem();
+            case 2:
+                yield ItemList.TierdDrone1.getItem();
+            case 3:
+                yield ItemList.TierdDrone2.getItem();
+            default:
+                yield null;
+        }, 1);
+        final EntityItem tItemEntity = new EntityItem(
+            getBaseMetaTileEntity().getWorld(),
+            getBaseMetaTileEntity().getXCoord() + XSTR_INSTANCE.nextFloat() * 0.8F + 0.1F,
+            getBaseMetaTileEntity().getYCoord() + XSTR_INSTANCE.nextFloat() * 0.8F + 0.1F,
+            getBaseMetaTileEntity().getZCoord() + XSTR_INSTANCE.nextFloat() * 0.8F + 0.1F,
+            insideDrone);
+        tItemEntity.motionX = (XSTR_INSTANCE.nextGaussian() * 0.05D);
+        tItemEntity.motionY = (XSTR_INSTANCE.nextGaussian() * 0.25D);
+        tItemEntity.motionZ = (XSTR_INSTANCE.nextGaussian() * 0.05D);
+        getBaseMetaTileEntity().getWorld()
+            .spawnEntityInWorld(tItemEntity);
     }
 
     @Override
@@ -384,6 +428,7 @@ public class GT_MetaTileEntity_DroneCentre extends
     }
 
     private void createRenderBlock() {
+        if (!useRender) return;
         int x = getBaseMetaTileEntity().getXCoord();
         int y = getBaseMetaTileEntity().getYCoord();
         int z = getBaseMetaTileEntity().getZCoord();
