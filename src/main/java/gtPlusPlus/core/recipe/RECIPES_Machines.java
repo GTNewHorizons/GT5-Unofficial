@@ -2760,13 +2760,13 @@ public class RECIPES_Machines {
 
         CORE.RA.addSixSlotAssemblingRecipe(
                 new ItemStack[] { GregtechItemList.Casing_Vacuum_Furnace.get(1),
-                        CI.getTieredComponent(OrePrefixes.wireGt16, 7, 4), CI.getEnergyCore(6, 1), CI.getRobotArm(4, 4),
-                        CI.getTieredComponent(OrePrefixes.plate, 7, 8),
+                        CI.getTieredComponent(OrePrefixes.wireGt16, 7, 4), CI.getEnergyCore(5, 1), CI.getRobotArm(4, 4),
+                        CI.getTieredComponent(OrePrefixes.plate, 6, 8),
                         CI.getTieredComponent(OrePrefixes.circuit, 6, 8), },
-                CI.getTieredFluid(7, (144 * 4 * 5)), // Input Fluid
+                CI.getTieredFluid(6, (144 * 4 * 5)), // Input Fluid
                 GregtechItemList.Controller_Vacuum_Furnace.get(1),
                 60 * 20 * 12,
-                MaterialUtils.getVoltageForTier(7));
+                MaterialUtils.getVoltageForTier(6));
     }
 
     private static void milling() {
