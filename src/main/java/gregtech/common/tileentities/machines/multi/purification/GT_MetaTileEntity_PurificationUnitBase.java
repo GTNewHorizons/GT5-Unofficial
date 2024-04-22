@@ -2,6 +2,7 @@ package gregtech.common.tileentities.machines.multi.purification;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -17,6 +18,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -115,6 +117,11 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
         }
     }
 
+    /**
+     * Get the success chance of the recipe. A value of 10000 means 100%.
+     */
+    public abstract int getRecipeSuccessChance();
+
     public void startCycle(int cycleTime, int progressTime) {
         for (FluidStack input : this.currentRecipe.mFluidInputs) {
             this.depleteInput(input);
@@ -129,7 +136,29 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
     }
 
     public void endCycle() {
-        this.addFluidOutputs(this.currentRecipe.mFluidOutputs);
+        ThreadLocalRandom random = ThreadLocalRandom.current();
+
+        // First see if the recipe succeeded
+        int successRoll = random.nextInt(10000);
+        if (successRoll < getRecipeSuccessChance()) {
+            this.addFluidOutputs(this.currentRecipe.mFluidOutputs);
+            // If this recipe has random item outputs, roll on it and add outputs
+            if (this.currentRecipe.mChances != null) {
+                for (int i = 0; i < this.currentRecipe.mOutputs.length; ++i) {
+                    int roll = random.nextInt(10000);
+                    if (roll <= this.currentRecipe.mChances[i]) {
+                        this.addOutput(this.currentRecipe.mOutputs[i]);
+                    }
+                }
+            } else {
+                // Guaranteed item output
+                for (int i = 0; i < this.currentRecipe.mOutputs.length; ++i) {
+                    this.addOutput(this.currentRecipe.mOutputs[i]);
+                }
+            }
+        }
+
+        // Reset recipe values for next iteration
         this.mMaxProgresstime = 0;
         this.mProgresstime = 0;
         this.lEUt = 0;
@@ -299,6 +328,16 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
                     + ", "
                     + controllerZ
                     + ".");
+
+            // If recipe is running, display success chance
+            if (this.mMaxProgresstime != 0) {
+                ret.add(
+                    "Success chance: " + EnumChatFormatting.YELLOW
+                        + GT_Utility.formatNumbers(getRecipeSuccessChance() / 100)
+                        + "%"
+                        + EnumChatFormatting.RESET);
+            }
+
         } else ret.add("This Purification Unit is not linked to any Water Purification Plant.");
         return ret.toArray(new String[0]);
     }
