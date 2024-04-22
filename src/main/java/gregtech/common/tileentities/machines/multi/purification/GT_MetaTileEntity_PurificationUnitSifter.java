@@ -27,7 +27,9 @@ import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTech_API;
@@ -45,9 +47,10 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_StructureUtility;
+import gregtech.api.util.GT_Utility;
 
-public class GT_MetaTileEntity_PurificationUnitSifter
-    extends GT_MetaTileEntity_PurificationUnitBase<GT_MetaTileEntity_PurificationUnitSifter> {
+public class GT_MetaTileEntity_PurificationUnitSifter extends
+    GT_MetaTileEntity_PurificationUnitBase<GT_MetaTileEntity_PurificationUnitSifter> implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String STRUCTURE_PIECE_MAIN_SURVIVAL = "main_survival";
@@ -190,6 +193,26 @@ public class GT_MetaTileEntity_PurificationUnitSifter
             STRUCTURE_X_OFFSET,
             STRUCTURE_Y_OFFSET,
             STRUCTURE_Z_OFFSET);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        int built = survivialBuildPiece(
+            STRUCTURE_PIECE_MAIN_SURVIVAL,
+            stackSize,
+            STRUCTURE_X_OFFSET,
+            STRUCTURE_Y_OFFSET,
+            STRUCTURE_Z_OFFSET,
+            elementBudget,
+            env,
+            true);
+        if (built == -1) {
+            GT_Utility.sendChatToPlayer(
+                env.getActor(),
+                EnumChatFormatting.GREEN + "Auto placing done ! Now go place the water yourself !");
+            return 0;
+        }
+        return built;
     }
 
     @Override
