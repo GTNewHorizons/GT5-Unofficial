@@ -1931,7 +1931,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         super.getWailaBody(itemStack, currentTip, accessor, config);
     }
 
-    public final void getOriginalWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+    public final void getMTEWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
     }
