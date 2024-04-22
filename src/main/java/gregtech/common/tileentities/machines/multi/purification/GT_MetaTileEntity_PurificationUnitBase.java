@@ -17,6 +17,7 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
+import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -118,9 +119,11 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
     }
 
     /**
-     * Get the success chance of the recipe. A value of 10000 means 100%.
+     * Get the success chance of the recipe, from 0 to 1
      */
-    public abstract int getRecipeSuccessChance();
+    public float getRecipeSuccessChance() {
+        return this.currentRecipe.getMetadataOrDefault(PurificationPlantBaseChanceKey.INSTANCE, 0.0f);
+    }
 
     public void startCycle(int cycleTime, int progressTime) {
         for (FluidStack input : this.currentRecipe.mFluidInputs) {
@@ -140,7 +143,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
 
         // First see if the recipe succeeded
         int successRoll = random.nextInt(10000);
-        if (successRoll < getRecipeSuccessChance()) {
+        if (successRoll <= getRecipeSuccessChance() * 10000) {
             this.addFluidOutputs(this.currentRecipe.mFluidOutputs);
             // If this recipe has random item outputs, roll on it and add outputs
             if (this.currentRecipe.mChances != null) {

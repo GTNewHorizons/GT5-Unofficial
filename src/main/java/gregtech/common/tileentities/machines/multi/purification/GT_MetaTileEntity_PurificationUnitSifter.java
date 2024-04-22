@@ -99,12 +99,6 @@ public class GT_MetaTileEntity_PurificationUnitSifter
     }
 
     @Override
-    public int getRecipeSuccessChance() {
-        // Debug: 80%
-        return 8000;
-    }
-
-    @Override
     public long getActivePowerUsage() {
         // TODO: Balancing, etc.
         return 32720;
