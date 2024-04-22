@@ -3,6 +3,10 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
+import static gregtech.api.util.GT_Utility.formatNumbers;
+import static mcp.mobius.waila.api.SpecialChars.GREEN;
+import static mcp.mobius.waila.api.SpecialChars.RED;
+import static mcp.mobius.waila.api.SpecialChars.RESET;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,10 +14,12 @@ import java.util.List;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.GT_Mod;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
@@ -26,11 +32,14 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GT_HatchElementBuilder;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GT_Waila;
 import gregtech.api.util.IGT_HatchAdder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Steam_BusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Steam_BusOutput;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMultiBase<T>>
         extends GregtechMeta_MultiBlockBase<T> {
@@ -323,6 +332,39 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
             }
         }
         return ret;
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+            IWailaConfigHandler config) {
+        final NBTTagCompound tag = accessor.getNBTData();
+
+        if (tag.getBoolean("incompleteStructure")) {
+            currentTip.add(RED + "** INCOMPLETE STRUCTURE **" + RESET);
+        }
+        currentTip.add(
+                (tag.getBoolean("hasProblems") ? (RED + "** HAS PROBLEMS **") : GREEN + "Running Fine") + RESET
+                        + "  Efficiency: "
+                        + tag.getFloat("efficiency")
+                        + "%");
+
+        boolean isActive = tag.getBoolean("isActive");
+        if (isActive) {
+            long actualEnergyUsage = tag.getLong("energyUsage");
+            if (actualEnergyUsage > 0) {
+                currentTip.add(
+                        StatCollector
+                                .translateToLocalFormatted("GTPP.waila.steam.use", formatNumbers(actualEnergyUsage)));
+            }
+        }
+        currentTip.add(
+                GT_Waila.getMachineProgressString(isActive, tag.getInteger("maxProgress"), tag.getInteger("progress")));
+        // Show ns on the tooltip
+        if (GT_Mod.gregtechproxy.wailaAverageNS && tag.hasKey("averageNS")) {
+            int tAverageTime = tag.getInteger("averageNS");
+            currentTip.add("Average CPU load of ~" + formatNumbers(tAverageTime) + " ns");
+        }
+        super.getMTEWailaBody(itemStack, currentTip, accessor, config);
     }
 
     protected static <T extends GregtechMeta_SteamMultiBase<T>> GT_HatchElementBuilder<T> buildSteamInput(
