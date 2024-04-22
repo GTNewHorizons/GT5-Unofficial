@@ -8,10 +8,15 @@ import static gregtech.api.enums.GT_HatchElement.InputBus;
 import static gregtech.api.enums.GT_HatchElement.InputHatch;
 import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_GLOW;
+import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
 import java.util.List;
 
@@ -27,6 +32,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
@@ -46,23 +52,46 @@ public class GT_MetaTileEntity_PurificationUnitSifter
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
+    private static final int STRUCTURE_X_OFFSET = 5;
+    private static final int STRUCTURE_Y_OFFSET = 2;
+    private static final int STRUCTURE_Z_OFFSET = 1;
+
     private int mCasingAmount;
 
     private static final IStructureDefinition<GT_MetaTileEntity_PurificationUnitSifter> STRUCTURE_DEFINITION = StructureDefinition
         .<GT_MetaTileEntity_PurificationUnitSifter>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
-            new String[][] { { "AAA", "A~A", "AAA" }, { "AAA", "A A", "AAA" }, { "AAA", "AAA", "AAA" } })
+            // spotless:off
+            new String[][] {
+                { "           ", "           ", "           ", "           " },
+                { "           ", "   AAAAA   ", "   AA~AA   ", "   AAAAA   " },
+                { "           ", "  A     A  ", "  A     A  ", "  AAAAAAA  " },
+                { "           ", " A       A ", " A       A ", " AAAAAAAAA " },
+                { "           ", "A         A", "A   CCC   A", "AAAAAAAAAAA" },
+                { "    DDD    ", "A         A", "A  C   C  A", "AAAAAAAAAAA" },
+                { "DDDDDBD    ", "A    B    A", "A  C B C  A", "AAAAAAAAAAA" },
+                { "    DDD    ", "A         A", "A  C   C  A", "AAAAAAAAAAA" },
+                { "           ", "A         A", "A   CCC   A", "AAAAAAAAAAA" },
+                { "           ", " A       A ", " A       A ", " AAAAAAAAA " },
+                { "           ", "  A     A  ", "  A     A  ", "  AAAAAAA  " },
+                { "           ", "   AAAAA   ", "   AAAAA   ", "   AAAAA   " } })
+        // spotless:on
         .addElement(
             'A',
             ofChain(
                 lazy(
                     t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitSifter>buildHatchAdder()
                         .atLeastList(t.getAllowedHatches())
-                        .casingIndex(48)
+                        .casingIndex(49)
                         .dot(1)
                         .build()),
-                onElementPass(t -> t.mCasingAmount++, ofBlock(GregTech_API.sBlockCasings4, 0))))
+                // Currently clean stainless steel casing
+                onElementPass(t -> t.mCasingAmount++, ofBlock(GregTech_API.sBlockCasings4, 1))))
+        // currently ptfe pipe casing
+        .addElement('B', ofBlock(GregTech_API.sBlockCasings8, 1))
+        .addElement('C', ofFrame(Materials.Iridium))
+        .addElement('D', ofFrame(Materials.DamascusSteel))
         .build();
 
     public GT_MetaTileEntity_PurificationUnitSifter(int aID, String aName, String aNameRegional) {
@@ -136,7 +165,7 @@ public class GT_MetaTileEntity_PurificationUnitSifter
                     + "1"
                     + EnumChatFormatting.RESET)
             .addSeparator()
-            .beginStructureBlock(3, 3, 3, true)
+            .beginStructureBlock(11, 4, 11, true)
             .addController("Front center")
             .toolTipFinisher("Gregtech");
         return tt;
@@ -144,7 +173,13 @@ public class GT_MetaTileEntity_PurificationUnitSifter
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 1, 1, 0);
+        buildPiece(
+            STRUCTURE_PIECE_MAIN,
+            stackSize,
+            hintsOnly,
+            STRUCTURE_X_OFFSET,
+            STRUCTURE_Y_OFFSET,
+            STRUCTURE_Z_OFFSET);
     }
 
     @Override
@@ -157,29 +192,29 @@ public class GT_MetaTileEntity_PurificationUnitSifter
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean active, boolean redstoneLevel) {
-        if (side == facing) {
-            if (active) return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][48], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE)
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
+                                 ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+        if (sideDirection == facingDirection) {
+            if (active) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(49), TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
                 .extFacing()
                 .build(),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW)
+                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][48], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY)
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(49), TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER)
                 .extFacing()
                 .build(),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_GLOW)
+                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
         }
-        return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][48] };
+        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(49) };
     }
 
     @Override
@@ -188,7 +223,9 @@ public class GT_MetaTileEntity_PurificationUnitSifter
     }
 
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        boolean result = checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0);
+        boolean result = checkPiece(STRUCTURE_PIECE_MAIN,  STRUCTURE_X_OFFSET,
+            STRUCTURE_Y_OFFSET,
+            STRUCTURE_Z_OFFSET);
         // Also call super.checkMachine() to fix maintenance issues.
         return result && super.checkMachine(aBaseMetaTileEntity, aStack);
     }
