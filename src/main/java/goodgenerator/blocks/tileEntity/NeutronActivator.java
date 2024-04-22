@@ -69,7 +69,12 @@ public class NeutronActivator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     protected int height = 0;
     protected int eV = 0, mCeil = 0, mFloor = 0;
     private GT_Recipe lastRecipe;
-    protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
+    protected static final NumberFormatMUI numberFormat;
+    static {
+        numberFormat = new NumberFormatMUI();
+        numberFormat.setMinimumFractionDigits(2);
+        numberFormat.setMaximumFractionDigits(2);
+    }
     final XSTR R = new XSTR();
 
     private static final IIconContainer textureFontOn = new Textures.BlockIcons.CustomIcon("icons/NeutronActivator_On");
@@ -451,7 +456,7 @@ public class NeutronActivator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
                         new TextWidget(StatCollector.translateToLocal("gui.NeutronActivator.0"))
                                 .setDefaultColor(COLOR_TEXT_WHITE.get()))
                 .widget(
-                        new TextWidget().setStringSupplier(() -> numberFormat.formatWithSuffix(eV) + "eV")
+                        new TextWidget().setStringSupplier(() -> numberFormat.format(eV / 1_000_000d) + " MeV")
                                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                                 .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
                 .widget(new FakeSyncWidget.IntegerSyncer(() -> eV, val -> eV = val));
