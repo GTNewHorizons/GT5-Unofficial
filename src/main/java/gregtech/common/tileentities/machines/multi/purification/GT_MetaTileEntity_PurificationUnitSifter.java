@@ -85,6 +85,8 @@ public class GT_MetaTileEntity_PurificationUnitSifter
         return 32720;
     }
 
+
+
     @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.purificationPlantGrade1Recipes;
@@ -105,6 +107,14 @@ public class GT_MetaTileEntity_PurificationUnitSifter
         this.endRecipeProcessing();
         if (recipe == null) {
             return CheckRecipeResultRegistry.NO_RECIPE;
+        }
+
+        if (this.protectsExcessFluid() && !this.canOutputAll(recipe.mFluidOutputs)) {
+            return CheckRecipeResultRegistry.FLUID_OUTPUT_FULL;
+        }
+
+        if (this.protectsExcessItem() && !this.canOutputAll(recipe.mOutputs)) {
+            return CheckRecipeResultRegistry.ITEM_OUTPUT_FULL;
         }
 
         this.currentRecipe = recipe;

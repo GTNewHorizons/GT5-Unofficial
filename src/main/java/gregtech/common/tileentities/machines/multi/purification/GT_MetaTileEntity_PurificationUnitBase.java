@@ -388,4 +388,14 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
             return PurificationUnitStatus.ONLINE;
         }
     }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
+    }
+
+    @Override
+    protected boolean supportsCraftingMEBuffer() {
+        return false;
+    }
 }
