@@ -74,7 +74,9 @@ public class GregtechMetaTileEntity_SteamMacerator
         }
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType(getMachineType()).addInfo("Controller Block for the Steam Macerator")
-                .addInfo("Macerates " + getMaxParallelRecipes() + " ores at a time").addSeparator()
+                .addInfo("33.3% faster than using a single block Steam Macerator.")
+                .addInfo("Uses only 66.6% of the steam/s required compared to a single block Steam Macerator.")
+                .addInfo("Macerates up to " + getMaxParallelRecipes() + " things at a time").addSeparator()
                 .beginStructureBlock(3, 3, 3, true).addController("Front center")
                 .addCasingInfoMin(mCasingName, 14, false).addOtherStructurePart(TT_steaminputbus, "Any casing", 1)
                 .addOtherStructurePart(TT_steamoutputbus, "Any casing", 1)
@@ -131,6 +133,7 @@ public class GregtechMetaTileEntity_SteamMacerator
         return RecipeMaps.maceratorRecipes;
     }
 
+    // note that a basic steam machine has .setEUtDiscount(2F).setSpeedBoost(2F). So these are bonuses.
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
@@ -138,7 +141,7 @@ public class GregtechMetaTileEntity_SteamMacerator
             @Override
             @Nonnull
             protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
-                return GT_OverclockCalculator.ofNoOverclock(recipe);
+                return GT_OverclockCalculator.ofNoOverclock(recipe).setEUtDiscount(1.33F).setSpeedBoost(1.5F);
             }
 
         }.setMaxParallel(getMaxParallelRecipes());
