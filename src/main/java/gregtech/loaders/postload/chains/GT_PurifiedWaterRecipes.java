@@ -20,7 +20,7 @@ public class GT_PurifiedWaterRecipes {
             .fluidInputs(GT_ModHandler.getDistilledWater(1000L))
             .fluidOutputs(Materials.Grade1PurifiedWater.getFluid(900L))
             .itemOutputs(new ItemStack(Items.stick, 1), Materials.Stone.getDust(1), Materials.Gold.getNuggets(1))
-            .outputChances(100, 50, 10)
+            .outputChances(1000, 500, 100)
             .duration(duration)
             .eut(TierEU.RECIPE_LuV)
             .addTo(purificationPlantGrade1Recipes);
