@@ -14,8 +14,10 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
+import java.util.Arrays;
 import java.util.List;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -24,6 +26,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
+import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
@@ -47,6 +50,7 @@ public class GT_MetaTileEntity_PurificationUnitSifter
     extends GT_MetaTileEntity_PurificationUnitBase<GT_MetaTileEntity_PurificationUnitSifter> {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_MAIN_SURVIVAL = "main_survival";
 
     private static final int STRUCTURE_X_OFFSET = 5;
     private static final int STRUCTURE_Y_OFFSET = 2;
@@ -54,25 +58,34 @@ public class GT_MetaTileEntity_PurificationUnitSifter
 
     private int mCasingAmount;
 
+    private static final String[][] structure =
+        // spotless:off
+        new String[][] {
+            { "           ", "           ", "           ", "           " },
+            { "           ", "   AAAAA   ", "   AA~AA   ", "   AAAAA   " },
+            { "           ", "  A     A  ", "  AWWWWWA  ", "  AAAAAAA  " },
+            { "           ", " A       A ", " AWWWWWWWA ", " AAAAAAAAA " },
+            { "           ", "A         A", "AWWWCCCWWWA", "AAAAAAAAAAA" },
+            { "    DDD    ", "A         A", "AWWCWWWCWWA", "AAAAAAAAAAA" },
+            { "DDDDDBD    ", "A    B    A", "AWWCWBWCWWA", "AAAAAAAAAAA" },
+            { "    DDD    ", "A         A", "AWWCWWWCWWA", "AAAAAAAAAAA" },
+            { "           ", "A         A", "AWWWCCCWWWA", "AAAAAAAAAAA" },
+            { "           ", " A       A ", " AWWWWWWWA ", " AAAAAAAAA " },
+            { "           ", "  A     A  ", "  AWWWWWA  ", "  AAAAAAA  " },
+            { "           ", "   AAAAA   ", "   AAAAA   ", "   AAAAA   " } };
+    // spotless:on
+
     private static final IStructureDefinition<GT_MetaTileEntity_PurificationUnitSifter> STRUCTURE_DEFINITION = StructureDefinition
         .<GT_MetaTileEntity_PurificationUnitSifter>builder()
+        .addShape(STRUCTURE_PIECE_MAIN, structure)
         .addShape(
-            STRUCTURE_PIECE_MAIN,
-            // spotless:off
-            new String[][] {
-                { "           ", "           ", "           ", "           " },
-                { "           ", "   AAAAA   ", "   AA~AA   ", "   AAAAA   " },
-                { "           ", "  A     A  ", "  A     A  ", "  AAAAAAA  " },
-                { "           ", " A       A ", " A       A ", " AAAAAAAAA " },
-                { "           ", "A         A", "A   CCC   A", "AAAAAAAAAAA" },
-                { "    DDD    ", "A         A", "A  C   C  A", "AAAAAAAAAAA" },
-                { "DDDDDBD    ", "A    B    A", "A  C B C  A", "AAAAAAAAAAA" },
-                { "    DDD    ", "A         A", "A  C   C  A", "AAAAAAAAAAA" },
-                { "           ", "A         A", "A   CCC   A", "AAAAAAAAAAA" },
-                { "           ", " A       A ", " A       A ", " AAAAAAAAA " },
-                { "           ", "  A     A  ", "  A     A  ", "  AAAAAAA  " },
-                { "           ", "   AAAAA   ", "   AAAAA   ", "   AAAAA   " } })
-        // spotless:on
+            STRUCTURE_PIECE_MAIN_SURVIVAL,
+            Arrays.stream(structure)
+                .map(
+                    sa -> Arrays.stream(sa)
+                        .map(s -> s.replaceAll("W", " "))
+                        .toArray(String[]::new))
+                .toArray(String[][]::new))
         .addElement(
             'A',
             ofChain(
@@ -88,6 +101,7 @@ public class GT_MetaTileEntity_PurificationUnitSifter
         .addElement('B', ofBlock(GregTech_API.sBlockCasings8, 1))
         .addElement('C', ofFrame(Materials.Iridium))
         .addElement('D', ofFrame(Materials.DamascusSteel))
+        .addElement('W', ofChain(ofBlock(Blocks.water, 0)))
         .build();
 
     public GT_MetaTileEntity_PurificationUnitSifter(int aID, String aName, String aNameRegional) {
@@ -141,6 +155,12 @@ public class GT_MetaTileEntity_PurificationUnitSifter
     @Override
     public IStructureDefinition<GT_MetaTileEntity_PurificationUnitSifter> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
+    }
+
+    @Override
+    protected IAlignmentLimits getInitialAlignmentLimits() {
+        // Rotated sifter not allowed, water will flow out.
+        return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && !f.isVerticallyFliped();
     }
 
     @Override
@@ -213,8 +233,7 @@ public class GT_MetaTileEntity_PurificationUnitSifter
     }
 
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        boolean result = checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET);
-        // Also call super.checkMachine() to fix maintenance issues.
-        return result && super.checkMachine(aBaseMetaTileEntity, aStack);
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET)) return false;
+        return super.checkMachine(aBaseMetaTileEntity, aStack);
     }
 }

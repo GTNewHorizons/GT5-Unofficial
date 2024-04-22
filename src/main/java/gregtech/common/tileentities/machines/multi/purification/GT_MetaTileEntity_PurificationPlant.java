@@ -112,7 +112,9 @@ public class GT_MetaTileEntity_PurificationPlant
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")
             .toolTipFinisher(
-                EnumChatFormatting.WHITE + "Not"
+                EnumChatFormatting.BOLD + ""
+                    + EnumChatFormatting.WHITE
+                    + "Not"
                     + EnumChatFormatting.DARK_AQUA
                     + "A"
                     + EnumChatFormatting.AQUA
@@ -184,7 +186,18 @@ public class GT_MetaTileEntity_PurificationPlant
         super.onPostTick(aBaseMetaTileEntity, aTick);
 
         if (aBaseMetaTileEntity.isServerSide()) {
-
+            // Trigger structure check of linked units, but never all in the same tick, and at most once per cycle.
+            for (int i = 0; i < mLinkedUnits.size(); ++i) {
+                if (aTick % CYCLE_TIME_TICKS == i) {
+                    LinkedPurificationUnit unit = mLinkedUnits.get(i);
+                    boolean structure = unit.metaTileEntity()
+                        .checkStructure(true);
+                    // If unit was active but deformed, set as inactive
+                    if (unit.isActive()) {
+                        unit.setActive(structure);
+                    }
+                }
+            }
         }
     }
 

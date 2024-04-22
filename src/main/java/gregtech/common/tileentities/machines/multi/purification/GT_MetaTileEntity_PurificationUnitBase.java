@@ -122,6 +122,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
      * Get the success chance of the recipe, from 0 to 1
      */
     public float getRecipeSuccessChance() {
+        // TODO: Should we error if this is null?
         return this.currentRecipe.getMetadataOrDefault(PurificationPlantBaseChanceKey.INSTANCE, 0.0f);
     }
 
@@ -147,7 +148,9 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
             this.addFluidOutputs(this.currentRecipe.mFluidOutputs);
             // If this recipe has random item outputs, roll on it and add outputs
             if (this.currentRecipe.mChances != null) {
+                // Roll on each output individually
                 for (int i = 0; i < this.currentRecipe.mOutputs.length; ++i) {
+                    // Recipes store probabilities as a value ranging from 1-10000
                     int roll = random.nextInt(10000);
                     if (roll <= this.currentRecipe.mChances[i]) {
                         this.addOutput(this.currentRecipe.mOutputs[i]);
@@ -336,7 +339,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
             if (this.mMaxProgresstime != 0) {
                 ret.add(
                     "Success chance: " + EnumChatFormatting.YELLOW
-                        + GT_Utility.formatNumbers(getRecipeSuccessChance() / 100)
+                        + GT_Utility.formatNumbers(getRecipeSuccessChance())
                         + "%"
                         + EnumChatFormatting.RESET);
             }
