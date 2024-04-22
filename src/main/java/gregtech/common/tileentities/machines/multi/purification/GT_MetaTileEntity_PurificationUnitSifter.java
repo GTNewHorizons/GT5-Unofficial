@@ -85,8 +85,6 @@ public class GT_MetaTileEntity_PurificationUnitSifter
         return 32720;
     }
 
-
-
     @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.purificationPlantGrade1Recipes;
