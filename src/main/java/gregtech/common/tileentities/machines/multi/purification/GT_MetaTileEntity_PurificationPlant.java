@@ -112,13 +112,7 @@ public class GT_MetaTileEntity_PurificationPlant
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")
             .toolTipFinisher(
-                EnumChatFormatting.BOLD + ""
-                    + EnumChatFormatting.WHITE
-                    + "Not"
-                    + EnumChatFormatting.DARK_AQUA
-                    + "A"
-                    + EnumChatFormatting.AQUA
-                    + "Penguin");
+                EnumChatFormatting.BOLD + "" + EnumChatFormatting.WHITE + "Not" + EnumChatFormatting.AQUA + "APenguin");
         return tt;
     }
 
@@ -235,6 +229,8 @@ public class GT_MetaTileEntity_PurificationPlant
                     }
                 } else {
                     // Power drain failed, shut down all other units due to power loss.
+                    // Note that we do not need to shut down self, as this is done in
+                    // onRunningTick already
                     for (LinkedPurificationUnit unit : mLinkedUnits) {
                         if (unit.isActive()) {
                             unit.metaTileEntity()
