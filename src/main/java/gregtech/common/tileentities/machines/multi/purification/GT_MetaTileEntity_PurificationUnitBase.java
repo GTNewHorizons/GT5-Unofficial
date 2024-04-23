@@ -2,6 +2,7 @@ package gregtech.common.tileentities.machines.multi.purification;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,9 +16,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.VoidingMode;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -199,9 +203,10 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
     public void endCycle() {
         ThreadLocalRandom random = ThreadLocalRandom.current();
 
-        // First see if the recipe succeeded
-        int successRoll = random.nextInt(10000);
-        if (successRoll <= this.currentRecipeChance * 10000) {
+        // First see if the recipe succeeded. For some reason random.nextFloat does not compile, so we use this
+        // hack instead.
+        float successRoll = random.nextInt(0, 10000) / 100.0f;
+        if (successRoll <= this.currentRecipeChance) {
             this.addFluidOutputs(this.currentRecipe.mFluidOutputs);
             // If this recipe has random item outputs, roll on it and add outputs
             if (this.currentRecipe.mChances != null) {
@@ -219,6 +224,8 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
                     this.addOutput(this.currentRecipe.mOutputs[i]);
                 }
             }
+        } else {
+            onRecipeFail();
         }
 
         // Reset recipe values for next iteration
@@ -228,6 +235,45 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
         this.mEfficiency = 0;
         this.currentRecipe = null;
         this.currentRecipeChance = 0.0f;
+    }
+
+    /**
+     * Outputs fluid when recipe fails.
+     */
+    private void onRecipeFail() {
+        // Possibly output lower quality water.
+        // Note that if there is no space for this, it will be voided regardless of fluid void setting!
+        FluidStack outputWater = getDegradedOutputWater();
+        this.addOutput(outputWater);
+    }
+
+    /**
+     * On recipe fail, water quality may degrade to the same or lower tier. This function returns the water to output
+     * in this case, or null if no water is produced at all.
+     */
+    private FluidStack getDegradedOutputWater() {
+        ThreadLocalRandom random = ThreadLocalRandom.current();
+        int roll = random.nextInt(0, 2);
+        // 50% chance to not output anything at all
+        if (roll == 0) return null;
+
+        for (int waterTier = getWaterTier(); waterTier > 0; --waterTier) {
+            // 50% chance every time of degrading into the previous tier
+            roll = random.nextInt(0, 2);
+            if (roll == 1) {
+                // Rolled good, stop the loop and output water below current tier
+                int amount = this.currentRecipe.mFluidOutputs[0].amount;
+                // For tier 1, this is distilled water, so we cannot use the helper function!
+                if (waterTier == 1) {
+                    return GT_ModHandler.getDistilledWater(amount);
+                }
+                Materials water = PurifiedWaterHelpers.getPurifiedWaterTier(waterTier - 1);
+                return water.getFluid(amount);
+            }
+            // Bad roll, keep looping and degrade quality even further
+        }
+        // Rolled bad on every iteration, no output for you
+        return null;
     }
 
     /**
@@ -458,6 +504,11 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
     @Override
     public boolean supportsVoidProtection() {
         return true;
+    }
+
+    @Override
+    public Set<VoidingMode> getAllowedVoidingModes() {
+        return VoidingMode.ITEM_ONLY_MODES;
     }
 
     @Override
