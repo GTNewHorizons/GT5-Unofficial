@@ -35,7 +35,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
-import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_StructureUtility;
@@ -262,8 +261,7 @@ public class GT_MetaTileEntity_PurificationPlant
             // Unit needs to be online to be considered active.
             if (status == PurificationUnitStatus.ONLINE) {
                 // Perform recipe check for unit and start it if successful
-                CheckRecipeResult result = metaTileEntity.checkProcessing();
-                if (result.wasSuccessful()) {
+                if (metaTileEntity.doPurificationRecipeCheck()) {
                     unit.setActive(true);
                     metaTileEntity.startCycle(mMaxProgresstime, mProgresstime);
                 }

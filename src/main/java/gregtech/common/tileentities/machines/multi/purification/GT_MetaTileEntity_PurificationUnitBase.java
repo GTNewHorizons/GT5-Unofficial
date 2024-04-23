@@ -130,6 +130,10 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
         }
     }
 
+    public boolean doPurificationRecipeCheck() {
+        return this.checkRecipe();
+    }
+
     /**
      * Get the success chance of the recipe, from 0 to 1. Never call this while a recipe is running, because items
      * or modifiers used to boost might disappear by the time recipe check comes around,
@@ -195,6 +199,8 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
         this.mMaxProgresstime = cycleTime;
         this.mProgresstime = progressTime;
         this.mEfficiency = 10000;
+        this.mOutputFluids = this.currentRecipe.mFluidOutputs;
+        this.mOutputItems = this.currentRecipe.mOutputs;
         // Set this value, so it can be displayed in Waila. Note that the logic for the units is
         // specifically overridden so setting this value does not actually drain power.
         // Instead, power is drained by the main purification plant controller.
@@ -236,6 +242,8 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
         this.mEfficiency = 0;
         this.currentRecipe = null;
         this.currentRecipeChance = 0.0f;
+        this.mOutputItems = null;
+        this.mOutputFluids = null;
     }
 
     /**
