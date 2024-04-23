@@ -26,8 +26,17 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.api.drawable.shapes.Rectangle;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.math.Color;
+import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.Scrollable;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
@@ -40,7 +49,9 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPow
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_StructureUtility;
+import gregtech.api.util.GT_Utility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
 
 public class GT_MetaTileEntity_PurificationPlant
     extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_PurificationPlant> {
@@ -383,8 +394,96 @@ public class GT_MetaTileEntity_PurificationPlant
         super.onBlockDestroyed();
     }
 
+    private void drawTopText(DynamicPositionedColumn screenElements) {
+        screenElements.setSynced(false)
+            .setSpace(0)
+            .setPos(10, 8);
+
+        screenElements
+            .widget(
+                new TextWidget(GT_Utility.trans("138", "Incomplete Structure.")).setDefaultColor(EnumChatFormatting.RED)
+                    .setEnabled(widget -> !mMachine))
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
+
+        screenElements.widget(
+            new TextWidget("Hit with Soft Mallet to start.").setDefaultColor(EnumChatFormatting.BLACK)
+                .setEnabled(
+                    widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()))
+            .widget(
+                new FakeSyncWidget.IntegerSyncer(
+                    () -> getBaseMetaTileEntity().getErrorDisplayID(),
+                    val -> getBaseMetaTileEntity().setErrorDisplayID(val)))
+            .widget(
+                new FakeSyncWidget.BooleanSyncer(
+                    () -> getBaseMetaTileEntity().isActive(),
+                    val -> getBaseMetaTileEntity().setActive(val)));
+        screenElements.widget(
+            new TextWidget(GT_Utility.trans("142", "Running perfectly.")).setDefaultColor(EnumChatFormatting.GREEN)
+                .setEnabled(
+                    widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive()));
+        screenElements.widget(
+            TextWidget.dynamicString(
+                () -> getBaseMetaTileEntity().getLastShutDownReason()
+                    .getDisplayString())
+                .setSynced(false)
+                .setTextAlignment(Alignment.CenterLeft)
+                .setEnabled(
+                    widget -> shouldDisplayShutDownReason() && !getBaseMetaTileEntity().isActive()
+                        && GT_Utility.isStringValid(
+                            getBaseMetaTileEntity().getLastShutDownReason()
+                                .getDisplayString())
+                        && getBaseMetaTileEntity().wasShutdown()))
+            .widget(
+                new ShutDownReasonSyncer(
+                    () -> getBaseMetaTileEntity().getLastShutDownReason(),
+                    reason -> getBaseMetaTileEntity().setShutDownReason(reason)))
+            .widget(
+                new FakeSyncWidget.BooleanSyncer(
+                    () -> getBaseMetaTileEntity().wasShutdown(),
+                    wasShutDown -> getBaseMetaTileEntity().setShutdownStatus(wasShutDown)));
+        screenElements.widget(
+            TextWidget.dynamicString(this::generateCurrentRecipeInfoString)
+                .setSynced(false)
+                .setTextAlignment(Alignment.CenterLeft)
+                .setEnabled(widget -> (mMaxProgresstime > 0)))
+            .widget(new FakeSyncWidget.IntegerSyncer(() -> mProgresstime, val -> mProgresstime = val))
+            .widget(new FakeSyncWidget.IntegerSyncer(() -> mMaxProgresstime, val -> mMaxProgresstime = val));
+    }
+
+    private Scrollable addUnitStatus(LinkedPurificationUnit unit, Scrollable parent) {
+        final DynamicPositionedRow entry = new DynamicPositionedRow();
+        entry.widget(
+            TextWidget.dynamicString(
+                () -> unit.metaTileEntity()
+                    .getLocalName())
+                .setSynced(false)
+                .setTextAlignment(Alignment.CenterLeft));
+        return parent.widget(entry);
+    }
+
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(createPowerSwitchButton(builder));
+        // builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+
+        final DynamicPositionedColumn controlTextArea = new DynamicPositionedColumn();
+        drawTopText(controlTextArea);
+        // builder.widget(controlTextArea);
+
+        builder.widget(
+            new Rectangle().setColor(Color.rgb(114, 120, 139))
+                .asWidget()
+                .setSizeProvider((screenSize, window, parent) -> new Size(screenSize.width - 6, 2))
+                .setPos(3, 32));
+
+        Scrollable statusArea = (Scrollable) new Scrollable().setVerticalScroll()
+            .setPos(4, 32)
+            .setSize(190, 120);
+
+        for (LinkedPurificationUnit unit : mLinkedUnits) {
+            statusArea = addUnitStatus(unit, statusArea);
+        }
+
+        // builder.widget(statusArea);
+        // builder.widget(createPowerSwitchButton(builder));
     }
 }
