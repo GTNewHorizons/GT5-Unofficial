@@ -2692,13 +2692,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             .addTo(maceratorRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(new ItemStack(Items.wheat, 1, 0))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 1L))
-            .duration(20 * SECONDS)
-            .eut(2)
-            .addTo(maceratorRecipes);
-
-        GT_Values.RA.stdBuilder()
             .itemInputs(GT_ModHandler.getIC2Item("crop", 1L))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
             .duration(20 * SECONDS)
