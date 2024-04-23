@@ -381,7 +381,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
         } else if (result == LinkResult.TOO_FAR) {
             aPlayer.addChatMessage(new ChatComponentText("Link failed: Out of range."));
         } else if (result == LinkResult.NO_VALID_PLANT) {
-            aPlayer.addChatMessage(new ChatComponentText("Link failed: No Purification Plant fount at link location"));
+            aPlayer.addChatMessage(new ChatComponentText("Link failed: No Purification Plant found at link location"));
         }
 
         return true;
