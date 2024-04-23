@@ -31,6 +31,11 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T>>
     extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T> {
 
+    // TODO: Balancing
+    public static final float WATER_BOOST_NEEDED_FLUID = 0.1f;
+    // TODO: Balancing
+    public static final float WATER_BOOST_BONUS_CHANCE = 0.15f;
+
     /**
      * Small internal enum to report back the various error cases when linking purification units to the
      * purification plant.
@@ -66,6 +71,8 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
     private GT_MetaTileEntity_PurificationPlant controller = null;
 
     protected GT_Recipe currentRecipe = null;
+
+    private float currentRecipeChance = 0.0f;
 
     protected GT_MetaTileEntity_PurificationUnitBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -119,14 +126,64 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
     }
 
     /**
-     * Get the success chance of the recipe, from 0 to 1
+     * Get the success chance of the recipe, from 0 to 1. Never call this while a recipe is running, because items
+     * or modifiers used to boost might disappear by the time recipe check comes around,
+     * which would invalidate this result.
      */
-    public float getRecipeSuccessChance() {
+    public float calculateBoostedSuccessChance() {
         // TODO: Should we error if this is null?
-        return this.currentRecipe.getMetadataOrDefault(PurificationPlantBaseChanceKey.INSTANCE, 0.0f);
+        float recipeChance = this.currentRecipe.getMetadataOrDefault(PurificationPlantBaseChanceKey.INSTANCE, 0.0f);
+        if (isWaterBoosted(this.currentRecipe)) {
+            recipeChance = Math.max(recipeChance + WATER_BOOST_BONUS_CHANCE, 1.0f);
+        }
+        return recipeChance;
     }
 
+    /**
+     * Get the tier of water this unit makes. Starts at 1.
+     */
+    public abstract int getWaterTier();
+
+    /**
+     * Get the amount of water needed to execute a water boost, in mb.
+     */
+    public FluidStack getWaterBoostAmount(GT_Recipe recipe) {
+        // Recipes should always be constructed so that output water is always the first fluid output
+        FluidStack outputWater = recipe.mFluidOutputs[0];
+        int amount = Math.round(outputWater.amount * WATER_BOOST_NEEDED_FLUID);
+        return new FluidStack(outputWater.getFluid(), amount);
+    }
+
+    /**
+     * Returns true if this purification unit contains enough water to apply a water boost for the selected recipe.
+     * This should only be called during recipe check! Never call this while a recipe is running, because water used to
+     * boost might disappear by the time recipe check comes around, which would invalidate this result.
+     * 
+     * @param recipe The recipe to check the water boost of
+     */
+    public boolean isWaterBoosted(GT_Recipe recipe) {
+        FluidStack inputWater = getWaterBoostAmount(recipe);
+        // Simulate input drain to see if we can water boost
+        return depleteInput(inputWater, true);
+    }
+
+    /**
+     * Called after a recipe is found and accepted.
+     * 
+     * @param cycleTime    Time for a full cycle to complete
+     * @param progressTime Current progress time
+     */
     public void startCycle(int cycleTime, int progressTime) {
+        // Important to calculate this before depleting inputs, otherwise we may get issues with boost items
+        // disappearing.
+        this.currentRecipeChance = this.calculateBoostedSuccessChance();
+
+        // Deplete inputs from water boost if enabled.
+        if (isWaterBoosted(this.currentRecipe)) {
+            FluidStack inputWater = this.getWaterBoostAmount(this.currentRecipe);
+            this.depleteInput(inputWater);
+        }
+
         for (FluidStack input : this.currentRecipe.mFluidInputs) {
             this.depleteInput(input);
         }
@@ -144,7 +201,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
 
         // First see if the recipe succeeded
         int successRoll = random.nextInt(10000);
-        if (successRoll <= getRecipeSuccessChance() * 10000) {
+        if (successRoll <= this.currentRecipeChance * 10000) {
             this.addFluidOutputs(this.currentRecipe.mFluidOutputs);
             // If this recipe has random item outputs, roll on it and add outputs
             if (this.currentRecipe.mChances != null) {
@@ -170,6 +227,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
         this.lEUt = 0;
         this.mEfficiency = 0;
         this.currentRecipe = null;
+        this.currentRecipeChance = 0.0f;
     }
 
     /**
@@ -202,6 +260,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
             controllerZ = controllerNBT.getInteger("z");
             controllerSet = true;
         }
+        currentRecipeChance = aNBT.getFloat("currentRecipeChance");
     }
 
     @Override
@@ -214,6 +273,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
             controllerNBT.setInteger("z", controllerZ);
             aNBT.setTag("controller", controllerNBT);
         }
+        aNBT.setFloat("currentRecipeChance", currentRecipeChance);
     }
 
     private LinkResult trySetControllerFromCoord(int x, int y, int z) {
@@ -339,7 +399,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
             if (this.mMaxProgresstime != 0) {
                 ret.add(
                     "Success chance: " + EnumChatFormatting.YELLOW
-                        + GT_Utility.formatNumbers(getRecipeSuccessChance())
+                        + GT_Utility.formatNumbers(this.currentRecipeChance)
                         + "%"
                         + EnumChatFormatting.RESET);
             }

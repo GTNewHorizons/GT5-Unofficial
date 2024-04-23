@@ -116,6 +116,11 @@ public class GT_MetaTileEntity_PurificationUnitSifter extends
     }
 
     @Override
+    public int getWaterTier() {
+        return 1;
+    }
+
+    @Override
     public long getActivePowerUsage() {
         // TODO: Balancing, etc.
         return 32720;
@@ -175,7 +180,7 @@ public class GT_MetaTileEntity_PurificationUnitSifter extends
                     + EnumChatFormatting.BOLD
                     + "Water tier: "
                     + EnumChatFormatting.WHITE
-                    + "1"
+                    + GT_Utility.formatNumbers(getWaterTier())
                     + EnumChatFormatting.RESET)
             .addSeparator()
             .beginStructureBlock(11, 4, 11, true)
