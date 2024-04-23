@@ -26,6 +26,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
@@ -379,5 +381,10 @@ public class GT_MetaTileEntity_PurificationPlant
                 .unlinkController();
         }
         super.onBlockDestroyed();
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.widget(createPowerSwitchButton(builder));
     }
 }
