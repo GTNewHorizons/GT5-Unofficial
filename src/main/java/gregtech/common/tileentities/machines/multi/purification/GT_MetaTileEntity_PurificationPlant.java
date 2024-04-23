@@ -32,6 +32,8 @@ import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.api.widget.Widget;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
@@ -41,6 +43,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -52,6 +55,7 @@ import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
+import gregtech.common.gui.modularui.widget.TextButtonWidget;
 
 public class GT_MetaTileEntity_PurificationPlant
     extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_PurificationPlant> {
@@ -450,6 +454,40 @@ public class GT_MetaTileEntity_PurificationPlant
             .widget(new FakeSyncWidget.IntegerSyncer(() -> mMaxProgresstime, val -> mMaxProgresstime = val));
     }
 
+    private final int STATUS_WINDOW_ID = 10;
+
+    private ModularWindow createStatusWindow(final EntityPlayer player) {
+        final int windowWidth = 260;
+        final int windowHeight = 200;
+        ModularWindow.Builder builder = ModularWindow.builder(windowWidth, windowHeight);
+        builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.widget(
+            ButtonWidget.closeWindowButton(true)
+                .setPos(windowWidth - 15, 3));
+        builder.widget(
+            new TextWidget(EnumChatFormatting.BOLD + "Purification Unit Status").setTextAlignment(Alignment.Center)
+                .setPos(0, 10)
+                .setSize(windowWidth, 8));
+        return builder.build();
+    }
+
+    private Widget makeStatusWindowButton() {
+        TextButtonWidget widget = (TextButtonWidget) new TextButtonWidget("Purification Unit Status").setLeftMargin(4)
+            .setSize(120, 16)
+            .setPos(10, 40);
+        widget.button()
+            .setOnClick(
+                (clickData, w) -> {
+                    if (!w.isClient()) w.getContext()
+                        .openSyncedWindow(STATUS_WINDOW_ID);
+                })
+            .setBackground(GT_UITextures.BUTTON_STANDARD);
+        widget.text()
+            .setTextAlignment(Alignment.CenterLeft)
+            .setDefaultColor(EnumChatFormatting.BLACK);
+        return widget;
+    }
+
     private Scrollable addUnitStatus(LinkedPurificationUnit unit, Scrollable parent) {
         final DynamicPositionedRow entry = new DynamicPositionedRow();
         entry.widget(
@@ -463,27 +501,26 @@ public class GT_MetaTileEntity_PurificationPlant
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        // builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
 
+        buildContext.addSyncedWindow(STATUS_WINDOW_ID, this::createStatusWindow);
+
+        // Draw basic recipe info
         final DynamicPositionedColumn controlTextArea = new DynamicPositionedColumn();
         drawTopText(controlTextArea);
-        // builder.widget(controlTextArea);
+        builder.widget(controlTextArea);
 
+        // Draw line separator
         builder.widget(
             new Rectangle().setColor(Color.rgb(114, 120, 139))
                 .asWidget()
-                .setSizeProvider((screenSize, window, parent) -> new Size(screenSize.width - 6, 2))
+                .setSizeProvider((screenSize, window, parent) -> new Size(window.getSize().width - 8, 2))
                 .setPos(3, 32));
 
-        Scrollable statusArea = (Scrollable) new Scrollable().setVerticalScroll()
-            .setPos(4, 32)
-            .setSize(190, 120);
+        // Add status window button
+        builder.widget(makeStatusWindowButton());
 
-        for (LinkedPurificationUnit unit : mLinkedUnits) {
-            statusArea = addUnitStatus(unit, statusArea);
-        }
+        // Add parallel count number input
 
-        // builder.widget(statusArea);
-        // builder.widget(createPowerSwitchButton(builder));
+        builder.widget(createPowerSwitchButton(builder));
     }
 }
