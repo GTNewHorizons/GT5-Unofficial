@@ -472,8 +472,8 @@ public class GT_MetaTileEntity_PurificationPlant
     }
 
     private Widget makeStatusWindowButton() {
-        TextButtonWidget widget = (TextButtonWidget) new TextButtonWidget("Purification Unit Status").setLeftMargin(4)
-            .setSize(120, 16)
+        TextButtonWidget widget = (TextButtonWidget) new TextButtonWidget("Status").setLeftMargin(4)
+            .setSize(40, 16)
             .setPos(10, 40);
         widget.button()
             .setOnClick(
