@@ -64,6 +64,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
      * on world load.
      */
     private int controllerX, controllerY, controllerZ;
+
     /**
      * Whether a controller was previously set.
      */

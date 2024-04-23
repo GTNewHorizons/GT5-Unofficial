@@ -187,8 +187,11 @@ public class GT_MetaTileEntity_PurificationPlant
                     boolean structure = unit.metaTileEntity()
                         .checkStructure(true);
                     // If unit was active but deformed, set as inactive
-                    if (unit.isActive()) {
-                        unit.setActive(structure);
+                    if (unit.isActive() && !structure) {
+                        unit.setActive(false);
+                        // Also remember to recalculate power usage, since otherwise the deformed unit will
+                        // keep drawing power
+                        this.lEUt = -calculateEffectivePowerUsage();
                     }
                 }
             }
