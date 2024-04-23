@@ -134,7 +134,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
         // TODO: Should we error if this is null?
         float recipeChance = this.currentRecipe.getMetadataOrDefault(PurificationPlantBaseChanceKey.INSTANCE, 0.0f);
         if (isWaterBoosted(this.currentRecipe)) {
-            recipeChance = Math.max(recipeChance + WATER_BOOST_BONUS_CHANCE, 1.0f);
+            recipeChance = Math.min(recipeChance + WATER_BOOST_BONUS_CHANCE, 1.0f);
         }
         return recipeChance;
     }
@@ -158,7 +158,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
      * Returns true if this purification unit contains enough water to apply a water boost for the selected recipe.
      * This should only be called during recipe check! Never call this while a recipe is running, because water used to
      * boost might disappear by the time recipe check comes around, which would invalidate this result.
-     * 
+     *
      * @param recipe The recipe to check the water boost of
      */
     public boolean isWaterBoosted(GT_Recipe recipe) {
@@ -169,7 +169,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
 
     /**
      * Called after a recipe is found and accepted.
-     * 
+     *
      * @param cycleTime    Time for a full cycle to complete
      * @param progressTime Current progress time
      */
