@@ -281,6 +281,7 @@ public class GT_MetaTileEntity_DroneCentre extends
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         droneLevel = aNBT.getInteger("drone");
+        useRender = aNBT.getBoolean("useRender");
         NBTTagCompound nameList = aNBT.getCompoundTag("conList");
         for (String s : nameList.func_150296_c()) {
             tempNameList.put(s, nameList.getString(s));
@@ -291,6 +292,7 @@ public class GT_MetaTileEntity_DroneCentre extends
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setInteger("drone", droneLevel);
+        aNBT.setBoolean("useRender", useRender);
         NBTTagCompound conList = new NBTTagCompound();
         for (DroneConnection con : connectionList) {
             if (!Objects.equals(con.customName, con.machine.getLocalName()))
