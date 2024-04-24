@@ -27,8 +27,10 @@ import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.drawable.shapes.Rectangle;
+import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
+import com.gtnewhorizons.modularui.api.math.MainAxisAlignment;
 import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -38,6 +40,7 @@ import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTech_API;
@@ -464,10 +467,49 @@ public class GT_MetaTileEntity_PurificationPlant
         builder.widget(
             ButtonWidget.closeWindowButton(true)
                 .setPos(windowWidth - 15, 3));
+        // Title widget
         builder.widget(
             new TextWidget(EnumChatFormatting.BOLD + "Purification Unit Status").setTextAlignment(Alignment.Center)
                 .setPos(0, 10)
                 .setSize(windowWidth, 8));
+
+        Scrollable scrollRegion = new Scrollable().setVerticalScroll();
+        int currentYPosition = 0;
+
+        for (LinkedPurificationUnit unit : this.mLinkedUnits) {
+            DynamicPositionedRow row = new DynamicPositionedRow();
+
+            // Draw small machine controller icon
+            /*ItemStackHandler machineIcon = new ItemStackHandler(1);
+            machineIcon.setStackInSlot(
+                0,
+                unit.metaTileEntity()
+                    .getStackForm(1));
+            row.widget(
+                SlotWidget.phantom(machineIcon, 0)
+                    .disableInteraction()
+                    .setPos(0, 0));*/
+
+            // Display machine name
+            String name = unit.metaTileEntity().getLocalName();
+
+            row.widget(
+                TextWidget.dynamicString(() -> name).setSynced(false).setTextAlignment(Alignment.CenterLeft).setPos(20, 0))
+                .widget(new FakeSyncWidget.StringSyncer(() -> name, _name -> {}));
+
+            // Add row widget to scroll region, then increment y position
+            //scrollRegion.widget(
+                //row.setAlignment(MainAxisAlignment.SPACE_BETWEEN)
+                    //.setSpace(4)
+                    //.setPos(0, currentYPosition));
+            currentYPosition += 20;
+
+            builder.widget(row.setPos(0, currentYPosition + 20));
+        }
+        // Add scroll region to window
+        builder.widget(
+            scrollRegion.setPos(10, 50)
+                .setSize(240, windowHeight - 60));
         return builder.build();
     }
 
