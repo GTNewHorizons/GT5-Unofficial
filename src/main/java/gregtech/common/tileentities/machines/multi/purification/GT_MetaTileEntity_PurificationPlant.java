@@ -16,6 +16,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
+import com.gtnewhorizons.modularui.common.widget.Row;
+import com.gtnewhorizons.modularui.common.widget.Scrollable;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -467,33 +471,18 @@ public class GT_MetaTileEntity_PurificationPlant
         // Title widget
         builder.widget(
             new TextWidget(EnumChatFormatting.BOLD + "Purification Unit Status").setTextAlignment(Alignment.Center)
-                .setPos(0, 10)
+                .setPos(5, 10)
                 .setSize(windowWidth, 8));
 
         int currentYPosition = 20;
-        for (LinkedPurificationUnit unit : this.mLinkedUnits) {
-            Widget row = makeUnitStatusWidget(unit);
+        Scrollable main_disp = new Scrollable().setVerticalScroll();
 
-            // Draw small machine controller icon
-            /*
-             * ItemStackHandler machineIcon = new ItemStackHandler(1);
-             * machineIcon.setStackInSlot(
-             * 0,
-             * unit.metaTileEntity()
-             * .getStackForm(1));
-             * row.widget(
-             * SlotWidget.phantom(machineIcon, 0)
-             * .disableInteraction()
-             * .setPos(0, 0));
-             */
+        int row_height = 20;
+        for (int i = 0; i< this.mLinkedUnits.size(); i++) {
 
-            // Display machine name
-            // String name = unit.metaTileEntity().getLocalName();
+            main_disp.widget(makeUnitStatusWidget(mLinkedUnits.get(i)).setPos(0,row_height*(i+1)));
 
-            // row.widget(
-            // TextWidget.dynamicString(() -> name).setSynced(false).setTextAlignment(Alignment.CenterLeft).setPos(20,
-            // 0))
-            // .widget(new FakeSyncWidget.StringSyncer(() -> name, _name -> {}));
+
 
             // Add row widget to scroll region, then increment y position
             // scrollRegion.widget(
@@ -501,12 +490,12 @@ public class GT_MetaTileEntity_PurificationPlant
             // .setSpace(4)
             // .setPos(0, currentYPosition));
 
-            builder.widget(
+           /* builder.widget(
                 row.setPos(5, currentYPosition + 20)
                     .setSize(240, 20));
-            currentYPosition += 20;
+            currentYPosition += 20;*/
         }
-
+        builder.widget(main_disp.setPos(5,currentYPosition).setSize(windowWidth -10,windowHeight-currentYPosition - 5));
         return builder.build();
     }
 
@@ -528,10 +517,25 @@ public class GT_MetaTileEntity_PurificationPlant
     }
 
     private Widget makeUnitStatusWidget(LinkedPurificationUnit unit) {
-        return new TextWidget(
-            unit.metaTileEntity()
-                .getLocalName()).setTextAlignment(Alignment.CenterLeft)
-                    .setPos(0, 0);
+        // Draw small machine controller icon
+        Row r = new Row();
+          ItemStackHandler machineIcon = new ItemStackHandler(1);
+          machineIcon.setStackInSlot(0, unit.metaTileEntity().getStackForm(1));
+          r.widget(SlotWidget.phantom(machineIcon, 0)
+          .disableInteraction()
+          .setPos(0, 0));
+
+        // Display machine name
+        String name = unit.metaTileEntity().getLocalName();
+
+        r.widget(TextWidget.dynamicString(() -> name)
+                .setSynced(false)
+                .setTextAlignment(Alignment.CenterLeft)
+                .setPos(20, 0))
+                .widget(new FakeSyncWidget.StringSyncer(() -> name, _name -> {}));
+
+
+        return r;
         /*
          * DynamicPositionedRow parent = new DynamicPositionedRow().setSynced(false);
          * parent.widget(
