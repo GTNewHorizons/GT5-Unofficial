@@ -318,14 +318,19 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
         currentRecipeChance = aNBT.getFloat("currentRecipeChance");
     }
 
+    public NBTTagCompound saveLinkDataToNBT() {
+        NBTTagCompound controllerNBT = new NBTTagCompound();
+        controllerNBT.setInteger("x", controllerX);
+        controllerNBT.setInteger("y", controllerY);
+        controllerNBT.setInteger("z", controllerZ);
+        return controllerNBT;
+    }
+
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         if (controllerSet) {
-            NBTTagCompound controllerNBT = new NBTTagCompound();
-            controllerNBT.setInteger("x", controllerX);
-            controllerNBT.setInteger("y", controllerY);
-            controllerNBT.setInteger("z", controllerZ);
+            NBTTagCompound controllerNBT = saveLinkDataToNBT();
             aNBT.setTag("controller", controllerNBT);
         }
         aNBT.setFloat("currentRecipeChance", currentRecipeChance);

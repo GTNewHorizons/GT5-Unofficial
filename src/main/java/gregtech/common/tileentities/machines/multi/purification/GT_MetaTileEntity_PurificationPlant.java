@@ -12,6 +12,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_AR
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_GLOW;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,20 +28,15 @@ import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.drawable.shapes.Rectangle;
-import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
-import com.gtnewhorizons.modularui.api.math.MainAxisAlignment;
 import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.Scrollable;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTech_API;
@@ -53,6 +49,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.GT_Utility;
@@ -473,43 +470,64 @@ public class GT_MetaTileEntity_PurificationPlant
                 .setPos(0, 10)
                 .setSize(windowWidth, 8));
 
-        Scrollable scrollRegion = new Scrollable().setVerticalScroll();
-        int currentYPosition = 0;
-
+        int currentYPosition = 20;
         for (LinkedPurificationUnit unit : this.mLinkedUnits) {
-            DynamicPositionedRow row = new DynamicPositionedRow();
+            Widget row = makeUnitStatusWidget(unit);
 
             // Draw small machine controller icon
-            /*ItemStackHandler machineIcon = new ItemStackHandler(1);
-            machineIcon.setStackInSlot(
-                0,
-                unit.metaTileEntity()
-                    .getStackForm(1));
-            row.widget(
-                SlotWidget.phantom(machineIcon, 0)
-                    .disableInteraction()
-                    .setPos(0, 0));*/
+            /*
+             * ItemStackHandler machineIcon = new ItemStackHandler(1);
+             * machineIcon.setStackInSlot(
+             * 0,
+             * unit.metaTileEntity()
+             * .getStackForm(1));
+             * row.widget(
+             * SlotWidget.phantom(machineIcon, 0)
+             * .disableInteraction()
+             * .setPos(0, 0));
+             */
 
             // Display machine name
-            String name = unit.metaTileEntity().getLocalName();
+            // String name = unit.metaTileEntity().getLocalName();
 
-            row.widget(
-                TextWidget.dynamicString(() -> name).setSynced(false).setTextAlignment(Alignment.CenterLeft).setPos(20, 0))
-                .widget(new FakeSyncWidget.StringSyncer(() -> name, _name -> {}));
+            // row.widget(
+            // TextWidget.dynamicString(() -> name).setSynced(false).setTextAlignment(Alignment.CenterLeft).setPos(20,
+            // 0))
+            // .widget(new FakeSyncWidget.StringSyncer(() -> name, _name -> {}));
 
             // Add row widget to scroll region, then increment y position
-            //scrollRegion.widget(
-                //row.setAlignment(MainAxisAlignment.SPACE_BETWEEN)
-                    //.setSpace(4)
-                    //.setPos(0, currentYPosition));
-            currentYPosition += 20;
+            // scrollRegion.widget(
+            // row.setAlignment(MainAxisAlignment.SPACE_BETWEEN)
+            // .setSpace(4)
+            // .setPos(0, currentYPosition));
 
-            builder.widget(row.setPos(0, currentYPosition + 20));
+            builder.widget(
+                row.setPos(5, currentYPosition + 20)
+                    .setSize(240, 20));
+            currentYPosition += 20;
         }
-        // Add scroll region to window
-        builder.widget(
-            scrollRegion.setPos(10, 50)
-                .setSize(240, windowHeight - 60));
+
+        // Sync connection list to client
+        builder.widget(new FakeSyncWidget.ListSyncer<>(() -> mLinkedUnits, links -> {
+            mLinkedUnits.clear();
+            mLinkedUnits.addAll(links);
+        }, (buffer, link) -> {
+            // Try to save link data to NBT, so we can reconstruct it on client
+            try {
+                buffer.writeNBTTagCompoundToBuffer(link.writeLinkDataToNBT());
+            } catch (IOException e) {
+                GT_Log.err.println(e.getCause());
+            }
+        }, buffer -> {
+            // Try to load link data from NBT compound as constructed above.
+            try {
+                return new LinkedPurificationUnit(buffer.readNBTTagCompoundFromBuffer());
+            } catch (IOException e) {
+                GT_Log.err.println(e.getCause());
+            }
+            return null;
+        }));
+
         return builder.build();
     }
 
@@ -530,15 +548,20 @@ public class GT_MetaTileEntity_PurificationPlant
         return widget;
     }
 
-    private Scrollable addUnitStatus(LinkedPurificationUnit unit, Scrollable parent) {
-        final DynamicPositionedRow entry = new DynamicPositionedRow();
-        entry.widget(
-            TextWidget.dynamicString(
-                () -> unit.metaTileEntity()
-                    .getLocalName())
-                .setSynced(false)
-                .setTextAlignment(Alignment.CenterLeft));
-        return parent.widget(entry);
+    private Widget makeUnitStatusWidget(LinkedPurificationUnit unit) {
+        return new TextWidget(
+            unit.metaTileEntity()
+                .getLocalName()).setTextAlignment(Alignment.CenterLeft)
+                    .setPos(0, 0);
+        /*
+         * DynamicPositionedRow parent = new DynamicPositionedRow().setSynced(false);
+         * parent.widget(
+         * new TextWidget(
+         * unit.metaTileEntity()
+         * .getLocalName()).setTextAlignment(Alignment.CenterLeft)
+         * .setPos(0, 0));
+         * return parent;
+         */
     }
 
     @Override
