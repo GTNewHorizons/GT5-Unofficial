@@ -507,27 +507,6 @@ public class GT_MetaTileEntity_PurificationPlant
             currentYPosition += 20;
         }
 
-        // Sync connection list to client
-        builder.widget(new FakeSyncWidget.ListSyncer<>(() -> mLinkedUnits, links -> {
-            mLinkedUnits.clear();
-            mLinkedUnits.addAll(links);
-        }, (buffer, link) -> {
-            // Try to save link data to NBT, so we can reconstruct it on client
-            try {
-                buffer.writeNBTTagCompoundToBuffer(link.writeLinkDataToNBT());
-            } catch (IOException e) {
-                GT_Log.err.println(e.getCause());
-            }
-        }, buffer -> {
-            // Try to load link data from NBT compound as constructed above.
-            try {
-                return new LinkedPurificationUnit(buffer.readNBTTagCompoundFromBuffer());
-            } catch (IOException e) {
-                GT_Log.err.println(e.getCause());
-            }
-            return null;
-        }));
-
         return builder.build();
     }
 
@@ -587,5 +566,32 @@ public class GT_MetaTileEntity_PurificationPlant
         // Add parallel count number input
 
         builder.widget(createPowerSwitchButton(builder));
+
+        // Add value syncers, note that we do this here so
+        // everything is updated once the status gui opens
+        addSyncers(builder);
+    }
+
+    private void addSyncers(ModularWindow.Builder builder) {
+        // Sync connection list to client
+        builder.widget(new FakeSyncWidget.ListSyncer<>(() -> mLinkedUnits, links -> {
+            mLinkedUnits.clear();
+            mLinkedUnits.addAll(links);
+        }, (buffer, link) -> {
+            // Try to save link data to NBT, so we can reconstruct it on client
+            try {
+                buffer.writeNBTTagCompoundToBuffer(link.writeLinkDataToNBT());
+            } catch (IOException e) {
+                GT_Log.err.println(e.getCause());
+            }
+        }, buffer -> {
+            // Try to load link data from NBT compound as constructed above.
+            try {
+                return new LinkedPurificationUnit(buffer.readNBTTagCompoundFromBuffer());
+            } catch (IOException e) {
+                GT_Log.err.println(e.getCause());
+            }
+            return null;
+        }));
     }
 }
