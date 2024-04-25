@@ -1,5 +1,11 @@
 package com.gtnewhorizons.gtnhintergalactic.render;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -13,7 +19,14 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 
+import org.apache.logging.log4j.Level;
+import org.joml.Math;
+import org.joml.Matrix4fStack;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL15;
+import org.lwjgl.opengl.GL20;
 
 import com.gtnewhorizons.gtnhintergalactic.GTNHIntergalactic;
 import com.gtnewhorizons.gtnhintergalactic.block.BlockSpaceElevatorCable;
@@ -21,6 +34,7 @@ import com.gtnewhorizons.gtnhintergalactic.config.Config;
 import com.gtnewhorizons.gtnhintergalactic.tile.TileEntitySpaceElevatorCable;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import cpw.mods.fml.common.FMLLog;
 
 /**
  * Renderer for the elevator cable
@@ -35,12 +49,16 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
     private static final ResourceLocation climberTexture = new ResourceLocation(
             GTNHIntergalactic.ASSET_PREFIX,
             "textures/models/climber.png");
+
     /** Model of the climber */
     private static IModelCustom modelCustom;
     /** Offset of the climber from the Space Elevator Cable block */
     private static final int CLIMBER_OFFSET = 50;
     /** Min Y level that the climber should have */
     private static final int MIN_CLIMBER_HEIGHT = 100;
+
+    /** Used for lazy loading of the shader and buffer objects */
+    boolean isInitialized = false;
 
     /** Distance from center to edge of cable octagon */
     private static final float LONG_DISTANCE = (float) (1.0f + Math.sqrt(2.0f)) / 5.4f;
@@ -54,6 +72,120 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
     /** Z edges of the helix */
     private static final float[] edgeZ = { SHORT_DISTANCE, -SHORT_DISTANCE, -LONG_DISTANCE, -LONG_DISTANCE,
             -SHORT_DISTANCE, SHORT_DISTANCE, LONG_DISTANCE, LONG_DISTANCE };
+
+    private static int cableProgram;
+    private static int uModelProjectionMatrix;
+    private static int uBlockTex;
+    private static int uSectionHeight;
+    private static int uTime;
+    private static int uBaseY;
+    private static int uGlowU;
+    private static int uGlowV;
+    private static int uUV;
+    private static int aVertexID = -1;
+    private static int vertexIDBuffer = -1;
+
+    private static final FloatBuffer bufModelViewProjection = BufferUtils.createFloatBuffer(16);
+    private static final Matrix4fStack modelProjection = new Matrix4fStack(2);
+
+    private static final float SIDE = 2.0f / 5.4f;
+    private static final float SECTION_HEIGHT = 8 * SIDE;
+    private static final int SECTIONS = (int) Math.ceil(CABLE_HEIGHT / SECTION_HEIGHT);
+    private static final int VERTEX_COUNT = 48 * 4 * SECTIONS;
+
+    private static String readFileAsString(String filename) throws Exception {
+        StringBuilder source = new StringBuilder();
+        InputStream in = RenderSpaceElevatorCable.class.getResourceAsStream(filename);
+        Exception exception = null;
+        BufferedReader reader;
+
+        if (in == null) return "";
+
+        try {
+            reader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
+
+            Exception innerExc = null;
+            try {
+                String line;
+                while ((line = reader.readLine()) != null) source.append(line).append('\n');
+            } catch (Exception exc) {
+                exception = exc;
+            } finally {
+                try {
+                    reader.close();
+                } catch (Exception exc) {
+                    if (innerExc == null) innerExc = exc;
+                    else exc.printStackTrace(System.err);
+                }
+            }
+
+            if (innerExc != null) throw innerExc;
+        } catch (Exception exc) {
+            exception = exc;
+        } finally {
+            try {
+                in.close();
+            } catch (Exception exc) {
+                if (exception == null) exception = exc;
+                else exc.printStackTrace(System.err);
+            }
+
+            if (exception != null) throw exception;
+        }
+
+        return source.toString();
+    }
+
+    private static String getLogInfo(int obj) {
+        return GL20.glGetShaderInfoLog(obj, GL20.glGetShaderi(obj, GL20.GL_INFO_LOG_LENGTH));
+    }
+
+    private static int createProgram(String vert, String frag) {
+        int vertId = 0, fragId = 0, program;
+        if (vert != null) vertId = createShader(vert, GL20.GL_VERTEX_SHADER);
+        if (frag != null) fragId = createShader(frag, GL20.GL_FRAGMENT_SHADER);
+
+        program = GL20.glCreateProgram();
+        if (program == 0) return 0;
+
+        if (vert != null) GL20.glAttachShader(program, vertId);
+        if (frag != null) GL20.glAttachShader(program, fragId);
+
+        GL20.glLinkProgram(program);
+        if (GL20.glGetProgrami(program, GL20.GL_LINK_STATUS) == GL11.GL_FALSE) {
+            FMLLog.log(Level.ERROR, getLogInfo(program));
+            return 0;
+        }
+
+        GL20.glValidateProgram(program);
+        if (GL20.glGetProgrami(program, GL20.GL_LINK_STATUS) == GL11.GL_FALSE) {
+            FMLLog.log(Level.ERROR, getLogInfo(program));
+            return 0;
+        }
+
+        return program;
+    }
+
+    private static int createShader(String filename, int shaderType) {
+        int shader = 0;
+        try {
+            shader = GL20.glCreateShader(shaderType);
+
+            if (shader == 0) return 0;
+
+            GL20.glShaderSource(shader, readFileAsString(filename));
+            GL20.glCompileShader(shader);
+
+            if (GL20.glGetShaderi(shader, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE)
+                throw new RuntimeException("Error creating shader: " + getLogInfo(shader));
+
+            return shader;
+        } catch (Exception e) {
+            GL20.glDeleteProgram(shader);
+            e.printStackTrace(System.err);
+            return -1;
+        }
+    }
 
     /**
      * Create a new render for the space elevator cable
@@ -81,11 +213,7 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
 
         if (!cableTile.shouldRender()) return;
 
-        {
-            GL11.glPushMatrix();
-            renderCable(x, y, z);
-            GL11.glPopMatrix();
-        }
+        renderCable(tile, x, y, z, timeSinceLastTick);
 
         {
             GL11.glPushMatrix();
@@ -129,26 +257,92 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
      * @param y Y coordinate of the block
      * @param z Z coordinate of the block
      */
-    private void renderCable(double x, double y, double z) {
-        // Initiate open GL for proper cable rendering
-        GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
-        Tessellator tessellator = Tessellator.instance;
-        GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, 10497.0F);
-        GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, 10497.0F);
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glDepthMask(true);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        // Draw the cable
-        tessellator.setColorOpaque_F(1F, 1F, 1F);
-        renderFullHelix(tessellator, x, y, z);
-        // Reset open GL
-        GL11.glDisable(GL11.GL_BLEND);
-        OpenGlHelper.glBlendFunc(770, 771, 1, 0);
-        GL11.glDepthMask(false);
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glDepthMask(true);
+    private void renderCable(TileEntity tile, double x, double y, double z, float timeSinceLastTick) {
+        GL13.glActiveTexture(GL13.GL_TEXTURE0);
+        this.bindTexture(TextureMap.locationBlocksTexture);
+
+        if (!isInitialized) {
+            // Draw the cable
+            final float minU = BlockSpaceElevatorCable.textures[0].getMinU();
+            final float maxU = BlockSpaceElevatorCable.textures[0].getMaxU();
+            final float minV = BlockSpaceElevatorCable.textures[0].getMinV();
+            final float maxV = BlockSpaceElevatorCable.textures[0].getMaxV();
+
+            final float glowMinU = Math.lerp(minU, maxU, 7f / 16f);
+            final float glowMaxU = Math.lerp(minU, maxU, 9f / 16f);
+            final float glowMinV = Math.lerp(minV, maxV, 7f / 16f);
+            final float glowMaxV = Math.lerp(minV, maxV, 9f / 16f);
+
+            cableProgram = createProgram(
+                    "/assets/gtnhintergalactic/shaders/spacecable.vert.glsl",
+                    "/assets/gtnhintergalactic/shaders/spacecable.frag.glsl");
+            GL20.glUseProgram(cableProgram);
+
+            aVertexID = GL20.glGetAttribLocation(cableProgram, "vertexId");
+
+            uModelProjectionMatrix = GL20.glGetUniformLocation(cableProgram, "u_ModelProjection");
+            uBlockTex = GL20.glGetUniformLocation(cableProgram, "u_BlockTex");
+            uSectionHeight = GL20.glGetUniformLocation(cableProgram, "u_SectionHeight");
+            uTime = GL20.glGetUniformLocation(cableProgram, "u_Time");
+            uBaseY = GL20.glGetUniformLocation(cableProgram, "u_BaseY");
+            uGlowU = GL20.glGetUniformLocation(cableProgram, "u_GlowU");
+            uGlowV = GL20.glGetUniformLocation(cableProgram, "u_GlowV");
+            uUV = GL20.glGetUniformLocation(cableProgram, "u_UV");
+
+            vertexIDBuffer = GL15.glGenBuffers();
+            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vertexIDBuffer);
+            // Make a 3x-sized buffer to act as a vec3 position input to the shader.
+            // Without a position input, the draw causes undefined behaviour in GL 2.x
+            final ByteBuffer vertexIDData = BufferUtils.createByteBuffer(VERTEX_COUNT * 4 * 3);
+            for (int i = 0; i < VERTEX_COUNT * 3; i++) {
+                vertexIDData.putFloat(i * 4, (float) i);
+            }
+            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertexIDData, GL15.GL_STATIC_DRAW);
+            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+
+            final FloatBuffer uvBuffer = BufferUtils.createFloatBuffer(4);
+            uvBuffer.put(0, minU);
+            uvBuffer.put(1, minV);
+            uvBuffer.put(2, maxU);
+            uvBuffer.put(3, maxV);
+
+            GL20.glUniform1f(uSectionHeight, SECTION_HEIGHT);
+            GL20.glUniform1i(uBlockTex, OpenGlHelper.defaultTexUnit - GL13.GL_TEXTURE0);
+            GL20.glUniform2f(uGlowU, glowMinU, glowMaxU);
+            GL20.glUniform2f(uGlowV, glowMinV, glowMaxV);
+            GL20.glUniform2(uUV, uvBuffer);
+
+            GL20.glUseProgram(0);
+
+            isInitialized = true;
+
+        }
+
+        GL20.glUseProgram(cableProgram);
+        GL20.glUniform1f(
+                uTime,
+                ((tile.getWorldObj().getWorldInfo().getWorldTotalTime() % 60) + timeSinceLastTick) / 60f);
+        GL20.glUniform1i(uBaseY, (int) y - 23);
+
+        modelProjection.identity();
+        modelProjection.translate((float) x, (float) (y - 23), (float) z);
+
+        GL11.glDisable(GL11.GL_CULL_FACE);
+        modelProjection.get(0, bufModelViewProjection);
+        GL20.glUniformMatrix4(uModelProjectionMatrix, false, bufModelViewProjection);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vertexIDBuffer);
+        GL20.glVertexAttribPointer(aVertexID, 1, GL11.GL_FLOAT, false, 0, 0);
+        GL20.glEnableVertexAttribArray(aVertexID);
+        GL11.glVertexPointer(3, GL11.GL_FLOAT, 0, 0);
+        GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
+
+        GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, VERTEX_COUNT);
+
+        GL11.glDisableClientState(GL11.GL_VERTEX_ARRAY);
+        GL20.glDisableVertexAttribArray(aVertexID);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+        GL11.glEnable(GL11.GL_CULL_FACE);
+        GL20.glUseProgram(0);
     }
 
     /**
@@ -257,136 +451,6 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
             }
         }
         return false;
-    }
-
-    /**
-     * Render the motor glow of the Space Elevator
-     *
-     * @param tes  Tessellator used for rendering
-     * @param x    X coordinate of the cable
-     * @param y    Y coordinate of the cable
-     * @param z    Z coordinate of the cable
-     * @param minU Minimum U coordinate of the texture
-     * @param maxU Maximum U coordinate of the texture
-     * @param minV Minimum V coordinate of the texture
-     * @param maxV Maximum V coordinate of the texture
-     */
-    private void motorGlow(Tessellator tes, double x, double y, double z, double minU, double maxU, double minV,
-            double maxV) {
-        // spotless:off
-        tes.addVertexWithUV(x + 0.5f - 2.51f, y - 22f,          z + 0.5f + 0.5f, minU, maxV);
-        tes.addVertexWithUV(x + 0.5f - 2.51f, y + 0.5f + 0.5f,  z + 0.5f + 0.5f, minU, minV);
-        tes.addVertexWithUV(x + 0.5f - 2.51f, y + 0.5f + 0.5f,  z + 0.5f - 0.5f, maxU, minV);
-        tes.addVertexWithUV(x + 0.5f - 2.51f, y - 22f,          z + 0.5f - 0.5f, maxU, maxV);
-
-        tes.addVertexWithUV(x + 0.5f + 2.51f, y - 22f,          z + 0.5f - 0.5f, minU, maxV);
-        tes.addVertexWithUV(x + 0.5f + 2.51f, y + 0.5f + 0.5f,  z + 0.5f - 0.5f, minU, minV);
-        tes.addVertexWithUV(x + 0.5f + 2.51f, y + 0.5f + 0.5f,  z + 0.5f + 0.5f, maxU, minV);
-        tes.addVertexWithUV(x + 0.5f + 2.51f, y - 22f,          z + 0.5f + 0.5f, maxU, maxV);
-
-        tes.addVertexWithUV(x + 0.5f + 0.5f, y - 22f,          z + 0.5f + 2.51f, minU, maxV);
-        tes.addVertexWithUV(x + 0.5f + 0.5f, y + 0.5f + 0.5f,  z + 0.5f + 2.51f, minU, minV);
-        tes.addVertexWithUV(x + 0.5f - 0.5f, y + 0.5f + 0.5f,  z + 0.5f + 2.51f, maxU, minV);
-        tes.addVertexWithUV(x + 0.5f - 0.5f, y - 22f,          z + 0.5f + 2.51f, maxU, maxV);
-
-        tes.addVertexWithUV(x + 0.5f - 0.5f, y - 22f,          z + 0.5f - 2.51f, minU, maxV);
-        tes.addVertexWithUV(x + 0.5f - 0.5f, y + 0.5f + 0.5f,  z + 0.5f - 2.51f, minU, minV);
-        tes.addVertexWithUV(x + 0.5f + 0.5f, y + 0.5f + 0.5f,  z + 0.5f - 2.51f, maxU, minV);
-        tes.addVertexWithUV(x + 0.5f + 0.5f, y - 22f,          z + 0.5f - 2.51f, maxU, maxV);
-        //spotless:on
-    }
-
-    /**
-     * Draw a clockwise helix part of the cable
-     *
-     * @param tes    Tessellator used for rendering
-     * @param x      X coordinate of the cable
-     * @param y      Y coordinate of the cable
-     * @param z      Z coordinate of the cable
-     * @param offset Vertical offset
-     * @param side   Side of the helix
-     * @param width  Width of the helix
-     * @param minU   Minimum U coordinate of the texture
-     * @param maxU   Maximum U coordinate of the texture
-     * @param minV   Minimum V coordinate of the texture
-     * @param maxV   Maximum V coordinate of the texture
-     */
-    private void clockwiseHelixPart(Tessellator tes, double x, double y, double z, int offset, double side,
-            double width, double minU, double maxU, double minV, double maxV) {
-
-        double sectionHeight = 8 * side;
-        int sections = (int) Math.ceil(CABLE_HEIGHT / sectionHeight);
-        // spotless:off
-        for (int i = 0; i < 8 * sections; i++) {
-            int j = (i + offset) % 8;
-            int k = (i + 1 + offset) % 8;
-            if (i % 4 == 0) {
-                // Light section
-                IIcon cableLight = BlockSpaceElevatorCable.textures[2 + ((i / 4) % 80)];
-                GTNHIntergalactic.instance.markTextureUsed(cableLight);
-                double lightMinU = cableLight.getMinU();
-                double lightMaxU = cableLight.getMaxU();
-                double lightMinV = cableLight.getMinV();
-                double lightMaxV = cableLight.getMaxV();
-
-                tes.addVertexWithUV(x + 0.5f + edgeX[k], y + side * i + side, z + 0.5f + edgeZ[k], lightMinU, lightMaxV);
-                tes.addVertexWithUV(x + 0.5f + edgeX[k], y + side * i + (side + width), z + 0.5f + edgeZ[k], lightMinU, lightMinV);
-                tes.addVertexWithUV(x + 0.5f + edgeX[j], y + side * i + width, z + 0.5f + edgeZ[j], lightMaxU, lightMinV);
-                tes.addVertexWithUV(x + 0.5f + edgeX[j], y + side * i, z + 0.5f + edgeZ[j], lightMaxU, lightMaxV);
-            } else {
-                tes.addVertexWithUV(x + 0.5f + edgeX[k], y + side * i + side, z + 0.5f + edgeZ[k], minU, maxV);
-                tes.addVertexWithUV(x + 0.5f + edgeX[k], y + side * i + (side + width), z + 0.5f + edgeZ[k], minU, minV);
-                tes.addVertexWithUV(x + 0.5f + edgeX[j], y + side * i + width, z + 0.5f + edgeZ[j], maxU, minV);
-                tes.addVertexWithUV(x + 0.5f + edgeX[j], y + side * i, z + 0.5f + edgeZ[j], maxU, maxV);
-            }
-
-            // Inner side
-            tes.addVertexWithUV(x + 0.5f + edgeX[j], y + side * i, z + 0.5f + edgeZ[j], maxU, maxV);
-            tes.addVertexWithUV(x + 0.5f + edgeX[j], y + side * i + width, z + 0.5f + edgeZ[j], maxU, minV);
-            tes.addVertexWithUV(x + 0.5f + edgeX[k], y + side * i + (side + width), z + 0.5f + edgeZ[k], minU, minV);
-            tes.addVertexWithUV(x + 0.5f + edgeX[k], y + side * i + side, z + 0.5f + edgeZ[k], minU, maxV);
-        }
-        // spotless:on
-    }
-
-    /**
-     * Render the cable helix of the Space Elevator
-     *
-     * @param tes Used tessellator for rendering
-     * @param x   X coordinate of the cable
-     * @param y   Y coordinate of the cable
-     * @param z   Z coordinate of the cable
-     */
-    private void renderFullHelix(Tessellator tes, double x, double y, double z) {
-        this.bindTexture(TextureMap.locationBlocksTexture);
-        IIcon cablePart = BlockSpaceElevatorCable.textures[0];
-        IIcon motorGlow = BlockSpaceElevatorCable.motorGlow;
-        double minU = cablePart.getMinU();
-        double maxU = cablePart.getMaxU();
-        double minV = cablePart.getMinV();
-        double maxV = cablePart.getMaxV();
-
-        double motorGlowMinU = motorGlow.getMinU();
-        double motorGlowMaxU = motorGlow.getMaxU();
-        double motorGlowMinV = motorGlow.getMinV();
-        double motorGlowMaxV = motorGlow.getMaxV();
-
-        tes.startDrawingQuads();
-        clockwiseHelixPart(tes, x, y - 23.0, z, 0, 2.0 / 5.4, 0.75, minU, maxU, minV, maxV);
-        tes.draw();
-        tes.startDrawingQuads();
-        clockwiseHelixPart(tes, x, y - 23.0, z, 2, 2.0 / 5.4, 0.75, minU, maxU, minV, maxV);
-        tes.draw();
-        tes.startDrawingQuads();
-        clockwiseHelixPart(tes, x, y - 23.0, z, 4, 2.0 / 5.4, 0.75, minU, maxU, minV, maxV);
-        tes.draw();
-        tes.startDrawingQuads();
-        clockwiseHelixPart(tes, x, y - 23.0, z, 6, 2.0 / 5.4, 0.75, minU, maxU, minV, maxV);
-        tes.draw();
-
-        tes.startDrawingQuads();
-        motorGlow(tes, x, y, z, motorGlowMinU, motorGlowMaxU, motorGlowMinV, motorGlowMaxV);
-        tes.draw();
     }
 
     /**
