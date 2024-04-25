@@ -355,9 +355,13 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
         var metaTileEntity = gtTileEntity.getMetaTileEntity();
         if (!(metaTileEntity instanceof GT_MetaTileEntity_PurificationPlant)) return LinkResult.NO_VALID_PLANT;
 
-        // Before linking, unlink from current controller so we don't end up with units linked to multiple
+        // Before linking, unlink from current controller, so we don't end up with units linked to multiple
         // controllers.
-        this.unlinkController();
+        GT_MetaTileEntity_PurificationPlant oldController = getController();
+        if (oldController != null) {
+            oldController.unregisterLinkedUnit(this);
+            this.unlinkController();
+        }
 
         // Now link to new controller
         controllerX = x;
