@@ -23,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.collect.ImmutableList;
@@ -46,6 +47,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IHatchElement;
@@ -54,10 +56,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_StructureUtility;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.*;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
 import gregtech.common.gui.modularui.widget.TextButtonWidget;
@@ -591,5 +590,11 @@ public class GT_MetaTileEntity_PurificationPlant
             }
             return null;
         }));
+    }
+
+    @Override
+    // Sound for the Base Unit of the Purification Plant, using DT for now.
+    protected ResourceLocation getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_DISTILLERY_LOOP.resourceLocation;
     }
 }
