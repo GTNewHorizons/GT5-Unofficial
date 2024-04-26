@@ -68,11 +68,11 @@ public class GT_MetaTileEntity_PurificationUnitSifter extends
             { "           ", "   AAAAA   ", "   AA~AA   ", "   AAAAA   " },
             { "           ", "  A     A  ", "  AWWWWWA  ", "  AAAAAAA  " },
             { "           ", " A       A ", " AWWWWWWWA ", " AAAAAAAAA " },
-            { "           ", "A         A", "AWWWCCCWWWA", "AAAAAAAAAAA" },
-            { "    DDD    ", "A         A", "AWWCWWWCWWA", "AAAAAAAAAAA" },
-            { "DDDDDBD    ", "A    B    A", "AWWCWBWCWWA", "AAAAAAAAAAA" },
-            { "    DDD    ", "A         A", "AWWCWWWCWWA", "AAAAAAAAAAA" },
-            { "           ", "A         A", "AWWWCCCWWWA", "AAAAAAAAAAA" },
+            { "           ", "A         A", "AWWWCCCWWWA", "AAAAFFFAAAA" },
+            { "    DDD    ", "A         A", "AWWCWWWCWWA", "AAAFFFFFAAA" },
+            { "DDDDDBD    ", "A    B    A", "AWWCWBWCWWA", "AAAFFFFFAAA" },
+            { "    DDD    ", "A         A", "AWWCWWWCWWA", "AAAFFFFFAAA" },
+            { "           ", "A         A", "AWWWCCCWWWA", "AAAAFFFAAAA" },
             { "           ", " A       A ", " AWWWWWWWA ", " AAAAAAAAA " },
             { "           ", "  A     A  ", "  AWWWWWA  ", "  AAAAAAA  " },
             { "           ", "   AAAAA   ", "   AAAAA   ", "   AAAAA   " } };
@@ -98,13 +98,15 @@ public class GT_MetaTileEntity_PurificationUnitSifter extends
                         .casingIndex(49)
                         .dot(1)
                         .build()),
-                // Currently clean stainless steel casing
+                // Clean stainless steel machine casing
                 onElementPass(t -> t.mCasingAmount++, ofBlock(GregTech_API.sBlockCasings4, 1))))
-        // currently ptfe pipe casing
+        // PTFE pipe casing
         .addElement('B', ofBlock(GregTech_API.sBlockCasings8, 1))
         .addElement('C', ofFrame(Materials.Iridium))
         .addElement('D', ofFrame(Materials.DamascusSteel))
         .addElement('W', ofChain(ofBlock(Blocks.water, 0)))
+        // Filter machine casing
+        .addElement('F', ofBlock(GregTech_API.sBlockCasings3, 11))
         .build();
 
     public GT_MetaTileEntity_PurificationUnitSifter(int aID, String aName, String aNameRegional) {

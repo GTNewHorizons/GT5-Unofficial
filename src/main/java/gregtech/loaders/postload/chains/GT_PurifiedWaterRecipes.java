@@ -26,8 +26,7 @@ public class GT_PurifiedWaterRecipes {
             .outputChances(1000, 500, 100)
             .duration(duration)
             .eut(TierEU.RECIPE_LuV)
-            // Debug: base chance of 80%
-            .metadata(BASE_CHANCE, 10.0f)
+            .metadata(BASE_CHANCE, 70.0f)
             .addTo(purificationPlantGrade1Recipes);
     }
 }

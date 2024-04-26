@@ -41,7 +41,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
 
     // TODO: Balancing
     public static final float WATER_BOOST_NEEDED_FLUID = 0.1f;
-    // TODO: Balancing
+    // TODO: Balancing. This is an additive boost
     public static final float WATER_BOOST_BONUS_CHANCE = 0.15f;
 
     /**
@@ -525,7 +525,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
 
     /**
      * Creates all widgets needed to sync this unit's status with the client
-     * 
+     *
      * @return
      */
     public Widget makeSyncerWidgets() {
