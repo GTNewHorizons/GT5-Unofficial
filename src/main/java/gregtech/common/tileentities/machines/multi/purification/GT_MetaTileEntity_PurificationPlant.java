@@ -521,29 +521,21 @@ public class GT_MetaTileEntity_PurificationPlant
                 .setPos(0, 0))
             .setSize(20, 20);
 
-        // Display machine name
+        // Display machine name and status
         String name = unit.metaTileEntity()
             .getLocalName();
 
         row.widget(
-            TextWidget.dynamicString(() -> name)
+            TextWidget.dynamicString(() -> name + "  " + unit.getStatusString())
                 .setSynced(false)
                 .setTextAlignment(Alignment.CenterLeft)
                 .setPos(25, 0)
                 .setSize(0, 20))
-            .widget(new FakeSyncWidget.StringSyncer(() -> name, _name -> {}));
-
-        // Display machine status
-        row.widget(
-            TextWidget.dynamicString(unit::getStatusString)
-                .setSynced(false)
-                .setTextAlignment(Alignment.CenterLeft)
-                .setPos(150, 0)
-                .setSize(0, 20))
+            .widget(new FakeSyncWidget.StringSyncer(() -> name, _name -> {}))
             .widget(
                 unit.metaTileEntity()
                     .makeSyncerWidgets())
-            .widget(new FakeSyncWidget.BooleanSyncer(unit::isActive, unit::setActive));
+            .widget(new FakeSyncWidget.BooleanSyncer(unit::isActive, unit::setActive));;
 
         return row;
     }
