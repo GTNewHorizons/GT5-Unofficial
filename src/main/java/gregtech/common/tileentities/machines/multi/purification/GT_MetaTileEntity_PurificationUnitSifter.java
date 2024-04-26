@@ -185,7 +185,8 @@ public class GT_MetaTileEntity_PurificationUnitSifter extends
             .addSeparator()
             .beginStructureBlock(11, 4, 11, true)
             .addController("Front center")
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher(
+                EnumChatFormatting.BOLD + "" + EnumChatFormatting.WHITE + "Not" + EnumChatFormatting.AQUA + "APenguin");
         return tt;
     }
 
