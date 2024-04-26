@@ -16,6 +16,7 @@ import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -58,6 +59,9 @@ public class GT_MetaTileEntity_PurificationUnitSifter extends
     private static final int STRUCTURE_X_OFFSET = 5;
     private static final int STRUCTURE_Y_OFFSET = 2;
     private static final int STRUCTURE_Z_OFFSET = 1;
+
+    // Chance that the filter is damaged every cycle.
+    private static final float FILTER_DAMAGE_RATE = 20.0f;
 
     private int mCasingAmount;
 
@@ -124,7 +128,6 @@ public class GT_MetaTileEntity_PurificationUnitSifter extends
 
     @Override
     public long getActivePowerUsage() {
-        // TODO: Balancing, etc.
         return 32720;
     }
 
@@ -143,6 +146,9 @@ public class GT_MetaTileEntity_PurificationUnitSifter extends
             .fluids(
                 this.getStoredFluids()
                     .toArray(new FluidStack[] {}))
+            .items(
+                this.getStoredInputs()
+                    .toArray(new ItemStack[] {}))
             .find();
 
         this.endRecipeProcessing();
@@ -160,6 +166,18 @@ public class GT_MetaTileEntity_PurificationUnitSifter extends
 
         this.currentRecipe = recipe;
         return CheckRecipeResultRegistry.SUCCESSFUL;
+    }
+
+    @Override
+    public void startCycle(int cycleTime, int progressTime) {
+        // First call super.startCycle() to start recipe
+        super.startCycle(cycleTime, progressTime);
+        // Now do random roll to determine if the filter should be destroyed
+        ThreadLocalRandom random = ThreadLocalRandom.current();
+        int roll = random.nextInt(1, 101);
+        if (roll < FILTER_DAMAGE_RATE) {
+            this.depleteInput(this.currentRecipe.mInputs[0]);
+        }
     }
 
     @Override
@@ -184,7 +202,32 @@ public class GT_MetaTileEntity_PurificationUnitSifter extends
                     + EnumChatFormatting.WHITE
                     + GT_Utility.formatNumbers(getWaterTier())
                     + EnumChatFormatting.RESET)
+            .addInfo("Controller block for the Sifter Purification Unit.")
+            .addInfo("Must be linked to a Purification Plant to work.")
             .addSeparator()
+            .addInfo("Filters out large particles in the water such as")
+            .addInfo("dirt, sticks, and perhaps even some treasure!")
+            .addInfo("Requires a filter in the input bus to work.")
+            .addInfo(
+                "Every cycle, has a " + EnumChatFormatting.RED
+                    + GT_Utility.formatNumbers(FILTER_DAMAGE_RATE)
+                    + "%"
+                    + EnumChatFormatting.GRAY
+                    + " chance to destroy the filter.")
+            .addSeparator()
+            .addInfo("Success rate can be boosted by using a portion")
+            .addInfo("of the target output as a secondary input.")
+            .addInfo(
+                EnumChatFormatting.RED + GT_Utility.formatNumbers(WATER_BOOST_NEEDED_FLUID * 100)
+                    + "%"
+                    + EnumChatFormatting.GRAY
+                    + " of output yield will be consumed in exchange")
+            .addInfo(
+                "for an additive " + EnumChatFormatting.RED
+                    + GT_Utility.formatNumbers(WATER_BOOST_BONUS_CHANCE * 100)
+                    + "%"
+                    + EnumChatFormatting.GRAY
+                    + " increase to success.")
             .beginStructureBlock(11, 4, 11, true)
             .addController("Front center")
             .toolTipFinisher(

@@ -1158,7 +1158,7 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> purificationPlantGrade1Recipes = RecipeMapBuilder
         .of("gt.recipe.purificationplantgrade1")
-        .maxIO(2, 9, 3, 3)
+        .maxIO(1, 9, 3, 3)
         .minInputs(0, 1)
         .progressBar(GT_UITextures.PROGRESSBAR_SIFT)
         .disableOptimize()
