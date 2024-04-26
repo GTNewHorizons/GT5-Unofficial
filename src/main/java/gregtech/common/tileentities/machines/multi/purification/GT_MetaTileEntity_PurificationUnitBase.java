@@ -15,6 +15,10 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.gtnewhorizons.modularui.api.widget.Widget;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
+
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.VoidingMode;
@@ -517,6 +521,17 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
         } else {
             return PurificationUnitStatus.ONLINE;
         }
+    }
+
+    /**
+     * Creates all widgets needed to sync this unit's status with the client
+     * 
+     * @return
+     */
+    public Widget makeSyncerWidgets() {
+        return new MultiChildWidget()
+            .addChild(new FakeSyncWidget.BooleanSyncer(() -> this.mMachine, machine -> this.mMachine = machine))
+            .addChild(new FakeSyncWidget.BooleanSyncer(this::isAllowedToWork, _work -> {}));
     }
 
     @Override

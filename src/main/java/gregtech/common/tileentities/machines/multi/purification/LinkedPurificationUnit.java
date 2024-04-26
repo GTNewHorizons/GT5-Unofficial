@@ -5,6 +5,7 @@ import static gregtech.GT_Mod.gregtechproxy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
@@ -77,6 +78,28 @@ public class LinkedPurificationUnit {
 
     public void setActive(boolean active) {
         this.mIsActive = active;
+    }
+
+    public String getStatusString() {
+        if (this.isActive()) {
+            return EnumChatFormatting.GREEN + "Active";
+        }
+
+        PurificationUnitStatus status = this.mMetaTileEntity.status();
+        switch (status) {
+            case ONLINE -> {
+                return EnumChatFormatting.GREEN + "Online";
+            }
+            case DISABLED -> {
+                return EnumChatFormatting.YELLOW + "Disabled";
+            }
+            case INCOMPLETE_STRUCTURE -> {
+                return EnumChatFormatting.RED + "Incomplete Structure";
+            }
+        }
+
+        // If this happens, this is a bug and there is a switch case missing.
+        return null;
     }
 
     /**

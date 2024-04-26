@@ -37,8 +37,8 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.Row;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
@@ -508,7 +508,7 @@ public class GT_MetaTileEntity_PurificationPlant
 
     private Widget makeUnitStatusWidget(LinkedPurificationUnit unit) {
         // Draw small machine controller icon
-        Row row = new Row();
+        DynamicPositionedRow row = new DynamicPositionedRow();
         ItemStackHandler machineIcon = new ItemStackHandler(1);
         machineIcon.setStackInSlot(
             0,
@@ -518,7 +518,8 @@ public class GT_MetaTileEntity_PurificationPlant
         row.widget(
             SlotWidget.phantom(machineIcon, 0)
                 .disableInteraction()
-                .setPos(0, 0));
+                .setPos(0, 0))
+            .setSize(20, 20);
 
         // Display machine name
         String name = unit.metaTileEntity()
@@ -528,8 +529,22 @@ public class GT_MetaTileEntity_PurificationPlant
             TextWidget.dynamicString(() -> name)
                 .setSynced(false)
                 .setTextAlignment(Alignment.CenterLeft)
-                .setPos(20, 0))
+                .setPos(25, 0)
+                .setSize(0, 20))
             .widget(new FakeSyncWidget.StringSyncer(() -> name, _name -> {}));
+
+        // Display machine status
+        row.widget(
+            TextWidget.dynamicString(unit::getStatusString)
+                .setSynced(false)
+                .setTextAlignment(Alignment.CenterLeft)
+                .setPos(150, 0)
+                .setSize(0, 20))
+            .widget(
+                unit.metaTileEntity()
+                    .makeSyncerWidgets())
+            .widget(new FakeSyncWidget.BooleanSyncer(unit::isActive, unit::setActive));
+
         return row;
     }
 
