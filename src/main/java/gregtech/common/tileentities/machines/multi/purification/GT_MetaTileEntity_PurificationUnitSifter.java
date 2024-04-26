@@ -241,7 +241,39 @@ public class GT_MetaTileEntity_PurificationUnitSifter extends
                     + " increase to success.")
             .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(11, 4, 11, true)
+            .addSeparator()
             .addController("Front center")
+            .addCasingInfoRangeColored(
+                "Clean Stainless Steel Machine Casing",
+                EnumChatFormatting.GRAY,
+                123,
+                131,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "Filter Machine Casing",
+                EnumChatFormatting.GRAY,
+                21,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "Iridium Frame Box",
+                EnumChatFormatting.GRAY,
+                21,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "Damascus Steel Frame Box",
+                EnumChatFormatting.GRAY,
+                12,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored("PTFE Pipe Casing", EnumChatFormatting.GRAY, 3, EnumChatFormatting.GOLD, false)
+            .addInputBus(EnumChatFormatting.GOLD + "0" + EnumChatFormatting.GRAY + "+", 1)
+            .addOutputBus(EnumChatFormatting.GOLD + "0" + EnumChatFormatting.GRAY + "+", 1)
+            .addInputHatch(EnumChatFormatting.GOLD + "0" + EnumChatFormatting.GRAY + "+", 1)
+            .addOutputHatch(EnumChatFormatting.GOLD + "0" + EnumChatFormatting.GRAY + "+", 1)
+            .addStructureInfo("Use the StructureLib Hologram Projector to build the structure.")
             .toolTipFinisher("GregTech");
         return tt;
     }
