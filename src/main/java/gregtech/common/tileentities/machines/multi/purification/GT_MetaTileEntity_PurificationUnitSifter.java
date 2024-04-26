@@ -196,20 +196,11 @@ public class GT_MetaTileEntity_PurificationUnitSifter extends
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        // 123-131 clean stainless machine casing
-        // 21 filter machine casing
-        // 12 iridium frame box
-        // 3 ptfe pipe casing
-        // 12 damascus steel frame box
-        // output bus: hint
-        // input bus: hint
-        // output hatch: hint
-        // input hatch: hint
         tt.addMachineType("Purification Unit")
             .addInfo(
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.BOLD
-                    + "Water tier: "
+                    + "Water Tier: "
                     + EnumChatFormatting.WHITE
                     + GT_Utility.formatNumbers(getWaterTier())
                     + EnumChatFormatting.RESET)
