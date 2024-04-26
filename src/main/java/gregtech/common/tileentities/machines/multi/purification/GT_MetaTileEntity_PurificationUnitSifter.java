@@ -3,11 +3,11 @@ package gregtech.common.tileentities.machines.multi.purification;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.GT_HatchElement.InputBus;
 import static gregtech.api.enums.GT_HatchElement.InputHatch;
 import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
+import static gregtech.api.enums.GT_Values.AuthorNotAPenguin;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
@@ -63,23 +63,21 @@ public class GT_MetaTileEntity_PurificationUnitSifter extends
     // Chance that the filter is damaged every cycle.
     private static final float FILTER_DAMAGE_RATE = 20.0f;
 
-    private int mCasingAmount;
-
     private static final String[][] structure =
         // spotless:off
         new String[][] {
             { "           ", "           ", "           ", "           " },
-            { "           ", "   AAAAA   ", "   AA~AA   ", "   AAAAA   " },
+            { "           ", "   AAAAA   ", "   AH~HA   ", "   AAAAA   " },
             { "           ", "  A     A  ", "  AWWWWWA  ", "  AAAAAAA  " },
             { "           ", " A       A ", " AWWWWWWWA ", " AAAAAAAAA " },
             { "           ", "A         A", "AWWWCCCWWWA", "AAAAFFFAAAA" },
-            { "    DDD    ", "A         A", "AWWCWWWCWWA", "AAAFFFFFAAA" },
+            { "    DDD    ", "A         A", "HWWCWWWCWWH", "AAAFFFFFAAA" },
             { "DDDDDBD    ", "A    B    A", "AWWCWBWCWWA", "AAAFFFFFAAA" },
-            { "    DDD    ", "A         A", "AWWCWWWCWWA", "AAAFFFFFAAA" },
+            { "    DDD    ", "A         A", "HWWCWWWCWWH", "AAAFFFFFAAA" },
             { "           ", "A         A", "AWWWCCCWWWA", "AAAAFFFAAAA" },
             { "           ", " A       A ", " AWWWWWWWA ", " AAAAAAAAA " },
             { "           ", "  A     A  ", "  AWWWWWA  ", "  AAAAAAA  " },
-            { "           ", "   AAAAA   ", "   AAAAA   ", "   AAAAA   " } };
+            { "           ", "   AAAAA   ", "   AHAHA   ", "   AAAAA   " } };
     // spotless:on
 
     private static final IStructureDefinition<GT_MetaTileEntity_PurificationUnitSifter> STRUCTURE_DEFINITION = StructureDefinition
@@ -93,17 +91,21 @@ public class GT_MetaTileEntity_PurificationUnitSifter extends
                         .map(s -> s.replaceAll("W", " "))
                         .toArray(String[]::new))
                 .toArray(String[][]::new))
+        // Hatches
         .addElement(
-            'A',
+            'H',
             ofChain(
                 lazy(
                     t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitSifter>buildHatchAdder()
                         .atLeastList(t.getAllowedHatches())
                         .casingIndex(49)
                         .dot(1)
+                        .hint(() -> "Input Bus, Output Bus, Input Hatch, Output Hatch")
                         .build()),
                 // Clean stainless steel machine casing
-                onElementPass(t -> t.mCasingAmount++, ofBlock(GregTech_API.sBlockCasings4, 1))))
+                ofBlock(GregTech_API.sBlockCasings4, 1)))
+        // Clean stainless steel machine casing
+        .addElement('A', ofBlock(GregTech_API.sBlockCasings4, 1))
         // PTFE pipe casing
         .addElement('B', ofBlock(GregTech_API.sBlockCasings8, 1))
         .addElement('C', ofFrame(Materials.Iridium))
@@ -194,6 +196,15 @@ public class GT_MetaTileEntity_PurificationUnitSifter extends
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        // 123-131 clean stainless machine casing
+        // 21 filter machine casing
+        // 12 iridium frame box
+        // 3 ptfe pipe casing
+        // 12 damascus steel frame box
+        // output bus: hint
+        // input bus: hint
+        // output hatch: hint
+        // input hatch: hint
         tt.addMachineType("Purification Unit")
             .addInfo(
                 EnumChatFormatting.AQUA + ""
@@ -228,10 +239,10 @@ public class GT_MetaTileEntity_PurificationUnitSifter extends
                     + "%"
                     + EnumChatFormatting.GRAY
                     + " increase to success.")
+            .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(11, 4, 11, true)
             .addController("Front center")
-            .toolTipFinisher(
-                EnumChatFormatting.BOLD + "" + EnumChatFormatting.WHITE + "Not" + EnumChatFormatting.AQUA + "APenguin");
+            .toolTipFinisher("GregTech");
         return tt;
     }
 

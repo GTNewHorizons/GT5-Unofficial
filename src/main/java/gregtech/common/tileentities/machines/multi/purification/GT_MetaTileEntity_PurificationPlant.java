@@ -7,6 +7,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElement
 import static gregtech.api.enums.GT_HatchElement.Energy;
 import static gregtech.api.enums.GT_HatchElement.ExoticEnergy;
 import static gregtech.api.enums.GT_HatchElement.Maintenance;
+import static gregtech.api.enums.GT_Values.AuthorNotAPenguin;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW;
@@ -129,10 +130,10 @@ public class GT_MetaTileEntity_PurificationPlant
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Purification Plant")
             .addSeparator()
+            .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")
-            .toolTipFinisher(
-                EnumChatFormatting.BOLD + "" + EnumChatFormatting.WHITE + "Not" + EnumChatFormatting.AQUA + "APenguin");
+            .toolTipFinisher("GregTech");
         return tt;
     }
 
