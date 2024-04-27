@@ -193,6 +193,7 @@ public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hat
                         connection = new DroneConnection(machine, centre);
                         connection.centre.getConnectionList()
                             .add(connection);
+                        return;
                     }
                 }
             }
