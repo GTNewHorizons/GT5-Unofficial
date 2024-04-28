@@ -325,9 +325,9 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
             ModularWindow.Builder builder = ModularWindow.builder(150, 54);
             builder.setBackground(ModularUITextures.VANILLA_BACKGROUND);
 
-            NumericWidget capacityWidget;
+            NumericWidget capacityWidget = new NumericWidget();
             builder.widget(
-                capacityWidget = (NumericWidget) new NumericWidget().setGetter(() -> capacity)
+                capacityWidget.setGetter(() -> capacity)
                     .setSetter(value -> setCapacity(getCurrentItem(), capacity = (int) value))
                     .setBounds(1, maxCapacity)
                     .setScrollValues(1, 144, 1000)
