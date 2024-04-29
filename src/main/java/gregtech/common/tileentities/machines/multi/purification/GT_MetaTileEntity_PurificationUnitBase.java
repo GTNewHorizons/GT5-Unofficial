@@ -180,6 +180,12 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
         return depleteInput(inputWater, true);
     }
 
+    public void depleteRecipeInputs() {
+        for (FluidStack input : this.currentRecipe.mFluidInputs) {
+            this.depleteInput(input);
+        }
+    }
+
     /**
      * Called after a recipe is found and accepted.
      *
@@ -197,9 +203,8 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
             this.depleteInput(inputWater);
         }
 
-        for (FluidStack input : this.currentRecipe.mFluidInputs) {
-            this.depleteInput(input);
-        }
+        this.depleteRecipeInputs();
+
         this.mMaxProgresstime = cycleTime;
         this.mProgresstime = progressTime;
         this.mEfficiency = 10000;
@@ -211,6 +216,27 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
         this.lEUt = -this.getActivePowerUsage();
     }
 
+    public void addRecipeOutputs() {
+        ThreadLocalRandom random = ThreadLocalRandom.current();
+        this.addFluidOutputs(this.currentRecipe.mFluidOutputs);
+        // If this recipe has random item outputs, roll on it and add outputs
+        if (this.currentRecipe.mChances != null) {
+            // Roll on each output individually
+            for (int i = 0; i < this.currentRecipe.mOutputs.length; ++i) {
+                // Recipes store probabilities as a value ranging from 1-10000
+                int roll = random.nextInt(10000);
+                if (roll <= this.currentRecipe.mChances[i]) {
+                    this.addOutput(this.currentRecipe.mOutputs[i]);
+                }
+            }
+        } else {
+            // Guaranteed item output
+            for (int i = 0; i < this.currentRecipe.mOutputs.length; ++i) {
+                this.addOutput(this.currentRecipe.mOutputs[i]);
+            }
+        }
+    }
+
     public void endCycle() {
         ThreadLocalRandom random = ThreadLocalRandom.current();
 
@@ -218,23 +244,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
         // hack instead.
         float successRoll = random.nextInt(0, 10000) / 100.0f;
         if (successRoll <= this.currentRecipeChance) {
-            this.addFluidOutputs(this.currentRecipe.mFluidOutputs);
-            // If this recipe has random item outputs, roll on it and add outputs
-            if (this.currentRecipe.mChances != null) {
-                // Roll on each output individually
-                for (int i = 0; i < this.currentRecipe.mOutputs.length; ++i) {
-                    // Recipes store probabilities as a value ranging from 1-10000
-                    int roll = random.nextInt(10000);
-                    if (roll <= this.currentRecipe.mChances[i]) {
-                        this.addOutput(this.currentRecipe.mOutputs[i]);
-                    }
-                }
-            } else {
-                // Guaranteed item output
-                for (int i = 0; i < this.currentRecipe.mOutputs.length; ++i) {
-                    this.addOutput(this.currentRecipe.mOutputs[i]);
-                }
-            }
+            addRecipeOutputs();
         } else {
             onRecipeFail();
         }

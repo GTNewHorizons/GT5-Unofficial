@@ -171,9 +171,9 @@ public class GT_MetaTileEntity_PurificationUnitSifter extends
     }
 
     @Override
-    public void startCycle(int cycleTime, int progressTime) {
-        // First call super.startCycle() to start recipe
-        super.startCycle(cycleTime, progressTime);
+    public void depleteRecipeInputs() {
+        super.depleteRecipeInputs();
+
         // Now do random roll to determine if the filter should be destroyed
         ThreadLocalRandom random = ThreadLocalRandom.current();
         int roll = random.nextInt(1, 101);
