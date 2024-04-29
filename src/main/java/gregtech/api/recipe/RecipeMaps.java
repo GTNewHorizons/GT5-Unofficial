@@ -65,6 +65,7 @@ import gregtech.api.recipe.maps.SpaceProjectFrontend;
 import gregtech.api.recipe.maps.TranscendentPlasmaMixerFrontend;
 import gregtech.api.recipe.maps.UnpackagerBackend;
 import gregtech.api.recipe.metadata.PCBFactoryTierKey;
+import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -1161,6 +1162,18 @@ public final class RecipeMaps {
         .maxIO(1, 9, 3, 3)
         .minInputs(0, 1)
         .progressBar(GT_UITextures.PROGRESSBAR_SIFT)
+        .disableOptimize()
+        .build();
+    public static final RecipeMap<RecipeMapBackend> purificationPlantGrade2Recipes = RecipeMapBuilder
+        .of("gt.recipe.purificationplantgrade2")
+        .maxIO(0, 9, 3, 3)
+        .minInputs(0, 2)
+        .progressBar(GT_UITextures.PROGRESSBAR_BATH)
+        .neiRecipeComparator(
+            Comparator
+                .<GT_Recipe, Float>comparing(
+                    recipe -> recipe.getMetadataOrDefault(PurificationPlantBaseChanceKey.INSTANCE, 0.0f))
+                .thenComparing(GT_Recipe::compareTo))
         .disableOptimize()
         .build();
     public static final RecipeMap<RecipeMapBackend> ic2NuclearFakeRecipes = RecipeMapBuilder.of("gt.recipe.ic2nuke")

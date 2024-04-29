@@ -680,7 +680,8 @@ public enum MetaTileEntityIDs {
     Drone_Centre(9400),
     DroneDownLink(9401),
     PURIFICATION_PLANT_CONTROLLER(9402),
-    PURIFICATION_UNIT_SIFTER(9403);
+    PURIFICATION_UNIT_SIFTER(9403),
+    PURIFICATION_UNIT_COAGULATOR(9404);
 
     public final int ID;
 

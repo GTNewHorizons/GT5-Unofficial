@@ -223,6 +223,7 @@ gt.recipe.nanoforge=Nano Forge
 gt.recipe.pcbfactory=PCB Factory
 gt.recipe.ic2nuke=Nuclear Fission
 gt.recipe.purificationplantgrade1=Water Purifying - Sifting
+gt.recipe.purificationplantgrade2=Water Purifying - Coagulation
 
 # Recipe categories
 gt.recipe.category.arc_furnace_recycling=Arc Furnace Recycling

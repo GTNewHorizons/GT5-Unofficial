@@ -314,6 +314,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.PUMP_IV;
 import static gregtech.api.enums.MetaTileEntityIDs.PUMP_LV;
 import static gregtech.api.enums.MetaTileEntityIDs.PUMP_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_PLANT_CONTROLLER;
+import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_COAGULATOR;
 import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_SIFTER;
 import static gregtech.api.enums.MetaTileEntityIDs.PYROLYSE_OVEN_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.QUADRUPLE_INPUT_HATCHES_EV;
@@ -584,6 +585,7 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_VacuumFreez
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_DroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_Hatch_DroneDownLink;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationPlant;
+import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitCoagulator;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitSifter;
 import gregtech.common.tileentities.machines.steam.GT_MetaTileEntity_AlloySmelter_Bronze;
 import gregtech.common.tileentities.machines.steam.GT_MetaTileEntity_AlloySmelter_Steel;
@@ -856,6 +858,11 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 PURIFICATION_UNIT_SIFTER.ID,
                 "multimachine.purificationunitsifter",
                 "Sifter Purification Unit").getStackForm(1L));
+        ItemList.Machine_Multi_PurificationUnitCoagulator.set(
+            new GT_MetaTileEntity_PurificationUnitCoagulator(
+                PURIFICATION_UNIT_COAGULATOR.ID,
+                "multimachine.purificationunitcoagulator",
+                "Coagulator Purification Unit").getStackForm(1L));
         ItemList.Machine_Multi_LargeBoiler_Bronze.set(
             new GT_MetaTileEntity_LargeBoiler_Bronze(
                 LARGE_BRONZE_BOILER_CONTROLLER.ID,

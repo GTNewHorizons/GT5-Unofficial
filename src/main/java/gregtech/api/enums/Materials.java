@@ -158,6 +158,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Grade6PurifiedWater                = new Materials(   559, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16            ,   0,   0, 230, 0,   "Grade6PurifiedWater"                ,   "Grade 6 Purified Water"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue                 , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).setHasCorrespondingFluid(true);
     public static Materials Grade7PurifiedWater                = new Materials(   560, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16             ,   0,   0, 225, 0,   "Grade7PurifiedWater"                ,   "Grade 7 Purified Water"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue                , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).setHasCorrespondingFluid(true);
     public static Materials Grade8PurifiedWater                = new Materials(   561, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16             ,   0,   0, 220, 0,   "Grade8PurifiedWater"                ,   "Grade 8 Purified Water"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue                 , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).setHasCorrespondingFluid(true);
+    public static Materials FerrousWastewater = new Materials(562, TextureSet.SET_FLUID, 1.0f, 0, 2, 16, 61, 58, 82, 0, "FerrousWastewater", "Ferrous Wastewater", 0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue                 , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).setHasCorrespondingFluid(true);
 
     //GT++ materials
 
@@ -1910,6 +1911,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Grade6PurifiedWater.mChemicalFormula = "H\u2082O";
         Grade7PurifiedWater.mChemicalFormula = "H\u2082O";
         Grade8PurifiedWater.mChemicalFormula = "H\u2082O";
+        FerrousWastewater.mChemicalFormula = "H\u2082O??Cl\u2083Fe";
         TengamRaw.mChemicalFormula = "";
         TengamPurified.mChemicalFormula = "M";
         TengamAttuned.mChemicalFormula = "M";

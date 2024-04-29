@@ -231,7 +231,7 @@ public class GT_MetaTileEntity_PurificationUnitSifter extends
                     + EnumChatFormatting.GRAY
                     + " increase to success.")
             .addInfo(AuthorNotAPenguin)
-            .beginStructureBlock(11, 4, 11, true)
+            .beginStructureBlock(11, 4, 11, false)
             .addSeparator()
             .addController("Front center")
             .addCasingInfoRangeColored(
