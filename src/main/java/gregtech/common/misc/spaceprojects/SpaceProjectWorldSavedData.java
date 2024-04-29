@@ -26,6 +26,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 
+import com.google.gson.reflect.TypeToken;
+import gregtech.GT_Mod;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
@@ -102,18 +104,16 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
         try (JsonReader reader = new JsonReader(new FileReader(teamProjectsFile))) {
             spaceTeamProjects = GSON_SPACE_PROJECT.fromJson(reader, spaceTeamProjects.getClass());
         } catch (Exception e) {
-            System.out.print("FAILED TO LOAD: " + SPACE_TEAM_PROJECTS_JSON);
-            e.printStackTrace();
+            GT_Mod.GT_FML_LOGGER.error("FAILED TO LOAD SPACE TEAM PROJECTS", e);
         }
 
         try (JsonReader reader = new JsonReader(new FileReader(spaceTeamsFile))) {
-            HashMap<UUID, UUID> jsonMap = GSON_TEAMS.fromJson(reader, spaceTeams.getClass());
+            HashMap<UUID, UUID> jsonMap = GSON_TEAMS.fromJson(reader, new TypeToken<>() {}.getType());
             for (UUID member : jsonMap.keySet()) {
                 spaceTeams.put(member, jsonMap.get(member));
             }
         } catch (Exception e) {
-            System.out.print("FAILED TO LOAD: " + SPACE_TEAMS_JSON);
-            e.printStackTrace();
+            GT_Mod.GT_FML_LOGGER.error("FAILED TO LOAD SPACE TEAMS", e);
         }
 
         if (spaceTeamProjects == null) {
@@ -131,8 +131,7 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
             try (JsonWriter writer = new JsonWriter(new FileWriter(teamProjectsFile))) {
                 GSON_SPACE_PROJECT.toJson(spaceTeamProjects, spaceTeamProjects.getClass(), writer);
             } catch (Exception ex) {
-                System.out.print("FAILED TO SAVE: " + SPACE_TEAM_PROJECTS_JSON);
-                ex.printStackTrace();
+                GT_Mod.GT_FML_LOGGER.error("FAILTO SAVE SPACE TEAM PROJECTS", ex);
             }
         }
 
@@ -140,8 +139,7 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
             try (JsonWriter writer = new JsonWriter(new FileWriter(spaceTeamsFile))) {
                 GSON_TEAMS.toJson(spaceTeams, spaceTeams.getClass(), writer);
             } catch (Exception ex) {
-                System.out.print("FAILED TO SAVE: " + SPACE_TEAMS_JSON);
-                ex.printStackTrace();
+                GT_Mod.GT_FML_LOGGER.error("FAILTO SAVE SPACE TEAM", ex);
             }
         }
     }
