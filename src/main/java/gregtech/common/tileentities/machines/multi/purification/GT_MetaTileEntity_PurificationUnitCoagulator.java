@@ -22,6 +22,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
@@ -38,8 +41,11 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.GT_Utility;
 
@@ -254,7 +260,7 @@ public class GT_MetaTileEntity_PurificationUnitCoagulator
             .addInfo(
                 "a multiple of " + EnumChatFormatting.RED
                     + IRON_III_PER_LEVEL
-                    + "L "
+                    + "L"
                     + EnumChatFormatting.GRAY
                     + ", a penalty to success is applied.")
             .addInfo(AuthorNotAPenguin)
@@ -294,6 +300,38 @@ public class GT_MetaTileEntity_PurificationUnitCoagulator
             .addController("Front center")
             .toolTipFinisher("GregTech");
         return tt;
+    }
+
+    @NotNull
+    @Override
+    public CheckRecipeResult checkProcessing() {
+        this.startRecipeProcessing();
+        RecipeMap<?> recipeMap = this.getRecipeMap();
+
+        GT_Recipe recipe = recipeMap.findRecipeQuery()
+            .fluids(
+                this.getStoredFluids()
+                    .toArray(new FluidStack[] {}))
+            .items(
+                this.getStoredInputs()
+                    .toArray(new ItemStack[] {}))
+            .find();
+
+        this.endRecipeProcessing();
+        if (recipe == null) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
+
+        if (this.protectsExcessFluid() && !this.canOutputAll(recipe.mFluidOutputs)) {
+            return CheckRecipeResultRegistry.FLUID_OUTPUT_FULL;
+        }
+
+        if (this.protectsExcessItem() && !this.canOutputAll(recipe.mOutputs)) {
+            return CheckRecipeResultRegistry.ITEM_OUTPUT_FULL;
+        }
+
+        this.currentRecipe = recipe;
+        return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     @Override

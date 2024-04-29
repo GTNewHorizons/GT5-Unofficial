@@ -36,26 +36,19 @@ public class GT_PurifiedWaterRecipes {
             .addTo(purificationPlantGrade1Recipes);
 
         // Grade 2 - Coagulation.
-        // TODO: Make a big custom recipemap for this that shows the actual insertion process
-        for (int i = 1; i <= 10; ++i) {
-            GT_Values.RA.stdBuilder()
-                .fluidInputs(
-                    Materials.Grade1PurifiedWater.getFluid(1000L),
-                    Materials.IronIIIChloride.getFluid(i * 1000000))
-                .fluidOutputs(
-                    Materials.Grade2PurifiedWater.getFluid(900),
-                    Materials.FerrousWastewater.getFluid(i * 10000000))
-                .ignoreCollision()
-                .itemOutputs(
-                    new ItemStack(Items.clay_ball, 1),
-                    Materials.QuartzSand.getDust(1),
-                    Materials.PolyvinylChloride.getNuggets(1))
-                .outputChances(1000, 500, 100)
-                .duration(duration)
-                .eut(TierEU.RECIPE_LuV)
-                .metadata(BASE_CHANCE, i * 10.0f)
-                .addTo(purificationPlantGrade2Recipes);
-        }
+        GT_Values.RA.stdBuilder()
+            .fluidInputs(Materials.Grade1PurifiedWater.getFluid(1000L))
+            .fluidOutputs(Materials.Grade2PurifiedWater.getFluid(900))
+            .ignoreCollision()
+            .itemOutputs(
+                new ItemStack(Items.clay_ball, 1),
+                Materials.QuartzSand.getDust(1),
+                Materials.PolyvinylChloride.getNuggets(1))
+            .outputChances(1000, 500, 100)
+            .duration(duration)
+            .eut(TierEU.RECIPE_LuV)
+            .metadata(BASE_CHANCE, 1 * 10.0f)
+            .addTo(purificationPlantGrade2Recipes);
 
         // Add recipe to reprocess ferrous waste water
 
