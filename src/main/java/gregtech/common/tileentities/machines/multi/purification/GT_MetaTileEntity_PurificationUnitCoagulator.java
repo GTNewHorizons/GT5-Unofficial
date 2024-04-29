@@ -256,7 +256,7 @@ public class GT_MetaTileEntity_PurificationUnitCoagulator
                     + IRON_III_PER_LEVEL
                     + "L "
                     + EnumChatFormatting.GRAY
-                    + "a penalty to success is applied.")
+                    + ", a penalty to success is applied.")
             .addSeparator()
             .addInfo("Success rate can be boosted by using a portion")
             .addInfo("of the target output as a secondary input.")
