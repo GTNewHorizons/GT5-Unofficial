@@ -92,7 +92,6 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
 import gregtech.common.misc.WirelessNetworkManager;
-import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 
 public class GTMTE_LapotronicSuperCapacitor extends
         GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_LapotronicSuperCapacitor> implements ISurvivalConstructable {
@@ -536,7 +535,7 @@ public class GTMTE_LapotronicSuperCapacitor extends
             WirelessNetworkManager.strongCheckOrAddUser(tileEntity.getOwnerUuid());
 
             // Get team UUID.
-            global_energy_user_uuid = SpaceProjectManager.getPlayerUUIDFromName(tileEntity.getOwnerName());
+            global_energy_user_uuid = tileEntity.getOwnerUuid();
 
             not_processed_lsc = false;
         }
