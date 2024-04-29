@@ -54,6 +54,11 @@ public final class CheckRecipeResultRegistry {
     @Nonnull
     public static final CheckRecipeResult NO_RECIPE = SimpleCheckRecipeResult.ofFailure("no_recipe");
     /**
+     * @deprecated Use either of {@link #ITEM_OUTPUT_FULL} or {@link #FLUID_OUTPUT_FULL}.
+     */
+    @Deprecated
+    public static final CheckRecipeResult OUTPUT_FULL = SimpleCheckRecipeResult.ofFailure("output_full");
+    /**
      * Cannot process recipe because item output is full.
      */
     public static final CheckRecipeResult ITEM_OUTPUT_FULL = SimpleCheckRecipeResult.ofFailure("item_output_full");

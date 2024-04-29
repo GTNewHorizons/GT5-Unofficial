@@ -45,7 +45,7 @@ public class GT_MetaTileEntity_OreDrillingPlant2 extends GT_MetaTileEntity_OreDr
 
     @Override
     protected int getRadiusInChunks() {
-        return 4;
+        return 11;
     }
 
     @Override
@@ -55,6 +55,6 @@ public class GT_MetaTileEntity_OreDrillingPlant2 extends GT_MetaTileEntity_OreDr
 
     @Override
     protected int getBaseProgressTime() {
-        return 800;
+        return 400;
     }
 }

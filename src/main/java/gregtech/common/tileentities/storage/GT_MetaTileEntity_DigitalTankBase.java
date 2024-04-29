@@ -74,16 +74,16 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
 
     protected static int commonSizeCompute(int tier) {
         return switch (tier) {
-            case 1 -> 4000000;
-            case 2 -> 8000000;
-            case 3 -> 16000000;
-            case 4 -> 32000000;
-            case 5 -> 64000000;
-            case 6 -> 128000000;
-            case 7 -> 256000000;
-            case 8 -> 512000000;
-            case 9 -> 1024000000;
-            case 10 -> 2147483640;
+            case 1 -> Integer.MAX_VALUE;
+            case 2 -> Integer.MAX_VALUE;
+            case 3 -> Integer.MAX_VALUE;
+            case 4 -> Integer.MAX_VALUE;
+            case 5 -> Integer.MAX_VALUE;
+            case 6 -> Integer.MAX_VALUE;
+            case 7 -> Integer.MAX_VALUE;
+            case 8 -> Integer.MAX_VALUE;
+            case 9 -> Integer.MAX_VALUE;
+            case 10 -> Integer.MAX_VALUE;
             default -> 0;
         };
     }
