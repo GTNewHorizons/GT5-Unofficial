@@ -12,6 +12,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_AR
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_GLOW;
+import static gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitBase.WATER_BOOST_BONUS_CHANCE;
+import static gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitBase.WATER_BOOST_NEEDED_FLUID;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -131,7 +133,41 @@ public class GT_MetaTileEntity_PurificationPlant
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Purification Plant")
+            .addInfo("Main controller block for the Water Purification Plant.")
+            .addInfo(
+                "Freely place " + EnumChatFormatting.YELLOW
+                    + "Purification Units "
+                    + EnumChatFormatting.GRAY
+                    + "inside the structure.")
+            .addInfo("Left click this controller with a data stick, then right click a purification unit to link.")
+            .addInfo("Supplies power to linked purification units. This multiblock accepts TecTech energy hatches.")
             .addSeparator()
+            .addInfo(
+                "Works in fixed time processing cycles of " + EnumChatFormatting.RED
+                    + CYCLE_TIME_TICKS / 20
+                    + EnumChatFormatting.GRAY
+                    + " seconds.")
+            .addInfo("All linked units follow this cycle.")
+            .addSeparator()
+            .addInfo("Every recipe has a base chance of success. Success rate can be boosted")
+            .addInfo("by using a portion of the target output as a secondary input.")
+            .addInfo(
+                EnumChatFormatting.RED + GT_Utility.formatNumbers(WATER_BOOST_NEEDED_FLUID * 100)
+                    + "%"
+                    + EnumChatFormatting.GRAY
+                    + " of output yield will be consumed in exchange for an")
+            .addInfo(
+                "additive " + EnumChatFormatting.RED
+                    + GT_Utility.formatNumbers(WATER_BOOST_BONUS_CHANCE * 100)
+                    + "%"
+                    + EnumChatFormatting.GRAY
+                    + " increase to success.")
+            .addInfo(
+                "On recipe failure, each purification unit has a " + EnumChatFormatting.RED
+                    + "50%"
+                    + EnumChatFormatting.GRAY
+                    + " chance")
+            .addInfo("to return water of the same quality as the input or lower.")
             .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")

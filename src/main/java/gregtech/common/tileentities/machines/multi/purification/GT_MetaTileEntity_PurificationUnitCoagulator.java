@@ -257,20 +257,6 @@ public class GT_MetaTileEntity_PurificationUnitCoagulator
                     + "L "
                     + EnumChatFormatting.GRAY
                     + ", a penalty to success is applied.")
-            .addSeparator()
-            .addInfo("Success rate can be boosted by using a portion")
-            .addInfo("of the target output as a secondary input.")
-            .addInfo(
-                EnumChatFormatting.RED + GT_Utility.formatNumbers(WATER_BOOST_NEEDED_FLUID * 100)
-                    + "%"
-                    + EnumChatFormatting.GRAY
-                    + " of output yield will be consumed in exchange")
-            .addInfo(
-                "for an additive " + EnumChatFormatting.RED
-                    + GT_Utility.formatNumbers(WATER_BOOST_BONUS_CHANCE * 100)
-                    + "%"
-                    + EnumChatFormatting.GRAY
-                    + " increase to success.")
             .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(7, 4, 7, false)
             .addCasingInfoRangeColored(
