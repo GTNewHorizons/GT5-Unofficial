@@ -54,6 +54,9 @@ public class GT_MetaTileEntity_PurificationUnitCoagulator
     private static final int STRUCTURE_Y_OFFSET = 2;
     private static final int STRUCTURE_Z_OFFSET = 0;
 
+    private static final int IRON_III_PER_LEVEL = 1000000;
+    private static final float SUCCESS_PER_LEVEL = 10.0f;
+
     private static final String[][] structure = new String[][]
     // spotless:off
         {
@@ -187,6 +190,17 @@ public class GT_MetaTileEntity_PurificationUnitCoagulator
 
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET)) return false;
+
+        // At most two input hatches allowed
+        if (mInputHatches.size() > 2) {
+            return false;
+        }
+
+        // At most two output hatches allowed
+        if (mOutputHatches.size() > 2) {
+            return false;
+        }
+
         return super.checkMachine(aBaseMetaTileEntity, aStack);
     }
 
@@ -216,8 +230,81 @@ public class GT_MetaTileEntity_PurificationUnitCoagulator
                     + EnumChatFormatting.GRAY
                     + "that can be recycled.")
             .addSeparator()
+            .addInfo(
+                "During operation, will consume ALL " + EnumChatFormatting.WHITE
+                    + "Iron III Chloride "
+                    + EnumChatFormatting.GRAY
+                    + "in the input hatch.")
+            .addInfo(
+                "At the end of the recipe, for every " + EnumChatFormatting.RED
+                    + IRON_III_PER_LEVEL
+                    + "L "
+                    + EnumChatFormatting.GRAY
+                    + "of "
+                    + EnumChatFormatting.WHITE
+                    + "Iron III Chloride "
+                    + EnumChatFormatting.GRAY
+                    + "consumed")
+            .addInfo(
+                "gain an additive " + EnumChatFormatting.RED
+                    + SUCCESS_PER_LEVEL
+                    + "%"
+                    + EnumChatFormatting.GRAY
+                    + " increase to success. If total fluid supplied is not")
+            .addInfo(
+                "a multiple of " + EnumChatFormatting.RED
+                    + IRON_III_PER_LEVEL
+                    + "L "
+                    + EnumChatFormatting.GRAY
+                    + "a penalty to success is applied.")
+            .addSeparator()
+            .addInfo("Success rate can be boosted by using a portion")
+            .addInfo("of the target output as a secondary input.")
+            .addInfo(
+                EnumChatFormatting.RED + GT_Utility.formatNumbers(WATER_BOOST_NEEDED_FLUID * 100)
+                    + "%"
+                    + EnumChatFormatting.GRAY
+                    + " of output yield will be consumed in exchange")
+            .addInfo(
+                "for an additive " + EnumChatFormatting.RED
+                    + GT_Utility.formatNumbers(WATER_BOOST_BONUS_CHANCE * 100)
+                    + "%"
+                    + EnumChatFormatting.GRAY
+                    + " increase to success.")
             .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(7, 4, 7, false)
+            .addCasingInfoRangeColored(
+                "Chemically Inert Machine Casing",
+                EnumChatFormatting.GRAY,
+                66,
+                71,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "Advanced Iridium Machine Casing",
+                EnumChatFormatting.GRAY,
+                16,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "Adamantium Frame Box",
+                EnumChatFormatting.GRAY,
+                12,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "Filter Machine Casing",
+                EnumChatFormatting.GRAY,
+                9,
+                EnumChatFormatting.GOLD,
+                false)
+            .addOutputBus(EnumChatFormatting.GOLD + "0" + EnumChatFormatting.GRAY + "+", 1)
+            .addInputHatch(
+                EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "-" + EnumChatFormatting.GOLD + "2",
+                1)
+            .addOutputHatch(
+                EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "-" + EnumChatFormatting.GOLD + "2",
+                1)
             .addController("Front center")
             .toolTipFinisher("GregTech");
         return tt;

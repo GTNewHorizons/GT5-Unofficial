@@ -35,7 +35,8 @@ public class GT_PurifiedWaterRecipes {
             .metadata(BASE_CHANCE, 70.0f)
             .addTo(purificationPlantGrade1Recipes);
 
-        // Grade 2 - Coagulation
+        // Grade 2 - Coagulation.
+        // TODO: Make a big custom recipemap for this that shows the actual insertion process
         for (int i = 1; i <= 10; ++i) {
             GT_Values.RA.stdBuilder()
                 .fluidInputs(
