@@ -282,10 +282,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     case "NetherQuartz":
                     case "Quartz":
                     case "CertusQuartz":
-                        if (gregtech.api.GregTech_API.sRecipeFile.get(
-                            gregtech.api.enums.ConfigCategories.Recipes.disabledrecipes,
-                            "QuartzDustSmeltingIntoAESilicon",
-                            true)) GT_ModHandler.removeFurnaceSmelting(aStack);
+                        GT_ModHandler.removeFurnaceSmelting(aStack);
                         break;
                     case "MeatRaw":
                         GT_ModHandler.addSmeltingRecipe(

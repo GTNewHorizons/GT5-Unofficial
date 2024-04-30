@@ -14,7 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IRecipeMap;
@@ -105,7 +104,7 @@ public class GT_RecipeConstants {
         if (!GT_Utility.isArrayOfLength(builder.getItemInputsBasic(), 1)
             || GT_Utility.isArrayEmptyOrNull(builder.getItemOutputs())) return Collections.emptyList();
         int aDuration = builder.getDuration();
-        if ((aDuration = GregTech_API.sRecipeFile.get("arcfurnace", builder.getItemInputBasic(0), aDuration)) <= 0) {
+        if (aDuration <= 0) {
             return Collections.emptyList();
         }
         builder.duration(aDuration);
@@ -291,10 +290,7 @@ public class GT_RecipeConstants {
         if (!builder.isValid()) return Collections.emptyList();
         Integer fuelType = builder.getMetadata(FUEL_TYPE);
         if (fuelType == null) return Collections.emptyList();
-        builder.metadata(
-            FUEL_VALUE,
-            GregTech_API.sRecipeFile
-                .get("fuel_" + fuelType, builder.getItemInputBasic(0), builder.getMetadataOrDefault(FUEL_VALUE, 0)));
+        builder.metadata(FUEL_VALUE, builder.getMetadataOrDefault(FUEL_VALUE, 0));
         return FuelType.get(fuelType)
             .getTarget()
             .doAdd(builder);

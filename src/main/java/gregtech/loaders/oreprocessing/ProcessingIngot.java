@@ -12,8 +12,6 @@ import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -93,8 +91,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                 if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)
                     && !aMaterial.contains(SubTag.NO_WORKING)
                     && !aMaterial.contains(SubTag.SMELTING_TO_GEM)
-                    && aMaterial.contains(SubTag.MORTAR_GRINDABLE)
-                    && GregTech_API.sRecipeFile.get(ConfigCategories.Tools.mortar, aMaterial.mName, true)) {
+                    && aMaterial.contains(SubTag.MORTAR_GRINDABLE)) {
                     GT_ModHandler.addShapelessCraftingRecipe(
                         GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L),
                         GT_Proxy.tBits,
@@ -201,9 +198,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                     }
 
                     // Enable crafting with hammer if tier is < IV.
-                    if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV && aSpecialRecipeReq
-                        && GregTech_API.sRecipeFile
-                            .get(ConfigCategories.Tools.hammermultiingot, aMaterial.toString(), true)) {
+                    if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV && aSpecialRecipeReq) {
                         GT_ModHandler.addCraftingRecipe(
                             GT_OreDictUnificator.get(OrePrefixes.ingotDouble, aMaterial, 1L),
                             GT_Proxy.tBits,
@@ -230,9 +225,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                             .addTo(benderRecipes);
                     }
 
-                    if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV && aSpecialRecipeReq
-                        && GregTech_API.sRecipeFile
-                            .get(ConfigCategories.Tools.hammermultiingot, aMaterial.toString(), true)) {
+                    if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV && aSpecialRecipeReq) {
                         GT_ModHandler.addCraftingRecipe(
                             GT_OreDictUnificator.get(OrePrefixes.ingotTriple, aMaterial, 1L),
                             GT_Proxy.tBits,
@@ -254,9 +247,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                     }
 
                     // If tier < IV add manual crafting.
-                    if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV && aSpecialRecipeReq
-                        && GregTech_API.sRecipeFile
-                            .get(ConfigCategories.Tools.hammermultiingot, aMaterial.toString(), true)) {
+                    if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV && aSpecialRecipeReq) {
                         GT_ModHandler.addCraftingRecipe(
                             GT_OreDictUnificator.get(OrePrefixes.ingotQuadruple, aMaterial, 1L),
                             GT_Proxy.tBits,
@@ -278,9 +269,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                     }
 
                     // Crafting recipes
-                    if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV && aSpecialRecipeReq
-                        && GregTech_API.sRecipeFile
-                            .get(ConfigCategories.Tools.hammermultiingot, aMaterial.toString(), true)) {
+                    if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV && aSpecialRecipeReq) {
                         GT_ModHandler.addCraftingRecipe(
                             GT_OreDictUnificator.get(OrePrefixes.ingotQuintuple, aMaterial, 1L),
                             GT_Proxy.tBits,

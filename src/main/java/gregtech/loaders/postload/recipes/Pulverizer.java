@@ -463,13 +463,6 @@ public class Pulverizer implements Runnable {
                 .duration(60 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(maceratorRecipes);
-
-            GT_Values.RA.stdBuilder()
-                .itemInputs(getModItem(Railcraft.ID, "cube.crushed.obsidian", 1L))
-                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Obsidian, 1L))
-                .duration(20 * SECONDS)
-                .eut(2)
-                .addTo(maceratorRecipes);
         }
 
         if (AppliedEnergistics2.isModLoaded()) {
