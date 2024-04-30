@@ -192,7 +192,7 @@ public class RecipeGen_Plates extends RecipeGen_Base {
         if ((aInput == null) || (aShape == null) || (aOutput == null)) {
             return false;
         }
-        if ((aDuration = GregTech_API.sRecipeFile.get("extruder", aOutput, aDuration)) <= 0) {
+        if (aDuration <= 0) {
             return false;
         }
         RecipeMaps.extruderRecipes.addRecipe(
@@ -211,9 +211,6 @@ public class RecipeGen_Plates extends RecipeGen_Base {
     public static boolean addForgeHammerRecipe(final ItemStack aInput1, final ItemStack aOutput1, final int aDuration,
             final int aEUt) {
         if ((aInput1 == null) || (aOutput1 == null)) {
-            return false;
-        }
-        if (!GregTech_API.sRecipeFile.get("forgehammer", aOutput1, true)) {
             return false;
         }
         RecipeMaps.hammerRecipes.addRecipe(

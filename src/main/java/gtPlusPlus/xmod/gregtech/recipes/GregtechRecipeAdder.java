@@ -5,8 +5,6 @@ import static gregtech.api.enums.GT_Values.RA;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.recipe.RecipeMaps;
@@ -38,13 +36,11 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
             Logger.WARNING("Something was null, returning false");
             return false;
         }
-        if (aOutput != null && (aDuration = GregTech_API.sRecipeFile.get("cokeoven", aOutput, aDuration)) <= 0) {
+        if (aOutput != null && (aDuration <= 0)) {
             Logger.WARNING("Something was null, returning false");
             return false;
         }
-        if (aFluidOutput != null
-                && (aDuration = GregTech_API.sRecipeFile.get("cokeoven", aFluidOutput.getFluid().getName(), aDuration))
-                        <= 0) {
+        if (aFluidOutput != null && (aDuration <= 0)) {
             Logger.WARNING("Something was null, returning false");
             return false;
         }
@@ -284,7 +280,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
         if (aOutput.isFluidEqual(Materials.PhasedIron.getMolten(1))) {
             aOutput = Materials.PulsatingIron.getMolten(aOutput.amount);
         }
-        if ((aDuration = GregTech_API.sRecipeFile.get("blastsmelter", aOutput.getFluid().getName(), aDuration)) <= 0) {
+        if (aDuration <= 0) {
             Logger.WARNING("Recipe did not register.");
             return false;
         }
@@ -694,7 +690,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
         if ((aInput1 == null) || (aOutput1 == null)) {
             return false;
         }
-        if ((aDuration = GregTech_API.sRecipeFile.get("compressor", aInput1, aDuration)) <= 0) {
+        if (aDuration <= 0) {
             return false;
         }
         RecipeMaps.compressorRecipes.addRecipe(
@@ -720,9 +716,6 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
     public boolean addBrewingRecipe(ItemStack aIngredient, FluidStack aInput, FluidStack aOutput, int aTime, int aEu,
             boolean aHidden) {
         if (aIngredient == null || aInput == null || aOutput == null) {
-            return false;
-        }
-        if (!GregTech_API.sRecipeFile.get("brewing", aOutput.getUnlocalizedName(), true)) {
             return false;
         }
         GT_Recipe tRecipe = RecipeMaps.brewingRecipes.addRecipe(
@@ -910,8 +903,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
     public boolean addDistilleryRecipe(ItemStack aCircuit, FluidStack aInput, FluidStack aOutput,
             ItemStack aSolidOutput, int aDuration, int aEUt, boolean aHidden) {
         if (aInput != null && aOutput != null) {
-            if ((aDuration = GregTech_API.sRecipeFile
-                    .get("distillery", aOutput.getFluid().getUnlocalizedName(), aDuration)) <= 0) {
+            if (aDuration <= 0) {
                 return false;
             } else {
                 GT_Recipe tRecipe = RecipeMaps.distilleryRecipes.addRecipe(
@@ -971,9 +963,8 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
         }
         if (GT_Utility.getContainerItem(aInput, false) == null) {
 
-            if (GregTech_API.sRecipeFile.get(ConfigCategories.Machines.maceration, aInput, true)) {
-                GT_Utility.addSimpleIC2MachineRecipe(aInput, GT_ModHandler.getMaceratorRecipeList(), null, aOutput1);
-            }
+            GT_Utility.addSimpleIC2MachineRecipe(aInput, GT_ModHandler.getMaceratorRecipeList(), null, aOutput1);
+
             GT_Values.RA.addPulveriserRecipe(
                     aInput,
                     new ItemStack[] { aOutput1, aOutput2, aOutput3 },
