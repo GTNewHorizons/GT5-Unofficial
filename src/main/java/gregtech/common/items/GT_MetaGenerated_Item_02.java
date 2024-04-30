@@ -2670,14 +2670,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             .addTo(maceratorRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(new ItemStack(Blocks.melon_block, 1, 0))
-            .itemOutputs(new ItemStack(Items.melon, 8, 0), new ItemStack(Items.melon_seeds, 1))
-            .outputChances(10000, 8000)
-            .duration(20 * SECONDS)
-            .eut(2)
-            .addTo(maceratorRecipes);
-
-        GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.pumpkin, 1, 0))
             .itemOutputs(new ItemStack(Items.pumpkin_seeds, 4, 0))
             .duration(20 * SECONDS)

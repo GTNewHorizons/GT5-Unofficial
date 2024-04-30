@@ -1,9 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.recipe.RecipeMaps.benderRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
-import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.implosionRecipes;
 import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
@@ -19,8 +17,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -51,8 +47,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
         boolean aNoSmashing = aMaterial.contains(SubTag.NO_SMASHING);
         boolean aNoWorking = aMaterial.contains(SubTag.NO_WORKING);
         boolean aNoSmelting = aMaterial.contains(SubTag.NO_SMELTING);
-        boolean aSpecialRecipeReq = (aMaterial.contains(SubTag.MORTAR_GRINDABLE))
-            && (GregTech_API.sRecipeFile.get(ConfigCategories.Tools.mortar, aMaterial.mName, true));
+        boolean aSpecialRecipeReq = aMaterial.contains(SubTag.MORTAR_GRINDABLE);
         boolean aFuelPower = aMaterial.mFuelPower > 0;
 
         switch (aPrefix) {
@@ -115,7 +110,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     }
 
                     // Bender recipes
-                    {
+                    if (aMaterial != Materials.Iridium) {
                         if (GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L) != null) {
                             // Plate
                             GT_Values.RA.stdBuilder()
@@ -257,32 +252,6 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                     new Object[] { "X", "m", 'X', OrePrefixes.gem.get(aMaterial) });
                             }
                         }
-                    }
-                }
-
-                switch (aMaterial.mName) {
-                    case "NULL":
-                        break;
-                    case "Coal", "Charcoal":
-                        if (GregTech_API.sRecipeFile
-                            .get(ConfigCategories.Recipes.disabledrecipes, "torchesFromCoal", false)) {
-                            GT_ModHandler.removeRecipeDelayed(
-                                GT_Utility.copyAmount(1, aStack),
-                                null,
-                                null,
-                                new ItemStack(net.minecraft.init.Items.stick, 1, 0));
-                        }
-                        break;
-                    case "CertusQuartz":
-                    // Electrolyzer recipe
-                    {
-                        GT_Values.RA.stdBuilder()
-                            .itemInputs(aStack)
-                            .itemOutputs(
-                                GT_ModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 1))
-                            .duration(100 * SECONDS)
-                            .eut(TierEU.RECIPE_LV)
-                            .addTo(electrolyzerRecipes);
                     }
                 }
 

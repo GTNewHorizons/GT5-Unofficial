@@ -51,7 +51,6 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enchants.Enchantment_EnderDamage;
 import gregtech.api.enchants.Enchantment_Hazmat;
 import gregtech.api.enchants.Enchantment_Radioactivity;
-import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -439,14 +438,12 @@ public class GT_Mod implements IGT_Mod {
                 null,
                 null),
             new ItemData(Materials.Tin, 10886400L));
-        if (!GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.storageblockcrafting, "tile.glowstone", false)) {
-            GT_ModHandler.removeRecipe(
-                new ItemStack(Items.glowstone_dust, 1),
-                new ItemStack(Items.glowstone_dust, 1),
-                null,
-                new ItemStack(Items.glowstone_dust, 1),
-                new ItemStack(Items.glowstone_dust, 1));
-        }
+        GT_ModHandler.removeRecipe(
+            new ItemStack(Items.glowstone_dust, 1),
+            new ItemStack(Items.glowstone_dust, 1),
+            null,
+            new ItemStack(Items.glowstone_dust, 1),
+            new ItemStack(Items.glowstone_dust, 1));
         GT_ModHandler.removeRecipeDelayed(
             new ItemStack(Blocks.wooden_slab, 1, 0),
             new ItemStack(Blocks.wooden_slab, 1, 1),
@@ -484,9 +481,7 @@ public class GT_Mod implements IGT_Mod {
                         .getDisplayName()));
         }
         new GT_CraftingRecipeLoader().run();
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "ic2forgehammer", true)) {
-            GT_ModHandler.removeRecipeByOutput(ItemList.IC2_ForgeHammer.getWildcard(1L));
-        }
+        GT_ModHandler.removeRecipeByOutput(ItemList.IC2_ForgeHammer.getWildcard(1L));
         GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("machine", 1L));
         GT_ModHandler.addCraftingRecipe(
             GT_ModHandler.getIC2Item("machine", 1L),
@@ -517,8 +512,6 @@ public class GT_Mod implements IGT_Mod {
                 new String[] { "blastfurnace", "blockcutter", "inductionFurnace", "generator", "windMill", "waterMill",
                     "solarPanel", "centrifuge", "electrolyzer", "compressor", "electroFurnace", "extractor",
                     "macerator", "recycler", "metalformer", "orewashingplant", "massFabricator", "replicator", })
-            .filter(
-                tName -> GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + tName, true))
             .map(tName -> GT_ModHandler.getIC2Item(tName, 1L))
             .forEach(GT_ModHandler::removeRecipeByOutputDelayed);
 

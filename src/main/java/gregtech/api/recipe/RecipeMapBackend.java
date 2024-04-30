@@ -174,8 +174,7 @@ public class RecipeMapBackend {
             if (properties.recipeConfigCategory != null) {
                 assert properties.recipeConfigKeyConvertor != null;
                 String configKey = properties.recipeConfigKeyConvertor.apply(recipe);
-                if (configKey != null && (recipe.mDuration = GregTech_API.sRecipeFile
-                    .get(properties.recipeConfigCategory, configKey, recipe.mDuration)) <= 0) {
+                if (configKey != null && recipe.mDuration <= 0) {
                     continue;
                 }
             }

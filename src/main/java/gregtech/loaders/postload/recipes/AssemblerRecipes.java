@@ -38,8 +38,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -999,25 +997,6 @@ public class AssemblerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                getModItem(Forestry.ID, "sturdyMachine", 1L, 0),
-                GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Diamond, 4))
-            .itemOutputs(ItemList.FR_Casing_Hardened.get(1))
-            .fluidInputs(Materials.Water.getFluid(5000))
-            .duration(3 * SECONDS + 4 * TICKS)
-            .eut(32)
-            .addTo(assemblerRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 8),
-                GT_Utility.getIntegratedCircuit(8))
-            .itemOutputs(ItemList.FR_Casing_Sturdy.get(1))
-            .duration(1 * SECONDS + 12 * TICKS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
                 new ItemStack(Blocks.wool, 1, 32767))
             .itemOutputs(new ItemStack(Blocks.torch, 6, 0))
@@ -1667,16 +1646,14 @@ public class AssemblerRecipes implements Runnable {
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
 
-        if (!GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "torchesFromCoal", false)) {
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
-                    new ItemStack(Items.coal, 1, 32767))
-                .itemOutputs(new ItemStack(Blocks.torch, 4))
-                .duration(2 * SECONDS)
-                .eut(20)
-                .addTo(assemblerRecipes);
-        }
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
+                new ItemStack(Items.coal, 1, 32767))
+            .itemOutputs(new ItemStack(Blocks.torch, 4))
+            .duration(2 * SECONDS)
+            .eut(20)
+            .addTo(assemblerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -1694,15 +1671,6 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(new ItemStack(Blocks.heavy_weighted_pressure_plate, 1))
             .duration(10 * SECONDS)
             .eut(16)
-            .addTo(assemblerRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 6),
-                GT_Utility.getIntegratedCircuit(6))
-            .itemOutputs(new ItemStack(Items.iron_door, 1))
-            .duration(30 * SECONDS)
-            .eut(4)
             .addTo(assemblerRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -1729,15 +1697,6 @@ public class AssemblerRecipes implements Runnable {
                 GT_Utility.getIntegratedCircuit(3))
             .itemOutputs(new ItemStack(Blocks.iron_bars, 4))
             .duration(15 * SECONDS)
-            .eut(4)
-            .addTo(assemblerRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 6),
-                GT_Utility.getIntegratedCircuit(6))
-            .itemOutputs(new ItemStack(Items.iron_door, 1))
-            .duration(30 * SECONDS)
             .eut(4)
             .addTo(assemblerRecipes);
 
@@ -2446,20 +2405,6 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(ItemList.IC2_Compressed_Coal_Ball.get(8), new ItemStack(Blocks.brick_block, 1))
-            .itemOutputs(ItemList.IC2_Compressed_Coal_Chunk.get(1))
-            .duration(20 * SECONDS)
-            .eut(4)
-            .addTo(assemblerRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_ModHandler.getIC2Item("waterMill", 2), GT_Utility.getIntegratedCircuit(2))
-            .itemOutputs(GT_ModHandler.getIC2Item("generator", 1))
-            .duration(5 * MINUTES + 20 * SECONDS)
-            .eut(8)
-            .addTo(assemblerRecipes);
-
-        GT_Values.RA.stdBuilder()
             .itemInputs(GT_ModHandler.getIC2Item("batPack", 1L, 32767), GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.IC2_ReBattery.get(6))
             .duration(40 * SECONDS)
@@ -2475,15 +2420,6 @@ public class AssemblerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 4),
-                GT_ModHandler.getIC2Item("generator", 1))
-            .itemOutputs(GT_ModHandler.getIC2Item("waterMill", 2))
-            .duration(5 * MINUTES + 20 * SECONDS)
-            .eut(8)
-            .addTo(assemblerRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 5),
                 new ItemStack(Blocks.chest, 1, 32767))
             .itemOutputs(new ItemStack(Blocks.hopper))
@@ -2516,15 +2452,6 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(new ItemStack(Blocks.hopper))
             .duration(8 * SECONDS)
             .eut(20)
-            .addTo(assemblerRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Magnalium, 2),
-                GT_ModHandler.getIC2Item("generator", 1))
-            .itemOutputs(GT_ModHandler.getIC2Item("windMill", 1))
-            .duration(5 * MINUTES + 20 * SECONDS)
-            .eut(8)
             .addTo(assemblerRecipes);
 
         GT_Values.RA.stdBuilder()

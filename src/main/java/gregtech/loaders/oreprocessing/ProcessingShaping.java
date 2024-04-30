@@ -50,7 +50,8 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                     }
 
                 if (!OrePrefixes.block.isIgnored(aMaterial.mSmeltInto)
-                    && (GT_OreDictUnificator.get(OrePrefixes.block, aMaterial.mSmeltInto, 1L) != null)) {
+                    && (GT_OreDictUnificator.get(OrePrefixes.block, aMaterial.mSmeltInto, 1L) != null)
+                    && aMaterial != Materials.Ichorium) {
                     GT_Values.RA.stdBuilder()
                         .itemInputs(GT_Utility.copyAmount(9, aStack), ItemList.Shape_Extruder_Block.get(0L))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.block, aMaterial.mSmeltInto, tAmount))
@@ -255,7 +256,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         }
                     }
                 }
-                if (tAmount * 2 <= 64) {
+                if (tAmount * 2 <= 64 && aMaterial != Materials.Obsidian) {
                     if (!(aMaterial == Materials.Aluminium)) {
                         if (GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.mSmeltInto, 1L) != null) {
                             GT_Values.RA.stdBuilder()
