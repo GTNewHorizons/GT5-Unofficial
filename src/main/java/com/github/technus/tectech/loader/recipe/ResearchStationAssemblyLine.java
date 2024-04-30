@@ -2857,6 +2857,16 @@ public class ResearchStationAssemblyLine implements Runnable {
                     CustomItemList.TimeAccelerationFieldGeneratorTier7.get(1),
                     CustomItemList.TimeAccelerationFieldGeneratorTier8.get(1) };
 
+            // Spectral Components
+            // Cycling should fix issues with conflicting recipes for T1-T2, T4-T5 & T7-T8
+            final ItemStack[] spectralComponents = new ItemStack[] {
+                    // Red Spectral Component
+                    getModItem(SuperSolarPanels.ID, "redcomponent", 64),
+                    // Green Spectral Component
+                    getModItem(SuperSolarPanels.ID, "greencomponent", 64),
+                    // Blue Spectral Component
+                    getModItem(SuperSolarPanels.ID, "bluecomponent", 64) };
+
             for (int absoluteTier = 0; absoluteTier < 9; absoluteTier++) {
 
                 TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -2871,11 +2881,11 @@ public class ResearchStationAssemblyLine implements Runnable {
 
                                 getItemContainer("QuantumCircuit").get(absoluteTier + 1),
                                 // Red Spectral Component
-                                getModItem(SuperSolarPanels.ID, "redcomponent", 64),
+                                spectralComponents[absoluteTier % spectralComponents.length],
                                 // Green Spectral Component
-                                getModItem(SuperSolarPanels.ID, "greencomponent", 64),
+                                spectralComponents[(absoluteTier + 1) % spectralComponents.length],
                                 // Blue Spectral Component
-                                getModItem(SuperSolarPanels.ID, "bluecomponent", 64),
+                                spectralComponents[(absoluteTier + 2) % spectralComponents.length],
 
                                 plateList[absoluteTier],
                                 // Dyson Swarm Module Deployment Unit Base Casing
