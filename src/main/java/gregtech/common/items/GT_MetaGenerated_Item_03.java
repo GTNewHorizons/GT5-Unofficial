@@ -46,7 +46,8 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
             OrePrefixes.crateGtIngot,
             OrePrefixes.crateGtGem,
             OrePrefixes.crateGtPlate,
-            OrePrefixes.nanite);
+            OrePrefixes.nanite,
+            OrePrefixes.rawOre);
         INSTANCE = this;
         Object[] o = new Object[0];
 
@@ -1078,6 +1079,9 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
     public boolean doesShowInCreative(OrePrefixes aPrefix, Materials aMaterial, boolean aDoShowAllItems) {
         return aDoShowAllItems || (aPrefix.toString()
             .toLowerCase()
-            .contains("nanite"));
+            .contains("nanite"))
+            || (aPrefix.toString()
+                .toLowerCase()
+                .contains("rawore"));
     }
 }
