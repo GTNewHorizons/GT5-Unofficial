@@ -81,7 +81,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
 
     protected GT_Recipe currentRecipe = null;
 
-    private float currentRecipeChance = 0.0f;
+    protected float currentRecipeChance = 0.0f;
 
     protected GT_MetaTileEntity_PurificationUnitBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -150,6 +150,10 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
             recipeChance = Math.min(recipeChance + WATER_BOOST_BONUS_CHANCE, 1.0f);
         }
         return recipeChance;
+    }
+
+    public float calculateFinalSuccessChance() {
+        return this.currentRecipeChance;
     }
 
     /**
@@ -243,7 +247,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
         // First see if the recipe succeeded. For some reason random.nextFloat does not compile, so we use this
         // hack instead.
         float successRoll = random.nextInt(0, 10000) / 100.0f;
-        if (successRoll <= this.currentRecipeChance) {
+        if (successRoll <= calculateFinalSuccessChance()) {
             addRecipeOutputs();
         } else {
             onRecipeFail();
@@ -328,6 +332,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
             controllerY = controllerNBT.getInteger("y");
             controllerZ = controllerNBT.getInteger("z");
             controllerSet = true;
+            trySetControllerFromCoord(controllerX, controllerY, controllerZ);
         }
         currentRecipeChance = aNBT.getFloat("currentRecipeChance");
     }
@@ -477,7 +482,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
             if (this.mMaxProgresstime != 0) {
                 ret.add(
                     "Success chance: " + EnumChatFormatting.YELLOW
-                        + GT_Utility.formatNumbers(this.currentRecipeChance)
+                        + GT_Utility.formatNumbers(this.calculateFinalSuccessChance())
                         + "%"
                         + EnumChatFormatting.RESET);
             }

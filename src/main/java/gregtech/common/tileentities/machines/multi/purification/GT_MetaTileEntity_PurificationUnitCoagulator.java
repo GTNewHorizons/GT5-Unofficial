@@ -15,6 +15,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICA
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -60,8 +61,13 @@ public class GT_MetaTileEntity_PurificationUnitCoagulator
     private static final int STRUCTURE_Y_OFFSET = 2;
     private static final int STRUCTURE_Z_OFFSET = 0;
 
-    private static final int IRON_III_PER_LEVEL = 1000000;
+    private static final long IRON_III_PER_LEVEL = 1000000;
+    private static final long WASTE_WATER_PER_LEVEL = 10 * IRON_III_PER_LEVEL;
     private static final float SUCCESS_PER_LEVEL = 10.0f;
+
+    private static final int CONSUME_INTERVAL = 20;
+
+    private long inputFluidConsumed = 0;
 
     private static final String[][] structure = new String[][]
     // spotless:off
@@ -262,7 +268,8 @@ public class GT_MetaTileEntity_PurificationUnitCoagulator
                     + IRON_III_PER_LEVEL
                     + "L"
                     + EnumChatFormatting.GRAY
-                    + ", a penalty to success is applied.")
+                    + ", a penalty to success is applied using the following formula:")
+            .addInfo(EnumChatFormatting.GREEN + "Success = Success * 2^(-10 * Overflow ratio)")
             .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(7, 4, 7, false)
             .addCasingInfoRangeColored(
@@ -335,6 +342,69 @@ public class GT_MetaTileEntity_PurificationUnitCoagulator
     }
 
     @Override
+    public void startCycle(int cycleTime, int progressTime) {
+        super.startCycle(cycleTime, progressTime);
+        this.inputFluidConsumed = 0;
+    }
+
+    @Override
+    public void endCycle() {
+        super.endCycle();
+        // Output waste water proportional to amount of boost levels. We do this even when the recipe fails, so you can
+        // always fully recycle.
+        // NOTE: If this process ever PRODUCES excess chlorine, there is a recipe bug.
+        int levels = calculateBoostLevels();
+        long amount = levels * WASTE_WATER_PER_LEVEL;
+        this.addFluidOutputs(new FluidStack[] { Materials.FerrousWastewater.getFluid(amount) });
+        this.inputFluidConsumed = 0;
+    }
+
+    @Override
+    public void addRecipeOutputs() {
+        super.addRecipeOutputs();
+    }
+
+    @Override
+    protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.runMachine(aBaseMetaTileEntity, aTick);
+
+        // Consume all input iron iii chloride periodically, only when running
+        if (aTick % CONSUME_INTERVAL == 0 && mMaxProgresstime > 0) {
+            // Iterate over all fluids stored
+            List<FluidStack> fluids = this.getStoredFluids();
+            for (int i = 0; i < fluids.size(); ++i) {
+                FluidStack fluid = fluids.get(i);
+                // If this FluidStack is Iron III chloride, consume it ALL
+                if (fluid.getFluid()
+                    .equals(Materials.IronIIIChloride.mFluid)) {
+                    this.inputFluidConsumed += fluid.amount;
+                    this.depleteInput(fluid);
+                }
+            }
+        }
+    }
+
+    private int calculateBoostLevels() {
+        return (int) Math.floor((float) this.inputFluidConsumed / (float) IRON_III_PER_LEVEL);
+    }
+
+    @Override
+    public float calculateFinalSuccessChance() {
+        int levels = calculateBoostLevels();
+        long targetAmount = levels * IRON_III_PER_LEVEL;
+        long overflow = inputFluidConsumed - targetAmount;
+        float boost = SUCCESS_PER_LEVEL * levels;
+        if (overflow > 0) {
+            // Exponential penalty multiplier based on percentage overflow
+            float overflowPct = (float) overflow / IRON_III_PER_LEVEL;
+            float penaltyMultiplier = (float) Math.pow(2.0f, overflowPct * -10.0);
+            return Math.max(0.0f, (this.currentRecipeChance + boost) * penaltyMultiplier);
+        } else {
+            return Math.min(100.0f, this.currentRecipeChance + boost);
+        }
+    }
+
+    @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
         return true;
     }
@@ -352,5 +422,12 @@ public class GT_MetaTileEntity_PurificationUnitCoagulator
     @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.purificationPlantGrade2Recipes;
+    }
+
+    @Override
+    public String[] getInfoData() {
+        ArrayList<String> infoData = new ArrayList<>(Arrays.asList(super.getInfoData()));
+        infoData.add("Iron III Chloride consumed this cycle: " + EnumChatFormatting.RED + inputFluidConsumed + "L");
+        return infoData.toArray(new String[] {});
     }
 }

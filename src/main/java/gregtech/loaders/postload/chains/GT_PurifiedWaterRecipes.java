@@ -57,7 +57,7 @@ public class GT_PurifiedWaterRecipes {
             .fluidInputs(Materials.FerrousWastewater.getFluid(90000L))
             .itemOutputs(Materials.Iron.getDust(9))
             .fluidOutputs(Materials.Water.getFluid(36000L), Materials.DilutedHydrochloricAcid.getFluid(54000L))
-            .duration(2 * SECONDS)
+            .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(distillationTowerRecipes);
     }
