@@ -297,6 +297,7 @@ public class GT_MetaTileEntity_PurificationUnitCoagulator
                 9,
                 EnumChatFormatting.GOLD,
                 false)
+            .addController("Front center")
             .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
             .addInputHatch(
                 EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "-" + EnumChatFormatting.GOLD + "2",
@@ -304,7 +305,6 @@ public class GT_MetaTileEntity_PurificationUnitCoagulator
             .addOutputHatch(
                 EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "-" + EnumChatFormatting.GOLD + "2",
                 1)
-            .addController("Front center")
             .toolTipFinisher("GregTech");
         return tt;
     }

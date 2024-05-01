@@ -219,7 +219,6 @@ public class GT_MetaTileEntity_PurificationUnitSifter extends
             .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(11, 4, 11, false)
             .addSeparator()
-            .addController("Front center")
             .addCasingInfoRangeColored(
                 "Clean Stainless Steel Machine Casing",
                 EnumChatFormatting.GRAY,
@@ -246,6 +245,7 @@ public class GT_MetaTileEntity_PurificationUnitSifter extends
                 EnumChatFormatting.GOLD,
                 false)
             .addCasingInfoExactlyColored("PTFE Pipe Casing", EnumChatFormatting.GRAY, 3, EnumChatFormatting.GOLD, false)
+            .addController("Front center")
             .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
             .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
             .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
