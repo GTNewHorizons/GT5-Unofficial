@@ -7,6 +7,7 @@ import static gregtech.api.enums.GT_HatchElement.InputBus;
 import static gregtech.api.enums.GT_HatchElement.InputHatch;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.GT_Values.AuthorNotAPenguin;
+import static gregtech.api.enums.Mods.GoodGenerator;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW;
@@ -25,6 +26,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
@@ -332,8 +335,21 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
 
             // Now do fluid, this is simpler since we only need to bother with one slot
             FluidStack stack = acidInputHatch.getDrainableStack();
-            int acidDrained = stack.amount;
-            acidInputHatch.drain(acidDrained, true);
+            int acidDrained = 0;
+            if (stack.isFluidEqual(Materials.HydrofluoricAcid.getFluid(1))) {
+                acidDrained = stack.amount;
+                acidInputHatch.drain(acidDrained, true);
+            } else {
+                // Little easier egg: Fluoroantimonic acid has a pH value of -31, it's an acid so strong it will
+                // instantly shatter the glass in the structure.
+                if (GoodGenerator.isModLoaded()) {
+                    Fluid acid = FluidRegistry.getFluid("fluoroantimonic acid");
+                    if (stack.getFluid()
+                        .equals(acid)) {
+                        // TODO: Actually break the glass and trigger achievement lol
+                    }
+                }
+            }
 
             // Adjust pH with to new value
             this.currentpHValue = this.currentpHValue + totalAlkalineDrained * PH_PER_ALKALINE_DUST
