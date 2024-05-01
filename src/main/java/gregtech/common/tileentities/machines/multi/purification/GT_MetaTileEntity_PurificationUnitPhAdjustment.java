@@ -5,7 +5,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static gregtech.api.enums.GT_HatchElement.InputBus;
 import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.GT_Values.AuthorNotAPenguin;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR;
@@ -13,10 +12,12 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICA
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
+import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -28,6 +29,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
@@ -50,31 +52,67 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
 
     private static final String[][] structure = new String[][] {
         // spotless:off
-        { "E   E     E   E", "EAAAE     ECCCE", "EADAE     ECDCE", "EADAE     ECDCE", "EADAE     ECDCE", "EAAAE     ECCCE" },
+        { "E   E     E   E", "EAAAE     ECCCE", "EAGAE     ECHCE", "EAGAE     ECHCE", "EAGAE     ECHCE", "EAAAE     ECCCE" },
         { " AAA       CCC ", "A   A     C   C", "A   A     C   C", "A   A     C   C", "A   ABB~BBC   C", "AAAAA     CCCCC" },
-        { " AFA       CFC ", "A   A     C   C", "D   A     C   D", "D   ABBBBBC   D", "D   A     C   D", "AAAAABBBBBCCCCC" },
+        { " AXA       CYC ", "A   A     C   C", "G   A     C   H", "G   ABBBBBC   H", "G             H", "AAAAAIIRIICCCCC" },
         { " AAA       CCC ", "A   A     C   C", "A   A     C   C", "A   A     C   C", "A   ABBBBBC   C", "AAAAA     CCCCC" },
-        { "E   E     E   E", "EAAAE     ECCCE", "EADAE     ECDCE", "EADAE     ECDCE", "EADAE     ECDCE", "EAAAE     ECCCE" } };
+        { "E   E     E   E", "EAAAE     ECCCE", "EAGAE     ECHCE", "EAGAE     ECHCE", "EAGAE     ECHCE", "EAAAE     ECCCE" } };
     // spotless:on
 
-    private static final int CASING_INDEX_MIDDLE = 176;
+    private static final int CASING_INDEX_MIDDLE = getTextureIndex(GregTech_API.sBlockCasings8, 0);
+    // Acidity tower -> input = NaOH (base)
+    private static final int CASING_INDEX_ACID = getTextureIndex(GregTech_API.sBlockCasings4, 1);
+    // Alkaninity tower -> input = HCl (acid)
+    private static final int CASING_INDEX_BASE = getTextureIndex(GregTech_API.sBlockCasings8, 7);
 
     private static final IStructureDefinition<GT_MetaTileEntity_PurificationUnitPhAdjustment> STRUCTURE_DEFINITION = StructureDefinition
         .<GT_MetaTileEntity_PurificationUnitPhAdjustment>builder()
         .addShape(STRUCTURE_PIECE_MAIN, structure)
-        // Connecting tube
+        .addElement('A', ofBlock(GregTech_API.sBlockCasings4, 1))
+        // PLACEHOLDER: Chemically inert machine casing
+        .addElement('B', ofBlock(GregTech_API.sBlockCasings8, 0))
+        .addElement('C', ofBlock(GregTech_API.sBlockCasings8, 7))
+        .addElement('E', ofFrame(Materials.NaquadahAlloy))
+        // PLACEHOLDER: Needs to become acid and alkaline resistant glass
+        .addElement('G', ofBlock(Blocks.stained_glass, 7))
+        .addElement('H', ofBlock(Blocks.stained_glass, 7))
+        // Regular I/O hatches
         .addElement(
-            'B',
+            'I',
             ofChain(
                 lazy(
                     t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitPhAdjustment>buildHatchAdder()
                         .atLeastList(t.getAllowedHatches())
-                        .casingIndex(getTextureIndex(GregTech_API.sBlockCasings8, 0))
                         .dot(1)
-                        .hint(() -> "Input Bus, Output Bus, Input Hatch, Output Hatch")
+                        .hint(() -> "Input Hatch, Output Hatch")
+                        .casingIndex(CASING_INDEX_MIDDLE)
+                        .disallowOnly(ForgeDirection.DOWN)
                         .build()),
                 // PLACEHOLDER: Chemically inert machine casing
                 ofBlock(GregTech_API.sBlockCasings8, 0)))
+        // PLACEHOLDER: Redstone hatch - use dot 2
+        .addElement('R', ofBlock(GregTech_API.sBlockCasings8, 0))
+        // Special I/O hatches
+        .addElement(
+            'X',
+            lazy(
+                t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitPhAdjustment>buildHatchAdder()
+                    .atLeast(InputBus)
+                    .dot(3)
+                    .hint(() -> "Input Bus (Sodium Hydroxide)")
+                    .casingIndex(CASING_INDEX_ACID)
+                    .allowOnly(ForgeDirection.UP)
+                    .build()))
+        .addElement(
+            'Y',
+            lazy(
+                t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitPhAdjustment>buildHatchAdder()
+                    .atLeast(InputHatch)
+                    .dot(4)
+                    .hint(() -> "Input Hatch (Hydrochloric Acid)")
+                    .casingIndex(CASING_INDEX_BASE)
+                    .allowOnly(ForgeDirection.UP)
+                    .build()))
         .build();
 
     private static int getTextureIndex(Block block, int meta) {
@@ -82,7 +120,7 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
     }
 
     private List<IHatchElement<? super GT_MetaTileEntity_PurificationUnitPhAdjustment>> getAllowedHatches() {
-        return ImmutableList.of(InputBus, InputHatch, OutputBus, OutputHatch);
+        return ImmutableList.of(InputHatch, OutputHatch);
     }
 
     public GT_MetaTileEntity_PurificationUnitPhAdjustment(int aID, String aName, String aNameRegional) {

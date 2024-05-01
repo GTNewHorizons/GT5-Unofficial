@@ -306,6 +306,7 @@ public class GT_MetaTileEntity_PurificationUnitCoagulator
             .addOutputHatch(
                 EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "-" + EnumChatFormatting.GOLD + "2",
                 1)
+            .addStructureInfo("Use the StructureLib Hologram Projector to build the structure.")
             .toolTipFinisher("GregTech");
         return tt;
     }
