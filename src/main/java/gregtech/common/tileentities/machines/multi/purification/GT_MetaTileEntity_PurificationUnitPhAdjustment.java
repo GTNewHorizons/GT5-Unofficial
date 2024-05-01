@@ -87,6 +87,8 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
 
     private float currentpHValue = 0.0f;
 
+    private static final int CONSUME_INTERVAL = 20;
+
     private static final float INITIAL_PH_DEVIATION = 2.5f;
 
     private static final float PH_NEUTRAL_VALUE = 7.0f;
@@ -318,6 +320,58 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
             .addInfo("Controller block for the pH Adjustment Purification Unit.")
             .addInfo("Must be linked to a Purification Plant to work.")
             .addSeparator()
+            .addInfo("Neutralizes the acidity of the water by adding in acids and bases.")
+            .addInfo(
+                "If the pH value is within " + EnumChatFormatting.RED
+                    + PH_MAX_DEVIATION
+                    + EnumChatFormatting.GRAY
+                    + " of 7.0 at the end of the cycle, the recipe always succeeds.")
+            .addInfo("Otherwise, the recipe always fails.")
+            .addInfo("Use a pH Sensor Hatch to read the current pH value.")
+            .addSeparator()
+            .addInfo(
+                "Every " + EnumChatFormatting.RED
+                    + CONSUME_INTERVAL
+                    + EnumChatFormatting.GRAY
+                    + " ticks, consumes ALL "
+                    + EnumChatFormatting.WHITE
+                    + "Sodium Hydroxide "
+                    + EnumChatFormatting.GRAY
+                    + "and "
+                    + EnumChatFormatting.WHITE
+                    + "Hydrochloric Acid "
+                    + EnumChatFormatting.GRAY
+                    + "in the special hatches.")
+            .addInfo(
+                EnumChatFormatting.RED + "Raises "
+                    + EnumChatFormatting.GRAY
+                    + "the pH value by "
+                    + EnumChatFormatting.RED
+                    + PH_PER_ALKALINE_DUST
+                    + " pH "
+                    + EnumChatFormatting.GRAY
+                    + "per piece of "
+                    + EnumChatFormatting.WHITE
+                    + "Sodium Hydroxide Dust"
+                    + EnumChatFormatting.GRAY
+                    + ".")
+            .addInfo(
+                EnumChatFormatting.RED + "Lowers "
+                    + EnumChatFormatting.GRAY
+                    + "the pH value by "
+                    + EnumChatFormatting.RED
+                    + -PH_PER_10_ACID_LITER
+                    + " pH "
+                    + EnumChatFormatting.GRAY
+                    + "per "
+                    + EnumChatFormatting.RED
+                    + "10L "
+                    + EnumChatFormatting.GRAY
+                    + "of "
+                    + EnumChatFormatting.WHITE
+                    + "Hydrochloric Acid"
+                    + EnumChatFormatting.GRAY
+                    + ".")
             .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(7, 4, 7, false)
             .addController("Front center")
@@ -344,7 +398,7 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
     protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.runMachine(aBaseMetaTileEntity, aTick);
         // Eat all NaOH and HCl every second
-        if (mMaxProgresstime > 0 && aTick % 20 == 0) {
+        if (mMaxProgresstime > 0 && aTick % CONSUME_INTERVAL == 0) {
             // Important that we drain backwards, since draining stacks can auto-sort the bus
             long totalAlkalineDrained = 0;
             for (int i = alkalineInputBus.getSizeInventory() - 1; i >= 0; --i) {
@@ -358,13 +412,12 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
 
             // Now do fluid, this is simpler since we only need to bother with one slot
             FluidStack stack = acidInputHatch.getDrainableStack();
-            int acidDrained = 0;
+            int numMultiples = 0;
             if (stack != null && stack.isFluidEqual(Materials.HydrochloricAcid.getFluid(1))) {
                 int acidAvailable = stack.amount;
-                // Only drain multiples of 10
-                int numMultiples = Math.floorDiv(acidAvailable, 10);
-                acidDrained = numMultiples * 10;
-                acidInputHatch.drain(acidDrained, true);
+                // We only care about multiples of 10, but we still drain all.
+                numMultiples = Math.floorDiv(acidAvailable, 10);
+                acidInputHatch.drain(acidAvailable, true);
             } else {
                 // Little easier egg: Fluoroantimonic acid has a pH value of -31, it's an acid so strong it will
                 // instantly shatter the glass in the structure.
@@ -379,7 +432,7 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
 
             // Adjust pH with to new value
             this.currentpHValue = this.currentpHValue + totalAlkalineDrained * PH_PER_ALKALINE_DUST
-                + Math.floorDiv(acidDrained, 10) * PH_PER_10_ACID_LITER;
+                + numMultiples * PH_PER_10_ACID_LITER;
 
             // Clamp pH to sensible values
             this.currentpHValue = Math.min(Math.max(this.currentpHValue, 0.0f), 14.0f);
