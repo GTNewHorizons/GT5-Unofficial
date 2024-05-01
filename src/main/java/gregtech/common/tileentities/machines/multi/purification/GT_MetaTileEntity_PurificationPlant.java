@@ -171,6 +171,15 @@ public class GT_MetaTileEntity_PurificationPlant
             .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")
+            .addCasingInfoRangeColored(
+                "Robust Tungstensteel Machine Casing",
+                EnumChatFormatting.GRAY,
+                14,
+                23,
+                EnumChatFormatting.GOLD,
+                false)
+            .addEnergyHatch(EnumChatFormatting.GOLD + "1", 1)
+            .addMaintenanceHatch(EnumChatFormatting.GOLD + "1", 1)
             .toolTipFinisher("GregTech");
         return tt;
     }
@@ -224,6 +233,10 @@ public class GT_MetaTileEntity_PurificationPlant
         }
 
         if (!checkHatches()) {
+            return false;
+        }
+        // using nano forge method of detecting hatches.
+        if (!checkExoticAndNormalEnergyHatches()) {
             return false;
         }
 
