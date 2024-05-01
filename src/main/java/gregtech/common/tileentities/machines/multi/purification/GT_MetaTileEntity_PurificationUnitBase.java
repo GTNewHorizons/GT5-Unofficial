@@ -332,7 +332,6 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
             controllerY = controllerNBT.getInteger("y");
             controllerZ = controllerNBT.getInteger("z");
             controllerSet = true;
-            trySetControllerFromCoord(controllerX, controllerY, controllerZ);
         }
         currentRecipeChance = aNBT.getFloat("currentRecipeChance");
     }
