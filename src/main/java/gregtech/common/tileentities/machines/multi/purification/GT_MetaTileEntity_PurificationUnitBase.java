@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
@@ -555,7 +556,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
 
     @Override
     public Set<VoidingMode> getAllowedVoidingModes() {
-        return VoidingMode.ITEM_ONLY_MODES;
+        return EnumSet.of(VoidingMode.VOID_NONE);
     }
 
     @Override
