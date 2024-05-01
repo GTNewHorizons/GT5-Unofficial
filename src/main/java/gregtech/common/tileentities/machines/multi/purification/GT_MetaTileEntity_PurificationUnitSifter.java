@@ -36,6 +36,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -130,7 +131,7 @@ public class GT_MetaTileEntity_PurificationUnitSifter extends
 
     @Override
     public long getActivePowerUsage() {
-        return 32720;
+        return TierEU.RECIPE_LuV;
     }
 
     @Override
