@@ -3,6 +3,7 @@ package gregtech.loaders.postload.chains;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
 import static gregtech.api.recipe.RecipeMaps.purificationPlantGrade1Recipes;
 import static gregtech.api.recipe.RecipeMaps.purificationPlantGrade2Recipes;
+import static gregtech.api.recipe.RecipeMaps.purificationPlantGrade3Recipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import net.minecraft.init.Items;
@@ -38,7 +39,7 @@ public class GT_PurifiedWaterRecipes {
         // Grade 2 - Coagulation.
         GT_Values.RA.stdBuilder()
             .fluidInputs(Materials.Grade1PurifiedWater.getFluid(1000L))
-            .fluidOutputs(Materials.Grade2PurifiedWater.getFluid(900))
+            .fluidOutputs(Materials.Grade2PurifiedWater.getFluid(900L))
             .ignoreCollision()
             .itemOutputs(
                 new ItemStack(Items.clay_ball, 1),
@@ -60,5 +61,15 @@ public class GT_PurifiedWaterRecipes {
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(distillationTowerRecipes);
+
+        // Grade 3 - pH adjustment
+        GT_Values.RA.stdBuilder()
+            .fluidInputs(Materials.Grade2PurifiedWater.getFluid(1000L))
+            .fluidOutputs(Materials.Grade3PurifiedWater.getFluid(900L))
+            .ignoreCollision()
+            .duration(duration)
+            .eut(TierEU.RECIPE_ZPM)
+            .metadata(BASE_CHANCE, 0.0f)
+            .addTo(purificationPlantGrade3Recipes);
     }
 }

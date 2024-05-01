@@ -21,6 +21,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -35,8 +38,13 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings_Abstract;
@@ -123,19 +131,6 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
         return ImmutableList.of(InputHatch, OutputHatch);
     }
 
-    public GT_MetaTileEntity_PurificationUnitPhAdjustment(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional);
-    }
-
-    public GT_MetaTileEntity_PurificationUnitPhAdjustment(String aName) {
-        super(aName);
-    }
-
-    @Override
-    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_PurificationUnitPhAdjustment(this.mName);
-    }
-
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
@@ -160,6 +155,19 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
                     .build() };
         }
         return new ITexture[] { casingTexturePages[1][48] };
+    }
+
+    public GT_MetaTileEntity_PurificationUnitPhAdjustment(int aID, String aName, String aNameRegional) {
+        super(aID, aName, aNameRegional);
+    }
+
+    public GT_MetaTileEntity_PurificationUnitPhAdjustment(String aName) {
+        super(aName);
+    }
+
+    @Override
+    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new GT_MetaTileEntity_PurificationUnitPhAdjustment(this.mName);
     }
 
     @Override
@@ -189,6 +197,36 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
     @Override
     public IStructureDefinition<GT_MetaTileEntity_PurificationUnitPhAdjustment> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
+    }
+
+    @Override
+    public RecipeMap<?> getRecipeMap() {
+        return RecipeMaps.purificationPlantGrade3Recipes;
+    }
+
+    @NotNull
+    @Override
+    public CheckRecipeResult checkProcessing() {
+        this.startRecipeProcessing();
+        RecipeMap<?> recipeMap = this.getRecipeMap();
+
+        GT_Recipe recipe = recipeMap.findRecipeQuery()
+            .fluids(
+                this.getStoredFluids()
+                    .toArray(new FluidStack[] {}))
+            .find();
+
+        this.endRecipeProcessing();
+        if (recipe == null) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
+
+        if (this.protectsExcessFluid() && !this.canOutputAll(recipe.mFluidOutputs)) {
+            return CheckRecipeResultRegistry.FLUID_OUTPUT_FULL;
+        }
+
+        this.currentRecipe = recipe;
+        return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     @Override

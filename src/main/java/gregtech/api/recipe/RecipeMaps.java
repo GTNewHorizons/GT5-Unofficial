@@ -60,6 +60,7 @@ import gregtech.api.recipe.maps.MicrowaveBackend;
 import gregtech.api.recipe.maps.OilCrackerBackend;
 import gregtech.api.recipe.maps.PrinterBackend;
 import gregtech.api.recipe.maps.PurificationUnitCoagulatorFrontend;
+import gregtech.api.recipe.maps.PurificationUnitPhAdjustmentFrontend;
 import gregtech.api.recipe.maps.RecyclerBackend;
 import gregtech.api.recipe.maps.ReplicatorBackend;
 import gregtech.api.recipe.maps.SpaceProjectFrontend;
@@ -1176,6 +1177,15 @@ public final class RecipeMaps {
                     recipe -> recipe.getMetadataOrDefault(PurificationPlantBaseChanceKey.INSTANCE, 0.0f))
                 .thenComparing(GT_Recipe::compareTo))
         .frontend(PurificationUnitCoagulatorFrontend::new)
+        .disableOptimize()
+        .build();
+
+    public static final RecipeMap<RecipeMapBackend> purificationPlantGrade3Recipes = RecipeMapBuilder
+        .of("gt.recipe.purificationplantgrade3")
+        .maxIO(0, 0, 1, 1)
+        .minInputs(0, 1)
+        .progressBar(GT_UITextures.PROGRESSBAR_MIXER)
+        .frontend(PurificationUnitPhAdjustmentFrontend::new)
         .disableOptimize()
         .build();
     public static final RecipeMap<RecipeMapBackend> ic2NuclearFakeRecipes = RecipeMapBuilder.of("gt.recipe.ic2nuke")
