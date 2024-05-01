@@ -22,6 +22,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -41,6 +42,9 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -82,6 +86,15 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
 
     private static final float PH_NEUTRAL_VALUE = 7.0f;
 
+    private static final float PH_MAX_DEVIATION = 0.05f;
+
+    private static final float PH_PER_ALKALINE_DUST = 0.01f;
+
+    private static final float PH_PER_ACID_LITER = -0.001f;
+
+    private GT_MetaTileEntity_Hatch_Input acidInputHatch;
+    private GT_MetaTileEntity_Hatch_InputBus alkalineInputBus;
+
     private static final IStructureDefinition<GT_MetaTileEntity_PurificationUnitPhAdjustment> STRUCTURE_DEFINITION = StructureDefinition
         .<GT_MetaTileEntity_PurificationUnitPhAdjustment>builder()
         .addShape(STRUCTURE_PIECE_MAIN, structure)
@@ -115,6 +128,7 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
             lazy(
                 t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitPhAdjustment>buildHatchAdder()
                     .atLeast(InputBus)
+                    .adder(GT_MetaTileEntity_PurificationUnitPhAdjustment::addAlkalineBusToMachineList)
                     .dot(3)
                     .hint(() -> "Input Bus (Sodium Hydroxide)")
                     .casingIndex(CASING_INDEX_ACID)
@@ -125,6 +139,7 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
             lazy(
                 t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitPhAdjustment>buildHatchAdder()
                     .atLeast(InputHatch)
+                    .adder(GT_MetaTileEntity_PurificationUnitPhAdjustment::addAcidHatchToMachineList)
                     .dot(4)
                     .hint(() -> "Input Hatch (Hydrochloric Acid)")
                     .casingIndex(CASING_INDEX_BASE)
@@ -238,6 +253,32 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
+    public boolean addAcidHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = null;
+            acidInputHatch = (GT_MetaTileEntity_Hatch_Input) aMetaTileEntity;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean addAlkalineBusToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity).mRecipeMap = null;
+            alkalineInputBus = (GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity;
+            return true;
+        }
+        return false;
+    }
+
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
@@ -266,11 +307,52 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
 
         ThreadLocalRandom random = ThreadLocalRandom.current();
         // Generate random integer in [-RNG_PRECISION, RNG_PRECISION]
-        final int RNG_PRECISION = 10000;
+        final int RNG_PRECISION = 1000;
         int rng = random.nextInt(-RNG_PRECISION, RNG_PRECISION);
         // Remap to [-1.0, 1.0] and then to [-INITIAL_PH_DEVIATION, INITIAL_PH_DEVIATION]
         float deviation = ((float) rng / RNG_PRECISION) * INITIAL_PH_DEVIATION;
         this.currentpHValue = PH_NEUTRAL_VALUE + deviation;
+    }
+
+    @Override
+    protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.runMachine(aBaseMetaTileEntity, aTick);
+        // Eat all NaOH and HCl every second
+        if (mMaxProgresstime > 0 && aTick % 20 == 0) {
+            // Important that we drain backwards, since draining stacks can auto-sort the bus
+            long totalAlkalineDrained = 0;
+            for (int i = alkalineInputBus.getSizeInventory() - 1; i >= 0; --i) {
+                ItemStack stack = alkalineInputBus.getStackInSlot(i);
+                // If this ItemStack is sodium hydroxide, drain it entirely and record the amount drained
+                if (stack != null && stack.isItemEqual(Materials.SodiumHydroxide.getDust(1))) {
+                    totalAlkalineDrained += stack.stackSize;
+                    alkalineInputBus.decrStackSize(i, stack.stackSize);
+                }
+            }
+
+            // Now do fluid, this is simpler since we only need to bother with one slot
+            FluidStack stack = acidInputHatch.getDrainableStack();
+            int acidDrained = stack.amount;
+            acidInputHatch.drain(acidDrained, true);
+
+            // Adjust pH with to new value
+            this.currentpHValue = this.currentpHValue + totalAlkalineDrained * PH_PER_ALKALINE_DUST
+                + acidDrained * PH_PER_ACID_LITER;
+
+            // Clamp pH to sensible values
+            this.currentpHValue = Math.min(Math.max(this.currentpHValue, 0.0f), 14.0f);
+        }
+    }
+
+    @Override
+    public float calculateFinalSuccessChance() {
+        // Success chance is 100% when inside target range, 0% otherwise
+        float distance = Math.abs(this.currentpHValue - PH_NEUTRAL_VALUE);
+        if (distance <= PH_MAX_DEVIATION) {
+            return 100.0f;
+        } else {
+            return 0.0f;
+        }
     }
 
     @Override
@@ -298,5 +380,17 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
         ArrayList<String> infoData = new ArrayList<>(Arrays.asList(super.getInfoData()));
         infoData.add("Current pH Value: " + EnumChatFormatting.YELLOW + currentpHValue + " pH");
         return infoData.toArray(new String[] {});
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setFloat("mCurrentpH", this.currentpHValue);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        this.currentpHValue = aNBT.getFloat("mCurrentpH");
     }
 }

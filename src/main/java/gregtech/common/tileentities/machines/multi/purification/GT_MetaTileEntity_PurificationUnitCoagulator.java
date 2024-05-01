@@ -21,6 +21,7 @@ import java.util.List;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -431,5 +432,17 @@ public class GT_MetaTileEntity_PurificationUnitCoagulator
         ArrayList<String> infoData = new ArrayList<>(Arrays.asList(super.getInfoData()));
         infoData.add("Iron III Chloride consumed this cycle: " + EnumChatFormatting.RED + inputFluidConsumed + "L");
         return infoData.toArray(new String[] {});
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setLong("mInputFluidConsumed", inputFluidConsumed);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        this.inputFluidConsumed = aNBT.getLong("mInputFluidConsumed");
     }
 }
