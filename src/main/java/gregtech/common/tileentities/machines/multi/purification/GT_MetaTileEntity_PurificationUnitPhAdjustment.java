@@ -14,7 +14,10 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICA
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -72,6 +75,12 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
     private static final int CASING_INDEX_ACID = getTextureIndex(GregTech_API.sBlockCasings4, 1);
     // Alkaninity tower -> input = HCl (acid)
     private static final int CASING_INDEX_BASE = getTextureIndex(GregTech_API.sBlockCasings8, 7);
+
+    private float currentpHValue = 0.0f;
+
+    private static final float INITIAL_PH_DEVIATION = 2.5f;
+
+    private static final float PH_NEUTRAL_VALUE = 7.0f;
 
     private static final IStructureDefinition<GT_MetaTileEntity_PurificationUnitPhAdjustment> STRUCTURE_DEFINITION = StructureDefinition
         .<GT_MetaTileEntity_PurificationUnitPhAdjustment>builder()
@@ -251,6 +260,20 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
     }
 
     @Override
+    public void startCycle(int cycleTime, int progressTime) {
+        super.startCycle(cycleTime, progressTime);
+        // Randomize current pH value
+
+        ThreadLocalRandom random = ThreadLocalRandom.current();
+        // Generate random integer in [-RNG_PRECISION, RNG_PRECISION]
+        final int RNG_PRECISION = 10000;
+        int rng = random.nextInt(-RNG_PRECISION, RNG_PRECISION);
+        // Remap to [-1.0, 1.0] and then to [-INITIAL_PH_DEVIATION, INITIAL_PH_DEVIATION]
+        float deviation = ((float) rng / RNG_PRECISION) * INITIAL_PH_DEVIATION;
+        this.currentpHValue = PH_NEUTRAL_VALUE + deviation;
+    }
+
+    @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
         return true;
     }
@@ -268,5 +291,12 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET)) return false;
         return super.checkMachine(aBaseMetaTileEntity, aStack);
+    }
+
+    @Override
+    public String[] getInfoData() {
+        ArrayList<String> infoData = new ArrayList<>(Arrays.asList(super.getInfoData()));
+        infoData.add("Current pH Value: " + EnumChatFormatting.YELLOW + currentpHValue + " pH");
+        return infoData.toArray(new String[] {});
     }
 }
