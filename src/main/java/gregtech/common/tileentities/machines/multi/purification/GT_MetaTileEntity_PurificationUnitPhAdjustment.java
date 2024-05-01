@@ -17,6 +17,7 @@ import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -57,6 +58,7 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.IGT_HatchAdder;
 import gregtech.common.blocks.GT_Block_Casings_Abstract;
 
 public class GT_MetaTileEntity_PurificationUnitPhAdjustment
@@ -72,8 +74,8 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
         // spotless:off
         { "E   E     E   E", "EAAAE     ECCCE", "EAGAE     ECHCE", "EAGAE     ECHCE", "EAGAE     ECHCE", "EAAAE     ECCCE" },
         { " AAA       CCC ", "A   A     C   C", "A   A     C   C", "A   A     C   C", "A   ABB~BBC   C", "AAAAA     CCCCC" },
-        { " AXA       CYC ", "A   A     C   C", "G   A     C   H", "G   ABBBBBC   H", "G             H", "AAAAAIIRIICCCCC" },
-        { " AAA       CCC ", "A   A     C   C", "A   A     C   C", "A   A     C   C", "A   ABBBBBC   C", "AAAAA     CCCCC" },
+        { " AXA       CYC ", "A   A     C   C", "G   A     C   H", "G   ABBBBBC   H", "G             H", "AAAAABRBRBCCCCC" },
+        { " AAA       CCC ", "A   A     C   C", "A   A     C   C", "A   A     C   C", "A   AIIIIIC   C", "AAAAA     CCCCC" },
         { "E   E     E   E", "EAAAE     ECCCE", "EAGAE     ECHCE", "EAGAE     ECHCE", "EAGAE     ECHCE", "EAAAE     ECCCE" } };
     // spotless:on
 
@@ -98,6 +100,8 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
     private GT_MetaTileEntity_Hatch_Input acidInputHatch;
     private GT_MetaTileEntity_Hatch_InputBus alkalineInputBus;
 
+    private ArrayList<GT_MetaTileEntity_pHSensor> sensorHatches = new ArrayList<>();
+
     private static final IStructureDefinition<GT_MetaTileEntity_PurificationUnitPhAdjustment> STRUCTURE_DEFINITION = StructureDefinition
         .<GT_MetaTileEntity_PurificationUnitPhAdjustment>builder()
         .addShape(STRUCTURE_PIECE_MAIN, structure)
@@ -119,12 +123,20 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
                         .dot(1)
                         .hint(() -> "Input Hatch, Output Hatch")
                         .casingIndex(CASING_INDEX_MIDDLE)
-                        .disallowOnly(ForgeDirection.DOWN)
                         .build()),
                 // PLACEHOLDER: Chemically inert machine casing
                 ofBlock(GregTech_API.sBlockCasings8, 0)))
-        // PLACEHOLDER: Redstone hatch - use dot 2
-        .addElement('R', ofBlock(GregTech_API.sBlockCasings8, 0))
+        .addElement(
+            'R',
+            ofChain(
+                lazy(
+                    t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitPhAdjustment>buildHatchAdder()
+                        .atLeast(SensorHatchElement.PhSensor)
+                        .dot(2)
+                        .hint(() -> "pH Sensor Hatch")
+                        .casingIndex(CASING_INDEX_MIDDLE)
+                        .build()),
+                ofBlock(GregTech_API.sBlockCasings8, 0)))
         // Special I/O hatches
         .addElement(
             'X',
@@ -282,6 +294,16 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
         return false;
     }
 
+    public boolean addSensorHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_pHSensor) {
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return this.sensorHatches.add((GT_MetaTileEntity_pHSensor) aMetaTileEntity);
+        }
+        return false;
+    }
+
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
@@ -336,7 +358,7 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
             // Now do fluid, this is simpler since we only need to bother with one slot
             FluidStack stack = acidInputHatch.getDrainableStack();
             int acidDrained = 0;
-            if (stack.isFluidEqual(Materials.HydrofluoricAcid.getFluid(1))) {
+            if (stack != null && stack.isFluidEqual(Materials.HydrofluoricAcid.getFluid(1))) {
                 acidDrained = stack.amount;
                 acidInputHatch.drain(acidDrained, true);
             } else {
@@ -357,6 +379,15 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
 
             // Clamp pH to sensible values
             this.currentpHValue = Math.min(Math.max(this.currentpHValue, 0.0f), 14.0f);
+        }
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
+        super.onPostTick(aBaseMetaTileEntity, aTimer);
+        // Update sensor hatch
+        for (GT_MetaTileEntity_pHSensor hatch : sensorHatches) {
+            hatch.updateRedstoneOutput(this.currentpHValue);
         }
     }
 
@@ -408,5 +439,37 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         this.currentpHValue = aNBT.getFloat("mCurrentpH");
+    }
+
+    private enum SensorHatchElement implements IHatchElement<GT_MetaTileEntity_PurificationUnitPhAdjustment> {
+
+        PhSensor(GT_MetaTileEntity_PurificationUnitPhAdjustment::addSensorHatchToMachineList,
+            GT_MetaTileEntity_pHSensor.class) {
+
+            @Override
+            public long count(
+                GT_MetaTileEntity_PurificationUnitPhAdjustment gtMetaTileEntityPurificationUnitPhAdjustment) {
+                return gtMetaTileEntityPurificationUnitPhAdjustment.sensorHatches.size();
+            }
+        };
+
+        private final List<Class<? extends IMetaTileEntity>> mteClasses;
+        private final IGT_HatchAdder<GT_MetaTileEntity_PurificationUnitPhAdjustment> adder;
+
+        @SafeVarargs
+        SensorHatchElement(IGT_HatchAdder<GT_MetaTileEntity_PurificationUnitPhAdjustment> adder,
+            Class<? extends IMetaTileEntity>... mteClasses) {
+            this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
+            this.adder = adder;
+        }
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return mteClasses;
+        }
+
+        public IGT_HatchAdder<? super GT_MetaTileEntity_PurificationUnitPhAdjustment> adder() {
+            return adder;
+        }
     }
 }

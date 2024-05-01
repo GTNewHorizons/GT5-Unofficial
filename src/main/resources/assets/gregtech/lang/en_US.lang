@@ -496,6 +496,7 @@ GT5U.gui.text.pollution_fail=§4Failed to output the pollution.
 GT5U.gui.text.structure_incomplete=§4Shut down due to incomplete structure.
 GT5U.gui.text.no_repair=§4Shut down due to machine damage.
 GT5U.gui.text.no_machine_part=No correct machine part in controller slot.
+GT5U.gui.text.ph_sensor=pH threshold
 
 GT5U.item.programmed_circuit.select.header=Reprogram Circuit
 
