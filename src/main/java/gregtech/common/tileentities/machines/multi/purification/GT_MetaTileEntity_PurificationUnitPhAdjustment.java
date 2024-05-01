@@ -95,7 +95,7 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
 
     private static final float PH_PER_ALKALINE_DUST = 0.01f;
 
-    private static final float PH_PER_ACID_LITER = -0.001f;
+    private static final float PH_PER_10_ACID_LITER = -0.01f;
 
     private GT_MetaTileEntity_Hatch_Input acidInputHatch;
     private GT_MetaTileEntity_Hatch_InputBus alkalineInputBus;
@@ -336,7 +336,8 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
         int rng = random.nextInt(-RNG_PRECISION, RNG_PRECISION);
         // Remap to [-1.0, 1.0] and then to [-INITIAL_PH_DEVIATION, INITIAL_PH_DEVIATION]
         float deviation = ((float) rng / RNG_PRECISION) * INITIAL_PH_DEVIATION;
-        this.currentpHValue = PH_NEUTRAL_VALUE + deviation;
+        // Round to 2 digits
+        this.currentpHValue = Math.round((PH_NEUTRAL_VALUE + deviation) * 100.0f) / 100.0f;
     }
 
     @Override
@@ -358,8 +359,11 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
             // Now do fluid, this is simpler since we only need to bother with one slot
             FluidStack stack = acidInputHatch.getDrainableStack();
             int acidDrained = 0;
-            if (stack != null && stack.isFluidEqual(Materials.HydrofluoricAcid.getFluid(1))) {
-                acidDrained = stack.amount;
+            if (stack != null && stack.isFluidEqual(Materials.HydrochloricAcid.getFluid(1))) {
+                int acidAvailable = stack.amount;
+                // Only drain multiples of 10
+                int numMultiples = Math.floorDiv(acidAvailable, 10);
+                acidDrained = numMultiples * 10;
                 acidInputHatch.drain(acidDrained, true);
             } else {
                 // Little easier egg: Fluoroantimonic acid has a pH value of -31, it's an acid so strong it will
@@ -375,10 +379,13 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
 
             // Adjust pH with to new value
             this.currentpHValue = this.currentpHValue + totalAlkalineDrained * PH_PER_ALKALINE_DUST
-                + acidDrained * PH_PER_ACID_LITER;
+                + Math.floorDiv(acidDrained, 10) * PH_PER_10_ACID_LITER;
 
             // Clamp pH to sensible values
             this.currentpHValue = Math.min(Math.max(this.currentpHValue, 0.0f), 14.0f);
+
+            // Round to 2 decimals
+            this.currentpHValue = Math.round(this.currentpHValue * 100.0f) / 100.0f;
         }
     }
 
