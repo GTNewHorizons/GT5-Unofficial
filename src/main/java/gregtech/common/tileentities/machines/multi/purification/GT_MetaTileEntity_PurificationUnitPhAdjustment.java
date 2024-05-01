@@ -324,8 +324,9 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
             .addInfo(
                 "If the pH value is within " + EnumChatFormatting.RED
                     + PH_MAX_DEVIATION
+                    + " pH "
                     + EnumChatFormatting.GRAY
-                    + " of 7.0 at the end of the cycle, the recipe always succeeds.")
+                    + "of 7.0 pH at the end of the cycle, the recipe always succeeds.")
             .addInfo("Otherwise, the recipe always fails.")
             .addInfo("Use a pH Sensor Hatch to read the current pH value.")
             .addSeparator()
