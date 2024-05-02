@@ -1,7 +1,9 @@
 package gregtech.common.blocks;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
@@ -46,10 +48,44 @@ public class GT_Block_Glass1 extends GT_Block_Casings_Abstract {
 
     @Override
     @SideOnly(Side.CLIENT)
+    public int getRenderBlockPass() {
+        return 1;
+    }
+
+    @Override
+    public boolean renderAsNormalBlock() {
+        return false;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
     public IIcon getIcon(int ordinalSide, int aMeta) {
         return switch (aMeta) {
             case 0 -> Textures.BlockIcons.GLASS_ACID_RESISTANT.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
+    }
+
+    /**
+     * Returns true if the given side of this block type should be rendered, if the adjacent block is at the given
+     * coordinates. Args: blockAccess, x, y, z, side
+     */
+    @SideOnly(Side.CLIENT)
+    @Override
+    public boolean shouldSideBeRendered(IBlockAccess worldIn, int x, int y, int z, int side) {
+        Block block = worldIn.getBlock(x, y, z);
+
+        if (worldIn.getBlockMetadata(x, y, z) != worldIn.getBlockMetadata(
+            x - Facing.offsetsXForSide[side],
+            y - Facing.offsetsYForSide[side],
+            z - Facing.offsetsZForSide[side])) {
+            return true;
+        }
+
+        if (block == this) {
+            return false;
+        }
+
+        return super.shouldSideBeRendered(worldIn, x, y, z, side);
     }
 }
