@@ -677,9 +677,7 @@ public class GT_MetaTileEntity_PlasmaForge extends
     @NotNull
     public CheckRecipeResult checkProcessing() {
         CheckRecipeResult recipe_process = super.checkProcessing();
-        if (!recipe_process.wasSuccessful()) {
-            resetDiscount();
-        } else {
+        if (recipe_process.wasSuccessful()) {
             running_time = Math.min(running_time + mMaxProgresstime, (long) max_efficiency_time_in_ticks);
         }
         return recipe_process;
@@ -805,11 +803,7 @@ public class GT_MetaTileEntity_PlasmaForge extends
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        boolean result = super.onRunningTick(aStack);
-        if (!result) {
-            resetDiscount();
-        }
-        return result;
+        return super.onRunningTick(aStack);
     }
 
     @Override
@@ -892,16 +886,9 @@ public class GT_MetaTileEntity_PlasmaForge extends
         discount = Math.max(maximum_discount, discount);
     }
 
-    // Reset running time and discount.
-    public void resetDiscount() {
-        recalculateDiscount();
-    }
-
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide() && !aBaseMetaTileEntity.isAllowedToWork()) {
-            // Reset running time and discount.
-            resetDiscount();
             // If machine has stopped, stop chunkloading.
             GT_ChunkManager.releaseTicket((TileEntity) aBaseMetaTileEntity);
             isMultiChunkloaded = false;
