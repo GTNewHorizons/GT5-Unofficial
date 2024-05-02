@@ -43,5 +43,14 @@
         "stream": false
       }
     ]
+  },
+  "machines.PurificationPlantLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "PurificationPlantLoop",
+        "stream": false
+      }
+    ]
   }
 }

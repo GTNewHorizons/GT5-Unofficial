@@ -645,8 +645,9 @@ public class GT_MetaTileEntity_PurificationPlant
     }
 
     @Override
-    // Sound for the Base Unit of the Purification Plant, using DT for now.
     protected ResourceLocation getActivitySoundLoop() {
-        return SoundResource.GT_MACHINES_DISTILLERY_LOOP.resourceLocation;
+        // Probably want to use this for the actual purification units and not the main controller,
+        // but I want to see it in game for now.
+        return SoundResource.GT_MACHINES_PURIFICATIONPLANT_LOOP.resourceLocation;
     }
 }
