@@ -3,7 +3,6 @@ package gregtech.common.tileentities.machines.multi.purification;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.GT_HatchElement.Energy;
 import static gregtech.api.enums.GT_HatchElement.ExoticEnergy;
 import static gregtech.api.enums.GT_HatchElement.Maintenance;
@@ -12,6 +11,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_AR
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_GLOW;
+import static gregtech.api.util.GT_StructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitBase.WATER_BOOST_BONUS_CHANCE;
 import static gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitBase.WATER_BOOST_NEEDED_FLUID;
 
@@ -21,6 +21,7 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
@@ -47,8 +48,10 @@ import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GT_UITextures;
@@ -71,16 +74,13 @@ public class GT_MetaTileEntity_PurificationPlant
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
-    /**
-     * Used to keep track of casing amount, so we can impose a minimum number of casings
-     */
-    private int mCasingAmount;
+    private static final int CASING_INDEX_MAIN = 100;
 
     /**
      * Maximum distance in each axis between the purification plant main controller and the controller blocks of the
      * purification plant units.
      */
-    public static final int MAX_UNIT_DISTANCE = 16;
+    public static final int MAX_UNIT_DISTANCE = 27;
 
     /**
      * Time in ticks for a full processing cycle to complete.
@@ -96,19 +96,33 @@ public class GT_MetaTileEntity_PurificationPlant
 
     private static final IStructureDefinition<GT_MetaTileEntity_PurificationPlant> STRUCTURE_DEFINITION = StructureDefinition
         .<GT_MetaTileEntity_PurificationPlant>builder()
-        .addShape(
-            STRUCTURE_PIECE_MAIN,
-            new String[][] { { "AAA", "A~A", "AAA" }, { "AAA", "A A", "AAA" }, { "AAA", "AAA", "AAA" } })
+        .addShape(STRUCTURE_PIECE_MAIN, PurificationPlantStructureString.STRUCTURE_STRING)
+        // PLACEHOLDER: Advanced iridium machine casing
+        .addElement('A', ofBlock(GregTech_API.sBlockCasings8, 7))
+        // PLACEHOLDER: Advanced lithographic casing
+        .addElement('B', ofBlock(GregTech_API.sBlockCasings8, 12))
+        // Industrial strength concrete
+        .addElement('C', ofBlock(GregTech_API.sBlockCasings9, 2))
+        // Door
+        .addElement('D', lazy(t -> ofBlock(GameRegistry.findBlock("IC2", "blockDoorAlloy"), 0)))
+        // PLACEHOLDER: Stained glass
+        .addElement('E', ofBlock(Blocks.stained_glass, 0))
+        .addElement('W', ofBlock(Blocks.water, 0))
+        // Material may change?
+        .addElement('G', ofFrame(Materials.Tungsten))
+        // Hatch space
         .addElement(
-            'A',
+            'H',
             ofChain(
                 lazy(
                     t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationPlant>buildHatchAdder()
                         .atLeastList(t.getAllowedHatches())
-                        .casingIndex(48)
                         .dot(1)
+                        // PLACEHOLDER, see above
+                        .casingIndex(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 12))
                         .build()),
-                onElementPass(t -> t.mCasingAmount++, ofBlock(GregTech_API.sBlockCasings4, 0))))
+                // PLACEHOLDER, see above
+                ofBlock(GregTech_API.sBlockCasings8, 12)))
         .build();
 
     public GT_MetaTileEntity_PurificationPlant(int aID, String aName, String aNameRegional) {
@@ -121,7 +135,7 @@ public class GT_MetaTileEntity_PurificationPlant
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 1, 1, 0);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 24, 9, 20);
     }
 
     @Override
@@ -169,7 +183,7 @@ public class GT_MetaTileEntity_PurificationPlant
                     + " chance")
             .addInfo("to return water of the same quality as the input or lower.")
             .addInfo(AuthorNotAPenguin)
-            .beginStructureBlock(3, 3, 3, true)
+            .beginStructureBlock(49, 9, 49, false)
             .addController("Front center")
             .addCasingInfoRangeColored(
                 "Robust Tungstensteel Machine Casing",
@@ -192,28 +206,34 @@ public class GT_MetaTileEntity_PurificationPlant
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean active, boolean redstoneLevel) {
-        // TODO: Proper textures instead of copying PA textures.
         if (side == facing) {
-            if (active) return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][48], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE)
-                .extFacing()
-                .build(),
+            if (active) return new ITexture[] {
+                Textures.BlockIcons
+                    .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 12)),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE)
+                    .extFacing()
+                    .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][48], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY)
-                .extFacing()
-                .build(),
+            return new ITexture[] {
+                Textures.BlockIcons
+                    .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 12)),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY)
+                    .extFacing()
+                    .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
         }
-        return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][48] };
+        return new ITexture[] { Textures.BlockIcons
+            .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 12)) };
     }
 
     @Override
@@ -228,7 +248,7 @@ public class GT_MetaTileEntity_PurificationPlant
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         // Check self
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0)) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 24, 9, 20)) {
             return false;
         }
 
