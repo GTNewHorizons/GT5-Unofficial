@@ -1359,7 +1359,8 @@ public class Textures {
         LARGETURBINE_NEW_EMPTY6,
         LARGETURBINE_NEW_EMPTY7,
         LARGETURBINE_NEW_EMPTY8,
-        LARGETURBINE_NEW_EMPTY9,;
+        LARGETURBINE_NEW_EMPTY9,
+        INDUSTRIAL_STRENGTH_CONCRETE,;
 
         /**
          * Icon for Fresh CFoam

@@ -21,9 +21,11 @@ public class GT_Block_Casings9 extends GT_Block_Casings_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Advanced Filter Casing");
         GT_LanguageManager
             .addStringLocalization(getUnlocalizedName() + ".1.tooltip", "Less than five 0.1μm particles per m^3");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Industrial Strength Concrete");
 
         ItemList.Casing_Pipe_Polybenzimidazole.set(new ItemStack(this, 1, 0));
         ItemList.Casing_Vent_T2.set(new ItemStack(this, 1, 1));
+        ItemList.BlockIndustrialStrengthConcrete.set(new ItemStack(this, 1, 2));
     }
 
     @Override
@@ -37,6 +39,7 @@ public class GT_Block_Casings9 extends GT_Block_Casings_Abstract {
         return switch (aMeta) {
             case 0 -> Textures.BlockIcons.MACHINE_CASING_PIPE_POLYBENZIMIDAZOLE.getIcon();
             case 1 -> Textures.BlockIcons.MACHINE_CASING_VENT_T2.getIcon();
+            case 2 -> Textures.BlockIcons.INDUSTRIAL_STRENGTH_CONCRETE.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
     }
