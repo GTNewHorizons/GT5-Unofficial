@@ -74,8 +74,6 @@ public class GT_MetaTileEntity_PurificationPlant
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
-    private static final int CASING_INDEX_MAIN = 100;
-
     /**
      * Maximum distance in each axis between the purification plant main controller and the controller blocks of the
      * purification plant units.
@@ -99,8 +97,8 @@ public class GT_MetaTileEntity_PurificationPlant
         .addShape(STRUCTURE_PIECE_MAIN, PurificationPlantStructureString.STRUCTURE_STRING)
         // PLACEHOLDER: Advanced iridium machine casing
         .addElement('A', ofBlock(GregTech_API.sBlockCasings8, 7))
-        // PLACEHOLDER: Advanced lithographic casing
-        .addElement('B', ofBlock(GregTech_API.sBlockCasings8, 12))
+        // Industrial Water Plant Casing
+        .addElement('B', ofBlock(GregTech_API.sBlockCasings9, 3))
         // Industrial strength concrete
         .addElement('C', ofBlock(GregTech_API.sBlockCasings9, 2))
         // Door
@@ -118,11 +116,9 @@ public class GT_MetaTileEntity_PurificationPlant
                     t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationPlant>buildHatchAdder()
                         .atLeastList(t.getAllowedHatches())
                         .dot(1)
-                        // PLACEHOLDER, see above
-                        .casingIndex(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 12))
+                        .casingIndex(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings9, 3))
                         .build()),
-                // PLACEHOLDER, see above
-                ofBlock(GregTech_API.sBlockCasings8, 12)))
+                ofBlock(GregTech_API.sBlockCasings9, 3)))
         .build();
 
     public GT_MetaTileEntity_PurificationPlant(int aID, String aName, String aNameRegional) {
@@ -209,7 +205,7 @@ public class GT_MetaTileEntity_PurificationPlant
         if (side == facing) {
             if (active) return new ITexture[] {
                 Textures.BlockIcons
-                    .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 12)),
+                    .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings9, 3)),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE)
                     .extFacing()
@@ -221,7 +217,7 @@ public class GT_MetaTileEntity_PurificationPlant
                     .build() };
             return new ITexture[] {
                 Textures.BlockIcons
-                    .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 12)),
+                    .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings9, 3)),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY)
                     .extFacing()
@@ -233,7 +229,7 @@ public class GT_MetaTileEntity_PurificationPlant
                     .build() };
         }
         return new ITexture[] { Textures.BlockIcons
-            .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 12)) };
+            .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings9, 3)) };
     }
 
     @Override
