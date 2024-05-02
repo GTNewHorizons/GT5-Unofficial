@@ -1695,6 +1695,7 @@ public class Textures {
             // adds some known pages, modders also can do it...
             GT_Utility.addTexturePage((byte) 1);
             GT_Utility.addTexturePage((byte) 8);
+            GT_Utility.addTexturePage((byte) 16);
             setCasingTextureForId(ERROR_TEXTURE_INDEX, ERROR_RENDERING[0]);
         }
 
