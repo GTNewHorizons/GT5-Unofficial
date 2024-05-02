@@ -23,11 +23,11 @@ public class GT_Block_Glass1 extends GT_Block_Casings_Abstract {
         super(GT_Item_Glass1.class, "gt.blockglass1", Material.glass, 2);
         this.opaque = false;
 
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Acid Resistant Glass");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "pH Resistant Glass");
         GT_LanguageManager
-            .addStringLocalization(getUnlocalizedName() + ".0.tooltip", "Able to resist very low pH values");
+            .addStringLocalization(getUnlocalizedName() + ".0.tooltip", "Able to resist extreme pH values");
 
-        ItemList.GlassAcidResistant.set(new ItemStack(this, 1, 0));
+        ItemList.GlassPHResistant.set(new ItemStack(this, 1, 0));
     }
 
     @Override
@@ -61,7 +61,7 @@ public class GT_Block_Glass1 extends GT_Block_Casings_Abstract {
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int ordinalSide, int aMeta) {
         return switch (aMeta) {
-            case 0 -> Textures.BlockIcons.GLASS_ACID_RESISTANT.getIcon();
+            case 0 -> Textures.BlockIcons.GLASS_PH_RESISTANT.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
     }

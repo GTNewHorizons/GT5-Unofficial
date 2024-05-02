@@ -1361,7 +1361,8 @@ public class Textures {
         LARGETURBINE_NEW_EMPTY8,
         LARGETURBINE_NEW_EMPTY9,
         INDUSTRIAL_STRENGTH_CONCRETE,
-        GLASS_ACID_RESISTANT,;
+        GLASS_PH_RESISTANT,
+        GLASS_ALKALINE_RESISTANT;
 
         /**
          * Icon for Fresh CFoam

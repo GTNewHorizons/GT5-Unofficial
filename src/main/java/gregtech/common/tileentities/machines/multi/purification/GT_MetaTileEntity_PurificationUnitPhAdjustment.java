@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -112,9 +111,9 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
         .addElement('B', ofBlock(GregTech_API.sBlockCasings8, 0))
         .addElement('C', ofBlock(GregTech_API.sBlockCasings8, 7))
         .addElement('E', ofFrame(Materials.NaquadahAlloy))
-        // PLACEHOLDER: Needs to become acid and alkaline resistant glass
-        .addElement('G', ofBlock(Blocks.stained_glass, 7))
-        .addElement('H', ofBlock(Blocks.stained_glass, 7))
+        // pH Resistant Glass
+        .addElement('G', ofBlock(GregTech_API.sBlockGlass1, 0))
+        .addElement('H', ofBlock(GregTech_API.sBlockGlass1, 0))
         // Regular I/O hatches
         .addElement(
             'I',
