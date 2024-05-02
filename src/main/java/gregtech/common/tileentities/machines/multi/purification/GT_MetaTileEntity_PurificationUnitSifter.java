@@ -101,7 +101,6 @@ public class GT_MetaTileEntity_PurificationUnitSifter extends
                         .atLeastList(t.getAllowedHatches())
                         .casingIndex(49)
                         .dot(1)
-                        .hint(() -> "Input Bus, Output Bus, Input Hatch, Output Hatch")
                         .build()),
                 // Clean stainless steel machine casing
                 ofBlock(GregTech_API.sBlockCasings4, 1)))

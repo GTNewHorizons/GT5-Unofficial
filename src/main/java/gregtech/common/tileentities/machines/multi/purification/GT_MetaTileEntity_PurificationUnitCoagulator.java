@@ -107,7 +107,6 @@ public class GT_MetaTileEntity_PurificationUnitCoagulator
                         .atLeastList(t.getAllowedHatches())
                         .casingIndex(CASING_INDEX)
                         .dot(1)
-                        .hint(() -> "Input Bus, Output Bus, Input Hatch, Output Hatch")
                         .build()),
                 // PLACEHOLDER: Chemically inert machine casing
                 ofBlock(GregTech_API.sBlockCasings8, 0)))

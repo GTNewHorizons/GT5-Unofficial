@@ -123,7 +123,6 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
                     t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitPhAdjustment>buildHatchAdder()
                         .atLeastList(t.getAllowedHatches())
                         .dot(1)
-                        .hint(() -> "Input Hatch, Output Hatch")
                         .casingIndex(CASING_INDEX_MIDDLE)
                         .build()),
                 // PLACEHOLDER: Chemically inert machine casing
@@ -133,9 +132,8 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
             ofChain(
                 lazy(
                     t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitPhAdjustment>buildHatchAdder()
-                        .atLeast(SensorHatchElement.PhSensor)
+                        .atLeast(SpecialHatchElement.PhSensor)
                         .dot(2)
-                        .hint(() -> "pH Sensor Hatch")
                         .casingIndex(CASING_INDEX_MIDDLE)
                         .build()),
                 ofBlock(GregTech_API.sBlockCasings8, 0)))
@@ -145,9 +143,8 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
             lazy(
                 t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitPhAdjustment>buildHatchAdder()
                     .atLeast(InputBus)
-                    .adder(GT_MetaTileEntity_PurificationUnitPhAdjustment::addAlkalineBusToMachineList)
                     .dot(3)
-                    .hint(() -> "Input Bus (Sodium Hydroxide)")
+                    // .cacheHint(() -> "Input Bus (Sodium Hydroxide)")
                     .casingIndex(CASING_INDEX_ACID)
                     .allowOnly(ForgeDirection.UP)
                     .build()))
@@ -156,9 +153,8 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
             lazy(
                 t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitPhAdjustment>buildHatchAdder()
                     .atLeast(InputHatch)
-                    .adder(GT_MetaTileEntity_PurificationUnitPhAdjustment::addAcidHatchToMachineList)
                     .dot(4)
-                    .hint(() -> "Input Hatch (Hydrochloric Acid)")
+                    // .cacheHint(() -> "Input Hatch (Hydrochloric Acid)")
                     .casingIndex(CASING_INDEX_BASE)
                     .allowOnly(ForgeDirection.UP)
                     .build()))
@@ -502,7 +498,7 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
         this.currentpHValue = aNBT.getFloat("mCurrentpH");
     }
 
-    private enum SensorHatchElement implements IHatchElement<GT_MetaTileEntity_PurificationUnitPhAdjustment> {
+    private enum SpecialHatchElement implements IHatchElement<GT_MetaTileEntity_PurificationUnitPhAdjustment> {
 
         PhSensor(GT_MetaTileEntity_PurificationUnitPhAdjustment::addSensorHatchToMachineList,
             GT_MetaTileEntity_pHSensor.class) {
@@ -518,7 +514,7 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
         private final IGT_HatchAdder<GT_MetaTileEntity_PurificationUnitPhAdjustment> adder;
 
         @SafeVarargs
-        SensorHatchElement(IGT_HatchAdder<GT_MetaTileEntity_PurificationUnitPhAdjustment> adder,
+        SpecialHatchElement(IGT_HatchAdder<GT_MetaTileEntity_PurificationUnitPhAdjustment> adder,
             Class<? extends IMetaTileEntity>... mteClasses) {
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
