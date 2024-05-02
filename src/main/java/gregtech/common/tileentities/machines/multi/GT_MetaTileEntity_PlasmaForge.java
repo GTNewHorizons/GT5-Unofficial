@@ -802,11 +802,6 @@ public class GT_MetaTileEntity_PlasmaForge extends
     }
 
     @Override
-    public boolean onRunningTick(ItemStack aStack) {
-        return super.onRunningTick(aStack);
-    }
-
-    @Override
     public String[] getInfoData() {
 
         long storedEnergy = 0;
