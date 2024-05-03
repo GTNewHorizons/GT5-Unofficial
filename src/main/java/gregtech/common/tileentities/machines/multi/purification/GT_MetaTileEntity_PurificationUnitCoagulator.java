@@ -2,6 +2,7 @@ package gregtech.common.tileentities.machines.multi.purification;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static gregtech.api.enums.GT_HatchElement.InputBus;
 import static gregtech.api.enums.GT_HatchElement.InputHatch;
@@ -12,7 +13,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICA
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
 import java.util.ArrayList;
@@ -37,6 +37,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
@@ -59,8 +60,8 @@ public class GT_MetaTileEntity_PurificationUnitCoagulator
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String STRUCTURE_PIECE_MAIN_SURVIVAL = "main_survival";
 
-    private static final int STRUCTURE_X_OFFSET = 3;
-    private static final int STRUCTURE_Y_OFFSET = 2;
+    private static final int STRUCTURE_X_OFFSET = 4;
+    private static final int STRUCTURE_Y_OFFSET = 3;
     private static final int STRUCTURE_Z_OFFSET = 0;
 
     private static final long IRON_III_PER_LEVEL = 100000;
@@ -74,17 +75,19 @@ public class GT_MetaTileEntity_PurificationUnitCoagulator
     private static final String[][] structure = new String[][]
     // spotless:off
         {
-        { "       ", "BBBBBBB", "BBB~BBB", "BBBBBBB" },
-        { "       ", "B     B", "BWWWWWB", "BCCCCCB" },
-        { "       ", "B     B", "BWWWWWB", "BCAAACB" },
-        { "       ", "B     B", "BWWWWWB", "BCAAACB" },
-        { "       ", "B     B", "BWWWWWB", "BCAAACB" },
-        { "EE   EE", "BE   EB", "BEWWWEB", "BCCCCCB" },
-        { "EE   EE", "BBBBBBB", "BBBBBBB", "BBBBBBB" }
+        { "         ", "         ", " BBBBBBB ", " BBB~BBB ", " BBBBBBB " },
+        { "         ", "         ", " B     B ", " BWWWWWB ", " BCCCCCB " },
+        { "         ", "         ", " B     B ", " GWWWWWG ", " BCAAACB " },
+        { "         ", "         ", " B     B ", " GWWWWWG ", " BCAAACB " },
+        { "         ", "         ", " B     B ", " GWWWWWG ", " BCAAACB " },
+        { "         ", " EE   EE ", " BE   EB ", " BEWWWEB ", " BCCCCCB " },
+        { "D       D", "DEE   EED", "DBBBBBBBD", "DBBBBBBBD", "DBBBBBBBD" },
+        { "DD     DD", "DD     DD", "DD     DD", "DD     DD", "DD     DD" }
         };
         // spotless:on
 
-    private static final int CASING_INDEX = 176;
+    private static final int BOTTOM_CASING_INDEX = getTextureIndex(GregTech_API.sBlockCasings9, 4);
+    private static final int MAIN_CASING_INDEX = getTextureIndex(GregTech_API.sBlockCasings9, 5);
 
     private static final IStructureDefinition<GT_MetaTileEntity_PurificationUnitCoagulator> STRUCTURE_DEFINITION = StructureDefinition
         .<GT_MetaTileEntity_PurificationUnitCoagulator>builder()
@@ -105,15 +108,19 @@ public class GT_MetaTileEntity_PurificationUnitCoagulator
                 lazy(
                     t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitCoagulator>buildHatchAdder()
                         .atLeastList(t.getAllowedHatches())
-                        .casingIndex(CASING_INDEX)
+                        .casingIndex(MAIN_CASING_INDEX)
                         .dot(1)
                         .build()),
-                // PLACEHOLDER: Chemically inert machine casing
-                ofBlock(GregTech_API.sBlockCasings8, 0)))
-        // Advanced iridium machine casing
-        .addElement('C', ofBlock(GregTech_API.sBlockCasings8, 7))
+                // Clean Coagulation Casing
+                ofBlock(GregTech_API.sBlockCasings9, 5)))
+        // Sterile Water Plant Casing
+        .addElement('C', ofBlock(GregTech_API.sBlockCasings9, 4))
+        // Industrial Water Plant Casing
+        .addElement('D', ofBlock(GregTech_API.sBlockCasings9, 3))
         .addElement('E', ofFrame(Materials.Adamantium))
         .addElement('W', ofBlock(Blocks.water, 0))
+        // Tinted industrial glass
+        .addElement('G', ofBlockAnyMeta(GregTech_API.sBlockTintedGlass))
         .build();
 
     List<IHatchElement<? super GT_MetaTileEntity_PurificationUnitCoagulator>> getAllowedHatches() {
@@ -137,26 +144,28 @@ public class GT_MetaTileEntity_PurificationUnitCoagulator
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
-            if (aActive) return new ITexture[] { casingTexturePages[1][48], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE)
-                .extFacing()
-                .build(),
+            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(MAIN_CASING_INDEX),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE)
+                    .extFacing()
+                    .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { casingTexturePages[1][48], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR)
-                .extFacing()
-                .build(),
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(MAIN_CASING_INDEX),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR)
+                    .extFacing()
+                    .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
         }
-        return new ITexture[] { casingTexturePages[1][48] };
+        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(MAIN_CASING_INDEX) };
     }
 
     @Override
@@ -274,16 +283,28 @@ public class GT_MetaTileEntity_PurificationUnitCoagulator
             .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(7, 4, 7, false)
             .addCasingInfoRangeColored(
-                "Chemically Inert Machine Casing",
+                "Clean Coagulation Casing",
                 EnumChatFormatting.GRAY,
-                66,
-                71,
+                60,
+                65,
                 EnumChatFormatting.GOLD,
                 false)
             .addCasingInfoExactlyColored(
-                "Advanced Iridium Machine Casing",
+                "Sterile Water Plant Casing",
                 EnumChatFormatting.GRAY,
                 16,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "Industrial Water Plant Casing",
+                EnumChatFormatting.GRAY,
+                30,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "Tinted Industrial Glass",
+                EnumChatFormatting.GRAY,
+                6,
                 EnumChatFormatting.GOLD,
                 false)
             .addCasingInfoExactlyColored(

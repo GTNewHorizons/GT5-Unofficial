@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -29,6 +30,7 @@ import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.blocks.GT_Block_Casings_Abstract;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -111,6 +113,10 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
     public boolean doRandomMaintenanceDamage() {
         // The individual purification unit structures cannot have maintenance issues, so do nothing.
         return true;
+    }
+
+    protected static int getTextureIndex(Block block, int meta) {
+        return ((GT_Block_Casings_Abstract) block).getTextureIndex(meta);
     }
 
     @Override

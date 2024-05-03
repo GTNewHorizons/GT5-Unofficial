@@ -64,6 +64,8 @@ public class GT_MetaTileEntity_PurificationUnitSifter extends
     // Chance that the filter is damaged every cycle.
     private static final float FILTER_DAMAGE_RATE = 20.0f;
 
+    private static final int CASING_TEXTURE_INDEX = getTextureIndex(GregTech_API.sBlockCasings9, 4);
+
     private static final String[][] structure =
         // spotless:off
         new String[][] {
@@ -99,13 +101,13 @@ public class GT_MetaTileEntity_PurificationUnitSifter extends
                 lazy(
                     t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitSifter>buildHatchAdder()
                         .atLeastList(t.getAllowedHatches())
-                        .casingIndex(49)
+                        .casingIndex(CASING_TEXTURE_INDEX)
                         .dot(1)
                         .build()),
-                // Clean stainless steel machine casing
-                ofBlock(GregTech_API.sBlockCasings4, 1)))
-        // Clean stainless steel machine casing
-        .addElement('A', ofBlock(GregTech_API.sBlockCasings4, 1))
+                // Sterile Water Plant Casing
+                ofBlock(GregTech_API.sBlockCasings9, 4)))
+        // Sterile Water Plant Casing
+        .addElement('A', ofBlock(GregTech_API.sBlockCasings9, 4))
         // PTFE pipe casing
         .addElement('B', ofBlock(GregTech_API.sBlockCasings8, 1))
         .addElement('C', ofFrame(Materials.Iridium))
@@ -220,7 +222,7 @@ public class GT_MetaTileEntity_PurificationUnitSifter extends
             .beginStructureBlock(11, 4, 11, false)
             .addSeparator()
             .addCasingInfoRangeColored(
-                "Clean Stainless Steel Machine Casing",
+                "Sterile Water Plant Casing",
                 EnumChatFormatting.GRAY,
                 123,
                 131,
@@ -300,26 +302,28 @@ public class GT_MetaTileEntity_PurificationUnitSifter extends
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
         ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         if (sideDirection == facingDirection) {
-            if (active) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(49), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
-                .extFacing()
-                .build(),
+            if (active) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_INDEX),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
+                    .extFacing()
+                    .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(49), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER)
-                .extFacing()
-                .build(),
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_INDEX),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER)
+                    .extFacing()
+                    .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
         }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(49) };
+        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_INDEX) };
     }
 
     @Override

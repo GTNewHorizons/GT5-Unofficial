@@ -21,7 +21,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -58,7 +57,6 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
-import gregtech.common.blocks.GT_Block_Casings_Abstract;
 
 public class GT_MetaTileEntity_PurificationUnitPhAdjustment
     extends GT_MetaTileEntity_PurificationUnitBase<GT_MetaTileEntity_PurificationUnitPhAdjustment>
@@ -161,10 +159,6 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
                     .allowOnly(ForgeDirection.UP)
                     .build()))
         .build();
-
-    private static int getTextureIndex(Block block, int meta) {
-        return ((GT_Block_Casings_Abstract) block).getTextureIndex(meta);
-    }
 
     private List<IHatchElement<? super GT_MetaTileEntity_PurificationUnitPhAdjustment>> getAllowedHatches() {
         return ImmutableList.of(InputHatch, OutputHatch);
