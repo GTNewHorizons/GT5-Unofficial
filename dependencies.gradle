@@ -40,12 +40,12 @@ dependencies {
     api("com.github.GTNewHorizons:GTNHLib:0.2.11:dev")
     api("com.github.GTNewHorizons:ModularUI:1.1.42:dev")
     api("com.github.GTNewHorizons:waila:1.7.3:dev")
-    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-352-GTNH:dev")
-    api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.2.28-gtnh:dev")
+    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-356-GTNH:dev")
+    api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.2.29-gtnh:dev")
 
     implementation("com.github.GTNewHorizons:Avaritia:1.49:dev")
 
-    compileOnlyApi('com.github.GTNewHorizons:Angelica:1.0.0-alpha41:api') { transitive = false }
+    compileOnlyApi('com.github.GTNewHorizons:Angelica:1.0.0-alpha42:api') { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:AppleCore:3.3.0:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:BuildCraft:7.1.39:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.7.4:dev") { transitive = false }
