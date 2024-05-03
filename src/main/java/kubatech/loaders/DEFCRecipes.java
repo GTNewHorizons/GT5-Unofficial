@@ -26,7 +26,9 @@ import gregtech.api.recipe.RecipeMapBuilder;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
 import gregtech.nei.formatter.SimpleSpecialValueFormatter;
+import gtPlusPlus.xmod.forestry.bees.handler.GTPP_CombType;
 import kubatech.Tags;
 import kubatech.api.LoaderReference;
 
@@ -274,7 +276,8 @@ public class DEFCRecipes {
             GT_Values.RA.stdBuilder()
                 .itemInputs(
                     new ItemStack(Blocks.dragon_egg, 0),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64))
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64),
+                    GT_Utility.getIntegratedCircuit(1))
                 .fluidInputs(Materials.Radon.getPlasma(144))
                 .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 288))
                 .eut(1_966_080)
@@ -286,11 +289,38 @@ public class DEFCRecipes {
             GT_Values.RA.stdBuilder()
                 .itemInputs(
                     GT_ModHandler.getModItem("witchery", "infinityegg", 0),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64))
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64),
+                    GT_Utility.getIntegratedCircuit(1))
                 .fluidInputs(Materials.Radon.getPlasma(72))
                 .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 432))
                 .eut(1_966_080)
                 .duration(3600)
+                .specialValue(3)
+                .noOptimize()
+                .addTo(fusionCraftingRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    new ItemStack(Blocks.dragon_egg, 0),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64),
+                    GTPP_CombType.DRAGONBLOOD.getStackForType(1))
+                .fluidInputs(Materials.Radon.getPlasma(216))
+                .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 432))
+                .eut(1_966_080)
+                .duration(2800)
+                .specialValue(3)
+                .noOptimize()
+                .addTo(fusionCraftingRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    GT_ModHandler.getModItem("witchery", "infinityegg", 0),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64),
+                    GTPP_CombType.DRAGONBLOOD.getStackForType(1))
+                .fluidInputs(Materials.Radon.getPlasma(108))
+                .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 648))
+                .eut(1_966_080)
+                .duration(2400)
                 .specialValue(3)
                 .noOptimize()
                 .addTo(fusionCraftingRecipes);
