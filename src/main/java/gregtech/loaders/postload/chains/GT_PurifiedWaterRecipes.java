@@ -53,12 +53,13 @@ public class GT_PurifiedWaterRecipes {
 
         // Add recipe to reprocess ferrous waste water
 
-        // This amount seems high, but it does perfectly cycle hydrochloric acid.
+        // Diluted is twice what chem balance would suggest, but it is 2:1 with hydrochloric acid which makes it
+        // correct I believe.
         GT_Values.RA.stdBuilder()
-            .fluidInputs(Materials.FerrousWastewater.getFluid(90000L))
-            .itemOutputs(Materials.Iron.getDust(9))
-            .fluidOutputs(Materials.Water.getFluid(36000L), Materials.DilutedHydrochloricAcid.getFluid(54000L))
-            .duration(10 * SECONDS)
+            .fluidInputs(Materials.FerrousWastewater.getFluid(1000L))
+            .itemOutputs(Materials.Iron.getDust(1))
+            .fluidOutputs(Materials.Water.getFluid(1000L), Materials.DilutedHydrochloricAcid.getFluid(6000L))
+            .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(distillationTowerRecipes);
 
