@@ -758,7 +758,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
      */
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setAvailableVoltage(getAverageInputVoltage());
-        logic.setAvailableAmperage(getMaxInputAmps());
+        logic.setAvailableAmperage(mEnergyHatches.size() == 1 ? 1 : getMaxInputAmps());
         logic.setAmperageOC(mEnergyHatches.size() != 1);
     }
 
