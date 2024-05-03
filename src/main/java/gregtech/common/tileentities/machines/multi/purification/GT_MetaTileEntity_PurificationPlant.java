@@ -180,16 +180,43 @@ public class GT_MetaTileEntity_PurificationPlant
             .addInfo("to return water of the same quality as the input or lower.")
             .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(49, 9, 49, false)
-            .addController("Front center")
-            .addCasingInfoRangeColored(
-                "Robust Tungstensteel Machine Casing",
+            .addCasingInfoExactlyColored(
+                "Industrial Strength Concrete",
                 EnumChatFormatting.GRAY,
-                14,
-                23,
+                2401,
                 EnumChatFormatting.GOLD,
                 false)
+            .addCasingInfoExactlyColored(
+                "Advanced Iridium Plated Machine Casing",
+                EnumChatFormatting.GRAY,
+                77,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoRangeColored(
+                "Industrial Water Plant Casing",
+                EnumChatFormatting.GRAY,
+                71,
+                72,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "Tungsten Frame Box",
+                EnumChatFormatting.GRAY,
+                30,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "White Stained Glass",
+                EnumChatFormatting.GRAY,
+                6,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored("Reinforced Door", EnumChatFormatting.GRAY, 1, EnumChatFormatting.GOLD, false)
+            .addController("Front center")
             .addEnergyHatch(EnumChatFormatting.GOLD + "1", 1)
             .addMaintenanceHatch(EnumChatFormatting.GOLD + "1", 1)
+            .addStructureInfo("Requires water to be placed in the tank.")
+            .addStructureInfo("Use the StructureLib Hologram Projector to build the structure.")
             .toolTipFinisher("GregTech");
         return tt;
     }
