@@ -2036,6 +2036,10 @@ public enum ItemList implements IItemContainer {
     Hatch_pHSensor,
     BlockIndustrialStrengthConcrete,
     GlassPHResistant,
+    GlassTintedIndustrialWhite,
+    GlassTintedIndustrialLightGray,
+    GlassTintedIndustrialGray,
+    GlassTintedIndustrialBlack,
     BlockIndustrialWaterPlantCasing;
 
     public static final ItemList[] DYE_ONLY_ITEMS = { Color_00, Color_01, Color_02, Color_03, Color_04, Color_05,

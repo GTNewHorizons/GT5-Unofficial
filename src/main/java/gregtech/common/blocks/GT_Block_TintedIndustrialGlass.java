@@ -2,18 +2,30 @@ package gregtech.common.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
+import gregtech.api.util.GT_LanguageManager;
 
-public class GT_Block_Glass2 extends GT_Block_Casings_Abstract {
+public class GT_Block_TintedIndustrialGlass extends GT_Block_Casings_Abstract {
 
-    public GT_Block_Glass2() {
-        super(GT_Item_Glass1.class, "gt.blockglass2", Material.glass, 1);
+    public GT_Block_TintedIndustrialGlass() {
+        super(GT_Item_Glass1.class, "gt.blocktintedglass", Material.glass, 4);
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Tinted Industrial Glass (White)");
+        GT_LanguageManager
+            .addStringLocalization(getUnlocalizedName() + ".1.name", "Tinted Industrial Glass (Light Gray)");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Tinted Industrial Glass (Gray)");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Tinted Industrial Glass (Black)");
+        ItemList.GlassTintedIndustrialWhite.set(new ItemStack(this, 1, 0));
+        ItemList.GlassTintedIndustrialLightGray.set(new ItemStack(this, 1, 1));
+        ItemList.GlassTintedIndustrialGray.set(new ItemStack(this, 1, 2));
+        ItemList.GlassTintedIndustrialBlack.set(new ItemStack(this, 1, 3));
         this.opaque = false;
     }
 
@@ -48,7 +60,10 @@ public class GT_Block_Glass2 extends GT_Block_Casings_Abstract {
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int ordinalSide, int aMeta) {
         return switch (aMeta) {
-
+            case 0 -> Textures.BlockIcons.GLASS_TINTED_INDUSTRIAL_WHITE.getIcon();
+            case 1 -> Textures.BlockIcons.GLASS_TINTED_INDUSTRIAL_LIGHT_GRAY.getIcon();
+            case 2 -> Textures.BlockIcons.GLASS_TINTED_INDUSTRIAL_GRAY.getIcon();
+            case 3 -> Textures.BlockIcons.GLASS_TINTED_INDUSTRIAL_BLACK.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
     }

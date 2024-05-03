@@ -2,6 +2,7 @@ package gregtech.common.tileentities.machines.multi.purification;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static gregtech.api.enums.GT_HatchElement.Energy;
 import static gregtech.api.enums.GT_HatchElement.ExoticEnergy;
@@ -103,8 +104,8 @@ public class GT_MetaTileEntity_PurificationPlant
         .addElement('C', ofBlock(GregTech_API.sBlockCasings9, 2))
         // Door
         .addElement('D', lazy(t -> ofBlock(GameRegistry.findBlock("IC2", "blockDoorAlloy"), 0)))
-        // PLACEHOLDER: Stained glass
-        .addElement('E', ofBlock(Blocks.stained_glass, 0))
+        // Tinted Industrial Glass
+        .addElement('E', ofBlockAnyMeta(GregTech_API.sBlockTintedGlass, 0))
         .addElement('W', ofBlock(Blocks.water, 0))
         // Material may change?
         .addElement('G', ofFrame(Materials.Tungsten))
@@ -206,7 +207,7 @@ public class GT_MetaTileEntity_PurificationPlant
                 EnumChatFormatting.GOLD,
                 false)
             .addCasingInfoExactlyColored(
-                "White Stained Glass",
+                "Tinted Industrial Glass",
                 EnumChatFormatting.GRAY,
                 6,
                 EnumChatFormatting.GOLD,

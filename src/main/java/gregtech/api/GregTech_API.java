@@ -298,7 +298,7 @@ public class GregTech_API {
     public static Block sBlockLongDistancePipes;
     public static Block sDroneRender;
     public static Block sBlockGlass1;
-    public static Block sBlockGlass2;
+    public static Block sBlockTintedGlass;
     /**
      * Getting assigned by the Config
      */
