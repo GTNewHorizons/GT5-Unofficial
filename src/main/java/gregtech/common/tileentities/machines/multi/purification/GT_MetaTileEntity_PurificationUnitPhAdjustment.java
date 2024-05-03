@@ -81,7 +81,7 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
     private static final int CASING_INDEX_MIDDLE = getTextureIndex(GregTech_API.sBlockCasings8, 0);
     // Acidity tower -> input = NaOH (base)
     private static final int CASING_INDEX_ACID = getTextureIndex(GregTech_API.sBlockCasings4, 1);
-    // Alkaninity tower -> input = HCl (acid)
+    // Alkalinity tower -> input = HCl (acid)
     private static final int CASING_INDEX_BASE = getTextureIndex(GregTech_API.sBlockCasings8, 7);
 
     private float currentpHValue = 0.0f;
@@ -94,14 +94,14 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
 
     private static final float PH_MAX_DEVIATION = 0.05f;
 
-    private static final float PH_PER_ALKALINE_DUST = 0.01f;
+    public static final float PH_PER_ALKALINE_DUST = 0.01f;
 
-    private static final float PH_PER_10_ACID_LITER = -0.01f;
+    public static final float PH_PER_10_ACID_LITER = -0.01f;
 
     private GT_MetaTileEntity_Hatch_Input acidInputHatch;
     private GT_MetaTileEntity_Hatch_InputBus alkalineInputBus;
 
-    private ArrayList<GT_MetaTileEntity_pHSensor> sensorHatches = new ArrayList<>();
+    private final ArrayList<GT_MetaTileEntity_pHSensor> sensorHatches = new ArrayList<>();
 
     private static final IStructureDefinition<GT_MetaTileEntity_PurificationUnitPhAdjustment> STRUCTURE_DEFINITION = StructureDefinition
         .<GT_MetaTileEntity_PurificationUnitPhAdjustment>builder()

@@ -80,7 +80,7 @@ public class GT_MetaTileEntity_PurificationUnitCoagulator
         { "       ", "B     B", "BWWWWWB", "BCAAACB" },
         { "       ", "B     B", "BWWWWWB", "BCAAACB" },
         { "EE   EE", "BE   EB", "BEWWWEB", "BCCCCCB" },
-        { "EE   E ", "BBBBBBB", "BBBBBBB", "BBBBBBB" }
+        { "EE   EE", "BBBBBBB", "BBBBBBB", "BBBBBBB" }
         };
         // spotless:on
 
