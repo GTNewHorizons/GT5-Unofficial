@@ -96,8 +96,8 @@ public class GT_MetaTileEntity_PurificationPlant
     private static final IStructureDefinition<GT_MetaTileEntity_PurificationPlant> STRUCTURE_DEFINITION = StructureDefinition
         .<GT_MetaTileEntity_PurificationPlant>builder()
         .addShape(STRUCTURE_PIECE_MAIN, PurificationPlantStructureString.STRUCTURE_STRING)
-        // PLACEHOLDER: Advanced iridium machine casing
-        .addElement('A', ofBlock(GregTech_API.sBlockCasings8, 7))
+        // Sterile Water Plant Casing
+        .addElement('A', ofBlock(GregTech_API.sBlockCasings9, 4))
         // Industrial Water Plant Casing
         .addElement('B', ofBlock(GregTech_API.sBlockCasings9, 3))
         // Industrial strength concrete
@@ -188,7 +188,7 @@ public class GT_MetaTileEntity_PurificationPlant
                 EnumChatFormatting.GOLD,
                 false)
             .addCasingInfoExactlyColored(
-                "Advanced Iridium Plated Machine Casing",
+                "Sterile Water Plant Casing",
                 EnumChatFormatting.GRAY,
                 77,
                 EnumChatFormatting.GOLD,

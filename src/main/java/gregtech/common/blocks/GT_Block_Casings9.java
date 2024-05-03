@@ -16,7 +16,7 @@ import gregtech.api.util.GT_LanguageManager;
 public class GT_Block_Casings9 extends GT_Block_Casings_Abstract {
 
     public GT_Block_Casings9() {
-        super(GT_Item_Casings9.class, "gt.blockcasings9", GT_Material_Casings.INSTANCE, 4);
+        super(GT_Item_Casings9.class, "gt.blockcasings9", GT_Material_Casings.INSTANCE, 5);
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "PBI Pipe Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Advanced Filter Casing");
         GT_LanguageManager
@@ -24,11 +24,13 @@ public class GT_Block_Casings9 extends GT_Block_Casings_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Industrial Strength Concrete");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.tooltip", "An industrial flooring.");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Industrial Water Plant Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Sterile Water Plant Casing");
 
         ItemList.Casing_Pipe_Polybenzimidazole.set(new ItemStack(this, 1, 0));
         ItemList.Casing_Vent_T2.set(new ItemStack(this, 1, 1));
         ItemList.BlockIndustrialStrengthConcrete.set(new ItemStack(this, 1, 2));
         ItemList.BlockIndustrialWaterPlantCasing.set(new ItemStack(this, 1, 3));
+        ItemList.BlockSterileWaterPlantCasing.set(new ItemStack(this, 1, 4));
     }
 
     @Override
@@ -44,6 +46,7 @@ public class GT_Block_Casings9 extends GT_Block_Casings_Abstract {
             case 1 -> Textures.BlockIcons.MACHINE_CASING_VENT_T2.getIcon();
             case 2 -> Textures.BlockIcons.INDUSTRIAL_STRENGTH_CONCRETE.getIcon();
             case 3 -> Textures.BlockIcons.MACHINE_CASING_INDUSTRIAL_WATER_PLANT.getIcon();
+            case 4 -> Textures.BlockIcons.MACHINE_CASING_STERILE_WATER_PLANT.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
     }
