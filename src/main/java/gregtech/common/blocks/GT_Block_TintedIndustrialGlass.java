@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.oredict.OreDictionary;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -26,6 +27,10 @@ public class GT_Block_TintedIndustrialGlass extends GT_Block_Casings_Abstract {
         ItemList.GlassTintedIndustrialLightGray.set(new ItemStack(this, 1, 1));
         ItemList.GlassTintedIndustrialGray.set(new ItemStack(this, 1, 2));
         ItemList.GlassTintedIndustrialBlack.set(new ItemStack(this, 1, 3));
+
+        // Register tinted industrial glass as EV-Tier glass
+        OreDictionary.registerOre("blockGlassEV", this);
+
         this.opaque = false;
     }
 
