@@ -62,6 +62,7 @@ import gregtech.common.blocks.GT_Block_Casings9;
 import gregtech.common.blocks.GT_Block_Concretes;
 import gregtech.common.blocks.GT_Block_Drone;
 import gregtech.common.blocks.GT_Block_Glass1;
+import gregtech.common.blocks.GT_Block_Glass2;
 import gregtech.common.blocks.GT_Block_Granites;
 import gregtech.common.blocks.GT_Block_Machines;
 import gregtech.common.blocks.GT_Block_Metal;
@@ -544,6 +545,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GregTech_API.sBlockOres1 = new GT_Block_Ores();
         GregTech_API.sDroneRender = new GT_Block_Drone();
         GregTech_API.sBlockGlass1 = new GT_Block_Glass1();
+        GregTech_API.sBlockGlass2 = new GT_Block_Glass2();
         // meta ID order, DO NOT CHANGE ORDER
 
         GregTech_API.sBlockMetal1 = new GT_Block_Metal(

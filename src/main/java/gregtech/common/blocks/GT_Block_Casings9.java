@@ -16,7 +16,7 @@ import gregtech.api.util.GT_LanguageManager;
 public class GT_Block_Casings9 extends GT_Block_Casings_Abstract {
 
     public GT_Block_Casings9() {
-        super(GT_Item_Casings9.class, "gt.blockcasings9", GT_Material_Casings.INSTANCE, 15);
+        super(GT_Item_Casings9.class, "gt.blockcasings9", GT_Material_Casings.INSTANCE, 4);
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "PBI Pipe Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Advanced Filter Casing");
         GT_LanguageManager

@@ -2,40 +2,25 @@ package gregtech.common.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
-import gregtech.api.util.GT_LanguageManager;
 
-/**
- * The glass is split into separate files because they are registered as regular blocks, and a regular block can have
- * 16 subtypes at most.
- *
- * This class hosts various special types of tiered glass with not many tiers.
- */
-public class GT_Block_Glass1 extends GT_Block_Casings_Abstract {
+public class GT_Block_Glass2 extends GT_Block_Casings_Abstract {
 
-    public GT_Block_Glass1() {
-        super(GT_Item_Glass1.class, "gt.blockglass1", Material.glass, 1);
+    public GT_Block_Glass2() {
+        super(GT_Item_Glass1.class, "gt.blockglass2", Material.glass, 1);
         this.opaque = false;
-
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "pH Resistant Glass");
-        GT_LanguageManager
-            .addStringLocalization(getUnlocalizedName() + ".0.tooltip", "Able to resist extreme pH values");
-
-        ItemList.GlassPHResistant.set(new ItemStack(this, 1, 0));
     }
 
     @Override
     public int getTextureIndex(int aMeta) {
-        // Page 16, 0-16
-        return (16 << 7) | (aMeta);
+        // Page 16, 32-47
+        return (16 << 7) | (aMeta + 32);
     }
 
     @Override
@@ -63,7 +48,7 @@ public class GT_Block_Glass1 extends GT_Block_Casings_Abstract {
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int ordinalSide, int aMeta) {
         return switch (aMeta) {
-            case 0 -> Textures.BlockIcons.GLASS_PH_RESISTANT.getIcon();
+
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
     }
