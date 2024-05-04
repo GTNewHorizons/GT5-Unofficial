@@ -99,7 +99,7 @@ public class EssentiaHatch extends TileEntity implements IAspectContainer, IEsse
             if (te[i] != null) {
                 IEssentiaTransport pipe = (IEssentiaTransport) te[i];
                 if (!pipe.canOutputTo(ForgeDirection.VALID_DIRECTIONS[i])) {
-                    return;
+                    continue;
                 }
                 if ((pipe.getEssentiaType(ForgeDirection.VALID_DIRECTIONS[i].getOpposite()) != null)
                         && (pipe.getSuctionAmount(ForgeDirection.VALID_DIRECTIONS[i])
