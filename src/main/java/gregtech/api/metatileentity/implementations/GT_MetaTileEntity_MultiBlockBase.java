@@ -404,6 +404,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             if (--mUpdate == 0 || --mStartUpCheck == 0) {
                 checkStructure(true, aBaseMetaTileEntity);
             }
+
             if (mStartUpCheck < 0) {
                 if (mMachine) {
                     checkMaintenance();
