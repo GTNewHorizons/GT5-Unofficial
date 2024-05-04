@@ -6,8 +6,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
+import net.minecraft.block.Block;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.config.Configuration;
+
+import com.github.bartimaeusnek.crossmod.galacticgreg.GT_TileEntity_VoidMiner_Base;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -26,6 +29,7 @@ import gtPlusPlus.everglades.biome.Biome_Everglades;
 import gtPlusPlus.everglades.block.DarkWorldContentLoader;
 import gtPlusPlus.everglades.dimension.Dimension_Everglades;
 import gtPlusPlus.everglades.gen.gt.WorldGen_GT_Base;
+import gtPlusPlus.everglades.gen.gt.WorldGen_GT_Ore_Layer;
 import gtPlusPlus.everglades.gen.gt.WorldGen_Ores;
 import gtPlusPlus.preloader.CORE_Preloader;
 import gtPlusPlus.xmod.gregtech.HANDLER_GT;
@@ -77,6 +81,7 @@ public class GTplusplus_Everglades implements ActionListener {
         GameRegistry.registerWorldGenerator(new WorldGen_GT_Base(), Short.MAX_VALUE);
         getEvergladesBiome().load();
         Everglades_Dimension.load();
+        addToVoidMinerDrops();
     }
 
     public static synchronized void GenerateOreMaterials() {
@@ -149,6 +154,19 @@ public class GTplusplus_Everglades implements ActionListener {
             WorldGen_GT_Base.debugWorldGen = true;
         }
         DarkWorldContentLoader.run();
+    }
+
+    public void addToVoidMinerDrops() {
+        for (WorldGen_GT_Ore_Layer t : WorldGen_Ores.validOreveins.values()) {
+            addVMDrop(t.mPrimaryMeta, 0, t.mWeight);
+            addVMDrop(t.mSecondaryMeta, 0, t.mWeight);
+            addVMDrop(t.mBetweenMeta, 0, t.mWeight);
+            addVMDrop(t.mSporadicMeta, 0, t.mWeight);
+        }
+    }
+
+    public void addVMDrop(Block block, int meta, float weight) {
+        GT_TileEntity_VoidMiner_Base.addBlockToDimensionList(CORE.EVERGLADES_ID, block, meta, weight);
     }
 
     @EventHandler
