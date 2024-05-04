@@ -30,6 +30,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -67,13 +68,13 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_DrillerBase
 
 public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_DrillerBase {
 
-    private static ArrayListMultimap<Integer, Pair<Pair<Integer, Boolean>, Float>> extraDropsDimMap = ArrayListMultimap
+    private static final ArrayListMultimap<Integer, Pair<Pair<Integer, Block>, Float>> extraDropsDimMap = ArrayListMultimap
             .create();
-    private static FluidStack[] NOBLE_GASSES = { WerkstoffLoader.Neon.getFluidOrGas(1),
+    private static final FluidStack[] NOBLE_GASSES = { WerkstoffLoader.Neon.getFluidOrGas(1),
             WerkstoffLoader.Krypton.getFluidOrGas(1), WerkstoffLoader.Xenon.getFluidOrGas(1),
             WerkstoffLoader.Oganesson.getFluidOrGas(1) };
 
-    private Map<Pair<Integer, Boolean>, Float> dropmap = null;
+    private Map<Pair<Integer, Block>, Float> dropmap = null;
     private float totalWeight;
     private int multiplier = 1;
 
@@ -83,17 +84,22 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
 
     /**
      * Public method giving other mods the ability to add manually a material with an ore version into the external
-     * dromap for a specified dim id
+     * dropmap for a specified dim id
      *
-     * @param DimensionID the dim id targetted
+     * @param DimensionID the dim id targeted
      * @param Material    the material with an ore version
      * @param weight      the non normalised version of the given weight
      */
     public static void addMatierialToDimensionList(int DimensionID, ISubTagContainer Material, float weight) {
-        if (Material instanceof Materials) getExtraDropsDimMap()
-                .put(DimensionID, new Pair<>(new Pair<>(((Materials) Material).mMetaItemSubID, false), weight));
-        else if (Material instanceof Werkstoff) getExtraDropsDimMap()
-                .put(DimensionID, new Pair<>(new Pair<>((int) ((Werkstoff) Material).getmID(), true), weight));
+        if (Material instanceof Materials gtMaterial) {
+            addBlockToDimensionList(DimensionID, GregTech_API.sBlockOres1, gtMaterial.mMetaItemSubID, weight);
+        } else if (Material instanceof Werkstoff werkstoff) {
+            addBlockToDimensionList(DimensionID, WerkstoffLoader.BWOres, werkstoff.getmID(), weight);
+        }
+    }
+
+    public static void addBlockToDimensionList(int dimId, Block block, int meta, float weight) {
+        getExtraDropsDimMap().put(dimId, new Pair<>(new Pair<>(meta, block), weight));
     }
 
     // adding tellurium to OW to ensure a way to get it, as it's used in Magneto Resonatic Dust and Circuit Compound MK3
@@ -201,9 +207,9 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
     /**
      * getter for the external drop map
      *
-     * @return the extraDriosDimMap
+     * @return the extraDropsDimMap
      */
-    public static ArrayListMultimap<Integer, Pair<Pair<Integer, Boolean>, Float>> getExtraDropsDimMap() {
+    public static ArrayListMultimap<Integer, Pair<Pair<Integer, Block>, Float>> getExtraDropsDimMap() {
         return extraDropsDimMap;
     }
 
@@ -219,7 +225,7 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
             case 0 -> gt_worldgen -> gt_worldgen.mOverworld;
             case 1 -> gt_worldgen -> gt_worldgen.mEnd || gt_worldgen.mEndAsteroid;
             /*
-             * explicitely giving different dim numbers so it default to false in the config, keeping compat with the
+             * explicitly giving different dim numbers so it default to false in the config, keeping compat with the
              * current worldgen config
              */
             case 7 -> gt_worldgen -> gt_worldgen.isGenerationAllowed(world, 0, 7);
@@ -239,7 +245,7 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
             case 0 -> gt_worldgen -> gt_worldgen.mOverworld;
             case 1 -> gt_worldgen -> gt_worldgen.mEnd;
             /*
-             * explicitely giving different dim numbers so it default to false in the config, keeping compat with the
+             * explicitly giving different dim numbers so it default to false in the config, keeping compat with the
              * current worldgen config
              */
             case 7 -> gt_worldgen -> gt_worldgen.isGenerationAllowed(world, 0, 7);
@@ -255,6 +261,15 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
      * @param value the non normalised weight
      */
     private void addDrop(Pair<Integer, Boolean> key, float value) {
+        if (key.getValue()) {
+            addDrop(WerkstoffLoader.BWOres, key.getKey(), value);
+        } else {
+            addDrop(GregTech_API.sBlockOres1, key.getKey(), value);
+        }
+    }
+
+    private void addDrop(Block block, int meta, float value) {
+        Pair<Integer, Block> key = new Pair<>(meta, block);
         final ItemStack ore = this.getOreItemStack(key);
         if (ConfigHandler.voidMinerBlacklist.contains(
                 String.format(
@@ -331,11 +346,11 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
      *
      * @return the chosen key
      */
-    private Pair<Integer, Boolean> getOreDamage() {
+    private Pair<Integer, Block> getOreDamage() {
         float curentWeight = 0.f;
         while (true) {
             float randomnumber = XSTR.XSTR_INSTANCE.nextFloat() * this.totalWeight;
-            for (Map.Entry<Pair<Integer, Boolean>, Float> entry : this.dropmap.entrySet()) {
+            for (Map.Entry<Pair<Integer, Block>, Float> entry : this.dropmap.entrySet()) {
                 curentWeight += entry.getValue();
                 if (randomnumber < curentWeight) return entry.getKey();
             }
@@ -469,8 +484,10 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
      * @param id the specified dim id
      */
     private void handleExtraDrops(int id) {
-        Optional.ofNullable(getExtraDropsDimMap().get(id))
-                .ifPresent(e -> e.forEach(f -> this.addDrop(f.getKey(), f.getValue())));
+        Optional.ofNullable(getExtraDropsDimMap().get(id)).ifPresent(e -> e.forEach(f -> {
+            Pair<Integer, Block> key = f.getKey();
+            addDrop(key.getValue(), key.getKey(), f.getValue());
+        }));
     }
 
     /**
@@ -541,14 +558,11 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
      * Builds the ore item stack from the key specified in the dropmap
      *
      * @param stats the key of the dropmap
-     * @return an ItemStack corresponding to the target ore, with a stacksize corresponding to the mutiplier induced by
+     * @return an ItemStack corresponding to the target ore, with a stacksize corresponding to the multiplier induced by
      *         the gas used
      */
-    private ItemStack getOreItemStack(Pair<Integer, Boolean> stats) {
-        return new ItemStack(
-                stats.getValue() ? WerkstoffLoader.BWOres : GregTech_API.sBlockOres1,
-                this.multiplier,
-                stats.getKey());
+    private ItemStack getOreItemStack(Pair<Integer, Block> stats) {
+        return new ItemStack(stats.getValue(), this.multiplier, stats.getKey());
     }
 
     @Override
