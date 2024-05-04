@@ -583,4 +583,16 @@ class GT_OverclockCalculator_UnitTest {
         assertEquals(expectedDuration, calculator.getDuration(), messageDuration);
         assertEquals(VP[6], calculator.getConsumption(), messageEUt);
     }
+
+    @Test
+    void slightlyOverOneAmpRecipeWorksWithSingleEnergyHatch() {
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(614400)
+            .setEUt(TierEU.UV)
+            .setDuration(600)
+            .setAmperage(2)
+            .setAmperageOC(false)
+            .calculate();
+        assertEquals(600, calculator.getDuration(), messageDuration);
+        assertEquals(614400, calculator.getConsumption(), messageEUt);
+    }
 }
