@@ -67,6 +67,8 @@ public class GT_MetaTileEntity_PlasmaForge extends
 
     // 3600 seconds in an hour, 8 hours, 20 ticks in a second.
     private static final double max_efficiency_time_in_ticks = 3600d * 8d * 20d;
+    // Multiplier for the efficiency decay rate
+    private static final double efficiency_decay_rate = 100;
     private static final double maximum_discount = 0.5d;
 
     // Valid fuels which the discount will get applied to.
@@ -87,7 +89,6 @@ public class GT_MetaTileEntity_PlasmaForge extends
     private double discount = 1;
     private int mHeatingCapacity = 0;
     private long running_time = 0;
-    // Custom long EU per tick value given that mEUt is an int. Required to overclock beyond MAX voltage.
     private HeatingCoilLevel mCoilLevel;
 
     @SuppressWarnings("SpellCheckingInspection")
@@ -538,6 +539,11 @@ public class GT_MetaTileEntity_PlasmaForge extends
                     + "%"
                     + EnumChatFormatting.GRAY
                     + ". Supports overclocking beyond MAX voltage.")
+            .addInfo(
+                "When no recipe is running, fuel discount decays x" + EnumChatFormatting.RED
+                    + GT_Utility.formatNumbers(efficiency_decay_rate)
+                    + EnumChatFormatting.GRAY
+                    + " as fast as it builds up.")
             .addInfo(AuthorColen)
             .addSeparator()
             .beginStructureBlock(33, 24, 33, false)
@@ -671,10 +677,8 @@ public class GT_MetaTileEntity_PlasmaForge extends
     @NotNull
     public CheckRecipeResult checkProcessing() {
         CheckRecipeResult recipe_process = super.checkProcessing();
-        if (!recipe_process.wasSuccessful()) {
-            resetDiscount();
-        } else {
-            running_time += mMaxProgresstime;
+        if (recipe_process.wasSuccessful()) {
+            running_time = Math.min(running_time + mMaxProgresstime, (long) max_efficiency_time_in_ticks);
         }
         return recipe_process;
     }
@@ -710,12 +714,7 @@ public class GT_MetaTileEntity_PlasmaForge extends
         outside: for (int i = 0; i < recipe.mFluidInputs.length; i++) {
             for (FluidStack fuel : valid_fuels) {
                 if (tRecipe.mFluidInputs[i].isFluidEqual(fuel)) {
-                    // If running for max_efficiency_time_in_ticks then discount is at maximum.
-                    double time_percentage = running_time / max_efficiency_time_in_ticks;
-                    time_percentage = Math.min(time_percentage, 1.0d);
-                    // Multiplied by 0.5 because that is the maximum achievable discount
-                    discount = 1 - time_percentage * 0.5;
-                    discount = Math.max(maximum_discount, discount);
+                    recalculateDiscount();
                     tRecipe.mFluidInputs[i].amount = (int) Math.round(tRecipe.mFluidInputs[i].amount * discount);
                     break outside;
                 }
@@ -803,15 +802,6 @@ public class GT_MetaTileEntity_PlasmaForge extends
     }
 
     @Override
-    public boolean onRunningTick(ItemStack aStack) {
-        boolean result = super.onRunningTick(aStack);
-        if (!result) {
-            resetDiscount();
-        }
-        return result;
-    }
-
-    @Override
     public String[] getInfoData() {
 
         long storedEnergy = 0;
@@ -825,6 +815,9 @@ public class GT_MetaTileEntity_PlasmaForge extends
         }
         long voltage = getAverageInputVoltage();
         long amps = getMaxInputAmps();
+
+        // Calculate discount to make sure it is shown properly even when machine is off but decaying
+        recalculateDiscount();
 
         return new String[] { "------------ Critical Information ------------",
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
@@ -880,17 +873,17 @@ public class GT_MetaTileEntity_PlasmaForge extends
             "-----------------------------------------" };
     }
 
-    // Reset running time and discount.
-    public void resetDiscount() {
-        running_time = 0;
-        discount = 1;
+    private void recalculateDiscount() {
+        double time_percentage = running_time / max_efficiency_time_in_ticks;
+        time_percentage = Math.min(time_percentage, 1.0d);
+        // Multiplied by 0.5 because that is the maximum achievable discount
+        discount = 1 - time_percentage * 0.5;
+        discount = Math.max(maximum_discount, discount);
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide() && !aBaseMetaTileEntity.isAllowedToWork()) {
-            // Reset running time and discount.
-            resetDiscount();
             // If machine has stopped, stop chunkloading.
             GT_ChunkManager.releaseTicket((TileEntity) aBaseMetaTileEntity);
             isMultiChunkloaded = false;
@@ -933,6 +926,12 @@ public class GT_MetaTileEntity_PlasmaForge extends
         }
 
         super.onPostTick(aBaseMetaTileEntity, aTick);
+
+        if (aBaseMetaTileEntity.isServerSide()) {
+            if (mMaxProgresstime == 0) {
+                running_time = Math.max(0, running_time - (long) efficiency_decay_rate);
+            }
+        }
     }
 
     @Override
