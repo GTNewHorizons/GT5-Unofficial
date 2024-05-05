@@ -52,5 +52,23 @@
         "stream": false
       }
     ]
+  },
+  "machines.PurificationPhLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "PurificationPhLoop",
+        "stream": false
+      }
+    ]
+  },
+  "machines.PurificationCoagulationLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "PurificationCoagulationLoop",
+        "stream": false
+      }
+    ]
   }
 }

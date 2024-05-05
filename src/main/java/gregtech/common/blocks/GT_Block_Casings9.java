@@ -16,7 +16,7 @@ import gregtech.api.util.GT_LanguageManager;
 public class GT_Block_Casings9 extends GT_Block_Casings_Abstract {
 
     public GT_Block_Casings9() {
-        super(GT_Item_Casings9.class, "gt.blockcasings9", GT_Material_Casings.INSTANCE, 6);
+        super(GT_Item_Casings9.class, "gt.blockcasings9", GT_Material_Casings.INSTANCE, 9);
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "PBI Pipe Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Advanced Filter Casing");
         GT_LanguageManager
@@ -26,6 +26,10 @@ public class GT_Block_Casings9 extends GT_Block_Casings_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Industrial Water Plant Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Sterile Water Plant Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Clean Coagulation Casing");
+        GT_LanguageManager
+            .addStringLocalization(getUnlocalizedName() + ".6.name", "Naquadah Reinforced Water Plant Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Extreme Base Resistant Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Extreme Acid Resistant Casing");
 
         ItemList.Casing_Pipe_Polybenzimidazole.set(new ItemStack(this, 1, 0));
         ItemList.Casing_Vent_T2.set(new ItemStack(this, 1, 1));
@@ -33,6 +37,9 @@ public class GT_Block_Casings9 extends GT_Block_Casings_Abstract {
         ItemList.BlockIndustrialWaterPlantCasing.set(new ItemStack(this, 1, 3));
         ItemList.BlockSterileWaterPlantCasing.set(new ItemStack(this, 1, 4));
         ItemList.BlockCoagulationCasing.set(new ItemStack(this, 1, 5));
+        ItemList.BlockNaquadahReinforcedWaterPlantCasing.set(new ItemStack(this, 1, 6));
+        ItemList.BlockExtremeBaseResistantCasing.set(new ItemStack(this, 1, 7));
+        ItemList.BlockExtremeAcidResistantCasing.set(new ItemStack(this, 1, 8));
     }
 
     @Override
@@ -50,6 +57,9 @@ public class GT_Block_Casings9 extends GT_Block_Casings_Abstract {
             case 3 -> Textures.BlockIcons.MACHINE_CASING_INDUSTRIAL_WATER_PLANT.getIcon();
             case 4 -> Textures.BlockIcons.MACHINE_CASING_STERILE_WATER_PLANT.getIcon();
             case 5 -> Textures.BlockIcons.MACHINE_CASING_COAGULATION.getIcon();
+            case 6 -> Textures.BlockIcons.MACHINE_CASING_NAQUADAH_REINFORCED_WATER_PLANT.getIcon();
+            case 7 -> Textures.BlockIcons.MACHINE_CASING_EXTREME_BASE_RESISTANT.getIcon();
+            case 8 -> Textures.BlockIcons.MACHINE_CASING_EXTREME_ACID_RESISTANT.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
     }

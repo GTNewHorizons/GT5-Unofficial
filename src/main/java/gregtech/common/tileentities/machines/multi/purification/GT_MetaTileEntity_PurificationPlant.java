@@ -27,7 +27,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.collect.ImmutableList;
@@ -53,7 +52,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IHatchElement;
@@ -686,12 +684,5 @@ public class GT_MetaTileEntity_PurificationPlant
             }
             return null;
         }));
-    }
-
-    @Override
-    protected ResourceLocation getActivitySoundLoop() {
-        // Probably want to use this for the actual purification units and not the main controller,
-        // but I want to see it in game for now.
-        return SoundResource.GT_MACHINES_PURIFICATIONPLANT_LOOP.resourceLocation;
     }
 }

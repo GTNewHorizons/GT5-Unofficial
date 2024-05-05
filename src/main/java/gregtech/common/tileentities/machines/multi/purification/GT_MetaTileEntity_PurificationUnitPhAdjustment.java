@@ -12,7 +12,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICA
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
 import java.util.ArrayList;
@@ -24,6 +23,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -39,6 +39,8 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
@@ -76,11 +78,11 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
         { "E   E     E   E", "EAAAE     ECCCE", "EAGAE     ECHCE", "EAGAE     ECHCE", "EAGAE     ECHCE", "EAAAE     ECCCE" } };
     // spotless:on
 
-    private static final int CASING_INDEX_MIDDLE = getTextureIndex(GregTech_API.sBlockCasings8, 0);
+    private static final int CASING_INDEX_MIDDLE = getTextureIndex(GregTech_API.sBlockCasings9, 6);
     // Acidity tower -> input = NaOH (base)
-    private static final int CASING_INDEX_ACID = getTextureIndex(GregTech_API.sBlockCasings4, 1);
+    private static final int CASING_INDEX_ACID = getTextureIndex(GregTech_API.sBlockCasings9, 8);
     // Alkalinity tower -> input = HCl (acid)
-    private static final int CASING_INDEX_BASE = getTextureIndex(GregTech_API.sBlockCasings8, 7);
+    private static final int CASING_INDEX_BASE = getTextureIndex(GregTech_API.sBlockCasings9, 7);
 
     private float currentpHValue = 0.0f;
 
@@ -104,10 +106,12 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
     private static final IStructureDefinition<GT_MetaTileEntity_PurificationUnitPhAdjustment> STRUCTURE_DEFINITION = StructureDefinition
         .<GT_MetaTileEntity_PurificationUnitPhAdjustment>builder()
         .addShape(STRUCTURE_PIECE_MAIN, structure)
-        .addElement('A', ofBlock(GregTech_API.sBlockCasings4, 1))
-        // PLACEHOLDER: Chemically inert machine casing
-        .addElement('B', ofBlock(GregTech_API.sBlockCasings8, 0))
-        .addElement('C', ofBlock(GregTech_API.sBlockCasings8, 7))
+        // Extreme Acid Resistant Casing
+        .addElement('A', ofBlock(GregTech_API.sBlockCasings9, 8))
+        // Naquadah Reinforced Water Plant Casing
+        .addElement('B', ofBlock(GregTech_API.sBlockCasings9, 6))
+        // Extreme Base Resistant Casing
+        .addElement('C', ofBlock(GregTech_API.sBlockCasings9, 7))
         .addElement('E', ofFrame(Materials.NaquadahAlloy))
         // pH Resistant Glass
         .addElement('G', ofBlock(GregTech_API.sBlockGlass1, 0))
@@ -122,8 +126,8 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
                         .dot(1)
                         .casingIndex(CASING_INDEX_MIDDLE)
                         .build()),
-                // PLACEHOLDER: Chemically inert machine casing
-                ofBlock(GregTech_API.sBlockCasings8, 0)))
+                // Naquadah Reinforced Water Plant Casing
+                ofBlock(GregTech_API.sBlockCasings9, 6)))
         .addElement(
             'R',
             ofChain(
@@ -134,7 +138,8 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
                         .cacheHint(() -> "pH Sensor Hatch")
                         .casingIndex(CASING_INDEX_MIDDLE)
                         .build()),
-                ofBlock(GregTech_API.sBlockCasings8, 0)))
+                // Naquadah Reinforced Water Plant Casing
+                ofBlock(GregTech_API.sBlockCasings9, 6)))
         // Special I/O hatches
         .addElement(
             'X',
@@ -168,26 +173,28 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
-            if (aActive) return new ITexture[] { casingTexturePages[1][48], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE)
-                .extFacing()
-                .build(),
+            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MIDDLE),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE)
+                    .extFacing()
+                    .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { casingTexturePages[1][48], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR)
-                .extFacing()
-                .build(),
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MIDDLE),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR)
+                    .extFacing()
+                    .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
         }
-        return new ITexture[] { casingTexturePages[1][48] };
+        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MIDDLE) };
     }
 
     public GT_MetaTileEntity_PurificationUnitPhAdjustment(int aID, String aName, String aNameRegional) {
@@ -377,7 +384,43 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
                     + ".")
             .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(7, 4, 7, false)
+            .addCasingInfoExactlyColored(
+                "Naquadah Reinforced Water Plant Casing",
+                EnumChatFormatting.GRAY,
+                15,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "pH Resistant Glass",
+                EnumChatFormatting.GRAY,
+                18,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "Naquadah Alloy Frame Box",
+                EnumChatFormatting.GRAY,
+                48,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "Extreme Base Resistant Casing",
+                EnumChatFormatting.GRAY,
+                67,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "Extreme Acid Resistant Casing",
+                EnumChatFormatting.GRAY,
+                67,
+                EnumChatFormatting.GOLD,
+                false)
             .addController("Front center")
+            .addOtherStructurePart("Input Hatch (Water)", EnumChatFormatting.GOLD + "1+", 1)
+            .addOtherStructurePart("Output Hatch", EnumChatFormatting.GOLD + "1", 1)
+            .addOtherStructurePart("pH Sensor Hatch", EnumChatFormatting.GOLD + "2", 2)
+            .addOtherStructurePart("Input Bus (Sodium Hydroxide)", EnumChatFormatting.GOLD + "1", 3)
+            .addOtherStructurePart("Input Hatch (Hydrochloric Acid)", EnumChatFormatting.GOLD + "1", 4)
+            .addStructureInfo("Use the StructureLib Hologram Projector to build the structure.")
             .toolTipFinisher("GregTech");
         return tt;
     }
@@ -502,6 +545,11 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         this.currentpHValue = aNBT.getFloat("mCurrentpH");
+    }
+
+    @Override
+    protected ResourceLocation getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_PURIFICATION_PH_LOOP.resourceLocation;
     }
 
     private enum SpecialHatchElement implements IHatchElement<GT_MetaTileEntity_PurificationUnitPhAdjustment> {
