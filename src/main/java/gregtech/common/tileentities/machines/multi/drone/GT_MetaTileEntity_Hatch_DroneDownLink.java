@@ -7,6 +7,7 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -225,10 +226,11 @@ public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hat
             final TileEntity tTileEntity;
             final boolean isMachineBlock;
             tTileEntity = world.getTileEntity(aCoords.posX, aCoords.posY, aCoords.posZ);
+            Block block=world.getBlock(aCoords.posX, aCoords.posY, aCoords.posZ);
             isMachineBlock = GregTech_API.isMachineBlock(
-                world.getBlock(aCoords.posX, aCoords.posY, aCoords.posZ),
-                world.getBlockMetadata(aCoords.posX, aCoords.posY, aCoords.posZ));
-
+                block,
+                world.getBlockMetadata(aCoords.posX, aCoords.posY, aCoords.posZ)) ||
+                (block==GregTech_API.sBlockReinforced && world.getBlockMetadata(aCoords.posX, aCoords.posY, aCoords.posZ)==2);
             // See if the block itself is MultiBlock, also the one we need.
             if (tTileEntity instanceof IGregTechTileEntity te
                 && te.getMetaTileEntity() instanceof GT_MetaTileEntity_MultiBlockBase mte)
