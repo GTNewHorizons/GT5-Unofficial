@@ -1,7 +1,7 @@
 // Add your dependencies here
 
 dependencies {
-    api('com.github.GTNewHorizons:GT5-Unofficial:5.09.46.00:dev')
-    api('com.github.GTNewHorizons:bartworks:0.9.21:dev')
+    api('com.github.GTNewHorizons:GT5-Unofficial:5.09.46.05:dev')
+    api('com.github.GTNewHorizons:bartworks:0.10.0:dev')
     api('com.github.GTNewHorizons:ThaumicTinkerer:2.9.4:dev')
 }
