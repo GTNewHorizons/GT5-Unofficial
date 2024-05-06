@@ -912,14 +912,14 @@ public class GTMTE_LapotronicSuperCapacitor extends
 
         final ArrayList<String> ll = new ArrayList<>();
         ll.add(EnumChatFormatting.YELLOW + "Operational Data:" + EnumChatFormatting.RESET);
-        ll.add("EU Stored: " + nf.format(stored) + "EU");
-        ll.add("EU Stored: " + toStandardForm(stored) + "EU");
+        ll.add("EU Stored: " + nf.format(stored) + " EU");
+        ll.add("EU Stored: " + toStandardForm(stored) + " EU");
         ll.add("Used Capacity: " + toPercentageFrom(stored, capacity));
-        ll.add("Total Capacity: " + nf.format(capacity) + "EU");
-        ll.add("Total Capacity: " + toStandardForm(capacity) + "EU");
-        ll.add("Passive Loss: " + nf.format(passiveDischargeAmount) + "EU/t");
-        ll.add("EU IN: " + GT_Utility.formatNumbers(inputLastTick) + "EU/t");
-        ll.add("EU OUT: " + GT_Utility.formatNumbers(outputLastTick) + "EU/t");
+        ll.add("Total Capacity: " + nf.format(capacity) + " EU");
+        ll.add("Total Capacity: " + toStandardForm(capacity) + " EU");
+        ll.add("Passive Loss: " + nf.format(passiveDischargeAmount) + " EU/t");
+        ll.add("EU IN: " + GT_Utility.formatNumbers(inputLastTick) + " EU/t");
+        ll.add("EU OUT: " + GT_Utility.formatNumbers(outputLastTick) + " EU/t");
         ll.add("Avg EU IN: " + nf.format(avgIn) + " (last " + secInterval + " seconds)");
         ll.add("Avg EU OUT: " + nf.format(avgOut) + " (last " + secInterval + " seconds)");
 
@@ -968,12 +968,12 @@ public class GTMTE_LapotronicSuperCapacitor extends
                         + getUMVCapacitorCount());
         ll.add(
                 "Total wireless EU: " + EnumChatFormatting.RED
-                        + nf.format(WirelessNetworkManager.getUserEU(global_energy_user_uuid)));
+                        + nf.format(WirelessNetworkManager.getUserEU(global_energy_user_uuid))
+                        + " EU");
         ll.add(
                 "Total wireless EU: " + EnumChatFormatting.RED
-                        + toStandardForm(WirelessNetworkManager.getUserEU(global_energy_user_uuid)));
-
-        ll.add("---------------------------------------------");
+                        + toStandardForm(WirelessNetworkManager.getUserEU(global_energy_user_uuid))
+                        + " EU");
 
         final String[] a = new String[ll.size()];
         return ll.toArray(a);

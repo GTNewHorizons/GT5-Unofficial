@@ -68,6 +68,9 @@ public class Util {
 
     /* If the number is less than 1, we round by the 6, otherwise to 2 */
     public static String toPercentageFrom(BigInteger value, BigInteger maxValue) {
+        if (BigInteger.ZERO.equals(maxValue)) {
+            return "0.00%";
+        }
         BigDecimal result = new BigDecimal(value).setScale(6, RoundingMode.HALF_UP)
                 .divide(new BigDecimal(maxValue), RoundingMode.HALF_UP);
         if (result.compareTo(Threshold_1) < 0) {
