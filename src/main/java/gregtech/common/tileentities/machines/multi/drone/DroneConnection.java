@@ -16,6 +16,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.GT_Util;
+import gregtech.api.util.GT_Utility;
 
 public class DroneConnection {
 
@@ -83,8 +84,24 @@ public class DroneConnection {
         return customName;
     }
 
+    public float getDistance() {
+        return centreCoord.getDistanceSquaredToChunkCoordinates(machineCoord);
+    }
+
     public void setCustomName(String name) {
         customName = name;
+    }
+
+    public boolean isMachineShutdown() {
+        return machine != null && machine.shouldDisplayShutDownReason()
+            && !machine.getBaseMetaTileEntity()
+                .isActive()
+            && GT_Utility.isStringValid(
+                machine.getBaseMetaTileEntity()
+                    .getLastShutDownReason()
+                    .getDisplayString())
+            && machine.getBaseMetaTileEntity()
+                .wasShutdown();
     }
 
     public NBTTagCompound transConnectionToNBT() {

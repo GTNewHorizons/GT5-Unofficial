@@ -9,12 +9,16 @@ import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import java.io.IOException;
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
@@ -98,7 +102,8 @@ public class GT_MetaTileEntity_DroneCentre extends
     private int buttonID;
     private String searchFilter = "";
     private boolean useRender = true;
-    private final List<DroneConnection> connectionList = new ArrayList<>();
+    private String sort = "distance";
+    private List<DroneConnection> connectionList = new ArrayList<>();
     public HashMap<String, String> tempNameList = new HashMap<>();
     // Save centre by dimID
     private static final HashMultimap<Integer, GT_MetaTileEntity_DroneCentre> droneMap = HashMultimap.create();
@@ -282,6 +287,7 @@ public class GT_MetaTileEntity_DroneCentre extends
         super.loadNBTData(aNBT);
         droneLevel = aNBT.getInteger("drone");
         useRender = aNBT.getBoolean("useRender");
+        sort = aNBT.getString("sort");
         NBTTagCompound nameList = aNBT.getCompoundTag("conList");
         for (String s : nameList.func_150296_c()) {
             tempNameList.put(s, nameList.getString(s));
@@ -293,6 +299,7 @@ public class GT_MetaTileEntity_DroneCentre extends
         super.saveNBTData(aNBT);
         aNBT.setInteger("drone", droneLevel);
         aNBT.setBoolean("useRender", useRender);
+        aNBT.setString("sort", sort);
         NBTTagCompound conList = new NBTTagCompound();
         for (DroneConnection con : connectionList) {
             if (!Objects.equals(con.customName, con.machine.getLocalName()))
@@ -611,8 +618,60 @@ public class GT_MetaTileEntity_DroneCentre extends
             .setFocusOnGuiOpen(false)
             .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD_LIGHT_GRAY.withOffset(-1, -1, 2, 2))
             .addTooltip(StatCollector.translateToLocal("GT5U.gui.text.drone_search"))
-            .setPos(10, 30)
-            .setSize(240, 16));
+            .setPos(30, 30)
+            .setSize(220, 16))
+            // Sort button
+            .widget(new ButtonWidget() {
+
+                @Override
+                public ClickResult onClick(int buttonId, boolean doubleClick) {
+                    ClickResult result = super.onClick(buttonId, doubleClick);
+                    syncToServer(2, buffer -> {});
+                    return result;
+                }
+
+                @Override
+                public void readOnServer(int id, PacketBuffer buf) {
+                    switch (id) {
+                        case 1 -> super.readOnServer(id, buf);
+                        case 2 -> {
+                            getContext().closeWindow(MACHINE_LIST_WINDOW_ID);
+                            getContext().openSyncedWindow(MACHINE_LIST_WINDOW_ID);
+                        }
+                    }
+                }
+            }.setOnClick((clickData, widget) -> {
+                switch (sort) {
+                    case "name" -> sort = "distance";
+                    case "distance" -> sort = "error";
+                    case "error" -> sort = "name";
+                }
+            })
+                .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_" + sort))
+                .setBackground(
+                    () -> new IDrawable[] { GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_SORTING_MODE })
+                .setPos(10, 30)
+                .setSize(16, 16))
+            .widget(new FakeSyncWidget.StringSyncer(() -> sort, var1 -> sort = var1));
+
+        // Sort first
+        switch (sort) {
+            case "name" -> connectionList = connectionList.stream()
+                .sorted(
+                    (o1, o2) -> Collator.getInstance(Locale.UK)
+                        .compare(o1.getCustomName(), o2.getCustomName()))
+                .collect(Collectors.toList());
+            case "distance" -> connectionList = connectionList.stream()
+                .sorted(Comparator.comparing(DroneConnection::getDistance))
+                .collect(Collectors.toList());
+            case "error" -> connectionList = connectionList.stream()
+                .sorted(
+                    Comparator.comparing(DroneConnection::isMachineShutdown)
+                        .reversed()
+                        .thenComparing(DroneConnection::getDistance))
+                .collect(Collectors.toList());
+        }
+
         Scrollable MachineContainer = new Scrollable().setVerticalScroll();
         int posY = 0;
         for (int i = 0; i < connectionList.size(); i++) {
