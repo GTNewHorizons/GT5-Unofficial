@@ -136,17 +136,6 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_TooltipMultiBlockB
     }
 
     @Override
-    public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer, float aX,
-            float aY, float aZ) {
-        if (wrenchingSide.offsetY != 0) return false;
-        if (getBaseMetaTileEntity().isValidFacing(wrenchingSide)) {
-            getBaseMetaTileEntity().setFrontFacing(wrenchingSide);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (this.getBaseMetaTileEntity().isServerSide()) {
             ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
