@@ -1,6 +1,9 @@
 package gregtech.loaders.postload.chains;
 
+import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
+import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.purificationPlantGrade1Recipes;
 import static gregtech.api.recipe.RecipeMaps.purificationPlantGrade2Recipes;
 import static gregtech.api.recipe.RecipeMaps.purificationPlantGrade3Recipes;
@@ -10,6 +13,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
@@ -63,7 +67,7 @@ public class GT_PurifiedWaterRecipes {
             .eut(TierEU.RECIPE_EV)
             .addTo(distillationTowerRecipes);
 
-        // Grade 3 - pH adjustment
+        // Grade 4 - pH adjustment
         GT_Values.RA.stdBuilder()
             .fluidInputs(Materials.Grade2PurifiedWater.getFluid(1000L))
             .fluidOutputs(Materials.Grade3PurifiedWater.getFluid(900L))
@@ -72,5 +76,30 @@ public class GT_PurifiedWaterRecipes {
             .eut(TierEU.RECIPE_ZPM)
             .metadata(BASE_CHANCE, 0.0f)
             .addTo(purificationPlantGrade3Recipes);
+
+        // Activated Carbon Line
+        GT_Values.RA.stdBuilder()
+            .itemInputs(Materials.Carbon.getDust(1))
+            .fluidInputs(Materials.PhosphoricAcid.getFluid(1000L))
+            .itemOutputs(Materials.PreActivatedCarbon.getDust(1))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_LuV)
+            .addTo(multiblockChemicalReactorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(Materials.PreActivatedCarbon.getDust(1))
+            .itemOutputs(Materials.DirtyActivatedCarbon.getDust(1))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .specialValue((int) HeatingCoilLevel.EV.getHeat())
+            .addTo(blastFurnaceRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(Materials.DirtyActivatedCarbon.getDust(1))
+            .fluidInputs(Materials.Water.getFluid(1000L))
+            .itemOutputs(Materials.ActivatedCarbon.getDust(1))
+            .fluidOutputs(Materials.PhosphoricAcid.getFluid(1000L))
+            .noOptimize()
+            .duration(2 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
+            .addTo(chemicalBathRecipes);
     }
 }
