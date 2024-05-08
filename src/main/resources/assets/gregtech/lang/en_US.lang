@@ -222,7 +222,7 @@ gt.recipe.largeboilerfakefuels=Large Boiler
 gt.recipe.nanoforge=Nano Forge
 gt.recipe.pcbfactory=PCB Factory
 gt.recipe.ic2nuke=Nuclear Fission
-gt.recipe.purificationplantgrade1=Water Purifying - Sifting
+gt.recipe.purificationplantgrade1=Clarifier
 gt.recipe.purificationplantgrade2=Water Purifying - Coagulation
 gt.recipe.purificationplantgrade3=Water Purifying - pH Adjustment
 

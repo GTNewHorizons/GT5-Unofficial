@@ -53,8 +53,9 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.GT_Utility;
 
-public class GT_MetaTileEntity_PurificationUnitSifter extends
-    GT_MetaTileEntity_PurificationUnitBase<GT_MetaTileEntity_PurificationUnitSifter> implements ISurvivalConstructable {
+public class GT_MetaTileEntity_PurificationUnitClarifier
+    extends GT_MetaTileEntity_PurificationUnitBase<GT_MetaTileEntity_PurificationUnitClarifier>
+    implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String STRUCTURE_PIECE_MAIN_SURVIVAL = "main_survival";
@@ -85,8 +86,8 @@ public class GT_MetaTileEntity_PurificationUnitSifter extends
             { "           ", "   AAAAA   ", "   AHAHA   ", "   AAAAA   " } };
     // spotless:on
 
-    private static final IStructureDefinition<GT_MetaTileEntity_PurificationUnitSifter> STRUCTURE_DEFINITION = StructureDefinition
-        .<GT_MetaTileEntity_PurificationUnitSifter>builder()
+    private static final IStructureDefinition<GT_MetaTileEntity_PurificationUnitClarifier> STRUCTURE_DEFINITION = StructureDefinition
+        .<GT_MetaTileEntity_PurificationUnitClarifier>builder()
         .addShape(STRUCTURE_PIECE_MAIN, structure)
         .addShape(
             STRUCTURE_PIECE_MAIN_SURVIVAL,
@@ -101,7 +102,7 @@ public class GT_MetaTileEntity_PurificationUnitSifter extends
             'H',
             ofChain(
                 lazy(
-                    t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitSifter>buildHatchAdder()
+                    t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitClarifier>buildHatchAdder()
                         .atLeastList(t.getAllowedHatches())
                         .casingIndex(CASING_TEXTURE_INDEX)
                         .dot(1)
@@ -119,11 +120,11 @@ public class GT_MetaTileEntity_PurificationUnitSifter extends
         .addElement('F', ofBlock(GregTech_API.sBlockCasings3, 11))
         .build();
 
-    public GT_MetaTileEntity_PurificationUnitSifter(int aID, String aName, String aNameRegional) {
+    public GT_MetaTileEntity_PurificationUnitClarifier(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public GT_MetaTileEntity_PurificationUnitSifter(String aName) {
+    public GT_MetaTileEntity_PurificationUnitClarifier(String aName) {
         super(aName);
     }
 
@@ -187,7 +188,7 @@ public class GT_MetaTileEntity_PurificationUnitSifter extends
     }
 
     @Override
-    public IStructureDefinition<GT_MetaTileEntity_PurificationUnitSifter> getStructureDefinition() {
+    public IStructureDefinition<GT_MetaTileEntity_PurificationUnitClarifier> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
@@ -208,7 +209,7 @@ public class GT_MetaTileEntity_PurificationUnitSifter extends
                     + EnumChatFormatting.WHITE
                     + GT_Utility.formatNumbers(getWaterTier())
                     + EnumChatFormatting.RESET)
-            .addInfo("Controller block for the Sifter Purification Unit.")
+            .addInfo("Controller block for the Clarifier Purification Unit.")
             .addInfo("Must be linked to a Purification Plant to work.")
             .addSeparator()
             .addInfo("Filters out large particles in the water such as")
@@ -293,10 +294,10 @@ public class GT_MetaTileEntity_PurificationUnitSifter extends
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_PurificationUnitSifter(this.mName);
+        return new GT_MetaTileEntity_PurificationUnitClarifier(this.mName);
     }
 
-    private List<IHatchElement<? super GT_MetaTileEntity_PurificationUnitSifter>> getAllowedHatches() {
+    private List<IHatchElement<? super GT_MetaTileEntity_PurificationUnitClarifier>> getAllowedHatches() {
         return ImmutableList.of(InputBus, InputHatch, OutputBus, OutputHatch);
     }
 
