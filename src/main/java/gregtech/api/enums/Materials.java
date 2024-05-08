@@ -928,7 +928,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials DirtyActivatedCarbon = new MaterialBuilder(565, TextureSet.SET_DULL, "Dirty Activated Carbon")
         .addDustItems()
         .setRGB(110, 110, 110)
-        .setName("DirtyActivatedCarbon")
+        .setName("carbonactivateddirty") // don't change this to the more sensible name or a centrifuge recipe appears
         .setOreValue(0)
         .setMaterialList(new MaterialStack(Carbon, 1), new MaterialStack(PhosphoricAcid, 1))
         .constructMaterial()
