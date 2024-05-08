@@ -24,7 +24,7 @@ public class GT_PurifiedWaterRecipes {
     public static void run() {
         final int duration = GT_MetaTileEntity_PurificationPlant.CYCLE_TIME_TICKS;
 
-        // Grade 1 - Sifter
+        // Grade 1 - Clarifier
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Component_Filter.get(1))
             .fluidInputs(GT_ModHandler.getDistilledWater(1000L))
@@ -36,7 +36,7 @@ public class GT_PurifiedWaterRecipes {
             .metadata(BASE_CHANCE, 70.0f)
             .addTo(purificationPlantGrade1Recipes);
 
-        // Grade 2 - Coagulation.
+        // Grade 2 - Flocculation.
         GT_Values.RA.stdBuilder()
             .fluidInputs(Materials.Grade1PurifiedWater.getFluid(1000L))
             .fluidOutputs(Materials.Grade2PurifiedWater.getFluid(900L))

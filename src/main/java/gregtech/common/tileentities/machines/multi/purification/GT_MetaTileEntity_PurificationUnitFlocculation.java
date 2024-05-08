@@ -55,8 +55,8 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.GT_Utility;
 
-public class GT_MetaTileEntity_PurificationUnitCoagulator
-    extends GT_MetaTileEntity_PurificationUnitBase<GT_MetaTileEntity_PurificationUnitCoagulator>
+public class GT_MetaTileEntity_PurificationUnitFlocculation
+    extends GT_MetaTileEntity_PurificationUnitBase<GT_MetaTileEntity_PurificationUnitFlocculation>
     implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -91,8 +91,8 @@ public class GT_MetaTileEntity_PurificationUnitCoagulator
     private static final int BOTTOM_CASING_INDEX = getTextureIndex(GregTech_API.sBlockCasings9, 4);
     private static final int MAIN_CASING_INDEX = getTextureIndex(GregTech_API.sBlockCasings9, 5);
 
-    private static final IStructureDefinition<GT_MetaTileEntity_PurificationUnitCoagulator> STRUCTURE_DEFINITION = StructureDefinition
-        .<GT_MetaTileEntity_PurificationUnitCoagulator>builder()
+    private static final IStructureDefinition<GT_MetaTileEntity_PurificationUnitFlocculation> STRUCTURE_DEFINITION = StructureDefinition
+        .<GT_MetaTileEntity_PurificationUnitFlocculation>builder()
         .addShape(STRUCTURE_PIECE_MAIN, structure)
         .addShape(
             STRUCTURE_PIECE_MAIN_SURVIVAL,
@@ -108,12 +108,12 @@ public class GT_MetaTileEntity_PurificationUnitCoagulator
             'B',
             ofChain(
                 lazy(
-                    t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitCoagulator>buildHatchAdder()
+                    t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitFlocculation>buildHatchAdder()
                         .atLeastList(t.getAllowedHatches())
                         .casingIndex(MAIN_CASING_INDEX)
                         .dot(1)
                         .build()),
-                // Clean Coagulation Casing
+                // Clean Flocculation Casing
                 ofBlock(GregTech_API.sBlockCasings9, 5)))
         // Sterile Water Plant Casing
         .addElement('C', ofBlock(GregTech_API.sBlockCasings9, 4))
@@ -125,21 +125,21 @@ public class GT_MetaTileEntity_PurificationUnitCoagulator
         .addElement('G', ofBlockAnyMeta(GregTech_API.sBlockTintedGlass))
         .build();
 
-    List<IHatchElement<? super GT_MetaTileEntity_PurificationUnitCoagulator>> getAllowedHatches() {
+    List<IHatchElement<? super GT_MetaTileEntity_PurificationUnitFlocculation>> getAllowedHatches() {
         return ImmutableList.of(InputBus, InputHatch, OutputBus, OutputHatch);
     }
 
-    public GT_MetaTileEntity_PurificationUnitCoagulator(int aID, String aName, String aNameRegional) {
+    public GT_MetaTileEntity_PurificationUnitFlocculation(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public GT_MetaTileEntity_PurificationUnitCoagulator(String aName) {
+    public GT_MetaTileEntity_PurificationUnitFlocculation(String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_PurificationUnitCoagulator(this.mName);
+        return new GT_MetaTileEntity_PurificationUnitFlocculation(this.mName);
     }
 
     @Override
@@ -202,7 +202,7 @@ public class GT_MetaTileEntity_PurificationUnitCoagulator
     }
 
     @Override
-    public IStructureDefinition<GT_MetaTileEntity_PurificationUnitCoagulator> getStructureDefinition() {
+    public IStructureDefinition<GT_MetaTileEntity_PurificationUnitFlocculation> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
@@ -239,7 +239,7 @@ public class GT_MetaTileEntity_PurificationUnitCoagulator
                     + EnumChatFormatting.WHITE
                     + GT_Utility.formatNumbers(getWaterTier())
                     + EnumChatFormatting.RESET)
-            .addInfo("Controller block for the Coagulator Purification Unit.")
+            .addInfo("Controller block for the Flocculation Purification Unit.")
             .addInfo("Must be linked to a Purification Plant to work.")
             .addSeparator()
             .addInfo("Filters out smaller dusts, algae and microplastics by mixing in chemicals.")
@@ -285,7 +285,7 @@ public class GT_MetaTileEntity_PurificationUnitCoagulator
             .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(7, 4, 7, false)
             .addCasingInfoRangeColored(
-                "Clean Coagulation Casing",
+                "Clean Flocculation Casing",
                 EnumChatFormatting.GRAY,
                 60,
                 65,

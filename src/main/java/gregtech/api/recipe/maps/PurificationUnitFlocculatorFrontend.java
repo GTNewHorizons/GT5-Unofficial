@@ -18,9 +18,9 @@ import gregtech.common.gui.modularui.UIHelper;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class PurificationUnitCoagulatorFrontend extends RecipeMapFrontend {
+public class PurificationUnitFlocculatorFrontend extends RecipeMapFrontend {
 
-    public PurificationUnitCoagulatorFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
+    public PurificationUnitFlocculatorFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
         NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(uiPropertiesBuilder, neiPropertiesBuilder);
     }

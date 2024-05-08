@@ -316,7 +316,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.PUMP_LV;
 import static gregtech.api.enums.MetaTileEntityIDs.PUMP_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_PLANT_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_CLARIFIER;
-import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_COAGULATOR;
+import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_FLOCCULATOR;
 import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_PH_ADJUSTMENT;
 import static gregtech.api.enums.MetaTileEntityIDs.PYROLYSE_OVEN_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.QUADRUPLE_INPUT_HATCHES_EV;
@@ -588,7 +588,7 @@ import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_Drone
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_Hatch_DroneDownLink;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationPlant;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitClarifier;
-import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitCoagulator;
+import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitFlocculation;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitPhAdjustment;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_pHSensor;
 import gregtech.common.tileentities.machines.steam.GT_MetaTileEntity_AlloySmelter_Bronze;
@@ -862,11 +862,11 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 PURIFICATION_UNIT_CLARIFIER.ID,
                 "multimachine.purificationunitclarifier",
                 "Clarifier Purification Unit").getStackForm(1L));
-        ItemList.Machine_Multi_PurificationUnitCoagulator.set(
-            new GT_MetaTileEntity_PurificationUnitCoagulator(
-                PURIFICATION_UNIT_COAGULATOR.ID,
-                "multimachine.purificationunitcoagulator",
-                "Coagulator Purification Unit").getStackForm(1L));
+        ItemList.Machine_Multi_PurificationUnitFlocculator.set(
+            new GT_MetaTileEntity_PurificationUnitFlocculation(
+                PURIFICATION_UNIT_FLOCCULATOR.ID,
+                "multimachine.purificationunitflocculator",
+                "Flocculation Purification Unit").getStackForm(1L));
         ItemList.Machine_Multi_PurificationUnitPhAdjustment.set(
             new GT_MetaTileEntity_PurificationUnitPhAdjustment(
                 PURIFICATION_UNIT_PH_ADJUSTMENT.ID,

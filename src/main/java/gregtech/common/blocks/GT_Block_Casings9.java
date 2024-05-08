@@ -25,7 +25,7 @@ public class GT_Block_Casings9 extends GT_Block_Casings_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.tooltip", "An industrial flooring.");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Industrial Water Plant Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Sterile Water Plant Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Clean Coagulation Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Clean Flocculation Casing");
         GT_LanguageManager
             .addStringLocalization(getUnlocalizedName() + ".6.name", "Naquadah Reinforced Water Plant Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Extreme Base Resistant Casing");
@@ -36,7 +36,7 @@ public class GT_Block_Casings9 extends GT_Block_Casings_Abstract {
         ItemList.BlockIndustrialStrengthConcrete.set(new ItemStack(this, 1, 2));
         ItemList.BlockIndustrialWaterPlantCasing.set(new ItemStack(this, 1, 3));
         ItemList.BlockSterileWaterPlantCasing.set(new ItemStack(this, 1, 4));
-        ItemList.BlockCoagulationCasing.set(new ItemStack(this, 1, 5));
+        ItemList.BlockFlocculationCasing.set(new ItemStack(this, 1, 5));
         ItemList.BlockNaquadahReinforcedWaterPlantCasing.set(new ItemStack(this, 1, 6));
         ItemList.BlockExtremeBaseResistantCasing.set(new ItemStack(this, 1, 7));
         ItemList.BlockExtremeAcidResistantCasing.set(new ItemStack(this, 1, 8));
