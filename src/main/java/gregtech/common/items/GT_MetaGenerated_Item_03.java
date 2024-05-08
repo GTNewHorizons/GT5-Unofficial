@@ -931,6 +931,13 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_METRICS_TRANSMITTER)),
             new GT_Cover_Metrics_Transmitter(TextureFactory.of(OVERLAY_METRICS_TRANSMITTER)));
 
+        ItemList.ActivatedCarbonFilterMesh.set(
+            addItem(
+                233,
+                "Activated Carbon Filter Mesh",
+                "The most granular filter you could possibly make.",
+                SubTag.NO_UNIFICATION));
+
         ItemList.Optical_Cpu_Containment_Housing.set(addItem(727, "Optical CPU Containment Housing", "CPU Housing", o));
         ItemList.Optically_Perfected_CPU.set(addItem(726, "Optically Perfected CPU", "Perfected CPU!", o));
         ItemList.Optically_Compatible_Memory.set(addItem(725, "Optically Compatible Memory", "Its in the name!", o));

@@ -1,5 +1,6 @@
 package gregtech.loaders.postload.chains;
 
+import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
@@ -16,9 +17,11 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationPlant;
 
 public class GT_PurifiedWaterRecipes {
@@ -30,7 +33,7 @@ public class GT_PurifiedWaterRecipes {
 
         // Grade 1 - Clarifier
         GT_Values.RA.stdBuilder()
-            .itemInputs(ItemList.Component_Filter.get(1))
+            .itemInputs(ItemList.ActivatedCarbonFilterMesh.get(1))
             .fluidInputs(GT_ModHandler.getDistilledWater(1000L))
             .fluidOutputs(Materials.Grade1PurifiedWater.getFluid(900L))
             .itemOutputs(new ItemStack(Items.stick, 1), Materials.Stone.getDust(1), Materials.Gold.getNuggets(1))
@@ -101,5 +104,13 @@ public class GT_PurifiedWaterRecipes {
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(chemicalBathRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.ActivatedCarbon.getDust(64),
+                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Zinc, 16))
+            .itemOutputs(ItemList.ActivatedCarbonFilterMesh.get(1))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
+            .addTo(assemblerRecipes);
     }
 }
