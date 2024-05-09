@@ -88,7 +88,6 @@ public class GT_MetaTileEntity_PurificationUnitFlocculation
         };
         // spotless:on
 
-    private static final int BOTTOM_CASING_INDEX = getTextureIndex(GregTech_API.sBlockCasings9, 4);
     private static final int MAIN_CASING_INDEX = getTextureIndex(GregTech_API.sBlockCasings9, 5);
 
     private static final IStructureDefinition<GT_MetaTileEntity_PurificationUnitFlocculation> STRUCTURE_DEFINITION = StructureDefinition
@@ -115,7 +114,7 @@ public class GT_MetaTileEntity_PurificationUnitFlocculation
                         .build()),
                 // Clean Flocculation Casing
                 ofBlock(GregTech_API.sBlockCasings9, 5)))
-        // Sterile Water Plant Casing
+        // Water Plant Pipe Casing
         .addElement('C', ofBlock(GregTech_API.sBlockCasings9, 4))
         // Industrial Water Plant Casing
         .addElement('D', ofBlock(GregTech_API.sBlockCasings9, 3))
@@ -292,7 +291,7 @@ public class GT_MetaTileEntity_PurificationUnitFlocculation
                 EnumChatFormatting.GOLD,
                 false)
             .addCasingInfoExactlyColored(
-                "Sterile Water Plant Casing",
+                "Water Plant Pipe Casing",
                 EnumChatFormatting.GRAY,
                 16,
                 EnumChatFormatting.GOLD,

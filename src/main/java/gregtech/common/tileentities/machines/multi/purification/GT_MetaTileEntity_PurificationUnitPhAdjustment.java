@@ -71,18 +71,15 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
 
     private static final String[][] structure = new String[][] {
         // spotless:off
-        { "E   E     E   E", "EAAAE     ECCCE", "EAGAE     ECHCE", "EAGAE     ECHCE", "EAGAE     ECHCE", "EAAAE     ECCCE" },
-        { " AAA       CCC ", "A   A     C   C", "A   A     C   C", "A   A     C   C", "A   ABB~BBC   C", "AAAAA     CCCCC" },
-        { " AXA       CYC ", "A   A     C   C", "G   A     C   H", "G   ABBBBBC   H", "G             H", "AAAAABRBRBCCCCC" },
-        { " AAA       CCC ", "A   A     C   C", "A   A     C   C", "A   A     C   C", "A   AIIIIIC   C", "AAAAA     CCCCC" },
-        { "E   E     E   E", "EAAAE     ECCCE", "EAGAE     ECHCE", "EAGAE     ECHCE", "EAGAE     ECHCE", "EAAAE     ECCCE" } };
+        { "E   E     E   E", "EAAAE     EAAAE", "EAGAE     EAHAE", "EAGAE     EAHAE", "EAGAE     EAHAE", "EAAAE     EAAAE" },
+        { " AAA       AAA ", "A   A     A   A", "A   A     A   A", "A   A     A   A", "A   ABB~BBA   A", "AAAAA     AAAAA" },
+        { " AXA       AYA ", "A   A     A   A", "G   A     A   H", "G   ABBBBBA   H", "G             H", "AAAAABRBRBAAAAA" },
+        { " AAA       AAA ", "A   A     A   A", "A   A     A   A", "A   A     A   A", "A   AIIIIIA   A", "AAAAA     AAAAA" },
+        { "E   E     E   E", "EAAAE     EAAAE", "EAGAE     EAHAE", "EAGAE     EAHAE", "EAGAE     EAHAE", "EAAAE     EAAAE" } };
     // spotless:on
 
     private static final int CASING_INDEX_MIDDLE = getTextureIndex(GregTech_API.sBlockCasings9, 6);
-    // Acidity tower -> input = NaOH (base)
-    private static final int CASING_INDEX_ACID = getTextureIndex(GregTech_API.sBlockCasings9, 8);
-    // Alkalinity tower -> input = HCl (acid)
-    private static final int CASING_INDEX_BASE = getTextureIndex(GregTech_API.sBlockCasings9, 7);
+    private static final int CASING_INDEX_TOWER = getTextureIndex(GregTech_API.sBlockCasings9, 7);
 
     private float currentpHValue = 0.0f;
 
@@ -106,12 +103,10 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
     private static final IStructureDefinition<GT_MetaTileEntity_PurificationUnitPhAdjustment> STRUCTURE_DEFINITION = StructureDefinition
         .<GT_MetaTileEntity_PurificationUnitPhAdjustment>builder()
         .addShape(STRUCTURE_PIECE_MAIN, structure)
-        // Extreme Acid Resistant Casing
-        .addElement('A', ofBlock(GregTech_API.sBlockCasings9, 8))
+        // Extreme Corrosion Resistant Casing
+        .addElement('A', ofBlock(GregTech_API.sBlockCasings9, 7))
         // Naquadah Reinforced Water Plant Casing
         .addElement('B', ofBlock(GregTech_API.sBlockCasings9, 6))
-        // Extreme Base Resistant Casing
-        .addElement('C', ofBlock(GregTech_API.sBlockCasings9, 7))
         .addElement('E', ofFrame(Materials.NaquadahAlloy))
         // pH Resistant Glass
         .addElement('G', ofBlock(GregTech_API.sBlockGlass1, 0))
@@ -149,7 +144,7 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
                     .dot(3)
                     .adder(GT_MetaTileEntity_PurificationUnitPhAdjustment::addAlkalineBusToMachineList)
                     .cacheHint(() -> "Input Bus (Sodium Hydroxide)")
-                    .casingIndex(CASING_INDEX_ACID)
+                    .casingIndex(CASING_INDEX_TOWER)
                     .allowOnly(ForgeDirection.UP)
                     .build()))
         .addElement(
@@ -160,7 +155,7 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
                     .dot(4)
                     .adder(GT_MetaTileEntity_PurificationUnitPhAdjustment::addAcidHatchToMachineList)
                     .cacheHint(() -> "Input Hatch (Hydrochloric Acid)")
-                    .casingIndex(CASING_INDEX_BASE)
+                    .casingIndex(CASING_INDEX_TOWER)
                     .allowOnly(ForgeDirection.UP)
                     .build()))
         .build();
@@ -403,15 +398,9 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
                 EnumChatFormatting.GOLD,
                 false)
             .addCasingInfoExactlyColored(
-                "Extreme Base Resistant Casing",
+                "Extreme Corrosion Resistant Casing",
                 EnumChatFormatting.GRAY,
-                67,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Extreme Acid Resistant Casing",
-                EnumChatFormatting.GRAY,
-                67,
+                67 * 2,
                 EnumChatFormatting.GOLD,
                 false)
             .addController("Front center")
