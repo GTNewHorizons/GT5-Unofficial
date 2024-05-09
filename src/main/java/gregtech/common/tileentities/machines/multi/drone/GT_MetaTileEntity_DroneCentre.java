@@ -183,7 +183,7 @@ public class GT_MetaTileEntity_DroneCentre extends
             .addInfo("Monitors multiblock machines in range.")
             .addInfo("Replace maintenance hatch on other multi with drone downlink module.")
             .addInfo("Provides maintenance, power control, monitoring and etc.")
-            .addInfo("Range is determined by drone tier: T1-32, T2-128, T3-512")
+            .addInfo("Range is determined by drone tier: T1-128, T2-512, T3-4096")
             .addInfo("Place drones in input bus; only one needed to operate.")
             .addInfo("Automatically upgrade based on the drone level in the input bus.")
             .addInfo("There is a chance per second that the drone will crash.")
@@ -397,9 +397,9 @@ public class GT_MetaTileEntity_DroneCentre extends
 
     public int getRange() {
         return switch (droneLevel) {
-            case 1 -> 32;
-            case 2 -> 128;
-            case 3 -> 512;
+            case 1 -> 128;
+            case 2 -> 512;
+            case 3 -> 4096;
             default -> 0;
         };
     }
