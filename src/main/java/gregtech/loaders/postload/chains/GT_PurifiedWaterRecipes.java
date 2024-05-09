@@ -4,6 +4,7 @@ import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
+import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.purificationPlantGrade1Recipes;
 import static gregtech.api.recipe.RecipeMaps.purificationPlantGrade2Recipes;
@@ -112,5 +113,22 @@ public class GT_PurifiedWaterRecipes {
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
+
+        // Polyaluminium Chloride Solution
+        GT_Values.RA.stdBuilder()
+            .itemInputs(Materials.Aluminium.getDust(1), Materials.Aluminiumhydroxide.getDust(1))
+            .fluidInputs(Materials.Chlorine.getGas(3000L))
+            .itemOutputs(Materials.PolyAluminiumChloride.getDust(5))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .noOptimize()
+            .addTo(multiblockChemicalReactorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(Materials.PolyAluminiumChloride.getDust(1))
+            .fluidInputs(Materials.Water.getFluid(1000L))
+            .fluidOutputs(Materials.PolyAluminiumChlorideSolution.getFluid(1000L))
+            .duration(1 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(mixerRecipes);
     }
 }
