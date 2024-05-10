@@ -227,7 +227,8 @@ public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hat
             final boolean isMachineBlock;
             tTileEntity = world.getTileEntity(aCoords.posX, aCoords.posY, aCoords.posZ);
             Block block = world.getBlock(aCoords.posX, aCoords.posY, aCoords.posZ);
-            // Plascrete block isn't registered as machineBlock, therefore we have to check it manually so that drone can work with cleanroom.
+            // Plascrete block isn't registered as machineBlock, therefore we have to check it manually so that drone
+            // can work with cleanroom.
             // Todo: loading cleanroom's config for other blocks
             isMachineBlock = GregTech_API
                 .isMachineBlock(block, world.getBlockMetadata(aCoords.posX, aCoords.posY, aCoords.posZ))
