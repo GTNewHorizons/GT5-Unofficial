@@ -16,7 +16,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -302,7 +301,7 @@ public class GT_MetaTileEntity_DroneCentre extends
         aNBT.setString("sort", sort);
         NBTTagCompound conList = new NBTTagCompound();
         for (DroneConnection con : connectionList) {
-            if (!Objects.equals(con.customName, con.machine.getLocalName()))
+            if (!con.customName.equals(con.machine.getLocalName()))
                 conList.setString(con.machineCoord.toString(), con.customName);
         }
         aNBT.setTag("conList", conList);

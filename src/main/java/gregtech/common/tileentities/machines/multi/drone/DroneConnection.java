@@ -13,7 +13,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
@@ -106,13 +105,12 @@ public class DroneConnection {
 
     public NBTTagCompound transConnectionToNBT() {
         NBTTagCompound aNBT = new NBTTagCompound();
-        if (!this.isValid()) return aNBT;
-        aNBT.setTag("machine", transGT_BaseMachineToNBT(machine));
-        aNBT.setTag("centre", transGT_BaseMachineToNBT(centre));
+        aNBT.setTag("machine", transCoordsToNBT(machineCoord));
+        aNBT.setTag("centre", transCoordsToNBT(centreCoord));
         aNBT.setTag("item", machineItem.writeToNBT(new NBTTagCompound()));
         aNBT.setInteger(
             "worldID",
-            machine.getBaseMetaTileEntity()
+            centre.getBaseMetaTileEntity()
                 .getWorld().provider.dimensionId);
         aNBT.setString("name", getCustomName());
         return aNBT;
@@ -125,12 +123,11 @@ public class DroneConnection {
         return (GT_MetaTileEntity_MultiBlockBase) ((IGregTechTileEntity) te).getMetaTileEntity();
     }
 
-    private NBTTagCompound transGT_BaseMachineToNBT(GT_MetaTileEntity_MultiBlockBase machine) {
-        IHasWorldObjectAndCoords baseCoord = machine.getBaseMetaTileEntity();
+    private NBTTagCompound transCoordsToNBT(ChunkCoordinates coord) {
         NBTTagCompound tag = new NBTTagCompound();
-        tag.setInteger("x", baseCoord.getXCoord());
-        tag.setInteger("y", baseCoord.getYCoord());
-        tag.setInteger("z", baseCoord.getZCoord());
+        tag.setInteger("x", coord.posX);
+        tag.setInteger("y", coord.posY);
+        tag.setInteger("z", coord.posZ);
         return tag;
     }
 
