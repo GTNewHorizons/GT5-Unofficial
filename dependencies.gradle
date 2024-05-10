@@ -45,10 +45,10 @@ dependencies {
 
     implementation("com.github.GTNewHorizons:Avaritia:1.49:dev")
 
-    compileOnlyApi('com.github.GTNewHorizons:Angelica:1.0.0-alpha44:api') { transitive = false }
+    compileOnlyApi('com.github.GTNewHorizons:Angelica:1.0.0-alpha45:api') { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:AppleCore:3.3.0:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:BuildCraft:7.1.39:dev") { transitive = false }
-    compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.7.4:dev") { transitive = false }
+    compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.8.0:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:ProjectRed:4.9.5-GTNH:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:ForestryMC:4.9.0:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:Railcraft:9.15.8:dev") { transitive = false }
@@ -62,7 +62,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:Nuclear-Control:2.6.2:dev") { transitive = false }
     compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Hodgepodge:2.5.0:dev") { transitive = false }
-    compileOnly('com.github.GTNewHorizons:Botania:1.10.12-GTNH:dev') { transitive = false }
+    compileOnly('com.github.GTNewHorizons:Botania:1.11.0-GTNH:dev') { transitive = false }
     compileOnly('com.github.GTNewHorizons:HoloInventory:2.4.7-GTNH:dev') { transitive = false }
     compileOnly('curse.maven:minefactory-reloaded-66672:2366150') { transitive = false }
 
