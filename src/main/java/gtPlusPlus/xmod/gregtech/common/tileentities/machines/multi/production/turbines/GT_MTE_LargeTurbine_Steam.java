@@ -19,6 +19,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 @SuppressWarnings("deprecation")
 public class GT_MTE_LargeTurbine_Steam extends GregtechMetaTileEntity_LargerTurbineBase {
@@ -199,11 +200,11 @@ public class GT_MTE_LargeTurbine_Steam extends GregtechMetaTileEntity_LargerTurb
 
     @Override
     protected ITexture getTextureFrontFace() {
-        return new GT_RenderedTexture(gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_ST5);
+        return new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Controller_Advanced);
     }
 
     @Override
     protected ITexture getTextureFrontFaceActive() {
-        return new GT_RenderedTexture(gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_ST_ACTIVE5);
+        return new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active);
     }
 }

@@ -36,7 +36,6 @@ import gtPlusPlus.core.tileentities.ModTileEntities;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.player.PlayerCache;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.preloader.CORE_Preloader;
 import gtPlusPlus.xmod.gregtech.api.util.SpecialBehaviourTooltipHandler;
@@ -101,8 +100,6 @@ public class CommonProxy {
     }
 
     public void postInit(final FMLPostInitializationEvent e) {
-        Logger.INFO("Cleaning up, doing postInit.");
-        PlayerCache.initCache();
 
         // Make Burnables burnable
         if (!CORE.burnables.isEmpty()) {

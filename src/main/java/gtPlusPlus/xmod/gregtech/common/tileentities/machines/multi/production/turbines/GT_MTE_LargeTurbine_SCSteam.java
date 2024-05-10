@@ -13,6 +13,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GT_MTE_LargeTurbine_SCSteam extends GregtechMetaTileEntity_LargerTurbineBase {
 
@@ -115,11 +116,11 @@ public class GT_MTE_LargeTurbine_SCSteam extends GregtechMetaTileEntity_LargerTu
 
     @Override
     protected ITexture getTextureFrontFace() {
-        return TextureFactory.of(gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TI5);
+        return TextureFactory.of(TexturesGtBlock.Overlay_Machine_Controller_Advanced);
     }
 
     @Override
     protected ITexture getTextureFrontFaceActive() {
-        return TextureFactory.of(gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TI_ACTIVE5);
+        return TextureFactory.of(TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active);
     }
 }
