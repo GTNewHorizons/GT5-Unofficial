@@ -16,7 +16,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -102,6 +101,7 @@ public class GT_MetaTileEntity_DroneCentre extends
     private int buttonID;
     private String searchFilter = "";
     private boolean useRender = true;
+    private boolean showLocalizedName = false;
     private String sort = "distance";
     private List<DroneConnection> connectionList = new ArrayList<>();
     public HashMap<String, String> tempNameList = new HashMap<>();
@@ -183,7 +183,7 @@ public class GT_MetaTileEntity_DroneCentre extends
             .addInfo("Monitors multiblock machines in range.")
             .addInfo("Replace maintenance hatch on other multi with drone downlink module.")
             .addInfo("Provides maintenance, power control, monitoring and etc.")
-            .addInfo("Range is determined by drone tier: T1-32, T2-128, T3-512")
+            .addInfo("Range is determined by drone tier: T1-128, T2-512, T3-4096")
             .addInfo("Place drones in input bus; only one needed to operate.")
             .addInfo("Automatically upgrade based on the drone level in the input bus.")
             .addInfo("There is a chance per second that the drone will crash.")
@@ -302,7 +302,7 @@ public class GT_MetaTileEntity_DroneCentre extends
         aNBT.setString("sort", sort);
         NBTTagCompound conList = new NBTTagCompound();
         for (DroneConnection con : connectionList) {
-            if (!Objects.equals(con.customName, con.machine.getLocalName()))
+            if (!con.customName.equals(con.machine.getLocalName()))
                 conList.setString(con.machineCoord.toString(), con.customName);
         }
         aNBT.setTag("conList", conList);
@@ -397,9 +397,9 @@ public class GT_MetaTileEntity_DroneCentre extends
 
     public int getRange() {
         return switch (droneLevel) {
-            case 1 -> 32;
-            case 2 -> 128;
-            case 3 -> 512;
+            case 1 -> 128;
+            case 2 -> 512;
+            case 3 -> 4096;
             default -> 0;
         };
     }
@@ -618,8 +618,8 @@ public class GT_MetaTileEntity_DroneCentre extends
             .setFocusOnGuiOpen(false)
             .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD_LIGHT_GRAY.withOffset(-1, -1, 2, 2))
             .addTooltip(StatCollector.translateToLocal("GT5U.gui.text.drone_search"))
-            .setPos(30, 30)
-            .setSize(220, 16))
+            .setPos(50, 30)
+            .setSize(200, 16))
             // Sort button
             .widget(new ButtonWidget() {
 
@@ -652,14 +652,41 @@ public class GT_MetaTileEntity_DroneCentre extends
                     () -> new IDrawable[] { GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_SORTING_MODE })
                 .setPos(10, 30)
                 .setSize(16, 16))
-            .widget(new FakeSyncWidget.StringSyncer(() -> sort, var1 -> sort = var1));
+            .widget(new FakeSyncWidget.StringSyncer(() -> sort, var1 -> sort = var1))
+            // Localized Button
+            .widget(new ButtonWidget() {
 
+                @Override
+                public ClickResult onClick(int buttonId, boolean doubleClick) {
+                    ClickResult result = super.onClick(buttonId, doubleClick);
+                    syncToServer(2, buffer -> {});
+                    return result;
+                }
+
+                @Override
+                public void readOnServer(int id, PacketBuffer buf) {
+                    switch (id) {
+                        case 1 -> super.readOnServer(id, buf);
+                        case 2 -> {
+                            getContext().closeWindow(MACHINE_LIST_WINDOW_ID);
+                            getContext().openSyncedWindow(MACHINE_LIST_WINDOW_ID);
+                        }
+                    }
+                }
+            }.setOnClick((clickData, widget) -> showLocalizedName = !showLocalizedName)
+                .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_showLocalName"))
+                .setBackground(
+                    () -> new IDrawable[] {
+                        showLocalizedName ? GT_UITextures.BUTTON_STANDARD_PRESSED : GT_UITextures.BUTTON_STANDARD,
+                        GT_UITextures.OVERLAY_BUTTON_CYCLIC })
+                .setPos(30, 30)
+                .setSize(16, 16));
         // Sort first
         switch (sort) {
             case "name" -> connectionList = connectionList.stream()
                 .sorted(
                     (o1, o2) -> Collator.getInstance(Locale.UK)
-                        .compare(o1.getCustomName(), o2.getCustomName()))
+                        .compare(o1.getCustomName(false), o2.getCustomName(false)))
                 .collect(Collectors.toList());
             case "distance" -> connectionList = connectionList.stream()
                 .sorted(Comparator.comparing(DroneConnection::getDistance))
@@ -800,7 +827,7 @@ public class GT_MetaTileEntity_DroneCentre extends
             row.widget(
                 new TextWidget(
                     connectionList.get(i)
-                        .getCustomName()).setTextAlignment(Alignment.CenterLeft)
+                        .getCustomName(showLocalizedName)).setTextAlignment(Alignment.CenterLeft)
                             .setPos(0, 4));
             MachineContainer.widget(
                 row.setAlignment(MainAxisAlignment.SPACE_BETWEEN)
@@ -837,7 +864,7 @@ public class GT_MetaTileEntity_DroneCentre extends
                 }
             }.setGetter(
                 () -> connectionList.get(buttonID)
-                    .getCustomName())
+                    .getCustomName(false))
                 .setSetter(
                     var -> connectionList.get(buttonID)
                         .setCustomName(var))

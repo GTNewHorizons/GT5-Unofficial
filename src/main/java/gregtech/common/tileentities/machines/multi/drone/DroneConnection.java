@@ -13,14 +13,15 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
 
 public class DroneConnection {
 
     String customName;
+    String unlocalizedName;
     GT_MetaTileEntity_MultiBlockBase machine;
     ItemStack machineItem;
     ChunkCoordinates machineCoord;
@@ -38,6 +39,7 @@ public class DroneConnection {
             .getCoords();
         this.world = centre.getBaseMetaTileEntity()
             .getWorld();
+        unlocalizedName = machine.mName;
         customName = Optional.ofNullable(centre.tempNameList.remove(machineCoord.toString()))
             .orElse(machine.getLocalName());
     }
@@ -62,6 +64,7 @@ public class DroneConnection {
             centreTag.getInteger("z"));
         this.centre = (GT_MetaTileEntity_DroneCentre) getLoadedGT_BaseMachineAt(centreCoord, world, true);
         this.customName = aNBT.getString("name");
+        this.unlocalizedName = aNBT.getString("unlocalizedName");
     }
 
     public GT_MetaTileEntity_MultiBlockBase getMachine() {
@@ -80,7 +83,8 @@ public class DroneConnection {
         return isValid();
     }
 
-    public String getCustomName() {
+    public String getCustomName(boolean localized) {
+        if (localized) return GT_LanguageManager.getTranslation("gt.blockmachines." + unlocalizedName + ".name");
         return customName;
     }
 
@@ -106,15 +110,15 @@ public class DroneConnection {
 
     public NBTTagCompound transConnectionToNBT() {
         NBTTagCompound aNBT = new NBTTagCompound();
-        if (!this.isValid()) return aNBT;
-        aNBT.setTag("machine", transGT_BaseMachineToNBT(machine));
-        aNBT.setTag("centre", transGT_BaseMachineToNBT(centre));
+        aNBT.setTag("machine", transCoordsToNBT(machineCoord));
+        aNBT.setTag("centre", transCoordsToNBT(centreCoord));
         aNBT.setTag("item", machineItem.writeToNBT(new NBTTagCompound()));
         aNBT.setInteger(
             "worldID",
-            machine.getBaseMetaTileEntity()
+            centre.getBaseMetaTileEntity()
                 .getWorld().provider.dimensionId);
-        aNBT.setString("name", getCustomName());
+        aNBT.setString("name", getCustomName(false));
+        aNBT.setString("unlocalizedName", unlocalizedName);
         return aNBT;
     }
 
@@ -125,12 +129,11 @@ public class DroneConnection {
         return (GT_MetaTileEntity_MultiBlockBase) ((IGregTechTileEntity) te).getMetaTileEntity();
     }
 
-    private NBTTagCompound transGT_BaseMachineToNBT(GT_MetaTileEntity_MultiBlockBase machine) {
-        IHasWorldObjectAndCoords baseCoord = machine.getBaseMetaTileEntity();
+    private NBTTagCompound transCoordsToNBT(ChunkCoordinates coord) {
         NBTTagCompound tag = new NBTTagCompound();
-        tag.setInteger("x", baseCoord.getXCoord());
-        tag.setInteger("y", baseCoord.getYCoord());
-        tag.setInteger("z", baseCoord.getZCoord());
+        tag.setInteger("x", coord.posX);
+        tag.setInteger("y", coord.posY);
+        tag.setInteger("z", coord.posZ);
         return tag;
     }
 

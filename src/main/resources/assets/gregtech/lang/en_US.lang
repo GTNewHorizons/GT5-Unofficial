@@ -435,6 +435,7 @@ GT5U.gui.button.drone_poweroff_all=Turn OFF ALL machines, no matter how remote
 GT5U.gui.button.drone_name=Sort by §3name
 GT5U.gui.button.drone_distance=Sort by §3distance
 GT5U.gui.button.drone_error=Sort by §3shutdown status
+GT5U.gui.button.drone_showLocalName=Show localized name
 GT5U.gui.text.success=§aProcessing recipe
 GT5U.gui.text.generating=§aGenerating power
 GT5U.gui.text.no_recipe=§7No valid recipe found
