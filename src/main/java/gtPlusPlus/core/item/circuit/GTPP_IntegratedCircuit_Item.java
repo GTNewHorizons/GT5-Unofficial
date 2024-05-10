@@ -37,6 +37,7 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.modularui.uifactory.SelectItemUIFactory;
+import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class GTPP_IntegratedCircuit_Item extends Item implements INetworkUpdatableItem {
@@ -44,7 +45,7 @@ public class GTPP_IntegratedCircuit_Item extends Item implements INetworkUpdatab
     private final List<ItemStack> ALL_VARIANTS = new ArrayList<>();
 
     private final String iconLocation;
-    protected IIcon base;
+    protected final IIcon[] iconDamage = new IIcon[25];
 
     public GTPP_IntegratedCircuit_Item(String unlocalizedName, String iconLocation) {
         this.setHasSubtypes(true);
@@ -111,27 +112,14 @@ public class GTPP_IntegratedCircuit_Item extends Item implements INetworkUpdatab
 
     @Override
     public void registerIcons(final IIconRegister u) {
-        this.base = u.registerIcon(GTPlusPlus.ID + ":" + iconLocation);
+        for (int i = 0; i < iconDamage.length; i++) {
+            this.iconDamage[i] = u.registerIcon(GTPlusPlus.ID + ":" + iconLocation + "/" + i);
+        }
     }
 
     @Override
-    public IIcon getIconFromDamageForRenderPass(final int damage, final int pass) {
-        return this.base;
-    }
-
-    @Override
-    public IIcon getIconFromDamage(int damage) {
-        return this.base;
-    }
-
-    @Override
-    public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
-        return this.base;
-    }
-
-    @Override
-    public IIcon getIcon(ItemStack stack, int pass) {
-        return this.base;
+    public IIcon getIconFromDamage(int meta) {
+        return this.iconDamage[MathUtils.balance(meta, 0, 24)];
     }
 
     @Override
