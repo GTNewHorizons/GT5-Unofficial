@@ -88,7 +88,7 @@ public class DroneConnection {
         return customName;
     }
 
-    public float getDistance() {
+    public float getDistanceSquared() {
         return centreCoord.getDistanceSquaredToChunkCoordinates(machineCoord);
     }
 

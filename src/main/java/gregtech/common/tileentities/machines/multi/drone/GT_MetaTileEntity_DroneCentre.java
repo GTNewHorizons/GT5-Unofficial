@@ -689,13 +689,13 @@ public class GT_MetaTileEntity_DroneCentre extends
                         .compare(o1.getCustomName(false), o2.getCustomName(false)))
                 .collect(Collectors.toList());
             case "distance" -> connectionList = connectionList.stream()
-                .sorted(Comparator.comparing(DroneConnection::getDistance))
+                .sorted(Comparator.comparing(DroneConnection::getDistanceSquared))
                 .collect(Collectors.toList());
             case "error" -> connectionList = connectionList.stream()
                 .sorted(
                     Comparator.comparing(DroneConnection::isMachineShutdown)
                         .reversed()
-                        .thenComparing(DroneConnection::getDistance))
+                        .thenComparing(DroneConnection::getDistanceSquared))
                 .collect(Collectors.toList());
         }
 
