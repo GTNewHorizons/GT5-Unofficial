@@ -291,7 +291,7 @@ public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hat
                     .setPos(0, 5)
                     .setSize(150, 8))
             .widget(
-                new TextFieldWidget().setGetter(() -> connection == null ? "" : connection.getCustomName())
+                new TextFieldWidget().setGetter(() -> connection == null ? "" : connection.getCustomName(false))
                     .setSetter(var -> { if (connection != null) connection.setCustomName(var); })
                     .setTextAlignment(Alignment.CenterLeft)
                     .setTextColor(Color.WHITE.dark(1))
