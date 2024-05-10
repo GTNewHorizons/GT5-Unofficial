@@ -981,9 +981,9 @@ public class WerkstoffMaterialPool implements Runnable {
             offsetID5 + 3,
             TextureSet.SET_FLUID);
 
-    public static final Werkstoff ImpureSamariumOxalate = new Werkstoff(
+    public static final Werkstoff SamariumOxalate = new Werkstoff(
             new short[] { 248, 248, 180 },
-            "Impure Samarium Oxalate",
+            "Samarium(III) Oxalate",
             subscriptNumbers("?Sm2(C2O4)3"),
             new Werkstoff.Stats(),
             Werkstoff.Types.MIXTURE,
@@ -991,10 +991,10 @@ public class WerkstoffMaterialPool implements Runnable {
             offsetID5 + 4,
             TextureSet.SET_DULL);
 
-    public static final Werkstoff ImpureSamariumChloride = new Werkstoff(
+    public static final Werkstoff SamariumChloride = new Werkstoff(
             new short[] { 248, 248, 120 },
-            "Impure Samarium Chloride",
-            subscriptNumbers("?SmCl3"),
+            "Samarium(III)-Chloride",
+            subscriptNumbers("SmCI3"),
             new Werkstoff.Stats(),
             Werkstoff.Types.MIXTURE,
             new Werkstoff.GenerationFeatures().disable().onlyDust().addMolten(),

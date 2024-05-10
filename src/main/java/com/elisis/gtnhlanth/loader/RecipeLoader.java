@@ -2093,15 +2093,15 @@ public class RecipeLoader {
                         DilutedSamariumRareEarthSolution.getFluidOrGas(2000),
                         MyMaterial.oxalate.getFluidOrGas(3000))
                 .itemOutputs(
-                        ImpureSamariumOxalate.get(OrePrefixes.dust, 5),
+                        SamariumOxalate.get(OrePrefixes.dust, 5),
                         DephosphatedSamariumConcentrate.get(OrePrefixes.dust, 3))
                 .fluidOutputs(MuddySamariumRareEarthSolution.getFluidOrGas(50)).outputChances(10000, 1000)
                 .eut(TierEU.RECIPE_EV).duration(10 * SECONDS).addTo(multiblockChemicalReactorRecipes);
 
         // 5 ImpureSamariumOxalate + 6B HCL = 8 ImpureSamariumChloride + 6B CO
-        GT_Values.RA.stdBuilder().itemInputs(ImpureSamariumOxalate.get(OrePrefixes.dust, 5))
+        GT_Values.RA.stdBuilder().itemInputs(SamariumOxalate.get(OrePrefixes.dust, 5))
                 .fluidInputs(Materials.HydrochloricAcid.getFluid(6000))
-                .itemOutputs(ImpureSamariumChloride.get(OrePrefixes.dust, 8))
+                .itemOutputs(SamariumChloride.get(OrePrefixes.dust, 8))
                 .fluidOutputs(Materials.CarbonMonoxide.getGas(6000)).eut(960).duration(10 * SECONDS)
                 .addTo(multiblockChemicalReactorRecipes);
 
@@ -2112,11 +2112,10 @@ public class RecipeLoader {
          */
 
         // 2 ImpureSamariumChloride + 1 NaCl =LV@5s= 3 SamariumChlorideSodiumChlorideBlend
-        GT_Values.RA.stdBuilder().itemInputs(ImpureSamariumChloride.get(OrePrefixes.dust, 2), Materials.Salt.getDust(1))
+        GT_Values.RA.stdBuilder().itemInputs(SamariumChloride.get(OrePrefixes.dust, 2), Materials.Salt.getDust(1))
                 .itemOutputs(SamariumChlorideSodiumChlorideBlend.get(OrePrefixes.dust, 3)).eut(30).duration(5 * SECONDS)
                 .addTo(mixerRecipes);
-        GT_Values.RA.stdBuilder()
-                .itemInputs(ImpureSamariumChloride.get(OrePrefixes.dust, 2), Materials.Sodium.getDust(1))
+        GT_Values.RA.stdBuilder().itemInputs(SamariumChloride.get(OrePrefixes.dust, 2), Materials.Sodium.getDust(1))
                 .itemOutputs(SamariumChlorideSodiumChlorideBlend.get(OrePrefixes.dust, 3)).eut(30).duration(5 * SECONDS)
                 .addTo(mixerNonCellRecipes);
 
@@ -2146,14 +2145,14 @@ public class RecipeLoader {
         // ZPM molten distilling method
 
         // melt ImpureSamariumChloride
-        GT_Values.RA.stdBuilder().itemInputs(ImpureSamariumChloride.get(OrePrefixes.dust, 1))
-                .fluidOutputs(ImpureSamariumChloride.getMolten(144)).eut(TierEU.RECIPE_EV).duration(24)
+        GT_Values.RA.stdBuilder().itemInputs(SamariumChloride.get(OrePrefixes.dust, 1))
+                .fluidOutputs(SamariumChloride.getMolten(144)).eut(TierEU.RECIPE_EV).duration(24)
                 .addTo(fluidExtractionRecipes);
 
         // distill with LanthanumDust 36*144L moltenSmCl3 = 16*144L moltenSm + 27B Cl
         GT_Values.RA.stdBuilder().itemInputs(Materials.Lanthanum.getDust(9))
                 .itemOutputs(ImpureLanthanumChloride.get(OrePrefixes.dust, 36))
-                .fluidInputs(ImpureSamariumChloride.getMolten(5184)).fluidOutputs(Materials.Samarium.getMolten(2304))
+                .fluidInputs(SamariumChloride.getMolten(5184)).fluidOutputs(Materials.Samarium.getMolten(2304))
                 .eut(TierEU.RECIPE_ZPM).duration(5 * SECONDS).noOptimize().addTo(distillationTowerRecipes);
 
         // Centrifuge ImpureLanthanumChlorideDust
