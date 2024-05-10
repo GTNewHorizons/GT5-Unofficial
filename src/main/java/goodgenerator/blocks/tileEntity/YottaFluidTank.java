@@ -20,6 +20,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
@@ -73,10 +74,23 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     protected IStructureDefinition<YottaFluidTank> multiDefinition = null;
     protected final ArrayList<YOTTAHatch> mYottaHatch = new ArrayList<>();
 
-    public BigInteger mStorage = new BigInteger("0", 10);
-    public BigInteger mStorageCurrent = new BigInteger("0", 10);
-    public String mFluidName = "";
-    public String mLockedFluidName = "";
+    private static final BigInteger ONE_HUNDRED = BigInteger.valueOf(100);
+    private static final BigInteger FIVE = BigInteger.valueOf(5);
+
+    /** Tank capacity */
+    public BigInteger mStorage = BigInteger.ZERO;
+    /** Amount of fluid millibuckets currently in the tank */
+    public BigInteger mStorageCurrent = BigInteger.ZERO;
+    /**
+     * Fluid type currently stored in the tank, can be null. Stack size is always 1, real amount is stored in
+     * mStorageCurrent.
+     */
+    public FluidStack mFluid = null;
+    /**
+     * Fluid type currently the tank is currently locked to, can be null. Stack size is always 1, real amount is stored
+     * in mStorageCurrent.
+     */
+    public FluidStack mLockedFluid = null;
     protected boolean isFluidLocked = false;
     protected int glassMeta;
     protected int maxCell;
@@ -84,6 +98,9 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     protected final String YOTTANK_MID = mName + "mid";
     protected final String YOTTANK_TOP = mName + "top";
     protected final NumberFormatMUI numberFormat = new NumberFormatMUI();
+    private int workTickCounter = 0;
+
+    public static final BigInteger MAX_INT_BIGINT = BigInteger.valueOf(Integer.MAX_VALUE);
 
     protected boolean voidExcessEnabled = false;
 
@@ -112,29 +129,26 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     }
 
     public String getFluidName() {
-        if (mFluidName == null || mFluidName.equals("") || FluidRegistry.getFluidStack(mFluidName, 1) == null)
-            return StatCollector.translateToLocal("scanner.info.YOTTank.empty");
-        return FluidRegistry.getFluidStack(mFluidName, 1).getLocalizedName();
+        if (mFluid == null) return StatCollector.translateToLocal("scanner.info.YOTTank.empty");
+        return mFluid.getLocalizedName();
     }
 
     public String getLockedFluidName() {
         if (!isFluidLocked) return StatCollector.translateToLocal("scanner.info.YOTTank.none");
-        if (mLockedFluidName == null || mLockedFluidName.equals("")
-                || FluidRegistry.getFluidStack(mLockedFluidName, 1) == null)
-            return StatCollector.translateToLocal("scanner.info.YOTTank.next");
-        return FluidRegistry.getFluidStack(mLockedFluidName, 1).getLocalizedName();
+        if (mLockedFluid == null) return StatCollector.translateToLocal("scanner.info.YOTTank.next");
+        return mLockedFluid.getLocalizedName();
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         String tAmount = aNBT.getString("mStorage");
         String tAmountCurrent = aNBT.getString("mStorageCurrent");
-        if (tAmount == null || tAmount.equals("")) tAmount = "0";
-        if (tAmountCurrent == null || tAmountCurrent.equals("")) tAmountCurrent = "0";
+        if (StringUtils.isEmpty(tAmount)) tAmount = "0";
+        if (StringUtils.isEmpty(tAmountCurrent)) tAmountCurrent = "0";
         mStorage = new BigInteger(tAmount, 10);
         mStorageCurrent = new BigInteger(tAmountCurrent, 10);
-        mFluidName = aNBT.getString("mFluidName");
-        mLockedFluidName = aNBT.getString("mLockedFluidName");
+        mFluid = FluidRegistry.getFluidStack(aNBT.getString("mFluidName"), 1);
+        mLockedFluid = FluidRegistry.getFluidStack(aNBT.getString("mLockedFluidName"), 1);
         voidExcessEnabled = aNBT.getBoolean("voidExcessEnabled");
         isFluidLocked = aNBT.getBoolean("isFluidLocked");
         super.loadNBTData(aNBT);
@@ -144,8 +158,8 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setString("mStorage", mStorage.toString(10));
         aNBT.setString("mStorageCurrent", mStorageCurrent.toString(10));
-        aNBT.setString("mFluidName", mFluidName);
-        aNBT.setString("mLockedFluidName", mLockedFluidName);
+        aNBT.setString("mFluidName", mFluid == null ? "" : mFluid.getFluid().getName());
+        aNBT.setString("mLockedFluidName", mLockedFluid == null ? "" : mLockedFluid.getFluid().getName());
         aNBT.setBoolean("voidExcessEnabled", voidExcessEnabled);
         aNBT.setBoolean("isFluidLocked", isFluidLocked);
         super.saveNBTData(aNBT);
@@ -162,31 +176,66 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         return voidExcessEnabled;
     }
 
+    /**
+     * Attempts to remove {@code amount} of fluid from the tank if possible, does not do partial removals.
+     *
+     * @param amount The millibucket amount of the fluid to remove
+     * @return True if successfully removed amount, false if no fluid was removed.
+     */
     public boolean reduceFluid(long amount) {
-        BigInteger tmp = new BigInteger(amount + "");
-        if (mStorageCurrent.compareTo(tmp) < 0) {
+        final BigInteger bigAmount = BigInteger.valueOf(amount);
+        if (mStorageCurrent.compareTo(bigAmount) < 0) {
             return false;
         } else {
-            mStorageCurrent = mStorageCurrent.subtract(tmp);
+            mStorageCurrent = mStorageCurrent.subtract(bigAmount);
             return true;
         }
     }
 
-    public boolean addFluid(long amount) {
-        BigInteger tmp = new BigInteger(amount + "");
-        if (mStorage.subtract(mStorageCurrent).compareTo(tmp) < 0) {
+    /**
+     * Attempts to put {@code amount} of fluid into the tank if possible, fails if there's not enough space for all of
+     * it.
+     *
+     * @param amount The millibucket amount of the fluid to insert
+     * @param doFill Whether to actually fill, or just simulate a fill
+     * @return True if successfully added the given amount of fluid to the tank, false if failed.
+     */
+    public boolean addFluid(long amount, boolean doFill) {
+        final BigInteger bigAmount = BigInteger.valueOf(amount);
+        final BigInteger newTotal = mStorageCurrent.add(bigAmount);
+        if (newTotal.compareTo(mStorage) > 0) {
             return false;
         } else {
-            mStorageCurrent = mStorageCurrent.add(tmp);
+            if (doFill) {
+                mStorageCurrent = newTotal;
+            }
             return true;
         }
     }
+
+    // Avoid allocating a new array on every query
+    private final FluidTankInfo[] tankInfoCache = new FluidTankInfo[1];
 
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection aSide) {
-        int fluidSize = mStorageCurrent.compareTo(new BigInteger(Integer.MAX_VALUE + "")) > 0 ? Integer.MAX_VALUE
-                : mStorageCurrent.intValue();
-        return new FluidTankInfo[] { new FluidTankInfo(FluidRegistry.getFluidStack(mFluidName, fluidSize), fluidSize) };
+        int fluidSize = mStorageCurrent.compareTo(MAX_INT_BIGINT) >= 0 ? Integer.MAX_VALUE : mStorageCurrent.intValue();
+        int tankCapacity = mStorage.compareTo(MAX_INT_BIGINT) >= 0 ? Integer.MAX_VALUE : mStorage.intValue();
+        final boolean cacheNeedsRecreation;
+        if (tankInfoCache[0] == null || tankInfoCache[0].capacity != tankCapacity) {
+            cacheNeedsRecreation = true;
+        } else if (tankInfoCache[0].fluid == null) {
+            cacheNeedsRecreation = (mFluid != null);
+        } else {
+            cacheNeedsRecreation = !tankInfoCache[0].fluid.isFluidEqual(mFluid);
+        }
+        if (cacheNeedsRecreation) {
+            final FluidStack storedFluid = mFluid.copy();
+            storedFluid.amount = fluidSize;
+            tankInfoCache[0] = new FluidTankInfo(storedFluid, tankCapacity);
+        } else if (mFluid != null) {
+            tankInfoCache[0].fluid.amount = fluidSize;
+        }
+        return tankInfoCache;
     }
 
     @Override
@@ -210,9 +259,8 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         // maxCell+1 = Tier of highest Cell. glassMeta is the glass voltage tier
         if (maxCell + 3 <= glassMeta) {
             if (mStorage.compareTo(mStorageCurrent) < 0) mStorageCurrent = mStorage;
-            if (FluidRegistry.getFluidStack(mFluidName, 1) == null) {
+            if (mFluid == null) {
                 mStorageCurrent = BigInteger.ZERO;
-                mFluidName = "";
             }
             mWrench = true;
             mScrewdriver = true;
@@ -338,7 +386,7 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
 
     private String getPercent() {
         if (mStorage.signum() == 0) return "0";
-        return String.valueOf(mStorageCurrent.multiply(new BigInteger("100")).divide(mStorage));
+        return mStorageCurrent.multiply(ONE_HUNDRED).divide(mStorage).toString();
     }
 
     @Override
@@ -357,71 +405,102 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         return tt;
     }
 
+    private static final BigInteger[] storageWithCells;
+
+    static {
+        storageWithCells = new BigInteger[10];
+        final BigInteger baseStorage = BigInteger.valueOf(1_000_000);
+        final BigInteger storageMultiplier = BigInteger.valueOf(100);
+        BigInteger currentStorage = baseStorage;
+        for (int i = 0; i < 10; i++) {
+            storageWithCells[i] = currentStorage;
+            currentStorage = currentStorage.multiply(storageMultiplier);
+        }
+    }
+
     public BigInteger calStorage(int meta) {
-        StringBuilder cap = new StringBuilder();
-        cap.append("1000000");
-        for (int i = 0; i < meta; ++i) cap.append("00");
-        return new BigInteger(cap.toString());
+        return storageWithCells[meta];
     }
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
         super.onRunningTick(aStack);
         if (this.getBaseMetaTileEntity().isServerSide()) {
+            ++workTickCounter;
+            if (workTickCounter < 20) {
+                return true;
+            }
+            workTickCounter = 0;
+
             List<FluidStack> tStore = getStoredFluids();
             for (FluidStack tFluid : tStore) {
                 if (tFluid == null) continue;
                 if (isFluidLocked) {
-                    if (mLockedFluidName != null && !mLockedFluidName.equals("")) {
-                        if (!tFluid.getFluid().getName().equals(mLockedFluidName)) continue;
+                    if (mLockedFluid != null) {
+                        if (!tFluid.isFluidEqual(mLockedFluid)) continue;;
                     } else {
-                        mLockedFluidName = tFluid.getFluid().getName();
+                        mLockedFluid = tFluid.copy();
+                        mLockedFluid.amount = 1;
                     }
                 }
-                if (mFluidName == null || mFluidName.equals("") || tFluid.getFluid().getName().equals(mFluidName)) {
-                    if (mFluidName == null || mFluidName.equals("")) {
-                        mFluidName = tFluid.getFluid().getName();
+                if (mFluid == null || tFluid.isFluidEqual(mFluid)) {
+                    if (mFluid == null) {
+                        mFluid = tFluid.copy();
+                        mFluid.amount = 1;
                     }
-                    if (mStorageCurrent.add(new BigInteger(tFluid.amount + "")).compareTo(mStorage) < 0) {
-                        mStorageCurrent = mStorageCurrent.add(new BigInteger(tFluid.amount + ""));
+                    if (addFluid(tFluid.amount, true)) {
                         tFluid.amount = 0;
                     } else {
-                        BigInteger delta = mStorage.subtract(mStorageCurrent);
-                        mStorageCurrent = mStorageCurrent.add(delta);
                         if (voidExcessEnabled) {
                             tFluid.amount = 0;
                         } else {
-                            tFluid.amount -= delta.intValue();
+                            final BigInteger delta = mStorage.subtract(mStorageCurrent);
+                            tFluid.amount -= delta.intValueExact();
                         }
+                        mStorageCurrent = mStorage;
                     }
                 }
             }
-            BigInteger outputAmount = mStorageCurrent.divide(new BigInteger("100", 10));
-            if (outputAmount.compareTo(new BigInteger(Integer.MAX_VALUE + "", 10)) > 0)
-                outputAmount = new BigInteger(Integer.MAX_VALUE + "");
-            if (outputAmount.compareTo(BigInteger.ONE) <= 0) outputAmount = new BigInteger("1", 10);
 
-            if (mStorageCurrent.compareTo(BigInteger.ZERO) <= 0) mFluidName = "";
+            if (mStorageCurrent.compareTo(BigInteger.ZERO) <= 0) {
+                mFluid = null;
+            }
 
-            if (mFluidName != null && !mFluidName.equals("")) {
-                for (GT_MetaTileEntity_Hatch outputHatch : mOutputHatches) {
-                    FluidStack tHatchFluid = outputHatch.mFluid;
-                    FluidStack tOutput = FluidRegistry.getFluidStack(mFluidName, outputAmount.intValue());
-                    if (tHatchFluid != null && tHatchFluid.isFluidEqual(tOutput)) {
-                        int leftSpace = outputHatch.getCapacity() - tHatchFluid.amount;
-                        if (leftSpace < tOutput.amount) {
-                            if (reduceFluid(leftSpace)) tHatchFluid.amount += leftSpace;
+            if (mFluid != null) {
+                // Try to drain 1% of the tank per tick, so 20% per second aka 1/5
+                int outputAmount = mStorageCurrent.divide(FIVE).min(MAX_INT_BIGINT).max(BigInteger.ONE).intValueExact();
+                final int originalOutputAmount = outputAmount;
+
+                for (final GT_MetaTileEntity_Hatch outputHatch : mOutputHatches) {
+                    final FluidStack fluidInHatch = outputHatch.mFluid;
+
+                    final int remainingHatchSpace;
+                    if (fluidInHatch != null) {
+                        if (fluidInHatch.isFluidEqual(mFluid)) {
+                            remainingHatchSpace = outputHatch.getCapacity() - fluidInHatch.amount;
                         } else {
-                            if (reduceFluid(tOutput.amount)) tHatchFluid.amount += tOutput.amount;
+                            continue;
                         }
-                    } else if (tHatchFluid == null) {
-                        int leftSpace = outputHatch.getCapacity();
-                        if (leftSpace < tOutput.amount) {
-                            if (reduceFluid(leftSpace))
-                                outputHatch.fill(FluidRegistry.getFluidStack(mFluidName, leftSpace), true);
-                        } else {
-                            if (reduceFluid(tOutput.amount)) outputHatch.fill(tOutput, true);
-                        }
+                    } else {
+                        remainingHatchSpace = outputHatch.getCapacity();
+                    }
+
+                    final int amountToFillHatch = Math.min(remainingHatchSpace, outputAmount);
+                    if (amountToFillHatch <= 0) {
+                        continue;
+                    }
+                    final FluidStack fillStack = mFluid.copy();
+                    fillStack.amount = amountToFillHatch;
+                    final int transferredAmount = outputHatch.fill(fillStack, true);
+                    outputAmount -= transferredAmount;
+                }
+
+                final int totalDrainedAmount = originalOutputAmount - outputAmount;
+                if (totalDrainedAmount > 0) {
+                    mStorageCurrent = mStorageCurrent.subtract(BigInteger.valueOf(totalDrainedAmount));
+                    if (mStorageCurrent.signum() < 0) {
+                        throw new IllegalStateException(
+                                "YOTTank drained beyond its fluid amount, indicating logic bug: " + mStorageCurrent);
                     }
                 }
             }
@@ -443,7 +522,7 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
 
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-            float aX, float aY, float aZ) {
+            float aX, float aY, float aZ, ItemStack toolStack) {
         if (side == getBaseMetaTileEntity().getFrontFacing()) {
             voidExcessEnabled ^= true;
             aPlayer.addChatMessage(
@@ -456,18 +535,18 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-            float aX, float aY, float aZ) {
+            float aX, float aY, float aZ, ItemStack toolStack) {
         if (side == getBaseMetaTileEntity().getFrontFacing()) {
-            if (mLockedFluidName == null || mLockedFluidName.equals("")) {
-                if (mFluidName != null && !mFluidName.equals("")) {
-                    mLockedFluidName = mFluidName;
+            if (mLockedFluid == null) {
+                if (mFluid != null) {
+                    mLockedFluid = mFluid;
                     aPlayer.addChatMessage(new ChatComponentTranslation("yottank.chat.1", getFluidName()));
                 } else {
                     aPlayer.addChatMessage(new ChatComponentTranslation("yottank.chat.2"));
                 }
                 isFluidLocked = true;
             } else {
-                mLockedFluidName = "";
+                mLockedFluid = null;
                 isFluidLocked = false;
                 aPlayer.addChatMessage(new ChatComponentTranslation("yottank.chat.0"));
             }
@@ -539,7 +618,7 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
                                         () -> StatCollector.translateToLocal("gui.YOTTank.1") + " " + getFluidName())
                                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                                 .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
-                .widget(new FakeSyncWidget.StringSyncer(() -> mFluidName, val -> mFluidName = val))
+                .widget(new FakeSyncWidget.FluidStackSyncer(() -> mFluid, val -> mFluid = val))
                 .widget(
                         new TextWidget()
                                 .setStringSupplier(
@@ -554,7 +633,7 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
                                 () -> StatCollector.translateToLocal("gui.YOTTank.3") + " " + getLockedFluidName())
                                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                                 .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
-                .widget(new FakeSyncWidget.StringSyncer(() -> mLockedFluidName, val -> mLockedFluidName = val))
+                .widget(new FakeSyncWidget.FluidStackSyncer(() -> mLockedFluid, val -> mLockedFluid = val))
                 .widget(new FakeSyncWidget.BooleanSyncer(() -> isFluidLocked, val -> isFluidLocked = val))
                 .widget(new FakeSyncWidget.BooleanSyncer(() -> voidExcessEnabled, val -> voidExcessEnabled = val));
     }
@@ -581,7 +660,7 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         return (ButtonWidget) new ButtonWidget().setOnClick((clickData, widget) -> {
             TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
             isFluidLocked = !isFluidLocked;
-            if (!widget.getContext().isClient()) mLockedFluidName = isFluidLocked ? mFluidName : "";
+            if (!widget.getContext().isClient()) mLockedFluid = isFluidLocked ? mFluid : null;
         }).setPlayClickSound(false).setBackground(() -> {
             List<UITexture> ret = new ArrayList<>();
             ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);

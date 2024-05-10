@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 
@@ -53,11 +53,13 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
     private AENetworkProxy gridProxy = null;
     private int priority;
     private byte tickRate = 20;
-    private String lastFluid = "";
+    private FluidStack lastFluid = null;
     private BigInteger lastAmt = BigInteger.ZERO;
     private AccessRestriction readMode = AccessRestriction.READ_WRITE;
     private final AccessRestriction[] AEModes = new AccessRestriction[] { AccessRestriction.NO_ACCESS,
             AccessRestriction.READ, AccessRestriction.WRITE, AccessRestriction.READ_WRITE };
+
+    private static final BigInteger MAX_LONG_BIGINT = BigInteger.valueOf(Long.MAX_VALUE);
 
     public YOTTAHatch(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -104,7 +106,8 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
     }
 
     @Override
-    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+            ItemStack toolStack) {
         if (aPlayer.isSneaking()) this.priority -= 10;
         else this.priority += 10;
         GT_Utility.sendChatToPlayer(
@@ -114,7 +117,7 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
 
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-            float aX, float aY, float aZ) {
+            float aX, float aY, float aZ, ItemStack toolStack) {
         this.readMode = AEModes[(readMode.ordinal() + 1) % 4];
         GT_Utility.sendChatToPlayer(
                 aPlayer,
@@ -156,14 +159,12 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
     public IItemList<IAEFluidStack> getAvailableItems(IItemList<IAEFluidStack> out) {
         if (host == null || host.getBaseMetaTileEntity() == null || !host.getBaseMetaTileEntity().isActive())
             return out;
-        if (host.mFluidName == null || host.mFluidName.equals("")
-                || host.mStorageCurrent.compareTo(BigInteger.ZERO) <= 0)
-            return out;
+        if (host.mFluid == null || host.mStorageCurrent.signum() <= 0) return out;
         long ready;
-        if (host.mStorageCurrent.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) > 0) {
+        if (host.mStorageCurrent.compareTo(MAX_LONG_BIGINT) >= 0) {
             ready = Long.MAX_VALUE;
         } else ready = host.mStorageCurrent.longValue();
-        out.add(StackUtils.createAEFluidStack(FluidRegistry.getFluid(host.mFluidName), ready));
+        out.add(StackUtils.createAEFluidStack(host.mFluid.getFluid(), ready));
         return out;
     }
 
@@ -228,7 +229,7 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
     @Override
     public int getCapacity() {
         if (host == null || host.getBaseMetaTileEntity() == null || !host.getBaseMetaTileEntity().isActive()) return 0;
-        if (host.mStorage.compareTo(BigInteger.valueOf(Integer.MAX_VALUE)) >= 0) {
+        if (host.mStorage.compareTo(YottaFluidTank.MAX_INT_BIGINT) >= 0) {
             return Integer.MAX_VALUE;
         } else return host.mStorage.intValue();
     }
@@ -236,40 +237,51 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
     @Override
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
         if (host == null || host.getBaseMetaTileEntity() == null || !host.getBaseMetaTileEntity().isActive()) return 0;
-        if (host.mLockedFluidName != null && !host.mLockedFluidName.equals("")
-                && !host.mLockedFluidName.equals(resource.getFluid().getName()))
-            return 0;
-        if (host.mFluidName == null || host.mFluidName.equals("")
-                || host.mFluidName.equals(resource.getFluid().getName())) {
-            host.mFluidName = resource.getFluid().getName();
-            if (host.mStorage.subtract(host.mStorageCurrent).compareTo(BigInteger.valueOf(resource.amount)) >= 0) {
-                if (doFill) host.addFluid(resource.amount);
+        if (host.mLockedFluid != null && !host.mLockedFluid.isFluidEqual(resource)) return 0;
+        if (host.mFluid == null || host.mFluid.isFluidEqual(resource)) {
+            if (host.mFluid == null) {
+                host.mFluid = resource.copy();
+                host.mFluid.amount = 1;
+            }
+
+            if (host.addFluid(resource.amount, doFill)) {
                 return resource.amount;
             } else {
-                int added = host.mStorage.subtract(host.mStorageCurrent).intValue();
-                if (doFill) host.addFluid(added);
-                return host.getIsVoidExcessEnabled() ? resource.amount : added;
+                final int returned;
+                if (host.getIsVoidExcessEnabled()) {
+                    returned = resource.amount;
+                } else {
+                    final BigInteger delta = host.mStorage.subtract(host.mStorageCurrent);
+                    returned = delta.intValueExact();
+                }
+                host.mStorageCurrent = host.mStorage;
+                return returned;
             }
         }
         return 0;
     }
 
-    public long fill(ForgeDirection from, IAEFluidStack resource, boolean doFill) {
+    public long fill(@SuppressWarnings("unused") ForgeDirection from, IAEFluidStack resource, boolean doFill) {
         if (host == null || host.getBaseMetaTileEntity() == null || !host.getBaseMetaTileEntity().isActive()) return 0;
-        if (host.mLockedFluidName != null && !host.mLockedFluidName.equals("")
-                && !host.mLockedFluidName.equals(resource.getFluid().getName()))
-            return 0;
-        if (host.mFluidName == null || host.mFluidName.equals("")
-                || host.mFluidName.equals(resource.getFluid().getName())) {
-            host.mFluidName = resource.getFluid().getName();
-            if (host.mStorage.subtract(host.mStorageCurrent).compareTo(BigInteger.valueOf(resource.getStackSize()))
-                    >= 0) {
-                if (doFill) host.addFluid(resource.getStackSize());
+        if (host.mLockedFluid != null && host.mLockedFluid.getFluid() != resource.getFluid()) return 0;
+        if (host.mFluid == null || host.mFluid.getFluid() == resource.getFluid()) {
+            if (host.mFluid == null) {
+                host.mFluid = resource.getFluidStack(); // makes a copy internally
+                host.mFluid.amount = 1;
+            }
+
+            if (host.addFluid(resource.getStackSize(), doFill)) {
                 return resource.getStackSize();
             } else {
-                long added = host.mStorage.subtract(host.mStorageCurrent).longValue();
-                if (doFill) host.addFluid(added);
-                return host.getIsVoidExcessEnabled() ? resource.getStackSize() : added;
+                final long returned;
+                if (host.getIsVoidExcessEnabled()) {
+                    returned = resource.getStackSize();
+                } else {
+                    final BigInteger delta = host.mStorage.subtract(host.mStorageCurrent);
+                    returned = delta.longValueExact();
+                }
+                host.mStorageCurrent = host.mStorage;
+                return returned;
             }
         }
         return 0;
@@ -279,11 +291,9 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
     public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
         if (host == null || host.getBaseMetaTileEntity() == null || !host.getBaseMetaTileEntity().isActive())
             return null;
-        if (host.mFluidName == null || host.mFluidName.equals("")
-                || !host.mFluidName.equals(resource.getFluid().getName()))
-            return null;
+        if (host.mFluid == null || host.mFluid.getFluid() != resource.getFluid()) return null;
         int ready;
-        if (host.mStorageCurrent.compareTo(BigInteger.valueOf(Integer.MAX_VALUE)) > 0) {
+        if (host.mStorageCurrent.compareTo(YottaFluidTank.MAX_INT_BIGINT) >= 0) {
             ready = Integer.MAX_VALUE;
         } else ready = host.mStorageCurrent.intValue();
         ready = Math.min(ready, resource.amount);
@@ -293,14 +303,13 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
         return new FluidStack(resource.getFluid(), ready);
     }
 
-    public IAEFluidStack drain(ForgeDirection from, IAEFluidStack resource, boolean doDrain) {
+    public IAEFluidStack drain(@SuppressWarnings("unused") ForgeDirection from, IAEFluidStack resource,
+            boolean doDrain) {
         if (host == null || host.getBaseMetaTileEntity() == null || !host.getBaseMetaTileEntity().isActive())
             return null;
-        if (host.mFluidName == null || host.mFluidName.equals("")
-                || !host.mFluidName.equals(resource.getFluid().getName()))
-            return null;
+        if (host.mFluid == null || host.mFluid.getFluid() != resource.getFluid()) return null;
         long ready;
-        if (host.mStorageCurrent.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) > 0) {
+        if (host.mStorageCurrent.compareTo(MAX_LONG_BIGINT) > 0) {
             ready = Long.MAX_VALUE;
         } else ready = host.mStorageCurrent.longValue();
         ready = Math.min(ready, resource.getStackSize());
@@ -316,26 +325,20 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
         if (host == null || host.getBaseMetaTileEntity() == null || !host.getBaseMetaTileEntity().isActive())
             return null;
-        if (host.mFluidName == null || host.mFluidName.equals("")) return null;
-        return this.drain(from, FluidRegistry.getFluidStack(host.mFluidName, maxDrain), doDrain);
+        if (host.mFluid == null) return null;
+        final FluidStack drainStack = host.mFluid.copy();
+        drainStack.amount = maxDrain;
+        return this.drain(from, drainStack, doDrain);
     }
+
+    private static final FluidTankInfo[] EMPTY_TANK_INFO = new FluidTankInfo[] { new FluidTankInfo(null, 0) };
 
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-        FluidTankInfo[] tankInfo = new FluidTankInfo[1];
-        tankInfo[0] = new FluidTankInfo(null, 0);
         if (host == null || host.getBaseMetaTileEntity() == null || !host.getBaseMetaTileEntity().isActive())
-            return tankInfo;
-        FluidStack fluid = null;
-        if (host.mFluidName != null && !host.mFluidName.equals("")) {
-            int camt;
-            if (host.mStorageCurrent.compareTo(BigInteger.valueOf(Integer.MAX_VALUE)) > 0) camt = Integer.MAX_VALUE;
-            else camt = host.mStorageCurrent.intValue();
-            fluid = FluidRegistry.getFluidStack(host.mFluidName, camt);
-        }
+            return EMPTY_TANK_INFO;
 
-        tankInfo[0] = new FluidTankInfo(fluid, getCapacity());
-        return tankInfo;
+        return host.getTankInfo(from);
     }
 
     @Override
@@ -386,6 +389,7 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
     }
 
     @Override
+    @SuppressWarnings("rawtypes")
     public List<IMEInventoryHandler> getCellArray(StorageChannel channel) {
         List<IMEInventoryHandler> list = new ArrayList<>();
         if (channel == StorageChannel.FLUIDS) {
@@ -419,13 +423,13 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
 
     private boolean isChanged() {
         if (this.host == null) return false;
-        return !this.lastAmt.equals(this.host.mStorageCurrent) || !this.lastFluid.equals(this.host.mFluidName);
+        return !this.lastAmt.equals(this.host.mStorageCurrent) || this.lastFluid != this.host.mFluid;
     }
 
     private void update() {
         if (this.host == null) return;
         this.lastAmt = this.host.mStorageCurrent;
-        this.lastFluid = this.host.mFluidName;
+        this.lastFluid = this.host.mFluid;
     }
 
     private void faster() {
