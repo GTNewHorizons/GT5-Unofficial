@@ -1,9 +1,22 @@
 package gregtech.common.covers;
 
+import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
+
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
+
 import cpw.mods.fml.common.network.ByteBufUtils;
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
@@ -12,25 +25,15 @@ import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 public class GT_Cover_Chest extends GT_CoverBehaviorBase<GT_Cover_Chest.ChestInventory> {
+
     private final int slots;
     private final int stackSizeLimit = 1;
 
     public GT_Cover_Chest(int slots, ITexture coverTexture) {
         super(ChestInventory.class, coverTexture);
-        if (slots <= 0)
-            throw new IllegalArgumentException("slots must be greater than 0");
+        if (slots <= 0) throw new IllegalArgumentException("slots must be greater than 0");
         this.slots = slots;
     }
 
@@ -70,13 +73,15 @@ public class GT_Cover_Chest extends GT_CoverBehaviorBase<GT_Cover_Chest.ChestInv
     }
 
     @Override
-    protected void onDroppedImpl(ForgeDirection side, int aCoverID, ChestInventory aCoverVariable, ICoverable aTileEntity) {
+    protected void onDroppedImpl(ForgeDirection side, int aCoverID, ChestInventory aCoverVariable,
+        ICoverable aTileEntity) {
         if (aTileEntity.getWorld().isRemote) return;
         aCoverVariable.dropAll(aTileEntity, side);
     }
 
     @Override
-    protected void onBaseTEDestroyedImpl(ForgeDirection side, int aCoverID, ChestInventory aCoverVariable, ICoverable aTileEntity) {
+    protected void onBaseTEDestroyedImpl(ForgeDirection side, int aCoverID, ChestInventory aCoverVariable,
+        ICoverable aTileEntity) {
         if (aTileEntity.getWorld().isRemote) return;
         aCoverVariable.dropAll(aTileEntity, ForgeDirection.UNKNOWN);
     }
@@ -87,6 +92,7 @@ public class GT_Cover_Chest extends GT_CoverBehaviorBase<GT_Cover_Chest.ChestInv
     }
 
     public class ChestUIFactory extends UIFactory {
+
         private static final int spaceX = 18;
         private static final int spaceY = 18;
 
@@ -100,8 +106,7 @@ public class GT_Cover_Chest extends GT_CoverBehaviorBase<GT_Cover_Chest.ChestInv
         }
 
         @Override
-        protected void addTitleToUI(ModularWindow.Builder builder) {
-        }
+        protected void addTitleToUI(ModularWindow.Builder builder) {}
 
         @Override
         protected int getGUIWidth() {
@@ -110,7 +115,10 @@ public class GT_Cover_Chest extends GT_CoverBehaviorBase<GT_Cover_Chest.ChestInv
 
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
-            CoverDataControllerWidget<ChestInventory> w = new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, GT_Cover_Chest.this);
+            CoverDataControllerWidget<ChestInventory> w = new CoverDataControllerWidget<>(
+                this::getCoverData,
+                this::setCoverData,
+                GT_Cover_Chest.this);
             ChestInventory d = getCoverData();
             LimitingItemStackHandler h;
             if (d == null) {
@@ -118,12 +126,16 @@ public class GT_Cover_Chest extends GT_CoverBehaviorBase<GT_Cover_Chest.ChestInv
                 return;
             }
             h = d.items;
-            w.addChild(SlotGroup.ofItemHandler(h, 3).build().setPos(4, 4));
+            w.addChild(
+                SlotGroup.ofItemHandler(h, 3)
+                    .build()
+                    .setPos(4, 4));
             builder.widget(w);
         }
     }
 
     private static class LimitingItemStackHandler extends ItemStackHandler {
+
         private final int slotLimit;
 
         private LimitingItemStackHandler(int slots, int slotLimit) {
@@ -138,6 +150,7 @@ public class GT_Cover_Chest extends GT_CoverBehaviorBase<GT_Cover_Chest.ChestInv
     }
 
     public static class ChestInventory implements ISerializableObject {
+
         final LimitingItemStackHandler items;
 
         public ChestInventory(int slots, int stackSize) {
@@ -201,7 +214,8 @@ public class GT_Cover_Chest extends GT_CoverBehaviorBase<GT_Cover_Chest.ChestInv
                 tItemEntity.motionZ = (XSTR_INSTANCE.nextGaussian() * 0.05D);
                 tItemEntity.hurtResistantTime = 999999;
                 tItemEntity.lifespan = 60000;
-                coverable.getWorld().spawnEntityInWorld(tItemEntity);
+                coverable.getWorld()
+                    .spawnEntityInWorld(tItemEntity);
                 items.setStackInSlot(i, null);
             }
         }
