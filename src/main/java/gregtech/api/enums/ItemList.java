@@ -592,6 +592,7 @@ public enum ItemList implements IItemContainer {
     Cover_SolarPanel_UHV,
     Cover_SolarPanel_UEV,
     Cover_SolarPanel_UIV,
+    Cover_Chest_Basic,
     Ingot_IridiumAlloy,
     Plank_Oak,
     Plank_Spruce,

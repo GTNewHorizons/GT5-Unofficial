@@ -439,6 +439,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gregtech.api.enums.Textures;
+import gregtech.common.covers.GT_Cover_Chest;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.item.EntityItem;
@@ -2848,6 +2850,12 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 "Displays the fluid stored in the Tank",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1L)));
+        ItemList.Cover_Chest_Basic.set(
+            addItem(
+                380,
+                "Basic Item Holder",
+                "Hold a few item for use within machine GUI",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 2L)));
 
         ItemList.Cover_Screen.set(
             addItem(
