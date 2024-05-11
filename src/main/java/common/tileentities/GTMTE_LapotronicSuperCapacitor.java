@@ -927,14 +927,14 @@ public class GTMTE_LapotronicSuperCapacitor extends
         if (avgIn > avgOut) {
             // Calculate time to full if charging
             if (avgIn != 0) {
-                double timeToFull = (capacity.longValue() - stored.longValue()) / avgIn;
+                double timeToFull = (capacity.longValue() - stored.longValue()) / avgIn / 20;
                 String timeToFullString = formatTime(timeToFull);
                 ll.add("Time to Full: " + timeToFullString);
             }
         } else {
             // Calculate time to empty if discharging
             if (avgOut != 0) {
-                double timeToEmpty = stored.longValue() / avgOut;
+                double timeToEmpty = stored.longValue() / avgOut / 20;
                 String timeToEmptyString = formatTime(timeToEmpty);
                 ll.add("Time to Empty: " + timeToEmptyString);
             }
