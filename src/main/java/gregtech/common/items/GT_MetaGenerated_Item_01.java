@@ -59,6 +59,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gregtech.api.enums.Textures;
+import gregtech.common.covers.GT_Cover_Chest;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.item.EntityItem;
@@ -3893,6 +3895,12 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 "Displays the fluid stored in the Tank",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1L)));
+        ItemList.Cover_Chest_Basic.set(
+            addItem(
+                tLastID = 380,
+                "Basic Item Holder",
+                "Hold a few item for use within machine GUI",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 2L)));
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 ItemList.Sensor_EV.get(1L),
@@ -3914,6 +3922,10 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 .addIcon(OVERLAY_ACTIVITYDETECTOR_GLOW)
                 .glow()
                 .build());
+        GregTech_API.registerCover(
+            ItemList.Cover_Chest_Basic.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(Textures.BlockIcons.AUTOMATION_CHESTBUFFER)),
+            new GT_Cover_Chest(9, TextureFactory.of(Textures.BlockIcons.AUTOMATION_CHESTBUFFER)));
         GregTech_API.registerCover(
             ItemList.Cover_ActivityDetector.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], doesWorkCoverTexture),
