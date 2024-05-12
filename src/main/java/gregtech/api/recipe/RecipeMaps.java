@@ -1168,7 +1168,7 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> purificationPlantGrade2Recipes = RecipeMapBuilder
         .of("gt.recipe.purificationplantgrade2")
-        .maxIO(0, 9, 2, 2)
+        .maxIO(0, 3, 2, 2)
         .minInputs(0, 1)
         .progressBar(GT_UITextures.PROGRESSBAR_BATH)
         .neiRecipeComparator(
