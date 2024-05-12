@@ -14,6 +14,8 @@ import org.jetbrains.annotations.Nullable;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 
@@ -131,6 +133,8 @@ public class GT_Cover_Chest extends GT_CoverBehaviorBase<GT_Cover_Chest.ChestInv
                     .build()
                     .setPos(4, 4));
             builder.widget(w);
+
+            builder.setPos((p, t) -> Alignment.Center.getAlignedPos(new Size(t.getPos().x, p.height), new Size(getGUIWidth(), getGUIHeight())));
         }
     }
 
