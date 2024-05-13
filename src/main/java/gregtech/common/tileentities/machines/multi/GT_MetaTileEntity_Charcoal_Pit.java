@@ -257,13 +257,15 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_TooltipMul
             .addInfo("Will automatically start when valid")
             .addPollutionAmount(getPollutionPerSecond(null))
             .addSeparator()
-            .beginVariableStructureBlock(3, 11, 3, 7, 3, 11, false)
-            .addStructureInfo("Can be up to 11x7x11 in size, shape doesn't matter")
+            .beginVariableStructureBlock(3, 13, 3, 7, 3, 13, false)
+            .addStructureInfo("Can be up to 13x7x13 in size, including the dirt; shape doesn't matter")
             .addOtherStructurePart("Controller", "Top layer, directly touching a wood log")
             .addOtherStructurePart("Dirt/Grass", "Top and middle layers, covering wood logs")
             .addOtherStructurePart("Bricks", "Bottom layer, under all wood logs")
-            .addOtherStructurePart("Wood Logs", "Inside the previously mentioned blocks")
-            .addStructureInfo("No air between logs allowed")
+            .addOtherStructurePart("Wood Logs", "Up to 5 layers, inside the previously mentioned blocks")
+            .addStructureInfo("No air between logs allowed.")
+            .addStructureInfo(
+                "All logs must be within 6 x/z of the controller, so it must be dead-center for a full 11x11 square of wood.")
             .toolTipFinisher("Gregtech");
         return tt;
     }

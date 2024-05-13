@@ -1,6 +1,7 @@
 package gregtech.common;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -10,8 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.TC_Aspects;
 import gregtech.api.interfaces.internal.IThaumcraftCompat;
 import gregtech.api.util.GT_LanguageManager;
@@ -134,9 +133,6 @@ public class GT_ThaumcraftCompat implements IThaumcraftCompat {
     public Object addResearch(String aResearch, String aName, String aText, String[] aParentResearches,
         String aCategory, ItemStack aIcon, int aComplexity, int aType, int aX, int aY,
         List<TC_Aspects.TC_AspectStack> aAspects, ItemStack[] aResearchTriggers, Object[] aPages) {
-        if (!GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.researches, aResearch, true)) {
-            return null;
-        }
         ResearchCategoryList tCategory = ResearchCategories.getResearchList(aCategory);
         if (tCategory == null) {
             return null;
@@ -196,11 +192,7 @@ public class GT_ThaumcraftCompat implements IThaumcraftCompat {
         }
         if (aParentResearches != null) {
             ArrayList<String> tParentResearches = new ArrayList<>();
-            for (String tParent : aParentResearches) {
-                if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.researches, aResearch, true)) {
-                    tParentResearches.add(tParent);
-                }
-            }
+            Collections.addAll(tParentResearches, aParentResearches);
             if (tParentResearches.size() > 0) {
                 rResearch.setParents(tParentResearches.toArray(new String[0]));
                 rResearch.setConcealed();

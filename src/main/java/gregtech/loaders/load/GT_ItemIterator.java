@@ -17,7 +17,6 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 
 import buildcraft.api.tools.IToolWrench;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -174,25 +173,17 @@ public class GT_ItemIterator implements Runnable {
                 }
 
                 if ((tItem instanceof IToolCrowbar)) {
-                    if ((!tItem.isDamageable()) && (!GT_ModHandler.isElectricItem(new ItemStack(tItem, 1, 0)))) {
-                        if ((GregTech_API.sRecipeFile
-                            .get(ConfigCategories.Recipes.disabledrecipes, "infiniteDurabilityRCCrowbars", false))
-                            && (GT_ModHandler.removeRecipeByOutput(new ItemStack(tItem, 1, WILDCARD)))) {
-                            GT_Log.out.println("GT_Mod: Removed infinite RC Crowbar: " + tName);
+                    if ((tItem.isDamageable()) || (GT_ModHandler.isElectricItem(new ItemStack(tItem, 1, 0)))) {
+                        if (GregTech_API.registerCrowbar(new ItemStack(tItem, 1, WILDCARD))) {
+                            GT_Log.out.println("GT_Mod: Registered valid RC Crowbar: " + tName);
                         }
-                    } else if (GregTech_API.registerCrowbar(new ItemStack(tItem, 1, WILDCARD))) {
-                        GT_Log.out.println("GT_Mod: Registered valid RC Crowbar: " + tName);
                     }
                 }
                 if ((tItem instanceof IToolWrench)) {
-                    if ((!tItem.isDamageable()) && (!GT_ModHandler.isElectricItem(new ItemStack(tItem, 1, 0)))) {
-                        if ((GregTech_API.sRecipeFile
-                            .get(ConfigCategories.Recipes.disabledrecipes, "infiniteDurabilityBCWrenches", false))
-                            && (GT_ModHandler.removeRecipeByOutput(new ItemStack(tItem, 1, WILDCARD)))) {
-                            GT_Log.out.println("GT_Mod: Removed infinite BC Wrench: " + tName);
+                    if ((tItem.isDamageable()) || (GT_ModHandler.isElectricItem(new ItemStack(tItem, 1, 0)))) {
+                        if (GregTech_API.registerWrench(new ItemStack(tItem, 1, WILDCARD))) {
+                            GT_Log.out.println("GT_Mod: Registered valid BC Wrench: " + tName);
                         }
-                    } else if (GregTech_API.registerWrench(new ItemStack(tItem, 1, WILDCARD))) {
-                        GT_Log.out.println("GT_Mod: Registered valid BC Wrench: " + tName);
                     }
                 }
                 Block tBlock = GT_Utility.getBlockFromStack(new ItemStack(tItem, 1, 0));
@@ -302,12 +293,8 @@ public class GT_ItemIterator implements Runnable {
                         .registerOre(OreDictNames.craftingWorkBench, new ItemStack(tItem, 1, 0));
 
                     // buildcraft
-                    case "tile.pumpBlock" -> {
-                        GT_OreDictUnificator.registerOre(OreDictNames.craftingPump, new ItemStack(tItem, 1, 0));
-                        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "BCPump", false)) {
-                            GT_ModHandler.removeRecipeByOutput(new ItemStack(tItem, 1, 0));
-                        }
-                    }
+                    case "tile.pumpBlock" -> GT_OreDictUnificator
+                        .registerOre(OreDictNames.craftingPump, new ItemStack(tItem, 1, 0));
 
                     // buildcraft
                     case "tile.tankBlock" -> GT_OreDictUnificator

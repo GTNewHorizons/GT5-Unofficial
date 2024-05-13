@@ -404,6 +404,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             if (--mUpdate == 0 || --mStartUpCheck == 0) {
                 checkStructure(true, aBaseMetaTileEntity);
             }
+
             if (mStartUpCheck < 0) {
                 if (mMachine) {
                     checkMaintenance();
@@ -1928,6 +1929,11 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             int tAverageTime = tag.getInteger("averageNS");
             currentTip.add("Average CPU load of ~" + formatNumbers(tAverageTime) + " ns");
         }
+        super.getWailaBody(itemStack, currentTip, accessor, config);
+    }
+
+    public final void getMTEWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
     }
 

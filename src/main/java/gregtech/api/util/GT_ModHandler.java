@@ -58,7 +58,6 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -494,8 +493,6 @@ public class GT_ModHandler {
         if (aOutput == null || aChance <= 0) return false;
         aOutput.stackSize = 1;
         if (GT_Config.troll && !GT_Utility.areStacksEqual(aOutput, new ItemStack(Items.wooden_hoe, 1, 0))) return false;
-        aChance = (float) GregTech_API.sRecipeFile.get(ConfigCategories.Machines.scrapboxdrops, aOutput, aChance);
-        if (aChance <= 0) return false;
         try {
             GT_Utility.callMethod(
                 GT_Utility.getFieldContent("ic2.api.recipe.Recipes", "scrapboxDrops", true, true),
@@ -538,7 +535,6 @@ public class GT_ModHandler {
     public static boolean addSmeltingRecipe(ItemStack aInput, ItemStack aOutput) {
         aOutput = GT_OreDictUnificator.get(true, aOutput);
         if (aInput == null || aOutput == null) return false;
-        if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.smelting, aInput, true)) return false;
         FurnaceRecipes.smelting()
             .func_151394_a(aInput, GT_Utility.copyOrNull(aOutput), 0.0F);
         return true;
@@ -562,10 +558,6 @@ public class GT_ModHandler {
             || (OrePrefixes.gem.contains(aInput)))) {
             return false;
         }
-        int duration = GregTech_API.sRecipeFile.get("alloysmelting", input2 == null ? aInput : aOutput, 130);
-        if (duration <= 0) {
-            return false;
-        }
         GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
         if (input2 == null) {
             recipeBuilder.itemInputs(aInput);
@@ -573,7 +565,7 @@ public class GT_ModHandler {
             recipeBuilder.itemInputs(aInput, input2);
         }
         recipeBuilder.itemOutputs(aOutput)
-            .duration(duration * TICKS)
+            .duration(6 * SECONDS + 10 * TICKS)
             .eut(3)
             .recipeCategory(RecipeCategories.alloySmelterRecycling);
         if (hidden) {
@@ -617,7 +609,6 @@ public class GT_ModHandler {
     public static boolean addExtractionRecipe(ItemStack aInput, ItemStack aOutput) {
         aOutput = GT_OreDictUnificator.get(true, aOutput);
         if (aInput == null || aOutput == null) return false;
-        if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.extractor, aInput, true)) return false;
         RA.stdBuilder()
             .itemInputs(aInput)
             .itemOutputs(aOutput)
@@ -894,7 +885,6 @@ public class GT_ModHandler {
     @Deprecated
     public static boolean addThermalCentrifugeRecipe(ItemStack aInput, int[] aChances, int aHeat, Object... aOutput) {
         if (aInput == null || aOutput == null || aOutput.length == 0 || aOutput[0] == null) return false;
-        if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.thermalcentrifuge, aInput, true)) return false;
         RA.addThermalCentrifugeRecipe(
             aInput,
             (ItemStack) aOutput[0],
@@ -909,7 +899,6 @@ public class GT_ModHandler {
     @Deprecated
     public static boolean addThermalCentrifugeRecipe(ItemStack aInput, int aHeat, Object... aOutput) {
         if (aInput == null || aOutput == null || aOutput.length == 0 || aOutput[0] == null) return false;
-        if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.thermalcentrifuge, aInput, true)) return false;
         RA.addThermalCentrifugeRecipe(
             aInput,
             (ItemStack) aOutput[0],
@@ -925,7 +914,6 @@ public class GT_ModHandler {
      */
     public static boolean addOreWasherRecipe(ItemStack aInput, int[] aChances, int aWaterAmount, Object... aOutput) {
         if (aInput == null || aOutput == null || aOutput.length == 0 || aOutput[0] == null) return false;
-        if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.orewashing, aInput, true)) return false;
         RA.stdBuilder()
             .itemInputs(aInput)
             .itemOutputs((ItemStack) aOutput[0], (ItemStack) aOutput[1], (ItemStack) aOutput[2])
@@ -948,7 +936,6 @@ public class GT_ModHandler {
 
     public static boolean addOreWasherRecipe(ItemStack aInput, int aWaterAmount, Object... aOutput) {
         if (aInput == null || aOutput == null || aOutput.length == 0 || aOutput[0] == null) return false;
-        if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.orewashing, aInput, true)) return false;
         RA.stdBuilder()
             .itemInputs(aInput)
             .itemOutputs((ItemStack) aOutput[0], (ItemStack) aOutput[1], (ItemStack) aOutput[2])
@@ -982,7 +969,6 @@ public class GT_ModHandler {
     public static boolean addCompressionRecipe(ItemStack aInput, ItemStack aOutput, int duration, int EUPerTick) {
         aOutput = GT_OreDictUnificator.get(true, aOutput);
         if (aInput == null || aOutput == null || GT_Utility.areStacksEqual(aInput, aOutput, true)) return false;
-        if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.compression, aInput, true)) return false;
         RA.addCompressorRecipe(aInput, aOutput, duration, EUPerTick);
         return true;
     }
@@ -992,7 +978,6 @@ public class GT_ModHandler {
      */
     public static boolean addIC2MatterAmplifier(ItemStack aAmplifier, int aValue) {
         if (aAmplifier == null || aValue <= 0) return false;
-        if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.massfabamplifier, aAmplifier, true)) return false;
         try {
             NBTTagCompound tNBT = new NBTTagCompound();
             tNBT.setInteger("amplification", aValue);
