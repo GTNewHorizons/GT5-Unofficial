@@ -598,7 +598,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
                 int tX = mX * 16 + aRandom.nextInt(16);
                 int tY = 50 + aRandom.nextInt(200 - 50);
                 int tZ = mZ * 16 + aRandom.nextInt(16);
-                mSize = aRandom.nextInt(endMaxSize - endMinSize);
+                mSize = endMinSize + aRandom.nextInt(endMaxSize - endMinSize + 1);
                 if ((mWorld.getBlock(tX, tY, tZ)
                     .isAir(mWorld, tX, tY, tZ))) {
                     float randomRadian = aRandom.nextFloat() * (float) Math.PI;
