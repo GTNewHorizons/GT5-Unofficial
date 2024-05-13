@@ -214,7 +214,7 @@ public class GT_MetaTileEntity_PurificationUnitClarifier
             .addSeparator()
             .addInfo("Filters out large particles in the water such as")
             .addInfo("dirt, sticks, and perhaps even some treasure!")
-            .addInfo("Requires an filter made of Activated Carbon to work.")
+            .addInfo("Requires a filter made of Activated Carbon to work.")
             .addInfo(
                 "Every cycle, has a " + EnumChatFormatting.RED
                     + GT_Utility.formatNumbers(FILTER_DAMAGE_RATE)

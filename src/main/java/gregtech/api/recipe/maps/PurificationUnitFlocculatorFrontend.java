@@ -43,7 +43,7 @@ public class PurificationUnitFlocculatorFrontend extends RecipeMapFrontend {
     @Override
     public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
         ArrayList<Pos2d> positions = new ArrayList<>();
-        positions.add(new Pos2d(151, 42));
+        positions.add(new Pos2d(151, 39));
         return positions;
     }
 
@@ -72,8 +72,8 @@ public class PurificationUnitFlocculatorFrontend extends RecipeMapFrontend {
         neiCachedRecipe.mOutputs.add(
             new PositionedStack(
                 GT_Utility.getFluidDisplayStack(Materials.FerrousWastewater.getFluid(1000L), false, true),
-                146,
-                50,
+                147,
+                48,
                 false));
     }
 }
