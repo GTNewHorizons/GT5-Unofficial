@@ -134,7 +134,9 @@ public class GT_Cover_Chest extends GT_CoverBehaviorBase<GT_Cover_Chest.ChestInv
                     .setPos(4, 4));
             builder.widget(w);
 
-            builder.setPos((p, t) -> Alignment.Center.getAlignedPos(new Size(t.getPos().x, p.height), new Size(getGUIWidth(), getGUIHeight())));
+            builder.setPos(
+                (p, t) -> Alignment.Center
+                    .getAlignedPos(new Size(t.getPos().x, p.height), new Size(getGUIWidth(), getGUIHeight())));
         }
     }
 
