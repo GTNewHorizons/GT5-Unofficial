@@ -29,8 +29,8 @@ public class PurificationUnitFlocculatorFrontend extends RecipeMapFrontend {
         NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(
             uiPropertiesBuilder.logoPos(new Pos2d(160, 100))
-                .addSpecialTexture(new Size(170, 80), new Pos2d(3, 3), GT_UITextures.BACKGROUND_FLOCCULATION_RECIPE),
-            neiPropertiesBuilder);
+                .addSpecialTexture(new Size(170, 100), new Pos2d(3, 3), GT_UITextures.BACKGROUND_FLOCCULATION_RECIPE),
+            neiPropertiesBuilder.recipeBackgroundSize(new Size(170, 120)));
     }
 
     @Override
@@ -49,7 +49,7 @@ public class PurificationUnitFlocculatorFrontend extends RecipeMapFrontend {
 
     @Override
     public List<Pos2d> getItemOutputPositions(int itemOutputCount) {
-        return UIHelper.getGridPositions(itemOutputCount, 114, 81, 3, 1);
+        return UIHelper.getGridPositions(itemOutputCount, 114, 76, 3, 1);
     }
 
     @Override
