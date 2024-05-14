@@ -205,9 +205,8 @@ public class GT_UITextures {
     public static final UITexture PROGRESSBAR_SLICE = UITexture.fullImage(GregTech.ID, "gui/progressbar/slice");
     public static final UITexture PROGRESSBAR_STORED_EU = UITexture.fullImage(GregTech.ID, "gui/progressbar/stored_eu");
     public static final UITexture PROGRESSBAR_WIREMILL = UITexture.fullImage(GregTech.ID, "gui/progressbar/wiremill");
-
-    // THIS IS A PLACEHOLDER IMAGE.
-    public static final UITexture PROGRESSBAR_WAVES = UITexture.fullImage(GregTech.ID, "gui/progressbar/waves");
+    public static final UITexture PROGRESSBAR_FLOCCULATION = UITexture
+        .fullImage(GregTech.ID, "gui/progressbar/flocculation");
 
     public static FallbackableUITexture fallbackableProgressbar(String name, UITexture fallback) {
         return new FallbackableUITexture(UITexture.fullImage(GregTech.ID, "gui/progressbar/" + name), fallback);
