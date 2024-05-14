@@ -66,9 +66,9 @@ public class GT_MetaTileEntity_PurificationUnitFlocculation
     private static final int STRUCTURE_Y_OFFSET = 3;
     private static final int STRUCTURE_Z_OFFSET = 0;
 
-    private static final long IRON_III_PER_LEVEL = 100000;
+    public static final long IRON_III_PER_LEVEL = 100000;
     private static final long WASTE_WATER_PER_LEVEL = IRON_III_PER_LEVEL;
-    private static final float SUCCESS_PER_LEVEL = 10.0f;
+    public static final float SUCCESS_PER_LEVEL = 10.0f;
 
     private static final int CONSUME_INTERVAL = 20;
 

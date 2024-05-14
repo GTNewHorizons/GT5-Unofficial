@@ -65,7 +65,7 @@ public class GT_MetaTileEntity_PurificationUnitClarifier
     private static final int STRUCTURE_Z_OFFSET = 1;
 
     // Chance that the filter is damaged every cycle.
-    private static final float FILTER_DAMAGE_RATE = 20.0f;
+    public static final float FILTER_DAMAGE_RATE = 20.0f;
 
     private static final int CASING_TEXTURE_INDEX = getTextureIndex(GregTech_API.sBlockCasings9, 4);
 

@@ -8,7 +8,7 @@ import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.purificationPlantGrade1Recipes;
 import static gregtech.api.recipe.RecipeMaps.purificationPlantGrade2Recipes;
-import static gregtech.api.recipe.RecipeMaps.purificationPlantGrade3Recipes;
+import static gregtech.api.recipe.RecipeMaps.purificationPlantGrade4Recipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import net.minecraft.init.Items;
@@ -73,13 +73,13 @@ public class GT_PurifiedWaterRecipes {
 
         // Grade 4 - pH adjustment
         GT_Values.RA.stdBuilder()
-            .fluidInputs(Materials.Grade2PurifiedWater.getFluid(1000L))
-            .fluidOutputs(Materials.Grade3PurifiedWater.getFluid(900L))
+            .fluidInputs(Materials.Grade3PurifiedWater.getFluid(1000L))
+            .fluidOutputs(Materials.Grade4PurifiedWater.getFluid(900L))
             .ignoreCollision()
             .duration(duration)
             .eut(TierEU.RECIPE_ZPM)
             .metadata(BASE_CHANCE, 0.0f)
-            .addTo(purificationPlantGrade3Recipes);
+            .addTo(purificationPlantGrade4Recipes);
 
         // Activated Carbon Line
         GT_Values.RA.stdBuilder()

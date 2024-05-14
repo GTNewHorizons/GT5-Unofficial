@@ -59,6 +59,7 @@ import gregtech.api.recipe.maps.LargeNEIFrontend;
 import gregtech.api.recipe.maps.MicrowaveBackend;
 import gregtech.api.recipe.maps.OilCrackerBackend;
 import gregtech.api.recipe.maps.PrinterBackend;
+import gregtech.api.recipe.maps.PurificationUnitClarifierFrontend;
 import gregtech.api.recipe.maps.PurificationUnitFlocculatorFrontend;
 import gregtech.api.recipe.maps.PurificationUnitPhAdjustmentFrontend;
 import gregtech.api.recipe.maps.RecyclerBackend;
@@ -1161,9 +1162,9 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> purificationPlantGrade1Recipes = RecipeMapBuilder
         .of("gt.recipe.purificationplantgrade1")
-        .maxIO(1, 9, 3, 3)
+        .maxIO(1, 4, 1, 1)
         .minInputs(0, 1)
-        .progressBar(GT_UITextures.PROGRESSBAR_SIFT)
+        .frontend(PurificationUnitClarifierFrontend::new)
         .disableOptimize()
         .build();
     public static final RecipeMap<RecipeMapBackend> purificationPlantGrade2Recipes = RecipeMapBuilder
@@ -1180,8 +1181,8 @@ public final class RecipeMaps {
         .disableOptimize()
         .build();
 
-    public static final RecipeMap<RecipeMapBackend> purificationPlantGrade3Recipes = RecipeMapBuilder
-        .of("gt.recipe.purificationplantgrade3")
+    public static final RecipeMap<RecipeMapBackend> purificationPlantGrade4Recipes = RecipeMapBuilder
+        .of("gt.recipe.purificationplantgrade4")
         .maxIO(0, 0, 1, 1)
         .minInputs(0, 1)
         .progressBar(GT_UITextures.PROGRESSBAR_MIXER)

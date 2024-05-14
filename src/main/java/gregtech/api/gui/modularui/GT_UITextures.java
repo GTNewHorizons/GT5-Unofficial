@@ -207,6 +207,9 @@ public class GT_UITextures {
     public static final UITexture PROGRESSBAR_WIREMILL = UITexture.fullImage(GregTech.ID, "gui/progressbar/wiremill");
     public static final UITexture PROGRESSBAR_FLOCCULATION = UITexture
         .fullImage(GregTech.ID, "gui/progressbar/flocculation");
+    public static final UITexture PROGRESSBAR_CLARIFIER = UITexture.fullImage(GregTech.ID, "gui/progressbar/clarifier");
+    public static final UITexture PROGRESSBAR_PH_NEUTRALIZATION = UITexture
+        .fullImage(GregTech.ID, "gui/progressbar/phneutralization");
 
     public static FallbackableUITexture fallbackableProgressbar(String name, UITexture fallback) {
         return new FallbackableUITexture(UITexture.fullImage(GregTech.ID, "gui/progressbar/" + name), fallback);
