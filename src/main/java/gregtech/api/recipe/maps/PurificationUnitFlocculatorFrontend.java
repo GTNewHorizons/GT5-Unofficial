@@ -61,8 +61,8 @@ public class PurificationUnitFlocculatorFrontend extends PurificationUnitRecipeM
     @NotNull
     public List<String> handleNEIItemTooltip(ItemStack stack, List<String> currentTip,
         GT_NEI_DefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
-        if (stack.isItemEqual(
-            GT_Utility.getFluidDisplayStack(Materials.PolyAluminiumChlorideSolution.getFluid(1000L), false))) {
+        if (stack
+            .isItemEqual(GT_Utility.getFluidDisplayStack(Materials.PolyAluminiumChloride.getFluid(1000L), false))) {
             currentTip.add("Consumed during operation");
             currentTip.add(
                 "+" + GT_MetaTileEntity_PurificationUnitFlocculation.SUCCESS_PER_LEVEL
@@ -83,7 +83,7 @@ public class PurificationUnitFlocculatorFrontend extends PurificationUnitRecipeM
         // Display flocculation chemical
         neiCachedRecipe.mInputs.add(
             new PositionedStack(
-                GT_Utility.getFluidDisplayStack(Materials.PolyAluminiumChlorideSolution.getFluid(100000L), true),
+                GT_Utility.getFluidDisplayStack(Materials.PolyAluminiumChloride.getFluid(100000L), true),
                 5,
                 -1,
                 false));
