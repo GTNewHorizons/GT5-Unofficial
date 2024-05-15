@@ -24,7 +24,7 @@ public class GT_Block_Casings9 extends GT_Block_Casings_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Industrial Strength Concrete");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.tooltip", "An industrial flooring.");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Industrial Water Plant Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Sterile Water Plant Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Water Plant Concrete Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Clean Flocculation Casing");
         GT_LanguageManager
             .addStringLocalization(getUnlocalizedName() + ".6.name", "Naquadah Reinforced Water Plant Casing");
@@ -53,7 +53,7 @@ public class GT_Block_Casings9 extends GT_Block_Casings_Abstract {
             case 1 -> Textures.BlockIcons.MACHINE_CASING_VENT_T2.getIcon();
             case 2 -> Textures.BlockIcons.INDUSTRIAL_STRENGTH_CONCRETE.getIcon();
             case 3 -> Textures.BlockIcons.MACHINE_CASING_INDUSTRIAL_WATER_PLANT.getIcon();
-            case 4 -> Textures.BlockIcons.WATER_PLANT_PIPE_CASING.getIcon();
+            case 4 -> Textures.BlockIcons.WATER_PLANT_CONCRETE_CASING.getIcon();
             case 5 -> Textures.BlockIcons.MACHINE_CASING_FLOCCULATION.getIcon();
             case 6 -> Textures.BlockIcons.MACHINE_CASING_NAQUADAH_REINFORCED_WATER_PLANT.getIcon();
             case 7 -> Textures.BlockIcons.MACHINE_CASING_EXTREME_CORROSION_RESISTANT.getIcon();

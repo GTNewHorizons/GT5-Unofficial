@@ -109,7 +109,7 @@ public class GT_MetaTileEntity_PurificationUnitClarifier
                         .build()),
                 // Water Plant Pipe Casing
                 ofBlock(GregTech_API.sBlockCasings9, 4)))
-        // Water Plant Pipe Casing
+        // Concrete Water Plant Casing
         .addElement('A', ofBlock(GregTech_API.sBlockCasings9, 4))
         // PTFE pipe casing
         .addElement('B', ofBlock(GregTech_API.sBlockCasings8, 1))
@@ -225,7 +225,7 @@ public class GT_MetaTileEntity_PurificationUnitClarifier
             .beginStructureBlock(11, 4, 11, false)
             .addSeparator()
             .addCasingInfoRangeColored(
-                "Water Plant Pipe Casing",
+                "Concrete Water Plant Casing",
                 EnumChatFormatting.GRAY,
                 123,
                 131,
@@ -305,10 +305,7 @@ public class GT_MetaTileEntity_PurificationUnitClarifier
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
         ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         if (sideDirection == facingDirection) {
-            if (active) return new ITexture[] { TextureFactory.builder()
-                .addIcon(Textures.BlockIcons.CLARIFIER_CONTROLLER_CASING)
-                .extFacing()
-                .build(),
+            if (active) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_INDEX),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
                     .extFacing()
@@ -318,10 +315,7 @@ public class GT_MetaTileEntity_PurificationUnitClarifier
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { TextureFactory.builder()
-                .addIcon(Textures.BlockIcons.CLARIFIER_CONTROLLER_CASING)
-                .extFacing()
-                .build(),
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_INDEX),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER)
                     .extFacing()
@@ -332,10 +326,7 @@ public class GT_MetaTileEntity_PurificationUnitClarifier
                     .glow()
                     .build() };
         }
-        return new ITexture[] { TextureFactory.builder()
-            .addIcon(Textures.BlockIcons.CLARIFIER_CONTROLLER_CASING)
-            .extFacing()
-            .build() };
+        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_INDEX) };
     }
 
     @Override

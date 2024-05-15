@@ -94,7 +94,7 @@ public class GT_MetaTileEntity_PurificationPlant
     private static final IStructureDefinition<GT_MetaTileEntity_PurificationPlant> STRUCTURE_DEFINITION = StructureDefinition
         .<GT_MetaTileEntity_PurificationPlant>builder()
         .addShape(STRUCTURE_PIECE_MAIN, PurificationPlantStructureString.STRUCTURE_STRING)
-        // Sterile Water Plant Casing
+        // Concrete Water Plant Casing
         .addElement('A', ofBlock(GregTech_API.sBlockCasings9, 4))
         // Industrial Water Plant Casing
         .addElement('B', ofBlock(GregTech_API.sBlockCasings9, 3))
