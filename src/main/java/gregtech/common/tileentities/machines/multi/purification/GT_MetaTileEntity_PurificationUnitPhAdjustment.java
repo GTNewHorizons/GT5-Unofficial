@@ -504,7 +504,7 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
 
     @Override
     public int getWaterTier() {
-        return 3;
+        return 4;
     }
 
     @Override
