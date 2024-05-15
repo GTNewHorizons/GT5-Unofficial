@@ -16,7 +16,7 @@ import gregtech.api.util.GT_LanguageManager;
 public class GT_Block_Casings9 extends GT_Block_Casings_Abstract {
 
     public GT_Block_Casings9() {
-        super(GT_Item_Casings9.class, "gt.blockcasings9", GT_Material_Casings.INSTANCE, 7);
+        super(GT_Item_Casings9.class, "gt.blockcasings9", GT_Material_Casings.INSTANCE, 8);
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "PBI Pipe Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Advanced Filter Casing");
         GT_LanguageManager
@@ -24,11 +24,12 @@ public class GT_Block_Casings9 extends GT_Block_Casings_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Industrial Strength Concrete");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.tooltip", "An industrial flooring.");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Industrial Water Plant Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Water Plant Concrete Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Concrete Water Plant Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Clean Flocculation Casing");
         GT_LanguageManager
             .addStringLocalization(getUnlocalizedName() + ".6.name", "Naquadah Reinforced Water Plant Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Extreme Base Resistant Casing");
+        GT_LanguageManager
+            .addStringLocalization(getUnlocalizedName() + ".7.name", "Extreme Corrosion Resistant Casing");
 
         ItemList.Casing_Pipe_Polybenzimidazole.set(new ItemStack(this, 1, 0));
         ItemList.Casing_Vent_T2.set(new ItemStack(this, 1, 1));
