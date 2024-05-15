@@ -46,6 +46,7 @@ import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IAllSidedTexturedTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IPipeRenderedTileEntity;
 import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
@@ -86,6 +87,16 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             textureArray[3] = pipeRenderedTileEntity.getTextureCovered(SOUTH);
             textureArray[4] = pipeRenderedTileEntity.getTextureCovered(WEST);
             textureArray[5] = pipeRenderedTileEntity.getTextureCovered(EAST);
+            return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, textureArray);
+        }
+        if (tTileEntity instanceof IAllSidedTexturedTileEntity allSidedTexturedTileEntity) {
+            ITexture[] texture = allSidedTexturedTileEntity.getTexture(aBlock);
+            textureArray[0] = texture;
+            textureArray[1] = texture;
+            textureArray[2] = texture;
+            textureArray[3] = texture;
+            textureArray[4] = texture;
+            textureArray[5] = texture;
             return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, textureArray);
         }
         if (tTileEntity instanceof ITexturedTileEntity texturedTileEntity) {

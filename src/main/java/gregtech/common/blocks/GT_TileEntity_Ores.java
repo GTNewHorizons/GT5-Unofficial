@@ -12,7 +12,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
@@ -20,13 +19,13 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
+import gregtech.api.interfaces.tileentity.IAllSidedTexturedTileEntity;
 import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 
-public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntity {
+public class GT_TileEntity_Ores extends TileEntity implements IAllSidedTexturedTileEntity {
 
     public short mMetaData = 0;
     protected static boolean shouldFortune = false;
@@ -438,7 +437,7 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
     }
 
     @Override
-    public ITexture[] getTexture(Block aBlock, ForgeDirection side) {
+    public ITexture[] getTexture(Block aBlock) {
         Materials aMaterial = GregTech_API.sGeneratedMaterials[(this.mMetaData % 1000)];
         if ((aMaterial != null) && (this.mMetaData < 32000)) {
             ITexture iTexture = TextureFactory.builder()
