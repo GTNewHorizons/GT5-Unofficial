@@ -122,6 +122,14 @@ public class GT_TileEntity_MegaChemicalReactor
     }
 
     @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        inputSeparation = !inputSeparation;
+        GT_Utility.sendChatToPlayer(
+                aPlayer,
+                StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + inputSeparation);
+    }
+
+    @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
             float aX, float aY, float aZ) {
         if (aPlayer.isSneaking()) {
@@ -231,6 +239,11 @@ public class GT_TileEntity_MegaChemicalReactor
 
     @Override
     public boolean supportsVoidProtection() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsInputSeparation() {
         return true;
     }
 }
