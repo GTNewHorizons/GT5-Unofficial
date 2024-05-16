@@ -556,12 +556,13 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             aBlock.setBlockBoundsForItemRender();
             aRenderer.setRenderBoundsFromBlock(aBlock);
             // spotless:off
-            renderNegativeYFacing(null, aRenderer, aBlock, 0, 0, 0, tTileEntity.getTexture(aBlock, ForgeDirection.DOWN), true);
-            renderPositiveYFacing(null, aRenderer, aBlock, 0, 0, 0, tTileEntity.getTexture(aBlock, ForgeDirection.UP), true);
-            renderNegativeZFacing(null, aRenderer, aBlock, 0, 0, 0, tTileEntity.getTexture(aBlock, ForgeDirection.NORTH), true);
-            renderPositiveZFacing(null, aRenderer, aBlock, 0, 0, 0, tTileEntity.getTexture(aBlock, ForgeDirection.SOUTH), true);
-            renderNegativeXFacing(null, aRenderer, aBlock, 0, 0, 0, tTileEntity.getTexture(aBlock, ForgeDirection.WEST), true);
-            renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, tTileEntity.getTexture(aBlock, ForgeDirection.EAST), true);
+            ITexture[] texture = tTileEntity.getTexture(aBlock);
+            renderNegativeYFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
+            renderPositiveYFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
+            renderNegativeZFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
+            renderPositiveZFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
+            renderNegativeXFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
+            renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
             // spotless:on
         } else if (aMeta > 0 && (aMeta < GregTech_API.METATILEENTITIES.length)
             && aBlock instanceof GT_Block_Machines
