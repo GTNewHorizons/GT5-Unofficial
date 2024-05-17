@@ -500,6 +500,8 @@ public class GT_Worldgenerator implements IWorldGenerator {
         @Override
         public void run() {
             long startTime = System.nanoTime();
+            Chunk tChunk = this.mWorld.getChunkFromChunkCoords(this.mX, this.mZ);
+
             int oreveinMaxSize;
 
             // Do GT_Stones and GT_small_ores oregen for this chunk
@@ -560,107 +562,18 @@ public class GT_Worldgenerator implements IWorldGenerator {
             // Asteroid Worldgen
             int tDimensionType = this.mWorld.provider.dimensionId;
             // String tDimensionName = this.mWorld.provider.getDimensionName();
-            Random aRandom = new Random();
             // if (((tDimensionType == 1) && endAsteroids && ((mEndAsteroidProbability <= 1) ||
             // (aRandom.nextInt(mEndAsteroidProbability) == 0))) || ((tDimensionName.equals("Asteroids")) && gcAsteroids
             // && ((mGCAsteroidProbability <= 1) || (aRandom.nextInt(mGCAsteroidProbability) == 0)))) {
-            if (((tDimensionType == 1) && endAsteroids
-                && ((mEndAsteroidProbability <= 1) || (aRandom.nextInt(mEndAsteroidProbability) == 0)))) {
-                short primaryMeta = 0;
-                short secondaryMeta = 0;
-                short betweenMeta = 0;
-                short sporadicMeta = 0;
-                if ((GT_Worldgen_GT_Ore_Layer.sWeight > 0) && (GT_Worldgen_GT_Ore_Layer.sList.size() > 0)) {
-                    boolean temp = true;
-                    int tRandomWeight;
-                    for (int i = 0; (i < oreveinAttempts) && (temp); i++) {
-                        tRandomWeight = aRandom.nextInt(GT_Worldgen_GT_Ore_Layer.sWeight);
-                        for (GT_Worldgen_GT_Ore_Layer tWorldGen : GT_Worldgen_GT_Ore_Layer.sList) {
-                            tRandomWeight -= tWorldGen.mWeight;
-                            if (tRandomWeight <= 0) {
-                                try {
-                                    if (tWorldGen.mEndAsteroid) {
-                                        primaryMeta = tWorldGen.mPrimaryMeta;
-                                        secondaryMeta = tWorldGen.mSecondaryMeta;
-                                        betweenMeta = tWorldGen.mBetweenMeta;
-                                        sporadicMeta = tWorldGen.mSporadicMeta;
-                                        temp = false;
-                                        break;
-                                    }
-                                } catch (Throwable e) {
-                                    e.printStackTrace(GT_Log.err);
-                                }
-                            }
-                        }
-                    }
-                }
-                // if(GT_Values.D1)GT_FML_LOGGER.info("do asteroid gen: "+this.mX+" "+this.mZ);
-                int tX = mX * 16 + aRandom.nextInt(16);
-                int tY = 50 + aRandom.nextInt(200 - 50);
-                int tZ = mZ * 16 + aRandom.nextInt(16);
-                mSize = aRandom.nextInt(endMaxSize - endMinSize);
-                if ((mWorld.getBlock(tX, tY, tZ)
-                    .isAir(mWorld, tX, tY, tZ))) {
-                    float randomRadian = aRandom.nextFloat() * (float) Math.PI;
-                    double xBase = tX + 8 + MathHelper.sin(randomRadian) * mSize / 8.0F;
-                    double xFactor = tX + 8 - MathHelper.sin(randomRadian) * mSize / 8.0F;
-                    double zBase = tZ + 8 + MathHelper.cos(randomRadian) * mSize / 8.0F;
-                    double zFactor = tZ + 8 - MathHelper.cos(randomRadian) * mSize / 8.0F;
-                    double yBase = tY + aRandom.nextInt(3) - 2;
-                    double yFactor = tY + aRandom.nextInt(3) - 2;
-                    for (int i = 0; i <= mSize; i++) {
-                        double xCenter = xBase + (xFactor - xBase) * i / mSize;
-                        double yCenter = yBase + (yFactor - yBase) * i / mSize;
-                        double zCenter = zBase + (zFactor - zBase) * i / mSize;
-                        double randomDistance = aRandom.nextDouble() * mSize / 16.0D;
-                        double halfLength = (MathHelper.sin(i * (float) Math.PI / mSize) + 1.0F) * randomDistance
-                            + 1.0D;
-                        double halfHeight = (MathHelper.sin(i * (float) Math.PI / mSize) + 1.0F) * randomDistance
-                            + 1.0D;
-                        int tMinX = MathHelper.floor_double(xCenter - halfLength / 2.0D);
-                        int tMinY = MathHelper.floor_double(yCenter - halfHeight / 2.0D);
-                        int tMinZ = MathHelper.floor_double(zCenter - halfLength / 2.0D);
-                        int tMaxX = MathHelper.floor_double(xCenter + halfLength / 2.0D);
-                        int tMaxY = MathHelper.floor_double(yCenter + halfHeight / 2.0D);
-                        int tMaxZ = MathHelper.floor_double(zCenter + halfLength / 2.0D);
-                        for (int eX = tMinX; eX <= tMaxX; eX++) {
-                            double xChance = (eX + 0.5D - xCenter) / (halfLength / 2.0D);
-                            if (xChance * xChance < 1.0D) {
-                                for (int eY = tMinY; eY <= tMaxY; eY++) {
-                                    double yChance = (eY + 0.5D - yCenter) / (halfHeight / 2.0D);
-                                    if (xChance * xChance + yChance * yChance < 1.0D) {
-                                        for (int eZ = tMinZ; eZ <= tMaxZ; eZ++) {
-                                            double zChance = (eZ + 0.5D - zCenter) / (halfLength / 2.0D);
-                                            if ((xChance * xChance + yChance * yChance + zChance * zChance < 1.0D)
-                                                && (mWorld.getBlock(tX, tY, tZ)
-                                                    .isAir(mWorld, tX, tY, tZ))) {
-                                                int ranOre = aRandom.nextInt(50);
-                                                if (ranOre < 3) {
-                                                    GT_TileEntity_Ores
-                                                        .setOreBlock(mWorld, eX, eY, eZ, primaryMeta, false);
-                                                } else if (ranOre < 6) {
-                                                    GT_TileEntity_Ores
-                                                        .setOreBlock(mWorld, eX, eY, eZ, secondaryMeta, false);
-                                                } else if (ranOre < 8) {
-                                                    GT_TileEntity_Ores
-                                                        .setOreBlock(mWorld, eX, eY, eZ, betweenMeta, false);
-                                                } else if (ranOre < 10) {
-                                                    GT_TileEntity_Ores
-                                                        .setOreBlock(mWorld, eX, eY, eZ, sporadicMeta, false);
-                                                } else {
-                                                    mWorld.setBlock(eX, eY, eZ, Blocks.end_stone, 0, 0);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+            if ((tDimensionType == 1 /* the end */) && endAsteroids) {
+                XSTR random = new XSTR(
+                    mWorld.getSeed() + mX * mX * 91777L + mZ * mZ * 137413L + mX * mZ * 1853L + mX * 3L + mZ * 17L);
+
+                if (mEndAsteroidProbability <= 1 || random.nextInt(mEndAsteroidProbability) == 0) {
+                    generateAsteroid(mWorld, random, mX, mZ);
                 }
             }
 
-            Chunk tChunk = this.mWorld.getChunkFromBlockCoords(this.mX, this.mZ);
             if (tChunk != null) {
                 tChunk.isModified = true;
             }
@@ -674,6 +587,101 @@ public class GT_Worldgenerator implements IWorldGenerator {
                         + " Worldgen took "
                         + duration
                         + " nanoseconds");
+            }
+        }
+
+        private void generateAsteroid(World world, Random random, int chunkX, int chunkZ) {
+            short primaryMeta = 0;
+            short secondaryMeta = 0;
+            short betweenMeta = 0;
+            short sporadicMeta = 0;
+            if ((GT_Worldgen_GT_Ore_Layer.sWeight > 0) && (GT_Worldgen_GT_Ore_Layer.sList.size() > 0)) {
+                boolean temp = true;
+                int tRandomWeight;
+                for (int i = 0; (i < oreveinAttempts) && (temp); i++) {
+                    tRandomWeight = random.nextInt(GT_Worldgen_GT_Ore_Layer.sWeight);
+                    for (GT_Worldgen_GT_Ore_Layer tWorldGen : GT_Worldgen_GT_Ore_Layer.sList) {
+                        tRandomWeight -= tWorldGen.mWeight;
+                        if (tRandomWeight <= 0) {
+                            try {
+                                if (tWorldGen.mEndAsteroid) {
+                                    primaryMeta = tWorldGen.mPrimaryMeta;
+                                    secondaryMeta = tWorldGen.mSecondaryMeta;
+                                    betweenMeta = tWorldGen.mBetweenMeta;
+                                    sporadicMeta = tWorldGen.mSporadicMeta;
+                                    temp = false;
+                                    break;
+                                }
+                            } catch (Throwable e) {
+                                e.printStackTrace(GT_Log.err);
+                            }
+                        }
+                    }
+                }
+            }
+            // if(GT_Values.D1)GT_FML_LOGGER.info("do asteroid gen: "+this.mX+" "+this.mZ);
+            int tX = chunkX * 16 + random.nextInt(16);
+            int tY = 50 + random.nextInt(200 - 50);
+            int tZ = chunkZ * 16 + random.nextInt(16);
+            mSize = endMinSize + random.nextInt(endMaxSize - endMinSize + 1);
+
+            if ((world.getBlock(tX, tY, tZ)
+                .isAir(world, tX, tY, tZ))) {
+                float randomRadian = random.nextFloat() * (float) Math.PI;
+                double xBase = tX + 8 + MathHelper.sin(randomRadian) * mSize / 8.0F;
+                double xFactor = tX + 8 - MathHelper.sin(randomRadian) * mSize / 8.0F;
+                double zBase = tZ + 8 + MathHelper.cos(randomRadian) * mSize / 8.0F;
+                double zFactor = tZ + 8 - MathHelper.cos(randomRadian) * mSize / 8.0F;
+                double yBase = tY + random.nextInt(3) - 2;
+                double yFactor = tY + random.nextInt(3) - 2;
+
+                for (int i = 0; i <= mSize; i++) {
+                    double xCenter = xBase + (xFactor - xBase) * i / mSize;
+                    double yCenter = yBase + (yFactor - yBase) * i / mSize;
+                    double zCenter = zBase + (zFactor - zBase) * i / mSize;
+                    double randomDistance = random.nextDouble() * mSize / 16.0D;
+                    double halfLength = (MathHelper.sin(i * (float) Math.PI / mSize) + 1.0F) * randomDistance + 1.0D;
+                    double halfHeight = (MathHelper.sin(i * (float) Math.PI / mSize) + 1.0F) * randomDistance + 1.0D;
+                    int tMinX = MathHelper.floor_double(xCenter - halfLength / 2.0D);
+                    int tMinY = MathHelper.floor_double(yCenter - halfHeight / 2.0D);
+                    int tMinZ = MathHelper.floor_double(zCenter - halfLength / 2.0D);
+                    int tMaxX = MathHelper.floor_double(xCenter + halfLength / 2.0D);
+                    int tMaxY = MathHelper.floor_double(yCenter + halfHeight / 2.0D);
+                    int tMaxZ = MathHelper.floor_double(zCenter + halfLength / 2.0D);
+
+                    for (int eX = tMinX; eX <= tMaxX; eX++) {
+                        double xChance = (eX + 0.5D - xCenter) / (halfLength / 2.0D);
+                        if (xChance * xChance < 1.0D) {
+                            for (int eY = tMinY; eY <= tMaxY; eY++) {
+                                double yChance = (eY + 0.5D - yCenter) / (halfHeight / 2.0D);
+                                if (xChance * xChance + yChance * yChance < 1.0D) {
+                                    for (int eZ = tMinZ; eZ <= tMaxZ; eZ++) {
+                                        double zChance = (eZ + 0.5D - zCenter) / (halfLength / 2.0D);
+                                        if (xChance * xChance + yChance * yChance + zChance * zChance >= 1.0D) {
+                                            continue;
+                                        }
+                                        if (!world.getBlock(tX, tY, tZ)
+                                            .isAir(world, tX, tY, tZ)) {
+                                            continue;
+                                        }
+                                        int ranOre = random.nextInt(50);
+                                        if (ranOre < 3) {
+                                            GT_TileEntity_Ores.setOreBlock(world, eX, eY, eZ, primaryMeta, false);
+                                        } else if (ranOre < 6) {
+                                            GT_TileEntity_Ores.setOreBlock(world, eX, eY, eZ, secondaryMeta, false);
+                                        } else if (ranOre < 8) {
+                                            GT_TileEntity_Ores.setOreBlock(world, eX, eY, eZ, betweenMeta, false);
+                                        } else if (ranOre < 10) {
+                                            GT_TileEntity_Ores.setOreBlock(world, eX, eY, eZ, sporadicMeta, false);
+                                        } else {
+                                            world.setBlock(eX, eY, eZ, Blocks.end_stone, 0, 0);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
