@@ -328,14 +328,21 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
                         Random tRandom = new XSTR(this.xCoord ^ this.yCoord ^ this.zCoord);
                         long amount = (long) Math
                             .max((tIsRich ? 2 : 1), tRandom.nextInt((1 + Math.min(3, aFortune)) * (tIsRich ? 2 : 1)));
-                        rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, amount));
+                        if (amount < 1) amount = 1;
+                        for(int i = 0; i < amount; i++) {
+                            rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, 1));
+                        }
                     } else {
-                        rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, (tIsRich ? 2 : 1)));
+                        for(int i = 0; i < (tIsRich ? 2 : 1); i++) {
+                            rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, (tIsRich ? 2 : 1)));
+                        }
                     }
                 }
                 case UnifiedBlock -> {
                     // Unified ore
-                    rList.add(new ItemStack(aDroppedOre, (tIsRich ? 2 : 1), this.mMetaData % 1000));
+                    for(int i = 0; i < (tIsRich ? 2 : 1); i++) {
+                        rList.add(new ItemStack(aDroppedOre, 1, this.mMetaData % 1000));
+                    }
                 }
                 case PerDimBlock -> {
                     // Per Dimension ore
