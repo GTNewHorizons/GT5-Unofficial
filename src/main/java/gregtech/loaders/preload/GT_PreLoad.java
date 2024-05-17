@@ -55,6 +55,7 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_RecipeBuilder;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.GT_Proxy;
 import gregtech.common.tileentities.machines.long_distance.GT_MetaTileEntity_LongDistancePipelineBase;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Cleanroom;
 
@@ -280,7 +281,7 @@ public class GT_PreLoad {
                                     null, "ingot", "ingotHot", "ingotDouble", "ingotTriple", "ingotQuadruple",
                                     "ingotQuintuple", "plate", "plateDouble", "plateTriple", "plateQuadruple",
                                     "plateQuintuple", "plateDense", "stick", "lens", "round", "bolt", "screw", "ring",
-                                    "foil", "cell", "cellPlasma", "cellMolten" };
+                                    "foil", "cell", "cellPlasma", "cellMolten", "rawOre" };
                                 if (mIt == 2) tags = new String[] { "toolHeadSword", "toolHeadPickaxe",
                                     "toolHeadShovel", "toolHeadAxe", "toolHeadHoe", "toolHeadHammer", "toolHeadFile",
                                     "toolHeadSaw", "toolHeadDrill", "toolHeadChainsaw", "toolHeadWrench",
@@ -313,7 +314,7 @@ public class GT_PreLoad {
             "toolHeadUniversalSpade", "toolHeadSense", "toolHeadPlow", "toolHeadArrow", "toolHeadBuzzSaw",
             "turbineBlade", "wireFine", "gearGtSmall", "rotor", "stickLong", "springSmall", "spring", "arrowGtWood",
             "arrowGtPlastic", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gearGt", "crateGtDust",
-            "crateGtIngot", "crateGtGem", "crateGtPlate", "nanite", "cellMolten" };
+            "crateGtIngot", "crateGtGem", "crateGtPlate", "nanite", "cellMolten", "rawOre" };
 
         List<String> mMTTags = new ArrayList<>();
         oreTags.stream()
@@ -761,6 +762,21 @@ public class GT_PreLoad {
         GT_MetaTileEntity_LongDistancePipelineBase.minimalDistancePoints = tMainConfig
             .get("general", "LongDistancePipelineMinimalDistancePoints", 64)
             .getInt(64);
+        try {
+            String setting_string = tMainConfig.get(
+                "OreDropBehaviour",
+                "general",
+                "FortuneItem",
+                "Settings: \n'PerDimBlock': Sets the drop to the block variant of the ore block based on dimension, defaults to stone type, \n'UnifiedBlock': Sets the drop to the stone variant of the ore block, \n'Block': Sets the drop to the ore  mined, \n'FortuneItem': Sets the drop to the new ore item and makes it affected by fortune, \n'Item': Sets the drop to the new ore item, \nDefaults to: 'FortuneItem'")
+                .getString();
+            GT_Log.out.println("Trying to set it to: " + setting_string);
+            GT_Proxy.OreDropSystem setting = GT_Proxy.OreDropSystem.valueOf(setting_string);
+            GT_Mod.gregtechproxy.oreDropSystem = setting;
+
+        } catch (IllegalArgumentException e) {
+            GT_Log.err.println(e);
+            GT_Mod.gregtechproxy.oreDropSystem = GT_Proxy.OreDropSystem.FortuneItem;
+        }
 
         GT_Mod.gregtechproxy.mChangeHarvestLevels = GregTech_API.sMaterialProperties
             .get("havestLevel", "activateHarvestLevelChange", false); // TODO CHECK

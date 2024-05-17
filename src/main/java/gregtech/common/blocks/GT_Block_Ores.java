@@ -10,9 +10,11 @@ import java.util.Arrays;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.relauncher.Side;
@@ -125,5 +127,16 @@ public class GT_Block_Ores extends GT_Block_Ores_Abstract {
             .stdOrient()
             .build();
         return rTextures;
+    }
+
+    @Override
+    public void harvestBlock(World worldIn, EntityPlayer player, int x, int y, int z, int meta) {
+        if (!(player instanceof FakePlayer)) {
+            GT_TileEntity_Ores.shouldFortune = true;
+        }
+        super.harvestBlock(worldIn, player, x, y, z, meta);
+        if (GT_TileEntity_Ores.shouldFortune) {
+            GT_TileEntity_Ores.shouldFortune = false;
+        }
     }
 }
