@@ -325,7 +325,7 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
                     // if not shouldFortune or not isNatural then get normal drops
                     // if not shouldFortune and isNatural then get normal drops
                     // if shouldFortune and not isNatural then get normal drops
-                    if (shouldFortune && this.mNatural && aFortune < 1) {
+                    if (shouldFortune && this.mNatural && aFortune > 0) {
                         int aMinAmount = 1;
                         // Max applicable fortune
                         if (aFortune > 3) aFortune = 3;
