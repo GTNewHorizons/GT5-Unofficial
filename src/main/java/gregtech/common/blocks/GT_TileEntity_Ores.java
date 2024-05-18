@@ -319,28 +319,31 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
                 case Item -> {
                     rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, (tIsRich ? 2 : 1)));
                 }
+                // TODO: Test
                 case FortuneItem -> {
                     // if shouldFortune and isNatural then get fortune drops
                     // if not shouldFortune or not isNatural then get normal drops
                     // if not shouldFortune and isNatural then get normal drops
                     // if shouldFortune and not isNatural then get normal drops
-                    if (shouldFortune && this.mNatural) {
-                        Random tRandom = new XSTR(this.xCoord ^ this.yCoord ^ this.zCoord);
-                        long amount = (long) Math
-                            .max((tIsRich ? 2 : 1), tRandom.nextInt((1 + Math.min(3, aFortune)) * (tIsRich ? 2 : 1)));
+                    if (shouldFortune && this.mNatural && aFortune < 1) {
+                        int aMinAmount = 1;
+                        // Max applicable fortune
+                        if (aFortune > 3) aFortune = 3;
+                        long amount = (long) new Random()
+                            .nextInt((aFortune * (tIsRich ? 2 : 1) - aMinAmount) + aMinAmount);
                         if (amount < 1) amount = 1;
-                        for(int i = 0; i < amount; i++) {
+                        for (int i = 0; i < amount; i++) {
                             rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, 1));
                         }
                     } else {
-                        for(int i = 0; i < (tIsRich ? 2 : 1); i++) {
-                            rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, (tIsRich ? 2 : 1)));
+                        for (int i = 0; i < (tIsRich ? 2 : 1); i++) {
+                            rList.add(new ItemStack(aDroppedOre, 1, this.mMetaData % 1000));
                         }
                     }
                 }
                 case UnifiedBlock -> {
                     // Unified ore
-                    for(int i = 0; i < (tIsRich ? 2 : 1); i++) {
+                    for (int i = 0; i < (tIsRich ? 2 : 1); i++) {
                         rList.add(new ItemStack(aDroppedOre, 1, this.mMetaData % 1000));
                     }
                 }

@@ -14,6 +14,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.ToolDictNames;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -181,6 +182,10 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
         }
 
         if (tCrushed != null) {
+            GT_ModHandler.addShapelessCraftingRecipe(
+                GT_Utility.mul(1, tCrushed),
+                new Object[] { aOreStack, ToolDictNames.craftingToolHardHammer });
+
             GT_Values.RA.stdBuilder()
                 .itemInputs(aOreStack)
                 .itemOutputs(GT_Utility.copy(GT_Utility.copyAmount(tCrushed.stackSize, tGem), tCrushed))
