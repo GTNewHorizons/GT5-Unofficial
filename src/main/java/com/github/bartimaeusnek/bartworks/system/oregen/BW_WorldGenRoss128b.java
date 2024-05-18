@@ -212,4 +212,9 @@ public class BW_WorldGenRoss128b extends BW_OreLayer {
     public boolean isGenerationAllowed(World aWorld, int aDimensionType, int aAllowedDimensionType) {
         return aDimensionType == ConfigHandler.ross128BID;
     }
+
+    @Override
+    public boolean isGenerationAllowed(String aDimName, int aDimensionType, int aAllowedDimensionType) {
+        return aDimensionType == ConfigHandler.ross128BID;
+    }
 }

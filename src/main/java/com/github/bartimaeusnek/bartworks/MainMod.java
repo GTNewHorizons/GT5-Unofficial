@@ -62,6 +62,7 @@ import com.github.bartimaeusnek.bartworks.system.material.processingLoaders.Down
 import com.github.bartimaeusnek.bartworks.system.oredict.OreDictHandler;
 import com.github.bartimaeusnek.bartworks.util.ResultWrongSievert;
 import com.github.bartimaeusnek.bartworks.util.log.DebugLog;
+import com.github.bartimaeusnek.crossmod.galacticgreg.VoidMinerUtility;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -200,6 +201,7 @@ public final class MainMod {
 
         runOnServerStarted();
         StaticRecipeChangeLoaders.unificationRecipeEnforcer();
+        VoidMinerUtility.generateDropMaps();
     }
 
     private static boolean recipesAdded;
