@@ -62,8 +62,8 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:Nuclear-Control:2.6.2:dev") { transitive = false }
     compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Hodgepodge:2.5.4:dev") { transitive = false }
-    compileOnly('com.github.GTNewHorizons:Botania:1.11.0-GTNH:dev') { transitive = false }
-    compileOnly('com.github.GTNewHorizons:HoloInventory:2.4.9-GTNH:dev') { transitive = false }
+    compileOnly('com.github.GTNewHorizons:Botania:1.11.1-GTNH:dev') { transitive = false }
+    compileOnly('com.github.GTNewHorizons:HoloInventory:2.4.10-GTNH:dev') { transitive = false }
     compileOnly('curse.maven:minefactory-reloaded-66672:2366150') { transitive = false }
 
     compileOnly("com.google.auto.value:auto-value-annotations:1.10.1") { transitive = false }
