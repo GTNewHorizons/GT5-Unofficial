@@ -580,6 +580,11 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                 // Calculate coordinates of the top sphere
                 posTop = getExtendedFacing().getWorldOffset(new Vec3Impl(0, -14, 2)).add(posBMTE);
             }
+            // Generate node map
+            if (!getBaseMetaTileEntity().isClientSide()) {
+                teslaSimpleNodeSetAdd(this);
+                generateTeslaNodeMap(this);
+            }
             return true;
         }
         return false;
@@ -815,15 +820,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         setEUVar(0);
         energyStoredDisplay.set(0);
         energyFractionDisplay.set(0);
-    }
-
-    @Override
-    public void onFirstTick_EM(IGregTechTileEntity aBaseMetaTileEntity) {
-        super.onFirstTick_EM(aBaseMetaTileEntity);
-        if (!aBaseMetaTileEntity.isClientSide()) {
-            teslaSimpleNodeSetAdd(this);
-            generateTeslaNodeMap(this);
-        }
     }
 
     @Override
