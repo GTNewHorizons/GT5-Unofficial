@@ -29,6 +29,7 @@ import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_HatchElement;
+import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -55,8 +56,11 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_TooltipMultiB
     protected final double GAS_EFFICIENCY_COEFFICIENT = 0.04D;
     protected final double ROCKET_EFFICIENCY_COEFFICIENT = 0.005D;
     protected final double EFFICIENCY_CEILING = 1.5D;
+    protected final int HEATING_TIMER = TickTime.SECOND * 10;
 
     private long tEff;
+    private int heatingTicks;
+    private boolean isStoppingSafe;
 
     private IStructureDefinition<UniversalChemicalFuelEngine> multiDefinition = null;
 
@@ -183,9 +187,13 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_TooltipMultiB
         tt.addMachineType("Chemical Engine").addInfo("Controller block for the Chemical Engine")
                 .addInfo("BURNING BURNING BURNING").addInfo("Use combustible liquid to generate power.")
                 .addInfo("You need to supply Combustion Promoter to keep it running.")
-                .addInfo("This engine will consume all the fuel and combustion promoter in the hatch every second.")
+                .addInfo("It will consume all the fuel and promoter in the hatch every second.")
+                .addInfo("If the Dynamo Hatch's buffer fills up, the machine will stop.")
+                .addInfo("When turned on, there's 10-second period where the machine will not stop.")
+                .addInfo("Even if it doesn't stop, all the fuel in the hatch will be consumed.")
                 .addInfo("The efficiency is determined by the proportion of Combustion Promoter to fuel.")
                 .addInfo("The proportion is bigger, and the efficiency will be higher.")
+                .addInfo("Start machine with power button to force structure check.")
                 .addInfo("It creates sqrt(Current Output Power) pollution every second")
                 .addInfo(
                         "If you forget to supply Combustion Promoter, this engine will swallow all the fuel "
@@ -195,9 +203,10 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_TooltipMultiB
                                 + ".")
                 .addInfo("The efficiency is up to 150%.").addInfo("The structure is too complex!")
                 .addInfo(BLUE_PRINT_INFO).addSeparator().beginStructureBlock(5, 4, 9, false)
-                .addMaintenanceHatch("Hint block with dot 1").addMufflerHatch("Hint block with dot 2")
-                .addInputHatch("Hint block with dot 3").addDynamoHatch("Hint block with dot 4")
-                .toolTipFinisher("Good Generator");
+                .addMaintenanceHatch("Hint block with dot 1")
+                .addMufflerHatch("Hint block with dot 2 (fill all slots with mufflers)")
+                .addInputHatch("Hint block with dot 3 (fill all slots with input hatches)")
+                .addDynamoHatch("Hint block with dot 4").toolTipFinisher("Good Generator");
         return tt;
     }
 
@@ -243,8 +252,23 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_TooltipMultiB
     }
 
     @Override
+    public void stopMachine() {
+        // Reset the counter for heating, so that it works again when the machine restarts
+        heatingTicks = 0;
+        super.stopMachine();
+    }
+
+    @Override
     public boolean onRunningTick(ItemStack stack) {
         super.onRunningTick(stack);
+        // Counts ticks up to the defined timer (200 ticks, 10 seconds)
+        // The multiblock will not stop due to excess energy during this time
+        // Machine used to explode in the past, this timer was first made to prevent that
+        if (heatingTicks < HEATING_TIMER) {
+            heatingTicks++;
+            isStoppingSafe = true;
+        } else if (isStoppingSafe) isStoppingSafe = false;
+
         if (this.getBaseMetaTileEntity().isServerSide()) {
             addAutoEnergy();
         }
@@ -275,13 +299,17 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_TooltipMultiB
             GT_MetaTileEntity_Hatch_Dynamo tHatch = mDynamoHatches.get(0);
             if (tHatch.maxEUOutput() * tHatch.maxAmperesOut() >= exEU) {
                 tHatch.setEUVar(Math.min(tHatch.maxEUStore(), tHatch.getBaseMetaTileEntity().getStoredEU() + exEU));
-            } else tHatch.doExplosion(tHatch.maxEUOutput());
+            } else if (!isStoppingSafe) {
+                stopMachine();
+            }
         }
         if (!eDynamoMulti.isEmpty()) {
             GT_MetaTileEntity_Hatch_DynamoMulti tHatch = eDynamoMulti.get(0);
             if (tHatch.maxEUOutput() * tHatch.maxAmperesOut() >= exEU) {
                 tHatch.setEUVar(Math.min(tHatch.maxEUStore(), tHatch.getBaseMetaTileEntity().getStoredEU() + exEU));
-            } else tHatch.doExplosion(tHatch.maxEUOutput());
+            } else if (!isStoppingSafe) {
+                stopMachine();
+            }
         }
     }
 
