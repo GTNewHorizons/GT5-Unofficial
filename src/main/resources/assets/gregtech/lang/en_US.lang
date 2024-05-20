@@ -222,9 +222,9 @@ gt.recipe.largeboilerfakefuels=Large Boiler
 gt.recipe.nanoforge=Nano Forge
 gt.recipe.pcbfactory=PCB Factory
 gt.recipe.ic2nuke=Nuclear Fission
-gt.recipe.purificationplantgrade1=Clarifier
-gt.recipe.purificationplantgrade2=Flocculation
-gt.recipe.purificationplantgrade4=pH Neutralization
+gt.recipe.purificationplantclarifier=Clarifier
+gt.recipe.purificationplantflocculation=Flocculation
+gt.recipe.purificationplantphadjustment=pH Neutralization
 
 # Recipe categories
 gt.recipe.category.arc_furnace_recycling=Arc Furnace Recycling

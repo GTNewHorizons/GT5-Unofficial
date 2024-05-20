@@ -1160,15 +1160,15 @@ public final class RecipeMaps {
                 .<GT_Recipe, Integer>comparing(recipe -> recipe.getMetadataOrDefault(PCBFactoryTierKey.INSTANCE, 1))
                 .thenComparing(GT_Recipe::compareTo))
         .build();
-    public static final RecipeMap<RecipeMapBackend> purificationPlantGrade1Recipes = RecipeMapBuilder
-        .of("gt.recipe.purificationplantgrade1")
+    public static final RecipeMap<RecipeMapBackend> purificationClarifierRecipes = RecipeMapBuilder
+        .of("gt.recipe.purificationplantclarifier")
         .maxIO(1, 4, 1, 1)
         .minInputs(0, 1)
         .frontend(PurificationUnitClarifierFrontend::new)
         .disableOptimize()
         .build();
-    public static final RecipeMap<RecipeMapBackend> purificationPlantGrade2Recipes = RecipeMapBuilder
-        .of("gt.recipe.purificationplantgrade2")
+    public static final RecipeMap<RecipeMapBackend> purificationFlocculationRecipes = RecipeMapBuilder
+        .of("gt.recipe.purificationplantflocculation")
         .maxIO(0, 3, 2, 2)
         .minInputs(0, 1)
         .progressBar(GT_UITextures.PROGRESSBAR_BATH)
@@ -1181,8 +1181,8 @@ public final class RecipeMaps {
         .disableOptimize()
         .build();
 
-    public static final RecipeMap<RecipeMapBackend> purificationPlantGrade4Recipes = RecipeMapBuilder
-        .of("gt.recipe.purificationplantgrade4")
+    public static final RecipeMap<RecipeMapBackend> purificationPhAdjustmentRecipes = RecipeMapBuilder
+        .of("gt.recipe.purificationplantphadjustment")
         .maxIO(0, 0, 1, 1)
         .minInputs(0, 1)
         .progressBar(GT_UITextures.PROGRESSBAR_MIXER)

@@ -236,7 +236,7 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.purificationPlantGrade4Recipes;
+        return RecipeMaps.purificationPhAdjustmentRecipes;
     }
 
     @NotNull

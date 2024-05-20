@@ -5,9 +5,9 @@ import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
-import static gregtech.api.recipe.RecipeMaps.purificationPlantGrade1Recipes;
-import static gregtech.api.recipe.RecipeMaps.purificationPlantGrade2Recipes;
-import static gregtech.api.recipe.RecipeMaps.purificationPlantGrade4Recipes;
+import static gregtech.api.recipe.RecipeMaps.purificationClarifierRecipes;
+import static gregtech.api.recipe.RecipeMaps.purificationFlocculationRecipes;
+import static gregtech.api.recipe.RecipeMaps.purificationPhAdjustmentRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import net.minecraft.init.Items;
@@ -41,12 +41,14 @@ public class GT_PurifiedWaterRecipes {
             .duration(duration)
             .eut(TierEU.RECIPE_LuV)
             .metadata(BASE_CHANCE, 70.0f)
-            .addTo(purificationPlantGrade1Recipes);
+            .addTo(purificationClarifierRecipes);
 
-        // Grade 2 - Flocculation.
+        // Grade 2 - Ozonation
+
+        // Grade 3 - Flocculation.
         GT_Values.RA.stdBuilder()
-            .fluidInputs(Materials.Grade1PurifiedWater.getFluid(1000L))
-            .fluidOutputs(Materials.Grade2PurifiedWater.getFluid(900L))
+            .fluidInputs(Materials.Grade2PurifiedWater.getFluid(1000L))
+            .fluidOutputs(Materials.Grade3PurifiedWater.getFluid(900L))
             .ignoreCollision()
             .itemOutputs(
                 new ItemStack(Items.clay_ball, 1),
@@ -56,9 +58,9 @@ public class GT_PurifiedWaterRecipes {
             .duration(duration)
             .eut(TierEU.RECIPE_LuV)
             .metadata(BASE_CHANCE, 1 * 10.0f)
-            .addTo(purificationPlantGrade2Recipes);
+            .addTo(purificationFlocculationRecipes);
 
-        // Add recipe to reprocess flocculated waste water
+        // Add recipe to reprocess flocculation waste water
 
         // Diluted is twice what chem balance would suggest, but it is 2:1 with hydrochloric acid which makes it
         // correct I believe.
@@ -78,7 +80,7 @@ public class GT_PurifiedWaterRecipes {
             .duration(duration)
             .eut(TierEU.RECIPE_ZPM)
             .metadata(BASE_CHANCE, 0.0f)
-            .addTo(purificationPlantGrade4Recipes);
+            .addTo(purificationPhAdjustmentRecipes);
 
         // Activated Carbon Line
         GT_Values.RA.stdBuilder()

@@ -140,7 +140,7 @@ public class GT_MetaTileEntity_PurificationUnitClarifier
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.purificationPlantGrade1Recipes;
+        return RecipeMaps.purificationClarifierRecipes;
     }
 
     @NotNull

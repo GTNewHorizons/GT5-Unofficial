@@ -438,7 +438,7 @@ public class GT_MetaTileEntity_PurificationUnitFlocculation
 
     @Override
     public int getWaterTier() {
-        return 2;
+        return 3;
     }
 
     @Override
@@ -448,7 +448,7 @@ public class GT_MetaTileEntity_PurificationUnitFlocculation
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.purificationPlantGrade2Recipes;
+        return RecipeMaps.purificationFlocculationRecipes;
     }
 
     @Override
