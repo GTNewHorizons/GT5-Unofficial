@@ -67,10 +67,10 @@ public class PurificationUnitFlocculatorFrontend extends PurificationUnitRecipeM
             currentTip.add(
                 "+" + GT_MetaTileEntity_PurificationUnitFlocculation.SUCCESS_PER_LEVEL
                     + "%/"
-                    + GT_MetaTileEntity_PurificationUnitFlocculation.IRON_III_PER_LEVEL
+                    + GT_MetaTileEntity_PurificationUnitFlocculation.INPUT_CHEMICAL_PER_LEVEL
                     + "L");
         } else if (stack
-            .isItemEqual(GT_Utility.getFluidDisplayStack(Materials.FerrousWastewater.getFluid(1000L), false))) {
+            .isItemEqual(GT_Utility.getFluidDisplayStack(Materials.FlocculationWasteLiquid.getFluid(1000L), false))) {
                 currentTip.add("Returned in amount equivalent to consumed flocculant.");
             }
         return super.handleNEIItemTooltip(stack, currentTip, neiCachedRecipe);
@@ -91,7 +91,7 @@ public class PurificationUnitFlocculatorFrontend extends PurificationUnitRecipeM
         // Display waste output
         neiCachedRecipe.mOutputs.add(
             new PositionedStack(
-                GT_Utility.getFluidDisplayStack(Materials.FerrousWastewater.getFluid(100000L), true),
+                GT_Utility.getFluidDisplayStack(Materials.FlocculationWasteLiquid.getFluid(100000L), true),
                 147,
                 48,
                 false));

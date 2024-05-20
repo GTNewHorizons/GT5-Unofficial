@@ -58,14 +58,14 @@ public class GT_PurifiedWaterRecipes {
             .metadata(BASE_CHANCE, 1 * 10.0f)
             .addTo(purificationPlantGrade2Recipes);
 
-        // Add recipe to reprocess ferrous waste water
+        // Add recipe to reprocess flocculated waste water
 
         // Diluted is twice what chem balance would suggest, but it is 2:1 with hydrochloric acid which makes it
         // correct I believe.
         GT_Values.RA.stdBuilder()
-            .fluidInputs(Materials.FerrousWastewater.getFluid(1000L))
-            .itemOutputs(Materials.Iron.getDust(1))
-            .fluidOutputs(Materials.Water.getFluid(1000L), Materials.DilutedHydrochloricAcid.getFluid(6000L))
+            .fluidInputs(Materials.FlocculationWasteLiquid.getFluid(1000L))
+            .itemOutputs(Materials.Aluminium.getDust(2))
+            .fluidOutputs(Materials.Oxygen.getGas(3000L), Materials.DilutedHydrochloricAcid.getFluid(6000L))
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(distillationTowerRecipes);

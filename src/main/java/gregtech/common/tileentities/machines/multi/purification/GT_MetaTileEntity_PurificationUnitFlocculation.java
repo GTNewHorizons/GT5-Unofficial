@@ -66,11 +66,14 @@ public class GT_MetaTileEntity_PurificationUnitFlocculation
     private static final int STRUCTURE_Y_OFFSET = 3;
     private static final int STRUCTURE_Z_OFFSET = 0;
 
-    public static final long IRON_III_PER_LEVEL = 100000;
-    private static final long WASTE_WATER_PER_LEVEL = IRON_III_PER_LEVEL;
+    public static final long INPUT_CHEMICAL_PER_LEVEL = 100000;
+    private static final long WASTE_WATER_PER_LEVEL = INPUT_CHEMICAL_PER_LEVEL;
     public static final float SUCCESS_PER_LEVEL = 10.0f;
 
     private static final int CONSUME_INTERVAL = 20;
+
+    private static final Materials INPUT_CHEMICAL = Materials.PolyAluminiumChloride;
+    private static final Materials OUTPUT_WASTE = Materials.FlocculationWasteLiquid;
 
     private long inputFluidConsumed = 0;
 
@@ -244,30 +247,30 @@ public class GT_MetaTileEntity_PurificationUnitFlocculation
             .addInfo("Filters out smaller dusts, algae and microplastics by mixing in chemicals.")
             .addInfo(
                 "Supply with " + EnumChatFormatting.WHITE
-                    + "Iron III Chloride "
+                    + INPUT_CHEMICAL.mLocalizedName
                     + EnumChatFormatting.GRAY
-                    + "to operate.")
+                    + " to operate.")
             .addInfo(
                 "Outputs " + EnumChatFormatting.WHITE
-                    + "Ferrous Wastewater "
+                    + OUTPUT_WASTE.mLocalizedName
                     + EnumChatFormatting.GRAY
-                    + "that can be recycled.")
+                    + " that can be recycled.")
             .addSeparator()
             .addInfo(
                 "During operation, will consume ALL " + EnumChatFormatting.WHITE
-                    + "Iron III Chloride "
+                    + INPUT_CHEMICAL.mLocalizedName
                     + EnumChatFormatting.GRAY
-                    + "in the input hatch.")
+                    + " in the input hatch.")
             .addInfo(
                 "At the end of the recipe, for every " + EnumChatFormatting.RED
-                    + IRON_III_PER_LEVEL
+                    + INPUT_CHEMICAL_PER_LEVEL
                     + "L "
                     + EnumChatFormatting.GRAY
                     + "of "
                     + EnumChatFormatting.WHITE
-                    + "Iron III Chloride "
+                    + INPUT_CHEMICAL.mLocalizedName
                     + EnumChatFormatting.GRAY
-                    + "consumed")
+                    + " consumed")
             .addInfo(
                 "gain an additive " + EnumChatFormatting.RED
                     + SUCCESS_PER_LEVEL
@@ -276,7 +279,7 @@ public class GT_MetaTileEntity_PurificationUnitFlocculation
                     + " increase to success. If total fluid supplied is not")
             .addInfo(
                 "a multiple of " + EnumChatFormatting.RED
-                    + IRON_III_PER_LEVEL
+                    + INPUT_CHEMICAL_PER_LEVEL
                     + "L"
                     + EnumChatFormatting.GRAY
                     + ", a penalty to success is applied using the following formula:")
@@ -379,7 +382,7 @@ public class GT_MetaTileEntity_PurificationUnitFlocculation
         // NOTE: If this process ever PRODUCES excess chlorine, there is a recipe bug.
         int levels = calculateBoostLevels();
         long amount = levels * WASTE_WATER_PER_LEVEL;
-        this.addFluidOutputs(new FluidStack[] { Materials.FerrousWastewater.getFluid(amount) });
+        this.addFluidOutputs(new FluidStack[] { OUTPUT_WASTE.getFluid(amount) });
         this.inputFluidConsumed = 0;
     }
 
@@ -398,9 +401,9 @@ public class GT_MetaTileEntity_PurificationUnitFlocculation
             List<FluidStack> fluids = this.getStoredFluids();
             for (int i = 0; i < fluids.size(); ++i) {
                 FluidStack fluid = fluids.get(i);
-                // If this FluidStack is Iron III chloride, consume it ALL
+                // If this FluidStack is the input chemical, consume it all
                 if (fluid.getFluid()
-                    .equals(Materials.IronIIIChloride.mFluid)) {
+                    .equals(INPUT_CHEMICAL.mFluid)) {
                     this.inputFluidConsumed += fluid.amount;
                     this.depleteInput(fluid);
                 }
@@ -409,18 +412,18 @@ public class GT_MetaTileEntity_PurificationUnitFlocculation
     }
 
     private int calculateBoostLevels() {
-        return (int) Math.floor((float) this.inputFluidConsumed / (float) IRON_III_PER_LEVEL);
+        return (int) Math.floor((float) this.inputFluidConsumed / (float) INPUT_CHEMICAL_PER_LEVEL);
     }
 
     @Override
     public float calculateFinalSuccessChance() {
         int levels = calculateBoostLevels();
-        long targetAmount = levels * IRON_III_PER_LEVEL;
+        long targetAmount = levels * INPUT_CHEMICAL_PER_LEVEL;
         long overflow = inputFluidConsumed - targetAmount;
         float boost = SUCCESS_PER_LEVEL * levels;
         if (overflow > 0) {
             // Exponential penalty multiplier based on percentage overflow
-            float overflowPct = (float) overflow / IRON_III_PER_LEVEL;
+            float overflowPct = (float) overflow / INPUT_CHEMICAL_PER_LEVEL;
             float penaltyMultiplier = (float) Math.pow(2.0f, overflowPct * -10.0);
             return Math.max(0.0f, (this.currentRecipeChance + boost) * penaltyMultiplier);
         } else {
@@ -451,7 +454,11 @@ public class GT_MetaTileEntity_PurificationUnitFlocculation
     @Override
     public String[] getInfoData() {
         ArrayList<String> infoData = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        infoData.add("Iron III Chloride consumed this cycle: " + EnumChatFormatting.RED + inputFluidConsumed + "L");
+        infoData.add(
+            INPUT_CHEMICAL.mLocalizedName + " consumed this cycle: "
+                + EnumChatFormatting.RED
+                + inputFluidConsumed
+                + "L");
         return infoData.toArray(new String[] {});
     }
 
