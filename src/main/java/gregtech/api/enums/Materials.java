@@ -942,6 +942,13 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         .setName("PolyaluminiumChloride")
         .constructMaterial();
 
+    public static Materials Ozone = new MaterialBuilder(568, TextureSet.SET_FLUID, "Ozone")
+        .addGas()
+        .addCell()
+        .setRGB(190, 244, 250)
+        .setName("Ozone")
+        .setMaterialList(new MaterialStack(Oxygen, 3))
+        .constructMaterial();
 
     // spotless:on
 
