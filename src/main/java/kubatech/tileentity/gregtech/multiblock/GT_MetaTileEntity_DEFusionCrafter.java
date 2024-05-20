@@ -227,7 +227,7 @@ public class GT_MetaTileEntity_DEFusionCrafter extends KubaTechGTMultiBlockBase<
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
                 return recipe.mSpecialValue <= mTierCasing ? CheckRecipeResultRegistry.SUCCESSFUL
-                    : CheckRecipeResultRegistry.NO_RECIPE;
+                    : CheckRecipeResultRegistry.insufficientMachineTier(recipe.mSpecialValue);
             }
 
             @Override
@@ -276,4 +276,8 @@ public class GT_MetaTileEntity_DEFusionCrafter extends KubaTechGTMultiBlockBase<
         return true;
     }
 
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
+    }
 }
