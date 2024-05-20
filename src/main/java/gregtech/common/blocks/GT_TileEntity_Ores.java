@@ -12,7 +12,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+
+import org.jetbrains.annotations.NotNull;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
@@ -20,18 +21,20 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
+import gregtech.api.interfaces.tileentity.IAllSidedTexturedTileEntity;
 import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 
-public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntity {
+public class GT_TileEntity_Ores extends TileEntity implements IAllSidedTexturedTileEntity {
 
     public short mMetaData = 0;
     public boolean mNatural = false;
     public boolean mBlocked = true;
     public boolean mBlockedChecked = false;
+    private short mMetadataForCachedTexture = -1;
+    private ITexture[] mCachedTexture;
 
     public static byte getHarvestData(short aMetaData, int aBaseBlockHarvestLevel) {
         Materials aMaterial = GregTech_API.sGeneratedMaterials[(aMetaData % 1000)];
@@ -388,9 +391,17 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
     }
 
     @Override
-    public ITexture[] getTexture(Block aBlock, ForgeDirection side) {
+    public ITexture[] getTexture(Block aBlock) {
+        if (mMetadataForCachedTexture == mMetaData && mCachedTexture != null) return mCachedTexture;
+
+        mMetadataForCachedTexture = mMetaData;
+        mCachedTexture = getTextureInternal(aBlock);
+        return mCachedTexture;
+    }
+
+    private ITexture @NotNull [] getTextureInternal(Block aBlock) {
         Materials aMaterial = GregTech_API.sGeneratedMaterials[(this.mMetaData % 1000)];
-        if ((aMaterial != null) && (this.mMetaData < 32000)) {
+        if ((aMaterial != null) && (this.mMetaData < 32000) && (aBlock instanceof GT_Block_Ores_Abstract)) {
             ITexture iTexture = TextureFactory.builder()
                 .addIcon(
                     aMaterial.mIconSet.mTextures[this.mMetaData / 16000 == 0 ? OrePrefixes.ore.mTextureIndex
@@ -398,10 +409,8 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
                 .setRGBA(aMaterial.mRGBa)
                 .stdOrient()
                 .build();
-            if (aBlock instanceof GT_Block_Ores_Abstract) {
-                return new ITexture[] {
-                    ((GT_Block_Ores_Abstract) aBlock).getTextureSet()[((this.mMetaData / 1000) % 16)], iTexture };
-            }
+            return new ITexture[] { ((GT_Block_Ores_Abstract) aBlock).getTextureSet()[((this.mMetaData / 1000) % 16)],
+                iTexture };
         }
         return new ITexture[] { TextureFactory.of(Blocks.stone, 0), TextureFactory.builder()
             .addIcon(SET_NONE.mTextures[OrePrefixes.ore.mTextureIndex])
