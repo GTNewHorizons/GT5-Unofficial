@@ -317,6 +317,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.PUMP_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_PLANT_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_CLARIFIER;
 import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_FLOCCULATOR;
+import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_OZONATION;
 import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_PH_ADJUSTMENT;
 import static gregtech.api.enums.MetaTileEntityIDs.PYROLYSE_OVEN_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.QUADRUPLE_INPUT_HATCHES_EV;
@@ -589,6 +590,7 @@ import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_Hatch
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationPlant;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitClarifier;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitFlocculation;
+import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitOzonation;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitPhAdjustment;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_pHSensor;
 import gregtech.common.tileentities.machines.steam.GT_MetaTileEntity_AlloySmelter_Bronze;
@@ -872,6 +874,11 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 PURIFICATION_UNIT_PH_ADJUSTMENT.ID,
                 "multimachine.purificationunitphadjustment",
                 "pH Adjustment Purification Unit").getStackForm(1L));
+        ItemList.Machine_Multi_PurificationUnitOzonation.set(
+            new GT_MetaTileEntity_PurificationUnitOzonation(
+                PURIFICATION_UNIT_OZONATION.ID,
+                "multimachine.purificationunitozonation",
+                "Ozonation Purification Unit").getStackForm(1L));
         ItemList.Machine_Multi_LargeBoiler_Bronze.set(
             new GT_MetaTileEntity_LargeBoiler_Bronze(
                 LARGE_BRONZE_BOILER_CONTROLLER.ID,
