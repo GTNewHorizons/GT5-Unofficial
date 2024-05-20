@@ -4,6 +4,7 @@ import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
+import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.purificationClarifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.purificationFlocculationRecipes;
@@ -22,6 +23,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationPlant;
 
 public class GT_PurifiedWaterRecipes {
@@ -42,45 +44,6 @@ public class GT_PurifiedWaterRecipes {
             .eut(TierEU.RECIPE_LuV)
             .metadata(BASE_CHANCE, 70.0f)
             .addTo(purificationClarifierRecipes);
-
-        // Grade 2 - Ozonation
-
-        // Grade 3 - Flocculation.
-        GT_Values.RA.stdBuilder()
-            .fluidInputs(Materials.Grade2PurifiedWater.getFluid(1000L))
-            .fluidOutputs(Materials.Grade3PurifiedWater.getFluid(900L))
-            .ignoreCollision()
-            .itemOutputs(
-                new ItemStack(Items.clay_ball, 1),
-                Materials.QuartzSand.getDust(1),
-                Materials.PolyvinylChloride.getNuggets(1))
-            .outputChances(1000, 500, 100)
-            .duration(duration)
-            .eut(TierEU.RECIPE_LuV)
-            .metadata(BASE_CHANCE, 1 * 10.0f)
-            .addTo(purificationFlocculationRecipes);
-
-        // Add recipe to reprocess flocculation waste water
-
-        // Diluted is twice what chem balance would suggest, but it is 2:1 with hydrochloric acid which makes it
-        // correct I believe.
-        GT_Values.RA.stdBuilder()
-            .fluidInputs(Materials.FlocculationWasteLiquid.getFluid(1000L))
-            .itemOutputs(Materials.Aluminium.getDust(2))
-            .fluidOutputs(Materials.Oxygen.getGas(3000L), Materials.DilutedHydrochloricAcid.getFluid(6000L))
-            .duration(1 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(distillationTowerRecipes);
-
-        // Grade 4 - pH adjustment
-        GT_Values.RA.stdBuilder()
-            .fluidInputs(Materials.Grade3PurifiedWater.getFluid(1000L))
-            .fluidOutputs(Materials.Grade4PurifiedWater.getFluid(900L))
-            .ignoreCollision()
-            .duration(duration)
-            .eut(TierEU.RECIPE_ZPM)
-            .metadata(BASE_CHANCE, 0.0f)
-            .addTo(purificationPhAdjustmentRecipes);
 
         // Activated Carbon Line
         GT_Values.RA.stdBuilder()
@@ -115,8 +78,34 @@ public class GT_PurifiedWaterRecipes {
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
 
-        // 2 Al(OH)3 + 3 HCl -> Al2(OH)3 Cl3 + 3 H2O
+        // Grade 2 - Ozonation
+        for (ItemStack lens : GT_OreDictUnificator.getOres("craftingLensBlue")) {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(GT_Utility.copyAmount(0, lens))
+                .noOptimize()
+                .fluidInputs(Materials.Air.getGas(10000L))
+                .fluidOutputs(Materials.Ozone.getGas(1000L))
+                .duration(10 * SECONDS)
+                .eut(TierEU.RECIPE_LuV)
+                .addTo(laserEngraverRecipes);
+        }
 
+        // Grade 3 - Flocculation.
+        GT_Values.RA.stdBuilder()
+            .fluidInputs(Materials.Grade2PurifiedWater.getFluid(1000L))
+            .fluidOutputs(Materials.Grade3PurifiedWater.getFluid(900L))
+            .ignoreCollision()
+            .itemOutputs(
+                new ItemStack(Items.clay_ball, 1),
+                Materials.QuartzSand.getDust(1),
+                Materials.PolyvinylChloride.getNuggets(1))
+            .outputChances(1000, 500, 100)
+            .duration(duration)
+            .eut(TierEU.RECIPE_LuV)
+            .metadata(BASE_CHANCE, 1 * 10.0f)
+            .addTo(purificationFlocculationRecipes);
+
+        // 2 Al(OH)3 + 3 HCl -> Al2(OH)3 Cl3 + 3 H2O
         GT_Values.RA.stdBuilder()
             .itemInputs(Materials.Aluminiumhydroxide.getDust(8))
             .fluidInputs(Materials.HydrochloricAcid.getFluid(3000L))
@@ -124,5 +113,25 @@ public class GT_PurifiedWaterRecipes {
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(multiblockChemicalReactorRecipes);
+
+        // Diluted is twice what chem balance would suggest, but it is 2:1 with hydrochloric acid which makes it
+        // correct I believe.
+        GT_Values.RA.stdBuilder()
+            .fluidInputs(Materials.FlocculationWasteLiquid.getFluid(1000L))
+            .itemOutputs(Materials.Aluminium.getDust(2))
+            .fluidOutputs(Materials.Oxygen.getGas(3000L), Materials.DilutedHydrochloricAcid.getFluid(6000L))
+            .duration(1 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(distillationTowerRecipes);
+
+        // Grade 4 - pH adjustment
+        GT_Values.RA.stdBuilder()
+            .fluidInputs(Materials.Grade3PurifiedWater.getFluid(1000L))
+            .fluidOutputs(Materials.Grade4PurifiedWater.getFluid(900L))
+            .ignoreCollision()
+            .duration(duration)
+            .eut(TierEU.RECIPE_ZPM)
+            .metadata(BASE_CHANCE, 0.0f)
+            .addTo(purificationPhAdjustmentRecipes);
     }
 }
