@@ -107,13 +107,6 @@ public class VoidMinerUtility {
         public Map<GT_Utility.ItemId, Float> getInternalMap() {
             return internalMap;
         }
-
-        public DropMap copy() {
-            DropMap result = new DropMap();
-            result.internalMap.putAll(internalMap);
-            result.totalWeight = totalWeight;
-            return result;
-        }
     }
 
     public static final Map<Integer, DropMap> dropMapsByDimId = new HashMap<>();
@@ -130,10 +123,11 @@ public class VoidMinerUtility {
      * Computes the ores of the dims
      */
     public static void generateDropMaps() {
-        // vanilla dims or TF
+        // vanilla dims
         dropMapsByDimId.put(-1, getDropMapVanilla(-1));
         dropMapsByDimId.put(0, getDropMapVanilla(0));
         dropMapsByDimId.put(1, getDropMapVanilla(1));
+        // Twilight Forest
         dropMapsByDimId.put(7, getDropMapVanilla(7));
 
         // ross dims

@@ -23,7 +23,6 @@ import static gregtech.api.enums.GT_Values.VN;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import net.minecraft.block.Block;
@@ -47,6 +46,7 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_DrillerBase
 public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_DrillerBase {
 
     private VoidMinerUtility.DropMap dropMap = null;
+    private VoidMinerUtility.DropMap extraDropMap = null;
     private float totalWeight;
     private int multiplier = 1;
 
@@ -172,6 +172,10 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
                 currentWeight += entry.getValue();
                 if (randomNumber < currentWeight) return entry.getKey().getItemStack();
             }
+            for (Map.Entry<GT_Utility.ItemId, Float> entry : this.extraDropMap.getInternalMap().entrySet()) {
+                currentWeight += entry.getValue();
+                if (randomNumber < currentWeight) return entry.getKey().getItemStack();
+            }
         }
     }
 
@@ -224,9 +228,9 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
      * @param id the specified dim id
      */
     private void handleExtraDrops(int id) {
-        Optional.ofNullable(VoidMinerUtility.extraDropsDimMap.get(id)).ifPresent(
-                extraDropMap -> extraDropMap.getInternalMap()
-                        .forEach((ItemId, weight) -> this.dropMap.addDrop(ItemId.getItemStack(), weight)));
+        if (VoidMinerUtility.extraDropsDimMap.containsKey(id)) {
+            extraDropMap = VoidMinerUtility.extraDropsDimMap.get(id);
+        }
     }
 
     /**
@@ -236,13 +240,13 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
      */
     private void handleModDimDef(int id) {
         if (VoidMinerUtility.dropMapsByDimId.containsKey(id)) {
-            this.dropMap = VoidMinerUtility.dropMapsByDimId.get(id).copy();
+            this.dropMap = VoidMinerUtility.dropMapsByDimId.get(id);
         } else {
             String chunkProviderName = ((ChunkProviderServer) this.getBaseMetaTileEntity().getWorld()
                     .getChunkProvider()).currentChunkProvider.getClass().getName();
 
             if (VoidMinerUtility.dropMapsByChunkProviderName.containsKey(chunkProviderName)) {
-                this.dropMap = VoidMinerUtility.dropMapsByChunkProviderName.get(chunkProviderName).copy();
+                this.dropMap = VoidMinerUtility.dropMapsByChunkProviderName.get(chunkProviderName);
             }
         }
     }
@@ -253,10 +257,11 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
      */
     private void calculateDropMap() {
         this.dropMap = new VoidMinerUtility.DropMap();
+        this.extraDropMap = new VoidMinerUtility.DropMap();
         int id = this.getBaseMetaTileEntity().getWorld().provider.dimensionId;
         this.handleModDimDef(id);
         this.handleExtraDrops(id);
-        this.totalWeight = dropMap.getTotalWeight();
+        this.totalWeight = dropMap.getTotalWeight() + extraDropMap.getTotalWeight();
     }
 
     /**
