@@ -9,7 +9,11 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICA
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
+import java.util.Arrays;
+
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -26,19 +30,21 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_Utility;
 
 public class GT_MetaTileEntity_PurificationUnitOzonation
     extends GT_MetaTileEntity_PurificationUnitBase<GT_MetaTileEntity_PurificationUnitOzonation>
     implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_MAIN_SURVIVAL = "main_survival";
 
     private static final String[][] structure = new String[][] {
         // spotless:off
         { "         ", "         ", "      A  ", "      A  ", "     AAA ", "     AAA ", "     A A ", "     A A ", "     A A ", "     A~A " },
-        { "      A  ", "      A  ", "     A A ", "     A A ", "BBBBA   A", "BDDBA   A", "BBBBA D A", "E   A D A", "E   A D A", "E   AAAAA" },
-        { "     AAA ", "     A A ", "    A   A", "    A   A", "BDDBA   A", "B  BA   A", "BBBBA   A", "  C A   A", "  CCA   A", "    AAAAA" },
-        { "      A  ", "      A  ", "     A A ", "     A A ", "BBBBA   A", "BDDBA   A", "BBBBA   A", "E   A   A", "E   A   A", "E   AAAAA" },
+        { "      A  ", "      A  ", "     A A ", "     A A ", "BBBBA   A", "BDDBA   A", "BBBBA D A", "E   AWDWA", "E   AWDWA", "E   AAAAA" },
+        { "     AAA ", "     A A ", "    A   A", "    A   A", "BDDBA   A", "B  BA   A", "BBBBA   A", "  C AWWWA", "  CCAWWWA", "    AAAAA" },
+        { "      A  ", "      A  ", "     A A ", "     A A ", "BBBBA   A", "BDDBA   A", "BBBBA   A", "E   AWWWA", "E   AWWWA", "E   AAAAA" },
         { "         ", "         ", "      A  ", "      A  ", "     AAA ", "     AAA ", "     AAA ", "     AAA ", "     AAA ", "     AAA " } };
     // spotless:on
 
@@ -52,15 +58,24 @@ public class GT_MetaTileEntity_PurificationUnitOzonation
     private static final IStructureDefinition<GT_MetaTileEntity_PurificationUnitOzonation> STRUCTURE_DEFINITION = StructureDefinition
         .<GT_MetaTileEntity_PurificationUnitOzonation>builder()
         .addShape(STRUCTURE_PIECE_MAIN, structure)
-        // placeholder: solid steel
+        .addShape(
+            STRUCTURE_PIECE_MAIN_SURVIVAL,
+            Arrays.stream(structure)
+                .map(
+                    sa -> Arrays.stream(sa)
+                        .map(s -> s.replaceAll("W", " "))
+                        .toArray(String[]::new))
+                .toArray(String[][]::new))
+        // Ozonation Casing (placeholder name)
         .addElement('A', ofBlock(GregTech_API.sBlockCasings9, 9))
-        // placeholder: iridium
+        // High Pressure Resistant Casing (possibly placeholder name)
         .addElement('B', ofBlock(GregTech_API.sBlockCasings9, 8))
         // PTFE pipe casing
         .addElement('C', ofBlock(GregTech_API.sBlockCasings8, 1))
         // Any tinted industrial glass
         .addElement('D', ofBlockAnyMeta(GregTech_API.sBlockTintedGlass))
         .addElement('E', ofFrame(Materials.TungstenSteel))
+        .addElement('W', ofBlock(Blocks.water, 0))
         .build();
 
     public GT_MetaTileEntity_PurificationUnitOzonation(int aID, String aName, String aNameRegional) {
@@ -111,7 +126,7 @@ public class GT_MetaTileEntity_PurificationUnitOzonation
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        return survivialBuildPiece(
+        int built = survivialBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             OFFSET_X,
@@ -120,6 +135,14 @@ public class GT_MetaTileEntity_PurificationUnitOzonation
             elementBudget,
             env,
             true);
+
+        if (built == -1) {
+            GT_Utility.sendChatToPlayer(
+                env.getActor(),
+                EnumChatFormatting.GREEN + "Auto placing done ! Now go place the water yourself !");
+            return 0;
+        }
+        return built;
     }
 
     @Override
