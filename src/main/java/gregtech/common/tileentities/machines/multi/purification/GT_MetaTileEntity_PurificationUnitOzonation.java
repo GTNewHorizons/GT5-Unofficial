@@ -43,7 +43,7 @@ public class GT_MetaTileEntity_PurificationUnitOzonation
     // spotless:on
 
     // placeholder
-    private static final int MAIN_CASING_INDEX = getTextureIndex(GregTech_API.sBlockCasings2, 0);
+    private static final int MAIN_CASING_INDEX = getTextureIndex(GregTech_API.sBlockCasings9, 9);
 
     private static final int OFFSET_X = 6;
     private static final int OFFSET_Y = 9;
@@ -53,9 +53,9 @@ public class GT_MetaTileEntity_PurificationUnitOzonation
         .<GT_MetaTileEntity_PurificationUnitOzonation>builder()
         .addShape(STRUCTURE_PIECE_MAIN, structure)
         // placeholder: solid steel
-        .addElement('A', ofBlock(GregTech_API.sBlockCasings2, 0))
+        .addElement('A', ofBlock(GregTech_API.sBlockCasings9, 9))
         // placeholder: iridium
-        .addElement('B', ofBlock(GregTech_API.sBlockCasings8, 7))
+        .addElement('B', ofBlock(GregTech_API.sBlockCasings9, 8))
         // PTFE pipe casing
         .addElement('C', ofBlock(GregTech_API.sBlockCasings8, 1))
         // Any tinted industrial glass
