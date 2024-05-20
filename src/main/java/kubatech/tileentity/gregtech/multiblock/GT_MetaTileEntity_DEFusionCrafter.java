@@ -48,7 +48,6 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import kubatech.Tags;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
@@ -230,12 +229,11 @@ public class GT_MetaTileEntity_DEFusionCrafter extends KubaTechGTMultiBlockBase<
                     : CheckRecipeResultRegistry.insufficientMachineTier(recipe.mSpecialValue);
             }
 
+            @NotNull
             @Override
-            protected double calculateDuration(@NotNull GT_Recipe recipe, @NotNull GT_ParallelHelper helper,
-                @NotNull GT_OverclockCalculator calculator) {
-                return Math.max(
-                    1d,
-                    super.calculateDuration(recipe, helper, calculator) / ((mTierCasing - recipe.mSpecialValue) + 1));
+            protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
+                return super.createOverclockCalculator(recipe)
+                    .setSpeedBoost(1f / (mTierCasing - recipe.mSpecialValue + 1));
             }
         };
     }
