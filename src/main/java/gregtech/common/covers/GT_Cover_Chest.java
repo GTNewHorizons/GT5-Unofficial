@@ -89,6 +89,38 @@ public class GT_Cover_Chest extends GT_CoverBehaviorBase<GT_Cover_Chest.ChestInv
     }
 
     @Override
+    protected int getTickRateImpl(ForgeDirection side, int aCoverID, ChestInventory aCoverVariable,
+        ICoverable aTileEntity) {
+        return aCoverVariable.initial ? 1 : 0;
+    }
+
+    @Override
+    protected ChestInventory doCoverThingsImpl(ForgeDirection side, byte aInputRedstone, int aCoverID,
+        ChestInventory aCoverVariable, ICoverable aTileEntity, long aTimer) {
+        // migrate slots. mostly needed while in development. still can be useful if we ever resize the inventory in the
+        // future
+        if (aCoverVariable.items.getSlots() != slots) {
+            if (aCoverVariable.items.getSlots() > slots) {
+                for (int i = slots; i < aCoverVariable.items.getSlots(); i++) {
+                    ItemStack item = aCoverVariable.items.getStackInSlot(i);
+                    if (item != null) {
+                        dropItem(aTileEntity, side, item);
+                    }
+                }
+            }
+
+            ChestInventory newData = createDataObject();
+            int toCopy = Math.min(newData.items.getSlots(), aCoverVariable.items.getSlots());
+            for (int i = 0; i < toCopy; i++) {
+                newData.items.setStackInSlot(i, aCoverVariable.items.getStackInSlot(i));
+            }
+            return newData;
+        }
+        aCoverVariable.initial = false;
+        return super.doCoverThingsImpl(side, aInputRedstone, aCoverID, aCoverVariable, aTileEntity, aTimer);
+    }
+
+    @Override
     public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
         return new ChestUIFactory(buildContext).createWindow();
     }
@@ -104,7 +136,7 @@ public class GT_Cover_Chest extends GT_CoverBehaviorBase<GT_Cover_Chest.ChestInv
 
         @Override
         protected int getGUIHeight() {
-            return slots / 3 * 18 + 12;
+            return slots / 3 * 18 + 8;
         }
 
         @Override
@@ -112,7 +144,7 @@ public class GT_Cover_Chest extends GT_CoverBehaviorBase<GT_Cover_Chest.ChestInv
 
         @Override
         protected int getGUIWidth() {
-            return 18 * 3 + 22;
+            return 18 * 3 + 20;
         }
 
         @Override
@@ -158,6 +190,7 @@ public class GT_Cover_Chest extends GT_CoverBehaviorBase<GT_Cover_Chest.ChestInv
     public static class ChestInventory implements ISerializableObject {
 
         final LimitingItemStackHandler items;
+        boolean initial;
 
         public ChestInventory(int slots, int stackSize) {
             items = new LimitingItemStackHandler(slots, stackSize);
@@ -179,6 +212,7 @@ public class GT_Cover_Chest extends GT_CoverBehaviorBase<GT_Cover_Chest.ChestInv
         public void loadDataFromNBT(NBTBase aNBT) {
             if (!(aNBT instanceof NBTTagCompound)) return;
             items.deserializeNBT((NBTTagCompound) aNBT);
+            initial = true;
         }
 
         @NotNull
@@ -203,27 +237,31 @@ public class GT_Cover_Chest extends GT_CoverBehaviorBase<GT_Cover_Chest.ChestInv
                 if (tItem == null) {
                     continue;
                 }
-                final EntityItem tItemEntity = new EntityItem(
-                    coverable.getWorld(),
-                    coverable.getXCoord() + XSTR_INSTANCE.nextFloat() * 0.8F + 0.1F + direction.offsetX,
-                    coverable.getYCoord() + XSTR_INSTANCE.nextFloat() * 0.8F + 0.1F + direction.offsetY,
-                    coverable.getZCoord() + XSTR_INSTANCE.nextFloat() * 0.8F + 0.1F + direction.offsetZ,
-                    new ItemStack(tItem.getItem(), tItem.stackSize, tItem.getItemDamage()));
-                if (tItem.hasTagCompound()) {
-                    tItemEntity.getEntityItem()
-                        .setTagCompound(
-                            (NBTTagCompound) tItem.getTagCompound()
-                                .copy());
-                }
-                tItemEntity.motionX = (XSTR_INSTANCE.nextGaussian() * 0.05D);
-                tItemEntity.motionY = (XSTR_INSTANCE.nextGaussian() * 0.05D + 0.2D);
-                tItemEntity.motionZ = (XSTR_INSTANCE.nextGaussian() * 0.05D);
-                tItemEntity.hurtResistantTime = 999999;
-                tItemEntity.lifespan = 60000;
-                coverable.getWorld()
-                    .spawnEntityInWorld(tItemEntity);
+                dropItem(coverable, direction, tItem);
                 items.setStackInSlot(i, null);
             }
         }
+    }
+
+    private static void dropItem(ICoverable coverable, ForgeDirection direction, ItemStack tItem) {
+        final EntityItem tItemEntity = new EntityItem(
+            coverable.getWorld(),
+            coverable.getXCoord() + XSTR_INSTANCE.nextFloat() * 0.8F + 0.1F + direction.offsetX,
+            coverable.getYCoord() + XSTR_INSTANCE.nextFloat() * 0.8F + 0.1F + direction.offsetY,
+            coverable.getZCoord() + XSTR_INSTANCE.nextFloat() * 0.8F + 0.1F + direction.offsetZ,
+            new ItemStack(tItem.getItem(), tItem.stackSize, tItem.getItemDamage()));
+        if (tItem.hasTagCompound()) {
+            tItemEntity.getEntityItem()
+                .setTagCompound(
+                    (NBTTagCompound) tItem.getTagCompound()
+                        .copy());
+        }
+        tItemEntity.motionX = (XSTR_INSTANCE.nextGaussian() * 0.05D);
+        tItemEntity.motionY = (XSTR_INSTANCE.nextGaussian() * 0.05D + 0.2D);
+        tItemEntity.motionZ = (XSTR_INSTANCE.nextGaussian() * 0.05D);
+        tItemEntity.hurtResistantTime = 999999;
+        tItemEntity.lifespan = 60000;
+        coverable.getWorld()
+            .spawnEntityInWorld(tItemEntity);
     }
 }
