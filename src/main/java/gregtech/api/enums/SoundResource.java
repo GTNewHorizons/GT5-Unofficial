@@ -63,6 +63,7 @@ public enum SoundResource {
     GT_MACHINES_PURIFICATIONPLANT_LOOP(233, GregTech.ID, "machines.PurificationPlantLoop"),
     GT_MACHINES_PURIFICATION_PH_LOOP(234, GregTech.ID, "machines.PurificationPhLoop"),
     GT_MACHINES_COAGULATION_LOOP(235, GregTech.ID, "machines.PurificationCoagulationLoop"),
+    GT_MACHINES_OZONATION_LOOP(236, GregTech.ID, "machines.PurificationOzonationLoop"),
 
     GUI_BUTTON_DOWN(-1, GregTech.ID, "gui.buttonDown"),
     GUI_BUTTON_UP(-1, GregTech.ID, "gui.buttonUp"),
