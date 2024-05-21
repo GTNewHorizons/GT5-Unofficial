@@ -146,7 +146,6 @@ public class GT_MetaTileEntity_PurificationUnitClarifier
     @NotNull
     @Override
     public CheckRecipeResult checkProcessing() {
-        this.startRecipeProcessing();
         RecipeMap<?> recipeMap = this.getRecipeMap();
 
         GT_Recipe recipe = recipeMap.findRecipeQuery()

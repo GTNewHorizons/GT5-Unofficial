@@ -339,7 +339,6 @@ public class GT_MetaTileEntity_PurificationUnitFlocculation
     @NotNull
     @Override
     public CheckRecipeResult checkProcessing() {
-        this.startRecipeProcessing();
         RecipeMap<?> recipeMap = this.getRecipeMap();
 
         GT_Recipe recipe = recipeMap.findRecipeQuery()
