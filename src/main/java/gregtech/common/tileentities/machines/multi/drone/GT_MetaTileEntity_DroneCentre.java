@@ -195,7 +195,7 @@ public class GT_MetaTileEntity_DroneCentre extends
             .addInfo(AuthorSilverMoon)
             .addSeparator()
             .beginStructureBlock(5, 4, 9, false)
-            .addController("Front center")
+            .addController("Front middle")
             .addCasingInfoRange("Stable Titanium Machine Casing", CASINGS_MIN, 91, false)
             .addCasingInfoExactly("Heat Proof Machine Casing", 8, false)
             .addCasingInfoExactly("Robust Tungstensteel Machine Casing", 1, false)
