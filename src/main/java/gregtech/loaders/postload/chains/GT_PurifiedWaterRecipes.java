@@ -101,6 +101,8 @@ public class GT_PurifiedWaterRecipes {
                     Materials.Grade1PurifiedWater.getFluid(1000L),
                     Materials.Ozone.getGas(1000 * (long) Math.pow(2, (tier + 6))))
                 .fluidOutputs(Materials.Grade2PurifiedWater.getFluid(900L))
+                .itemOutputs(Materials.Manganese.getDust(1), Materials.Iron.getDust(1), Materials.Sulfur.getDust(1))
+                .outputChances(500, 500, 500)
                 .duration(duration)
                 .ignoreCollision()
                 .eut(TierEU.RECIPE_LuV)

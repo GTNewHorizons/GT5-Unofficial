@@ -14,6 +14,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICA
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.stream.Stream;
@@ -73,6 +74,8 @@ public class GT_MetaTileEntity_PurificationUnitOzonation
     private static final int OFFSET_X = 6;
     private static final int OFFSET_Y = 9;
     private static final int OFFSET_Z = 0;
+
+    public static final int MAX_OZONE_GAS_FOR_EXPLOSION = 1000 * (int) Math.pow(2, 10);
 
     private static final IStructureDefinition<GT_MetaTileEntity_PurificationUnitOzonation> STRUCTURE_DEFINITION = StructureDefinition
         .<GT_MetaTileEntity_PurificationUnitOzonation>builder()
@@ -191,7 +194,68 @@ public class GT_MetaTileEntity_PurificationUnitOzonation
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Purification Unit")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.BOLD
+                    + "Water Tier: "
+                    + EnumChatFormatting.WHITE
+                    + GT_Utility.formatNumbers(getWaterTier())
+                    + EnumChatFormatting.RESET)
+            .addInfo("Controller block for the Ozonation Purification Unit.")
+            .addInfo("Must be linked to a Purification Plant to work.")
+            .addSeparator()
+            .addInfo(
+                "Inserts highly reactive " + EnumChatFormatting.WHITE
+                    + "Ozone Gas"
+                    + EnumChatFormatting.GRAY
+                    + " into the water.")
+            .addInfo(
+                "Will explode if the input hatch contains more than " + EnumChatFormatting.RED
+                    + MAX_OZONE_GAS_FOR_EXPLOSION
+                    + "L "
+                    + EnumChatFormatting.WHITE
+                    + "Ozone Gas.")
+            .addInfo(
+                "Receives a " + EnumChatFormatting.RED
+                    + "20%"
+                    + EnumChatFormatting.GRAY
+                    + " bonus to success chance for every doubling of "
+                    + EnumChatFormatting.WHITE
+                    + "Ozone Gas.")
+            .addSeparator()
             .addInfo(AuthorNotAPenguin)
+            .beginStructureBlock(9, 10, 5, false)
+            .addSeparator()
+            .addCasingInfoRangeColored(
+                "Ozonation Casing",
+                EnumChatFormatting.GRAY,
+                99,
+                102,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "High Pressure Resistant Casing",
+                EnumChatFormatting.GRAY,
+                27,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "Any Tinted Industrial Glass",
+                EnumChatFormatting.GRAY,
+                9,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "Tungstensteel Frame Box",
+                EnumChatFormatting.GRAY,
+                6,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored("PTFE Pipe Casing", EnumChatFormatting.GRAY, 3, EnumChatFormatting.GOLD, false)
+            .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
+            .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
+            .addOutputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
+            .addOtherStructurePart("Input Hatch (Ozone)", EnumChatFormatting.GOLD + "1", 2)
             .toolTipFinisher("GregTech");
         return tt;
     }
@@ -206,15 +270,24 @@ public class GT_MetaTileEntity_PurificationUnitOzonation
     public CheckRecipeResult checkProcessing() {
         RecipeMap<?> recipeMap = this.getRecipeMap();
 
+        ArrayList<FluidStack> storedFluids = this.getStoredFluids();
+        // Look for ozone, blow up if more than max allowed
+        for (FluidStack fluid : storedFluids) {
+            if (fluid.isFluidEqual(Materials.Ozone.getGas(1000L))) {
+                if (fluid.amount > MAX_OZONE_GAS_FOR_EXPLOSION) {
+                    // TODO: Fix this with stocking hatch?
+                    // this.explodeMultiblock();
+                }
+            }
+        }
+
         // Grab a stream of recipes and find the one with the highest success chance
         Stream<GT_Recipe> recipes = recipeMap.findRecipeQuery()
-            .fluids(
-                this.getStoredFluids()
-                    .toArray(new FluidStack[] {}))
+            .fluids(storedFluids.toArray(new FluidStack[] {}))
             .findAll();
         GT_Recipe recipe = recipes
             .max(Comparator.comparing(r -> r.getMetadataOrDefault(PurificationPlantBaseChanceKey.INSTANCE, 0.0f)))
-            .get();
+            .orElse(null);
 
         if (recipe == null) {
             return CheckRecipeResultRegistry.NO_RECIPE;

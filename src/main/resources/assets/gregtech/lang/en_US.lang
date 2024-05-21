@@ -225,6 +225,7 @@ gt.recipe.ic2nuke=Nuclear Fission
 gt.recipe.purificationplantclarifier=Clarifier
 gt.recipe.purificationplantflocculation=Flocculation
 gt.recipe.purificationplantphadjustment=pH Neutralization
+gt.recipe.purificationplantozonation=Ozonation
 
 # Recipe categories
 gt.recipe.category.arc_furnace_recycling=Arc Furnace Recycling
