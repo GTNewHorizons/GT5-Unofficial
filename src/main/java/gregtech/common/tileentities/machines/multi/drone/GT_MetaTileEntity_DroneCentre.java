@@ -272,7 +272,9 @@ public class GT_MetaTileEntity_DroneCentre extends
                     default -> 1;
                 } == 0) {
                     droneLevel = 0;
+                    startRecipeProcessing();
                     if (!tryConsumeDrone()) stopMachine(ShutDownReasonRegistry.outOfStuff("Any Drone", 1));
+                    endRecipeProcessing();
                 }
             }
             // Clean invalid connections every 4 seconds
