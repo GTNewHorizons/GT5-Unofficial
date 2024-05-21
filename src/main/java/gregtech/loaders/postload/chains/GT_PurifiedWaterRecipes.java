@@ -8,6 +8,7 @@ import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.purificationClarifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.purificationFlocculationRecipes;
+import static gregtech.api.recipe.RecipeMaps.purificationOzonationRecipes;
 import static gregtech.api.recipe.RecipeMaps.purificationPhAdjustmentRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
@@ -84,10 +85,27 @@ public class GT_PurifiedWaterRecipes {
                 .itemInputs(GT_Utility.copyAmount(0, lens))
                 .noOptimize()
                 .fluidInputs(Materials.Air.getGas(10000L))
-                .fluidOutputs(Materials.Ozone.getGas(1000L))
+                .fluidOutputs(Materials.Ozone.getGas(2000L))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_LuV)
                 .addTo(laserEngraverRecipes);
+        }
+
+        // Recipes for ozonation, uses 128kL, 256kL, 512kL, 1m kL at each tier
+        // 20% boost per tier
+        // Gets you up to 80%, need to water boost for 100%
+        for (int tier = 1; tier <= 4; ++tier) {
+            GT_Values.RA.stdBuilder()
+                .noOptimize()
+                .fluidInputs(
+                    Materials.Grade1PurifiedWater.getFluid(1000L),
+                    Materials.Ozone.getGas(1000 * (long) Math.pow(2, (tier + 6))))
+                .fluidOutputs(Materials.Grade2PurifiedWater.getFluid(900L))
+                .duration(duration)
+                .ignoreCollision()
+                .eut(TierEU.RECIPE_LuV)
+                .metadata(BASE_CHANCE, tier * 20.0f)
+                .addTo(purificationOzonationRecipes);
         }
 
         // Grade 3 - Flocculation.

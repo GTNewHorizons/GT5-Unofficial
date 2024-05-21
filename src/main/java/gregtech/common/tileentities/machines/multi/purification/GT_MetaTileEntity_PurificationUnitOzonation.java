@@ -1,7 +1,12 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static gregtech.api.enums.GT_HatchElement.InputHatch;
+import static gregtech.api.enums.GT_HatchElement.OutputBus;
+import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.GT_Values.AuthorNotAPenguin;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE;
@@ -10,13 +15,19 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICA
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.stream.Stream;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
+import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -30,8 +41,15 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.GT_Utility;
 
 public class GT_MetaTileEntity_PurificationUnitOzonation
@@ -45,12 +63,11 @@ public class GT_MetaTileEntity_PurificationUnitOzonation
         // spotless:off
         { "         ", "         ", "      A  ", "      A  ", "     AAA ", "     AAA ", "     A A ", "     A A ", "     A A ", "     A~A " },
         { "      A  ", "      A  ", "     A A ", "     A A ", "BBBBA   A", "BDDBA   A", "BBBBA D A", "E   AWDWA", "E   AWDWA", "E   AAAAA" },
-        { "     AAA ", "     A A ", "    A   A", "    A   A", "BDDBA   A", "B  BA   A", "BBBBA   A", "  C AWWWA", "  CCAWWWA", "    AAAAA" },
+        { "     AAA ", "     A A ", "    A   A", "    A   A", "BDDBA   A", "O  BA   A", "BBBBA   A", "  C AWWWA", "  CCAWWWA", "    AAAAA" },
         { "      A  ", "      A  ", "     A A ", "     A A ", "BBBBA   A", "BDDBA   A", "BBBBA   A", "E   AWWWA", "E   AWWWA", "E   AAAAA" },
         { "         ", "         ", "      A  ", "      A  ", "     AAA ", "     AAA ", "     AAA ", "     AAA ", "     AAA ", "     AAA " } };
     // spotless:on
 
-    // placeholder
     private static final int MAIN_CASING_INDEX = getTextureIndex(GregTech_API.sBlockCasings9, 9);
 
     private static final int OFFSET_X = 6;
@@ -69,7 +86,16 @@ public class GT_MetaTileEntity_PurificationUnitOzonation
                         .toArray(String[]::new))
                 .toArray(String[][]::new))
         // Ozonation Casing (placeholder name)
-        .addElement('A', ofBlock(GregTech_API.sBlockCasings9, 9))
+        .addElement(
+            'A',
+            ofChain(
+                lazy(
+                    t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitOzonation>buildHatchAdder()
+                        .atLeastList(ImmutableList.of(InputHatch, OutputHatch, OutputBus))
+                        .casingIndex(getTextureIndex(GregTech_API.sBlockCasings9, 9))
+                        .dot(1)
+                        .build()),
+                ofBlock(GregTech_API.sBlockCasings9, 9)))
         // High Pressure Resistant Casing (possibly placeholder name)
         .addElement('B', ofBlock(GregTech_API.sBlockCasings9, 8))
         // PTFE pipe casing
@@ -78,6 +104,15 @@ public class GT_MetaTileEntity_PurificationUnitOzonation
         .addElement('D', ofBlockAnyMeta(GregTech_API.sBlockTintedGlass))
         .addElement('E', ofFrame(Materials.TungstenSteel))
         .addElement('W', ofBlock(Blocks.water, 0))
+        // Ozone input hatch
+        .addElement(
+            'O',
+            lazy(
+                t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitOzonation>buildHatchAdder()
+                    .atLeast(InputHatch)
+                    .casingIndex(getTextureIndex(GregTech_API.sBlockCasings9, 8))
+                    .dot(2)
+                    .build()))
         .build();
 
     public GT_MetaTileEntity_PurificationUnitOzonation(int aID, String aName, String aNameRegional) {
@@ -162,6 +197,42 @@ public class GT_MetaTileEntity_PurificationUnitOzonation
     }
 
     @Override
+    public RecipeMap<?> getRecipeMap() {
+        return RecipeMaps.purificationOzonationRecipes;
+    }
+
+    @NotNull
+    @Override
+    public CheckRecipeResult checkProcessing() {
+        RecipeMap<?> recipeMap = this.getRecipeMap();
+
+        // Grab a stream of recipes and find the one with the highest success chance
+        Stream<GT_Recipe> recipes = recipeMap.findRecipeQuery()
+            .fluids(
+                this.getStoredFluids()
+                    .toArray(new FluidStack[] {}))
+            .findAll();
+        GT_Recipe recipe = recipes
+            .max(Comparator.comparing(r -> r.getMetadataOrDefault(PurificationPlantBaseChanceKey.INSTANCE, 0.0f)))
+            .get();
+
+        if (recipe == null) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
+
+        if (this.protectsExcessFluid() && !this.canOutputAll(recipe.mFluidOutputs)) {
+            return CheckRecipeResultRegistry.FLUID_OUTPUT_FULL;
+        }
+
+        if (this.protectsExcessItem() && !this.canOutputAll(recipe.mOutputs)) {
+            return CheckRecipeResultRegistry.ITEM_OUTPUT_FULL;
+        }
+
+        this.currentRecipe = recipe;
+        return CheckRecipeResultRegistry.SUCCESSFUL;
+    }
+
+    @Override
     protected ResourceLocation getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_OZONATION_LOOP.resourceLocation;
     }
@@ -174,6 +245,11 @@ public class GT_MetaTileEntity_PurificationUnitOzonation
     @Override
     public int getWaterTier() {
         return 2;
+    }
+
+    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z)) return false;
+        return super.checkMachine(aBaseMetaTileEntity, aStack);
     }
 
     @Override

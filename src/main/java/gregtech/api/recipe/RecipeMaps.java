@@ -1167,6 +1167,18 @@ public final class RecipeMaps {
         .frontend(PurificationUnitClarifierFrontend::new)
         .disableOptimize()
         .build();
+    public static final RecipeMap<RecipeMapBackend> purificationOzonationRecipes = RecipeMapBuilder
+        .of("gt.recipe.purificationplantozonation")
+        .maxIO(0, 4, 2, 1)
+        .minInputs(0, 2)
+        .progressBar(GT_UITextures.PROGRESSBAR_BATH)
+        .neiRecipeComparator(
+            Comparator
+                .<GT_Recipe, Float>comparing(
+                    recipe -> recipe.getMetadataOrDefault(PurificationPlantBaseChanceKey.INSTANCE, 0.0f))
+                .thenComparing(GT_Recipe::compareTo))
+        .disableOptimize()
+        .build();
     public static final RecipeMap<RecipeMapBackend> purificationFlocculationRecipes = RecipeMapBuilder
         .of("gt.recipe.purificationplantflocculation")
         .maxIO(0, 3, 2, 2)

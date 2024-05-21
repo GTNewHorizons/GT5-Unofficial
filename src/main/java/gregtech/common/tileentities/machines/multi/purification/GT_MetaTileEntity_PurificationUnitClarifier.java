@@ -157,7 +157,6 @@ public class GT_MetaTileEntity_PurificationUnitClarifier
                     .toArray(new ItemStack[] {}))
             .find();
 
-        this.endRecipeProcessing();
         if (recipe == null) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
