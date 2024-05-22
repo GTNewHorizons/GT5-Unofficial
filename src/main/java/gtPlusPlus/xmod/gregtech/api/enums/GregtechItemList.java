@@ -702,8 +702,6 @@ public enum GregtechItemList implements GregtechItemContainer {
     GT_Solar_MAX,
 
     // Variable voltage RF convertor
-    Energy_Buffer_RF_Convertor,
-    // Energy Buffers
     Energy_Buffer_1by1_ULV,
     Energy_Buffer_1by1_LV,
     Energy_Buffer_1by1_MV,

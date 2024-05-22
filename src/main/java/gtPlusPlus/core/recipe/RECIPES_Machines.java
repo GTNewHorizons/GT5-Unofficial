@@ -1,7 +1,6 @@
 package gtPlusPlus.core.recipe;
 
 import static gregtech.api.enums.Mods.BartWorks;
-import static gregtech.api.enums.Mods.COFHCore;
 import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.GoodGenerator;
 import static gregtech.api.enums.Mods.GregTech;
@@ -115,67 +114,20 @@ public class RECIPES_Machines {
     // Nuclear Salt Processing Plant
     public static ItemStack RECIPE_SaltPlantController;
 
-    // Milling
-    public static ItemStack RECIPE_ISAMill_Controller;
-    public static ItemStack RECIPE_ISAMill_Gearbox;
-    public static ItemStack RECIPE_ISAMill_Casing;
-    public static ItemStack RECIPE_ISAMill_Hatch;
-    public static ItemStack RECIPE_Flotation_Controller;
-    public static ItemStack RECIPE_Flotation_Casing;
-
     // Cyclotron
     public static ItemStack RECIPE_CyclotronController;
     public static ItemStack RECIPE_CyclotronOuterCasing;
     public static ItemStack RECIPE_CyclotronInnerCoil;
 
-    // Buffer Cores
-    public static ItemStack RECIPE_BufferCore_ULV = ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore1", 1);
-    public static ItemStack RECIPE_BufferCore_LV = ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore2", 1);
-    public static ItemStack RECIPE_BufferCore_MV = ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore3", 1);
-    public static ItemStack RECIPE_BufferCore_HV = ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore4", 1);
-    public static ItemStack RECIPE_BufferCore_EV = ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore5", 1);
-    public static ItemStack RECIPE_BufferCore_IV = ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore6", 1);
-    public static ItemStack RECIPE_BufferCore_LuV = ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore7", 1);
-    public static ItemStack RECIPE_BufferCore_ZPM = ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore8", 1);
-    public static ItemStack RECIPE_BufferCore_UV = ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore9", 1);
-    public static ItemStack RECIPE_BufferCore_MAX = ItemUtils
-            .getItemStackFromFQRN("miscutils:item.itemBufferCore10", 1);
-
     // Wire
-    public static String wireTier1 = "wireGt08Lead";
-    public static String wireTier2 = "wireGt08Tin";
-    public static String wireTier3 = "wireGt08Copper";
-    public static String wireTier4 = "wireGt08Gold";
-    public static String wireTier5 = "wireGt08Aluminium";
-    public static String wireTier6 = "wireGt08Tungsten";
-    public static String wireTier7 = "wireGt08Naquadah";
-    public static String wireTier8 = "wireGt08Osmium";
-    public static String wireTier9 = "wireGt08Superconductor";
-    public static String wireTier10 = "wireGt16Superconductor";
-
-    // Wire
-    public static String cableTier1 = "cableGt04Lead";
-    public static String cableTier2 = "cableGt04Tin";
-    public static String cableTier3 = "cableGt04Copper";
     public static String cableTier4 = "cableGt04Gold";
-    public static String cableTier5 = "cableGt04Aluminium";
     public static String cableTier6 = "cableGt04Tungsten";
-    public static String cableTier7 = "cableGt04Naquadah";
-    public static String cableTier8 = "cableGt04Osmium";
-    public static String cableTier9 = "cableGt04NiobiumTitanium";
-    public static String cableTier10 = "cableGt08NiobiumTitanium";
 
     public static String pipeTier1 = "pipeHuge" + "Clay";
     public static String pipeTier2 = "pipeHuge" + "Potin";
     public static String pipeTier3 = "pipeHuge" + "Steel";
     public static String pipeTier4 = "pipeHuge" + "StainlessSteel";
-    public static String pipeTier5 = "pipeHuge" + "TungstenSteel";
-    public static String pipeTier6 = "pipeHuge" + "MaragingSteel300";
     public static String pipeTier7 = "pipeHuge" + "Tantalloy60";
-    public static String pipeTier8 = "pipeHuge" + "Tantalloy61";
-    public static String pipeTier9 = "pipeHuge" + "Inconel792";
-    public static String pipeTier10 = "pipeHuge" + "HastelloyX";
-    public static String pipeTier11 = "pipeHuge" + "Europium";
 
     // EV/IV MACHINES
     public static ItemStack IV_MACHINE_Electrolyzer;
@@ -192,32 +144,16 @@ public class RECIPES_Machines {
     public static ItemStack IV_MACHINE_AlloySmelter;
     public static ItemStack IV_MACHINE_Mixer;
     public static ItemStack EV_MACHINE_ChemicalBath;
-    // Cables
-    public static String cableGt02Electrum = "cableGt02Electrum";
 
     // Plates
-    public static String plateElectricalSteel = "plateElectricalSteel";
-    public static String plateEnergeticAlloy = "plateEnergeticAlloy";
-    public static String plateCobalt = "plateCobalt";
     public static String plateBronze = "plateBronze";
     public static String plateSteel = "plateSteel";
 
     // Pipes
-    public static String pipeLargeCopper = "pipeLargeCopper";
-    public static String pipeHugeSteel = "pipeHugeSteel";
     public static String pipeHugeStainlessSteel = "pipeHugeStainlessSteel";
-    public static String pipeHugeTitanium = "pipeHugeTitanium";
 
     // Lava Boiler
     public static ItemStack boiler_Coal;
-    public static ItemStack blockBricks = ItemUtils.getItemStackFromFQRN("minecraft:brick_block", 1);
-
-    // Batteries
-    public static String batteryBasic = "batteryBasic";
-    public static String batteryAdvanced = "batteryAdvanced";
-    public static String batteryElite = "batteryElite";
-    public static String batteryMaster = "batteryMaster";
-    public static String batteryUltimate = "batteryUltimate";
     public static ItemStack IC2MFE;
     public static ItemStack IC2MFSU;
 
@@ -955,21 +891,6 @@ public class RECIPES_Machines {
                 "plateBronze",
                 GregtechItemList.Hatch_Output_Bus_Steam.get(1));
 
-        // RF Convertor
-        if (COFHCore.isModLoaded() && CORE.ConfigSwitches.enableMachine_RF_Convetor) {
-            RecipeUtils.addShapedGregtechRecipe(
-                    CI.getPlate(4, 1),
-                    CI.getTieredCircuitOreDictName(5),
-                    CI.getPlate(4, 1),
-                    CI.getTransmissionComponent(3, 1),
-                    CI.getTieredGTPPMachineCasing(4, 1),
-                    CI.getTransmissionComponent(3, 1),
-                    CI.getPlate(4, 1),
-                    plateEnergeticAlloy,
-                    CI.getPlate(4, 1),
-                    GregtechItemList.Energy_Buffer_RF_Convertor.get(1));
-        }
-
         // Flask Configurator
         CORE.RA.addSixSlotAssemblingRecipe(
                 new ItemStack[] { CI.getNumberedAdvancedCircuit(8), CI.getTieredMachineHull(2),
@@ -1384,7 +1305,6 @@ public class RECIPES_Machines {
                 ALLOY.POLYETHYLENE.getFluidStack(144), ALLOY.POLYETHYLENE.getFluidStack(144),
                 ALLOY.POLYETHYLENE.getFluidStack(144), ALLOY.POLYTETRAFLUOROETHYLENE.getFluidStack(144) };
 
-        // ItemUtils.simpleMetaStack("IC2:blockGenerator:7", 7, 1);
         ItemStack[] aSemifluids = new ItemStack[] { GregtechItemList.Generator_SemiFluid_LV.get(1),
                 GregtechItemList.Generator_SemiFluid_MV.get(1), GregtechItemList.Generator_SemiFluid_HV.get(1),
                 GregtechItemList.Generator_SemiFluid_EV.get(1), GregtechItemList.Generator_SemiFluid_IV.get(1) };

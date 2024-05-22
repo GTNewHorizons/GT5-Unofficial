@@ -2,79 +2,12 @@ package gtPlusPlus.core.util.minecraft;
 
 import java.util.HashMap;
 
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.world.World;
-
 import gregtech.common.GT_Worldgen_GT_Ore_Layer;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class MiningUtils {
-
-    public static boolean getBlockType(final Block block, final World world, final int[] xyz, final int miningLevel) {
-        final String LIQUID = "liquid";
-        final String BLOCK = "block";
-        final String ORE = "ore";
-        final String AIR = "air";
-        String blockClass;
-
-        if (world.isRemote) {
-            return false;
-        }
-
-        if (block == Blocks.end_stone) {
-            return true;
-        }
-        if (block == Blocks.stone) {
-            return true;
-        }
-        if (block == Blocks.sandstone) {
-            return true;
-        }
-        if (block == Blocks.netherrack) {
-            return true;
-        }
-        if (block == Blocks.nether_brick) {
-            return true;
-        }
-        if (block == Blocks.nether_brick_stairs) {
-            return true;
-        }
-        if (block == Blocks.nether_brick_fence) {
-            return true;
-        }
-        if (block == Blocks.glowstone) {
-            return true;
-        }
-
-        try {
-            blockClass = block.getClass().toString().toLowerCase();
-            Logger.WARNING(blockClass);
-            if (blockClass.toLowerCase().contains(LIQUID)) {
-                Logger.WARNING(block + " is a Liquid.");
-                return false;
-            } else if (blockClass.toLowerCase().contains(ORE)) {
-                Logger.WARNING(block + " is an Ore.");
-                return true;
-            } else if (block.getHarvestLevel(world.getBlockMetadata(xyz[0], xyz[1], xyz[2])) >= miningLevel) {
-                Logger.WARNING(block + " is minable.");
-                return true;
-            } else if (blockClass.toLowerCase().contains(AIR)) {
-                Logger.WARNING(block + " is Air.");
-                return false;
-            } else if (blockClass.toLowerCase().contains(BLOCK)) {
-                Logger.WARNING(block + " is a block of some kind.");
-                return false;
-            } else {
-                Logger.WARNING(block + " is mystery.");
-                return false;
-            }
-        } catch (final NullPointerException e) {
-            return false;
-        }
-    }
 
     public static int mMoonID = -99;
     public static int mMarsID = -99;
@@ -174,12 +107,8 @@ public class MiningUtils {
                 if (x.mOverworld || x.mNether || (x.mEnd || aEndAsteroids)) {
                     continue;
                 }
-                /*
-                 * if (x.mMoon) { Ores_Moon.put(x); continue; } if (x.mMars) { Ores_Mars.put(x); continue; } if
-                 * (x.mAsteroid) { Ores_Comets.put(x); continue; }
-                 */
+
                 Ores_Misc.put(x);
-                continue;
             } else {
                 Ores_Comets.put(x);
             }

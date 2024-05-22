@@ -38,7 +38,6 @@ import org.lwjgl.opengl.GL11;
  */
 public final class NeiTextureHandler {
 
-    public static final NeiTextureHandler RECIPE = new NeiTextureHandler(16, 132, 16, 16);
     public static final NeiTextureHandler RECIPE_BUTTON = new NeiTextureHandler(128, 116, 24, 24);
 
     public final double minU;

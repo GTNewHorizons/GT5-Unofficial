@@ -46,10 +46,7 @@ public class RECIPES_General {
     static String RECIPE_LapisDust = "dustLazurite";
     static ItemStack OUTPUT_Blueprint;
     static ItemStack RECIPE_CraftingTable;
-    static String RECIPE_BronzePlate = "plateBronze";
-    static String RECIPE_StainlessPlate = "plateStainlessSteel";
     static ItemStack RECIPE_BasicCasingIC2;
-    static ItemStack RECIPE_HydrogenDust;
 
     public static void loadRecipes() {
         RECIPE_Paper = ItemUtils.getSimpleStack(Items.paper);
@@ -57,7 +54,6 @@ public class RECIPES_General {
         RECIPE_Snow = ItemUtils.getSimpleStack(Blocks.snow);
         RECIPE_Obsidian = ItemUtils.getSimpleStack(Blocks.obsidian);
         RECIPE_CraftingTable = ItemUtils.getSimpleStack(Blocks.crafting_table);
-        RECIPE_HydrogenDust = ItemUtils.getSimpleStack(ModItems.itemHydrogenBlob);
         RECIPE_BasicCasingIC2 = ItemUtils.getItemStackFromFQRN("IC2:blockMachine", 1);
         OUTPUT_Blueprint = ItemUtils.getSimpleStack(ModItems.itemBlueprintBase, 2);
         run();

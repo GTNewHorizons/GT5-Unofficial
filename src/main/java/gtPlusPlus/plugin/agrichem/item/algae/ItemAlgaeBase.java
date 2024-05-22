@@ -157,7 +157,7 @@ public class ItemAlgaeBase extends Item implements IAlgalItem {
     @Override
     public void registerIcons(final IIconRegister i) {
         this.base = i.registerIcon(GTPlusPlus.ID + ":" + "bioscience/BasicAlgae");
-        this.overlay = i.registerIcon(GTPlusPlus.ID + ":" + "bioscience/BasicAlgae" + "_Overlay");
+        this.overlay = i.registerIcon(GTPlusPlus.ID + ":" + "bioscience/BasicAlgae_Overlay");
     }
 
     public static ItemStack initNBT(ItemStack aFreshAlgae) {

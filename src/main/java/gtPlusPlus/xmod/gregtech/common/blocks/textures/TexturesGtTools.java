@@ -14,8 +14,6 @@ public final class TexturesGtTools {
 
     public static final CustomIcon ANGLE_GRINDER = new CustomIcon("iconsets/ANGLE_GRINDER");
     public static final CustomIcon ELECTRIC_SNIPS = new CustomIcon("iconsets/ELECTRIC_SNIPS");
-    public static final CustomIcon ELECTRIC_LIGHTER = new CustomIcon("iconsets/ELECTRIC_LIGHTER");
-    public static final CustomIcon ELECTRIC_BUTCHER_KNIFE = new CustomIcon("iconsets/ELECTRIC_BUTCHER_KNIFE");
 
     public static final class CustomIcon implements IIconContainer, Runnable {
 

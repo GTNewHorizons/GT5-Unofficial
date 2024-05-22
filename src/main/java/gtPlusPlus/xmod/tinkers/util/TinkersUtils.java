@@ -2,7 +2,6 @@ package gtPlusPlus.xmod.tinkers.util;
 
 import static gregtech.api.enums.Mods.TinkerConstruct;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -259,39 +258,6 @@ public class TinkersUtils {
         }
         mDryingRackRecipes = aData;
         return aData;
-    }
-
-    public static Object generateToolMaterial(String name, String localizationString, int level, int durability,
-            int speed, int damage, float handle, int reinforced, float stonebound, String style, int primaryColor) {
-        try {
-            Constructor<?> constructor = mClass_ToolMaterial.getConstructor(
-                    String.class,
-                    String.class,
-                    int.class,
-                    int.class,
-                    int.class,
-                    int.class,
-                    float.class,
-                    int.class,
-                    float.class,
-                    String.class,
-                    int.class);
-            return constructor.newInstance(
-                    name,
-                    localizationString,
-                    level,
-                    durability,
-                    speed,
-                    damage,
-                    handle,
-                    reinforced,
-                    stonebound,
-                    style,
-                    primaryColor);
-        } catch (Throwable t) {
-            t.printStackTrace();
-            return null;
-        }
     }
 
     public static List<?> getTableCastingRecipes() {

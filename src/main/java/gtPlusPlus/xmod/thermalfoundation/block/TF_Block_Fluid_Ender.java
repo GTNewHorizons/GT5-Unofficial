@@ -16,7 +16,6 @@ import gtPlusPlus.xmod.thermalfoundation.fluid.TF_Fluids;
 
 public class TF_Block_Fluid_Ender extends BlockFluidCoFHBase {
 
-    public static final int LEVELS = 4;
     public static final Material materialFluidEnder = new MaterialLiquid(MapColor.greenColor);
     private static boolean effect = true;
 
@@ -33,9 +32,6 @@ public class TF_Block_Fluid_Ender extends BlockFluidCoFHBase {
     @Override
     public boolean preInit() {
         GameRegistry.registerBlock(this, "FluidEnder");
-
-        String str1 = "Fluid.Ender";
-        String str2 = "Enable this for Fluid Ender to randomly teleport entities on contact.";
 
         return true;
     }

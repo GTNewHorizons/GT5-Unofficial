@@ -9,7 +9,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChunkCoordinates;
@@ -52,11 +51,11 @@ public class PlayerUtils {
     public static EntityPlayer getPlayer(final String name) {
         try {
             for (final EntityPlayer temp : getOnlinePlayers()) {
-                if (temp.getDisplayName().toLowerCase().equals(name.toLowerCase())) {
+                if (temp.getDisplayName().equalsIgnoreCase(name)) {
                     return temp;
                 }
             }
-        } catch (final Throwable e) {}
+        } catch (final Throwable ignored) {}
         return null;
     }
 
@@ -69,20 +68,6 @@ public class PlayerUtils {
                 return player;
             }
         }
-        return null;
-    }
-
-    // Not Clientside
-    public static EntityPlayer getPlayerInWorld(final World world, final String Name) {
-        final List<EntityPlayer> i = world.playerEntities;
-        final Minecraft mc = Minecraft.getMinecraft();
-        try {
-            for (final EntityPlayer temp : i) {
-                if (temp.getDisplayName().toLowerCase().equals(Name.toLowerCase())) {
-                    return temp;
-                }
-            }
-        } catch (final NullPointerException e) {}
         return null;
     }
 
@@ -111,7 +96,7 @@ public class PlayerUtils {
     @SideOnly(Side.CLIENT)
     public static ItemStack getItemStackInPlayersHand() {
         final Minecraft mc = Minecraft.getMinecraft();
-        ItemStack heldItem = null;
+        ItemStack heldItem;
         try {
             heldItem = mc.thePlayer.getHeldItem();
         } catch (final NullPointerException e) {
@@ -124,7 +109,7 @@ public class PlayerUtils {
     }
 
     public static ItemStack getItemStackInPlayersHand(final EntityPlayer player) {
-        ItemStack heldItem = null;
+        ItemStack heldItem;
         try {
             heldItem = player.getHeldItem();
         } catch (final NullPointerException e) {
@@ -141,46 +126,6 @@ public class PlayerUtils {
             }
         }
         return heldItem;
-    }
-
-    @SideOnly(Side.CLIENT)
-    public static Item getItemInPlayersHandClient() {
-        final Minecraft mc = Minecraft.getMinecraft();
-        Item heldItem = null;
-
-        try {
-            heldItem = mc.thePlayer.getHeldItem().getItem();
-        } catch (final NullPointerException e) {
-            return null;
-        }
-
-        if (heldItem != null) {
-            return heldItem;
-        }
-
-        return null;
-    }
-
-    public static Item getItemInPlayersHand(final EntityPlayer player) {
-        Item heldItem = null;
-        try {
-            heldItem = player.getHeldItem().getItem();
-        } catch (final NullPointerException e) {
-            return null;
-        }
-
-        if (heldItem != null) {
-            return heldItem;
-        }
-        return null;
-    }
-
-    public static final EntityPlayer getPlayerEntityByName(final String aPlayerName) {
-        final EntityPlayer player = PlayerUtils.getPlayer(aPlayerName);
-        if (player != null) {
-            return player;
-        }
-        return null;
     }
 
     public static final UUID getPlayersUUIDByName(final String aPlayerName) {

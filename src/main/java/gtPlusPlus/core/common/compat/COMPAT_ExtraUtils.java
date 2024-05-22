@@ -2,10 +2,8 @@ package gtPlusPlus.core.common.compat;
 
 import net.minecraft.item.ItemStack;
 
-import gtPlusPlus.core.lib.CORE.ConfigSwitches;
 import gtPlusPlus.core.recipe.RECIPES_Tools;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.RecipeUtils;
 
 public class COMPAT_ExtraUtils {
 
@@ -16,21 +14,5 @@ public class COMPAT_ExtraUtils {
 
     private static void run() {
         ItemUtils.getItemForOreDict("ExtraUtilities:bedrockiumIngot", "ingotBedrockium", "Bedrockium Ingot", 0);
-        // GT_OreDictUnificator.registerOre("plateBedrockium", new ItemStack(ModItems.itemPlateBedrockium));
-
-        if (ConfigSwitches.enableAlternativeDivisionSigilRecipe) {
-            // Division Sigil
-            RecipeUtils.addShapedRecipe(
-                    "plateNetherStar",
-                    "gemIridium",
-                    "plateNetherStar",
-                    "plateIridium",
-                    RECIPES_Tools.craftingToolHardHammer,
-                    "plateIridium",
-                    "plateNetherStar",
-                    "gemIridium",
-                    "plateNetherStar",
-                    RECIPES_Tools.RECIPE_DivisionSigil);
-        }
     }
 }

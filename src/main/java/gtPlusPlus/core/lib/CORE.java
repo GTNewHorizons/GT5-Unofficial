@@ -1,7 +1,5 @@
 package gtPlusPlus.core.lib;
 
-import static gregtech.api.enums.Mods.GTPlusPlus;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,13 +10,10 @@ import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.util.FakePlayerFactory;
 
 import com.mojang.authlib.GameProfile;
 
@@ -41,12 +36,9 @@ public class CORE {
     public static final float PI = (float) Math.PI;
     public static volatile Random RANDOM = new XSTR();
 
-    public static boolean DEVENV = false;
-    // Only can be set in Dev, no config or setting elsewhere.
-    public static final boolean LOAD_ALL_CONTENT = false;;
+    public static boolean DEVENV = false;;
 
     // Mod Variables
-
     public static final String name = "GT++";
     public static final String VERSION = "GRADLETOKEN_VERSION";
 
@@ -67,7 +59,6 @@ public class CORE {
             .translateToLocal("GTPP.core.GT_Tooltip_Builder");
     public static final Supplier<String> GT_Tooltip_Radioactive = () -> StatCollector
             .translateToLocal("GTPP.core.GT_Tooltip_Radioactive");
-    public static final String noItem = "";
 
     public static final String SEPERATOR = "/";
 
@@ -92,74 +83,24 @@ public class CORE {
 
     public static final GT_Materials[] sMU_GeneratedMaterials = new GT_Materials[1000];
 
-    /**
-     * File Paths and Resource Paths
-     */
-    public static final String TEX_DIR = "textures/", TEX_DIR_GUI = TEX_DIR + "gui/", TEX_DIR_ITEM = TEX_DIR + "items/",
-            TEX_DIR_BLOCK = TEX_DIR + "blocks/", TEX_DIR_ENTITY = TEX_DIR + "entity/",
-            TEX_DIR_ASPECTS = TEX_DIR + "aspects/", TEX_DIR_FLUIDS = TEX_DIR_BLOCK + "fluids/",
-            RES_PATH = GTPlusPlus.ID + ":" + TEX_DIR, RES_PATH_GUI = GTPlusPlus.ID + ":" + TEX_DIR_GUI,
-            RES_PATH_ITEM = GTPlusPlus.ID + ":" + TEX_DIR_ITEM, RES_PATH_BLOCK = GTPlusPlus.ID + ":" + TEX_DIR_BLOCK,
-            RES_PATH_ENTITY = GTPlusPlus.ID + ":" + TEX_DIR_ENTITY,
-            RES_PATH_ASPECTS = GTPlusPlus.ID + ":" + TEX_DIR_ASPECTS,
-            RES_PATH_FLUIDS = GTPlusPlus.ID + ":" + TEX_DIR_FLUIDS;
-
-    /**
-     * Used to create a {@link EntityPlayer} instance from {@link FakePlayerFactory}. If this instance already exists in
-     * the cache, we will return that instead. These instances are held via weak reference, if the world object is
-     * unloaded, they too will be removed. This is the suggested way to handle them, as suggested by Forge.
-     *
-     * @param world - The {@link World} object for which you want to check for in the cache. This object is used as a
-     *              weak reference in a {@link WeakHashMap}.
-     * @return - An {@link EntityPlayerMP} instance, returned either from cache or created and cached prior to return.
-     */
-    public static EntityPlayerMP getFakePlayer(World world) {
-        if (fakePlayerCache.get(world) == null) {
-            fakePlayerCache.put(world, FakePlayerFactory.get((WorldServer) world, CORE.gameProfile));
-        }
-        return fakePlayerCache.get(world);
-    }
-
-    /*
-     * Config Switch Class
-     */
-
     public static class ConfigSwitches {
 
         // Debug
-        public static boolean disableEnderIOIntegration = false;
-        public static boolean disableEnderIOIngotTooltips = false;
         public static boolean MACHINE_INFO = true;
         public static boolean showHiddenNEIItems = false;
         public static boolean dumpItemAndBlockData = false;
 
-        // Tools
-        public static boolean enableMultiSizeTools = true;
-
-        // Block Drops
-        public static int chanceToDropDrainedShard = 196;
-        public static int chanceToDropFluoriteOre = 32;
-
         // Machine Related
-        public static boolean enableAlternativeBatteryAlloy = false;
         public static boolean enableThaumcraftShardUnification = false;
         public static boolean disableIC2Recipes = false;
-        public static boolean enableAlternativeDivisionSigilRecipe = false;
         public static int boilerSteamPerSecond = 750;
-        public static final boolean requireControlCores = false;
 
         // Feature Related
         public static boolean enableCustomCapes = false;
-        public static boolean enableCustomCircuits = true;
-        public static boolean enableOldGTcircuits = false;
         public static int enableWatchdogBGM = CORE_Preloader.enableWatchdogBGM;
         public static boolean hideUniversalCells = true;
 
-        // GT Fixes
-        public static boolean enableSulfuricAcidFix = false;
-
         // Single Block Machines
-        public static boolean enableMachine_SolarGenerators = false;
         public static boolean enableMachine_Dehydrators = true;
         public static boolean enableMachine_SteamConverter = true;
         public static boolean enableMachine_FluidTanks = true;
@@ -170,7 +111,6 @@ public class CORE {
         public static boolean enableMachine_Pollution = true;
         public static boolean enableCustom_Pipes = true;
         public static boolean enableCustom_Cables = true;
-        public static boolean enableMachine_RF_Convetor = false;
 
         // Multiblocks
         public static boolean enableMultiblock_AlloyBlastSmelter = true;
@@ -200,7 +140,6 @@ public class CORE {
         public static boolean enableMultiblock_Cyclotron = true;
 
         // Visuals
-        public static boolean enableTreeFarmerParticles = true;
         public static boolean useGregtechTextures = true;
         public static boolean enableAnimatedTextures = false;
 
@@ -236,11 +175,9 @@ public class CORE {
         public static int pollutionPerSecondMultiABS = 200;
         public static int pollutionPerSecondMultiCyclotron = 200;
         public static int pollutionPerSecondMultiIndustrialFishingPond = 20;
-        public static int pollutionPerSecondMultiLargeRocketEngine;
         public static int pollutionPerSecondMultiLargeSemiFluidGenerator = 1280;
         public static int pollutionPerSecondMultiMassFabricator = 40;
         public static int pollutionPerSecondMultiRefinery = 4000;
-        public static int pollutionPerSecondMultiGeneratorArray;
         public static int pollutionPerSecondMultiTreeFarm = 100;
         public static int pollutionPerSecondMultiFrothFlotationCell = 0;
         public static int pollutionPerSecondMultiAutoCrafter = 500;

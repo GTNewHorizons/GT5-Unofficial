@@ -92,7 +92,7 @@ public class GT_NEI_LFTR_Sparging extends TemplateRecipeHandler {
         if (mCachedRecipes == null || (cache = mCachedRecipes.get()) == null) {
             cache = GasSpargingRecipeMap.mRecipes.stream() // do not use parallel stream. This is already parallelized
                                                            // by NEI
-                    .sorted().map(temp -> { return createCachedRecipe(temp); }).collect(Collectors.toList());
+                    .sorted().map(temp -> createCachedRecipe(temp)).collect(Collectors.toList());
             // while the NEI parallelize handlers, for each individual handler it still uses sequential execution model
             // so we do not need any synchronization here
             mCachedRecipes = new SoftReference<>(cache);

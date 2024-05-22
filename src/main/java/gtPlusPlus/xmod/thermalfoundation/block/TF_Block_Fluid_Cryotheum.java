@@ -30,8 +30,6 @@ import gtPlusPlus.xmod.thermalfoundation.fluid.TF_Fluids;
 
 public class TF_Block_Fluid_Cryotheum extends BlockFluidInteractive {
 
-    Random random = new Random();
-    public static final int LEVELS = 5;
     public static final Material materialFluidCryotheum = new MaterialLiquid(MapColor.iceColor);
     private static boolean enableSourceFall = true;
     private static boolean effect = true;
@@ -62,13 +60,8 @@ public class TF_Block_Fluid_Cryotheum extends BlockFluidInteractive {
         this.addInteraction(Blocks.leaves, Blocks.air);
         this.addInteraction(Blocks.tallgrass, Blocks.air);
         this.addInteraction(Blocks.fire, Blocks.air);
-        // addInteraction(TFBlocks.blockFluidGlowstone, 0, Blocks.glowstone);
 
-        final String str1 = "Fluid.Cryotheum";
-        String str2 = "Enable this for Fluid Cryotheum to be worse than lava, except cold.";
         effect = true;
-
-        str2 = "Enable this for Fluid Cryotheum Source blocks to gradually fall downwards.";
         enableSourceFall = true;
 
         return true;
@@ -182,6 +175,4 @@ public class TF_Block_Fluid_Cryotheum extends BlockFluidInteractive {
                 }
     }
 
-    protected void triggerInteractionEffects(final World paramWorld, final int paramInt1, final int paramInt2,
-            final int paramInt3) {}
 }

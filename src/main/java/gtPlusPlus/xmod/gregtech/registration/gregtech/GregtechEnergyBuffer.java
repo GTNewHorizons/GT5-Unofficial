@@ -1,16 +1,12 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import static gregtech.api.enums.Mods.COFHCore;
-
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOreDictNames;
-import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GT_MetaTileEntity_RfConvertor;
 import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GregtechMetaEnergyBuffer;
 
 public class GregtechEnergyBuffer {
@@ -65,13 +61,6 @@ public class GregtechEnergyBuffer {
         GregtechItemList.Energy_Buffer_1by1_MAX.set(
                 new GregtechMetaEnergyBuffer(779, "energybuffer.tier.09", "MAX Voltage Energy Buffer", 9, "", 1)
                         .getStackForm(1L));
-
-        if (COFHCore.isModLoaded() && CORE.ConfigSwitches.enableMachine_RF_Convetor) {
-            // RF Convertor Buffer Has Special ID
-            GregtechItemList.Energy_Buffer_RF_Convertor.set(
-                    new GT_MetaTileEntity_RfConvertor(31022, "energybuffer.rf.tier.01", "RF Energy Convertor", 3, "", 0)
-                            .getStackForm(1L));
-        }
 
         GT_ModHandler.addCraftingRecipe(
                 GregtechItemList.Energy_Buffer_1by1_ULV.get(1L, new Object[0]),

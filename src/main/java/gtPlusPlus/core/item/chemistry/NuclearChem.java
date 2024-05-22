@@ -4,6 +4,7 @@ import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
@@ -94,7 +95,7 @@ public class NuclearChem extends ItemPackage {
                 .itemInputs(
                         GT_OreDictUnificator.get(OrePrefixes.gem, Materials.NetherStar, 2),
                         GT_Utility.getIntegratedCircuit(20))
-                .fluidInputs(FluidUtils.getMobEssence(5000))
+                .fluidInputs(FluidRegistry.getFluidStack("mobessence", 5000))
                 .fluidOutputs(FluidUtils.getFluidStack(GeneticMutagen, 8000)).duration(30 * SECONDS)
                 .eut(TierEU.RECIPE_HV).addTo(UniversalChemical);
     }

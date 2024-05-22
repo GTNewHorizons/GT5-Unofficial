@@ -32,18 +32,8 @@ public class WorldProviderMod extends WorldProvider {
     }
 
     @Override
-    public boolean isSurfaceWorld() {
-        return true;
-    }
-
-    @Override
     public boolean canCoordinateBeSpawn(int par1, int par2) {
         return false;
-    }
-
-    @Override
-    public boolean canRespawnHere() {
-        return true;
     }
 
     @Override

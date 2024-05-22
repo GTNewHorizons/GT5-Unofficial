@@ -39,7 +39,7 @@ public abstract class ElectricBaseBauble extends BaseBauble implements IElectric
     private final BaubleType mType;
 
     public ElectricBaseBauble(BaubleType aType, int aTier, double aMaxEU, String aUnlocalName) {
-        super(aType, aUnlocalName, 0);
+        super(aType);
         mType = aType;
         mTier = aTier;
         maxValueEU = aMaxEU;

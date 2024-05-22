@@ -147,23 +147,12 @@ public class ClientProxy extends CommonProxy implements Runnable {
     public void serverStarting(final FMLServerStartingEvent e) {}
 
     public void onPreLoad() {
-        /*
-         * if (ConfigSwitches.enableCustomCapes){ String arr$[] = { "draknyte1", "fobius" }; int len$ = arr$.length; for
-         * (int i$ = 0; i$ < len$; i$++) { String tName = arr$[i$]; mCapeList.add(tName.toLowerCase()); } (new
-         * Thread(this)).start(); }
-         */
+
     }
 
     @Override
     public void run() {
-        /*
-         * try { if (ConfigSwitches.enableCustomCapes){ Logger.INFO("GT++ Mod: Downloading Cape List.");
-         * @SuppressWarnings("resource") Scanner tScanner = new Scanner(new
-         * URL("https://github.com/draknyte1/GTplusplus/blob/master/SupporterList.txt").openStream()); while
-         * (tScanner.hasNextLine()) { String tName = tScanner.nextLine(); if
-         * (!this.mCapeList.contains(tName.toLowerCase())) { this.mCapeList.add(tName.toLowerCase()); } } } } catch
-         * (Throwable e) { Logger.INFO("Failed to download GT++ cape list."); }
-         */
+
     }
 
     @Override

@@ -260,9 +260,7 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
 
     @Override
     @SideOnly(Side.CLIENT)
-    public final void registerBlockIcons(final IIconRegister aRegisterer) {
-        this.blockIcon = aRegisterer.registerIcon(GTPlusPlus.ID + ":" + "net");
-    }
+    public final void registerBlockIcons(final IIconRegister aRegisterer) {}
 
     @Override
     public abstract TileEntity createNewTileEntity(final World world, final int p_149915_2_);

@@ -49,7 +49,6 @@ public class GTplusplus_Everglades implements ActionListener {
     // Dark World Handler
     protected static volatile Biome_Everglades Everglades_Biome;
     protected static volatile Dimension_Everglades Everglades_Dimension;
-    public static int globalEvergladesPortalSpawnTimer = 0;
 
     // Pre-Init
     @Mod.EventHandler
@@ -173,20 +172,6 @@ public class GTplusplus_Everglades implements ActionListener {
     public void serverLoad(FMLServerStartingEvent event) {
         getEvergladesBiome().serverLoad(event);
     }
-
-    /*
-     * @Override public int getBurnTime(ItemStack fuel) { if (DarkWorld_Biome.addFuel(fuel) != 0) return
-     * DarkWorld_Biome.addFuel(fuel); if (DarkWorld_Dimension.addFuel(fuel) != 0) return
-     * DarkWorld_Dimension.addFuel(fuel); return 0; }
-     */
-
-    /*
-     * @Override public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator,
-     * IChunkProvider chunkProvider) { chunkX = chunkX * 16; chunkZ = chunkZ * 16; if (world.provider.dimensionId ==
-     * Dimension_DarkWorld.DIMID) { DarkWorld_Biome.generateSurface(world, random, chunkX, chunkZ); } //What does this
-     * even do? if (world.provider.dimensionId == -1) { DarkWorld_Biome.generateNether(world, random, chunkX, chunkZ); }
-     * if (world.provider.dimensionId == 0) { DarkWorld_Biome.generateSurface(world, random, chunkX, chunkZ); } }
-     */
 
     @EventHandler
     public static void postInit(final FMLPostInitializationEvent e) {

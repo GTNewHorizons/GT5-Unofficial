@@ -58,20 +58,6 @@ public class RecipeGen_FluidCanning implements Runnable {
         return isValid;
     }
 
-    public RecipeGen_FluidCanning(boolean aExtracting, ItemStack aEmpty, ItemStack aFull, FluidStack aFluid) {
-        this(aExtracting, aEmpty, aFull, aFluid, GT_Values.NF, null, null);
-    }
-
-    public RecipeGen_FluidCanning(boolean aExtracting, ItemStack aEmpty, ItemStack aFull, FluidStack aFluidIn,
-            FluidStack aFluidOut) {
-        this(aExtracting, aEmpty, aFull, aFluidIn, aFluidOut, null, null);
-    }
-
-    public RecipeGen_FluidCanning(boolean aExtracting, ItemStack aEmpty, ItemStack aFull, FluidStack aFluid,
-            Integer aDuration, Integer aEUt) {
-        this(aExtracting, aEmpty, aFull, aFluid, GT_Values.NF, aDuration, aEUt);
-    }
-
     // Alternative Constructor
     public RecipeGen_FluidCanning(boolean aExtracting, ItemStack aEmpty, ItemStack aFull, FluidStack aFluidIn,
             FluidStack aFluidOut, Integer aDuration, Integer aEUt) {
@@ -163,7 +149,6 @@ public class RecipeGen_FluidCanning implements Runnable {
 
     private void generateRecipes() {
         if (isValid && recipe != null) {
-            // Logger.INFO("Processing "+(disableOptional ? "Extracting" : "Canning")+" Recipe.");
             if (this.disableOptional) {
                 addFluidExtractionRecipe(recipe);
             } else {
@@ -172,8 +157,7 @@ public class RecipeGen_FluidCanning implements Runnable {
         }
     }
 
-    private boolean addFluidExtractionRecipe(GT_Recipe aRecipe) {
-        boolean result = false;
+    private void addFluidExtractionRecipe(GT_Recipe aRecipe) {
         CORE.crash();
         Logger.INFO(
                 "[FE-Debug] " + aRecipe.mFluidOutputs[0].amount
@@ -189,13 +173,7 @@ public class RecipeGen_FluidCanning implements Runnable {
         int aCount2 = aCount1;
         RecipeMaps.fluidExtractionRecipes.addRecipe(aRecipe);
         aCount1 = getMapSize(RecipeMaps.fluidExtractionRecipes);
-        result = aCount1 > aCount2;
-        if (result) {
-            // Logger.INFO("[FIND] Added Extraction recipe for "+ItemUtils.getArrayStackNames(aRecipe.mInputs)+",
-            // "+ItemUtils.getArrayStackNames(aRecipe.mOutputs)+",
-            // "+ItemUtils.getArrayStackNames(aRecipe.mFluidInputs)+",
-            // "+ItemUtils.getArrayStackNames(aRecipe.mFluidOutputs));
-        } else {
+        if (aCount1 <= aCount2) {
             Logger.INFO(
                     "[ERROR] Failed adding Extraction recipe for " + ItemUtils.getArrayStackNames(aRecipe.mInputs)
                             + ", "
@@ -206,22 +184,15 @@ public class RecipeGen_FluidCanning implements Runnable {
                             + ItemUtils.getArrayStackNames(aRecipe.mFluidOutputs));
             dumpStack();
         }
-        return result;
     }
 
-    private boolean addFluidCannerRecipe(GT_Recipe aRecipe) {
-        boolean result = false;
+    private void addFluidCannerRecipe(GT_Recipe aRecipe) {
+        boolean result;
         int aCount1 = getMapSize(RecipeMaps.fluidCannerRecipes);
         int aCount2 = aCount1;
         RecipeMaps.fluidCannerRecipes.addRecipe(aRecipe);
         aCount1 = getMapSize(RecipeMaps.fluidCannerRecipes);
-        result = aCount1 > aCount2;
-        if (result) {
-            // Logger.INFO("[FIND] Added Canning recipe for "+ItemUtils.getArrayStackNames(aRecipe.mInputs)+",
-            // "+ItemUtils.getArrayStackNames(aRecipe.mOutputs)+",
-            // "+ItemUtils.getArrayStackNames(aRecipe.mFluidInputs)+",
-            // "+ItemUtils.getArrayStackNames(aRecipe.mFluidOutputs));
-        } else {
+        if (aCount1 <= aCount2) {
             Logger.INFO(
                     "[ERROR] Failed adding Canning recipe for " + ItemUtils.getArrayStackNames(aRecipe.mInputs)
                             + ", "
@@ -232,7 +203,6 @@ public class RecipeGen_FluidCanning implements Runnable {
                             + ItemUtils.getArrayStackNames(aRecipe.mFluidOutputs));
             dumpStack();
         }
-        return result;
     }
 
     private void dumpStack() {

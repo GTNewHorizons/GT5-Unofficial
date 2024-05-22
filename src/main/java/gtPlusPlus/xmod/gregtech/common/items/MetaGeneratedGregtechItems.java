@@ -15,10 +15,7 @@ import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.data.StringUtils;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.items.Gregtech_MetaItem_X32;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.covers.GTPP_Cover_Overflow;
@@ -37,8 +34,6 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 
     public void generateMetaItems() {
         int tLastID = 0;
-
-        registerCustomCircuits();
 
         // Extruder Shape
         GregtechItemList.Shape_Extruder_WindmillShaft
@@ -158,7 +153,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
                         getTcAspectStack(TC_Aspects.ELECTRUM, 8L),
                         getTcAspectStack(TC_Aspects.METALLUM, 8L),
                         getTcAspectStack(TC_Aspects.POTENTIA, 8L)));
-        this.setElectricStats(32000 + tLastID, GT_Values.V[6] * 10 * 60 * 20, GT_Values.V[5], 5L, -3L, true);
+        this.setElectricStats(32000 + tLastID, GT_Values.V[6] * 10 * 60 * 20, GT_Values.V[5], 5L, -3L, false);
 
         GregtechItemList.Cover_Overflow_LV.set(
                 this.addItem(
@@ -297,50 +292,4 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
                 .set(this.addItem(152, "Maceration Upgrade Chip", "Used to upgrade Maceration Stack to Tier 2"));
     }
 
-    public void registerCustomCircuits() {
-        if (CORE.ConfigSwitches.enableCustomCircuits) {
-            GregtechItemList.Circuit_IV.set(
-                    this.addItem(
-                            704,
-                            "Symbiotic Circuit (IV)",
-                            "A Symbiotic Data Processor",
-                            GregtechOrePrefixes.circuit.get(GT_Materials.Symbiotic)));
-            GregtechItemList.Circuit_LuV.set(
-                    this.addItem(
-                            705,
-                            "Neutronic Circuit (LuV)",
-                            "A Neutron Particle Processor",
-                            GregtechOrePrefixes.circuit.get(GT_Materials.Neutronic)));
-            GregtechItemList.Circuit_ZPM.set(
-                    this.addItem(
-                            706,
-                            "Quantum Circuit (ZPM)",
-                            "A Singlularity Processor",
-                            GregtechOrePrefixes.circuit.get(GT_Materials.Quantum)));
-            GregtechItemList.Circuit_Board_IV
-                    .set(this.addItem(710, "IV Circuit Board", "An IV Voltage Rated Circuit Board"));
-            GregtechItemList.Circuit_Board_LuV
-                    .set(this.addItem(711, "LuV Circuit Board", "An LuV Voltage Rated Circuit Board"));
-            GregtechItemList.Circuit_Board_ZPM
-                    .set(this.addItem(712, "ZPM Processor Board", "A ZPM Voltage Rated Processor Board"));
-            GregtechItemList.Circuit_Parts_Crystal_Chip_IV
-                    .set(this.addItem(713, "(IV) Energized Crystal Chip", "Needed for Circuits"));
-            GregtechItemList.Circuit_Parts_Crystal_Chip_LuV
-                    .set(this.addItem(714, "(LuV) Neutron based Microchip", "Needed for Circuits"));
-            GregtechItemList.Circuit_Parts_Crystal_Chip_ZPM
-                    .set(this.addItem(715, "(ZPM) Quantum Chip", "Needed for Circuits"));
-            GregtechItemList.Circuit_Parts_IV.set(this.addItem(716, "(IV) Energized Circuit Parts", "Circuit Parts"));
-            GregtechItemList.Circuit_Parts_LuV
-                    .set(this.addItem(717, "(LuV) Neutron-based Circuit Parts", "Circuit Parts"));
-            GregtechItemList.Circuit_Parts_ZPM.set(this.addItem(718, "(ZPM) Quantum Circuit Parts", "Circuit Parts"));
-            GregtechItemList.Circuit_Parts_Wiring_IV
-                    .set(this.addItem(719, "Etched IV Voltage Wiring", "Part of Circuit Boards"));
-            GregtechItemList.Circuit_Parts_Wiring_LuV
-                    .set(this.addItem(720, "Etched LuV Voltage Wiring", "Part of Circuit Boards"));
-            GregtechItemList.Circuit_Parts_Wiring_ZPM
-                    .set(this.addItem(721, "Etched ZPM Voltage Wiring", "Part of Circuit Boards"));
-            ItemUtils.addItemToOreDictionary(GregtechItemList.Circuit_IV.get(1), "circuitSuperconductor");
-            ItemUtils.addItemToOreDictionary(GregtechItemList.Circuit_LuV.get(1), "circuitInfinite");
-        }
-    }
 }

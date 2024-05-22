@@ -6,8 +6,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
-import gregtech.api.items.GT_MetaGenerated_Tool;
-import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 
 public class NBTUtils {
@@ -79,46 +77,6 @@ public class NBTUtils {
         tNBT.setTag(customkey, list);
         itemstack.setTagCompound(tNBT);
         return itemstack;
-    }
-
-    public static ItemStack writeItemsToGtCraftingComponents(ItemStack rStack, ItemStack[] input, boolean copyTags) {
-        try {
-            ItemStack stored[] = new ItemStack[9];
-            if (input.length != 9) {
-                for (int e = 0; e < input.length; e++) {
-                    if (input[e] != null) stored[e] = input[e];
-                }
-            }
-
-            if (copyTags) {
-                for (ItemStack itemStack : stored) {
-                    if (itemStack != null && itemStack.hasTagCompound()) {
-                        rStack.setTagCompound((NBTTagCompound) itemStack.getTagCompound().copy());
-                        break;
-                    }
-                }
-            }
-
-            NBTTagCompound rNBT = rStack.getTagCompound(), tNBT = new NBTTagCompound();
-            if (rNBT == null) rNBT = new NBTTagCompound();
-            for (int i = 0; i < 9; i++) {
-                ItemStack tStack = stored[i];
-                if (tStack != null && GT_Utility.getContainerItem(tStack, true) == null
-                        && !(tStack.getItem() instanceof GT_MetaGenerated_Tool)) {
-                    tStack = GT_Utility.copyAmount(1, tStack);
-                    if (GT_Utility.isStackValid(tStack)) {
-                        GT_ModHandler
-                                .dischargeElectricItem(tStack, Integer.MAX_VALUE, Integer.MAX_VALUE, true, false, true);
-                        tNBT.setTag("Ingredient." + i, tStack.writeToNBT(new NBTTagCompound()));
-                    }
-                }
-            }
-            rNBT.setTag("GT.CraftingComponents", tNBT);
-            rStack.setTagCompound(rNBT);
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
-        return rStack;
     }
 
     public static void setBoolean(ItemStack aStack, String aTag, boolean aBoolean) {

@@ -3,17 +3,10 @@ package gtPlusPlus.core.util.reflect;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.GenericDeclaration;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -48,40 +41,30 @@ public class ReflectionUtils {
 
     private static class CachedMethod {
 
-        private final boolean STATIC;
         private final Method METHOD;
 
         public CachedMethod(Method aMethod, boolean isStatic) {
             METHOD = aMethod;
-            STATIC = isStatic;
         }
 
         public Method get() {
             return METHOD;
         }
 
-        public boolean type() {
-            return STATIC;
-        }
     }
 
     private static class CachedField {
 
-        private final boolean STATIC;
         private final Field FIELD;
 
         public CachedField(Field aField, boolean isStatic) {
             FIELD = aField;
-            STATIC = isStatic;
         }
 
         public Field get() {
             return FIELD;
         }
 
-        public boolean type() {
-            return STATIC;
-        }
     }
 
     private static Fields.ClassFields.Field cacheAccessor(Field f) {
@@ -132,19 +115,13 @@ public class ReflectionUtils {
         return false;
     }
 
-    private static boolean cacheConstructor(Class<?> aClass, Constructor<?> aConstructor) {
+    private static void cacheConstructor(Class<?> aClass, Constructor<?> aConstructor) {
         if (aConstructor == null) {
-            return false;
+            return;
         }
-        CachedConstructor y = mCachedConstructors
-                .get(aClass.getName() + "." + ArrayUtils.toString(aConstructor.getParameterTypes()));
-        if (y == null) {
-            mCachedConstructors.put(
-                    aClass.getName() + "." + ArrayUtils.toString(aConstructor.getParameterTypes()),
-                    new CachedConstructor(aConstructor));
-            return true;
-        }
-        return false;
+        mCachedConstructors.computeIfAbsent(
+                aClass.getName() + "." + ArrayUtils.toString(aConstructor.getParameterTypes()),
+                k -> new CachedConstructor(aConstructor));
     }
 
     /**
@@ -238,17 +215,6 @@ public class ReflectionUtils {
         }
     }
 
-    public static boolean isStaticMethod(Class<?> aClass, String aMethodName, Class<?>... aTypes) {
-        return isStaticMethod(ReflectionUtils.getMethod(aClass, aMethodName, aTypes));
-    }
-
-    public static boolean isStaticMethod(Method aMethod) {
-        if (aMethod != null && Modifier.isStatic(aMethod.getModifiers())) {
-            return true;
-        }
-        return false;
-    }
-
     /**
      * Returns a cached {@link Field} object.
      * 
@@ -278,21 +244,6 @@ public class ReflectionUtils {
         }
     }
 
-    public static Field[] getAllFields(final Class<?> aClass) {
-        if (aClass == null) {
-            return null;
-        }
-        Field[] aFields = aClass.getDeclaredFields();
-        for (Field f : aFields) {
-            CachedField y = mCachedFields.get(aClass.getName() + "." + f.getName());
-            if (y == null) {
-                makeFieldAccessible(f);
-                cacheField(aClass, f);
-            }
-        }
-        return aFields;
-    }
-
     /**
      * Returns a cached {@link Field} object.
      * 
@@ -314,20 +265,6 @@ public class ReflectionUtils {
 
     public static boolean doesClassExist(final String classname) {
         return isClassPresent(classname);
-    }
-
-    /**
-     * Returns the class of the objects type parameter
-     * 
-     * @param o - Object to examine paramters on
-     * @return - a Class<?> or null
-     */
-    public static Class<?> getTypeOfGenericObject(Object o) {
-        Class<?> aTypeParam = findSuperClassParameterType(o, o.getClass(), 0);
-        if (aTypeParam == null) {
-            aTypeParam = findSubClassParameterType(o, o.getClass(), 0);
-        }
-        return aTypeParam;
     }
 
     public static void makeFieldAccessible(final Field field) {
@@ -405,10 +342,10 @@ public class ReflectionUtils {
                     return true;
                 }
             } catch (final NoSuchFieldException e) {
-                Logger.REFLECTION("setField(" + object.toString() + ", " + fieldName + ") failed.");
+                Logger.REFLECTION("setField(" + object + ", " + fieldName + ") failed.");
                 clazz = clazz.getSuperclass();
             } catch (final Exception e) {
-                Logger.REFLECTION("setField(" + object.toString() + ", " + fieldName + ") failed.");
+                Logger.REFLECTION("setField(" + object + ", " + fieldName + ") failed.");
                 throw new IllegalStateException(e);
             }
         }
@@ -431,10 +368,10 @@ public class ReflectionUtils {
                     return true;
                 }
             } catch (final NoSuchFieldException e) {
-                Logger.REFLECTION("setField(" + object.toString() + ", " + field.getName() + ") failed.");
+                Logger.REFLECTION("setField(" + object + ", " + field.getName() + ") failed.");
                 clazz = clazz.getSuperclass();
             } catch (final Exception e) {
-                Logger.REFLECTION("setField(" + object.toString() + ", " + field.getName() + ") failed.");
+                Logger.REFLECTION("setField(" + object + ", " + field.getName() + ") failed.");
                 throw new IllegalStateException(e);
             }
         }
@@ -453,95 +390,9 @@ public class ReflectionUtils {
         }
     }
 
-    /**
-     * Allows to change the state of an immutable instance. Huh?!?
-     */
-    public static void setFinalFieldValue(Class<?> clazz, Field field, Object newValue) {
-        try {
-            setFieldValue_Internal(clazz, field, newValue);
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
-    }
-
-    public static void setByte(Object clazz, String fieldName, byte newValue) throws Exception {
+    public static void setByte(Object clazz, String fieldName, byte newValue) {
         Field nameField = getField(clazz.getClass(), fieldName);
         cacheAccessor(nameField).setValue(null, newValue);
-    }
-
-    public static boolean invoke(Object objectInstance, String methodName, Class[] parameters, Object[] values) {
-        if (objectInstance == null || methodName == null || parameters == null || values == null) {
-            return false;
-        }
-        Class<?> mLocalClass = (objectInstance instanceof Class ? (Class<?>) objectInstance
-                : objectInstance.getClass());
-        Logger.REFLECTION(
-                "Trying to invoke " + methodName + " on an instance of " + mLocalClass.getCanonicalName() + ".");
-        try {
-            Method mInvokingMethod = mLocalClass.getDeclaredMethod(methodName, parameters);
-            if (mInvokingMethod != null) {
-                return invoke(objectInstance, mInvokingMethod, values);
-            }
-        } catch (NoSuchMethodException | SecurityException | IllegalArgumentException e) {
-            Logger.REFLECTION(
-                    "Failed to Dynamically invoke " + methodName + " on an object of type: " + mLocalClass.getName());
-        }
-
-        Logger.REFLECTION("Invoke failed or did something wrong.");
-        return false;
-    }
-
-    public static boolean invoke(Object objectInstance, Method method, Object[] values) {
-        if (method == null || values == null || (!ReflectionUtils.isStaticMethod(method) && objectInstance == null)) {
-            // Logger.REFLECTION("Null value when trying to Dynamically invoke "+methodName+" on an object of type:
-            // "+objectInstance.getClass().getName());
-            return false;
-        }
-        String methodName = method.getName();
-        String classname = objectInstance != null ? objectInstance.getClass().getCanonicalName()
-                : method.getDeclaringClass().getCanonicalName();
-        Logger.REFLECTION("Trying to invoke " + methodName + " on an instance of " + classname + ".");
-        try {
-            Method mInvokingMethod = method;
-            if (mInvokingMethod != null) {
-                Logger.REFLECTION(methodName + " was not null.");
-                if ((boolean) mInvokingMethod.invoke(objectInstance, values)) {
-                    Logger.REFLECTION("Successfully invoked " + methodName + ".");
-                    return true;
-                } else {
-                    Logger.REFLECTION("Invocation failed for " + methodName + ".");
-                }
-            }
-        } catch (SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            Logger.REFLECTION("Failed to Dynamically invoke " + methodName + " on an object of type: " + classname);
-        }
-        Logger.REFLECTION("Invoke failed or did something wrong.");
-        return false;
-    }
-
-    public static boolean invokeVoid(Object objectInstance, Method method, Object[] values) {
-        if (method == null || values == null || (!ReflectionUtils.isStaticMethod(method) && objectInstance == null)) {
-            // Logger.REFLECTION("Null value when trying to Dynamically invoke "+methodName+" on an object of type:
-            // "+objectInstance.getClass().getName());
-            return false;
-        }
-        String methodName = method.getName();
-        String classname = objectInstance != null ? objectInstance.getClass().getCanonicalName()
-                : method.getDeclaringClass().getCanonicalName();
-        Logger.REFLECTION("Trying to invoke " + methodName + " on an instance of " + classname + ".");
-        try {
-            Method mInvokingMethod = method;
-            if (mInvokingMethod != null) {
-                Logger.REFLECTION(methodName + " was not null.");
-                mInvokingMethod.invoke(objectInstance, values);
-                Logger.REFLECTION("Successfully invoked " + methodName + ".");
-                return true;
-            }
-        } catch (SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            Logger.REFLECTION("Failed to Dynamically invoke " + methodName + " on an object of type: " + classname);
-        }
-        Logger.REFLECTION("Invoke failed or did something wrong.");
-        return false;
     }
 
     public static boolean invokeVoid(Object objectInstance, String methodName, Class[] parameters, Object[] values) {
@@ -572,158 +423,9 @@ public class ReflectionUtils {
         return false;
     }
 
-    public static Object invokeNonBool(Object objectInstance, Method method, Object[] values) {
-        if ((!ReflectionUtils.isStaticMethod(method) && objectInstance == null) || method == null || values == null) {
-            return false;
-        }
-        String methodName = method.getName();
-        String classname = objectInstance != null ? objectInstance.getClass().getCanonicalName()
-                : method.getDeclaringClass().getCanonicalName();
-        Logger.REFLECTION("Trying to invoke " + methodName + " on an instance of " + classname + ".");
-        try {
-            return method.invoke(objectInstance, values);
-        } catch (SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            Logger.REFLECTION("Failed to Dynamically invoke " + methodName + " on an object of type: " + classname);
-        }
-
-        Logger.REFLECTION("Invoke failed or did something wrong.");
-        return null;
-    }
-
-    public static Object invokeNonBool(Object objectInstance, String methodName, Class[] parameters, Object[] values) {
-        if (objectInstance == null || methodName == null || parameters == null || values == null) {
-            return false;
-        }
-        Class<?> mLocalClass = (objectInstance instanceof Class ? (Class<?>) objectInstance
-                : objectInstance.getClass());
-        Logger.REFLECTION(
-                "Trying to invoke " + methodName + " on an instance of " + mLocalClass.getCanonicalName() + ".");
-        try {
-            Method mInvokingMethod = mLocalClass.getDeclaredMethod(methodName, parameters);
-            if (mInvokingMethod != null) {
-                Logger.REFLECTION(methodName + " was not null.");
-                return mInvokingMethod.invoke(objectInstance, values);
-            } else {
-                Logger.REFLECTION(methodName + " is null.");
-            }
-        } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-                | InvocationTargetException e) {
-            Logger.REFLECTION(
-                    "Failed to Dynamically invoke " + methodName + " on an object of type: " + mLocalClass.getName());
-        }
-
-        Logger.REFLECTION("Invoke failed or did something wrong.");
-        return null;
-    }
-
-    /*
-     * Internal Magic that probably should not get exposed.
-     */
-
     /*
      * Below Code block is used for determining generic types associated with type<E>
      */
-
-    // https://xebia.com/blog/acessing-generic-types-at-runtime-in-java/
-    // https://www.javacodegeeks.com/2013/12/advanced-java-generics-retreiving-generic-type-arguments.html
-    public static Class<?> findSuperClassParameterType(Object instance, Class<?> classOfInterest, int parameterIndex) {
-        Class<?> subClass = instance.getClass();
-        while (classOfInterest != subClass.getSuperclass()) {
-            // instance.getClass() is no subclass of classOfInterest or instance is a direct instance of classOfInterest
-            subClass = subClass.getSuperclass();
-            if (subClass == null) {
-                return null;
-            }
-        }
-        ParameterizedType parameterizedType = (ParameterizedType) subClass.getGenericSuperclass();
-        Class<?> aReturn;
-        aReturn = (Class<?>) parameterizedType.getActualTypeArguments()[parameterIndex];
-        return aReturn;
-    }
-
-    public static Class<?> findSubClassParameterType(Object instance, Class<?> classOfInterest, int parameterIndex) {
-        Map<Type, Type> typeMap = new HashMap<>();
-        Class<?> instanceClass = instance.getClass();
-        while (classOfInterest != instanceClass.getSuperclass()) {
-            extractTypeArguments(typeMap, instanceClass);
-            instanceClass = instanceClass.getSuperclass();
-            if (instanceClass == null) {
-                return null;
-            }
-        }
-
-        ParameterizedType parameterizedType = (ParameterizedType) instanceClass.getGenericSuperclass();
-        Type actualType = parameterizedType.getActualTypeArguments()[parameterIndex];
-        if (typeMap.containsKey(actualType)) {
-            actualType = typeMap.get(actualType);
-        }
-        if (actualType instanceof Class) {
-            return (Class<?>) actualType;
-        } else if (actualType instanceof TypeVariable) {
-            return browseNestedTypes(instance, (TypeVariable<?>) actualType);
-        } else {
-            return null;
-        }
-    }
-
-    private static void extractTypeArguments(Map<Type, Type> typeMap, Class<?> clazz) {
-        Type genericSuperclass = clazz.getGenericSuperclass();
-        if (!(genericSuperclass instanceof ParameterizedType parameterizedType)) {
-            return;
-        }
-
-        Type[] typeParameter = ((Class<?>) parameterizedType.getRawType()).getTypeParameters();
-        Type[] actualTypeArgument = parameterizedType.getActualTypeArguments();
-        for (int i = 0; i < typeParameter.length; i++) {
-            if (typeMap.containsKey(actualTypeArgument[i])) {
-                actualTypeArgument[i] = typeMap.get(actualTypeArgument[i]);
-            }
-            typeMap.put(typeParameter[i], actualTypeArgument[i]);
-        }
-    }
-
-    private static Class<?> browseNestedTypes(Object instance, TypeVariable<?> actualType) {
-        Class<?> instanceClass = instance.getClass();
-        List<Class<?>> nestedOuterTypes = new LinkedList<>();
-        for (Class<?> enclosingClass = instanceClass.getEnclosingClass(); enclosingClass
-                != null; enclosingClass = enclosingClass.getEnclosingClass()) {
-            try {
-                Field this$0 = instanceClass.getDeclaredField("this$0");
-                Object outerInstance = this$0.get(instance);
-                Class<?> outerClass = outerInstance.getClass();
-                nestedOuterTypes.add(outerClass);
-                Map<Type, Type> outerTypeMap = new HashMap<>();
-                extractTypeArguments(outerTypeMap, outerClass);
-                for (Map.Entry<Type, Type> entry : outerTypeMap.entrySet()) {
-                    if (!(entry.getKey() instanceof TypeVariable<?>foundType)) {
-                        continue;
-                    }
-                    if (foundType.getName().equals(actualType.getName())
-                            && isInnerClass(foundType.getGenericDeclaration(), actualType.getGenericDeclaration())) {
-                        if (entry.getValue() instanceof Class) {
-                            return (Class<?>) entry.getValue();
-                        }
-                        actualType = (TypeVariable<?>) entry.getValue();
-                    }
-                }
-            } catch (NoSuchFieldException | IllegalAccessException e) {
-
-            }
-        }
-        return null;
-    }
-
-    private static boolean isInnerClass(GenericDeclaration outerDeclaration, GenericDeclaration innerDeclaration) {
-        if (!(outerDeclaration instanceof Class<?>outerClass) || !(innerDeclaration instanceof Class<?>innerClass)) {
-            return false;
-        }
-        while ((innerClass = innerClass.getEnclosingClass()) != null) {
-            if (innerClass == outerClass) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     /*
      * End of Generics Block
@@ -734,20 +436,15 @@ public class ReflectionUtils {
             Logger.REFLECTION("Field: Internal Lookup: " + fieldName);
             Field k = clazz.getDeclaredField(fieldName);
             makeFieldAccessible(k);
-            // Logger.REFLECTION("Got Field from Class. "+fieldName+" did exist within "+clazz.getCanonicalName()+".");
             return k;
         } catch (final NoSuchFieldException e) {
             Logger.REFLECTION("Field: Internal Lookup Failed: " + fieldName);
             final Class<?> superClass = clazz.getSuperclass();
             if (superClass == null) {
                 Logger.REFLECTION("Unable to find field '" + fieldName + "'");
-                // Logger.REFLECTION("Failed to get Field from Class. "+fieldName+" does not existing within
-                // "+clazz.getCanonicalName()+".");
                 throw e;
             }
             Logger.REFLECTION("Method: Recursion Lookup: " + fieldName + " - Checking in " + superClass.getName());
-            // Logger.REFLECTION("Failed to get Field from Class. "+fieldName+" does not existing within
-            // "+clazz.getCanonicalName()+". Trying super class.");
             return getField_Internal(superClass, fieldName);
         }
     }
@@ -973,10 +670,6 @@ public class ReflectionUtils {
      */
     private static void setFieldValue_Internal(Object owner, Field field, Object value) throws Exception {
         cacheAccessor(field).setValue(owner, value);
-    }
-
-    public static boolean doesFieldExist(String clazz, String string) {
-        return doesFieldExist(ReflectionUtils.getClass(clazz), string);
     }
 
     public static boolean doesFieldExist(Class<?> clazz, String string) {

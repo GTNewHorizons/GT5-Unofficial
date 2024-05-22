@@ -9,13 +9,4 @@ public class LogRainforestTree extends LogBase {
         this.treeType = new String[] { "rainforest" };
     }
 
-    /*
-     * @Override
-     * @SideOnly(Side.CLIENT) protected IIcon getSideIcon(int metaID){ return this.textureSide[metaID %
-     * this.textureSide.length]; }
-     * @Override
-     * @SideOnly(Side.CLIENT) protected IIcon getTopIcon(int metaID){ return this.textureTop[metaID %
-     * this.textureTop.length]; }
-     */
-
 }

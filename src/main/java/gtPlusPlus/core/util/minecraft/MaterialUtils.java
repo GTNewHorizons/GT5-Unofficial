@@ -126,10 +126,7 @@ public class MaterialUtils {
             } else if (material.getGas(1) != null) {
                 Logger.MATERIALS("[Debug] State set as gas.");
                 materialState = MaterialState.GAS;
-            } /*
-               * else if (material.getPlasma(1) != null){ Logger.MATERIALS("[Debug] State set as plasma.");
-               * materialState = MaterialState.PLASMA; }
-               */ else {
+            } else {
                 Logger.MATERIALS(
                         "[Debug] State set as solid. This material has no alternative states, so for safety we wont generate anything.");
                 materialState = MaterialState.SOLID;
@@ -274,7 +271,6 @@ public class MaterialUtils {
                             + aFallbackMaterialName
                             + "', returning _NULL.");
             CORE.crash();
-            // g = Materials._NULL;
         }
         return g;
     }
@@ -309,7 +305,7 @@ public class MaterialUtils {
 
         toCheck.add(toSearch);
         int processed = 0;
-        while (toCheck.size() > 0 && processed < HARD_LIMIT) {
+        while (!toCheck.isEmpty() && processed < HARD_LIMIT) {
             Material current = toCheck.remove();
             if (current.getComposites().isEmpty()) {
                 resultList.put(current);

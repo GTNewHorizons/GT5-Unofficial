@@ -64,7 +64,6 @@ import gtPlusPlus.core.item.general.chassis.ItemDehydratorCoilWire;
 import gtPlusPlus.core.item.general.spawn.ItemCustomSpawnEgg;
 import gtPlusPlus.core.item.init.ItemsFoods;
 import gtPlusPlus.core.item.materials.DustDecayable;
-import gtPlusPlus.core.item.tool.misc.DebugScanner;
 import gtPlusPlus.core.item.tool.misc.GregtechPump;
 import gtPlusPlus.core.item.wearable.WearableLoader;
 import gtPlusPlus.core.lib.CORE;
@@ -97,8 +96,6 @@ public final class ModItems {
     public static ItemCustomSpawnEgg itemCustomSpawnEgg;
 
     public static Item itemIngotBatteryAlloy;
-
-    public static Item itemHydrogenBlob;
 
     public static Item itemBedLocator_Base;
     public static Item itemBaseItemWithCharge;
@@ -212,8 +209,6 @@ public final class ModItems {
     public static BatteryPackBaseBauble itemChargePack_High_3;
     public static BatteryPackBaseBauble itemChargePack_High_4;
 
-    public static DebugScanner itemDebugScanner;
-
     public static ItemDummyResearch itemDummyResearch;
 
     public static BaseItemMetaFood itemMetaFood;
@@ -234,7 +229,6 @@ public final class ModItems {
 
     public static void init() {
 
-        itemDebugScanner = new DebugScanner();
         itemMagicFeather = new ItemMagicFeather();
 
         itemAlkalusDisk = new BaseItemDamageable(
@@ -256,8 +250,6 @@ public final class ModItems {
         MetaGeneratedGregtechItems.INSTANCE.generateMetaItems();
 
         // Register Hydrogen Blobs first, so we can replace old helium blobs.
-        itemHydrogenBlob = new CoreItem("itemHydrogenBlob", "Mysterious Hydrogen Blob", tabMisc)
-                .setTextureName(GTPlusPlus.ID + ":itemHeliumBlob");
         // Register Old Helium Blob, this will be replaced when held by a player.
 
         // Load Wearable Items
@@ -720,10 +712,7 @@ public final class ModItems {
 
         // Xp Fluids - Dev
         if (!FluidRegistry.isFluidRegistered("mobessence")) {
-            FluidUtils.generateFluidNoPrefix("mobessence", "mobessence", 0, new short[] { 125, 175, 125, 100 });
-        }
-        if (!FluidRegistry.isFluidRegistered("xpjuice")) {
-            FluidUtils.generateFluidNoPrefix("xpjuice", "xpjuice", 0, new short[] { 50, 150, 50, 100 });
+            FluidUtils.generateFluidNoPrefix("mobessence", "Mob Essence", 0, new short[] { 125, 175, 125, 100 });
         }
 
         dustNeptunium238 = new DustDecayable(

@@ -41,7 +41,7 @@ public class FireProtectionBauble extends BaseBauble {
     }
 
     public FireProtectionBauble() {
-        super(BaubleType.RING, "GTPP.bauble.fireprotection.0" + ".name", 0);
+        super(BaubleType.RING);
         String aUnlocalName = "GTPP.bauble.fireprotection.0" + ".name";
         this.setUnlocalizedName(aUnlocalName);
         this.setTextureName(GTPlusPlus.ID + ":" + getTextureNameForBauble());
@@ -70,7 +70,6 @@ public class FireProtectionBauble extends BaseBauble {
         return false;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
         super.addInformation(stack, aPlayer, list, bool);
@@ -87,11 +86,7 @@ public class FireProtectionBauble extends BaseBauble {
     }
 
     @Override
-    public void onEquipped(final ItemStack arg0, final EntityLivingBase aPlayer) {
-        if (!aPlayer.worldObj.isRemote) {
-            if (aPlayer instanceof EntityPlayer bPlayer) {}
-        }
-    }
+    public void onEquipped(final ItemStack arg0, final EntityLivingBase aPlayer) {}
 
     @Override
     public void onUnequipped(final ItemStack arg0, final EntityLivingBase aPlayer) {

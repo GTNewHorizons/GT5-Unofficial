@@ -8,7 +8,6 @@ public class AddToCreativeTab {
 
     public static CreativeTabs tabBlock;
     public static CreativeTabs tabMisc;
-    public static CreativeTabs tabCombat;
     public static CreativeTabs tabTools;
     public static CreativeTabs tabMachines;
     public static CreativeTabs tabOther;

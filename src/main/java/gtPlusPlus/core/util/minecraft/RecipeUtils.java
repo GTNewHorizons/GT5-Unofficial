@@ -18,12 +18,10 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.ShapedRecipe;
 import gtPlusPlus.core.handler.COMPAT_HANDLER;
 import gtPlusPlus.core.handler.Recipes.LateRegistrationHandler;
@@ -216,27 +214,6 @@ public class RecipeUtils {
                 aOutput);
     }
 
-    public static String[] getRecipeInfo(GT_Recipe m) {
-        if (m == null) {
-            return new String[] {};
-        }
-        AutoMap<String> result = new AutoMap<>();
-        result.put(m.toString());
-        result.put("Input " + ItemUtils.getArrayStackNames(m.mInputs));
-        result.put("Output " + ItemUtils.getArrayStackNames(m.mOutputs));
-        result.put("Input " + ItemUtils.getArrayStackNames(m.mFluidInputs));
-        result.put("Output " + ItemUtils.getArrayStackNames(m.mFluidOutputs));
-        result.put("Can be buffered? " + m.mCanBeBuffered);
-        result.put("Duration: " + m.mDuration);
-        result.put("EU/t: " + m.mEUt);
-        result.put("Is Hidden? " + m.mHidden);
-        result.put("Is Enabled? " + m.mEnabled);
-        result.put("Special Value: " + m.mSpecialValue);
-        result.put("=====================================");
-        String s[] = result.toArray();
-        return s;
-    }
-
     public static class InternalRecipeObject implements RunnableWithInfo<String> {
 
         final ItemStack mOutput;
@@ -305,7 +282,7 @@ public class RecipeUtils {
         @Override
         public String getInfoData() {
             if (mOutput != null && mOutput instanceof ItemStack) {
-                return ((ItemStack) mOutput).getDisplayName();
+                return mOutput.getDisplayName();
             }
             return "";
         }

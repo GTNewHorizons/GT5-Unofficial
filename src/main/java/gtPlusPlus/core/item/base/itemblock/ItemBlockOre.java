@@ -17,8 +17,6 @@ import gtPlusPlus.core.block.base.BlockBaseOre;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialStack;
-import gtPlusPlus.core.material.nuclear.FLUORIDES;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
 import gtPlusPlus.everglades.gen.gt.WorldGen_GT_Ore_Layer;
@@ -28,7 +26,6 @@ public class ItemBlockOre extends ItemBlock {
     private final BlockBaseOre mThisOre;
     private final Material mThisMaterial;
     private final int mThisRadiation;
-    private final int mThisColour;
 
     public ItemBlockOre(final Block block) {
         super(block);
@@ -36,17 +33,11 @@ public class ItemBlockOre extends ItemBlock {
             this.mThisOre = (BlockBaseOre) block;
             this.mThisMaterial = this.mThisOre.getMaterialEx();
             this.mThisRadiation = this.mThisMaterial.vRadiationLevel;
-            this.mThisColour = this.mThisMaterial.getRgbAsHex();
         } else {
             this.mThisOre = null;
             this.mThisMaterial = null;
             this.mThisRadiation = 0;
-            this.mThisColour = Utils.rgbtoHexValue(255, 255, 255);
         }
-    }
-
-    public int getRenderColor(final int aMeta) {
-        return this.mThisColour;
     }
 
     private static Map<String, AutoMap<String>> mMapOreBlockItemToDimName = new LinkedHashMap<>();
@@ -83,17 +74,6 @@ public class ItemBlockOre extends ItemBlock {
             list.add(CORE.GT_Tooltip_Radioactive.get());
         }
 
-        /**
-         * Tooltip Handler for Ores
-         */
-        if (this.mThisMaterial == FLUORIDES.FLUORITE) {
-            list.add(
-                    "Mined from Sandstone with a 1/" + (CORE.ConfigSwitches.chanceToDropFluoriteOre * 20)
-                            + " chance, or Limestone with a 1/"
-                            + (CORE.ConfigSwitches.chanceToDropFluoriteOre)
-                            + " chance.");
-        }
-
         if (this.mThisMaterial != null) {
             list.add("Ore contains:    ");
             if (mThisMaterial.getComposites().isEmpty()) {
@@ -109,7 +89,6 @@ public class ItemBlockOre extends ItemBlock {
 
             Block b = Block.getBlockFromItem(stack.getItem());
             if (b != null) {
-                String aTool = b.getHarvestTool(stack.getItemDamage());
                 int aMiningLevel1 = b.getHarvestLevel(stack.getItemDamage());
                 if (aMiningLevel1 != 0) {
                     list.add("Mining Level: " + Math.min(Math.max(aMiningLevel1, 0), 5));

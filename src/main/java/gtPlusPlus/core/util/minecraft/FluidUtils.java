@@ -576,10 +576,6 @@ public class FluidUtils {
         return gtFluid;
     }
 
-    public static FluidStack getMobEssence(final int amount) {
-        return EnchantingUtils.getMobEssence(amount);
-    }
-
     public static boolean doesFluidExist(String aFluidName) {
         FluidStack aFStack1 = (FluidUtils.getFluidStack("molten" + "." + aFluidName.toLowerCase(), 1));
         FluidStack aFStack2 = (FluidUtils.getFluidStack("fluid" + "." + aFluidName.toLowerCase(), 1));

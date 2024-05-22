@@ -8,30 +8,20 @@ import static gtPlusPlus.core.lib.CORE.ConfigSwitches.basePollutionPerSecondBoil
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.basePollutionPerSecondGeothermalGenerator;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.basePollutionPerSecondSemiFluidGenerator;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.boilerSteamPerSecond;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.chanceToDropDrainedShard;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.chanceToDropFluoriteOre;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.disableEnderIOIngotTooltips;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.disableEnderIOIntegration;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.disableIC2Recipes;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.dumpItemAndBlockData;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableAlternativeBatteryAlloy;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableAlternativeDivisionSigilRecipe;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableAnimatedTextures;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableCustomCapes;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableCustomCircuits;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableCustom_Cables;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableCustom_Pipes;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_Dehydrators;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_FluidTanks;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_GeothermalEngines;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_Pollution;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_RF_Convetor;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_RocketEngines;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_SimpleWasher;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_SolarGenerators;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_SteamConverter;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_Tesseracts;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiSizeTools;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_AlloyBlastSmelter;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_Cyclotron;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_IndustrialCentrifuge;
@@ -55,8 +45,6 @@ import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_NuclearFu
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_NuclearSaltProcessingPlant;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_PowerSubstation;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_ThermalBoiler;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableOldGTcircuits;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableSulfuricAcidFix;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableThaumcraftShardUnification;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableWatchdogBGM;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.hideUniversalCells;
@@ -129,13 +117,6 @@ public class ConfigHandler {
          * DEBUG = config.getBoolean("debugMode", "debug", false,
          * "Enables all sorts of debug logging. (Don't use unless told to, breaks other things.)");
          */
-        disableEnderIOIntegration = config
-                .getBoolean("disableEnderIO", "debug", false, "Disables EnderIO Integration.");
-        disableEnderIOIngotTooltips = config.getBoolean(
-                "disableEnderIOIngotTooltips",
-                "debug",
-                false,
-                "Disables EnderIO Ingot Tooltips. These apparently may cause issues for a very small number of users.");
         MACHINE_INFO = config.getBoolean(
                 "enableMachineInfoLogging",
                 "debug",
@@ -155,18 +136,11 @@ public class ConfigHandler {
                 "machines",
                 false,
                 "Allows the use of TC shards across many recipes by oreDicting them into a common group.");
-        enableAlternativeBatteryAlloy = config.getBoolean(
-                "enableAlternativeBatteryAlloy",
-                "machines",
-                false,
-                "Adds a non-Antimony using Battery Alloy. Not Balanced at all..");
         disableIC2Recipes = config.getBoolean(
                 "disableIC2Recipes",
                 "machines",
                 false,
                 "Alkaluscraft Related - Removes IC2 Cables Except glass fibre. Few other Misc Tweaks.");
-        enableAlternativeDivisionSigilRecipe = config
-                .getBoolean("enableAlternativeDivisionSigilRecipe", "machines", false, "Utilizes Neutronium instead.");
         boilerSteamPerSecond = config.getInt(
                 "boilerSteamPerSecond",
                 "machines",
@@ -175,34 +149,7 @@ public class ConfigHandler {
                 10000,
                 "Sets the steam per second value in LV,MV,HV boilers (respectively 1x,2x,3x this number for the tiers)");
 
-        // requireControlCores
-        boolean temp = config.getBoolean("requireControlCores", "machines", true, "Multiblocks Require Control Cores");
-
-        // Circuits
-        enableCustomCircuits = config.getBoolean(
-                "enableCustomCircuits",
-                GregTech.ID,
-                false,
-                "Adds custom circuits to expand past the Master Tier. Only really recommended to enable if enableOldGTcircuits is enabled.");
-        enableOldGTcircuits = config.getBoolean(
-                "enableOldGTcircuits",
-                GregTech.ID,
-                false,
-                "Restores circuits and their recipes from Pre-5.09.28 times.");
-
-        // Tools
-        enableMultiSizeTools = config.getBoolean(
-                "enableMultiSizeTools",
-                GregTech.ID,
-                true,
-                "Adds Custom GT Shovels and Pickaxes which mine in a 3x3 style. One of each whill be generated for each Gregtech Material which has Dense Plates and Long Rods available.");
-
         // GT-Fixes
-        enableSulfuricAcidFix = config.getBoolean(
-                "enableSulfuricAcidFix",
-                GregTech.ID,
-                false,
-                "Adds GT6 recipes for Sulfuric Acid. Should remove all pre-existing recipes.");
         turbineCutoffBase = config.getInt(
                 "turbineCutoffBase",
                 GregTech.ID,
@@ -214,29 +161,6 @@ public class ConfigHandler {
         // Pipes & Cables
         enableCustom_Pipes = config.getBoolean("enableCustom_Pipes", GregTech.ID, true, "Adds Custom GT Fluid Pipes.");
         enableCustom_Cables = config.getBoolean("enableCustom_Cables", GregTech.ID, true, "Adds Custom GT Cables.");
-
-        // Block Drops
-        chanceToDropDrainedShard = config.getInt(
-                "chanceToDropDrainedShard",
-                "blockdrops",
-                196,
-                0,
-                10000,
-                "Drained shards have a 1 in X chance to drop.");
-        chanceToDropFluoriteOre = config.getInt(
-                "chanceToDropFluoriteOre",
-                "blockdrops",
-                32,
-                0,
-                10000,
-                "Fluorite Ore has a 1 in X chance to drop from Limestone and a 1 in X*20 from Sandstone..");
-
-        // Single machines
-        enableMachine_SolarGenerators = config.getBoolean(
-                "enableSolarGenerators",
-                GregTech.ID,
-                false,
-                "These may be overpowered, Consult a local electrician.");
 
         enableMachine_Dehydrators = config
                 .getBoolean("enableMachineDehydrators", GregTech.ID, true, "These dehydrate stuff.");
@@ -266,11 +190,6 @@ public class ConfigHandler {
                 "Very basic automated cauldron for dust washing.");
         enableMachine_Pollution = config
                 .getBoolean("enableMachinePollution", GregTech.ID, true, "Pollution Detector & Scrubbers.");
-        enableMachine_RF_Convetor = config.getBoolean(
-                "enableMachineRFConvetor",
-                GregTech.ID,
-                true,
-                "Converts RF to GTEU. Requires COFH-Core to be installed.");
 
         // Multi machines
         enableMultiblock_AlloyBlastSmelter = config.getBoolean(
