@@ -59,6 +59,14 @@ public final class TT_Utility {
 
     }
 
+    public static String toExponentForm(BigInteger number) {
+        BigInteger abs = number.abs();
+        String strNum = abs.toString();
+        int exponent = strNum.length() - 1;
+        return (number.signum() == -1 ? "-" : "") + strNum.charAt(0) + "." + strNum.substring(1, 3) + "e" + exponent;
+
+    }
+
     public static int bitStringToInt(String bits) {
         if (bits == null) {
             return 0;

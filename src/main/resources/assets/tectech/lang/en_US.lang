@@ -905,77 +905,85 @@ fog.upgrade.tt.28=upgrade 151
 fog.upgrade.tt.29=upgrade 161
 fog.upgrade.tt.30=upgrade end
 
-fog.upgrade.lore.0=*insert lore here* upgrade start
-fog.upgrade.lore.1=*insert lore here* upgrade 11
-fog.upgrade.lore.2=*insert lore here* upgrade 21
-fog.upgrade.lore.3=*insert lore here* upgrade 22
-fog.upgrade.lore.4=*insert lore here* upgrade 31
-fog.upgrade.lore.5=*insert lore here* upgrade 32
-fog.upgrade.lore.6=*insert lore here* upgrade 33
-fog.upgrade.lore.7=*insert lore here* upgrade 41
-fog.upgrade.lore.8=*insert lore here* upgrade 51
-fog.upgrade.lore.9=*insert lore here* upgrade 52
-fog.upgrade.lore.10=*insert lore here* upgrade 53
-fog.upgrade.lore.11=*insert lore here* upgrade 61
-fog.upgrade.lore.12=*insert lore here* upgrade 71
-fog.upgrade.lore.13=*insert lore here* upgrade 72
-fog.upgrade.lore.14=*insert lore here* upgrade 73
-fog.upgrade.lore.15=*insert lore here* upgrade 74
-fog.upgrade.lore.16=*insert lore here* upgrade 80
-fog.upgrade.lore.17=*insert lore here* upgrade 81
-fog.upgrade.lore.18=*insert lore here* upgrade 82
-fog.upgrade.lore.19=*insert lore here* upgrade 83
-fog.upgrade.lore.20=*insert lore here* upgrade 91
-fog.upgrade.lore.21=*insert lore here* upgrade 92
-fog.upgrade.lore.22=*insert lore here* upgrade 93
-fog.upgrade.lore.23=*insert lore here* upgrade 101
-fog.upgrade.lore.24=*insert lore here* upgrade 111
-fog.upgrade.lore.25=*insert lore here* upgrade 121
-fog.upgrade.lore.26=*insert lore here* upgrade 131
-fog.upgrade.lore.27=*insert lore here* upgrade 141
-fog.upgrade.lore.28=*insert lore here* upgrade 151
-fog.upgrade.lore.29=*insert lore here* upgrade 161
+fog.upgrade.lore.0=The Forge of the Gods is an immensely powerful structure constructed around a stabilized neutron star – it is so advanced that its full capabilities are not yet understood. However, through continued use one can slowly upgrade and expand the range of abilities of the Forge, and learn the power hidden in the most extreme parts of the universe: graviton shards. This esoteric material can only be found where conventional matter and degenerate neutronium crust matter on the surface of a neutron star meet. At this point in space, gravitons are far more common and irradiate this material mixture to create highly unstable graviton shards, which can be used to internally upgrade the Forge. While these shards cannot yet exist outside the extreme conditions of the Forge, with continued research and utilization it may be possible to eventually isolate and extract them outside the Forge – but for what purpose?
+fog.upgrade.lore.1=The first major upgrade of the Forge of the Gods has allowed for greater processing speeds as the heat increases, thanks to the space warping effects of graviton shards. This is the first of many applications of the shards, which will be discovered through continuous use of the Forge.
+fog.upgrade.lore.2=Graviton shards warp the surface area of fuels used in the Forge, increasing efficiency as more material can be processed per unit of fuel. Graviton shards will prove crucial for further efficiency increases to offset the ever-increasing demands of the Forge.
+fog.upgrade.lore.3=Through use of graviton shards, the space within the Forge’s fuel chambers can be increased, allowing for greater quantities of fuel to be burned, thus reaching higher temperatures. Don’t forget to reserve fuel to keep the star at the centre of the Forge alive.
+fog.upgrade.lore.4=Graviton shards not only affect matter, but also energy: depending on the fuel burn rate, the Forge may now accept more energy input, allowing for greater processing capacity. What other properties do these Graviton shards hold?
+fog.upgrade.lore.5=As usage of the Forge continues, more data on graviton shards is gathered. It has been found that they can stabilize the outputs of the Forge, allowing for the direct extraction of molten material while it is still close to the heart of the star.
+fog.upgrade.lore.6=As stellar fuel consumption continues to increase the size and energy of the star, the amount of material that can be processed at once also increases. Graviton shards facilitate the manipulation of increased quantities of materials near the star in the core of the Forge.
+fog.upgrade.lore.7=As understanding of graviton shards continues to improve, better control over the materials they manipulate can be achieved. Graviton shards provide an alternative to electromagnetic containment of plasma using spacetime manipulation instead, allowing the Forge to directly output processed materials as plasma.
+fog.upgrade.lore.8=Adding graviton shards to the Forge’s internal energy storage allows for greater quantities of energy stored in a smaller area. By increasing energy density to relativistic levels, the Forge can be run more efficiently and store essentially infinite energy.
+fog.upgrade.lore.9=Simply adding more graviton shards to the fuel chamber continues to amplify the ability for the Forge to consume increased quantities of stellar fuel. It even benefits from graviton shards invested in different parts of the Forge entirely – it seems shards exhibit quantum entanglement-like properties.
+fog.upgrade.lore.10=Increasing the concentration of graviton shards near the material processing regions of the Forge warps spacetime so significantly that it doubles the material input and processing possible. As the Forge’s capabilities increase, the amount of graviton shard data collected increases too, allowing for further expansion.
+fog.upgrade.lore.11=Using large quantities of graviton shards creates regions of space so extreme that exotic forms of matter can exist with far greater stability than usual. Unfortunately, this region is so extreme that it is essentially spatially disconnected from the rest of the Forge, unable to utilize existing upgrades to the structure and its other modules.
+fog.upgrade.lore.12=Graviton shards can further compress stellar fuel, increasing its ability to fuel the star at the centre of the Forge through higher energy fusion reactions than usually possible in a natural star. As a result, greater heat is produced, increasing processing efficiency of the Forge.
+fog.upgrade.lore.13=Increasing the concentration of graviton shards in the fuel chamber allows for a further increase in material processing capacity, so long as the Forge receives enough stellar fuel to maintain the unnaturally powerful state of the star.
+fog.upgrade.lore.14=Utilising the unique energy-manipulating properties of graviton shards, electricity can be more efficiently utilised within the Forge. This sort of improvement is not possible with conventional matter, but also would not be possible outside the extreme environments near the star in the Forge.
+fog.upgrade.lore.15=Similar to the Quantum Force Transformer, the quantum-mechanical properties of graviton shards facilitate the ability for the Forge to complete a complex series of nuclear fusion processes in a single event by directly manipulating the subatomic particles of the materials themselves.
+fog.upgrade.lore.16=Another instance of the entanglement-like effects of graviton shards, the simple Power Forge module now also exhibits the improvements made to the Melting Core module of the Forge. This allows for greater efficiency in both processing and allocation of the precious few graviton shards that can be obtained.
+fog.upgrade.lore.17=Typical smelting techniques become too inefficient at extreme temperatures. Graviton shards allow for new methods of processing that can better take advantage of the abundant heat available within the Forge, such as manipulating spacetime to better transfer heat to the processed materials than regular matter ever could.
+fog.upgrade.lore.18=As the heat available within the Forge continues to increase, it becomes possible for more material to be processed as it requires less proximity to the star’s surface. Graviton shards facilitate the manipulation of increased material quantities across larger regions of space within the Forge.
+fog.upgrade.lore.19=Continual improvements to energy storage density using graviton shards improves both the efficiency of the Forge and improvements to heat utilisation for processing. Reaching this threshold of energy density allows the extreme spacetime bending to transfer the heat of the star more directly to the processed materials, increasing the effectiveness of heat in the smelting process.
+fog.upgrade.lore.20=Normally increasing heat indefinitely has extreme diminishing returns when processing materials, but graviton shards allow for heat to more acutely affect input materials by manipulating them ever closer to the star at the centre of the Forge. At such levels of heat, the bonds between atoms are broken, allowing for the most quick and pure processing possible.
+fog.upgrade.lore.21=Using the entanglement-like properties of graviton shards, it is possible to utilize the increasingly extreme differences in spacetime between regions of the Forge to improve the processing capacity of the molten module. As space becomes more warped, more material can be moved closer to the star, increasing production capacity.
+fog.upgrade.lore.22=Returning to the first upgrade of the Forge with the myriad discoveries about the graviton shards allows it to run much faster than previously possible. As a result of excessive spacetime manipulation, greater heat and larger quantities of material paradoxically result in faster processing times as larger surface areas of the processed material are available to the Forge.
+fog.upgrade.lore.23=The stress of maintaining such a large structure around such a gravitationally dense object as a neutron star is alleviated through graviton shards. A larger Forge allows for more machinery and better electricity utilisation, effectively increasing processing capabilities.
+fog.upgrade.lore.24=Improvements in understanding of the gravitational containment effects of graviton shards allow the Forge to process and handle more exotic and unstable plasma. With this, a new age of fusion processing and power is possible.
+fog.upgrade.lore.25=Further utilisation of the quantum entanglement-like properties of graviton shards allows the effects of other module upgrades to also apply to the exotic module. However, because of the extreme nature of spacetime within this module and the materials it handles, these benefits are reduced as per the inverse square law.
+fog.upgrade.lore.26=As additional rings are placed closer to the star at the centre of the Forge, the gravitational stress drastically increases on the structure. Graviton shards alleviate these stresses and also allow for upgrades made in other similar modules to apply to the new ring’s modules through the use of localized spacetime bridges.
+fog.upgrade.lore.27=A huge development in the capabilities of the Forge has been achieved with the use of large quantities of graviton shards – the ability to indefinitely feed the star with stellar fuel. Obviously, this has diminishing returns but the processing potential is immense thanks to extreme gravitational distortion containing the star regardless of its energy level.
+fog.upgrade.lore.28=The usage of graviton shards in electrical systems to create localised miniature energy wormholes has allowed for such efficient power transfer that effectively unlimited electricity may be utilized by the Forge. More power means faster processing, quicker material movement, and better utilization of graviton shard related upgrades.
+fog.upgrade.lore.29=The final structural upgrade to the Forge required the most advanced understanding of graviton shards and their applications in extreme environments. With this, the last 4 module slots of the Forge of the Gods are available to construct, completing the single greatest structure in human history. The power of the sun in the palm of your hand.
 fog.upgrade.lore.30=*insert lore here* upgrade end
 
-fog.upgrade.text.0=Unlocks a recipe time reduction multiplier based on the current heat the multi is running at. This bonus is calculated via following formula: Multiplier = 1/(Heat^0.01)
-fog.upgrade.text.1=*insert text here* upgrade 11
-fog.upgrade.text.2=*insert text here* upgrade 21
-fog.upgrade.text.3=*insert text here* upgrade 22
-fog.upgrade.text.4=*insert text here* upgrade 31
-fog.upgrade.text.5=*insert text here* upgrade 32
-fog.upgrade.text.6=*insert text here* upgrade 33
-fog.upgrade.text.7=*insert text here* upgrade 41
-fog.upgrade.text.8=*insert text here* upgrade 51
-fog.upgrade.text.9=*insert text here* upgrade 52
-fog.upgrade.text.10=*insert text here* upgrade 53
-fog.upgrade.text.11=*insert text here* upgrade 61
-fog.upgrade.text.12=*insert text here* upgrade 71
-fog.upgrade.text.13=*insert text here* upgrade 72
-fog.upgrade.text.14=*insert text here* upgrade 73
-fog.upgrade.text.15=*insert text here* upgrade 74
-fog.upgrade.text.16=*insert text here* upgrade 80
-fog.upgrade.text.17=*insert text here* upgrade 81
-fog.upgrade.text.18=*insert text here* upgrade 82
-fog.upgrade.text.19=*insert text here* upgrade 83
-fog.upgrade.text.20=*insert text here* upgrade 91
-fog.upgrade.text.21=*insert text here* upgrade 92
-fog.upgrade.text.22=*insert text here* upgrade 93
-fog.upgrade.text.23=*insert text here* upgrade 101
-fog.upgrade.text.24=*insert text here* upgrade 111
-fog.upgrade.text.25=*insert text here* upgrade 121
-fog.upgrade.text.26=*insert text here* upgrade 131
-fog.upgrade.text.27=*insert text here* upgrade 141
-fog.upgrade.text.28=*insert text here* upgrade 151
-fog.upgrade.text.29=*insert text here* upgrade 161
+fog.upgrade.text.0=Unlocks the base functionality of the Forge of the Gods, meaning 8 module slots, 1 ring and the Helioflare Power Forge module.
+fog.upgrade.text.1=Unlocks a recipe time reduction multiplier based on the current heat the multi is running at. This bonus is calculated via following formula: Multiplier = 1 / (Heat^0.01)
+fog.upgrade.text.2=Increases fuel efficiency by multiplying the actual fuel consumption by 0.8
+fog.upgrade.text.3=Multiplies the maximum fuel consumption by 1.2
+fog.upgrade.text.4=Increases the base processing voltage of the multi by: Stellar Fuel Units/sec * 10^8 EU/t
+fog.upgrade.text.5=Unlocks the Helioflux Melting Core module.
+fog.upgrade.text.6=Unlocks a multiplier to maximum parallel based on fuel consumption rate. This bonus is calculated via this formula: Multiplier = 1 + (Stellar Fuel Units/sec) / 15
+fog.upgrade.text.7=Unlocks the Heliothermal Plasma Fabricator module and basic element -> plasma processing (1 step plasmas, T3 fusion maximum).
+fog.upgrade.text.8=Unlocks a configuration window for maximum battery size and increases the limit to max int. Furthermore, an energy discount multiplier is unlocked that scales with battery size (capped to 0.05, or 5%). The discount is calculated as follows: Discount = (1 - 1.05^(-0.05 * Max Battery Capacity)) / 20
+fog.upgrade.text.9=Increases maximum fuel consumption by 1 Stellar Fuel Unit/sec for every purchased upgrade.
+fog.upgrade.text.10=Adds a x2 multiplier to maximum parallel.
+fog.upgrade.text.11=Unlocks the Heliofusion Exoticizer module and quark gluon plasma creation. At this point this module is not affected by any other multipliers or bonuses from other upgrades.
+fog.upgrade.text.12=Improves the fuel consumption -> heat conversion formula. Improved formula: Heat = log1.2(Stellar Fuel Units/sec) * 1000 + 12601
+fog.upgrade.text.13=Improves the formula of N33 to: Multiplier = 1 + (Stellar Fuel Units/sec) / 5
+fog.upgrade.text.14=Improves the OC formula from 4/2 OCs to 4/2.3 OCs.
+fog.upgrade.text.15=Allows the Heliothermal Plasma Fabricator to process multi step plasmas. Tier restriction still applies.
+fog.upgrade.text.16=Allows the Helioflare Power Forge to receive the full benefits of the Helioflux Melting Core upgrade path.
+fog.upgrade.text.17=Increases the cap of EBF heat bonuses to 30,000K.
+fog.upgrade.text.18=Unlocks a multiplier to maximum parallel based on current heat. This bonus is calculated via this formula: Multiplier = 1 + Heat / 15000
+fog.upgrade.text.19=Improves the EBF energy reduction heat bonus from 5% to 8% and adds an energy discount based on the fill level of the internal battery. This bonus is calculated via this formula: Discount = (Current fill level / Max Capacity - 0.5)^2 * (-0,6) + 0,15
+fog.upgrade.text.20=EBF heat bonuses are granted above 30,000K, but the heat value used in heat bonus calculations is determined by this formula: Actual Heat = 30000 + (Current Heat - 30000)^0.85
+fog.upgrade.text.21=Unlocks a multiplier to maximum parallel based on total amount of purchased upgrades. This bonus is calculated via this formula: Multiplier = 1 + Upgrade Amount / 5
+fog.upgrade.text.22=Improves N11 based on current maximum parallel. Improved Formula: Multiplier = (1 / Heat^0.01) / (Parallel^0.02)
+fog.upgrade.text.23=Increases maximum processing voltage by 1 per active ring.
+fog.upgrade.text.24=Allows the Heliothermal Plasma Fabricator to process up to T5 plasmas.
+fog.upgrade.text.25=Allows the Heliofusion Exoticizer to be affected by other upgrade benefits, but those benefits are square rooted first. The overclock bonus is adjusted via the following formula: OC Factor = 2 + (Base OC Factor - 2)^2
+fog.upgrade.text.26=Allows construction of the second ring and adds 4 module slots.
+fog.upgrade.text.27=Uncaps maximum fuel consumption, but fuel consumption used in bonus calculations scales according to this formula: Actual FC = Current Max FC + (Current FC - Current Max FC)^0.75, where FC refers to fuel consumption and max FC refers to the max fuel consumption without this upgrade.
+fog.upgrade.text.28=Uncaps maximum processing voltage. Voltage can be set in each module's GUI.
+fog.upgrade.text.29=Allows construction of the third ring and adds 4 module slots.
 fog.upgrade.text.30=*insert text here* upgrade end
 
 fog.debug.resetbutton.text=Reset
 fog.debug.resetbutton.tooltip=Resets all upgrades to zero
+fog.debug.unlockall.text=Unlock all upgrades
+fog.debug.gravitonshardsetter.tooltip=Set the amount of availabe graviton shards
 
 fog.button.fuelconfig.tooltip=Fuel Configuration Menu
 fog.button.furnacemode.tooltip=Toggle Furnace Mode
 fog.button.magmattermode.tooltip.01=Toggle Magmatter Mode
-fog.button.magmattermode.tooltip.02=Magmatter Mode Locked, missing upgrade
+fog.button.magmattermode.tooltip.02=Magmatter Mode locked, missing upgrade
+fog.button.battery.tooltip.01=Toggle Battery Charging
+fog.button.battery.tooltip.02=Right click to open configuration menu (if unlocked)
+fog.button.voltageconfig.tooltip.01=Open voltage config
+fog.button.voltageconfig.tooltip.02=Voltage config locked, missing upgrade
+fog.button.structurecheck.tooltip=Refresh module connection status
+fog.button.milestones.tooltip=Milestone Overview
 
 
 achievement.gt.blockmachines.multimachine.em.forge_of_gods=Forge of the Gods
@@ -1001,6 +1009,29 @@ gt.blockmachines.multimachine.FOG.fuelusage=Fuel Usage
 gt.blockmachines.multimachine.FOG.plasmamultistep=Multi-Step plasma
 gt.blockmachines.multimachine.FOG.plasmarecipetier=Fusion Tier
 gt.blockmachines.multimachine.FOG.storedfuel=Stored fuel amount:
+gt.blockmachines.multimachine.FOG.storedstartupfuel=Star Fuel amount:
+gt.blockmachines.multimachine.FOG.batteryinfo=Set battery size
+gt.blockmachines.multimachine.FOG.shardcost=Graviton Shard cost:
+gt.blockmachines.multimachine.FOG.availableshards=Available Graviton Shards:
+gt.blockmachines.multimachine.FOG.modulestatus=Status:
+gt.blockmachines.multimachine.FOG.modulestatus.true=Connected
+gt.blockmachines.multimachine.FOG.modulestatus.false=Disconnected
+gt.blockmachines.multimachine.FOG.voltageinfo=Set processing voltage
+gt.blockmachines.multimachine.FOG.totalprogress=Total Progress
+gt.blockmachines.multimachine.FOG.milestoneprogress=Current Milestone Level
+gt.blockmachines.multimachine.FOG.progress=Next Milestone at
+gt.blockmachines.multimachine.FOG.milestonecomplete=Milestone Complete
+gt.blockmachines.multimachine.FOG.milestoneinfo=View Milestone Progress
+gt.blockmachines.multimachine.FOG.inversion=Inversion Active
+gt.blockmachines.multimachine.FOG.powermilestone=Charge
+gt.blockmachines.multimachine.FOG.recipemilestone=Conversion
+gt.blockmachines.multimachine.FOG.fuelmilestone=Catalyst
+gt.blockmachines.multimachine.FOG.purchasablemilestone=Composition
+gt.blockmachines.multimachine.FOG.power=EU Consumed
+gt.blockmachines.multimachine.FOG.recipes=Recipes Processed
+gt.blockmachines.multimachine.FOG.fuel=Fuel Units Consumed
+gt.blockmachines.multimachine.FOG.extensions=Extensions Built
+gt.blockmachines.multimachine.FOG.shardgain=Graviton Shards gained
 
 # Optical Circuits
 achievement.gt.metaitem.03.32155=Optical Assembly
@@ -1133,6 +1164,9 @@ GT5U.gui.text.waiting_for_inputs=§7Waiting for inputs
 # RecipeMaps
 gt.recipe.eyeofharmony=Eye of Harmony
 gt.recipe.researchStation=Research Station
+gt.recipe.fog_plasma=Heliothermal Plasma Fabricator
+gt.recipe.fog_exotic=Heliofusion Exoticizer
+
 
 # NEI
 tt.nei.eoh.total_items=Total Items: %s

@@ -266,51 +266,19 @@ public class TT_recipeAdder extends GT_RecipeAdder {
         return true;
     }
 
-    public static boolean addFOGExoticFakeRecipe(Object[] itemInputs, Object[] fluidInputs, FluidStack[] fluidOutputs,
-            int machineDuration, int machineEUt, int recipeTier) {
-
-        if (itemInputs == null) {
-            itemInputs = nullItem;
-        }
-
-        if (fluidInputs == null) {
-            fluidInputs = nullFluid;
-        }
-
-        ItemStack[] inputItems = new ItemStack[itemInputs.length];
-        ItemStack[][] itemAlts = new ItemStack[itemInputs.length][];
-        for (int i = 0; i < itemInputs.length; i++) {
-            Object obj = itemInputs[i];
-            if (obj instanceof ItemStack) {
-                inputItems[i] = (ItemStack) obj;
-                itemAlts[i] = null;
-            } else if (obj instanceof ItemStack[]stacks) {
-                if (stacks.length > 0) {
-                    inputItems[i] = stacks[0];
-                    itemAlts[i] = Arrays.copyOf(stacks, stacks.length);
-                }
-            }
-        }
-
-        FluidStack[] inputFluids = new FluidStack[fluidInputs.length];
-        for (int i = 0; i < fluidInputs.length; i++) {
-            Object obj = fluidInputs[i];
-            if (obj instanceof FluidStack[]stacks) {
-                inputFluids[i] = stacks[0];
-            }
-        }
+    public static boolean addFOGExoticFakeRecipe(ItemStack[] itemInputs, FluidStack[] fluidInputs,
+            FluidStack[] fluidOutputs, int machineDuration, int machineEUt, int recipeTier) {
 
         TecTechRecipeMaps.godforgeExoticMatterRecipes.addFakeRecipe(
                 false,
-                inputItems,
+                itemInputs,
                 null,
                 null,
-                inputFluids,
+                fluidInputs,
                 fluidOutputs,
                 machineDuration,
                 machineEUt,
                 recipeTier,
-                itemAlts,
                 false);
         return true;
     }

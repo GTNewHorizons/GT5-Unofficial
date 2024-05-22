@@ -2041,19 +2041,25 @@ public class MachineLoader implements Runnable {
                     new GT_MetaTileEntity_EM_ForgeOfGods(15411, "multimachine.em.forge_of_gods", "Forge of the Gods")
                             .getStackForm(1L));
             Machine_Multi_SmeltingModule.set(
-                    new GT_MetaTileEntity_EM_SmeltingModule(15412, "multimachine.em.smelting_module", "Smelting Module")
-                            .getStackForm(1L));
+                    new GT_MetaTileEntity_EM_SmeltingModule(
+                            15412,
+                            "multimachine.em.smelting_module",
+                            "Helioflare Power Forge").getStackForm(1L));
             Machine_Multi_MoltenModule.set(
-                    new GT_MetaTileEntity_EM_MoltenModule(15413, "multimachine.em.molten_module", "Molten Module")
-                            .getStackForm(1L));
+                    new GT_MetaTileEntity_EM_MoltenModule(
+                            15413,
+                            "multimachine.em.molten_module",
+                            "Helioflux Melting Core").getStackForm(1L));
             Machine_Multi_PlasmaModule.set(
-                    new GT_MetaTileEntity_EM_PlasmaModule(15414, "multimachine.em.plasma_module", "Plasma Module")
-                            .getStackForm(1L));
+                    new GT_MetaTileEntity_EM_PlasmaModule(
+                            15414,
+                            "multimachine.em.plasma_module",
+                            "Heliothermal Plasma Fabricator").getStackForm(1L));
             Machine_Multi_QuarkGluonPlasmaModule.set(
                     new GT_MetaTileEntity_EM_ExoticModule(
                             15415,
                             "multimachine.em.exotic_module",
-                            "Exotic Matter Module").getStackForm(1L));
+                            "Heliofusion Exoticizer").getStackForm(1L));
         }
 
         // ===================================================================================================

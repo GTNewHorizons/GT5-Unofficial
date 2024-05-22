@@ -1,6 +1,5 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi.godforge_modules;
 
-import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static gregtech.api.util.GT_OreDictUnificator.getAssociation;
 import static gregtech.api.util.GT_ParallelHelper.addFluidsLong;
 import static gregtech.api.util.GT_ParallelHelper.addItemsLong;
@@ -20,21 +19,15 @@ import java.util.ArrayList;
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.github.technus.tectech.util.CommonValues;
 
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.Textures;
-import gregtech.api.enums.TierEU;
-import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
@@ -105,7 +98,7 @@ public class GT_MetaTileEntity_EM_MoltenModule extends GT_MetaTileEntity_EM_Base
                         // substring 8 because ingotHot is 8 characters long
                         String strippedOreDict = dict.substring(8);
                         meltableItems[i] = FluidRegistry
-                                .getFluidStack("molten." + strippedOreDict.toLowerCase(), (int) (INGOTS));
+                                .getFluidStack("molten." + strippedOreDict.toLowerCase(), INGOTS);
                     }
                 }
 
@@ -115,8 +108,10 @@ public class GT_MetaTileEntity_EM_MoltenModule extends GT_MetaTileEntity_EM_Base
             @Nonnull
             @Override
             protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
-                return super.createOverclockCalculator(recipe).setEUt(TierEU.MAX).setRecipeHeat(recipe.mSpecialValue)
-                        .setHeatOC(true).setHeatDiscount(true).setMachineHeat(getHeat());
+                return super.createOverclockCalculator(recipe).setEUt(getProcessingVoltage())
+                        .setRecipeHeat(recipe.mSpecialValue).setHeatOC(true).setHeatDiscount(true)
+                        .setMachineHeat(getHeatForOC()).setHeatDiscountMultiplier(getHeatEnergyDiscount())
+                        .setDurationDecreasePerOC(getOverclockTimeFactor());
 
             }
 
@@ -126,6 +121,8 @@ public class GT_MetaTileEntity_EM_MoltenModule extends GT_MetaTileEntity_EM_Base
                 if (!addEUToGlobalEnergyMap(userUUID, -calculatedEut * duration)) {
                     return CheckRecipeResultRegistry.insufficientPower(calculatedEut * duration);
                 }
+                addToPowerTally(BigInteger.valueOf(calculatedEut).multiply(BigInteger.valueOf(duration)));
+                addToRecipeTally(calculatedParallels);
                 currentParallel = calculatedParallels;
                 EUt = calculatedEut;
                 setCalculatedEut(0);
@@ -180,18 +177,7 @@ public class GT_MetaTileEntity_EM_MoltenModule extends GT_MetaTileEntity_EM_Base
         logic.setAmperageOC(false);
         logic.setMaxParallel(getMaxParallel());
         logic.setSpeedBonus(getSpeedBonus());
-    }
-
-    @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-            int colorIndex, boolean aActive, boolean aRedstone) {
-        if (side == facing) {
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(texturePage << 7),
-                    new TT_RenderedExtendedFacingTexture(
-                            aActive ? GT_MetaTileEntity_MultiblockBase_EM.ScreenON
-                                    : GT_MetaTileEntity_MultiblockBase_EM.ScreenOFF) };
-        }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(texturePage << 7) };
+        logic.setEuModifier(getEnergyDiscount());
     }
 
     @Override
@@ -210,19 +196,20 @@ public class GT_MetaTileEntity_EM_MoltenModule extends GT_MetaTileEntity_EM_Base
         str.add(YELLOW + "Max Parallel: " + RESET + formatNumbers(getMaxParallel()));
         str.add(YELLOW + "Current Parallel: " + RESET + formatNumbers(currentParallel));
         str.add(YELLOW + "Heat Capacity: " + RESET + formatNumbers(getHeat()));
+        str.add(YELLOW + "Effective Heat Capacity: " + RESET + formatNumbers(getHeatForOC()));
         str.add(YELLOW + "Recipe time multiplier: " + RESET + formatNumbers(getSpeedBonus()));
+        str.add(YELLOW + "Energy multiplier: " + RESET + formatNumbers(getEnergyDiscount()));
+        str.add(YELLOW + "Recipe time divisor per non-perfect OC: " + RESET + formatNumbers(getOverclockTimeFactor()));
         return str.toArray(new String[0]);
     }
 
     @Override
     public GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Molten Module") // Machine Type:
-                .addInfo("Controller block of the Molten Module") // Controller
+        tt.addMachineType("Blast Furnace").addInfo("Controller block of the Molten Module")
                 .addInfo("Uses a Star to to melt Metals").addSeparator().beginStructureBlock(1, 4, 2, false)
-                .addEnergyHatch("Any Infinite Spacetime Casing", 1) // Energy Hatch: Any
-                .addMaintenanceHatch("Any Infinite Spacetime Casing", 1) // Maintenance
-                .toolTipFinisher(CommonValues.TEC_MARK_EM);
+                .addEnergyHatch("Any Infinite Spacetime Casing", 1)
+                .addMaintenanceHatch("Any Infinite Spacetime Casing", 1).toolTipFinisher(CommonValues.GODFORGE_MARK);
         return tt;
     }
 

@@ -48,11 +48,11 @@ public class TecTechRecipeMaps {
             .neiHandlerInfo(builder -> builder.setDisplayStack(CustomItemList.Machine_Multi_Research.get(1))).build();
 
     public static final RecipeMap<RecipeMapBackend> godforgePlasmaRecipes = RecipeMapBuilder.of("gt.recipe.fog_plasma")
-            .maxIO(1, 1, 1, 1).progressBar(TecTechUITextures.OVERLAY_BUTTON_ARROW_BLUE_UP, ProgressBar.Direction.RIGHT)
-            .progressBarPos(86, 44).neiTransferRect(86, 44, 20, 20).frontend(GodforgePlasmaFrontend::new).build();
+            .maxIO(1, 1, 1, 1).progressBar(TecTechUITextures.PROGRESSBAR_GODFORGE_PLASMA, ProgressBar.Direction.RIGHT)
+            .progressBarPos(78, 33).neiTransferRect(78, 33, 20, 20).frontend(GodforgePlasmaFrontend::new).build();
     public static final RecipeMap<RecipeMapBackend> godforgeExoticMatterRecipes = RecipeMapBuilder
-            .of("gt.recipe.fog_exotic").maxIO(1, 1, 1, 1)
-            .progressBar(TecTechUITextures.OVERLAY_BUTTON_ARROW_BLUE_UP, ProgressBar.Direction.RIGHT)
-            .progressBarPos(86, 44).neiTransferRect(86, 44, 20, 20).frontend(GodforgeExoticFrontend::new).build();
+            .of("gt.recipe.fog_exotic").maxIO(1, 1, 2, 1)
+            .progressBar(TecTechUITextures.PROGRESSBAR_GODFORGE_PLASMA, ProgressBar.Direction.RIGHT)
+            .progressBarPos(78, 33).neiTransferRect(78, 33, 20, 20).frontend(GodforgeExoticFrontend::new).build();
 
 }

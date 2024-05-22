@@ -22,6 +22,8 @@ public class TecTechUITextures {
     public static final UITexture BACKGROUND_GLOW_PURPLE = UITexture.fullImage(MODID, "gui/background/purple_glow");
     public static final UITexture BACKGROUND_GLOW_BLUE = UITexture.fullImage(MODID, "gui/background/blue_glow");
     public static final UITexture BACKGROUND_GLOW_GREEN = UITexture.fullImage(MODID, "gui/background/green_glow");
+    public static final UITexture BACKGROUND_GLOW_WHITE = UITexture.fullImage(MODID, "gui/background/white_glow");
+    public static final UITexture BACKGROUND_SPACE = UITexture.fullImage(MODID, "gui/background/space");
 
     public static final UITexture BUTTON_STANDARD_16x16 = UITexture.fullImage(MODID, "gui/button/standard_16x16");
     public static final UITexture BUTTON_STANDARD_LIGHT_16x16 = UITexture
@@ -69,6 +71,12 @@ public class TecTechUITextures {
             .fullImage(MODID, "gui/overlay_button/parametrizer_if");
     public static final UITexture OVERLAY_BUTTON_ARROW_BLUE_UP = UITexture
             .fullImage(MODID, "gui/overlay_button/arrow_blue_up");
+    public static final UITexture OVERLAY_BUTTON_BATTERY_ON = UITexture
+            .fullImage(MODID, "gui/overlay_button/battery_on");
+    public static final UITexture OVERLAY_BUTTON_BATTERY_OFF = UITexture
+            .fullImage(MODID, "gui/overlay_button/battery_off");
+    public static final UITexture OVERLAY_BUTTON_FLAG = UITexture.fullImage(MODID, "gui/overlay_button/flag");
+    public static final UITexture OVERLAY_CYCLIC_BLUE = UITexture.fullImage(MODID, "gui/overlay_button/cyclic_blue");
 
     public static final UITexture OVERLAY_SLOT_RACK = UITexture.fullImage(MODID, "gui/overlay_slot/rack");
     public static final UITexture OVERLAY_SLOT_MESH = UITexture.fullImage(MODID, "gui/overlay_slot/mesh");
@@ -79,10 +87,31 @@ public class TecTechUITextures {
             .fullImage(MODID, "gui/progressbar/research_station_2");
     public static final UITexture PROGRESSBAR_RESEARCH_STATION_3 = UITexture
             .fullImage(MODID, "gui/progressbar/research_station_3");
+    public static final UITexture PROGRESSBAR_GODFORGE_PLASMA = UITexture
+            .fullImage(MODID, "gui/progressbar/godforge_plasma");
+    public static final UITexture PROGRESSBAR_GODFORGE_MILESTONE_BACKGROUND = UITexture
+            .fullImage(MODID, "gui/progressbar/godforge_progressbar_background");
+    public static final UITexture PROGRESSBAR_GODFORGE_MILESTONE_BLUE = UITexture
+            .fullImage(MODID, "gui/progressbar/godforge_progressbar_blue");
+    public static final UITexture PROGRESSBAR_GODFORGE_MILESTONE_RED = UITexture
+            .fullImage(MODID, "gui/progressbar/godforge_progressbar_red");
+    public static final UITexture PROGRESSBAR_GODFORGE_MILESTONE_PURPLE = UITexture
+            .fullImage(MODID, "gui/progressbar/godforge_progressbar_purple");
+    public static final UITexture PROGRESSBAR_GODFORGE_MILESTONE_RAINBOW = UITexture
+            .fullImage(MODID, "gui/progressbar/godforge_progressbar_rainbow");
+    public static final UITexture PROGRESSBAR_GODFORGE_MILESTONE_BLUE_INVERTED = UITexture
+            .fullImage(MODID, "gui/progressbar/godforge_progressbar_blue_inverted");
+    public static final UITexture PROGRESSBAR_GODFORGE_MILESTONE_RED_INVERTED = UITexture
+            .fullImage(MODID, "gui/progressbar/godforge_progressbar_red_inverted");
+    public static final UITexture PROGRESSBAR_GODFORGE_MILESTONE_PURPLE_INVERTED = UITexture
+            .fullImage(MODID, "gui/progressbar/godforge_progressbar_purple_inverted");
+    public static final UITexture PROGRESSBAR_GODFORGE_MILESTONE_RAINBOW_INVERTED = UITexture
+            .fullImage(MODID, "gui/progressbar/godforge_progressbar_rainbow_inverted");
 
     public static final UITexture PICTURE_TECTECH_LOGO = UITexture.fullImage(MODID, "gui/picture/tectech_logo");
     public static final UITexture PICTURE_TECTECH_LOGO_DARK = UITexture
             .fullImage(MODID, "gui/picture/tectech_logo_dark");
+    public static final UITexture PICTURE_GODFORGE_LOGO = UITexture.fullImage(MODID, "gui/picture/gorge_logo");
     public static final UITexture PICTURE_RACK_LARGE = UITexture.fullImage(MODID, "gui/picture/rack_large");
     public static final UITexture PICTURE_HEAT_SINK = UITexture.fullImage(MODID, "gui/picture/heat_sink");
     public static final UITexture PICTURE_UNCERTAINTY_MONITOR = UITexture
@@ -123,4 +152,25 @@ public class TecTechUITextures {
     public static final UITexture PICTURE_UPGRADE_CONNECTOR_SWITCH = UITexture
             .fullImage(MODID, "gui/picture/connector_switch");
     public static final UITexture SLOT_OUTLINE_GREEN = UITexture.fullImage(MODID, "gui/picture/green_selector");
+    public static final UITexture PICTURE_GODFORGE_MILESTONE_CHARGE = UITexture
+            .fullImage(MODID, "gui/picture/milestone_charge");
+    public static final UITexture PICTURE_GODFORGE_MILESTONE_CONVERSION = UITexture
+            .fullImage(MODID, "gui/picture/milestone_conversion");
+    public static final UITexture PICTURE_GODFORGE_MILESTONE_CATALYST = UITexture
+            .fullImage(MODID, "gui/picture/milestone_catalyst");
+    public static final UITexture PICTURE_GODFORGE_MILESTONE_COMPOSITION = UITexture
+            .fullImage(MODID, "gui/picture/milestone_composition");
+    public static final UITexture PICTURE_GODFORGE_MILESTONE_CHARGE_GLOW = UITexture
+            .fullImage(MODID, "gui/picture/milestone_charge_glow");
+    public static final UITexture PICTURE_GODFORGE_MILESTONE_CONVERSION_GLOW = UITexture
+            .fullImage(MODID, "gui/picture/milestone_conversion_glow");
+    public static final UITexture PICTURE_GODFORGE_MILESTONE_CATALYST_GLOW = UITexture
+            .fullImage(MODID, "gui/picture/milestone_catalyst_glow");
+    public static final UITexture PICTURE_GODFORGE_MILESTONE_COMPOSITION_GLOW = UITexture
+            .fullImage(MODID, "gui/picture/milestone_composition_glow");
+    public static final UITexture PICTURE_OVERLAY_BLUE = UITexture.fullImage(MODID, "gui/picture/overlay_blue");
+    public static final UITexture PICTURE_OVERLAY_ORANGE = UITexture.fullImage(MODID, "gui/picture/overlay_orange");
+    public static final UITexture PICTURE_OVERLAY_GREEN = UITexture.fullImage(MODID, "gui/picture/overlay_green");
+    public static final UITexture PICTURE_OVERLAY_PURPLE = UITexture.fullImage(MODID, "gui/picture/overlay_purple");
+
 }

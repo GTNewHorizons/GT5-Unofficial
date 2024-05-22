@@ -1,7 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi.godforge_modules;
 
 import static com.github.technus.tectech.recipe.TecTechRecipeMaps.godforgePlasmaRecipes;
-import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GT_Utility.formatNumbers;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
@@ -17,12 +16,8 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
-import net.minecraftforge.common.util.ForgeDirection;
-
 import org.jetbrains.annotations.NotNull;
 
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.github.technus.tectech.util.CommonValues;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.math.Alignment;
@@ -36,10 +31,7 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.Textures;
-import gregtech.api.enums.TierEU;
 import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
@@ -56,9 +48,7 @@ public class GT_MetaTileEntity_EM_PlasmaModule extends GT_MetaTileEntity_EM_Base
 
     private long EUt = 0;
     private int currentParallel = 0;
-    private boolean multiStep = false;
     private boolean debug = true;
-    private int fusionTier = 0;
     private int inputMaxParallel = 0;
 
     public GT_MetaTileEntity_EM_PlasmaModule(int aID, String aName, String aNameRegional) {
@@ -87,8 +77,8 @@ public class GT_MetaTileEntity_EM_PlasmaModule extends GT_MetaTileEntity_EM_Base
                 if (getUserEU(userUUID).compareTo(BigInteger.valueOf(wirelessEUt * recipe.mDuration)) < 0) {
                     return CheckRecipeResultRegistry.insufficientPower(wirelessEUt * recipe.mDuration);
                 }
-                if (recipe.mSpecialValue > fusionTier
-                        || Objects.equals(recipe.mSpecialItems.toString(), "true") && !multiStep) {
+                if (recipe.mSpecialValue > getPlasmaTier()
+                        || Objects.equals(recipe.mSpecialItems.toString(), "true") && !isMultiStepPlasmaCapable) {
                     return SimpleCheckRecipeResult.ofFailure("missing_upgrades");
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
@@ -101,6 +91,8 @@ public class GT_MetaTileEntity_EM_PlasmaModule extends GT_MetaTileEntity_EM_Base
                 if (!addEUToGlobalEnergyMap(userUUID, -calculatedEut * duration)) {
                     return CheckRecipeResultRegistry.insufficientPower(wirelessEUt * recipe.mDuration);
                 }
+                addToPowerTally(BigInteger.valueOf(calculatedEut).multiply(BigInteger.valueOf(duration)));
+                addToRecipeTally(calculatedParallels);
                 currentParallel = calculatedParallels;
                 EUt = calculatedEut;
                 setCalculatedEut(0);
@@ -110,7 +102,8 @@ public class GT_MetaTileEntity_EM_PlasmaModule extends GT_MetaTileEntity_EM_Base
             @Nonnull
             @Override
             protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
-                return super.createOverclockCalculator(recipe).setEUt(TierEU.MAX);
+                return super.createOverclockCalculator(recipe).setEUt(getProcessingVoltage())
+                        .setDurationDecreasePerOC(getOverclockTimeFactor());
             }
         };
     }
@@ -122,6 +115,7 @@ public class GT_MetaTileEntity_EM_PlasmaModule extends GT_MetaTileEntity_EM_Base
         logic.setAmperageOC(false);
         logic.setMaxParallel(getMaxParallel());
         logic.setSpeedBonus(getSpeedBonus());
+        logic.setEuModifier(getEnergyDiscount());
     }
 
     @Override
@@ -133,12 +127,13 @@ public class GT_MetaTileEntity_EM_PlasmaModule extends GT_MetaTileEntity_EM_Base
     }
 
     protected Widget createTestButton(IWidgetBuilder<?> builder) {
-        return new ButtonWidget().setOnClick((clickData, widget) -> { multiStep = !multiStep; })
+        return new ButtonWidget()
+                .setOnClick((clickData, widget) -> isMultiStepPlasmaCapable = !isMultiStepPlasmaCapable)
                 .setPlayClickSoundResource(
                         () -> isAllowedToWork() ? SoundResource.GUI_BUTTON_UP.resourceLocation
                                 : SoundResource.GUI_BUTTON_DOWN.resourceLocation)
                 .setBackground(() -> {
-                    if (multiStep) {
+                    if (isMultiStepPlasmaCapable) {
                         return new IDrawable[] { GT_UITextures.BUTTON_STANDARD_PRESSED,
                                 GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_ON };
                     } else {
@@ -153,7 +148,7 @@ public class GT_MetaTileEntity_EM_PlasmaModule extends GT_MetaTileEntity_EM_Base
     }
 
     protected Widget createTestButton2() {
-        return new TextFieldWidget().setSetterInt(val -> fusionTier = val).setGetterInt(() -> fusionTier)
+        return new TextFieldWidget().setSetterInt(this::setPlasmaTier).setGetterInt(this::getPlasmaTier)
                 .setNumbers(0, 2).setTextAlignment(Alignment.Center).setTextColor(Color.WHITE.normal).setPos(3, 18)
                 .addTooltip("fusion tier").setTooltipShowUpDelay(TOOLTIP_DELAY).setSize(16, 16).setPos(174, 80)
                 .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD);
@@ -164,18 +159,6 @@ public class GT_MetaTileEntity_EM_PlasmaModule extends GT_MetaTileEntity_EM_Base
                 .setNumbers(0, Integer.MAX_VALUE).setTextAlignment(Alignment.Center).setTextColor(Color.WHITE.normal)
                 .setPos(3, 18).addTooltip("parallel").setTooltipShowUpDelay(TOOLTIP_DELAY).setSize(70, 16)
                 .setPos(174, 60).setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD);
-    }
-
-    @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-            int colorIndex, boolean aActive, boolean aRedstone) {
-        if (side == facing) {
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(texturePage << 7),
-                    new TT_RenderedExtendedFacingTexture(
-                            aActive ? GT_MetaTileEntity_MultiblockBase_EM.ScreenON
-                                    : GT_MetaTileEntity_MultiblockBase_EM.ScreenOFF) };
-        }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(texturePage << 7) };
     }
 
     @Override
@@ -199,18 +182,18 @@ public class GT_MetaTileEntity_EM_PlasmaModule extends GT_MetaTileEntity_EM_Base
         str.add(YELLOW + "Max Parallel: " + RESET + formatNumbers(getMaxParallel()));
         str.add(YELLOW + "Current Parallel: " + RESET + formatNumbers(currentParallel));
         str.add(YELLOW + "Recipe time multiplier: " + RESET + formatNumbers(getSpeedBonus()));
+        str.add(YELLOW + "Energy multiplier: " + RESET + formatNumbers(getEnergyDiscount()));
+        str.add(YELLOW + "Recipe time divisor per non-perfect OC: " + RESET + formatNumbers(getOverclockTimeFactor()));
         return str.toArray(new String[0]);
     }
 
     @Override
     public GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Plasma Module") // Machine Type:
-                .addInfo("Controller block of the Plasma Module") // Controller
+        tt.addMachineType("Plasma Fabricator").addInfo("Controller block of the Plasma Module")
                 .addInfo("Uses a Star to to turn Metals into Plasma").addSeparator().beginStructureBlock(1, 4, 2, false)
-                .addEnergyHatch("Any Infinite Spacetime Casing", 1) // Energy Hatch: Any
-                .addMaintenanceHatch("Any Infinite Spacetime Casing", 1) // Maintenance
-                .toolTipFinisher(CommonValues.TEC_MARK_EM);
+                .addEnergyHatch("Any Infinite Spacetime Casing", 1)
+                .addMaintenanceHatch("Any Infinite Spacetime Casing", 1).toolTipFinisher(CommonValues.GODFORGE_MARK);
         return tt;
     }
 
