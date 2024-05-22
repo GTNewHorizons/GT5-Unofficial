@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.machines.multi.drone;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GT_HatchElement.InputBus;
 import static gregtech.api.enums.GT_Values.AuthorSilverMoon;
@@ -96,6 +97,8 @@ public class GT_MetaTileEntity_DroneCentre extends
     private static final IIconContainer INACTIVE = new Textures.BlockIcons.CustomIcon("iconsets/DRONE_CENTRE_INACTIVE");
     private final int MACHINE_LIST_WINDOW_ID = 10;
     private final int CUSTOM_NAME_WINDOW_ID = 11;
+    private static final int CASINGS_MIN = 85;
+    private int mCasingAmount = 0;
     private Vec3Impl centreCoord;
     private int droneLevel = 0;
     private int buttonID;
@@ -114,18 +117,18 @@ public class GT_MetaTileEntity_DroneCentre extends
             "main",
             transpose(
                 new String[][] { { "     ", "     ", "     ", "     ", "CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC" },
-                    { "CE~EC", "C   C", "C   C", "C   C", "CAAAC", "CCCCC", "CAAAC", "C   C", "CCCCC" },
-                    { "CEEEC", "CBBBC", "CBDBC", "CBBBC", "CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC" },
-                    { "C   C", "     ", "     ", "     ", "     ", "     ", "     ", "     ", "C   C" },
-                    { "C   C", "     ", "     ", "     ", "     ", "     ", "     ", "     ", "C   C" },
+                    { "CC~CC", "C   C", "C   C", "C   C", "CAAAC", "CCCCC", "CAAAC", "C   C", "CCCCC" },
+                    { "CCCCC", "CBBBC", "CBDBC", "CBBBC", "CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC" },
                     { "C   C", "     ", "     ", "     ", "     ", "     ", "     ", "     ", "C   C" } }))
         .addElement(
-            'E',
+            'C',
             buildHatchAdder(GT_MetaTileEntity_DroneCentre.class).atLeast(InputBus)
                 .casingIndex(59)
                 .dot(1)
-                .buildAndChain(ofBlock(GregTech_API.sBlockCasings4, 2)))
-        .addElement('C', ofBlock(GregTech_API.sBlockCasings4, 2))
+                .buildAndChain(
+                    onElementPass(
+                        GT_MetaTileEntity_DroneCentre::onCasingAdded,
+                        ofBlock(GregTech_API.sBlockCasings4, 2))))
         .addElement('A', chainAllGlasses())
         .addElement('B', ofBlock(GregTech_API.sBlockCasings1, 11))
         .addElement('D', ofBlock(GregTech_API.sBlockCasings4, 0))
@@ -191,8 +194,14 @@ public class GT_MetaTileEntity_DroneCentre extends
             .addInfo("If machine is too far, remote control would not available")
             .addInfo(AuthorSilverMoon)
             .addSeparator()
-            .beginStructureBlock(5, 6, 9, false)
-            .addStructureInfo("Do not need maintenance hatch")
+            .beginStructureBlock(5, 4, 9, false)
+            .addController("Front center")
+            .addCasingInfoRange("Stable Titanium Machine Casing", CASINGS_MIN, 91, false)
+            .addCasingInfoExactly("Heat Proof Machine Casing", 8, false)
+            .addCasingInfoExactly("Robust Tungstensteel Machine Casing", 1, false)
+            .addCasingInfoExactly("Any tiered glass", 6, false)
+            .addInputBus("Any Titanium Casing", 1)
+            .addStructureInfo("No maintenance hatch needed")
             .addSeparator()
             .toolTipFinisher("Gregtech");
         return tt;
@@ -221,9 +230,14 @@ public class GT_MetaTileEntity_DroneCentre extends
         return true;
     }
 
+    private void onCasingAdded() {
+        mCasingAmount++;
+    }
+
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return checkPiece("main", 2, 1, 0);
+        mCasingAmount = 0;
+        return checkPiece("main", 2, 1, 0) && mCasingAmount >= CASINGS_MIN;
     }
 
     @Override
