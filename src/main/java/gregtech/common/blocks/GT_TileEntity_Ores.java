@@ -30,6 +30,7 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
 
     public short mMetaData = 0;
     protected static boolean shouldFortune = false;
+    protected static boolean shouldSilkTouch = false;
     public boolean mNatural = false;
     public boolean mBlocked = true;
     public boolean mBlockedChecked = false;
@@ -314,48 +315,54 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
             if (GT_Mod.gregtechproxy.mEndOreYieldMultiplier && !tIsRich) {
                 tIsRich = (this.mMetaData >= 2000 && this.mMetaData < 3000);
             }
-            // TODO: Silk Touch?
-            switch (GT_Mod.gregtechproxy.oreDropSystem) {
-                case Item -> {
-                    rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, (tIsRich ? 2 : 1)));
-                }
-                // TODO: Test
-                case FortuneItem -> {
-                    // if shouldFortune and isNatural then get fortune drops
-                    // if not shouldFortune or not isNatural then get normal drops
-                    // if not shouldFortune and isNatural then get normal drops
-                    // if shouldFortune and not isNatural then get normal drops
-                    if (shouldFortune && this.mNatural && aFortune > 0) {
-                        int aMinAmount = 1;
-                        // Max applicable fortune
-                        if (aFortune > 3) aFortune = 3;
-                        long amount = (long) new Random().nextInt(aFortune * (tIsRich ? 2 : 1)) + aMinAmount;
-                        for (int i = 0; i < amount; i++) {
-                            rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, 1));
+
+            //Silk Touch
+            if (shouldSilkTouch) {
+                rList.add(new ItemStack(aDroppedOre, 1, this.mMetaData));
+
+            } else {
+                switch (GT_Mod.gregtechproxy.oreDropSystem) {
+                    case Item -> {
+                        rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, (tIsRich ? 2 : 1)));
+                    }
+                    // TODO: Test
+                    case FortuneItem -> {
+                        // if shouldFortune and isNatural then get fortune drops
+                        // if not shouldFortune or not isNatural then get normal drops
+                        // if not shouldFortune and isNatural then get normal drops
+                        // if shouldFortune and not isNatural then get normal drops
+                        if (shouldFortune && this.mNatural && aFortune > 0) {
+                            int aMinAmount = 1;
+                            // Max applicable fortune
+                            if (aFortune > 3) aFortune = 3;
+                            long amount = (long) new Random().nextInt(aFortune * (tIsRich ? 2 : 1)) + aMinAmount;
+                            for (int i = 0; i < amount; i++) {
+                                rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, 1));
+                            }
+                        } else {
+                            for (int i = 0; i < (tIsRich ? 2 : 1); i++) {
+                                rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, 1));
+                            }
                         }
-                    } else {
+                    }
+                    case UnifiedBlock -> {
+                        // Unified ore
                         for (int i = 0; i < (tIsRich ? 2 : 1); i++) {
-                            rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, 1));
+                            rList.add(new ItemStack(aDroppedOre, 1, this.mMetaData % 1000));
                         }
                     }
-                }
-                case UnifiedBlock -> {
-                    // Unified ore
-                    for (int i = 0; i < (tIsRich ? 2 : 1); i++) {
-                        rList.add(new ItemStack(aDroppedOre, 1, this.mMetaData % 1000));
+                    case PerDimBlock -> {
+                        // Per Dimension ore
+                        if (tIsRich) {
+                            rList.add(new ItemStack(aDroppedOre, 1, this.mMetaData));
+                        } else {
+                            rList.add(new ItemStack(aDroppedOre, 1, this.mMetaData % 1000));
+                        }
                     }
-                }
-                case PerDimBlock -> {
-                    // Per Dimension ore
-                    if (tIsRich) {
+                    case Block -> {
+                        // Regular ore
                         rList.add(new ItemStack(aDroppedOre, 1, this.mMetaData));
-                    } else {
-                        rList.add(new ItemStack(aDroppedOre, 1, this.mMetaData % 1000));
                     }
-                }
-                case Block -> {
-                    // Regular ore
-                    rList.add(new ItemStack(aDroppedOre, 1, this.mMetaData));
                 }
             }
             return rList;
