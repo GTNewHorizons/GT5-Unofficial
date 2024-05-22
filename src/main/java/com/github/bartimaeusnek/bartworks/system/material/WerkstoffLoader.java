@@ -556,7 +556,9 @@ public class WerkstoffLoader {
     );
     public static final Werkstoff BismuthTellurite = new Werkstoff(
             new short[] { 32, 72, 32, 0 },
-            "Bismuth Tellurite",
+            // Telluride is correct, tellurite is not.
+            // Only the display name gets renamed to avoid problems in other mods
+            "Bismuth Telluride",
             new Werkstoff.Stats().setElektrolysis(true),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().onlyDust().addChemicalRecipes(),
