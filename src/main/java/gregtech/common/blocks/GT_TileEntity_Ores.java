@@ -30,6 +30,8 @@ import gregtech.api.util.GT_Utility;
 public class GT_TileEntity_Ores extends TileEntity implements IAllSidedTexturedTileEntity {
 
     public short mMetaData = 0;
+    protected static boolean shouldFortune = false;
+    protected static boolean shouldSilkTouch = false;
     public boolean mNatural = false;
     public boolean mBlocked = true;
     public boolean mBlockedChecked = false;
@@ -300,11 +302,74 @@ public class GT_TileEntity_Ores extends TileEntity implements IAllSidedTexturedT
             rList.add(new ItemStack(Blocks.cobblestone, 1, 0));
             return rList;
         }
+        Materials aOreMaterial = GregTech_API.sGeneratedMaterials[(this.mMetaData % 1000)];
         if (this.mMetaData < 16000) {
-            rList.add(new ItemStack(aDroppedOre, 1, this.mMetaData));
+            boolean tIsRich = false;
+
+            // For Sake of god of balance!
+
+            // Dense ore
+
+            // NetherOre
+            if (GT_Mod.gregtechproxy.mNetherOreYieldMultiplier && !tIsRich) {
+                tIsRich = (this.mMetaData >= 1000 && this.mMetaData < 2000);
+            }
+            // EndOre
+            if (GT_Mod.gregtechproxy.mEndOreYieldMultiplier && !tIsRich) {
+                tIsRich = (this.mMetaData >= 2000 && this.mMetaData < 3000);
+            }
+
+            // Silk Touch
+            if (shouldSilkTouch) {
+                rList.add(new ItemStack(aDroppedOre, 1, this.mMetaData));
+
+            } else {
+                switch (GT_Mod.gregtechproxy.oreDropSystem) {
+                    case Item -> {
+                        rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, (tIsRich ? 2 : 1)));
+                    }
+                    // TODO: Test
+                    case FortuneItem -> {
+                        // if shouldFortune and isNatural then get fortune drops
+                        // if not shouldFortune or not isNatural then get normal drops
+                        // if not shouldFortune and isNatural then get normal drops
+                        // if shouldFortune and not isNatural then get normal drops
+                        if (shouldFortune && this.mNatural && aFortune > 0) {
+                            int aMinAmount = 1;
+                            // Max applicable fortune
+                            if (aFortune > 3) aFortune = 3;
+                            long amount = (long) new Random().nextInt(aFortune * (tIsRich ? 2 : 1)) + aMinAmount;
+                            for (int i = 0; i < amount; i++) {
+                                rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, 1));
+                            }
+                        } else {
+                            for (int i = 0; i < (tIsRich ? 2 : 1); i++) {
+                                rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, 1));
+                            }
+                        }
+                    }
+                    case UnifiedBlock -> {
+                        // Unified ore
+                        for (int i = 0; i < (tIsRich ? 2 : 1); i++) {
+                            rList.add(new ItemStack(aDroppedOre, 1, this.mMetaData % 1000));
+                        }
+                    }
+                    case PerDimBlock -> {
+                        // Per Dimension ore
+                        if (tIsRich) {
+                            rList.add(new ItemStack(aDroppedOre, 1, this.mMetaData));
+                        } else {
+                            rList.add(new ItemStack(aDroppedOre, 1, this.mMetaData % 1000));
+                        }
+                    }
+                    case Block -> {
+                        // Regular ore
+                        rList.add(new ItemStack(aDroppedOre, 1, this.mMetaData));
+                    }
+                }
+            }
             return rList;
         }
-        Materials aOreMaterial = GregTech_API.sGeneratedMaterials[(this.mMetaData % 1000)];
 
         // Everyone gets a free small fortune boost
         aFortune += 1;
