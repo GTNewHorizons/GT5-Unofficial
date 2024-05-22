@@ -168,6 +168,16 @@ public class RecipeGen_Fluorite extends RecipeGen_Base {
                 tVoltageMultiplier / 2)) {
             Logger.MATERIALS("[Macerator] Added Recipe: 'Macerate ore to Crushed ore'");
         }
+        // Macerate raw ore to Crushed
+        if (GT_Values.RA.addPulveriserRecipe(
+                material.getRawOre(1),
+                new ItemStack[] { material.getCrushed(2) },
+                new int[] { 10000 },
+                20 * 20,
+                tVoltageMultiplier / 2)) {
+            Logger.MATERIALS("[Macerator] Added Recipe: 'Macerate raw ore to Crushed ore'");
+        }
+
         // Macerate Centrifuged to Pure Dust
         if (GT_Values.RA.addPulveriserRecipe(
                 material.getCrushedCentrifuged(1),

@@ -1191,6 +1191,10 @@ public class Material {
         return getComponentByPrefix(OrePrefixes.milled, stacksize);
     }
 
+    public final ItemStack getRawOre(final int stacksize) {
+        return getComponentByPrefix(OrePrefixes.rawOre, stacksize);
+    }
+
     public final boolean hasSolidForm() {
         if (ItemUtils
                 .checkForInvalidItems(new ItemStack[] { getDust(1), getBlock(1), getTinyDust(1), getSmallDust(1) })) {

@@ -71,20 +71,15 @@ public class BaseOreComponent extends Item {
             aMap = new HashMap<>();
         }
         String aKey = "Invalid";
-        if (componentType == ComponentTypes.CRUSHED) {
-            aKey = OrePrefixes.crushed.name();
-        } else if (componentType == ComponentTypes.CRUSHEDCENTRIFUGED) {
-            aKey = OrePrefixes.crushedCentrifuged.name();
-        } else if (componentType == ComponentTypes.CRUSHEDPURIFIED) {
-            aKey = OrePrefixes.crushedPurified.name();
-        } else if (componentType == ComponentTypes.DUST) {
-            aKey = OrePrefixes.dust.name();
-        } else if (componentType == ComponentTypes.DUSTIMPURE) {
-            aKey = OrePrefixes.dustImpure.name();
-        } else if (componentType == ComponentTypes.DUSTPURE) {
-            aKey = OrePrefixes.dustPure.name();
-        } else if (componentType == ComponentTypes.MILLED) {
-            aKey = OrePrefixes.milled.name();
+        switch (componentType) {
+            case CRUSHED -> aKey = OrePrefixes.crushed.name();
+            case CRUSHEDCENTRIFUGED -> aKey = OrePrefixes.crushedCentrifuged.name();
+            case CRUSHEDPURIFIED -> aKey = OrePrefixes.crushedPurified.name();
+            case DUST -> aKey = OrePrefixes.dust.name();
+            case DUSTIMPURE -> aKey = OrePrefixes.dustImpure.name();
+            case DUSTPURE -> aKey = OrePrefixes.dustPure.name();
+            case MILLED -> aKey = OrePrefixes.milled.name();
+            case RAWORE -> aKey = OrePrefixes.rawOre.name();
         }
 
         ItemStack x = aMap.get(aKey);
@@ -241,6 +236,7 @@ public class BaseOreComponent extends Item {
         CRUSHED("crushed", "Crushed ", " Ore", true),
         CRUSHEDCENTRIFUGED("crushedCentrifuged", "Centrifuged Crushed ", " Ore", true),
         CRUSHEDPURIFIED("crushedPurified", "Purified Crushed ", " Ore", true),
+        RAWORE("oreRaw", "Raw ", " Ore", true),
         MILLED("milled", "Milled ", " Ore", true);
 
         private final String COMPONENT_NAME;

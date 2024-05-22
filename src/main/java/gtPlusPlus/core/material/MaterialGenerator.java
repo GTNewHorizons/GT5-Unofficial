@@ -27,6 +27,7 @@ import gtPlusPlus.core.item.base.ore.BaseItemCrushedOre;
 import gtPlusPlus.core.item.base.ore.BaseItemImpureDust;
 import gtPlusPlus.core.item.base.ore.BaseItemPurifiedCrushedOre;
 import gtPlusPlus.core.item.base.ore.BaseItemPurifiedDust;
+import gtPlusPlus.core.item.base.ore.BaseItemRawOre;
 import gtPlusPlus.core.item.base.plates.BaseItemPlate;
 import gtPlusPlus.core.item.base.plates.BaseItemPlateDense;
 import gtPlusPlus.core.item.base.plates.BaseItemPlateDouble;
@@ -357,6 +358,7 @@ public class MaterialGenerator {
             temp = new BaseItemPurifiedCrushedOre(matInfo);
             temp = new BaseItemImpureDust(matInfo);
             temp = new BaseItemPurifiedDust(matInfo);
+            temp = new BaseItemRawOre(matInfo);
 
             Logger.MATERIALS(
                     "Generated all ore components for " + matInfo.getLocalizedName()
@@ -398,6 +400,7 @@ public class MaterialGenerator {
             temp = new BaseItemPurifiedCrushedOre(matInfo);
             temp = new BaseItemImpureDust(matInfo);
             temp = new BaseItemPurifiedDust(matInfo);
+            temp = new BaseItemRawOre(matInfo);
 
             Logger.MATERIALS(
                     "Generated all ore & base components for " + matInfo.getLocalizedName()
