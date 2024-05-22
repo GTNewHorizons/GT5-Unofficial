@@ -55,6 +55,7 @@ import static gregtech.api.enums.OrePrefixes.plateDouble;
 import static gregtech.api.enums.OrePrefixes.plateQuadruple;
 import static gregtech.api.enums.OrePrefixes.plateQuintuple;
 import static gregtech.api.enums.OrePrefixes.plateTriple;
+import static gregtech.api.enums.OrePrefixes.rawOre;
 import static gregtech.api.enums.OrePrefixes.ring;
 import static gregtech.api.enums.OrePrefixes.rotor;
 import static gregtech.api.enums.OrePrefixes.screw;
@@ -108,6 +109,7 @@ import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.reci
 import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.recipe.MoltenCellLoader;
 import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.recipe.MultipleMetalLoader;
 import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.recipe.OreLoader;
+import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.recipe.RawOreLoader;
 import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.recipe.SimpleMetalLoader;
 import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.recipe.ToolLoader;
 import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.registration.AssociationLoader;
@@ -1498,8 +1500,8 @@ public class WerkstoffLoader {
 
             IWerkstoffRunnable[] werkstoffRunnables = { new ToolLoader(), new DustLoader(), new GemLoader(),
                     new SimpleMetalLoader(), new CasingLoader(), new AspectLoader(), new OreLoader(),
-                    new CrushedLoader(), new CraftingMaterialLoader(), new CellLoader(), new MoltenCellLoader(),
-                    new MultipleMetalLoader(), new MetalLoader(), new BlockLoader() };
+                    new RawOreLoader(), new CrushedLoader(), new CraftingMaterialLoader(), new CellLoader(),
+                    new MoltenCellLoader(), new MultipleMetalLoader(), new MetalLoader(), new BlockLoader() };
 
             long timepreone = 0;
             for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
@@ -1686,6 +1688,7 @@ public class WerkstoffLoader {
             WerkstoffLoader.items.put(crushedCentrifuged, new BW_MetaGenerated_Items(crushedCentrifuged));
             WerkstoffLoader.items.put(dustPure, new BW_MetaGenerated_Items(dustPure));
             WerkstoffLoader.items.put(dustImpure, new BW_MetaGenerated_Items(dustImpure));
+            WerkstoffLoader.items.put(rawOre, new BW_MetaGenerated_Items(rawOre));
         }
         if ((WerkstoffLoader.toGenerateGlobal & 0b10000) != 0) {
             WerkstoffLoader.items.put(cell, new BW_MetaGenerated_Items(cell));

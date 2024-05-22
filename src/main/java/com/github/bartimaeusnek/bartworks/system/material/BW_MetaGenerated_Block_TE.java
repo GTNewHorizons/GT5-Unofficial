@@ -45,8 +45,8 @@ public abstract class BW_MetaGenerated_Block_TE extends TileEntity implements IT
 
     @Override
     public void writeToNBT(NBTTagCompound aNBT) {
-        aNBT.setShort("m", this.mMetaData);
         super.writeToNBT(aNBT);
+        aNBT.setShort("m", this.mMetaData);
     }
 
     @Override
@@ -63,7 +63,7 @@ public abstract class BW_MetaGenerated_Block_TE extends TileEntity implements IT
 
     public ArrayList<ItemStack> getDrops(int aFortune) {
         ArrayList<ItemStack> rList = new ArrayList<>();
-        if (this.mMetaData < 0) {
+        if (this.mMetaData <= 0) {
             rList.add(new ItemStack(Blocks.cobblestone, 1, 0));
             return rList;
         }

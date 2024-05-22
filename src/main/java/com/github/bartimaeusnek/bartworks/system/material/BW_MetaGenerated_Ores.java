@@ -19,6 +19,8 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -26,6 +28,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.FakePlayer;
 
 import com.github.bartimaeusnek.bartworks.util.MathUtils;
 
@@ -71,6 +74,7 @@ public class BW_MetaGenerated_Ores extends BW_MetaGenerated_Blocks {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof BW_MetaGeneratedOreTE metaTE) {
             metaTE.mMetaData = (short) aMetaData;
+            metaTE.mNatural = true;
         }
 
         return true;
@@ -103,6 +107,27 @@ public class BW_MetaGenerated_Ores extends BW_MetaGenerated_Blocks {
                     && (tMaterial.getGenerationFeatures().blacklist & 0x8) == 0) {
                 aList.add(new ItemStack(aItem, 1, tMaterial.getmID()));
             }
+        }
+    }
+
+    @Override
+    public void harvestBlock(World worldIn, EntityPlayer player, int x, int y, int z, int meta) {
+        if (EnchantmentHelper.getSilkTouchModifier(player)) {
+            BW_MetaGeneratedOreTE.shouldSilkTouch = true;
+            super.harvestBlock(worldIn, player, x, y, z, meta);
+
+            if (BW_MetaGeneratedOreTE.shouldSilkTouch) {
+                BW_MetaGeneratedOreTE.shouldSilkTouch = false;
+            }
+            return;
+        }
+
+        if (!(player instanceof FakePlayer)) {
+            BW_MetaGeneratedOreTE.shouldFortune = true;
+        }
+        super.harvestBlock(worldIn, player, x, y, z, meta);
+        if (BW_MetaGeneratedOreTE.shouldFortune) {
+            BW_MetaGeneratedOreTE.shouldFortune = false;
         }
     }
 }

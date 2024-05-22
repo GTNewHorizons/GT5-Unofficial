@@ -73,6 +73,7 @@ import static gregtech.api.enums.OrePrefixes.dustSmall;
 import static gregtech.api.enums.OrePrefixes.dustTiny;
 import static gregtech.api.enums.OrePrefixes.ingot;
 import static gregtech.api.enums.OrePrefixes.nugget;
+import static gregtech.api.enums.OrePrefixes.rawOre;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidHeaterRecipes;
@@ -922,10 +923,12 @@ public class PlatinumSludgeOverHaul {
 
         if (stack.getItem() instanceof GT_Generic_Item) {
             if (!BW_Util.checkStackAndPrefix(stack)) return false;
-            return !Arrays.asList(PlatinumSludgeOverHaul.OPBLACKLIST)
-                    .contains(GT_OreDictUnificator.getAssociation(stack).mPrefix)
-                    || Arrays.asList(PlatinumSludgeOverHaul.BLACKLIST)
-                            .contains(GT_OreDictUnificator.getAssociation(stack).mMaterial.mMaterial);
+            if (GT_OreDictUnificator.getAssociation(stack).mPrefix != rawOre) {
+                return !Arrays.asList(PlatinumSludgeOverHaul.OPBLACKLIST)
+                        .contains(GT_OreDictUnificator.getAssociation(stack).mPrefix)
+                        || Arrays.asList(PlatinumSludgeOverHaul.BLACKLIST)
+                                .contains(GT_OreDictUnificator.getAssociation(stack).mMaterial.mMaterial);
+            }
         }
 
         if (GTPlusPlus.isModLoaded()) {
