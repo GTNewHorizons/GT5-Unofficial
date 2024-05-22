@@ -316,7 +316,7 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
                 tIsRich = (this.mMetaData >= 2000 && this.mMetaData < 3000);
             }
 
-            //Silk Touch
+            // Silk Touch
             if (shouldSilkTouch) {
                 rList.add(new ItemStack(aDroppedOre, 1, this.mMetaData));
 
