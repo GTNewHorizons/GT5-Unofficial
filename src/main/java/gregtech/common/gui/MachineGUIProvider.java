@@ -37,6 +37,7 @@ import gregtech.api.gui.GUIHost;
 import gregtech.api.gui.GUIProvider;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.gui.modularui.GUITextureSet;
+import gregtech.api.interfaces.tileentity.MachineProgress;
 import gregtech.api.logic.MuTEProcessingLogic;
 import gregtech.api.logic.PowerLogic;
 import gregtech.api.logic.interfaces.PowerLogicHost;
@@ -45,7 +46,7 @@ import gregtech.api.logic.interfaces.ProcessingLogicHost;
 /**
  * Default GUI a machine will use to show its information
  */
-public class MachineGUIProvider<T extends GUIHost & ProcessingLogicHost<? extends MuTEProcessingLogic<?>> & PowerLogicHost>
+public class MachineGUIProvider<T extends GUIHost & ProcessingLogicHost<? extends MuTEProcessingLogic<?>> & PowerLogicHost & MachineProgress>
     extends GUIProvider<T> {
 
     private static final int LOGO_SIZE = 17;

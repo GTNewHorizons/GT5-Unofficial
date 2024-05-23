@@ -12,7 +12,6 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
 public interface GUIHost extends ITileWithModularUI {
 
-    @Nonnull
     @Override
     default ModularWindow createWindow(UIBuildContext uiContext) {
         Objects.requireNonNull(uiContext);
@@ -33,6 +32,10 @@ public interface GUIHost extends ITileWithModularUI {
 
     @Nonnull
     GUIProvider<?> getGUI(@Nonnull UIBuildContext uiContext);
+
+    default boolean shouldOpen() {
+        return true;
+    }
 
     ItemStack getAsItem();
 

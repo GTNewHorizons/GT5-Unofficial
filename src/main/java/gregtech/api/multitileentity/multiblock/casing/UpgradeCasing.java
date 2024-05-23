@@ -1,5 +1,7 @@
 package gregtech.api.multitileentity.multiblock.casing;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.nbt.NBTTagCompound;
 
 import gregtech.api.enums.GT_Values;
@@ -25,8 +27,8 @@ public abstract class UpgradeCasing extends MultiBlockPart {
     }
 
     @Override
-    public void readMultiTileNBT(NBTTagCompound aNBT) {
-        super.readMultiTileNBT(aNBT);
+    public void readFromNBT(@Nonnull NBTTagCompound aNBT) {
+        super.readFromNBT(aNBT);
         tier = aNBT.getInteger(GT_Values.NBT.TIER);
     }
 

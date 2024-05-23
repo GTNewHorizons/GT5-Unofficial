@@ -3,12 +3,12 @@ package gregtech.common.tileentities.machines.multiblock;
 import static com.google.common.primitives.Ints.saturatedCast;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ENERGY_IN;
-import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.FLUID_IN;
-import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.FLUID_OUT;
-import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_IN;
-import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_OUT;
-import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.NOTHING;
+import static gregtech.api.multitileentity.enums.PartMode.ENERGY_INPUT;
+import static gregtech.api.multitileentity.enums.PartMode.FLUID_INPUT;
+import static gregtech.api.multitileentity.enums.PartMode.FLUID_OUTPUT;
+import static gregtech.api.multitileentity.enums.PartMode.ITEM_INPUT;
+import static gregtech.api.multitileentity.enums.PartMode.ITEM_OUTPUT;
+import static gregtech.api.multitileentity.enums.PartMode.NOTHING;
 import static gregtech.api.util.GT_StructureUtilityMuTE.MOTOR_CASINGS;
 import static gregtech.api.util.GT_StructureUtilityMuTE.ofMuTECasings;
 
@@ -97,8 +97,8 @@ public class AdvChemicalProcessor
     }
 
     @Override
-    public void readMultiTileNBT(NBTTagCompound nbt) {
-        super.readMultiTileNBT(nbt);
+    public void readFromNBT(NBTTagCompound nbt) {
+        super.readFromNBT(nbt);
         setMaxComplexParallels(nbt.getInteger("processors"), false);
         final NBTTagCompound processWhiteLists = nbt.getCompoundTag("whiteLists");
         long capacity = 1000;
@@ -141,8 +141,8 @@ public class AdvChemicalProcessor
     }
 
     @Override
-    public void writeMultiTileNBT(NBTTagCompound nbt) {
-        super.writeMultiTileNBT(nbt);
+    public void writeToNBT(NBTTagCompound nbt) {
+        super.writeToNBT(nbt);
         nbt.setInteger("processors", maxComplexParallels);
         final NBTTagCompound processWhiteLists = new NBTTagCompound();
         for (int i = 0; i < MAX_PROCESSES; i++) {
@@ -346,10 +346,13 @@ public class AdvChemicalProcessor
                 .addElement(
                     'C',
                     ofMuTECasings(
-                        FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT | ENERGY_IN,
+                        FLUID_INPUT.getValue() | ITEM_INPUT.getValue()
+                            | FLUID_OUTPUT.getValue()
+                            | ITEM_OUTPUT.getValue()
+                            | ENERGY_INPUT.getValue(),
                         GT_MultiTileCasing.Chemical.getCasing()))
                 .addElement('P', ofBlock(GregTech_API.sBlockCasings8, 1))
-                .addElement('T', ofMuTECasings(NOTHING, MOTOR_CASINGS))
+                .addElement('T', ofMuTECasings(NOTHING.getValue(), MOTOR_CASINGS))
                 .addElement(
                     'W',
                     GT_StructureUtility.ofCoil(AdvChemicalProcessor::setCoilTier, AdvChemicalProcessor::getCoilTier))
@@ -359,7 +362,10 @@ public class AdvChemicalProcessor
                 .addElement(
                     'U',
                     ofMuTECasings(
-                        FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT | ENERGY_IN,
+                        FLUID_INPUT.getValue() | ITEM_INPUT.getValue()
+                            | FLUID_OUTPUT.getValue()
+                            | ITEM_OUTPUT.getValue()
+                            | ENERGY_INPUT.getValue(),
                         GT_MultiTileCasing.Chemical.getCasing(),
                         GT_StructureUtilityMuTE.INVENTORY_CASINGS))
                 .build();
@@ -402,9 +408,7 @@ public class AdvChemicalProcessor
         return child;
     }
 
-    @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
         for (int i = 0; i < MAX_PROCESSES; i++) {
             final int processIndex = i;
             buildContext.addSyncedWindow(
@@ -434,7 +438,6 @@ public class AdvChemicalProcessor
                 .startFromSlot(0)
                 .endAtSlot(ITEM_WHITELIST_SLOTS - 1)
                 .phantom(true)
-                .background(getGUITextureSet().getItemSlot())
                 .build()
                 .setPos(7, 19));
         builder.widget(
@@ -452,7 +455,6 @@ public class AdvChemicalProcessor
         return "gt.multitileentity.multiblock.advchemicalprocessor";
     }
 
-    @Override
     public String getLocalName() {
         return "Advanced Chemical Processor";
     }

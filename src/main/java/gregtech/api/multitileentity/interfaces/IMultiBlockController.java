@@ -5,7 +5,6 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.InventoryType;
@@ -24,9 +23,6 @@ public interface IMultiBlockController
 
     /** Set the structure as having changed, and trigger an update */
     void onStructureChange();
-
-    @Override
-    ChunkCoordinates getCoords();
 
     void registerCoveredPartOnSide(final ForgeDirection side, IMultiBlockPart part);
 
@@ -48,4 +44,6 @@ public interface IMultiBlockController
     FluidInventoryLogic unregisterFluidInventory(@Nonnull UUID id, @Nonnull InventoryType type);
 
     void changeFluidInventoryDisplayName(@Nonnull UUID id, @Nullable String displayName, @Nonnull InventoryType type);
+
+    void registerSpecialCasings(@Nonnull IMultiBlockPart part);
 }

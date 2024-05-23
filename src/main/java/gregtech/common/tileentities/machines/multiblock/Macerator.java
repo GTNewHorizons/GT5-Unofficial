@@ -1,12 +1,12 @@
 package gregtech.common.tileentities.machines.multiblock;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ENERGY_IN;
-import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.FLUID_IN;
-import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.FLUID_OUT;
-import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_IN;
-import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_OUT;
-import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.NOTHING;
+import static gregtech.api.multitileentity.enums.PartMode.ENERGY_INPUT;
+import static gregtech.api.multitileentity.enums.PartMode.FLUID_INPUT;
+import static gregtech.api.multitileentity.enums.PartMode.FLUID_OUTPUT;
+import static gregtech.api.multitileentity.enums.PartMode.ITEM_INPUT;
+import static gregtech.api.multitileentity.enums.PartMode.ITEM_OUTPUT;
+import static gregtech.api.multitileentity.enums.PartMode.NOTHING;
 import static gregtech.api.util.GT_StructureUtilityMuTE.*;
 
 import javax.annotation.Nonnull;
@@ -46,14 +46,18 @@ public class Macerator extends StackableController<Macerator, MaceratorProcessin
                 .addShape(
                     STACKABLE_START,
                     transpose(new String[][] { { " G~F ", "AAAAA", "AAAAA", "AAAAA", " AAA " }, }))
-                .addElement('A', ofMuTECasings(ENERGY_IN, GT_MultiTileCasing.Macerator.getCasing()))
+                .addElement('A', ofMuTECasings(ENERGY_INPUT.getValue(), GT_MultiTileCasing.Macerator.getCasing()))
                 .addElement(
                     'B',
-                    ofMuTECasings(FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT, GT_MultiTileCasing.Macerator.getCasing()))
-                .addElement('C', ofMuTECasings(NOTHING, GT_MultiTileCasing.Macerator.getCasing()))
-                .addElement('D', ofMuTECasings(NOTHING, GT_MultiTileCasing.Macerator.getCasing()))
-                .addElement('F', ofMuTECasings(NOTHING, MOTOR_CASINGS))
-                .addElement('G', ofMuTECasings(NOTHING, INVENTORY_CASINGS))
+                    ofMuTECasings(
+                        FLUID_INPUT.getValue() | ITEM_INPUT.getValue()
+                            | FLUID_OUTPUT.getValue()
+                            | ITEM_OUTPUT.getValue(),
+                        GT_MultiTileCasing.Macerator.getCasing()))
+                .addElement('C', ofMuTECasings(NOTHING.getValue(), GT_MultiTileCasing.Macerator.getCasing()))
+                .addElement('D', ofMuTECasings(NOTHING.getValue(), GT_MultiTileCasing.Macerator.getCasing()))
+                .addElement('F', ofMuTECasings(NOTHING.getValue(), MOTOR_CASINGS))
+                .addElement('G', ofMuTECasings(NOTHING.getValue(), INVENTORY_CASINGS))
                 .build();
         }
         return STRUCTURE_DEFINITION;

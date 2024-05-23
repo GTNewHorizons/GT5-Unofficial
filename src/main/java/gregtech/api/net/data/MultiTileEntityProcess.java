@@ -2,23 +2,31 @@ package gregtech.api.net.data;
 
 import javax.annotation.Nonnull;
 
+import cpw.mods.fml.common.FMLLog;
 import net.minecraft.block.Block;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.IBlockAccess;
-
+import net.minecraftforge.common.util.ForgeDirection;
+import gregtech.api.GregTech_API;
 import gregtech.api.multitileentity.MultiTileEntityBlock;
+import gregtech.api.multitileentity.MultiTileEntityRegistry;
+import gregtech.api.multitileentity.enums.PartMode;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
+import gregtech.api.multitileentity.multiblock.base.MultiBlockPart;
+import gregtech.api.util.GT_Log;
 
 public class MultiTileEntityProcess extends Process {
 
     @Nonnull
     private final IBlockAccess world;
-    private ChunkCoordinates coords;
+    private int x, y, z;
     private int registryId;
     private int metaId;
-    private byte redstone;
-    private byte color;
-    private byte commonData;
+    private int allowedModes;
+    private int currentMode;
+    private int controllerX, controllerY, controllerZ;
+    private ForgeDirection facing;
 
     public MultiTileEntityProcess(@Nonnull IBlockAccess world) {
         this.world = world;
@@ -26,29 +34,41 @@ public class MultiTileEntityProcess extends Process {
 
     @Override
     public void process() {
-        if (coords == null) return;
-        Block block = world.getBlock(coords.posX, coords.posY, coords.posZ);
-        if (!(block instanceof MultiTileEntityBlock muteBlock)) {
+        Block block = world.getBlock(x, y, z);
+        if (!(block instanceof MultiTileEntityBlock)) {
             return;
         }
-        IMultiTileEntity mute = muteBlock
-            .receiveMultiTileEntityData(world, coords.posX, coords.posY, coords.posZ, registryId, metaId);
-        if (mute == null) return;
-        mute.setColorization(color);
+        TileEntity te = world.getTileEntity(x, y, z);
+        if (!(te instanceof IMultiTileEntity mute)) return;
+
+        mute.setFacing(facing);
+
+        if (mute instanceof MultiBlockPart part) {
+            part.setTargetPos(new ChunkCoordinates(controllerX, controllerY, controllerZ));
+            part.setAllowedModes(allowedModes);
+            part.setMode(PartMode.values()[currentMode]);
+        }
+
+        te.getWorldObj().markBlockForUpdate(x, y, z);
+        // Marks the block to get a render update;
+        te.getWorldObj().func_147479_m(x,y,z);
     }
 
-    public void giveCoordinates(@Nonnull ChunkCoordinates coords) {
-        this.coords = coords;
+    public void giveCoordinates(int x, int y, int z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
 
-    public void giveMultiTileEntityData(int registryId, int metaId) {
-        this.registryId = registryId;
-        this.metaId = metaId;
+    public void giveFacing(ForgeDirection facing) {
+        this.facing = facing;
     }
 
-    public void giveCommonData(byte redstone, byte color, byte commonData) {
-        this.redstone = redstone;
-        this.color = color;
-        this.commonData = commonData;
+    public void giveCasingData(int allowedModes, int currentMode, int controllerX, int controllerY, int controllerZ) {
+        this.allowedModes = allowedModes;
+        this.currentMode = currentMode;
+        this.controllerX = controllerX;
+        this.controllerY = controllerY;
+        this.controllerZ = controllerZ;
     }
 }

@@ -45,8 +45,8 @@ public class Tank extends UpgradeCasing {
     }
 
     @Override
-    public void readMultiTileNBT(NBTTagCompound aNBT) {
-        super.readMultiTileNBT(aNBT);
+    public void readFromNBT(NBTTagCompound aNBT) {
+        super.readFromNBT(aNBT);
         tankCount = aNBT.getInteger(GT_Values.NBT.UPGRADE_TANK_COUNT);
         tankCapacity = aNBT.getInteger(GT_Values.NBT.UPGRADE_TANK_CAPACITY);
     }

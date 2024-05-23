@@ -19,12 +19,10 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
-import gregtech.api.multitileentity.MultiTileEntityContainer;
+import gregtech.api.multitileentity.MultiTileEntityBlock;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.enums.GT_MultiTileUpgradeCasing;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
-import gregtech.api.multitileentity.multiblock.base.Controller;
 import gregtech.api.multitileentity.multiblock.base.MultiBlockPart;
 
 public class GT_StructureUtilityMuTE {
@@ -145,7 +143,8 @@ public class GT_StructureUtilityMuTE {
      * @return Structure Element
      * @param <T> Multiblock class
      */
-    public static <T> IStructureElement<T> ofMuTECasings(int modes, MuTEStructureCasing... validCasings) {
+    public static <T extends IMultiBlockController> IStructureElement<T> ofMuTECasings(int modes,
+        MuTEStructureCasing... validCasings) {
         if (validCasings == null || validCasings.length == 0) {
             throw new IllegalArgumentException();
         }
@@ -161,13 +160,13 @@ public class GT_StructureUtilityMuTE {
                 if (!(tileEntity instanceof MultiBlockPart part)) return false;
 
                 for (MuTEStructureCasing casing : allowedCasings) {
-                    if (casing.isCasingValid(part.getMultiTileEntityRegistryID(), part.getMultiTileEntityID())) {
+                    if (casing.isCasingValid(part.getRegistryId(), part.getMetaId())) {
                         final IMultiBlockController tTarget = part.getTarget(false);
                         if (tTarget != null && tTarget != t) return false;
 
-                        part.setTarget((IMultiBlockController) t, modes);
+                        part.setTarget(t, modes);
 
-                        ((Controller<?, ?>) t).registerSpecialCasings(part);
+                        t.registerSpecialCasings(part);
                         return true;
                     }
                 }
@@ -195,25 +194,15 @@ public class GT_StructureUtilityMuTE {
                     GT_FML_LOGGER.error("NULL REGISTRY");
                     return false;
                 }
-                final MultiTileEntityContainer tContainer = tRegistry
-                    .getNewTileEntityContainer(world, x, y, z, validCasings[0].defaultMeta, null);
-                if (tContainer == null) {
-                    GT_FML_LOGGER.error("NULL CONTAINER");
+                MultiTileEntityBlock block = tRegistry.getBlock();
+                if (!world.setBlock(x, y, z, block, allowedCasings[0].getDefaultMeta(), 2)) {
                     return false;
                 }
-                final IMultiTileEntity te = ((IMultiTileEntity) tContainer.mTileEntity);
-                if (!(te instanceof MultiBlockPart)) {
-                    GT_FML_LOGGER.error("Not a multiblock part");
-                    return false;
-                }
-                if (world.setBlock(x, y, z, tContainer.mBlock, 15 - tContainer.mBlockMetaData, 2)) {
-                    tContainer.setMultiTile(world, x, y, z);
-                    ((MultiBlockPart) te).setTarget((IMultiBlockController) t, modes);
 
-                    ((Controller<?, ?>) t).registerSpecialCasings((MultiBlockPart) te);
-                }
-
-                return false;
+                final TileEntity te = world.getTileEntity(x, y, z);
+                if (!(te instanceof MultiBlockPart part)) return false;
+                part.setTarget(t, modes);
+                return true;
             }
         };
     }
@@ -263,7 +252,7 @@ public class GT_StructureUtilityMuTE {
             // but it should be properly fixed in the future
             if (registryId == GT_Values.W) {
                 MultiTileEntityRegistry registry = MultiTileEntityRegistry.getRegistry(registryName);
-                registryId = Block.getIdFromBlock(registry.mBlock);
+                registryId = Block.getIdFromBlock(registry.block);
             }
             return registryId;
         }

@@ -1,7 +1,12 @@
 package gregtech.common.tileentities.machines.multiblock;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.*;
+import static gregtech.api.multitileentity.enums.PartMode.ENERGY_INPUT;
+import static gregtech.api.multitileentity.enums.PartMode.FLUID_INPUT;
+import static gregtech.api.multitileentity.enums.PartMode.FLUID_OUTPUT;
+import static gregtech.api.multitileentity.enums.PartMode.ITEM_INPUT;
+import static gregtech.api.multitileentity.enums.PartMode.ITEM_OUTPUT;
+import static gregtech.api.multitileentity.enums.PartMode.NOTHING;
 import static gregtech.api.util.GT_StructureUtilityMuTE.MOTOR_CASINGS;
 import static gregtech.api.util.GT_StructureUtilityMuTE.ofMuTECasings;
 
@@ -109,12 +114,15 @@ public class DistillationTower extends StackableController<DistillationTower, Di
                 .addElement(
                     'C',
                     ofMuTECasings(
-                        FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT | ENERGY_IN,
+                        FLUID_INPUT.getValue() | ITEM_INPUT.getValue()
+                            | FLUID_OUTPUT.getValue()
+                            | ITEM_OUTPUT.getValue()
+                            | ENERGY_INPUT.getValue(),
                         GT_MultiTileCasing.Distillation.getCasing()))
                 .addElement('E', GT_StructureUtility.ofFrame(Materials.StainlessSteel))
                 .addElement('A', ofBlock(GregTech_API.sBlockCasings2, 0))
                 .addElement('B', ofBlock(GregTech_API.sBlockCasings2, 13))
-                .addElement('X', ofMuTECasings(NOTHING, MOTOR_CASINGS))
+                .addElement('X', ofMuTECasings(NOTHING.getValue(), MOTOR_CASINGS))
                 .addElement('D', GT_StructureUtility.ofCoil((tile, meta) -> {}, (tile) -> HeatingCoilLevel.None))
                 .build();
         }
@@ -156,7 +164,6 @@ public class DistillationTower extends StackableController<DistillationTower, Di
         return "gt.multitileentity.multiblock.distillationtower";
     }
 
-    @Override
     public String getLocalName() {
         return "Distillation Tower";
     }

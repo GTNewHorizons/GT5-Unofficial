@@ -3,9 +3,12 @@ package gregtech.common.tileentities.machines.multiblock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockUnlocalizedName;
 import static gregtech.api.enums.Mods.*;
-import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.*;
-import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ENERGY_IN;
-import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.FLUID_OUT;
+import static gregtech.api.multitileentity.enums.PartMode.ENERGY_INPUT;
+import static gregtech.api.multitileentity.enums.PartMode.FLUID_INPUT;
+import static gregtech.api.multitileentity.enums.PartMode.FLUID_OUTPUT;
+import static gregtech.api.multitileentity.enums.PartMode.ITEM_INPUT;
+import static gregtech.api.multitileentity.enums.PartMode.ITEM_OUTPUT;
+import static gregtech.api.multitileentity.enums.PartMode.NOTHING;
 import static gregtech.api.util.GT_StructureUtilityMuTE.*;
 
 import java.util.UUID;
@@ -196,22 +199,30 @@ public class LaserEngraver extends ComplexParallelController<LaserEngraver, Lase
                 .addElement(
                     'A',
                     ofMuTECasings(
-                        FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT | ENERGY_IN,
+                        FLUID_INPUT.getValue() | ITEM_INPUT.getValue()
+                            | FLUID_OUTPUT.getValue()
+                            | ITEM_OUTPUT.getValue()
+                            | ENERGY_INPUT.getValue(),
                         GT_MultiTileCasing.LaserEngraver.getCasing()))
                 .addElement(
                     'B',
                     ofMuTECasings(
-                        FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT | ENERGY_IN,
+                        FLUID_INPUT.getValue() | ITEM_INPUT.getValue()
+                            | FLUID_OUTPUT.getValue()
+                            | ITEM_OUTPUT.getValue()
+                            | ENERGY_INPUT.getValue(),
                         GT_MultiTileCasing.BlackLaserEngraverCasing.getCasing()))
                 .addElement(
                     'C',
-                    ofMuTECasings(NOTHING, CLEANROOM_CASINGS, GT_MultiTileCasing.LaserEngraver.getCasing()))
-                .addElement('D', ofMuTECasings(NOTHING, WIRELESS_CASINGS, GT_MultiTileCasing.LaserEngraver.getCasing()))
-                .addElement('E', ofMuTECasings(NOTHING, MOTOR_CASINGS))
+                    ofMuTECasings(NOTHING.getValue(), CLEANROOM_CASINGS, GT_MultiTileCasing.LaserEngraver.getCasing()))
+                .addElement(
+                    'D',
+                    ofMuTECasings(NOTHING.getValue(), WIRELESS_CASINGS, GT_MultiTileCasing.LaserEngraver.getCasing()))
+                .addElement('E', ofMuTECasings(NOTHING.getValue(), MOTOR_CASINGS))
                 .addElement('F', GT_StructureUtility.ofFrame(Materials.Naquadah)
 
                 )
-                .addElement('H', ofMuTECasings(NOTHING, GT_MultiTileCasing.Mirror.getCasing()))
+                .addElement('H', ofMuTECasings(NOTHING.getValue(), GT_MultiTileCasing.Mirror.getCasing()))
 
                 .addElement(
                     'G',
@@ -220,13 +231,21 @@ public class LaserEngraver extends ComplexParallelController<LaserEngraver, Lase
                         ofBlockUnlocalizedName(BartWorks.ID, "BW_GlasBlocks", 0, true),
                         ofBlockUnlocalizedName(BartWorks.ID, "BW_GlasBlocks2", 0, true),
                         ofBlockUnlocalizedName(Thaumcraft.ID, "blockCosmeticOpaque", 2, false)))
-                .addElement('I', ofMuTECasings(NOTHING, EMITTER_CASINGS))
+                .addElement('I', ofMuTECasings(NOTHING.getValue(), EMITTER_CASINGS))
                 .addElement('K', ofBlock(GregTech_API.sBlockCasings3, 11))
-                .addElement('L', ofMuTECasings(NOTHING, ROBOT_ARM_CASINGS))
-                .addElement('M', ofMuTECasings(NOTHING, GT_MultiTileCasing.LaserEngraverUpgrade1.getCasing()))
-                .addElement('N', ofMuTECasings(NOTHING, GT_MultiTileCasing.LaserEngraverUpgrade2.getCasing()))
-                .addElement('O', ofMuTECasings(NOTHING, GT_MultiTileCasing.LaserEngraverUpgrade3.getCasing()))
-                .addElement('P', ofMuTECasings(NOTHING, GT_MultiTileCasing.LaserEngraverUpgrade4.getCasing()))
+                .addElement('L', ofMuTECasings(NOTHING.getValue(), ROBOT_ARM_CASINGS))
+                .addElement(
+                    'M',
+                    ofMuTECasings(NOTHING.getValue(), GT_MultiTileCasing.LaserEngraverUpgrade1.getCasing()))
+                .addElement(
+                    'N',
+                    ofMuTECasings(NOTHING.getValue(), GT_MultiTileCasing.LaserEngraverUpgrade2.getCasing()))
+                .addElement(
+                    'O',
+                    ofMuTECasings(NOTHING.getValue(), GT_MultiTileCasing.LaserEngraverUpgrade3.getCasing()))
+                .addElement(
+                    'P',
+                    ofMuTECasings(NOTHING.getValue(), GT_MultiTileCasing.LaserEngraverUpgrade4.getCasing()))
                 .build();
             buildState.stopBuilding();
         }
@@ -268,14 +287,14 @@ public class LaserEngraver extends ComplexParallelController<LaserEngraver, Lase
     }
 
     @Override
-    public void readMultiTileNBT(NBTTagCompound nbt) {
-        super.readMultiTileNBT(nbt);
+    public void readFromNBT(NBTTagCompound nbt) {
+        super.readFromNBT(nbt);
         setMaxComplexParallels(nbt.getInteger("processors"), false);
     }
 
     @Override
-    public void writeMultiTileNBT(NBTTagCompound nbt) {
-        super.writeMultiTileNBT(nbt);
+    public void writeToNBT(NBTTagCompound nbt) {
+        super.writeToNBT(nbt);
         nbt.setInteger("processors", maxComplexParallels);
     }
 

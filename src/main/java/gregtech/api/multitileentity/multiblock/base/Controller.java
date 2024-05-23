@@ -1,7 +1,6 @@
 package gregtech.api.multitileentity.multiblock.base;
 
 import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
-import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
 import static mcp.mobius.waila.api.SpecialChars.*;
 
 import java.lang.ref.WeakReference;
@@ -20,14 +19,10 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -43,7 +38,6 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.api.enums.GT_Values.NBT;
@@ -60,24 +54,17 @@ import gregtech.api.logic.PowerLogic;
 import gregtech.api.multitileentity.enums.MultiTileCasingPurpose;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
 import gregtech.api.multitileentity.interfaces.IMultiBlockPart;
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_AddToolTips;
 import gregtech.api.multitileentity.machine.MultiTileBasicMachine;
 import gregtech.api.multitileentity.multiblock.casing.FunctionalCasing;
 import gregtech.api.multitileentity.multiblock.casing.UpgradeCasing;
-import gregtech.api.net.GT_Packet_MultiTileEntity;
-import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Utility;
-import gregtech.api.util.GT_Waila;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
+import gregtech.api.util.WorldHelper;
 
 /**
  * Multi Tile Entities - or MuTEs - don't have dedicated hatches, but their casings can become hatches.
  */
-public abstract class Controller<C extends Controller<C, P>, P extends MuTEProcessingLogic<P>>
-    extends MultiTileBasicMachine<P>
-    implements IAlignment, IMultiBlockController, IDescribable, IMTE_AddToolTips, ISurvivalConstructable {
+public abstract class Controller<C extends Controller<C, P>, P extends MuTEProcessingLogic<P>> extends
+    MultiTileBasicMachine<P> implements IAlignment, IMultiBlockController, IDescribable, ISurvivalConstructable {
 
     public static final String ALL_INVENTORIES_NAME = "all";
     protected static final int AUTO_OUTPUT_FREQUENCY_TICK = 20;
@@ -170,8 +157,8 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
     }
 
     @Override
-    public void writeMultiTileNBT(NBTTagCompound nbt) {
-        super.writeMultiTileNBT(nbt);
+    public void writeToNBT(NBTTagCompound nbt) {
+        super.writeToNBT(nbt);
 
         nbt.setBoolean(NBT.STRUCTURE_OK, structureOkay);
         nbt.setByte(
@@ -206,15 +193,15 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
     }
 
     @Override
-    public void readMultiTileNBT(NBTTagCompound nbt) {
-        super.readMultiTileNBT(nbt);
+    public void readFromNBT(NBTTagCompound nbt) {
+        super.readFromNBT(nbt);
 
         // Multiblock inventories are a collection of inventories. The first inventory is the default internal
         // inventory, and the others are added by inventory extending blocks.
 
         structureOkay = nbt.getBoolean(NBT.STRUCTURE_OK);
         extendedFacing = ExtendedFacing
-            .of(getFrontFacing(), Rotation.byIndex(nbt.getByte(NBT.ROTATION)), Flip.byIndex(nbt.getByte(NBT.FLIP)));
+            .of(getFacing(), Rotation.byIndex(nbt.getByte(NBT.ROTATION)), Flip.byIndex(nbt.getByte(NBT.FLIP)));
 
         voidingMode = VoidingMode.fromName(nbt.getString(NBT.VOIDING_MODE));
         separateInputs = nbt.getBoolean(NBT.SEPARATE_INPUTS);
@@ -245,11 +232,6 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
     }
 
     @Override
-    public void addToolTips(List<String> aList, ItemStack aStack, boolean aF3_H) {
-        aList.addAll(Arrays.asList(getDescription()));
-    }
-
-    @Override
     public String[] getDescription() {
         if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
             return getTooltip().getStructureInformation();
@@ -258,28 +240,17 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
         return getTooltip().getInformation();
     }
 
-    @Override
-    protected void addDebugInfo(EntityPlayer aPlayer, int aLogLevel, ArrayList<String> tList) {
-        super.addDebugInfo(aPlayer, aLogLevel, tList);
-        tList.add("Structure ok: " + checkStructure(false));
-    }
-
-    protected int getToolTipID() {
-        return getMultiTileEntityRegistryID() << 16 + getMultiTileEntityID();
-    }
-
     protected GT_Multiblock_Tooltip_Builder getTooltip() {
-        GT_Multiblock_Tooltip_Builder builder = tooltip.get(getToolTipID());
+        GT_Multiblock_Tooltip_Builder builder = tooltip.get(0);
         if (builder == null) {
             builder = createTooltip();
-            tooltip.put(getToolTipID(), builder);
         }
         return builder;
     }
 
     @Override
     public boolean checkStructure(boolean aForceReset) {
-        if (!isServerSide()) return structureOkay;
+        if (worldObj.isRemote) return structureOkay;
 
         // Only trigger an update if forced (from onPostTick, generally), or if the structure has changed
         if ((structureChanged || aForceReset)) {
@@ -315,7 +286,7 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
         return getCastedStructureDefinition().check(
             this,
             piece,
-            getWorld(),
+            getWorldObj(),
             getExtendedFacing(),
             getXCoord(),
             getYCoord(),
@@ -336,7 +307,7 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
             this,
             trigger,
             piece,
-            getWorld(),
+            getWorldObj(),
             getExtendedFacing(),
             getXCoord(),
             getYCoord(),
@@ -366,7 +337,7 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
             this,
             trigger,
             piece,
-            getWorld(),
+            getWorldObj(),
             getExtendedFacing(),
             getXCoord(),
             getYCoord(),
@@ -403,31 +374,15 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
             StructureLibAPI.sendAlignment(
                 this,
                 new NetworkRegistry.TargetPoint(
-                    getWorld().provider.dimensionId,
+                    getWorldObj().provider.dimensionId,
                     getXCoord(),
                     getYCoord(),
                     getZCoord(),
                     512));
         } else {
-            issueTextureUpdate();
+            issueClientUpdate();
         }
 
-    }
-
-    @Override
-    public boolean onWrenchRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, ForgeDirection wrenchSide, float aX,
-        float aY, float aZ, ItemStack aTool) {
-        if (wrenchSide != getFrontFacing())
-            return super.onWrenchRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ);
-        if (aPlayer.isSneaking()) {
-            // we won't be allowing horizontal flips, as it can be perfectly emulated by rotating twice and flipping
-            // horizontally allowing an extra round of flip make it hard to draw meaningful flip markers in
-            // GT_Proxy#drawGrid
-            toolSetFlip(getFlip().isHorizontallyFlipped() ? Flip.NONE : Flip.HORIZONTAL);
-        } else {
-            toolSetRotation(null);
-        }
-        return true;
     }
 
     @Override
@@ -477,9 +432,9 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
     }
 
     @Override
-    public void onFirstTick(boolean isServerSide) {
-        super.onFirstTick(isServerSide);
-        if (isServerSide) {
+    public void onFirstTick() {
+        super.onFirstTick();
+        if (isServerSide()) {
             checkStructure(true);
         } else {
             StructureLibAPI.queryAlignment(this);
@@ -498,7 +453,7 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
                     it.remove();
                     continue;
                 }
-                if (!part.tickCoverAtSide(side, mTickTimer)) it.remove();
+                // if (!part.tickCoverAtSide(side, timer)) it.remove();
             }
         }
 
@@ -506,15 +461,17 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
     }
 
     @Override
-    public void onTick(long tick, boolean isServerSide) {
+    public void onTick(long tick) {
+        if (!isServerSide()) return;
+
         if (!tickCovers()) {
             return;
         }
     }
 
     @Override
-    public void onPostTick(long tick, boolean isServerSide) {
-        if (!isServerSide) { // client side
+    public void onPostTick(long tick) {
+        if (!isServerSide()) { // client side
             doActivitySound(getActivitySoundLoop());
             return;
         }
@@ -546,12 +503,14 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
                 itemOutputIterator.remove();
                 continue;
             }
-            if (!part.shouldTick(mTickTimer)) {
+            if (!part.shouldTick(tick)) {
                 itemOutputIterator.remove();
                 continue;
             }
 
-            final IInventory facingInventory = part.getIInventoryAtSide(part.getFrontFacing());
+            final ChunkCoordinates coords = part.getCoords();
+            final IInventory facingInventory = WorldHelper
+                .getIInventoryAtSide(part.getFacing(), getWorldObj(), coords.posX, coords.posY, coords.posZ);
             if (facingInventory == null) {
                 continue;
             }
@@ -559,8 +518,9 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
             moveMultipleItemStacks(
                 part,
                 facingInventory,
-                part.getFrontFacing(),
-                part.getBackFacing(),
+                part.getFacing(),
+                part.getFacing()
+                    .getOpposite(),
                 null,
                 false,
                 (byte) 64,
@@ -588,7 +548,7 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
                 fluidOutputIterator.remove();
                 continue;
             }
-            if (!part.shouldTick(mTickTimer)) {
+            if (!part.shouldTick(tick)) {
                 fluidOutputIterator.remove();
             }
         }
@@ -602,22 +562,6 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
     protected void clearSpecialLists() {
         upgradeCasings.clear();
         functionalCasings.clear();
-    }
-
-    @Override
-    public final boolean isFacingValid(ForgeDirection facing) {
-        return canSetToDirectionAny(facing);
-    }
-
-    @Override
-    public void onFacingChange() {
-        toolSetDirection(getFrontFacing());
-        onStructureChange();
-    }
-
-    @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GT_ItemStack aCoverID) {
-        return side != facing;
     }
 
     @Override
@@ -695,7 +639,8 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
         }
     }
 
-    public void registerSpecialCasings(MultiBlockPart part) {
+    @Override
+    public void registerSpecialCasings(IMultiBlockPart part) {
         if (part instanceof UpgradeCasing) {
             upgradeCasings.add((UpgradeCasing) part);
         }
@@ -709,7 +654,7 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
     @Override
     @Nullable
     public FluidInventoryLogic getFluidLogic(@Nonnull ForgeDirection side, @Nonnull InventoryType type) {
-        if (side == facing) return null;
+        if (side == getFacing()) return null;
         return switch (type) {
             case Input -> controllerFluidInput.getAllInventoryLogics();
             case Output -> controllerFluidOutput.getAllInventoryLogics();
@@ -787,7 +732,7 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
     @Override
     @Nullable
     public ItemInventoryLogic getItemLogic(@Nonnull ForgeDirection side, @Nonnull InventoryType type) {
-        if (side == facing) return null;
+        if (side == getFacing()) return null;
         return switch (type) {
             case Input -> controllerItemInput.getAllInventoryLogics();
             case Output -> controllerItemOutput.getAllInventoryLogics();
@@ -880,20 +825,6 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
     /*
      * GUI Work - Multiblock GUI related methods
      */
-    @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
-    @Override
-    public boolean hasGui(ForgeDirection side) {
-        return true;
-    }
-
-    @Override
-    protected void addTitleTextStyle(ModularWindow.Builder builder, String title) {
-        // leave empty
-    }
 
     @Override
     public boolean supportsVoidProtection() {
@@ -966,74 +897,6 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        P processing = getProcessingLogic();
-        tag.setInteger("progress", processing.getProgress());
-        tag.setInteger("maxProgress", processing.getDuration());
-        tag.setBoolean("structureOkay", structureOkay);
-        tag.setBoolean("isActive", isActive());
-        if (isActive()) {
-            tag.setLong("energyUsage", getProcessingLogic().getCalculatedEut());
-            tag.setLong("energyTier", tier);
-        }
-    }
-
-    @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        final NBTTagCompound tag = accessor.getNBTData();
-        if (!tag.getBoolean("structureOkay")) {
-            currentTip.add(RED + "** INCOMPLETE STRUCTURE **" + RESET);
-        } else {
-            currentTip.add((GREEN + "Running Fine") + RESET);
-        }
-        if (isSimpleMachine) {
-            boolean isActive = tag.getBoolean("isActive");
-            currentTip.add(
-                GT_Waila.getMachineProgressString(isActive, tag.getInteger("maxProgress"), tag.getInteger("progress")));
-        }
-        boolean isActive = tag.getBoolean("isActive");
-        if (isActive) {
-            long energyTier = tag.getLong("energyTier");
-            long actualEnergyUsage = tag.getLong("energyUsage");
-            if (actualEnergyUsage > 0) {
-                currentTip.add(
-                    StatCollector.translateToLocalFormatted(
-                        "GT5U.waila.energy.use_with_amperage",
-                        GT_Utility.formatNumbers(actualEnergyUsage),
-                        GT_Utility.getAmperageForTier(actualEnergyUsage, (byte) energyTier),
-                        GT_Utility.getColoredTierNameFromTier((byte) energyTier)));
-            } else if (actualEnergyUsage < 0) {
-                currentTip.add(
-                    StatCollector.translateToLocalFormatted(
-                        "GT5U.waila.energy.produce_with_amperage",
-                        GT_Utility.formatNumbers(-actualEnergyUsage),
-                        GT_Utility.getAmperageForTier(-actualEnergyUsage, (byte) energyTier),
-                        GT_Utility.getColoredTierNameFromTier((byte) energyTier)));
-            }
-        }
-    }
-
-    @Override
-    public GT_Packet_MultiTileEntity getClientDataPacket() {
-        final GT_Packet_MultiTileEntity packet = super.getClientDataPacket();
-
-        return packet;
-
-    }
-
-    @Override
-    public void enableWorking() {
-        super.enableWorking();
-        if (!structureOkay) {
-            checkStructure(true);
-        }
-    }
-
-    @Override
     public List<ItemStack> getItemOutputSlots(ItemStack[] toOutput) {
         return new ArrayList<>(0);
     }
@@ -1064,12 +927,7 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
     }
 
     @Override
-    public void setWirelessSupport(boolean canUse) {
-        if (canUse) {
-            strongCheckOrAddUser(getOwnerUuid());
-        }
-        power.setCanUseWireless(canUse, getOwnerUuid());
-    }
+    public void setWirelessSupport(boolean canUse) {}
 
     @Override
     public void setLaserSupport(boolean canUse) {

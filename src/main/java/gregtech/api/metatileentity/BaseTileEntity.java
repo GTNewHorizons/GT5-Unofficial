@@ -1,10 +1,7 @@
 package gregtech.api.metatileentity;
 
-import static gregtech.api.enums.GT_Values.COMPASS_DIRECTIONS;
 import static gregtech.api.enums.GT_Values.GT;
 import static gregtech.api.enums.GT_Values.NW;
-import static gregtech.api.enums.GT_Values.SIDE_DOWN;
-import static gregtech.api.enums.GT_Values.SIDE_UP;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +23,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -108,13 +104,9 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
     public static ForgeDirection getSideForPlayerPlacing(Entity aPlayer, ForgeDirection defaultFacing,
         boolean[] aAllowedFacings) {
-        if (aPlayer != null) {
-            if (aPlayer.rotationPitch >= 65 && aAllowedFacings[SIDE_UP]) return ForgeDirection.UP;
-            if (aPlayer.rotationPitch <= -65 && aAllowedFacings[SIDE_DOWN]) return ForgeDirection.DOWN;
-            final byte rFacing = COMPASS_DIRECTIONS[MathHelper.floor_double(0.5D + 4.0F * aPlayer.rotationYaw / 360.0F)
-                & 0x3];
-            if (aAllowedFacings[rFacing]) return ForgeDirection.getOrientation(rFacing);
-        }
+        ForgeDirection facingFromPlayer = GT_Utility.getSideFromPlayerFacing(aPlayer);
+        if (facingFromPlayer != ForgeDirection.UNKNOWN && aAllowedFacings[facingFromPlayer.ordinal()])
+            return facingFromPlayer;
         for (final ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) if (aAllowedFacings[dir.ordinal()]) return dir;
         return defaultFacing;
     }

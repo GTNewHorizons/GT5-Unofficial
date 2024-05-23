@@ -4,7 +4,6 @@ import static gregtech.api.enums.GT_Values.*;
 import static gregtech.api.enums.TickTime.MINUTE;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
@@ -16,7 +15,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -24,6 +22,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.ApiStatus.OverrideOnly;
 
+import com.gtnewhorizons.modularui.api.UIInfos;
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -70,10 +69,10 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
 
     protected static final IItemHandlerModifiable EMPTY_INVENTORY = new ItemStackHandler(0);
 
-    public ITexture activeOverlayTexture = null;
-    public ITexture activeOverlayGlowTexture = null;
-    public ITexture inactiveOverlayTexture = null;
-    public ITexture inactiveOverlayGlowTexture = null;
+    private ITexture activeOverlayTexture = null;
+    private ITexture activeOverlayGlowTexture = null;
+    private ITexture inactiveOverlayTexture = null;
+    private ITexture inactiveOverlayGlowTexture = null;
 
     protected int maxParallel = 1;
     protected boolean active = false;
@@ -113,13 +112,8 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
     }
 
     @Override
-    public String getTileEntityName() {
-        return "gt.multitileentity.machine.basic";
-    }
-
-    @Override
-    public void writeMultiTileNBT(NBTTagCompound nbt) {
-        super.writeMultiTileNBT(nbt);
+    public void writeToNBT(NBTTagCompound nbt) {
+        super.writeToNBT(nbt);
         if (maxParallel > 0) {
             nbt.setInteger(NBT.PARALLEL, maxParallel);
         }
@@ -159,8 +153,8 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
     }
 
     @Override
-    public void readMultiTileNBT(NBTTagCompound nbt) {
-        super.readMultiTileNBT(nbt);
+    public void readFromNBT(NBTTagCompound nbt) {
+        super.readFromNBT(nbt);
         if (nbt.hasKey(NBT.PARALLEL)) {
             maxParallel = Math.max(1, nbt.getInteger(NBT.PARALLEL));
         }
@@ -246,11 +240,11 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
     public void copyTextures() {
         super.copyTextures();
         final TileEntity tCanonicalTileEntity = MultiTileEntityRegistry
-            .getCanonicalTileEntity(getMultiTileEntityRegistryID(), getMultiTileEntityID());
+            .getCachedTileEntity(getRegistryId(), getMetaId());
         if (!(tCanonicalTileEntity instanceof MultiTileBasicMachine)) {
             return;
         }
-        final MultiTileBasicMachine canonicalEntity = (MultiTileBasicMachine) tCanonicalTileEntity;
+        final MultiTileBasicMachine<?> canonicalEntity = (MultiTileBasicMachine<?>) tCanonicalTileEntity;
         activeOverlayTexture = canonicalEntity.activeOverlayTexture;
         activeOverlayGlowTexture = canonicalEntity.activeOverlayGlowTexture;
         inactiveOverlayTexture = canonicalEntity.inactiveOverlayTexture;
@@ -258,17 +252,13 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
     }
 
     @Override
-    public ITexture getTexture(ForgeDirection side) {
-        final ITexture texture = super.getTexture(side);
-        if (side == facing) {
-            if (isActive()) {
-                return TextureFactory.of(texture, activeOverlayTexture, activeOverlayGlowTexture);
-            }
-
-            return TextureFactory.of(texture, inactiveOverlayTexture, inactiveOverlayGlowTexture);
+    public ITexture getFrontTexture() {
+        final ITexture texture = super.getFrontTexture();
+        if (isActive()) {
+            return TextureFactory.of(texture, activeOverlayTexture, activeOverlayGlowTexture);
         }
 
-        return TextureFactory.of(texture, getCoverTexture(side));
+        return TextureFactory.of(texture, inactiveOverlayTexture, inactiveOverlayGlowTexture);
     }
     /*
      * Fluids
@@ -288,18 +278,9 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
         return 3;
     }
 
-    @Override
-    public void setLightValue(byte aLightValue) {}
-
     /*
      * Inventory
      */
-
-    @Override
-    public boolean hasInventoryBeenModified() {
-        // True if the input inventory has changed
-        return hasInventoryChanged;
-    }
 
     public void markOutputInventoryBeenModified() {
         outputInventoryChanged = true;
@@ -309,16 +290,11 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
         // True if the output inventory has changed
         return outputInventoryChanged;
     }
-
-    public void markInputInventoryBeenModified() {
-        hasInventoryChanged = true;
-    }
-
     // #region Machine
 
     @Override
-    public void onPostTick(long tick, boolean isServerSide) {
-        if (isServerSide) {
+    public void onPostTick(long tick) {
+        if (isServerSide()) {
             runMachine(tick);
         } else {
             doActivitySound(getActivitySoundLoop());
@@ -331,7 +307,7 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
      * @param tick The current tick of the machine
      */
     protected void runMachine(long tick) {
-        if (acceptsFuel() && isActive() && !consumeFuel()) {
+        if (acceptsFuel() && !consumeFuel()) {
             stopMachine(true);
             return;
         }
@@ -342,8 +318,7 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
             return;
         }
 
-        if (tick % TICKS_BETWEEN_RECIPE_CHECKS == 0 || hasWorkJustBeenEnabled()
-            || hasInventoryBeenModified() && isAllowedToWork()) {
+        if ((tick % TICKS_BETWEEN_RECIPE_CHECKS == 0) && isAllowedToWork()) {
             wasEnabled = false;
             if (checkRecipe()) {
                 setActive(true);
@@ -411,7 +386,7 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
 
     @SideOnly(Side.CLIENT)
     protected void doActivitySound(ResourceLocation activitySound) {
-        if (isActive() && activitySound != null && activitySoundLoop == null) {
+        if (activitySound != null && activitySoundLoop == null) {
             activitySoundLoop = new GT_SoundLoop(activitySound, this, false, true);
             Minecraft.getMinecraft()
                 .getSoundHandler()
@@ -436,66 +411,6 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
 
     protected FluidStack[] getInputFluids() {
         return fluidInput.getStoredFluids();
-    }
-
-    @Override
-    public int getProgress() {
-        P processing = getProcessingLogic();
-        return processing.getProgress();
-    }
-
-    @Override
-    public int getMaxProgress() {
-        P processing = getProcessingLogic();
-        return processing.getDuration();
-    }
-
-    @Override
-    public boolean increaseProgress(int progressAmount) {
-        P processing = getProcessingLogic();
-        processing.increaseProgress(progressAmount);
-        return true;
-    }
-
-    @Override
-    public boolean hasThingsToDo() {
-        return getMaxProgress() > 0;
-    }
-
-    @Override
-    public boolean hasWorkJustBeenEnabled() {
-        return wasEnabled;
-    }
-
-    @Override
-    public void enableWorking() {
-        wasEnabled = true;
-        canWork = true;
-    }
-
-    @Override
-    public void disableWorking() {
-        canWork = false;
-    }
-
-    @Override
-    public boolean wasShutdown() {
-        return powerShutDown;
-    }
-
-    @Override
-    public boolean isAllowedToWork() {
-        return canWork;
-    }
-
-    @Override
-    public boolean isActive() {
-        return active;
-    }
-
-    @Override
-    public void setActive(boolean active) {
-        this.active = active;
     }
 
     protected boolean isElectric() {
@@ -524,7 +439,7 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
 
     protected boolean consumeFuel() {
         if (isElectric() || isSteam()) return false;
-        if (isActive() && burnTime <= 0) {
+        if (true && burnTime <= 0) {
             for (int i = 0; i < itemInput.getSlots(); i++) {
                 ItemStack item = itemInput.getItemInSlot(i);
                 if (item == null) continue;
@@ -544,82 +459,6 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
             return false;
         }
         return false;
-    }
-
-    @Override
-    protected void addDebugInfo(EntityPlayer player, int logLevel, ArrayList<String> list) {
-        list.add(
-            GT_Utility.trans("186", "Owned by: ") + EnumChatFormatting.BLUE
-                + getOwnerName()
-                + EnumChatFormatting.RESET
-                + " ("
-                + EnumChatFormatting.AQUA
-                + getOwnerUuid()
-                + EnumChatFormatting.RESET
-                + ")");
-
-        if (acceptsFuel()) {
-            list.add("Fuel: " + EnumChatFormatting.GOLD + burnTime + "/" + totalBurnTime);
-        }
-
-        PowerLogic logic = getPowerLogic();
-        if (isElectric) {
-            list.add(
-                StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                    + EnumChatFormatting.GREEN
-                    + GT_Utility.formatNumbers(logic.getStoredEnergy())
-                    + EnumChatFormatting.RESET
-                    + " EU / "
-                    + EnumChatFormatting.YELLOW
-                    + GT_Utility.formatNumbers(logic.getCapacity())
-                    + EnumChatFormatting.RESET
-                    + " EU");
-            list.add(
-                StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
-                    + EnumChatFormatting.RED
-                    + GT_Utility.formatNumbers(getProcessingLogic().getCalculatedEut())
-                    + EnumChatFormatting.RESET
-                    + " EU/t");
-            list.add(
-                StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
-                    + EnumChatFormatting.YELLOW
-                    + GT_Utility.formatNumbers(logic.getVoltage())
-                    + EnumChatFormatting.RESET
-                    // TODO: Put ampere getter here, once that's variable
-                    + " EU/t(*2A) "
-                    + StatCollector.translateToLocal("GT5U.machines.tier")
-                    + ": "
-                    + EnumChatFormatting.YELLOW
-                    + VN[GT_Utility.getTier(logic.getVoltage())]
-                    + EnumChatFormatting.RESET);
-        }
-
-        addProgressStringToScanner(player, logLevel, list);
-
-        // TODO: Add CPU load calculator
-        list.add(
-            "Average CPU load of ~" + GT_Utility.formatNumbers(0)
-                + "ns over "
-                + GT_Utility.formatNumbers(0)
-                + " ticks with worst time of "
-                + GT_Utility.formatNumbers(0)
-                + "ns.");
-    }
-
-    protected void addProgressStringToScanner(EntityPlayer player, int logLevel, ArrayList<String> list) {
-        P processing = getProcessingLogic();
-        int progressTime = processing.getProgress();
-        int maxProgressTime = processing.getDuration();
-        list.add(
-            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + GT_Utility.formatNumbers(progressTime > 20 ? progressTime / 20 : progressTime)
-                + EnumChatFormatting.RESET
-                + (progressTime > 20 ? " s / " : " ticks / ")
-                + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(maxProgressTime > 20 ? maxProgressTime / 20 : maxProgressTime)
-                + EnumChatFormatting.RESET
-                + (maxProgressTime > 20 ? " s" : " ticks"));
     }
 
     protected void stopMachine(boolean powerShutDown) {
@@ -672,7 +511,7 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
     public void setSound(byte soundEvent, int soundEventValue) {
         this.soundEvent = soundEvent;
         this.soundEventValue = soundEventValue;
-        if (isServerSide()) {
+        if (!worldObj.isRemote) {
             return;
         }
 
@@ -699,7 +538,7 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
 
     @Nullable
     public ItemInventoryLogic getItemLogic(@Nonnull ForgeDirection side, @Nonnull InventoryType type) {
-        if (side == facing) return null;
+        if (side == getFacing()) return null;
         return switch (type) {
             case Input -> itemInput;
             case Output -> itemOutput;
@@ -709,7 +548,7 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
 
     @Nullable
     public FluidInventoryLogic getFluidLogic(@Nonnull ForgeDirection side, @Nonnull InventoryType type) {
-        if (side == facing) return null;
+        if (side == getFacing()) return null;
         return switch (type) {
             case Input -> fluidInput;
             case Output -> fluidOutput;
@@ -754,14 +593,14 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
     @Override
     @Nonnull
     public PowerLogic getPowerLogic(@Nonnull ForgeDirection side) {
-        if (side == facing) return new NullPowerLogic();
+        if (side == getFacing()) return new NullPowerLogic();
         return power;
     }
 
     @Override
     @Nonnull
     public ForgeDirection getPowerOutputSide() {
-        return Objects.requireNonNull(facing.getOpposite());
+        return Objects.requireNonNull(getFacing().getOpposite());
     }
 
     protected void updatePowerLogic() {
@@ -788,8 +627,8 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
 
     @Override
     public ItemStack getAsItem() {
-        return MultiTileEntityRegistry.getRegistry(getMultiTileEntityRegistryID())
-            .getItem(getMultiTileEntityID());
+        return MultiTileEntityRegistry.getRegistry(getRegistryId())
+            .getItem(getMetaId());
     }
 
     @Override
@@ -797,4 +636,36 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
         return StatCollector.translateToLocal(getAsItem().getUnlocalizedName());
     }
 
+    @Override
+    public boolean isActive() {
+        return active;
+    }
+
+    @Override
+    public void setActive(final boolean active) {
+        this.active = active;
+    }
+
+    @Override
+    public boolean isAllowedToWork() {
+        return getProcessingLogic().canWork();
+    }
+
+    @Override
+    public boolean hasThingsToDo() {
+        return getProcessingLogic().getDuration() > getProcessingLogic().getProgress();
+    }
+
+    @Override
+    public void enableWorking() {}
+
+    @Override
+    public void disableWorking() {}
+
+    @Override
+    protected boolean onRightClick(EntityPlayer player, ForgeDirection side, ForgeDirection wrenchSide) {
+        if (!shouldOpen()) return false;
+        UIInfos.openClientUI(player, this::createWindow);
+        return true;
+    }
 }
