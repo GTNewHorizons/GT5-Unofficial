@@ -13,6 +13,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_AR
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_GLOW;
+import static gregtech.api.enums.TickTime.SECOND;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
@@ -51,10 +52,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -62,17 +60,20 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class GT_MetaTileEntity_IntegratedOreFactory extends
-    GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_IntegratedOreFactory> implements ISurvivalConstructable {
+public class GT_MetaTileEntity_IntegratedOreFactory
+    extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_IntegratedOreFactory>
+    implements ISurvivalConstructable {
 
     private static final int CASING_INDEX1 = 183;
     private static final int CASING_INDEX2 = 49;
     private static final int MAX_PARA = 1024;
+    private static final long RECIPE_EUT = 30;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<GT_MetaTileEntity_IntegratedOreFactory> STRUCTURE_DEFINITION = StructureDefinition
         .<GT_MetaTileEntity_IntegratedOreFactory>builder()
@@ -179,21 +180,6 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
         super(aName);
     }
 
-    public boolean addFluidInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) return false;
-        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            ((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = getRecipeMap();
-            return mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
-        } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mMufflerHatches.add((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity);
-        }
-        return false;
-    }
-
     @Override
     public IStructureDefinition<GT_MetaTileEntity_IntegratedOreFactory> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
@@ -253,11 +239,11 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
 
     private static int getTime(int mode) {
         return switch (mode) {
-            case 0 -> 30 * 20;
-            case 1 -> 15 * 20;
-            case 2 -> 10 * 20;
-            case 3 -> 20 * 20;
-            case 4 -> 17 * 20;
+            case 0 -> 30 * SECOND;
+            case 1 -> 15 * SECOND;
+            case 2 -> 10 * SECOND;
+            case 3 -> 20 * SECOND;
+            case 4 -> 17 * SECOND;
             default ->
                 // go to hell
                 1000000000;
@@ -272,13 +258,39 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
             isInit = true;
         }
 
-        int tCharged = MAX_PARA;
         List<ItemStack> tInput = getStoredInputs();
         List<FluidStack> tInputFluid = getStoredFluids();
+        long availableEUt = getMaxInputVoltage();
+        if (availableEUt < RECIPE_EUT) {
+            return CheckRecipeResultRegistry.insufficientPower(RECIPE_EUT);
+        }
+        if (tInput.isEmpty() || tInputFluid.isEmpty()) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
 
+        int maxParallel = MAX_PARA;
+        int originalMaxParallel = maxParallel;
+
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setEUt(availableEUt)
+            .setRecipeEUt(RECIPE_EUT)
+            .setDuration(getTime(sMode));
+
+        double tickTimeAfterOC = calculator.setParallel(originalMaxParallel)
+            .calculateDurationUnderOneTick();
+
+        if (tickTimeAfterOC < 1) {
+            maxParallel = GT_Utility.safeInt((long) (maxParallel / tickTimeAfterOC), 0);
+        }
+
+        int maxParallelBeforeBatchMode = maxParallel;
+        if (isBatchModeEnabled()) {
+            maxParallel = GT_Utility.safeInt((long) maxParallel * getMaxBatchSize(), 0);
+        }
+
+        int currentParallel = (int) Math.min(maxParallel, availableEUt / RECIPE_EUT);
+        // Calculate parallel by fluids
         int tLube = 0;
         int tWater = 0;
-
         for (FluidStack fluid : tInputFluid) {
             if (fluid != null && fluid.equals(GT_ModHandler.getDistilledWater(1L))) {
                 tWater += fluid.amount;
@@ -286,15 +298,15 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
                 tLube += fluid.amount;
             }
         }
+        currentParallel = Math.min(currentParallel, tLube / 2);
+        currentParallel = Math.min(currentParallel, tWater / 200);
+        if (currentParallel <= 0) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
 
-        tCharged = Math.min(tCharged, tLube / 2);
-        tCharged = Math.min(tCharged, tWater / 200);
-
-        List<ItemStack> tOres = new ArrayList<>();
-        int tRealUsed = 0;
-
+        // Calculate parallel by items
+        int itemParallel = 0;
         for (ItemStack ore : tInput) {
-            if (tCharged <= 0) break;
             int tID = GT_Utility.stackToInt(ore);
             if (tID == 0) continue;
             if (isPureDust.contains(tID) || isImpureDust.contains(tID)
@@ -302,33 +314,61 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
                 || isThermal.contains(tID)
                 || isCrushedOre.contains(tID)
                 || isOre.contains(tID)) {
-                if (ore.stackSize <= tCharged) {
-                    tRealUsed += ore.stackSize;
-                    tOres.add(GT_Utility.copy(ore));
-                    tCharged -= ore.stackSize;
-                    ore.stackSize = 0;
+                if (itemParallel + ore.stackSize <= currentParallel) {
+                    itemParallel += ore.stackSize;
                 } else {
-                    tRealUsed = tCharged;
-                    tOres.add(GT_Utility.copyAmountUnsafe(tCharged, ore));
-                    ore.stackSize -= tCharged;
-                    tCharged = 0;
+                    itemParallel = currentParallel;
                     break;
                 }
             }
         }
+        currentParallel = itemParallel;
+        int currentParallelBeforeBatchMode = Math.min(currentParallel, maxParallelBeforeBatchMode);
 
-        // for scanner
-        setCurrentParallelism(tRealUsed);
+        long eutUseAfterOC = calculator
+            .calculateEUtConsumptionUnderOneTick(originalMaxParallel, currentParallelBeforeBatchMode);
+        calculator.setParallel(Math.min(currentParallelBeforeBatchMode, originalMaxParallel))
+            .calculate();
 
-        if (tRealUsed == 0) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
+        double batchMultiplierMax = 1;
+        // In case batch mode enabled
+        if (currentParallel > maxParallelBeforeBatchMode && calculator.getDuration() < getMaxBatchSize()) {
+            batchMultiplierMax = (double) getMaxBatchSize() / calculator.getDuration();
+            batchMultiplierMax = Math.min(batchMultiplierMax, (double) currentParallel / maxParallelBeforeBatchMode);
         }
 
-        depleteInput(GT_ModHandler.getDistilledWater(tRealUsed * 200L));
-        depleteInput(Materials.Lubricant.getFluid(tRealUsed * 2L));
+        int finalParallel = (int) (batchMultiplierMax * maxParallelBeforeBatchMode);
 
+        // for scanner
+        setCurrentParallelism(finalParallel);
+
+        // Consume fluids
+        depleteInput(GT_ModHandler.getDistilledWater(finalParallel * 200L));
+        depleteInput(Materials.Lubricant.getFluid(finalParallel * 2L));
+
+        // Consume items and generate outputs
+        List<ItemStack> tOres = new ArrayList<>();
+        int remainingCost = finalParallel;
+        for (ItemStack ore : tInput) {
+            int tID = GT_Utility.stackToInt(ore);
+            if (tID == 0) continue;
+            if (isPureDust.contains(tID) || isImpureDust.contains(tID)
+                || isCrushedPureOre.contains(tID)
+                || isThermal.contains(tID)
+                || isCrushedOre.contains(tID)
+                || isOre.contains(tID)) {
+                if (remainingCost >= ore.stackSize) {
+                    tOres.add(GT_Utility.copy(ore));
+                    remainingCost -= ore.stackSize;
+                    ore.stackSize = 0;
+                } else {
+                    tOres.add(GT_Utility.copyAmountUnsafe(remainingCost, ore));
+                    ore.stackSize -= remainingCost;
+                    break;
+                }
+            }
+        }
         sMidProduct = tOres.toArray(new ItemStack[0]);
-
         switch (sMode) {
             case 0 -> {
                 doMac(isOre);
@@ -363,12 +403,13 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
             }
         }
 
-        this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+        this.mEfficiency = 10000 - (getIdealStatus() - getRepairStatus()) * 1000;
         this.mEfficiencyIncrease = 10000;
         this.mOutputItems = sMidProduct;
-        calculateOverclockedNessMultiInternal(30L * tRealUsed, getTime(sMode), 1, getMaxInputVoltage(), false);
-        if (this.mEUt > 0) {
-            this.mEUt = -this.mEUt;
+        this.mMaxProgresstime = (int) (calculator.getDuration() * batchMultiplierMax);
+        this.lEUt = eutUseAfterOC;
+        if (this.lEUt > 0) {
+            this.lEUt = -this.lEUt;
         }
         this.updateSlots();
 
@@ -781,5 +822,10 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
         tag.setInteger("ssMode", sMode);
         tag.setBoolean("ssStone", sVoidStone);
         tag.setInteger("currentParallelism", currentParallelism);
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
     }
 }
