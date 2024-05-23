@@ -1,0 +1,2 @@
+[exclude]
+"src/main/java/**/*.java" = "import scala."
