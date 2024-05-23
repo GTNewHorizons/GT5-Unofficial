@@ -67,7 +67,7 @@ public class GT_Block_Casings9 extends GT_Block_Casings_Abstract {
             case 7 -> Textures.BlockIcons.MACHINE_CASING_EXTREME_CORROSION_RESISTANT.getIcon();
             case 8 -> Textures.BlockIcons.MACHINE_CASING_HIGH_PRESSURE_RESISTANT.getIcon();
             case 9 -> Textures.BlockIcons.MACHINE_CASING_OZONE.getIcon();
-            case 10 -> Textures.BlockIcons.MACHINE_CASING_IRIDIUM.getIcon(); // placeholder
+            case 10 -> Textures.BlockIcons.MACHINE_CASING_PLASMA_HEATER.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
     }
