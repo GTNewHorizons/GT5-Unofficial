@@ -16,7 +16,7 @@ import gregtech.api.util.GT_LanguageManager;
 public class GT_Block_Casings9 extends GT_Block_Casings_Abstract {
 
     public GT_Block_Casings9() {
-        super(GT_Item_Casings9.class, "gt.blockcasings9", GT_Material_Casings.INSTANCE, 10);
+        super(GT_Item_Casings9.class, "gt.blockcasings9", GT_Material_Casings.INSTANCE, 11);
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "PBI Pipe Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Advanced Filter Casing");
         GT_LanguageManager
@@ -33,6 +33,7 @@ public class GT_Block_Casings9 extends GT_Block_Casings_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "High Pressure Resistant Casing");
         // todo: ask deleno for non placeholder name
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Ozonation Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Plasma Heating Casing");
 
         ItemList.Casing_Pipe_Polybenzimidazole.set(new ItemStack(this, 1, 0));
         ItemList.Casing_Vent_T2.set(new ItemStack(this, 1, 1));
@@ -44,6 +45,7 @@ public class GT_Block_Casings9 extends GT_Block_Casings_Abstract {
         ItemList.BlockExtremeCorrosionResistantCasing.set(new ItemStack(this, 1, 7));
         ItemList.BlockHighPressureResistantCasing.set(new ItemStack(this, 1, 8));
         ItemList.BlockOzoneCasing.set(new ItemStack(this, 1, 9));
+        ItemList.BlockPlasmaHeatingCasing.set(new ItemStack(this, 1, 10));
     }
 
     @Override
@@ -65,6 +67,7 @@ public class GT_Block_Casings9 extends GT_Block_Casings_Abstract {
             case 7 -> Textures.BlockIcons.MACHINE_CASING_EXTREME_CORROSION_RESISTANT.getIcon();
             case 8 -> Textures.BlockIcons.MACHINE_CASING_HIGH_PRESSURE_RESISTANT.getIcon();
             case 9 -> Textures.BlockIcons.MACHINE_CASING_OZONE.getIcon();
+            case 10 -> Textures.BlockIcons.MACHINE_CASING_IRIDIUM.getIcon(); // placeholder
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
     }
