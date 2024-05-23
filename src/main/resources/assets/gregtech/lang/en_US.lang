@@ -226,6 +226,7 @@ gt.recipe.purificationplantclarifier=Clarifier
 gt.recipe.purificationplantflocculation=Flocculation
 gt.recipe.purificationplantphadjustment=pH Neutralization
 gt.recipe.purificationplantozonation=Ozonation
+gt.recipe.purificationplantplasmaheating=Plasma Heating
 
 # Recipe categories
 gt.recipe.category.arc_furnace_recycling=Arc Furnace Recycling

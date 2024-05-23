@@ -8,6 +8,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICA
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW;
+import static gregtech.api.recipe.RecipeMaps.purificationPlasmaHeatingRecipes;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
 import net.minecraft.block.Block;
@@ -29,6 +30,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 
@@ -154,6 +156,11 @@ public class GT_MetaTileEntity_PurificationUnitPlasmaHeater
     @Override
     public IStructureDefinition<GT_MetaTileEntity_PurificationUnitPlasmaHeater> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
+    }
+
+    @Override
+    public RecipeMap<?> getRecipeMap() {
+        return purificationPlasmaHeatingRecipes;
     }
 
     @Override

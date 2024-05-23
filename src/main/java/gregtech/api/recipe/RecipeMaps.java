@@ -1201,6 +1201,14 @@ public final class RecipeMaps {
         .frontend(PurificationUnitPhAdjustmentFrontend::new)
         .disableOptimize()
         .build();
+
+    public static final RecipeMap<RecipeMapBackend> purificationPlasmaHeatingRecipes = RecipeMapBuilder
+        .of("gt.recipe.purificationplantplasmaheating")
+        .maxIO(0, 0, 1, 1)
+        .minInputs(0, 1)
+        .progressBar(GT_UITextures.PROGRESSBAR_BOILER_HEAT)
+        .disableOptimize()
+        .build();
     public static final RecipeMap<RecipeMapBackend> ic2NuclearFakeRecipes = RecipeMapBuilder.of("gt.recipe.ic2nuke")
         .maxIO(1, 1, 0, 0)
         .minInputs(1, 0)

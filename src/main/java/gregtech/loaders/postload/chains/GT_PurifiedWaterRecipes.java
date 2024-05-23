@@ -10,6 +10,7 @@ import static gregtech.api.recipe.RecipeMaps.purificationClarifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.purificationFlocculationRecipes;
 import static gregtech.api.recipe.RecipeMaps.purificationOzonationRecipes;
 import static gregtech.api.recipe.RecipeMaps.purificationPhAdjustmentRecipes;
+import static gregtech.api.recipe.RecipeMaps.purificationPlasmaHeatingRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import net.minecraft.init.Items;
@@ -153,5 +154,15 @@ public class GT_PurifiedWaterRecipes {
             .eut(TierEU.RECIPE_ZPM)
             .metadata(BASE_CHANCE, 0.0f)
             .addTo(purificationPhAdjustmentRecipes);
+
+        // Grade 5 - Plasma Heating
+        GT_Values.RA.stdBuilder()
+            .fluidInputs(Materials.Grade4PurifiedWater.getFluid(1000L))
+            .fluidOutputs(Materials.Grade5PurifiedWater.getFluid(900L))
+            .ignoreCollision()
+            .duration(duration)
+            .eut(TierEU.RECIPE_UV)
+            .metadata(BASE_CHANCE, 0.0f)
+            .addTo(purificationPlasmaHeatingRecipes);
     }
 }
