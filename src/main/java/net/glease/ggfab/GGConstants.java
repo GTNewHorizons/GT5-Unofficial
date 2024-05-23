@@ -1,7 +1,8 @@
 package net.glease.ggfab;
 
-import gregtech.GT_Version;
 import net.minecraft.util.EnumChatFormatting;
+
+import gregtech.GT_Version;
 
 public class GGConstants {
 

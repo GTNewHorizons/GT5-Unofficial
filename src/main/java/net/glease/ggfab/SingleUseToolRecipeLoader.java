@@ -20,7 +20,7 @@ class SingleUseToolRecipeLoader implements Runnable {
     @Override
     public void run() {
         ToolDictNames[] hardTools = new ToolDictNames[] { craftingToolHardHammer, craftingToolScrewdriver,
-                craftingToolWrench, craftingToolCrowbar, craftingToolWireCutter, craftingToolFile };
+            craftingToolWrench, craftingToolCrowbar, craftingToolWireCutter, craftingToolFile };
         ToolDictNames[] softTools = new ToolDictNames[] { craftingToolSoftHammer };
         addSingleUseToolRecipe(Materials.Steel, hardTools);
         addSingleUseToolRecipe(Materials.Silver, 5000, hardTools);
@@ -33,13 +33,15 @@ class SingleUseToolRecipeLoader implements Runnable {
 
         String prefix = "Shape_One_Use_";
         for (GGItemList value : GGItemList.values()) {
-            if (!value.name().startsWith(prefix)) {
+            if (!value.name()
+                .startsWith(prefix)) {
                 continue;
             }
-            ToolDictNames type = ToolDictNames.valueOf(value.name().substring(prefix.length()));
-            GT_ModHandler.addCraftingRecipe(
-                    value.get(1L),
-                    new Object[] { "h", "P", "I", 'P', ItemList.Shape_Empty, 'I', type });
+            ToolDictNames type = ToolDictNames.valueOf(
+                value.name()
+                    .substring(prefix.length()));
+            GT_ModHandler
+                .addCraftingRecipe(value.get(1L), new Object[] { "h", "P", "I", 'P', ItemList.Shape_Empty, 'I', type });
         }
     }
 
@@ -67,10 +69,10 @@ class SingleUseToolRecipeLoader implements Runnable {
             }
             long fluids = cost * GT_Values.L / GT_Values.M, duration = 6 * SECONDS;
             long count = (long) (material.mDurability * stats.getMaxDurabilityMultiplier()
-                    * outputModifier
-                    * 100
-                    / stats.getToolDamagePerContainerCraft()
-                    / 10000);
+                * outputModifier
+                * 100
+                / stats.getToolDamagePerContainerCraft()
+                / 10000);
             if (count > 64 * 4) {
                 long niceFactor = findNiceFactor(fluids, count);
                 if (niceFactor < 0) {
@@ -89,11 +91,13 @@ class SingleUseToolRecipeLoader implements Runnable {
                 duration *= mod;
                 count *= mod;
             }
-            GT_Values.RA.stdBuilder().fluidInputs(material.getMolten(fluids)) //
-                    .metadata(GGFabRecipeMaps.OUTPUT_TYPE, type) //
-                    .metadata(GGFabRecipeMaps.OUTPUT_COUNT, (int) count) //
-                    .eut(TierEU.RECIPE_MV).duration(duration) //
-                    .addTo(GGFabRecipeMaps.toolCastRecipes);
+            GT_Values.RA.stdBuilder()
+                .fluidInputs(material.getMolten(fluids)) //
+                .metadata(GGFabRecipeMaps.OUTPUT_TYPE, type) //
+                .metadata(GGFabRecipeMaps.OUTPUT_COUNT, (int) count) //
+                .eut(TierEU.RECIPE_MV)
+                .duration(duration) //
+                .addTo(GGFabRecipeMaps.toolCastRecipes);
         }
     }
 }

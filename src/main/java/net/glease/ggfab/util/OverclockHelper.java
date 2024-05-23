@@ -18,7 +18,7 @@ public class OverclockHelper {
     }
 
     public static OverclockOutput laserOverclock(long recipeEUt, int duration, long inputEUt,
-            float penaltyIncreaseFactor) {
+        float penaltyIncreaseFactor) {
         if (recipeEUt > inputEUt) return null;
         float currentPenalty = 4 + penaltyIncreaseFactor;
         // 2/(n+k) overclock until energy hatch is crying

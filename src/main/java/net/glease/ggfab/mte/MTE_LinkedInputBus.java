@@ -59,14 +59,14 @@ public class MTE_LinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus impleme
 
     public MTE_LinkedInputBus(int id, String name, String nameRegional, int tier) {
         super(
-                id,
-                name,
-                nameRegional,
-                tier,
-                1,
-                new String[] { SIZE_INVENTORY + " slot input bus linked together wirelessly",
-                        "Link does not cross world boundary",
-                        "Left/right click with data stick to copy/paste configuration", GGConstants.GGMARK_TOOLTIP, });
+            id,
+            name,
+            nameRegional,
+            tier,
+            1,
+            new String[] { SIZE_INVENTORY + " slot input bus linked together wirelessly",
+                "Link does not cross world boundary", "Left/right click with data stick to copy/paste configuration",
+                GGConstants.GGMARK_TOOLTIP, });
     }
 
     public MTE_LinkedInputBus(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -86,36 +86,49 @@ public class MTE_LinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus impleme
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-                new TextFieldWidget().setSynced(true, true).setGetter(() -> mChannel == null ? "" : mChannel)
-                        .setSetter(this::setChannel).setTextColor(Color.WHITE.dark(1))
-                        .setTextAlignment(Alignment.CenterLeft).setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
-                        .setGTTooltip(() -> mTooltipCache.getData("ggfab.tooltip.linked_input_bus.change_freq_warn"))
-                        .setSize(60, 18).setPos(48, 3))
-                .widget(
-                        new CycleButtonWidget().setToggle(this::isPrivate, this::setPrivate)
-                                .setTextureGetter(
-                                        i -> i == 1 ? GT_UITextures.OVERLAY_BUTTON_CHECKMARK
-                                                : GT_UITextures.OVERLAY_BUTTON_CROSS)
-                                .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE).setSynced(true, true)
-                                .setGTTooltip(() -> mTooltipCache.getData("ggfab.tooltip.linked_input_bus.private"))
-                                .setSize(18, 18).setPos(150, 3))
-                .widget(
-                        SlotGroup.ofItemHandler(handler, 9).startFromSlot(0).endAtSlot(SIZE_INVENTORY - 1)
-                                .background(getGUITextureSet().getItemSlot())
-                                .slotCreator(i -> new BaseSlot(handler, i, false) {
+            new TextFieldWidget().setSynced(true, true)
+                .setGetter(() -> mChannel == null ? "" : mChannel)
+                .setSetter(this::setChannel)
+                .setTextColor(Color.WHITE.dark(1))
+                .setTextAlignment(Alignment.CenterLeft)
+                .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                .setGTTooltip(() -> mTooltipCache.getData("ggfab.tooltip.linked_input_bus.change_freq_warn"))
+                .setSize(60, 18)
+                .setPos(48, 3))
+            .widget(
+                new CycleButtonWidget().setToggle(this::isPrivate, this::setPrivate)
+                    .setTextureGetter(
+                        i -> i == 1 ? GT_UITextures.OVERLAY_BUTTON_CHECKMARK : GT_UITextures.OVERLAY_BUTTON_CROSS)
+                    .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
+                    .setSynced(true, true)
+                    .setGTTooltip(() -> mTooltipCache.getData("ggfab.tooltip.linked_input_bus.private"))
+                    .setSize(18, 18)
+                    .setPos(150, 3))
+            .widget(
+                SlotGroup.ofItemHandler(handler, 9)
+                    .startFromSlot(0)
+                    .endAtSlot(SIZE_INVENTORY - 1)
+                    .background(getGUITextureSet().getItemSlot())
+                    .slotCreator(i -> new BaseSlot(handler, i, false) {
 
-                                    @Override
-                                    public ItemStack getStack() {
-                                        return isEnabled() ? super.getStack() : null;
-                                    }
+                        @Override
+                        public ItemStack getStack() {
+                            return isEnabled() ? super.getStack() : null;
+                        }
 
-                                    @Override
-                                    public boolean isEnabled() {
-                                        return mChannel != null;
-                                    }
-                                }).build().setPos(7, 24))
-                .widget(new TextWidget(new Text("Private")).setPos(110, 3).setSize(43, 20))
-                .widget(new TextWidget(new Text("Channel")).setPos(5, 3).setSize(43, 20));
+                        @Override
+                        public boolean isEnabled() {
+                            return mChannel != null;
+                        }
+                    })
+                    .build()
+                    .setPos(7, 24))
+            .widget(
+                new TextWidget(new Text("Private")).setPos(110, 3)
+                    .setSize(43, 20))
+            .widget(
+                new TextWidget(new Text("Channel")).setPos(5, 3)
+                    .setSize(43, 20));
     }
 
     @Override
@@ -158,21 +171,21 @@ public class MTE_LinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus impleme
     @Override
     public boolean canInsertItem(int aIndex, ItemStack aStack, int ordinalSide) {
         return isValidSlot(aIndex) && aStack != null
-                && mChannel != null
-                && mRealInventory != null
-                && aIndex > getCircuitSlot()
-                && aIndex < SIZE_INVENTORY + 1
-                && (mRealInventory.stacks[aIndex - 1] == null
-                        || GT_Utility.areStacksEqual(aStack, mRealInventory.stacks[aIndex - 1]))
-                && allowPutStack(getBaseMetaTileEntity(), aIndex, ForgeDirection.getOrientation(ordinalSide), aStack);
+            && mChannel != null
+            && mRealInventory != null
+            && aIndex > getCircuitSlot()
+            && aIndex < SIZE_INVENTORY + 1
+            && (mRealInventory.stacks[aIndex - 1] == null
+                || GT_Utility.areStacksEqual(aStack, mRealInventory.stacks[aIndex - 1]))
+            && allowPutStack(getBaseMetaTileEntity(), aIndex, ForgeDirection.getOrientation(ordinalSide), aStack);
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return side == getBaseMetaTileEntity().getFrontFacing() && aIndex != getCircuitSlot()
-                && (mRecipeMap == null || disableFilter || mRecipeMap.containsInput(aStack))
-                && (mRealInventory.disableLimited || limitedAllowPutStack(aIndex, aStack));
+            && (mRecipeMap == null || disableFilter || mRecipeMap.containsInput(aStack))
+            && (mRealInventory.disableLimited || limitedAllowPutStack(aIndex, aStack));
     }
 
     @Override
@@ -220,7 +233,7 @@ public class MTE_LinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus impleme
         if (mChannel == null || mRealInventory == null) return;
         for (int i = 0; i < mRealInventory.stacks.length; i++) {
             if (mRealInventory.stacks[i] != null
-                    && (mRealInventory.stacks[i].getItem() == null || mRealInventory.stacks[i].stackSize <= 0))
+                && (mRealInventory.stacks[i].getItem() == null || mRealInventory.stacks[i].stackSize <= 0))
                 mRealInventory.stacks[i] = null;
         }
         if (!mRealInventory.disableSort) fillStacksIntoFirstSlots();
@@ -253,7 +266,8 @@ public class MTE_LinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus impleme
             if (toSet == 0) continue;
             int slot = validSlots.get(slotindex);
             slotindex++;
-            mRealInventory.stacks[slot] = stacks.get(sID).copy();
+            mRealInventory.stacks[slot] = stacks.get(sID)
+                .copy();
             toSet = Math.min(toSet, mRealInventory.stacks[slot].getMaxStackSize());
             mRealInventory.stacks[slot].stackSize = toSet;
             slots.merge(sID, toSet, (a, b) -> a - b);
@@ -264,13 +278,14 @@ public class MTE_LinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus impleme
         for (ItemStack stack : aStacks) {
             if (!GT_Utility.isStackValid(stack)) continue;
             EntityItem ei = new EntityItem(
-                    getBaseMetaTileEntity().getWorld(),
-                    getBaseMetaTileEntity().getOffsetX(getBaseMetaTileEntity().getFrontFacing(), 1) + 0.5,
-                    getBaseMetaTileEntity().getOffsetY(getBaseMetaTileEntity().getFrontFacing(), 1) + 0.5,
-                    getBaseMetaTileEntity().getOffsetZ(getBaseMetaTileEntity().getFrontFacing(), 1) + 0.5,
-                    stack);
+                getBaseMetaTileEntity().getWorld(),
+                getBaseMetaTileEntity().getOffsetX(getBaseMetaTileEntity().getFrontFacing(), 1) + 0.5,
+                getBaseMetaTileEntity().getOffsetY(getBaseMetaTileEntity().getFrontFacing(), 1) + 0.5,
+                getBaseMetaTileEntity().getOffsetZ(getBaseMetaTileEntity().getFrontFacing(), 1) + 0.5,
+                stack);
             ei.motionX = ei.motionY = ei.motionZ = 0;
-            getBaseMetaTileEntity().getWorld().spawnEntityInWorld(ei);
+            getBaseMetaTileEntity().getWorld()
+                .spawnEntityInWorld(ei);
         }
     }
 
@@ -320,7 +335,8 @@ public class MTE_LinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus impleme
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (!getBaseMetaTileEntity().getCoverBehaviorAtSideNew(side).isGUIClickable(
+        if (!getBaseMetaTileEntity().getCoverBehaviorAtSideNew(side)
+            .isGUIClickable(
                 side,
                 getBaseMetaTileEntity().getCoverIDAtSide(side),
                 getBaseMetaTileEntity().getComplexCoverDataAtSide(side),
@@ -342,21 +358,20 @@ public class MTE_LinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus impleme
                 }
             }
             GT_Utility.sendChatToPlayer(
-                    aPlayer,
-                    StatCollector.translateToLocal("GT5U.hatch.disableSort." + mRealInventory.disableSort) + "   "
-                            + StatCollector
-                                    .translateToLocal("GT5U.hatch.disableLimited." + mRealInventory.disableLimited));
+                aPlayer,
+                StatCollector.translateToLocal("GT5U.hatch.disableSort." + mRealInventory.disableSort) + "   "
+                    + StatCollector.translateToLocal("GT5U.hatch.disableLimited." + mRealInventory.disableLimited));
         } else {
             this.disableFilter = !this.disableFilter;
             GT_Utility.sendChatToPlayer(
-                    aPlayer,
-                    StatCollector.translateToLocal("GT5U.hatch.disableFilter." + this.disableFilter));
+                aPlayer,
+                StatCollector.translateToLocal("GT5U.hatch.disableFilter." + this.disableFilter));
         }
     }
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-            float aX, float aY, float aZ) {
+        float aX, float aY, float aZ) {
         if (!(aPlayer instanceof EntityPlayerMP))
             return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
         ItemStack stick = aPlayer.inventory.getCurrentItem();
@@ -372,13 +387,14 @@ public class MTE_LinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus impleme
         if ("".equals(channel)) {
             aPlayer.addChatMessage(new ChatComponentTranslation("ggfab.info.linked_input_bus.no_data"));
             return true;
-        } else if (circuit != null && getConfigurationCircuits().stream().noneMatch(circuit::isItemEqual)) {
-            aPlayer.addChatMessage(new ChatComponentTranslation("ggfab.info.linked_input_bus.invalid_circuit"));
-            return true;
-        }
+        } else if (circuit != null && getConfigurationCircuits().stream()
+            .noneMatch(circuit::isItemEqual)) {
+                aPlayer.addChatMessage(new ChatComponentTranslation("ggfab.info.linked_input_bus.invalid_circuit"));
+                return true;
+            }
         UUID owner = stick.stackTagCompound.hasKey("owner1")
-                ? new UUID(stick.stackTagCompound.getLong("owner1"), stick.stackTagCompound.getLong("owner2"))
-                : null;
+            ? new UUID(stick.stackTagCompound.getLong("owner1"), stick.stackTagCompound.getLong("owner2"))
+            : null;
         if (owner != null && !owner.equals(getBaseMetaTileEntity().getOwnerUuid())) {
             aPlayer.addChatMessage(new ChatComponentTranslation("ggfab.info.linked_input_bus.not_owned"));
             return true;
@@ -404,8 +420,14 @@ public class MTE_LinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus impleme
         tag.setString("channel", getChannel());
         tag.setTag("circuit", GT_Utility.saveItem(getStackInSlot(getCircuitSlot())));
         if (isPrivate()) {
-            tag.setLong("owner1", getBaseMetaTileEntity().getOwnerUuid().getMostSignificantBits());
-            tag.setLong("owner2", getBaseMetaTileEntity().getOwnerUuid().getLeastSignificantBits());
+            tag.setLong(
+                "owner1",
+                getBaseMetaTileEntity().getOwnerUuid()
+                    .getMostSignificantBits());
+            tag.setLong(
+                "owner2",
+                getBaseMetaTileEntity().getOwnerUuid()
+                    .getLeastSignificantBits());
         }
         aPlayer.addChatMessage(new ChatComponentTranslation("ggfab.info.linked_input_bus.data_copied", getChannel()));
         stick.stackTagCompound = tag;
@@ -479,10 +501,11 @@ public class MTE_LinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus impleme
     private WorldSave getWorldSave() {
         if (save == null) {
             WorldSave save = (WorldSave) getBaseMetaTileEntity().getWorld()
-                    .loadItemData(WorldSave.class, "LinkedInputBusses");
+                .loadItemData(WorldSave.class, "LinkedInputBusses");
             if (save == null) {
                 save = new WorldSave("LinkedInputBusses");
-                getBaseMetaTileEntity().getWorld().setItemData(save.mapName, save);
+                getBaseMetaTileEntity().getWorld()
+                    .setItemData(save.mapName, save);
             }
             this.save = save;
         }
@@ -562,7 +585,10 @@ public class MTE_LinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus impleme
         @Override
         public void writeToNBT(NBTTagCompound tag) {
             for (Map.Entry<String, SharedInventory> e : data.entrySet()) {
-                if (e.getValue().ref > 0) tag.setTag(e.getKey(), e.getValue().save());
+                if (e.getValue().ref > 0) tag.setTag(
+                    e.getKey(),
+                    e.getValue()
+                        .save());
             }
         }
 

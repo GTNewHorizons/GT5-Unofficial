@@ -106,7 +106,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  * Dev note: 1. This multi will be an assline but with greater throughput. it will take one input every 2.
  */
 public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<MTE_AdvAssLine>
-        implements ISurvivalConstructable {
+    implements ISurvivalConstructable {
 
     private static final ItemStack NOT_CHECKED = new ItemStack(Blocks.dirt);
     private static final String STRUCTURE_PIECE_FIRST = "first";
@@ -115,8 +115,8 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
     public static final String TAG_KEY_CURRENT_STICK = "mCurrentStick";
     public static final String TAG_KEY_PROGRESS_TIMES = "mProgressTimeArray";
     private static final IStructureDefinition<MTE_AdvAssLine> STRUCTURE_DEFINITION = StructureDefinition
-            .<MTE_AdvAssLine>builder()
-            // @formatter:off
+        .<MTE_AdvAssLine>builder()
+        // @formatter:off
             .addShape(
                     STRUCTURE_PIECE_FIRST,
                     transpose(new String[][] {
@@ -142,44 +142,52 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
                                     { "o", "i", "b" },
                             }))
             // @formatter:on
-            .addElement('G', ofBlock(GregTech_API.sBlockCasings3, 10)) // grate machine casing
-            .addElement('l', ofBlock(GregTech_API.sBlockCasings2, 9)) // assembler machine casing
-            .addElement('m', ofBlock(GregTech_API.sBlockCasings2, 5)) // assembling line casing
-            .addElement(
-                    'g',
-                    ofChain(
-                            ofBlockUnlocalizedName("IC2", "blockAlloyGlass", 0, true),
-                            ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks", 0, true),
-                            // warded glass
-                            ofBlockUnlocalizedName("Thaumcraft", "blockCosmeticOpaque", 2, false)))
-            .addElement(
-                    'e',
-                    ofChain(
-                            Energy.or(ExoticEnergy)
-                                    .newAny(16, 1, ForgeDirection.UP, ForgeDirection.NORTH, ForgeDirection.SOUTH),
-                            ofBlock(GregTech_API.sBlockCasings2, 0)))
-            .addElement(
-                    'd',
-                    buildHatchAdder(MTE_AdvAssLine.class).atLeast(DataHatchElement.DataAccess).dot(2).casingIndex(42)
-                            .allowOnly(ForgeDirection.NORTH).buildAndChain(GregTech_API.sBlockCasings3, 10))
-            .addElement(
-                    'b',
-                    buildHatchAdder(MTE_AdvAssLine.class)
-                            .atLeast(InputHatch, InputHatch, InputHatch, InputHatch, Maintenance).casingIndex(16).dot(3)
-                            .allowOnly(ForgeDirection.DOWN).buildAndChain(
-                                    ofBlock(GregTech_API.sBlockCasings2, 0),
-                                    ofHatchAdder(MTE_AdvAssLine::addOutputToMachineList, 16, 4)))
-            .addElement(
-                    'I',
-                    ofChain(
-                            // all blocks nearby use solid steel casing, so let's use the texture of that
-                            InputBus.newAny(16, 5, ForgeDirection.DOWN),
-                            ofHatchAdder(MTE_AdvAssLine::addOutputToMachineList, 16, 4)))
-            .addElement('i', InputBus.newAny(16, 5, ForgeDirection.DOWN))
-            .addElement('o', OutputBus.newAny(16, 4, ForgeDirection.DOWN)).build();
+        .addElement('G', ofBlock(GregTech_API.sBlockCasings3, 10)) // grate machine casing
+        .addElement('l', ofBlock(GregTech_API.sBlockCasings2, 9)) // assembler machine casing
+        .addElement('m', ofBlock(GregTech_API.sBlockCasings2, 5)) // assembling line casing
+        .addElement(
+            'g',
+            ofChain(
+                ofBlockUnlocalizedName("IC2", "blockAlloyGlass", 0, true),
+                ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks", 0, true),
+                // warded glass
+                ofBlockUnlocalizedName("Thaumcraft", "blockCosmeticOpaque", 2, false)))
+        .addElement(
+            'e',
+            ofChain(
+                Energy.or(ExoticEnergy)
+                    .newAny(16, 1, ForgeDirection.UP, ForgeDirection.NORTH, ForgeDirection.SOUTH),
+                ofBlock(GregTech_API.sBlockCasings2, 0)))
+        .addElement(
+            'd',
+            buildHatchAdder(MTE_AdvAssLine.class).atLeast(DataHatchElement.DataAccess)
+                .dot(2)
+                .casingIndex(42)
+                .allowOnly(ForgeDirection.NORTH)
+                .buildAndChain(GregTech_API.sBlockCasings3, 10))
+        .addElement(
+            'b',
+            buildHatchAdder(MTE_AdvAssLine.class).atLeast(InputHatch, InputHatch, InputHatch, InputHatch, Maintenance)
+                .casingIndex(16)
+                .dot(3)
+                .allowOnly(ForgeDirection.DOWN)
+                .buildAndChain(
+                    ofBlock(GregTech_API.sBlockCasings2, 0),
+                    ofHatchAdder(MTE_AdvAssLine::addOutputToMachineList, 16, 4)))
+        .addElement(
+            'I',
+            ofChain(
+                // all blocks nearby use solid steel casing, so let's use the texture of that
+                InputBus.newAny(16, 5, ForgeDirection.DOWN),
+                ofHatchAdder(MTE_AdvAssLine::addOutputToMachineList, 16, 4)))
+        .addElement('i', InputBus.newAny(16, 5, ForgeDirection.DOWN))
+        .addElement('o', OutputBus.newAny(16, 4, ForgeDirection.DOWN))
+        .build();
     private ItemStack currentStick;
     private GT_Recipe.GT_Recipe_AssemblyLine currentRecipe;
-    private final Slice[] slices = IntStream.range(0, 16).mapToObj(Slice::new).toArray(Slice[]::new);
+    private final Slice[] slices = IntStream.range(0, 16)
+        .mapToObj(Slice::new)
+        .toArray(Slice[]::new);
     private boolean processing;
     private long inputVoltage;
     // surely no one is using more EUt than this, no?
@@ -232,7 +240,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
             if (!checkPiece(STRUCTURE_PIECE_LATER, leftToRight ? -i : i, 1, 0)) return false;
             if (!mOutputBusses.isEmpty())
                 return (!mEnergyHatches.isEmpty() || !mExoticEnergyHatches.isEmpty()) && mMaintenanceHatches.size() == 1
-                        && mDataAccessHatches.size() <= 1;
+                    && mDataAccessHatches.size() <= 1;
         }
         return false;
     }
@@ -273,7 +281,8 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
             @SuppressWarnings("unchecked")
             List<EntityPlayerMP> l = server.getConfigurationManager().playerEntityList;
             for (EntityPlayerMP p : l) {
-                if (p.getUniqueID().equals(ownerUuid)) {
+                if (p.getUniqueID()
+                    .equals(ownerUuid)) {
                     for (int i = 0; i < 9; i++) {
                         // switch is stupid, but I have no better idea
                         Object[] args;
@@ -283,8 +292,8 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
                                 break;
                             case 8:
                                 args = new Object[] { (int) (factor * 100) + 400,
-                                        (int) ((4 + factor) * (4 + factor + factor) * 100), 4 + factor,
-                                        4 + factor + factor };
+                                    (int) ((4 + factor) * (4 + factor + factor) * 100), 4 + factor,
+                                    4 + factor + factor };
                                 break;
                             default:
                                 args = new Object[0];
@@ -298,21 +307,37 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-            int colorIndex, boolean aActive, boolean aRedstone) {
+        int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
             if (stuck) {
-                return new ITexture[] { casingTexturePages[0][16],
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_ADV_ASSLINE_STUCK).extFacing().build(),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_ADV_ASSLINE_STUCK_GLOW).extFacing().glow()
-                                .build() };
+                return new ITexture[] { casingTexturePages[0][16], TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_ADV_ASSLINE_STUCK)
+                    .extFacing()
+                    .build(),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_ADV_ASSLINE_STUCK_GLOW)
+                        .extFacing()
+                        .glow()
+                        .build() };
             }
-            if (aActive) return new ITexture[] { casingTexturePages[0][16],
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ADV_ASSLINE_ACTIVE).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ADV_ASSLINE_ACTIVE_GLOW).extFacing().glow()
-                            .build() };
-            return new ITexture[] { casingTexturePages[0][16],
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ADV_ASSLINE).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ADV_ASSLINE_GLOW).extFacing().glow().build() };
+            if (aActive) return new ITexture[] { casingTexturePages[0][16], TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_ADV_ASSLINE_ACTIVE)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_ADV_ASSLINE_ACTIVE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
+            return new ITexture[] { casingTexturePages[0][16], TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_ADV_ASSLINE)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_ADV_ASSLINE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
         }
         return new ITexture[] { casingTexturePages[0][16] };
     }
@@ -320,27 +345,32 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Assembling Line").addInfo("Controller block for the Advanced Assembling Line")
-                .addInfo("Built exactly the same as standard Assembling Line")
-                .addInfo("Place in world to get more info. It will be a lengthy read.")
-                .addInfo("Assembling Line with item pipelining").addInfo("All fluids are however consumed at start")
-                .addInfo("Use voltage of worst energy hatch for overclocking")
-                .addInfo("EU/t is (number of slices working) * (overclocked EU/t)").addSeparator()
-                .beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false)
-                .addStructureInfo("From Bottom to Top, Left to Right")
-                .addStructureInfo(
-                        "Layer 1 - Solid Steel Machine Casing, Input Bus (last can be Output Bus), Solid Steel Machine Casing")
-                .addStructureInfo(
-                        "Layer 2 - Borosilicate Glass(any)/Warded Glass/Reinforced Glass, Assembling Line Casing, Reinforced Glass")
-                .addStructureInfo("Layer 3 - Grate Machine Casing, Assembler Machine Casing, Grate Machine Casing")
-                .addStructureInfo("Layer 4 - Empty, Solid Steel Machine Casing, Empty")
-                .addStructureInfo("Up to 16 repeating slices, each one allows for 1 more item in recipes")
-                .addController("Either Grate on layer 3 of the first slice").addEnergyHatch("Any layer 4 casing", 1)
-                .addMaintenanceHatch("Any layer 1 casing", 3).addInputBus("As specified on layer 1", 4, 5)
-                .addInputHatch("Any layer 1 casing", 3)
-                .addOutputBus("Replaces Input Bus on final slice or on any solid steel casing on layer 1", 4)
-                .addOtherStructurePart("Data Access Hatch", "Optional, next to controller", 2)
-                .toolTipFinisher(GGConstants.GGMARK);
+        tt.addMachineType("Assembling Line")
+            .addInfo("Controller block for the Advanced Assembling Line")
+            .addInfo("Built exactly the same as standard Assembling Line")
+            .addInfo("Place in world to get more info. It will be a lengthy read.")
+            .addInfo("Assembling Line with item pipelining")
+            .addInfo("All fluids are however consumed at start")
+            .addInfo("Use voltage of worst energy hatch for overclocking")
+            .addInfo("EU/t is (number of slices working) * (overclocked EU/t)")
+            .addSeparator()
+            .beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false)
+            .addStructureInfo("From Bottom to Top, Left to Right")
+            .addStructureInfo(
+                "Layer 1 - Solid Steel Machine Casing, Input Bus (last can be Output Bus), Solid Steel Machine Casing")
+            .addStructureInfo(
+                "Layer 2 - Borosilicate Glass(any)/Warded Glass/Reinforced Glass, Assembling Line Casing, Reinforced Glass")
+            .addStructureInfo("Layer 3 - Grate Machine Casing, Assembler Machine Casing, Grate Machine Casing")
+            .addStructureInfo("Layer 4 - Empty, Solid Steel Machine Casing, Empty")
+            .addStructureInfo("Up to 16 repeating slices, each one allows for 1 more item in recipes")
+            .addController("Either Grate on layer 3 of the first slice")
+            .addEnergyHatch("Any layer 4 casing", 1)
+            .addMaintenanceHatch("Any layer 1 casing", 3)
+            .addInputBus("As specified on layer 1", 4, 5)
+            .addInputHatch("Any layer 1 casing", 3)
+            .addOutputBus("Replaces Input Bus on final slice or on any solid steel casing on layer 1", 4)
+            .addOtherStructurePart("Data Access Hatch", "Optional, next to controller", 2)
+            .toolTipFinisher(GGConstants.GGMARK);
         return tt;
     }
 
@@ -376,8 +406,11 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
             aNBT.setTag(TAG_KEY_CURRENT_STICK, currentStick.writeToNBT(new NBTTagCompound()));
             aNBT.setInteger("mRecipeHash", currentRecipe.getPersistentHash());
             aNBT.setIntArray(
-                    TAG_KEY_PROGRESS_TIMES,
-                    Arrays.stream(slices).limit(currentInputLength).mapToInt(s -> s.progress).toArray());
+                TAG_KEY_PROGRESS_TIMES,
+                Arrays.stream(slices)
+                    .limit(currentInputLength)
+                    .mapToInt(s -> s.progress)
+                    .toArray());
             aNBT.setBoolean("stuck", stuck);
             aNBT.setLong("inputV", inputVoltage);
             aNBT.setLong("inputEU", inputEUt);
@@ -406,7 +439,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
         if (aNBT.hasKey(TAG_KEY_CURRENT_STICK, Constants.NBT.TAG_COMPOUND)) {
             loadedStack = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag(TAG_KEY_CURRENT_STICK));
             GT_AssemblyLineUtils.LookupResult lookupResult = GT_AssemblyLineUtils
-                    .findAssemblyLineRecipeFromDataStick(loadedStack, false);
+                .findAssemblyLineRecipeFromDataStick(loadedStack, false);
             switch (lookupResult.getType()) {
                 case VALID_STACK_AND_VALID_HASH:
                     recipe = lookupResult.getRecipe();
@@ -526,19 +559,20 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
          * l -> { currentInputLength = l; for (SliceStatusWidget w : arr) { w.updateText(); } }));
          */
         screenElements.widget(
-                new TextWidget(Text.localised("ggfab.gui.advassline.shutdown"))
-                        .setEnabled(this::hasAbnormalStopReason));
+            new TextWidget(Text.localised("ggfab.gui.advassline.shutdown")).setEnabled(this::hasAbnormalStopReason));
         screenElements.widget(
-                new TextWidget().setTextSupplier(() -> Text.localised(lastStopReason))
-                        .attachSyncer(
-                                new FakeSyncWidget.StringSyncer(() -> lastStopReason, r -> this.lastStopReason = r),
-                                screenElements)
-                        .setEnabled(this::hasAbnormalStopReason));
+            new TextWidget().setTextSupplier(() -> Text.localised(lastStopReason))
+                .attachSyncer(
+                    new FakeSyncWidget.StringSyncer(() -> lastStopReason, r -> this.lastStopReason = r),
+                    screenElements)
+                .setEnabled(this::hasAbnormalStopReason));
         screenElements.widget(
-                new ClickableTextWidget(
-                        Text.localised("ggfab.gui.advassline.shutdown_clear").alignment(Alignment.CenterLeft))
-                                .setMarginInLines(0).setOnClick((d, w) -> lastStopReason = "").setSize(36, 20)
-                                .setEnabled(this::hasAbnormalStopReason));
+            new ClickableTextWidget(
+                Text.localised("ggfab.gui.advassline.shutdown_clear")
+                    .alignment(Alignment.CenterLeft)).setMarginInLines(0)
+                        .setOnClick((d, w) -> lastStopReason = "")
+                        .setSize(36, 20)
+                        .setEnabled(this::hasAbnormalStopReason));
     }
 
     private Boolean hasAbnormalStopReason(Widget w) {
@@ -578,8 +612,8 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
         if (getBaseMetaTileEntity().isAllowedToWork() && slices[0].progress < 0) {
             startRecipeProcessing();
             if (hasAllItems(currentRecipe, this.currentRecipeParallel)
-                    && hasAllFluids(currentRecipe, this.currentRecipeParallel)
-                    && slices[0].start()) {
+                && hasAllFluids(currentRecipe, this.currentRecipeParallel)
+                && slices[0].start()) {
                 drainAllFluids(currentRecipe, this.currentRecipeParallel);
                 mProgresstime = 0;
             }
@@ -648,7 +682,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
 
     private GT_Recipe.GT_Recipe_AssemblyLine findRecipe(ItemStack tDataStick) {
         GT_AssemblyLineUtils.LookupResult tLookupResult = GT_AssemblyLineUtils
-                .findAssemblyLineRecipeFromDataStick(tDataStick, false);
+            .findAssemblyLineRecipeFromDataStick(tDataStick, false);
 
         if (tLookupResult.getType() == GT_AssemblyLineUtils.LookupResultType.INVALID_STICK) return null;
 
@@ -690,18 +724,15 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
             return false;
         }
         int maxParallel = (int) GT_Recipe.GT_Recipe_AssemblyLine
-                .maxParallelCalculatedByInputItems(mInputBusses, parallel, itemConsumptions, curBatchItemsFromME);
+            .maxParallelCalculatedByInputItems(mInputBusses, parallel, itemConsumptions, curBatchItemsFromME);
         return maxParallel >= parallel;
     }
 
     private boolean hasAllFluids(GT_Recipe.GT_Recipe_AssemblyLine tRecipe, int parallel) {
         int aFluidCount = tRecipe.mFluidInputs.length;
         if (mInputHatches.size() < aFluidCount) return false;
-        int maxParallel = (int) GT_Recipe.GT_Recipe_AssemblyLine.maxParallelCalculatedByInputFluids(
-                mInputHatches,
-                parallel,
-                tRecipe.mFluidInputs,
-                curBatchFluidsFromME);
+        int maxParallel = (int) GT_Recipe.GT_Recipe_AssemblyLine
+            .maxParallelCalculatedByInputFluids(mInputHatches, parallel, tRecipe.mFluidInputs, curBatchFluidsFromME);
         return maxParallel >= parallel;
     }
 
@@ -724,10 +755,16 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
         }
         for (GT_MetaTileEntity_Hatch_DataAccess tHatch : mDataAccessHatches) {
             if (tHatch.isValid()) {
-                for (int i = 0; i < tHatch.getBaseMetaTileEntity().getSizeInventory(); i++) {
-                    if (tHatch.getBaseMetaTileEntity().getStackInSlot(i) != null
-                            && isCorrectDataItem(tHatch.getBaseMetaTileEntity().getStackInSlot(i), state))
-                        rList.add(tHatch.getBaseMetaTileEntity().getStackInSlot(i));
+                for (int i = 0; i < tHatch.getBaseMetaTileEntity()
+                    .getSizeInventory(); i++) {
+                    if (tHatch.getBaseMetaTileEntity()
+                        .getStackInSlot(i) != null && isCorrectDataItem(
+                            tHatch.getBaseMetaTileEntity()
+                                .getStackInSlot(i),
+                            state))
+                        rList.add(
+                            tHatch.getBaseMetaTileEntity()
+                                .getStackInSlot(i));
                 }
             }
         }
@@ -772,18 +809,19 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
             // calculateOverclockedNessMulti from super class has a mysterious 5% cable loss thing at the moment
             // of writing
             GT_OverclockCalculator ocCalc = new GT_OverclockCalculator().setRecipeEUt(currentRecipe.mEUt)
-                    .setDuration(Math.max(recipe.mDuration / recipe.mInputs.length, 1)).setEUt(inputVoltage)
-                    .calculate();
+                .setDuration(Math.max(recipe.mDuration / recipe.mInputs.length, 1))
+                .setEUt(inputVoltage)
+                .calculate();
             // since we already checked mEUt <= inputVoltage, no need to check if recipe is too OP
             lEUt = ocCalc.getConsumption();
             mMaxProgresstime = ocCalc.getDuration();
             // then laser overclock if needed
             if (!mExoticEnergyHatches.isEmpty()) {
                 OverclockHelper.OverclockOutput laserOverclock = OverclockHelper.laserOverclock(
-                        lEUt,
-                        mMaxProgresstime,
-                        inputEUt / recipe.mInputs.length,
-                        ConfigurationHandler.INSTANCE.getLaserOCPenaltyFactor());
+                    lEUt,
+                    mMaxProgresstime,
+                    inputEUt / recipe.mInputs.length,
+                    ConfigurationHandler.INSTANCE.getLaserOCPenaltyFactor());
                 if (laserOverclock != null) {
                     lEUt = laserOverclock.getEUt();
                     mMaxProgresstime = laserOverclock.getDuration();
@@ -896,13 +934,13 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-            IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
         NBTTagCompound tag = accessor.getNBTData();
         String machineProgressString = GT_Waila.getMachineProgressString(
-                tag.getBoolean("isActive"),
-                tag.getInteger("maxProgress"),
-                tag.getInteger("progress"));
+            tag.getBoolean("isActive"),
+            tag.getInteger("maxProgress"),
+            tag.getInteger("progress"));
         currentTip.remove(machineProgressString);
 
         int duration = tag.getInteger("mDuration");
@@ -919,14 +957,10 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
                     currentTip.add(I18n.format("ggfab.waila.advassline.slice.idle", i + 1));
                 } else if (duration > 40) {
                     currentTip.add(
-                            I18n.format(
-                                    "ggfab.waila.advassline.slice",
-                                    i + 1,
-                                    (duration - progress) / 20,
-                                    duration / 20));
+                        I18n.format("ggfab.waila.advassline.slice", i + 1, (duration - progress) / 20, duration / 20));
                 } else {
-                    currentTip.add(
-                            I18n.format("ggfab.waila.advassline.slice.small", i + 1, duration - progress, duration));
+                    currentTip
+                        .add(I18n.format("ggfab.waila.advassline.slice.small", i + 1, duration - progress, duration));
                 }
             }
         }
@@ -934,7 +968,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-            int z) {
+        int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         if (currentRecipe == null || !getBaseMetaTileEntity().isActive()) return;
         NBTTagList l = new NBTTagList();
@@ -951,7 +985,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
      */
     private void drainAllFluids(GT_Recipe.GT_Recipe_AssemblyLine recipe, int parallel) {
         GT_Recipe.GT_Recipe_AssemblyLine
-                .consumeInputFluids(mInputHatches, parallel, recipe.mFluidInputs, curBatchFluidsFromME);
+            .consumeInputFluids(mInputHatches, parallel, recipe.mFluidInputs, curBatchFluidsFromME);
         for (GT_MetaTileEntity_Hatch_Input tHatch : filterValidMTEs(mInputHatches)) tHatch.updateSlots();
     }
 
@@ -968,7 +1002,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-            float aX, float aY, float aZ) {
+        float aX, float aY, float aZ) {
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {
@@ -1073,11 +1107,12 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
             ItemStack stack = getInputBusContent(id);
             if (stack == null) return false;
             int size = GT_Recipe.GT_Recipe_AssemblyLine
-                    .getMatchedIngredientAmount(stack, currentRecipe.mInputs[id], currentRecipe.mOreDictAlt[id]);
+                .getMatchedIngredientAmount(stack, currentRecipe.mInputs[id], currentRecipe.mOreDictAlt[id]);
             if (size < 0 || stack.stackSize < size * currentRecipeParallel) return false;
             progress = mMaxProgresstime / currentInputLength;
             stack.stackSize -= size * currentRecipeParallel;
-            mInputBusses.get(id).updateSlots();
+            mInputBusses.get(id)
+                .updateSlots();
             return true;
         }
 
