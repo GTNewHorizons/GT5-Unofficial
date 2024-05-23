@@ -19,5 +19,21 @@
       "Industrialcraft",
       "structurelib"
     ]
+  },
+  {
+      "modid": "ggfab",
+      "name": "GigaGramFab",
+      "description": "Production at scale",
+      "version": "${modVersion}",
+      "mcversion": "${minecraftVersion}",
+      "url": "https://glease.github.io/GigaGramFab",
+      "updateUrl": "",
+      "authorList": ["glee8e"],
+      "credits": "",
+      "logoFile": "",
+      "screenshots": [],
+      "dependencies": [
+        "gregtech"
+      ]
   }
 ]
