@@ -82,7 +82,7 @@ public class GT_MetaTileEntity_PurificationPlant
     /**
      * Time in ticks for a full processing cycle to complete.
      */
-    public static final int CYCLE_TIME_TICKS = 10 * 20; // TODO: Set to proper value after debugging
+    public static final int CYCLE_TIME_TICKS = 120 * 20; // TODO: Set to proper value after debugging
 
     /**
      * Stores all purification units linked to this controller.

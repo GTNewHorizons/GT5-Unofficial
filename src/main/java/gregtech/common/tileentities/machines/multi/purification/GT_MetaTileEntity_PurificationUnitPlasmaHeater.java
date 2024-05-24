@@ -14,11 +14,15 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICA
 import static gregtech.api.recipe.RecipeMaps.purificationPlasmaHeatingRecipes;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.collect.ImmutableList;
@@ -55,6 +59,26 @@ public class GT_MetaTileEntity_PurificationUnitPlasmaHeater
     private static final int STRUCTURE_X_OFFSET = 2;
     private static final int STRUCTURE_Y_OFFSET = 14;
     private static final int STRUCTURE_Z_OFFSET = 5;
+
+    private long currentTemperature = 0;
+    private int cyclesCompleted = 0;
+    private boolean ruinedCycle = false;
+
+    // A cycle is 30s at shortest, a purification plant cycle is 120s. 33% chance per heating cycle
+    // will give you plenty of room for delay and still get to 99% chance.
+    public static final long SUCCESS_PER_CYCLE = 33;
+
+    // Consumption rates in liters/second
+    public static final long MAX_PLASMA_PER_SEC = 10;
+    public static final long MAX_COOLANT_PER_SEC = 100;
+    // Change in temperature per consumed liter of plasma
+    public static final long PLASMA_TEMP_PER_LITER = 100;
+    // Change in temperature per consumed liter of coolant
+    public static final long COOLANT_TEMP_PER_LITER = -5;
+    // Temperature at which the batch is ruined
+    public static final long MAX_TEMP = 12500;
+    // Point at which the heating point of the cycle is reached
+    public static final long HEATING_POINT = 10000;
 
     private GT_MetaTileEntity_Hatch_Input plasmaInputHatch;
     private GT_MetaTileEntity_Hatch_Input coolantInputHatch;
@@ -215,6 +239,7 @@ public class GT_MetaTileEntity_PurificationUnitPlasmaHeater
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.addInfo("Each cycle completed boosts success by " + EnumChatFormatting.RED + SUCCESS_PER_CYCLE + "%");
         tt.addInfo(AuthorNotAPenguin);
         tt.toolTipFinisher("GregTech");
         return tt;
@@ -244,6 +269,37 @@ public class GT_MetaTileEntity_PurificationUnitPlasmaHeater
             return true;
         }
         return false;
+    }
+
+    @Override
+    public float calculateFinalSuccessChance() {
+        if (ruinedCycle) return 0.0f;
+        // Success chance directly depends on number of cycles completed.
+        return cyclesCompleted * SUCCESS_PER_CYCLE;
+    }
+
+    @Override
+    public String[] getInfoData() {
+        ArrayList<String> infoData = new ArrayList<>(Arrays.asList(super.getInfoData()));
+        infoData.add("Current temperature: " + EnumChatFormatting.YELLOW + currentTemperature + "K");
+        infoData.add("Heating cycles completed this run: " + EnumChatFormatting.YELLOW + cyclesCompleted);
+        return infoData.toArray(new String[] {});
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        aNBT.setLong("mCurrentTemperature", currentTemperature);
+        aNBT.setInteger("mCyclesCompleted", cyclesCompleted);
+        aNBT.setBoolean("mRuinedCycle", ruinedCycle);
+        super.saveNBTData(aNBT);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        currentTemperature = aNBT.getLong("mCurrentTemperature");
+        cyclesCompleted = aNBT.getInteger("mCyclesCompleted");
+        ruinedCycle = aNBT.getBoolean("mRuinedCycle");
     }
 
     @Override
