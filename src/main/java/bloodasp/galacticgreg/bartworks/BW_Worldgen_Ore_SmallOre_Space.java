@@ -35,26 +35,32 @@ public class BW_Worldgen_Ore_SmallOre_Space extends BW_OreLayer {
     private String name;
 
     public BW_Worldgen_Ore_SmallOre_Space(String aName, boolean pDefault, int pMinY, int pMaxY, int pDensity,
-            int pPrimary, ISubTagContainer primaryBW) {
+        int pPrimary, ISubTagContainer primaryBW) {
         super(aName, pDefault, 0, 0, 0, 0, 0, primaryBW, Materials._NULL, Materials._NULL, Materials._NULL);
         mMinY = ((short) GregTech_API.sWorldgenFile
-                .get("worldgen.GaGregBartworks." + this.mWorldGenName, "MinHeight", pMinY));
+            .get("worldgen.GaGregBartworks." + this.mWorldGenName, "MinHeight", pMinY));
         mMaxY = ((short) Math.max(
-                this.mMinY + 1,
-                GregTech_API.sWorldgenFile.get("worldgen.GaGregBartworks." + this.mWorldGenName, "MaxHeight", pMaxY)));
+            this.mMinY + 1,
+            GregTech_API.sWorldgenFile.get("worldgen.GaGregBartworks." + this.mWorldGenName, "MaxHeight", pMaxY)));
         mDensity = ((short) Math.max(
-                1,
-                GregTech_API.sWorldgenFile.get("worldgen.GaGregBartworks." + this.mWorldGenName, "Amount", pDensity)));
+            1,
+            GregTech_API.sWorldgenFile.get("worldgen.GaGregBartworks." + this.mWorldGenName, "Amount", pDensity)));
         mPrimaryMeta = ((short) GregTech_API.sWorldgenFile
-                .get("worldgen.GaGregBartworks." + this.mWorldGenName, "Meta", pPrimary));
+            .get("worldgen.GaGregBartworks." + this.mWorldGenName, "Meta", pPrimary));
         bwOres = ((byte) GregTech_API.sWorldgenFile
-                .get("worldgen.GaGregBartworks." + this.mWorldGenName, "BWGTlogic", bwOres));
+            .get("worldgen.GaGregBartworks." + this.mWorldGenName, "BWGTlogic", bwOres));
         _mDynWorldConfig = new DynamicOreMixWorldConfig(mWorldGenName, true);
         _mDynWorldConfig.InitDynamicConfig();
         StringBuilder ret = new StringBuilder();
-        for (Map.Entry<String, Boolean> key : _mDynWorldConfig.get_mDynWorldConfigMap().entrySet().stream()
-                .filter(Map.Entry::getValue).collect(Collectors.toSet()))
-            ret.append(key.getKey().split("_")[1]).append("; ");
+        for (Map.Entry<String, Boolean> key : _mDynWorldConfig.get_mDynWorldConfigMap()
+            .entrySet()
+            .stream()
+            .filter(Map.Entry::getValue)
+            .collect(Collectors.toSet()))
+            ret.append(
+                key.getKey()
+                    .split("_")[1])
+                .append("; ");
         name = ret.length() == 0 ? "" : ret.substring(0, ret.length() - 1);
         if (mEnabled) {
             smallOreWorldgenList.add(this);
@@ -78,19 +84,19 @@ public class BW_Worldgen_Ore_SmallOre_Space extends BW_OreLayer {
 
     @Override
     public boolean executeWorldgen(World aWorld, Random aRandom, String aBiome, int aDimensionType, int aChunkX,
-            int aChunkZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
+        int aChunkZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
         ModDimensionDef tMDD = GalacticGregRegistry.getDimensionTypeByChunkGenerator(aChunkGenerator);
         if (tMDD == null) return false;
         pDimensionDef = tMDD;
         if (this.mPrimaryMeta > 0)
             for (int i = 0, j = Math.max(1, this.mDensity / 2 + aRandom.nextInt(this.mDensity) / 2); i < j; i++) {
                 this.setOreBlock(
-                        aWorld,
-                        aChunkX + aRandom.nextInt(16),
-                        this.mMinY + aRandom.nextInt(Math.max(1, this.mMaxY - this.mMinY)),
-                        aChunkZ + aRandom.nextInt(16),
-                        this.mPrimaryMeta,
-                        true);
+                    aWorld,
+                    aChunkX + aRandom.nextInt(16),
+                    this.mMinY + aRandom.nextInt(Math.max(1, this.mMaxY - this.mMinY)),
+                    aChunkZ + aRandom.nextInt(16),
+                    this.mPrimaryMeta,
+                    true);
             }
         return true;
     }
@@ -100,42 +106,42 @@ public class BW_Worldgen_Ore_SmallOre_Space extends BW_OreLayer {
         TileEntity te = aWorld.getTileEntity(aX, aY, aZ);
         if (!(te instanceof BW_MetaGeneratedOreTE) && !(te instanceof GT_TileEntity_Ores)) {
             if (aMetaData == this.mSporadicMeta && (this.bwOres & 1) != 0
-                    || aMetaData == this.mBetweenMeta && (this.bwOres & 2) != 0
-                    || aMetaData == this.mPrimaryMeta && (this.bwOres & 8) != 0
-                    || aMetaData == this.mSecondaryMeta && (this.bwOres & 4) != 0) {
+                || aMetaData == this.mBetweenMeta && (this.bwOres & 2) != 0
+                || aMetaData == this.mPrimaryMeta && (this.bwOres & 8) != 0
+                || aMetaData == this.mSecondaryMeta && (this.bwOres & 4) != 0) {
                 boolean wasSet;
                 for (ModDBMDef e : pDimensionDef.getReplaceableBlocks()) {
                     wasSet = isSmallOre
-                            ? BW_MetaGenerated_SmallOres.setOreBlock(
-                                    aWorld,
-                                    aX,
-                                    aY,
-                                    aZ,
-                                    aMetaData,
-                                    pDimensionDef.getAirSetting() == Enums.AirReplaceRule.AllowReplaceAir,
-                                    (Block) Block.blockRegistry.getObject(e.getBlockName()),
-                                    new int[] { e.getMeta() })
-                            : BW_MetaGenerated_Ores.setOreBlock(
-                                    aWorld,
-                                    aX,
-                                    aY,
-                                    aZ,
-                                    aMetaData,
-                                    pDimensionDef.getAirSetting() == Enums.AirReplaceRule.AllowReplaceAir,
-                                    (Block) Block.blockRegistry.getObject(e.getBlockName()),
-                                    new int[] { e.getMeta() });
+                        ? BW_MetaGenerated_SmallOres.setOreBlock(
+                            aWorld,
+                            aX,
+                            aY,
+                            aZ,
+                            aMetaData,
+                            pDimensionDef.getAirSetting() == Enums.AirReplaceRule.AllowReplaceAir,
+                            (Block) Block.blockRegistry.getObject(e.getBlockName()),
+                            new int[] { e.getMeta() })
+                        : BW_MetaGenerated_Ores.setOreBlock(
+                            aWorld,
+                            aX,
+                            aY,
+                            aZ,
+                            aMetaData,
+                            pDimensionDef.getAirSetting() == Enums.AirReplaceRule.AllowReplaceAir,
+                            (Block) Block.blockRegistry.getObject(e.getBlockName()),
+                            new int[] { e.getMeta() });
                     if (wasSet) return true;
                 }
                 return false;
             } else {
                 return GT_TileEntity_Ores_Space.setOuterSpaceOreBlock(
-                        pDimensionDef,
-                        aWorld,
-                        aX,
-                        aY,
-                        aZ,
-                        aMetaData,
-                        pDimensionDef.getAirSetting() == Enums.AirReplaceRule.AllowReplaceAir);
+                    pDimensionDef,
+                    aWorld,
+                    aX,
+                    aY,
+                    aZ,
+                    aMetaData,
+                    pDimensionDef.getAirSetting() == Enums.AirReplaceRule.AllowReplaceAir);
             }
         } else {
             return true;

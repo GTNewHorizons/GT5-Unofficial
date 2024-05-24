@@ -42,24 +42,22 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
     private DynamicOreMixWorldConfig _mDynWorldConfig;
 
     public GT_Worldgen_GT_Ore_Layer_Space(String pName, boolean pDefault, int pMinY, int pMaxY, int pWeight,
-            int pDensity, int pSize, Materials pPrimary, Materials pSecondary, Materials pBetween,
-            Materials pSporadic) {
+        int pDensity, int pSize, Materials pPrimary, Materials pSecondary, Materials pBetween, Materials pSporadic) {
         super(pName, GalacticGreg.oreVeinWorldgenList, pDefault);
         mMinY = ((short) GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "MinHeight", pMinY));
-        mMaxY = ((short) Math.max(
-                this.mMinY + 5,
-                GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "MaxHeight", pMaxY)));
+        mMaxY = ((short) Math
+            .max(this.mMinY + 5, GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "MaxHeight", pMaxY)));
         mWeight = ((short) GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "RandomWeight", pWeight));
         mDensity = ((short) GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Density", pDensity));
         mSize = ((short) Math.max(1, GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Size", pSize)));
         mPrimaryMeta = ((short) GregTech_API.sWorldgenFile
-                .get("worldgen." + this.mWorldGenName, "OrePrimaryLayer", pPrimary.mMetaItemSubID));
+            .get("worldgen." + this.mWorldGenName, "OrePrimaryLayer", pPrimary.mMetaItemSubID));
         mSecondaryMeta = ((short) GregTech_API.sWorldgenFile
-                .get("worldgen." + this.mWorldGenName, "OreSecondaryLayer", pSecondary.mMetaItemSubID));
+            .get("worldgen." + this.mWorldGenName, "OreSecondaryLayer", pSecondary.mMetaItemSubID));
         mBetweenMeta = ((short) GregTech_API.sWorldgenFile
-                .get("worldgen." + this.mWorldGenName, "OreSporadiclyInbetween", pBetween.mMetaItemSubID));
+            .get("worldgen." + this.mWorldGenName, "OreSporadiclyInbetween", pBetween.mMetaItemSubID));
         mSporadicMeta = ((short) GregTech_API.sWorldgenFile
-                .get("worldgen." + this.mWorldGenName, "OreSporaticlyAround", pSporadic.mMetaItemSubID));
+            .get("worldgen." + this.mWorldGenName, "OreSporaticlyAround", pSporadic.mMetaItemSubID));
 
         _mDynWorldConfig = new DynamicOreMixWorldConfig(mWorldGenName);
         _mDynWorldConfig.InitDynamicConfig();
@@ -71,23 +69,22 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
     }
 
     public GT_Worldgen_GT_Ore_Layer_Space(String pName, boolean pDefault, int pMinY, int pMaxY, int pWeight,
-            int pDensity, int pSize, short pPrimary, short pSecondary, short pBetween, short pSporadic) {
+        int pDensity, int pSize, short pPrimary, short pSecondary, short pBetween, short pSporadic) {
         super(pName, GalacticGreg.oreVeinWorldgenList, pDefault);
         mMinY = ((short) GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "MinHeight", pMinY));
-        mMaxY = ((short) Math.max(
-                this.mMinY + 5,
-                GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "MaxHeight", pMaxY)));
+        mMaxY = ((short) Math
+            .max(this.mMinY + 5, GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "MaxHeight", pMaxY)));
         mWeight = ((short) GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "RandomWeight", pWeight));
         mDensity = ((short) GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Density", pDensity));
         mSize = ((short) Math.max(1, GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Size", pSize)));
         mPrimaryMeta = ((short) GregTech_API.sWorldgenFile
-                .get("worldgen." + this.mWorldGenName, "OrePrimaryLayer", pPrimary));
+            .get("worldgen." + this.mWorldGenName, "OrePrimaryLayer", pPrimary));
         mSecondaryMeta = ((short) GregTech_API.sWorldgenFile
-                .get("worldgen." + this.mWorldGenName, "OreSecondaryLayer", pSecondary));
+            .get("worldgen." + this.mWorldGenName, "OreSecondaryLayer", pSecondary));
         mBetweenMeta = ((short) GregTech_API.sWorldgenFile
-                .get("worldgen." + this.mWorldGenName, "OreSporadiclyInbetween", pBetween));
+            .get("worldgen." + this.mWorldGenName, "OreSporadiclyInbetween", pBetween));
         mSporadicMeta = ((short) GregTech_API.sWorldgenFile
-                .get("worldgen." + this.mWorldGenName, "OreSporaticlyAround", pSporadic));
+            .get("worldgen." + this.mWorldGenName, "OreSporaticlyAround", pSporadic));
 
         _mDynWorldConfig = new DynamicOreMixWorldConfig(mWorldGenName);
         _mDynWorldConfig.InitDynamicConfig();
@@ -124,8 +121,7 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
         else {
             for (GT_Worldgen tWorldGen : GalacticGreg.oreVeinWorldgenList)
                 if (tWorldGen instanceof GT_Worldgen_GT_Ore_Layer_Space
-                        && ((GT_Worldgen_GT_Ore_Layer_Space) tWorldGen).isEnabledForDim(pDimensionDef))
-                    tVal++;
+                    && ((GT_Worldgen_GT_Ore_Layer_Space) tWorldGen).isEnabledForDim(pDimensionDef)) tVal++;
 
             _mBufferedVeinCountList.put(pDimensionDef.getDimIdentifier(), tVal);
         }
@@ -150,10 +146,10 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
             tReturn = new ArrayList<>();
             for (GT_Worldgen tWorldGen : GalacticGreg.oreVeinWorldgenList)
                 if (tWorldGen instanceof GT_Worldgen_GT_Ore_Layer_Space
-                        && ((GT_Worldgen_GT_Ore_Layer_Space) tWorldGen).isEnabledForDim(pDimensionDef))
+                    && ((GT_Worldgen_GT_Ore_Layer_Space) tWorldGen).isEnabledForDim(pDimensionDef))
                     tReturn.add(tWorldGen.mWorldGenName);
                 else if (tWorldGen instanceof BW_Worldgen_Ore_Layer_Space
-                        && ((BW_Worldgen_Ore_Layer_Space) tWorldGen).isEnabledForDim(pDimensionDef))
+                    && ((BW_Worldgen_Ore_Layer_Space) tWorldGen).isEnabledForDim(pDimensionDef))
                     tReturn.add(tWorldGen.mWorldGenName);
 
             _mBufferedVeinList.put(pDimensionDef.getDimIdentifier(), tReturn);
@@ -166,8 +162,8 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
         short tVal = 0;
         for (GT_Worldgen tWorldGen : GalacticGreg.oreVeinWorldgenList)
             if (tWorldGen instanceof GT_Worldgen_GT_Ore_Layer_Space
-                    && ((GT_Worldgen_GT_Ore_Layer_Space) tWorldGen).isEnabledForDim(pDimensionDef)
-                    && tVal < ((GT_Worldgen_GT_Ore_Layer_Space) tWorldGen).mWeight)
+                && ((GT_Worldgen_GT_Ore_Layer_Space) tWorldGen).isEnabledForDim(pDimensionDef)
+                && tVal < ((GT_Worldgen_GT_Ore_Layer_Space) tWorldGen).mWeight)
                 tVal = ((GT_Worldgen_GT_Ore_Layer_Space) tWorldGen).mWeight;
 
         return tVal;
@@ -200,8 +196,7 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
             GT_Worldgen tGen = null;
             for (GT_Worldgen tWorldGen : GalacticGreg.oreVeinWorldgenList)
                 if (tWorldGen instanceof GT_Worldgen_GT_Ore_Layer_Space
-                        && ((GT_Worldgen_GT_Ore_Layer_Space) tWorldGen).mWorldGenName.equals(tVeinName))
-                    tGen = tWorldGen;
+                    && ((GT_Worldgen_GT_Ore_Layer_Space) tWorldGen).mWorldGenName.equals(tVeinName)) tGen = tWorldGen;
 
             if (tGen != null) {
                 // GT_Worldgen_GT_Ore_Layer_Space tGen = GalacticGreg.oreVeinWorldgenList.get(tRndMix);
@@ -249,21 +244,18 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
 
     @Override
     public boolean executeWorldgen(World pWorld, Random pRandom, String pBiome, int pDimensionType, int pChunkX,
-            int pChunkZ, IChunkProvider pChunkGenerator, IChunkProvider pChunkProvider) {
+        int pChunkZ, IChunkProvider pChunkGenerator, IChunkProvider pChunkProvider) {
         GalacticGreg.Logger.trace("Entering executeWorldgen for [%s]", mWorldGenName);
         ModDimensionDef tMDD = GalacticGregRegistry.getDimensionTypeByChunkGenerator(pChunkGenerator);
         if (tMDD == null) {
-            GalacticGreg.Logger.trace(
-                    "Can't find dimension definition for ChunkProvider %s, skipping",
-                    pChunkGenerator.toString());
+            GalacticGreg.Logger
+                .trace("Can't find dimension definition for ChunkProvider %s, skipping", pChunkGenerator.toString());
             return false;
         }
 
         if (!_mDynWorldConfig.isEnabledInDim(tMDD)) {
-            GalacticGreg.Logger.trace(
-                    "OreGen for %s is disallowed in dimension %s, skipping",
-                    mWorldGenName,
-                    tMDD.getDimensionName());
+            GalacticGreg.Logger
+                .trace("OreGen for %s is disallowed in dimension %s, skipping", mWorldGenName, tMDD.getDimensionName());
             return false;
         }
 
@@ -280,31 +272,31 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
                 if (this.mSecondaryMeta > 0) {
                     for (int i = tMinY - 1; i < tMinY + 3; i++) {
                         int placeX = Math.max(
-                                1,
-                                Math.max(MathHelper.abs_int(cX - tX), MathHelper.abs_int(eX - tX))
-                                        / getDensityFromPos(tX, tZ, pChunkX, pChunkZ));
+                            1,
+                            Math.max(MathHelper.abs_int(cX - tX), MathHelper.abs_int(eX - tX))
+                                / getDensityFromPos(tX, tZ, pChunkX, pChunkZ));
                         int placeZ = Math.max(
-                                1,
-                                Math.max(MathHelper.abs_int(cZ - tZ), MathHelper.abs_int(eZ - tZ))
-                                        / getDensityFromPos(tX, tZ, pChunkX, pChunkZ));
+                            1,
+                            Math.max(MathHelper.abs_int(cZ - tZ), MathHelper.abs_int(eZ - tZ))
+                                / getDensityFromPos(tX, tZ, pChunkX, pChunkZ));
                         if ((pRandom.nextInt(placeZ) == 0) || (pRandom.nextInt(placeX) == 0)) {
                             GT_TileEntity_Ores_Space
-                                    .setOuterSpaceOreBlock(tMDD, pWorld, tX, i, tZ, this.mSecondaryMeta);
+                                .setOuterSpaceOreBlock(tMDD, pWorld, tX, i, tZ, this.mSecondaryMeta);
                         }
                     }
                 }
                 if (this.mBetweenMeta > 0) {
                     for (int i = tMinY + 2; i < tMinY + 6; i++) {
                         int placeX = Math.max(
-                                1,
-                                Math.max(MathHelper.abs_int(cX - tX), MathHelper.abs_int(eX - tX))
-                                        / getDensityFromPos(tX, tZ, pChunkX, pChunkZ));
+                            1,
+                            Math.max(MathHelper.abs_int(cX - tX), MathHelper.abs_int(eX - tX))
+                                / getDensityFromPos(tX, tZ, pChunkX, pChunkZ));
                         int placeZ = Math.max(
-                                1,
-                                Math.max(MathHelper.abs_int(cZ - tZ), MathHelper.abs_int(eZ - tZ))
-                                        / getDensityFromPos(tX, tZ, pChunkX, pChunkZ));
+                            1,
+                            Math.max(MathHelper.abs_int(cZ - tZ), MathHelper.abs_int(eZ - tZ))
+                                / getDensityFromPos(tX, tZ, pChunkX, pChunkZ));
                         if (((pRandom.nextInt(placeZ) == 0) || (pRandom.nextInt(placeX) == 0))
-                                && (pRandom.nextInt(2) == 0)) {
+                            && (pRandom.nextInt(2) == 0)) {
                             GT_TileEntity_Ores_Space.setOuterSpaceOreBlock(tMDD, pWorld, tX, i, tZ, this.mBetweenMeta);
                         }
                     }
@@ -313,13 +305,13 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
                 if (this.mPrimaryMeta > 0) {
                     for (int i = tMinY + 4; i < tMinY + 8; i++) {
                         int placeX = Math.max(
-                                1,
-                                Math.max(MathHelper.abs_int(cX - tX), MathHelper.abs_int(eX - tX))
-                                        / getDensityFromPos(tX, tZ, pChunkX, pChunkZ));
+                            1,
+                            Math.max(MathHelper.abs_int(cX - tX), MathHelper.abs_int(eX - tX))
+                                / getDensityFromPos(tX, tZ, pChunkX, pChunkZ));
                         int placeZ = Math.max(
-                                1,
-                                Math.max(MathHelper.abs_int(cZ - tZ), MathHelper.abs_int(eZ - tZ))
-                                        / getDensityFromPos(tX, tZ, pChunkX, pChunkZ));
+                            1,
+                            Math.max(MathHelper.abs_int(cZ - tZ), MathHelper.abs_int(eZ - tZ))
+                                / getDensityFromPos(tX, tZ, pChunkX, pChunkZ));
                         if ((pRandom.nextInt(placeZ) == 0) || (pRandom.nextInt(placeX) == 0)) {
                             GT_TileEntity_Ores_Space.setOuterSpaceOreBlock(tMDD, pWorld, tX, i, tZ, this.mPrimaryMeta);
                         }
@@ -328,15 +320,15 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
                 if (this.mSporadicMeta > 0) {
                     for (int i = tMinY - 1; i < tMinY + 8; i++) {
                         int placeX = Math.max(
-                                1,
-                                Math.max(MathHelper.abs_int(cX - tX), MathHelper.abs_int(eX - tX))
-                                        / getDensityFromPos(tX, tZ, pChunkX, pChunkZ));
+                            1,
+                            Math.max(MathHelper.abs_int(cX - tX), MathHelper.abs_int(eX - tX))
+                                / getDensityFromPos(tX, tZ, pChunkX, pChunkZ));
                         int placeZ = Math.max(
-                                1,
-                                Math.max(MathHelper.abs_int(cZ - tZ), MathHelper.abs_int(eZ - tZ))
-                                        / getDensityFromPos(tX, tZ, pChunkX, pChunkZ));
+                            1,
+                            Math.max(MathHelper.abs_int(cZ - tZ), MathHelper.abs_int(eZ - tZ))
+                                / getDensityFromPos(tX, tZ, pChunkX, pChunkZ));
                         if (((pRandom.nextInt(placeX) == 0) || (pRandom.nextInt(placeZ) == 0))
-                                && (pRandom.nextInt(7) == 0)) {
+                            && (pRandom.nextInt(7) == 0)) {
                             GT_TileEntity_Ores_Space.setOuterSpaceOreBlock(tMDD, pWorld, tX, i, tZ, this.mSporadicMeta);
                         }
                     }
@@ -356,7 +348,7 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
                 tZ = pRandom.nextInt(16) + pChunkZ + 2;
                 tY = pRandom.nextInt(160) + 10; // Y height can vary from 10 to 170 for small ores.
                 if (this.mSecondaryMeta > 0) GT_TileEntity_Ores_Space
-                        .setOuterSpaceOreBlock(tMDD, pWorld, tX, tY, tZ, this.mSecondaryMeta + 16000);
+                    .setOuterSpaceOreBlock(tMDD, pWorld, tX, tY, tZ, this.mSecondaryMeta + 16000);
                 tX = pRandom.nextInt(16) + pChunkX + 2;
                 tZ = pRandom.nextInt(16) + pChunkZ + 2;
                 tY = pRandom.nextInt(160) + 10; // Y height can vary from 10 to 170 for small ores.
@@ -366,7 +358,7 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
                 tZ = pRandom.nextInt(16) + pChunkZ + 2;
                 tY = pRandom.nextInt(190) + 10; // Y height can vary from 10 to 200 for small ores.
                 if (this.mSporadicMeta > 0) GT_TileEntity_Ores_Space
-                        .setOuterSpaceOreBlock(tMDD, pWorld, tX, tY, tZ, this.mSporadicMeta + 16000);
+                    .setOuterSpaceOreBlock(tMDD, pWorld, tX, tY, tZ, this.mSporadicMeta + 16000);
             }
         }
 
@@ -377,9 +369,9 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
                 long tTotalTime = mProfilingEnd - mProfilingStart;
                 GalacticGreg.Profiler.AddTimeToList(tMDD, tTotalTime);
                 GalacticGreg.Logger.debug(
-                        "Done with OreLayer-Worldgen in DimensionType %s. Generation took %d ms",
-                        tMDD.getDimensionName(),
-                        tTotalTime);
+                    "Done with OreLayer-Worldgen in DimensionType %s. Generation took %d ms",
+                    tMDD.getDimensionName(),
+                    tTotalTime);
             } catch (Exception ignored) {} // Silently ignore errors
         }
 
@@ -391,8 +383,8 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
         if (aX < 0) aX -= 16;
         if (aZ < 0) aZ -= 16;
         return Math.max(
-                1,
-                this.mDensity / ((int) Math
-                        .sqrt(2 + Math.pow(aX / 16 - aSeedX / 16, 2) + Math.pow(aZ / 16 - aSeedZ / 16, 2))));
+            1,
+            this.mDensity
+                / ((int) Math.sqrt(2 + Math.pow(aX / 16 - aSeedX / 16, 2) + Math.pow(aZ / 16 - aSeedZ / 16, 2))));
     }
 }

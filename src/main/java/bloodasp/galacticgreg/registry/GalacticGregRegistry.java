@@ -39,13 +39,14 @@ public class GalacticGregRegistry {
 
         if (_mModContainers.containsKey(pModContainer.getModName())) {
             GalacticGreg.Logger
-                    .warn("There is already a mod registered with that name: [%s]", pModContainer.getModName());
+                .warn("There is already a mod registered with that name: [%s]", pModContainer.getModName());
             return false;
         } else {
             GalacticGreg.Logger.info(
-                    "Registered new mod to generate ores: [%s] Dimensions provided: [%d]",
-                    pModContainer.getModName(),
-                    pModContainer.getDimensionList().size());
+                "Registered new mod to generate ores: [%s] Dimensions provided: [%d]",
+                pModContainer.getModName(),
+                pModContainer.getDimensionList()
+                    .size());
             _mModContainers.put(pModContainer.getModName(), pModContainer);
             return true;
         }
@@ -62,12 +63,14 @@ public class GalacticGregRegistry {
         try {
             if (!_mInitializationDone) return null;
 
-            String tFQCPN = pChunkProvider.toString().split("@")[0];
+            String tFQCPN = pChunkProvider.toString()
+                .split("@")[0];
             ModDimensionDef tReturnMDD = null;
 
             for (ModContainer mc : _mModContainers.values()) {
                 for (ModDimensionDef mdd : mc.getDimensionList()) {
-                    if (mdd.getChunkProviderName().equals(tFQCPN)) {
+                    if (mdd.getChunkProviderName()
+                        .equals(tFQCPN)) {
                         tReturnMDD = mdd;
                         break;
                     }
@@ -110,33 +113,38 @@ public class GalacticGregRegistry {
      */
     private static void InitModContainers() {
         for (ModContainer mc : _mModContainers.values()) {
-            if (!Loader.isModLoaded(mc.getModName()) && !mc.getModName().equalsIgnoreCase("vanilla")) {
+            if (!Loader.isModLoaded(mc.getModName()) && !mc.getModName()
+                .equalsIgnoreCase("vanilla")) {
                 GalacticGreg.Logger.warn(
-                        "Ignoring ModRegistration for OreGen: [%s], because mod is not loaded. Did you misspell the name?",
-                        mc.getModName());
+                    "Ignoring ModRegistration for OreGen: [%s], because mod is not loaded. Did you misspell the name?",
+                    mc.getModName());
                 mc.setEnabled(false);
             } else {
                 GalacticGreg.Logger.info("Mod [%s] is now enabled for OreGen by GalacticGreg", mc.getModName());
                 mc.setEnabled(true);
                 for (ModDimensionDef md : mc.getDimensionList()) {
                     GalacticGreg.Logger.info(
-                            "ModID: [%s] DimName: [%s] ValidBlocks: [%d] Identifier: [%s] Generators: [%d]",
-                            mc.getModName(),
-                            md.getDimensionName(),
-                            md.getReplaceableBlocks().size(),
-                            md.getDimIdentifier(),
-                            md.getSpaceObjectGenerators().size());
+                        "ModID: [%s] DimName: [%s] ValidBlocks: [%d] Identifier: [%s] Generators: [%d]",
+                        mc.getModName(),
+                        md.getDimensionName(),
+                        md.getReplaceableBlocks()
+                            .size(),
+                        md.getDimIdentifier(),
+                        md.getSpaceObjectGenerators()
+                            .size());
 
                     // Register default generator if dimension is asteroid and no generator was added
                     if (md.getDimensionType() == DimensionType.AsteroidAndPlanet
-                            || md.getDimensionType() == DimensionType.Asteroid) {
-                        if (md.getSpaceObjectGenerators().size() == 0) {
+                        || md.getDimensionType() == DimensionType.Asteroid) {
+                        if (md.getSpaceObjectGenerators()
+                            .size() == 0) {
                             GalacticGreg.Logger.debug("No generators found, adding build-in ellipsoid generator");
                             md.registerSpaceObjectGenerator(new GenEllipsoid());
                         }
                         GalacticGreg.Logger.info(
-                                "Asteroid-Enabled dimension. Registered Generators: [%d]",
-                                md.getSpaceObjectGenerators().size());
+                            "Asteroid-Enabled dimension. Registered Generators: [%d]",
+                            md.getSpaceObjectGenerators()
+                                .size());
                     }
 
                     md.finalizeReplaceableBlocks(mc.getModName());
@@ -158,7 +166,8 @@ public class GalacticGregRegistry {
         try {
             for (ModContainer mc : _mModContainers.values()) {
                 for (ModDimensionDef md : mc.getDimensionList()) {
-                    if (pDimensionDefinition.getDimIdentifier().equals(md.getDimIdentifier())) {
+                    if (pDimensionDefinition.getDimIdentifier()
+                        .equals(md.getDimIdentifier())) {
                         return mc;
                     }
                 }

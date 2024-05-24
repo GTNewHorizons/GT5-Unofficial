@@ -62,37 +62,37 @@ public class DynamicDimensionConfig {
                     if (dt == DimensionType.Asteroid || dt == DimensionType.AsteroidAndPlanet) {
                         String tDimIdentifier = mdd.getDimIdentifier();
                         if (_mDynamicAsteroidMap.containsKey(tDimIdentifier)) GalacticGreg.Logger.warn(
-                                "Found 2 Dimensions with the same Identifier! This should never happen, and you should report this to me. Identifier in question: %s",
-                                tDimIdentifier);
+                            "Found 2 Dimensions with the same Identifier! This should never happen, and you should report this to me. Identifier in question: %s",
+                            tDimIdentifier);
                         else {
                             AsteroidConfig aConf = new AsteroidConfig();
                             aConf.MinSize = GregTech_API.sWorldgenFile.get(getConfigKeyName(mc, mdd), "SizeMin", 5);
                             aConf.MaxSize = GregTech_API.sWorldgenFile.get(getConfigKeyName(mc, mdd), "SizeMax", 15);
                             aConf.Probability = GregTech_API.sWorldgenFile
-                                    .get(getConfigKeyName(mc, mdd), "Probability", 200);
+                                .get(getConfigKeyName(mc, mdd), "Probability", 200);
                             aConf.SpecialBlockChance = GregTech_API.sWorldgenFile
-                                    .get(getConfigKeyName(mc, mdd), "SpecialBlockChance", 5);
+                                .get(getConfigKeyName(mc, mdd), "SpecialBlockChance", 5);
 
                             aConf.OreChance = GregTech_API.sWorldgenFile
-                                    .get(getConfigKeyName(mc, mdd, "orespawn"), "BaseOreChance", 5);
+                                .get(getConfigKeyName(mc, mdd, "orespawn"), "BaseOreChance", 5);
                             aConf.OrePrimaryOffset = GregTech_API.sWorldgenFile
-                                    .get(getConfigKeyName(mc, mdd, "orespawn"), "PrimaryToRareOreOffset", 5);
+                                .get(getConfigKeyName(mc, mdd, "orespawn"), "PrimaryToRareOreOffset", 5);
                             aConf.SmallOreChance = GregTech_API.sWorldgenFile
-                                    .get(getConfigKeyName(mc, mdd, "orespawn"), "SmallOreChance", 10);
+                                .get(getConfigKeyName(mc, mdd, "orespawn"), "SmallOreChance", 10);
                             aConf.ObeyHeightLimits = GregTech_API.sWorldgenFile
-                                    .get(getConfigKeyName(mc, mdd, "orespawn"), "ObeyHeightLimits", false);
+                                .get(getConfigKeyName(mc, mdd, "orespawn"), "ObeyHeightLimits", false);
                             aConf.HiddenOres = GregTech_API.sWorldgenFile
-                                    .get(getConfigKeyName(mc, mdd, "orespawn"), "OresOnlyInsideAsteroids", false);
+                                .get(getConfigKeyName(mc, mdd, "orespawn"), "OresOnlyInsideAsteroids", false);
 
                             if (GalacticGreg.GalacticConfig.LootChestsEnabled) {
                                 aConf.LootChestChance = GregTech_API.sWorldgenFile
-                                        .get(getConfigKeyName(mc, mdd, "loot"), "LootChestChance", 1);
+                                    .get(getConfigKeyName(mc, mdd, "loot"), "LootChestChance", 1);
                                 aConf.LootChestTable = GregTech_API.sWorldgenFile
-                                        .get(getConfigKeyName(mc, mdd, "loot"), "LootChestTable", 3);
+                                    .get(getConfigKeyName(mc, mdd, "loot"), "LootChestTable", 3);
                                 aConf.NumLootItems = GregTech_API.sWorldgenFile
-                                        .get(getConfigKeyName(mc, mdd, "loot"), "LootChestItemCount", 10);
+                                    .get(getConfigKeyName(mc, mdd, "loot"), "LootChestItemCount", 10);
                                 aConf.RandomizeNumLootItems = GregTech_API.sWorldgenFile
-                                        .get(getConfigKeyName(mc, mdd, "loot"), "RandomizeLootItemCount", true);
+                                    .get(getConfigKeyName(mc, mdd, "loot"), "RandomizeLootItemCount", true);
                             } else {
                                 aConf.LootChestChance = 0;
                                 aConf.LootChestTable = 1;
@@ -104,16 +104,14 @@ public class DynamicDimensionConfig {
                                 int tDefaultMaxY = mdd.getPreConfiguratedGroundOreMaxY();
                                 int tDefaultMinY = mdd.getPreConfiguratedFloatingAsteroidMinY();
                                 aConf.OreGenMaxY = GregTech_API.sWorldgenFile
-                                        .get(getConfigKeyName(mc, mdd, "floating"), "OreGenMaxY", tDefaultMaxY);
-                                aConf.FloatingAsteroidMinY = GregTech_API.sWorldgenFile.get(
-                                        getConfigKeyName(mc, mdd, "floating"),
-                                        "FloatingAsteroidMinY",
-                                        tDefaultMinY);
+                                    .get(getConfigKeyName(mc, mdd, "floating"), "OreGenMaxY", tDefaultMaxY);
+                                aConf.FloatingAsteroidMinY = GregTech_API.sWorldgenFile
+                                    .get(getConfigKeyName(mc, mdd, "floating"), "FloatingAsteroidMinY", tDefaultMinY);
                             }
 
                             if (aConf.MaxSize > 50) GalacticGreg.Logger.warn(
-                                    "Asteroid-MaxSize for dimID [%s] is larger than 50. This might cause memory-problems, as the maximum asteroid size will be larger than 50*50*50 blocks",
-                                    tDimIdentifier);
+                                "Asteroid-MaxSize for dimID [%s] is larger than 50. This might cause memory-problems, as the maximum asteroid size will be larger than 50*50*50 blocks",
+                                tDimIdentifier);
                             _mDynamicAsteroidMap.put(tDimIdentifier, aConf);
                         }
                     }

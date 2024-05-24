@@ -73,10 +73,10 @@ public class AEStorageCommand implements ICommand {
 
                     // Export structure
                     GalacticGreg.Logger.info(
-                            "Creating Structure from Spatial AE drive. Dimensions: X [%d] Y [%d] Z [%d]",
-                            storedSize.x,
-                            storedSize.y,
-                            storedSize.z);
+                        "Creating Structure from Spatial AE drive. Dimensions: X [%d] Y [%d] Z [%d]",
+                        storedSize.x,
+                        storedSize.y,
+                        storedSize.z);
                     SpaceSchematic tSchematic = SpaceSchematicFactory.createSchematic(tName);
                     boolean tTEWarningSend = false;
 
@@ -106,22 +106,22 @@ public class AEStorageCommand implements ICommand {
                                         // Print a warning on the console
                                         tMsg += " TE";
                                         GalacticGreg.Logger.warn(
-                                                "Warning: Found TileEntity at X[%d] Y[%d] Z[%d]. NBT States are not exported!",
-                                                lX,
-                                                lY,
-                                                lZ);
+                                            "Warning: Found TileEntity at X[%d] Y[%d] Z[%d]. NBT States are not exported!",
+                                            lX,
+                                            lY,
+                                            lZ);
                                         if (!tTEWarningSend) {
                                             // Send a warning ingame, once per export command
                                             tTEWarningSend = true;
                                             PlayerChatHelper
-                                                    .SendWarn(pCommandSender, "TileEntity states are not exported!");
+                                                .SendWarn(pCommandSender, "TileEntity states are not exported!");
                                         }
 
                                     }
 
                                     // If the block is not air, add it to the structure
-                                    if (b != Blocks.air) tSchematic.addStructureInfo(
-                                            SpaceSchematicFactory.createStructureInfo(lX, lY, lZ, b, bm));
+                                    if (b != Blocks.air) tSchematic
+                                        .addStructureInfo(SpaceSchematicFactory.createStructureInfo(lX, lY, lZ, b, bm));
                                 }
                             }
                         }
@@ -134,16 +134,17 @@ public class AEStorageCommand implements ICommand {
                     } else {
                         // All good, xml exported. Notify player that he needs to edit the file
                         PlayerChatHelper.SendInfo(
-                                pCommandSender,
-                                "Structure has been exported to " + tSchematic.getName()
-                                        + ".xml. It contains "
-                                        + tSchematic.coordInfo().size()
-                                        + " Blocks");
+                            pCommandSender,
+                            "Structure has been exported to " + tSchematic.getName()
+                                + ".xml. It contains "
+                                + tSchematic.coordInfo()
+                                    .size()
+                                + " Blocks");
                         PlayerChatHelper
-                                .SendInfo(pCommandSender, "You have to edit the file before a reload will accept it!");
+                            .SendInfo(pCommandSender, "You have to edit the file before a reload will accept it!");
                     }
                 } else PlayerChatHelper
-                        .SendError(pCommandSender, "Error: Item in your hand is not a spatial storage drive!");
+                    .SendError(pCommandSender, "Error: Item in your hand is not a spatial storage drive!");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -155,7 +156,9 @@ public class AEStorageCommand implements ICommand {
         // Command is only enabled for actual players and only if they are OP-ed
         if (pCommandSender instanceof EntityPlayerMP) {
             EntityPlayerMP tEP = (EntityPlayerMP) pCommandSender;
-            return MinecraftServer.getServer().getConfigurationManager().func_152596_g(tEP.getGameProfile());
+            return MinecraftServer.getServer()
+                .getConfigurationManager()
+                .func_152596_g(tEP.getGameProfile());
         } else return false;
     }
 

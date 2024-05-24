@@ -76,8 +76,8 @@ public class DynamicOreMixWorldConfig {
                 for (ModDimensionDef mdd : mc.getDimensionList()) {
                     String tDimIdentifier = mdd.getDimIdentifier();
                     if (_mDynWorldConfigMap.containsKey(tDimIdentifier)) GalacticGreg.Logger.error(
-                            "Found 2 Dimensions with the same Identifier: %s Dimension will not generate Ores",
-                            tDimIdentifier);
+                        "Found 2 Dimensions with the same Identifier: %s Dimension will not generate Ores",
+                        tDimIdentifier);
                     else {
                         boolean tFlag = GregTech_API.sWorldgenFile.get(_mConfigName, getConfigKeyName(mc, mdd), false);
                         _mDynWorldConfigMap.put(tDimIdentifier, tFlag);

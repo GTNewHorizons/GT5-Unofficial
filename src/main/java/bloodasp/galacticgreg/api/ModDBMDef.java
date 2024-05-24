@@ -38,7 +38,8 @@ public class ModDBMDef {
     public ReplaceState blockEquals(Block pBlock) {
         if (pBlock == null) return ReplaceState.Unknown;
 
-        if (Block.blockRegistry.getNameForObject(pBlock).equals(_targetBlockName)) return ReplaceState.CanReplace;
+        if (Block.blockRegistry.getNameForObject(pBlock)
+            .equals(_targetBlockName)) return ReplaceState.CanReplace;
         else return ReplaceState.CannotReplace;
     }
 

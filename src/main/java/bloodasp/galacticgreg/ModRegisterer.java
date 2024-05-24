@@ -84,9 +84,9 @@ public class ModRegisterer {
         // DimensionType.Asteroid
         // also don't forget to add at least one asteroid type, or nothing will generate!
         ModDimensionDef dimEndAsteroids = new ModDimensionDef(
-                "EndAsteroids",
-                ChunkProviderEnd.class,
-                DimensionType.Asteroid);
+            "EndAsteroids",
+            ChunkProviderEnd.class,
+            DimensionType.Asteroid);
 
         dimEndAsteroids.addAsteroidMaterial(new AsteroidBlockComb(GTOreTypes.Netherrack));
         dimEndAsteroids.addAsteroidMaterial(new AsteroidBlockComb(GTOreTypes.RedGranite));
@@ -110,10 +110,10 @@ public class ModRegisterer {
         ModDBMDef DBMMoon = new ModDBMDef("tile.moonBlock", 4);
 
         ModDimensionDef tMoonDim = new ModDimensionDef(
-                "Moon",
-                "micdoodle8.mods.galacticraft.core.world.gen.ChunkProviderMoon",
-                Enums.DimensionType.Planet,
-                singleToList(DBMMoon));
+            "Moon",
+            "micdoodle8.mods.galacticraft.core.world.gen.ChunkProviderMoon",
+            Enums.DimensionType.Planet,
+            singleToList(DBMMoon));
         modGCraftCore.addDimensionDef(tMoonDim);
 
         return modGCraftCore;
@@ -128,19 +128,19 @@ public class ModRegisterer {
         ModContainer modGCraftPlanets = new ModContainer("GalacticraftMars");
         ModDBMDef DBMMars = new ModDBMDef("tile.mars", 9);
         ModDimensionDef dimMars = new ModDimensionDef(
-                "Mars",
-                "micdoodle8.mods.galacticraft.planets.mars.world.gen.ChunkProviderMars",
-                DimensionType.Planet,
-                singleToList(DBMMars));
+            "Mars",
+            "micdoodle8.mods.galacticraft.planets.mars.world.gen.ChunkProviderMars",
+            DimensionType.Planet,
+            singleToList(DBMMars));
 
         // Overwrite ore blocks on mars with red granite ones. This will default to regular stone if not set
         dimMars.setStoneType(GTOreTypes.RedGranite);
         modGCraftPlanets.addDimensionDef(dimMars);
 
         ModDimensionDef dimAsteroids = new ModDimensionDef(
-                "Asteroids",
-                "micdoodle8.mods.galacticraft.planets.asteroids.world.gen.ChunkProviderAsteroids",
-                DimensionType.Asteroid);
+            "Asteroids",
+            "micdoodle8.mods.galacticraft.planets.asteroids.world.gen.ChunkProviderAsteroids",
+            DimensionType.Asteroid);
         dimAsteroids.addAsteroidMaterial(new AsteroidBlockComb(GTOreTypes.BlackGranite));
         dimAsteroids.addAsteroidMaterial(new AsteroidBlockComb(GTOreTypes.RedGranite));
         dimAsteroids.addAsteroidMaterial(new AsteroidBlockComb(GTOreTypes.Netherrack));
@@ -184,95 +184,95 @@ public class ModRegisterer {
 
         // 25.10.2015 GSpace v2.5
         modCGalaxySpace.addDimensionDef(
-                new ModDimensionDef(
-                        "Pluto",
-                        "blessentumble.planets.SolarSystem.pluto.dimension.ChunkProviderPluto",
-                        DimensionType.Planet,
-                        singleToList(DBMPluto)));
+            new ModDimensionDef(
+                "Pluto",
+                "blessentumble.planets.SolarSystem.pluto.dimension.ChunkProviderPluto",
+                DimensionType.Planet,
+                singleToList(DBMPluto)));
         modCGalaxySpace.addDimensionDef(
-                new ModDimensionDef(
-                        "Triton",
-                        "blessentumble.moons.triton.dimension.ChunkProviderTriton",
-                        DimensionType.Planet,
-                        singleToList(DBMTriton)));
+            new ModDimensionDef(
+                "Triton",
+                "blessentumble.moons.triton.dimension.ChunkProviderTriton",
+                DimensionType.Planet,
+                singleToList(DBMTriton)));
         modCGalaxySpace.addDimensionDef(
-                new ModDimensionDef(
-                        "Proteus",
-                        "blessentumble.moons.proteus.dimension.ChunkProviderProteus",
-                        DimensionType.Planet,
-                        singleToList(DBMProteus)));
+            new ModDimensionDef(
+                "Proteus",
+                "blessentumble.moons.proteus.dimension.ChunkProviderProteus",
+                DimensionType.Planet,
+                singleToList(DBMProteus)));
         modCGalaxySpace.addDimensionDef(
-                new ModDimensionDef(
-                        "Oberon",
-                        "blessentumble.moons.oberon.dimension.ChunkProviderOberon",
-                        DimensionType.Planet,
-                        singleToList(DBMOberon)));
+            new ModDimensionDef(
+                "Oberon",
+                "blessentumble.moons.oberon.dimension.ChunkProviderOberon",
+                DimensionType.Planet,
+                singleToList(DBMOberon)));
         modCGalaxySpace.addDimensionDef(
-                new ModDimensionDef(
-                        "Titan",
-                        "blessentumble.moons.titan.dimension.ChunkProviderTitan",
-                        DimensionType.Planet,
-                        singleToList(DBMTitan)));
+            new ModDimensionDef(
+                "Titan",
+                "blessentumble.moons.titan.dimension.ChunkProviderTitan",
+                DimensionType.Planet,
+                singleToList(DBMTitan)));
         modCGalaxySpace.addDimensionDef(
-                new ModDimensionDef(
-                        "Callisto",
-                        "blessentumble.moons.SolarSystem.callisto.dimension.ChunkProviderCallisto",
-                        DimensionType.Planet,
-                        singleToList(DBMCallisto)));
+            new ModDimensionDef(
+                "Callisto",
+                "blessentumble.moons.SolarSystem.callisto.dimension.ChunkProviderCallisto",
+                DimensionType.Planet,
+                singleToList(DBMCallisto)));
         modCGalaxySpace.addDimensionDef(
-                new ModDimensionDef(
-                        "Ganymede",
-                        "blessentumble.moons.ganymede.dimension.ChunkProviderGanymede",
-                        DimensionType.Planet,
-                        singleToList(DBMGanymede)));
+            new ModDimensionDef(
+                "Ganymede",
+                "blessentumble.moons.ganymede.dimension.ChunkProviderGanymede",
+                DimensionType.Planet,
+                singleToList(DBMGanymede)));
         modCGalaxySpace.addDimensionDef(
-                new ModDimensionDef(
-                        "Ceres",
-                        "blessentumble.planets.SolarSystem.ceres.dimension.ChunkProviderCeres",
-                        DimensionType.Planet,
-                        singleToList(DBMCeres)));
+            new ModDimensionDef(
+                "Ceres",
+                "blessentumble.planets.SolarSystem.ceres.dimension.ChunkProviderCeres",
+                DimensionType.Planet,
+                singleToList(DBMCeres)));
         modCGalaxySpace.addDimensionDef(
-                new ModDimensionDef(
-                        "Deimos",
-                        "blessentumble.moons.SolarSystem.deimos.dimension.ChunkProviderDeimos",
-                        DimensionType.Planet,
-                        singleToList(DBMDeimos)));
+            new ModDimensionDef(
+                "Deimos",
+                "blessentumble.moons.SolarSystem.deimos.dimension.ChunkProviderDeimos",
+                DimensionType.Planet,
+                singleToList(DBMDeimos)));
         modCGalaxySpace.addDimensionDef(
-                new ModDimensionDef(
-                        "Enceladus",
-                        "blessentumble.moons.SolarSystem.enceladus.dimension.ChunkProviderEnceladus",
-                        DimensionType.Planet,
-                        singleToList(DBMEnceladus)));
+            new ModDimensionDef(
+                "Enceladus",
+                "blessentumble.moons.SolarSystem.enceladus.dimension.ChunkProviderEnceladus",
+                DimensionType.Planet,
+                singleToList(DBMEnceladus)));
         modCGalaxySpace.addDimensionDef(
-                new ModDimensionDef(
-                        "Io",
-                        "blessentumble.moons.io.dimension.ChunkProviderIo",
-                        DimensionType.Planet,
-                        singleToList(DBMIO)));
+            new ModDimensionDef(
+                "Io",
+                "blessentumble.moons.io.dimension.ChunkProviderIo",
+                DimensionType.Planet,
+                singleToList(DBMIO)));
         modCGalaxySpace.addDimensionDef(
-                new ModDimensionDef(
-                        "Phobos",
-                        "blessentumble.moons.phobos.dimension.ChunkProviderPhobos",
-                        DimensionType.Planet,
-                        singleToList(DBMPhobos)));
+            new ModDimensionDef(
+                "Phobos",
+                "blessentumble.moons.phobos.dimension.ChunkProviderPhobos",
+                DimensionType.Planet,
+                singleToList(DBMPhobos)));
         modCGalaxySpace.addDimensionDef(
-                new ModDimensionDef(
-                        "Venus",
-                        "blessentumble.planets.SolarSystem.venus.dimension.ChunkProviderVenus",
-                        DimensionType.Planet,
-                        singleToList(DBMVenus)));
+            new ModDimensionDef(
+                "Venus",
+                "blessentumble.planets.SolarSystem.venus.dimension.ChunkProviderVenus",
+                DimensionType.Planet,
+                singleToList(DBMVenus)));
         modCGalaxySpace.addDimensionDef(
-                new ModDimensionDef(
-                        "Mercury",
-                        "blessentumble.planets.SolarSystem.mercury.dimension.ChunkProviderMercury",
-                        DimensionType.Planet,
-                        singleToList(DBMMercury)));
+            new ModDimensionDef(
+                "Mercury",
+                "blessentumble.planets.SolarSystem.mercury.dimension.ChunkProviderMercury",
+                DimensionType.Planet,
+                singleToList(DBMMercury)));
 
         // GSpace 2.2-Beta: Kupierbelt
         ModDimensionDef dimKupierBelt = new ModDimensionDef(
-                "Kuiperbelt",
-                "blessentumble.planets.SolarSystem.kuiperbelt.dimension.ChunkProviderKuiper",
-                DimensionType.Asteroid);
+            "Kuiperbelt",
+            "blessentumble.planets.SolarSystem.kuiperbelt.dimension.ChunkProviderKuiper",
+            DimensionType.Asteroid);
         dimKupierBelt.setDimensionType(DimensionType.Asteroid);
         dimKupierBelt.addAsteroidMaterial(new AsteroidBlockComb(GTOreTypes.RedGranite));
         dimKupierBelt.addAsteroidMaterial(new AsteroidBlockComb(GTOreTypes.BlackGranite));

@@ -282,8 +282,13 @@ public class ModDimensionDef {
      * @param pChunkProvider The chunkprovider class that shall be observed for the oregen
      */
     public ModDimensionDef(String pDimensionName, Class<? extends IChunkProvider> pChunkProvider,
-            DimensionType pDimType) {
-        this(pDimensionName, pChunkProvider.toString().substring(6), pDimType, null);
+        DimensionType pDimType) {
+        this(
+            pDimensionName,
+            pChunkProvider.toString()
+                .substring(6),
+            pDimType,
+            null);
     }
 
     /**
@@ -294,8 +299,13 @@ public class ModDimensionDef {
      * @param pBlockDefinitions The list of predefined blocks to be replaced by ores
      */
     public ModDimensionDef(String pDimensionName, Class<? extends IChunkProvider> pChunkProvider,
-            DimensionType pDimType, List<ModDBMDef> pBlockDefinitions) {
-        this(pDimensionName, pChunkProvider.toString().substring(6), pDimType, pBlockDefinitions);
+        DimensionType pDimType, List<ModDBMDef> pBlockDefinitions) {
+        this(
+            pDimensionName,
+            pChunkProvider.toString()
+                .substring(6),
+            pDimType,
+            pBlockDefinitions);
     }
 
     /**
@@ -316,7 +326,7 @@ public class ModDimensionDef {
      * @param pBlockDefinitions  The list of predefined blocks to be replaced by ores
      */
     public ModDimensionDef(String pDimensionName, String pChunkProviderName, DimensionType pDimType,
-            List<ModDBMDef> pBlockDefinitions) {
+        List<ModDBMDef> pBlockDefinitions) {
         _mInternalDimIdentifier = STR_NOTDEFINED;
         _mDimensionName = pDimensionName;
         _mChunkProvider = pChunkProviderName;

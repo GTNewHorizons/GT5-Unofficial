@@ -16,12 +16,12 @@ public class GT_TileEntity_Ores_Space {
 
     // Renamed function to prevent function shadowing with base GT-code
     public static boolean setOuterSpaceOreBlock(ModDimensionDef pDimensionDef, World pWorld, int pX, int pY, int pZ,
-            int pMetaData) {
+        int pMetaData) {
         return setOuterSpaceOreBlock(pDimensionDef, pWorld, pX, pY, pZ, pMetaData, false, -1);
     }
 
     public static boolean setOuterSpaceOreBlock(ModDimensionDef pDimensionDef, World pWorld, int pX, int pY, int pZ,
-            int pMetaData, boolean pAir) {
+        int pMetaData, boolean pAir) {
         return setOuterSpaceOreBlock(pDimensionDef, pWorld, pX, pY, pZ, pMetaData, pAir, -1);
     }
 
@@ -35,7 +35,7 @@ public class GT_TileEntity_Ores_Space {
      * @return
      */
     private static ReplaceState CheckForReplaceableBlock(World pWorld, int pX, int pY, int pZ,
-            ModDimensionDef pDimDef) {
+        ModDimensionDef pDimDef) {
         try {
             ReplaceState tFlag = ReplaceState.Unknown;
 
@@ -65,12 +65,12 @@ public class GT_TileEntity_Ores_Space {
      * @return
      */
     public static boolean setOuterSpaceOreBlock(ModDimensionDef pDimensionDef, World pWorld, int pX, int pY, int pZ,
-            int pMetaData, boolean pAir, int pCustomGTOreOffset) {
+        int pMetaData, boolean pAir, int pCustomGTOreOffset) {
         if (!pAir) pY = Math.min(pWorld.getActualHeight(), Math.max(pY, 1));
 
         if (pDimensionDef == null) {
             GalacticGreg.Logger
-                    .warn("Unknown DimensionID: %d. Will not set anything here", pWorld.provider.dimensionId);
+                .warn("Unknown DimensionID: %d. Will not set anything here", pWorld.provider.dimensionId);
             return false;
         }
         try {
@@ -96,20 +96,21 @@ public class GT_TileEntity_Ores_Space {
                         return false;
                     }
 
-                    if (pCustomGTOreOffset == -1) pMetaData += pDimensionDef.getStoneType().getOffset();
+                    if (pCustomGTOreOffset == -1) pMetaData += pDimensionDef.getStoneType()
+                        .getOffset();
                     else pMetaData += pCustomGTOreOffset;
                     // This fix seems like cargo cult coding...The Abstract class just returns 0 for the harvest level.
                     // But it aligns with the GT5U method, so yay?
                     pWorld.setBlock(
-                            pX,
-                            pY,
-                            pZ,
-                            GregTech_API.sBlockOres1,
-                            GT_TileEntity_Ores.getHarvestData(
-                                    (short) pMetaData,
-                                    ((GT_Block_Ores_Abstract) GregTech_API.sBlockOres1)
-                                            .getBaseBlockHarvestLevel(pMetaData % 16000 / 1000)),
-                            0);
+                        pX,
+                        pY,
+                        pZ,
+                        GregTech_API.sBlockOres1,
+                        GT_TileEntity_Ores.getHarvestData(
+                            (short) pMetaData,
+                            ((GT_Block_Ores_Abstract) GregTech_API.sBlockOres1)
+                                .getBaseBlockHarvestLevel(pMetaData % 16000 / 1000)),
+                        0);
                     TileEntity tTileEntity = pWorld.getTileEntity(pX, pY, pZ);
                     if ((tTileEntity instanceof GT_TileEntity_Ores)) {
                         ((GT_TileEntity_Ores) tTileEntity).mMetaData = ((short) pMetaData);
@@ -120,20 +121,20 @@ public class GT_TileEntity_Ores_Space {
                         // That's why I put this behind a debug config option. If you ever find the reason for it,
                         // please tell me what caused this
                         if (GalacticGreg.GalacticConfig.ReportOreGenFailures) GalacticGreg.Logger.warn(
-                                "Something went wrong while placing GT OreTileEntity. Meta: %d X [%d] Y [%d] Z [%d]",
-                                pMetaData,
-                                pX,
-                                pY,
-                                pZ);
+                            "Something went wrong while placing GT OreTileEntity. Meta: %d X [%d] Y [%d] Z [%d]",
+                            pMetaData,
+                            pX,
+                            pY,
+                            pZ);
                     }
 
                     return true;
                 } else GalacticGreg.Logger.warn(
-                        "Not replacing block at pos %d %d %d due unexpected metaData for OreBlock: %d",
-                        pX,
-                        pY,
-                        pZ,
-                        pMetaData);
+                    "Not replacing block at pos %d %d %d due unexpected metaData for OreBlock: %d",
+                    pX,
+                    pY,
+                    pZ,
+                    pMetaData);
             }
         } catch (Exception e) {
             if (GalacticGreg.GalacticConfig.ReportOreGenFailures) e.printStackTrace();

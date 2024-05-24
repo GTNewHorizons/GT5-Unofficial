@@ -23,11 +23,11 @@ import gregtech.api.GregTech_API;
 import gregtech.api.world.GT_Worldgen;
 
 @Mod(
-        modid = GalacticGreg.MODID,
-        name = GalacticGreg.MODNAME,
-        version = GalacticGreg.VERSION,
-        dependencies = "required-after:GalacticraftCore; required-after:gregtech@5.09.32.30;",
-        acceptableRemoteVersions = "*")
+    modid = GalacticGreg.MODID,
+    name = GalacticGreg.MODNAME,
+    version = GalacticGreg.VERSION,
+    dependencies = "required-after:GalacticraftCore; required-after:gregtech@5.09.32.30;",
+    acceptableRemoteVersions = "*")
 public class GalacticGreg {
 
     public static final List<GT_Worldgen> smallOreWorldgenList = new ArrayList<>();
@@ -56,7 +56,7 @@ public class GalacticGreg {
     public void onPreLoad(FMLPreInitializationEvent aEvent) {
         GalacticConfig = new GalacticGregConfig(aEvent.getModConfigurationDirectory(), NICE_MODID, NICE_MODID);
         if (!GalacticConfig.LoadConfig()) GalacticGreg.Logger
-                .warn("Something went wrong while reading GalacticGregs config file. Things will be wonky..");
+            .warn("Something went wrong while reading GalacticGregs config file. Things will be wonky..");
 
         GalacticRandom = new Random(System.currentTimeMillis());
 
@@ -85,31 +85,29 @@ public class GalacticGreg {
         Logger.trace("Entering POSTLOAD");
 
         if (!GalacticGregRegistry.InitRegistry()) throw new RuntimeException(
-                "GalacticGreg registry has been finalized from a 3rd-party mod, this is forbidden!");
+            "GalacticGreg registry has been finalized from a 3rd-party mod, this is forbidden!");
 
         // new WorldGenGaGT().run(); DO NOT UNCOMMENT, was moved to gregtech.loaders.postload.GT_Worldgenloader
 
         if (Loader.isModLoaded("bartworks")) {
             for (int f = 0,
-                    j = GregTech_API.sWorldgenFile.get("worldgen.GaGregBartworks", "AmountOfCustomLargeVeinSlots", 0); f
-                            < j; f++) {
+                j = GregTech_API.sWorldgenFile.get("worldgen.GaGregBartworks", "AmountOfCustomLargeVeinSlots", 0); f
+                    < j; f++) {
                 new BW_Worldgen_Ore_Layer_Space(
-                        "mix.custom." + (f < 10 ? "0" : "") + f,
-                        GregTech_API.sWorldgenFile.get(
-                                "worldgen.GaGregBartworks." + "mix.custom." + (f < 10 ? "0" : "") + f,
-                                "Enabled",
-                                false));
+                    "mix.custom." + (f < 10 ? "0" : "") + f,
+                    GregTech_API.sWorldgenFile
+                        .get("worldgen.GaGregBartworks." + "mix.custom." + (f < 10 ? "0" : "") + f, "Enabled", false));
             }
 
             for (int f = 0,
-                    j = GregTech_API.sWorldgenFile.get("worldgen.GaGregBartworks", "AmountOfCustomSmallSlots", 0); f
-                            < j; f++) {
+                j = GregTech_API.sWorldgenFile.get("worldgen.GaGregBartworks", "AmountOfCustomSmallSlots", 0); f
+                    < j; f++) {
                 new BW_Worldgen_Ore_SmallOre_Space(
-                        "small.custom." + (f < 10 ? "0" : "") + f,
-                        GregTech_API.sWorldgenFile.get(
-                                "worldgen.GaGregBartworks." + "small.custom." + (f < 10 ? "0" : "") + f,
-                                "Enabled",
-                                false));
+                    "small.custom." + (f < 10 ? "0" : "") + f,
+                    GregTech_API.sWorldgenFile.get(
+                        "worldgen.GaGregBartworks." + "small.custom." + (f < 10 ? "0" : "") + f,
+                        "Enabled",
+                        false));
             }
         }
 
@@ -138,8 +136,7 @@ public class GalacticGreg {
         if (GalacticConfig.ProfileOreGen) pEvent.registerServerCommand(new ProfilingCommand());
 
         if (Loader.isModLoaded("appliedenergistics2") && GalacticConfig.EnableAEExportCommand
-                && GalacticConfig.SchematicsEnabled)
-            pEvent.registerServerCommand(new AEStorageCommand());
+            && GalacticConfig.SchematicsEnabled) pEvent.registerServerCommand(new AEStorageCommand());
 
         Logger.trace("Leaving SERVERLOAD");
     }

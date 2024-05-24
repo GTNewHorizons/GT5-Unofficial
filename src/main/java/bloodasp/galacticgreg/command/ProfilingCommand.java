@@ -57,21 +57,26 @@ public class ProfilingCommand implements ICommand {
                 if (tTime == -1) tInfo = "N/A";
                 else tInfo = String.format("%d ms", tTime);
                 pCommandSender.addChatMessage(
-                        new ChatComponentText(
-                                String.format("%s (%s): %s", mdd.getDimIdentifier(), mdd.getDimensionName(), tInfo)));
+                    new ChatComponentText(
+                        String.format("%s (%s): %s", mdd.getDimIdentifier(), mdd.getDimensionName(), tInfo)));
             }
         }
     }
 
     @Override
     public boolean canCommandSenderUseCommand(ICommandSender pCommandSender) {
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER
-                && !FMLCommonHandler.instance().getMinecraftServerInstance().isDedicatedServer())
+        if (FMLCommonHandler.instance()
+            .getEffectiveSide() == Side.SERVER
+            && !FMLCommonHandler.instance()
+                .getMinecraftServerInstance()
+                .isDedicatedServer())
             return true;
 
         if (pCommandSender instanceof EntityPlayerMP) {
             EntityPlayerMP tEP = (EntityPlayerMP) pCommandSender;
-            return MinecraftServer.getServer().getConfigurationManager().func_152596_g(tEP.getGameProfile());
+            return MinecraftServer.getServer()
+                .getConfigurationManager()
+                .func_152596_g(tEP.getGameProfile());
         }
         return false;
     }

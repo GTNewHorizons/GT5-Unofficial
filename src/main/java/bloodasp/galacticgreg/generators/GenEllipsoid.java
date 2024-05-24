@@ -106,8 +106,8 @@ public class GenEllipsoid implements ISpaceObjectGenerator {
 
                     else if (val > 0.01D && val < _mCoreDensity) tbp = TargetBlockPosition.AsteroidCore;
 
-                    else if (val >= _mCoreDensity && val <= (1.0D - (_mSineFactor
-                            * MathHelper.sin((iZ + iX + iY - _mRandom.nextFloat() * _mRandomInfluence)))))
+                    else if (val >= _mCoreDensity && val <= (1.0D
+                        - (_mSineFactor * MathHelper.sin((iZ + iX + iY - _mRandom.nextFloat() * _mRandomInfluence)))))
                         tbp = TargetBlockPosition.AsteroidShell;
 
                     if (tbp != TargetBlockPosition.Invalid)

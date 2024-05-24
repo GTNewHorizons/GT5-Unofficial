@@ -50,12 +50,12 @@ public class SpaceSchematicWrapper implements ISpaceObjectGenerator {
                     BlockMetaComb bmc = new BlockMetaComb(tBlock, bsi.blockMeta);
                     Vec3 tCenteredPos = _mCenter.addVector(bsi.posX, bsi.posY, bsi.posZ);
                     StructureInformation tnewSI = new StructureInformation(
-                            tCenteredPos,
-                            TargetBlockPosition.StructureBlock,
-                            bmc);
+                        tCenteredPos,
+                        TargetBlockPosition.StructureBlock,
+                        bmc);
                     _mFinalizedStructure.add(tnewSI);
                 } else GalacticGreg.Logger
-                        .warn("Block %s:%s could not be found. Schematic will be incomplete!", tModID, tBlockName);
+                    .warn("Block %s:%s could not be found. Schematic will be incomplete!", tModID, tBlockName);
             } catch (Exception e) {
                 e.printStackTrace();
                 GalacticGreg.Logger.error("Error while recalculating blocks position");

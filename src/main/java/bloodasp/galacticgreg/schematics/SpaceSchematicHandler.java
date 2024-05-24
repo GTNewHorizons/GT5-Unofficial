@@ -54,7 +54,8 @@ public class SpaceSchematicHandler {
             if (tChoosenSchematic.getRarity() < tRandomChance) tChoosenSchematic = null;
         } else {
             for (int i = 0; i < _mSpaceSchematics.size(); i++) {
-                if (_mSpaceSchematics.get(i).getRarity() >= tRandomChance) tRandomIDs.add(i);
+                if (_mSpaceSchematics.get(i)
+                    .getRarity() >= tRandomChance) tRandomIDs.add(i);
             }
         }
 
@@ -75,7 +76,7 @@ public class SpaceSchematicHandler {
     public boolean reloadSchematics(boolean pForceReload) {
         try {
             Collection<File> structureFiles = FileUtils
-                    .listFiles(_mSchematicsFolderName, new String[] { "xml" }, false);
+                .listFiles(_mSchematicsFolderName, new String[] { "xml" }, false);
             List<SpaceSchematic> tNewSpaceSchematics = new ArrayList<>();
             int tErrorsFound = 0;
 
@@ -126,16 +127,15 @@ public class SpaceSchematicHandler {
      */
     public boolean SaveSpaceStructure(SpaceSchematic pSchematic) {
         try {
-            if (pSchematic.getName().length() < 1) return false;
+            if (pSchematic.getName()
+                .length() < 1) return false;
 
             JAXBContext tJaxbCtx = JAXBContext.newInstance(SpaceSchematic.class);
             Marshaller jaxMarsh = tJaxbCtx.createMarshaller();
             jaxMarsh.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             jaxMarsh.marshal(
-                    pSchematic,
-                    new FileOutputStream(
-                            String.format("%s/%s.xml", _mSchematicsFolderName, pSchematic.getName()),
-                            false));
+                pSchematic,
+                new FileOutputStream(String.format("%s/%s.xml", _mSchematicsFolderName, pSchematic.getName()), false));
 
             return true;
         } catch (Exception e) {
