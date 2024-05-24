@@ -1,1 +1,0 @@
-for /r /d %%I in (*) do xcopy %1 "%%~fsI" /H /K /Y
