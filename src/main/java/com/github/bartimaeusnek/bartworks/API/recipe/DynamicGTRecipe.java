@@ -12,19 +12,19 @@ import gregtech.api.util.GT_Recipe;
 public class DynamicGTRecipe extends GT_Recipe {
 
     public DynamicGTRecipe(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems,
-            int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt,
-            int aSpecialValue, GT_Recipe originalRecipe) {
+        int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt,
+        int aSpecialValue, GT_Recipe originalRecipe) {
         super(
-                aOptimize,
-                aInputs,
-                aOutputs,
-                aSpecialItems,
-                aChances,
-                aFluidInputs,
-                aFluidOutputs,
-                aDuration,
-                aEUt,
-                aSpecialValue);
+            aOptimize,
+            aInputs,
+            aOutputs,
+            aSpecialItems,
+            aChances,
+            aFluidInputs,
+            aFluidOutputs,
+            aDuration,
+            aEUt,
+            aSpecialValue);
         if (originalRecipe != null) {
             this.owners = new ArrayList<>(originalRecipe.owners);
             this.stackTraces = new ArrayList<>(originalRecipe.stackTraces);

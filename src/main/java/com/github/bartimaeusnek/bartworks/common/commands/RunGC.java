@@ -31,7 +31,8 @@ public class RunGC extends CommandBase {
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
-        Runtime.getRuntime().gc();
+        Runtime.getRuntime()
+            .gc();
         sender.addChatMessage(new ChatComponentText("Ran GC!"));
     }
 }

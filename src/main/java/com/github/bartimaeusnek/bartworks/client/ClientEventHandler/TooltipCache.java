@@ -37,7 +37,8 @@ class TooltipCache {
             sb.append(s);
             sb.append(System.lineSeparator());
         }
-        char[] rettype = sb.toString().toCharArray();
+        char[] rettype = sb.toString()
+            .toCharArray();
         return TooltipCache.cache.put(p, rettype) == rettype;
     }
 

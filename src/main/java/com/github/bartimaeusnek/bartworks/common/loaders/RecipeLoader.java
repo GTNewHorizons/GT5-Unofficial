@@ -36,7 +36,7 @@ import gregtech.api.util.GT_ModHandler;
 public class RecipeLoader {
 
     public static final long BITSD = GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-            | GT_ModHandler.RecipeBits.REVERSIBLE;
+        | GT_ModHandler.RecipeBits.REVERSIBLE;
 
     public static void run() {
         new Assembler().run();

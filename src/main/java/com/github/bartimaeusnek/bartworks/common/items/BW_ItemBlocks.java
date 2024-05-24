@@ -38,9 +38,9 @@ import gregtech.api.util.GT_LanguageManager;
 public class BW_ItemBlocks extends ItemBlock {
 
     private final String mNoMobsToolTip = GT_LanguageManager
-            .addStringLocalization("gt.nomobspawnsonthisblock", "Mobs cannot Spawn on this Block");
+        .addStringLocalization("gt.nomobspawnsonthisblock", "Mobs cannot Spawn on this Block");
     private final String mNoTileEntityToolTip = GT_LanguageManager
-            .addStringLocalization("gt.notileentityinthisblock", "This is NOT a TileEntity!");
+        .addStringLocalization("gt.notileentityinthisblock", "This is NOT a TileEntity!");
 
     public BW_ItemBlocks(Block par1) {
         super(par1);
@@ -65,9 +65,9 @@ public class BW_ItemBlocks extends ItemBlock {
         byte tier = BorosilicateGlass.getTier(this.field_150939_a, aStack.getItemDamage());
         if (tier >= 0) {
             aList.add(
-                    StatCollector.translateToLocal("tooltip.glas.0.name") + " "
-                            + BW_ColorUtil.getColorForTier(tier)
-                            + GT_Values.VN[tier]);
+                StatCollector.translateToLocal("tooltip.glas.0.name") + " "
+                    + BW_ColorUtil.getColorForTier(tier)
+                    + GT_Values.VN[tier]);
         }
         if (this.field_150939_a instanceof ITileAddsInformation) {
             aList.addAll(Arrays.asList(((ITileAddsInformation) this.field_150939_a).getInfoData()));

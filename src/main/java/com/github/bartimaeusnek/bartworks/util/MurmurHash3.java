@@ -36,13 +36,13 @@ public final class MurmurHash3 {
      */
     public static long getLongLittleEndian(byte[] buf, int offset) {
         return (long) buf[offset + 7] << 56 // no mask needed
-                | (buf[offset + 6] & 0xffL) << 48
-                | (buf[offset + 5] & 0xffL) << 40
-                | (buf[offset + 4] & 0xffL) << 32
-                | (buf[offset + 3] & 0xffL) << 24
-                | (buf[offset + 2] & 0xffL) << 16
-                | (buf[offset + 1] & 0xffL) << 8
-                | buf[offset] & 0xffL; // no shift needed
+            | (buf[offset + 6] & 0xffL) << 48
+            | (buf[offset + 5] & 0xffL) << 40
+            | (buf[offset + 4] & 0xffL) << 32
+            | (buf[offset + 3] & 0xffL) << 24
+            | (buf[offset + 2] & 0xffL) << 16
+            | (buf[offset + 1] & 0xffL) << 8
+            | buf[offset] & 0xffL; // no shift needed
     }
 
     /**
@@ -148,8 +148,8 @@ public final class MurmurHash3 {
                 int utf32 = data.charAt(pos++);
                 utf32 = (code - 0xD7C0 << 10) + (utf32 & 0x3FF);
                 k2 = 0xff & (0xF0 | utf32 >> 18) | (0x80 | utf32 >> 12 & 0x3F) << 8
-                        | (0x80 | utf32 >> 6 & 0x3F) << 16
-                        | (0x80 | utf32 & 0x3F) << 24;
+                    | (0x80 | utf32 >> 6 & 0x3F) << 16
+                    | (0x80 | utf32 & 0x3F) << 24;
                 bits = 32;
             }
 

@@ -107,18 +107,18 @@ public class BartsNoise implements INoiseGen {
 
     double getNonOctavedNoise(double x, double y) {
         double phase = SimplexNoise
-                .noise(Math.pow(x * this.frequency, this.amplitude), Math.pow(y * this.frequency, this.amplitude));
+            .noise(Math.pow(x * this.frequency, this.amplitude), Math.pow(y * this.frequency, this.amplitude));
         return MathUtils.wrap(phase, 1);
     }
 
     public double getNeighbouringNoise(int x, int y) {
         return (this.getNoiseSingle(x - 1, y - 1) + this.getNoiseSingle(x, y - 1)
-                + this.getNoiseSingle(x - 1, y)
-                + this.getNoiseSingle(x + 1, y)
-                + this.getNoiseSingle(x, y + 1)
-                + this.getNoiseSingle(x + 1, y + 1)
-                + this.getNoiseSingle(x - 1, y + 1)
-                + this.getNoiseSingle(x + 1, y - 1)) / 8;
+            + this.getNoiseSingle(x - 1, y)
+            + this.getNoiseSingle(x + 1, y)
+            + this.getNoiseSingle(x, y + 1)
+            + this.getNoiseSingle(x + 1, y + 1)
+            + this.getNoiseSingle(x - 1, y + 1)
+            + this.getNoiseSingle(x + 1, y - 1)) / 8;
     }
 
     public double getNoiseSingle(int x, int y) {

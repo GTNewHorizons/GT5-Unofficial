@@ -65,21 +65,21 @@ public class Circuit_Programmer extends GT_Generic_Item implements IElectricItem
         this.setHasSubtypes(false);
         this.setCreativeTab(MainMod.BWT);
         GregTech_API.registerCircuitProgrammer(
-                s -> s.getItem() instanceof Circuit_Programmer && ElectricItem.manager.canUse(s, COST_PER_USE),
-                (s, p) -> {
-                    ElectricItem.manager.use(s, COST_PER_USE, p);
-                    return s;
-                });
+            s -> s.getItem() instanceof Circuit_Programmer && ElectricItem.manager.canUse(s, COST_PER_USE),
+            (s, p) -> {
+                ElectricItem.manager.use(s, COST_PER_USE, p);
+                return s;
+            });
     }
 
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         super.addInformation(aStack, aPlayer, aList, aF3_H);
         if (aStack != null && aStack.getTagCompound() != null) aList.add(
-                StatCollector.translateToLocal("tooltip.cp.0.name") + " "
-                        + (aStack.getTagCompound().getBoolean("HasChip")
-                                ? StatCollector.translateToLocal("tooltip.bw.yes.name")
-                                : StatCollector.translateToLocal("tooltip.bw.no.name")));
+            StatCollector.translateToLocal("tooltip.cp.0.name") + " "
+                + (aStack.getTagCompound()
+                    .getBoolean("HasChip") ? StatCollector.translateToLocal("tooltip.bw.yes.name")
+                        : StatCollector.translateToLocal("tooltip.bw.no.name")));
         aList.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
     }
 
@@ -174,11 +174,15 @@ public class Circuit_Programmer extends GT_Generic_Item implements IElectricItem
         if (tag != null && tag.getBoolean(NBT_KEY_HAS_CHIP)) {
             initialStack = this.createRealCircuit(tag.getByte(NBT_KEY_CHIP_CONFIG));
         }
-        circuitSlotWidget.getMcSlot().putStack(initialStack);
+        circuitSlotWidget.getMcSlot()
+            .putStack(initialStack);
 
         builder.widget(circuitSlotWidget.setChangeListener(widget -> {
-            ItemStack stack = widget.getMcSlot().getStack();
-            ItemStack heldItem = widget.getContext().getPlayer().getHeldItem();
+            ItemStack stack = widget.getMcSlot()
+                .getStack();
+            ItemStack heldItem = widget.getContext()
+                .getPlayer()
+                .getHeldItem();
             NBTTagCompound tag2 = heldItem.getTagCompound();
             if (tag2 == null) {
                 tag2 = new NBTTagCompound();
@@ -191,17 +195,25 @@ public class Circuit_Programmer extends GT_Generic_Item implements IElectricItem
                 tag2.setBoolean(NBT_KEY_HAS_CHIP, false);
             }
             heldItem.setTagCompound(tag2);
-        }).setFilter(stack -> this.isProgrammedCircuit(stack) || this.isLVCircuit(stack))
-                .setBackground(ModularUITextures.ITEM_SLOT, GT_UITextures.OVERLAY_SLOT_INT_CIRCUIT).setPos(122, 60));
+        })
+            .setFilter(stack -> this.isProgrammedCircuit(stack) || this.isLVCircuit(stack))
+            .setBackground(ModularUITextures.ITEM_SLOT, GT_UITextures.OVERLAY_SLOT_INT_CIRCUIT)
+            .setPos(122, 60));
 
         for (int i = 0; i < 24; i++) {
             final int index = i;
             builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                if (circuitSlotWidget.getMcSlot().getHasStack()
-                        && this.isProgrammedCircuit(circuitSlotWidget.getMcSlot().getStack())) {
-                    circuitSlotWidget.getMcSlot().putStack(this.createRealCircuit(index + 1));
+                if (circuitSlotWidget.getMcSlot()
+                    .getHasStack()
+                    && this.isProgrammedCircuit(
+                        circuitSlotWidget.getMcSlot()
+                            .getStack())) {
+                    circuitSlotWidget.getMcSlot()
+                        .putStack(this.createRealCircuit(index + 1));
                 }
-            }).setPos(32 + i % 12 * 18, 21 + i / 12 * 18).setSize(18, 18));
+            })
+                .setPos(32 + i % 12 * 18, 21 + i / 12 * 18)
+                .setSize(18, 18));
         }
 
         return builder.build();
@@ -212,12 +224,15 @@ public class Circuit_Programmer extends GT_Generic_Item implements IElectricItem
     }
 
     private boolean isProgrammedCircuit(ItemStack stack) {
-        return stack.getItem().equals(GT_Utility.getIntegratedCircuit(0).getItem());
+        return stack.getItem()
+            .equals(
+                GT_Utility.getIntegratedCircuit(0)
+                    .getItem());
     }
 
     private boolean isLVCircuit(ItemStack stack) {
         return BW_Util.checkStackAndPrefix(stack)
-                && OrePrefixes.circuit.equals(GT_OreDictUnificator.getAssociation(stack).mPrefix)
-                && GT_OreDictUnificator.getAssociation(stack).mMaterial.mMaterial.equals(Materials.Basic);
+            && OrePrefixes.circuit.equals(GT_OreDictUnificator.getAssociation(stack).mPrefix)
+            && GT_OreDictUnificator.getAssociation(stack).mMaterial.mMaterial.equals(Materials.Basic);
     }
 }

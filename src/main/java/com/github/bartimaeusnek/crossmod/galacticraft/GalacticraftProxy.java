@@ -61,7 +61,7 @@ public class GalacticraftProxy {
 
     private static void commonpreInit(FMLPreInitializationEvent e) {
         GalacticraftProxy.gtConf = new Configuration(
-                new File(new File(e.getModConfigurationDirectory(), "GregTech"), "GregTech.cfg"));
+            new File(new File(e.getModConfigurationDirectory(), "GregTech"), "GregTech.cfg"));
         GalacticraftProxy.uo_dimensionList.getConfig(GalacticraftProxy.gtConf, "undergroundfluid");
         BW_WorldGenRoss128b.initundergroundFluids();
         BW_WorldGenRoss128ba.init_undergroundFluids();

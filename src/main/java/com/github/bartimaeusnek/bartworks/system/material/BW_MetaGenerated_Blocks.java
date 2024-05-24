@@ -44,7 +44,7 @@ public abstract class BW_MetaGenerated_Blocks extends BW_TileEntityContainer {
     }
 
     public BW_MetaGenerated_Blocks(Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName,
-            OrePrefixes types) {
+        OrePrefixes types) {
         super(p_i45386_1_, tileEntity, blockName);
         this.setHardness(5.0F);
         this.setResistance(5.0F);
@@ -53,8 +53,8 @@ public abstract class BW_MetaGenerated_Blocks extends BW_TileEntityContainer {
         this._prefixes = types;
         if (this._prefixes != null) {
             this.blockTypeLocalizedName = GT_LanguageManager.addStringLocalization(
-                    "bw.blocktype." + this._prefixes,
-                    this._prefixes.mLocalizedMaterialPre + "%material" + this._prefixes.mLocalizedMaterialPost);
+                "bw.blocktype." + this._prefixes,
+                this._prefixes.mLocalizedMaterialPre + "%material" + this._prefixes.mLocalizedMaterialPost);
         }
         Werkstoff.werkstoffHashSet.forEach(this::doRegistrationStuff);
     }
@@ -124,6 +124,8 @@ public abstract class BW_MetaGenerated_Blocks extends BW_TileEntityContainer {
         if (tTileEntity instanceof BW_MetaGenerated_Block_TE metaTE) {
             return metaTE.getDrops(aFortune);
         }
-        return mTemporaryTileEntity.get() == null ? new ArrayList<>() : mTemporaryTileEntity.get().getDrops(aFortune);
+        return mTemporaryTileEntity.get() == null ? new ArrayList<>()
+            : mTemporaryTileEntity.get()
+                .getDrops(aFortune);
     }
 }

@@ -73,8 +73,10 @@ public class GT_WandBuffer extends GT_MetaTileEntity_BasicBatteryBuffer {
     public long[] getStoredEnergy() {
         boolean scaleOverflow = false;
         boolean storedOverflow = false;
-        long tScale = this.getBaseMetaTileEntity().getEUCapacity();
-        long tStored = this.getBaseMetaTileEntity().getStoredEU();
+        long tScale = this.getBaseMetaTileEntity()
+            .getEUCapacity();
+        long tStored = this.getBaseMetaTileEntity()
+            .getStoredEU();
         long tStep;
         if (this.mInventory != null) {
 

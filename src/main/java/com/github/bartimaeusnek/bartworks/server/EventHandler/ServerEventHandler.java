@@ -38,7 +38,7 @@ public class ServerEventHandler {
     public void EntityJoinWorldEvent(EntityJoinWorldEvent event) {
         if (event == null || !(event.entity instanceof EntityPlayerMP) || !SideReference.Side.Server) return;
         MainMod.BW_Network_instance
-                .sendToPlayer(new OreDictCachePacket(OreDictHandler.getNonBWCache()), (EntityPlayerMP) event.entity);
+            .sendToPlayer(new OreDictCachePacket(OreDictHandler.getNonBWCache()), (EntityPlayerMP) event.entity);
         MainMod.BW_Network_instance.sendToPlayer(new ServerJoinedPackage(null), (EntityPlayerMP) event.entity);
     }
 
@@ -46,8 +46,7 @@ public class ServerEventHandler {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onPlayerTickEventServer(TickEvent.PlayerTickEvent event) {
         if (event == null || !(event.player instanceof EntityPlayerMP)
-                || event.player.worldObj.getTotalWorldTime() % 20 != 0)
-            return;
+            || event.player.worldObj.getTotalWorldTime() % 20 != 0) return;
 
         boolean replace = false;
         ItemStack toReplace = null;

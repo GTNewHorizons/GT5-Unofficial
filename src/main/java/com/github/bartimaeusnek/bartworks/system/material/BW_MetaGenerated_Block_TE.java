@@ -52,10 +52,10 @@ public abstract class BW_MetaGenerated_Block_TE extends TileEntity implements IT
     @Override
     public Packet getDescriptionPacket() {
         if (!this.worldObj.isRemote) BW_Network_instance.sendPacketToAllPlayersInRange(
-                this.worldObj,
-                new MetaBlockPacket(this.xCoord, (short) this.yCoord, this.zCoord, this.mMetaData),
-                this.xCoord,
-                this.zCoord);
+            this.worldObj,
+            new MetaBlockPacket(this.xCoord, (short) this.yCoord, this.zCoord, this.mMetaData),
+            this.xCoord,
+            this.zCoord);
         return null;
     }
 

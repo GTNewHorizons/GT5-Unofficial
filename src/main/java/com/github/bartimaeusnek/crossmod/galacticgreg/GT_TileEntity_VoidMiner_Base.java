@@ -112,7 +112,7 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
 
     @Override
     protected boolean workingAtBottom(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe,
-            int yHead, int oldYHead) {
+        int yHead, int oldYHead) {
         // if the dropMap has never been initialised or if the dropMap is empty
         if (this.dropMap == null || this.totalWeight == 0) this.calculateDropMap();
 
@@ -128,29 +128,36 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
 
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        String casings = this.getCasingBlockItem().get(0).getDisplayName();
+        String casings = this.getCasingBlockItem()
+            .get(0)
+            .getDisplayName();
 
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Miner").addInfo("Controller Block for the Void Miner " + GT_Values.VN[this.getMinTier()])
-                .addInfo("Consumes " + GT_Values.V[this.getMinTier()] + "EU/t")
-                .addInfo(
-                        "Can be supplied with 2L/s of Neon(x4), Krypton(x8), Xenon(x16) or Oganesson(x64) for higher outputs.")
-                .addInfo(
-                        "Will output " + 2 * this.TIER_MULTIPLIER
-                                + " Ores per Second depending on the Dimension it is build in")
-                .addInfo("Put the Ore into the input bus to set the Whitelist/Blacklist")
-                .addInfo("Use a screwdriver to toggle Whitelist/Blacklist")
-                .addInfo("Blacklist or non Whitelist Ore will be VOIDED").addSeparator()
-                .beginStructureBlock(3, 7, 3, false).addController("Front bottom")
-                .addOtherStructurePart(casings, "form the 3x1x3 Base")
-                .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base (2 minimum total)")
-                .addOtherStructurePart(
-                        this.getFrameMaterial().mName + " Frame Boxes",
-                        "Each pillar's side and 1x3x1 on top")
-                .addEnergyHatch(VN[this.getMinTier()] + "+, Any base casing").addMaintenanceHatch("Any base casing")
-                .addInputBus("Mining Pipes or Ores, optional, any base casing")
-                .addInputHatch("Optional noble gas, any base casing").addOutputBus("Any base casing")
-                .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS);
+        tt.addMachineType("Miner")
+            .addInfo("Controller Block for the Void Miner " + GT_Values.VN[this.getMinTier()])
+            .addInfo("Consumes " + GT_Values.V[this.getMinTier()] + "EU/t")
+            .addInfo(
+                "Can be supplied with 2L/s of Neon(x4), Krypton(x8), Xenon(x16) or Oganesson(x64) for higher outputs.")
+            .addInfo(
+                "Will output " + 2 * this.TIER_MULTIPLIER
+                    + " Ores per Second depending on the Dimension it is build in")
+            .addInfo("Put the Ore into the input bus to set the Whitelist/Blacklist")
+            .addInfo("Use a screwdriver to toggle Whitelist/Blacklist")
+            .addInfo("Blacklist or non Whitelist Ore will be VOIDED")
+            .addSeparator()
+            .beginStructureBlock(3, 7, 3, false)
+            .addController("Front bottom")
+            .addOtherStructurePart(casings, "form the 3x1x3 Base")
+            .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base (2 minimum total)")
+            .addOtherStructurePart(
+                this.getFrameMaterial().mName + " Frame Boxes",
+                "Each pillar's side and 1x3x1 on top")
+            .addEnergyHatch(VN[this.getMinTier()] + "+, Any base casing")
+            .addMaintenanceHatch("Any base casing")
+            .addInputBus("Mining Pipes or Ores, optional, any base casing")
+            .addInputHatch("Optional noble gas, any base casing")
+            .addOutputBus("Any base casing")
+            .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS);
         return tt;
     }
 
@@ -168,13 +175,17 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
         float currentWeight = 0.f;
         while (true) {
             float randomNumber = XSTR.XSTR_INSTANCE.nextFloat() * this.totalWeight;
-            for (Map.Entry<GT_Utility.ItemId, Float> entry : this.dropMap.getInternalMap().entrySet()) {
+            for (Map.Entry<GT_Utility.ItemId, Float> entry : this.dropMap.getInternalMap()
+                .entrySet()) {
                 currentWeight += entry.getValue();
-                if (randomNumber < currentWeight) return entry.getKey().getItemStack();
+                if (randomNumber < currentWeight) return entry.getKey()
+                    .getItemStack();
             }
-            for (Map.Entry<GT_Utility.ItemId, Float> entry : this.extraDropMap.getInternalMap().entrySet()) {
+            for (Map.Entry<GT_Utility.ItemId, Float> entry : this.extraDropMap.getInternalMap()
+                .entrySet()) {
                 currentWeight += entry.getValue();
-                if (randomNumber < currentWeight) return entry.getKey().getItemStack();
+                if (randomNumber < currentWeight) return entry.getKey()
+                    .getItemStack();
             }
         }
     }
@@ -242,8 +253,10 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
         if (VoidMinerUtility.dropMapsByDimId.containsKey(id)) {
             this.dropMap = VoidMinerUtility.dropMapsByDimId.get(id);
         } else {
-            String chunkProviderName = ((ChunkProviderServer) this.getBaseMetaTileEntity().getWorld()
-                    .getChunkProvider()).currentChunkProvider.getClass().getName();
+            String chunkProviderName = ((ChunkProviderServer) this.getBaseMetaTileEntity()
+                .getWorld()
+                .getChunkProvider()).currentChunkProvider.getClass()
+                    .getName();
 
             if (VoidMinerUtility.dropMapsByChunkProviderName.containsKey(chunkProviderName)) {
                 this.dropMap = VoidMinerUtility.dropMapsByChunkProviderName.get(chunkProviderName);
@@ -258,7 +271,8 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
     private void calculateDropMap() {
         this.dropMap = new VoidMinerUtility.DropMap();
         this.extraDropMap = new VoidMinerUtility.DropMap();
-        int id = this.getBaseMetaTileEntity().getWorld().provider.dimensionId;
+        int id = this.getBaseMetaTileEntity()
+            .getWorld().provider.dimensionId;
         this.handleModDimDef(id);
         this.handleExtraDrops(id);
         this.totalWeight = dropMap.getTotalWeight() + extraDropMap.getTotalWeight();
@@ -268,13 +282,16 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
      * Output logic of the VM
      */
     private void handleOutputs() {
-        final List<ItemStack> inputOres = this.getStoredInputs().stream().filter(GT_Utility::isOre)
-                .collect(Collectors.toList());;
+        final List<ItemStack> inputOres = this.getStoredInputs()
+            .stream()
+            .filter(GT_Utility::isOre)
+            .collect(Collectors.toList());;
         final ItemStack output = this.nextOre();
         output.stackSize = multiplier;
-        if (inputOres.size() == 0
-                || this.mBlacklist && inputOres.stream().noneMatch(is -> GT_Utility.areStacksEqual(is, output))
-                || !this.mBlacklist && inputOres.stream().anyMatch(is -> GT_Utility.areStacksEqual(is, output)))
+        if (inputOres.size() == 0 || this.mBlacklist && inputOres.stream()
+            .noneMatch(is -> GT_Utility.areStacksEqual(is, output))
+            || !this.mBlacklist && inputOres.stream()
+                .anyMatch(is -> GT_Utility.areStacksEqual(is, output)))
             this.addOutput(output);
         this.updateSlots();
     }

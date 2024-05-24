@@ -25,7 +25,7 @@ import gregtech.api.enums.Materials;
 public class BW_GT_MaterialReference {
 
     private static final Werkstoff.GenerationFeatures ADD_CASINGS_ONLY = new Werkstoff.GenerationFeatures().disable()
-            .addCasings();
+        .addCasings();
 
     public static Werkstoff Aluminium = new Werkstoff(Materials.Aluminium, ADD_CASINGS_ONLY, ELEMENT, 31_766 + 19);
     public static Werkstoff Americium = new Werkstoff(Materials.Americium, ADD_CASINGS_ONLY, ELEMENT, 31_766 + 103);
@@ -68,16 +68,16 @@ public class BW_GT_MaterialReference {
     public static Werkstoff Phosphorus = new Werkstoff(Materials.Phosphorus, ADD_CASINGS_ONLY, ELEMENT, 31_766 + 21);
     public static Werkstoff Platinum = new Werkstoff(Materials.Platinum, ADD_CASINGS_ONLY, ELEMENT, 31_766 + 85);
     public static Werkstoff Plutonium241 = new Werkstoff(
-            Materials.Plutonium241,
-            ADD_CASINGS_ONLY,
-            ISOTOPE,
-            31_766 + 101);
+        Materials.Plutonium241,
+        ADD_CASINGS_ONLY,
+        ISOTOPE,
+        31_766 + 101);
     public static Werkstoff Potassium = new Werkstoff(Materials.Potassium, ADD_CASINGS_ONLY, ELEMENT, 31_766 + 25);
     public static Werkstoff Praseodymium = new Werkstoff(
-            Materials.Praseodymium,
-            ADD_CASINGS_ONLY,
-            ELEMENT,
-            31_766 + 66);
+        Materials.Praseodymium,
+        ADD_CASINGS_ONLY,
+        ELEMENT,
+        31_766 + 66);
     public static Werkstoff Promethium = new Werkstoff(Materials.Promethium, ADD_CASINGS_ONLY, ELEMENT, 31_766 + 68);
     public static Werkstoff Rubidium = new Werkstoff(Materials.Rubidium, ADD_CASINGS_ONLY, ELEMENT, 31_766 + 43);
     public static Werkstoff Samarium = new Werkstoff(Materials.Samarium, ADD_CASINGS_ONLY, ELEMENT, 31_766 + 69);
@@ -105,68 +105,68 @@ public class BW_GT_MaterialReference {
     public static Werkstoff Ardite = new Werkstoff(Materials.Ardite, ADD_CASINGS_ONLY, ELEMENT, 31_766 + 382);
     public static Werkstoff Naquadah = new Werkstoff(Materials.Naquadah, ADD_CASINGS_ONLY, ELEMENT, 31_766 + 324);
     public static Werkstoff NaquadahAlloy = new Werkstoff(
-            Materials.NaquadahAlloy,
-            ADD_CASINGS_ONLY,
-            COMPOUND,
-            31_766 + 325);
+        Materials.NaquadahAlloy,
+        ADD_CASINGS_ONLY,
+        COMPOUND,
+        31_766 + 325);
     public static Werkstoff NaquadahEnriched = new Werkstoff(
-            Materials.NaquadahEnriched,
-            ADD_CASINGS_ONLY,
-            ISOTOPE,
-            31_766 + 326);
+        Materials.NaquadahEnriched,
+        ADD_CASINGS_ONLY,
+        ISOTOPE,
+        31_766 + 326);
     public static Werkstoff Naquadria = new Werkstoff(Materials.Naquadria, ADD_CASINGS_ONLY, ELEMENT, 31_766 + 327);
     public static Werkstoff WroughtIron = new Werkstoff(Materials.WroughtIron, ADD_CASINGS_ONLY, ISOTOPE, 31_766 + 304);
     public static Werkstoff AnnealedCopper = new Werkstoff(
-            Materials.AnnealedCopper,
-            ADD_CASINGS_ONLY,
-            ISOTOPE,
-            31_766 + 345);
+        Materials.AnnealedCopper,
+        ADD_CASINGS_ONLY,
+        ISOTOPE,
+        31_766 + 345);
 
     public static Werkstoff Osmiridium = new Werkstoff(Materials.Osmiridium, ADD_CASINGS_ONLY, MIXTURE, 31_766 + 317);
     public static Werkstoff SterlingSilver = new Werkstoff(
-            Materials.SterlingSilver,
-            ADD_CASINGS_ONLY,
-            MIXTURE,
-            31_766 + 350);
+        Materials.SterlingSilver,
+        ADD_CASINGS_ONLY,
+        MIXTURE,
+        31_766 + 350);
     public static Werkstoff RoseGold = new Werkstoff(Materials.RoseGold, ADD_CASINGS_ONLY, MIXTURE, 31_766 + 351);
     public static Werkstoff BlackBronze = new Werkstoff(Materials.BlackBronze, ADD_CASINGS_ONLY, MIXTURE, 31_766 + 352);
     public static Werkstoff BismuthBronze = new Werkstoff(
-            Materials.BismuthBronze,
-            ADD_CASINGS_ONLY,
-            MIXTURE,
-            31_766 + 353);
+        Materials.BismuthBronze,
+        ADD_CASINGS_ONLY,
+        MIXTURE,
+        31_766 + 353);
     public static Werkstoff BlackSteel = new Werkstoff(Materials.BlackSteel, ADD_CASINGS_ONLY, MIXTURE, 31_766 + 334);
     public static Werkstoff RedSteel = new Werkstoff(Materials.RedSteel, ADD_CASINGS_ONLY, MIXTURE, 31_766 + 348);
     public static Werkstoff BlueSteel = new Werkstoff(Materials.BlueSteel, ADD_CASINGS_ONLY, MIXTURE, 31_766 + 349);
     public static Werkstoff DamascusSteel = new Werkstoff(
-            Materials.DamascusSteel,
-            ADD_CASINGS_ONLY,
-            MIXTURE,
-            31_766 + 335);
+        Materials.DamascusSteel,
+        ADD_CASINGS_ONLY,
+        MIXTURE,
+        31_766 + 335);
     public static Werkstoff TungstenSteel = new Werkstoff(
-            Materials.TungstenSteel,
-            ADD_CASINGS_ONLY,
-            MIXTURE,
-            31_766 + 316);
+        Materials.TungstenSteel,
+        ADD_CASINGS_ONLY,
+        MIXTURE,
+        31_766 + 316);
     public static Werkstoff Ultimet = new Werkstoff(Materials.Ultimet, ADD_CASINGS_ONLY, MIXTURE, 31_766 + 344);
     public static Werkstoff TungstenCarbide = new Werkstoff(
-            Materials.TungstenCarbide,
-            ADD_CASINGS_ONLY,
-            MIXTURE,
-            31_766 + 370);
+        Materials.TungstenCarbide,
+        ADD_CASINGS_ONLY,
+        MIXTURE,
+        31_766 + 370);
     public static Werkstoff VanadiumSteel = new Werkstoff(
-            Materials.VanadiumSteel,
-            ADD_CASINGS_ONLY,
-            MIXTURE,
-            31_766 + 371);
+        Materials.VanadiumSteel,
+        ADD_CASINGS_ONLY,
+        MIXTURE,
+        31_766 + 371);
     public static Werkstoff HSSG = new Werkstoff(Materials.HSSG, ADD_CASINGS_ONLY, MIXTURE, 31_766 + 372);
     public static Werkstoff HSSE = new Werkstoff(Materials.HSSE, ADD_CASINGS_ONLY, MIXTURE, 31_766 + 373);
     public static Werkstoff HSSS = new Werkstoff(Materials.HSSS, ADD_CASINGS_ONLY, MIXTURE, 31_766 + 374);
     public static Werkstoff StainlessSteel = new Werkstoff(
-            Materials.StainlessSteel,
-            ADD_CASINGS_ONLY,
-            MIXTURE,
-            31_766 + 306);
+        Materials.StainlessSteel,
+        ADD_CASINGS_ONLY,
+        MIXTURE,
+        31_766 + 306);
     public static Werkstoff Brass = new Werkstoff(Materials.Brass, ADD_CASINGS_ONLY, MIXTURE, 31_766 + 301);
     public static Werkstoff Bronze = new Werkstoff(Materials.Bronze, ADD_CASINGS_ONLY, MIXTURE, 31_766 + 300);
 
@@ -174,17 +174,19 @@ public class BW_GT_MaterialReference {
 
     public static Werkstoff Steel = new Werkstoff(Materials.Steel, ADD_CASINGS_ONLY, COMPOUND, 31_766 + 305);
     public static Werkstoff Polytetrafluoroethylene = new Werkstoff(
-            Materials.Polytetrafluoroethylene,
-            ADD_CASINGS_ONLY,
-            COMPOUND,
-            31_766 + 473);
+        Materials.Polytetrafluoroethylene,
+        ADD_CASINGS_ONLY,
+        COMPOUND,
+        31_766 + 473);
     public static Werkstoff Plastic = new Werkstoff(Materials.Plastic, ADD_CASINGS_ONLY, COMPOUND, 31_766 + 874);
     public static Werkstoff Epoxid = new Werkstoff(Materials.Epoxid, ADD_CASINGS_ONLY, COMPOUND, 31_766 + 470);
     public static Werkstoff Magnesia = new Werkstoff(
-            Materials.Magnesia,
-            new Werkstoff.GenerationFeatures().disable().addMetalItems().addMolten(),
-            COMPOUND,
-            31_766 + 471);
+        Materials.Magnesia,
+        new Werkstoff.GenerationFeatures().disable()
+            .addMetalItems()
+            .addMolten(),
+        COMPOUND,
+        31_766 + 471);
 
     public static void init() {
         MainMod.LOGGER.info("Load Elements from GT");

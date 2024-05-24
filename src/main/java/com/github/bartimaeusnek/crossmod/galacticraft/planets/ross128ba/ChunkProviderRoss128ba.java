@@ -56,7 +56,7 @@ public class ChunkProviderRoss128ba extends ChunkProviderMoon {
         Arrays.fill(ids, Blocks.air);
         this.generateTerrain(cx, cz, ids, meta);
         this.biomesForGeneration = this.worldObj.getWorldChunkManager()
-                .loadBlockGeneratorData(this.biomesForGeneration, cx * 16, cz * 16, 16, 16);
+            .loadBlockGeneratorData(this.biomesForGeneration, cx * 16, cz * 16, 16, 16);
         this.createCraters(cx, cz, ids, meta);
         this.replaceBlocksForBiome(cx, cz, ids, meta, this.biomesForGeneration);
         this.caveGenerator.generate(this, this.worldObj, cx, cz, ids, meta);

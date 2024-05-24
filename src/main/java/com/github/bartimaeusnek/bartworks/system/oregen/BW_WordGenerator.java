@@ -36,14 +36,14 @@ public class BW_WordGenerator implements IWorldGenerator {
     }
 
     public synchronized void generate(Random aRandom, int aX, int aZ, World aWorld, IChunkProvider aChunkGenerator,
-            IChunkProvider aChunkProvider) {
+        IChunkProvider aChunkProvider) {
         new BW_WordGenerator.WorldGenContainer(
-                aX * 16,
-                aZ * 16,
-                aWorld.provider.dimensionId,
-                aWorld,
-                aChunkGenerator,
-                aChunkProvider).run();
+            aX * 16,
+            aZ * 16,
+            aWorld.provider.dimensionId,
+            aWorld,
+            aChunkGenerator,
+            aChunkProvider).run();
     }
 
     public static class WorldGenContainer implements Runnable {
@@ -57,7 +57,7 @@ public class BW_WordGenerator implements IWorldGenerator {
         public int mZ;
 
         public WorldGenContainer(int aX, int aZ, int aDimensionType, World aWorld, IChunkProvider aChunkGenerator,
-                IChunkProvider aChunkProvider) {
+            IChunkProvider aChunkProvider) {
             this.mX = aX;
             this.mZ = aZ;
             this.mDimensionType = aDimensionType;
@@ -94,7 +94,7 @@ public class BW_WordGenerator implements IWorldGenerator {
             zCenter <<= 4;
             ChunkCoordIntPair centerChunk = new ChunkCoordIntPair(xCenter, zCenter);
             if (!BW_WordGenerator.WorldGenContainer.mGenerated.contains(centerChunk)
-                    && this.surroundingChunksLoaded(xCenter, zCenter)) {
+                && this.surroundingChunksLoaded(xCenter, zCenter)) {
                 BW_WordGenerator.WorldGenContainer.mGenerated.add(centerChunk);
                 if (BW_OreLayer.sWeight > 0 && BW_OreLayer.sList.size() > 0) {
                     boolean temp = true;
@@ -111,14 +111,14 @@ public class BW_WordGenerator implements IWorldGenerator {
                                     int attempts = 0;
                                     do {
                                         placed = tWorldGen.executeWorldgen(
-                                                this.mWorld,
-                                                random,
-                                                "",
-                                                this.mDimensionType,
-                                                xCenter,
-                                                zCenter,
-                                                this.mChunkGenerator,
-                                                this.mChunkProvider);
+                                            this.mWorld,
+                                            random,
+                                            "",
+                                            this.mDimensionType,
+                                            xCenter,
+                                            zCenter,
+                                            this.mChunkGenerator,
+                                            this.mChunkProvider);
                                         ++attempts;
                                     } while (!placed && attempts < 25);
                                     temp = false;

@@ -53,26 +53,33 @@ public class RendererPacket extends GT_Packet_New {
         byte g = (byte) (this.integer >> 8 & 0xFF);
         byte b = (byte) (this.integer & 0xFF);
         byte checksum = (byte) (this.coords.x % 25 + this.coords.y % 25
-                + this.coords.z % 25
-                + this.coords.wID % 25
-                + this.integer % 25
-                + this.removal);
-        aOut.writeInt(this.coords.x).writeShort(this.coords.y).writeInt(this.coords.z).writeInt(this.coords.wID)
-                .writeByte(r).writeByte(g).writeByte(b).writeByte(this.removal).writeByte(checksum);
+            + this.coords.z % 25
+            + this.coords.wID % 25
+            + this.integer % 25
+            + this.removal);
+        aOut.writeInt(this.coords.x)
+            .writeShort(this.coords.y)
+            .writeInt(this.coords.z)
+            .writeInt(this.coords.wID)
+            .writeByte(r)
+            .writeByte(g)
+            .writeByte(b)
+            .writeByte(this.removal)
+            .writeByte(checksum);
     }
 
     @Override
     public GT_Packet_New decode(ByteArrayDataInput dataInput) {
         this.coords = new Coords(dataInput.readInt(), dataInput.readShort(), dataInput.readInt(), dataInput.readInt());
         this.integer = BW_ColorUtil
-                .getColorFromRGBArray(new int[] { dataInput.readByte(), dataInput.readByte(), dataInput.readByte() });
+            .getColorFromRGBArray(new int[] { dataInput.readByte(), dataInput.readByte(), dataInput.readByte() });
         this.removal = dataInput.readByte();
 
         byte checksum = (byte) (this.coords.x % 25 + this.coords.y % 25
-                + this.coords.z % 25
-                + this.coords.wID % 25
-                + this.integer % 25
-                + this.removal);
+            + this.coords.z % 25
+            + this.coords.wID % 25
+            + this.integer % 25
+            + this.removal);
 
         if (checksum != dataInput.readByte()) {
             MainMod.LOGGER.error("BW Packet was corrupted or modified!");

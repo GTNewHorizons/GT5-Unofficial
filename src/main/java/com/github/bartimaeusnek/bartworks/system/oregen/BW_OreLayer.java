@@ -61,7 +61,7 @@ public abstract class BW_OreLayer extends GT_Worldgen {
     public abstract String getDimName();
 
     public BW_OreLayer(String aName, boolean aDefault, int aMinY, int aMaxY, int aWeight, int aDensity, int aSize,
-            ISubTagContainer top, ISubTagContainer bottom, ISubTagContainer between, ISubTagContainer sprinkled) {
+        ISubTagContainer top, ISubTagContainer bottom, ISubTagContainer between, ISubTagContainer sprinkled) {
         super(aName, BW_OreLayer.sList, aDefault);
         this.mMinY = (short) aMinY;
         this.mMaxY = (short) aMaxY;
@@ -77,13 +77,13 @@ public abstract class BW_OreLayer extends GT_Worldgen {
         if (sprinkled instanceof Werkstoff) this.bwOres = (byte) (this.bwOres | 0b0001);
 
         short aPrimary = top instanceof Materials ? (short) ((Materials) top).mMetaItemSubID
-                : top instanceof Werkstoff ? ((Werkstoff) top).getmID() : 0;
+            : top instanceof Werkstoff ? ((Werkstoff) top).getmID() : 0;
         short aSecondary = bottom instanceof Materials ? (short) ((Materials) bottom).mMetaItemSubID
-                : bottom instanceof Werkstoff ? ((Werkstoff) bottom).getmID() : 0;
+            : bottom instanceof Werkstoff ? ((Werkstoff) bottom).getmID() : 0;
         short aBetween = between instanceof Materials ? (short) ((Materials) between).mMetaItemSubID
-                : between instanceof Werkstoff ? ((Werkstoff) between).getmID() : 0;
+            : between instanceof Werkstoff ? ((Werkstoff) between).getmID() : 0;
         short aSporadic = sprinkled instanceof Materials ? (short) ((Materials) sprinkled).mMetaItemSubID
-                : sprinkled instanceof Werkstoff ? ((Werkstoff) sprinkled).getmID() : 0;
+            : sprinkled instanceof Werkstoff ? ((Werkstoff) sprinkled).getmID() : 0;
         this.mPrimaryMeta = aPrimary;
         this.mSecondaryMeta = aSecondary;
         this.mBetweenMeta = aBetween;
@@ -97,17 +97,17 @@ public abstract class BW_OreLayer extends GT_Worldgen {
     public List<ItemStack> getStacks() {
         ArrayList<ItemStack> ret = new ArrayList<>();
         ret.add(
-                (this.bwOres & 0b1000) != 0 ? new ItemStack(WerkstoffLoader.BWOres, 1, this.mPrimaryMeta)
-                        : new ItemStack(GregTech_API.sBlockOres1, 1, this.mPrimaryMeta));
+            (this.bwOres & 0b1000) != 0 ? new ItemStack(WerkstoffLoader.BWOres, 1, this.mPrimaryMeta)
+                : new ItemStack(GregTech_API.sBlockOres1, 1, this.mPrimaryMeta));
         ret.add(
-                (this.bwOres & 0b0100) != 0 ? new ItemStack(WerkstoffLoader.BWOres, 1, this.mSecondaryMeta)
-                        : new ItemStack(GregTech_API.sBlockOres1, 1, this.mSecondaryMeta));
+            (this.bwOres & 0b0100) != 0 ? new ItemStack(WerkstoffLoader.BWOres, 1, this.mSecondaryMeta)
+                : new ItemStack(GregTech_API.sBlockOres1, 1, this.mSecondaryMeta));
         ret.add(
-                (this.bwOres & 0b0010) != 0 ? new ItemStack(WerkstoffLoader.BWOres, 1, this.mBetweenMeta)
-                        : new ItemStack(GregTech_API.sBlockOres1, 1, this.mBetweenMeta));
+            (this.bwOres & 0b0010) != 0 ? new ItemStack(WerkstoffLoader.BWOres, 1, this.mBetweenMeta)
+                : new ItemStack(GregTech_API.sBlockOres1, 1, this.mBetweenMeta));
         ret.add(
-                (this.bwOres & 0b0001) != 0 ? new ItemStack(WerkstoffLoader.BWOres, 1, this.mSporadicMeta)
-                        : new ItemStack(GregTech_API.sBlockOres1, 1, this.mSporadicMeta));
+            (this.bwOres & 0b0001) != 0 ? new ItemStack(WerkstoffLoader.BWOres, 1, this.mSporadicMeta)
+                : new ItemStack(GregTech_API.sBlockOres1, 1, this.mSporadicMeta));
         return ret;
     }
 
@@ -122,7 +122,7 @@ public abstract class BW_OreLayer extends GT_Worldgen {
 
     @Override
     public boolean executeWorldgen(World aWorld, Random aRandom, String aBiome, int aDimensionType, int aChunkX,
-            int aChunkZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
+        int aChunkZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
         {
             int tMinY = this.mMinY + aRandom.nextInt(this.mMaxY - this.mMinY - 5);
             int cX = aChunkX - aRandom.nextInt(this.mSize);
@@ -146,7 +146,7 @@ public abstract class BW_OreLayer extends GT_Worldgen {
 
                     if (this.mBetweenMeta > 0 && this.shouldPlace(aRandom, cX, eX, tX, cZ, eZ, tZ)) {
                         wasPlaced = this
-                                .setOreBlock(aWorld, tX, tMinY + 2 + aRandom.nextInt(2), tZ, this.mBetweenMeta, false);
+                            .setOreBlock(aWorld, tX, tMinY + 2 + aRandom.nextInt(2), tZ, this.mBetweenMeta, false);
                     }
 
                     if (this.mPrimaryMeta > 0) {
@@ -159,7 +159,7 @@ public abstract class BW_OreLayer extends GT_Worldgen {
 
                     if (this.mSporadicMeta > 0 && this.shouldPlace(aRandom, cX, eX, tX, cZ, eZ, tZ)) {
                         wasPlaced = this
-                                .setOreBlock(aWorld, tX, tMinY - 1 + aRandom.nextInt(7), tZ, this.mSporadicMeta, false);
+                            .setOreBlock(aWorld, tX, tMinY - 1 + aRandom.nextInt(7), tZ, this.mSporadicMeta, false);
                     }
                 }
             }
@@ -174,10 +174,9 @@ public abstract class BW_OreLayer extends GT_Worldgen {
 
     private boolean shouldPlace(Random aRandom, int cX, int eX, int tX, int cZ, int eZ, int tZ) {
         if (aRandom.nextInt(
-                Math.max(1, Math.max(MathHelper.abs_int(cZ - tZ), MathHelper.abs_int(eZ - tZ)) / this.mDensity)) == 0
-                || aRandom.nextInt(
-                        Math.max(1, Math.max(MathHelper.abs_int(cX - tX), MathHelper.abs_int(eX - tX)) / this.mDensity))
-                        == 0)
+            Math.max(1, Math.max(MathHelper.abs_int(cZ - tZ), MathHelper.abs_int(eZ - tZ)) / this.mDensity)) == 0
+            || aRandom.nextInt(
+                Math.max(1, Math.max(MathHelper.abs_int(cX - tX), MathHelper.abs_int(eX - tX)) / this.mDensity)) == 0)
             return true;
         return false;
     }
@@ -188,28 +187,28 @@ public abstract class BW_OreLayer extends GT_Worldgen {
         if (te instanceof BW_MetaGeneratedOreTE || te instanceof GT_TileEntity_Ores) return true;
 
         if (aMetaData == this.mSporadicMeta && (this.bwOres & 0b0001) != 0
-                || aMetaData == this.mBetweenMeta && (this.bwOres & 0b0010) != 0
-                || aMetaData == this.mPrimaryMeta && (this.bwOres & 0b1000) != 0
-                || aMetaData == this.mSecondaryMeta && (this.bwOres & 0b0100) != 0) {
+            || aMetaData == this.mBetweenMeta && (this.bwOres & 0b0010) != 0
+            || aMetaData == this.mPrimaryMeta && (this.bwOres & 0b1000) != 0
+            || aMetaData == this.mSecondaryMeta && (this.bwOres & 0b0100) != 0) {
             return isSmallOre
-                    ? BW_MetaGenerated_SmallOres.setOreBlock(
-                            aWorld,
-                            aX,
-                            aY,
-                            aZ,
-                            aMetaData,
-                            false,
-                            this.getDefaultBlockToReplace(),
-                            this.getDefaultDamageToReplace())
-                    : BW_MetaGenerated_Ores.setOreBlock(
-                            aWorld,
-                            aX,
-                            aY,
-                            aZ,
-                            aMetaData,
-                            false,
-                            this.getDefaultBlockToReplace(),
-                            this.getDefaultDamageToReplace());
+                ? BW_MetaGenerated_SmallOres.setOreBlock(
+                    aWorld,
+                    aX,
+                    aY,
+                    aZ,
+                    aMetaData,
+                    false,
+                    this.getDefaultBlockToReplace(),
+                    this.getDefaultDamageToReplace())
+                : BW_MetaGenerated_Ores.setOreBlock(
+                    aWorld,
+                    aX,
+                    aY,
+                    aZ,
+                    aMetaData,
+                    false,
+                    this.getDefaultBlockToReplace(),
+                    this.getDefaultDamageToReplace());
         }
 
         return this.setGTOreBlockSpace(aWorld, aX, aY, aZ, aMetaData, this.getDefaultBlockToReplace());
@@ -242,9 +241,8 @@ public abstract class BW_OreLayer extends GT_Worldgen {
         if (!(o instanceof BW_OreLayer that)) return false;
 
         if (this.bwOres != that.bwOres || this.mMinY != that.mMinY
-                || this.mWeight != that.mWeight
-                || this.mDensity != that.mDensity)
-            return false;
+            || this.mWeight != that.mWeight
+            || this.mDensity != that.mDensity) return false;
         if (this.mSize != that.mSize) return false;
         if (this.mMaxY != that.mMaxY) return false;
         if (this.mPrimaryMeta != that.mPrimaryMeta) return false;
@@ -256,11 +254,20 @@ public abstract class BW_OreLayer extends GT_Worldgen {
     @Override
     public int hashCode() {
         return MurmurHash3.murmurhash3_x86_32(
-                ByteBuffer.allocate(37).put(this.bwOres).putInt(this.mMinY).putInt(this.mWeight).putInt(this.mDensity)
-                        .putInt(this.mSize).putInt(this.mMaxY).putInt(this.mPrimaryMeta).putInt(this.mSecondaryMeta)
-                        .putInt(this.mBetweenMeta).putInt(this.mSporadicMeta).array(),
-                0,
-                37,
-                31);
+            ByteBuffer.allocate(37)
+                .put(this.bwOres)
+                .putInt(this.mMinY)
+                .putInt(this.mWeight)
+                .putInt(this.mDensity)
+                .putInt(this.mSize)
+                .putInt(this.mMaxY)
+                .putInt(this.mPrimaryMeta)
+                .putInt(this.mSecondaryMeta)
+                .putInt(this.mBetweenMeta)
+                .putInt(this.mSporadicMeta)
+                .array(),
+            0,
+            37,
+            31);
     }
 }

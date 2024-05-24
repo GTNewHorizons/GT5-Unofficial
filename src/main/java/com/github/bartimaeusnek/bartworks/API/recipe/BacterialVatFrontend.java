@@ -24,15 +24,15 @@ import gregtech.nei.formatter.INEISpecialInfoFormatter;
 public class BacterialVatFrontend extends RecipeMapFrontend {
 
     public BacterialVatFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
-            NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(
-                uiPropertiesBuilder,
-                neiPropertiesBuilder.neiSpecialInfoFormatter(new BacterialVatSpecialValueFormatter()));
+            uiPropertiesBuilder,
+            neiPropertiesBuilder.neiSpecialInfoFormatter(new BacterialVatSpecialValueFormatter()));
     }
 
     @Override
     protected List<String> handleNEIItemInputTooltip(List<String> currentTip,
-            GT_NEI_DefaultHandler.FixedPositionedStack pStack) {
+        GT_NEI_DefaultHandler.FixedPositionedStack pStack) {
         if (pStack.isFluid()) {
             currentTip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("nei.biovat.input.tooltip"));
             return currentTip;
@@ -42,7 +42,7 @@ public class BacterialVatFrontend extends RecipeMapFrontend {
 
     @Override
     protected List<String> handleNEIItemOutputTooltip(List<String> currentTip,
-            GT_NEI_DefaultHandler.FixedPositionedStack pStack) {
+        GT_NEI_DefaultHandler.FixedPositionedStack pStack) {
         if (pStack.isFluid()) {
             currentTip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("nei.biovat.output.tooltip"));
             return currentTip;
@@ -63,12 +63,12 @@ public class BacterialVatFrontend extends RecipeMapFrontend {
     private void drawFluidOverlay(GT_NEI_DefaultHandler.FixedPositionedStack stack) {
         if (stack.isFluid()) {
             drawNEIOverlayText(
-                    "+",
-                    stack,
-                    colorOverride.getTextColorOrDefault("nei_overlay_yellow", 0xFDD835),
-                    0.5f,
-                    true,
-                    Alignment.TopRight);
+                "+",
+                stack,
+                colorOverride.getTextColorOrDefault("nei_overlay_yellow", 0xFDD835),
+                0.5f,
+                true,
+                Alignment.TopRight);
             return;
         }
         super.drawNEIOverlayForOutput(stack);

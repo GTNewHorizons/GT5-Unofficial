@@ -39,7 +39,7 @@ public class BW_MetaGeneratedBlock_Item extends BW_ItemBlocks {
 
     @Override
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
-            float hitX, float hitY, float hitZ) {
+        float hitX, float hitY, float hitZ) {
         return false;
     }
 
@@ -89,7 +89,7 @@ public class BW_MetaGeneratedBlock_Item extends BW_ItemBlocks {
 
     @Override
     public boolean placeBlockAt(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int side,
-            float hitX, float hitY, float hitZ, int aMeta) {
+        float hitX, float hitY, float hitZ, int aMeta) {
         short tDamage = (short) this.getDamage(aStack);
         if (tDamage > 0) {
             if (!aWorld.setBlock(aX, aY, aZ, this.field_150939_a, tDamage, 3)) {

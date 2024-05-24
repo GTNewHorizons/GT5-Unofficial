@@ -32,13 +32,14 @@ public class BW_EICPistonVisualizer extends EntityFX {
 
     @Override
     public void renderParticle(Tessellator p_70539_1_, float p_70539_2_, float p_70539_3_, float p_70539_4_,
-            float p_70539_5_, float p_70539_6_, float p_70539_7_) {
+        float p_70539_5_, float p_70539_6_, float p_70539_7_) {
         Tessellator tessellator = Tessellator.instance;
         GL11.glDisable(GL11.GL_CULL_FACE);
         GL11.glDepthMask(false);
 
         RenderBlocks.getInstance().blockAccess = this.worldObj;
-        RenderBlocks.getInstance().setRenderFromInside(false);
+        RenderBlocks.getInstance()
+            .setRenderFromInside(false);
 
         // Look at nearby block for correct tiered block to use
         Pair<Block, Integer> tieredBlock;
@@ -53,7 +54,8 @@ public class BW_EICPistonVisualizer extends EntityFX {
             tieredBlock = Pair.of(GregTech_API.sBlockMetal5, 2);
         }
 
-        IIcon icon = tieredBlock.getKey().getIcon(0, tieredBlock.getValue());
+        IIcon icon = tieredBlock.getKey()
+            .getIcon(0, tieredBlock.getValue());
 
         double x = this.posX + 1;
         double z = this.posZ;
@@ -63,7 +65,7 @@ public class BW_EICPistonVisualizer extends EntityFX {
         double f13 = z - interpPosZ;
         tessellator.setTranslation(f11 - x, f12 - this.posY, f13 - z);
         RenderBlocks.getInstance()
-                .renderBlockUsingTexture(tieredBlock.getKey(), (int) x, (int) this.posY, (int) z, icon);
+            .renderBlockUsingTexture(tieredBlock.getKey(), (int) x, (int) this.posY, (int) z, icon);
 
         x = this.posX - 1;
         z = this.posZ;
@@ -72,7 +74,7 @@ public class BW_EICPistonVisualizer extends EntityFX {
         f13 = z - interpPosZ;
         tessellator.setTranslation(f11 - x, f12 - this.posY, f13 - z);
         RenderBlocks.getInstance()
-                .renderBlockUsingTexture(tieredBlock.getKey(), (int) x, (int) this.posY, (int) z, icon);
+            .renderBlockUsingTexture(tieredBlock.getKey(), (int) x, (int) this.posY, (int) z, icon);
 
         x = this.posX;
         z = this.posZ + 1;
@@ -81,7 +83,7 @@ public class BW_EICPistonVisualizer extends EntityFX {
         f13 = z - interpPosZ;
         tessellator.setTranslation(f11 - x, f12 - this.posY, f13 - z);
         RenderBlocks.getInstance()
-                .renderBlockUsingTexture(tieredBlock.getKey(), (int) x, (int) this.posY, (int) z, icon);
+            .renderBlockUsingTexture(tieredBlock.getKey(), (int) x, (int) this.posY, (int) z, icon);
 
         x = this.posX;
         z = this.posZ - 1;
@@ -90,7 +92,7 @@ public class BW_EICPistonVisualizer extends EntityFX {
         f13 = z - interpPosZ;
         tessellator.setTranslation(f11 - x, f12 - this.posY, f13 - z);
         RenderBlocks.getInstance()
-                .renderBlockUsingTexture(tieredBlock.getKey(), (int) x, (int) this.posY, (int) z, icon);
+            .renderBlockUsingTexture(tieredBlock.getKey(), (int) x, (int) this.posY, (int) z, icon);
 
         tessellator.setTranslation(0d, 0d, 0d);
 

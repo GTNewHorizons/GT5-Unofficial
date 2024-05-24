@@ -17,15 +17,15 @@ import vexatos.tgregworks.item.ItemTGregPart;
 import vexatos.tgregworks.reference.Config;
 
 @Mod(
-        modid = MaterialsInjector.MOD_ID,
-        name = MaterialsInjector.NAME,
-        version = MaterialsInjector.VERSION,
-        dependencies = """
-                required-after:IC2;\
-                required-after:gregtech;\
-                required-after:bartworks;\
-                before:TGregworks;\
-                before:miscutils;""")
+    modid = MaterialsInjector.MOD_ID,
+    name = MaterialsInjector.NAME,
+    version = MaterialsInjector.VERSION,
+    dependencies = """
+        required-after:IC2;\
+        required-after:gregtech;\
+        required-after:bartworks;\
+        before:TGregworks;\
+        before:miscutils;""")
 public class MaterialsInjector {
 
     public static final String NAME = "BartWorks Mod Additions - TGregworks Container";
@@ -42,12 +42,14 @@ public class MaterialsInjector {
     public static void run() {
         MainMod.LOGGER.info("Registering TGregworks - BartWorks tool parts.");
         Werkstoff.werkstoffHashSet.stream()
-                .filter(x -> x.hasItemType(OrePrefixes.gem) || x.hasItemType(OrePrefixes.plate))
-                .map(Werkstoff::getBridgeMaterial).filter(x -> x.mMetaItemSubID == -1).filter(x -> x.mDurability != 0)
-                .forEach(m -> {
-                    setConfigProps(m);
-                    registerParts(m);
-                });
+            .filter(x -> x.hasItemType(OrePrefixes.gem) || x.hasItemType(OrePrefixes.plate))
+            .map(Werkstoff::getBridgeMaterial)
+            .filter(x -> x.mMetaItemSubID == -1)
+            .filter(x -> x.mDurability != 0)
+            .forEach(m -> {
+                setConfigProps(m);
+                registerParts(m);
+            });
 
         TGregworks.registry.configProps.clear();
         TGregworks.registry.configIDs.clear();
@@ -68,10 +70,11 @@ public class MaterialsInjector {
     }
 
     private static void setConfigProps(Materials m) {
-        if (TGregworks.config.get(Config.Category.Enable, m.mName, true).getBoolean(true)) {
+        if (TGregworks.config.get(Config.Category.Enable, m.mName, true)
+            .getBoolean(true)) {
             TGregworks.registry.toolMaterials.add(m);
             Property configProp = TGregworks.config
-                    .get(Config.onMaterial(Config.MaterialID), m.mName, 0, null, 0, 100000);
+                .get(Config.onMaterial(Config.MaterialID), m.mName, 0, null, 0, 100000);
             TGregworks.registry.configProps.put(m, configProp);
             TGregworks.registry.configIDs.add(configProp.getInt());
         }

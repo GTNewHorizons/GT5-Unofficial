@@ -33,52 +33,64 @@ public class AddSomeRecipes implements Runnable {
 
     public void run() {
 
-        GT_Values.RA.stdBuilder().itemInputs(BW_NonMeta_MaterialItems.Depleted_Tiberium_1.get(1))
-                .itemOutputs(
-                        WerkstoffLoader.Zirconium.get(dust),
-                        WerkstoffLoader.Zirconium.get(dust),
-                        WerkstoffLoader.Tiberium.get(dustSmall, 2),
-                        WerkstoffLoader.Zirconium.get(dust, 2),
-                        GT_OreDictUnificator.get(dust, Materials.TungstenSteel, 8L),
-                        GT_OreDictUnificator.get(dust, Materials.Platinum, 1L))
-                .outputChances(100_00, 50_00, 50_00, 25_00, 100_00, 100_00)
-                .fluidOutputs(WerkstoffLoader.Xenon.getFluidOrGas(1)).duration(12 * SECONDS + 10 * TICKS)
-                .eut(TierEU.RECIPE_EV).addTo(centrifugeRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(BW_NonMeta_MaterialItems.Depleted_Tiberium_1.get(1))
+            .itemOutputs(
+                WerkstoffLoader.Zirconium.get(dust),
+                WerkstoffLoader.Zirconium.get(dust),
+                WerkstoffLoader.Tiberium.get(dustSmall, 2),
+                WerkstoffLoader.Zirconium.get(dust, 2),
+                GT_OreDictUnificator.get(dust, Materials.TungstenSteel, 8L),
+                GT_OreDictUnificator.get(dust, Materials.Platinum, 1L))
+            .outputChances(100_00, 50_00, 50_00, 25_00, 100_00, 100_00)
+            .fluidOutputs(WerkstoffLoader.Xenon.getFluidOrGas(1))
+            .duration(12 * SECONDS + 10 * TICKS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(centrifugeRecipes);
 
-        GT_Values.RA.stdBuilder().itemInputs(BW_NonMeta_MaterialItems.Depleted_Tiberium_2.get(1))
-                .itemOutputs(
-                        WerkstoffLoader.Zirconium.get(dust, 2),
-                        WerkstoffLoader.Zirconium.get(dust, 2),
-                        WerkstoffLoader.Tiberium.get(dust),
-                        WerkstoffLoader.Zirconium.get(dust, 4),
-                        GT_OreDictUnificator.get(dust, Materials.TungstenSteel, 18L),
-                        GT_OreDictUnificator.get(dust, Materials.Platinum, 2L))
-                .outputChances(100_00, 50_00, 50_00, 25_00, 100_00, 100_00)
-                .fluidOutputs(WerkstoffLoader.Xenon.getFluidOrGas(2)).duration(12 * SECONDS + 10 * TICKS)
-                .eut(TierEU.RECIPE_EV).addTo(centrifugeRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(BW_NonMeta_MaterialItems.Depleted_Tiberium_2.get(1))
+            .itemOutputs(
+                WerkstoffLoader.Zirconium.get(dust, 2),
+                WerkstoffLoader.Zirconium.get(dust, 2),
+                WerkstoffLoader.Tiberium.get(dust),
+                WerkstoffLoader.Zirconium.get(dust, 4),
+                GT_OreDictUnificator.get(dust, Materials.TungstenSteel, 18L),
+                GT_OreDictUnificator.get(dust, Materials.Platinum, 2L))
+            .outputChances(100_00, 50_00, 50_00, 25_00, 100_00, 100_00)
+            .fluidOutputs(WerkstoffLoader.Xenon.getFluidOrGas(2))
+            .duration(12 * SECONDS + 10 * TICKS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(centrifugeRecipes);
 
-        GT_Values.RA.stdBuilder().itemInputs(BW_NonMeta_MaterialItems.Depleted_Tiberium_4.get(1))
-                .itemOutputs(
-                        WerkstoffLoader.Zirconium.get(dust, 4),
-                        WerkstoffLoader.Zirconium.get(dust, 4),
-                        WerkstoffLoader.Tiberium.get(dust, 2),
-                        WerkstoffLoader.Zirconium.get(dust, 8),
-                        GT_OreDictUnificator.get(dust, Materials.TungstenSteel, 38L),
-                        GT_OreDictUnificator.get(dust, Materials.Platinum, 4L))
-                .outputChances(100_00, 50_00, 50_00, 25_00, 100_00, 100_00)
-                .fluidOutputs(WerkstoffLoader.Xenon.getFluidOrGas(4)).duration(50 * SECONDS).eut(TierEU.RECIPE_EV)
-                .addTo(centrifugeRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(BW_NonMeta_MaterialItems.Depleted_Tiberium_4.get(1))
+            .itemOutputs(
+                WerkstoffLoader.Zirconium.get(dust, 4),
+                WerkstoffLoader.Zirconium.get(dust, 4),
+                WerkstoffLoader.Tiberium.get(dust, 2),
+                WerkstoffLoader.Zirconium.get(dust, 8),
+                GT_OreDictUnificator.get(dust, Materials.TungstenSteel, 38L),
+                GT_OreDictUnificator.get(dust, Materials.Platinum, 4L))
+            .outputChances(100_00, 50_00, 50_00, 25_00, 100_00, 100_00)
+            .fluidOutputs(WerkstoffLoader.Xenon.getFluidOrGas(4))
+            .duration(50 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(centrifugeRecipes);
 
-        GT_Values.RA.stdBuilder().itemInputs(BW_NonMeta_MaterialItems.Depleted_TheCoreCell.get(1))
-                .itemOutputs(
-                        ItemList.Depleted_Naquadah_4.get(8),
-                        WerkstoffLoader.Zirconium.get(dust, 64),
-                        WerkstoffLoader.Zirconium.get(dust, 64),
-                        GT_OreDictUnificator.get(dust, Materials.TungstenSteel, 64L),
-                        GT_OreDictUnificator.get(dust, Materials.TungstenSteel, 64L),
-                        GT_OreDictUnificator.get(dust, Materials.TungstenSteel, 48L))
-                .outputChances(100_00, 50_00, 50_00, 100_00, 100_00, 100_00).duration(1 * MINUTES + 40 * SECONDS)
-                .eut(TierEU.RECIPE_IV).addTo(centrifugeRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(BW_NonMeta_MaterialItems.Depleted_TheCoreCell.get(1))
+            .itemOutputs(
+                ItemList.Depleted_Naquadah_4.get(8),
+                WerkstoffLoader.Zirconium.get(dust, 64),
+                WerkstoffLoader.Zirconium.get(dust, 64),
+                GT_OreDictUnificator.get(dust, Materials.TungstenSteel, 64L),
+                GT_OreDictUnificator.get(dust, Materials.TungstenSteel, 64L),
+                GT_OreDictUnificator.get(dust, Materials.TungstenSteel, 48L))
+            .outputChances(100_00, 50_00, 50_00, 100_00, 100_00, 100_00)
+            .duration(1 * MINUTES + 40 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
+            .addTo(centrifugeRecipes);
 
     }
 }

@@ -109,9 +109,9 @@ public class RadioHatchCompat {
         DebugLog.log("Starting Generation of missing GT++ rods/longrods");
         try {
             Class<? extends Item> rodclass = (Class<? extends Item>) Class
-                    .forName("gtPlusPlus.core.item.base.rods.BaseItemRod");
+                .forName("gtPlusPlus.core.item.base.rods.BaseItemRod");
             Class<? extends Item> longrodclass = (Class<? extends Item>) Class
-                    .forName("gtPlusPlus.core.item.base.rods.BaseItemRodLong");
+                .forName("gtPlusPlus.core.item.base.rods.BaseItemRodLong");
             Constructor<? extends Item> c1 = rodclass.getConstructor(RadioHatchCompat.materialClass);
             Constructor<? extends Item> c2 = longrodclass.getConstructor(RadioHatchCompat.materialClass);
             Field cOwners = GameData.class.getDeclaredField("customOwners");
@@ -121,56 +121,65 @@ public class RadioHatchCompat {
             Map<Item, String> UniqueIdentifierMap = (Map<Item, String>) map.get(GameData.getItemRegistry());
 
             Map<GameRegistry.UniqueIdentifier, ModContainer> ownerItems = (Map<GameRegistry.UniqueIdentifier, ModContainer>) cOwners
-                    .get(null);
+                .get(null);
             ModContainer gtpp = null;
             ModContainer bartworks = null;
 
-            for (ModContainer container : Loader.instance().getModList()) {
+            for (ModContainer container : Loader.instance()
+                .getModList()) {
                 if (gtpp != null && bartworks != null) break;
                 if (BartWorksCrossmod.MOD_ID.equalsIgnoreCase(container.getModId())) bartworks = container;
-                else if (container.getModId().equalsIgnoreCase(GTPlusPlus.ID)) gtpp = container;
+                else if (container.getModId()
+                    .equalsIgnoreCase(GTPlusPlus.ID)) gtpp = container;
             }
 
-            for (Object mats : (Set<?>) RadioHatchCompat.materialClass.getField("mMaterialMap").get(null)) {
+            for (Object mats : (Set<?>) RadioHatchCompat.materialClass.getField("mMaterialMap")
+                .get(null)) {
                 if (RadioHatchCompat.isRadioactive.getBoolean(mats)) {
 
-                    if (OreDictionary.getOres("stick" + RadioHatchCompat.unlocalizedName.get(mats)).isEmpty()) {
+                    if (OreDictionary.getOres("stick" + RadioHatchCompat.unlocalizedName.get(mats))
+                        .isEmpty()) {
                         Item it = c1.newInstance(mats);
                         UniqueIdentifierMap.replace(it, "miscutils:" + it.getUnlocalizedName());
                         GameRegistry.UniqueIdentifier ui = GameRegistry.findUniqueIdentifierFor(it);
                         ownerItems.replace(ui, bartworks, gtpp);
 
                         String tanslate = it.getUnlocalizedName() + ".name="
-                                + RadioHatchCompat.localizedName.get(mats)
-                                + " Rod";
+                            + RadioHatchCompat.localizedName.get(mats)
+                            + " Rod";
                         RadioHatchCompat.TranslateSet.add(tanslate);
 
                         DebugLog.log(tanslate);
                         DebugLog.log("Generate: " + RadioHatchCompat.rod + RadioHatchCompat.unlocalizedName.get(mats));
                     }
-                    if (OreDictionary.getOres("stickLong" + RadioHatchCompat.unlocalizedName.get(mats)).isEmpty()) {
+                    if (OreDictionary.getOres("stickLong" + RadioHatchCompat.unlocalizedName.get(mats))
+                        .isEmpty()) {
                         Item it2 = c2.newInstance(mats);
                         UniqueIdentifierMap.replace(it2, "miscutils:" + it2.getUnlocalizedName());
                         GameRegistry.UniqueIdentifier ui2 = GameRegistry.findUniqueIdentifierFor(it2);
                         ownerItems.replace(ui2, bartworks, gtpp);
 
-                        DebugLog.log(
-                                "Generate: " + RadioHatchCompat.longRod + RadioHatchCompat.unlocalizedName.get(mats));
+                        DebugLog
+                            .log("Generate: " + RadioHatchCompat.longRod + RadioHatchCompat.unlocalizedName.get(mats));
                     }
                 }
             }
         } catch (NoSuchFieldException | IllegalAccessException | NoSuchMethodException | InvocationTargetException
-                | InstantiationException | ClassNotFoundException e) {
+            | InstantiationException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
     public static IRadMaterial GTppRadChecker(ItemStack lStack) {
         try {
-            if (RadioHatchCompat.intf.isAssignableFrom(lStack.getItem().getClass())) {
+            if (RadioHatchCompat.intf.isAssignableFrom(
+                lStack.getItem()
+                    .getClass())) {
                 if (!RadioHatchCompat.isRadioactive.getBoolean(RadioHatchCompat.f.get(lStack.getItem()))) return null;
-                int amount = RadioHatchCompat.componentType.get(lStack.getItem()).equals(RadioHatchCompat.rod) ? 1
-                        : RadioHatchCompat.componentType.get(lStack.getItem()).equals(RadioHatchCompat.longRod) ? 2 : 0;
+                int amount = RadioHatchCompat.componentType.get(lStack.getItem())
+                    .equals(RadioHatchCompat.rod) ? 1
+                        : RadioHatchCompat.componentType.get(lStack.getItem())
+                            .equals(RadioHatchCompat.longRod) ? 2 : 0;
                 if (amount == 0) return null;
                 return new RadioHatchCompat.GTPPRadAdapter(amount, RadioHatchCompat.f.get(lStack.getItem()));
             }
@@ -202,7 +211,8 @@ public class RadioHatchCompat {
         }
 
         private static boolean isElement(Object GTPPMaterial) throws IllegalAccessException {
-            return RadioHatchCompat.GTPPRadAdapter.getMaterialInput(GTPPMaterial).isEmpty();
+            return RadioHatchCompat.GTPPRadAdapter.getMaterialInput(GTPPMaterial)
+                .isEmpty();
         }
 
         private static List<?> getElemets(Object GTPPMaterial) throws IllegalAccessException {
@@ -226,8 +236,8 @@ public class RadioHatchCompat {
             try {
                 List<?> pureElements = RadioHatchCompat.GTPPRadAdapter.getElemets(m);
                 for (Object materialObj : pureElements) if (RadioHatchCompat.isRadioactive.getBoolean(materialObj))
-                    ret += RadioHatchCompat.radlevel.getByte(m) + RadioHatchCompat.GTPPRadAdapter
-                            .clampToZero(RadioHatchCompat.protons.getLong(materialObj));
+                    ret += RadioHatchCompat.radlevel.getByte(m)
+                        + RadioHatchCompat.GTPPRadAdapter.clampToZero(RadioHatchCompat.protons.getLong(materialObj));
                 else ret += RadioHatchCompat.radlevel.getByte(m);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
@@ -238,7 +248,7 @@ public class RadioHatchCompat {
         @Override
         public int getRadiationLevel(ItemStack aStack) {
             return RadioHatchCompat.GTPPRadAdapter.BUFFER
-                    .computeIfAbsent(this.m, radlvl -> RadioHatchCompat.GTPPRadAdapter.calulateRad(this.m));
+                .computeIfAbsent(this.m, radlvl -> RadioHatchCompat.GTPPRadAdapter.calulateRad(this.m));
         }
 
         private static long clampToZero(long number) {

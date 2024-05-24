@@ -27,25 +27,25 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GT_Utility;
 
 public class TT_MetaTileEntity_LowPowerLaserDynamo extends GT_MetaTileEntity_Hatch_DynamoTunnel
-        implements LowPowerLaser {
+    implements LowPowerLaser {
 
     public TT_MetaTileEntity_LowPowerLaserDynamo(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
         super(aID, aName, aNameRegional, aTier, aAmp);
     }
 
     public TT_MetaTileEntity_LowPowerLaserDynamo(String aName, int aTier, int aAmp, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aAmp, aDescription, aTextures);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new TT_MetaTileEntity_LowPowerLaserDynamo(
-                this.mName,
-                this.mTier,
-                this.Amperes,
-                this.mDescriptionArray,
-                this.mTextures);
+            this.mName,
+            this.mTier,
+            this.Amperes,
+            this.mDescriptionArray,
+            this.mTextures);
     }
 
     @Override
@@ -71,13 +71,13 @@ public class TT_MetaTileEntity_LowPowerLaserDynamo extends GT_MetaTileEntity_Hat
     @Override
     public String[] getDescription() {
         return ArrayUtils.addAll(
-                this.mDescriptionArray,
-                StatCollector.translateToLocal("gt.blockmachines.hatch.dynamotunnel.desc.1") + ": "
-                        + EnumChatFormatting.YELLOW
-                        + GT_Utility.formatNumbers(this.getTotalPower())
-                        + EnumChatFormatting.RESET
-                        + " EU/t",
-                BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get());
+            this.mDescriptionArray,
+            StatCollector.translateToLocal("gt.blockmachines.hatch.dynamotunnel.desc.1") + ": "
+                + EnumChatFormatting.YELLOW
+                + GT_Utility.formatNumbers(this.getTotalPower())
+                + EnumChatFormatting.RESET
+                + " EU/t",
+            BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get());
     }
 
     @Override

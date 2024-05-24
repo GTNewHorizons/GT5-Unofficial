@@ -27,37 +27,37 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GT_Utility;
 
 public class TT_MetaTileEntity_LowPowerLaserHatch extends GT_MetaTileEntity_Hatch_EnergyTunnel
-        implements LowPowerLaser {
+    implements LowPowerLaser {
 
     public TT_MetaTileEntity_LowPowerLaserHatch(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
         super(aID, aName, aNameRegional, aTier, aAmp);
     }
 
     public TT_MetaTileEntity_LowPowerLaserHatch(String aName, int aTier, int aAmp, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aAmp, aDescription, aTextures);
     }
 
     @Override
     public String[] getDescription() {
         return ArrayUtils.addAll(
-                this.mDescriptionArray,
-                StatCollector.translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
-                        + EnumChatFormatting.YELLOW
-                        + GT_Utility.formatNumbers(this.getTotalPower())
-                        + EnumChatFormatting.RESET
-                        + " EU/t",
-                BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get());
+            this.mDescriptionArray,
+            StatCollector.translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
+                + EnumChatFormatting.YELLOW
+                + GT_Utility.formatNumbers(this.getTotalPower())
+                + EnumChatFormatting.RESET
+                + " EU/t",
+            BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get());
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new TT_MetaTileEntity_LowPowerLaserHatch(
-                this.mName,
-                this.mTier,
-                this.Amperes,
-                this.mDescriptionArray,
-                this.mTextures);
+            this.mName,
+            this.mTier,
+            this.Amperes,
+            this.mDescriptionArray,
+            this.mTextures);
     }
 
     @Override

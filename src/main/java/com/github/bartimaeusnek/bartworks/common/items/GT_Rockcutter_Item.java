@@ -46,7 +46,7 @@ import ic2.api.item.IElectricItem;
 public class GT_Rockcutter_Item extends ItemTool implements IElectricItem {
 
     private static Set<Block> mineableBlocks = Sets
-            .newHashSet(Blocks.stone, Blocks.cobblestone, Blocks.sand, Blocks.clay);
+        .newHashSet(Blocks.stone, Blocks.cobblestone, Blocks.sand, Blocks.clay);
     private final int mCharge;
     private final int mTransfer;
     public int mTier;
@@ -81,7 +81,8 @@ public class GT_Rockcutter_Item extends ItemTool implements IElectricItem {
     public void onUpdate(ItemStack aStack, World worldIn, Entity entityIn, int p_77663_4_, boolean p_77663_5_) {
         if (!ElectricItem.manager.canUse(aStack, 500 * this.multi)) {
             if (aStack.isItemEnchanted()) {
-                aStack.getTagCompound().removeTag("ench");
+                aStack.getTagCompound()
+                    .removeTag("ench");
             }
         } else if (!aStack.isItemEnchanted()) {
             aStack.addEnchantment(Enchantment.silkTouch, 3);
@@ -90,14 +91,14 @@ public class GT_Rockcutter_Item extends ItemTool implements IElectricItem {
 
     @Override
     public boolean onItemUse(ItemStack aStack, EntityPlayer aPlayer, World p_77648_3_, int p_77648_4_, int p_77648_5_,
-            int p_77648_6_, int p_77648_7_, float p_77648_8_, float p_77648_9_, float p_77648_10_) {
+        int p_77648_6_, int p_77648_7_, float p_77648_8_, float p_77648_9_, float p_77648_10_) {
         ElectricItem.manager.use(aStack, 0, aPlayer);
         return false;
     }
 
     @Override
     public boolean onBlockDestroyed(ItemStack var1, World var2, Block var3, int var4, int var5, int var6,
-            EntityLivingBase var7) {
+        EntityLivingBase var7) {
         ElectricItem.manager.use(var1, 0, var7);
         if (ElectricItem.manager.canUse(var1, 500 * this.multi)) {
             ElectricItem.manager.use(var1, 500 * this.multi, var7);
@@ -109,13 +110,21 @@ public class GT_Rockcutter_Item extends ItemTool implements IElectricItem {
 
     @Override
     public boolean canHarvestBlock(Block par1Block, ItemStack itemStack) {
-        return par1Block.getMaterial().equals(Material.glass) || par1Block.getMaterial().equals(Material.clay)
-                || par1Block.getMaterial().equals(Material.packedIce)
-                || par1Block.getMaterial().equals(Material.ice)
-                || par1Block.getMaterial().equals(Material.sand)
-                || par1Block.getMaterial().equals(Material.ground)
-                || par1Block.getMaterial().equals(Material.rock)
-                || mineableBlocks.contains(par1Block);
+        return par1Block.getMaterial()
+            .equals(Material.glass)
+            || par1Block.getMaterial()
+                .equals(Material.clay)
+            || par1Block.getMaterial()
+                .equals(Material.packedIce)
+            || par1Block.getMaterial()
+                .equals(Material.ice)
+            || par1Block.getMaterial()
+                .equals(Material.sand)
+            || par1Block.getMaterial()
+                .equals(Material.ground)
+            || par1Block.getMaterial()
+                .equals(Material.rock)
+            || mineableBlocks.contains(par1Block);
     }
 
     @Override

@@ -33,7 +33,7 @@ public class ServerJoinedPackage extends GT_Packet_New {
     public ServerJoinedPackage(Object obj) {
         super(false);
         this.config = (byte) (ConfigHandler.classicMode && ConfigHandler.disableExtraGassesForEBF ? 3
-                : ConfigHandler.classicMode ? 2 : ConfigHandler.disableExtraGassesForEBF ? 1 : 0);
+            : ConfigHandler.classicMode ? 2 : ConfigHandler.disableExtraGassesForEBF ? 1 : 0);
     }
 
     @Override

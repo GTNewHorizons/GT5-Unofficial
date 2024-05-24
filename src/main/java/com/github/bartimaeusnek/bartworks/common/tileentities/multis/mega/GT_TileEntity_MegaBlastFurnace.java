@@ -70,43 +70,42 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 
 public class GT_TileEntity_MegaBlastFurnace extends GT_TileEntity_MegaMultiBlockBase<GT_TileEntity_MegaBlastFurnace>
-        implements ISurvivalConstructable {
+    implements ISurvivalConstructable {
 
     private static final int CASING_INDEX = 11;
     private static final IStructureDefinition<GT_TileEntity_MegaBlastFurnace> STRUCTURE_DEFINITION = StructureDefinition
-            .<GT_TileEntity_MegaBlastFurnace>builder().addShape("main", createShape())
-            .addElement('=', StructureElementAirNoHint.getInstance())
-            .addElement(
-                    't',
-                    buildHatchAdder(GT_TileEntity_MegaBlastFurnace.class)
-                            .atLeast(
-                                    OutputHatch.withAdder(GT_TileEntity_MegaBlastFurnace::addOutputHatchToTopList)
-                                            .withCount(t -> t.mPollutionOutputHatches.size()))
-                            .casingIndex(CASING_INDEX).dot(1).buildAndChain(GregTech_API.sBlockCasings1, CASING_INDEX))
-            .addElement('m', Muffler.newAny(CASING_INDEX, 2))
-            .addElement(
-                    'C',
-                    withChannel(
-                            "coil",
-                            ofCoil(
-                                    GT_TileEntity_MegaBlastFurnace::setCoilLevel,
-                                    GT_TileEntity_MegaBlastFurnace::getCoilLevel)))
-            .addElement(
-                    'g',
-                    withChannel(
-                            "glass",
-                            BorosilicateGlass.ofBoroGlass(
-                                    (byte) 0,
-                                    (byte) 1,
-                                    Byte.MAX_VALUE,
-                                    (te, t) -> te.glassTier = t,
-                                    te -> te.glassTier)))
-            .addElement(
-                    'b',
-                    buildHatchAdder(GT_TileEntity_MegaBlastFurnace.class)
-                            .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                            .casingIndex(CASING_INDEX).dot(1).buildAndChain(GregTech_API.sBlockCasings1, CASING_INDEX))
-            .build();
+        .<GT_TileEntity_MegaBlastFurnace>builder()
+        .addShape("main", createShape())
+        .addElement('=', StructureElementAirNoHint.getInstance())
+        .addElement(
+            't',
+            buildHatchAdder(GT_TileEntity_MegaBlastFurnace.class)
+                .atLeast(
+                    OutputHatch.withAdder(GT_TileEntity_MegaBlastFurnace::addOutputHatchToTopList)
+                        .withCount(t -> t.mPollutionOutputHatches.size()))
+                .casingIndex(CASING_INDEX)
+                .dot(1)
+                .buildAndChain(GregTech_API.sBlockCasings1, CASING_INDEX))
+        .addElement('m', Muffler.newAny(CASING_INDEX, 2))
+        .addElement(
+            'C',
+            withChannel(
+                "coil",
+                ofCoil(GT_TileEntity_MegaBlastFurnace::setCoilLevel, GT_TileEntity_MegaBlastFurnace::getCoilLevel)))
+        .addElement(
+            'g',
+            withChannel(
+                "glass",
+                BorosilicateGlass
+                    .ofBoroGlass((byte) 0, (byte) 1, Byte.MAX_VALUE, (te, t) -> te.glassTier = t, te -> te.glassTier)))
+        .addElement(
+            'b',
+            buildHatchAdder(GT_TileEntity_MegaBlastFurnace.class)
+                .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                .casingIndex(CASING_INDEX)
+                .dot(1)
+                .buildAndChain(GregTech_API.sBlockCasings1, CASING_INDEX))
+        .build();
 
     private static String[][] createShape() {
         String[][] raw = new String[20][];
@@ -149,7 +148,7 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_TileEntity_MegaMultiBlock
     private HeatingCoilLevel mCoilLevel;
     protected final ArrayList<GT_MetaTileEntity_Hatch_Output> mPollutionOutputHatches = new ArrayList<>();
     protected final FluidStack[] pollutionFluidStacks = { Materials.CarbonDioxide.getGas(1000),
-            Materials.CarbonMonoxide.getGas(1000), Materials.SulfurDioxide.getGas(1000) };
+        Materials.CarbonMonoxide.getGas(1000), Materials.SulfurDioxide.getGas(1000) };
     private int mHeatingCapacity;
     private byte glassTier;
     private final static int polPtick = ConfigHandler.basePollutionMBFSecond / 20 * ConfigHandler.megaMachinesMax;
@@ -170,27 +169,32 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_TileEntity_MegaMultiBlock
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Blast Furnace").addInfo("Controller block for the Mega Blast Furnace")
-                .addInfo("You can use some fluids to reduce recipe time. Place the circuit in the Input Bus")
-                .addInfo("Each 900K over the min. Heat required reduces power consumption by 5% (multiplicatively)")
-                .addInfo("Each 1800K over the min. Heat allows for an overclock to be upgraded to a perfect overclock.")
-                .addInfo(
-                        "That means the EBF will reduce recipe time by a factor 4 instead of 2 (giving 100% efficiency).")
-                .addInfo("Additionally gives +100K for every tier past MV")
-                .addPollutionAmount(20 * this.getPollutionPerTick(null)).addSeparator()
-                .beginStructureBlock(15, 20, 15, true).addController("3rd layer center")
-                .addCasingInfoRange("Heat Proof Machine Casing", 0, 279, false)
-                .addOtherStructurePart("864x Heating Coils", "Inner 13x18x13 (Hollow)")
-                .addOtherStructurePart("1007x Borosilicate Glass", "Outer 15x18x15")
-                .addStructureInfo("The glass tier limits the Energy Input tier")
-                .addEnergyHatch("Any bottom layer casing").addMaintenanceHatch("Any bottom layer casing")
-                .addMufflerHatch("Top middle").addInputBus("Any bottom layer casing")
-                .addInputHatch("Any bottom layer casing").addOutputBus("Any bottom layer casing")
-                .addOutputHatch("Gasses, Any top layer casing")
-                .addStructureInfo("Recovery amount scales with Muffler Hatch tier")
-                .addOutputHatch("Platline fluids, Any bottom layer casing")
-                .addStructureHint("This Mega Multiblock is too big to have its structure hologram displayed fully.")
-                .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS);
+        tt.addMachineType("Blast Furnace")
+            .addInfo("Controller block for the Mega Blast Furnace")
+            .addInfo("You can use some fluids to reduce recipe time. Place the circuit in the Input Bus")
+            .addInfo("Each 900K over the min. Heat required reduces power consumption by 5% (multiplicatively)")
+            .addInfo("Each 1800K over the min. Heat allows for an overclock to be upgraded to a perfect overclock.")
+            .addInfo("That means the EBF will reduce recipe time by a factor 4 instead of 2 (giving 100% efficiency).")
+            .addInfo("Additionally gives +100K for every tier past MV")
+            .addPollutionAmount(20 * this.getPollutionPerTick(null))
+            .addSeparator()
+            .beginStructureBlock(15, 20, 15, true)
+            .addController("3rd layer center")
+            .addCasingInfoRange("Heat Proof Machine Casing", 0, 279, false)
+            .addOtherStructurePart("864x Heating Coils", "Inner 13x18x13 (Hollow)")
+            .addOtherStructurePart("1007x Borosilicate Glass", "Outer 15x18x15")
+            .addStructureInfo("The glass tier limits the Energy Input tier")
+            .addEnergyHatch("Any bottom layer casing")
+            .addMaintenanceHatch("Any bottom layer casing")
+            .addMufflerHatch("Top middle")
+            .addInputBus("Any bottom layer casing")
+            .addInputHatch("Any bottom layer casing")
+            .addOutputBus("Any bottom layer casing")
+            .addOutputHatch("Gasses, Any top layer casing")
+            .addStructureInfo("Recovery amount scales with Muffler Hatch tier")
+            .addOutputHatch("Platline fluids, Any bottom layer casing")
+            .addStructureHint("This Mega Multiblock is too big to have its structure hologram displayed fully.")
+            .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS);
         return tt;
     }
 
@@ -208,12 +212,12 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_TileEntity_MegaMultiBlock
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-            float aX, float aY, float aZ) {
+        float aX, float aY, float aZ) {
         if (!aPlayer.isSneaking()) {
             this.inputSeparation = !this.inputSeparation;
             GT_Utility.sendChatToPlayer(
-                    aPlayer,
-                    StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + this.inputSeparation);
+                aPlayer,
+                StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + this.inputSeparation);
             return true;
         }
         this.batchMode = !this.batchMode;
@@ -227,16 +231,26 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_TileEntity_MegaMultiBlock
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-            int aColorIndex, boolean aActive, boolean aRedstone) {
+        int aColorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
-            if (aActive) return new ITexture[] { casingTexturePages[0][CASING_INDEX],
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW).extFacing()
-                            .glow().build() };
-            return new ITexture[] { casingTexturePages[0][CASING_INDEX],
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW).extFacing().glow()
-                            .build() };
+            if (aActive) return new ITexture[] { casingTexturePages[0][CASING_INDEX], TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
+            return new ITexture[] { casingTexturePages[0][CASING_INDEX], TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
         }
         return new ITexture[] { casingTexturePages[0][CASING_INDEX] };
     }
@@ -266,10 +280,10 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_TileEntity_MegaMultiBlock
     @Override
     protected String[] getExtendedInfoData() {
         return new String[] { StatCollector.translateToLocal("GT5U.EBF.heat") + ": "
-                + EnumChatFormatting.GREEN
-                + GT_Utility.formatNumbers(this.mHeatingCapacity)
-                + EnumChatFormatting.RESET
-                + " K" };
+            + EnumChatFormatting.GREEN
+            + GT_Utility.formatNumbers(this.mHeatingCapacity)
+            + EnumChatFormatting.RESET
+            + " K" };
     }
 
     @Override
@@ -280,15 +294,16 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_TileEntity_MegaMultiBlock
             @Override
             protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
                 return super.createOverclockCalculator(recipe).setRecipeHeat(recipe.mSpecialValue)
-                        .setMachineHeat(GT_TileEntity_MegaBlastFurnace.this.mHeatingCapacity).setHeatOC(true)
-                        .setHeatDiscount(true);
+                    .setMachineHeat(GT_TileEntity_MegaBlastFurnace.this.mHeatingCapacity)
+                    .setHeatOC(true)
+                    .setHeatDiscount(true);
             }
 
             @Override
             protected @Nonnull CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
                 return recipe.mSpecialValue <= GT_TileEntity_MegaBlastFurnace.this.mHeatingCapacity
-                        ? CheckRecipeResultRegistry.SUCCESSFUL
-                        : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
+                    ? CheckRecipeResultRegistry.SUCCESSFUL
+                    : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
             }
         }.setMaxParallel(ConfigHandler.megaMachinesMax);
     }
@@ -361,8 +376,7 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_TileEntity_MegaMultiBlock
         this.mPollutionOutputHatches.clear();
 
         if (!this.checkPiece("main", 7, 17, 0) || this.getCoilLevel() == HeatingCoilLevel.None
-                || this.mMaintenanceHatches.size() != 1)
-            return false;
+            || this.mMaintenanceHatches.size() != 1) return false;
 
         if (this.glassTier < 8) {
             for (int i = 0; i < this.mExoticEnergyHatches.size(); ++i) {
@@ -381,7 +395,8 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_TileEntity_MegaMultiBlock
             }
         }
 
-        this.mHeatingCapacity = (int) this.getCoilLevel().getHeat() + 100 * (BW_Util.getTier(this.getMaxInputEu()) - 2);
+        this.mHeatingCapacity = (int) this.getCoilLevel()
+            .getHeat() + 100 * (BW_Util.getTier(this.getMaxInputEu()) - 2);
 
         return true;
     }

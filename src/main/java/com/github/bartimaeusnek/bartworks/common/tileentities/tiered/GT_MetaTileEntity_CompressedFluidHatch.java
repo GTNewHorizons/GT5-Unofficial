@@ -32,7 +32,7 @@ public class GT_MetaTileEntity_CompressedFluidHatch extends GT_MetaTileEntity_Ha
     }
 
     public GT_MetaTileEntity_CompressedFluidHatch(String aName, int aTier, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
@@ -49,10 +49,10 @@ public class GT_MetaTileEntity_CompressedFluidHatch extends GT_MetaTileEntity_Ha
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_CompressedFluidHatch(
-                this.mName,
-                this.mTier,
-                this.mDescriptionArray,
-                this.mTextures);
+            this.mName,
+            this.mTier,
+            this.mDescriptionArray,
+            this.mTextures);
     }
 
     @Override

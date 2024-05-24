@@ -68,7 +68,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 
 public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch
-        implements RecipeMapWorkable, IAddGregtechLogo {
+    implements RecipeMapWorkable, IAddGregtechLogo {
 
     private final int cap;
     public int sievert;
@@ -84,19 +84,19 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch
 
     public GT_MetaTileEntity_RadioHatch(int aID, String aName, String aNameRegional, int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                1,
-                new String[] { StatCollector.translateToLocal("tooltip.tile.radhatch.0.name"),
-                        StatCollector.translateToLocal("tooltip.tile.tiereddsc.3.name") + " "
-                                + (aTier - 2)
-                                + " "
-                                + (aTier - 2 >= 2 ? StatCollector.translateToLocal("tooltip.bw.kg.1.name")
-                                        : StatCollector.translateToLocal("tooltip.bw.kg.0.name")),
-                        StatCollector.translateToLocal("tooltip.tile.radhatch.1.name"),
-                        BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get() });
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            1,
+            new String[] { StatCollector.translateToLocal("tooltip.tile.radhatch.0.name"),
+                StatCollector.translateToLocal("tooltip.tile.tiereddsc.3.name") + " "
+                    + (aTier - 2)
+                    + " "
+                    + (aTier - 2 >= 2 ? StatCollector.translateToLocal("tooltip.bw.kg.1.name")
+                        : StatCollector.translateToLocal("tooltip.bw.kg.0.name")),
+                StatCollector.translateToLocal("tooltip.tile.radhatch.1.name"),
+                BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get() });
         this.cap = aTier - 2;
     }
 
@@ -174,7 +174,7 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch
             }
 
             if (myMetaTileEntity.mTickTimer > myMetaTileEntity.mLastSoundTick + ticksBetweenSounds
-                    && this.sievert > 0) {
+                && this.sievert > 0) {
                 this.sendLoopStart((byte) 1);
                 myMetaTileEntity.mLastSoundTick = myMetaTileEntity.mTickTimer;
             }
@@ -213,11 +213,11 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch
 
                 if (this.lastRecipe == null || this.lastFail) {
                     this.lastRecipe = BartWorksRecipeMaps.radioHatchRecipes.findRecipe(
-                            this.getBaseMetaTileEntity(),
-                            false,
-                            Integer.MAX_VALUE - 7,
-                            null,
-                            this.mInventory[0]);
+                        this.getBaseMetaTileEntity(),
+                        false,
+                        Integer.MAX_VALUE - 7,
+                        null,
+                        this.mInventory[0]);
                     if (this.lastRecipe == null) {
                         this.lastFail = true;
                         this.lastUsedItem = this.mInventory[0] == null ? null : this.mInventory[0].copy();
@@ -249,27 +249,27 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch
     @Override
     public String[] getInfoData() {
         if (this.sievert != 0) return new String[] {
-                StatCollector.translateToLocal("tooltip.tile.radhatch.2.name") + " "
-                        + StatCollector.translateToLocal(this.material),
-                StatCollector.translateToLocal("tooltip.tile.radhatch.3.name") + " " + this.sievert,
-                StatCollector.translateToLocal("tooltip.tile.radhatch.4.name") + " " + this.mass,
-                StatCollector.translateToLocal("tooltip.tile.radhatch.5.name") + " "
-                        + (this.decayTime - this.timer % (this.decayTime * 60))
-                        + StatCollector.translateToLocal("tooltip.tile.radhatch.6.name")
-                        + "/"
-                        + (this.decayTime - this.timer % this.decayTime) / 20
-                        + StatCollector.translateToLocal("tooltip.tile.radhatch.7.name")
-                        + "/"
-                        + (this.decayTime - this.timer % this.decayTime) / 20 / 60
-                        + StatCollector.translateToLocal("tooltip.tile.radhatch.8.name")
-                        + "/"
-                        + (this.decayTime - this.timer % this.decayTime) / 20 / 60 / 60
-                        + StatCollector.translateToLocal("tooltip.tile.radhatch.9.name") };
+            StatCollector.translateToLocal("tooltip.tile.radhatch.2.name") + " "
+                + StatCollector.translateToLocal(this.material),
+            StatCollector.translateToLocal("tooltip.tile.radhatch.3.name") + " " + this.sievert,
+            StatCollector.translateToLocal("tooltip.tile.radhatch.4.name") + " " + this.mass,
+            StatCollector.translateToLocal("tooltip.tile.radhatch.5.name") + " "
+                + (this.decayTime - this.timer % (this.decayTime * 60))
+                + StatCollector.translateToLocal("tooltip.tile.radhatch.6.name")
+                + "/"
+                + (this.decayTime - this.timer % this.decayTime) / 20
+                + StatCollector.translateToLocal("tooltip.tile.radhatch.7.name")
+                + "/"
+                + (this.decayTime - this.timer % this.decayTime) / 20 / 60
+                + StatCollector.translateToLocal("tooltip.tile.radhatch.8.name")
+                + "/"
+                + (this.decayTime - this.timer % this.decayTime) / 20 / 60 / 60
+                + StatCollector.translateToLocal("tooltip.tile.radhatch.9.name") };
         return new String[] {
-                StatCollector.translateToLocal("tooltip.tile.radhatch.2.name") + " "
-                        + StatCollector.translateToLocal("tooltip.bw.empty.name"),
-                StatCollector.translateToLocal("tooltip.tile.radhatch.3.name") + " " + "0",
-                StatCollector.translateToLocal("tooltip.tile.radhatch.4.name") + " " + "0" };
+            StatCollector.translateToLocal("tooltip.tile.radhatch.2.name") + " "
+                + StatCollector.translateToLocal("tooltip.bw.empty.name"),
+            StatCollector.translateToLocal("tooltip.tile.radhatch.3.name") + " " + "0",
+            StatCollector.translateToLocal("tooltip.tile.radhatch.4.name") + " " + "0" };
     }
 
     @Override
@@ -294,15 +294,15 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
-        return side == this.getBaseMetaTileEntity().getFrontFacing()
-                && BartWorksRecipeMaps.radioHatchRecipes.containsInput(aStack);
+        ItemStack aStack) {
+        return side == this.getBaseMetaTileEntity()
+            .getFrontFacing() && BartWorksRecipeMaps.radioHatchRecipes.containsInput(aStack);
     }
 
     @Override
@@ -350,79 +350,93 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         buildContext.addSyncedWindow(RADIATION_SHUTTER_WINDOW_ID, this::createShutterWindow);
 
-        this.getBaseMetaTileEntity().add1by1Slot(builder);
+        this.getBaseMetaTileEntity()
+            .add1by1Slot(builder);
         builder.widget(
-                new DrawableWidget().setBackground(BW_UITextures.PICTURE_SIEVERT_CONTAINER).setPos(61, 9)
-                        .setSize(56, 24))
-                .widget(
-                        new ProgressBar().setProgress(() -> this.getSievert() / 148f).setDirection(Direction.RIGHT)
-                                .setTexture(BW_UITextures.PROGRESSBAR_SIEVERT, 24).setPos(65, 13).setSize(48, 16))
-                .widget(
-                        new DrawableWidget().setBackground(BW_UITextures.PICTURE_DECAY_TIME_INSIDE).setPos(124, 18)
-                                .setSize(16, 48))
-                .widget(new DrawableWidget() {
+            new DrawableWidget().setBackground(BW_UITextures.PICTURE_SIEVERT_CONTAINER)
+                .setPos(61, 9)
+                .setSize(56, 24))
+            .widget(
+                new ProgressBar().setProgress(() -> this.getSievert() / 148f)
+                    .setDirection(Direction.RIGHT)
+                    .setTexture(BW_UITextures.PROGRESSBAR_SIEVERT, 24)
+                    .setPos(65, 13)
+                    .setSize(48, 16))
+            .widget(
+                new DrawableWidget().setBackground(BW_UITextures.PICTURE_DECAY_TIME_INSIDE)
+                    .setPos(124, 18)
+                    .setSize(16, 48))
+            .widget(new DrawableWidget() {
 
-                    @Override
-                    public void draw(float partialTicks) {
-                        if (GT_MetaTileEntity_RadioHatch.this.decayTime > 0) {
-                            int height = MathUtils.ceilInt(
-                                    48 * ((GT_MetaTileEntity_RadioHatch.this.decayTime
-                                            - GT_MetaTileEntity_RadioHatch.this.timer
-                                                    % GT_MetaTileEntity_RadioHatch.this.decayTime)
-                                            / (float) GT_MetaTileEntity_RadioHatch.this.decayTime));
-                            new Rectangle()
-                                    .setColor(
-                                            Color.argb(
-                                                    GT_MetaTileEntity_RadioHatch.this.colorForGUI[0],
-                                                    GT_MetaTileEntity_RadioHatch.this.colorForGUI[1],
-                                                    GT_MetaTileEntity_RadioHatch.this.colorForGUI[2],
-                                                    255))
-                                    .draw(new Pos2d(0, 48 - height), new Size(16, height), partialTicks);
-                        }
+                @Override
+                public void draw(float partialTicks) {
+                    if (GT_MetaTileEntity_RadioHatch.this.decayTime > 0) {
+                        int height = MathUtils.ceilInt(
+                            48 * ((GT_MetaTileEntity_RadioHatch.this.decayTime
+                                - GT_MetaTileEntity_RadioHatch.this.timer % GT_MetaTileEntity_RadioHatch.this.decayTime)
+                                / (float) GT_MetaTileEntity_RadioHatch.this.decayTime));
+                        new Rectangle()
+                            .setColor(
+                                Color.argb(
+                                    GT_MetaTileEntity_RadioHatch.this.colorForGUI[0],
+                                    GT_MetaTileEntity_RadioHatch.this.colorForGUI[1],
+                                    GT_MetaTileEntity_RadioHatch.this.colorForGUI[2],
+                                    255))
+                            .draw(new Pos2d(0, 48 - height), new Size(16, height), partialTicks);
                     }
-                }.dynamicTooltip(
-                        () -> Collections.singletonList(
-                                StatCollector.translateToLocalFormatted(
-                                        "tooltip.tile.radhatch.10.name",
-                                        this.timer <= 1 ? 0 : (this.decayTime - this.timer) / 20,
-                                        this.timer <= 1 ? 0 : this.decayTime / 20)))
-                        .setPos(124, 18).setSize(16, 48)
-                        .attachSyncer(
-                                new FakeSyncWidget.LongSyncer(() -> this.decayTime, val -> this.decayTime = val),
-                                builder,
-                                (widget, val) -> widget.notifyTooltipChange())
-                        .attachSyncer(
-                                new FakeSyncWidget.LongSyncer(() -> this.timer, val -> this.timer = val),
-                                builder,
-                                (widget, val) -> widget.notifyTooltipChange()))
-                .widget(new FakeSyncWidget.ShortSyncer(() -> this.colorForGUI[0], val -> this.colorForGUI[0] = val))
-                .widget(new FakeSyncWidget.ShortSyncer(() -> this.colorForGUI[1], val -> this.colorForGUI[1] = val))
-                .widget(new FakeSyncWidget.ShortSyncer(() -> this.colorForGUI[2], val -> this.colorForGUI[2] = val))
-                .widget(
-                        new DrawableWidget().setBackground(BW_UITextures.PICTURE_DECAY_TIME_CONTAINER).setPos(120, 14)
-                                .setSize(24, 56))
-                .widget(
-                        new TextWidget().setStringSupplier(
-                                () -> StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.1", this.mass))
-                                .setTextAlignment(Alignment.Center).setPos(65, 62))
-                .widget(new FakeSyncWidget.ByteSyncer(() -> this.mass, val -> this.mass = val))
-                .widget(
-                        new TextWidget().setStringSupplier(
-                                () -> StatCollector
-                                        .translateToLocalFormatted("BW.NEI.display.radhatch.0", this.getSievert()))
-                                .setTextAlignment(Alignment.Center).setPos(60, 72))
-                .widget(new FakeSyncWidget.IntegerSyncer(() -> this.sievert, val -> this.sievert = val))
-                .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                    if (!widget.isClient()) {
-                        widget.getContext().openSyncedWindow(RADIATION_SHUTTER_WINDOW_ID);
-                    }
-                }).addTooltip("Radiation Shutter").setBackground(GT_UITextures.BUTTON_STANDARD).setPos(153, 5)
-                        .setSize(18, 18))
-                .widget(
-                        new ItemDrawable(
-                                GT_MetaGenerated_Tool_01.INSTANCE
-                                        .getToolWithStats(GT_MetaGenerated_Tool_01.SCREWDRIVER, 1, null, null, null))
-                                                .asWidget().setPos(154, 6));
+                }
+            }.dynamicTooltip(
+                () -> Collections.singletonList(
+                    StatCollector.translateToLocalFormatted(
+                        "tooltip.tile.radhatch.10.name",
+                        this.timer <= 1 ? 0 : (this.decayTime - this.timer) / 20,
+                        this.timer <= 1 ? 0 : this.decayTime / 20)))
+                .setPos(124, 18)
+                .setSize(16, 48)
+                .attachSyncer(
+                    new FakeSyncWidget.LongSyncer(() -> this.decayTime, val -> this.decayTime = val),
+                    builder,
+                    (widget, val) -> widget.notifyTooltipChange())
+                .attachSyncer(
+                    new FakeSyncWidget.LongSyncer(() -> this.timer, val -> this.timer = val),
+                    builder,
+                    (widget, val) -> widget.notifyTooltipChange()))
+            .widget(new FakeSyncWidget.ShortSyncer(() -> this.colorForGUI[0], val -> this.colorForGUI[0] = val))
+            .widget(new FakeSyncWidget.ShortSyncer(() -> this.colorForGUI[1], val -> this.colorForGUI[1] = val))
+            .widget(new FakeSyncWidget.ShortSyncer(() -> this.colorForGUI[2], val -> this.colorForGUI[2] = val))
+            .widget(
+                new DrawableWidget().setBackground(BW_UITextures.PICTURE_DECAY_TIME_CONTAINER)
+                    .setPos(120, 14)
+                    .setSize(24, 56))
+            .widget(
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.1", this.mass))
+                    .setTextAlignment(Alignment.Center)
+                    .setPos(65, 62))
+            .widget(new FakeSyncWidget.ByteSyncer(() -> this.mass, val -> this.mass = val))
+            .widget(
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.0", this.getSievert()))
+                    .setTextAlignment(Alignment.Center)
+                    .setPos(60, 72))
+            .widget(new FakeSyncWidget.IntegerSyncer(() -> this.sievert, val -> this.sievert = val))
+            .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+                if (!widget.isClient()) {
+                    widget.getContext()
+                        .openSyncedWindow(RADIATION_SHUTTER_WINDOW_ID);
+                }
+            })
+                .addTooltip("Radiation Shutter")
+                .setBackground(GT_UITextures.BUTTON_STANDARD)
+                .setPos(153, 5)
+                .setSize(18, 18))
+            .widget(
+                new ItemDrawable(
+                    GT_MetaGenerated_Tool_01.INSTANCE
+                        .getToolWithStats(GT_MetaGenerated_Tool_01.SCREWDRIVER, 1, null, null, null)).asWidget()
+                            .setPos(154, 6));
     }
 
     private ModularWindow createShutterWindow(EntityPlayer player) {
@@ -431,25 +445,35 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch
         builder.setGuiTint(this.getGUIColorization());
 
         builder.widget(
-                new TextWidget("Radiation Shutter Control").setDefaultColor(this.COLOR_TITLE.get()).setPos(10, 9))
-                .widget(
-                        new DrawableWidget().setDrawable(BW_UITextures.PICTURE_RADIATION_SHUTTER_FRAME).setPos(14, 27)
-                                .setSize(55, 54))
-                .widget(
-                        new DrawableWidget().setDrawable(
-                                () -> this.coverage < 100 ? BW_UITextures.PICTURE_RADIATION_SHUTTER_INSIDE : null)
-                                .setPos(16, 29).setSize(51, 50).attachSyncer(
-                                        new FakeSyncWidget.ByteSyncer(this::getCoverage, this::setCoverage),
-                                        builder,
-                                        (widget, val) -> widget.setPos(16, 29 + this.coverage / 2)
-                                                .setSize(51, 50 - this.coverage / 2)))
-                .widget(
-                        new NumericWidget().setSetter(val -> this.coverage = (byte) val).setGetter(() -> this.coverage)
-                                .setBounds(0, 100).setScrollValues(1, 5, 50).setTextColor(Color.WHITE.dark(1))
-                                .setTextAlignment(Alignment.CenterLeft)
-                                .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
-                                .setPos(86, 27).setSize(30, 12))
-                .widget(ButtonWidget.closeWindowButton(true).setPos(176 - 15, 3));
+            new TextWidget("Radiation Shutter Control").setDefaultColor(this.COLOR_TITLE.get())
+                .setPos(10, 9))
+            .widget(
+                new DrawableWidget().setDrawable(BW_UITextures.PICTURE_RADIATION_SHUTTER_FRAME)
+                    .setPos(14, 27)
+                    .setSize(55, 54))
+            .widget(
+                new DrawableWidget()
+                    .setDrawable(() -> this.coverage < 100 ? BW_UITextures.PICTURE_RADIATION_SHUTTER_INSIDE : null)
+                    .setPos(16, 29)
+                    .setSize(51, 50)
+                    .attachSyncer(
+                        new FakeSyncWidget.ByteSyncer(this::getCoverage, this::setCoverage),
+                        builder,
+                        (widget, val) -> widget.setPos(16, 29 + this.coverage / 2)
+                            .setSize(51, 50 - this.coverage / 2)))
+            .widget(
+                new NumericWidget().setSetter(val -> this.coverage = (byte) val)
+                    .setGetter(() -> this.coverage)
+                    .setBounds(0, 100)
+                    .setScrollValues(1, 5, 50)
+                    .setTextColor(Color.WHITE.dark(1))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
+                    .setPos(86, 27)
+                    .setSize(30, 12))
+            .widget(
+                ButtonWidget.closeWindowButton(true)
+                    .setPos(176 - 15, 3));
 
         return builder.build();
     }
@@ -457,13 +481,15 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(
-                new DrawableWidget().setDrawable(BW_UITextures.PICTURE_BW_LOGO_47X21).setSize(47, 21).setPos(10, 53));
+            new DrawableWidget().setDrawable(BW_UITextures.PICTURE_BW_LOGO_47X21)
+                .setSize(47, 21)
+                .setPos(10, 53));
     }
 
     @Override
     public GUITextureSet getGUITextureSet() {
         return new GUITextureSet().setMainBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT)
-                .setGregTechLogo(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT);
+            .setGregTechLogo(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT);
     }
 
     @Override

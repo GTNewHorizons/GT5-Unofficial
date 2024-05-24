@@ -13,12 +13,12 @@ public class PyrolyseOven implements Runnable {
     @Override
     public void run() {
         GT_Values.RA.addPyrolyseRecipe(
-                Materials.Wood.getDust(10),
-                new FluidStack(FluidLoader.Kerogen, 1000),
-                10,
-                null,
-                Materials.Oil.getFluid(1000),
-                105,
-                (int) TierEU.RECIPE_HV);
+            Materials.Wood.getDust(10),
+            new FluidStack(FluidLoader.Kerogen, 1000),
+            10,
+            null,
+            Materials.Oil.getFluid(1000),
+            105,
+            (int) TierEU.RECIPE_HV);
     }
 }

@@ -27,31 +27,38 @@ public class Mixer implements Runnable {
     @Override
     public void run() {
         GT_Values.RA.stdBuilder()
-                .itemInputs(
-                        WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 10),
-                        Materials.Uranium235.getDust(1),
-                        GT_Utility.getIntegratedCircuit(2))
-                .itemOutputs(new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials)).duration(20 * SECONDS)
-                .eut(TierEU.RECIPE_LV).addTo(mixerRecipes);
+            .itemInputs(
+                WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 10),
+                Materials.Uranium235.getDust(1),
+                GT_Utility.getIntegratedCircuit(2))
+            .itemOutputs(new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(mixerRecipes);
 
         int i = 0;
         for (GT_TileEntity_HTGR.HTGRMaterials.Fuel_ fuel : sHTGR_Fuel) {
-            GT_Values.RA.stdBuilder().itemInputs(fuel.mainItem, fuel.secondaryItem, GT_Utility.getIntegratedCircuit(1))
-                    .itemOutputs(new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i))
-                    .duration(20 * SECONDS).eut(TierEU.RECIPE_LV).addTo(mixerRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(fuel.mainItem, fuel.secondaryItem, GT_Utility.getIntegratedCircuit(1))
+                .itemOutputs(new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i))
+                .duration(20 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(mixerRecipes);
 
             i += MATERIALS_PER_FUEL;
         }
 
         if (Gendustry.isModLoaded()) {
             GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                            GT_Utility.getIntegratedCircuit(17),
-                            GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Radon, 1L))
-                    .itemOutputs(Materials.Empty.getCells(1))
-                    .fluidInputs(FluidRegistry.getFluidStack("liquiddna", 1000))
-                    .fluidOutputs(new FluidStack(FluidLoader.BioLabFluidMaterials[0], 2000)).duration(25 * SECONDS)
-                    .eut(TierEU.RECIPE_HV).addTo(mixerRecipes);
+                .itemInputs(
+                    GT_Utility.getIntegratedCircuit(17),
+                    GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Radon, 1L))
+                .itemOutputs(Materials.Empty.getCells(1))
+                .fluidInputs(FluidRegistry.getFluidStack("liquiddna", 1000))
+                .fluidOutputs(new FluidStack(FluidLoader.BioLabFluidMaterials[0], 2000))
+                .duration(25 * SECONDS)
+                .eut(TierEU.RECIPE_HV)
+                .addTo(mixerRecipes);
         }
 
     }

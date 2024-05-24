@@ -41,39 +41,36 @@ public class BW_GUIContainer_RotorBlock extends GuiWindKineticGenerator {
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         this.fontRendererObj
-                .drawString(this.name, (this.xSize - this.fontRendererObj.getStringWidth(this.name)) / 2, 6, 2157374);
+            .drawString(this.name, (this.xSize - this.fontRendererObj.getStringWidth(this.name)) / 2, 6, 2157374);
         if (this.container.base.checkrotor()) {
             if (!this.container.base.rotorspace()) {
                 this.fontRendererObj.drawString(
-                        StatCollector.translateToLocal("ic2.WindKineticGenerator.gui.rotorspace"),
-                        27,
-                        52,
-                        2157374);
+                    StatCollector.translateToLocal("ic2.WindKineticGenerator.gui.rotorspace"),
+                    27,
+                    52,
+                    2157374);
             } else if (this.container.base.checkrotor() && !this.container.base.guiisminWindStrength()) {
                 this.fontRendererObj.drawString(
-                        StatCollector.translateToLocal("ic2.WindKineticGenerator.gui.windweak1"),
-                        27,
-                        52,
-                        2157374);
+                    StatCollector.translateToLocal("ic2.WindKineticGenerator.gui.windweak1"),
+                    27,
+                    52,
+                    2157374);
             } else {
                 this.fontRendererObj.drawString(this.container.base.getRotorhealth() + " %", 46, 52, 2157374);
                 if (this.container.base.guiisoverload()) {
                     GuiTooltipHelper.drawAreaTooltip(
-                            mouseX - this.guiLeft,
-                            mouseY - this.guiTop,
-                            StatCollector.translateToLocal("ic2.WindKineticGenerator.error.overload"),
-                            44,
-                            27,
-                            79,
-                            52);
+                        mouseX - this.guiLeft,
+                        mouseY - this.guiTop,
+                        StatCollector.translateToLocal("ic2.WindKineticGenerator.error.overload"),
+                        44,
+                        27,
+                        79,
+                        52);
                 }
             }
         } else {
-            this.fontRendererObj.drawString(
-                    StatCollector.translateToLocal("ic2.WindKineticGenerator.gui.rotormiss"),
-                    27,
-                    52,
-                    2157374);
+            this.fontRendererObj
+                .drawString(StatCollector.translateToLocal("ic2.WindKineticGenerator.gui.rotormiss"), 27, 52, 2157374);
         }
     }
 
@@ -81,7 +78,7 @@ public class BW_GUIContainer_RotorBlock extends GuiWindKineticGenerator {
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
         GL11.glColor3f(0.5f, 0.25f, 0.07f);
         this.mc.getTextureManager()
-                .bindTexture(new ResourceLocation(MainMod.MOD_ID, "textures/GUI/GUIPrimitiveKUBox.png"));
+            .bindTexture(new ResourceLocation(MainMod.MOD_ID, "textures/GUI/GUIPrimitiveKUBox.png"));
         int j = (this.width - this.xSize) / 2;
         int k = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(j, k, 0, 0, this.xSize, this.ySize);

@@ -52,7 +52,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Pollution;
 
 public class BW_TileEntity_HeatedWaterPump extends TileEntity implements ITileDropsContent, IFluidHandler, IFluidTank,
-        ITileWithModularUI, ITileAddsInformation, ITileHasDifferentTextureSides {
+    ITileWithModularUI, ITileAddsInformation, ITileHasDifferentTextureSides {
 
     public static final int FUELSLOT = 0;
     public static final Fluid WATER = FluidRegistry.WATER;
@@ -85,7 +85,8 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity implements ITileDr
         this.fuel = compound.getInteger("fuel");
         this.maxfuel = compound.getInteger("maxfuel");
         this.outputstack = FluidStack.loadFluidStackFromNBT(compound.getCompoundTag("FluidStack"));
-        if (!compound.getCompoundTag("ItemStack").equals(new NBTTagCompound()))
+        if (!compound.getCompoundTag("ItemStack")
+            .equals(new NBTTagCompound()))
             this.fuelstack = ItemStack.loadItemStackFromNBT(compound.getCompoundTag("ItemStack"));
         super.readFromNBT(compound);
     }
@@ -134,38 +135,40 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity implements ITileDr
 
     private void pushWaterToAdjacentTiles() {
         Arrays.stream(ForgeDirection.values(), 0, 6) // All but Unknown
-                .forEach(
-                        direction -> Optional.ofNullable(
-                                this.worldObj.getTileEntity(
-                                        this.xCoord + direction.offsetX,
-                                        this.yCoord + direction.offsetY,
-                                        this.zCoord + direction.offsetZ))
-                                .ifPresent(te -> {
-                                    if (te instanceof IFluidHandler tank) {
-                                        if (tank.canFill(direction.getOpposite(), this.outputstack.getFluid())) {
-                                            int drainage = tank.fill(direction.getOpposite(), this.outputstack, false);
-                                            if (drainage > 0) {
-                                                tank.fill(direction.getOpposite(), this.outputstack, true);
-                                                this.drain(drainage, true);
-                                            }
-                                        }
-                                    } else if (te instanceof IFluidTank tank) {
-                                        int drainage = tank.fill(this.outputstack, false);
-                                        if (drainage > 0) {
-                                            tank.fill(this.outputstack, true);
-                                            this.drain(drainage, true);
-                                        }
-                                    }
-                                }));
+            .forEach(
+                direction -> Optional
+                    .ofNullable(
+                        this.worldObj.getTileEntity(
+                            this.xCoord + direction.offsetX,
+                            this.yCoord + direction.offsetY,
+                            this.zCoord + direction.offsetZ))
+                    .ifPresent(te -> {
+                        if (te instanceof IFluidHandler tank) {
+                            if (tank.canFill(direction.getOpposite(), this.outputstack.getFluid())) {
+                                int drainage = tank.fill(direction.getOpposite(), this.outputstack, false);
+                                if (drainage > 0) {
+                                    tank.fill(direction.getOpposite(), this.outputstack, true);
+                                    this.drain(drainage, true);
+                                }
+                            }
+                        } else if (te instanceof IFluidTank tank) {
+                            int drainage = tank.fill(this.outputstack, false);
+                            if (drainage > 0) {
+                                tank.fill(this.outputstack, true);
+                                this.drain(drainage, true);
+                            }
+                        }
+                    }));
     }
 
     private void causePollution() {
-        Optional.ofNullable(this.worldObj).ifPresent(e -> {
-            if (e.getTotalWorldTime() % 20 == 0) {
-                Optional.ofNullable(e.getChunkFromBlockCoords(this.xCoord, this.zCoord))
+        Optional.ofNullable(this.worldObj)
+            .ifPresent(e -> {
+                if (e.getTotalWorldTime() % 20 == 0) {
+                    Optional.ofNullable(e.getChunkFromBlockCoords(this.xCoord, this.zCoord))
                         .ifPresent(c -> GT_Pollution.addPollution(c, ConfigHandler.pollutionHeatedWaterPumpSecond));
-            }
-        });
+                }
+            });
     }
 
     @Override
@@ -197,8 +200,7 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity implements ITileDr
     @Override
     public ItemStack decrStackSize(int slot, int ammount) {
         if (slot != BW_TileEntity_HeatedWaterPump.FUELSLOT || this.fuelstack == null
-                || ammount > this.fuelstack.stackSize)
-            return null;
+            || ammount > this.fuelstack.stackSize) return null;
 
         return this.fuelstack.splitStack(ammount);
     }
@@ -279,14 +281,14 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity implements ITileDr
         if (doDrain) {
             this.outputstack.amount -= actualdrain;
             FluidEvent.fireEvent(
-                    new FluidEvent.FluidDrainingEvent(
-                            this.outputstack,
-                            this.getWorldObj(),
-                            this.xCoord,
-                            this.yCoord,
-                            this.zCoord,
-                            this,
-                            actualdrain));
+                new FluidEvent.FluidDrainingEvent(
+                    this.outputstack,
+                    this.getWorldObj(),
+                    this.xCoord,
+                    this.yCoord,
+                    this.zCoord,
+                    this,
+                    actualdrain));
         }
         return ret;
     }
@@ -299,8 +301,7 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity implements ITileDr
     @Override
     public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
         if (resource != null && resource.getFluid() == BW_TileEntity_HeatedWaterPump.WATER
-                && this.drain(resource.amount, false) != null)
-            return this.drain(resource.amount, doDrain);
+            && this.drain(resource.amount, false) != null) return this.drain(resource.amount, doDrain);
         return null;
     }
 
@@ -327,23 +328,23 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity implements ITileDr
     @Override
     public String[] getInfoData() {
         return new String[] {
-                StatCollector.translateToLocal("tooltip.tile.waterpump.0.name") + " "
-                        + GT_Utility.formatNumbers(ConfigHandler.mbWaterperSec)
-                        + String.format(
-                                StatCollector.translateToLocal("tooltip.tile.waterpump.1.name"),
-                                ConfigHandler.pollutionHeatedWaterPumpSecond),
-                StatCollector.translateToLocal("tooltip.tile.waterpump.2.name") };
+            StatCollector.translateToLocal("tooltip.tile.waterpump.0.name") + " "
+                + GT_Utility.formatNumbers(ConfigHandler.mbWaterperSec)
+                + String.format(
+                    StatCollector.translateToLocal("tooltip.tile.waterpump.1.name"),
+                    ConfigHandler.pollutionHeatedWaterPumpSecond),
+            StatCollector.translateToLocal("tooltip.tile.waterpump.2.name") };
     }
 
     @Override
     public void registerBlockIcons(IIconRegister par1IconRegister) {
         ITileHasDifferentTextureSides.texture[ForgeDirection.UP.ordinal()] = par1IconRegister
-                .registerIcon(MainMod.MOD_ID + ":heatedWaterPumpTop");
+            .registerIcon(MainMod.MOD_ID + ":heatedWaterPumpTop");
         ITileHasDifferentTextureSides.texture[ForgeDirection.DOWN.ordinal()] = par1IconRegister
-                .registerIcon(MainMod.MOD_ID + ":heatedWaterPumpDown");
+            .registerIcon(MainMod.MOD_ID + ":heatedWaterPumpDown");
         for (int i = 2; i < 7; i++) {
             ITileHasDifferentTextureSides.texture[i] = par1IconRegister
-                    .registerIcon(MainMod.MOD_ID + ":heatedWaterPumpSide");
+                .registerIcon(MainMod.MOD_ID + ":heatedWaterPumpSide");
         }
     }
 
@@ -355,12 +356,18 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity implements ITileDr
         final IItemHandlerModifiable invWrapper = new InvWrapper(this);
 
         builder.widget(
-                new SlotWidget(invWrapper, 0).setFilter(stack -> TileEntityFurnace.getItemBurnTime(stack) > 0)
-                        .setPos(55, 52))
-                .widget(SlotWidget.phantom(invWrapper, 1).disableInteraction().setPos(85, 32)).widget(
-                        new ProgressBar().setProgress(() -> (float) this.fuel / this.maxfuel)
-                                .setTexture(BW_UITextures.PROGRESSBAR_FUEL, 14).setDirection(ProgressBar.Direction.UP)
-                                .setPos(56, 36).setSize(14, 14));
+            new SlotWidget(invWrapper, 0).setFilter(stack -> TileEntityFurnace.getItemBurnTime(stack) > 0)
+                .setPos(55, 52))
+            .widget(
+                SlotWidget.phantom(invWrapper, 1)
+                    .disableInteraction()
+                    .setPos(85, 32))
+            .widget(
+                new ProgressBar().setProgress(() -> (float) this.fuel / this.maxfuel)
+                    .setTexture(BW_UITextures.PROGRESSBAR_FUEL, 14)
+                    .setDirection(ProgressBar.Direction.UP)
+                    .setPos(56, 36)
+                    .setSize(14, 14));
 
         return builder.build();
     }

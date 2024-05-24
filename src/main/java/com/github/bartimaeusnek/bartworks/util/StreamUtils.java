@@ -25,7 +25,9 @@ public class StreamUtils {
 
     public static Predicate<RecipeMap<?>> filterVisualMaps() {
         return recipeMap -> {
-            Optional<GT_Recipe> op = recipeMap.getAllRecipes().stream().findAny();
+            Optional<GT_Recipe> op = recipeMap.getAllRecipes()
+                .stream()
+                .findAny();
             return op.isPresent() && !op.get().mFakeRecipe;
         };
     }

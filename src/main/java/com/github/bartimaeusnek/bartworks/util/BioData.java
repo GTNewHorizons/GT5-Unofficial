@@ -100,21 +100,29 @@ public class BioData {
         if (o == null || this.getClass() != o.getClass()) return false;
         BioData bioData = (BioData) o;
         return this.getID() == bioData.getID()
-                || this.getChance() == bioData.getChance() && this.getTier() == bioData.getTier()
-                        && Objects.equals(this.getName(), bioData.getName())
-                        && this.getRarity() == bioData.getRarity();
+            || this.getChance() == bioData.getChance() && this.getTier() == bioData.getTier()
+                && Objects.equals(this.getName(), bioData.getName())
+                && this.getRarity() == bioData.getRarity();
     }
 
     @Override
     public int hashCode() {
         return MurmurHash3.murmurhash3_x86_32(
-                ByteBuffer.allocate(13)
-                        .putInt(MurmurHash3.murmurhash3_x86_32(this.getName(), 0, this.getName().length(), 31))
-                        .put(BW_Util.getByteFromRarity(this.getRarity())).putInt(this.getChance())
-                        .putInt(this.getTier()).array(),
-                0,
-                13,
-                31);
+            ByteBuffer.allocate(13)
+                .putInt(
+                    MurmurHash3.murmurhash3_x86_32(
+                        this.getName(),
+                        0,
+                        this.getName()
+                            .length(),
+                        31))
+                .put(BW_Util.getByteFromRarity(this.getRarity()))
+                .putInt(this.getChance())
+                .putInt(this.getTier())
+                .array(),
+            0,
+            13,
+            31);
     }
 
     public int getTier() {

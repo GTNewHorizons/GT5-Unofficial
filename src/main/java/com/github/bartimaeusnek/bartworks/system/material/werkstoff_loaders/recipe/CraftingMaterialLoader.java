@@ -53,113 +53,196 @@ public class CraftingMaterialLoader implements IWerkstoffRunnable {
     @Override
     public void run(Werkstoff werkstoff) {
         if (werkstoff.hasItemType(screw)) {
-            int tVoltageMultiplier = werkstoff.getStats().getMeltingPoint() >= 2800 ? 60 : 15;
+            int tVoltageMultiplier = werkstoff.getStats()
+                .getMeltingPoint() >= 2800 ? 60 : 15;
 
             // bolt
 
             GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                            werkstoff.hasItemType(gem) ? werkstoff.get(gem) : werkstoff.get(ingot),
-                            ItemList.Shape_Extruder_Bolt.get(0L))
-                    .itemOutputs(werkstoff.get(bolt, 8))
-                    .duration((int) Math.max(werkstoff.getStats().getMass() * 2L, 1)).eut(8 * tVoltageMultiplier)
-                    .addTo(extruderRecipes);
+                .itemInputs(
+                    werkstoff.hasItemType(gem) ? werkstoff.get(gem) : werkstoff.get(ingot),
+                    ItemList.Shape_Extruder_Bolt.get(0L))
+                .itemOutputs(werkstoff.get(bolt, 8))
+                .duration(
+                    (int) Math.max(
+                        werkstoff.getStats()
+                            .getMass() * 2L,
+                        1))
+                .eut(8 * tVoltageMultiplier)
+                .addTo(extruderRecipes);
 
-            GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(stick)).itemOutputs(werkstoff.get(bolt, 4))
-                    .duration((int) Math.max(werkstoff.getStats().getMass() * 2L, 1L)).eut(4).addTo(cutterRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(werkstoff.get(stick))
+                .itemOutputs(werkstoff.get(bolt, 4))
+                .duration(
+                    (int) Math.max(
+                        werkstoff.getStats()
+                            .getMass() * 2L,
+                        1L))
+                .eut(4)
+                .addTo(cutterRecipes);
 
-            GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(bolt)).itemOutputs(werkstoff.get(dustTiny, 1))
-                    .duration(2 * TICKS).eut(8).addTo(maceratorRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(werkstoff.get(bolt))
+                .itemOutputs(werkstoff.get(dustTiny, 1))
+                .duration(2 * TICKS)
+                .eut(8)
+                .addTo(maceratorRecipes);
 
             // screw
 
-            GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(bolt)).itemOutputs(werkstoff.get(screw))
-                    .duration((int) Math.max(werkstoff.getStats().getMass() / 8L, 1L)).eut(4).addTo(latheRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(werkstoff.get(bolt))
+                .itemOutputs(werkstoff.get(screw))
+                .duration(
+                    (int) Math.max(
+                        werkstoff.getStats()
+                            .getMass() / 8L,
+                        1L))
+                .eut(4)
+                .addTo(latheRecipes);
 
             GT_ModHandler.addCraftingRecipe(
-                    werkstoff.get(screw),
-                    GT_Proxy.tBits,
-                    new Object[] { "fX", "X ", 'X', werkstoff.get(bolt) });
+                werkstoff.get(screw),
+                GT_Proxy.tBits,
+                new Object[] { "fX", "X ", 'X', werkstoff.get(bolt) });
 
-            GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(screw)).itemOutputs(werkstoff.get(dustTiny, 1))
-                    .duration(2 * TICKS).eut(8).addTo(maceratorRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(werkstoff.get(screw))
+                .itemOutputs(werkstoff.get(dustTiny, 1))
+                .duration(2 * TICKS)
+                .eut(8)
+                .addTo(maceratorRecipes);
 
             if (werkstoff.hasItemType(gem)) return;
 
             // ring
 
-            GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(ingot), ItemList.Shape_Extruder_Ring.get(0L))
-                    .itemOutputs(werkstoff.get(ring, 4))
-                    .duration((int) Math.max(werkstoff.getStats().getMass() * 2L, 1)).eut(6 * tVoltageMultiplier)
-                    .addTo(extruderRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(werkstoff.get(ingot), ItemList.Shape_Extruder_Ring.get(0L))
+                .itemOutputs(werkstoff.get(ring, 4))
+                .duration(
+                    (int) Math.max(
+                        werkstoff.getStats()
+                            .getMass() * 2L,
+                        1))
+                .eut(6 * tVoltageMultiplier)
+                .addTo(extruderRecipes);
 
             GT_ModHandler.addCraftingRecipe(
-                    werkstoff.get(ring),
-                    GT_Proxy.tBits,
-                    new Object[] { "h ", "fX", 'X', werkstoff.get(stick) });
+                werkstoff.get(ring),
+                GT_Proxy.tBits,
+                new Object[] { "h ", "fX", 'X', werkstoff.get(stick) });
 
             // Gear
             GT_ModHandler.addCraftingRecipe(
-                    werkstoff.get(gearGt),
-                    GT_Proxy.tBits,
-                    new Object[] { "SPS", "PwP", "SPS", 'P', werkstoff.get(plate), 'S', werkstoff.get(stick) });
+                werkstoff.get(gearGt),
+                GT_Proxy.tBits,
+                new Object[] { "SPS", "PwP", "SPS", 'P', werkstoff.get(plate), 'S', werkstoff.get(stick) });
 
-            GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(ingot, 4), ItemList.Shape_Extruder_Gear.get(0L))
-                    .itemOutputs(werkstoff.get(gearGt)).duration((int) Math.max(werkstoff.getStats().getMass() * 5L, 1))
-                    .eut(8 * tVoltageMultiplier).addTo(extruderRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(werkstoff.get(ingot, 4), ItemList.Shape_Extruder_Gear.get(0L))
+                .itemOutputs(werkstoff.get(gearGt))
+                .duration(
+                    (int) Math.max(
+                        werkstoff.getStats()
+                            .getMass() * 5L,
+                        1))
+                .eut(8 * tVoltageMultiplier)
+                .addTo(extruderRecipes);
             // wireFine
 
-            GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(ingot), ItemList.Shape_Extruder_Wire.get(0L))
-                    .itemOutputs(werkstoff.get(wireFine, 8))
-                    .duration((int) Math.max(werkstoff.getStats().getMass() * 1.5F, 1F)).eut(8 * tVoltageMultiplier)
-                    .addTo(extruderRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(werkstoff.get(ingot), ItemList.Shape_Extruder_Wire.get(0L))
+                .itemOutputs(werkstoff.get(wireFine, 8))
+                .duration(
+                    (int) Math.max(
+                        werkstoff.getStats()
+                            .getMass() * 1.5F,
+                        1F))
+                .eut(8 * tVoltageMultiplier)
+                .addTo(extruderRecipes);
 
-            GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(ingot), GT_Utility.getIntegratedCircuit(3))
-                    .itemOutputs(werkstoff.get(wireFine, 8)).duration((int) Math.max(werkstoff.getStats().getMass(), 1))
-                    .eut(8 * tVoltageMultiplier).addTo(wiremillRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(werkstoff.get(ingot), GT_Utility.getIntegratedCircuit(3))
+                .itemOutputs(werkstoff.get(wireFine, 8))
+                .duration(
+                    (int) Math.max(
+                        werkstoff.getStats()
+                            .getMass(),
+                        1))
+                .eut(8 * tVoltageMultiplier)
+                .addTo(wiremillRecipes);
 
-            GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(stick), GT_Utility.getIntegratedCircuit(3))
-                    .itemOutputs(werkstoff.get(wireFine, 4))
-                    .duration((int) Math.max(werkstoff.getStats().getMass() * 0.5F, 1F)).eut(8 * tVoltageMultiplier)
-                    .addTo(wiremillRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(werkstoff.get(stick), GT_Utility.getIntegratedCircuit(3))
+                .itemOutputs(werkstoff.get(wireFine, 4))
+                .duration(
+                    (int) Math.max(
+                        werkstoff.getStats()
+                            .getMass() * 0.5F,
+                        1F))
+                .eut(8 * tVoltageMultiplier)
+                .addTo(wiremillRecipes);
 
             // smallGear
             if (WerkstoffLoader.smallGearShape != null) {
 
-                GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(ingot), WerkstoffLoader.smallGearShape.get(0L))
-                        .itemOutputs(werkstoff.get(gearGtSmall)).duration((int) werkstoff.getStats().getMass())
-                        .eut(8 * tVoltageMultiplier).addTo(extruderRecipes);
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(werkstoff.get(ingot), WerkstoffLoader.smallGearShape.get(0L))
+                    .itemOutputs(werkstoff.get(gearGtSmall))
+                    .duration(
+                        (int) werkstoff.getStats()
+                            .getMass())
+                    .eut(8 * tVoltageMultiplier)
+                    .addTo(extruderRecipes);
 
             }
 
             GT_ModHandler.addCraftingRecipe(
-                    werkstoff.get(gearGtSmall),
-                    GT_Proxy.tBits,
-                    new Object[] { " S ", "hPx", " S ", 'S', werkstoff.get(stick), 'P', werkstoff.get(plate) });
+                werkstoff.get(gearGtSmall),
+                GT_Proxy.tBits,
+                new Object[] { " S ", "hPx", " S ", 'S', werkstoff.get(stick), 'P', werkstoff.get(plate) });
 
             // Rotor
             GT_ModHandler.addCraftingRecipe(
-                    werkstoff.get(rotor),
-                    GT_Proxy.tBits,
-                    new Object[] { "PhP", "SRf", "PdP", 'P', werkstoff.get(plate), 'R', werkstoff.get(ring), 'S',
-                            werkstoff.get(screw) });
+                werkstoff.get(rotor),
+                GT_Proxy.tBits,
+                new Object[] { "PhP", "SRf", "PdP", 'P', werkstoff.get(plate), 'R', werkstoff.get(ring), 'S',
+                    werkstoff.get(screw) });
 
-            GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(plate, 4), werkstoff.get(ring))
-                    .itemOutputs(werkstoff.get(rotor)).fluidInputs(Materials.Tin.getMolten(32)).duration(12 * SECONDS)
-                    .eut(24).addTo(assemblerRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(werkstoff.get(plate, 4), werkstoff.get(ring))
+                .itemOutputs(werkstoff.get(rotor))
+                .fluidInputs(Materials.Tin.getMolten(32))
+                .duration(12 * SECONDS)
+                .eut(24)
+                .addTo(assemblerRecipes);
 
-            GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(plate, 4), werkstoff.get(ring))
-                    .itemOutputs(werkstoff.get(rotor)).fluidInputs(Materials.Lead.getMolten(48)).duration(12 * SECONDS)
-                    .eut(24).addTo(assemblerRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(werkstoff.get(plate, 4), werkstoff.get(ring))
+                .itemOutputs(werkstoff.get(rotor))
+                .fluidInputs(Materials.Lead.getMolten(48))
+                .duration(12 * SECONDS)
+                .eut(24)
+                .addTo(assemblerRecipes);
 
-            GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(plate, 4), werkstoff.get(ring))
-                    .itemOutputs(werkstoff.get(rotor)).fluidInputs(Materials.SolderingAlloy.getMolten(16))
-                    .duration(12 * SECONDS).eut(24).addTo(assemblerRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(werkstoff.get(plate, 4), werkstoff.get(ring))
+                .itemOutputs(werkstoff.get(rotor))
+                .fluidInputs(Materials.SolderingAlloy.getMolten(16))
+                .duration(12 * SECONDS)
+                .eut(24)
+                .addTo(assemblerRecipes);
 
             if (WerkstoffLoader.rotorShape != null) {
 
-                GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(ingot, 5), WerkstoffLoader.rotorShape.get(0L))
-                        .itemOutputs(werkstoff.get(rotor)).duration(10 * SECONDS).eut(60).addTo(extruderRecipes);
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(werkstoff.get(ingot, 5), WerkstoffLoader.rotorShape.get(0L))
+                    .itemOutputs(werkstoff.get(rotor))
+                    .duration(10 * SECONDS)
+                    .eut(60)
+                    .addTo(extruderRecipes);
 
             }
 
@@ -180,18 +263,33 @@ public class CraftingMaterialLoader implements IWerkstoffRunnable {
                  */
             }
 
-            GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(gearGt)).itemOutputs(werkstoff.get(dust, 4))
-                    .duration(2 * TICKS).eut(8).addTo(maceratorRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(werkstoff.get(gearGt))
+                .itemOutputs(werkstoff.get(dust, 4))
+                .duration(2 * TICKS)
+                .eut(8)
+                .addTo(maceratorRecipes);
 
-            GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(gearGtSmall)).itemOutputs(werkstoff.get(dust, 1))
-                    .duration(2 * TICKS).eut(8).addTo(maceratorRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(werkstoff.get(gearGtSmall))
+                .itemOutputs(werkstoff.get(dust, 1))
+                .duration(2 * TICKS)
+                .eut(8)
+                .addTo(maceratorRecipes);
 
-            GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(rotor))
-                    .itemOutputs(werkstoff.get(dust, 4), werkstoff.get(dustSmall)).duration(2 * TICKS).eut(8)
-                    .addTo(maceratorRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(werkstoff.get(rotor))
+                .itemOutputs(werkstoff.get(dust, 4), werkstoff.get(dustSmall))
+                .duration(2 * TICKS)
+                .eut(8)
+                .addTo(maceratorRecipes);
 
-            GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(ring)).itemOutputs(werkstoff.get(dustSmall, 1))
-                    .duration(2 * TICKS).eut(8).addTo(maceratorRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(werkstoff.get(ring))
+                .itemOutputs(werkstoff.get(dustSmall, 1))
+                .duration(2 * TICKS)
+                .eut(8)
+                .addTo(maceratorRecipes);
 
         }
     }

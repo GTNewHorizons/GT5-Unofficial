@@ -59,11 +59,10 @@ public class BW_ColorUtil {
                             if (rgba[3] - 50 > rgba[0]) return Dyes.dyeMagenta;
                             else if (rgba[0] > 200 && rgba[2] > 140) return Dyes.dyePink;
                             else if (rgba[0] > rgba[1] + rgba[1] / 10 && rgba[0] > rgba[2] + rgba[2] / 10
-                                    && rgba[1] >> 4 == rgba[2] >> 4
-                                    && rgba[1] + 50 > rgba[0]) {
-                                        return Dyes.dyeBrown;
-                                    } else
-                                return Dyes.dyeRed;
+                                && rgba[1] >> 4 == rgba[2] >> 4
+                                && rgba[1] + 50 > rgba[0]) {
+                                    return Dyes.dyeBrown;
+                                } else return Dyes.dyeRed;
                         case 4:
                             return Dyes._NULL;
                     }

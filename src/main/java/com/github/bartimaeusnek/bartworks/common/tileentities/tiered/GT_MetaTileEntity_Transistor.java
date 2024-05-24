@@ -31,12 +31,12 @@ public class GT_MetaTileEntity_Transistor extends GT_MetaTileEntity_TieredMachin
     boolean powered;
 
     public GT_MetaTileEntity_Transistor(int aID, String aName, String aNameRegional, int aTier, String aDescription,
-            ITexture... aTextures) {
+        ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, 0, aDescription, aTextures);
     }
 
     public GT_MetaTileEntity_Transistor(int aID, String aName, String aNameRegional, int aTier, String[] aDescription,
-            ITexture... aTextures) {
+        ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, 0, aDescription, aTextures);
     }
 
@@ -54,29 +54,29 @@ public class GT_MetaTileEntity_Transistor extends GT_MetaTileEntity_TieredMachin
 
         for (byte i = -1; i < 16; ++i) {
             rTextures[0][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier] };
             rTextures[1][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier] };
             rTextures[2][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier] };
             rTextures[3][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[this.mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[this.mTier] };
             rTextures[4][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[this.mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[this.mTier] };
             rTextures[5][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[this.mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[this.mTier] };
             rTextures[6][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_IN[this.mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN[this.mTier] };
             rTextures[7][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_IN[this.mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN[this.mTier] };
             rTextures[8][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_IN[this.mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN[this.mTier] };
             rTextures[9][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier] };
             rTextures[10][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier] };
             rTextures[11][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier] };
         }
 
         return rTextures;
@@ -101,7 +101,7 @@ public class GT_MetaTileEntity_Transistor extends GT_MetaTileEntity_TieredMachin
                     return;
                 }
                 if (!tileAtSide.outputsEnergyTo(ForgeDirection.WEST) || !tileAtSide.isUniversalEnergyStored(4L)
-                        || !tileAtSide.decreaseStoredEnergyUnits(4, false)) {
+                    || !tileAtSide.decreaseStoredEnergyUnits(4, false)) {
                     this.powered = false;
                     return;
                 }
@@ -139,19 +139,19 @@ public class GT_MetaTileEntity_Transistor extends GT_MetaTileEntity_TieredMachin
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
-            ItemStack itemStack) {
+        ItemStack itemStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
-            ItemStack itemStack) {
+        ItemStack itemStack) {
         return false;
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity iGregTechTileEntity, ForgeDirection side, ForgeDirection facing,
-            int colorIndex, boolean b3, boolean b4) {
+        int colorIndex, boolean b3, boolean b4) {
         return new ITexture[0];
     }
 }

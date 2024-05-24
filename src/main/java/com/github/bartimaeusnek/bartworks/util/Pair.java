@@ -45,10 +45,13 @@ public class Pair<A, B> implements Map.Entry<A, B> {
     @Override
     public int hashCode() {
         return MurmurHash3.murmurhash3_x86_32(
-                ByteBuffer.allocate(8).putInt(this.pair[0].hashCode()).putInt(this.pair[1].hashCode()).array(),
-                0,
-                8,
-                31);
+            ByteBuffer.allocate(8)
+                .putInt(this.pair[0].hashCode())
+                .putInt(this.pair[1].hashCode())
+                .array(),
+            0,
+            8,
+            31);
     }
 
     @Override

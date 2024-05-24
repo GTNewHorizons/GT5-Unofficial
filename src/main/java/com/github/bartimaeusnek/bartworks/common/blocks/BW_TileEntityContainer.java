@@ -61,25 +61,28 @@ public class BW_TileEntityContainer extends BlockContainer implements ITileAddsI
 
     @Override
     public boolean onBlockActivated(World worldObj, int x, int y, int z, EntityPlayer player, int side, float subX,
-            float subY, float subZ) {
+        float subY, float subZ) {
         if (worldObj.isRemote) {
             return false;
         }
         TileEntity tile = worldObj.getTileEntity(x, y, z);
         if (tile instanceof BW_TileEntity_HeatedWaterPump) {
-            if (player.getHeldItem() != null
-                    && (player.getHeldItem().getItem().equals(Items.bucket)
-                            || player.getHeldItem().getItem() instanceof IFluidContainerItem)
-                    && ((BW_TileEntity_HeatedWaterPump) tile).drain(1000, false) != null)
-                if (player.getHeldItem().getItem().equals(Items.bucket)
-                        && ((BW_TileEntity_HeatedWaterPump) tile).drain(1000, false).amount == 1000) {
-                            ((BW_TileEntity_HeatedWaterPump) tile).drain(1000, true);
-                            player.getHeldItem().stackSize--;
-                            if (player.getHeldItem().stackSize <= 0)
-                                player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
-                            player.inventory.addItemStackToInventory(new ItemStack(Items.water_bucket));
-                            return true;
-                        }
+            if (player.getHeldItem() != null && (player.getHeldItem()
+                .getItem()
+                .equals(Items.bucket)
+                || player.getHeldItem()
+                    .getItem() instanceof IFluidContainerItem)
+                && ((BW_TileEntity_HeatedWaterPump) tile).drain(1000, false) != null)
+                if (player.getHeldItem()
+                    .getItem()
+                    .equals(Items.bucket) && ((BW_TileEntity_HeatedWaterPump) tile).drain(1000, false).amount == 1000) {
+                        ((BW_TileEntity_HeatedWaterPump) tile).drain(1000, true);
+                        player.getHeldItem().stackSize--;
+                        if (player.getHeldItem().stackSize <= 0)
+                            player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
+                        player.inventory.addItemStackToInventory(new ItemStack(Items.water_bucket));
+                        return true;
+                    }
         }
         if (!player.isSneaking()) {
             if (tile instanceof IHasGui) {
@@ -128,7 +131,7 @@ public class BW_TileEntityContainer extends BlockContainer implements ITileAddsI
             int[] dropSlots = ((ITileDropsContent) t).getDropSlots();
             for (int dropSlot : dropSlots) {
                 if (((ITileDropsContent) t).getStackInSlot(dropSlot) != null) world.spawnEntityInWorld(
-                        new EntityItem(world, x, y, z, ((BW_TileEntity_HeatedWaterPump) t).getStackInSlot(dropSlot)));
+                    new EntityItem(world, x, y, z, ((BW_TileEntity_HeatedWaterPump) t).getStackInSlot(dropSlot)));
             }
         }
         super.breakBlock(world, x, y, z, block, meta);
@@ -139,8 +142,8 @@ public class BW_TileEntityContainer extends BlockContainer implements ITileAddsI
     public IIcon getIcon(int side, int meta) {
         if (!ITileHasDifferentTextureSides.class.isAssignableFrom(this.tileEntity)) return super.getIcon(side, meta);
         try {
-            return ((ITileHasDifferentTextureSides) this.tileEntity.getConstructor().newInstance())
-                    .getTextureForSide(side, meta);
+            return ((ITileHasDifferentTextureSides) this.tileEntity.getConstructor()
+                .newInstance()).getTextureForSide(side, meta);
         } catch (Exception e) {
             e.printStackTrace();
             return super.getIcon(side, meta);
@@ -152,8 +155,8 @@ public class BW_TileEntityContainer extends BlockContainer implements ITileAddsI
     public void registerBlockIcons(IIconRegister par1IconRegister) {
         if (ITileHasDifferentTextureSides.class.isAssignableFrom(this.tileEntity)) {
             try {
-                ((ITileHasDifferentTextureSides) this.tileEntity.getConstructor().newInstance())
-                        .registerBlockIcons(par1IconRegister);
+                ((ITileHasDifferentTextureSides) this.tileEntity.getConstructor()
+                    .newInstance()).registerBlockIcons(par1IconRegister);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -163,7 +166,8 @@ public class BW_TileEntityContainer extends BlockContainer implements ITileAddsI
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
         try {
-            return this.tileEntity.getConstructor().newInstance();
+            return this.tileEntity.getConstructor()
+                .newInstance();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -189,7 +193,8 @@ public class BW_TileEntityContainer extends BlockContainer implements ITileAddsI
     public String[] getInfoData() {
         if (ITileAddsInformation.class.isAssignableFrom(this.tileEntity)) {
             try {
-                return ((ITileAddsInformation) this.tileEntity.getConstructor().newInstance()).getInfoData();
+                return ((ITileAddsInformation) this.tileEntity.getConstructor()
+                    .newInstance()).getInfoData();
             } catch (Exception e) {
                 e.printStackTrace();
             }

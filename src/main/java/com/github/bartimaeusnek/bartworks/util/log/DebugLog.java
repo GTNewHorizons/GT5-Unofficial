@@ -34,8 +34,12 @@ public class DebugLog {
     public static void initDebugLog(FMLPreInitializationEvent event) throws IOException {
         if (DebugLog.init) return;
         DebugLog.fh = new FileHandler(
-                new File(new File(event.getModConfigurationDirectory().getParentFile(), "logs"), "BWLog.log")
-                        .toString());
+            new File(
+                new File(
+                    event.getModConfigurationDirectory()
+                        .getParentFile(),
+                    "logs"),
+                "BWLog.log").toString());
         DebugLog.utilLog = Logger.getLogger("DebugLog");
         DebugLog.utilLog.setUseParentHandlers(false);
         DebugLog.utilLog.addHandler(DebugLog.fh);
@@ -47,7 +51,7 @@ public class DebugLog {
                 Calendar cal = new GregorianCalendar();
                 cal.setTimeInMillis(record.getMillis());
                 return "Level: " + record
-                        .getLevel() + " at " + logTime.format(cal.getTime()) + " " + record.getMessage() + "\n";
+                    .getLevel() + " at " + logTime.format(cal.getTime()) + " " + record.getMessage() + "\n";
             }
         };
         DebugLog.fh.setFormatter(formatter);

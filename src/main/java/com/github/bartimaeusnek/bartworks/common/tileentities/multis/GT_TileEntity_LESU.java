@@ -110,8 +110,10 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
     @Override
     public long maxAmperesIn() {
         int ret = 0;
-        for (int i = 0; i < 5; ++i) if (this.circuits[i] != null
-                && this.circuits[i].getItem().equals(GT_Utility.getIntegratedCircuit(0).getItem()))
+        for (int i = 0; i < 5; ++i) if (this.circuits[i] != null && this.circuits[i].getItem()
+            .equals(
+                GT_Utility.getIntegratedCircuit(0)
+                    .getItem()))
             ret += this.circuits[i].getItemDamage();
         return ret > 0 ? ret : 1;
     }
@@ -170,13 +172,15 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
     @Override
     public String[] getDescription() {
         ArrayList<String> e = new ArrayList<>();
-        String[] dsc = StatCollector.translateToLocal("tooltip.tile.lesu.0.name").split(";");
+        String[] dsc = StatCollector.translateToLocal("tooltip.tile.lesu.0.name")
+            .split(";");
         Collections.addAll(e, dsc);
         e.add(
-                StatCollector.translateToLocal("tooltip.tile.lesu.1.name") + " "
-                        + GT_Utility.formatNumbers(ConfigHandler.energyPerCell)
-                        + "EU");
-        dsc = StatCollector.translateToLocal("tooltip.tile.lesu.2.name").split(";");
+            StatCollector.translateToLocal("tooltip.tile.lesu.1.name") + " "
+                + GT_Utility.formatNumbers(ConfigHandler.energyPerCell)
+                + "EU");
+        dsc = StatCollector.translateToLocal("tooltip.tile.lesu.2.name")
+            .split(";");
         Collections.addAll(e, dsc);
         e.add(ChatColorHelper.RED + StatCollector.translateToLocal("tooltip.tile.lesu.3.name"));
         e.add(BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get());
@@ -211,15 +215,17 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
     }
 
     public boolean isClientSide() {
-        if (this.getWorld() != null)
-            return this.getWorld().isRemote ? FMLCommonHandler.instance().getSide() == Side.CLIENT
-                    : FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT;
-        return FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT;
+        if (this.getWorld() != null) return this.getWorld().isRemote ? FMLCommonHandler.instance()
+            .getSide() == Side.CLIENT
+            : FMLCommonHandler.instance()
+                .getEffectiveSide() == Side.CLIENT;
+        return FMLCommonHandler.instance()
+            .getEffectiveSide() == Side.CLIENT;
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-            int aColorIndex, boolean aActive, boolean aRedstone) {
+        int aColorIndex, boolean aActive, boolean aRedstone) {
 
         ITexture[] ret = {};
 
@@ -227,11 +233,11 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
 
             for (int i = 0; i < GT_TileEntity_LESU.iTextures.length; i++) {
                 GT_TileEntity_LESU.iTextures[i][0] = TextureFactory
-                        .of(GT_TileEntity_LESU.iIconContainers[i], Dyes.getModulation(0, Dyes.MACHINE_METAL.mRGBa));
+                    .of(GT_TileEntity_LESU.iIconContainers[i], Dyes.getModulation(0, Dyes.MACHINE_METAL.mRGBa));
             }
 
-            if (side == facing && this.getBaseMetaTileEntity().getUniversalEnergyStored() <= 0)
-                ret = GT_TileEntity_LESU.iTextures[GT_TileEntity_LESU.TEXID_EMPTY];
+            if (side == facing && this.getBaseMetaTileEntity()
+                .getUniversalEnergyStored() <= 0) ret = GT_TileEntity_LESU.iTextures[GT_TileEntity_LESU.TEXID_EMPTY];
             else if (side == facing && !aActive) ret = GT_TileEntity_LESU.iTextures[GT_TileEntity_LESU.TEXID_IDLE];
             else if (side == facing && aActive) ret = GT_TileEntity_LESU.iTextures[GT_TileEntity_LESU.TEXID_CHARGING];
             else ret = GT_TileEntity_LESU.iTextures[GT_TileEntity_LESU.TEXID_SIDE];
@@ -292,7 +298,10 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
 
         return switch (index) {
             case 0, 1 -> true;
-            default -> stack != null && stack.getItem().equals(GT_Utility.getIntegratedCircuit(0).getItem());
+            default -> stack != null && stack.getItem()
+                .equals(
+                    GT_Utility.getIntegratedCircuit(0)
+                        .getItem());
         };
     }
 
@@ -308,12 +317,14 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
 
     @Override
     public boolean isInputFacing(ForgeDirection side) {
-        return side != this.getBaseMetaTileEntity().getFrontFacing();
+        return side != this.getBaseMetaTileEntity()
+            .getFrontFacing();
     }
 
     @Override
     public boolean isOutputFacing(ForgeDirection side) {
-        return side == this.getBaseMetaTileEntity().getFrontFacing();
+        return side == this.getBaseMetaTileEntity()
+            .getFrontFacing();
     }
 
     @Override
@@ -367,20 +378,23 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
         long startingTime = System.nanoTime();
         this.connectedcells = new ConnectedBlocksChecker();
         this.connectedcells.get_connected(
-                aBaseMetaTileEntity.getWorld(),
-                aBaseMetaTileEntity.getXCoord(),
-                aBaseMetaTileEntity.getYCoord(),
-                aBaseMetaTileEntity.getZCoord(),
-                ItemRegistry.BW_BLOCKS[1]);
+            aBaseMetaTileEntity.getWorld(),
+            aBaseMetaTileEntity.getXCoord(),
+            aBaseMetaTileEntity.getYCoord(),
+            aBaseMetaTileEntity.getZCoord(),
+            ItemRegistry.BW_BLOCKS[1]);
 
         if (this.connectedcells.get_meta_of_sideblocks(
-                aBaseMetaTileEntity.getWorld(),
-                this.getBaseMetaTileEntity().getMetaTileID(),
-                new int[] { aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(),
-                        aBaseMetaTileEntity.getZCoord() },
-                true)) {
-            this.getBaseMetaTileEntity().disableWorking();
-            this.getBaseMetaTileEntity().setActive(false);
+            aBaseMetaTileEntity.getWorld(),
+            this.getBaseMetaTileEntity()
+                .getMetaTileID(),
+            new int[] { aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(),
+                aBaseMetaTileEntity.getZCoord() },
+            true)) {
+            this.getBaseMetaTileEntity()
+                .disableWorking();
+            this.getBaseMetaTileEntity()
+                .setActive(false);
             this.mStorage = 0;
             this.mMaxProgresstime = 0;
             this.mProgresstime = 0;
@@ -389,8 +403,8 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
 
         this.mEfficiency = this.getMaxEfficiency(null);
         this.mStorage = ConfigHandler.energyPerCell * this.connectedcells.hashset.size() >= Long.MAX_VALUE - 1
-                || ConfigHandler.energyPerCell * this.connectedcells.hashset.size() < 0 ? Long.MAX_VALUE - 1
-                        : ConfigHandler.energyPerCell * this.connectedcells.hashset.size();
+            || ConfigHandler.energyPerCell * this.connectedcells.hashset.size() < 0 ? Long.MAX_VALUE - 1
+                : ConfigHandler.energyPerCell * this.connectedcells.hashset.size();
         this.mMaxProgresstime = 1;
         this.mProgresstime = 0;
 
@@ -401,25 +415,32 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
         this.mSolderingTool = true;
         this.mWrench = true;
 
-        this.getBaseMetaTileEntity().enableWorking();
-        this.getBaseMetaTileEntity().setActive(true);
+        this.getBaseMetaTileEntity()
+            .enableWorking();
+        this.getBaseMetaTileEntity()
+            .setActive(true);
 
         long finishedTime = System.nanoTime();
         // System.out.println("LESU LookUp: "+((finishedTime - startingTime) / 1000000)+"ms");
         if (finishedTime - startingTime > 5000000) MainMod.LOGGER.warn(
-                "LESU LookUp took longer than 5ms!(" + (finishedTime - startingTime)
-                        + "ns / "
-                        + (finishedTime - startingTime) / 1000000
-                        + "ms) Owner:"
-                        + this.getBaseMetaTileEntity().getOwnerName()
-                        + " Check at x:"
-                        + this.getBaseMetaTileEntity().getXCoord()
-                        + " y:"
-                        + this.getBaseMetaTileEntity().getYCoord()
-                        + " z:"
-                        + this.getBaseMetaTileEntity().getZCoord()
-                        + " DIM-ID: "
-                        + this.getBaseMetaTileEntity().getWorld().provider.dimensionId);
+            "LESU LookUp took longer than 5ms!(" + (finishedTime - startingTime)
+                + "ns / "
+                + (finishedTime - startingTime) / 1000000
+                + "ms) Owner:"
+                + this.getBaseMetaTileEntity()
+                    .getOwnerName()
+                + " Check at x:"
+                + this.getBaseMetaTileEntity()
+                    .getXCoord()
+                + " y:"
+                + this.getBaseMetaTileEntity()
+                    .getYCoord()
+                + " z:"
+                + this.getBaseMetaTileEntity()
+                    .getZCoord()
+                + " DIM-ID: "
+                + this.getBaseMetaTileEntity()
+                    .getWorld().provider.dimensionId);
         return true;
     }
 
@@ -444,40 +465,53 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
     }
 
     public World getWorld() {
-        return this.getBaseMetaTileEntity().getWorld();
+        return this.getBaseMetaTileEntity()
+            .getWorld();
     }
 
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(
-                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY).setSize(17, 17)
-                        .setPos(105, 51));
+            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY)
+                .setSize(17, 17)
+                .setPos(105, 51));
     }
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK).setPos(7, 4).setSize(118, 67))
-                .widget(new SlotWidget(new BaseSlot(this.inventoryHandler, 1) {
+            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+                .setPos(7, 4)
+                .setSize(118, 67))
+            .widget(new SlotWidget(new BaseSlot(this.inventoryHandler, 1) {
 
-                    @Override
-                    public int getSlotStackLimit() {
-                        return 1;
-                    }
-                }).setBackground(this.getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_IN).setPos(127, 13))
-                .widget(new SlotWidget(new BaseSlot(this.inventoryHandler, 0) {
+                @Override
+                public int getSlotStackLimit() {
+                    return 1;
+                }
+            }).setBackground(
+                this.getGUITextureSet()
+                    .getItemSlot(),
+                GT_UITextures.OVERLAY_SLOT_IN)
+                .setPos(127, 13))
+            .widget(new SlotWidget(new BaseSlot(this.inventoryHandler, 0) {
 
-                    @Override
-                    public int getSlotStackLimit() {
-                        return 1;
-                    }
-                }).setBackground(this.getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_CHARGER)
-                        .setPos(127, 49));
+                @Override
+                public int getSlotStackLimit() {
+                    return 1;
+                }
+            }).setBackground(
+                this.getGUITextureSet()
+                    .getItemSlot(),
+                GT_UITextures.OVERLAY_SLOT_CHARGER)
+                .setPos(127, 49));
         for (int i = 0; i < 4; i++) {
             builder.widget(
-                    new SlotWidget(this.circuitsInventoryHandler, i).setBackground(
-                            this.getGUITextureSet().getItemSlot(),
-                            GT_UITextures.OVERLAY_SLOT_INT_CIRCUIT).setPos(151, 4 + i * 18));
+                new SlotWidget(this.circuitsInventoryHandler, i).setBackground(
+                    this.getGUITextureSet()
+                        .getItemSlot(),
+                    GT_UITextures.OVERLAY_SLOT_INT_CIRCUIT)
+                    .setPos(151, 4 + i * 18));
         }
 
         final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
@@ -485,15 +519,18 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
         builder.widget(screenElements);
 
         builder.widget(
-                new DrawableWidget().setDrawable(BW_UITextures.PICTURE_STORED_EU_FRAME).setPos(7, 72).setSize(118, 7))
-                .widget(
-                        new ProgressBar()
-                                .setProgress(
-                                        () -> (float) this.getBaseMetaTileEntity().getStoredEU()
-                                                / this.getBaseMetaTileEntity().getEUCapacity())
-                                .setDirection(ProgressBar.Direction.RIGHT)
-                                .setTexture(BW_UITextures.PROGRESSBAR_STORED_EU_116, 116).setPos(8, 73)
-                                .setSize(116, 5));
+            new DrawableWidget().setDrawable(BW_UITextures.PICTURE_STORED_EU_FRAME)
+                .setPos(7, 72)
+                .setSize(118, 7))
+            .widget(
+                new ProgressBar().setProgress(
+                    () -> (float) this.getBaseMetaTileEntity()
+                        .getStoredEU() / this.getBaseMetaTileEntity()
+                            .getEUCapacity())
+                    .setDirection(ProgressBar.Direction.RIGHT)
+                    .setTexture(BW_UITextures.PROGRESSBAR_STORED_EU_116, 116)
+                    .setPos(8, 73)
+                    .setSize(116, 5));
     }
 
     private long clientEU;
@@ -503,51 +540,59 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
     private long clientAmps;
 
     private void drawTexts(DynamicPositionedColumn screenElements) {
-        screenElements.setSpace(0).setPos(11, 8);
+        screenElements.setSpace(0)
+            .setPos(11, 8);
 
-        screenElements
-                .widget(
-                        new TextWidget().setStringSupplier(() -> "EU: " + numberFormat.format(this.clientEU))
-                                .setDefaultColor(this.COLOR_TEXT_WHITE.get()))
-                .widget(
-                        new FakeSyncWidget.LongSyncer(
-                                () -> this.getBaseMetaTileEntity().getStoredEU(),
-                                val -> clientEU = val))
-                .widget(
-                        new TextWidget().setStringSupplier(() -> "MAX: " + numberFormat.format(clientMaxEU))
-                                .setDefaultColor(this.COLOR_TEXT_WHITE.get()))
-                .widget(
-                        new FakeSyncWidget.LongSyncer(
-                                () -> this.getBaseMetaTileEntity().isActive()
-                                        ? this.getBaseMetaTileEntity().getOutputVoltage() * ConfigHandler.energyPerCell
-                                        : 0,
-                                val -> clientMaxEU = val))
-                .widget(
-                        new TextWidget().setStringSupplier(() -> "MAX EU/t IN: " + numberFormat.format(clientMaxIn))
-                                .setDefaultColor(this.COLOR_TEXT_WHITE.get()))
-                .widget(
-                        new FakeSyncWidget.LongSyncer(
-                                () -> this.getBaseMetaTileEntity().getInputVoltage(),
-                                val -> clientMaxIn = val))
-                .widget(
-                        new TextWidget().setStringSupplier(() -> "EU/t OUT: " + numberFormat.format(clientMaxOut))
-                                .setDefaultColor(this.COLOR_TEXT_WHITE.get()))
-                .widget(
-                        new FakeSyncWidget.LongSyncer(
-                                () -> this.getBaseMetaTileEntity().getOutputVoltage(),
-                                val -> clientMaxOut = val))
-                .widget(
-                        new TextWidget().setStringSupplier(() -> "AMP/t IN/OUT: " + numberFormat.format(clientAmps))
-                                .setDefaultColor(this.COLOR_TEXT_WHITE.get()))
-                .widget(
-                        new FakeSyncWidget.LongSyncer(
-                                () -> this.getBaseMetaTileEntity().getInputAmperage(),
-                                val -> clientAmps = val))
-                .widget(
-                        new TextWidget(Text.localised("tooltip.LESU.0.name")).setDefaultColor(Color.YELLOW.getRGB())
-                                .setEnabled(widget -> this.maxEUStore() >= Long.MAX_VALUE - 1))
-                .widget(
-                        new TextWidget(Text.localised("tooltip.LESU.1.name")).setDefaultColor(Color.RED.getRGB())
-                                .setEnabled(widget -> !this.getBaseMetaTileEntity().isActive()));
+        screenElements.widget(
+            new TextWidget().setStringSupplier(() -> "EU: " + numberFormat.format(this.clientEU))
+                .setDefaultColor(this.COLOR_TEXT_WHITE.get()))
+            .widget(
+                new FakeSyncWidget.LongSyncer(
+                    () -> this.getBaseMetaTileEntity()
+                        .getStoredEU(),
+                    val -> clientEU = val))
+            .widget(
+                new TextWidget().setStringSupplier(() -> "MAX: " + numberFormat.format(clientMaxEU))
+                    .setDefaultColor(this.COLOR_TEXT_WHITE.get()))
+            .widget(
+                new FakeSyncWidget.LongSyncer(
+                    () -> this.getBaseMetaTileEntity()
+                        .isActive()
+                            ? this.getBaseMetaTileEntity()
+                                .getOutputVoltage() * ConfigHandler.energyPerCell
+                            : 0,
+                    val -> clientMaxEU = val))
+            .widget(
+                new TextWidget().setStringSupplier(() -> "MAX EU/t IN: " + numberFormat.format(clientMaxIn))
+                    .setDefaultColor(this.COLOR_TEXT_WHITE.get()))
+            .widget(
+                new FakeSyncWidget.LongSyncer(
+                    () -> this.getBaseMetaTileEntity()
+                        .getInputVoltage(),
+                    val -> clientMaxIn = val))
+            .widget(
+                new TextWidget().setStringSupplier(() -> "EU/t OUT: " + numberFormat.format(clientMaxOut))
+                    .setDefaultColor(this.COLOR_TEXT_WHITE.get()))
+            .widget(
+                new FakeSyncWidget.LongSyncer(
+                    () -> this.getBaseMetaTileEntity()
+                        .getOutputVoltage(),
+                    val -> clientMaxOut = val))
+            .widget(
+                new TextWidget().setStringSupplier(() -> "AMP/t IN/OUT: " + numberFormat.format(clientAmps))
+                    .setDefaultColor(this.COLOR_TEXT_WHITE.get()))
+            .widget(
+                new FakeSyncWidget.LongSyncer(
+                    () -> this.getBaseMetaTileEntity()
+                        .getInputAmperage(),
+                    val -> clientAmps = val))
+            .widget(
+                new TextWidget(Text.localised("tooltip.LESU.0.name")).setDefaultColor(Color.YELLOW.getRGB())
+                    .setEnabled(widget -> this.maxEUStore() >= Long.MAX_VALUE - 1))
+            .widget(
+                new TextWidget(Text.localised("tooltip.LESU.1.name")).setDefaultColor(Color.RED.getRGB())
+                    .setEnabled(
+                        widget -> !this.getBaseMetaTileEntity()
+                            .isActive()));
     }
 }

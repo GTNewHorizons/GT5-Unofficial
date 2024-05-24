@@ -36,43 +36,52 @@ public class PrefixTextureLinker implements Runnable {
 
     private static void fillBlockTexMap() {
         blockTexMap.put(TextureSet.SET_QUARTZ, TextureSet.INDEX_block4);
-        Stream.of(OrePrefixes.blockCasing, OrePrefixes.blockCasingAdvanced).forEach(prefixes -> {
-            HashMap<TextureSet, IIconContainer> curr = new HashMap<>();
-            Arrays.stream(TextureSet.class.getFields()).filter(field -> field.getName().contains("SET"))
+        Stream.of(OrePrefixes.blockCasing, OrePrefixes.blockCasingAdvanced)
+            .forEach(prefixes -> {
+                HashMap<TextureSet, IIconContainer> curr = new HashMap<>();
+                Arrays.stream(TextureSet.class.getFields())
+                    .filter(
+                        field -> field.getName()
+                            .contains("SET"))
                     .forEach(SET -> {
                         try {
                             curr.put(
-                                    (TextureSet) SET.get(null),
-                                    new Textures.BlockIcons.CustomIcon(
-                                            "materialicons/" + SET.getName().substring(4) + "/" + prefixes));
+                                (TextureSet) SET.get(null),
+                                new Textures.BlockIcons.CustomIcon(
+                                    "materialicons/" + SET.getName()
+                                        .substring(4) + "/" + prefixes));
                         } catch (IllegalAccessException e) {
                             e.printStackTrace();
                         }
                     });
-            texMapBlocks.put(prefixes, curr);
-        });
+                texMapBlocks.put(prefixes, curr);
+            });
     }
 
     private static void fillItemTexMap() {
         Arrays.stream(OrePrefixes.values())
-                .filter(
-                        prefixes -> prefixes != OrePrefixes.rod && prefixes.mTextureIndex == -1
-                                && Werkstoff.GenerationFeatures.getPrefixDataRaw(prefixes) != 0)
-                .forEach(prefixes -> {
-                    HashMap<TextureSet, Textures.ItemIcons.CustomIcon> curr = new HashMap<>();
-                    Arrays.stream(TextureSet.class.getFields()).filter(field -> field.getName().contains("SET"))
-                            .forEach(SET -> {
-                                try {
-                                    curr.put(
-                                            (TextureSet) SET.get(null),
-                                            new Textures.ItemIcons.CustomIcon(
-                                                    "materialicons/" + SET.getName().substring(4) + "/" + prefixes));
-                                } catch (IllegalAccessException e) {
-                                    e.printStackTrace();
-                                }
-                            });
-                    texMap.put(prefixes, curr);
-                });
+            .filter(
+                prefixes -> prefixes != OrePrefixes.rod && prefixes.mTextureIndex == -1
+                    && Werkstoff.GenerationFeatures.getPrefixDataRaw(prefixes) != 0)
+            .forEach(prefixes -> {
+                HashMap<TextureSet, Textures.ItemIcons.CustomIcon> curr = new HashMap<>();
+                Arrays.stream(TextureSet.class.getFields())
+                    .filter(
+                        field -> field.getName()
+                            .contains("SET"))
+                    .forEach(SET -> {
+                        try {
+                            curr.put(
+                                (TextureSet) SET.get(null),
+                                new Textures.ItemIcons.CustomIcon(
+                                    "materialicons/" + SET.getName()
+                                        .substring(4) + "/" + prefixes));
+                        } catch (IllegalAccessException e) {
+                            e.printStackTrace();
+                        }
+                    });
+                texMap.put(prefixes, curr);
+            });
     }
 
     @Override

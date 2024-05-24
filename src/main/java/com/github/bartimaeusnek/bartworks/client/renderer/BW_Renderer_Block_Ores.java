@@ -61,59 +61,59 @@ public class BW_Renderer_Block_Ores implements ISimpleBlockRenderingHandler {
         GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
         renderNegativeYFacing(
-                null,
-                aRenderer,
-                aBlock,
-                0,
-                0,
-                0,
-                tTileEntity.getTexture(aBlock, ForgeDirection.DOWN),
-                true);
+            null,
+            aRenderer,
+            aBlock,
+            0,
+            0,
+            0,
+            tTileEntity.getTexture(aBlock, ForgeDirection.DOWN),
+            true);
         renderPositiveYFacing(
-                null,
-                aRenderer,
-                aBlock,
-                0,
-                0,
-                0,
-                tTileEntity.getTexture(aBlock, ForgeDirection.UP),
-                true);
+            null,
+            aRenderer,
+            aBlock,
+            0,
+            0,
+            0,
+            tTileEntity.getTexture(aBlock, ForgeDirection.UP),
+            true);
         renderNegativeZFacing(
-                null,
-                aRenderer,
-                aBlock,
-                0,
-                0,
-                0,
-                tTileEntity.getTexture(aBlock, ForgeDirection.NORTH),
-                true);
+            null,
+            aRenderer,
+            aBlock,
+            0,
+            0,
+            0,
+            tTileEntity.getTexture(aBlock, ForgeDirection.NORTH),
+            true);
         renderPositiveZFacing(
-                null,
-                aRenderer,
-                aBlock,
-                0,
-                0,
-                0,
-                tTileEntity.getTexture(aBlock, ForgeDirection.SOUTH),
-                true);
+            null,
+            aRenderer,
+            aBlock,
+            0,
+            0,
+            0,
+            tTileEntity.getTexture(aBlock, ForgeDirection.SOUTH),
+            true);
         renderNegativeXFacing(
-                null,
-                aRenderer,
-                aBlock,
-                0,
-                0,
-                0,
-                tTileEntity.getTexture(aBlock, ForgeDirection.WEST),
-                true);
+            null,
+            aRenderer,
+            aBlock,
+            0,
+            0,
+            0,
+            tTileEntity.getTexture(aBlock, ForgeDirection.WEST),
+            true);
         renderPositiveXFacing(
-                null,
-                aRenderer,
-                aBlock,
-                0,
-                0,
-                0,
-                tTileEntity.getTexture(aBlock, ForgeDirection.EAST),
-                true);
+            null,
+            aRenderer,
+            aBlock,
+            0,
+            0,
+            0,
+            tTileEntity.getTexture(aBlock, ForgeDirection.EAST),
+            true);
         aRenderer.setRenderBoundsFromBlock(aBlock);
         aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);

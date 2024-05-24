@@ -54,11 +54,20 @@ public class MetaBlockPacket extends GT_Packet_New {
     @Override
     public void encode(ByteBuf aOut) {
         int hash = MurmurHash3.murmurhash3_x86_32(
-                ByteBuffer.allocate(12).putInt(this.x).putInt(this.z).putShort(this.y).putShort(this.meta).array(),
-                0,
-                12,
-                31);
-        aOut.writeInt(this.x).writeInt(this.z).writeShort(this.y).writeShort(this.meta).writeInt(hash);
+            ByteBuffer.allocate(12)
+                .putInt(this.x)
+                .putInt(this.z)
+                .putShort(this.y)
+                .putShort(this.meta)
+                .array(),
+            0,
+            12,
+            31);
+        aOut.writeInt(this.x)
+            .writeInt(this.z)
+            .writeShort(this.y)
+            .writeShort(this.meta)
+            .writeInt(hash);
     }
 
     @Override
@@ -69,10 +78,15 @@ public class MetaBlockPacket extends GT_Packet_New {
         this.meta = byteArrayDataInput.readShort();
         MetaBlockPacket todecode = new MetaBlockPacket(this.x, this.y, this.z, this.meta);
         if (byteArrayDataInput.readInt() != MurmurHash3.murmurhash3_x86_32(
-                ByteBuffer.allocate(12).putInt(this.x).putInt(this.z).putShort(this.y).putShort(this.meta).array(),
-                0,
-                12,
-                31)) {
+            ByteBuffer.allocate(12)
+                .putInt(this.x)
+                .putInt(this.z)
+                .putShort(this.y)
+                .putShort(this.meta)
+                .array(),
+            0,
+            12,
+            31)) {
             MainMod.LOGGER.error("PACKET HASH DOES NOT MATCH!");
             return null;
         }

@@ -72,24 +72,26 @@ public class BW_Meta_Items {
         BW_Meta_Items.NEWCIRCUITS.addItem(3, "Imprint supporting Board", "A Board needed for Circuit Imprints");
 
         GT_Values.RA.stdBuilder()
-                .itemInputs(
-                        WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.dust, 1),
-                        WerkstoffLoader.ArInGaPhoBiBoTe.get(OrePrefixes.dust, 4))
-                .itemOutputs(BW_Meta_Items.NEWCIRCUITS.getStack(2)).duration(15 * SECONDS).eut(TierEU.RECIPE_HV)
-                .addTo(formingPressRecipes);
+            .itemInputs(
+                WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.dust, 1),
+                WerkstoffLoader.ArInGaPhoBiBoTe.get(OrePrefixes.dust, 4))
+            .itemOutputs(BW_Meta_Items.NEWCIRCUITS.getStack(2))
+            .duration(15 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(formingPressRecipes);
 
         RecipeMaps.autoclaveRecipes.add(
-                new GT_Recipe(
-                        false,
-                        new ItemStack[] { BW_Meta_Items.NEWCIRCUITS.getStack(2) },
-                        new ItemStack[] { BW_Meta_Items.NEWCIRCUITS.getStack(3) },
-                        null,
-                        new int[] { 7500 },
-                        new FluidStack[] { Materials.SolderingAlloy.getMolten(576) },
-                        null,
-                        300,
-                        (int) TierEU.RECIPE_EV,
-                        BW_Util.CLEANROOM));
+            new GT_Recipe(
+                false,
+                new ItemStack[] { BW_Meta_Items.NEWCIRCUITS.getStack(2) },
+                new ItemStack[] { BW_Meta_Items.NEWCIRCUITS.getStack(3) },
+                null,
+                new int[] { 7500 },
+                new FluidStack[] { Materials.SolderingAlloy.getMolten(576) },
+                null,
+                300,
+                (int) TierEU.RECIPE_EV,
+                BW_Util.CLEANROOM));
     }
 
     public void addNewCircuit(int aTier, int aID, String aName) {
@@ -157,11 +159,11 @@ public class BW_Meta_Items {
 
         public final ItemStack addCircuit(int aID, String aEnglish, String aToolTip, int tier) {
             CircuitImprintLoader.bwCircuitTagMap.put(
-                    new CircuitData(
-                            BW_Util.getMachineVoltageFromTier(Math.min(1, tier - 2)),
-                            tier > 2 ? BW_Util.CLEANROOM : 0,
-                            (byte) tier),
-                    new ItemStack(BW_Meta_Items.NEWCIRCUITS, 1, aID));
+                new CircuitData(
+                    BW_Util.getMachineVoltageFromTier(Math.min(1, tier - 2)),
+                    tier > 2 ? BW_Util.CLEANROOM : 0,
+                    (byte) tier),
+                new ItemStack(BW_Meta_Items.NEWCIRCUITS, 1, aID));
             return this.addItem(aID, aEnglish, aToolTip, SubTag.NO_UNIFICATION);
         }
 
@@ -201,29 +203,31 @@ public class BW_Meta_Items {
             for (short i = 0; i < CircuitImprintLoader.reverseIDs; ++i) {
                 if (this.mEnabledItems.get(i)) {
                     BW_Util.set2DCoordTo1DArray(
-                            i,
-                            0,
-                            2,
-                            aIconRegister.registerIcon(
-                                    "gregtech:" + (GT_Config.troll ? "troll" : this.getUnlocalizedName() + "/" + i)),
-                            this.mIconList);
+                        i,
+                        0,
+                        2,
+                        aIconRegister.registerIcon(
+                            "gregtech:" + (GT_Config.troll ? "troll" : this.getUnlocalizedName() + "/" + i)),
+                        this.mIconList);
                 }
             }
 
             for (short i = CircuitImprintLoader.reverseIDs; i < Short.MAX_VALUE; i++) {
                 if (this.mEnabledItems.get(i)) {
                     BW_Util.set2DCoordTo1DArray(
-                            i,
-                            0,
-                            2,
-                            Objects.requireNonNull(CircuitImprintLoader.circuitIIconRefs.get(i)).get(1).getIconIndex(),
-                            this.mIconList);
+                        i,
+                        0,
+                        2,
+                        Objects.requireNonNull(CircuitImprintLoader.circuitIIconRefs.get(i))
+                            .get(1)
+                            .getIconIndex(),
+                        this.mIconList);
                     BW_Util.set2DCoordTo1DArray(
-                            i,
-                            1,
-                            2,
-                            aIconRegister.registerIcon(MainMod.MOD_ID + ":WrapOverlay"),
-                            this.mIconList);
+                        i,
+                        1,
+                        2,
+                        aIconRegister.registerIcon(MainMod.MOD_ID + ":WrapOverlay"),
+                        this.mIconList);
                 }
             }
         }
@@ -231,18 +235,18 @@ public class BW_Meta_Items {
         @Override
         protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
             if (aStack.getItemDamage() == 0) if (aStack.getTagCompound() != null
-                    && CircuitImprintLoader.getStackFromTag(aStack.getTagCompound()) != null)
+                && CircuitImprintLoader.getStackFromTag(aStack.getTagCompound()) != null)
                 aList.add(
-                        "An Imprint for: " + GT_LanguageManager.getTranslation(
-                                GT_LanguageManager.getTranslateableItemStackName(
-                                        CircuitImprintLoader.getStackFromTag(aStack.getTagCompound()))));
+                    "An Imprint for: " + GT_LanguageManager.getTranslation(
+                        GT_LanguageManager.getTranslateableItemStackName(
+                            CircuitImprintLoader.getStackFromTag(aStack.getTagCompound()))));
             else aList.add("An Imprint for a Circuit");
             else if (aStack.getItemDamage() == 1) if (aStack.getTagCompound() != null
-                    && CircuitImprintLoader.getStackFromTag(aStack.getTagCompound()) != null)
+                && CircuitImprintLoader.getStackFromTag(aStack.getTagCompound()) != null)
                 aList.add(
-                        "A Sliced " + GT_LanguageManager.getTranslation(
-                                GT_LanguageManager.getTranslateableItemStackName(
-                                        CircuitImprintLoader.getStackFromTag(aStack.getTagCompound()))));
+                    "A Sliced " + GT_LanguageManager.getTranslation(
+                        GT_LanguageManager.getTranslateableItemStackName(
+                            CircuitImprintLoader.getStackFromTag(aStack.getTagCompound()))));
             else aList.add("A Sliced Circuit");
             super.addAdditionalToolTips(aList, aStack, aPlayer);
         }
@@ -380,7 +384,7 @@ public class BW_Meta_Items {
 
         @Override
         public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem,
-                int useRemaining) {
+            int useRemaining) {
             return this.getIconFromDamage(stack.getItemDamage());
         }
 

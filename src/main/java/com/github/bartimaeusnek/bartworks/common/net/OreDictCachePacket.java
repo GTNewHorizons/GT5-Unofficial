@@ -47,7 +47,8 @@ public class OreDictCachePacket extends GT_Packet_New {
         int size = this.hashSet.size();
         aOut.writeInt(size);
         for (Pair<Integer, Short> p : this.hashSet) {
-            aOut.writeInt(p.getKey()).writeShort(p.getValue());
+            aOut.writeInt(p.getKey())
+                .writeShort(p.getValue());
         }
     }
 
@@ -62,7 +63,9 @@ public class OreDictCachePacket extends GT_Packet_New {
 
     @Override
     public void process(IBlockAccess iBlockAccess) {
-        OreDictHandler.getNonBWCache().clear();
-        OreDictHandler.getNonBWCache().addAll(this.hashSet);
+        OreDictHandler.getNonBWCache()
+            .clear();
+        OreDictHandler.getNonBWCache()
+            .addAll(this.hashSet);
     }
 }

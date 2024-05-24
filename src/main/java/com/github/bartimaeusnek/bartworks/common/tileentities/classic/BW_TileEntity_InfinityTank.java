@@ -93,7 +93,10 @@ public class BW_TileEntity_InfinityTank extends TileEntity implements IFluidTank
         for (FluidStack internaltank : this.INTERNALTANKS) {
             if (internaltank != null) {
                 NBTTagCompound entry = new NBTTagCompound();
-                entry.setString("FluidName", internaltank.getFluid().getName());
+                entry.setString(
+                    "FluidName",
+                    internaltank.getFluid()
+                        .getName());
                 entry.setInteger("Ammount", internaltank.amount);
                 entry.setTag("FluidTag", internaltank.tag);
                 lInternalTank.appendTag(entry);
@@ -146,14 +149,14 @@ public class BW_TileEntity_InfinityTank extends TileEntity implements IFluidTank
         if (doDrain) {
             outputstack.amount -= actualdrain;
             FluidEvent.fireEvent(
-                    new FluidEvent.FluidDrainingEvent(
-                            outputstack,
-                            this.getWorldObj(),
-                            this.xCoord,
-                            this.yCoord,
-                            this.zCoord,
-                            this,
-                            actualdrain));
+                new FluidEvent.FluidDrainingEvent(
+                    outputstack,
+                    this.getWorldObj(),
+                    this.xCoord,
+                    this.yCoord,
+                    this.zCoord,
+                    this,
+                    actualdrain));
         }
         return ret;
     }

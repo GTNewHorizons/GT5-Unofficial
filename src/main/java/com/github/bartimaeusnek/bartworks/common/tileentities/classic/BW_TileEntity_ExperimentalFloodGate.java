@@ -98,10 +98,16 @@ public class BW_TileEntity_ExperimentalFloodGate extends TileFluidHandler implem
 
     private void setFluidBlock(Coords current) {
         if (!this.checkForAir(current) || this.tank.drain(1000, false) == null
-                || this.tank.drain(1000, false).amount != 1000)
-            return;
+            || this.tank.drain(1000, false).amount != 1000) return;
         FluidStack stack = this.tank.drain(1000, true);
-        this.worldObj.setBlock(current.x, current.y, current.z, stack.getFluid().getBlock(), 0, 2);
+        this.worldObj.setBlock(
+            current.x,
+            current.y,
+            current.z,
+            stack.getFluid()
+                .getBlock(),
+            0,
+            2);
     }
 
     private void addBlockToQueue(Coords current, ForgeDirection allowed_direction) {

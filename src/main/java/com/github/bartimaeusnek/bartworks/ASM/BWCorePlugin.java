@@ -66,7 +66,8 @@ public class BWCorePlugin implements IFMLLoadingPlugin {
         }
         if (data.get("coremodList") != null) {
             for (Object o : (ArrayList) data.get("coremodList")) {
-                if (o.toString().contains("MicdoodlePlugin")) {
+                if (o.toString()
+                    .contains("MicdoodlePlugin")) {
                     BWCoreTransformer.shouldTransform[2] = ConfigHandler.enabledPatches[2];
                     break;
                 }

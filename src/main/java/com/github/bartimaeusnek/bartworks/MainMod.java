@@ -81,16 +81,16 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_OreDictUnificator;
 
 @Mod(modid = MainMod.MOD_ID, name = MainMod.NAME, version = API_REFERENCE.VERSION, dependencies = """
-        required-after:IC2;\
-        required-after:gregtech;\
-        after:berriespp;\
-        after:tectech;\
-        after:GalacticraftMars;\
-        after:GalacticraftCore;\
-        after:Forestry;\
-        after:ProjRed|Illumination;\
-        after:RandomThings;\
-        before:miscutils;""")
+    required-after:IC2;\
+    required-after:gregtech;\
+    after:berriespp;\
+    after:tectech;\
+    after:GalacticraftMars;\
+    after:GalacticraftCore;\
+    after:Forestry;\
+    after:ProjRed|Illumination;\
+    after:RandomThings;\
+    before:miscutils;""")
 public final class MainMod {
 
     public static final String NAME = "BartWorks";
@@ -147,7 +147,9 @@ public final class MainMod {
         if (SideReference.Side.Server) {
             MinecraftForge.EVENT_BUS.register(serverEventHandler);
         }
-        FMLCommonHandler.instance().bus().register(serverEventHandler);
+        FMLCommonHandler.instance()
+            .bus()
+            .register(serverEventHandler);
         if (ConfigHandler.BioLab) {
             BioLabLoader.run();
         }
@@ -166,10 +168,15 @@ public final class MainMod {
         if (ConfigHandler.BioLab) {
             GTNHBlocks.run();
             for (Map.Entry<BioVatLogicAdder.BlockMetaPair, Byte> pair : BioVatLogicAdder.BioVatGlass.getGlassMap()
-                    .entrySet()) {
+                .entrySet()) {
                 GT_OreDictUnificator.registerOre(
-                        "blockGlass" + VN[pair.getValue()],
-                        new ItemStack(pair.getKey().getBlock(), 1, pair.getKey().getaByte()));
+                    "blockGlass" + VN[pair.getValue()],
+                    new ItemStack(
+                        pair.getKey()
+                            .getBlock(),
+                        1,
+                        pair.getKey()
+                            .getaByte()));
             }
         }
         ArtificialMicaLine.runArtificialMicaRecipe();
@@ -224,6 +231,9 @@ public final class MainMod {
         // StaticRecipeChangeLoaders.synchroniseCircuitUseMulti();
 
         // Accept recipe map changes into Buffers
-        RecipeMap.ALL_RECIPE_MAPS.values().forEach(map -> map.getBackend().reInit());
+        RecipeMap.ALL_RECIPE_MAPS.values()
+            .forEach(
+                map -> map.getBackend()
+                    .reInit());
     }
 }

@@ -90,7 +90,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class GT_TileEntity_CircuitAssemblyLine extends
-        GT_MetaTileEntity_EnhancedMultiBlockBase<GT_TileEntity_CircuitAssemblyLine> implements ISurvivalConstructable {
+    GT_MetaTileEntity_EnhancedMultiBlockBase<GT_TileEntity_CircuitAssemblyLine> implements ISurvivalConstructable {
 
     private static final int CASING_INDEX = 16;
 
@@ -110,37 +110,44 @@ public class GT_TileEntity_CircuitAssemblyLine extends
     private ItemStack imprintedStack;
 
     private static final IStructureDefinition<GT_TileEntity_CircuitAssemblyLine> STRUCTURE_DEFINITION = StructureDefinition
-            .<GT_TileEntity_CircuitAssemblyLine>builder()
-            .addShape(
-                    STRUCTURE_PIECE_FIRST,
-                    transpose(new String[][] { { "~", "G", "G" }, { "g", "l", "g" }, { "b", "i", "b" }, }))
-            .addShape(
-                    STRUCTURE_PIECE_NEXT,
-                    transpose(new String[][] { { "G", "G", "G" }, { "g", "l", "g" }, { "b", "I", "b" }, }))
-            .addShape(
-                    STRUCTURE_PIECE_NEXT_HINT,
-                    transpose(new String[][] { { "G", "G", "G" }, { "g", "l", "g" }, { "b", "i", "b" }, }))
-            .addShape(
-                    STRUCTURE_PIECE_LAST,
-                    transpose(new String[][] { { "G", "G", "G" }, { "g", "l", "g" }, { "b", "o", "b" }, }))
-            .addElement(
-                    'G',
-                    buildHatchAdder(GT_TileEntity_CircuitAssemblyLine.class).atLeast(Energy).casingIndex(CASING_INDEX)
-                            .dot(1).buildAndChain(GregTech_API.sBlockCasings3, 10))
-            .addElement('g', ofGlassTieredMixed((byte) 4, (byte) 127, 5))
-            .addElement('l', ofBlock(GregTech_API.sBlockCasings2, 5)) // assembling line casings
-            .addElement(
-                    'b',
-                    buildHatchAdder(GT_TileEntity_CircuitAssemblyLine.class).atLeast(InputHatch, Maintenance)
-                            .casingIndex(CASING_INDEX).dot(2).disallowOnly(ForgeDirection.EAST, ForgeDirection.WEST)
-                            .buildAndChain(GregTech_API.sBlockCasings2, 0))
-            .addElement('i', InputBus.newAny(CASING_INDEX, 3, ForgeDirection.DOWN))
-            .addElement(
-                    'I',
-                    buildHatchAdder(GT_TileEntity_CircuitAssemblyLine.class).atLeast(InputHatch, InputBus, OutputBus)
-                            .casingIndex(CASING_INDEX).dot(2).disallowOnly(ForgeDirection.EAST, ForgeDirection.WEST)
-                            .buildAndChain(GregTech_API.sBlockCasings2, 0))
-            .addElement('o', OutputBus.newAny(CASING_INDEX, 2, ForgeDirection.DOWN)).build();
+        .<GT_TileEntity_CircuitAssemblyLine>builder()
+        .addShape(
+            STRUCTURE_PIECE_FIRST,
+            transpose(new String[][] { { "~", "G", "G" }, { "g", "l", "g" }, { "b", "i", "b" }, }))
+        .addShape(
+            STRUCTURE_PIECE_NEXT,
+            transpose(new String[][] { { "G", "G", "G" }, { "g", "l", "g" }, { "b", "I", "b" }, }))
+        .addShape(
+            STRUCTURE_PIECE_NEXT_HINT,
+            transpose(new String[][] { { "G", "G", "G" }, { "g", "l", "g" }, { "b", "i", "b" }, }))
+        .addShape(
+            STRUCTURE_PIECE_LAST,
+            transpose(new String[][] { { "G", "G", "G" }, { "g", "l", "g" }, { "b", "o", "b" }, }))
+        .addElement(
+            'G',
+            buildHatchAdder(GT_TileEntity_CircuitAssemblyLine.class).atLeast(Energy)
+                .casingIndex(CASING_INDEX)
+                .dot(1)
+                .buildAndChain(GregTech_API.sBlockCasings3, 10))
+        .addElement('g', ofGlassTieredMixed((byte) 4, (byte) 127, 5))
+        .addElement('l', ofBlock(GregTech_API.sBlockCasings2, 5)) // assembling line casings
+        .addElement(
+            'b',
+            buildHatchAdder(GT_TileEntity_CircuitAssemblyLine.class).atLeast(InputHatch, Maintenance)
+                .casingIndex(CASING_INDEX)
+                .dot(2)
+                .disallowOnly(ForgeDirection.EAST, ForgeDirection.WEST)
+                .buildAndChain(GregTech_API.sBlockCasings2, 0))
+        .addElement('i', InputBus.newAny(CASING_INDEX, 3, ForgeDirection.DOWN))
+        .addElement(
+            'I',
+            buildHatchAdder(GT_TileEntity_CircuitAssemblyLine.class).atLeast(InputHatch, InputBus, OutputBus)
+                .casingIndex(CASING_INDEX)
+                .dot(2)
+                .disallowOnly(ForgeDirection.EAST, ForgeDirection.WEST)
+                .buildAndChain(GregTech_API.sBlockCasings2, 0))
+        .addElement('o', OutputBus.newAny(CASING_INDEX, 2, ForgeDirection.DOWN))
+        .build();
 
     @Override
     public IStructureDefinition<GT_TileEntity_CircuitAssemblyLine> getStructureDefinition() {
@@ -151,45 +158,49 @@ public class GT_TileEntity_CircuitAssemblyLine extends
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Circuit Assembler/Circuit Assembly Line")
-                .addInfo("Controller block for the Circuit Assembly Line").addInfo("Change Mode with Screwdriver")
-                .addInfo("Does not lose efficiency when overclocked")
-                .addInfo(
-                        "---------" + EnumChatFormatting.WHITE
-                                + StatCollector.translateToLocal("chat.cal.mode.0")
-                                + EnumChatFormatting.GRAY
-                                + "--------")
-                .addInfo("Imprint this machine with a Circuit Imprint,")
-                .addInfo("by putting the imprint in the controller")
-                .addInfo("Every Circuit Assembly Line can only be imprinted ONCE")
-                .addInfo(
-                        "---------" + EnumChatFormatting.WHITE
-                                + StatCollector.translateToLocal("chat.cal.mode.1")
-                                + EnumChatFormatting.GRAY
-                                + "--------")
-                .addInfo(
-                        "Does Circuit Assembler recipes, Minimum Length: " + EnumChatFormatting.RED
-                                + MINIMUM_CIRCUIT_ASSEMBLER_LENGTH
-                                + EnumChatFormatting.GRAY)
-                .addInfo("Recipe tier in Circuit Assembler mode is at most Energy Hatch tier - 1.")
-                .addInfo("This mode supports Crafting Input Buffer/Bus and allows bus separation").addInfo("")
-                .addSeparator().addInfo(BW_Tooltip_Reference.TT_BLUEPRINT)
-                .beginVariableStructureBlock(2, 7, 3, 3, 3, 3, false)
-                .addStructureInfo("From Bottom to Top, Left to Right")
-                .addStructureInfo(
-                        "Layer 1 - Solid Steel Machine Casing, Input bus (Last Output bus), Solid Steel Machine Casing")
-                .addStructureInfo("Layer 2 - EV+ Tier Glass, Assembling Line Casing, EV+ Tier Glass")
-                .addStructureInfo("Layer 3 - Grate Machine Casing")
-                .addStructureInfo("Up to 7 repeating slices, last is Output Bus")
-                .addController("Layer 3 first slice front")
-                .addOtherStructurePart(
-                        "1x " + StatCollector.translateToLocal("GT5U.MBTT.EnergyHatch"),
-                        "Any layer 3 casing",
-                        1)
-                .addInputHatch("Any layer 1 casing", 2).addInputBus("As specified on layer 1", 3, 4)
-                .addOutputBus("As specified in final slice on layer 1", 4)
-                .addOtherStructurePart("EV+ Tier Glass", "As specified on layer 2", 5)
-                .addMaintenanceHatch("Any layer 1 casing", 2)
-                .toolTipFinisher(ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get());
+            .addInfo("Controller block for the Circuit Assembly Line")
+            .addInfo("Change Mode with Screwdriver")
+            .addInfo("Does not lose efficiency when overclocked")
+            .addInfo(
+                "---------" + EnumChatFormatting.WHITE
+                    + StatCollector.translateToLocal("chat.cal.mode.0")
+                    + EnumChatFormatting.GRAY
+                    + "--------")
+            .addInfo("Imprint this machine with a Circuit Imprint,")
+            .addInfo("by putting the imprint in the controller")
+            .addInfo("Every Circuit Assembly Line can only be imprinted ONCE")
+            .addInfo(
+                "---------" + EnumChatFormatting.WHITE
+                    + StatCollector.translateToLocal("chat.cal.mode.1")
+                    + EnumChatFormatting.GRAY
+                    + "--------")
+            .addInfo(
+                "Does Circuit Assembler recipes, Minimum Length: " + EnumChatFormatting.RED
+                    + MINIMUM_CIRCUIT_ASSEMBLER_LENGTH
+                    + EnumChatFormatting.GRAY)
+            .addInfo("Recipe tier in Circuit Assembler mode is at most Energy Hatch tier - 1.")
+            .addInfo("This mode supports Crafting Input Buffer/Bus and allows bus separation")
+            .addInfo("")
+            .addSeparator()
+            .addInfo(BW_Tooltip_Reference.TT_BLUEPRINT)
+            .beginVariableStructureBlock(2, 7, 3, 3, 3, 3, false)
+            .addStructureInfo("From Bottom to Top, Left to Right")
+            .addStructureInfo(
+                "Layer 1 - Solid Steel Machine Casing, Input bus (Last Output bus), Solid Steel Machine Casing")
+            .addStructureInfo("Layer 2 - EV+ Tier Glass, Assembling Line Casing, EV+ Tier Glass")
+            .addStructureInfo("Layer 3 - Grate Machine Casing")
+            .addStructureInfo("Up to 7 repeating slices, last is Output Bus")
+            .addController("Layer 3 first slice front")
+            .addOtherStructurePart(
+                "1x " + StatCollector.translateToLocal("GT5U.MBTT.EnergyHatch"),
+                "Any layer 3 casing",
+                1)
+            .addInputHatch("Any layer 1 casing", 2)
+            .addInputBus("As specified on layer 1", 3, 4)
+            .addOutputBus("As specified in final slice on layer 1", 4)
+            .addOtherStructurePart("EV+ Tier Glass", "As specified on layer 2", 5)
+            .addMaintenanceHatch("Any layer 1 casing", 2)
+            .toolTipFinisher(ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get());
         return tt;
     }
 
@@ -197,7 +208,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends
 
         if (this.type.equals(new NBTTagCompound())) return "";
         return GT_LanguageManager.getTranslation(
-                GT_LanguageManager.getTranslateableItemStackName(CircuitImprintLoader.getStackFromTag(this.type)));
+            GT_LanguageManager.getTranslateableItemStackName(CircuitImprintLoader.getStackFromTag(this.type)));
     }
 
     private NBTTagCompound type = new NBTTagCompound();
@@ -214,11 +225,12 @@ public class GT_TileEntity_CircuitAssemblyLine extends
         if (!this.type.equals(new NBTTagCompound())) return true;
         if (!GT_Utility.isStackValid(itemStack)) return false;
         if (itemStack.getItem() instanceof BW_Meta_Items.BW_GT_MetaGenCircuits && itemStack.getItemDamage() == 0
-                && itemStack.getTagCompound() != null
-                && this.type.equals(new NBTTagCompound())) {
+            && itemStack.getTagCompound() != null
+            && this.type.equals(new NBTTagCompound())) {
             this.type = itemStack.getTagCompound();
             this.mInventory[1] = null;
-            this.getBaseMetaTileEntity().issueBlockUpdate();
+            this.getBaseMetaTileEntity()
+                .issueBlockUpdate();
             return true;
         }
         return false;
@@ -241,7 +253,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends
     public void loadNBTData(NBTTagCompound aNBT) {
         this.type = aNBT.getCompoundTag(IMPRINT_KEY);
         this.imprintedItemName = this.type == null ? ""
-                : GT_LanguageManager.getTranslateableItemStackName(ItemStack.loadItemStackFromNBT(this.type));
+            : GT_LanguageManager.getTranslateableItemStackName(ItemStack.loadItemStackFromNBT(this.type));
         mode = aNBT.getInteger(RUNNING_MODE_KEY);
         length = aNBT.getInteger(LENGTH_KEY);
         super.loadNBTData(aNBT);
@@ -293,7 +305,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends
             protected CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
                 // limit CA mode recipes to hatch tier - 1
                 if (GT_TileEntity_CircuitAssemblyLine.this.mode == 1
-                        && recipe.mEUt > GT_TileEntity_CircuitAssemblyLine.this.getMaxInputVoltage() / 4) {
+                    && recipe.mEUt > GT_TileEntity_CircuitAssemblyLine.this.getMaxInputVoltage() / 4) {
                     return CheckRecipeResultRegistry.NO_RECIPE;
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
@@ -336,9 +348,13 @@ public class GT_TileEntity_CircuitAssemblyLine extends
             ArrayList<ItemStack> rList = new ArrayList<>();
             for (GT_MetaTileEntity_Hatch_InputBus tHatch : filterValidMTEs(mInputBusses)) {
                 tHatch.mRecipeMap = this.getRecipeMap();
-                for (int i = 0; i < tHatch.getBaseMetaTileEntity().getSizeInventory(); i++) {
-                    if (tHatch.getBaseMetaTileEntity().getStackInSlot(i) != null) {
-                        rList.add(tHatch.getBaseMetaTileEntity().getStackInSlot(i));
+                for (int i = 0; i < tHatch.getBaseMetaTileEntity()
+                    .getSizeInventory(); i++) {
+                    if (tHatch.getBaseMetaTileEntity()
+                        .getStackInSlot(i) != null) {
+                        rList.add(
+                            tHatch.getBaseMetaTileEntity()
+                                .getStackInSlot(i));
                         break;
                     }
                 }
@@ -418,22 +434,34 @@ public class GT_TileEntity_CircuitAssemblyLine extends
         this.infoDataBuffer = new String[oldInfo.length + 1];
         System.arraycopy(oldInfo, 0, this.infoDataBuffer, 0, oldInfo.length);
         this.infoDataBuffer[oldInfo.length] = StatCollector.translateToLocal("tooltip.cal.imprintedWith") + " "
-                + EnumChatFormatting.YELLOW
-                + this.getTypeForDisplay();
+            + EnumChatFormatting.YELLOW
+            + this.getTypeForDisplay();
         return this.infoDataBuffer;
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-            int aColorIndex, boolean aActive, boolean aRedstone) {
+        int aColorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW).extFacing().glow()
-                            .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ASSEMBLY_LINE).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_GLOW).extFacing().glow().build() };
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
     }
@@ -481,57 +509,58 @@ public class GT_TileEntity_CircuitAssemblyLine extends
 
         for (int i = 1; i < tLength - 1; ++i) {
             built = survivialBuildPiece(
-                    STRUCTURE_PIECE_NEXT_HINT,
-                    stackSize,
-                    -i,
-                    0,
-                    0,
-                    elementBudget,
-                    env,
-                    false,
-                    true);
-            if (built >= 0) return built;
-        }
-        return survivialBuildPiece(
-                STRUCTURE_PIECE_LAST,
+                STRUCTURE_PIECE_NEXT_HINT,
                 stackSize,
-                -(tLength - 1),
+                -i,
                 0,
                 0,
                 elementBudget,
                 env,
                 false,
                 true);
+            if (built >= 0) return built;
+        }
+        return survivialBuildPiece(
+            STRUCTURE_PIECE_LAST,
+            stackSize,
+            -(tLength - 1),
+            0,
+            0,
+            elementBudget,
+            env,
+            false,
+            true);
     }
 
     @Override
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
         if (stack.hasTagCompound() && stack.stackTagCompound.hasKey(IMPRINT_KEY)) {
             tooltip.add(
-                    StatCollector.translateToLocal("tooltip.cal.imprintedWith") + " "
-                            + EnumChatFormatting.YELLOW
-                            + StatCollector.translateToLocal(
-                                    GT_LanguageManager.getTranslateableItemStackName(
-                                            ItemStack.loadItemStackFromNBT(
-                                                    stack.stackTagCompound.getCompoundTag("Type")))));
+                StatCollector.translateToLocal("tooltip.cal.imprintedWith") + " "
+                    + EnumChatFormatting.YELLOW
+                    + StatCollector.translateToLocal(
+                        GT_LanguageManager.getTranslateableItemStackName(
+                            ItemStack.loadItemStackFromNBT(stack.stackTagCompound.getCompoundTag("Type")))));
         }
     }
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
+        builder
+            .widget(new FakeSyncWidget.StringSyncer(() -> this.imprintedItemName, val -> this.imprintedItemName = val));
         builder.widget(
-                new FakeSyncWidget.StringSyncer(() -> this.imprintedItemName, val -> this.imprintedItemName = val));
-        builder.widget(
-                new CycleButtonWidget().setToggle(() -> mode == 1, val -> mode = val ? 1 : 0)
-                        .setTextureGetter(
-                                state -> state == 1 ? BW_UITextures.OVERLAY_BUTTON_ASSEMBLER_MODE
-                                        : BW_UITextures.OVERLAY_BUTTON_LINE_MODE)
-                        .setBackground(GT_UITextures.BUTTON_STANDARD).setPos(80, 91).setSize(16, 16)
-                        .dynamicTooltip(
-                                () -> Collections
-                                        .singletonList(StatCollector.translateToLocal("chat.cal.mode." + mode)))
-                        .setUpdateTooltipEveryTick(true).setTooltipShowUpDelay(TOOLTIP_DELAY));
+            new CycleButtonWidget().setToggle(() -> mode == 1, val -> mode = val ? 1 : 0)
+                .setTextureGetter(
+                    state -> state == 1 ? BW_UITextures.OVERLAY_BUTTON_ASSEMBLER_MODE
+                        : BW_UITextures.OVERLAY_BUTTON_LINE_MODE)
+                .setBackground(GT_UITextures.BUTTON_STANDARD)
+                .setPos(80, 91)
+                .setSize(16, 16)
+                .dynamicTooltip(
+                    () -> Collections.singletonList(StatCollector.translateToLocal("chat.cal.mode." + mode)))
+                .setUpdateTooltipEveryTick(true)
+                .setTooltipShowUpDelay(TOOLTIP_DELAY));
     }
 
     @Override
@@ -546,13 +575,13 @@ public class GT_TileEntity_CircuitAssemblyLine extends
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-            float aX, float aY, float aZ) {
+        float aX, float aY, float aZ) {
         if (!aPlayer.isSneaking()) {
             if (mode == 0) return false;
             inputSeparation = !inputSeparation;
             GT_Utility.sendChatToPlayer(
-                    aPlayer,
-                    StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + inputSeparation);
+                aPlayer,
+                StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + inputSeparation);
             return true;
         } else {
             batchMode = !batchMode;
@@ -582,22 +611,22 @@ public class GT_TileEntity_CircuitAssemblyLine extends
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-            IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         NBTTagCompound tag = accessor.getNBTData();
         currenttip.add(
-                EnumChatFormatting.GREEN
-                        + StatCollector.translateToLocal("chat.cal.mode." + tag.getInteger(RUNNING_MODE_KEY)));
+            EnumChatFormatting.GREEN
+                + StatCollector.translateToLocal("chat.cal.mode." + tag.getInteger(RUNNING_MODE_KEY)));
         if (tag.hasKey("ImprintedWith") && tag.getInteger(RUNNING_MODE_KEY) == 0) currenttip.add(
-                StatCollector.translateToLocal("tooltip.cal.imprintedWith") + " "
-                        + EnumChatFormatting.YELLOW
-                        + tag.getString("ImprintedWith"));
+            StatCollector.translateToLocal("tooltip.cal.imprintedWith") + " "
+                + EnumChatFormatting.YELLOW
+                + tag.getString("ImprintedWith"));
 
     }
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-            int z) {
+        int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         String imprintedWith = this.getTypeForDisplay();
         if (!imprintedWith.isEmpty()) tag.setString("ImprintedWith", imprintedWith);

@@ -26,30 +26,30 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 
 public abstract class TT_Abstract_LowPowerLaserThingy extends GT_MetaTileEntity_TieredMachineBlock
-        implements LowPowerLaser {
+    implements LowPowerLaser {
 
     protected long AMPERES;
 
     public TT_Abstract_LowPowerLaserThingy(int aID, String aName, String aNameRegional, int aTier, long aAmperes,
-            int aInvSlotCount, String aDescription, ITexture... aTextures) {
+        int aInvSlotCount, String aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
         this.AMPERES = aAmperes;
     }
 
     public TT_Abstract_LowPowerLaserThingy(int aID, String aName, String aNameRegional, int aTier, long aAmperes,
-            int aInvSlotCount, String[] aDescription, ITexture... aTextures) {
+        int aInvSlotCount, String[] aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
         this.AMPERES = aAmperes;
     }
 
     public TT_Abstract_LowPowerLaserThingy(String aName, int aTier, long aAmperes, int aInvSlotCount,
-            String aDescription, ITexture[][][] aTextures) {
+        String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
         this.AMPERES = aAmperes;
     }
 
     public TT_Abstract_LowPowerLaserThingy(String aName, int aTier, long aAmperes, int aInvSlotCount,
-            String[] aDescription, ITexture[][][] aTextures) {
+        String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
         this.AMPERES = aAmperes;
     }
@@ -61,13 +61,13 @@ public abstract class TT_Abstract_LowPowerLaserThingy extends GT_MetaTileEntity_
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
-            ItemStack itemStack) {
+        ItemStack itemStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
-            ItemStack itemStack) {
+        ItemStack itemStack) {
         return false;
     }
 
@@ -93,7 +93,8 @@ public abstract class TT_Abstract_LowPowerLaserThingy extends GT_MetaTileEntity_
 
     @Override
     public void saveNBTData(NBTTagCompound nbtTagCompound) {
-        Optional.ofNullable(nbtTagCompound).ifPresent(tag -> tag.setLong("AMPERES", this.AMPERES));
+        Optional.ofNullable(nbtTagCompound)
+            .ifPresent(tag -> tag.setLong("AMPERES", this.AMPERES));
     }
 
     @Override

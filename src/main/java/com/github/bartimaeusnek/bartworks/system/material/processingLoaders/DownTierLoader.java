@@ -27,17 +27,22 @@ import gregtech.api.util.GT_Recipe;
 public class DownTierLoader {
 
     public static void run() {
-        RecipeMap.ALL_RECIPE_MAPS.values().stream()
-                .filter(map -> StreamUtils.filterVisualMaps(map) && map != RecipeMaps.fusionRecipes).forEach(map -> {
-                    Set<GT_Recipe> newRecipes = new HashSet<>();
-                    Set<GT_Recipe> toRem = new HashSet<>();
-                    map.getAllRecipes().stream().filter(recipe -> Objects.nonNull(recipe) && recipe.mEUt > 128)
-                            .forEach(recipe -> {
-                                toRem.add(recipe);
-                                newRecipes.add(BW_Util.copyAndSetTierToNewRecipe(recipe, (byte) 2));
-                            });
-                    map.getBackend().removeRecipes(toRem);
-                    newRecipes.forEach(map::add);
-                });
+        RecipeMap.ALL_RECIPE_MAPS.values()
+            .stream()
+            .filter(map -> StreamUtils.filterVisualMaps(map) && map != RecipeMaps.fusionRecipes)
+            .forEach(map -> {
+                Set<GT_Recipe> newRecipes = new HashSet<>();
+                Set<GT_Recipe> toRem = new HashSet<>();
+                map.getAllRecipes()
+                    .stream()
+                    .filter(recipe -> Objects.nonNull(recipe) && recipe.mEUt > 128)
+                    .forEach(recipe -> {
+                        toRem.add(recipe);
+                        newRecipes.add(BW_Util.copyAndSetTierToNewRecipe(recipe, (byte) 2));
+                    });
+                map.getBackend()
+                    .removeRecipes(toRem);
+                newRecipes.forEach(map::add);
+            });
     }
 }

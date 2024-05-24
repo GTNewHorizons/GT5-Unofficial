@@ -44,15 +44,18 @@ public class BW_MetaGeneratedFrames extends MetaPipeEntity {
 
         GT_OreDictUnificator.registerOre(OrePrefixes.frameGt, aMaterial, this.getStackForm(1));
         GT_ModHandler.addCraftingRecipe(
-                this.getStackForm(2),
-                RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
-                new Object[] { "SSS", "SwS", "SSS", 'S', this.mMaterial.get(OrePrefixes.stick) });
+            this.getStackForm(2),
+            RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
+            new Object[] { "SSS", "SwS", "SSS", 'S', this.mMaterial.get(OrePrefixes.stick) });
 
         RA.stdBuilder()
-                .itemInputs(
-                        GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.getVarName(), 4),
-                        ItemList.Circuit_Integrated.getWithDamage(0, 4))
-                .itemOutputs(getStackForm(1)).duration(3 * SECONDS + 4 * TICKS).eut(8).addTo(assemblerRecipes);
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.getVarName(), 4),
+                ItemList.Circuit_Integrated.getWithDamage(0, 4))
+            .itemOutputs(getStackForm(1))
+            .duration(3 * SECONDS + 4 * TICKS)
+            .eut(8)
+            .addTo(assemblerRecipes);
     }
 
     private BW_MetaGeneratedFrames(String aName, Werkstoff aMaterial) {
@@ -71,10 +74,10 @@ public class BW_MetaGeneratedFrames extends MetaPipeEntity {
     }
 
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, byte aConnections,
-            int aColorIndex, boolean aConnected, boolean aRedstone) {
+        int aColorIndex, boolean aConnected, boolean aRedstone) {
         return new ITexture[] { TextureFactory.of(
-                this.mMaterial.getTexSet().mTextures[OrePrefixes.frameGt.mTextureIndex],
-                Dyes.getModulation(aColorIndex, this.mMaterial.getRGBA())) };
+            this.mMaterial.getTexSet().mTextures[OrePrefixes.frameGt.mTextureIndex],
+            Dyes.getModulation(aColorIndex, this.mMaterial.getRGBA())) };
     }
 
     @Override
@@ -119,13 +122,13 @@ public class BW_MetaGeneratedFrames extends MetaPipeEntity {
 
     @Override
     public final boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
     @Override
     public final boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 

@@ -26,7 +26,7 @@ public class GT_MetaTileEntity_HumongousInputHatch extends GT_MetaTileEntity_Hat
     }
 
     public GT_MetaTileEntity_HumongousInputHatch(String aName, int aTier, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
@@ -38,9 +38,9 @@ public class GT_MetaTileEntity_HumongousInputHatch extends GT_MetaTileEntity_Hat
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_HumongousInputHatch(
-                this.mName,
-                this.mTier,
-                this.mDescriptionArray,
-                this.mTextures);
+            this.mName,
+            this.mTier,
+            this.mDescriptionArray,
+            this.mTextures);
     }
 }

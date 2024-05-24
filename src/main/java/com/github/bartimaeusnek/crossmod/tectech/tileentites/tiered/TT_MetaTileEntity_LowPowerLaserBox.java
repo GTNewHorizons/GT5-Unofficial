@@ -27,23 +27,25 @@ import gregtech.api.util.GT_Utility;
 public class TT_MetaTileEntity_LowPowerLaserBox extends TT_Abstract_LowPowerLaserThingy {
 
     public TT_MetaTileEntity_LowPowerLaserBox(int aID, String aName, String aNameRegional, int aTier, long aAmperes,
-            ITexture... aTextures) {
+        ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, aAmperes, 0, new String[0], aTextures);
     }
 
     public TT_MetaTileEntity_LowPowerLaserBox(String aName, int aTier, long aAmperes, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aAmperes, 0, aDescription, aTextures);
     }
 
     @Override
     public boolean isSender() {
-        return this.getBaseMetaTileEntity().isAllowedToWork();
+        return this.getBaseMetaTileEntity()
+            .isAllowedToWork();
     }
 
     @Override
     public boolean isReceiver() {
-        return !this.getBaseMetaTileEntity().isAllowedToWork();
+        return !this.getBaseMetaTileEntity()
+            .isAllowedToWork();
     }
 
     @Override
@@ -53,12 +55,14 @@ public class TT_MetaTileEntity_LowPowerLaserBox extends TT_Abstract_LowPowerLase
 
     @Override
     public long maxAmperesOut() {
-        return !this.getBaseMetaTileEntity().isAllowedToWork() ? this.AMPERES : 0;
+        return !this.getBaseMetaTileEntity()
+            .isAllowedToWork() ? this.AMPERES : 0;
     }
 
     @Override
     public long maxAmperesIn() {
-        return this.getBaseMetaTileEntity().isAllowedToWork() ? this.AMPERES + this.AMPERES / 4 : 0;
+        return this.getBaseMetaTileEntity()
+            .isAllowedToWork() ? this.AMPERES + this.AMPERES / 4 : 0;
     }
 
     @Override
@@ -73,27 +77,30 @@ public class TT_MetaTileEntity_LowPowerLaserBox extends TT_Abstract_LowPowerLase
 
     @Override
     public boolean isEnetInput() {
-        return this.getBaseMetaTileEntity().isAllowedToWork();
+        return this.getBaseMetaTileEntity()
+            .isAllowedToWork();
     }
 
     @Override
     public boolean isEnetOutput() {
-        return !this.getBaseMetaTileEntity().isAllowedToWork();
+        return !this.getBaseMetaTileEntity()
+            .isAllowedToWork();
     }
 
     @Override
     public boolean canConnect(ForgeDirection side) {
-        return side == this.getBaseMetaTileEntity().getFrontFacing();
+        return side == this.getBaseMetaTileEntity()
+            .getFrontFacing();
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
         return new TT_MetaTileEntity_LowPowerLaserBox(
-                this.mName,
-                this.mTier,
-                this.AMPERES,
-                this.mDescriptionArray,
-                this.mTextures);
+            this.mName,
+            this.mTier,
+            this.AMPERES,
+            this.mDescriptionArray,
+            this.mTextures);
     }
 
     @Override
@@ -109,8 +116,8 @@ public class TT_MetaTileEntity_LowPowerLaserBox extends TT_Abstract_LowPowerLase
                         this.setEUVar(0L);
                     }
                 }
-                if (this.getBaseMetaTileEntity().isAllowedToWork()
-                        && aBaseMetaTileEntity.getStoredEU() > this.getMinimumStoredEU()) {
+                if (this.getBaseMetaTileEntity()
+                    .isAllowedToWork() && aBaseMetaTileEntity.getStoredEU() > this.getMinimumStoredEU()) {
                     this.moveAroundLowPower(aBaseMetaTileEntity);
                 }
             }
@@ -123,29 +130,29 @@ public class TT_MetaTileEntity_LowPowerLaserBox extends TT_Abstract_LowPowerLase
 
         for (byte i = -1; i < 16; ++i) {
             rTextures[0][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[this.mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[this.mTier] };
             rTextures[1][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[this.mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[this.mTier] };
             rTextures[2][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[this.mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[this.mTier] };
             rTextures[3][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1],
-                    com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_LASER_TT[this.mTier] };
+                com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_LASER_TT[this.mTier] };
             rTextures[4][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1],
-                    com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_LASER_TT[this.mTier] };
+                com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_LASER_TT[this.mTier] };
             rTextures[5][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1],
-                    com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_LASER_TT[this.mTier] };
+                com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_LASER_TT[this.mTier] };
             rTextures[6][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier] };
             rTextures[7][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier] };
             rTextures[8][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier] };
             rTextures[9][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1],
-                    com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_OUT_LASER_TT[this.mTier] };
+                com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_OUT_LASER_TT[this.mTier] };
             rTextures[10][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1],
-                    com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_OUT_LASER_TT[this.mTier] };
+                com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_OUT_LASER_TT[this.mTier] };
             rTextures[11][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1],
-                    com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_OUT_LASER_TT[this.mTier] };
+                com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_OUT_LASER_TT[this.mTier] };
         }
 
         return rTextures;
@@ -153,18 +160,18 @@ public class TT_MetaTileEntity_LowPowerLaserBox extends TT_Abstract_LowPowerLase
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-            int aColorIndex, boolean aActive, boolean aRedstone) {
+        int aColorIndex, boolean aActive, boolean aRedstone) {
         return this.mTextures[Math.min(2, side.ordinal()) + (side == facing ? 3 : 0) + (aActive ? 0 : 6)][aColorIndex
-                + 1];
+            + 1];
     }
 
     @Override
     public String[] getDescription() {
         return new String[] { "Like a Tranformer... but for LAZORZ",
-                "Transfer rate: " + ChatColorHelper.YELLOW
-                        + GT_Utility.formatNumbers(this.getTotalPower())
-                        + ChatColorHelper.WHITE
-                        + " EU/t",
-                BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get() };
+            "Transfer rate: " + ChatColorHelper.YELLOW
+                + GT_Utility.formatNumbers(this.getTotalPower())
+                + ChatColorHelper.WHITE
+                + " EU/t",
+            BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get() };
     }
 }

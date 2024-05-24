@@ -48,20 +48,23 @@ public class OreDictHandler {
         OreDictHandler.cache.clear();
         OreDictHandler.cacheNonBW.clear();
         for (String s : used) {
-            if (!OreDictionary.getOres(s).isEmpty()) {
-                ItemStack tmpstack = OreDictionary.getOres(s).get(0).copy();
+            if (!OreDictionary.getOres(s)
+                .isEmpty()) {
+                ItemStack tmpstack = OreDictionary.getOres(s)
+                    .get(0)
+                    .copy();
                 Pair<Integer, Short> p = new Pair<>(
-                        Item.getIdFromItem(tmpstack.getItem()),
-                        (short) tmpstack.getItemDamage());
+                    Item.getIdFromItem(tmpstack.getItem()),
+                    (short) tmpstack.getItemDamage());
                 OreDictHandler.cache.put(s, p);
                 for (ItemStack tmp : OreDictionary.getOres(s)) {
                     Pair<Integer, Short> p2 = new Pair<>(
-                            Item.getIdFromItem(tmp.getItem()),
-                            (short) tmp.getItemDamage());
+                        Item.getIdFromItem(tmp.getItem()),
+                        (short) tmp.getItemDamage());
                     GameRegistry.UniqueIdentifier UI = GameRegistry.findUniqueIdentifierFor(tmp.getItem());
                     if (UI == null) UI = GameRegistry.findUniqueIdentifierFor(Block.getBlockFromItem(tmp.getItem()));
                     if (!MainMod.MOD_ID.equals(UI.modId) && !BartWorksCrossmod.MOD_ID.equals(UI.modId)
-                            && !"BWCore".equals(UI.modId)) {
+                        && !"BWCore".equals(UI.modId)) {
                         OreDictHandler.cacheNonBW.add(p2);
                     }
                 }
@@ -74,12 +77,16 @@ public class OreDictHandler {
             Pair<Integer, Short> p = OreDictHandler.cache.get(prefixes + elementName.replace(" ", ""));
             return new ItemStack(Item.getItemById(p.getKey()), amount, p.getValue());
         }
-        if (!OreDictionary.getOres(prefixes + elementName.replace(" ", "")).isEmpty()) {
-            ItemStack tmp = GT_OreDictUnificator
-                    .get(OreDictionary.getOres(prefixes + elementName.replace(" ", "")).get(0).copy()).copy();
+        if (!OreDictionary.getOres(prefixes + elementName.replace(" ", ""))
+            .isEmpty()) {
+            ItemStack tmp = GT_OreDictUnificator.get(
+                OreDictionary.getOres(prefixes + elementName.replace(" ", ""))
+                    .get(0)
+                    .copy())
+                .copy();
             OreDictHandler.cache.put(
-                    prefixes + elementName.replace(" ", ""),
-                    new Pair<>(Item.getIdFromItem(tmp.getItem()), (short) tmp.getItemDamage()));
+                prefixes + elementName.replace(" ", ""),
+                new Pair<>(Item.getIdFromItem(tmp.getItem()), (short) tmp.getItemDamage()));
             tmp.stackSize = amount;
             return tmp;
         }

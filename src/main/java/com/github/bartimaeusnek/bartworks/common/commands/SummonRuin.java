@@ -34,11 +34,11 @@ public class SummonRuin extends CommandBase {
     public void processCommand(ICommandSender iCommandSender, String[] args) {
         try {
             new MapGenRuins.RuinsBase().generate(
-                    iCommandSender.getEntityWorld(),
-                    iCommandSender.getEntityWorld().rand,
-                    Integer.parseInt(args[0]),
-                    256,
-                    Integer.parseInt(args[1]));
+                iCommandSender.getEntityWorld(),
+                iCommandSender.getEntityWorld().rand,
+                Integer.parseInt(args[0]),
+                256,
+                Integer.parseInt(args[1]));
         } catch (Exception e) {
             e.printStackTrace();
         }

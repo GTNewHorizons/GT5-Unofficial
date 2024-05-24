@@ -63,63 +63,51 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<GT_TileEntity_HTGR> STRUCTURE_DEFINITION = StructureDefinition
-            .<GT_TileEntity_HTGR>builder()
-            .addShape(
-                    STRUCTURE_PIECE_MAIN,
-                    transpose(
-                            new String[][] {
-                                    { "  BBBBBBB  ", " BBBBBBBBB ", "BBBBBBBBBBB", "BBBBBBBBBBB", "BBBBBBBBBBB",
-                                            "BBBBBBBBBBB", "BBBBBBBBBBB", "BBBBBBBBBBB", "BBBBBBBBBBB", " BBBBBBBBB ",
-                                            "  BBBBBBB  " },
-                                    { "  ccccccc  ", " c-------c ", "c---------c", "c---------c", "c---------c",
-                                            "c---------c", "c---------c", "c---------c", "c---------c", " c-------c ",
-                                            "  ccccccc  " },
-                                    { "  ccccccc  ", " c-------c ", "c---------c", "c---------c", "c---------c",
-                                            "c---------c", "c---------c", "c---------c", "c---------c", " c-------c ",
-                                            "  ccccccc  " },
-                                    { "  ccccccc  ", " c-------c ", "c---------c", "c---------c", "c---------c",
-                                            "c---------c", "c---------c", "c---------c", "c---------c", " c-------c ",
-                                            "  ccccccc  " },
-                                    { "  ccccccc  ", " c-------c ", "c---------c", "c---------c", "c---------c",
-                                            "c---------c", "c---------c", "c---------c", "c---------c", " c-------c ",
-                                            "  ccccccc  " },
-                                    { "  ccccccc  ", " c-------c ", "c---------c", "c---------c", "c---------c",
-                                            "c---------c", "c---------c", "c---------c", "c---------c", " c-------c ",
-                                            "  ccccccc  " },
-                                    { "  ccccccc  ", " c-------c ", "c---------c", "c---------c", "c---------c",
-                                            "c---------c", "c---------c", "c---------c", "c---------c", " c-------c ",
-                                            "  ccccccc  " },
-                                    { "  ccccccc  ", " c-------c ", "c---------c", "c---------c", "c---------c",
-                                            "c---------c", "c---------c", "c---------c", "c---------c", " c-------c ",
-                                            "  ccccccc  " },
-                                    { "  ccccccc  ", " c-------c ", "c---------c", "c---------c", "c---------c",
-                                            "c---------c", "c---------c", "c---------c", "c---------c", " c-------c ",
-                                            "  ccccccc  " },
-                                    { "  ccccccc  ", " c-------c ", "c---------c", "c---------c", "c---------c",
-                                            "c---------c", "c---------c", "c---------c", "c---------c", " c-------c ",
-                                            "  ccccccc  " },
-                                    { "  ccccccc  ", " c-------c ", "c---------c", "c---------c", "c---------c",
-                                            "c---------c", "c---------c", "c---------c", "c---------c", " c-------c ",
-                                            "  ccccccc  " },
-                                    { "  bbb~bbb  ", " bbbbbbbbb ", "bbbbbbbbbbb", "bbbbbbbbbbb", "bbbbbbbbbbb",
-                                            "bbbbbbbbbbb", "bbbbbbbbbbb", "bbbbbbbbbbb", "bbbbbbbbbbb", " bbbbbbbbb ",
-                                            "  bbbbbbb  " }, }))
-            .addElement('c', onElementPass(x -> x.mCasing++, ofBlock(GregTech_API.sBlockCasings8, 5)))
-            .addElement(
-                    'b',
-                    ofChain(
-                            ofHatchAdder(GT_TileEntity_HTGR::addOutputToMachineList, BASECASINGINDEX, 1),
-                            ofHatchAdder(GT_TileEntity_HTGR::addMaintenanceToMachineList, BASECASINGINDEX, 1),
-                            ofHatchAdder(GT_TileEntity_HTGR::addEnergyInputToMachineList, BASECASINGINDEX, 1),
-                            onElementPass(x -> x.mCasing++, ofBlock(GregTech_API.sBlockCasings8, 5))))
-            .addElement(
-                    'B',
-                    ofChain(
-                            ofHatchAdder(GT_TileEntity_HTGR::addInputToMachineList, BASECASINGINDEX, 2),
-                            onElementPass(x -> x.mCasing++, ofBlock(GregTech_API.sBlockCasings8, 5))))
-            // ofHatchAdderOptional(GT_TileEntity_HTGR::addInputToMachineList, BASECASINGINDEX, 2,
-            // GregTech_API.sBlockCasings8, 5))
-            .build();
+        .<GT_TileEntity_HTGR>builder()
+        .addShape(
+            STRUCTURE_PIECE_MAIN,
+            transpose(
+                new String[][] {
+                    { "  BBBBBBB  ", " BBBBBBBBB ", "BBBBBBBBBBB", "BBBBBBBBBBB", "BBBBBBBBBBB", "BBBBBBBBBBB",
+                        "BBBBBBBBBBB", "BBBBBBBBBBB", "BBBBBBBBBBB", " BBBBBBBBB ", "  BBBBBBB  " },
+                    { "  ccccccc  ", " c-------c ", "c---------c", "c---------c", "c---------c", "c---------c",
+                        "c---------c", "c---------c", "c---------c", " c-------c ", "  ccccccc  " },
+                    { "  ccccccc  ", " c-------c ", "c---------c", "c---------c", "c---------c", "c---------c",
+                        "c---------c", "c---------c", "c---------c", " c-------c ", "  ccccccc  " },
+                    { "  ccccccc  ", " c-------c ", "c---------c", "c---------c", "c---------c", "c---------c",
+                        "c---------c", "c---------c", "c---------c", " c-------c ", "  ccccccc  " },
+                    { "  ccccccc  ", " c-------c ", "c---------c", "c---------c", "c---------c", "c---------c",
+                        "c---------c", "c---------c", "c---------c", " c-------c ", "  ccccccc  " },
+                    { "  ccccccc  ", " c-------c ", "c---------c", "c---------c", "c---------c", "c---------c",
+                        "c---------c", "c---------c", "c---------c", " c-------c ", "  ccccccc  " },
+                    { "  ccccccc  ", " c-------c ", "c---------c", "c---------c", "c---------c", "c---------c",
+                        "c---------c", "c---------c", "c---------c", " c-------c ", "  ccccccc  " },
+                    { "  ccccccc  ", " c-------c ", "c---------c", "c---------c", "c---------c", "c---------c",
+                        "c---------c", "c---------c", "c---------c", " c-------c ", "  ccccccc  " },
+                    { "  ccccccc  ", " c-------c ", "c---------c", "c---------c", "c---------c", "c---------c",
+                        "c---------c", "c---------c", "c---------c", " c-------c ", "  ccccccc  " },
+                    { "  ccccccc  ", " c-------c ", "c---------c", "c---------c", "c---------c", "c---------c",
+                        "c---------c", "c---------c", "c---------c", " c-------c ", "  ccccccc  " },
+                    { "  ccccccc  ", " c-------c ", "c---------c", "c---------c", "c---------c", "c---------c",
+                        "c---------c", "c---------c", "c---------c", " c-------c ", "  ccccccc  " },
+                    { "  bbb~bbb  ", " bbbbbbbbb ", "bbbbbbbbbbb", "bbbbbbbbbbb", "bbbbbbbbbbb", "bbbbbbbbbbb",
+                        "bbbbbbbbbbb", "bbbbbbbbbbb", "bbbbbbbbbbb", " bbbbbbbbb ", "  bbbbbbb  " }, }))
+        .addElement('c', onElementPass(x -> x.mCasing++, ofBlock(GregTech_API.sBlockCasings8, 5)))
+        .addElement(
+            'b',
+            ofChain(
+                ofHatchAdder(GT_TileEntity_HTGR::addOutputToMachineList, BASECASINGINDEX, 1),
+                ofHatchAdder(GT_TileEntity_HTGR::addMaintenanceToMachineList, BASECASINGINDEX, 1),
+                ofHatchAdder(GT_TileEntity_HTGR::addEnergyInputToMachineList, BASECASINGINDEX, 1),
+                onElementPass(x -> x.mCasing++, ofBlock(GregTech_API.sBlockCasings8, 5))))
+        .addElement(
+            'B',
+            ofChain(
+                ofHatchAdder(GT_TileEntity_HTGR::addInputToMachineList, BASECASINGINDEX, 2),
+                onElementPass(x -> x.mCasing++, ofBlock(GregTech_API.sBlockCasings8, 5))))
+        // ofHatchAdderOptional(GT_TileEntity_HTGR::addInputToMachineList, BASECASINGINDEX, 2,
+        // GregTech_API.sBlockCasings8, 5))
+        .build();
 
     private static final int HELIUM_NEEDED = 730000;
     public static final int powerUsage = (int) TierEU.RECIPE_LuV;
@@ -154,24 +142,30 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Breeder Reactor")
-                .addInfo("Controller block for the High Temperature Gas-cooled Reactor (HTGR)").addInfo(AuthorKuba)
-                .addInfo("You can clear internal buffer by changing the mode with a screwdriver")
-                .addInfo("Needs a constant supply of coolant while running")
-                .addInfo("Needs at least 72k Fuel pebbles to start operation (can hold up to 720k pebbles)")
-                .addInfo("Consumes up to 2.5% of total Fuel Pellets per Operation depending on efficiency")
-                .addInfo(
-                        "Efficiency is calculated exponentially depending on the amount of pebbles in the internal buffer")
-                .addInfo("and affects total recipe time (at 100% eff, -50% total recipe time")
-                .addInfo(
-                        "Reactor will take 4 000L/s of coolant multiplied by efficiency and by fuel coolant value (check tooltips)")
-                .addInfo("Uses " + GT_Utility.formatNumbers(powerUsage) + " EU/t").addInfo("One Operation takes 1 hour")
-                .addSeparator().beginStructureBlock(11, 12, 11, true).addController("Front bottom center")
-                .addCasingInfoMin("Europium Reinforced Radiation Proof Casings", 500, false)
-                .addStructureInfo("Corners and the 2 touching blocks are air (cylindric)")
-                .addInputBus("Any top layer casing", 2).addInputHatch("Any top layer casing", 2)
-                .addOutputBus("Any bottom layer casing", 1).addOutputHatch("Any bottom layer casing", 1)
-                .addEnergyHatch("Any bottom layer casing", 1).addMaintenanceHatch("Any bottom layer casing", 1)
-                .toolTipFinisher(MULTIBLOCK_ADDED_VIA_BARTWORKS.apply(ChatColorHelper.GOLD + "kuba6000"));
+            .addInfo("Controller block for the High Temperature Gas-cooled Reactor (HTGR)")
+            .addInfo(AuthorKuba)
+            .addInfo("You can clear internal buffer by changing the mode with a screwdriver")
+            .addInfo("Needs a constant supply of coolant while running")
+            .addInfo("Needs at least 72k Fuel pebbles to start operation (can hold up to 720k pebbles)")
+            .addInfo("Consumes up to 2.5% of total Fuel Pellets per Operation depending on efficiency")
+            .addInfo("Efficiency is calculated exponentially depending on the amount of pebbles in the internal buffer")
+            .addInfo("and affects total recipe time (at 100% eff, -50% total recipe time")
+            .addInfo(
+                "Reactor will take 4 000L/s of coolant multiplied by efficiency and by fuel coolant value (check tooltips)")
+            .addInfo("Uses " + GT_Utility.formatNumbers(powerUsage) + " EU/t")
+            .addInfo("One Operation takes 1 hour")
+            .addSeparator()
+            .beginStructureBlock(11, 12, 11, true)
+            .addController("Front bottom center")
+            .addCasingInfoMin("Europium Reinforced Radiation Proof Casings", 500, false)
+            .addStructureInfo("Corners and the 2 touching blocks are air (cylindric)")
+            .addInputBus("Any top layer casing", 2)
+            .addInputHatch("Any top layer casing", 2)
+            .addOutputBus("Any bottom layer casing", 1)
+            .addOutputHatch("Any bottom layer casing", 1)
+            .addEnergyHatch("Any bottom layer casing", 1)
+            .addMaintenanceHatch("Any bottom layer casing", 1)
+            .toolTipFinisher(MULTIBLOCK_ADDED_VIA_BARTWORKS.apply(ChatColorHelper.GOLD + "kuba6000"));
         return tt;
     }
 
@@ -189,12 +183,12 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
         this.mCasing = 0;
         return this.checkPiece("main", 5, 11, 0) && this.mCasing >= 500
-                && this.mMaintenanceHatches.size() == 1
-                && this.mInputHatches.size() > 0
-                && this.mOutputHatches.size() > 0
-                && this.mInputBusses.size() > 0
-                && this.mOutputBusses.size() > 0
-                && this.mEnergyHatches.size() > 0;
+            && this.mMaintenanceHatches.size() == 1
+            && this.mInputHatches.size() > 0
+            && this.mOutputHatches.size() > 0
+            && this.mInputBusses.size() > 0
+            && this.mOutputBusses.size() > 0
+            && this.mEnergyHatches.size() > 0;
     }
 
     @Override
@@ -279,7 +273,7 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
         if (this.HeliumSupply < GT_TileEntity_HTGR.HELIUM_NEEDED || this.fuelsupply < mincapacity) return false;
 
         double eff = Math.min(Math.pow((double) this.fuelsupply / (double) mincapacity, 2D), 100D) / 100D
-                - (this.getIdealStatus() - this.getRepairStatus()) / 10D;
+            - (this.getIdealStatus() - this.getRepairStatus()) / 10D;
 
         if (eff <= 0) return false;
 
@@ -292,7 +286,7 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
         int meta = this.fueltype * HTGRMaterials.MATERIALS_PER_FUEL + HTGRMaterials.BURNED_OUT_FUEL_INDEX;
 
         ItemStack[] toOutput = { new ItemStack(HTGRMaterials.aHTGR_Materials, burnedballs, meta),
-                new ItemStack(HTGRMaterials.aHTGR_Materials, toReduce, meta + 1) };
+            new ItemStack(HTGRMaterials.aHTGR_Materials, toReduce, meta + 1) };
         if (!this.canOutputAll(toOutput)) return false;
 
         this.fuelsupply -= originalToReduce;
@@ -326,9 +320,9 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
             }
             if (this.fuelsupply > 0) {
                 ItemStack iStack = new ItemStack(
-                        HTGRMaterials.aHTGR_Materials,
-                        this.fuelsupply,
-                        HTGRMaterials.MATERIALS_PER_FUEL * this.fueltype + HTGRMaterials.USABLE_FUEL_INDEX);
+                    HTGRMaterials.aHTGR_Materials,
+                    this.fuelsupply,
+                    HTGRMaterials.MATERIALS_PER_FUEL * this.fueltype + HTGRMaterials.USABLE_FUEL_INDEX);
                 boolean storedAll = false;
                 for (GT_MetaTileEntity_Hatch_OutputBus tHatch : filterValidMTEs(mOutputBusses)) {
                     if (tHatch.storeAll(iStack)) {
@@ -408,34 +402,43 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
     @Override
     public String[] getInfoData() {
         return new String[] { "Mode:", this.empty ? "Emptying" : "Normal", "Progress:",
-                GT_Utility.formatNumbers(this.mProgresstime / 20) + "s / "
-                        + GT_Utility.formatNumbers(this.mMaxProgresstime / 20)
-                        + "s",
-                "Fuel type:",
-                this.fueltype == -1 ? "NONE" : "TRISO (" + HTGRMaterials.sHTGR_Fuel[this.fueltype].sEnglish + ")",
-                "Fuel amount:", GT_Utility.formatNumbers(this.fuelsupply) + " pcs.", "Helium-Level:",
-                GT_Utility.formatNumbers(this.HeliumSupply) + "L / "
-                        + GT_Utility.formatNumbers(GT_TileEntity_HTGR.HELIUM_NEEDED)
-                        + "L",
-                "Coolant:", GT_Utility.formatNumbers(this.coolanttaking) + "L/s", "Problems:",
-                String.valueOf(this.getIdealStatus() - this.getRepairStatus()) };
+            GT_Utility.formatNumbers(this.mProgresstime / 20) + "s / "
+                + GT_Utility.formatNumbers(this.mMaxProgresstime / 20)
+                + "s",
+            "Fuel type:",
+            this.fueltype == -1 ? "NONE" : "TRISO (" + HTGRMaterials.sHTGR_Fuel[this.fueltype].sEnglish + ")",
+            "Fuel amount:", GT_Utility.formatNumbers(this.fuelsupply) + " pcs.", "Helium-Level:",
+            GT_Utility.formatNumbers(this.HeliumSupply) + "L / "
+                + GT_Utility.formatNumbers(GT_TileEntity_HTGR.HELIUM_NEEDED)
+                + "L",
+            "Coolant:", GT_Utility.formatNumbers(this.coolanttaking) + "L/s", "Problems:",
+            String.valueOf(this.getIdealStatus() - this.getRepairStatus()) };
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side,
-            ForgeDirection forgeDirection, int aColorIndex, boolean aActive, boolean aRedstone) {
+        ForgeDirection forgeDirection, int aColorIndex, boolean aActive, boolean aRedstone) {
         if (side == forgeDirection) {
-            if (aActive)
-                return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(GT_TileEntity_HTGR.BASECASINGINDEX),
-                        TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE)
-                                .extFacing().build(),
-                        TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE_GLOW)
-                                .extFacing().glow().build() };
+            if (aActive) return new ITexture[] {
+                Textures.BlockIcons.getCasingTextureForId(GT_TileEntity_HTGR.BASECASINGINDEX), TextureFactory.builder()
+                    .addIcon(Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(GT_TileEntity_HTGR.BASECASINGINDEX),
-                    TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER).extFacing()
-                            .build(),
-                    TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_GLOW).extFacing()
-                            .glow().build() };
+                TextureFactory.builder()
+                    .addIcon(Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(GT_TileEntity_HTGR.BASECASINGINDEX) };
     }
@@ -448,8 +451,8 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
         }
         this.empty = !this.empty;
         GT_Utility.sendChatToPlayer(
-                aPlayer,
-                "HTGR is now running in " + (this.empty ? "emptying mode." : "normal Operation"));
+            aPlayer,
+            "HTGR is now running in " + (this.empty ? "emptying mode." : "normal Operation"));
     }
 
     @Override
@@ -496,13 +499,13 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
             public ItemStack mainItem;
             public ItemStack secondaryItem;
             public ItemStack[] recycledItems = { GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI,
-                    GT_Values.NI };
+                GT_Values.NI };
             public FluidStack recycledFluid;
             public int[] recycleChances;
             public String tooltip;
 
             public Fuel_(String sName, String sEnglish, ItemStack mainItem, ItemStack secondaryItem,
-                    FluidStack recycledFluid, ItemStack[] recycledItems, int[] recycleChances, String tooltip) {
+                FluidStack recycledFluid, ItemStack[] recycledItems, int[] recycleChances, String tooltip) {
                 this.sName = sName;
                 this.sEnglish = sEnglish;
                 this.mainItem = mainItem;
@@ -526,46 +529,43 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
         }
 
         public static final Base_[] sHTGR_Bases = { new Base_("HTGRFuelMixture", "HTGR fuel mixture"),
-                new Base_("BISOPebbleCompound", "BISO pebble compound"),
-                new Base_("TRISOPebbleCompound", "TRISO pebble compound"), new Base_("TRISOBall", "TRISO ball"),
-                new Base_("TRISOPebble", "TRISO pebble"), new Base_("BurnedOutTRISOBall", "Burned out TRISO Ball"),
-                new Base_("BurnedOutTRISOPebble", "Burned out TRISO Pebble"), };
+            new Base_("BISOPebbleCompound", "BISO pebble compound"),
+            new Base_("TRISOPebbleCompound", "TRISO pebble compound"), new Base_("TRISOBall", "TRISO ball"),
+            new Base_("TRISOPebble", "TRISO pebble"), new Base_("BurnedOutTRISOBall", "Burned out TRISO Ball"),
+            new Base_("BurnedOutTRISOPebble", "Burned out TRISO Pebble"), };
         public static final int MATERIALS_PER_FUEL = sHTGR_Bases.length;
         static final int USABLE_FUEL_INDEX = 4;
         static final int BURNED_OUT_FUEL_INDEX = 5;
-        public static final Fuel_[] sHTGR_Fuel = {
-                new Fuel_(
-                        "Thorium",
-                        "Thorium",
-                        WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 64),
-                        Materials.Uranium235.getDust(4),
-                        GT_Values.NF,
-                        new ItemStack[] { Materials.Silicon.getDust(1), Materials.Graphite.getDust(1),
-                                Materials.Carbon.getDust(1), Materials.Lutetium.getDust(1),
-                                WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 1) },
-                        new int[] { 9900 / 4, 9900 / 4, 9900 / 4, 9900 / 4, 162 / 4 },
-                        "Multiplies coolant by 1"),
-                new Fuel_(
-                        "Uranium",
-                        "Uranium",
-                        Materials.Uranium.getDust(64),
-                        Materials.Uranium235.getDust(8),
-                        FluidRegistry.getFluidStack("krypton", 4),
-                        new ItemStack[] { Materials.Silicon.getDust(1), Materials.Graphite.getDust(1),
-                                Materials.Carbon.getDust(1), Materials.Lead.getDust(1), Materials.Uranium.getDust(1) },
-                        new int[] { 9900 / 4, 9900 / 4, 9900 / 4, 5000 / 4, 5000 / 4 },
-                        "Multiplies coolant by 1.5"),
-                new Fuel_(
-                        "Plutonium",
-                        "Plutonium",
-                        Materials.Plutonium.getDust(64),
-                        Materials.Plutonium241.getDust(4),
-                        FluidRegistry.getFluidStack("xenon", 4),
-                        new ItemStack[] { Materials.Silicon.getDust(1), Materials.Graphite.getDust(1),
-                                Materials.Carbon.getDust(1), Materials.Lead.getDust(1),
-                                Materials.Plutonium.getDust(1) },
-                        new int[] { 9900 / 4, 9900 / 4, 9900 / 4, 5000 / 4, 5000 / 4 },
-                        "Multiplies coolant by 2"), };
+        public static final Fuel_[] sHTGR_Fuel = { new Fuel_(
+            "Thorium",
+            "Thorium",
+            WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 64),
+            Materials.Uranium235.getDust(4),
+            GT_Values.NF,
+            new ItemStack[] { Materials.Silicon.getDust(1), Materials.Graphite.getDust(1), Materials.Carbon.getDust(1),
+                Materials.Lutetium.getDust(1), WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 1) },
+            new int[] { 9900 / 4, 9900 / 4, 9900 / 4, 9900 / 4, 162 / 4 },
+            "Multiplies coolant by 1"),
+            new Fuel_(
+                "Uranium",
+                "Uranium",
+                Materials.Uranium.getDust(64),
+                Materials.Uranium235.getDust(8),
+                FluidRegistry.getFluidStack("krypton", 4),
+                new ItemStack[] { Materials.Silicon.getDust(1), Materials.Graphite.getDust(1),
+                    Materials.Carbon.getDust(1), Materials.Lead.getDust(1), Materials.Uranium.getDust(1) },
+                new int[] { 9900 / 4, 9900 / 4, 9900 / 4, 5000 / 4, 5000 / 4 },
+                "Multiplies coolant by 1.5"),
+            new Fuel_(
+                "Plutonium",
+                "Plutonium",
+                Materials.Plutonium.getDust(64),
+                Materials.Plutonium241.getDust(4),
+                FluidRegistry.getFluidStack("xenon", 4),
+                new ItemStack[] { Materials.Silicon.getDust(1), Materials.Graphite.getDust(1),
+                    Materials.Carbon.getDust(1), Materials.Lead.getDust(1), Materials.Plutonium.getDust(1) },
+                new int[] { 9900 / 4, 9900 / 4, 9900 / 4, 5000 / 4, 5000 / 4 },
+                "Multiplies coolant by 2"), };
         public static final CustomHTGRSimpleSubItemClass aHTGR_Materials;
         static final ArrayList<LangEntry_> aHTGR_Localizations = new ArrayList<>();
 
@@ -576,12 +576,9 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
             for (Fuel_ fuel : sHTGR_Fuel) for (Base_ base : sHTGR_Bases) {
                 sHTGR_Materials[i] = "HTGR" + base.sName + fuel.sName;
                 aHTGR_Localizations.add(
-                        new LangEntry_(
-                                "item." + sHTGR_Materials[i] + ".name",
-                                base.sEnglish + " (" + fuel.sEnglish + ")"));
+                    new LangEntry_("item." + sHTGR_Materials[i] + ".name", base.sEnglish + " (" + fuel.sEnglish + ")"));
                 if ((i + 1) % MATERIALS_PER_FUEL == USABLE_FUEL_INDEX + 1 && fuel.tooltip != null
-                        && !fuel.tooltip.isEmpty())
-                    tooltip.put(i, fuel.tooltip);
+                    && !fuel.tooltip.isEmpty()) tooltip.put(i, fuel.tooltip);
                 i++;
             }
             aHTGR_Materials = new CustomHTGRSimpleSubItemClass(tooltip, sHTGR_Materials);
@@ -600,15 +597,15 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
             Fuel_ fuel : sHTGR_Fuel) {
 
                 BartWorksRecipeMaps.htgrFakeRecipes.addFakeRecipe(
-                        false,
-                        new ItemStack[] { new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 64, i + 4) },
-                        new ItemStack[] { new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 5) },
-                        null,
-                        null,
-                        null,
-                        72000,
-                        powerUsage,
-                        0);
+                    false,
+                    new ItemStack[] { new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 64, i + 4) },
+                    new ItemStack[] { new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 5) },
+                    null,
+                    null,
+                    null,
+                    72000,
+                    powerUsage,
+                    0);
 
                 i += MATERIALS_PER_FUEL;
             }

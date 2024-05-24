@@ -34,61 +34,60 @@ public class TecTechResearchLoader {
 
     public static void runResearches() {
         Fluid solderIndalloy = FluidRegistry.getFluid("molten.indalloy140") != null
-                ? FluidRegistry.getFluid("molten.indalloy140")
-                : FluidRegistry.getFluid("molten.solderingalloy");
+            ? FluidRegistry.getFluid("molten.indalloy140")
+            : FluidRegistry.getFluid("molten.solderingalloy");
 
         if (GalactiGreg.isModLoaded()) {
             TT_recipeAdder.addResearchableAssemblylineRecipe(
-                    ItemRegistry.voidminer[0].copy(),
-                    1024000,
-                    256,
-                    (int) TierEU.RECIPE_ZPM,
-                    24,
-                    new Object[] { ItemRegistry.voidminer[0].copy(),
-                            GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.BlackPlutonium, 9L),
-                            Materials.BlackPlutonium.getPlates(3), ItemList.Electric_Motor_ZPM.get(9L),
-                            ItemList.Sensor_ZPM.get(9L), ItemList.Field_Generator_ZPM.get(9L),
-                            GT_OreDictUnificator.get(OrePrefixes.screw, Materials.BlackPlutonium, 36L) },
-                    new FluidStack[] { new FluidStack(solderIndalloy, 1440),
-                            WerkstoffLoader.Krypton.getFluidOrGas(20000) },
-                    ItemRegistry.voidminer[1].copy(),
-                    5 * MINUTES,
-                    (int) TierEU.RECIPE_ZPM);
+                ItemRegistry.voidminer[0].copy(),
+                1024000,
+                256,
+                (int) TierEU.RECIPE_ZPM,
+                24,
+                new Object[] { ItemRegistry.voidminer[0].copy(),
+                    GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.BlackPlutonium, 9L),
+                    Materials.BlackPlutonium.getPlates(3), ItemList.Electric_Motor_ZPM.get(9L),
+                    ItemList.Sensor_ZPM.get(9L), ItemList.Field_Generator_ZPM.get(9L),
+                    GT_OreDictUnificator.get(OrePrefixes.screw, Materials.BlackPlutonium, 36L) },
+                new FluidStack[] { new FluidStack(solderIndalloy, 1440), WerkstoffLoader.Krypton.getFluidOrGas(20000) },
+                ItemRegistry.voidminer[1].copy(),
+                5 * MINUTES,
+                (int) TierEU.RECIPE_ZPM);
 
             TT_recipeAdder.addResearchableAssemblylineRecipe(
-                    ItemRegistry.voidminer[1].copy(),
-                    8192000,
-                    512,
-                    (int) TierEU.RECIPE_UV,
-                    64,
-                    new Object[] { ItemRegistry.voidminer[1].copy(),
-                            GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 9L),
-                            Materials.Neutronium.getPlates(3), ItemList.Electric_Motor_UV.get(9L),
-                            ItemList.Sensor_UV.get(9L), ItemList.Field_Generator_UV.get(9L),
-                            GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Neutronium, 36L) },
-                    new FluidStack[] { new FluidStack(solderIndalloy, 1440),
-                            WerkstoffLoader.Oganesson.getFluidOrGas(20000) },
-                    ItemRegistry.voidminer[2].copy(),
-                    5 * MINUTES,
-                    (int) TierEU.RECIPE_UV);
+                ItemRegistry.voidminer[1].copy(),
+                8192000,
+                512,
+                (int) TierEU.RECIPE_UV,
+                64,
+                new Object[] { ItemRegistry.voidminer[1].copy(),
+                    GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 9L),
+                    Materials.Neutronium.getPlates(3), ItemList.Electric_Motor_UV.get(9L), ItemList.Sensor_UV.get(9L),
+                    ItemList.Field_Generator_UV.get(9L),
+                    GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Neutronium, 36L) },
+                new FluidStack[] { new FluidStack(solderIndalloy, 1440),
+                    WerkstoffLoader.Oganesson.getFluidOrGas(20000) },
+                ItemRegistry.voidminer[2].copy(),
+                5 * MINUTES,
+                (int) TierEU.RECIPE_UV);
         }
 
         TT_recipeAdder.addResearchableAssemblylineRecipe(
-                ItemList.Machine_Multi_ImplosionCompressor.get(1L),
-                64000,
-                48,
-                (int) TierEU.RECIPE_UV,
-                8,
-                new Object[] { ItemList.Machine_Multi_ImplosionCompressor.get(1L), Materials.Neutronium.getBlocks(5),
-                        GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Osmium, 64),
-                        GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Osmium, 64),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUHV, 64),
-                        ItemList.Electric_Piston_UV.get(64), },
-                new FluidStack[] { new FluidStack(solderIndalloy, 1440), Materials.Osmium.getMolten(1440),
-                        Materials.Neutronium.getMolten(1440) },
-                ItemRegistry.eic.copy(),
-                5 * MINUTES,
-                (int) TierEU.RECIPE_UV);
+            ItemList.Machine_Multi_ImplosionCompressor.get(1L),
+            64000,
+            48,
+            (int) TierEU.RECIPE_UV,
+            8,
+            new Object[] { ItemList.Machine_Multi_ImplosionCompressor.get(1L), Materials.Neutronium.getBlocks(5),
+                GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Osmium, 64),
+                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Osmium, 64),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUHV, 64),
+                ItemList.Electric_Piston_UV.get(64), },
+            new FluidStack[] { new FluidStack(solderIndalloy, 1440), Materials.Osmium.getMolten(1440),
+                Materials.Neutronium.getMolten(1440) },
+            ItemRegistry.eic.copy(),
+            5 * MINUTES,
+            (int) TierEU.RECIPE_UV);
 
     }
 }

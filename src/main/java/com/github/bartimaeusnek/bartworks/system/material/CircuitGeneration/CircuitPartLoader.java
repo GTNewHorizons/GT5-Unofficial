@@ -116,26 +116,34 @@ public class CircuitPartLoader implements Runnable {
     @Override
     public void run() {
         CircuitPartLoader.makeCircuitParts();
-        if (FMLCommonHandler.instance().getEffectiveSide().isClient()) new BW_GT_ItemRenderer();
+        if (FMLCommonHandler.instance()
+            .getEffectiveSide()
+            .isClient()) new BW_GT_ItemRenderer();
     }
 
     public static void makeCircuitParts() {
         ItemList[] itemLists = values();
         for (ItemList single : itemLists) {
             if (!single.hasBeenSet()) continue;
-            if (single.toString().contains("Wafer") || single.toString().contains("Circuit_Silicon_Ingot")
-                    || single.toString().contains("Raw")
-                    || single.toString().contains("raw")
-                    || single.toString().contains("Glass_Tube")
-                    || single == Circuit_Parts_GlassFiber
-                    || single == Circuit_Parts_Advanced
-                    || single == Circuit_Parts_Wiring_Advanced
-                    || single == Circuit_Parts_Wiring_Elite
-                    || single == Circuit_Parts_Wiring_Basic
-                    || single == Circuit_Integrated
-                    || single == Circuit_Parts_PetriDish
-                    || single == Circuit_Parts_Vacuum_Tube
-                    || single == Circuit_Integrated_Good) {
+            if (single.toString()
+                .contains("Wafer")
+                || single.toString()
+                    .contains("Circuit_Silicon_Ingot")
+                || single.toString()
+                    .contains("Raw")
+                || single.toString()
+                    .contains("raw")
+                || single.toString()
+                    .contains("Glass_Tube")
+                || single == Circuit_Parts_GlassFiber
+                || single == Circuit_Parts_Advanced
+                || single == Circuit_Parts_Wiring_Advanced
+                || single == Circuit_Parts_Wiring_Elite
+                || single == Circuit_Parts_Wiring_Basic
+                || single == Circuit_Integrated
+                || single == Circuit_Parts_PetriDish
+                || single == Circuit_Parts_Vacuum_Tube
+                || single == Circuit_Integrated_Good) {
 
                 CircuitImprintLoader.blacklistSet.add(single.get(1));
             }
@@ -146,18 +154,35 @@ public class CircuitPartLoader implements Runnable {
             ItemStack itemStack = single.get(1);
             if (!GT_Utility.isStackValid(itemStack)) continue;
             ArrayList<String> toolTip = new ArrayList<>();
-            if (FMLCommonHandler.instance().getEffectiveSide().isClient())
-                single.getItem().addInformation(single.get(1).copy(), null, toolTip, true);
+            if (FMLCommonHandler.instance()
+                .getEffectiveSide()
+                .isClient())
+                single.getItem()
+                    .addInformation(
+                        single.get(1)
+                            .copy(),
+                        null,
+                        toolTip,
+                        true);
             String tt = toolTip.size() > 0 ? toolTip.get(0) : "";
             // tt += "Internal Name = "+single;
             String localised = GT_LanguageManager
-                    .getTranslation(GT_LanguageManager.getTranslateableItemStackName(itemStack));
-            BW_Meta_Items.getNEWCIRCUITS().addItem(CircuitImprintLoader.reverseIDs, "Wrap of " + localised + "s", tt);
+                .getTranslation(GT_LanguageManager.getTranslateableItemStackName(itemStack));
+            BW_Meta_Items.getNEWCIRCUITS()
+                .addItem(CircuitImprintLoader.reverseIDs, "Wrap of " + localised + "s", tt);
 
-            GT_Values.RA.stdBuilder().itemInputs(single.get(16).copy(), GT_Utility.getIntegratedCircuit(16))
-                    .itemOutputs(BW_Meta_Items.getNEWCIRCUITS().getStack(CircuitImprintLoader.reverseIDs))
-                    .fluidInputs(Materials.Plastic.getMolten(72)).duration(30 * SECONDS).eut(TierEU.RECIPE_LV)
-                    .addTo(assemblerRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    single.get(16)
+                        .copy(),
+                    GT_Utility.getIntegratedCircuit(16))
+                .itemOutputs(
+                    BW_Meta_Items.getNEWCIRCUITS()
+                        .getStack(CircuitImprintLoader.reverseIDs))
+                .fluidInputs(Materials.Plastic.getMolten(72))
+                .duration(30 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
 
             CircuitImprintLoader.circuitIIconRefs.put(CircuitImprintLoader.reverseIDs, single);
             CircuitImprintLoader.reverseIDs--;
@@ -169,73 +194,73 @@ public class CircuitPartLoader implements Runnable {
      * this list, to prevent id shift.
      */
     private static final List<ItemList> CIRCUIT_PARTS = Collections.unmodifiableList(
-            Arrays.asList(
-                    Circuit_Board_Basic,
-                    Circuit_Board_Advanced,
-                    Circuit_Board_Elite,
-                    Circuit_Parts_Crystal_Chip_Elite,
-                    Circuit_Parts_Crystal_Chip_Master,
-                    Circuit_Board_Coated,
-                    Circuit_Board_Coated_Basic,
-                    Circuit_Board_Phenolic,
-                    Circuit_Board_Phenolic_Good,
-                    Circuit_Board_Epoxy,
-                    Circuit_Board_Epoxy_Advanced,
-                    Circuit_Board_Fiberglass,
-                    Circuit_Board_Fiberglass_Advanced,
-                    Circuit_Board_Multifiberglass_Elite,
-                    Circuit_Board_Multifiberglass,
-                    Circuit_Board_Wetware,
-                    Circuit_Board_Wetware_Extreme,
-                    Circuit_Board_Plastic,
-                    Circuit_Board_Plastic_Advanced,
-                    Circuit_Board_Bio,
-                    Circuit_Board_Bio_Ultra,
-                    Circuit_Parts_ResistorSMD,
-                    Circuit_Parts_InductorSMD,
-                    Circuit_Parts_DiodeSMD,
-                    Circuit_Parts_TransistorSMD,
-                    Circuit_Parts_CapacitorSMD,
-                    Circuit_Parts_ResistorASMD,
-                    Circuit_Parts_DiodeASMD,
-                    Circuit_Parts_TransistorASMD,
-                    Circuit_Parts_CapacitorASMD,
-                    Circuit_Chip_ILC,
-                    Circuit_Chip_Ram,
-                    Circuit_Chip_NAND,
-                    Circuit_Chip_NOR,
-                    Circuit_Chip_CPU,
-                    Circuit_Chip_SoC,
-                    Circuit_Chip_SoC2,
-                    Circuit_Chip_PIC,
-                    Circuit_Chip_Simple_SoC,
-                    Circuit_Chip_HPIC,
-                    Circuit_Chip_UHPIC,
-                    Circuit_Chip_ULPIC,
-                    Circuit_Chip_LPIC,
-                    Circuit_Chip_NPIC,
-                    Circuit_Chip_PPIC,
-                    Circuit_Chip_QPIC,
-                    Circuit_Chip_NanoCPU,
-                    Circuit_Chip_QuantumCPU,
-                    Circuit_Chip_CrystalCPU,
-                    Circuit_Chip_CrystalSoC,
-                    Circuit_Chip_CrystalSoC2,
-                    Circuit_Chip_NeuroCPU,
-                    Circuit_Chip_BioCPU,
-                    Circuit_Chip_Stemcell,
-                    Circuit_Chip_Biocell,
-                    Circuit_Parts_ResistorXSMD,
-                    Circuit_Parts_DiodeXSMD,
-                    Circuit_Parts_TransistorXSMD,
-                    Circuit_Parts_CapacitorXSMD,
-                    Circuit_Parts_InductorASMD,
-                    Circuit_Parts_InductorXSMD,
-                    Circuit_Chip_Optical,
-                    Circuit_Board_Optical,
-                    Optically_Perfected_CPU,
-                    Optical_Cpu_Containment_Housing,
-                    Optically_Compatible_Memory,
-                    Circuit_Parts_Crystal_Chip_Wetware,
-                    Circuit_Parts_Chip_Bioware));
+        Arrays.asList(
+            Circuit_Board_Basic,
+            Circuit_Board_Advanced,
+            Circuit_Board_Elite,
+            Circuit_Parts_Crystal_Chip_Elite,
+            Circuit_Parts_Crystal_Chip_Master,
+            Circuit_Board_Coated,
+            Circuit_Board_Coated_Basic,
+            Circuit_Board_Phenolic,
+            Circuit_Board_Phenolic_Good,
+            Circuit_Board_Epoxy,
+            Circuit_Board_Epoxy_Advanced,
+            Circuit_Board_Fiberglass,
+            Circuit_Board_Fiberglass_Advanced,
+            Circuit_Board_Multifiberglass_Elite,
+            Circuit_Board_Multifiberglass,
+            Circuit_Board_Wetware,
+            Circuit_Board_Wetware_Extreme,
+            Circuit_Board_Plastic,
+            Circuit_Board_Plastic_Advanced,
+            Circuit_Board_Bio,
+            Circuit_Board_Bio_Ultra,
+            Circuit_Parts_ResistorSMD,
+            Circuit_Parts_InductorSMD,
+            Circuit_Parts_DiodeSMD,
+            Circuit_Parts_TransistorSMD,
+            Circuit_Parts_CapacitorSMD,
+            Circuit_Parts_ResistorASMD,
+            Circuit_Parts_DiodeASMD,
+            Circuit_Parts_TransistorASMD,
+            Circuit_Parts_CapacitorASMD,
+            Circuit_Chip_ILC,
+            Circuit_Chip_Ram,
+            Circuit_Chip_NAND,
+            Circuit_Chip_NOR,
+            Circuit_Chip_CPU,
+            Circuit_Chip_SoC,
+            Circuit_Chip_SoC2,
+            Circuit_Chip_PIC,
+            Circuit_Chip_Simple_SoC,
+            Circuit_Chip_HPIC,
+            Circuit_Chip_UHPIC,
+            Circuit_Chip_ULPIC,
+            Circuit_Chip_LPIC,
+            Circuit_Chip_NPIC,
+            Circuit_Chip_PPIC,
+            Circuit_Chip_QPIC,
+            Circuit_Chip_NanoCPU,
+            Circuit_Chip_QuantumCPU,
+            Circuit_Chip_CrystalCPU,
+            Circuit_Chip_CrystalSoC,
+            Circuit_Chip_CrystalSoC2,
+            Circuit_Chip_NeuroCPU,
+            Circuit_Chip_BioCPU,
+            Circuit_Chip_Stemcell,
+            Circuit_Chip_Biocell,
+            Circuit_Parts_ResistorXSMD,
+            Circuit_Parts_DiodeXSMD,
+            Circuit_Parts_TransistorXSMD,
+            Circuit_Parts_CapacitorXSMD,
+            Circuit_Parts_InductorASMD,
+            Circuit_Parts_InductorXSMD,
+            Circuit_Chip_Optical,
+            Circuit_Board_Optical,
+            Optically_Perfected_CPU,
+            Optical_Cpu_Containment_Housing,
+            Optically_Compatible_Memory,
+            Circuit_Parts_Crystal_Chip_Wetware,
+            Circuit_Parts_Chip_Bioware));
 }

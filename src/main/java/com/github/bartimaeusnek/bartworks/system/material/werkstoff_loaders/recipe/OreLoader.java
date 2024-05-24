@@ -34,24 +34,29 @@ public class OreLoader implements IWerkstoffRunnable {
 
     @Override
     public void run(Werkstoff werkstoff) {
-        if (werkstoff.hasItemType(ore) && werkstoff.hasItemType(ingot) && !werkstoff.getStats().isBlastFurnace())
+        if (werkstoff.hasItemType(ore) && werkstoff.hasItemType(ingot)
+            && !werkstoff.getStats()
+                .isBlastFurnace())
             GT_ModHandler
-                    .addSmeltingRecipe(WerkstoffLoader.getCorrespondingItemStack(ore, werkstoff), werkstoff.get(ingot));
+                .addSmeltingRecipe(WerkstoffLoader.getCorrespondingItemStack(ore, werkstoff), werkstoff.get(ingot));
 
         if (werkstoff.hasItemType(ore)) {
 
-            GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(ore))
-                    .itemOutputs(werkstoff.hasItemType(gem) ? werkstoff.get(gem) : werkstoff.get(crushed))
-                    .duration(16 * TICKS).eut(10).addTo(hammerRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(werkstoff.get(ore))
+                .itemOutputs(werkstoff.hasItemType(gem) ? werkstoff.get(gem) : werkstoff.get(crushed))
+                .duration(16 * TICKS)
+                .eut(10)
+                .addTo(hammerRecipes);
 
             GT_ModHandler.addPulverisationRecipe(
-                    werkstoff.get(ore),
-                    werkstoff.get(crushed, 2),
-                    werkstoff.contains(SubTag.CRYSTAL) ? werkstoff.get(gem) : werkstoff.getOreByProduct(0, dust),
-                    werkstoff.getNoOfByProducts() > 0 ? 10 : 0,
-                    Materials.Stone.getDust(1),
-                    50,
-                    true);
+                werkstoff.get(ore),
+                werkstoff.get(crushed, 2),
+                werkstoff.contains(SubTag.CRYSTAL) ? werkstoff.get(gem) : werkstoff.getOreByProduct(0, dust),
+                werkstoff.getNoOfByProducts() > 0 ? 10 : 0,
+                Materials.Stone.getDust(1),
+                50,
+                true);
         }
     }
 }

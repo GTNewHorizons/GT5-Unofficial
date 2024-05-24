@@ -29,7 +29,7 @@ public class RecipeFinderForParallel {
      * @return The parallel that it can reach
      */
     public static int handleParallelRecipe(GT_Recipe aRecipe, FluidStack[] aFluidInputs, ItemStack[] aItemStacks,
-            int aMaxParallel) {
+        int aMaxParallel) {
         if (aFluidInputs == null) aFluidInputs = new FluidStack[0];
         if (aItemStacks == null) aItemStacks = new ItemStack[0];
         HashMap<Integer, Integer> tCompressedFluidInput = compressFluid(aFluidInputs);
@@ -40,7 +40,7 @@ public class RecipeFinderForParallel {
         for (int tFluid : tCompressedFluidRecipe.keySet()) {
             if (tCompressedFluidInput.containsKey(tFluid) && tCompressedFluidRecipe.get(tFluid) != 0) {
                 tCurrentPara = Math
-                        .min(tCurrentPara, tCompressedFluidInput.get(tFluid) / tCompressedFluidRecipe.get(tFluid));
+                    .min(tCurrentPara, tCompressedFluidInput.get(tFluid) / tCompressedFluidRecipe.get(tFluid));
             }
         }
         for (int tItem : tCompressedItemRecipe.keySet()) {
@@ -83,7 +83,7 @@ public class RecipeFinderForParallel {
                     tCompressedFluidRecipe.remove(tFluid.getFluidID());
                 } else {
                     tCompressedFluidRecipe
-                            .put(tFluid.getFluidID(), tCompressedFluidRecipe.get(tFluid.getFluidID()) - tFluid.amount);
+                        .put(tFluid.getFluidID(), tCompressedFluidRecipe.get(tFluid.getFluidID()) - tFluid.amount);
                     tFluid.amount = 0;
                 }
             }
@@ -91,7 +91,8 @@ public class RecipeFinderForParallel {
 
         /* OreDict Stuff */
         /* Wildcard Stuff */
-        for (Iterator<Integer> i = tCompressedItemRecipe.keySet().iterator(); i.hasNext();) {
+        for (Iterator<Integer> i = tCompressedItemRecipe.keySet()
+            .iterator(); i.hasNext();) {
             int tItem = i.next();
             if (tItem >> 16 == Short.MAX_VALUE) {
                 for (ItemStack tInputItem : aItemStacks) {

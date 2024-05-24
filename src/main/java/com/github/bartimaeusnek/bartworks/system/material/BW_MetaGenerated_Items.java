@@ -66,16 +66,16 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
         super("bwMetaGeneratedGTEnhancement" + orePrefixes.name(), (short) 32766, (short) 0);
         this.orePrefixes = orePrefixes;
         this.itemTypeLocalizedName = GT_LanguageManager.addStringLocalization(
-                "bw.itemtype." + orePrefixes,
-                orePrefixes.mLocalizedMaterialPre + "%material" + orePrefixes.mLocalizedMaterialPost);
+            "bw.itemtype." + orePrefixes,
+            orePrefixes.mLocalizedMaterialPre + "%material" + orePrefixes.mLocalizedMaterialPost);
     }
 
     public BW_MetaGenerated_Items(OrePrefixes orePrefixes) {
         super("bwMetaGenerated" + orePrefixes.name(), (short) 32766, (short) 0);
         this.orePrefixes = orePrefixes;
         this.itemTypeLocalizedName = GT_LanguageManager.addStringLocalization(
-                "bw.itemtype." + orePrefixes,
-                orePrefixes.mLocalizedMaterialPre + "%material" + orePrefixes.mLocalizedMaterialPost);
+            "bw.itemtype." + orePrefixes,
+            orePrefixes.mLocalizedMaterialPre + "%material" + orePrefixes.mLocalizedMaterialPost);
         this.setCreativeTab(BW_MetaGenerated_Items.metaTab);
         for (Werkstoff w : werkstoffHashSet) {
             ItemStack tStack = new ItemStack(this, 1, w.getmID());
@@ -87,8 +87,9 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
     @Override
     public boolean onEntityItemUpdate(EntityItem aItemEntity) {
         if (this.orePrefixes == OrePrefixes.dustImpure || this.orePrefixes == OrePrefixes.dustPure
-                || this.orePrefixes == OrePrefixes.crushed) {
-            int aDamage = aItemEntity.getEntityItem().getItemDamage();
+            || this.orePrefixes == OrePrefixes.crushed) {
+            int aDamage = aItemEntity.getEntityItem()
+                .getItemDamage();
             if (aDamage >= 0 && !aItemEntity.worldObj.isRemote) {
                 Werkstoff aMaterial = werkstoffHashMap.get((short) aDamage);
                 if (aMaterial != null && aMaterial != Werkstoff.default_null_Werkstoff) {
@@ -100,18 +101,18 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
                     if (tBlock == Blocks.cauldron && tMetaData > 0) {
                         if (this.orePrefixes == OrePrefixes.dustImpure || this.orePrefixes == OrePrefixes.dustPure) {
                             aItemEntity.setEntityItemStack(
-                                    WerkstoffLoader.getCorrespondingItemStack(
-                                            OrePrefixes.dust,
-                                            aMaterial,
-                                            aItemEntity.getEntityItem().stackSize));
+                                WerkstoffLoader.getCorrespondingItemStack(
+                                    OrePrefixes.dust,
+                                    aMaterial,
+                                    aItemEntity.getEntityItem().stackSize));
                             aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
                             return true;
                         } else {
                             aItemEntity.setEntityItemStack(
-                                    WerkstoffLoader.getCorrespondingItemStack(
-                                            OrePrefixes.crushedPurified,
-                                            aMaterial,
-                                            aItemEntity.getEntityItem().stackSize));
+                                WerkstoffLoader.getCorrespondingItemStack(
+                                    OrePrefixes.crushedPurified,
+                                    aMaterial,
+                                    aItemEntity.getEntityItem().stackSize));
                             aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
                             return true;
                         }
@@ -131,7 +132,7 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
             aList.add(GT_LanguageManager.getTranslation("metaitem.01.tooltip.purify.2"));
 
         if (aStack != null && aStack.getItem() instanceof BW_MetaGenerated_Items
-                && aStack.getItemDamage() == WerkstoffLoader.Tiberium.getmID())
+            && aStack.getItemDamage() == WerkstoffLoader.Tiberium.getmID())
             aList.add(GT_LanguageManager.getTranslation("metaitem.01.tooltip.nqgen"));
 
         Werkstoff werkstoff = werkstoffHashMap.get((short) this.getDamage(aStack));
@@ -164,12 +165,15 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
     public IIconContainer getIconContainer(int aMetaData) {
         if (werkstoffHashMap.get((short) aMetaData) == null) return null;
         if (this.orePrefixes.mTextureIndex == -1) return this.getIconContainerBartWorks(aMetaData);
-        return werkstoffHashMap.get((short) aMetaData).getTexSet().mTextures[this.orePrefixes.mTextureIndex];
+        return werkstoffHashMap.get((short) aMetaData)
+            .getTexSet().mTextures[this.orePrefixes.mTextureIndex];
     }
 
     protected IIconContainer getIconContainerBartWorks(int aMetaData) {
         if (SideReference.Side.Client) return PrefixTextureLinker.texMap.get(this.orePrefixes)
-                .get(werkstoffHashMap.get((short) aMetaData).getTexSet());
+            .get(
+                werkstoffHashMap.get((short) aMetaData)
+                    .getTexSet());
         return null;
     }
 
@@ -200,11 +204,13 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
         Werkstoff w = werkstoffHashMap.get((short) aStack.getItemDamage());
         if (w == null || w.getStats() == null) return;
 
-        if (w.getStats().isToxic() && !GT_Utility.isWearingFullBioHazmat(bPlayer)) {
+        if (w.getStats()
+            .isToxic() && !GT_Utility.isWearingFullBioHazmat(bPlayer)) {
             bPlayer.addPotionEffect(new PotionEffect(Potion.poison.getId(), 80, 4));
         }
 
-        if (w.getStats().isRadioactive() && !GT_Utility.isWearingFullRadioHazmat(bPlayer)) {
+        if (w.getStats()
+            .isRadioactive() && !GT_Utility.isWearingFullRadioHazmat(bPlayer)) {
             bPlayer.addPotionEffect(new PotionEffect(IC2Potion.radiation.id, 80, 4));
         }
     }
@@ -227,7 +233,11 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
     @Override
     public int getRadiationLevel(ItemStack aStack) {
         Werkstoff w = werkstoffHashMap.get((short) aStack.getItemDamage());
-        return w.getStats().isRadioactive() ? (int) w.getStats().getProtons() : 0;
+        return w.getStats()
+            .isRadioactive()
+                ? (int) w.getStats()
+                    .getProtons()
+                : 0;
     }
 
     @Override
@@ -250,16 +260,13 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
     @Override
     public int getCapacity(ItemStack aStack) {
         return this.orePrefixes == OrePrefixes.capsule || this.orePrefixes == OrePrefixes.cell
-                || this.orePrefixes == OrePrefixes.cellPlasma
-                        ? 1000
-                        : this.orePrefixes == OrePrefixes.cellMolten || this.orePrefixes == OrePrefixes.capsuleMolten
-                                ? 144
-                                : 0;
+            || this.orePrefixes == OrePrefixes.cellPlasma ? 1000
+                : this.orePrefixes == OrePrefixes.cellMolten || this.orePrefixes == OrePrefixes.capsuleMolten ? 144 : 0;
     }
 
     @Override
     public ItemStack getContainerItem(ItemStack aStack) {
         return this.orePrefixes == OrePrefixes.cell || this.orePrefixes == OrePrefixes.cellPlasma
-                || this.orePrefixes == OrePrefixes.cellMolten ? Materials.Empty.getCells(1) : null;
+            || this.orePrefixes == OrePrefixes.cellMolten ? Materials.Empty.getCells(1) : null;
     }
 }

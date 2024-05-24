@@ -51,7 +51,7 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 
 public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBlockBase<GT_TileEntity_MegaVacuumFreezer>
-        implements ISurvivalConstructable {
+    implements ISurvivalConstructable {
 
     public GT_TileEntity_MegaVacuumFreezer(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -71,89 +71,84 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBloc
     private static final int CASING_INDEX = 17;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<GT_TileEntity_MegaVacuumFreezer> STRUCTURE_DEFINITION = StructureDefinition
-            .<GT_TileEntity_MegaVacuumFreezer>builder()
-            .addShape(
-                    STRUCTURE_PIECE_MAIN,
-                    transpose(
-                            new String[][] {
-                                    { "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc",
-                                            "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc",
-                                            "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc",
-                                            "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc" },
-                                    { "ccccccccccccccc", "c=============c", "c=============c", "c=============c",
-                                            "c=============c", "c=============c", "c=============c", "c=============c",
-                                            "c=============c", "c=============c", "c=============c", "c=============c",
-                                            "c=============c", "c=============c", "ccccccccccccccc" },
-                                    { "ccccccccccccccc", "c=============c", "c=============c", "c=============c",
-                                            "c=============c", "c=============c", "c=============c", "c=============c",
-                                            "c=============c", "c=============c", "c=============c", "c=============c",
-                                            "c=============c", "c=============c", "ccccccccccccccc" },
-                                    { "ccccccccccccccc", "c=============c", "c=============c", "c=============c",
-                                            "c=============c", "c=============c", "c=============c", "c=============c",
-                                            "c=============c", "c=============c", "c=============c", "c=============c",
-                                            "c=============c", "c=============c", "ccccccccccccccc" },
-                                    { "ccccccccccccccc", "c=============c", "c=============c", "c=============c",
-                                            "c=============c", "c=============c", "c=============c", "c=============c",
-                                            "c=============c", "c=============c", "c=============c", "c=============c",
-                                            "c=============c", "c=============c", "ccccccccccccccc" },
-                                    { "ccccccccccccccc", "c=============c", "c=============c", "c=============c",
-                                            "c=============c", "c=============c", "c=============c", "c=============c",
-                                            "c=============c", "c=============c", "c=============c", "c=============c",
-                                            "c=============c", "c=============c", "ccccccccccccccc" },
-                                    { "ccccccccccccccc", "c=============c", "c=============c", "c=============c",
-                                            "c=============c", "c=============c", "c=============c", "c=============c",
-                                            "c=============c", "c=============c", "c=============c", "c=============c",
-                                            "c=============c", "c=============c", "ccccccccccccccc" },
-                                    { "ccccccc~ccccccc", "c=============c", "c=============c", "c=============c",
-                                            "c=============c", "c=============c", "c=============c", "c=============c",
-                                            "c=============c", "c=============c", "c=============c", "c=============c",
-                                            "c=============c", "c=============c", "ccccccccccccccc" },
-                                    { "ccccccccccccccc", "c=============c", "c=============c", "c=============c",
-                                            "c=============c", "c=============c", "c=============c", "c=============c",
-                                            "c=============c", "c=============c", "c=============c", "c=============c",
-                                            "c=============c", "c=============c", "ccccccccccccccc" },
-                                    { "ccccccccccccccc", "c=============c", "c=============c", "c=============c",
-                                            "c=============c", "c=============c", "c=============c", "c=============c",
-                                            "c=============c", "c=============c", "c=============c", "c=============c",
-                                            "c=============c", "c=============c", "ccccccccccccccc" },
-                                    { "ccccccccccccccc", "c=============c", "c=============c", "c=============c",
-                                            "c=============c", "c=============c", "c=============c", "c=============c",
-                                            "c=============c", "c=============c", "c=============c", "c=============c",
-                                            "c=============c", "c=============c", "ccccccccccccccc" },
-                                    { "ccccccccccccccc", "c=============c", "c=============c", "c=============c",
-                                            "c=============c", "c=============c", "c=============c", "c=============c",
-                                            "c=============c", "c=============c", "c=============c", "c=============c",
-                                            "c=============c", "c=============c", "ccccccccccccccc" },
-                                    { "ccccccccccccccc", "c=============c", "c=============c", "c=============c",
-                                            "c=============c", "c=============c", "c=============c", "c=============c",
-                                            "c=============c", "c=============c", "c=============c", "c=============c",
-                                            "c=============c", "c=============c", "ccccccccccccccc" },
-                                    { "ccccccccccccccc", "c=============c", "c=============c", "c=============c",
-                                            "c=============c", "c=============c", "c=============c", "c=============c",
-                                            "c=============c", "c=============c", "c=============c", "c=============c",
-                                            "c=============c", "c=============c", "ccccccccccccccc" },
-                                    { "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc",
-                                            "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc",
-                                            "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc",
-                                            "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc" } }))
-            .addElement('=', StructureElementAirNoHint.getInstance())
-            .addElement(
-                    'c',
-                    buildHatchAdder(GT_TileEntity_MegaVacuumFreezer.class)
-                            .atLeast(Energy.or(ExoticEnergy), InputHatch, InputBus, OutputHatch, OutputBus, Maintenance)
-                            .casingIndex(CASING_INDEX).dot(1)
-                            .buildAndChain(onElementPass(x -> x.mCasing++, ofBlock(GregTech_API.sBlockCasings2, 1))))
-            .build();
+        .<GT_TileEntity_MegaVacuumFreezer>builder()
+        .addShape(
+            STRUCTURE_PIECE_MAIN,
+            transpose(
+                new String[][] {
+                    { "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc",
+                        "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc",
+                        "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc" },
+                    { "ccccccccccccccc", "c=============c", "c=============c", "c=============c", "c=============c",
+                        "c=============c", "c=============c", "c=============c", "c=============c", "c=============c",
+                        "c=============c", "c=============c", "c=============c", "c=============c", "ccccccccccccccc" },
+                    { "ccccccccccccccc", "c=============c", "c=============c", "c=============c", "c=============c",
+                        "c=============c", "c=============c", "c=============c", "c=============c", "c=============c",
+                        "c=============c", "c=============c", "c=============c", "c=============c", "ccccccccccccccc" },
+                    { "ccccccccccccccc", "c=============c", "c=============c", "c=============c", "c=============c",
+                        "c=============c", "c=============c", "c=============c", "c=============c", "c=============c",
+                        "c=============c", "c=============c", "c=============c", "c=============c", "ccccccccccccccc" },
+                    { "ccccccccccccccc", "c=============c", "c=============c", "c=============c", "c=============c",
+                        "c=============c", "c=============c", "c=============c", "c=============c", "c=============c",
+                        "c=============c", "c=============c", "c=============c", "c=============c", "ccccccccccccccc" },
+                    { "ccccccccccccccc", "c=============c", "c=============c", "c=============c", "c=============c",
+                        "c=============c", "c=============c", "c=============c", "c=============c", "c=============c",
+                        "c=============c", "c=============c", "c=============c", "c=============c", "ccccccccccccccc" },
+                    { "ccccccccccccccc", "c=============c", "c=============c", "c=============c", "c=============c",
+                        "c=============c", "c=============c", "c=============c", "c=============c", "c=============c",
+                        "c=============c", "c=============c", "c=============c", "c=============c", "ccccccccccccccc" },
+                    { "ccccccc~ccccccc", "c=============c", "c=============c", "c=============c", "c=============c",
+                        "c=============c", "c=============c", "c=============c", "c=============c", "c=============c",
+                        "c=============c", "c=============c", "c=============c", "c=============c", "ccccccccccccccc" },
+                    { "ccccccccccccccc", "c=============c", "c=============c", "c=============c", "c=============c",
+                        "c=============c", "c=============c", "c=============c", "c=============c", "c=============c",
+                        "c=============c", "c=============c", "c=============c", "c=============c", "ccccccccccccccc" },
+                    { "ccccccccccccccc", "c=============c", "c=============c", "c=============c", "c=============c",
+                        "c=============c", "c=============c", "c=============c", "c=============c", "c=============c",
+                        "c=============c", "c=============c", "c=============c", "c=============c", "ccccccccccccccc" },
+                    { "ccccccccccccccc", "c=============c", "c=============c", "c=============c", "c=============c",
+                        "c=============c", "c=============c", "c=============c", "c=============c", "c=============c",
+                        "c=============c", "c=============c", "c=============c", "c=============c", "ccccccccccccccc" },
+                    { "ccccccccccccccc", "c=============c", "c=============c", "c=============c", "c=============c",
+                        "c=============c", "c=============c", "c=============c", "c=============c", "c=============c",
+                        "c=============c", "c=============c", "c=============c", "c=============c", "ccccccccccccccc" },
+                    { "ccccccccccccccc", "c=============c", "c=============c", "c=============c", "c=============c",
+                        "c=============c", "c=============c", "c=============c", "c=============c", "c=============c",
+                        "c=============c", "c=============c", "c=============c", "c=============c", "ccccccccccccccc" },
+                    { "ccccccccccccccc", "c=============c", "c=============c", "c=============c", "c=============c",
+                        "c=============c", "c=============c", "c=============c", "c=============c", "c=============c",
+                        "c=============c", "c=============c", "c=============c", "c=============c", "ccccccccccccccc" },
+                    { "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc",
+                        "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc",
+                        "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc",
+                        "ccccccccccccccc" } }))
+        .addElement('=', StructureElementAirNoHint.getInstance())
+        .addElement(
+            'c',
+            buildHatchAdder(GT_TileEntity_MegaVacuumFreezer.class)
+                .atLeast(Energy.or(ExoticEnergy), InputHatch, InputBus, OutputHatch, OutputBus, Maintenance)
+                .casingIndex(CASING_INDEX)
+                .dot(1)
+                .buildAndChain(onElementPass(x -> x.mCasing++, ofBlock(GregTech_API.sBlockCasings2, 1))))
+        .build();
 
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Vacuum Freezer").addInfo("Controller Block for the Mega Vacuum Freezer")
-                .addInfo("Cools hot ingots and cells").addSeparator().beginStructureBlock(15, 15, 15, true)
-                .addController("Front center").addCasingInfoMin("Frost Proof Machine Casing", 900, false)
-                .addEnergyHatch("Any casing", 1).addMaintenanceHatch("Any casing", 1).addInputHatch("Any casing", 1)
-                .addOutputHatch("Any casing", 1).addInputBus("Any casing", 1).addOutputBus("Any casing", 1)
-                .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTWORKS);
+        tt.addMachineType("Vacuum Freezer")
+            .addInfo("Controller Block for the Mega Vacuum Freezer")
+            .addInfo("Cools hot ingots and cells")
+            .addSeparator()
+            .beginStructureBlock(15, 15, 15, true)
+            .addController("Front center")
+            .addCasingInfoMin("Frost Proof Machine Casing", 900, false)
+            .addEnergyHatch("Any casing", 1)
+            .addMaintenanceHatch("Any casing", 1)
+            .addInputHatch("Any casing", 1)
+            .addOutputHatch("Any casing", 1)
+            .addInputBus("Any casing", 1)
+            .addOutputBus("Any casing", 1)
+            .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTWORKS);
         return tt;
     }
 
@@ -172,7 +167,7 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBloc
         if (this.mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
         return this
-                .survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 7, 7, 0, realBudget, source, actor, false, true);
+            .survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 7, 7, 0, realBudget, source, actor, false, true);
     }
 
     @Override
@@ -190,7 +185,7 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBloc
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-            float aX, float aY, float aZ) {
+        float aX, float aY, float aZ) {
         if (aPlayer.isSneaking()) {
             this.batchMode = !this.batchMode;
             if (this.batchMode) {
@@ -219,19 +214,29 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBloc
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-            int aColorIndex, boolean aActive, boolean aRedstone) {
+        int aColorIndex, boolean aActive, boolean aRedstone) {
         ITexture[] rTexture;
         if (side == facing) {
             if (aActive) {
-                rTexture = new ITexture[] { casingTexturePages[0][17],
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE).extFacing().build(),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE_GLOW).extFacing().glow()
-                                .build() };
+                rTexture = new ITexture[] { casingTexturePages[0][17], TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE)
+                    .extFacing()
+                    .build(),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE_GLOW)
+                        .extFacing()
+                        .glow()
+                        .build() };
             } else {
-                rTexture = new ITexture[] { casingTexturePages[0][17],
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_VACUUM_FREEZER).extFacing().build(),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_VACUUM_FREEZER_GLOW).extFacing().glow()
-                                .build() };
+                rTexture = new ITexture[] { casingTexturePages[0][17], TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_VACUUM_FREEZER)
+                    .extFacing()
+                    .build(),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_VACUUM_FREEZER_GLOW)
+                        .extFacing()
+                        .glow()
+                        .build() };
             }
         } else {
             rTexture = new ITexture[] { casingTexturePages[0][17] };

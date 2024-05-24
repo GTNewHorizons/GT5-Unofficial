@@ -56,14 +56,15 @@ public interface LowPowerLaser extends IMetaTileEntity, IConnectsToEnergyTunnel 
     }
 
     default void moveAroundLowPower(IGregTechTileEntity aBaseMetaTileEntity) {
-        byte color = this.getBaseMetaTileEntity().getColorization();
+        byte color = this.getBaseMetaTileEntity()
+            .getColorization();
         if (color >= 0) {
             ForgeDirection front = aBaseMetaTileEntity.getFrontFacing();
             ForgeDirection opposite = front.getOpposite();
 
             for (short dist = 1; dist < 250; ++dist) {
                 IGregTechTileEntity tGTTileEntity = aBaseMetaTileEntity
-                        .getIGregTechTileEntityAtSideAndDistance(front, dist);
+                    .getIGregTechTileEntityAtSideAndDistance(front, dist);
                 if (tGTTileEntity == null || tGTTileEntity.getColorization() != color) {
                     return;
                 }
@@ -74,9 +75,9 @@ public interface LowPowerLaser extends IMetaTileEntity, IConnectsToEnergyTunnel 
                 }
 
                 if (aMetaTileEntity instanceof LowPowerLaser lowPowerLaser && lowPowerLaser.isReceiver()
-                        && opposite == tGTTileEntity.getFrontFacing()) {
+                    && opposite == tGTTileEntity.getFrontFacing()) {
                     if (this.maxEUOutput() > lowPowerLaser.maxEUInput()
-                            || this.getAMPERES() > lowPowerLaser.getAMPERES()) {
+                        || this.getAMPERES() > lowPowerLaser.getAMPERES()) {
                         aMetaTileEntity.doExplosion(this.maxEUOutput());
                         this.setEUVar(aBaseMetaTileEntity.getStoredEU() - this.maxEUOutput());
                         return;
@@ -84,19 +85,21 @@ public interface LowPowerLaser extends IMetaTileEntity, IConnectsToEnergyTunnel 
 
                     if (this.maxEUOutput() == lowPowerLaser.maxEUInput()) {
                         long diff = Math.min(
-                                this.getAMPERES() * 20L * this.maxEUOutput(),
-                                Math.min(
-                                        lowPowerLaser.maxEUStore()
-                                                - aMetaTileEntity.getBaseMetaTileEntity().getStoredEU(),
-                                        aBaseMetaTileEntity.getStoredEU()));
+                            this.getAMPERES() * 20L * this.maxEUOutput(),
+                            Math.min(
+                                lowPowerLaser.maxEUStore() - aMetaTileEntity.getBaseMetaTileEntity()
+                                    .getStoredEU(),
+                                aBaseMetaTileEntity.getStoredEU()));
                         this.setEUVar(aBaseMetaTileEntity.getStoredEU() - diff);
-                        lowPowerLaser.setEUVar(aMetaTileEntity.getBaseMetaTileEntity().getStoredEU() + diff);
+                        lowPowerLaser.setEUVar(
+                            aMetaTileEntity.getBaseMetaTileEntity()
+                                .getStoredEU() + diff);
                     }
                     return;
                 }
 
                 if ((!(aMetaTileEntity instanceof LowPowerLaser lowPowerLaser) || !lowPowerLaser.isTunnel())
-                        && !(aMetaTileEntity instanceof GT_MetaTileEntity_Pipe_Energy)) {
+                    && !(aMetaTileEntity instanceof GT_MetaTileEntity_Pipe_Energy)) {
                     return;
                 }
 
@@ -109,7 +112,7 @@ public interface LowPowerLaser extends IMetaTileEntity, IConnectsToEnergyTunnel 
                 }
 
                 if (aMetaTileEntity instanceof LowPowerLaser lowPowerLaser && lowPowerLaser.isTunnel()
-                        && !lowPowerLaser.isConnectedCorrectly(front)) {
+                    && !lowPowerLaser.isConnectedCorrectly(front)) {
                     return;
                 }
             }

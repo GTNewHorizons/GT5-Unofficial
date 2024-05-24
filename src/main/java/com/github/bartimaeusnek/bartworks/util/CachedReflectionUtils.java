@@ -12,11 +12,13 @@ public class CachedReflectionUtils {
     private static final ClassValue<Map<String, Field>> declaredFields = new ConcurrentMapClassValue();
 
     public static Field getField(final Class<?> cls, final String fieldName) {
-        return fields.get(cls).computeIfAbsent(fieldName, f -> FieldUtils.getField(cls, f, true));
+        return fields.get(cls)
+            .computeIfAbsent(fieldName, f -> FieldUtils.getField(cls, f, true));
     }
 
     public static Field getDeclaredField(final Class<?> cls, final String fieldName) {
-        return declaredFields.get(cls).computeIfAbsent(fieldName, f -> FieldUtils.getDeclaredField(cls, f, true));
+        return declaredFields.get(cls)
+            .computeIfAbsent(fieldName, f -> FieldUtils.getDeclaredField(cls, f, true));
     }
 
     private static class ConcurrentMapClassValue extends ClassValue<Map<String, Field>> {

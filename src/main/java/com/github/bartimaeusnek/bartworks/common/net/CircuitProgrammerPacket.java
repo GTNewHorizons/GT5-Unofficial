@@ -52,16 +52,18 @@ public class CircuitProgrammerPacket extends GT_Packet_New {
 
     @Override
     public void encode(ByteBuf aOut) {
-        aOut.writeInt(this.dimID).writeInt(this.playerID).writeByte(this.hasChip ? this.chipCfg : -1);
+        aOut.writeInt(this.dimID)
+            .writeInt(this.playerID)
+            .writeByte(this.hasChip ? this.chipCfg : -1);
     }
 
     @Override
     public GT_Packet_New decode(ByteArrayDataInput byteArrayDataInput) {
         return new CircuitProgrammerPacket(
-                byteArrayDataInput.readInt(),
-                byteArrayDataInput.readInt(),
-                byteArrayDataInput.readByte() > -1,
-                byteArrayDataInput.readByte());
+            byteArrayDataInput.readInt(),
+            byteArrayDataInput.readInt(),
+            byteArrayDataInput.readByte() > -1,
+            byteArrayDataInput.readByte());
     }
 
     @Override
@@ -77,8 +79,8 @@ public class CircuitProgrammerPacket extends GT_Packet_New {
                     if (this.hasChip) nbt.setByte("ChipConfig", this.chipCfg);
                     stack.setTagCompound(nbt);
                     ((EntityPlayer) w.getEntityByID(this.playerID)).inventory.setInventorySlotContents(
-                            ((EntityPlayer) w.getEntityByID(this.playerID)).inventory.currentItem,
-                            stack);
+                        ((EntityPlayer) w.getEntityByID(this.playerID)).inventory.currentItem,
+                        stack);
                 }
             }
         }

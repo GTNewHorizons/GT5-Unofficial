@@ -34,25 +34,29 @@ public class RawOreLoader implements IWerkstoffRunnable {
 
     @Override
     public void run(Werkstoff werkstoff) {
-        if (werkstoff.hasItemType(rawOre) && werkstoff.hasItemType(ingot) && !werkstoff.getStats().isBlastFurnace())
-            GT_ModHandler.addSmeltingRecipe(
-                    WerkstoffLoader.getCorrespondingItemStack(rawOre, werkstoff),
-                    werkstoff.get(ingot));
+        if (werkstoff.hasItemType(rawOre) && werkstoff.hasItemType(ingot)
+            && !werkstoff.getStats()
+                .isBlastFurnace())
+            GT_ModHandler
+                .addSmeltingRecipe(WerkstoffLoader.getCorrespondingItemStack(rawOre, werkstoff), werkstoff.get(ingot));
 
         if (werkstoff.hasItemType(rawOre)) {
 
-            GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(rawOre))
-                    .itemOutputs(werkstoff.hasItemType(gem) ? werkstoff.get(gem) : werkstoff.get(crushed))
-                    .duration(16 * TICKS).eut(10).addTo(hammerRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(werkstoff.get(rawOre))
+                .itemOutputs(werkstoff.hasItemType(gem) ? werkstoff.get(gem) : werkstoff.get(crushed))
+                .duration(16 * TICKS)
+                .eut(10)
+                .addTo(hammerRecipes);
 
             GT_ModHandler.addPulverisationRecipe(
-                    werkstoff.get(rawOre),
-                    werkstoff.get(crushed, 2),
-                    werkstoff.contains(SubTag.CRYSTAL) ? werkstoff.get(gem) : werkstoff.getOreByProduct(0, dust),
-                    werkstoff.getNoOfByProducts() > 0 ? 5 : 0,
-                    Materials.Stone.getDust(1),
-                    50,
-                    true);
+                werkstoff.get(rawOre),
+                werkstoff.get(crushed, 2),
+                werkstoff.contains(SubTag.CRYSTAL) ? werkstoff.get(gem) : werkstoff.getOreByProduct(0, dust),
+                werkstoff.getNoOfByProducts() > 0 ? 5 : 0,
+                Materials.Stone.getDust(1),
+                50,
+                true);
         }
     }
 }

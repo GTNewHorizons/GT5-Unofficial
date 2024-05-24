@@ -46,13 +46,12 @@ import org.objectweb.asm.tree.VarInsnNode;
 public class BWCoreTransformer implements IClassTransformer {
 
     public static final String[] DESCRIPTIONFORCONFIG = { "REMOVING RAIN FROM LAST MILLENNIUM (EXU)",
-            "REMOVING CREATURES FROM LAST MILLENNIUM (EXU)",
-            "PATCHING THAUMCRAFT WAND PEDESTAL TO PREVENT VIS DUPLICATION",
-            "PATCHING CRAFTING MANAGER FOR CACHING RECIPES" };
+        "REMOVING CREATURES FROM LAST MILLENNIUM (EXU)", "PATCHING THAUMCRAFT WAND PEDESTAL TO PREVENT VIS DUPLICATION",
+        "PATCHING CRAFTING MANAGER FOR CACHING RECIPES" };
     public static final String[] CLASSESBEINGTRANSFORMED = {
-            "com.rwtema.extrautils.worldgen.endoftime.WorldProviderEndOfTime",
-            "com.rwtema.extrautils.worldgen.endoftime.ChunkProviderEndOfTime",
-            "thaumcraft.common.tiles.TileWandPedestal", "net.minecraft.item.crafting.CraftingManager" };
+        "com.rwtema.extrautils.worldgen.endoftime.WorldProviderEndOfTime",
+        "com.rwtema.extrautils.worldgen.endoftime.ChunkProviderEndOfTime", "thaumcraft.common.tiles.TileWandPedestal",
+        "net.minecraft.item.crafting.CraftingManager" };
     static boolean obfs;
 
     public static boolean[] shouldTransform = new boolean[BWCoreTransformer.CLASSESBEINGTRANSFORMED.length];
@@ -72,19 +71,19 @@ public class BWCoreTransformer implements IClassTransformer {
                     LabelNode label = new LabelNode();
                     nu.insertBefore(beginning, new VarInsnNode(ALOAD, 0));
                     nu.insertBefore(
-                            beginning,
-                            new FieldInsnNode(
-                                    GETFIELD,
-                                    "thaumcraft/common/tiles/TileWandPedestal",
-                                    obfs ? "field_145850_b" : "worldObj",
-                                    "Lnet/minecraft/world/World;"));
+                        beginning,
+                        new FieldInsnNode(
+                            GETFIELD,
+                            "thaumcraft/common/tiles/TileWandPedestal",
+                            obfs ? "field_145850_b" : "worldObj",
+                            "Lnet/minecraft/world/World;"));
                     nu.insertBefore(
-                            beginning,
-                            new FieldInsnNode(
-                                    GETFIELD,
-                                    "net/minecraft/world/World",
-                                    obfs ? "field_72995_K" : "isRemote",
-                                    "Z"));
+                        beginning,
+                        new FieldInsnNode(
+                            GETFIELD,
+                            "net/minecraft/world/World",
+                            obfs ? "field_72995_K" : "isRemote",
+                            "Z"));
                     nu.insertBefore(beginning, new JumpInsnNode(IFNE, label));
                     nu.add(new InsnNode(POP));
                     nu.add(label);
@@ -99,7 +98,7 @@ public class BWCoreTransformer implements IClassTransformer {
     public static byte[] transform(int id, byte[] basicClass) {
         if (!BWCoreTransformer.shouldTransform[id]) {
             BWCore.BWCORE_LOG
-                    .info("Patch: " + BWCoreTransformer.DESCRIPTIONFORCONFIG[id] + " is disabled, will not patch!");
+                .info("Patch: " + BWCoreTransformer.DESCRIPTIONFORCONFIG[id] + " is disabled, will not patch!");
             return basicClass;
         }
 
@@ -143,7 +142,7 @@ public class BWCoreTransformer implements IClassTransformer {
 
                     for (int i = 0; i < methods.size(); i++) {
                         if (ASMUtils.isCorrectMethod(methods.get(i), name_deObfs, name_Obfs, name_src)
-                                && ASMUtils.isCorrectMethod(methods.get(i), dsc_deObfs, dsc_Obfs)) {
+                            && ASMUtils.isCorrectMethod(methods.get(i), dsc_deObfs, dsc_Obfs)) {
                             BWCore.BWCORE_LOG.info("Found " + name_deObfs + "! Patching!");
                             MethodNode toPatch = methods.get(i);
                             InsnList insnList = new InsnList();
@@ -166,7 +165,7 @@ public class BWCoreTransformer implements IClassTransformer {
 
                     for (int i = 0; i < methods.size(); i++) {
                         if (ASMUtils.isCorrectMethod(methods.get(i), name_deObfs, name_Obfs, name_src)
-                                && ASMUtils.isCorrectMethod(methods.get(i), dsc_universal, dsc_universal)) {
+                            && ASMUtils.isCorrectMethod(methods.get(i), dsc_universal, dsc_universal)) {
                             BWCore.BWCORE_LOG.info("Found " + name_deObfs + "! Patching!");
                             methods.set(i, BWCoreTransformer.transformThaumcraftWandPedestal(methods.get(i)));
                             break scase;
@@ -184,12 +183,12 @@ public class BWCoreTransformer implements IClassTransformer {
                             toPatch.instructions.add(new VarInsnNode(ALOAD, 1));
                             toPatch.instructions.add(new VarInsnNode(ALOAD, 2));
                             toPatch.instructions.add(
-                                    new MethodInsnNode(
-                                            INVOKESTATIC,
-                                            "com/github/bartimaeusnek/bartworks/ASM/BWCoreStaticReplacementMethodes",
-                                            "findCachedMatchingRecipe",
-                                            "(Lnet/minecraft/inventory/InventoryCrafting;Lnet/minecraft/world/World;)Lnet/minecraft/item/ItemStack;",
-                                            false));
+                                new MethodInsnNode(
+                                    INVOKESTATIC,
+                                    "com/github/bartimaeusnek/bartworks/ASM/BWCoreStaticReplacementMethodes",
+                                    "findCachedMatchingRecipe",
+                                    "(Lnet/minecraft/inventory/InventoryCrafting;Lnet/minecraft/world/World;)Lnet/minecraft/item/ItemStack;",
+                                    false));
                             toPatch.instructions.add(new InsnNode(ARETURN));
                             toPatch.localVariables.clear();
                             toPatch.maxStack = 2;
@@ -220,7 +219,7 @@ public class BWCoreTransformer implements IClassTransformer {
     public byte[] transform(String name, String transformedName, byte[] basicClass) {
         for (int i = 0; i < BWCoreTransformer.CLASSESBEINGTRANSFORMED.length; i++) {
             if (name.equalsIgnoreCase(BWCoreTransformer.CLASSESBEINGTRANSFORMED[i])
-                    || transformedName.equalsIgnoreCase(BWCoreTransformer.CLASSESBEINGTRANSFORMED[i]))
+                || transformedName.equalsIgnoreCase(BWCoreTransformer.CLASSESBEINGTRANSFORMED[i]))
                 return BWCoreTransformer.transform(i, basicClass);
         }
         return basicClass;

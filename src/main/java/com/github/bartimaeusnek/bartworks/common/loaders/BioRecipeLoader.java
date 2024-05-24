@@ -41,121 +41,121 @@ public class BioRecipeLoader {
 
     public static void registerWaterBasedBioLabIncubations() {
         FluidStack[] easyFluids = { Materials.Water.getFluid(1000L),
-                FluidRegistry.getFluidStack("ic2distilledwater", 1000) };
+            FluidRegistry.getFluidStack("ic2distilledwater", 1000) };
         for (FluidStack fluidStack : easyFluids) {
 
             BWRecipes.instance.addBioLabRecipeIncubation(
-                    new ItemStack(Items.rotten_flesh),
-                    BioCultureLoader.rottenFleshBacteria,
-                    new int[] { 3300 },
-                    new FluidStack[] { fluidStack },
-                    500,
-                    (int) TierEU.RECIPE_HV,
-                    BW_Util.STANDART);
+                new ItemStack(Items.rotten_flesh),
+                BioCultureLoader.rottenFleshBacteria,
+                new int[] { 3300 },
+                new FluidStack[] { fluidStack },
+                500,
+                (int) TierEU.RECIPE_HV,
+                BW_Util.STANDART);
 
             BWRecipes.instance.addBioLabRecipeIncubation(
-                    new ItemStack(Items.fermented_spider_eye),
-                    BioCultureLoader.eColi,
-                    new int[] { 4500 },
-                    new FluidStack[] { fluidStack },
-                    500,
-                    (int) TierEU.RECIPE_HV,
-                    BW_Util.STANDART);
+                new ItemStack(Items.fermented_spider_eye),
+                BioCultureLoader.eColi,
+                new int[] { 4500 },
+                new FluidStack[] { fluidStack },
+                500,
+                (int) TierEU.RECIPE_HV,
+                BW_Util.STANDART);
 
             BWRecipes.instance.addBioLabRecipeIncubation(
-                    ItemList.Food_Dough.get(1L),
-                    BioCultureLoader.CommonYeast,
-                    new int[] { 7500 },
-                    new FluidStack[] { fluidStack },
-                    500,
-                    (int) TierEU.RECIPE_HV,
-                    BW_Util.STANDART);
+                ItemList.Food_Dough.get(1L),
+                BioCultureLoader.CommonYeast,
+                new int[] { 7500 },
+                new FluidStack[] { fluidStack },
+                500,
+                (int) TierEU.RECIPE_HV,
+                BW_Util.STANDART);
 
             BWRecipes.instance.addBioLabRecipeIncubation(
-                    ItemList.Food_Dough_Sugar.get(1L),
-                    BioCultureLoader.WhineYeast,
-                    new int[] { 2500 },
-                    new FluidStack[] { fluidStack },
-                    500,
-                    (int) TierEU.RECIPE_HV,
-                    BW_Util.STANDART);
+                ItemList.Food_Dough_Sugar.get(1L),
+                BioCultureLoader.WhineYeast,
+                new int[] { 2500 },
+                new FluidStack[] { fluidStack },
+                500,
+                (int) TierEU.RECIPE_HV,
+                BW_Util.STANDART);
 
             BWRecipes.instance.addBioLabRecipeIncubation(
-                    ItemList.Bottle_Wine.get(1L),
-                    BioCultureLoader.WhineYeast,
-                    new int[] { 3300 },
-                    new FluidStack[] { fluidStack },
-                    500,
-                    (int) TierEU.RECIPE_HV,
-                    BW_Util.STANDART);
+                ItemList.Bottle_Wine.get(1L),
+                BioCultureLoader.WhineYeast,
+                new int[] { 3300 },
+                new FluidStack[] { fluidStack },
+                500,
+                (int) TierEU.RECIPE_HV,
+                BW_Util.STANDART);
 
             BWRecipes.instance.addBioLabRecipeIncubation(
-                    ItemList.Bottle_Beer.get(1L),
-                    BioCultureLoader.BeerYeast,
-                    new int[] { 2500 },
-                    new FluidStack[] { fluidStack },
-                    500,
-                    (int) TierEU.RECIPE_HV,
-                    BW_Util.STANDART);
+                ItemList.Bottle_Beer.get(1L),
+                BioCultureLoader.BeerYeast,
+                new int[] { 2500 },
+                new FluidStack[] { fluidStack },
+                500,
+                (int) TierEU.RECIPE_HV,
+                BW_Util.STANDART);
 
             BWRecipes.instance.addBioLabRecipeIncubation(
-                    ItemList.Bottle_Dark_Beer.get(1L),
-                    BioCultureLoader.BeerYeast,
-                    new int[] { 3300 },
-                    new FluidStack[] { fluidStack },
-                    500,
-                    (int) TierEU.RECIPE_HV,
-                    BW_Util.STANDART);
+                ItemList.Bottle_Dark_Beer.get(1L),
+                BioCultureLoader.BeerYeast,
+                new int[] { 3300 },
+                new FluidStack[] { fluidStack },
+                500,
+                (int) TierEU.RECIPE_HV,
+                BW_Util.STANDART);
 
             BWRecipes.instance.addBioLabRecipeIncubation(
-                    new ItemStack(Blocks.dirt),
-                    BioCultureLoader.anaerobicOil,
-                    new int[] { 100 },
-                    new FluidStack[] { fluidStack },
-                    1500,
-                    (int) TierEU.RECIPE_EV,
-                    BW_Util.STANDART);
+                new ItemStack(Blocks.dirt),
+                BioCultureLoader.anaerobicOil,
+                new int[] { 100 },
+                new FluidStack[] { fluidStack },
+                1500,
+                (int) TierEU.RECIPE_EV,
+                BW_Util.STANDART);
         }
     }
 
     public static void registerWaterBasedBacterialVatRecipes() {
         FluidStack[] easyFluids = { Materials.Water.getFluid(1000L),
-                FluidRegistry.getFluidStack("ic2distilledwater", 1000) };
+            FluidRegistry.getFluidStack("ic2distilledwater", 1000) };
         for (FluidStack fluidStack : easyFluids) {
             if (CropsPlusPlus.isModLoaded()) {
                 BWRecipes.instance.addBacterialVatRecipe(
-                        new ItemStack[] { new ItemStack(Items.sugar, 64) },
-                        new FluidStack[] { new FluidStack(fluidStack, 100) },
-                        BioCultureLoader.CommonYeast,
-                        new FluidStack[] { FluidRegistry.getFluidStack("potion.ghp", 1) },
-                        350,
-                        (int) TierEU.RECIPE_EV);
+                    new ItemStack[] { new ItemStack(Items.sugar, 64) },
+                    new FluidStack[] { new FluidStack(fluidStack, 100) },
+                    BioCultureLoader.CommonYeast,
+                    new FluidStack[] { FluidRegistry.getFluidStack("potion.ghp", 1) },
+                    350,
+                    (int) TierEU.RECIPE_EV);
             }
 
             BWRecipes.instance.addBacterialVatRecipe(
-                    new ItemStack[] { ItemList.Crop_Drop_Grapes.get(16) },
-                    new FluidStack[] { new FluidStack(fluidStack, 100) },
-                    BioCultureLoader.WhineYeast,
-                    new FluidStack[] { FluidRegistry.getFluidStack("potion.wine", 12) },
-                    200,
-                    (int) TierEU.RECIPE_MV);
+                new ItemStack[] { ItemList.Crop_Drop_Grapes.get(16) },
+                new FluidStack[] { new FluidStack(fluidStack, 100) },
+                BioCultureLoader.WhineYeast,
+                new FluidStack[] { FluidRegistry.getFluidStack("potion.wine", 12) },
+                200,
+                (int) TierEU.RECIPE_MV);
 
             BWRecipes.instance.addBacterialVatRecipe(
-                    new ItemStack[] { new ItemStack(Items.sugar, 4), ItemList.IC2_Hops.get(16L),
-                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 8L) },
-                    new FluidStack[] { new FluidStack(fluidStack, 100) },
-                    BioCultureLoader.BeerYeast,
-                    new FluidStack[] { FluidRegistry.getFluidStack("potion.beer", 5) },
-                    600,
-                    (int) TierEU.RECIPE_LV);
+                new ItemStack[] { new ItemStack(Items.sugar, 4), ItemList.IC2_Hops.get(16L),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 8L) },
+                new FluidStack[] { new FluidStack(fluidStack, 100) },
+                BioCultureLoader.BeerYeast,
+                new FluidStack[] { FluidRegistry.getFluidStack("potion.beer", 5) },
+                600,
+                (int) TierEU.RECIPE_LV);
             BWRecipes.instance.addBacterialVatRecipe(
-                    new ItemStack[] { ItemList.IC2_Hops.get(32L),
-                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 16L) },
-                    new FluidStack[] { new FluidStack(fluidStack, 100) },
-                    BioCultureLoader.BeerYeast,
-                    new FluidStack[] { FluidRegistry.getFluidStack("potion.darkbeer", 10) },
-                    600,
-                    (int) TierEU.RECIPE_LV);
+                new ItemStack[] { ItemList.IC2_Hops.get(32L),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 16L) },
+                new FluidStack[] { new FluidStack(fluidStack, 100) },
+                BioCultureLoader.BeerYeast,
+                new FluidStack[] { FluidRegistry.getFluidStack("potion.darkbeer", 10) },
+                600,
+                (int) TierEU.RECIPE_LV);
         }
     }
 
@@ -163,31 +163,32 @@ public class BioRecipeLoader {
         registerWaterBasedBacterialVatRecipes();
 
         BWRecipes.instance.addBacterialVatRecipe(
-                null,
-                new FluidStack[] { FluidRegistry.getFluidStack("potion.grapejuice", 100) },
-                BioCultureLoader.WhineYeast,
-                new FluidStack[] { FluidRegistry.getFluidStack("potion.wine", 12) },
-                400,
-                (int) TierEU.RECIPE_LV);
+            null,
+            new FluidStack[] { FluidRegistry.getFluidStack("potion.grapejuice", 100) },
+            BioCultureLoader.WhineYeast,
+            new FluidStack[] { FluidRegistry.getFluidStack("potion.wine", 12) },
+            400,
+            (int) TierEU.RECIPE_LV);
 
         BWRecipes.instance.addBacterialVatRecipe(
-                null,
-                new FluidStack[] { Materials.FermentedBiomass.getFluid(10000) },
-                BioCultureLoader.anaerobicOil,
-                new FluidStack[] { new FluidStack(FluidLoader.fulvicAcid, 1000) },
-                2748,
-                (int) TierEU.RECIPE_HV);
+            null,
+            new FluidStack[] { Materials.FermentedBiomass.getFluid(10000) },
+            BioCultureLoader.anaerobicOil,
+            new FluidStack[] { new FluidStack(FluidLoader.fulvicAcid, 1000) },
+            2748,
+            (int) TierEU.RECIPE_HV);
     }
 
     public static void runOnServerStarted() {
-        RecipeMaps.fermentingRecipes.getAllRecipes().forEach(
+        RecipeMaps.fermentingRecipes.getAllRecipes()
+            .forEach(
                 recipe -> BWRecipes.instance.addBacterialVatRecipe(
-                        new ItemStack[] { null },
-                        BioCultureLoader.generalPurposeFermentingBacteria,
-                        recipe.mFluidInputs,
-                        recipe.mFluidOutputs,
-                        recipe.mDuration,
-                        recipe.mEUt,
-                        GT_Utility.getTier(recipe.mEUt)));
+                    new ItemStack[] { null },
+                    BioCultureLoader.generalPurposeFermentingBacteria,
+                    recipe.mFluidInputs,
+                    recipe.mFluidOutputs,
+                    recipe.mDuration,
+                    recipe.mEUt,
+                    GT_Utility.getTier(recipe.mEUt)));
     }
 }

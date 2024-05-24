@@ -70,56 +70,57 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_EnhancedMultiBl
     private static final String STRUCTURE_PIECE_TOP = "top";
     private static final String STRUCTURE_PIECE_TAP_LAYER = "taplayer";
     private static final IStructureDefinition<GT_TileEntity_ManualTrafo> STRUCTURE_DEFINITION = StructureDefinition
-            .<GT_TileEntity_ManualTrafo>builder()
-            .addShape(STRUCTURE_PIECE_BASE, transpose(new String[][] { { "b~b", "bbb", "bbb" } }))
-            .addShape(STRUCTURE_PIECE_LAYER, transpose(new String[][] { { "ttt", "tft", "ttt" } }))
-            .addShape(STRUCTURE_PIECE_TOP, transpose(new String[][] { { "ooo", "ooo", "ooo" } }))
-            .addShape(
-                    STRUCTURE_PIECE_TAP_LAYER,
-                    transpose(new String[][] { { " TTT ", "TtttT", "TtftT", "TtttT", " TTT " } }))
-            .addElement(
-                    'b',
-                    ofChain(
-                            ofHatchAdder(GT_TileEntity_ManualTrafo::addEnergyInputToMachineList, CASING_INDEX, 1),
-                            ofHatchAdder(GT_TileEntity_ManualTrafo::addMaintenanceToMachineList, CASING_INDEX, 1),
-                            ofBlock(GregTech_API.sBlockCasings1, 2)))
-            .addElement(
-                    'o',
-                    ofHatchAdderOptional(
-                            GT_TileEntity_ManualTrafo::addDynamoToMachineList,
-                            CASING_INDEX,
-                            2,
-                            GregTech_API.sBlockCasings1,
-                            2))
-            .addElement('t', ofBlock(BW_BLOCKS[2], 1)).addElement('f', ofBlock(BW_BLOCKS[2], 0))
-            .addElement('T', new IStructureElementNoPlacement<GT_TileEntity_ManualTrafo>() {
+        .<GT_TileEntity_ManualTrafo>builder()
+        .addShape(STRUCTURE_PIECE_BASE, transpose(new String[][] { { "b~b", "bbb", "bbb" } }))
+        .addShape(STRUCTURE_PIECE_LAYER, transpose(new String[][] { { "ttt", "tft", "ttt" } }))
+        .addShape(STRUCTURE_PIECE_TOP, transpose(new String[][] { { "ooo", "ooo", "ooo" } }))
+        .addShape(
+            STRUCTURE_PIECE_TAP_LAYER,
+            transpose(new String[][] { { " TTT ", "TtttT", "TtftT", "TtttT", " TTT " } }))
+        .addElement(
+            'b',
+            ofChain(
+                ofHatchAdder(GT_TileEntity_ManualTrafo::addEnergyInputToMachineList, CASING_INDEX, 1),
+                ofHatchAdder(GT_TileEntity_ManualTrafo::addMaintenanceToMachineList, CASING_INDEX, 1),
+                ofBlock(GregTech_API.sBlockCasings1, 2)))
+        .addElement(
+            'o',
+            ofHatchAdderOptional(
+                GT_TileEntity_ManualTrafo::addDynamoToMachineList,
+                CASING_INDEX,
+                2,
+                GregTech_API.sBlockCasings1,
+                2))
+        .addElement('t', ofBlock(BW_BLOCKS[2], 1))
+        .addElement('f', ofBlock(BW_BLOCKS[2], 0))
+        .addElement('T', new IStructureElementNoPlacement<GT_TileEntity_ManualTrafo>() {
 
-                @Override
-                public boolean check(GT_TileEntity_ManualTrafo te, World world, int x, int y, int z) {
-                    if (world.isAirBlock(x, y, z)) return true;
-                    TileEntity tileEntity = world.getTileEntity(x, y, z);
-                    if (tileEntity == null || !(tileEntity instanceof IGregTechTileEntity)) return true;
-                    IMetaTileEntity mte = ((IGregTechTileEntity) tileEntity).getMetaTileEntity();
-                    if (mte instanceof GT_MetaTileEntity_Hatch_Dynamo
-                            || mte instanceof GT_MetaTileEntity_Hatch_Energy) {
-                        int intier = te.mEnergyHatches.get(0).mTier;
-                        if (((GT_MetaTileEntity_TieredMachineBlock) mte).mTier
-                                == intier + (te.upstep ? te.mTiers : -te.mTiers)) {
-                            te.addToMachineList((IGregTechTileEntity) tileEntity, CASING_INDEX);
-                            return true;
-                        }
-                        return false;
+            @Override
+            public boolean check(GT_TileEntity_ManualTrafo te, World world, int x, int y, int z) {
+                if (world.isAirBlock(x, y, z)) return true;
+                TileEntity tileEntity = world.getTileEntity(x, y, z);
+                if (tileEntity == null || !(tileEntity instanceof IGregTechTileEntity)) return true;
+                IMetaTileEntity mte = ((IGregTechTileEntity) tileEntity).getMetaTileEntity();
+                if (mte instanceof GT_MetaTileEntity_Hatch_Dynamo || mte instanceof GT_MetaTileEntity_Hatch_Energy) {
+                    int intier = te.mEnergyHatches.get(0).mTier;
+                    if (((GT_MetaTileEntity_TieredMachineBlock) mte).mTier
+                        == intier + (te.upstep ? te.mTiers : -te.mTiers)) {
+                        te.addToMachineList((IGregTechTileEntity) tileEntity, CASING_INDEX);
+                        return true;
                     }
-                    return true;
+                    return false;
                 }
+                return true;
+            }
 
-                @Override
-                public boolean spawnHint(GT_TileEntity_ManualTrafo te, World world, int x, int y, int z,
-                        ItemStack itemStack) {
-                    StructureLibAPI.hintParticle(world, x, y, z, StructureLibAPI.getBlockHint(), 2 /* aDots: 3 */);
-                    return true;
-                }
-            }).build();
+            @Override
+            public boolean spawnHint(GT_TileEntity_ManualTrafo te, World world, int x, int y, int z,
+                ItemStack itemStack) {
+                StructureLibAPI.hintParticle(world, x, y, z, StructureLibAPI.getBlockHint(), 2 /* aDots: 3 */);
+                return true;
+            }
+        })
+        .build();
 
     @Override
     public IStructureDefinition<GT_TileEntity_ManualTrafo> getStructureDefinition() {
@@ -129,21 +130,27 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_EnhancedMultiBl
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Transformer").addInfo("Controller block for the Manual Trafo")
-                .addInfo("Operates in 4 diffrent modes:").addInfo("Mode 1: Circuit 0 in controller: Direct-Upstep")
-                .addInfo("Mode 2: Circuit 1 in controller: Direct-Downstep")
-                .addInfo("Mode 3: Circuit 2 in controller: Tapped-Upstep (currently disabled)")
-                .addInfo("Mode 4: Circuit 2 in controller: Tapped-Downstep (currently disabled)").addSeparator()
-                .beginVariableStructureBlock(3, 3, 3, 10, 3, 3, false).addController("Front bottom center")
-                .addCasingInfoMin("MV Machine Casing", 0, false)
-                .addOtherStructurePart("Transformer-Winding Blocks", "1 Layer for each tier transformed")
-                .addOtherStructurePart("Nickel-Zinc-Ferrite Blocks", "Middle of Transformer-Winding Blocks")
-                .addMaintenanceHatch("Any bottom layer casing", 1).addEnergyHatch("Any bottom layer casing", 1)
-                .addDynamoHatch("Any top layer casing", 2).addStructureInfo("---------TAPPED MODE---------")
-                .addEnergyHatch("Touching Transformer-Winding Blocks", 3)
-                .addDynamoHatch("Touching Transformer-Winding Blocks", 3)
-                .addStructureInfo("Hatches touching Transformer-Winding Blocks must be tiered from bottom to top")
-                .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTWORKS);
+        tt.addMachineType("Transformer")
+            .addInfo("Controller block for the Manual Trafo")
+            .addInfo("Operates in 4 diffrent modes:")
+            .addInfo("Mode 1: Circuit 0 in controller: Direct-Upstep")
+            .addInfo("Mode 2: Circuit 1 in controller: Direct-Downstep")
+            .addInfo("Mode 3: Circuit 2 in controller: Tapped-Upstep (currently disabled)")
+            .addInfo("Mode 4: Circuit 2 in controller: Tapped-Downstep (currently disabled)")
+            .addSeparator()
+            .beginVariableStructureBlock(3, 3, 3, 10, 3, 3, false)
+            .addController("Front bottom center")
+            .addCasingInfoMin("MV Machine Casing", 0, false)
+            .addOtherStructurePart("Transformer-Winding Blocks", "1 Layer for each tier transformed")
+            .addOtherStructurePart("Nickel-Zinc-Ferrite Blocks", "Middle of Transformer-Winding Blocks")
+            .addMaintenanceHatch("Any bottom layer casing", 1)
+            .addEnergyHatch("Any bottom layer casing", 1)
+            .addDynamoHatch("Any top layer casing", 2)
+            .addStructureInfo("---------TAPPED MODE---------")
+            .addEnergyHatch("Touching Transformer-Winding Blocks", 3)
+            .addDynamoHatch("Touching Transformer-Winding Blocks", 3)
+            .addStructureInfo("Hatches touching Transformer-Winding Blocks must be tiered from bottom to top")
+            .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTWORKS);
         return tt;
     }
 
@@ -154,13 +161,15 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_EnhancedMultiBl
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (!this.getBaseMetaTileEntity().isAllowedToWork()) this.stopMachine();
+        if (!this.getBaseMetaTileEntity()
+            .isAllowedToWork()) this.stopMachine();
         super.onPostTick(aBaseMetaTileEntity, aTick);
     }
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        if (!this.getBaseMetaTileEntity().isAllowedToWork()) {
+        if (!this.getBaseMetaTileEntity()
+            .isAllowedToWork()) {
             this.stopMachine();
             return false;
         }
@@ -168,16 +177,16 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_EnhancedMultiBl
         this.mProgresstime = 0;
         this.mMaxProgresstime = 1;
 
-        if (this.getBaseMetaTileEntity().getTimer() % 40 == 0)
-            if (this.mEfficiency < this.getMaxEfficiency(null)) this.mEfficiency += 100;
-            else this.mEfficiency = this.getMaxEfficiency(null);
+        if (this.getBaseMetaTileEntity()
+            .getTimer() % 40 == 0) if (this.mEfficiency < this.getMaxEfficiency(null)) this.mEfficiency += 100;
+        else this.mEfficiency = this.getMaxEfficiency(null);
 
         if (this.mode > 1) {
             return false; // this.onRunningTickTabbedMode(); Tapped mode is disable
         }
 
         return this.drainEnergyInput(this.getInputTier() * 2 * this.mEnergyHatches.size()) && this.addEnergyOutput(
-                this.getInputTier() * 2 * this.mEnergyHatches.size() * this.mEfficiency / this.getMaxEfficiency(null));
+            this.getInputTier() * 2 * this.mEnergyHatches.size() * this.mEfficiency / this.getMaxEfficiency(null));
     }
 
     public boolean onRunningTickTabbedMode() {
@@ -201,39 +210,46 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_EnhancedMultiBl
 
     @Override
     public long getInputTier() {
-        if (this.mEnergyHatches.size() > 0)
-            return GT_Utility.getTier(this.mEnergyHatches.get(0).getBaseMetaTileEntity().getInputVoltage());
+        if (this.mEnergyHatches.size() > 0) return GT_Utility.getTier(
+            this.mEnergyHatches.get(0)
+                .getBaseMetaTileEntity()
+                .getInputVoltage());
         return 0L;
     }
 
     @Override
     public long getOutputTier() {
-        if (this.mDynamoHatches.size() > 0)
-            return GT_Utility.getTier(this.mDynamoHatches.get(0).getBaseMetaTileEntity().getOutputVoltage());
+        if (this.mDynamoHatches.size() > 0) return GT_Utility.getTier(
+            this.mDynamoHatches.get(0)
+                .getBaseMetaTileEntity()
+                .getOutputVoltage());
         return 0L;
     }
 
     @Override
     public boolean checkRecipe(ItemStack itemStack) {
 
-        if (!this.getBaseMetaTileEntity().isAllowedToWork()) {
+        if (!this.getBaseMetaTileEntity()
+            .isAllowedToWork()) {
             this.stopMachine();
             return false;
         }
-        if (itemStack == null || !itemStack.getUnlocalizedName().startsWith("gt.integrated_circuit")) this.mode = 0;
+        if (itemStack == null || !itemStack.getUnlocalizedName()
+            .startsWith("gt.integrated_circuit")) this.mode = 0;
         else this.mode = (byte) Math.min(3, itemStack.getItemDamage());
         this.upstep = this.mode % 2 == 0;
         this.mProgresstime = 0;
         this.mMaxProgresstime = 1;
         this.mEfficiency = Math.max(this.mEfficiency, 100);
         return this.upstep ? this.getOutputTier() - this.getInputTier() == this.mTiers
-                : this.getInputTier() - this.getOutputTier() == this.mTiers;
+            : this.getInputTier() - this.getOutputTier() == this.mTiers;
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
 
-        if (itemStack == null || !itemStack.getUnlocalizedName().startsWith("gt.integrated_circuit")) this.mode = 0;
+        if (itemStack == null || !itemStack.getUnlocalizedName()
+            .startsWith("gt.integrated_circuit")) this.mode = 0;
         else this.mode = (byte) Math.min(3, itemStack.getItemDamage());
 
         this.upstep = this.mode % 2 == 0;
@@ -307,24 +323,35 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_EnhancedMultiBl
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-            int aColorIndex, boolean aActive, boolean aRedstone) {
+        int aColorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW).extFacing()
-                            .glow().build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW).extFacing().glow()
-                            .build() };
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
     }
 
     @Override
     public void construct(ItemStack itemStack, boolean b) {
-        if (this.mInventory[1] == null || !this.mInventory[1].getUnlocalizedName().startsWith("gt.integrated_circuit"))
-            this.mode = 0;
+        if (this.mInventory[1] == null || !this.mInventory[1].getUnlocalizedName()
+            .startsWith("gt.integrated_circuit")) this.mode = 0;
         else this.mode = (byte) Math.min(3, this.mInventory[1].getItemDamage());
         int mHeight = Math.min(itemStack.stackSize, 8);
         boolean tapmode = this.mode > 1;

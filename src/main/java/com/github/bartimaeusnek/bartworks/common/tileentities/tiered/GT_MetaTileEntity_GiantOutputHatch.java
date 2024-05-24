@@ -26,7 +26,7 @@ public class GT_MetaTileEntity_GiantOutputHatch extends GT_MetaTileEntity_Hatch_
     }
 
     public GT_MetaTileEntity_GiantOutputHatch(String aName, int aTier, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 

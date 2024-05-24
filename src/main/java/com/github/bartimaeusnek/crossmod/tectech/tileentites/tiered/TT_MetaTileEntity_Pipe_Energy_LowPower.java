@@ -41,21 +41,21 @@ public class TT_MetaTileEntity_Pipe_Energy_LowPower extends GT_MetaPipeEntity_Ca
     }
 
     public TT_MetaTileEntity_Pipe_Energy_LowPower(String aName, float aThickNess, Materials aMaterial,
-            long aCableLossPerMeter, long aAmperage, long aVoltage, boolean aInsulated, boolean aCanShock) {
+        long aCableLossPerMeter, long aAmperage, long aVoltage, boolean aInsulated, boolean aCanShock) {
         super(aName, aThickNess, aMaterial, aCableLossPerMeter, aAmperage, aVoltage, aInsulated, aCanShock);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
         return new TT_MetaTileEntity_Pipe_Energy_LowPower(
-                this.mName,
-                this.mThickNess,
-                this.mMaterial,
-                this.mCableLossPerMeter,
-                this.mAmperage,
-                this.mVoltage,
-                this.mInsulated,
-                this.mCanShock);
+            this.mName,
+            this.mThickNess,
+            this.mMaterial,
+            this.mCableLossPerMeter,
+            this.mAmperage,
+            this.mVoltage,
+            this.mInsulated,
+            this.mCanShock);
     }
 
     @Override
@@ -66,35 +66,35 @@ public class TT_MetaTileEntity_Pipe_Energy_LowPower extends GT_MetaPipeEntity_Ca
     }
 
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection siide, byte aConnections,
-            int aColorIndex, boolean aConnected, boolean aRedstone) {
+        int aColorIndex, boolean aConnected, boolean aRedstone) {
         return new ITexture[] { TextureFactory.of(
-                Block.getBlockFromItem(Ic2Items.glassFiberCableBlock.getItem()),
-                Ic2Items.glassFiberCableBlock.getItemDamage(),
-                siide) };
+            Block.getBlockFromItem(Ic2Items.glassFiberCableBlock.getItem()),
+            Ic2Items.glassFiberCableBlock.getItemDamage(),
+            siide) };
     }
 
     @Override
     public String[] getDescription() {
         return new String[] { "Primitive Laser Cable intended for Low Power Applications", "Does not auto-connect",
-                "Does not turn or bend",
-                ChatColorHelper.WHITE + "Must be "
-                        + ChatColorHelper.YELLOW
-                        + "c"
-                        + ChatColorHelper.RED
-                        + "o"
-                        + ChatColorHelper.BLUE
-                        + "l"
-                        + ChatColorHelper.DARKPURPLE
-                        + "o"
-                        + ChatColorHelper.GOLD
-                        + "r"
-                        + ChatColorHelper.DARKRED
-                        + "e"
-                        + ChatColorHelper.DARKGREEN
-                        + "d"
-                        + ChatColorHelper.WHITE
-                        + " in order to work",
-                BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get() };
+            "Does not turn or bend",
+            ChatColorHelper.WHITE + "Must be "
+                + ChatColorHelper.YELLOW
+                + "c"
+                + ChatColorHelper.RED
+                + "o"
+                + ChatColorHelper.BLUE
+                + "l"
+                + ChatColorHelper.DARKPURPLE
+                + "o"
+                + ChatColorHelper.GOLD
+                + "r"
+                + ChatColorHelper.DARKRED
+                + "e"
+                + ChatColorHelper.DARKGREEN
+                + "d"
+                + ChatColorHelper.WHITE
+                + " in order to work",
+            BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get() };
     }
 
     @Override
@@ -139,25 +139,25 @@ public class TT_MetaTileEntity_Pipe_Energy_LowPower extends GT_MetaPipeEntity_Ca
     @Override
     @Deprecated
     public long transferElectricity(ForgeDirection side, long aVoltage, long aAmperage,
-            ArrayList<TileEntity> aAlreadyPassedTileEntityList) {
+        ArrayList<TileEntity> aAlreadyPassedTileEntityList) {
         return 0L;
     }
 
     @Override
     public long transferElectricity(ForgeDirection side, long aVoltage, long aAmperage,
-            HashSet<TileEntity> aAlreadyPassedSet) {
+        HashSet<TileEntity> aAlreadyPassedSet) {
         return 0L;
     }
 
     @Override
     public boolean letsIn(GT_CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return true;
     }
 
     @Override
     public boolean letsOut(GT_CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return true;
     }
 }

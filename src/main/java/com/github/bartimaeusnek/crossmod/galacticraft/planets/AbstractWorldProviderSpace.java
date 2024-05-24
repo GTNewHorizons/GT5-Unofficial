@@ -26,7 +26,8 @@ public abstract class AbstractWorldProviderSpace extends WorldProviderSpace impl
 
     @Override
     public String getDimensionName() {
-        return this.getCelestialBody().getLocalizedName();
+        return this.getCelestialBody()
+            .getLocalizedName();
     }
 
     @Override

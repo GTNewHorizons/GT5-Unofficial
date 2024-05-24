@@ -47,8 +47,13 @@ public class LabParts extends SimpleSubItemClass {
         if (itemStack == null || itemStack.getTagCompound() == null) return EnumRarity.common;
 
         return switch (itemStack.getItemDamage()) {
-            case 0 -> BW_Util.getRarityFromByte(itemStack.getTagCompound().getCompoundTag("DNA").getByte("Rarity"));
-            case 1, 2 -> BW_Util.getRarityFromByte(itemStack.getTagCompound().getByte("Rarity"));
+            case 0 -> BW_Util.getRarityFromByte(
+                itemStack.getTagCompound()
+                    .getCompoundTag("DNA")
+                    .getByte("Rarity"));
+            case 1, 2 -> BW_Util.getRarityFromByte(
+                itemStack.getTagCompound()
+                    .getByte("Rarity"));
             default -> EnumRarity.common;
         };
     }
@@ -57,9 +62,12 @@ public class LabParts extends SimpleSubItemClass {
     @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(ItemStack stack, int p_82790_2_) {
         if (stack.getItemDamage() == 0 && stack.getTagCompound() != null
-                && stack.getTagCompound().getIntArray("Color") != null
-                && stack.getTagCompound().getIntArray("Color").length > 0) {
-            int[] rgb = stack.getTagCompound().getIntArray("Color");
+            && stack.getTagCompound()
+                .getIntArray("Color") != null
+            && stack.getTagCompound()
+                .getIntArray("Color").length > 0) {
+            int[] rgb = stack.getTagCompound()
+                .getIntArray("Color");
             return BW_ColorUtil.getColorFromRGBArray(rgb);
         }
         return super.getColorFromItemStack(stack, p_82790_2_);
@@ -93,29 +101,35 @@ public class LabParts extends SimpleSubItemClass {
             return;
         }
 
-        BioCulture culture = BioCulture.getBioCulture(itemStack.getTagCompound().getString("Name"));
+        BioCulture culture = BioCulture.getBioCulture(
+            itemStack.getTagCompound()
+                .getString("Name"));
 
         switch (itemStack.getItemDamage()) {
             case 0:
                 list.add(
-                        StatCollector.translateToLocal("tooltip.labparts.5.name") + " "
-                                + itemStack.getTagCompound().getString("Name")
-                                + (culture != null ? " (" + culture.getLocalisedName() + ")" : ""));
-                if (!itemStack.getTagCompound().getBoolean("Breedable")) {
+                    StatCollector.translateToLocal("tooltip.labparts.5.name") + " "
+                        + itemStack.getTagCompound()
+                            .getString("Name")
+                        + (culture != null ? " (" + culture.getLocalisedName() + ")" : ""));
+                if (!itemStack.getTagCompound()
+                    .getBoolean("Breedable")) {
                     list.add(StatCollector.translateToLocal("tooltip.labparts.6.name"));
                 }
                 break;
             case 1:
                 list.add(
-                        StatCollector.translateToLocal("tooltip.labparts.7.name") + " "
-                                + itemStack.getTagCompound().getString("Name")
-                                + (culture != null ? " (" + culture.getLocalisedName() + ")" : ""));
+                    StatCollector.translateToLocal("tooltip.labparts.7.name") + " "
+                        + itemStack.getTagCompound()
+                            .getString("Name")
+                        + (culture != null ? " (" + culture.getLocalisedName() + ")" : ""));
                 break;
             case 2:
                 list.add(
-                        StatCollector.translateToLocal("tooltip.labparts.8.name") + " "
-                                + itemStack.getTagCompound().getString("Name")
-                                + (culture != null ? " (" + culture.getLocalisedName() + ")" : ""));
+                    StatCollector.translateToLocal("tooltip.labparts.8.name") + " "
+                        + itemStack.getTagCompound()
+                            .getString("Name")
+                        + (culture != null ? " (" + culture.getLocalisedName() + ")" : ""));
                 break;
             default:
                 break;

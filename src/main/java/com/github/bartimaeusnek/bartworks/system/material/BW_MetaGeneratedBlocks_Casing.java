@@ -32,10 +32,10 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.OrePrefixes;
 
 public class BW_MetaGeneratedBlocks_Casing extends BW_MetaGenerated_Blocks
-        implements com.gtnewhorizon.structurelib.structure.ICustomBlockSetting {
+    implements com.gtnewhorizon.structurelib.structure.ICustomBlockSetting {
 
     public BW_MetaGeneratedBlocks_Casing(Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName,
-            OrePrefixes prefixes) {
+        OrePrefixes prefixes) {
         super(p_i45386_1_, tileEntity, blockName, prefixes);
     }
 
@@ -92,15 +92,16 @@ public class BW_MetaGeneratedBlocks_Casing extends BW_MetaGenerated_Blocks
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item aItem, CreativeTabs aTab, List<ItemStack> aList) {
         Werkstoff.werkstoffHashSet.stream()
-                .filter(
-                        pMaterial -> Werkstoff.Types.BIOLOGICAL.equals(pMaterial.getType())
-                                && pMaterial.hasGenerationFeature(OrePrefixes.blockCasing)
-                                || pMaterial.doesOreDictedItemExists(OrePrefixes.plate)
-                                        && pMaterial.doesOreDictedItemExists(OrePrefixes.screw)
-                                        && pMaterial.doesOreDictedItemExists(OrePrefixes.plateDouble)
-                                        && pMaterial.doesOreDictedItemExists(OrePrefixes.gearGt)
-                                        && pMaterial.doesOreDictedItemExists(OrePrefixes.gearGtSmall))
-                .map(pMaterial -> new ItemStack(aItem, 1, pMaterial.getmID())).forEach(aList::add);
+            .filter(
+                pMaterial -> Werkstoff.Types.BIOLOGICAL.equals(pMaterial.getType())
+                    && pMaterial.hasGenerationFeature(OrePrefixes.blockCasing)
+                    || pMaterial.doesOreDictedItemExists(OrePrefixes.plate)
+                        && pMaterial.doesOreDictedItemExists(OrePrefixes.screw)
+                        && pMaterial.doesOreDictedItemExists(OrePrefixes.plateDouble)
+                        && pMaterial.doesOreDictedItemExists(OrePrefixes.gearGt)
+                        && pMaterial.doesOreDictedItemExists(OrePrefixes.gearGtSmall))
+            .map(pMaterial -> new ItemStack(aItem, 1, pMaterial.getmID()))
+            .forEach(aList::add);
     }
 
     /**
@@ -112,7 +113,9 @@ public class BW_MetaGeneratedBlocks_Casing extends BW_MetaGenerated_Blocks
             Thread.sleep(1);
             // Fucking Minecraft TE settings.
         } catch (InterruptedException ignored) {}
-        Optional.ofNullable(world.getTileEntity(x, y, z)).filter(te -> te instanceof BW_MetaGenerated_Block_TE)
-                .map(te -> (BW_MetaGenerated_Block_TE) te).ifPresent(te -> te.mMetaData = (short) meta);
+        Optional.ofNullable(world.getTileEntity(x, y, z))
+            .filter(te -> te instanceof BW_MetaGenerated_Block_TE)
+            .map(te -> (BW_MetaGenerated_Block_TE) te)
+            .ifPresent(te -> te.mMetaData = (short) meta);
     }
 }

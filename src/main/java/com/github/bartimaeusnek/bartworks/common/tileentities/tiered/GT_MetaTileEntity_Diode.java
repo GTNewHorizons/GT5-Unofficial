@@ -49,8 +49,11 @@ public class GT_MetaTileEntity_Diode extends GT_MetaTileEntity_BasicHull {
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick(aBaseMetaTileEntity);
-        if (this.maxAmps == 0 && !this.getBaseMetaTileEntity().getWorld().isRemote) {
-            this.maxAmps = this.getAmpsfromMeta(this.getBaseMetaTileEntity().getMetaTileID());
+        if (this.maxAmps == 0 && !this.getBaseMetaTileEntity()
+            .getWorld().isRemote) {
+            this.maxAmps = this.getAmpsfromMeta(
+                this.getBaseMetaTileEntity()
+                    .getMetaTileID());
             this.aAmps = this.maxAmps;
         }
     }
@@ -59,7 +62,8 @@ public class GT_MetaTileEntity_Diode extends GT_MetaTileEntity_BasicHull {
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
 
-        if (this.getBaseMetaTileEntity().getWorld().isRemote) return;
+        if (this.getBaseMetaTileEntity()
+            .getWorld().isRemote) return;
         if (!aPlayer.isSneaking()) {
             --this.aAmps;
             if (this.aAmps < 0) this.aAmps = this.maxAmps;
@@ -101,20 +105,15 @@ public class GT_MetaTileEntity_Diode extends GT_MetaTileEntity_BasicHull {
 
     private long getAmpsfromMeta(int meta) {
         if (meta > ConfigHandler.IDOffset + GT_Values.VN.length
-                && meta <= ConfigHandler.IDOffset + GT_Values.VN.length * 2)
-            return 2L;
+            && meta <= ConfigHandler.IDOffset + GT_Values.VN.length * 2) return 2L;
         if (meta > ConfigHandler.IDOffset + GT_Values.VN.length * 2
-                && meta <= ConfigHandler.IDOffset + GT_Values.VN.length * 3)
-            return 4L;
+            && meta <= ConfigHandler.IDOffset + GT_Values.VN.length * 3) return 4L;
         else if (meta > ConfigHandler.IDOffset + GT_Values.VN.length * 3
-                && meta <= ConfigHandler.IDOffset + GT_Values.VN.length * 4)
-            return 8L;
+            && meta <= ConfigHandler.IDOffset + GT_Values.VN.length * 4) return 8L;
         else if (meta > ConfigHandler.IDOffset + GT_Values.VN.length * 4
-                && meta <= ConfigHandler.IDOffset + GT_Values.VN.length * 5)
-            return 12L;
+            && meta <= ConfigHandler.IDOffset + GT_Values.VN.length * 5) return 12L;
         else if (meta > ConfigHandler.IDOffset + GT_Values.VN.length * 5
-                && meta <= ConfigHandler.IDOffset + GT_Values.VN.length * 6)
-            return 16L;
+            && meta <= ConfigHandler.IDOffset + GT_Values.VN.length * 6) return 16L;
         else return 0L;
     }
 
@@ -122,16 +121,16 @@ public class GT_MetaTileEntity_Diode extends GT_MetaTileEntity_BasicHull {
     @SuppressWarnings("deprecation")
     public String[] getDescription() {
         return ArrayUtils.addAll(
-                this.mDescriptionArray,
-                StatCollector.translateToLocal("tooltip.tile.tiereddsc.0.name") + " "
-                        + ChatColorHelper.YELLOW
-                        + GT_Utility.formatNumbers(GT_Values.V[this.mTier]),
-                StatCollector.translateToLocal("tooltip.tile.tiereddsc.1.name") + " "
-                        + ChatColorHelper.YELLOW
-                        + GT_Utility.formatNumbers(this.maxAmperesIn()),
-                StatCollector.translateToLocal("tooltip.tile.tiereddsc.2.name") + " "
-                        + ChatColorHelper.YELLOW
-                        + GT_Utility.formatNumbers(this.maxAmperesOut()),
-                BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get());
+            this.mDescriptionArray,
+            StatCollector.translateToLocal("tooltip.tile.tiereddsc.0.name") + " "
+                + ChatColorHelper.YELLOW
+                + GT_Utility.formatNumbers(GT_Values.V[this.mTier]),
+            StatCollector.translateToLocal("tooltip.tile.tiereddsc.1.name") + " "
+                + ChatColorHelper.YELLOW
+                + GT_Utility.formatNumbers(this.maxAmperesIn()),
+            StatCollector.translateToLocal("tooltip.tile.tiereddsc.2.name") + " "
+                + ChatColorHelper.YELLOW
+                + GT_Utility.formatNumbers(this.maxAmperesOut()),
+            BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get());
     }
 }

@@ -38,24 +38,31 @@ public class MultipleMetalLoader implements IWerkstoffRunnable {
     public void run(Werkstoff werkstoff) {
         if (werkstoff.hasItemType(plateDense)) {
             RecipeMaps.benderRecipes.add(
-                    new GT_Recipe(
-                            true,
-                            new ItemStack[] { werkstoff.get(ingot, 2), GT_Utility.getIntegratedCircuit(2) },
-                            new ItemStack[] { werkstoff.get(plateDouble) },
-                            null,
-                            null,
-                            null,
-                            null,
-                            (int) Math.max(werkstoff.getStats().getMass() * 2, 1L),
-                            60,
-                            0));
+                new GT_Recipe(
+                    true,
+                    new ItemStack[] { werkstoff.get(ingot, 2), GT_Utility.getIntegratedCircuit(2) },
+                    new ItemStack[] { werkstoff.get(plateDouble) },
+                    null,
+                    null,
+                    null,
+                    null,
+                    (int) Math.max(
+                        werkstoff.getStats()
+                            .getMass() * 2,
+                        1L),
+                    60,
+                    0));
             GregTech_API.registerCover(
-                    werkstoff.get(plateDouble),
-                    TextureFactory.of(werkstoff.getTexSet().mTextures[72], werkstoff.getRGBA(), false),
-                    null);
+                werkstoff.get(plateDouble),
+                TextureFactory.of(werkstoff.getTexSet().mTextures[72], werkstoff.getRGBA(), false),
+                null);
 
-            GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(plateDouble)).itemOutputs(werkstoff.get(dust, 2))
-                    .duration(2 * TICKS).eut(8).addTo(maceratorRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(werkstoff.get(plateDouble))
+                .itemOutputs(werkstoff.get(dust, 2))
+                .duration(2 * TICKS)
+                .eut(8)
+                .addTo(maceratorRecipes);
 
         }
     }

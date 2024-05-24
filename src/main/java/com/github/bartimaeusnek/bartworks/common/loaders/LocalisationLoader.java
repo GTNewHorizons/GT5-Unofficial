@@ -21,40 +21,38 @@ public class LocalisationLoader {
 
     private static void localiseTooltips() {
         GT_LanguageManager
-                .addStringLocalization("metaitem.01.tooltip.purify.2", "Throw into Cauldron to get clean crushed Ore");
+            .addStringLocalization("metaitem.01.tooltip.purify.2", "Throw into Cauldron to get clean crushed Ore");
         GT_LanguageManager
-                .addStringLocalization("metaitem.01.tooltip.nqgen", "Can be used as Enriched Naquadah Fuel Substitute");
+            .addStringLocalization("metaitem.01.tooltip.nqgen", "Can be used as Enriched Naquadah Fuel Substitute");
     }
 
     private static void localiseAchivements() {
+        GT_LanguageManager
+            .addStringLocalization("achievement.gt.blockmachines.electricimplosioncompressor", "Electric Implosions?");
         GT_LanguageManager.addStringLocalization(
-                "achievement.gt.blockmachines.electricimplosioncompressor",
-                "Electric Implosions?");
-        GT_LanguageManager.addStringLocalization(
-                "achievement.gt.blockmachines.electricimplosioncompressor.desc",
-                "Basically a giant Hammer that presses Stuff - No more TNT!");
+            "achievement.gt.blockmachines.electricimplosioncompressor.desc",
+            "Basically a giant Hammer that presses Stuff - No more TNT!");
         GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.dehp", "Heat from below!");
         GT_LanguageManager
-                .addStringLocalization("achievement.gt.blockmachines.dehp.desc", "Get ALL the thermal energy!");
+            .addStringLocalization("achievement.gt.blockmachines.dehp.desc", "Get ALL the thermal energy!");
         GT_LanguageManager
-                .addStringLocalization("achievement.gt.blockmachines.circuitassemblyline", "Cheaper Circuits?");
+            .addStringLocalization("achievement.gt.blockmachines.circuitassemblyline", "Cheaper Circuits?");
         GT_LanguageManager.addStringLocalization(
-                "achievement.gt.blockmachines.circuitassemblyline.desc",
-                "Well, yes, but actually no...");
+            "achievement.gt.blockmachines.circuitassemblyline.desc",
+            "Well, yes, but actually no...");
         GT_LanguageManager.addStringLocalization("achievement.gt.blockmachines.voidminer1", "Ores from deep below!");
-        GT_LanguageManager.addStringLocalization(
-                "achievement.gt.blockmachines.voidminer1.desc",
-                "Is this some kind of Ex-Nihilo?");
-        GT_LanguageManager.addStringLocalization(
-                "achievement.gt.blockmachines.voidminer2",
-                "Ores from deep below 2! Electric Boogaloo!");
         GT_LanguageManager
-                .addStringLocalization("achievement.gt.blockmachines.voidminer2.desc", "Ex-Nihilo, but faster!");
+            .addStringLocalization("achievement.gt.blockmachines.voidminer1.desc", "Is this some kind of Ex-Nihilo?");
         GT_LanguageManager.addStringLocalization(
-                "achievement.gt.blockmachines.voidminer3",
-                "Ores from deep below 3! Trinity Ex-Nihilo");
+            "achievement.gt.blockmachines.voidminer2",
+            "Ores from deep below 2! Electric Boogaloo!");
         GT_LanguageManager
-                .addStringLocalization("achievement.gt.blockmachines.voidminer3.desc", "3x the trouble, 3x the fun!");
+            .addStringLocalization("achievement.gt.blockmachines.voidminer2.desc", "Ex-Nihilo, but faster!");
+        GT_LanguageManager.addStringLocalization(
+            "achievement.gt.blockmachines.voidminer3",
+            "Ores from deep below 3! Trinity Ex-Nihilo");
+        GT_LanguageManager
+            .addStringLocalization("achievement.gt.blockmachines.voidminer3.desc", "3x the trouble, 3x the fun!");
     }
 
     public static void localiseAll() {

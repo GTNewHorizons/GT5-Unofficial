@@ -51,7 +51,7 @@ public class BW_TileEntityContainer_Multiple extends BlockContainer {
     protected IIcon[] texture;
 
     public BW_TileEntityContainer_Multiple(Material p_i45386_1_, Class<? extends TileEntity>[] tileEntity,
-            String blockName, String[] textureNames, CreativeTabs tabs) {
+        String blockName, String[] textureNames, CreativeTabs tabs) {
         super(p_i45386_1_);
         this.setHardness(15.0F);
         this.setResistance(30.0F);
@@ -65,7 +65,7 @@ public class BW_TileEntityContainer_Multiple extends BlockContainer {
 
     @Override
     public boolean onBlockActivated(World worldObj, int x, int y, int z, EntityPlayer player, int side, float subX,
-            float subY, float subZ) {
+        float subY, float subZ) {
         if (worldObj.isRemote) {
             return true;
         }
@@ -154,7 +154,8 @@ public class BW_TileEntityContainer_Multiple extends BlockContainer {
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
         try {
-            return this.tileEntityArray[meta].getConstructor().newInstance();
+            return this.tileEntityArray[meta].getConstructor()
+                .newInstance();
         } catch (Exception e) {
             e.printStackTrace();
         }

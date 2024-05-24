@@ -47,16 +47,16 @@ public class BW_GT_ItemRenderer implements IItemRenderer {
     public boolean handleRenderType(ItemStack aStack, IItemRenderer.ItemRenderType aType) {
         if (!GT_Utility.isStackInvalid(aStack) && aStack.getItemDamage() >= 0) {
             return aType == IItemRenderer.ItemRenderType.EQUIPPED_FIRST_PERSON
-                    || aType == IItemRenderer.ItemRenderType.INVENTORY
-                    || aType == IItemRenderer.ItemRenderType.EQUIPPED
-                    || aType == IItemRenderer.ItemRenderType.ENTITY;
+                || aType == IItemRenderer.ItemRenderType.INVENTORY
+                || aType == IItemRenderer.ItemRenderType.EQUIPPED
+                || aType == IItemRenderer.ItemRenderType.ENTITY;
         }
         return false;
     }
 
     @Override
     public boolean shouldUseRenderHelper(IItemRenderer.ItemRenderType aType, ItemStack aStack,
-            IItemRenderer.ItemRendererHelper aHelper) {
+        IItemRenderer.ItemRendererHelper aHelper) {
         if (GT_Utility.isStackInvalid(aStack)) {
             return false;
         }
@@ -89,26 +89,26 @@ public class BW_GT_ItemRenderer implements IItemRenderer {
                     else {
                         for (int i = 0; i < 4; i++) {
                             GT_RenderUtil.renderItemIcon(
-                                    tIcon,
-                                    0.0D + i * 2D,
-                                    0.0D + i * 2D,
-                                    10.0D + i * 2D,
-                                    10.0D + i * 2D,
-                                    0.001D,
-                                    0.0F,
-                                    0.0F,
-                                    -1.0F);
+                                tIcon,
+                                0.0D + i * 2D,
+                                0.0D + i * 2D,
+                                10.0D + i * 2D,
+                                10.0D + i * 2D,
+                                0.001D,
+                                0.0F,
+                                0.0F,
+                                -1.0F);
                         }
                     }
                 } else if (aMetaData < CircuitImprintLoader.reverseIDs) ItemRenderer.renderItemIn2D(
-                        Tessellator.instance,
-                        tIcon.getMaxU(),
-                        tIcon.getMinV(),
-                        tIcon.getMinU(),
-                        tIcon.getMaxV(),
-                        tIcon.getIconWidth(),
-                        tIcon.getIconHeight(),
-                        0.0625F);
+                    Tessellator.instance,
+                    tIcon.getMaxU(),
+                    tIcon.getMinV(),
+                    tIcon.getMinU(),
+                    tIcon.getMaxV(),
+                    tIcon.getIconWidth(),
+                    tIcon.getIconHeight(),
+                    0.0625F);
 
                 IIcon tOverlay = (IIcon) BW_Util.get2DCoordFrom1DArray(aMetaData, 1, 2, aItem.mIconList);
                 GL11.glColor3f(1.0F, 1.0F, 1.0F);
@@ -119,14 +119,14 @@ public class BW_GT_ItemRenderer implements IItemRenderer {
                         GT_RenderUtil.renderItemIcon(tOverlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
                     } else {
                         ItemRenderer.renderItemIn2D(
-                                Tessellator.instance,
-                                tOverlay.getMaxU(),
-                                tOverlay.getMinV(),
-                                tOverlay.getMinU(),
-                                tOverlay.getMaxV(),
-                                tOverlay.getIconWidth(),
-                                tOverlay.getIconHeight(),
-                                0.0625F);
+                            Tessellator.instance,
+                            tOverlay.getMaxU(),
+                            tOverlay.getMinV(),
+                            tOverlay.getMinU(),
+                            tOverlay.getMaxV(),
+                            tOverlay.getIconWidth(),
+                            tOverlay.getIconHeight(),
+                            0.0625F);
                     }
                 }
             }

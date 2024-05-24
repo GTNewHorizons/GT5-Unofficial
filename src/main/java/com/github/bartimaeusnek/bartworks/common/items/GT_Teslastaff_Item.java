@@ -71,8 +71,8 @@ public class GT_Teslastaff_Item extends ItemTool implements IElectricItem {
         if (aTarget instanceof EntityLiving tTarget && ElectricItem.manager.canUse(aStack, 9000000)) {
             ElectricItem.manager.use(aStack, 9000000, aPlayer);
             for (int i = 1; i < 5; ++i) {
-                if (tTarget.getEquipmentInSlot(i) != null
-                        && tTarget.getEquipmentInSlot(i).getItem() instanceof IElectricItem) {
+                if (tTarget.getEquipmentInSlot(i) != null && tTarget.getEquipmentInSlot(i)
+                    .getItem() instanceof IElectricItem) {
                     tTarget.setCurrentItemOrArmor(i, null);
                 }
             }

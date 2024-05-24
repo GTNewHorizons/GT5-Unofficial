@@ -40,21 +40,23 @@ public class CLSCompat {
             e.printStackTrace();
         }
 
-        Optional.ofNullable(alexiilMinecraftDisplayer).ifPresent(e -> {
-            try {
-                isRegisteringBartWorks = e.getField("isRegisteringBartWorks");
-            } catch (NoSuchFieldException ex) {
-                ex.printStackTrace();
-            }
-        });
+        Optional.ofNullable(alexiilMinecraftDisplayer)
+            .ifPresent(e -> {
+                try {
+                    isRegisteringBartWorks = e.getField("isRegisteringBartWorks");
+                } catch (NoSuchFieldException ex) {
+                    ex.printStackTrace();
+                }
+            });
 
-        Optional.ofNullable(alexiilProgressDisplayer).ifPresent(e -> {
-            try {
-                displayProgress = e.getMethod("displayProgress", String.class, float.class);
-            } catch (NoSuchMethodException ex) {
-                ex.printStackTrace();
-            }
-        });
+        Optional.ofNullable(alexiilProgressDisplayer)
+            .ifPresent(e -> {
+                try {
+                    displayProgress = e.getMethod("displayProgress", String.class, float.class);
+                } catch (NoSuchMethodException ex) {
+                    ex.printStackTrace();
+                }
+            });
     }
 
     public static Integer[] initCls() {

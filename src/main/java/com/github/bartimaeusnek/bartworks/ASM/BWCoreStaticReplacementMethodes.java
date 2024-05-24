@@ -31,7 +31,7 @@ import com.github.bartimaeusnek.bartworks.util.accessprioritylist.AccessPriority
 public class BWCoreStaticReplacementMethodes {
 
     private static ThreadLocal<AccessPriorityList<IRecipe>> RECENTLYUSEDRECIPES = ThreadLocal
-            .withInitial(AccessPriorityList::new);
+        .withInitial(AccessPriorityList::new);
 
     public static void clearRecentlyUsedRecipes() {
         // the easiest way to ensure the cache is flushed without causing synchronization overhead
@@ -58,9 +58,10 @@ public class BWCoreStaticReplacementMethodes {
         }
 
         if (i == 2 && itemstack.getItem() == itemstack1.getItem()
-                && itemstack.stackSize == 1
-                && itemstack1.stackSize == 1
-                && itemstack.getItem().isRepairable()) {
+            && itemstack.stackSize == 1
+            && itemstack1.stackSize == 1
+            && itemstack.getItem()
+                .isRepairable()) {
             Item item = itemstack.getItem();
             int j1 = item.getMaxDamage() - itemstack.getItemDamageForDisplay();
             int k = item.getMaxDamage() - itemstack1.getItemDamageForDisplay();
@@ -87,7 +88,8 @@ public class BWCoreStaticReplacementMethodes {
         }
 
         HashSet<IRecipe> recipeSet = new NonNullWrappedHashSet<>();
-        List<IRecipe> recipeList = CraftingManager.getInstance().getRecipeList();
+        List<IRecipe> recipeList = CraftingManager.getInstance()
+            .getRecipeList();
 
         for (IRecipe r : recipeList) {
             if (r.matches(inventoryCrafting, world)) recipeSet.add(r);
