@@ -49,7 +49,8 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
 
     // Interface fields
     private final Multimap<Integer, ITeslaConnectableSimple> teslaNodeMap = MultimapBuilder.treeKeys()
-            .linkedListValues().build();
+        .linkedListValues()
+        .build();
     private final HashSet<ThaumSpark> sparkList = new HashSet<>();
     private int sparkCount = 10;
 
@@ -82,17 +83,17 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
     }
 
     public GT_MetaTileEntity_TeslaCoil(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
-            int aSlotCount) {
+        int aSlotCount) {
         super(aName, aTier, aDescription, aTextures, aSlotCount);
     }
 
     @Override
     public String[] getDescription() {
         String[] jargon = new String[] { CommonValues.THETA_MOVEMENT,
-                translateToLocal("gt.blockmachines.machine.tt.tesla.desc.0"), // Your Tesla I/O machine of choice
-                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.machine.tt.tesla.desc.1") // Lightning
-                                                                                                       // stoves for the
-                                                                                                       // rich
+            translateToLocal("gt.blockmachines.machine.tt.tesla.desc.0"), // Your Tesla I/O machine of choice
+            EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.machine.tt.tesla.desc.1") // Lightning
+                                                                                                   // stoves for the
+                                                                                                   // rich
         };
         String[] sDesc = super.getDescription();
         sDesc = Arrays.copyOfRange(sDesc, 1, sDesc.length); // Removes first element from array
@@ -101,15 +102,15 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
 
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-            float aX, float aY, float aZ) {
+        float aX, float aY, float aZ) {
         if (overdriveToggle) {
             overdriveToggle = false;
             PlayerChatHelper
-                    .SendInfo(aPlayer, translateToLocalFormatted("tt.keyphrase.Overdrive_disengaged", clientLocale));
+                .SendInfo(aPlayer, translateToLocalFormatted("tt.keyphrase.Overdrive_disengaged", clientLocale));
         } else {
             overdriveToggle = true;
             PlayerChatHelper
-                    .SendInfo(aPlayer, translateToLocalFormatted("tt.keyphrase.Overdrive_engaged", clientLocale));
+                .SendInfo(aPlayer, translateToLocalFormatted("tt.keyphrase.Overdrive_engaged", clientLocale));
         }
         return true;
     }
@@ -124,10 +125,10 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
             }
             histHigh = (float) histSettingHigh / histSteps;
             PlayerChatHelper.SendInfo(
-                    aPlayer,
-                    translateToLocalFormatted("tt.keyphrase.Hysteresis_high_set_to", clientLocale) + " "
-                            + round(histHigh * 100F)
-                            + "%");
+                aPlayer,
+                translateToLocalFormatted("tt.keyphrase.Hysteresis_high_set_to", clientLocale) + " "
+                    + round(histHigh * 100F)
+                    + "%");
         } else {
             if (histSettingLow > histLowLimit) {
                 histSettingLow--;
@@ -136,16 +137,16 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
             }
             histLow = (float) histSettingLow / histSteps;
             PlayerChatHelper.SendInfo(
-                    aPlayer,
-                    translateToLocalFormatted("tt.keyphrase.Hysteresis_low_set_to", clientLocale) + " "
-                            + round(histLow * 100F)
-                            + "%");
+                aPlayer,
+                translateToLocalFormatted("tt.keyphrase.Hysteresis_low_set_to", clientLocale) + " "
+                    + round(histLow * 100F)
+                    + "%");
         }
     }
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-            float aX, float aY, float aZ) {
+        float aX, float aY, float aZ) {
         if (aPlayer.isSneaking()) {
             if (transferRadius > transferRadiusMin) {
                 transferRadius--;
@@ -156,10 +157,8 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
             }
         }
         PlayerChatHelper.SendInfo(
-                aPlayer,
-                translateToLocalFormatted("tt.keyphrase.Tesla_radius_set_to", clientLocale) + " "
-                        + transferRadius
-                        + "m");
+            aPlayer,
+            translateToLocalFormatted("tt.keyphrase.Tesla_radius_set_to", clientLocale) + " " + transferRadius + "m");
         return false;
     }
 
@@ -187,7 +186,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
 
         // And after this cheeky-ness, toss the string XD
         return powerPassToggle ? translateToLocalFormatted("tt.keyphrase.Sending_power", clientLocale) + "!"
-                : translateToLocalFormatted("tt.keyphrase.Receiving_power", clientLocale) + "!";
+            : translateToLocalFormatted("tt.keyphrase.Receiving_power", clientLocale) + "!";
     }
 
     @Override
@@ -202,16 +201,16 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
             rTextures[0][i + 1] = new ITexture[] { MACHINE_CASINGS_TT[this.mTier][i + 1] };
             rTextures[1][i + 1] = new ITexture[] { MACHINE_CASINGS_TT[this.mTier][i + 1], TESLA_TRANSCEIVER_TOP_BA };
             rTextures[2][i + 1] = new ITexture[] { MACHINE_CASINGS_TT[this.mTier][i + 1],
-                    this.mInventory.length == 16 ? OVERLAYS_ENERGY_OUT_POWER_TT[this.mTier]
-                            : (this.mInventory.length > 4 ? OVERLAYS_ENERGY_OUT_MULTI_TT[this.mTier]
-                                    : OVERLAYS_ENERGY_OUT_TT[this.mTier]) };
+                this.mInventory.length == 16 ? OVERLAYS_ENERGY_OUT_POWER_TT[this.mTier]
+                    : (this.mInventory.length > 4 ? OVERLAYS_ENERGY_OUT_MULTI_TT[this.mTier]
+                        : OVERLAYS_ENERGY_OUT_TT[this.mTier]) };
         }
         return rTextures;
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-            int colorIndex, boolean aActive, boolean aRedstone) {
+        int colorIndex, boolean aActive, boolean aRedstone) {
         return this.mTextures[side == facing ? 2 : side == ForgeDirection.UP ? 1 : 0][colorIndex + 1];
     }
 
@@ -232,14 +231,16 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
     @Override
     public void onRemoval() {
         super.onRemoval();
-        if (!this.getBaseMetaTileEntity().isClientSide()) {
+        if (!this.getBaseMetaTileEntity()
+            .isClientSide()) {
             teslaSimpleNodeSetRemove(this);
         }
     }
 
     @Override
     public void onUnload() {
-        if (!this.getBaseMetaTileEntity().isClientSide()) {
+        if (!this.getBaseMetaTileEntity()
+            .isClientSide()) {
             teslaSimpleNodeSetRemove(this);
         }
     }
@@ -278,12 +279,12 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
             sparkCount = 10;
             if (!sparkList.isEmpty()) {
                 NetworkDispatcher.INSTANCE.sendToAllAround(
-                        new RendererMessage.RendererData(sparkList),
-                        aBaseMetaTileEntity.getWorld().provider.dimensionId,
-                        aBaseMetaTileEntity.getXCoord(),
-                        aBaseMetaTileEntity.getYCoord(),
-                        aBaseMetaTileEntity.getZCoord(),
-                        256);
+                    new RendererMessage.RendererData(sparkList),
+                    aBaseMetaTileEntity.getWorld().provider.dimensionId,
+                    aBaseMetaTileEntity.getXCoord(),
+                    aBaseMetaTileEntity.getYCoord(),
+                    aBaseMetaTileEntity.getZCoord(),
+                    256);
                 sparkList.clear();
             }
         }
@@ -381,18 +382,23 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
     @Override
     public Vec3Impl getTeslaPosition() {
         return new Vec3Impl(
-                this.getBaseMetaTileEntity().getXCoord(),
-                this.getBaseMetaTileEntity().getYCoord(),
-                this.getBaseMetaTileEntity().getZCoord());
+            this.getBaseMetaTileEntity()
+                .getXCoord(),
+            this.getBaseMetaTileEntity()
+                .getYCoord(),
+            this.getBaseMetaTileEntity()
+                .getZCoord());
     }
 
     @Override
     public Integer getTeslaDimension() {
-        return this.getBaseMetaTileEntity().getWorld().provider.dimensionId;
+        return this.getBaseMetaTileEntity()
+            .getWorld().provider.dimensionId;
     }
 
     @Override
     public boolean teslaInjectEnergy(long teslaVoltageInjected) {
-        return this.getBaseMetaTileEntity().injectEnergyUnits(ForgeDirection.UP, teslaVoltageInjected, 1L) > 0L;
+        return this.getBaseMetaTileEntity()
+            .injectEnergyUnits(ForgeDirection.UP, teslaVoltageInjected, 1L) > 0L;
     }
 }

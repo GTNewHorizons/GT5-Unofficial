@@ -33,93 +33,93 @@ public class GT_Item_CasingsTT extends GT_Item_Casings_Abstract {
             case 0: // "High Power Casing"
                 aList.add(translateToLocal("gt.blockcasingsTT.0.desc.0")); // Well suited for high power applications.
                 aList.add(
-                        EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-                                + translateToLocal("gt.blockcasingsTT.0.desc.1")); // The power levels are rising!
+                    EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
+                        + translateToLocal("gt.blockcasingsTT.0.desc.1")); // The power levels are rising!
                 break;
             case 1: // "Computer Casing"
                 aList.add(translateToLocal("gt.blockcasingsTT.1.desc.0")); // Nice and clean casing.
                 aList.add(
-                        EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-                                + translateToLocal("gt.blockcasingsTT.1.desc.1")); // Dust can break it!?
+                    EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
+                        + translateToLocal("gt.blockcasingsTT.1.desc.1")); // Dust can break it!?
                 break;
             case 2: // "Computer Heat Vent"
                 aList.add(translateToLocal("gt.blockcasingsTT.2.desc.0")); // Air vent with a filter.
                 aList.add(
-                        EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-                                + translateToLocal("gt.blockcasingsTT.2.desc.1")); // Perfectly muffled sound!
+                    EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
+                        + translateToLocal("gt.blockcasingsTT.2.desc.1")); // Perfectly muffled sound!
                 break;
             case 3: // "Advanced Computer Casing"
                 aList.add(translateToLocal("gt.blockcasingsTT.3.desc.0")); // Contains high bandwidth bus
                 aList.add(
-                        EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-                                + translateToLocal("gt.blockcasingsTT.3.desc.1")); // couple thousand qubits wide.
+                    EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
+                        + translateToLocal("gt.blockcasingsTT.3.desc.1")); // couple thousand qubits wide.
                 break;
             case 4: // "Molecular Casing"
                 aList.add(translateToLocal("gt.blockcasingsTT.4.desc.0")); // Stops elemental things.
                 aList.add(
-                        EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-                                + translateToLocal("gt.blockcasingsTT.4.desc.1")); // Radiation and emotions too...
+                    EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
+                        + translateToLocal("gt.blockcasingsTT.4.desc.1")); // Radiation and emotions too...
                 break;
             case 5: // "Advanced Molecular Casing"
                 aList.add(translateToLocal("gt.blockcasingsTT.5.desc.0")); // Cooling and stabilization.
                 aList.add(
-                        EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-                                + translateToLocal("gt.blockcasingsTT.5.desc.1")); // A comfortable machine bed.
+                    EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
+                        + translateToLocal("gt.blockcasingsTT.5.desc.1")); // A comfortable machine bed.
                 break;
             case 6: // "Containment Field Generator"
                 aList.add(translateToLocal("gt.blockcasingsTT.6.desc.0")); // Creates a field that...
                 aList.add(
-                        EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-                                + translateToLocal("gt.blockcasingsTT.6.desc.1")); // can stop even force carriers.
+                    EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
+                        + translateToLocal("gt.blockcasingsTT.6.desc.1")); // can stop even force carriers.
                 break;
             case 7: // "Molecular Coil"
                 aList.add(translateToLocal("gt.blockcasingsTT.7.desc.0")); // Well it does things too...
                 aList.add(
-                        EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-                                + translateToLocal("gt.blockcasingsTT.7.desc.1")); // [Use this coil!]
+                    EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
+                        + translateToLocal("gt.blockcasingsTT.7.desc.1")); // [Use this coil!]
                 break;
             case 8: // "Collider Hollow Casing"
                 aList.add(translateToLocal("gt.blockcasingsTT.8.desc.0")); // Reinforced accelerator tunnel.
                 aList.add(
-                        EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-                                + translateToLocal("gt.blockcasingsTT.8.desc.1")); // Most advanced pipe ever.
+                    EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
+                        + translateToLocal("gt.blockcasingsTT.8.desc.1")); // Most advanced pipe ever.
                 break;
             case 9: // "Spacetime Altering Casing"
                 aList.add(translateToLocal("gt.blockcasingsTT.9.desc.0")); // c is no longer the limit.
                 aList.add(
-                        EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-                                + translateToLocal("gt.blockcasingsTT.9.desc.1")); // Wibbly wobbly timey wimey stuff.
+                    EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
+                        + translateToLocal("gt.blockcasingsTT.9.desc.1")); // Wibbly wobbly timey wimey stuff.
                 break;
             case 10: // "Teleportation Casing"
                 aList.add(translateToLocal("gt.blockcasingsTT.10.desc.0")); // Remote connection.
                 aList.add(
-                        EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-                                + translateToLocal("gt.blockcasingsTT.10.desc.1")); // Better touch with a stick.
+                    EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
+                        + translateToLocal("gt.blockcasingsTT.10.desc.1")); // Better touch with a stick.
                 break;
             case 11: // "Dimensional Bridge Generator"
                 aList.add(translateToLocal("gt.blockcasingsTT.11.desc.0")); // Interdimensional Operations.
                 aList.add(
-                        EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-                                + translateToLocal("gt.blockcasingsTT.11.desc.1")); // Around the universe and other
-                                                                                    // places too.
+                    EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
+                        + translateToLocal("gt.blockcasingsTT.11.desc.1")); // Around the universe and other
+                                                                            // places too.
                 break;
             case 12: // "Ultimate Molecular Casing"
                 aList.add(translateToLocal("gt.blockcasingsTT.12.desc.0")); // Ultimate in every way.
                 aList.add(
-                        EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-                                + translateToLocal("gt.blockcasingsTT.12.desc.1")); // I don't know what it can't do.
+                    EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
+                        + translateToLocal("gt.blockcasingsTT.12.desc.1")); // I don't know what it can't do.
                 break;
             case 13: // "Ultimate Advanced Molecular Casing"
                 aList.add(translateToLocal("gt.blockcasingsTT.13.desc.0")); // More Ultimate in every way.
                 aList.add(
-                        EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-                                + translateToLocal("gt.blockcasingsTT.13.desc.1")); // I don't know what I am doing!
+                    EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
+                        + translateToLocal("gt.blockcasingsTT.13.desc.1")); // I don't know what I am doing!
                 break;
             case 14: // "Ultimate Containment Field Generator"
                 aList.add(translateToLocal("gt.blockcasingsTT.14.desc.0")); // Black Hole...
                 aList.add(
-                        EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-                                + translateToLocal("gt.blockcasingsTT.14.desc.1")); // Meh...
+                    EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
+                        + translateToLocal("gt.blockcasingsTT.14.desc.1")); // Meh...
                 break;
             case 15: // "Debug Sides"
                 aList.add(translateToLocal("gt.blockcasingsTT.15.desc.0")); // Lazy man way of determining sides.

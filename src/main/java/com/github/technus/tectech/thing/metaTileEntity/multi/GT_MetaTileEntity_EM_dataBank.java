@@ -50,7 +50,7 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.IGT_HatchAdder;
 
 public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockBase_EM
-        implements ISurvivalConstructable {
+    implements ISurvivalConstructable {
 
     // region variables
     private final ArrayList<GT_MetaTileEntity_Hatch_OutputDataItems> eStacksDataOutputs = new ArrayList<>();
@@ -60,31 +60,32 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
 
     // region structure
     private static final String[] description = new String[] {
-            EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
-            translateToLocal("gt.blockmachines.multimachine.em.databank.hint.0"), // 1 - Classic Hatches or high power
-                                                                                  // casing
-            translateToLocal("gt.blockmachines.multimachine.em.databank.hint.1"), // 2 - Data Access/Data Bank Master
-                                                                                  // Hatches or
-            // computer casing
+        EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
+        translateToLocal("gt.blockmachines.multimachine.em.databank.hint.0"), // 1 - Classic Hatches or high power
+                                                                              // casing
+        translateToLocal("gt.blockmachines.multimachine.em.databank.hint.1"), // 2 - Data Access/Data Bank Master
+                                                                              // Hatches or
+        // computer casing
     };
 
     private static final IStructureDefinition<GT_MetaTileEntity_EM_dataBank> STRUCTURE_DEFINITION = IStructureDefinition
-            .<GT_MetaTileEntity_EM_dataBank>builder()
-            .addShape(
-                    "main",
-                    transpose(
-                            new String[][] { { "BCCCB", "BDDDB", "BDDDB" }, { "BC~CB", "BAAAB", "BDDDB" },
-                                    { "BCCCB", "BDDDB", "BDDDB" } }))
-            .addElement('A', ofBlock(sBlockCasingsTT, 1)).addElement('B', ofBlock(sBlockCasingsTT, 2))
-            .addElement('C', classicHatches(textureOffset, 1, sBlockCasingsTT, 0))
-            .addElement(
-                    'D',
-                    buildHatchAdder(GT_MetaTileEntity_EM_dataBank.class)
-                            .atLeast(DataBankHatches.OutboundConnector, DataBankHatches.InboundConnector)
-                            .casingIndex(textureOffset + 1).dot(2).buildAndChain(
-                                    DataBankHatches.DataStick.newAny(textureOffset + 1, 2),
-                                    ofBlock(sBlockCasingsTT, 1)))
-            .build();
+        .<GT_MetaTileEntity_EM_dataBank>builder()
+        .addShape(
+            "main",
+            transpose(
+                new String[][] { { "BCCCB", "BDDDB", "BDDDB" }, { "BC~CB", "BAAAB", "BDDDB" },
+                    { "BCCCB", "BDDDB", "BDDDB" } }))
+        .addElement('A', ofBlock(sBlockCasingsTT, 1))
+        .addElement('B', ofBlock(sBlockCasingsTT, 2))
+        .addElement('C', classicHatches(textureOffset, 1, sBlockCasingsTT, 0))
+        .addElement(
+            'D',
+            buildHatchAdder(GT_MetaTileEntity_EM_dataBank.class)
+                .atLeast(DataBankHatches.OutboundConnector, DataBankHatches.InboundConnector)
+                .casingIndex(textureOffset + 1)
+                .dot(2)
+                .buildAndChain(DataBankHatches.DataStick.newAny(textureOffset + 1, 2), ofBlock(sBlockCasingsTT, 1)))
+        .build();
     // endregion
 
     public GT_MetaTileEntity_EM_dataBank(int aID, String aName, String aNameRegional) {
@@ -104,31 +105,32 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
     public GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.databank.name")) // Machine Type: Data Bank
-                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.0")) // Controller block of
-                                                                                               // the Data Bank
-                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.1")) // Used to supply
-                                                                                               // Assembling Lines
-                // with more Data Sticks
-                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.2")) // and give multiple
-                                                                                               // Assembling
-                // Lines access to the same Data
-                // Stick
-                .addInfo(translateToLocal("tt.keyword.Structure.StructureTooComplex")) // The structure is too complex!
-                .addSeparator().beginStructureBlock(5, 3, 3, false)
-                .addOtherStructurePart(
-                        translateToLocal("tt.keyword.Structure.DataAccessHatch"),
-                        translateToLocal("tt.keyword.Structure.AnyComputerCasing"),
-                        2) // Data Access Hatch: Any Computer Casing
-                .addOtherStructurePart(
-                        translateToLocal("gt.blockmachines.hatch.dataoutass.tier.07.name"),
-                        translateToLocal("tt.keyword.Structure.AnyComputerCasing"),
-                        2) // Data Bank Master Connector: Any Computer Casing
-                .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Energy Hatch: Any
-                                                                                                // High Power Casing
-                .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Maintenance
-                                                                                                     // Hatch: Any High
-                                                                                                     // Power Casing
-                .toolTipFinisher(CommonValues.TEC_MARK_EM);
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.0")) // Controller block of
+                                                                                           // the Data Bank
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.1")) // Used to supply
+                                                                                           // Assembling Lines
+            // with more Data Sticks
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.2")) // and give multiple
+                                                                                           // Assembling
+            // Lines access to the same Data
+            // Stick
+            .addInfo(translateToLocal("tt.keyword.Structure.StructureTooComplex")) // The structure is too complex!
+            .addSeparator()
+            .beginStructureBlock(5, 3, 3, false)
+            .addOtherStructurePart(
+                translateToLocal("tt.keyword.Structure.DataAccessHatch"),
+                translateToLocal("tt.keyword.Structure.AnyComputerCasing"),
+                2) // Data Access Hatch: Any Computer Casing
+            .addOtherStructurePart(
+                translateToLocal("gt.blockmachines.hatch.dataoutass.tier.07.name"),
+                translateToLocal("tt.keyword.Structure.AnyComputerCasing"),
+                2) // Data Bank Master Connector: Any Computer Casing
+            .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Energy Hatch: Any
+                                                                                            // High Power Casing
+            .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Maintenance
+                                                                                                 // Hatch: Any High
+                                                                                                 // Power Casing
+            .toolTipFinisher(CommonValues.TEC_MARK_EM);
         return tt;
     }
 
@@ -179,12 +181,12 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-            int colorIndex, boolean aActive, boolean aRedstone) {
+        int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
             return new ITexture[] { Textures.BlockIcons.casingTexturePages[texturePage][1],
-                    new TT_RenderedExtendedFacingTexture(
-                            aActive ? GT_MetaTileEntity_MultiblockBase_EM.ScreenON
-                                    : GT_MetaTileEntity_MultiblockBase_EM.ScreenOFF) };
+                new TT_RenderedExtendedFacingTexture(
+                    aActive ? GT_MetaTileEntity_MultiblockBase_EM.ScreenON
+                        : GT_MetaTileEntity_MultiblockBase_EM.ScreenOFF) };
         }
         return new ITexture[] { Textures.BlockIcons.casingTexturePages[texturePage][1] };
     }
@@ -209,11 +211,10 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
             ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eStacksDataOutputs.add((GT_MetaTileEntity_Hatch_OutputDataItems) aMetaTileEntity);
         } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DataAccess
-                && !(aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputDataItems)) {
-                    ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                    return eDataAccessHatches.add(aMetaTileEntity);
-                } else
-            if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputDataItems) {
+            && !(aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputDataItems)) {
+                ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                return eDataAccessHatches.add(aMetaTileEntity);
+            } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputDataItems) {
                 ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
                 slave = true;
                 return eDataAccessHatches.add(aMetaTileEntity);

@@ -26,7 +26,8 @@ public class EnderLinkTank implements Serializable {
 
     public IFluidHandler getFluidHandler() {
         IFluidHandler fluidHandler = null;
-        TileEntity tile = DimensionManager.getWorld(D).getTileEntity(X, Y, Z);
+        TileEntity tile = DimensionManager.getWorld(D)
+            .getTileEntity(X, Y, Z);
         if (tile instanceof IFluidHandler) fluidHandler = (IFluidHandler) tile;
         return fluidHandler;
     }

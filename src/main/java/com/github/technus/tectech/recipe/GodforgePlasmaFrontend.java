@@ -25,15 +25,16 @@ import gregtech.nei.RecipeDisplayInfo;
 public class GodforgePlasmaFrontend extends RecipeMapFrontend {
 
     public GodforgePlasmaFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
-            NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(uiPropertiesBuilder, neiPropertiesBuilder);
     }
 
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder, Pos2d windowOffset) {
         builder.widget(
-                new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_GODFORGE_LOGO).setSize(18, 18)
-                        .setPos(new Pos2d(151, 63).add(windowOffset)));
+            new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_GODFORGE_LOGO)
+                .setSize(18, 18)
+                .setPos(new Pos2d(151, 63).add(windowOffset)));
     }
 
     @Override
@@ -51,7 +52,8 @@ public class GodforgePlasmaFrontend extends RecipeMapFrontend {
         long eut = recipeInfo.recipe.mEUt;
         long duration = recipeInfo.recipe.mDuration;
         String multistep = "No";
-        if (recipeInfo.recipe.mSpecialItems.toString().equals("true")) {
+        if (recipeInfo.recipe.mSpecialItems.toString()
+            .equals("true")) {
             multistep = "Yes";
         }
         String requiredUpgrade = switch (recipeInfo.recipe.mSpecialValue) {
@@ -64,8 +66,8 @@ public class GodforgePlasmaFrontend extends RecipeMapFrontend {
         recipeInfo.drawText(trans("153", "Usage: ") + GT_Utility.formatNumbers(eut) + " EU/t");
         recipeInfo.drawText(trans("158", "Time: ") + GT_Utility.formatNumbers(duration / 20) + " secs");
         recipeInfo.drawText(translateToLocal("gt.blockmachines.multimachine.FOG.plasmamultistep") + ": " + multistep);
-        recipeInfo.drawText(
-                translateToLocal("gt.blockmachines.multimachine.FOG.plasmarecipetier") + ": " + requiredUpgrade);
+        recipeInfo
+            .drawText(translateToLocal("gt.blockmachines.multimachine.FOG.plasmarecipetier") + ": " + requiredUpgrade);
     }
 
     @Override

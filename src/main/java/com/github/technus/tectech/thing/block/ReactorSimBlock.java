@@ -76,13 +76,13 @@ public class ReactorSimBlock extends Block implements ITileEntityProvider {
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float a,
-            float b, float c) {
+        float b, float c) {
         if (entityPlayer.isSneaking()) {
             return false;
         } else {
             TileEntity te = world.getTileEntity(x, y, z);
             return te instanceof IHasGui
-                    && (!IC2.platform.isSimulating() || IC2.platform.launchGui(entityPlayer, (IHasGui) te));
+                && (!IC2.platform.isSimulating() || IC2.platform.launchGui(entityPlayer, (IHasGui) te));
         }
     }
 

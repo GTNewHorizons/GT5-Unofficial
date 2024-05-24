@@ -59,7 +59,8 @@ public class EOH_TESR extends TileEntitySpecialRenderer {
 
         if (EOHRenderTile.getOrbitingObjects() != null) {
 
-            if (EOHRenderTile.getOrbitingObjects().size() == 0) {
+            if (EOHRenderTile.getOrbitingObjects()
+                .size() == 0) {
                 EOHRenderTile.generateImportantInfo();
             }
 

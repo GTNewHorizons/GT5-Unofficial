@@ -77,7 +77,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  */
 @SuppressWarnings("unchecked")
 public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockBase_EM
-        implements ISurvivalConstructable {
+    implements ISurvivalConstructable {
 
     public static final String machine = "EM Machinery";
     public static final String crafter = "EM Crafting";
@@ -93,10 +93,10 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     private static LinkedHashMap<String, String> lServerNames;
 
     private static final String[] description = new String[] {
-            EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
-            translateToLocal("gt.blockmachines.multimachine.em.research.hint.0"), // 1 - Classic/Data Hatches or
-                                                                                  // Computer casing
-            translateToLocal("gt.blockmachines.multimachine.em.research.hint.1"), // 2 - Holder Hatch
+        EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
+        translateToLocal("gt.blockmachines.multimachine.em.research.hint.0"), // 1 - Classic/Data Hatches or
+                                                                              // Computer casing
+        translateToLocal("gt.blockmachines.multimachine.em.research.hint.1"), // 2 - Holder Hatch
     };
 
     private String clientLocale = "en_US";
@@ -104,25 +104,29 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
 
     // region structure
     private static final IStructureDefinition<GT_MetaTileEntity_EM_research> STRUCTURE_DEFINITION = IStructureDefinition
-            .<GT_MetaTileEntity_EM_research>builder()
-            .addShape(
-                    "main",
-                    transpose(
-                            new String[][] { { "   ", " A ", " A ", "AAA", "AAA", "AAA", "AAA" },
-                                    { "AAA", "ACA", "ACA", "ACA", "BCB", "BCB", "BBB" },
-                                    { "   ", " C ", "   ", "   ", "ACA", "CCC", "DDD" },
-                                    { "   ", " E ", "   ", "   ", "A~A", "CCC", "DDD" },
-                                    { "   ", " C ", "   ", "   ", "ACA", "CCC", "DDD" },
-                                    { "AAA", "ACA", "ACA", "ACA", "BCB", "BCB", "BBB" },
-                                    { "   ", " A ", " A ", "AAA", "AAA", "AAA", "AAA" } }))
-            .addElement('A', ofBlock(sBlockCasingsTT, 1)).addElement('B', ofBlock(sBlockCasingsTT, 2))
-            .addElement('C', ofBlock(sBlockCasingsTT, 3))
-            .addElement(
-                    'D',
-                    buildHatchAdder(GT_MetaTileEntity_EM_research.class)
-                            .atLeast(Energy.or(HatchElement.EnergyMulti), Maintenance, HatchElement.InputData)
-                            .casingIndex(textureOffset + 1).dot(1).buildAndChain(ofBlock(sBlockCasingsTT, 1)))
-            .addElement('E', HolderHatchElement.INSTANCE.newAny(textureOffset + 3, 2)).build();
+        .<GT_MetaTileEntity_EM_research>builder()
+        .addShape(
+            "main",
+            transpose(
+                new String[][] { { "   ", " A ", " A ", "AAA", "AAA", "AAA", "AAA" },
+                    { "AAA", "ACA", "ACA", "ACA", "BCB", "BCB", "BBB" },
+                    { "   ", " C ", "   ", "   ", "ACA", "CCC", "DDD" },
+                    { "   ", " E ", "   ", "   ", "A~A", "CCC", "DDD" },
+                    { "   ", " C ", "   ", "   ", "ACA", "CCC", "DDD" },
+                    { "AAA", "ACA", "ACA", "ACA", "BCB", "BCB", "BBB" },
+                    { "   ", " A ", " A ", "AAA", "AAA", "AAA", "AAA" } }))
+        .addElement('A', ofBlock(sBlockCasingsTT, 1))
+        .addElement('B', ofBlock(sBlockCasingsTT, 2))
+        .addElement('C', ofBlock(sBlockCasingsTT, 3))
+        .addElement(
+            'D',
+            buildHatchAdder(GT_MetaTileEntity_EM_research.class)
+                .atLeast(Energy.or(HatchElement.EnergyMulti), Maintenance, HatchElement.InputData)
+                .casingIndex(textureOffset + 1)
+                .dot(1)
+                .buildAndChain(ofBlock(sBlockCasingsTT, 1)))
+        .addElement('E', HolderHatchElement.INSTANCE.newAny(textureOffset + 3, 2))
+        .build();
     // endregion
 
     public GT_MetaTileEntity_EM_research(int aID, String aName, String aNameRegional) {
@@ -136,10 +140,10 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     private void makeStick() {
         mInventory[1].setTagCompound(new NBTTagCompound());
         mInventory[1].setStackDisplayName(
-                GT_LanguageManager.getTranslation(tRecipe.mOutput.getDisplayName()) + " Construction Data");
+            GT_LanguageManager.getTranslation(tRecipe.mOutput.getDisplayName()) + " Construction Data");
         GT_Utility.ItemNBT.setBookTitle(
-                mInventory[1],
-                GT_LanguageManager.getTranslation(tRecipe.mOutput.getDisplayName()) + " Construction Data");
+            mInventory[1],
+            GT_LanguageManager.getTranslation(tRecipe.mOutput.getDisplayName()) + " Construction Data");
         NBTTagCompound tNBT = mInventory[1].getTagCompound(); // code above makes it not null
 
         tNBT.setTag("output", tRecipe.mOutput.writeToNBT(new NBTTagCompound()));
@@ -152,43 +156,42 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
             tNBT.setTag("f" + i, tRecipe.mFluidInputs[i].writeToNBT(new NBTTagCompound()));
         }
         tNBT.setString(
-                "author",
-                EnumChatFormatting.BLUE + "Tec"
-                        + EnumChatFormatting.DARK_BLUE
-                        + "Tech"
-                        + EnumChatFormatting.WHITE
-                        + " Assembling Line Recipe Generator");
+            "author",
+            EnumChatFormatting.BLUE + "Tec"
+                + EnumChatFormatting.DARK_BLUE
+                + "Tech"
+                + EnumChatFormatting.WHITE
+                + " Assembling Line Recipe Generator");
         NBTTagList tNBTList = new NBTTagList();
         tNBTList.appendTag(
-                new NBTTagString(
-                        "Construction plan for " + tRecipe.mOutput.stackSize
-                                + ' '
-                                + GT_LanguageManager.getTranslation(tRecipe.mOutput.getDisplayName())
-                                + ". Needed EU/t: "
-                                + tRecipe.mEUt
-                                + " Production time: "
-                                + tRecipe.mDuration / 20));
+            new NBTTagString(
+                "Construction plan for " + tRecipe.mOutput.stackSize
+                    + ' '
+                    + GT_LanguageManager.getTranslation(tRecipe.mOutput.getDisplayName())
+                    + ". Needed EU/t: "
+                    + tRecipe.mEUt
+                    + " Production time: "
+                    + tRecipe.mDuration / 20));
         for (int i = 0; i < tRecipe.mInputs.length; i++) {
             if (tRecipe.mInputs[i] != null) {
                 tNBTList.appendTag(
-                        new NBTTagString(
-                                "Input Bus " + (i + 1)
-                                        + ": "
-                                        + tRecipe.mInputs[i].stackSize
-                                        + ' '
-                                        + GT_LanguageManager.getTranslation(tRecipe.mInputs[i].getDisplayName())));
+                    new NBTTagString(
+                        "Input Bus " + (i + 1)
+                            + ": "
+                            + tRecipe.mInputs[i].stackSize
+                            + ' '
+                            + GT_LanguageManager.getTranslation(tRecipe.mInputs[i].getDisplayName())));
             }
         }
         for (int i = 0; i < tRecipe.mFluidInputs.length; i++) {
             if (tRecipe.mFluidInputs[i] != null) {
                 tNBTList.appendTag(
-                        new NBTTagString(
-                                "Input Hatch " + (i + 1)
-                                        + ": "
-                                        + tRecipe.mFluidInputs[i].amount
-                                        + "L "
-                                        + GT_LanguageManager
-                                                .getTranslation(tRecipe.mFluidInputs[i].getLocalizedName())));
+                    new NBTTagString(
+                        "Input Hatch " + (i + 1)
+                            + ": "
+                            + tRecipe.mFluidInputs[i].amount
+                            + "L "
+                            + GT_LanguageManager.getTranslation(tRecipe.mFluidInputs[i].getLocalizedName())));
             }
         }
         tNBT.setTag("pages", tNBTList);
@@ -197,7 +200,8 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     static {
         try {
             Class<?> GT_Assemblyline_Server = Class.forName("gregtech.api.util.GT_Assemblyline_Server");
-            lServerNames = (LinkedHashMap<String, String>) GT_Assemblyline_Server.getField("lServerNames").get(null);
+            lServerNames = (LinkedHashMap<String, String>) GT_Assemblyline_Server.getField("lServerNames")
+                .get(null);
         } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
             lServerNames = null;
         }
@@ -239,14 +243,14 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
             tNBT.setTag("f" + i, tRecipe.mFluidInputs[i].writeToNBT(new NBTTagCompound()));
         }
         tNBT.setString(
-                "author",
-                EnumChatFormatting.BLUE + "Tec"
-                        + EnumChatFormatting.DARK_BLUE
-                        + "Tech"
-                        + EnumChatFormatting.WHITE
-                        + ' '
-                        + machineType
-                        + " Recipe Generator");
+            "author",
+            EnumChatFormatting.BLUE + "Tec"
+                + EnumChatFormatting.DARK_BLUE
+                + "Tech"
+                + EnumChatFormatting.WHITE
+                + ' '
+                + machineType
+                + " Recipe Generator");
         NBTTagList tNBTList = new NBTTagList();
         s = tRecipe.mOutput.getDisplayName();
         if (getBaseMetaTileEntity().isServerSide()) {
@@ -256,14 +260,14 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
             }
         }
         tNBTList.appendTag(
-                new NBTTagString(
-                        "Construction plan for " + tRecipe.mOutput.stackSize
-                                + " "
-                                + s
-                                + ". Needed EU/t: "
-                                + tRecipe.mEUt
-                                + " Production time: "
-                                + (tRecipe.mDuration / 20)));
+            new NBTTagString(
+                "Construction plan for " + tRecipe.mOutput.stackSize
+                    + " "
+                    + s
+                    + ". Needed EU/t: "
+                    + tRecipe.mEUt
+                    + " Production time: "
+                    + (tRecipe.mDuration / 20)));
         for (int i = 0; i < tRecipe.mInputs.length; i++) {
             if (tRecipe.mOreDictAlt[i] != null) {
                 int count = 0;
@@ -276,7 +280,10 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                             if (s == null) s = tStack.getDisplayName();
                         }
 
-                        tBuilder.append(count == 0 ? "" : "\nOr ").append(tStack.stackSize).append(" ").append(s);
+                        tBuilder.append(count == 0 ? "" : "\nOr ")
+                            .append(tStack.stackSize)
+                            .append(" ")
+                            .append(s);
                         count++;
                     }
                 }
@@ -290,7 +297,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                     }
                 }
                 tNBTList.appendTag(
-                        new NBTTagString("Input Bus " + (i + 1) + ": " + tRecipe.mInputs[i].stackSize + " " + s));
+                    new NBTTagString("Input Bus " + (i + 1) + ": " + tRecipe.mInputs[i].stackSize + " " + s));
             }
         }
         for (int i = 0; i < tRecipe.mFluidInputs.length; i++) {
@@ -303,7 +310,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                     }
                 }
                 tNBTList.appendTag(
-                        new NBTTagString("Input Hatch " + (i + 1) + ": " + tRecipe.mFluidInputs[i].amount + "L " + s));
+                    new NBTTagString("Input Hatch " + (i + 1) + ": " + tRecipe.mFluidInputs[i].amount + "L " + s));
             }
         }
         tNBT.setTag("pages", tNBTList);
@@ -320,7 +327,9 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                 eRequiredData = (short) (ttRecipe.mSpecialValue >>> 16);
                 eAmpereFlow = (short) (ttRecipe.mSpecialValue & 0xFFFF);
                 mEUt = Math.min(ttRecipe.mEUt, -ttRecipe.mEUt);
-                eHolders.get(0).getBaseMetaTileEntity().setActive(true);
+                eHolders.get(0)
+                    .getBaseMetaTileEntity()
+                    .setActive(true);
                 return true;
             }
         }
@@ -335,7 +344,8 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         for (GT_MetaTileEntity_Hatch_Holder rack : filterValidMTEs(eHolders)) {
-            rack.getBaseMetaTileEntity().setActive(false);
+            rack.getBaseMetaTileEntity()
+                .setActive(false);
         }
         eHolders.clear();
 
@@ -344,7 +354,8 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
         }
 
         for (GT_MetaTileEntity_Hatch_Holder rack : filterValidMTEs(eHolders)) {
-            rack.getBaseMetaTileEntity().setActive(iGregTechTileEntity.isActive());
+            rack.getBaseMetaTileEntity()
+                .setActive(iGregTechTileEntity.isActive());
         }
         return eHolders.size() == 1;
     }
@@ -382,7 +393,9 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                                 eRequiredData = 1;
                                 eAmpereFlow = 1;
                                 mEUt = -524288;
-                                eHolders.get(0).getBaseMetaTileEntity().setActive(true);
+                                eHolders.get(0)
+                                    .getBaseMetaTileEntity()
+                                    .setActive(true);
                                 return SimpleCheckRecipeResult.ofSuccess("scanning");
                             }
                         }
@@ -404,7 +417,8 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
         holdItem = null;
         computationRequired = computationRemaining = 0;
         for (GT_MetaTileEntity_Hatch_Holder r : eHolders) {
-            r.getBaseMetaTileEntity().setActive(false);
+            r.getBaseMetaTileEntity()
+                .setActive(false);
         }
         return SimpleCheckRecipeResult.ofFailure("no_research_item");
     }
@@ -415,7 +429,9 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
             switch (machineType) {
                 case assembly -> {
                     if (tRecipe != null && ItemList.Tool_DataStick.isStackEqual(mInventory[1], false, true)) {
-                        eHolders.get(0).getBaseMetaTileEntity().setActive(false);
+                        eHolders.get(0)
+                            .getBaseMetaTileEntity()
+                            .setActive(false);
                         eHolders.get(0).mInventory[0] = null;
                         if (lServerNames == null) {
                             makeStick();
@@ -431,7 +447,9 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                 case scanner -> {
                     mInventory[1] = ItemList.Tool_DataStick.get(1);
                     GT_AssemblyLineUtils.setAssemblyLineRecipeOnDataStick(mInventory[1], tRecipe);
-                    eHolders.get(0).getBaseMetaTileEntity().setActive(false);
+                    eHolders.get(0)
+                        .getBaseMetaTileEntity()
+                        .setActive(false);
                 }
             }
         }
@@ -445,41 +463,42 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.research.name")) // Machine Type: Research
                                                                                               // Station
-                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.0")) // Controller block of
-                                                                                               // the Research Station
-                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.1")) // Used to scan Data
-                                                                                               // Sticks for
-                // Assembling Line Recipes
-                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.2")) // Needs to be fed with
-                                                                                               // computation to work
-                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.3")) // Does not consume the
-                                                                                               // item until
-                // the Data Stick is written
-                .addInfo(translateToLocal("tt.keyword.Structure.StructureTooComplex")) // The structure is too complex!
-                .addSeparator().beginStructureBlock(3, 7, 7, false)
-                .addOtherStructurePart(
-                        translateToLocal("gt.blockmachines.hatch.holder.tier.09.name"),
-                        translateToLocal("tt.keyword.Structure.CenterPillar"),
-                        2) // Object Holder: Center of the front pillar
-                .addOtherStructurePart(
-                        translateToLocal("tt.keyword.Structure.DataConnector"),
-                        translateToLocal("tt.keyword.Structure.AnyComputerCasingBackMain"),
-                        1) // Optical Connector: Any Computer Casing on the backside of the main body
-                .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasingBackMain"), 1) // Energy Hatch:
-                                                                                                       // Any Computer
-                                                                                                       // Casing on the
-                                                                                                       // backside of
-                                                                                                       // the main body
-                .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasingBackMain"), 1) // Maintenance
-                                                                                                            // Hatch:
-                                                                                                            // Any
-                                                                                                            // Computer
-                                                                                                            // Casing on
-                                                                                                            // the
-                                                                                                            // backside
-                                                                                                            // of the
-                                                                                                            // main body
-                .toolTipFinisher(CommonValues.TEC_MARK_EM);
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.0")) // Controller block of
+                                                                                           // the Research Station
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.1")) // Used to scan Data
+                                                                                           // Sticks for
+            // Assembling Line Recipes
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.2")) // Needs to be fed with
+                                                                                           // computation to work
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.3")) // Does not consume the
+                                                                                           // item until
+            // the Data Stick is written
+            .addInfo(translateToLocal("tt.keyword.Structure.StructureTooComplex")) // The structure is too complex!
+            .addSeparator()
+            .beginStructureBlock(3, 7, 7, false)
+            .addOtherStructurePart(
+                translateToLocal("gt.blockmachines.hatch.holder.tier.09.name"),
+                translateToLocal("tt.keyword.Structure.CenterPillar"),
+                2) // Object Holder: Center of the front pillar
+            .addOtherStructurePart(
+                translateToLocal("tt.keyword.Structure.DataConnector"),
+                translateToLocal("tt.keyword.Structure.AnyComputerCasingBackMain"),
+                1) // Optical Connector: Any Computer Casing on the backside of the main body
+            .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasingBackMain"), 1) // Energy Hatch:
+                                                                                                   // Any Computer
+                                                                                                   // Casing on the
+                                                                                                   // backside of
+                                                                                                   // the main body
+            .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasingBackMain"), 1) // Maintenance
+                                                                                                        // Hatch:
+                                                                                                        // Any
+                                                                                                        // Computer
+                                                                                                        // Casing on
+                                                                                                        // the
+                                                                                                        // backside
+                                                                                                        // of the
+                                                                                                        // main body
+            .toolTipFinisher(CommonValues.TEC_MARK_EM);
         return tt;
     }
 
@@ -488,93 +507,97 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
         long storedEnergy = 0;
         long maxEnergy = 0;
         for (GT_MetaTileEntity_Hatch_Energy tHatch : filterValidMTEs(mEnergyHatches)) {
-            storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
-            maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
+            storedEnergy += tHatch.getBaseMetaTileEntity()
+                .getStoredEU();
+            maxEnergy += tHatch.getBaseMetaTileEntity()
+                .getEUCapacity();
         }
         for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : filterValidMTEs(eEnergyMulti)) {
-            storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
-            maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
+            storedEnergy += tHatch.getBaseMetaTileEntity()
+                .getStoredEU();
+            maxEnergy += tHatch.getBaseMetaTileEntity()
+                .getEUCapacity();
         }
 
         return new String[] { translateToLocalFormatted("tt.keyphrase.Energy_Hatches", clientLocale) + ":",
-                EnumChatFormatting.GREEN + GT_Utility.formatNumbers(storedEnergy)
-                        + EnumChatFormatting.RESET
-                        + " EU / "
-                        + EnumChatFormatting.YELLOW
-                        + GT_Utility.formatNumbers(maxEnergy)
-                        + EnumChatFormatting.RESET
-                        + " EU",
-                (mEUt <= 0 ? translateToLocalFormatted("tt.keyphrase.Probably_uses", clientLocale) + ": "
-                        : translateToLocalFormatted("tt.keyphrase.Probably_makes", clientLocale) + ": ")
-                        + EnumChatFormatting.RED
-                        + GT_Utility.formatNumbers(Math.abs(mEUt))
-                        + EnumChatFormatting.RESET
-                        + " EU/t "
-                        + translateToLocalFormatted("tt.keyword.at", clientLocale)
-                        + " "
-                        + EnumChatFormatting.RED
-                        + GT_Utility.formatNumbers(eAmpereFlow)
-                        + EnumChatFormatting.RESET
-                        + " A",
-                translateToLocalFormatted("tt.keyphrase.Tier_Rating", clientLocale) + ": "
-                        + EnumChatFormatting.YELLOW
-                        + VN[getMaxEnergyInputTier_EM()]
-                        + EnumChatFormatting.RESET
-                        + " / "
-                        + EnumChatFormatting.GREEN
-                        + VN[getMinEnergyInputTier_EM()]
-                        + EnumChatFormatting.RESET
-                        + " "
-                        + translateToLocalFormatted("tt.keyphrase.Amp_Rating", clientLocale)
-                        + ": "
-                        + EnumChatFormatting.GREEN
-                        + GT_Utility.formatNumbers(eMaxAmpereFlow)
-                        + EnumChatFormatting.RESET
-                        + " A",
-                translateToLocalFormatted("tt.keyword.Problems", clientLocale) + ": "
-                        + EnumChatFormatting.RED
-                        + (getIdealStatus() - getRepairStatus())
-                        + EnumChatFormatting.RESET
-                        + " "
-                        + translateToLocalFormatted("tt.keyword.Efficiency", clientLocale)
-                        + ": "
-                        + EnumChatFormatting.YELLOW
-                        + mEfficiency / 100.0F
-                        + EnumChatFormatting.RESET
-                        + " %",
-                translateToLocalFormatted("tt.keyword.PowerPass", clientLocale) + ": "
-                        + EnumChatFormatting.BLUE
-                        + ePowerPass
-                        + EnumChatFormatting.RESET
-                        + " "
-                        + translateToLocalFormatted("tt.keyword.SafeVoid", clientLocale)
-                        + ": "
-                        + EnumChatFormatting.BLUE
-                        + eSafeVoid,
-                translateToLocalFormatted("tt.keyphrase.Computation_Available", clientLocale) + ": "
-                        + EnumChatFormatting.GREEN
-                        + GT_Utility.formatNumbers(eAvailableData)
-                        + EnumChatFormatting.RESET
-                        + " / "
-                        + EnumChatFormatting.YELLOW
-                        + GT_Utility.formatNumbers(eRequiredData)
-                        + EnumChatFormatting.RESET,
-                translateToLocalFormatted("tt.keyphrase.Computation_Remaining", clientLocale) + ":",
-                EnumChatFormatting.GREEN + GT_Utility.formatNumbers(computationRemaining / 20L)
-                        + EnumChatFormatting.RESET
-                        + " / "
-                        + EnumChatFormatting.YELLOW
-                        + GT_Utility.formatNumbers(computationRequired / 20L) };
+            EnumChatFormatting.GREEN + GT_Utility.formatNumbers(storedEnergy)
+                + EnumChatFormatting.RESET
+                + " EU / "
+                + EnumChatFormatting.YELLOW
+                + GT_Utility.formatNumbers(maxEnergy)
+                + EnumChatFormatting.RESET
+                + " EU",
+            (mEUt <= 0 ? translateToLocalFormatted("tt.keyphrase.Probably_uses", clientLocale) + ": "
+                : translateToLocalFormatted("tt.keyphrase.Probably_makes", clientLocale) + ": ")
+                + EnumChatFormatting.RED
+                + GT_Utility.formatNumbers(Math.abs(mEUt))
+                + EnumChatFormatting.RESET
+                + " EU/t "
+                + translateToLocalFormatted("tt.keyword.at", clientLocale)
+                + " "
+                + EnumChatFormatting.RED
+                + GT_Utility.formatNumbers(eAmpereFlow)
+                + EnumChatFormatting.RESET
+                + " A",
+            translateToLocalFormatted("tt.keyphrase.Tier_Rating", clientLocale) + ": "
+                + EnumChatFormatting.YELLOW
+                + VN[getMaxEnergyInputTier_EM()]
+                + EnumChatFormatting.RESET
+                + " / "
+                + EnumChatFormatting.GREEN
+                + VN[getMinEnergyInputTier_EM()]
+                + EnumChatFormatting.RESET
+                + " "
+                + translateToLocalFormatted("tt.keyphrase.Amp_Rating", clientLocale)
+                + ": "
+                + EnumChatFormatting.GREEN
+                + GT_Utility.formatNumbers(eMaxAmpereFlow)
+                + EnumChatFormatting.RESET
+                + " A",
+            translateToLocalFormatted("tt.keyword.Problems", clientLocale) + ": "
+                + EnumChatFormatting.RED
+                + (getIdealStatus() - getRepairStatus())
+                + EnumChatFormatting.RESET
+                + " "
+                + translateToLocalFormatted("tt.keyword.Efficiency", clientLocale)
+                + ": "
+                + EnumChatFormatting.YELLOW
+                + mEfficiency / 100.0F
+                + EnumChatFormatting.RESET
+                + " %",
+            translateToLocalFormatted("tt.keyword.PowerPass", clientLocale) + ": "
+                + EnumChatFormatting.BLUE
+                + ePowerPass
+                + EnumChatFormatting.RESET
+                + " "
+                + translateToLocalFormatted("tt.keyword.SafeVoid", clientLocale)
+                + ": "
+                + EnumChatFormatting.BLUE
+                + eSafeVoid,
+            translateToLocalFormatted("tt.keyphrase.Computation_Available", clientLocale) + ": "
+                + EnumChatFormatting.GREEN
+                + GT_Utility.formatNumbers(eAvailableData)
+                + EnumChatFormatting.RESET
+                + " / "
+                + EnumChatFormatting.YELLOW
+                + GT_Utility.formatNumbers(eRequiredData)
+                + EnumChatFormatting.RESET,
+            translateToLocalFormatted("tt.keyphrase.Computation_Remaining", clientLocale) + ":",
+            EnumChatFormatting.GREEN + GT_Utility.formatNumbers(computationRemaining / 20L)
+                + EnumChatFormatting.RESET
+                + " / "
+                + EnumChatFormatting.YELLOW
+                + GT_Utility.formatNumbers(computationRequired / 20L) };
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-            int colorIndex, boolean aActive, boolean aRedstone) {
+        int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
             return new ITexture[] { Textures.BlockIcons.casingTexturePages[texturePage][3],
-                    new TT_RenderedExtendedFacingTexture(
-                            aActive ? GT_MetaTileEntity_MultiblockBase_EM.ScreenON
-                                    : GT_MetaTileEntity_MultiblockBase_EM.ScreenOFF) };
+                new TT_RenderedExtendedFacingTexture(
+                    aActive ? GT_MetaTileEntity_MultiblockBase_EM.ScreenON
+                        : GT_MetaTileEntity_MultiblockBase_EM.ScreenOFF) };
         }
         return new ITexture[] { Textures.BlockIcons.casingTexturePages[texturePage][3] };
     }
@@ -583,14 +606,16 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     public void onRemoval() {
         super.onRemoval();
         for (GT_MetaTileEntity_Hatch_Holder r : eHolders) {
-            r.getBaseMetaTileEntity().setActive(false);
+            r.getBaseMetaTileEntity()
+                .setActive(false);
         }
     }
 
     @Override
     protected void extraExplosions_EM() {
         for (MetaTileEntity tTileEntity : eHolders) {
-            tTileEntity.getBaseMetaTileEntity().doExplosion(V[9]);
+            tTileEntity.getBaseMetaTileEntity()
+                .doExplosion(V[9]);
         }
     }
 
@@ -624,7 +649,8 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     public void stopMachine(@Nonnull ShutDownReason reason) {
         super.stopMachine(reason);
         for (GT_MetaTileEntity_Hatch_Holder r : eHolders) {
-            r.getBaseMetaTileEntity().setActive(false);
+            r.getBaseMetaTileEntity()
+                .setActive(false);
         }
         computationRequired = computationRemaining = 0;
         tRecipe = null;
@@ -652,7 +678,8 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                     mMaxProgresstime = 0;
                     mEfficiencyIncrease = 0;
                     for (GT_MetaTileEntity_Hatch_Holder r : eHolders) {
-                        r.getBaseMetaTileEntity().setActive(false);
+                        r.getBaseMetaTileEntity()
+                            .setActive(false);
                     }
                 }
             }
@@ -712,13 +739,13 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
             case assembly -> machineType = scanner;
         }
         aPlayer.addChatComponentMessage(
-                new ChatComponentTranslation(
-                        "gt.blockmachines.multimachine.em.research.mode." + machineType.replace(" ", "_")));
+            new ChatComponentTranslation(
+                "gt.blockmachines.multimachine.em.research.mode." + machineType.replace(" ", "_")));
     }
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-            int z) {
+        int z) {
         tag.setBoolean("hasProblems", (getIdealStatus() - getRepairStatus()) > 0);
         tag.setFloat("efficiency", mEfficiency / 100.0F);
         tag.setBoolean("incompleteStructure", (getBaseMetaTileEntity().getErrorDisplayID() & 64) != 0);
@@ -729,23 +756,23 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-            IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         final NBTTagCompound tag = accessor.getNBTData();
 
         if (tag.getBoolean("incompleteStructure")) {
             currentTip.add(RED + "** INCOMPLETE STRUCTURE **" + RESET);
         }
         currentTip.add(
-                (tag.getBoolean("hasProblems") ? (RED + "** HAS PROBLEMS **") : GREEN + "Running Fine") + RESET
-                        + "  Efficiency: "
-                        + tag.getFloat("efficiency")
-                        + "%");
+            (tag.getBoolean("hasProblems") ? (RED + "** HAS PROBLEMS **") : GREEN + "Running Fine") + RESET
+                + "  Efficiency: "
+                + tag.getFloat("efficiency")
+                + "%");
         currentTip.add("Mode: " + tag.getString("machineType"));
         currentTip.add(
-                String.format(
-                        "Computation: %,d / %,d",
-                        tag.getInteger("computation"),
-                        tag.getInteger("computationRequired")));
+            String.format(
+                "Computation: %,d / %,d",
+                tag.getInteger("computation"),
+                tag.getInteger("computationRequired")));
     }
 
     @Override

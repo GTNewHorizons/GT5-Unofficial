@@ -37,13 +37,13 @@ public final class TeslaCoilCapacitor extends Item {
         aList.add(CommonValues.THETA_MOVEMENT);
         if (aStack.getItemDamage() >= 0 && aStack.getItemDamage() <= 6) {
             aList.add(
-                    translateToLocal("item.tm.teslaCoilCapacitor.desc.0") + " "
-                            + V[aStack.getItemDamage() + 1] * 512
-                            + " "
-                            + translateToLocal("item.tm.teslaCoilCapacitor.desc.1")
-                            + " "
-                            + V[aStack.getItemDamage() + 1]
-                            + " EU/t"); // Stores 16384 EU in a tesla tower at 32 EU/t
+                translateToLocal("item.tm.teslaCoilCapacitor.desc.0") + " "
+                    + V[aStack.getItemDamage() + 1] * 512
+                    + " "
+                    + translateToLocal("item.tm.teslaCoilCapacitor.desc.1")
+                    + " "
+                    + V[aStack.getItemDamage() + 1]
+                    + " EU/t"); // Stores 16384 EU in a tesla tower at 32 EU/t
         } else {
             aList.add(translateToLocal("item.tm.teslaCoilCapacitor.desc.2")); // Yeet this broken item into some spicy
                                                                               // water!

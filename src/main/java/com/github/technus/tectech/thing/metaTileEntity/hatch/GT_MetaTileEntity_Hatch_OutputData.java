@@ -24,18 +24,18 @@ public class GT_MetaTileEntity_Hatch_OutputData extends GT_MetaTileEntity_Hatch_
 
     public GT_MetaTileEntity_Hatch_OutputData(int aID, String aName, String aNameRegional, int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.dataout.desc.0"),
-                        translateToLocal("gt.blockmachines.hatch.dataout.desc.1"),
-                        EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.dataout.desc.2") });
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.dataout.desc.0"),
+                translateToLocal("gt.blockmachines.hatch.dataout.desc.1"),
+                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.dataout.desc.2") });
         TT_Utility.setTier(aTier, this);
     }
 
     public GT_MetaTileEntity_Hatch_OutputData(String aName, int aTier, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
@@ -105,10 +105,12 @@ public class GT_MetaTileEntity_Hatch_OutputData extends GT_MetaTileEntity_Hatch_
             ((GT_MetaTileEntity_Pipe_Data) meta).markUsed();
             return (IConnectsToDataPipe) meta;
         } else if (meta instanceof GT_MetaTileEntity_Hatch_InputData
-                && ((GT_MetaTileEntity_Hatch_InputData) meta).getColorization() == color
-                && ((GT_MetaTileEntity_Hatch_InputData) meta).canConnectData(base.getFrontFacing().getOpposite())) {
-                    return (IConnectsToDataPipe) meta;
-                }
+            && ((GT_MetaTileEntity_Hatch_InputData) meta).getColorization() == color
+            && ((GT_MetaTileEntity_Hatch_InputData) meta).canConnectData(
+                base.getFrontFacing()
+                    .getOpposite())) {
+                        return (IConnectsToDataPipe) meta;
+                    }
         return null;
     }
 }

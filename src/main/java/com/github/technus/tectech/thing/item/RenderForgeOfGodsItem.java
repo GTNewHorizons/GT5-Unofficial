@@ -20,7 +20,7 @@ public class RenderForgeOfGodsItem implements IItemRenderer {
 
     @Override
     public boolean shouldUseRenderHelper(IItemRenderer.ItemRenderType type, ItemStack item,
-            IItemRenderer.ItemRendererHelper helper) {
+        IItemRenderer.ItemRendererHelper helper) {
         return true;
     }
 
@@ -30,10 +30,10 @@ public class RenderForgeOfGodsItem implements IItemRenderer {
 
         if (type == IItemRenderer.ItemRenderType.INVENTORY) GL11.glRotated(180, 0, 1, 0);
         else if (type == IItemRenderer.ItemRenderType.EQUIPPED
-                || type == IItemRenderer.ItemRenderType.EQUIPPED_FIRST_PERSON) {
-                    GL11.glTranslated(0.5, 0.5, 0.5);
-                    if (type == IItemRenderer.ItemRenderType.EQUIPPED) GL11.glRotated(90, 0, 1, 0);
-                }
+            || type == IItemRenderer.ItemRenderType.EQUIPPED_FIRST_PERSON) {
+                GL11.glTranslated(0.5, 0.5, 0.5);
+                if (type == IItemRenderer.ItemRenderType.EQUIPPED) GL11.glRotated(90, 0, 1, 0);
+            }
 
         // Render star stuff
         renderStarLayer(0, STAR_LAYER_0, 1.0f);
@@ -52,7 +52,10 @@ public class RenderForgeOfGodsItem implements IItemRenderer {
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-        FMLClientHandler.instance().getClient().getTextureManager().bindTexture(texture);
+        FMLClientHandler.instance()
+            .getClient()
+            .getTextureManager()
+            .bindTexture(texture);
 
         // 0.01f magic number to shrink sphere obj down
         float scale = 0.01f;

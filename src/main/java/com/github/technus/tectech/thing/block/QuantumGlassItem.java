@@ -27,7 +27,7 @@ public class QuantumGlassItem extends ItemBlock {
         aList.add(TEC_MARK_EM);
         aList.add(translateToLocal("tile.quantumGlass.desc.0")); // Dense yet transparent
         aList.add(
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-                        + translateToLocal("tile.quantumGlass.desc.1")); // Glassy & Classy
+            EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
+                + translateToLocal("tile.quantumGlass.desc.1")); // Glassy & Classy
     }
 }

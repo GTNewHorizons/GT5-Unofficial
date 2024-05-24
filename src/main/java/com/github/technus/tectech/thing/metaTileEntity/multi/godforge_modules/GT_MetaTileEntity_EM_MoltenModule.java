@@ -98,7 +98,7 @@ public class GT_MetaTileEntity_EM_MoltenModule extends GT_MetaTileEntity_EM_Base
                         // substring 8 because ingotHot is 8 characters long
                         String strippedOreDict = dict.substring(8);
                         meltableItems[i] = FluidRegistry
-                                .getFluidStack("molten." + strippedOreDict.toLowerCase(), INGOTS);
+                            .getFluidStack("molten." + strippedOreDict.toLowerCase(), INGOTS);
                     }
                 }
 
@@ -109,9 +109,12 @@ public class GT_MetaTileEntity_EM_MoltenModule extends GT_MetaTileEntity_EM_Base
             @Override
             protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
                 return super.createOverclockCalculator(recipe).setEUt(getProcessingVoltage())
-                        .setRecipeHeat(recipe.mSpecialValue).setHeatOC(true).setHeatDiscount(true)
-                        .setMachineHeat(getHeatForOC()).setHeatDiscountMultiplier(getHeatEnergyDiscount())
-                        .setDurationDecreasePerOC(getOverclockTimeFactor());
+                    .setRecipeHeat(recipe.mSpecialValue)
+                    .setHeatOC(true)
+                    .setHeatDiscount(true)
+                    .setMachineHeat(getHeatForOC())
+                    .setHeatDiscountMultiplier(getHeatEnergyDiscount())
+                    .setDurationDecreasePerOC(getOverclockTimeFactor());
 
             }
 
@@ -121,7 +124,9 @@ public class GT_MetaTileEntity_EM_MoltenModule extends GT_MetaTileEntity_EM_Base
                 if (!addEUToGlobalEnergyMap(userUUID, -calculatedEut * duration)) {
                     return CheckRecipeResultRegistry.insufficientPower(calculatedEut * duration);
                 }
-                addToPowerTally(BigInteger.valueOf(calculatedEut).multiply(BigInteger.valueOf(duration)));
+                addToPowerTally(
+                    BigInteger.valueOf(calculatedEut)
+                        .multiply(BigInteger.valueOf(duration)));
                 addToRecipeTally(calculatedParallels);
                 currentParallel = calculatedParallels;
                 EUt = calculatedEut;
@@ -143,29 +148,31 @@ public class GT_MetaTileEntity_EM_MoltenModule extends GT_MetaTileEntity_EM_Base
                         addItemsLong(outputItems, itemToAdd, (long) item.stackSize * currentParallel);
                     }
                     return outputItems.toArray(new ItemStack[0]);
-                }).setCustomFluidOutputCalculation(currentParallel -> {
-                    ArrayList<FluidStack> fluids = new ArrayList<>();
+                })
+                    .setCustomFluidOutputCalculation(currentParallel -> {
+                        ArrayList<FluidStack> fluids = new ArrayList<>();
 
-                    for (int i = 0; i < recipe.mOutputs.length; i++) {
-                        FluidStack fluid = meltableItems[i];
-                        if (fluid == null) {
-                            continue;
+                        for (int i = 0; i < recipe.mOutputs.length; i++) {
+                            FluidStack fluid = meltableItems[i];
+                            if (fluid == null) {
+                                continue;
+                            }
+                            FluidStack fluidToAdd = fluid.copy();
+                            long fluidAmount = (long) fluidToAdd.amount * recipe.mOutputs[i].stackSize
+                                * currentParallel;
+                            addFluidsLong(fluids, fluidToAdd, fluidAmount);
                         }
-                        FluidStack fluidToAdd = fluid.copy();
-                        long fluidAmount = (long) fluidToAdd.amount * recipe.mOutputs[i].stackSize * currentParallel;
-                        addFluidsLong(fluids, fluidToAdd, fluidAmount);
-                    }
 
-                    for (int i = 0; i < recipe.mFluidOutputs.length; i++) {
-                        FluidStack fluid = recipe.getFluidOutput(i);
-                        if (fluid == null) {
-                            continue;
+                        for (int i = 0; i < recipe.mFluidOutputs.length; i++) {
+                            FluidStack fluid = recipe.getFluidOutput(i);
+                            if (fluid == null) {
+                                continue;
+                            }
+                            FluidStack fluidToAdd = fluid.copy();
+                            addFluidsLong(fluids, fluidToAdd, (long) fluidToAdd.amount * currentParallel);
                         }
-                        FluidStack fluidToAdd = fluid.copy();
-                        addFluidsLong(fluids, fluidToAdd, (long) fluidToAdd.amount * currentParallel);
-                    }
-                    return fluids.toArray(new FluidStack[0]);
-                });
+                        return fluids.toArray(new FluidStack[0]);
+                    });
             }
         };
     }
@@ -184,14 +191,14 @@ public class GT_MetaTileEntity_EM_MoltenModule extends GT_MetaTileEntity_EM_Base
     public String[] getInfoData() {
         ArrayList<String> str = new ArrayList<>();
         str.add(
-                "Progress: " + GREEN
-                        + GT_Utility.formatNumbers(mProgresstime / 20)
-                        + RESET
-                        + " s / "
-                        + YELLOW
-                        + GT_Utility.formatNumbers(mMaxProgresstime / 20)
-                        + RESET
-                        + " s");
+            "Progress: " + GREEN
+                + GT_Utility.formatNumbers(mProgresstime / 20)
+                + RESET
+                + " s / "
+                + YELLOW
+                + GT_Utility.formatNumbers(mMaxProgresstime / 20)
+                + RESET
+                + " s");
         str.add("Currently using: " + RED + formatNumbers(EUt) + RESET + " EU/t");
         str.add(YELLOW + "Max Parallel: " + RESET + formatNumbers(getMaxParallel()));
         str.add(YELLOW + "Current Parallel: " + RESET + formatNumbers(currentParallel));
@@ -206,10 +213,14 @@ public class GT_MetaTileEntity_EM_MoltenModule extends GT_MetaTileEntity_EM_Base
     @Override
     public GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Blast Furnace").addInfo("Controller block of the Molten Module")
-                .addInfo("Uses a Star to to melt Metals").addSeparator().beginStructureBlock(1, 4, 2, false)
-                .addEnergyHatch("Any Infinite Spacetime Casing", 1)
-                .addMaintenanceHatch("Any Infinite Spacetime Casing", 1).toolTipFinisher(CommonValues.GODFORGE_MARK);
+        tt.addMachineType("Blast Furnace")
+            .addInfo("Controller block of the Molten Module")
+            .addInfo("Uses a Star to to melt Metals")
+            .addSeparator()
+            .beginStructureBlock(1, 4, 2, false)
+            .addEnergyHatch("Any Infinite Spacetime Casing", 1)
+            .addMaintenanceHatch("Any Infinite Spacetime Casing", 1)
+            .toolTipFinisher(CommonValues.GODFORGE_MARK);
         return tt;
     }
 

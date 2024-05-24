@@ -47,8 +47,8 @@ public class StabilisationFieldCasing extends GT_Block_Casings_Abstract {
 
         for (int i = 0; i < MAX_BLOCK_TIER; i++) {
             GT_LanguageManager.addStringLocalization(
-                    getUnlocalizedName() + "." + i + ".name",
-                    WHITE + EOH_TIER_FANCY_NAMES[i] + RESET + " Stabilisation Field Generator");
+                getUnlocalizedName() + "." + i + ".name",
+                WHITE + EOH_TIER_FANCY_NAMES[i] + RESET + " Stabilisation Field Generator");
         }
 
         CustomItemList.StabilisationFieldGeneratorTier0.set(new ItemStack(this, 1, 0));

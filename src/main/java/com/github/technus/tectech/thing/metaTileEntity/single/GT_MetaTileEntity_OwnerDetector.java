@@ -40,16 +40,15 @@ public class GT_MetaTileEntity_OwnerDetector extends GT_MetaTileEntity_TieredMac
 
     public GT_MetaTileEntity_OwnerDetector(int aID, String aName, String aNameRegional, int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                0,
-                new String[] { CommonValues.TEC_MARK_GENERAL,
-                        translateToLocal("gt.blockmachines.machine.tt.ownerdetector.desc.0"),
-                        EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.machine.tt.ownerdetector.desc.1"),
-                        EnumChatFormatting.BLUE
-                                + translateToLocal("gt.blockmachines.machine.tt.ownerdetector.desc.2") });
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            0,
+            new String[] { CommonValues.TEC_MARK_GENERAL,
+                translateToLocal("gt.blockmachines.machine.tt.ownerdetector.desc.0"),
+                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.machine.tt.ownerdetector.desc.1"),
+                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.machine.tt.ownerdetector.desc.2") });
         TT_Utility.setTier(aTier, this);
     }
 
@@ -73,7 +72,7 @@ public class GT_MetaTileEntity_OwnerDetector extends GT_MetaTileEntity_TieredMac
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-            int colorIndex, boolean aActive, boolean aRedstone) {
+        int colorIndex, boolean aActive, boolean aRedstone) {
         return new ITexture[] { MACHINE_CASINGS_TT[mTier][colorIndex + 1], aActive ? OWNER_ONLINE : OWNER_OFFLINE };
     }
 
@@ -84,13 +83,13 @@ public class GT_MetaTileEntity_OwnerDetector extends GT_MetaTileEntity_TieredMac
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
-            ItemStack itemStack) {
+        ItemStack itemStack) {
         return false;
     }
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
-            ItemStack itemStack) {
+        ItemStack itemStack) {
         return false;
     }
 
@@ -127,7 +126,7 @@ public class GT_MetaTileEntity_OwnerDetector extends GT_MetaTileEntity_TieredMac
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide() && aTick % 20 == RECIPE_AT) {
             boolean detected = TecTech.proxy.isOnlineUUID(uuid) || (uuid != null && uuid.length() > 0
-                    && TecTech.proxy.isOnlineName(aBaseMetaTileEntity.getOwnerName()));
+                && TecTech.proxy.isOnlineName(aBaseMetaTileEntity.getOwnerName()));
             aBaseMetaTileEntity.setActive(detected);
             aBaseMetaTileEntity.setGenericRedstoneOutput(detected);
             byte value = (byte) (detected ? 15 : 0);
@@ -148,9 +147,9 @@ public class GT_MetaTileEntity_OwnerDetector extends GT_MetaTileEntity_TieredMac
         }
         interdimensional ^= true;
         GT_Utility.sendChatToPlayer(
-                aPlayer,
-                interdimensional ? translateToLocalFormatted("tt.keyphrase.Running_interdimensional_scan", clientLocale)
-                        : translateToLocalFormatted("tt.keyphrase.Running_local_dimension_scan", clientLocale));
+            aPlayer,
+            interdimensional ? translateToLocalFormatted("tt.keyphrase.Running_interdimensional_scan", clientLocale)
+                : translateToLocalFormatted("tt.keyphrase.Running_local_dimension_scan", clientLocale));
     }
 
     @Override

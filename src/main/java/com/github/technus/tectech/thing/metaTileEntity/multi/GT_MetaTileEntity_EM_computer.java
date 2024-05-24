@@ -69,7 +69,7 @@ import gregtech.api.util.shutdown.ShutDownReason;
  * Created by danie_000 on 17.12.2016.
  */
 public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockBase_EM
-        implements ISurvivalConstructable {
+    implements ISurvivalConstructable {
 
     // region variables
     private final ArrayList<GT_MetaTileEntity_Hatch_Rack> eRacks = new ArrayList<>();
@@ -80,34 +80,35 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
 
     // region structure
     private static final String[] description = new String[] {
-            EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
-            translateToLocal("gt.blockmachines.multimachine.em.computer.hint.0"), // 1 - Classic/Data Hatches or
-                                                                                  // Computer casing
-            translateToLocal("gt.blockmachines.multimachine.em.computer.hint.1"), // 2 - Rack Hatches or Advanced
-                                                                                  // computer casing
+        EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
+        translateToLocal("gt.blockmachines.multimachine.em.computer.hint.0"), // 1 - Classic/Data Hatches or
+                                                                              // Computer casing
+        translateToLocal("gt.blockmachines.multimachine.em.computer.hint.1"), // 2 - Rack Hatches or Advanced
+                                                                              // computer casing
     };
 
     private static final IStructureDefinition<GT_MetaTileEntity_EM_computer> STRUCTURE_DEFINITION = IStructureDefinition
-            .<GT_MetaTileEntity_EM_computer>builder()
-            .addShape("front", transpose(new String[][] { { " AA" }, { " AA" }, { " ~A" }, { " AA" } }))
-            .addShape("cap", transpose(new String[][] { { "-CB" }, { " DD" }, { " DD" }, { "-CB" } }))
-            .addShape("slice", transpose(new String[][] { { "-CB" }, { " ED" }, { " ED" }, { "-CB" } }))
-            .addShape("back", transpose(new String[][] { { " AA" }, { " AA" }, { " AA" }, { " AA" } }))
-            .addElement('B', ofBlock(sBlockCasingsTT, 1)).addElement('C', ofBlock(sBlockCasingsTT, 2))
-            .addElement('D', ofBlock(sBlockCasingsTT, 3))
-            .addElement(
-                    'A',
-                    buildHatchAdder(GT_MetaTileEntity_EM_computer.class)
-                            .atLeast(
-                                    Energy.or(HatchElement.EnergyMulti),
-                                    Maintenance,
-                                    HatchElement.Uncertainty,
-                                    HatchElement.OutputData)
-                            .casingIndex(textureOffset + 1).dot(1).buildAndChain(ofBlock(sBlockCasingsTT, 1)))
-            .addElement(
-                    'E',
-                    ofChain(RackHatchElement.INSTANCE.newAny(textureOffset + 3, 2), ofBlock(sBlockCasingsTT, 3)))
-            .build();
+        .<GT_MetaTileEntity_EM_computer>builder()
+        .addShape("front", transpose(new String[][] { { " AA" }, { " AA" }, { " ~A" }, { " AA" } }))
+        .addShape("cap", transpose(new String[][] { { "-CB" }, { " DD" }, { " DD" }, { "-CB" } }))
+        .addShape("slice", transpose(new String[][] { { "-CB" }, { " ED" }, { " ED" }, { "-CB" } }))
+        .addShape("back", transpose(new String[][] { { " AA" }, { " AA" }, { " AA" }, { " AA" } }))
+        .addElement('B', ofBlock(sBlockCasingsTT, 1))
+        .addElement('C', ofBlock(sBlockCasingsTT, 2))
+        .addElement('D', ofBlock(sBlockCasingsTT, 3))
+        .addElement(
+            'A',
+            buildHatchAdder(GT_MetaTileEntity_EM_computer.class)
+                .atLeast(
+                    Energy.or(HatchElement.EnergyMulti),
+                    Maintenance,
+                    HatchElement.Uncertainty,
+                    HatchElement.OutputData)
+                .casingIndex(textureOffset + 1)
+                .dot(1)
+                .buildAndChain(ofBlock(sBlockCasingsTT, 1)))
+        .addElement('E', ofChain(RackHatchElement.INSTANCE.newAny(textureOffset + 3, 2), ofBlock(sBlockCasingsTT, 3)))
+        .build();
     // endregion
 
     // region parameters
@@ -115,19 +116,19 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     protected Parameters.Group.ParameterOut maxCurrentTemp, availableData;
 
     private static final INameFunction<GT_MetaTileEntity_EM_computer> OC_NAME = (base,
-            p) -> translateToLocal("gt.blockmachines.multimachine.em.computer.cfgi.0"); // Overclock ratio
+        p) -> translateToLocal("gt.blockmachines.multimachine.em.computer.cfgi.0"); // Overclock ratio
     private static final INameFunction<GT_MetaTileEntity_EM_computer> OV_NAME = (base,
-            p) -> translateToLocal("gt.blockmachines.multimachine.em.computer.cfgi.1"); // Overvoltage ratio
+        p) -> translateToLocal("gt.blockmachines.multimachine.em.computer.cfgi.1"); // Overvoltage ratio
     private static final INameFunction<GT_MetaTileEntity_EM_computer> MAX_TEMP_NAME = (base,
-            p) -> translateToLocal("gt.blockmachines.multimachine.em.computer.cfgo.0"); // Current max. heat
+        p) -> translateToLocal("gt.blockmachines.multimachine.em.computer.cfgo.0"); // Current max. heat
     private static final INameFunction<GT_MetaTileEntity_EM_computer> COMPUTE_NAME = (base,
-            p) -> translateToLocal("gt.blockmachines.multimachine.em.computer.cfgo.1"); // Produced computation
+        p) -> translateToLocal("gt.blockmachines.multimachine.em.computer.cfgo.1"); // Produced computation
     private static final IStatusFunction<GT_MetaTileEntity_EM_computer> OC_STATUS = (base, p) -> LedStatus
-            .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 1, 3);
+        .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 1, 3);
     private static final IStatusFunction<GT_MetaTileEntity_EM_computer> OV_STATUS = (base, p) -> LedStatus
-            .fromLimitsInclusiveOuterBoundary(p.get(), .7, .8, 1.2, 2);
+        .fromLimitsInclusiveOuterBoundary(p.get(), .7, .8, 1.2, 2);
     private static final IStatusFunction<GT_MetaTileEntity_EM_computer> MAX_TEMP_STATUS = (base, p) -> LedStatus
-            .fromLimitsInclusiveOuterBoundary(p.get(), -10000, 0, 0, 5000);
+        .fromLimitsInclusiveOuterBoundary(p.get(), -10000, 0, 0, 5000);
     private static final IStatusFunction<GT_MetaTileEntity_EM_computer> COMPUTE_STATUS = (base, p) -> {
         if (base.eAvailableData < 0) {
             return STATUS_TOO_LOW;
@@ -168,7 +169,8 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         for (GT_MetaTileEntity_Hatch_Rack rack : filterValidMTEs(eRacks)) {
-            rack.getBaseMetaTileEntity().setActive(false);
+            rack.getBaseMetaTileEntity()
+                .setActive(false);
         }
         eRacks.clear();
         if (!structureCheck_EM("front", 1, 2, 0)) {
@@ -196,7 +198,8 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
         }
         eCertainMode = (byte) Math.min(totalLen / 3, 5);
         for (GT_MetaTileEntity_Hatch_Rack rack : filterValidMTEs(eRacks)) {
-            rack.getBaseMetaTileEntity().setActive(iGregTechTileEntity.isActive());
+            rack.getBaseMetaTileEntity()
+                .setActive(iGregTechTileEntity.isActive());
         }
         return eUncertainHatches.size() == 1;
     }
@@ -220,8 +223,8 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide() && mMachine
-                && !aBaseMetaTileEntity.isActive()
-                && aTick % 20 == MULTI_CHECK_AT) {
+            && !aBaseMetaTileEntity.isActive()
+            && aTick % 20 == MULTI_CHECK_AT) {
             double maxTemp = 0;
             for (GT_MetaTileEntity_Hatch_Rack rack : filterValidMTEs(eRacks)) {
                 if (rack.heat > maxTemp) {
@@ -263,7 +266,8 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
                     eAvailableData += rackComputation;
                     thingsActive += 4;
                 }
-                rack.getBaseMetaTileEntity().setActive(true);
+                rack.getBaseMetaTileEntity()
+                    .setActive(true);
             }
 
             for (GT_MetaTileEntity_Hatch_InputData di : eInputData) {
@@ -299,9 +303,9 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     public void outputAfterRecipe_EM() {
         if (!eOutputData.isEmpty()) {
             Vec3Impl pos = new Vec3Impl(
-                    getBaseMetaTileEntity().getXCoord(),
-                    getBaseMetaTileEntity().getYCoord(),
-                    getBaseMetaTileEntity().getZCoord());
+                getBaseMetaTileEntity().getXCoord(),
+                getBaseMetaTileEntity().getYCoord(),
+                getBaseMetaTileEntity().getZCoord());
 
             QuantumDataPacket pack = new QuantumDataPacket(eAvailableData / eOutputData.size()).unifyTraceWith(pos);
             if (pack == null) {
@@ -328,50 +332,51 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.computer.name")) // Machine Type: Quantum
                                                                                               // Computer
-                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.computer.desc.0")) // Controller block of
-                                                                                               // the Quantum Computer
-                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.computer.desc.1")) // Used to generate
-                                                                                               // computation (and heat)
-                .addInfo(translateToLocal("tt.keyword.Structure.StructureTooComplex")) // The structure is too complex!
-                .addSeparator().beginVariableStructureBlock(2, 2, 4, 4, 5, 16, false)
-                .addOtherStructurePart(
-                        translateToLocal("gt.blockmachines.hatch.certain.tier.07.name"),
-                        translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"),
-                        1) // Uncertainty Resolver: Any Computer Casing on first or last slice
-                .addOtherStructurePart(
-                        translateToLocal("tt.keyword.Structure.DataConnector"),
-                        translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"),
-                        1) // Optical Connector: Any Computer Casing on first or last slice
-                .addOtherStructurePart(
-                        translateToLocal("gt.blockmachines.hatch.rack.tier.08.name"),
-                        translateToLocal("tt.keyword.Structure.AnyAdvComputerCasingExceptOuter"),
-                        2) // Computer Rack: Any Advanced Computer Casing, except the outer ones
-                .addOtherStructurePart(
-                        translateToLocal("gt.blockmachines.hatch.param.tier.05.name"),
-                        translateToLocal("tt.keyword.Structure.Optional") + " "
-                                + translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"),
-                        2) // Parametrizer: (optional) Any Computer Casing on first or last slice
-                .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"), 1) // Energy
-                                                                                                               // Hatch:
-                                                                                                               // Any
-                                                                                                               // Computer
-                                                                                                               // Casing
-                                                                                                               // on
-                                                                                                               // first
-                                                                                                               // or
-                                                                                                               // last
-                                                                                                               // slice
-                .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"), 1) // Maintenance
-                                                                                                                    // Hatch:
-                                                                                                                    // Any
-                                                                                                                    // Computer
-                                                                                                                    // Casing
-                                                                                                                    // on
-                                                                                                                    // first
-                                                                                                                    // or
-                                                                                                                    // last
-                                                                                                                    // slice
-                .toolTipFinisher(CommonValues.TEC_MARK_EM);
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.computer.desc.0")) // Controller block of
+                                                                                           // the Quantum Computer
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.computer.desc.1")) // Used to generate
+                                                                                           // computation (and heat)
+            .addInfo(translateToLocal("tt.keyword.Structure.StructureTooComplex")) // The structure is too complex!
+            .addSeparator()
+            .beginVariableStructureBlock(2, 2, 4, 4, 5, 16, false)
+            .addOtherStructurePart(
+                translateToLocal("gt.blockmachines.hatch.certain.tier.07.name"),
+                translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"),
+                1) // Uncertainty Resolver: Any Computer Casing on first or last slice
+            .addOtherStructurePart(
+                translateToLocal("tt.keyword.Structure.DataConnector"),
+                translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"),
+                1) // Optical Connector: Any Computer Casing on first or last slice
+            .addOtherStructurePart(
+                translateToLocal("gt.blockmachines.hatch.rack.tier.08.name"),
+                translateToLocal("tt.keyword.Structure.AnyAdvComputerCasingExceptOuter"),
+                2) // Computer Rack: Any Advanced Computer Casing, except the outer ones
+            .addOtherStructurePart(
+                translateToLocal("gt.blockmachines.hatch.param.tier.05.name"),
+                translateToLocal("tt.keyword.Structure.Optional") + " "
+                    + translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"),
+                2) // Parametrizer: (optional) Any Computer Casing on first or last slice
+            .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"), 1) // Energy
+                                                                                                           // Hatch:
+                                                                                                           // Any
+                                                                                                           // Computer
+                                                                                                           // Casing
+                                                                                                           // on
+                                                                                                           // first
+                                                                                                           // or
+                                                                                                           // last
+                                                                                                           // slice
+            .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"), 1) // Maintenance
+                                                                                                                // Hatch:
+                                                                                                                // Any
+                                                                                                                // Computer
+                                                                                                                // Casing
+                                                                                                                // on
+                                                                                                                // first
+                                                                                                                // or
+                                                                                                                // last
+                                                                                                                // slice
+            .toolTipFinisher(CommonValues.TEC_MARK_EM);
         return tt;
     }
 
@@ -385,10 +390,10 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-            int colorIndex, boolean aActive, boolean aRedstone) {
+        int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
             return new ITexture[] { Textures.BlockIcons.casingTexturePages[texturePage][3],
-                    new TT_RenderedExtendedFacingTexture(aActive ? ScreenON : ScreenOFF) };
+                new TT_RenderedExtendedFacingTexture(aActive ? ScreenON : ScreenOFF) };
         }
         return new ITexture[] { Textures.BlockIcons.casingTexturePages[texturePage][3] };
     }
@@ -403,14 +408,16 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     public void onRemoval() {
         super.onRemoval();
         for (GT_MetaTileEntity_Hatch_Rack rack : filterValidMTEs(eRacks)) {
-            rack.getBaseMetaTileEntity().setActive(false);
+            rack.getBaseMetaTileEntity()
+                .setActive(false);
         }
     }
 
     @Override
     protected void extraExplosions_EM() {
         for (MetaTileEntity tTileEntity : eRacks) {
-            tTileEntity.getBaseMetaTileEntity().doExplosion(V[9]);
+            tTileEntity.getBaseMetaTileEntity()
+                .doExplosion(V[9]);
         }
     }
 
@@ -424,7 +431,8 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
         super.stopMachine(reason);
         eAvailableData = 0;
         for (GT_MetaTileEntity_Hatch_Rack rack : filterValidMTEs(eRacks)) {
-            rack.getBaseMetaTileEntity().setActive(false);
+            rack.getBaseMetaTileEntity()
+                .setActive(false);
         }
     }
 
@@ -432,7 +440,8 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     protected void afterRecipeCheckFailed() {
         super.afterRecipeCheckFailed();
         for (GT_MetaTileEntity_Hatch_Rack rack : filterValidMTEs(eRacks)) {
-            rack.getBaseMetaTileEntity().setActive(false);
+            rack.getBaseMetaTileEntity()
+                .setActive(false);
         }
     }
 

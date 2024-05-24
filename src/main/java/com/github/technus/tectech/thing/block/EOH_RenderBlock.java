@@ -59,7 +59,10 @@ public class EOH_RenderBlock extends Block {
     }
 
     public static void registerOther(Block block) {
-        String name = block.getUnlocalizedName().substring(block.getUnlocalizedName().indexOf(".") + 1);
+        String name = block.getUnlocalizedName()
+            .substring(
+                block.getUnlocalizedName()
+                    .indexOf(".") + 1);
         GameRegistry.registerBlock(block, name.substring(name.indexOf(":") + 1));
     }
 

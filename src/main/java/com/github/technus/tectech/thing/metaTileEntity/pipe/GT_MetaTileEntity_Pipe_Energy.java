@@ -67,22 +67,22 @@ public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements ICo
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, int aConnections,
-            int colorIndex, boolean aConnected, boolean aRedstone) {
+        int colorIndex, boolean aConnected, boolean aRedstone) {
         return new ITexture[] { new GT_RenderedTexture(EMpipe),
-                new GT_RenderedTexture(
-                        getActive() ? EMCandyActive : EMcandy,
-                        Dyes.getModulation(colorIndex, MACHINE_METAL.getRGBA())) };
+            new GT_RenderedTexture(
+                getActive() ? EMCandyActive : EMcandy,
+                Dyes.getModulation(colorIndex, MACHINE_METAL.getRGBA())) };
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
-            ItemStack itemStack) {
+        ItemStack itemStack) {
         return false;
     }
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
-            ItemStack itemStack) {
+        ItemStack itemStack) {
         return false;
     }
 
@@ -111,13 +111,13 @@ public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements ICo
         return new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.pipe.energystream.desc.0"), // Laser
                                                                                                                        // tunneling
                                                                                                                        // device.
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-                        + translateToLocal("gt.blockmachines.pipe.energystream.desc.1"), // Bright Vacuum!!!
-                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.energystream.desc.2"), // Must be
-                                                                                                         // painted to
-                                                                                                         // work
-                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.energystream.desc.3") // Do not split
-                                                                                                        // or turn
+            EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
+                + translateToLocal("gt.blockmachines.pipe.energystream.desc.1"), // Bright Vacuum!!!
+            EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.energystream.desc.2"), // Must be
+                                                                                                     // painted to
+                                                                                                     // work
+            EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.energystream.desc.3") // Do not split
+                                                                                                    // or turn
         };
     }
 
@@ -135,12 +135,12 @@ public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements ICo
             if ((aTick & 31) == 31) {
                 if (TecTech.RANDOM.nextInt(15) == 0) {
                     NetworkDispatcher.INSTANCE.sendToAllAround(
-                            new PipeActivityMessage.PipeActivityData(this),
-                            aBaseMetaTileEntity.getWorld().provider.dimensionId,
-                            aBaseMetaTileEntity.getXCoord(),
-                            aBaseMetaTileEntity.getYCoord(),
-                            aBaseMetaTileEntity.getZCoord(),
-                            256);
+                        new PipeActivityMessage.PipeActivityData(this),
+                        aBaseMetaTileEntity.getWorld().provider.dimensionId,
+                        aBaseMetaTileEntity.getXCoord(),
+                        aBaseMetaTileEntity.getYCoord(),
+                        aBaseMetaTileEntity.getZCoord(),
+                        256);
                 }
                 if (active) {
                     active = false;
@@ -173,17 +173,17 @@ public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements ICo
                         }
                     }
                     if (tTileEntity instanceof IConnectsToEnergyTunnel
-                            && ((IConnectsToEnergyTunnel) tTileEntity).canConnect(oppositeSide)) {
+                        && ((IConnectsToEnergyTunnel) tTileEntity).canConnect(oppositeSide)) {
                         mConnections |= 1 << side.ordinal();
                         connectionCount++;
-                    } else if (tTileEntity instanceof IGregTechTileEntity && ((IGregTechTileEntity) tTileEntity)
-                            .getMetaTileEntity() instanceof IConnectsToEnergyTunnel) {
-                                if (((IConnectsToEnergyTunnel) ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())
-                                        .canConnect(oppositeSide)) {
-                                    mConnections |= 1 << side.ordinal();
-                                    connectionCount++;
-                                }
+                    } else if (tTileEntity instanceof IGregTechTileEntity
+                        && ((IGregTechTileEntity) tTileEntity).getMetaTileEntity() instanceof IConnectsToEnergyTunnel) {
+                            if (((IConnectsToEnergyTunnel) ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())
+                                .canConnect(oppositeSide)) {
+                                mConnections |= 1 << side.ordinal();
+                                connectionCount++;
                             }
+                        }
                 }
             }
 
@@ -271,7 +271,7 @@ public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements ICo
         }
 
         return AxisAlignedBB
-                .getBoundingBox(aX + tSide4, aY + tSide0, aZ + tSide2, aX + tSide5, aY + tSide1, aZ + tSide3);
+            .getBoundingBox(aX + tSide4, aY + tSide0, aZ + tSide2, aX + tSide5, aY + tSide1, aZ + tSide3);
     }
 
     @Override

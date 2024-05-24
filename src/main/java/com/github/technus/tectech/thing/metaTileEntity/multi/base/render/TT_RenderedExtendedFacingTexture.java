@@ -7,7 +7,7 @@ import gregtech.common.render.GT_RenderedTexture;
 public class TT_RenderedExtendedFacingTexture extends GT_RenderedTexture {
 
     public TT_RenderedExtendedFacingTexture(IIconContainer aIcon, short[] aRGBa, boolean allowAlpha, boolean glow,
-            boolean stdOrient, boolean extFacing) {
+        boolean stdOrient, boolean extFacing) {
         super(aIcon, aRGBa, allowAlpha, glow, stdOrient, extFacing);
     }
 

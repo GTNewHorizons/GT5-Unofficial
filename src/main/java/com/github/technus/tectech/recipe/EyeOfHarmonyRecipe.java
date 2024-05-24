@@ -39,16 +39,16 @@ import pers.gwyog.gtneioreplugin.util.GT5OreSmallHelper;
 public class EyeOfHarmonyRecipe {
 
     static final FluidStackLong[] SPECIAL_FLUIDS = new FluidStackLong[] {
-            new FluidStackLong(MaterialsUEVplus.WhiteDwarfMatter.getMolten(1_152), 1_152),
-            new FluidStackLong(MaterialsUEVplus.WhiteDwarfMatter.getMolten(1_152), 1_152),
-            new FluidStackLong(MaterialsUEVplus.WhiteDwarfMatter.getMolten(4_608), 4_608),
-            new FluidStackLong(MaterialsUEVplus.WhiteDwarfMatter.getMolten(18_432), 18_432),
-            new FluidStackLong(MaterialsUEVplus.BlackDwarfMatter.getMolten(1_152), 1_152),
-            new FluidStackLong(MaterialsUEVplus.BlackDwarfMatter.getMolten(4_608), 4_608),
-            new FluidStackLong(MaterialsUEVplus.BlackDwarfMatter.getMolten(18_432), 18_432),
-            new FluidStackLong(MaterialsUEVplus.Universium.getMolten(1_152), 1_152),
-            new FluidStackLong(MaterialsUEVplus.Universium.getMolten(4_608), 4_608),
-            new FluidStackLong(MaterialsUEVplus.Universium.getMolten(18_432), 18_432) };
+        new FluidStackLong(MaterialsUEVplus.WhiteDwarfMatter.getMolten(1_152), 1_152),
+        new FluidStackLong(MaterialsUEVplus.WhiteDwarfMatter.getMolten(1_152), 1_152),
+        new FluidStackLong(MaterialsUEVplus.WhiteDwarfMatter.getMolten(4_608), 4_608),
+        new FluidStackLong(MaterialsUEVplus.WhiteDwarfMatter.getMolten(18_432), 18_432),
+        new FluidStackLong(MaterialsUEVplus.BlackDwarfMatter.getMolten(1_152), 1_152),
+        new FluidStackLong(MaterialsUEVplus.BlackDwarfMatter.getMolten(4_608), 4_608),
+        new FluidStackLong(MaterialsUEVplus.BlackDwarfMatter.getMolten(18_432), 18_432),
+        new FluidStackLong(MaterialsUEVplus.Universium.getMolten(1_152), 1_152),
+        new FluidStackLong(MaterialsUEVplus.Universium.getMolten(4_608), 4_608),
+        new FluidStackLong(MaterialsUEVplus.Universium.getMolten(18_432), 18_432) };
 
     HashingStrategy<ItemStack> itemStackHashingStrategy = new HashingStrategy<>() {
 
@@ -57,14 +57,16 @@ public class EyeOfHarmonyRecipe {
         @Override
         public int computeHashCode(ItemStack stack) {
             // Not really sure how this works or if it is "unique enough".
-            int result = stack.getItem().hashCode();
+            int result = stack.getItem()
+                .hashCode();
             result = 31 * result + stack.getItemDamage();
             return result;
         }
 
         @Override
         public boolean equals(ItemStack item1, ItemStack item2) {
-            return item1.getUnlocalizedName().equals(item2.getUnlocalizedName());
+            return item1.getUnlocalizedName()
+                .equals(item2.getUnlocalizedName());
         }
     };
 
@@ -117,8 +119,8 @@ public class EyeOfHarmonyRecipe {
     }
 
     public EyeOfHarmonyRecipe(final ArrayList<Pair<Materials, Long>> materialList, final BlockDimensionDisplay block,
-            final double recipeEnergyEfficiency, final long hydrogenRequirement, final long heliumRequirement,
-            final long miningTimeSeconds, final long rocketTierOfRecipe, final double baseSuccessChance) {
+        final double recipeEnergyEfficiency, final long hydrogenRequirement, final long heliumRequirement,
+        final long miningTimeSeconds, final long rocketTierOfRecipe, final double baseSuccessChance) {
 
         this.rocketTier = rocketTierOfRecipe;
         this.spacetimeCasingTierRequired = min(8, rocketTierOfRecipe);
@@ -127,7 +129,9 @@ public class EyeOfHarmonyRecipe {
 
         this.outputItems = validDustGenerator(materialList);
 
-        this.sumOfItems = this.outputItems.stream().map(ItemStackLong::getStackSize).reduce(0L, Long::sum);
+        this.sumOfItems = this.outputItems.stream()
+            .map(ItemStackLong::getStackSize)
+            .reduce(0L, Long::sum);
 
         this.outputItems.add(new ItemStackLong(getStoneDustType(block.getDimension()), this.sumOfItems * 3L));
         this.outputItems.sort(Comparator.comparingLong(ItemStackLong::getStackSize));
@@ -163,9 +167,9 @@ public class EyeOfHarmonyRecipe {
 
         // Add a bonus fluid of compressed star matter.
         fluidStackLongArrayList.add(
-                new FluidStackLong(
-                        MaterialsUEVplus.RawStarMatter.getFluid((this.spacetimeCasingTierRequired + 1) * 100_000),
-                        (this.spacetimeCasingTierRequired + 1) * 100_000));
+            new FluidStackLong(
+                MaterialsUEVplus.RawStarMatter.getFluid((this.spacetimeCasingTierRequired + 1) * 100_000),
+                (this.spacetimeCasingTierRequired + 1) * 100_000));
 
         // Tier 0 & 1 - 576 White
         // Tier 2 - 2304 White
@@ -269,22 +273,21 @@ public class EyeOfHarmonyRecipe {
     }
 
     public EyeOfHarmonyRecipe(final GT5OreLayerHelper.NormalOreDimensionWrapper normalOreDimensionWrapper,
-            final GT5OreSmallHelper.SmallOreDimensionWrapper smallOreDimensionWrapper,
-            final BlockDimensionDisplay block, final double recipeEnergyEfficiency, final long hydrogenRequirement,
-            final long heliumRequirement, final long miningTimeSeconds, final long spacetimeCasingTierRequired,
-            final double baseSuccessChance) {
+        final GT5OreSmallHelper.SmallOreDimensionWrapper smallOreDimensionWrapper, final BlockDimensionDisplay block,
+        final double recipeEnergyEfficiency, final long hydrogenRequirement, final long heliumRequirement,
+        final long miningTimeSeconds, final long spacetimeCasingTierRequired, final double baseSuccessChance) {
 
         // Process recipes output items.
         // 6 * 64 = 6 stacks/second for VM tier 3 + Og gas.
         this(
-                processDimension(normalOreDimensionWrapper, smallOreDimensionWrapper, miningTimeSeconds),
-                block,
-                recipeEnergyEfficiency,
-                hydrogenRequirement,
-                heliumRequirement,
-                miningTimeSeconds,
-                spacetimeCasingTierRequired,
-                baseSuccessChance);
+            processDimension(normalOreDimensionWrapper, smallOreDimensionWrapper, miningTimeSeconds),
+            block,
+            recipeEnergyEfficiency,
+            hydrogenRequirement,
+            heliumRequirement,
+            miningTimeSeconds,
+            spacetimeCasingTierRequired,
+            baseSuccessChance);
     }
 
     // Return clone of list. Deep copy. Maybe a better way to do this?
@@ -346,7 +349,7 @@ public class EyeOfHarmonyRecipe {
     private static final double QUATERNARY_MULTIPLIER = (0.7); // Mercury/chem bath processing chance.
 
     private static final double[] ORE_MULTIPLIER = { PRIMARY_MULTIPLIER, SECONDARY_MULTIPLIER, TERTIARY_MULTIPLIER,
-            QUATERNARY_MULTIPLIER };
+        QUATERNARY_MULTIPLIER };
 
     public static class HashMapHelper extends HashMap<Materials, Double> {
 
@@ -366,21 +369,20 @@ public class EyeOfHarmonyRecipe {
     }
 
     public static void processHelper(HashMapHelper outputMap, Materials material, double mainMultiplier,
-            double probability) {
+        double probability) {
         if (material == null) return;
         outputMap.add(material.mDirectSmelting, (material.mOreMultiplier * 2) * mainMultiplier * probability);
 
         int index = 0;
         for (Materials byProductMaterial : material.mOreByProducts) {
-            outputMap.add(
-                    byProductMaterial.mDirectSmelting,
-                    mainMultiplier * (ORE_MULTIPLIER[index++] * 2) * probability);
+            outputMap
+                .add(byProductMaterial.mDirectSmelting, mainMultiplier * (ORE_MULTIPLIER[index++] * 2) * probability);
         }
     }
 
     private static ArrayList<Pair<Materials, Long>> processDimension(
-            GT5OreLayerHelper.NormalOreDimensionWrapper normalOreDimWrapper,
-            GT5OreSmallHelper.SmallOreDimensionWrapper smallOreDimWrapper, long timeInSeconds) {
+        GT5OreLayerHelper.NormalOreDimensionWrapper normalOreDimWrapper,
+        GT5OreSmallHelper.SmallOreDimensionWrapper smallOreDimWrapper, long timeInSeconds) {
         HashMapHelper outputMap = new HashMapHelper();
 
         double mainMultiplier = timeInSeconds * 384.0;
@@ -398,11 +400,8 @@ public class EyeOfHarmonyRecipe {
         // Iterate over small ores in dimension and add them, kinda hacky but works and is close enough.
         if (smallOreDimWrapper != null) {
             smallOreDimWrapper.oreVeinToProbabilityInDimension.forEach(
-                    (veinInfo, probability) -> processHelper(
-                            outputMap,
-                            veinInfo.getOreMaterial(),
-                            mainMultiplier,
-                            probability));
+                (veinInfo,
+                    probability) -> processHelper(outputMap, veinInfo.getOreMaterial(), mainMultiplier, probability));
         }
 
         ArrayList<Pair<Materials, Long>> outputList = new ArrayList<>();
@@ -418,7 +417,9 @@ public class EyeOfHarmonyRecipe {
 
         for (Pair<Materials, Long> pair : planetList) {
             if (VALID_PLASMAS.contains(pair.getLeft())) {
-                plasmaList.add(pair.getLeft().getPlasma(1));
+                plasmaList.add(
+                    pair.getLeft()
+                        .getPlasma(1));
             }
         }
 
@@ -430,7 +431,9 @@ public class EyeOfHarmonyRecipe {
         ArrayList<ItemStackLong> dustList = new ArrayList<>();
 
         for (Pair<Materials, Long> pair : planetList) {
-            ItemStack dust = getUnificatedOreDictStack(pair.getLeft().getDust(1));
+            ItemStack dust = getUnificatedOreDictStack(
+                pair.getLeft()
+                    .getDust(1));
             if (dust != null) {
                 dustList.add(new ItemStackLong(dust, pair.getRight()));
             }
@@ -444,7 +447,8 @@ public class EyeOfHarmonyRecipe {
         for (FluidStackLong plasma : plasmas) {
             FluidStack plasmaFluid = plasma.getRegularFluidStack(plasma, 1);
             try {
-                String plasmaName = plasmaFluid.getFluid().getUnlocalizedName();
+                String plasmaName = plasmaFluid.getFluid()
+                    .getUnlocalizedName();
                 total += plasmaEnergyMap.getOrDefault(plasmaName, 0L) * plasma.amount;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -459,7 +463,8 @@ public class EyeOfHarmonyRecipe {
         return 3.85;
     }
 
-    private static final List<Materials> VALID_PLASMAS = Stream.of(
+    private static final List<Materials> VALID_PLASMAS = Stream
+        .of(
             Materials.Helium,
             Materials.Iron,
             Materials.Calcium,
@@ -475,7 +480,8 @@ public class EyeOfHarmonyRecipe {
             Materials.Americium,
             Materials.Bismuth,
             Materials.Oxygen,
-            Materials.Tin).collect(Collectors.toList());
+            Materials.Tin)
+        .collect(Collectors.toList());
 
     private static final HashMap<String, Long> plasmaEnergyMap = new HashMap<>() {
 
@@ -483,10 +489,11 @@ public class EyeOfHarmonyRecipe {
 
         {
             VALID_PLASMAS.forEach(
-                    (material -> put(
-                            material.getPlasma(1).getFluid().getUnlocalizedName(),
-                            (long) (getPlasmaFuelValueInEUPerLiterFromMaterial(material)
-                                    * getMaxPlasmaTurbineEfficiency()))));
+                (material -> put(
+                    material.getPlasma(1)
+                        .getFluid()
+                        .getUnlocalizedName(),
+                    (long) (getPlasmaFuelValueInEUPerLiterFromMaterial(material) * getMaxPlasmaTurbineEfficiency()))));
         }
     };
 }

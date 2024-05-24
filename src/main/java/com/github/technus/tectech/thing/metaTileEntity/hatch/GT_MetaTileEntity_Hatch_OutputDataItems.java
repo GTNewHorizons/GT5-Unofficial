@@ -19,22 +19,22 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 
 public class GT_MetaTileEntity_Hatch_OutputDataItems
-        extends GT_MetaTileEntity_Hatch_DataConnector<InventoryDataPacket> {
+    extends GT_MetaTileEntity_Hatch_DataConnector<InventoryDataPacket> {
 
     public GT_MetaTileEntity_Hatch_OutputDataItems(int aID, String aName, String aNameRegional, int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.dataoutass.desc.0"),
-                        translateToLocal("gt.blockmachines.hatch.dataoutass.desc.1"),
-                        EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.dataoutass.desc.2") });
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.dataoutass.desc.0"),
+                translateToLocal("gt.blockmachines.hatch.dataoutass.desc.1"),
+                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.dataoutass.desc.2") });
         TT_Utility.setTier(aTier, this);
     }
 
     public GT_MetaTileEntity_Hatch_OutputDataItems(String aName, int aTier, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
@@ -51,21 +51,21 @@ public class GT_MetaTileEntity_Hatch_OutputDataItems
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_Hatch_OutputDataItems(
-                this.mName,
-                this.mTier,
-                this.mDescriptionArray,
-                this.mTextures);
+            this.mName,
+            this.mTier,
+            this.mDescriptionArray,
+            this.mTextures);
     }
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
@@ -130,11 +130,12 @@ public class GT_MetaTileEntity_Hatch_OutputDataItems
             ((GT_MetaTileEntity_Pipe_Data) meta).markUsed();
             return (IConnectsToDataPipe) meta;
         } else if (meta instanceof GT_MetaTileEntity_Hatch_InputDataItems
-                && ((GT_MetaTileEntity_Hatch_InputDataItems) meta).getColorization() == color
-                && ((GT_MetaTileEntity_Hatch_InputDataItems) meta)
-                        .canConnectData(base.getFrontFacing().getOpposite())) {
-                            return (IConnectsToDataPipe) meta;
-                        }
+            && ((GT_MetaTileEntity_Hatch_InputDataItems) meta).getColorization() == color
+            && ((GT_MetaTileEntity_Hatch_InputDataItems) meta).canConnectData(
+                base.getFrontFacing()
+                    .getOpposite())) {
+                        return (IConnectsToDataPipe) meta;
+                    }
         return null;
     }
 }

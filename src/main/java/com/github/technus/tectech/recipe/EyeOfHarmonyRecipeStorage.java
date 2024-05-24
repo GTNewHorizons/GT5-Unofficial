@@ -50,16 +50,16 @@ public class EyeOfHarmonyRecipeStorage {
         {
             for (String dimAbbreviation : DimensionHelper.DimNameDisplayed) {
                 BlockDimensionDisplay blockDimensionDisplay = (BlockDimensionDisplay) ModBlocks.blocks
-                        .get(dimAbbreviation);
+                    .get(dimAbbreviation);
 
                 if (dimAbbreviation.equals("DD")) {
                     specialDeepDarkRecipe(this, blockDimensionDisplay);
                 } else {
 
                     GT5OreLayerHelper.NormalOreDimensionWrapper normalOre = GT5OreLayerHelper.dimToOreWrapper
-                            .getOrDefault(dimAbbreviation, null);
+                        .getOrDefault(dimAbbreviation, null);
                     GT5OreSmallHelper.SmallOreDimensionWrapper smallOre = GT5OreSmallHelper.dimToSmallOreWrapper
-                            .getOrDefault(dimAbbreviation, null);
+                        .getOrDefault(dimAbbreviation, null);
                     if (normalOre == null && smallOre == null) {
                         // No ores are generated in this dimension. Fail silently.
                         continue;
@@ -71,18 +71,17 @@ public class EyeOfHarmonyRecipeStorage {
                     }
 
                     put(
-                            dimAbbreviation,
-                            new EyeOfHarmonyRecipe(
-                                    normalOre,
-                                    smallOre,
-                                    blockDimensionDisplay,
-                                    0.6 + blockDimensionDisplay.getDimensionRocketTier() / 10.0,
-                                    BILLION * (blockDimensionDisplay.getDimensionRocketTier() + 1),
-                                    BILLION * (blockDimensionDisplay.getDimensionRocketTier() + 1),
-                                    timeCalculator(blockDimensionDisplay.getDimensionRocketTier()),
-                                    spacetimeTier - 1,
-                                    1.0 - CHANCE_DECREASE_PER_DIMENSION
-                                            * blockDimensionDisplay.getDimensionRocketTier()));
+                        dimAbbreviation,
+                        new EyeOfHarmonyRecipe(
+                            normalOre,
+                            smallOre,
+                            blockDimensionDisplay,
+                            0.6 + blockDimensionDisplay.getDimensionRocketTier() / 10.0,
+                            BILLION * (blockDimensionDisplay.getDimensionRocketTier() + 1),
+                            BILLION * (blockDimensionDisplay.getDimensionRocketTier() + 1),
+                            timeCalculator(blockDimensionDisplay.getDimensionRocketTier()),
+                            spacetimeTier - 1,
+                            1.0 - CHANCE_DECREASE_PER_DIMENSION * blockDimensionDisplay.getDimensionRocketTier()));
                 }
             }
         }
@@ -107,26 +106,27 @@ public class EyeOfHarmonyRecipeStorage {
                 outputFluids.add(fluidStackLong.fluidStack);
             }
 
-            ItemStack planetItem = recipe.getRecipeTriggerItem().copy();
+            ItemStack planetItem = recipe.getRecipeTriggerItem()
+                .copy();
             planetItem.stackSize = 0;
 
             eyeOfHarmonyRecipes.addRecipe(
-                    false,
-                    new ItemStack[] { planetItem },
-                    outputItems.toArray(new ItemStack[0]),
-                    recipe,
-                    null,
-                    new FluidStack[] { Materials.Hydrogen.getGas(0), Materials.Helium.getGas(0),
-                            MaterialsUEVplus.RawStarMatter.getFluid(0) },
-                    outputFluids.toArray(new FluidStack[0]),
-                    (int) recipe.getRecipeTimeInTicks(),
-                    0,
-                    0);
+                false,
+                new ItemStack[] { planetItem },
+                outputItems.toArray(new ItemStack[0]),
+                recipe,
+                null,
+                new FluidStack[] { Materials.Hydrogen.getGas(0), Materials.Helium.getGas(0),
+                    MaterialsUEVplus.RawStarMatter.getFluid(0) },
+                outputFluids.toArray(new FluidStack[0]),
+                (int) recipe.getRecipeTimeInTicks(),
+                0,
+                0);
         }
     }
 
     private void specialDeepDarkRecipe(final HashMap<String, EyeOfHarmonyRecipe> hashMap,
-            final BlockDimensionDisplay planetItem) {
+        final BlockDimensionDisplay planetItem) {
 
         HashSet<Materials> validMaterialSet = new HashSet<>();
 
@@ -150,16 +150,16 @@ public class EyeOfHarmonyRecipeStorage {
         long rocketTier = 9;
 
         hashMap.put(
-                "DD",
-                new EyeOfHarmonyRecipe(
-                        processDD(validMaterialList),
-                        planetItem,
-                        0.6 + rocketTier / 10.0,
-                        BILLION * (rocketTier + 1),
-                        BILLION * (rocketTier + 1),
-                        timeCalculator(rocketTier),
-                        rocketTier, // -1 so that we avoid out of bounds exception on NEI render.
-                        1.0 - rocketTier * CHANCE_DECREASE_PER_DIMENSION));
+            "DD",
+            new EyeOfHarmonyRecipe(
+                processDD(validMaterialList),
+                planetItem,
+                0.6 + rocketTier / 10.0,
+                BILLION * (rocketTier + 1),
+                BILLION * (rocketTier + 1),
+                timeCalculator(rocketTier),
+                rocketTier, // -1 so that we avoid out of bounds exception on NEI render.
+                1.0 - rocketTier * CHANCE_DECREASE_PER_DIMENSION));
     }
 
     private static long timeCalculator(final long rocketTier) {

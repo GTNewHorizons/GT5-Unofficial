@@ -41,17 +41,17 @@ public class SpacetimeCompressionFieldCasing extends GT_Block_Casings_Abstract {
 
     public SpacetimeCompressionFieldCasing() {
         super(
-                GT_Item_Casings_Spacetime.class,
-                "gt.spacetime_compression_field_generator",
-                GT_Material_Casings.INSTANCE);
+            GT_Item_Casings_Spacetime.class,
+            "gt.spacetime_compression_field_generator",
+            GT_Material_Casings.INSTANCE);
         for (byte b = 0; b < 16; b = (byte) (b + 1)) {
             Textures.BlockIcons.casingTexturePages[7][b + START_INDEX] = new GT_CopiedBlockTexture(this, 6, b);
         }
 
         for (int i = 0; i < MAX_BLOCK_TIER; i++) {
             GT_LanguageManager.addStringLocalization(
-                    getUnlocalizedName() + "." + i + ".name",
-                    WHITE + EOH_TIER_FANCY_NAMES[i] + RESET + " Spacetime Compression Field Generator");
+                getUnlocalizedName() + "." + i + ".name",
+                WHITE + EOH_TIER_FANCY_NAMES[i] + RESET + " Spacetime Compression Field Generator");
         }
 
         CustomItemList.SpacetimeCompressionFieldGeneratorTier0.set(new ItemStack(this, 1, 0));

@@ -82,171 +82,171 @@ public class TecTechConfig extends ConfigManager {
     @Override
     protected void Init() {
         DEBUG_MODE = _mainConfig
-                .getBoolean("DebugMode", "debug", DEBUG_MODE, "Enables logging and other purely debug features");
+            .getBoolean("DebugMode", "debug", DEBUG_MODE, "Enables logging and other purely debug features");
         POWERLESS_MODE = _mainConfig
-                .getBoolean("PowerlessMode", "debug", POWERLESS_MODE, "Enables 0EU/t multi block machinery");
+            .getBoolean("PowerlessMode", "debug", POWERLESS_MODE, "Enables 0EU/t multi block machinery");
 
         BOOM_ENABLE = _mainConfig.getBoolean(
-                "BoomEnable",
-                "features",
-                BOOM_ENABLE,
-                "Set to false to disable explosions on everything bad that you can do");
+            "BoomEnable",
+            "features",
+            BOOM_ENABLE,
+            "Set to false to disable explosions on everything bad that you can do");
         DISABLE_BLOCK_HARDNESS_NERF = _mainConfig.getBoolean(
-                "DisableBlockHardnessNerf",
-                "features",
-                DISABLE_BLOCK_HARDNESS_NERF,
-                "Set to true to disable the block hardness nerf");
+            "DisableBlockHardnessNerf",
+            "features",
+            DISABLE_BLOCK_HARDNESS_NERF,
+            "Set to true to disable the block hardness nerf");
         EASY_SCAN = _mainConfig.getBoolean(
-                "EasyScan",
-                "features",
-                EASY_SCAN,
-                "Enables tricorder to scan EM i/o hatches directly, too CHEEKY");
+            "EasyScan",
+            "features",
+            EASY_SCAN,
+            "Enables tricorder to scan EM i/o hatches directly, too CHEEKY");
         NERF_FUSION = _mainConfig.getBoolean(
-                "NerfFusion",
-                "features",
-                NERF_FUSION,
-                "Set to true to enable removal of plasmas heavier than Fe and other weird ones");
+            "NerfFusion",
+            "features",
+            NERF_FUSION,
+            "Set to true to enable removal of plasmas heavier than Fe and other weird ones");
         ENABLE_TURRET_EXPLOSIONS = _mainConfig.getBoolean(
-                "TurretBoomEnable",
-                "features",
-                ENABLE_TURRET_EXPLOSIONS,
-                "Set to false to disable explosions caused by EM turrets");
+            "TurretBoomEnable",
+            "features",
+            ENABLE_TURRET_EXPLOSIONS,
+            "Set to false to disable explosions caused by EM turrets");
         TURRET_DAMAGE_FACTOR = _mainConfig.getFloat(
-                "TurretDamageFactor",
-                "features",
-                TURRET_DAMAGE_FACTOR,
-                0,
-                Short.MAX_VALUE,
-                "Damage is multiplied by this number");
+            "TurretDamageFactor",
+            "features",
+            TURRET_DAMAGE_FACTOR,
+            0,
+            Short.MAX_VALUE,
+            "Damage is multiplied by this number");
         TURRET_EXPLOSION_FACTOR = _mainConfig.getFloat(
-                "TurretExplosionFactor",
-                "features",
-                TURRET_EXPLOSION_FACTOR,
-                0,
-                Short.MAX_VALUE,
-                "Explosion strength is multiplied by this number");
+            "TurretExplosionFactor",
+            "features",
+            TURRET_EXPLOSION_FACTOR,
+            0,
+            Short.MAX_VALUE,
+            "Explosion strength is multiplied by this number");
 
         MOD_ADMIN_ERROR_LOGS = _mainConfig.getBoolean(
-                "AdminErrorLog",
-                "modules",
-                MOD_ADMIN_ERROR_LOGS,
-                "If set to true, every op/admin will receive all errors occurred during the startup phase as in game message on join");
+            "AdminErrorLog",
+            "modules",
+            MOD_ADMIN_ERROR_LOGS,
+            "If set to true, every op/admin will receive all errors occurred during the startup phase as in game message on join");
 
         TESLA_MULTI_GAS_OUTPUT = _mainConfig.getBoolean(
-                "TeslaMultiGasOutput",
-                "tesla_tweaks",
-                TESLA_MULTI_GAS_OUTPUT,
-                "Set to true to enable outputting plasmas as gasses from the tesla tower with a 1:1 ratio");
+            "TeslaMultiGasOutput",
+            "tesla_tweaks",
+            TESLA_MULTI_GAS_OUTPUT,
+            "Set to true to enable outputting plasmas as gasses from the tesla tower with a 1:1 ratio");
         TESLA_MULTI_LOSS_FACTOR_OVERDRIVE = _mainConfig.getFloat(
-                "TeslaMultiLossFactorOverdrive",
-                "tesla_tweaks",
-                TESLA_MULTI_LOSS_FACTOR_OVERDRIVE,
-                0,
-                1,
-                "Additional Tesla Tower power loss per amp as a factor of the tier voltage");
+            "TeslaMultiLossFactorOverdrive",
+            "tesla_tweaks",
+            TESLA_MULTI_LOSS_FACTOR_OVERDRIVE,
+            0,
+            1,
+            "Additional Tesla Tower power loss per amp as a factor of the tier voltage");
         TESLA_MULTI_LOSS_PER_BLOCK_T0 = _mainConfig.getInt(
-                "TeslaMultiLossPerBlockT0",
-                "tesla_tweaks",
-                TESLA_MULTI_LOSS_PER_BLOCK_T0,
-                0,
-                Integer.MAX_VALUE,
-                "Tesla Tower power transmission loss per block per amp using no plasmas");
+            "TeslaMultiLossPerBlockT0",
+            "tesla_tweaks",
+            TESLA_MULTI_LOSS_PER_BLOCK_T0,
+            0,
+            Integer.MAX_VALUE,
+            "Tesla Tower power transmission loss per block per amp using no plasmas");
         TESLA_MULTI_LOSS_PER_BLOCK_T1 = _mainConfig.getInt(
-                "TeslaMultiLossPerBlockT1",
-                "tesla_tweaks",
-                TESLA_MULTI_LOSS_PER_BLOCK_T1,
-                0,
-                Integer.MAX_VALUE,
-                "Tesla Tower power transmission loss per block per amp using helium or nitrogen plasma");
+            "TeslaMultiLossPerBlockT1",
+            "tesla_tweaks",
+            TESLA_MULTI_LOSS_PER_BLOCK_T1,
+            0,
+            Integer.MAX_VALUE,
+            "Tesla Tower power transmission loss per block per amp using helium or nitrogen plasma");
         TESLA_MULTI_LOSS_PER_BLOCK_T2 = _mainConfig.getInt(
-                "TeslaMultiLossPerBlockT2",
-                "tesla_tweaks",
-                TESLA_MULTI_LOSS_PER_BLOCK_T2,
-                0,
-                Integer.MAX_VALUE,
-                "Tesla Tower power transmission loss per block per amp using radon plasma");
+            "TeslaMultiLossPerBlockT2",
+            "tesla_tweaks",
+            TESLA_MULTI_LOSS_PER_BLOCK_T2,
+            0,
+            Integer.MAX_VALUE,
+            "Tesla Tower power transmission loss per block per amp using radon plasma");
         TESLA_MULTI_PLASMA_PER_SECOND_T1_HELIUM = _mainConfig.getInt(
-                "TeslaMultiPlasmaPerSecondT1Helium",
-                "tesla_tweaks",
-                TESLA_MULTI_PLASMA_PER_SECOND_T1_HELIUM,
-                0,
-                Integer.MAX_VALUE,
-                "Tesla Tower helium plasma consumed each second the tesla tower is active");
+            "TeslaMultiPlasmaPerSecondT1Helium",
+            "tesla_tweaks",
+            TESLA_MULTI_PLASMA_PER_SECOND_T1_HELIUM,
+            0,
+            Integer.MAX_VALUE,
+            "Tesla Tower helium plasma consumed each second the tesla tower is active");
         TESLA_MULTI_PLASMA_PER_SECOND_T1_NITROGEN = _mainConfig.getInt(
-                "TeslaMultiPlasmaPerSecondT1Nitrogen",
-                "tesla_tweaks",
-                TESLA_MULTI_PLASMA_PER_SECOND_T1_NITROGEN,
-                0,
-                Integer.MAX_VALUE,
-                "Tesla Tower nitrogen plasma consumed each second the tesla tower is active");
+            "TeslaMultiPlasmaPerSecondT1Nitrogen",
+            "tesla_tweaks",
+            TESLA_MULTI_PLASMA_PER_SECOND_T1_NITROGEN,
+            0,
+            Integer.MAX_VALUE,
+            "Tesla Tower nitrogen plasma consumed each second the tesla tower is active");
         TESLA_MULTI_PLASMA_PER_SECOND_T2_RADON = _mainConfig.getInt(
-                "TeslaMultiPlasmaPerSecondT2Radon",
-                "tesla_tweaks",
-                TESLA_MULTI_PLASMA_PER_SECOND_T2_RADON,
-                0,
-                Integer.MAX_VALUE,
-                "Tesla Tower radon plasma consumed each second the tesla tower is active");
+            "TeslaMultiPlasmaPerSecondT2Radon",
+            "tesla_tweaks",
+            TESLA_MULTI_PLASMA_PER_SECOND_T2_RADON,
+            0,
+            Integer.MAX_VALUE,
+            "Tesla Tower radon plasma consumed each second the tesla tower is active");
         TESLA_MULTI_RANGE_COEFFICIENT_PLASMA_T1 = _mainConfig.getInt(
-                "TeslaMultiRangeCoefficientPlasmaT1",
-                "tesla_tweaks",
-                TESLA_MULTI_RANGE_COEFFICIENT_PLASMA_T1,
-                0,
-                Integer.MAX_VALUE,
-                "Tesla Tower T1 Plasmas Range Multiplier");
+            "TeslaMultiRangeCoefficientPlasmaT1",
+            "tesla_tweaks",
+            TESLA_MULTI_RANGE_COEFFICIENT_PLASMA_T1,
+            0,
+            Integer.MAX_VALUE,
+            "Tesla Tower T1 Plasmas Range Multiplier");
         TESLA_MULTI_RANGE_COEFFICIENT_PLASMA_T2 = _mainConfig.getInt(
-                "TeslaMultiRangeCoefficientPlasmaT2",
-                "tesla_tweaks",
-                TESLA_MULTI_RANGE_COEFFICIENT_PLASMA_T2,
-                0,
-                Integer.MAX_VALUE,
-                "Tesla Tower T2 Plasmas Range Multiplier");
+            "TeslaMultiRangeCoefficientPlasmaT2",
+            "tesla_tweaks",
+            TESLA_MULTI_RANGE_COEFFICIENT_PLASMA_T2,
+            0,
+            Integer.MAX_VALUE,
+            "Tesla Tower T2 Plasmas Range Multiplier");
         TESLA_MULTI_RANGE_COVER = _mainConfig.getInt(
-                "TeslaMultiRangeCover",
-                "tesla_tweaks",
-                TESLA_MULTI_RANGE_COVER,
-                0,
-                Integer.MAX_VALUE,
-                "Tesla Tower to Tesla Coil Rich Edition Cover max range");
+            "TeslaMultiRangeCover",
+            "tesla_tweaks",
+            TESLA_MULTI_RANGE_COVER,
+            0,
+            Integer.MAX_VALUE,
+            "Tesla Tower to Tesla Coil Rich Edition Cover max range");
         TESLA_MULTI_RANGE_TOWER = _mainConfig.getInt(
-                "TeslaMultiRangeTower",
-                "tesla_tweaks",
-                TESLA_MULTI_RANGE_TOWER,
-                0,
-                Integer.MAX_VALUE,
-                "Tesla Tower to Tower max range");
+            "TeslaMultiRangeTower",
+            "tesla_tweaks",
+            TESLA_MULTI_RANGE_TOWER,
+            0,
+            Integer.MAX_VALUE,
+            "Tesla Tower to Tower max range");
         TESLA_MULTI_RANGE_TRANSCEIVER = _mainConfig.getInt(
-                "TeslaMultiRangeTransceiver",
-                "tesla_tweaks",
-                TESLA_MULTI_RANGE_TRANSCEIVER,
-                0,
-                Integer.MAX_VALUE,
-                "Tesla Tower to Transceiver max range");
+            "TeslaMultiRangeTransceiver",
+            "tesla_tweaks",
+            TESLA_MULTI_RANGE_TRANSCEIVER,
+            0,
+            Integer.MAX_VALUE,
+            "Tesla Tower to Transceiver max range");
         TESLA_SINGLE_LOSS_FACTOR_OVERDRIVE = _mainConfig.getFloat(
-                "TeslaSingleLossFactorOverdrive",
-                "tesla_tweaks",
-                TESLA_SINGLE_LOSS_FACTOR_OVERDRIVE,
-                0,
-                1,
-                "Additional Tesla Transceiver power loss per amp as a factor of the tier voltage");
+            "TeslaSingleLossFactorOverdrive",
+            "tesla_tweaks",
+            TESLA_SINGLE_LOSS_FACTOR_OVERDRIVE,
+            0,
+            1,
+            "Additional Tesla Transceiver power loss per amp as a factor of the tier voltage");
         TESLA_SINGLE_LOSS_PER_BLOCK = _mainConfig.getInt(
-                "TeslaSingleLossPerBlock",
-                "tesla_tweaks",
-                TESLA_SINGLE_LOSS_PER_BLOCK,
-                0,
-                Integer.MAX_VALUE,
-                "Tesla Transceiver power transmission loss per block per amp");
+            "TeslaSingleLossPerBlock",
+            "tesla_tweaks",
+            TESLA_SINGLE_LOSS_PER_BLOCK,
+            0,
+            Integer.MAX_VALUE,
+            "Tesla Transceiver power transmission loss per block per amp");
         TESLA_SINGLE_RANGE = _mainConfig.getInt(
-                "TeslaSingleRange",
-                "tesla_tweaks",
-                TESLA_SINGLE_RANGE,
-                0,
-                Integer.MAX_VALUE,
-                "Tesla Transceiver to max range");
+            "TeslaSingleRange",
+            "tesla_tweaks",
+            TESLA_SINGLE_RANGE,
+            0,
+            Integer.MAX_VALUE,
+            "Tesla Transceiver to max range");
         TESLA_VISUAL_EFFECT = _mainConfig.getBoolean(
-                "EnableTeslaVisualEffect",
-                "tesla_tweaks",
-                TESLA_VISUAL_EFFECT,
-                "Set true to enable the cool visual effect when tesla tower running.");
+            "EnableTeslaVisualEffect",
+            "tesla_tweaks",
+            TESLA_VISUAL_EFFECT,
+            "Set true to enable the cool visual effect when tesla tower running.");
     }
 
     /**

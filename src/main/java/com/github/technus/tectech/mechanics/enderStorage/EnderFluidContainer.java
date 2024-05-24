@@ -104,7 +104,9 @@ public class EnderFluidContainer implements IFluidHandler, Serializable {
         if (fluidStack != null) {
             out.writeByte(fluidStack.tag != null ? SERIALIZE_TYPE_WITH_NBT : SERIALIZE_TYPE_WITHOUT_NBT);
             if (fluidStack.tag != null) CompressedStreamTools.write(fluidStack.tag, out);
-            out.writeUTF(fluidStack.getFluid().getName());
+            out.writeUTF(
+                fluidStack.getFluid()
+                    .getName());
             out.writeInt(fluidStack.amount);
         } else {
             out.writeByte(SERIALIZE_TYPE_NULL);

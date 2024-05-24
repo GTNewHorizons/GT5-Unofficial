@@ -27,10 +27,10 @@ public abstract class EOH_RenderingUtils {
 
         if (type == IItemRenderer.ItemRenderType.INVENTORY) GL11.glRotated(180, 0, 1, 0);
         else if (type == IItemRenderer.ItemRenderType.EQUIPPED
-                || type == IItemRenderer.ItemRenderType.EQUIPPED_FIRST_PERSON) {
-                    GL11.glTranslated(0.5, 0.5, 0.5);
-                    if (type == IItemRenderer.ItemRenderType.EQUIPPED) GL11.glRotated(90, 0, 1, 0);
-                }
+            || type == IItemRenderer.ItemRenderType.EQUIPPED_FIRST_PERSON) {
+                GL11.glTranslated(0.5, 0.5, 0.5);
+                if (type == IItemRenderer.ItemRenderType.EQUIPPED) GL11.glRotated(90, 0, 1, 0);
+            }
 
         // Render star stuff.
         renderStarLayer(0, STAR_LAYER_0, color, 1.0f);
@@ -65,7 +65,10 @@ public abstract class EOH_RenderingUtils {
         }
 
         // Bind image to layer of star.
-        FMLClientHandler.instance().getClient().getTextureManager().bindTexture(texture);
+        FMLClientHandler.instance()
+            .getClient()
+            .getTextureManager()
+            .bindTexture(texture);
 
         // 0.01f magic number to shrink sphere obj down.
         // Size obtained from the multis current recipe.
@@ -126,7 +129,7 @@ public abstract class EOH_RenderingUtils {
     static final double[] BLOCK_Z = { +0.5, +0.5, +0.5, +0.5, -0.5, -0.5, -0.5, -0.5 };
 
     public static void addRenderedBlockInWorld(final Block block, final int meta, final double x, final double y,
-            final double z) {
+        final double z) {
         final Tessellator tes = Tessellator.instance;
 
         IIcon texture;
@@ -244,8 +247,10 @@ public abstract class EOH_RenderingUtils {
         // GL11.glEnable(GL11.GL_BLEND);
 
         // Bind animation to layer of star.
-        FMLClientHandler.instance().getClient().getTextureManager()
-                .bindTexture(new ResourceLocation(MODID, "models/spaceLayer.png"));
+        FMLClientHandler.instance()
+            .getClient()
+            .getTextureManager()
+            .bindTexture(new ResourceLocation(MODID, "models/spaceLayer.png"));
 
         final float scale = 0.01f * 17.5f;
         // Scale the star up in the x, y and z directions.

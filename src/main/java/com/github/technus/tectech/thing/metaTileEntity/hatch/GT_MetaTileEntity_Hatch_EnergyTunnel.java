@@ -23,28 +23,28 @@ import gregtech.api.util.GT_Utility;
  * Created by danie_000 on 16.12.2016.
  */
 public class GT_MetaTileEntity_Hatch_EnergyTunnel extends GT_MetaTileEntity_Hatch_EnergyMulti
-        implements IConnectsToEnergyTunnel {
+    implements IConnectsToEnergyTunnel {
 
     public GT_MetaTileEntity_Hatch_EnergyTunnel(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                0,
-                new String[] { CommonValues.TEC_MARK_GENERAL,
-                        translateToLocal("gt.blockmachines.hatch.energytunnel.desc.0"),
-                        translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
-                                + EnumChatFormatting.YELLOW
-                                + GT_Utility.formatNumbers(aAmp * V[aTier])
-                                + EnumChatFormatting.RESET
-                                + " EU/t" },
-                aAmp); // Energy injecting terminal for Multiblocks
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            0,
+            new String[] { CommonValues.TEC_MARK_GENERAL,
+                translateToLocal("gt.blockmachines.hatch.energytunnel.desc.0"),
+                translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
+                    + EnumChatFormatting.YELLOW
+                    + GT_Utility.formatNumbers(aAmp * V[aTier])
+                    + EnumChatFormatting.RESET
+                    + " EU/t" },
+            aAmp); // Energy injecting terminal for Multiblocks
         TT_Utility.setTier(aTier, this);
     }
 
     public GT_MetaTileEntity_Hatch_EnergyTunnel(String aName, int aTier, int aAmp, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aAmp, aDescription, aTextures);
     }
 
@@ -120,13 +120,13 @@ public class GT_MetaTileEntity_Hatch_EnergyTunnel extends GT_MetaTileEntity_Hatc
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 

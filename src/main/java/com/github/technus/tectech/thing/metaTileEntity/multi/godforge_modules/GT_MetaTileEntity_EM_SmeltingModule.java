@@ -102,7 +102,9 @@ public class GT_MetaTileEntity_EM_SmeltingModule extends GT_MetaTileEntity_EM_Ba
                 if (!addEUToGlobalEnergyMap(userUUID, -calculatedEut * duration)) {
                     return CheckRecipeResultRegistry.insufficientPower(calculatedEut * duration);
                 }
-                addToPowerTally(BigInteger.valueOf(calculatedEut).multiply(BigInteger.valueOf(duration)));
+                addToPowerTally(
+                    BigInteger.valueOf(calculatedEut)
+                        .multiply(BigInteger.valueOf(duration)));
                 if (!furnaceMode) {
                     addToRecipeTally(calculatedParallels);
                 }
@@ -116,9 +118,12 @@ public class GT_MetaTileEntity_EM_SmeltingModule extends GT_MetaTileEntity_EM_Ba
             @Override
             protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
                 return super.createOverclockCalculator(recipe).setEUt(getProcessingVoltage())
-                        .setRecipeHeat(recipe.mSpecialValue).setHeatOC(true).setHeatDiscount(true)
-                        .setMachineHeat(getHeatForOC()).setHeatDiscountMultiplier(getHeatEnergyDiscount())
-                        .setDurationDecreasePerOC(getOverclockTimeFactor());
+                    .setRecipeHeat(recipe.mSpecialValue)
+                    .setHeatOC(true)
+                    .setHeatDiscount(true)
+                    .setMachineHeat(getHeatForOC())
+                    .setHeatDiscountMultiplier(getHeatEnergyDiscount())
+                    .setDurationDecreasePerOC(getOverclockTimeFactor());
             }
         };
     }
@@ -142,20 +147,24 @@ public class GT_MetaTileEntity_EM_SmeltingModule extends GT_MetaTileEntity_EM_Ba
 
     protected ButtonWidget furnaceSwitch(IWidgetBuilder<?> builder) {
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> furnaceMode = !furnaceMode)
-                .setPlayClickSound(true).setBackground(() -> {
-                    List<UITexture> ret = new ArrayList<>();
-                    if (isFurnaceModeOn()) {
-                        ret.add(GT_UITextures.BUTTON_STANDARD_PRESSED);
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_CHECKMARK);
-                    } else {
-                        ret.add(GT_UITextures.BUTTON_STANDARD);
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_CROSS);
+            .setPlayClickSound(true)
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                if (isFurnaceModeOn()) {
+                    ret.add(GT_UITextures.BUTTON_STANDARD_PRESSED);
+                    ret.add(GT_UITextures.OVERLAY_BUTTON_CHECKMARK);
+                } else {
+                    ret.add(GT_UITextures.BUTTON_STANDARD);
+                    ret.add(GT_UITextures.OVERLAY_BUTTON_CROSS);
 
-                    }
-                    return ret.toArray(new IDrawable[0]);
-                }).attachSyncer(new FakeSyncWidget.BooleanSyncer(this::isFurnaceModeOn, this::setFurnaceMode), builder)
-                .addTooltip(translateToLocal("fog.button.furnacemode.tooltip")).setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setPos(174, 91).setSize(16, 16);
+                }
+                return ret.toArray(new IDrawable[0]);
+            })
+            .attachSyncer(new FakeSyncWidget.BooleanSyncer(this::isFurnaceModeOn, this::setFurnaceMode), builder)
+            .addTooltip(translateToLocal("fog.button.furnacemode.tooltip"))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setPos(174, 91)
+            .setSize(16, 16);
         return (ButtonWidget) button;
     }
 
@@ -183,14 +192,14 @@ public class GT_MetaTileEntity_EM_SmeltingModule extends GT_MetaTileEntity_EM_Ba
     public String[] getInfoData() {
         ArrayList<String> str = new ArrayList<>();
         str.add(
-                "Progress: " + GREEN
-                        + GT_Utility.formatNumbers(mProgresstime / 20)
-                        + RESET
-                        + " s / "
-                        + YELLOW
-                        + GT_Utility.formatNumbers(mMaxProgresstime / 20)
-                        + RESET
-                        + " s");
+            "Progress: " + GREEN
+                + GT_Utility.formatNumbers(mProgresstime / 20)
+                + RESET
+                + " s / "
+                + YELLOW
+                + GT_Utility.formatNumbers(mMaxProgresstime / 20)
+                + RESET
+                + " s");
         str.add("Currently using: " + RED + formatNumbers(EUt) + RESET + " EU/t");
         str.add(YELLOW + "Max Parallel: " + RESET + formatNumbers(getMaxParallel()));
         str.add(YELLOW + "Current Parallel: " + RESET + formatNumbers(currentParallel));
@@ -205,10 +214,14 @@ public class GT_MetaTileEntity_EM_SmeltingModule extends GT_MetaTileEntity_EM_Ba
     @Override
     public GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Blast Furnace, Furnace").addInfo("Controller block of the Smelting Module")
-                .addInfo("Uses a Star to Smelt Metals").addSeparator().beginStructureBlock(1, 4, 2, false)
-                .addEnergyHatch("Any Infinite Spacetime Casing", 1)
-                .addMaintenanceHatch("Any Infinite Spacetime Casing", 1).toolTipFinisher(CommonValues.GODFORGE_MARK);
+        tt.addMachineType("Blast Furnace, Furnace")
+            .addInfo("Controller block of the Smelting Module")
+            .addInfo("Uses a Star to Smelt Metals")
+            .addSeparator()
+            .beginStructureBlock(1, 4, 2, false)
+            .addEnergyHatch("Any Infinite Spacetime Casing", 1)
+            .addMaintenanceHatch("Any Infinite Spacetime Casing", 1)
+            .toolTipFinisher(CommonValues.GODFORGE_MARK);
         return tt;
     }
 

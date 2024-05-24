@@ -26,94 +26,89 @@ public class GT_Item_Casings_Godforge extends GT_Item_Casings_Abstract {
         switch (aStack.getItemDamage()) {
             case 0:
                 aList.add(
-                        GT_LanguageManager.addStringLocalization(
-                                "godforge.casings.0.Tooltip.0",
-                                "Shielded by the event horizon of a singularity"));
+                    GT_LanguageManager.addStringLocalization(
+                        "godforge.casings.0.Tooltip.0",
+                        "Shielded by the event horizon of a singularity"));
                 aList.add(
-                        AQUA.toString() + BOLD
-                                + GT_LanguageManager.addStringLocalization(
-                                        "godforge.casings.0.Tooltip.1",
-                                        "Don't get too close..."));
+                    AQUA.toString() + BOLD
+                        + GT_LanguageManager
+                            .addStringLocalization("godforge.casings.0.Tooltip.1", "Don't get too close..."));
                 break;
             case 1:
                 aList.add(
-                        GT_LanguageManager.addStringLocalization(
-                                "godforge.casings.1.Tooltip.0",
-                                "Designed to route stellar matter using spacetime distortion"));
+                    GT_LanguageManager.addStringLocalization(
+                        "godforge.casings.1.Tooltip.0",
+                        "Designed to route stellar matter using spacetime distortion"));
                 aList.add(
-                        AQUA.toString() + BOLD
-                                + GT_LanguageManager
-                                        .addStringLocalization("godforge.casings.1.Tooltip.1", "Reality Distortion"));
+                    AQUA.toString() + BOLD
+                        + GT_LanguageManager
+                            .addStringLocalization("godforge.casings.1.Tooltip.1", "Reality Distortion"));
                 break;
             case 2:
                 aList.add(
-                        GT_LanguageManager.addStringLocalization(
-                                "godforge.casings.2.Tooltip.0",
-                                "Unaffected by gravitational forces"));
+                    GT_LanguageManager
+                        .addStringLocalization("godforge.casings.2.Tooltip.0", "Unaffected by gravitational forces"));
                 aList.add(
-                        AQUA.toString() + BOLD
-                                + GT_LanguageManager.addStringLocalization(
-                                        "godforge.casings.2.Tooltip.1",
-                                        "Not even a black hole could tear it apart."));
+                    AQUA.toString() + BOLD
+                        + GT_LanguageManager.addStringLocalization(
+                            "godforge.casings.2.Tooltip.1",
+                            "Not even a black hole could tear it apart."));
                 break;
             case 3:
                 aList.add(
-                        GT_LanguageManager.addStringLocalization(
-                                "godforge.casings.3.Tooltip.0",
-                                "Creates enormous magnetic fields capable of constraining entire stars"));
+                    GT_LanguageManager.addStringLocalization(
+                        "godforge.casings.3.Tooltip.0",
+                        "Creates enormous magnetic fields capable of constraining entire stars"));
                 aList.add(
-                        AQUA.toString() + BOLD
-                                + GT_LanguageManager.addStringLocalization(
-                                        "godforge.casings.3.Tooltip.1",
-                                        "It's super effective!"));
+                    AQUA.toString() + BOLD
+                        + GT_LanguageManager
+                            .addStringLocalization("godforge.casings.3.Tooltip.1", "It's super effective!"));
                 break;
             case 4:
                 aList.add(
-                        GT_LanguageManager.addStringLocalization(
-                                "godforge.casings.4.Tooltip.0",
-                                "Taps into streams of stellar matter to harness their heat energy"));
+                    GT_LanguageManager.addStringLocalization(
+                        "godforge.casings.4.Tooltip.0",
+                        "Taps into streams of stellar matter to harness their heat energy"));
                 aList.add(
-                        AQUA.toString() + BOLD
-                                + GT_LanguageManager
-                                        .addStringLocalization("godforge.casings.4.Tooltip.1", "Turn up the heat!"));
+                    AQUA.toString() + BOLD
+                        + GT_LanguageManager
+                            .addStringLocalization("godforge.casings.4.Tooltip.1", "Turn up the heat!"));
                 break;
             case 5:
                 aList.add(
-                        GT_LanguageManager.addStringLocalization(
-                                "godforge.casings.5.Tooltip.0",
-                                "Controls the flow of gravitons to manipulate gravity"));
+                    GT_LanguageManager.addStringLocalization(
+                        "godforge.casings.5.Tooltip.0",
+                        "Controls the flow of gravitons to manipulate gravity"));
                 aList.add(
-                        AQUA.toString() + BOLD
-                                + GT_LanguageManager.addStringLocalization(
-                                        "godforge.casings.5.Tooltip.1",
-                                        "Exponential scaling past 800 Galaxies"));
+                    AQUA.toString() + BOLD
+                        + GT_LanguageManager.addStringLocalization(
+                            "godforge.casings.5.Tooltip.1",
+                            "Exponential scaling past 800 Galaxies"));
                 break;
             case 6:
                 aList.add(
-                        GT_LanguageManager.addStringLocalization(
-                                "godforge.casings.6.Tooltip.0",
-                                "Controls the flow of gravitons to manipulate gravity"));
+                    GT_LanguageManager.addStringLocalization(
+                        "godforge.casings.6.Tooltip.0",
+                        "Controls the flow of gravitons to manipulate gravity"));
                 aList.add(
-                        AQUA.toString() + BOLD
-                                + GT_LanguageManager
-                                        .addStringLocalization("godforge.casings.6.Tooltip.1", "Getting closer..."));
+                    AQUA.toString() + BOLD
+                        + GT_LanguageManager
+                            .addStringLocalization("godforge.casings.6.Tooltip.1", "Getting closer..."));
                 break;
             case 7:
                 aList.add(
-                        GT_LanguageManager.addStringLocalization(
-                                "godforge.casings.7.Tooltip.0",
-                                "Controls the flow of gravitons to manipulate gravity"));
+                    GT_LanguageManager.addStringLocalization(
+                        "godforge.casings.7.Tooltip.0",
+                        "Controls the flow of gravitons to manipulate gravity"));
                 aList.add(
-                        AQUA.toString() + BOLD
-                                + GT_LanguageManager
-                                        .addStringLocalization("godforge.casings.7.Tooltip.1", "Gravity Central"));
+                    AQUA.toString() + BOLD
+                        + GT_LanguageManager.addStringLocalization("godforge.casings.7.Tooltip.1", "Gravity Central"));
                 break;
             default:
                 aList.add(
-                        EnumChatFormatting.RED.toString() + BOLD
-                                + GT_LanguageManager.addStringLocalization(
-                                        "godforge.casings.Error.Tooltip",
-                                        "Error, report to GTNH team"));
+                    EnumChatFormatting.RED.toString() + BOLD
+                        + GT_LanguageManager
+                            .addStringLocalization("godforge.casings.Error.Tooltip", "Error, report to GTNH team"));
         }
     }
 }

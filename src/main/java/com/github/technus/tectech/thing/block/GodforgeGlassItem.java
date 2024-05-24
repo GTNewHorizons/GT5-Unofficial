@@ -24,7 +24,7 @@ public class GodforgeGlassItem extends ItemBlock {
         aList.add(GODFORGE_MARK);
         aList.add(translateToLocal("tile.godforgeGlass.desc.0"));
         aList.add(
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-                        + translateToLocal("tile.godforgeGlass.desc.1"));
+            EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
+                + translateToLocal("tile.godforgeGlass.desc.1"));
     }
 }

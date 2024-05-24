@@ -60,16 +60,16 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch imple
 
     public GT_MetaTileEntity_Hatch_Param(int aID, String aName, String aNameRegional, int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                0,
-                new String[] { CommonValues.TEC_MARK_GENERAL,
-                        EnumChatFormatting.DARK_RED
-                                + "Deprecated; Now you can set parameter by clicking LED on multiblock GUI.",
-                        EnumChatFormatting.DARK_RED
-                                + "If it doesn't work, try removing Parametrizer from multiblock structure." });
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            0,
+            new String[] { CommonValues.TEC_MARK_GENERAL,
+                EnumChatFormatting.DARK_RED
+                    + "Deprecated; Now you can set parameter by clicking LED on multiblock GUI.",
+                EnumChatFormatting.DARK_RED
+                    + "If it doesn't work, try removing Parametrizer from multiblock structure." });
         TT_Utility.setTier(aTier, this);
     }
 
@@ -108,23 +108,17 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch imple
     @Override
     public String[] getInfoData() {
         return new String[] {
-                translateToLocalFormatted("tt.keyword.Parametrizer", clientLocale) + " "
-                        + translateToLocalFormatted("tt.keyword.ID", clientLocale)
-                        + ": "
-                        + EnumChatFormatting.GREEN
-                        + param,
-                translateToLocalFormatted("tt.keyword.Value", clientLocale) + " 0D: "
-                        + EnumChatFormatting.AQUA
-                        + value0D,
-                translateToLocalFormatted("tt.keyword.Value", clientLocale) + " 1D: "
-                        + EnumChatFormatting.BLUE
-                        + value1D,
-                translateToLocalFormatted("tt.keyword.Input", clientLocale) + " 0D: "
-                        + EnumChatFormatting.GOLD
-                        + input0D,
-                translateToLocalFormatted("tt.keyword.Input", clientLocale) + " 1D: "
-                        + EnumChatFormatting.YELLOW
-                        + input1D, };
+            translateToLocalFormatted("tt.keyword.Parametrizer", clientLocale) + " "
+                + translateToLocalFormatted("tt.keyword.ID", clientLocale)
+                + ": "
+                + EnumChatFormatting.GREEN
+                + param,
+            translateToLocalFormatted("tt.keyword.Value", clientLocale) + " 0D: " + EnumChatFormatting.AQUA + value0D,
+            translateToLocalFormatted("tt.keyword.Value", clientLocale) + " 1D: " + EnumChatFormatting.BLUE + value1D,
+            translateToLocalFormatted("tt.keyword.Input", clientLocale) + " 0D: " + EnumChatFormatting.GOLD + input0D,
+            translateToLocalFormatted("tt.keyword.Input", clientLocale) + " 1D: "
+                + EnumChatFormatting.YELLOW
+                + input1D, };
     }
 
     @Override
@@ -134,13 +128,13 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch imple
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
@@ -160,9 +154,9 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch imple
         super.loadNBTData(aNBT);
         pointer = aNBT.getInteger("ePointer");
         if (aNBT.hasKey("eFloats") || aNBT.hasKey("eValue0i")
-                || aNBT.hasKey("eValue1i")
-                || aNBT.hasKey("eInput0i")
-                || aNBT.hasKey("eInput1i")) {
+            || aNBT.hasKey("eValue1i")
+            || aNBT.hasKey("eInput0i")
+            || aNBT.hasKey("eInput1i")) {
             boolean usesFloat = aNBT.getBoolean("eFloats");
             if (usesFloat) {
                 value0D = Double.longBitsToDouble(aNBT.getLong("eValue0i"));
@@ -232,24 +226,26 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch imple
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(
-                new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_TECTECH_LOGO_DARK).setSize(18, 18)
-                        .setPos(112, 55));
+            new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_TECTECH_LOGO_DARK)
+                .setSize(18, 18)
+                .setPos(112, 55));
     }
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         final boolean isAdvanced = mTier > 5;
         builder.widget(
-                new DrawableWidget().setDrawable(TecTechUITextures.BACKGROUND_SCREEN_BLUE).setPos(43, 4)
-                        .setSize(90, 72));
+            new DrawableWidget().setDrawable(TecTechUITextures.BACKGROUND_SCREEN_BLUE)
+                .setPos(43, 4)
+                .setSize(90, 72));
 
         addChangeParamButton(
-                builder,
-                (shift, columnPointer, secondRow) -> param -= shift ? 16 : 4,
-                7,
-                4,
-                GT_UITextures.OVERLAY_BUTTON_MINUS_LARGE,
-                TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_ID);
+            builder,
+            (shift, columnPointer, secondRow) -> param -= shift ? 16 : 4,
+            7,
+            4,
+            GT_UITextures.OVERLAY_BUTTON_MINUS_LARGE,
+            TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_ID);
         addChangeParamButton(builder, (shift, columnPointer, secondRow) -> {
             if (isAdvanced) {
                 if (secondRow.get()) {
@@ -296,18 +292,18 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch imple
                 value1D /= shift ? 4096 : 256;
             }
         },
-                7,
-                58,
-                isAdvanced ? TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_S : GT_UITextures.OVERLAY_BUTTON_MINUS_LARGE,
-                isAdvanced ? null : TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_ID);
+            7,
+            58,
+            isAdvanced ? TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_S : GT_UITextures.OVERLAY_BUTTON_MINUS_LARGE,
+            isAdvanced ? null : TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_ID);
 
         addChangeParamButton(
-                builder,
-                (shift, columnPointer, secondRow) -> param -= shift ? 2 : 1,
-                25,
-                4,
-                GT_UITextures.OVERLAY_BUTTON_MINUS_SMALL,
-                TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_ID);
+            builder,
+            (shift, columnPointer, secondRow) -> param -= shift ? 2 : 1,
+            25,
+            4,
+            GT_UITextures.OVERLAY_BUTTON_MINUS_SMALL,
+            TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_ID);
         addChangeParamButton(builder, (shift, columnPointer, secondRow) -> {
             if (isAdvanced) {
                 if (secondRow.get()) {
@@ -354,18 +350,18 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch imple
                 value1D /= shift ? 16 : 2;
             }
         },
-                25,
-                58,
-                isAdvanced ? TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_C : GT_UITextures.OVERLAY_BUTTON_MINUS_SMALL,
-                isAdvanced ? null : TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_X);
+            25,
+            58,
+            isAdvanced ? TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_C : GT_UITextures.OVERLAY_BUTTON_MINUS_SMALL,
+            isAdvanced ? null : TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_X);
 
         addChangeParamButton(
-                builder,
-                (shift, columnPointer, secondRow) -> param += shift ? 2 : 1,
-                133,
-                4,
-                GT_UITextures.OVERLAY_BUTTON_PLUS_SMALL,
-                TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_ID);
+            builder,
+            (shift, columnPointer, secondRow) -> param += shift ? 2 : 1,
+            133,
+            4,
+            GT_UITextures.OVERLAY_BUTTON_PLUS_SMALL,
+            TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_ID);
         addChangeParamButton(builder, (shift, columnPointer, secondRow) -> {
             if (isAdvanced) {
                 if (secondRow.get()) {
@@ -412,18 +408,18 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch imple
                 value1D *= shift ? 16 : 2;
             }
         },
-                133,
-                58,
-                isAdvanced ? TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_T : GT_UITextures.OVERLAY_BUTTON_PLUS_SMALL,
-                isAdvanced ? null : TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_ID);
+            133,
+            58,
+            isAdvanced ? TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_T : GT_UITextures.OVERLAY_BUTTON_PLUS_SMALL,
+            isAdvanced ? null : TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_ID);
 
         addChangeParamButton(
-                builder,
-                (shift, columnPointer, secondRow) -> param += shift ? 16 : 4,
-                151,
-                4,
-                GT_UITextures.OVERLAY_BUTTON_PLUS_LARGE,
-                TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_ID);
+            builder,
+            (shift, columnPointer, secondRow) -> param += shift ? 16 : 4,
+            151,
+            4,
+            GT_UITextures.OVERLAY_BUTTON_PLUS_LARGE,
+            TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_ID);
         addChangeParamButton(builder, (shift, columnPointer, secondRow) -> {
             if (isAdvanced) {
                 if (secondRow.get()) {
@@ -455,66 +451,78 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch imple
                 value1D *= shift ? 4096 : 256;
             }
         },
-                151,
-                58,
-                isAdvanced ? TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_IF : GT_UITextures.OVERLAY_BUTTON_PLUS_LARGE,
-                isAdvanced ? null : TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_ID);
+            151,
+            58,
+            isAdvanced ? TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_IF : GT_UITextures.OVERLAY_BUTTON_PLUS_LARGE,
+            isAdvanced ? null : TecTechUITextures.OVERLAY_BUTTON_PARAMETRIZER_ID);
 
         builder.widget(new FakeSyncWidget.IntegerSyncer(() -> pointer, val -> pointer = val))
-                .widget(new FakeSyncWidget.IntegerSyncer(() -> param, val -> param = val))
-                .widget(new FakeSyncWidget.DoubleSyncer(() -> value0D, val -> value0D = val))
-                .widget(new FakeSyncWidget.DoubleSyncer(() -> value1D, val -> value1D = val))
-                .widget(new FakeSyncWidget.DoubleSyncer(() -> input0D, val -> input0D = val))
-                .widget(new FakeSyncWidget.DoubleSyncer(() -> input1D, val -> input1D = val));
+            .widget(new FakeSyncWidget.IntegerSyncer(() -> param, val -> param = val))
+            .widget(new FakeSyncWidget.DoubleSyncer(() -> value0D, val -> value0D = val))
+            .widget(new FakeSyncWidget.DoubleSyncer(() -> value1D, val -> value1D = val))
+            .widget(new FakeSyncWidget.DoubleSyncer(() -> input0D, val -> input0D = val))
+            .widget(new FakeSyncWidget.DoubleSyncer(() -> input1D, val -> input1D = val));
 
         final String CIRCLED_0 = "\u24EA";
         final String CIRCLED_1 = "\u2460";
         final String ARROW_DOWN = "\u2b07";
         final String ARROW_UP = "\u2b06";
         builder.widget(
+            TextWidget.dynamicString(() -> (isAdvanced ? "Parameters X: " : "Parameters: ") + param)
+                .setSynced(false)
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setPos(46, 7))
+            .widget(
+                TextWidget.dynamicString(() -> CIRCLED_0 + ARROW_DOWN + TT_Utility.formatNumberExp(input0D))
+                    .setSynced(false)
+                    .setDefaultColor(0x22ddff)
+                    .setPos(46, 16))
+            .widget(
+                TextWidget.dynamicString(() -> CIRCLED_1 + ARROW_DOWN + TT_Utility.formatNumberExp(input1D))
+                    .setSynced(false)
+                    .setDefaultColor(0x00ffff)
+                    .setPos(46, 24))
+            .widget(
+                TextWidget.dynamicString(() -> CIRCLED_0 + ARROW_UP + TT_Utility.formatNumberExp(value0D))
+                    .setSynced(false)
+                    .setDefaultColor(0x00bbff)
+                    .setPos(46, 33))
+            .widget(
+                TextWidget.dynamicString(() -> CIRCLED_1 + ARROW_UP + TT_Utility.formatNumberExp(value1D))
+                    .setSynced(false)
+                    .setDefaultColor(0x0077ff)
+                    .setPos(46, 41))
+            .widget(
                 TextWidget
-                        .dynamicString(
-                                () -> (isAdvanced ? "Parameters X: " : "Parameters: ") + param)
-                        .setSynced(false).setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 7))
-                .widget(
-                        TextWidget
-                                .dynamicString(
-                                        () -> CIRCLED_0 + ARROW_DOWN + TT_Utility.formatNumberExp(input0D))
-                                .setSynced(false).setDefaultColor(0x22ddff).setPos(46, 16))
-                .widget(
-                        TextWidget
-                                .dynamicString(
-                                        () -> CIRCLED_1 + ARROW_DOWN + TT_Utility.formatNumberExp(input1D))
-                                .setSynced(false).setDefaultColor(0x00ffff).setPos(46, 24))
-                .widget(
-                        TextWidget.dynamicString(() -> CIRCLED_0 + ARROW_UP + TT_Utility.formatNumberExp(value0D))
-                                .setSynced(false).setDefaultColor(0x00bbff).setPos(46, 33))
-                .widget(
-                        TextWidget.dynamicString(() -> CIRCLED_1 + ARROW_UP + TT_Utility.formatNumberExp(value1D))
-                                .setSynced(false).setDefaultColor(0x0077ff).setPos(46, 41))
-                .widget(
-                        TextWidget
-                                .dynamicString(
-                                        () -> CIRCLED_0 + ARROW_UP
-                                                + TT_Utility.longBitsToShortString(Double.doubleToLongBits(value0D)))
-                                .setSynced(false).setDefaultColor(0x00bbff).setScale(.5f)
-                                .setTextAlignment(Alignment.CenterLeft).setPos(46, 50))
-                .widget(
-                        TextWidget
-                                .dynamicString(
-                                        () -> CIRCLED_1 + ARROW_UP
-                                                + TT_Utility.longBitsToShortString(Double.doubleToLongBits(value1D)))
-                                .setSynced(false).setDefaultColor(0x0077ff).setScale(.5f)
-                                .setTextAlignment(Alignment.CenterLeft).setPos(46, 58));
+                    .dynamicString(
+                        () -> CIRCLED_0 + ARROW_UP + TT_Utility.longBitsToShortString(Double.doubleToLongBits(value0D)))
+                    .setSynced(false)
+                    .setDefaultColor(0x00bbff)
+                    .setScale(.5f)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(46, 50))
+            .widget(
+                TextWidget
+                    .dynamicString(
+                        () -> CIRCLED_1 + ARROW_UP + TT_Utility.longBitsToShortString(Double.doubleToLongBits(value1D)))
+                    .setSynced(false)
+                    .setDefaultColor(0x0077ff)
+                    .setScale(.5f)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(46, 58));
         if (isAdvanced) {
             builder.widget(
-                    TextWidget.dynamicString(() -> "Pointer " + Integer.toHexString(pointer | 0x10000).substring(1))
-                            .setSynced(false).setDefaultColor(0x0033ff).setPos(46, 66));
+                TextWidget.dynamicString(
+                    () -> "Pointer " + Integer.toHexString(pointer | 0x10000)
+                        .substring(1))
+                    .setSynced(false)
+                    .setDefaultColor(0x0033ff)
+                    .setPos(46, 66));
         }
     }
 
     private void addChangeParamButton(ModularWindow.Builder builder, OnClick onClick, int xPos, int yPos,
-            IDrawable overlay1, IDrawable overlay2) {
+        IDrawable overlay1, IDrawable overlay2) {
         final boolean isAdvanced = mTier > 5;
         builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
             AtomicInteger columnPointer = new AtomicInteger(pointer & 0xff);
@@ -534,11 +542,13 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch imple
             } else if (param < -1) {
                 param = -1;
             }
-        }).setPlayClickSound(false)
-                .setBackground(
-                        overlay2 != null ? new IDrawable[] { GT_UITextures.BUTTON_STANDARD, overlay1, overlay2 }
-                                : new IDrawable[] { GT_UITextures.BUTTON_STANDARD, overlay1 })
-                .setSize(18, 18).setPos(xPos, yPos));
+        })
+            .setPlayClickSound(false)
+            .setBackground(
+                overlay2 != null ? new IDrawable[] { GT_UITextures.BUTTON_STANDARD, overlay1, overlay2 }
+                    : new IDrawable[] { GT_UITextures.BUTTON_STANDARD, overlay1 })
+            .setSize(18, 18)
+            .setPos(xPos, yPos));
     }
 
     @FunctionalInterface

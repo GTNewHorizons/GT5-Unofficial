@@ -25,12 +25,13 @@ public final class TT_Utility {
     private static Formatter getFormatter() {
         STRING_BUILDER.setLength(0);
         return FORMATTER_MAP.computeIfAbsent(
-                Locale.getDefault(Locale.Category.FORMAT),
-                locale -> new Formatter(STRING_BUILDER, locale));
+            Locale.getDefault(Locale.Category.FORMAT),
+            locale -> new Formatter(STRING_BUILDER, locale));
     }
 
     public static String formatNumberExp(double value) {
-        return getFormatter().format("%+.5E", value).toString();
+        return getFormatter().format("%+.5E", value)
+            .toString();
     }
 
     // Formats to standard form.

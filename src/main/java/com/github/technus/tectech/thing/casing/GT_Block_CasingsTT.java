@@ -30,7 +30,7 @@ public class GT_Block_CasingsTT extends GT_Block_Casings_Abstract {
     public static final byte texturePage = tectechTexturePage1;
     public static final short textureOffset = texturePage << 7; // Start of PAGE 8 (which is the 9th page) (8*128)
     private static IIcon eM0, eM1, eM1s, eM2, eM2s, eM3, eM3s, eM4, eM5, eM6, eM7, eM7s, eM8, eM9, eM10, eM11, eM12,
-            eM13, eM14;
+        eM13, eM14;
     private static final IIcon[] debug = new IIcon[6];
 
     public GT_Block_CasingsTT() {
@@ -60,9 +60,9 @@ public class GT_Block_CasingsTT extends GT_Block_Casings_Abstract {
 
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Ultimate Molecular Casing");
         GT_LanguageManager
-                .addStringLocalization(getUnlocalizedName() + ".13.name", "Ultimate Advanced Molecular Casing");
+            .addStringLocalization(getUnlocalizedName() + ".13.name", "Ultimate Advanced Molecular Casing");
         GT_LanguageManager
-                .addStringLocalization(getUnlocalizedName() + ".14.name", "Ultimate Containment Field Generator");
+            .addStringLocalization(getUnlocalizedName() + ".14.name", "Ultimate Containment Field Generator");
 
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Debug Sides"); // NOT REGISTER AS
                                                                                                     // TEXTURE FOR

@@ -68,7 +68,10 @@ public class AvrArchitecture implements Architecture {
 
             // }
         }
-        memory = Math.min(Math.max(memory, 0), Settings.get().maxTotalRam());
+        memory = Math.min(
+            Math.max(memory, 0),
+            Settings.get()
+                .maxTotalRam());
         if (memory != memSize) {}
     }
 
@@ -76,7 +79,9 @@ public class AvrArchitecture implements Architecture {
     public boolean initialize() {
         core = new AvrCore();
 
-        computeMemory(this.machine.host().internalComponents());
+        computeMemory(
+            this.machine.host()
+                .internalComponents());
 
         if (isInitialized()) {
             machine.beep(".");
@@ -102,7 +107,8 @@ public class AvrArchitecture implements Architecture {
         if (core.awoken) {
             delay = 0;
             for (int load = 0; load < 512;) {
-                load += core.getInstruction().getCost(core);
+                load += core.getInstruction()
+                    .getCost(core);
                 ExecutionEvent executionEvent = core.cpuCycleForce();
                 if (executionEvent != null) {
                     if (executionEvent.throwable instanceof DelayEvent) {
@@ -146,14 +152,23 @@ public class AvrArchitecture implements Architecture {
         core.programCounter = avr.getInteger("programCounter");
         InstructionRegistry registry = InstructionRegistry.REGISTRIES.get(avr.getString("instructionRegistry"));
         if (registry != null) {
-            byte[] instructions = SaveHandler.load(avr, this.machine.node().address() + "_instructionsMemory");
-            byte[] param0 = SaveHandler.load(avr, this.machine.node().address() + "_param0Memory");
-            byte[] param1 = SaveHandler.load(avr, this.machine.node().address() + "_param1Memory");
+            byte[] instructions = SaveHandler.load(
+                avr,
+                this.machine.node()
+                    .address() + "_instructionsMemory");
+            byte[] param0 = SaveHandler.load(
+                avr,
+                this.machine.node()
+                    .address() + "_param0Memory");
+            byte[] param1 = SaveHandler.load(
+                avr,
+                this.machine.node()
+                    .address() + "_param1Memory");
             if (instructions != null && param0 != null
-                    && param1 != null
-                    && instructions.length > 0
-                    && param0.length > 0
-                    && param1.length > 0) {
+                && param1 != null
+                && instructions.length > 0
+                && param0.length > 0
+                && param1.length > 0) {
                 int[] instr = null, par0 = null, par1 = null;
                 try {
                     GZIPInputStream gzis = new GZIPInputStream(new ByteArrayInputStream(instructions));
@@ -180,9 +195,9 @@ public class AvrArchitecture implements Architecture {
                     e.printStackTrace();
                 }
                 if (instr != null && par0 != null
-                        && par1 != null
-                        && instr.length == par0.length
-                        && instr.length == par1.length) {
+                    && par1 != null
+                    && instr.length == par0.length
+                    && instr.length == par1.length) {
                     core.setProgramMemory(new ProgramMemory(registry, avr.getBoolean("immersive"), instr, par0, par1));
                 }
             }
@@ -190,7 +205,10 @@ public class AvrArchitecture implements Architecture {
         if (avr.hasKey("eepromSize")) {
             core.restoreEepromDefinition(EepromMemory.make(avr.getInteger("eepromSize")));
         }
-        byte[] data = SaveHandler.load(avr, this.machine.node().address() + "_dataMemory");
+        byte[] data = SaveHandler.load(
+            avr,
+            this.machine.node()
+                .address() + "_dataMemory");
         if (data != null && data.length > 0) {
             try {
                 GZIPInputStream gzis = new GZIPInputStream(new ByteArrayInputStream(data));
@@ -219,10 +237,11 @@ public class AvrArchitecture implements Architecture {
                 gzos.write(Converter.writeInts(programMemory.instructions));
                 gzos.close();
                 SaveHandler.scheduleSave(
-                        machine.host(),
-                        avr,
-                        machine.node().address() + "_instructionsMemory",
-                        baos.toByteArray());
+                    machine.host(),
+                    avr,
+                    machine.node()
+                        .address() + "_instructionsMemory",
+                    baos.toByteArray());
             } catch (IOException e) {
                 TecTech.LOGGER.error("Failed to compress instructions memory to disk");
                 e.printStackTrace();
@@ -233,10 +252,11 @@ public class AvrArchitecture implements Architecture {
                 gzos.write(Converter.writeInts(programMemory.param0));
                 gzos.close();
                 SaveHandler.scheduleSave(
-                        machine.host(),
-                        avr,
-                        machine.node().address() + "_param0Memory",
-                        baos.toByteArray());
+                    machine.host(),
+                    avr,
+                    machine.node()
+                        .address() + "_param0Memory",
+                    baos.toByteArray());
             } catch (IOException e) {
                 TecTech.LOGGER.error("Failed to compress param0 memory to disk");
                 e.printStackTrace();
@@ -247,10 +267,11 @@ public class AvrArchitecture implements Architecture {
                 gzos.write(Converter.writeInts(programMemory.param1));
                 gzos.close();
                 SaveHandler.scheduleSave(
-                        machine.host(),
-                        avr,
-                        machine.node().address() + "_param1Memory",
-                        baos.toByteArray());
+                    machine.host(),
+                    avr,
+                    machine.node()
+                        .address() + "_param1Memory",
+                    baos.toByteArray());
             } catch (IOException e) {
                 TecTech.LOGGER.error("Failed to compress param1 memory to disk");
                 e.printStackTrace();
@@ -260,7 +281,10 @@ public class AvrArchitecture implements Architecture {
         }
         RemovableMemory<EepromMemory> eeprom = core.getEepromMemory();
         if (eeprom != null) {
-            avr.setInteger("eepromSize", eeprom.getDefinition().getSize());
+            avr.setInteger(
+                "eepromSize",
+                eeprom.getDefinition()
+                    .getSize());
         }
         if (core.dataMemory != null) {
             try {
@@ -269,10 +293,11 @@ public class AvrArchitecture implements Architecture {
                 gzos.write(Converter.writeInts(core.dataMemory));
                 gzos.close();
                 SaveHandler.scheduleSave(
-                        machine.host(),
-                        avr,
-                        machine.node().address() + "_dataMemory",
-                        baos.toByteArray());
+                    machine.host(),
+                    avr,
+                    machine.node()
+                        .address() + "_dataMemory",
+                    baos.toByteArray());
             } catch (IOException e) {
                 TecTech.LOGGER.error("Failed to compress data memory to disk");
                 e.printStackTrace();

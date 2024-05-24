@@ -17,7 +17,7 @@ public class GT_MetaTileEntity_Hatch_CreativeUncertainty extends GT_MetaTileEnti
     }
 
     public GT_MetaTileEntity_Hatch_CreativeUncertainty(String aName, int aTier, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
@@ -32,9 +32,9 @@ public class GT_MetaTileEntity_Hatch_CreativeUncertainty extends GT_MetaTileEnti
                                                                                                                       // certain,
                                                                                                                       // for
                                                                                                                       // sure
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-                        + translateToLocal("gt.blockmachines.debug.tt.certain.desc.1") // Schrödinger's cat escaped the
-                                                                                       // box
+            EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
+                + translateToLocal("gt.blockmachines.debug.tt.certain.desc.1") // Schrödinger's cat escaped the
+                                                                               // box
         };
     }
 

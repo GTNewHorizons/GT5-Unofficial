@@ -33,7 +33,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_DataA
 import gregtech.api.objects.GT_RenderedTexture;
 
 public class GT_MetaTileEntity_Hatch_InputDataItems extends GT_MetaTileEntity_Hatch_DataAccess
-        implements IConnectsToDataPipe {
+    implements IConnectsToDataPipe {
 
     public boolean delDelay = true;
     private ItemStack[] stacks;
@@ -46,26 +46,26 @@ public class GT_MetaTileEntity_Hatch_InputDataItems extends GT_MetaTileEntity_Ha
     }
 
     public GT_MetaTileEntity_Hatch_InputDataItems(String aName, int aTier, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture,
-                new GT_RenderedTexture(
-                        EM_D_ACTIVE,
-                        Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
-                new GT_RenderedTexture(EM_D_CONN) };
+            new GT_RenderedTexture(
+                EM_D_ACTIVE,
+                Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
+            new GT_RenderedTexture(EM_D_CONN) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture,
-                new GT_RenderedTexture(
-                        EM_D_SIDES,
-                        Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
-                new GT_RenderedTexture(EM_D_CONN) };
+            new GT_RenderedTexture(
+                EM_D_SIDES,
+                Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
+            new GT_RenderedTexture(EM_D_CONN) };
     }
 
     @Override
@@ -99,13 +99,13 @@ public class GT_MetaTileEntity_Hatch_InputDataItems extends GT_MetaTileEntity_Ha
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
@@ -224,8 +224,8 @@ public class GT_MetaTileEntity_Hatch_InputDataItems extends GT_MetaTileEntity_Ha
     @Override
     public String[] getDescription() {
         return new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.datainass.desc.0"),
-                translateToLocal("gt.blockmachines.hatch.datainass.desc.1"),
-                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.datainass.desc.2") };
+            translateToLocal("gt.blockmachines.hatch.datainass.desc.1"),
+            EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.datainass.desc.2") };
     }
 
     @Override
@@ -236,7 +236,7 @@ public class GT_MetaTileEntity_Hatch_InputDataItems extends GT_MetaTileEntity_Ha
     @Override
     public String[] getInfoData() {
         return new String[] { translateToLocalFormatted("tt.keyphrase.Content_Stack_Count", clientLocale) + ": "
-                + (stacks == null ? 0 : stacks.length) };
+            + (stacks == null ? 0 : stacks.length) };
     }
 
     @Override

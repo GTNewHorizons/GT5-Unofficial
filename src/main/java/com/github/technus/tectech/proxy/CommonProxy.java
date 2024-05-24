@@ -40,7 +40,9 @@ public class CommonProxy implements IGuiHandler {
     }
 
     public void broadcast(String str) {
-        MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentText(str));
+        MinecraftServer.getServer()
+            .getConfigurationManager()
+            .sendChatMsg(new ChatComponentText(str));
     }
 
     public void printInchat(String... strings) {}
@@ -50,8 +52,12 @@ public class CommonProxy implements IGuiHandler {
     public String getUUID(String name) {
         for (WorldServer worldServer : MinecraftServer.getServer().worldServers) {
             for (Object o : worldServer.playerEntities) {
-                if (o instanceof EntityPlayer && ((EntityPlayer) o).getGameProfile().getName().equals(name)) {
-                    return ((EntityPlayer) o).getGameProfile().getId().toString();
+                if (o instanceof EntityPlayer && ((EntityPlayer) o).getGameProfile()
+                    .getName()
+                    .equals(name)) {
+                    return ((EntityPlayer) o).getGameProfile()
+                        .getId()
+                        .toString();
                 }
             }
         }
@@ -61,7 +67,9 @@ public class CommonProxy implements IGuiHandler {
     public boolean isOnlineName(String name) {
         for (WorldServer worldServer : MinecraftServer.getServer().worldServers) {
             for (Object o : worldServer.playerEntities) {
-                if (o instanceof EntityPlayer && ((EntityPlayer) o).getGameProfile().getName().equals(name)) {
+                if (o instanceof EntityPlayer && ((EntityPlayer) o).getGameProfile()
+                    .getName()
+                    .equals(name)) {
                     return true;
                 }
             }
@@ -72,7 +80,10 @@ public class CommonProxy implements IGuiHandler {
     public boolean isOnlineUUID(String uuid) {
         for (WorldServer worldServer : MinecraftServer.getServer().worldServers) {
             for (Object o : worldServer.playerEntities) {
-                if (o instanceof EntityPlayer && ((EntityPlayer) o).getGameProfile().getId().toString().equals(uuid)) {
+                if (o instanceof EntityPlayer && ((EntityPlayer) o).getGameProfile()
+                    .getId()
+                    .toString()
+                    .equals(uuid)) {
                     return true;
                 }
             }

@@ -43,11 +43,11 @@ public class ThaumSpark implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         ThaumSpark that = (ThaumSpark) o;
         return x == that.x && y == that.y
-                && z == that.z
-                && wID == that.wID
-                && xR == that.xR
-                && yR == that.yR
-                && zR == that.zR;
+            && z == that.z
+            && wID == that.wID
+            && xR == that.xR
+            && yR == that.yR
+            && zR == that.zR;
     }
 
     @Override

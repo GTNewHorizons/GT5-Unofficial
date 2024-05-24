@@ -38,16 +38,15 @@ public class GodforgeCasings extends GT_Block_Casings_Abstract {
             Textures.BlockIcons.casingTexturePages[7][b + START_INDEX] = new GT_CopiedBlockTexture(this, 6, b);
         }
 
-        GT_LanguageManager.addStringLocalization(
-                getUnlocalizedName() + ".0.name",
-                "Singularity Reinforced Stellar Shielding Casing");
+        GT_LanguageManager
+            .addStringLocalization(getUnlocalizedName() + ".0.name", "Singularity Reinforced Stellar Shielding Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Celestial Matter Guidance Casing");
         GT_LanguageManager.addStringLocalization(
-                getUnlocalizedName() + ".2.name",
-                "Boundless Gravitationally Severed Structure Casing");
+            getUnlocalizedName() + ".2.name",
+            "Boundless Gravitationally Severed Structure Casing");
         GT_LanguageManager.addStringLocalization(
-                getUnlocalizedName() + ".3.name",
-                "Transcendentally Amplified Magnetic Confinement Casing");
+            getUnlocalizedName() + ".3.name",
+            "Transcendentally Amplified Magnetic Confinement Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Stellar Energy Siphon Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Remote Graviton Flow Modulator");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Medial Graviton Flow Modulator");

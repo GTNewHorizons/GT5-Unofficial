@@ -27,7 +27,10 @@ public class ReactorSimItem extends ItemBlock {
         aList.add(TEC_MARK_GENERAL);
         aList.add(translateToLocal("tile.reactorSim.desc.0")); // Fission Reaction Uncertainty Resolver 9001
         aList.add(
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-                        + translateToLocal("tile.reactorSim.desc.1")); // Explodes, but not as much...
+            EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("tile.reactorSim.desc.1")); // Explodes,
+                                                                                                                        // but
+                                                                                                                        // not
+                                                                                                                        // as
+                                                                                                                        // much...
     }
 }

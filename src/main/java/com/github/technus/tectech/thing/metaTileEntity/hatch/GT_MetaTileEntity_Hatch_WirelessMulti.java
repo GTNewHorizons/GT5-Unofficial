@@ -26,10 +26,10 @@ import gregtech.api.interfaces.tileentity.IWirelessEnergyHatchInformation;
 import gregtech.api.metatileentity.MetaTileEntity;
 
 public class GT_MetaTileEntity_Hatch_WirelessMulti extends GT_MetaTileEntity_Hatch_EnergyMulti
-        implements IGlobalWirelessEnergy, IWirelessEnergyHatchInformation {
+    implements IGlobalWirelessEnergy, IWirelessEnergyHatchInformation {
 
     private final BigInteger eu_transferred_per_operation = BigInteger
-            .valueOf(Amperes * V[mTier] * ticks_between_energy_addition);
+        .valueOf(Amperes * V[mTier] * ticks_between_energy_addition);
     private final long eu_transferred_per_operation_long = eu_transferred_per_operation.longValue();
 
     private String owner_uuid;
@@ -37,20 +37,20 @@ public class GT_MetaTileEntity_Hatch_WirelessMulti extends GT_MetaTileEntity_Hat
 
     public GT_MetaTileEntity_Hatch_WirelessMulti(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                0,
-                new String[] { GRAY + "Stores energy globally in a network, up to 2^(2^31) EU.",
-                        GRAY + "Does not connect to wires. This block withdraws EU from the network.",
-                        AuthorColen + GRAY + BOLD + " & " + BLUE + BOLD + "Cloud" },
-                aAmp);
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            0,
+            new String[] { GRAY + "Stores energy globally in a network, up to 2^(2^31) EU.",
+                GRAY + "Does not connect to wires. This block withdraws EU from the network.",
+                AuthorColen + GRAY + BOLD + " & " + BLUE + BOLD + "Cloud" },
+            aAmp);
         TT_Utility.setTier(aTier, this);
     }
 
     public GT_MetaTileEntity_Hatch_WirelessMulti(String aName, int aTier, int aAmp, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aAmp, aDescription, aTextures);
     }
 
@@ -156,13 +156,13 @@ public class GT_MetaTileEntity_Hatch_WirelessMulti extends GT_MetaTileEntity_Hat
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
@@ -177,7 +177,8 @@ public class GT_MetaTileEntity_Hatch_WirelessMulti extends GT_MetaTileEntity_Hat
             // On first tick find the player name and attempt to add them to the map.
 
             // UUID and username of the owner.
-            owner_uuid = aBaseMetaTileEntity.getOwnerUuid().toString();
+            owner_uuid = aBaseMetaTileEntity.getOwnerUuid()
+                .toString();
             owner_name = aBaseMetaTileEntity.getOwnerName();
 
             strongCheckOrAddUser(owner_uuid, owner_name);

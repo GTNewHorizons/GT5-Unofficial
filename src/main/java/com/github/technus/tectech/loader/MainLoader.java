@@ -86,7 +86,8 @@ public final class MainLoader {
         if (NewHorizonsCoreMod.isModLoaded()) {
             try {
                 Class<?> clazz = Class.forName("com.dreammaster.gthandler.casings.GT_Container_CasingsNH");
-                TT_Container_Casings.sBlockCasingsNH = (Block) clazz.getField("sBlockCasingsNH").get(null);
+                TT_Container_Casings.sBlockCasingsNH = (Block) clazz.getField("sBlockCasingsNH")
+                    .get(null);
 
                 if (TT_Container_Casings.sBlockCasingsNH == null) {
                     throw new NullPointerException("sBlockCasingsNH Is not set at this time");
@@ -129,20 +130,32 @@ public final class MainLoader {
                     LOGGER.info("Found Plasma of " + material.mName);
                 }
                 if (material.mElement != null && (material.mElement.mProtons >= Materials.Iron.mElement.mProtons
-                        || -material.mElement.mProtons >= Materials.Iron.mElement.mProtons
-                        || material.mElement.mNeutrons >= Materials.Iron.mElement.mNeutrons
-                        || -material.mElement.mNeutrons >= Materials.Iron.mElement.mNeutrons)) {
+                    || -material.mElement.mProtons >= Materials.Iron.mElement.mProtons
+                    || material.mElement.mNeutrons >= Materials.Iron.mElement.mNeutrons
+                    || -material.mElement.mNeutrons >= Materials.Iron.mElement.mNeutrons)) {
                     if (DEBUG_MODE) {
                         LOGGER.info("Attempting to bind " + material.mName);
                     }
                     if (material.getMolten(1) != null) {
-                        binds.put(p.getFluid(), material.getMolten(1).getFluid());
+                        binds.put(
+                            p.getFluid(),
+                            material.getMolten(1)
+                                .getFluid());
                     } else if (material.getGas(1) != null) {
-                        binds.put(p.getFluid(), material.getGas(1).getFluid());
+                        binds.put(
+                            p.getFluid(),
+                            material.getGas(1)
+                                .getFluid());
                     } else if (material.getFluid(1) != null) {
-                        binds.put(p.getFluid(), material.getFluid(1).getFluid());
+                        binds.put(
+                            p.getFluid(),
+                            material.getFluid(1)
+                                .getFluid());
                     } else {
-                        binds.put(p.getFluid(), Materials.Iron.getMolten(1).getFluid());
+                        binds.put(
+                            p.getFluid(),
+                            Materials.Iron.getMolten(1)
+                                .getFluid());
                     }
                 }
             }

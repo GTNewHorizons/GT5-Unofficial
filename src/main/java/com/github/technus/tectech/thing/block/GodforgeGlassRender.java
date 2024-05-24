@@ -49,7 +49,7 @@ public class GodforgeGlassRender implements ISimpleBlockRenderingHandler {
 
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
-            RenderBlocks renderer) {
+        RenderBlocks renderer) {
 
         renderer.renderStandardBlock(block, x, y, z);
         Tessellator tes = Tessellator.instance;
@@ -59,7 +59,8 @@ public class GodforgeGlassRender implements ISimpleBlockRenderingHandler {
         IIcon side = GodforgeGlassBlock.Icon;
 
         // South
-        if (world.getBlock(x, y, z + 1).getClass() != GodforgeGlassBlock.class) {
+        if (world.getBlock(x, y, z + 1)
+            .getClass() != GodforgeGlassBlock.class) {
             tes.addVertexWithUV(x, y, z + 0.999, side.getMinU(), side.getMaxV()); // 0.999 instead of 1 for fighting
             // (textures overlapping)
             tes.addVertexWithUV(x, y + 1, z + 0.999, side.getMinU(), side.getMinV());
@@ -67,35 +68,40 @@ public class GodforgeGlassRender implements ISimpleBlockRenderingHandler {
             tes.addVertexWithUV(x + 1, y, z + 0.999, side.getMaxU(), side.getMaxV());
         }
         // East
-        if (world.getBlock(x + 1, y, z).getClass() != GodforgeGlassBlock.class) {
+        if (world.getBlock(x + 1, y, z)
+            .getClass() != GodforgeGlassBlock.class) {
             tes.addVertexWithUV(x + 0.999, y, z + 1, side.getMinU(), side.getMaxV());
             tes.addVertexWithUV(x + 0.999, y + 1, z + 1, side.getMinU(), side.getMinV());
             tes.addVertexWithUV(x + 0.999, y + 1, z, side.getMaxU(), side.getMinV());
             tes.addVertexWithUV(x + 0.999, y, z, side.getMaxU(), side.getMaxV());
         }
         // North
-        if (world.getBlock(x, y, z - 1).getClass() != GodforgeGlassBlock.class) {
+        if (world.getBlock(x, y, z - 1)
+            .getClass() != GodforgeGlassBlock.class) {
             tes.addVertexWithUV(x + 1, y, z + 0.001, side.getMinU(), side.getMaxV());
             tes.addVertexWithUV(x + 1, y + 1, z + 0.001, side.getMinU(), side.getMinV());
             tes.addVertexWithUV(x, y + 1, z + 0.001, side.getMaxU(), side.getMinV());
             tes.addVertexWithUV(x, y, z + 0.001, side.getMaxU(), side.getMaxV());
         }
         // West
-        if (world.getBlock(x - 1, y, z).getClass() != GodforgeGlassBlock.class) {
+        if (world.getBlock(x - 1, y, z)
+            .getClass() != GodforgeGlassBlock.class) {
             tes.addVertexWithUV(x + 0.001, y, z, side.getMinU(), side.getMaxV());
             tes.addVertexWithUV(x + 0.001, y + 1, z, side.getMinU(), side.getMinV());
             tes.addVertexWithUV(x + 0.001, y + 1, z + 1, side.getMaxU(), side.getMinV());
             tes.addVertexWithUV(x + 0.001, y, z + 1, side.getMaxU(), side.getMaxV());
         }
         // Top
-        if (world.getBlock(x, y + 1, z).getClass() != GodforgeGlassBlock.class) {
+        if (world.getBlock(x, y + 1, z)
+            .getClass() != GodforgeGlassBlock.class) {
             tes.addVertexWithUV(x, y + 0.999, z + 1, side.getMinU(), side.getMaxV());
             tes.addVertexWithUV(x, y + 0.999, z, side.getMinU(), side.getMinV());
             tes.addVertexWithUV(x + 1, y + 0.999, z, side.getMaxU(), side.getMinV());
             tes.addVertexWithUV(x + 1, y + 0.999, z + 1, side.getMaxU(), side.getMaxV());
         }
         // Bottom
-        if (world.getBlock(x, y - 1, z).getClass() != GodforgeGlassBlock.class) {
+        if (world.getBlock(x, y - 1, z)
+            .getClass() != GodforgeGlassBlock.class) {
             tes.addVertexWithUV(x, y + 0.001, z, side.getMinU(), side.getMaxV());
             tes.addVertexWithUV(x, y + 0.001, z + 1, side.getMinU(), side.getMinV());
             tes.addVertexWithUV(x + 1, y + 0.001, z + 1, side.getMaxU(), side.getMinV());

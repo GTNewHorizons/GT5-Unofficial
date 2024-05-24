@@ -16,7 +16,7 @@ public class GT_Cover_TM_PowerPassUpgrade extends GT_CoverBehavior {
     @Override
     public boolean isCoverPlaceable(ForgeDirection side, ItemStack aStack, ICoverable aTileEntity) {
         IMetaTileEntity iGregTechTileEntityOffset = aTileEntity.getIGregTechTileEntityOffset(0, 0, 0)
-                .getMetaTileEntity();
+            .getMetaTileEntity();
         if (iGregTechTileEntityOffset instanceof GT_MetaTileEntity_MultiblockBase_EM multi) {
             return !multi.ePowerPassCover;
         }
@@ -26,7 +26,7 @@ public class GT_Cover_TM_PowerPassUpgrade extends GT_CoverBehavior {
     @Override
     public void placeCover(ForgeDirection side, ItemStack aCover, ICoverable aTileEntity) {
         IMetaTileEntity iGregTechTileEntityOffset = aTileEntity.getIGregTechTileEntityOffset(0, 0, 0)
-                .getMetaTileEntity();
+            .getMetaTileEntity();
         if (iGregTechTileEntityOffset instanceof GT_MetaTileEntity_MultiblockBase_EM multi) {
             multi.ePowerPassCover = true;
             multi.ePowerPass = true;
@@ -36,9 +36,9 @@ public class GT_Cover_TM_PowerPassUpgrade extends GT_CoverBehavior {
 
     @Override
     public boolean onCoverRemoval(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-            boolean aForced) {
+        boolean aForced) {
         IMetaTileEntity iGregTechTileEntityOffset = aTileEntity.getIGregTechTileEntityOffset(0, 0, 0)
-                .getMetaTileEntity();
+            .getMetaTileEntity();
         if (iGregTechTileEntityOffset instanceof GT_MetaTileEntity_MultiblockBase_EM multi) {
             multi.ePowerPassCover = false;
             multi.ePowerPass = false;

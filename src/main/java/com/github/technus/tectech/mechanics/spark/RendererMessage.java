@@ -41,7 +41,9 @@ public class RendererMessage implements IMessage {
     @SuppressWarnings("unchecked")
     @Override
     public void fromBytes(ByteBuf pBuffer) {
-        if (FMLCommonHandler.instance().getSide().isServer()) return;
+        if (FMLCommonHandler.instance()
+            .getSide()
+            .isServer()) return;
         try {
             // I'd love to know why I need to offset by one byte for this to work
             byte[] boop = pBuffer.array();
@@ -105,17 +107,17 @@ public class RendererMessage implements IMessage {
             World world = Minecraft.getMinecraft().theWorld;
             if (world.provider.dimensionId == wID) {
                 FXLightningBolt bolt = new FXLightningBolt(
-                        world,
-                        tX + 0.5F,
-                        tY + 0.5F,
-                        tZ + 0.5F,
-                        tX + tXN + 0.5F,
-                        tY + tYN + 0.5F,
-                        tZ + tZN + 0.5F,
-                        world.rand.nextLong(),
-                        6,
-                        0.5F,
-                        8);
+                    world,
+                    tX + 0.5F,
+                    tY + 0.5F,
+                    tZ + 0.5F,
+                    tX + tXN + 0.5F,
+                    tY + tYN + 0.5F,
+                    tZ + tZN + 0.5F,
+                    world.rand.nextLong(),
+                    6,
+                    0.5F,
+                    8);
                 bolt.defaultFractal();
                 bolt.setType(2);
                 bolt.setWidth(0.125F);
@@ -137,7 +139,7 @@ public class RendererMessage implements IMessage {
         protected Class<?> resolveClass(ObjectStreamClass desc) throws IOException, ClassNotFoundException {
             String name = desc.getName();
             if (!name.equals("java.util.HashSet")
-                    && !name.equals("com.github.technus.tectech.mechanics.spark.ThaumSpark")) {
+                && !name.equals("com.github.technus.tectech.mechanics.spark.ThaumSpark")) {
                 logger.warn(securityMarker, "Received packet containing disallowed class: " + name);
                 throw new RuntimeException();
             }

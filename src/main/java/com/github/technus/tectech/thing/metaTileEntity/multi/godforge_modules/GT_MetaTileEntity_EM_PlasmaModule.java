@@ -78,7 +78,7 @@ public class GT_MetaTileEntity_EM_PlasmaModule extends GT_MetaTileEntity_EM_Base
                     return CheckRecipeResultRegistry.insufficientPower(wirelessEUt * recipe.mDuration);
                 }
                 if (recipe.mSpecialValue > getPlasmaTier()
-                        || Objects.equals(recipe.mSpecialItems.toString(), "true") && !isMultiStepPlasmaCapable) {
+                    || Objects.equals(recipe.mSpecialItems.toString(), "true") && !isMultiStepPlasmaCapable) {
                     return SimpleCheckRecipeResult.ofFailure("missing_upgrades");
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
@@ -91,7 +91,9 @@ public class GT_MetaTileEntity_EM_PlasmaModule extends GT_MetaTileEntity_EM_Base
                 if (!addEUToGlobalEnergyMap(userUUID, -calculatedEut * duration)) {
                     return CheckRecipeResultRegistry.insufficientPower(wirelessEUt * recipe.mDuration);
                 }
-                addToPowerTally(BigInteger.valueOf(calculatedEut).multiply(BigInteger.valueOf(duration)));
+                addToPowerTally(
+                    BigInteger.valueOf(calculatedEut)
+                        .multiply(BigInteger.valueOf(duration)));
                 addToRecipeTally(calculatedParallels);
                 currentParallel = calculatedParallels;
                 EUt = calculatedEut;
@@ -103,7 +105,7 @@ public class GT_MetaTileEntity_EM_PlasmaModule extends GT_MetaTileEntity_EM_Base
             @Override
             protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
                 return super.createOverclockCalculator(recipe).setEUt(getProcessingVoltage())
-                        .setDurationDecreasePerOC(getOverclockTimeFactor());
+                    .setDurationDecreasePerOC(getOverclockTimeFactor());
             }
         };
     }
@@ -122,43 +124,63 @@ public class GT_MetaTileEntity_EM_PlasmaModule extends GT_MetaTileEntity_EM_Base
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
         if (debug) {
-            builder.widget(createTestButton(builder)).widget(createTestButton2()).widget(createTestButton3());
+            builder.widget(createTestButton(builder))
+                .widget(createTestButton2())
+                .widget(createTestButton3());
         }
     }
 
     protected Widget createTestButton(IWidgetBuilder<?> builder) {
         return new ButtonWidget()
-                .setOnClick((clickData, widget) -> isMultiStepPlasmaCapable = !isMultiStepPlasmaCapable)
-                .setPlayClickSoundResource(
-                        () -> isAllowedToWork() ? SoundResource.GUI_BUTTON_UP.resourceLocation
-                                : SoundResource.GUI_BUTTON_DOWN.resourceLocation)
-                .setBackground(() -> {
-                    if (isMultiStepPlasmaCapable) {
-                        return new IDrawable[] { GT_UITextures.BUTTON_STANDARD_PRESSED,
-                                GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_ON };
-                    } else {
-                        return new IDrawable[] { GT_UITextures.BUTTON_STANDARD,
-                                GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF };
-                    }
-                }).attachSyncer(new FakeSyncWidget.BooleanSyncer(this::isAllowedToWork, val -> {
-                    if (val) enableWorking();
-                    else disableWorking();
-                }), builder).addTooltip("multi-step").setTooltipShowUpDelay(TOOLTIP_DELAY).setPos(174, 100)
-                .setSize(16, 16);
+            .setOnClick((clickData, widget) -> isMultiStepPlasmaCapable = !isMultiStepPlasmaCapable)
+            .setPlayClickSoundResource(
+                () -> isAllowedToWork() ? SoundResource.GUI_BUTTON_UP.resourceLocation
+                    : SoundResource.GUI_BUTTON_DOWN.resourceLocation)
+            .setBackground(() -> {
+                if (isMultiStepPlasmaCapable) {
+                    return new IDrawable[] { GT_UITextures.BUTTON_STANDARD_PRESSED,
+                        GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_ON };
+                } else {
+                    return new IDrawable[] { GT_UITextures.BUTTON_STANDARD,
+                        GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF };
+                }
+            })
+            .attachSyncer(new FakeSyncWidget.BooleanSyncer(this::isAllowedToWork, val -> {
+                if (val) enableWorking();
+                else disableWorking();
+            }), builder)
+            .addTooltip("multi-step")
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setPos(174, 100)
+            .setSize(16, 16);
     }
 
     protected Widget createTestButton2() {
-        return new TextFieldWidget().setSetterInt(this::setPlasmaTier).setGetterInt(this::getPlasmaTier)
-                .setNumbers(0, 2).setTextAlignment(Alignment.Center).setTextColor(Color.WHITE.normal).setPos(3, 18)
-                .addTooltip("fusion tier").setTooltipShowUpDelay(TOOLTIP_DELAY).setSize(16, 16).setPos(174, 80)
-                .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD);
+        return new TextFieldWidget().setSetterInt(this::setPlasmaTier)
+            .setGetterInt(this::getPlasmaTier)
+            .setNumbers(0, 2)
+            .setTextAlignment(Alignment.Center)
+            .setTextColor(Color.WHITE.normal)
+            .setPos(3, 18)
+            .addTooltip("fusion tier")
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setSize(16, 16)
+            .setPos(174, 80)
+            .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD);
     }
 
     protected Widget createTestButton3() {
-        return new TextFieldWidget().setSetterInt(val -> inputMaxParallel = val).setGetterInt(() -> inputMaxParallel)
-                .setNumbers(0, Integer.MAX_VALUE).setTextAlignment(Alignment.Center).setTextColor(Color.WHITE.normal)
-                .setPos(3, 18).addTooltip("parallel").setTooltipShowUpDelay(TOOLTIP_DELAY).setSize(70, 16)
-                .setPos(174, 60).setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD);
+        return new TextFieldWidget().setSetterInt(val -> inputMaxParallel = val)
+            .setGetterInt(() -> inputMaxParallel)
+            .setNumbers(0, Integer.MAX_VALUE)
+            .setTextAlignment(Alignment.Center)
+            .setTextColor(Color.WHITE.normal)
+            .setPos(3, 18)
+            .addTooltip("parallel")
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setSize(70, 16)
+            .setPos(174, 60)
+            .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD);
     }
 
     @Override
@@ -170,14 +192,14 @@ public class GT_MetaTileEntity_EM_PlasmaModule extends GT_MetaTileEntity_EM_Base
     public String[] getInfoData() {
         ArrayList<String> str = new ArrayList<>();
         str.add(
-                "Progress: " + GREEN
-                        + GT_Utility.formatNumbers(mProgresstime / 20)
-                        + RESET
-                        + " s / "
-                        + YELLOW
-                        + GT_Utility.formatNumbers(mMaxProgresstime / 20)
-                        + RESET
-                        + " s");
+            "Progress: " + GREEN
+                + GT_Utility.formatNumbers(mProgresstime / 20)
+                + RESET
+                + " s / "
+                + YELLOW
+                + GT_Utility.formatNumbers(mMaxProgresstime / 20)
+                + RESET
+                + " s");
         str.add("Currently using: " + RED + formatNumbers(EUt) + RESET + " EU/t");
         str.add(YELLOW + "Max Parallel: " + RESET + formatNumbers(getMaxParallel()));
         str.add(YELLOW + "Current Parallel: " + RESET + formatNumbers(currentParallel));
@@ -190,10 +212,14 @@ public class GT_MetaTileEntity_EM_PlasmaModule extends GT_MetaTileEntity_EM_Base
     @Override
     public GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Plasma Fabricator").addInfo("Controller block of the Plasma Module")
-                .addInfo("Uses a Star to to turn Metals into Plasma").addSeparator().beginStructureBlock(1, 4, 2, false)
-                .addEnergyHatch("Any Infinite Spacetime Casing", 1)
-                .addMaintenanceHatch("Any Infinite Spacetime Casing", 1).toolTipFinisher(CommonValues.GODFORGE_MARK);
+        tt.addMachineType("Plasma Fabricator")
+            .addInfo("Controller block of the Plasma Module")
+            .addInfo("Uses a Star to to turn Metals into Plasma")
+            .addSeparator()
+            .beginStructureBlock(1, 4, 2, false)
+            .addEnergyHatch("Any Infinite Spacetime Casing", 1)
+            .addMaintenanceHatch("Any Infinite Spacetime Casing", 1)
+            .toolTipFinisher(CommonValues.GODFORGE_MARK);
         return tt;
     }
 

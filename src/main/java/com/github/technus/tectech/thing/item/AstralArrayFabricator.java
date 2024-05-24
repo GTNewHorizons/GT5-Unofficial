@@ -34,8 +34,8 @@ public class AstralArrayFabricator extends Item {
         aList.add(EnumChatFormatting.GRAY + translateToLocal("item.tm.itemAstralArrayFabricator.desc2"));
         aList.add(EnumChatFormatting.GRAY + translateToLocal("item.tm.itemAstralArrayFabricator.desc3"));
         aList.add(
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-                        + translateToLocal("item.tm.itemAstralArrayFabricator.desc0"));
+            EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
+                + translateToLocal("item.tm.itemAstralArrayFabricator.desc0"));
     }
 
     public static void run() {

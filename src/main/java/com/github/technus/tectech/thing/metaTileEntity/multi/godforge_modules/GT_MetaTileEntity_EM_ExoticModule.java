@@ -78,10 +78,14 @@ public class GT_MetaTileEntity_EM_ExoticModule extends GT_MetaTileEntity_EM_Base
     private ItemStack[] randomizedItemInput = new ItemStack[] {};
     List<FluidStack> inputPlasmas = new ArrayList<>();
     private GT_Recipe plasmaRecipe = null;
-    private static RecipeMap<RecipeMapBackend> tempRecipeMap = RecipeMapBuilder.of("bye").maxIO(0, 0, 7, 2)
-            .disableRegisterNEI().build();
-    private static final RecipeMap<RecipeMapBackend> emptyRecipeMap = RecipeMapBuilder.of("hey").maxIO(0, 0, 7, 2)
-            .disableRegisterNEI().build();
+    private static RecipeMap<RecipeMapBackend> tempRecipeMap = RecipeMapBuilder.of("bye")
+        .maxIO(0, 0, 7, 2)
+        .disableRegisterNEI()
+        .build();
+    private static final RecipeMap<RecipeMapBackend> emptyRecipeMap = RecipeMapBuilder.of("hey")
+        .maxIO(0, 0, 7, 2)
+        .disableRegisterNEI()
+        .build();
     private static final int NUMBER_OF_INPUTS = 7;
 
     public GT_MetaTileEntity_EM_ExoticModule(int aID, String aName, String aNameRegional) {
@@ -115,12 +119,10 @@ public class GT_MetaTileEntity_EM_ExoticModule extends GT_MetaTileEntity_EM_Base
                         int timeAmount = getRandomIntInRange(1, 50);
                         int spaceAmount = getRandomIntInRange(51, 100);
                         randomizedFluidInput = new FluidStack[] { MaterialsUEVplus.Time.getMolten(timeAmount * 1000L),
-                                MaterialsUEVplus.Space.getMolten(spaceAmount * 1000L) };
+                            MaterialsUEVplus.Space.getMolten(spaceAmount * 1000L) };
                         inputPlasmas = new ArrayList<>(
-                                Arrays.asList(
-                                        convertItemToPlasma(
-                                                randomizedItemInput,
-                                                (spaceAmount - timeAmount) * actualParallel)));
+                            Arrays.asList(
+                                convertItemToPlasma(randomizedItemInput, (spaceAmount - timeAmount) * actualParallel)));
                         inputPlasmas.add(MaterialsUEVplus.Time.getMolten(timeAmount * actualParallel));
                         inputPlasmas.add(MaterialsUEVplus.Space.getMolten(spaceAmount * actualParallel));
                         outputFluid = MaterialsUEVplus.MagMatter.getMolten(144 * actualParallel);
@@ -143,24 +145,25 @@ public class GT_MetaTileEntity_EM_ExoticModule extends GT_MetaTileEntity_EM_Base
                         }
 
                         inputPlasmas = new ArrayList<>(
-                                Arrays.asList(convertItemToPlasma(randomizedItemInput, actualParallel)));
+                            Arrays.asList(convertItemToPlasma(randomizedItemInput, actualParallel)));
                         inputPlasmas.addAll(Arrays.asList(convertFluidToPlasma(randomizedFluidInput, actualParallel)));
                     }
                     plasmaRecipe = new GT_Recipe(
-                            false,
-                            null,
-                            null,
-                            null,
-                            null,
-                            inputPlasmas.toArray(new FluidStack[0]),
-                            new FluidStack[] { outputFluid },
-                            10 * SECONDS * (int) actualParallel,
-                            (int) TierEU.RECIPE_MAX,
-                            0);
+                        false,
+                        null,
+                        null,
+                        null,
+                        null,
+                        inputPlasmas.toArray(new FluidStack[0]),
+                        new FluidStack[] { outputFluid },
+                        10 * SECONDS * (int) actualParallel,
+                        (int) TierEU.RECIPE_MAX,
+                        0);
 
                     tempRecipeMap.add(plasmaRecipe);
                 }
-                return tempRecipeMap.getAllRecipes().parallelStream();
+                return tempRecipeMap.getAllRecipes()
+                    .parallelStream();
             }
 
             @NotNull
@@ -177,11 +180,11 @@ public class GT_MetaTileEntity_EM_ExoticModule extends GT_MetaTileEntity_EM_Base
                     if (numberOfFluids != 0) {
                         for (FluidStack fluidStack : randomizedFluidInput) {
                             dumpFluid(
-                                    mOutputHatches,
-                                    new FluidStack(
-                                            fluidStack.getFluid(),
-                                            (int) (fluidStack.amount / 1000 * actualParallel)),
-                                    false);
+                                mOutputHatches,
+                                new FluidStack(
+                                    fluidStack.getFluid(),
+                                    (int) (fluidStack.amount / 1000 * actualParallel)),
+                                false);
                         }
                     }
 
@@ -220,7 +223,9 @@ public class GT_MetaTileEntity_EM_ExoticModule extends GT_MetaTileEntity_EM_Base
                 if (!addEUToGlobalEnergyMap(userUUID, -calculatedEut * duration)) {
                     return CheckRecipeResultRegistry.insufficientPower(wirelessEUt * recipe.mDuration);
                 }
-                addToPowerTally(BigInteger.valueOf(calculatedEut).multiply(BigInteger.valueOf(duration)));
+                addToPowerTally(
+                    BigInteger.valueOf(calculatedEut)
+                        .multiply(BigInteger.valueOf(duration)));
                 addToRecipeTally(calculatedParallels);
                 EUt = calculatedEut;
                 setCalculatedEut(0);
@@ -233,7 +238,7 @@ public class GT_MetaTileEntity_EM_ExoticModule extends GT_MetaTileEntity_EM_Base
             @Override
             protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
                 return super.createOverclockCalculator(recipe).setEUt(getProcessingVoltage())
-                        .setDurationDecreasePerOC(getOverclockTimeFactor());
+                    .setDurationDecreasePerOC(getOverclockTimeFactor());
             }
 
         };
@@ -270,7 +275,8 @@ public class GT_MetaTileEntity_EM_ExoticModule extends GT_MetaTileEntity_EM_Base
             // Find the corresponding FluidStack based on randomWeight
             for (int j = 0; j < cumulativeWeights.size(); j++) {
                 if (randomWeight <= cumulativeWeights.get(j)) {
-                    FluidStack pickedFluid = fluidEntryList.get(j).getKey();
+                    FluidStack pickedFluid = fluidEntryList.get(j)
+                        .getKey();
                     // prevent duplicates
                     if (pickedFluids.contains(pickedFluid)) {
                         i--;
@@ -303,7 +309,8 @@ public class GT_MetaTileEntity_EM_ExoticModule extends GT_MetaTileEntity_EM_Base
             // Find the corresponding ItemStack based on randomWeight
             for (int j = 0; j < cumulativeWeights.size(); j++) {
                 if (randomWeight <= cumulativeWeights.get(j)) {
-                    ItemStack pickedItem = itemEntryList.get(j).getKey();
+                    ItemStack pickedItem = itemEntryList.get(j)
+                        .getKey();
                     // prevent duplicates
                     if (pickedItems.contains(pickedItem)) {
                         i--;
@@ -326,9 +333,9 @@ public class GT_MetaTileEntity_EM_ExoticModule extends GT_MetaTileEntity_EM_Base
             // substring 8 because dustTiny is 8 characters long and there is no other possible oreDict
             String strippedOreDict = dict.substring(8);
             plasmas.add(
-                    FluidRegistry.getFluidStack(
-                            "plasma." + strippedOreDict.toLowerCase(),
-                            (int) (INGOTS * multiplier * itemStack.stackSize)));
+                FluidRegistry.getFluidStack(
+                    "plasma." + strippedOreDict.toLowerCase(),
+                    (int) (INGOTS * multiplier * itemStack.stackSize)));
         }
 
         return plasmas.toArray(new FluidStack[0]);
@@ -338,11 +345,12 @@ public class GT_MetaTileEntity_EM_ExoticModule extends GT_MetaTileEntity_EM_Base
         List<FluidStack> plasmas = new ArrayList<>();
 
         for (FluidStack fluidStack : fluids) {
-            String[] fluidName = fluidStack.getUnlocalizedName().split("\\.");
+            String[] fluidName = fluidStack.getUnlocalizedName()
+                .split("\\.");
             plasmas.add(
-                    FluidRegistry.getFluidStack(
-                            "plasma." + fluidName[fluidName.length - 1],
-                            (int) (multiplier * fluidStack.amount)));
+                FluidRegistry.getFluidStack(
+                    "plasma." + fluidName[fluidName.length - 1],
+                    (int) (multiplier * fluidStack.amount)));
         }
 
         return plasmas.toArray(new FluidStack[0]);
@@ -410,17 +418,17 @@ public class GT_MetaTileEntity_EM_ExoticModule extends GT_MetaTileEntity_EM_Base
         }
 
         tempRecipeMap.add(
-                new GT_Recipe(
-                        false,
-                        null,
-                        null,
-                        null,
-                        null,
-                        inputPlasmas.toArray(new FluidStack[0]),
-                        new FluidStack[] { outputFluid },
-                        10 * SECONDS,
-                        (int) TierEU.RECIPE_MAX,
-                        0));
+            new GT_Recipe(
+                false,
+                null,
+                null,
+                null,
+                null,
+                inputPlasmas.toArray(new FluidStack[0]),
+                new FluidStack[] { outputFluid },
+                10 * SECONDS,
+                (int) TierEU.RECIPE_MAX,
+                0));
 
         super.loadNBTData(NBT);
     }
@@ -437,32 +445,38 @@ public class GT_MetaTileEntity_EM_ExoticModule extends GT_MetaTileEntity_EM_Base
             if (isMagmatterCapable) {
                 magmatterMode = !magmatterMode;
             }
-        }).setPlayClickSound(isMagmatterCapable).setBackground(() -> {
-            List<UITexture> ret = new ArrayList<>();
-            if (isMagmatterModeOn()) {
-                ret.add(GT_UITextures.BUTTON_STANDARD_PRESSED);
-                if (isMagmatterCapable) {
-                    ret.add(GT_UITextures.OVERLAY_BUTTON_CHECKMARK);
+        })
+            .setPlayClickSound(isMagmatterCapable)
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                if (isMagmatterModeOn()) {
+                    ret.add(GT_UITextures.BUTTON_STANDARD_PRESSED);
+                    if (isMagmatterCapable) {
+                        ret.add(GT_UITextures.OVERLAY_BUTTON_CHECKMARK);
+                    } else {
+                        ret.add(GT_UITextures.OVERLAY_BUTTON_DISABLE);
+                    }
                 } else {
+                    ret.add(GT_UITextures.BUTTON_STANDARD);
+                    if (isMagmatterCapable) {
+                        ret.add(GT_UITextures.OVERLAY_BUTTON_CROSS);
+                    } else {
+                        ret.add(GT_UITextures.OVERLAY_BUTTON_DISABLE);
+                    }
+                }
+                if (!isMagmatterCapable) {
                     ret.add(GT_UITextures.OVERLAY_BUTTON_DISABLE);
                 }
-            } else {
-                ret.add(GT_UITextures.BUTTON_STANDARD);
-                if (isMagmatterCapable) {
-                    ret.add(GT_UITextures.OVERLAY_BUTTON_CROSS);
-                } else {
-                    ret.add(GT_UITextures.OVERLAY_BUTTON_DISABLE);
-                }
-            }
-            if (!isMagmatterCapable) {
-                ret.add(GT_UITextures.OVERLAY_BUTTON_DISABLE);
-            }
-            return ret.toArray(new IDrawable[0]);
-        }).attachSyncer(new FakeSyncWidget.BooleanSyncer(this::isMagmatterModeOn, this::setMagmatterMode), builder)
-                .addTooltip(translateToLocal("fog.button.magmattermode.tooltip.01"))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY).setPos(174, 91).setSize(16, 16).attachSyncer(
-                        new FakeSyncWidget.BooleanSyncer(() -> isMagmatterCapable, this::setMagmatterCapable),
-                        builder);
+                return ret.toArray(new IDrawable[0]);
+            })
+            .attachSyncer(new FakeSyncWidget.BooleanSyncer(this::isMagmatterModeOn, this::setMagmatterMode), builder)
+            .addTooltip(translateToLocal("fog.button.magmattermode.tooltip.01"))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setPos(174, 91)
+            .setSize(16, 16)
+            .attachSyncer(
+                new FakeSyncWidget.BooleanSyncer(() -> isMagmatterCapable, this::setMagmatterCapable),
+                builder);
         if (!isMagmatterCapable) {
             button.addTooltip(EnumChatFormatting.GRAY + translateToLocal("fog.button.magmattermode.tooltip.02"));
         }
@@ -480,10 +494,14 @@ public class GT_MetaTileEntity_EM_ExoticModule extends GT_MetaTileEntity_EM_Base
     @Override
     public GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Exotic Matter Producer").addInfo("Controller block of the Quark Gluon Plasma Module")
-                .addInfo("Uses a Star to to turn Items into Quark Gluon Plasma").addSeparator()
-                .beginStructureBlock(1, 4, 2, false).addEnergyHatch("Any Infinite Spacetime Casing", 1)
-                .addMaintenanceHatch("Any Infinite Spacetime Casing", 1).toolTipFinisher(CommonValues.GODFORGE_MARK);
+        tt.addMachineType("Exotic Matter Producer")
+            .addInfo("Controller block of the Quark Gluon Plasma Module")
+            .addInfo("Uses a Star to to turn Items into Quark Gluon Plasma")
+            .addSeparator()
+            .beginStructureBlock(1, 4, 2, false)
+            .addEnergyHatch("Any Infinite Spacetime Casing", 1)
+            .addMaintenanceHatch("Any Infinite Spacetime Casing", 1)
+            .toolTipFinisher(CommonValues.GODFORGE_MARK);
         return tt;
     }
 
@@ -491,14 +509,14 @@ public class GT_MetaTileEntity_EM_ExoticModule extends GT_MetaTileEntity_EM_Base
     public String[] getInfoData() {
         ArrayList<String> str = new ArrayList<>();
         str.add(
-                "Progress: " + GREEN
-                        + GT_Utility.formatNumbers(mProgresstime / 20)
-                        + RESET
-                        + " s / "
-                        + YELLOW
-                        + GT_Utility.formatNumbers(mMaxProgresstime / 20)
-                        + RESET
-                        + " s");
+            "Progress: " + GREEN
+                + GT_Utility.formatNumbers(mProgresstime / 20)
+                + RESET
+                + " s / "
+                + YELLOW
+                + GT_Utility.formatNumbers(mMaxProgresstime / 20)
+                + RESET
+                + " s");
         str.add("Currently using: " + RED + formatNumbers(EUt) + RESET + " EU/t");
         str.add(YELLOW + "Max Parallel: " + RESET + formatNumbers(getMaxParallel()));
         str.add(YELLOW + "Current Parallel: " + RESET + formatNumbers(getMaxParallel()));

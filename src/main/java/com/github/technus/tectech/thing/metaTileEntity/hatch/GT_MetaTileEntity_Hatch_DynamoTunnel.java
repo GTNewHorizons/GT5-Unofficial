@@ -27,30 +27,30 @@ import gregtech.api.util.GT_Utility;
  * Created by danie_000 on 16.12.2016.
  */
 public class GT_MetaTileEntity_Hatch_DynamoTunnel extends GT_MetaTileEntity_Hatch_DynamoMulti
-        implements IConnectsToEnergyTunnel {
+    implements IConnectsToEnergyTunnel {
 
     public GT_MetaTileEntity_Hatch_DynamoTunnel(int ID, String unlocalisedName, String localisedName, int tier,
-            int amps) {
+        int amps) {
         super(
-                ID,
-                unlocalisedName,
-                localisedName,
-                tier,
-                0,
-                new String[] { CommonValues.TEC_MARK_GENERAL,
-                        translateToLocal("gt.blockmachines.hatch.dynamotunnel.desc.0"),
-                        translateToLocal("gt.blockmachines.hatch.dynamotunnel.desc.1") + ": "
-                                + EnumChatFormatting.YELLOW
-                                + GT_Utility.formatNumbers(amps * V[tier])
-                                + EnumChatFormatting.RESET
-                                + " EU/t" },
-                amps);
+            ID,
+            unlocalisedName,
+            localisedName,
+            tier,
+            0,
+            new String[] { CommonValues.TEC_MARK_GENERAL,
+                translateToLocal("gt.blockmachines.hatch.dynamotunnel.desc.0"),
+                translateToLocal("gt.blockmachines.hatch.dynamotunnel.desc.1") + ": "
+                    + EnumChatFormatting.YELLOW
+                    + GT_Utility.formatNumbers(amps * V[tier])
+                    + EnumChatFormatting.RESET
+                    + " EU/t" },
+            amps);
 
         TT_Utility.setTier(tier, this);
     }
 
     public GT_MetaTileEntity_Hatch_DynamoTunnel(String aName, int aTier, int aAmp, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aAmp, aDescription, aTextures);
     }
 
@@ -126,13 +126,13 @@ public class GT_MetaTileEntity_Hatch_DynamoTunnel extends GT_MetaTileEntity_Hatc
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
@@ -164,31 +164,32 @@ public class GT_MetaTileEntity_Hatch_DynamoTunnel extends GT_MetaTileEntity_Hatc
         for (short dist = 1; dist < 1000; dist++) {
 
             IGregTechTileEntity tGTTileEntity = aBaseMetaTileEntity
-                    .getIGregTechTileEntityAtSideAndDistance(front, dist);
+                .getIGregTechTileEntityAtSideAndDistance(front, dist);
             if (tGTTileEntity != null && tGTTileEntity.getColorization() == color) {
                 IMetaTileEntity aMetaTileEntity = tGTTileEntity.getMetaTileEntity();
                 if (aMetaTileEntity != null) {
                     if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_EnergyTunnel
-                            && opposite == tGTTileEntity.getFrontFacing()) {
+                        && opposite == tGTTileEntity.getFrontFacing()) {
                         if (maxEUOutput() > ((GT_MetaTileEntity_Hatch_EnergyTunnel) aMetaTileEntity).maxEUInput()) {
                             aMetaTileEntity.doExplosion(maxEUOutput());
                             setEUVar(aBaseMetaTileEntity.getStoredEU() - maxEUOutput());
                             return;
                         } else if (maxEUOutput()
-                                == ((GT_MetaTileEntity_Hatch_EnergyTunnel) aMetaTileEntity).maxEUInput()) {
-                                    long diff = Math.min(
-                                            Amperes * 20L * maxEUOutput(),
-                                            Math.min(
-                                                    ((GT_MetaTileEntity_Hatch_EnergyTunnel) aMetaTileEntity)
-                                                            .maxEUStore()
-                                                            - aMetaTileEntity.getBaseMetaTileEntity().getStoredEU(),
-                                                    aBaseMetaTileEntity.getStoredEU()));
+                            == ((GT_MetaTileEntity_Hatch_EnergyTunnel) aMetaTileEntity).maxEUInput()) {
+                                long diff = Math.min(
+                                    Amperes * 20L * maxEUOutput(),
+                                    Math.min(
+                                        ((GT_MetaTileEntity_Hatch_EnergyTunnel) aMetaTileEntity).maxEUStore()
+                                            - aMetaTileEntity.getBaseMetaTileEntity()
+                                                .getStoredEU(),
+                                        aBaseMetaTileEntity.getStoredEU()));
 
-                                    setEUVar(aBaseMetaTileEntity.getStoredEU() - diff);
+                                setEUVar(aBaseMetaTileEntity.getStoredEU() - diff);
 
-                                    ((GT_MetaTileEntity_Hatch_EnergyTunnel) aMetaTileEntity)
-                                            .setEUVar(aMetaTileEntity.getBaseMetaTileEntity().getStoredEU() + diff);
-                                }
+                                ((GT_MetaTileEntity_Hatch_EnergyTunnel) aMetaTileEntity).setEUVar(
+                                    aMetaTileEntity.getBaseMetaTileEntity()
+                                        .getStoredEU() + diff);
+                            }
                         return;
                     } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Pipe_Energy) {
                         if (((GT_MetaTileEntity_Pipe_Energy) aMetaTileEntity).connectionCount < 2) {

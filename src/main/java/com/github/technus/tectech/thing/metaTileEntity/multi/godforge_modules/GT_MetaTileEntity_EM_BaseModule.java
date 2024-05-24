@@ -80,33 +80,36 @@ public class GT_MetaTileEntity_EM_BaseModule extends GT_MetaTileEntity_Multibloc
     private static final int VOLTAGE_WINDOW_ID = 9;
     private static final int TEXTURE_INDEX = 960;
     private static final IStructureDefinition<GT_MetaTileEntity_EM_BaseModule> STRUCTURE_DEFINITION = StructureDefinition
-            .<GT_MetaTileEntity_EM_BaseModule>builder()
-            .addShape(
-                    STRUCTURE_PIECE_MAIN,
-                    new String[][] { { "       ", "  BBB  ", " BBBBB ", " BB~BB ", " BBBBB ", "  BBB  ", "       " },
-                            { "  CCC  ", " CFFFC ", "CFFFFFC", "CFFFFFC", "CFFFFFC", " CFFFC ", "  CCC  " },
-                            { "       ", "       ", "   E   ", "  EAE  ", "   E   ", "       ", "       " },
-                            { "       ", "       ", "   E   ", "  EAE  ", "   E   ", "       ", "       " },
-                            { "       ", "       ", "   E   ", "  EAE  ", "   E   ", "       ", "       " },
-                            { "       ", "       ", "   E   ", "  EAE  ", "   E   ", "       ", "       " },
-                            { "       ", "       ", "       ", "   D   ", "       ", "       ", "       " },
-                            { "       ", "       ", "       ", "   D   ", "       ", "       ", "       " },
-                            { "       ", "       ", "       ", "   D   ", "       ", "       ", "       " },
-                            { "       ", "       ", "       ", "   D   ", "       ", "       ", "       " },
-                            { "       ", "       ", "       ", "   D   ", "       ", "       ", "       " },
-                            { "       ", "       ", "       ", "   G   ", "       ", "       ", "       " } })
-            .addElement('A', ofBlock(GregTech_API.sSolenoidCoilCasings, 9))
-            .addElement(
-                    'B',
-                    GT_StructureUtility.ofHatchAdderOptional(
-                            GT_MetaTileEntity_EM_BaseModule::addClassicToMachineList,
-                            TEXTURE_INDEX,
-                            1,
-                            GodforgeCasings,
-                            0))
-            .addElement('C', ofBlock(GodforgeCasings, 0)).addElement('D', ofBlock(GodforgeCasings, 1))
-            .addElement('E', ofBlock(GodforgeCasings, 2)).addElement('F', ofBlock(GodforgeCasings, 3))
-            .addElement('G', ofBlock(GodforgeCasings, 4)).build();
+        .<GT_MetaTileEntity_EM_BaseModule>builder()
+        .addShape(
+            STRUCTURE_PIECE_MAIN,
+            new String[][] { { "       ", "  BBB  ", " BBBBB ", " BB~BB ", " BBBBB ", "  BBB  ", "       " },
+                { "  CCC  ", " CFFFC ", "CFFFFFC", "CFFFFFC", "CFFFFFC", " CFFFC ", "  CCC  " },
+                { "       ", "       ", "   E   ", "  EAE  ", "   E   ", "       ", "       " },
+                { "       ", "       ", "   E   ", "  EAE  ", "   E   ", "       ", "       " },
+                { "       ", "       ", "   E   ", "  EAE  ", "   E   ", "       ", "       " },
+                { "       ", "       ", "   E   ", "  EAE  ", "   E   ", "       ", "       " },
+                { "       ", "       ", "       ", "   D   ", "       ", "       ", "       " },
+                { "       ", "       ", "       ", "   D   ", "       ", "       ", "       " },
+                { "       ", "       ", "       ", "   D   ", "       ", "       ", "       " },
+                { "       ", "       ", "       ", "   D   ", "       ", "       ", "       " },
+                { "       ", "       ", "       ", "   D   ", "       ", "       ", "       " },
+                { "       ", "       ", "       ", "   G   ", "       ", "       ", "       " } })
+        .addElement('A', ofBlock(GregTech_API.sSolenoidCoilCasings, 9))
+        .addElement(
+            'B',
+            GT_StructureUtility.ofHatchAdderOptional(
+                GT_MetaTileEntity_EM_BaseModule::addClassicToMachineList,
+                TEXTURE_INDEX,
+                1,
+                GodforgeCasings,
+                0))
+        .addElement('C', ofBlock(GodforgeCasings, 0))
+        .addElement('D', ofBlock(GodforgeCasings, 1))
+        .addElement('E', ofBlock(GodforgeCasings, 2))
+        .addElement('F', ofBlock(GodforgeCasings, 3))
+        .addElement('G', ofBlock(GodforgeCasings, 4))
+        .build();
 
     public GT_MetaTileEntity_EM_BaseModule(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -310,9 +313,13 @@ public class GT_MetaTileEntity_EM_BaseModule extends GT_MetaTileEntity_Multibloc
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK).setPos(4, 4).setSize(190, 85));
+            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+                .setPos(4, 4)
+                .setSize(190, 85));
         final SlotWidget inventorySlot = new SlotWidget(inventoryHandler, 1);
-        builder.widget(inventorySlot.setPos(173, 167).setBackground(GT_UITextures.SLOT_DARK_GRAY));
+        builder.widget(
+            inventorySlot.setPos(173, 167)
+                .setBackground(GT_UITextures.SLOT_DARK_GRAY));
 
         final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
         drawTexts(screenElements, inventorySlot);
@@ -321,36 +328,46 @@ public class GT_MetaTileEntity_EM_BaseModule extends GT_MetaTileEntity_Multibloc
         buildContext.addSyncedWindow(VOLTAGE_WINDOW_ID, this::createVoltageWindow);
 
         builder.widget(
-                TextWidget.dynamicText(this::connectionStatus).setDefaultColor(EnumChatFormatting.BLACK).setPos(75, 94)
-                        .setSize(100, 10));
+            TextWidget.dynamicText(this::connectionStatus)
+                .setDefaultColor(EnumChatFormatting.BLACK)
+                .setPos(75, 94)
+                .setSize(100, 10));
 
-        builder.widget(createPowerSwitchButton(builder)).widget(createVoidExcessButton(builder))
-                .widget(createInputSeparationButton(builder)).widget(createBatchModeButton(builder))
-                .widget(createLockToSingleRecipeButton(builder)).widget(createVoltageButton(builder));
+        builder.widget(createPowerSwitchButton(builder))
+            .widget(createVoidExcessButton(builder))
+            .widget(createInputSeparationButton(builder))
+            .widget(createBatchModeButton(builder))
+            .widget(createLockToSingleRecipeButton(builder))
+            .widget(createVoltageButton(builder));
     }
 
     protected Widget createVoltageButton(IWidgetBuilder<?> builder) {
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
             if (isVoltageConfigUnlocked) {
                 if (!widget.isClient()) {
-                    widget.getContext().openSyncedWindow(VOLTAGE_WINDOW_ID);
+                    widget.getContext()
+                        .openSyncedWindow(VOLTAGE_WINDOW_ID);
                 }
             }
-        }).setPlayClickSound(isVoltageConfigUnlocked).setBackground(() -> {
-            List<UITexture> ret = new ArrayList<>();
-            ret.add(GT_UITextures.BUTTON_STANDARD);
-            if (isVoltageConfigUnlocked) {
-                ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_PASS_ON);
-            } else {
-                ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_PASS_DISABLED);
-            }
-            return ret.toArray(new IDrawable[0]);
-        }).addTooltip(translateToLocal("fog.button.voltageconfig.tooltip.01")).setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setPos(174, 129).setSize(16, 16).attachSyncer(
-                        new FakeSyncWidget.BooleanSyncer(
-                                () -> isVoltageConfigUnlocked,
-                                val -> isVoltageConfigUnlocked = val),
-                        builder);
+        })
+            .setPlayClickSound(isVoltageConfigUnlocked)
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                ret.add(GT_UITextures.BUTTON_STANDARD);
+                if (isVoltageConfigUnlocked) {
+                    ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_PASS_ON);
+                } else {
+                    ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_PASS_DISABLED);
+                }
+                return ret.toArray(new IDrawable[0]);
+            })
+            .addTooltip(translateToLocal("fog.button.voltageconfig.tooltip.01"))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setPos(174, 129)
+            .setSize(16, 16)
+            .attachSyncer(
+                new FakeSyncWidget.BooleanSyncer(() -> isVoltageConfigUnlocked, val -> isVoltageConfigUnlocked = val),
+                builder);
         if (!isVoltageConfigUnlocked) {
             button.addTooltip(EnumChatFormatting.GRAY + translateToLocal("fog.button.voltageconfig.tooltip.02"));
         }
@@ -367,30 +384,38 @@ public class GT_MetaTileEntity_EM_BaseModule extends GT_MetaTileEntity_Multibloc
         builder.setGuiTint(getGUIColorization());
         builder.setDraggable(true);
         builder.setPos(
-                (size, window) -> Alignment.Center.getAlignedPos(size, new Size(PARENT_WIDTH, PARENT_HEIGHT)).add(
-                        Alignment.BottomRight
-                                .getAlignedPos(new Size(PARENT_WIDTH, PARENT_HEIGHT), new Size(WIDTH, HEIGHT))
-                                .add(WIDTH - 3, 0).subtract(0, 10)));
+            (size, window) -> Alignment.Center.getAlignedPos(size, new Size(PARENT_WIDTH, PARENT_HEIGHT))
+                .add(
+                    Alignment.BottomRight.getAlignedPos(new Size(PARENT_WIDTH, PARENT_HEIGHT), new Size(WIDTH, HEIGHT))
+                        .add(WIDTH - 3, 0)
+                        .subtract(0, 10)));
         builder.widget(
-                TextWidget.localised("gt.blockmachines.multimachine.FOG.voltageinfo").setPos(3, 4).setSize(150, 20))
-                .widget(
-                        new NumericWidget().setSetter(val -> processingVoltage = (long) val)
-                                .setGetter(() -> processingVoltage).setBounds(2_000_000_000, Long.MAX_VALUE)
-                                .setDefaultValue(2_000_000_000).setScrollValues(1, 4, 64)
-                                .setTextAlignment(Alignment.Center).setTextColor(Color.WHITE.normal).setSize(150, 18)
-                                .setPos(4, 25).setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD).attachSyncer(
-                                        new FakeSyncWidget.LongSyncer(
-                                                this::getProcessingVoltage,
-                                                this::setProcessingVoltage),
-                                        builder));
+            TextWidget.localised("gt.blockmachines.multimachine.FOG.voltageinfo")
+                .setPos(3, 4)
+                .setSize(150, 20))
+            .widget(
+                new NumericWidget().setSetter(val -> processingVoltage = (long) val)
+                    .setGetter(() -> processingVoltage)
+                    .setBounds(2_000_000_000, Long.MAX_VALUE)
+                    .setDefaultValue(2_000_000_000)
+                    .setScrollValues(1, 4, 64)
+                    .setTextAlignment(Alignment.Center)
+                    .setTextColor(Color.WHITE.normal)
+                    .setSize(150, 18)
+                    .setPos(4, 25)
+                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                    .attachSyncer(
+                        new FakeSyncWidget.LongSyncer(this::getProcessingVoltage, this::setProcessingVoltage),
+                        builder));
         return builder.build();
     }
 
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(
-                new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_GODFORGE_LOGO).setSize(18, 18)
-                        .setPos(172, 67));
+            new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_GODFORGE_LOGO)
+                .setSize(18, 18)
+                .setPos(172, 67));
     }
 
     @Override
@@ -425,7 +450,7 @@ public class GT_MetaTileEntity_EM_BaseModule extends GT_MetaTileEntity_Multibloc
 
     private Text connectionStatus() {
         String status = EnumChatFormatting.RED
-                + translateToLocal("gt.blockmachines.multimachine.FOG.modulestatus.false");
+            + translateToLocal("gt.blockmachines.multimachine.FOG.modulestatus.false");
         if (isConnected) {
             status = EnumChatFormatting.GREEN + translateToLocal("gt.blockmachines.multimachine.FOG.modulestatus.true");
         }
@@ -462,10 +487,10 @@ public class GT_MetaTileEntity_EM_BaseModule extends GT_MetaTileEntity_Multibloc
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-            int colorIndex, boolean aActive, boolean aRedstone) {
+        int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TEXTURE_INDEX),
-                    new TT_RenderedExtendedFacingTexture(aActive ? ScreenON : ScreenOFF) };
+                new TT_RenderedExtendedFacingTexture(aActive ? ScreenON : ScreenOFF) };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TEXTURE_INDEX) };
     }

@@ -61,7 +61,10 @@ public class EOH_ItemRenderer implements IItemRenderer {
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
         // Bind animation to layer of star.
-        FMLClientHandler.instance().getClient().getTextureManager().bindTexture(texture);
+        FMLClientHandler.instance()
+            .getClient()
+            .getTextureManager()
+            .bindTexture(texture);
 
         // 0.01f magic number to shrink sphere obj down.
         // Size obtained from the multis current recipe.

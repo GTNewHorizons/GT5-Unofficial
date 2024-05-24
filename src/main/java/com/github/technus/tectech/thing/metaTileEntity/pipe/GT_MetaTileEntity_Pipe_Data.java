@@ -67,22 +67,22 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConn
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, int aConnections,
-            int colorIndex, boolean aConnected, boolean aRedstone) {
+        int colorIndex, boolean aConnected, boolean aRedstone) {
         return new ITexture[] { new GT_RenderedTexture(EMpipe),
-                new GT_RenderedTexture(
-                        getActive() ? EMbarActive : EMbar,
-                        Dyes.getModulation(colorIndex, MACHINE_METAL.getRGBA())) };
+            new GT_RenderedTexture(
+                getActive() ? EMbarActive : EMbar,
+                Dyes.getModulation(colorIndex, MACHINE_METAL.getRGBA())) };
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
-            ItemStack itemStack) {
+        ItemStack itemStack) {
         return false;
     }
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
-            ItemStack itemStack) {
+        ItemStack itemStack) {
         return false;
     }
 
@@ -111,13 +111,13 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConn
         return new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.pipe.datastream.desc.0"), // Advanced
                                                                                                                      // data
                                                                                                                      // transmission
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-                        + translateToLocal("gt.blockmachines.pipe.datastream.desc.1"), // Don't stare at the beam!
-                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.datastream.desc.2"), // Must be
-                                                                                                       // painted to
-                                                                                                       // work
-                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.datastream.desc.3") // Do not cross or
-                                                                                                      // split
+            EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
+                + translateToLocal("gt.blockmachines.pipe.datastream.desc.1"), // Don't stare at the beam!
+            EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.datastream.desc.2"), // Must be
+                                                                                                   // painted to
+                                                                                                   // work
+            EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.datastream.desc.3") // Do not cross or
+                                                                                                  // split
         };
     }
 
@@ -135,12 +135,12 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConn
             if ((aTick & 31) == 31) {
                 if (TecTech.RANDOM.nextInt(15) == 0) {
                     NetworkDispatcher.INSTANCE.sendToAllAround(
-                            new PipeActivityMessage.PipeActivityData(this),
-                            aBaseMetaTileEntity.getWorld().provider.dimensionId,
-                            aBaseMetaTileEntity.getXCoord(),
-                            aBaseMetaTileEntity.getYCoord(),
-                            aBaseMetaTileEntity.getZCoord(),
-                            256);
+                        new PipeActivityMessage.PipeActivityData(this),
+                        aBaseMetaTileEntity.getWorld().provider.dimensionId,
+                        aBaseMetaTileEntity.getXCoord(),
+                        aBaseMetaTileEntity.getYCoord(),
+                        aBaseMetaTileEntity.getZCoord(),
+                        256);
                 }
                 if (active) {
                     active = false;
@@ -274,7 +274,7 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConn
         }
 
         return AxisAlignedBB
-                .getBoundingBox(aX + tSide4, aY + tSide0, aZ + tSide2, aX + tSide5, aY + tSide1, aZ + tSide3);
+            .getBoundingBox(aX + tSide4, aY + tSide0, aZ + tSide2, aX + tSide5, aY + tSide1, aZ + tSide3);
     }
 
     @Override

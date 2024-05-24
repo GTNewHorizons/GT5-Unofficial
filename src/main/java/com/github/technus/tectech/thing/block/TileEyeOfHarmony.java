@@ -36,12 +36,12 @@ public class TileEyeOfHarmony extends TileEntity {
 
         // Create a bounding box that extends 'size' blocks in all directions from the block.
         return AxisAlignedBB.getBoundingBox(
-                x - EOH_STAR_FIELD_RADIUS,
-                y - EOH_STAR_FIELD_RADIUS,
-                z - EOH_STAR_FIELD_RADIUS,
-                x + EOH_STAR_FIELD_RADIUS + 1,
-                y + EOH_STAR_FIELD_RADIUS + 1,
-                z + EOH_STAR_FIELD_RADIUS + 1);
+            x - EOH_STAR_FIELD_RADIUS,
+            y - EOH_STAR_FIELD_RADIUS,
+            z - EOH_STAR_FIELD_RADIUS,
+            x + EOH_STAR_FIELD_RADIUS + 1,
+            y + EOH_STAR_FIELD_RADIUS + 1,
+            z + EOH_STAR_FIELD_RADIUS + 1);
     }
 
     public void setSize(float size) {
@@ -60,11 +60,12 @@ public class TileEyeOfHarmony extends TileEntity {
         ArrayList<T> randomElements = new ArrayList<>((int) n);
         ArrayList<T> inputArray = new ArrayList<>(inputList);
         Random rand = new Random();
-        IntStream.range(0, (int) n).forEach(i -> {
-            int randomIndex = rand.nextInt(inputArray.size());
-            randomElements.add(inputArray.get(randomIndex));
-            inputArray.remove(randomIndex);
-        });
+        IntStream.range(0, (int) n)
+            .forEach(i -> {
+                int randomIndex = rand.nextInt(inputArray.size());
+                randomElements.add(inputArray.get(randomIndex));
+                inputArray.remove(randomIndex);
+            });
         return randomElements;
     }
 
@@ -99,7 +100,7 @@ public class TileEyeOfHarmony extends TileEntity {
     public static class OrbitingObject {
 
         public OrbitingObject(Block block, float distance, float rotationSpeed, float orbitSpeed, float xAngle,
-                float zAngle, float scale) {
+            float zAngle, float scale) {
             this.block = block;
             this.distance = distance;
             this.rotationSpeed = rotationSpeed;
@@ -124,7 +125,7 @@ public class TileEyeOfHarmony extends TileEntity {
 
     private final ArrayList<OrbitingObject> orbitingObjects = new ArrayList<>();
     private static final Set<String> BLACKLISTED_BLOCKS = Collections
-            .unmodifiableSet(new HashSet<>(Arrays.asList("Tf", "Ow", "ED", "EA", "VA")));
+        .unmodifiableSet(new HashSet<>(Arrays.asList("Tf", "Ow", "ED", "EA", "VA")));
     // Map of strings to blocks
     private static final Map<String, Block> BLOCKS = new HashMap<>();
 

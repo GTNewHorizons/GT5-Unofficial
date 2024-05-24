@@ -39,7 +39,7 @@ public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
     public GT_Cover_TM_EnderFluidLink() {}
 
     private void transferFluid(IFluidHandler source, ForgeDirection side, IFluidHandler target, ForgeDirection tSide,
-            int amount) {
+        int amount) {
         FluidStack fluidStack = source.drain(side, amount, false);
 
         if (fluidStack != null) {
@@ -58,7 +58,7 @@ public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
 
     @Override
     public int doCoverThings(ForgeDirection side, byte aInputRedstone, int aCoverID, int aCoverVariable,
-            ICoverable aTileEntity, long aTimer) {
+        ICoverable aTileEntity, long aTimer) {
         if ((aTileEntity instanceof IFluidHandler fluidHandlerSelf)) {
             IFluidHandler fluidHandlerEnder = getEnderFluidContainer(getEnderLinkTag((IFluidHandler) aTileEntity));
 
@@ -78,19 +78,19 @@ public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
 
     @Override
     public boolean letsFluidIn(ForgeDirection side, int aCoverID, int aCoverVariable, Fluid aFluid,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return true;
     }
 
     @Override
     public boolean letsFluidOut(ForgeDirection side, int aCoverID, int aCoverVariable, Fluid aFluid,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return true;
     }
 
     @Override
     public int onCoverScrewdriverclick(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-            EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        EntityPlayer aPlayer, float aX, float aY, float aZ) {
         int newCoverVariable = toggleBit(aCoverVariable, IMPORT_EXPORT_MASK);
 
         if (testBit(aCoverVariable, IMPORT_EXPORT_MASK)) {
@@ -150,80 +150,72 @@ public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
             builder.widget(frequencyField.setGetter(() -> {
                 ICoverable te = getUIBuildContext().getTile();
                 if (!frequencyField.isClient() && te instanceof IFluidHandler) {
-                    return EnderWorldSavedData.getEnderLinkTag((IFluidHandler) te).getFrequency();
+                    return EnderWorldSavedData.getEnderLinkTag((IFluidHandler) te)
+                        .getFrequency();
                 }
                 return "";
-            }).setSetter(val -> {
-                ICoverable te = getUIBuildContext().getTile();
-                if (!frequencyField.isClient() && te instanceof IFluidHandler) {
-                    UUID uuid;
-                    if (testBit(convert(getCoverData()), PUBLIC_PRIVATE_MASK)) {
-                        uuid = getUUID();
-                        if (!(te instanceof IGregTechTileEntity)) return;
-                        if (!uuid.equals(((IGregTechTileEntity) te).getOwnerUuid())) return;
-                    } else {
-                        uuid = null;
+            })
+                .setSetter(val -> {
+                    ICoverable te = getUIBuildContext().getTile();
+                    if (!frequencyField.isClient() && te instanceof IFluidHandler) {
+                        UUID uuid;
+                        if (testBit(convert(getCoverData()), PUBLIC_PRIVATE_MASK)) {
+                            uuid = getUUID();
+                            if (!(te instanceof IGregTechTileEntity)) return;
+                            if (!uuid.equals(((IGregTechTileEntity) te).getOwnerUuid())) return;
+                        } else {
+                            uuid = null;
+                        }
+                        EnderWorldSavedData.bindEnderLinkTag((IFluidHandler) te, new EnderLinkTag(val, uuid));
                     }
-                    EnderWorldSavedData.bindEnderLinkTag((IFluidHandler) te, new EnderLinkTag(val, uuid));
-                }
-            }).setTextColor(Color.WHITE.dark(1)).setTextAlignment(Alignment.CenterLeft).setFocusOnGuiOpen(true)
-                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
-                    .setPos(START_X + SPACE_X * 0, START_Y + SPACE_Y * 0).setSize(SPACE_X * 5 - 8, 12))
-                    .widget(
-                            new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                                    this::getCoverData,
-                                    this::setCoverData,
-                                    GT_Cover_TM_EnderFluidLink.this,
-                                    (id, coverData) -> !getClickable(id, convert(coverData)),
-                                    (id, coverData) -> new ISerializableObject.LegacyCoverData(
-                                            getNewCoverVariable(id, convert(coverData)))).addToggleButton(
-                                                    PUBLIC_BUTTON_ID,
-                                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                                    widget -> widget
-                                                            .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_WHITELIST)
-                                                            .addTooltip(GT_Utility.trans("326", "Public"))
-                                                            .setPos(START_X + SPACE_X * 0, START_Y + SPACE_Y * 2))
-                                                    .addToggleButton(
-                                                            PRIVATE_BUTTON_ID,
-                                                            CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                                            widget -> widget
-                                                                    .setStaticTexture(
-                                                                            GT_UITextures.OVERLAY_BUTTON_BLACKLIST)
-                                                                    .addTooltip(GT_Utility.trans("327", "Private"))
-                                                                    .setPos(
-                                                                            START_X + SPACE_X * 1,
-                                                                            START_Y + SPACE_Y * 2))
-                                                    .addToggleButton(
-                                                            IMPORT_BUTTON_ID,
-                                                            CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                                            widget -> widget
-                                                                    .setStaticTexture(
-                                                                            GT_UITextures.OVERLAY_BUTTON_IMPORT)
-                                                                    .addTooltip(GT_Utility.trans("007", "Import"))
-                                                                    .setPos(
-                                                                            START_X + SPACE_X * 0,
-                                                                            START_Y + SPACE_Y * 3))
-                                                    .addToggleButton(
-                                                            EXPORT_BUTTON_ID,
-                                                            CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                                            widget -> widget
-                                                                    .setStaticTexture(
-                                                                            GT_UITextures.OVERLAY_BUTTON_EXPORT)
-                                                                    .addTooltip(GT_Utility.trans("006", "Export"))
-                                                                    .setPos(
-                                                                            START_X + SPACE_X * 1,
-                                                                            START_Y + SPACE_Y * 3)))
-                    .widget(
-                            new TextWidget(GT_Utility.trans("328", "Channel")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                                    .setPos(START_X + SPACE_X * 5, 4 + START_Y + SPACE_Y * 0))
-                    .widget(
-                            new TextWidget(GT_Utility.trans("329", "Public/Private"))
-                                    .setDefaultColor(COLOR_TEXT_GRAY.get())
-                                    .setPos(START_X + SPACE_X * 2, 4 + START_Y + SPACE_Y * 2))
-                    .widget(
-                            new TextWidget(GT_Utility.trans("229", "Import/Export"))
-                                    .setDefaultColor(COLOR_TEXT_GRAY.get())
-                                    .setPos(START_X + SPACE_X * 2, 4 + START_Y + SPACE_Y * 3));
+                })
+                .setTextColor(Color.WHITE.dark(1))
+                .setTextAlignment(Alignment.CenterLeft)
+                .setFocusOnGuiOpen(true)
+                .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
+                .setPos(START_X + SPACE_X * 0, START_Y + SPACE_Y * 0)
+                .setSize(SPACE_X * 5 - 8, 12))
+                .widget(
+                    new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
+                        this::getCoverData,
+                        this::setCoverData,
+                        GT_Cover_TM_EnderFluidLink.this,
+                        (id, coverData) -> !getClickable(id, convert(coverData)),
+                        (id, coverData) -> new ISerializableObject.LegacyCoverData(
+                            getNewCoverVariable(id, convert(coverData))))
+                                .addToggleButton(
+                                    PUBLIC_BUTTON_ID,
+                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_WHITELIST)
+                                        .addTooltip(GT_Utility.trans("326", "Public"))
+                                        .setPos(START_X + SPACE_X * 0, START_Y + SPACE_Y * 2))
+                                .addToggleButton(
+                                    PRIVATE_BUTTON_ID,
+                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_BLACKLIST)
+                                        .addTooltip(GT_Utility.trans("327", "Private"))
+                                        .setPos(START_X + SPACE_X * 1, START_Y + SPACE_Y * 2))
+                                .addToggleButton(
+                                    IMPORT_BUTTON_ID,
+                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_IMPORT)
+                                        .addTooltip(GT_Utility.trans("007", "Import"))
+                                        .setPos(START_X + SPACE_X * 0, START_Y + SPACE_Y * 3))
+                                .addToggleButton(
+                                    EXPORT_BUTTON_ID,
+                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_EXPORT)
+                                        .addTooltip(GT_Utility.trans("006", "Export"))
+                                        .setPos(START_X + SPACE_X * 1, START_Y + SPACE_Y * 3)))
+                .widget(
+                    new TextWidget(GT_Utility.trans("328", "Channel")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(START_X + SPACE_X * 5, 4 + START_Y + SPACE_Y * 0))
+                .widget(
+                    new TextWidget(GT_Utility.trans("329", "Public/Private")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(START_X + SPACE_X * 2, 4 + START_Y + SPACE_Y * 2))
+                .widget(
+                    new TextWidget(GT_Utility.trans("229", "Import/Export")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(START_X + SPACE_X * 2, 4 + START_Y + SPACE_Y * 3));
         }
 
         private int getNewCoverVariable(int id, int coverVariable) {
@@ -253,7 +245,8 @@ public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
         }
 
         private UUID getUUID() {
-            return getUIBuildContext().getPlayer().getUniqueID();
+            return getUIBuildContext().getPlayer()
+                .getUniqueID();
         }
     }
 }

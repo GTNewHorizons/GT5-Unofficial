@@ -52,12 +52,12 @@ import gregtech.api.objects.GT_RenderedTexture;
  * Created by danie_000 on 15.12.2016.
  */
 public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
-        implements IAddGregtechLogo, IAddUIWidgets {
+    implements IAddGregtechLogo, IAddUIWidgets {
 
     private static Textures.BlockIcons.CustomIcon ScreenON;
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     public short[] matrix = new short[] { 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500,
-            500 };
+        500 };
     public byte selection = -1, mode = 0, status = -128; // all 8 bits set
 
     private String clientLocale = "en_US";
@@ -69,7 +69,7 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
     }
 
     public GT_MetaTileEntity_Hatch_Uncertainty(String aName, int aTier, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
         regenerate();
     }
@@ -118,9 +118,8 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
 
     @Override
     public String[] getInfoData() {
-        return new String[] { translateToLocalFormatted("tt.keyword.Status", clientLocale) + ": "
-                + EnumChatFormatting.GOLD
-                + status };
+        return new String[] {
+            translateToLocalFormatted("tt.keyword.Status", clientLocale) + ": " + EnumChatFormatting.GOLD + status };
     }
 
     @Override
@@ -130,13 +129,13 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
@@ -211,8 +210,8 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
                                                                                                                    // certain,
                                                                                                                    // or
                                                                                                                    // not?
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-                        + translateToLocal("gt.blockmachines.hatch.certain.desc.1") // Schrödinger equation in a box
+            EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
+                + translateToLocal("gt.blockmachines.hatch.certain.desc.1") // Schrödinger equation in a box
         };
     }
 
@@ -238,67 +237,67 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
                 break;
             case 2: // ooo xox ooo
                 result += balanceCheck(
-                        4,
-                        matrix[0],
-                        matrix[4],
-                        matrix[1],
-                        matrix[5],
-                        matrix[2],
-                        matrix[6],
-                        matrix[3],
-                        matrix[7]) ? 0 : 1;
+                    4,
+                    matrix[0],
+                    matrix[4],
+                    matrix[1],
+                    matrix[5],
+                    matrix[2],
+                    matrix[6],
+                    matrix[3],
+                    matrix[7]) ? 0 : 1;
                 result += balanceCheck(
-                        4,
-                        matrix[8],
-                        matrix[12],
-                        matrix[9],
-                        matrix[13],
-                        matrix[10],
-                        matrix[14],
-                        matrix[11],
-                        matrix[15]) ? 0 : 2;
+                    4,
+                    matrix[8],
+                    matrix[12],
+                    matrix[9],
+                    matrix[13],
+                    matrix[10],
+                    matrix[14],
+                    matrix[11],
+                    matrix[15]) ? 0 : 2;
                 break;
             case 3: // oxo xox oxo
                 result += balanceCheck(
-                        2,
-                        matrix[0],
-                        matrix[4],
-                        matrix[8],
-                        matrix[12],
-                        matrix[1],
-                        matrix[5],
-                        matrix[9],
-                        matrix[13]) ? 0 : 1;
+                    2,
+                    matrix[0],
+                    matrix[4],
+                    matrix[8],
+                    matrix[12],
+                    matrix[1],
+                    matrix[5],
+                    matrix[9],
+                    matrix[13]) ? 0 : 1;
                 result += balanceCheck(
-                        4,
-                        matrix[0],
-                        matrix[4],
-                        matrix[1],
-                        matrix[5],
-                        matrix[2],
-                        matrix[6],
-                        matrix[3],
-                        matrix[7]) ? 0 : 2;
+                    4,
+                    matrix[0],
+                    matrix[4],
+                    matrix[1],
+                    matrix[5],
+                    matrix[2],
+                    matrix[6],
+                    matrix[3],
+                    matrix[7]) ? 0 : 2;
                 result += balanceCheck(
-                        4,
-                        matrix[8],
-                        matrix[12],
-                        matrix[9],
-                        matrix[13],
-                        matrix[10],
-                        matrix[14],
-                        matrix[11],
-                        matrix[15]) ? 0 : 4;
+                    4,
+                    matrix[8],
+                    matrix[12],
+                    matrix[9],
+                    matrix[13],
+                    matrix[10],
+                    matrix[14],
+                    matrix[11],
+                    matrix[15]) ? 0 : 4;
                 result += balanceCheck(
-                        2,
-                        matrix[2],
-                        matrix[6],
-                        matrix[10],
-                        matrix[14],
-                        matrix[3],
-                        matrix[7],
-                        matrix[11],
-                        matrix[15]) ? 0 : 8;
+                    2,
+                    matrix[2],
+                    matrix[6],
+                    matrix[10],
+                    matrix[14],
+                    matrix[3],
+                    matrix[7],
+                    matrix[11],
+                    matrix[15]) ? 0 : 8;
                 break;
             case 4: // xox ooo xox
                 result += balanceCheck(2, matrix[0], matrix[4], matrix[1], matrix[5]) ? 0 : 1;
@@ -349,8 +348,9 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(
-                new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_TECTECH_LOGO_DARK).setSize(18, 18)
-                        .setPos(112, 55));
+            new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_TECTECH_LOGO_DARK)
+                .setSize(18, 18)
+                .setPos(112, 55));
     }
 
     @Override
@@ -358,11 +358,13 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
         final boolean isAdvanced = mTier > 7;
 
         builder.widget(
-                new DrawableWidget().setDrawable(TecTechUITextures.BACKGROUND_SCREEN_BLUE).setPos(43, 4)
-                        .setSize(90, 72))
-                .widget(
-                        new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_UNCERTAINTY_MONITOR).setPos(46, 27)
-                                .setSize(46, 46));
+            new DrawableWidget().setDrawable(TecTechUITextures.BACKGROUND_SCREEN_BLUE)
+                .setPos(43, 4)
+                .setSize(90, 72))
+            .widget(
+                new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_UNCERTAINTY_MONITOR)
+                    .setPos(46, 27)
+                    .setSize(46, 46));
 
         int[] xPositions = new int[] { 7, 25, 133, 151 };
         for (int i = 0; i < 4; i++) {
@@ -379,21 +381,22 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
                         selection = -1;
                     }
                     compute();
-                }).setPlayClickSound(false)
-                        .setBackground(
-                                GT_UITextures.BUTTON_STANDARD,
-                                TecTechUITextures.OVERLAY_BUTTON_UNCERTAINTY[index])
-                        .setPos(xPositions[i], 4 + j * 18).setSize(18, 18))
-                        .widget(new FakeSyncWidget.ShortSyncer(() -> matrix[index], val -> matrix[index] = val));
+                })
+                    .setPlayClickSound(false)
+                    .setBackground(GT_UITextures.BUTTON_STANDARD, TecTechUITextures.OVERLAY_BUTTON_UNCERTAINTY[index])
+                    .setPos(xPositions[i], 4 + j * 18)
+                    .setSize(18, 18))
+                    .widget(new FakeSyncWidget.ShortSyncer(() -> matrix[index], val -> matrix[index] = val));
             }
         }
         builder.widget(new FakeSyncWidget.ByteSyncer(() -> selection, val -> selection = val))
-                .widget(new FakeSyncWidget.ByteSyncer(() -> mode, val -> mode = val))
-                .widget(new FakeSyncWidget.ByteSyncer(() -> status, val -> status = val));
+            .widget(new FakeSyncWidget.ByteSyncer(() -> mode, val -> mode = val))
+            .widget(new FakeSyncWidget.ByteSyncer(() -> status, val -> status = val));
 
         builder.widget(
-                new TextWidget().setStringSupplier(() -> "Status: " + (status == 0 ? "OK" : "NG"))
-                        .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 7));
+            new TextWidget().setStringSupplier(() -> "Status: " + (status == 0 ? "OK" : "NG"))
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setPos(46, 7));
 
         for (int i = 0; i < 9; i++) {
             final int index = i;
@@ -429,7 +432,9 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
                         break;
                 }
                 return null;
-            }).setPos(55 + (index % 3) * 12, 36 + (index / 3) * 12).setSize(4, 4));
+            })
+                .setPos(55 + (index % 3) * 12, 36 + (index / 3) * 12)
+                .setSize(4, 4));
         }
 
         for (int i = 0; i < 16; i++) {
@@ -456,11 +461,14 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
                         }
                     }
                 }
-            }.setDrawable(TecTechUITextures.PICTURE_UNCERTAINTY_INDICATOR).setPos(47 + (i / 4) * 12, 28 + (i % 4) * 12)
-                    .setSize(8, 8)).widget(
-                            new DrawableWidget().setDrawable(
-                                    () -> selection == index ? TecTechUITextures.PICTURE_UNCERTAINTY_SELECTED : null)
-                                    .setPos(46 + (i / 4) * 12, 27 + (i % 4) * 12).setSize(10, 10));
+            }.setDrawable(TecTechUITextures.PICTURE_UNCERTAINTY_INDICATOR)
+                .setPos(47 + (i / 4) * 12, 28 + (i % 4) * 12)
+                .setSize(8, 8))
+                .widget(
+                    new DrawableWidget()
+                        .setDrawable(() -> selection == index ? TecTechUITextures.PICTURE_UNCERTAINTY_SELECTED : null)
+                        .setPos(46 + (i / 4) * 12, 27 + (i % 4) * 12)
+                        .setSize(10, 10));
         }
     }
 }

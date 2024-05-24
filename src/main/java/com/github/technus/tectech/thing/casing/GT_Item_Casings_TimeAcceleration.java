@@ -31,17 +31,15 @@ public class GT_Item_Casings_TimeAcceleration extends GT_Item_Casings_Abstract {
             case 7:
             case 8:
                 aList.add(
-                        EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-                                + GT_LanguageManager.addStringLocalization(
-                                        "EOH.TimeDilation.Standard.Tooltip",
-                                        "Time dilation in a box."));
+                    EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
+                        + GT_LanguageManager
+                            .addStringLocalization("EOH.TimeDilation.Standard.Tooltip", "Time dilation in a box."));
                 break;
             default:
                 aList.add(
-                        EnumChatFormatting.RED.toString() + EnumChatFormatting.BOLD
-                                + GT_LanguageManager.addStringLocalization(
-                                        "EOH.TimeDilation.Error.Tooltip",
-                                        "Error, report to GTNH team"));
+                    EnumChatFormatting.RED.toString() + EnumChatFormatting.BOLD
+                        + GT_LanguageManager
+                            .addStringLocalization("EOH.TimeDilation.Error.Tooltip", "Error, report to GTNH team"));
         }
         aList.add(AuthorColen);
     }

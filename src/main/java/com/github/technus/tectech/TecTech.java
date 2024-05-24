@@ -26,19 +26,19 @@ import eu.usrv.yamcore.auxiliary.LogHelper;
 import gregtech.api.objects.XSTR;
 
 @Mod(
-        modid = Reference.MODID,
-        name = Reference.NAME,
-        version = Reference.VERSION,
-        dependencies = "required-after:Forge@[10.13.4.1614,);" + "required-after:YAMCore@[0.5.70,);"
-                + "required-after:structurelib;"
-                + "after:ComputerCraft;"
-                + "after:OpenComputers;"
-                + "required-after:gtneioreplugin;"
-                + "required-after:gregtech;"
-                + "after:dreamcraft;"
-                + "after:appliedenergistics2;"
-                + "after:CoFHCore;"
-                + "after:Thaumcraft;")
+    modid = Reference.MODID,
+    name = Reference.NAME,
+    version = Reference.VERSION,
+    dependencies = "required-after:Forge@[10.13.4.1614,);" + "required-after:YAMCore@[0.5.70,);"
+        + "required-after:structurelib;"
+        + "after:ComputerCraft;"
+        + "after:OpenComputers;"
+        + "required-after:gtneioreplugin;"
+        + "required-after:gregtech;"
+        + "after:dreamcraft;"
+        + "after:appliedenergistics2;"
+        + "after:CoFHCore;"
+        + "after:Thaumcraft;")
 public class TecTech {
 
     @SidedProxy(clientSide = Reference.CLIENTSIDE, serverSide = Reference.SERVERSIDE)
@@ -68,9 +68,9 @@ public class TecTech {
         LOGGER.setDebugOutput(true);
 
         configTecTech = new TecTechConfig(
-                PreEvent.getModConfigurationDirectory(),
-                Reference.COLLECTIONNAME,
-                Reference.MODID);
+            PreEvent.getModConfigurationDirectory(),
+            Reference.COLLECTIONNAME,
+            Reference.MODID);
 
         if (!configTecTech.LoadConfig()) {
             LOGGER.error(Reference.MODID + " could not load its config file. Things are going to be weird!");
@@ -83,7 +83,9 @@ public class TecTech {
         }
 
         enderWorldSavedData = new EnderWorldSavedData();
-        FMLCommonHandler.instance().bus().register(enderWorldSavedData);
+        FMLCommonHandler.instance()
+            .bus()
+            .register(enderWorldSavedData);
         MinecraftForge.EVENT_BUS.register(enderWorldSavedData);
 
         TecTechRecipeMaps.init();

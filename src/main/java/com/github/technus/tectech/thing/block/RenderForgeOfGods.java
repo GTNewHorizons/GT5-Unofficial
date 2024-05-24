@@ -58,8 +58,10 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glEnable(GL11.GL_BLEND);
 
-        FMLClientHandler.instance().getClient().getTextureManager()
-                .bindTexture(new ResourceLocation(MODID, "models/spaceLayer.png"));
+        FMLClientHandler.instance()
+            .getClient()
+            .getTextureManager()
+            .bindTexture(new ResourceLocation(MODID, "models/spaceLayer.png"));
 
         final float scale = 0.01f * 17.5f;
         GL11.glScalef(scale, scale, scale);
@@ -85,7 +87,10 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-        FMLClientHandler.instance().getClient().getTextureManager().bindTexture(texture);
+        FMLClientHandler.instance()
+            .getClient()
+            .getTextureManager()
+            .bindTexture(texture);
 
         // 0.01f magic number to shrink sphere obj down
         float scale = 0.01f * STAR_RESCALE * FOGRenderTile.getRenderSize();

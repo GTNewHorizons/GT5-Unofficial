@@ -39,13 +39,13 @@ public class GT_MetaTileEntity_Hatch_Holder extends GT_MetaTileEntity_Hatch impl
 
     public GT_MetaTileEntity_Hatch_Holder(int aID, String aName, String aNameRegional, int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                1,
-                new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.holder.desc.0"),
-                        EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.holder.desc.1") });
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            1,
+            new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.holder.desc.0"),
+                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.holder.desc.1") });
         TT_Utility.setTier(aTier, this);
     }
 
@@ -98,13 +98,13 @@ public class GT_MetaTileEntity_Hatch_Holder extends GT_MetaTileEntity_Hatch impl
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return side == aBaseMetaTileEntity.getFrontFacing();
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return side == aBaseMetaTileEntity.getFrontFacing();
     }
 
@@ -135,42 +135,47 @@ public class GT_MetaTileEntity_Hatch_Holder extends GT_MetaTileEntity_Hatch impl
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(
-                new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_TECTECH_LOGO).setSize(18, 18)
-                        .setPos(151, 63));
+            new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_TECTECH_LOGO)
+                .setSize(18, 18)
+                .setPos(151, 63));
     }
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-                new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_HEAT_SINK).setPos(46, 17).setSize(84, 60))
-                .widget(
-                        new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_RACK_LARGE).setPos(68, 27)
-                                .setSize(40, 40))
-                .widget(new SlotWidget(new BaseSlot(inventoryHandler, 0) {
+            new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_HEAT_SINK)
+                .setPos(46, 17)
+                .setSize(84, 60))
+            .widget(
+                new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_RACK_LARGE)
+                    .setPos(68, 27)
+                    .setSize(40, 40))
+            .widget(new SlotWidget(new BaseSlot(inventoryHandler, 0) {
 
-                    @Override
-                    public int getSlotStackLimit() {
-                        return 1;
-                    }
+                @Override
+                public int getSlotStackLimit() {
+                    return 1;
+                }
 
-                    @Override
-                    public boolean isEnabled() {
-                        return !getBaseMetaTileEntity().isActive();
-                    }
-                }).setPos(79, 38))
-                .widget(
-                        new DrawableWidget().setDrawable(TecTechUITextures.BUTTON_STANDARD_LIGHT_16x16).setPos(152, 24)
-                                .setSize(16, 16))
-                .widget(
-                        new DrawableWidget()
-                                .setDrawable(
-                                        () -> getBaseMetaTileEntity().isActive()
-                                                ? TecTechUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON
-                                                : TecTechUITextures.OVERLAY_BUTTON_POWER_SWITCH_DISABLED)
-                                .setPos(152, 24).setSize(16, 16))
-                .widget(
-                        new FakeSyncWidget.BooleanSyncer(
-                                () -> getBaseMetaTileEntity().isActive(),
-                                val -> getBaseMetaTileEntity().setActive(val)));
+                @Override
+                public boolean isEnabled() {
+                    return !getBaseMetaTileEntity().isActive();
+                }
+            }).setPos(79, 38))
+            .widget(
+                new DrawableWidget().setDrawable(TecTechUITextures.BUTTON_STANDARD_LIGHT_16x16)
+                    .setPos(152, 24)
+                    .setSize(16, 16))
+            .widget(
+                new DrawableWidget()
+                    .setDrawable(
+                        () -> getBaseMetaTileEntity().isActive() ? TecTechUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON
+                            : TecTechUITextures.OVERLAY_BUTTON_POWER_SWITCH_DISABLED)
+                    .setPos(152, 24)
+                    .setSize(16, 16))
+            .widget(
+                new FakeSyncWidget.BooleanSyncer(
+                    () -> getBaseMetaTileEntity().isActive(),
+                    val -> getBaseMetaTileEntity().setActive(val)));
     }
 }

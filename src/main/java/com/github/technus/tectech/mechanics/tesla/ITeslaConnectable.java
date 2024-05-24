@@ -56,32 +56,40 @@ public interface ITeslaConnectable extends ITeslaConnectableSimple {
         }
 
         private static void addTargetToTeslaOrigin(ITeslaConnectableSimple target, ITeslaConnectable origin) {
-            if (origin.equals(target) || !origin.getTeslaDimension().equals(target.getTeslaDimension())) {
+            if (origin.equals(target) || !origin.getTeslaDimension()
+                .equals(target.getTeslaDimension())) {
                 // Skip if looking at myself and skip if not in the same dimension
                 // TODO, INTERDIM?
                 return;
             } else if (origin.getTeslaTransmissionCapability() != 0 && origin.getTeslaReceptionCapability() != 0
-                    && origin.getTeslaTransmissionCapability() != origin.getTeslaReceptionCapability()) {
-                        // Skip if incompatible
-                        return;
-                    }
+                && origin.getTeslaTransmissionCapability() != origin.getTeslaReceptionCapability()) {
+                    // Skip if incompatible
+                    return;
+                }
             // Range calc
-            int distance = (int) sqrt(origin.getTeslaPosition().distanceSq(target.getTeslaPosition()));
+            int distance = (int) sqrt(
+                origin.getTeslaPosition()
+                    .distanceSq(target.getTeslaPosition()));
             if (distance > origin.getTeslaTransmissionRange() * target.getTeslaReceptionCoefficient()) {
                 // Skip if the range is too vast
                 return;
             }
-            origin.getTeslaNodeMap().put(distance, target);
+            origin.getTeslaNodeMap()
+                .put(distance, target);
         }
 
         private static void removeTargetFromTeslaOrigin(ITeslaConnectableSimple target, ITeslaConnectable origin) {
             // Range calc TODO Remove duplicate?
-            int distance = (int) sqrt(origin.getTeslaPosition().distanceSq(target.getTeslaPosition()));
-            origin.getTeslaNodeMap().remove(distance, target);
+            int distance = (int) sqrt(
+                origin.getTeslaPosition()
+                    .distanceSq(target.getTeslaPosition()));
+            origin.getTeslaNodeMap()
+                .remove(distance, target);
         }
 
         public static void generateTeslaNodeMap(ITeslaConnectable origin) {
-            origin.getTeslaNodeMap().clear();
+            origin.getTeslaNodeMap()
+                .clear();
             for (ITeslaConnectableSimple target : teslaSimpleNodeSet) {
                 // Sanity checks
                 if (target == null) {
@@ -99,11 +107,12 @@ public interface ITeslaConnectable extends ITeslaConnectableSimple {
             boolean canSendPower = !origin.isTeslaReadyToReceive() && remainingAmperes > 0;
 
             if (canSendPower) {
-                for (Map.Entry<Integer, ITeslaConnectableSimple> Rx : origin.getTeslaNodeMap().entries()) {
+                for (Map.Entry<Integer, ITeslaConnectableSimple> Rx : origin.getTeslaNodeMap()
+                    .entries()) {
                     // Do we still have power left to send kind of check
                     if (origin.getTeslaStoredEnergy()
-                            < (origin.isOverdriveEnabled() ? origin.getTeslaOutputVoltage() * 2
-                                    : origin.getTeslaOutputVoltage()))
+                        < (origin.isOverdriveEnabled() ? origin.getTeslaOutputVoltage() * 2
+                            : origin.getTeslaOutputVoltage()))
                         break;
                     // Explicit words for the important fields
                     ITeslaConnectableSimple target = Rx.getValue();
@@ -117,12 +126,12 @@ public interface ITeslaConnectable extends ITeslaConnectableSimple {
                     if (origin.isOverdriveEnabled()) {
                         outputVoltageInjectable = origin.getTeslaOutputVoltage();
                         outputVoltageConsumption = origin.getTeslaOutputVoltage()
-                                + ((long) distance * origin.getTeslaEnergyLossPerBlock())
-                                + (long) Math.round(
-                                        origin.getTeslaOutputVoltage() * origin.getTeslaOverdriveLossCoefficient());
+                            + ((long) distance * origin.getTeslaEnergyLossPerBlock())
+                            + (long) Math
+                                .round(origin.getTeslaOutputVoltage() * origin.getTeslaOverdriveLossCoefficient());
                     } else {
                         outputVoltageInjectable = origin.getTeslaOutputVoltage()
-                                - ((long) distance * origin.getTeslaEnergyLossPerBlock());
+                            - ((long) distance * origin.getTeslaEnergyLossPerBlock());
                         outputVoltageConsumption = origin.getTeslaOutputVoltage();
                     }
 
@@ -134,15 +143,16 @@ public interface ITeslaConnectable extends ITeslaConnectableSimple {
                     while (canSendPower) {
                         if (target.teslaInjectEnergy(outputVoltageInjectable)) {
                             origin.teslaDrainEnergy(outputVoltageConsumption);
-                            origin.getSparkList().add(
+                            origin.getSparkList()
+                                .add(
                                     new ThaumSpark(
-                                            origin.getTeslaPosition(),
-                                            target.getTeslaPosition(),
-                                            origin.getTeslaDimension()));
+                                        origin.getTeslaPosition(),
+                                        target.getTeslaPosition(),
+                                        origin.getTeslaDimension()));
                             remainingAmperes--;
                             // Update the can send power flag each time we send power
                             canSendPower = (origin.getTeslaStoredEnergy() < outputVoltageConsumption
-                                    || remainingAmperes > 0);
+                                || remainingAmperes > 0);
                         } else {
                             // Breaks out when I can't send anymore power
                             break;

@@ -45,8 +45,8 @@ public class GT_MetaTileEntity_PipeBlock_Energy extends GT_MetaTileEntity_Pipe_E
     @Override
     public String[] getDescription() {
         return ArrayUtils.add(
-                super.getDescription(),
-                EnumChatFormatting.DARK_AQUA.toString() + EnumChatFormatting.BOLD
-                        + translateToLocal("gt.blockmachines.pipe.desc.4"));
+            super.getDescription(),
+            EnumChatFormatting.DARK_AQUA.toString() + EnumChatFormatting.BOLD
+                + translateToLocal("gt.blockmachines.pipe.desc.4"));
     }
 }

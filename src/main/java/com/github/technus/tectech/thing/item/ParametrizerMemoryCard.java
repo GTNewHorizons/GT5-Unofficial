@@ -53,7 +53,7 @@ public final class ParametrizerMemoryCard extends Item {
 
     @Override
     public boolean onItemUseFirst(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
-            int ordinalSide, float hitX, float hitY, float hitZ) {
+        int ordinalSide, float hitX, float hitY, float hitZ) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (!(aPlayer instanceof EntityPlayerMP)) return false;
         if (!(tTileEntity instanceof IGregTechTileEntity)) return false;
@@ -115,14 +115,14 @@ public final class ParametrizerMemoryCard extends Item {
                     for (int hatch = 0; hatch < 10; hatch++) {
                         NBTTagCompound tag = tagList.getCompoundTagAt(hatch);
                         controller.parametrization
-                                .trySetParameters(hatch, tag.getDouble("value0D"), tag.getDouble("value1D"));
+                            .trySetParameters(hatch, tag.getDouble("value0D"), tag.getDouble("value1D"));
                     }
                 } else {
                     // from parametrizer
                     controller.parametrization.trySetParameters(
-                            tNBT.getInteger("param"),
-                            tNBT.getDouble("value0D"),
-                            tNBT.getDouble("value1D"));
+                        tNBT.getInteger("param"),
+                        tNBT.getDouble("value0D"),
+                        tNBT.getDouble("value1D"));
                 }
             } else {
                 // read from controller
@@ -192,14 +192,14 @@ public final class ParametrizerMemoryCard extends Item {
             temp = tNBT.getInteger("value0D");
             aList.add("Value 0D: " + EnumChatFormatting.AQUA + temp);
             aList.add(
-                    "Value 0B: " + EnumChatFormatting.AQUA
-                            + TT_Utility.longBitsToShortString(Double.doubleToLongBits(temp)));
+                "Value 0B: " + EnumChatFormatting.AQUA
+                    + TT_Utility.longBitsToShortString(Double.doubleToLongBits(temp)));
             aList.add("Value 0s: " + EnumChatFormatting.AQUA + tNBT.getString("value0s"));
             temp = tNBT.getInteger("value1D");
             aList.add("Value 1D: " + EnumChatFormatting.AQUA + temp);
             aList.add(
-                    "Value 1B: " + EnumChatFormatting.AQUA
-                            + TT_Utility.longBitsToShortString(Double.doubleToLongBits(temp)));
+                "Value 1B: " + EnumChatFormatting.AQUA
+                    + TT_Utility.longBitsToShortString(Double.doubleToLongBits(temp)));
             aList.add("Value 1s: " + EnumChatFormatting.AQUA + tNBT.getString("value1s"));
         }
     }

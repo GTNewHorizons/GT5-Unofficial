@@ -23,8 +23,8 @@ public class GT_MetaTileEntity_WetTransformer extends GT_MetaTileEntity_TT_Trans
     @Override
     public String[] getDescription() {
         return new String[] {
-                translateToLocal("gt.blockmachines.wetransformer.tier." + (mTier > 9 ? "" : "0") + mTier + ".desc"),
-                "Accepts 16A and outputs 64A", CommonValues.TEC_MARK_GENERAL };
+            translateToLocal("gt.blockmachines.wetransformer.tier." + (mTier > 9 ? "" : "0") + mTier + ".desc"),
+            "Accepts 16A and outputs 64A", CommonValues.TEC_MARK_GENERAL };
     }
 
     @Override

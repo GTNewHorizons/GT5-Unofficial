@@ -49,27 +49,28 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
 
     // region structure
     private static final String[] description = new String[] {
-            EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
-            // 1 - Classic Hatches or High Power Casing
-            translateToLocal("gt.blockmachines.multimachine.em.infuser.hint"), };
+        EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
+        // 1 - Classic Hatches or High Power Casing
+        translateToLocal("gt.blockmachines.multimachine.em.infuser.hint"), };
 
     private static final IStructureDefinition<GT_MetaTileEntity_EM_infuser> STRUCTURE_DEFINITION = IStructureDefinition
-            .<GT_MetaTileEntity_EM_infuser>builder()
-            .addShape(
-                    "main",
-                    transpose(
-                            new String[][] { { "CCC", "CCC", "CCC" }, { "BBB", "BAB", "BBB" }, { "A~A", "AAA", "AAA" },
-                                    { "BBB", "BAB", "BBB" }, { "CCC", "CCC", "CCC" } }))
-            .addElement('A', ofBlock(sBlockCasingsTT, 4)).addElement('B', ofBlock(sBlockCasingsTT, 7))
-            .addElement(
-                    'C',
-                    ofHatchAdderOptional(
-                            GT_MetaTileEntity_EM_infuser::addClassicToMachineList,
-                            textureOffset,
-                            1,
-                            sBlockCasingsTT,
-                            0))
-            .build();
+        .<GT_MetaTileEntity_EM_infuser>builder()
+        .addShape(
+            "main",
+            transpose(
+                new String[][] { { "CCC", "CCC", "CCC" }, { "BBB", "BAB", "BBB" }, { "A~A", "AAA", "AAA" },
+                    { "BBB", "BAB", "BBB" }, { "CCC", "CCC", "CCC" } }))
+        .addElement('A', ofBlock(sBlockCasingsTT, 4))
+        .addElement('B', ofBlock(sBlockCasingsTT, 7))
+        .addElement(
+            'C',
+            ofHatchAdderOptional(
+                GT_MetaTileEntity_EM_infuser::addClassicToMachineList,
+                textureOffset,
+                1,
+                sBlockCasingsTT,
+                0))
+        .build();
     // endregion
 
     public GT_MetaTileEntity_EM_infuser(int aID, String aName, String aNameRegional) {
@@ -94,7 +95,7 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
                 return ElectricItem.manager.getCharge(stack) >= ((IElectricItem) item).getMaxCharge(stack);
             } else if (TecTech.hasCOFH && item instanceof IEnergyContainerItem) {
                 return ((IEnergyContainerItem) item).getEnergyStored(stack)
-                        >= ((IEnergyContainerItem) item).getMaxEnergyStored(stack);
+                    >= ((IEnergyContainerItem) item).getMaxEnergyStored(stack);
             }
         }
         return true;
@@ -112,7 +113,7 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
         try {
             double euDiff = item.getMaxCharge(stack) - ElectricItem.manager.getCharge(stack);
             long remove = (long) Math.ceil(
-                    ElectricItem.manager.charge(stack, Math.min(euDiff, getEUVar()), item.getTier(stack), true, false));
+                ElectricItem.manager.charge(stack, Math.min(euDiff, getEUVar()), item.getTier(stack), true, false));
             setEUVar(getEUVar() - remove);
             if (getEUVar() < 0) {
                 setEUVar(0);
@@ -129,7 +130,7 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
     private long doChargeItemStackRF(IEnergyContainerItem item, ItemStack stack) {
         try {
             long RF = Math
-                    .min(item.getMaxEnergyStored(stack) - item.getEnergyStored(stack), getEUVar() * mEUtoRF / 100L);
+                .min(item.getMaxEnergyStored(stack) - item.getEnergyStored(stack), getEUVar() * mEUtoRF / 100L);
             RF = item.receiveEnergy(stack, RF > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) RF, false);
             RF = RF * 100L / mEUtoRF;
             setEUVar(getEUVar() - RF);
@@ -198,17 +199,20 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
                 } else {
                     if (item.isRepairable()) {
                         FluidStack uum = getStoredFluids().stream()
-                                .filter(fluid -> Materials.UUMatter.getFluid(1).isFluidEqual(fluid)).findAny()
-                                .orElse(null);
+                            .filter(
+                                fluid -> Materials.UUMatter.getFluid(1)
+                                    .isFluidEqual(fluid))
+                            .findAny()
+                            .orElse(null);
                         if (uum != null) {
                             int repairedDamage = Math
-                                    .min(item.getDamage(itemStackInBus), maxRepairedDamagePerOperation);
+                                .min(item.getDamage(itemStackInBus), maxRepairedDamagePerOperation);
                             long euCost = repairedDamage * usedEuPerDurability;
                             if (getEUVar() >= euCost && depleteInput(
-                                    new FluidStack(Materials.UUMatter.mFluid, repairedDamage * usedUumPerDurability))) {
+                                new FluidStack(Materials.UUMatter.mFluid, repairedDamage * usedUumPerDurability))) {
                                 item.setDamage(
-                                        itemStackInBus,
-                                        Math.max(item.getDamage(itemStackInBus) - repairedDamage, 0));
+                                    itemStackInBus,
+                                    Math.max(item.getDamage(itemStackInBus) - repairedDamage, 0));
                                 setEUVar(Math.min(getEUVar() - euCost, 0));
                             }
                         }
@@ -234,38 +238,40 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         // Machine Type: Energy Infuser
         tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.infuser.name"))
-                // Controller block of the Energy Infuser
-                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.infuser.desc.0"))
-                // Can be used to charge items (lossless)
-                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.infuser.desc.1"))
-                // Can be fed with UU-Matter to repair items
-                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.infuser.desc.2"))
-                // Stocking Bus is not supported
-                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.infuser.desc.3")).addSeparator()
-                .beginStructureBlock(3, 5, 3, false)
-                // Controller: Front 3rd layer center
-                .addController(translateToLocal("tt.keyword.Structure.FrontCenter3rd")).addOtherStructurePart(
-                        // High Power
-                        translateToLocal("gt.blockcasingsTT.0.name"),
-                        translateToLocal("gt.blockmachines.multimachine.em.infuser.Structure.HighPowerCasing"))
-                // Casing: Layer
-                // 1 and 5
-                .addOtherStructurePart(
-                        // Molecular Coil
-                        translateToLocal("gt.blockcasingsTT.7.name"),
-                        translateToLocal("gt.blockmachines.multimachine.em.infuser.Structure.MolecularCoil"))
-                // Layer 2 and 4
-                .addOtherStructurePart(
-                        // Molecular
-                        translateToLocal("gt.blockcasingsTT.4.name"),
-                        translateToLocal("gt.blockmachines.multimachine.em.infuser.Structure.MolecularCasing"))
-                // Casing: Layer
-                // 3 (hollow)
-                // Energy Hatch: Any High Power Casing
-                .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
-                // Maintenance Hatch: Any High Power Casing
-                .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
-                .toolTipFinisher(CommonValues.TEC_MARK_GENERAL);
+            // Controller block of the Energy Infuser
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.infuser.desc.0"))
+            // Can be used to charge items (lossless)
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.infuser.desc.1"))
+            // Can be fed with UU-Matter to repair items
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.infuser.desc.2"))
+            // Stocking Bus is not supported
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.infuser.desc.3"))
+            .addSeparator()
+            .beginStructureBlock(3, 5, 3, false)
+            // Controller: Front 3rd layer center
+            .addController(translateToLocal("tt.keyword.Structure.FrontCenter3rd"))
+            .addOtherStructurePart(
+                // High Power
+                translateToLocal("gt.blockcasingsTT.0.name"),
+                translateToLocal("gt.blockmachines.multimachine.em.infuser.Structure.HighPowerCasing"))
+            // Casing: Layer
+            // 1 and 5
+            .addOtherStructurePart(
+                // Molecular Coil
+                translateToLocal("gt.blockcasingsTT.7.name"),
+                translateToLocal("gt.blockmachines.multimachine.em.infuser.Structure.MolecularCoil"))
+            // Layer 2 and 4
+            .addOtherStructurePart(
+                // Molecular
+                translateToLocal("gt.blockcasingsTT.4.name"),
+                translateToLocal("gt.blockmachines.multimachine.em.infuser.Structure.MolecularCasing"))
+            // Casing: Layer
+            // 3 (hollow)
+            // Energy Hatch: Any High Power Casing
+            .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
+            // Maintenance Hatch: Any High Power Casing
+            .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
+            .toolTipFinisher(CommonValues.TEC_MARK_GENERAL);
         return tt;
     }
 

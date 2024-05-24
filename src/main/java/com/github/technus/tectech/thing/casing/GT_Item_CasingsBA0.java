@@ -39,9 +39,9 @@ public class GT_Item_CasingsBA0 extends GT_Item_Casings_Abstract {
             case 4: // "IV Superconductor Primary Tesla Windings"
             case 5: // "LuV Superconductor Primary Tesla Windings"
                 aList.add(
-                        translateToLocal("gt.blockcasingsBA0.0.desc.0") + " "
-                                + formatNumbers(V[aStack.getItemDamage() + 1])
-                                + " EU/t"); // Handles up to
+                    translateToLocal("gt.blockcasingsBA0.0.desc.0") + " "
+                        + formatNumbers(V[aStack.getItemDamage() + 1])
+                        + " EU/t"); // Handles up to
                 aList.add(AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockcasingsBA0.0.desc.1")); // What
                                                                                                                         // one
                                                                                                                         // man
