@@ -24,6 +24,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -44,8 +47,11 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_StructureUtility;
 
 public class GT_MetaTileEntity_PurificationUnitPlasmaHeater
@@ -59,10 +65,20 @@ public class GT_MetaTileEntity_PurificationUnitPlasmaHeater
     private static final int STRUCTURE_X_OFFSET = 2;
     private static final int STRUCTURE_Y_OFFSET = 14;
     private static final int STRUCTURE_Z_OFFSET = 5;
+    private static final long CONSUME_INTERVAL = 20;
 
     private long currentTemperature = 0;
     private int cyclesCompleted = 0;
     private boolean ruinedCycle = false;
+
+    private enum CycleState {
+        // Was previously at 0K, currently waiting to heat to 10000K
+        Heating,
+        // Was previously at 10000K, currently waiting to cool down to 0K
+        Cooling
+    }
+
+    private CycleState state;
 
     // A cycle is 30s at shortest, a purification plant cycle is 120s. 33% chance per heating cycle
     // will give you plenty of room for delay and still get to 99% chance.
@@ -79,6 +95,9 @@ public class GT_MetaTileEntity_PurificationUnitPlasmaHeater
     public static final long MAX_TEMP = 12500;
     // Point at which the heating point of the cycle is reached
     public static final long HEATING_POINT = 10000;
+
+    private static final Materials plasmaMaterial = Materials.Helium;
+    private static final Materials coolantMaterial = Materials.SuperCoolant;
 
     private GT_MetaTileEntity_Hatch_Input plasmaInputHatch;
     private GT_MetaTileEntity_Hatch_Input coolantInputHatch;
@@ -245,6 +264,89 @@ public class GT_MetaTileEntity_PurificationUnitPlasmaHeater
         return tt;
     }
 
+    @Override
+    public void startCycle(int cycleTime, int progressTime) {
+        super.startCycle(cycleTime, progressTime);
+        this.cyclesCompleted = 0;
+        this.currentTemperature = 0;
+        this.ruinedCycle = false;
+        this.state = CycleState.Heating;
+    }
+
+    // Drains up to maxAmount of a fluid if it is the same fluid as given, returns the amount drained
+    private long drainFluidLimited(GT_MetaTileEntity_Hatch_Input inputHatch, FluidStack fluid, long maxAmount) {
+        FluidStack hatchStack = inputHatch.getDrainableStack();
+        if (hatchStack == null) return 0;
+        if (hatchStack.isFluidEqual(fluid)) {
+            long amountToDrain = Math.min(maxAmount, hatchStack.amount);
+            if (amountToDrain > 0) {
+                inputHatch.drain((int) amountToDrain, true);
+            }
+            return amountToDrain;
+        } else {
+            return 0;
+        }
+    }
+
+    @NotNull
+    @Override
+    public CheckRecipeResult checkProcessing() {
+        RecipeMap<?> recipeMap = this.getRecipeMap();
+
+        GT_Recipe recipe = recipeMap.findRecipeQuery()
+            .fluids(
+                this.getStoredFluids()
+                    .toArray(new FluidStack[] {}))
+            .find();
+
+        this.endRecipeProcessing();
+        if (recipe == null) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
+
+        if (this.protectsExcessFluid() && !this.canOutputAll(recipe.mFluidOutputs)) {
+            return CheckRecipeResultRegistry.FLUID_OUTPUT_FULL;
+        }
+
+        this.currentRecipe = recipe;
+        return CheckRecipeResultRegistry.SUCCESSFUL;
+    }
+
+    @Override
+    protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.runMachine(aBaseMetaTileEntity, aTick);
+        if (mMaxProgresstime > 0 && aTick % CONSUME_INTERVAL == 0) {
+            // Drain plasma and coolant up to limited amount per second
+            long plasmaDrained = drainFluidLimited(plasmaInputHatch, plasmaMaterial.getPlasma(1L), MAX_PLASMA_PER_SEC);
+            long coolantDrained = drainFluidLimited(
+                coolantInputHatch,
+                coolantMaterial.getFluid(1L),
+                MAX_COOLANT_PER_SEC);
+            // Calculate temperature change
+            long tempChance = plasmaDrained * PLASMA_TEMP_PER_LITER + coolantDrained * COOLANT_TEMP_PER_LITER;
+            currentTemperature = Math.max(0, currentTemperature + tempChance);
+            // Check if batch was ruined
+            if (currentTemperature > MAX_TEMP) {
+                ruinedCycle = true;
+            }
+            // Update cycle state.
+            switch (state) {
+                case Heating -> {
+                    // Heating state can change to cooling when temperature exceeds 10000K
+                    if (currentTemperature >= HEATING_POINT) {
+                        state = CycleState.Cooling;
+                    }
+                }
+                case Cooling -> {
+                    if (currentTemperature == 0) {
+                        state = CycleState.Heating;
+                        cyclesCompleted += 1;
+                    }
+                }
+            }
+        }
+    }
+
     public boolean addCoolantHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
@@ -291,6 +393,7 @@ public class GT_MetaTileEntity_PurificationUnitPlasmaHeater
         aNBT.setLong("mCurrentTemperature", currentTemperature);
         aNBT.setInteger("mCyclesCompleted", cyclesCompleted);
         aNBT.setBoolean("mRuinedCycle", ruinedCycle);
+        aNBT.setString("mCycleState", state.toString());
         super.saveNBTData(aNBT);
     }
 
@@ -300,6 +403,7 @@ public class GT_MetaTileEntity_PurificationUnitPlasmaHeater
         currentTemperature = aNBT.getLong("mCurrentTemperature");
         cyclesCompleted = aNBT.getInteger("mCyclesCompleted");
         ruinedCycle = aNBT.getBoolean("mRuinedCycle");
+        state = CycleState.valueOf(aNBT.getString("mCycleState"));
     }
 
     @Override
