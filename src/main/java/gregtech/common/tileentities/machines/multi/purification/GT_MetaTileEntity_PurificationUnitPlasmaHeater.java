@@ -50,9 +50,11 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_StructureUtility;
+import gregtech.api.util.GT_Utility;
 
 public class GT_MetaTileEntity_PurificationUnitPlasmaHeater
     extends GT_MetaTileEntity_PurificationUnitBase<GT_MetaTileEntity_PurificationUnitPlasmaHeater>
@@ -258,9 +260,78 @@ public class GT_MetaTileEntity_PurificationUnitPlasmaHeater
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addInfo("Each cycle completed boosts success by " + EnumChatFormatting.RED + SUCCESS_PER_CYCLE + "%");
-        tt.addInfo(AuthorNotAPenguin);
-        tt.toolTipFinisher("GregTech");
+        tt.addMachineType("Purification Unit")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.BOLD
+                    + "Water Tier: "
+                    + EnumChatFormatting.WHITE
+                    + GT_Utility.formatNumbers(getWaterTier())
+                    + EnumChatFormatting.RESET)
+            .addInfo("Controller block for the Plasma Heater Purification Unit.")
+            .addInfo("Must be linked to a Purification Plant to work.")
+            .addSeparator()
+            .addInfo("Ensures all organics are destroyed by repeatedly heating and cooling the water using plasma.")
+            .addSeparator()
+            .addInfo(
+                "Complete heating cycles by first heating the water to " + EnumChatFormatting.RED
+                    + HEATING_POINT
+                    + "K"
+                    + EnumChatFormatting.GRAY
+                    + ",")
+            .addInfo(
+                "and then cooling it back down to " + EnumChatFormatting.RED + "0K" + EnumChatFormatting.GRAY + ".")
+            .addInfo(
+                "Initial temperature is reset to " + EnumChatFormatting.RED
+                    + "0K"
+                    + EnumChatFormatting.GRAY
+                    + " on recipe start.")
+            .addInfo(
+                "Each completed heating cycle boosts success chance by " + EnumChatFormatting.RED
+                    + SUCCESS_PER_CYCLE
+                    + "%.")
+            .addInfo(
+                "If the temperature ever reaches " + EnumChatFormatting.RED
+                    + MAX_TEMP
+                    + "K"
+                    + EnumChatFormatting.GRAY
+                    + " the recipe will fail and output steam.")
+            .addSeparator()
+            .addInfo(
+                "Consumes up to " + EnumChatFormatting.RED
+                    + MAX_PLASMA_PER_SEC
+                    + "L/s "
+                    + EnumChatFormatting.WHITE
+                    + plasmaMaterial.getPlasma(1)
+                        .getLocalizedName()
+                    + EnumChatFormatting.GRAY
+                    + " and up to "
+                    + EnumChatFormatting.RED
+                    + MAX_COOLANT_PER_SEC
+                    + "L/s "
+                    + EnumChatFormatting.WHITE
+                    + coolantMaterial.getFluid(1)
+                        .getLocalizedName())
+            .addInfo(
+                EnumChatFormatting.RED + "Raises "
+                    + EnumChatFormatting.GRAY
+                    + "the temperature by "
+                    + EnumChatFormatting.RED
+                    + PLASMA_TEMP_PER_LITER
+                    + "K"
+                    + EnumChatFormatting.GRAY
+                    + " per liter of plasma consumed.")
+            .addInfo(
+                EnumChatFormatting.RED + "Lowers "
+                    + EnumChatFormatting.GRAY
+                    + "the temperature by "
+                    + EnumChatFormatting.RED
+                    + -COOLANT_TEMP_PER_LITER
+                    + "K"
+                    + EnumChatFormatting.GRAY
+                    + " per liter of coolant consumed.")
+            .addInfo(AuthorNotAPenguin)
+            .toolTipFinisher("GregTech");
         return tt;
     }
 
@@ -310,6 +381,17 @@ public class GT_MetaTileEntity_PurificationUnitPlasmaHeater
 
         this.currentRecipe = recipe;
         return CheckRecipeResultRegistry.SUCCESSFUL;
+    }
+
+    @Override
+    public void addRecipeOutputs() {
+        super.addRecipeOutputs();
+        // If the cycle was ruined, output steam
+        if (this.ruinedCycle) {
+            FluidStack insertedWater = currentRecipe.mFluidInputs[0];
+            long steamAmount = insertedWater.amount * 60L;
+            addOutput(GT_ModHandler.getSteam(steamAmount));
+        }
     }
 
     @Override
