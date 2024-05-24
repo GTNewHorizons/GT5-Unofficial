@@ -526,6 +526,7 @@ public class NaquadahReworkRecipeLoader {
                 int[] oreDict = OreDictionary.getOreIDs(input);
                 for (int oreDictID : oreDict) {
                     if ((OreDictionary.getOreName(oreDictID).startsWith("ore")
+                            || OreDictionary.getOreName(oreDictID).startsWith("rawOre")
                             || OreDictionary.getOreName(oreDictID).startsWith("crushed"))
                             && OreDictionary.getOreName(oreDictID).contains("Naq")) {
                         GT_Recipe tRecipe = recipe.copy();
