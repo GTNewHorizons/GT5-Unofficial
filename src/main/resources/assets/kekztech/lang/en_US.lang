@@ -1,0 +1,109 @@
+item.kekztech_error_item.name=KekzTech Error Coin
+
+# -------- Multiblock Tooltip Builder Keywords
+# -------- Context can be found in the class util.MultiBlockTooltipBuilder
+mbdesc.beginStructureBlock.Dimensions=Dimensions
+mbdesc.beginStructureBlock.Structure=Structure
+mbdesc.addController.Controller=Controller
+mbdesc.addCasing.atleast=(at least)
+mbdesc.addEnergyHatch.EnergyHatch=Energy Hatch
+mbdesc.addDynamoHatch.DynamoHatch=Dynamo Hatch
+mbdesc.addMaintenanceHatch.MaintenanceHatch=Maintenance Hatch
+mbdesc.addIOHatches.IOHatches=I/O Hatches
+mbdesc.addInputBus.InputBus=Input Bus/ses
+mbdesc.addInputHatch.InputHatch=Input Hatch/es
+mbdesc.addOutputBus.OutputBus=Output Bus/ses
+mbdesc.addOutputHatch.OutputHatch=Output Hatch/es
+mbdesc.signAndFinalize.Hold=Hold
+mbdesc.signAndFinalize.todisplay=to display structure guidelines
+mbdesc.signAndFinalize.createdby=Created by
+
+# -------- Fuel Cell: Structure Blocks
+tile.kekztech_gdcceramicelectrolyteunit_block.name=GDC Ceramic Electrolyte Unit
+tile.kekztech_yszceramicelectrolyteunit_block.name=YSZ Ceramic Electrolyte Unit
+
+# -------- Fuel Cell: Crafting Components
+item.kekztech_crafting_item.9.name=YSZ Ceramic Dust
+item.kekztech_crafting_item.10.name=GDC Ceramic Dust
+item.kekztech_crafting_item.11.name=Yttria Dust
+item.kekztech_crafting_item.12.name=Zirconia Dust
+item.kekztech_crafting_item.13.name=Ceria Dust
+item.kekztech_crafting_item.14.name=YSZ Ceramic Plate
+item.kekztech_crafting_item.15.name=GDC Ceramic Plate
+
+# -------- TFFT: Structure Blocks
+tile.kekztech_tfftstoragefield_block.0.name=T.F.F.T Casing
+tile.kekztech_tfftstoragefield_block.1.name=T.F.F.T Storage Field Block (Tier I)
+tile.kekztech_tfftstoragefield_block.2.name=T.F.F.T Storage Field Block (Tier II)
+tile.kekztech_tfftstoragefield_block.3.name=T.F.F.T Storage Field Block (Tier III)
+tile.kekztech_tfftstoragefield_block.4.name=T.F.F.T Storage Field Block (Tier IV)
+tile.kekztech_tfftstoragefield_block.5.name=T.F.F.T Storage Field Block (Tier V)
+tile.kekztech_tfftstoragefield_block.6.name=T.F.F.T Storage Field Block (Tier VI)
+tile.kekztech_tfftstoragefield_block.7.name=T.F.F.T Storage Field Block (Tier VII)
+tile.kekztech_tfftstoragefield_block.8.name=T.F.F.T Storage Field Block (Tier VIII)
+tile.kekztech_tfftstoragefield_block.9.name=T.F.F.T Storage Field Block (Tier IX)
+tile.kekztech_tfftstoragefield_block.10.name=T.F.F.T Storage Field Block (Tier X)
+tile.kekztech_tfftstoragefield_block.desc=This is not a fluid tank
+tile.kekztech_tfftstoragefield_block.hint.1=Hint 1 Dot: T.F.F.T Casing
+tile.kekztech_tfftstoragefield_block.hint.2=Hint 2 Dot: T.F.F.T Casing, Maintenance Hatch, T.F.F.T Multi I/O Hatch, Input/Output Hatch, Energy Hatch
+tile.kekztech_tfftstoragefield_block.hint.3=Hint 3 Dot: EV+ Tier Glass, T.F.F.T Multi I/O Hatch, Input/Output Hatch
+tile.kekztech_tfftstoragefield_block.hint.4=Hint 4 Dot: EV+ Tier Glass
+
+# -------- Lapotronic Super Capacitor: Structure Blocks
+tile.kekztech_lapotronicenergyunit_block.0.name=Lapotronic Super Capacitor Casing
+tile.kekztech_lapotronicenergyunit_block.1.name=Lapotronic Capacitor (IV)
+tile.kekztech_lapotronicenergyunit_block.2.name=Lapotronic Capacitor (LuV)
+tile.kekztech_lapotronicenergyunit_block.3.name=Lapotronic Capacitor (ZPM)
+tile.kekztech_lapotronicenergyunit_block.4.name=Lapotronic Capacitor (UV)
+tile.kekztech_lapotronicenergyunit_block.5.name=Ultimate Capacitor (UHV)
+tile.kekztech_lapotronicenergyunit_block.6.name=Empty Capacitor (-)
+tile.kekztech_lapotronicenergyunit_block.7.name=Lapotron Capacitor (EV)
+tile.kekztech_lapotronicenergyunit_block.8.name=Extremely Ultimate Capacitor (UEV)
+tile.kekztech_lapotronicenergyunit_block.9.name=Insanely Ultimate Capacitor (UIV)
+tile.kekztech_lapotronicenergyunit_block.10.name=Mega Ultimate Capacitor (UMV)
+tile.kekztech_lapotronicenergyunit_block.desc=Part of the Lapotronic Super Capacitor
+
+# -------- Thaumium Reinforced Jar: Block
+tile.kekztech_thaumiumreinforcedjar_block.0.name=Thaumium Reinforced Jar
+tile.kekztech_thaumiumreinforcedjar_block.3.name=Thaumium Reinforced Void Jar
+
+# -------- Thaumium Reinforced Jar: Research
+# This is the name of the research
+tc.research_name.THAUMIUMREINFORCEDJAR=Thaumium Reinforced Jars
+# This is the subtext for the research note
+tc.research_text.THAUMIUMREINFORCEDJAR=Slightly better jars
+# Lore text for the research pages
+kekztech.research_page.THAUMIUMREINFORCEDJAR.0=You have heard your fellow Thaumaturges talk about the benefits of digitized Essentia Storage.<BR><BR>Storing enough Essentia for your advanced infusions has indeed been an issue for you too. However those jars are simply too pleasing to look at to even consider the idea of replacing them with some compact technological construct.<BR><BR>Thanks to this new discovery, you have managed to quadruple the capacity of your jars by improving them with a thick Thaumium lining. This should buy you some more time to come up with a better solution.
+kekztech.research_page.THAUMIUMREINFORCEDJAR.1=Compressing this much Essentia in such a tiny space causes some volatility. Picking up reinforced jars is probably a bad idea...<BR><BR>You imagine that you could get even more out of your jars if only you had some kind of material harder than even diamond or any of the other magical metal you have seen so far.
+
+# -------- Ichor Jar: Block
+tile.kekztech_ichorjar_block.0.name=Ichor Jar
+tile.kekztech_ichorjar_block.3.name=Ichor Void Jar
+
+# -------- Ichor Jar: Research
+tc.research_name.ICHORJAR=Ichor Jars
+tc.research_text.ICHORJAR=Much better jars
+kekztech.research_page.ICHORJAR.0=This is it!<BR><BR>By infusing a jar with just a single piece of Ichor you have created something to rival digitized Essentia storage without sacrificing any of the beauty of Warded Jars.<BR><BR>Ichor Jars can hold an astounding 4096 Essentia and fit nicely into your recently aquired set of Ichor based achievements.<BR><BR>You definitely don't want to disturb these jars. Luckily Ichor is resilient enough to make accidentially destroying one unlikely.
+
+# -------- Cosmetic Blocks
+tile.kekztech_largehextile_block.name=Large Hex Tile
+
+# -------- Achievements
+achievement.tile.kekztech_lapotronicenergyunit_block.2.desc=Pickup this item to see the recipe in NEI
+achievement.tile.kekztech_lapotronicenergyunit_block.2=Lapotronic Capacitor (LuV)
+achievement.tile.kekztech_lapotronicenergyunit_block.3.desc=Pickup this item to see the recipe in NEI
+achievement.tile.kekztech_lapotronicenergyunit_block.3=Lapotronic Capacitor (ZPM)
+achievement.tile.kekztech_lapotronicenergyunit_block.4.desc=Pickup this item to see the recipe in NEI
+achievement.tile.kekztech_lapotronicenergyunit_block.4=Lapotronic Capacitor (UV)
+achievement.tile.kekztech_lapotronicenergyunit_block.5.desc=Pickup this item to see the recipe in NEI
+achievement.tile.kekztech_lapotronicenergyunit_block.5=Ultimate Capacitor (UHV)
+achievement.tile.kekztech_lapotronicenergyunit_block.8.desc=Beyond the ranks of Gods
+achievement.tile.kekztech_lapotronicenergyunit_block.8=Extremely Ultimate Capacitor (UEV)
+achievement.tile.kekztech_lapotronicenergyunit_block.9.desc=Insanity ensues!
+achievement.tile.kekztech_lapotronicenergyunit_block.9=Insanely Ultimate Capacitor (UIV)
+achievement.tile.kekztech_lapotronicenergyunit_block.10.desc=How far can we go?
+achievement.tile.kekztech_lapotronicenergyunit_block.10=Mega Ultimate Capacitor (UMV)
+
+
+# -------- GUI
+gui.kekztech_lapotronicenergyunit.wireless=Wireless mode

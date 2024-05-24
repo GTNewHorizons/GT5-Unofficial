@@ -43,6 +43,7 @@ dependencies {
     api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-402-GTNH:dev")
     api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.3.0-gtnh:dev")
     api('com.github.GTNewHorizons:Yamcl:0.6.0:dev')
+    api('com.github.GTNewHorizons:ThaumicTinkerer:2.9.4:dev')
 
     implementation('com.github.GTNewHorizons:GTNEIOrePlugin:1.2.0:dev') { transitive = false }
     implementation("com.github.GTNewHorizons:Avaritia:1.49:dev")
