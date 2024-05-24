@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -61,6 +63,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.IGT_HatchAdder;
+import gregtech.api.util.shutdown.ShutDownReason;
 
 /**
  * Created by danie_000 on 17.12.2016.
@@ -417,8 +420,8 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public void stopMachine() {
-        super.stopMachine();
+    public void stopMachine(@Nonnull ShutDownReason reason) {
+        super.stopMachine(reason);
         eAvailableData = 0;
         for (GT_MetaTileEntity_Hatch_Rack rack : filterValidMTEs(eRacks)) {
             rack.getBaseMetaTileEntity().setActive(false);

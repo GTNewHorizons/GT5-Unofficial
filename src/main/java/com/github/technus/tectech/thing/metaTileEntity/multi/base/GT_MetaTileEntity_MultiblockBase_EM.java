@@ -24,6 +24,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -101,6 +103,9 @@ import gregtech.api.util.GT_HatchElementBuilder;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
+import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.common.GT_Pollution;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 
@@ -869,8 +874,10 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
      * hammered to offline state! - it SHOULD cause a full stop like power failure does
      */
     @Override
-    public void stopMachine() {
-
+    public void stopMachine(@Nonnull ShutDownReason reason) {
+        if (!ShutDownReasonRegistry.isRegistered(reason.getID())) {
+            throw new RuntimeException(String.format("Reason %s is not registered for registry", reason.getID()));
+        }
         for (GT_MetaTileEntity_Hatch_OutputData data : eOutputData) {
             data.q = null;
         }
@@ -884,6 +891,11 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
         eAvailableData = 0;
         hatchesStatusUpdate_EM();
         getBaseMetaTileEntity().disableWorking();
+        getBaseMetaTileEntity().setShutDownReason(reason);
+        getBaseMetaTileEntity().setShutdownStatus(true);
+        if (reason.wasCritical()) {
+            sendSound(INTERRUPT_SOUND_INDEX);
+        }
     }
 
     /**
@@ -1028,7 +1040,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
         if (eRequiredData > eAvailableData) {
             if (!checkComputationTimeout()) {
                 if (energyFlowOnRunningTick_EM(aStack, false)) {
-                    stopMachine();
+                    stopMachine(SimpleShutDownReason.ofCritical("computation_loss"));
                 }
                 return false;
             }
@@ -1040,7 +1052,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
         if (eRequiredData > eAvailableData) {
             if (!checkComputationTimeout()) {
                 if (energyFlowOnRunningTick(aStack, false)) {
-                    stopMachine();
+                    stopMachine(SimpleShutDownReason.ofCritical("computation_loss"));
                 }
                 return false;
             }
@@ -1115,7 +1127,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
                         if (mMaxProgresstime > 0 && doRandomMaintenanceDamage()) { // Start
                             if (onRunningTick(mInventory[1])) { // Compute EU
                                 if (!polluteEnvironment(getPollutionPerTick(mInventory[1]))) {
-                                    stopMachine();
+                                    stopMachine(ShutDownReasonRegistry.POLLUTION_FAIL);
                                 }
 
                                 if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) { // progress increase
@@ -1166,10 +1178,10 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
                             } // else notAllowedToWork_stopMachine_EM(); //it is already stopped here
                         }
                     } else { // not repaired
-                        stopMachine();
+                        stopMachine(ShutDownReasonRegistry.NO_REPAIR);
                     }
                 } else { // not complete
-                    stopMachine();
+                    stopMachine(ShutDownReasonRegistry.STRUCTURE_INCOMPLETE);
                 }
             }
 

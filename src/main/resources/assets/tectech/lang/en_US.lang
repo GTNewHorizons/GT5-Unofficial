@@ -761,6 +761,8 @@ gt.blockmachines.multimachine.em.research.desc.0=Controller block of the Researc
 gt.blockmachines.multimachine.em.research.desc.1=Used to scan Data Sticks for Assembling Line Recipes
 gt.blockmachines.multimachine.em.research.desc.2=Needs to be fed with computation to work
 gt.blockmachines.multimachine.em.research.desc.3=Does not consume the item until the Data Stick is written
+gt.blockmachines.multimachine.em.research.mode.Assembly_line=Mode: Research Station
+gt.blockmachines.multimachine.em.research.mode.Scanner=Mode: Scanner
 
 gt.blockmachines.multimachine.em.collider.name=Matter Collider
 gt.blockmachines.multimachine.em.collider.hint.0=1 - Classic Hatches or High Power Casing
@@ -1139,6 +1141,8 @@ GT5U.gui.text.computing=§aComputing
 GT5U.gui.text.providing_data=§aProviding Data
 GT5U.gui.text.routing=§aRouting
 GT5U.gui.text.researching=§aResearching
+GT5U.gui.text.wrongRequirements=§7Incorrect scanning item
+GT5U.gui.text.scanning=§aScanning
 GT5U.gui.text.charging=§aCharging
 GT5U.gui.text.microwaving=§aMicrowaving
 GT5U.gui.text.no_routing=§7Can't route
@@ -1160,6 +1164,7 @@ GT5U.gui.text.invalid_overdrive_setting=§7Invalid overdrive setting
 GT5U.gui.text.insufficient_power_no_val=§7Insufficient power
 GT5U.gui.text.missing_upgrades=§7Missing upgrades
 GT5U.gui.text.waiting_for_inputs=§7Waiting for inputs
+GT5U.gui.text.computation_loss=§4Shut down due to computation loss.
 
 # RecipeMaps
 gt.recipe.eyeofharmony=Eye of Harmony

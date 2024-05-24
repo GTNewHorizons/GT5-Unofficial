@@ -16,6 +16,8 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -48,6 +50,7 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.shutdown.ShutDownReason;
 
 /**
  * Created by danie_000 on 17.12.2016.
@@ -294,8 +297,8 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     }
 
     @Override
-    public void stopMachine() {
-        super.stopMachine();
+    public void stopMachine(@Nonnull ShutDownReason reason) {
+        super.stopMachine(reason);
         remainingTime.set(timerSetting.get());
         timerValue.set(0);
     }

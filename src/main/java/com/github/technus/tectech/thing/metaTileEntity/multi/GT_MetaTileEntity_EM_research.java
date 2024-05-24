@@ -9,6 +9,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GT_HatchElement.Energy;
 import static gregtech.api.enums.GT_HatchElement.Maintenance;
+import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
 import static mcp.mobius.waila.api.SpecialChars.GREEN;
@@ -22,6 +23,8 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -29,6 +32,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -58,11 +62,13 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energ
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.util.GT_AssemblyLineUtils;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
+import gregtech.api.util.shutdown.ShutDownReason;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -78,8 +84,9 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     // region variables
     private final ArrayList<GT_MetaTileEntity_Hatch_Holder> eHolders = new ArrayList<>();
     private GT_Recipe.GT_Recipe_AssemblyLine tRecipe;
-    private String machineType;
     private static final String assembly = "Assembly line";
+    private static final String scanner = "Scanner";
+    private String machineType = assembly;
     private ItemStack holdItem;
     private long computationRemaining, computationRequired;
 
@@ -350,12 +357,44 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
         if (!eHolders.isEmpty() && eHolders.get(0).mInventory[0] != null) {
             holdItem = eHolders.get(0).mInventory[0].copy();
             if (ItemList.Tool_DataStick.isStackEqual(controllerStack, false, true)) {
-                for (GT_Recipe.GT_Recipe_AssemblyLine assRecipe : TecTechRecipeMaps.researchableALRecipeList) {
-                    if (GT_Utility.areStacksEqual(assRecipe.mResearchItem, holdItem, true)) {
-                        machineType = assembly;
-                        tRecipe = assRecipe;
-                        // if found
-                        if (iterateRecipes()) return SimpleCheckRecipeResult.ofSuccess("researching");
+                switch (machineType) {
+                    case scanner -> {
+                        for (GT_Recipe.GT_Recipe_AssemblyLine assRecipe : GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes) {
+                            if (GT_Utility.areStacksEqual(assRecipe.mResearchItem, holdItem, true)) {
+                                boolean failScanner = true;
+                                for (GT_Recipe scannerRecipe : scannerFakeRecipes.getAllRecipes()) {
+                                    if (GT_Utility.areStacksEqual(scannerRecipe.mInputs[0], holdItem, true)) {
+                                        failScanner = false;
+                                        break;
+                                    }
+                                }
+                                if (failScanner) {
+                                    return SimpleCheckRecipeResult.ofFailure("wrongRequirements");
+                                }
+                                this.tRecipe = assRecipe;
+                                // Scanner mode should consume item first
+                                eHolders.get(0).mInventory[0] = null;
+                                mInventory[1] = null;
+                                // Set property
+                                computationRequired = computationRemaining = assRecipe.mResearchTime;
+                                mMaxProgresstime = 20;
+                                mEfficiencyIncrease = 10000;
+                                eRequiredData = 1;
+                                eAmpereFlow = 1;
+                                mEUt = -524288;
+                                eHolders.get(0).getBaseMetaTileEntity().setActive(true);
+                                return SimpleCheckRecipeResult.ofSuccess("scanning");
+                            }
+                        }
+                    }
+                    case assembly -> {
+                        for (GT_Recipe.GT_Recipe_AssemblyLine assRecipe : TecTechRecipeMaps.researchableALRecipeList) {
+                            if (GT_Utility.areStacksEqual(assRecipe.mResearchItem, holdItem, true)) {
+                                tRecipe = assRecipe;
+                                // if found
+                                if (iterateRecipes()) return SimpleCheckRecipeResult.ofSuccess("researching");
+                            }
+                        }
                     }
                 }
             } else {
@@ -373,17 +412,26 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     @Override
     public void outputAfterRecipe_EM() {
         if (!eHolders.isEmpty()) {
-            if (tRecipe != null && ItemList.Tool_DataStick.isStackEqual(mInventory[1], false, true)) {
-                eHolders.get(0).getBaseMetaTileEntity().setActive(false);
-                eHolders.get(0).mInventory[0] = null;
-                if (lServerNames == null) {
-                    makeStick();
-                } else {
-                    try {
-                        makeStick2();
-                    } catch (NoSuchFieldError e) {
-                        makeStick();
+            switch (machineType) {
+                case assembly -> {
+                    if (tRecipe != null && ItemList.Tool_DataStick.isStackEqual(mInventory[1], false, true)) {
+                        eHolders.get(0).getBaseMetaTileEntity().setActive(false);
+                        eHolders.get(0).mInventory[0] = null;
+                        if (lServerNames == null) {
+                            makeStick();
+                        } else {
+                            try {
+                                makeStick2();
+                            } catch (NoSuchFieldError e) {
+                                makeStick();
+                            }
+                        }
                     }
+                }
+                case scanner -> {
+                    mInventory[1] = ItemList.Tool_DataStick.get(1);
+                    GT_AssemblyLineUtils.setAssemblyLineRecipeOnDataStick(mInventory[1], tRecipe);
+                    eHolders.get(0).getBaseMetaTileEntity().setActive(false);
                 }
             }
         }
@@ -551,6 +599,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
         super.saveNBTData(aNBT);
         aNBT.setLong("eComputationRemaining", computationRemaining);
         aNBT.setLong("eComputationRequired", computationRequired);
+        aNBT.setString("eMachineType", machineType);
         if (holdItem != null) {
             aNBT.setTag("eHold", holdItem.writeToNBT(new NBTTagCompound()));
         } else {
@@ -563,6 +612,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
         super.loadNBTData(aNBT);
         computationRemaining = aNBT.getLong("eComputationRemaining");
         computationRequired = aNBT.getLong("eComputationRequired");
+        machineType = aNBT.hasKey("eMachineType") ? aNBT.getString("eMachineType") : assembly;
         if (aNBT.hasKey("eHold")) {
             holdItem = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("eHold"));
         } else {
@@ -571,8 +621,8 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public void stopMachine() {
-        super.stopMachine();
+    public void stopMachine(@Nonnull ShutDownReason reason) {
+        super.stopMachine(reason);
         for (GT_MetaTileEntity_Hatch_Holder r : eHolders) {
             r.getBaseMetaTileEntity().setActive(false);
         }
@@ -591,7 +641,6 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                         for (GT_Recipe.GT_Recipe_AssemblyLine tRecipe : TecTechRecipeMaps.researchableALRecipeList) {
                             if (GT_Utility.areStacksEqual(tRecipe.mResearchItem, holdItem, true)) {
                                 this.tRecipe = tRecipe;
-                                machineType = assembly;
                                 break;
                             }
                         }
@@ -656,11 +705,24 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
+        switch (machineType) {
+            case scanner -> machineType = assembly;
+            case assembly -> machineType = scanner;
+        }
+        aPlayer.addChatComponentMessage(
+                new ChatComponentTranslation(
+                        "gt.blockmachines.multimachine.em.research.mode." + machineType.replace(" ", "_")));
+    }
+
+    @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
             int z) {
         tag.setBoolean("hasProblems", (getIdealStatus() - getRepairStatus()) > 0);
         tag.setFloat("efficiency", mEfficiency / 100.0F);
         tag.setBoolean("incompleteStructure", (getBaseMetaTileEntity().getErrorDisplayID() & 64) != 0);
+        tag.setString("machineType", machineType);
         tag.setLong("computation", (computationRequired - computationRemaining) / 20L);
         tag.setLong("computationRequired", computationRequired / 20L);
     }
@@ -678,7 +740,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                         + "  Efficiency: "
                         + tag.getFloat("efficiency")
                         + "%");
-
+        currentTip.add("Mode: " + tag.getString("machineType"));
         currentTip.add(
                 String.format(
                         "Computation: %,d / %,d",
