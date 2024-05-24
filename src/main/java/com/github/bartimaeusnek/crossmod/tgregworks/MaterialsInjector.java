@@ -2,9 +2,9 @@ package com.github.bartimaeusnek.crossmod.tgregworks;
 
 import static gregtech.api.enums.Mods.TinkersGregworks;
 
+import gregtech.GT_Version;
 import net.minecraftforge.common.config.Property;
 
-import com.github.bartimaeusnek.bartworks.API.API_REFERENCE;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 
@@ -29,7 +29,7 @@ import vexatos.tgregworks.reference.Config;
 public class MaterialsInjector {
 
     public static final String NAME = "BartWorks Mod Additions - TGregworks Container";
-    public static final String VERSION = API_REFERENCE.VERSION;
+    public static final String VERSION = GT_Version.VERSION;
     public static final String MOD_ID = "bartworkscrossmodtgregworkscontainer";
 
     @Mod.EventHandler

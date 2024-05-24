@@ -22,6 +22,7 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 import java.io.IOException;
 import java.util.Map;
 
+import gregtech.GT_Version;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
@@ -30,7 +31,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.github.bartimaeusnek.bartworks.API.API_ConfigValues;
-import com.github.bartimaeusnek.bartworks.API.API_REFERENCE;
 import com.github.bartimaeusnek.bartworks.API.BioObjectAdder;
 import com.github.bartimaeusnek.bartworks.API.BioVatLogicAdder;
 import com.github.bartimaeusnek.bartworks.API.SideReference;
@@ -80,7 +80,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_OreDictUnificator;
 
-@Mod(modid = MainMod.MOD_ID, name = MainMod.NAME, version = API_REFERENCE.VERSION, dependencies = """
+@Mod(modid = MainMod.MOD_ID, name = MainMod.NAME, version = GT_Version.VERSION, dependencies = """
     required-after:IC2;\
     required-after:gregtech;\
     after:berriespp;\

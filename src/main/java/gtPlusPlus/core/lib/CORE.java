@@ -10,6 +10,7 @@ import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
+import gregtech.GT_Version;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
@@ -40,7 +41,7 @@ public class CORE {
 
     // Mod Variables
     public static final String name = "GT++";
-    public static final String VERSION = "GRADLETOKEN_VERSION";
+    public static final String VERSION = GT_Version.VERSION;
 
     // Tweakables
     public static int EVERGLADES_ID = 227;
@@ -202,7 +203,7 @@ public class CORE {
     public static class Everglades {
 
         public static final String NAME = "GT++ Toxic Everglades";
-        public static final String VERSION = "GRADLETOKEN_VERSION";
+        public static final String VERSION = GT_Version.VERSION;
     }
 
     public static final void crash() {

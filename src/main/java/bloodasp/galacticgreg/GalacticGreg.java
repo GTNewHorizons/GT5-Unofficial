@@ -19,6 +19,7 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import gregtech.GT_Version;
 import gregtech.api.GregTech_API;
 import gregtech.api.world.GT_Worldgen;
 
@@ -37,7 +38,7 @@ public class GalacticGreg {
     public static final String MODID = "galacticgreg";
     public static final String MODNAME = "Galactic Greg";
 
-    public static final String VERSION = "GRADLETOKEN_VERSION";
+    public static final String VERSION = GT_Version.VERSION;
 
     public static final LogHelper Logger = new LogHelper(NICE_MODID);
     public static ProfilingStorage Profiler = new ProfilingStorage();
@@ -49,7 +50,7 @@ public class GalacticGreg {
 
     /**
      * Preload phase. Read config values and set various features.. n stuff...
-     * 
+     *
      * @param aEvent
      */
     @EventHandler
@@ -77,7 +78,7 @@ public class GalacticGreg {
      * Postload phase. Mods can add their custom definition to our api in their own PreLoad or Init-phase Once
      * GalacticGregRegistry.InitRegistry() is called, no changes are accepted. (Well you can with reflection, but on a
      * "normal" way it's not possible)
-     * 
+     *
      * @param aEvent
      */
     @EventHandler
@@ -126,7 +127,7 @@ public class GalacticGreg {
 
     /**
      * If oregen profiling is enabled, then register the command
-     * 
+     *
      * @param pEvent
      */
     @EventHandler
