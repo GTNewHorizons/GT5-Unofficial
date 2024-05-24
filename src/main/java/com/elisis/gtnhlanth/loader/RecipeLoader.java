@@ -2506,8 +2506,9 @@ public class RecipeLoader {
             if (GT_Utility.isStackValid(input)) {
                 int[] oreDict = OreDictionary.getOreIDs(input);
                 for (int oreDictID : oreDict) {
-                    if ((OreDictionary.getOreName(oreDictID).startsWith("ore") || OreDictionary.getOreName(oreDictID)
-                            .startsWith("crushed")) /* && OreDictionary.getOreName(oreDictID).contains("Cerium") */) {
+                    if ((OreDictionary.getOreName(oreDictID).startsWith("ore")
+                            || OreDictionary.getOreName(oreDictID).startsWith("rawOre")
+                            || OreDictionary.getOreName(oreDictID).startsWith("crushed"))) {
                         GT_Log.out.print(OreDictionary.getOreName(oreDictID));
                         GT_Recipe tRecipe = recipe.copy();
                         boolean modified = false;
