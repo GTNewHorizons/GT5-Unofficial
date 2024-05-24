@@ -13,9 +13,9 @@ public class GregtechIndustrialFishPond {
 
     private static void run1() {
         GregtechItemList.Industrial_FishingPond.set(
-                new GregtechMetaTileEntity_IndustrialFishingPond(
-                        829,
-                        "industrial.fishpond.controller.tier.single",
-                        "Zhuhai - Fishing Port").getStackForm(1L));
+            new GregtechMetaTileEntity_IndustrialFishingPond(
+                829,
+                "industrial.fishpond.controller.tier.single",
+                "Zhuhai - Fishing Port").getStackForm(1L));
     }
 }

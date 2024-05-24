@@ -82,7 +82,7 @@ public abstract class EntityToxinball extends EntityFireball {
     @Override
     public void onUpdate() {
         if (!this.worldObj.isRemote && (this.shootingEntity != null && this.shootingEntity.isDead
-                || !this.worldObj.blockExists(this.entityX, this.entityY, this.entityZ))) {
+            || !this.worldObj.blockExists(this.entityX, this.entityY, this.entityZ))) {
             this.setDead();
         } else {
             super.onUpdate();
@@ -111,34 +111,35 @@ public abstract class EntityToxinball extends EntityFireball {
 
             Vec3 vec3 = Vec3.createVectorHelper(this.entityX, this.entityY, this.entityZ);
             Vec3 vec31 = Vec3.createVectorHelper(
-                    this.entityX + this.motionX,
-                    this.entityY + this.motionY,
-                    this.entityZ + this.motionZ);
+                this.entityX + this.motionX,
+                this.entityY + this.motionY,
+                this.entityZ + this.motionZ);
             MovingObjectPosition movingobjectposition = this.worldObj.rayTraceBlocks(vec3, vec31);
             vec3 = Vec3.createVectorHelper(this.entityX, this.entityY, this.entityZ);
             vec31 = Vec3.createVectorHelper(
-                    this.entityX + this.motionX,
-                    this.entityY + this.motionY,
-                    this.entityZ + this.motionZ);
+                this.entityX + this.motionX,
+                this.entityY + this.motionY,
+                this.entityZ + this.motionZ);
 
             if (movingobjectposition != null) {
                 vec31 = Vec3.createVectorHelper(
-                        movingobjectposition.hitVec.xCoord,
-                        movingobjectposition.hitVec.yCoord,
-                        movingobjectposition.hitVec.zCoord);
+                    movingobjectposition.hitVec.xCoord,
+                    movingobjectposition.hitVec.yCoord,
+                    movingobjectposition.hitVec.zCoord);
             }
 
             Entity entity = null;
             List<?> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(
-                    this,
-                    this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
+                this,
+                this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ)
+                    .expand(1.0D, 1.0D, 1.0D));
             double d0 = 0.0D;
 
             for (Object o : list) {
                 Entity entity1 = (Entity) o;
 
                 if (entity1.canBeCollidedWith()
-                        && (!entity1.isEntityEqual(this.shootingEntity) || this.ticksInAir >= 25)) {
+                    && (!entity1.isEntityEqual(this.shootingEntity) || this.ticksInAir >= 25)) {
                     float f = 0.3F;
                     AxisAlignedBB axisalignedbb = entity1.boundingBox.expand(f, f, f);
                     MovingObjectPosition movingobjectposition1 = axisalignedbb.calculateIntercept(vec3, vec31);
@@ -169,7 +170,7 @@ public abstract class EntityToxinball extends EntityFireball {
             this.rotationYaw = (float) (Math.atan2(this.motionZ, this.motionX) * 180.0D / Math.PI) + 90.0F;
 
             for (this.rotationPitch = (float) (Math.atan2(f1, this.motionY) * 180.0D / Math.PI)
-                    - 90.0F; this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F) {
+                - 90.0F; this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F) {
                 ;
             }
 
@@ -193,13 +194,13 @@ public abstract class EntityToxinball extends EntityFireball {
                 for (int j = 0; j < 4; ++j) {
                     float f3 = 0.25F;
                     this.worldObj.spawnParticle(
-                            "bubble",
-                            this.entityX - this.motionX * f3,
-                            this.entityY - this.motionY * f3,
-                            this.entityZ - this.motionZ * f3,
-                            this.motionX,
-                            this.motionY,
-                            this.motionZ);
+                        "bubble",
+                        this.entityX - this.motionX * f3,
+                        this.entityY - this.motionY * f3,
+                        this.entityZ - this.motionZ * f3,
+                        this.motionX,
+                        this.motionY,
+                        this.motionZ);
                 }
 
                 f2 = 0.8F;
@@ -288,7 +289,8 @@ public abstract class EntityToxinball extends EntityFireball {
             this.setBeenAttacked();
 
             if (damage.getEntity() != null) {
-                Vec3 vec3 = damage.getEntity().getLookVec();
+                Vec3 vec3 = damage.getEntity()
+                    .getLookVec();
 
                 if (vec3 != null) {
                     this.motionX = vec3.xCoord;

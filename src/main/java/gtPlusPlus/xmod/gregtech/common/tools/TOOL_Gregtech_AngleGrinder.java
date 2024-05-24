@@ -28,12 +28,13 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
 public class TOOL_Gregtech_AngleGrinder extends GT_Tool {
 
     public static final List<String> mEffectiveList = Arrays
-            .asList(new String[] { EntityIronGolem.class.getName(), "EntityTowerGuardian" });
+        .asList(new String[] { EntityIronGolem.class.getName(), "EntityTowerGuardian" });
 
     @Override
     public float getNormalDamageAgainstEntity(final float aOriginalDamage, final Entity aEntity, final ItemStack aStack,
-            final EntityPlayer aPlayer) {
-        String tName = aEntity.getClass().getName();
+        final EntityPlayer aPlayer) {
+        String tName = aEntity.getClass()
+            .getName();
         tName = tName.substring(tName.lastIndexOf(".") + 1);
         return (mEffectiveList.contains(tName)) || (tName.contains("Golem")) ? aOriginalDamage * 2.0F : aOriginalDamage;
     }
@@ -121,8 +122,8 @@ public class TOOL_Gregtech_AngleGrinder extends GT_Tool {
 
     @Override
     public int convertBlockDrops(final List<ItemStack> aDrops, final ItemStack aStack, final EntityPlayer aPlayer,
-            final Block aBlock, final int aX, final int aY, final int aZ, final byte aMetaData, final int aFortune,
-            final boolean aSilkTouch, final BlockEvent.HarvestDropsEvent aEvent) {
+        final Block aBlock, final int aX, final int aY, final int aZ, final byte aMetaData, final int aFortune,
+        final boolean aSilkTouch, final BlockEvent.HarvestDropsEvent aEvent) {
         return 0;
     }
 
@@ -154,12 +155,12 @@ public class TOOL_Gregtech_AngleGrinder extends GT_Tool {
     @Override
     public IChatComponent getDeathMessage(final EntityLivingBase aPlayer, final EntityLivingBase aEntity) {
         return new ChatComponentText(
-                EnumChatFormatting.RED + aEntity.getCommandSenderName()
-                        + EnumChatFormatting.WHITE
-                        + " has been Ground out of existence by "
-                        + EnumChatFormatting.GREEN
-                        + aPlayer.getCommandSenderName()
-                        + EnumChatFormatting.WHITE);
+            EnumChatFormatting.RED + aEntity.getCommandSenderName()
+                + EnumChatFormatting.WHITE
+                + " has been Ground out of existence by "
+                + EnumChatFormatting.GREEN
+                + aPlayer.getCommandSenderName()
+                + EnumChatFormatting.WHITE);
     }
 
     @Override

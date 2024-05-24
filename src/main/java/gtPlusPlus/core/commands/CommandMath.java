@@ -49,7 +49,8 @@ public class CommandMath implements ICommand {
         Logger.INFO("Debug Command");
         final World W = S.getEntityWorld();
         final EntityPlayer P = CommandUtils.getPlayer(S);
-        if (P.getDisplayName().equalsIgnoreCase("draknyte1")) {
+        if (P.getDisplayName()
+            .equalsIgnoreCase("draknyte1")) {
             Logger.INFO("[Bedrock Miner] OreType Scan");
             MiningUtils.iterateAllOreTypes();
         }
@@ -61,9 +62,13 @@ public class CommandMath implements ICommand {
         if (P == null) {
             return false;
         }
-        if (P.getDisplayName().toLowerCase().equals("draknyte1")
-                || P.getCommandSenderName().toLowerCase().equals("draknyte1")
-                || CORE.DEVENV) {
+        if (P.getDisplayName()
+            .toLowerCase()
+            .equals("draknyte1")
+            || P.getCommandSenderName()
+                .toLowerCase()
+                .equals("draknyte1")
+            || CORE.DEVENV) {
             return true;
         }
         return false;

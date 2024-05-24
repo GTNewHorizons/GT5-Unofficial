@@ -31,7 +31,7 @@ public class RenderMiningExplosivesPrimed extends RenderTNTPrimed {
      * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
      */
     public void doRender(final EntityPrimedMiningExplosive entity, final double p_76986_2_, final double p_76986_4_,
-            final double p_76986_6_, final float p_76986_8_, final float p_76986_9_) {
+        final double p_76986_6_, final float p_76986_8_, final float p_76986_9_) {
         Logger.WARNING("Rendering Mining Explosion. 2");
         GL11.glPushMatrix();
         GL11.glTranslatef((float) p_76986_2_, (float) p_76986_4_, (float) p_76986_6_);
@@ -98,14 +98,14 @@ public class RenderMiningExplosivesPrimed extends RenderTNTPrimed {
      */
     @Override
     public void doRender(final Entity p_76986_1_, final double p_76986_2_, final double p_76986_4_,
-            final double p_76986_6_, final float p_76986_8_, final float p_76986_9_) {
+        final double p_76986_6_, final float p_76986_8_, final float p_76986_9_) {
         Logger.WARNING("Rendering Mining Explosion. 3");
         this.doRender(
-                (EntityPrimedMiningExplosive) p_76986_1_,
-                p_76986_2_,
-                p_76986_4_,
-                p_76986_6_,
-                p_76986_8_,
-                p_76986_9_);
+            (EntityPrimedMiningExplosive) p_76986_1_,
+            p_76986_2_,
+            p_76986_4_,
+            p_76986_6_,
+            p_76986_8_,
+            p_76986_9_);
     }
 }

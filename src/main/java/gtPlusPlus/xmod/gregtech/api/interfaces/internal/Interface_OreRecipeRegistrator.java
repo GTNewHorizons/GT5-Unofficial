@@ -17,8 +17,8 @@ public interface Interface_OreRecipeRegistrator {
      * @param aStack    always != null
      */
     public void registerOre(GregtechOrePrefixes aPrefix, GT_Materials aMaterial, String aOreDictName, String aModName,
-            ItemStack aStack);
+        ItemStack aStack);
 
     public void registerOre(GregtechOrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
-            ItemStack copyAmount);
+        ItemStack copyAmount);
 }

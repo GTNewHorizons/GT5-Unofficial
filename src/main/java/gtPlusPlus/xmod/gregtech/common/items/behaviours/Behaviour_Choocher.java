@@ -20,20 +20,20 @@ public class Behaviour_Choocher extends Behaviour_None {
     private final Behaviour_Wrench wrench = new Behaviour_Wrench(150);
     private final Behaviour_Prospecting_Ex prospecting = new Behaviour_Prospecting_Ex(10, 1250);
     private final String mTooltip1 = GT_LanguageManager
-            .addStringLocalization("gt.behaviour.choochering1", "Current tool mode: ");
+        .addStringLocalization("gt.behaviour.choochering1", "Current tool mode: ");
     private final String mTooltip2 = GT_LanguageManager
-            .addStringLocalization("gt.behaviour.choochering2", "Change tool mode using Shift+Rightclick.");
+        .addStringLocalization("gt.behaviour.choochering2", "Change tool mode using Shift+Rightclick.");
     private final String mTooltipH = GT_LanguageManager
-            .addStringLocalization("gt.behaviour.prospectingEx", "Usable for Prospecting large areas.");
+        .addStringLocalization("gt.behaviour.prospectingEx", "Usable for Prospecting large areas.");
     private final String mTooltipW = GT_LanguageManager
-            .addStringLocalization("gt.behaviour.wrench", "Rotates Blocks on Rightclick.");
+        .addStringLocalization("gt.behaviour.wrench", "Rotates Blocks on Rightclick.");
 
     public Behaviour_Choocher() {}
 
     @Override
     public boolean onItemUseFirst(final GT_MetaBase_Item aItem, final ItemStack aStack, final EntityPlayer aPlayer,
-            final World aWorld, final int aX, final int aY, final int aZ, final ForgeDirection side, final float hitX,
-            final float hitY, final float hitZ) {
+        final World aWorld, final int aX, final int aY, final int aZ, final ForgeDirection side, final float hitX,
+        final float hitY, final float hitZ) {
         if (aWorld.isRemote) {
             return false;
         }
@@ -42,13 +42,15 @@ public class Behaviour_Choocher extends Behaviour_None {
         if (NBTUtils.hasKey(aStack, "aMode")) {
             inWrenchMode = NBTUtils.getBoolean(aStack, "aMode");
         } else {
-            aStack.getTagCompound().setBoolean("aMode", true);
+            aStack.getTagCompound()
+                .setBoolean("aMode", true);
             inWrenchMode = true;
         }
 
         if (aPlayer.isSneaking()) {
             boolean aModeNew = !inWrenchMode;
-            aStack.getTagCompound().setBoolean("aMode", aModeNew);
+            aStack.getTagCompound()
+                .setBoolean("aMode", aModeNew);
             PlayerUtils.messagePlayer(aPlayer, "Mode: " + (aModeNew ? "Wrench" : "Hammer"));
             return true;
         } else {
@@ -56,21 +58,22 @@ public class Behaviour_Choocher extends Behaviour_None {
                 return this.wrench.onItemUseFirst(aItem, aStack, aPlayer, aWorld, aX, aY, aZ, side, hitZ, hitZ, hitZ);
             } else {
                 return this.prospecting
-                        .onItemUseFirst(aItem, aStack, aPlayer, aWorld, aX, aY, aZ, side, hitX, hitY, hitZ);
+                    .onItemUseFirst(aItem, aStack, aPlayer, aWorld, aX, aY, aZ, side, hitX, hitY, hitZ);
             }
         }
     }
 
     @Override
     public List<String> getAdditionalToolTips(final GT_MetaBase_Item aItem, final List<String> aList,
-            final ItemStack aStack) {
+        final ItemStack aStack) {
 
         boolean inWrenchMode;
         if (NBTUtils.hasKey(aStack, "aMode")) {
             inWrenchMode = NBTUtils.getBoolean(aStack, "aMode");
         } else {
             NBTUtils.setBoolean(aStack, "aMode", true);
-            aStack.getTagCompound().setBoolean("aMode", true);
+            aStack.getTagCompound()
+                .setBoolean("aMode", true);
             inWrenchMode = true;
         }
 

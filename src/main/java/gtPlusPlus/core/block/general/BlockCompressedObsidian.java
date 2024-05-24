@@ -90,7 +90,7 @@ public class BlockCompressedObsidian extends BlockObsidian {
 
     @Override
     public ArrayList<ItemStack> getDrops(final World world, final int x, final int y, final int z, final int metadata,
-            final int fortune) {
+        final int fortune) {
         int m = metadata;
         if (m == 5) {
             m = 1;

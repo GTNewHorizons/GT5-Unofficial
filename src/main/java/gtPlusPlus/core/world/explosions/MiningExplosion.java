@@ -35,7 +35,7 @@ public class MiningExplosion extends Explosion {
     private final Map<Entity, Vec3> field_77288_k = new HashMap<>();
 
     public MiningExplosion(final World worldObj, final Entity entityObj, final double x, final double y, final double z,
-            final float size) {
+        final float size) {
         super(worldObj, entityObj, x, y, z, size);
         this.worldObj = worldObj;
         this.exploder = entityObj;
@@ -64,10 +64,10 @@ public class MiningExplosion extends Explosion {
             for (j = 0; j < this.field_77289_h; ++j) {
                 for (k = 0; k < this.field_77289_h; ++k) {
                     if ((i == 0) || (i == (this.field_77289_h - 1))
-                            || (j == 0)
-                            || (j == (this.field_77289_h - 1))
-                            || (k == 0)
-                            || (k == (this.field_77289_h - 1))) {
+                        || (j == 0)
+                        || (j == (this.field_77289_h - 1))
+                        || (k == 0)
+                        || (k == (this.field_77289_h - 1))) {
                         double d0 = ((i / (this.field_77289_h - 1.0F)) * 2.0F) - 1.0F;
                         double d1 = ((j / (this.field_77289_h - 1.0F)) * 2.0F) - 1.0F;
                         double d2 = ((k / (this.field_77289_h - 1.0F)) * 2.0F) - 1.0F;
@@ -88,21 +88,21 @@ public class MiningExplosion extends Explosion {
 
                             if (block.getMaterial() != Material.air) {
                                 final float f3 = this.exploder != null
-                                        ? this.exploder.func_145772_a(this, this.worldObj, j1, k1, l1, block)
-                                        : block.getExplosionResistance(
-                                                this.exploder,
-                                                this.worldObj,
-                                                j1,
-                                                k1,
-                                                l1,
-                                                this.explosionX,
-                                                this.explosionY,
-                                                this.explosionZ);
+                                    ? this.exploder.func_145772_a(this, this.worldObj, j1, k1, l1, block)
+                                    : block.getExplosionResistance(
+                                        this.exploder,
+                                        this.worldObj,
+                                        j1,
+                                        k1,
+                                        l1,
+                                        this.explosionX,
+                                        this.explosionY,
+                                        this.explosionZ);
                                 f1 -= (f3 + 0.3F) * f2;
                             }
 
                             if ((f1 > 0.0F) && ((this.exploder == null)
-                                    || this.exploder.func_145774_a(this, this.worldObj, j1, k1, l1, block, f1))) {
+                                || this.exploder.func_145774_a(this, this.worldObj, j1, k1, l1, block, f1))) {
                                 hashset.add(new ChunkPosition(j1, k1, l1));
                             }
 
@@ -124,13 +124,13 @@ public class MiningExplosion extends Explosion {
         final int l = MathHelper.floor_double(this.explosionZ - this.explosionSize - 1.0D);
         final int j2 = MathHelper.floor_double(this.explosionZ + this.explosionSize + 1.0D);
         final List<Entity> list = this.worldObj
-                .getEntitiesWithinAABBExcludingEntity(this.exploder, AxisAlignedBB.getBoundingBox(i, k, l, j, i2, j2));
+            .getEntitiesWithinAABBExcludingEntity(this.exploder, AxisAlignedBB.getBoundingBox(i, k, l, j, i2, j2));
         net.minecraftforge.event.ForgeEventFactory.onExplosionDetonate(this.worldObj, this, list, this.explosionSize);
         final Vec3 vec3 = Vec3.createVectorHelper(this.explosionX, this.explosionY, this.explosionZ);
 
         for (final Entity entity : list) {
             final double d4 = entity.getDistance(this.explosionX, this.explosionY, this.explosionZ)
-                    / this.explosionSize;
+                / this.explosionSize;
 
             if (d4 <= 1.0D) {
                 d5 = entity.posX - this.explosionX;
@@ -145,8 +145,8 @@ public class MiningExplosion extends Explosion {
                     final double d10 = this.worldObj.getBlockDensity(vec3, entity.boundingBox);
                     final double d11 = (1.0D - d4) * d10;
                     entity.attackEntityFrom(
-                            DamageSource.setExplosionSource(this),
-                            ((int) (((((d11 * d11) + d11) / 2.0D) * 8.0D * this.explosionSize) + 1.0D)));
+                        DamageSource.setExplosionSource(this),
+                        ((int) (((((d11 * d11) + d11) / 2.0D) * 8.0D * this.explosionSize) + 1.0D)));
                     final double d8 = EnchantmentProtection.func_92092_a(entity, d11);
                     entity.motionX += d5 * d8;
                     entity.motionY += d6 * d8;
@@ -168,129 +168,123 @@ public class MiningExplosion extends Explosion {
     @Override
     public void doExplosionB(final boolean p_77279_1_) {
         this.worldObj.playSoundEffect(
-                this.explosionX,
-                this.explosionY,
-                this.explosionZ,
-                "random.explode",
-                4.0F,
-                (1.0F + ((this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.2F)) * 0.7F);
+            this.explosionX,
+            this.explosionY,
+            this.explosionZ,
+            "random.explode",
+            4.0F,
+            (1.0F + ((this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.2F)) * 0.7F);
 
         if ((this.explosionSize >= 2.0F) && this.isSmoking) {
+            this.worldObj
+                .spawnParticle("hugeexplosion", this.explosionX, this.explosionY, this.explosionZ, 1.0D, 0.0D, 0.0D);
             this.worldObj.spawnParticle(
-                    "hugeexplosion",
-                    this.explosionX,
-                    this.explosionY,
-                    this.explosionZ,
-                    1.0D,
-                    0.0D,
-                    0.0D);
+                "smoke",
+                this.explosionX + MathUtils.randDouble(0, 1),
+                this.explosionY + MathUtils.randDouble(0, 1),
+                this.explosionZ + MathUtils.randDouble(0, 1),
+                0.0D,
+                0.0D,
+                0.0D);
             this.worldObj.spawnParticle(
-                    "smoke",
-                    this.explosionX + MathUtils.randDouble(0, 1),
-                    this.explosionY + MathUtils.randDouble(0, 1),
-                    this.explosionZ + MathUtils.randDouble(0, 1),
-                    0.0D,
-                    0.0D,
-                    0.0D);
+                "largesmoke",
+                this.explosionX + MathUtils.randDouble(0, 1),
+                this.explosionY + MathUtils.randDouble(0, 1),
+                this.explosionZ + MathUtils.randDouble(0, 1),
+                0.0D,
+                0.0D,
+                0.0D);
             this.worldObj.spawnParticle(
-                    "largesmoke",
-                    this.explosionX + MathUtils.randDouble(0, 1),
-                    this.explosionY + MathUtils.randDouble(0, 1),
-                    this.explosionZ + MathUtils.randDouble(0, 1),
-                    0.0D,
-                    0.0D,
-                    0.0D);
+                "cloud",
+                this.explosionX + MathUtils.randDouble(0, 1),
+                this.explosionY + MathUtils.randDouble(0, 1),
+                this.explosionZ + MathUtils.randDouble(0, 1),
+                0.0D,
+                0.0D,
+                0.0D);
             this.worldObj.spawnParticle(
-                    "cloud",
-                    this.explosionX + MathUtils.randDouble(0, 1),
-                    this.explosionY + MathUtils.randDouble(0, 1),
-                    this.explosionZ + MathUtils.randDouble(0, 1),
-                    0.0D,
-                    0.0D,
-                    0.0D);
+                "flame",
+                this.explosionX + MathUtils.randDouble(0, 1),
+                this.explosionY + MathUtils.randDouble(0, 1),
+                this.explosionZ + MathUtils.randDouble(0, 1),
+                0.0D,
+                0.0D,
+                0.0D);
             this.worldObj.spawnParticle(
-                    "flame",
-                    this.explosionX + MathUtils.randDouble(0, 1),
-                    this.explosionY + MathUtils.randDouble(0, 1),
-                    this.explosionZ + MathUtils.randDouble(0, 1),
-                    0.0D,
-                    0.0D,
-                    0.0D);
+                "explode",
+                this.explosionX + MathUtils.randDouble(0, 1),
+                this.explosionY + MathUtils.randDouble(0, 1),
+                this.explosionZ + MathUtils.randDouble(0, 1),
+                0.0D,
+                0.0D,
+                0.0D);
             this.worldObj.spawnParticle(
-                    "explode",
-                    this.explosionX + MathUtils.randDouble(0, 1),
-                    this.explosionY + MathUtils.randDouble(0, 1),
-                    this.explosionZ + MathUtils.randDouble(0, 1),
-                    0.0D,
-                    0.0D,
-                    0.0D);
+                "largeexplode",
+                this.explosionX + MathUtils.randDouble(0, 1),
+                this.explosionY + MathUtils.randDouble(0, 1),
+                this.explosionZ + MathUtils.randDouble(0, 1),
+                0.0D,
+                0.0D,
+                0.0D);
             this.worldObj.spawnParticle(
-                    "largeexplode",
-                    this.explosionX + MathUtils.randDouble(0, 1),
-                    this.explosionY + MathUtils.randDouble(0, 1),
-                    this.explosionZ + MathUtils.randDouble(0, 1),
-                    0.0D,
-                    0.0D,
-                    0.0D);
-            this.worldObj.spawnParticle(
-                    "hugeexplosion",
-                    this.explosionX + MathUtils.randDouble(0, 1),
-                    this.explosionY + MathUtils.randDouble(0, 1),
-                    this.explosionZ + MathUtils.randDouble(0, 1),
-                    0.0D,
-                    0.0D,
-                    0.0D);
+                "hugeexplosion",
+                this.explosionX + MathUtils.randDouble(0, 1),
+                this.explosionY + MathUtils.randDouble(0, 1),
+                this.explosionZ + MathUtils.randDouble(0, 1),
+                0.0D,
+                0.0D,
+                0.0D);
         } else {
             this.worldObj
-                    .spawnParticle("largeexplode", this.explosionX, this.explosionY, this.explosionZ, 1.0D, 0.0D, 0.0D);
+                .spawnParticle("largeexplode", this.explosionX, this.explosionY, this.explosionZ, 1.0D, 0.0D, 0.0D);
             this.worldObj.spawnParticle(
-                    "smoke",
-                    this.explosionX + MathUtils.randDouble(0, 1),
-                    this.explosionY + MathUtils.randDouble(0, 1),
-                    this.explosionZ + MathUtils.randDouble(0, 1),
-                    0.0D,
-                    0.0D,
-                    0.0D);
+                "smoke",
+                this.explosionX + MathUtils.randDouble(0, 1),
+                this.explosionY + MathUtils.randDouble(0, 1),
+                this.explosionZ + MathUtils.randDouble(0, 1),
+                0.0D,
+                0.0D,
+                0.0D);
             this.worldObj.spawnParticle(
-                    "largesmoke",
-                    this.explosionX + MathUtils.randDouble(0, 1),
-                    this.explosionY + MathUtils.randDouble(0, 1),
-                    this.explosionZ + MathUtils.randDouble(0, 1),
-                    0.0D,
-                    0.0D,
-                    0.0D);
+                "largesmoke",
+                this.explosionX + MathUtils.randDouble(0, 1),
+                this.explosionY + MathUtils.randDouble(0, 1),
+                this.explosionZ + MathUtils.randDouble(0, 1),
+                0.0D,
+                0.0D,
+                0.0D);
             this.worldObj.spawnParticle(
-                    "cloud",
-                    this.explosionX + MathUtils.randDouble(0, 1),
-                    this.explosionY + MathUtils.randDouble(0, 1),
-                    this.explosionZ + MathUtils.randDouble(0, 1),
-                    0.0D,
-                    0.0D,
-                    0.0D);
+                "cloud",
+                this.explosionX + MathUtils.randDouble(0, 1),
+                this.explosionY + MathUtils.randDouble(0, 1),
+                this.explosionZ + MathUtils.randDouble(0, 1),
+                0.0D,
+                0.0D,
+                0.0D);
             this.worldObj.spawnParticle(
-                    "flame",
-                    this.explosionX + MathUtils.randDouble(0, 1),
-                    this.explosionY + MathUtils.randDouble(0, 1),
-                    this.explosionZ + MathUtils.randDouble(0, 1),
-                    0.0D,
-                    0.0D,
-                    0.0D);
+                "flame",
+                this.explosionX + MathUtils.randDouble(0, 1),
+                this.explosionY + MathUtils.randDouble(0, 1),
+                this.explosionZ + MathUtils.randDouble(0, 1),
+                0.0D,
+                0.0D,
+                0.0D);
             this.worldObj.spawnParticle(
-                    "explode",
-                    this.explosionX + MathUtils.randDouble(0, 1),
-                    this.explosionY + MathUtils.randDouble(0, 1),
-                    this.explosionZ + MathUtils.randDouble(0, 1),
-                    0.0D,
-                    0.0D,
-                    0.0D);
+                "explode",
+                this.explosionX + MathUtils.randDouble(0, 1),
+                this.explosionY + MathUtils.randDouble(0, 1),
+                this.explosionZ + MathUtils.randDouble(0, 1),
+                0.0D,
+                0.0D,
+                0.0D);
             this.worldObj.spawnParticle(
-                    "largeexplode",
-                    this.explosionX + MathUtils.randDouble(0, 1),
-                    this.explosionY + MathUtils.randDouble(0, 1),
-                    this.explosionZ + MathUtils.randDouble(0, 1),
-                    0.0D,
-                    0.0D,
-                    0.0D);
+                "largeexplode",
+                this.explosionX + MathUtils.randDouble(0, 1),
+                this.explosionY + MathUtils.randDouble(0, 1),
+                this.explosionZ + MathUtils.randDouble(0, 1),
+                0.0D,
+                0.0D,
+                0.0D);
         }
 
         Iterator<ChunkPosition> iterator;
@@ -327,83 +321,83 @@ public class MiningExplosion extends Explosion {
                     d4 *= d7;
                     d5 *= d7;
                     this.worldObj.spawnParticle(
-                            "explode",
-                            (d0 + (this.explosionX * 1.0D)) / 2.0D,
-                            (d1 + (this.explosionY * 1.0D)) / 2.0D,
-                            (d2 + (this.explosionZ * 1.0D)) / 2.0D,
-                            d3,
-                            d4,
-                            d5);
+                        "explode",
+                        (d0 + (this.explosionX * 1.0D)) / 2.0D,
+                        (d1 + (this.explosionY * 1.0D)) / 2.0D,
+                        (d2 + (this.explosionZ * 1.0D)) / 2.0D,
+                        d3,
+                        d4,
+                        d5);
                     this.worldObj.spawnParticle("smoke", d0, d1, d2, d3, d4, d5);
                     this.worldObj.spawnParticle(
-                            "smoke",
-                            this.explosionX + MathUtils.randDouble(0, 1),
-                            this.explosionY + MathUtils.randDouble(0, 1),
-                            this.explosionZ + MathUtils.randDouble(0, 1),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "smoke",
+                        this.explosionX + MathUtils.randDouble(0, 1),
+                        this.explosionY + MathUtils.randDouble(0, 1),
+                        this.explosionZ + MathUtils.randDouble(0, 1),
+                        0.0D,
+                        0.0D,
+                        0.0D);
                     this.worldObj.spawnParticle(
-                            "largesmoke",
-                            this.explosionX + MathUtils.randDouble(0, 1),
-                            this.explosionY + MathUtils.randDouble(0, 1),
-                            this.explosionZ + MathUtils.randDouble(0, 1),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "largesmoke",
+                        this.explosionX + MathUtils.randDouble(0, 1),
+                        this.explosionY + MathUtils.randDouble(0, 1),
+                        this.explosionZ + MathUtils.randDouble(0, 1),
+                        0.0D,
+                        0.0D,
+                        0.0D);
                     this.worldObj.spawnParticle(
-                            "cloud",
-                            this.explosionX + MathUtils.randDouble(0, 1),
-                            this.explosionY + MathUtils.randDouble(0, 1),
-                            this.explosionZ + MathUtils.randDouble(0, 1),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "cloud",
+                        this.explosionX + MathUtils.randDouble(0, 1),
+                        this.explosionY + MathUtils.randDouble(0, 1),
+                        this.explosionZ + MathUtils.randDouble(0, 1),
+                        0.0D,
+                        0.0D,
+                        0.0D);
                     this.worldObj.spawnParticle(
-                            "flame",
-                            this.explosionX + MathUtils.randDouble(0, 1),
-                            this.explosionY + MathUtils.randDouble(0, 1),
-                            this.explosionZ + MathUtils.randDouble(0, 1),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "flame",
+                        this.explosionX + MathUtils.randDouble(0, 1),
+                        this.explosionY + MathUtils.randDouble(0, 1),
+                        this.explosionZ + MathUtils.randDouble(0, 1),
+                        0.0D,
+                        0.0D,
+                        0.0D);
                     this.worldObj.spawnParticle(
-                            "explode",
-                            this.explosionX + MathUtils.randDouble(0, 1),
-                            this.explosionY + MathUtils.randDouble(0, 1),
-                            this.explosionZ + MathUtils.randDouble(0, 1),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "explode",
+                        this.explosionX + MathUtils.randDouble(0, 1),
+                        this.explosionY + MathUtils.randDouble(0, 1),
+                        this.explosionZ + MathUtils.randDouble(0, 1),
+                        0.0D,
+                        0.0D,
+                        0.0D);
                     this.worldObj.spawnParticle(
-                            "largeexplode",
-                            this.explosionX + MathUtils.randDouble(0, 1),
-                            this.explosionY + MathUtils.randDouble(0, 1),
-                            this.explosionZ + MathUtils.randDouble(0, 1),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "largeexplode",
+                        this.explosionX + MathUtils.randDouble(0, 1),
+                        this.explosionY + MathUtils.randDouble(0, 1),
+                        this.explosionZ + MathUtils.randDouble(0, 1),
+                        0.0D,
+                        0.0D,
+                        0.0D);
                     this.worldObj.spawnParticle(
-                            "hugeexplosion",
-                            this.explosionX + MathUtils.randDouble(0, 1),
-                            this.explosionY + MathUtils.randDouble(0, 1),
-                            this.explosionZ + MathUtils.randDouble(0, 1),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "hugeexplosion",
+                        this.explosionX + MathUtils.randDouble(0, 1),
+                        this.explosionY + MathUtils.randDouble(0, 1),
+                        this.explosionZ + MathUtils.randDouble(0, 1),
+                        0.0D,
+                        0.0D,
+                        0.0D);
                 }
 
                 if (block.getMaterial() != Material.air) {
                     if (block.canDropFromExplosion(this)) {
                         // world, x, y, z, world.getBlockMetadata(x, y, z), dropProb, 0
                         block.dropBlockAsItemWithChance(
-                                this.worldObj,
-                                i,
-                                j,
-                                k,
-                                this.worldObj.getBlockMetadata(i, j, k),
-                                1F,
-                                0);
+                            this.worldObj,
+                            i,
+                            j,
+                            k,
+                            this.worldObj.getBlockMetadata(i, j, k),
+                            1F,
+                            0);
                     }
 
                     block.onBlockExploded(this.worldObj, i, j, k, this);
@@ -423,7 +417,7 @@ public class MiningExplosion extends Explosion {
                 final Block block1 = this.worldObj.getBlock(i, j - 1, k);
 
                 if ((block.getMaterial() == Material.air) && block1.func_149730_j()
-                        && (this.explosionRNG.nextInt(3) == 0)) {
+                    && (this.explosionRNG.nextInt(3) == 0)) {
                     this.worldObj.setBlock(i, j, k, Blocks.fire);
                 }
             }
@@ -441,8 +435,8 @@ public class MiningExplosion extends Explosion {
     @Override
     public EntityLivingBase getExplosivePlacedBy() {
         return this.exploder == null ? null
-                : (this.exploder instanceof EntityPrimedMiningExplosive
-                        ? ((EntityPrimedMiningExplosive) this.exploder).getTntPlacedBy()
-                        : (this.exploder instanceof EntityLivingBase ? (EntityLivingBase) this.exploder : null));
+            : (this.exploder instanceof EntityPrimedMiningExplosive
+                ? ((EntityPrimedMiningExplosive) this.exploder).getTntPlacedBy()
+                : (this.exploder instanceof EntityLivingBase ? (EntityLivingBase) this.exploder : null));
     }
 }

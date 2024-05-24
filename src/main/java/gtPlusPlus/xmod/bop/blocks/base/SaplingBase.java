@@ -133,7 +133,7 @@ public class SaplingBase extends BlockSapling {
     @Override
     public boolean func_149880_a(World world, int p_149880_2_, int p_149880_3_, int p_149880_4_, int p_149880_5_) {
         return world.getBlock(p_149880_2_, p_149880_3_, p_149880_4_) == this
-                && (world.getBlockMetadata(p_149880_2_, p_149880_3_, p_149880_4_) & 7) == p_149880_5_;
+            && (world.getBlockMetadata(p_149880_2_, p_149880_3_, p_149880_4_) & 7) == p_149880_5_;
     }
 
     /**
@@ -160,7 +160,7 @@ public class SaplingBase extends BlockSapling {
     public void registerBlockIcons(IIconRegister iIcon) {
         for (int i = 0; i < saplingTextures.length; ++i) {
             saplingTextures[i] = iIcon
-                    .registerIcon(GTPlusPlus.ID + ":" + "trees/" + "saplings/" + "sapling_" + saplingTypes[i]);
+                .registerIcon(GTPlusPlus.ID + ":" + "trees/" + "saplings/" + "sapling_" + saplingTypes[i]);
         }
     }
 }

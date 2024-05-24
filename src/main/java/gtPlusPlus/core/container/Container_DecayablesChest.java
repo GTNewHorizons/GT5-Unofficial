@@ -66,7 +66,7 @@ public class Container_DecayablesChest extends Container {
 
     @Override
     public ItemStack slotClick(final int aSlotIndex, final int aMouseclick, final int aShifthold,
-            final EntityPlayer aPlayer) {
+        final EntityPlayer aPlayer) {
 
         if (!aPlayer.worldObj.isRemote) {
             if ((aSlotIndex == 999) || (aSlotIndex == -999)) {

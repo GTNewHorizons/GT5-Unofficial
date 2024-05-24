@@ -40,11 +40,8 @@ public class EntityDeathHandler {
         mMobDropMap.put(aMobClass, aDataMap);
 
         Logger.INFO(
-                "[Loot] Registered " + aStack.getDisplayName()
-                        + " (1-"
-                        + aMaxAmount
-                        + ") as a valid drop for "
-                        + aMobClass.getCanonicalName());
+            "[Loot] Registered " + aStack
+                .getDisplayName() + " (1-" + aMaxAmount + ") as a valid drop for " + aMobClass.getCanonicalName());
 
         mInternalClassKeyCache.add(aMobClass);
     }
@@ -86,27 +83,27 @@ public class EntityDeathHandler {
         // always drop some meat.
         int aBigMeatStackSize1 = MathUtils.randInt(4, 8);
         aPlayer.entityDropItem(
-                ItemUtils.simpleMetaStack(ModItems.itemMetaFood, 0, aBigMeatStackSize1),
-                MathUtils.randInt(0, 1));
+            ItemUtils.simpleMetaStack(ModItems.itemMetaFood, 0, aBigMeatStackSize1),
+            MathUtils.randInt(0, 1));
 
         // additional chances for more meat.
         if (MathUtils.randInt(0, 10) < 7) {
             int aBigMeatStackSize2 = MathUtils.randInt(4, 8);
             aPlayer.entityDropItem(
-                    ItemUtils.simpleMetaStack(ModItems.itemMetaFood, 0, aBigMeatStackSize2),
-                    MathUtils.randInt(0, 1));
+                ItemUtils.simpleMetaStack(ModItems.itemMetaFood, 0, aBigMeatStackSize2),
+                MathUtils.randInt(0, 1));
         }
         if (MathUtils.randInt(0, 10) < 4) {
             int aBigMeatStackSize3 = MathUtils.randInt(4, 8);
             aPlayer.entityDropItem(
-                    ItemUtils.simpleMetaStack(ModItems.itemMetaFood, 0, aBigMeatStackSize3),
-                    MathUtils.randInt(0, 1));
+                ItemUtils.simpleMetaStack(ModItems.itemMetaFood, 0, aBigMeatStackSize3),
+                MathUtils.randInt(0, 1));
         }
         if (MathUtils.randInt(0, 10) < 2) {
             int aBigMeatStackSize4 = MathUtils.randInt(4, 8);
             aPlayer.entityDropItem(
-                    ItemUtils.simpleMetaStack(ModItems.itemMetaFood, 0, aBigMeatStackSize4),
-                    MathUtils.randInt(0, 1));
+                ItemUtils.simpleMetaStack(ModItems.itemMetaFood, 0, aBigMeatStackSize4),
+                MathUtils.randInt(0, 1));
         }
     }
 

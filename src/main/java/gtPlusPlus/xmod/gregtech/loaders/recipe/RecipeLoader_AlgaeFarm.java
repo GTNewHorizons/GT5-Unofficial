@@ -39,8 +39,8 @@ public class RecipeLoader_AlgaeFarm {
             Logger.INFO("Tier " + aTier + aComp + " had no recipes, initialising new map.");
         }
         if (aTemp.size() < 500) {
-            Logger.INFO(
-                    "Tier " + aTier + aComp + " has less than 500 recipes, generating " + (500 - aTemp.size()) + ".");
+            Logger
+                .INFO("Tier " + aTier + aComp + " has less than 500 recipes, generating " + (500 - aTemp.size()) + ".");
             for (int i = aTemp.size(); i < 500; i++) {
                 aTemp.put(generateBaseRecipe(aCompost, aTier));
             }
@@ -75,7 +75,7 @@ public class RecipeLoader_AlgaeFarm {
         }
 
         final int[] aDurations = new int[] { 2000, 1800, 1600, 1400, 1200, 1000, 512, 256, 128, 64, 32, 16, 8, 4, 2,
-                1 };
+            1 };
 
         ItemStack[] aInputs = new ItemStack[] {};
 
@@ -92,16 +92,16 @@ public class RecipeLoader_AlgaeFarm {
         ItemStack[] aOutputs = getOutputsForTier(aTier);
 
         GT_Recipe tRecipe = new GT_Recipe(
-                false,
-                aInputs,
-                aOutputs,
-                (Object) null,
-                new int[] {},
-                new FluidStack[] { GT_Values.NF },
-                new FluidStack[] { GT_Values.NF },
-                (int) (aDurations[aTier] * aOutputTimeMulti.get() / 2), // Time
-                0,
-                0);
+            false,
+            aInputs,
+            aOutputs,
+            (Object) null,
+            new int[] {},
+            new FluidStack[] { GT_Values.NF },
+            new FluidStack[] { GT_Values.NF },
+            (int) (aDurations[aTier] * aOutputTimeMulti.get() / 2), // Time
+            0,
+            0);
 
         tRecipe.mSpecialValue = tRecipe.hashCode();
 

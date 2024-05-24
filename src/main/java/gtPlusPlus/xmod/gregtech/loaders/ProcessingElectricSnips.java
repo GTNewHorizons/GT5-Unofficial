@@ -27,18 +27,18 @@ public class ProcessingElectricSnips implements Interface_OreRecipeRegistrator, 
 
     @Override
     public void registerOre(final GregtechOrePrefixes aPrefix, final Materials aMaterial, final String aOreDictName,
-            final String aModName, final ItemStack aStack) {
+        final String aModName, final ItemStack aStack) {
         if ((aMaterial != Materials.Stone) && (aMaterial != Materials.Flint)) {
             if (aMaterial != Materials.Rubber) {
                 if ((!aMaterial.contains(SubTag.WOOD)) && (!aMaterial.contains(SubTag.BOUNCY))
-                        && (!aMaterial.contains(SubTag.NO_SMASHING))) {}
+                    && (!aMaterial.contains(SubTag.NO_SMASHING))) {}
             }
         }
     }
 
     @Override
     public void registerOre(final GregtechOrePrefixes aPrefix, final GT_Materials aMaterial, final String aOreDictName,
-            final String aModName, final ItemStack aStack) {
+        final String aModName, final ItemStack aStack) {
         // TODO Auto-generated method stub
 
     }
@@ -52,14 +52,14 @@ public class ProcessingElectricSnips implements Interface_OreRecipeRegistrator, 
         for (Materials materials : i) {
             aMaterial = materials;
             if ((aMaterial != Materials.Stone) && (aMaterial != Materials.Flint)
-                    && (aMaterial != Materials.Rubber)
-                    && (aMaterial != Materials._NULL)) {
+                && (aMaterial != Materials.Rubber)
+                && (aMaterial != Materials._NULL)) {
                 if ((!aMaterial.contains(SubTag.WOOD)) && (!aMaterial.contains(SubTag.BOUNCY))
-                        && (!aMaterial.contains(SubTag.NO_SMASHING))
-                        && (!aMaterial.contains(SubTag.TRANSPARENT))
-                        && (!aMaterial.contains(SubTag.FLAMMABLE))
-                        && (!aMaterial.contains(SubTag.MAGICAL))
-                        && (!aMaterial.contains(SubTag.NO_SMELTING))) {
+                    && (!aMaterial.contains(SubTag.NO_SMASHING))
+                    && (!aMaterial.contains(SubTag.TRANSPARENT))
+                    && (!aMaterial.contains(SubTag.FLAMMABLE))
+                    && (!aMaterial.contains(SubTag.MAGICAL))
+                    && (!aMaterial.contains(SubTag.NO_SMELTING))) {
                     Logger.MATERIALS("Generating Electric Snips from " + MaterialUtils.getMaterialName(aMaterial));
                     // Input 1
 
@@ -72,11 +72,11 @@ public class ProcessingElectricSnips implements Interface_OreRecipeRegistrator, 
                         used++;
                     } else {
                         Logger.MATERIALS(
-                                "Unable to generate Electric Snips from " + MaterialUtils.getMaterialName(aMaterial)
-                                        + ", Plate or Long Rod may be invalid. Invalid | Plate? "
-                                        + (plate == null)
-                                        + " | Rod? "
-                                        + " |");
+                            "Unable to generate Electric Snips from " + MaterialUtils.getMaterialName(aMaterial)
+                                + ", Plate or Long Rod may be invalid. Invalid | Plate? "
+                                + (plate == null)
+                                + " | Rod? "
+                                + " |");
                     }
                     // GT_ModHandler.addCraftingRecipe(,
                     // GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS |
@@ -86,7 +86,7 @@ public class ProcessingElectricSnips implements Interface_OreRecipeRegistrator, 
                     // Character.valueOf('H'), OrePrefixes.toolHeadHammer.get(aMaterial)});
                 } else {
                     Logger.MATERIALS(
-                            "Unable to generate Electric Snips from " + MaterialUtils.getMaterialName(aMaterial));
+                        "Unable to generate Electric Snips from " + MaterialUtils.getMaterialName(aMaterial));
                 }
             } else {
                 Logger.MATERIALS("Unable to generate Electric Snips from " + MaterialUtils.getMaterialName(aMaterial));
@@ -105,33 +105,33 @@ public class ProcessingElectricSnips implements Interface_OreRecipeRegistrator, 
     public boolean addRecipe(Materials aMaterial, long aBatteryStorage, int aVoltageTier, ItemStack aBattery) {
 
         ItemStack aOutputStack = MetaGeneratedGregtechTools.INSTANCE.getToolWithStats(
-                MetaGeneratedGregtechTools.ELECTRIC_SNIPS,
-                1,
-                aMaterial,
-                Materials.Titanium,
-                new long[] { aBatteryStorage, GT_Values.V[aVoltageTier], 3L, -1L });
+            MetaGeneratedGregtechTools.ELECTRIC_SNIPS,
+            1,
+            aMaterial,
+            Materials.Titanium,
+            new long[] { aBatteryStorage, GT_Values.V[aVoltageTier], 3L, -1L });
 
         ItemStack aInputCutter = GT_MetaGenerated_Tool_01.INSTANCE
-                .getToolWithStats(GT_MetaGenerated_Tool_01.WIRECUTTER, 1, aMaterial, aMaterial, null);
+            .getToolWithStats(GT_MetaGenerated_Tool_01.WIRECUTTER, 1, aMaterial, aMaterial, null);
 
         long aDura = MetaGeneratedGregtechTools.getToolMaxDamage(aOutputStack);
         if (aDura <= 32000) {
             Logger.MATERIALS(
-                    "Unable to generate Electric Snips from " + MaterialUtils.getMaterialName(aMaterial)
-                            + ", Durability: "
-                            + aDura);
+                "Unable to generate Electric Snips from " + MaterialUtils.getMaterialName(aMaterial)
+                    + ", Durability: "
+                    + aDura);
             return false;
         }
         return RecipeUtils.addShapedRecipe(
-                OrePrefixes.wireFine.get(Materials.Electrum),
-                aInputCutter,
-                OrePrefixes.wireFine.get(Materials.Electrum),
-                ELEMENT.STANDALONE.WHITE_METAL.getGear(1),
-                CI.getElectricMotor(aVoltageTier, 1),
-                ELEMENT.STANDALONE.WHITE_METAL.getGear(1),
-                OrePrefixes.plate.get(aMaterial),
-                aBattery,
-                OrePrefixes.plate.get(aMaterial),
-                aOutputStack);
+            OrePrefixes.wireFine.get(Materials.Electrum),
+            aInputCutter,
+            OrePrefixes.wireFine.get(Materials.Electrum),
+            ELEMENT.STANDALONE.WHITE_METAL.getGear(1),
+            CI.getElectricMotor(aVoltageTier, 1),
+            ELEMENT.STANDALONE.WHITE_METAL.getGear(1),
+            OrePrefixes.plate.get(aMaterial),
+            aBattery,
+            OrePrefixes.plate.get(aMaterial),
+            aOutputStack);
     }
 }

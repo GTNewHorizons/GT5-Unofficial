@@ -72,16 +72,11 @@ public class WorldGenMinable_Custom extends WorldGenMinable {
                             for (int i3 = k1; i3 <= j2; ++i3) {
                                 final double d14 = ((i3 + 0.5D) - d8) / (d10 / 2.0D);
                                 if ((((d12 * d12) + (d13 * d13) + (d14 * d14)) < 1.0D) && world.getBlock(k2, l2, i3)
-                                        .isReplaceableOreGen(world, k2, l2, i3, this.blockToReplace)) {
+                                    .isReplaceableOreGen(world, k2, l2, i3, this.blockToReplace)) {
                                     world.setBlock(k2, l2, i3, this.oreToGenerate, this.mineableBlockMeta, 3);
                                     Logger.INFO(
-                                            "Generated a " + this.oreToGenerate.getLocalizedName()
-                                                    + " at x: "
-                                                    + k2
-                                                    + " | y: "
-                                                    + l2
-                                                    + " | z: "
-                                                    + i3);
+                                        "Generated a " + this.oreToGenerate
+                                            .getLocalizedName() + " at x: " + k2 + " | y: " + l2 + " | z: " + i3);
                                 }
                             }
                         }

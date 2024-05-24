@@ -36,7 +36,7 @@ public class PlayerUtils {
 
     public static List<EntityPlayerMP> getOnlinePlayers() {
         final List<EntityPlayerMP> onlinePlayers = MinecraftServer.getServer()
-                .getConfigurationManager().playerEntityList;
+            .getConfigurationManager().playerEntityList;
         return onlinePlayers;
     }
 
@@ -51,7 +51,8 @@ public class PlayerUtils {
     public static EntityPlayer getPlayer(final String name) {
         try {
             for (final EntityPlayer temp : getOnlinePlayers()) {
-                if (temp.getDisplayName().equalsIgnoreCase(name)) {
+                if (temp.getDisplayName()
+                    .equalsIgnoreCase(name)) {
                     return temp;
                 }
             }
@@ -64,7 +65,8 @@ public class PlayerUtils {
             return null;
         }
         for (final EntityPlayerMP player : getOnlinePlayers()) {
-            if (player.getUniqueID().equals(parUUID)) {
+            if (player.getUniqueID()
+                .equals(parUUID)) {
                 return player;
             }
         }
@@ -152,12 +154,15 @@ public class PlayerUtils {
         ChunkCoordinates aChunkLocation = aPlayer.getPlayerCoordinates();
         // Cache Fake Player
         if (aPlayer instanceof FakePlayer
-                || (mThaumcraftFakePlayer != null && mThaumcraftFakePlayer.isInstance(aPlayer))
-                || (aPlayer.getCommandSenderName() == null || aPlayer.getCommandSenderName().length() <= 0)
-                || (aPlayer.isEntityInvulnerable() && !aPlayer.canCommandSenderUseCommand(0, "")
-                        && (aChunkLocation == null)
-                        || (aChunkLocation.posX == 0 && aChunkLocation.posY == 0 && aChunkLocation.posZ == 0))) {
-            mCachedFakePlayers.put(aPlayer.getUniqueID().toString(), aPlayer);
+            || (mThaumcraftFakePlayer != null && mThaumcraftFakePlayer.isInstance(aPlayer))
+            || (aPlayer.getCommandSenderName() == null || aPlayer.getCommandSenderName()
+                .length() <= 0)
+            || (aPlayer.isEntityInvulnerable() && !aPlayer.canCommandSenderUseCommand(0, "") && (aChunkLocation == null)
+                || (aChunkLocation.posX == 0 && aChunkLocation.posY == 0 && aChunkLocation.posZ == 0))) {
+            mCachedFakePlayers.put(
+                aPlayer.getUniqueID()
+                    .toString(),
+                aPlayer);
         }
     }
 
@@ -180,16 +185,19 @@ public class PlayerUtils {
                 cacheFakePlayer(p);
                 return false;
             }
-            if (p.getCommandSenderName().length() <= 0) {
+            if (p.getCommandSenderName()
+                .length() <= 0) {
                 cacheFakePlayer(p);
                 return false;
             }
             if (p.isEntityInvulnerable() && !p.canCommandSenderUseCommand(0, "")
-                    && (aChunkLocation.posX == 0 && aChunkLocation.posY == 0 && aChunkLocation.posZ == 0)) {
+                && (aChunkLocation.posX == 0 && aChunkLocation.posY == 0 && aChunkLocation.posZ == 0)) {
                 cacheFakePlayer(p);
                 return false;
             }
-            if (!isCachedFakePlayer(p.getUniqueID().toString())) {
+            if (!isCachedFakePlayer(
+                p.getUniqueID()
+                    .toString())) {
                 return true;
             }
         }

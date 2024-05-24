@@ -13,12 +13,12 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 public abstract class GregtechMetaTreeFarmerBase extends GT_MetaTileEntity_TieredMachineBlock {
 
     public GregtechMetaTreeFarmerBase(final int aID, final String aName, final String aNameRegional, final int aTier,
-            final int aInvSlotCount, final String aDescription) {
+        final int aInvSlotCount, final String aDescription) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription);
     }
 
     public GregtechMetaTreeFarmerBase(final String aName, final int aTier, final int aInvSlotCount,
-            final String[] aDescription, final ITexture[][][] aTextures) {
+        final String[] aDescription, final ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
@@ -42,12 +42,10 @@ public abstract class GregtechMetaTreeFarmerBase extends GT_MetaTileEntity_Tiere
 
     @Override
     public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
-            final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
-        return this.mTextures[(aActive ? 5 : 0)
-                + (side == facing ? 0
-                        : side == facing.getOpposite() ? 1
-                                : side == ForgeDirection.DOWN ? 2 : side == ForgeDirection.UP ? 3 : 4)][aColorIndex
-                                        + 1];
+        final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+        return this.mTextures[(aActive ? 5 : 0) + (side == facing ? 0
+            : side == facing.getOpposite() ? 1
+                : side == ForgeDirection.DOWN ? 2 : side == ForgeDirection.UP ? 3 : 4)][aColorIndex + 1];
     }
 
     @Override
@@ -82,7 +80,8 @@ public abstract class GregtechMetaTreeFarmerBase extends GT_MetaTileEntity_Tiere
 
     @Override
     public boolean isOutputFacing(final ForgeDirection side) {
-        return this.getBaseMetaTileEntity().getBackFacing() == side;
+        return this.getBaseMetaTileEntity()
+            .getBackFacing() == side;
     }
 
     @Override
@@ -129,13 +128,13 @@ public abstract class GregtechMetaTreeFarmerBase extends GT_MetaTileEntity_Tiere
 
     @Override
     public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
-            final ForgeDirection side, final ItemStack aStack) {
+        final ForgeDirection side, final ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
-            final ForgeDirection side, final ItemStack aStack) {
+        final ForgeDirection side, final ItemStack aStack) {
         return false;
     }
 

@@ -53,28 +53,28 @@ import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_MultisUsingFluidInsteadOfCells
 import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
 
 @Mod(
-        modid = Names.G_T_PLUS_PLUS,
-        name = CORE.name,
-        version = CORE.VERSION,
-        dependencies = "required-after:Forge;" + " after:TConstruct;"
-                + " after:dreamcraft;"
-                + " after:IC2;"
-                + " required-after:gregtech;"
-                + " after:Forestry;"
-                + " after:MagicBees;"
-                + " after:CoFHCore;"
-                + " after:Railcraft;"
-                + " after:CompactWindmills;"
-                + " after:ForbiddenMagic;"
-                + " after:ExtraUtilities;"
-                + " after:Thaumcraft;"
-                + " after:EnderIO;"
-                + " after:tectech;"
-                + " after:OpenBlocks;"
-                + " after:IC2NuclearControl;"
-                + " after:TGregworks;"
-                + " after:StevesCarts;"
-                + " required-after:gtnhlib@[0.0.10,);")
+    modid = Names.G_T_PLUS_PLUS,
+    name = CORE.name,
+    version = CORE.VERSION,
+    dependencies = "required-after:Forge;" + " after:TConstruct;"
+        + " after:dreamcraft;"
+        + " after:IC2;"
+        + " required-after:gregtech;"
+        + " after:Forestry;"
+        + " after:MagicBees;"
+        + " after:CoFHCore;"
+        + " after:Railcraft;"
+        + " after:CompactWindmills;"
+        + " after:ForbiddenMagic;"
+        + " after:ExtraUtilities;"
+        + " after:Thaumcraft;"
+        + " after:EnderIO;"
+        + " after:tectech;"
+        + " after:OpenBlocks;"
+        + " after:IC2NuclearControl;"
+        + " after:TGregworks;"
+        + " after:StevesCarts;"
+        + " required-after:gtnhlib@[0.0.10,);")
 public class GTplusplus implements ActionListener {
 
     public enum INIT_PHASE {
@@ -123,12 +123,17 @@ public class GTplusplus implements ActionListener {
     public static void loadTextures() {
         Logger.INFO("Loading some textures on the client.");
         // Tools
-        Logger.WARNING("Processing texture: " + TexturesGtTools.ANGLE_GRINDER.getTextureFile().getResourcePath());
-        Logger.WARNING("Processing texture: " + TexturesGtTools.ELECTRIC_SNIPS.getTextureFile().getResourcePath());
+        Logger.WARNING(
+            "Processing texture: " + TexturesGtTools.ANGLE_GRINDER.getTextureFile()
+                .getResourcePath());
+        Logger.WARNING(
+            "Processing texture: " + TexturesGtTools.ELECTRIC_SNIPS.getTextureFile()
+                .getResourcePath());
 
         // Blocks
         Logger.WARNING(
-                "Processing texture: " + TexturesGtBlock.Casing_Machine_Dimensional.getTextureFile().getResourcePath());
+            "Processing texture: " + TexturesGtBlock.Casing_Machine_Dimensional.getTextureFile()
+                .getResourcePath());
     }
 
     public GTplusplus() {
@@ -188,10 +193,10 @@ public class GTplusplus implements ActionListener {
 
         Logger.INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         Logger.INFO(
-                "| Recipes succesfully Loaded: " + RegistrationHandler.recipesSuccess
-                        + " | Failed: "
-                        + RegistrationHandler.recipesFailed
-                        + " |");
+            "| Recipes succesfully Loaded: " + RegistrationHandler.recipesSuccess
+                + " | Failed: "
+                + RegistrationHandler.recipesFailed
+                + " |");
         Logger.INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         Logger.INFO("Finally, we are finished. Have some cripsy bacon as a reward.");
 
@@ -255,23 +260,22 @@ public class GTplusplus implements ActionListener {
         SemiFluidFuelHandler.generateFuels();
 
         mInvalidCount[0] = RecipeGen_MultisUsingFluidInsteadOfCells
-                .generateRecipesNotUsingCells(RecipeMaps.centrifugeRecipes, GTPPRecipeMaps.centrifugeNonCellRecipes);
-        mInvalidCount[1] = RecipeGen_MultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
-                RecipeMaps.electrolyzerRecipes,
-                GTPPRecipeMaps.electrolyzerNonCellRecipes);
+            .generateRecipesNotUsingCells(RecipeMaps.centrifugeRecipes, GTPPRecipeMaps.centrifugeNonCellRecipes);
+        mInvalidCount[1] = RecipeGen_MultisUsingFluidInsteadOfCells
+            .generateRecipesNotUsingCells(RecipeMaps.electrolyzerRecipes, GTPPRecipeMaps.electrolyzerNonCellRecipes);
         mInvalidCount[2] = RecipeGen_MultisUsingFluidInsteadOfCells
-                .generateRecipesNotUsingCells(RecipeMaps.vacuumFreezerRecipes, GTPPRecipeMaps.advancedFreezerRecipes);
+            .generateRecipesNotUsingCells(RecipeMaps.vacuumFreezerRecipes, GTPPRecipeMaps.advancedFreezerRecipes);
         mInvalidCount[3] = RecipeGen_MultisUsingFluidInsteadOfCells
-                .generateRecipesNotUsingCells(RecipeMaps.mixerRecipes, GTPPRecipeMaps.mixerNonCellRecipes);
+            .generateRecipesNotUsingCells(RecipeMaps.mixerRecipes, GTPPRecipeMaps.mixerNonCellRecipes);
         mInvalidCount[4] = RecipeGen_MultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
-                GTPPRecipeMaps.chemicalDehydratorRecipes,
-                GTPPRecipeMaps.chemicalDehydratorNonCellRecipes);
+            GTPPRecipeMaps.chemicalDehydratorRecipes,
+            GTPPRecipeMaps.chemicalDehydratorNonCellRecipes);
         mInvalidCount[5] = RecipeGen_MultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
-                GTPPRecipeMaps.coldTrapRecipes,
-                GTPPRecipeMaps.nuclearSaltProcessingPlantRecipes);
+            GTPPRecipeMaps.coldTrapRecipes,
+            GTPPRecipeMaps.nuclearSaltProcessingPlantRecipes);
         mInvalidCount[6] = RecipeGen_MultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
-                GTPPRecipeMaps.reactorProcessingUnitRecipes,
-                GTPPRecipeMaps.nuclearSaltProcessingPlantRecipes);
+            GTPPRecipeMaps.reactorProcessingUnitRecipes,
+            GTPPRecipeMaps.nuclearSaltProcessingPlantRecipes);
     }
 
     private static void setupMaterialBlacklist() {
@@ -304,56 +308,54 @@ public class GTplusplus implements ActionListener {
         sMissingItemMappings.put("miscutils:Ammonium", GameRegistry.findItem(GTPlusPlus.ID, "itemCellAmmonium"));
         sMissingItemMappings.put("miscutils:Hydroxide", GameRegistry.findItem(GTPlusPlus.ID, "itemCellHydroxide"));
         sMissingItemMappings.put(
-                "miscutils:BerylliumHydroxide",
-                GameRegistry.findItem(GTPlusPlus.ID, "itemCellmiscutils:BerylliumHydroxide"));
+            "miscutils:BerylliumHydroxide",
+            GameRegistry.findItem(GTPlusPlus.ID, "itemCellmiscutils:BerylliumHydroxide"));
         sMissingItemMappings.put("miscutils:Bromine", GameRegistry.findItem(GTPlusPlus.ID, "itemCellBromine"));
         sMissingItemMappings.put("miscutils:Krypton", GameRegistry.findItem(GTPlusPlus.ID, "itemCellKrypton"));
         sMissingItemMappings.put(
-                "miscutils:itemCellZirconiumTetrafluoride",
-                GameRegistry.findItem(GTPlusPlus.ID, "ZirconiumTetrafluoride"));
+            "miscutils:itemCellZirconiumTetrafluoride",
+            GameRegistry.findItem(GTPlusPlus.ID, "ZirconiumTetrafluoride"));
         sMissingItemMappings
-                .put("miscutils:Li2BeF4", GameRegistry.findItem(GTPlusPlus.ID, "itemCellLithiumTetrafluoroberyllate"));
+            .put("miscutils:Li2BeF4", GameRegistry.findItem(GTPlusPlus.ID, "itemCellLithiumTetrafluoroberyllate"));
 
         // Cryolite
         sMissingBlockMappings.put("miscutils:oreCryolite", GameRegistry.findBlock(GTPlusPlus.ID, "oreCryoliteF"));
         sMissingItemMappings
-                .put("miscutils:itemDustTinyCryolite", GameRegistry.findItem(GTPlusPlus.ID, "itemDustTinyCryoliteF"));
+            .put("miscutils:itemDustTinyCryolite", GameRegistry.findItem(GTPlusPlus.ID, "itemDustTinyCryoliteF"));
         sMissingItemMappings
-                .put("miscutils:itemDustSmallCryolite", GameRegistry.findItem(GTPlusPlus.ID, "itemDustSmallCryoliteF"));
+            .put("miscutils:itemDustSmallCryolite", GameRegistry.findItem(GTPlusPlus.ID, "itemDustSmallCryoliteF"));
         sMissingItemMappings
-                .put("miscutils:itemDustCryolite", GameRegistry.findItem(GTPlusPlus.ID, "itemDustCryoliteF"));
+            .put("miscutils:itemDustCryolite", GameRegistry.findItem(GTPlusPlus.ID, "itemDustCryoliteF"));
         sMissingItemMappings
-                .put("miscutils:dustPureCryolite", GameRegistry.findItem(GTPlusPlus.ID, "dustPureCryoliteF"));
+            .put("miscutils:dustPureCryolite", GameRegistry.findItem(GTPlusPlus.ID, "dustPureCryoliteF"));
         sMissingItemMappings
-                .put("miscutils:dustImpureCryolite", GameRegistry.findItem(GTPlusPlus.ID, "dustImpureCryoliteF"));
+            .put("miscutils:dustImpureCryolite", GameRegistry.findItem(GTPlusPlus.ID, "dustImpureCryoliteF"));
         sMissingItemMappings.put("miscutils:crushedCryolite", GameRegistry.findItem(GTPlusPlus.ID, "crushedCryoliteF"));
+        sMissingItemMappings
+            .put("miscutils:crushedPurifiedCryolite", GameRegistry.findItem(GTPlusPlus.ID, "crushedPurifiedCryoliteF"));
         sMissingItemMappings.put(
-                "miscutils:crushedPurifiedCryolite",
-                GameRegistry.findItem(GTPlusPlus.ID, "crushedPurifiedCryoliteF"));
-        sMissingItemMappings.put(
-                "miscutils:crushedCentrifugedCryolite",
-                GameRegistry.findItem(GTPlusPlus.ID, "crushedCentrifugedCryoliteF"));
+            "miscutils:crushedCentrifugedCryolite",
+            GameRegistry.findItem(GTPlusPlus.ID, "crushedCentrifugedCryoliteF"));
         sMissingItemMappings.put("miscutils:oreCryolite", GameRegistry.findItem(GTPlusPlus.ID, "oreCryoliteF"));
 
         // Fluorite
         sMissingBlockMappings.put("miscutils:oreFluorite", GameRegistry.findBlock(GTPlusPlus.ID, "oreFluoriteF"));
         sMissingItemMappings
-                .put("miscutils:itemDustTinyFluorite", GameRegistry.findItem(GTPlusPlus.ID, "itemDustTinyFluoriteF"));
+            .put("miscutils:itemDustTinyFluorite", GameRegistry.findItem(GTPlusPlus.ID, "itemDustTinyFluoriteF"));
         sMissingItemMappings
-                .put("miscutils:itemDustSmallFluorite", GameRegistry.findItem(GTPlusPlus.ID, "itemDustSmallFluoriteF"));
+            .put("miscutils:itemDustSmallFluorite", GameRegistry.findItem(GTPlusPlus.ID, "itemDustSmallFluoriteF"));
         sMissingItemMappings
-                .put("miscutils:itemDustFluorite", GameRegistry.findItem(GTPlusPlus.ID, "itemDustFluoriteF"));
+            .put("miscutils:itemDustFluorite", GameRegistry.findItem(GTPlusPlus.ID, "itemDustFluoriteF"));
         sMissingItemMappings
-                .put("miscutils:dustPureFluorite", GameRegistry.findItem(GTPlusPlus.ID, "dustPureFluoriteF"));
+            .put("miscutils:dustPureFluorite", GameRegistry.findItem(GTPlusPlus.ID, "dustPureFluoriteF"));
         sMissingItemMappings
-                .put("miscutils:dustImpureFluorite", GameRegistry.findItem(GTPlusPlus.ID, "dustImpureFluoriteF"));
+            .put("miscutils:dustImpureFluorite", GameRegistry.findItem(GTPlusPlus.ID, "dustImpureFluoriteF"));
         sMissingItemMappings.put("miscutils:crushedFluorite", GameRegistry.findItem(GTPlusPlus.ID, "crushedFluoriteF"));
+        sMissingItemMappings
+            .put("miscutils:crushedPurifiedFluorite", GameRegistry.findItem(GTPlusPlus.ID, "crushedPurifiedFluoriteF"));
         sMissingItemMappings.put(
-                "miscutils:crushedPurifiedFluorite",
-                GameRegistry.findItem(GTPlusPlus.ID, "crushedPurifiedFluoriteF"));
-        sMissingItemMappings.put(
-                "miscutils:crushedCentrifugedFluorite",
-                GameRegistry.findItem(GTPlusPlus.ID, "crushedCentrifugedFluoriteF"));
+            "miscutils:crushedCentrifugedFluorite",
+            GameRegistry.findItem(GTPlusPlus.ID, "crushedCentrifugedFluoriteF"));
         sMissingItemMappings.put("miscutils:oreFluorite", GameRegistry.findItem(GTPlusPlus.ID, "oreFluoriteF"));
     }
 

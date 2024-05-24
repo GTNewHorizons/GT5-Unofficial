@@ -17,9 +17,9 @@ public class GregtechIndustrialExtruder {
     private static void run1() {
         // Industrial Presser Multiblock
         GregtechItemList.Industrial_Extruder.set(
-                new GregtechMetaTileEntity_IndustrialExtruder(
-                        859,
-                        "industrialextruder.controller.tier.single",
-                        "Industrial Extrusion Machine").getStackForm(1L));
+            new GregtechMetaTileEntity_IndustrialExtruder(
+                859,
+                "industrialextruder.controller.tier.single",
+                "Industrial Extrusion Machine").getStackForm(1L));
     }
 }

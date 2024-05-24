@@ -56,7 +56,7 @@ import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
 
 public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<GregtechMTE_AlgaePondBase>
-        implements ISurvivalConstructable {
+    implements ISurvivalConstructable {
 
     private int mLevel = -1;
     private int mCasing;
@@ -90,17 +90,24 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<Gregt
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType()).addInfo("Grows Algae!").addInfo("Controller Block for the Algae Farm")
-                .addInfo("Provide compost to boost production by one tier")
-                .addInfo("Does not require power or maintenance")
-                .addInfo("All Machine Casings must be the same tier, this dictates machine speed.")
-                .addInfo("All Buses/Hatches must, at least, match the tier of the Casings")
-                .addInfo("Fill Input Hatch with Water to fill the inside of the multiblock.")
-                .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(9, 3, 9, true)
-                .addController("Front Center").addCasingInfoMin("Machine Casings", 64, true)
-                .addCasingInfoMin("Sterile Farm Casings", 64, false).addInputBus("Any Casing", 1)
-                .addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+        tt.addMachineType(getMachineType())
+            .addInfo("Grows Algae!")
+            .addInfo("Controller Block for the Algae Farm")
+            .addInfo("Provide compost to boost production by one tier")
+            .addInfo("Does not require power or maintenance")
+            .addInfo("All Machine Casings must be the same tier, this dictates machine speed.")
+            .addInfo("All Buses/Hatches must, at least, match the tier of the Casings")
+            .addInfo("Fill Input Hatch with Water to fill the inside of the multiblock.")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .addSeparator()
+            .beginStructureBlock(9, 3, 9, true)
+            .addController("Front Center")
+            .addCasingInfoMin("Machine Casings", 64, true)
+            .addCasingInfoMin("Sterile Farm Casings", 64, false)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addInputHatch("Any Casing", 1)
+            .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
@@ -116,30 +123,32 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<Gregt
     public IStructureDefinition<GregtechMTE_AlgaePondBase> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<GregtechMTE_AlgaePondBase>builder()
-                    .addShape(
-                            mName,
-                            transpose(
-                                    new String[][] {
-                                            { "XXXXXXXXX", "X       X", "X       X", "X       X", "X       X",
-                                                    "X       X", "X       X", "X       X", "XXXXXXXXX" },
-                                            { "XXXXXXXXX", "X       X", "X       X", "X       X", "X       X",
-                                                    "X       X", "X       X", "X       X", "XXXXXXXXX" },
-                                            { "CCCC~CCCC", "CCCCCCCCC", "CCCCCCCCC", "CCCCCCCCC", "CCCCCCCCC",
-                                                    "CCCCCCCCC", "CCCCCCCCC", "CCCCCCCCC", "CCCCCCCCC" }, }))
-                    .addElement(
-                            'C',
-                            ofChain(
-                                    buildHatchAdder(GregtechMTE_AlgaePondBase.class)
-                                            .atLeast(InputHatch, InputBus, OutputBus)
-                                            .casingIndex(TAE.getIndexFromPage(1, 15)).dot(1).build(),
-                                    onElementPass(
-                                            x -> ++x.mCasing,
-                                            addTieredBlock(
-                                                    GregTech_API.sBlockCasings1,
-                                                    GregtechMTE_AlgaePondBase::setMeta,
-                                                    GregtechMTE_AlgaePondBase::getMeta,
-                                                    10))))
-                    .addElement('X', ofBlock(ModBlocks.blockCasings2Misc, 15)).build();
+                .addShape(
+                    mName,
+                    transpose(
+                        new String[][] {
+                            { "XXXXXXXXX", "X       X", "X       X", "X       X", "X       X", "X       X", "X       X",
+                                "X       X", "XXXXXXXXX" },
+                            { "XXXXXXXXX", "X       X", "X       X", "X       X", "X       X", "X       X", "X       X",
+                                "X       X", "XXXXXXXXX" },
+                            { "CCCC~CCCC", "CCCCCCCCC", "CCCCCCCCC", "CCCCCCCCC", "CCCCCCCCC", "CCCCCCCCC", "CCCCCCCCC",
+                                "CCCCCCCCC", "CCCCCCCCC" }, }))
+                .addElement(
+                    'C',
+                    ofChain(
+                        buildHatchAdder(GregtechMTE_AlgaePondBase.class).atLeast(InputHatch, InputBus, OutputBus)
+                            .casingIndex(TAE.getIndexFromPage(1, 15))
+                            .dot(1)
+                            .build(),
+                        onElementPass(
+                            x -> ++x.mCasing,
+                            addTieredBlock(
+                                GregTech_API.sBlockCasings1,
+                                GregtechMTE_AlgaePondBase::setMeta,
+                                GregtechMTE_AlgaePondBase::getMeta,
+                                10))))
+                .addElement('X', ofBlock(ModBlocks.blockCasings2Misc, 15))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -241,7 +250,8 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<Gregt
                                         // Utils.LOG_WARNING("Going to try swap an air block for water from inut bus.");
                                         stored.amount -= 1000;
                                         Block fluidUsed = Blocks.water;
-                                        aBaseMetaTileEntity.getWorld().setBlock(
+                                        aBaseMetaTileEntity.getWorld()
+                                            .setBlock(
                                                 aBaseMetaTileEntity.getXCoord() + xDir + i,
                                                 aBaseMetaTileEntity.getYCoord() + h,
                                                 aBaseMetaTileEntity.getZCoord() + zDir + j,
@@ -272,8 +282,8 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<Gregt
 
     private boolean isNotStaticWater(Block block, byte meta) {
         return block == Blocks.air || block == Blocks.flowing_water
-                || block == BlocksItems.getFluidBlock(InternalName.fluidDistilledWater)
-                || (cofhWater != null && cofhWater.isAssignableFrom(block.getClass()) && meta != 0);
+            || block == BlocksItems.getFluidBlock(InternalName.fluidDistilledWater)
+            || (cofhWater != null && cofhWater.isAssignableFrom(block.getClass()) && meta != 0);
     }
 
     @Override
@@ -313,8 +323,8 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<Gregt
             @Nonnull
             @Override
             protected Stream<GT_Recipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
-                return GT_StreamUtil.ofNullable(
-                        RecipeLoader_AlgaeFarm.getTieredRecipeFromCache(mLevel, isUsingCompost(inputItems)));
+                return GT_StreamUtil
+                    .ofNullable(RecipeLoader_AlgaeFarm.getTieredRecipeFromCache(mLevel, isUsingCompost(inputItems)));
             }
 
             @NotNull
@@ -325,7 +335,8 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<Gregt
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
-        }.setEuModifier(0F).setMaxParallelSupplier(this::getMaxParallelRecipes);
+        }.setEuModifier(0F)
+            .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     private boolean isUsingCompost(ItemStack[] aItemInputs) {
@@ -341,7 +352,8 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<Gregt
     }
 
     private int getCasingTier() {
-        if (this.getBaseMetaTileEntity().getWorld() == null) {
+        if (this.getBaseMetaTileEntity()
+            .getWorld() == null) {
             return 0;
         }
         try {

@@ -37,7 +37,7 @@ public class ItemBlueprint extends Item implements IItemBlueprint {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void addInformation(final ItemStack itemStack, final EntityPlayer aPlayer, final List list,
-            final boolean bool) {
+        final boolean bool) {
         // Create some NBT if it's not there, otherwise this does nothing.
         if (!itemStack.hasTagCompound()) {
             this.createNBT(itemStack);
@@ -57,15 +57,14 @@ public class ItemBlueprint extends Item implements IItemBlueprint {
         if (itemStack.hasTagCompound()) {
             if (id != -1) {
                 list.add(
-                        EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
-                                StatCollector.translateToLocal("item.itemBlueprint.tooltip.0"),
-                                id));
+                    EnumChatFormatting.GRAY + StatCollector
+                        .translateToLocalFormatted(StatCollector.translateToLocal("item.itemBlueprint.tooltip.0"), id));
             }
             if (blueprint) {
                 list.add(
-                        EnumChatFormatting.BLUE + StatCollector.translateToLocalFormatted(
-                                StatCollector.translateToLocal("item.itemBlueprint.tooltip.1"),
-                                name));
+                    EnumChatFormatting.BLUE + StatCollector.translateToLocalFormatted(
+                        StatCollector.translateToLocal("item.itemBlueprint.tooltip.1"),
+                        name));
             } else {
                 list.add(EnumChatFormatting.RED + StatCollector.translateToLocal("item.itemBlueprint.tooltip.2"));
             }
@@ -82,22 +81,22 @@ public class ItemBlueprint extends Item implements IItemBlueprint {
 
     @Override
     public void onUpdate(final ItemStack itemStack, final World par2World, final Entity par3Entity, final int par4,
-            final boolean par5) {}
+        final boolean par5) {}
 
     @Override
     public ItemStack onItemRightClick(final ItemStack itemStack, final World world, final EntityPlayer par3Entity) {
         // Let the player know what blueprint is held
         if (itemStack.hasTagCompound()) {
             PlayerUtils.messagePlayer(
-                    par3Entity,
-                    "This Blueprint holds NBT data. " + "|"
-                            + this.getNBT(itemStack, "mID")
-                            + "|"
-                            + this.getNBT(itemStack, "mBlueprint")
-                            + "|"
-                            + this.getNBT(itemStack, "mName")
-                            + "|"
-                            + ItemUtils.getArrayStackNames(this.readItemsFromNBT(itemStack)));
+                par3Entity,
+                "This Blueprint holds NBT data. " + "|"
+                    + this.getNBT(itemStack, "mID")
+                    + "|"
+                    + this.getNBT(itemStack, "mBlueprint")
+                    + "|"
+                    + this.getNBT(itemStack, "mName")
+                    + "|"
+                    + ItemUtils.getArrayStackNames(this.readItemsFromNBT(itemStack)));
         } else {
             this.createNBT(itemStack);
             PlayerUtils.messagePlayer(par3Entity, "This is a placeholder. " + this.getNBT(itemStack, "mID"));
@@ -170,7 +169,8 @@ public class ItemBlueprint extends Item implements IItemBlueprint {
                 }
                 this.writeItemsToNBT(stack, blueprint);
                 if (stack.hasTagCompound()) {
-                    if (stack.getTagCompound().getCompoundTag("Items") != null) {
+                    if (stack.getTagCompound()
+                        .getCompoundTag("Items") != null) {
                         stack.stackTagCompound.setBoolean("mBlueprint", true);
                     } else {
                         // Invalid BP saved?
@@ -226,19 +226,21 @@ public class ItemBlueprint extends Item implements IItemBlueprint {
 
     public boolean createNBT(final ItemStack itemStack) {
         if (itemStack.hasTagCompound()) {
-            if (!itemStack.stackTagCompound.getBoolean("mBlueprint")
-                    && !itemStack.stackTagCompound.getString("mName").equals("")) {
+            if (!itemStack.stackTagCompound.getBoolean("mBlueprint") && !itemStack.stackTagCompound.getString("mName")
+                .equals("")) {
                 // No Blueprint and no name Set
                 Logger.WARNING("No Blueprint and no name Set");
                 return false;
             } else if (itemStack.stackTagCompound.getBoolean("mBlueprint")
-                    && !itemStack.stackTagCompound.getString("mName").equals("")) {
+                && !itemStack.stackTagCompound.getString("mName")
+                    .equals("")) {
                         // Has Blueprint but invalid name set
                         Logger.WARNING("Has Blueprint but invalid name set");
                         return false;
                     } else
                 if (!itemStack.stackTagCompound.getBoolean("mBlueprint")
-                        && itemStack.stackTagCompound.getString("mName").equals("")) {
+                    && itemStack.stackTagCompound.getString("mName")
+                        .equals("")) {
                             // Has no Blueprint, but strangely has a name
                             Logger.WARNING("Has no Blueprint, but strangely has a name");
                             return false;

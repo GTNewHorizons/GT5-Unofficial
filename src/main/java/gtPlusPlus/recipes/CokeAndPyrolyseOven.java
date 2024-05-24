@@ -30,34 +30,34 @@ public class CokeAndPyrolyseOven {
         ArrayList<ItemStack> aLogData = OreDictionary.getOres("logWood");
         for (ItemStack stack : aLogData) {
             AddGregtechRecipe.addCokeAndPyrolyseRecipes(
-                    ItemUtils.getSimpleStack(stack, 20),
-                    20,
-                    GT_ModHandler.getSteam(1000),
-                    GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 24L),
-                    FluidUtils.getFluidStack("fluid.coalgas", 1440),
-                    60,
-                    30);
+                ItemUtils.getSimpleStack(stack, 20),
+                20,
+                GT_ModHandler.getSteam(1000),
+                GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 24L),
+                FluidUtils.getFluidStack("fluid.coalgas", 1440),
+                60,
+                30);
         }
 
         // Coal to Coke
         AddGregtechRecipe.addCokeAndPyrolyseRecipes(
-                GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 16L),
-                22,
-                GT_ModHandler.getSteam(1000),
-                ItemUtils.getItemStackOfAmountFromOreDict("fuelCoke", 10),
-                FluidUtils.getFluidStack("fluid.coalgas", 2880),
-                30,
-                120);
+            GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 16L),
+            22,
+            GT_ModHandler.getSteam(1000),
+            ItemUtils.getItemStackOfAmountFromOreDict("fuelCoke", 10),
+            FluidUtils.getFluidStack("fluid.coalgas", 2880),
+            30,
+            120);
 
         // Coke & Coal
         CORE.RA.addCokeOvenRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 12L),
-                ItemUtils.getItemStackOfAmountFromOreDict("fuelCoke", 6),
-                GT_ModHandler.getSteam(2000),
-                FluidUtils.getFluidStack("fluid.coalgas", 5040),
-                ItemUtils.getItemStackOfAmountFromOreDict("fuelCoke", 14),
-                60 * 20,
-                240);
+            GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 12L),
+            ItemUtils.getItemStackOfAmountFromOreDict("fuelCoke", 6),
+            GT_ModHandler.getSteam(2000),
+            FluidUtils.getFluidStack("fluid.coalgas", 5040),
+            ItemUtils.getItemStackOfAmountFromOreDict("fuelCoke", 14),
+            60 * 20,
+            240);
 
     }
 

@@ -48,8 +48,8 @@ public class FluidTankInfinite extends BlockContainer {
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(final int ordinalSide, final int meta) {
         return ordinalSide == 1 ? this.textureTop
-                : (ordinalSide == 0 ? this.textureBottom
-                        : ((ordinalSide != 2) && (ordinalSide != 4) ? this.blockIcon : this.textureFront));
+            : (ordinalSide == 0 ? this.textureBottom
+                : ((ordinalSide != 2) && (ordinalSide != 4) ? this.blockIcon : this.textureFront));
     }
 
     @Override
@@ -58,9 +58,9 @@ public class FluidTankInfinite extends BlockContainer {
         this.blockIcon = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "Generic_Creative_Texture");
         this.textureTop = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "Generic_Creative_Texture");
         this.textureBottom = p_149651_1_
-                .registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "Generic_Creative_Texture");
+            .registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "Generic_Creative_Texture");
         this.textureFront = p_149651_1_
-                .registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "Generic_Creative_Texture");
+            .registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "Generic_Creative_Texture");
     }
 
     /**
@@ -68,7 +68,7 @@ public class FluidTankInfinite extends BlockContainer {
      */
     @Override
     public boolean onBlockActivated(final World world, final int x, final int y, final int z, final EntityPlayer player,
-            final int side, final float lx, final float ly, final float lz) {
+        final int side, final float lx, final float ly, final float lz) {
         if (world.isRemote) {
             return true;
         } else {
@@ -76,13 +76,14 @@ public class FluidTankInfinite extends BlockContainer {
             if (tank != null) {
                 Item handItem;
                 try {
-                    handItem = player.getHeldItem().getItem();
+                    handItem = player.getHeldItem()
+                        .getItem();
                 } catch (Throwable t) {
                     handItem = null;
                 }
                 if (handItem != null
-                        && (handItem instanceof IFluidContainerItem || handItem instanceof ItemFluidContainer
-                                || FluidContainerRegistry.isFilledContainer(player.getHeldItem()))) {
+                    && (handItem instanceof IFluidContainerItem || handItem instanceof ItemFluidContainer
+                        || FluidContainerRegistry.isFilledContainer(player.getHeldItem()))) {
                     if (tank.tank.getFluid() == null) {
                         try {
                             if (!FluidContainerRegistry.isFilledContainer(player.getHeldItem())) {
@@ -107,10 +108,11 @@ public class FluidTankInfinite extends BlockContainer {
                 }
                 if (tank.tank.getFluid() != null) {
                     PlayerUtils.messagePlayer(
-                            player,
-                            "This tank contains " + tank.tank.getFluidAmount()
-                                    + "L of "
-                                    + tank.tank.getFluid().getLocalizedName());
+                        player,
+                        "This tank contains " + tank.tank.getFluidAmount()
+                            + "L of "
+                            + tank.tank.getFluid()
+                                .getLocalizedName());
                 }
             }
         }

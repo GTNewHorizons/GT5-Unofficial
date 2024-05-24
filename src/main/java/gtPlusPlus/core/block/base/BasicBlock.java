@@ -18,7 +18,8 @@ public class BasicBlock extends BlockContainer {
         super(material);
         this.setBlockName(Utils.sanitizeString(unlocalizedName));
 
-        if (type != BlockTypes.ORE && !unlocalizedName.toLowerCase().contains("ore")) {
+        if (type != BlockTypes.ORE && !unlocalizedName.toLowerCase()
+            .contains("ore")) {
             this.setBlockTextureName(GTPlusPlus.ID + ":" + unlocalizedName);
         }
 
@@ -63,7 +64,7 @@ public class BasicBlock extends BlockContainer {
 
     @Override
     public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y,
-            final int z) {
+        final int z) {
         return false;
     }
 }

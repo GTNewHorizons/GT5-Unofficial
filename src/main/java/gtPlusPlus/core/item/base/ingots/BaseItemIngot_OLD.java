@@ -25,7 +25,7 @@ public class BaseItemIngot_OLD extends Item {
     protected String unlocalName;
 
     public BaseItemIngot_OLD(final String unlocalizedName, final String materialName, final int colour,
-            final int sRadioactivity) {
+        final int sRadioactivity) {
         this.setUnlocalizedName(unlocalizedName);
         this.setCreativeTab(AddToCreativeTab.tabMisc);
         this.unlocalName = unlocalizedName;
@@ -69,10 +69,13 @@ public class BaseItemIngot_OLD extends Item {
         if (this.unlocalName.contains("itemIngot")) {
             final ItemStack tempStack = ItemUtils.getSimpleStack(this, 9);
             ItemStack tempOutput = null;
-            String temp = this.getUnlocalizedName().replace("item.itemIngot", "block");
+            String temp = this.getUnlocalizedName()
+                .replace("item.itemIngot", "block");
             Logger.WARNING("Unlocalized name for OreDict nameGen: " + this.getUnlocalizedName());
-            if (this.getUnlocalizedName().contains("item.")) {
-                temp = this.getUnlocalizedName().replace("item.", "");
+            if (this.getUnlocalizedName()
+                .contains("item.")) {
+                temp = this.getUnlocalizedName()
+                    .replace("item.", "");
                 Logger.WARNING("Generating OreDict Name: " + temp);
             }
             temp = temp.replace("itemIngot", "block");
@@ -80,8 +83,12 @@ public class BaseItemIngot_OLD extends Item {
             if ((temp != null) && !temp.equals("")) {
                 tempOutput = ItemUtils.getItemStackOfAmountFromOreDict(temp, 1);
                 if (tempOutput != null) {
-                    GT_Values.RA.stdBuilder().itemInputs(tempStack).itemOutputs(tempOutput).duration(15 * SECONDS)
-                            .eut(2).addTo(compressorRecipes);
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(tempStack)
+                        .itemOutputs(tempOutput)
+                        .duration(15 * SECONDS)
+                        .eut(2)
+                        .addTo(compressorRecipes);
                 }
             }
         } else if (this.unlocalName.contains("itemHotIngot")) {
@@ -93,7 +100,7 @@ public class BaseItemIngot_OLD extends Item {
 
     @Override
     public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
-            final boolean p_77663_5_) {
+        final boolean p_77663_5_) {
         EntityUtils.applyRadiationDamageToEntity(iStack.stackSize, this.sRadiation, world, entityHolding);
     }
 }

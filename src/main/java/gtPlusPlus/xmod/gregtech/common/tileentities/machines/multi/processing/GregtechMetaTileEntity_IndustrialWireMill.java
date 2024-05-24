@@ -37,8 +37,8 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class GregtechMetaTileEntity_IndustrialWireMill extends
-        GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialWireMill> implements ISurvivalConstructable {
+public class GregtechMetaTileEntity_IndustrialWireMill
+    extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialWireMill> implements ISurvivalConstructable {
 
     private int mCasing;
     private static IStructureDefinition<GregtechMetaTileEntity_IndustrialWireMill> STRUCTURE_DEFINITION = null;
@@ -66,34 +66,42 @@ public class GregtechMetaTileEntity_IndustrialWireMill extends
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType()).addInfo("Controller Block for the Industrial Wire Factory")
-                .addInfo("200% faster than using single block machines of the same voltage")
-                .addInfo("Only uses 75% of the EU/t normally required").addInfo("Processes four items per voltage tier")
-                .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 5, true)
-                .addController("Front Center").addCasingInfoMin("Wire Factory Casings", 14, false)
-                .addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1).addEnergyHatch("Any Casing", 1)
-                .addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+        tt.addMachineType(getMachineType())
+            .addInfo("Controller Block for the Industrial Wire Factory")
+            .addInfo("200% faster than using single block machines of the same voltage")
+            .addInfo("Only uses 75% of the EU/t normally required")
+            .addInfo("Processes four items per voltage tier")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .addSeparator()
+            .beginStructureBlock(3, 3, 5, true)
+            .addController("Front Center")
+            .addCasingInfoMin("Wire Factory Casings", 14, false)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addMufflerHatch("Any Casing", 1)
+            .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
     @Override
     public IStructureDefinition<GregtechMetaTileEntity_IndustrialWireMill> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialWireMill>builder().addShape(
+            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialWireMill>builder()
+                .addShape(
                     mName,
                     transpose(
-                            new String[][] { { "CCC", "CCC", "CCC", "CCC", "CCC" },
-                                    { "C~C", "C-C", "C-C", "C-C", "CCC" }, { "CCC", "CCC", "CCC", "CCC", "CCC" }, }))
-                    .addElement(
-                            'C',
-                            buildHatchAdder(GregtechMetaTileEntity_IndustrialWireMill.class)
-                                    .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
-                                    .casingIndex(getCasingTextureIndex()).dot(1).buildAndChain(
-                                            onElementPass(
-                                                    x -> ++x.mCasing,
-                                                    ofBlock(getCasingBlock(), getCasingMeta()))))
-                    .build();
+                        new String[][] { { "CCC", "CCC", "CCC", "CCC", "CCC" }, { "C~C", "C-C", "C-C", "C-C", "CCC" },
+                            { "CCC", "CCC", "CCC", "CCC", "CCC" }, }))
+                .addElement(
+                    'C',
+                    buildHatchAdder(GregtechMetaTileEntity_IndustrialWireMill.class)
+                        .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
+                        .casingIndex(getCasingTextureIndex())
+                        .dot(1)
+                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -147,17 +155,17 @@ public class GregtechMetaTileEntity_IndustrialWireMill extends
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 3F).setEuModifier(0.75F)
-                .setMaxParallelSupplier(this::getMaxParallelRecipes);
+        return new ProcessingLogic().setSpeedBonus(1F / 3F)
+            .setEuModifier(0.75F)
+            .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     @Override
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         inputSeparation = !inputSeparation;
         aPlayer.addChatMessage(
-                new ChatComponentTranslation(
-                        inputSeparation ? "interaction.separateBusses.enabled"
-                                : "interaction.separateBusses.disabled"));
+            new ChatComponentTranslation(
+                inputSeparation ? "interaction.separateBusses.enabled" : "interaction.separateBusses.disabled"));
     }
 
     @Override

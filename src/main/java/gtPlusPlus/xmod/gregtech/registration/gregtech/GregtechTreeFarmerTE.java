@@ -15,7 +15,7 @@ public class GregtechTreeFarmerTE {
     }
 
     private static void run1() {
-        GregtechItemList.TreeFarmer_Structural.set(
-                new GregtechMetaTreeFarmerStructural(752, "treefarmer.structural", "Farm Keeper", 0).getStackForm(1L));
+        GregtechItemList.TreeFarmer_Structural
+            .set(new GregtechMetaTreeFarmerStructural(752, "treefarmer.structural", "Farm Keeper", 0).getStackForm(1L));
     }
 }

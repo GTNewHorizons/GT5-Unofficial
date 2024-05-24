@@ -14,7 +14,7 @@ public class GregtechAmazonWarehouse {
     private static void run1() {
         // Amazon packager multiblock
         GregtechItemList.Amazon_Warehouse_Controller.set(
-                new GMTE_AmazonPackager(942, "amazonprime.controller.tier.single", "Amazon Warehousing Depot.")
-                        .getStackForm(1L));
+            new GMTE_AmazonPackager(942, "amazonprime.controller.tier.single", "Amazon Warehousing Depot.")
+                .getStackForm(1L));
     }
 }

@@ -17,9 +17,9 @@ public class GregtechIndustrialCentrifuge {
     private static void run1() {
         // Industrial Centrifuge Multiblock
         GregtechItemList.Industrial_Centrifuge.set(
-                new GregtechMetaTileEntity_IndustrialCentrifuge(
-                        790,
-                        "industrialcentrifuge.controller.tier.single",
-                        "Industrial Centrifuge").getStackForm(1L));
+            new GregtechMetaTileEntity_IndustrialCentrifuge(
+                790,
+                "industrialcentrifuge.controller.tier.single",
+                "Industrial Centrifuge").getStackForm(1L));
     }
 }

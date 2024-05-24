@@ -59,7 +59,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.Gregtech
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GregtechMetaTileEntity_MassFabricator
-        extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_MassFabricator> implements ISurvivalConstructable {
+    extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_MassFabricator> implements ISurvivalConstructable {
 
     public static int sUUAperUUM = 1;
     public static int sUUASpeedBonus = 4;
@@ -97,15 +97,27 @@ public class GregtechMetaTileEntity_MassFabricator
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType()).addInfo("Controller Block for the Matter Fabricator")
-                .addInfo("Speed: +0% | EU Usage: 80%").addInfo("Parallel: Scrap = 64 | UU = 8 * Tier")
-                .addInfo("Produces UU-A, UU-M & Scrap").addInfo("Change mode with screwdriver")
-                .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(5, 4, 5, true)
-                .addController("Front Center").addCasingInfoMin(mCasingName3, 9, false)
-                .addCasingInfoMin(mCasingName2, 24, false).addCasingInfoMin(mCasingName1, 36, false)
-                .addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1)
-                .addOutputHatch("Any Casing", 1).addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1)
-                .addMufflerHatch("Any Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+        tt.addMachineType(getMachineType())
+            .addInfo("Controller Block for the Matter Fabricator")
+            .addInfo("Speed: +0% | EU Usage: 80%")
+            .addInfo("Parallel: Scrap = 64 | UU = 8 * Tier")
+            .addInfo("Produces UU-A, UU-M & Scrap")
+            .addInfo("Change mode with screwdriver")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .addSeparator()
+            .beginStructureBlock(5, 4, 5, true)
+            .addController("Front Center")
+            .addCasingInfoMin(mCasingName3, 9, false)
+            .addCasingInfoMin(mCasingName2, 24, false)
+            .addCasingInfoMin(mCasingName1, 36, false)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addInputHatch("Any Casing", 1)
+            .addOutputHatch("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addMufflerHatch("Any Casing", 1)
+            .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
@@ -128,7 +140,7 @@ public class GregtechMetaTileEntity_MassFabricator
     public void onConfigLoad(final GT_Config aConfig) {
         super.onConfigLoad(aConfig);
         sDurationMultiplier = aConfig
-                .get(ConfigCategories.machineconfig, "Massfabricator.UUM_Duration_Multiplier", sDurationMultiplier);
+            .get(ConfigCategories.machineconfig, "Massfabricator.UUM_Duration_Multiplier", sDurationMultiplier);
         sUUAperUUM = aConfig.get(ConfigCategories.machineconfig, "Massfabricator.UUA_per_UUM", sUUAperUUM);
         sUUASpeedBonus = aConfig.get(ConfigCategories.machineconfig, "Massfabricator.UUA_Speed_Bonus", sUUASpeedBonus);
         sRequiresUUA = aConfig.get(ConfigCategories.machineconfig, "Massfabricator.UUA_Requirement", sRequiresUUA);
@@ -159,21 +171,23 @@ public class GregtechMetaTileEntity_MassFabricator
     public IStructureDefinition<GregtechMetaTileEntity_MassFabricator> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_MassFabricator>builder()
-                    .addShape(
-                            mName,
-                            transpose(
-                                    new String[][] { { "CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC" },
-                                            { "CGGGC", "G---G", "G---G", "G---G", "CGGGC" },
-                                            { "CGGGC", "G---G", "G---G", "G---G", "CGGGC" },
-                                            { "CC~CC", "CHHHC", "CHHHC", "CHHHC", "CCCCC" }, }))
-                    .addElement(
-                            'C',
-                            buildHatchAdder(GregtechMetaTileEntity_MassFabricator.class)
-                                    .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, Muffler)
-                                    .casingIndex(TAE.GTPP_INDEX(9)).dot(1).buildAndChain(
-                                            onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 9))))
-                    .addElement('H', ofBlock(ModBlocks.blockCasingsMisc, 8))
-                    .addElement('G', ofBlock(ModBlocks.blockCasings3Misc, 15)).build();
+                .addShape(
+                    mName,
+                    transpose(
+                        new String[][] { { "CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC" },
+                            { "CGGGC", "G---G", "G---G", "G---G", "CGGGC" },
+                            { "CGGGC", "G---G", "G---G", "G---G", "CGGGC" },
+                            { "CC~CC", "CHHHC", "CHHHC", "CHHHC", "CCCCC" }, }))
+                .addElement(
+                    'C',
+                    buildHatchAdder(GregtechMetaTileEntity_MassFabricator.class)
+                        .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, Muffler)
+                        .casingIndex(TAE.GTPP_INDEX(9))
+                        .dot(1)
+                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 9))))
+                .addElement('H', ofBlock(ModBlocks.blockCasingsMisc, 8))
+                .addElement('G', ofBlock(ModBlocks.blockCasings3Misc, 15))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -259,18 +273,18 @@ public class GregtechMetaTileEntity_MassFabricator
                         for (ItemStack item : inputItems) {
                             if (item == null || item.stackSize == 0) continue;
                             ItemStack aPotentialOutput = GT_ModHandler
-                                    .getRecyclerOutput(GT_Utility.copyAmount(1, item), 0);
+                                .getRecyclerOutput(GT_Utility.copyAmount(1, item), 0);
                             GT_Recipe recipe = new GT_Recipe(
-                                    false,
-                                    new ItemStack[] { GT_Utility.copyAmount(1, item) },
-                                    aPotentialOutput == null ? null : new ItemStack[] { aPotentialOutput },
-                                    null,
-                                    new int[] { 2000 },
-                                    null,
-                                    null,
-                                    40,
-                                    MaterialUtils.getVoltageForTier(1),
-                                    0);
+                                false,
+                                new ItemStack[] { GT_Utility.copyAmount(1, item) },
+                                aPotentialOutput == null ? null : new ItemStack[] { aPotentialOutput },
+                                null,
+                                new int[] { 2000 },
+                                null,
+                                null,
+                                40,
+                                MaterialUtils.getVoltageForTier(1),
+                                0);
                             return Stream.of(recipe);
                         }
                     }
@@ -278,7 +292,8 @@ public class GregtechMetaTileEntity_MassFabricator
                 }
                 return super.findRecipeMatches(map);
             }
-        }.setEuModifier(0.8F).setMaxParallelSupplier(this::getMaxParallelRecipes);
+        }.setEuModifier(0.8F)
+            .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     @Override

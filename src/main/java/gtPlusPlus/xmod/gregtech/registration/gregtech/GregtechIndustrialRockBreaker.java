@@ -7,9 +7,9 @@ public class GregtechIndustrialRockBreaker {
 
     public static void run() {
         GregtechItemList.Controller_IndustrialRockBreaker.set(
-                new GregtechMetaTileEntity_IndustrialRockBreaker(
-                        31065,
-                        "industrialrockcrusher.controller.tier.single",
-                        "Boldarnator").getStackForm(1L));
+            new GregtechMetaTileEntity_IndustrialRockBreaker(
+                31065,
+                "industrialrockcrusher.controller.tier.single",
+                "Boldarnator").getStackForm(1L));
     }
 }

@@ -21,7 +21,7 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 public class ChemicalPlantFrontend extends RecipeMapFrontend {
 
     public ChemicalPlantFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
-            NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(uiPropertiesBuilder, neiPropertiesBuilder);
     }
 
@@ -47,7 +47,7 @@ public class ChemicalPlantFrontend extends RecipeMapFrontend {
 
     @Override
     protected List<String> handleNEIItemInputTooltip(List<String> currentTip,
-            GT_NEI_DefaultHandler.FixedPositionedStack pStack) {
+        GT_NEI_DefaultHandler.FixedPositionedStack pStack) {
         if (ItemUtils.isCatalyst(pStack.item)) {
             currentTip.add(GRAY + "Does not always get consumed in the process");
             currentTip.add(GRAY + "Higher tier pipe casings allow this item to last longer");

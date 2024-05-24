@@ -52,11 +52,11 @@ public class TexturesGrinderMultiblock {
     private static CustomIcon frontFaceActive_8 = (GT8_9_Active);
 
     CustomIcon[] GRINDER = new CustomIcon[] { frontFace_0, frontFace_1, frontFace_2, frontFace_3, frontFace_4,
-            frontFace_5, frontFace_6, frontFace_7, frontFace_8 };
+        frontFace_5, frontFace_6, frontFace_7, frontFace_8 };
 
     CustomIcon[] GRINDER_ACTIVE = new CustomIcon[] { frontFaceActive_0, frontFaceActive_1, frontFaceActive_2,
-            frontFaceActive_3, frontFaceActive_4, frontFaceActive_5, frontFaceActive_6, frontFaceActive_7,
-            frontFaceActive_8 };
+        frontFaceActive_3, frontFaceActive_4, frontFaceActive_5, frontFaceActive_6, frontFaceActive_7,
+        frontFaceActive_8 };
 
     private static int isIsaControllerWithSide(IBlockAccess aWorld, int aX, int aY, int aZ, ForgeDirection side) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
@@ -67,7 +67,7 @@ public class TexturesGrinderMultiblock {
     }
 
     public IIcon handleCasingsGT(final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord,
-            final int ordinalSide, final GregtechMetaCasingBlocks5 ii) {
+        final int ordinalSide, final GregtechMetaCasingBlocks5 ii) {
         final int tMeta = aWorld.getBlockMetadata(xCoord, yCoord, zCoord);
         final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
         if (tMeta != 1) {
@@ -81,7 +81,7 @@ public class TexturesGrinderMultiblock {
                         if (i == 0 && j == 0) continue;
                         if (isIsaControllerWithSide(aWorld, xCoord + j, yCoord, zCoord + i, side) != 0) {
                             IMetaTileEntity tMetaTileEntity = ((IGregTechTileEntity) aWorld
-                                    .getTileEntity(xCoord + j, yCoord, zCoord + i)).getMetaTileEntity();
+                                .getTileEntity(xCoord + j, yCoord, zCoord + i)).getMetaTileEntity();
                             return getIconByIndex(tMetaTileEntity, 4 - i * 3 - j);
                         }
                     }
@@ -93,7 +93,7 @@ public class TexturesGrinderMultiblock {
                         if (i == 0 && j == 0) continue;
                         if (isIsaControllerWithSide(aWorld, xCoord + j, yCoord + i, zCoord, side) != 0) {
                             IMetaTileEntity tMetaTileEntity = ((IGregTechTileEntity) aWorld
-                                    .getTileEntity(xCoord + j, yCoord + i, zCoord)).getMetaTileEntity();
+                                .getTileEntity(xCoord + j, yCoord + i, zCoord)).getMetaTileEntity();
                             return getIconByIndex(tMetaTileEntity, 4 + i * 3 - j * tInvertLeftRightMod);
                         }
                     }
@@ -105,7 +105,7 @@ public class TexturesGrinderMultiblock {
                         if (i == 0 && j == 0) continue;
                         if (isIsaControllerWithSide(aWorld, xCoord, yCoord + i, zCoord + j, side) != 0) {
                             IMetaTileEntity tMetaTileEntity = ((IGregTechTileEntity) aWorld
-                                    .getTileEntity(xCoord, yCoord + i, zCoord + j)).getMetaTileEntity();
+                                .getTileEntity(xCoord, yCoord + i, zCoord + j)).getMetaTileEntity();
                             return getIconByIndex(tMetaTileEntity, 4 + i * 3 + j * tInvertLeftRightMod);
                         }
                     }
@@ -119,7 +119,8 @@ public class TexturesGrinderMultiblock {
         if (aTile == null) {
             return false;
         } else {
-            return aTile.getBaseMetaTileEntity().isActive();
+            return aTile.getBaseMetaTileEntity()
+                .isActive();
         }
     }
 

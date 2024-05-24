@@ -40,7 +40,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.Gregtech
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GregtechMetaTileEntity_IndustrialMixer
-        extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialMixer> implements ISurvivalConstructable {
+    extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialMixer> implements ISurvivalConstructable {
 
     public static int CASING_TEXTURE_ID;
     public static String mCasingName = "Multi-Use Casing";
@@ -87,14 +87,24 @@ public class GregtechMetaTileEntity_IndustrialMixer
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType()).addInfo("Controller Block for the Industrial Mixer")
-                .addInfo("250% faster than using single block machines of the same voltage")
-                .addInfo("Processes eight recipes per voltage tier").addPollutionAmount(getPollutionPerSecond(null))
-                .addSeparator().beginStructureBlock(3, 4, 3, false).addController("Second Layer Center")
-                .addCasingInfoMin(mCasingName, 6, false).addCasingInfoMin(mCasingName2, 2, false)
-                .addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1)
-                .addOutputHatch("Any Casing", 1).addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1)
-                .addMufflerHatch("Any Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+        tt.addMachineType(getMachineType())
+            .addInfo("Controller Block for the Industrial Mixer")
+            .addInfo("250% faster than using single block machines of the same voltage")
+            .addInfo("Processes eight recipes per voltage tier")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .addSeparator()
+            .beginStructureBlock(3, 4, 3, false)
+            .addController("Second Layer Center")
+            .addCasingInfoMin(mCasingName, 6, false)
+            .addCasingInfoMin(mCasingName2, 2, false)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addInputHatch("Any Casing", 1)
+            .addOutputHatch("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addMufflerHatch("Any Casing", 1)
+            .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
@@ -102,18 +112,20 @@ public class GregtechMetaTileEntity_IndustrialMixer
     public IStructureDefinition<GregtechMetaTileEntity_IndustrialMixer> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialMixer>builder()
-                    .addShape(
-                            mName,
-                            transpose(
-                                    new String[][] { { "CCC", "CCC", "CCC" }, { "CCC", "CMC", "CCC" },
-                                            { "C~C", "CMC", "CCC" }, { "CCC", "CCC", "CCC" }, }))
-                    .addElement(
-                            'C',
-                            buildHatchAdder(GregtechMetaTileEntity_IndustrialMixer.class)
-                                    .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
-                                    .casingIndex(CASING_TEXTURE_ID).dot(1).buildAndChain(
-                                            onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 2))))
-                    .addElement('M', ofBlock(GregTech_API.sBlockCasings4, 11)).build();
+                .addShape(
+                    mName,
+                    transpose(
+                        new String[][] { { "CCC", "CCC", "CCC" }, { "CCC", "CMC", "CCC" }, { "C~C", "CMC", "CCC" },
+                            { "CCC", "CCC", "CCC" }, }))
+                .addElement(
+                    'C',
+                    buildHatchAdder(GregtechMetaTileEntity_IndustrialMixer.class)
+                        .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
+                        .casingIndex(CASING_TEXTURE_ID)
+                        .dot(1)
+                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 2))))
+                .addElement('M', ofBlock(GregTech_API.sBlockCasings4, 11))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -162,7 +174,8 @@ public class GregtechMetaTileEntity_IndustrialMixer
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 3.5F).setMaxParallelSupplier(this::getMaxParallelRecipes);
+        return new ProcessingLogic().setSpeedBonus(1F / 3.5F)
+            .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     @Override
@@ -184,8 +197,8 @@ public class GregtechMetaTileEntity_IndustrialMixer
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         inputSeparation = !inputSeparation;
         GT_Utility.sendChatToPlayer(
-                aPlayer,
-                StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + inputSeparation);
+            aPlayer,
+            StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + inputSeparation);
     }
 
     @Override

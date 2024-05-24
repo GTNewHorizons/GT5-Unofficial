@@ -38,7 +38,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 
 public class GregtechMetaTileEntity_IndustrialAlloySmelter extends
-        GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialAlloySmelter> implements ISurvivalConstructable {
+    GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialAlloySmelter> implements ISurvivalConstructable {
 
     public static int CASING_TEXTURE_ID;
     private HeatingCoilLevel mHeatingCapacity;
@@ -114,17 +114,25 @@ public class GregtechMetaTileEntity_IndustrialAlloySmelter extends
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType()).addInfo("Controller Block for the Industrial Alloy Smelter")
-                .addInfo("Gains one parallel per voltage tier").addInfo("Gains one multiplier per coil tier")
-                .addInfo("Parallel = Tier * Coil Tier").addInfo("Gains 5% speed bonus per coil tier")
-                .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 5, 3, true)
-                .addController("Bottom center").addCasingInfoMin("Inconel Reinforced Casings", 8, false)
-                .addOtherStructurePart("Integral Encasement V", "Middle Layer")
-                .addOtherStructurePart("Heating Coils", "Above and below Integral Encasements")
-                .addInputBus("Any Inconel Reinforced Casing", 1).addOutputBus("Any Inconel Reinforced Casing", 1)
-                .addEnergyHatch("Any Inconel Reinforced Casing", 1)
-                .addMaintenanceHatch("Any Inconel Reinforced Casing", 1)
-                .addMufflerHatch("Any Inconel Reinforced Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+        tt.addMachineType(getMachineType())
+            .addInfo("Controller Block for the Industrial Alloy Smelter")
+            .addInfo("Gains one parallel per voltage tier")
+            .addInfo("Gains one multiplier per coil tier")
+            .addInfo("Parallel = Tier * Coil Tier")
+            .addInfo("Gains 5% speed bonus per coil tier")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .addSeparator()
+            .beginStructureBlock(3, 5, 3, true)
+            .addController("Bottom center")
+            .addCasingInfoMin("Inconel Reinforced Casings", 8, false)
+            .addOtherStructurePart("Integral Encasement V", "Middle Layer")
+            .addOtherStructurePart("Heating Coils", "Above and below Integral Encasements")
+            .addInputBus("Any Inconel Reinforced Casing", 1)
+            .addOutputBus("Any Inconel Reinforced Casing", 1)
+            .addEnergyHatch("Any Inconel Reinforced Casing", 1)
+            .addMaintenanceHatch("Any Inconel Reinforced Casing", 1)
+            .addMufflerHatch("Any Inconel Reinforced Casing", 1)
+            .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
@@ -132,24 +140,25 @@ public class GregtechMetaTileEntity_IndustrialAlloySmelter extends
     public IStructureDefinition<GregtechMetaTileEntity_IndustrialAlloySmelter> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialAlloySmelter>builder()
-                    .addShape(
-                            mName,
-                            transpose(
-                                    new String[][] { { "CCC", "CCC", "CCC" }, { "HHH", "H-H", "HHH" },
-                                            { "VVV", "V-V", "VVV" }, { "HHH", "H-H", "HHH" },
-                                            { "C~C", "CCC", "CCC" }, }))
-                    .addElement(
-                            'C',
-                            buildHatchAdder(GregtechMetaTileEntity_IndustrialAlloySmelter.class)
-                                    .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
-                                    .casingIndex(CASING_TEXTURE_ID).dot(1).buildAndChain(
-                                            onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 1))))
-                    .addElement(
-                            'H',
-                            ofCoil(
-                                    GregtechMetaTileEntity_IndustrialAlloySmelter::setCoilLevel,
-                                    GregtechMetaTileEntity_IndustrialAlloySmelter::getCoilLevel))
-                    .addElement('V', ofBlock(ModBlocks.blockCasingsTieredGTPP, 4)).build();
+                .addShape(
+                    mName,
+                    transpose(
+                        new String[][] { { "CCC", "CCC", "CCC" }, { "HHH", "H-H", "HHH" }, { "VVV", "V-V", "VVV" },
+                            { "HHH", "H-H", "HHH" }, { "C~C", "CCC", "CCC" }, }))
+                .addElement(
+                    'C',
+                    buildHatchAdder(GregtechMetaTileEntity_IndustrialAlloySmelter.class)
+                        .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
+                        .casingIndex(CASING_TEXTURE_ID)
+                        .dot(1)
+                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 1))))
+                .addElement(
+                    'H',
+                    ofCoil(
+                        GregtechMetaTileEntity_IndustrialAlloySmelter::setCoilLevel,
+                        GregtechMetaTileEntity_IndustrialAlloySmelter::getCoilLevel))
+                .addElement('V', ofBlock(ModBlocks.blockCasingsTieredGTPP, 4))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -171,9 +180,9 @@ public class GregtechMetaTileEntity_IndustrialAlloySmelter extends
         mLevel = 0;
         setCoilLevel(HeatingCoilLevel.None);
         return checkPiece(mName, 1, 4, 0) && mCasing >= 8
-                && getCoilLevel() != HeatingCoilLevel.None
-                && (mLevel = getCoilLevel().getTier() + 1) > 0
-                && checkHatch();
+            && getCoilLevel() != HeatingCoilLevel.None
+            && (mLevel = getCoilLevel().getTier() + 1) > 0
+            && checkHatch();
     }
 
     @Override
@@ -189,11 +198,12 @@ public class GregtechMetaTileEntity_IndustrialAlloySmelter extends
             @Override
             protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
                 return super.createOverclockCalculator(recipe).setSpeedBoost(100F / (100F + 5F * mLevel))
-                        .setHeatOC(true).setRecipeHeat(0)
-                        // Need to multiply by 2 because heat OC is done only once every 1800 and this one does it once
-                        // every
-                        // 900
-                        .setMachineHeat((int) (getCoilLevel().getHeat() * 2));
+                    .setHeatOC(true)
+                    .setRecipeHeat(0)
+                    // Need to multiply by 2 because heat OC is done only once every 1800 and this one does it once
+                    // every
+                    // 900
+                    .setMachineHeat((int) (getCoilLevel().getHeat() * 2));
             }
         }.setMaxParallelSupplier(this::getMaxParallelRecipes);
     }

@@ -33,7 +33,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_SteamMultiBase;
 
 public class GregtechMetaTileEntity_SteamMacerator
-        extends GregtechMeta_SteamMultiBase<GregtechMetaTileEntity_SteamMacerator> implements ISurvivalConstructable {
+    extends GregtechMeta_SteamMultiBase<GregtechMetaTileEntity_SteamMacerator> implements ISurvivalConstructable {
 
     private String mCasingName = "Bronze Plated Bricks";
     private static IStructureDefinition<GregtechMetaTileEntity_SteamMacerator> STRUCTURE_DEFINITION = null;
@@ -70,38 +70,47 @@ public class GregtechMetaTileEntity_SteamMacerator
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         if (mCasingName.contains("gt.blockcasings")) {
-            mCasingName = ItemList.Casing_BronzePlatedBricks.get(1).getDisplayName();
+            mCasingName = ItemList.Casing_BronzePlatedBricks.get(1)
+                .getDisplayName();
         }
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType()).addInfo("Controller Block for the Steam Macerator")
-                .addInfo("33.3% faster than using a single block Steam Macerator.")
-                .addInfo("Uses only 66.6% of the steam/s required compared to a single block Steam Macerator.")
-                .addInfo("Macerates up to " + getMaxParallelRecipes() + " things at a time").addSeparator()
-                .beginStructureBlock(3, 3, 3, true).addController("Front center")
-                .addCasingInfoMin(mCasingName, 14, false).addOtherStructurePart(TT_steaminputbus, "Any casing", 1)
-                .addOtherStructurePart(TT_steamoutputbus, "Any casing", 1)
-                .addOtherStructurePart(TT_steamhatch, "Any casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+        tt.addMachineType(getMachineType())
+            .addInfo("Controller Block for the Steam Macerator")
+            .addInfo("33.3% faster than using a single block Steam Macerator.")
+            .addInfo("Uses only 66.6% of the steam/s required compared to a single block Steam Macerator.")
+            .addInfo("Macerates up to " + getMaxParallelRecipes() + " things at a time")
+            .addSeparator()
+            .beginStructureBlock(3, 3, 3, true)
+            .addController("Front center")
+            .addCasingInfoMin(mCasingName, 14, false)
+            .addOtherStructurePart(TT_steaminputbus, "Any casing", 1)
+            .addOtherStructurePart(TT_steamoutputbus, "Any casing", 1)
+            .addOtherStructurePart(TT_steamhatch, "Any casing", 1)
+            .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
     @Override
     public IStructureDefinition<GregtechMetaTileEntity_SteamMacerator> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_SteamMacerator>builder().addShape(
+            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_SteamMacerator>builder()
+                .addShape(
                     mName,
                     transpose(
-                            new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" },
-                                    { "CCC", "CCC", "CCC" }, }))
-                    .addElement(
-                            'C',
-                            ofChain(
-                                    buildSteamInput(GregtechMetaTileEntity_SteamMacerator.class).casingIndex(10).dot(1)
-                                            .build(),
-                                    buildHatchAdder(GregtechMetaTileEntity_SteamMacerator.class).atLeast(
-                                            SteamHatchElement.InputBus_Steam,
-                                            SteamHatchElement.OutputBus_Steam).casingIndex(10).dot(1).build(),
-                                    onElementPass(x -> ++x.mCasing, ofBlock(sBlockCasings1, 10))))
-                    .build();
+                        new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" }, { "CCC", "CCC", "CCC" }, }))
+                .addElement(
+                    'C',
+                    ofChain(
+                        buildSteamInput(GregtechMetaTileEntity_SteamMacerator.class).casingIndex(10)
+                            .dot(1)
+                            .build(),
+                        buildHatchAdder(GregtechMetaTileEntity_SteamMacerator.class)
+                            .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam)
+                            .casingIndex(10)
+                            .dot(1)
+                            .build(),
+                        onElementPass(x -> ++x.mCasing, ofBlock(sBlockCasings1, 10))))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -141,7 +150,9 @@ public class GregtechMetaTileEntity_SteamMacerator
             @Override
             @Nonnull
             protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
-                return GT_OverclockCalculator.ofNoOverclock(recipe).setEUtDiscount(1.33F).setSpeedBoost(1.5F);
+                return GT_OverclockCalculator.ofNoOverclock(recipe)
+                    .setEUtDiscount(1.33F)
+                    .setSpeedBoost(1.5F);
             }
 
         }.setMaxParallel(getMaxParallelRecipes());

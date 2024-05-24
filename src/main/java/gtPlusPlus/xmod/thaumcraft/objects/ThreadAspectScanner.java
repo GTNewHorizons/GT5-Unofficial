@@ -40,10 +40,13 @@ public class ThreadAspectScanner extends Thread {
             nameKey = ItemUtils.getUnlocalizedItemName(aStack);
         } catch (NullPointerException n) {
             try {
-                nameKey = Utils.sanitizeString(aStack.getDisplayName().toLowerCase());
+                nameKey = Utils.sanitizeString(
+                    aStack.getDisplayName()
+                        .toLowerCase());
             } catch (NullPointerException n2) {
                 try {
-                    nameKey = aStack.getItem().getUnlocalizedName();
+                    nameKey = aStack.getItem()
+                        .getUnlocalizedName();
                 } catch (NullPointerException n3) {
                     nameKey = "BadItemsGalore";
                 }
@@ -67,7 +70,8 @@ public class ThreadAspectScanner extends Thread {
             long mItemsCounter = 0;
 
             // First, find blocks
-            iterator = Block.blockRegistry.getKeys().iterator();
+            iterator = Block.blockRegistry.getKeys()
+                .iterator();
             while (iterator.hasNext()) {
                 String s = (String) iterator.next();
                 Block block = (Block) Block.blockRegistry.getObject(s);
@@ -79,7 +83,8 @@ public class ThreadAspectScanner extends Thread {
             Logger.INFO("Completed Block Scan. Counted " + mBlocksCounter);
 
             // Second Find items, Skipping things that exist.
-            iterator = Item.itemRegistry.getKeys().iterator();
+            iterator = Item.itemRegistry.getKeys()
+                .iterator();
             while (iterator.hasNext()) {
                 String s = (String) iterator.next();
                 Item item = (Item) Item.itemRegistry.getObject(s);
@@ -119,7 +124,7 @@ public class ThreadAspectScanner extends Thread {
                     }
                     for (ItemStack stack : group) {
                         thaumcraft.api.aspects.AspectList a = thaumcraft.common.lib.crafting.ThaumcraftCraftingManager
-                                .getObjectTags(stack);
+                            .getObjectTags(stack);
                         if (a == null) {
                             continue;
                         } else {
@@ -132,10 +137,10 @@ public class ThreadAspectScanner extends Thread {
                             try {
                                 List<String> mList = new ArrayList<>();
                                 mList.add(
-                                        stack.getDisplayName() + " | Meta: "
-                                                + stack.getItemDamage()
-                                                + " | Unlocal: "
-                                                + stack.getUnlocalizedName());
+                                    stack.getDisplayName() + " | Meta: "
+                                        + stack.getItemDamage()
+                                        + " | Unlocal: "
+                                        + stack.getUnlocalizedName());
                                 for (Pair<String, Integer> r : aspectPairs) {
                                     if (r != null) {
                                         mList.add(r.getKey() + " x" + r.getValue());
@@ -153,7 +158,7 @@ public class ThreadAspectScanner extends Thread {
                 }
             }
             Logger.INFO(
-                    "Completed Aspect Iteration. AspectInfo.txt is now available to process in the GTplusplus configuration folder.");
+                "Completed Aspect Iteration. AspectInfo.txt is now available to process in the GTplusplus configuration folder.");
             CommandDumpAspects.mLastScanTime = System.currentTimeMillis();
         }
     }

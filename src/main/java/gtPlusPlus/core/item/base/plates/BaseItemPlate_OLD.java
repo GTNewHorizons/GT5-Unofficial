@@ -28,12 +28,12 @@ public class BaseItemPlate_OLD extends Item {
     protected final String chemicalNotation;
 
     public BaseItemPlate_OLD(final String unlocalizedName, final String materialName, final int colour,
-            final int sRadioactivity) {
+        final int sRadioactivity) {
         this(unlocalizedName, materialName, "NullFormula", colour, sRadioactivity);
     }
 
     public BaseItemPlate_OLD(final String unlocalizedName, final String materialName, final String mChemicalFormula,
-            final int colour, final int sRadioactivity) {
+        final int colour, final int sRadioactivity) {
         this.setUnlocalizedName("itemPlate" + unlocalizedName);
         this.setCreativeTab(AddToCreativeTab.tabMisc);
         this.unlocalName = "itemPlate" + unlocalizedName;
@@ -50,7 +50,8 @@ public class BaseItemPlate_OLD extends Item {
         this.sRadiation = sRadioactivity;
         GameRegistry.registerItem(this, "itemPlate" + unlocalizedName);
         String temp;
-        if (this.unlocalName.toLowerCase().contains("itemplate")) {
+        if (this.unlocalName.toLowerCase()
+            .contains("itemplate")) {
             temp = this.unlocalName.replace("itemP", "p");
             if ((temp != null) && !temp.equals("")) {
                 GT_OreDictUnificator.registerOre(temp, ItemUtils.getSimpleStack(this));
@@ -72,7 +73,7 @@ public class BaseItemPlate_OLD extends Item {
 
     @Override
     public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
-            final boolean p_77663_5_) {
+        final boolean p_77663_5_) {
         EntityUtils.applyRadiationDamageToEntity(iStack.stackSize, this.sRadiation, world, entityHolding);
     }
 

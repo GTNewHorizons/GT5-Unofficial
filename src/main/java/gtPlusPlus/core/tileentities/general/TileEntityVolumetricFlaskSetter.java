@@ -60,11 +60,13 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
 
     // Rename to hasCircuitToConfigure
     public final boolean hasFlask() {
-        for (int i = 0; i < this.getInventory().getInventory().length - 1; i++) {
+        for (int i = 0; i < this.getInventory()
+            .getInventory().length - 1; i++) {
             if (i == Container_VolumetricFlaskSetter.SLOT_OUTPUT) {
                 continue;
             }
-            if (this.getInventory().getInventory()[i] != null) {
+            if (this.getInventory()
+                .getInventory()[i] != null) {
                 return true;
             }
         }
@@ -116,7 +118,9 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
             return false;
         }
 
-        ItemStack[] aInputs = this.getInventory().getInventory().clone();
+        ItemStack[] aInputs = this.getInventory()
+            .getInventory()
+            .clone();
 
         // Check if there is output in slot.
         Boolean hasOutput = false;
@@ -165,17 +169,15 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
                     // Check that the Circuit in the Output slot is not null and the same type as the circuit input.
                     if (aTypeInCheckedSlot > 0 && (aTypeInSlot == aTypeInCheckedSlot) && f != null) {
                         if (g.getItem() == f.getItem()
-                                && VolumetricFlaskHelper.getFlaskCapacity(f) == getCapacityForSlot(e)
-                                && ((aInputFluidStack == null && aFluidInCheckedSlot == null)
-                                        || aInputFluidStack.isFluidEqual(aFluidInCheckedSlot))) {
+                            && VolumetricFlaskHelper.getFlaskCapacity(f) == getCapacityForSlot(e)
+                            && ((aInputFluidStack == null && aFluidInCheckedSlot == null)
+                                || aInputFluidStack.isFluidEqual(aFluidInCheckedSlot))) {
                             log(
-                                    "Input Slot Flask Contains: "
-                                            + (aInputFluidStack != null ? aInputFluidStack.getLocalizedName()
-                                                    : "Empty"));
+                                "Input Slot Flask Contains: "
+                                    + (aInputFluidStack != null ? aInputFluidStack.getLocalizedName() : "Empty"));
                             log(
-                                    "Output Slot Flask Contains: "
-                                            + (aFluidInCheckedSlot != null ? aFluidInCheckedSlot.getLocalizedName()
-                                                    : "Empty"));
+                                "Output Slot Flask Contains: "
+                                    + (aFluidInCheckedSlot != null ? aFluidInCheckedSlot.getLocalizedName() : "Empty"));
                             aSize = f.stackSize + g.stackSize;
                             if (aSize > 16) {
                                 aInputStack = g.copy();
@@ -276,37 +278,44 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
 
     @Override
     public int getSizeInventory() {
-        return this.getInventory().getSizeInventory();
+        return this.getInventory()
+            .getSizeInventory();
     }
 
     @Override
     public ItemStack getStackInSlot(final int slot) {
-        return this.getInventory().getStackInSlot(slot);
+        return this.getInventory()
+            .getStackInSlot(slot);
     }
 
     @Override
     public ItemStack decrStackSize(final int slot, final int count) {
-        return this.getInventory().decrStackSize(slot, count);
+        return this.getInventory()
+            .decrStackSize(slot, count);
     }
 
     @Override
     public ItemStack getStackInSlotOnClosing(final int slot) {
-        return this.getInventory().getStackInSlotOnClosing(slot);
+        return this.getInventory()
+            .getStackInSlotOnClosing(slot);
     }
 
     @Override
     public void setInventorySlotContents(final int slot, final ItemStack stack) {
-        this.getInventory().setInventorySlotContents(slot, stack);
+        this.getInventory()
+            .setInventorySlotContents(slot, stack);
     }
 
     @Override
     public int getInventoryStackLimit() {
-        return this.getInventory().getInventoryStackLimit();
+        return this.getInventory()
+            .getInventoryStackLimit();
     }
 
     @Override
     public boolean isUseableByPlayer(final EntityPlayer entityplayer) {
-        return this.getInventory().isUseableByPlayer(entityplayer);
+        return this.getInventory()
+            .isUseableByPlayer(entityplayer);
     }
 
     @Override
@@ -314,7 +323,8 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
         this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, 1);
         this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType());
         this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord - 1, this.zCoord, this.getBlockType());
-        this.getInventory().openInventory();
+        this.getInventory()
+            .openInventory();
     }
 
     @Override
@@ -322,18 +332,21 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
         this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, 1);
         this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType());
         this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord - 1, this.zCoord, this.getBlockType());
-        this.getInventory().closeInventory();
+        this.getInventory()
+            .closeInventory();
     }
 
     @Override
     public boolean isItemValidForSlot(final int slot, final ItemStack itemstack) {
-        return this.getInventory().isItemValidForSlot(slot, itemstack);
+        return this.getInventory()
+            .isItemValidForSlot(slot, itemstack);
     }
 
     @Override
     public int[] getAccessibleSlotsFromSide(final int p_94128_1_) {
         final int[] accessibleSides = new int[this.getSizeInventory()];
-        for (int r = 0; r < this.getInventory().getSizeInventory(); r++) {
+        for (int r = 0; r < this.getInventory()
+            .getSizeInventory(); r++) {
             accessibleSides[r] = r;
         }
         return accessibleSides;

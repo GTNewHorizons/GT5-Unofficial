@@ -77,9 +77,8 @@ public class ChargingHelper {
 
                 for (GregtechMetaWirelessCharger mEntityTemp : mChargerMap.values()) {
                     if (mEntityTemp != null) {
-                        if (mEntityTemp.getBaseMetaTileEntity() == null
-                                || !mEntityTemp.getBaseMetaTileEntity().isAllowedToWork())
-                            continue;
+                        if (mEntityTemp.getBaseMetaTileEntity() == null || !mEntityTemp.getBaseMetaTileEntity()
+                            .isAllowedToWork()) continue;
                         if (mPlayerMan.getEntityWorld().provider.dimensionId == mEntityTemp.getDimensionID()) {
                             mVoltage = mEntityTemp.maxEUInput();
                             mEuStored = mEntityTemp.getEUVar();
@@ -123,7 +122,8 @@ public class ChargingHelper {
             if (!mChargerMap.isEmpty()) {
                 for (BlockPos aPos : mChargerMap.keySet()) {
                     GregtechMetaWirelessCharger r = mChargerMap.get(aPos);
-                    if (r == null || r.getBaseMetaTileEntity().isInvalidTileEntity()) {
+                    if (r == null || r.getBaseMetaTileEntity()
+                        .isInvalidTileEntity()) {
                         mChargerMap.remove(aPos);
                     }
                 }
@@ -179,7 +179,7 @@ public class ChargingHelper {
     }
 
     private boolean canCharge(GregtechMetaWirelessCharger charger, EntityPlayer chargeablePlayer,
-            Map<String, UUID> longRangeChargers, Map<String, UUID> shortRangeChargers) {
+        Map<String, UUID> longRangeChargers, Map<String, UUID> shortRangeChargers) {
         if (charger.getMode() == 0) {
             return !longRangeChargers.isEmpty() && longRangeChargers.containsKey(chargeablePlayer.getDisplayName());
         } else if (charger.getMode() == 1) {
@@ -197,8 +197,8 @@ public class ChargingHelper {
             return 0;
         }
         return mEntityTemp.getDistanceBetweenTwoPositions(
-                mEntityTemp.getTileEntityPosition(),
-                mEntityTemp.getPositionOfEntity(mPlayerMan));
+            mEntityTemp.getTileEntityPosition(),
+            mEntityTemp.getPositionOfEntity(mPlayerMan));
     }
 
     private void chargeItems(@Nonnull GregtechMetaWirelessCharger mEntity, ItemStack[] mItems) {
@@ -235,13 +235,17 @@ public class ChargingHelper {
 
                     // Try to get charge direct from NBT for GT and IC2 stacks
                     if (mTemp.getItem() instanceof GT_MetaGenerated_Tool_01
-                            || mTemp.getItem() instanceof GT_MetaGenerated_Item_01
-                            || mTemp.getItem() instanceof GT_MetaGenerated_Item_02
-                            || mTemp.getItem() instanceof GT_MetaGenerated_Item_03
-                            || mTemp.getItem().getClass().getName()
-                                    .equalsIgnoreCase(GT_MetaGenerated_Tool_01.class.getName())) {
+                        || mTemp.getItem() instanceof GT_MetaGenerated_Item_01
+                        || mTemp.getItem() instanceof GT_MetaGenerated_Item_02
+                        || mTemp.getItem() instanceof GT_MetaGenerated_Item_03
+                        || mTemp.getItem()
+                            .getClass()
+                            .getName()
+                            .equalsIgnoreCase(GT_MetaGenerated_Tool_01.class.getName())) {
                         if (!NBTUtils.hasKey(mTemp, "GT.ItemCharge")) {
-                            if (!mTemp.getDisplayName().toLowerCase().contains("battery")) {
+                            if (!mTemp.getDisplayName()
+                                .toLowerCase()
+                                .contains("battery")) {
                                 if (!GT_ModHandler.isElectricItem(mTemp)) {
                                     continue;
                                 }
@@ -268,21 +272,20 @@ public class ChargingHelper {
                     if ((mitemCurrentCharge + (mVoltageIncrease * 20)) <= (mItemMaxCharge - (mVoltageIncrease * 20))) {
                         mMulti = 20;
                     } else if ((mitemCurrentCharge + (mVoltageIncrease * 10))
-                            <= (mItemMaxCharge - (mVoltageIncrease * 10))) {
-                                mMulti = 10;
-                            } else
-                        if ((mitemCurrentCharge + (mVoltageIncrease * 5))
-                                <= (mItemMaxCharge - (mVoltageIncrease * 5))) {
-                                    mMulti = 5;
-                                } else {
-                                    mMulti = 1;
-                                }
+                        <= (mItemMaxCharge - (mVoltageIncrease * 10))) {
+                            mMulti = 10;
+                        } else if ((mitemCurrentCharge + (mVoltageIncrease * 5))
+                            <= (mItemMaxCharge - (mVoltageIncrease * 5))) {
+                                mMulti = 5;
+                            } else {
+                                mMulti = 1;
+                            }
 
                     int mMultiVoltage = (int) (mMulti * mVoltageIncrease);
 
                     if ((mitemCurrentCharge + mMultiVoltage) <= mItemMaxCharge) {
                         if (GT_ModHandler.chargeElectricItem(mTemp, mMultiVoltage, Integer.MAX_VALUE, true, false)
-                                > 0) {
+                            > 0) {
                             for (int i = 0; i < mMulti; i++) {
                                 ElectricItem.manager.charge(mTemp, mVoltageIncrease, Integer.MAX_VALUE, false, false);
                             }
@@ -310,12 +313,12 @@ public class ChargingHelper {
                     IEnergyContainerItem rfItem = (IEnergyContainerItem) mTemp.getItem();
                     if (rfItem != null) {
                         long chargedPower = Math.min(
-                                rfItem.getMaxEnergyStored(mTemp) - rfItem.getEnergyStored(mTemp),
-                                mEntity.getEUVar() * mEUtoRF / 100L);
+                            rfItem.getMaxEnergyStored(mTemp) - rfItem.getEnergyStored(mTemp),
+                            mEntity.getEUVar() * mEUtoRF / 100L);
                         chargedPower = rfItem.receiveEnergy(
-                                mTemp,
-                                chargedPower > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) chargedPower,
-                                false);
+                            mTemp,
+                            chargedPower > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) chargedPower,
+                            false);
                         chargedPower = chargedPower * 100L / mEUtoRF;
                         mEntity.setEUVar(Math.max(mEntity.getEUVar() - chargedPower, 0));
                         mEuStored = mEntity.getEUVar();

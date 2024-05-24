@@ -39,9 +39,9 @@ public class BaseItemCell extends BaseItemComponent {
         super(unlocalName, localName, RGBa);
         this.fluidColour = RGBa;
         FluidContainerRegistry.registerFluidContainer(
-                FluidUtils.getFluidStack(cellFluid, 1000),
-                ItemUtils.getSimpleStack(this),
-                Ic2Items.cell.copy());
+            FluidUtils.getFluidStack(cellFluid, 1000),
+            ItemUtils.getSimpleStack(this),
+            Ic2Items.cell.copy());
     }
 
     @Override

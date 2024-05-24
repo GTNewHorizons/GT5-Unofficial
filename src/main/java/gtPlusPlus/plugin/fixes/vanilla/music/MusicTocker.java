@@ -48,13 +48,15 @@ public class MusicTocker extends MusicTicker implements Runnable {
         try {
             Object m = f.get(mMinecraft);
             if (m != null) {
-                if (m instanceof MusicTocker || m.getClass().isAssignableFrom(getClass())) {
+                if (m instanceof MusicTocker || m.getClass()
+                    .isAssignableFrom(getClass())) {
                     mPlugin.log("[BGM] Success.");
                     return true;
-                } else if (m instanceof MusicTicker || m.getClass().isAssignableFrom(MusicTicker.class)) {
-                    mPlugin.log("[BGM] Found Vanilla MusicTicker, but may be instance of MusicTocker.");
-                    return true;
-                }
+                } else if (m instanceof MusicTicker || m.getClass()
+                    .isAssignableFrom(MusicTicker.class)) {
+                        mPlugin.log("[BGM] Found Vanilla MusicTicker, but may be instance of MusicTocker.");
+                        return true;
+                    }
             }
         } catch (IllegalArgumentException | IllegalAccessException e) {}
 
@@ -88,25 +90,29 @@ public class MusicTocker extends MusicTicker implements Runnable {
         MusicType musictype = this.mMinecraft.func_147109_W();
 
         if (this.mSound != null) {
-            if (!musictype.getMusicTickerLocation().equals(this.mSound.getPositionedSoundLocation())) {
-                this.mMinecraft.getSoundHandler().stopSound(this.mSound);
+            if (!musictype.getMusicTickerLocation()
+                .equals(this.mSound.getPositionedSoundLocation())) {
+                this.mMinecraft.getSoundHandler()
+                    .stopSound(this.mSound);
                 this.mTimeUntilNextTrack = MathHelper.getRandomIntegerInRange(this.mRandom, 0, getDelay() / 2);
                 updateInternalNumber();
                 Logger.INFO("[BGM] Adjusted BGM delay 1");
             }
-            if (!this.mMinecraft.getSoundHandler().isSoundPlaying(this.mSound)) {
+            if (!this.mMinecraft.getSoundHandler()
+                .isSoundPlaying(this.mSound)) {
                 this.mSound = null;
                 updateInternalSound(null);
                 this.mTimeUntilNextTrack = Math.min(
-                        MathHelper.getRandomIntegerInRange(this.mRandom, getDelay(), getDelay() * 2),
-                        this.mTimeUntilNextTrack);
+                    MathHelper.getRandomIntegerInRange(this.mRandom, getDelay(), getDelay() * 2),
+                    this.mTimeUntilNextTrack);
                 updateInternalNumber();
                 Logger.INFO("[BGM] Adjusted BGM delay 2");
             }
         } else if (this.mSound == null && this.mTimeUntilNextTrack-- <= 0) {
             this.mSound = PositionedSoundRecord.func_147673_a(musictype.getMusicTickerLocation());
             updateInternalSound(mSound);
-            this.mMinecraft.getSoundHandler().playSound(this.mSound);
+            this.mMinecraft.getSoundHandler()
+                .playSound(this.mSound);
             this.mTimeUntilNextTrack = getDelay();
             updateInternalNumber();
             Logger.INFO("[BGM] Adjusted BGM 3");

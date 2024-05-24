@@ -59,14 +59,14 @@ public class Container_ProjectTable extends Container {
         this.addSlotToContainer(new SlotNoInput(this.inventoryOutputs, 1, 26 + (18 * 6), 44));
 
         this.addSlotToContainer(
-                new SlotCraftingNoCollect(inventory.player, this.craftMatrix, this.craftResult, 0, 26 + (18 * 4), 25));
+            new SlotCraftingNoCollect(inventory.player, this.craftMatrix, this.craftResult, 0, 26 + (18 * 4), 25));
 
         int o = 0;
         // Storage Side
         for (var6 = 0; var6 < 3; ++var6) {
             for (var7 = 0; var7 < 3; ++var7) {
                 this.addSlotToContainer(
-                        new Slot(this.craftMatrix, nextFreeSlot, 8 + 18 + (var7 * 18), 8 + (var6 * 18)));
+                    new Slot(this.craftMatrix, nextFreeSlot, 8 + 18 + (var7 * 18), 8 + (var6 * 18)));
                 this.slotGrid[o] = nextFreeSlot;
                 nextFreeSlot++;
                 o++;
@@ -94,8 +94,9 @@ public class Container_ProjectTable extends Container {
     @Override
     public void onCraftMatrixChanged(IInventory p_75130_1_) {
         this.craftResult.setInventorySlotContents(
-                0,
-                CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.worldObj));
+            0,
+            CraftingManager.getInstance()
+                .findMatchingRecipe(this.craftMatrix, this.worldObj));
     }
 
     /**
@@ -116,7 +117,7 @@ public class Container_ProjectTable extends Container {
 
     @Override
     public ItemStack slotClick(final int aSlotIndex, final int aMouseclick, final int aShifthold,
-            final EntityPlayer aPlayer) {
+        final EntityPlayer aPlayer) {
 
         if (!aPlayer.worldObj.isRemote) {
             if ((aSlotIndex == 999) || (aSlotIndex == -999)) {

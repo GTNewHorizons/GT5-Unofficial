@@ -49,9 +49,9 @@ public class GregtechMetaCasingBlocks5 extends GregtechMetaCasingBlocksAbstract 
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", "SpaceTime Continuum Ripper");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", "Neutron Shielding Core");
         GT_LanguageManager
-                .addStringLocalization(this.getUnlocalizedName() + ".12.name", "Cosmic Fabric Shielding Core");
+            .addStringLocalization(this.getUnlocalizedName() + ".12.name", "Cosmic Fabric Shielding Core");
         GT_LanguageManager
-                .addStringLocalization(this.getUnlocalizedName() + ".13.name", "Infinity Infused Shielding Core");
+            .addStringLocalization(this.getUnlocalizedName() + ".13.name", "Infinity Infused Shielding Core");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".14.name", "SpaceTime Bending Core");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", "Force Field Glass");
 
@@ -152,7 +152,7 @@ public class GregtechMetaCasingBlocks5 extends GregtechMetaCasingBlocksAbstract 
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord,
-            final int ordinalSide) {
+        final int ordinalSide) {
         final GregtechMetaCasingBlocks5 i = this;
         return mGrinderOverlayHandler.handleCasingsGT(aWorld, xCoord, yCoord, zCoord, ordinalSide, i);
     }

@@ -50,7 +50,7 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.helpers.FlotationRecipeHandler;
 
 public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase<GregtechMTE_FrothFlotationCell>
-        implements ISurvivalConstructable {
+    implements ISurvivalConstructable {
 
     private int mCasing;
     private static IStructureDefinition<GregtechMTE_FrothFlotationCell> STRUCTURE_DEFINITION = null;
@@ -76,13 +76,21 @@ public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase<
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType()).addInfo("Process that milled ore!")
-                .addInfo("You can only ever process one type of material per controller")
-                .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(7, 9, 7, true)
-                .addController("Front Center").addCasingInfoMin("Inconel Reinforced Casing", 68, false)
-                .addCasingInfoMin("Flotation Casing", 52, false).addInputBus("Bottom Casing", 1)
-                .addInputHatch("Bottom Casing", 1).addOutputHatch("Bottom Casing", 1).addEnergyHatch("Bottom Casing", 1)
-                .addMaintenanceHatch("Bottom Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+        tt.addMachineType(getMachineType())
+            .addInfo("Process that milled ore!")
+            .addInfo("You can only ever process one type of material per controller")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .addSeparator()
+            .beginStructureBlock(7, 9, 7, true)
+            .addController("Front Center")
+            .addCasingInfoMin("Inconel Reinforced Casing", 68, false)
+            .addCasingInfoMin("Flotation Casing", 52, false)
+            .addInputBus("Bottom Casing", 1)
+            .addInputHatch("Bottom Casing", 1)
+            .addOutputHatch("Bottom Casing", 1)
+            .addEnergyHatch("Bottom Casing", 1)
+            .addMaintenanceHatch("Bottom Casing", 1)
+            .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
@@ -119,25 +127,28 @@ public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase<
     @Override
     public IStructureDefinition<GregtechMTE_FrothFlotationCell> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMTE_FrothFlotationCell>builder().addShape(
+            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMTE_FrothFlotationCell>builder()
+                .addShape(
                     mName,
                     new String[][] { { "       ", "       ", "   X   ", "  X~X  ", "   X   ", "       ", "       " },
-                            { "       ", "   F   ", "  FFF  ", " FF FF ", "  FFF  ", "   F   ", "       " },
-                            { "       ", "   F   ", "  F F  ", " F   F ", "  F F  ", "   F   ", "       " },
-                            { "       ", "   F   ", "  F F  ", " F   F ", "  F F  ", "   F   ", "       " },
-                            { "       ", "   F   ", "  F F  ", " F   F ", "  F F  ", "   F   ", "       " },
-                            { "       ", "   F   ", "  F F  ", " F   F ", "  F F  ", "   F   ", "       " },
-                            { "       ", "   F   ", "  F F  ", " F   F ", "  F F  ", "   F   ", "       " },
-                            { "  CCC  ", " CCCCC ", "CCCCCCC", "CCCCCCC", "CCCCCCC", " CCCCC ", "  CCC  " },
-                            { "  CCC  ", " CCCCC ", "CCCCCCC", "CCCCCCC", "CCCCCCC", " CCCCC ", "  CCC  " }, })
-                    .addElement(
-                            'C',
-                            buildHatchAdder(GregtechMTE_FrothFlotationCell.class)
-                                    .atLeast(InputBus, InputHatch, OutputHatch, Maintenance, Energy)
-                                    .casingIndex(getCasingTextureId()).dot(1).buildAndChain(
-                                            onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 1))))
-                    .addElement('F', ofBlock(ModBlocks.blockSpecialMultiCasings, 9))
-                    .addElement('X', ofBlock(ModBlocks.blockCasings3Misc, 1)).build();
+                        { "       ", "   F   ", "  FFF  ", " FF FF ", "  FFF  ", "   F   ", "       " },
+                        { "       ", "   F   ", "  F F  ", " F   F ", "  F F  ", "   F   ", "       " },
+                        { "       ", "   F   ", "  F F  ", " F   F ", "  F F  ", "   F   ", "       " },
+                        { "       ", "   F   ", "  F F  ", " F   F ", "  F F  ", "   F   ", "       " },
+                        { "       ", "   F   ", "  F F  ", " F   F ", "  F F  ", "   F   ", "       " },
+                        { "       ", "   F   ", "  F F  ", " F   F ", "  F F  ", "   F   ", "       " },
+                        { "  CCC  ", " CCCCC ", "CCCCCCC", "CCCCCCC", "CCCCCCC", " CCCCC ", "  CCC  " },
+                        { "  CCC  ", " CCCCC ", "CCCCCCC", "CCCCCCC", "CCCCCCC", " CCCCC ", "  CCC  " }, })
+                .addElement(
+                    'C',
+                    buildHatchAdder(GregtechMTE_FrothFlotationCell.class)
+                        .atLeast(InputBus, InputHatch, OutputHatch, Maintenance, Energy)
+                        .casingIndex(getCasingTextureId())
+                        .dot(1)
+                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 1))))
+                .addElement('F', ofBlock(ModBlocks.blockSpecialMultiCasings, 9))
+                .addElement('X', ofBlock(ModBlocks.blockCasings3Misc, 1))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -192,7 +203,7 @@ public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase<
                  * material now.
                  */
                 Material foundMaterial = FlotationRecipeHandler
-                        .getMaterialOfMilledProduct(FlotationRecipeHandler.findMilledStack(recipe));
+                    .getMaterialOfMilledProduct(FlotationRecipeHandler.findMilledStack(recipe));
                 String foundMaterialName = null;
                 if (foundMaterial != null) {
                     foundMaterialName = foundMaterial.getUnlocalizedName();
@@ -248,10 +259,13 @@ public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase<
 
     @Override
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
-        if (stack.hasTagCompound() && stack.getTagCompound().hasKey("lockedMaterialName")) {
+        if (stack.hasTagCompound() && stack.getTagCompound()
+            .hasKey("lockedMaterialName")) {
             tooltip.add(
-                    StatCollector.translateToLocal("tooltip.flotationCell.lockedTo") + " "
-                            + StatCollector.translateToLocal(stack.getTagCompound().getString("lockedMaterialName")));
+                StatCollector.translateToLocal("tooltip.flotationCell.lockedTo") + " "
+                    + StatCollector.translateToLocal(
+                        stack.getTagCompound()
+                            .getString("lockedMaterialName")));
         }
     }
 

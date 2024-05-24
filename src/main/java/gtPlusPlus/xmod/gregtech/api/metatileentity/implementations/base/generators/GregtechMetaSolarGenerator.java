@@ -22,12 +22,12 @@ public abstract class GregtechMetaSolarGenerator extends GT_MetaTileEntity_Basic
     public static int sEnergyPerTick = 16;
 
     public GregtechMetaSolarGenerator(final int aID, final String aName, final String aNameRegional, final int aTier,
-            final String aDescription, final ITexture... aTextures) {
+        final String aDescription, final ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, 3, aDescription, aTextures);
     }
 
     public GregtechMetaSolarGenerator(final String aName, final int aTier, final String[] aDescription,
-            final ITexture[][][] aTextures) {
+        final ITexture[][][] aTextures) {
         super(aName, aTier, 3, aDescription, aTextures);
     }
 
@@ -51,12 +51,10 @@ public abstract class GregtechMetaSolarGenerator extends GT_MetaTileEntity_Basic
 
     @Override
     public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
-            final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
-        return this.mTextures[(aActive ? 5 : 0)
-                + (side == facing ? 0
-                        : side == facing.getOpposite() ? 1
-                                : side == ForgeDirection.DOWN ? 2 : side == ForgeDirection.UP ? 3 : 4)][aColorIndex
-                                        + 1];
+        final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+        return this.mTextures[(aActive ? 5 : 0) + (side == facing ? 0
+            : side == facing.getOpposite() ? 1
+                : side == ForgeDirection.DOWN ? 2 : side == ForgeDirection.UP ? 3 : 4)][aColorIndex + 1];
     }
 
     @Override
@@ -145,7 +143,8 @@ public abstract class GregtechMetaSolarGenerator extends GT_MetaTileEntity_Basic
 
     @Override
     public long maxEUOutput() {
-        return this.getBaseMetaTileEntity().isAllowedToWork() ? V[this.mTier] : 0;
+        return this.getBaseMetaTileEntity()
+            .isAllowedToWork() ? V[this.mTier] : 0;
     }
 
     @Override
@@ -156,9 +155,9 @@ public abstract class GregtechMetaSolarGenerator extends GT_MetaTileEntity_Basic
     @Override
     public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
         if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork()
-                && (aTick > 20L)
-                && (aBaseMetaTileEntity.getUniversalEnergyStored()
-                        < (this.maxEUOutput() + aBaseMetaTileEntity.getEUCapacity()))) {
+            && (aTick > 20L)
+            && (aBaseMetaTileEntity.getUniversalEnergyStored()
+                < (this.maxEUOutput() + aBaseMetaTileEntity.getEUCapacity()))) {
 
             if (this.mSolarCharge <= 20) {
                 this.mSolarCharge = 20;
@@ -172,12 +171,13 @@ public abstract class GregtechMetaSolarGenerator extends GT_MetaTileEntity_Basic
             if ((aTick % 25L) == 0L) {
                 if (this.mSolarCharge > 100) {
                     if ((this.mProcessingEnergy > 0) && (aBaseMetaTileEntity.isAllowedToWork())
-                            && ((aTick % 256L) == 0L)
-                            && (!aBaseMetaTileEntity.getWorld().isThundering()
-                                    && (aBaseMetaTileEntity.getUniversalEnergyStored()
-                                            < ((this.maxEUOutput() * 20) + this.getMinimumStoredEU())))) {
+                        && ((aTick % 256L) == 0L)
+                        && (!aBaseMetaTileEntity.getWorld()
+                            .isThundering()
+                            && (aBaseMetaTileEntity.getUniversalEnergyStored()
+                                < ((this.maxEUOutput() * 20) + this.getMinimumStoredEU())))) {
                         this.getBaseMetaTileEntity()
-                                .increaseStoredEnergyUnits((sEnergyPerTick * this.getEfficiency()) / 10, false);
+                            .increaseStoredEnergyUnits((sEnergyPerTick * this.getEfficiency()) / 10, false);
                     }
                 }
             }
@@ -188,19 +188,21 @@ public abstract class GregtechMetaSolarGenerator extends GT_MetaTileEntity_Basic
             }
 
             if ((this.mProcessingEnergy <= 0) && (aBaseMetaTileEntity.isAllowedToWork())
-                    && ((aTick % 256L) == 0L)
-                    && (!aBaseMetaTileEntity.getWorld().isThundering())) {
-                final boolean bRain = aBaseMetaTileEntity.getWorld().isRaining()
-                        && (aBaseMetaTileEntity.getBiome().rainfall > 0.0F);
+                && ((aTick % 256L) == 0L)
+                && (!aBaseMetaTileEntity.getWorld()
+                    .isThundering())) {
+                final boolean bRain = aBaseMetaTileEntity.getWorld()
+                    .isRaining() && (aBaseMetaTileEntity.getBiome().rainfall > 0.0F);
                 this.mProcessingEnergy += (bRain && (aBaseMetaTileEntity.getWorld().skylightSubtracted >= 4))
-                        || !aBaseMetaTileEntity.getSkyAtSide(ForgeDirection.UP) ? 0
-                                : !bRain && aBaseMetaTileEntity.getWorld().isDaytime() ? 8 : 1;
+                    || !aBaseMetaTileEntity.getSkyAtSide(ForgeDirection.UP) ? 0
+                        : !bRain && aBaseMetaTileEntity.getWorld()
+                            .isDaytime() ? 8 : 1;
             }
 
             if (aBaseMetaTileEntity.isServerSide()) {
                 aBaseMetaTileEntity.setActive(
-                        aBaseMetaTileEntity.isAllowedToWork() && (aBaseMetaTileEntity.getUniversalEnergyStored()
-                                >= (this.maxEUOutput() + this.getMinimumStoredEU())));
+                    aBaseMetaTileEntity.isAllowedToWork() && (aBaseMetaTileEntity.getUniversalEnergyStored()
+                        >= (this.maxEUOutput() + this.getMinimumStoredEU())));
             }
         }
     }

@@ -27,10 +27,10 @@ public class GregtechIndustrialMassFabricator {
     private static void run1() {
         // Industrial Matter Fabricator Multiblock
         GregtechItemList.Industrial_MassFab.set(
-                new GregtechMetaTileEntity_MassFabricator(
-                        799,
-                        "industrialmassfab.controller.tier.single",
-                        "Matter Fabrication CPU").getStackForm(1L));
+            new GregtechMetaTileEntity_MassFabricator(
+                799,
+                "industrialmassfab.controller.tier.single",
+                "Matter Fabrication CPU").getStackForm(1L));
     }
 
     private static void generateRecipes() {
@@ -39,92 +39,92 @@ public class GregtechIndustrialMassFabricator {
 
         // Basic UUA1
         GT_Recipe UUA_From_Scrap = new GT_Recipe(
-                false,
-                new ItemStack[] { CI.getNumberedCircuit(9), ItemUtils.getSimpleStack(getScrapPile(), 9) },
-                new ItemStack[] { GT_Values.NI },
-                null,
-                null,
-                new FluidStack[] { GT_Values.NF },
-                new FluidStack[] { Materials.UUAmplifier.getFluid(1) },
-                9 * 20,
-                32,
-                0);
+            false,
+            new ItemStack[] { CI.getNumberedCircuit(9), ItemUtils.getSimpleStack(getScrapPile(), 9) },
+            new ItemStack[] { GT_Values.NI },
+            null,
+            null,
+            new FluidStack[] { GT_Values.NF },
+            new FluidStack[] { Materials.UUAmplifier.getFluid(1) },
+            9 * 20,
+            32,
+            0);
         // Basic UUA2
         GT_Recipe UUA_From_ScrapBoxes = new GT_Recipe(
-                false,
-                new ItemStack[] { CI.getNumberedCircuit(19), ItemUtils.getSimpleStack(getScrapBox(), 1) },
-                new ItemStack[] { GT_Values.NI },
-                null,
-                null,
-                new FluidStack[] { GT_Values.NF },
-                new FluidStack[] { Materials.UUAmplifier.getFluid(1) },
-                9 * 20,
-                32,
-                0);
+            false,
+            new ItemStack[] { CI.getNumberedCircuit(19), ItemUtils.getSimpleStack(getScrapBox(), 1) },
+            new ItemStack[] { GT_Values.NI },
+            null,
+            null,
+            new FluidStack[] { GT_Values.NF },
+            new FluidStack[] { Materials.UUAmplifier.getFluid(1) },
+            9 * 20,
+            32,
+            0);
 
         GTPPRecipeMaps.multiblockMassFabricatorRecipes.add(UUA_From_Scrap);
         GTPPRecipeMaps.multiblockMassFabricatorRecipes.add(UUA_From_ScrapBoxes);
 
         // Basic UUM
         GT_Recipe generateUUM_LV = new GT_Recipe(
+            false,
+            new ItemStack[] { CI.getNumberedCircuit(1) },
+            new ItemStack[] { GT_Values.NI },
+            null,
+            null,
+            new FluidStack[] { GT_Values.NF },
+            new FluidStack[] { Materials.UUMatter.getFluid(16) },
+            160 * 20,
+            4096,
+            0);
+
+        // Basic UUM
+        GT_Recipe generateUUMFromUUA_LV = new GT_Recipe(
+            false,
+            new ItemStack[] { CI.getNumberedCircuit(2) },
+            new ItemStack[] { GT_Values.NI },
+            null,
+            null,
+            new FluidStack[] { Materials.UUAmplifier.getFluid(16) },
+            new FluidStack[] { Materials.UUMatter.getFluid(16) },
+            40 * 20,
+            4096,
+            0);
+
+        // Advanced UUM
+        GTPPRecipeMaps.multiblockMassFabricatorRecipes.add(
+            new GT_Recipe(
                 false,
-                new ItemStack[] { CI.getNumberedCircuit(1) },
+                new ItemStack[] { CI.getNumberedCircuit(3) },
                 new ItemStack[] { GT_Values.NI },
                 null,
                 null,
                 new FluidStack[] { GT_Values.NF },
-                new FluidStack[] { Materials.UUMatter.getFluid(16) },
+                new FluidStack[] { Materials.UUMatter.getFluid(256) },
                 160 * 20,
-                4096,
-                0);
+                65536,
+                0));
 
-        // Basic UUM
-        GT_Recipe generateUUMFromUUA_LV = new GT_Recipe(
+        // Advanced UUM
+        GTPPRecipeMaps.multiblockMassFabricatorRecipes.add(
+            new GT_Recipe(
                 false,
-                new ItemStack[] { CI.getNumberedCircuit(2) },
+                new ItemStack[] { CI.getNumberedCircuit(4) },
                 new ItemStack[] { GT_Values.NI },
                 null,
                 null,
-                new FluidStack[] { Materials.UUAmplifier.getFluid(16) },
-                new FluidStack[] { Materials.UUMatter.getFluid(16) },
+                new FluidStack[] { Materials.UUAmplifier.getFluid(256) },
+                new FluidStack[] { Materials.UUMatter.getFluid(256) },
                 40 * 20,
-                4096,
-                0);
-
-        // Advanced UUM
-        GTPPRecipeMaps.multiblockMassFabricatorRecipes.add(
-                new GT_Recipe(
-                        false,
-                        new ItemStack[] { CI.getNumberedCircuit(3) },
-                        new ItemStack[] { GT_Values.NI },
-                        null,
-                        null,
-                        new FluidStack[] { GT_Values.NF },
-                        new FluidStack[] { Materials.UUMatter.getFluid(256) },
-                        160 * 20,
-                        65536,
-                        0));
-
-        // Advanced UUM
-        GTPPRecipeMaps.multiblockMassFabricatorRecipes.add(
-                new GT_Recipe(
-                        false,
-                        new ItemStack[] { CI.getNumberedCircuit(4) },
-                        new ItemStack[] { GT_Values.NI },
-                        null,
-                        null,
-                        new FluidStack[] { Materials.UUAmplifier.getFluid(256) },
-                        new FluidStack[] { Materials.UUMatter.getFluid(256) },
-                        40 * 20,
-                        65536,
-                        0));
+                65536,
+                0));
 
         GTPPRecipeMaps.multiblockMassFabricatorRecipes.add(generateUUM_LV);
         GTPPRecipeMaps.multiblockMassFabricatorRecipes.add(generateUUMFromUUA_LV);
 
         Logger.INFO(
-                "Generated " + GTPPRecipeMaps.multiblockMassFabricatorRecipes.getAllRecipes().size()
-                        + " Matter Fabricator recipes.");
+            "Generated " + GTPPRecipeMaps.multiblockMassFabricatorRecipes.getAllRecipes()
+                .size() + " Matter Fabricator recipes.");
     }
 
     public static ItemStack getScrapPile() {

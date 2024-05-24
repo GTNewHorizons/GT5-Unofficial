@@ -17,9 +17,9 @@ public class GregtechIndustrialCokeOven {
     private static void run1() {
         // Industrial Centrifuge Multiblock
         GregtechItemList.Industrial_CokeOven.set(
-                new GregtechMetaTileEntity_IndustrialCokeOven(
-                        791,
-                        "industrialcokeoven.controller.tier.single",
-                        "Industrial Coke Oven").getStackForm(1L));
+            new GregtechMetaTileEntity_IndustrialCokeOven(
+                791,
+                "industrialcokeoven.controller.tier.single",
+                "Industrial Coke Oven").getStackForm(1L));
     }
 }

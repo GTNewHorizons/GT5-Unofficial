@@ -66,8 +66,8 @@ public class Machine_ProjectTable extends BlockContainer implements ITileTooltip
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(final int ordinalSide, final int meta) {
         return ordinalSide == 1 ? this.textureTop
-                : (ordinalSide == 0 ? this.textureBottom
-                        : ((ordinalSide != 2) && (ordinalSide != 4) ? this.blockIcon : this.textureFront));
+            : (ordinalSide == 0 ? this.textureBottom
+                : ((ordinalSide != 2) && (ordinalSide != 4) ? this.blockIcon : this.textureFront));
     }
 
     @Override
@@ -84,7 +84,7 @@ public class Machine_ProjectTable extends BlockContainer implements ITileTooltip
      */
     @Override
     public boolean onBlockActivated(final World world, final int x, final int y, final int z, final EntityPlayer player,
-            final int side, final float lx, final float ly, final float lz) {
+        final int side, final float lx, final float ly, final float lz) {
 
         ItemStack heldItem = null;
         if (world.isRemote) {
@@ -154,7 +154,7 @@ public class Machine_ProjectTable extends BlockContainer implements ITileTooltip
 
     @Override
     public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y,
-            final int z) {
+        final int z) {
         return false;
     }
 }

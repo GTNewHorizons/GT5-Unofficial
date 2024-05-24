@@ -45,12 +45,12 @@ public class GT_MetaTileEntity_ChiselBus extends GT_MetaTileEntity_Hatch_InputBu
     @Override
     public String[] getDescription() {
         return new String[] { "Item Input Bus for Industrial Chisel", getSlots(this.mTier) - 1 + " + 1 " + " Slots",
-                "Added by: " + EnumChatFormatting.AQUA
-                        + "Quetz4l"
-                        + " - "
-                        + EnumChatFormatting.RED
-                        + "[GT++]"
-                        + EnumChatFormatting.RESET };
+            "Added by: " + EnumChatFormatting.AQUA
+                + "Quetz4l"
+                + " - "
+                + EnumChatFormatting.RED
+                + "[GT++]"
+                + EnumChatFormatting.RESET };
     }
 
     @Override
@@ -61,13 +61,18 @@ public class GT_MetaTileEntity_ChiselBus extends GT_MetaTileEntity_Hatch_InputBu
             int columnsToMake = Math.min(inventoryHandler.getSlots() - row * 4, 4);
             for (int column = 0; column < columnsToMake; column++) {
                 scrollable.widget(
-                        new SlotWidget(inventoryHandler, slotIndex++).setPos(column * 18, row * 18).setSize(18, 18));
+                    new SlotWidget(inventoryHandler, slotIndex++).setPos(column * 18, row * 18)
+                        .setSize(18, 18));
 
             }
         }
 
-        builder.widget(scrollable.setSize(18 * 4 + 4, 18 * 4).setPos(52, 7)); // main slots
-        builder.widget(new SlotWidget(inventoryHandler, slotIndex).setPos(18, 18).setSize(18, 18)); // slot for target
+        builder.widget(
+            scrollable.setSize(18 * 4 + 4, 18 * 4)
+                .setPos(52, 7)); // main slots
+        builder.widget(
+            new SlotWidget(inventoryHandler, slotIndex).setPos(18, 18)
+                .setSize(18, 18)); // slot for target
     }
 
 }

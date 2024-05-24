@@ -25,8 +25,8 @@ public class BaseItemDamageable extends Item {
     private final boolean hasEffect;
 
     public BaseItemDamageable(final String unlocalizedName, final CreativeTabs creativeTab, final int stackSize,
-            final int maxDmg, final String description, final EnumRarity regRarity, final EnumChatFormatting colour,
-            final boolean Effect, final ItemStack OverrideItem) {
+        final int maxDmg, final String description, final EnumRarity regRarity, final EnumChatFormatting colour,
+        final boolean Effect, final ItemStack OverrideItem) {
         this.setUnlocalizedName(unlocalizedName);
         this.setTextureName(GTPlusPlus.ID + ":" + unlocalizedName);
         this.setCreativeTab(creativeTab);
@@ -52,16 +52,16 @@ public class BaseItemDamageable extends Item {
         }
         if (dmg > 3 && dmg <= 25) {
             list.add(
-                    EnumChatFormatting.GRAY
-                            + "You have discovered that smashing this against valuable stones has some function..");
+                EnumChatFormatting.GRAY
+                    + "You have discovered that smashing this against valuable stones has some function..");
         } else if (dmg > 0) {
             int maxDamage = 250;
             list.add(
-                    EnumChatFormatting.GRAY + ""
-                            + (maxDamage - getItemDamage(stack))
-                            + "/"
-                            + maxDamage
-                            + " gems remaining.");
+                EnumChatFormatting.GRAY + ""
+                    + (maxDamage - getItemDamage(stack))
+                    + "/"
+                    + maxDamage
+                    + " gems remaining.");
         }
     }
 

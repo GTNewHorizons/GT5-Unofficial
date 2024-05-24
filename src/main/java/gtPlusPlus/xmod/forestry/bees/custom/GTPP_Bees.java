@@ -74,7 +74,7 @@ public class GTPP_Bees {
 
         // Nikolite may not exist, so lets make it.
         dropNikoliteDust = ItemUtils
-                .generateSpecialUseDusts("Nikolite", "Nikolite", Utils.rgbtoHexValue(60, 180, 200))[2];
+            .generateSpecialUseDusts("Nikolite", "Nikolite", Utils.rgbtoHexValue(60, 180, 200))[2];
 
         if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ingotNikolite", 1) == null) {
             new BaseItemIngot_OLD("itemIngotNikolite", "Nikolite", Utils.rgbtoHexValue(60, 180, 200), 0);
@@ -91,8 +91,12 @@ public class GTPP_Bees {
     }
 
     private void addExtractorRecipe(ItemStack input, FluidStack output) {
-        GT_Values.RA.stdBuilder().itemInputs(input).fluidOutputs(output).duration(1 * SECONDS + 10 * TICKS).eut(8)
-                .addTo(fluidExtractionRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(input)
+            .fluidOutputs(output)
+            .duration(1 * SECONDS + 10 * TICKS)
+            .eut(8)
+            .addTo(fluidExtractionRecipes);
     }
 
     private static boolean tryGetBeesBoolean() {
@@ -150,7 +154,7 @@ public class GTPP_Bees {
             }
 
         } catch (NullPointerException | ClassNotFoundException | IllegalArgumentException | IllegalAccessException
-                | NoSuchMethodException | SecurityException | InvocationTargetException e) {
+            | NoSuchMethodException | SecurityException | InvocationTargetException e) {
             Logger.BEES("Bad Reflection. setMaterials()");
         }
 

@@ -37,6 +37,6 @@ public class GT_MetaTileEntity_ULV_SteamTurbine extends GT_MetaTileEntity_SteamT
     @Override
     public void onConfigLoad() {
         this.mEfficiency = GregTech_API.sMachineFile
-                .get(ConfigCategories.machineconfig, "SteamTurbine.efficiency.tier." + this.mTier, 6 + 1);
+            .get(ConfigCategories.machineconfig, "SteamTurbine.efficiency.tier." + this.mTier, 6 + 1);
     }
 }

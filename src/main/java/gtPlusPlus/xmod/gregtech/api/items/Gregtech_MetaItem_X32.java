@@ -62,19 +62,19 @@ public abstract class Gregtech_MetaItem_X32 extends Gregtech_MetaItem {
             if (this.doesMaterialAllowGeneration(tPrefix, tMaterial)) {
                 final ItemStack tStack = new ItemStack(this, 1, i);
                 GT_LanguageManager.addStringLocalization(
-                        this.getUnlocalizedName(tStack) + ".name",
-                        this.getDefaultLocalization(tPrefix, tMaterial, i));
+                    this.getUnlocalizedName(tStack) + ".name",
+                    this.getDefaultLocalization(tPrefix, tMaterial, i));
                 GT_LanguageManager.addStringLocalization(
-                        this.getUnlocalizedName(tStack) + ".tooltip",
-                        tMaterial.getToolTip(tPrefix.mMaterialAmount / GT_Values.M));
+                    this.getUnlocalizedName(tStack) + ".tooltip",
+                    tMaterial.getToolTip(tPrefix.mMaterialAmount / GT_Values.M));
                 if (tPrefix.mIsUnificatable) {
                     GT_OreDictUnificator.set(tPrefix, tMaterial, tStack);
                 } else {
                     GT_OreDictUnificator.registerOre(tPrefix.get(tMaterial), tStack);
                 }
                 if (((tPrefix == OrePrefixes.stick) || (tPrefix == OrePrefixes.wireFine))
-                        && ((tMaterial == Materials.Lead) || (tMaterial == Materials.Tin)
-                                || (tMaterial == Materials.SolderingAlloy))) {
+                    && ((tMaterial == Materials.Lead) || (tMaterial == Materials.Tin)
+                        || (tMaterial == Materials.SolderingAlloy))) {
                     GregTech_API.sSolderingMetalList.add(tStack);
                 }
             }
@@ -123,9 +123,9 @@ public abstract class Gregtech_MetaItem_X32 extends Gregtech_MetaItem {
      */
     public final IIconContainer getIconContainer(final int aMetaData, final Materials aMaterial) {
         return (this.mGeneratedPrefixList[aMetaData / 1000] != null)
-                && (this.mGeneratedPrefixList[aMetaData / 1000].mTextureIndex >= 0)
-                        ? aMaterial.mIconSet.mTextures[this.mGeneratedPrefixList[aMetaData / 1000].mTextureIndex]
-                        : null;
+            && (this.mGeneratedPrefixList[aMetaData / 1000].mTextureIndex >= 0)
+                ? aMaterial.mIconSet.mTextures[this.mGeneratedPrefixList[aMetaData / 1000].mTextureIndex]
+                : null;
     }
 
     /**
@@ -136,7 +136,7 @@ public abstract class Gregtech_MetaItem_X32 extends Gregtech_MetaItem {
      * @return if this Item should be visible in NEI or Creative
      */
     public boolean doesShowInCreative(final OrePrefixes aPrefix, final Materials aMaterial,
-            final boolean aDoShowAllItems) {
+        final boolean aDoShowAllItems) {
         return true;
     }
 
@@ -160,7 +160,7 @@ public abstract class Gregtech_MetaItem_X32 extends Gregtech_MetaItem {
     @Override
     public final IIconContainer getIconContainer(final int aMetaData) {
         return GregTech_API.sGeneratedMaterials[aMetaData % 1000] == null ? null
-                : this.getIconContainer(aMetaData, GregTech_API.sGeneratedMaterials[aMetaData % 1000]);
+            : this.getIconContainer(aMetaData, GregTech_API.sGeneratedMaterials[aMetaData % 1000]);
     }
 
     @Override
@@ -168,12 +168,12 @@ public abstract class Gregtech_MetaItem_X32 extends Gregtech_MetaItem {
     public final void getSubItems(final Item var1, final CreativeTabs aCreativeTab, final List aList) {
         for (int i = 0; i < 32000; i++) {
             if (this.doesMaterialAllowGeneration(
+                this.mGeneratedPrefixList[i / 1000],
+                GregTech_API.sGeneratedMaterials[i % 1000])
+                && this.doesShowInCreative(
                     this.mGeneratedPrefixList[i / 1000],
-                    GregTech_API.sGeneratedMaterials[i % 1000])
-                    && this.doesShowInCreative(
-                            this.mGeneratedPrefixList[i / 1000],
-                            GregTech_API.sGeneratedMaterials[i % 1000],
-                            GregTech_API.sDoShowAllItemsInCreative)) {
+                    GregTech_API.sGeneratedMaterials[i % 1000],
+                    GregTech_API.sDoShowAllItemsInCreative)) {
                 final ItemStack tStack = new ItemStack(this, 1, i);
                 this.isItemStackUsable(tStack);
                 aList.add(tStack);
@@ -206,7 +206,7 @@ public abstract class Gregtech_MetaItem_X32 extends Gregtech_MetaItem {
         final int tDamage = this.getDamage(aStack);
         if ((tDamage < 32000) && (this.mGeneratedPrefixList[tDamage / 1000] != null)) {
             return Math
-                    .min(super.getItemStackLimit(aStack), this.mGeneratedPrefixList[tDamage / 1000].mDefaultStackSize);
+                .min(super.getItemStackLimit(aStack), this.mGeneratedPrefixList[tDamage / 1000].mDefaultStackSize);
         }
         return super.getItemStackLimit(aStack);
     }
@@ -215,40 +215,52 @@ public abstract class Gregtech_MetaItem_X32 extends Gregtech_MetaItem {
     public int getColorFromItemStack(final ItemStack stack, int HEX_OxFFFFFF) {
 
         int aMeta = stack.getItemDamage();
-        if (stack.getDisplayName().contains("Sodium")) {
+        if (stack.getDisplayName()
+            .contains("Sodium")) {
             HEX_OxFFFFFF = Utils.rgbtoHexValue(90, 90, 255);
-        } else if (stack.getDisplayName().contains("Cadmium")) {
-            HEX_OxFFFFFF = Utils.rgbtoHexValue(150, 150, 80);
-        } else if (stack.getDisplayName().contains("Lithium")) {
-            HEX_OxFFFFFF = Utils.rgbtoHexValue(225, 220, 255);
-        } else if (stack.getDisplayName().contains("Wrought")) {
-            HEX_OxFFFFFF = Utils.rgbtoHexValue(200, 180, 180);
-        } else if (stack.getDisplayName().contains("Bronze")) {
-            HEX_OxFFFFFF = Utils.rgbtoHexValue(255, 128, 0);
-        } else if (stack.getDisplayName().contains("Brass")) {
-            HEX_OxFFFFFF = Utils.rgbtoHexValue(255, 180, 0);
-        } else if (stack.getDisplayName().contains("Invar")) {
-            HEX_OxFFFFFF = Utils.rgbtoHexValue(180, 180, 120);
-        } else {
-            if (aMeta > 50 && aMeta != 150) {
-                HEX_OxFFFFFF = 0xffffff;
-            } else if (stack.getDisplayName().contains("ULV")) {
-                HEX_OxFFFFFF = Utils.rgbtoHexValue(200, 180, 180);
-            } else if (stack.getDisplayName().contains("LuV")) {
-                HEX_OxFFFFFF = 0xffffcc;
-            } else if (stack.getDisplayName().contains("ZPM")) {
-                HEX_OxFFFFFF = 0xffe600;
-            } else if (stack.getDisplayName().contains("UV")) {
-                HEX_OxFFFFFF = 0xffb300;
-            } else if (stack.getDisplayName().contains("MAX")) {
-                HEX_OxFFFFFF = Utils.rgbtoHexValue(
-                        MathUtils.randInt(220, 250),
-                        MathUtils.randInt(221, 251),
-                        MathUtils.randInt(220, 250));
-            } else {
-                HEX_OxFFFFFF = 0xffffff;
-            }
-        }
+        } else if (stack.getDisplayName()
+            .contains("Cadmium")) {
+                HEX_OxFFFFFF = Utils.rgbtoHexValue(150, 150, 80);
+            } else if (stack.getDisplayName()
+                .contains("Lithium")) {
+                    HEX_OxFFFFFF = Utils.rgbtoHexValue(225, 220, 255);
+                } else if (stack.getDisplayName()
+                    .contains("Wrought")) {
+                        HEX_OxFFFFFF = Utils.rgbtoHexValue(200, 180, 180);
+                    } else if (stack.getDisplayName()
+                        .contains("Bronze")) {
+                            HEX_OxFFFFFF = Utils.rgbtoHexValue(255, 128, 0);
+                        } else if (stack.getDisplayName()
+                            .contains("Brass")) {
+                                HEX_OxFFFFFF = Utils.rgbtoHexValue(255, 180, 0);
+                            } else if (stack.getDisplayName()
+                                .contains("Invar")) {
+                                    HEX_OxFFFFFF = Utils.rgbtoHexValue(180, 180, 120);
+                                } else {
+                                    if (aMeta > 50 && aMeta != 150) {
+                                        HEX_OxFFFFFF = 0xffffff;
+                                    } else if (stack.getDisplayName()
+                                        .contains("ULV")) {
+                                            HEX_OxFFFFFF = Utils.rgbtoHexValue(200, 180, 180);
+                                        } else if (stack.getDisplayName()
+                                            .contains("LuV")) {
+                                                HEX_OxFFFFFF = 0xffffcc;
+                                            } else if (stack.getDisplayName()
+                                                .contains("ZPM")) {
+                                                    HEX_OxFFFFFF = 0xffe600;
+                                                } else if (stack.getDisplayName()
+                                                    .contains("UV")) {
+                                                        HEX_OxFFFFFF = 0xffb300;
+                                                    } else if (stack.getDisplayName()
+                                                        .contains("MAX")) {
+                                                            HEX_OxFFFFFF = Utils.rgbtoHexValue(
+                                                                MathUtils.randInt(220, 250),
+                                                                MathUtils.randInt(221, 251),
+                                                                MathUtils.randInt(220, 250));
+                                                        } else {
+                                                            HEX_OxFFFFFF = 0xffffff;
+                                                        }
+                                }
         return HEX_OxFFFFFF;
     }
 }

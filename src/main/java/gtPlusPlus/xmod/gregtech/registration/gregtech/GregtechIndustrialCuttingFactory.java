@@ -17,9 +17,9 @@ public class GregtechIndustrialCuttingFactory {
     private static void run1() {
         // Industrial Wire Factory Multiblock
         GregtechItemList.Industrial_CuttingFactoryController.set(
-                new GregtechMetaTileEntity_IndustrialCuttingMachine(
-                        992,
-                        "industrialcuttingmachine.controller.tier.01",
-                        "Cutting Factory Controller").getStackForm(1L));
+            new GregtechMetaTileEntity_IndustrialCuttingMachine(
+                992,
+                "industrialcuttingmachine.controller.tier.01",
+                "Cutting Factory Controller").getStackForm(1L));
     }
 }

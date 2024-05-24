@@ -27,12 +27,12 @@ public class TileEntitySolarHeater extends GT_MetaTileEntity_TieredMachineBlock 
     private Byte mRequiredFacing;
 
     public TileEntitySolarHeater(final int aID, final String aName, final String aNameRegional, final int aTier,
-            final String aDescription, final int aSlotCount) {
+        final String aDescription, final int aSlotCount) {
         super(aID, aName, aNameRegional, aTier, aSlotCount, aDescription);
     }
 
     public TileEntitySolarHeater(final String aName, final int aTier, final String[] aDescription,
-            final ITexture[][][] aTextures, final int aSlotCount) {
+        final ITexture[][][] aTextures, final int aSlotCount) {
         super(aName, aTier, aSlotCount, aDescription, aTextures);
     }
 
@@ -61,17 +61,15 @@ public class TileEntitySolarHeater extends GT_MetaTileEntity_TieredMachineBlock 
 
     @Override
     public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
-            final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
-        return this.mTextures[(aActive ? 5 : 0)
-                + (side == facing ? 0
-                        : side == facing.getOpposite() ? 1
-                                : side == ForgeDirection.DOWN ? 2 : side == ForgeDirection.UP ? 3 : 4)][aColorIndex
-                                        + 1];
+        final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+        return this.mTextures[(aActive ? 5 : 0) + (side == facing ? 0
+            : side == facing.getOpposite() ? 1
+                : side == ForgeDirection.DOWN ? 2 : side == ForgeDirection.UP ? 3 : 4)][aColorIndex + 1];
     }
 
     public ITexture[] getFront(final byte aColor) {
         return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top),
-                new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL_IV) };
+            new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL_IV) };
     }
 
     public ITexture[] getBack(final byte aColor) {
@@ -84,17 +82,17 @@ public class TileEntitySolarHeater extends GT_MetaTileEntity_TieredMachineBlock 
 
     public ITexture[] getTop(final byte aColor) {
         return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top),
-                new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL_LuV) };
+            new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL_LuV) };
     }
 
     public ITexture[] getSides(final byte aColor) {
         return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top),
-                new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL_IV) };
+            new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL_IV) };
     }
 
     public ITexture[] getFrontActive(final byte aColor) {
         return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top),
-                new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL_IV) };
+            new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL_IV) };
     }
 
     public ITexture[] getBackActive(final byte aColor) {
@@ -107,12 +105,12 @@ public class TileEntitySolarHeater extends GT_MetaTileEntity_TieredMachineBlock 
 
     public ITexture[] getTopActive(final byte aColor) {
         return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top),
-                new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL_LuV) };
+            new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL_LuV) };
     }
 
     public ITexture[] getSidesActive(final byte aColor) {
         return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top),
-                new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL_IV) };
+            new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL_IV) };
     }
 
     @Override
@@ -122,13 +120,13 @@ public class TileEntitySolarHeater extends GT_MetaTileEntity_TieredMachineBlock 
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
@@ -268,10 +266,15 @@ public class TileEntitySolarHeater extends GT_MetaTileEntity_TieredMachineBlock 
     }
 
     public boolean canSeeSky() {
-        if (this.getBaseMetaTileEntity().getWorld().canBlockSeeTheSky(
-                this.getBaseMetaTileEntity().getXCoord(),
-                this.getBaseMetaTileEntity().getYCoord() + 1,
-                this.getBaseMetaTileEntity().getZCoord())) {
+        if (this.getBaseMetaTileEntity()
+            .getWorld()
+            .canBlockSeeTheSky(
+                this.getBaseMetaTileEntity()
+                    .getXCoord(),
+                this.getBaseMetaTileEntity()
+                    .getYCoord() + 1,
+                this.getBaseMetaTileEntity()
+                    .getZCoord())) {
             return true;
         }
         return false;
@@ -279,9 +282,12 @@ public class TileEntitySolarHeater extends GT_MetaTileEntity_TieredMachineBlock 
 
     public boolean setSolarTower(GregtechMetaTileEntity_SolarTower aTowerTile) {
         if (!hasSolarTower()) {
-            this.mTX = aTowerTile.getBaseMetaTileEntity().getXCoord();
-            this.mTY = (int) aTowerTile.getBaseMetaTileEntity().getYCoord();
-            this.mTZ = aTowerTile.getBaseMetaTileEntity().getZCoord();
+            this.mTX = aTowerTile.getBaseMetaTileEntity()
+                .getXCoord();
+            this.mTY = (int) aTowerTile.getBaseMetaTileEntity()
+                .getYCoord();
+            this.mTZ = aTowerTile.getBaseMetaTileEntity()
+                .getZCoord();
             this.mHasTower = true;
             this.mTower = aTowerTile;
             return true;

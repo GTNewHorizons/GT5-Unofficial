@@ -33,8 +33,8 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class GregtechMetaTileEntity_IndustrialExtruder extends
-        GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialExtruder> implements ISurvivalConstructable {
+public class GregtechMetaTileEntity_IndustrialExtruder
+    extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialExtruder> implements ISurvivalConstructable {
 
     private int mCasing;
     private static IStructureDefinition<GregtechMetaTileEntity_IndustrialExtruder> STRUCTURE_DEFINITION = null;
@@ -60,37 +60,44 @@ public class GregtechMetaTileEntity_IndustrialExtruder extends
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType()).addInfo("Controller Block for the Material Extruder")
-                .addInfo("250% faster than using single block machines of the same voltage")
-                .addInfo("Processes four items per voltage tier")
-                .addInfo("Extrusion Shape for recipe goes in the Input Bus")
-                .addInfo("Each Input Bus can have a different shape!")
-                .addInfo("You can use several input buses per multiblock")
-                .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 5, true)
-                .addController("Front Center").addCasingInfoMin("Inconel Reinforced Casings", 14, false)
-                .addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1).addEnergyHatch("Any Casing", 1)
-                .addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+        tt.addMachineType(getMachineType())
+            .addInfo("Controller Block for the Material Extruder")
+            .addInfo("250% faster than using single block machines of the same voltage")
+            .addInfo("Processes four items per voltage tier")
+            .addInfo("Extrusion Shape for recipe goes in the Input Bus")
+            .addInfo("Each Input Bus can have a different shape!")
+            .addInfo("You can use several input buses per multiblock")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .addSeparator()
+            .beginStructureBlock(3, 3, 5, true)
+            .addController("Front Center")
+            .addCasingInfoMin("Inconel Reinforced Casings", 14, false)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addMufflerHatch("Any Casing", 1)
+            .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
     @Override
     public IStructureDefinition<GregtechMetaTileEntity_IndustrialExtruder> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialExtruder>builder().addShape(
+            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialExtruder>builder()
+                .addShape(
                     mName,
                     transpose(
-                            new String[][] { { "CCC", "CCC", "CCC", "CCC", "CCC" },
-                                    { "C~C", "C-C", "C-C", "C-C", "CCC" }, { "CCC", "CCC", "CCC", "CCC", "CCC" }, }))
-                    .addElement(
-                            'C',
-                            buildHatchAdder(GregtechMetaTileEntity_IndustrialExtruder.class)
-                                    .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
-                                    .casingIndex(getCasingTextureIndex()).dot(1).buildAndChain(
-                                            onElementPass(
-                                                    x -> ++x.mCasing,
-                                                    ofBlock(getCasingBlock(), getCasingMeta()))))
-                    .build();
+                        new String[][] { { "CCC", "CCC", "CCC", "CCC", "CCC" }, { "C~C", "C-C", "C-C", "C-C", "CCC" },
+                            { "CCC", "CCC", "CCC", "CCC", "CCC" }, }))
+                .addElement(
+                    'C',
+                    buildHatchAdder(GregtechMetaTileEntity_IndustrialExtruder.class)
+                        .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
+                        .casingIndex(getCasingTextureIndex())
+                        .dot(1)
+                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -144,7 +151,8 @@ public class GregtechMetaTileEntity_IndustrialExtruder extends
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 3.5F).setMaxParallelSupplier(this::getMaxParallelRecipes);
+        return new ProcessingLogic().setSpeedBonus(1F / 3.5F)
+            .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     @Override

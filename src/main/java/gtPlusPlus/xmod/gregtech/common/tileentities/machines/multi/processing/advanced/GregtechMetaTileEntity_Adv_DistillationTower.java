@@ -56,7 +56,7 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 
 public class GregtechMetaTileEntity_Adv_DistillationTower extends
-        GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_Adv_DistillationTower> implements ISurvivalConstructable {
+    GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_Adv_DistillationTower> implements ISurvivalConstructable {
 
     private Mode mMode = Mode.DistillationTower;
     private boolean mUpgraded = false;
@@ -90,81 +90,88 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends
     public IStructureDefinition<GregtechMetaTileEntity_Adv_DistillationTower> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             IHatchElement<GregtechMetaTileEntity_Adv_DistillationTower> layeredOutputHatch = OutputHatch
-                    .withCount(GregtechMetaTileEntity_Adv_DistillationTower::getCurrentLayerOutputHatchCount)
-                    .withAdder(GregtechMetaTileEntity_Adv_DistillationTower::addLayerOutputHatch);
+                .withCount(GregtechMetaTileEntity_Adv_DistillationTower::getCurrentLayerOutputHatchCount)
+                .withAdder(GregtechMetaTileEntity_Adv_DistillationTower::addLayerOutputHatch);
             STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_Adv_DistillationTower>builder()
-                    .addShape(STRUCTURE_PIECE_BASE, transpose(new String[][] { { "b~b", "bbb", "bbb" }, }))
-                    .addShape(STRUCTURE_PIECE_LAYER, transpose(new String[][] { { "lll", "lcl", "lll" }, }))
-                    .addShape(STRUCTURE_PIECE_LAYER_HINT, transpose(new String[][] { { "lll", "l-l", "lll" }, }))
-                    .addShape(STRUCTURE_PIECE_TOP_HINT, transpose(new String[][] { { "ttt", "ttt", "ttt" }, }))
-                    .addElement(
-                            'b',
-                            ofChain(
-                                    buildHatchAdder(GregtechMetaTileEntity_Adv_DistillationTower.class)
-                                            .atLeast(Energy, OutputBus, InputHatch, InputBus, Maintenance)
-                                            .disallowOnly(ForgeDirection.UP).casingIndex(getCasingTextureId()).dot(1)
-                                            .build(),
-                                    ofBlock(GregTech_API.sBlockCasings4, 1)))
-                    .addElement(
-                            'l',
-                            ofChain(
-                                    buildHatchAdder(GregtechMetaTileEntity_Adv_DistillationTower.class)
-                                            .atLeast(layeredOutputHatch, Energy, Maintenance)
-                                            .disallowOnly(ForgeDirection.UP, ForgeDirection.DOWN)
-                                            .casingIndex(getCasingTextureId()).dot(2).build(),
-                                    ofHatchAdder(
-                                            GregtechMetaTileEntity_Adv_DistillationTower::addMufflerToMachineList,
-                                            getCasingTextureId(),
-                                            3),
-                                    ofBlock(GregTech_API.sBlockCasings4, 1)))
-                    .addElement(
-                            'c',
-                            ofChain(
-                                    onElementPass(
-                                            GregtechMetaTileEntity_Adv_DistillationTower::onTopLayerFound,
-                                            ofHatchAdder(
-                                                    GregtechMetaTileEntity_Adv_DistillationTower::addMufflerToMachineList,
-                                                    getCasingTextureId(),
-                                                    3)),
-                                    onElementPass(
-                                            GregtechMetaTileEntity_Adv_DistillationTower::onTopLayerFound,
-                                            ofHatchAdder(
-                                                    GregtechMetaTileEntity_Adv_DistillationTower::addOutputToMachineList,
-                                                    getCasingTextureId(),
-                                                    3)),
-                                    onElementPass(
-                                            GregtechMetaTileEntity_Adv_DistillationTower::onTopLayerFound,
-                                            ofHatchAdder(
-                                                    GregtechMetaTileEntity_Adv_DistillationTower::addMaintenanceToMachineList,
-                                                    getCasingTextureId(),
-                                                    3)),
-                                    onElementPass(
-                                            GregtechMetaTileEntity_Adv_DistillationTower::onTopLayerFound,
-                                            ofBlock(GregTech_API.sBlockCasings4, 1)),
-                                    isAir()))
-                    .addElement(
-                            't',
-                            buildHatchAdder(GregtechMetaTileEntity_Adv_DistillationTower.class)
-                                    .atLeast(layeredOutputHatch, Muffler).disallowOnly(ForgeDirection.DOWN)
-                                    .casingIndex(getCasingTextureId()).dot(2)
-                                    .buildAndChain(GregTech_API.sBlockCasings4, 1))
-                    .build();
+                .addShape(STRUCTURE_PIECE_BASE, transpose(new String[][] { { "b~b", "bbb", "bbb" }, }))
+                .addShape(STRUCTURE_PIECE_LAYER, transpose(new String[][] { { "lll", "lcl", "lll" }, }))
+                .addShape(STRUCTURE_PIECE_LAYER_HINT, transpose(new String[][] { { "lll", "l-l", "lll" }, }))
+                .addShape(STRUCTURE_PIECE_TOP_HINT, transpose(new String[][] { { "ttt", "ttt", "ttt" }, }))
+                .addElement(
+                    'b',
+                    ofChain(
+                        buildHatchAdder(GregtechMetaTileEntity_Adv_DistillationTower.class)
+                            .atLeast(Energy, OutputBus, InputHatch, InputBus, Maintenance)
+                            .disallowOnly(ForgeDirection.UP)
+                            .casingIndex(getCasingTextureId())
+                            .dot(1)
+                            .build(),
+                        ofBlock(GregTech_API.sBlockCasings4, 1)))
+                .addElement(
+                    'l',
+                    ofChain(
+                        buildHatchAdder(GregtechMetaTileEntity_Adv_DistillationTower.class)
+                            .atLeast(layeredOutputHatch, Energy, Maintenance)
+                            .disallowOnly(ForgeDirection.UP, ForgeDirection.DOWN)
+                            .casingIndex(getCasingTextureId())
+                            .dot(2)
+                            .build(),
+                        ofHatchAdder(
+                            GregtechMetaTileEntity_Adv_DistillationTower::addMufflerToMachineList,
+                            getCasingTextureId(),
+                            3),
+                        ofBlock(GregTech_API.sBlockCasings4, 1)))
+                .addElement(
+                    'c',
+                    ofChain(
+                        onElementPass(
+                            GregtechMetaTileEntity_Adv_DistillationTower::onTopLayerFound,
+                            ofHatchAdder(
+                                GregtechMetaTileEntity_Adv_DistillationTower::addMufflerToMachineList,
+                                getCasingTextureId(),
+                                3)),
+                        onElementPass(
+                            GregtechMetaTileEntity_Adv_DistillationTower::onTopLayerFound,
+                            ofHatchAdder(
+                                GregtechMetaTileEntity_Adv_DistillationTower::addOutputToMachineList,
+                                getCasingTextureId(),
+                                3)),
+                        onElementPass(
+                            GregtechMetaTileEntity_Adv_DistillationTower::onTopLayerFound,
+                            ofHatchAdder(
+                                GregtechMetaTileEntity_Adv_DistillationTower::addMaintenanceToMachineList,
+                                getCasingTextureId(),
+                                3)),
+                        onElementPass(
+                            GregtechMetaTileEntity_Adv_DistillationTower::onTopLayerFound,
+                            ofBlock(GregTech_API.sBlockCasings4, 1)),
+                        isAir()))
+                .addElement(
+                    't',
+                    buildHatchAdder(GregtechMetaTileEntity_Adv_DistillationTower.class)
+                        .atLeast(layeredOutputHatch, Muffler)
+                        .disallowOnly(ForgeDirection.DOWN)
+                        .casingIndex(getCasingTextureId())
+                        .dot(2)
+                        .buildAndChain(GregTech_API.sBlockCasings4, 1))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
 
     protected int getCurrentLayerOutputHatchCount() {
         return mOutputHatchesByLayer.size() < mHeight || mHeight <= 0 ? 0
-                : mOutputHatchesByLayer.get(mHeight - 1).size();
+            : mOutputHatchesByLayer.get(mHeight - 1)
+                .size();
     }
 
     protected boolean addLayerOutputHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null || aTileEntity.isDead()
-                || !(aTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_Output tHatch))
-            return false;
+            || !(aTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_Output tHatch)) return false;
         while (mOutputHatchesByLayer.size() < mHeight) mOutputHatchesByLayer.add(new ArrayList<>());
         tHatch.updateTexture(aBaseCasingIndex);
-        return mOutputHatchesByLayer.get(mHeight - 1).add(tHatch) && mOutputHatches.add(tHatch);
+        return mOutputHatchesByLayer.get(mHeight - 1)
+            .add(tHatch) && mOutputHatches.add(tHatch);
     }
 
     protected void onTopLayerFound() {
@@ -174,17 +181,26 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType()).addInfo("Controller Block for the Advanced Distillation Tower")
-                .addInfo("Use 85% less energy in distillery mode").addInfo("250%/100% faster in DT/distillery mode")
-                .addInfo("Right click the controller with screwdriver to change mode.")
-                .addInfo("Max parallel dictated by tower tier and mode").addInfo("DTower Mode: T1=4, T2=12")
-                .addInfo("Distilery Mode: Tower Tier * (4*InputTier)")
-                .addInfo("Distilery Mode require a full height tower").addPollutionAmount(getPollutionPerSecond(null))
-                .addSeparator().addCasingInfoMin("Clean Stainless Steel Machine Casing", 7, false)
-                .addInputBus("Bottom Casing", 1).addOutputBus("Bottom Casing", 1).addInputHatch("Bottom Casing", 1)
-                .addMaintenanceHatch("Any Casing", 1).addEnergyHatch("Any Casing", 1)
-                .addOutputHatch("One per layer except bottom", 2).addMufflerHatch("Top Casing", 3)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+        tt.addMachineType(getMachineType())
+            .addInfo("Controller Block for the Advanced Distillation Tower")
+            .addInfo("Use 85% less energy in distillery mode")
+            .addInfo("250%/100% faster in DT/distillery mode")
+            .addInfo("Right click the controller with screwdriver to change mode.")
+            .addInfo("Max parallel dictated by tower tier and mode")
+            .addInfo("DTower Mode: T1=4, T2=12")
+            .addInfo("Distilery Mode: Tower Tier * (4*InputTier)")
+            .addInfo("Distilery Mode require a full height tower")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .addSeparator()
+            .addCasingInfoMin("Clean Stainless Steel Machine Casing", 7, false)
+            .addInputBus("Bottom Casing", 1)
+            .addOutputBus("Bottom Casing", 1)
+            .addInputHatch("Bottom Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addOutputHatch("One per layer except bottom", 2)
+            .addMufflerHatch("Top Casing", 3)
+            .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
@@ -207,28 +223,28 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends
         for (int i = 1; i < tTotalHeight - 1; i++) {
             mHeight = i;
             built = survivialBuildPiece(
-                    STRUCTURE_PIECE_LAYER_HINT,
-                    stackSize,
-                    1,
-                    i,
-                    0,
-                    elementBudget,
-                    env,
-                    false,
-                    true);
-            if (built >= 0) return built;
-        }
-        mHeight = tTotalHeight - 1;
-        return survivialBuildPiece(
-                STRUCTURE_PIECE_TOP_HINT,
+                STRUCTURE_PIECE_LAYER_HINT,
                 stackSize,
                 1,
-                tTotalHeight - 1,
+                i,
                 0,
                 elementBudget,
                 env,
                 false,
                 true);
+            if (built >= 0) return built;
+        }
+        mHeight = tTotalHeight - 1;
+        return survivialBuildPiece(
+            STRUCTURE_PIECE_TOP_HINT,
+            stackSize,
+            1,
+            tTotalHeight - 1,
+            0,
+            elementBudget,
+            env,
+            false,
+            true);
     }
 
     @Override
@@ -246,7 +262,8 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends
             if (!checkPiece(STRUCTURE_PIECE_LAYER, 1, mHeight, 0)) {
                 return false;
             }
-            if (mOutputHatchesByLayer.size() < mHeight || mOutputHatchesByLayer.get(mHeight - 1).isEmpty())
+            if (mOutputHatchesByLayer.size() < mHeight || mOutputHatchesByLayer.get(mHeight - 1)
+                .isEmpty())
                 // layer without output hatch
                 return false;
             if (mTopLayerFound || !mMufflerHatches.isEmpty()) {
@@ -430,9 +447,10 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends
     @Override
     public boolean canDumpFluidToME() {
         // All fluids can be dumped to ME only if each layer contains a ME Output Hatch.
-        return this.mOutputHatchesByLayer.stream().allMatch(
+        return this.mOutputHatchesByLayer.stream()
+            .allMatch(
                 tLayerOutputHatches -> tLayerOutputHatches.stream()
-                        .anyMatch(tHatch -> tHatch instanceof GT_MetaTileEntity_Hatch_Output_ME));
+                    .anyMatch(tHatch -> tHatch instanceof GT_MetaTileEntity_Hatch_Output_ME));
     }
 
     @Override

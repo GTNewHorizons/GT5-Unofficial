@@ -64,7 +64,8 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
                 }
 
                 if ((this.tickCount % 20) == 0) {
-                    for (ItemStack inv : this.getInventory().getInventory()) {
+                    for (ItemStack inv : this.getInventory()
+                        .getInventory()) {
                         if (inv == null) {
                             continue;
                         }
@@ -151,37 +152,44 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
 
     @Override
     public int getSizeInventory() {
-        return this.getInventory().getSizeInventory();
+        return this.getInventory()
+            .getSizeInventory();
     }
 
     @Override
     public ItemStack getStackInSlot(final int slot) {
-        return this.getInventory().getStackInSlot(slot);
+        return this.getInventory()
+            .getStackInSlot(slot);
     }
 
     @Override
     public ItemStack decrStackSize(final int slot, final int count) {
-        return this.getInventory().decrStackSize(slot, count);
+        return this.getInventory()
+            .decrStackSize(slot, count);
     }
 
     @Override
     public ItemStack getStackInSlotOnClosing(final int slot) {
-        return this.getInventory().getStackInSlotOnClosing(slot);
+        return this.getInventory()
+            .getStackInSlotOnClosing(slot);
     }
 
     @Override
     public void setInventorySlotContents(final int slot, final ItemStack stack) {
-        this.getInventory().setInventorySlotContents(slot, stack);
+        this.getInventory()
+            .setInventorySlotContents(slot, stack);
     }
 
     @Override
     public int getInventoryStackLimit() {
-        return this.getInventory().getInventoryStackLimit();
+        return this.getInventory()
+            .getInventoryStackLimit();
     }
 
     @Override
     public boolean isUseableByPlayer(final EntityPlayer entityplayer) {
-        return this.getInventory().isUseableByPlayer(entityplayer);
+        return this.getInventory()
+            .isUseableByPlayer(entityplayer);
     }
 
     @Override
@@ -194,10 +202,11 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
             cachedChestType = 1;
         }
         this.worldObj
-                .addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, this.numPlayersUsing);
+            .addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, this.numPlayersUsing);
         this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType());
         this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord - 1, this.zCoord, this.getBlockType());
-        this.getInventory().openInventory();
+        this.getInventory()
+            .openInventory();
     }
 
     @Override
@@ -207,21 +216,24 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
             cachedChestType = 1;
         }
         this.worldObj
-                .addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, this.numPlayersUsing);
+            .addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, this.numPlayersUsing);
         this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType());
         this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord - 1, this.zCoord, this.getBlockType());
-        this.getInventory().closeInventory();
+        this.getInventory()
+            .closeInventory();
     }
 
     @Override
     public boolean isItemValidForSlot(final int slot, final ItemStack itemstack) {
-        return this.getInventory().isItemValidForSlot(slot, itemstack);
+        return this.getInventory()
+            .isItemValidForSlot(slot, itemstack);
     }
 
     @Override
     public int[] getAccessibleSlotsFromSide(final int p_94128_1_) {
         final int[] accessibleSides = new int[this.getSizeInventory()];
-        for (int r = 0; r < this.getInventory().getSizeInventory(); r++) {
+        for (int r = 0; r < this.getInventory()
+            .getSizeInventory(); r++) {
             accessibleSides[r] = r;
         }
         return accessibleSides;
@@ -229,12 +241,14 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
 
     @Override
     public boolean canInsertItem(final int p_102007_1_, final ItemStack p_102007_2_, final int p_102007_3_) {
-        return this.getInventory().isItemValidForSlot(0, p_102007_2_);
+        return this.getInventory()
+            .isItemValidForSlot(0, p_102007_2_);
     }
 
     @Override
     public boolean canExtractItem(final int p_102008_1_, final ItemStack p_102008_2_, final int p_102008_3_) {
-        return this.getInventory().isItemValidForSlot(0, p_102008_2_);
+        return this.getInventory()
+            .isItemValidForSlot(0, p_102008_2_);
     }
 
     public String getCustomName() {
@@ -284,17 +298,17 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
         f = 0.04F;
         double d2;
         if (this.numPlayersUsing > 0 && this.lidAngle == 0.0F
-                && this.adjacentChestZNeg == null
-                && this.adjacentChestXNeg == null) {
+            && this.adjacentChestZNeg == null
+            && this.adjacentChestXNeg == null) {
             double d1 = (double) this.xCoord + 0.5D;
             d2 = (double) this.zCoord + 0.5D;
             this.worldObj.playSoundEffect(
-                    d1,
-                    (double) this.yCoord + 0.5D,
-                    d2,
-                    "random.chestopen",
-                    0.5F,
-                    this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+                d1,
+                (double) this.yCoord + 0.5D,
+                d2,
+                "random.chestopen",
+                0.5F,
+                this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
         }
 
         if (this.numPlayersUsing == 0 && this.lidAngle > 0.0F || this.numPlayersUsing > 0 && this.lidAngle < 1.0F) {
@@ -314,12 +328,12 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
                 d2 = (double) this.xCoord + 0.5D;
                 double d0 = (double) this.zCoord + 0.5D;
                 this.worldObj.playSoundEffect(
-                        d2,
-                        (double) this.yCoord + 0.5D,
-                        d0,
-                        "random.chestclosed",
-                        0.5F,
-                        this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+                    d2,
+                    (double) this.yCoord + 0.5D,
+                    d0,
+                    "random.chestclosed",
+                    0.5F,
+                    this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
             }
 
             if (this.lidAngle < 0.0F) {

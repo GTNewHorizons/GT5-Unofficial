@@ -27,11 +27,11 @@ public class VanillaBedHeightFix implements IBugFix {
             m = ReflectionUtils.getMethod(EntityPlayer.class, "func_71018_a", int.class, int.class, int.class);
         } else {
             m = ReflectionUtils.getMethod(
-                    net.minecraft.entity.player.EntityPlayer.class,
-                    "sleepInBedAt",
-                    int.class,
-                    int.class,
-                    int.class);
+                net.minecraft.entity.player.EntityPlayer.class,
+                "sleepInBedAt",
+                int.class,
+                int.class,
+                int.class);
         }
         if (m != null) {
             mSleepInBedAt = m;
@@ -60,16 +60,16 @@ public class VanillaBedHeightFix implements IBugFix {
             int correctY = 256 + evt.y;
             if (correctY <= 0) {
                 Logger.WARNING(
-                        "You're trying to sleep at y=" + evt.y
-                                + ", which is impossibly low. However, fixed y value is "
-                                + correctY
-                                + ", which is still below 0. Falling back to default behavior.");
+                    "You're trying to sleep at y=" + evt.y
+                        + ", which is impossibly low. However, fixed y value is "
+                        + correctY
+                        + ", which is still below 0. Falling back to default behavior.");
             } else {
                 Logger.WARNING(
-                        "You're trying to sleep at y=" + evt.y
-                                + ". This is probably caused by overflow, stopping original event; retrying with y="
-                                + correctY
-                                + ".");
+                    "You're trying to sleep at y=" + evt.y
+                        + ". This is probably caused by overflow, stopping original event; retrying with y="
+                        + correctY
+                        + ".");
                 evt.result = EntityPlayer.EnumStatus.OTHER_PROBLEM;
                 try {
                     mSleepInBedAt.invoke(evt.entityPlayer, evt.x, correctY, evt.z);
@@ -79,7 +79,7 @@ public class VanillaBedHeightFix implements IBugFix {
             }
         } else if (!isFixValid()) {
             Logger.WARNING(
-                    "Method sleepInBedAt was not found in EntityPlayer (wrong MC and/or Forge version?), unable to fix");
+                "Method sleepInBedAt was not found in EntityPlayer (wrong MC and/or Forge version?), unable to fix");
         }
     }
 }

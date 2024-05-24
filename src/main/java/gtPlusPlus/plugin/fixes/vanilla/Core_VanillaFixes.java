@@ -87,14 +87,14 @@ public class Core_VanillaFixes implements IPlugin {
 
     private void registerToOreDict(ItemStack aStack, String aString) {
         if (aStack.getItem() == Items.blaze_rod) {
-            mInstance.log(
-                    "Registering " + aStack.getDisplayName() + " to OreDictionary under the tag '" + aString + "'.");
+            mInstance
+                .log("Registering " + aStack.getDisplayName() + " to OreDictionary under the tag '" + aString + "'.");
         } else {
             mInstance.log(
-                    "Registering " + aStack.getDisplayName()
-                            + " to OreDictionary under the tag '"
-                            + aString
-                            + "'. (Added to Forge in 1.8.9)");
+                "Registering " + aStack.getDisplayName()
+                    + " to OreDictionary under the tag '"
+                    + aString
+                    + "'. (Added to Forge in 1.8.9)");
         }
         ItemUtils.addItemToOreDictionary(aStack, aString);
     }

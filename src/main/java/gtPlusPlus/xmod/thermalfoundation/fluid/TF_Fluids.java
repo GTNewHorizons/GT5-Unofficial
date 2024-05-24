@@ -20,8 +20,11 @@ public class TF_Fluids {
 
         if (pyrotheum == null) {
             Logger.INFO("Registering Blazing Pyrotheum as it does not exist.");
-            fluidPyrotheum = new Fluid("pyrotheum").setLuminosity(15).setDensity(2000).setViscosity(1200)
-                    .setTemperature(4000).setRarity(EnumRarity.rare);
+            fluidPyrotheum = new Fluid("pyrotheum").setLuminosity(15)
+                .setDensity(2000)
+                .setViscosity(1200)
+                .setTemperature(4000)
+                .setRarity(EnumRarity.rare);
             registerFluid(fluidPyrotheum, "pyrotheum");
         } else {
             Logger.INFO("Registering Blazing Pyrotheum as it is an already existing Fluid.");
@@ -29,8 +32,11 @@ public class TF_Fluids {
         }
         if (cryotheum == null) {
             Logger.INFO("Registering Gelid Cryotheum as it does not exist.");
-            fluidCryotheum = new Fluid("cryotheum").setLuminosity(0).setDensity(4000).setViscosity(3000)
-                    .setTemperature(50).setRarity(EnumRarity.rare);
+            fluidCryotheum = new Fluid("cryotheum").setLuminosity(0)
+                .setDensity(4000)
+                .setViscosity(3000)
+                .setTemperature(50)
+                .setRarity(EnumRarity.rare);
             registerFluid(fluidCryotheum, "cryotheum");
         } else {
             Logger.INFO("Registering Gelid Cryotheum as it is an already existing Fluid.");
@@ -39,8 +45,11 @@ public class TF_Fluids {
 
         if (ender == null) {
             Logger.INFO("Registering Resonant Ender as it does not exist.");
-            fluidEnder = new Fluid("ender").setLuminosity(3).setDensity(4000).setViscosity(3000).setTemperature(300)
-                    .setRarity(EnumRarity.uncommon);
+            fluidEnder = new Fluid("ender").setLuminosity(3)
+                .setDensity(4000)
+                .setViscosity(3000)
+                .setTemperature(300)
+                .setRarity(EnumRarity.uncommon);
             registerFluid(fluidEnder, "ender");
         } else {
             Logger.INFO("Registering Resonant Ender as it is an already existing Fluid.");

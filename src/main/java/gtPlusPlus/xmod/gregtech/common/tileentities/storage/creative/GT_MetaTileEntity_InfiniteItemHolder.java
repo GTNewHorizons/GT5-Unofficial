@@ -18,7 +18,7 @@ public class GT_MetaTileEntity_InfiniteItemHolder extends GT_MetaTileEntity_Tier
     }
 
     public GT_MetaTileEntity_InfiniteItemHolder(String aName, int aTier, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
@@ -31,12 +31,13 @@ public class GT_MetaTileEntity_InfiniteItemHolder extends GT_MetaTileEntity_Tier
         if (!KeyboardUtils.isShiftKeyDown()) {
             if (this.mItemStack == null) {
                 if (aPlayer.getHeldItem() != null) {
-                    this.mItemStack = aPlayer.getHeldItem().copy();
+                    this.mItemStack = aPlayer.getHeldItem()
+                        .copy();
                     this.mItemCount = Short.MAX_VALUE;
                     aPlayer.setCurrentItemOrArmor(0, null);
                     PlayerUtils.messagePlayer(
-                            aPlayer,
-                            "Now holding " + this.mItemStack.getDisplayName() + " x" + Short.MAX_VALUE + ".");
+                        aPlayer,
+                        "Now holding " + this.mItemStack.getDisplayName() + " x" + Short.MAX_VALUE + ".");
                     return true;
                 }
             } else {
@@ -51,10 +52,10 @@ public class GT_MetaTileEntity_InfiniteItemHolder extends GT_MetaTileEntity_Tier
         }
 
         PlayerUtils.messagePlayer(
-                aPlayer,
-                "Currently holding: " + (this.mItemStack != null ? this.mItemStack.getDisplayName() : "Nothing")
-                        + " x"
-                        + this.mItemCount);
+            aPlayer,
+            "Currently holding: " + (this.mItemStack != null ? this.mItemStack.getDisplayName() : "Nothing")
+                + " x"
+                + this.mItemCount);
         return true;
         // return super.onRightclick(aBaseMetaTileEntity, aPlayer);
     }
@@ -74,13 +75,13 @@ public class GT_MetaTileEntity_InfiniteItemHolder extends GT_MetaTileEntity_Tier
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return true;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 

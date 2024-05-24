@@ -25,7 +25,7 @@ public abstract class BaseCrop extends CropCard implements ICropCardInfo {
         this.textures = new IIcon[this.maxSize()];
         for (int i = 1; i <= this.textures.length; ++i) {
             this.textures[i - 1] = iconRegister
-                    .registerIcon(GTPlusPlus.ID + ":crop/blockCrop." + this.name() + "." + i);
+                .registerIcon(GTPlusPlus.ID + ":crop/blockCrop." + this.name() + "." + i);
         }
     }
 

@@ -31,8 +31,8 @@ public class AlgaeGeneticData {
     }
 
     public AlgaeGeneticData(boolean isDominant, boolean requiresLight, boolean isSalt, boolean isFresh,
-            byte aTempTolerance, float aFertility, float aSpeed, byte aLifespan, int aGeneration,
-            AutoMap<AlgaeGrowthRequirement> aRequirements) {
+        byte aTempTolerance, float aFertility, float aSpeed, byte aLifespan, int aGeneration,
+        AutoMap<AlgaeGrowthRequirement> aRequirements) {
         mIsDominant = isDominant;
         mRequiresLight = requiresLight;
         mSaltWater = isSalt;

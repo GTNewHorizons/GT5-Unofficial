@@ -35,45 +35,35 @@ public class RecipeGen_Assembler extends RecipeGen_Base {
         // Frame Box
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { material.getRod(1), material.getFrameBox(1) }))
             GT_Values.RA.addAssemblerRecipe(
-                    material.getRod(4),
-                    ItemUtils.getGregtechCircuit(4),
-                    material.getFrameBox(1),
-                    60,
-                    material.vVoltageMultiplier);
+                material.getRod(4),
+                ItemUtils.getGregtechCircuit(4),
+                material.getFrameBox(1),
+                60,
+                material.vVoltageMultiplier);
 
         // Rotor
-        if (ItemUtils.checkForInvalidItems(
-                new ItemStack[] { material.getPlate(1), material.getRing(1), material.getRotor(1) }))
+        if (ItemUtils
+            .checkForInvalidItems(new ItemStack[] { material.getPlate(1), material.getRing(1), material.getRotor(1) }))
             addAssemblerRecipe(
-                    material.getPlate(4),
-                    material.getRing(1),
-                    material.getRotor(1),
-                    240,
-                    material.vVoltageMultiplier);
+                material.getPlate(4),
+                material.getRing(1),
+                material.getRotor(1),
+                240,
+                material.vVoltageMultiplier);
     }
 
     private static void addAssemblerRecipe(final ItemStack input1, final ItemStack input2, final ItemStack output1,
-            final int seconds, final int euCost) {
+        final int seconds, final int euCost) {
         GT_Values.RA.addAssemblerRecipe(
-                input1,
-                input2,
-                FluidUtils.getFluidStack("molten.solderingalloy", 16),
-                output1,
-                seconds,
-                euCost);
-        GT_Values.RA.addAssemblerRecipe(
-                input1,
-                input2,
-                FluidUtils.getFluidStack("molten.tin", 32),
-                output1,
-                seconds,
-                euCost);
-        GT_Values.RA.addAssemblerRecipe(
-                input1,
-                input2,
-                FluidUtils.getFluidStack("molten.lead", 48),
-                output1,
-                seconds,
-                euCost);
+            input1,
+            input2,
+            FluidUtils.getFluidStack("molten.solderingalloy", 16),
+            output1,
+            seconds,
+            euCost);
+        GT_Values.RA
+            .addAssemblerRecipe(input1, input2, FluidUtils.getFluidStack("molten.tin", 32), output1, seconds, euCost);
+        GT_Values.RA
+            .addAssemblerRecipe(input1, input2, FluidUtils.getFluidStack("molten.lead", 48), output1, seconds, euCost);
     }
 }

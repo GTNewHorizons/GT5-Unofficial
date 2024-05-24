@@ -64,7 +64,7 @@ public class MiningExplosives extends BlockTNT {
      */
     @Override
     public void onNeighborBlockChange(final World world, final int x, final int y, final int z,
-            final Block neighbourblock) {
+        final Block neighbourblock) {
         if (world.isBlockIndirectlyGettingPowered(x, y, z)) {
             this.onBlockDestroyedByPlayer(world, x, y, z, 1);
             world.setBlockToAir(x, y, z);
@@ -84,16 +84,16 @@ public class MiningExplosives extends BlockTNT {
      */
     @Override
     public void onBlockDestroyedByExplosion(final World world, final int x, final int y, final int z,
-            final Explosion bang) {
+        final Explosion bang) {
         if (!world.isRemote) {
             final EntityPrimedMiningExplosive EntityPrimedMiningExplosive = new EntityPrimedMiningExplosive(
-                    world,
-                    x + 0.5F,
-                    y + 0.5F,
-                    z + 0.5F,
-                    bang.getExplosivePlacedBy());
+                world,
+                x + 0.5F,
+                y + 0.5F,
+                z + 0.5F,
+                bang.getExplosivePlacedBy());
             EntityPrimedMiningExplosive.fuse = world.rand.nextInt(EntityPrimedMiningExplosive.fuse / 4)
-                    + (EntityPrimedMiningExplosive.fuse / 8);
+                + (EntityPrimedMiningExplosive.fuse / 8);
             world.spawnEntityInWorld(EntityPrimedMiningExplosive);
         }
     }
@@ -109,15 +109,15 @@ public class MiningExplosives extends BlockTNT {
     // TODO Spawns Primed TNT?
     @Override
     public void func_150114_a(final World world, final int p_150114_2_, final int p_150114_3_, final int p_150114_4_,
-            final int p_150114_5_, final EntityLivingBase entityLiving) {
+        final int p_150114_5_, final EntityLivingBase entityLiving) {
         if (!world.isRemote) {
             if ((p_150114_5_ & 1) == 1) {
                 final EntityPrimedMiningExplosive EntityPrimedMiningExplosive = new EntityPrimedMiningExplosive(
-                        world,
-                        p_150114_2_ + 0.5F,
-                        p_150114_3_ + 0.5F,
-                        p_150114_4_ + 0.5F,
-                        entityLiving);
+                    world,
+                    p_150114_2_ + 0.5F,
+                    p_150114_3_ + 0.5F,
+                    p_150114_4_ + 0.5F,
+                    entityLiving);
                 world.spawnEntityInWorld(EntityPrimedMiningExplosive);
                 world.playSoundAtEntity(EntityPrimedMiningExplosive, "game.tnt.primed", 1.0F, 1.0F);
             }
@@ -129,25 +129,26 @@ public class MiningExplosives extends BlockTNT {
      */
     @Override
     public boolean onBlockActivated(final World world, final int x, final int y, final int z,
-            final EntityPlayer clickingPlayer, final int p_149727_6_, final float p_149727_7_, final float p_149727_8_,
-            final float p_149727_9_) {
-        if ((clickingPlayer.getCurrentEquippedItem() != null)
-                && (clickingPlayer.getCurrentEquippedItem().getItem() == Items.flint_and_steel)) {
+        final EntityPlayer clickingPlayer, final int p_149727_6_, final float p_149727_7_, final float p_149727_8_,
+        final float p_149727_9_) {
+        if ((clickingPlayer.getCurrentEquippedItem() != null) && (clickingPlayer.getCurrentEquippedItem()
+            .getItem() == Items.flint_and_steel)) {
             this.func_150114_a(world, x, y, z, 1, clickingPlayer);
             world.setBlockToAir(x, y, z);
-            clickingPlayer.getCurrentEquippedItem().damageItem(1, clickingPlayer);
+            clickingPlayer.getCurrentEquippedItem()
+                .damageItem(1, clickingPlayer);
             return true;
         } else {
             return super.onBlockActivated(
-                    world,
-                    x,
-                    y,
-                    z,
-                    clickingPlayer,
-                    p_149727_6_,
-                    p_149727_7_,
-                    p_149727_8_,
-                    p_149727_9_);
+                world,
+                x,
+                y,
+                z,
+                clickingPlayer,
+                p_149727_6_,
+                p_149727_7_,
+                p_149727_8_,
+                p_149727_9_);
         }
     }
 

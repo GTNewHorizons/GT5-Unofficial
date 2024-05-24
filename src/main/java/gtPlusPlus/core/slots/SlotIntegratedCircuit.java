@@ -39,18 +39,21 @@ public class SlotIntegratedCircuit extends Slot {
     public static synchronized boolean isItemValidForSlot(int aLockedCircuitNumber, final ItemStack itemstack) {
         boolean isValid = false;
         if (mCircuitItem == null) {
-            mCircuitItem = CI.getNumberedCircuit(0).getItem();
+            mCircuitItem = CI.getNumberedCircuit(0)
+                .getItem();
         }
         if (mCircuitItem2 == null) {
-            mCircuitItem2 = CI.getNumberedBioCircuit(0).getItem();
+            mCircuitItem2 = CI.getNumberedBioCircuit(0)
+                .getItem();
         }
         if (mCircuitItem3 == null) {
-            mCircuitItem3 = CI.getNumberedAdvancedCircuit(0).getItem();
+            mCircuitItem3 = CI.getNumberedAdvancedCircuit(0)
+                .getItem();
         }
         if (mCircuitItem != null && mCircuitItem2 != null && mCircuitItem3 != null) {
             if (itemstack != null) {
                 if (itemstack.getItem() == mCircuitItem || itemstack.getItem() == mCircuitItem2
-                        || itemstack.getItem() == mCircuitItem3) {
+                    || itemstack.getItem() == mCircuitItem3) {
                     if (aLockedCircuitNumber == -1) {
                         isValid = true;
                     } else {
@@ -72,18 +75,21 @@ public class SlotIntegratedCircuit extends Slot {
      */
     public static synchronized int isRegularProgrammableCircuit(final ItemStack itemstack) {
         if (mCircuitItem == null) {
-            mCircuitItem = CI.getNumberedCircuit(0).getItem();
+            mCircuitItem = CI.getNumberedCircuit(0)
+                .getItem();
         }
         if (mCircuitItem2 == null) {
-            mCircuitItem2 = CI.getNumberedBioCircuit(0).getItem();
+            mCircuitItem2 = CI.getNumberedBioCircuit(0)
+                .getItem();
         }
         if (mCircuitItem3 == null) {
-            mCircuitItem3 = CI.getNumberedAdvancedCircuit(0).getItem();
+            mCircuitItem3 = CI.getNumberedAdvancedCircuit(0)
+                .getItem();
         }
         if (mCircuitItem != null && mCircuitItem2 != null && mCircuitItem3 != null) {
             if (itemstack != null) {
                 if (itemstack.getItem() == mCircuitItem || itemstack.getItem() == mCircuitItem2
-                        || itemstack.getItem() == mCircuitItem3) {
+                    || itemstack.getItem() == mCircuitItem3) {
                     if (itemstack.getItem() == mCircuitItem) {
                         return 0;
                     } else if (itemstack.getItem() == mCircuitItem2) {

@@ -60,7 +60,7 @@ public class ItemAgrichemBase extends Item {
 
     @Override
     public void onUpdate(ItemStack p_77663_1_, World p_77663_2_, Entity p_77663_3_, int p_77663_4_,
-            boolean p_77663_5_) {
+        boolean p_77663_5_) {
         super.onUpdate(p_77663_1_, p_77663_2_, p_77663_3_, p_77663_4_, p_77663_5_);
     }
 
@@ -87,7 +87,7 @@ public class ItemAgrichemBase extends Item {
             return mShowSodiumHydroxide;
         } else {
             if (OreDictUtils.containsValidEntries("dustSodiumHydroxide_GT5U")
-                    || OreDictUtils.containsValidEntries("dustSodiumHydroxide")) {
+                || OreDictUtils.containsValidEntries("dustSodiumHydroxide")) {
                 List<ItemStack> aTest = OreDictionary.getOres("dustSodiumHydroxide", false);
                 if (aTest.isEmpty()) {
                     aTest = OreDictionary.getOres("dustSodiumHydroxide_GT5U", false);
@@ -162,7 +162,7 @@ public class ItemAgrichemBase extends Item {
                         return true;
                     }
                 } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                        | InvocationTargetException e) {}
+                    | InvocationTargetException e) {}
             }
         }
         return false;
@@ -196,7 +196,8 @@ public class ItemAgrichemBase extends Item {
     @Override
     public double getDurabilityForDisplay(ItemStack aStack) {
         if (ItemUtils.isCatalyst(aStack)) {
-            if (aStack.getTagCompound() == null || aStack.getTagCompound().hasNoTags()) {
+            if (aStack.getTagCompound() == null || aStack.getTagCompound()
+                .hasNoTags()) {
                 createCatalystNBT(aStack);
             }
             double currentDamage = getCatalystDamage(aStack);

@@ -109,8 +109,8 @@ public class COMPAT_HANDLER {
 
         for (int i = 1; i <= 10; i++) {
             GT_OreDictUnificator.registerOre(
-                    "bufferCore_" + GT_Values.VN[i - 1],
-                    new ItemStack(ItemUtils.getItemFromFQRN("miscutils:item.itemBufferCore" + i)));
+                "bufferCore_" + GT_Values.VN[i - 1],
+                new ItemStack(ItemUtils.getItemFromFQRN("miscutils:item.itemBufferCore" + i)));
         }
     }
 
@@ -224,10 +224,14 @@ public class COMPAT_HANDLER {
             for (RunnableWithInfo<Material> r : m) {
                 try {
                     r.run();
-                    Logger.INFO("[FIND] " + r.getInfoData().getLocalizedName() + " recipes generated.");
+                    Logger.INFO(
+                        "[FIND] " + r.getInfoData()
+                            .getLocalizedName() + " recipes generated.");
                 } catch (Throwable t) {
                     t.printStackTrace();
-                    Logger.INFO("[ERROR] " + r.getInfoData().getLocalizedName() + " recipes failed to generated.");
+                    Logger.INFO(
+                        "[ERROR] " + r.getInfoData()
+                            .getLocalizedName() + " recipes failed to generated.");
                 }
             }
         }

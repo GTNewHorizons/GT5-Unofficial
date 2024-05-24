@@ -56,7 +56,7 @@ public class BatteryPackBaseBauble extends ElectricBaseBauble {
 
     @Override
     public void onUpdate(final ItemStack itemStack, final World worldObj, final Entity player, final int p_77663_4_,
-            final boolean p_77663_5_) {
+        final boolean p_77663_5_) {
         super.onUpdate(itemStack, worldObj, player, p_77663_4_, p_77663_5_);
     }
 
@@ -96,13 +96,13 @@ public class BatteryPackBaseBauble extends ElectricBaseBauble {
 
         list.add(EnumChatFormatting.GREEN + aString1 + EnumChatFormatting.GRAY);
         list.add(
-                EnumChatFormatting.GREEN + aString2
-                        + " "
-                        + (int) getTransferLimit(stack)
-                        + aEUT
-                        + " "
-                        + aString3
-                        + EnumChatFormatting.GRAY);
+            EnumChatFormatting.GREEN + aString2
+                + " "
+                + (int) getTransferLimit(stack)
+                + aEUT
+                + " "
+                + aString3
+                + EnumChatFormatting.GRAY);
         list.add(EnumChatFormatting.GREEN + aString4 + EnumChatFormatting.GRAY);
         super.addInformation(stack, aPlayer, list, bool);
     }
@@ -154,27 +154,18 @@ public class BatteryPackBaseBauble extends ElectricBaseBauble {
                                             if (aItemCharge <= (electricItem.getMaxCharge(aInvStack) - aTransferRate)) {
                                                 if (ElectricItem.manager.getCharge(aBaubleStack) >= aTransferRate) {
                                                     if (ElectricItem.manager.getCharge(aInvStack)
-                                                            <= (electricItem.getMaxCharge(aInvStack) - aTransferRate)) {
-                                                        double d = ElectricItem.manager.charge(
+                                                        <= (electricItem.getMaxCharge(aInvStack) - aTransferRate)) {
+                                                        double d = ElectricItem.manager
+                                                            .charge(aInvStack, aTransferRate * 16, mTier, false, true);
+                                                        if (d > 0) {
+                                                            d = ElectricItem.manager.charge(
                                                                 aInvStack,
                                                                 aTransferRate * 16,
                                                                 mTier,
                                                                 false,
-                                                                true);
-                                                        if (d > 0) {
-                                                            d = ElectricItem.manager.charge(
-                                                                    aInvStack,
-                                                                    aTransferRate * 16,
-                                                                    mTier,
-                                                                    false,
-                                                                    false);
-                                                            ElectricItem.manager.discharge(
-                                                                    aBaubleStack,
-                                                                    d,
-                                                                    mTier,
-                                                                    false,
-                                                                    true,
-                                                                    false);
+                                                                false);
+                                                            ElectricItem.manager
+                                                                .discharge(aBaubleStack, d, mTier, false, true, false);
                                                             // Logger.INFO("Charging " + aInvStack.getDisplayName() + "
                                                             // | " + d + " | "+electricItem.getMaxCharge(aInvStack));
                                                         }
@@ -222,23 +213,14 @@ public class BatteryPackBaseBauble extends ElectricBaseBauble {
                                             if (aItemCharge <= (electricItem.getMaxCharge(aInvStack) - aTransferRate)) {
                                                 if (ElectricItem.manager.getCharge(aBaubleStack) >= aTransferRate) {
                                                     if (ElectricItem.manager.getCharge(aInvStack)
-                                                            <= (electricItem.getMaxCharge(aInvStack) - aTransferRate)) {
+                                                        <= (electricItem.getMaxCharge(aInvStack) - aTransferRate)) {
                                                         double d = ElectricItem.manager
-                                                                .charge(aInvStack, aTransferRate, mTier, false, true);
+                                                            .charge(aInvStack, aTransferRate, mTier, false, true);
                                                         if (d > 0) {
-                                                            d = ElectricItem.manager.charge(
-                                                                    aInvStack,
-                                                                    aTransferRate,
-                                                                    mTier,
-                                                                    false,
-                                                                    false);
-                                                            ElectricItem.manager.discharge(
-                                                                    aBaubleStack,
-                                                                    d,
-                                                                    mTier,
-                                                                    false,
-                                                                    true,
-                                                                    false);
+                                                            d = ElectricItem.manager
+                                                                .charge(aInvStack, aTransferRate, mTier, false, false);
+                                                            ElectricItem.manager
+                                                                .discharge(aBaubleStack, d, mTier, false, true, false);
                                                             // Logger.INFO("Charging " + aInvStack.getDisplayName() + "
                                                             // | " + d + " | "+electricItem.getMaxCharge(aInvStack));
                                                         }

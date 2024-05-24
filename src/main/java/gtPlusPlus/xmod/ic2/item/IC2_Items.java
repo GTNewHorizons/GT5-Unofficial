@@ -36,55 +36,35 @@ public class IC2_Items {
 
         // Rotor Blades
         rotor_Blade_Material_1 = new ItemStack(
-                new CoreItem(
-                        mData1[aIndexEIO],
-                        AddToCreativeTab.tabMachines,
-                        16,
-                        "A part for an advanced Kinetic Rotor"));
+            new CoreItem(mData1[aIndexEIO], AddToCreativeTab.tabMachines, 16, "A part for an advanced Kinetic Rotor"));
         rotor_Blade_Material_2 = new ItemStack(
-                new CoreItem(
-                        "itemTungstenSteelRotorBlade",
-                        AddToCreativeTab.tabMachines,
-                        16,
-                        "A part for an advanced Kinetic Rotor"));
+            new CoreItem(
+                "itemTungstenSteelRotorBlade",
+                AddToCreativeTab.tabMachines,
+                16,
+                "A part for an advanced Kinetic Rotor"));
         rotor_Blade_Material_3 = new ItemStack(
-                new CoreItem(
-                        mData3[aIndexEIO],
-                        AddToCreativeTab.tabMachines,
-                        16,
-                        "A part for an advanced Kinetic Rotor"));
+            new CoreItem(mData3[aIndexEIO], AddToCreativeTab.tabMachines, 16, "A part for an advanced Kinetic Rotor"));
         rotor_Blade_Material_4 = new ItemStack(
-                new CoreItem(
-                        "itemIridiumRotorBlade",
-                        AddToCreativeTab.tabMachines,
-                        16,
-                        "A part for an advanced Kinetic Rotor"));
+            new CoreItem(
+                "itemIridiumRotorBlade",
+                AddToCreativeTab.tabMachines,
+                16,
+                "A part for an advanced Kinetic Rotor"));
 
         // Rotor Shafts
         shaft_Material_1 = new ItemStack(
-                new CoreItem(
-                        mData2[aIndexEIO],
-                        AddToCreativeTab.tabMachines,
-                        16,
-                        "A part for an advanced Kinetic Rotor"));
+            new CoreItem(mData2[aIndexEIO], AddToCreativeTab.tabMachines, 16, "A part for an advanced Kinetic Rotor"));
         shaft_Material_2 = new ItemStack(
-                new CoreItem(
-                        "itemTungstenSteelShaft",
-                        AddToCreativeTab.tabMachines,
-                        16,
-                        "A part for an advanced Kinetic Rotor"));
+            new CoreItem(
+                "itemTungstenSteelShaft",
+                AddToCreativeTab.tabMachines,
+                16,
+                "A part for an advanced Kinetic Rotor"));
         shaft_Material_3 = new ItemStack(
-                new CoreItem(
-                        mData4[aIndexEIO],
-                        AddToCreativeTab.tabMachines,
-                        16,
-                        "A part for an advanced Kinetic Rotor"));
+            new CoreItem(mData4[aIndexEIO], AddToCreativeTab.tabMachines, 16, "A part for an advanced Kinetic Rotor"));
         shaft_Material_4 = new ItemStack(
-                new CoreItem(
-                        "itemIridiumShaft",
-                        AddToCreativeTab.tabMachines,
-                        16,
-                        "A part for an advanced Kinetic Rotor"));
+            new CoreItem("itemIridiumShaft", AddToCreativeTab.tabMachines, 16, "A part for an advanced Kinetic Rotor"));
 
         // Rotors
         rotor_Material_1 = new ItemStack(new CustomKineticRotor(0));

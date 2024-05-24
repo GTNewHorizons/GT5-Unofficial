@@ -50,8 +50,8 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class GregtechMetaTileEntity_IndustrialMacerator extends
-        GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialMacerator> implements ISurvivalConstructable {
+public class GregtechMetaTileEntity_IndustrialMacerator
+    extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialMacerator> implements ISurvivalConstructable {
 
     private int controllerTier = 1;
     private int mCasing;
@@ -79,16 +79,23 @@ public class GregtechMetaTileEntity_IndustrialMacerator extends
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType()).addInfo("Controller block for the Industrial Maceration Stack")
-                .addInfo("60% faster than using single block machines of the same voltage")
-                .addInfo("Maximum of n*tier parallels, LV = Tier 1, MV = Tier 2, etc.")
-                .addInfo("n=2 initially. n=8 after inserting Maceration Upgrade Chip.")
-                .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 6, 3, true)
-                .addController("Bottom center").addCasingInfoMin("Maceration Stack Casings (After upgrade)", 26, false)
-                .addCasingInfoMin("Stable Titanium Casings (Before upgrade)", 26, false).addInputBus("Bottom casing", 1)
-                .addEnergyHatch("Any casing", 1).addMaintenanceHatch("Any casing", 1)
-                .addOutputBus("One per layer except bottom layer", 2)
-                .addMufflerHatch("Any casing except bottom layer", 2).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+        tt.addMachineType(getMachineType())
+            .addInfo("Controller block for the Industrial Maceration Stack")
+            .addInfo("60% faster than using single block machines of the same voltage")
+            .addInfo("Maximum of n*tier parallels, LV = Tier 1, MV = Tier 2, etc.")
+            .addInfo("n=2 initially. n=8 after inserting Maceration Upgrade Chip.")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .addSeparator()
+            .beginStructureBlock(3, 6, 3, true)
+            .addController("Bottom center")
+            .addCasingInfoMin("Maceration Stack Casings (After upgrade)", 26, false)
+            .addCasingInfoMin("Stable Titanium Casings (Before upgrade)", 26, false)
+            .addInputBus("Bottom casing", 1)
+            .addEnergyHatch("Any casing", 1)
+            .addMaintenanceHatch("Any casing", 1)
+            .addOutputBus("One per layer except bottom layer", 2)
+            .addMufflerHatch("Any casing except bottom layer", 2)
+            .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
@@ -96,59 +103,65 @@ public class GregtechMetaTileEntity_IndustrialMacerator extends
     public IStructureDefinition<GregtechMetaTileEntity_IndustrialMacerator> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialMacerator>builder()
-                    .addShape(mName + "top1", transpose(new String[][] { { "ccc", "ccc", "ccc" }, }))
-                    .addShape(mName + "mid1", transpose(new String[][] { { "ccc", "c-c", "ccc" }, }))
-                    .addShape(mName + "bottom1", transpose(new String[][] { { "b~b", "bbb", "bbb" }, }))
-                    .addShape(mName + "top2", transpose(new String[][] { { "CCC", "CCC", "CCC" }, }))
-                    .addShape(
-                            mName + "mid2",
-                            transpose(new String[][] { { "CCC", "C-C", "CCC" }, }))
-                    .addShape(mName + "bottom2", transpose(new String[][] { { "B~B", "BBB", "BBB" }, }))
-                    .addElement(
-                            'C',
-                            ofChain(
-                                    buildHatchAdder(GregtechMetaTileEntity_IndustrialMacerator.class).anyOf(OutputBus)
-                                            .shouldReject(t -> t.mPerLayer + 1 == t.mOutputBusses.size())
-                                            .disallowOnly(ForgeDirection.UP, ForgeDirection.DOWN)
-                                            .casingIndex(TAE.GTPP_INDEX(7)).dot(2).build(),
-                                    buildHatchAdder(GregtechMetaTileEntity_IndustrialMacerator.class)
-                                            .atLeast(Energy, Maintenance, Muffler)
-                                            .disallowOnly(ForgeDirection.UP, ForgeDirection.DOWN)
-                                            .casingIndex(TAE.GTPP_INDEX(7)).dot(2).build(),
-                                    onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 7))))
-                    .addElement(
-                            'B',
-                            ofChain(
-                                    buildHatchAdder(GregtechMetaTileEntity_IndustrialMacerator.class)
-                                            .atLeast(Energy, Maintenance, InputBus).disallowOnly(ForgeDirection.UP)
-                                            .casingIndex(TAE.GTPP_INDEX(7)).dot(2).build(),
-                                    onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 7))))
-                    .addElement(
-                            'c',
-                            ofChain(
-                                    buildHatchAdder(GregtechMetaTileEntity_IndustrialMacerator.class).anyOf(OutputBus)
-                                            .shouldReject(t -> t.mPerLayer + 1 == t.mOutputBusses.size())
-                                            .disallowOnly(ForgeDirection.UP, ForgeDirection.DOWN)
-                                            .casingIndex(
-                                                    GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings4, 2))
-                                            .dot(2).build(),
-                                    buildHatchAdder(GregtechMetaTileEntity_IndustrialMacerator.class)
-                                            .atLeast(Energy, Maintenance, Muffler)
-                                            .disallowOnly(ForgeDirection.UP, ForgeDirection.DOWN)
-                                            .casingIndex(
-                                                    GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings4, 2))
-                                            .dot(2).build(),
-                                    onElementPass(x -> ++x.mCasing, ofBlock(GregTech_API.sBlockCasings4, 2))))
-                    .addElement(
-                            'b',
-                            ofChain(
-                                    buildHatchAdder(GregtechMetaTileEntity_IndustrialMacerator.class)
-                                            .atLeast(Energy, Maintenance, InputBus).disallowOnly(ForgeDirection.UP)
-                                            .casingIndex(
-                                                    GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings4, 2))
-                                            .dot(2).build(),
-                                    onElementPass(x -> ++x.mCasing, ofBlock(GregTech_API.sBlockCasings4, 2))))
-                    .build();
+                .addShape(mName + "top1", transpose(new String[][] { { "ccc", "ccc", "ccc" }, }))
+                .addShape(mName + "mid1", transpose(new String[][] { { "ccc", "c-c", "ccc" }, }))
+                .addShape(mName + "bottom1", transpose(new String[][] { { "b~b", "bbb", "bbb" }, }))
+                .addShape(mName + "top2", transpose(new String[][] { { "CCC", "CCC", "CCC" }, }))
+                .addShape(mName + "mid2", transpose(new String[][] { { "CCC", "C-C", "CCC" }, }))
+                .addShape(mName + "bottom2", transpose(new String[][] { { "B~B", "BBB", "BBB" }, }))
+                .addElement(
+                    'C',
+                    ofChain(
+                        buildHatchAdder(GregtechMetaTileEntity_IndustrialMacerator.class).anyOf(OutputBus)
+                            .shouldReject(t -> t.mPerLayer + 1 == t.mOutputBusses.size())
+                            .disallowOnly(ForgeDirection.UP, ForgeDirection.DOWN)
+                            .casingIndex(TAE.GTPP_INDEX(7))
+                            .dot(2)
+                            .build(),
+                        buildHatchAdder(GregtechMetaTileEntity_IndustrialMacerator.class)
+                            .atLeast(Energy, Maintenance, Muffler)
+                            .disallowOnly(ForgeDirection.UP, ForgeDirection.DOWN)
+                            .casingIndex(TAE.GTPP_INDEX(7))
+                            .dot(2)
+                            .build(),
+                        onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 7))))
+                .addElement(
+                    'B',
+                    ofChain(
+                        buildHatchAdder(GregtechMetaTileEntity_IndustrialMacerator.class)
+                            .atLeast(Energy, Maintenance, InputBus)
+                            .disallowOnly(ForgeDirection.UP)
+                            .casingIndex(TAE.GTPP_INDEX(7))
+                            .dot(2)
+                            .build(),
+                        onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 7))))
+                .addElement(
+                    'c',
+                    ofChain(
+                        buildHatchAdder(GregtechMetaTileEntity_IndustrialMacerator.class).anyOf(OutputBus)
+                            .shouldReject(t -> t.mPerLayer + 1 == t.mOutputBusses.size())
+                            .disallowOnly(ForgeDirection.UP, ForgeDirection.DOWN)
+                            .casingIndex(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings4, 2))
+                            .dot(2)
+                            .build(),
+                        buildHatchAdder(GregtechMetaTileEntity_IndustrialMacerator.class)
+                            .atLeast(Energy, Maintenance, Muffler)
+                            .disallowOnly(ForgeDirection.UP, ForgeDirection.DOWN)
+                            .casingIndex(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings4, 2))
+                            .dot(2)
+                            .build(),
+                        onElementPass(x -> ++x.mCasing, ofBlock(GregTech_API.sBlockCasings4, 2))))
+                .addElement(
+                    'b',
+                    ofChain(
+                        buildHatchAdder(GregtechMetaTileEntity_IndustrialMacerator.class)
+                            .atLeast(Energy, Maintenance, InputBus)
+                            .disallowOnly(ForgeDirection.UP)
+                            .casingIndex(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings4, 2))
+                            .dot(2)
+                            .build(),
+                        onElementPass(x -> ++x.mCasing, ofBlock(GregTech_API.sBlockCasings4, 2))))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -168,63 +181,63 @@ public class GregtechMetaTileEntity_IndustrialMacerator extends
         if (mMachine) return -1;
         int built;
         built = survivialBuildPiece(
-                mName + "bottom" + controllerTier,
-                stackSize,
-                1,
-                0,
-                0,
-                elementBudget,
-                env,
-                false,
-                true);
+            mName + "bottom" + controllerTier,
+            stackSize,
+            1,
+            0,
+            0,
+            elementBudget,
+            env,
+            false,
+            true);
         mPerLayer = 0;
         if (built >= 0) return built;
         built = survivialBuildPiece(
-                mName + "mid" + controllerTier,
-                stackSize,
-                1,
-                1,
-                0,
-                elementBudget,
-                env,
-                false,
-                true);
+            mName + "mid" + controllerTier,
+            stackSize,
+            1,
+            1,
+            0,
+            elementBudget,
+            env,
+            false,
+            true);
         mPerLayer = 1;
         if (built >= 0) return built;
         built = survivialBuildPiece(
-                mName + "mid" + controllerTier,
-                stackSize,
-                1,
-                2,
-                0,
-                elementBudget,
-                env,
-                false,
-                true);
+            mName + "mid" + controllerTier,
+            stackSize,
+            1,
+            2,
+            0,
+            elementBudget,
+            env,
+            false,
+            true);
         if (built >= 0) return built;
         mPerLayer = 2;
         built = survivialBuildPiece(
-                mName + "mid" + controllerTier,
-                stackSize,
-                1,
-                3,
-                0,
-                elementBudget,
-                env,
-                false,
-                true);
+            mName + "mid" + controllerTier,
+            stackSize,
+            1,
+            3,
+            0,
+            elementBudget,
+            env,
+            false,
+            true);
         if (built >= 0) return built;
         mPerLayer = 3;
         built = survivialBuildPiece(
-                mName + "mid" + controllerTier,
-                stackSize,
-                1,
-                4,
-                0,
-                elementBudget,
-                env,
-                false,
-                true);
+            mName + "mid" + controllerTier,
+            stackSize,
+            1,
+            4,
+            0,
+            elementBudget,
+            env,
+            false,
+            true);
         if (built >= 0) return built;
         mPerLayer = 4;
         return survivialBuildPiece(mName + "top" + controllerTier, stackSize, 1, 5, 0, elementBudget, env, false, true);
@@ -237,13 +250,12 @@ public class GregtechMetaTileEntity_IndustrialMacerator extends
         if (checkPiece(mName + "bottom" + controllerTier, 1, 0, 0)) {
             while (mPerLayer < 4) {
                 if (!checkPiece(mName + "mid" + controllerTier, 1, mPerLayer + 1, 0)
-                        || mPerLayer + 1 != mOutputBusses.size())
-                    return false;
+                    || mPerLayer + 1 != mOutputBusses.size()) return false;
                 mPerLayer++;
             }
             return checkPiece(mName + "top" + controllerTier, 1, 5, 0) && mOutputBusses.size() == 5
-                    && mCasing >= 26
-                    && checkHatch();
+                && mCasing >= 26
+                && checkHatch();
         }
         return false;
     }
@@ -285,11 +297,12 @@ public class GregtechMetaTileEntity_IndustrialMacerator extends
     public void onPreTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
         super.onPreTick(aBaseMetaTileEntity, aTick);
         if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())
-                && (aBaseMetaTileEntity.getFrontFacing() != ForgeDirection.UP)
-                && (aBaseMetaTileEntity.getCoverIDAtSide(ForgeDirection.UP) == 0)
-                && (!aBaseMetaTileEntity.getOpacityAtSide(ForgeDirection.UP))) {
+            && (aBaseMetaTileEntity.getFrontFacing() != ForgeDirection.UP)
+            && (aBaseMetaTileEntity.getCoverIDAtSide(ForgeDirection.UP) == 0)
+            && (!aBaseMetaTileEntity.getOpacityAtSide(ForgeDirection.UP))) {
             final Random tRandom = aBaseMetaTileEntity.getWorld().rand;
-            aBaseMetaTileEntity.getWorld().spawnParticle(
+            aBaseMetaTileEntity.getWorld()
+                .spawnParticle(
                     "smoke",
                     (aBaseMetaTileEntity.getXCoord() + 0.8F) - (tRandom.nextFloat() * 0.6F),
                     aBaseMetaTileEntity.getYCoord() + 0.3f + (tRandom.nextFloat() * 0.2F),
@@ -317,7 +330,7 @@ public class GregtechMetaTileEntity_IndustrialMacerator extends
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-            float aX, float aY, float aZ) {
+        float aX, float aY, float aZ) {
         if (controllerTier == 1 && !aPlayer.isSneaking()) {
             ItemStack heldItem = aPlayer.getHeldItem();
             if (GregtechItemList.Maceration_Upgrade_Chip.isStackEqual(heldItem, false, true)) {
@@ -392,7 +405,8 @@ public class GregtechMetaTileEntity_IndustrialMacerator extends
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 1.6F).setMaxParallelSupplier(this::getMaxParallelRecipes);
+        return new ProcessingLogic().setSpeedBonus(1F / 1.6F)
+            .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     @Override
@@ -424,21 +438,21 @@ public class GregtechMetaTileEntity_IndustrialMacerator extends
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-            int z) {
+        int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("tier", controllerTier);
     }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-            IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
         if (tag.hasKey("tier")) {
             currentTip.add(
-                    "Tier: " + EnumChatFormatting.YELLOW
-                            + GT_Utility.formatNumbers(tag.getInteger("tier"))
-                            + EnumChatFormatting.RESET);
+                "Tier: " + EnumChatFormatting.YELLOW
+                    + GT_Utility.formatNumbers(tag.getInteger("tier"))
+                    + EnumChatFormatting.RESET);
         }
     }
 }

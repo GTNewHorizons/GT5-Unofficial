@@ -67,15 +67,17 @@ public class RecipeHashStrat {
 
     public static void sortItemStackArray(ItemStack[] itemStackArray) {
         Arrays.sort(
-                itemStackArray,
-                Comparator.<ItemStack, Integer>comparing(itemStack -> Item.getIdFromItem(itemStack.getItem()))
-                        .thenComparing(ItemStack::getItemDamage).thenComparing(itemStack -> itemStack.stackSize));
+            itemStackArray,
+            Comparator.<ItemStack, Integer>comparing(itemStack -> Item.getIdFromItem(itemStack.getItem()))
+                .thenComparing(ItemStack::getItemDamage)
+                .thenComparing(itemStack -> itemStack.stackSize));
     }
 
     public static void sortFluidStackArray(FluidStack[] fluidStackArray) {
         Arrays.sort(
-                fluidStackArray,
-                Comparator.comparing(FluidStack::getFluidID).thenComparing(fluidStack -> fluidStack.amount));
+            fluidStackArray,
+            Comparator.comparing(FluidStack::getFluidID)
+                .thenComparing(fluidStack -> fluidStack.amount));
     }
 
     public static boolean areItemsStackArraysEqual(ItemStack[] array1, ItemStack[] array2) {

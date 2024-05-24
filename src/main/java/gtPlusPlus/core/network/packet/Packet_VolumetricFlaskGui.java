@@ -14,7 +14,7 @@ import gtPlusPlus.core.tileentities.general.TileEntityVolumetricFlaskSetter;
 import io.netty.buffer.ByteBuf;
 
 public class Packet_VolumetricFlaskGui extends AbstractServerMessageHandler<Packet_VolumetricFlaskGui>
-        implements AbstractPacket {
+    implements AbstractPacket {
 
     private int x;
     private int y;

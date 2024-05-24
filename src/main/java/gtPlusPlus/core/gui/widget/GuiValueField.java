@@ -17,7 +17,7 @@ public class GuiValueField extends GuiTextField {
     private final GUI_VolumetricFlaskSetter mGUI;
 
     public GuiValueField(FontRenderer aFontRenderer, int aX, int aY, int aScreenLocationX, int aScreenLocationY,
-            int aWidth, int aHeight, GUI_VolumetricFlaskSetter aGUI) {
+        int aWidth, int aHeight, GUI_VolumetricFlaskSetter aGUI) {
         super(aFontRenderer, aX, aY, aWidth, aHeight);
         mFontRenderer = aFontRenderer;
         mScreenLocationX = aScreenLocationX;
@@ -32,8 +32,8 @@ public class GuiValueField extends GuiTextField {
 
     public boolean isBackgroundDrawingEnabled() {
         Field enableBackgroundDrawing = ReflectionUtils.getField(
-                GuiTextField.class,
-                !CORE_Preloader.DEV_ENVIRONMENT ? "field_146215_m" : "enableBackgroundDrawing");
+            GuiTextField.class,
+            !CORE_Preloader.DEV_ENVIRONMENT ? "field_146215_m" : "enableBackgroundDrawing");
         if (enableBackgroundDrawing != null) {
             return ReflectionUtils.getFieldValue(enableBackgroundDrawing, this);
         }
@@ -42,7 +42,7 @@ public class GuiValueField extends GuiTextField {
 
     public int getLineScrollOffset() {
         Field lineScrollOffset = ReflectionUtils
-                .getField(GuiTextField.class, !CORE_Preloader.DEV_ENVIRONMENT ? "field_146225_q" : "lineScrollOffset");
+            .getField(GuiTextField.class, !CORE_Preloader.DEV_ENVIRONMENT ? "field_146225_q" : "lineScrollOffset");
         if (lineScrollOffset != null) {
             return (int) ReflectionUtils.getFieldValue(lineScrollOffset, this);
         }
@@ -52,8 +52,8 @@ public class GuiValueField extends GuiTextField {
     public boolean didClickInTextField(int aX, int aY) {
         mGUI.log("Clicked at X:" + aX + ", Y:" + aY);
         boolean aDidClick = aX >= this.mScreenLocationX && aX < this.mScreenLocationX + this.width
-                && aY >= this.mScreenLocationY
-                && aY < this.mScreenLocationY + this.height;
+            && aY >= this.mScreenLocationY
+            && aY < this.mScreenLocationY + this.height;
         mGUI.log("Did click in textbox? " + aDidClick);
         mGUI.log("Expected Region: X:" + mScreenLocationX + "-" + (this.mScreenLocationX + this.width));
         mGUI.log("Expected Region: Y:" + mScreenLocationY + "-" + (this.mScreenLocationY + this.height));
@@ -78,16 +78,24 @@ public class GuiValueField extends GuiTextField {
             }
             if (aButton == 0) {
                 mGUI.log("Left clicked in text box.");
-                String s = this.mFontRenderer
-                        .trimStringToWidth(this.getText().substring(getLineScrollOffset()), this.getWidth());
-                this.setCursorPosition(this.mFontRenderer.trimStringToWidth(s, l).length() + getLineScrollOffset());
+                String s = this.mFontRenderer.trimStringToWidth(
+                    this.getText()
+                        .substring(getLineScrollOffset()),
+                    this.getWidth());
+                this.setCursorPosition(
+                    this.mFontRenderer.trimStringToWidth(s, l)
+                        .length() + getLineScrollOffset());
             } else if (aButton == 1) {
                 mGUI.log("Right clicked in text box.");
                 mGUI.setText(0);
                 mGUI.sendUpdateToServer();
-                String s = this.mFontRenderer
-                        .trimStringToWidth(this.getText().substring(getLineScrollOffset()), this.getWidth());
-                this.setCursorPosition(this.mFontRenderer.trimStringToWidth(s, l).length() + getLineScrollOffset());
+                String s = this.mFontRenderer.trimStringToWidth(
+                    this.getText()
+                        .substring(getLineScrollOffset()),
+                    this.getWidth());
+                this.setCursorPosition(
+                    this.mFontRenderer.trimStringToWidth(s, l)
+                        .length() + getLineScrollOffset());
             }
         } else {
             mGUI.log("Clicked, but no focus.");

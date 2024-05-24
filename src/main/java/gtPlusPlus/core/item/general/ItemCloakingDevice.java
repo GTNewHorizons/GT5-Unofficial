@@ -28,8 +28,8 @@ import ic2.api.item.IElectricItem;
 import ic2.api.item.IElectricItemManager;
 
 @Optional.InterfaceList(
-        value = { @Optional.Interface(iface = "baubles.api.IBauble", modid = Names.BAUBLES),
-                @Optional.Interface(iface = "baubles.api.BaubleType", modid = Names.BAUBLES) })
+    value = { @Optional.Interface(iface = "baubles.api.IBauble", modid = Names.BAUBLES),
+        @Optional.Interface(iface = "baubles.api.BaubleType", modid = Names.BAUBLES) })
 public class ItemCloakingDevice extends Item implements IElectricItem, IElectricItemManager, IBauble {
 
     private final String unlocalizedName = "personalCloakingDevice";
@@ -133,25 +133,25 @@ public class ItemCloakingDevice extends Item implements IElectricItem, IElectric
         list.add("");
         list.add(StatCollector.translateToLocal("item.personalCloakingDevice.tooltip.2"));
         list.add(
-                StatCollector.translateToLocalFormatted(
-                        "item.personalCloakingDevice.tooltip.3",
-                        GT_Utility.formatNumbers(this.getTier(this.thisStack)),
-                        GT_Utility.formatNumbers(this.getTransferLimit(this.thisStack))));
+            StatCollector.translateToLocalFormatted(
+                "item.personalCloakingDevice.tooltip.3",
+                GT_Utility.formatNumbers(this.getTier(this.thisStack)),
+                GT_Utility.formatNumbers(this.getTransferLimit(this.thisStack))));
         list.add(
-                StatCollector.translateToLocalFormatted(
-                        "item.personalCloakingDevice.tooltip.4",
-                        GT_Utility.formatNumbers(this.getCharge(stack)),
-                        MathUtils.findPercentage(this.getCharge(stack), this.getMaxCharge(stack))));
+            StatCollector.translateToLocalFormatted(
+                "item.personalCloakingDevice.tooltip.4",
+                GT_Utility.formatNumbers(this.getCharge(stack)),
+                MathUtils.findPercentage(this.getCharge(stack), this.getMaxCharge(stack))));
         list.add(
-                StatCollector.translateToLocalFormatted(
-                        "item.personalCloakingDevice.tooltip.5",
-                        GT_Utility.formatNumbers(this.secondsLeft(stack))));
+            StatCollector.translateToLocalFormatted(
+                "item.personalCloakingDevice.tooltip.5",
+                GT_Utility.formatNumbers(this.secondsLeft(stack))));
         super.addInformation(stack, aPlayer, list, bool);
     }
 
     @Override
     public double charge(final ItemStack stack, final double amount, final int tier, final boolean ignoreTransferLimit,
-            final boolean simulate) {
+        final boolean simulate) {
 
         if (!simulate) {
             ElectricItem.manager.charge(stack, amount, tier, true, simulate);
@@ -161,7 +161,7 @@ public class ItemCloakingDevice extends Item implements IElectricItem, IElectric
 
     @Override
     public double discharge(final ItemStack stack, final double amount, final int tier,
-            final boolean ignoreTransferLimit, final boolean externally, final boolean simulate) {
+        final boolean ignoreTransferLimit, final boolean externally, final boolean simulate) {
         if (!simulate) {
             ElectricItem.manager.discharge(stack, amount, tier, ignoreTransferLimit, externally, simulate);
         }

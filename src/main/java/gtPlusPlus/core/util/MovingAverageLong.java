@@ -30,12 +30,15 @@ public class MovingAverageLong {
         for (long l : storage) {
             result = result.add(BigInteger.valueOf(l));
         }
-        return result.divide(BigInteger.valueOf(storage.length)).longValue();
+        return result.divide(BigInteger.valueOf(storage.length))
+            .longValue();
     }
 
     public void write(NBTTagCompound tagCompound, String key) {
-        ByteBuffer buf = ByteBuffer.allocate(storage.length * Long.BYTES).order(ByteOrder.nativeOrder());
-        buf.asLongBuffer().put(storage);
+        ByteBuffer buf = ByteBuffer.allocate(storage.length * Long.BYTES)
+            .order(ByteOrder.nativeOrder());
+        buf.asLongBuffer()
+            .put(storage);
         tagCompound.setByteArray(key, buf.array());
     }
 
@@ -49,7 +52,8 @@ public class MovingAverageLong {
         if (buf.remaining() != storage.length * Long.BYTES)
             // not very good...
             return false;
-        buf.asLongBuffer().get(storage);
+        buf.asLongBuffer()
+            .get(storage);
         return true;
     }
 }

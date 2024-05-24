@@ -12,10 +12,10 @@ public class GregtechNuclearSaltProcessingPlant {
         if (CORE.ConfigSwitches.enableMultiblock_NuclearSaltProcessingPlant) {
             // Nuclear Salt Processing Plant Multiblock
             GregtechItemList.Nuclear_Salt_Processing_Plant.set(
-                    new GregtechMetaTileEntity_NuclearSaltProcessingPlant(
-                            749,
-                            "nuclearsaltprocessingplant.controller.tier.single",
-                            "Nuclear Salt Processing Plant").getStackForm(1L));
+                new GregtechMetaTileEntity_NuclearSaltProcessingPlant(
+                    749,
+                    "nuclearsaltprocessingplant.controller.tier.single",
+                    "Nuclear Salt Processing Plant").getStackForm(1L));
         }
     }
 }

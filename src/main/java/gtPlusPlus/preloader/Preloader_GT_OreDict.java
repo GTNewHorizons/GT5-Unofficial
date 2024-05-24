@@ -24,7 +24,9 @@ public class Preloader_GT_OreDict {
 
         try {
             if (CORE_Preloader.enableOldGTcircuits) {
-                if ((bannedItem != null) && ItemUtils.getModId(bannedItem).toLowerCase().equals(GregTech.ID)) {
+                if ((bannedItem != null) && ItemUtils.getModId(bannedItem)
+                    .toLowerCase()
+                    .equals(GregTech.ID)) {
                     final int damageValue = bannedItem.getItemDamage() - 32000;
                     if (bannedItem.getItem() instanceof GT_MetaGenerated_Item_01) { // 700-720
                         if ((damageValue >= 700) && (damageValue <= 720)) {
@@ -33,16 +35,16 @@ public class Preloader_GT_OreDict {
                     } else {
                         if (ReflectionUtils.doesClassExist("gregtech.common.items.GT_MetaGenerated_Item_03")) { // 6/11/12/14/16/20/30-57/69-73/79-96
                             final Class<?> MetaItem03 = ReflectionUtils
-                                    .getClass("gregtech.common.items.GT_MetaGenerated_Item_03");
+                                .getClass("gregtech.common.items.GT_MetaGenerated_Item_03");
                             if (isInstanceOf(MetaItem03, bannedItem.getItem())) {
                                 if ((damageValue == 6) || (damageValue == 7)
-                                        || (damageValue == 11)
-                                        || (damageValue == 12)
-                                        || (damageValue == 14)
-                                        || (damageValue == 16)
-                                        || (damageValue == 20)
-                                        || (damageValue == 21)
-                                        || (damageValue == 22)) {
+                                    || (damageValue == 11)
+                                    || (damageValue == 12)
+                                    || (damageValue == 14)
+                                    || (damageValue == 16)
+                                    || (damageValue == 20)
+                                    || (damageValue == 21)
+                                    || (damageValue == 22)) {
                                     return true;
                                 } else if ((damageValue >= 30) && (damageValue <= 57)) {
                                     return true;
@@ -60,29 +62,29 @@ public class Preloader_GT_OreDict {
         } catch (final Throwable e) {
             if (CORE.ConfigSwitches.showHiddenNEIItems) {
                 FMLRelaunchLog.log(
-                        "[GT++ ASM] OreDictTransformer",
-                        Level.INFO,
-                        "A mod tried to register an invalid item with the OreDictionary.");
+                    "[GT++ ASM] OreDictTransformer",
+                    Level.INFO,
+                    "A mod tried to register an invalid item with the OreDictionary.");
                 if (bannedItem != null) {
                     FMLRelaunchLog.log(
-                            "[GT++ ASM] OreDictTransformer",
-                            Level.INFO,
-                            "Please report this issue to the authors of %s",
-                            ItemUtils.getModId(bannedItem));
+                        "[GT++ ASM] OreDictTransformer",
+                        Level.INFO,
+                        "Please report this issue to the authors of %s",
+                        ItemUtils.getModId(bannedItem));
                     try {
                         if (bannedItem.getItemDamage() <= Short.MAX_VALUE - 1) {
                             FMLRelaunchLog.log(
-                                    "[GT++ ASM] OreDictTransformer",
-                                    Level.INFO,
-                                    "Item was not null, but still invalidly registering: %s",
-                                    bannedItem.getDisplayName() != null ? bannedItem.getDisplayName()
-                                            : "INVALID ITEM FOUND");
+                                "[GT++ ASM] OreDictTransformer",
+                                Level.INFO,
+                                "Item was not null, but still invalidly registering: %s",
+                                bannedItem.getDisplayName() != null ? bannedItem.getDisplayName()
+                                    : "INVALID ITEM FOUND");
                         } else {
                             FMLRelaunchLog.log(
-                                    "[GT++ ASM] OreDictTransformer",
-                                    Level.INFO,
-                                    "Item was not null, but still invalidly registering: %s",
-                                    "Found Wildcard item that is being registered too early.");
+                                "[GT++ ASM] OreDictTransformer",
+                                Level.INFO,
+                                "Item was not null, but still invalidly registering: %s",
+                                "Found Wildcard item that is being registered too early.");
                         }
                     } catch (Exception h) {
                         h.printStackTrace();

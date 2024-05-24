@@ -56,7 +56,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.Gregtech
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_Adv_EBF>
-        implements ISurvivalConstructable {
+    implements ISurvivalConstructable {
 
     public static int CASING_TEXTURE_ID;
     public static String mHotFuelName = "Blazing Pyrotheum";
@@ -91,57 +91,65 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType()).addInfo("Factory Grade Advanced Blast Furnace")
-                .addInfo("Speed: +120% | EU Usage: 90% | Parallel: 8")
-                .addInfo("Consumes 10L of " + mHotFuelName + " per second during operation")
-                .addInfo("Constructed exactly the same as a normal EBF").addPollutionAmount(getPollutionPerSecond(null))
-                .addSeparator().addController("Bottom center").addCasingInfoMin(mCasingName, 8, false)
-                .addInputHatch("Any Casing", 1).addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1)
-                .addOutputHatch("Any Casing", 1).addEnergyHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
-                .addMaintenanceHatch("Any Casing", 1).addOtherStructurePart(mHatchName, "Any Casing", 1)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+        tt.addMachineType(getMachineType())
+            .addInfo("Factory Grade Advanced Blast Furnace")
+            .addInfo("Speed: +120% | EU Usage: 90% | Parallel: 8")
+            .addInfo("Consumes 10L of " + mHotFuelName + " per second during operation")
+            .addInfo("Constructed exactly the same as a normal EBF")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .addSeparator()
+            .addController("Bottom center")
+            .addCasingInfoMin(mCasingName, 8, false)
+            .addInputHatch("Any Casing", 1)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addOutputHatch("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addMufflerHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addOtherStructurePart(mHatchName, "Any Casing", 1)
+            .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
     @Override
     public String[] getExtraInfoData() {
         return new String[] { StatCollector.translateToLocal("GT5U.EBF.heat") + ": "
-                + EnumChatFormatting.GREEN
-                + GT_Utility.formatNumbers(mHeatingCapacity.getHeat())
-                + EnumChatFormatting.RESET
-                + " K" };
+            + EnumChatFormatting.GREEN
+            + GT_Utility.formatNumbers(mHeatingCapacity.getHeat())
+            + EnumChatFormatting.RESET
+            + " K" };
     }
 
     @Override
     public IStructureDefinition<GregtechMetaTileEntity_Adv_EBF> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_Adv_EBF>builder().addShape(
+            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_Adv_EBF>builder()
+                .addShape(
                     mName,
                     transpose(
-                            new String[][] { { "CCC", "CCC", "CCC" }, { "HHH", "H-H", "HHH" }, { "HHH", "H-H", "HHH" },
-                                    { "C~C", "CCC", "CCC" }, }))
-                    .addElement(
-                            'C',
-                            ofChain(
-                                    buildHatchAdder(GregtechMetaTileEntity_Adv_EBF.class)
-                                            .adder(GregtechMetaTileEntity_Adv_EBF::addPyrotheumHatch).hatchId(968)
-                                            .shouldReject(x -> !x.mPyrotheumHatches.isEmpty())
-                                            .casingIndex(CASING_TEXTURE_ID).dot(1).build(),
-                                    buildHatchAdder(GregtechMetaTileEntity_Adv_EBF.class).atLeast(
-                                            InputBus,
-                                            OutputBus,
-                                            Maintenance,
-                                            Energy,
-                                            Muffler,
-                                            InputHatch,
-                                            OutputHatch).casingIndex(CASING_TEXTURE_ID).dot(1).build(),
-                                    onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 11))))
-                    .addElement(
-                            'H',
-                            ofCoil(
-                                    GregtechMetaTileEntity_Adv_EBF::setCoilLevel,
-                                    GregtechMetaTileEntity_Adv_EBF::getCoilLevel))
-                    .build();
+                        new String[][] { { "CCC", "CCC", "CCC" }, { "HHH", "H-H", "HHH" }, { "HHH", "H-H", "HHH" },
+                            { "C~C", "CCC", "CCC" }, }))
+                .addElement(
+                    'C',
+                    ofChain(
+                        buildHatchAdder(GregtechMetaTileEntity_Adv_EBF.class)
+                            .adder(GregtechMetaTileEntity_Adv_EBF::addPyrotheumHatch)
+                            .hatchId(968)
+                            .shouldReject(x -> !x.mPyrotheumHatches.isEmpty())
+                            .casingIndex(CASING_TEXTURE_ID)
+                            .dot(1)
+                            .build(),
+                        buildHatchAdder(GregtechMetaTileEntity_Adv_EBF.class)
+                            .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
+                            .casingIndex(CASING_TEXTURE_ID)
+                            .dot(1)
+                            .build(),
+                        onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 11))))
+                .addElement(
+                    'H',
+                    ofCoil(GregtechMetaTileEntity_Adv_EBF::setCoilLevel, GregtechMetaTileEntity_Adv_EBF::getCoilLevel))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -176,7 +184,8 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<
         } else {
             IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
             if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_CustomFluidBase
-                    && aMetaTileEntity.getBaseMetaTileEntity().getMetaTileID() == 968) {
+                && aMetaTileEntity.getBaseMetaTileEntity()
+                    .getMetaTileID() == 968) {
                 return addToMachineListInternal(mPyrotheumHatches, aTileEntity, aBaseCasingIndex);
             }
         }
@@ -227,16 +236,20 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
                 return recipe.mSpecialValue <= getCoilLevel().getHeat() ? CheckRecipeResultRegistry.SUCCESSFUL
-                        : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
+                    : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
             }
 
             @NotNull
             @Override
             protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
-                return super.createOverclockCalculator(recipe).setHeatOC(true).setHeatDiscount(true)
-                        .setRecipeHeat(recipe.mSpecialValue).setMachineHeat((int) getCoilLevel().getHeat());
+                return super.createOverclockCalculator(recipe).setHeatOC(true)
+                    .setHeatDiscount(true)
+                    .setRecipeHeat(recipe.mSpecialValue)
+                    .setMachineHeat((int) getCoilLevel().getHeat());
             }
-        }.setSpeedBonus(1F / 2.2F).setEuModifier(0.9F).setMaxParallelSupplier(this::getMaxParallelRecipes);
+        }.setSpeedBonus(1F / 2.2F)
+            .setEuModifier(0.9F)
+            .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     @Override
@@ -266,15 +279,16 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<
         super.onPostTick(aBaseMetaTileEntity, aTick);
         // Try dry Pyrotheum after all other logic
         if (this.mStartUpCheck < 0) {
-            if (this.mMaxProgresstime > 0 && this.mProgresstime != 0
-                    || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled()) {
-                if (aTick % 10 == 0 || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled()) {
+            if (this.mMaxProgresstime > 0 && this.mProgresstime != 0 || this.getBaseMetaTileEntity()
+                .hasWorkJustBeenEnabled()) {
+                if (aTick % 10 == 0 || this.getBaseMetaTileEntity()
+                    .hasWorkJustBeenEnabled()) {
                     if (!this.depleteInputFromRestrictedHatches(this.mPyrotheumHatches, 5)) {
                         if (mGraceTimer-- == 0) {
                             this.causeMaintenanceIssue();
                             this.stopMachine(
-                                    ShutDownReasonRegistry.outOfFluid(
-                                            Objects.requireNonNull(FluidUtils.getFluidStack("pyrotheum", 10))));
+                                ShutDownReasonRegistry
+                                    .outOfFluid(Objects.requireNonNull(FluidUtils.getFluidStack("pyrotheum", 10))));
                             mGraceTimer = 2;
                         }
                     }
@@ -292,9 +306,8 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         inputSeparation = !inputSeparation;
         aPlayer.addChatMessage(
-                new ChatComponentTranslation(
-                        inputSeparation ? "interaction.separateBusses.enabled"
-                                : "interaction.separateBusses.disabled"));
+            new ChatComponentTranslation(
+                inputSeparation ? "interaction.separateBusses.enabled" : "interaction.separateBusses.disabled"));
     }
 
     @Override

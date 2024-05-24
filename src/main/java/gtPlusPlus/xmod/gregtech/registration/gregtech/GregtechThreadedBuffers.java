@@ -7,7 +7,7 @@ public class GregtechThreadedBuffers {
 
     public static void run() {
         GregtechItemList.Infinite_Item_Chest.set(
-                (new GT_MetaTileEntity_InfiniteItemHolder(31010, "infinite.chest.tier.01", "Infinite Item Chest", 1))
-                        .getStackForm(1L));
+            (new GT_MetaTileEntity_InfiniteItemHolder(31010, "infinite.chest.tier.01", "Infinite Item Chest", 1))
+                .getStackForm(1L));
     }
 }

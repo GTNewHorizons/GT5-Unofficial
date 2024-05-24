@@ -79,7 +79,7 @@ public class Machine_PooCollector extends BlockContainer {
      */
     @Override
     public boolean onBlockActivated(final World world, final int x, final int y, final int z, final EntityPlayer player,
-            final int side, final float lx, final float ly, final float lz) {
+        final int side, final float lx, final float ly, final float lz) {
         if (world.isRemote) {
             return true;
         } else {
@@ -87,7 +87,8 @@ public class Machine_PooCollector extends BlockContainer {
             if (tank != null) {
                 Item handItem;
                 try {
-                    handItem = player.getHeldItem().getItem();
+                    handItem = player.getHeldItem()
+                        .getItem();
                 } catch (Throwable t) {
                     handItem = null;
                 }
@@ -116,10 +117,11 @@ public class Machine_PooCollector extends BlockContainer {
                 }
                 if (tank.tank.getFluid() != null) {
                     PlayerUtils.messagePlayer(
-                            player,
-                            "Tank contains " + tank.tank.getFluidAmount()
-                                    + "L of "
-                                    + tank.tank.getFluid().getLocalizedName());
+                        player,
+                        "Tank contains " + tank.tank.getFluidAmount()
+                            + "L of "
+                            + tank.tank.getFluid()
+                                .getLocalizedName());
                 }
             }
         }

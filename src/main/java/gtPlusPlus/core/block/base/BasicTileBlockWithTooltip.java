@@ -147,7 +147,9 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
     @Override
     @SideOnly(Side.CLIENT)
     public final IIcon getIcon(final int ordinalSide, final int aMeta) {
-        return mSidedTextureArray.get(aMeta).get(ForgeDirection.getOrientation(ordinalSide)).getIcon();
+        return mSidedTextureArray.get(aMeta)
+            .get(ForgeDirection.getOrientation(ordinalSide))
+            .getIcon();
     }
 
     @Override
@@ -171,8 +173,8 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
         final String aPrefixTexPath = GTPlusPlus.ID + ":";
         // Default Path Name, this will make us look in the subdirectory for this Tile Entity.
         final String aTexPathMid = "TileEntities" + CORE.SEPERATOR
-                + getTileEntityNameForTexturePathing()
-                + CORE.SEPERATOR;
+            + getTileEntityNameForTexturePathing()
+            + CORE.SEPERATOR;
         // Construct a full path
         String aTexPathBuilt = aPrefixTexPath + aTexPathMid;
         // File Name Suffixes, without meta tags
@@ -223,12 +225,12 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
                 aStringRight = aTexPathBuilt + aStringRight;
                 // Convenience Blob
                 CubicObject<String> aMetaBlob = new CubicObject<>(
-                        aStringBot,
-                        aStringTop,
-                        aStringBack,
-                        aStringFront,
-                        aStringLeft,
-                        aStringRight);
+                    aStringBot,
+                    aStringTop,
+                    aStringBack,
+                    aStringFront,
+                    aStringLeft,
+                    aStringRight);
                 mSidedTexturePathArray.put(aMetaBlob);
                 Logger.INFO("[TeTexture] Added Texture Path data to map for meta " + i);
             }
@@ -273,7 +275,7 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
 
     @Override
     public final void breakBlock(final World world, final int x, final int y, final int z, final Block block,
-            final int number) {
+        final int number) {
         onBlockBreak();
         InventoryUtils.dropInventoryItems(world, x, y, z, block);
         super.breakBlock(world, x, y, z, block, number);
@@ -293,7 +295,7 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
 
     @Override
     public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y,
-            final int z) {
+        final int z) {
         return false;
     }
 
@@ -307,7 +309,8 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
 
     @Override
     public Item getItemDropped(int meta, Random rand, int p_149650_3_) {
-        return ItemUtils.getSimpleStack(this, 1).getItem();
+        return ItemUtils.getSimpleStack(this, 1)
+            .getItem();
     }
 
     @Override

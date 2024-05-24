@@ -52,7 +52,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.Gregtech
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GregtechMetaTileEntity_IndustrialRockBreaker extends
-        GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialRockBreaker> implements ISurvivalConstructable {
+    GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialRockBreaker> implements ISurvivalConstructable {
 
     private int mCasing;
     private static IStructureDefinition<GregtechMetaTileEntity_IndustrialRockBreaker> STRUCTURE_DEFINITION = null;
@@ -77,21 +77,31 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends
 
     private static final String casingBaseName = GT_LanguageManager.getTranslation("gtplusplus.blockcasings.2.0.name");
     private static final String casingMiddleName = GT_LanguageManager
-            .getTranslation("gtplusplus.blockcasings.2.11.name");
+        .getTranslation("gtplusplus.blockcasings.2.11.name");
     private static final String anyBaseCasing = "Any " + casingBaseName;
 
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType()).addInfo("Controller Block for the Industrial Rock Breaker")
-                .addInfo("Speed: +200% | EU Usage: 75% | Parallel: Tier x 8").addInfo("Circuit goes in the GUI slot")
-                .addInfo("1 = cobble, 2 = stone, 3 = obsidian").addInfo("Supply Water/Lava")
-                .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 4, 3, true)
-                .addController("Bottom Center").addCasingInfoMin(casingBaseName, 9, false)
-                .addCasingInfoExactly(casingMiddleName, 16, false).addInputBus(anyBaseCasing, 1)
-                .addInputHatch(anyBaseCasing, 1).addOutputBus(anyBaseCasing, 1).addEnergyHatch(anyBaseCasing, 1)
-                .addMaintenanceHatch(anyBaseCasing, 1).addMufflerHatch(anyBaseCasing, 1)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+        tt.addMachineType(getMachineType())
+            .addInfo("Controller Block for the Industrial Rock Breaker")
+            .addInfo("Speed: +200% | EU Usage: 75% | Parallel: Tier x 8")
+            .addInfo("Circuit goes in the GUI slot")
+            .addInfo("1 = cobble, 2 = stone, 3 = obsidian")
+            .addInfo("Supply Water/Lava")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .addSeparator()
+            .beginStructureBlock(3, 4, 3, true)
+            .addController("Bottom Center")
+            .addCasingInfoMin(casingBaseName, 9, false)
+            .addCasingInfoExactly(casingMiddleName, 16, false)
+            .addInputBus(anyBaseCasing, 1)
+            .addInputHatch(anyBaseCasing, 1)
+            .addOutputBus(anyBaseCasing, 1)
+            .addEnergyHatch(anyBaseCasing, 1)
+            .addMaintenanceHatch(anyBaseCasing, 1)
+            .addMufflerHatch(anyBaseCasing, 1)
+            .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
@@ -99,18 +109,20 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends
     public IStructureDefinition<GregtechMetaTileEntity_IndustrialRockBreaker> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialRockBreaker>builder()
-                    .addShape(
-                            mName,
-                            transpose(
-                                    new String[][] { { "CCC", "CCC", "CCC" }, { "HHH", "H-H", "HHH" },
-                                            { "HHH", "H-H", "HHH" }, { "C~C", "CCC", "CCC" }, }))
-                    .addElement(
-                            'C',
-                            buildHatchAdder(GregtechMetaTileEntity_IndustrialRockBreaker.class)
-                                    .atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy, Muffler)
-                                    .casingIndex(TAE.GTPP_INDEX(16)).dot(1).buildAndChain(
-                                            onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 0))))
-                    .addElement('H', ofBlock(ModBlocks.blockCasings2Misc, 11)).build();
+                .addShape(
+                    mName,
+                    transpose(
+                        new String[][] { { "CCC", "CCC", "CCC" }, { "HHH", "H-H", "HHH" }, { "HHH", "H-H", "HHH" },
+                            { "C~C", "CCC", "CCC" }, }))
+                .addElement(
+                    'C',
+                    buildHatchAdder(GregtechMetaTileEntity_IndustrialRockBreaker.class)
+                        .atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy, Muffler)
+                        .casingIndex(TAE.GTPP_INDEX(16))
+                        .dot(1)
+                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 0))))
+                .addElement('H', ofBlock(ModBlocks.blockCasings2Misc, 11))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -177,39 +189,39 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends
 
     private static void generateRecipes() {
         sRecipe_Cobblestone = new GT_Recipe(
-                false,
-                new ItemStack[] { CI.getNumberedCircuit(1) },
-                new ItemStack[] { ItemUtils.getSimpleStack(Blocks.cobblestone) },
-                null,
-                new int[] { 10000 },
-                null,
-                null,
-                16,
-                32,
-                0);
+            false,
+            new ItemStack[] { CI.getNumberedCircuit(1) },
+            new ItemStack[] { ItemUtils.getSimpleStack(Blocks.cobblestone) },
+            null,
+            new int[] { 10000 },
+            null,
+            null,
+            16,
+            32,
+            0);
         sRecipe_SmoothStone = new GT_Recipe(
-                false,
-                new ItemStack[] { CI.getNumberedCircuit(2) },
-                new ItemStack[] { ItemUtils.getSimpleStack(Blocks.stone) },
-                null,
-                new int[] { 10000 },
-                null,
-                null,
-                16,
-                32,
-                0);
+            false,
+            new ItemStack[] { CI.getNumberedCircuit(2) },
+            new ItemStack[] { ItemUtils.getSimpleStack(Blocks.stone) },
+            null,
+            new int[] { 10000 },
+            null,
+            null,
+            16,
+            32,
+            0);
         sRecipe_Redstone = new GT_Recipe(
-                false,
-                new ItemStack[] { CI.getNumberedCircuit(3),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L) },
-                new ItemStack[] { ItemUtils.getSimpleStack(Blocks.obsidian) },
-                null,
-                new int[] { 10000 },
-                null,
-                null,
-                128,
-                32,
-                0);
+            false,
+            new ItemStack[] { CI.getNumberedCircuit(3),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L) },
+            new ItemStack[] { ItemUtils.getSimpleStack(Blocks.obsidian) },
+            null,
+            new int[] { 10000 },
+            null,
+            null,
+            128,
+            32,
+            0);
     }
 
     @Override
@@ -233,7 +245,7 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends
         if (!aItems.isEmpty()) {
             for (ItemStack aItem : aItems) {
                 if (GT_Utility
-                        .areStacksEqual(aItem, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L))) {
+                    .areStacksEqual(aItem, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L))) {
                     aHasRedstone = true;
                     break;
                 }
@@ -279,9 +291,15 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends
         // Remember last recipe - an optimization for findRecipe()
         this.mLastRecipe = tRecipe;
 
-        GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe).setItemInputs(aItemInputs)
-                .setFluidInputs(aFluidInputs).setAvailableEUt(tEnergy).setMaxParallel(getMaxParallelRecipes())
-                .setConsumption(true).setOutputCalculation(true).setEUtModifier(0.75F).setMachine(this);
+        GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe)
+            .setItemInputs(aItemInputs)
+            .setFluidInputs(aFluidInputs)
+            .setAvailableEUt(tEnergy)
+            .setMaxParallel(getMaxParallelRecipes())
+            .setConsumption(true)
+            .setOutputCalculation(true)
+            .setEUtModifier(0.75F)
+            .setMachine(this);
 
         if (batchMode) {
             helper.enableBatchMode(128);
@@ -296,10 +314,13 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
 
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(tRecipe.mEUt).setEUt(tEnergy)
-                .setDuration(tRecipe.mDuration).setEUtDiscount(0.75F).setSpeedBoost(1F / 3F)
-                .setParallel((int) Math.floor(helper.getCurrentParallel() / helper.getDurationMultiplierDouble()))
-                .calculate();
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(tRecipe.mEUt)
+            .setEUt(tEnergy)
+            .setDuration(tRecipe.mDuration)
+            .setEUtDiscount(0.75F)
+            .setSpeedBoost(1F / 3F)
+            .setParallel((int) Math.floor(helper.getCurrentParallel() / helper.getDurationMultiplierDouble()))
+            .calculate();
         lEUt = -calculator.getConsumption();
         mMaxProgresstime = (int) Math.ceil(calculator.getDuration() * helper.getDurationMultiplierDouble());
 

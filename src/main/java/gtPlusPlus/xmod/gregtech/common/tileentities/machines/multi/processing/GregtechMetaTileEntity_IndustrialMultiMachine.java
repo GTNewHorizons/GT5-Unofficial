@@ -70,7 +70,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class GregtechMetaTileEntity_IndustrialMultiMachine extends
-        GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialMultiMachine> implements ISurvivalConstructable {
+    GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialMultiMachine> implements ISurvivalConstructable {
 
     protected int mInternalMode = 0;
     private static final int MODE_COMPRESSOR = 0;
@@ -98,7 +98,7 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
     }
 
     public GregtechMetaTileEntity_IndustrialMultiMachine(final int aID, final String aName,
-            final String aNameRegional) {
+        final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
@@ -124,30 +124,31 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
         aBuiltStrings[2] = aToolTipNames[6] + ", " + aToolTipNames[7] + ", " + aToolTipNames[8];
 
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType()).addInfo("Controller Block for the Industrial Multi-Machine")
-                .addInfo("250% faster than using single block machines of the same voltage")
-                .addInfo("Only uses 80% of the EU/t normally required").addInfo("Processes two items per voltage tier")
-                .addInfo(
-                        "Machine Type: Metal - " + EnumChatFormatting.YELLOW
-                                + aBuiltStrings[0]
-                                + EnumChatFormatting.RESET)
-                .addInfo(
-                        "Machine Type: Fluid - " + EnumChatFormatting.YELLOW
-                                + aBuiltStrings[1]
-                                + EnumChatFormatting.RESET)
-                .addInfo(
-                        "Machine Type: Misc - " + EnumChatFormatting.YELLOW
-                                + aBuiltStrings[2]
-                                + EnumChatFormatting.RESET)
-                .addInfo("Read Multi-Machine Manual for extra information")
-                .addInfo(
-                        EnumChatFormatting.AQUA + "You can use Solidifier Hatch to solidify multiple liquids."
-                                + EnumChatFormatting.RESET)
-                .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 3, true)
-                .addController("Front Center").addCasingInfoMin("Multi-Use Casings", 6, false)
-                .addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1)
-                .addOutputHatch("Any Casing", 1).addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1)
-                .addMufflerHatch("Any Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+        tt.addMachineType(getMachineType())
+            .addInfo("Controller Block for the Industrial Multi-Machine")
+            .addInfo("250% faster than using single block machines of the same voltage")
+            .addInfo("Only uses 80% of the EU/t normally required")
+            .addInfo("Processes two items per voltage tier")
+            .addInfo("Machine Type: Metal - " + EnumChatFormatting.YELLOW + aBuiltStrings[0] + EnumChatFormatting.RESET)
+            .addInfo("Machine Type: Fluid - " + EnumChatFormatting.YELLOW + aBuiltStrings[1] + EnumChatFormatting.RESET)
+            .addInfo("Machine Type: Misc - " + EnumChatFormatting.YELLOW + aBuiltStrings[2] + EnumChatFormatting.RESET)
+            .addInfo("Read Multi-Machine Manual for extra information")
+            .addInfo(
+                EnumChatFormatting.AQUA + "You can use Solidifier Hatch to solidify multiple liquids."
+                    + EnumChatFormatting.RESET)
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .addSeparator()
+            .beginStructureBlock(3, 3, 3, true)
+            .addController("Front Center")
+            .addCasingInfoMin("Multi-Use Casings", 6, false)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addInputHatch("Any Casing", 1)
+            .addOutputHatch("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addMufflerHatch("Any Casing", 1)
+            .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
@@ -155,18 +156,18 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
     public IStructureDefinition<GregtechMetaTileEntity_IndustrialMultiMachine> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialMultiMachine>builder()
-                    .addShape(
-                            mName,
-                            transpose(
-                                    new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" },
-                                            { "CCC", "CCC", "CCC" }, }))
-                    .addElement(
-                            'C',
-                            buildHatchAdder(GregtechMetaTileEntity_IndustrialMultiMachine.class)
-                                    .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
-                                    .casingIndex(getTextureIndex()).dot(1).buildAndChain(
-                                            onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 2))))
-                    .build();
+                .addShape(
+                    mName,
+                    transpose(
+                        new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" }, { "CCC", "CCC", "CCC" }, }))
+                .addElement(
+                    'C',
+                    buildHatchAdder(GregtechMetaTileEntity_IndustrialMultiMachine.class)
+                        .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
+                        .casingIndex(getTextureIndex())
+                        .dot(1)
+                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 2))))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -235,7 +236,8 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
 
     private ItemStack getCircuit(ItemStack[] t) {
         for (ItemStack j : t) {
-            if (j.getItem() == CI.getNumberedCircuit(0).getItem()) {
+            if (j.getItem() == CI.getNumberedCircuit(0)
+                .getItem()) {
                 if (j.getItemDamage() >= 20 && j.getItemDamage() <= 22) {
                     return j;
                 }
@@ -259,15 +261,15 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
     @Override
     public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
         return Arrays.asList(
-                RecipeMaps.compressorRecipes,
-                RecipeMaps.latheRecipes,
-                RecipeMaps.polarizerRecipes,
-                RecipeMaps.fermentingRecipes,
-                RecipeMaps.fluidExtractionRecipes,
-                RecipeMaps.extractorRecipes,
-                RecipeMaps.laserEngraverRecipes,
-                RecipeMaps.autoclaveRecipes,
-                RecipeMaps.fluidSolidifierRecipes);
+            RecipeMaps.compressorRecipes,
+            RecipeMaps.latheRecipes,
+            RecipeMaps.polarizerRecipes,
+            RecipeMaps.fermentingRecipes,
+            RecipeMaps.fluidExtractionRecipes,
+            RecipeMaps.extractorRecipes,
+            RecipeMaps.laserEngraverRecipes,
+            RecipeMaps.autoclaveRecipes,
+            RecipeMaps.fluidSolidifierRecipes);
     }
 
     @Override
@@ -322,7 +324,9 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
                 }
                 return super.findRecipeMatches(foundMap);
             }
-        }.setSpeedBonus(1F / 3.5F).setEuModifier(0.8F).setMaxParallelSupplier(this::getMaxParallelRecipes);
+        }.setSpeedBonus(1F / 3.5F)
+            .setEuModifier(0.8F)
+            .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     @Override
@@ -333,7 +337,7 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
             mInternalMode = 0;
         }
         String mModeString = (mInternalMode == 0 ? "Metal"
-                : mInternalMode == 1 ? "Fluid" : mInternalMode == 2 ? "Misc." : "null");
+            : mInternalMode == 1 ? "Fluid" : mInternalMode == 2 ? "Misc." : "null");
         PlayerUtils.messagePlayer(aPlayer, "Multi-Machine is now in " + mModeString + " mode.");
         mLastRecipe = null;
     }
@@ -373,7 +377,7 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-            int z) {
+        int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("mode", mInternalMode);
     }
@@ -496,7 +500,7 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-            IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
         if (tag.hasKey("mode")) {

@@ -92,7 +92,9 @@ public class GT_MTE_LargeTurbine_SHSteam extends GregtechMetaTileEntity_LargerTu
 
         storedFluid = 0;
         for (int i = 0; i < aFluids.size() && remainingFlow > 0; i++) {
-            String fluidName = aFluids.get(i).getFluid().getUnlocalizedName(aFluids.get(i));
+            String fluidName = aFluids.get(i)
+                .getFluid()
+                .getUnlocalizedName(aFluids.get(i));
             if (fluidName.equals("ic2.fluidSuperheatedSteam")) {
                 flow = Math.min(aFluids.get(i).amount, remainingFlow); // try to use up w/o exceeding remainingFlow
                 depleteInput(new FluidStack(aFluids.get(i), flow)); // deplete that amount
@@ -102,16 +104,19 @@ public class GT_MTE_LargeTurbine_SHSteam extends GregtechMetaTileEntity_LargerTu
                 if (!achievement) {
                     try {
                         GT_Mod.achievements.issueAchievement(
-                                this.getBaseMetaTileEntity().getWorld()
-                                        .getPlayerEntityByName(this.getBaseMetaTileEntity().getOwnerName()),
-                                "efficientsteam");
+                            this.getBaseMetaTileEntity()
+                                .getWorld()
+                                .getPlayerEntityByName(
+                                    this.getBaseMetaTileEntity()
+                                        .getOwnerName()),
+                            "efficientsteam");
                     } catch (Exception e) {}
                     achievement = true;
                 }
             } else if (fluidName.equals("fluid.steam") || fluidName.equals("ic2.fluidSteam")
-                    || fluidName.equals("fluid.mfr.steam.still.name")) {
-                        depleteInput(new FluidStack(aFluids.get(i), aFluids.get(i).amount));
-                    }
+                || fluidName.equals("fluid.mfr.steam.still.name")) {
+                    depleteInput(new FluidStack(aFluids.get(i), aFluids.get(i).amount));
+                }
         }
         if (totalFlow <= 0) return 0;
         tEU = totalFlow;
@@ -137,8 +142,8 @@ public class GT_MTE_LargeTurbine_SHSteam extends GregtechMetaTileEntity_LargerTu
         if (side == getBaseMetaTileEntity().getFrontFacing()) {
             looseFit ^= true;
             GT_Utility.sendChatToPlayer(
-                    aPlayer,
-                    looseFit ? "Fitting is Loose (Higher Flow)" : "Fitting is Tight (Higher Efficiency)");
+                aPlayer,
+                looseFit ? "Fitting is Loose (Higher Flow)" : "Fitting is Tight (Higher Efficiency)");
         }
 
         if (looseFit) {

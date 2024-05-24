@@ -36,16 +36,16 @@ public class ItemGenericToken extends CoreItem {
 
     public ItemGenericToken(String aUnlocalName, String aInternalName, String[] aBaseTooltip, String aTextureDir) {
         super(
-                aUnlocalName,
-                aInternalName,
-                AddToCreativeTab.tabMisc,
-                64,
-                1000,
-                aBaseTooltip,
-                EnumRarity.common,
-                EnumChatFormatting.RESET,
-                false,
-                null);
+            aUnlocalName,
+            aInternalName,
+            AddToCreativeTab.tabMisc,
+            64,
+            1000,
+            aBaseTooltip,
+            EnumRarity.common,
+            EnumChatFormatting.RESET,
+            false,
+            null);
         mLocalNames = new HashMap<>();
         mMaxStackSizes = new HashMap<>();
         mDescriptionArrays = new HashMap<>();
@@ -65,7 +65,7 @@ public class ItemGenericToken extends CoreItem {
     }
 
     public boolean register(int id, String aLocalName, int aMaxStack, String[] aDescript, EnumRarity aRarity,
-            EnumChatFormatting aCustomNameColour) {
+        EnumChatFormatting aCustomNameColour) {
         int[][] sizes = new int[2][6];
         sizes[0][0] = mLocalNames.size();
         sizes[0][1] = mMaxStackSizes.size();
@@ -75,13 +75,13 @@ public class ItemGenericToken extends CoreItem {
         // sizes[0][5] = mIcons.size();
         mLocalNames.put(id, aLocalName);
         GT_LanguageManager
-                .addStringLocalization("gtplusplus." + this.getUnlocalizedName() + "." + id + ".name", aLocalName);
+            .addStringLocalization("gtplusplus." + this.getUnlocalizedName() + "." + id + ".name", aLocalName);
         mMaxStackSizes.put(id, aMaxStack);
         mDescriptionArrays.put(id, aDescript);
         for (int i = 0; i < aDescript.length; i++) {
             GT_LanguageManager.addStringLocalization(
-                    "gtplusplus." + this.getUnlocalizedName() + "." + id + ".tooltip." + i,
-                    aDescript[i]);
+                "gtplusplus." + this.getUnlocalizedName() + "." + id + ".tooltip." + i,
+                aDescript[i]);
         }
         mRarities.put(id, aRarity);
         mCustomNameColours.put(id, aCustomNameColour);
@@ -92,9 +92,9 @@ public class ItemGenericToken extends CoreItem {
         sizes[1][4] = mCustomNameColours.size();
         // sizes[1][5] = mIcons.size();
         boolean b = sizes[0][0] > sizes[1][0] && sizes[0][1] > sizes[1][1]
-                && sizes[0][2] > sizes[1][2]
-                && sizes[0][3] > sizes[1][3]
-                && sizes[0][4] > sizes[1][4];
+            && sizes[0][2] > sizes[1][2]
+            && sizes[0][3] > sizes[1][3]
+            && sizes[0][4] > sizes[1][4];
         return b;
     }
 
@@ -114,11 +114,11 @@ public class ItemGenericToken extends CoreItem {
         super.addInformation(stack, aPlayer, list, bool);
         for (int i = 0;; i++) {
             String tooltip = GT_LanguageManager.getTranslation(
-                    "gtplusplus." + this
-                            .getUnlocalizedNameInefficiently(stack) + "." + stack.getItemDamage() + ".tooltip." + i);
+                "gtplusplus." + this
+                    .getUnlocalizedNameInefficiently(stack) + "." + stack.getItemDamage() + ".tooltip." + i);
             if (!("gtplusplus." + this
-                    .getUnlocalizedNameInefficiently(stack) + "." + stack.getItemDamage() + ".tooltip." + i)
-                            .equals(tooltip)) {
+                .getUnlocalizedNameInefficiently(stack) + "." + stack.getItemDamage() + ".tooltip." + i)
+                    .equals(tooltip)) {
                 list.add(tooltip);
             } else break;
         }
@@ -127,7 +127,7 @@ public class ItemGenericToken extends CoreItem {
     @Override
     public String getItemStackDisplayName(final ItemStack tItem) {
         String ret = GT_LanguageManager.getTranslation(
-                "gtplusplus." + this.getUnlocalizedNameInefficiently(tItem) + "." + tItem.getItemDamage() + ".name");
+            "gtplusplus." + this.getUnlocalizedNameInefficiently(tItem) + "." + tItem.getItemDamage() + ".name");
         EnumChatFormatting format = mCustomNameColours.get(tItem.getItemDamage());
         if (format != null) {
             ret = format + ret;

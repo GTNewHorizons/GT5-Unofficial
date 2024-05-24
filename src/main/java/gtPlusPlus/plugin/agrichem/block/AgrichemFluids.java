@@ -25,27 +25,27 @@ public class AgrichemFluids {
     public static void init() {
         if (!FluidRegistry.isFluidRegistered("aceticacid")) {
             mAceticAcid = FluidUtils
-                    .generateFluidNoPrefix("aceticacid", "Acetic Acid", 200, new short[] { 97, 168, 96, 100 }, true);
+                .generateFluidNoPrefix("aceticacid", "Acetic Acid", 200, new short[] { 97, 168, 96, 100 }, true);
         } else {
             mAceticAcid = FluidRegistry.getFluid("aceticacid");
         }
         if (!FluidRegistry.isFluidRegistered("propionicacid")) {
             mPropionicAcid = FluidUtils.generateFluidNoPrefix(
-                    "propionicacid",
-                    "Propionic Acid",
-                    200,
-                    new short[] { 198, 209, 148, 100 },
-                    true);
+                "propionicacid",
+                "Propionic Acid",
+                200,
+                new short[] { 198, 209, 148, 100 },
+                true);
         } else {
             mPropionicAcid = FluidRegistry.getFluid("propionicacid");
         }
         if (!FluidRegistry.isFluidRegistered("fermentation.base")) {
             mFermentationBase = FluidUtils.generateFluidNoPrefix(
-                    "fermentation.base",
-                    "Fermentation Base",
-                    200,
-                    new short[] { 107, 100, 63, 100 },
-                    true);
+                "fermentation.base",
+                "Fermentation Base",
+                200,
+                new short[] { 107, 100, 63, 100 },
+                true);
         } else {
             mFermentationBase = FluidRegistry.getFluid("fermentation.base");
         }
@@ -56,20 +56,20 @@ public class AgrichemFluids {
         }
         if (!FluidRegistry.isFluidRegistered("liquidresin")) {
             mLiquidResin = FluidUtils
-                    .generateFluidNoPrefix("liquidresin", "Liquid Resin", 200, new short[] { 59, 58, 56, 100 }, true);
+                .generateFluidNoPrefix("liquidresin", "Liquid Resin", 200, new short[] { 59, 58, 56, 100 }, true);
         } else {
             mLiquidResin = FluidRegistry.getFluid("liquidresin");
         }
 
         if (!FluidRegistry.isFluidRegistered("acetone")) {
             mAcetone = FluidUtils
-                    .generateFluidNoPrefix("acetone", "Acetone", 200, new short[] { 59, 58, 56, 100 }, true);
+                .generateFluidNoPrefix("acetone", "Acetone", 200, new short[] { 59, 58, 56, 100 }, true);
         } else {
             mAcetone = FluidRegistry.getFluid("acetone");
         }
         if (!FluidRegistry.isFluidRegistered("butanol")) {
             mButanol = FluidUtils
-                    .generateFluidNoPrefix("butanol", "Butanol", 200, new short[] { 159, 58, 56, 100 }, true);
+                .generateFluidNoPrefix("butanol", "Butanol", 200, new short[] { 159, 58, 56, 100 }, true);
         } else {
             mButanol = FluidRegistry.getFluid("butanol");
         }

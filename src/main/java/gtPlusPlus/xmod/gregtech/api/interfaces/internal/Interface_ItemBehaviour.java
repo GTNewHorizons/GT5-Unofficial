@@ -19,10 +19,10 @@ public interface Interface_ItemBehaviour<E extends Item> {
     public boolean onLeftClickEntity(E aItem, ItemStack aStack, EntityPlayer aPlayer, Entity aEntity);
 
     public boolean onItemUse(E aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
-            int aSide, float hitX, float hitY, float hitZ);
+        int aSide, float hitX, float hitY, float hitZ);
 
     public boolean onItemUseFirst(E aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
-            int aSide, float hitX, float hitY, float hitZ);
+        int aSide, float hitX, float hitY, float hitZ);
 
     public ItemStack onItemRightClick(E aItem, ItemStack aStack, World aWorld, EntityPlayer aPlayer);
 
@@ -39,8 +39,8 @@ public interface Interface_ItemBehaviour<E extends Item> {
     public boolean hasProjectile(Gregtech_MetaItem_Base aItem, SubTag aProjectileType, ItemStack aStack);
 
     public EntityArrow getProjectile(E aItem, SubTag aProjectileType, ItemStack aStack, World aWorld, double aX,
-            double aY, double aZ);
+        double aY, double aZ);
 
     public EntityArrow getProjectile(E aItem, SubTag aProjectileType, ItemStack aStack, World aWorld,
-            EntityLivingBase aEntity, float aSpeed);
+        EntityLivingBase aEntity, float aSpeed);
 }

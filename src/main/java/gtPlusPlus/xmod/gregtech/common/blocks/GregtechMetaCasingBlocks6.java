@@ -64,7 +64,7 @@ public class GregtechMetaCasingBlocks6 extends GregtechMetaCasingBlocksAbstract 
     @SideOnly(Side.CLIENT)
     @Override
     public IIcon getIcon(final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord,
-            final int ordinalSide) {
+        final int ordinalSide) {
         final Block thisBlock = aWorld.getBlock(xCoord, yCoord, zCoord);
         final int tMeta = aWorld.getBlockMetadata(xCoord, yCoord, zCoord);
         if ((tMeta != 0) || !GregtechMetaCasingBlocks6.mConnectedMachineTextures) {
@@ -73,18 +73,18 @@ public class GregtechMetaCasingBlocks6 extends GregtechMetaCasingBlocksAbstract 
         final int tStartIndex = 0;
         if (tMeta == 0) {
             final boolean[] tConnectedSides = {
-                    aWorld.getBlock(xCoord, yCoord - 1, zCoord) == thisBlock
-                            && aWorld.getBlockMetadata(xCoord, yCoord - 1, zCoord) == tMeta,
-                    aWorld.getBlock(xCoord, yCoord + 1, zCoord) == thisBlock
-                            && aWorld.getBlockMetadata(xCoord, yCoord + 1, zCoord) == tMeta,
-                    aWorld.getBlock(xCoord + 1, yCoord, zCoord) == thisBlock
-                            && aWorld.getBlockMetadata(xCoord + 1, yCoord, zCoord) == tMeta,
-                    aWorld.getBlock(xCoord, yCoord, zCoord + 1) == thisBlock
-                            && aWorld.getBlockMetadata(xCoord, yCoord, zCoord + 1) == tMeta,
-                    aWorld.getBlock(xCoord - 1, yCoord, zCoord) == thisBlock
-                            && aWorld.getBlockMetadata(xCoord - 1, yCoord, zCoord) == tMeta,
-                    aWorld.getBlock(xCoord, yCoord, zCoord - 1) == thisBlock
-                            && aWorld.getBlockMetadata(xCoord, yCoord, zCoord - 1) == tMeta };
+                aWorld.getBlock(xCoord, yCoord - 1, zCoord) == thisBlock
+                    && aWorld.getBlockMetadata(xCoord, yCoord - 1, zCoord) == tMeta,
+                aWorld.getBlock(xCoord, yCoord + 1, zCoord) == thisBlock
+                    && aWorld.getBlockMetadata(xCoord, yCoord + 1, zCoord) == tMeta,
+                aWorld.getBlock(xCoord + 1, yCoord, zCoord) == thisBlock
+                    && aWorld.getBlockMetadata(xCoord + 1, yCoord, zCoord) == tMeta,
+                aWorld.getBlock(xCoord, yCoord, zCoord + 1) == thisBlock
+                    && aWorld.getBlockMetadata(xCoord, yCoord, zCoord + 1) == tMeta,
+                aWorld.getBlock(xCoord - 1, yCoord, zCoord) == thisBlock
+                    && aWorld.getBlockMetadata(xCoord - 1, yCoord, zCoord) == tMeta,
+                aWorld.getBlock(xCoord, yCoord, zCoord - 1) == thisBlock
+                    && aWorld.getBlockMetadata(xCoord, yCoord, zCoord - 1) == tMeta };
             switch (ordinalSide) {
                 case 0: {
                     if (tConnectedSides[0]) {

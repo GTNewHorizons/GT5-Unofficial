@@ -39,7 +39,7 @@ public class GT_MetaTileEntity_SuperBus_Input extends GT_MetaTileEntity_Hatch_In
     @Override
     public String[] getDescription() {
         return new String[] { "Item Input for Multiblocks", "" + getSlots(this.mTier) + " Slots",
-                CORE.GT_Tooltip.get() };
+            CORE.GT_Tooltip.get() };
     }
 
     @Override
@@ -54,10 +54,12 @@ public class GT_MetaTileEntity_SuperBus_Input extends GT_MetaTileEntity_Hatch_In
             int columnsToMake = Math.min(inventoryHandler.getSlots() - row * 4, 4);
             for (int column = 0; column < columnsToMake; column++) {
                 scrollable.widget(
-                        new SlotWidget(inventoryHandler, row * 4 + column).setPos(column * 18, row * 18)
-                                .setSize(18, 18));
+                    new SlotWidget(inventoryHandler, row * 4 + column).setPos(column * 18, row * 18)
+                        .setSize(18, 18));
             }
         }
-        builder.widget(scrollable.setSize(18 * 4 + 4, 18 * 4).setPos(52, 7));
+        builder.widget(
+            scrollable.setSize(18 * 4 + 4, 18 * 4)
+                .setPos(52, 7));
     }
 }

@@ -12,7 +12,7 @@ public class BaseItemBurnable extends CoreItem {
     protected final int meta;
 
     public BaseItemBurnable(String unlocalizedName, String displayName, CreativeTabs creativeTab, int stackSize,
-            int maxDmg, String description, String oredictName, int burnTime, int meta) {
+        int maxDmg, String description, String oredictName, int burnTime, int meta) {
         super(unlocalizedName, creativeTab, stackSize, maxDmg, description);
         this.itemName = displayName;
         this.meta = meta;

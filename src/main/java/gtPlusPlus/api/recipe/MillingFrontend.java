@@ -20,13 +20,13 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 public class MillingFrontend extends RecipeMapFrontend {
 
     public MillingFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
-            NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(uiPropertiesBuilder, neiPropertiesBuilder);
     }
 
     @Override
     protected List<String> handleNEIItemInputTooltip(List<String> currentTip,
-            GT_NEI_DefaultHandler.FixedPositionedStack pStack) {
+        GT_NEI_DefaultHandler.FixedPositionedStack pStack) {
         if (ItemUtils.isMillingBall(pStack.item)) {
             currentTip.add(GRAY + StatCollector.translateToLocal("gtpp.nei.milling.not_consumed"));
         } else {

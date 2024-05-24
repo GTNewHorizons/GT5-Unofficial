@@ -74,12 +74,12 @@ public class ItemDummyResearch extends ItemGenericToken {
     @Override
     public boolean register(int id, String aLocalName, int aMaxStack, String aDescript) {
         return register(
-                id,
-                aLocalName,
-                1,
-                new String[] { aDescript, EnumChatFormatting.DARK_GRAY + "Used to further your knowledge" },
-                EnumRarity.common,
-                EnumChatFormatting.LIGHT_PURPLE);
+            id,
+            aLocalName,
+            1,
+            new String[] { aDescript, EnumChatFormatting.DARK_GRAY + "Used to further your knowledge" },
+            EnumRarity.common,
+            EnumChatFormatting.LIGHT_PURPLE);
     }
 
     @Override

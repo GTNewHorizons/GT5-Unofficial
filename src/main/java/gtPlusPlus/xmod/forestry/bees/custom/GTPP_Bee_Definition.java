@@ -36,7 +36,7 @@ import gtPlusPlus.core.util.reflect.ReflectionUtils;
 public enum GTPP_Bee_Definition implements IBeeDefinition {
 
     SILICON(GTPP_Branch_Definition.ORGANIC, "Silicon", true, Utils.rgbtoHexValue(75, 75, 75),
-            Utils.rgbtoHexValue(125, 125, 125)) {
+        Utils.rgbtoHexValue(125, 125, 125)) {
 
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
@@ -54,14 +54,14 @@ public enum GTPP_Bee_Definition implements IBeeDefinition {
         @Override
         protected void registerMutations() {
             IBeeMutationCustom tMutation = registerMutation(
-                    getGregtechBeeType("SLIMEBALL"),
-                    getGregtechBeeType("STICKYRESIN"),
-                    10);
+                getGregtechBeeType("SLIMEBALL"),
+                getGregtechBeeType("STICKYRESIN"),
+                10);
         }
     },
 
     RUBBER(GTPP_Branch_Definition.ORGANIC, "Rubber", true, Utils.rgbtoHexValue(55, 55, 55),
-            Utils.rgbtoHexValue(75, 75, 75)) {
+        Utils.rgbtoHexValue(75, 75, 75)) {
 
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
@@ -79,14 +79,14 @@ public enum GTPP_Bee_Definition implements IBeeDefinition {
         @Override
         protected void registerMutations() {
             IBeeMutationCustom tMutation = registerMutation(
-                    getGregtechBeeType("SLIMEBALL"),
-                    getGregtechBeeType("STICKYRESIN"),
-                    10);
+                getGregtechBeeType("SLIMEBALL"),
+                getGregtechBeeType("STICKYRESIN"),
+                10);
         }
     },
 
     PLASTIC(GTPP_Branch_Definition.ORGANIC, "Plastic", true, Utils.rgbtoHexValue(245, 245, 245),
-            Utils.rgbtoHexValue(175, 175, 175)) {
+        Utils.rgbtoHexValue(175, 175, 175)) {
 
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
@@ -108,7 +108,7 @@ public enum GTPP_Bee_Definition implements IBeeDefinition {
     },
 
     PTFE(GTPP_Branch_Definition.ORGANIC, "Ptfe", true, Utils.rgbtoHexValue(150, 150, 150),
-            Utils.rgbtoHexValue(75, 75, 75)) {
+        Utils.rgbtoHexValue(75, 75, 75)) {
 
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
@@ -154,7 +154,7 @@ public enum GTPP_Bee_Definition implements IBeeDefinition {
      * Fuels
      */
     BIOMASS(GTPP_Branch_Definition.ORGANIC, "Biomass", true, Utils.rgbtoHexValue(33, 225, 24),
-            Utils.rgbtoHexValue(23, 175, 14)) {
+        Utils.rgbtoHexValue(23, 175, 14)) {
 
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
@@ -177,7 +177,7 @@ public enum GTPP_Bee_Definition implements IBeeDefinition {
     },
 
     ETHANOL(GTPP_Branch_Definition.ORGANIC, "Ethanol", true, Utils.rgbtoHexValue(255, 128, 0),
-            Utils.rgbtoHexValue(220, 156, 32)) {
+        Utils.rgbtoHexValue(220, 156, 32)) {
 
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
@@ -203,7 +203,7 @@ public enum GTPP_Bee_Definition implements IBeeDefinition {
      * Materials
      */
     FLUORINE(GTPP_Branch_Definition.ORGANIC, "Fluorine", true, Utils.rgbtoHexValue(30, 230, 230),
-            Utils.rgbtoHexValue(10, 150, 150)) {
+        Utils.rgbtoHexValue(10, 150, 150)) {
 
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
@@ -221,9 +221,9 @@ public enum GTPP_Bee_Definition implements IBeeDefinition {
         @Override
         protected void registerMutations() {
             IBeeMutationCustom tMutation = registerMutation(
-                    getGregtechBeeType("LAPIS"),
-                    getGregtechBeeType("SAPPHIRE"),
-                    5);
+                getGregtechBeeType("LAPIS"),
+                getGregtechBeeType("SAPPHIRE"),
+                5);
             tMutation.restrictBiomeType(Type.COLD);
         }
     },
@@ -232,7 +232,7 @@ public enum GTPP_Bee_Definition implements IBeeDefinition {
 
     // Force
     FORCE(GTPP_Branch_Definition.METAL, "Force", true, Utils.rgbtoHexValue(250, 250, 20),
-            Utils.rgbtoHexValue(200, 200, 5)) {
+        Utils.rgbtoHexValue(200, 200, 5)) {
 
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
@@ -252,16 +252,16 @@ public enum GTPP_Bee_Definition implements IBeeDefinition {
         @Override
         protected void registerMutations() {
             IBeeMutationCustom tMutation = registerMutation(
-                    getGregtechBeeType("STEEL"),
-                    getGregtechBeeType("GOLD"),
-                    10);
+                getGregtechBeeType("STEEL"),
+                getGregtechBeeType("GOLD"),
+                10);
             tMutation.restrictBiomeType(Type.HOT);
         }
     },
 
     // Nikolite
     NIKOLITE(GTPP_Branch_Definition.METAL, "Nikolite", true, Utils.rgbtoHexValue(60, 180, 200),
-            Utils.rgbtoHexValue(40, 150, 170)) {
+        Utils.rgbtoHexValue(40, 150, 170)) {
 
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
@@ -279,9 +279,9 @@ public enum GTPP_Bee_Definition implements IBeeDefinition {
         @Override
         protected void registerMutations() {
             IBeeMutationCustom tMutation = registerMutation(
-                    getGregtechBeeType("ALUMINIUM"),
-                    getGregtechBeeType("SILVER"),
-                    8);
+                getGregtechBeeType("ALUMINIUM"),
+                getGregtechBeeType("SILVER"),
+                8);
             tMutation.restrictBiomeType(Type.HOT);
         }
     },
@@ -483,7 +483,8 @@ public enum GTPP_Bee_Definition implements IBeeDefinition {
     private IBeeGenome genome;
 
     GTPP_Bee_Definition(GTPP_Branch_Definition branch, String binomial, boolean dominant, int primary, int secondary) {
-        String lowercaseName = this.toString().toLowerCase(Locale.ENGLISH);
+        String lowercaseName = this.toString()
+            .toLowerCase(Locale.ENGLISH);
         String species = "species" + WordUtils.capitalize(lowercaseName);
 
         String uid = "forestry." + species;
@@ -492,15 +493,15 @@ public enum GTPP_Bee_Definition implements IBeeDefinition {
 
         this.branch = branch;
         this.species = BeeManager.beeFactory.createSpecies(
-                uid,
-                dominant,
-                "Sengir",
-                name,
-                description,
-                branch.getBranch(),
-                binomial,
-                primary,
-                secondary);
+            uid,
+            dominant,
+            "Sengir",
+            name,
+            description,
+            branch.getBranch(),
+            binomial,
+            primary,
+            secondary);
     }
 
     public static void initBees() {
@@ -513,8 +514,10 @@ public enum GTPP_Bee_Definition implements IBeeDefinition {
     }
 
     private static IAlleleBeeSpecies getSpecies(String name) {
-        return (IAlleleBeeSpecies) AlleleManager.alleleRegistry
-                .getAllele((new StringBuilder()).append("forestry.species").append(name).toString());
+        return (IAlleleBeeSpecies) AlleleManager.alleleRegistry.getAllele(
+            (new StringBuilder()).append("forestry.species")
+                .append(name)
+                .toString());
     }
 
     protected abstract void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies);
@@ -536,7 +539,7 @@ public enum GTPP_Bee_Definition implements IBeeDefinition {
     }
 
     protected final IBeeMutationCustom registerMutation(IAlleleBeeSpecies parent1, IAlleleBeeSpecies parent2,
-            int chance) {
+        int chance) {
         IAllele[] template = getTemplate();
         Logger.DEBUG_BEES("parent1: " + (parent1 != null));
         Logger.DEBUG_BEES("parent2: " + (parent2 != null));

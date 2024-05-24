@@ -17,8 +17,8 @@ import gtPlusPlus.core.tileentities.general.TileEntityCircuitProgrammer;
 public class GUI_CircuitProgrammer extends GuiContainer {
 
     private static final ResourceLocation craftingTableGuiTextures = new ResourceLocation(
-            GTPlusPlus.ID,
-            "textures/gui/CircuitProgrammer.png");
+        GTPlusPlus.ID,
+        "textures/gui/CircuitProgrammer.png");
 
     public GUI_CircuitProgrammer(final InventoryPlayer player_inventory, final TileEntityCircuitProgrammer te) {
         super(new Container_CircuitProgrammer(player_inventory, te));

@@ -50,15 +50,15 @@ public class CORE {
 
     // GT++ Fake Player Profile
     public static final GameProfile gameProfile = new GameProfile(
-            UUID.nameUUIDFromBytes("gtplusplus.core".getBytes()),
-            "[GT++]");
+        UUID.nameUUIDFromBytes("gtplusplus.core".getBytes()),
+        "[GT++]");
     public static final WeakHashMap<World, EntityPlayerMP> fakePlayerCache = new WeakHashMap<>();
     // Tooltips;
     public static final Supplier<String> GT_Tooltip = () -> StatCollector.translateToLocal("GTPP.core.GT_Tooltip");
     public static final Supplier<String> GT_Tooltip_Builder = () -> StatCollector
-            .translateToLocal("GTPP.core.GT_Tooltip_Builder");
+        .translateToLocal("GTPP.core.GT_Tooltip_Builder");
     public static final Supplier<String> GT_Tooltip_Radioactive = () -> StatCollector
-            .translateToLocal("GTPP.core.GT_Tooltip_Radioactive");
+        .translateToLocal("GTPP.core.GT_Tooltip_Radioactive");
 
     public static final String SEPERATOR = "/";
 
@@ -189,7 +189,7 @@ public class CORE {
         // pollution single blocks
         public static int basePollutionPerSecondSemiFluidGenerator = 40;
         public static double[] pollutionReleasedByTierSemiFluidGenerator = new double[] { 0, 2.0, 4.0, 8.0, 12.0, 16,
-                0 };
+            0 };
         public static int basePollutionPerSecondBoiler = 35;
         public static double[] pollutionReleasedByTierBoiler = new double[] { 0, 1.0, 1.43, 1.86 };
         public static int baseMinPollutionPerSecondRocketFuelGenerator = 250;
@@ -236,6 +236,7 @@ public class CORE {
         } catch (Throwable t) {
             t.printStackTrace();
         }
-        FMLCommonHandler.instance().exitJava(0, true);
+        FMLCommonHandler.instance()
+            .exitJava(0, true);
     }
 }

@@ -57,20 +57,20 @@ public class GregtechMetaCasingBlocks3 extends GregtechMetaCasingBlocksAbstract 
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "Multi-Use Casing");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", "Trinium Plated Casing");
         GT_LanguageManager
-                .addStringLocalization(this.getUnlocalizedName() + ".4.name", "Vanadium Redox Power Cell (IV)");
+            .addStringLocalization(this.getUnlocalizedName() + ".4.name", "Vanadium Redox Power Cell (IV)");
         GT_LanguageManager
-                .addStringLocalization(this.getUnlocalizedName() + ".5.name", "Vanadium Redox Power Cell (LuV)");
+            .addStringLocalization(this.getUnlocalizedName() + ".5.name", "Vanadium Redox Power Cell (LuV)");
         GT_LanguageManager
-                .addStringLocalization(this.getUnlocalizedName() + ".6.name", "Vanadium Redox Power Cell (ZPM)");
+            .addStringLocalization(this.getUnlocalizedName() + ".6.name", "Vanadium Redox Power Cell (ZPM)");
         GT_LanguageManager
-                .addStringLocalization(this.getUnlocalizedName() + ".7.name", "Vanadium Redox Power Cell (UV)");
+            .addStringLocalization(this.getUnlocalizedName() + ".7.name", "Vanadium Redox Power Cell (UV)");
         GT_LanguageManager
-                .addStringLocalization(this.getUnlocalizedName() + ".8.name", "Vanadium Redox Power Cell (UHV)");
+            .addStringLocalization(this.getUnlocalizedName() + ".8.name", "Vanadium Redox Power Cell (UHV)");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", "Supply Depot Casing");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", "Advanced Cryogenic Casing");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", "Volcanus Casing");
         GT_LanguageManager
-                .addStringLocalization(this.getUnlocalizedName() + ".12.name", "Fusion Machine Casing MK III");
+            .addStringLocalization(this.getUnlocalizedName() + ".12.name", "Fusion Machine Casing MK III");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", "Advanced Fusion Coil");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".14.name", "Unnamed"); // Can Use, don't
                                                                                                      // change texture
@@ -102,7 +102,7 @@ public class GregtechMetaCasingBlocks3 extends GregtechMetaCasingBlocksAbstract 
     @SideOnly(Side.CLIENT)
     @Override
     public IIcon getIcon(final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord,
-            final int ordinalSide) {
+        final int ordinalSide) {
         final Block thisBlock = aWorld.getBlock(xCoord, yCoord, zCoord);
         final int tMeta = aWorld.getBlockMetadata(xCoord, yCoord, zCoord);
         if ((tMeta != 12) || !GregtechMetaCasingBlocks3.mConnectedMachineTextures) {
@@ -111,18 +111,18 @@ public class GregtechMetaCasingBlocks3 extends GregtechMetaCasingBlocksAbstract 
         final int tStartIndex = 0;
         if (tMeta == 12) {
             final boolean[] tConnectedSides = {
-                    aWorld.getBlock(xCoord, yCoord - 1, zCoord) == thisBlock
-                            && aWorld.getBlockMetadata(xCoord, yCoord - 1, zCoord) == tMeta,
-                    aWorld.getBlock(xCoord, yCoord + 1, zCoord) == thisBlock
-                            && aWorld.getBlockMetadata(xCoord, yCoord + 1, zCoord) == tMeta,
-                    aWorld.getBlock(xCoord + 1, yCoord, zCoord) == thisBlock
-                            && aWorld.getBlockMetadata(xCoord + 1, yCoord, zCoord) == tMeta,
-                    aWorld.getBlock(xCoord, yCoord, zCoord + 1) == thisBlock
-                            && aWorld.getBlockMetadata(xCoord, yCoord, zCoord + 1) == tMeta,
-                    aWorld.getBlock(xCoord - 1, yCoord, zCoord) == thisBlock
-                            && aWorld.getBlockMetadata(xCoord - 1, yCoord, zCoord) == tMeta,
-                    aWorld.getBlock(xCoord, yCoord, zCoord - 1) == thisBlock
-                            && aWorld.getBlockMetadata(xCoord, yCoord, zCoord - 1) == tMeta };
+                aWorld.getBlock(xCoord, yCoord - 1, zCoord) == thisBlock
+                    && aWorld.getBlockMetadata(xCoord, yCoord - 1, zCoord) == tMeta,
+                aWorld.getBlock(xCoord, yCoord + 1, zCoord) == thisBlock
+                    && aWorld.getBlockMetadata(xCoord, yCoord + 1, zCoord) == tMeta,
+                aWorld.getBlock(xCoord + 1, yCoord, zCoord) == thisBlock
+                    && aWorld.getBlockMetadata(xCoord + 1, yCoord, zCoord) == tMeta,
+                aWorld.getBlock(xCoord, yCoord, zCoord + 1) == thisBlock
+                    && aWorld.getBlockMetadata(xCoord, yCoord, zCoord + 1) == tMeta,
+                aWorld.getBlock(xCoord - 1, yCoord, zCoord) == thisBlock
+                    && aWorld.getBlockMetadata(xCoord - 1, yCoord, zCoord) == tMeta,
+                aWorld.getBlock(xCoord, yCoord, zCoord - 1) == thisBlock
+                    && aWorld.getBlockMetadata(xCoord, yCoord, zCoord - 1) == tMeta };
             switch (ordinalSide) {
                 case 0: {
                     if (tConnectedSides[0]) {

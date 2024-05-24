@@ -37,7 +37,7 @@ public class MetaCustomCoverItem extends Item {
     private final short[][] mRGB;
 
     public MetaCustomCoverItem(String aModId, int aTextureCount, String aTextureSetName, IIconContainer[] aTextures,
-            short[][] aRGB) {
+        short[][] aRGB) {
         super();
         icons = new IIcon[aTextureCount];
         mModID = aModId;
@@ -53,12 +53,12 @@ public class MetaCustomCoverItem extends Item {
         GameRegistry.registerItem(this, unlocalizedName);
         registerCover();
         Logger.INFO(
-                "[Covers] Generated Custom covers for " + mModID
-                        + " using "
-                        + aTextureCount
-                        + " textures from "
-                        + mTextureSetName
-                        + ".");
+            "[Covers] Generated Custom covers for " + mModID
+                + " using "
+                + aTextureCount
+                + " textures from "
+                + mTextureSetName
+                + ".");
     }
 
     public boolean hide() {
@@ -73,9 +73,9 @@ public class MetaCustomCoverItem extends Item {
                 ItemUtils.hideItemFromNEI(thisStack);
             }
             GregTech_API.registerCover(
-                    thisStack,
-                    new GT_MultiTexture(new ITexture[] { new GT_RenderedTexture(mTextures[i]) }),
-                    new GTPP_Cover_ToggleVisual());
+                thisStack,
+                new GT_MultiTexture(new ITexture[] { new GT_RenderedTexture(mTextures[i]) }),
+                new GTPP_Cover_ToggleVisual());
         }
     }
 

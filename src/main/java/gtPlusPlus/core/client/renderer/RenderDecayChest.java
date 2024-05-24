@@ -21,8 +21,8 @@ import gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest;
 public class RenderDecayChest extends TileEntitySpecialRenderer {
 
     private static final ResourceLocation mChestTexture = new ResourceLocation(
-            GTPlusPlus.ID,
-            "textures/blocks/TileEntities/DecayablesChest_full.png");
+        GTPlusPlus.ID,
+        "textures/blocks/TileEntities/DecayablesChest_full.png");
     private ModelDecayChest mChestModel = new ModelDecayChest();
 
     public static RenderDecayChest INSTANCE;
@@ -35,7 +35,7 @@ public class RenderDecayChest extends TileEntitySpecialRenderer {
     }
 
     public void renderTileEntityAt(TileEntityDecayablesChest p_147500_1_, double p_147500_2_, double p_147500_4_,
-            double p_147500_6_, float p_147500_8_) {
+        double p_147500_6_, float p_147500_8_) {
 
         int i = 0;
 
@@ -81,12 +81,12 @@ public class RenderDecayChest extends TileEntitySpecialRenderer {
 
     @Override
     public void renderTileEntityAt(TileEntity p_147500_1_, double p_147500_2_, double p_147500_4_, double p_147500_6_,
-            float p_147500_8_) {
+        float p_147500_8_) {
         this.renderTileEntityAt(
-                (TileEntityDecayablesChest) p_147500_1_,
-                p_147500_2_,
-                p_147500_4_,
-                p_147500_6_,
-                p_147500_8_);
+            (TileEntityDecayablesChest) p_147500_1_,
+            p_147500_2_,
+            p_147500_4_,
+            p_147500_6_,
+            p_147500_8_);
     }
 }

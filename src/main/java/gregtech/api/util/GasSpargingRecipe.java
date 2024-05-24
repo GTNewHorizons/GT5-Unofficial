@@ -19,7 +19,7 @@ public class GasSpargingRecipe implements Comparable<GasSpargingRecipe> {
     public final int mEUt;
 
     public GasSpargingRecipe(FluidStack aSpargeGas, FluidStack aSpentFuel, FluidStack aSpargedFuel,
-            FluidStack[] aOutputs, int[] aMaxOutputQuantity) {
+        FluidStack[] aOutputs, int[] aMaxOutputQuantity) {
         mInputGas = aSpargeGas;
         mInputSpentFuel = aSpentFuel;
         mOutputSpargedFuel = aSpargedFuel;
@@ -57,21 +57,23 @@ public class GasSpargingRecipe implements Comparable<GasSpargingRecipe> {
 
     public boolean isValid() {
         if (mInputGas == null || mInputGas.amount <= 0
-                || mInputSpentFuel == null
-                || mInputSpentFuel.amount <= 0
-                || mFluidOutputs == null
-                || mFluidOutputs.length < 1
-                || mMaxOutputQuantity == null
-                || mMaxOutputQuantity.length < 1
-                || mFluidOutputs.length != mMaxOutputQuantity.length) {
+            || mInputSpentFuel == null
+            || mInputSpentFuel.amount <= 0
+            || mFluidOutputs == null
+            || mFluidOutputs.length < 1
+            || mMaxOutputQuantity == null
+            || mMaxOutputQuantity.length < 1
+            || mFluidOutputs.length != mMaxOutputQuantity.length) {
             return false;
         }
         return true;
     }
 
     public boolean containsInputs(FluidStack aSpargeGas, FluidStack aSpentFuel) {
-        if (aSpargeGas != null && aSpargeGas.getFluid().equals(this.mInputGas.getFluid())) {
-            if (aSpentFuel != null && aSpentFuel.getFluid().equals(this.mInputSpentFuel.getFluid())) {
+        if (aSpargeGas != null && aSpargeGas.getFluid()
+            .equals(this.mInputGas.getFluid())) {
+            if (aSpentFuel != null && aSpentFuel.getFluid()
+                .equals(this.mInputSpentFuel.getFluid())) {
                 return true;
             }
         }

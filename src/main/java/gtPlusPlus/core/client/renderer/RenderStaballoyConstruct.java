@@ -23,7 +23,7 @@ import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
 public class RenderStaballoyConstruct extends RenderLiving {
 
     private static final ResourceLocation staballoyGolemTextures = new ResourceLocation(
-            GTPlusPlus.ID + ":" + "textures/entity/golemStaballoy.png");
+        GTPlusPlus.ID + ":" + "textures/entity/golemStaballoy.png");
     /** Staballoy Golem's Model. */
     private final ModelStaballoyConstruct staballoyGolemModel;
 
@@ -39,7 +39,7 @@ public class RenderStaballoyConstruct extends RenderLiving {
      * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
      */
     public void doRender(EntityStaballoyConstruct p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_,
-            float p_76986_8_, float p_76986_9_) {
+        float p_76986_8_, float p_76986_9_) {
         super.doRender(p_76986_1_, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
     }
 
@@ -51,7 +51,7 @@ public class RenderStaballoyConstruct extends RenderLiving {
     }
 
     protected void rotateCorpse(EntityStaballoyConstruct p_77043_1_, float p_77043_2_, float p_77043_3_,
-            float p_77043_4_) {
+        float p_77043_4_) {
         super.rotateCorpse(p_77043_1_, p_77043_2_, p_77043_3_, p_77043_4_);
 
         if (p_77043_1_.limbSwingAmount >= 0.01D) {
@@ -69,10 +69,10 @@ public class RenderStaballoyConstruct extends RenderLiving {
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
             GL11.glPushMatrix();
             GL11.glRotatef(
-                    5.0F + 180.0F * this.staballoyGolemModel.ironGolemRightArm.rotateAngleX / (float) Math.PI,
-                    1.0F,
-                    0.0F,
-                    0.0F);
+                5.0F + 180.0F * this.staballoyGolemModel.ironGolemRightArm.rotateAngleX / (float) Math.PI,
+                1.0F,
+                0.0F,
+                0.0F);
             GL11.glTranslatef(-0.6875F, 1.25F, -0.9375F);
             GL11.glRotatef(90.0F, 1.0F, 0.0F, 0.0F);
             float f1 = 0.8F;
@@ -97,14 +97,14 @@ public class RenderStaballoyConstruct extends RenderLiving {
      */
     @Override
     public void doRender(EntityLiving p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_,
-            float p_76986_8_, float p_76986_9_) {
+        float p_76986_8_, float p_76986_9_) {
         this.doRender(
-                (EntityStaballoyConstruct) p_76986_1_,
-                p_76986_2_,
-                p_76986_4_,
-                p_76986_6_,
-                p_76986_8_,
-                p_76986_9_);
+            (EntityStaballoyConstruct) p_76986_1_,
+            p_76986_2_,
+            p_76986_4_,
+            p_76986_6_,
+            p_76986_8_,
+            p_76986_9_);
     }
 
     @Override
@@ -125,14 +125,14 @@ public class RenderStaballoyConstruct extends RenderLiving {
      */
     @Override
     public void doRender(EntityLivingBase p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_,
-            float p_76986_8_, float p_76986_9_) {
+        float p_76986_8_, float p_76986_9_) {
         this.doRender(
-                (EntityStaballoyConstruct) p_76986_1_,
-                p_76986_2_,
-                p_76986_4_,
-                p_76986_6_,
-                p_76986_8_,
-                p_76986_9_);
+            (EntityStaballoyConstruct) p_76986_1_,
+            p_76986_2_,
+            p_76986_4_,
+            p_76986_6_,
+            p_76986_8_,
+            p_76986_9_);
     }
 
     /**
@@ -151,13 +151,13 @@ public class RenderStaballoyConstruct extends RenderLiving {
      */
     @Override
     public void doRender(Entity p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_,
-            float p_76986_9_) {
+        float p_76986_9_) {
         this.doRender(
-                (EntityStaballoyConstruct) p_76986_1_,
-                p_76986_2_,
-                p_76986_4_,
-                p_76986_6_,
-                p_76986_8_,
-                p_76986_9_);
+            (EntityStaballoyConstruct) p_76986_1_,
+            p_76986_2_,
+            p_76986_4_,
+            p_76986_6_,
+            p_76986_8_,
+            p_76986_9_);
     }
 }

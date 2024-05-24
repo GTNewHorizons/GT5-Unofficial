@@ -23,7 +23,7 @@ import gtPlusPlus.preloader.CORE_Preloader;
 public class PlayerSleepEventHandler {
 
     private static Field sEffectDuration = ReflectionUtils
-            .getField(PotionEffect.class, !CORE_Preloader.DEV_ENVIRONMENT ? "field_76460_b" : "duration");
+        .getField(PotionEffect.class, !CORE_Preloader.DEV_ENVIRONMENT ? "field_76460_b" : "duration");
     private static ArrayList<Potion> sPositiveEffects = new ArrayList<>();
     private static ArrayList<Potion> sNegativeEffects = new ArrayList<>();
 
@@ -56,7 +56,8 @@ public class PlayerSleepEventHandler {
     public void wake(PlayerWakeUpEvent event) {
         EntityPlayer aPlayer = event.entityPlayer;
         if (aPlayer != null && !aPlayer.worldObj.isRemote) {
-            if (event.entityPlayer.getEntityWorld().getWorldTime() % 24000 != 0) {
+            if (event.entityPlayer.getEntityWorld()
+                .getWorldTime() % 24000 != 0) {
                 return;
             }
             boolean aRemovedBad = false;
@@ -94,10 +95,7 @@ public class PlayerSleepEventHandler {
                     Potion aPotionToApply = sPositiveEffects.get(aRandomBuff);
                     if (aPotionToApply != null) {
                         aPlayer.addPotionEffect(
-                                new GtPotionEffect(
-                                        aPotionToApply.id,
-                                        MathUtils.randInt(60, 180),
-                                        MathUtils.randInt(0, 2)));
+                            new GtPotionEffect(aPotionToApply.id, MathUtils.randInt(60, 180), MathUtils.randInt(0, 2)));
                         messagePlayer(aPlayer, "sleep.event.wellrested");
                     }
                 }

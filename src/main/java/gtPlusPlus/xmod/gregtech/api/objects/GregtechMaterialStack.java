@@ -34,8 +34,8 @@ public class GregtechMaterialStack implements Cloneable {
         }
         if (aObject instanceof GregtechMaterialStack) {
             return (((GregtechMaterialStack) aObject).mMaterial == this.mMaterial)
-                    && ((this.mAmount < 0) || (((GregtechMaterialStack) aObject).mAmount < 0)
-                            || (((GregtechMaterialStack) aObject).mAmount == this.mAmount));
+                && ((this.mAmount < 0) || (((GregtechMaterialStack) aObject).mAmount < 0)
+                    || (((GregtechMaterialStack) aObject).mAmount == this.mAmount));
         }
         return false;
     }
@@ -43,9 +43,9 @@ public class GregtechMaterialStack implements Cloneable {
     @Override
     public String toString() {
         return ((this.mMaterial.mMaterialList.size() > 1) && (this.mAmount > 1) ? "(" : "")
-                + this.mMaterial.getToolTip(true)
-                + ((this.mMaterial.mMaterialList.size() > 1) && (this.mAmount > 1) ? ")" : "")
-                + (this.mAmount > 1 ? this.mAmount : "");
+            + this.mMaterial.getToolTip(true)
+            + ((this.mMaterial.mMaterialList.size() > 1) && (this.mAmount > 1) ? ")" : "")
+            + (this.mAmount > 1 ? this.mAmount : "");
     }
 
     @Override

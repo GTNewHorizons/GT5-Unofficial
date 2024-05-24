@@ -101,11 +101,11 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
         ItemStack lastUsedFuel = ItemStack.loadItemStackFromNBT(data);
         if (lastUsedFuel != null) {
             this.mCurrentRecipe = getRecipeMap().findRecipe(
-                    getBaseMetaTileEntity(),
-                    false,
-                    9223372036854775807L,
-                    null,
-                    new ItemStack[] { lastUsedFuel });
+                getBaseMetaTileEntity(),
+                false,
+                9223372036854775807L,
+                null,
+                new ItemStack[] { lastUsedFuel });
         }
     }
 
@@ -129,20 +129,20 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
                     if (this.mInventory[getStackDisplaySlot()] == null)
                         this.mInventory[getStackDisplaySlot()] = new ItemStack(Blocks.fire, 1);
                     this.mInventory[getStackDisplaySlot()].setStackDisplayName(
-                            "Generating: "
-                                    + GT_Utility.formatNumbers(
-                                            aBaseMetaTileEntity.getUniversalEnergyStored() - getMinimumStoredEU())
-                                    + " EU");
+                        "Generating: "
+                            + GT_Utility.formatNumbers(
+                                aBaseMetaTileEntity.getUniversalEnergyStored() - getMinimumStoredEU())
+                            + " EU");
                 }
             } else {
                 int tFuelValue = getFuelValue(this.mFluid);
                 int tConsumed = consumedFluidPerOperation(this.mFluid);
                 if ((tFuelValue > 0) && (tConsumed > 0) && (this.mFluid.amount > tConsumed)) {
                     long tFluidAmountToUse = Math.min(
-                            this.mFluid.amount / tConsumed,
-                            (maxEUStore() - aBaseMetaTileEntity.getUniversalEnergyStored()) / tFuelValue);
+                        this.mFluid.amount / tConsumed,
+                        (maxEUStore() - aBaseMetaTileEntity.getUniversalEnergyStored()) / tFuelValue);
                     if ((tFluidAmountToUse > 0L)
-                            && (aBaseMetaTileEntity.increaseStoredEnergyUnits(tFluidAmountToUse * tFuelValue, true))) {
+                        && (aBaseMetaTileEntity.increaseStoredEnergyUnits(tFluidAmountToUse * tFuelValue, true))) {
                         tProducedEU = tFluidAmountToUse * tFuelValue;
                         FluidStack tmp260_257 = this.mFluid;
                         tmp260_257.amount = (int) (tmp260_257.amount - (tFluidAmountToUse * tConsumed));
@@ -150,8 +150,8 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
                 }
             }
             if ((this.mInventory[getInputSlot()] != null)
-                    && (aBaseMetaTileEntity.getUniversalEnergyStored() < maxEUOutput() * 20L + getMinimumStoredEU())
-                    && (GT_Utility.getFluidForFilledItem(this.mInventory[getInputSlot()], true) == null)) {
+                && (aBaseMetaTileEntity.getUniversalEnergyStored() < maxEUOutput() * 20L + getMinimumStoredEU())
+                && (GT_Utility.getFluidForFilledItem(this.mInventory[getInputSlot()], true) == null)) {
                 int tFuelValue = getFuelValue(this.mInventory[getInputSlot()]);
                 if (tFuelValue > 0) {
                     ItemStack tEmptyContainer = getEmptyContainer(this.mInventory[getInputSlot()]);
@@ -163,26 +163,25 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
                 }
             }
             if ((tProducedEU > 0L) && (getPollution() > 0)) {
-                PollutionUtils.addPollution(
-                        aBaseMetaTileEntity,
-                        (int) (tProducedEU * getPollution() / 500 * this.mTier + 1L));
+                PollutionUtils
+                    .addPollution(aBaseMetaTileEntity, (int) (tProducedEU * getPollution() / 500 * this.mTier + 1L));
             }
         }
 
         if (aBaseMetaTileEntity.isServerSide()) aBaseMetaTileEntity.setActive(
-                (aBaseMetaTileEntity.isAllowedToWork())
-                        && (aBaseMetaTileEntity.getUniversalEnergyStored() >= maxEUOutput() + getMinimumStoredEU()));
+            (aBaseMetaTileEntity.isAllowedToWork())
+                && (aBaseMetaTileEntity.getUniversalEnergyStored() >= maxEUOutput() + getMinimumStoredEU()));
     }
 
     @Override
     public String[] getDescription() {
         return ArrayUtils.addAll(
-                this.mDescriptionArray,
-                "Fuel is measured in minecraft days (Check with Scanner)",
-                "RTG changes output voltage depending on fuel",
-                "Generates power at " + GT_Utility.formatNumbers(this.getEfficiency()) + "% Efficiency per tick",
-                "Output Voltage: " + GT_Utility.formatNumbers(this.getOutputTier()) + " EU/t",
-                CORE.GT_Tooltip.get());
+            this.mDescriptionArray,
+            "Fuel is measured in minecraft days (Check with Scanner)",
+            "RTG changes output voltage depending on fuel",
+            "Generates power at " + GT_Utility.formatNumbers(this.getEfficiency()) + "% Efficiency per tick",
+            "Output Voltage: " + GT_Utility.formatNumbers(this.getOutputTier()) + " EU/t",
+            CORE.GT_Tooltip.get());
     }
 
     public GregtechMetaTileEntity_RTG(int aID, String aName, String aNameRegional, int aTier) {
@@ -210,7 +209,7 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
     @Override
     public boolean isOutputFacing(ForgeDirection side) {
         return ((side.offsetY == 0) && (side != getBaseMetaTileEntity().getFrontFacing())
-                && (side != getBaseMetaTileEntity().getBackFacing()));
+            && (side != getBaseMetaTileEntity().getBackFacing()));
     }
 
     @Override
@@ -236,67 +235,67 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
     @Override
     public ITexture[] getFront(byte aColor) {
         return new ITexture[] { super.getFront(aColor)[0],
-                new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP),
-                new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_MASSFAB) };
+            new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP),
+            new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_MASSFAB) };
     }
 
     @Override
     public ITexture[] getBack(byte aColor) {
         return new ITexture[] { super.getBack(aColor)[0],
-                new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP) };
+            new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP) };
     }
 
     @Override
     public ITexture[] getBottom(byte aColor) {
         return new ITexture[] { super.getBottom(aColor)[0],
-                new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP) };
+            new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP) };
     }
 
     @Override
     public ITexture[] getTop(byte aColor) {
         return new ITexture[] { super.getTop(aColor)[0],
-                new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP),
-                new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_FLUID_SIDE) };
+            new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP),
+            new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_FLUID_SIDE) };
     }
 
     @Override
     public ITexture[] getSides(byte aColor) {
         return new ITexture[] { gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS[this.mTier][(0)],
-                new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP_ACTIVE),
-                gregtech.api.enums.Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[getTier()] };
+            new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP_ACTIVE),
+            gregtech.api.enums.Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[getTier()] };
     }
 
     @Override
     public ITexture[] getFrontActive(byte aColor) {
         return new ITexture[] { super.getFrontActive(aColor)[0],
-                new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP_ACTIVE),
-                new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_MASSFAB_ACTIVE) };
+            new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP_ACTIVE),
+            new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_MASSFAB_ACTIVE) };
     }
 
     @Override
     public ITexture[] getBackActive(byte aColor) {
         return new ITexture[] { super.getBackActive(aColor)[0],
-                new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP_ACTIVE) };
+            new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP_ACTIVE) };
     }
 
     @Override
     public ITexture[] getBottomActive(byte aColor) {
         return new ITexture[] { super.getBottomActive(aColor)[0],
-                new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP_ACTIVE) };
+            new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP_ACTIVE) };
     }
 
     @Override
     public ITexture[] getTopActive(byte aColor) {
         return new ITexture[] { super.getTopActive(aColor)[0],
-                new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP_ACTIVE),
-                new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_FLUID_SIDE_ACTIVE) };
+            new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP_ACTIVE),
+            new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_FLUID_SIDE_ACTIVE) };
     }
 
     @Override
     public ITexture[] getSidesActive(byte aColor) {
         return new ITexture[] { gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS[this.mTier][(0)],
-                new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP_ACTIVE),
-                gregtech.api.enums.Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[getTier()] };
+            new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP_ACTIVE),
+            gregtech.api.enums.Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[getTier()] };
     }
 
     @Override
@@ -308,7 +307,7 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
     public int getFuelValue(ItemStack aStack) {
         if ((GT_Utility.isStackInvalid(aStack)) || (getRecipeMap() == null)) return 0;
         GT_Recipe tFuel = getRecipeMap()
-                .findRecipe(getBaseMetaTileEntity(), false, 9223372036854775807L, null, new ItemStack[] { aStack });
+            .findRecipe(getBaseMetaTileEntity(), false, 9223372036854775807L, null, new ItemStack[] { aStack });
         if (tFuel != null) {
             this.mCurrentRecipe = tFuel;
             int voltage = tFuel.mEUt;
@@ -370,12 +369,11 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
 
     @Override
     public String[] getInfoData() {
-        return new String[] { "RTG - Running at tier " + this.mTier,
-                "Active: " + this.getBaseMetaTileEntity().isActive(),
-                "Current Output: " + GT_Utility.formatNumbers(mVoltage) + " EU/t",
-                "Days of Fuel remaining: " + GT_Utility.formatNumbers(mTicksToBurnFor / 20 / 60 / 20),
-                "Hours of Fuel remaining: " + GT_Utility.formatNumbers(mTicksToBurnFor / 20 / 60 / 60),
-                "Ticks of " + this.mVoltage + "v remaining: " + mTicksToBurnFor,
-                this.mCurrentRecipe.mInputs[0].getDisplayName() + " x1" };
+        return new String[] { "RTG - Running at tier " + this.mTier, "Active: " + this.getBaseMetaTileEntity()
+            .isActive(), "Current Output: " + GT_Utility.formatNumbers(mVoltage) + " EU/t",
+            "Days of Fuel remaining: " + GT_Utility.formatNumbers(mTicksToBurnFor / 20 / 60 / 20),
+            "Hours of Fuel remaining: " + GT_Utility.formatNumbers(mTicksToBurnFor / 20 / 60 / 60),
+            "Ticks of " + this.mVoltage + "v remaining: " + mTicksToBurnFor,
+            this.mCurrentRecipe.mInputs[0].getDisplayName() + " x1" };
     }
 }

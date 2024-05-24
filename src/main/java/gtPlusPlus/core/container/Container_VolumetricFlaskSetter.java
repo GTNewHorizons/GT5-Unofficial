@@ -82,7 +82,7 @@ public class Container_VolumetricFlaskSetter extends Container {
             for (var6 = 0; var6 < 3; ++var6) {
                 for (var7 = 0; var7 < 9; ++var7) {
                     this.addSlotToContainer(
-                            new Slot(inventory, var7 + (var6 * 9) + 9, 8 + (var7 * 18), 84 + (var6 * 18)));
+                        new Slot(inventory, var7 + (var6 * 9) + 9, 8 + (var7 * 18), 84 + (var6 * 18)));
                 }
             }
             // Player Hotbar

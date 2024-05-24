@@ -113,11 +113,11 @@ public class IonParticles extends BaseItemParticle {
         // State not set
         if (aCharge == 0) {
             list.add(
-                    EnumChatFormatting.GRAY + "A "
-                            + MetaToNameMap.get(stack.getItemDamage())
-                            + " Ion with an "
-                            + aState
-                            + " charge state");
+                EnumChatFormatting.GRAY + "A "
+                    + MetaToNameMap.get(stack.getItemDamage())
+                    + " Ion with an "
+                    + aState
+                    + " charge state");
         } else {
             if (aCharge > 0) {
                 aState = EnumChatFormatting.GREEN + "Positive" + EnumChatFormatting.GRAY;
@@ -126,13 +126,13 @@ public class IonParticles extends BaseItemParticle {
             }
 
             list.add(
-                    EnumChatFormatting.GRAY + "A "
-                            + MetaToNameMap.get(stack.getItemDamage())
-                            + " Ion with a "
-                            + aState
-                            + " charge state of "
-                            + aCharge
-                            + "");
+                EnumChatFormatting.GRAY + "A "
+                    + MetaToNameMap.get(stack.getItemDamage())
+                    + " Ion with a "
+                    + aState
+                    + " charge state of "
+                    + aCharge
+                    + "");
         }
         super.addInformation(stack, player, list, bool);
     }

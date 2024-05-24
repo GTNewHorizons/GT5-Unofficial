@@ -39,8 +39,8 @@ import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIcon;
 
-public class GregtechMetaTileEntity_IndustrialCentrifuge extends
-        GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialCentrifuge> implements ISurvivalConstructable {
+public class GregtechMetaTileEntity_IndustrialCentrifuge
+    extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialCentrifuge> implements ISurvivalConstructable {
 
     private boolean mIsAnimated;
     private static final CustomIcon frontFaceActive = new CustomIcon("iconsets/LARGECENTRIFUGE_ACTIVE5");
@@ -72,15 +72,25 @@ public class GregtechMetaTileEntity_IndustrialCentrifuge extends
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType()).addInfo("Controller Block for the Industrial Centrifuge")
-                .addInfo("125% faster than using single block machines of the same voltage")
-                .addInfo("Disable animations with a screwdriver").addInfo("Only uses 90% of the EU/t normally required")
-                .addInfo("Processes six items per voltage tier").addPollutionAmount(getPollutionPerSecond(null))
-                .addSeparator().beginStructureBlock(3, 3, 3, true).addController("Front Center")
-                .addCasingInfoMin("Centrifuge Casings", 6, false).addInputBus("Any Casing", 1)
-                .addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1).addOutputHatch("Any Casing", 1)
-                .addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+        tt.addMachineType(getMachineType())
+            .addInfo("Controller Block for the Industrial Centrifuge")
+            .addInfo("125% faster than using single block machines of the same voltage")
+            .addInfo("Disable animations with a screwdriver")
+            .addInfo("Only uses 90% of the EU/t normally required")
+            .addInfo("Processes six items per voltage tier")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .addSeparator()
+            .beginStructureBlock(3, 3, 3, true)
+            .addController("Front Center")
+            .addCasingInfoMin("Centrifuge Casings", 6, false)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addInputHatch("Any Casing", 1)
+            .addOutputHatch("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addMufflerHatch("Any Casing", 1)
+            .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
@@ -88,18 +98,18 @@ public class GregtechMetaTileEntity_IndustrialCentrifuge extends
     public IStructureDefinition<GregtechMetaTileEntity_IndustrialCentrifuge> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialCentrifuge>builder()
-                    .addShape(
-                            mName,
-                            transpose(
-                                    new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" },
-                                            { "CCC", "CCC", "CCC" }, }))
-                    .addElement(
-                            'C',
-                            buildHatchAdder(GregtechMetaTileEntity_IndustrialCentrifuge.class)
-                                    .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
-                                    .casingIndex(getCasingTextureIndex()).dot(1).buildAndChain(
-                                            onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 0))))
-                    .build();
+                .addShape(
+                    mName,
+                    transpose(
+                        new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" }, { "CCC", "CCC", "CCC" }, }))
+                .addElement(
+                    'C',
+                    buildHatchAdder(GregtechMetaTileEntity_IndustrialCentrifuge.class)
+                        .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
+                        .casingIndex(getCasingTextureIndex())
+                        .dot(1)
+                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 0))))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -147,8 +157,9 @@ public class GregtechMetaTileEntity_IndustrialCentrifuge extends
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setEuModifier(0.9F).setSpeedBonus(1F / 2.25F)
-                .setMaxParallelSupplier(this::getMaxParallelRecipes);
+        return new ProcessingLogic().setEuModifier(0.9F)
+            .setSpeedBonus(1F / 2.25F)
+            .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     @Override

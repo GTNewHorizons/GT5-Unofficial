@@ -16,9 +16,9 @@ public class GregtechIndustrialThermalCentrifuge {
 
     private static void run1() {
         GregtechItemList.Industrial_ThermalCentrifuge.set(
-                new GregtechMetaTileEntity_IndustrialThermalCentrifuge(
-                        849,
-                        "industrialthermalcentrifuge.controller.tier.single",
-                        "Large Thermal Refinery").getStackForm(1L));
+            new GregtechMetaTileEntity_IndustrialThermalCentrifuge(
+                849,
+                "industrialthermalcentrifuge.controller.tier.single",
+                "Large Thermal Refinery").getStackForm(1L));
     }
 }

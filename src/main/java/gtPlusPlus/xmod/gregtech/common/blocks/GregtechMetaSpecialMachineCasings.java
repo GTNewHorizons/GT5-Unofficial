@@ -50,12 +50,12 @@ public class GregtechMetaSpecialMachineCasings extends GregtechMetaCasingBlocksA
         }
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Strong Bronze Machine Casing");
         GT_LanguageManager
-                .addStringLocalization(this.getUnlocalizedName() + ".1.name", "Sturdy Aluminium Machine Casing");
+            .addStringLocalization(this.getUnlocalizedName() + ".1.name", "Sturdy Aluminium Machine Casing");
         GT_LanguageManager
-                .addStringLocalization(this.getUnlocalizedName() + ".2.name", "Vigorous Laurenium Machine Casing");
+            .addStringLocalization(this.getUnlocalizedName() + ".2.name", "Vigorous Laurenium Machine Casing");
         TAE.registerTexture(84, new GTPP_CopiedBlockTexture(this, 6, 2));
         GT_LanguageManager
-                .addStringLocalization(this.getUnlocalizedName() + ".3.name", "Rugged Botmium Machine Casing");
+            .addStringLocalization(this.getUnlocalizedName() + ".3.name", "Rugged Botmium Machine Casing");
 
         GregtechItemList.Casing_Machine_Custom_1.set(new ItemStack(this, 1, 0));
         GregtechItemList.Casing_Machine_Custom_2.set(new ItemStack(this, 1, 1));

@@ -30,21 +30,21 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
     protected int pollMin, pollMax;
 
     public GregtechRocketFuelGeneratorBase(final int aID, final String aName, final String aNameRegional,
-            final int aTier, final String aDescription, final ITexture... aTextures) {
+        final int aTier, final String aDescription, final ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, 3, aDescription, aTextures);
         pollMin = (int) (CORE.ConfigSwitches.baseMinPollutionPerSecondRocketFuelGenerator
-                * CORE.ConfigSwitches.pollutionReleasedByTierRocketFuelGenerator[mTier]);
+            * CORE.ConfigSwitches.pollutionReleasedByTierRocketFuelGenerator[mTier]);
         pollMax = (int) (CORE.ConfigSwitches.baseMaxPollutionPerSecondRocketFuelGenerator
-                * CORE.ConfigSwitches.pollutionReleasedByTierRocketFuelGenerator[mTier]);
+            * CORE.ConfigSwitches.pollutionReleasedByTierRocketFuelGenerator[mTier]);
     }
 
     public GregtechRocketFuelGeneratorBase(final String aName, final int aTier, final String[] aDescription,
-            final ITexture[][][] aTextures) {
+        final ITexture[][][] aTextures) {
         super(aName, aTier, 3, aDescription, aTextures);
         pollMin = (int) (CORE.ConfigSwitches.baseMinPollutionPerSecondRocketFuelGenerator
-                * CORE.ConfigSwitches.pollutionReleasedByTierRocketFuelGenerator[mTier]);
+            * CORE.ConfigSwitches.pollutionReleasedByTierRocketFuelGenerator[mTier]);
         pollMax = (int) (CORE.ConfigSwitches.baseMaxPollutionPerSecondRocketFuelGenerator
-                * CORE.ConfigSwitches.pollutionReleasedByTierRocketFuelGenerator[mTier]);
+            * CORE.ConfigSwitches.pollutionReleasedByTierRocketFuelGenerator[mTier]);
     }
 
     @Override
@@ -67,22 +67,20 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
 
     @Override
     public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
-            final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
-        return this.mTextures[(aActive ? 5 : 0)
-                + (side == facing ? 0
-                        : side == facing.getOpposite() ? 1
-                                : side == ForgeDirection.DOWN ? 2 : side == ForgeDirection.UP ? 3 : 4)][aColorIndex
-                                        + 1];
+        final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+        return this.mTextures[(aActive ? 5 : 0) + (side == facing ? 0
+            : side == facing.getOpposite() ? 1
+                : side == ForgeDirection.DOWN ? 2 : side == ForgeDirection.UP ? 3 : 4)][aColorIndex + 1];
     }
 
     @Override
     public String[] getDescription() {
         String aPollution = "Causes between " + pollMin + " and " + pollMax + " Pollution per second";
         return ArrayUtils.addAll(
-                this.mDescriptionArray,
-                "Fuel Efficiency: " + this.getEfficiency() + "%",
-                aPollution,
-                CORE.GT_Tooltip.get());
+            this.mDescriptionArray,
+            "Fuel Efficiency: " + this.getEfficiency() + "%",
+            aPollution,
+            CORE.GT_Tooltip.get());
     }
 
     @Override
@@ -153,7 +151,8 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
 
     @Override
     public boolean isOutputFacing(final ForgeDirection side) {
-        return this.getBaseMetaTileEntity().getFrontFacing() == side;
+        return this.getBaseMetaTileEntity()
+            .getFrontFacing() == side;
     }
 
     @Override
@@ -218,20 +217,19 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
                         this.mInventory[this.getStackDisplaySlot()] = new ItemStack(Blocks.fire, 1);
                     }
                     this.mInventory[this.getStackDisplaySlot()].setStackDisplayName(
-                            "Generating: "
-                                    + (aBaseMetaTileEntity.getUniversalEnergyStored() - this.getMinimumStoredEU())
-                                    + " EU");
+                        "Generating: " + (aBaseMetaTileEntity.getUniversalEnergyStored() - this.getMinimumStoredEU())
+                            + " EU");
                 }
             } else {
                 final int tFuelValue = this.getFuelValue(this.mFluid),
-                        tConsumed = this.consumedFluidPerOperation(this.mFluid);
+                    tConsumed = this.consumedFluidPerOperation(this.mFluid);
                 if ((tFuelValue > 0) && (tConsumed > 0) && (this.mFluid.amount >= tConsumed)) {
                     final long tFluidAmountToUse = Math.min(
-                            this.mFluid.amount / tConsumed,
-                            (((this.maxEUOutput() * 20) + this.getMinimumStoredEU())
-                                    - aBaseMetaTileEntity.getUniversalEnergyStored()) / tFuelValue);
+                        this.mFluid.amount / tConsumed,
+                        (((this.maxEUOutput() * 20) + this.getMinimumStoredEU())
+                            - aBaseMetaTileEntity.getUniversalEnergyStored()) / tFuelValue);
                     if ((tFluidAmountToUse > 0)
-                            && aBaseMetaTileEntity.increaseStoredEnergyUnits(tFluidAmountToUse * tFuelValue, true)) {
+                        && aBaseMetaTileEntity.increaseStoredEnergyUnits(tFluidAmountToUse * tFuelValue, true)) {
                         int aSafeFloor = (int) Math.max(((tFluidAmountToUse * tConsumed) / 3), 1);
                         this.mFluid.amount -= (int) aSafeFloor;
                         PollutionUtils.addPollution(getBaseMetaTileEntity(), 10 * getPollution());
@@ -239,9 +237,9 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
                 }
             }
             if ((this.mInventory[this.getInputSlot()] != null)
-                    && (aBaseMetaTileEntity.getUniversalEnergyStored()
-                            < ((this.maxEUOutput() * 20) + this.getMinimumStoredEU()))
-                    && (GT_Utility.getFluidForFilledItem(this.mInventory[this.getInputSlot()], true) == null)) {
+                && (aBaseMetaTileEntity.getUniversalEnergyStored()
+                    < ((this.maxEUOutput() * 20) + this.getMinimumStoredEU()))
+                && (GT_Utility.getFluidForFilledItem(this.mInventory[this.getInputSlot()], true) == null)) {
                 final int tFuelValue = this.getFuelValue(this.mInventory[this.getInputSlot()]);
                 if (tFuelValue > 0) {
                     final ItemStack tEmptyContainer = this.getEmptyContainer(this.mInventory[this.getInputSlot()]);
@@ -256,8 +254,8 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
 
         if (aBaseMetaTileEntity.isServerSide()) {
             aBaseMetaTileEntity.setActive(
-                    aBaseMetaTileEntity.isAllowedToWork() && (aBaseMetaTileEntity.getUniversalEnergyStored()
-                            >= (this.maxEUOutput() + this.getMinimumStoredEU())));
+                aBaseMetaTileEntity.isAllowedToWork() && (aBaseMetaTileEntity.getUniversalEnergyStored()
+                    >= (this.maxEUOutput() + this.getMinimumStoredEU())));
         }
     }
 
@@ -279,7 +277,8 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
             return 0;
         }
         FluidStack tLiquid;
-        final Collection<GT_Recipe> tRecipeList = this.getRecipeMap().getAllRecipes();
+        final Collection<GT_Recipe> tRecipeList = this.getRecipeMap()
+            .getAllRecipes();
         for (final GT_Recipe tFuel : tRecipeList) {
             if ((tLiquid = tFuel.mFluidInputs[0]) != null) {
                 if (aLiquid.isFluidEqual(tLiquid)) {
@@ -296,7 +295,7 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
             return 0;
         }
         final GT_Recipe tFuel = this.getRecipeMap()
-                .findRecipe(this.getBaseMetaTileEntity(), false, Long.MAX_VALUE, null, aStack);
+            .findRecipe(this.getBaseMetaTileEntity(), false, Long.MAX_VALUE, null, aStack);
         if (tFuel != null) {
             return (int) ((tFuel.mSpecialValue * 1000L * this.getEfficiency()) / 100);
         }
@@ -308,7 +307,7 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
             return null;
         }
         final GT_Recipe tFuel = this.getRecipeMap()
-                .findRecipe(this.getBaseMetaTileEntity(), false, Long.MAX_VALUE, null, aStack);
+            .findRecipe(this.getBaseMetaTileEntity(), false, Long.MAX_VALUE, null, aStack);
         if (tFuel != null) {
             return GT_Utility.copy(tFuel.getOutput(0));
         }
@@ -317,9 +316,9 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
 
     @Override
     public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
-            final ForgeDirection side, final ItemStack aStack) {
+        final ForgeDirection side, final ItemStack aStack) {
         return super.allowPutStack(aBaseMetaTileEntity, aIndex, side, aStack) && ((this.getFuelValue(aStack) > 0)
-                || (this.getFuelValue(GT_Utility.getFluidForFilledItem(aStack, true)) > 0));
+            || (this.getFuelValue(GT_Utility.getFluidForFilledItem(aStack, true)) > 0));
     }
 
     @Override

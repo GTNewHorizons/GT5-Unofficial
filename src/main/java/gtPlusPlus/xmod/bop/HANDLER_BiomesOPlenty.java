@@ -62,35 +62,35 @@ public class HANDLER_BiomesOPlenty {
 
     private static void setFields() {
         Field aBopMiscItem = ReflectionUtils
-                .getField(ReflectionUtils.getClass("biomesoplenty.api.content.BOPCItems"), "misc");
+            .getField(ReflectionUtils.getClass("biomesoplenty.api.content.BOPCItems"), "misc");
 
         Field aBopBlock1 = ReflectionUtils
-                .getField(ReflectionUtils.getClass("biomesoplenty.api.content.BOPCBlocks"), "logs1");
+            .getField(ReflectionUtils.getClass("biomesoplenty.api.content.BOPCBlocks"), "logs1");
         Field aBopBlock2 = ReflectionUtils
-                .getField(ReflectionUtils.getClass("biomesoplenty.api.content.BOPCBlocks"), "logs2");
+            .getField(ReflectionUtils.getClass("biomesoplenty.api.content.BOPCBlocks"), "logs2");
         Field aBopBlock3 = ReflectionUtils
-                .getField(ReflectionUtils.getClass("biomesoplenty.api.content.BOPCBlocks"), "logs3");
+            .getField(ReflectionUtils.getClass("biomesoplenty.api.content.BOPCBlocks"), "logs3");
         Field aBopBlock4 = ReflectionUtils
-                .getField(ReflectionUtils.getClass("biomesoplenty.api.content.BOPCBlocks"), "logs4");
+            .getField(ReflectionUtils.getClass("biomesoplenty.api.content.BOPCBlocks"), "logs4");
 
         Field aBopLeaves1 = ReflectionUtils
-                .getField(ReflectionUtils.getClass("biomesoplenty.api.content.BOPCBlocks"), "leaves1");
+            .getField(ReflectionUtils.getClass("biomesoplenty.api.content.BOPCBlocks"), "leaves1");
         Field aBopLeaves2 = ReflectionUtils
-                .getField(ReflectionUtils.getClass("biomesoplenty.api.content.BOPCBlocks"), "leaves2");
+            .getField(ReflectionUtils.getClass("biomesoplenty.api.content.BOPCBlocks"), "leaves2");
         Field aBopLeaves3 = ReflectionUtils
-                .getField(ReflectionUtils.getClass("biomesoplenty.api.content.BOPCBlocks"), "leaves3");
+            .getField(ReflectionUtils.getClass("biomesoplenty.api.content.BOPCBlocks"), "leaves3");
         Field aBopLeaves4 = ReflectionUtils
-                .getField(ReflectionUtils.getClass("biomesoplenty.api.content.BOPCBlocks"), "leaves4");
+            .getField(ReflectionUtils.getClass("biomesoplenty.api.content.BOPCBlocks"), "leaves4");
 
         Field aBopColouredLeaves1 = ReflectionUtils
-                .getField(ReflectionUtils.getClass("biomesoplenty.api.content.BOPCBlocks"), "colorizedLeaves1");
+            .getField(ReflectionUtils.getClass("biomesoplenty.api.content.BOPCBlocks"), "colorizedLeaves1");
         Field aBopColouredLeaves2 = ReflectionUtils
-                .getField(ReflectionUtils.getClass("biomesoplenty.api.content.BOPCBlocks"), "colorizedLeaves2");
+            .getField(ReflectionUtils.getClass("biomesoplenty.api.content.BOPCBlocks"), "colorizedLeaves2");
 
         Field aBopSapling = ReflectionUtils
-                .getField(ReflectionUtils.getClass("biomesoplenty.api.content.BOPCBlocks"), "saplings");
+            .getField(ReflectionUtils.getClass("biomesoplenty.api.content.BOPCBlocks"), "saplings");
         Field aBopColouredSapling = ReflectionUtils
-                .getField(ReflectionUtils.getClass("biomesoplenty.api.content.BOPCBlocks"), "colorizedSaplings");
+            .getField(ReflectionUtils.getClass("biomesoplenty.api.content.BOPCBlocks"), "colorizedSaplings");
 
         if (aBopMiscItem != null) {
             Item aMiscItem = ReflectionUtils.getFieldValue(aBopMiscItem);

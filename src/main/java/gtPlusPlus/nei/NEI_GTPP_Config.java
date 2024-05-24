@@ -37,14 +37,14 @@ public class NEI_GTPP_Config implements IConfigureNEI {
         API.addRecipeCatalyst(GregtechItemList.Controller_Sparge_Tower.get(1), "gtpp.recipe.lftr.sparging");
 
         for (GregtechItemList item : Arrays.asList(
-                GregtechItemList.GT4_Electric_Auto_Workbench_LV,
-                GregtechItemList.GT4_Electric_Auto_Workbench_MV,
-                GregtechItemList.GT4_Electric_Auto_Workbench_HV,
-                GregtechItemList.GT4_Electric_Auto_Workbench_EV,
-                GregtechItemList.GT4_Electric_Auto_Workbench_IV,
-                GregtechItemList.GT4_Electric_Auto_Workbench_LuV,
-                GregtechItemList.GT4_Electric_Auto_Workbench_ZPM,
-                GregtechItemList.GT4_Electric_Auto_Workbench_UV)) {
+            GregtechItemList.GT4_Electric_Auto_Workbench_LV,
+            GregtechItemList.GT4_Electric_Auto_Workbench_MV,
+            GregtechItemList.GT4_Electric_Auto_Workbench_HV,
+            GregtechItemList.GT4_Electric_Auto_Workbench_EV,
+            GregtechItemList.GT4_Electric_Auto_Workbench_IV,
+            GregtechItemList.GT4_Electric_Auto_Workbench_LuV,
+            GregtechItemList.GT4_Electric_Auto_Workbench_ZPM,
+            GregtechItemList.GT4_Electric_Auto_Workbench_UV)) {
             API.addRecipeCatalyst(item.get(1), "crafting", -10);
         }
         // Bronze workbench
@@ -53,23 +53,23 @@ public class NEI_GTPP_Config implements IConfigureNEI {
 
         // Moved to its own handler
         API.removeRecipeCatalyst(
-                GregtechItemList.Controller_Vacuum_Furnace.get(1),
-                GTPPRecipeMaps.chemicalDehydratorRecipes.unlocalizedName);
+            GregtechItemList.Controller_Vacuum_Furnace.get(1),
+            GTPPRecipeMaps.chemicalDehydratorRecipes.unlocalizedName);
 
         // ULV simple washer
         API.removeRecipeCatalyst(
-                ItemUtils.getItemStackFromFQRN("gregtech:gt.blockmachines:767", 1),
-                GTPPRecipeMaps.simpleWasherRecipes.unlocalizedName);
+            ItemUtils.getItemStackFromFQRN("gregtech:gt.blockmachines:767", 1),
+            GTPPRecipeMaps.simpleWasherRecipes.unlocalizedName);
 
         // ULV combustion generator
         API.removeRecipeCatalyst(
-                ItemUtils.getItemStackFromFQRN("gregtech:gt.blockmachines:960", 1),
-                RecipeMaps.dieselFuels.unlocalizedName);
+            ItemUtils.getItemStackFromFQRN("gregtech:gt.blockmachines:960", 1),
+            RecipeMaps.dieselFuels.unlocalizedName);
 
         // ULV gas turbine
         API.removeRecipeCatalyst(
-                ItemUtils.getItemStackFromFQRN("gregtech:gt.blockmachines:961", 1),
-                RecipeMaps.gasTurbineFuels.unlocalizedName);
+            ItemUtils.getItemStackFromFQRN("gregtech:gt.blockmachines:961", 1),
+            RecipeMaps.gasTurbineFuels.unlocalizedName);
 
         // Hide Flasks
         if (Utils.isClient()) {
@@ -82,9 +82,12 @@ public class NEI_GTPP_Config implements IConfigureNEI {
     @SubscribeEvent
     public void registerHandlerInfo(NEIRegisterHandlerInfosEvent event) {
         event.registerHandlerInfo(
-                new HandlerInfo.Builder("gtpp.recipe.lftr.sparging", CORE.name, Mods.GTPlusPlus.ID)
-                        .setDisplayStack(GregtechItemList.Controller_Sparge_Tower.get(1)).setShiftY(6).setHeight(135)
-                        .setMaxRecipesPerPage(1).build());
+            new HandlerInfo.Builder("gtpp.recipe.lftr.sparging", CORE.name, Mods.GTPlusPlus.ID)
+                .setDisplayStack(GregtechItemList.Controller_Sparge_Tower.get(1))
+                .setShiftY(6)
+                .setHeight(135)
+                .setMaxRecipesPerPage(1)
+                .build());
     }
 
     @Override

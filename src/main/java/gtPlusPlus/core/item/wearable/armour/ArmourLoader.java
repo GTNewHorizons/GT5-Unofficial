@@ -21,7 +21,7 @@ public class ArmourLoader {
     public static Item TinFoilHat;
 
     public static ArmorMaterial ClearGlassArmour = EnumHelper
-            .addArmorMaterial("ClearGlassArmor", 1, new int[] { 1, 1, 1, 1 }, 100);
+        .addArmorMaterial("ClearGlassArmor", 1, new int[] { 1, 1, 1, 1 }, 100);
     public static ArmorMaterial TinFoilArmour = EnumHelper.addArmorMaterial("TINFOIL", 5, new int[] { 1, 1, 1, 1 }, 50);
 
     public static void run() {

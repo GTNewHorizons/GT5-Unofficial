@@ -28,8 +28,8 @@ public class Workbench_CraftingHandler {
 
         // just a example recipe so you know how to add them
         this.addRecipe(
-                new ItemStack(Blocks.iron_block),
-                new Object[] { "###", "###", "###", Character.valueOf('#'), Items.iron_ingot });
+            new ItemStack(Blocks.iron_block),
+            new Object[] { "###", "###", "###", Character.valueOf('#'), Items.iron_ingot });
 
         // another example Recipe, but shapeless
         this.addShapelessRecipe(new ItemStack(Items.cake), new Object[] { Items.stick });
@@ -47,14 +47,18 @@ public class Workbench_CraftingHandler {
             for (final String s2 : as) {
                 k++;
                 j = s2.length();
-                s = (new StringBuilder()).append(s).append(s2).toString();
+                s = (new StringBuilder()).append(s)
+                    .append(s2)
+                    .toString();
             }
         } else {
             while (par2ArrayOfObj[i] instanceof String) {
                 final String s1 = (String) par2ArrayOfObj[i++];
                 k++;
                 j = s1.length();
-                s = (new StringBuilder()).append(s).append(s1).toString();
+                s = (new StringBuilder()).append(s)
+                    .append(s1)
+                    .toString();
             }
         }
 
@@ -81,7 +85,8 @@ public class Workbench_CraftingHandler {
             final char c = s.charAt(i1);
 
             if (hashmap.containsKey(Character.valueOf(c))) {
-                aitemstack[i1] = hashmap.get(Character.valueOf(c)).copy();
+                aitemstack[i1] = hashmap.get(Character.valueOf(c))
+                    .copy();
             } else {
                 aitemstack[i1] = null;
             }

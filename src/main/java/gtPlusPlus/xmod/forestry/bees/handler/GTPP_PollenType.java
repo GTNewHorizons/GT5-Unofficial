@@ -31,11 +31,14 @@ public enum GTPP_PollenType {
     private GTPP_PollenType(int aID, String aName, boolean aShow, int... aColour) {
         this.mID = aID;
         this.mName = aName;
-        this.mNameUnlocal = aName.toLowerCase().replaceAll(" ", "");
+        this.mNameUnlocal = aName.toLowerCase()
+            .replaceAll(" ", "");
         this.mShowInList = aShow;
         this.mColour = aColour;
         map(aID, this);
-        this.mMaterial = GTPP_Bees.sMaterialMappings.get(aName.toLowerCase().replaceAll(" ", ""));
+        this.mMaterial = GTPP_Bees.sMaterialMappings.get(
+            aName.toLowerCase()
+                .replaceAll(" ", ""));
         GT_LanguageManager.addStringLocalization("gtplusplus.pollen." + this.mNameUnlocal, this.mName + " Pollen");
     }
 

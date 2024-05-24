@@ -17,9 +17,9 @@ public class GregtechIndustrialElectrolyzer {
     private static void run1() {
         // Industrial Electrolyzer Multiblock
         GregtechItemList.Industrial_Electrolyzer.set(
-                new GregtechMetaTileEntity_IndustrialElectrolyzer(
-                        796,
-                        "industrialelectrolyzer.controller.tier.single",
-                        "Industrial Electrolyzer").getStackForm(1L));
+            new GregtechMetaTileEntity_IndustrialElectrolyzer(
+                796,
+                "industrialelectrolyzer.controller.tier.single",
+                "Industrial Electrolyzer").getStackForm(1L));
     }
 }

@@ -54,7 +54,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.Gregtech
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_SpargeTower>
-        implements ISurvivalConstructable {
+    implements ISurvivalConstructable {
 
     protected static final String STRUCTURE_PIECE_BASE = "base";
     protected static final String STRUCTURE_PIECE_LAYER = "layer";
@@ -64,56 +64,52 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
 
     static {
         IHatchElement<GregtechMetaTileEntity_SpargeTower> layeredOutputHatch = OutputHatch
-                .withCount(GregtechMetaTileEntity_SpargeTower::getCurrentLayerOutputHatchCount)
-                .withAdder(GregtechMetaTileEntity_SpargeTower::addLayerOutputHatch);
+            .withCount(GregtechMetaTileEntity_SpargeTower::getCurrentLayerOutputHatchCount)
+            .withAdder(GregtechMetaTileEntity_SpargeTower::addLayerOutputHatch);
         STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_SpargeTower>builder()
-                .addShape(STRUCTURE_PIECE_BASE, transpose(new String[][] { { "b~b", "bbb", "bbb" }, }))
-                .addShape(STRUCTURE_PIECE_LAYER, transpose(new String[][] { { "lll", "lcl", "lll" } }))
-                .addShape(STRUCTURE_PIECE_LAYER_HINT, transpose(new String[][] { { "lll", "l-l", "lll" } }))
-                .addShape(STRUCTURE_PIECE_TOP_HINT, transpose(new String[][] { { "lll", "lll", "lll" } }))
-                .addElement(
-                        'b',
-                        buildHatchAdder(GregtechMetaTileEntity_SpargeTower.class)
-                                .atLeast(Energy, InputHatch, InputBus, Maintenance).disallowOnly(ForgeDirection.UP)
-                                .casingIndex(getCasingIndex()).dot(1).buildAndChain(
-                                        onElementPass(
-                                                GregtechMetaTileEntity_SpargeTower::onCasingFound,
-                                                ofBlock(ModBlocks.blockCasings5Misc, 4))))
-                .addElement(
-                        'l',
-                        ofChain(
-                                buildHatchAdder(GregtechMetaTileEntity_SpargeTower.class).atLeast(layeredOutputHatch)
-                                        .disallowOnly(ForgeDirection.UP, ForgeDirection.DOWN)
-                                        .casingIndex(getCasingIndex()).dot(2).build(),
-                                ofHatchAdder(
-                                        GregtechMetaTileEntity_SpargeTower::addEnergyInputToMachineList,
-                                        getCasingIndex(),
-                                        2),
-                                ofHatchAdder(
-                                        GregtechMetaTileEntity_SpargeTower::addMaintenanceToMachineList,
-                                        getCasingIndex(),
-                                        2),
-                                onElementPass(
-                                        GregtechMetaTileEntity_SpargeTower::onCasingFound,
-                                        ofBlock(ModBlocks.blockCasings5Misc, 4))))
-                .addElement(
-                        'c',
-                        ofChain(
-                                onElementPass(
-                                        t -> t.onTopLayerFound(false),
-                                        ofHatchAdder(
-                                                GregtechMetaTileEntity_SpargeTower::addOutputToMachineList,
-                                                getCasingIndex(),
-                                                3)),
-                                onElementPass(
-                                        t -> t.onTopLayerFound(false),
-                                        ofHatchAdder(
-                                                GregtechMetaTileEntity_SpargeTower::addMaintenanceToMachineList,
-                                                getCasingIndex(),
-                                                3)),
-                                onElementPass(t -> t.onTopLayerFound(true), ofBlock(ModBlocks.blockCasings5Misc, 4)),
-                                isAir()))
-                .build();
+            .addShape(STRUCTURE_PIECE_BASE, transpose(new String[][] { { "b~b", "bbb", "bbb" }, }))
+            .addShape(STRUCTURE_PIECE_LAYER, transpose(new String[][] { { "lll", "lcl", "lll" } }))
+            .addShape(STRUCTURE_PIECE_LAYER_HINT, transpose(new String[][] { { "lll", "l-l", "lll" } }))
+            .addShape(STRUCTURE_PIECE_TOP_HINT, transpose(new String[][] { { "lll", "lll", "lll" } }))
+            .addElement(
+                'b',
+                buildHatchAdder(GregtechMetaTileEntity_SpargeTower.class)
+                    .atLeast(Energy, InputHatch, InputBus, Maintenance)
+                    .disallowOnly(ForgeDirection.UP)
+                    .casingIndex(getCasingIndex())
+                    .dot(1)
+                    .buildAndChain(
+                        onElementPass(
+                            GregtechMetaTileEntity_SpargeTower::onCasingFound,
+                            ofBlock(ModBlocks.blockCasings5Misc, 4))))
+            .addElement(
+                'l',
+                ofChain(
+                    buildHatchAdder(GregtechMetaTileEntity_SpargeTower.class).atLeast(layeredOutputHatch)
+                        .disallowOnly(ForgeDirection.UP, ForgeDirection.DOWN)
+                        .casingIndex(getCasingIndex())
+                        .dot(2)
+                        .build(),
+                    ofHatchAdder(GregtechMetaTileEntity_SpargeTower::addEnergyInputToMachineList, getCasingIndex(), 2),
+                    ofHatchAdder(GregtechMetaTileEntity_SpargeTower::addMaintenanceToMachineList, getCasingIndex(), 2),
+                    onElementPass(
+                        GregtechMetaTileEntity_SpargeTower::onCasingFound,
+                        ofBlock(ModBlocks.blockCasings5Misc, 4))))
+            .addElement(
+                'c',
+                ofChain(
+                    onElementPass(
+                        t -> t.onTopLayerFound(false),
+                        ofHatchAdder(GregtechMetaTileEntity_SpargeTower::addOutputToMachineList, getCasingIndex(), 3)),
+                    onElementPass(
+                        t -> t.onTopLayerFound(false),
+                        ofHatchAdder(
+                            GregtechMetaTileEntity_SpargeTower::addMaintenanceToMachineList,
+                            getCasingIndex(),
+                            3)),
+                    onElementPass(t -> t.onTopLayerFound(true), ofBlock(ModBlocks.blockCasings5Misc, 4)),
+                    isAir()))
+            .build();
     }
 
     protected final List<List<GT_MetaTileEntity_Hatch_Output>> mOutputHatchesByLayer = new ArrayList<>();
@@ -141,17 +137,21 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Gas Sparge Tower").addInfo("Controller block for the Sparging Tower")
-                .addInfo("Runs gases through depleted molten salts to extract precious fluids")
-                .addInfo("Works the same way as the Distillation Tower, but with a fixed height of 8")
-                .addInfo("Fluids are only put out at the correct height")
-                .addInfo("The correct height equals the slot number in the NEI recipe").addSeparator()
-                .beginStructureBlock(3, 8, 3, true).addController("Front bottom")
-                .addOtherStructurePart("Sparge Tower Exterior Casing", "45 (minimum)")
-                .addEnergyHatch("Any casing", 1, 2).addMaintenanceHatch("Any casing", 1, 2, 3)
-                .addInputHatch("2x Input Hatches (Any bottom layer casing)", 1)
-                .addOutputHatch("6x Output Hatches (At least one per layer except bottom layer)", 2, 3)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+        tt.addMachineType("Gas Sparge Tower")
+            .addInfo("Controller block for the Sparging Tower")
+            .addInfo("Runs gases through depleted molten salts to extract precious fluids")
+            .addInfo("Works the same way as the Distillation Tower, but with a fixed height of 8")
+            .addInfo("Fluids are only put out at the correct height")
+            .addInfo("The correct height equals the slot number in the NEI recipe")
+            .addSeparator()
+            .beginStructureBlock(3, 8, 3, true)
+            .addController("Front bottom")
+            .addOtherStructurePart("Sparge Tower Exterior Casing", "45 (minimum)")
+            .addEnergyHatch("Any casing", 1, 2)
+            .addMaintenanceHatch("Any casing", 1, 2, 3)
+            .addInputHatch("2x Input Hatches (Any bottom layer casing)", 1)
+            .addOutputHatch("6x Output Hatches (At least one per layer except bottom layer)", 2, 3)
+            .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
@@ -172,7 +172,8 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        if (GTPPRecipeMaps.spargeTowerFakeRecipes.getAllRecipes().isEmpty()) {
+        if (GTPPRecipeMaps.spargeTowerFakeRecipes.getAllRecipes()
+            .isEmpty()) {
             generateRecipes();
         }
         return GTPPRecipeMaps.spargeTowerFakeRecipes;
@@ -181,19 +182,20 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
     private static boolean generateRecipes() {
         for (GasSpargingRecipe aRecipe : GasSpargingRecipeMap.mRecipes) {
             GT_Recipe newRecipe = new GT_Recipe(
-                    false,
-                    new ItemStack[] {},
-                    new ItemStack[] {},
-                    null,
-                    null,
-                    aRecipe.mFluidInputs.clone(),
-                    new FluidStack[] {},
-                    aRecipe.mDuration,
-                    aRecipe.mEUt,
-                    0);
+                false,
+                new ItemStack[] {},
+                new ItemStack[] {},
+                null,
+                null,
+                aRecipe.mFluidInputs.clone(),
+                new FluidStack[] {},
+                aRecipe.mDuration,
+                aRecipe.mEUt,
+                0);
             GTPPRecipeMaps.spargeTowerFakeRecipes.add(newRecipe);
         }
-        return !GTPPRecipeMaps.spargeTowerFakeRecipes.getAllRecipes().isEmpty();
+        return !GTPPRecipeMaps.spargeTowerFakeRecipes.getAllRecipes()
+            .isEmpty();
     }
 
     @Override
@@ -209,11 +211,11 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
         FluidStack[] tFluids = tFluidList.toArray(new FluidStack[0]);
         if (tFluids.length > 0) {
             GT_Recipe tRecipe = getRecipeMap()
-                    .findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids);
+                .findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids);
             if (tRecipe != null) {
                 FluidStack[] possibleOutputs = getPossibleByproductsOfSparge(
-                        tRecipe.mFluidInputs[0],
-                        tRecipe.mFluidInputs[1]).toArray(new FluidStack[0]);
+                    tRecipe.mFluidInputs[0],
+                    tRecipe.mFluidInputs[1]).toArray(new FluidStack[0]);
                 if (canOutputAll(possibleOutputs) && tRecipe.isRecipeInputEqual(true, tFluids)) {
                     this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                     this.mEfficiencyIncrease = 10000;
@@ -221,8 +223,8 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
                     calculateOverclockedNessMulti((long) tRecipe.mEUt, tRecipe.mDuration, 1, tVoltage);
                     mMaxProgresstime = Math.max(1, mMaxProgresstime);
                     ArrayList<FluidStack> aFluidOutputs = getByproductsOfSparge(
-                            tRecipe.mFluidInputs[0],
-                            tRecipe.mFluidInputs[1]);
+                        tRecipe.mFluidInputs[0],
+                        tRecipe.mFluidInputs[1]);
                     this.mOutputFluids = aFluidOutputs.toArray(new FluidStack[0]);
                     updateSlots();
 
@@ -240,7 +242,7 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
     }
 
     private static List<FluidStack> getPossibleByproductsOfSparge(final FluidStack aSpargeGas,
-            final FluidStack aSpentFuel) {
+        final FluidStack aSpentFuel) {
         GasSpargingRecipe aSpargeRecipe = GasSpargingRecipeMap.findRecipe(aSpargeGas, aSpentFuel);
         ArrayList<FluidStack> aOutputGases = new ArrayList<>();
         if (aSpargeRecipe == null) {
@@ -264,7 +266,7 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
     }
 
     private static ArrayList<FluidStack> getByproductsOfSparge(final FluidStack aSpargeGas,
-            final FluidStack aSpentFuel) {
+        final FluidStack aSpentFuel) {
         GasSpargingRecipe aSpargeRecipe = GasSpargingRecipeMap.findRecipe(aSpargeGas, aSpentFuel);
         ArrayList<FluidStack> aOutputGases = new ArrayList<>();
         if (aSpargeRecipe == null) {
@@ -309,12 +311,13 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
 
     protected int getCurrentLayerOutputHatchCount() {
         return mOutputHatchesByLayer.size() < mHeight || mHeight <= 0 ? 0
-                : mOutputHatchesByLayer.get(mHeight - 1).size();
+            : mOutputHatchesByLayer.get(mHeight - 1)
+                .size();
     }
 
     protected boolean addLayerOutputHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null || aTileEntity.isDead()
-                || !(aTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_Output tHatch)) {
+            || !(aTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_Output tHatch)) {
             Logger.INFO("Bad Output Hatch");
             return false;
         }
@@ -322,7 +325,8 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
             mOutputHatchesByLayer.add(new ArrayList<>());
         }
         tHatch.updateTexture(aBaseCasingIndex);
-        boolean addedHatch = mOutputHatchesByLayer.get(mHeight - 1).add(tHatch);
+        boolean addedHatch = mOutputHatchesByLayer.get(mHeight - 1)
+            .add(tHatch);
         Logger.INFO("Added Hatch: " + addedHatch);
         return addedHatch;
     }
@@ -359,7 +363,8 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
 
         // check each layer
         while (mHeight < 8 && checkPiece(STRUCTURE_PIECE_LAYER, 1, mHeight, 0) && !mTopLayerFound) {
-            if (mOutputHatchesByLayer.get(mHeight - 1).isEmpty()) {
+            if (mOutputHatchesByLayer.get(mHeight - 1)
+                .isEmpty()) {
                 // layer without output hatch
                 Logger.INFO("Height: " + mHeight + " - Missing output on " + (mHeight - 1));
                 return false;
@@ -429,28 +434,28 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
         for (int i = 1; i < tTotalHeight - 1; i++) {
             mHeight = i;
             built = survivialBuildPiece(
-                    STRUCTURE_PIECE_LAYER_HINT,
-                    stackSize,
-                    1,
-                    i,
-                    0,
-                    elementBudget,
-                    env,
-                    false,
-                    true);
-            if (built >= 0) return built;
-        }
-        mHeight = tTotalHeight - 1;
-        return survivialBuildPiece(
-                STRUCTURE_PIECE_TOP_HINT,
+                STRUCTURE_PIECE_LAYER_HINT,
                 stackSize,
                 1,
-                tTotalHeight - 1,
+                i,
                 0,
                 elementBudget,
                 env,
                 false,
                 true);
+            if (built >= 0) return built;
+        }
+        mHeight = tTotalHeight - 1;
+        return survivialBuildPiece(
+            STRUCTURE_PIECE_TOP_HINT,
+            stackSize,
+            1,
+            tTotalHeight - 1,
+            0,
+            elementBudget,
+            env,
+            false,
+            true);
     }
 
     @Override
@@ -466,23 +471,22 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
     @Override
     public boolean onPlungerRightClick(EntityPlayer aPlayer, ForgeDirection side, float aX, float aY, float aZ) {
         int aLayerIndex = 0;
-        PlayerUtils.messagePlayer(
-                aPlayer,
-                "Trying to clear " + mOutputHatchesByLayer.size() + " layers of output hatches.");
+        PlayerUtils
+            .messagePlayer(aPlayer, "Trying to clear " + mOutputHatchesByLayer.size() + " layers of output hatches.");
         for (List<GT_MetaTileEntity_Hatch_Output> layer : this.mOutputHatchesByLayer) {
             int aHatchIndex = 0;
             for (GT_MetaTileEntity_Hatch_Output hatch : layer) {
                 if (hatch.mFluid != null) {
                     PlayerUtils.messagePlayer(
-                            aPlayer,
-                            "Clearing " + hatch.mFluid.amount
-                                    + "L of "
-                                    + hatch.mFluid.getLocalizedName()
-                                    + " from hatch "
-                                    + aHatchIndex
-                                    + " on layer "
-                                    + aLayerIndex
-                                    + ".");
+                        aPlayer,
+                        "Clearing " + hatch.mFluid.amount
+                            + "L of "
+                            + hatch.mFluid.getLocalizedName()
+                            + " from hatch "
+                            + aHatchIndex
+                            + " on layer "
+                            + aLayerIndex
+                            + ".");
                     hatch.mFluid = null;
                 }
                 aHatchIndex++;

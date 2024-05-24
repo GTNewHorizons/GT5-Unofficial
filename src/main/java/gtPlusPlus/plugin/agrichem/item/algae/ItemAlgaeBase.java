@@ -49,8 +49,9 @@ public class ItemAlgaeBase extends Item implements IAlgalItem {
 
     @Override
     public void onUpdate(ItemStack p_77663_1_, World p_77663_2_, Entity p_77663_3_, int p_77663_4_,
-            boolean p_77663_5_) {
-        if (!p_77663_1_.hasTagCompound() || p_77663_1_.getTagCompound().hasNoTags()) {
+        boolean p_77663_5_) {
+        if (!p_77663_1_.hasTagCompound() || p_77663_1_.getTagCompound()
+            .hasNoTags()) {
             p_77663_1_ = initNBT(p_77663_1_);
         }
         super.onUpdate(p_77663_1_, p_77663_2_, p_77663_3_, p_77663_4_, p_77663_5_);
@@ -66,7 +67,8 @@ public class ItemAlgaeBase extends Item implements IAlgalItem {
         int aDam = aStack.getItemDamage();
         try {
             aList.add(AlgaeDefinition.getByIndex(aDam).mSimpleName);
-            if (!aStack.hasTagCompound() || aStack.getTagCompound().hasNoTags()) {
+            if (!aStack.hasTagCompound() || aStack.getTagCompound()
+                .hasNoTags()) {
                 aStack = initNBT(aStack);
             } else {
                 NBTTagCompound aNBT = aStack.getTagCompound();
@@ -184,7 +186,8 @@ public class ItemAlgaeBase extends Item implements IAlgalItem {
     @Override
     public AlgaeGeneticData getSpeciesData(ItemStack aStack) {
         NBTTagCompound aTag;
-        if (!aStack.hasTagCompound() || aStack.getTagCompound().hasNoTags()) {
+        if (!aStack.hasTagCompound() || aStack.getTagCompound()
+            .hasNoTags()) {
             aTag = new NBTTagCompound();
             AlgaeGeneticData aGenes;
             if (aStack.getItemDamage() < 3 || aStack.getItemDamage() > 5) {
@@ -201,16 +204,16 @@ public class ItemAlgaeBase extends Item implements IAlgalItem {
                 aSpeed = (float) (aDam == 3 ? 1f : aDam == 4 ? 1.5f : 2f);
 
                 aGenes = new AlgaeGeneticData(
-                        true,
-                        true,
-                        AlgaeDefinition.getByIndex(aDam).mSaltWater,
-                        AlgaeDefinition.getByIndex(aDam).mFreshWater,
-                        aTemp,
-                        aFert,
-                        aSpeed,
-                        aLifespan,
-                        0,
-                        new AutoMap<>());
+                    true,
+                    true,
+                    AlgaeDefinition.getByIndex(aDam).mSaltWater,
+                    AlgaeDefinition.getByIndex(aDam).mFreshWater,
+                    aTemp,
+                    aFert,
+                    aSpeed,
+                    aLifespan,
+                    0,
+                    new AutoMap<>());
                 aTag = aGenes.writeToNBT();
             }
         } else {

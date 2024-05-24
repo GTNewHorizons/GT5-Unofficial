@@ -31,12 +31,12 @@ public class BaseItemDustUnique extends Item {
     protected final String chemicalNotation;
 
     public BaseItemDustUnique(final String unlocalizedName, final String materialName, final int colour,
-            final String pileSize) {
+        final String pileSize) {
         this(unlocalizedName, materialName, "NullFormula", colour, pileSize);
     }
 
     public BaseItemDustUnique(final String unlocalizedName, final String materialName, final String mChemicalFormula,
-            final int colour, final String pileSize) {
+        final int colour, final String pileSize) {
         this.setUnlocalizedName(unlocalizedName);
         this.setMaxStackSize(64);
         this.setTextureName(this.getCorrectTexture(pileSize));
@@ -52,19 +52,23 @@ public class BaseItemDustUnique extends Item {
         GameRegistry.registerItem(this, unlocalizedName);
 
         String type;
-        if (this.getUnlocalizedName().contains("DustTiny")) {
+        if (this.getUnlocalizedName()
+            .contains("DustTiny")) {
             type = "Tiny Pile of %material Dust";
-        } else if (this.getUnlocalizedName().contains("DustSmall")) {
-            type = "Small Pile of %material Dust";
-        } else {
-            type = "%material Dust";
-        }
+        } else if (this.getUnlocalizedName()
+            .contains("DustSmall")) {
+                type = "Small Pile of %material Dust";
+            } else {
+                type = "%material Dust";
+            }
         GT_LanguageManager.addStringLocalization("gtplusplus." + this.getUnlocalizedName() + ".name", type);
 
         String temp = "";
         Logger.WARNING("Unlocalized name for OreDict nameGen: " + this.getUnlocalizedName());
-        if (this.getUnlocalizedName().contains("item.")) {
-            temp = this.getUnlocalizedName().replace("item.", "");
+        if (this.getUnlocalizedName()
+            .contains("item.")) {
+            temp = this.getUnlocalizedName()
+                .replace("item.", "");
             Logger.WARNING("Generating OreDict Name: " + temp);
         } else {
             temp = this.getUnlocalizedName();
@@ -112,7 +116,7 @@ public class BaseItemDustUnique extends Item {
     @Override
     public String getItemStackDisplayName(final ItemStack iStack) {
         return GT_LanguageManager.getTranslation("gtplusplus." + getUnlocalizedName() + ".name")
-                .replace("%material", GT_LanguageManager.getTranslation("gtplusplus.material." + materialName));
+            .replace("%material", GT_LanguageManager.getTranslation("gtplusplus.material." + materialName));
     }
 
     private String getCorrectTexture(final String pileSize) {
@@ -123,11 +127,13 @@ public class BaseItemDustUnique extends Item {
                 this.setTextureName(GTPlusPlus.ID + ":" + "dust" + pileSize);
             }
         }
-        if (pileSize.toLowerCase().contains("small")) {
+        if (pileSize.toLowerCase()
+            .contains("small")) {
             return GregTech.ID + ":" + "materialicons/SHINY/dustSmall";
-        } else if (pileSize.toLowerCase().contains("tiny")) {
-            return GregTech.ID + ":" + "materialicons/SHINY/dustTiny";
-        }
+        } else if (pileSize.toLowerCase()
+            .contains("tiny")) {
+                return GregTech.ID + ":" + "materialicons/SHINY/dustTiny";
+            }
         return GregTech.ID + ":" + "materialicons/SHINY/dust";
     }
 
@@ -138,7 +144,7 @@ public class BaseItemDustUnique extends Item {
             list.add(CORE.GT_Tooltip_Radioactive.get());
         }
         if (this.chemicalNotation.length() > 0 && !chemicalNotation.equals("")
-                && !chemicalNotation.equals("NullFormula")) {
+            && !chemicalNotation.equals("NullFormula")) {
             list.add(this.chemicalNotation);
         }
         super.addInformation(stack, aPlayer, list, bool);

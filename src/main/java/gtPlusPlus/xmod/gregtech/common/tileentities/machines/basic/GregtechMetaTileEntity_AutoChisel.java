@@ -32,22 +32,22 @@ public class GregtechMetaTileEntity_AutoChisel extends GT_MetaTileEntity_BasicMa
 
     public GregtechMetaTileEntity_AutoChisel(int aID, String aName, String aNameRegional, int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                1,
-                "Chisels things, Gregtech style",
-                1,
-                1,
-                new ITexture[] { new GT_RenderedTexture(BlockIcons.OVERLAY_SIDE_MASSFAB_ACTIVE),
-                        new GT_RenderedTexture(BlockIcons.OVERLAY_SIDE_MASSFAB),
-                        new GT_RenderedTexture(BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE),
-                        new GT_RenderedTexture(BlockIcons.OVERLAY_FRONT_MULTI_SMELTER),
-                        new GT_RenderedTexture(TexturesGtBlock.Overlay_MatterFab_Active),
-                        new GT_RenderedTexture(TexturesGtBlock.Overlay_MatterFab),
-                        new GT_RenderedTexture(BlockIcons.OVERLAY_BOTTOM_MASSFAB_ACTIVE),
-                        new GT_RenderedTexture(BlockIcons.OVERLAY_BOTTOM_MASSFAB) });
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            1,
+            "Chisels things, Gregtech style",
+            1,
+            1,
+            new ITexture[] { new GT_RenderedTexture(BlockIcons.OVERLAY_SIDE_MASSFAB_ACTIVE),
+                new GT_RenderedTexture(BlockIcons.OVERLAY_SIDE_MASSFAB),
+                new GT_RenderedTexture(BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE),
+                new GT_RenderedTexture(BlockIcons.OVERLAY_FRONT_MULTI_SMELTER),
+                new GT_RenderedTexture(TexturesGtBlock.Overlay_MatterFab_Active),
+                new GT_RenderedTexture(TexturesGtBlock.Overlay_MatterFab),
+                new GT_RenderedTexture(BlockIcons.OVERLAY_BOTTOM_MASSFAB_ACTIVE),
+                new GT_RenderedTexture(BlockIcons.OVERLAY_BOTTOM_MASSFAB) });
     }
 
     public GregtechMetaTileEntity_AutoChisel(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -62,16 +62,16 @@ public class GregtechMetaTileEntity_AutoChisel extends GT_MetaTileEntity_BasicMa
     @Override
     public String[] getDescription() {
         return ArrayUtils.addAll(
-                this.mDescriptionArray,
-                "What you want to chisel goes in slot 1",
-                "What you want to get goes in the special slot (bottom right)",
-                "If special slot is empty, first chisel result is used");
+            this.mDescriptionArray,
+            "What you want to chisel goes in slot 1",
+            "What you want to get goes in the special slot (bottom right)",
+            "If special slot is empty, first chisel result is used");
     }
 
     private boolean hasValidCache(ItemStack aStack, ItemStack aSpecialSlot, boolean aClearOnFailure) {
         if (mInputCache != null && mOutputCache != null) {
             if (GT_Utility.areStacksEqual(aStack, mInputCache)
-                    && GT_Utility.areStacksEqual(aSpecialSlot, mOutputCache)) {
+                && GT_Utility.areStacksEqual(aSpecialSlot, mOutputCache)) {
                 return true;
             }
         }
@@ -90,9 +90,9 @@ public class GregtechMetaTileEntity_AutoChisel extends GT_MetaTileEntity_BasicMa
 
     @Override
     protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return hasValidCache(aStack, this.getSpecialSlot(), false) ? true
-                : super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, side, aStack) && hasChiselResults(aStack);
+            : super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, side, aStack) && hasChiselResults(aStack);
     }
 
     // lets make sure the user isn't trying to make something from a block that doesn't have this as a valid target
@@ -167,22 +167,24 @@ public class GregtechMetaTileEntity_AutoChisel extends GT_MetaTileEntity_BasicMa
     }
 
     private static final FallbackableUITexture progressBarTexture = GT_UITextures
-            .fallbackableProgressbar("auto_chisel", GT_UITextures.PROGRESSBAR_COMPRESS);
+        .fallbackableProgressbar("auto_chisel", GT_UITextures.PROGRESSBAR_COMPRESS);
 
     @Override
     protected BasicUIProperties getUIProperties() {
-        return super.getUIProperties().toBuilder().progressBarTexture(progressBarTexture).build();
+        return super.getUIProperties().toBuilder()
+            .progressBarTexture(progressBarTexture)
+            .build();
     }
 
     @Override
     protected SlotWidget createItemInputSlot(int index, IDrawable[] backgrounds, Pos2d pos) {
         return (SlotWidget) super.createItemInputSlot(index, backgrounds, pos)
-                .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_COMPRESSOR);
+            .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_COMPRESSOR);
     }
 
     @Override
     protected SlotWidget createSpecialSlot(IDrawable[] backgrounds, Pos2d pos, BasicUIProperties uiProperties) {
         return (SlotWidget) super.createSpecialSlot(backgrounds, pos, uiProperties)
-                .setGTTooltip(() -> mTooltipCache.getData("GTPP.machines.chisel_slot.tooltip"));
+            .setGTTooltip(() -> mTooltipCache.getData("GTPP.machines.chisel_slot.tooltip"));
     }
 }

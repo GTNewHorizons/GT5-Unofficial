@@ -42,13 +42,13 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
         super(SpecialCasingItemBlock.class, "gtplusplus.blockspecialcasings.1", GT_Material_Casings.INSTANCE);
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Turbine Shaft");
         GT_LanguageManager
-                .addStringLocalization(this.getUnlocalizedName() + ".1.name", "Reinforced Steam Turbine Casing");
+            .addStringLocalization(this.getUnlocalizedName() + ".1.name", "Reinforced Steam Turbine Casing");
         GT_LanguageManager
-                .addStringLocalization(this.getUnlocalizedName() + ".2.name", "Reinforced HP Steam Turbine Casing");
+            .addStringLocalization(this.getUnlocalizedName() + ".2.name", "Reinforced HP Steam Turbine Casing");
         GT_LanguageManager
-                .addStringLocalization(this.getUnlocalizedName() + ".3.name", "Reinforced Gas Turbine Casing");
+            .addStringLocalization(this.getUnlocalizedName() + ".3.name", "Reinforced Gas Turbine Casing");
         GT_LanguageManager
-                .addStringLocalization(this.getUnlocalizedName() + ".4.name", "Reinforced Plasma Turbine Casing");
+            .addStringLocalization(this.getUnlocalizedName() + ".4.name", "Reinforced Plasma Turbine Casing");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "Tesla Containment Casing");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "Structural Solar Casing");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", "Salt Containment Casing");
@@ -56,14 +56,14 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", "Flotation Cell Casings");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", "Reinforced Engine Casing");
         GT_LanguageManager
-                .addStringLocalization(this.getUnlocalizedName() + ".11.name", "Molecular Containment Casing");
+            .addStringLocalization(this.getUnlocalizedName() + ".11.name", "Molecular Containment Casing");
         GT_LanguageManager
-                .addStringLocalization(this.getUnlocalizedName() + ".12.name", "High Voltage Current Capacitor");
+            .addStringLocalization(this.getUnlocalizedName() + ".12.name", "High Voltage Current Capacitor");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", "Particle Containment Casing");
         GT_LanguageManager
-                .addStringLocalization(this.getUnlocalizedName() + ".14.name", "Reinforced Heat Exchanger Casing");
+            .addStringLocalization(this.getUnlocalizedName() + ".14.name", "Reinforced Heat Exchanger Casing");
         GT_LanguageManager
-                .addStringLocalization(this.getUnlocalizedName() + ".15.name", "Reinforced SC Turbine Casing");
+            .addStringLocalization(this.getUnlocalizedName() + ".15.name", "Reinforced SC Turbine Casing");
         TAE.registerTexture(1, 12, new GTPP_CopiedBlockTexture(this, 6, 14));
 
         GregtechItemList.Casing_Turbine_Shaft.set(new ItemStack(this, 1, 0));
@@ -86,9 +86,9 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord,
-            final int ordinalSide) {
+        final int ordinalSide) {
         return LargeTurbineTextureHandler
-                .handleCasingsGT(aWorld, xCoord, yCoord, zCoord, ForgeDirection.getOrientation(ordinalSide), this);
+            .handleCasingsGT(aWorld, xCoord, yCoord, zCoord, ForgeDirection.getOrientation(ordinalSide), this);
     }
 
     @Override

@@ -25,7 +25,7 @@ public class GTPP_Bee_Mutation extends BeeMutation {
     private final float split;
 
     public GTPP_Bee_Mutation(IAlleleBeeSpecies bee0, IAlleleBeeSpecies bee1, IAllele[] result, int chance,
-            float split) {
+        float split) {
         super(bee0, bee1, result, chance);
         this.split = split;
         BeeManager.beeRoot.registerMutation(this);
@@ -38,7 +38,7 @@ public class GTPP_Bee_Mutation extends BeeMutation {
 
     @Override
     public float getChance(IBeeHousing housing, IAlleleBeeSpecies allele0, IAlleleBeeSpecies allele1,
-            IBeeGenome genome0, IBeeGenome genome1) {
+        IBeeGenome genome0, IBeeGenome genome1) {
         World world = housing != null ? housing.getWorld() : null;
         ChunkCoordinates housingCoordinates = housing != null ? housing.getCoordinates() : null;
         int x = housingCoordinates != null ? housingCoordinates.posX : 0;
@@ -52,7 +52,8 @@ public class GTPP_Bee_Mutation extends BeeMutation {
         }
 
         IBeeModifier beeHousingModifier = BeeManager.beeRoot.createBeeHousingModifier(housing);
-        IBeeModifier beeModeModifier = BeeManager.beeRoot.getBeekeepingMode(world).getBeeModifier();
+        IBeeModifier beeModeModifier = BeeManager.beeRoot.getBeekeepingMode(world)
+            .getBeeModifier();
 
         processedChance *= beeHousingModifier.getMutationModifier(genome0, genome1, processedChance);
         processedChance *= beeModeModifier.getMutationModifier(genome0, genome1, processedChance);
@@ -62,7 +63,7 @@ public class GTPP_Bee_Mutation extends BeeMutation {
 
     @SuppressWarnings("unchecked")
     private float getBasicChance(World world, int x, int y, int z, IAllele allele0, IAllele allele1, IGenome genome0,
-            IGenome genome1, IClimateProvider climate) {
+        IGenome genome1, IClimateProvider climate) {
         float mutationChance = this.getBaseChance();
         List<IMutationCondition> mutationConditions = null;
         Field f = FieldUtils.getDeclaredField(Mutation.class, "mutationConditions", true);

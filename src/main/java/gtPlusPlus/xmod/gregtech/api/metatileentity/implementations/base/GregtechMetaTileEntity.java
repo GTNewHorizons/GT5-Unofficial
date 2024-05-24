@@ -23,7 +23,7 @@ public abstract class GregtechMetaTileEntity extends MetaTileEntity {
     public final ITexture[][][] mTextures;
 
     public GregtechMetaTileEntity(final int aID, final String aName, final String aNameRegional, final int aTier,
-            final int aInvSlotCount, final String aDescription, final ITexture... aTextures) {
+        final int aInvSlotCount, final String aDescription, final ITexture... aTextures) {
         super(aID, aName, aNameRegional, aInvSlotCount);
         this.mTier = (byte) Math.max(0, Math.min(aTier, 9));
         this.mDescription = aDescription;
@@ -37,7 +37,7 @@ public abstract class GregtechMetaTileEntity extends MetaTileEntity {
     }
 
     public GregtechMetaTileEntity(final String aName, final int aTier, final int aInvSlotCount,
-            final String aDescription, final ITexture[][][] aTextures) {
+        final String aDescription, final ITexture[][][] aTextures) {
         super(aName, aInvSlotCount);
         this.mTier = (byte) aTier;
         this.mDescription = aDescription;

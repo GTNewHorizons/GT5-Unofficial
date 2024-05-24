@@ -30,7 +30,7 @@ public class GT_MetaTileEntity_Hatch_OutputBattery extends GT_MetaTileEntity_Hat
     }
 
     public GT_MetaTileEntity_Hatch_OutputBattery(String aName, int aTier, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aTier < 1 ? 1 : aTier == 1 ? 4 : aTier == 2 ? 9 : 16, aDescription, aTextures);
     }
 
@@ -115,13 +115,13 @@ public class GT_MetaTileEntity_Hatch_OutputBattery extends GT_MetaTileEntity_Hat
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return side == aBaseMetaTileEntity.getFrontFacing();
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return side == aBaseMetaTileEntity.getFrontFacing();
     }
 
@@ -134,17 +134,17 @@ public class GT_MetaTileEntity_Hatch_OutputBattery extends GT_MetaTileEntity_Hat
     protected void fillStacksIntoFirstSlots() {
         for (int i = 0; i < mInventory.length; i++)
             for (int j = i + 1; j < mInventory.length; j++) if (mInventory[j] != null
-                    && (mInventory[i] == null || GT_Utility.areStacksEqual(mInventory[i], mInventory[j]))) {
-                        GT_Utility.moveStackFromSlotAToSlotB(
-                                getBaseMetaTileEntity(),
-                                getBaseMetaTileEntity(),
-                                j,
-                                i,
-                                (byte) 64,
-                                (byte) 1,
-                                (byte) 64,
-                                (byte) 1);
-                    }
+                && (mInventory[i] == null || GT_Utility.areStacksEqual(mInventory[i], mInventory[j]))) {
+                    GT_Utility.moveStackFromSlotAToSlotB(
+                        getBaseMetaTileEntity(),
+                        getBaseMetaTileEntity(),
+                        j,
+                        i,
+                        (byte) 64,
+                        (byte) 1,
+                        (byte) 64,
+                        (byte) 1);
+                }
     }
 
     @Override
@@ -176,23 +176,22 @@ public class GT_MetaTileEntity_Hatch_OutputBattery extends GT_MetaTileEntity_Hat
         if (aBaseMetaTileEntity.isServerSide()) {
             if (aBaseMetaTileEntity.getMetaTileEntity() instanceof MetaTileEntity mMetaTileEntity) {
                 if (mMetaTileEntity.dechargerSlotCount() > 0
-                        && mMetaTileEntity.getEUVar() < aBaseMetaTileEntity.getEUCapacity()) {
+                    && mMetaTileEntity.getEUVar() < aBaseMetaTileEntity.getEUCapacity()) {
                     for (int i = mMetaTileEntity.dechargerSlotStartIndex(),
-                            k = mMetaTileEntity.dechargerSlotCount() + i; i < k; i++) {
+                        k = mMetaTileEntity.dechargerSlotCount() + i; i < k; i++) {
                         if (mMetaTileEntity.mInventory[i] != null
-                                && mMetaTileEntity.getEUVar() < aBaseMetaTileEntity.getEUCapacity()) {
+                            && mMetaTileEntity.getEUVar() < aBaseMetaTileEntity.getEUCapacity()) {
                             aBaseMetaTileEntity.increaseStoredEnergyUnits(
-                                    GT_ModHandler.dischargeElectricItem(
-                                            mMetaTileEntity.mInventory[i],
-                                            (int) Math.min(
-                                                    V[mTier] * 15,
-                                                    aBaseMetaTileEntity.getEUCapacity()
-                                                            - aBaseMetaTileEntity.getStoredEU()),
-                                            (int) Math.min(Integer.MAX_VALUE, mMetaTileEntity.getInputTier()),
-                                            true,
-                                            false,
-                                            false),
-                                    true);
+                                GT_ModHandler.dischargeElectricItem(
+                                    mMetaTileEntity.mInventory[i],
+                                    (int) Math.min(
+                                        V[mTier] * 15,
+                                        aBaseMetaTileEntity.getEUCapacity() - aBaseMetaTileEntity.getStoredEU()),
+                                    (int) Math.min(Integer.MAX_VALUE, mMetaTileEntity.getInputTier()),
+                                    true,
+                                    false,
+                                    false),
+                                true);
                             if (mMetaTileEntity.mInventory[i].stackSize <= 0) mMetaTileEntity.mInventory[i] = null;
                         }
                     }
@@ -211,8 +210,8 @@ public class GT_MetaTileEntity_Hatch_OutputBattery extends GT_MetaTileEntity_Hat
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         if (mTier == 2) {
             for (int i = 0; i < 4; i++) {
-                builder.widget(
-                        new ElectricSlotWidget(inventoryHandler, i).setPos(70 + (i % 2) * 18, 25 + (i / 2) * 18));
+                builder
+                    .widget(new ElectricSlotWidget(inventoryHandler, i).setPos(70 + (i % 2) * 18, 25 + (i / 2) * 18));
             }
         } else {
             for (int i = 0; i < 16; i++) {

@@ -31,7 +31,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.Gregtech
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GregtechMetaTileEntity_Adv_Implosion
-        extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_Adv_Implosion> {
+    extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_Adv_Implosion> {
 
     private int mCasing;
     private static IStructureDefinition<GregtechMetaTileEntity_Adv_Implosion> STRUCTURE_DEFINITION = null;
@@ -57,14 +57,21 @@ public class GregtechMetaTileEntity_Adv_Implosion
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType()).addInfo("Factory Grade Advanced Implosion Compressor")
-                .addInfo("Speed: +100% | EU Usage: 100% | Parallel: ((Tier/2)+1)")
-                .addInfo("Constructed exactly the same as a normal Implosion Compressor")
-                .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 3, true)
-                .addController("Front center").addCasingInfoMin("Robust TungstenSteel Casing", 10, false)
-                .addInputBus("Any casing", 1).addOutputBus("Any casing", 1).addEnergyHatch("Any casing", 1)
-                .addMaintenanceHatch("Any casing", 1).addMufflerHatch("Any casing", 1)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+        tt.addMachineType(getMachineType())
+            .addInfo("Factory Grade Advanced Implosion Compressor")
+            .addInfo("Speed: +100% | EU Usage: 100% | Parallel: ((Tier/2)+1)")
+            .addInfo("Constructed exactly the same as a normal Implosion Compressor")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .addSeparator()
+            .beginStructureBlock(3, 3, 3, true)
+            .addController("Front center")
+            .addCasingInfoMin("Robust TungstenSteel Casing", 10, false)
+            .addInputBus("Any casing", 1)
+            .addOutputBus("Any casing", 1)
+            .addEnergyHatch("Any casing", 1)
+            .addMaintenanceHatch("Any casing", 1)
+            .addMufflerHatch("Any casing", 1)
+            .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
@@ -72,19 +79,20 @@ public class GregtechMetaTileEntity_Adv_Implosion
     public IStructureDefinition<GregtechMetaTileEntity_Adv_Implosion> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_Adv_Implosion>builder()
-                    .addShape(
-                            mName,
-                            transpose(
-                                    new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" },
-                                            { "CCC", "CCC", "CCC" }, }))
-                    .addElement(
-                            'C',
-                            ofChain(
-                                    buildHatchAdder(GregtechMetaTileEntity_Adv_Implosion.class)
-                                            .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler).casingIndex(48)
-                                            .dot(1).build(),
-                                    onElementPass(x -> ++x.mCasing, ofBlock(sBlockCasings4, 0))))
-                    .build();
+                .addShape(
+                    mName,
+                    transpose(
+                        new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" }, { "CCC", "CCC", "CCC" }, }))
+                .addElement(
+                    'C',
+                    ofChain(
+                        buildHatchAdder(GregtechMetaTileEntity_Adv_Implosion.class)
+                            .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
+                            .casingIndex(48)
+                            .dot(1)
+                            .build(),
+                        onElementPass(x -> ++x.mCasing, ofBlock(sBlockCasings4, 0))))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -132,7 +140,8 @@ public class GregtechMetaTileEntity_Adv_Implosion
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 2F).setMaxParallelSupplier(this::getMaxParallelRecipes);
+        return new ProcessingLogic().setSpeedBonus(1F / 2F)
+            .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     @Override

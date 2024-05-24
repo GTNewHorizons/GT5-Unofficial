@@ -92,17 +92,17 @@ public class Container_SuperJukebox extends Container {
             // Two Control Buttons
             this.addSlotToContainer(new SlotNoInput(this.inventoryChest, SLOT_HOLO_PLAY, xStart + (18 * c), 12));
             this.addSlotToContainer(
-                    new SlotNoInput(this.inventoryChest, SLOT_HOLO_LOOP, xStart + (18 * c), 12 + (1 * 18)));
+                new SlotNoInput(this.inventoryChest, SLOT_HOLO_LOOP, xStart + (18 * c), 12 + (1 * 18)));
 
             // Active playing slot for visual
             this.addSlotToContainer(
-                    new SlotJukebox(this.inventoryChest, SLOT_OUTPUT, xStart + (18 * c), 18 + (2 * 18), true));
+                new SlotJukebox(this.inventoryChest, SLOT_OUTPUT, xStart + (18 * c), 18 + (2 * 18), true));
 
             // Player Inventory
             for (var6 = 0; var6 < 3; ++var6) {
                 for (var7 = 0; var7 < 9; ++var7) {
                     this.addSlotToContainer(
-                            new Slot(inventory, var7 + (var6 * 9) + 9, 8 + (var7 * 18), 84 + (var6 * 18)));
+                        new Slot(inventory, var7 + (var6 * 9) + 9, 8 + (var7 * 18), 84 + (var6 * 18)));
                 }
             }
             // Player Hotbar

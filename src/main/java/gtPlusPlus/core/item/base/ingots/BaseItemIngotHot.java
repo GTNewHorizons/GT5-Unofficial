@@ -54,14 +54,17 @@ public class BaseItemIngotHot extends BaseItemIngot {
 
     private void generateRecipe() {
         Logger.WARNING("Adding Vacuum Freezer recipe for a Hot Ingot of " + this.materialName + ".");
-        GT_Values.RA.stdBuilder().itemInputs(ItemUtils.getSimpleStack(this)).itemOutputs(this.outputIngot.copy())
-                .duration(Math.max(this.componentMaterial.getMass() * 3L, 1L) * TICKS)
-                .eut(this.componentMaterial.vVoltageMultiplier).addTo(vacuumFreezerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemUtils.getSimpleStack(this))
+            .itemOutputs(this.outputIngot.copy())
+            .duration(Math.max(this.componentMaterial.getMass() * 3L, 1L) * TICKS)
+            .eut(this.componentMaterial.vVoltageMultiplier)
+            .addTo(vacuumFreezerRecipes);
     }
 
     @Override
     public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
-            final boolean p_77663_5_) {
+        final boolean p_77663_5_) {
         if (this.componentMaterial != null) {
             if (entityHolding != null && entityHolding instanceof EntityPlayer) {
                 if (!((EntityPlayer) entityHolding).capabilities.isCreativeMode) {
@@ -89,8 +92,8 @@ public class BaseItemIngotHot extends BaseItemIngot {
             this.base = i.registerIcon(GregTech.ID + ":" + "materialicons/METALLIC/" + "ingotHot");
             this.overlay = i.registerIcon(GregTech.ID + ":" + "materialicons/METALLIC/" + "ingotHot_OVERLAY");
         } else {
-            this.base = i.registerIcon(
-                    GTPlusPlus.ID + ":" + "item" + BaseItemComponent.ComponentTypes.HOTINGOT.getComponent());
+            this.base = i
+                .registerIcon(GTPlusPlus.ID + ":" + "item" + BaseItemComponent.ComponentTypes.HOTINGOT.getComponent());
         }
         // this.overlay = cellMaterial.getFluid(1000).getFluid().get
     }

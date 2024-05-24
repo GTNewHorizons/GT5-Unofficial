@@ -51,18 +51,18 @@ public class ItemCustomSpawnEgg extends ItemMonsterPlacer {
     protected EntityLiving entityToSpawn = null;
 
     public static void registerEntityForSpawnEgg(final int aMetaID, String parEntityToSpawnName, int aPrimaryColor,
-            int aSecondaryColor) {
+        int aSecondaryColor) {
         registerEntityForSpawnEgg(
-                aMetaID,
-                parEntityToSpawnName,
-                aPrimaryColor,
-                aSecondaryColor,
-                EnumRarity.common,
-                new ArrayList<String>());
+            aMetaID,
+            parEntityToSpawnName,
+            aPrimaryColor,
+            aSecondaryColor,
+            EnumRarity.common,
+            new ArrayList<String>());
     }
 
     public static void registerEntityForSpawnEgg(final int aMetaID, String parEntityToSpawnName, int aPrimaryColor,
-            int aSecondaryColor, EnumRarity aRarity, final ArrayList<String> aOreDictNames) {
+        int aSecondaryColor, EnumRarity aRarity, final ArrayList<String> aOreDictNames) {
         mTotalMetaItems++;
         mMaxStackSizeMap.put(aMetaID, 64);
         mRarityMap.put(aMetaID, aRarity);
@@ -89,7 +89,7 @@ public class ItemCustomSpawnEgg extends ItemMonsterPlacer {
      */
     @Override
     public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4,
-            int par5, int par6, int par7, float par8, float par9, float par10) {
+        int par5, int par6, int par7, float par8, float par9, float par10) {
         if (par3World.isRemote) {
             return true;
         } else {
@@ -130,9 +130,9 @@ public class ItemCustomSpawnEgg extends ItemMonsterPlacer {
             return par1ItemStack;
         } else {
             MovingObjectPosition movingobjectposition = getMovingObjectPositionFromPlayer(
-                    par2World,
-                    par3EntityPlayer,
-                    true);
+                par2World,
+                par3EntityPlayer,
+                true);
 
             if (movingobjectposition == null) {
                 return par1ItemStack;
@@ -190,11 +190,11 @@ public class ItemCustomSpawnEgg extends ItemMonsterPlacer {
             if (EntityList.stringToClassMapping.containsKey(entityToSpawnNameFull)) {
                 entityToSpawn = (EntityLiving) EntityList.createEntityByName(entityToSpawnNameFull, parWorld);
                 entityToSpawn.setLocationAndAngles(
-                        parX,
-                        parY,
-                        parZ,
-                        MathHelper.wrapAngleTo180_float(parWorld.rand.nextFloat() * 360.0F),
-                        0.0F);
+                    parX,
+                    parY,
+                    parZ,
+                    MathHelper.wrapAngleTo180_float(parWorld.rand.nextFloat() * 360.0F),
+                    0.0F);
                 parWorld.spawnEntityInWorld(entityToSpawn);
                 entityToSpawn.onSpawnWithEgg((IEntityLivingData) null);
                 entityToSpawn.playLivingSound();
@@ -236,9 +236,8 @@ public class ItemCustomSpawnEgg extends ItemMonsterPlacer {
     // unless you specifically check for localization here and convert
     public String getItemStackDisplayName(ItemStack par1ItemStack) {
         return StatCollector.translateToLocalFormatted(
-                "item.ItemCustomSpawnEgg.name",
-                StatCollector
-                        .translateToLocal("entity." + mEntityNameMap.get(par1ItemStack.getItemDamage()) + ".name"));
+            "item.ItemCustomSpawnEgg.name",
+            StatCollector.translateToLocal("entity." + mEntityNameMap.get(par1ItemStack.getItemDamage()) + ".name"));
     }
 
     @Override

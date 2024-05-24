@@ -27,7 +27,7 @@ public class SlotDataStick extends Slot {
             }
             if (mDataItems[0] != null && mDataItems[1] != null) {
                 if (GT_Utility.areStacksEqual(itemstack, mDataItems[0], true)
-                        || GT_Utility.areStacksEqual(itemstack, mDataItems[1], true)) {
+                    || GT_Utility.areStacksEqual(itemstack, mDataItems[1], true)) {
                     isValid = true;
                 }
             }

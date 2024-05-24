@@ -78,7 +78,7 @@ public class LeavesBase extends BlockLeaves {
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int ordinalSide, int metaID) {
         return (metaID & 3) == 1 ? this.leafTextures[this.field_150127_b][1]
-                : this.leafTextures[this.field_150127_b][0];
+            : this.leafTextures[this.field_150127_b][0];
     }
 
     @Override
@@ -93,7 +93,7 @@ public class LeavesBase extends BlockLeaves {
             this.leafTextures[i] = new IIcon[leafType[i].length];
             for (int j = 0; j < leafType[i].length; ++j) {
                 this.leafTextures[i][j] = iIcon
-                        .registerIcon(GTPlusPlus.ID + ":" + "trees/" + "leaves/" + "leaves_" + leafType[i][j]);
+                    .registerIcon(GTPlusPlus.ID + ":" + "trees/" + "leaves/" + "leaves_" + leafType[i][j]);
             }
         }
         setVanillaVariable(this.field_150129_M, this.leafTextures);

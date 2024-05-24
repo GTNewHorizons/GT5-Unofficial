@@ -36,7 +36,7 @@ public class BaseItemTCShard extends Item {
         if (Description != null) {
             for (int i = 0; i < Description.length; i++) {
                 GT_LanguageManager
-                        .addStringLocalization("gtplusplus." + getUnlocalizedName() + ".tooltip." + i, Description[i]);
+                    .addStringLocalization("gtplusplus." + getUnlocalizedName() + ".tooltip." + i, Description[i]);
             }
         }
         this.setMaxStackSize(64);
@@ -51,7 +51,7 @@ public class BaseItemTCShard extends Item {
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
         for (int i = 0;; i++) {
             String tooltip = GT_LanguageManager
-                    .getTranslation("gtplusplus." + this.getUnlocalizedName() + ".tooltip" + "." + i);
+                .getTranslation("gtplusplus." + this.getUnlocalizedName() + ".tooltip" + "." + i);
             if (!("gtplusplus." + this.getUnlocalizedName() + ".tooltip" + "." + i).equals(tooltip)) {
                 list.add(tooltip);
             } else break;
@@ -65,5 +65,5 @@ public class BaseItemTCShard extends Item {
 
     @Override
     public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
-            final boolean p_77663_5_) {}
+        final boolean p_77663_5_) {}
 }

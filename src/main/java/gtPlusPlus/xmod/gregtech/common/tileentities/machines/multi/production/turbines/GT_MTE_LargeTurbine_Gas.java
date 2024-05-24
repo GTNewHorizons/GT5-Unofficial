@@ -33,7 +33,9 @@ public class GT_MTE_LargeTurbine_Gas extends GregtechMetaTileEntity_LargerTurbin
     private static final HashSet<Fluid> BLACKLIST = new HashSet<>();
 
     static {
-        BLACKLIST.add(Materials.Benzene.getFluid(0).getFluid());
+        BLACKLIST.add(
+            Materials.Benzene.getFluid(0)
+                .getFluid());
     }
 
     public GT_MTE_LargeTurbine_Gas(int aID, String aName, String aNameRegional) {
@@ -74,7 +76,8 @@ public class GT_MTE_LargeTurbine_Gas extends GregtechMetaTileEntity_LargerTurbin
         if (aLiquid == null) {
             return 0;
         }
-        GT_Recipe tFuel = getRecipeMap().getBackend().findFuel(aLiquid);
+        GT_Recipe tFuel = getRecipeMap().getBackend()
+            .findFuel(aLiquid);
         if (tFuel != null) {
             return tFuel.mSpecialValue;
         }

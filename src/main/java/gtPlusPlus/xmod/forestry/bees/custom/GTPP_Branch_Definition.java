@@ -36,7 +36,7 @@ public enum GTPP_Branch_Definition {
 
             return (IAllele[]) methodMyMethod.invoke(enumA);
         } catch (ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException
-                | IllegalArgumentException | InvocationTargetException e) {
+            | IllegalArgumentException | InvocationTargetException e) {
             Logger.INFO("[Bees] Bad Reflection. getTemplate()");
             e.printStackTrace();
             // gregtech.loaders.misc.GT_BranchDefinition.getTemplate()
@@ -57,7 +57,7 @@ public enum GTPP_Branch_Definition {
 
             return (IClassification) methodMyMethod.invoke(enum_MY_SAMPLE_ENUM);
         } catch (ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException
-                | IllegalArgumentException | InvocationTargetException e) {
+            | IllegalArgumentException | InvocationTargetException e) {
             Logger.INFO("[Bees] Bad Reflection. getBranch()");
             e.printStackTrace();
             return null;

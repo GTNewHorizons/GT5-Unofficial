@@ -33,14 +33,14 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.Gregtech
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GregtechMetaTileEntity_IndustrialMolecularTransformer
-        extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialMolecularTransformer>
-        implements ISurvivalConstructable {
+    extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialMolecularTransformer>
+    implements ISurvivalConstructable {
 
     private static final int CASING_TEXTURE_ID = 48;
     private int mCasing = 0;
 
     public GregtechMetaTileEntity_IndustrialMolecularTransformer(final int aID, final String aName,
-            final String aNameRegional) {
+        final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
@@ -62,21 +62,26 @@ public class GregtechMetaTileEntity_IndustrialMolecularTransformer
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
 
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType()).addInfo("Changes the structure of items to produce new ones")
-                .addInfo("Maximum 1x of each bus/hatch.").addPollutionAmount(getPollutionPerSecond(null)).addSeparator()
-                .beginStructureBlock(7, 7, 7, false).addController("Top Center")
-                .addCasingInfoMin("Robust Tungstensteel Machine Casing", 40, false)
-                .addCasingInfoMin("Tungstensteel Coils", 16, false)
-                .addCasingInfoMin("Molecular Containment Casing", 52, false)
-                .addCasingInfoMin("High Voltage Current Capacitor", 32, false)
-                .addCasingInfoMin("Particle Containment Casing", 4, false)
-                .addCasingInfoMin("Resonance Chamber I", 5, false).addCasingInfoMin("Modulator I", 4, false)
-                .addInputBus("Any Robust Tungstensteel Machine Casing", 1)
-                .addOutputBus("Any Robust Tungstensteel Machine Casing", 1)
-                .addEnergyHatch("Any Robust Tungstensteel Machine Casing", 1)
-                .addMaintenanceHatch("Any Robust Tungstensteel Machine Casing", 1)
-                .addMufflerHatch("Any Robust Tungstensteel Machine Casing", 1)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+        tt.addMachineType(getMachineType())
+            .addInfo("Changes the structure of items to produce new ones")
+            .addInfo("Maximum 1x of each bus/hatch.")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .addSeparator()
+            .beginStructureBlock(7, 7, 7, false)
+            .addController("Top Center")
+            .addCasingInfoMin("Robust Tungstensteel Machine Casing", 40, false)
+            .addCasingInfoMin("Tungstensteel Coils", 16, false)
+            .addCasingInfoMin("Molecular Containment Casing", 52, false)
+            .addCasingInfoMin("High Voltage Current Capacitor", 32, false)
+            .addCasingInfoMin("Particle Containment Casing", 4, false)
+            .addCasingInfoMin("Resonance Chamber I", 5, false)
+            .addCasingInfoMin("Modulator I", 4, false)
+            .addInputBus("Any Robust Tungstensteel Machine Casing", 1)
+            .addOutputBus("Any Robust Tungstensteel Machine Casing", 1)
+            .addEnergyHatch("Any Robust Tungstensteel Machine Casing", 1)
+            .addMaintenanceHatch("Any Robust Tungstensteel Machine Casing", 1)
+            .addMufflerHatch("Any Robust Tungstensteel Machine Casing", 1)
+            .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
@@ -87,31 +92,31 @@ public class GregtechMetaTileEntity_IndustrialMolecularTransformer
     public IStructureDefinition<GregtechMetaTileEntity_IndustrialMolecularTransformer> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialMolecularTransformer>builder()
-                    .addShape(
-                            STRUCTURE_PIECE_MAIN,
-                            (new String[][] {
-                                    { "       ", "       ", "  xxx  ", "  x~x  ", "  xxx  ", "       ", "       " },
-                                    { "       ", "  xxx  ", " xyyyx ", " xyzyx ", " xyyyx ", "  xxx  ", "       " },
-                                    { "       ", "  xxx  ", " xyyyx ", " xyzyx ", " xyyyx ", "  xxx  ", "       " },
-                                    { "       ", "  xxx  ", " xyyyx ", " xyzyx ", " xyyyx ", "  xxx  ", "       " },
-                                    { "   t   ", " ttxtt ", " tyyyt ", "txyzyxt", " tyyyt ", " ttxtt ", "   t   " },
-                                    { "   c   ", " ccecc ", " cxfxc ", "cefefec", " cxfxc ", " ccecc ", "   c   " },
-                                    { "   h   ", " hhhhh ", " hhhhh ", "hhhhhhh", " hhhhh ", " hhhhh ", "   h   " }, }))
-                    .addElement('x', ofBlock(getCasingBlock(), getCasingMeta()))
-                    .addElement('y', ofBlock(getCasingBlock(), getCasingMeta2()))
-                    .addElement('z', ofBlock(getCasingBlock(), getCasingMeta3()))
-                    .addElement('e', ofBlock(getCasingBlock2(), 0)).addElement('f', ofBlock(getCasingBlock2(), 4))
-                    .addElement('c', ofBlock(getCoilBlock(), 3))
-                    .addElement('t', ofBlock(getCasingBlock3(), getTungstenCasingMeta()))
-                    .addElement(
-                            'h',
-                            buildHatchAdder(GregtechMetaTileEntity_IndustrialMolecularTransformer.class)
-                                    .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
-                                    .casingIndex(getCasingTextureIndex()).dot(1).buildAndChain(
-                                            onElementPass(
-                                                    x -> ++x.mCasing,
-                                                    ofBlock(getCasingBlock3(), getTungstenCasingMeta()))))
-                    .build();
+                .addShape(
+                    STRUCTURE_PIECE_MAIN,
+                    (new String[][] { { "       ", "       ", "  xxx  ", "  x~x  ", "  xxx  ", "       ", "       " },
+                        { "       ", "  xxx  ", " xyyyx ", " xyzyx ", " xyyyx ", "  xxx  ", "       " },
+                        { "       ", "  xxx  ", " xyyyx ", " xyzyx ", " xyyyx ", "  xxx  ", "       " },
+                        { "       ", "  xxx  ", " xyyyx ", " xyzyx ", " xyyyx ", "  xxx  ", "       " },
+                        { "   t   ", " ttxtt ", " tyyyt ", "txyzyxt", " tyyyt ", " ttxtt ", "   t   " },
+                        { "   c   ", " ccecc ", " cxfxc ", "cefefec", " cxfxc ", " ccecc ", "   c   " },
+                        { "   h   ", " hhhhh ", " hhhhh ", "hhhhhhh", " hhhhh ", " hhhhh ", "   h   " }, }))
+                .addElement('x', ofBlock(getCasingBlock(), getCasingMeta()))
+                .addElement('y', ofBlock(getCasingBlock(), getCasingMeta2()))
+                .addElement('z', ofBlock(getCasingBlock(), getCasingMeta3()))
+                .addElement('e', ofBlock(getCasingBlock2(), 0))
+                .addElement('f', ofBlock(getCasingBlock2(), 4))
+                .addElement('c', ofBlock(getCoilBlock(), 3))
+                .addElement('t', ofBlock(getCasingBlock3(), getTungstenCasingMeta()))
+                .addElement(
+                    'h',
+                    buildHatchAdder(GregtechMetaTileEntity_IndustrialMolecularTransformer.class)
+                        .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
+                        .casingIndex(getCasingTextureIndex())
+                        .dot(1)
+                        .buildAndChain(
+                            onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock3(), getTungstenCasingMeta()))))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }

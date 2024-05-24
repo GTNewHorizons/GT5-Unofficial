@@ -56,7 +56,7 @@ public class MaterialUtils {
     }
 
     public static Material generateMaterialFromGtENUM(final Materials material, short[] customRGB,
-            TextureSet aCustomTextures) {
+        TextureSet aCustomTextures) {
         String aMaterialKey = getMaterialName(material).toLowerCase();
         if (mGeneratedMaterialMap.containsKey(aMaterialKey)) {
             return mGeneratedMaterialMap.get(aMaterialKey);
@@ -90,7 +90,8 @@ public class MaterialUtils {
             } else {
                 iconSet = aCustomTextures;
             }
-            if (iconSet == null || iconSet.mSetName.toLowerCase().contains("fluid")) {
+            if (iconSet == null || iconSet.mSetName.toLowerCase()
+                .contains("fluid")) {
                 iconSet = TextureSet.SET_METALLIC;
             }
             Logger.MATERIALS("[Debug] Calculated Texture Set to be " + iconSet.mSetName + ".");
@@ -128,41 +129,42 @@ public class MaterialUtils {
                 materialState = MaterialState.GAS;
             } else {
                 Logger.MATERIALS(
-                        "[Debug] State set as solid. This material has no alternative states, so for safety we wont generate anything.");
+                    "[Debug] State set as solid. This material has no alternative states, so for safety we wont generate anything.");
                 materialState = MaterialState.SOLID;
                 mGenerateFluid = false;
             }
 
-            if (name.toLowerCase().contains("infused")) {
+            if (name.toLowerCase()
+                .contains("infused")) {
                 final String tempname = name.substring(7);
                 name = "Infused " + tempname;
             }
             if (hasValidRGBA(rgba) || (element == Element.H)
-                    || ((material == Materials.InfusedAir) || (material == Materials.InfusedFire)
-                            || (material == Materials.InfusedEarth)
-                            || (material == Materials.InfusedWater))) {
+                || ((material == Materials.InfusedAir) || (material == Materials.InfusedFire)
+                    || (material == Materials.InfusedEarth)
+                    || (material == Materials.InfusedWater))) {
                 Material M = new Material(
-                        name,
-                        materialState,
-                        iconSet,
-                        durability,
-                        rgba,
-                        melting,
-                        boiling,
-                        protons,
-                        neutrons,
-                        blastFurnace,
-                        chemicalFormula,
-                        radioactivity,
-                        mGenerateCell,
-                        mGenerateFluid);
+                    name,
+                    materialState,
+                    iconSet,
+                    durability,
+                    rgba,
+                    melting,
+                    boiling,
+                    protons,
+                    neutrons,
+                    blastFurnace,
+                    chemicalFormula,
+                    radioactivity,
+                    mGenerateCell,
+                    mGenerateFluid);
                 mGeneratedMaterialMap.put(aMaterialKey, M);
                 return M;
             } else {
                 Logger.DEBUG_MATERIALS(
-                        "Failed to generate GT++ material instance for " + material.mName
-                                + " | Valid RGB? "
-                                + (hasValidRGBA(rgba)));
+                    "Failed to generate GT++ material instance for " + material.mName
+                        + " | Valid RGB? "
+                        + (hasValidRGBA(rgba)));
             }
         } catch (Throwable t) {
             Logger.DEBUG_MATERIALS("Failed to generate GT++ material instance for " + material.mName);
@@ -172,23 +174,23 @@ public class MaterialUtils {
     }
 
     public static Material generateQuickMaterial(final String materialName, final MaterialState defaultState,
-            final short[] colour, final int sRadioactivity) {
+        final short[] colour, final int sRadioactivity) {
         String aMaterialKey = materialName.toLowerCase();
         if (mGeneratedMaterialMap.containsKey(aMaterialKey)) {
             return mGeneratedMaterialMap.get(aMaterialKey);
         }
 
         final Material temp = new Material(
-                materialName,
-                defaultState,
-                colour,
-                1000, // melting
-                3000, // boiling
-                50, // Protons
-                50, // Neutrons
-                false,
-                "",
-                sRadioactivity);
+            materialName,
+            defaultState,
+            colour,
+            1000, // melting
+            3000, // boiling
+            50, // Protons
+            50, // Neutrons
+            false,
+            "",
+            sRadioactivity);
         mGeneratedMaterialMap.put(aMaterialKey, temp);
         return temp;
     }
@@ -230,7 +232,9 @@ public class MaterialUtils {
 
     private static Materials getMaterialByName(String materialName) {
         for (Materials m : Materials.values()) {
-            if (MaterialUtils.getMaterialName(m).toLowerCase().equals(materialName.toLowerCase())) {
+            if (MaterialUtils.getMaterialName(m)
+                .toLowerCase()
+                .equals(materialName.toLowerCase())) {
                 return m;
             }
         }
@@ -266,10 +270,10 @@ public class MaterialUtils {
         }
         if (g == null) {
             Logger.INFO(
-                    "Failed finding material '" + aMaterialName
-                            + "' & fallback '"
-                            + aFallbackMaterialName
-                            + "', returning _NULL.");
+                "Failed finding material '" + aMaterialName
+                    + "' & fallback '"
+                    + aFallbackMaterialName
+                    + "', returning _NULL.");
             CORE.crash();
         }
         return g;
@@ -293,7 +297,8 @@ public class MaterialUtils {
 
     public static AutoMap<Material> getCompoundMaterialsRecursively_Speiger(Material toSearch) {
         AutoMap<Material> resultList = new AutoMap<>();
-        if (toSearch.getComposites().isEmpty()) {
+        if (toSearch.getComposites()
+            .isEmpty()) {
             resultList.put(toSearch);
             return resultList;
         }
@@ -307,7 +312,8 @@ public class MaterialUtils {
         int processed = 0;
         while (!toCheck.isEmpty() && processed < HARD_LIMIT) {
             Material current = toCheck.remove();
-            if (current.getComposites().isEmpty()) {
+            if (current.getComposites()
+                .isEmpty()) {
                 resultList.put(current);
             } else {
                 for (MaterialStack entry : current.getComposites()) {
@@ -324,7 +330,7 @@ public class MaterialUtils {
     }
 
     public static void generateComponentAndAssignToAMaterial(ComponentTypes aType, Material aMaterial,
-            boolean generateRecipes) {
+        boolean generateRecipes) {
         Item aGC;
         if (aType == ComponentTypes.FINEWIRE) {
             aGC = new BaseItemFineWire(aMaterial);
@@ -361,6 +367,6 @@ public class MaterialUtils {
 
     public static boolean isNullGregtechMaterial(Materials aGregtechMaterial) {
         return aGregtechMaterial == Materials._NULL || aGregtechMaterial.equals(Materials._NULL)
-                || aGregtechMaterial.mName.equals(Materials._NULL.mName);
+            || aGregtechMaterial.mName.equals(Materials._NULL.mName);
     }
 }

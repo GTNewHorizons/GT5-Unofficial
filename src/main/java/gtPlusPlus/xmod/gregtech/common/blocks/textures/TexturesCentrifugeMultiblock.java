@@ -52,29 +52,28 @@ public class TexturesCentrifugeMultiblock {
     private static CustomIcon frontFaceActive_8 = (GT8_9_Active);
 
     CustomIcon[] CENTRIFUGE = new CustomIcon[] { frontFace_0, frontFace_1, frontFace_2, frontFace_3, frontFace_4,
-            frontFace_5, frontFace_6, frontFace_7, frontFace_8 };
+        frontFace_5, frontFace_6, frontFace_7, frontFace_8 };
 
     CustomIcon[] CENTRIFUGE_ACTIVE = new CustomIcon[] { frontFaceActive_0, frontFaceActive_1, frontFaceActive_2,
-            frontFaceActive_3, frontFaceActive_4, frontFaceActive_5, frontFaceActive_6, frontFaceActive_7,
-            frontFaceActive_8 };
+        frontFaceActive_3, frontFaceActive_4, frontFaceActive_5, frontFaceActive_6, frontFaceActive_7,
+        frontFaceActive_8 };
 
     public IIcon handleCasingsGT(final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord,
-            final ForgeDirection side, final GregtechMetaCasingBlocks thisBlock) {
+        final ForgeDirection side, final GregtechMetaCasingBlocks thisBlock) {
         return this.handleCasingsGT58(aWorld, xCoord, yCoord, zCoord, side, thisBlock);
     }
 
     private static int isCentrifugeControllerWithSide(IBlockAccess aWorld, int aX, int aY, int aZ,
-            ForgeDirection side) {
+        ForgeDirection side) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (!(tTileEntity instanceof IGregTechTileEntity tTile)) return 0;
         if (tTile.getMetaTileEntity() instanceof GregtechMetaTileEntity_IndustrialCentrifuge
-                && tTile.getFrontFacing() == side)
-            return tTile.isActive() ? 1 : 2;
+            && tTile.getFrontFacing() == side) return tTile.isActive() ? 1 : 2;
         return 0;
     }
 
     public IIcon handleCasingsGT58(final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord,
-            final ForgeDirection side, final GregtechMetaCasingBlocks thisBlock) {
+        final ForgeDirection side, final GregtechMetaCasingBlocks thisBlock) {
         final int tMeta = aWorld.getBlockMetadata(xCoord, yCoord, zCoord);
         final int ordinalSide = side.ordinal();
         if (tMeta != 0) {
@@ -89,7 +88,7 @@ public class TexturesCentrifugeMultiblock {
                         if (i == 0 && j == 0) continue;
                         if (isCentrifugeControllerWithSide(aWorld, xCoord + j, yCoord, zCoord + i, side) != 0) {
                             IMetaTileEntity tMetaTileEntity = ((IGregTechTileEntity) aWorld
-                                    .getTileEntity(xCoord + j, yCoord, zCoord + i)).getMetaTileEntity();
+                                .getTileEntity(xCoord + j, yCoord, zCoord + i)).getMetaTileEntity();
                             return getIconByIndex(tMetaTileEntity, 4 - i * 3 - j);
                         }
                     }
@@ -101,7 +100,7 @@ public class TexturesCentrifugeMultiblock {
                         if (i == 0 && j == 0) continue;
                         if (isCentrifugeControllerWithSide(aWorld, xCoord + j, yCoord + i, zCoord, side) != 0) {
                             IMetaTileEntity tMetaTileEntity = ((IGregTechTileEntity) aWorld
-                                    .getTileEntity(xCoord + j, yCoord + i, zCoord)).getMetaTileEntity();
+                                .getTileEntity(xCoord + j, yCoord + i, zCoord)).getMetaTileEntity();
                             return getIconByIndex(tMetaTileEntity, 4 + i * 3 - j * tInvertLeftRightMod);
                         }
                     }
@@ -113,7 +112,7 @@ public class TexturesCentrifugeMultiblock {
                         if (i == 0 && j == 0) continue;
                         if (isCentrifugeControllerWithSide(aWorld, xCoord, yCoord + i, zCoord + j, side) != 0) {
                             IMetaTileEntity tMetaTileEntity = ((IGregTechTileEntity) aWorld
-                                    .getTileEntity(xCoord, yCoord + i, zCoord + j)).getMetaTileEntity();
+                                .getTileEntity(xCoord, yCoord + i, zCoord + j)).getMetaTileEntity();
                             return getIconByIndex(tMetaTileEntity, 4 + i * 3 + j * tInvertLeftRightMod);
                         }
                     }
@@ -127,7 +126,8 @@ public class TexturesCentrifugeMultiblock {
         if (aTile == null) {
             return false;
         } else {
-            return aTile.getBaseMetaTileEntity().isActive();
+            return aTile.getBaseMetaTileEntity()
+                .isActive();
         }
     }
 

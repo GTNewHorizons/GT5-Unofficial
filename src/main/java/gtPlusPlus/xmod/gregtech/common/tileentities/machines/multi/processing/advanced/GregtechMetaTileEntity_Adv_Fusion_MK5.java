@@ -52,18 +52,24 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK5 extends GT_MetaTileEntity_Fus
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Fusion Reactor").addInfo("HARNESSING THE POWER OF A NEUTRON STAR")
-                .addInfo("Controller block for the Fusion Reactor Mk V")
-                .addInfo("524,288EU/t and 1.28B EU capacity per Energy Hatch")
-                .addInfo("If the recipe has a startup cost greater than the")
-                .addInfo("number of energy hatches * cap, you can't do it").addInfo("Performs 4/4 overclocks")
-                .addSeparator().beginStructureBlock(15, 3, 15, false).addController("See diagram when placed")
-                .addCasingInfoMin("Fusion Machine Casings MK IV", 79, false)
-                .addStructureInfo("Cover the coils with casing")
-                .addOtherStructurePart("Advanced Fusion Coils II", "Center part of the ring")
-                .addEnergyHatch("1-16, Specified casings", 2).addInputHatch("2-16, Specified casings", 1)
-                .addOutputHatch("1-16, Specified casings", 3).addStructureInfo("ALL Hatches must be UEV or better")
-                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+        tt.addMachineType("Fusion Reactor")
+            .addInfo("HARNESSING THE POWER OF A NEUTRON STAR")
+            .addInfo("Controller block for the Fusion Reactor Mk V")
+            .addInfo("524,288EU/t and 1.28B EU capacity per Energy Hatch")
+            .addInfo("If the recipe has a startup cost greater than the")
+            .addInfo("number of energy hatches * cap, you can't do it")
+            .addInfo("Performs 4/4 overclocks")
+            .addSeparator()
+            .beginStructureBlock(15, 3, 15, false)
+            .addController("See diagram when placed")
+            .addCasingInfoMin("Fusion Machine Casings MK IV", 79, false)
+            .addStructureInfo("Cover the coils with casing")
+            .addOtherStructurePart("Advanced Fusion Coils II", "Center part of the ring")
+            .addEnergyHatch("1-16, Specified casings", 2)
+            .addInputHatch("2-16, Specified casings", 1)
+            .addOutputHatch("1-16, Specified casings", 3)
+            .addStructureInfo("ALL Hatches must be UEV or better")
+            .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
@@ -119,34 +125,37 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK5 extends GT_MetaTileEntity_Fus
 
     @Override
     public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
-            final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+        final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
         if (side == facing) {
             return new ITexture[] {
-                    new GT_RenderedTexture(
-                            Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS,
-                            Dyes.getModulation(-1, Dyes._NULL.mRGBa)),
-                    TextureFactory.builder().addIcon(this.getIconOverlay()).extFacing().build() };
+                new GT_RenderedTexture(
+                    Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS,
+                    Dyes.getModulation(-1, Dyes._NULL.mRGBa)),
+                TextureFactory.builder()
+                    .addIcon(this.getIconOverlay())
+                    .extFacing()
+                    .build() };
         } else if (!aActive) {
             return new ITexture[] { new GT_RenderedTexture(
-                    Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS,
-                    Dyes.getModulation(-1, Dyes._NULL.mRGBa)) };
+                Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS,
+                Dyes.getModulation(-1, Dyes._NULL.mRGBa)) };
         } else {
             return new ITexture[] { new GT_RenderedTexture(
-                    TexturesGtBlock.TEXTURE_CASING_FUSION_CASING_HYPER,
-                    Dyes.getModulation(-1, Dyes._NULL.mRGBa)) };
+                TexturesGtBlock.TEXTURE_CASING_FUSION_CASING_HYPER,
+                Dyes.getModulation(-1, Dyes._NULL.mRGBa)) };
         }
     }
 
     @Override
     public ITexture getTextureOverlay() {
         return new GT_RenderedTexture(
-                this.getBaseMetaTileEntity().isActive() ? TexturesGtBlock.Casing_Machine_Screen_Rainbow
-                        : TexturesGtBlock.Casing_Machine_Screen_1);
+            this.getBaseMetaTileEntity()
+                .isActive() ? TexturesGtBlock.Casing_Machine_Screen_Rainbow : TexturesGtBlock.Casing_Machine_Screen_1);
     }
 
     public IIconContainer getIconOverlay() {
-        return this.getBaseMetaTileEntity().isActive() ? TexturesGtBlock.Casing_Machine_Screen_Rainbow
-                : TexturesGtBlock.Casing_Machine_Screen_1;
+        return this.getBaseMetaTileEntity()
+            .isActive() ? TexturesGtBlock.Casing_Machine_Screen_Rainbow : TexturesGtBlock.Casing_Machine_Screen_1;
     }
 
     @Override
@@ -186,6 +195,6 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK5 extends GT_MetaTileEntity_Fus
         }
 
         return new String[] { "Fusion Reactor MK " + tier, "EU Required: " + powerRequired + "EU/t",
-                "Stored EU: " + mEUStore + " / " + maxEUStore(), "Plasma Output: " + plasmaOut + "L/t" };
+            "Stored EU: " + mEUStore + " / " + maxEUStore(), "Plasma Output: " + plasmaOut + "L/t" };
     }
 }

@@ -72,13 +72,17 @@ public class GTPP_IntegratedCircuit_Item extends Item implements INetworkUpdatab
         try {
             aList.add("Configuration == " + aStack.getItemDamage());
             aList.add(
-                    GT_LanguageManager.addStringLocalization(
-                            new StringBuilder().append(getUnlocalizedName()).append(".tooltip.0").toString(),
-                            "Right click to reconfigure"));
+                GT_LanguageManager.addStringLocalization(
+                    new StringBuilder().append(getUnlocalizedName())
+                        .append(".tooltip.0")
+                        .toString(),
+                    "Right click to reconfigure"));
             aList.add(
-                    GT_LanguageManager.addStringLocalization(
-                            new StringBuilder().append(getUnlocalizedName()).append(".tooltip.1").toString(),
-                            "Needs a screwdriver or circuit programming tool"));
+                GT_LanguageManager.addStringLocalization(
+                    new StringBuilder().append(getUnlocalizedName())
+                        .append(".tooltip.1")
+                        .toString(),
+                    "Needs a screwdriver or circuit programming tool"));
         } catch (Throwable t) {
             t.printStackTrace();
         }
@@ -132,7 +136,8 @@ public class GTPP_IntegratedCircuit_Item extends Item implements INetworkUpdatab
             if (toolIndex == null) return true;
 
             ItemStack[] mainInventory = player.inventory.mainInventory;
-            mainInventory[toolIndex.getKey()] = toolIndex.getValue().apply(mainInventory[toolIndex.getKey()], player);
+            mainInventory[toolIndex.getKey()] = toolIndex.getValue()
+                .apply(mainInventory[toolIndex.getKey()], player);
         }
         stack.setItemDamage(meta);
 
@@ -152,18 +157,18 @@ public class GTPP_IntegratedCircuit_Item extends Item implements INetworkUpdatab
             if (configurator == null) {
                 int count;
                 try {
-                    count = Integer.parseInt(
-                            StatCollector.translateToLocal("GT5U.item.programmed_circuit.no_screwdriver.count"));
+                    count = Integer
+                        .parseInt(StatCollector.translateToLocal("GT5U.item.programmed_circuit.no_screwdriver.count"));
                 } catch (NumberFormatException e) {
                     player.addChatComponentMessage(
-                            new ChatComponentText(
-                                    "Error in translation GT5U.item.programmed_circuit.no_screwdriver.count: "
-                                            + e.getMessage()));
+                        new ChatComponentText(
+                            "Error in translation GT5U.item.programmed_circuit.no_screwdriver.count: "
+                                + e.getMessage()));
                     count = 1;
                 }
                 player.addChatComponentMessage(
-                        new ChatComponentTranslation(
-                                "GT5U.item.programmed_circuit.no_screwdriver." + XSTR.XSTR_INSTANCE.nextInt(count)));
+                    new ChatComponentTranslation(
+                        "GT5U.item.programmed_circuit.no_screwdriver." + XSTR.XSTR_INSTANCE.nextInt(count)));
                 return stack;
             }
             configuratorStack = player.inventory.mainInventory[configurator.getKey()];
@@ -174,14 +179,14 @@ public class GTPP_IntegratedCircuit_Item extends Item implements INetworkUpdatab
 
     private void openSelectorGui(ItemStack configurator, int meta, EntityPlayer player) {
         UIInfos.openClientUI(
-                player,
-                buildContext -> new SelectItemUIFactory(
-                        StatCollector.translateToLocal("GT5U.item.programmed_circuit.select.header"),
-                        configurator,
-                        GTPP_IntegratedCircuit_Item::onConfigured,
-                        ALL_VARIANTS,
-                        meta,
-                        true).createWindow(buildContext));
+            player,
+            buildContext -> new SelectItemUIFactory(
+                StatCollector.translateToLocal("GT5U.item.programmed_circuit.select.header"),
+                configurator,
+                GTPP_IntegratedCircuit_Item::onConfigured,
+                ALL_VARIANTS,
+                meta,
+                true).createWindow(buildContext));
     }
 
     private static void onConfigured(ItemStack stack) {
@@ -191,7 +196,7 @@ public class GTPP_IntegratedCircuit_Item extends Item implements INetworkUpdatab
     }
 
     private static Pair<Integer, BiFunction<ItemStack, EntityPlayerMP, ItemStack>> findConfiguratorInInv(
-            EntityPlayer player) {
+        EntityPlayer player) {
         ItemStack[] mainInventory = player.inventory.mainInventory;
         for (int j = 0, mainInventoryLength = mainInventory.length; j < mainInventoryLength; j++) {
             ItemStack toolStack = mainInventory[j];
@@ -199,8 +204,9 @@ public class GTPP_IntegratedCircuit_Item extends Item implements INetworkUpdatab
             if (!GT_Utility.isStackValid(toolStack)) continue;
 
             for (Map.Entry<Predicate<ItemStack>, BiFunction<ItemStack, EntityPlayerMP, ItemStack>> p : GregTech_API.sCircuitProgrammerList
-                    .entrySet())
-                if (p.getKey().test(toolStack)) return Pair.of(j, p.getValue());
+                .entrySet())
+                if (p.getKey()
+                    .test(toolStack)) return Pair.of(j, p.getValue());
         }
         return null;
     }

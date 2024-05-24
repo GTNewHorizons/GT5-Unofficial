@@ -30,7 +30,7 @@ public class BaseItemMisc extends Item {
     public final Object componentColour;
 
     public BaseItemMisc(final String displayName, final short[] RGB, final int maxStackSize, final MiscTypes miscType,
-            String[] description) {
+        String[] description) {
 
         // Set-up the Misc Generic Item
         this.displayName = displayName;
@@ -48,9 +48,8 @@ public class BaseItemMisc extends Item {
         }
         if (description != null) {
             for (int i = 0; i < description.length; i++) {
-                GT_LanguageManager.addStringLocalization(
-                        "gtplusplus." + this.getUnlocalizedName() + ".tooltip." + i,
-                        description[i]);
+                GT_LanguageManager
+                    .addStringLocalization("gtplusplus." + this.getUnlocalizedName() + ".tooltip." + i, description[i]);
             }
         }
         GameRegistry.registerItem(this, this.unlocalName);
@@ -94,10 +93,10 @@ public class BaseItemMisc extends Item {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public final void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list,
-            final boolean bool) {
+        final boolean bool) {
         for (int i = 0;; i++) {
             String tooltip = GT_LanguageManager
-                    .getTranslation("gtplusplus." + this.getUnlocalizedName() + ".tooltip" + "." + i);
+                .getTranslation("gtplusplus." + this.getUnlocalizedName() + ".tooltip" + "." + i);
             if (!("gtplusplus." + this.getUnlocalizedName() + ".tooltip" + "." + i).equals(tooltip)) {
                 list.add(tooltip);
             } else break;
@@ -116,7 +115,7 @@ public class BaseItemMisc extends Item {
 
     @Override
     public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
-            final boolean p_77663_5_) {
+        final boolean p_77663_5_) {
         // Nothing Fancy here yet.
     }
 

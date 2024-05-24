@@ -47,24 +47,24 @@ public class Preloader_DummyContainer extends DummyModContainer {
 
     public static void handleConfigFile(final FMLPreInitializationEvent event) {
         final Configuration config = new Configuration(
-                new File(event.getModConfigurationDirectory(), "GTplusplus/GTplusplus.cfg"));
+            new File(event.getModConfigurationDirectory(), "GTplusplus/GTplusplus.cfg"));
         config.load();
 
         // BGM Watchdog
         CORE_Preloader.enableWatchdogBGM = config.getInt(
-                "enableWatchdogBGM",
-                "features",
-                0,
-                0,
-                Short.MAX_VALUE,
-                "Set to a value greater than 0 to reduce the ticks taken to delay between BGM tracks. Acceptable Values are 1-32767, where 0 is disabled. Vanilla Uses 12,000 & 24,000. 200 is 10s.");
+            "enableWatchdogBGM",
+            "features",
+            0,
+            0,
+            Short.MAX_VALUE,
+            "Set to a value greater than 0 to reduce the ticks taken to delay between BGM tracks. Acceptable Values are 1-32767, where 0 is disabled. Vanilla Uses 12,000 & 24,000. 200 is 10s.");
 
         // Circuits
         CORE_Preloader.enableOldGTcircuits = config.getBoolean(
-                "enableOldGTcircuits",
-                GregTech.ID,
-                false,
-                "Restores circuits and their recipes from Pre-5.09.28 times.");
+            "enableOldGTcircuits",
+            GregTech.ID,
+            false,
+            "Restores circuits and their recipes from Pre-5.09.28 times.");
     }
 
 }

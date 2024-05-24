@@ -44,15 +44,15 @@ public class Gregtech_Generic_Item extends Item implements IProjectileItem {
     }
 
     public Gregtech_Generic_Item(final String aUnlocalized, final String aEnglish, final String aEnglishTooltip,
-            final boolean aWriteToolTipIntoLangFile) {
+        final boolean aWriteToolTipIntoLangFile) {
         super();
         this.mName = aUnlocalized;
         GT_LanguageManager.addStringLocalization(this.mName + ".name", aEnglish);
         if (GT_Utility.isStringValid(aEnglishTooltip)) {
             GT_LanguageManager.addStringLocalization(
-                    this.mTooltip = this.mName + ".tooltip_main",
-                    aEnglishTooltip,
-                    aWriteToolTipIntoLangFile);
+                this.mTooltip = this.mName + ".tooltip_main",
+                aEnglishTooltip,
+                aWriteToolTipIntoLangFile);
         } else {
             this.mTooltip = null;
         }
@@ -84,7 +84,7 @@ public class Gregtech_Generic_Item extends Item implements IProjectileItem {
 
     @Override
     public boolean doesSneakBypassUse(final World aWorld, final int aX, final int aY, final int aZ,
-            final EntityPlayer aPlayer) {
+        final EntityPlayer aPlayer) {
         return true;
     }
 
@@ -99,7 +99,7 @@ public class Gregtech_Generic_Item extends Item implements IProjectileItem {
 
     @Override
     public void addInformation(final ItemStack aStack, final EntityPlayer aPlayer, final List aList,
-            final boolean aF3_H) {
+        final boolean aF3_H) {
         if ((this.getMaxDamage() > 0) && !this.getHasSubtypes()) {
             aList.add((aStack.getMaxDamage() - this.getDamage(aStack)) + " / " + aStack.getMaxDamage());
         }
@@ -135,13 +135,13 @@ public class Gregtech_Generic_Item extends Item implements IProjectileItem {
 
     @Override
     public EntityArrow getProjectile(final SubTag aProjectileType, final ItemStack aStack, final World aWorld,
-            final double aX, final double aY, final double aZ) {
+        final double aX, final double aY, final double aZ) {
         return null;
     }
 
     @Override
     public EntityArrow getProjectile(final SubTag aProjectileType, final ItemStack aStack, final World aWorld,
-            final EntityLivingBase aEntity, final float aSpeed) {
+        final EntityLivingBase aEntity, final float aSpeed) {
         return null;
     }
 
@@ -175,23 +175,30 @@ public class Gregtech_Generic_Item extends Item implements IProjectileItem {
 
     @Override
     public int getColorFromItemStack(final ItemStack stack, int HEX_OxFFFFFF) {
-        if (stack.getDisplayName().contains("LuV")) {
+        if (stack.getDisplayName()
+            .contains("LuV")) {
             HEX_OxFFFFFF = 0xffffcc;
-        } else if (stack.getDisplayName().contains("ZPM")) {
-            HEX_OxFFFFFF = 0xace600;
-        } else if (stack.getDisplayName().contains("UV")) {
-            HEX_OxFFFFFF = 0xffff00;
-        } else if (stack.getDisplayName().contains("MAX")) {
-            HEX_OxFFFFFF = 0xff0000;
-        } else if (stack.getDisplayName().contains("Sodium")) {
-            HEX_OxFFFFFF = Utils.rgbtoHexValue(0, 0, 150);
-        } else if (stack.getDisplayName().contains("Cadmium")) {
-            HEX_OxFFFFFF = Utils.rgbtoHexValue(50, 50, 60);
-        } else if (stack.getDisplayName().contains("Lithium")) {
-            HEX_OxFFFFFF = Utils.rgbtoHexValue(225, 220, 255);
-        } else {
-            HEX_OxFFFFFF = 0xffffff;
-        }
+        } else if (stack.getDisplayName()
+            .contains("ZPM")) {
+                HEX_OxFFFFFF = 0xace600;
+            } else if (stack.getDisplayName()
+                .contains("UV")) {
+                    HEX_OxFFFFFF = 0xffff00;
+                } else if (stack.getDisplayName()
+                    .contains("MAX")) {
+                        HEX_OxFFFFFF = 0xff0000;
+                    } else if (stack.getDisplayName()
+                        .contains("Sodium")) {
+                            HEX_OxFFFFFF = Utils.rgbtoHexValue(0, 0, 150);
+                        } else if (stack.getDisplayName()
+                            .contains("Cadmium")) {
+                                HEX_OxFFFFFF = Utils.rgbtoHexValue(50, 50, 60);
+                            } else if (stack.getDisplayName()
+                                .contains("Lithium")) {
+                                    HEX_OxFFFFFF = Utils.rgbtoHexValue(225, 220, 255);
+                                } else {
+                                    HEX_OxFFFFFF = 0xffffff;
+                                }
         return HEX_OxFFFFFF;
     }
 }

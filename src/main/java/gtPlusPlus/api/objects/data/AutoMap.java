@@ -107,7 +107,8 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable, Collect
     public synchronized boolean setValue(V object) {
         int mOriginalID = this.mInternalID;
         put(object);
-        if (this.mInternalMap.get(mOriginalID).equals(object) || mOriginalID > this.mInternalID) {
+        if (this.mInternalMap.get(mOriginalID)
+            .equals(object) || mOriginalID > this.mInternalID) {
             return true;
         } else {
             return false;
@@ -173,7 +174,10 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable, Collect
     @Override
     @SuppressWarnings("unchecked")
     public V[] toArray() {
-        V[] toR = (V[]) java.lang.reflect.Array.newInstance(mInternalMap.get(0).getClass(), mInternalMap.size());
+        V[] toR = (V[]) java.lang.reflect.Array.newInstance(
+            mInternalMap.get(0)
+                .getClass(),
+            mInternalMap.size());
         for (int i = 0; i < mInternalMap.size(); i++) {
             toR[i] = mInternalMap.get(i);
         }

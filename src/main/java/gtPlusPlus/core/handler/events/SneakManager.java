@@ -29,7 +29,9 @@ public class SneakManager {
     }
 
     private static String getKey(EntityPlayer aPlayer) {
-        return "" + aPlayer.getGameProfile().getId().toString();
+        return "" + aPlayer.getGameProfile()
+            .getId()
+            .toString();
     }
 
     public SneakManager instance;

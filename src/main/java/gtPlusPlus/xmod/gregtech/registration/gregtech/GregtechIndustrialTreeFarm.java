@@ -16,7 +16,7 @@ public class GregtechIndustrialTreeFarm {
 
     private static void run1() {
         GregtechItemList.Industrial_TreeFarm.set(
-                new GregtechMetaTileEntityTreeFarm(836, "treefarm.controller.tier.single", "Tree Growth Simulator")
-                        .getStackForm(1L));
+            new GregtechMetaTileEntityTreeFarm(836, "treefarm.controller.tier.single", "Tree Growth Simulator")
+                .getStackForm(1L));
     }
 }

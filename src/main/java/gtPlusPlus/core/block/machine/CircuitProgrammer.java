@@ -43,7 +43,7 @@ public class CircuitProgrammer extends BasicTileBlockWithTooltip {
      */
     @Override
     public boolean onBlockActivated(final World world, final int x, final int y, final int z, final EntityPlayer player,
-            final int side, final float lx, final float ly, final float lz) {
+        final int side, final float lx, final float ly, final float lz) {
         if (world.isRemote) {
             return true;
         } else {
@@ -54,7 +54,7 @@ public class CircuitProgrammer extends BasicTileBlockWithTooltip {
                 final ItemStack mHandStack = PlayerUtils.getItemStackInPlayersHand(world, player.getDisplayName());
                 final Item mHandItem = mHandStack.getItem();
                 if (((mHandItem instanceof GT_MetaGenerated_Tool_01)
-                        && ((mHandItem.getDamage(mHandStack) == 22) || (mHandItem.getDamage(mHandStack) == 150)))) {
+                    && ((mHandItem.getDamage(mHandStack) == 22) || (mHandItem.getDamage(mHandStack) == 150)))) {
                     final TileEntityCircuitProgrammer tile = (TileEntityCircuitProgrammer) world.getTileEntity(x, y, z);
                     if (tile != null) {
                         mDidScrewDriver = tile.onScrewdriverRightClick((byte) side, player, x, y, z);
@@ -97,7 +97,7 @@ public class CircuitProgrammer extends BasicTileBlockWithTooltip {
 
     @Override
     public void onBlockPlacedBy(final World world, final int x, final int y, final int z, final EntityLivingBase entity,
-            final ItemStack stack) {
+        final ItemStack stack) {
         if (stack.hasDisplayName()) {
             ((TileEntityCircuitProgrammer) world.getTileEntity(x, y, z)).setCustomName(stack.getDisplayName());
         }
@@ -105,7 +105,7 @@ public class CircuitProgrammer extends BasicTileBlockWithTooltip {
 
     @Override
     public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y,
-            final int z) {
+        final int z) {
         return false;
     }
 
@@ -142,11 +142,11 @@ public class CircuitProgrammer extends BasicTileBlockWithTooltip {
     @Override
     public CubicObject<String>[] getCustomTextureDirectoryObject() {
         String[] aTexData = new String[] { GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_G",
-                GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_TECH_PANEL_B",
-                GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_I",
-                GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_I",
-                GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_I",
-                GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_I" };
+            GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_TECH_PANEL_B",
+            GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_I",
+            GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_I",
+            GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_I",
+            GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_I" };
         CubicObject<String>[] aTextureData = new CubicObject[] { new CubicObject<>(aTexData) };
         return aTextureData;
     }

@@ -18,8 +18,8 @@ import gtPlusPlus.core.tileentities.machines.TileEntityProjectTable;
 public class GUI_ProjectTable extends GuiContainer {
 
     private static final ResourceLocation craftingTableGuiTextures = new ResourceLocation(
-            GTPlusPlus.ID,
-            "textures/gui/ProjectTable.png");
+        GTPlusPlus.ID,
+        "textures/gui/ProjectTable.png");
 
     public GUI_ProjectTable(final InventoryPlayer player_inventory, final TileEntityProjectTable tile) {
         super(new Container_ProjectTable(player_inventory, tile));

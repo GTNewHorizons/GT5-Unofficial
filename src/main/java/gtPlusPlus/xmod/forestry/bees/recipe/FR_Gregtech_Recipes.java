@@ -43,92 +43,92 @@ public class FR_Gregtech_Recipes {
     public static void registerItems() {
         // Magic Bee Like Frames
         RecipeUtils.addShapedGregtechRecipe(
-                rod_LongElectrum,
-                rod_Electrum,
-                rod_LongElectrum,
-                rod_LongElectrum,
-                foil_Electrum,
-                rod_LongElectrum,
-                rod_Electrum,
-                rod_Electrum,
-                rod_Electrum,
-                hiveFrameAccelerated);
+            rod_LongElectrum,
+            rod_Electrum,
+            rod_LongElectrum,
+            rod_LongElectrum,
+            foil_Electrum,
+            rod_LongElectrum,
+            rod_Electrum,
+            rod_Electrum,
+            rod_Electrum,
+            hiveFrameAccelerated);
 
         RecipeUtils.addShapedGregtechRecipe(
-                rod_LongUranium,
-                rod_Uranium,
-                rod_LongUranium,
-                rod_LongUranium,
-                foil_Uranium235,
-                rod_LongUranium,
-                rod_Uranium,
-                rod_Uranium,
-                rod_Uranium,
-                hiveFrameMutagenic);
+            rod_LongUranium,
+            rod_Uranium,
+            rod_LongUranium,
+            rod_LongUranium,
+            foil_Uranium235,
+            rod_LongUranium,
+            rod_Uranium,
+            rod_Uranium,
+            rod_Uranium,
+            hiveFrameMutagenic);
         if (MagicBees.isModLoaded()) {
             RecipeUtils.addShapelessGregtechRecipe(
-                    new ItemStack[] { hiveFrameVoid },
-                    ItemUtils.getCorrectStacktype("MagicBees:frameOblivion", 1));
+                new ItemStack[] { hiveFrameVoid },
+                ItemUtils.getCorrectStacktype("MagicBees:frameOblivion", 1));
         }
         RecipeUtils.addShapedGregtechRecipe(
-                "stickLongBlueSteel",
-                "stickBlueSteel",
-                "stickLongBlueSteel",
-                "stickLongBlueSteel",
-                ItemUtils.getSimpleStack(Items.nether_star),
-                "stickLongBlueSteel",
-                "stickBlueSteel",
-                "stickBlueSteel",
-                "stickBlueSteel",
-                hiveFrameBusy);
+            "stickLongBlueSteel",
+            "stickBlueSteel",
+            "stickLongBlueSteel",
+            "stickLongBlueSteel",
+            ItemUtils.getSimpleStack(Items.nether_star),
+            "stickLongBlueSteel",
+            "stickBlueSteel",
+            "stickBlueSteel",
+            "stickBlueSteel",
+            hiveFrameBusy);
 
         // Frame Items added by bartimaeusnek
         RecipeUtils.addShapedGregtechRecipe(
-                ItemUtils.getItemStackOfAmountFromOreDict("stickLongTumbaga", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("stickTumbaga", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("stickLongTumbaga", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("stickLongTumbaga", 1),
-                foil_Electrum,
-                ItemUtils.getItemStackOfAmountFromOreDict("stickLongTumbaga", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("stickTumbaga", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("stickTumbaga", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("stickTumbaga", 1),
-                hiveFrameSlow);
+            ItemUtils.getItemStackOfAmountFromOreDict("stickLongTumbaga", 1),
+            ItemUtils.getItemStackOfAmountFromOreDict("stickTumbaga", 1),
+            ItemUtils.getItemStackOfAmountFromOreDict("stickLongTumbaga", 1),
+            ItemUtils.getItemStackOfAmountFromOreDict("stickLongTumbaga", 1),
+            foil_Electrum,
+            ItemUtils.getItemStackOfAmountFromOreDict("stickLongTumbaga", 1),
+            ItemUtils.getItemStackOfAmountFromOreDict("stickTumbaga", 1),
+            ItemUtils.getItemStackOfAmountFromOreDict("stickTumbaga", 1),
+            ItemUtils.getItemStackOfAmountFromOreDict("stickTumbaga", 1),
+            hiveFrameSlow);
 
         RecipeUtils.addShapedGregtechRecipe(
-                "stickLongWroughtIron",
-                "stickWroughtIron",
-                "stickLongWroughtIron",
-                "stickLongWroughtIron",
-                "foilZinc",
-                "stickLongWroughtIron",
-                "stickWroughtIron",
-                "stickWroughtIron",
-                "stickWroughtIron",
-                hiveFrameDecay);
+            "stickLongWroughtIron",
+            "stickWroughtIron",
+            "stickLongWroughtIron",
+            "stickLongWroughtIron",
+            "foilZinc",
+            "stickLongWroughtIron",
+            "stickWroughtIron",
+            "stickWroughtIron",
+            "stickWroughtIron",
+            hiveFrameDecay);
 
         RecipeUtils.addShapedGregtechRecipe(
-                "stickLongOsmiridium",
-                "stickOsmiridium",
-                "stickLongOsmiridium",
-                "stickLongOsmiridium",
-                "foilOsmiridium",
-                "stickLongOsmiridium",
-                "stickOsmiridium",
-                "stickOsmiridium",
-                "stickOsmiridium",
-                hiveFrameStalilize);
+            "stickLongOsmiridium",
+            "stickOsmiridium",
+            "stickLongOsmiridium",
+            "stickLongOsmiridium",
+            "foilOsmiridium",
+            "stickLongOsmiridium",
+            "stickOsmiridium",
+            "stickOsmiridium",
+            "stickOsmiridium",
+            hiveFrameStalilize);
 
         RecipeUtils.addShapedGregtechRecipe(
-                "stickLongWoodSealed",
-                "stickWoodSealed",
-                "stickLongWoodSealed",
-                "stickLongWoodSealed",
-                Items.paper,
-                "stickLongWoodSealed",
-                "stickWoodSealed",
-                "stickWoodSealed",
-                "stickWoodSealed",
-                hiveFrameArborist);
+            "stickLongWoodSealed",
+            "stickWoodSealed",
+            "stickLongWoodSealed",
+            "stickLongWoodSealed",
+            Items.paper,
+            "stickLongWoodSealed",
+            "stickWoodSealed",
+            "stickWoodSealed",
+            "stickWoodSealed",
+            hiveFrameArborist);
     }
 }

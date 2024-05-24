@@ -47,12 +47,13 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
     public byte[] transform(String name, String transformedName, byte[] basicClass) {
         // Fix LWJGL index array out of bounds on keybinding IDs
         if ((transformedName.equals(LWJGL_KEYBOARD) || transformedName.equals(MINECRAFT_GAMESETTINGS))
-                && AsmConfig.enabledLwjglKeybindingFix
-                // Do not transform if using lwjgl3
-                && !ReflectionUtils.doesClassExist("org.lwjgl.system.Platform")) {
+            && AsmConfig.enabledLwjglKeybindingFix
+            // Do not transform if using lwjgl3
+            && !ReflectionUtils.doesClassExist("org.lwjgl.system.Platform")) {
             boolean isClientSettingsClass = !transformedName.equals("org.lwjgl.input.Keyboard");
             Preloader_Logger.INFO("LWJGL Keybinding index out of bounds fix", "Transforming " + transformedName);
-            return new ClassTransformer_LWJGL_Keyboard(basicClass, isClientSettingsClass).getWriter().toByteArray();
+            return new ClassTransformer_LWJGL_Keyboard(basicClass, isClientSettingsClass).getWriter()
+                .toByteArray();
         }
 
         // Fix the OreDictionary - Forge
@@ -65,15 +66,17 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 
         // Fix the OreDictionary COFH
         if (transformedName.equals(COFH_ORE_DICTIONARY_ARBITER)
-                && (AsmConfig.enableCofhPatch || CORE_Preloader.DEV_ENVIRONMENT)) {
+            && (AsmConfig.enableCofhPatch || CORE_Preloader.DEV_ENVIRONMENT)) {
             Preloader_Logger.INFO("COFH", "Transforming " + transformedName);
-            return new ClassTransformer_COFH_OreDictionaryArbiter(basicClass).getWriter().toByteArray();
+            return new ClassTransformer_COFH_OreDictionaryArbiter(basicClass).getWriter()
+                .toByteArray();
         }
 
         if (IC2_WRENCH_PATCH_CLASS_NAMES.contains(transformedName)) {
             Preloader_Logger.INFO("IC2 getHarvestTool Patch", "Transforming " + transformedName);
             return new ClassTransformer_IC2_GetHarvestTool(basicClass, !CORE_Preloader.DEV_ENVIRONMENT, transformedName)
-                    .getWriter().toByteArray();
+                .getWriter()
+                .toByteArray();
         }
 
         // Fix Thaumcraft stuff
@@ -81,7 +84,7 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
         if (transformedName.equals(THAUMCRAFT_ITEM_WISP_ESSENCE) && AsmConfig.enableTcAspectSafety) {
             Preloader_Logger.INFO("Thaumcraft WispEssence_Patch", "Transforming " + transformedName);
             return new ClassTransformer_TC_ItemWispEssence(basicClass, !CORE_Preloader.DEV_ENVIRONMENT).getWriter()
-                    .toByteArray();
+                .toByteArray();
         }
 
         return basicClass;

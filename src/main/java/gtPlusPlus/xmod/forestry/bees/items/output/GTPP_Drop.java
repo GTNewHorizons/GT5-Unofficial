@@ -79,10 +79,12 @@ public class GTPP_Drop extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(ItemStack stack, int pass) {
-        int colour = GTPP_DropType.get(stack.getItemDamage()).getColours()[0];
+        int colour = GTPP_DropType.get(stack.getItemDamage())
+            .getColours()[0];
 
         if (pass >= 1) {
-            colour = GTPP_DropType.get(stack.getItemDamage()).getColours()[1];
+            colour = GTPP_DropType.get(stack.getItemDamage())
+                .getColours()[1];
         }
 
         return colour;
@@ -90,11 +92,12 @@ public class GTPP_Drop extends Item {
 
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
-        return GTPP_DropType.get(stack.getItemDamage()).getName();
+        return GTPP_DropType.get(stack.getItemDamage())
+            .getName();
     }
 
     private static final int[] sFluidOutputs = new int[] { 144, 136, 128, 120, 112, 104, 96, 88, 80, 72, 64, 48, 32, 16,
-            8, 4 };
+        8, 4 };
 
     public static void initDropsRecipes() {
         ItemStack tDrop;
@@ -102,10 +105,10 @@ public class GTPP_Drop extends Item {
         for (GTPP_DropType aDrop : GTPP_Bees.sDropMappings.values()) {
             tDrop = aDrop.getStackForType(1);
             if (addProcess(
-                    tDrop,
-                    new FluidStack(aDrop.mMaterial.getFluid(), sFluidOutputs[aDrop.mMaterial.vTier]),
-                    aDrop.mMaterial.vTier * 20 * 30,
-                    aDrop.mMaterial.vVoltageMultiplier)) {
+                tDrop,
+                new FluidStack(aDrop.mMaterial.getFluid(), sFluidOutputs[aDrop.mMaterial.vTier]),
+                aDrop.mMaterial.vTier * 20 * 30,
+                aDrop.mMaterial.vVoltageMultiplier)) {
                 Logger.BEES("Added Drop extraction recipe for: " + aDrop.getName());
             } else {
                 Logger.BEES("Failed to add Drop extraction recipe for: " + aDrop.getName());
@@ -117,8 +120,12 @@ public class GTPP_Drop extends Item {
         if (aOutput == null) {
             return false;
         }
-        GT_Values.RA.stdBuilder().itemInputs(tDrop).fluidOutputs(aOutput).duration(aDuration * TICKS).eut(aEUt)
-                .addTo(fluidExtractionRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(tDrop)
+            .fluidOutputs(aOutput)
+            .duration(aDuration * TICKS)
+            .eut(aEUt)
+            .addTo(fluidExtractionRecipes);
         return true;
     }
 }

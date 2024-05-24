@@ -43,8 +43,10 @@ public class FluidRegistryHandler {
         FluidRegistry.registerFluid(fluidSludge);
         blockFluidSludge = new BlockFluidSludge(fluidSludge, Material.cactus).setBlockName("fluidBlockSludge");
         GameRegistry.registerBlock(
-                blockFluidSludge,
-                GTPlusPlus.ID + "_" + blockFluidSludge.getUnlocalizedName().substring(5));
+            blockFluidSludge,
+            GTPlusPlus.ID + "_"
+                + blockFluidSludge.getUnlocalizedName()
+                    .substring(5));
         fluidSludge.setUnlocalizedName(blockFluidSludge.getUnlocalizedName());
     }
 }

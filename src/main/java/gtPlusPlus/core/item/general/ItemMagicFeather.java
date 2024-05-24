@@ -39,15 +39,15 @@ public class ItemMagicFeather extends CoreItem {
 
     public ItemMagicFeather() {
         super(
-                "magicfeather",
-                AddToCreativeTab.tabMisc,
-                1,
-                100,
-                new String[] { "Lets you fly around Beacons" },
-                EnumRarity.uncommon,
-                null,
-                false,
-                null);
+            "magicfeather",
+            AddToCreativeTab.tabMisc,
+            1,
+            100,
+            new String[] { "Lets you fly around Beacons" },
+            EnumRarity.uncommon,
+            null,
+            false,
+            null);
         setMaxStackSize(1);
         setUnlocalizedName(GTPlusPlus.ID + ":" + NAME);
         MinecraftForge.EVENT_BUS.register(this);
@@ -80,21 +80,22 @@ public class ItemMagicFeather extends CoreItem {
         }
         HashSet<TileEntityBeacon> aBeaconData = sBeaconData.computeIfAbsent(player, k -> new HashSet<>());
         int chunkXlo = (int) (player.posX - 50) >> 4, chunkXhi = (int) (player.posX + 50) >> 4,
-                chunkZlo = (int) (player.posZ - 50) >> 4, chunkZhi = (int) (player.posZ + 50) >> 4;
+            chunkZlo = (int) (player.posZ - 50) >> 4, chunkZhi = (int) (player.posZ + 50) >> 4;
         for (int chunkX = chunkXlo; chunkX < chunkXhi; chunkX++) {
             for (int chunkZ = chunkZlo; chunkZ < chunkZhi; chunkZ++) {
-                if (!world.getChunkProvider().chunkExists(chunkX, chunkZ)) continue;
+                if (!world.getChunkProvider()
+                    .chunkExists(chunkX, chunkZ)) continue;
                 findSuitableBeacon(
-                        player,
-                        world.getChunkFromChunkCoords(chunkX, chunkZ).chunkTileEntityMap.values(),
-                        aBeaconData);
+                    player,
+                    world.getChunkFromChunkCoords(chunkX, chunkZ).chunkTileEntityMap.values(),
+                    aBeaconData);
             }
         }
         return aBeaconData.size() > 0;
     }
 
     private static void findSuitableBeacon(EntityPlayer player, Collection<TileEntity> tileEntities,
-            HashSet<TileEntityBeacon> aBeaconData) {
+        HashSet<TileEntityBeacon> aBeaconData) {
         for (TileEntity t : tileEntities) {
             if (!(t instanceof TileEntityBeacon beacon)) {
                 continue;
@@ -153,8 +154,8 @@ public class ItemMagicFeather extends CoreItem {
                 int x = aBeacon.xCoord;
                 int z = aBeacon.zCoord;
                 if (player.posX < (x - radius) || player.posX > (x + radius)
-                        || player.posZ < (z - radius)
-                        || player.posZ > (z + radius)) {
+                    || player.posZ < (z - radius)
+                    || player.posZ > (z + radius)) {
                     iterator.remove();
                 }
             }

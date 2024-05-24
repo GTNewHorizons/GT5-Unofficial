@@ -18,16 +18,16 @@ public class GregtechAlgaeContent {
     private static void run1() {
 
         // Algae Pond
-        GregtechItemList.AlgaeFarm_Controller.set(
-                new GregtechMTE_AlgaePondBase(997, "algaefarm.controller.tier.single", "Algae Farm").getStackForm(1L));
+        GregtechItemList.AlgaeFarm_Controller
+            .set(new GregtechMTE_AlgaePondBase(997, "algaefarm.controller.tier.single", "Algae Farm").getStackForm(1L));
 
         // Chemical Plant
         GregtechItemList.ChemicalPlant_Controller.set(
-                new GregtechMTE_ChemicalPlant(998, "chemicalplant.controller.tier.single", "ExxonMobil Chemical Plant")
-                        .getStackForm(1L));
+            new GregtechMTE_ChemicalPlant(998, "chemicalplant.controller.tier.single", "ExxonMobil Chemical Plant")
+                .getStackForm(1L));
 
         GregtechItemList.Bus_Catalysts.set(
-                (new GT_MetaTileEntity_Hatch_Catalysts(31030, "hatch.catalysts", "Catalyst Housing")).getStackForm(1L));
+            (new GT_MetaTileEntity_Hatch_Catalysts(31030, "hatch.catalysts", "Catalyst Housing")).getStackForm(1L));
 
         int aTier = 0;
         // Bronze

@@ -24,20 +24,20 @@ public class GT_MetaTileEntity_Hatch_Solidifier extends GT_MetaTileEntity_Hatch_
     @Override
     public String[] getDescription() {
         return new String[] {
-                "Fluid Input with Mold for " + EnumChatFormatting.YELLOW
-                        + "Large Processing Factory"
-                        + EnumChatFormatting.RESET,
-                "#22 Circuit is imprinted in Hatch", "Capacity: " + GT_Utility.formatNumbers(getCapacity()) + "L",
-                "Added by: " + EnumChatFormatting.AQUA
-                        + "Quetz4l"
-                        + " - "
-                        + EnumChatFormatting.RED
-                        + "[GT++]"
-                        + EnumChatFormatting.RESET };
+            "Fluid Input with Mold for " + EnumChatFormatting.YELLOW
+                + "Large Processing Factory"
+                + EnumChatFormatting.RESET,
+            "#22 Circuit is imprinted in Hatch", "Capacity: " + GT_Utility.formatNumbers(getCapacity()) + "L",
+            "Added by: " + EnumChatFormatting.AQUA
+                + "Quetz4l"
+                + " - "
+                + EnumChatFormatting.RED
+                + "[GT++]"
+                + EnumChatFormatting.RESET };
     }
 
     public GT_MetaTileEntity_Hatch_Solidifier(String aName, int aTier, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, getSlots(aTier), aTier, aDescription, aTextures);
     }
 
@@ -53,7 +53,9 @@ public class GT_MetaTileEntity_Hatch_Solidifier extends GT_MetaTileEntity_Hatch_
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
-        builder.widget(new SlotWidget(inventoryHandler, moldSlot).setPos(125, 35).setSize(18, 18));
+        builder.widget(
+            new SlotWidget(inventoryHandler, moldSlot).setPos(125, 35)
+                .setSize(18, 18));
     }
 
     @Override

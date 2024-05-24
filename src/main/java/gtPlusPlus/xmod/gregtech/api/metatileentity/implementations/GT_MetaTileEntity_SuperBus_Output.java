@@ -65,16 +65,16 @@ public class GT_MetaTileEntity_SuperBus_Output extends GT_MetaTileEntity_Hatch_O
         for (int i = 0; i < this.mInventory.length; ++i) {
             for (int j = i + 1; j < this.mInventory.length; ++j) {
                 if (this.mInventory[j] != null && (this.mInventory[i] == null
-                        || GT_Utility.areStacksEqual(this.mInventory[i], this.mInventory[j]))) {
+                    || GT_Utility.areStacksEqual(this.mInventory[i], this.mInventory[j]))) {
                     GT_Utility.moveStackFromSlotAToSlotB(
-                            (IInventory) this.getBaseMetaTileEntity(),
-                            (IInventory) this.getBaseMetaTileEntity(),
-                            j,
-                            i,
-                            (byte) 64,
-                            (byte) 1,
-                            (byte) 64,
-                            (byte) 1);
+                        (IInventory) this.getBaseMetaTileEntity(),
+                        (IInventory) this.getBaseMetaTileEntity(),
+                        j,
+                        i,
+                        (byte) 64,
+                        (byte) 1,
+                        (byte) 64,
+                        (byte) 1);
                 }
             }
         }
@@ -83,7 +83,7 @@ public class GT_MetaTileEntity_SuperBus_Output extends GT_MetaTileEntity_Hatch_O
     @Override
     public String[] getDescription() {
         String[] aDesc = new String[] { "Item Output for Multiblocks", "" + getSlots(this.mTier) + " Slots",
-                CORE.GT_Tooltip.get() };
+            CORE.GT_Tooltip.get() };
         return aDesc;
     }
 
@@ -94,10 +94,12 @@ public class GT_MetaTileEntity_SuperBus_Output extends GT_MetaTileEntity_Hatch_O
             int columnsToMake = Math.min(inventoryHandler.getSlots() - row * 4, 4);
             for (int column = 0; column < columnsToMake; column++) {
                 scrollable.widget(
-                        new SlotWidget(inventoryHandler, row * 4 + column).setPos(column * 18, row * 18)
-                                .setSize(18, 18));
+                    new SlotWidget(inventoryHandler, row * 4 + column).setPos(column * 18, row * 18)
+                        .setSize(18, 18));
             }
         }
-        builder.widget(scrollable.setSize(18 * 4 + 4, 18 * 4).setPos(52, 7));
+        builder.widget(
+            scrollable.setSize(18 * 4 + 4, 18 * 4)
+                .setPos(52, 7));
     }
 }

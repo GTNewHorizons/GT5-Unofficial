@@ -17,8 +17,8 @@ import gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest;
 public class GUI_DecayablesChest extends GuiContainer {
 
     private static final ResourceLocation craftingTableGuiTextures = new ResourceLocation(
-            GTPlusPlus.ID,
-            "textures/gui/FishTrap.png");
+        GTPlusPlus.ID,
+        "textures/gui/FishTrap.png");
 
     public GUI_DecayablesChest(final InventoryPlayer player_inventory, final TileEntityDecayablesChest te) {
         super(new Container_DecayablesChest(player_inventory, te));

@@ -25,7 +25,7 @@ public class SlotCraftingNoCollect extends SlotCrafting {
     private int amountCrafted;
 
     public SlotCraftingNoCollect(EntityPlayer player, IInventory inventory, IInventory inventory2, int x, int y,
-            int z) {
+        int z) {
         super(player, inventory, inventory2, x, y, z);
         this.thePlayer = player;
         this.craftMatrix = inventory;
@@ -95,7 +95,7 @@ public class SlotCraftingNoCollect extends SlotCrafting {
         }
 
         if (output.getItem() instanceof ItemPickaxe
-                && ((ItemPickaxe) output.getItem()).func_150913_i() != Item.ToolMaterial.WOOD) {
+            && ((ItemPickaxe) output.getItem()).func_150913_i() != Item.ToolMaterial.WOOD) {
             this.thePlayer.addStat(AchievementList.buildBetterPickaxe, 1);
         }
 
@@ -114,7 +114,8 @@ public class SlotCraftingNoCollect extends SlotCrafting {
 
     @Override
     public void onPickupFromSlot(EntityPlayer player, ItemStack output) {
-        FMLCommonHandler.instance().firePlayerCraftingEvent(player, output, craftMatrix);
+        FMLCommonHandler.instance()
+            .firePlayerCraftingEvent(player, output, craftMatrix);
         this.onCrafting(output);
 
         /*

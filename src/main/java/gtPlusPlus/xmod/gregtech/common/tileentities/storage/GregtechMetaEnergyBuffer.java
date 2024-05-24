@@ -26,24 +26,25 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
     protected byte aCurrentOutputAmperage = 4;
 
     public GregtechMetaEnergyBuffer(final int aID, final String aName, final String aNameRegional, final int aTier,
-            final String aDescription, final int aSlotCount) {
+        final String aDescription, final int aSlotCount) {
         super(aID, aName, aNameRegional, aTier, aSlotCount, aDescription);
     }
 
     public GregtechMetaEnergyBuffer(final String aName, final int aTier, final String aDescription,
-            final ITexture[][][] aTextures, final int aSlotCount) {
+        final ITexture[][][] aTextures, final int aSlotCount) {
         super(aName, aTier, aSlotCount, aDescription, aTextures);
     }
 
     @Override
     public String[] getDescription() {
         return new String[] { this.mDescription, "Defaults 4A In/Out", "Change output Amperage with a screwdriver",
-                "Now Portable!", CORE.GT_Tooltip.get() };
+            "Now Portable!", CORE.GT_Tooltip.get() };
     }
 
     @Override
     public boolean allowCoverOnSide(ForgeDirection side, GT_ItemStack aCover) {
-        if (side != this.getBaseMetaTileEntity().getFrontFacing()) {
+        if (side != this.getBaseMetaTileEntity()
+            .getFrontFacing()) {
             return true;
         }
         return super.allowCoverOnSide(side, aCover);
@@ -73,72 +74,70 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 
     @Override
     public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
-            final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
-        return this.mTextures[(aActive ? 5 : 0)
-                + (side == facing ? 0
-                        : side == facing.getOpposite() ? 1
-                                : side == ForgeDirection.DOWN ? 2 : side == ForgeDirection.UP ? 3 : 4)][aColorIndex
-                                        + 1];
+        final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+        return this.mTextures[(aActive ? 5 : 0) + (side == facing ? 0
+            : side == facing.getOpposite() ? 1
+                : side == ForgeDirection.DOWN ? 2 : side == ForgeDirection.UP ? 3 : 4)][aColorIndex + 1];
     }
 
     public ITexture[] getFront(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier] };
+            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier] };
     }
 
     public ITexture[] getBack(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-                new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
+            new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
     }
 
     public ITexture[] getBottom(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-                new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
+            new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
     }
 
     public ITexture[] getTop(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-                new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Screen_Logo) };
+            new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Screen_Logo) };
     }
 
     public ITexture[] getSides(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-                new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
+            new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
     }
 
     public ITexture[] getFrontActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier] };
+            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier] };
     }
 
     public ITexture[] getBackActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-                new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
+            new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
     }
 
     public ITexture[] getBottomActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-                new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
+            new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
     }
 
     public ITexture[] getTopActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-                new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Screen_Logo) };
+            new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Screen_Logo) };
     }
 
     public ITexture[] getSidesActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-                new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
+            new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
         return new GregtechMetaEnergyBuffer(
-                this.mName,
-                this.mTier,
-                this.mDescription,
-                this.mTextures,
-                this.mInventory.length);
+            this.mName,
+            this.mTier,
+            this.mDescription,
+            this.mTextures,
+            this.mInventory.length);
     }
 
     @Override
@@ -173,12 +172,14 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 
     @Override
     public boolean isInputFacing(final ForgeDirection side) {
-        return side != this.getBaseMetaTileEntity().getFrontFacing();
+        return side != this.getBaseMetaTileEntity()
+            .getFrontFacing();
     }
 
     @Override
     public boolean isOutputFacing(final ForgeDirection side) {
-        return side == this.getBaseMetaTileEntity().getFrontFacing();
+        return side == this.getBaseMetaTileEntity()
+            .getFrontFacing();
     }
 
     @Override
@@ -238,12 +239,14 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 
     @Override
     public int getProgresstime() {
-        return (int) this.getBaseMetaTileEntity().getUniversalEnergyStored();
+        return (int) this.getBaseMetaTileEntity()
+            .getUniversalEnergyStored();
     }
 
     @Override
     public int maxProgresstime() {
-        return (int) this.getBaseMetaTileEntity().getUniversalEnergyCapacity();
+        return (int) this.getBaseMetaTileEntity()
+            .getUniversalEnergyCapacity();
     }
 
     @Override
@@ -254,7 +257,8 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
     @Override
     public void saveNBTData(final NBTTagCompound aNBT) {
         aNBT.setByte("aCurrentOutputAmperage", aCurrentOutputAmperage);
-        long aEU = this.getBaseMetaTileEntity().getStoredEU();
+        long aEU = this.getBaseMetaTileEntity()
+            .getStoredEU();
         if (aEU > 0) {
             aNBT.setLong("aStoredEU", aEU);
             if (aNBT.hasKey("aStoredEU")) {
@@ -284,13 +288,13 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
     }
 
     protected void showEnergy(final World worldIn, final EntityPlayer playerIn) {
-        final long tempStorage = this.getBaseMetaTileEntity().getStoredEU();
+        final long tempStorage = this.getBaseMetaTileEntity()
+            .getStoredEU();
         final double c = ((double) tempStorage / this.maxEUStore()) * 100;
         final double roundOff = Math.round(c * 100.00) / 100.00;
         PlayerUtils.messagePlayer(
-                playerIn,
-                "Energy: " + GT_Utility
-                        .formatNumbers(tempStorage) + " EU at " + V[this.mTier] + "v (" + roundOff + "%)");
+            playerIn,
+            "Energy: " + GT_Utility.formatNumbers(tempStorage) + " EU at " + V[this.mTier] + "v (" + roundOff + "%)");
         PlayerUtils.messagePlayer(playerIn, "Amperage: " + GT_Utility.formatNumbers(maxAmperesOut()) + "A");
     }
     // Utils.LOG_WARNING("Begin Show Energy");
@@ -310,20 +314,24 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 
     @Override
     public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
-            final ForgeDirection side, final ItemStack aStack) {
+        final ForgeDirection side, final ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
-            final ForgeDirection side, final ItemStack aStack) {
+        final ForgeDirection side, final ItemStack aStack) {
         return false;
     }
 
     @Override
     public String[] getInfoData() {
-        String cur = GT_Utility.formatNumbers(this.getBaseMetaTileEntity().getStoredEU());
-        String max = GT_Utility.formatNumbers(this.getBaseMetaTileEntity().getEUCapacity());
+        String cur = GT_Utility.formatNumbers(
+            this.getBaseMetaTileEntity()
+                .getStoredEU());
+        String max = GT_Utility.formatNumbers(
+            this.getBaseMetaTileEntity()
+                .getEUCapacity());
 
         // Right-align current storage with maximum storage
         String fmt = String.format("%%%ds", max.length());
@@ -409,7 +417,8 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
     @Override
     public void setItemNBT(NBTTagCompound aNBT) {
         aNBT.setByte("aCurrentOutputAmperage", aCurrentOutputAmperage);
-        long aEU = this.getBaseMetaTileEntity().getStoredEU();
+        long aEU = this.getBaseMetaTileEntity()
+            .getStoredEU();
         if (aEU > 0) {
             aNBT.setLong("aStoredEU", aEU);
             if (aNBT.hasKey("aStoredEU")) {

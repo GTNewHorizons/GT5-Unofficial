@@ -69,7 +69,8 @@ public class WorldChunkManagerCustom extends WorldChunkManager {
 
         for (int i1 = 0; i1 < width * length; ++i1) {
             try {
-                float f = BiomeGenBase.getBiome(aint[i1]).getIntRainfall() / 65536.0F;
+                float f = BiomeGenBase.getBiome(aint[i1])
+                    .getIntRainfall() / 65536.0F;
 
                 if (f > 1.0F) {
                     f = 1.0F;
@@ -106,7 +107,7 @@ public class WorldChunkManagerCustom extends WorldChunkManager {
      */
     @Override
     public BiomeGenBase[] getBiomesForGeneration(BiomeGenBase[] par1ArrayOfBiomeGenBase, int par2, int par3, int par4,
-            int par5) {
+        int par5) {
         IntCache.resetIntCache();
 
         if (par1ArrayOfBiomeGenBase == null || par1ArrayOfBiomeGenBase.length < par4 * par5) {
@@ -148,7 +149,7 @@ public class WorldChunkManagerCustom extends WorldChunkManager {
      */
     @Override
     public BiomeGenBase[] getBiomeGenAt(BiomeGenBase[] listToReuse, int x, int y, int width, int length,
-            boolean cacheFlag) {
+        boolean cacheFlag) {
         IntCache.resetIntCache();
 
         if (listToReuse == null || listToReuse.length < width * length) {
@@ -213,7 +214,7 @@ public class WorldChunkManagerCustom extends WorldChunkManager {
     @Override
     @SuppressWarnings("rawtypes")
     public ChunkPosition findBiomePosition(int p_150795_1_, int p_150795_2_, int p_150795_3_, List p_150795_4_,
-            Random p_150795_5_) {
+        Random p_150795_5_) {
         IntCache.resetIntCache();
         int l = p_150795_1_ - p_150795_3_ >> 2;
         int i1 = p_150795_2_ - p_150795_3_ >> 2;

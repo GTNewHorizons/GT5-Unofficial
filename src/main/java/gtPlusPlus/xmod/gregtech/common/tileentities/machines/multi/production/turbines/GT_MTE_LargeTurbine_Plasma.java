@@ -71,7 +71,8 @@ public class GT_MTE_LargeTurbine_Plasma extends GregtechMetaTileEntity_LargerTur
         if (aLiquid == null) {
             return 0;
         }
-        GT_Recipe tFuel = getRecipeMap().getBackend().findFuel(aLiquid);
+        GT_Recipe tFuel = getRecipeMap().getBackend()
+            .findFuel(aLiquid);
         if (tFuel != null) {
             return tFuel.mSpecialValue;
         }
@@ -127,31 +128,32 @@ public class GT_MTE_LargeTurbine_Plasma extends GregtechMetaTileEntity_LargerTur
                     }
                 }
                 if (baseEff == 0 || optFlow == 0
-                        || counter >= 512
-                        || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled()
-                        || this.getBaseMetaTileEntity().hasInventoryBeenModified()) {
+                    || counter >= 512
+                    || this.getBaseMetaTileEntity()
+                        .hasWorkJustBeenEnabled()
+                    || this.getBaseMetaTileEntity()
+                        .hasInventoryBeenModified()) {
                     counter = 0;
 
                     float aTotalBaseEff = 0;
                     float aTotalOptimalFlow = 0;
 
-                    ItemStack aStack = getFullTurbineAssemblies().get(0).getTurbine();
+                    ItemStack aStack = getFullTurbineAssemblies().get(0)
+                        .getTurbine();
                     aTotalBaseEff += GT_Utility.safeInt(
-                            (long) ((5F + ((GT_MetaGenerated_Tool) aStack.getItem()).getToolCombatDamage(aStack))
-                                    * 1000F));
+                        (long) ((5F + ((GT_MetaGenerated_Tool) aStack.getItem()).getToolCombatDamage(aStack)) * 1000F));
                     aTotalOptimalFlow += GT_Utility.safeInt(
-                            (long) Math.max(
-                                    Float.MIN_NORMAL,
-                                    ((GT_MetaGenerated_Tool) aStack.getItem()).getToolStats(aStack).getSpeedMultiplier()
-                                            * GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mToolSpeed
-                                            * 50));
+                        (long) Math.max(
+                            Float.MIN_NORMAL,
+                            ((GT_MetaGenerated_Tool) aStack.getItem()).getToolStats(aStack)
+                                .getSpeedMultiplier() * GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mToolSpeed
+                                * 50));
 
                     // Calculate total EU/t (as shown on turbine tooltip (Fast mode doesn't affect))
                     double aEUPerTurbine = aTotalOptimalFlow * 40
-                            * 0.0105
-                            * GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mPlasmaMultiplier
-                            * (50.0f + (10.0f
-                                    * ((GT_MetaGenerated_Tool) aStack.getItem()).getToolCombatDamage(aStack)));
+                        * 0.0105
+                        * GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mPlasmaMultiplier
+                        * (50.0f + (10.0f * ((GT_MetaGenerated_Tool) aStack.getItem()).getToolCombatDamage(aStack)));
                     aTotalOptimalFlow *= getSpeedMultiplier();
 
                     if (aTotalOptimalFlow < 0) {
@@ -231,7 +233,7 @@ public class GT_MTE_LargeTurbine_Plasma extends GregtechMetaTileEntity_LargerTur
                                                                           // Doesn't matter which one. Ignore the rest!
             int fuelValue = getFuelValue(firstFuelType);
             actualOptimalFlow = GT_Utility
-                    .safeInt((long) Math.ceil((double) aOptFlow * (double) flowMultipliers[2] / (double) fuelValue));
+                .safeInt((long) Math.ceil((double) aOptFlow * (double) flowMultipliers[2] / (double) fuelValue));
             this.realOptFlow = actualOptimalFlow; // For scanner info
 
             int remainingFlow = GT_Utility.safeInt((long) (actualOptimalFlow * 1.25f)); // Allowed to use up to 125% of

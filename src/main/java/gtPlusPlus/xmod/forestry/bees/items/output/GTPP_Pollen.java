@@ -73,10 +73,12 @@ public class GTPP_Pollen extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(ItemStack stack, int pass) {
-        int colour = GTPP_PollenType.get(stack.getItemDamage()).getColours()[0];
+        int colour = GTPP_PollenType.get(stack.getItemDamage())
+            .getColours()[0];
 
         if (pass >= 1) {
-            colour = GTPP_PollenType.get(stack.getItemDamage()).getColours()[1];
+            colour = GTPP_PollenType.get(stack.getItemDamage())
+                .getColours()[1];
         }
 
         return colour;
@@ -84,6 +86,7 @@ public class GTPP_Pollen extends Item {
 
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
-        return GTPP_PollenType.get(stack.getItemDamage()).getName();
+        return GTPP_PollenType.get(stack.getItemDamage())
+            .getName();
     }
 }

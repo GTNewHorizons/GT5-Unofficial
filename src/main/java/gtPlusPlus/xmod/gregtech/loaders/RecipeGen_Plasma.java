@@ -37,8 +37,8 @@ public class RecipeGen_Plasma extends RecipeGen_Base {
             ItemStack aPlasmaCell = material.getPlasmaCell(1);
             ItemStack aCell = material.getCell(1);
             ItemStack aContainerItem = GT_Utility.getFluidForFilledItem(aPlasmaCell, true) == null
-                    ? GT_Utility.getContainerItem(aPlasmaCell, true)
-                    : CI.emptyCells(1);
+                ? GT_Utility.getContainerItem(aPlasmaCell, true)
+                : CI.emptyCells(1);
             if (ItemUtils.checkForInvalidItems(new ItemStack[] { aPlasmaCell, aContainerItem })) {
                 switch (material.getUnlocalizedName()) {
                     case "Runite":
@@ -47,10 +47,10 @@ public class RecipeGen_Plasma extends RecipeGen_Base {
                         GT_Values.RA.addFuel(GT_Utility.copyAmount(1L, aPlasmaCell), aContainerItem, 720_000, 4);
                     default:
                         GT_Values.RA.addFuel(
-                                GT_Utility.copyAmount(1L, aPlasmaCell),
-                                aContainerItem,
-                                (int) Math.max(1024L, 1024L * material.getMass()),
-                                4);
+                            GT_Utility.copyAmount(1L, aPlasmaCell),
+                            aContainerItem,
+                            (int) Math.max(1024L, 1024L * material.getMass()),
+                            4);
 
                 }
             }

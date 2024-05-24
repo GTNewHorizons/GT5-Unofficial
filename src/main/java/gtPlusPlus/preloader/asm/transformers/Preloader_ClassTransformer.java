@@ -46,31 +46,29 @@ public class Preloader_ClassTransformer {
 
         @Override
         public void visitCode() {
-            FMLRelaunchLog.log(
-                    "[GT++ ASM] OreDictTransformer",
-                    Level.INFO,
-                    "Fixing Forge's poor attempt at an oreDictionary.");
+            FMLRelaunchLog
+                .log("[GT++ ASM] OreDictTransformer", Level.INFO, "Fixing Forge's poor attempt at an oreDictionary.");
             super.visitCode();
             super.visitVarInsn(ALOAD, 0);
             super.visitVarInsn(ALOAD, 1);
             if (!mObfuscated) {
                 FMLRelaunchLog
-                        .log("[GT++ ASM] OreDictTransformer", Level.INFO, "Injecting target method. [Unobfuscated]");
+                    .log("[GT++ ASM] OreDictTransformer", Level.INFO, "Injecting target method. [Unobfuscated]");
                 super.visitMethodInsn(
-                        INVOKESTATIC,
-                        "gtPlusPlus/preloader/Preloader_GT_OreDict",
-                        "shouldPreventRegistration",
-                        "(Ljava/lang/String;Lnet/minecraft/item/ItemStack;)Z",
-                        false);
+                    INVOKESTATIC,
+                    "gtPlusPlus/preloader/Preloader_GT_OreDict",
+                    "shouldPreventRegistration",
+                    "(Ljava/lang/String;Lnet/minecraft/item/ItemStack;)Z",
+                    false);
             } else {
                 FMLRelaunchLog
-                        .log("[GT++ ASM] OreDictTransformer", Level.INFO, "Injecting target method. [Obfuscated]");
+                    .log("[GT++ ASM] OreDictTransformer", Level.INFO, "Injecting target method. [Obfuscated]");
                 super.visitMethodInsn(
-                        INVOKESTATIC,
-                        "gtPlusPlus/preloader/Preloader_GT_OreDict",
-                        "shouldPreventRegistration",
-                        "(Ljava/lang/String;Ladd;)Z",
-                        false);
+                    INVOKESTATIC,
+                    "gtPlusPlus/preloader/Preloader_GT_OreDict",
+                    "shouldPreventRegistration",
+                    "(Ljava/lang/String;Ladd;)Z",
+                    false);
             }
             Label endLabel = new Label();
             super.visitJumpInsn(IFEQ, endLabel);

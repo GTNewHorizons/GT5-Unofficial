@@ -66,7 +66,7 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 
 public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntityTreeFarm>
-        implements ISurvivalConstructable {
+    implements ISurvivalConstructable {
 
     public static int CASING_TEXTURE_ID;
     private static final int TICKS_PER_OPERATION = 100;
@@ -100,23 +100,35 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType()).addInfo("Controller block for the Tree Growth Simulator")
-                .addInfo("Farms and harvests trees using EU").addInfo("Place a sapling in the controller slot")
-                .addInfo("Place a tool in an input bus").addInfo("Different tools are required for different outputs")
-                .addInfo("Advanced tools multiply output amount")
-                .addInfo("  Logs: Saw (1x), Buzzsaw (2x), Chainsaw (4x)")
-                .addInfo("  Saplings: Branch Cutter (1x), Grafter (3x)")
-                .addInfo("  Leaves: Shears (1x), Wire Cutter (2x), Automatic Snips (4x)").addInfo("  Fruit: Knife (1x)")
-                .addInfo("Multiple tools can be used at the same time").addSeparator()
-                .addInfo("Work time is fixed at 5 seconds").addInfo("Energy input tier multiplies output further")
-                .addInfo("Output multiplier is equal to: 2*tier^2 - 2*tier + 5")
-                .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 3, true)
-                .addController("Front center").addCasingInfoMin(mCasingName, 8, false).addInputBus("Any casing", 1)
-                .addStructureInfo(
-                        EnumChatFormatting.YELLOW
-                                + "Stocking Input Busses and Crafting Input Busses/Buffers are not allowed!")
-                .addOutputBus("Any casing", 1).addEnergyHatch("Any casing", 1).addMaintenanceHatch("Any casing", 1)
-                .addMufflerHatch("Any casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+        tt.addMachineType(getMachineType())
+            .addInfo("Controller block for the Tree Growth Simulator")
+            .addInfo("Farms and harvests trees using EU")
+            .addInfo("Place a sapling in the controller slot")
+            .addInfo("Place a tool in an input bus")
+            .addInfo("Different tools are required for different outputs")
+            .addInfo("Advanced tools multiply output amount")
+            .addInfo("  Logs: Saw (1x), Buzzsaw (2x), Chainsaw (4x)")
+            .addInfo("  Saplings: Branch Cutter (1x), Grafter (3x)")
+            .addInfo("  Leaves: Shears (1x), Wire Cutter (2x), Automatic Snips (4x)")
+            .addInfo("  Fruit: Knife (1x)")
+            .addInfo("Multiple tools can be used at the same time")
+            .addSeparator()
+            .addInfo("Work time is fixed at 5 seconds")
+            .addInfo("Energy input tier multiplies output further")
+            .addInfo("Output multiplier is equal to: 2*tier^2 - 2*tier + 5")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .addSeparator()
+            .beginStructureBlock(3, 3, 3, true)
+            .addController("Front center")
+            .addCasingInfoMin(mCasingName, 8, false)
+            .addInputBus("Any casing", 1)
+            .addStructureInfo(
+                EnumChatFormatting.YELLOW + "Stocking Input Busses and Crafting Input Busses/Buffers are not allowed!")
+            .addOutputBus("Any casing", 1)
+            .addEnergyHatch("Any casing", 1)
+            .addMaintenanceHatch("Any casing", 1)
+            .addMufflerHatch("Any casing", 1)
+            .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
@@ -192,23 +204,25 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
     public IStructureDefinition<GregtechMetaTileEntityTreeFarm> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntityTreeFarm>builder()
-                    .addShape(
-                            mName,
-                            transpose(
-                                    new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" },
-                                            { "CCC", "CCC", "CCC" }, }))
-                    .addElement(
-                            'C',
-                            buildHatchAdder(GregtechMetaTileEntityTreeFarm.class).atLeast(
-                                    InputHatch,
-                                    OutputHatch,
-                                    InputBus,
-                                    OutputBus,
-                                    Maintenance,
-                                    Energy.or(TTEnergy),
-                                    Muffler).casingIndex(CASING_TEXTURE_ID).dot(1).buildAndChain(
-                                            onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 15))))
-                    .build();
+                .addShape(
+                    mName,
+                    transpose(
+                        new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" }, { "CCC", "CCC", "CCC" }, }))
+                .addElement(
+                    'C',
+                    buildHatchAdder(GregtechMetaTileEntityTreeFarm.class)
+                        .atLeast(
+                            InputHatch,
+                            OutputHatch,
+                            InputBus,
+                            OutputBus,
+                            Maintenance,
+                            Energy.or(TTEnergy),
+                            Muffler)
+                        .casingIndex(CASING_TEXTURE_ID)
+                        .dot(1)
+                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 15))))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -339,7 +353,8 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
                 outputItems = outputs.toArray(new ItemStack[0]);
 
                 VoidProtectionHelper voidProtection = new VoidProtectionHelper().setMachine(machine)
-                        .setItemOutputs(outputItems).build();
+                    .setItemOutputs(outputItems)
+                    .build();
                 if (voidProtection.isItemFull()) {
                     return CheckRecipeResultRegistry.ITEM_OUTPUT_FULL;
                 }
@@ -365,11 +380,11 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
             int toolMultiplier = getToolMultiplier(stack, mode);
             if (toolMultiplier < 0) continue;
             boolean canDamage = GT_ModHandler
-                    .damageOrDechargeItem(stack, TOOL_DAMAGE_PER_OPERATION, TOOL_CHARGE_PER_OPERATION, null);
+                .damageOrDechargeItem(stack, TOOL_DAMAGE_PER_OPERATION, TOOL_CHARGE_PER_OPERATION, null);
             if (canDamage) {
                 // Tool was used.
                 if (GT_ModHandler.isElectricItem(stack)
-                        && !GT_ModHandler.canUseElectricItem(stack, TOOL_CHARGE_PER_OPERATION)) {
+                    && !GT_ModHandler.canUseElectricItem(stack, TOOL_CHARGE_PER_OPERATION)) {
                     // Tool is out of charge, move it to output.
                     depleteInput(stack);
                     addOutput(stack);
@@ -537,7 +552,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
         if (stack == null) return false;
         String registryName = Item.itemRegistry.getNameForObject(stack.getItem());
         return treeProductsMap.containsKey(registryName + ":" + stack.getItemDamage())
-                || "Forestry:sapling".equals(registryName);
+            || "Forestry:sapling".equals(registryName);
     }
 
     /**
@@ -585,8 +600,12 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
 
         ItemStack log = defaultMap.get(Mode.LOG);
         if (log != null) {
-            double height = Math.max(3 * (tree.getGenome().getHeight() - 1), 0) + 1;
-            double girth = tree.getGenome().getGirth();
+            double height = Math.max(
+                3 * (tree.getGenome()
+                    .getHeight() - 1),
+                0) + 1;
+            double girth = tree.getGenome()
+                .getGirth();
 
             log = log.copy();
             log.stackSize = (int) (log.stackSize * height * girth);
@@ -596,7 +615,8 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
         ItemStack saplingOut = defaultMap.get(Mode.SAPLING);
         if (saplingOut != null) {
             // Lowest = 0.01 ... Average = 0.05 ... Highest = 0.3
-            double fertility = tree.getGenome().getFertility() * 10;
+            double fertility = tree.getGenome()
+                .getFertility() * 10;
 
             // Return a copy of the *input* sapling, retaining its genetics.
             int stackSize = Math.max(1, (int) (saplingOut.stackSize * fertility));
@@ -613,7 +633,8 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
         ItemStack fruit = defaultMap.get(Mode.FRUIT);
         if (fruit != null) {
             // Lowest = 0.025 ... Average = 0.2 ... Highest = 0.4
-            double yield = tree.getGenome().getYield() * 10;
+            double yield = tree.getGenome()
+                .getYield() * 10;
 
             fruit = fruit.copy();
             fruit.stackSize = (int) (fruit.stackSize * yield);
@@ -650,7 +671,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
      * @param fruit      ItemStack to output in mode FRUIT.
      */
     public static void registerTreeProducts(ItemStack saplingIn, ItemStack log, ItemStack saplingOut, ItemStack leaves,
-            ItemStack fruit) {
+        ItemStack fruit) {
         String key = Item.itemRegistry.getNameForObject(saplingIn.getItem()) + ":" + saplingIn.getItemDamage();
         EnumMap<Mode, ItemStack> map = new EnumMap<>(Mode.class);
         if (log != null) map.put(Mode.LOG, log);
@@ -670,7 +691,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
      * to the stats of the real sapling that is in the controller slot.
      */
     public static void registerForestryTree(String speciesUID, ItemStack sapling, ItemStack log, ItemStack leaves,
-            ItemStack fruit) {
+        ItemStack fruit) {
         String key = "Forestry:sapling:" + speciesUID;
         EnumMap<Mode, ItemStack> map = new EnumMap<>(Mode.class);
         map.put(Mode.LOG, log);
@@ -687,11 +708,11 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
             return;
         }
         addFakeRecipeToNEI(
-                sapling,
-                map.get(Mode.LOG),
-                map.get(Mode.SAPLING),
-                map.get(Mode.LEAVES),
-                map.get(Mode.FRUIT));
+            sapling,
+            map.get(Mode.LOG),
+            map.get(Mode.SAPLING),
+            map.get(Mode.LEAVES),
+            map.get(Mode.FRUIT));
     }
 
     /**
@@ -701,29 +722,28 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
     static {
         GT_MetaGenerated_Tool toolInstance = GT_MetaGenerated_Tool_01.INSTANCE;
         altToolsForNEI = new ItemStack[][] {
-                // Mode.LOG
-                { toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.SAW, 1, null, null, null),
-                        toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.POCKET_SAW, 1, null, null, null),
-                        toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.BUZZSAW_LV, 1, null, null, null),
-                        toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.CHAINSAW_LV, 1, null, null, null),
-                        toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.BUZZSAW_MV, 1, null, null, null),
-                        toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.CHAINSAW_MV, 1, null, null, null),
-                        toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.BUZZSAW_HV, 1, null, null, null),
-                        toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.CHAINSAW_HV, 1, null, null, null), },
-                // Mode.SAPLING
-                { toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.BRANCHCUTTER, 1, null, null, null),
-                        toolInstance
-                                .getToolWithStats(GT_MetaGenerated_Tool_01.POCKET_BRANCHCUTTER, 1, null, null, null),
-                        GT_ModHandler.getModItem(Mods.Forestry.ID, "grafter", 1, 0), },
-                // Mode.LEAVES
-                { new ItemStack(Items.shears),
-                        toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.WIRECUTTER, 1, null, null, null),
-                        toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.POCKET_WIRECUTTER, 1, null, null, null),
-                        MetaGeneratedGregtechTools.getInstance()
-                                .getToolWithStats(MetaGeneratedGregtechTools.ELECTRIC_SNIPS, 1, null, null, null), },
-                // Mode.FRUIT
-                { toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.KNIFE, 1, null, null, null),
-                        toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.POCKET_KNIFE, 1, null, null, null), } };
+            // Mode.LOG
+            { toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.SAW, 1, null, null, null),
+                toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.POCKET_SAW, 1, null, null, null),
+                toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.BUZZSAW_LV, 1, null, null, null),
+                toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.CHAINSAW_LV, 1, null, null, null),
+                toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.BUZZSAW_MV, 1, null, null, null),
+                toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.CHAINSAW_MV, 1, null, null, null),
+                toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.BUZZSAW_HV, 1, null, null, null),
+                toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.CHAINSAW_HV, 1, null, null, null), },
+            // Mode.SAPLING
+            { toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.BRANCHCUTTER, 1, null, null, null),
+                toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.POCKET_BRANCHCUTTER, 1, null, null, null),
+                GT_ModHandler.getModItem(Mods.Forestry.ID, "grafter", 1, 0), },
+            // Mode.LEAVES
+            { new ItemStack(Items.shears),
+                toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.WIRECUTTER, 1, null, null, null),
+                toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.POCKET_WIRECUTTER, 1, null, null, null),
+                MetaGeneratedGregtechTools.getInstance()
+                    .getToolWithStats(MetaGeneratedGregtechTools.ELECTRIC_SNIPS, 1, null, null, null), },
+            // Mode.FRUIT
+            { toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.KNIFE, 1, null, null, null),
+                toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.POCKET_KNIFE, 1, null, null, null), } };
     }
 
     /**
@@ -732,8 +752,9 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
      * @return True if the recipe was added successfully.
      */
     public static boolean addFakeRecipeToNEI(ItemStack saplingIn, ItemStack log, ItemStack saplingOut, ItemStack leaves,
-            ItemStack fruit) {
-        int recipeCount = GTPPRecipeMaps.treeGrowthSimulatorFakeRecipes.getAllRecipes().size();
+        ItemStack fruit) {
+        int recipeCount = GTPPRecipeMaps.treeGrowthSimulatorFakeRecipes.getAllRecipes()
+            .size();
 
         // Sapling goes into the "special" slot.
         ItemStack specialStack = saplingIn.copy();
@@ -763,25 +784,26 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
         }
 
         Logger.INFO(
-                "Adding Tree Growth Simulation NEI recipe for " + specialStack.getDisplayName()
-                        + " -> "
-                        + ItemUtils.getArrayStackNames(outputStacks));
+            "Adding Tree Growth Simulation NEI recipe for " + specialStack.getDisplayName()
+                + " -> "
+                + ItemUtils.getArrayStackNames(outputStacks));
 
         GTPPRecipeMaps.treeGrowthSimulatorFakeRecipes.addFakeRecipe(
+            false,
+            new GT_Recipe.GT_Recipe_WithAlt(
                 false,
-                new GT_Recipe.GT_Recipe_WithAlt(
-                        false,
-                        null, // All inputs are taken from aAtl argument.
-                        outputStacks,
-                        specialStack,
-                        null,
-                        null,
-                        null,
-                        TICKS_PER_OPERATION,
-                        0,
-                        recipeCount, // special value, also sorts recipes correctly in order of addition.
-                        inputStacks));
+                null, // All inputs are taken from aAtl argument.
+                outputStacks,
+                specialStack,
+                null,
+                null,
+                null,
+                TICKS_PER_OPERATION,
+                0,
+                recipeCount, // special value, also sorts recipes correctly in order of addition.
+                inputStacks));
 
-        return GTPPRecipeMaps.treeGrowthSimulatorFakeRecipes.getAllRecipes().size() > recipeCount;
+        return GTPPRecipeMaps.treeGrowthSimulatorFakeRecipes.getAllRecipes()
+            .size() > recipeCount;
     }
 }

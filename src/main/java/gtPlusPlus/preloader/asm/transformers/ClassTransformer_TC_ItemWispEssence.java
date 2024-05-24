@@ -52,9 +52,9 @@ public class ClassTransformer_TC_ItemWispEssence {
         ClassReader aTempReader = null;
         ClassWriter aTempWriter = null;
         FMLRelaunchLog.log(
-                "[GT++ ASM] Thaumcraft WispEssence_Patch",
-                Level.INFO,
-                "Are we patching obfuscated methods? " + obfuscated2);
+            "[GT++ ASM] Thaumcraft WispEssence_Patch",
+            Level.INFO,
+            "Are we patching obfuscated methods? " + obfuscated2);
         String aGetColour = obfuscated2 ? "func_82790_a" : "getColorFromItemStack";
         aTempReader = new ClassReader(basicClass);
         aTempWriter = new ClassWriter(aTempReader, ClassWriter.COMPUTE_FRAMES);
@@ -94,11 +94,11 @@ public class ClassTransformer_TC_ItemWispEssence {
 
         if (aMethodName.equals("getAspects")) {
             mv = cw.visitMethod(
-                    ACC_PUBLIC,
-                    "getAspects",
-                    "(Lnet/minecraft/item/ItemStack;)Lthaumcraft/api/aspects/AspectList;",
-                    null,
-                    null);
+                ACC_PUBLIC,
+                "getAspects",
+                "(Lnet/minecraft/item/ItemStack;)Lthaumcraft/api/aspects/AspectList;",
+                null,
+                null);
             mv.visitCode();
             Label l0 = new Label();
             mv.visitLabel(l0);
@@ -131,17 +131,17 @@ public class ClassTransformer_TC_ItemWispEssence {
             mv.visitVarInsn(ALOAD, 2);
             mv.visitVarInsn(ALOAD, 1);
             mv.visitMethodInsn(
-                    INVOKEVIRTUAL,
-                    "net/minecraft/item/ItemStack",
-                    aGetTagCompound,
-                    "()Lnet/minecraft/nbt/NBTTagCompound;",
-                    false);
+                INVOKEVIRTUAL,
+                "net/minecraft/item/ItemStack",
+                aGetTagCompound,
+                "()Lnet/minecraft/nbt/NBTTagCompound;",
+                false);
             mv.visitMethodInsn(
-                    INVOKEVIRTUAL,
-                    "thaumcraft/api/aspects/AspectList",
-                    "readFromNBT",
-                    "(Lnet/minecraft/nbt/NBTTagCompound;)V",
-                    false);
+                INVOKEVIRTUAL,
+                "thaumcraft/api/aspects/AspectList",
+                "readFromNBT",
+                "(Lnet/minecraft/nbt/NBTTagCompound;)V",
+                false);
             Label l6 = new Label();
             mv.visitLabel(l6);
             mv.visitLineNumber(147, l6);
@@ -166,12 +166,12 @@ public class ClassTransformer_TC_ItemWispEssence {
             Label l9 = new Label();
             mv.visitLabel(l9);
             mv.visitLocalVariable(
-                    "this",
-                    "LgtPlusPlus/preloader/asm/transformers/ClassTransformer_TC_ItemWispEssence;",
-                    null,
-                    l0,
-                    l9,
-                    0);
+                "this",
+                "LgtPlusPlus/preloader/asm/transformers/ClassTransformer_TC_ItemWispEssence;",
+                null,
+                l0,
+                l9,
+                0);
             mv.visitLocalVariable("itemstack", "Lnet/minecraft/item/ItemStack;", null, l0, l9, 1);
             mv.visitLocalVariable("aspects", "Lthaumcraft/api/aspects/AspectList;", null, l5, l3, 2);
             mv.visitMaxs(2, 3);
@@ -205,11 +205,11 @@ public class ClassTransformer_TC_ItemWispEssence {
             mv.visitVarInsn(ALOAD, 0);
             mv.visitVarInsn(ALOAD, 1);
             mv.visitMethodInsn(
-                    INVOKEVIRTUAL,
-                    "thaumcraft/common/items/ItemWispEssence",
-                    "getAspects",
-                    "(Lnet/minecraft/item/ItemStack;)Lthaumcraft/api/aspects/AspectList;",
-                    false);
+                INVOKEVIRTUAL,
+                "thaumcraft/common/items/ItemWispEssence",
+                "getAspects",
+                "(Lnet/minecraft/item/ItemStack;)Lthaumcraft/api/aspects/AspectList;",
+                false);
             Label l3 = new Label();
             mv.visitJumpInsn(IFNULL, l3);
             Label l4 = new Label();
@@ -218,17 +218,17 @@ public class ClassTransformer_TC_ItemWispEssence {
             mv.visitVarInsn(ALOAD, 0);
             mv.visitVarInsn(ALOAD, 1);
             mv.visitMethodInsn(
-                    INVOKEVIRTUAL,
-                    "thaumcraft/common/items/ItemWispEssence",
-                    "getAspects",
-                    "(Lnet/minecraft/item/ItemStack;)Lthaumcraft/api/aspects/AspectList;",
-                    false);
+                INVOKEVIRTUAL,
+                "thaumcraft/common/items/ItemWispEssence",
+                "getAspects",
+                "(Lnet/minecraft/item/ItemStack;)Lthaumcraft/api/aspects/AspectList;",
+                false);
             mv.visitMethodInsn(
-                    INVOKEVIRTUAL,
-                    "thaumcraft/api/aspects/AspectList",
-                    "getAspects",
-                    "()[Lthaumcraft/api/aspects/Aspect;",
-                    false);
+                INVOKEVIRTUAL,
+                "thaumcraft/api/aspects/AspectList",
+                "getAspects",
+                "()[Lthaumcraft/api/aspects/Aspect;",
+                false);
             mv.visitInsn(ICONST_0);
             mv.visitInsn(AALOAD);
             mv.visitMethodInsn(INVOKEVIRTUAL, "thaumcraft/api/aspects/Aspect", "getColor", "()I", false);
@@ -240,10 +240,10 @@ public class ClassTransformer_TC_ItemWispEssence {
             mv.visitLdcInsn(new Long(500L));
             mv.visitInsn(LDIV);
             mv.visitFieldInsn(
-                    GETSTATIC,
-                    "thaumcraft/common/items/ItemWispEssence",
-                    "displayAspects",
-                    "[Lthaumcraft/api/aspects/Aspect;");
+                GETSTATIC,
+                "thaumcraft/common/items/ItemWispEssence",
+                "displayAspects",
+                "[Lthaumcraft/api/aspects/Aspect;");
             mv.visitInsn(ARRAYLENGTH);
             mv.visitInsn(I2L);
             mv.visitInsn(LREM);
@@ -253,10 +253,10 @@ public class ClassTransformer_TC_ItemWispEssence {
             mv.visitLabel(l5);
             mv.visitLineNumber(204, l5);
             mv.visitFieldInsn(
-                    GETSTATIC,
-                    "thaumcraft/common/items/ItemWispEssence",
-                    "displayAspects",
-                    "[Lthaumcraft/api/aspects/Aspect;");
+                GETSTATIC,
+                "thaumcraft/common/items/ItemWispEssence",
+                "displayAspects",
+                "[Lthaumcraft/api/aspects/Aspect;");
             mv.visitVarInsn(ILOAD, 3);
             mv.visitInsn(AALOAD);
             mv.visitMethodInsn(INVOKEVIRTUAL, "thaumcraft/api/aspects/Aspect", "getColor", "()I", false);
@@ -273,9 +273,9 @@ public class ClassTransformer_TC_ItemWispEssence {
         }
 
         FMLRelaunchLog.log(
-                "[GT++ ASM] Thaumcraft WispEssence_Patch",
-                Level.INFO,
-                "Method injection complete. " + (obfuscated ? "Obfuscated" : "Non-Obfuscated"));
+            "[GT++ ASM] Thaumcraft WispEssence_Patch",
+            Level.INFO,
+            "Method injection complete. " + (obfuscated ? "Obfuscated" : "Non-Obfuscated"));
         return didInject;
     }
 
@@ -308,10 +308,8 @@ public class ClassTransformer_TC_ItemWispEssence {
             }
 
             if (found) {
-                FMLRelaunchLog.log(
-                        "[GT++ ASM] Thaumcraft WispEssence_Patch",
-                        Level.INFO,
-                        "Found method " + name + ", removing.");
+                FMLRelaunchLog
+                    .log("[GT++ ASM] Thaumcraft WispEssence_Patch", Level.INFO, "Found method " + name + ", removing.");
             }
             return methodVisitor;
         }

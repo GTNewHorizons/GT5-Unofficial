@@ -29,10 +29,10 @@ public class CustomKineticRotor extends Item implements IKineticRotor {
     private IIcon[] mTextures;
 
     private static final String[] mRegistrationNames = new String[] { "itemwoodrotor", "itemironrotor",
-            "itemsteelrotor", "itemwcarbonrotor" };
+        "itemsteelrotor", "itemwcarbonrotor" };
 
     private static final String[] mUnlocalNames = new String[] { "itemEnergeticRotor", "itemTungstenSteelRotor",
-            "itemVibrantRotor", "itemIridiumRotor", "itemMagnaliumRotor", "itemUltimetRotor", };
+        "itemVibrantRotor", "itemIridiumRotor", "itemMagnaliumRotor", "itemUltimetRotor", };
     private static final int[] mMaxDurability = new int[] { 512000, 809600, 1600000, 3200000 };
     private static final int[] mRadius = new int[] { 9, 11, 13, 15 };
     private static final float[] mEfficiency = new float[] { 0.9f, 1.0f, 1.2f, 1.5f };
@@ -40,12 +40,12 @@ public class CustomKineticRotor extends Item implements IKineticRotor {
     private static final int[] mMaxWindStrength = new int[] { 80, 120, 160, 320 };
 
     private static final ResourceLocation[] mResourceLocations = new ResourceLocation[] {
-            new ResourceLocation(IC2.textureDomain, "textures/items/rotors/rotorEnergeticModel.png"),
-            new ResourceLocation(IC2.textureDomain, "textures/items/rotors/rotorTungstenSteelModel.png"),
-            new ResourceLocation(IC2.textureDomain, "textures/items/rotors/rotorVibrantModel.png"),
-            new ResourceLocation(IC2.textureDomain, "textures/items/rotors/rotorIridiumModel.png"),
-            new ResourceLocation(IC2.textureDomain, "textures/items/rotors/rotorMagnaliumModel.png"),
-            new ResourceLocation(IC2.textureDomain, "textures/items/rotors/rotorUltimetModel.png"), };
+        new ResourceLocation(IC2.textureDomain, "textures/items/rotors/rotorEnergeticModel.png"),
+        new ResourceLocation(IC2.textureDomain, "textures/items/rotors/rotorTungstenSteelModel.png"),
+        new ResourceLocation(IC2.textureDomain, "textures/items/rotors/rotorVibrantModel.png"),
+        new ResourceLocation(IC2.textureDomain, "textures/items/rotors/rotorIridiumModel.png"),
+        new ResourceLocation(IC2.textureDomain, "textures/items/rotors/rotorMagnaliumModel.png"),
+        new ResourceLocation(IC2.textureDomain, "textures/items/rotors/rotorUltimetModel.png"), };
 
     private final int maxWindStrength;
     private final int minWindStrength;
@@ -85,18 +85,18 @@ public class CustomKineticRotor extends Item implements IKineticRotor {
     public void addInformation(final ItemStack itemStack, final EntityPlayer player, final List info, final boolean b) {
 
         info.add(
-                StatCollector.translateToLocalFormatted(
-                        "ic2.itemrotor.wind.info",
-                        new Object[] { this.minWindStrength, this.maxWindStrength }));
+            StatCollector.translateToLocalFormatted(
+                "ic2.itemrotor.wind.info",
+                new Object[] { this.minWindStrength, this.maxWindStrength }));
 
         GearboxType type = null;
         if (Minecraft.getMinecraft().currentScreen != null
-                && Minecraft.getMinecraft().currentScreen instanceof GuiWaterKineticGenerator) {
+            && Minecraft.getMinecraft().currentScreen instanceof GuiWaterKineticGenerator) {
             type = GearboxType.WATER;
         } else if (Minecraft.getMinecraft().currentScreen != null
-                && Minecraft.getMinecraft().currentScreen instanceof GuiWindKineticGenerator) {
-                    type = GearboxType.WIND;
-                }
+            && Minecraft.getMinecraft().currentScreen instanceof GuiWindKineticGenerator) {
+                type = GearboxType.WIND;
+            }
 
         if (type != null) {
             info.add(StatCollector.translateToLocal("ic2.itemrotor.fitsin." + this.isAcceptedType(itemStack, type)));

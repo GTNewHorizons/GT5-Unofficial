@@ -32,7 +32,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.Gregtech
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_AmazonPackager>
-        implements ISurvivalConstructable {
+    implements ISurvivalConstructable {
 
     private int mCasing;
 
@@ -60,18 +60,18 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_Amazon
     public IStructureDefinition<GMTE_AmazonPackager> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<GMTE_AmazonPackager>builder()
-                    .addShape(
-                            mName,
-                            transpose(
-                                    new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" },
-                                            { "CCC", "CCC", "CCC" }, }))
-                    .addElement(
-                            'C',
-                            buildHatchAdder(GMTE_AmazonPackager.class)
-                                    .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
-                                    .casingIndex(TAE.getIndexFromPage(2, 9)).dot(1).buildAndChain(
-                                            onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 9))))
-                    .build();
+                .addShape(
+                    mName,
+                    transpose(
+                        new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" }, { "CCC", "CCC", "CCC" }, }))
+                .addElement(
+                    'C',
+                    buildHatchAdder(GMTE_AmazonPackager.class)
+                        .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
+                        .casingIndex(TAE.getIndexFromPage(2, 9))
+                        .dot(1)
+                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 9))))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -79,17 +79,26 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_Amazon
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType()).addInfo("Controller Block for the Amazon Warehouse")
-                .addInfo("This Multiblock is used for EXTREME packaging requirements")
-                .addInfo("Dust Schematics are inserted into the input busses")
-                .addInfo("If inserted into the controller, it is shared across all busses")
-                .addInfo("1x, 2x, 3x & Other Schematics are to be placed into the controller GUI slot")
-                .addInfo("500% faster than using single block machines of the same voltage")
-                .addInfo("Only uses 75% of the EU/t normally required").addInfo("Processes 16 items per voltage tier")
-                .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 3, true)
-                .addController("Front center").addCasingInfoMin("Supply Depot Casings", 10, false)
-                .addInputBus("Any casing", 1).addOutputBus("Any casing", 1).addEnergyHatch("Any casing", 1)
-                .addMaintenanceHatch("Any casing", 1).addMufflerHatch("Any casing", 1).toolTipFinisher("GT++");
+        tt.addMachineType(getMachineType())
+            .addInfo("Controller Block for the Amazon Warehouse")
+            .addInfo("This Multiblock is used for EXTREME packaging requirements")
+            .addInfo("Dust Schematics are inserted into the input busses")
+            .addInfo("If inserted into the controller, it is shared across all busses")
+            .addInfo("1x, 2x, 3x & Other Schematics are to be placed into the controller GUI slot")
+            .addInfo("500% faster than using single block machines of the same voltage")
+            .addInfo("Only uses 75% of the EU/t normally required")
+            .addInfo("Processes 16 items per voltage tier")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .addSeparator()
+            .beginStructureBlock(3, 3, 3, true)
+            .addController("Front center")
+            .addCasingInfoMin("Supply Depot Casings", 10, false)
+            .addInputBus("Any casing", 1)
+            .addOutputBus("Any casing", 1)
+            .addEnergyHatch("Any casing", 1)
+            .addMaintenanceHatch("Any casing", 1)
+            .addMufflerHatch("Any casing", 1)
+            .toolTipFinisher("GT++");
         return tt;
     }
 
@@ -115,8 +124,9 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_Amazon
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 6F).setEuModifier(0.75F)
-                .setMaxParallelSupplier(this::getMaxParallelRecipes);
+        return new ProcessingLogic().setSpeedBonus(1F / 6F)
+            .setEuModifier(0.75F)
+            .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     @Override

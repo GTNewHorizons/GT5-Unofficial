@@ -26,37 +26,37 @@ public class RECIPE_Batteries {
     private static void run() {
 
         RecipeUtils.addShapedGregtechRecipe(
-                GT_Battery_Sodium,
-                RECIPES_Machines.cableTier4,
-                GT_Battery_Sodium,
-                CI.circuitTier3,
-                machineTransformer_EV,
-                CI.circuitTier3,
-                GT_Battery_Sodium,
-                RECIPES_Machines.cableTier4,
-                GT_Battery_Sodium,
-                RECIPE_Battery_Sodium);
+            GT_Battery_Sodium,
+            RECIPES_Machines.cableTier4,
+            GT_Battery_Sodium,
+            CI.circuitTier3,
+            machineTransformer_EV,
+            CI.circuitTier3,
+            GT_Battery_Sodium,
+            RECIPES_Machines.cableTier4,
+            GT_Battery_Sodium,
+            RECIPE_Battery_Sodium);
         RecipeUtils.addShapedGregtechRecipe(
-                GT_Battery_Cadmium,
-                RECIPES_Machines.cableTier4,
-                GT_Battery_Cadmium,
-                CI.circuitTier3,
-                machineTransformer_EV,
-                CI.circuitTier3,
-                GT_Battery_Cadmium,
-                RECIPES_Machines.cableTier4,
-                GT_Battery_Cadmium,
-                RECIPE_Battery_Cadmium);
+            GT_Battery_Cadmium,
+            RECIPES_Machines.cableTier4,
+            GT_Battery_Cadmium,
+            CI.circuitTier3,
+            machineTransformer_EV,
+            CI.circuitTier3,
+            GT_Battery_Cadmium,
+            RECIPES_Machines.cableTier4,
+            GT_Battery_Cadmium,
+            RECIPE_Battery_Cadmium);
         RecipeUtils.addShapedGregtechRecipe(
-                GT_Battery_Lithium,
-                RECIPES_Machines.cableTier4,
-                GT_Battery_Lithium,
-                CI.circuitTier3,
-                machineTransformer_EV,
-                CI.circuitTier3,
-                GT_Battery_Lithium,
-                RECIPES_Machines.cableTier4,
-                GT_Battery_Lithium,
-                RECIPE_Battery_Lithium);
+            GT_Battery_Lithium,
+            RECIPES_Machines.cableTier4,
+            GT_Battery_Lithium,
+            CI.circuitTier3,
+            machineTransformer_EV,
+            CI.circuitTier3,
+            GT_Battery_Lithium,
+            RECIPES_Machines.cableTier4,
+            GT_Battery_Lithium,
+            RECIPE_Battery_Lithium);
     }
 }

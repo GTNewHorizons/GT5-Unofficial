@@ -274,7 +274,7 @@ public class MathUtils {
 
     public static int safeInt(long number) {
         return number > GT_Values.V[GT_Values.V.length - 1] ? safeInt(GT_Values.V[GT_Values.V.length - 1], 1)
-                : number < Integer.MIN_VALUE ? Integer.MIN_VALUE : (int) number;
+            : number < Integer.MIN_VALUE ? Integer.MIN_VALUE : (int) number;
     }
 
     public static int getRandomFromArray(int[] mValues) {

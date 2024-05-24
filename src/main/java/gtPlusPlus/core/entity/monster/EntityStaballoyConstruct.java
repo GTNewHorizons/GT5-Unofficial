@@ -48,10 +48,14 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
         super(world);
         this.experienceValue = 250;
         this.setSize(1.4F, 2.9F);
-        this.getNavigator().setAvoidsWater(true);
-        this.getNavigator().setBreakDoors(true);
-        this.getNavigator().setCanSwim(false);
-        this.getNavigator().setAvoidSun(false);
+        this.getNavigator()
+            .setAvoidsWater(true);
+        this.getNavigator()
+            .setBreakDoors(true);
+        this.getNavigator()
+            .setCanSwim(false);
+        this.getNavigator()
+            .setAvoidSun(false);
         this.tasks.addTask(1, new EntityAIAttackOnCollide(this, 1.0D, true));
         this.tasks.addTask(2, new EntityAIMoveTowardsTarget(this, 0.9D, 32.0F));
         // this.tasks.addTask(3, new EntityAIMoveThroughVillage(this, 0.6D, true));
@@ -61,8 +65,8 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
         this.tasks.addTask(6, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
         this.targetTasks.addTask(
-                2,
-                new EntityAINearestAttackableTarget(this, EntityLiving.class, 0, false, true, IMob.mobSelector));
+            2,
+            new EntityAINearestAttackableTarget(this, EntityLiving.class, 0, false, true, IMob.mobSelector));
     }
 
     /**
@@ -112,8 +116,10 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(500.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.5D);
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth)
+            .setBaseValue(500.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed)
+            .setBaseValue(0.5D);
     }
 
     /**
@@ -126,7 +132,8 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
 
     @Override
     protected void collideWithEntity(Entity p_82167_1_) {
-        if (p_82167_1_ instanceof IMob && this.getRNG().nextInt(20) == 0) {
+        if (p_82167_1_ instanceof IMob && this.getRNG()
+            .nextInt(20) == 0) {
             this.setAttackTarget((EntityLivingBase) p_82167_1_);
         }
 
@@ -146,7 +153,7 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
         }
 
         if (this.motionX * this.motionX + this.motionZ * this.motionZ > 2.500000277905201E-7D
-                && this.rand.nextInt(5) == 0) {
+            && this.rand.nextInt(5) == 0) {
             int i = MathHelper.floor_double(this.posX);
             int j = MathHelper.floor_double(this.posY - 0.20000000298023224D - this.yOffset);
             int k = MathHelper.floor_double(this.posZ);
@@ -154,13 +161,13 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
 
             if (block.getMaterial() != Material.air) {
                 this.worldObj.spawnParticle(
-                        "blockcrack_" + Block.getIdFromBlock(block) + "_" + this.worldObj.getBlockMetadata(i, j, k),
-                        this.posX + (this.rand.nextFloat() - 0.5D) * this.width,
-                        this.boundingBox.minY + 0.1D,
-                        this.posZ + (this.rand.nextFloat() - 0.5D) * this.width,
-                        4.0D * (this.rand.nextFloat() - 0.5D),
-                        0.5D,
-                        (this.rand.nextFloat() - 0.5D) * 4.0D);
+                    "blockcrack_" + Block.getIdFromBlock(block) + "_" + this.worldObj.getBlockMetadata(i, j, k),
+                    this.posX + (this.rand.nextFloat() - 0.5D) * this.width,
+                    this.boundingBox.minY + 0.1D,
+                    this.posZ + (this.rand.nextFloat() - 0.5D) * this.width,
+                    4.0D * (this.rand.nextFloat() - 0.5D),
+                    0.5D,
+                    (this.rand.nextFloat() - 0.5D) * 4.0D);
             }
         }
     }
@@ -332,73 +339,73 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
                     for (int o = 0; o < r2; o++) {
                         if (r <= 0.3) {
                             this.worldObj.spawnParticle(
-                                    "smoke",
-                                    this.posX + MathUtils.randDouble(-2, 2),
-                                    this.posY + MathUtils.randDouble(-2, 2),
-                                    this.posZ + MathUtils.randDouble(-2, 2),
-                                    0.0D,
-                                    0.0D,
-                                    0.0D);
+                                "smoke",
+                                this.posX + MathUtils.randDouble(-2, 2),
+                                this.posY + MathUtils.randDouble(-2, 2),
+                                this.posZ + MathUtils.randDouble(-2, 2),
+                                0.0D,
+                                0.0D,
+                                0.0D);
 
                         } else if (r <= 0.6) {
                             this.worldObj.spawnParticle(
-                                    "largesmoke",
-                                    this.posX + MathUtils.randDouble(-2, 2),
-                                    this.posY + MathUtils.randDouble(-2, 2),
-                                    this.posZ + MathUtils.randDouble(-2, 2),
-                                    0.0D,
-                                    0.0D,
-                                    0.0D);
+                                "largesmoke",
+                                this.posX + MathUtils.randDouble(-2, 2),
+                                this.posY + MathUtils.randDouble(-2, 2),
+                                this.posZ + MathUtils.randDouble(-2, 2),
+                                0.0D,
+                                0.0D,
+                                0.0D);
                         }
                         if (r <= 0.3) {
                             this.worldObj.spawnParticle(
-                                    "cloud",
-                                    this.posX + MathUtils.randDouble(-2, 2),
-                                    this.posY + MathUtils.randDouble(-2, 2),
-                                    this.posZ + MathUtils.randDouble(-2, 2),
-                                    0.0D,
-                                    0.0D,
-                                    0.0D);
+                                "cloud",
+                                this.posX + MathUtils.randDouble(-2, 2),
+                                this.posY + MathUtils.randDouble(-2, 2),
+                                this.posZ + MathUtils.randDouble(-2, 2),
+                                0.0D,
+                                0.0D,
+                                0.0D);
 
                         } else if (r <= 0.7) {
                             this.worldObj.spawnParticle(
-                                    "flame",
-                                    this.posX + MathUtils.randDouble(-2, 2),
-                                    this.posY + MathUtils.randDouble(-2, 2),
-                                    this.posZ + MathUtils.randDouble(-2, 2),
-                                    0.0D,
-                                    0.0D,
-                                    0.0D);
+                                "flame",
+                                this.posX + MathUtils.randDouble(-2, 2),
+                                this.posY + MathUtils.randDouble(-2, 2),
+                                this.posZ + MathUtils.randDouble(-2, 2),
+                                0.0D,
+                                0.0D,
+                                0.0D);
                         }
                         if (r <= 0.2) {
                             this.worldObj.spawnParticle(
-                                    "explode",
-                                    this.posX + MathUtils.randDouble(-2, 2),
-                                    this.posY + MathUtils.randDouble(-2, 2),
-                                    this.posZ + MathUtils.randDouble(-2, 2),
-                                    0.0D,
-                                    0.0D,
-                                    0.0D);
+                                "explode",
+                                this.posX + MathUtils.randDouble(-2, 2),
+                                this.posY + MathUtils.randDouble(-2, 2),
+                                this.posZ + MathUtils.randDouble(-2, 2),
+                                0.0D,
+                                0.0D,
+                                0.0D);
 
                         } else if (r <= 0.5) {
                             this.worldObj.spawnParticle(
-                                    "largeexplode",
-                                    this.posX + MathUtils.randDouble(-2, 2),
-                                    this.posY + MathUtils.randDouble(-2, 2),
-                                    this.posZ + MathUtils.randDouble(-2, 2),
-                                    0.0D,
-                                    0.0D,
-                                    0.0D);
+                                "largeexplode",
+                                this.posX + MathUtils.randDouble(-2, 2),
+                                this.posY + MathUtils.randDouble(-2, 2),
+                                this.posZ + MathUtils.randDouble(-2, 2),
+                                0.0D,
+                                0.0D,
+                                0.0D);
 
                         } else if (r <= 0.7) {
                             this.worldObj.spawnParticle(
-                                    "hugeexplosion",
-                                    this.posX + MathUtils.randDouble(-2, 2),
-                                    this.posY + MathUtils.randDouble(-2, 2),
-                                    this.posZ + MathUtils.randDouble(-2, 2),
-                                    0.0D,
-                                    0.0D,
-                                    0.0D);
+                                "hugeexplosion",
+                                this.posX + MathUtils.randDouble(-2, 2),
+                                this.posY + MathUtils.randDouble(-2, 2),
+                                this.posZ + MathUtils.randDouble(-2, 2),
+                                0.0D,
+                                0.0D,
+                                0.0D);
                         }
                     }
                 }
@@ -475,14 +482,15 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
     public boolean handleFluidMovement(Material fluid) {
 
         if (this.worldObj.handleMaterialAcceleration(
-                this.boundingBox.expand(0.0D, -0.4000000059604645D, 0.0D).contract(0.001D, 0.001D, 0.001D),
-                fluid,
-                this)) {
+            this.boundingBox.expand(0.0D, -0.4000000059604645D, 0.0D)
+                .contract(0.001D, 0.001D, 0.001D),
+            fluid,
+            this)) {
             if (!this.inFluid && !this.mReflectFirstUpdate) {
                 float f = MathHelper.sqrt_double(
-                        this.motionX * this.motionX * 0.20000000298023224D + this.motionY * this.motionY
-                                + this.motionZ * this.motionZ * 0.20000000298023224D)
-                        * 0.2F;
+                    this.motionX * this.motionX * 0.20000000298023224D + this.motionY * this.motionY
+                        + this.motionZ * this.motionZ * 0.20000000298023224D)
+                    * 0.2F;
 
                 if (f > 1.0F) {
                     f = 1.0F;
@@ -498,26 +506,26 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
                     f2 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width;
                     f3 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width;
                     this.worldObj.spawnParticle(
-                            "bubble",
-                            this.posX + f2,
-                            f1 + 1.0F,
-                            this.posZ + f3,
-                            this.motionX,
-                            this.motionY - this.rand.nextFloat() * 0.2F,
-                            this.motionZ);
+                        "bubble",
+                        this.posX + f2,
+                        f1 + 1.0F,
+                        this.posZ + f3,
+                        this.motionX,
+                        this.motionY - this.rand.nextFloat() * 0.2F,
+                        this.motionZ);
                 }
 
                 for (i = 0; i < 1.0F + this.width * 20.0F; ++i) {
                     f2 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width;
                     f3 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width;
                     this.worldObj.spawnParticle(
-                            "splash",
-                            this.posX + f2,
-                            f1 + 1.0F,
-                            this.posZ + f3,
-                            this.motionX,
-                            this.motionY,
-                            this.motionZ);
+                        "splash",
+                        this.posX + f2,
+                        f1 + 1.0F,
+                        this.posZ + f3,
+                        this.motionX,
+                        this.motionY,
+                        this.motionZ);
                 }
             }
             this.fallDistance = 0.0F;
@@ -555,73 +563,73 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
             for (int o = 0; o < r2; o++) {
                 if (r <= 0.3) {
                     this.worldObj.spawnParticle(
-                            "smoke",
-                            this.posX + MathUtils.randDouble(-4, 4),
-                            this.posY + MathUtils.randDouble(0, 3),
-                            this.posZ + MathUtils.randDouble(-4, 4),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "smoke",
+                        this.posX + MathUtils.randDouble(-4, 4),
+                        this.posY + MathUtils.randDouble(0, 3),
+                        this.posZ + MathUtils.randDouble(-4, 4),
+                        0.0D,
+                        0.0D,
+                        0.0D);
 
                 } else if (r <= 0.6) {
                     this.worldObj.spawnParticle(
-                            "largesmoke",
-                            this.posX + MathUtils.randDouble(-4, 4),
-                            this.posY + MathUtils.randDouble(-4, 4),
-                            this.posZ + MathUtils.randDouble(-4, 4),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "largesmoke",
+                        this.posX + MathUtils.randDouble(-4, 4),
+                        this.posY + MathUtils.randDouble(-4, 4),
+                        this.posZ + MathUtils.randDouble(-4, 4),
+                        0.0D,
+                        0.0D,
+                        0.0D);
                 }
                 if (r <= 0.3) {
                     this.worldObj.spawnParticle(
-                            "cloud",
-                            this.posX + MathUtils.randDouble(-4, 4),
-                            this.posY + MathUtils.randDouble(-4, 4),
-                            this.posZ + MathUtils.randDouble(-4, 4),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "cloud",
+                        this.posX + MathUtils.randDouble(-4, 4),
+                        this.posY + MathUtils.randDouble(-4, 4),
+                        this.posZ + MathUtils.randDouble(-4, 4),
+                        0.0D,
+                        0.0D,
+                        0.0D);
 
                 } else if (r <= 0.7) {
                     this.worldObj.spawnParticle(
-                            "flame",
-                            this.posX + MathUtils.randDouble(-4, 4),
-                            this.posY + MathUtils.randDouble(-4, 4),
-                            this.posZ + MathUtils.randDouble(-4, 4),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "flame",
+                        this.posX + MathUtils.randDouble(-4, 4),
+                        this.posY + MathUtils.randDouble(-4, 4),
+                        this.posZ + MathUtils.randDouble(-4, 4),
+                        0.0D,
+                        0.0D,
+                        0.0D);
                 }
                 if (r <= 0.2) {
                     this.worldObj.spawnParticle(
-                            "explode",
-                            this.posX + MathUtils.randDouble(-4, 4),
-                            this.posY + MathUtils.randDouble(-4, 4),
-                            this.posZ + MathUtils.randDouble(-4, 4),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "explode",
+                        this.posX + MathUtils.randDouble(-4, 4),
+                        this.posY + MathUtils.randDouble(-4, 4),
+                        this.posZ + MathUtils.randDouble(-4, 4),
+                        0.0D,
+                        0.0D,
+                        0.0D);
 
                 } else if (r <= 0.5) {
                     this.worldObj.spawnParticle(
-                            "largeexplode",
-                            this.posX + MathUtils.randDouble(-4, 4),
-                            this.posY + MathUtils.randDouble(-4, 4),
-                            this.posZ + MathUtils.randDouble(-4, 4),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "largeexplode",
+                        this.posX + MathUtils.randDouble(-4, 4),
+                        this.posY + MathUtils.randDouble(-4, 4),
+                        this.posZ + MathUtils.randDouble(-4, 4),
+                        0.0D,
+                        0.0D,
+                        0.0D);
 
                 } else if (r <= 0.7) {
                     this.worldObj.spawnParticle(
-                            "hugeexplosion",
-                            this.posX + MathUtils.randDouble(-4, 4),
-                            this.posY + MathUtils.randDouble(-4, 4),
-                            this.posZ + MathUtils.randDouble(-4, 4),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "hugeexplosion",
+                        this.posX + MathUtils.randDouble(-4, 4),
+                        this.posY + MathUtils.randDouble(-4, 4),
+                        this.posZ + MathUtils.randDouble(-4, 4),
+                        0.0D,
+                        0.0D,
+                        0.0D);
                 }
             }
         }

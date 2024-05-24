@@ -52,29 +52,29 @@ public class GregtechMetaTransformerHiAmp extends GT_MetaTileEntity_Transformer 
         ITexture[][][] rTextures = new ITexture[12][17][];
         for (byte i = -1; i < 16; i++) {
             rTextures[0][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier] };
             rTextures[1][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier] };
             rTextures[2][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier] };
             rTextures[3][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[mTier + 1] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[mTier + 1] };
             rTextures[4][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[mTier + 1] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[mTier + 1] };
             rTextures[5][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[mTier + 1] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[mTier + 1] };
             rTextures[6][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_IN[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN[mTier] };
             rTextures[7][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_IN[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN[mTier] };
             rTextures[8][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_IN[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN[mTier] };
             rTextures[9][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier + 1] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier + 1] };
             rTextures[10][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier + 1] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier + 1] };
             rTextures[11][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                    Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier + 1] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier + 1] };
         }
         return rTextures;
     }
@@ -87,10 +87,10 @@ public class GregtechMetaTransformerHiAmp extends GT_MetaTileEntity_Transformer 
     @Override
     public String[] getDescription() {
         return ArrayUtils.addAll(
-                this.mDescriptionArray,
-                "Accepts 4A and outputs 16A",
-                "Toggle 2A/8A half-mode with Screwdriver",
-                CORE.GT_Tooltip.get());
+            this.mDescriptionArray,
+            "Accepts 4A and outputs 16A",
+            "Toggle 2A/8A half-mode with Screwdriver",
+            CORE.GT_Tooltip.get());
     }
 
     @Override

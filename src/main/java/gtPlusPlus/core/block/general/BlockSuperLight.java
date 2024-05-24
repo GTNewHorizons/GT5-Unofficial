@@ -116,7 +116,7 @@ public class BlockSuperLight extends BlockContainer {
             try {
                 if (mLastUpdateTick == 0 || (System.currentTimeMillis() - mLastUpdateTick) >= 30000) {
                     boolean powered = (this.worldObj
-                            .isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord));
+                        .isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord));
                     boolean aLastState = mPowered;
                     // Logger.INFO("Powered: "+powered);
                     mPowered = powered;
@@ -147,10 +147,10 @@ public class BlockSuperLight extends BlockContainer {
             Logger.INFO("Trying to relight area.");
 
             BlockPos aStartIterationPoint = new BlockPos(
-                    this.xCoord - 24,
-                    this.yCoord - 4,
-                    this.zCoord - 24,
-                    this.worldObj);
+                this.xCoord - 24,
+                this.yCoord - 4,
+                this.zCoord - 24,
+                this.worldObj);
             for (int x = 0; x < 50; x++) {
                 for (int y = 0; y < 10; y++) {
                     for (int z = 0; z < 50; z++) {
@@ -171,7 +171,7 @@ public class BlockSuperLight extends BlockContainer {
                                 else if (enable && aLight == 0) {
                                     aBlocksToUpdate.put(new BlockPos(xOff, yOff, zOff, this.worldObj));
                                     this.worldObj
-                                            .setBlock(xOff, yOff, zOff, ModBlocks.MatterFabricatorEffectBlock, 0, 3);
+                                        .setBlock(xOff, yOff, zOff, ModBlocks.MatterFabricatorEffectBlock, 0, 3);
                                     aLitCounter++;
                                 }
                                 // Turning Lights off

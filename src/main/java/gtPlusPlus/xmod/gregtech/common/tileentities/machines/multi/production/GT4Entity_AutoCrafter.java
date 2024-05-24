@@ -34,7 +34,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 
 public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase<GT4Entity_AutoCrafter>
-        implements ISurvivalConstructable {
+    implements ISurvivalConstructable {
 
     protected GT_Recipe lastRecipeToBuffer;
     private int casing;
@@ -86,14 +86,22 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase<GT4Entity
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType()).addInfo("Highly Advanced Assembling Machine")
-                .addInfo("200% faster than using single block machines of the same voltage")
-                .addInfo("Processes two items per voltage tier").addPollutionAmount(getPollutionPerSecond(null))
-                .addSeparator().beginStructureBlock(3, 3, 3, true).addController("Front Center")
-                .addCasingInfoRange("Bulk Production Frame", 10, 25, false).addInputBus("Any Casing", 1)
-                .addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1).addEnergyHatch("Any Casing", 1)
-                .addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+        tt.addMachineType(getMachineType())
+            .addInfo("Highly Advanced Assembling Machine")
+            .addInfo("200% faster than using single block machines of the same voltage")
+            .addInfo("Processes two items per voltage tier")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .addSeparator()
+            .beginStructureBlock(3, 3, 3, true)
+            .addController("Front Center")
+            .addCasingInfoRange("Bulk Production Frame", 10, 25, false)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addInputHatch("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addMufflerHatch("Any Casing", 1)
+            .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
@@ -116,18 +124,18 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase<GT4Entity
     public IStructureDefinition<GT4Entity_AutoCrafter> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<GT4Entity_AutoCrafter>builder()
-                    .addShape(
-                            mName,
-                            transpose(
-                                    new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" },
-                                            { "CCC", "CCC", "CCC" }, }))
-                    .addElement(
-                            'C',
-                            buildHatchAdder(GT4Entity_AutoCrafter.class)
-                                    .atLeast(InputBus, OutputBus, InputHatch, Maintenance, Energy, Muffler)
-                                    .casingIndex(TAE.getIndexFromPage(0, 10)).dot(1).buildAndChain(
-                                            onElementPass(x -> ++x.casing, ofBlock(ModBlocks.blockCasings2Misc, 12))))
-                    .build();
+                .addShape(
+                    mName,
+                    transpose(
+                        new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" }, { "CCC", "CCC", "CCC" }, }))
+                .addElement(
+                    'C',
+                    buildHatchAdder(GT4Entity_AutoCrafter.class)
+                        .atLeast(InputBus, OutputBus, InputHatch, Maintenance, Energy, Muffler)
+                        .casingIndex(TAE.getIndexFromPage(0, 10))
+                        .dot(1)
+                        .buildAndChain(onElementPass(x -> ++x.casing, ofBlock(ModBlocks.blockCasings2Misc, 12))))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -156,7 +164,8 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase<GT4Entity
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 3F).setMaxParallelSupplier(this::getMaxParallelRecipes);
+        return new ProcessingLogic().setSpeedBonus(1F / 3F)
+            .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     @Override
@@ -168,7 +177,7 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase<GT4Entity
     public String[] getExtraInfoData() {
         final String running = (this.mMaxProgresstime > 0 ? "Auto-Crafter running" : "Auto-Crafter stopped");
         final String maintenance = (this.getIdealStatus() == this.getRepairStatus() ? "No Maintenance issues"
-                : "Needs Maintenance");
+            : "Needs Maintenance");
         String tSpecialText;
 
         if (lastRecipeToBuffer != null && lastRecipeToBuffer.mOutputs[0].getDisplayName() != null) {

@@ -872,7 +872,7 @@ public enum GregtechItemList implements GregtechItemContainer {
             return false;
         }
         return GT_Utility
-                .areUnificationsEqual((ItemStack) aStack, aWildcard ? this.getWildcard(1) : this.get(1), aIgnoreNBT);
+            .areUnificationsEqual((ItemStack) aStack, aWildcard ? this.getWildcard(1) : this.get(1), aIgnoreNBT);
     }
 
     public static Block getBlockFromStack(Object aStack) {
@@ -922,7 +922,7 @@ public enum GregtechItemList implements GregtechItemContainer {
             return GT_Utility.copyAmount(aAmount, aReplacements);
         }
         return GT_Utility
-                .copyAmountAndMetaData(aAmount, this.mStack.getMaxDamage() - 1, GT_OreDictUnificator.get(this.mStack));
+            .copyAmountAndMetaData(aAmount, this.mStack.getMaxDamage() - 1, GT_OreDictUnificator.get(this.mStack));
     }
 
     @Override

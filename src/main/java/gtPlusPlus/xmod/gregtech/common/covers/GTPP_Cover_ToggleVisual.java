@@ -29,7 +29,7 @@ public class GTPP_Cover_ToggleVisual extends GT_CoverBehavior {
     public static String generateUniqueKey(ForgeDirection side, ICoverable aEntity) {
         try {
             BlockPos aPos = new BlockPos(
-                    aEntity.getIGregTechTileEntity(aEntity.getXCoord(), aEntity.getYCoord(), aEntity.getZCoord()));
+                aEntity.getIGregTechTileEntity(aEntity.getXCoord(), aEntity.getYCoord(), aEntity.getZCoord()));
 
             String s = aEntity.getInventoryName() + "." + aPos.getUniqueIdentifier() + side.name();
             return s;
@@ -39,14 +39,14 @@ public class GTPP_Cover_ToggleVisual extends GT_CoverBehavior {
     }
 
     public boolean onCoverRightclick(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-            EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        EntityPlayer aPlayer, float aX, float aY, float aZ) {
         PlayerUtils
-                .messagePlayer(aPlayer, GT_Utility.trans("756", "Connectable: ") + getConnectionState(aCoverVariable));
+            .messagePlayer(aPlayer, GT_Utility.trans("756", "Connectable: ") + getConnectionState(aCoverVariable));
         return super.onCoverRightclick(side, aCoverID, aCoverVariable, aTileEntity, aPlayer, aX, aY, aZ);
     }
 
     public int onCoverScrewdriverclick(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-            EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        EntityPlayer aPlayer, float aX, float aY, float aZ) {
         return super.onCoverScrewdriverclick(side, aCoverID, aCoverVariable, aTileEntity, aPlayer, aX, aY, aZ);
     }
 
@@ -59,22 +59,22 @@ public class GTPP_Cover_ToggleVisual extends GT_CoverBehavior {
     }
 
     public boolean letsFluidIn(ForgeDirection side, int aCoverID, int aCoverVariable, Fluid aFluid,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return getConnectionState(aCoverVariable);
     }
 
     public boolean letsFluidOut(ForgeDirection side, int aCoverID, int aCoverVariable, Fluid aFluid,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return getConnectionState(aCoverVariable);
     }
 
     public boolean letsItemsIn(ForgeDirection side, int aCoverID, int aCoverVariable, int aSlot,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return getConnectionState(aCoverVariable);
     }
 
     public boolean letsItemsOut(ForgeDirection side, int aCoverID, int aCoverVariable, int aSlot,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return getConnectionState(aCoverVariable);
     }
 
@@ -84,7 +84,7 @@ public class GTPP_Cover_ToggleVisual extends GT_CoverBehavior {
 
     @Override
     public int doCoverThings(ForgeDirection side, byte aInputRedstone, int aCoverID, int aCoverVariable,
-            ICoverable aTileEntity, long aTimer) {
+        ICoverable aTileEntity, long aTimer) {
         try {
             String aKey = generateUniqueKey(side, aTileEntity);
             Integer b = sConnectionStateForEntityMap.get(aKey);
@@ -120,7 +120,7 @@ public class GTPP_Cover_ToggleVisual extends GT_CoverBehavior {
 
     @Override
     public byte getRedstoneInput(ForgeDirection side, byte aInputRedstone, int aCoverID, int aCoverVariable,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         if (!getConnectionState(aCoverVariable)) {
             return 0;
         }
@@ -142,7 +142,7 @@ public class GTPP_Cover_ToggleVisual extends GT_CoverBehavior {
 
     @Override
     public boolean onCoverRemoval(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-            boolean aForced) {
+        boolean aForced) {
         String aKey = generateUniqueKey(side, aTileEntity);
         sConnectionStateForEntityMap.remove(aKey);
         // Logger.INFO("Unmapping key "+aKey+".");

@@ -33,31 +33,31 @@ public class RecipeGen_AlloySmelter extends RecipeGen_Base {
 
         // Nuggets
         if (ItemUtils.checkForInvalidItems(material.getIngot(1))
-                && ItemUtils.checkForInvalidItems(material.getNugget(1)))
+            && ItemUtils.checkForInvalidItems(material.getNugget(1)))
             GT_Values.RA.addAlloySmelterRecipe(
-                    material.getIngot(1),
-                    ItemList.Shape_Mold_Nugget.get(0),
-                    material.getNugget(9),
-                    (int) Math.max(material.getMass() * 2L, 1L),
-                    tVoltageMultiplier);
+                material.getIngot(1),
+                ItemList.Shape_Mold_Nugget.get(0),
+                material.getNugget(9),
+                (int) Math.max(material.getMass() * 2L, 1L),
+                tVoltageMultiplier);
 
         // Gears
         if (ItemUtils.checkForInvalidItems(material.getIngot(1)) && ItemUtils.checkForInvalidItems(material.getGear(1)))
             GT_Values.RA.addAlloySmelterRecipe(
-                    material.getIngot(8),
-                    ItemList.Shape_Mold_Gear.get(0),
-                    material.getGear(1),
-                    (int) Math.max(material.getMass() * 2L, 1L),
-                    tVoltageMultiplier);
+                material.getIngot(8),
+                ItemList.Shape_Mold_Gear.get(0),
+                material.getGear(1),
+                (int) Math.max(material.getMass() * 2L, 1L),
+                tVoltageMultiplier);
 
         // Ingot
         if (ItemUtils.checkForInvalidItems(material.getIngot(1))
-                && ItemUtils.checkForInvalidItems(material.getNugget(1)))
+            && ItemUtils.checkForInvalidItems(material.getNugget(1)))
             GT_Values.RA.addAlloySmelterRecipe(
-                    material.getNugget(9),
-                    ItemList.Shape_Mold_Ingot.get(0),
-                    material.getIngot(1),
-                    (int) Math.max(material.getMass() * 2L, 1L),
-                    tVoltageMultiplier);
+                material.getNugget(9),
+                ItemList.Shape_Mold_Ingot.get(0),
+                material.getIngot(1),
+                (int) Math.max(material.getMass() * 2L, 1L),
+                tVoltageMultiplier);
     }
 }

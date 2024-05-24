@@ -72,7 +72,10 @@ public class ItemBlockGtBlock extends ItemBlock {
     }
 
     public String getUnlocalizedBlockName() {
-        return "block." + mMaterial.getUnlocalizedName() + "." + this.thisBlockType.name().toLowerCase();
+        return "block." + mMaterial.getUnlocalizedName()
+            + "."
+            + this.thisBlockType.name()
+                .toLowerCase();
     }
 
     public String GetProperName() {
@@ -120,14 +123,14 @@ public class ItemBlockGtBlock extends ItemBlock {
                     if (this.mMaterial != null) {
                         list.add("Mining Level: " + Math.min(Math.max(aMiningLevel1, 0), 5));
                         list.add("Contains:    ");
-                        if (mMaterial.getComposites().isEmpty()) {
+                        if (mMaterial.getComposites()
+                            .isEmpty()) {
                             list.add("- " + mMaterial.getLocalizedName());
                         } else {
                             for (MaterialStack m : mMaterial.getComposites()) {
                                 list.add(
-                                        "- " + m.getStackMaterial().getLocalizedName()
-                                                + " x"
-                                                + m.getPartsPerOneHundred());
+                                    "- " + m.getStackMaterial()
+                                        .getLocalizedName() + " x" + m.getPartsPerOneHundred());
                             }
                         }
                     }
@@ -155,7 +158,7 @@ public class ItemBlockGtBlock extends ItemBlock {
 
     @Override
     public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
-            final boolean p_77663_5_) {
+        final boolean p_77663_5_) {
 
         if (!isModular && !isOre) {
             mMaterial = null;

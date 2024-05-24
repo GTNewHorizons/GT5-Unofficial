@@ -59,14 +59,14 @@ public class CommandDumpAspects implements ICommand {
             Thread t = createNewThread();
             messagePlayer(P, "Beginning to dump information about all items/blocks & their aspects to file.");
             messagePlayer(
-                    P,
-                    "Please do not close your game during this process, you will be notified upon completion.");
+                P,
+                "Please do not close your game during this process, you will be notified upon completion.");
             t.start();
         } else {
             messagePlayer(
-                    P,
-                    "Your last run of DA was less than 30 seconds ago, please wait " + (30 - Z)
-                            + " seconds before trying again.");
+                P,
+                "Your last run of DA was less than 30 seconds ago, please wait " + (30 - Z)
+                    + " seconds before trying again.");
         }
     }
 

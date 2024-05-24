@@ -42,7 +42,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.Gregtech
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase<GregtechMTE_ElementalDuplicator>
-        implements ISurvivalConstructable {
+    implements ISurvivalConstructable {
 
     private final ArrayList<GT_MetaTileEntity_Hatch_ElementalDataOrbHolder> mReplicatorDataOrbHatches = new ArrayList<>();
     private static final int CASING_TEXTURE_ID = TAE.getIndexFromPage(0, 3);
@@ -70,21 +70,31 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
 
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType()).addInfo("Produces Elemental Material from UU Matter")
-                .addInfo("Speed: +100% | EU Usage: 100% | Parallel: 8 * Tier").addInfo("Maximum 1x of each bus/hatch.")
-                .addInfo("Requires circuit 1-16 in your Data Orb Repository")
-                .addInfo("depending on what Data Orb you want to prioritize")
-                .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(9, 6, 9, true)
-                .addController("Top Center").addCasingInfoMin("Elemental Confinement Shell", 138, false)
-                .addCasingInfoMin("Matter Fabricator Casing", 24, false)
-                .addCasingInfoMin("Particle Containment Casing", 24, false)
-                .addCasingInfoMin("Matter Generation Coil", 24, false)
-                .addCasingInfoMin("High Voltage Current Capacitor", 20, false)
-                .addCasingInfoMin("Resonance Chamber III", 24, false).addCasingInfoMin("Modulator III", 16, false)
-                .addOtherStructurePart("Data Orb Repository", "1x", 1).addInputHatch("Any 1 dot hint", 1)
-                .addOutputBus("Any 1 dot hint", 1).addOutputHatch("Any 1 dot hint", 1)
-                .addEnergyHatch("Any 1 dot hint", 1).addMaintenanceHatch("Any 1 dot hint", 1)
-                .addMufflerHatch("Any 1 dot hint", 1).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+        tt.addMachineType(getMachineType())
+            .addInfo("Produces Elemental Material from UU Matter")
+            .addInfo("Speed: +100% | EU Usage: 100% | Parallel: 8 * Tier")
+            .addInfo("Maximum 1x of each bus/hatch.")
+            .addInfo("Requires circuit 1-16 in your Data Orb Repository")
+            .addInfo("depending on what Data Orb you want to prioritize")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .addSeparator()
+            .beginStructureBlock(9, 6, 9, true)
+            .addController("Top Center")
+            .addCasingInfoMin("Elemental Confinement Shell", 138, false)
+            .addCasingInfoMin("Matter Fabricator Casing", 24, false)
+            .addCasingInfoMin("Particle Containment Casing", 24, false)
+            .addCasingInfoMin("Matter Generation Coil", 24, false)
+            .addCasingInfoMin("High Voltage Current Capacitor", 20, false)
+            .addCasingInfoMin("Resonance Chamber III", 24, false)
+            .addCasingInfoMin("Modulator III", 16, false)
+            .addOtherStructurePart("Data Orb Repository", "1x", 1)
+            .addInputHatch("Any 1 dot hint", 1)
+            .addOutputBus("Any 1 dot hint", 1)
+            .addOutputHatch("Any 1 dot hint", 1)
+            .addEnergyHatch("Any 1 dot hint", 1)
+            .addMaintenanceHatch("Any 1 dot hint", 1)
+            .addMufflerHatch("Any 1 dot hint", 1)
+            .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
@@ -96,62 +106,58 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<GregtechMTE_ElementalDuplicator>builder()
 
-                    // h = Hatch
-                    // c = Casing
+                // h = Hatch
+                // c = Casing
 
-                    // a = MF Casing 1
-                    // b = Matter Gen Coil
+                // a = MF Casing 1
+                // b = Matter Gen Coil
 
-                    // d = Current Capacitor
-                    // e = Particle
+                // d = Current Capacitor
+                // e = Particle
 
-                    // f = Resonance III
-                    // g = Modulator III
+                // f = Resonance III
+                // g = Modulator III
 
-                    .addShape(
-                            STRUCTURE_PIECE_MAIN,
-                            (new String[][] {
-                                    { "   ccc   ", "  ccccc  ", " ccccccc ", "ccchhhccc", "ccch~hccc", "ccchhhccc",
-                                            " ccccccc ", "  ccccc  ", "   ccc   " },
-                                    { "   cac   ", "  abfba  ", " abfgfba ", "cbfgdgfbc", "afgdddgfa", "cbfgdgfbc",
-                                            " abfgfba ", "  abfba  ", "   cac   " },
-                                    { "   cec   ", "  e   e  ", " e     e ", "c   d   c", "e  ddd  e", "c   d   c",
-                                            " e     e ", "  e   e  ", "   cec   " },
-                                    { "   cec   ", "  e   e  ", " e     e ", "c   d   c", "e  ddd  e", "c   d   c",
-                                            " e     e ", "  e   e  ", "   cec   " },
-                                    { "   cac   ", "  abfba  ", " abfgfba ", "cbfgdgfbc", "afgdddgfa", "cbfgdgfbc",
-                                            " abfgfba ", "  abfba  ", "   cac   " },
-                                    { "   ccc   ", "  ccccc  ", " ccccccc ", "ccchhhccc", "ccchhhccc", "ccchhhccc",
-                                            " ccccccc ", "  ccccc  ", "   ccc   " }, }))
-                    .addElement('a', ofBlock(getCasingBlock4(), getCasingMeta6()))
-                    .addElement('b', ofBlock(getCasingBlock4(), getCasingMeta7()))
-                    .addElement('d', ofBlock(getCasingBlock2(), getCasingMeta2()))
-                    .addElement('e', ofBlock(getCasingBlock2(), getCasingMeta3()))
-                    .addElement('f', ofBlock(getCasingBlock3(), getCasingMeta4()))
-                    .addElement('g', ofBlock(getCasingBlock3(), getCasingMeta5()))
-                    .addElement(
-                            'c',
-                            lazy(t -> onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
-                    .addElement(
-                            'h',
-                            lazy(
-                                    t -> ofChain(
-                                            buildHatchAdder(GregtechMTE_ElementalDuplicator.class).atLeast(
-                                                    InputHatch,
-                                                    OutputBus,
-                                                    OutputHatch,
-                                                    Maintenance,
-                                                    Muffler,
-                                                    Energy).casingIndex(getCasingTextureIndex()).dot(1).build(),
-                                            buildHatchAdder(GregtechMTE_ElementalDuplicator.class)
-                                                    .hatchClass(GT_MetaTileEntity_Hatch_ElementalDataOrbHolder.class)
-                                                    .shouldReject(x -> x.mReplicatorDataOrbHatches.size() >= 1)
-                                                    .adder(GregtechMTE_ElementalDuplicator::addDataOrbHatch)
-                                                    .casingIndex(getCasingTextureIndex()).dot(1).build(),
-                                            onElementPass(
-                                                    x -> ++x.mCasing,
-                                                    ofBlock(getCasingBlock(), getCasingMeta())))))
-                    .build();
+                .addShape(
+                    STRUCTURE_PIECE_MAIN,
+                    (new String[][] {
+                        { "   ccc   ", "  ccccc  ", " ccccccc ", "ccchhhccc", "ccch~hccc", "ccchhhccc", " ccccccc ",
+                            "  ccccc  ", "   ccc   " },
+                        { "   cac   ", "  abfba  ", " abfgfba ", "cbfgdgfbc", "afgdddgfa", "cbfgdgfbc", " abfgfba ",
+                            "  abfba  ", "   cac   " },
+                        { "   cec   ", "  e   e  ", " e     e ", "c   d   c", "e  ddd  e", "c   d   c", " e     e ",
+                            "  e   e  ", "   cec   " },
+                        { "   cec   ", "  e   e  ", " e     e ", "c   d   c", "e  ddd  e", "c   d   c", " e     e ",
+                            "  e   e  ", "   cec   " },
+                        { "   cac   ", "  abfba  ", " abfgfba ", "cbfgdgfbc", "afgdddgfa", "cbfgdgfbc", " abfgfba ",
+                            "  abfba  ", "   cac   " },
+                        { "   ccc   ", "  ccccc  ", " ccccccc ", "ccchhhccc", "ccchhhccc", "ccchhhccc", " ccccccc ",
+                            "  ccccc  ", "   ccc   " }, }))
+                .addElement('a', ofBlock(getCasingBlock4(), getCasingMeta6()))
+                .addElement('b', ofBlock(getCasingBlock4(), getCasingMeta7()))
+                .addElement('d', ofBlock(getCasingBlock2(), getCasingMeta2()))
+                .addElement('e', ofBlock(getCasingBlock2(), getCasingMeta3()))
+                .addElement('f', ofBlock(getCasingBlock3(), getCasingMeta4()))
+                .addElement('g', ofBlock(getCasingBlock3(), getCasingMeta5()))
+                .addElement('c', lazy(t -> onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
+                .addElement(
+                    'h',
+                    lazy(
+                        t -> ofChain(
+                            buildHatchAdder(GregtechMTE_ElementalDuplicator.class)
+                                .atLeast(InputHatch, OutputBus, OutputHatch, Maintenance, Muffler, Energy)
+                                .casingIndex(getCasingTextureIndex())
+                                .dot(1)
+                                .build(),
+                            buildHatchAdder(GregtechMTE_ElementalDuplicator.class)
+                                .hatchClass(GT_MetaTileEntity_Hatch_ElementalDataOrbHolder.class)
+                                .shouldReject(x -> x.mReplicatorDataOrbHatches.size() >= 1)
+                                .adder(GregtechMTE_ElementalDuplicator::addDataOrbHatch)
+                                .casingIndex(getCasingTextureIndex())
+                                .dot(1)
+                                .build(),
+                            onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta())))))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -166,8 +172,8 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
         mCasing = 0;
         boolean aDidBuild = checkPiece(STRUCTURE_PIECE_MAIN, 4, 4, 0);
         if (this.mInputHatches.size() != 1 || (this.mOutputBusses.size() != 1 && this.mOutputHatches.size() != 0)
-                || this.mEnergyHatches.size() != 1
-                || this.mReplicatorDataOrbHatches.size() != 1) {
+            || this.mEnergyHatches.size() != 1
+            || this.mReplicatorDataOrbHatches.size() != 1) {
             return false;
         }
         log("Casings: " + mCasing);
@@ -279,8 +285,9 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 2F).enablePerfectOverclock()
-                .setMaxParallelSupplier(this::getMaxParallelRecipes);
+        return new ProcessingLogic().setSpeedBonus(1F / 2F)
+            .enablePerfectOverclock()
+            .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     @Override

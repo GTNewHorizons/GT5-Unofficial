@@ -27,26 +27,28 @@ public class TinkersDryingRecipe {
         List<?> aRecipes = TinkersUtils.getDryingRecipes();
         if (aRecipes != null && aRecipes.size() > 0) {
             for (Object o : aRecipes) {
-                Logger.INFO("Trying to generate recipe using object of type " + o.getClass().getSimpleName());
+                Logger.INFO(
+                    "Trying to generate recipe using object of type " + o.getClass()
+                        .getSimpleName());
                 generateFromTinkersRecipeObject(o);
             }
         } else {
             Logger.INFO(
-                    "Error generating Drying recipes, map was either null or empty. Null? " + (aRecipes != null)
-                            + ", Size: "
-                            + aRecipes.size());
+                "Error generating Drying recipes, map was either null or empty. Null? " + (aRecipes != null)
+                    + ", Size: "
+                    + aRecipes.size());
         }
         if (!recipes.isEmpty()) {
             Logger.INFO("Adding " + recipes.size() + " drying rack recipes to the dehydrator.");
             for (TinkersDryingRecipe r : recipes) {
                 CORE.RA.addDehydratorRecipe(
-                        new ItemStack[] { CI.getNumberedCircuit(16), r.input },
-                        GT_Values.NF,
-                        GT_Values.NF,
-                        new ItemStack[] { r.result },
-                        new int[] {},
-                        r.time / 10,
-                        30);
+                    new ItemStack[] { CI.getNumberedCircuit(16), r.input },
+                    GT_Values.NF,
+                    GT_Values.NF,
+                    new ItemStack[] { r.result },
+                    new int[] {},
+                    r.time / 10,
+                    30);
             }
         }
     }
@@ -58,8 +60,8 @@ public class TinkersDryingRecipe {
         Class aTinkerClass = ReflectionUtils.getClass("tconstruct.library.crafting.DryingRackRecipes.DryingRecipe"); // o.getClass();
         if (aTinkerClass == null || TinkerConstruct.isModLoaded()) {
             Logger.INFO(
-                    "Error generating Drying Recipe, could not find class. Exists? " + ReflectionUtils
-                            .doesClassExist("tconstruct.library.crafting.DryingRackRecipes.DryingRecipe"));
+                "Error generating Drying Recipe, could not find class. Exists? "
+                    + ReflectionUtils.doesClassExist("tconstruct.library.crafting.DryingRackRecipes.DryingRecipe"));
             Class clazz = ReflectionUtils.getClass("tconstruct.library.crafting.DryingRackRecipes");
             Class[] y = clazz.getDeclaredClasses();
             if (y == null || y.length <= 0) {
@@ -69,10 +71,12 @@ public class TinkersDryingRecipe {
                 boolean found = false;
                 for (Class h : y) {
                     Logger.INFO("Found hidden inner class: " + h.getCanonicalName());
-                    if (h.getSimpleName().toLowerCase().equals("dryingrecipe")) {
+                    if (h.getSimpleName()
+                        .toLowerCase()
+                        .equals("dryingrecipe")) {
                         Logger.INFO("Found correct recipe. Caching at correct location.");
                         ReflectionUtils.mCachedClasses
-                                .put("tconstruct.library.crafting.DryingRackRecipes.DryingRecipe", h);
+                            .put("tconstruct.library.crafting.DryingRackRecipes.DryingRecipe", h);
                         aTinkerClass = h;
                         found = true;
                         break;
@@ -102,15 +106,17 @@ public class TinkersDryingRecipe {
         this.input = input;
         this.result = result;
         Logger.INFO(
-                "Generating Drying Recipe. Input: " + input.getDisplayName() + ", Output: " + result.getDisplayName());
+            "Generating Drying Recipe. Input: " + input.getDisplayName() + ", Output: " + result.getDisplayName());
         recipes.add(this);
     }
 
     public boolean matches(ItemStack input) {
         if (input.hasTagCompound()) {
             input = input.copy();
-            input.getTagCompound().removeTag("frypanKill");
-            if (input.getTagCompound().hasNoTags()) {
+            input.getTagCompound()
+                .removeTag("frypanKill");
+            if (input.getTagCompound()
+                .hasNoTags()) {
                 input.setTagCompound((NBTTagCompound) null);
             }
         }

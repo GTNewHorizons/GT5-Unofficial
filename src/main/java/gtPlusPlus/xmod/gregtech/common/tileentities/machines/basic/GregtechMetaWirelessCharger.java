@@ -33,25 +33,24 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
     public boolean mLocked = true;
 
     public GregtechMetaWirelessCharger(final int aID, final String aName, final String aNameRegional, final int aTier,
-            final String aDescription, final int aSlotCount) {
+        final String aDescription, final int aSlotCount) {
         super(aID, aName, aNameRegional, aTier, aSlotCount, aDescription);
     }
 
     public GregtechMetaWirelessCharger(final String aName, final int aTier, final String aDescription,
-            final ITexture[][][] aTextures, final int aSlotCount) {
+        final ITexture[][][] aTextures, final int aSlotCount) {
         super(aName, aTier, aSlotCount, aDescription, aTextures);
     }
 
     @Override
     public String[] getDescription() {
         return new String[] { this.mDescription, "Can be locked to the owner by sneaking with a screwdriver",
-                "Can also be locked with a lock upgrade", "", "3 Modes, Long-Range, Local and Mixed.",
-                "Long-Range: Can supply 2A of power to a single player up to " + (GT_Values.V[this.mTier] * 4)
-                        + "m away.",
-                "Local: Can supply several Amps to each player within " + this.mTier * 20 + "m.",
-                "Mixed: Provides both 2A of long range and 1A per player locally.",
-                "Mixed mode is more conservative of power and as a result only",
-                "Gets half the distances each singular mode gets.", CORE.GT_Tooltip.get() };
+            "Can also be locked with a lock upgrade", "", "3 Modes, Long-Range, Local and Mixed.",
+            "Long-Range: Can supply 2A of power to a single player up to " + (GT_Values.V[this.mTier] * 4) + "m away.",
+            "Local: Can supply several Amps to each player within " + this.mTier * 20 + "m.",
+            "Mixed: Provides both 2A of long range and 1A per player locally.",
+            "Mixed mode is more conservative of power and as a result only",
+            "Gets half the distances each singular mode gets.", CORE.GT_Tooltip.get() };
     }
 
     public int getTier() {
@@ -94,62 +93,60 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 
     @Override
     public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
-            final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
-        return this.mTextures[(aActive ? 5 : 0)
-                + (side == facing ? 0
-                        : side == facing.getOpposite() ? 1
-                                : side == ForgeDirection.DOWN ? 2 : side == ForgeDirection.UP ? 3 : 4)][aColorIndex
-                                        + 1];
+        final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+        return this.mTextures[(aActive ? 5 : 0) + (side == facing ? 0
+            : side == facing.getOpposite() ? 1
+                : side == ForgeDirection.DOWN ? 2 : side == ForgeDirection.UP ? 3 : 4)][aColorIndex + 1];
     }
 
     public ITexture[] getFront(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-                new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Screen_2) };
+            new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Screen_2) };
     }
 
     public ITexture[] getBack(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-                new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
+            new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     public ITexture[] getBottom(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-                new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
+            new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     public ITexture[] getTop(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-                new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
+            new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     public ITexture[] getSides(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-                new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
+            new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     public ITexture[] getFrontActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-                new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Screen_2) };
+            new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Screen_2) };
     }
 
     public ITexture[] getBackActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-                new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
+            new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     public ITexture[] getBottomActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-                new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
+            new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     public ITexture[] getTopActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-                new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
+            new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     public ITexture[] getSidesActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-                new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
+            new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     @Override
@@ -163,8 +160,10 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 
         mWirelessChargingMap.clear();
         mLocalChargingMap.clear();
-        if (!this.getBaseMetaTileEntity().getWorld().playerEntities.isEmpty()) {
-            for (Object mTempPlayer : this.getBaseMetaTileEntity().getWorld().playerEntities) {
+        if (!this.getBaseMetaTileEntity()
+            .getWorld().playerEntities.isEmpty()) {
+            for (Object mTempPlayer : this.getBaseMetaTileEntity()
+                .getWorld().playerEntities) {
                 if (mTempPlayer instanceof EntityPlayer || mTempPlayer instanceof EntityPlayerMP) {
                     EntityPlayer mTemp = (EntityPlayer) mTempPlayer;
                     ChargingHelper.removeValidPlayer(mTemp, this);
@@ -190,11 +189,11 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
         return new GregtechMetaWirelessCharger(
-                this.mName,
-                this.mTier,
-                this.mDescription,
-                this.mTextures,
-                this.mInventory.length);
+            this.mName,
+            this.mTier,
+            this.mDescription,
+            this.mTextures,
+            this.mInventory.length);
     }
 
     @Override
@@ -229,12 +228,14 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 
     @Override
     public boolean isInputFacing(final ForgeDirection side) {
-        return side != this.getBaseMetaTileEntity().getFrontFacing();
+        return side != this.getBaseMetaTileEntity()
+            .getFrontFacing();
     }
 
     @Override
     public boolean isOutputFacing(final ForgeDirection side) {
-        return side == this.getBaseMetaTileEntity().getFrontFacing();
+        return side == this.getBaseMetaTileEntity()
+            .getFrontFacing();
     }
 
     @Override
@@ -305,12 +306,14 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 
     @Override
     public int getProgresstime() {
-        return (int) this.getBaseMetaTileEntity().getUniversalEnergyStored();
+        return (int) this.getBaseMetaTileEntity()
+            .getUniversalEnergyStored();
     }
 
     @Override
     public int maxProgresstime() {
-        return (int) this.getBaseMetaTileEntity().getUniversalEnergyCapacity();
+        return (int) this.getBaseMetaTileEntity()
+            .getUniversalEnergyCapacity();
     }
 
     @Override
@@ -328,13 +331,13 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 
     @Override
     public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
-            final ForgeDirection side, final ItemStack aStack) {
+        final ForgeDirection side, final ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
-            final ForgeDirection side, final ItemStack aStack) {
+        final ForgeDirection side, final ItemStack aStack) {
         return false;
     }
 
@@ -452,7 +455,8 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
     private boolean isValidPlayer(EntityPlayer aPlayer) {
         BaseMetaTileEntity aTile = (BaseMetaTileEntity) this.getBaseMetaTileEntity();
         if (mLocked || (aTile != null && aTile.privateAccess())) {
-            if (aPlayer.getUniqueID().equals(getBaseMetaTileEntity().getOwnerUuid())) {
+            if (aPlayer.getUniqueID()
+                .equals(getBaseMetaTileEntity().getOwnerUuid())) {
                 return true;
             } else {
                 return false;
@@ -464,7 +468,8 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
     @Override
     public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (this.getBaseMetaTileEntity().isServerSide()) {
+        if (this.getBaseMetaTileEntity()
+            .isServerSide()) {
 
             if (this.mCurrentDimension != aBaseMetaTileEntity.getWorld().provider.dimensionId) {
                 this.mCurrentDimension = aBaseMetaTileEntity.getWorld().provider.dimensionId;
@@ -484,9 +489,9 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
                             if (this.mMode == 1 || this.mMode == 2) {
                                 int tempRange = (this.mMode == 1 ? this.mTier * 20 : this.mTier * 10);
                                 if (getDistanceBetweenTwoPositions(getTileEntityPosition(), getPositionOfEntity(mTemp))
-                                        < tempRange) {
+                                    < tempRange) {
                                     if (isValidPlayer(mTemp)
-                                            && !mLocalChargingMap.containsKey(mTemp.getDisplayName())) {
+                                        && !mLocalChargingMap.containsKey(mTemp.getDisplayName())) {
                                         mLocalChargingMap.put(mTemp.getDisplayName(), mTemp.getPersistentID());
                                         ChargingHelper.addValidPlayer(mTemp, this);
                                         // PlayerUtils.messagePlayer(mTemp, "You have entered charging range.
@@ -504,25 +509,24 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
                             }
                             if (this.mMode == 0 || this.mMode == 2) {
                                 int tempRange = (int) (this.mMode == 0 ? 4 * GT_Values.V[this.mTier]
-                                        : 2 * GT_Values.V[this.mTier]);
+                                    : 2 * GT_Values.V[this.mTier]);
                                 if (getDistanceBetweenTwoPositions(getTileEntityPosition(), getPositionOfEntity(mTemp))
-                                        <= tempRange) {
+                                    <= tempRange) {
                                     if (!mWirelessChargingMap.containsKey(mTemp.getDisplayName())) {
                                         if (isValidPlayer(mTemp)) {
                                             mWirelessChargingMap.put(mTemp.getDisplayName(), mTemp.getPersistentID());
                                             ChargingHelper.addValidPlayer(mTemp, this);
                                             PlayerUtils.messagePlayer(
-                                                    mTemp,
-                                                    "You have entered charging range. [" + tempRange
-                                                            + "m - Long-Range].");
+                                                mTemp,
+                                                "You have entered charging range. [" + tempRange + "m - Long-Range].");
                                         }
                                     }
                                 } else {
                                     if (mWirelessChargingMap.containsKey(mTemp.getDisplayName())) {
                                         if (mWirelessChargingMap.remove(mTemp.getDisplayName()) != null) {
                                             PlayerUtils.messagePlayer(
-                                                    mTemp,
-                                                    "You have left charging range. [" + tempRange + "m - Long Range].");
+                                                mTemp,
+                                                "You have left charging range. [" + tempRange + "m - Long Range].");
                                             ChargingHelper.removeValidPlayer(mTemp, this);
                                         }
                                     }
@@ -551,10 +555,14 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 
     public BlockPos getTileEntityPosition() {
         return new BlockPos(
-                this.getBaseMetaTileEntity().getXCoord(),
-                this.getBaseMetaTileEntity().getYCoord(),
-                this.getBaseMetaTileEntity().getZCoord(),
-                this.getBaseMetaTileEntity().getWorld());
+            this.getBaseMetaTileEntity()
+                .getXCoord(),
+            this.getBaseMetaTileEntity()
+                .getYCoord(),
+            this.getBaseMetaTileEntity()
+                .getZCoord(),
+            this.getBaseMetaTileEntity()
+                .getWorld());
     }
 
     public BlockPos getPositionOfEntity(Entity mEntity) {
@@ -572,9 +580,9 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
         int[] objectArray2 = new int[] { objectB.xPos, objectB.yPos, objectB.zPos };
 
         final double distance = Math.sqrt(
-                (objectArray2[0] - objectArray1[0]) * (objectArray2[0] - objectArray1[0])
-                        + (objectArray2[1] - objectArray1[1]) * (objectArray2[1] - objectArray1[1])
-                        + (objectArray2[2] - objectArray1[2]) * (objectArray2[2] - objectArray1[2]));
+            (objectArray2[0] - objectArray1[0]) * (objectArray2[0] - objectArray1[0])
+                + (objectArray2[1] - objectArray1[1]) * (objectArray2[1] - objectArray1[1])
+                + (objectArray2[2] - objectArray1[2]) * (objectArray2[2] - objectArray1[2]));
         return distance;
     }
 
@@ -585,8 +593,10 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 
         mWirelessChargingMap.clear();
         mLocalChargingMap.clear();
-        if (!this.getBaseMetaTileEntity().getWorld().playerEntities.isEmpty()) {
-            for (Object mTempPlayer : this.getBaseMetaTileEntity().getWorld().playerEntities) {
+        if (!this.getBaseMetaTileEntity()
+            .getWorld().playerEntities.isEmpty()) {
+            for (Object mTempPlayer : this.getBaseMetaTileEntity()
+                .getWorld().playerEntities) {
                 if (mTempPlayer instanceof EntityPlayer || mTempPlayer instanceof EntityPlayerMP) {
                     EntityPlayer mTemp = (EntityPlayer) mTempPlayer;
                     ChargingHelper.removeValidPlayer(mTemp, this);
@@ -599,7 +609,7 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-            float aX, float aY, float aZ) {
+        float aX, float aY, float aZ) {
 
         int tempRange;
 
@@ -611,25 +621,29 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 
         if (this.mMode == 2) {
             PlayerUtils
-                    .messagePlayer(aPlayer, "Mixed Mode | Local: " + this.mTier * 10 + "m | Long: " + tempRange + "m");
+                .messagePlayer(aPlayer, "Mixed Mode | Local: " + this.mTier * 10 + "m | Long: " + tempRange + "m");
             PlayerUtils.messagePlayer(aPlayer, "Players with access:");
-            for (String name : this.getLocalMap().keySet()) {
+            for (String name : this.getLocalMap()
+                .keySet()) {
                 PlayerUtils.messagePlayer(aPlayer, "Local: " + name);
             }
-            for (String name : this.getLongRangeMap().keySet()) {
+            for (String name : this.getLongRangeMap()
+                .keySet()) {
                 PlayerUtils.messagePlayer(aPlayer, "Long: " + name);
             }
         } else if (this.mMode == 1) {
             PlayerUtils.messagePlayer(aPlayer, "Local Mode: " + this.mTier * 20 + "m");
             PlayerUtils.messagePlayer(aPlayer, "Players with access:");
-            for (String name : this.getLocalMap().keySet()) {
+            for (String name : this.getLocalMap()
+                .keySet()) {
                 PlayerUtils.messagePlayer(aPlayer, "" + name);
             }
 
         } else {
             PlayerUtils.messagePlayer(aPlayer, "Long-range Mode: " + tempRange + "m");
             PlayerUtils.messagePlayer(aPlayer, "Players with access:");
-            for (String name : this.getLongRangeMap().keySet()) {
+            for (String name : this.getLongRangeMap()
+                .keySet()) {
                 PlayerUtils.messagePlayer(aPlayer, "" + name);
             }
         }

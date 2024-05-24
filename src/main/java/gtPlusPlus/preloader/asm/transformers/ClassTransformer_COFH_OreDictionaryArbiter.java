@@ -78,15 +78,15 @@ public class ClassTransformer_COFH_OreDictionaryArbiter {
         MethodVisitor mv;
         if (aMethodName.equals("registerOreDictionaryEntry")) {
             FMLRelaunchLog.log(
-                    "[GT++ ASM] COFH OreDictionaryArbiter Patch",
-                    Level.INFO,
-                    "Injecting " + aMethodName + " into " + className + ". ItemStack: " + aItemStack);
+                "[GT++ ASM] COFH OreDictionaryArbiter Patch",
+                Level.INFO,
+                "Injecting " + aMethodName + " into " + className + ". ItemStack: " + aItemStack);
             mv = getWriter().visitMethod(
-                    ACC_PUBLIC + ACC_STATIC,
-                    "registerOreDictionaryEntry",
-                    "(L" + aItemStack + ";Ljava/lang/String;)V",
-                    null,
-                    null);
+                ACC_PUBLIC + ACC_STATIC,
+                "registerOreDictionaryEntry",
+                "(L" + aItemStack + ";Ljava/lang/String;)V",
+                null,
+                null);
             mv.visitCode();
             Label l0 = new Label();
             mv.visitLabel(l0);
@@ -94,11 +94,11 @@ public class ClassTransformer_COFH_OreDictionaryArbiter {
             mv.visitVarInsn(ALOAD, 0);
             mv.visitVarInsn(ALOAD, 1);
             mv.visitMethodInsn(
-                    INVOKESTATIC,
-                    "gtPlusPlus/preloader/asm/transformers/ClassTransformer_COFH_OreDictionaryArbiter$FixCOFH",
-                    "registerOreDictionaryEntry",
-                    "(L" + aItemStack + ";Ljava/lang/String;)V",
-                    false);
+                INVOKESTATIC,
+                "gtPlusPlus/preloader/asm/transformers/ClassTransformer_COFH_OreDictionaryArbiter$FixCOFH",
+                "registerOreDictionaryEntry",
+                "(L" + aItemStack + ";Ljava/lang/String;)V",
+                false);
             Label l1 = new Label();
             mv.visitLabel(l1);
             mv.visitLineNumber(62, l1);
@@ -141,13 +141,16 @@ public class ClassTransformer_COFH_OreDictionaryArbiter {
         static {
             try {
                 oreIDs = (BiMap<String, Integer>) ReflectionUtils.getField(OreDictionaryArbiter.class, "oreIDs")
-                        .get(null);
+                    .get(null);
                 oreStacks = (TMap<Integer, ArrayList<ItemStack>>) ReflectionUtils
-                        .getField(OreDictionaryArbiter.class, "oreStacks").get(null);
+                    .getField(OreDictionaryArbiter.class, "oreStacks")
+                    .get(null);
                 stackIDs = (TMap<ItemWrapper, ArrayList<Integer>>) ReflectionUtils
-                        .getField(OreDictionaryArbiter.class, "stackIDs").get(null);
+                    .getField(OreDictionaryArbiter.class, "stackIDs")
+                    .get(null);
                 stackNames = (TMap<ItemWrapper, ArrayList<String>>) ReflectionUtils
-                        .getField(OreDictionaryArbiter.class, "stackNames").get(null);
+                    .getField(OreDictionaryArbiter.class, "stackNames")
+                    .get(null);
             } catch (Throwable t) {
                 oreIDs = HashBiMap.create();
                 oreStacks = new THashMap<>();

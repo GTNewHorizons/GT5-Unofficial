@@ -66,12 +66,14 @@ public class GTPP_Propolis extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(ItemStack stack, int pass) {
-        return GTPP_PropolisType.get(stack.getItemDamage()).getColours();
+        return GTPP_PropolisType.get(stack.getItemDamage())
+            .getColours();
     }
 
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
-        return GTPP_PropolisType.get(stack.getItemDamage()).getName();
+        return GTPP_PropolisType.get(stack.getItemDamage())
+            .getName();
     }
 
     public static void initPropolisRecipes() {
@@ -80,11 +82,11 @@ public class GTPP_Propolis extends Item {
         for (GTPP_PropolisType aProp : GTPP_Bees.sPropolisMappings.values()) {
             tDrop = aProp.getStackForType(1);
             if (addProcess(
-                    tDrop,
-                    aProp.mMaterial.getDust(1),
-                    Math.min(Math.max(10000 - (aProp.mMaterial.vTier * 625), 100), 10000),
-                    aProp.mMaterial.vTier * 20 * 15,
-                    aProp.mMaterial.vVoltageMultiplier)) {
+                tDrop,
+                aProp.mMaterial.getDust(1),
+                Math.min(Math.max(10000 - (aProp.mMaterial.vTier * 625), 100), 10000),
+                aProp.mMaterial.vTier * 20 * 15,
+                aProp.mMaterial.vVoltageMultiplier)) {
                 Logger.BEES("Added Propolis extraction recipe for: " + aProp.getName());
             } else {
                 Logger.BEES("Failed to add Propolis extraction recipe for: " + aProp.getName());
@@ -96,8 +98,13 @@ public class GTPP_Propolis extends Item {
         if (aOutput == null) {
             return false;
         }
-        GT_Values.RA.stdBuilder().itemInputs(tDrop).itemOutputs(aOutput).outputChances(aChance)
-                .duration(aDuration * TICKS).eut(aEUt).addTo(extractorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(tDrop)
+            .itemOutputs(aOutput)
+            .outputChances(aChance)
+            .duration(aDuration * TICKS)
+            .eut(aEUt)
+            .addTo(extractorRecipes);
         return true;
     }
 }

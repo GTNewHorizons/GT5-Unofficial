@@ -22,13 +22,13 @@ public class GregtechItemData {
     public ItemStack mUnificationTarget = null;
 
     public GregtechItemData(final GregtechOrePrefixes aPrefix, final GT_Materials aMaterial,
-            final boolean aBlackListed) {
+        final boolean aBlackListed) {
         this.mPrefix = aPrefix;
         this.mMaterial = aMaterial == null ? null : new GregtechMaterialStack(aMaterial, aPrefix.mMaterialAmount);
         this.mBlackListed = aBlackListed;
         this.mByProducts = (aPrefix.mSecondaryMaterial == null) || (aPrefix.mSecondaryMaterial.mMaterial == null)
-                ? EMPTY_GT_MaterialStack_ARRAY
-                : new GregtechMaterialStack[] { aPrefix.mSecondaryMaterial.clone() };
+            ? EMPTY_GT_MaterialStack_ARRAY
+            : new GregtechMaterialStack[] { aPrefix.mSecondaryMaterial.clone() };
     }
 
     public GregtechItemData(final GregtechOrePrefixes aPrefix, final GT_Materials aMaterial) {
@@ -43,7 +43,7 @@ public class GregtechItemData {
             this.mByProducts = EMPTY_GT_MaterialStack_ARRAY;
         } else {
             final GregtechMaterialStack[] tByProducts = aByProducts.length < 1 ? EMPTY_GT_MaterialStack_ARRAY
-                    : new GregtechMaterialStack[aByProducts.length];
+                : new GregtechMaterialStack[aByProducts.length];
             int j = 0;
             for (GregtechMaterialStack aByProduct : aByProducts) {
                 if ((aByProduct != null) && (aByProduct.mMaterial != null)) {
@@ -58,12 +58,12 @@ public class GregtechItemData {
     }
 
     public GregtechItemData(final GT_Materials aMaterial, final long aAmount,
-            final GregtechMaterialStack... aByProducts) {
+        final GregtechMaterialStack... aByProducts) {
         this(new GregtechMaterialStack(aMaterial, aAmount), aByProducts);
     }
 
     public GregtechItemData(final GT_Materials aMaterial, final long aAmount, final GT_Materials aByProduct,
-            final long aByProductAmount) {
+        final long aByProductAmount) {
         this(new GregtechMaterialStack(aMaterial, aAmount), new GregtechMaterialStack(aByProduct, aByProductAmount));
     }
 

@@ -35,10 +35,10 @@ import gtPlusPlus.core.util.math.MathUtils;
 public class GTPP_CapeRenderer extends RenderPlayer {
 
     private static final ResourceLocation[] mCapes = { new ResourceLocation("miscutils:textures/OrangeHD.png"),
-            new ResourceLocation("miscutils:textures/FancyCapeHD.png"),
-            new ResourceLocation("miscutils:textures/TesterCapeHD.png"),
-            new ResourceLocation("miscutils:textures/PatreonCapeHD.png"),
-            new ResourceLocation("miscutils:textures/DevCapeHD.png"), };
+        new ResourceLocation("miscutils:textures/FancyCapeHD.png"),
+        new ResourceLocation("miscutils:textures/TesterCapeHD.png"),
+        new ResourceLocation("miscutils:textures/PatreonCapeHD.png"),
+        new ResourceLocation("miscutils:textures/DevCapeHD.png"), };
 
     private final boolean mInit;
 
@@ -103,7 +103,9 @@ public class GTPP_CapeRenderer extends RenderPlayer {
             if (!hasResourceChecked) {
 
                 // Get players UUID
-                String aPlayerUUID = aPlayer != null ? aPlayer.getGameProfile().getId().toString() : "BAD";
+                String aPlayerUUID = aPlayer != null ? aPlayer.getGameProfile()
+                    .getId()
+                    .toString() : "BAD";
 
                 // If for whatever reason this fails, we just exit early.
                 if (aPlayerUUID.equals("BAD")) {
@@ -121,7 +123,8 @@ public class GTPP_CapeRenderer extends RenderPlayer {
                 // Check cape lists for the cape this player owns.
                 if (!hasCape) {
                     for (Pair<String, String> aData : CapeUtils.mOrangeCapes) {
-                        if (aData.getKey().equals(aPlayerUUID) || aPlayerName.equals(aData.getValue())) {
+                        if (aData.getKey()
+                            .equals(aPlayerUUID) || aPlayerName.equals(aData.getValue())) {
                             tResource = mCapes[0];
                             hasCape = true;
                             break;
@@ -130,7 +133,8 @@ public class GTPP_CapeRenderer extends RenderPlayer {
                 }
                 if (!hasCape) {
                     for (Pair<String, String> aData : CapeUtils.mMiscCapes) {
-                        if (aData.getKey().equals(aPlayerUUID) || aPlayerName.equals(aData.getValue())) {
+                        if (aData.getKey()
+                            .equals(aPlayerUUID) || aPlayerName.equals(aData.getValue())) {
                             tResource = mCapes[1];
                             hasCape = true;
                             break;
@@ -139,7 +143,8 @@ public class GTPP_CapeRenderer extends RenderPlayer {
                 }
                 if (!hasCape) {
                     for (Pair<String, String> aData : CapeUtils.mBetaTestCapes) {
-                        if (aData.getKey().equals(aPlayerUUID) || aPlayerName.equals(aData.getValue())) {
+                        if (aData.getKey()
+                            .equals(aPlayerUUID) || aPlayerName.equals(aData.getValue())) {
                             tResource = mCapes[2];
                             hasCape = true;
                             break;
@@ -148,7 +153,8 @@ public class GTPP_CapeRenderer extends RenderPlayer {
                 }
                 if (!hasCape) {
                     for (Pair<String, String> aData : CapeUtils.mPatreonCapes) {
-                        if (aData.getKey().equals(aPlayerUUID) || aPlayerName.equals(aData.getValue())) {
+                        if (aData.getKey()
+                            .equals(aPlayerUUID) || aPlayerName.equals(aData.getValue())) {
                             tResource = mCapes[3];
                             hasCape = true;
                             break;
@@ -157,7 +163,8 @@ public class GTPP_CapeRenderer extends RenderPlayer {
                 }
                 if (!hasCape) {
                     for (Pair<String, String> aData : CapeUtils.mDevCapes) {
-                        if (aData.getKey().equals(aPlayerUUID) || aPlayerName.equals(aData.getValue())) {
+                        if (aData.getKey()
+                            .equals(aPlayerUUID) || aPlayerName.equals(aData.getValue())) {
                             tResource = mCapes[4];
                             hasCape = true;
                             break;
@@ -183,7 +190,7 @@ public class GTPP_CapeRenderer extends RenderPlayer {
 
             // If player is invisible, don't render.
             if (GT_Utility.getFullInvisibility(aPlayer) || aPlayer.isInvisible()
-                    || GT_Utility.getPotion(aPlayer, Integer.valueOf(Potion.invisibility.id))) {
+                || GT_Utility.getPotion(aPlayer, Integer.valueOf(Potion.invisibility.id))) {
                 aEvent.setCanceled(true);
                 return false;
             }
@@ -193,13 +200,13 @@ public class GTPP_CapeRenderer extends RenderPlayer {
                 GL11.glPushMatrix();
                 GL11.glTranslatef(0.0F, 0.0F, 0.125F);
                 double d0 = aPlayer.field_71091_bM + (aPlayer.field_71094_bP - aPlayer.field_71091_bM) * aPartialTicks
-                        - (aPlayer.prevPosX + (aPlayer.posX - aPlayer.prevPosX) * aPartialTicks);
+                    - (aPlayer.prevPosX + (aPlayer.posX - aPlayer.prevPosX) * aPartialTicks);
                 double d1 = aPlayer.field_71096_bN + (aPlayer.field_71095_bQ - aPlayer.field_71096_bN) * aPartialTicks
-                        - (aPlayer.prevPosY + (aPlayer.posY - aPlayer.prevPosY) * aPartialTicks);
+                    - (aPlayer.prevPosY + (aPlayer.posY - aPlayer.prevPosY) * aPartialTicks);
                 double d2 = aPlayer.field_71097_bO + (aPlayer.field_71085_bR - aPlayer.field_71097_bO) * aPartialTicks
-                        - (aPlayer.prevPosZ + (aPlayer.posZ - aPlayer.prevPosZ) * aPartialTicks);
+                    - (aPlayer.prevPosZ + (aPlayer.posZ - aPlayer.prevPosZ) * aPartialTicks);
                 float f6 = aPlayer.prevRenderYawOffset
-                        + (aPlayer.renderYawOffset - aPlayer.prevRenderYawOffset) * aPartialTicks;
+                    + (aPlayer.renderYawOffset - aPlayer.prevRenderYawOffset) * aPartialTicks;
                 double d3 = MathHelper.sin(f6 * CORE.PI / 180.0F);
                 double d4 = -MathHelper.cos(f6 * CORE.PI / 180.0F);
                 float f7 = (float) d1 * 10.0F;
@@ -216,11 +223,10 @@ public class GTPP_CapeRenderer extends RenderPlayer {
                 }
                 float f10 = aPlayer.prevCameraYaw + (aPlayer.cameraYaw - aPlayer.prevCameraYaw) * aPartialTicks;
                 f7 += MathHelper.sin(
-                        (aPlayer.prevDistanceWalkedModified
-                                + (aPlayer.distanceWalkedModified - aPlayer.prevDistanceWalkedModified) * aPartialTicks)
-                                * 6.0F)
-                        * 32.0F
-                        * f10;
+                    (aPlayer.prevDistanceWalkedModified
+                        + (aPlayer.distanceWalkedModified - aPlayer.prevDistanceWalkedModified) * aPartialTicks) * 6.0F)
+                    * 32.0F
+                    * f10;
                 if (aPlayer.isSneaking()) {
                     f7 += 25.0F;
                 }
@@ -257,14 +263,15 @@ public class GTPP_CapeRenderer extends RenderPlayer {
             if (CORE.DEVENV) {
                 return true;
             }
-            ForkJoinPool.commonPool().execute(() -> {
-                try {
-                    if (shouldDownloadCapeList()) {
-                        downloadCapeList();
-                    }
-                } catch (Exception ignored) {}
-                cacheReady = true;
-            });
+            ForkJoinPool.commonPool()
+                .execute(() -> {
+                    try {
+                        if (shouldDownloadCapeList()) {
+                            downloadCapeList();
+                        }
+                    } catch (Exception ignored) {}
+                    cacheReady = true;
+                });
             return true;
         }
 
@@ -358,7 +365,7 @@ public class GTPP_CapeRenderer extends RenderPlayer {
             }
             if (tempFile == null) {
                 tempFile = FileUtils
-                        .createFile("", "gtpp-" + MathUtils.randInt(Short.MAX_VALUE, (Integer.MAX_VALUE / 2)), "tmp");
+                    .createFile("", "gtpp-" + MathUtils.randInt(Short.MAX_VALUE, (Integer.MAX_VALUE / 2)), "tmp");
             }
             tempFile.deleteOnExit();
             return tempFile;
@@ -390,51 +397,51 @@ public class GTPP_CapeRenderer extends RenderPlayer {
                                 if (aCapeTypeID2 != null) {
                                     int aCapeTypeID = aCapeTypeID2;
                                     Pair<String, String> aFinalString = new Pair<>(
-                                            "UUID: " + aSplitData[1],
-                                            "Username: " + (aSplitData[2] != null && aSplitData[0].length() > 0
-                                                    ? aSplitData[2]
-                                                    : "Not Specified"));
+                                        "UUID: " + aSplitData[1],
+                                        "Username: "
+                                            + (aSplitData[2] != null && aSplitData[0].length() > 0 ? aSplitData[2]
+                                                : "Not Specified"));
                                     Logger.INFO("Cape Type: " + aCapeTypeID);
                                     switch (aCapeTypeID) {
                                         case 0 -> {
                                             aCapeType1.add(aFinalString);
                                             Logger.INFO(
-                                                    "Added user to map " + aCapeTypeID
-                                                            + ", map now holds "
-                                                            + aCapeType1.size()
-                                                            + " users.");
+                                                "Added user to map " + aCapeTypeID
+                                                    + ", map now holds "
+                                                    + aCapeType1.size()
+                                                    + " users.");
                                         }
                                         case 1 -> {
                                             aCapeType2.add(aFinalString);
                                             Logger.INFO(
-                                                    "Added user to map " + aCapeTypeID
-                                                            + ", map now holds "
-                                                            + aCapeType2.size()
-                                                            + " users.");
+                                                "Added user to map " + aCapeTypeID
+                                                    + ", map now holds "
+                                                    + aCapeType2.size()
+                                                    + " users.");
                                         }
                                         case 2 -> {
                                             aCapeType3.add(aFinalString);
                                             Logger.INFO(
-                                                    "Added user to map " + aCapeTypeID
-                                                            + ", map now holds "
-                                                            + aCapeType3.size()
-                                                            + " users.");
+                                                "Added user to map " + aCapeTypeID
+                                                    + ", map now holds "
+                                                    + aCapeType3.size()
+                                                    + " users.");
                                         }
                                         case 3 -> {
                                             aCapeType4.add(aFinalString);
                                             Logger.INFO(
-                                                    "Added user to map " + aCapeTypeID
-                                                            + ", map now holds "
-                                                            + aCapeType4.size()
-                                                            + " users.");
+                                                "Added user to map " + aCapeTypeID
+                                                    + ", map now holds "
+                                                    + aCapeType4.size()
+                                                    + " users.");
                                         }
                                         case 4 -> {
                                             aCapeType5.add(aFinalString);
                                             Logger.INFO(
-                                                    "Added user to map " + aCapeTypeID
-                                                            + ", map now holds "
-                                                            + aCapeType5.size()
-                                                            + " users.");
+                                                "Added user to map " + aCapeTypeID
+                                                    + ", map now holds "
+                                                    + aCapeType5.size()
+                                                    + " users.");
                                         }
                                         default -> {}
                                     }
@@ -443,9 +450,9 @@ public class GTPP_CapeRenderer extends RenderPlayer {
                         }
                     }
                     if (!aCapeType1.isEmpty() || !aCapeType2.isEmpty()
-                            || !aCapeType3.isEmpty()
-                            || !aCapeType4.isEmpty()
-                            || !aCapeType5.isEmpty()) {
+                        || !aCapeType3.isEmpty()
+                        || !aCapeType4.isEmpty()
+                        || !aCapeType5.isEmpty()) {
                         didProcessStringData = true;
                     } else {
                         // did not process any data

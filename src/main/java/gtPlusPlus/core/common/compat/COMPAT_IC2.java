@@ -14,27 +14,27 @@ public class COMPAT_IC2 {
     private static ItemStack itemSolarHelmet = ItemUtils.simpleMetaStack("IC2:itemSolarHelmet", 0, 1);
 
     public static ShapedRecipeObject Cropnalyzer = new ShapedRecipeObject(
-            "ore:cableGt02Copper",
-            "ore:cableGt02Copper",
-            null,
-            "minecraft:redstone",
-            "ore:blockGlass",
-            "minecraft:redstone",
-            "minecraft:redstone",
-            "ore:circuitBasic",
-            "minecraft:redstone",
-            itemCropnalyzer);
+        "ore:cableGt02Copper",
+        "ore:cableGt02Copper",
+        null,
+        "minecraft:redstone",
+        "ore:blockGlass",
+        "minecraft:redstone",
+        "minecraft:redstone",
+        "ore:circuitBasic",
+        "minecraft:redstone",
+        itemCropnalyzer);
     public static ShapedRecipeObject SolarHelmet = new ShapedRecipeObject(
-            "ore:plateIron",
-            "ore:plateIron",
-            "ore:plateIron",
-            "ore:plateIron",
-            "gregtech:gt.metaitem.01:32750",
-            "ore:plateIron",
-            "ore:craftingWireCopper",
-            "ore:craftingWireCopper",
-            "ore:craftingWireCopper",
-            itemSolarHelmet);
+        "ore:plateIron",
+        "ore:plateIron",
+        "ore:plateIron",
+        "ore:plateIron",
+        "gregtech:gt.metaitem.01:32750",
+        "ore:plateIron",
+        "ore:craftingWireCopper",
+        "ore:craftingWireCopper",
+        "ore:craftingWireCopper",
+        itemSolarHelmet);
 
     public static void OreDict() {
         run();

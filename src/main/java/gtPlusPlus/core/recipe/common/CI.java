@@ -30,10 +30,10 @@ public class CI {
 
     // bits
     public static long bits = GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE
-            | GT_ModHandler.RecipeBits.BUFFERED;
+        | GT_ModHandler.RecipeBits.BUFFERED;
     public static long bitsd = GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-            | GT_ModHandler.RecipeBits.REVERSIBLE
-            | GT_ModHandler.RecipeBits.BUFFERED;
+        | GT_ModHandler.RecipeBits.REVERSIBLE
+        | GT_ModHandler.RecipeBits.BUFFERED;
 
     // Circuits
     public static Object circuitPrimitive;
@@ -180,33 +180,33 @@ public class CI {
     public static ItemStack explosiveITNT;
 
     public static Materials[] tieredMaterials = new Materials[] { Materials.Iron, Materials.Steel, Materials.Aluminium,
-            Materials.StainlessSteel, Materials.Titanium, Materials.TungstenSteel, Materials.Chrome, Materials.Iridium,
-            Materials.Osmium, Materials.Neutronium };
+        Materials.StainlessSteel, Materials.Titanium, Materials.TungstenSteel, Materials.Chrome, Materials.Iridium,
+        Materials.Osmium, Materials.Neutronium };
 
     public static void preInit() {
 
         // Tiered Components
         component_Plate = new String[] { getTieredComponent(OrePrefixes.plate, 0),
-                getTieredComponent(OrePrefixes.plate, 1), getTieredComponent(OrePrefixes.plate, 2),
-                getTieredComponent(OrePrefixes.plate, 3), getTieredComponent(OrePrefixes.plate, 4),
-                getTieredComponent(OrePrefixes.plate, 5), getTieredComponent(OrePrefixes.plate, 6),
-                getTieredComponent(OrePrefixes.plate, 7), getTieredComponent(OrePrefixes.plate, 8),
-                getTieredComponent(OrePrefixes.plate, 9), getTieredComponent(OrePrefixes.plate, 10),
-                getTieredComponent(OrePrefixes.plate, 11) };
+            getTieredComponent(OrePrefixes.plate, 1), getTieredComponent(OrePrefixes.plate, 2),
+            getTieredComponent(OrePrefixes.plate, 3), getTieredComponent(OrePrefixes.plate, 4),
+            getTieredComponent(OrePrefixes.plate, 5), getTieredComponent(OrePrefixes.plate, 6),
+            getTieredComponent(OrePrefixes.plate, 7), getTieredComponent(OrePrefixes.plate, 8),
+            getTieredComponent(OrePrefixes.plate, 9), getTieredComponent(OrePrefixes.plate, 10),
+            getTieredComponent(OrePrefixes.plate, 11) };
         component_Rod = new String[] { getTieredComponent(OrePrefixes.stick, 0),
-                getTieredComponent(OrePrefixes.stick, 1), getTieredComponent(OrePrefixes.stick, 2),
-                getTieredComponent(OrePrefixes.stick, 3), getTieredComponent(OrePrefixes.stick, 4),
-                getTieredComponent(OrePrefixes.stick, 5), getTieredComponent(OrePrefixes.stick, 6),
-                getTieredComponent(OrePrefixes.stick, 7), getTieredComponent(OrePrefixes.stick, 8),
-                getTieredComponent(OrePrefixes.stick, 9), getTieredComponent(OrePrefixes.stick, 10),
-                getTieredComponent(OrePrefixes.stick, 11) };
+            getTieredComponent(OrePrefixes.stick, 1), getTieredComponent(OrePrefixes.stick, 2),
+            getTieredComponent(OrePrefixes.stick, 3), getTieredComponent(OrePrefixes.stick, 4),
+            getTieredComponent(OrePrefixes.stick, 5), getTieredComponent(OrePrefixes.stick, 6),
+            getTieredComponent(OrePrefixes.stick, 7), getTieredComponent(OrePrefixes.stick, 8),
+            getTieredComponent(OrePrefixes.stick, 9), getTieredComponent(OrePrefixes.stick, 10),
+            getTieredComponent(OrePrefixes.stick, 11) };
         component_Ingot = new String[] { getTieredComponent(OrePrefixes.ingot, 0),
-                getTieredComponent(OrePrefixes.ingot, 1), getTieredComponent(OrePrefixes.ingot, 2),
-                getTieredComponent(OrePrefixes.ingot, 3), getTieredComponent(OrePrefixes.ingot, 4),
-                getTieredComponent(OrePrefixes.ingot, 5), getTieredComponent(OrePrefixes.ingot, 6),
-                getTieredComponent(OrePrefixes.ingot, 7), getTieredComponent(OrePrefixes.ingot, 8),
-                getTieredComponent(OrePrefixes.ingot, 9), getTieredComponent(OrePrefixes.ingot, 10),
-                getTieredComponent(OrePrefixes.ingot, 11) };
+            getTieredComponent(OrePrefixes.ingot, 1), getTieredComponent(OrePrefixes.ingot, 2),
+            getTieredComponent(OrePrefixes.ingot, 3), getTieredComponent(OrePrefixes.ingot, 4),
+            getTieredComponent(OrePrefixes.ingot, 5), getTieredComponent(OrePrefixes.ingot, 6),
+            getTieredComponent(OrePrefixes.ingot, 7), getTieredComponent(OrePrefixes.ingot, 8),
+            getTieredComponent(OrePrefixes.ingot, 9), getTieredComponent(OrePrefixes.ingot, 10),
+            getTieredComponent(OrePrefixes.ingot, 11) };
 
         // Circuits
         circuitPrimitive = getTieredCircuit(0);
@@ -372,7 +372,8 @@ public class CI {
     public static void init() {
         // Set Explosives
         explosivePowderKeg = ItemList.Block_Powderbarrel.get(1);
-        explosiveTNT = ItemUtils.getSimpleStack(Blocks.tnt).copy();
+        explosiveTNT = ItemUtils.getSimpleStack(Blocks.tnt)
+            .copy();
         explosiveITNT = Ic2Items.industrialTnt.copy();
 
         // Machine Casings
@@ -414,29 +415,29 @@ public class CI {
     }
 
     private static final Material[] aMaterial_Main = new Material[] { ALLOY.POTIN, ALLOY.TUMBAGA, ALLOY.EGLIN_STEEL,
-            ALLOY.INCONEL_625, ALLOY.INCOLOY_DS, ALLOY.NITINOL_60, ALLOY.ZERON_100, ALLOY.PIKYONIUM,
-            ELEMENT.STANDALONE.ADVANCED_NITINOL, ALLOY.ABYSSAL, ALLOY.QUANTUM, ELEMENT.STANDALONE.HYPOGEN };
+        ALLOY.INCONEL_625, ALLOY.INCOLOY_DS, ALLOY.NITINOL_60, ALLOY.ZERON_100, ALLOY.PIKYONIUM,
+        ELEMENT.STANDALONE.ADVANCED_NITINOL, ALLOY.ABYSSAL, ALLOY.QUANTUM, ELEMENT.STANDALONE.HYPOGEN };
 
     private static final Material[] aMaterial_Secondary = new Material[] { ALLOY.STEEL, ALLOY.SILICON_CARBIDE,
-            ALLOY.BLOODSTEEL, ALLOY.TANTALUM_CARBIDE, ALLOY.INCONEL_792, ALLOY.ARCANITE, ALLOY.LAFIUM, ALLOY.CINOBITE,
-            ALLOY.TITANSTEEL, ALLOY.OCTIRON, ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN, ELEMENT.STANDALONE.HYPOGEN };
+        ALLOY.BLOODSTEEL, ALLOY.TANTALUM_CARBIDE, ALLOY.INCONEL_792, ALLOY.ARCANITE, ALLOY.LAFIUM, ALLOY.CINOBITE,
+        ALLOY.TITANSTEEL, ALLOY.OCTIRON, ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN, ELEMENT.STANDALONE.HYPOGEN };
 
     private static final Material[] aMaterial_Tertiary = new Material[] { ELEMENT.getInstance().LEAD,
-            ELEMENT.getInstance().ALUMINIUM, ELEMENT.STANDALONE.BLACK_METAL, ELEMENT.getInstance().TITANIUM,
-            ALLOY.HASTELLOY_N, ALLOY.ENERGYCRYSTAL, ALLOY.TRINIUM_NAQUADAH_CARBON, ALLOY.TRINIUM_REINFORCED_STEEL, // Arceus
-            ALLOY.TITANSTEEL, ELEMENT.STANDALONE.ASTRAL_TITANIUM, ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN,
-            ELEMENT.STANDALONE.HYPOGEN };
+        ELEMENT.getInstance().ALUMINIUM, ELEMENT.STANDALONE.BLACK_METAL, ELEMENT.getInstance().TITANIUM,
+        ALLOY.HASTELLOY_N, ALLOY.ENERGYCRYSTAL, ALLOY.TRINIUM_NAQUADAH_CARBON, ALLOY.TRINIUM_REINFORCED_STEEL, // Arceus
+        ALLOY.TITANSTEEL, ELEMENT.STANDALONE.ASTRAL_TITANIUM, ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN,
+        ELEMENT.STANDALONE.HYPOGEN };
 
     private static final Materials[] aMaterial_Cables = new Materials[] { Materials.Tin, Materials.Cobalt,
-            Materials.AnnealedCopper, Materials.Gold, Materials.Titanium, Materials.Nichrome, Materials.Platinum,
-            Materials.YttriumBariumCuprate, Materials.Naquadah, Materials.Duranium, Materials.SuperconductorUHV, };
+        Materials.AnnealedCopper, Materials.Gold, Materials.Titanium, Materials.Nichrome, Materials.Platinum,
+        Materials.YttriumBariumCuprate, Materials.Naquadah, Materials.Duranium, Materials.SuperconductorUHV, };
 
     private static final Materials[] aMaterial_Circuits = new Materials[] { Materials.Primitive, Materials.Basic,
-            Materials.Good, Materials.Advanced, Materials.Data, Materials.Data, Materials.Elite, Materials.Master,
-            Materials.Ultimate, Materials.SuperconductorUHV, Materials.Infinite, };
+        Materials.Good, Materials.Advanced, Materials.Data, Materials.Data, Materials.Elite, Materials.Master,
+        Materials.Ultimate, Materials.SuperconductorUHV, Materials.Infinite, };
 
     private static final Material[][] aMaster = new Material[][] { aMaterial_Main, aMaterial_Secondary,
-            aMaterial_Tertiary };
+        aMaterial_Tertiary };
 
     public static FluidStack getTieredFluid(int aTier, int aAmount) {
         return getTieredFluid(aTier, aAmount, 0);
@@ -472,16 +473,16 @@ public class CI {
 
     public static ItemStack getEnergyCore(int aTier, int aAmount) {
         ItemStack[] aOutput = new ItemStack[] {
-                ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore" + "1", 1),
-                ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore" + "2", 1),
-                ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore" + "3", 1),
-                ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore" + "4", 1),
-                ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore" + "5", 1),
-                ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore" + "6", 1),
-                ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore" + "7", 1),
-                ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore" + "8", 1),
-                ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore" + "9", 1),
-                ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore" + "10", 1) };
+            ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore" + "1", 1),
+            ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore" + "2", 1),
+            ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore" + "3", 1),
+            ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore" + "4", 1),
+            ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore" + "5", 1),
+            ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore" + "6", 1),
+            ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore" + "7", 1),
+            ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore" + "8", 1),
+            ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore" + "9", 1),
+            ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore" + "10", 1) };
         return ItemUtils.getSimpleStack(aOutput[MathUtils.balance(aTier, 0, 9)], aAmount);
     }
 
@@ -520,7 +521,7 @@ public class CI {
 
         if (aPrefix == OrePrefixes.liquid) {
             int aMatID = (aTier == 0 || aTier == 2 || aTier == 5 || aTier == 8 ? 0
-                    : (aTier == 1 || aTier == 3 || aTier == 6 || aTier == 9 ? 1 : 2));
+                : (aTier == 1 || aTier == 3 || aTier == 6 || aTier == 9 ? 1 : 2));
             ItemStack aCell = aMaster[aMatID][aTier].getCell(aAmount);
             return aCell;
         }
@@ -535,9 +536,9 @@ public class CI {
 
         // Check for Cables first, catch SuperConductor case and swap to wire.
         if (aPrefix == OrePrefixes.cableGt01 || aPrefix == OrePrefixes.cableGt02
-                || aPrefix == OrePrefixes.cableGt04
-                || aPrefix == OrePrefixes.cableGt08
-                || aPrefix == OrePrefixes.cableGt12) {
+            || aPrefix == OrePrefixes.cableGt04
+            || aPrefix == OrePrefixes.cableGt08
+            || aPrefix == OrePrefixes.cableGt12) {
             // Special Handler
             if (aTier == 10) {
                 if (aPrefix == OrePrefixes.cableGt01) {
@@ -556,18 +557,18 @@ public class CI {
             }
         }
         if (aPrefix == OrePrefixes.wireGt01 || aPrefix == OrePrefixes.wireGt02
-                || aPrefix == OrePrefixes.wireGt04
-                || aPrefix == OrePrefixes.wireGt08
-                || aPrefix == OrePrefixes.wireGt12
-                || aPrefix == OrePrefixes.wireGt16) {
+            || aPrefix == OrePrefixes.wireGt04
+            || aPrefix == OrePrefixes.wireGt08
+            || aPrefix == OrePrefixes.wireGt12
+            || aPrefix == OrePrefixes.wireGt16) {
             return ItemUtils.getOrePrefixStack(aPrefix, aMaterial_Cables[aTier], aAmount);
         }
 
         if (aPrefix == OrePrefixes.pipeTiny || aPrefix == OrePrefixes.pipeSmall
-                || aPrefix == OrePrefixes.pipe
-                || aPrefix == OrePrefixes.pipeMedium
-                || aPrefix == OrePrefixes.pipeLarge
-                || aPrefix == OrePrefixes.pipeHuge) {
+            || aPrefix == OrePrefixes.pipe
+            || aPrefix == OrePrefixes.pipeMedium
+            || aPrefix == OrePrefixes.pipeLarge
+            || aPrefix == OrePrefixes.pipeHuge) {
 
             if (aPrefix == OrePrefixes.pipe) {
                 aPrefix = OrePrefixes.pipeMedium;
@@ -952,9 +953,9 @@ public class CI {
 
     public static ItemStack getTieredGTPPMachineCasing(int aTier, int aAmount) {
         GregtechItemList[] aHulls = new GregtechItemList[] { GregtechItemList.GTPP_Casing_ULV,
-                GregtechItemList.GTPP_Casing_LV, GregtechItemList.GTPP_Casing_MV, GregtechItemList.GTPP_Casing_HV,
-                GregtechItemList.GTPP_Casing_EV, GregtechItemList.GTPP_Casing_IV, GregtechItemList.GTPP_Casing_LuV,
-                GregtechItemList.GTPP_Casing_ZPM, GregtechItemList.GTPP_Casing_UV, GregtechItemList.GTPP_Casing_UHV };
+            GregtechItemList.GTPP_Casing_LV, GregtechItemList.GTPP_Casing_MV, GregtechItemList.GTPP_Casing_HV,
+            GregtechItemList.GTPP_Casing_EV, GregtechItemList.GTPP_Casing_IV, GregtechItemList.GTPP_Casing_LuV,
+            GregtechItemList.GTPP_Casing_ZPM, GregtechItemList.GTPP_Casing_UV, GregtechItemList.GTPP_Casing_UHV };
         return aHulls[aTier].get(aAmount);
     }
 
@@ -964,10 +965,10 @@ public class CI {
 
     public static ItemStack getTransmissionComponent(int aTier, int aAmount) {
         GregtechItemList[] aTransParts = new GregtechItemList[] { null, GregtechItemList.TransmissionComponent_LV,
-                GregtechItemList.TransmissionComponent_MV, GregtechItemList.TransmissionComponent_HV,
-                GregtechItemList.TransmissionComponent_EV, GregtechItemList.TransmissionComponent_IV,
-                GregtechItemList.TransmissionComponent_LuV, GregtechItemList.TransmissionComponent_ZPM,
-                GregtechItemList.TransmissionComponent_UV, GregtechItemList.TransmissionComponent_UHV, };
+            GregtechItemList.TransmissionComponent_MV, GregtechItemList.TransmissionComponent_HV,
+            GregtechItemList.TransmissionComponent_EV, GregtechItemList.TransmissionComponent_IV,
+            GregtechItemList.TransmissionComponent_LuV, GregtechItemList.TransmissionComponent_ZPM,
+            GregtechItemList.TransmissionComponent_UV, GregtechItemList.TransmissionComponent_UHV, };
         return aTransParts[aTier].get(aAmount);
     }
 

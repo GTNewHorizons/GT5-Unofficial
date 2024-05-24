@@ -56,7 +56,8 @@ public class CustomMovementHandler {
         //
 
         // Check to see if Enabled - Added 6/17/14 to provide option to disable Sneak Toggle
-        final boolean isSneaking = SneakManager.get(thisPlayer).Sneaking();
+        final boolean isSneaking = SneakManager.get(thisPlayer)
+            .Sneaking();
         if (isSneaking) {
             // Key Pressed
             if (settings.keyBindSneak.getIsKeyPressed() && !this.handledSneakPress) {
@@ -90,7 +91,8 @@ public class CustomMovementHandler {
             options.sneak = settings.keyBindSneak.getIsKeyPressed();
         }
 
-        if (options.sneak || SneakManager.get(thisPlayer).Sneaking()) {
+        if (options.sneak || SneakManager.get(thisPlayer)
+            .Sneaking()) {
             options.moveStrafe = (float) (options.moveStrafe * 0.3D);
             options.moveForward = (float) (options.moveForward * 0.3D);
         }
@@ -100,13 +102,14 @@ public class CustomMovementHandler {
         //
 
         // Establish conditions where we don't want to start a sprint - sneaking, riding, flying, hungry
-        final boolean enoughHunger = (thisPlayer.getFoodStats().getFoodLevel() > 6.0F)
-                || thisPlayer.capabilities.isFlying;
+        final boolean enoughHunger = (thisPlayer.getFoodStats()
+            .getFoodLevel() > 6.0F) || thisPlayer.capabilities.isFlying;
         final boolean canSprint = !options.sneak && !thisPlayer.isRiding()
-                && !thisPlayer.capabilities.isFlying
-                && enoughHunger;
+            && !thisPlayer.capabilities.isFlying
+            && enoughHunger;
 
-        this.isDisabled = !SneakManager.get(thisPlayer).Sprinting();
+        this.isDisabled = !SneakManager.get(thisPlayer)
+            .Sprinting();
         this.canDoubleTap = SneakManager.get(thisPlayer).optionDoubleTap;
 
         // Key Pressed

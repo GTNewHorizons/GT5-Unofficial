@@ -20,8 +20,8 @@ import gtPlusPlus.core.gui.GUI_Base_Tile_Entity;
 public class GUI_SuperJukebox extends GUI_Base_Tile_Entity {
 
     private static final ResourceLocation craftingTableGuiTextures = new ResourceLocation(
-            GTPlusPlus.ID,
-            "textures/gui/SuperJukebox.png");
+        GTPlusPlus.ID,
+        "textures/gui/SuperJukebox.png");
     private final Container_SuperJukebox mThisContainer;
 
     public GUI_SuperJukebox(final InventoryPlayer player_inventory, final TileEntitySuperJukebox te) {

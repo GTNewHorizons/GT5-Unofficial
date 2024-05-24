@@ -75,7 +75,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers.G
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<GregtechMTE_ChemicalPlant>
-        implements ISurvivalConstructable {
+    implements ISurvivalConstructable {
 
     private int mSolidCasingTier = 0;
     private int mMachineCasingTier = 0;
@@ -105,8 +105,8 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
         Triplet<Block, Integer, Integer> aCasingData = new Triplet<>(aBlock, aMeta, aCasingTextureID);
         if (mTieredBlockRegistry.containsKey(aTier)) {
             CORE.crash(
-                    "Tried to register a Machine casing for tier " + aTier
-                            + " to the Chemical Plant, however this tier already contains one.");
+                "Tried to register a Machine casing for tier " + aTier
+                    + " to the Chemical Plant, however this tier already contains one.");
         }
         mTieredBlockRegistry.put(aTier, aCasingData);
         return true;
@@ -116,7 +116,8 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
         if (!mTieredBlockRegistry.containsKey(aTier)) {
             return 10;
         }
-        int aCasingID = mTieredBlockRegistry.get(aTier).getValue_3();
+        int aCasingID = mTieredBlockRegistry.get(aTier)
+            .getValue_3();
         // Logger.INFO("Found casing texture ID "+aCasingID+" for tier "+aTier);
         return aCasingID;
     }
@@ -134,15 +135,24 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType()).addInfo("Controller Block for the Chemical Plant")
-                .addInfo("Heavy Industry, now right at your doorstep!")
-                .addInfo("Please read the user manual for more information on construction and usage").addSeparator()
-                .addController("Bottom Center").addStructureHint("Catalyst Housing", 1).addInputBus("Bottom Casing", 1)
-                .addOutputBus("Bottom Casing", 1).addInputHatch("Bottom Casing", 1).addOutputHatch("Bottom Casing", 1)
-                .addEnergyHatch("Bottom Casing", 1).addMaintenanceHatch("Bottom Casing", 1)
-                .addSubChannelUsage("casing", "metal machine casing")
-                .addSubChannelUsage("machine", "tier machine casing").addSubChannelUsage("coil", "heating coil blocks")
-                .addSubChannelUsage("pipe", "pipe casing blocks").toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+        tt.addMachineType(getMachineType())
+            .addInfo("Controller Block for the Chemical Plant")
+            .addInfo("Heavy Industry, now right at your doorstep!")
+            .addInfo("Please read the user manual for more information on construction and usage")
+            .addSeparator()
+            .addController("Bottom Center")
+            .addStructureHint("Catalyst Housing", 1)
+            .addInputBus("Bottom Casing", 1)
+            .addOutputBus("Bottom Casing", 1)
+            .addInputHatch("Bottom Casing", 1)
+            .addOutputHatch("Bottom Casing", 1)
+            .addEnergyHatch("Bottom Casing", 1)
+            .addMaintenanceHatch("Bottom Casing", 1)
+            .addSubChannelUsage("casing", "metal machine casing")
+            .addSubChannelUsage("machine", "tier machine casing")
+            .addSubChannelUsage("coil", "heating coil blocks")
+            .addSubChannelUsage("pipe", "pipe casing blocks")
+            .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
@@ -174,68 +184,74 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
     public IStructureDefinition<GregtechMTE_ChemicalPlant> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             IStructureElement<GregtechMTE_ChemicalPlant> allCasingsElement = withChannel(
-                    "casing",
-                    ofChain(
-                            IntStream.range(0, 8).mapToObj(GregtechMTE_ChemicalPlant::ofSolidCasing)
-                                    .collect(Collectors.toList())));
-            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMTE_ChemicalPlant>builder().addShape(
+                "casing",
+                ofChain(
+                    IntStream.range(0, 8)
+                        .mapToObj(GregtechMTE_ChemicalPlant::ofSolidCasing)
+                        .collect(Collectors.toList())));
+            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMTE_ChemicalPlant>builder()
+                .addShape(
                     mName,
                     transpose(
-                            new String[][] {
-                                    { "XXXXXXX", "XXXXXXX", "XXXXXXX", "XXXXXXX", "XXXXXXX", "XXXXXXX", "XXXXXXX" },
-                                    { "X     X", " MMMMM ", " MHHHM ", " MHHHM ", " MHHHM ", " MMMMM ", "X     X" },
-                                    { "X     X", "       ", "  PPP  ", "  PPP  ", "  PPP  ", "       ", "X     X" },
-                                    { "X     X", "       ", "  HHH  ", "  HHH  ", "  HHH  ", "       ", "X     X" },
-                                    { "X     X", "       ", "  PPP  ", "  PPP  ", "  PPP  ", "       ", "X     X" },
-                                    { "X     X", " MMMMM ", " MHHHM ", " MHHHM ", " MHHHM ", " MMMMM ", "X     X" },
-                                    { "CCC~CCC", "CMMMMMC", "CMMMMMC", "CMMMMMC", "CMMMMMC", "CMMMMMC", "CCCCCCC" }, }))
-                    .addElement(
-                            'C',
-                            ofChain(
-                                    buildHatchAdder(GregtechMTE_ChemicalPlant.class).atLeast(Maintenance)
-                                            .casingIndex(getCasingTextureID()).dot(1).build(),
-                                    buildHatchAdder(GregtechMTE_ChemicalPlant.class)
-                                            .atLeast(InputHatch, OutputHatch, InputBus, OutputBus)
-                                            .adder(GregtechMTE_ChemicalPlant::addChemicalPlantList)
-                                            .hatchItemFilterAnd(
-                                                    (t, s) -> filterByMTETier(
-                                                            Integer.MIN_VALUE,
-                                                            s.stackSize >= 10 ? Integer.MAX_VALUE : s.stackSize))
-                                            .casingIndex(getCasingTextureID()).dot(1).build(),
-                                    buildHatchAdder(GregtechMTE_ChemicalPlant.class)
-                                            .hatchClass(GT_MetaTileEntity_Hatch_Catalysts.class)
-                                            .shouldReject(t -> t.mCatalystBuses.size() >= 1)
-                                            .adder(GregtechMTE_ChemicalPlant::addChemicalPlantList)
-                                            .casingIndex(getCasingTextureID()).dot(1).build(),
-                                    allCasingsElement))
-                    .addElement('X', allCasingsElement)
-                    .addElement(
-                            'M',
-                            withChannel(
-                                    "machine",
-                                    addTieredBlock(
-                                            GregTech_API.sBlockCasings1,
-                                            GregtechMTE_ChemicalPlant::setMachineMeta,
-                                            GregtechMTE_ChemicalPlant::getMachineMeta,
-                                            10)))
-                    .addElement(
-                            'H',
-                            withChannel(
-                                    "coil",
-                                    ofCoil(
-                                            GregtechMTE_ChemicalPlant::setCoilMeta,
-                                            GregtechMTE_ChemicalPlant::getCoilMeta)))
-                    .addElement(
-                            'P',
-                            withChannel(
-                                    "pipe",
-                                    addTieredBlock(
-                                            GregTech_API.sBlockCasings2,
-                                            GregtechMTE_ChemicalPlant::setPipeMeta,
-                                            GregtechMTE_ChemicalPlant::getPipeMeta,
-                                            12,
-                                            16)))
-                    .build();
+                        new String[][] {
+                            { "XXXXXXX", "XXXXXXX", "XXXXXXX", "XXXXXXX", "XXXXXXX", "XXXXXXX", "XXXXXXX" },
+                            { "X     X", " MMMMM ", " MHHHM ", " MHHHM ", " MHHHM ", " MMMMM ", "X     X" },
+                            { "X     X", "       ", "  PPP  ", "  PPP  ", "  PPP  ", "       ", "X     X" },
+                            { "X     X", "       ", "  HHH  ", "  HHH  ", "  HHH  ", "       ", "X     X" },
+                            { "X     X", "       ", "  PPP  ", "  PPP  ", "  PPP  ", "       ", "X     X" },
+                            { "X     X", " MMMMM ", " MHHHM ", " MHHHM ", " MHHHM ", " MMMMM ", "X     X" },
+                            { "CCC~CCC", "CMMMMMC", "CMMMMMC", "CMMMMMC", "CMMMMMC", "CMMMMMC", "CCCCCCC" }, }))
+                .addElement(
+                    'C',
+                    ofChain(
+                        buildHatchAdder(GregtechMTE_ChemicalPlant.class).atLeast(Maintenance)
+                            .casingIndex(getCasingTextureID())
+                            .dot(1)
+                            .build(),
+                        buildHatchAdder(GregtechMTE_ChemicalPlant.class)
+                            .atLeast(InputHatch, OutputHatch, InputBus, OutputBus)
+                            .adder(GregtechMTE_ChemicalPlant::addChemicalPlantList)
+                            .hatchItemFilterAnd(
+                                (t, s) -> filterByMTETier(
+                                    Integer.MIN_VALUE,
+                                    s.stackSize >= 10 ? Integer.MAX_VALUE : s.stackSize))
+                            .casingIndex(getCasingTextureID())
+                            .dot(1)
+                            .build(),
+                        buildHatchAdder(GregtechMTE_ChemicalPlant.class)
+                            .hatchClass(GT_MetaTileEntity_Hatch_Catalysts.class)
+                            .shouldReject(t -> t.mCatalystBuses.size() >= 1)
+                            .adder(GregtechMTE_ChemicalPlant::addChemicalPlantList)
+                            .casingIndex(getCasingTextureID())
+                            .dot(1)
+                            .build(),
+                        allCasingsElement))
+                .addElement('X', allCasingsElement)
+                .addElement(
+                    'M',
+                    withChannel(
+                        "machine",
+                        addTieredBlock(
+                            GregTech_API.sBlockCasings1,
+                            GregtechMTE_ChemicalPlant::setMachineMeta,
+                            GregtechMTE_ChemicalPlant::getMachineMeta,
+                            10)))
+                .addElement(
+                    'H',
+                    withChannel(
+                        "coil",
+                        ofCoil(GregtechMTE_ChemicalPlant::setCoilMeta, GregtechMTE_ChemicalPlant::getCoilMeta)))
+                .addElement(
+                    'P',
+                    withChannel(
+                        "pipe",
+                        addTieredBlock(
+                            GregTech_API.sBlockCasings2,
+                            GregtechMTE_ChemicalPlant::setPipeMeta,
+                            GregtechMTE_ChemicalPlant::getPipeMeta,
+                            12,
+                            16)))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -255,8 +271,10 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
             private boolean check(int aIndex, World world, int x, int y, int z) {
                 Block block = world.getBlock(x, y, z);
                 int meta = world.getBlockMetadata(x, y, z);
-                Block target = mTieredBlockRegistry.get(aIndex).getValue_1();
-                int targetMeta = mTieredBlockRegistry.get(aIndex).getValue_2();
+                Block target = mTieredBlockRegistry.get(aIndex)
+                    .getValue_1();
+                int targetMeta = mTieredBlockRegistry.get(aIndex)
+                    .getValue_2();
                 return target.equals(block) && meta == targetMeta;
             }
 
@@ -268,50 +286,58 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
             @Override
             public boolean spawnHint(GregtechMTE_ChemicalPlant t, World world, int x, int y, int z, ItemStack trigger) {
                 StructureLibAPI.hintParticle(
-                        world,
-                        x,
-                        y,
-                        z,
-                        mTieredBlockRegistry.get(getIndex(trigger.stackSize)).getValue_1(),
-                        mTieredBlockRegistry.get(getIndex(trigger.stackSize)).getValue_2());
+                    world,
+                    x,
+                    y,
+                    z,
+                    mTieredBlockRegistry.get(getIndex(trigger.stackSize))
+                        .getValue_1(),
+                    mTieredBlockRegistry.get(getIndex(trigger.stackSize))
+                        .getValue_2());
                 return true;
             }
 
             @Override
             public boolean placeBlock(GregtechMTE_ChemicalPlant t, World world, int x, int y, int z,
-                    ItemStack trigger) {
+                ItemStack trigger) {
                 return world.setBlock(
-                        x,
-                        y,
-                        z,
-                        mTieredBlockRegistry.get(getIndex(trigger.stackSize)).getValue_1(),
-                        mTieredBlockRegistry.get(getIndex(trigger.stackSize)).getValue_2(),
-                        3);
+                    x,
+                    y,
+                    z,
+                    mTieredBlockRegistry.get(getIndex(trigger.stackSize))
+                        .getValue_1(),
+                    mTieredBlockRegistry.get(getIndex(trigger.stackSize))
+                        .getValue_2(),
+                    3);
             }
 
             @Nullable
             @Override
             public BlocksToPlace getBlocksToPlace(GregtechMTE_ChemicalPlant gregtechMTE_chemicalPlant, World world,
-                    int x, int y, int z, ItemStack trigger, AutoPlaceEnvironment env) {
+                int x, int y, int z, ItemStack trigger, AutoPlaceEnvironment env) {
                 return BlocksToPlace.create(
-                        mTieredBlockRegistry.get(getIndex(trigger.stackSize)).getValue_1(),
-                        mTieredBlockRegistry.get(getIndex(trigger.stackSize)).getValue_2());
+                    mTieredBlockRegistry.get(getIndex(trigger.stackSize))
+                        .getValue_1(),
+                    mTieredBlockRegistry.get(getIndex(trigger.stackSize))
+                        .getValue_2());
             }
 
             @Override
             public PlaceResult survivalPlaceBlock(GregtechMTE_ChemicalPlant t, World world, int x, int y, int z,
-                    ItemStack trigger, AutoPlaceEnvironment env) {
+                ItemStack trigger, AutoPlaceEnvironment env) {
                 if (check(getIndex(trigger.stackSize), world, x, y, z)) return PlaceResult.SKIP;
                 return StructureUtility.survivalPlaceBlock(
-                        mTieredBlockRegistry.get(getIndex(trigger.stackSize)).getValue_1(),
-                        mTieredBlockRegistry.get(getIndex(trigger.stackSize)).getValue_2(),
-                        world,
-                        x,
-                        y,
-                        z,
-                        env.getSource(),
-                        env.getActor(),
-                        env.getChatter());
+                    mTieredBlockRegistry.get(getIndex(trigger.stackSize))
+                        .getValue_1(),
+                    mTieredBlockRegistry.get(getIndex(trigger.stackSize))
+                        .getValue_2(),
+                    world,
+                    x,
+                    y,
+                    z,
+                    env.getSource(),
+                    env.getActor(),
+                    env.getChatter());
             }
         };
     }

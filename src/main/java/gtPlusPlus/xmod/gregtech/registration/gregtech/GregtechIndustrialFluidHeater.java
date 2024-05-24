@@ -13,9 +13,9 @@ public class GregtechIndustrialFluidHeater {
 
     private static void run1() {
         GregtechItemList.Controller_IndustrialFluidHeater.set(
-                new GregtechMetaTileEntity_IndustrialFluidHeater(
-                        31077,
-                        "industrialfluidheater.controller.tier.single",
-                        "Thermic Heating Device").getStackForm(1L));
+            new GregtechMetaTileEntity_IndustrialFluidHeater(
+                31077,
+                "industrialfluidheater.controller.tier.single",
+                "Thermic Heating Device").getStackForm(1L));
     }
 }

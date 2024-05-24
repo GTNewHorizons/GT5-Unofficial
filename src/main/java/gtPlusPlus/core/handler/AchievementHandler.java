@@ -45,33 +45,33 @@ public class AchievementHandler {
 
         // register first
         this.registerAchievement(
-                aBaseAchievementName,
-                0,
-                0,
-                MetaGeneratedGregtechTools.INSTANCE.getToolWithStats(
-                        MetaGeneratedGregtechTools.ANGLE_GRINDER,
-                        1,
-                        Materials.Osmium,
-                        Materials.Osmium,
-                        null),
-                "",
-                true);
+            aBaseAchievementName,
+            0,
+            0,
+            MetaGeneratedGregtechTools.INSTANCE.getToolWithStats(
+                MetaGeneratedGregtechTools.ANGLE_GRINDER,
+                1,
+                Materials.Osmium,
+                Materials.Osmium,
+                null),
+            "",
+            true);
 
         this.registerAchievement(
-                "hatch.dynamo.buffered",
-                2,
-                -2,
-                GregtechItemList.Hatch_Buffer_Dynamo_IV.get(1),
-                aBaseAchievementName,
-                false);
+            "hatch.dynamo.buffered",
+            2,
+            -2,
+            GregtechItemList.Hatch_Buffer_Dynamo_IV.get(1),
+            aBaseAchievementName,
+            false);
         // First multi anyone really needs
         this.registerAchievement(
-                "multi.abs",
-                -4,
-                -2,
-                GregtechItemList.Industrial_AlloyBlastSmelter.get(1),
-                aBaseAchievementName,
-                true);
+            "multi.abs",
+            -4,
+            -2,
+            GregtechItemList.Industrial_AlloyBlastSmelter.get(1),
+            aBaseAchievementName,
+            true);
 
         // Material Advancement
         this.registerAchievement("dust.potin", 0, 2, ALLOY.POTIN.getDust(1), aBaseAchievementName, false);
@@ -82,167 +82,172 @@ public class AchievementHandler {
 
         // Blocks
         this.registerAchievement(
-                "block.fishtrap",
-                -2,
-                2,
-                ItemUtils.getSimpleStack(ModBlocks.blockFishTrap),
-                "dust.potin",
-                false);
+            "block.fishtrap",
+            -2,
+            2,
+            ItemUtils.getSimpleStack(ModBlocks.blockFishTrap),
+            "dust.potin",
+            false);
         this.registerAchievement(
-                "block.withercage",
-                -2,
-                4,
-                ItemUtils.getSimpleStack(ModBlocks.blockWitherGuard),
-                "dust.eglin",
-                false);
+            "block.withercage",
+            -2,
+            4,
+            ItemUtils.getSimpleStack(ModBlocks.blockWitherGuard),
+            "dust.eglin",
+            false);
 
         // Machines (-10/-8/-6)
         this.registerAchievement("rtg", -16, -10, GregtechItemList.RTG.get(1), aBaseAchievementName, false);
         this.registerAchievement(
-                "dehydrate",
-                -15,
-                -10,
-                GregtechItemList.GT_Dehydrator_HV.get(1),
-                aBaseAchievementName,
-                false);
+            "dehydrate",
+            -15,
+            -10,
+            GregtechItemList.GT_Dehydrator_HV.get(1),
+            aBaseAchievementName,
+            false);
         this.registerAchievement(
-                "semifluid",
-                -14,
-                -10,
-                GregtechItemList.Generator_SemiFluid_HV.get(1),
-                aBaseAchievementName,
-                false);
+            "semifluid",
+            -14,
+            -10,
+            GregtechItemList.Generator_SemiFluid_HV.get(1),
+            aBaseAchievementName,
+            false);
         this.registerAchievement(
-                "earlywasher",
-                -13,
-                -10,
-                GregtechItemList.SimpleDustWasher_ULV.get(1),
-                aBaseAchievementName,
-                false);
+            "earlywasher",
+            -13,
+            -10,
+            GregtechItemList.SimpleDustWasher_ULV.get(1),
+            aBaseAchievementName,
+            false);
         this.registerAchievement(
-                "advancedsteam",
-                -12,
-                -10,
-                GregtechItemList.Boiler_Advanced_MV.get(1),
-                aBaseAchievementName,
-                false);
+            "advancedsteam",
+            -12,
+            -10,
+            GregtechItemList.Boiler_Advanced_MV.get(1),
+            aBaseAchievementName,
+            false);
         if (PollutionUtils.isPollutionEnabled()) {
             this.registerAchievement(
-                    "pollutionremoval",
-                    -11,
-                    -10,
-                    GregtechItemList.Pollution_Cleaner_IV.get(1),
-                    aBaseAchievementName,
-                    false);
-        }
-        this.registerAchievement(
-                "hiampxform",
+                "pollutionremoval",
+                -11,
                 -10,
-                -10,
-                GregtechItemList.Transformer_HA_HV_MV.get(1),
+                GregtechItemList.Pollution_Cleaner_IV.get(1),
                 aBaseAchievementName,
                 false);
+        }
+        this.registerAchievement(
+            "hiampxform",
+            -10,
+            -10,
+            GregtechItemList.Transformer_HA_HV_MV.get(1),
+            aBaseAchievementName,
+            false);
 
         // Multis (-4/-2/0)
         this.registerAchievement("multi.pss", -16, -7, GregtechItemList.PowerSubStation.get(1), "multi.abs", false);
         this.registerAchievement("multi.cyclo", -15, -7, GregtechItemList.COMET_Cyclotron.get(1), "multi.abs", false);
         this.registerAchievement(
-                "multi.sifter",
-                -14,
-                -7,
-                GregtechItemList.Industrial_Sifter.get(1),
-                "dust.eglin",
-                false);
+            "multi.sifter",
+            -14,
+            -7,
+            GregtechItemList.Industrial_Sifter.get(1),
+            "dust.eglin",
+            false);
         this.registerAchievement(
-                "multi.cokeoven",
-                -13,
-                -7,
-                GregtechItemList.Industrial_CokeOven.get(1),
-                "multi.abs",
-                false);
+            "multi.cokeoven",
+            -13,
+            -7,
+            GregtechItemList.Industrial_CokeOven.get(1),
+            "multi.abs",
+            false);
         this.registerAchievement(
-                "multi.boiler.thermal",
-                -12,
-                -7,
-                GregtechItemList.GT4_Thermal_Boiler.get(1),
-                "multi.abs",
-                false);
+            "multi.boiler.thermal",
+            -12,
+            -7,
+            GregtechItemList.GT4_Thermal_Boiler.get(1),
+            "multi.abs",
+            false);
         this.registerAchievement(
-                "multi.zhuhai",
-                -11,
-                -7,
-                GregtechItemList.Industrial_FishingPond.get(1),
-                aBaseAchievementName,
-                false);
+            "multi.zhuhai",
+            -11,
+            -7,
+            GregtechItemList.Industrial_FishingPond.get(1),
+            aBaseAchievementName,
+            false);
 
         // Casings
         this.registerAchievement(
-                "casing.abs",
-                2,
-                -10,
-                GregtechItemList.Casing_Coil_BlastSmelter.get(1),
-                aBaseAchievementName,
-                false);
+            "casing.abs",
+            2,
+            -10,
+            GregtechItemList.Casing_Coil_BlastSmelter.get(1),
+            aBaseAchievementName,
+            false);
         this.registerAchievement(
-                "casing.cyclotron.coil",
-                3,
-                -10,
-                GregtechItemList.Casing_Cyclotron_Coil.get(1),
-                aBaseAchievementName,
-                false);
+            "casing.cyclotron.coil",
+            3,
+            -10,
+            GregtechItemList.Casing_Cyclotron_Coil.get(1),
+            aBaseAchievementName,
+            false);
         this.registerAchievement(
-                "casing.multiuse",
-                4,
-                -10,
-                GregtechItemList.Casing_Multi_Use.get(1),
-                aBaseAchievementName,
-                false);
+            "casing.multiuse",
+            4,
+            -10,
+            GregtechItemList.Casing_Multi_Use.get(1),
+            aBaseAchievementName,
+            false);
         this.registerAchievement(
-                "casing.containment",
-                5,
-                -10,
-                GregtechItemList.Casing_Containment.get(1),
-                aBaseAchievementName,
-                false);
+            "casing.containment",
+            5,
+            -10,
+            GregtechItemList.Casing_Containment.get(1),
+            aBaseAchievementName,
+            false);
 
         // Radioactive
         this.registerAchievement(
-                "decay.neptunium238",
-                11,
-                8,
-                ItemUtils.getSimpleStack(ModItems.dustNeptunium238),
-                "multi.cyclo",
-                false);
+            "decay.neptunium238",
+            11,
+            8,
+            ItemUtils.getSimpleStack(ModItems.dustNeptunium238),
+            "multi.cyclo",
+            false);
         this.registerAchievement(
-                "decay.radium226",
-                12,
-                8,
-                ItemUtils.getSimpleStack(ModItems.dustRadium226),
-                "multi.cyclo",
-                false);
+            "decay.radium226",
+            12,
+            8,
+            ItemUtils.getSimpleStack(ModItems.dustRadium226),
+            "multi.cyclo",
+            false);
         this.registerAchievement(
-                "decay.molybdenum99",
-                13,
-                8,
-                ItemUtils.getSimpleStack(ModItems.dustMolybdenum99),
-                "multi.cyclo",
-                false);
+            "decay.molybdenum99",
+            13,
+            8,
+            ItemUtils.getSimpleStack(ModItems.dustMolybdenum99),
+            "multi.cyclo",
+            false);
 
         AchievementPage.registerAchievementPage(
-                new AchievementPage("GT++", this.achievementList.values().toArray(new Achievement[0])));
+            new AchievementPage(
+                "GT++",
+                this.achievementList.values()
+                    .toArray(new Achievement[0])));
         MinecraftForge.EVENT_BUS.register(this);
-        FMLCommonHandler.instance().bus().register(this);
+        FMLCommonHandler.instance()
+            .bus()
+            .register(this);
     }
 
     public Achievement registerAchievement(String textId, int x, int y, ItemStack icon, String requirement,
-            boolean special) {
+        boolean special) {
         Achievement achievement = new Achievement(
-                textId,
-                textId,
-                this.adjX + x,
-                this.adjY + y,
-                icon,
-                this.getAchievement(requirement));
+            textId,
+            textId,
+            this.adjX + x,
+            this.adjY + y,
+            icon,
+            this.getAchievement(requirement));
         if (special) {
             achievement.setSpecial();
         }
@@ -292,8 +297,10 @@ public class AchievementHandler {
                 return;
             }
 
-            if (ItemUtils.getModId(aStack).equals(GTPlusPlus.ID)
-                    || ItemUtils.getModId(aStack).equalsIgnoreCase(GregTech.ID)) {
+            if (ItemUtils.getModId(aStack)
+                .equals(GTPlusPlus.ID)
+                || ItemUtils.getModId(aStack)
+                    .equalsIgnoreCase(GregTech.ID)) {
                 isValid = true;
             }
             if (!isValid) {
@@ -301,7 +308,8 @@ public class AchievementHandler {
             }
 
             // Should unlock base achievement from *ANY* GT++ item. (Too lazy to special case GT machineBlocks though)
-            if (ItemUtils.getModId(aStack).equals(GTPlusPlus.ID)) {
+            if (ItemUtils.getModId(aStack)
+                .equals(GTPlusPlus.ID)) {
                 this.issueAchievement(aPlayer, aBaseAchievementName);
             }
 

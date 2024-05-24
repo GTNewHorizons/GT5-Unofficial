@@ -96,7 +96,7 @@ public class Container_CircuitProgrammer extends Container {
             for (var6 = 0; var6 < 3; ++var6) {
                 for (var7 = 0; var7 < 9; ++var7) {
                     this.addSlotToContainer(
-                            new Slot(inventory, var7 + (var6 * 9) + 9, 8 + (var7 * 18), 84 + (var6 * 18)));
+                        new Slot(inventory, var7 + (var6 * 9) + 9, 8 + (var7 * 18), 84 + (var6 * 18)));
                 }
             }
             // Player Hotbar
@@ -110,7 +110,7 @@ public class Container_CircuitProgrammer extends Container {
 
     @Override
     public ItemStack slotClick(final int aSlotIndex, final int aMouseclick, final int aShifthold,
-            final EntityPlayer aPlayer) {
+        final EntityPlayer aPlayer) {
 
         if (!aPlayer.worldObj.isRemote) {
             if ((aSlotIndex == 999) || (aSlotIndex == -999)) {

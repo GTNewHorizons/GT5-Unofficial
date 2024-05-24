@@ -14,22 +14,17 @@ public class GregtechSteamMultis {
         Logger.INFO("Gregtech5u Content | Registering Steam Multiblocks.");
 
         GregtechItemList.Controller_SteamMaceratorMulti.set(
-                new GregtechMetaTileEntity_SteamMacerator(31041, "gtpp.multimachine.steam.macerator", "Steam Grinder")
-                        .getStackForm(1L));
+            new GregtechMetaTileEntity_SteamMacerator(31041, "gtpp.multimachine.steam.macerator", "Steam Grinder")
+                .getStackForm(1L));
         GregtechItemList.Controller_SteamCompressorMulti.set(
-                new GregtechMetaTileEntity_SteamCompressor(
-                        31078,
-                        "gtpp.multimachine.steam.compressor",
-                        "Steam Squasher").getStackForm(1L));
+            new GregtechMetaTileEntity_SteamCompressor(31078, "gtpp.multimachine.steam.compressor", "Steam Squasher")
+                .getStackForm(1L));
 
         GregtechItemList.Hatch_Input_Bus_Steam.set(
-                new GT_MetaTileEntity_Hatch_Steam_BusInput(31046, "hatch.input_bus.tier.steam", "Input Bus (Steam)", 0)
-                        .getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Steam_BusInput(31046, "hatch.input_bus.tier.steam", "Input Bus (Steam)", 0)
+                .getStackForm(1L));
         GregtechItemList.Hatch_Output_Bus_Steam.set(
-                new GT_MetaTileEntity_Hatch_Steam_BusOutput(
-                        31047,
-                        "hatch.output_bus.tier.steam",
-                        "Output Bus (Steam)",
-                        0).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Steam_BusOutput(31047, "hatch.output_bus.tier.steam", "Output Bus (Steam)", 0)
+                .getStackForm(1L));
     }
 }

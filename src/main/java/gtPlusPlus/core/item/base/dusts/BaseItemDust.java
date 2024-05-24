@@ -30,7 +30,7 @@ public class BaseItemDust extends BaseItemComponent {
     }
 
     private BaseItemDust(String unlocalizedName, String materialName, Material matInfo, int colour, String pileSize,
-            int tier, boolean addRecipes) {
+        int tier, boolean addRecipes) {
         super(matInfo, ComponentTypes.DUST);
     }
 

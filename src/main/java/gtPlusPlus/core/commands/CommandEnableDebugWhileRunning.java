@@ -71,7 +71,8 @@ public class CommandEnableDebugWhileRunning implements ICommand {
         int aMaxArgumentsAllowed = 2;
 
         if ((argString == null || argString.length == 0 || argString.length > aMaxArgumentsAllowed)
-                || argString[0].toLowerCase().equals("?")) {
+            || argString[0].toLowerCase()
+                .equals("?")) {
             Logger.INFO("Listing commands and their uses.");
             final EntityPlayer P = CommandUtils.getPlayer(S);
             AsmConfig.disableAllLogging = !AsmConfig.disableAllLogging;
@@ -81,126 +82,137 @@ public class CommandEnableDebugWhileRunning implements ICommand {
             PlayerUtils.messagePlayer(P, "hand - Lists information about held item.");
             PlayerUtils.messagePlayer(P, "fuid xxx - Tries to find the fluid in the FluidRegistry.");
             PlayerUtils.messagePlayer(
-                    P,
-                    "debug   - Toggles GT++ Debug Mode. Only use when advised, may break everything. (OP)");
-        } else if (argString[0].toLowerCase().equals("debug")) {
-            Logger.INFO("Toggling Debug Mode.");
-            final EntityPlayer P = CommandUtils.getPlayer(S);
-            if (PlayerUtils.isPlayerOP(P)) {
-                CORE_Preloader.DEBUG_MODE = !CORE_Preloader.DEBUG_MODE;
-                PlayerUtils.messagePlayer(P, "Toggled GT++ Debug Mode - Enabled: " + CORE_Preloader.DEBUG_MODE);
-            }
-        } else if (argString[0].toLowerCase().equals("logging")) {
-            Logger.INFO("Toggling Logging.");
-            final EntityPlayer P = CommandUtils.getPlayer(S);
-            AsmConfig.disableAllLogging = !AsmConfig.disableAllLogging;
-            PlayerUtils.messagePlayer(P, "Toggled GT++ Logging - Enabled: " + (!AsmConfig.disableAllLogging));
-        }
+                P,
+                "debug   - Toggles GT++ Debug Mode. Only use when advised, may break everything. (OP)");
+        } else if (argString[0].toLowerCase()
+            .equals("debug")) {
+                Logger.INFO("Toggling Debug Mode.");
+                final EntityPlayer P = CommandUtils.getPlayer(S);
+                if (PlayerUtils.isPlayerOP(P)) {
+                    CORE_Preloader.DEBUG_MODE = !CORE_Preloader.DEBUG_MODE;
+                    PlayerUtils.messagePlayer(P, "Toggled GT++ Debug Mode - Enabled: " + CORE_Preloader.DEBUG_MODE);
+                }
+            } else if (argString[0].toLowerCase()
+                .equals("logging")) {
+                    Logger.INFO("Toggling Logging.");
+                    final EntityPlayer P = CommandUtils.getPlayer(S);
+                    AsmConfig.disableAllLogging = !AsmConfig.disableAllLogging;
+                    PlayerUtils.messagePlayer(P, "Toggled GT++ Logging - Enabled: " + (!AsmConfig.disableAllLogging));
+                }
         /*
          * else if (argString[0].toLowerCase().equals("test")) { ItemStack mSemiFluidgen =
          * ItemUtils.simpleMetaStack("IC2:blockGenerator", 7, 1); final EntityPlayer P = CommandUtils.getPlayer(S);
          * if(mSemiFluidgen != null) { PlayerUtils.messagePlayer(P, ItemUtils.getItemName(mSemiFluidgen)); } }
          */
 
-        else if (argString[0].toLowerCase().equals("inv")) {
-            final EntityPlayer P = CommandUtils.getPlayer(S);
-            if (P != null && !P.worldObj.isRemote) {
-                ItemStack[] aInv = P.inventory.mainInventory;
-                for (ItemStack aItem : aInv) {
-                    if (aItem != null) {
-                        String aModID = GameRegistry.findUniqueIdentifierFor(aItem.getItem()).modId;
-                        String aRegistryName = GameRegistry.findUniqueIdentifierFor(aItem.getItem()).name;
-                        Logger.INFO(
+        else if (argString[0].toLowerCase()
+            .equals("inv")) {
+                final EntityPlayer P = CommandUtils.getPlayer(S);
+                if (P != null && !P.worldObj.isRemote) {
+                    ItemStack[] aInv = P.inventory.mainInventory;
+                    for (ItemStack aItem : aInv) {
+                        if (aItem != null) {
+                            String aModID = GameRegistry.findUniqueIdentifierFor(aItem.getItem()).modId;
+                            String aRegistryName = GameRegistry.findUniqueIdentifierFor(aItem.getItem()).name;
+                            Logger.INFO(
                                 aModID + ":"
-                                        + aRegistryName
-                                        + ":"
-                                        + aItem.getItemDamage()
-                                        + " | "
-                                        + aItem.getDisplayName());
-                    }
-                }
-                PlayerUtils.messagePlayer(P, "Dumped Inventory.");
-            }
-        } else if (argString[0].toLowerCase().equals("hand")) {
-            final EntityPlayer P = CommandUtils.getPlayer(S);
-            if (P != null) {
-                ItemStack aHeldItem = PlayerUtils.getItemStackInPlayersHand(P);
-                if (aHeldItem != null) {
-                    String aItemDisplayName = ItemUtils.getItemName(aHeldItem);
-                    String aItemUnlocalName = ItemUtils.getUnlocalizedItemName(aHeldItem);
-                    String aNbtString = tryIterateNBTData(aHeldItem);
-                    AutoMap<String> aOreDictNames = new AutoMap<>();
-
-                    int[] aOreIDs = OreDictionary.getOreIDs(aHeldItem);
-                    for (int id : aOreIDs) {
-                        String aOreNameFromID = OreDictionary.getOreName(id);
-                        if (aOreNameFromID != null && aOreNameFromID.length() > 0
-                                && !aOreNameFromID.equals("Unknown")) {
-                            aOreDictNames.add(aOreNameFromID);
+                                    + aRegistryName
+                                    + ":"
+                                    + aItem.getItemDamage()
+                                    + " | "
+                                    + aItem.getDisplayName());
                         }
                     }
-
-                    String aOreDictData = "";
-                    if (!aOreDictNames.isEmpty()) {
-                        for (String tag : aOreDictNames) {
-                            aOreDictData += (tag + ", ");
-                        }
-                        if (aOreDictData.endsWith(", ")) {
-                            aOreDictData = aOreDictData.substring(0, aOreDictData.length() - 2);
-                        }
-                    }
-
-                    AutoMap<String> aFluidContainerData = new AutoMap<>();
-                    FluidStack aHeldItemFluid = FluidContainerRegistry.getFluidForFilledItem(aHeldItem);
-                    if (aHeldItemFluid != null) {
-                        aFluidContainerData.put("FluidStack Unlocal Name: " + aHeldItemFluid.getUnlocalizedName());
-                        aFluidContainerData.put("FluidStack Local Name: " + aHeldItemFluid.getLocalizedName());
-                        aFluidContainerData
-                                .put("Fluid Unlocal Name: " + aHeldItemFluid.getFluid().getUnlocalizedName());
-                        aFluidContainerData.put("Fluid Local Name: " + aHeldItemFluid.getLocalizedName());
-                        aFluidContainerData.put("Fluid Name: " + aHeldItemFluid.getFluid().getName());
-                    }
-
-                    PlayerUtils.messagePlayer(P, "[" + aItemUnlocalName + "]" + "[" + aItemDisplayName + "] ");
-                    if (aFluidContainerData.size() > 0) {
-                        for (String s : aFluidContainerData) {
-                            PlayerUtils.messagePlayer(P, "" + s);
-                        }
-                    }
-                    if (!aOreDictNames.isEmpty()) {
-                        PlayerUtils.messagePlayer(P, "" + aOreDictData);
-                    }
-                    if (aNbtString.length() > 0) {
-                        PlayerUtils.messagePlayer(P, "" + aNbtString);
-                    }
-                } else {
-                    PlayerUtils.messagePlayer(P, "No item held.");
+                    PlayerUtils.messagePlayer(P, "Dumped Inventory.");
                 }
-            }
-        } else if (argString[0].toLowerCase().equals("fluid")) {
-            if (argString.length > 1 && argString[1] != null && argString[1].length() > 0) {
-                final EntityPlayer P = CommandUtils.getPlayer(S);
-                FluidStack aFluid = FluidUtils.getWildcardFluidStack(argString[1], 1);
-                if (P != null && aFluid != null) {
-                    PlayerUtils.messagePlayer(P, "Found fluid stack: " + FluidRegistry.getFluidName(aFluid));
-                } else if (P != null && aFluid == null) {
-                    PlayerUtils.messagePlayer(P, "Could not find any fluids.");
-                }
-            }
-        } else if (argString[0].toLowerCase().equals("item")) {
-            if (argString.length > 1 && argString[1] != null && argString[1].length() > 0) {
-                final EntityPlayer P = CommandUtils.getPlayer(S);
-                ItemStack aTest = ItemUtils.getItemStackFromFQRN(argString[1], 1);
-                if (P != null && aTest != null) {
-                    PlayerUtils.messagePlayer(P, "Found fluid stack: " + ItemUtils.getItemName(aTest));
-                } else if (P != null && aTest == null) {
-                    PlayerUtils.messagePlayer(P, "Could not find valid item.");
-                }
-            }
-        } else {
-            final EntityPlayer P = CommandUtils.getPlayer(S);
-            PlayerUtils.messagePlayer(P, "Invalid command, use '?' as an argument for help.'");
-        }
+            } else if (argString[0].toLowerCase()
+                .equals("hand")) {
+                    final EntityPlayer P = CommandUtils.getPlayer(S);
+                    if (P != null) {
+                        ItemStack aHeldItem = PlayerUtils.getItemStackInPlayersHand(P);
+                        if (aHeldItem != null) {
+                            String aItemDisplayName = ItemUtils.getItemName(aHeldItem);
+                            String aItemUnlocalName = ItemUtils.getUnlocalizedItemName(aHeldItem);
+                            String aNbtString = tryIterateNBTData(aHeldItem);
+                            AutoMap<String> aOreDictNames = new AutoMap<>();
+
+                            int[] aOreIDs = OreDictionary.getOreIDs(aHeldItem);
+                            for (int id : aOreIDs) {
+                                String aOreNameFromID = OreDictionary.getOreName(id);
+                                if (aOreNameFromID != null && aOreNameFromID.length() > 0
+                                    && !aOreNameFromID.equals("Unknown")) {
+                                    aOreDictNames.add(aOreNameFromID);
+                                }
+                            }
+
+                            String aOreDictData = "";
+                            if (!aOreDictNames.isEmpty()) {
+                                for (String tag : aOreDictNames) {
+                                    aOreDictData += (tag + ", ");
+                                }
+                                if (aOreDictData.endsWith(", ")) {
+                                    aOreDictData = aOreDictData.substring(0, aOreDictData.length() - 2);
+                                }
+                            }
+
+                            AutoMap<String> aFluidContainerData = new AutoMap<>();
+                            FluidStack aHeldItemFluid = FluidContainerRegistry.getFluidForFilledItem(aHeldItem);
+                            if (aHeldItemFluid != null) {
+                                aFluidContainerData
+                                    .put("FluidStack Unlocal Name: " + aHeldItemFluid.getUnlocalizedName());
+                                aFluidContainerData.put("FluidStack Local Name: " + aHeldItemFluid.getLocalizedName());
+                                aFluidContainerData.put(
+                                    "Fluid Unlocal Name: " + aHeldItemFluid.getFluid()
+                                        .getUnlocalizedName());
+                                aFluidContainerData.put("Fluid Local Name: " + aHeldItemFluid.getLocalizedName());
+                                aFluidContainerData.put(
+                                    "Fluid Name: " + aHeldItemFluid.getFluid()
+                                        .getName());
+                            }
+
+                            PlayerUtils.messagePlayer(P, "[" + aItemUnlocalName + "]" + "[" + aItemDisplayName + "] ");
+                            if (aFluidContainerData.size() > 0) {
+                                for (String s : aFluidContainerData) {
+                                    PlayerUtils.messagePlayer(P, "" + s);
+                                }
+                            }
+                            if (!aOreDictNames.isEmpty()) {
+                                PlayerUtils.messagePlayer(P, "" + aOreDictData);
+                            }
+                            if (aNbtString.length() > 0) {
+                                PlayerUtils.messagePlayer(P, "" + aNbtString);
+                            }
+                        } else {
+                            PlayerUtils.messagePlayer(P, "No item held.");
+                        }
+                    }
+                } else if (argString[0].toLowerCase()
+                    .equals("fluid")) {
+                        if (argString.length > 1 && argString[1] != null && argString[1].length() > 0) {
+                            final EntityPlayer P = CommandUtils.getPlayer(S);
+                            FluidStack aFluid = FluidUtils.getWildcardFluidStack(argString[1], 1);
+                            if (P != null && aFluid != null) {
+                                PlayerUtils
+                                    .messagePlayer(P, "Found fluid stack: " + FluidRegistry.getFluidName(aFluid));
+                            } else if (P != null && aFluid == null) {
+                                PlayerUtils.messagePlayer(P, "Could not find any fluids.");
+                            }
+                        }
+                    } else if (argString[0].toLowerCase()
+                        .equals("item")) {
+                            if (argString.length > 1 && argString[1] != null && argString[1].length() > 0) {
+                                final EntityPlayer P = CommandUtils.getPlayer(S);
+                                ItemStack aTest = ItemUtils.getItemStackFromFQRN(argString[1], 1);
+                                if (P != null && aTest != null) {
+                                    PlayerUtils.messagePlayer(P, "Found fluid stack: " + ItemUtils.getItemName(aTest));
+                                } else if (P != null && aTest == null) {
+                                    PlayerUtils.messagePlayer(P, "Could not find valid item.");
+                                }
+                            }
+                        } else {
+                            final EntityPlayer P = CommandUtils.getPlayer(S);
+                            PlayerUtils.messagePlayer(P, "Invalid command, use '?' as an argument for help.'");
+                        }
     }
 
     @Override
@@ -241,7 +253,10 @@ public class CommandEnableDebugWhileRunning implements ICommand {
                     Map<?, ?> mInternalMap = ReflectionUtils.getField(aNBT, "tagMap");
                     if (mInternalMap != null) {
                         for (Map.Entry<?, ?> e : mInternalMap.entrySet()) {
-                            aItemDataTags.add(e.getKey().toString() + ":" + e.getValue());
+                            aItemDataTags.add(
+                                e.getKey()
+                                    .toString() + ":"
+                                    + e.getValue());
                         }
                         int a = 0;
                         String data = "";

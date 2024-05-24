@@ -96,18 +96,20 @@ public class HellFire extends BlockFire {
 
         random = new XSTR();
 
-        if (world.getGameRules().getGameRuleBooleanValue("doFireTick")) {
-            final boolean flag = world.getBlock(x, y - 1, z).isFireSource(world, x, y - 1, z, UP);
+        if (world.getGameRules()
+            .getGameRuleBooleanValue("doFireTick")) {
+            final boolean flag = world.getBlock(x, y - 1, z)
+                .isFireSource(world, x, y - 1, z, UP);
 
             if (!this.canPlaceBlockAt(world, x, y, z)) {
                 world.setBlockToAir(x, y, z);
             }
 
             if (!flag && world.isRaining()
-                    && (world.canLightningStrikeAt(x, y, z) || world.canLightningStrikeAt(x - 1, y, z)
-                            || world.canLightningStrikeAt(x + 1, y, z)
-                            || world.canLightningStrikeAt(x, y, z - 1)
-                            || world.canLightningStrikeAt(x, y, z + 1))) {
+                && (world.canLightningStrikeAt(x, y, z) || world.canLightningStrikeAt(x - 1, y, z)
+                    || world.canLightningStrikeAt(x + 1, y, z)
+                    || world.canLightningStrikeAt(x, y, z - 1)
+                    || world.canLightningStrikeAt(x, y, z + 1))) {
 
                 if (MathUtils.randInt(0, 100) >= 90) {
                     world.setBlockToAir(x, y, z);
@@ -126,81 +128,79 @@ public class HellFire extends BlockFire {
                         world.setBlockToAir(x, y, z);
                     }
                 } else if (!flag && !this.canCatchFire(world, x, y - 1, z, UP)
-                        && (blockMeta == 15)
-                        && (random.nextInt(4) == 0)) {
-                            world.setBlockToAir(x, y, z);
-                        } else {
-                            final boolean flag1 = world.isBlockHighHumidity(x, y, z);
-                            byte b0 = 0;
+                    && (blockMeta == 15)
+                    && (random.nextInt(4) == 0)) {
+                        world.setBlockToAir(x, y, z);
+                    } else {
+                        final boolean flag1 = world.isBlockHighHumidity(x, y, z);
+                        byte b0 = 0;
 
-                            if (flag1) {
-                                b0 = -50;
-                            }
+                        if (flag1) {
+                            b0 = -50;
+                        }
 
-                            this.tryCatchFire(world, x + 1, y, z, 300 + b0, random, blockMeta, WEST);
-                            this.tryCatchFire(world, x - 1, y, z, 300 + b0, random, blockMeta, EAST);
-                            this.tryCatchFire(world, x, y - 1, z, 250 + b0, random, blockMeta, UP);
-                            this.tryCatchFire(world, x, y + 1, z, 250 + b0, random, blockMeta, DOWN);
-                            this.tryCatchFire(world, x, y, z - 1, 300 + b0, random, blockMeta, SOUTH);
-                            this.tryCatchFire(world, x, y, z + 1, 300 + b0, random, blockMeta, NORTH);
+                        this.tryCatchFire(world, x + 1, y, z, 300 + b0, random, blockMeta, WEST);
+                        this.tryCatchFire(world, x - 1, y, z, 300 + b0, random, blockMeta, EAST);
+                        this.tryCatchFire(world, x, y - 1, z, 250 + b0, random, blockMeta, UP);
+                        this.tryCatchFire(world, x, y + 1, z, 250 + b0, random, blockMeta, DOWN);
+                        this.tryCatchFire(world, x, y, z - 1, 300 + b0, random, blockMeta, SOUTH);
+                        this.tryCatchFire(world, x, y, z + 1, 300 + b0, random, blockMeta, NORTH);
 
-                            for (int i1 = x - 1; i1 <= (x + 1); ++i1) {
-                                for (int j1 = z - 1; j1 <= (z + 1); ++j1) {
-                                    for (int k1 = y - 1; k1 <= (y + 4); ++k1) {
-                                        if ((i1 != x) || (k1 != y) || (j1 != z)) {
-                                            int l1 = 100;
+                        for (int i1 = x - 1; i1 <= (x + 1); ++i1) {
+                            for (int j1 = z - 1; j1 <= (z + 1); ++j1) {
+                                for (int k1 = y - 1; k1 <= (y + 4); ++k1) {
+                                    if ((i1 != x) || (k1 != y) || (j1 != z)) {
+                                        int l1 = 100;
 
-                                            if (k1 > (y + 1)) {
-                                                l1 += (k1 - (y + 1)) * 100;
+                                        if (k1 > (y + 1)) {
+                                            l1 += (k1 - (y + 1)) * 100;
+                                        }
+
+                                        final int neighbourFireChance = this
+                                            .getChanceOfNeighborsEncouragingFire(world, i1, k1, j1);
+
+                                        if (neighbourFireChance > 0) {
+                                            int j2 = (neighbourFireChance + 40
+                                                + (world.difficultySetting.getDifficultyId() * 14)) / (blockMeta + 30);
+
+                                            if (flag1) {
+                                                j2 /= 2;
                                             }
 
-                                            final int neighbourFireChance = this
-                                                    .getChanceOfNeighborsEncouragingFire(world, i1, k1, j1);
+                                            if ((j2 > 0) && (random.nextInt(l1) <= j2)
+                                                && (!world.isRaining() || !world.canLightningStrikeAt(i1, k1, j1))
+                                                && !world.canLightningStrikeAt(i1 - 1, k1, z)
+                                                && !world.canLightningStrikeAt(i1 + 1, k1, j1)
+                                                && !world.canLightningStrikeAt(i1, k1, j1 - 1)
+                                                && !world.canLightningStrikeAt(i1, k1, j1 + 1)) {
+                                                int k2 = blockMeta + (random.nextInt(5) / 4);
 
-                                            if (neighbourFireChance > 0) {
-                                                int j2 = (neighbourFireChance + 40
-                                                        + (world.difficultySetting.getDifficultyId() * 14))
-                                                        / (blockMeta + 30);
-
-                                                if (flag1) {
-                                                    j2 /= 2;
+                                                if (k2 > 15) {
+                                                    k2 = 15;
                                                 }
 
-                                                if ((j2 > 0) && (random.nextInt(l1) <= j2)
-                                                        && (!world.isRaining()
-                                                                || !world.canLightningStrikeAt(i1, k1, j1))
-                                                        && !world.canLightningStrikeAt(i1 - 1, k1, z)
-                                                        && !world.canLightningStrikeAt(i1 + 1, k1, j1)
-                                                        && !world.canLightningStrikeAt(i1, k1, j1 - 1)
-                                                        && !world.canLightningStrikeAt(i1, k1, j1 + 1)) {
-                                                    int k2 = blockMeta + (random.nextInt(5) / 4);
-
-                                                    if (k2 > 15) {
-                                                        k2 = 15;
-                                                    }
-
-                                                    world.setBlock(i1, k1, j1, this, k2, 3);
-                                                }
+                                                world.setBlock(i1, k1, j1, this, k2, 3);
                                             }
                                         }
                                     }
                                 }
                             }
                         }
+                    }
             }
         }
     }
 
     private void tryCatchFire(final World world, final int p_149841_2_, final int p_149841_3_, final int p_149841_4_,
-            final int p_149841_5_, final Random p_149841_6_, final int p_149841_7_, final ForgeDirection face) {
+        final int p_149841_5_, final Random p_149841_6_, final int p_149841_7_, final ForgeDirection face) {
         final int j1 = world.getBlock(p_149841_2_, p_149841_3_, p_149841_4_)
-                .getFlammability(world, p_149841_2_, p_149841_3_, p_149841_4_, face);
+            .getFlammability(world, p_149841_2_, p_149841_3_, p_149841_4_, face);
 
         if (p_149841_6_.nextInt(p_149841_5_) < j1) {
             final boolean flag = world.getBlock(p_149841_2_, p_149841_3_, p_149841_4_) == Blocks.tnt;
 
             if ((p_149841_6_.nextInt(p_149841_7_ + 10) < 5)
-                    && !world.canLightningStrikeAt(p_149841_2_, p_149841_3_, p_149841_4_)) {
+                && !world.canLightningStrikeAt(p_149841_2_, p_149841_3_, p_149841_4_)) {
                 int k1 = p_149841_7_ + (p_149841_6_.nextInt(5) / 4);
 
                 if (k1 > 15) {
@@ -223,10 +223,10 @@ public class HellFire extends BlockFire {
      */
     private boolean canNeighborBurn(final World world, final int x, final int y, final int z) {
         return this.canCatchFire(world, x + 1, y, z, WEST) || this.canCatchFire(world, x - 1, y, z, EAST)
-                || this.canCatchFire(world, x, y - 1, z, UP)
-                || this.canCatchFire(world, x, y + 1, z, DOWN)
-                || this.canCatchFire(world, x, y, z - 1, SOUTH)
-                || this.canCatchFire(world, x, y, z + 1, NORTH);
+            || this.canCatchFire(world, x, y - 1, z, UP)
+            || this.canCatchFire(world, x, y + 1, z, DOWN)
+            || this.canCatchFire(world, x, y, z - 1, SOUTH)
+            || this.canCatchFire(world, x, y, z + 1, NORTH);
     }
 
     /**
@@ -263,7 +263,7 @@ public class HellFire extends BlockFire {
      */
     @Override
     public void onNeighborBlockChange(final World worldObj, final int x, final int y, final int z,
-            final Block blockObj) {
+        final Block blockObj) {
         if (!World.doesBlockHaveSolidTopSurface(worldObj, x, y - 1, z) && !this.canNeighborBurn(worldObj, x, y, z)) {
             worldObj.setBlockToAir(x, y, z);
         }
@@ -291,14 +291,14 @@ public class HellFire extends BlockFire {
 
     @Override
     public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y,
-            final int z) {
+        final int z) {
         return false;
     }
 
     // Burn
     @Override
     public void onEntityCollidedWithBlock(final World world, final int i, final int j, final int k,
-            final Entity entity) {
+        final Entity entity) {
         entity.setFire(10);
     }
 
@@ -313,13 +313,13 @@ public class HellFire extends BlockFire {
 
         if (randomObj.nextInt(24) == 0) {
             world.playSound(
-                    x + 0.5F,
-                    y + 0.5F,
-                    z + 0.5F,
-                    "fire.fire",
-                    1.0F + randomObj.nextFloat(),
-                    (randomObj.nextFloat() * 0.7F) + 0.3F,
-                    false);
+                x + 0.5F,
+                y + 0.5F,
+                z + 0.5F,
+                "fire.fire",
+                1.0F + randomObj.nextFloat(),
+                (randomObj.nextFloat() * 0.7F) + 0.3F,
+                false);
         }
 
         int l;
@@ -328,7 +328,7 @@ public class HellFire extends BlockFire {
         float f2;
 
         if (!World.doesBlockHaveSolidTopSurface(world, x, y - 1, z)
-                && !Blocks.fire.canCatchFire(world, x, y - 1, z, UP)) {
+            && !Blocks.fire.canCatchFire(world, x, y - 1, z, UP)) {
             if (Blocks.fire.canCatchFire(world, x - 1, y, z, EAST)) {
                 for (l = 0; l < 2; ++l) {
                     f = x + (randomObj.nextFloat() * 0.1F);
@@ -399,8 +399,8 @@ public class HellFire extends BlockFire {
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister IIconRegister) {
         this.IIconArray = new IIcon[] {
-                IIconRegister.registerIcon(GTPlusPlus.ID + ":" + "hellfire/" + "blockHellFire" + "_layer_0"),
-                IIconRegister.registerIcon(GTPlusPlus.ID + ":" + "hellfire/" + "blockHellFire" + "_layer_1") };
+            IIconRegister.registerIcon(GTPlusPlus.ID + ":" + "hellfire/" + "blockHellFire" + "_layer_0"),
+            IIconRegister.registerIcon(GTPlusPlus.ID + ":" + "hellfire/" + "blockHellFire" + "_layer_1") };
     }
 
     @Override
@@ -506,8 +506,9 @@ public class HellFire extends BlockFire {
      */
     @Override
     public boolean canCatchFire(final IBlockAccess world, final int x, final int y, final int z,
-            final ForgeDirection face) {
-        return world.getBlock(x, y, z).isFlammable(world, x, y, z, face);
+        final ForgeDirection face) {
+        return world.getBlock(x, y, z)
+            .isFlammable(world, x, y, z, face);
     }
 
     /**
@@ -523,8 +524,9 @@ public class HellFire extends BlockFire {
      */
     @Override
     public int getChanceToEncourageFire(final IBlockAccess world, final int x, final int y, final int z,
-            final int oldChance, final ForgeDirection face) {
-        final int newChance = world.getBlock(x, y, z).getFireSpreadSpeed(world, x, y, z, face);
+        final int oldChance, final ForgeDirection face) {
+        final int newChance = world.getBlock(x, y, z)
+            .getFireSpreadSpeed(world, x, y, z, face);
         return (newChance > oldChance ? newChance : oldChance);
     }
     /*

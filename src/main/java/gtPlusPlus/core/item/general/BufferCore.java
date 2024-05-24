@@ -41,9 +41,9 @@ public class BufferCore extends BaseItemWithDamageValue {
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
         list.add(
-                EnumChatFormatting.GRAY + "A key crafting component for "
-                        + GT_Values.VN[this.coreTier - 1]
-                        + " Applicances");
+            EnumChatFormatting.GRAY + "A key crafting component for "
+                + GT_Values.VN[this.coreTier - 1]
+                + " Applicances");
     }
 
     public final int getCoreTier() {
@@ -54,15 +54,13 @@ public class BufferCore extends BaseItemWithDamageValue {
     public int getColorFromItemStack(final ItemStack stack, int HEX_OxFFFFFF) {
 
         int[] mTierTypes = new int[] { Utils.rgbtoHexValue(200, 180, 180), Utils.rgbtoHexValue(142, 153, 161),
-                Utils.rgbtoHexValue(230, 121, 75), Utils.rgbtoHexValue(215, 156, 70), Utils.rgbtoHexValue(97, 97, 96), // EV
-                Utils.rgbtoHexValue(202, 202, 201), Utils.rgbtoHexValue(247, 159, 157),
-                Utils.rgbtoHexValue(181, 223, 223), Utils.rgbtoHexValue(187, 219, 185), };
+            Utils.rgbtoHexValue(230, 121, 75), Utils.rgbtoHexValue(215, 156, 70), Utils.rgbtoHexValue(97, 97, 96), // EV
+            Utils.rgbtoHexValue(202, 202, 201), Utils.rgbtoHexValue(247, 159, 157), Utils.rgbtoHexValue(181, 223, 223),
+            Utils.rgbtoHexValue(187, 219, 185), };
 
         if (this.coreTier == 10) {
-            return Utils.rgbtoHexValue(
-                    MathUtils.randInt(220, 250),
-                    MathUtils.randInt(221, 251),
-                    MathUtils.randInt(220, 250));
+            return Utils
+                .rgbtoHexValue(MathUtils.randInt(220, 250), MathUtils.randInt(221, 251), MathUtils.randInt(220, 250));
         }
 
         return mTierTypes[this.coreTier - 1];

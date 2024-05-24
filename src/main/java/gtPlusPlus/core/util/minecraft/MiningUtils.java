@@ -23,7 +23,8 @@ public class MiningUtils {
 
                     try {
                         aTextWorldGen = (String) ReflectionUtils
-                                .getField(GT_Worldgen_GT_Ore_Layer.class, "aTextWorldgen").get(h);
+                            .getField(GT_Worldgen_GT_Ore_Layer.class, "aTextWorldgen")
+                            .get(h);
                     } catch (IllegalArgumentException | IllegalAccessException e) {
                         aTextWorldGen = h.mWorldGenName;
                     }
@@ -51,31 +52,37 @@ public class MiningUtils {
         boolean aEndAsteroids;
         try {
             if (ReflectionUtils.getClass("micdoodle8.mods.galacticraft.core.util.ConfigManagerCore") != null
-                    && mMoonID == -99) {
-                mMoonID = ReflectionUtils.getField(
+                && mMoonID == -99) {
+                mMoonID = ReflectionUtils
+                    .getField(
                         ReflectionUtils.getClass("micdoodle8.mods.galacticraft.core.util.ConfigManagerCore"),
-                        "idDimensionMoon").getInt(null);
+                        "idDimensionMoon")
+                    .getInt(null);
             }
         } catch (IllegalArgumentException | IllegalAccessException ignored) {}
 
         // Gets Mars ID
         try {
             if (ReflectionUtils.getClass("micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars") != null
-                    && mMarsID == -99) {
-                mMarsID = ReflectionUtils.getField(
+                && mMarsID == -99) {
+                mMarsID = ReflectionUtils
+                    .getField(
                         ReflectionUtils.getClass("micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars"),
-                        "dimensionIDMars").getInt(null);
+                        "dimensionIDMars")
+                    .getInt(null);
             }
         } catch (IllegalArgumentException | IllegalAccessException ignored) {}
 
         // Get Comets ID
         try {
             if (ReflectionUtils.getClass("micdoodle8.mods.galacticraft.planets.asteroids.ConfigManagerAsteroids")
-                    != null && mCometsID == -99) {
-                mCometsID = ReflectionUtils.getField(
+                != null && mCometsID == -99) {
+                mCometsID = ReflectionUtils
+                    .getField(
                         ReflectionUtils
-                                .getClass("micdoodle8.mods.galacticraft.planets.asteroids.ConfigManagerAsteroids"),
-                        "dimensionIDAsteroids").getInt(null);
+                            .getClass("micdoodle8.mods.galacticraft.planets.asteroids.ConfigManagerAsteroids"),
+                        "dimensionIDAsteroids")
+                    .getInt(null);
             }
         } catch (IllegalArgumentException | IllegalAccessException ignored) {}
 
@@ -90,7 +97,7 @@ public class MiningUtils {
 
                 try {
                     aEndAsteroids = ReflectionUtils.getField(GT_Worldgen_GT_Ore_Layer.class, "mEndAsteroid")
-                            .getBoolean(x);
+                        .getBoolean(x);
                 } catch (IllegalArgumentException | IllegalAccessException e) {
                     aEndAsteroids = false;
                 }

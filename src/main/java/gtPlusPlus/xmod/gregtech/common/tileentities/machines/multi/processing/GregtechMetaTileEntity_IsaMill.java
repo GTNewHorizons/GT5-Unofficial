@@ -63,7 +63,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers.G
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIcon;
 
 public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IsaMill>
-        implements ISurvivalConstructable {
+    implements ISurvivalConstructable {
 
     protected boolean boostEu = false;
     private int mCasing;
@@ -86,47 +86,56 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType()).addInfo("Controller Block for the Large Grinding Machine")
-                .addInfo("Grind ores.").addPollutionAmount(getPollutionPerSecond(null)).addSeparator()
-                .beginStructureBlock(3, 3, 7, false).addController("Front Center")
-                .addCasingInfoMin("IsaMill Exterior Casing", 40, false)
-                .addOtherStructurePart("IsaMill Gearbox", "5x, Inner Blocks")
-                .addOtherStructurePart("IsaMill Piping", "8x, ring around controller")
-                .addStructureInfo("IsaMill Pipings must not be obstructed in front (only air blocks)")
-                .addOtherStructurePart("Milling Ball Hatch", "Any Casing").addInputBus("Any Casing", 1)
-                .addOutputBus("Any Casing", 1).addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1)
-                .addMufflerHatch("Any Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+        tt.addMachineType(getMachineType())
+            .addInfo("Controller Block for the Large Grinding Machine")
+            .addInfo("Grind ores.")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .addSeparator()
+            .beginStructureBlock(3, 3, 7, false)
+            .addController("Front Center")
+            .addCasingInfoMin("IsaMill Exterior Casing", 40, false)
+            .addOtherStructurePart("IsaMill Gearbox", "5x, Inner Blocks")
+            .addOtherStructurePart("IsaMill Piping", "8x, ring around controller")
+            .addStructureInfo("IsaMill Pipings must not be obstructed in front (only air blocks)")
+            .addOtherStructurePart("Milling Ball Hatch", "Any Casing")
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addMufflerHatch("Any Casing", 1)
+            .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
     @Override
     public IStructureDefinition<GregtechMetaTileEntity_IsaMill> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IsaMill>builder().addShape(
+            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IsaMill>builder()
+                .addShape(
                     mName,
                     transpose(
-                            new String[][] { { "DDD", "CCC", "CCC", "CCC", "CCC", "CCC", "CCC" },
-                                    { "D~D", "CGC", "CGC", "CGC", "CGC", "CGC", "CCC" },
-                                    { "DDD", "CCC", "CCC", "CCC", "CCC", "CCC", "CCC" }, }))
-                    .addElement(
-                            'C',
-                            ofChain(
-                                    buildHatchAdder(GregtechMetaTileEntity_IsaMill.class)
-                                            .adder(GregtechMetaTileEntity_IsaMill::addMillingBallsHatch)
-                                            .hatchClass(GT_MetaTileEntity_Hatch_MillingBalls.class)
-                                            .shouldReject(t -> !t.mMillingBallBuses.isEmpty())
-                                            .casingIndex(getCasingTextureIndex()).dot(1).build(),
-                                    buildHatchAdder(GregtechMetaTileEntity_IsaMill.class).atLeast(
-                                            InputBus,
-                                            OutputBus,
-                                            InputHatch,
-                                            OutputHatch,
-                                            Maintenance,
-                                            Energy,
-                                            Muffler).casingIndex(getCasingTextureIndex()).dot(1).build(),
-                                    onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
-                    .addElement('D', ofBlock(getIntakeBlock(), getIntakeMeta()))
-                    .addElement('G', ofBlock(getGearboxBlock(), getGearboxMeta())).build();
+                        new String[][] { { "DDD", "CCC", "CCC", "CCC", "CCC", "CCC", "CCC" },
+                            { "D~D", "CGC", "CGC", "CGC", "CGC", "CGC", "CCC" },
+                            { "DDD", "CCC", "CCC", "CCC", "CCC", "CCC", "CCC" }, }))
+                .addElement(
+                    'C',
+                    ofChain(
+                        buildHatchAdder(GregtechMetaTileEntity_IsaMill.class)
+                            .adder(GregtechMetaTileEntity_IsaMill::addMillingBallsHatch)
+                            .hatchClass(GT_MetaTileEntity_Hatch_MillingBalls.class)
+                            .shouldReject(t -> !t.mMillingBallBuses.isEmpty())
+                            .casingIndex(getCasingTextureIndex())
+                            .dot(1)
+                            .build(),
+                        buildHatchAdder(GregtechMetaTileEntity_IsaMill.class)
+                            .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, Muffler)
+                            .casingIndex(getCasingTextureIndex())
+                            .dot(1)
+                            .build(),
+                        onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
+                .addElement('D', ofBlock(getIntakeBlock(), getIntakeMeta()))
+                .addElement('G', ofBlock(getGearboxBlock(), getGearboxMeta()))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -261,9 +270,9 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<
                     }
                 } else if (aFoundEntity.getHealth() > 0) {
                     EntityUtils.doDamage(
-                            aFoundEntity,
-                            mIsaMillDamageSource,
-                            Math.max(1, (int) (aFoundEntity.getMaxHealth() / 3)));
+                        aFoundEntity,
+                        mIsaMillDamageSource,
+                        Math.max(1, (int) (aFoundEntity.getMaxHealth() / 3)));
                     if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())) {
                         generateParticles(aFoundEntity);
                     }
@@ -329,13 +338,13 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<
             float aOffsetY = MathUtils.randFloat(-0.25f, 0.35f);
             float aOffsetZ = MathUtils.randFloat(-0.35f, 0.35f);
             aEntity.worldObj.spawnParticle(
-                    "reddust",
-                    aEffectPos.xPos + aOffsetX,
-                    aEffectPos.yPos + 0.3f + aOffsetY,
-                    aEffectPos.zPos + aOffsetZ,
-                    0.0D,
-                    0.0D,
-                    0.0D);
+                "reddust",
+                aEffectPos.xPos + aOffsetX,
+                aEffectPos.yPos + 0.3f + aOffsetY,
+                aEffectPos.zPos + aOffsetZ,
+                0.0D,
+                0.0D,
+                0.0D);
         }
     }
 
@@ -405,7 +414,7 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<
     @Override
     public String[] getExtraInfoData() {
         return new String[] { "IsaMill Grinding Machine", "Current Efficiency: " + (mEfficiency / 100) + "%",
-                getIdealStatus() == getRepairStatus() ? "No Maintainance issues" : "Needs Maintainance" };
+            getIdealStatus() == getRepairStatus() ? "No Maintainance issues" : "Needs Maintainance" };
     }
 
     @Override

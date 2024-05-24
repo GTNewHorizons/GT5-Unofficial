@@ -36,10 +36,10 @@ import gtPlusPlus.xmod.gregtech.HANDLER_GT;
 import gtPlusPlus.xmod.gregtech.api.util.GTPP_Config;
 
 @Mod(
-        modid = Mods.Names.G_T_PLUS_PLUS_EVERGLADES,
-        name = Everglades.NAME,
-        version = Everglades.VERSION,
-        dependencies = "required-after:Forge; after:dreamcraft; after:IC2; required-after:gregtech; required-after:miscutils;")
+    modid = Mods.Names.G_T_PLUS_PLUS_EVERGLADES,
+    name = Everglades.NAME,
+    version = Everglades.VERSION,
+    dependencies = "required-after:Forge; after:dreamcraft; after:IC2; required-after:gregtech; required-after:miscutils;")
 public class GTplusplus_Everglades implements ActionListener {
 
     // Mod Instance
@@ -68,8 +68,8 @@ public class GTplusplus_Everglades implements ActionListener {
 
         // Load/Set Custom Ore Gen
         HANDLER_GT.sCustomWorldgenFile = new GTPP_Config(
-                new Configuration(
-                        new File(new File(event.getModConfigurationDirectory(), "GTplusplus"), "WorldGeneration.cfg")));
+            new Configuration(
+                new File(new File(event.getModConfigurationDirectory(), "GTplusplus"), "WorldGeneration.cfg")));
     }
 
     @EventHandler
@@ -135,8 +135,8 @@ public class GTplusplus_Everglades implements ActionListener {
     protected synchronized void setVars(FMLPreInitializationEvent event) {
         // Init WorldGen config.
         HANDLER_GT.sCustomWorldgenFile = new GTPP_Config(
-                new Configuration(
-                        new File(new File(event.getModConfigurationDirectory(), "GTplusplus"), "WorldGeneration.cfg")));
+            new Configuration(
+                new File(new File(event.getModConfigurationDirectory(), "GTplusplus"), "WorldGeneration.cfg")));
 
         if (DimensionManager.isDimensionRegistered(Dimension_Everglades.DIMID)) {
             Dimension_Everglades.DIMID = DimensionManager.getNextFreeDimId();

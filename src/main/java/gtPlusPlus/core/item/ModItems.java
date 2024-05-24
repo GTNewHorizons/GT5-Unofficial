@@ -220,10 +220,10 @@ public final class ModItems {
         // Default item used when recipes fail, handy for debugging. Let's make sure they exist when this class is
         // called upon.
         AAA_Broken = new BaseItemIngot_OLD(
-                "AAA_Broken",
-                "Errors - Tell Alkalus",
-                Utils.rgbtoHexValue(128, 128, 128),
-                0);
+            "AAA_Broken",
+            "Errors - Tell Alkalus",
+            Utils.rgbtoHexValue(128, 128, 128),
+            0);
         ZZZ_Empty = new ItemEmpty();
     }
 
@@ -232,15 +232,15 @@ public final class ModItems {
         itemMagicFeather = new ItemMagicFeather();
 
         itemAlkalusDisk = new BaseItemDamageable(
-                "itemAlkalusDisk",
-                AddToCreativeTab.tabMisc,
-                1,
-                0,
-                "Unknown Use",
-                EnumRarity.rare,
-                EnumChatFormatting.AQUA,
-                false,
-                null);
+            "itemAlkalusDisk",
+            AddToCreativeTab.tabMisc,
+            1,
+            0,
+            "Unknown Use",
+            EnumRarity.rare,
+            EnumChatFormatting.AQUA,
+            false,
+            null);
 
         itemGenericToken = new ItemGenericToken();
         itemDummyResearch = new ItemDummyResearch();
@@ -258,15 +258,15 @@ public final class ModItems {
         itemBlueprintBase = new ItemBlueprint("itemBlueprint");
 
         itemHalfCompleteCasings = new ItemHalfCompleteCasings(
-                "itemHalfCompleteCasings",
-                AddToCreativeTab.tabMisc,
-                32,
-                0,
-                "This isn't quite finished yet.",
-                EnumRarity.common,
-                EnumChatFormatting.GRAY,
-                false,
-                Utils.rgbtoHexValue(255, 255, 255)).setTextureName(GregTech.ID + ":" + "gt.metaitem.01/" + "761");
+            "itemHalfCompleteCasings",
+            AddToCreativeTab.tabMisc,
+            32,
+            0,
+            "This isn't quite finished yet.",
+            EnumRarity.common,
+            EnumChatFormatting.GRAY,
+            false,
+            Utils.rgbtoHexValue(255, 255, 255)).setTextureName(GregTech.ID + ":" + "gt.metaitem.01/" + "761");
 
         // Start meta Item Generation
         ItemsFoods.load();
@@ -490,17 +490,17 @@ public final class ModItems {
             shardAqua = new BaseItemTCShard("Aqua", Utils.rgbtoHexValue(5, 5, 255));
         } else {
             shardAer = ItemUtils
-                    .getItemStackWithMeta(Thaumcraft.isModLoaded(), "Thaumcraft:ItemShard", "Air Shard", 0, 1)
-                    .getItem();
+                .getItemStackWithMeta(Thaumcraft.isModLoaded(), "Thaumcraft:ItemShard", "Air Shard", 0, 1)
+                .getItem();
             shardIgnis = ItemUtils
-                    .getItemStackWithMeta(Thaumcraft.isModLoaded(), "Thaumcraft:ItemShard", "Fire Shard", 1, 1)
-                    .getItem();
+                .getItemStackWithMeta(Thaumcraft.isModLoaded(), "Thaumcraft:ItemShard", "Fire Shard", 1, 1)
+                .getItem();
             shardAqua = ItemUtils
-                    .getItemStackWithMeta(Thaumcraft.isModLoaded(), "Thaumcraft:ItemShard", "Warer Shard", 2, 1)
-                    .getItem();
+                .getItemStackWithMeta(Thaumcraft.isModLoaded(), "Thaumcraft:ItemShard", "Warer Shard", 2, 1)
+                .getItem();
             shardTerra = ItemUtils
-                    .getItemStackWithMeta(Thaumcraft.isModLoaded(), "Thaumcraft:ItemShard", "Earth Shard", 3, 1)
-                    .getItem();
+                .getItemStackWithMeta(Thaumcraft.isModLoaded(), "Thaumcraft:ItemShard", "Earth Shard", 3, 1)
+                .getItem();
         }
         // Generates a set of four special dusts to be used in my recipes.
         dustAer = ItemUtils.generateSpecialUseDusts(ELEMENT.getInstance().AER, true)[0];
@@ -509,64 +509,64 @@ public final class ModItems {
         dustAqua = ItemUtils.generateSpecialUseDusts(ELEMENT.getInstance().AQUA, true)[0];
 
         ItemUtils.generateSpecialUseDusts(MISC_MATERIALS.WOODS_GLASS, false);
-        cellHydrogenChlorideMix = MISC_MATERIALS.HYDROGEN_CHLORIDE_MIX.getCell(1).getItem();
+        cellHydrogenChlorideMix = MISC_MATERIALS.HYDROGEN_CHLORIDE_MIX.getCell(1)
+            .getItem();
 
         // Nuclear Fuel Dusts
         dustLithiumCarbonate = ItemUtils.generateSpecialUseDusts(
-                "LithiumCarbonate",
-                "Lithium Carbonate",
-                "Li2CO3",
-                Utils.rgbtoHexValue(240, 240, 240))[0]; // https://en.wikipedia.org/wiki/Lithium_carbonate
+            "LithiumCarbonate",
+            "Lithium Carbonate",
+            "Li2CO3",
+            Utils.rgbtoHexValue(240, 240, 240))[0]; // https://en.wikipedia.org/wiki/Lithium_carbonate
         dustLithiumPeroxide = ItemUtils.generateSpecialUseDusts(
-                "LithiumPeroxide",
-                "Lithium Peroxide",
-                "Li2O2",
-                Utils.rgbtoHexValue(250, 250, 250))[0]; // https://en.wikipedia.org/wiki/Lithium_peroxide
+            "LithiumPeroxide",
+            "Lithium Peroxide",
+            "Li2O2",
+            Utils.rgbtoHexValue(250, 250, 250))[0]; // https://en.wikipedia.org/wiki/Lithium_peroxide
         dustLithiumHydroxide = ItemUtils.generateSpecialUseDusts(
-                "LithiumHydroxide",
-                "Lithium Hydroxide",
-                "LiOH",
-                Utils.rgbtoHexValue(250, 250, 250))[0]; // https://en.wikipedia.org/wiki/Lithium_hydroxide
+            "LithiumHydroxide",
+            "Lithium Hydroxide",
+            "LiOH",
+            Utils.rgbtoHexValue(250, 250, 250))[0]; // https://en.wikipedia.org/wiki/Lithium_hydroxide
 
         if (!ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 1))) {
             dustQuicklime = ItemUtils
-                    .generateSpecialUseDusts("Quicklime", "Quicklime", "CaO", Utils.rgbtoHexValue(255, 255, 175))[0]; // https://en.wikipedia.org/wiki/Calcium_oxide
+                .generateSpecialUseDusts("Quicklime", "Quicklime", "CaO", Utils.rgbtoHexValue(255, 255, 175))[0]; // https://en.wikipedia.org/wiki/Calcium_oxide
         }
         dustCalciumHydroxide = ItemUtils.generateSpecialUseDusts(
-                "CalciumHydroxide",
-                "Hydrated Lime",
-                "Ca(OH)2",
-                Utils.rgbtoHexValue(255, 255, 255))[0]; // https://en.wikipedia.org/wiki/Calcium_hydroxide
+            "CalciumHydroxide",
+            "Hydrated Lime",
+            "Ca(OH)2",
+            Utils.rgbtoHexValue(255, 255, 255))[0]; // https://en.wikipedia.org/wiki/Calcium_hydroxide
         dustCalciumCarbonate = ItemUtils.generateSpecialUseDusts(
-                "CalciumCarbonate",
-                "Calcium Carbonate",
-                "CaCO3",
-                Utils.rgbtoHexValue(255, 255, 255))[0]; // https://en.wikipedia.org/wiki/Calcium_carbonate
+            "CalciumCarbonate",
+            "Calcium Carbonate",
+            "CaCO3",
+            Utils.rgbtoHexValue(255, 255, 255))[0]; // https://en.wikipedia.org/wiki/Calcium_carbonate
         if ((ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGypsum", 1) == null)
-                || (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustCalciumSulfate", 1) == null)) {
+            || (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustCalciumSulfate", 1) == null)) {
             dustCalciumSulfate = ItemUtils.generateSpecialUseDusts(
-                    "Gypsum",
-                    "Calcium Sulfate (Gypsum)",
-                    "CaSO4",
-                    Utils.rgbtoHexValue(255, 255, 255))[0]; // https://en.wikipedia.org/wiki/Calcium_sulfate
+                "Gypsum",
+                "Calcium Sulfate (Gypsum)",
+                "CaSO4",
+                Utils.rgbtoHexValue(255, 255, 255))[0]; // https://en.wikipedia.org/wiki/Calcium_sulfate
             GT_OreDictUnificator.registerOre("dustCalciumSulfate", ItemUtils.getSimpleStack(dustCalciumSulfate));
         } else {
-            GT_OreDictUnificator.registerOre(
-                    "dustCalciumSulfate",
-                    ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGypsum", 1));
+            GT_OreDictUnificator
+                .registerOre("dustCalciumSulfate", ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGypsum", 1));
         }
         dustLi2CO3CaOH2 = ItemUtils.generateSpecialUseDusts(
-                "Li2CO3CaOH2",
-                "Li2CO3 + Ca(OH)2 Compound",
-                "Li2CO3CaOH2",
-                Utils.rgbtoHexValue(255, 255, 255))[0]; // https://en.wikipedia.org/wiki/Calcium_carbonate
+            "Li2CO3CaOH2",
+            "Li2CO3 + Ca(OH)2 Compound",
+            "Li2CO3CaOH2",
+            Utils.rgbtoHexValue(255, 255, 255))[0]; // https://en.wikipedia.org/wiki/Calcium_carbonate
         MaterialUtils.generateSpecialDustAndAssignToAMaterial(FLUORIDES.SODIUM_FLUORIDE, false);
         // FLiBe Fuel Compounds
         dustLi2BeF4 = ItemUtils.generateSpecialUseDusts(
-                "Li2BeF4",
-                "Lithium Tetrafluoroberyllate Fuel Compound",
-                "Li2BeF4",
-                Utils.rgbtoHexValue(255, 255, 255))[0]; // https://en.wikipedia.org/wiki/FLiBe
+            "Li2BeF4",
+            "Lithium Tetrafluoroberyllate Fuel Compound",
+            "Li2BeF4",
+            Utils.rgbtoHexValue(255, 255, 255))[0]; // https://en.wikipedia.org/wiki/FLiBe
         Material.registerComponentForMaterial(NUCLIDE.Li2BeF4, OrePrefixes.dust, ItemUtils.getSimpleStack(dustLi2BeF4));
         // fluidFLiBeSalt = ("Li2BeF4", "Li2BeF4", 7430, new short[]{255, 255, 255, 100}, 0);
         // fluidFLiBeSalt = FluidUtils.addGTFluidNoPrefix("Li2BeF4", "Lithium Tetrafluoroberyllate", new short[]{255,
@@ -585,28 +585,28 @@ public final class ModItems {
         // 800, null, CI.emptyCells(1), 1000, true);
         // LFTR Blanket Fluid Processing
         fluidNuclearWaste = FluidUtils.addGTFluidNoPrefix(
-                "nuclear.waste",
-                "Nuclear Waste",
-                new short[] { 10, 250, 10, 100 },
-                0,
-                1000,
-                null,
-                CI.emptyCells(1),
-                1000,
-                true);
+            "nuclear.waste",
+            "Nuclear Waste",
+            new short[] { 10, 250, 10, 100 },
+            0,
+            1000,
+            null,
+            CI.emptyCells(1),
+            1000,
+            true);
 
         // LFTR Control Circuit
         itemCircuitLFTR = new CoreItem(
-                "itemCircuitLFTR",
-                "" + EnumChatFormatting.GREEN + "Control Circuit",
-                AddToCreativeTab.tabMisc,
-                1,
-                0,
-                new String[] { "Keeps Multiblocks Stable" },
-                EnumRarity.epic,
-                EnumChatFormatting.DARK_GREEN,
-                false,
-                null);
+            "itemCircuitLFTR",
+            "" + EnumChatFormatting.GREEN + "Control Circuit",
+            AddToCreativeTab.tabMisc,
+            1,
+            0,
+            new String[] { "Keeps Multiblocks Stable" },
+            EnumRarity.epic,
+            EnumChatFormatting.DARK_GREEN,
+            false,
+            null);
 
         if (CORE.ConfigSwitches.enableMachine_Pollution) {
             itemBasicTurbine = new ItemBasicScrubberTurbine();
@@ -615,14 +615,14 @@ public final class ModItems {
         // Zirconium
         // Cinter Pellet.
         itemZirconiumChlorideCinterPellet = new CoreItem(
-                "itemZirconiumPellet",
-                "Zirconium Pellet [" + StringUtils.subscript("ZrCl4") + "]",
-                tabMisc).setTextureName(GTPlusPlus.ID + ":itemShard");
+            "itemZirconiumPellet",
+            "Zirconium Pellet [" + StringUtils.subscript("ZrCl4") + "]",
+            tabMisc).setTextureName(GTPlusPlus.ID + ":itemShard");
         GT_OreDictUnificator.registerOre("pelletZirconium", new ItemStack(itemZirconiumChlorideCinterPellet));
         // Zirconium Chloride
         dustZrCl4 = ItemUtils.generateSpecialUseDusts("ZrCl4", "ZrCl4", "ZrCl4", Utils.rgbtoHexValue(180, 180, 180))[0]; // http://www.iaea.org/inis/collection/NCLCollectionStore/_Public/39/036/39036750.pdf
         dustCookedZrCl4 = ItemUtils
-                .generateSpecialUseDusts("CookedZrCl4", "Cooked ZrCl4", "ZrCl4", Utils.rgbtoHexValue(180, 180, 180))[0]; // http://www.iaea.org/inis/collection/NCLCollectionStore/_Public/39/036/39036750.pdf
+            .generateSpecialUseDusts("CookedZrCl4", "Cooked ZrCl4", "ZrCl4", Utils.rgbtoHexValue(180, 180, 180))[0]; // http://www.iaea.org/inis/collection/NCLCollectionStore/_Public/39/036/39036750.pdf
 
         // Zirconium Tetrafluoride
         /*
@@ -632,10 +632,10 @@ public final class ModItems {
          * ItemUtils.getItemStackOfAmountFromOreDict("dustZirconiumTetrafluoride", 1));
          */
         fluidZrF4 = FluidUtils.generateFluidNoPrefix(
-                "ZirconiumTetrafluoride",
-                "Zirconium Tetrafluoride",
-                500,
-                new short[] { 170, 170, 140, 100 }); // https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
+            "ZirconiumTetrafluoride",
+            "Zirconium Tetrafluoride",
+            500,
+            new short[] { 170, 170, 140, 100 }); // https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
         FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.setFluid(fluidZrF4);
 
         // Coolant Salt
@@ -646,9 +646,9 @@ public final class ModItems {
         // Load Tree Farmer
         if (CORE.ConfigSwitches.enableMultiblock_TreeFarmer) { // https://en.wikipedia.org/wiki/UAN
             dustFertUN18 = ItemUtils
-                    .generateSpecialUseDusts("UN18Fertiliser", "UN-18 Fertiliser", Utils.rgbtoHexValue(60, 155, 60))[0];
+                .generateSpecialUseDusts("UN18Fertiliser", "UN-18 Fertiliser", Utils.rgbtoHexValue(60, 155, 60))[0];
             dustFertUN32 = ItemUtils
-                    .generateSpecialUseDusts("UN32Fertiliser", "UN-32 Fertiliser", Utils.rgbtoHexValue(55, 190, 55))[0];
+                .generateSpecialUseDusts("UN32Fertiliser", "UN-32 Fertiliser", Utils.rgbtoHexValue(55, 190, 55))[0];
 
             ItemStack temp1 = ItemUtils.getCorrectStacktype("IC2:itemFertilizer", 1);
             ItemStack temp2 = null;
@@ -658,32 +658,36 @@ public final class ModItems {
             }
             if (temp1 != null) {
                 fluidFertBasic = FluidUtils.generateFluidNonMolten(
-                        "Fertiliser",
-                        "Fertiliser",
-                        32,
-                        new short[] { 45, 170, 45, 100 },
-                        temp1,
-                        null,
-                        true);
-                GT_Values.RA.stdBuilder().itemInputs(temp2).fluidOutputs(new FluidStack(fluidFertBasic, 36))
-                        .duration(5 * TICKS).eut(16).addTo(fluidExtractionRecipes);
+                    "Fertiliser",
+                    "Fertiliser",
+                    32,
+                    new short[] { 45, 170, 45, 100 },
+                    temp1,
+                    null,
+                    true);
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(temp2)
+                    .fluidOutputs(new FluidStack(fluidFertBasic, 36))
+                    .duration(5 * TICKS)
+                    .eut(16)
+                    .addTo(fluidExtractionRecipes);
             }
             fluidFertUN32 = FluidUtils.generateFluidNonMolten(
-                    "UN32Fertiliser",
-                    "UN-32 Fertiliser",
-                    24,
-                    new short[] { 55, 190, 55, 100 },
-                    null,
-                    null,
-                    true);
+                "UN32Fertiliser",
+                "UN-32 Fertiliser",
+                24,
+                new short[] { 55, 190, 55, 100 },
+                null,
+                null,
+                true);
             fluidFertUN18 = FluidUtils.generateFluidNonMolten(
-                    "UN18Fertiliser",
-                    "UN-18 Fertiliser",
-                    22,
-                    new short[] { 60, 155, 60, 100 },
-                    null,
-                    null,
-                    true);
+                "UN18Fertiliser",
+                "UN-18 Fertiliser",
+                22,
+                new short[] { 60, 155, 60, 100 },
+                null,
+                null,
+                true);
 
             /*
              * GT_Values.RA.addMixerRecipe( arg0, //Item In arg1, arg2, arg3, arg4, //Fluid in arg5, //Fluid Out arg6,
@@ -694,14 +698,14 @@ public final class ModItems {
 
         // Juice
         FluidUtils.generateFluidNonMolten(
-                "RaisinJuice",
-                "Raisin Juice",
-                2,
-                new short[] { 51, 0, 51, 100 },
-                ItemUtils.getItemStackOfAmountFromOreDictNoBroken("foodRaisins", 1),
-                ItemUtils.getItemStackOfAmountFromOreDictNoBroken("fruitRaisins", 1),
-                50,
-                true);
+            "RaisinJuice",
+            "Raisin Juice",
+            2,
+            new short[] { 51, 0, 51, 100 },
+            ItemUtils.getItemStackOfAmountFromOreDictNoBroken("foodRaisins", 1),
+            ItemUtils.getItemStackOfAmountFromOreDictNoBroken("fruitRaisins", 1),
+            50,
+            true);
 
         // Test items
         toolGregtechPump = new GregtechPump();
@@ -716,49 +720,52 @@ public final class ModItems {
         }
 
         dustNeptunium238 = new DustDecayable(
-                "dustNeptunium238",
-                Utils.rgbtoHexValue(175, 240, 75),
-                50640,
-                new String[] { StringUtils.superscript("238Np"),
-                        "Result: Plutonium 238 (" + StringUtils.superscript("238Pu") + ")" },
-                ELEMENT.getInstance().PLUTONIUM238.getDust(1).getItem(),
-                5);
+            "dustNeptunium238",
+            Utils.rgbtoHexValue(175, 240, 75),
+            50640,
+            new String[] { StringUtils.superscript("238Np"),
+                "Result: Plutonium 238 (" + StringUtils.superscript("238Pu") + ")" },
+            ELEMENT.getInstance().PLUTONIUM238.getDust(1)
+                .getItem(),
+            5);
         dustDecayedRadium226 = ItemUtils.generateSpecialUseDusts(
-                "DecayedRadium226",
-                "Decayed Radium-226",
-                "Contains Radon (" + StringUtils.superscript("222Rn") + ")",
-                ELEMENT.getInstance().RADIUM.getRgbAsHex())[0];
+            "DecayedRadium226",
+            "Decayed Radium-226",
+            "Contains Radon (" + StringUtils.superscript("222Rn") + ")",
+            ELEMENT.getInstance().RADIUM.getRgbAsHex())[0];
         dustRadium226 = new DustDecayable(
-                "dustRadium226",
-                ELEMENT.getInstance().RADIUM.getRgbAsHex(),
-                90000,
-                new String[] { StringUtils.superscript("226Ra"),
-                        "Result: Radon (" + StringUtils.superscript("222Rn") + ")" },
-                ItemUtils.getSimpleStack(dustDecayedRadium226).getItem(),
-                5);
+            "dustRadium226",
+            ELEMENT.getInstance().RADIUM.getRgbAsHex(),
+            90000,
+            new String[] { StringUtils.superscript("226Ra"),
+                "Result: Radon (" + StringUtils.superscript("222Rn") + ")" },
+            ItemUtils.getSimpleStack(dustDecayedRadium226)
+                .getItem(),
+            5);
         dustProtactinium233 = new DustDecayable(
-                "dustProtactinium233",
-                ELEMENT.getInstance().PROTACTINIUM.getRgbAsHex(),
-                32000,
-                new String[] { StringUtils.superscript("233Pa"),
-                        "Result: Uranium 233(" + StringUtils.superscript("233U") + ")" },
-                ELEMENT.getInstance().URANIUM233.getDust(1).getItem(),
-                6);
+            "dustProtactinium233",
+            ELEMENT.getInstance().PROTACTINIUM.getRgbAsHex(),
+            32000,
+            new String[] { StringUtils.superscript("233Pa"),
+                "Result: Uranium 233(" + StringUtils.superscript("233U") + ")" },
+            ELEMENT.getInstance().URANIUM233.getDust(1)
+                .getItem(),
+            6);
         dustMolybdenum99 = new DustDecayable(
-                "dustMolybdenum99",
-                ELEMENT.getInstance().MOLYBDENUM.getRgbAsHex(),
-                16450,
-                new String[] { StringUtils.superscript("99Mo"),
-                        "Result: Technicium 99ᵐ (" + StringUtils.superscript("99ᵐTc") + ")" },
-                dustTechnetium99M,
-                4);
+            "dustMolybdenum99",
+            ELEMENT.getInstance().MOLYBDENUM.getRgbAsHex(),
+            16450,
+            new String[] { StringUtils.superscript("99Mo"),
+                "Result: Technicium 99ᵐ (" + StringUtils.superscript("99ᵐTc") + ")" },
+            dustTechnetium99M,
+            4);
 
         itemIonParticleBase = new IonParticles();
         itemStandarParticleBase = new StandardBaseParticles();
 
         Item a8kFlask = VolumetricFlaskHelper.generateNewFlask("Volumetric_Flask_8k", "Large Volumetric Flask", 8000);
         Item a64kFlask = VolumetricFlaskHelper
-                .generateNewFlask("Volumetric_Flask_32k", "Gigantic Volumetric Flask", 32000);
+            .generateNewFlask("Volumetric_Flask_32k", "Gigantic Volumetric Flask", 32000);
         GregtechItemList.VOLUMETRIC_FLASK_8k.set(a8kFlask);
         GregtechItemList.VOLUMETRIC_FLASK_32k.set(a64kFlask);
 
@@ -827,34 +834,34 @@ public final class ModItems {
          */
         if (!ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGadolinium", 1))) {
             ItemUtils.generateSpecialUseDusts(
-                    "Gadolinium",
-                    "Gadolinium",
-                    Materials.Gadolinium.mElement.name(),
-                    Utils.rgbtoHexValue(226, 172, 9));
+                "Gadolinium",
+                "Gadolinium",
+                Materials.Gadolinium.mElement.name(),
+                Utils.rgbtoHexValue(226, 172, 9));
         }
         if (!ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustYtterbium", 1))) {
             ItemUtils.generateSpecialUseDusts(
-                    "Ytterbium",
-                    "Ytterbium",
-                    Materials.Ytterbium.mElement.name(),
-                    Utils.rgbtoHexValue(
-                            Materials.Yttrium.mRGBa[0] - 60,
-                            Materials.Yttrium.mRGBa[1] - 60,
-                            Materials.Yttrium.mRGBa[2] - 60));
+                "Ytterbium",
+                "Ytterbium",
+                Materials.Ytterbium.mElement.name(),
+                Utils.rgbtoHexValue(
+                    Materials.Yttrium.mRGBa[0] - 60,
+                    Materials.Yttrium.mRGBa[1] - 60,
+                    Materials.Yttrium.mRGBa[2] - 60));
         }
         if (!ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustSamarium", 1))) {
             ItemUtils.generateSpecialUseDusts(
-                    "Samarium",
-                    "Samarium",
-                    Materials.Samarium.mElement.name(),
-                    Utils.rgbtoHexValue(161, 168, 114));
+                "Samarium",
+                "Samarium",
+                Materials.Samarium.mElement.name(),
+                Utils.rgbtoHexValue(161, 168, 114));
         }
         if (!ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustLanthanum", 1))) {
             ItemUtils.generateSpecialUseDusts(
-                    "Lanthanum",
-                    "Lanthanum",
-                    Materials.Lanthanum.mElement.name(),
-                    Utils.rgbtoHexValue(106, 127, 163));
+                "Lanthanum",
+                "Lanthanum",
+                Materials.Lanthanum.mElement.name(),
+                Utils.rgbtoHexValue(106, 127, 163));
         }
 
         // Just an unusual plate needed for some black magic.
@@ -877,7 +884,7 @@ public final class ModItems {
         // Krypton Processing
         if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ingotHotTitanium", 1) == null) {
             itemHotTitaniumIngot = ItemUtils
-                    .getSimpleStack(new BaseItemIngot(ELEMENT.getInstance().TITANIUM, ComponentTypes.HOTINGOT));
+                .getSimpleStack(new BaseItemIngot(ELEMENT.getInstance().TITANIUM, ComponentTypes.HOTINGOT));
         } else {
             itemHotTitaniumIngot = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ingotHotTitanium", 1);
         }
@@ -889,7 +896,7 @@ public final class ModItems {
 
         // Springs
         MaterialUtils
-                .generateComponentAndAssignToAMaterial(ComponentTypes.SPRING, ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN);
+            .generateComponentAndAssignToAMaterial(ComponentTypes.SPRING, ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN);
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SPRING, ELEMENT.STANDALONE.WHITE_METAL);
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SPRING, ALLOY.NITINOL_60);
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SPRING, ALLOY.AQUATIC_STEEL);
@@ -913,7 +920,7 @@ public final class ModItems {
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, ALLOY.QUANTUM);
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, ELEMENT.STANDALONE.HYPOGEN);
         MaterialUtils
-                .generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, ELEMENT.STANDALONE.CHRONOMATIC_GLASS);
+            .generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, ELEMENT.STANDALONE.CHRONOMATIC_GLASS);
 
         // Foil
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, ALLOY.BLACK_TITANIUM);
@@ -966,16 +973,16 @@ public final class ModItems {
 
         // A plate of Europium.
         if ((ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateEuropium", 1) == null)
-                && CORE.ConfigSwitches.enableCustom_Pipes) {
+            && CORE.ConfigSwitches.enableCustom_Pipes) {
             itemPlateEuropium = new BaseItemPlate(ELEMENT.getInstance().EUROPIUM);
         }
         if ((ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateDoubleEuropium", 1) == null)
-                && CORE.ConfigSwitches.enableCustom_Pipes) {
+            && CORE.ConfigSwitches.enableCustom_Pipes) {
             itemDoublePlateEuropium = new BaseItemPlateDouble(ELEMENT.getInstance().EUROPIUM);
         }
 
         // Tumbaga Mix (For Simple Crafting)
         dustTumbagaMix = ItemUtils
-                .generateSpecialUseDusts("MixTumbaga", "Tumbaga Mix", "Au2Cu", Utils.rgbtoHexValue(255, 150, 80))[0];
+            .generateSpecialUseDusts("MixTumbaga", "Tumbaga Mix", "Au2Cu", Utils.rgbtoHexValue(255, 150, 80))[0];
     }
 }

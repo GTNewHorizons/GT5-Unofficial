@@ -31,26 +31,26 @@ public class GT_MetaTileEntity_Hatch_TurbineProvider extends GT_MetaTileEntity_H
     }
 
     public GT_MetaTileEntity_Hatch_TurbineProvider(String aName, int aTier, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_Hatch_TurbineProvider(
-                this.mName,
-                this.mTier,
-                this.mDescriptionArray,
-                this.mTextures);
+            this.mName,
+            this.mTier,
+            this.mDescriptionArray,
+            this.mTextures);
     }
 
     @Override
     public String[] getDescription() {
         return new String[] { "An automation port for Large Turbines",
-                "Will attempt once per 1200 ticks to fill the turbine slot of it's parent turbine",
-                "You may adjust this with a screwdriver", "Hold shift to adjust in finer amounts",
-                "Hold control to adjust direction", "Left Click with Screwdriver to reset",
-                "This module assumes the entire turbine is in the same Chunk", CORE.GT_Tooltip.get() };
+            "Will attempt once per 1200 ticks to fill the turbine slot of it's parent turbine",
+            "You may adjust this with a screwdriver", "Hold shift to adjust in finer amounts",
+            "Hold control to adjust direction", "Left Click with Screwdriver to reset",
+            "This module assumes the entire turbine is in the same Chunk", CORE.GT_Tooltip.get() };
     }
 
     private GT_MetaTileEntity_LargeTurbine mParent = null;
@@ -58,7 +58,8 @@ public class GT_MetaTileEntity_Hatch_TurbineProvider extends GT_MetaTileEntity_H
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         super.onPostTick(aBaseMetaTileEntity, aTimer);
-        if (aTimer % mRefreshTime == 0 && this.getBaseMetaTileEntity().isServerSide()) {
+        if (aTimer % mRefreshTime == 0 && this.getBaseMetaTileEntity()
+            .isServerSide()) {
             tryRefillTurbine();
         }
     }
@@ -132,13 +133,13 @@ public class GT_MetaTileEntity_Hatch_TurbineProvider extends GT_MetaTileEntity_H
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return isItemStackTurbine(aStack);
     }
 
@@ -213,7 +214,8 @@ public class GT_MetaTileEntity_Hatch_TurbineProvider extends GT_MetaTileEntity_H
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-                new SlotWidget(inventoryHandler, 0).setFilter(GregtechMetaTileEntity_LargerTurbineBase::isValidTurbine)
-                        .setAccess(false, true).setPos(79, 34));
+            new SlotWidget(inventoryHandler, 0).setFilter(GregtechMetaTileEntity_LargerTurbineBase::isValidTurbine)
+                .setAccess(false, true)
+                .setPos(79, 34));
     }
 }

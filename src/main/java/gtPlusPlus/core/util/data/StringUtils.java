@@ -81,8 +81,10 @@ public class StringUtils {
     }
 
     public static String firstLetterCaps(String data) {
-        String firstLetter = data.substring(0, 1).toUpperCase();
-        String restLetters = data.substring(1).toLowerCase();
+        String firstLetter = data.substring(0, 1)
+            .toUpperCase();
+        String restLetters = data.substring(1)
+            .toLowerCase();
         return firstLetter + restLetters;
     }
 
@@ -93,7 +95,8 @@ public class StringUtils {
             StringBuilder aData = new StringBuilder();
             for (V y : parameterTypes) {
                 if (y != null) {
-                    aData.append(", ").append(y);
+                    aData.append(", ")
+                        .append(y);
                 }
             }
             return aData.toString();
@@ -108,19 +111,19 @@ public class StringUtils {
      */
     public static boolean isSpecialCharacter(char aChar) {
         return aChar == '"' || aChar == '.'
-                || aChar == '$'
-                || aChar == '|'
-                || aChar == '('
-                || aChar == ')'
-                || aChar == '['
-                || aChar == ']'
-                || aChar == '{'
-                || aChar == '}'
-                || aChar == '^'
-                || aChar == '?'
-                || aChar == '*'
-                || aChar == '+'
-                || aChar == '\\';
+            || aChar == '$'
+            || aChar == '|'
+            || aChar == '('
+            || aChar == ')'
+            || aChar == '['
+            || aChar == ']'
+            || aChar == '{'
+            || aChar == '}'
+            || aChar == '^'
+            || aChar == '?'
+            || aChar == '*'
+            || aChar == '+'
+            || aChar == '\\';
     }
 
     public static boolean isEscaped(String aString) {
@@ -167,6 +170,8 @@ public class StringUtils {
     }
 
     public static long uppercaseCount(String aString) {
-        return aString.chars().filter(Character::isUpperCase).count();
+        return aString.chars()
+            .filter(Character::isUpperCase)
+            .count();
     }
 }

@@ -166,7 +166,7 @@ public interface Interface_ToolStats extends IToolStats {
      */
     @Override
     public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX,
-            int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent);
+        int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent);
 
     /**
      * @return Returns a broken Version of the Item.
@@ -179,14 +179,14 @@ public interface Interface_ToolStats extends IToolStats {
      */
     @Override
     public float getNormalDamageAgainstEntity(float aOriginalDamage, Entity aEntity, ItemStack aStack,
-            EntityPlayer aPlayer);
+        EntityPlayer aPlayer);
 
     /**
      * @return the Damage actually done to the Mob.
      */
     @Override
     public float getMagicDamageAgainstEntity(float aOriginalDamage, Entity aEntity, ItemStack aStack,
-            EntityPlayer aPlayer);
+        EntityPlayer aPlayer);
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack);

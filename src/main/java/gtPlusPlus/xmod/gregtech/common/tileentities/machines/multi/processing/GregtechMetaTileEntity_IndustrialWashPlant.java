@@ -60,8 +60,8 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
 
-public class GregtechMetaTileEntity_IndustrialWashPlant extends
-        GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialWashPlant> implements ISurvivalConstructable {
+public class GregtechMetaTileEntity_IndustrialWashPlant
+    extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialWashPlant> implements ISurvivalConstructable {
 
     private int mMode = 0;
     private int mCasing;
@@ -88,17 +88,27 @@ public class GregtechMetaTileEntity_IndustrialWashPlant extends
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType()).addInfo("Controller Block for the Industrial Wash Plant")
-                .addInfo("Can be configured with a screwdriver to also do Simple Washer and process Chemical Bathing")
-                .addInfo("400% faster than using single block machines of the same voltage")
-                .addInfo("Processes four item per voltage tier")
-                .addInfo("Always requires an Input Hatch full of water to refill structure")
-                .addInfo("Need to be filled with water.").addInfo("Will automatically fill water from input hatch.")
-                .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(5, 3, 7, true)
-                .addController("Front Center").addCasingInfoMin("Wash Plant Casings", 40, false)
-                .addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1)
-                .addOutputHatch("Any Casing", 1).addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1)
-                .addMufflerHatch("Any Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+        tt.addMachineType(getMachineType())
+            .addInfo("Controller Block for the Industrial Wash Plant")
+            .addInfo("Can be configured with a screwdriver to also do Simple Washer and process Chemical Bathing")
+            .addInfo("400% faster than using single block machines of the same voltage")
+            .addInfo("Processes four item per voltage tier")
+            .addInfo("Always requires an Input Hatch full of water to refill structure")
+            .addInfo("Need to be filled with water.")
+            .addInfo("Will automatically fill water from input hatch.")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .addSeparator()
+            .beginStructureBlock(5, 3, 7, true)
+            .addController("Front Center")
+            .addCasingInfoMin("Wash Plant Casings", 40, false)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addInputHatch("Any Casing", 1)
+            .addOutputHatch("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addMufflerHatch("Any Casing", 1)
+            .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
@@ -106,28 +116,27 @@ public class GregtechMetaTileEntity_IndustrialWashPlant extends
     public IStructureDefinition<GregtechMetaTileEntity_IndustrialWashPlant> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialWashPlant>builder()
-                    .addShape(
-                            mName,
-                            transpose(
-                                    new String[][] { { "CCCCC", "CwwwC", "CwwwC", "CwwwC", "CwwwC", "CwwwC", "CCCCC" },
-                                            { "CC~CC", "CwwwC", "CwwwC", "CwwwC", "CwwwC", "CwwwC", "CCCCC" },
-                                            { "CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC" }, }))
-                    .addElement(
-                            'C',
-                            buildHatchAdder(GregtechMetaTileEntity_IndustrialWashPlant.class)
-                                    .atLeast(InputBus, InputHatch, OutputHatch, OutputBus, Maintenance, Energy, Muffler)
-                                    .casingIndex(getCasingTextureIndex()).dot(1).buildAndChain(
-                                            onElementPass(
-                                                    x -> ++x.mCasing,
-                                                    ofBlock(getCasingBlock(), getCasingMeta()))))
-                    .addElement(
-                            'w',
-                            ofChain(
-                                    isAir(),
-                                    ofBlockAnyMeta(Blocks.water),
-                                    ofBlockAnyMeta(Blocks.flowing_water),
-                                    ofBlockAnyMeta(BlocksItems.getFluidBlock(InternalName.fluidDistilledWater))))
-                    .build();
+                .addShape(
+                    mName,
+                    transpose(
+                        new String[][] { { "CCCCC", "CwwwC", "CwwwC", "CwwwC", "CwwwC", "CwwwC", "CCCCC" },
+                            { "CC~CC", "CwwwC", "CwwwC", "CwwwC", "CwwwC", "CwwwC", "CCCCC" },
+                            { "CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC" }, }))
+                .addElement(
+                    'C',
+                    buildHatchAdder(GregtechMetaTileEntity_IndustrialWashPlant.class)
+                        .atLeast(InputBus, InputHatch, OutputHatch, OutputBus, Maintenance, Energy, Muffler)
+                        .casingIndex(getCasingTextureIndex())
+                        .dot(1)
+                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
+                .addElement(
+                    'w',
+                    ofChain(
+                        isAir(),
+                        ofBlockAnyMeta(Blocks.water),
+                        ofBlockAnyMeta(Blocks.flowing_water),
+                        ofBlockAnyMeta(BlocksItems.getFluidBlock(InternalName.fluidDistilledWater))))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -173,16 +182,14 @@ public class GregtechMetaTileEntity_IndustrialWashPlant extends
     @Override
     public RecipeMap<?> getRecipeMap() {
         return mMode == 0 ? RecipeMaps.oreWasherRecipes
-                : mMode == 1 ? GTPPRecipeMaps.simpleWasherRecipes : RecipeMaps.chemicalBathRecipes;
+            : mMode == 1 ? GTPPRecipeMaps.simpleWasherRecipes : RecipeMaps.chemicalBathRecipes;
     }
 
     @Nonnull
     @Override
     public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
-        return Arrays.asList(
-                RecipeMaps.oreWasherRecipes,
-                GTPPRecipeMaps.simpleWasherRecipes,
-                RecipeMaps.chemicalBathRecipes);
+        return Arrays
+            .asList(RecipeMaps.oreWasherRecipes, GTPPRecipeMaps.simpleWasherRecipes, RecipeMaps.chemicalBathRecipes);
     }
 
     @Override
@@ -202,7 +209,8 @@ public class GregtechMetaTileEntity_IndustrialWashPlant extends
                 }
                 return SimpleCheckRecipeResult.ofFailure("no_water");
             }
-        }.setSpeedBonus(1F / 5F).setMaxParallelSupplier(this::getMaxParallelRecipes);
+        }.setSpeedBonus(1F / 5F)
+            .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     @Override
@@ -291,7 +299,8 @@ public class GregtechMetaTileEntity_IndustrialWashPlant extends
                                         if (tBlock == Blocks.water) {
                                             fluidUsed = BlocksItems.getFluidBlock(InternalName.fluidDistilledWater);
                                         }
-                                        aBaseMetaTileEntity.getWorld().setBlock(
+                                        aBaseMetaTileEntity.getWorld()
+                                            .setBlock(
                                                 aBaseMetaTileEntity.getXCoord() + xDir + i,
                                                 aBaseMetaTileEntity.getYCoord() + h,
                                                 aBaseMetaTileEntity.getZCoord() + zDir + j,

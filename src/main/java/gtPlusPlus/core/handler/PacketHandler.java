@@ -39,8 +39,8 @@ public class PacketHandler {
         INSTANCE.registerMessage(handlerClass, messageClass, packetId++, side);
         if (AbstractPacket.class.isInstance(messageClass.getClass())) {
             AbstractPacket aPacket = ReflectionUtils.createNewInstanceFromConstructor(
-                    ReflectionUtils.getConstructor(messageClass, new Class[] {}),
-                    new Object[] {});
+                ReflectionUtils.getConstructor(messageClass, new Class[] {}),
+                new Object[] {});
             if (aPacket != null) {
                 Logger.INFO("Registered Packet: " + aPacket.getPacketName());
             }
@@ -66,7 +66,7 @@ public class PacketHandler {
      * Sends a message to everyone within a certain range of the coordinates in the same dimension.
      */
     public static final void sendToAllAround(IMessage message, int dimension, double x, double y, double z,
-            double range) {
+        double range) {
         sendToAllAround(message, new NetworkRegistry.TargetPoint(dimension, x, y, z, range));
     }
 

@@ -116,7 +116,8 @@ public class TileEntityPestKiller extends TileEntity implements ISidedInventory,
                                 for (Object e : o) {
                                     if (e instanceof Entity) {
                                         for (Class<?> C : mEntityMap) {
-                                            if (e.getClass().equals(C) || C.isAssignableFrom(e.getClass())) {
+                                            if (e.getClass()
+                                                .equals(C) || C.isAssignableFrom(e.getClass())) {
                                                 entities.put((Entity) e);
                                             }
                                         }
@@ -136,7 +137,8 @@ public class TileEntityPestKiller extends TileEntity implements ISidedInventory,
                         for (Object e : o) {
                             if (e instanceof Entity) {
                                 for (Class<?> C : mEntityMap) {
-                                    if (e.getClass().equals(C) || C.isAssignableFrom(e.getClass())) {
+                                    if (e.getClass()
+                                        .equals(C) || C.isAssignableFrom(e.getClass())) {
                                         entities.put((Entity) e);
                                     }
                                 }
@@ -249,37 +251,44 @@ public class TileEntityPestKiller extends TileEntity implements ISidedInventory,
 
     @Override
     public int getSizeInventory() {
-        return this.getInventory().getSizeInventory();
+        return this.getInventory()
+            .getSizeInventory();
     }
 
     @Override
     public ItemStack getStackInSlot(final int slot) {
-        return this.getInventory().getStackInSlot(slot);
+        return this.getInventory()
+            .getStackInSlot(slot);
     }
 
     @Override
     public ItemStack decrStackSize(final int slot, final int count) {
-        return this.getInventory().decrStackSize(slot, count);
+        return this.getInventory()
+            .decrStackSize(slot, count);
     }
 
     @Override
     public ItemStack getStackInSlotOnClosing(final int slot) {
-        return this.getInventory().getStackInSlotOnClosing(slot);
+        return this.getInventory()
+            .getStackInSlotOnClosing(slot);
     }
 
     @Override
     public void setInventorySlotContents(final int slot, final ItemStack stack) {
-        this.getInventory().setInventorySlotContents(slot, stack);
+        this.getInventory()
+            .setInventorySlotContents(slot, stack);
     }
 
     @Override
     public int getInventoryStackLimit() {
-        return this.getInventory().getInventoryStackLimit();
+        return this.getInventory()
+            .getInventoryStackLimit();
     }
 
     @Override
     public boolean isUseableByPlayer(final EntityPlayer entityplayer) {
-        return this.getInventory().isUseableByPlayer(entityplayer);
+        return this.getInventory()
+            .isUseableByPlayer(entityplayer);
     }
 
     @Override
@@ -287,7 +296,8 @@ public class TileEntityPestKiller extends TileEntity implements ISidedInventory,
         this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, 1);
         this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType());
         this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord - 1, this.zCoord, this.getBlockType());
-        this.getInventory().openInventory();
+        this.getInventory()
+            .openInventory();
     }
 
     @Override
@@ -295,18 +305,21 @@ public class TileEntityPestKiller extends TileEntity implements ISidedInventory,
         this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, 1);
         this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType());
         this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord - 1, this.zCoord, this.getBlockType());
-        this.getInventory().closeInventory();
+        this.getInventory()
+            .closeInventory();
     }
 
     @Override
     public boolean isItemValidForSlot(final int slot, final ItemStack itemstack) {
-        return this.getInventory().isItemValidForSlot(slot, itemstack);
+        return this.getInventory()
+            .isItemValidForSlot(slot, itemstack);
     }
 
     @Override
     public int[] getAccessibleSlotsFromSide(final int p_94128_1_) {
         final int[] accessibleSides = new int[this.getSizeInventory()];
-        for (int r = 0; r < this.getInventory().getSizeInventory(); r++) {
+        for (int r = 0; r < this.getInventory()
+            .getSizeInventory(); r++) {
             accessibleSides[r] = r;
         }
         return accessibleSides;
@@ -314,22 +327,29 @@ public class TileEntityPestKiller extends TileEntity implements ISidedInventory,
 
     @Override
     public boolean canInsertItem(final int aSlot, final ItemStack aStack, final int p_102007_3_) {
-        if (this.getInventory().getInventory()[0] == null) {
+        if (this.getInventory()
+            .getInventory()[0] == null) {
             return true;
-        } else if (GT_Utility.areStacksEqual(aStack, this.getInventory().getInventory()[0])) {
-            if (this.getInventory().getInventory()[0].stackSize < 64) {
-                int diff = 64 - this.getInventory().getInventory()[0].stackSize;
-                if (aStack.stackSize <= diff) {
-                    return true;
+        } else if (GT_Utility.areStacksEqual(
+            aStack,
+            this.getInventory()
+                .getInventory()[0])) {
+                    if (this.getInventory()
+                        .getInventory()[0].stackSize < 64) {
+                        int diff = 64 - this.getInventory()
+                            .getInventory()[0].stackSize;
+                        if (aStack.stackSize <= diff) {
+                            return true;
+                        }
+                    }
                 }
-            }
-        }
         return false;
     }
 
     @Override
     public boolean canExtractItem(final int aSlot, final ItemStack aStack, final int p_102008_3_) {
-        if (this.getInventory().getInventory()[1] == null) {
+        if (this.getInventory()
+            .getInventory()[1] == null) {
             return false;
         } else {
             return true;
@@ -388,14 +408,14 @@ public class TileEntityPestKiller extends TileEntity implements ISidedInventory,
 
             if (this != null) {
                 FluidEvent.fireEvent(
-                        new FluidEvent.FluidDrainingEvent(
-                                fluid,
-                                this.getWorldObj(),
-                                this.xCoord,
-                                this.yCoord,
-                                this.zCoord,
-                                this.mTank,
-                                0));
+                    new FluidEvent.FluidDrainingEvent(
+                        fluid,
+                        this.getWorldObj(),
+                        this.xCoord,
+                        this.yCoord,
+                        this.zCoord,
+                        this.mTank,
+                        0));
             }
         }
         updateTileEntity();
@@ -404,7 +424,9 @@ public class TileEntityPestKiller extends TileEntity implements ISidedInventory,
 
     @Override
     public boolean canFill(ForgeDirection from, Fluid fluid) {
-        return mTank.getFluid() == null || mTank.getFluid().getFluid().equals(fluid);
+        return mTank.getFluid() == null || mTank.getFluid()
+            .getFluid()
+            .equals(fluid);
     }
 
     @Override
@@ -474,7 +496,8 @@ public class TileEntityPestKiller extends TileEntity implements ISidedInventory,
     public boolean addFluid(ArrayList<ItemStack> inputs, ItemStack aInput, FluidStack aFluidForInput) {
         for (ItemStack a : inputs) {
             if (GT_Utility.areStacksEqual(a, aInput)) {
-                if (mTank.getFluid() == null || mTank.getFluid().isFluidEqual(aFluidForInput)) {
+                if (mTank.getFluid() == null || mTank.getFluid()
+                    .isFluidEqual(aFluidForInput)) {
                     boolean didFill = fill(ForgeDirection.UNKNOWN, aFluidForInput, true) > 0;
                     return didFill;
                 }
@@ -486,7 +509,8 @@ public class TileEntityPestKiller extends TileEntity implements ISidedInventory,
     }
 
     public void updateTileEntity() {
-        this.getInventory().markDirty();
+        this.getInventory()
+            .markDirty();
         this.markDirty();
         this.mNeedsUpdate = true;
     }

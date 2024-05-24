@@ -65,7 +65,8 @@ public class Container_PestKiller extends Container {
     public FluidStack getFluidOfStoredTank() {
         if (tile_entity != null) {
             if (tile_entity.getTank() != null) {
-                return tile_entity.getTank().getFluid();
+                return tile_entity.getTank()
+                    .getFluid();
             }
         }
         return null;
@@ -78,7 +79,7 @@ public class Container_PestKiller extends Container {
 
     @Override
     public ItemStack slotClick(final int aSlotIndex, final int aMouseclick, final int aShifthold,
-            final EntityPlayer aPlayer) {
+        final EntityPlayer aPlayer) {
         boolean fluid = false;
         if (aSlotIndex == 2) {
             fluid = true;

@@ -69,7 +69,7 @@ public class TF_Block_Fluid_Cryotheum extends BlockFluidInteractive {
 
     @Override
     public void onEntityCollidedWithBlock(final World paramWorld, final int paramInt1, final int paramInt2,
-            final int paramInt3, final Entity paramEntity) {
+        final int paramInt3, final Entity paramEntity) {
         paramEntity.extinguish();
         if (!effect) {
             return;
@@ -92,11 +92,11 @@ public class TF_Block_Fluid_Cryotheum extends BlockFluidInteractive {
         if (((paramEntity instanceof EntityZombie)) || ((paramEntity instanceof EntityCreeper))) {
             final EntitySnowman localEntitySnowman = new EntitySnowman(paramWorld);
             localEntitySnowman.setLocationAndAngles(
-                    paramEntity.posX,
-                    paramEntity.posY,
-                    paramEntity.posZ,
-                    paramEntity.rotationYaw,
-                    paramEntity.rotationPitch);
+                paramEntity.posX,
+                paramEntity.posY,
+                paramEntity.posZ,
+                paramEntity.rotationYaw,
+                paramEntity.rotationPitch);
             paramWorld.spawnEntityInWorld(localEntitySnowman);
 
             paramEntity.setDead();
@@ -115,13 +115,13 @@ public class TF_Block_Fluid_Cryotheum extends BlockFluidInteractive {
 
     @Override
     public int getLightValue(final IBlockAccess paramIBlockAccess, final int paramInt1, final int paramInt2,
-            final int paramInt3) {
+        final int paramInt3) {
         return TF_Fluids.fluidCryotheum.getLuminosity();
     }
 
     @Override
     public void updateTick(final World paramWorld, final int paramInt1, final int paramInt2, final int paramInt3,
-            final Random paramRandom) {
+        final Random paramRandom) {
         if (effect) {
             this.checkForInteraction(paramWorld, paramInt1, paramInt2, paramInt3);
         }
@@ -138,7 +138,7 @@ public class TF_Block_Fluid_Cryotheum extends BlockFluidInteractive {
     }
 
     protected void checkForInteraction(final World paramWorld, final int paramInt1, final int paramInt2,
-            final int paramInt3) {
+        final int paramInt3) {
         if (paramWorld.getBlock(paramInt1, paramInt2, paramInt3) != this) {
             return;
         }
@@ -159,7 +159,7 @@ public class TF_Block_Fluid_Cryotheum extends BlockFluidInteractive {
     }
 
     protected void interactWithBlock(final World paramWorld, final int paramInt1, final int paramInt2,
-            final int paramInt3) {
+        final int paramInt3) {
         final Block localBlock = paramWorld.getBlock(paramInt1, paramInt2, paramInt3);
         if ((localBlock == Blocks.air) || (localBlock == this)) {
             return;
@@ -168,11 +168,11 @@ public class TF_Block_Fluid_Cryotheum extends BlockFluidInteractive {
         if (this.hasInteraction(localBlock, i)) {
             final BlockWrapper localBlockWrapper = this.getInteraction(localBlock, i);
             paramWorld
-                    .setBlock(paramInt1, paramInt2, paramInt3, localBlockWrapper.block, localBlockWrapper.metadata, 3);
+                .setBlock(paramInt1, paramInt2, paramInt3, localBlockWrapper.block, localBlockWrapper.metadata, 3);
         } else if ((paramWorld.isSideSolid(paramInt1, paramInt2, paramInt3, ForgeDirection.UP))
-                && (paramWorld.isAirBlock(paramInt1, paramInt2 + 1, paramInt3))) {
-                    paramWorld.setBlock(paramInt1, paramInt2 + 1, paramInt3, Blocks.snow_layer, 0, 3);
-                }
+            && (paramWorld.isAirBlock(paramInt1, paramInt2 + 1, paramInt3))) {
+                paramWorld.setBlock(paramInt1, paramInt2 + 1, paramInt3, Blocks.snow_layer, 0, 3);
+            }
     }
 
 }

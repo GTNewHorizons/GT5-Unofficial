@@ -33,9 +33,9 @@ public class TF_Items {
     public static void preInit() {
 
         itemBucket = (ItemBucket) new ItemBucket("MiscUtils").setUnlocalizedName("bucket")
-                .setCreativeTab(AddToCreativeTab.tabMisc);
+            .setCreativeTab(AddToCreativeTab.tabMisc);
         itemMaterial = (ItemBase) new ItemBase("MiscUtils").setUnlocalizedName("material")
-                .setCreativeTab(AddToCreativeTab.tabMisc);
+            .setCreativeTab(AddToCreativeTab.tabMisc);
 
         bucketPyrotheum = itemBucket.addOreDictItem(1, "bucketPyrotheum");
         bucketCryotheum = itemBucket.addOreDictItem(2, "bucketCryotheum");
@@ -64,11 +64,11 @@ public class TF_Items {
         BucketHandler.registerBucket(TF_Blocks.blockFluidCryotheum, 0, bucketCryotheum);
         BucketHandler.registerBucket(TF_Blocks.blockFluidEnder, 0, bucketEnder);
         FluidContainerRegistry
-                .registerFluidContainer(TF_Fluids.fluidPyrotheum, bucketPyrotheum, FluidContainerRegistry.EMPTY_BUCKET);
+            .registerFluidContainer(TF_Fluids.fluidPyrotheum, bucketPyrotheum, FluidContainerRegistry.EMPTY_BUCKET);
         FluidContainerRegistry
-                .registerFluidContainer(TF_Fluids.fluidCryotheum, bucketCryotheum, FluidContainerRegistry.EMPTY_BUCKET);
+            .registerFluidContainer(TF_Fluids.fluidCryotheum, bucketCryotheum, FluidContainerRegistry.EMPTY_BUCKET);
         FluidContainerRegistry
-                .registerFluidContainer(TF_Fluids.fluidEnder, bucketEnder, FluidContainerRegistry.EMPTY_BUCKET);
+            .registerFluidContainer(TF_Fluids.fluidEnder, bucketEnder, FluidContainerRegistry.EMPTY_BUCKET);
     }
 
     public static void postInit() {}

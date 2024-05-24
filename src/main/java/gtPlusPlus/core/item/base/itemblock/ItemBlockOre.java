@@ -51,7 +51,9 @@ public class ItemBlockOre extends ItemBlock {
             for (WorldGen_GT_Ore_Layer f : gtPlusPlus.everglades.gen.gt.WorldGen_Ores.validOreveins.values()) {
                 Material[] m2 = new Material[] { f.mPrimary, f.mSecondary, f.mBetween, f.mSporadic };
                 for (Material m1 : m2) {
-                    AutoMap<String> aMap = mMapOreBlockItemToDimName.get(m1.getUnlocalizedName().toLowerCase());
+                    AutoMap<String> aMap = mMapOreBlockItemToDimName.get(
+                        m1.getUnlocalizedName()
+                            .toLowerCase());
                     if (aMap == null) {
                         aMap = new AutoMap<>();
                     }
@@ -59,7 +61,10 @@ public class ItemBlockOre extends ItemBlock {
                     if (!aMap.containsValue(aDimName)) {
                         aMap.put(aDimName);
                     }
-                    mMapOreBlockItemToDimName.put(m1.getUnlocalizedName().toLowerCase(), aMap);
+                    mMapOreBlockItemToDimName.put(
+                        m1.getUnlocalizedName()
+                            .toLowerCase(),
+                        aMap);
                 }
             }
             mInitOres_Everglades = true;
@@ -76,11 +81,14 @@ public class ItemBlockOre extends ItemBlock {
 
         if (this.mThisMaterial != null) {
             list.add("Ore contains:    ");
-            if (mThisMaterial.getComposites().isEmpty()) {
+            if (mThisMaterial.getComposites()
+                .isEmpty()) {
                 list.add("- " + mThisMaterial.getLocalizedName());
             } else {
                 for (MaterialStack m : mThisMaterial.getComposites()) {
-                    list.add("- " + m.getStackMaterial().getLocalizedName() + " x" + m.getPartsPerOneHundred());
+                    list.add(
+                        "- " + m.getStackMaterial()
+                            .getLocalizedName() + " x" + m.getPartsPerOneHundred());
                 }
             }
         }
@@ -96,8 +104,9 @@ public class ItemBlockOre extends ItemBlock {
             }
 
             if (mDimsForThisOre.isEmpty()) {
-                AutoMap<String> A = mMapOreBlockItemToDimName
-                        .get(this.mThisMaterial.getUnlocalizedName().toLowerCase());
+                AutoMap<String> A = mMapOreBlockItemToDimName.get(
+                    this.mThisMaterial.getUnlocalizedName()
+                        .toLowerCase());
                 if (A != null) {
                     mDimsForThisOre = A;
                 }
@@ -121,16 +130,16 @@ public class ItemBlockOre extends ItemBlock {
 
     @Override
     public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
-            final boolean p_77663_5_) {
+        final boolean p_77663_5_) {
         if (this.mThisMaterial != null) {
             if (this.mThisRadiation > 0) {
                 if (entityHolding instanceof EntityPlayer) {
                     if (!((EntityPlayer) entityHolding).capabilities.isCreativeMode) {
                         EntityUtils.applyRadiationDamageToEntity(
-                                iStack.stackSize,
-                                this.mThisMaterial.vRadiationLevel,
-                                world,
-                                entityHolding);
+                            iStack.stackSize,
+                            this.mThisMaterial.vRadiationLevel,
+                            world,
+                            entityHolding);
                     }
                 }
             }

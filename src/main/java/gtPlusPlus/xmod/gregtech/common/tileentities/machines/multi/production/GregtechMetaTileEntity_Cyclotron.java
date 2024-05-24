@@ -43,7 +43,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.Gregtech
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_Cyclotron>
-        implements ISurvivalConstructable {
+    implements ISurvivalConstructable {
 
     private int mCasing;
     private static IStructureDefinition<GregtechMetaTileEntity_Cyclotron> STRUCTURE_DEFINITION = null;
@@ -93,31 +93,32 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
     @Override
     public IStructureDefinition<GregtechMetaTileEntity_Cyclotron> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_Cyclotron>builder().addShape(
+            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_Cyclotron>builder()
+                .addShape(
                     mName,
                     transpose(
-                            new String[][] {
-                                    { "               ", "      hhh      ", "    hh   hh    ", "   h       h   ",
-                                            "  h         h  ", "  h         h  ", " h           h ", " h           h ",
-                                            " h           h ", "  h         h  ", "  h         h  ", "   h       h   ",
-                                            "    hh   hh    ", "      hhh      ", "               ", },
-                                    { "      hhh      ", "    hhccchh    ", "   hcchhhcch   ", "  hchh   hhch  ",
-                                            " hch       hch ", " hch       hch ", "hch         hch", "hch         hch",
-                                            "hch         hch", " hch       hch ", " hch       hch ", "  hchh   hhch  ",
-                                            "   hcch~hcch   ", "    hhccchh    ", "      hhh      ", },
-                                    { "               ", "      hhh      ", "    hh   hh    ", "   h       h   ",
-                                            "  h         h  ", "  h         h  ", " h           h ", " h           h ",
-                                            " h           h ", "  h         h  ", "  h         h  ", "   h       h   ",
-                                            "    hh   hh    ", "      hhh      ", "               ", } }))
-                    .addElement(
-                            'h',
-                            buildHatchAdder(GregtechMetaTileEntity_Cyclotron.class)
-                                    .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
-                                    .casingIndex(44).dot(1).buildAndChain(
-                                            onElementPass(
-                                                    x -> ++x.mCasing,
-                                                    ofBlock(getCasingBlock(), getCasingMeta()))))
-                    .addElement('c', ofBlock(getCyclotronCoil(), getCyclotronCoilMeta())).build();
+                        new String[][] {
+                            { "               ", "      hhh      ", "    hh   hh    ", "   h       h   ",
+                                "  h         h  ", "  h         h  ", " h           h ", " h           h ",
+                                " h           h ", "  h         h  ", "  h         h  ", "   h       h   ",
+                                "    hh   hh    ", "      hhh      ", "               ", },
+                            { "      hhh      ", "    hhccchh    ", "   hcchhhcch   ", "  hchh   hhch  ",
+                                " hch       hch ", " hch       hch ", "hch         hch", "hch         hch",
+                                "hch         hch", " hch       hch ", " hch       hch ", "  hchh   hhch  ",
+                                "   hcch~hcch   ", "    hhccchh    ", "      hhh      ", },
+                            { "               ", "      hhh      ", "    hh   hh    ", "   h       h   ",
+                                "  h         h  ", "  h         h  ", " h           h ", " h           h ",
+                                " h           h ", "  h         h  ", "  h         h  ", "   h       h   ",
+                                "    hh   hh    ", "      hhh      ", "               ", } }))
+                .addElement(
+                    'h',
+                    buildHatchAdder(GregtechMetaTileEntity_Cyclotron.class)
+                        .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
+                        .casingIndex(44)
+                        .dot(1)
+                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
+                .addElement('c', ofBlock(getCyclotronCoil(), getCyclotronCoilMeta()))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -163,19 +164,29 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType()).addInfo("Super Magnetic Speed Shooter").addSeparator()
-                .addInfo("Particles are accelerated over 186 revolutions to 80% light speed")
-                .addInfo("Can produce a continuous beam current of 2.2 mA at 590 MeV")
-                .addInfo("Which will be extracted from the Isochronous Cyclotron").addSeparator()
-                .addInfo("Consists of the same layout as a Fusion Reactor")
-                .addInfo("Any external casing can be a hatch/bus, unlike Fusion")
-                .addInfo("Cyclotron Machine Casings around Cyclotron Coil Blocks")
-                .addInfo("All Hatches must be IV or better").addPollutionAmount(getPollutionPerSecond(null))
-                .addSeparator().addCasingInfoMin("Cyclotron Machine Casings", 40, false)
-                .addCasingInfoMin("Cyclotron Coil", 32, false).addInputBus("Any Casing", 1)
-                .addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1).addOutputHatch("Any Casing", 1)
-                .addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+        tt.addMachineType(getMachineType())
+            .addInfo("Super Magnetic Speed Shooter")
+            .addSeparator()
+            .addInfo("Particles are accelerated over 186 revolutions to 80% light speed")
+            .addInfo("Can produce a continuous beam current of 2.2 mA at 590 MeV")
+            .addInfo("Which will be extracted from the Isochronous Cyclotron")
+            .addSeparator()
+            .addInfo("Consists of the same layout as a Fusion Reactor")
+            .addInfo("Any external casing can be a hatch/bus, unlike Fusion")
+            .addInfo("Cyclotron Machine Casings around Cyclotron Coil Blocks")
+            .addInfo("All Hatches must be IV or better")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .addSeparator()
+            .addCasingInfoMin("Cyclotron Machine Casings", 40, false)
+            .addCasingInfoMin("Cyclotron Coil", 32, false)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addInputHatch("Any Casing", 1)
+            .addOutputHatch("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addMufflerHatch("Any Casing", 1)
+            .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
@@ -195,7 +206,8 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
     }
 
     public IIconContainer getIconOverlay() {
-        if (this.getBaseMetaTileEntity().isActive()) {
+        if (this.getBaseMetaTileEntity()
+            .isActive()) {
             return TexturesGtBlock.Overlay_MatterFab_Active_Animated;
         }
         return TexturesGtBlock.Overlay_MatterFab_Animated;
@@ -227,12 +239,12 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
                                 long aCharge = IonParticles.getChargeState(s);
                                 if (aCharge == 0) {
                                     IonParticles.setChargeState(
-                                            s,
-                                            MathUtils.getRandomFromArray(
-                                                    new int[] { -5, -5, -4, -4, -4, -3, -3, -3, -3, -3, -2, -2, -2, -2,
-                                                            -2, -2, -2, -1, -1, -1, -1, -1, -1, -1, -1, 1, 1, 1, 1, 1,
-                                                            1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-                                                            3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6 }));
+                                        s,
+                                        MathUtils.getRandomFromArray(
+                                            new int[] { -5, -5, -4, -4, -4, -3, -3, -3, -3, -3, -2, -2, -2, -2, -2, -2,
+                                                -2, -1, -1, -1, -1, -1, -1, -1, -1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                                                1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4,
+                                                5, 5, 5, 6, 6 }));
                                 }
                             }
                         }
@@ -259,12 +271,12 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
                                 long aCharge = IonParticles.getChargeState(s);
                                 if (aCharge == 0) {
                                     IonParticles.setChargeState(
-                                            s,
-                                            MathUtils.getRandomFromArray(
-                                                    new int[] { -5, -5, -4, -4, -4, -3, -3, -3, -3, -3, -2, -2, -2, -2,
-                                                            -2, -2, -2, -1, -1, -1, -1, -1, -1, -1, -1, 1, 1, 1, 1, 1,
-                                                            1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-                                                            3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6 }));
+                                        s,
+                                        MathUtils.getRandomFromArray(
+                                            new int[] { -5, -5, -4, -4, -4, -3, -3, -3, -3, -3, -2, -2, -2, -2, -2, -2,
+                                                -2, -1, -1, -1, -1, -1, -1, -1, -1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                                                1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4,
+                                                5, 5, 5, 6, 6 }));
                                 }
                             }
                         }
@@ -309,7 +321,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
         }
 
         return new String[] { "COMET - Compact Cyclotron MK " + tier, "EU Required: " + powerRequired + "EU/t",
-                "Stored EU: " + this.getEUVar() + " / " + maxEUStore() };
+            "Stored EU: " + this.getEUVar() + " / " + maxEUStore() };
     }
 
     @Override

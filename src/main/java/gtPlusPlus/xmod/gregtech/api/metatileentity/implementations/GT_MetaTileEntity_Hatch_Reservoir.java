@@ -13,12 +13,12 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 public class GT_MetaTileEntity_Hatch_Reservoir extends GT_MetaTileEntity_Hatch_FluidGenerator {
 
     public GT_MetaTileEntity_Hatch_Reservoir(final int aID, final String aName, final String aNameRegional,
-            final int aTier) {
+        final int aTier) {
         super(aID, aName, aNameRegional, aTier);
     }
 
     public GT_MetaTileEntity_Hatch_Reservoir(final String aName, final int aTier, final String[] aDescription,
-            final ITexture[][][] aTextures) {
+        final ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 

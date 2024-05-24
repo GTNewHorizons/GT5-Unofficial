@@ -32,7 +32,7 @@ public class GTPP_Cover_Overflow extends GT_CoverBehavior {
     }
 
     public int doCoverThings(ForgeDirection side, byte aInputRedstone, int aCoverID, int aCoverVariable,
-            ICoverable aTileEntity, long aTimer) {
+        ICoverable aTileEntity, long aTimer) {
         if (aCoverVariable == 0) {
             return aCoverVariable;
         }
@@ -66,7 +66,7 @@ public class GTPP_Cover_Overflow extends GT_CoverBehavior {
     }
 
     public int onCoverScrewdriverclick(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-            EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (GT_Utility.getClickedFacingCoords(side, aX, aY, aZ)[0] >= 0.5F) {
             aCoverVariable += (mMaxTransferRate * (aPlayer.isSneaking() ? 0.1f : 0.01f));
         } else {
@@ -79,13 +79,13 @@ public class GTPP_Cover_Overflow extends GT_CoverBehavior {
             aCoverVariable = mMaxTransferRate;
         }
         GT_Utility.sendChatToPlayer(
-                aPlayer,
-                GT_Utility.trans("322", "Overflow point: ") + aCoverVariable + GT_Utility.trans("323", "L"));
+            aPlayer,
+            GT_Utility.trans("322", "Overflow point: ") + aCoverVariable + GT_Utility.trans("323", "L"));
         return aCoverVariable;
     }
 
     public boolean onCoverRightclick(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-            EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        EntityPlayer aPlayer, float aX, float aY, float aZ) {
         boolean aShift = aPlayer.isSneaking();
         int aAmount = aShift ? 128 : 8;
         if (GT_Utility.getClickedFacingCoords(side, aX, aY, aZ)[0] >= 0.5F) {
@@ -100,8 +100,8 @@ public class GTPP_Cover_Overflow extends GT_CoverBehavior {
             aCoverVariable = mMaxTransferRate;
         }
         GT_Utility.sendChatToPlayer(
-                aPlayer,
-                GT_Utility.trans("322", "Overflow point: ") + aCoverVariable + GT_Utility.trans("323", "L"));
+            aPlayer,
+            GT_Utility.trans("322", "Overflow point: ") + aCoverVariable + GT_Utility.trans("323", "L"));
         aTileEntity.setCoverDataAtSide(side, new ISerializableObject.LegacyCoverData(aCoverVariable));
         return true;
     }
@@ -123,22 +123,22 @@ public class GTPP_Cover_Overflow extends GT_CoverBehavior {
     }
 
     public boolean letsItemsIn(ForgeDirection side, int aCoverID, int aCoverVariable, int aSlot,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return true;
     }
 
     public boolean letsItemsOut(ForgeDirection side, int aCoverID, int aCoverVariable, int aSlot,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return true;
     }
 
     public boolean letsFluidIn(ForgeDirection side, int aCoverID, int aCoverVariable, Fluid aFluid,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return false;
     }
 
     public boolean letsFluidOut(ForgeDirection side, int aCoverID, int aCoverVariable, Fluid aFluid,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return true;
     }
 
@@ -183,20 +183,21 @@ public class GTPP_Cover_Overflow extends GT_CoverBehavior {
         protected void addUIWidgets(ModularWindow.Builder builder) {
             AtomicBoolean warn = new AtomicBoolean(false);
 
-            builder.widget(
+            builder
+                .widget(
                     new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, GTPP_Cover_Overflow.this)
-                            .addFollower(
-                                    new CoverDataFollower_NumericWidget<>(),
-                                    coverData -> (double) convert(coverData),
-                                    (coverData, state) -> new ISerializableObject.LegacyCoverData(state.intValue()),
-                                    widget -> widget.setBounds(0, mMaxTransferRate).setScrollValues(1000, 144, 100000)
-                                            .setFocusOnGuiOpen(true)
-                                            .setPos(startX + spaceX * 0, startY + spaceY * 1 + 8)
-                                            .setSize(spaceX * 4 - 3, 12)))
-                    .widget(
-                            new TextWidget(GT_Utility.trans("322", "Overflow point: "))
-                                    .setDefaultColor(COLOR_TEXT_GRAY.get())
-                                    .setPos(startX, 4 + startY + spaceY * 0 + 8));
+                        .addFollower(
+                            new CoverDataFollower_NumericWidget<>(),
+                            coverData -> (double) convert(coverData),
+                            (coverData, state) -> new ISerializableObject.LegacyCoverData(state.intValue()),
+                            widget -> widget.setBounds(0, mMaxTransferRate)
+                                .setScrollValues(1000, 144, 100000)
+                                .setFocusOnGuiOpen(true)
+                                .setPos(startX + spaceX * 0, startY + spaceY * 1 + 8)
+                                .setSize(spaceX * 4 - 3, 12)))
+                .widget(
+                    new TextWidget(GT_Utility.trans("322", "Overflow point: ")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(startX, 4 + startY + spaceY * 0 + 8));
         }
     }
 }

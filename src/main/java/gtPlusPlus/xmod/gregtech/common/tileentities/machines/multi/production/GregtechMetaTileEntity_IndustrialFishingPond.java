@@ -59,10 +59,11 @@ import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
 
 public class GregtechMetaTileEntity_IndustrialFishingPond extends
-        GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialFishingPond> implements ISurvivalConstructable {
+    GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialFishingPond> implements ISurvivalConstructable {
 
     private boolean isUsingControllerCircuit = false;
-    private static final Item circuit = CI.getNumberedCircuit(0).getItem();
+    private static final Item circuit = CI.getNumberedCircuit(0)
+        .getItem();
     private int mCasing;
     private static IStructureDefinition<GregtechMetaTileEntity_IndustrialFishingPond> STRUCTURE_DEFINITION = null;
     private static final Class<?> cofhWater;
@@ -92,15 +93,27 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType()).addInfo("Controller Block for the Fishing Pond")
-                .addInfo("Can process (Tier + 1) * 2 recipes").addInfo("Put a numbered circuit into the input bus.")
-                .addInfo("Circuit 14 for Fish").addInfo("Circuit 15 for Junk").addInfo("Circuit 16 for Treasure")
-                .addInfo("Need to be filled with water.").addInfo("Will automatically fill water from input hatch.")
-                .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(9, 3, 9, true)
-                .addController("Front Center").addCasingInfoMin("Aquatic Casings", 64, false)
-                .addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1)
-                .addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+        tt.addMachineType(getMachineType())
+            .addInfo("Controller Block for the Fishing Pond")
+            .addInfo("Can process (Tier + 1) * 2 recipes")
+            .addInfo("Put a numbered circuit into the input bus.")
+            .addInfo("Circuit 14 for Fish")
+            .addInfo("Circuit 15 for Junk")
+            .addInfo("Circuit 16 for Treasure")
+            .addInfo("Need to be filled with water.")
+            .addInfo("Will automatically fill water from input hatch.")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .addSeparator()
+            .beginStructureBlock(9, 3, 9, true)
+            .addController("Front Center")
+            .addCasingInfoMin("Aquatic Casings", 64, false)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addInputHatch("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addMufflerHatch("Any Casing", 1)
+            .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
@@ -113,25 +126,24 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends
     public IStructureDefinition<GregtechMetaTileEntity_IndustrialFishingPond> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialFishingPond>builder()
-                    .addShape(
-                            mName,
-                            transpose(
-                                    new String[][] {
-                                            { "XXXXXXXXX", "X       X", "X       X", "X       X", "X       X",
-                                                    "X       X", "X       X", "X       X", "XXXXXXXXX" },
-                                            { "XXXX~XXXX", "X       X", "X       X", "X       X", "X       X",
-                                                    "X       X", "X       X", "X       X", "XXXXXXXXX" },
-                                            { "XXXXXXXXX", "XXXXXXXXX", "XXXXXXXXX", "XXXXXXXXX", "XXXXXXXXX",
-                                                    "XXXXXXXXX", "XXXXXXXXX", "XXXXXXXXX", "XXXXXXXXX" }, }))
-                    .addElement(
-                            'X',
-                            buildHatchAdder(GregtechMetaTileEntity_IndustrialFishingPond.class)
-                                    .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch)
-                                    .casingIndex(getCasingTextureIndex()).dot(1).buildAndChain(
-                                            onElementPass(
-                                                    x -> ++x.mCasing,
-                                                    ofBlock(getCasingBlock(), getCasingMeta()))))
-                    .build();
+                .addShape(
+                    mName,
+                    transpose(
+                        new String[][] {
+                            { "XXXXXXXXX", "X       X", "X       X", "X       X", "X       X", "X       X", "X       X",
+                                "X       X", "XXXXXXXXX" },
+                            { "XXXX~XXXX", "X       X", "X       X", "X       X", "X       X", "X       X", "X       X",
+                                "X       X", "XXXXXXXXX" },
+                            { "XXXXXXXXX", "XXXXXXXXX", "XXXXXXXXX", "XXXXXXXXX", "XXXXXXXXX", "XXXXXXXXX", "XXXXXXXXX",
+                                "XXXXXXXXX", "XXXXXXXXX" }, }))
+                .addElement(
+                    'X',
+                    buildHatchAdder(GregtechMetaTileEntity_IndustrialFishingPond.class)
+                        .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch)
+                        .casingIndex(getCasingTextureIndex())
+                        .dot(1)
+                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -211,22 +223,29 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends
         ItemStack[] mFishOutput = generateLoot(this.mMode);
         mFishOutput = removeNulls(mFishOutput);
         GT_Recipe g = new GT_Recipe(
-                true,
-                new ItemStack[] {},
-                mFishOutput,
-                null,
-                new int[] {},
-                tFluidInputs,
-                null,
-                200,
-                16,
-                0);
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(g.mEUt).setEUt(tEnergy)
-                .setDuration(g.mDuration);
-        GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(g).setItemInputs(tItemInputs)
-                .setFluidInputs(tFluidInputs).setAvailableEUt(tEnergy).setMaxParallel(getMaxParallelRecipes())
-                .setConsumption(true).setOutputCalculation(true).setMachine(this).enableBatchMode(batchMode ? 128 : 1)
-                .setCalculator(calculator);
+            true,
+            new ItemStack[] {},
+            mFishOutput,
+            null,
+            new int[] {},
+            tFluidInputs,
+            null,
+            200,
+            16,
+            0);
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(g.mEUt)
+            .setEUt(tEnergy)
+            .setDuration(g.mDuration);
+        GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(g)
+            .setItemInputs(tItemInputs)
+            .setFluidInputs(tFluidInputs)
+            .setAvailableEUt(tEnergy)
+            .setMaxParallel(getMaxParallelRecipes())
+            .setConsumption(true)
+            .setOutputCalculation(true)
+            .setMachine(this)
+            .enableBatchMode(batchMode ? 128 : 1)
+            .setCalculator(calculator);
 
         helper.build();
 
@@ -318,7 +337,8 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends
                                         // Utils.LOG_WARNING("Going to try swap an air block for water from inut bus.");
                                         stored.amount -= 1000;
                                         Block fluidUsed = Blocks.water;
-                                        aBaseMetaTileEntity.getWorld().setBlock(
+                                        aBaseMetaTileEntity.getWorld()
+                                            .setBlock(
                                                 aBaseMetaTileEntity.getXCoord() + xDir + i,
                                                 aBaseMetaTileEntity.getYCoord() + h,
                                                 aBaseMetaTileEntity.getZCoord() + zDir + j,
@@ -341,8 +361,8 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends
 
     private boolean isNotStaticWater(Block block, byte meta) {
         return block == Blocks.air || block == Blocks.flowing_water
-                || block == BlocksItems.getFluidBlock(InternalName.fluidDistilledWater)
-                || (cofhWater != null && cofhWater.isAssignableFrom(block.getClass()) && meta != 0);
+            || block == BlocksItems.getFluidBlock(InternalName.fluidDistilledWater)
+            || (cofhWater != null && cofhWater.isAssignableFrom(block.getClass()) && meta != 0);
     }
 
     private static AutoMap<AutoMap<WeightedRandomFishable>> categories = new AutoMap<>();
@@ -374,7 +394,8 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends
     private int getCircuit(ItemStack[] t) {
         if (!this.isUsingControllerCircuit) {
             for (ItemStack j : t) {
-                if (j.getItem() == CI.getNumberedCircuit(0).getItem()) {
+                if (j.getItem() == CI.getNumberedCircuit(0)
+                    .getItem()) {
                     // Fish
                     if (j.getItemDamage() == 14) {
                         mMax = 8 + (this.getMaxParallelRecipes() - 2);
@@ -416,7 +437,8 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends
         }
         ItemStack t;
         try {
-            t = (ItemStack) ReflectionUtils.getField(WeightedRandomFishable.class, "field_150711_b").get(y);
+            t = (ItemStack) ReflectionUtils.getField(WeightedRandomFishable.class, "field_150711_b")
+                .get(y);
             ItemStack k = ItemUtils.getSimpleStack(t, 1);
             reflectiveFishMap.put(y, k);
             return t;

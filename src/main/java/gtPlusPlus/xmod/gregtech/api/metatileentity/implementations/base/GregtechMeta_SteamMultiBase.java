@@ -42,7 +42,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMultiBase<T>>
-        extends GregtechMeta_MultiBlockBase<T> {
+    extends GregtechMeta_MultiBlockBase<T> {
 
     public ArrayList<GT_MetaTileEntity_Hatch_Steam_BusInput> mSteamInputs = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_Steam_BusOutput> mSteamOutputs = new ArrayList<>();
@@ -62,10 +62,10 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
 
     @Override
     public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
-            final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+        final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
         if (side == facing) {
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureIndex()),
-                    aActive ? getFrontOverlayActive() : getFrontOverlay() };
+                aActive ? getFrontOverlayActive() : getFrontOverlay() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureIndex()) };
     }
@@ -172,8 +172,8 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
             aDidAdd = addToMachineListInternal(mSteamInputFluids, aMetaTileEntity, aBaseCasingIndex);
         } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Steam_BusInput) {
             log(
-                    "Trying to set recipe map. Type: "
-                            + (getRecipeMap() != null ? getRecipeMap().unlocalizedName : "Null"));
+                "Trying to set recipe map. Type: "
+                    + (getRecipeMap() != null ? getRecipeMap().unlocalizedName : "Null"));
             this.resetRecipeMapForHatch(aTileEntity, getRecipeMap());
             log("Adding Steam Input Bus");
             aDidAdd = addToMachineListInternal(mSteamInputs, aMetaTileEntity, aBaseCasingIndex);
@@ -211,19 +211,30 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
         FluidStack aLiquid = GT_Utility.getFluidForFilledItem(aStack, true);
         if (aLiquid != null) return depleteInput(aLiquid);
         for (GT_MetaTileEntity_Hatch_CustomFluidBase tHatch : filterValidMTEs(mSteamInputFluids)) {
-            if (GT_Utility.areStacksEqual(aStack, tHatch.getBaseMetaTileEntity().getStackInSlot(0))) {
-                if (tHatch.getBaseMetaTileEntity().getStackInSlot(0).stackSize >= aStack.stackSize) {
-                    tHatch.getBaseMetaTileEntity().decrStackSize(0, aStack.stackSize);
+            if (GT_Utility.areStacksEqual(
+                aStack,
+                tHatch.getBaseMetaTileEntity()
+                    .getStackInSlot(0))) {
+                if (tHatch.getBaseMetaTileEntity()
+                    .getStackInSlot(0).stackSize >= aStack.stackSize) {
+                    tHatch.getBaseMetaTileEntity()
+                        .decrStackSize(0, aStack.stackSize);
                     return true;
                 }
             }
         }
         for (GT_MetaTileEntity_Hatch_Steam_BusInput tHatch : filterValidMTEs(mSteamInputs)) {
             tHatch.mRecipeMap = getRecipeMap();
-            for (int i = tHatch.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
-                if (GT_Utility.areStacksEqual(aStack, tHatch.getBaseMetaTileEntity().getStackInSlot(i))) {
-                    if (tHatch.getBaseMetaTileEntity().getStackInSlot(0).stackSize >= aStack.stackSize) {
-                        tHatch.getBaseMetaTileEntity().decrStackSize(0, aStack.stackSize);
+            for (int i = tHatch.getBaseMetaTileEntity()
+                .getSizeInventory() - 1; i >= 0; i--) {
+                if (GT_Utility.areStacksEqual(
+                    aStack,
+                    tHatch.getBaseMetaTileEntity()
+                        .getStackInSlot(i))) {
+                    if (tHatch.getBaseMetaTileEntity()
+                        .getStackInSlot(0).stackSize >= aStack.stackSize) {
+                        tHatch.getBaseMetaTileEntity()
+                            .decrStackSize(0, aStack.stackSize);
                         return true;
                     }
                 }
@@ -248,9 +259,13 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
         ArrayList<ItemStack> rList = new ArrayList<>();
         for (GT_MetaTileEntity_Hatch_Steam_BusInput tHatch : filterValidMTEs(mSteamInputs)) {
             tHatch.mRecipeMap = getRecipeMap();
-            for (int i = tHatch.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
-                if (tHatch.getBaseMetaTileEntity().getStackInSlot(i) != null) {
-                    rList.add(tHatch.getBaseMetaTileEntity().getStackInSlot(i));
+            for (int i = tHatch.getBaseMetaTileEntity()
+                .getSizeInventory() - 1; i >= 0; i--) {
+                if (tHatch.getBaseMetaTileEntity()
+                    .getStackInSlot(i) != null) {
+                    rList.add(
+                        tHatch.getBaseMetaTileEntity()
+                            .getStackInSlot(i));
                 }
             }
         }
@@ -268,13 +283,15 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
             for (GT_MetaTileEntity_Hatch_Steam_BusOutput tHatch : filterValidMTEs(mSteamOutputs)) {
                 if (!outputSuccess) {
                     for (int i = tHatch.getSizeInventory() - 1; i >= 0 && !outputSuccess; i--) {
-                        if (tHatch.getBaseMetaTileEntity().addStackToSlot(i, single)) outputSuccess = true;
+                        if (tHatch.getBaseMetaTileEntity()
+                            .addStackToSlot(i, single)) outputSuccess = true;
                     }
                 }
             }
             for (GT_MetaTileEntity_Hatch_Output tHatch : filterValidMTEs(mOutputHatches)) {
                 if (!outputSuccess && tHatch.outputsItems()) {
-                    if (tHatch.getBaseMetaTileEntity().addStackToSlot(1, single)) outputSuccess = true;
+                    if (tHatch.getBaseMetaTileEntity()
+                        .addStackToSlot(1, single)) outputSuccess = true;
                 }
             }
         }
@@ -285,8 +302,11 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
     public ArrayList<ItemStack> getStoredOutputs() {
         ArrayList<ItemStack> rList = new ArrayList<>();
         for (GT_MetaTileEntity_Hatch_Steam_BusOutput tHatch : filterValidMTEs(mSteamOutputs)) {
-            for (int i = tHatch.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
-                rList.add(tHatch.getBaseMetaTileEntity().getStackInSlot(i));
+            for (int i = tHatch.getBaseMetaTileEntity()
+                .getSizeInventory() - 1; i >= 0; i--) {
+                rList.add(
+                    tHatch.getBaseMetaTileEntity()
+                        .getStackInSlot(i));
             }
         }
         return rList;
@@ -336,29 +356,28 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-            IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         final NBTTagCompound tag = accessor.getNBTData();
 
         if (tag.getBoolean("incompleteStructure")) {
             currentTip.add(RED + "** INCOMPLETE STRUCTURE **" + RESET);
         }
         currentTip.add(
-                (tag.getBoolean("hasProblems") ? (RED + "** HAS PROBLEMS **") : GREEN + "Running Fine") + RESET
-                        + "  Efficiency: "
-                        + tag.getFloat("efficiency")
-                        + "%");
+            (tag.getBoolean("hasProblems") ? (RED + "** HAS PROBLEMS **") : GREEN + "Running Fine") + RESET
+                + "  Efficiency: "
+                + tag.getFloat("efficiency")
+                + "%");
 
         boolean isActive = tag.getBoolean("isActive");
         if (isActive) {
             long actualEnergyUsage = tag.getLong("energyUsage");
             if (actualEnergyUsage > 0) {
                 currentTip.add(
-                        StatCollector
-                                .translateToLocalFormatted("GTPP.waila.steam.use", formatNumbers(actualEnergyUsage)));
+                    StatCollector.translateToLocalFormatted("GTPP.waila.steam.use", formatNumbers(actualEnergyUsage)));
             }
         }
         currentTip.add(
-                GT_Waila.getMachineProgressString(isActive, tag.getInteger("maxProgress"), tag.getInteger("progress")));
+            GT_Waila.getMachineProgressString(isActive, tag.getInteger("maxProgress"), tag.getInteger("progress")));
         // Show ns on the tooltip
         if (GT_Mod.gregtechproxy.wailaAverageNS && tag.hasKey("averageNS")) {
             int tAverageTime = tag.getInteger("averageNS");
@@ -368,9 +387,10 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
     }
 
     protected static <T extends GregtechMeta_SteamMultiBase<T>> GT_HatchElementBuilder<T> buildSteamInput(
-            Class<T> typeToken) {
-        return buildHatchAdder(typeToken).adder(GregtechMeta_SteamMultiBase::addToMachineList).hatchIds(31040)
-                .shouldReject(t -> !t.mSteamInputFluids.isEmpty());
+        Class<T> typeToken) {
+        return buildHatchAdder(typeToken).adder(GregtechMeta_SteamMultiBase::addToMachineList)
+            .hatchIds(31040)
+            .shouldReject(t -> !t.mSteamInputFluids.isEmpty());
     }
 
     protected enum SteamHatchElement implements IHatchElement<GregtechMeta_SteamMultiBase<?>> {

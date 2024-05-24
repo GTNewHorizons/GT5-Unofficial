@@ -53,63 +53,63 @@ public class FR_ItemRegistry {
         // Magic Bee like Frames
 
         hiveFrameVoid = new MB_ItemFrame(
-                MB_FrameType.USELESS,
-                EnumRarity.common,
-                "No more cheaty frames for GTNH players.");
+            MB_FrameType.USELESS,
+            EnumRarity.common,
+            "No more cheaty frames for GTNH players.");
 
         hiveFrameAccelerated = new MB_ItemFrame(
-                MB_FrameType.ACCELERATED,
-                "Longevity for bees isn't very common, especially if they're working harder.");
+            MB_FrameType.ACCELERATED,
+            "Longevity for bees isn't very common, especially if they're working harder.");
         hiveFrameMutagenic = new MB_ItemFrame(
-                MB_FrameType.MUTAGENIC,
-                EnumRarity.epic,
-                "Evolution of the fittest, finest and fastest.");
+            MB_FrameType.MUTAGENIC,
+            EnumRarity.epic,
+            "Evolution of the fittest, finest and fastest.");
         hiveFrameBusy = new MB_ItemFrame(MB_FrameType.BUSY, "Your bee will work harder and longer than you expected.");
         ChestGenHooks.addItem(
-                ChestGenHooks.STRONGHOLD_CORRIDOR,
-                new WeightedRandomChestContent(new ItemStack(hiveFrameVoid), 1, 1, 14));
+            ChestGenHooks.STRONGHOLD_CORRIDOR,
+            new WeightedRandomChestContent(new ItemStack(hiveFrameVoid), 1, 1, 14));
         ChestGenHooks.addItem(
-                ChestGenHooks.STRONGHOLD_LIBRARY,
-                new WeightedRandomChestContent(new ItemStack(hiveFrameVoid), 1, 3, 18));
+            ChestGenHooks.STRONGHOLD_LIBRARY,
+            new WeightedRandomChestContent(new ItemStack(hiveFrameVoid), 1, 3, 18));
         ChestGenHooks.addItem(
-                ChestGenHooks.DUNGEON_CHEST,
-                new WeightedRandomChestContent(new ItemStack(hiveFrameVoid), 1, 1, 14));
+            ChestGenHooks.DUNGEON_CHEST,
+            new WeightedRandomChestContent(new ItemStack(hiveFrameVoid), 1, 1, 14));
         ChestGenHooks.addItem(
-                ChestGenHooks.MINESHAFT_CORRIDOR,
-                new WeightedRandomChestContent(new ItemStack(hiveFrameVoid), 1, 1, 9));
+            ChestGenHooks.MINESHAFT_CORRIDOR,
+            new WeightedRandomChestContent(new ItemStack(hiveFrameVoid), 1, 1, 9));
         ChestGenHooks.addItem(
-                ChestGenHooks.PYRAMID_DESERT_CHEST,
-                new WeightedRandomChestContent(new ItemStack(hiveFrameMutagenic), 1, 1, 9));
+            ChestGenHooks.PYRAMID_DESERT_CHEST,
+            new WeightedRandomChestContent(new ItemStack(hiveFrameMutagenic), 1, 1, 9));
         ChestGenHooks.addItem(
-                ChestGenHooks.PYRAMID_JUNGLE_CHEST,
-                new WeightedRandomChestContent(new ItemStack(hiveFrameMutagenic), 1, 3, 12));
+            ChestGenHooks.PYRAMID_JUNGLE_CHEST,
+            new WeightedRandomChestContent(new ItemStack(hiveFrameMutagenic), 1, 3, 12));
         ChestGenHooks.addItem(
-                ChestGenHooks.MINESHAFT_CORRIDOR,
-                new WeightedRandomChestContent(new ItemStack(hiveFrameMutagenic), 1, 3, 8));
+            ChestGenHooks.MINESHAFT_CORRIDOR,
+            new WeightedRandomChestContent(new ItemStack(hiveFrameMutagenic), 1, 3, 8));
         ChestGenHooks.addItem(
-                ChestGenHooks.DUNGEON_CHEST,
-                new WeightedRandomChestContent(new ItemStack(hiveFrameMutagenic), 1, 3, 12));
+            ChestGenHooks.DUNGEON_CHEST,
+            new WeightedRandomChestContent(new ItemStack(hiveFrameMutagenic), 1, 3, 12));
 
         // Frame Items added by bartimaeusnek
         hiveFrameDecay = new MB_ItemFrame(
-                MB_FrameType.DECAYING,
-                EnumRarity.uncommon,
-                "Who really needs stable genetics?");
+            MB_FrameType.DECAYING,
+            EnumRarity.uncommon,
+            "Who really needs stable genetics?");
         hiveFrameSlow = new MB_ItemFrame(MB_FrameType.SLOWING, EnumRarity.common, "The journey is its own reward.");
         hiveFrameStalilize = new MB_ItemFrame(
-                MB_FrameType.STABILIZING,
-                EnumRarity.rare,
-                "If you wish your bees to keep their form.");
+            MB_FrameType.STABILIZING,
+            EnumRarity.rare,
+            "If you wish your bees to keep their form.");
         hiveFrameArborist = new MB_ItemFrame(
-                MB_FrameType.ARBORISTS,
-                EnumRarity.common,
-                "Who need Bees when you can have Trees?");
+            MB_FrameType.ARBORISTS,
+            EnumRarity.common,
+            "Who need Bees when you can have Trees?");
         ChestGenHooks.addItem(
-                ChestGenHooks.PYRAMID_JUNGLE_CHEST,
-                new WeightedRandomChestContent(new ItemStack(hiveFrameArborist), 1, 4, 24));
+            ChestGenHooks.PYRAMID_JUNGLE_CHEST,
+            new WeightedRandomChestContent(new ItemStack(hiveFrameArborist), 1, 4, 24));
         ChestGenHooks.addItem(
-                ChestGenHooks.STRONGHOLD_LIBRARY,
-                new WeightedRandomChestContent(new ItemStack(hiveFrameSlow), 1, 4, 24));
+            ChestGenHooks.STRONGHOLD_LIBRARY,
+            new WeightedRandomChestContent(new ItemStack(hiveFrameSlow), 1, 4, 24));
     }
 
     protected static <T extends Item> T registerItem(final T item, final String name) {

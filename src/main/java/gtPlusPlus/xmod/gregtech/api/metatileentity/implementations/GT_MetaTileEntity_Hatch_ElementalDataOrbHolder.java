@@ -26,26 +26,26 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GT_MetaTileEntity_Hatch_ElementalDataOrbHolder extends GT_MetaTileEntity_Hatch
-        implements IConfigurationCircuitSupport {
+    implements IConfigurationCircuitSupport {
 
     public GT_MetaTileEntity_Hatch_ElementalDataOrbHolder(int aID, String aName, String aNameRegional, int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                17,
-                new String[] { "Holds Data Orbs for the Elemental Duplicator", "Can insert/extract the circuit slot",
-                        "A circuit must be used to select a slot (1-16)", CORE.GT_Tooltip.get() });
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            17,
+            new String[] { "Holds Data Orbs for the Elemental Duplicator", "Can insert/extract the circuit slot",
+                "A circuit must be used to select a slot (1-16)", CORE.GT_Tooltip.get() });
     }
 
     public GT_MetaTileEntity_Hatch_ElementalDataOrbHolder(String aName, int aTier, String aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, 17, aDescription, aTextures);
     }
 
     public GT_MetaTileEntity_Hatch_ElementalDataOrbHolder(String aName, int aTier, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, 17, aDescription, aTextures);
     }
 
@@ -126,10 +126,10 @@ public class GT_MetaTileEntity_Hatch_ElementalDataOrbHolder extends GT_MetaTileE
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         Logger.INFO("Checking if we can pull " + aStack.getDisplayName() + " from slot " + aIndex);
         if (aIndex == mInventory.length - 1 && ItemUtils.isControlCircuit(aStack)
-                && side == getBaseMetaTileEntity().getFrontFacing()) {
+            && side == getBaseMetaTileEntity().getFrontFacing()) {
             return true;
         }
         return false;
@@ -137,10 +137,10 @@ public class GT_MetaTileEntity_Hatch_ElementalDataOrbHolder extends GT_MetaTileE
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         Logger.INFO("Checking if we can put " + aStack.getDisplayName() + " into slot " + aIndex);
         if (aIndex == mInventory.length - 1 && ItemUtils.isControlCircuit(aStack)
-                && side == getBaseMetaTileEntity().getFrontFacing()) {
+            && side == getBaseMetaTileEntity().getFrontFacing()) {
             return true;
         }
         return false;
@@ -172,7 +172,8 @@ public class GT_MetaTileEntity_Hatch_ElementalDataOrbHolder extends GT_MetaTileE
     @Override
     public boolean canInsertItem(int aIndex, ItemStack aStack, int ordinalSide) {
         if (aIndex == mInventory.length - 1 && ItemUtils.isControlCircuit(aStack)
-                && ordinalSide == getBaseMetaTileEntity().getFrontFacing().ordinal()) {
+            && ordinalSide == getBaseMetaTileEntity().getFrontFacing()
+                .ordinal()) {
             Logger.INFO("Putting " + aStack.getDisplayName() + " into slot " + aIndex);
             return true;
         }
@@ -216,11 +217,13 @@ public class GT_MetaTileEntity_Hatch_ElementalDataOrbHolder extends GT_MetaTileE
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-                SlotGroup.ofItemHandler(inventoryHandler, 4).startFromSlot(0).endAtSlot(15)
-                        .background(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_DATA_ORB)
-                        .applyForWidget(
-                                widget -> widget
-                                        .setFilter(stack -> ItemList.Tool_DataOrb.isStackEqual(stack, false, true)))
-                        .build().setPos(52, 7));
+            SlotGroup.ofItemHandler(inventoryHandler, 4)
+                .startFromSlot(0)
+                .endAtSlot(15)
+                .background(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_DATA_ORB)
+                .applyForWidget(
+                    widget -> widget.setFilter(stack -> ItemList.Tool_DataOrb.isStackEqual(stack, false, true)))
+                .build()
+                .setPos(52, 7));
     }
 }

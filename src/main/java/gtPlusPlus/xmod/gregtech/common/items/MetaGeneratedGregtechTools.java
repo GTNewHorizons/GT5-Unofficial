@@ -27,28 +27,28 @@ public class MetaGeneratedGregtechTools extends GT_MetaGenerated_Tool {
 
         // Electric File
         this.addTool(
-                ANGLE_GRINDER,
-                "Angle Grinder",
-                "Hand-held electric filing device",
-                new TOOL_Gregtech_AngleGrinder(),
-                GregtechToolDictNames.craftingToolAngleGrinder,
-                ToolDictNames.craftingToolFile,
-                new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 2L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L));
+            ANGLE_GRINDER,
+            "Angle Grinder",
+            "Hand-held electric filing device",
+            new TOOL_Gregtech_AngleGrinder(),
+            GregtechToolDictNames.craftingToolAngleGrinder,
+            ToolDictNames.craftingToolFile,
+            new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L),
+            new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 2L),
+            new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L));
 
         // Electric Wire Cutter
         GregTech_API.registerWireCutter(
-                this.addTool(
-                        ELECTRIC_SNIPS,
-                        "Automatic Snips",
-                        "Hand-held electric wire cutter",
-                        new TOOL_Gregtech_ElectricSnips(),
-                        GregtechToolDictNames.craftingToolElectricSnips,
-                        ToolDictNames.craftingToolWireCutter,
-                        new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 4L),
-                        new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 4L),
-                        new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 4L)));
+            this.addTool(
+                ELECTRIC_SNIPS,
+                "Automatic Snips",
+                "Hand-held electric wire cutter",
+                new TOOL_Gregtech_ElectricSnips(),
+                GregtechToolDictNames.craftingToolElectricSnips,
+                ToolDictNames.craftingToolWireCutter,
+                new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 4L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 4L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 4L)));
 
     }
 }

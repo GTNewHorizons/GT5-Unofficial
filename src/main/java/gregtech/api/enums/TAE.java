@@ -89,8 +89,8 @@ public class TAE {
                     if (h != null) {
                         h[64][secondaryIndex++] = GTPP_CopiedBlockTexture;
                         x.set(null, h);
-                        Logger.INFO(
-                                "[TAE} Registered Texture with ID " + (secondaryIndex - 1) + " in secondary index.");
+                        Logger
+                            .INFO("[TAE} Registered Texture with ID " + (secondaryIndex - 1) + " in secondary index.");
                         return true;
                     }
                 }

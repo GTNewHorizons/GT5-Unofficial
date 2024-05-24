@@ -69,9 +69,9 @@ public class ReflectionUtils {
 
     private static Fields.ClassFields.Field cacheAccessor(Field f) {
         return mCachedFieldAccessors.computeIfAbsent(
-                f,
-                (field) -> Fields.ofClass(field.getDeclaringClass())
-                        .getUntypedField(Fields.LookupType.DECLARED_IN_HIERARCHY, field.getName()));
+            f,
+            (field) -> Fields.ofClass(field.getDeclaringClass())
+                .getUntypedField(Fields.LookupType.DECLARED_IN_HIERARCHY, field.getName()));
     }
 
     private static boolean cacheClass(Class<?> aClass) {
@@ -91,12 +91,12 @@ public class ReflectionUtils {
             return false;
         }
         boolean isStatic = Modifier.isStatic(aMethod.getModifiers());
-        CachedMethod y = mCachedMethods.get(
-                aClass.getName() + "." + aMethod.getName() + "." + ArrayUtils.toString(aMethod.getParameterTypes()));
+        CachedMethod y = mCachedMethods
+            .get(aClass.getName() + "." + aMethod.getName() + "." + ArrayUtils.toString(aMethod.getParameterTypes()));
         if (y == null) {
             mCachedMethods.put(
-                    aClass.getName() + "." + aMethod.getName() + "." + ArrayUtils.toString(aMethod.getParameterTypes()),
-                    new CachedMethod(aMethod, isStatic));
+                aClass.getName() + "." + aMethod.getName() + "." + ArrayUtils.toString(aMethod.getParameterTypes()),
+                new CachedMethod(aMethod, isStatic));
             return true;
         }
         return false;
@@ -120,8 +120,8 @@ public class ReflectionUtils {
             return;
         }
         mCachedConstructors.computeIfAbsent(
-                aClass.getName() + "." + ArrayUtils.toString(aConstructor.getParameterTypes()),
-                k -> new CachedConstructor(aConstructor));
+            aClass.getName() + "." + ArrayUtils.toString(aConstructor.getParameterTypes()),
+            k -> new CachedConstructor(aConstructor));
     }
 
     /**
@@ -268,13 +268,17 @@ public class ReflectionUtils {
     }
 
     public static void makeFieldAccessible(final Field field) {
-        if (!Modifier.isPublic(field.getModifiers()) || !Modifier.isPublic(field.getDeclaringClass().getModifiers())) {
+        if (!Modifier.isPublic(field.getModifiers()) || !Modifier.isPublic(
+            field.getDeclaringClass()
+                .getModifiers())) {
             field.setAccessible(true);
         }
     }
 
     public static void makeMethodAccessible(final Method field) {
-        if (!Modifier.isPublic(field.getModifiers()) || !Modifier.isPublic(field.getDeclaringClass().getModifiers())) {
+        if (!Modifier.isPublic(field.getModifiers()) || !Modifier.isPublic(
+            field.getDeclaringClass()
+                .getModifiers())) {
             field.setAccessible(true);
         }
     }
@@ -400,9 +404,9 @@ public class ReflectionUtils {
             return false;
         }
         Class<?> mLocalClass = (objectInstance instanceof Class ? (Class<?>) objectInstance
-                : objectInstance.getClass());
+            : objectInstance.getClass());
         Logger.REFLECTION(
-                "Trying to invoke " + methodName + " on an instance of " + mLocalClass.getCanonicalName() + ".");
+            "Trying to invoke " + methodName + " on an instance of " + mLocalClass.getCanonicalName() + ".");
         try {
             Method mInvokingMethod = mLocalClass.getDeclaredMethod(methodName, parameters);
             if (mInvokingMethod != null) {
@@ -414,9 +418,9 @@ public class ReflectionUtils {
                 Logger.REFLECTION(methodName + " is null.");
             }
         } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-                | InvocationTargetException e) {
+            | InvocationTargetException e) {
             Logger.REFLECTION(
-                    "Failed to Dynamically invoke " + methodName + " on an object of type: " + mLocalClass.getName());
+                "Failed to Dynamically invoke " + methodName + " on an object of type: " + mLocalClass.getName());
         }
 
         Logger.REFLECTION("Invoke failed or did something wrong.");
@@ -523,7 +527,7 @@ public class ReflectionUtils {
     }
 
     private static Method getMethodRecursively(final Class<?> clazz, final String aMethodName)
-            throws NoSuchMethodException {
+        throws NoSuchMethodException {
         try {
             Logger.REFLECTION("Method: Recursion Lookup: " + aMethodName);
             Method k = clazz.getDeclaredMethod(aMethodName);
@@ -540,8 +544,7 @@ public class ReflectionUtils {
 
     private static void dumpClassInfo(Class<?> aClass) {
         Logger.INFO(
-                "We ran into an error processing reflection in " + aClass.getName()
-                        + ", dumping all data for debugging.");
+            "We ran into an error processing reflection in " + aClass.getName() + ", dumping all data for debugging.");
         // Get the methods
         Method[] methods = aClass.getDeclaredMethods();
         Field[] fields = aClass.getDeclaredFields();
@@ -550,7 +553,7 @@ public class ReflectionUtils {
         Logger.INFO("Dumping all Methods.");
         for (Method method : methods) {
             System.out
-                    .println(method.getName() + " | " + StringUtils.getDataStringFromArray(method.getParameterTypes()));
+                .println(method.getName() + " | " + StringUtils.getDataStringFromArray(method.getParameterTypes()));
         }
         Logger.INFO("Dumping all Fields.");
         for (Field f : fields) {
@@ -559,10 +562,10 @@ public class ReflectionUtils {
         Logger.INFO("Dumping all Constructors.");
         for (Constructor<?> c : consts) {
             System.out.println(
-                    c.getName() + " | "
-                            + c.getParameterCount()
-                            + " | "
-                            + StringUtils.getDataStringFromArray(c.getParameterTypes()));
+                c.getName() + " | "
+                    + c.getParameterCount()
+                    + " | "
+                    + StringUtils.getDataStringFromArray(c.getParameterTypes()));
         }
     }
 
@@ -598,7 +601,7 @@ public class ReflectionUtils {
                     final Object o = constructor.newInstance();
                     return (Class<?>) o;
                 } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                        | InvocationTargetException e) {
+                    | InvocationTargetException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
@@ -638,11 +641,13 @@ public class ReflectionUtils {
                         boolean found = false;
                         for (Class<?> h : y) {
                             Logger.REFLECTION("Found hidden inner class: " + h.getCanonicalName());
-                            if (h.getSimpleName().toLowerCase().equals(aData[aData.length - 1].toLowerCase())) {
+                            if (h.getSimpleName()
+                                .toLowerCase()
+                                .equals(aData[aData.length - 1].toLowerCase())) {
                                 Logger.REFLECTION(
-                                        "Found correct class. [" + aData[aData.length - 1]
-                                                + "] Caching at correct location: "
-                                                + string);
+                                    "Found correct class. [" + aData[aData.length - 1]
+                                        + "] Caching at correct location: "
+                                        + string);
                                 Logger.REFLECTION("Found at location: " + h.getCanonicalName());
                                 ReflectionUtils.mCachedClasses.put(string, h);
                                 aClass = h;
@@ -700,7 +705,7 @@ public class ReflectionUtils {
                 return aInstance;
             }
         } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                | InvocationTargetException e) {
+            | InvocationTargetException e) {
             e.printStackTrace();
         }
         return null;
@@ -710,7 +715,9 @@ public class ReflectionUtils {
         if (sgtbees.isEnum()) {
             Object[] aValues = sgtbees.getEnumConstants();
             for (Object o : aValues) {
-                if (o.toString().toLowerCase().equals(name.toLowerCase())) {
+                if (o.toString()
+                    .toLowerCase()
+                    .equals(name.toLowerCase())) {
                     return (Enum) o;
                 }
             }

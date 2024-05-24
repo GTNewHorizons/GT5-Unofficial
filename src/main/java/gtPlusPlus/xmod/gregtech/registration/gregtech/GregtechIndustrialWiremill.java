@@ -17,9 +17,9 @@ public class GregtechIndustrialWiremill {
     private static void run1() {
         // Industrial Wire Factory Multiblock
         GregtechItemList.Industrial_WireFactory.set(
-                new GregtechMetaTileEntity_IndustrialWireMill(
-                        798,
-                        "industrialwiremill.controller.tier.single",
-                        "Wire Factory Controller").getStackForm(1L));
+            new GregtechMetaTileEntity_IndustrialWireMill(
+                798,
+                "industrialwiremill.controller.tier.single",
+                "Wire Factory Controller").getStackForm(1L));
     }
 }

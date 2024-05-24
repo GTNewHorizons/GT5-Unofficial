@@ -45,11 +45,15 @@ import ic2.core.item.resources.ItemCell;
 public class Utils {
 
     public static boolean isServer() {
-        return FMLCommonHandler.instance().getEffectiveSide().isServer();
+        return FMLCommonHandler.instance()
+            .getEffectiveSide()
+            .isServer();
     }
 
     public static boolean isClient() {
-        return FMLCommonHandler.instance().getEffectiveSide().isClient();
+        return FMLCommonHandler.instance()
+            .getEffectiveSide()
+            .isClient();
     }
 
     public static TC_AspectStack getTcAspectStack(final TC_Aspects aspect, final long size) {
@@ -76,8 +80,8 @@ public class Utils {
                     returnValue = new TC_AspectStack(TC_Aspects.valueOf("COGNITIO"), size);
                 } else {
                     Logger.INFO(
-                            "Fallback TC Aspect found - " + aspect
-                                    + " - PLEASE UPDATE GREGTECH TO A NEWER VERSION TO REMOVE THIS MESSAGE - THIS IS NOT AN ERROR");
+                        "Fallback TC Aspect found - " + aspect
+                            + " - PLEASE UPDATE GREGTECH TO A NEWER VERSION TO REMOVE THIS MESSAGE - THIS IS NOT AN ERROR");
                     returnValue = new TC_AspectStack(TC_Aspects.valueOf("COGNITO"), size);
                 }
             } catch (final NoSuchFieldError r) {
@@ -91,8 +95,8 @@ public class Utils {
                     returnValue = new TC_AspectStack(TC_Aspects.valueOf("EXANIMUS"), size);
                 } else {
                     Logger.INFO(
-                            "Fallback TC Aspect found - " + aspect
-                                    + " - PLEASE UPDATE GREGTECH TO A NEWER VERSION TO REMOVE THIS MESSAGE - THIS IS NOT AN ERROR");
+                        "Fallback TC Aspect found - " + aspect
+                            + " - PLEASE UPDATE GREGTECH TO A NEWER VERSION TO REMOVE THIS MESSAGE - THIS IS NOT AN ERROR");
                     returnValue = new TC_AspectStack(TC_Aspects.valueOf("EXAMINIS"), size);
                 }
             } catch (final NoSuchFieldError r) {
@@ -107,8 +111,8 @@ public class Utils {
                     returnValue = new TC_AspectStack(TC_Aspects.valueOf("PRAECANTATIO"), size);
                 } else {
                     Logger.INFO(
-                            "Fallback TC Aspect found - " + aspect
-                                    + " - PLEASE UPDATE GREGTECH TO A NEWER VERSION TO REMOVE THIS MESSAGE - THIS IS NOT AN ERROR");
+                        "Fallback TC Aspect found - " + aspect
+                            + " - PLEASE UPDATE GREGTECH TO A NEWER VERSION TO REMOVE THIS MESSAGE - THIS IS NOT AN ERROR");
                     returnValue = new TC_AspectStack(TC_Aspects.valueOf("PRAECANTIO"), size);
                 }
             } catch (final NoSuchFieldError r) {
@@ -125,7 +129,9 @@ public class Utils {
     // Register an event to both busses.
     public static void registerEvent(Object o) {
         MinecraftForge.EVENT_BUS.register(o);
-        FMLCommonHandler.instance().bus().register(o);
+        FMLCommonHandler.instance()
+            .bus()
+            .register(o);
     }
 
     // Send a message to all players on the server
@@ -135,7 +141,9 @@ public class Utils {
 
     // Send a message to all players on the server
     public static void sendServerMessage(final IChatComponent chatComponent) {
-        MinecraftServer.getServer().getConfigurationManager().sendChatMsg(chatComponent);
+        MinecraftServer.getServer()
+            .getConfigurationManager()
+            .sendChatMsg(chatComponent);
     }
 
     /**
@@ -160,7 +168,8 @@ public class Utils {
             return 0;
         }
         final Color c = new Color(r, g, b);
-        String temp = Integer.toHexString(c.getRGB() & 0xFFFFFF).toUpperCase();
+        String temp = Integer.toHexString(c.getRGB() & 0xFFFFFF)
+            .toUpperCase();
         temp = Utils.appenedHexNotationToString(temp);
         return Integer.decode(temp);
     }
@@ -187,8 +196,15 @@ public class Utils {
             String code = "" + (int) (Math.random() * 256);
             code = code + code + code;
             final int i = Integer.parseInt(code);
-            hexColorMap.put(a, Integer.toHexString(0x1000000 | i).substring(1).toUpperCase());
-            Logger.WARNING("" + Integer.toHexString(0x1000000 | i).substring(1).toUpperCase());
+            hexColorMap.put(
+                a,
+                Integer.toHexString(0x1000000 | i)
+                    .substring(1)
+                    .toUpperCase());
+            Logger.WARNING(
+                "" + Integer.toHexString(0x1000000 | i)
+                    .substring(1)
+                    .toUpperCase());
         }
         return hexColorMap;
     }
@@ -244,9 +260,9 @@ public class Utils {
             final ItemStack temp = (ItemStack) methode.invoke(item, cellID++, yourName, new Block[0]);
             Logger.WARNING("Successfully created " + temp.getDisplayName() + "s.");
             FluidContainerRegistry.registerFluidContainer(
-                    FluidUtils.getFluidStack(s.toLowerCase(), 1000),
-                    temp.copy(),
-                    Ic2Items.cell.copy());
+                FluidUtils.getFluidStack(s.toLowerCase(), 1000),
+                temp.copy(),
+                Ic2Items.cell.copy());
             ItemUtils.addItemToOreDictionary(temp.copy(), "cell" + s);
             return temp;
         } catch (final Exception e) {
@@ -260,26 +276,26 @@ public class Utils {
         // List of characters to remove
         final HashSet<Character> toRemoveSet = new HashSet<>();
         Collections.addAll(
-                toRemoveSet,
-                ' ',
-                '-',
-                '_',
-                '~',
-                '?',
-                '!',
-                '@',
-                '#',
-                '$',
-                '%',
-                '^',
-                '&',
-                '*',
-                '(',
-                ')',
-                '{',
-                '}',
-                '[',
-                ']');
+            toRemoveSet,
+            ' ',
+            '-',
+            '_',
+            '~',
+            '?',
+            '!',
+            '@',
+            '#',
+            '$',
+            '%',
+            '^',
+            '&',
+            '*',
+            '(',
+            ')',
+            '{',
+            '}',
+            '[',
+            ']');
 
         // Remove characters from the toRemoveSet if they are in dontRemove
         for (char e : dontRemove) {
@@ -337,22 +353,22 @@ public class Utils {
 
     public static String addBookTitleLocalization(final String aTitle) {
         return GT_LanguageManager
-                .addStringLocalization("Book." + aTitle + ".Name", aTitle, !GregTech_API.sPostloadFinished);
+            .addStringLocalization("Book." + aTitle + ".Name", aTitle, !GregTech_API.sPostloadFinished);
     }
 
     public static String[] addBookPagesLocalization(final String aTitle, final String[] aPages) {
         String[] aLocalizationPages = new String[aPages.length];
         for (byte i = 0; i < aPages.length; i = (byte) (i + 1)) {
             aLocalizationPages[i] = GT_LanguageManager.addStringLocalization(
-                    "Book." + aTitle + ".Page" + ((i < 10) ? "0" + i : Byte.valueOf(i)),
-                    aPages[i],
-                    !GregTech_API.sPostloadFinished);
+                "Book." + aTitle + ".Page" + ((i < 10) ? "0" + i : Byte.valueOf(i)),
+                aPages[i],
+                !GregTech_API.sPostloadFinished);
         }
         return aLocalizationPages;
     }
 
     public static ItemStack getWrittenBook(ItemStack book, int ID, String mapping, String title, String author,
-            String[] pages) {
+        String[] pages) {
 
         if (GT_Utility.isStringInvalid(mapping)) {
             return null;
@@ -394,19 +410,19 @@ public class Utils {
         }
 
         String credits = String.format(
-                "Credits to %s for writing this Book. This was Book Nr. %d at its creation. Gotta get 'em all!",
-                author,
-                ID);
+            "Credits to %s for writing this Book. This was Book Nr. %d at its creation. Gotta get 'em all!",
+            author,
+            ID);
         NBTList.appendTag(new NBTTagString(credits));
         NBT.setTag("pages", NBTList);
 
         stack.setTagCompound(NBT);
 
         String logMessage = String.format(
-                "GT++_Mod: Added Book to Book++ List  -  Mapping: '%s'  -  Name: '%s'  -  Author: '%s'",
-                mapping,
-                title,
-                author);
+            "GT++_Mod: Added Book to Book++ List  -  Mapping: '%s'  -  Name: '%s'  -  Author: '%s'",
+            mapping,
+            title,
+            author);
         GT_Log.out.println(logMessage);
 
         NBTUtils.createIntegerTagCompound(stack, "stats", "mMeta", ID);

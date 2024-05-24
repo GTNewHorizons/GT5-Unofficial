@@ -28,9 +28,8 @@ public class StandardBaseParticles extends BaseItemParticle {
     }
 
     private static final String[] aTypes = new String[] { "Graviton", "Up", "Down", "Charm", "Strange", "Top", "Bottom",
-            "Electron", "Electron Neutrino", "Muon", "Muon Neutrino", "Tau", "Tau Neutrino", "Gluon", "Photon",
-            "Z Boson", "W Boson", "Higgs Boson", "Proton", "Neutron", "Lambda", "Omega", "Pion", "ETA Meson",
-            "Unknown" };
+        "Electron", "Electron Neutrino", "Muon", "Muon Neutrino", "Tau", "Tau Neutrino", "Gluon", "Photon", "Z Boson",
+        "W Boson", "Higgs Boson", "Proton", "Neutron", "Lambda", "Omega", "Pion", "ETA Meson", "Unknown" };
 
     public IIcon[] icons = new IIcon[aTypes.length];
 
@@ -44,7 +43,8 @@ public class StandardBaseParticles extends BaseItemParticle {
             MetaToNameMap.put(key, Utils.sanitizeString(s.toLowerCase()));
             for (Particle o : Particle.aMap) {
                 int aColour = 0;
-                if (o.mParticleName.toLowerCase().equals(s.toLowerCase())) {
+                if (o.mParticleName.toLowerCase()
+                    .equals(s.toLowerCase())) {
                     if (o.mParticleType == ElementaryGroup.BARYON) {
                         aColour = Utils.rgbtoHexValue(174, 226, 156);
                         aColourMap.put(key++, aColour);
@@ -111,23 +111,30 @@ public class StandardBaseParticles extends BaseItemParticle {
         EnumChatFormatting aColour = EnumChatFormatting.GRAY;
         String aState = aColour + "Unknown" + EnumChatFormatting.RESET;
         if (aCharge != null) {
-            String aGroup = aCharge.mParticleType.name().toLowerCase();
-            if (aGroup.toLowerCase().contains("quark")) {
+            String aGroup = aCharge.mParticleType.name()
+                .toLowerCase();
+            if (aGroup.toLowerCase()
+                .contains("quark")) {
                 aColour = EnumChatFormatting.LIGHT_PURPLE;
-            } else if (aGroup.toLowerCase().contains("lepton")) {
-                aColour = EnumChatFormatting.GREEN;
-            } else if (aCharge == Particle.HIGGS_BOSON) {
-                aColour = EnumChatFormatting.YELLOW;
-            } else if (aGroup.toLowerCase().contains("boson")) {
-                aColour = EnumChatFormatting.RED;
-            } else if (aGroup.toLowerCase().contains("baryon")) {
-                aColour = EnumChatFormatting.BLUE;
-            } else if (aGroup.toLowerCase().contains("meson")) {
-                aColour = EnumChatFormatting.WHITE;
-            } else {
-                aColour = EnumChatFormatting.GRAY;
-            }
-            String aFirstLet = aGroup.substring(0, 1).toUpperCase();
+            } else if (aGroup.toLowerCase()
+                .contains("lepton")) {
+                    aColour = EnumChatFormatting.GREEN;
+                } else if (aCharge == Particle.HIGGS_BOSON) {
+                    aColour = EnumChatFormatting.YELLOW;
+                } else if (aGroup.toLowerCase()
+                    .contains("boson")) {
+                        aColour = EnumChatFormatting.RED;
+                    } else if (aGroup.toLowerCase()
+                        .contains("baryon")) {
+                            aColour = EnumChatFormatting.BLUE;
+                        } else if (aGroup.toLowerCase()
+                            .contains("meson")) {
+                                aColour = EnumChatFormatting.WHITE;
+                            } else {
+                                aColour = EnumChatFormatting.GRAY;
+                            }
+            String aFirstLet = aGroup.substring(0, 1)
+                .toUpperCase();
             aGroup = aGroup.replaceFirst(aGroup.substring(0, 1), aFirstLet);
             aState = aColour + aGroup + EnumChatFormatting.RESET;
             list.add(EnumChatFormatting.GRAY + "Type: " + aState);

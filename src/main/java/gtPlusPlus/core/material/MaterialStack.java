@@ -30,7 +30,8 @@ public class MaterialStack {
         final BigDecimal bd = new BigDecimal(val).setScale(2, RoundingMode.HALF_EVEN);
         i = bd.doubleValue();
         // Split the string into xx.xx
-        final String[] arr = String.valueOf(i).split("\\.");
+        final String[] arr = String.valueOf(i)
+            .split("\\.");
         final int[] intArr = new int[2];
         intArr[0] = Integer.parseInt(arr[0]);
         intArr[1] = Integer.parseInt(arr[1]);
@@ -58,7 +59,7 @@ public class MaterialStack {
     public ItemStack getUnificatedDustStack(final int amount) {
         if (this.stackMaterial.werkstoffID != 0) {
             ItemStack stack = BW_Utils
-                    .getCorrespondingItemStack(OrePrefixes.dust, this.stackMaterial.werkstoffID, amount);
+                .getCorrespondingItemStack(OrePrefixes.dust, this.stackMaterial.werkstoffID, amount);
             if (stack != null) {
                 return stack;
             }

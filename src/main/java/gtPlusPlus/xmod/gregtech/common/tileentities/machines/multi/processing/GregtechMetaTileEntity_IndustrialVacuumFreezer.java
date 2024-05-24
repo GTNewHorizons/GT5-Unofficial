@@ -42,7 +42,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.Gregtech
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends
-        GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialVacuumFreezer> implements ISurvivalConstructable {
+    GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialVacuumFreezer> implements ISurvivalConstructable {
 
     public static int CASING_TEXTURE_ID;
     public static String mCryoFuelName = "Gelid Cryotheum";
@@ -55,7 +55,7 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends
     private final ArrayList<GT_MetaTileEntity_Hatch_CustomFluidBase> mCryotheumHatches = new ArrayList<>();
 
     public GregtechMetaTileEntity_IndustrialVacuumFreezer(final int aID, final String aName,
-            final String aNameRegional) {
+        final String aNameRegional) {
         super(aID, aName, aNameRegional);
         mFuelStack = FluidUtils.getFluidStack("cryotheum", 1);
         CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 10);
@@ -80,15 +80,25 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType()).addInfo("Factory Grade Advanced Vacuum Freezer")
-                .addInfo("Speed: +100% | EU Usage: 100% | Parallel: 4")
-                .addInfo("Consumes 20L of " + mCryoFuelName + "/s during operation")
-                .addInfo("Constructed exactly the same as a normal Vacuum Freezer")
-                .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 3, true)
-                .addController("Front Center").addCasingInfoMin(mCasingName, 10, false).addInputBus("Any Casing", 1)
-                .addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1).addOutputHatch("Any Casing", 1)
-                .addEnergyHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1)
-                .addOtherStructurePart(mHatchName, "Any Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+        tt.addMachineType(getMachineType())
+            .addInfo("Factory Grade Advanced Vacuum Freezer")
+            .addInfo("Speed: +100% | EU Usage: 100% | Parallel: 4")
+            .addInfo("Consumes 20L of " + mCryoFuelName + "/s during operation")
+            .addInfo("Constructed exactly the same as a normal Vacuum Freezer")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .addSeparator()
+            .beginStructureBlock(3, 3, 3, true)
+            .addController("Front Center")
+            .addCasingInfoMin(mCasingName, 10, false)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addInputHatch("Any Casing", 1)
+            .addOutputHatch("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addMufflerHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addOtherStructurePart(mHatchName, "Any Casing", 1)
+            .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
@@ -96,28 +106,27 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends
     public IStructureDefinition<GregtechMetaTileEntity_IndustrialVacuumFreezer> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialVacuumFreezer>builder()
-                    .addShape(
-                            mName,
-                            transpose(
-                                    new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" },
-                                            { "CCC", "CCC", "CCC" }, }))
-                    .addElement(
-                            'C',
-                            ofChain(
-                                    buildHatchAdder(GregtechMetaTileEntity_IndustrialVacuumFreezer.class)
-                                            .adder(GregtechMetaTileEntity_IndustrialVacuumFreezer::addCryotheumHatch)
-                                            .hatchId(967).shouldReject(t -> !t.mCryotheumHatches.isEmpty())
-                                            .casingIndex(CASING_TEXTURE_ID).dot(1).build(),
-                                    buildHatchAdder(GregtechMetaTileEntity_IndustrialVacuumFreezer.class).atLeast(
-                                            InputBus,
-                                            OutputBus,
-                                            Maintenance,
-                                            Energy,
-                                            Muffler,
-                                            InputHatch,
-                                            OutputHatch).casingIndex(CASING_TEXTURE_ID).dot(1).build(),
-                                    onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 10))))
-                    .build();
+                .addShape(
+                    mName,
+                    transpose(
+                        new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" }, { "CCC", "CCC", "CCC" }, }))
+                .addElement(
+                    'C',
+                    ofChain(
+                        buildHatchAdder(GregtechMetaTileEntity_IndustrialVacuumFreezer.class)
+                            .adder(GregtechMetaTileEntity_IndustrialVacuumFreezer::addCryotheumHatch)
+                            .hatchId(967)
+                            .shouldReject(t -> !t.mCryotheumHatches.isEmpty())
+                            .casingIndex(CASING_TEXTURE_ID)
+                            .dot(1)
+                            .build(),
+                        buildHatchAdder(GregtechMetaTileEntity_IndustrialVacuumFreezer.class)
+                            .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
+                            .casingIndex(CASING_TEXTURE_ID)
+                            .dot(1)
+                            .build(),
+                        onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 10))))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -151,7 +160,8 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends
         } else {
             IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
             if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_CustomFluidBase
-                    && aMetaTileEntity.getBaseMetaTileEntity().getMetaTileID() == 967) {
+                && aMetaTileEntity.getBaseMetaTileEntity()
+                    .getMetaTileID() == 967) {
                 return addToMachineListInternal(mCryotheumHatches, aTileEntity, aBaseCasingIndex);
             }
         }
@@ -191,7 +201,8 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 2F).setMaxParallelSupplier(this::getMaxParallelRecipes);
+        return new ProcessingLogic().setSpeedBonus(1F / 2F)
+            .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     @Override
@@ -230,15 +241,16 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends
         super.onPostTick(aBaseMetaTileEntity, aTick);
 
         if (this.mStartUpCheck < 0) {
-            if (this.mMaxProgresstime > 0 && this.mProgresstime != 0
-                    || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled()) {
-                if (aTick % 10 == 0 || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled()) {
+            if (this.mMaxProgresstime > 0 && this.mProgresstime != 0 || this.getBaseMetaTileEntity()
+                .hasWorkJustBeenEnabled()) {
+                if (aTick % 10 == 0 || this.getBaseMetaTileEntity()
+                    .hasWorkJustBeenEnabled()) {
                     if (!this.depleteInputFromRestrictedHatches(this.mCryotheumHatches, 10)) {
                         if (mGraceTimer-- == 0) {
                             this.causeMaintenanceIssue();
                             this.stopMachine(
-                                    ShutDownReasonRegistry.outOfFluid(
-                                            Objects.requireNonNull(FluidUtils.getFluidStack("cryotheum", 20))));
+                                ShutDownReasonRegistry
+                                    .outOfFluid(Objects.requireNonNull(FluidUtils.getFluidStack("cryotheum", 20))));
                             mGraceTimer = 2;
                         }
                     }

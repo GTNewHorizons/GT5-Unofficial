@@ -12,17 +12,17 @@ import gregtech.api.util.GT_LanguageManager;
 public abstract class GregtechMetaItemCasingsAbstract extends ItemBlock {
 
     protected final String mCasing_Centrifuge = GT_LanguageManager
-            .addStringLocalization("mu.centrifugecasing", "Warning! Standing in the Centrifuge not recommended");
+        .addStringLocalization("mu.centrifugecasing", "Warning! Standing in the Centrifuge not recommended");
     protected final String mCasing_CokeOven = GT_LanguageManager
-            .addStringLocalization("mu.cokeoven", "Sturdy and Strong");
+        .addStringLocalization("mu.cokeoven", "Sturdy and Strong");
     protected final String mCasing_CokeCoil1 = GT_LanguageManager
-            .addStringLocalization("mu.coil01tooltip", "Base Heating Capacity = 1350 Kelvin");
+        .addStringLocalization("mu.coil01tooltip", "Base Heating Capacity = 1350 Kelvin");
     protected final String mCasing_CokeCoil2 = GT_LanguageManager
-            .addStringLocalization("mu.coil02tooltip", "Base Heating Capacity = 2275 Kelvin");
+        .addStringLocalization("mu.coil02tooltip", "Base Heating Capacity = 2275 Kelvin");
     protected final String mNoMobsToolTip = GT_LanguageManager
-            .addStringLocalization("gt.nomobspawnsonthisblock", "Mobs cannot Spawn on this Block");
+        .addStringLocalization("gt.nomobspawnsonthisblock", "Mobs cannot Spawn on this Block");
     protected final String mNoTileEntityToolTip = GT_LanguageManager
-            .addStringLocalization("gt.notileentityinthisblock", "This is NOT a TileEntity!");
+        .addStringLocalization("gt.notileentityinthisblock", "This is NOT a TileEntity!");
 
     public GregtechMetaItemCasingsAbstract(final Block par1) {
         super(par1);
@@ -43,7 +43,7 @@ public abstract class GregtechMetaItemCasingsAbstract extends ItemBlock {
 
     @Override
     public void addInformation(final ItemStack aStack, final EntityPlayer aPlayer, final List aList,
-            final boolean aF3_H) {
+        final boolean aF3_H) {
         super.addInformation(aStack, aPlayer, aList, aF3_H);
         switch (this.getDamage(aStack)) {
             case 0:

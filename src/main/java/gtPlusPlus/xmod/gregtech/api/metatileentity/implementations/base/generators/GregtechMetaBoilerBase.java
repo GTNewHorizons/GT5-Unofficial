@@ -33,20 +33,20 @@ public abstract class GregtechMetaBoilerBase extends GT_MetaTileEntity_BasicTank
     public long RI = MathUtils.randLong(5L, 30L);
 
     public GregtechMetaBoilerBase(final int aID, final String aName, final String aNameRegional,
-            final String aDescription, final ITexture... aTextures) {
+        final String aDescription, final ITexture... aTextures) {
         super(aID, aName, aNameRegional, 0, 4, aDescription, aTextures);
     }
 
     public GregtechMetaBoilerBase(final String aName, final int aTier, final String[] aDescription,
-            final ITexture[][][] aTextures) {
+        final ITexture[][][] aTextures) {
         super(aName, aTier, 4, aDescription, aTextures);
     }
 
     @Override
     public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
-            final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+        final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
         ITexture[] tmp = this.mTextures[side.offsetY == 0 ? side != facing ? 2 : ((byte) (aActive ? 4 : 3))
-                : side.ordinal()][aColorIndex + 1];
+            : side.ordinal()][aColorIndex + 1];
         if ((side != facing) && (tmp.length == 2)) {
             tmp = new ITexture[] { tmp[0] };
         }
@@ -106,7 +106,8 @@ public abstract class GregtechMetaBoilerBase extends GT_MetaTileEntity_BasicTank
         if (aPlayer != null) {
             if (GT_Utility.areStacksEqual(aPlayer.getCurrentEquippedItem(), new ItemStack(Items.water_bucket, 1))) {
                 this.fill(Materials.Water.getFluid(1000 * aPlayer.getCurrentEquippedItem().stackSize), true);
-                aPlayer.getCurrentEquippedItem().func_150996_a(Items.bucket);
+                aPlayer.getCurrentEquippedItem()
+                    .func_150996_a(Items.bucket);
             } else {
                 GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
             }
@@ -167,7 +168,8 @@ public abstract class GregtechMetaBoilerBase extends GT_MetaTileEntity_BasicTank
 
     @Override
     public boolean allowCoverOnSide(final ForgeDirection side, final GT_ItemStack aCover) {
-        return GregTech_API.getCoverBehaviorNew(aCover.toStack()).isSimpleCover();
+        return GregTech_API.getCoverBehaviorNew(aCover.toStack())
+            .isSimpleCover();
     }
 
     @Override
@@ -208,14 +210,14 @@ public abstract class GregtechMetaBoilerBase extends GT_MetaTileEntity_BasicTank
                     final IFluidHandler tTileEntity = aBaseMetaTileEntity.getITankContainerAtSide(side);
                     if (tTileEntity != null) {
                         final FluidStack tDrained = aBaseMetaTileEntity
-                                .drain(side, Math.max(1, this.mSteam.amount / 2), false);
+                            .drain(side, Math.max(1, this.mSteam.amount / 2), false);
                         if (tDrained != null) {
                             final int tFilledAmount = tTileEntity.fill(side.getOpposite(), tDrained, false);
                             if (tFilledAmount > 0) {
                                 tTileEntity.fill(
-                                        side.getOpposite(),
-                                        aBaseMetaTileEntity.drain(side, tFilledAmount, true),
-                                        true);
+                                    side.getOpposite(),
+                                    aBaseMetaTileEntity.drain(side, tFilledAmount, true),
+                                    true);
                             }
                         }
                     }
@@ -248,59 +250,52 @@ public abstract class GregtechMetaBoilerBase extends GT_MetaTileEntity_BasicTank
                 this.mSteam.amount = getSteamCapacity() * 3 / 4;
             }
             if ((this.mProcessingEnergy <= 0) && (aBaseMetaTileEntity.isAllowedToWork())
-                    && (this.mInventory[2] != null)) {
+                && (this.mInventory[2] != null)) {
                 if ((GT_OreDictUnificator
-                        .isItemStackInstanceOf(this.mInventory[2], OrePrefixes.gem.get(Materials.Coal)))
-                        || (GT_OreDictUnificator
-                                .isItemStackInstanceOf(this.mInventory[2], OrePrefixes.dust.get(Materials.Coal)))
-                        || (GT_OreDictUnificator
-                                .isItemStackInstanceOf(this.mInventory[2], OrePrefixes.dustImpure.get(Materials.Coal)))
-                        || (GT_OreDictUnificator
-                                .isItemStackInstanceOf(this.mInventory[2], OrePrefixes.crushed.get(Materials.Coal)))) {
+                    .isItemStackInstanceOf(this.mInventory[2], OrePrefixes.gem.get(Materials.Coal)))
+                    || (GT_OreDictUnificator
+                        .isItemStackInstanceOf(this.mInventory[2], OrePrefixes.dust.get(Materials.Coal)))
+                    || (GT_OreDictUnificator
+                        .isItemStackInstanceOf(this.mInventory[2], OrePrefixes.dustImpure.get(Materials.Coal)))
+                    || (GT_OreDictUnificator
+                        .isItemStackInstanceOf(this.mInventory[2], OrePrefixes.crushed.get(Materials.Coal)))) {
                     this.mProcessingEnergy += 160;
                     aBaseMetaTileEntity.decrStackSize(2, 1);
                     if (aBaseMetaTileEntity.getRandomNumber(3) == 0) {
-                        aBaseMetaTileEntity.addStackToSlot(
-                                3,
-                                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1L));
+                        aBaseMetaTileEntity
+                            .addStackToSlot(3, GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1L));
                     }
                 } else if (GT_OreDictUnificator
-                        .isItemStackInstanceOf(this.mInventory[2], OrePrefixes.gem.get(Materials.Charcoal))) {
-                            this.mProcessingEnergy += 160;
-                            aBaseMetaTileEntity.decrStackSize(2, 1);
-                            if (aBaseMetaTileEntity.getRandomNumber(3) == 0) {
-                                aBaseMetaTileEntity.addStackToSlot(
-                                        3,
-                                        GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
-                            }
-                        } else
-                    if (GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[2], "fuelCoke")) {
+                    .isItemStackInstanceOf(this.mInventory[2], OrePrefixes.gem.get(Materials.Charcoal))) {
+                        this.mProcessingEnergy += 160;
+                        aBaseMetaTileEntity.decrStackSize(2, 1);
+                        if (aBaseMetaTileEntity.getRandomNumber(3) == 0) {
+                            aBaseMetaTileEntity
+                                .addStackToSlot(3, GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
+                        }
+                    } else if (GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[2], "fuelCoke")) {
                         this.mProcessingEnergy += 640;
                         aBaseMetaTileEntity.decrStackSize(2, 1);
                         if (aBaseMetaTileEntity.getRandomNumber(2) == 0) {
-                            aBaseMetaTileEntity.addStackToSlot(
-                                    3,
-                                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
+                            aBaseMetaTileEntity
+                                .addStackToSlot(3, GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
                         }
                     } else if ((GT_OreDictUnificator
-                            .isItemStackInstanceOf(this.mInventory[2], OrePrefixes.gem.get(Materials.Lignite)))
-                            || (GT_OreDictUnificator
-                                    .isItemStackInstanceOf(this.mInventory[2], OrePrefixes.dust.get(Materials.Lignite)))
-                            || (GT_OreDictUnificator.isItemStackInstanceOf(
-                                    this.mInventory[2],
-                                    OrePrefixes.dustImpure.get(Materials.Lignite)))
-                            || (GT_OreDictUnificator.isItemStackInstanceOf(
-                                    this.mInventory[2],
-                                    OrePrefixes.crushed.get(Materials.Lignite)))) {
-                                        this.mProcessingEnergy += 40;
-                                        aBaseMetaTileEntity.decrStackSize(2, 1);
-                                        if (aBaseMetaTileEntity.getRandomNumber(8) == 0) {
-                                            aBaseMetaTileEntity.addStackToSlot(
-                                                    3,
-                                                    GT_OreDictUnificator
-                                                            .get(OrePrefixes.dustTiny, Materials.DarkAsh, 1L));
-                                        }
-                                    }
+                        .isItemStackInstanceOf(this.mInventory[2], OrePrefixes.gem.get(Materials.Lignite)))
+                        || (GT_OreDictUnificator
+                            .isItemStackInstanceOf(this.mInventory[2], OrePrefixes.dust.get(Materials.Lignite)))
+                        || (GT_OreDictUnificator
+                            .isItemStackInstanceOf(this.mInventory[2], OrePrefixes.dustImpure.get(Materials.Lignite)))
+                        || (GT_OreDictUnificator
+                            .isItemStackInstanceOf(this.mInventory[2], OrePrefixes.crushed.get(Materials.Lignite)))) {
+                                this.mProcessingEnergy += 40;
+                                aBaseMetaTileEntity.decrStackSize(2, 1);
+                                if (aBaseMetaTileEntity.getRandomNumber(8) == 0) {
+                                    aBaseMetaTileEntity.addStackToSlot(
+                                        3,
+                                        GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1L));
+                                }
+                            }
             }
             if ((this.mTemperature < 1000) && (this.mProcessingEnergy > 0) && ((aTick % 12L) == 0L)) {
                 this.mProcessingEnergy -= 2;
@@ -315,18 +310,18 @@ public abstract class GregtechMetaBoilerBase extends GT_MetaTileEntity_BasicTank
     // support returning those different capacities.
     public FluidTankInfo[] getTankInfo(ForgeDirection aSide) {
         return new FluidTankInfo[] { new FluidTankInfo(this.mFluid, getCapacity()),
-                new FluidTankInfo(this.mSteam, getSteamCapacity()) };
+            new FluidTankInfo(this.mSteam, getSteamCapacity()) };
     }
 
     @Override
     public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
-            final ForgeDirection side, final ItemStack aStack) {
+        final ForgeDirection side, final ItemStack aStack) {
         return (aIndex == 1) || (aIndex == 3);
     }
 
     @Override
     public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
-            final ForgeDirection side, final ItemStack aStack) {
+        final ForgeDirection side, final ItemStack aStack) {
         return aIndex == 2;
     }
 
@@ -335,7 +330,9 @@ public abstract class GregtechMetaBoilerBase extends GT_MetaTileEntity_BasicTank
         if (aIndex == 1) {
             GT_Utility.doSoundAtClient(SoundResource.RANDOM_FIZZ, 2, 1.0F, aX, aY, aZ);
             for (int l = 0; l < 8; l++) {
-                this.getBaseMetaTileEntity().getWorld().spawnParticle(
+                this.getBaseMetaTileEntity()
+                    .getWorld()
+                    .spawnParticle(
                         "largesmoke",
                         (aX - 0.5D) + Math.random(),
                         aY,

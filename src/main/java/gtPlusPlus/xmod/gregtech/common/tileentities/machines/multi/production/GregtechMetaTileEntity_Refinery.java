@@ -35,7 +35,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 
 public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_Refinery>
-        implements ISurvivalConstructable {
+    implements ISurvivalConstructable {
 
     private int mCasing;
     private static IStructureDefinition<GregtechMetaTileEntity_Refinery> STRUCTURE_DEFINITION = null;
@@ -56,23 +56,30 @@ public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType()).addInfo("Controller Block for the Fission Fuel Processing Unit")
-                .addInfo("Refines fluorides and Uranium into nuclear fuel for the LFTR")
-                .addInfo("LFTR Fuel 2 and Fuel 3 have alternative, much more efficient recipes")
-                .addInfo("However, they require fission breeding outputs from the LFTR itself")
-                .addInfo("Only one Energy Hatch is allowed per Processing Unit")
-                .addInfo("All recipe times in this multi are very long, watch out!")
-                .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 9, 3, false)
-                .addController("Bottom Center").addCasingInfoMin("Hastelloy-X Structural Block", 7, false)
-                .addCasingInfoMin("Incoloy-DS Fluid Containment Block", 5, false)
-                .addCasingInfoMin("Zeron-100 Reactor Shielding", 4, false)
-                .addCasingInfoMin("Hastelloy-N Sealant Blocks", 17, false).addInputHatch("Base platform", 1)
-                .addOutputHatch("Base platform", 1).addMufflerHatch("Base platform", 1)
-                .addMaintenanceHatch("Base platform", 1).addEnergyHatch("Base platform", 1)
-                .addStructureInfo("Muffler's Tier must be IV+")
-                .addStructureInfo("2-4x Input Hatches, 1-2x Output Hatches")
-                .addStructureInfo("1x Muffler, 1x Maintenance Hatch, 1x Energy Hatch")
-                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+        tt.addMachineType(getMachineType())
+            .addInfo("Controller Block for the Fission Fuel Processing Unit")
+            .addInfo("Refines fluorides and Uranium into nuclear fuel for the LFTR")
+            .addInfo("LFTR Fuel 2 and Fuel 3 have alternative, much more efficient recipes")
+            .addInfo("However, they require fission breeding outputs from the LFTR itself")
+            .addInfo("Only one Energy Hatch is allowed per Processing Unit")
+            .addInfo("All recipe times in this multi are very long, watch out!")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .addSeparator()
+            .beginStructureBlock(3, 9, 3, false)
+            .addController("Bottom Center")
+            .addCasingInfoMin("Hastelloy-X Structural Block", 7, false)
+            .addCasingInfoMin("Incoloy-DS Fluid Containment Block", 5, false)
+            .addCasingInfoMin("Zeron-100 Reactor Shielding", 4, false)
+            .addCasingInfoMin("Hastelloy-N Sealant Blocks", 17, false)
+            .addInputHatch("Base platform", 1)
+            .addOutputHatch("Base platform", 1)
+            .addMufflerHatch("Base platform", 1)
+            .addMaintenanceHatch("Base platform", 1)
+            .addEnergyHatch("Base platform", 1)
+            .addStructureInfo("Muffler's Tier must be IV+")
+            .addStructureInfo("2-4x Input Hatches, 1-2x Output Hatches")
+            .addStructureInfo("1x Muffler, 1x Maintenance Hatch, 1x Energy Hatch")
+            .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
@@ -113,7 +120,7 @@ public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase
         } else {
             IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
             if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler
-                    && ((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity).mTier >= 5) {
+                && ((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity).mTier >= 5) {
                 return addToMachineList(aTileEntity, aBaseCasingIndex);
             }
         }
@@ -123,26 +130,32 @@ public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase
     @Override
     public IStructureDefinition<GregtechMetaTileEntity_Refinery> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_Refinery>builder().addShape(
+            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_Refinery>builder()
+                .addShape(
                     mName,
                     transpose(
-                            new String[][] { { "   ", " N ", "   " }, { " N ", "NIN", " N " }, { " N ", "NIN", " N " },
-                                    { " N ", "NIN", " N " }, { " Z ", "ZIZ", " Z " }, { " N ", "NIN", " N " },
-                                    { "XXX", "XXX", "XXX" }, { "X~X", "XXX", "XXX" }, }))
-                    .addElement(
-                            'X',
-                            ofChain(
-                                    buildHatchAdder(GregtechMetaTileEntity_Refinery.class)
-                                            .atLeast(Energy, Maintenance, OutputHatch, OutputBus, InputHatch)
-                                            .casingIndex(TAE.GTPP_INDEX(18)).dot(1).build(),
-                                    buildHatchAdder(GregtechMetaTileEntity_Refinery.class).atLeast(Muffler)
-                                            .adder(GregtechMetaTileEntity_Refinery::addMufflerToMachineList)
-                                            .hatchItemFilterAnd(t -> filterByMTETier(6, Integer.MAX_VALUE))
-                                            .casingIndex(TAE.GTPP_INDEX(18)).dot(1).build(),
-                                    onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 2))))
-                    .addElement('I', ofBlock(ModBlocks.blockCasings2Misc, 3))
-                    .addElement('N', ofBlock(ModBlocks.blockCasings2Misc, 1))
-                    .addElement('Z', ofBlock(ModBlocks.blockCasingsMisc, 13)).build();
+                        new String[][] { { "   ", " N ", "   " }, { " N ", "NIN", " N " }, { " N ", "NIN", " N " },
+                            { " N ", "NIN", " N " }, { " Z ", "ZIZ", " Z " }, { " N ", "NIN", " N " },
+                            { "XXX", "XXX", "XXX" }, { "X~X", "XXX", "XXX" }, }))
+                .addElement(
+                    'X',
+                    ofChain(
+                        buildHatchAdder(GregtechMetaTileEntity_Refinery.class)
+                            .atLeast(Energy, Maintenance, OutputHatch, OutputBus, InputHatch)
+                            .casingIndex(TAE.GTPP_INDEX(18))
+                            .dot(1)
+                            .build(),
+                        buildHatchAdder(GregtechMetaTileEntity_Refinery.class).atLeast(Muffler)
+                            .adder(GregtechMetaTileEntity_Refinery::addMufflerToMachineList)
+                            .hatchItemFilterAnd(t -> filterByMTETier(6, Integer.MAX_VALUE))
+                            .casingIndex(TAE.GTPP_INDEX(18))
+                            .dot(1)
+                            .build(),
+                        onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 2))))
+                .addElement('I', ofBlock(ModBlocks.blockCasings2Misc, 3))
+                .addElement('N', ofBlock(ModBlocks.blockCasings2Misc, 1))
+                .addElement('Z', ofBlock(ModBlocks.blockCasingsMisc, 13))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -163,11 +176,11 @@ public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase
         mCasing = 0;
         if (checkPiece(mName, 1, 7, 0) && mCasing >= 7) {
             if (this.mInputHatches.size() >= 2 && this.mInputHatches.size() <= 4
-                    && this.mOutputHatches.size() >= 1
-                    && this.mOutputHatches.size() <= 2
-                    && this.mMufflerHatches.size() == 1
-                    && this.mMaintenanceHatches.size() == 1
-                    && this.mEnergyHatches.size() == 1) {
+                && this.mOutputHatches.size() >= 1
+                && this.mOutputHatches.size() <= 2
+                && this.mMufflerHatches.size() == 1
+                && this.mMaintenanceHatches.size() == 1
+                && this.mEnergyHatches.size() == 1) {
                 this.resetRecipeMapForAllInputHatches(this.getRecipeMap());
                 return true;
             }

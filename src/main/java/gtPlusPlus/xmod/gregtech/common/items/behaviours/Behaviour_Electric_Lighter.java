@@ -29,11 +29,11 @@ import ic2.api.item.IElectricItemManager;
 public class Behaviour_Electric_Lighter extends Behaviour_None {
 
     private final String mTooltip = GT_LanguageManager
-            .addStringLocalization("gt.behaviour.lighter.tooltip", "Can light things on Fire");
+        .addStringLocalization("gt.behaviour.lighter.tooltip", "Can light things on Fire");
     private final String mTooltipUses = GT_LanguageManager
-            .addStringLocalization("gt.behaviour.lighter.uses", "Remaining Uses:");
+        .addStringLocalization("gt.behaviour.lighter.uses", "Remaining Uses:");
     private final String mTooltipUnstackable = GT_LanguageManager
-            .addStringLocalization("gt.behaviour.unstackable", "Not usable when stacked!");
+        .addStringLocalization("gt.behaviour.unstackable", "Not usable when stacked!");
 
     public Behaviour_Electric_Lighter() {}
 
@@ -44,13 +44,13 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
             if (aEntity instanceof EntityCreeper) {
                 if (this.prepare(aStack) || aPlayer.capabilities.isCreativeMode) {
                     GT_Utility.sendSoundToPlayers(
-                            aPlayer.worldObj,
-                            SoundResource.FIRE_IGNITE,
-                            1.0F,
-                            1.0F,
-                            MathHelper.floor_double(aEntity.posX),
-                            MathHelper.floor_double(aEntity.posY),
-                            MathHelper.floor_double(aEntity.posZ));
+                        aPlayer.worldObj,
+                        SoundResource.FIRE_IGNITE,
+                        1.0F,
+                        1.0F,
+                        MathHelper.floor_double(aEntity.posX),
+                        MathHelper.floor_double(aEntity.posY),
+                        MathHelper.floor_double(aEntity.posZ));
                     ((EntityCreeper) aEntity).func_146079_cb();
                     rOutput = true;
                 }
@@ -63,7 +63,7 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
 
     @Override
     public boolean onItemUse(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-            int aY, int aZ, int ordinalSide, float hitX, float hitY, float hitZ) {
+        int aY, int aZ, int ordinalSide, float hitX, float hitY, float hitZ) {
         if (!aWorld.isRemote && aStack != null && aStack.stackSize == 1) {
             if (aPlayer.isSneaking()) {
                 Logger.INFO("Changing Mode");
@@ -71,20 +71,18 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
                 Logger.INFO("Is currently in Fireball mode? " + aCurrentMode);
                 boolean aNewMode = !aCurrentMode;
                 Logger.INFO("Is now set to Fireball mode? " + aNewMode);
-                aStack.getTagCompound().setBoolean("aFireballMod", aNewMode);
+                aStack.getTagCompound()
+                    .setBoolean("aFireballMod", aNewMode);
                 // NBTUtils.setBoolean(aStack, "aFireballMode", aNewMode);
                 PlayerUtils.messagePlayer(
-                        aPlayer,
-                        "Current Mode: " + EnumChatFormatting.RED + (aNewMode ? "Projectile" : "Fire Starter"));
+                    aPlayer,
+                    "Current Mode: " + EnumChatFormatting.RED + (aNewMode ? "Projectile" : "Fire Starter"));
             } else {
                 boolean aCurrentMode = NBTUtils.getBoolean(aStack, "aFireballMode");
                 if (aCurrentMode) {
                     // Shoot Lightning Attack
-                    aWorld.playSoundAtEntity(
-                            aPlayer,
-                            "random.bow",
-                            0.5F,
-                            0.4F / (CORE.RANDOM.nextFloat() * 0.4F + 0.8F));
+                    aWorld
+                        .playSoundAtEntity(aPlayer, "random.bow", 0.5F, 0.4F / (CORE.RANDOM.nextFloat() * 0.4F + 0.8F));
                     if (!aWorld.isRemote) {
                         aWorld.spawnEntityInWorld(new EntityLightningAttack(aWorld, aPlayer, hitX, hitY, hitZ));
                     }
@@ -97,7 +95,7 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
                     aY += tDirection.offsetY;
                     aZ += tDirection.offsetZ;
                     if (GT_Utility.isBlockAir(aWorld, aX, aY, aZ)
-                            && aPlayer.canPlayerEdit(aX, aY, aZ, ordinalSide, aStack)) {
+                        && aPlayer.canPlayerEdit(aX, aY, aZ, ordinalSide, aStack)) {
                         Logger.WARNING("Preparing Lighter b");
                         if (this.prepare(aStack) || aPlayer.capabilities.isCreativeMode) {
                             Logger.WARNING("Preparing Lighter c");
@@ -116,7 +114,7 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
     }
 
     public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-            int aY, int aZ, int ordinalSide, float hitX, float hitY, float hitZ) {
+        int aY, int aZ, int ordinalSide, float hitX, float hitY, float hitZ) {
         if (!aWorld.isRemote && aStack != null && aStack.stackSize == 1) {
             if (aPlayer.isSneaking()) {
                 Logger.INFO("Changing Mode");
@@ -124,20 +122,18 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
                 Logger.INFO("Is currently in Fireball mode? " + aCurrentMode);
                 boolean aNewMode = !aCurrentMode;
                 Logger.INFO("Is now set to Fireball mode? " + aNewMode);
-                aStack.getTagCompound().setBoolean("aFireballMode", aNewMode);
+                aStack.getTagCompound()
+                    .setBoolean("aFireballMode", aNewMode);
                 // NBTUtils.setBoolean(aStack, "aFireballMode", aNewMode);
                 PlayerUtils.messagePlayer(
-                        aPlayer,
-                        "Current Mode: " + EnumChatFormatting.RED + (aNewMode ? "Projectile" : "Fire Starter"));
+                    aPlayer,
+                    "Current Mode: " + EnumChatFormatting.RED + (aNewMode ? "Projectile" : "Fire Starter"));
             } else {
                 boolean aCurrentMode = NBTUtils.getBoolean(aStack, "aFireballMode");
                 if (aCurrentMode) {
                     // Shoot Lightning Attack
-                    aWorld.playSoundAtEntity(
-                            aPlayer,
-                            "random.bow",
-                            0.5F,
-                            0.4F / (CORE.RANDOM.nextFloat() * 0.4F + 0.8F));
+                    aWorld
+                        .playSoundAtEntity(aPlayer, "random.bow", 0.5F, 0.4F / (CORE.RANDOM.nextFloat() * 0.4F + 0.8F));
                     if (!aWorld.isRemote) {
                         aWorld.spawnEntityInWorld(new EntityLightningAttack(aWorld, aPlayer, hitX, hitY, hitZ));
                     }
@@ -150,7 +146,7 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
                     aY += tDirection.offsetY;
                     aZ += tDirection.offsetZ;
                     if (GT_Utility.isBlockAir(aWorld, aX, aY, aZ)
-                            && aPlayer.canPlayerEdit(aX, aY, aZ, ordinalSide, aStack)) {
+                        && aPlayer.canPlayerEdit(aX, aY, aZ, ordinalSide, aStack)) {
                         Logger.WARNING("Preparing Lighter b");
                         if (this.prepare(aStack) || aPlayer.capabilities.isCreativeMode) {
                             Logger.WARNING("Preparing Lighter c");
@@ -214,7 +210,8 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
                 if (NBTUtils.hasKey(aStack, "aFireballMode")) {
                     aCurrentMode = NBTUtils.getBoolean(aStack, "aFireballMode");
                 } else {
-                    aStack.getTagCompound().setBoolean("aFireballMode", false);
+                    aStack.getTagCompound()
+                        .setBoolean("aFireballMode", false);
                     aCurrentMode = false;
                 }
                 aList.add("Current Mode: " + EnumChatFormatting.RED + (aCurrentMode ? "Projectile" : "Fire Starter"));

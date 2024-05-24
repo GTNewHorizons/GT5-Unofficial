@@ -39,10 +39,11 @@ public class TGSFrontend extends RecipeMapFrontend {
 
     public TGSFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder, NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(
-                uiPropertiesBuilder.addNEITransferRect(
-                        new Rectangle(INPUTS_X + SLOT_SIZE * 2, INPUTS_Y + SLOT_SIZE / 2, SLOT_SIZE * 2, SLOT_SIZE))
-                        .progressBarPos(new Pos2d(CENTER_X - 10, INPUTS_Y + SLOT_SIZE / 2)),
-                neiPropertiesBuilder.neiSpecialInfoFormatter(new TGSSpecialValueFormatter()));
+            uiPropertiesBuilder
+                .addNEITransferRect(
+                    new Rectangle(INPUTS_X + SLOT_SIZE * 2, INPUTS_Y + SLOT_SIZE / 2, SLOT_SIZE * 2, SLOT_SIZE))
+                .progressBarPos(new Pos2d(CENTER_X - 10, INPUTS_Y + SLOT_SIZE / 2)),
+            neiPropertiesBuilder.neiSpecialInfoFormatter(new TGSSpecialValueFormatter()));
     }
 
     @Override
@@ -66,20 +67,20 @@ public class TGSFrontend extends RecipeMapFrontend {
     }
 
     private static final String[] tooltipInputs = { StatCollector.translateToLocal("gtpp.nei.tgs.tooltip.saw"),
-            StatCollector.translateToLocal("gtpp.nei.tgs.tooltip.cutter"),
-            StatCollector.translateToLocal("gtpp.nei.tgs.tooltip.shears"),
-            StatCollector.translateToLocal("gtpp.nei.tgs.tooltip.knife") };
+        StatCollector.translateToLocal("gtpp.nei.tgs.tooltip.cutter"),
+        StatCollector.translateToLocal("gtpp.nei.tgs.tooltip.shears"),
+        StatCollector.translateToLocal("gtpp.nei.tgs.tooltip.knife") };
 
     private static final String[] tooltipOutputs = { StatCollector.translateToLocal("gtpp.nei.tgs.tooltip.needsSaw"),
-            StatCollector.translateToLocal("gtpp.nei.tgs.tooltip.needsCutter"),
-            StatCollector.translateToLocal("gtpp.nei.tgs.tooltip.needsShears"),
-            StatCollector.translateToLocal("gtpp.nei.tgs.tooltip.needsKnife") };
+        StatCollector.translateToLocal("gtpp.nei.tgs.tooltip.needsCutter"),
+        StatCollector.translateToLocal("gtpp.nei.tgs.tooltip.needsShears"),
+        StatCollector.translateToLocal("gtpp.nei.tgs.tooltip.needsKnife") };
     private static final String tooltipSapling = StatCollector.translateToLocal("gtpp.nei.tgs.tooltip.sapling");
     private static final String tooltipMultiplier = StatCollector.translateToLocal("gtpp.nei.tgs.tooltip.multiplier");
 
     @Override
     public List<String> handleNEIItemTooltip(ItemStack stack, List<String> currentTip,
-            GT_NEI_DefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
+        GT_NEI_DefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
 
         /*
          * This gets a little complicated, because we want to assign tooltips to inputs/outputs based on which mode
@@ -138,9 +139,9 @@ public class TGSFrontend extends RecipeMapFrontend {
         @Override
         public List<String> format(RecipeDisplayInfo recipeInfo) {
             return Arrays.asList(
-                    StatCollector.translateToLocal("gtpp.nei.tgs.info-1"),
-                    StatCollector.translateToLocal("gtpp.nei.tgs.info-2"),
-                    StatCollector.translateToLocal("gtpp.nei.tgs.info-3"));
+                StatCollector.translateToLocal("gtpp.nei.tgs.info-1"),
+                StatCollector.translateToLocal("gtpp.nei.tgs.info-2"),
+                StatCollector.translateToLocal("gtpp.nei.tgs.info-3"));
         }
     }
 }

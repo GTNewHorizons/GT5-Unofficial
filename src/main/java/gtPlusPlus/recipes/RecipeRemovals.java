@@ -80,14 +80,14 @@ public class RecipeRemovals {
                                 long rotorDurabilityMax = GT_MetaGenerated_Tool.getToolMaxDamage(aI);
                                 if (rotorDurabilityMax < aCutoff) {
                                     Logger.WARNING(
-                                            "[Turbine Cleanup] " + getMaterialName(aMainMaterial)
-                                                    + " "
-                                                    + aType
-                                                    + "Turbines have "
-                                                    + rotorDurabilityMax
-                                                    + ", which is below the cutoff durability of "
-                                                    + aCutoff
-                                                    + ", disabling.");
+                                        "[Turbine Cleanup] " + getMaterialName(aMainMaterial)
+                                            + " "
+                                            + aType
+                                            + "Turbines have "
+                                            + rotorDurabilityMax
+                                            + ", which is below the cutoff durability of "
+                                            + aCutoff
+                                            + ", disabling.");
                                     aG.mEnabled = false;
                                     aG.mHidden = true;
                                     aG.mCanBeBuffered = false;

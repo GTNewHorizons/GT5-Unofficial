@@ -91,7 +91,7 @@ public class ArmourTinFoilHat extends BaseArmourHelm {
 
     @Override
     public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage,
-            int slot) {
+        int slot) {
         return new ArmorProperties(0, 0, 0);
     }
 
@@ -102,7 +102,7 @@ public class ArmourTinFoilHat extends BaseArmourHelm {
 
     @Override
     public boolean itemInteractionForEntity(ItemStack p_111207_1_, EntityPlayer p_111207_2_,
-            EntityLivingBase p_111207_3_) {
+        EntityLivingBase p_111207_3_) {
         return super.itemInteractionForEntity(p_111207_1_, p_111207_2_, p_111207_3_);
     }
 
@@ -141,12 +141,12 @@ public class ArmourTinFoilHat extends BaseArmourHelm {
                         for (Entity e : g) {
                             if (e != null) {
                                 if (!EntityXPOrb.class.isInstance(e) && !EntityBoat.class.isInstance(e)
-                                        && !EntitySnowball.class.isInstance(e)
-                                        && !EntityFireball.class.isInstance(e)
-                                        && !EntityEgg.class.isInstance(e)
-                                        && !EntityExpBottle.class.isInstance(e)
-                                        && !EntityEnderEye.class.isInstance(e)
-                                        && !EntityEnderPearl.class.isInstance(e)) {
+                                    && !EntitySnowball.class.isInstance(e)
+                                    && !EntityFireball.class.isInstance(e)
+                                    && !EntityEgg.class.isInstance(e)
+                                    && !EntityExpBottle.class.isInstance(e)
+                                    && !EntityEnderEye.class.isInstance(e)
+                                    && !EntityEnderPearl.class.isInstance(e)) {
                                     continue;
                                 } else {
                                     // Logger.INFO("Found "+e.getClass().getName());

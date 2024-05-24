@@ -48,14 +48,14 @@ public class RecipeGen_Extruder extends RecipeGen_Base {
         Logger.WARNING("Generating Extruder recipes for " + material.getLocalizedName());
 
         if (ItemUtils.checkForInvalidItems(material.getIngot(1))
-                && ItemUtils.checkForInvalidItems(material.getBlock(1))) {
+            && ItemUtils.checkForInvalidItems(material.getBlock(1))) {
             // Ingot Recipe
             if (GT_Values.RA.addExtruderRecipe(
-                    material.getBlock(1),
-                    shape_Ingot,
-                    material.getIngot(9),
-                    (int) Math.max(material.getMass() * 2L * 1, 1),
-                    material.vVoltageMultiplier)) {
+                material.getBlock(1),
+                shape_Ingot,
+                material.getIngot(9),
+                (int) Math.max(material.getMass() * 2L * 1, 1),
+                material.vVoltageMultiplier)) {
                 Logger.WARNING("Extruder Ingot Recipe: " + material.getLocalizedName() + " - Success");
             } else {
                 Logger.WARNING("Extruder Ingot Recipe: " + material.getLocalizedName() + " - Failed");
@@ -63,11 +63,11 @@ public class RecipeGen_Extruder extends RecipeGen_Base {
 
             // Block Recipe
             if (GT_Values.RA.addExtruderRecipe(
-                    material.getIngot(9),
-                    shape_Block,
-                    material.getBlock(1),
-                    (int) Math.max(material.getMass() * 2L * 1, 1),
-                    material.vVoltageMultiplier)) {
+                material.getIngot(9),
+                shape_Block,
+                material.getBlock(1),
+                (int) Math.max(material.getMass() * 2L * 1, 1),
+                material.vVoltageMultiplier)) {
                 Logger.WARNING("Extruder Block Recipe: " + material.getLocalizedName() + " - Success");
             } else {
                 Logger.WARNING("Extruder Block Recipe: " + material.getLocalizedName() + " - Failed");
@@ -76,7 +76,7 @@ public class RecipeGen_Extruder extends RecipeGen_Base {
 
         // Plate Recipe
         if (ItemUtils.checkForInvalidItems(material.getIngot(1))
-                && ItemUtils.checkForInvalidItems(material.getPlate(1)))
+            && ItemUtils.checkForInvalidItems(material.getPlate(1)))
             if (GT_Values.RA.addExtruderRecipe(itemIngot, shape_Plate, itemPlate, 10, material.vVoltageMultiplier)) {
                 Logger.WARNING("Extruder Plate Recipe: " + material.getLocalizedName() + " - Success");
             } else {
@@ -87,11 +87,11 @@ public class RecipeGen_Extruder extends RecipeGen_Base {
         if (ItemUtils.checkForInvalidItems(material.getIngot(1)) && ItemUtils.checkForInvalidItems(material.getRing(1)))
             if (!material.isRadioactive) {
                 if (GT_Values.RA.addExtruderRecipe(
-                        itemIngot,
-                        shape_Ring,
-                        material.getRing(4),
-                        (int) Math.max(material.getMass() * 2L * 1, 1),
-                        material.vVoltageMultiplier)) {
+                    itemIngot,
+                    shape_Ring,
+                    material.getRing(4),
+                    (int) Math.max(material.getMass() * 2L * 1, 1),
+                    material.vVoltageMultiplier)) {
                     Logger.WARNING("Extruder Ring Recipe: " + material.getLocalizedName() + " - Success");
                 } else {
                     Logger.WARNING("Extruder Ring Recipe: " + material.getLocalizedName() + " - Failed");
@@ -102,11 +102,11 @@ public class RecipeGen_Extruder extends RecipeGen_Base {
         if (ItemUtils.checkForInvalidItems(material.getIngot(1)) && ItemUtils.checkForInvalidItems(material.getGear(1)))
             if (!material.isRadioactive) {
                 if (GT_Values.RA.addExtruderRecipe(
-                        material.getIngot(4),
-                        shape_Gear,
-                        itemGear,
-                        (int) Math.max(material.getMass() * 5L, 1),
-                        material.vVoltageMultiplier)) {
+                    material.getIngot(4),
+                    shape_Gear,
+                    itemGear,
+                    (int) Math.max(material.getMass() * 5L, 1),
+                    material.vVoltageMultiplier)) {
                     Logger.WARNING("Extruder Gear Recipe: " + material.getLocalizedName() + " - Success");
                 } else {
                     Logger.WARNING("Extruder Gear Recipe: " + material.getLocalizedName() + " - Failed");
@@ -116,25 +116,25 @@ public class RecipeGen_Extruder extends RecipeGen_Base {
         // Rod Recipe
         if (ItemUtils.checkForInvalidItems(material.getIngot(1)) && ItemUtils.checkForInvalidItems(material.getRod(1)))
             if (GT_Values.RA.addExtruderRecipe(
-                    itemIngot,
-                    shape_Rod,
-                    material.getRod(2),
-                    (int) Math.max(material.getMass() * 2L * 1, 1),
-                    material.vVoltageMultiplier)) {
-                        Logger.WARNING("Extruder Rod Recipe: " + material.getLocalizedName() + " - Success");
-                    } else {
-                        Logger.WARNING("Extruder Rod Recipe: " + material.getLocalizedName() + " - Failed");
-                    }
+                itemIngot,
+                shape_Rod,
+                material.getRod(2),
+                (int) Math.max(material.getMass() * 2L * 1, 1),
+                material.vVoltageMultiplier)) {
+                    Logger.WARNING("Extruder Rod Recipe: " + material.getLocalizedName() + " - Success");
+                } else {
+                    Logger.WARNING("Extruder Rod Recipe: " + material.getLocalizedName() + " - Failed");
+                }
 
         // Bolt Recipe
         if (ItemUtils.checkForInvalidItems(material.getIngot(1)) && ItemUtils.checkForInvalidItems(material.getBolt(1)))
             if (!material.isRadioactive) {
                 if (GT_Values.RA.addExtruderRecipe(
-                        itemIngot,
-                        shape_Bolt,
-                        material.getBolt(8),
-                        (int) Math.max(material.getMass() * 2L * 1, 1),
-                        material.vVoltageMultiplier)) {
+                    itemIngot,
+                    shape_Bolt,
+                    material.getBolt(8),
+                    (int) Math.max(material.getMass() * 2L * 1, 1),
+                    material.vVoltageMultiplier)) {
                     Logger.WARNING("Extruder Bolt Recipe: " + material.getLocalizedName() + " - Success");
                 } else {
                     Logger.WARNING("Extruder Bolt Recipe: " + material.getLocalizedName() + " - Failed");
@@ -144,16 +144,16 @@ public class RecipeGen_Extruder extends RecipeGen_Base {
         // Rotor Recipe
         // Shape_Extruder_Rotor
         if (ItemUtils.checkForInvalidItems(material.getIngot(1))
-                && ItemUtils.checkForInvalidItems(material.getRotor(1)))
+            && ItemUtils.checkForInvalidItems(material.getRotor(1)))
             if (GT_Values.RA.addExtruderRecipe(
-                    material.getIngot(5),
-                    ItemList.Shape_Extruder_Rotor.get(0),
-                    material.getRotor(1),
-                    (int) Math.max(material.getMass() * 5L * 1, 1),
-                    material.vVoltageMultiplier)) {
-                        Logger.WARNING("Extruder Rotor Recipe: " + material.getLocalizedName() + " - Success");
-                    } else {
-                        Logger.WARNING("Extruder Rotor Recipe: " + material.getLocalizedName() + " - Failed");
-                    }
+                material.getIngot(5),
+                ItemList.Shape_Extruder_Rotor.get(0),
+                material.getRotor(1),
+                (int) Math.max(material.getMass() * 5L * 1, 1),
+                material.vVoltageMultiplier)) {
+                    Logger.WARNING("Extruder Rotor Recipe: " + material.getLocalizedName() + " - Success");
+                } else {
+                    Logger.WARNING("Extruder Rotor Recipe: " + material.getLocalizedName() + " - Failed");
+                }
     }
 }

@@ -44,23 +44,23 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
         final ItemStack tinyDust = M.getTinyDust(1);
         if (tinyDust != null && normalDust != null) {
             if (RecipeUtils.addShapedRecipe(
-                    tinyDust,
-                    tinyDust,
-                    tinyDust,
-                    tinyDust,
-                    tinyDust,
-                    tinyDust,
-                    tinyDust,
-                    tinyDust,
-                    tinyDust,
-                    normalDust)) {
+                tinyDust,
+                tinyDust,
+                tinyDust,
+                tinyDust,
+                tinyDust,
+                tinyDust,
+                tinyDust,
+                tinyDust,
+                tinyDust,
+                normalDust)) {
                 Logger.INFO("9 Tiny dust to 1 Dust Recipe: " + M.getLocalizedName() + " - Success");
             } else {
                 Logger.INFO("9 Tiny dust to 1 Dust Recipe: " + M.getLocalizedName() + " - Failed");
             }
 
             if (RecipeUtils
-                    .addShapedRecipe(normalDust, null, null, null, null, null, null, null, null, M.getTinyDust(9))) {
+                .addShapedRecipe(normalDust, null, null, null, null, null, null, null, null, M.getTinyDust(9))) {
                 Logger.INFO("9 Tiny dust from 1 Recipe: " + M.getLocalizedName() + " - Success");
             } else {
                 Logger.INFO("9 Tiny dust from 1 Recipe: " + M.getLocalizedName() + " - Failed");
@@ -69,22 +69,22 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 
         if (smallDust != null && normalDust != null) {
             if (RecipeUtils.addShapedRecipe(
-                    smallDust,
-                    smallDust,
-                    null,
-                    smallDust,
-                    smallDust,
-                    null,
-                    null,
-                    null,
-                    null,
-                    normalDust)) {
+                smallDust,
+                smallDust,
+                null,
+                smallDust,
+                smallDust,
+                null,
+                null,
+                null,
+                null,
+                normalDust)) {
                 Logger.INFO("4 Small dust to 1 Dust Recipe: " + M.getLocalizedName() + " - Success");
             } else {
                 Logger.INFO("4 Small dust to 1 Dust Recipe: " + M.getLocalizedName() + " - Failed");
             }
             if (RecipeUtils
-                    .addShapedRecipe(null, normalDust, null, null, null, null, null, null, null, M.getSmallDust(4))) {
+                .addShapedRecipe(null, normalDust, null, null, null, null, null, null, null, M.getSmallDust(4))) {
                 Logger.INFO("4 Small dust from 1 Dust Recipe: " + M.getLocalizedName() + " - Success");
             } else {
                 Logger.INFO("4 Small dust from 1 Dust Recipe: " + M.getLocalizedName() + " - Failed");
@@ -182,14 +182,20 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
                     FluidStack oxygen = GT_Values.NF;
                     if (material.getComposites() != null) {
                         for (final MaterialStack x : material.getComposites()) {
-                            if (!material.getComposites().isEmpty()) {
+                            if (!material.getComposites()
+                                .isEmpty()) {
                                 if (x != null) {
                                     if (x.getStackMaterial() != null) {
-                                        if (x.getStackMaterial().getDust(1) == null) {
-                                            if (x.getStackMaterial().getState() != MaterialState.SOLID
-                                                    && x.getStackMaterial().getState() != MaterialState.ORE
-                                                    && x.getStackMaterial().getState() != MaterialState.PLASMA) {
-                                                oxygen = x.getStackMaterial().getFluidStack(1000);
+                                        if (x.getStackMaterial()
+                                            .getDust(1) == null) {
+                                            if (x.getStackMaterial()
+                                                .getState() != MaterialState.SOLID
+                                                && x.getStackMaterial()
+                                                    .getState() != MaterialState.ORE
+                                                && x.getStackMaterial()
+                                                    .getState() != MaterialState.PLASMA) {
+                                                oxygen = x.getStackMaterial()
+                                                    .getFluidStack(1000);
                                                 break;
                                             }
                                         }
@@ -203,15 +209,15 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 
                     // Add mixer Recipe
                     if (GT_Values.RA.addMixerRecipe(
-                            input[0],
-                            input[1],
-                            input[2],
-                            input[3],
-                            oxygen,
-                            null,
-                            outputStacks,
-                            (int) Math.max(material.getMass() * 2L * 1, 1),
-                            material.vVoltageMultiplier)) // Was 6, but let's try 2. This makes Potin LV, for example.
+                        input[0],
+                        input[1],
+                        input[2],
+                        input[3],
+                        oxygen,
+                        null,
+                        outputStacks,
+                        (int) Math.max(material.getMass() * 2L * 1, 1),
+                        material.vVoltageMultiplier)) // Was 6, but let's try 2. This makes Potin LV, for example.
                     {
                         Logger.WARNING("Dust Mixer Recipe: " + material.getLocalizedName() + " - Success");
                     } else {
@@ -257,11 +263,11 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
                     ItemStack input1, input2, input3, input4;
                     input1 = inputStacks[0];
                     input2 = (inputStacks.length >= 2) ? (input2 = (inputStacks[1] == null) ? null : inputStacks[1])
-                            : null;
+                        : null;
                     input3 = (inputStacks.length >= 3) ? (input3 = (inputStacks[2] == null) ? null : inputStacks[2])
-                            : null;
+                        : null;
                     input4 = (inputStacks.length >= 4) ? (input4 = (inputStacks[3] == null) ? null : inputStacks[3])
-                            : null;
+                        : null;
 
                     if (inputStacks.length == 1) {
                         input2 = input1;
@@ -283,16 +289,19 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
                     if (material.getComposites() != null) {
                         int compSlot = 0;
                         for (final MaterialStack x : material.getComposites()) {
-                            if (!material.getComposites().isEmpty()) {
+                            if (!material.getComposites()
+                                .isEmpty()) {
                                 if (x != null) {
                                     if (x.getStackMaterial() != null) {
-                                        if (x.getStackMaterial().getDust(1) == null) {
-                                            MaterialState f = x.getStackMaterial().getState();
+                                        if (x.getStackMaterial()
+                                            .getDust(1) == null) {
+                                            MaterialState f = x.getStackMaterial()
+                                                .getState();
                                             if (f == MaterialState.GAS || f == MaterialState.LIQUID
-                                                    || f == MaterialState.PURE_LIQUID
-                                                    || f == MaterialState.PURE_GAS) {
-                                                oxygen = x.getStackMaterial().getFluidStack(
-                                                        (int) (material.vSmallestRatio[compSlot] * 1000));
+                                                || f == MaterialState.PURE_LIQUID
+                                                || f == MaterialState.PURE_GAS) {
+                                                oxygen = x.getStackMaterial()
+                                                    .getFluidStack((int) (material.vSmallestRatio[compSlot] * 1000));
                                             }
                                         }
                                     }
@@ -305,15 +314,15 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
                     // Add mixer Recipe
                     try {
                         if (GT_Values.RA.addMixerRecipe(
-                                input1,
-                                input2,
-                                input3,
-                                input4,
-                                oxygen,
-                                null,
-                                outputStacks,
-                                (int) Math.max(material.getMass() * 2L * 1, 1),
-                                material.vVoltageMultiplier)) // Was 6, but let's try 2. This makes Potin LV, for
+                            input1,
+                            input2,
+                            input3,
+                            input4,
+                            oxygen,
+                            null,
+                            outputStacks,
+                            (int) Math.max(material.getMass() * 2L * 1, 1),
+                            material.vVoltageMultiplier)) // Was 6, but let's try 2. This makes Potin LV, for
                         // example.
                         {
                             Logger.WARNING("Dust Mixer Recipe: " + material.getLocalizedName() + " - Success");
@@ -341,20 +350,20 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
         AutoMap<Boolean> aResults = new AutoMap<>();
         // Small Dust
         aResults.put(
-                GT_Values.RA.addBoxingRecipe(
-                        GT_Utility.copyAmount(4L, new Object[] { aMatInfo.getSmallDust(4) }),
-                        ItemList.Schematic_Dust.get(0L, new Object[0]),
-                        aMatInfo.getDust(1),
-                        100,
-                        4));
+            GT_Values.RA.addBoxingRecipe(
+                GT_Utility.copyAmount(4L, new Object[] { aMatInfo.getSmallDust(4) }),
+                ItemList.Schematic_Dust.get(0L, new Object[0]),
+                aMatInfo.getDust(1),
+                100,
+                4));
         // Tiny Dust
         aResults.put(
-                GT_Values.RA.addBoxingRecipe(
-                        GT_Utility.copyAmount(9L, new Object[] { aMatInfo.getTinyDust(9) }),
-                        ItemList.Schematic_Dust.get(0L, new Object[0]),
-                        aMatInfo.getDust(1),
-                        100,
-                        4));
+            GT_Values.RA.addBoxingRecipe(
+                GT_Utility.copyAmount(9L, new Object[] { aMatInfo.getTinyDust(9) }),
+                ItemList.Schematic_Dust.get(0L, new Object[0]),
+                aMatInfo.getDust(1),
+                100,
+                4));
 
         for (boolean b : aResults) {
             if (!b) {
@@ -383,8 +392,8 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
                 aOutput = aMatInfo.getHotIngot(1);
                 if (ItemUtils.checkForInvalidItems(aOutput)) {
                     if (addBlastFurnaceRecipe(aMatInfo, aDust, null, aOutput, null, aMatInfo.getMeltingPointK())) {
-                        Logger.MATERIALS(
-                                "Successfully added a blast furnace recipe for " + aMatInfo.getLocalizedName());
+                        Logger
+                            .MATERIALS("Successfully added a blast furnace recipe for " + aMatInfo.getLocalizedName());
                     } else {
                         Logger.MATERIALS("Failed to add a blast furnace recipe for " + aMatInfo.getLocalizedName());
                     }
@@ -407,7 +416,7 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
     }
 
     private boolean addBlastFurnaceRecipe(Material aMatInfo, final ItemStack input1, final ItemStack input2,
-            final ItemStack output1, final ItemStack output2, final int tempRequired) {
+        final ItemStack output1, final ItemStack output2, final int tempRequired) {
 
         try {
             int timeTaken = 125 * aMatInfo.vTier * 10;
@@ -422,15 +431,15 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
             long aVoltage = aMatInfo.vVoltageMultiplier;
 
             return GT_Values.RA.addBlastRecipe(
-                    input1,
-                    input2,
-                    GT_Values.NF,
-                    GT_Values.NF,
-                    output1,
-                    output2,
-                    timeTaken,
-                    (int) aVoltage,
-                    tempRequired);
+                input1,
+                input2,
+                GT_Values.NF,
+                GT_Values.NF,
+                output1,
+                output2,
+                timeTaken,
+                (int) aVoltage,
+                tempRequired);
         } catch (Throwable t) {
             t.printStackTrace();
             return false;

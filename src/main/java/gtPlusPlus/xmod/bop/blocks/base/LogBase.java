@@ -32,9 +32,9 @@ public abstract class LogBase extends BlockLog {
         GameRegistry.registerBlock(this, ItemBlock.class, blockName);
         this.setBlockName(blockName);
         ItemUtils.addItemToOreDictionary(
-                ItemUtils.getSimpleStack(this),
-                "log" + Utils.sanitizeString(blockNameLocalized),
-                true);
+            ItemUtils.getSimpleStack(this),
+            "log" + Utils.sanitizeString(blockNameLocalized),
+            true);
         ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(this), "logWood", true);
         this.setCreativeTab(AddToCreativeTab.tabBOP);
         Blocks.fire.setFireInfo(this, 20, 100);
@@ -76,7 +76,7 @@ public abstract class LogBase extends BlockLog {
         for (int i = 0; i < this.textureSide.length; ++i) {
             this.textureSide[i] = iIcon.registerIcon(GTPlusPlus.ID + ":" + "trees/" + "logs/" + "log_" + treeType[i]);
             this.textureTop[i] = iIcon
-                    .registerIcon(GTPlusPlus.ID + ":" + "trees/" + "logs/" + "log_" + treeType[i] + "_top");
+                .registerIcon(GTPlusPlus.ID + ":" + "trees/" + "logs/" + "log_" + treeType[i] + "_top");
         }
 
         setVanillaVariable(this.field_150167_a, this.textureSide);

@@ -52,17 +52,17 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
     }
 
     public GT_MetaTileEntity_Hatch_Muffler_Adv(String aName, int aTier, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, 1, aDescription, aTextures);
     }
 
     final String[] mDescription = new String[] { "Outputs pollution from a multiblock", "DO NOT OBSTRUCT THE OUTPUT!",
-            "Requires 3 Air Blocks in front of the exhaust face",
-            mTier < 5 ? "Requires an Air Filter"
-                    : "Requires an Air Filter " + EnumChatFormatting.WHITE + "[Tier 2]" + EnumChatFormatting.GRAY,
-            "Can take Air Filters from an input bus of the multiblock",
-            "Reduces Pollution to " + calculatePollutionReduction(100, true) + "%",
-            "Recovers " + (100 - calculatePollutionReduction(100, true)) + "% of CO2/CO/SO2", CORE.GT_Tooltip.get() };
+        "Requires 3 Air Blocks in front of the exhaust face",
+        mTier < 5 ? "Requires an Air Filter"
+            : "Requires an Air Filter " + EnumChatFormatting.WHITE + "[Tier 2]" + EnumChatFormatting.GRAY,
+        "Can take Air Filters from an input bus of the multiblock",
+        "Reduces Pollution to " + calculatePollutionReduction(100, true) + "%",
+        "Recovers " + (100 - calculatePollutionReduction(100, true)) + "% of CO2/CO/SO2", CORE.GT_Tooltip.get() };
 
     @Override
     public String[] getDescription() {
@@ -86,7 +86,7 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return (aIndex == this.SLOT_FILTER && isAirFilter(aStack));
     }
 
@@ -152,7 +152,7 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
         IGregTechTileEntity bmte = getBaseMetaTileEntity();
         ForgeDirection facing = bmte.getFrontFacing();
         return bmte.getAirAtSide(facing) && bmte.getAirAtSideAndDistance(facing, 1)
-                && bmte.getAirAtSideAndDistance(facing, 2);
+            && bmte.getAirAtSideAndDistance(facing, 2);
     }
 
     /**
@@ -249,14 +249,18 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
         super.onPostTick(aBaseMetaTileEntity, aTick);
 
         if (aBaseMetaTileEntity.isClientSide()) {
-            if (this.getBaseMetaTileEntity().isActive()) {
+            if (this.getBaseMetaTileEntity()
+                .isActive()) {
                 String aParticleName;
                 if ((aTick % 2) == 0) {
                     aParticleName = "cloud";
                 } else {
                     aParticleName = "smoke";
                 }
-                this.pollutionParticles(this.getBaseMetaTileEntity().getWorld(), aParticleName);
+                this.pollutionParticles(
+                    this.getBaseMetaTileEntity()
+                        .getWorld(),
+                    aParticleName);
             }
         }
     }
@@ -306,35 +310,35 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
 
         if (chk1) {
             aWorld.spawnParticle(
-                    name,
-                    (double) (xPos + ran1 * 0.5F),
-                    (double) (yPos + CORE.RANDOM.nextFloat() * 0.5F),
-                    (double) (zPos + CORE.RANDOM.nextFloat() * 0.5F),
-                    (double) xSpd,
-                    (double) ySpd,
-                    (double) zSpd);
+                name,
+                (double) (xPos + ran1 * 0.5F),
+                (double) (yPos + CORE.RANDOM.nextFloat() * 0.5F),
+                (double) (zPos + CORE.RANDOM.nextFloat() * 0.5F),
+                (double) xSpd,
+                (double) ySpd,
+                (double) zSpd);
         }
 
         if (chk2) {
             aWorld.spawnParticle(
-                    name,
-                    (double) (xPos + ran2 * 0.5F),
-                    (double) (yPos + CORE.RANDOM.nextFloat() * 0.5F),
-                    (double) (zPos + CORE.RANDOM.nextFloat() * 0.5F),
-                    (double) xSpd,
-                    (double) ySpd,
-                    (double) zSpd);
+                name,
+                (double) (xPos + ran2 * 0.5F),
+                (double) (yPos + CORE.RANDOM.nextFloat() * 0.5F),
+                (double) (zPos + CORE.RANDOM.nextFloat() * 0.5F),
+                (double) xSpd,
+                (double) ySpd,
+                (double) zSpd);
         }
 
         if (chk3) {
             aWorld.spawnParticle(
-                    name,
-                    (double) (xPos + ran3 * 0.5F),
-                    (double) (yPos + CORE.RANDOM.nextFloat() * 0.5F),
-                    (double) (zPos + CORE.RANDOM.nextFloat() * 0.5F),
-                    (double) xSpd,
-                    (double) ySpd,
-                    (double) zSpd);
+                name,
+                (double) (xPos + ran3 * 0.5F),
+                (double) (yPos + CORE.RANDOM.nextFloat() * 0.5F),
+                (double) (zPos + CORE.RANDOM.nextFloat() * 0.5F),
+                (double) xSpd,
+                (double) ySpd,
+                (double) zSpd);
         }
     }
 
@@ -349,16 +353,18 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
     @Override
     public GUITextureSet getGUITextureSet() {
         return new GUITextureSet().setMainBackground(GTPP_UITextures.BACKGROUND_YELLOW)
-                .setItemSlot(GTPP_UITextures.SLOT_ITEM_YELLOW).setTitleTab(
-                        GTPP_UITextures.TAB_TITLE_YELLOW,
-                        GTPP_UITextures.TAB_TITLE_DARK_YELLOW,
-                        GTPP_UITextures.TAB_TITLE_ANGULAR_YELLOW);
+            .setItemSlot(GTPP_UITextures.SLOT_ITEM_YELLOW)
+            .setTitleTab(
+                GTPP_UITextures.TAB_TITLE_YELLOW,
+                GTPP_UITextures.TAB_TITLE_DARK_YELLOW,
+                GTPP_UITextures.TAB_TITLE_ANGULAR_YELLOW);
     }
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-                new SlotWidget(inventoryHandler, 0).setFilter(stack -> stack.getItem() instanceof ItemAirFilter)
-                        .setBackground(getGUITextureSet().getItemSlot()).setPos(79, 34));
+            new SlotWidget(inventoryHandler, 0).setFilter(stack -> stack.getItem() instanceof ItemAirFilter)
+                .setBackground(getGUITextureSet().getItemSlot())
+                .setPos(79, 34));
     }
 }

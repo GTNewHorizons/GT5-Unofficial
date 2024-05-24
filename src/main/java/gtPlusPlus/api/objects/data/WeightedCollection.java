@@ -31,7 +31,8 @@ public class WeightedCollection<E> implements Map<Integer, E> {
 
     private E next() {
         int value = random.nextInt(total) + 1; // Can also use floating-point weights
-        return map.ceilingEntry(value).getValue();
+        return map.ceilingEntry(value)
+            .getValue();
     }
 
     @Override

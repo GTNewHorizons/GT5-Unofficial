@@ -121,7 +121,10 @@ public class AES {
 
             cipher.init(Cipher.DECRYPT_MODE, secretKey);
 
-            return new String(cipher.doFinal(Base64.getDecoder().decode(strToDecrypt)));
+            return new String(
+                cipher.doFinal(
+                    Base64.getDecoder()
+                        .decode(strToDecrypt)));
 
         } catch (Exception ignored) {
 

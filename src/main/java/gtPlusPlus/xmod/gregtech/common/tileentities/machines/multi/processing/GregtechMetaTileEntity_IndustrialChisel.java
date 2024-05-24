@@ -46,7 +46,7 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import team.chisel.carving.Carving;
 
 public class GregtechMetaTileEntity_IndustrialChisel
-        extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialChisel> implements ISurvivalConstructable {
+    extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialChisel> implements ISurvivalConstructable {
 
     private int mCasing;
 
@@ -77,40 +77,48 @@ public class GregtechMetaTileEntity_IndustrialChisel
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType()).addInfo("Factory Grade Auto Chisel")
-                .addInfo("Target block goes in Controller slot for common Input Buses")
-                .addInfo("You can also set a target block in each Chisel Input Bus and use them as an Input Bus")
-                .addInfo("If no target is provided for common buses, the result of the first chisel is used")
-                .addInfo("Speed: +200% | EU Usage: 75% | Parallel: Tier x 16")
-                .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 3, true)
-                .addController("Front center").addCasingInfoMin("Sturdy Printer Casing", 6, false)
-                .addInputBus("Any casing", 1).addOutputBus("Any casing", 1).addEnergyHatch("Any casing", 1)
-                .addMaintenanceHatch("Any casing", 1).addMufflerHatch("Any casing", 1)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+        tt.addMachineType(getMachineType())
+            .addInfo("Factory Grade Auto Chisel")
+            .addInfo("Target block goes in Controller slot for common Input Buses")
+            .addInfo("You can also set a target block in each Chisel Input Bus and use them as an Input Bus")
+            .addInfo("If no target is provided for common buses, the result of the first chisel is used")
+            .addInfo("Speed: +200% | EU Usage: 75% | Parallel: Tier x 16")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .addSeparator()
+            .beginStructureBlock(3, 3, 3, true)
+            .addController("Front center")
+            .addCasingInfoMin("Sturdy Printer Casing", 6, false)
+            .addInputBus("Any casing", 1)
+            .addOutputBus("Any casing", 1)
+            .addEnergyHatch("Any casing", 1)
+            .addMaintenanceHatch("Any casing", 1)
+            .addMufflerHatch("Any casing", 1)
+            .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
     @Override
     public IStructureDefinition<GregtechMetaTileEntity_IndustrialChisel> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition
-                    .<GregtechMetaTileEntity_IndustrialChisel>builder().addShape(
-                            mName,
-                            transpose(
-                                    // spotless:off
+            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialChisel>builder()
+                .addShape(
+                    mName,
+                    transpose(
+                        // spotless:off
                                     new String[][] {
                                             { "CCC", "CCC", "CCC" },
                                             { "C~C", "C-C", "CCC" },
                                             { "CCC", "CCC", "CCC" },
                                     }))
                                     // spotless:on
-                    .addElement(
-                            'C',
-                            buildHatchAdder(GregtechMetaTileEntity_IndustrialChisel.class)
-                                    .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler).casingIndex(90).dot(1)
-                                    .buildAndChain(
-                                            onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings5Misc, 5))))
-                    .build();
+                .addElement(
+                    'C',
+                    buildHatchAdder(GregtechMetaTileEntity_IndustrialChisel.class)
+                        .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
+                        .casingIndex(90)
+                        .dot(1)
+                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings5Misc, 5))))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -155,7 +163,7 @@ public class GregtechMetaTileEntity_IndustrialChisel
     private boolean hasValidCache(ItemStack aStack, ItemStack aSpecialSlot, boolean aClearOnFailure) {
         if (mInputCache != null && mOutputCache != null && mCachedRecipe != null) {
             if (GT_Utility.areStacksEqual(aStack, mInputCache)
-                    && GT_Utility.areStacksEqual(aSpecialSlot, mOutputCache)) {
+                && GT_Utility.areStacksEqual(aSpecialSlot, mOutputCache)) {
                 return true;
             }
         }
@@ -213,21 +221,21 @@ public class GregtechMetaTileEntity_IndustrialChisel
             ItemStack tOutput = tIsCached ? mOutputCache.copy() : getChiselOutput(aInput, this.target);
             if (tOutput != null) {
                 if (mCachedRecipe != null && GT_Utility.areStacksEqual(aInput, mInputCache)
-                        && GT_Utility.areStacksEqual(tOutput, mOutputCache)) {
+                    && GT_Utility.areStacksEqual(tOutput, mOutputCache)) {
                     return mCachedRecipe;
                 }
                 // We can chisel this
                 GT_Recipe aRecipe = new GT_Recipe(
-                        false,
-                        new ItemStack[] { ItemUtils.getSimpleStack(aInput, 1) },
-                        new ItemStack[] { ItemUtils.getSimpleStack(tOutput, 1) },
-                        null,
-                        new int[] { 10000 },
-                        new FluidStack[] {},
-                        new FluidStack[] {},
-                        20,
-                        16,
-                        0);
+                    false,
+                    new ItemStack[] { ItemUtils.getSimpleStack(aInput, 1) },
+                    new ItemStack[] { ItemUtils.getSimpleStack(tOutput, 1) },
+                    null,
+                    new int[] { 10000 },
+                    new FluidStack[] {},
+                    new FluidStack[] {},
+                    20,
+                    16,
+                    0);
 
                 // Cache it
                 cacheItem(aInput, tOutput, aRecipe);
@@ -278,7 +286,9 @@ public class GregtechMetaTileEntity_IndustrialChisel
             protected Stream<GT_Recipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
                 return GT_StreamUtil.ofNullable(getRecipe());
             }
-        }.setSpeedBonus(1F / 3F).setEuModifier(0.75F).setMaxParallelSupplier(this::getMaxParallelRecipes);
+        }.setSpeedBonus(1F / 3F)
+            .setEuModifier(0.75F)
+            .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     @Override
@@ -304,9 +314,9 @@ public class GregtechMetaTileEntity_IndustrialChisel
     public void doSound(byte aIndex, double aX, double aY, double aZ) {
         switch (aIndex) {
             case PROCESS_START_SOUND_INDEX -> GT_Utility
-                    .doSoundAtClient(getChiselSound(), getTimeBetweenProcessSounds(), 1.0F, 1.0F, aX, aY, aZ);
+                .doSoundAtClient(getChiselSound(), getTimeBetweenProcessSounds(), 1.0F, 1.0F, aX, aY, aZ);
             case INTERRUPT_SOUND_INDEX -> GT_Utility
-                    .doSoundAtClient(SoundResource.IC2_MACHINES_INTERRUPT_ONE, 100, 1.0F, aX, aY, aZ);
+                .doSoundAtClient(SoundResource.IC2_MACHINES_INTERRUPT_ONE, 100, 1.0F, aX, aY, aZ);
         }
     }
 

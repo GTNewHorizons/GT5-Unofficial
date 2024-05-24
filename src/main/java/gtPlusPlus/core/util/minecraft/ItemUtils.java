@@ -108,7 +108,7 @@ public class ItemUtils {
     }
 
     public static void getItemForOreDict(final String FQRN, final String oreDictName, final String itemName,
-            final int meta) {
+        final int meta) {
         try {
             Item em = null;
             final Item em1 = getItemFromFQRN(FQRN);
@@ -144,7 +144,7 @@ public class ItemUtils {
     }
 
     public static ItemStack getItemStackWithMeta(final boolean MOD, final String FQRN, final String itemName,
-            final int meta, final int itemstackSize) {
+        final int meta, final int itemstackSize) {
         if (MOD) {
             try {
                 Item em = null;
@@ -213,7 +213,8 @@ public class ItemUtils {
     public static ItemStack getCorrectStacktype(final String fqrn, final int stackSize) {
         final String oreDict = "ore:";
         ItemStack temp;
-        if (fqrn.toLowerCase().contains(oreDict.toLowerCase())) {
+        if (fqrn.toLowerCase()
+            .contains(oreDict.toLowerCase())) {
             final String sanitizedName = fqrn.replace(oreDict, "");
             temp = ItemUtils.getItemStackFromFQRN(sanitizedName, stackSize);
             return temp;
@@ -287,13 +288,15 @@ public class ItemUtils {
 
         // Banned Materials and replacements for GT5.8 compat.
 
-        if (oredictName.toLowerCase().contains("ingotclay")) {
+        if (oredictName.toLowerCase()
+            .contains("ingotclay")) {
             return getSimpleStack(Items.clay_ball, amount);
         }
 
         final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(mTemp);
         if (!oreDictList.isEmpty()) {
-            final ItemStack returnValue = oreDictList.get(0).copy();
+            final ItemStack returnValue = oreDictList.get(0)
+                .copy();
             returnValue.stackSize = amount;
             return returnValue;
         }
@@ -321,8 +324,10 @@ public class ItemUtils {
 
             // Adds a check to grab dusts using GT methodology if possible.
             ItemStack returnValue = null;
-            if (oredictName.toLowerCase().contains("dust")) {
-                final String MaterialName = oredictName.toLowerCase().replace("dust", "");
+            if (oredictName.toLowerCase()
+                .contains("dust")) {
+                final String MaterialName = oredictName.toLowerCase()
+                    .replace("dust", "");
                 final Materials m = Materials.get(MaterialName);
                 if (m != null && m != Materials._NULL) {
                     returnValue = getGregtechDust(m, amount);
@@ -358,17 +363,17 @@ public class ItemUtils {
 
     // NullFormula
     public static Item[] generateSpecialUseDusts(final String unlocalizedName, final String materialName,
-            final int Colour) {
+        final int Colour) {
         return generateSpecialUseDusts(unlocalizedName, materialName, "NullFormula", Colour);
     }
 
     public static Item[] generateSpecialUseDusts(final String unlocalizedName, final String materialName,
-            String mChemForm, final int Colour) {
+        String mChemForm, final int Colour) {
         GT_LanguageManager.addStringLocalization("gtplusplus.material." + materialName, materialName);
         final Item[] output = {
-                new BaseItemDustUnique("itemDust" + unlocalizedName, materialName, mChemForm, Colour, "Dust"),
-                new BaseItemDustUnique("itemDustSmall" + unlocalizedName, materialName, mChemForm, Colour, "Small"),
-                new BaseItemDustUnique("itemDustTiny" + unlocalizedName, materialName, mChemForm, Colour, "Tiny") };
+            new BaseItemDustUnique("itemDust" + unlocalizedName, materialName, mChemForm, Colour, "Dust"),
+            new BaseItemDustUnique("itemDustSmall" + unlocalizedName, materialName, mChemForm, Colour, "Small"),
+            new BaseItemDustUnique("itemDustTiny" + unlocalizedName, materialName, mChemForm, Colour, "Tiny") };
 
         // Generate Shaped/Shapeless Recipes
 
@@ -380,32 +385,32 @@ public class ItemUtils {
 
         if (ItemUtils.checkForInvalidItems(tinyDust) && ItemUtils.checkForInvalidItems(normalDust)) {
             if (RecipeUtils.addShapedRecipe(
-                    tinyDust,
-                    tinyDust,
-                    tinyDust,
-                    tinyDust,
-                    tinyDust,
-                    tinyDust,
-                    tinyDust,
-                    tinyDust,
-                    tinyDust,
-                    normalDust)) {
+                tinyDust,
+                tinyDust,
+                tinyDust,
+                tinyDust,
+                tinyDust,
+                tinyDust,
+                tinyDust,
+                tinyDust,
+                tinyDust,
+                normalDust)) {
                 Logger.WARNING("9 Tiny dust to 1 Dust Recipe: " + materialName + " - Success");
             } else {
                 Logger.WARNING("9 Tiny dust to 1 Dust Recipe: " + materialName + " - Failed");
             }
 
             if (RecipeUtils.addShapedRecipe(
-                    normalDust,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    ItemUtils.getSimpleStack(tinyDust, 9))) {
+                normalDust,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                ItemUtils.getSimpleStack(tinyDust, 9))) {
                 Logger.WARNING("9 Tiny dust from 1 Recipe: " + materialName + " - Success");
             } else {
                 Logger.WARNING("9 Tiny dust from 1 Recipe: " + materialName + " - Failed");
@@ -414,31 +419,31 @@ public class ItemUtils {
 
         if (ItemUtils.checkForInvalidItems(smallDust) && ItemUtils.checkForInvalidItems(normalDust)) {
             if (RecipeUtils.addShapedRecipe(
-                    smallDust,
-                    smallDust,
-                    null,
-                    smallDust,
-                    smallDust,
-                    null,
-                    null,
-                    null,
-                    null,
-                    normalDust)) {
+                smallDust,
+                smallDust,
+                null,
+                smallDust,
+                smallDust,
+                null,
+                null,
+                null,
+                null,
+                normalDust)) {
                 Logger.WARNING("4 Small dust to 1 Dust Recipe: " + materialName + " - Success");
             } else {
                 Logger.WARNING("4 Small dust to 1 Dust Recipe: " + materialName + " - Failed");
             }
             if (RecipeUtils.addShapedRecipe(
-                    null,
-                    normalDust,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    ItemUtils.getSimpleStack(smallDust, 4))) {
+                null,
+                normalDust,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                ItemUtils.getSimpleStack(smallDust, 4))) {
                 Logger.WARNING("4 Small dust from 1 Dust Recipe: " + materialName + " - Success");
             } else {
                 Logger.WARNING("4 Small dust from 1 Dust Recipe: " + materialName + " - Failed");
@@ -453,7 +458,7 @@ public class ItemUtils {
     }
 
     public static Item[] generateSpecialUseDusts(final Material material, final boolean onlyLargeDust,
-            final boolean disableExtraRecipes) {
+        final boolean disableExtraRecipes) {
         final String materialName = material.getUnlocalizedName();
         final String unlocalizedName = Utils.sanitizeString(materialName);
         final int Colour = material.getRgbAsHex();
@@ -462,24 +467,24 @@ public class ItemUtils {
         Item[] output = null;
         if (onlyLargeDust == false) {
             output = new Item[] {
-                    new BaseItemDustUnique(
-                            "itemDust" + unlocalizedName,
-                            materialName,
-                            isChemFormvalid ? aChemForm : "",
-                            Colour,
-                            "Dust"),
-                    new BaseItemDustUnique(
-                            "itemDustSmall" + unlocalizedName,
-                            materialName,
-                            isChemFormvalid ? aChemForm : "",
-                            Colour,
-                            "Small"),
-                    new BaseItemDustUnique(
-                            "itemDustTiny" + unlocalizedName,
-                            materialName,
-                            isChemFormvalid ? aChemForm : "",
-                            Colour,
-                            "Tiny") };
+                new BaseItemDustUnique(
+                    "itemDust" + unlocalizedName,
+                    materialName,
+                    isChemFormvalid ? aChemForm : "",
+                    Colour,
+                    "Dust"),
+                new BaseItemDustUnique(
+                    "itemDustSmall" + unlocalizedName,
+                    materialName,
+                    isChemFormvalid ? aChemForm : "",
+                    Colour,
+                    "Small"),
+                new BaseItemDustUnique(
+                    "itemDustTiny" + unlocalizedName,
+                    materialName,
+                    isChemFormvalid ? aChemForm : "",
+                    Colour,
+                    "Tiny") };
         } else {
             output = new Item[] { new BaseItemDustUnique("itemDust" + unlocalizedName, materialName, Colour, "Dust") };
         }
@@ -491,13 +496,16 @@ public class ItemUtils {
 
     public static boolean isRadioactive(final String materialName) {
         int sRadiation = 0;
-        if (materialName.toLowerCase().contains("uranium")) {
+        if (materialName.toLowerCase()
+            .contains("uranium")) {
             sRadiation = 2;
-        } else if (materialName.toLowerCase().contains("plutonium")) {
-            sRadiation = 4;
-        } else if (materialName.toLowerCase().contains("thorium")) {
-            sRadiation = 1;
-        }
+        } else if (materialName.toLowerCase()
+            .contains("plutonium")) {
+                sRadiation = 4;
+            } else if (materialName.toLowerCase()
+                .contains("thorium")) {
+                    sRadiation = 1;
+                }
         if (sRadiation >= 1) {
             return true;
         }
@@ -506,13 +514,16 @@ public class ItemUtils {
 
     public static int getRadioactivityLevel(final String materialName) {
         int sRadiation = 0;
-        if (materialName.toLowerCase().contains("uranium")) {
+        if (materialName.toLowerCase()
+            .contains("uranium")) {
             sRadiation = 2;
-        } else if (materialName.toLowerCase().contains("plutonium")) {
-            sRadiation = 4;
-        } else if (materialName.toLowerCase().contains("thorium")) {
-            sRadiation = 1;
-        }
+        } else if (materialName.toLowerCase()
+            .contains("plutonium")) {
+                sRadiation = 4;
+            } else if (materialName.toLowerCase()
+                .contains("thorium")) {
+                    sRadiation = 1;
+                }
         return sRadiation;
     }
 
@@ -638,8 +649,8 @@ public class ItemUtils {
         }
         ItemStack aGtStack = GT_OreDictUnificator.get(mPrefix, mMat, mAmount);
         if (aGtStack == null) {
-            Logger.INFO(
-                    "Failed to find `" + mPrefix + MaterialUtils.getMaterialName(mMat) + "` in OD. [Prefix Search]");
+            Logger
+                .INFO("Failed to find `" + mPrefix + MaterialUtils.getMaterialName(mMat) + "` in OD. [Prefix Search]");
             return getErrorStack(mAmount, (mPrefix.toString() + MaterialUtils.getMaterialName(mMat) + " x" + mAmount));
         } else {
             return aGtStack;
@@ -699,15 +710,15 @@ public class ItemUtils {
             for (ItemStack stack : mInputs) {
                 if (stack != null) {
                     if (stack.getItem() != null) {
-                        if (stack.getItem() == ModItems.AAA_Broken
-                                || stack.getItem().getClass() == ModItems.AAA_Broken.getClass()) {
+                        if (stack.getItem() == ModItems.AAA_Broken || stack.getItem()
+                            .getClass() == ModItems.AAA_Broken.getClass()) {
                             return false;
-                        } else if (stack.getItem() == ModItems.ZZZ_Empty
-                                || stack.getItem().getClass() == ModItems.ZZZ_Empty.getClass()) {
-                                    return false;
-                                } else {
-                                    continue;
-                                }
+                        } else if (stack.getItem() == ModItems.ZZZ_Empty || stack.getItem()
+                            .getClass() == ModItems.ZZZ_Empty.getClass()) {
+                                return false;
+                            } else {
+                                continue;
+                            }
                     } else {
                         continue;
                     }
@@ -720,15 +731,15 @@ public class ItemUtils {
             for (ItemStack stack : mOutputs) {
                 if (stack != null) {
                     if (stack.getItem() != null) {
-                        if (stack.getItem() == ModItems.AAA_Broken
-                                || stack.getItem().getClass() == ModItems.AAA_Broken.getClass()) {
+                        if (stack.getItem() == ModItems.AAA_Broken || stack.getItem()
+                            .getClass() == ModItems.AAA_Broken.getClass()) {
                             return false;
-                        } else if (stack.getItem() == ModItems.ZZZ_Empty
-                                || stack.getItem().getClass() == ModItems.ZZZ_Empty.getClass()) {
-                                    return false;
-                                } else {
-                                    continue;
-                                }
+                        } else if (stack.getItem() == ModItems.ZZZ_Empty || stack.getItem()
+                            .getClass() == ModItems.ZZZ_Empty.getClass()) {
+                                return false;
+                            } else {
+                                continue;
+                            }
                     } else {
                         continue;
                     }
@@ -761,7 +772,8 @@ public class ItemUtils {
     }
 
     public static String getFluidName(FluidStack aFluid) {
-        return aFluid != null ? aFluid.getFluid().getLocalizedName(aFluid) : "NULL";
+        return aFluid != null ? aFluid.getFluid()
+            .getLocalizedName(aFluid) : "NULL";
     }
 
     public static String getItemName(ItemStack aStack) {
@@ -770,8 +782,9 @@ public class ItemUtils {
         }
         String aDisplay = null;
         try {
-            aDisplay = ("" + StatCollector
-                    .translateToLocal(aStack.getItem().getUnlocalizedNameInefficiently(aStack) + ".name")).trim();
+            aDisplay = ("" + StatCollector.translateToLocal(
+                aStack.getItem()
+                    .getUnlocalizedNameInefficiently(aStack) + ".name")).trim();
             if (aStack.hasTagCompound()) {
                 if (aStack.stackTagCompound != null && aStack.stackTagCompound.hasKey("display", 10)) {
                     NBTTagCompound nbttagcompound = aStack.stackTagCompound.getCompoundTag("display");
@@ -800,10 +813,12 @@ public class ItemUtils {
         try {
             aDisplay = (aStack.getUnlocalizedName()).trim();
         } catch (Throwable t) {
-            aDisplay = aStack.getItem().getUnlocalizedName();
+            aDisplay = aStack.getItem()
+                .getUnlocalizedName();
         }
         if (aDisplay == null || aDisplay.length() <= 0) {
-            aDisplay = aStack.getItem().getUnlocalizedNameInefficiently(aStack);
+            aDisplay = aStack.getItem()
+                .getUnlocalizedNameInefficiently(aStack);
         }
         return aDisplay;
     }
@@ -816,9 +831,9 @@ public class ItemUtils {
         final Item aSkookum = ItemUtils.getItemFromFQRN("miscutils:gt.plusplus.metatool.01");
         final Class aSkookClass = aSkookum.getClass();
         if (aSkookClass.isInstance(mItem) || mItem instanceof GT_MetaGenerated_Tool_01
-                || mItem instanceof MetaGeneratedGregtechTools
-                || mItem instanceof Gregtech_MetaTool
-                || mItem == aSkookum) {
+            || mItem instanceof MetaGeneratedGregtechTools
+            || mItem instanceof Gregtech_MetaTool
+            || mItem == aSkookum) {
             return true;
         }
         return false;
@@ -826,7 +841,7 @@ public class ItemUtils {
 
     public static boolean isToolScrewdriver(ItemStack aScrewdriver) {
         if (isItemGregtechTool(aScrewdriver)
-                && (aScrewdriver.getItemDamage() == 22 || aScrewdriver.getItemDamage() == 150)) {
+            && (aScrewdriver.getItemDamage() == 22 || aScrewdriver.getItemDamage() == 150)) {
             return true;
         }
         return false;
@@ -881,8 +896,12 @@ public class ItemUtils {
     public static boolean isControlCircuit(ItemStack aStack) {
         if (aStack != null) {
             Item aItem = aStack.getItem();
-            if (aItem == CI.getNumberedBioCircuit(0).getItem() || aItem == CI.getNumberedCircuit(0).getItem()
-                    || aItem == CI.getNumberedAdvancedCircuit(0).getItem()) {
+            if (aItem == CI.getNumberedBioCircuit(0)
+                .getItem() || aItem
+                    == CI.getNumberedCircuit(0)
+                        .getItem()
+                || aItem == CI.getNumberedAdvancedCircuit(0)
+                    .getItem()) {
                 return true;
             }
         }

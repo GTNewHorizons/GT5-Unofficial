@@ -51,7 +51,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.Gregtech
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Entity_ThermalBoiler>
-        implements ISurvivalConstructable {
+    implements ISurvivalConstructable {
 
     private int mCasing;
     private static IStructureDefinition<GT4Entity_ThermalBoiler> STRUCTURE_DEFINITION = null;
@@ -63,9 +63,12 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
     private static final Item itemLavaFilter = ItemList.Component_LavaFilter.getItem();
     private static final Item itemObsidian = Item.getItemFromBlock(Blocks.obsidian);
     private static final Fluid fluidWater = FluidRegistry.WATER;
-    private static final Fluid fluidDistilledWater = FluidUtils.getDistilledWater(1).getFluid();
-    private static final Fluid fluidSteam = FluidUtils.getSteam(1).getFluid();
-    private static final Fluid fluidSHSteam = FluidUtils.getSuperHeatedSteam(1).getFluid();
+    private static final Fluid fluidDistilledWater = FluidUtils.getDistilledWater(1)
+        .getFluid();
+    private static final Fluid fluidSteam = FluidUtils.getSteam(1)
+        .getFluid();
+    private static final Fluid fluidSHSteam = FluidUtils.getSuperHeatedSteam(1)
+        .getFluid();
 
     public GT4Entity_ThermalBoiler(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -125,7 +128,9 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
                 if (map == null) {
                     return Stream.empty();
                 }
-                return map.getAllRecipes().stream().filter(recipe -> depleteInput(recipe.mFluidInputs[0], true));
+                return map.getAllRecipes()
+                    .stream()
+                    .filter(recipe -> depleteInput(recipe.mFluidInputs[0], true));
             }
 
             @NotNull
@@ -136,7 +141,7 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
                 // Hack the recipe logic to not consume water, so that we can explode.
                 for (FluidStack inputFluid : adjustedRecipe.mFluidInputs) {
                     if (inputFluid != null
-                            && (inputFluid.getFluid() == fluidWater || inputFluid.getFluid() == fluidDistilledWater)) {
+                        && (inputFluid.getFluid() == fluidWater || inputFluid.getFluid() == fluidDistilledWater)) {
                         inputFluid.amount = 0;
                     }
                 }
@@ -168,7 +173,7 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
             if (mOutputFluids != null) {
                 for (FluidStack outputFluid : mOutputFluids) {
                     if (outputFluid != null
-                            && (outputFluid.getFluid() == fluidSteam || outputFluid.getFluid() == fluidSHSteam)) {
+                        && (outputFluid.getFluid() == fluidSteam || outputFluid.getFluid() == fluidSHSteam)) {
 
                         // Purely for display reasons, we don't actually make any EU.
                         if (outputFluid.getFluid() == fluidSteam) {
@@ -181,7 +186,7 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
                         // TODO: This is not reflected in the GUI while the player has it open??
                         if (mEfficiency < getMaxEfficiency(null)) {
                             outputFluid.amount = Math
-                                    .max(1, (outputFluid.amount * mEfficiency) / getMaxEfficiency(null));
+                                .max(1, (outputFluid.amount * mEfficiency) / getMaxEfficiency(null));
                         }
 
                         // Consume water to run recipe.
@@ -274,14 +279,23 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType()).addInfo("Thermal Boiler Controller")
-                .addInfo("Converts Water & Heat into Steam").addInfo("Filters raw materials from lava")
-                .addInfo("Explodes if water is not supplied").addInfo("Consult user manual for more information")
-                .addPollutionAmount(getPollutionPerSecond(null)).beginStructureBlock(3, 3, 3, true)
-                .addController("Front Center").addCasingInfoMin("Thermal Containment Casings", 10, false)
-                .addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1)
-                .addOutputHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+        tt.addMachineType(getMachineType())
+            .addInfo("Thermal Boiler Controller")
+            .addInfo("Converts Water & Heat into Steam")
+            .addInfo("Filters raw materials from lava")
+            .addInfo("Explodes if water is not supplied")
+            .addInfo("Consult user manual for more information")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .beginStructureBlock(3, 3, 3, true)
+            .addController("Front Center")
+            .addCasingInfoMin("Thermal Containment Casings", 10, false)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addInputHatch("Any Casing", 1)
+            .addOutputHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addMufflerHatch("Any Casing", 1)
+            .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
@@ -304,18 +318,18 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
     public IStructureDefinition<GT4Entity_ThermalBoiler> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<GT4Entity_ThermalBoiler>builder()
-                    .addShape(
-                            mName,
-                            transpose(
-                                    new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" },
-                                            { "CCC", "CCC", "CCC" }, }))
-                    .addElement(
-                            'C',
-                            buildHatchAdder(GT4Entity_ThermalBoiler.class)
-                                    .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Muffler)
-                                    .casingIndex(TAE.getIndexFromPage(0, 1)).dot(1).buildAndChain(
-                                            onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 11))))
-                    .build();
+                .addShape(
+                    mName,
+                    transpose(
+                        new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" }, { "CCC", "CCC", "CCC" }, }))
+                .addElement(
+                    'C',
+                    buildHatchAdder(GT4Entity_ThermalBoiler.class)
+                        .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Muffler)
+                        .casingIndex(TAE.getIndexFromPage(0, 1))
+                        .dot(1)
+                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 11))))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }

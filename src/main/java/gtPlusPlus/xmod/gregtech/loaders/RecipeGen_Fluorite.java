@@ -36,95 +36,77 @@ public class RecipeGen_Fluorite extends RecipeGen_Base {
          * Shaped Crafting
          */
         RecipeUtils.addShapedRecipe(
-                CI.craftingToolHammer_Hard,
-                null,
-                null,
-                material.getCrushedPurified(1),
-                null,
-                null,
-                null,
-                null,
-                null,
-                material.getDustPurified(1));
+            CI.craftingToolHammer_Hard,
+            null,
+            null,
+            material.getCrushedPurified(1),
+            null,
+            null,
+            null,
+            null,
+            null,
+            material.getDustPurified(1));
 
         RecipeUtils.addShapedRecipe(
-                CI.craftingToolHammer_Hard,
-                null,
-                null,
-                material.getCrushed(1),
-                null,
-                null,
-                null,
-                null,
-                null,
-                material.getDustImpure(1));
+            CI.craftingToolHammer_Hard,
+            null,
+            null,
+            material.getCrushed(1),
+            null,
+            null,
+            null,
+            null,
+            null,
+            material.getDustImpure(1));
 
         RecipeUtils.addShapedRecipe(
-                CI.craftingToolHammer_Hard,
-                null,
-                null,
-                material.getCrushedCentrifuged(1),
-                null,
-                null,
-                null,
-                null,
-                null,
-                material.getDust(1));
+            CI.craftingToolHammer_Hard,
+            null,
+            null,
+            material.getCrushedCentrifuged(1),
+            null,
+            null,
+            null,
+            null,
+            null,
+            material.getDust(1));
 
         final ItemStack normalDust = material.getDust(1);
         final ItemStack smallDust = material.getSmallDust(1);
         final ItemStack tinyDust = material.getTinyDust(1);
 
         if (RecipeUtils.addShapedRecipe(
-                tinyDust,
-                tinyDust,
-                tinyDust,
-                tinyDust,
-                tinyDust,
-                tinyDust,
-                tinyDust,
-                tinyDust,
-                tinyDust,
-                normalDust)) {
+            tinyDust,
+            tinyDust,
+            tinyDust,
+            tinyDust,
+            tinyDust,
+            tinyDust,
+            tinyDust,
+            tinyDust,
+            tinyDust,
+            normalDust)) {
             Logger.WARNING("9 Tiny dust to 1 Dust Recipe: " + material.getLocalizedName() + " - Success");
         } else {
             Logger.WARNING("9 Tiny dust to 1 Dust Recipe: " + material.getLocalizedName() + " - Failed");
         }
 
         if (RecipeUtils
-                .addShapedRecipe(normalDust, null, null, null, null, null, null, null, null, material.getTinyDust(9))) {
+            .addShapedRecipe(normalDust, null, null, null, null, null, null, null, null, material.getTinyDust(9))) {
             Logger.WARNING("9 Tiny dust from 1 Recipe: " + material.getLocalizedName() + " - Success");
         } else {
             Logger.WARNING("9 Tiny dust from 1 Recipe: " + material.getLocalizedName() + " - Failed");
         }
 
-        if (RecipeUtils.addShapedRecipe(
-                smallDust,
-                smallDust,
-                null,
-                smallDust,
-                smallDust,
-                null,
-                null,
-                null,
-                null,
-                normalDust)) {
+        if (RecipeUtils
+            .addShapedRecipe(smallDust, smallDust, null, smallDust, smallDust, null, null, null, null, normalDust)) {
             Logger.WARNING("4 Small dust to 1 Dust Recipe: " + material.getLocalizedName() + " - Success");
         } else {
             Logger.WARNING("4 Small dust to 1 Dust Recipe: " + material.getLocalizedName() + " - Failed");
         }
 
-        if (RecipeUtils.addShapedRecipe(
-                null,
-                normalDust,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                material.getSmallDust(4))) {
+        if (RecipeUtils
+            .addShapedRecipe(null, normalDust, null, null, null, null, null, null, null, material.getSmallDust(4))) {
             Logger.WARNING("4 Small dust from 1 Dust Recipe: " + material.getLocalizedName() + " - Success");
         } else {
             Logger.WARNING("4 Small dust from 1 Dust Recipe: " + material.getLocalizedName() + " - Failed");
@@ -152,7 +134,7 @@ public class RecipeGen_Fluorite extends RecipeGen_Base {
          */
         // Allow ore dusts to be packaged
         if (ItemUtils.checkForInvalidItems(material.getSmallDust(1))
-                && ItemUtils.checkForInvalidItems(material.getTinyDust(1))) {
+            && ItemUtils.checkForInvalidItems(material.getTinyDust(1))) {
             RecipeGen_DustGeneration.generatePackagerRecipes(material);
         }
 
@@ -161,59 +143,61 @@ public class RecipeGen_Fluorite extends RecipeGen_Base {
          */
         // Macerate ore to Crushed
         if (GT_Values.RA.addPulveriserRecipe(
-                material.getOre(1),
-                new ItemStack[] { material.getCrushed(2) },
-                new int[] { 10000 },
-                20 * 20,
-                tVoltageMultiplier / 2)) {
+            material.getOre(1),
+            new ItemStack[] { material.getCrushed(2) },
+            new int[] { 10000 },
+            20 * 20,
+            tVoltageMultiplier / 2)) {
             Logger.MATERIALS("[Macerator] Added Recipe: 'Macerate ore to Crushed ore'");
         }
         // Macerate raw ore to Crushed
         if (GT_Values.RA.addPulveriserRecipe(
-                material.getRawOre(1),
-                new ItemStack[] { material.getCrushed(2) },
-                new int[] { 10000 },
-                20 * 20,
-                tVoltageMultiplier / 2)) {
+            material.getRawOre(1),
+            new ItemStack[] { material.getCrushed(2) },
+            new int[] { 10000 },
+            20 * 20,
+            tVoltageMultiplier / 2)) {
             Logger.MATERIALS("[Macerator] Added Recipe: 'Macerate raw ore to Crushed ore'");
         }
 
         // Macerate Centrifuged to Pure Dust
         if (GT_Values.RA.addPulveriserRecipe(
-                material.getCrushedCentrifuged(1),
-                new ItemStack[] { matDust, matDustA },
-                new int[] { 10000, 1000 },
-                20 * 20,
-                tVoltageMultiplier / 2)) {
+            material.getCrushedCentrifuged(1),
+            new ItemStack[] { matDust, matDustA },
+            new int[] { 10000, 1000 },
+            20 * 20,
+            tVoltageMultiplier / 2)) {
             Logger.MATERIALS("[Macerator] Added Recipe: 'Macerate Centrifuged ore to Pure Dust'");
         }
         if (GT_ModHandler.addThermalCentrifugeRecipe(
-                material.getCrushedPurified(1),
-                (int) Math.min(5000L, Math.abs(material.getMass() * 20L)),
-                material.getCrushedCentrifuged(1),
-                tinyDustA,
-                dustStone)) {
+            material.getCrushedPurified(1),
+            (int) Math.min(5000L, Math.abs(material.getMass() * 20L)),
+            material.getCrushedCentrifuged(1),
+            tinyDustA,
+            dustStone)) {
             Logger.MATERIALS(
-                    "[ThermalCentrifuge] Added Recipe: 'Washed ore to Centrifuged Ore' | Input: "
-                            + material.getCrushedPurified(1).getDisplayName()
-                            + " | Outputs: "
-                            + material.getCrushedCentrifuged(1).getDisplayName()
-                            + ", "
-                            + tinyDustA.getDisplayName()
-                            + ", "
-                            + dustStone.getDisplayName()
-                            + ".");
+                "[ThermalCentrifuge] Added Recipe: 'Washed ore to Centrifuged Ore' | Input: "
+                    + material.getCrushedPurified(1)
+                        .getDisplayName()
+                    + " | Outputs: "
+                    + material.getCrushedCentrifuged(1)
+                        .getDisplayName()
+                    + ", "
+                    + tinyDustA.getDisplayName()
+                    + ", "
+                    + dustStone.getDisplayName()
+                    + ".");
         }
 
         GT_Values.RA.addChemicalBathRecipe(
-                FLUORIDES.FLUORITE.getCrushed(2),
-                FluidUtils.getFluidStack("hydrogen", 2000),
-                FLUORIDES.FLUORITE.getCrushedPurified(8),
-                FLUORIDES.FLUORITE.getDustImpure(4),
-                FLUORIDES.FLUORITE.getDustPurified(2),
-                new int[] { 10000, 5000, 1000 },
-                30 * 20,
-                240);
+            FLUORIDES.FLUORITE.getCrushed(2),
+            FluidUtils.getFluidStack("hydrogen", 2000),
+            FLUORIDES.FLUORITE.getCrushedPurified(8),
+            FLUORIDES.FLUORITE.getDustImpure(4),
+            FLUORIDES.FLUORITE.getDustPurified(2),
+            new int[] { 10000, 5000, 1000 },
+            30 * 20,
+            240);
 
         /**
          * Forge Hammer
@@ -227,37 +211,37 @@ public class RecipeGen_Fluorite extends RecipeGen_Base {
          */
         // Purified Dust to Clean
         if (GT_Values.RA.addCentrifugeRecipe(
-                material.getDustPurified(1),
-                null,
-                null, // In Fluid
-                null, // Out Fluid
-                matDust,
-                tinyDustA,
-                null,
-                null,
-                null,
-                null,
-                new int[] { 10000, 10000 }, // Chances
-                (int) Math.max(1L, material.getMass() * 8L), // Time
-                tVoltageMultiplier / 2)) { // Eu
+            material.getDustPurified(1),
+            null,
+            null, // In Fluid
+            null, // Out Fluid
+            matDust,
+            tinyDustA,
+            null,
+            null,
+            null,
+            null,
+            new int[] { 10000, 10000 }, // Chances
+            (int) Math.max(1L, material.getMass() * 8L), // Time
+            tVoltageMultiplier / 2)) { // Eu
             Logger.MATERIALS("[Centrifuge] Added Recipe: Purified Dust to Clean Dust");
         }
 
         // Impure Dust to Clean
         if (GT_Values.RA.addCentrifugeRecipe(
-                material.getDustImpure(1),
-                null,
-                null, // In Fluid
-                null, // Out Fluid
-                matDust,
-                tinyDustB,
-                null,
-                null,
-                null,
-                null,
-                new int[] { 10000, 10000 }, // Chances
-                (int) Math.max(1L, material.getMass() * 8L), // Time
-                tVoltageMultiplier / 2)) { // Eu
+            material.getDustImpure(1),
+            null,
+            null, // In Fluid
+            null, // Out Fluid
+            matDust,
+            tinyDustB,
+            null,
+            null,
+            null,
+            null,
+            new int[] { 10000, 10000 }, // Chances
+            (int) Math.max(1L, material.getMass() * 8L), // Time
+            tVoltageMultiplier / 2)) { // Eu
             Logger.MATERIALS("[Centrifuge] Added Recipe: Inpure Dust to Clean Dust");
         }
 
@@ -268,16 +252,16 @@ public class RecipeGen_Fluorite extends RecipeGen_Base {
         }
 
         CORE.RA.addDehydratorRecipe(
-                new ItemStack[] { CI.getNumberedAdvancedCircuit(5), FLUORIDES.FLUORITE.getDust(37), },
-                FluidUtils.getFluidStack("sulfuricacid", 8000),
-                aGregtechHydro, // Fluid output (slot 2)
-                new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumSulfate", 15),
-                        ItemUtils.getItemStackOfAmountFromOreDict("dustSilver", 1),
-                        ItemUtils.getItemStackOfAmountFromOreDict("dustGold", 2),
-                        ItemUtils.getItemStackOfAmountFromOreDict("dustTin", 1),
-                        ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 2) },
-                new int[] { 10000, 1000, 1000, 3000, 2000 },
-                10 * 60 * 20,
-                240); // EU
+            new ItemStack[] { CI.getNumberedAdvancedCircuit(5), FLUORIDES.FLUORITE.getDust(37), },
+            FluidUtils.getFluidStack("sulfuricacid", 8000),
+            aGregtechHydro, // Fluid output (slot 2)
+            new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumSulfate", 15),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustSilver", 1),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustGold", 2),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustTin", 1),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 2) },
+            new int[] { 10000, 1000, 1000, 3000, 2000 },
+            10 * 60 * 20,
+            240); // EU
     }
 }

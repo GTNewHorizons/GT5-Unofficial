@@ -33,7 +33,7 @@ public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_Basi
     }
 
     public GT_MetaTileEntity_SemiFluidGenerator(String aName, int aTier, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
         onConfigLoad();
     }
@@ -41,7 +41,7 @@ public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_Basi
     @Override
     public int getPollution() {
         return (int) (CORE.ConfigSwitches.basePollutionPerSecondSemiFluidGenerator
-                * CORE.ConfigSwitches.pollutionReleasedByTierSemiFluidGenerator[this.mTier]);
+            * CORE.ConfigSwitches.pollutionReleasedByTierSemiFluidGenerator[this.mTier]);
     }
 
     @Override
@@ -51,9 +51,9 @@ public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_Basi
 
     public void onConfigLoad() {
         this.mEfficiency = GregTech_API.sMachineFile.get(
-                ConfigCategories.machineconfig,
-                "SemiFluidGenerator.efficiency.tier." + this.mTier,
-                100 - (this.mTier * 5));
+            ConfigCategories.machineconfig,
+            "SemiFluidGenerator.efficiency.tier." + this.mTier,
+            100 - (this.mTier * 5));
     }
 
     @Override
@@ -70,10 +70,10 @@ public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_Basi
     @Override
     public String[] getDescription() {
         return ArrayUtils.addAll(
-                this.mDescriptionArray,
-                "Produces " + (this.getPollution()) + " pollution/sec",
-                "Fuel Efficiency: " + this.getEfficiency() + "%",
-                CORE.GT_Tooltip.get());
+            this.mDescriptionArray,
+            "Produces " + (this.getPollution()) + " pollution/sec",
+            "Fuel Efficiency: " + this.getEfficiency() + "%",
+            CORE.GT_Tooltip.get());
     }
 
     @Override
@@ -88,7 +88,8 @@ public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_Basi
 
     @Override
     public boolean allowCoverOnSide(ForgeDirection side, GT_ItemStack aCover) {
-        if (side != this.getBaseMetaTileEntity().getFrontFacing()) {
+        if (side != this.getBaseMetaTileEntity()
+            .getFrontFacing()) {
             return true;
         }
         return super.allowCoverOnSide(side, aCover);
@@ -111,62 +112,62 @@ public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_Basi
     @Override
     public ITexture[] getFront(byte aColor) {
         return new ITexture[] { super.getFront(aColor)[0],
-                new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_FRONT),
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier] };
+            new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_FRONT),
+            Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier] };
     }
 
     @Override
     public ITexture[] getBack(byte aColor) {
         return new ITexture[] { super.getBack(aColor)[0],
-                new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_TOP) };
+            new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_TOP) };
     }
 
     @Override
     public ITexture[] getBottom(byte aColor) {
         return new ITexture[] { super.getBottom(aColor)[0],
-                new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_BOTTOM) };
+            new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_BOTTOM) };
     }
 
     @Override
     public ITexture[] getTop(byte aColor) {
         return new ITexture[] { super.getTop(aColor)[0],
-                new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_SIDE) };
+            new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_SIDE) };
     }
 
     @Override
     public ITexture[] getSides(byte aColor) {
         return new ITexture[] { super.getSides(aColor)[0],
-                new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_TOP) };
+            new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_TOP) };
     }
 
     @Override
     public ITexture[] getFrontActive(byte aColor) {
         return new ITexture[] { super.getFrontActive(aColor)[0],
-                new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_FRONT_ACTIVE),
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier] };
+            new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_FRONT_ACTIVE),
+            Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier] };
     }
 
     @Override
     public ITexture[] getBackActive(byte aColor) {
         return new ITexture[] { super.getBackActive(aColor)[0],
-                new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_TOP_ACTIVE) };
+            new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_TOP_ACTIVE) };
     }
 
     @Override
     public ITexture[] getBottomActive(byte aColor) {
         return new ITexture[] { super.getBottomActive(aColor)[0],
-                new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_BOTTOM_ACTIVE) };
+            new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_BOTTOM_ACTIVE) };
     }
 
     @Override
     public ITexture[] getTopActive(byte aColor) {
         return new ITexture[] { super.getTopActive(aColor)[0],
-                new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_SIDE_ACTIVE) };
+            new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_SIDE_ACTIVE) };
     }
 
     @Override
     public ITexture[] getSidesActive(byte aColor) {
         return new ITexture[] { super.getSidesActive(aColor)[0],
-                new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_TOP_ACTIVE) };
+            new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_TOP_ACTIVE) };
     }
 }

@@ -23,7 +23,7 @@ import ic2.api.tile.IWrenchable;
 import ic2.core.IC2;
 
 public class TileEntityProjectTable extends TileEntity
-        implements INetworkDataProvider, INetworkUpdateListener, IWrenchable {
+    implements INetworkDataProvider, INetworkUpdateListener, IWrenchable {
 
     public InventoryProjectMain inventoryGrid;
     public InventoryProjectOutput inventoryOutputs;
@@ -82,7 +82,8 @@ public class TileEntityProjectTable extends TileEntity
     public void setFacing(final short facing1) {
         this.facing = facing1;
         if (this.prevFacing != facing1) {
-            IC2.network.get().updateTileEntityField(this, "facing");
+            IC2.network.get()
+                .updateTileEntityField(this, "facing");
         }
         this.prevFacing = facing1;
     }
@@ -105,9 +106,9 @@ public class TileEntityProjectTable extends TileEntity
     @Override
     public ItemStack getWrenchDrop(final EntityPlayer entityPlayer) {
         return new ItemStack(
-                this.worldObj.getBlock(this.xCoord, this.yCoord, this.zCoord),
-                1,
-                this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord));
+            this.worldObj.getBlock(this.xCoord, this.yCoord, this.zCoord),
+            1,
+            this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord));
     }
 
     @Override
@@ -122,10 +123,10 @@ public class TileEntityProjectTable extends TileEntity
             ItemStack dataStick = this.inventoryOutputs.getStackInSlot(0);
             if (dataStick != null && this.container != null && container.getOutputContent() != null) {
                 if ((dataStick.getItem() instanceof GT_MetaGenerated_Item_01 && dataStick.getItemDamage() == 32708)
-                        || (dataStick == ItemList.Tool_DataStick.get(1))
-                        || (dataStick == GregtechItemList.Old_Tool_DataStick.get(1))
-                        || (dataStick.getItem() instanceof MetaGeneratedGregtechItems
-                                && dataStick.getItemDamage() == 32208)) {
+                    || (dataStick == ItemList.Tool_DataStick.get(1))
+                    || (dataStick == GregtechItemList.Old_Tool_DataStick.get(1))
+                    || (dataStick.getItem() instanceof MetaGeneratedGregtechItems
+                        && dataStick.getItemDamage() == 32208)) {
 
                     Logger.INFO("Found Data Stick and valid container.");
 
@@ -133,7 +134,7 @@ public class TileEntityProjectTable extends TileEntity
                     ItemStack[] craftInputComponent = container.getInputComponents();
 
                     ItemStack newStick = NBTUtils
-                            .writeItemsToNBT(dataStick, new ItemStack[] { outputComponent }, "Output");
+                        .writeItemsToNBT(dataStick, new ItemStack[] { outputComponent }, "Output");
                     newStick = NBTUtils.writeItemsToNBT(newStick, craftInputComponent);
                     NBTUtils.setBookTitle(newStick, "Encrypted Project Data");
                     NBTUtils.setBoolean(newStick, "mEncrypted", true);

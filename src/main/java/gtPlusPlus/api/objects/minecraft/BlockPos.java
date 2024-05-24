@@ -91,8 +91,8 @@ public class BlockPos implements Serializable {
             return false;
         }
         return this.xPos == otherPoint.xPos && this.yPos == otherPoint.yPos
-                && this.zPos == otherPoint.zPos
-                && this.dim == otherPoint.dim;
+            && this.zPos == otherPoint.zPos
+            && this.dim == otherPoint.dim;
     }
 
     public int distanceFrom(BlockPos target) {

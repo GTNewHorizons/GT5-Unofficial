@@ -53,16 +53,16 @@ public class CoreItem extends Item {
      */
     public CoreItem(final String unlocalizedName, final CreativeTabs creativeTab, final ItemStack OverrideItem) {
         this(
-                unlocalizedName,
-                creativeTab,
-                64,
-                0,
-                new String[] {
-                        "This item will be replaced by another when held by a player, it is old and should not be used in recipes." },
-                EnumRarity.uncommon,
-                EnumChatFormatting.UNDERLINE,
-                false,
-                OverrideItem); // Calls 5
+            unlocalizedName,
+            creativeTab,
+            64,
+            0,
+            new String[] {
+                "This item will be replaced by another when held by a player, it is old and should not be used in recipes." },
+            EnumRarity.uncommon,
+            EnumChatFormatting.UNDERLINE,
+            false,
+            OverrideItem); // Calls 5
     }
 
     // 0.1
@@ -70,18 +70,18 @@ public class CoreItem extends Item {
      * Name, Tab - 64 Stack, 0 Dmg
      */
     public CoreItem(final String unlocalizedName, final String displayName, final CreativeTabs creativeTab,
-            final ItemStack OverrideItem) {
+        final ItemStack OverrideItem) {
         this(
-                unlocalizedName,
-                creativeTab,
-                64,
-                0,
-                new String[] {
-                        "This item will be replaced by another when held by a player, it is old and should not be used in recipes." },
-                EnumRarity.uncommon,
-                EnumChatFormatting.UNDERLINE,
-                false,
-                OverrideItem); // Calls 5
+            unlocalizedName,
+            creativeTab,
+            64,
+            0,
+            new String[] {
+                "This item will be replaced by another when held by a player, it is old and should not be used in recipes." },
+            EnumRarity.uncommon,
+            EnumChatFormatting.UNDERLINE,
+            false,
+            OverrideItem); // Calls 5
         this.itemName = displayName;
     }
 
@@ -98,7 +98,7 @@ public class CoreItem extends Item {
      * Name, Tab, Stack, Description - 0 Dmg
      */
     public CoreItem(final String unlocalizedName, final CreativeTabs creativeTab, final int stackSize,
-            final String[] description) {
+        final String[] description) {
         this(unlocalizedName, creativeTab, stackSize, 0, description); // Calls 4
     }
 
@@ -111,7 +111,7 @@ public class CoreItem extends Item {
     }
 
     public CoreItem(final String unlocalizedName, final CreativeTabs creativeTab, final int stackSize,
-            final int maxDmg) {
+        final int maxDmg) {
         this(unlocalizedName, creativeTab, stackSize, maxDmg, new String[] {}); // Calls 4
     }
 
@@ -124,17 +124,17 @@ public class CoreItem extends Item {
     }
 
     public CoreItem(final String unlocalizedName, final CreativeTabs creativeTab, final int stackSize, final int maxDmg,
-            final String[] description) {
+        final String[] description) {
         this(
-                unlocalizedName,
-                creativeTab,
-                stackSize,
-                maxDmg,
-                description,
-                EnumRarity.common,
-                EnumChatFormatting.GRAY,
-                false,
-                null); // Calls 4.5
+            unlocalizedName,
+            creativeTab,
+            stackSize,
+            maxDmg,
+            description,
+            EnumRarity.common,
+            EnumChatFormatting.GRAY,
+            false,
+            null); // Calls 4.5
     }
 
     // 4.5
@@ -142,7 +142,7 @@ public class CoreItem extends Item {
      * Name, Tab, Stack, Dmg, Description, Text Colour - Common
      */
     public CoreItem(final String unlocalizedName, final CreativeTabs creativeTab, final int stackSize, final int maxDmg,
-            final String[] description, final EnumChatFormatting colour) {
+        final String[] description, final EnumChatFormatting colour) {
         this(unlocalizedName, creativeTab, stackSize, maxDmg, description, EnumRarity.common, colour, false, null); // Calls
                                                                                                                     // 5
     }
@@ -152,22 +152,22 @@ public class CoreItem extends Item {
      * Name, Tab, Stack, Dmg, Description, Rarity - Gray text
      */
     public CoreItem(String unlocalizedName, CreativeTabs creativeTab, int stackSize, int maxDmg, String string,
-            EnumRarity uncommon) {
+        EnumRarity uncommon) {
         this(unlocalizedName, creativeTab, stackSize, maxDmg, new String[] { string }, uncommon);
     }
 
     public CoreItem(final String unlocalizedName, final CreativeTabs creativeTab, final int stackSize, final int maxDmg,
-            final String[] description, final EnumRarity rarity) {
+        final String[] description, final EnumRarity rarity) {
         this(
-                unlocalizedName,
-                creativeTab,
-                stackSize,
-                maxDmg,
-                description,
-                rarity,
-                EnumChatFormatting.GRAY,
-                false,
-                null); // Calls 5
+            unlocalizedName,
+            creativeTab,
+            stackSize,
+            maxDmg,
+            description,
+            rarity,
+            EnumChatFormatting.GRAY,
+            false,
+            null); // Calls 5
     }
 
     // 5
@@ -175,8 +175,8 @@ public class CoreItem extends Item {
      * Name, Tab, Stack, Dmg, Description, Rarity, Text Colour, Effect
      */
     public CoreItem(final String unlocalizedName, final CreativeTabs creativeTab, final int stackSize, final int maxDmg,
-            final String[] description, final EnumRarity regRarity, final EnumChatFormatting colour,
-            final boolean Effect, final ItemStack OverrideItem) {
+        final String[] description, final EnumRarity regRarity, final EnumChatFormatting colour, final boolean Effect,
+        final ItemStack OverrideItem) {
         this.setUnlocalizedName(unlocalizedName);
         this.setTextureName(GTPlusPlus.ID + ":" + unlocalizedName);
         this.setCreativeTab(creativeTab);
@@ -195,8 +195,8 @@ public class CoreItem extends Item {
      * Name, Tab, Stack, Dmg, Description, Rarity, Text Colour, Effect
      */
     public CoreItem(final String unlocalizedName, final String displayName, final CreativeTabs creativeTab,
-            final int stackSize, final int maxDmg, final String[] description, final EnumRarity regRarity,
-            final EnumChatFormatting colour, final boolean Effect, final ItemStack OverrideItem) {
+        final int stackSize, final int maxDmg, final String[] description, final EnumRarity regRarity,
+        final EnumChatFormatting colour, final boolean Effect, final ItemStack OverrideItem) {
         this.setUnlocalizedName(unlocalizedName);
         this.itemName = displayName;
         this.setTextureName(GTPlusPlus.ID + ":" + unlocalizedName);
@@ -216,7 +216,7 @@ public class CoreItem extends Item {
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
         for (int i = 0;; i++) {
             String tooltip = GT_LanguageManager
-                    .getTranslation("gtplusplus." + this.getUnlocalizedName() + ".tooltip" + "." + i);
+                .getTranslation("gtplusplus." + this.getUnlocalizedName() + ".tooltip" + "." + i);
             if (!("gtplusplus." + this.getUnlocalizedName() + ".tooltip" + "." + i).equals(tooltip)) {
                 list.add(tooltip);
             } else break;
@@ -236,7 +236,7 @@ public class CoreItem extends Item {
 
     @Override
     public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
-            final boolean p_77663_5_) {
+        final boolean p_77663_5_) {
         if (this.turnsInto != null) {
             if (entityHolding instanceof EntityPlayer) {
 
@@ -275,8 +275,8 @@ public class CoreItem extends Item {
     public void setItemDescription(String[] description) {
         for (int i = 0; i < description.length; i++) {
             GT_LanguageManager.addStringLocalization(
-                    "gtplusplus." + this.getUnlocalizedName() + ".tooltip" + "." + i,
-                    description[i]);
+                "gtplusplus." + this.getUnlocalizedName() + ".tooltip" + "." + i,
+                description[i]);
         }
     }
     /*

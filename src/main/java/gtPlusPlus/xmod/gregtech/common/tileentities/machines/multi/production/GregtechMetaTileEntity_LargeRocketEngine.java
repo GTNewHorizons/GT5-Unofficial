@@ -52,8 +52,8 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEn
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class GregtechMetaTileEntity_LargeRocketEngine extends
-        GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_LargeRocketEngine> implements ISurvivalConstructable {
+public class GregtechMetaTileEntity_LargeRocketEngine
+    extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_LargeRocketEngine> implements ISurvivalConstructable {
 
     protected int fuelConsumption;
     protected int fuelValue;
@@ -98,30 +98,36 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType()).addInfo("Controller Block for the Large Rocket Engine")
-                .addInfo("Generating Power from Rocket Fuels - Supports TecTech Multi-Amp Dynamos!")
-                .addInfo("Supply GT++ Rocket Fuels and 1000L of " + mLubricantName + " per hour")
-                .addInfo("Produces as much energy as you put fuel in, with optional boosting")
-                .addInfo("This multi doesn't accept fluids if not enabled - enable it first!")
-                .addInfo("Consumes 2000L/s of air and pollutes 1500 gibbl/s per 16384 eu/t produced")
-                .addInfo("Place 1-8 Air Intake Hatches on the sides to maintain Air input")
-                .addInfo("If it runs out of air, it will shut down and have to be manually restarted")
-                .addInfo("Supply 3L of " + mCoolantName + " per second, per 1000 EU/t to boost")
-                .addInfo("Takes 3x the amount of " + mLubricantName + " and maintains efficiency")
-                .addInfo("Fuel efficiency starts at ~160%, falls more slowly at higher EU/t if boosted")
-                .addInfo("If producing more than 30k EU/t, fuel efficiency will be lower:")
-                .addInfo("(These thresholds are 3x higher when boosted, boosted values displayed second)")
-                .addInfo("- 75% of max fuel efficiency at 53k or 159k EU/t output energy")
-                .addInfo("- 50% of max fuel efficiency at 69k or 207k EU/t output energy")
-                .addInfo("- 25% of max fuel efficiency at 98k or 294k EU/t output energy")
-                .addInfo("formula: x = input of energy (30000^(1/3)/ x^(1/3)) * (80000^(1/3)/ x^(1/3))").addSeparator()
-                .beginStructureBlock(3, 3, 10, false).addController("Front Center")
-                .addCasingInfoMin(mCasingName, 64, false).addCasingInfoMin(mGearboxName, 8, false)
-                .addStructureHint("Air Intake Hatch", 1).addInputBus("Side center line", 1)
-                .addInputHatch("Side center line", 1)
-                .addMaintenanceHatch("Any Block Touching Inconel Reinforced Casing", 1)
-                .addDynamoHatch("Top center line", 2).addMufflerHatch("Back Center", 3)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+        tt.addMachineType(getMachineType())
+            .addInfo("Controller Block for the Large Rocket Engine")
+            .addInfo("Generating Power from Rocket Fuels - Supports TecTech Multi-Amp Dynamos!")
+            .addInfo("Supply GT++ Rocket Fuels and 1000L of " + mLubricantName + " per hour")
+            .addInfo("Produces as much energy as you put fuel in, with optional boosting")
+            .addInfo("This multi doesn't accept fluids if not enabled - enable it first!")
+            .addInfo("Consumes 2000L/s of air and pollutes 1500 gibbl/s per 16384 eu/t produced")
+            .addInfo("Place 1-8 Air Intake Hatches on the sides to maintain Air input")
+            .addInfo("If it runs out of air, it will shut down and have to be manually restarted")
+            .addInfo("Supply 3L of " + mCoolantName + " per second, per 1000 EU/t to boost")
+            .addInfo("Takes 3x the amount of " + mLubricantName + " and maintains efficiency")
+            .addInfo("Fuel efficiency starts at ~160%, falls more slowly at higher EU/t if boosted")
+            .addInfo("If producing more than 30k EU/t, fuel efficiency will be lower:")
+            .addInfo("(These thresholds are 3x higher when boosted, boosted values displayed second)")
+            .addInfo("- 75% of max fuel efficiency at 53k or 159k EU/t output energy")
+            .addInfo("- 50% of max fuel efficiency at 69k or 207k EU/t output energy")
+            .addInfo("- 25% of max fuel efficiency at 98k or 294k EU/t output energy")
+            .addInfo("formula: x = input of energy (30000^(1/3)/ x^(1/3)) * (80000^(1/3)/ x^(1/3))")
+            .addSeparator()
+            .beginStructureBlock(3, 3, 10, false)
+            .addController("Front Center")
+            .addCasingInfoMin(mCasingName, 64, false)
+            .addCasingInfoMin(mGearboxName, 8, false)
+            .addStructureHint("Air Intake Hatch", 1)
+            .addInputBus("Side center line", 1)
+            .addInputHatch("Side center line", 1)
+            .addMaintenanceHatch("Any Block Touching Inconel Reinforced Casing", 1)
+            .addDynamoHatch("Top center line", 2)
+            .addMufflerHatch("Back Center", 3)
+            .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
@@ -129,35 +135,32 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends
     public IStructureDefinition<GregtechMetaTileEntity_LargeRocketEngine> getStructureDefinition() {
         if (this.STRUCTURE_DEFINITION == null) {
             this.STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_LargeRocketEngine>builder()
-                    .addShape(
-                            this.mName,
-                            transpose(
-                                    new String[][] {
-                                            { "CTC", "CTC", "CTC", "CTC", "CTC", "CTC", "CTC", "CTC", "CTC", "CTC" },
-                                            { "C~C", "SIS", "SIS", "SIS", "SIS", "SIS", "SIS", "SIS", "SIS", "CMC" },
-                                            { "CCC", "CSC", "CSC", "CSC", "CSC", "CSC", "CSC", "CSC", "CSC",
-                                                    "CCC" }, }))
-                    .addElement('C', ofBlock(getCasingBlock(), getCasingMeta()))
-                    .addElement('I', ofBlock(getGearboxBlock(), getGearboxMeta()))
-                    // side
-                    .addElement(
-                            'S',
-                            buildHatchAdder(GregtechMetaTileEntity_LargeRocketEngine.class)
-                                    .atLeast(ImmutableMap.of(AirIntake, 8, InputBus, 1, InputHatch, 3, Maintenance, 1))
-                                    .casingIndex(getCasingTextureIndex()).dot(1).buildAndChain(
-                                            onElementPass(
-                                                    x -> ++x.mCasing,
-                                                    ofBlock(getCasingBlock(), getCasingMeta()))))
-                    // top
-                    .addElement(
-                            'T',
-                            buildHatchAdder(GregtechMetaTileEntity_LargeRocketEngine.class)
-                                    .atLeast(ImmutableMap.of(AirIntake, 8, Dynamo.or(TTDynamo), 1, Maintenance, 1))
-                                    .casingIndex(getCasingTextureIndex()).dot(2).buildAndChain(
-                                            onElementPass(
-                                                    x -> ++x.mCasing,
-                                                    ofBlock(getCasingBlock(), getCasingMeta()))))
-                    .addElement('M', Muffler.newAny(getCasingTextureIndex(), 3)).build();
+                .addShape(
+                    this.mName,
+                    transpose(
+                        new String[][] { { "CTC", "CTC", "CTC", "CTC", "CTC", "CTC", "CTC", "CTC", "CTC", "CTC" },
+                            { "C~C", "SIS", "SIS", "SIS", "SIS", "SIS", "SIS", "SIS", "SIS", "CMC" },
+                            { "CCC", "CSC", "CSC", "CSC", "CSC", "CSC", "CSC", "CSC", "CSC", "CCC" }, }))
+                .addElement('C', ofBlock(getCasingBlock(), getCasingMeta()))
+                .addElement('I', ofBlock(getGearboxBlock(), getGearboxMeta()))
+                // side
+                .addElement(
+                    'S',
+                    buildHatchAdder(GregtechMetaTileEntity_LargeRocketEngine.class)
+                        .atLeast(ImmutableMap.of(AirIntake, 8, InputBus, 1, InputHatch, 3, Maintenance, 1))
+                        .casingIndex(getCasingTextureIndex())
+                        .dot(1)
+                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
+                // top
+                .addElement(
+                    'T',
+                    buildHatchAdder(GregtechMetaTileEntity_LargeRocketEngine.class)
+                        .atLeast(ImmutableMap.of(AirIntake, 8, Dynamo.or(TTDynamo), 1, Maintenance, 1))
+                        .casingIndex(getCasingTextureIndex())
+                        .dot(2)
+                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
+                .addElement('M', Muffler.newAny(getCasingTextureIndex(), 3))
+                .build();
         }
         return this.STRUCTURE_DEFINITION;
     }
@@ -180,8 +183,8 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends
         this.mAllDynamoHatches.clear();
         this.mAirIntakes.clear();
         return checkPiece(this.mName, 1, 1, 0) && this.mCasing >= 64 - 48
-                && this.mAirIntakes.size() >= 1
-                && checkHatch();
+            && this.mAirIntakes.size() >= 1
+            && checkHatch();
     }
 
     @Override
@@ -358,7 +361,7 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends
 
     public boolean consumeCO2() {
         return this.depleteInput(MISC_MATERIALS.CARBON_DIOXIDE.getFluidStack(this.boostEu ? 3 : 1))
-                || this.depleteInput(FluidUtils.getFluidStack("carbondioxide", (this.boostEu ? 3 : 1)));
+            || this.depleteInput(FluidUtils.getFluidStack("carbondioxide", (this.boostEu ? 3 : 1)));
     }
 
     public boolean consumeLOH() {
@@ -421,7 +424,8 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends
                 } else {
                     powerGain = aVoltage;
                 }
-                aDynamo.getBaseMetaTileEntity().increaseStoredEnergyUnits(powerGain, false);
+                aDynamo.getBaseMetaTileEntity()
+                    .increaseStoredEnergyUnits(powerGain, false);
                 injected += powerGain;
             }
         }
@@ -490,13 +494,12 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends
     @Override
     public String[] getExtraInfoData() {
         return new String[] { "Rocket Engine", "Current Air: " + getAir(),
-                "Current Pollution: " + getPollutionPerTick(null),
-                "Time until next fuel consumption: " + this.freeFuelTicks,
-                "Current Output: " + this.lEUt * this.mEfficiency / 10000 + " EU/t",
-                "Fuel Consumption: " + (this.fuelConsumption) + "L/s", "Fuel Value: " + this.fuelValue + " EU/L",
-                "Fuel Remaining: " + this.fuelRemaining + " Litres",
-                "Current Efficiency: " + this.mEfficiency / 100 + "%",
-                (this.getIdealStatus() == this.getRepairStatus()) ? "No Maintainance issues" : "Needs Maintainance" };
+            "Current Pollution: " + getPollutionPerTick(null),
+            "Time until next fuel consumption: " + this.freeFuelTicks,
+            "Current Output: " + this.lEUt * this.mEfficiency / 10000 + " EU/t",
+            "Fuel Consumption: " + (this.fuelConsumption) + "L/s", "Fuel Value: " + this.fuelValue + " EU/L",
+            "Fuel Remaining: " + this.fuelRemaining + " Litres", "Current Efficiency: " + this.mEfficiency / 100 + "%",
+            (this.getIdealStatus() == this.getRepairStatus()) ? "No Maintainance issues" : "Needs Maintainance" };
     }
 
     @Override

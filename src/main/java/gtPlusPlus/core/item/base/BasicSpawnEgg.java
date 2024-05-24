@@ -43,7 +43,7 @@ public class BasicSpawnEgg extends ItemMonsterPlacer {
     }
 
     public BasicSpawnEgg(final String MODID, final String parEntityToSpawnName, final int parPrimaryColor,
-            final int parSecondaryColor) {
+        final int parSecondaryColor) {
         this.setHasSubtypes(false);
         this.maxStackSize = 64;
         this.setCreativeTab(AddToCreativeTab.tabOther);
@@ -63,7 +63,7 @@ public class BasicSpawnEgg extends ItemMonsterPlacer {
      */
     @Override
     public boolean onItemUse(final ItemStack par1ItemStack, final EntityPlayer par2EntityPlayer, final World par3World,
-            int par4, int par5, int par6, final int par7, final float par8, final float par9, final float par10) {
+        int par4, int par5, int par6, final int par7, final float par8, final float par9, final float par10) {
         if (par3World.isRemote) {
             return true;
         }
@@ -99,12 +99,12 @@ public class BasicSpawnEgg extends ItemMonsterPlacer {
      */
     @Override
     public ItemStack onItemRightClick(final ItemStack par1ItemStack, final World par2World,
-            final EntityPlayer par3EntityPlayer) {
+        final EntityPlayer par3EntityPlayer) {
         if (par2World.isRemote) {
             return par1ItemStack;
         }
         final MovingObjectPosition movingobjectposition = this
-                .getMovingObjectPositionFromPlayer(par2World, par3EntityPlayer, true);
+            .getMovingObjectPositionFromPlayer(par2World, par3EntityPlayer, true);
 
         if (movingobjectposition == null) {
             return par1ItemStack;
@@ -155,11 +155,11 @@ public class BasicSpawnEgg extends ItemMonsterPlacer {
                 this.entityToSpawn = (EntityLiving) EntityList.createEntityByName(this.entityToSpawnNameFull, parWorld);
 
                 this.entityToSpawn.setLocationAndAngles(
-                        parX,
-                        parY,
-                        parZ,
-                        MathHelper.wrapAngleTo180_float(parWorld.rand.nextFloat() * 360.0F),
-                        0.0F);
+                    parX,
+                    parY,
+                    parZ,
+                    MathHelper.wrapAngleTo180_float(parWorld.rand.nextFloat() * 360.0F),
+                    0.0F);
 
                 parWorld.spawnEntityInWorld(this.entityToSpawn);
                 this.entityToSpawn.onSpawnWithEgg((IEntityLivingData) null);

@@ -22,7 +22,7 @@ public class EntityPrimedMiningExplosive extends EntityTNTPrimed {
     }
 
     public EntityPrimedMiningExplosive(final World world, final double x, final double y, final double z,
-            final EntityLivingBase placingEntity) {
+        final EntityLivingBase placingEntity) {
         this(world);
         this.setPosition(x, y, z);
         final float f = (float) (Math.random() * Math.PI * 2.0D);
@@ -91,270 +91,270 @@ public class EntityPrimedMiningExplosive extends EntityTNTPrimed {
                 if (e <= 1) {
                     this.worldObj.spawnParticle("smoke", this.posX, this.posY + 0.5D, this.posZ, 0.0D, 0.0D, 0.0D);
                     this.worldObj.spawnParticle(
-                            "largesmoke",
-                            this.posX + MathUtils.randDouble(0, 1),
-                            this.posY + MathUtils.randDouble(0, 1),
-                            this.posZ + MathUtils.randDouble(0, 1),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "largesmoke",
+                        this.posX + MathUtils.randDouble(0, 1),
+                        this.posY + MathUtils.randDouble(0, 1),
+                        this.posZ + MathUtils.randDouble(0, 1),
+                        0.0D,
+                        0.0D,
+                        0.0D);
                     this.worldObj.spawnParticle(
-                            "cloud",
-                            this.posX + MathUtils.randDouble(0, 1),
-                            this.posY + MathUtils.randDouble(0, 1),
-                            this.posZ + MathUtils.randDouble(0, 1),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "cloud",
+                        this.posX + MathUtils.randDouble(0, 1),
+                        this.posY + MathUtils.randDouble(0, 1),
+                        this.posZ + MathUtils.randDouble(0, 1),
+                        0.0D,
+                        0.0D,
+                        0.0D);
                     this.worldObj.spawnParticle(
-                            "flame",
-                            this.posX + MathUtils.randDouble(0, 1),
-                            this.posY + MathUtils.randDouble(0, 1),
-                            this.posZ + MathUtils.randDouble(0, 1),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "flame",
+                        this.posX + MathUtils.randDouble(0, 1),
+                        this.posY + MathUtils.randDouble(0, 1),
+                        this.posZ + MathUtils.randDouble(0, 1),
+                        0.0D,
+                        0.0D,
+                        0.0D);
                 } else if (e == 2) {
                     this.worldObj.spawnParticle(
-                            "explode",
-                            this.posX + MathUtils.randDouble(0, 1),
-                            this.posY + MathUtils.randDouble(0, 1),
-                            this.posZ + MathUtils.randDouble(0, 1),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "explode",
+                        this.posX + MathUtils.randDouble(0, 1),
+                        this.posY + MathUtils.randDouble(0, 1),
+                        this.posZ + MathUtils.randDouble(0, 1),
+                        0.0D,
+                        0.0D,
+                        0.0D);
                     this.worldObj.spawnParticle(
-                            "largeexplode",
-                            this.posX + MathUtils.randDouble(0, 1),
-                            this.posY + MathUtils.randDouble(0, 1),
-                            this.posZ + MathUtils.randDouble(0, 1),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "largeexplode",
+                        this.posX + MathUtils.randDouble(0, 1),
+                        this.posY + MathUtils.randDouble(0, 1),
+                        this.posZ + MathUtils.randDouble(0, 1),
+                        0.0D,
+                        0.0D,
+                        0.0D);
                     this.worldObj.spawnParticle(
-                            "hugeexplosion",
-                            this.posX + MathUtils.randDouble(0, 1),
-                            this.posY + MathUtils.randDouble(0, 1),
-                            this.posZ + MathUtils.randDouble(0, 1),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "hugeexplosion",
+                        this.posX + MathUtils.randDouble(0, 1),
+                        this.posY + MathUtils.randDouble(0, 1),
+                        this.posZ + MathUtils.randDouble(0, 1),
+                        0.0D,
+                        0.0D,
+                        0.0D);
                 }
             } else if (t <= 4) {
                 int e = MathUtils.randInt(0, 5);
                 if (e <= 1) {
                     this.worldObj.spawnParticle("smoke", this.posX, this.posY + 0.5D, this.posZ, 0.0D, 0.0D, 0.0D);
                     this.worldObj.spawnParticle(
-                            "largesmoke",
-                            this.posX + MathUtils.randDouble(0, 1),
-                            this.posY + MathUtils.randDouble(0, 1),
-                            this.posZ + MathUtils.randDouble(0, 1),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "largesmoke",
+                        this.posX + MathUtils.randDouble(0, 1),
+                        this.posY + MathUtils.randDouble(0, 1),
+                        this.posZ + MathUtils.randDouble(0, 1),
+                        0.0D,
+                        0.0D,
+                        0.0D);
                     this.worldObj.spawnParticle(
-                            "cloud",
-                            this.posX + MathUtils.randDouble(0, 1),
-                            this.posY + MathUtils.randDouble(0, 1),
-                            this.posZ + MathUtils.randDouble(0, 1),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "cloud",
+                        this.posX + MathUtils.randDouble(0, 1),
+                        this.posY + MathUtils.randDouble(0, 1),
+                        this.posZ + MathUtils.randDouble(0, 1),
+                        0.0D,
+                        0.0D,
+                        0.0D);
                     this.worldObj.spawnParticle(
-                            "flame",
-                            this.posX + MathUtils.randDouble(0, 1),
-                            this.posY + MathUtils.randDouble(0, 1),
-                            this.posZ + MathUtils.randDouble(0, 1),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "flame",
+                        this.posX + MathUtils.randDouble(0, 1),
+                        this.posY + MathUtils.randDouble(0, 1),
+                        this.posZ + MathUtils.randDouble(0, 1),
+                        0.0D,
+                        0.0D,
+                        0.0D);
                 } else if (e == 2) {
                     this.worldObj.spawnParticle(
-                            "explode",
-                            this.posX + MathUtils.randDouble(0, 1),
-                            this.posY + MathUtils.randDouble(0, 1),
-                            this.posZ + MathUtils.randDouble(0, 1),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "explode",
+                        this.posX + MathUtils.randDouble(0, 1),
+                        this.posY + MathUtils.randDouble(0, 1),
+                        this.posZ + MathUtils.randDouble(0, 1),
+                        0.0D,
+                        0.0D,
+                        0.0D);
                     this.worldObj.spawnParticle(
-                            "largeexplode",
-                            this.posX + MathUtils.randDouble(0, 1),
-                            this.posY + MathUtils.randDouble(0, 1),
-                            this.posZ + MathUtils.randDouble(0, 1),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "largeexplode",
+                        this.posX + MathUtils.randDouble(0, 1),
+                        this.posY + MathUtils.randDouble(0, 1),
+                        this.posZ + MathUtils.randDouble(0, 1),
+                        0.0D,
+                        0.0D,
+                        0.0D);
                     this.worldObj.spawnParticle(
-                            "hugeexplosion",
-                            this.posX + MathUtils.randDouble(0, 1),
-                            this.posY + MathUtils.randDouble(0, 1),
-                            this.posZ + MathUtils.randDouble(0, 1),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "hugeexplosion",
+                        this.posX + MathUtils.randDouble(0, 1),
+                        this.posY + MathUtils.randDouble(0, 1),
+                        this.posZ + MathUtils.randDouble(0, 1),
+                        0.0D,
+                        0.0D,
+                        0.0D);
                 }
             } else if (t <= 6) {
                 int e = MathUtils.randInt(0, 4);
                 if (e <= 1) {
                     this.worldObj.spawnParticle("smoke", this.posX, this.posY + 0.5D, this.posZ, 0.0D, 0.0D, 0.0D);
                     this.worldObj.spawnParticle(
-                            "largesmoke",
-                            this.posX + MathUtils.randDouble(0, 1),
-                            this.posY + MathUtils.randDouble(0, 1),
-                            this.posZ + MathUtils.randDouble(0, 1),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "largesmoke",
+                        this.posX + MathUtils.randDouble(0, 1),
+                        this.posY + MathUtils.randDouble(0, 1),
+                        this.posZ + MathUtils.randDouble(0, 1),
+                        0.0D,
+                        0.0D,
+                        0.0D);
                     this.worldObj.spawnParticle(
-                            "cloud",
-                            this.posX + MathUtils.randDouble(0, 1),
-                            this.posY + MathUtils.randDouble(0, 1),
-                            this.posZ + MathUtils.randDouble(0, 1),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "cloud",
+                        this.posX + MathUtils.randDouble(0, 1),
+                        this.posY + MathUtils.randDouble(0, 1),
+                        this.posZ + MathUtils.randDouble(0, 1),
+                        0.0D,
+                        0.0D,
+                        0.0D);
                     this.worldObj.spawnParticle(
-                            "flame",
-                            this.posX + MathUtils.randDouble(0, 1),
-                            this.posY + MathUtils.randDouble(0, 1),
-                            this.posZ + MathUtils.randDouble(0, 1),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "flame",
+                        this.posX + MathUtils.randDouble(0, 1),
+                        this.posY + MathUtils.randDouble(0, 1),
+                        this.posZ + MathUtils.randDouble(0, 1),
+                        0.0D,
+                        0.0D,
+                        0.0D);
                 } else if (e == 2) {
                     this.worldObj.spawnParticle(
-                            "explode",
-                            this.posX + MathUtils.randDouble(0, 1),
-                            this.posY + MathUtils.randDouble(0, 1),
-                            this.posZ + MathUtils.randDouble(0, 1),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "explode",
+                        this.posX + MathUtils.randDouble(0, 1),
+                        this.posY + MathUtils.randDouble(0, 1),
+                        this.posZ + MathUtils.randDouble(0, 1),
+                        0.0D,
+                        0.0D,
+                        0.0D);
                     this.worldObj.spawnParticle(
-                            "largeexplode",
-                            this.posX + MathUtils.randDouble(0, 1),
-                            this.posY + MathUtils.randDouble(0, 1),
-                            this.posZ + MathUtils.randDouble(0, 1),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "largeexplode",
+                        this.posX + MathUtils.randDouble(0, 1),
+                        this.posY + MathUtils.randDouble(0, 1),
+                        this.posZ + MathUtils.randDouble(0, 1),
+                        0.0D,
+                        0.0D,
+                        0.0D);
                     this.worldObj.spawnParticle(
-                            "hugeexplosion",
-                            this.posX + MathUtils.randDouble(0, 1),
-                            this.posY + MathUtils.randDouble(0, 1),
-                            this.posZ + MathUtils.randDouble(0, 1),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "hugeexplosion",
+                        this.posX + MathUtils.randDouble(0, 1),
+                        this.posY + MathUtils.randDouble(0, 1),
+                        this.posZ + MathUtils.randDouble(0, 1),
+                        0.0D,
+                        0.0D,
+                        0.0D);
                 }
             } else if (t <= 8) {
                 int e = MathUtils.randInt(0, 1);
                 if (e <= 1) {
                     this.worldObj.spawnParticle("smoke", this.posX, this.posY + 0.5D, this.posZ, 0.0D, 0.0D, 0.0D);
                     this.worldObj.spawnParticle(
-                            "largesmoke",
-                            this.posX + MathUtils.randDouble(0, 1),
-                            this.posY + MathUtils.randDouble(0, 1),
-                            this.posZ + MathUtils.randDouble(0, 1),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "largesmoke",
+                        this.posX + MathUtils.randDouble(0, 1),
+                        this.posY + MathUtils.randDouble(0, 1),
+                        this.posZ + MathUtils.randDouble(0, 1),
+                        0.0D,
+                        0.0D,
+                        0.0D);
                     this.worldObj.spawnParticle(
-                            "cloud",
-                            this.posX + MathUtils.randDouble(0, 1),
-                            this.posY + MathUtils.randDouble(0, 1),
-                            this.posZ + MathUtils.randDouble(0, 1),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "cloud",
+                        this.posX + MathUtils.randDouble(0, 1),
+                        this.posY + MathUtils.randDouble(0, 1),
+                        this.posZ + MathUtils.randDouble(0, 1),
+                        0.0D,
+                        0.0D,
+                        0.0D);
                     this.worldObj.spawnParticle(
-                            "flame",
-                            this.posX + MathUtils.randDouble(0, 1),
-                            this.posY + MathUtils.randDouble(0, 1),
-                            this.posZ + MathUtils.randDouble(0, 1),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "flame",
+                        this.posX + MathUtils.randDouble(0, 1),
+                        this.posY + MathUtils.randDouble(0, 1),
+                        this.posZ + MathUtils.randDouble(0, 1),
+                        0.0D,
+                        0.0D,
+                        0.0D);
                 } else if (e == 2) {
                     this.worldObj.spawnParticle(
-                            "explode",
-                            this.posX + MathUtils.randDouble(0, 1),
-                            this.posY + MathUtils.randDouble(0, 1),
-                            this.posZ + MathUtils.randDouble(0, 1),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "explode",
+                        this.posX + MathUtils.randDouble(0, 1),
+                        this.posY + MathUtils.randDouble(0, 1),
+                        this.posZ + MathUtils.randDouble(0, 1),
+                        0.0D,
+                        0.0D,
+                        0.0D);
                     this.worldObj.spawnParticle(
-                            "largeexplode",
-                            this.posX + MathUtils.randDouble(0, 1),
-                            this.posY + MathUtils.randDouble(0, 1),
-                            this.posZ + MathUtils.randDouble(0, 1),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "largeexplode",
+                        this.posX + MathUtils.randDouble(0, 1),
+                        this.posY + MathUtils.randDouble(0, 1),
+                        this.posZ + MathUtils.randDouble(0, 1),
+                        0.0D,
+                        0.0D,
+                        0.0D);
                     this.worldObj.spawnParticle(
-                            "hugeexplosion",
-                            this.posX + MathUtils.randDouble(0, 1),
-                            this.posY + MathUtils.randDouble(0, 1),
-                            this.posZ + MathUtils.randDouble(0, 1),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "hugeexplosion",
+                        this.posX + MathUtils.randDouble(0, 1),
+                        this.posY + MathUtils.randDouble(0, 1),
+                        this.posZ + MathUtils.randDouble(0, 1),
+                        0.0D,
+                        0.0D,
+                        0.0D);
                 }
             } else if (t <= 10) {
                 int e = MathUtils.randInt(0, 6);
                 if (e <= 1) {
                     this.worldObj.spawnParticle("smoke", this.posX, this.posY + 0.5D, this.posZ, 0.0D, 0.0D, 0.0D);
                     this.worldObj.spawnParticle(
-                            "largesmoke",
-                            this.posX + MathUtils.randDouble(0, 1),
-                            this.posY + MathUtils.randDouble(0, 1),
-                            this.posZ + MathUtils.randDouble(0, 1),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "largesmoke",
+                        this.posX + MathUtils.randDouble(0, 1),
+                        this.posY + MathUtils.randDouble(0, 1),
+                        this.posZ + MathUtils.randDouble(0, 1),
+                        0.0D,
+                        0.0D,
+                        0.0D);
                     this.worldObj.spawnParticle(
-                            "cloud",
-                            this.posX + MathUtils.randDouble(0, 1),
-                            this.posY + MathUtils.randDouble(0, 1),
-                            this.posZ + MathUtils.randDouble(0, 1),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "cloud",
+                        this.posX + MathUtils.randDouble(0, 1),
+                        this.posY + MathUtils.randDouble(0, 1),
+                        this.posZ + MathUtils.randDouble(0, 1),
+                        0.0D,
+                        0.0D,
+                        0.0D);
                     this.worldObj.spawnParticle(
-                            "flame",
-                            this.posX + MathUtils.randDouble(0, 1),
-                            this.posY + MathUtils.randDouble(0, 1),
-                            this.posZ + MathUtils.randDouble(0, 1),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "flame",
+                        this.posX + MathUtils.randDouble(0, 1),
+                        this.posY + MathUtils.randDouble(0, 1),
+                        this.posZ + MathUtils.randDouble(0, 1),
+                        0.0D,
+                        0.0D,
+                        0.0D);
                 } else if (e >= 2) {
                     this.worldObj.spawnParticle(
-                            "explode",
-                            this.posX + MathUtils.randDouble(0, 1),
-                            this.posY + MathUtils.randDouble(0, 1),
-                            this.posZ + MathUtils.randDouble(0, 1),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "explode",
+                        this.posX + MathUtils.randDouble(0, 1),
+                        this.posY + MathUtils.randDouble(0, 1),
+                        this.posZ + MathUtils.randDouble(0, 1),
+                        0.0D,
+                        0.0D,
+                        0.0D);
                     this.worldObj.spawnParticle(
-                            "largeexplode",
-                            this.posX + MathUtils.randDouble(0, 1),
-                            this.posY + MathUtils.randDouble(0, 1),
-                            this.posZ + MathUtils.randDouble(0, 1),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "largeexplode",
+                        this.posX + MathUtils.randDouble(0, 1),
+                        this.posY + MathUtils.randDouble(0, 1),
+                        this.posZ + MathUtils.randDouble(0, 1),
+                        0.0D,
+                        0.0D,
+                        0.0D);
                     this.worldObj.spawnParticle(
-                            "hugeexplosion",
-                            this.posX + MathUtils.randDouble(0, 1),
-                            this.posY + MathUtils.randDouble(0, 1),
-                            this.posZ + MathUtils.randDouble(0, 1),
-                            0.0D,
-                            0.0D,
-                            0.0D);
+                        "hugeexplosion",
+                        this.posX + MathUtils.randDouble(0, 1),
+                        this.posY + MathUtils.randDouble(0, 1),
+                        this.posZ + MathUtils.randDouble(0, 1),
+                        0.0D,
+                        0.0D,
+                        0.0D);
                 }
             }
         }

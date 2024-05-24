@@ -30,19 +30,19 @@ public class GT_MetaTileEntity_Boiler_MV extends GT_MetaTileEntity_Boiler_Base {
     @Override
     public ITexture[] getFront(final byte aColor) {
         return new ITexture[] { super.getFront(aColor)[0], this.getCasingTexture(),
-                new GT_RenderedTexture(Textures.BlockIcons.BOILER_FRONT) };
+            new GT_RenderedTexture(Textures.BlockIcons.BOILER_FRONT) };
     }
 
     @Override
     public ITexture[] getTop(final byte aColor) {
         return new ITexture[] { super.getTop(aColor)[0], this.getCasingTexture(),
-                new GT_RenderedTexture(TexturesGtBlock.Casing_Material_Tumbaga) };
+            new GT_RenderedTexture(TexturesGtBlock.Casing_Material_Tumbaga) };
     }
 
     @Override
     public ITexture[] getFrontActive(final byte aColor) {
         return new ITexture[] { super.getFrontActive(aColor)[0], this.getCasingTexture(),
-                new GT_RenderedTexture(Textures.BlockIcons.BOILER_FRONT_ACTIVE) };
+            new GT_RenderedTexture(Textures.BlockIcons.BOILER_FRONT_ACTIVE) };
     }
 
     @Override

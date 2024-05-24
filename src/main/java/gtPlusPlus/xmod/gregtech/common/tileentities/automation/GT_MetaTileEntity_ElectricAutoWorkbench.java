@@ -46,17 +46,17 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
 
     public GT_MetaTileEntity_ElectricAutoWorkbench(final int aID, final int aTier, final String aDescription) {
         super(
-                aID,
-                "basicmachine.automation.autoworkbench.0" + aTier,
-                "Auto Workbench (" + GT_Values.VN[aTier] + ")",
-                aTier,
-                30,
-                aDescription);
+            aID,
+            "basicmachine.automation.autoworkbench.0" + aTier,
+            "Auto Workbench (" + GT_Values.VN[aTier] + ")",
+            aTier,
+            30,
+            aDescription);
         mLocalName = "Auto Workbench (" + GT_Values.VN[aTier] + ")";
     }
 
     public GT_MetaTileEntity_ElectricAutoWorkbench(final String aName, final int aTier, final String[] aDescription,
-            final ITexture[][][] aTextures) {
+        final ITexture[][][] aTextures) {
         super(aName, aTier, 30, aDescription, aTextures);
     }
 
@@ -149,10 +149,10 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_ElectricAutoWorkbench(
-                this.mName,
-                this.mTier,
-                this.mDescriptionArray,
-                this.mTextures);
+            this.mName,
+            this.mTier,
+            this.mDescriptionArray,
+            this.mTextures);
     }
 
     @Override
@@ -212,13 +212,14 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (getBaseMetaTileEntity().isAllowedToWork() && getBaseMetaTileEntity().isServerSide()
-                && getBaseMetaTileEntity().getUniversalEnergyStored() >= (mMode == 5 || mMode == 6 ? 128 : 2048)
-                && (getBaseMetaTileEntity().hasWorkJustBeenEnabled() || --mTicksUntilNextUpdate < 1)) {
+            && getBaseMetaTileEntity().getUniversalEnergyStored() >= (mMode == 5 || mMode == 6 ? 128 : 2048)
+            && (getBaseMetaTileEntity().hasWorkJustBeenEnabled() || --mTicksUntilNextUpdate < 1)) {
             mTicksUntilNextUpdate = 32;
 
             for (byte i = 19; i < 28; i++) {
                 if (mInventory[i] != null && mInventory[i].isItemStackDamageable()
-                        && mInventory[i].getItem().hasContainerItem(mInventory[i])) {
+                    && mInventory[i].getItem()
+                        .hasContainerItem(mInventory[i])) {
                     mInventory[i].setItemDamage(OreDictionary.WILDCARD_VALUE);
                 }
             }
@@ -229,9 +230,9 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
                     if (tOutput != null) {
                         for (byte j = 0; j < 9; j++) {
                             if (mInventory[j] == null || (GT_Utility.areStacksEqual(tOutput, mInventory[j])
-                                    && mInventory[j].stackSize + tOutput.stackSize <= tOutput.getMaxStackSize())) {
+                                && mInventory[j].stackSize + tOutput.stackSize <= tOutput.getMaxStackSize())) {
                                 mFluid.amount -= GT_Utility.getFluidForFilledItem(tOutput, true).amount
-                                        * tOutput.stackSize;
+                                    * tOutput.stackSize;
                                 getBaseMetaTileEntity().decrStackSize(i, 1);
                                 if (mInventory[j] == null) {
                                     mInventory[j] = tOutput;
@@ -262,7 +263,7 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
                     switch (mMode) {
                         case 0 -> {
                             if (mInventory[mCurrentSlot] != null
-                                    && !isItemTypeOrItsEmptyLiquidContainerInCraftingGrid(mInventory[mCurrentSlot])) {
+                                && !isItemTypeOrItsEmptyLiquidContainerInCraftingGrid(mInventory[mCurrentSlot])) {
                                 if (mInventory[18] == null && mThroughPut < 2 && mCurrentSlot < 8) {
                                     mInventory[18] = mInventory[mCurrentSlot];
                                     mInventory[mCurrentSlot] = null;
@@ -419,7 +420,7 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
                                 tRecipe[3] = tTempStack;
                                 tRecipe[4] = tTempStack;
                                 if (GT_ModHandler.getAllRecipeOutput(getBaseMetaTileEntity().getWorld(), tRecipe)
-                                        == null) {
+                                    == null) {
                                     if (mInventory[18] == null) {
                                         mInventory[18] = mInventory[mCurrentSlot];
                                         mInventory[mCurrentSlot] = null;
@@ -439,7 +440,7 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
                                 tRecipe[7] = tTempStack;
                                 tRecipe[8] = tTempStack;
                                 if (GT_ModHandler.getAllRecipeOutput(getBaseMetaTileEntity().getWorld(), tRecipe)
-                                        == null) {
+                                    == null) {
                                     if (mInventory[18] == null) {
                                         mInventory[18] = mInventory[mCurrentSlot];
                                         mInventory[mCurrentSlot] = null;
@@ -456,7 +457,7 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
                         }
                         case 7 -> {
                             if (isItemTypeOrItsEmptyLiquidContainerInCraftingGrid(mInventory[mCurrentSlot])
-                                    || !OrePrefixes.nugget.contains(mInventory[mCurrentSlot])) {
+                                || !OrePrefixes.nugget.contains(mInventory[mCurrentSlot])) {
                                 if (mInventory[18] == null && mThroughPut < 2) {
                                     mInventory[18] = mInventory[mCurrentSlot];
                                     mInventory[mCurrentSlot] = null;
@@ -485,8 +486,9 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
                         }
                         case 8 -> {
                             if (isItemTypeOrItsEmptyLiquidContainerInCraftingGrid(mInventory[mCurrentSlot])
-                                    || mInventory[mCurrentSlot].getItemDamage() <= 0
-                                    || !mInventory[mCurrentSlot].getItem().isRepairable()) {
+                                || mInventory[mCurrentSlot].getItemDamage() <= 0
+                                || !mInventory[mCurrentSlot].getItem()
+                                    .isRepairable()) {
                                 if (mInventory[18] == null && mThroughPut < 2) {
                                     mInventory[18] = mInventory[mCurrentSlot];
                                     mInventory[mCurrentSlot] = null;
@@ -498,12 +500,12 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
                             tTempStack.stackSize = 1;
                             for (int i = mCurrentSlot + 1; i < 18; i++) {
                                 if (mInventory[i] != null && mInventory[i].getItem() == tTempStack.getItem()
-                                        && mInventory[mCurrentSlot].getItemDamage() + mInventory[i].getItemDamage()
-                                                > tTempStack.getMaxDamage()) {
+                                    && mInventory[mCurrentSlot].getItemDamage() + mInventory[i].getItemDamage()
+                                        > tTempStack.getMaxDamage()) {
                                     tRecipe[0] = tTempStack;
                                     tRecipe[1] = GT_Utility.copy(mInventory[i]);
                                     if (GT_ModHandler.getAllRecipeOutput(getBaseMetaTileEntity().getWorld(), tRecipe)
-                                            == null) {
+                                        == null) {
                                         if (mInventory[18] == null) {
                                             mInventory[18] = mInventory[mCurrentSlot];
                                             mInventory[mCurrentSlot] = null;
@@ -524,9 +526,9 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
                                 break;
                             }
                             for (byte i = 0, j = 0; i < 18 && j < 9
-                                    && (j < 2 || GT_ModHandler
-                                            .getAllRecipeOutput(getBaseMetaTileEntity().getWorld(), tRecipe)
-                                            == null); i++) {
+                                && (j < 2
+                                    || GT_ModHandler.getAllRecipeOutput(getBaseMetaTileEntity().getWorld(), tRecipe)
+                                        == null); i++) {
                                 tRecipe[j] = mInventory[(mCurrentSlot + i) % 18];
                                 if (tRecipe[j] != null) {
                                     tRecipe[j] = GT_Utility.copy(tRecipe[j]);
@@ -579,17 +581,17 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
                                             if (tStack != null) {
                                                 getBaseMetaTileEntity().decrStackSize(j, 1);
                                                 if (!tStack.isItemStackDamageable()
-                                                        || tStack.getItemDamage() < tStack.getMaxDamage()) {
+                                                    || tStack.getItemDamage() < tStack.getMaxDamage()) {
                                                     for (byte k = 9; k < 18; k++) {
                                                         if (mInventory[k] == null) {
                                                             mInventory[k] = GT_Utility.copy(tStack);
                                                             break;
                                                         } else if (GT_Utility.areStacksEqual(mInventory[k], tStack)
-                                                                && mInventory[k].stackSize + tStack.stackSize
-                                                                        <= tStack.getMaxStackSize()) {
-                                                                            mInventory[k].stackSize += tStack.stackSize;
-                                                                            break;
-                                                                        }
+                                                            && mInventory[k].stackSize + tStack.stackSize
+                                                                <= tStack.getMaxStackSize()) {
+                                                                    mInventory[k].stackSize += tStack.stackSize;
+                                                                    break;
+                                                                }
                                                     }
                                                 }
                                             } else {
@@ -602,9 +604,8 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
                             }
 
                             mInventory[18] = GT_Utility.copy(tOutput);
-                            getBaseMetaTileEntity().decreaseStoredEnergyUnits(
-                                    mMode == 5 || mMode == 6 || mMode == 7 ? 128 : 2048,
-                                    true);
+                            getBaseMetaTileEntity()
+                                .decreaseStoredEnergyUnits(mMode == 5 || mMode == 6 || mMode == 7 ? 128 : 2048, true);
                             mTicksUntilNextUpdate = 1;
                         } else {
                             mLastCraftSuccessful = false;
@@ -620,7 +621,7 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
                         for (byte i = 0; i < 8; i++) {
                             for (byte j = i; ++j < 9;) {
                                 if (GT_Utility.areStacksEqual(mInventory[i], mInventory[j])
-                                        && mInventory[i].getMaxStackSize() > 8) {
+                                    && mInventory[i].getMaxStackSize() > 8) {
                                     mInventory[18] = mInventory[j];
                                     mInventory[j] = null;
                                     mTicksUntilNextUpdate = 1;
@@ -633,21 +634,19 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
             }
 
             if (mThroughPut < 2) {
-                getBaseMetaTileEntity()
-                        .decreaseStoredEnergyUnits(
-                                GT_Utility.moveOneItemStack(
-                                        getBaseMetaTileEntity(),
-                                        getBaseMetaTileEntity()
-                                                .getIInventoryAtSide(getBaseMetaTileEntity().getBackFacing()),
-                                        getBaseMetaTileEntity().getBackFacing(),
-                                        getBaseMetaTileEntity().getFrontFacing(),
-                                        null,
-                                        false,
-                                        (byte) 64,
-                                        (byte) 1,
-                                        (byte) 64,
-                                        (byte) 1) * 10,
-                                true);
+                getBaseMetaTileEntity().decreaseStoredEnergyUnits(
+                    GT_Utility.moveOneItemStack(
+                        getBaseMetaTileEntity(),
+                        getBaseMetaTileEntity().getIInventoryAtSide(getBaseMetaTileEntity().getBackFacing()),
+                        getBaseMetaTileEntity().getBackFacing(),
+                        getBaseMetaTileEntity().getFrontFacing(),
+                        null,
+                        false,
+                        (byte) 64,
+                        (byte) 1,
+                        (byte) 64,
+                        (byte) 1) * 10,
+                    true);
             }
         }
     }
@@ -702,13 +701,13 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return mMode == 0 ? aIndex >= 10 : aIndex >= 18;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return mMode == 0 ? aIndex < 9 : aIndex < 18;
     }
 
@@ -730,8 +729,8 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
     @Override
     public String[] getDescription() {
         return new String[] { "Automatic Crafting Table Mk III",
-                // this.mDescription,
-                CORE.GT_Tooltip.get() };
+            // this.mDescription,
+            CORE.GT_Tooltip.get() };
     }
 
     @Override
@@ -754,7 +753,7 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
 
     @Override
     public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
-            final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+        final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
         if (side == facing) {
             return this.mTextures[0][aColorIndex + 1];
         } else if (side.getOpposite() == facing) {
@@ -766,12 +765,12 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
 
     public ITexture[] getFront(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-                new GT_RenderedTexture(TexturesGtBlock.Casing_Adv_Workbench_Crafting_Overlay) };
+            new GT_RenderedTexture(TexturesGtBlock.Casing_Adv_Workbench_Crafting_Overlay) };
     }
 
     public ITexture[] getBack(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-                new GT_RenderedTexture(BlockIcons.OVERLAY_PIPE) };
+            new GT_RenderedTexture(BlockIcons.OVERLAY_PIPE) };
     }
 
     public ITexture[] getBottom(final byte aColor) {
@@ -780,12 +779,12 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
 
     public ITexture[] getTop(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-                new GT_RenderedTexture(TexturesGtBlock.Casing_Adv_Workbench_Crafting_Overlay) };
+            new GT_RenderedTexture(TexturesGtBlock.Casing_Adv_Workbench_Crafting_Overlay) };
     }
 
     public ITexture[] getSides(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-                new GT_RenderedTexture(TexturesGtBlock.Casing_Adv_Workbench_Crafting_Overlay) };
+            new GT_RenderedTexture(TexturesGtBlock.Casing_Adv_Workbench_Crafting_Overlay) };
     }
 
     @Override
@@ -796,49 +795,79 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(
-                new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo()).setSize(17, 17).setPos(118, 22));
+            new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
+                .setSize(17, 17)
+                .setPos(118, 22));
     }
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 3).endAtSlot(8).build().setPos(7, 4))
-                .widget(
-                        SlotGroup.ofItemHandler(inventoryHandler, 9).startFromSlot(9).endAtSlot(17).canInsert(false)
-                                .background(GT_UITextures.SLOT_DARK_GRAY).applyForWidget(SlotWidget::disableShiftInsert)
-                                .build().setPos(7, 59))
-                .widget(
-                        new SlotWidget(inventoryHandler, 18).setAccess(true, false)
-                                .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_OUT)
-                                .setPos(151, 40))
-                .widget(
-                        new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SLOTS_HOLO_3BY3).setPos(62, 4)
-                                .setSize(54, 54))
-                .widget(
-                        SlotGroup.ofItemHandler(inventoryHandler, 3).startFromSlot(19).endAtSlot(27).phantom(true)
-                                .background(GT_UITextures.TRANSPARENT).build().setPos(62, 4))
-                .widget(
-                        SlotWidget.phantom(inventoryHandler, 28).disableInteraction()
-                                .setBackground(getGUITextureSet().getItemSlot(), GTPP_UITextures.OVERLAY_SLOT_ARROW_4)
-                                .setPos(151, 4));
         builder.widget(
-                new CycleButtonWidget().setGetter(() -> mThroughPut).setSetter(val -> mThroughPut = val)
-                        .setLength(MAX_THROUGHPUT).setTextureGetter(i -> GTPP_UITextures.OVERLAY_BUTTON_THROUGHPUT[i])
-                        .setBackground(GT_UITextures.BUTTON_STANDARD).setPos(120, 4).setSize(18, 18));
+            SlotGroup.ofItemHandler(inventoryHandler, 3)
+                .endAtSlot(8)
+                .build()
+                .setPos(7, 4))
+            .widget(
+                SlotGroup.ofItemHandler(inventoryHandler, 9)
+                    .startFromSlot(9)
+                    .endAtSlot(17)
+                    .canInsert(false)
+                    .background(GT_UITextures.SLOT_DARK_GRAY)
+                    .applyForWidget(SlotWidget::disableShiftInsert)
+                    .build()
+                    .setPos(7, 59))
+            .widget(
+                new SlotWidget(inventoryHandler, 18).setAccess(true, false)
+                    .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_OUT)
+                    .setPos(151, 40))
+            .widget(
+                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SLOTS_HOLO_3BY3)
+                    .setPos(62, 4)
+                    .setSize(54, 54))
+            .widget(
+                SlotGroup.ofItemHandler(inventoryHandler, 3)
+                    .startFromSlot(19)
+                    .endAtSlot(27)
+                    .phantom(true)
+                    .background(GT_UITextures.TRANSPARENT)
+                    .build()
+                    .setPos(62, 4))
+            .widget(
+                SlotWidget.phantom(inventoryHandler, 28)
+                    .disableInteraction()
+                    .setBackground(getGUITextureSet().getItemSlot(), GTPP_UITextures.OVERLAY_SLOT_ARROW_4)
+                    .setPos(151, 4));
+        builder.widget(
+            new CycleButtonWidget().setGetter(() -> mThroughPut)
+                .setSetter(val -> mThroughPut = val)
+                .setLength(MAX_THROUGHPUT)
+                .setTextureGetter(i -> GTPP_UITextures.OVERLAY_BUTTON_THROUGHPUT[i])
+                .setBackground(GT_UITextures.BUTTON_STANDARD)
+                .setPos(120, 4)
+                .setSize(18, 18));
         String[] mModeText = new String[] { "Normal Crafting Table", "???", "1x1", "2x2", "3x3", "Unifier", "Dust",
-                "???", "Hammer?", "Circle" };
-        CycleButtonWidget modeButton = new CycleButtonWidget().setGetter(() -> mMode).setSetter(val -> {
-            mMode = val;
-            switchMode();
-        }).setLength(MAX_MODES).setTextureGetter(i -> GTPP_UITextures.OVERLAY_BUTTON_MODE[i]);
+            "???", "Hammer?", "Circle" };
+        CycleButtonWidget modeButton = new CycleButtonWidget().setGetter(() -> mMode)
+            .setSetter(val -> {
+                mMode = val;
+                switchMode();
+            })
+            .setLength(MAX_MODES)
+            .setTextureGetter(i -> GTPP_UITextures.OVERLAY_BUTTON_MODE[i]);
         for (int i = 0; i < MAX_MODES; i++) {
             modeButton.addTooltip(i, "Mode: " + mModeText[i]);
         }
-        builder.widget(modeButton.setBackground(GT_UITextures.BUTTON_STANDARD).setPos(120, 40).setSize(18, 18));
         builder.widget(
-                new DrawableWidget().setDrawable(GTPP_UITextures.PICTURE_WORKBENCH_CIRCLE).setPos(136, 23)
-                        .setSize(16, 16))
-                .widget(
-                        new DrawableWidget().setDrawable(GTPP_UITextures.PICTURE_ARROW_WHITE_DOWN).setPos(155, 23)
-                                .setSize(10, 16));
+            modeButton.setBackground(GT_UITextures.BUTTON_STANDARD)
+                .setPos(120, 40)
+                .setSize(18, 18));
+        builder.widget(
+            new DrawableWidget().setDrawable(GTPP_UITextures.PICTURE_WORKBENCH_CIRCLE)
+                .setPos(136, 23)
+                .setSize(16, 16))
+            .widget(
+                new DrawableWidget().setDrawable(GTPP_UITextures.PICTURE_ARROW_WHITE_DOWN)
+                    .setPos(155, 23)
+                    .setSize(10, 16));
     }
 }

@@ -31,38 +31,38 @@ public class GT_MetaTileEntity_Hatch_Steam_BusInput extends GT_MetaTileEntity_Ha
 
     public GT_MetaTileEntity_Hatch_Steam_BusInput(int aID, String aName, String aNameRegional, int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                getSlots(aTier),
-                new String[] { "Item Input for Steam Multiblocks",
-                        "Shift + right click with screwdriver to toggle automatic item shuffling", "Capacity: 4 stacks",
-                        "Does not work with non-steam multiblocks", CORE.GT_Tooltip.get() });
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            getSlots(aTier),
+            new String[] { "Item Input for Steam Multiblocks",
+                "Shift + right click with screwdriver to toggle automatic item shuffling", "Capacity: 4 stacks",
+                "Does not work with non-steam multiblocks", CORE.GT_Tooltip.get() });
     }
 
     public GT_MetaTileEntity_Hatch_Steam_BusInput(String aName, int aTier, String aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, 4, aDescription, aTextures);
     }
 
     public GT_MetaTileEntity_Hatch_Steam_BusInput(String aName, int aTier, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, 4, aDescription, aTextures);
     }
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
         return GT_Mod.gregtechproxy.mRenderIndicatorsOnHatch
-                ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), TextureFactory.of(ITEM_IN_SIGN) }
-                : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN) };
+            ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), TextureFactory.of(ITEM_IN_SIGN) }
+            : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return GT_Mod.gregtechproxy.mRenderIndicatorsOnHatch
-                ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), TextureFactory.of(ITEM_IN_SIGN) }
-                : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN) };
+            ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), TextureFactory.of(ITEM_IN_SIGN) }
+            : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN) };
     }
 
     @Override
@@ -116,16 +116,16 @@ public class GT_MetaTileEntity_Hatch_Steam_BusInput extends GT_MetaTileEntity_Ha
         } else {
             for (int i = 0; i < mInventory.length; i++)
                 for (int j = i + 1; j < mInventory.length; j++) if (mInventory[j] != null
-                        && (mInventory[i] == null || GT_Utility.areStacksEqual(mInventory[i], mInventory[j])))
+                    && (mInventory[i] == null || GT_Utility.areStacksEqual(mInventory[i], mInventory[j])))
                     GT_Utility.moveStackFromSlotAToSlotB(
-                            getBaseMetaTileEntity(),
-                            getBaseMetaTileEntity(),
-                            j,
-                            i,
-                            (byte) 64,
-                            (byte) 1,
-                            (byte) 64,
-                            (byte) 1);
+                        getBaseMetaTileEntity(),
+                        getBaseMetaTileEntity(),
+                        j,
+                        i,
+                        (byte) 64,
+                        (byte) 1,
+                        (byte) 64,
+                        (byte) 1);
         }
     }
 
@@ -146,23 +146,23 @@ public class GT_MetaTileEntity_Hatch_Steam_BusInput extends GT_MetaTileEntity_Ha
         if (aPlayer.isSneaking()) {
             disableSort = !disableSort;
             GT_Utility.sendChatToPlayer(
-                    aPlayer,
-                    GT_Utility.trans("200.1", "Automatic Item Shuffling: ")
-                            + (disableSort ? GT_Utility.trans("087", "Disabled") : GT_Utility.trans("088", "Enabled")));
+                aPlayer,
+                GT_Utility.trans("200.1", "Automatic Item Shuffling: ")
+                    + (disableSort ? GT_Utility.trans("087", "Disabled") : GT_Utility.trans("088", "Enabled")));
         }
     }
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return side == getBaseMetaTileEntity().getFrontFacing()
-                && (mRecipeMap == null || mRecipeMap.containsInput(aStack));
+            && (mRecipeMap == null || mRecipeMap.containsInput(aStack));
     }
 
     @Override
@@ -189,84 +189,82 @@ public class GT_MetaTileEntity_Hatch_Steam_BusInput extends GT_MetaTileEntity_Ha
 
     public ITexture[] getSideFacingActive(byte aColor) {
         return new ITexture[] { new GT_RenderedTexture(
-                mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE : Textures.BlockIcons.MACHINE_BRONZE_SIDE) };
+            mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE : Textures.BlockIcons.MACHINE_BRONZE_SIDE) };
     }
 
     public ITexture[] getSideFacingInactive(byte aColor) {
         return new ITexture[] { new GT_RenderedTexture(
-                mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE : Textures.BlockIcons.MACHINE_BRONZE_SIDE) };
+            mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE : Textures.BlockIcons.MACHINE_BRONZE_SIDE) };
     }
 
     public ITexture[] getFrontFacingActive(byte aColor) {
         return new ITexture[] { new GT_RenderedTexture(
-                mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE : Textures.BlockIcons.MACHINE_BRONZE_SIDE) };
+            mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE : Textures.BlockIcons.MACHINE_BRONZE_SIDE) };
     }
 
     public ITexture[] getFrontFacingInactive(byte aColor) {
         return new ITexture[] { new GT_RenderedTexture(
-                mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE : Textures.BlockIcons.MACHINE_BRONZE_SIDE) };
+            mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE : Textures.BlockIcons.MACHINE_BRONZE_SIDE) };
     }
 
     public ITexture[] getTopFacingActive(byte aColor) {
         return new ITexture[] { new GT_RenderedTexture(
-                mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_TOP : Textures.BlockIcons.MACHINE_BRONZE_TOP) };
+            mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_TOP : Textures.BlockIcons.MACHINE_BRONZE_TOP) };
     }
 
     public ITexture[] getTopFacingInactive(byte aColor) {
         return new ITexture[] { new GT_RenderedTexture(
-                mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_TOP : Textures.BlockIcons.MACHINE_BRONZE_TOP) };
+            mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_TOP : Textures.BlockIcons.MACHINE_BRONZE_TOP) };
     }
 
     public ITexture[] getBottomFacingActive(byte aColor) {
         return new ITexture[] { new GT_RenderedTexture(
-                mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_BOTTOM
-                        : Textures.BlockIcons.MACHINE_BRONZE_BOTTOM) };
+            mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_BOTTOM : Textures.BlockIcons.MACHINE_BRONZE_BOTTOM) };
     }
 
     public ITexture[] getBottomFacingInactive(byte aColor) {
         return new ITexture[] { new GT_RenderedTexture(
-                mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_BOTTOM
-                        : Textures.BlockIcons.MACHINE_BRONZE_BOTTOM) };
+            mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_BOTTOM : Textures.BlockIcons.MACHINE_BRONZE_BOTTOM) };
     }
 
     public ITexture[] getBottomFacingPipeActive(byte aColor) {
-        return new ITexture[] {
-                new GT_RenderedTexture(
-                        mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_BOTTOM
-                                : Textures.BlockIcons.MACHINE_BRONZE_BOTTOM),
-                new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT) };
+        return new ITexture[] { new GT_RenderedTexture(
+            mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_BOTTOM : Textures.BlockIcons.MACHINE_BRONZE_BOTTOM),
+            new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT) };
     }
 
     public ITexture[] getBottomFacingPipeInactive(byte aColor) {
-        return new ITexture[] {
-                new GT_RenderedTexture(
-                        mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_BOTTOM
-                                : Textures.BlockIcons.MACHINE_BRONZE_BOTTOM),
-                new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT) };
+        return new ITexture[] { new GT_RenderedTexture(
+            mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_BOTTOM : Textures.BlockIcons.MACHINE_BRONZE_BOTTOM),
+            new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT) };
     }
 
     public ITexture[] getTopFacingPipeActive(byte aColor) {
-        return new ITexture[] { new GT_RenderedTexture(
+        return new ITexture[] {
+            new GT_RenderedTexture(
                 mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_TOP : Textures.BlockIcons.MACHINE_BRONZE_TOP),
-                new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT) };
+            new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT) };
     }
 
     public ITexture[] getTopFacingPipeInactive(byte aColor) {
-        return new ITexture[] { new GT_RenderedTexture(
+        return new ITexture[] {
+            new GT_RenderedTexture(
                 mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_TOP : Textures.BlockIcons.MACHINE_BRONZE_TOP),
-                new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT) };
+            new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT) };
     }
 
     public ITexture[] getSideFacingPipeActive(byte aColor) {
-        return new ITexture[] { new GT_RenderedTexture(
+        return new ITexture[] {
+            new GT_RenderedTexture(
                 mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE : Textures.BlockIcons.MACHINE_BRONZE_SIDE),
-                new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT) };
+            new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT) };
     }
 
     public ITexture[] getSideFacingPipeInactive(byte aColor) {
-        return new ITexture[] { new GT_RenderedTexture(
+        return new ITexture[] {
+            new GT_RenderedTexture(
                 mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE : Textures.BlockIcons.MACHINE_BRONZE_SIDE),
-                new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT) };
+            new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT) };
     }
 
     @Override

@@ -26,8 +26,8 @@ public class ElectricSlotWidget extends SlotWidget {
     private ElectricSlotWidget(BaseSlot slot) {
         super(slot);
         setFilter(
-                stack -> (accepts(stack)) || (stack.getItem() instanceof GT_MetaGenerated_Tool)
-                        || (stack.getItem() instanceof IElectricItem));
+            stack -> (accepts(stack)) || (stack.getItem() instanceof GT_MetaGenerated_Tool)
+                || (stack.getItem() instanceof IElectricItem));
     }
 
     private boolean accepts(final ItemStack stack) {
@@ -35,6 +35,6 @@ public class ElectricSlotWidget extends SlotWidget {
             return false;
         }
         return (Info.itemEnergy.getEnergyValue(stack) > 0.0D)
-                || (ElectricItem.manager.discharge(stack, (1.0D / 0.0D), 4, true, true, true) > 0.0D);
+            || (ElectricItem.manager.discharge(stack, (1.0D / 0.0D), 4, true, true, true) > 0.0D);
     }
 }

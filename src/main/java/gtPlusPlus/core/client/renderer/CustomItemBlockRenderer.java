@@ -43,13 +43,13 @@ public class CustomItemBlockRenderer implements IItemRenderer {
     }
 
     public static void renderItemAsBlock(RenderBlocks renderer, ItemStack item, double translateX, double translateY,
-            double translateZ) {
+        double translateZ) {
 
         renderTextureAsBlock(renderer, item.getIconIndex(), translateX, translateY, translateZ);
     }
 
     public static void renderTextureAsBlock(RenderBlocks renderer, IIcon texture, double translateX, double translateY,
-            double translateZ) {
+        double translateZ) {
 
         Tessellator tessellator = Tessellator.instance;
         Block block = Blocks.stone;

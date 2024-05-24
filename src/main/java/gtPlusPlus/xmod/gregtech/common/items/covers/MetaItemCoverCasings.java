@@ -17,11 +17,11 @@ public class MetaItemCoverCasings extends MetaCustomCoverItem {
 
     public MetaItemCoverCasings() {
         super(
-                GTPlusPlus.ID,
-                Textures.BlockIcons.MACHINECASINGS_SIDE.length,
-                "Gt Machine Casings",
-                Textures.BlockIcons.MACHINECASINGS_SIDE,
-                null);
+            GTPlusPlus.ID,
+            Textures.BlockIcons.MACHINECASINGS_SIDE.length,
+            "Gt Machine Casings",
+            Textures.BlockIcons.MACHINECASINGS_SIDE,
+            null);
     }
 
     @Override
@@ -44,8 +44,7 @@ public class MetaItemCoverCasings extends MetaCustomCoverItem {
     @Override
     public String getItemStackDisplayName(final ItemStack tItem) {
         return EnumChatFormatting.LIGHT_PURPLE + StatCollector.translateToLocalFormatted(
-                "item.itemCustomMetaCover.miscutils.GtMachineCasings",
-                GT_Values.VOLTAGE_NAMES[MathUtils
-                        .balance(tItem.getItemDamage(), 0, GT_Values.VOLTAGE_NAMES.length - 1)]); // super.getItemStackDisplayName(tItem);
+            "item.itemCustomMetaCover.miscutils.GtMachineCasings",
+            GT_Values.VOLTAGE_NAMES[MathUtils.balance(tItem.getItemDamage(), 0, GT_Values.VOLTAGE_NAMES.length - 1)]); // super.getItemStackDisplayName(tItem);
     }
 }

@@ -21,7 +21,7 @@ public class EntityToxinballSmall extends EntityToxinball {
         if (!this.worldObj.isRemote) {
             if (MoP.entityHit != null) {
                 if (!MoP.entityHit.isImmuneToFire() && MoP.entityHit
-                        .attackEntityFrom(DamageSource.causeFireballDamage(this, this.shootingEntity), 5.0F)) {
+                    .attackEntityFrom(DamageSource.causeFireballDamage(this, this.shootingEntity), 5.0F)) {
                     MoP.entityHit.setFire(5);
                 }
             } else {

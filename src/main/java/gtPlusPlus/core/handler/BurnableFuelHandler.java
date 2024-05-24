@@ -15,7 +15,9 @@ public class BurnableFuelHandler implements IFuelHandler {
         // Iterate over my burnables.
         for (Pair<Integer, ItemStack> temp : CORE.burnables) {
             int aStackID = Item.getIdFromItem(aStack.getItem());
-            int burnID = Item.getIdFromItem(temp.getValue().getItem());
+            int burnID = Item.getIdFromItem(
+                temp.getValue()
+                    .getItem());
             if (aStackID == burnID) {
                 int burn = temp.getKey();
                 ItemStack fuel = temp.getValue();

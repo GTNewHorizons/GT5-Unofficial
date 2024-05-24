@@ -27,8 +27,8 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
 
 @Optional.InterfaceList(
-        value = { @Optional.Interface(iface = "baubles.api.IBauble", modid = Mods.Names.BAUBLES),
-                @Optional.Interface(iface = "baubles.api.BaubleType", modid = Mods.Names.BAUBLES) })
+    value = { @Optional.Interface(iface = "baubles.api.IBauble", modid = Mods.Names.BAUBLES),
+        @Optional.Interface(iface = "baubles.api.BaubleType", modid = Mods.Names.BAUBLES) })
 public class BaseBauble extends Item implements IBauble {
 
     /**
@@ -96,13 +96,15 @@ public class BaseBauble extends Item implements IBauble {
 
     public void onEquippedOrLoadedIntoWorld(EntityLivingBase player) {
         attributes.clear();
-        player.getAttributeMap().applyAttributeModifiers(attributes);
+        player.getAttributeMap()
+            .applyAttributeModifiers(attributes);
     }
 
     @Override
     public void onUnequipped(ItemStack stack, EntityLivingBase player) {
         attributes.clear();
-        player.getAttributeMap().removeAttributeModifiers(attributes);
+        player.getAttributeMap()
+            .removeAttributeModifiers(attributes);
     }
 
     public ItemStack getCorrectBauble(EntityPlayer player) {

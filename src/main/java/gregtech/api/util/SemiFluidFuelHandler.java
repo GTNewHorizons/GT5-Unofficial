@@ -29,22 +29,22 @@ public class SemiFluidFuelHandler {
         FluidStack p = aFuel;
         if (p != null && aFuelValue > 0) {
             GT_Recipe aRecipe = new GT_Recipe(
-                    true,
-                    new ItemStack[] {},
-                    new ItemStack[] {},
-                    null,
-                    new int[] {},
-                    new FluidStack[] { p },
-                    null,
-                    0,
-                    0,
-                    aFuelValue);
+                true,
+                new ItemStack[] {},
+                new ItemStack[] {},
+                null,
+                new int[] {},
+                new FluidStack[] { p },
+                null,
+                0,
+                0,
+                aFuelValue);
             if (aRecipe.mSpecialValue > 0) {
                 Logger.INFO(
-                        "Added " + aRecipe.mFluidInputs[0].getLocalizedName()
-                                + " to the Semi-Fluid Generator fuel map. Fuel Produces "
-                                + (aRecipe.mSpecialValue * 1000)
-                                + "EU per 1000L.");
+                    "Added " + aRecipe.mFluidInputs[0].getLocalizedName()
+                        + " to the Semi-Fluid Generator fuel map. Fuel Produces "
+                        + (aRecipe.mSpecialValue * 1000)
+                        + "EU per 1000L.");
                 semiFluidFuels.add(aRecipe);
                 return true;
             }
@@ -81,49 +81,56 @@ public class SemiFluidFuelHandler {
                 }
                 g.mSpecialValue *= aContainsCreosote ? 6 : 3;
                 Logger.INFO(
-                        "Added " + g.mFluidInputs[0].getLocalizedName()
-                                + " to the Semi-Fluid Generator fuel map. Fuel Produces "
-                                + g.mSpecialValue
-                                + "EU per 1000L.");
+                    "Added " + g.mFluidInputs[0].getLocalizedName()
+                        + " to the Semi-Fluid Generator fuel map. Fuel Produces "
+                        + g.mSpecialValue
+                        + "EU per 1000L.");
                 semiFluidFuels.add(g);
             }
         }
         for (Pair<FluidStack, Integer> p : aFoundFluidsFromItems.values()) {
             if (p != null) {
                 int aFuelValue = p.getValue();
-                if (p.getKey().isFluidEqual(aCreosote)) {
+                if (p.getKey()
+                    .isFluidEqual(aCreosote)) {
                     aFuelValue *= 6;
-                } else if (p.getKey().isFluidEqual(aHeavyFuel) || p.getKey().isFluidEqual(aHeavyOil)) {
-                    aFuelValue *= 1.5;
-                } else {
-                    aFuelValue *= 2;
-                }
+                } else if (p.getKey()
+                    .isFluidEqual(aHeavyFuel)
+                    || p.getKey()
+                        .isFluidEqual(aHeavyOil)) {
+                            aFuelValue *= 1.5;
+                        } else {
+                            aFuelValue *= 2;
+                        }
 
                 if (aFuelValue <= (128 * 3)) {
                     GT_Recipe aRecipe = new GT_Recipe(
-                            true,
-                            new ItemStack[] {},
-                            new ItemStack[] {},
-                            null,
-                            new int[] {},
-                            new FluidStack[] { p.getKey() },
-                            null,
-                            0,
-                            0,
-                            aFuelValue);
+                        true,
+                        new ItemStack[] {},
+                        new ItemStack[] {},
+                        null,
+                        new int[] {},
+                        new FluidStack[] { p.getKey() },
+                        null,
+                        0,
+                        0,
+                        aFuelValue);
                     if (aRecipe.mSpecialValue > 0) {
                         Logger.INFO(
-                                "Added " + aRecipe.mFluidInputs[0].getLocalizedName()
-                                        + " to the Semi-Fluid Generator fuel map. Fuel Produces "
-                                        + (aRecipe.mSpecialValue * 1000)
-                                        + "EU per 1000L.");
+                            "Added " + aRecipe.mFluidInputs[0].getLocalizedName()
+                                + " to the Semi-Fluid Generator fuel map. Fuel Produces "
+                                + (aRecipe.mSpecialValue * 1000)
+                                + "EU per 1000L.");
                         semiFluidFuels.add(aRecipe);
                     }
                 } else {
-                    Logger.INFO("Boosted Fuel value for " + p.getKey().getLocalizedName() + " exceeds 512k, ignoring.");
+                    Logger.INFO(
+                        "Boosted Fuel value for " + p.getKey()
+                            .getLocalizedName() + " exceeds 512k, ignoring.");
                 }
             }
         }
-        return !semiFluidFuels.getAllRecipes().isEmpty();
+        return !semiFluidFuels.getAllRecipes()
+            .isEmpty();
     }
 }

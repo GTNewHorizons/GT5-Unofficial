@@ -46,28 +46,28 @@ public enum GregtechOrePrefixes {
      * and Lapotronic Energy Orb Infinite (Cheaty)
      */
     ingotHot("Hot Ingots", "Hot ", " Ingot", true, true, false, false, false, false, false, true, false, false, B[1],
-            M * 1, 16, 12), // A hot Ingot, which has to be cooled down by a Vacuum Freezer.
+        M * 1, 16, 12), // A hot Ingot, which has to be cooled down by a Vacuum Freezer.
     ingot("Ingots", "", " Ingot", true, true, false, false, false, false, false, true, false, false, B[1], M * 1, 64,
-            11), // A regular Ingot. Introduced by Eloraam
+        11), // A regular Ingot. Introduced by Eloraam
     dustTiny("Tiny Dusts", "Tiny Pile of ", " Dust", true, true, false, false, false, false, false, true, false, false,
-            B[0] | B[1] | B[2] | B[3], M / 9, 64, 0), // 1/9th of a Dust.
+        B[0] | B[1] | B[2] | B[3], M / 9, 64, 0), // 1/9th of a Dust.
     dustSmall("Small Dusts", "Small Pile of ", " Dust", true, true, false, false, false, false, false, true, false,
-            false, B[0] | B[1] | B[2] | B[3], M / 4, 64, 1), // 1/4th of a Dust.
+        false, B[0] | B[1] | B[2] | B[3], M / 4, 64, 1), // 1/4th of a Dust.
     dustImpure("Impure Dusts", "Impure Pile of ", " Dust", true, true, false, false, false, false, false, true, false,
-            true, B[3], M * 1, 64, 3), // Dust with impurities. 1 Unit of Main Material and 1/9 - 1/4 Unit of secondary
-                                       // Material
+        true, B[3], M * 1, 64, 3), // Dust with impurities. 1 Unit of Main Material and 1/9 - 1/4 Unit of secondary
+                                   // Material
     dustRefined("Refined Dusts", "Refined Pile of ", " Dust", true, true, false, false, false, false, false, true,
-            false, true, B[3], M * 1, 64, 2),
+        false, true, B[3], M * 1, 64, 2),
     dustPure("Purified Dusts", "Purified Pile of ", " Dust", true, true, false, false, false, false, false, true, false,
-            true, B[3], M * 1, 64, 4),
+        true, B[3], M * 1, 64, 4),
     dust("Dusts", "", " Dust", true, true, false, false, false, false, false, true, false, false,
-            B[0] | B[1] | B[2] | B[3], M * 1, 64, 2), // Pure Dust worth of one Ingot or Gem. Introduced by Alblaka.
+        B[0] | B[1] | B[2] | B[3], M * 1, 64, 2), // Pure Dust worth of one Ingot or Gem. Introduced by Alblaka.
     nugget("Nuggets", "", " Nugget", true, true, false, false, false, false, false, true, false, false, B[1], M / 9, 64,
-            9), // A Nugget. Introduced by Eloraam
+        9), // A Nugget. Introduced by Eloraam
     plate("Plates", "", " Plate", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M * 1,
-            64, 17), // Regular Plate made of one Ingot/Dust. Introduced by Calclavia
+        64, 17), // Regular Plate made of one Ingot/Dust. Introduced by Calclavia
     block("Storage Blocks", "Block of ", "", true, true, false, false, false, true, true, false, false, false, 0, M * 9,
-            64, 71), // Storage Block consisting out of 9 Ingots/Gems/Dusts. Introduced by CovertJaguar
+        64, 71), // Storage Block consisting out of 9 Ingots/Gems/Dusts. Introduced by CovertJaguar
     gem("Gemstones", "", "", true, true, true, false, false, false, true, true, false, false, B[2], M * 1, 64, 8), // A
                                                                                                                    // regular
                                                                                                                    // Gem
@@ -78,31 +78,31 @@ public enum GregtechOrePrefixes {
                                                                                                                    // by
                                                                                                                    // Eloraam
     gemChipped("Chipped Gemstones", "Chipped ", "", true, true, true, false, false, false, true, true, false, false,
-            B[2], M / 4, 64, 59), // A regular Gem worth one small Dust. Introduced by TerraFirmaCraft
+        B[2], M / 4, 64, 59), // A regular Gem worth one small Dust. Introduced by TerraFirmaCraft
     gemFlawed("Flawed Gemstones", "Flawed ", "", true, true, true, false, false, false, true, true, false, false, B[2],
-            M / 2, 64, 60), // A regular Gem worth two small Dusts. Introduced by TerraFirmaCraft
+        M / 2, 64, 60), // A regular Gem worth two small Dusts. Introduced by TerraFirmaCraft
     gemFlawless("Flawless Gemstones", "Flawless ", "", true, true, true, false, false, false, true, true, false, false,
-            B[2], M * 2, 32, 61), // A regular Gem worth two Dusts. Introduced by TerraFirmaCraft
+        B[2], M * 2, 32, 61), // A regular Gem worth two Dusts. Introduced by TerraFirmaCraft
     gemExquisite("Exquisite Gemstones", "Exquisite ", "", true, true, true, false, false, false, true, true, false,
-            false, B[2], M * 4, 16, 62), // A regular Gem worth four Dusts. Introduced by TerraFirmaCraft
+        false, B[2], M * 4, 16, 62), // A regular Gem worth four Dusts. Introduced by TerraFirmaCraft
     stick("Sticks/Rods", "", " Rod", true, true, false, false, false, false, true, true, false, false, B[1] | B[2],
-            M / 2, 64, 23), // Stick made of half an Ingot. Introduced by Eloraam
+        M / 2, 64, 23), // Stick made of half an Ingot. Introduced by Eloraam
     type2("16x Wires", "16x ", " Wire", true, true, false, false, false, false, true, false, false, false, 0, M * 8, 64,
-            -1),
+        -1),
 
     toolAngleGrinder("Angle Grinder", "", "Angle Grinder", true, true, false, false, false, false, true, true, false,
-            false, B[6], M * 6, 16, 37), // consisting out of 6 Ingots.
+        false, B[6], M * 6, 16, 37), // consisting out of 6 Ingots.
     toolElectricSnips("Electric Snips", "", "Electric Snips", true, true, false, false, false, false, true, true, false,
-            false, B[6], M * 6, 16, 37), // consisting out of 6 Ingots.
+        false, B[6], M * 6, 16, 37), // consisting out of 6 Ingots.
     toolElectricLighter("Electric Lighter", "", "Electric Lighter", true, true, false, false, false, false, true, true,
-            false, false, B[6], M * 6, 16, 37), // consisting out of 6 Ingots.
+        false, false, B[6], M * 6, 16, 37), // consisting out of 6 Ingots.
     toolElectricButcherKnife("Electric Butcher Knife", "", "Electric Butcher Knife", true, true, false, false, false,
-            false, true, true, false, false, B[6], M * 6, 16, 37), // consisting out of 6 Ingots.
+        false, true, true, false, false, B[6], M * 6, 16, 37), // consisting out of 6 Ingots.
 
     batterySingleuse("Single Use Batteries", "", "", false, true, false, false, false, false, false, false, false,
-            false, 0, -1, 64, -1),
+        false, 0, -1, 64, -1),
     battery("Reusable Batteries", "", "", false, true, false, false, false, false, false, false, false, false, 0, -1,
-            64, -1), // Introduced by Calclavia
+        64, -1), // Introduced by Calclavia
     circuit("Circuits", "", "", true, true, false, false, false, false, false, false, false, false, 0, -1, 64, -1), // Introduced
                                                                                                                     // by
                                                                                                                     // Calclavia
@@ -119,7 +119,7 @@ public enum GregtechOrePrefixes {
     public final short mTextureIndex;
     public final String mRegularLocalName, mLocalizedMaterialPre, mLocalizedMaterialPost;
     public final boolean mIsUsedForOreProcessing, mIsEnchantable, mIsUnificatable, mIsMaterialBased, mIsSelfReferencing,
-            mIsContainer, mDontUnificateActively, mIsUsedForBlocks, mAllowNormalRecycling, mGenerateDefaultItem;
+        mIsContainer, mDontUnificateActively, mIsUsedForBlocks, mAllowNormalRecycling, mGenerateDefaultItem;
     public final List<TC_AspectStack> mAspects = new ArrayList<>();
     public final Collection<GregtechOrePrefixes> mFamiliarPrefixes = new HashSet<>();
     /**
@@ -129,7 +129,7 @@ public enum GregtechOrePrefixes {
     public final long mMaterialAmount;
 
     private final Collection<Materials> mNotGeneratedItems = new HashSet<>(), mIgnoredMaterials = new HashSet<>(),
-            mGeneratedItems = new HashSet<>();
+        mGeneratedItems = new HashSet<>();
     private final ArrayList<Interface_OreRecipeRegistrator> mOreProcessing = new ArrayList<>();
     private final ArrayList<Interface_OreRecipeRegistrator> mOreProcessingFake = new ArrayList<>();
     public final ItemStack mContainerItem = null;
@@ -144,11 +144,11 @@ public enum GregtechOrePrefixes {
     public int mMaterialGenerationBits = 0;
 
     private GregtechOrePrefixes(final String aRegularLocalName, final String aLocalizedMaterialPre,
-            final String aLocalizedMaterialPost, final boolean aIsUnificatable, final boolean aIsMaterialBased,
-            final boolean aIsSelfReferencing, final boolean aIsContainer, final boolean aDontUnificateActively,
-            final boolean aIsUsedForBlocks, final boolean aAllowNormalRecycling, final boolean aGenerateDefaultItem,
-            final boolean aIsEnchantable, final boolean aIsUsedForOreProcessing, final int aMaterialGenerationBits,
-            final long aMaterialAmount, final int aDefaultStackSize, final int aTextureindex) {
+        final String aLocalizedMaterialPost, final boolean aIsUnificatable, final boolean aIsMaterialBased,
+        final boolean aIsSelfReferencing, final boolean aIsContainer, final boolean aDontUnificateActively,
+        final boolean aIsUsedForBlocks, final boolean aAllowNormalRecycling, final boolean aGenerateDefaultItem,
+        final boolean aIsEnchantable, final boolean aIsUsedForOreProcessing, final int aMaterialGenerationBits,
+        final long aMaterialAmount, final int aDefaultStackSize, final int aTextureindex) {
         this.mIsUnificatable = aIsUnificatable;
         this.mIsMaterialBased = aIsMaterialBased;
         this.mIsSelfReferencing = aIsSelfReferencing;
@@ -168,39 +168,73 @@ public enum GregtechOrePrefixes {
         this.mTextureIndex = (short) aTextureindex;
 
         // TODO - Utilise some form of way to check if it's gt 5.9 if so, use string switch.
-        if (this.name().startsWith("ore")) {
+        if (this.name()
+            .startsWith("ore")) {
             getTcAspectStack(TC_Aspects.TERRA.name(), 1).addToAspectList(this.mAspects);
-        } else if (this.name().startsWith("wire") || this.name().startsWith("cable")) {
-            getTcAspectStack(TC_Aspects.ELECTRUM.name(), 1).addToAspectList(this.mAspects);
-        } else if (this.name().startsWith("dust")) {
-            getTcAspectStack(TC_Aspects.PERDITIO.name(), 1).addToAspectList(this.mAspects);
-        } else if (this.name().startsWith("crushed")) {
-            getTcAspectStack(TC_Aspects.PERFODIO.name(), 1).addToAspectList(this.mAspects);
-        } else if (this.name().startsWith("ingot") || this.name().startsWith("nugget")) {
-            getTcAspectStack(TC_Aspects.METALLUM.name(), 1).addToAspectList(this.mAspects);
-        } else if (this.name().startsWith("armor")) {
-            getTcAspectStack(TC_Aspects.TUTAMEN.name(), 1).addToAspectList(this.mAspects);
-        } else if (this.name().startsWith("stone")) {
-            getTcAspectStack(TC_Aspects.TERRA.name(), 1).addToAspectList(this.mAspects);
-        } else if (this.name().startsWith("pipe")) {
-            getTcAspectStack(TC_Aspects.ITER.name(), 1).addToAspectList(this.mAspects);
-        } else if (this.name().startsWith("gear")) {
-            getTcAspectStack(TC_Aspects.MOTUS.name(), 1).addToAspectList(this.mAspects);
-            getTcAspectStack(TC_Aspects.MACHINA.name(), 1).addToAspectList(this.mAspects);
-        } else if (this.name().startsWith("frame") || this.name().startsWith("plate")) {
-            getTcAspectStack(TC_Aspects.FABRICO.name(), 1).addToAspectList(this.mAspects);
-        } else if (this.name().startsWith("tool")) {
-            getTcAspectStack(TC_Aspects.INSTRUMENTUM.name(), 2).addToAspectList(this.mAspects);
-        } else
-            if (this.name().startsWith("gem") || this.name().startsWith("crystal") || this.name().startsWith("lens")) {
-                getTcAspectStack(TC_Aspects.VITREUS.name(), 1).addToAspectList(this.mAspects);
-            } else if (this.name().startsWith("crate")) {
-                getTcAspectStack(TC_Aspects.ITER.name(), 2).addToAspectList(this.mAspects);
-            } else if (this.name().startsWith("circuit")) {
-                getTcAspectStack("COGNITIO", 1);
-            } else if (this.name().startsWith("battery")) {
-                getTcAspectStack(TC_Aspects.ELECTRUM.name(), 1).addToAspectList(this.mAspects);
-            }
+        } else if (this.name()
+            .startsWith("wire")
+            || this.name()
+                .startsWith("cable")) {
+                    getTcAspectStack(TC_Aspects.ELECTRUM.name(), 1).addToAspectList(this.mAspects);
+                } else
+            if (this.name()
+                .startsWith("dust")) {
+                    getTcAspectStack(TC_Aspects.PERDITIO.name(), 1).addToAspectList(this.mAspects);
+                } else if (this.name()
+                    .startsWith("crushed")) {
+                        getTcAspectStack(TC_Aspects.PERFODIO.name(), 1).addToAspectList(this.mAspects);
+                    } else if (this.name()
+                        .startsWith("ingot")
+                        || this.name()
+                            .startsWith("nugget")) {
+                                getTcAspectStack(TC_Aspects.METALLUM.name(), 1).addToAspectList(this.mAspects);
+                            } else
+                        if (this.name()
+                            .startsWith("armor")) {
+                                getTcAspectStack(TC_Aspects.TUTAMEN.name(), 1).addToAspectList(this.mAspects);
+                            } else if (this.name()
+                                .startsWith("stone")) {
+                                    getTcAspectStack(TC_Aspects.TERRA.name(), 1).addToAspectList(this.mAspects);
+                                } else if (this.name()
+                                    .startsWith("pipe")) {
+                                        getTcAspectStack(TC_Aspects.ITER.name(), 1).addToAspectList(this.mAspects);
+                                    } else if (this.name()
+                                        .startsWith("gear")) {
+                                            getTcAspectStack(TC_Aspects.MOTUS.name(), 1).addToAspectList(this.mAspects);
+                                            getTcAspectStack(TC_Aspects.MACHINA.name(), 1)
+                                                .addToAspectList(this.mAspects);
+                                        } else if (this.name()
+                                            .startsWith("frame")
+                                            || this.name()
+                                                .startsWith("plate")) {
+                                                    getTcAspectStack(TC_Aspects.FABRICO.name(), 1)
+                                                        .addToAspectList(this.mAspects);
+                                                } else
+                                            if (this.name()
+                                                .startsWith("tool")) {
+                                                    getTcAspectStack(TC_Aspects.INSTRUMENTUM.name(), 2)
+                                                        .addToAspectList(this.mAspects);
+                                                } else if (this.name()
+                                                    .startsWith("gem")
+                                                    || this.name()
+                                                        .startsWith("crystal")
+                                                    || this.name()
+                                                        .startsWith("lens")) {
+                                                            getTcAspectStack(TC_Aspects.VITREUS.name(), 1)
+                                                                .addToAspectList(this.mAspects);
+                                                        } else
+                                                    if (this.name()
+                                                        .startsWith("crate")) {
+                                                            getTcAspectStack(TC_Aspects.ITER.name(), 2)
+                                                                .addToAspectList(this.mAspects);
+                                                        } else if (this.name()
+                                                            .startsWith("circuit")) {
+                                                                getTcAspectStack("COGNITIO", 1);
+                                                            } else if (this.name()
+                                                                .startsWith("battery")) {
+                                                                    getTcAspectStack(TC_Aspects.ELECTRUM.name(), 1)
+                                                                        .addToAspectList(this.mAspects);
+                                                                }
     }
 
     public static GregtechOrePrefixes getOrePrefix(final String aOre) {
@@ -285,10 +319,9 @@ public enum GregtechOrePrefixes {
 
     public boolean doGenerateItem(final Materials aMaterial) {
         return (aMaterial != null) && (aMaterial != Materials._NULL)
-                && (((aMaterial.mTypes & this.mMaterialGenerationBits) != 0)
-                        || this.mGeneratedItems.contains(aMaterial))
-                && !this.mNotGeneratedItems.contains(aMaterial)
-                && ((this.mCondition == null) || this.mCondition.isTrue(aMaterial));
+            && (((aMaterial.mTypes & this.mMaterialGenerationBits) != 0) || this.mGeneratedItems.contains(aMaterial))
+            && !this.mNotGeneratedItems.contains(aMaterial)
+            && ((this.mCondition == null) || this.mCondition.isTrue(aMaterial));
     }
 
     public boolean ignoreMaterials(final Materials... aMaterials) {
@@ -315,20 +348,20 @@ public enum GregtechOrePrefixes {
     }
 
     public void processOre(final GT_Materials aMaterial, final String aOreDictName, final String aModName,
-            final ItemStack aStack) {
+        final ItemStack aStack) {
         if ((aMaterial != null)
-                && ((aMaterial != GT_Materials._NULL) || this.mIsSelfReferencing || !this.mIsMaterialBased)
-                && GT_Utility.isStackValid(aStack)) {
+            && ((aMaterial != GT_Materials._NULL) || this.mIsSelfReferencing || !this.mIsMaterialBased)
+            && GT_Utility.isStackValid(aStack)) {
             for (final Interface_OreRecipeRegistrator tRegistrator : this.mOreProcessing) {
                 if (D2) {
                     GT_Log.ore.println(
-                            "Processing '" + aOreDictName
-                                    + "' with the Prefix '"
-                                    + this.name()
-                                    + "' and the Material '"
-                                    + aMaterial.name()
-                                    + "' at "
-                                    + GT_Utility.getClassName(tRegistrator));
+                        "Processing '" + aOreDictName
+                            + "' with the Prefix '"
+                            + this.name()
+                            + "' and the Material '"
+                            + aMaterial.name()
+                            + "' at "
+                            + GT_Utility.getClassName(tRegistrator));
                 }
                 tRegistrator.registerOre(this, aMaterial, aOreDictName, aModName, GT_Utility.copyAmount(1, aStack));
             }
@@ -337,19 +370,19 @@ public enum GregtechOrePrefixes {
 
     // TODO
     public void processOre(final Materials aMaterial, final String aOreDictName, final String aModName,
-            final ItemStack aStack) {
+        final ItemStack aStack) {
         if ((aMaterial != null) && ((aMaterial != Materials._NULL) || this.mIsSelfReferencing || !this.mIsMaterialBased)
-                && GT_Utility.isStackValid(aStack)) {
+            && GT_Utility.isStackValid(aStack)) {
             for (final Interface_OreRecipeRegistrator tRegistrator : this.mOreProcessingFake) {
                 if (D2) {
                     GT_Log.ore.println(
-                            "Processing '" + aOreDictName
-                                    + "' with the Prefix '"
-                                    + this.name()
-                                    + "' and the Material '"
-                                    + aMaterial.mName
-                                    + "' at "
-                                    + GT_Utility.getClassName(tRegistrator));
+                        "Processing '" + aOreDictName
+                            + "' with the Prefix '"
+                            + this.name()
+                            + "' and the Material '"
+                            + aMaterial.mName
+                            + "' at "
+                            + GT_Utility.getClassName(tRegistrator));
                 }
                 tRegistrator.registerOre(this, aMaterial, aOreDictName, aModName, GT_Utility.copyAmount(1, aStack));
             }
@@ -386,231 +419,228 @@ public enum GregtechOrePrefixes {
          *
          */
         _NULL(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "NULL", 0, 0, 0, 0, false, false, 1, 1, 1,
-                Dyes._NULL, Element._NULL, Arrays.asList(getTcAspectStack(TC_Aspects.VACUOS.name(), 1))),
+            Dyes._NULL, Element._NULL, Arrays.asList(getTcAspectStack(TC_Aspects.VACUOS.name(), 1))),
 
         // Lapis(526, TextureSet.SET_LAPIS, 1.0F, 0, 1, 1 | 4 | 8, 70, 70, 220, 0, "Lapis", 0, 0, -1, 0, false, false,
         // 3, 1, 1, Dyes.dyeBlue, 2, Arrays.asList(new MaterialStack(Materials.Lazurite, 12), new
         // MaterialStack(Materials.Sodalite, 2), new MaterialStack(Materials.Pyrite, 1), new
         // MaterialStack(Materials.Calcite, 1)), Arrays.asList(getTcAspectStack(TC_Aspects.SENSUS, 1))),
         Pyrotheum(20, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 255, 128, 0, 0, "Pyrotheum", 0, 0, -1, 0, false,
-                false, 2, 3, 1, Dyes.dyeYellow, 2,
-                Arrays.asList(
-                        new MaterialStack(Materials.Coal, 1),
-                        new MaterialStack(Materials.Redstone, 1),
-                        new MaterialStack(Materials.Blaze, 1),
-                        new MaterialStack(Materials.Sulfur, 1)),
-                Arrays.asList(getTcAspectStack("PRAECANTATIO", 2), getTcAspectStack(TC_Aspects.IGNIS, 1))),
+            false, 2, 3, 1, Dyes.dyeYellow, 2,
+            Arrays.asList(
+                new MaterialStack(Materials.Coal, 1),
+                new MaterialStack(Materials.Redstone, 1),
+                new MaterialStack(Materials.Blaze, 1),
+                new MaterialStack(Materials.Sulfur, 1)),
+            Arrays.asList(getTcAspectStack("PRAECANTATIO", 2), getTcAspectStack(TC_Aspects.IGNIS, 1))),
         Cryotheum(21, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 102, 178, 255, 0, "Cryotheum", 0, 0, -1, 0, false,
-                false, 2, 3, 1, Dyes.dyeLightBlue, 2,
-                Arrays.asList(
-                        new MaterialStack(Materials.Blizz, 1),
-                        new MaterialStack(Materials.Redstone, 1),
-                        new MaterialStack(Materials.Snow, 1),
-                        new MaterialStack(Materials.Niter, 1)),
-                Arrays.asList(getTcAspectStack("PRAECANTATIO", 2), getTcAspectStack(TC_Aspects.GELUM, 1))),
+            false, 2, 3, 1, Dyes.dyeLightBlue, 2,
+            Arrays.asList(
+                new MaterialStack(Materials.Blizz, 1),
+                new MaterialStack(Materials.Redstone, 1),
+                new MaterialStack(Materials.Snow, 1),
+                new MaterialStack(Materials.Niter, 1)),
+            Arrays.asList(getTcAspectStack("PRAECANTATIO", 2), getTcAspectStack(TC_Aspects.GELUM, 1))),
         Ender(22, TextureSet.SET_FLUID, 1.0F, 0, 2, 1, 255, 255, 255, 0, "Ender", 0, 0, -1, 0, false, false, 3, 1, 1,
-                Dyes.dyeGreen),
+            Dyes.dyeGreen),
 
         /**
          * Circuitry, Batteries and other Technical things
          */
         Symbiotic(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "IV Tier", 0, 0, -1, 0, false, false, 1, 1,
-                1, Dyes.dyeLightGray,
-                Arrays.asList(getTcAspectStack(TC_Aspects.ELECTRUM, 4), getTcAspectStack(TC_Aspects.MACHINA, 4))),
+            1, Dyes.dyeLightGray,
+            Arrays.asList(getTcAspectStack(TC_Aspects.ELECTRUM, 4), getTcAspectStack(TC_Aspects.MACHINA, 4))),
         Neutronic(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "LuV Tier", 0, 0, -1, 0, false, false, 1, 1,
-                1, Dyes.dyeLightGray,
-                Arrays.asList(getTcAspectStack(TC_Aspects.ELECTRUM, 6), getTcAspectStack(TC_Aspects.MACHINA, 6))),
+            1, Dyes.dyeLightGray,
+            Arrays.asList(getTcAspectStack(TC_Aspects.ELECTRUM, 6), getTcAspectStack(TC_Aspects.MACHINA, 6))),
         Quantum(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "ZPM Tier", 0, 0, -1, 0, false, false, 1, 1,
-                1, Dyes.dyeLightGray,
-                Arrays.asList(getTcAspectStack(TC_Aspects.ELECTRUM, 8), getTcAspectStack(TC_Aspects.MACHINA, 8))),
+            1, Dyes.dyeLightGray,
+            Arrays.asList(getTcAspectStack(TC_Aspects.ELECTRUM, 8), getTcAspectStack(TC_Aspects.MACHINA, 8))),
 
         Superconductor(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 190, 240, 190, 0, "Superconductor", 0, 0, -1, 0, false,
-                false, 1, 1, 1, Dyes.dyeGreen, Arrays.asList(getTcAspectStack(TC_Aspects.ELECTRUM, 8))),
+            false, 1, 1, 1, Dyes.dyeGreen, Arrays.asList(getTcAspectStack(TC_Aspects.ELECTRUM, 8))),
 
         Staballoy(30, TextureSet.SET_ROUGH, 10.0F, 5120, 4, 1 | 2 | 16 | 32 | 64 | 128, 68, 75, 66, 0, "Staballoy", 0,
-                0, 1500, 2800, true, false, 1, 3, 1, Dyes.dyeGreen, 2,
-                Arrays.asList(new MaterialStack(Materials.Titanium, 1), new MaterialStack(Materials.Uranium, 9)),
-                Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3))),
+            0, 1500, 2800, true, false, 1, 3, 1, Dyes.dyeGreen, 2,
+            Arrays.asList(new MaterialStack(Materials.Titanium, 1), new MaterialStack(Materials.Uranium, 9)),
+            Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3))),
         Bedrockium(31, TextureSet.SET_FINE, 8.0F, 8196, 3, 1 | 2 | 16 | 32 | 64 | 128, 39, 39, 39, 0, "Bedrockium", 0,
-                0, -1, 0, false, false, 1, 5, 1, Dyes.dyeLightGray, 2,
-                Arrays.asList(new MaterialStack(Materials.Carbon, 63), new MaterialStack(Materials.Carbon, 56)),
-                Arrays.asList(getTcAspectStack(TC_Aspects.VACUOS, 8), getTcAspectStack(TC_Aspects.TUTAMEN, 3))),
+            0, -1, 0, false, false, 1, 5, 1, Dyes.dyeLightGray, 2,
+            Arrays.asList(new MaterialStack(Materials.Carbon, 63), new MaterialStack(Materials.Carbon, 56)),
+            Arrays.asList(getTcAspectStack(TC_Aspects.VACUOS, 8), getTcAspectStack(TC_Aspects.TUTAMEN, 3))),
         BloodSteel(32, TextureSet.SET_METALLIC, 11.0F, 768, 4, 1 | 2 | 16 | 32 | 64 | 128, 142, 28, 0, 0, "Blood Steel",
-                0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeRed, 2,
-                Arrays.asList(new MaterialStack(Materials.Steel, 3)),
-                Arrays.asList(getTcAspectStack(TC_Aspects.VICTUS, 8), getTcAspectStack(TC_Aspects.IGNIS, 3))),
+            0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeRed, 2, Arrays.asList(new MaterialStack(Materials.Steel, 3)),
+            Arrays.asList(getTcAspectStack(TC_Aspects.VICTUS, 8), getTcAspectStack(TC_Aspects.IGNIS, 3))),
         Void(33, TextureSet.SET_METALLIC, 6.0F, 1280, 3, 1 | 2 | 16 | 32 | 64 | 128, 82, 17, 82, 0, "Void Metal", 0, 0,
-                -1, 0, false, false, 3, 1, 1, Dyes.dyeBlack,
-                Arrays.asList(getTcAspectStack("PRAECANTATIO", 5), getTcAspectStack(TC_Aspects.VACUOS, 7))),
+            -1, 0, false, false, 3, 1, 1, Dyes.dyeBlack,
+            Arrays.asList(getTcAspectStack("PRAECANTATIO", 5), getTcAspectStack(TC_Aspects.VACUOS, 7))),
         ConductiveIron(34, TextureSet.SET_METALLIC, 5.0F, 256, 2, 1 | 2, 164, 109, 100, 0, "Conductive Iron", 0, 0, -1,
-                0, false, false, 3, 1, 1, Dyes.dyeRed, 2,
-                Arrays.asList(new MaterialStack(Materials.Iron, 6), new MaterialStack(Materials.Redstone, 2)),
-                Arrays.asList(getTcAspectStack(TC_Aspects.POTENTIA, 2), getTcAspectStack(TC_Aspects.METALLUM, 2))),
+            0, false, false, 3, 1, 1, Dyes.dyeRed, 2,
+            Arrays.asList(new MaterialStack(Materials.Iron, 6), new MaterialStack(Materials.Redstone, 2)),
+            Arrays.asList(getTcAspectStack(TC_Aspects.POTENTIA, 2), getTcAspectStack(TC_Aspects.METALLUM, 2))),
         ElectricalSteel(35, TextureSet.SET_METALLIC, 7.0F, 768, 3, 1 | 2 | 64 | 128, 194, 194, 194, 0,
-                "Electrical Steel", 0, 0, 1811, 1000, true, false, 3, 1, 1, Dyes.dyeLightGray, 2,
-                Arrays.asList(
-                        new MaterialStack(Materials.Iron, 3),
-                        new MaterialStack(Materials.Coal, 2),
-                        new MaterialStack(Materials.Silicon, 2)),
-                Arrays.asList(getTcAspectStack(TC_Aspects.MAGNETO, 2), getTcAspectStack(TC_Aspects.ELECTRUM, 5))),
+            "Electrical Steel", 0, 0, 1811, 1000, true, false, 3, 1, 1, Dyes.dyeLightGray, 2,
+            Arrays.asList(
+                new MaterialStack(Materials.Iron, 3),
+                new MaterialStack(Materials.Coal, 2),
+                new MaterialStack(Materials.Silicon, 2)),
+            Arrays.asList(getTcAspectStack(TC_Aspects.MAGNETO, 2), getTcAspectStack(TC_Aspects.ELECTRUM, 5))),
         EnergeticAlloy(36, TextureSet.SET_SHINY, 5.0F, 512, 3, 1 | 2 | 64 | 128, 252, 152, 45, 0, "Energetic Alloy", 0,
-                0, -1, 0, false, false, 3, 1, 1, Dyes.dyeOrange, 2,
-                Arrays.asList(
-                        new MaterialStack(Materials.Gold, 3),
-                        new MaterialStack(Materials.Glowstone, 2),
-                        new MaterialStack(Materials.Redstone, 2)),
-                Arrays.asList(getTcAspectStack(TC_Aspects.POTENTIA, 4), getTcAspectStack(TC_Aspects.LUX, 3))),
+            0, -1, 0, false, false, 3, 1, 1, Dyes.dyeOrange, 2,
+            Arrays.asList(
+                new MaterialStack(Materials.Gold, 3),
+                new MaterialStack(Materials.Glowstone, 2),
+                new MaterialStack(Materials.Redstone, 2)),
+            Arrays.asList(getTcAspectStack(TC_Aspects.POTENTIA, 4), getTcAspectStack(TC_Aspects.LUX, 3))),
         VibrantAlloy(37, TextureSet.SET_SHINY, 7.0F, 1280, 4, 1 | 2 | 64 | 128, 204, 242, 142, 0, "Vibrant Alloy", 0, 0,
-                -1, 0, false, false, 3, 1, 1, Dyes.dyeLime, 2,
-                Arrays.asList(
-                        new MaterialStack(Materials.EnergeticAlloy, 1),
-                        new MaterialStack(Materials.EnderPearl, 3)),
-                Arrays.asList(getTcAspectStack(TC_Aspects.MACHINA, 5), getTcAspectStack(TC_Aspects.TELUM, 4))),
+            -1, 0, false, false, 3, 1, 1, Dyes.dyeLime, 2,
+            Arrays.asList(new MaterialStack(Materials.EnergeticAlloy, 1), new MaterialStack(Materials.EnderPearl, 3)),
+            Arrays.asList(getTcAspectStack(TC_Aspects.MACHINA, 5), getTcAspectStack(TC_Aspects.TELUM, 4))),
         PulsatingIron(38, TextureSet.SET_SHINY, 5.0F, 256, 2, 1 | 2 | 64 | 128, 50, 91, 21, 0, "Pulsating Iron", 0, 0,
-                -1, 0, false, false, 3, 1, 1, Dyes.dyeGreen, 2,
-                Arrays.asList(new MaterialStack(Materials.Iron, 2), new MaterialStack(Materials.EnderPearl, 2)),
-                Arrays.asList(getTcAspectStack(TC_Aspects.ALIENIS, 3), getTcAspectStack(TC_Aspects.METALLUM, 3))),
+            -1, 0, false, false, 3, 1, 1, Dyes.dyeGreen, 2,
+            Arrays.asList(new MaterialStack(Materials.Iron, 2), new MaterialStack(Materials.EnderPearl, 2)),
+            Arrays.asList(getTcAspectStack(TC_Aspects.ALIENIS, 3), getTcAspectStack(TC_Aspects.METALLUM, 3))),
         /* TODO */ RedstoneAlloy(39, TextureSet.SET_METALLIC, 1.0F, 256, 2, 1 | 2 | 16 | 32 | 64, 178, 34, 34, 0,
-                "Redstone Alloy", 0, 0, -1, 0, false, false, 3, 1, 1, Dyes.dyeRed, 2,
-                Arrays.asList(new MaterialStack(Materials.Iron, 2), new MaterialStack(Materials.Redstone, 4))),
+            "Redstone Alloy", 0, 0, -1, 0, false, false, 3, 1, 1, Dyes.dyeRed, 2,
+            Arrays.asList(new MaterialStack(Materials.Iron, 2), new MaterialStack(Materials.Redstone, 4))),
 
         // Needs more Use, I think.
         Tantalloy60(40, TextureSet.SET_DULL, 8.0F, 5120, 3, 1 | 2 | 16 | 32 | 64 | 128, 68, 75, 166, 0, "Tantalloy-60",
-                0, 0, 3035, 2200, true, false, 1, 2, 1, Dyes.dyeLightBlue, 2,
-                Arrays.asList(new MaterialStack(Materials.Tungsten, 1), new MaterialStack(Materials.Tantalum, 9)),
-                Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3))),
+            0, 0, 3035, 2200, true, false, 1, 2, 1, Dyes.dyeLightBlue, 2,
+            Arrays.asList(new MaterialStack(Materials.Tungsten, 1), new MaterialStack(Materials.Tantalum, 9)),
+            Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3))),
         Tantalloy61(41, TextureSet.SET_DULL, 7.0F, 5120, 2, 1 | 2 | 16 | 32 | 64 | 128, 122, 135, 196, 0,
-                "Tantalloy-61", 0, 0, 3015, 2150, true, false, 1, 2, 1, Dyes.dyeLightBlue, 2,
-                Arrays.asList(
-                        new MaterialStack(Materials.Tungsten, 1),
-                        new MaterialStack(Materials.Tantalum, 9),
-                        new MaterialStack(Materials.Titanium, 1)),
-                Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3))),
+            "Tantalloy-61", 0, 0, 3015, 2150, true, false, 1, 2, 1, Dyes.dyeLightBlue, 2,
+            Arrays.asList(
+                new MaterialStack(Materials.Tungsten, 1),
+                new MaterialStack(Materials.Tantalum, 9),
+                new MaterialStack(Materials.Titanium, 1)),
+            Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3))),
 
         Potin(42, TextureSet.SET_METALLIC, 7.0F, 5120, 2, 1 | 2 | 16 | 32 | 64 | 128, 201, 151, 129, 0, "Potin", 0, 0,
-                3015, 2150, true, false, 1, 2, 1, Dyes.dyeLightBlue, 2,
-                Arrays.asList(
-                        new MaterialStack(Materials.Tungsten, 1),
-                        new MaterialStack(Materials.Tantalum, 9),
-                        new MaterialStack(Materials.Titanium, 1)),
-                Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3))),
+            3015, 2150, true, false, 1, 2, 1, Dyes.dyeLightBlue, 2,
+            Arrays.asList(
+                new MaterialStack(Materials.Tungsten, 1),
+                new MaterialStack(Materials.Tantalum, 9),
+                new MaterialStack(Materials.Titanium, 1)),
+            Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3))),
         Inconel792(43, TextureSet.SET_METALLIC, 7.0F, 5120, 2, 1 | 2 | 16 | 32 | 64 | 128, 108, 240, 118, 0,
-                "Inconel-792", 0, 0, 3015, 2150, true, false, 1, 2, 1, Dyes.dyeLightBlue, 2,
-                Arrays.asList(
-                        new MaterialStack(Materials.Tungsten, 1),
-                        new MaterialStack(Materials.Tantalum, 9),
-                        new MaterialStack(Materials.Titanium, 1)),
-                Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3))),
+            "Inconel-792", 0, 0, 3015, 2150, true, false, 1, 2, 1, Dyes.dyeLightBlue, 2,
+            Arrays.asList(
+                new MaterialStack(Materials.Tungsten, 1),
+                new MaterialStack(Materials.Tantalum, 9),
+                new MaterialStack(Materials.Titanium, 1)),
+            Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3))),
         Inconel690(44, TextureSet.SET_DULL, 7.0F, 5120, 2, 1 | 2 | 16 | 32 | 64 | 128, 118, 220, 138, 0, "Inconel-690",
-                0, 0, 3015, 2150, true, false, 1, 2, 1, Dyes.dyeLightBlue, 2,
-                Arrays.asList(
-                        new MaterialStack(Materials.Tungsten, 1),
-                        new MaterialStack(Materials.Tantalum, 9),
-                        new MaterialStack(Materials.Titanium, 1)),
-                Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3))),
+            0, 0, 3015, 2150, true, false, 1, 2, 1, Dyes.dyeLightBlue, 2,
+            Arrays.asList(
+                new MaterialStack(Materials.Tungsten, 1),
+                new MaterialStack(Materials.Tantalum, 9),
+                new MaterialStack(Materials.Titanium, 1)),
+            Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3))),
         MaragingSteel300(45, TextureSet.SET_METALLIC, 7.0F, 5120, 2, 1 | 2 | 16 | 32 | 64 | 128, 150, 150, 150, 0,
-                "Maraging Steel 300", 0, 0, 3015, 2150, true, false, 1, 2, 1, Dyes.dyeLightBlue, 2,
-                Arrays.asList(
-                        new MaterialStack(Materials.Tungsten, 1),
-                        new MaterialStack(Materials.Tantalum, 9),
-                        new MaterialStack(Materials.Titanium, 1)),
-                Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3))),
+            "Maraging Steel 300", 0, 0, 3015, 2150, true, false, 1, 2, 1, Dyes.dyeLightBlue, 2,
+            Arrays.asList(
+                new MaterialStack(Materials.Tungsten, 1),
+                new MaterialStack(Materials.Tantalum, 9),
+                new MaterialStack(Materials.Titanium, 1)),
+            Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3))),
         MaragingSteel350(46, TextureSet.SET_METALLIC, 7.0F, 5120, 2, 1 | 2 | 16 | 32 | 64 | 128, 160, 160, 160, 0,
-                "Maraging Steel 350", 0, 0, 3015, 2150, true, false, 1, 2, 1, Dyes.dyeLightBlue, 2,
-                Arrays.asList(
-                        new MaterialStack(Materials.Tungsten, 1),
-                        new MaterialStack(Materials.Tantalum, 9),
-                        new MaterialStack(Materials.Titanium, 1)),
-                Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3))),
+            "Maraging Steel 350", 0, 0, 3015, 2150, true, false, 1, 2, 1, Dyes.dyeLightBlue, 2,
+            Arrays.asList(
+                new MaterialStack(Materials.Tungsten, 1),
+                new MaterialStack(Materials.Tantalum, 9),
+                new MaterialStack(Materials.Titanium, 1)),
+            Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3))),
         HastelloyX(47, TextureSet.SET_SHINY, 7.0F, 5120, 2, 1 | 2 | 16 | 32 | 64 | 128, 255, 193, 37, 0, "Hastelloy-X",
-                0, 0, 3015, 2150, true, false, 1, 2, 1, Dyes.dyeLightBlue, 2,
-                Arrays.asList(
-                        new MaterialStack(Materials.Tungsten, 1),
-                        new MaterialStack(Materials.Tantalum, 9),
-                        new MaterialStack(Materials.Titanium, 1)),
-                Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3))),
+            0, 0, 3015, 2150, true, false, 1, 2, 1, Dyes.dyeLightBlue, 2,
+            Arrays.asList(
+                new MaterialStack(Materials.Tungsten, 1),
+                new MaterialStack(Materials.Tantalum, 9),
+                new MaterialStack(Materials.Titanium, 1)),
+            Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3))),
 
         TriniumNaquadahCarbonite(48, TextureSet.SET_SHINY, 7.0F, 5120, 2, 1 | 2 | 16 | 32 | 64 | 128, 255, 233, 0, 0,
-                "Trinium Naquadah Carbonite", 0, 0, 3015, 2150, true, false, 1, 2, 1, Dyes.dyeLightBlue, 2,
-                Arrays.asList(
-                        new MaterialStack(Materials.Tungsten, 1),
-                        new MaterialStack(Materials.Tantalum, 9),
-                        new MaterialStack(Materials.Titanium, 1)),
-                Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3))),
+            "Trinium Naquadah Carbonite", 0, 0, 3015, 2150, true, false, 1, 2, 1, Dyes.dyeLightBlue, 2,
+            Arrays.asList(
+                new MaterialStack(Materials.Tungsten, 1),
+                new MaterialStack(Materials.Tantalum, 9),
+                new MaterialStack(Materials.Titanium, 1)),
+            Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3))),
 
         // Radioactive Materials
         HydrofluoricAcid(-1, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 200, 200, 200, 0, "Hydrofluoric Acid", 0, 0,
-                -1, 0, false, false, 2, 3, 1, Dyes.dyeWhite, 2,
-                Arrays.asList(
-                        new MaterialStack(Materials.Coal, 1),
-                        new MaterialStack(Materials.Redstone, 1),
-                        new MaterialStack(Materials.Blaze, 1),
-                        new MaterialStack(Materials.Sulfur, 1))),
+            -1, 0, false, false, 2, 3, 1, Dyes.dyeWhite, 2,
+            Arrays.asList(
+                new MaterialStack(Materials.Coal, 1),
+                new MaterialStack(Materials.Redstone, 1),
+                new MaterialStack(Materials.Blaze, 1),
+                new MaterialStack(Materials.Sulfur, 1))),
         UraniumHexaFluoride(-1, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 73, 220, 83, 0, "Uranium Hexafluoride",
-                0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeLime, 2,
-                Arrays.asList(
-                        new MaterialStack(Materials.Coal, 1),
-                        new MaterialStack(Materials.Redstone, 1),
-                        new MaterialStack(Materials.Blaze, 1),
-                        new MaterialStack(Materials.Sulfur, 1))),
+            0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeLime, 2,
+            Arrays.asList(
+                new MaterialStack(Materials.Coal, 1),
+                new MaterialStack(Materials.Redstone, 1),
+                new MaterialStack(Materials.Blaze, 1),
+                new MaterialStack(Materials.Sulfur, 1))),
         UraniumTetraFluoride(-1, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 73, 220, 83, 0, "Uranium Tetrafluoride",
-                0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeLime, 2,
-                Arrays.asList(
-                        new MaterialStack(Materials.Coal, 1),
-                        new MaterialStack(Materials.Redstone, 1),
-                        new MaterialStack(Materials.Blaze, 1),
-                        new MaterialStack(Materials.Sulfur, 1))),
+            0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeLime, 2,
+            Arrays.asList(
+                new MaterialStack(Materials.Coal, 1),
+                new MaterialStack(Materials.Redstone, 1),
+                new MaterialStack(Materials.Blaze, 1),
+                new MaterialStack(Materials.Sulfur, 1))),
         ThoriumTetraFluoride(-1, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 15, 120, 15, 0, "Thorium Tetrafluoride",
-                0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeGreen, 2,
-                Arrays.asList(
-                        new MaterialStack(Materials.Coal, 1),
-                        new MaterialStack(Materials.Redstone, 1),
-                        new MaterialStack(Materials.Blaze, 1),
-                        new MaterialStack(Materials.Sulfur, 1))),
+            0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeGreen, 2,
+            Arrays.asList(
+                new MaterialStack(Materials.Coal, 1),
+                new MaterialStack(Materials.Redstone, 1),
+                new MaterialStack(Materials.Blaze, 1),
+                new MaterialStack(Materials.Sulfur, 1))),
 
         SulfurousAcid(-1, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 110, 220, 30, 0, "Sulfurous Acid", 0, 0, -1, 0,
-                false, false, 2, 3, 1, Dyes.dyeWhite, 2,
-                Arrays.asList(
-                        new MaterialStack(Materials.Coal, 1),
-                        new MaterialStack(Materials.Redstone, 1),
-                        new MaterialStack(Materials.Blaze, 1),
-                        new MaterialStack(Materials.Sulfur, 1))),
+            false, false, 2, 3, 1, Dyes.dyeWhite, 2,
+            Arrays.asList(
+                new MaterialStack(Materials.Coal, 1),
+                new MaterialStack(Materials.Redstone, 1),
+                new MaterialStack(Materials.Blaze, 1),
+                new MaterialStack(Materials.Sulfur, 1))),
         SulfurDioxide(-1, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 150, 200, 50, 0, "Sulfur Dioxide", 0, 0, -1, 0,
-                false, false, 2, 3, 1, Dyes.dyeWhite, 2,
-                Arrays.asList(
-                        new MaterialStack(Materials.Coal, 1),
-                        new MaterialStack(Materials.Redstone, 1),
-                        new MaterialStack(Materials.Blaze, 1),
-                        new MaterialStack(Materials.Sulfur, 1))),
+            false, false, 2, 3, 1, Dyes.dyeWhite, 2,
+            Arrays.asList(
+                new MaterialStack(Materials.Coal, 1),
+                new MaterialStack(Materials.Redstone, 1),
+                new MaterialStack(Materials.Blaze, 1),
+                new MaterialStack(Materials.Sulfur, 1))),
         HydrogenChloride(-1, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 150, 240, 90, 0, "Hydrogen Chloride", 0, 0,
-                -1, 0, false, false, 2, 3, 1, Dyes.dyeWhite, 2,
-                Arrays.asList(
-                        new MaterialStack(Materials.Coal, 1),
-                        new MaterialStack(Materials.Redstone, 1),
-                        new MaterialStack(Materials.Blaze, 1),
-                        new MaterialStack(Materials.Sulfur, 1))),
+            -1, 0, false, false, 2, 3, 1, Dyes.dyeWhite, 2,
+            Arrays.asList(
+                new MaterialStack(Materials.Coal, 1),
+                new MaterialStack(Materials.Redstone, 1),
+                new MaterialStack(Materials.Blaze, 1),
+                new MaterialStack(Materials.Sulfur, 1))),
         SulfuricApatite(-1, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 0, 105, 105, 0, "Sulfuric Apatite Solution",
-                0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeWhite, 2,
-                Arrays.asList(
-                        new MaterialStack(Materials.Coal, 1),
-                        new MaterialStack(Materials.Redstone, 1),
-                        new MaterialStack(Materials.Blaze, 1),
-                        new MaterialStack(Materials.Sulfur, 1))),
+            0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeWhite, 2,
+            Arrays.asList(
+                new MaterialStack(Materials.Coal, 1),
+                new MaterialStack(Materials.Redstone, 1),
+                new MaterialStack(Materials.Blaze, 1),
+                new MaterialStack(Materials.Sulfur, 1))),
 
         SulfuricLithium(-1, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 0, 105, 105, 0, "Sulfuric Lithium Solution",
-                0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeWhite, 2,
-                Arrays.asList(
-                        new MaterialStack(Materials.Coal, 1),
-                        new MaterialStack(Materials.Redstone, 1),
-                        new MaterialStack(Materials.Blaze, 1),
-                        new MaterialStack(Materials.Sulfur, 1))),
+            0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeWhite, 2,
+            Arrays.asList(
+                new MaterialStack(Materials.Coal, 1),
+                new MaterialStack(Materials.Redstone, 1),
+                new MaterialStack(Materials.Blaze, 1),
+                new MaterialStack(Materials.Sulfur, 1))),
         LithiumHydroxide(-1, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 0, 105, 105, 0, "Lithium Hydroxide", 0, 0,
-                -1, 0, false, false, 2, 3, 1, Dyes.dyeWhite, 2,
-                Arrays.asList(
-                        new MaterialStack(Materials.Coal, 1),
-                        new MaterialStack(Materials.Redstone, 1),
-                        new MaterialStack(Materials.Blaze, 1),
-                        new MaterialStack(Materials.Sulfur, 1))),;
+            -1, 0, false, false, 2, 3, 1, Dyes.dyeWhite, 2,
+            Arrays.asList(
+                new MaterialStack(Materials.Coal, 1),
+                new MaterialStack(Materials.Redstone, 1),
+                new MaterialStack(Materials.Blaze, 1),
+                new MaterialStack(Materials.Sulfur, 1))),;
 
         /**
          * List of all Materials.
@@ -654,7 +684,7 @@ public enum GregtechOrePrefixes {
         public Dyes mColor = Dyes._NULL;
         public short mMeltingPoint = 0, mBlastFurnaceTemp = 0;
         public int mTypes = 0, mDurability = 16, mFuelPower = 0, mFuelType = 0, mExtraData = 0, mOreValue = 0,
-                mOreMultiplier = 1, mByProductMultiplier = 1, mSmeltingMultiplier = 1;
+            mOreMultiplier = 1, mByProductMultiplier = 1, mSmeltingMultiplier = 1;
         public long mDensity = M;
         public Element mElement = null;
         public GT_Materials mDirectSmelting = this;
@@ -675,7 +705,7 @@ public enum GregtechOrePrefixes {
         public final Fluid mStandardMoltenFluid = null;
 
         private GT_Materials(final int aMetaItemSubID, final TextureSet aIconSet, final float aToolSpeed,
-                final int aToolDurability, final int aToolQuality, final boolean aUnificatable) {
+            final int aToolDurability, final int aToolQuality, final boolean aUnificatable) {
             this.mUnificatable = aUnificatable;
             this.mMaterialInto = this;
             this.mMetaItemSubID = aMetaItemSubID;
@@ -725,11 +755,11 @@ public enum GregtechOrePrefixes {
          * @param aColor                Vanilla MC Wool Color which comes the closest to this.
          */
         private GT_Materials(final int aMetaItemSubID, final TextureSet aIconSet, final float aToolSpeed,
-                final int aToolDurability, final int aToolQuality, final int aTypes, final int aR, final int aG,
-                final int aB, final int aA, final String aLocalName, final int aFuelType, final int aFuelPower,
-                final int aMeltingPoint, final int aBlastFurnaceTemp, final boolean aBlastFurnaceRequired,
-                final boolean aTransparent, final int aOreValue, final int aDensityMultiplier,
-                final int aDensityDivider, final Dyes aColor) {
+            final int aToolDurability, final int aToolQuality, final int aTypes, final int aR, final int aG,
+            final int aB, final int aA, final String aLocalName, final int aFuelType, final int aFuelPower,
+            final int aMeltingPoint, final int aBlastFurnaceTemp, final boolean aBlastFurnaceRequired,
+            final boolean aTransparent, final int aOreValue, final int aDensityMultiplier, final int aDensityDivider,
+            final Dyes aColor) {
             this(aMetaItemSubID, aIconSet, aToolSpeed, aToolDurability, aToolQuality, true);
             this.mDefaultLocalName = aLocalName;
             this.mMeltingPoint = (short) aMeltingPoint;
@@ -757,33 +787,33 @@ public enum GregtechOrePrefixes {
         }
 
         private GT_Materials(final int aMetaItemSubID, final TextureSet aIconSet, final float aToolSpeed,
-                final int aToolDurability, final int aToolQuality, final int aTypes, final int aR, final int aG,
-                final int aB, final int aA, final String aLocalName, final int aFuelType, final int aFuelPower,
-                final int aMeltingPoint, final int aBlastFurnaceTemp, final boolean aBlastFurnaceRequired,
-                final boolean aTransparent, final int aOreValue, final int aDensityMultiplier,
-                final int aDensityDivider, final Dyes aColor, final List<TC_AspectStack> aAspects) {
+            final int aToolDurability, final int aToolQuality, final int aTypes, final int aR, final int aG,
+            final int aB, final int aA, final String aLocalName, final int aFuelType, final int aFuelPower,
+            final int aMeltingPoint, final int aBlastFurnaceTemp, final boolean aBlastFurnaceRequired,
+            final boolean aTransparent, final int aOreValue, final int aDensityMultiplier, final int aDensityDivider,
+            final Dyes aColor, final List<TC_AspectStack> aAspects) {
             this(
-                    aMetaItemSubID,
-                    aIconSet,
-                    aToolSpeed,
-                    aToolDurability,
-                    aToolQuality,
-                    aTypes,
-                    aR,
-                    aG,
-                    aB,
-                    aA,
-                    aLocalName,
-                    aFuelType,
-                    aFuelPower,
-                    aMeltingPoint,
-                    aBlastFurnaceTemp,
-                    aBlastFurnaceRequired,
-                    aTransparent,
-                    aOreValue,
-                    aDensityMultiplier,
-                    aDensityDivider,
-                    aColor);
+                aMetaItemSubID,
+                aIconSet,
+                aToolSpeed,
+                aToolDurability,
+                aToolQuality,
+                aTypes,
+                aR,
+                aG,
+                aB,
+                aA,
+                aLocalName,
+                aFuelType,
+                aFuelPower,
+                aMeltingPoint,
+                aBlastFurnaceTemp,
+                aBlastFurnaceRequired,
+                aTransparent,
+                aOreValue,
+                aDensityMultiplier,
+                aDensityDivider,
+                aColor);
             this.mAspects.addAll(aAspects);
         }
 
@@ -791,34 +821,33 @@ public enum GregtechOrePrefixes {
          * @param aElement The Element Enum represented by this Material
          */
         private GT_Materials(final int aMetaItemSubID, final TextureSet aIconSet, final float aToolSpeed,
-                final int aToolDurability, final int aToolQuality, final int aTypes, final int aR, final int aG,
-                final int aB, final int aA, final String aLocalName, final int aFuelType, final int aFuelPower,
-                final int aMeltingPoint, final int aBlastFurnaceTemp, final boolean aBlastFurnaceRequired,
-                final boolean aTransparent, final int aOreValue, final int aDensityMultiplier,
-                final int aDensityDivider, final Dyes aColor, final Element aElement,
-                final List<TC_AspectStack> aAspects) {
+            final int aToolDurability, final int aToolQuality, final int aTypes, final int aR, final int aG,
+            final int aB, final int aA, final String aLocalName, final int aFuelType, final int aFuelPower,
+            final int aMeltingPoint, final int aBlastFurnaceTemp, final boolean aBlastFurnaceRequired,
+            final boolean aTransparent, final int aOreValue, final int aDensityMultiplier, final int aDensityDivider,
+            final Dyes aColor, final Element aElement, final List<TC_AspectStack> aAspects) {
             this(
-                    aMetaItemSubID,
-                    aIconSet,
-                    aToolSpeed,
-                    aToolDurability,
-                    aToolQuality,
-                    aTypes,
-                    aR,
-                    aG,
-                    aB,
-                    aA,
-                    aLocalName,
-                    aFuelType,
-                    aFuelPower,
-                    aMeltingPoint,
-                    aBlastFurnaceTemp,
-                    aBlastFurnaceRequired,
-                    aTransparent,
-                    aOreValue,
-                    aDensityMultiplier,
-                    aDensityDivider,
-                    aColor);
+                aMetaItemSubID,
+                aIconSet,
+                aToolSpeed,
+                aToolDurability,
+                aToolQuality,
+                aTypes,
+                aR,
+                aG,
+                aB,
+                aA,
+                aLocalName,
+                aFuelType,
+                aFuelPower,
+                aMeltingPoint,
+                aBlastFurnaceTemp,
+                aBlastFurnaceRequired,
+                aTransparent,
+                aOreValue,
+                aDensityMultiplier,
+                aDensityDivider,
+                aColor);
             this.mElement = aElement;
             // mElement.mLinkedMaterials.add(this);
             if (aElement == Element._NULL) {
@@ -831,68 +860,67 @@ public enum GregtechOrePrefixes {
         }
 
         private GT_Materials(final int aMetaItemSubID, final TextureSet aIconSet, final float aToolSpeed,
-                final int aToolDurability, final int aToolQuality, final int aTypes, final int aR, final int aG,
-                final int aB, final int aA, final String aLocalName, final int aFuelType, final int aFuelPower,
-                final int aMeltingPoint, final int aBlastFurnaceTemp, final boolean aBlastFurnaceRequired,
-                final boolean aTransparent, final int aOreValue, final int aDensityMultiplier,
-                final int aDensityDivider, final Dyes aColor, final int aExtraData,
-                final List<MaterialStack> aMaterialList) {
+            final int aToolDurability, final int aToolQuality, final int aTypes, final int aR, final int aG,
+            final int aB, final int aA, final String aLocalName, final int aFuelType, final int aFuelPower,
+            final int aMeltingPoint, final int aBlastFurnaceTemp, final boolean aBlastFurnaceRequired,
+            final boolean aTransparent, final int aOreValue, final int aDensityMultiplier, final int aDensityDivider,
+            final Dyes aColor, final int aExtraData, final List<MaterialStack> aMaterialList) {
             this(
-                    aMetaItemSubID,
-                    aIconSet,
-                    aToolSpeed,
-                    aToolDurability,
-                    aToolQuality,
-                    aTypes,
-                    aR,
-                    aG,
-                    aB,
-                    aA,
-                    aLocalName,
-                    aFuelType,
-                    aFuelPower,
-                    aMeltingPoint,
-                    aBlastFurnaceTemp,
-                    aBlastFurnaceRequired,
-                    aTransparent,
-                    aOreValue,
-                    aDensityMultiplier,
-                    aDensityDivider,
-                    aColor,
-                    aExtraData,
-                    aMaterialList,
-                    null);
+                aMetaItemSubID,
+                aIconSet,
+                aToolSpeed,
+                aToolDurability,
+                aToolQuality,
+                aTypes,
+                aR,
+                aG,
+                aB,
+                aA,
+                aLocalName,
+                aFuelType,
+                aFuelPower,
+                aMeltingPoint,
+                aBlastFurnaceTemp,
+                aBlastFurnaceRequired,
+                aTransparent,
+                aOreValue,
+                aDensityMultiplier,
+                aDensityDivider,
+                aColor,
+                aExtraData,
+                aMaterialList,
+                null);
         }
 
         private GT_Materials(final int aMetaItemSubID, final TextureSet aIconSet, final float aToolSpeed,
-                final int aToolDurability, final int aToolQuality, final int aTypes, final int aR, final int aG,
-                final int aB, final int aA, final String aLocalName, final int aFuelType, final int aFuelPower,
-                final int aMeltingPoint, final int aBlastFurnaceTemp, final boolean aBlastFurnaceRequired,
-                final boolean aTransparent, final int aOreValue, final int aDensityMultiplier,
-                final int aDensityDivider, final Dyes aColor, final int aExtraData,
-                final List<MaterialStack> aMaterialList, final List<TC_AspectStack> aAspects) {
+            final int aToolDurability, final int aToolQuality, final int aTypes, final int aR, final int aG,
+            final int aB, final int aA, final String aLocalName, final int aFuelType, final int aFuelPower,
+            final int aMeltingPoint, final int aBlastFurnaceTemp, final boolean aBlastFurnaceRequired,
+            final boolean aTransparent, final int aOreValue, final int aDensityMultiplier, final int aDensityDivider,
+            final Dyes aColor, final int aExtraData, final List<MaterialStack> aMaterialList,
+            final List<TC_AspectStack> aAspects) {
             this(
-                    aMetaItemSubID,
-                    aIconSet,
-                    aToolSpeed,
-                    aToolDurability,
-                    aToolQuality,
-                    aTypes,
-                    aR,
-                    aG,
-                    aB,
-                    aA,
-                    aLocalName,
-                    aFuelType,
-                    aFuelPower,
-                    aMeltingPoint,
-                    aBlastFurnaceTemp,
-                    aBlastFurnaceRequired,
-                    aTransparent,
-                    aOreValue,
-                    aDensityMultiplier,
-                    aDensityDivider,
-                    aColor);
+                aMetaItemSubID,
+                aIconSet,
+                aToolSpeed,
+                aToolDurability,
+                aToolQuality,
+                aTypes,
+                aR,
+                aG,
+                aB,
+                aA,
+                aLocalName,
+                aFuelType,
+                aFuelPower,
+                aMeltingPoint,
+                aBlastFurnaceTemp,
+                aBlastFurnaceRequired,
+                aTransparent,
+                aOreValue,
+                aDensityMultiplier,
+                aDensityDivider,
+                aColor);
             this.mExtraData = aExtraData;
             this.mMaterialList.addAll(aMaterialList);
             this.mChemicalFormula = "";
@@ -948,17 +976,18 @@ public enum GregtechOrePrefixes {
          */
         public static void init(final GT_Config aConfiguration) {
             for (final GT_Materials tMaterial : VALUES) {
-                final String tString = tMaterial.toString().toLowerCase();
+                final String tString = tMaterial.toString()
+                    .toLowerCase();
                 tMaterial.mHeatDamage = (float) aConfiguration
-                        .get(ConfigCategories.Materials.heatdamage, tString, tMaterial.mHeatDamage);
+                    .get(ConfigCategories.Materials.heatdamage, tString, tMaterial.mHeatDamage);
                 if (tMaterial.mBlastFurnaceRequired) {
                     tMaterial.mBlastFurnaceRequired = aConfiguration
-                            .get(ConfigCategories.Materials.blastfurnacerequirements, tString, true);
+                        .get(ConfigCategories.Materials.blastfurnacerequirements, tString, true);
                 }
                 if (tMaterial.mBlastFurnaceRequired && aConfiguration.get(
-                        ConfigCategories.Materials.blastinductionsmelter,
-                        tString,
-                        tMaterial.mBlastFurnaceTemp < 1500)) {}
+                    ConfigCategories.Materials.blastinductionsmelter,
+                    tString,
+                    tMaterial.mBlastFurnaceTemp < 1500)) {}
             }
         }
 
@@ -1041,10 +1070,10 @@ public enum GregtechOrePrefixes {
             }
             if ((aMultiplier >= (M * 2)) && !this.mMaterialList.isEmpty()) {
                 return (((this.mElement != null)
-                        || ((this.mMaterialList.size() < 2) && (this.mMaterialList.get(0).mAmount == 1)))
-                                ? this.mChemicalFormula
-                                : "(" + this.mChemicalFormula + ")")
-                        + aMultiplier;
+                    || ((this.mMaterialList.size() < 2) && (this.mMaterialList.get(0).mAmount == 1)))
+                        ? this.mChemicalFormula
+                        : "(" + this.mChemicalFormula + ")")
+                    + aMultiplier;
             }
             return this.mChemicalFormula;
         }

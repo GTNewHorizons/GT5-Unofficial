@@ -34,7 +34,7 @@ import ic2.api.item.IElectricItemManager;
 import ic2.api.item.ISpecialElectricItem;
 
 public abstract class Gregtech_MetaItem_Base extends Gregtech_Generic_Item
-        implements ISpecialElectricItem, IElectricItemManager, IFluidContainerItem {
+    implements ISpecialElectricItem, IElectricItemManager, IFluidContainerItem {
 
     /* ---------- CONSTRUCTOR AND MEMBER VARIABLES ---------- */
     private final HashMap<Short, ArrayList<Interface_ItemBehaviour<Gregtech_MetaItem_Base>>> mItemBehaviors = new HashMap<>();
@@ -61,7 +61,7 @@ public abstract class Gregtech_MetaItem_Base extends Gregtech_Generic_Item
      * @return the Item itself for convenience in constructing.
      */
     public final Gregtech_MetaItem_Base addItemBehavior(final int aMetaValue,
-            final Interface_ItemBehaviour<Gregtech_MetaItem_Base> aBehavior) {
+        final Interface_ItemBehaviour<Gregtech_MetaItem_Base> aBehavior) {
         if ((aMetaValue < 0) || (aMetaValue >= 32766) || (aBehavior == null)) {
             return this;
         }
@@ -81,7 +81,7 @@ public abstract class Gregtech_MetaItem_Base extends Gregtech_Generic_Item
     @Override
     public boolean hasProjectile(final SubTag aProjectileType, final ItemStack aStack) {
         final ArrayList<Interface_ItemBehaviour<Gregtech_MetaItem_Base>> tList = this.mItemBehaviors
-                .get((short) this.getDamage(aStack));
+            .get((short) this.getDamage(aStack));
         if (tList != null) {
             for (final Interface_ItemBehaviour<Gregtech_MetaItem_Base> tBehavior : tList) {
                 if (tBehavior.hasProjectile(this, aProjectileType, aStack)) {
@@ -94,9 +94,9 @@ public abstract class Gregtech_MetaItem_Base extends Gregtech_Generic_Item
 
     @Override
     public EntityArrow getProjectile(final SubTag aProjectileType, final ItemStack aStack, final World aWorld,
-            final double aX, final double aY, final double aZ) {
+        final double aX, final double aY, final double aZ) {
         final ArrayList<Interface_ItemBehaviour<Gregtech_MetaItem_Base>> tList = this.mItemBehaviors
-                .get((short) this.getDamage(aStack));
+            .get((short) this.getDamage(aStack));
         if (tList != null) {
             for (final Interface_ItemBehaviour<Gregtech_MetaItem_Base> tBehavior : tList) {
                 final EntityArrow rArrow = tBehavior.getProjectile(this, aProjectileType, aStack, aWorld, aX, aY, aZ);
@@ -110,13 +110,13 @@ public abstract class Gregtech_MetaItem_Base extends Gregtech_Generic_Item
 
     @Override
     public EntityArrow getProjectile(final SubTag aProjectileType, final ItemStack aStack, final World aWorld,
-            final EntityLivingBase aEntity, final float aSpeed) {
+        final EntityLivingBase aEntity, final float aSpeed) {
         final ArrayList<Interface_ItemBehaviour<Gregtech_MetaItem_Base>> tList = this.mItemBehaviors
-                .get((short) this.getDamage(aStack));
+            .get((short) this.getDamage(aStack));
         if (tList != null) {
             for (final Interface_ItemBehaviour<Gregtech_MetaItem_Base> tBehavior : tList) {
                 final EntityArrow rArrow = tBehavior
-                        .getProjectile(this, aProjectileType, aStack, aWorld, aEntity, aSpeed);
+                    .getProjectile(this, aProjectileType, aStack, aWorld, aEntity, aSpeed);
                 if (rArrow != null) {
                     return rArrow;
                 }
@@ -128,7 +128,7 @@ public abstract class Gregtech_MetaItem_Base extends Gregtech_Generic_Item
     @Override
     public ItemStack onDispense(final IBlockSource aSource, final ItemStack aStack) {
         final ArrayList<Interface_ItemBehaviour<Gregtech_MetaItem_Base>> tList = this.mItemBehaviors
-                .get((short) this.getDamage(aStack));
+            .get((short) this.getDamage(aStack));
         if (tList != null) {
             for (final Interface_ItemBehaviour<Gregtech_MetaItem_Base> tBehavior : tList) {
                 if (tBehavior.canDispense(this, aSource, aStack)) {
@@ -142,7 +142,7 @@ public abstract class Gregtech_MetaItem_Base extends Gregtech_Generic_Item
     @Override
     public boolean isItemStackUsable(final ItemStack aStack) {
         final ArrayList<Interface_ItemBehaviour<Gregtech_MetaItem_Base>> tList = this.mItemBehaviors
-                .get((short) this.getDamage(aStack));
+            .get((short) this.getDamage(aStack));
         if (tList != null) {
             for (final Interface_ItemBehaviour<Gregtech_MetaItem_Base> tBehavior : tList) {
                 if (!tBehavior.isItemStackUsable(this, aStack)) {
@@ -158,7 +158,7 @@ public abstract class Gregtech_MetaItem_Base extends Gregtech_Generic_Item
         this.use(aStack, 0, aPlayer);
         this.isItemStackUsable(aStack);
         final ArrayList<Interface_ItemBehaviour<Gregtech_MetaItem_Base>> tList = this.mItemBehaviors
-                .get((short) this.getDamage(aStack));
+            .get((short) this.getDamage(aStack));
         if (tList != null) {
             for (final Interface_ItemBehaviour<Gregtech_MetaItem_Base> tBehavior : tList) {
                 try {
@@ -184,11 +184,11 @@ public abstract class Gregtech_MetaItem_Base extends Gregtech_Generic_Item
 
     @Override
     public boolean onItemUse(final ItemStack aStack, final EntityPlayer aPlayer, final World aWorld, final int aX,
-            final int aY, final int aZ, final int ordinalSide, final float hitX, final float hitY, final float hitZ) {
+        final int aY, final int aZ, final int ordinalSide, final float hitX, final float hitY, final float hitZ) {
         this.use(aStack, 0, aPlayer);
         this.isItemStackUsable(aStack);
         final ArrayList<Interface_ItemBehaviour<Gregtech_MetaItem_Base>> tList = this.mItemBehaviors
-                .get((short) this.getDamage(aStack));
+            .get((short) this.getDamage(aStack));
         if (tList != null) {
             for (final Interface_ItemBehaviour<Gregtech_MetaItem_Base> tBehavior : tList) {
                 try {
@@ -214,16 +214,16 @@ public abstract class Gregtech_MetaItem_Base extends Gregtech_Generic_Item
 
     @Override
     public boolean onItemUseFirst(final ItemStack aStack, final EntityPlayer aPlayer, final World aWorld, final int aX,
-            final int aY, final int aZ, final int ordinalSide, final float hitX, final float hitY, final float hitZ) {
+        final int aY, final int aZ, final int ordinalSide, final float hitX, final float hitY, final float hitZ) {
         this.use(aStack, 0, aPlayer);
         this.isItemStackUsable(aStack);
         final ArrayList<Interface_ItemBehaviour<Gregtech_MetaItem_Base>> tList = this.mItemBehaviors
-                .get((short) this.getDamage(aStack));
+            .get((short) this.getDamage(aStack));
         if (tList != null) {
             for (final Interface_ItemBehaviour<Gregtech_MetaItem_Base> tBehavior : tList) {
                 try {
                     if (tBehavior
-                            .onItemUseFirst(this, aStack, aPlayer, aWorld, aX, aY, aZ, ordinalSide, hitX, hitY, hitZ)) {
+                        .onItemUseFirst(this, aStack, aPlayer, aWorld, aX, aY, aZ, ordinalSide, hitX, hitY, hitZ)) {
                         if (aStack.stackSize <= 0) {
                             aPlayer.destroyCurrentEquippedItem();
                         }
@@ -248,7 +248,7 @@ public abstract class Gregtech_MetaItem_Base extends Gregtech_Generic_Item
         this.use(aStack, 0, aPlayer);
         this.isItemStackUsable(aStack);
         final ArrayList<Interface_ItemBehaviour<Gregtech_MetaItem_Base>> tList = this.mItemBehaviors
-                .get((short) this.getDamage(aStack));
+            .get((short) this.getDamage(aStack));
         if (tList != null) {
             for (final Interface_ItemBehaviour<Gregtech_MetaItem_Base> tBehavior : tList) {
                 try {
@@ -265,9 +265,9 @@ public abstract class Gregtech_MetaItem_Base extends Gregtech_Generic_Item
 
     @Override
     public final void addInformation(final ItemStack aStack, final EntityPlayer aPlayer, List aList,
-            final boolean aF3_H) {
+        final boolean aF3_H) {
         final String tKey = this.getUnlocalizedName(aStack) + ".tooltip",
-                tString = GT_LanguageManager.getTranslation(tKey);
+            tString = GT_LanguageManager.getTranslation(tKey);
         if (GT_Utility.isStringValid(tString) && !tKey.equals(tString)) {
             aList.add(tString);
         }
@@ -276,28 +276,26 @@ public abstract class Gregtech_MetaItem_Base extends Gregtech_Generic_Item
         if (tStats != null) {
             if (tStats[3] > 0) {
                 aList.add(
-                        EnumChatFormatting.AQUA + "Contains "
-                                + GT_Utility.formatNumbers(tStats[3])
-                                + " EU   Tier: "
-                                + (tStats[2] >= 0 ? tStats[2] : 0)
-                                + EnumChatFormatting.GRAY);
+                    EnumChatFormatting.AQUA + "Contains "
+                        + GT_Utility.formatNumbers(tStats[3])
+                        + " EU   Tier: "
+                        + (tStats[2] >= 0 ? tStats[2] : 0)
+                        + EnumChatFormatting.GRAY);
             } else {
                 final long tCharge = this.getRealCharge(aStack);
                 if ((tStats[3] == -2) && (tCharge <= 0)) {
                     aList.add(
-                            EnumChatFormatting.AQUA + "Empty. You should recycle it properly."
-                                    + EnumChatFormatting.GRAY);
+                        EnumChatFormatting.AQUA + "Empty. You should recycle it properly." + EnumChatFormatting.GRAY);
                 } else {
                     aList.add(
-                            EnumChatFormatting.AQUA + ""
-                                    + GT_Utility.formatNumbers(tCharge)
-                                    + " / "
-                                    + GT_Utility.formatNumbers(Math.abs(tStats[0]))
-                                    + " EU - Voltage: "
-                                    + GT_Utility.formatNumbers(
-                                            V[(int) (tStats[2] >= 0 ? tStats[2] < V.length ? tStats[2] : V.length - 1
-                                                    : 1)])
-                                    + EnumChatFormatting.GRAY);
+                        EnumChatFormatting.AQUA + ""
+                            + GT_Utility.formatNumbers(tCharge)
+                            + " / "
+                            + GT_Utility.formatNumbers(Math.abs(tStats[0]))
+                            + " EU - Voltage: "
+                            + GT_Utility.formatNumbers(
+                                V[(int) (tStats[2] >= 0 ? tStats[2] < V.length ? tStats[2] : V.length - 1 : 1)])
+                            + EnumChatFormatting.GRAY);
                 }
             }
         }
@@ -306,19 +304,19 @@ public abstract class Gregtech_MetaItem_Base extends Gregtech_Generic_Item
         if ((tStats != null) && (tStats[0] > 0)) {
             final FluidStack tFluid = this.getFluidContent(aStack);
             aList.add(
-                    EnumChatFormatting.BLUE
-                            + ((tFluid == null ? "No Fluids Contained" : GT_Utility.getFluidName(tFluid, true)))
-                            + EnumChatFormatting.GRAY);
+                EnumChatFormatting.BLUE
+                    + ((tFluid == null ? "No Fluids Contained" : GT_Utility.getFluidName(tFluid, true)))
+                    + EnumChatFormatting.GRAY);
             aList.add(
-                    EnumChatFormatting.BLUE
-                            + (GT_Utility.formatNumbers(tFluid == null ? 0 : tFluid.amount) + "L / "
-                                    + GT_Utility.formatNumbers(tStats[0])
-                                    + "L")
-                            + EnumChatFormatting.GRAY);
+                EnumChatFormatting.BLUE
+                    + (GT_Utility.formatNumbers(tFluid == null ? 0 : tFluid.amount) + "L / "
+                        + GT_Utility.formatNumbers(tStats[0])
+                        + "L")
+                    + EnumChatFormatting.GRAY);
         }
 
         final ArrayList<Interface_ItemBehaviour<Gregtech_MetaItem_Base>> tList = this.mItemBehaviors
-                .get((short) this.getDamage(aStack));
+            .get((short) this.getDamage(aStack));
         if (tList != null) {
             for (final Interface_ItemBehaviour<Gregtech_MetaItem_Base> tBehavior : tList) {
                 aList = tBehavior.getAdditionalToolTips(this, aList, aStack);
@@ -330,9 +328,9 @@ public abstract class Gregtech_MetaItem_Base extends Gregtech_Generic_Item
 
     @Override
     public void onUpdate(final ItemStack aStack, final World aWorld, final Entity aPlayer, final int aTimer,
-            final boolean aIsInHand) {
+        final boolean aIsInHand) {
         final ArrayList<Interface_ItemBehaviour<Gregtech_MetaItem_Base>> tList = this.mItemBehaviors
-                .get((short) this.getDamage(aStack));
+            .get((short) this.getDamage(aStack));
         if (tList != null) {
             for (final Interface_ItemBehaviour<Gregtech_MetaItem_Base> tBehavior : tList) {
                 tBehavior.onUpdate(this, aStack, aWorld, aPlayer, aTimer, aIsInHand);
@@ -369,18 +367,18 @@ public abstract class Gregtech_MetaItem_Base extends Gregtech_Generic_Item
 
     @Override
     public final double charge(final ItemStack aStack, final double aCharge, final int aTier,
-            final boolean aIgnoreTransferLimit, final boolean aSimulate) {
+        final boolean aIgnoreTransferLimit, final boolean aSimulate) {
         final Long[] tStats = this.getElectricStats(aStack);
         if ((tStats == null) || (tStats[2] > aTier)
-                || !((tStats[3] == -1) || (tStats[3] == -3) || ((tStats[3] < 0) && (aCharge == Integer.MAX_VALUE)))
-                || (aStack.stackSize != 1)) {
+            || !((tStats[3] == -1) || (tStats[3] == -3) || ((tStats[3] < 0) && (aCharge == Integer.MAX_VALUE)))
+            || (aStack.stackSize != 1)) {
             return 0;
         }
-        final long tChargeBefore = this.getRealCharge(aStack), tNewCharge = aCharge == Integer.MAX_VALUE
-                ? Long.MAX_VALUE
+        final long tChargeBefore = this.getRealCharge(aStack),
+            tNewCharge = aCharge == Integer.MAX_VALUE ? Long.MAX_VALUE
                 : Math.min(
-                        Math.abs(tStats[0]),
-                        tChargeBefore + (aIgnoreTransferLimit ? (long) aCharge : Math.min(tStats[1], (long) aCharge)));
+                    Math.abs(tStats[0]),
+                    tChargeBefore + (aIgnoreTransferLimit ? (long) aCharge : Math.min(tStats[1], (long) aCharge)));
         if (!aSimulate) {
             this.setCharge(aStack, tNewCharge);
         }
@@ -389,7 +387,7 @@ public abstract class Gregtech_MetaItem_Base extends Gregtech_Generic_Item
 
     @Override
     public final double discharge(final ItemStack aStack, final double aCharge, final int aTier,
-            final boolean aIgnoreTransferLimit, final boolean aBatteryAlike, final boolean aSimulate) {
+        final boolean aIgnoreTransferLimit, final boolean aBatteryAlike, final boolean aSimulate) {
         final Long[] tStats = this.getElectricStats(aStack);
         if ((tStats == null) || (tStats[2] > aTier)) {
             return 0;
@@ -407,7 +405,7 @@ public abstract class Gregtech_MetaItem_Base extends Gregtech_Generic_Item
             return tStats[3];
         }
         final long tChargeBefore = this.getRealCharge(aStack), tNewCharge = Math
-                .max(0, tChargeBefore - (aIgnoreTransferLimit ? (long) aCharge : Math.min(tStats[1], (long) aCharge)));
+            .max(0, tChargeBefore - (aIgnoreTransferLimit ? (long) aCharge : Math.min(tStats[1], (long) aCharge)));
         if (!aSimulate) {
             this.setCharge(aStack, tNewCharge);
         }
@@ -452,12 +450,12 @@ public abstract class Gregtech_MetaItem_Base extends Gregtech_Generic_Item
                 final IElectricItem tArmorItem = (IElectricItem) tArmor.getItem();
                 if (tArmorItem.canProvideEnergy(tArmor) && (tArmorItem.getTier(tArmor) >= this.getTier(aStack))) {
                     final double tCharge = ElectricItem.manager.discharge(
-                            tArmor,
-                            this.charge(aStack, Integer.MAX_VALUE - 1, Integer.MAX_VALUE, true, true),
-                            Integer.MAX_VALUE,
-                            true,
-                            true,
-                            false);
+                        tArmor,
+                        this.charge(aStack, Integer.MAX_VALUE - 1, Integer.MAX_VALUE, true, true),
+                        Integer.MAX_VALUE,
+                        true,
+                        true,
+                        false);
                     if (tCharge > 0) {
                         this.charge(aStack, tCharge, Integer.MAX_VALUE, true, false);
                         if (aPlayer instanceof EntityPlayer) {
@@ -544,15 +542,17 @@ public abstract class Gregtech_MetaItem_Base extends Gregtech_Generic_Item
 
         final Long[] tStats = this.getFluidContainerStats(aStack);
         if ((tStats == null) || (tStats[0] <= 0)
-                || (aFluid == null)
-                || (aFluid.getFluid().getID() <= 0)
-                || (aFluid.amount <= 0)) {
+            || (aFluid == null)
+            || (aFluid.getFluid()
+                .getID() <= 0)
+            || (aFluid.amount <= 0)) {
             return 0;
         }
 
         FluidStack tFluid = this.getFluidContent(aStack);
 
-        if ((tFluid == null) || (tFluid.getFluid().getID() <= 0)) {
+        if ((tFluid == null) || (tFluid.getFluid()
+            .getID() <= 0)) {
             if (aFluid.amount <= tStats[0]) {
                 if (doFill) {
                     this.setFluidContent(aStack, aFluid);
@@ -716,23 +716,30 @@ public abstract class Gregtech_MetaItem_Base extends Gregtech_Generic_Item
 
     @Override
     public int getColorFromItemStack(final ItemStack stack, int HEX_OxFFFFFF) {
-        if (stack.getDisplayName().contains("LuV")) {
+        if (stack.getDisplayName()
+            .contains("LuV")) {
             HEX_OxFFFFFF = 0xffffcc;
-        } else if (stack.getDisplayName().contains("ZPM")) {
-            HEX_OxFFFFFF = 0xace600;
-        } else if (stack.getDisplayName().contains("UV")) {
-            HEX_OxFFFFFF = 0xffff00;
-        } else if (stack.getDisplayName().contains("MAX")) {
-            HEX_OxFFFFFF = 0xff0000;
-        } else if (stack.getDisplayName().contains("Sodium")) {
-            HEX_OxFFFFFF = Utils.rgbtoHexValue(0, 0, 150);
-        } else if (stack.getDisplayName().contains("Cadmium")) {
-            HEX_OxFFFFFF = Utils.rgbtoHexValue(50, 50, 60);
-        } else if (stack.getDisplayName().contains("Lithium")) {
-            HEX_OxFFFFFF = Utils.rgbtoHexValue(225, 220, 255);
-        } else {
-            HEX_OxFFFFFF = 0xffffff;
-        }
+        } else if (stack.getDisplayName()
+            .contains("ZPM")) {
+                HEX_OxFFFFFF = 0xace600;
+            } else if (stack.getDisplayName()
+                .contains("UV")) {
+                    HEX_OxFFFFFF = 0xffff00;
+                } else if (stack.getDisplayName()
+                    .contains("MAX")) {
+                        HEX_OxFFFFFF = 0xff0000;
+                    } else if (stack.getDisplayName()
+                        .contains("Sodium")) {
+                            HEX_OxFFFFFF = Utils.rgbtoHexValue(0, 0, 150);
+                        } else if (stack.getDisplayName()
+                            .contains("Cadmium")) {
+                                HEX_OxFFFFFF = Utils.rgbtoHexValue(50, 50, 60);
+                            } else if (stack.getDisplayName()
+                                .contains("Lithium")) {
+                                    HEX_OxFFFFFF = Utils.rgbtoHexValue(225, 220, 255);
+                                } else {
+                                    HEX_OxFFFFFF = 0xffffff;
+                                }
         return HEX_OxFFFFFF;
     }
 }

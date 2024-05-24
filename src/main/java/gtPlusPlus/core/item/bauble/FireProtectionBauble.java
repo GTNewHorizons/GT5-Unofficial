@@ -26,7 +26,7 @@ public class FireProtectionBauble extends BaseBauble {
 
     static {
         isImmuneToFire = ReflectionUtils
-                .getField(Entity.class, !CORE_Preloader.DEV_ENVIRONMENT ? "func_70045_F" : "isImmuneToFire");
+            .getField(Entity.class, !CORE_Preloader.DEV_ENVIRONMENT ? "func_70045_F" : "isImmuneToFire");
     }
 
     public static boolean fireImmune(Entity aEntity) {
@@ -56,7 +56,7 @@ public class FireProtectionBauble extends BaseBauble {
 
     @Override
     public void onUpdate(final ItemStack itemStack, final World worldObj, final Entity player, final int p_77663_4_,
-            final boolean p_77663_5_) {
+        final boolean p_77663_5_) {
         super.onUpdate(itemStack, worldObj, player, p_77663_4_, p_77663_5_);
     }
 

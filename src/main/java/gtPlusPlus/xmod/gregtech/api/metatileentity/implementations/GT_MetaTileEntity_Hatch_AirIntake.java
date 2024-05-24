@@ -13,12 +13,12 @@ import gtPlusPlus.core.util.minecraft.FluidUtils;
 public class GT_MetaTileEntity_Hatch_AirIntake extends GT_MetaTileEntity_Hatch_FluidGenerator {
 
     public GT_MetaTileEntity_Hatch_AirIntake(final int aID, final String aName, final String aNameRegional,
-            final int aTier) {
+        final int aTier) {
         super(aID, aName, aNameRegional, aTier);
     }
 
     public GT_MetaTileEntity_Hatch_AirIntake(final String aName, final int aTier, final String[] aDescription,
-            final ITexture[][][] aTextures) {
+        final ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
@@ -38,7 +38,8 @@ public class GT_MetaTileEntity_Hatch_AirIntake extends GT_MetaTileEntity_Hatch_F
 
     @Override
     public Fluid getFluidToGenerate() {
-        return FluidUtils.getAir(1).getFluid();
+        return FluidUtils.getAir(1)
+            .getFluid();
     }
 
     @Override
@@ -58,12 +59,16 @@ public class GT_MetaTileEntity_Hatch_AirIntake extends GT_MetaTileEntity_Hatch_F
 
     @Override
     public boolean doesHatchMeetConditionsToGenerate() {
-        return this.getBaseMetaTileEntity().getAirAtSide(this.getBaseMetaTileEntity().getFrontFacing());
+        return this.getBaseMetaTileEntity()
+            .getAirAtSide(
+                this.getBaseMetaTileEntity()
+                    .getFrontFacing());
     }
 
     @Override
     public void generateParticles(World aWorld, String name) {
-        if (this.getBaseMetaTileEntity().isServerSide()) {
+        if (this.getBaseMetaTileEntity()
+            .isServerSide()) {
             return;
         }
         final float ran1 = GT_MetaTileEntity_Hatch_AirIntake.floatGen.nextFloat();
@@ -96,28 +101,28 @@ public class GT_MetaTileEntity_Hatch_AirIntake extends GT_MetaTileEntity_Hatch_F
         }
 
         aWorld.spawnParticle(
-                name,
-                (double) (xPos + ran1 * 0.5f),
-                (double) (yPos + GT_MetaTileEntity_Hatch_AirIntake.floatGen.nextFloat() * 0.5f),
-                (double) (zPos + GT_MetaTileEntity_Hatch_AirIntake.floatGen.nextFloat() * 0.5f),
-                (double) xSpd,
-                (double) -ySpd,
-                (double) zSpd);
+            name,
+            (double) (xPos + ran1 * 0.5f),
+            (double) (yPos + GT_MetaTileEntity_Hatch_AirIntake.floatGen.nextFloat() * 0.5f),
+            (double) (zPos + GT_MetaTileEntity_Hatch_AirIntake.floatGen.nextFloat() * 0.5f),
+            (double) xSpd,
+            (double) -ySpd,
+            (double) zSpd);
         aWorld.spawnParticle(
-                name,
-                (double) (xPos + ran2 * 0.5f),
-                (double) (yPos + GT_MetaTileEntity_Hatch_AirIntake.floatGen.nextFloat() * 0.5f),
-                (double) (zPos + GT_MetaTileEntity_Hatch_AirIntake.floatGen.nextFloat() * 0.5f),
-                (double) xSpd,
-                (double) -ySpd,
-                (double) zSpd);
+            name,
+            (double) (xPos + ran2 * 0.5f),
+            (double) (yPos + GT_MetaTileEntity_Hatch_AirIntake.floatGen.nextFloat() * 0.5f),
+            (double) (zPos + GT_MetaTileEntity_Hatch_AirIntake.floatGen.nextFloat() * 0.5f),
+            (double) xSpd,
+            (double) -ySpd,
+            (double) zSpd);
         aWorld.spawnParticle(
-                name,
-                (double) (xPos + ran3 * 0.5f),
-                (double) (yPos + GT_MetaTileEntity_Hatch_AirIntake.floatGen.nextFloat() * 0.5f),
-                (double) (zPos + GT_MetaTileEntity_Hatch_AirIntake.floatGen.nextFloat() * 0.5f),
-                (double) xSpd,
-                (double) -ySpd,
-                (double) zSpd);
+            name,
+            (double) (xPos + ran3 * 0.5f),
+            (double) (yPos + GT_MetaTileEntity_Hatch_AirIntake.floatGen.nextFloat() * 0.5f),
+            (double) (zPos + GT_MetaTileEntity_Hatch_AirIntake.floatGen.nextFloat() * 0.5f),
+            (double) xSpd,
+            (double) -ySpd,
+            (double) zSpd);
     }
 }

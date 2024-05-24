@@ -105,7 +105,9 @@ public class CommonProxy {
         if (!CORE.burnables.isEmpty()) {
             BurnableFuelHandler fuelHandler = new BurnableFuelHandler();
             GameRegistry.registerFuelHandler(fuelHandler);
-            Logger.INFO("[Fuel Handler] Registering " + fuelHandler.getClass().getName());
+            Logger.INFO(
+                "[Fuel Handler] Registering " + fuelHandler.getClass()
+                    .getName());
         }
 
         // Compat Handling
@@ -157,15 +159,15 @@ public class CommonProxy {
         // Blazes
         if (ItemUtils.doesOreDictHaveEntryFor("dustPyrotheum")) {
             EntityUtils.registerDropsForMob(
-                    EntityBlaze.class,
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustPyrotheum", 1),
-                    1,
-                    10);
+                EntityBlaze.class,
+                ItemUtils.getItemStackOfAmountFromOreDict("dustPyrotheum", 1),
+                1,
+                10);
             EntityUtils.registerDropsForMob(
-                    EntityBlaze.class,
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustPyrotheum", 1),
-                    1,
-                    10);
+                EntityBlaze.class,
+                ItemUtils.getItemStackOfAmountFromOreDict("dustPyrotheum", 1),
+                1,
+                10);
         }
 
         // GalaxySpace Support
@@ -176,11 +178,8 @@ public class CommonProxy {
             aTinyBlizz = ItemUtils.getItemStackOfAmountFromOreDict("dustTinyBlizz", 1);
             aSmallCryo = ItemUtils.getItemStackOfAmountFromOreDict("dustSmallCryotheum", 1);
             aTinyCryo = ItemUtils.getItemStackOfAmountFromOreDict("dustTinyCryotheum", 1);
-            EntityUtils.registerDropsForMob(
-                    aColdBlaze,
-                    ItemUtils.getItemStackOfAmountFromOreDict("stickBlizz", 1),
-                    2,
-                    500);
+            EntityUtils
+                .registerDropsForMob(aColdBlaze, ItemUtils.getItemStackOfAmountFromOreDict("stickBlizz", 1), 2, 500);
             if (aSmallBlizz != null) {
                 EntityUtils.registerDropsForMob(aColdBlaze, aSmallBlizz, 2, 750);
             }

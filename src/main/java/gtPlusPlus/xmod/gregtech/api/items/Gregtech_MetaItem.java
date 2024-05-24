@@ -117,8 +117,8 @@ public abstract class Gregtech_MetaItem extends Gregtech_MetaItem_Base {
 
                     if (tRandomData instanceof Interface_ItemBehaviour) {
                         this.addItemBehavior(
-                                this.mOffset + aID,
-                                (Interface_ItemBehaviour<Gregtech_MetaItem_Base>) tRandomData);
+                            this.mOffset + aID,
+                            (Interface_ItemBehaviour<Gregtech_MetaItem_Base>) tRandomData);
                         tUseOreDict = false;
                     }
                     if (tRandomData instanceof IItemContainer) {
@@ -185,7 +185,7 @@ public abstract class Gregtech_MetaItem extends Gregtech_MetaItem_Base {
      * @return the Item itself for convenience in constructing.
      */
     public final Gregtech_MetaItem setElectricStats(final int aMetaValue, final long aMaxCharge,
-            final long aTransferLimit, final long aTier, final long aSpecialData, final boolean aUseAnimations) {
+        final long aTransferLimit, final long aTier, final long aSpecialData, final boolean aUseAnimations) {
         if ((aMetaValue < 0) || (aMetaValue >= (this.mOffset + this.mEnabledItems.length()))) {
             return this;
         }
@@ -193,12 +193,12 @@ public abstract class Gregtech_MetaItem extends Gregtech_MetaItem_Base {
             this.mElectricStats.remove((short) aMetaValue);
         } else {
             this.mElectricStats.put(
-                    (short) aMetaValue,
-                    new Long[] { aMaxCharge, Math.max(0, aTransferLimit), Math.max(-1, aTier), aSpecialData });
+                (short) aMetaValue,
+                new Long[] { aMaxCharge, Math.max(0, aTransferLimit), Math.max(-1, aTier), aSpecialData });
             if ((aMetaValue >= this.mOffset) && aUseAnimations) {
                 this.mIconList[aMetaValue - this.mOffset] = Arrays.copyOf(
-                        this.mIconList[aMetaValue - this.mOffset],
-                        Math.max(9, this.mIconList[aMetaValue - this.mOffset].length));
+                    this.mIconList[aMetaValue - this.mOffset],
+                    Math.max(9, this.mIconList[aMetaValue - this.mOffset].length));
             }
         }
         return this;
@@ -216,7 +216,7 @@ public abstract class Gregtech_MetaItem extends Gregtech_MetaItem_Base {
      * @return the Item itself for convenience in constructing.
      */
     public final Gregtech_MetaItem setFluidContainerStats(final int aMetaValue, final long aCapacity,
-            final long aStacksize) {
+        final long aStacksize) {
         if ((aMetaValue < 0) || (aMetaValue >= (this.mOffset + this.mEnabledItems.length()))) {
             return this;
         }
@@ -302,10 +302,10 @@ public abstract class Gregtech_MetaItem extends Gregtech_MetaItem_Base {
             if (this.mEnabledItems.get(i)) {
                 for (byte k = 1; k < this.mIconList[i].length; k++) {
                     this.mIconList[i][k] = aIconRegister
-                            .registerIcon(GTPlusPlus.ID + ":" + this.getUnlocalizedName() + "/" + i + "/" + k);
+                        .registerIcon(GTPlusPlus.ID + ":" + this.getUnlocalizedName() + "/" + i + "/" + k);
                 }
                 this.mIconList[i][0] = aIconRegister
-                        .registerIcon(GTPlusPlus.ID + ":" + this.getUnlocalizedName() + "/" + i);
+                    .registerIcon(GTPlusPlus.ID + ":" + this.getUnlocalizedName() + "/" + i);
             }
         }
     }
@@ -337,17 +337,21 @@ public abstract class Gregtech_MetaItem extends Gregtech_MetaItem_Base {
 
     @Override
     public int getColorFromItemStack(final ItemStack stack, int HEX_OxFFFFFF) {
-        if (stack.getDisplayName().contains("LuV")) {
+        if (stack.getDisplayName()
+            .contains("LuV")) {
             HEX_OxFFFFFF = 0xffffcc;
-        } else if (stack.getDisplayName().contains("ZPM")) {
-            HEX_OxFFFFFF = 0xace600;
-        } else if (stack.getDisplayName().contains("UV")) {
-            HEX_OxFFFFFF = 0xffff00;
-        } else if (stack.getDisplayName().contains("MAX")) {
-            HEX_OxFFFFFF = 0xff0000;
-        } else {
-            HEX_OxFFFFFF = 0xffffff;
-        }
+        } else if (stack.getDisplayName()
+            .contains("ZPM")) {
+                HEX_OxFFFFFF = 0xace600;
+            } else if (stack.getDisplayName()
+                .contains("UV")) {
+                    HEX_OxFFFFFF = 0xffff00;
+                } else if (stack.getDisplayName()
+                    .contains("MAX")) {
+                        HEX_OxFFFFFF = 0xff0000;
+                    } else {
+                        HEX_OxFFFFFF = 0xffffff;
+                    }
         return HEX_OxFFFFFF;
     }
 }

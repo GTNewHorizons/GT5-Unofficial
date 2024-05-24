@@ -84,12 +84,13 @@ public class BTF_FluidTank extends FluidTank {
 
     @Override
     public int fill(FluidStack aFluid, boolean doFill) {
-        if (aFluid != null && aFluid.getFluid().getID() > 0
-                && aFluid.amount > 0
-                && this.canTankBeFilled()
-                && this.isFluidInputAllowed(aFluid)) {
-            if (this.getFillableStack() != null && this.getFillableStack().getFluid().getID() > 0) {
-                if (!this.getFillableStack().isFluidEqual(aFluid)) {
+        if (aFluid != null && aFluid.getFluid()
+            .getID() > 0 && aFluid.amount > 0 && this.canTankBeFilled() && this.isFluidInputAllowed(aFluid)) {
+            if (this.getFillableStack() != null && this.getFillableStack()
+                .getFluid()
+                .getID() > 0) {
+                if (!this.getFillableStack()
+                    .isFluidEqual(aFluid)) {
                     return 0;
                 } else {
                     int space = this.getCapacity() - this.getFillableStack().amount;
@@ -144,7 +145,8 @@ public class BTF_FluidTank extends FluidTank {
                     arg9999.amount -= used;
                 }
 
-                FluidStack drained = this.getDrainableStack().copy();
+                FluidStack drained = this.getDrainableStack()
+                    .copy();
                 drained.amount = used;
                 if (this.getDrainableStack().amount <= 0 && this.isFluidChangingAllowed()) {
                     this.setDrainableStack((FluidStack) null);

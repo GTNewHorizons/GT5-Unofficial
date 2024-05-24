@@ -51,7 +51,7 @@ public class CasingTextureHandler {
     }
 
     public static IIcon handleCasingsGT(final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord,
-            final ForgeDirection side, final GregtechMetaCasingBlocks thisBlock) {
+        final ForgeDirection side, final GregtechMetaCasingBlocks thisBlock) {
         return gregtechX.handleCasingsGT(aWorld, xCoord, yCoord, zCoord, side, thisBlock);
     }
 }

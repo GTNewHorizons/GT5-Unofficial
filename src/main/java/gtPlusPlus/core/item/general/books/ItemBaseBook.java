@@ -58,7 +58,7 @@ public class ItemBaseBook extends ItemWritableBook {
             return NBTUtils.getString(tItem, "title");
         } else if (tItem.getItemDamage() > -1 && tItem.getItemDamage() <= mBookMap.size()) {
             return EnumChatFormatting.ITALIC + ""
-                    + addBookTitleLocalization(mBookMap.get(tItem.getItemDamage()).mTitle);
+                + addBookTitleLocalization(mBookMap.get(tItem.getItemDamage()).mTitle);
         }
         // NBTUtils.tryIterateNBTData(tItem);
         return "GT++ Storybook";
@@ -96,21 +96,22 @@ public class ItemBaseBook extends ItemWritableBook {
         // player.displayGUIBook(item);
         int i = item.getItemDamage();
         ItemStack bookstack = Utils.getWrittenBook(
-                null,
-                mBookMap.get(i).mMeta,
-                mBookMap.get(i).mMapping,
-                mBookMap.get(i).mTitle,
-                mBookMap.get(i).mAuthor,
-                mBookMap.get(i).mPages);
+            null,
+            mBookMap.get(i).mMeta,
+            mBookMap.get(i).mMapping,
+            mBookMap.get(i).mTitle,
+            mBookMap.get(i).mAuthor,
+            mBookMap.get(i).mPages);
 
         if (player.worldObj.isRemote) {
             try {
                 Class<?> clazz = ReflectionUtils.getClass("net.minecraft.client.gui.GuiScreenBook");
                 Constructor<?> ctor = clazz.getConstructor(EntityPlayer.class, ItemStack.class, boolean.class);
                 Object object = ctor.newInstance(new Object[] { player, bookstack, false });
-                Minecraft.getMinecraft().displayGuiScreen((GuiScreen) object);
+                Minecraft.getMinecraft()
+                    .displayGuiScreen((GuiScreen) object);
             } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                    | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+                | InvocationTargetException | NoSuchMethodException | SecurityException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }

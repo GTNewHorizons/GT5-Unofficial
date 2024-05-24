@@ -74,7 +74,8 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
         if (loot == null) {
             return;
         }
-        for (final ItemStack contents : this.getInventory().getInventory()) {
+        for (final ItemStack contents : this.getInventory()
+            .getInventory()) {
             if (GT_Utility.areStacksEqual(loot, contents)) {
                 if (contents.stackSize < contents.getMaxStackSize()) {
                     contents.stackSize++;
@@ -84,9 +85,11 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
             }
         }
         int checkingSlot = 0;
-        for (final ItemStack contents : this.getInventory().getInventory()) {
+        for (final ItemStack contents : this.getInventory()
+            .getInventory()) {
             if (contents == null) {
-                this.getInventory().setInventorySlotContents(checkingSlot, loot);
+                this.getInventory()
+                    .setInventorySlotContents(checkingSlot, loot);
                 this.markDirty();
                 return;
             }
@@ -150,7 +153,7 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
         }
 
         if ((waterBlocksToTickRate[this.surroundingWaterBlocks] != 0)
-                && this.tickCount > waterBlocksToTickRate[this.surroundingWaterBlocks]) {
+            && this.tickCount > waterBlocksToTickRate[this.surroundingWaterBlocks]) {
             int aExtraLootChance = MathUtils.randInt(1, 1000);
             if (aExtraLootChance >= 999) {
                 this.tryAddLoot();
@@ -187,37 +190,44 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 
     @Override
     public int getSizeInventory() {
-        return this.getInventory().getSizeInventory();
+        return this.getInventory()
+            .getSizeInventory();
     }
 
     @Override
     public ItemStack getStackInSlot(final int slot) {
-        return this.getInventory().getStackInSlot(slot);
+        return this.getInventory()
+            .getStackInSlot(slot);
     }
 
     @Override
     public ItemStack decrStackSize(final int slot, final int count) {
-        return this.getInventory().decrStackSize(slot, count);
+        return this.getInventory()
+            .decrStackSize(slot, count);
     }
 
     @Override
     public ItemStack getStackInSlotOnClosing(final int slot) {
-        return this.getInventory().getStackInSlotOnClosing(slot);
+        return this.getInventory()
+            .getStackInSlotOnClosing(slot);
     }
 
     @Override
     public void setInventorySlotContents(final int slot, final ItemStack stack) {
-        this.getInventory().setInventorySlotContents(slot, stack);
+        this.getInventory()
+            .setInventorySlotContents(slot, stack);
     }
 
     @Override
     public int getInventoryStackLimit() {
-        return this.getInventory().getInventoryStackLimit();
+        return this.getInventory()
+            .getInventoryStackLimit();
     }
 
     @Override
     public boolean isUseableByPlayer(final EntityPlayer entityplayer) {
-        return this.getInventory().isUseableByPlayer(entityplayer);
+        return this.getInventory()
+            .isUseableByPlayer(entityplayer);
     }
 
     @Override
@@ -225,7 +235,8 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
         this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, 1);
         this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType());
         this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord - 1, this.zCoord, this.getBlockType());
-        this.getInventory().openInventory();
+        this.getInventory()
+            .openInventory();
     }
 
     @Override
@@ -233,18 +244,21 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
         this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, 1);
         this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType());
         this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord - 1, this.zCoord, this.getBlockType());
-        this.getInventory().closeInventory();
+        this.getInventory()
+            .closeInventory();
     }
 
     @Override
     public boolean isItemValidForSlot(final int slot, final ItemStack itemstack) {
-        return this.getInventory().isItemValidForSlot(slot, itemstack);
+        return this.getInventory()
+            .isItemValidForSlot(slot, itemstack);
     }
 
     @Override
     public int[] getAccessibleSlotsFromSide(final int p_94128_1_) {
         final int[] accessibleSides = new int[this.getSizeInventory()];
-        for (int r = 0; r < this.getInventory().getSizeInventory(); r++) {
+        for (int r = 0; r < this.getInventory()
+            .getSizeInventory(); r++) {
             accessibleSides[r] = r;
         }
         return accessibleSides;
