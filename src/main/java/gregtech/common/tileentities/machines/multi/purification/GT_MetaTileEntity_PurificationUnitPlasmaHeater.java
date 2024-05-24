@@ -287,6 +287,7 @@ public class GT_MetaTileEntity_PurificationUnitPlasmaHeater
                     + EnumChatFormatting.GRAY
                     + " on recipe start.")
             .addInfo(
+                // TODO: Refer to heating cycles in another way to avoid confusion
                 "Each completed heating cycle boosts success chance by " + EnumChatFormatting.RED
                     + SUCCESS_PER_CYCLE
                     + "%.")
@@ -331,6 +332,44 @@ public class GT_MetaTileEntity_PurificationUnitPlasmaHeater
                     + EnumChatFormatting.GRAY
                     + " per liter of coolant consumed.")
             .addInfo(AuthorNotAPenguin)
+            .beginStructureBlock(23, 15, 15, false)
+            .addCasingInfoExactlyColored(
+                "Water Plant Concrete Casing",
+                EnumChatFormatting.GRAY,
+                1091,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "Plasma Heater Casing",
+                EnumChatFormatting.GRAY,
+                122,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "Any Tinted Industrial Glass",
+                EnumChatFormatting.GRAY,
+                64,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "Superconductor Base ZPM Frame Box",
+                EnumChatFormatting.GRAY,
+                40,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored("Any Neonite", EnumChatFormatting.GRAY, 8, EnumChatFormatting.GOLD, false)
+            .addCasingInfoExactlyColored(
+                "Superconducting Coil Block",
+                EnumChatFormatting.GRAY,
+                8,
+                EnumChatFormatting.GOLD,
+                false)
+            .addController("Front center")
+            .addOtherStructurePart("Input Hatch (Water)", EnumChatFormatting.GOLD + "1+", 1)
+            .addOtherStructurePart("Output Hatch", EnumChatFormatting.GOLD + "1", 1)
+            .addOtherStructurePart("Input Hatch (Coolant)", EnumChatFormatting.GOLD + "1", 2)
+            .addOtherStructurePart("Input Hatch (Plasma)", EnumChatFormatting.GOLD + "1", 3)
+            .addStructureInfo("Use the StructureLib Hologram Projector to build the structure.")
             .toolTipFinisher("GregTech");
         return tt;
     }
