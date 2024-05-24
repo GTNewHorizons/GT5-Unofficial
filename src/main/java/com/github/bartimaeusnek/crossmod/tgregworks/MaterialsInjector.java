@@ -2,7 +2,6 @@ package com.github.bartimaeusnek.crossmod.tgregworks;
 
 import static gregtech.api.enums.Mods.TinkersGregworks;
 
-import gregtech.GT_Version;
 import net.minecraftforge.common.config.Property;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
@@ -10,6 +9,7 @@ import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import gregtech.GT_Version;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import vexatos.tgregworks.TGregworks;

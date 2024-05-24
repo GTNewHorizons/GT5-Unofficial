@@ -22,7 +22,6 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 import java.io.IOException;
 import java.util.Map;
 
-import gregtech.GT_Version;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
@@ -74,6 +73,7 @@ import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import gregtech.GT_Version;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Mods;
 import gregtech.api.recipe.RecipeMap;

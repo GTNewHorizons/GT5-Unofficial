@@ -26,7 +26,11 @@ public class CommandMath implements ICommand {
 
     @Override
     public int compareTo(final Object o) {
-        return 0;
+        if (o instanceof ICommand c) {
+            return this.getCommandName()
+                .compareTo(c.getCommandName());
+        }
+        return -1;
     }
 
     @Override
@@ -75,7 +79,7 @@ public class CommandMath implements ICommand {
     }
 
     @Override
-    public List<?> addTabCompletionOptions(final ICommandSender var1, final String[] var2) {
+    public List<String> addTabCompletionOptions(final ICommandSender var1, final String[] var2) {
         return null;
     }
 

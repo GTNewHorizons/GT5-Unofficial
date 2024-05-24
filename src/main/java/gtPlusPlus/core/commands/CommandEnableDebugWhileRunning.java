@@ -37,14 +37,9 @@ public class CommandEnableDebugWhileRunning implements ICommand {
 
     @Override
     public int compareTo(final Object o) {
-        if (o instanceof Comparable<?>) {
-            @SuppressWarnings("unchecked")
-            Comparable<ICommand> a = (Comparable<ICommand>) o;
-            if (a.equals(this)) {
-                return 0;
-            } else {
-                return -1;
-            }
+        if (o instanceof ICommand c) {
+            return this.getCommandName()
+                .compareTo(c.getCommandName());
         }
         return -1;
     }
@@ -224,7 +219,7 @@ public class CommandEnableDebugWhileRunning implements ICommand {
     }
 
     @Override
-    public List<?> addTabCompletionOptions(final ICommandSender var1, final String[] var2) {
+    public List<String> addTabCompletionOptions(final ICommandSender var1, final String[] var2) {
         ArrayList<String> aTabCompletes = new ArrayList<>();
         aTabCompletes.add("?");
         aTabCompletes.add("logging");

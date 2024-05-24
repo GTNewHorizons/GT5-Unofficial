@@ -15,7 +15,6 @@ package com.github.bartimaeusnek.bartworks.ASM;
 
 import static com.github.bartimaeusnek.bartworks.ASM.BWCoreTransformer.shouldTransform;
 import static gregtech.api.enums.Mods.ExtraUtilities;
-import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.RWG;
 import static gregtech.api.enums.Mods.Thaumcraft;
 
@@ -69,7 +68,6 @@ public class BWCore extends DummyModContainer {
         List<ArtifactVersion> ret = new ArrayList<>();
         ret.add(new DefaultArtifactVersion(ExtraUtilities.ID, true));
         ret.add(new DefaultArtifactVersion(Thaumcraft.ID, true));
-        ret.add(new DefaultArtifactVersion(GTPlusPlus.ID, true));
         ret.add(new DefaultArtifactVersion(RWG.ID, true));
         ret.add(new DefaultArtifactVersion(MainMod.MOD_ID, true));
         ret.add(new DefaultArtifactVersion(BartWorksCrossmod.MOD_ID, true));

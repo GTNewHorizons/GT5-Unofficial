@@ -1,5 +1,6 @@
 package gtPlusPlus.everglades.biome;
 
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.passive.EntitySquid;
@@ -75,7 +76,7 @@ public class Biome_Everglades {
         }
 
         @SuppressWarnings({ "unchecked", "unused" })
-        private boolean addToMonsterSpawnLists(Class<?> EntityClass, int a, int b, int c) {
+        private boolean addToMonsterSpawnLists(Class<? extends EntityLiving> EntityClass, int a, int b, int c) {
             this.spawnableCaveCreatureList.add(new SpawnListEntry(EntityClass, a, b, c));
             return true;
         }

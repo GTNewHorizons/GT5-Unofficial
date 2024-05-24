@@ -10,7 +10,6 @@ import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
-import gregtech.GT_Version;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
@@ -19,6 +18,7 @@ import net.minecraft.world.World;
 import com.mojang.authlib.GameProfile;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import gregtech.GT_Version;
 import gregtech.api.objects.XSTR;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;

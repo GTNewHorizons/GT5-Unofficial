@@ -19,7 +19,6 @@ import static gregtech.api.enums.Mods.TecTech;
 
 import java.io.StringReader;
 
-import gregtech.GT_Version;
 import net.minecraft.util.StringTranslate;
 
 import org.apache.commons.io.input.ReaderInputStream;
@@ -35,6 +34,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import gregtech.GT_Version;
 
 @Mod(
     modid = BartWorksCrossmod.MOD_ID,

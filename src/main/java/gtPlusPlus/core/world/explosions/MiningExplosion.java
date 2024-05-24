@@ -32,7 +32,7 @@ public class MiningExplosion extends Explosion {
     private final Random explosionRNG = new XSTR();
     private final World worldObj;
 
-    private final Map<Entity, Vec3> field_77288_k = new HashMap<>();
+    private final Map<EntityPlayer, Vec3> field_77288_k = new HashMap<>();
 
     public MiningExplosion(final World worldObj, final Entity entityObj, final double x, final double y, final double z,
         final float size) {
@@ -152,8 +152,8 @@ public class MiningExplosion extends Explosion {
                     entity.motionY += d6 * d8;
                     entity.motionZ += d7 * d8;
 
-                    if (entity instanceof EntityPlayer) {
-                        this.field_77288_k.put(entity, Vec3.createVectorHelper(d5 * d11, d6 * d11, d7 * d11));
+                    if (entity instanceof EntityPlayer player) {
+                        this.field_77288_k.put(player, Vec3.createVectorHelper(d5 * d11, d6 * d11, d7 * d11));
                     }
                 }
             }
@@ -425,7 +425,7 @@ public class MiningExplosion extends Explosion {
     }
 
     @Override
-    public Map<Entity, Vec3> func_77277_b() {
+    public Map<EntityPlayer, Vec3> func_77277_b() {
         return this.field_77288_k;
     }
 

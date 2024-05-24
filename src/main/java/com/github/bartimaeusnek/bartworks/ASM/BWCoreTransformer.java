@@ -52,7 +52,7 @@ public class BWCoreTransformer implements IClassTransformer {
         "com.rwtema.extrautils.worldgen.endoftime.WorldProviderEndOfTime",
         "com.rwtema.extrautils.worldgen.endoftime.ChunkProviderEndOfTime", "thaumcraft.common.tiles.TileWandPedestal",
         "net.minecraft.item.crafting.CraftingManager" };
-    static boolean obfs;
+    public static boolean obfs;
 
     public static boolean[] shouldTransform = new boolean[BWCoreTransformer.CLASSESBEINGTRANSFORMED.length];
 
