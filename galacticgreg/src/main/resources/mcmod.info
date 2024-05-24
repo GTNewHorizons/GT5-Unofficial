@@ -1,0 +1,16 @@
+[
+{
+  "modid": "${modId}",
+  "name": "${modName}",
+  "description": "Adds Gregtech Oregen to Galacticraft Dimensions",
+  "version": "${modVersion}",
+  "mcversion": "${minecraftVersion}",
+  "url": "http://forum.industrial-craft.net/index.php?page=Thread&threadID=11039",
+  "updateUrl": "",
+  "authorList": ["Blood Asp, Namikon"],
+  "credits": "To GregoriusT and micdoodle8 for making such good Mods",
+  "logoFile": "assets/galacticgreg/galacticgreg.png",
+  "screenshots": [],
+  "dependencies": []
+}
+]
