@@ -20,6 +20,9 @@
 
 package kubatech.loaders;
 
+import static gregtech.api.enums.Mods.Avaritia;
+import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.benderRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
@@ -67,8 +70,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
-
-import com.dreammaster.gthandler.CustomItemList;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GT_Values;
@@ -146,7 +147,8 @@ public class RecipeLoader {
                 bitsd,
                 new Object[] { "AZA", "BRB", "AZA", 'B', gregtech.api.enums.ItemList.Casing_CleanStainlessSteel, 'R',
                     GT_ModHandler.getModItem("EnderIO", "blockFarmStation", 1, new ItemStack(Items.diamond_hoe)), 'A',
-                    LoaderReference.GTNHCoreMod ? CustomItemList.AcceleratorIV.get(1)
+                    NewHorizonsCoreMod.isModLoaded()
+                        ? GT_ModHandler.getModItem(GregTech.ID, "gt.blockmachines", 1, 11104) // IV World Accelerator
                         : gregtech.api.enums.ItemList.Robot_Arm_IV,
                     'Z', OrePrefixes.circuit.get(Materials.Ultimate) });
         }
@@ -340,7 +342,7 @@ public class RecipeLoader {
             GameRegistry.addSmelting(WhiteTeaLeaf.get(1), WhiteTea.get(1), 10);
             GameRegistry.addSmelting(YellowTeaLeaf.get(1), YellowTea.get(1), 10);
         }
-        if (LoaderReference.Avaritia && LoaderReference.GTNHCoreMod) {
+        if (Avaritia.isModLoaded() && NewHorizonsCoreMod.isModLoaded()) {
             GT_Values.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, TeaAcceptorResearchNote.get(1))
                 .metadata(RESEARCH_TIME, 8 * MINUTES + 20 * SECONDS)
@@ -348,7 +350,7 @@ public class RecipeLoader {
                     LegendaryUltimateTea.get(0),
                     GameRegistry.findItemStack("Avaritia", "Neutronium_Compressor", 1),
                     gregtech.api.enums.ItemList.Quantum_Tank_EV.get(1),
-                    CustomItemList.FluidExtractorUHV.get(10),
+                    GT_ModHandler.getModItem(GregTech.ID, "gt.blockmachines", 10, 11193), // UHV Fluid extractor
                     new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4L },
                     new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4L },
                     new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4L },
