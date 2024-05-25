@@ -13,9 +13,7 @@
 
 package com.github.bartimaeusnek.crossmod;
 
-import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GalacticraftCore;
-import static gregtech.api.enums.Mods.TecTech;
 
 import java.io.StringReader;
 
@@ -79,20 +77,14 @@ public class BartWorksCrossmod {
         if (GalacticraftCore.isModLoaded()) {
             GalacticraftProxy.postInit(init);
         }
-        if (GTPlusPlus.isModLoaded()) {
-            RadioHatchCompat.run();
-        }
-        if (TecTech.isModLoaded()) {
-            TecTechResearchLoader.runResearches();
-        }
+        RadioHatchCompat.run();
+        TecTechResearchLoader.runResearches();
     }
 
     @Mod.EventHandler
     public void onFMLServerStart(FMLServerStartingEvent event) {
-        if (GTPlusPlus.isModLoaded()) {
-            for (Object s : RadioHatchCompat.TranslateSet) {
-                StringTranslate.inject(new ReaderInputStream(new StringReader((String) s)));
-            }
+        for (Object s : RadioHatchCompat.TranslateSet) {
+            StringTranslate.inject(new ReaderInputStream(new StringReader((String) s)));
         }
     }
 }

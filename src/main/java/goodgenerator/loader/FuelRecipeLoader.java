@@ -2,6 +2,7 @@ package goodgenerator.loader;
 
 import static goodgenerator.main.GG_Config_Loader.NaquadahFuelTime;
 import static goodgenerator.main.GG_Config_Loader.NaquadahFuelVoltage;
+import static gregtech.api.enums.Mods.GTPlusPlus;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -86,7 +87,7 @@ public class FuelRecipeLoader {
             new FluidStack[] { MyMaterial.heavyNaquadahFuel.getFluidOrGas(800),
                 MyMaterial.lightNaquadahFuel.getFluidOrGas(1000), },
             new ItemStack[] { MyMaterial.extremelyUnstableNaquadah.get(OrePrefixes.dust, 8),
-                GT_ModHandler.getModItem("miscutils", "itemDustChromaticGlass", 9),
+                GT_ModHandler.getModItem(GTPlusPlus.ID, "itemDustChromaticGlass", 9),
                 ItemRefer.High_Density_Uranium.get(2), ItemRefer.High_Density_Plutonium.get(1), },
             MyMaterial.naquadahBasedFuelMkIII.getFluidOrGas(200),
             2100000,

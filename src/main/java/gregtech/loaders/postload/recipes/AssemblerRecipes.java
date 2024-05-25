@@ -2,11 +2,9 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.AvaritiaAddons;
-import static gregtech.api.enums.Mods.BartWorks;
 import static gregtech.api.enums.Mods.BuildCraftFactory;
 import static gregtech.api.enums.Mods.ExtraUtilities;
 import static gregtech.api.enums.Mods.Forestry;
-import static gregtech.api.enums.Mods.GTNHLanthanides;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GalacticraftMars;
@@ -6447,9 +6445,6 @@ public class AssemblerRecipes implements Runnable {
     }
 
     public void withBartWorks() {
-        if (!BartWorks.isModLoaded()) {
-            return;
-        }
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -6632,9 +6627,6 @@ public class AssemblerRecipes implements Runnable {
     }
 
     public void withGTNHLanthAndGTPP() {
-        if (!(GTNHLanthanides.isModLoaded() && GTPlusPlus.isModLoaded())) {
-            return;
-        }
 
         GT_Values.RA.stdBuilder()
             .itemInputs(

@@ -24,7 +24,7 @@ public class RecipeLoader_TreeFarm {
 
         if (Mods.IndustrialCraft2.isModLoaded()) generateIC2Trees();
         if (Mods.TinkerConstruct.isModLoaded()) generateTinkersTrees();
-        if (Mods.GTPlusPlus.isModLoaded()) generateGTPPTrees();
+        generateGTPPTrees();
 
         if (Mods.TwilightForest.isModLoaded()) generateTwilightForestTrees();
         if (Mods.GalaxySpace.isModLoaded()) generateGalaxySpaceTrees();
