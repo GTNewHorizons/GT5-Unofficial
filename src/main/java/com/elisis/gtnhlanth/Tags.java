@@ -1,9 +1,11 @@
 package com.elisis.gtnhlanth;
 
+import gregtech.GT_Version;
+
 public class Tags {
 
-    public static final String MODID = "GRADLETOKEN_MODID";
-    public static final String MODNAME = "GRADLETOKEN_MODNAME";
-    public static final String VERSION = "GRADLETOKEN_VERSION";
-    public static final String GROUPNAME = "GRADLETOKEN_GROUPNAME";
+    public static final String MODID = "gtnhlanth";
+    public static final String MODNAME = "GTNH: Lanthanides";
+    public static final String VERSION = GT_Version.VERSION;
+    public static final String GROUPNAME = "com.elisis.gtnhlanth";
 }
