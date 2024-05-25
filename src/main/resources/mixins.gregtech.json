@@ -1,9 +1,9 @@
 {
   "required": true,
   "minVersion": "0.8.5-GTNH",
-  "package": "kubatech.mixin.mixins",
-  "plugin": "kubatech.mixin.MixinPlugin", 
-  "refmap": "mixins.kubatech.refmap.json",
+  "package": "gregtech.mixin.mixins",
+  "plugin": "gregtech.mixin.MixinPlugin",
+  "refmap": "mixins.gregtech.refmap.json",
   "target": "@env(DEFAULT)",
   "compatibilityLevel": "JAVA_8",
   "mixins": [],

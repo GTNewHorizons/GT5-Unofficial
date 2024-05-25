@@ -1,6 +1,6 @@
-package kubatech.mixin;
+package gregtech.mixin;
 
-import static kubatech.mixin.TargetedMod.VANILLA;
+import static gregtech.mixin.TargetedMod.VANILLA;
 
 import java.util.Arrays;
 import java.util.HashSet;

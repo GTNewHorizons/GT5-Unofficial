@@ -1,4 +1,4 @@
-package kubatech.mixin;
+package gregtech.mixin;
 
 import java.nio.file.Path;
 

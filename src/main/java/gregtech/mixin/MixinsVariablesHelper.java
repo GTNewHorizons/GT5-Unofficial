@@ -1,4 +1,4 @@
-package kubatech.mixin;
+package gregtech.mixin;
 
 public class MixinsVariablesHelper {
 

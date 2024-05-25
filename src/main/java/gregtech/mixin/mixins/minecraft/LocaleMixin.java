@@ -1,6 +1,6 @@
-package kubatech.mixin.mixins.minecraft;
+package gregtech.mixin.mixins.minecraft;
 
-import static kubatech.mixin.MixinsVariablesHelper.currentlyTranslating;
+import static gregtech.mixin.MixinsVariablesHelper.currentlyTranslating;
 
 import java.util.regex.Matcher;
 

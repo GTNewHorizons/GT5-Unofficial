@@ -1,7 +1,7 @@
-package kubatech.mixin;
+package gregtech.mixin;
 
+import static gregtech.mixin.TargetedMod.VANILLA;
 import static java.nio.file.Files.walk;
-import static kubatech.mixin.TargetedMod.VANILLA;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -26,7 +26,6 @@ import com.gtnewhorizon.gtnhmixins.MinecraftURLClassPath;
 
 import kubatech.Tags;
 
-@SuppressWarnings("unused")
 public class MixinPlugin implements IMixinConfigPlugin {
 
     private static final Logger LOG = LogManager.getLogger(Tags.MODID + " mixins");
