@@ -2,6 +2,7 @@ package kubatech.api;
 
 import cpw.mods.fml.common.Loader;
 
+@Deprecated
 public class LoaderReference {
 
     public static final boolean BloodMagic = Loader.isModLoaded("AWWayofTime");
