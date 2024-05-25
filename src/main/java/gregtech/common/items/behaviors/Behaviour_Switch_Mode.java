@@ -25,7 +25,7 @@ public class Behaviour_Switch_Mode extends Behaviour_None {
                 return aStack;
             }
 
-            MovingObjectPosition mop = GT_Utility.getPlayerLookingTarget();
+            MovingObjectPosition mop = GT_Utility.getPlayerLookingTarget(aPlayer);
             if (mop == null) {
                 byte currentMode = itemTool.getToolMode(aStack);
                 currentMode = (byte) ((currentMode + 1) % maxMode);
