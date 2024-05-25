@@ -38,6 +38,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -109,7 +110,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
                     		"                                    ", 
                     		"  ccc      ccccccccccc              ",
                     		" c---c    ccc-------ccc             ", 
-                    		" c---c    cc---------cc             ",
+                    		" c---c    ccc-------ccc             ",
                     		" c---c    ccc-------ccc             ", 
                     		"  ccc      ccccccccccc              ",
                     		"                                    " 
@@ -584,6 +585,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
 
             GT_MetaTileEntity_Hatch_Energy hatch = (GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity;
 
+            
             // First energy hatch added
             if (this.mEnergyHatches.size() == 0) this.energyHatchTier = hatch.mTier;
 
@@ -685,7 +687,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
         mMaxProgresstime = 20;
 
         long voltage = this.getMaxInputVoltage();
-        mEUt = (int) -voltage;
+        mEUt = (int) (-voltage / GT_Values.V[(int) this.getInputVoltageTier()] * GT_Values.VP[(int) this.getInputVoltageTier()]); // Multiply VP by amps
 
         outputParticle = 1; // Photon
 
@@ -719,6 +721,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
             .getEnergy();
         float mass = inputParticle.getMass();
 
+        
         // Perhaps divide by mass somehow here too
         outputEnergy = (float) calculateOutputParticleEnergy(voltage, inputEnergy, this.antennaeTier); // TODO maybe
                                                                                                        // adjust
@@ -846,7 +849,6 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
             * (-Math.pow(Math.pow(0.15, 2.0 / (Math.pow(antennaTier, 3.0 / 2.0))), voltage / 60768.0) + 1); // In
                                                                                                             // keV
 
-        GT_Log.out.print("Energy " + energy);
         return energy;
 
     }
@@ -858,7 +860,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
 
     // Punny, right?
     private static float getOutputRatetio(float voltageFactor) {
-        return voltageFactor / 10; // TODO this is terrible
+        return voltageFactor / 10; // TODO this is terrible and boring
     }
 
     @Override
@@ -1001,11 +1003,14 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 
+    	GT_Log.out.print("In checkMachine\n");
+    	
         this.mInputBeamline.clear();
         this.mOutputBeamline.clear();
 
         this.mAntennaCasings.clear();
-
+        
+        this.mEnergyHatches.clear();
         this.energyHatchTier = 0;
         this.antennaeTier = 0;
 
