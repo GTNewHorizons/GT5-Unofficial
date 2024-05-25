@@ -80,7 +80,7 @@ public class Block_IchorJar extends BlockJar {
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float f1, float f2,
-            float f3) {
+        float f3) {
         // Call parent method to handle jar emptying, labels stuff etc
         super.onBlockActivated(world, x, y, z, player, side, f1, f2, f3);
         // Interact with Essentia Phials if the player holds one
@@ -129,12 +129,7 @@ public class Block_IchorJar extends BlockJar {
                     // Drop on ground if there's no inventory space
                     if (!player.inventory.addItemStackToInventory(filledPhial)) {
                         world.spawnEntityInWorld(
-                                new EntityItem(
-                                        world,
-                                        (float) x + 0.5F,
-                                        (float) y + 0.5F,
-                                        (float) z + 0.5F,
-                                        filledPhial));
+                            new EntityItem(world, (float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F, filledPhial));
                     }
 
                     world.playSoundAtEntity(player, "game.neutral.swim", 0.25F, 1.0F);
@@ -159,12 +154,12 @@ public class Block_IchorJar extends BlockJar {
                         // Drop on ground if there's no inventory space
                         if (!player.inventory.addItemStackToInventory(new ItemStack(ConfigItems.itemEssence, 1, 0))) {
                             world.spawnEntityInWorld(
-                                    new EntityItem(
-                                            world,
-                                            (float) x + 0.5F,
-                                            (float) y + 0.5F,
-                                            (float) z + 0.5F,
-                                            new ItemStack(ConfigItems.itemEssence, 1, 0)));
+                                new EntityItem(
+                                    world,
+                                    (float) x + 0.5F,
+                                    (float) y + 0.5F,
+                                    (float) z + 0.5F,
+                                    new ItemStack(ConfigItems.itemEssence, 1, 0)));
                         }
 
                         world.playSoundAtEntity(player, "game.neutral.swim", 0.25F, 1.0F);
@@ -192,7 +187,7 @@ public class Block_IchorJar extends BlockJar {
     }
 
     private void breakBlockWarpy(World world, int x, int y, int z, int fillAmount, int iterations,
-            float explosionStrength) {
+        float explosionStrength) {
         if (fillAmount > 0) {
             // Create a decent explosion in the center of the block (TNT has strength 4.0F)
             world.createExplosion(null, x + 0.5D, y + 0.5D, z + 0.5D, explosionStrength, false);
@@ -226,7 +221,7 @@ public class Block_IchorJar extends BlockJar {
 
     @Override
     public void onBlockHarvested(World par1World, int par2, int par3, int par4, int par5,
-            EntityPlayer par6EntityPlayer) {}
+        EntityPlayer par6EntityPlayer) {}
 
     @Override
     public boolean canDropFromExplosion(Explosion e) {

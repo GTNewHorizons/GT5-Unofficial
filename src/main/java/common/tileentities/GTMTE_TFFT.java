@@ -152,44 +152,46 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
 
         @Override
         public PlaceResult survivalPlaceBlock(GTMTE_TFFT t, World world, int x, int y, int z, ItemStack trigger,
-                AutoPlaceEnvironment env) {
+            AutoPlaceEnvironment env) {
             if (check(t, world, x, y, z)) return PlaceResult.SKIP;
             int fieldTier = getHint(trigger);
-            ItemStack result = env.getSource().takeOne(
+            ItemStack result = env.getSource()
+                .takeOne(
                     s -> s != null && s.stackSize >= 0
-                            && s.getItem() == TFFT_FIELD_ITEM
-                            && s.getItemDamage() != CASING_META
-                            && s.getItemDamage() <= fieldTier,
+                        && s.getItem() == TFFT_FIELD_ITEM
+                        && s.getItemDamage() != CASING_META
+                        && s.getItemDamage() <= fieldTier,
                     true);
             if (result == null) return PlaceResult.REJECT;
 
             return StructureUtility.survivalPlaceBlock(
-                    result,
-                    ItemStackPredicate.NBTMode.EXACT,
-                    null,
-                    true,
-                    world,
-                    x,
-                    y,
-                    z,
-                    env.getSource(),
-                    env.getActor(),
-                    env.getChatter());
+                result,
+                ItemStackPredicate.NBTMode.EXACT,
+                null,
+                true,
+                world,
+                x,
+                y,
+                z,
+                env.getSource(),
+                env.getActor(),
+                env.getChatter());
         }
     }
 
     private static final IIconContainer TEXTURE_TFFT = new Textures.BlockIcons.CustomIcon("iconsets/TFFT");
     private static final IIconContainer TEXTURE_TFFT_ACTIVE = new Textures.BlockIcons.CustomIcon(
-            "iconsets/TFFT_ACTIVE");
+        "iconsets/TFFT_ACTIVE");
     private static final IIconContainer TEXTURE_TFFT_ACTIVE_GLOW = new Textures.BlockIcons.CustomIcon(
-            "iconsets/TFFT_ACTIVE_GLOW");
+        "iconsets/TFFT_ACTIVE_GLOW");
     private static final int CASING_TEXTURE_ID_1 = (12 << 7) | 127;
     private static final int CASING_TEXTURE_ID_2 = 176;
 
     private static final Block TFFT_FIELD = Blocks.tfftStorageField;
     private static final Item TFFT_FIELD_ITEM = Item.getItemFromBlock(TFFT_FIELD);
     public static final int MAX_DISTINCT_FLUIDS = 25;
-    private static final BigInteger MAX_CAPACITY = BigInteger.valueOf(Long.MAX_VALUE).multiply(BigInteger.valueOf(25));
+    private static final BigInteger MAX_CAPACITY = BigInteger.valueOf(Long.MAX_VALUE)
+        .multiply(BigInteger.valueOf(25));
     private static final int CASING_META = 0;
     private static final int MIN_CASING_AMOUNT = 20;
     private static final int MAX_LAYER_AMOUNT = 13;
@@ -205,56 +207,60 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
     }
 
     private static final String[] description = new String[] {
-            translateToLocal("tile.kekztech_tfftstoragefield_block.hint.1"), // Casing
-            translateToLocal("tile.kekztech_tfftstoragefield_block.hint.2"), // Casing, Maintenance Hatch, T.F.F.T Multi
-                                                                             // I/O Hatch, Input/Output Hatch, Energy
-                                                                             // Hatch
-            translateToLocal("tile.kekztech_tfftstoragefield_block.hint.3"), // Glass, T.F.F.T Multi I/O Hatch,
-                                                                             // Input/Output Hatch
-            translateToLocal("tile.kekztech_tfftstoragefield_block.hint.4"), // Glass
+        translateToLocal("tile.kekztech_tfftstoragefield_block.hint.1"), // Casing
+        translateToLocal("tile.kekztech_tfftstoragefield_block.hint.2"), // Casing, Maintenance Hatch, T.F.F.T Multi
+                                                                         // I/O Hatch, Input/Output Hatch, Energy
+                                                                         // Hatch
+        translateToLocal("tile.kekztech_tfftstoragefield_block.hint.3"), // Glass, T.F.F.T Multi I/O Hatch,
+                                                                         // Input/Output Hatch
+        translateToLocal("tile.kekztech_tfftstoragefield_block.hint.4"), // Glass
     };
 
     // height channel for height
     // field channel for field
     private static final IStructureDefinition<GTMTE_TFFT> STRUCTURE_DEFINITION = IStructureDefinition
-            .<GTMTE_TFFT>builder()
-            .addShape(
-                    STRUCTURE_PIECE_TOP,
-                    transpose(new String[][] { { "ccccc" }, { "cCCCc" }, { "cC~Cc" }, { "cCCCc" }, { "ccccc" } }))
-            .addShape(
-                    STRUCTURE_PIECE_MID,
-                    transpose(new String[][] { { "gGGGg" }, { "GfffG" }, { "GfffG" }, { "GfffG" }, { "gGGGg" } }))
-            .addShape(
-                    STRUCTURE_PIECE_BOTTOM,
-                    transpose(new String[][] { { "ccccc" }, { "cCCCc" }, { "cCCCc" }, { "cCCCc" }, { "ccccc" } }))
-            .addElement(
-                    'c',
-                    buildHatchAdder(GTMTE_TFFT.class).atLeast(Energy, Maintenance).casingIndex(CASING_TEXTURE_ID_1)
-                            .dot(1)
-                            .buildAndChain(onElementPass(te -> te.casingAmount++, ofBlock(TFFT_FIELD, CASING_META))))
-            .addElement(
-                    'C',
-                    buildHatchAdder(GTMTE_TFFT.class).casingIndex(CASING_TEXTURE_ID_1)
-                            .atLeast(
-                                    Energy,
-                                    Maintenance,
-                                    InputHatch.or(TFFTMultiHatch.INSTANCE),
-                                    OutputHatch.or(TFFTMultiHatch.INSTANCE))
-                            .dot(2)
-                            .buildAndChain(onElementPass(te -> te.casingAmount++, ofBlock(TFFT_FIELD, CASING_META))))
-            .addElement(
-                    'G',
-                    buildHatchAdder(GTMTE_TFFT.class)
-                            .atLeast(InputHatch.or(TFFTMultiHatch.INSTANCE), OutputHatch.or(TFFTMultiHatch.INSTANCE))
-                            .casingIndex(CASING_TEXTURE_ID_2).dot(3).buildAndChain(
-                                    ofBlockUnlocalizedName("Thaumcraft", "blockCosmeticOpaque", 2, false),
-                                    ofGlassTieredMixed((byte) 4, (byte) 127, 3)))
-            .addElement(
-                    'g',
-                    ofChain(
-                            ofBlockUnlocalizedName("Thaumcraft", "blockCosmeticOpaque", 2, false),
-                            ofGlassTieredMixed((byte) 4, (byte) 127, 4)))
-            .addElement('f', ofChain(TFFTStorageFieldElement.INSTANCE)).build();
+        .<GTMTE_TFFT>builder()
+        .addShape(
+            STRUCTURE_PIECE_TOP,
+            transpose(new String[][] { { "ccccc" }, { "cCCCc" }, { "cC~Cc" }, { "cCCCc" }, { "ccccc" } }))
+        .addShape(
+            STRUCTURE_PIECE_MID,
+            transpose(new String[][] { { "gGGGg" }, { "GfffG" }, { "GfffG" }, { "GfffG" }, { "gGGGg" } }))
+        .addShape(
+            STRUCTURE_PIECE_BOTTOM,
+            transpose(new String[][] { { "ccccc" }, { "cCCCc" }, { "cCCCc" }, { "cCCCc" }, { "ccccc" } }))
+        .addElement(
+            'c',
+            buildHatchAdder(GTMTE_TFFT.class).atLeast(Energy, Maintenance)
+                .casingIndex(CASING_TEXTURE_ID_1)
+                .dot(1)
+                .buildAndChain(onElementPass(te -> te.casingAmount++, ofBlock(TFFT_FIELD, CASING_META))))
+        .addElement(
+            'C',
+            buildHatchAdder(GTMTE_TFFT.class).casingIndex(CASING_TEXTURE_ID_1)
+                .atLeast(
+                    Energy,
+                    Maintenance,
+                    InputHatch.or(TFFTMultiHatch.INSTANCE),
+                    OutputHatch.or(TFFTMultiHatch.INSTANCE))
+                .dot(2)
+                .buildAndChain(onElementPass(te -> te.casingAmount++, ofBlock(TFFT_FIELD, CASING_META))))
+        .addElement(
+            'G',
+            buildHatchAdder(GTMTE_TFFT.class)
+                .atLeast(InputHatch.or(TFFTMultiHatch.INSTANCE), OutputHatch.or(TFFTMultiHatch.INSTANCE))
+                .casingIndex(CASING_TEXTURE_ID_2)
+                .dot(3)
+                .buildAndChain(
+                    ofBlockUnlocalizedName("Thaumcraft", "blockCosmeticOpaque", 2, false),
+                    ofGlassTieredMixed((byte) 4, (byte) 127, 3)))
+        .addElement(
+            'g',
+            ofChain(
+                ofBlockUnlocalizedName("Thaumcraft", "blockCosmeticOpaque", 2, false),
+                ofGlassTieredMixed((byte) 4, (byte) 127, 4)))
+        .addElement('f', ofChain(TFFTStorageFieldElement.INSTANCE))
+        .build();
 
     public final FluidTankGT[] STORE = new FluidTankGT[MAX_DISTINCT_FLUIDS];
 
@@ -297,13 +303,23 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-            int colorIndex, boolean aActive, boolean aRedstone) {
+        int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID_1),
-                    TextureFactory.builder().addIcon(TEXTURE_TFFT_ACTIVE).extFacing().build(),
-                    TextureFactory.builder().addIcon(TEXTURE_TFFT_ACTIVE_GLOW).extFacing().glow().build() };
+                TextureFactory.builder()
+                    .addIcon(TEXTURE_TFFT_ACTIVE)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(TEXTURE_TFFT_ACTIVE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID_1),
-                    TextureFactory.builder().addIcon(TEXTURE_TFFT).extFacing().build() };
+                TextureFactory.builder()
+                    .addIcon(TEXTURE_TFFT)
+                    .extFacing()
+                    .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID_1) };
     }
@@ -311,28 +327,34 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Fluid Tank").addInfo("High-Tech fluid tank that can hold up to 25 different fluids!")
-                .addInfo("Has 1/25th of the total capacity as capacity for each fluid.")
-                .addInfo("Right clicking the controller with a screwdriver will turn on excess voiding.")
-                .addInfo("Fluid storage amount and running cost depends on the storage field blocks used.")
-                .addSeparator().addInfo("Note on hatch locking:")
-                .addInfo("Use an Integrated Circuit in the GUI slot to limit which fluid is output.")
-                .addInfo("The index of a stored fluid can be obtained through the Tricorder.").addSeparator()
-                .beginVariableStructureBlock(5, 5, 5, 15, 5, 5, false).addController("Top Center")
-                .addCasingInfoMin("T.F.F.T Casing", MIN_CASING_AMOUNT, false)
-                .addOtherStructurePart("Storage Field Blocks (Tier I-X)", "Inner 3xhx3 solid pillar")
-                .addStructureInfo("Energy hatch is not required when running cost is 0")
-                .addOtherStructurePart("EV+ Tier Glass/Warded Glass/Reinforced Glass", "Outer 5xhx5 glass shell")
-                .addMaintenanceHatch("Any top or bottom casing").addEnergyHatch("Any top or bottom casing")
-                .addInputHatch("Instead of any casing or glass, has to touch storage field block")
-                .addOutputHatch("Instead of any casing or glass, has to touch storage field block")
-                .addStructureInfo("You can have a bunch of hatches")
-                .addOtherStructurePart(
-                        "Multi I/O Hatches",
-                        "Instead of any casing or glass, has to touch storage field block")
-                .addStructureInfo("Use MIOH with conduits or fluid storage busses to see all fluids at once.")
-                .addSubChannelUsage("field", "Maximum Field Tier").addSubChannelUsage("height", "Height of structure")
-                .toolTipFinisher("KekzTech");
+        tt.addMachineType("Fluid Tank")
+            .addInfo("High-Tech fluid tank that can hold up to 25 different fluids!")
+            .addInfo("Has 1/25th of the total capacity as capacity for each fluid.")
+            .addInfo("Right clicking the controller with a screwdriver will turn on excess voiding.")
+            .addInfo("Fluid storage amount and running cost depends on the storage field blocks used.")
+            .addSeparator()
+            .addInfo("Note on hatch locking:")
+            .addInfo("Use an Integrated Circuit in the GUI slot to limit which fluid is output.")
+            .addInfo("The index of a stored fluid can be obtained through the Tricorder.")
+            .addSeparator()
+            .beginVariableStructureBlock(5, 5, 5, 15, 5, 5, false)
+            .addController("Top Center")
+            .addCasingInfoMin("T.F.F.T Casing", MIN_CASING_AMOUNT, false)
+            .addOtherStructurePart("Storage Field Blocks (Tier I-X)", "Inner 3xhx3 solid pillar")
+            .addStructureInfo("Energy hatch is not required when running cost is 0")
+            .addOtherStructurePart("EV+ Tier Glass/Warded Glass/Reinforced Glass", "Outer 5xhx5 glass shell")
+            .addMaintenanceHatch("Any top or bottom casing")
+            .addEnergyHatch("Any top or bottom casing")
+            .addInputHatch("Instead of any casing or glass, has to touch storage field block")
+            .addOutputHatch("Instead of any casing or glass, has to touch storage field block")
+            .addStructureInfo("You can have a bunch of hatches")
+            .addOtherStructurePart(
+                "Multi I/O Hatches",
+                "Instead of any casing or glass, has to touch storage field block")
+            .addStructureInfo("Use MIOH with conduits or fluid storage busses to see all fluids at once.")
+            .addSubChannelUsage("field", "Maximum Field Tier")
+            .addSubChannelUsage("height", "Height of structure")
+            .toolTipFinisher("KekzTech");
         return tt;
     }
 
@@ -387,13 +409,14 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
         if (layer - 1 > MAX_LAYER_AMOUNT || layer - 1 < DEFAULT_LAYER_AMOUNT) return false;
         if (!checkPiece(STRUCTURE_PIECE_BOTTOM, 2, 2, -layer)) return false;
         if (casingAmount >= MIN_CASING_AMOUNT
-                && (tfftHatch != null || (!mInputHatches.isEmpty() && !mOutputHatches.isEmpty()))
-                && mInputHatches.size() + mOutputHatches.size() <= MAX_DISTINCT_FLUIDS * 2
-                && mMaintenanceHatches.size() == 1) {
+            && (tfftHatch != null || (!mInputHatches.isEmpty() && !mOutputHatches.isEmpty()))
+            && mInputHatches.size() + mOutputHatches.size() <= MAX_DISTINCT_FLUIDS * 2
+            && mMaintenanceHatches.size() == 1) {
             BigInteger tempCap = BigInteger.ZERO;
             for (int i = 0; i < this.FIELDS.length; i++) {
                 tempCap = tempCap.add(
-                        BigInteger.valueOf(Field.VALUES[i].getCapacity()).multiply(BigInteger.valueOf(this.FIELDS[i])));
+                    BigInteger.valueOf(Field.VALUES[i].getCapacity())
+                        .multiply(BigInteger.valueOf(this.FIELDS[i])));
                 this.runningCost += Field.VALUES[i].getCost() * this.FIELDS[i];
             }
             this.setCapacity(tempCap);
@@ -417,8 +440,8 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
         mMaxProgresstime = 20;
 
         this.fluidSelector = (itemStack != null && itemStack.getItem() instanceof GT_IntegratedCircuit_Item)
-                ? (byte) itemStack.getItemDamage()
-                : -1;
+            ? (byte) itemStack.getItemDamage()
+            : -1;
 
         // Suck in fluids
         final ArrayList<FluidStack> inputFluids = getStoredFluids();
@@ -447,7 +470,9 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
                     final FluidStack tFluid = tHatch.getFluid();
 
                     String lockedFluidName = tHatch.getLockedFluidName() == null ? "" : tHatch.getLockedFluidName();
-                    String tFluidName = tFluid == null ? "" : tFluid.getFluid().getName();
+                    String tFluidName = tFluid == null ? ""
+                        : tFluid.getFluid()
+                            .getName();
 
                     boolean isFluidLocked = tHatch.isFluidLocked();
                     boolean isFluidEmpty = tFluid == null || tHatch.getFluidAmount() == 0;
@@ -462,7 +487,10 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
 
                         tHatch.fill(this.push(sFluid.get(remaining), true), true);
                     } else if (isFluidLocked) {
-                        if (!isFluidEmpty && !lockedFluidName.equals(tFluid.getFluid().getName())) continue;
+                        if (!isFluidEmpty && !lockedFluidName.equals(
+                            tFluid.getFluid()
+                                .getName()))
+                            continue;
 
                         FluidStack aFluid = FluidRegistry.getFluidStack(lockedFluidName, remaining);
                         tHatch.fill(this.push(aFluid, true), true);
@@ -497,10 +525,11 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
             if (tank.isEmpty()) {
                 ll.add(MessageFormat.format("{0} - {1}: {2}L ({3}%)", i, "NULL", 0, 0));
             } else {
-                String localizedName = STORE[i].get().getLocalizedName();
+                String localizedName = STORE[i].get()
+                    .getLocalizedName();
                 String amount = nf.format(STORE[i].amount());
                 String percentage = capacityPerFluid > 0 ? String.valueOf(STORE[i].amount() * 100 / capacityPerFluid)
-                        : "";
+                    : "";
 
                 ll.add(MessageFormat.format("{0} - {1}: {2}L ({3}%)", i, localizedName, amount, percentage));
             }
@@ -512,9 +541,9 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
         ll.add("Running Cost: " + getActualEnergyUsage() + "EU/t");
         ll.add("Auto-voiding: " + doVoidExcess);
         ll.add(
-                "Maintenance Status: " + ((getRepairStatus() == getIdealStatus())
-                        ? EnumChatFormatting.GREEN + "Working perfectly" + EnumChatFormatting.RESET
-                        : EnumChatFormatting.RED + "Has Problems" + EnumChatFormatting.RESET));
+            "Maintenance Status: " + ((getRepairStatus() == getIdealStatus())
+                ? EnumChatFormatting.GREEN + "Working perfectly" + EnumChatFormatting.RESET
+                : EnumChatFormatting.RED + "Has Problems" + EnumChatFormatting.RESET));
         ll.add("---------------------------------------------");
 
         return ll.toArray(new String[0]);
@@ -605,7 +634,8 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
         if (index >= 0) {
             return STORE[index].fill(aFluid, doPull);
         } else if (fluidCount() < MAX_DISTINCT_FLUIDS) {
-            return STORE[getNullSlot()].setCapacity(capacityPerFluid).fill(aFluid, doPull);
+            return STORE[getNullSlot()].setCapacity(capacityPerFluid)
+                .fill(aFluid, doPull);
         }
         return 0;
     }
@@ -617,7 +647,7 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
             FluidTankGT tank = STORE[index];
             if (doPull) return tank.add(amount);
             return doVoidExcess ? amount
-                    : tank.amount() + amount > tank.capacity() ? tank.capacity() - tank.amount() : amount;
+                : tank.amount() + amount > tank.capacity() ? tank.capacity() - tank.amount() : amount;
         } else if (fluidCount() < MAX_DISTINCT_FLUIDS) {
             FluidTankGT tank = STORE[getNullSlot()];
             if (doPull) return tank.add(amount, aFluid);
@@ -658,12 +688,14 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
             this.capacityPerFluid = Long.MAX_VALUE;
         } else {
             this.capacity = capacity;
-            this.capacityPerFluid = capacity.divide(BigInteger.valueOf(MAX_DISTINCT_FLUIDS)).longValue();
+            this.capacityPerFluid = capacity.divide(BigInteger.valueOf(MAX_DISTINCT_FLUIDS))
+                .longValue();
         }
 
         for (int i = 0; i < MAX_DISTINCT_FLUIDS; i++) {
             FluidTankGT tank = STORE[i];
-            if (tank.setCapacity(capacityPerFluid).amount() > capacityPerFluid) {
+            if (tank.setCapacity(capacityPerFluid)
+                .amount() > capacityPerFluid) {
                 STORE[i] = new FluidTankGT(tank.get(), capacityPerFluid, capacityPerFluid);
             }
         }
@@ -679,7 +711,8 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
 
     public int getFluidPosition(String fluidName) {
         for (int i = 0; i < MAX_DISTINCT_FLUIDS; i++) {
-            if (!STORE[i].isEmpty() && STORE[i].name().equals(fluidName)) return i;
+            if (!STORE[i].isEmpty() && STORE[i].name()
+                .equals(fluidName)) return i;
         }
         return -1;
     }

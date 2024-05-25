@@ -43,11 +43,11 @@ public class Block_LargeHexPlate extends Block {
     @Override
     public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
         final int xMod = x >= 0 ? Math.abs(x % BATCH_SIZE)
-                : Math.abs((Math.abs(x) % BATCH_SIZE) - BATCH_SIZE) % BATCH_SIZE;
+            : Math.abs((Math.abs(x) % BATCH_SIZE) - BATCH_SIZE) % BATCH_SIZE;
         final int yMod = y >= 0 ? Math.abs(y % BATCH_SIZE)
-                : Math.abs((Math.abs(y) % BATCH_SIZE) - BATCH_SIZE) % BATCH_SIZE;
+            : Math.abs((Math.abs(y) % BATCH_SIZE) - BATCH_SIZE) % BATCH_SIZE;
         final int zMod = z >= 0 ? Math.abs(z % BATCH_SIZE)
-                : Math.abs((Math.abs(z) % BATCH_SIZE) - BATCH_SIZE) % BATCH_SIZE;
+            : Math.abs((Math.abs(z) % BATCH_SIZE) - BATCH_SIZE) % BATCH_SIZE;
 
         if (side == 0 || side == 1) {
             return parts[xMod][zMod];

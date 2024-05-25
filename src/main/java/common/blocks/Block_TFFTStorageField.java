@@ -51,10 +51,8 @@ public class Block_TFFTStorageField extends BaseGTUpdateableBlock {
     // I guess glodblock won't mind
     static {
         GT_Utility.addTexturePage((byte) 12);
-        Textures.BlockIcons.setCasingTexture(
-                (byte) 12,
-                (byte) 127,
-                TextureFactory.of(Block_TFFTStorageField.TFFTCasingIcon.INSTANCE));
+        Textures.BlockIcons
+            .setCasingTexture((byte) 12, (byte) 127, TextureFactory.of(Block_TFFTStorageField.TFFTCasingIcon.INSTANCE));
     }
 
     private Block_TFFTStorageField() {

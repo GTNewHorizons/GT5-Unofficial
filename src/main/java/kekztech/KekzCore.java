@@ -23,15 +23,15 @@ import gregtech.api.enums.Mods;
  * @author kekzdealer
  */
 @Mod(
-        modid = KekzCore.MODID,
-        name = KekzCore.NAME,
-        version = KekzCore.VERSION,
-        dependencies = "required-after:IC2;" + "required-after:gregtech;"
-                + "required-after:tectech;"
-                + "required-after:Thaumcraft;"
-                + "required-after:ThaumicTinkerer;"
-                + "after:bartworks;"
-                + "after:dreamcraft")
+    modid = KekzCore.MODID,
+    name = KekzCore.NAME,
+    version = KekzCore.VERSION,
+    dependencies = "required-after:IC2;" + "required-after:gregtech;"
+        + "required-after:tectech;"
+        + "required-after:Thaumcraft;"
+        + "required-after:ThaumicTinkerer;"
+        + "after:bartworks;"
+        + "after:dreamcraft")
 public class KekzCore {
 
     public static final String NAME = "KekzTech";
@@ -67,13 +67,13 @@ public class KekzCore {
 
         // intentionally not a static final field to save a bit of ram.
         Set<String> removedStuff = ImmutableSet.of(
-                MODID + ":kekztech_tfftcasingblock_block",
-                MODID + ":kekztech_tfftmultihatch_block",
-                MODID + ":kekztech_tfftstoragefieldblock1_block",
-                MODID + ":kekztech_tfftstoragefieldblock2_block",
-                MODID + ":kekztech_tfftstoragefieldblock3_block",
-                MODID + ":kekztech_tfftstoragefieldblock4_block",
-                MODID + ":kekztech_tfftstoragefieldblock5_block");
+            MODID + ":kekztech_tfftcasingblock_block",
+            MODID + ":kekztech_tfftmultihatch_block",
+            MODID + ":kekztech_tfftstoragefieldblock1_block",
+            MODID + ":kekztech_tfftstoragefieldblock2_block",
+            MODID + ":kekztech_tfftstoragefieldblock3_block",
+            MODID + ":kekztech_tfftstoragefieldblock4_block",
+            MODID + ":kekztech_tfftstoragefieldblock5_block");
 
         for (FMLMissingMappingsEvent.MissingMapping mapping : missingMappings) {
             if (removedStuff.contains(mapping.name)) mapping.ignore();

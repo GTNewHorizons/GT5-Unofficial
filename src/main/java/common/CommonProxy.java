@@ -13,8 +13,10 @@ public class CommonProxy {
 
     public void preInit(final FMLPreInitializationEvent e) {
         // Items
-        ErrorItem.getInstance().registerItem();
-        MetaItem_CraftingComponent.getInstance().registerItem();
+        ErrorItem.getInstance()
+            .registerItem();
+        MetaItem_CraftingComponent.getInstance()
+            .registerItem();
         Items.registerOreDictNames();
         // Blocks
         Blocks.preInit();

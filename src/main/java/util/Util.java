@@ -32,7 +32,8 @@ public class Util {
     public static ItemStack getStackofAmountFromOreDict(String oredictName, final int amount) {
         final ArrayList<ItemStack> list = OreDictionary.getOres(oredictName);
         if (!list.isEmpty()) {
-            final ItemStack ret = list.get(0).copy();
+            final ItemStack ret = list.get(0)
+                .copy();
             ret.stackSize = amount;
             return ret;
         }
@@ -72,7 +73,7 @@ public class Util {
             return "0.00%";
         }
         BigDecimal result = new BigDecimal(value).setScale(6, RoundingMode.HALF_UP)
-                .divide(new BigDecimal(maxValue), RoundingMode.HALF_UP);
+            .divide(new BigDecimal(maxValue), RoundingMode.HALF_UP);
         if (result.compareTo(Threshold_1) < 0) {
             return percentFormatRound_6.format(result);
         } else {

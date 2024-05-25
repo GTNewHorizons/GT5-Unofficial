@@ -20,11 +20,13 @@ public class AlloySmelter implements Runnable {
 
             // YSZ Cermic Plate
             GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                            craftingItem.getStackOfAmountFromDamage(Items.YSZCeramicDust.getMetaID(), 3),
-                            ItemList.Shape_Mold_Plate.get(0))
-                    .itemOutputs(craftingItem.getStackOfAmountFromDamage(Items.YSZCeramicPlate.getMetaID(), 1))
-                    .duration(20 * SECONDS).eut(TierEU.RECIPE_HV).addTo(alloySmelterRecipes);
+                .itemInputs(
+                    craftingItem.getStackOfAmountFromDamage(Items.YSZCeramicDust.getMetaID(), 3),
+                    ItemList.Shape_Mold_Plate.get(0))
+                .itemOutputs(craftingItem.getStackOfAmountFromDamage(Items.YSZCeramicPlate.getMetaID(), 1))
+                .duration(20 * SECONDS)
+                .eut(TierEU.RECIPE_HV)
+                .addTo(alloySmelterRecipes);
         }
     }
 }

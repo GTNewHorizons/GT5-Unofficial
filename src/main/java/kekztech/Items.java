@@ -46,7 +46,9 @@ public enum Items {
     }
 
     public static void registerOreDictNames() {
-        Arrays.stream(Items.values()).filter(e -> e.getOreDictName() != null).forEach(Items::registerOreDict);
+        Arrays.stream(Items.values())
+            .filter(e -> e.getOreDictName() != null)
+            .forEach(Items::registerOreDict);
     }
 
     public ItemStack getNonOreDictedItemStack(int amount) {
@@ -55,7 +57,7 @@ public enum Items {
 
     public ItemStack getOreDictedItemStack(int amount) {
         return this.getOreDictName() != null ? Util.getStackofAmountFromOreDict(this.getOreDictName(), amount)
-                : new ItemStack(MetaItem_CraftingComponent.getInstance(), amount, this.getMetaID());
+            : new ItemStack(MetaItem_CraftingComponent.getInstance(), amount, this.getMetaID());
     }
 
     public String getOreDictName() {

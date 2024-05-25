@@ -42,21 +42,22 @@ public class IB_TFFTStorageField extends ItemBlock {
         if (meta > 0) {
             lines.add(StatCollector.translateToLocal("tile.kekztech_tfftstoragefield_block.desc"));
             lines.add(
-                    "Capacity: " + EnumChatFormatting.BLUE
-                            + NumberFormat.getNumberInstance().format(GTMTE_TFFT.Field.VALUES[meta - 1].getCapacity())
-                            + EnumChatFormatting.GRAY
-                            + " L");
+                "Capacity: " + EnumChatFormatting.BLUE
+                    + NumberFormat.getNumberInstance()
+                        .format(GTMTE_TFFT.Field.VALUES[meta - 1].getCapacity())
+                    + EnumChatFormatting.GRAY
+                    + " L");
             lines.add(
-                    "Per Fluid Capacity: " + EnumChatFormatting.BLUE
-                            + NumberFormat.getNumberInstance()
-                                    .format(GTMTE_TFFT.Field.VALUES[meta - 1].getCapacity() / UNIQUE_FLUIDS_PER_CELL)
-                            + EnumChatFormatting.GRAY
-                            + " L");
+                "Per Fluid Capacity: " + EnumChatFormatting.BLUE
+                    + NumberFormat.getNumberInstance()
+                        .format(GTMTE_TFFT.Field.VALUES[meta - 1].getCapacity() / UNIQUE_FLUIDS_PER_CELL)
+                    + EnumChatFormatting.GRAY
+                    + " L");
             lines.add(
-                    "Power Draw: " + EnumChatFormatting.BLUE
-                            + GTMTE_TFFT.Field.VALUES[meta - 1].getCost()
-                            + EnumChatFormatting.GRAY
-                            + " EU/t");
+                "Power Draw: " + EnumChatFormatting.BLUE
+                    + GTMTE_TFFT.Field.VALUES[meta - 1].getCost()
+                    + EnumChatFormatting.GRAY
+                    + " EU/t");
         }
     }
 }
