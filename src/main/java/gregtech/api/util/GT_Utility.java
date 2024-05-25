@@ -4966,9 +4966,8 @@ public class GT_Utility {
     }
 
     public static MovingObjectPosition getPlayerLookingTarget(EntityPlayer viewpoint) {
-        double reachDistance = viewpoint instanceof EntityPlayerMP mp ?
-            mp.theItemInWorldManager.getBlockReachDistance() :
-            getClientReachDistance();
+        double reachDistance = viewpoint instanceof EntityPlayerMP mp ? mp.theItemInWorldManager.getBlockReachDistance()
+            : getClientReachDistance();
         Vec3 posVec = viewpoint.getPosition(0);
         Vec3 lookVec = viewpoint.getLook(0);
         Vec3 modifiedPosVec = posVec
