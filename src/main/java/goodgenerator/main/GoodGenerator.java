@@ -13,13 +13,13 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import goodgenerator.Tags;
 import goodgenerator.common.CommonProxy;
 import goodgenerator.crossmod.thaumcraft.Research;
 import goodgenerator.items.MyMaterial;
 import goodgenerator.loader.Loaders;
 import goodgenerator.loader.NaquadahReworkRecipeLoader;
 import goodgenerator.tabs.MyTabs;
+import gregtech.GT_Version;
 
 @SuppressWarnings("ALL")
 @Mod(
@@ -35,7 +35,7 @@ public final class GoodGenerator {
 
     public static final String MOD_ID = "GoodGenerator";
     public static final String MOD_NAME = "Good Generator";
-    public static final String VERSION = Tags.VERSION;
+    public static final String VERSION = GT_Version.VERSION;
 
     public static final CreativeTabs GG = new MyTabs("Good Generator");
 
