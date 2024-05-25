@@ -14,6 +14,6 @@ public final class LanthItemList {
 
         LanthItemList.DIGESTER = new Digester(10500, "Digester", "Digester").getStackForm(1L);
         LanthItemList.DISSOLUTION_TANK = new DissolutionTank(10501, "Dissolution Tank", "Dissolution Tank")
-                .getStackForm(1L);
+            .getStackForm(1L);
     }
 }

@@ -25,13 +25,13 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_Log;
 
 @Mod(
-        modid = Tags.MODID,
-        version = Tags.VERSION,
-        name = Tags.MODNAME,
-        dependencies = "required-after:IC2; " + "required-after:gregtech; "
-                + "required-after:bartworks; "
-                + "required-after:GoodGenerator; "
-                + "before:miscutils; ")
+    modid = Tags.MODID,
+    version = Tags.VERSION,
+    name = Tags.MODNAME,
+    dependencies = "required-after:IC2; " + "required-after:gregtech; "
+        + "required-after:bartworks; "
+        + "required-after:GoodGenerator; "
+        + "before:miscutils; ")
 public class GTNHLanthanides {
 
     public static Logger LOG = Logger.getLogger("GTNH:Lanthanides");
@@ -40,8 +40,8 @@ public class GTNHLanthanides {
     public static GTNHLanthanides instance;
 
     @SidedProxy(
-            clientSide = "com.elisis.gtnhlanth.client.ClientProxy",
-            serverSide = "com.elisis.gtnhlanth.common.CommonProxy")
+        clientSide = "com.elisis.gtnhlanth.client.ClientProxy",
+        serverSide = "com.elisis.gtnhlanth.common.CommonProxy")
     public static CommonProxy proxy;
 
     @EventHandler
@@ -69,13 +69,19 @@ public class GTNHLanthanides {
         proxy.postInit(e);
         // GT_Log.out.print(FluidRegistry.getFluid("Sodium Tungstate").getName());
 
-        GT_Log.out.print(Arrays.toString(Werkstoff.werkstoffNameHashMap.keySet().toArray()));
-        GT_Log.out.print(Arrays.toString(Werkstoff.werkstoffHashMap.keySet().toArray()));
+        GT_Log.out.print(
+            Arrays.toString(
+                Werkstoff.werkstoffNameHashMap.keySet()
+                    .toArray()));
+        GT_Log.out.print(
+            Arrays.toString(
+                Werkstoff.werkstoffHashMap.keySet()
+                    .toArray()));
 
         GT_Log.out.print(
-                "HMMM " + Arrays.toString(
-                        OreDictionary.getOreIDs(
-                                WerkstoffMaterialPool.DephosphatedSamariumConcentrate.get(OrePrefixes.dust, 1))));
+            "HMMM " + Arrays.toString(
+                OreDictionary
+                    .getOreIDs(WerkstoffMaterialPool.DephosphatedSamariumConcentrate.get(OrePrefixes.dust, 1))));
     }
 
     @EventHandler

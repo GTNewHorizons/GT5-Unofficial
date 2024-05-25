@@ -52,22 +52,26 @@ public class Digester extends GT_MetaTileEntity_EnhancedMultiBlockBase<Digester>
 
     private HeatingCoilLevel heatLevel;
 
-    private final IStructureDefinition<Digester> multiDefinition = StructureDefinition.<Digester>builder().addShape(
+    private final IStructureDefinition<Digester> multiDefinition = StructureDefinition.<Digester>builder()
+        .addShape(
             mName,
             transpose(
-                    new String[][] { { "       ", " ttttt ", " t---t ", " t---t ", " t---t ", " ttttt ", "       " },
-                            { "  ttt  ", " t---t ", "t-----t", "t-----t", "t-----t", " t---t ", "  ttt  " },
-                            { " tccct ", "tc---ct", "c-----c", "c-----c", "c-----c", "tc---ct", " tccct " },
-                            { " tt~tt ", "thhhhht", "thsssht", "thsssht", "thsssht", "thhhhht", " ttttt " }, }))
+                new String[][] { { "       ", " ttttt ", " t---t ", " t---t ", " t---t ", " ttttt ", "       " },
+                    { "  ttt  ", " t---t ", "t-----t", "t-----t", "t-----t", " t---t ", "  ttt  " },
+                    { " tccct ", "tc---ct", "c-----c", "c-----c", "c-----c", "tc---ct", " tccct " },
+                    { " tt~tt ", "thhhhht", "thsssht", "thsssht", "thsssht", "thhhhht", " ttttt " }, }))
 
-            .addElement(
-                    't',
-                    buildHatchAdder(Digester.class)
-                            .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy, Muffler)
-                            .casingIndex(47).dot(1).buildAndChain(GregTech_API.sBlockCasings4, 0))
-            .addElement('h', ofBlock(GregTech_API.sBlockCasings1, 11))
-            .addElement('s', ofBlock(GregTech_API.sBlockCasings4, 1))
-            .addElement('c', ofCoil(Digester::setCoilLevel, Digester::getCoilLevel)).build();
+        .addElement(
+            't',
+            buildHatchAdder(Digester.class)
+                .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy, Muffler)
+                .casingIndex(47)
+                .dot(1)
+                .buildAndChain(GregTech_API.sBlockCasings4, 0))
+        .addElement('h', ofBlock(GregTech_API.sBlockCasings1, 11))
+        .addElement('s', ofBlock(GregTech_API.sBlockCasings4, 1))
+        .addElement('c', ofCoil(Digester::setCoilLevel, Digester::getCoilLevel))
+        .build();
 
     // private int mHeat;
     // private int mNeededHeat;
@@ -115,8 +119,8 @@ public class Digester extends GT_MetaTileEntity_EnhancedMultiBlockBase<Digester>
 
             @Override
             protected @Nonnull CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
-                return recipe.mSpecialValue <= Digester.this.getCoilLevel().getHeat()
-                        ? CheckRecipeResultRegistry.SUCCESSFUL
+                return recipe.mSpecialValue <= Digester.this.getCoilLevel()
+                    .getHeat() ? CheckRecipeResultRegistry.SUCCESSFUL
                         : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
             }
 
@@ -175,18 +179,29 @@ public class Digester extends GT_MetaTileEntity_EnhancedMultiBlockBase<Digester>
     }
 
     public ITexture[] getTexture(IGregTechTileEntity te, ForgeDirection side, ForgeDirection facing, int colorIndex,
-            boolean active, boolean redstone) {
+        boolean active, boolean redstone) {
 
         // Oil Cracker textures cuz I'm lazy
 
         if (side == facing) {
-            if (active) return new ITexture[] { casingTexturePages[0][47],
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW).extFacing().glow()
-                            .build() };
-            return new ITexture[] { casingTexturePages[0][47],
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_OIL_CRACKER).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_OIL_CRACKER_GLOW).extFacing().glow().build() };
+            if (active) return new ITexture[] { casingTexturePages[0][47], TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
+            return new ITexture[] { casingTexturePages[0][47], TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_OIL_CRACKER)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_OIL_CRACKER_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
         }
         return new ITexture[] { casingTexturePages[0][47] };
     }
@@ -194,12 +209,19 @@ public class Digester extends GT_MetaTileEntity_EnhancedMultiBlockBase<Digester>
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Digester").addInfo("Controller block for the Digester")
-                .addInfo("Input ores and fluid, output water.").addInfo(BLUEPRINT_INFO).addSeparator()
-                .addController("Front bottom").addInputHatch("Hint block with dot 1")
-                .addInputBus("Hint block with dot 1").addOutputHatch("Hint block with dot 1")
-                .addOutputBus("Hint block with dot 1").addMaintenanceHatch("Hint block with dot 1")
-                .addMufflerHatch("Hint block with dot 1").toolTipFinisher("GTNH: Lanthanides");
+        tt.addMachineType("Digester")
+            .addInfo("Controller block for the Digester")
+            .addInfo("Input ores and fluid, output water.")
+            .addInfo(BLUEPRINT_INFO)
+            .addSeparator()
+            .addController("Front bottom")
+            .addInputHatch("Hint block with dot 1")
+            .addInputBus("Hint block with dot 1")
+            .addOutputHatch("Hint block with dot 1")
+            .addOutputBus("Hint block with dot 1")
+            .addMaintenanceHatch("Hint block with dot 1")
+            .addMufflerHatch("Hint block with dot 1")
+            .toolTipFinisher("GTNH: Lanthanides");
         return tt;
     }
 

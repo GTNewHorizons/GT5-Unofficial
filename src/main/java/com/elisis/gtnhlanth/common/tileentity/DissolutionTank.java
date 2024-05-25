@@ -53,24 +53,25 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 
 public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<DissolutionTank>
-        implements ISurvivalConstructable, ISecondaryDescribable {
+    implements ISurvivalConstructable, ISecondaryDescribable {
 
     private final IStructureDefinition<DissolutionTank> multiDefinition = StructureDefinition.<DissolutionTank>builder()
-            .addShape(
-                    mName,
-                    transpose(
-                            new String[][] { { " sss ", "sssss", "sssss", "sssss", " sss " },
-                                    { "sgggs", "g---g", "g---g", "g---g", "sgggs" },
-                                    { "sgggs", "g---g", "g---g", "g---g", "sgggs" },
-                                    { "ss~ss", "shhhs", "shhhs", "shhhs", "sssss" },
-                                    { "s   s", "     ", "     ", "     ", "s   s" } }))
-            .addElement(
-                    's',
-                    buildHatchAdder(DissolutionTank.class)
-                            .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy).casingIndex(49)
-                            .dot(1).buildAndChain(GregTech_API.sBlockCasings4, 1))
-            .addElement('h', ofBlock(GregTech_API.sBlockCasings1, 11))
-            .addElement('g', ofBlockAdder(DissolutionTank::addGlass, ItemRegistry.bw_glasses[0], 1)).build();
+        .addShape(
+            mName,
+            transpose(
+                new String[][] { { " sss ", "sssss", "sssss", "sssss", " sss " },
+                    { "sgggs", "g---g", "g---g", "g---g", "sgggs" }, { "sgggs", "g---g", "g---g", "g---g", "sgggs" },
+                    { "ss~ss", "shhhs", "shhhs", "shhhs", "sssss" }, { "s   s", "     ", "     ", "     ", "s   s" } }))
+        .addElement(
+            's',
+            buildHatchAdder(DissolutionTank.class)
+                .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy)
+                .casingIndex(49)
+                .dot(1)
+                .buildAndChain(GregTech_API.sBlockCasings4, 1))
+        .addElement('h', ofBlock(GregTech_API.sBlockCasings1, 11))
+        .addElement('g', ofBlockAdder(DissolutionTank::addGlass, ItemRegistry.bw_glasses[0], 1))
+        .build();
 
     public DissolutionTank(String name) {
         super(name);
@@ -158,8 +159,10 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
         // ? fluidInputOne
         // : fluidInputTwo);
         // GT_Log.out.print(majorInput.getLocalizedName());
-        if (fluidInputOne.getUnlocalizedName().equals(majorGenericFluid.getUnlocalizedName())) {
-            if (fluidInputTwo.getUnlocalizedName().equals(minorGenericFluid.getUnlocalizedName())) {
+        if (fluidInputOne.getUnlocalizedName()
+            .equals(majorGenericFluid.getUnlocalizedName())) {
+            if (fluidInputTwo.getUnlocalizedName()
+                .equals(minorGenericFluid.getUnlocalizedName())) {
                 // majorInput = fluidInputOne;
                 majorAmount = fluidInputOne.amount;
                 // minorInput = fluidInputTwo;
@@ -167,16 +170,18 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
                 // GT_Log.out.print("in first IF");
             } else return false; // No valid other input
 
-        } else if (fluidInputTwo.getUnlocalizedName().equals(majorGenericFluid.getUnlocalizedName())) {
-            if (fluidInputOne.getUnlocalizedName().equals(minorGenericFluid.getUnlocalizedName())) {
-                // majorInput = fluidInputTwo;
-                majorAmount = fluidInputTwo.amount;
-                // minorInput = fluidInputOne;
-                minorAmount = fluidInputOne.amount;
-                // GT_Log.out.print("in second if");
-            } else return false;
+        } else if (fluidInputTwo.getUnlocalizedName()
+            .equals(majorGenericFluid.getUnlocalizedName())) {
+                if (fluidInputOne.getUnlocalizedName()
+                    .equals(minorGenericFluid.getUnlocalizedName())) {
+                    // majorInput = fluidInputTwo;
+                    majorAmount = fluidInputTwo.amount;
+                    // minorInput = fluidInputOne;
+                    minorAmount = fluidInputOne.amount;
+                    // GT_Log.out.print("in second if");
+                } else return false;
 
-        } else return false;
+            } else return false;
 
         // GT_Log.out.print("out of switch weirdness");
 
@@ -215,16 +220,27 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity te, ForgeDirection side, ForgeDirection facing, int colorIndex,
-            boolean active, boolean redstone) {
+        boolean active, boolean redstone) {
 
         if (side == facing) {
-            if (active) return new ITexture[] { casingTexturePages[0][49],
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW).extFacing().glow()
-                            .build() };
-            return new ITexture[] { casingTexturePages[0][49],
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_OIL_CRACKER).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_OIL_CRACKER_GLOW).extFacing().glow().build() };
+            if (active) return new ITexture[] { casingTexturePages[0][49], TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
+            return new ITexture[] { casingTexturePages[0][49], TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_OIL_CRACKER)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_OIL_CRACKER_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
         }
         return new ITexture[] { casingTexturePages[0][49] };
     }
@@ -232,13 +248,19 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Dissolution Tank").addInfo("Controller block for the Dissolution Tank")
-                .addInfo("Input Water and Fluid, output Fluid")
-                .addInfo("You must input the Fluids at the correct Ratio").addInfo(BLUEPRINT_INFO).addSeparator()
-                .addController("Front bottom").addInputHatch("Hint block with dot 1")
-                .addInputBus("Hint block with dot 1").addOutputHatch("Hint block with dot 1")
-                .addOutputBus("Hint block with dot 1").addMaintenanceHatch("Hint block with dot 1")
-                .toolTipFinisher("GTNH: Lanthanides");
+        tt.addMachineType("Dissolution Tank")
+            .addInfo("Controller block for the Dissolution Tank")
+            .addInfo("Input Water and Fluid, output Fluid")
+            .addInfo("You must input the Fluids at the correct Ratio")
+            .addInfo(BLUEPRINT_INFO)
+            .addSeparator()
+            .addController("Front bottom")
+            .addInputHatch("Hint block with dot 1")
+            .addInputBus("Hint block with dot 1")
+            .addOutputHatch("Hint block with dot 1")
+            .addOutputBus("Hint block with dot 1")
+            .addMaintenanceHatch("Hint block with dot 1")
+            .toolTipFinisher("GTNH: Lanthanides");
 
         return tt;
     }
