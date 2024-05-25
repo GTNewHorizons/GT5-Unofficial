@@ -36,7 +36,7 @@ public class GTNHLanthanides {
 
     public static Logger LOG = Logger.getLogger("GTNH:Lanthanides");
 
-    @Mod.Instance
+    @Mod.Instance(Tags.MODID)
     public static GTNHLanthanides instance;
 
     @SidedProxy(
