@@ -34,7 +34,6 @@ import static goodgenerator.items.MyMaterial.towEthyl1Hexanol;
 import static goodgenerator.items.MyMaterial.triniumSulphate;
 import static goodgenerator.items.MyMaterial.wasteLiquid;
 import static goodgenerator.main.GG_Config_Loader.EnableNaquadahRework;
-import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
@@ -100,76 +99,72 @@ public class NaquadahReworkRecipeLoader {
 
         if (!EnableNaquadahRework) return;
 
-        if (GTPlusPlus.isModLoaded()) {
-            try {
-                // Naquadah (UEV)
-                CORE.RA.addQuantumTransformerRecipe(
-                    new ItemStack[] { naquadahEarth.get(OrePrefixes.dust, 32), Materials.Sodium.getDust(64),
-                        Materials.Carbon.getDust(1), GT_Utility.copyAmount(0, GenericChem.mSimpleNaquadahCatalyst) },
-                    new FluidStack[] { Materials.Hydrogen.getGas(64000L), Materials.Fluorine.getGas(64000L),
-                        Materials.Oxygen.getGas(100L) },
-                    new FluidStack[] {},
-                    new ItemStack[] { inertNaquadah.get(OrePrefixes.dust, 1), Materials.Titanium.getDust(64),
-                        Materials.Adamantium.getDust(64), Materials.Gallium.getDust(64) },
-                    new int[] { 2500, 2500, 2500, 2500 },
-                    10 * 20,
-                    (int) GT_Values.VP[10],
-                    2);
-                // Enriched Naquadah (UIV)
-                CORE.RA.addQuantumTransformerRecipe(
-                    new ItemStack[] { enrichedNaquadahEarth.get(OrePrefixes.dust, 32), Materials.Zinc.getDust(64),
-                        Materials.Carbon.getDust(1), GT_Utility.copyAmount(0, GenericChem.mSimpleNaquadahCatalyst) },
-                    new FluidStack[] { Materials.SulfuricAcid.getFluid(16000), Materials.Oxygen.getGas(100L) },
-                    new FluidStack[] { wasteLiquid.getFluidOrGas(32000) },
-                    new ItemStack[] { inertEnrichedNaquadah.get(OrePrefixes.dust, 1), Materials.Trinium.getDust(64), },
-                    new int[] { 3300, 3300, 3300 },
-                    10 * 20,
-                    (int) GT_Values.VP[11],
-                    2);
-                // Naquadria (UMV)
-                CORE.RA.addQuantumTransformerRecipe(
-                    new ItemStack[] { naquadriaEarth.get(OrePrefixes.dust, 32), Materials.Magnesium.getDust(64),
-                        GT_Utility.copyAmount(0, GenericChem.mAdvancedNaquadahCatalyst) },
-                    new FluidStack[] { Materials.PhosphoricAcid.getFluid(16000), Materials.SulfuricAcid.getFluid(16000),
-                        Materials.Oxygen.getGas(100L) },
-                    new FluidStack[] {},
-                    new ItemStack[] { inertNaquadria.get(OrePrefixes.dust, 1), Materials.Barium.getDust(64),
-                        Materials.Indium.getDust(64), ItemList.NaquadriaSupersolid.get(1) },
-                    new int[] { 2500, 2500, 2500, 2500 },
-                    5 * 20,
-                    (int) GT_Values.VP[12],
-                    3);
-                // Activate Them
-                MyRecipeAdder.instance.addNeutronActivatorRecipe(
-                    new FluidStack[] { Materials.Nickel.getPlasma(144 * 16) },
-                    new ItemStack[] { inertNaquadah.get(OrePrefixes.dust, 64),
-                        inertNaquadah.get(OrePrefixes.dust, 32) },
-                    new FluidStack[] { Materials.Naquadah.getMolten(144 * 9216) },
-                    new ItemStack[] { Materials.Nickel.getDust(16) },
-                    2000,
-                    600,
-                    500);
-                MyRecipeAdder.instance.addNeutronActivatorRecipe(
-                    new FluidStack[] { Materials.Titanium.getPlasma(16 * 144) },
-                    new ItemStack[] { inertEnrichedNaquadah.get(OrePrefixes.dust, 64),
-                        inertEnrichedNaquadah.get(OrePrefixes.dust, 32) },
-                    new FluidStack[] { Materials.NaquadahEnriched.getMolten(144 * 9216) },
-                    new ItemStack[] { Materials.Titanium.getDust(16) },
-                    2000,
-                    900,
-                    850);
-                MyRecipeAdder.instance.addNeutronActivatorRecipe(
-                    new FluidStack[] { Materials.Americium.getPlasma(144 * 16) },
-                    new ItemStack[] { inertNaquadria.get(OrePrefixes.dust, 64),
-                        inertNaquadria.get(OrePrefixes.dust, 32) },
-                    new FluidStack[] { Materials.Naquadria.getMolten(144 * 9216) },
-                    new ItemStack[] { Materials.Americium.getDust(16) },
-                    2000,
-                    1100,
-                    1080);
-            } catch (Throwable t) {
-                // Cry about it
-            }
+        try {
+            // Naquadah (UEV)
+            CORE.RA.addQuantumTransformerRecipe(
+                new ItemStack[] { naquadahEarth.get(OrePrefixes.dust, 32), Materials.Sodium.getDust(64),
+                    Materials.Carbon.getDust(1), GT_Utility.copyAmount(0, GenericChem.mSimpleNaquadahCatalyst) },
+                new FluidStack[] { Materials.Hydrogen.getGas(64000L), Materials.Fluorine.getGas(64000L),
+                    Materials.Oxygen.getGas(100L) },
+                new FluidStack[] {},
+                new ItemStack[] { inertNaquadah.get(OrePrefixes.dust, 1), Materials.Titanium.getDust(64),
+                    Materials.Adamantium.getDust(64), Materials.Gallium.getDust(64) },
+                new int[] { 2500, 2500, 2500, 2500 },
+                10 * 20,
+                (int) GT_Values.VP[10],
+                2);
+            // Enriched Naquadah (UIV)
+            CORE.RA.addQuantumTransformerRecipe(
+                new ItemStack[] { enrichedNaquadahEarth.get(OrePrefixes.dust, 32), Materials.Zinc.getDust(64),
+                    Materials.Carbon.getDust(1), GT_Utility.copyAmount(0, GenericChem.mSimpleNaquadahCatalyst) },
+                new FluidStack[] { Materials.SulfuricAcid.getFluid(16000), Materials.Oxygen.getGas(100L) },
+                new FluidStack[] { wasteLiquid.getFluidOrGas(32000) },
+                new ItemStack[] { inertEnrichedNaquadah.get(OrePrefixes.dust, 1), Materials.Trinium.getDust(64), },
+                new int[] { 3300, 3300, 3300 },
+                10 * 20,
+                (int) GT_Values.VP[11],
+                2);
+            // Naquadria (UMV)
+            CORE.RA.addQuantumTransformerRecipe(
+                new ItemStack[] { naquadriaEarth.get(OrePrefixes.dust, 32), Materials.Magnesium.getDust(64),
+                    GT_Utility.copyAmount(0, GenericChem.mAdvancedNaquadahCatalyst) },
+                new FluidStack[] { Materials.PhosphoricAcid.getFluid(16000), Materials.SulfuricAcid.getFluid(16000),
+                    Materials.Oxygen.getGas(100L) },
+                new FluidStack[] {},
+                new ItemStack[] { inertNaquadria.get(OrePrefixes.dust, 1), Materials.Barium.getDust(64),
+                    Materials.Indium.getDust(64), ItemList.NaquadriaSupersolid.get(1) },
+                new int[] { 2500, 2500, 2500, 2500 },
+                5 * 20,
+                (int) GT_Values.VP[12],
+                3);
+            // Activate Them
+            MyRecipeAdder.instance.addNeutronActivatorRecipe(
+                new FluidStack[] { Materials.Nickel.getPlasma(144 * 16) },
+                new ItemStack[] { inertNaquadah.get(OrePrefixes.dust, 64), inertNaquadah.get(OrePrefixes.dust, 32) },
+                new FluidStack[] { Materials.Naquadah.getMolten(144 * 9216) },
+                new ItemStack[] { Materials.Nickel.getDust(16) },
+                2000,
+                600,
+                500);
+            MyRecipeAdder.instance.addNeutronActivatorRecipe(
+                new FluidStack[] { Materials.Titanium.getPlasma(16 * 144) },
+                new ItemStack[] { inertEnrichedNaquadah.get(OrePrefixes.dust, 64),
+                    inertEnrichedNaquadah.get(OrePrefixes.dust, 32) },
+                new FluidStack[] { Materials.NaquadahEnriched.getMolten(144 * 9216) },
+                new ItemStack[] { Materials.Titanium.getDust(16) },
+                2000,
+                900,
+                850);
+            MyRecipeAdder.instance.addNeutronActivatorRecipe(
+                new FluidStack[] { Materials.Americium.getPlasma(144 * 16) },
+                new ItemStack[] { inertNaquadria.get(OrePrefixes.dust, 64), inertNaquadria.get(OrePrefixes.dust, 32) },
+                new FluidStack[] { Materials.Naquadria.getMolten(144 * 9216) },
+                new ItemStack[] { Materials.Americium.getDust(16) },
+                2000,
+                1100,
+                1080);
+        } catch (Throwable t) {
+            // Cry about it
         }
 
         // Fix shit
@@ -1152,68 +1147,64 @@ public class NaquadahReworkRecipeLoader {
 
         GT_Log.out.print("Multi Chemical Reactor done!\n");
 
-        if (GTPlusPlus.isModLoaded()) {
-            // For Gt++ Multi Centrifuge
-            // Apparently NEI will break down if one modifies the hash list directly.
-            // GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.mRecipeList.clear();
-            // RecipeGen_MultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
-            // RecipeMaps.centrifugeRecipes,
-            // GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT);
-            // GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.reInit();
+        // For Gt++ Multi Centrifuge
+        // Apparently NEI will break down if one modifies the hash list directly.
+        // GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.mRecipeList.clear();
+        // RecipeGen_MultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
+        // RecipeMaps.centrifugeRecipes,
+        // GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT);
+        // GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.reInit();
 
-            // For Simple Washer
-            for (GT_Recipe recipe : GTPPRecipeMaps.simpleWasherRecipes.getAllRecipes()) {
-                ItemStack input = recipe.mInputs[0];
-                if (GT_Utility.isStackValid(input)) {
-                    int[] oreDict = OreDictionary.getOreIDs(input);
-                    for (int oreDictID : oreDict) {
-                        if (OreDictionary.getOreName(oreDictID)
-                            .startsWith("dustImpureNaq")
-                            || OreDictionary.getOreName(oreDictID)
-                                .startsWith("dustPureNaq")) {
-                            GT_Recipe tRecipe = recipe.copy();
-                            boolean modified = false;
-                            for (int i = 0; i < tRecipe.mOutputs.length; i++) {
-                                if (!GT_Utility.isStackValid(tRecipe.mOutputs[i])) continue;
-                                if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDust(1))) {
-                                    tRecipe.mOutputs[i] = GT_Utility.copyAmount(
-                                        tRecipe.mOutputs[i].stackSize,
-                                        naquadahEarth.get(OrePrefixes.dust, 1));
-                                    modified = true;
-                                } else if (tRecipe.mOutputs[i].isItemEqual(Materials.NaquadahEnriched.getDust(1))) {
-                                    tRecipe.mOutputs[i] = GT_Utility.copyAmount(
-                                        tRecipe.mOutputs[i].stackSize,
-                                        enrichedNaquadahEarth.get(OrePrefixes.dust, 1));
-                                    modified = true;
-                                } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadria.getDust(1))) {
-                                    tRecipe.mOutputs[i] = GT_Utility.copyAmount(
-                                        tRecipe.mOutputs[i].stackSize,
-                                        naquadriaEarth.get(OrePrefixes.dust, 1));
-                                    modified = true;
-                                }
+        // For Simple Washer
+        for (GT_Recipe recipe : GTPPRecipeMaps.simpleWasherRecipes.getAllRecipes()) {
+            ItemStack input = recipe.mInputs[0];
+            if (GT_Utility.isStackValid(input)) {
+                int[] oreDict = OreDictionary.getOreIDs(input);
+                for (int oreDictID : oreDict) {
+                    if (OreDictionary.getOreName(oreDictID)
+                        .startsWith("dustImpureNaq")
+                        || OreDictionary.getOreName(oreDictID)
+                            .startsWith("dustPureNaq")) {
+                        GT_Recipe tRecipe = recipe.copy();
+                        boolean modified = false;
+                        for (int i = 0; i < tRecipe.mOutputs.length; i++) {
+                            if (!GT_Utility.isStackValid(tRecipe.mOutputs[i])) continue;
+                            if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDust(1))) {
+                                tRecipe.mOutputs[i] = GT_Utility
+                                    .copyAmount(tRecipe.mOutputs[i].stackSize, naquadahEarth.get(OrePrefixes.dust, 1));
+                                modified = true;
+                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.NaquadahEnriched.getDust(1))) {
+                                tRecipe.mOutputs[i] = GT_Utility.copyAmount(
+                                    tRecipe.mOutputs[i].stackSize,
+                                    enrichedNaquadahEarth.get(OrePrefixes.dust, 1));
+                                modified = true;
+                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadria.getDust(1))) {
+                                tRecipe.mOutputs[i] = GT_Utility
+                                    .copyAmount(tRecipe.mOutputs[i].stackSize, naquadriaEarth.get(OrePrefixes.dust, 1));
+                                modified = true;
                             }
-                            if (modified) {
-                                reAdd.add(tRecipe);
-                                remove.add(recipe);
-                            }
-                            break;
                         }
+                        if (modified) {
+                            reAdd.add(tRecipe);
+                            remove.add(recipe);
+                        }
+                        break;
                     }
                 }
             }
-            GTPPRecipeMaps.simpleWasherRecipes.getBackend()
-                .removeRecipes(remove);
-            reAdd.forEach(GTPPRecipeMaps.simpleWasherRecipes::add);
-            GTPPRecipeMaps.simpleWasherRecipes.getBackend()
-                .reInit();
-
-            GT_Log.out.print(GoodGenerator.MOD_ID + ": Replace " + remove.size() + "! ");
-
-            remove.clear();
-            reAdd.clear();
-
-            GT_Log.out.print("Simple Washer done!\n");
         }
+        GTPPRecipeMaps.simpleWasherRecipes.getBackend()
+            .removeRecipes(remove);
+        reAdd.forEach(GTPPRecipeMaps.simpleWasherRecipes::add);
+        GTPPRecipeMaps.simpleWasherRecipes.getBackend()
+            .reInit();
+
+        GT_Log.out.print(GoodGenerator.MOD_ID + ": Replace " + remove.size() + "! ");
+
+        remove.clear();
+        reAdd.clear();
+
+        GT_Log.out.print("Simple Washer done!\n");
 
         // For Cauldron Wash
         registerCauldronCleaningFor(Materials.Naquadah, naquadahEarth.getBridgeMaterial());

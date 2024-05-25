@@ -976,7 +976,7 @@ public class PlatinumSludgeOverHaul {
             if (obj instanceof ShapedRecipes || obj instanceof ShapelessRecipes) {
                 inputName = "recipeOutput";
                 inputItemName = "recipeItems";
-            } else if (GTPlusPlus.isModLoaded()) {
+            } else {
                 try {
                     if (Class.forName("gtPlusPlus.api.objects.minecraft.ShapedRecipe")
                         .isAssignableFrom(obj.getClass()))
@@ -1109,33 +1109,33 @@ public class PlatinumSludgeOverHaul {
             }
         }
 
-        if (GTPlusPlus.isModLoaded()) {
-            try {
-                if (Class.forName("gtPlusPlus.core.item.base.BaseItemComponent")
-                    .isAssignableFrom(
-                        stack.getItem()
-                            .getClass())
-                    && !stack.getUnlocalizedName()
-                        .contains("dust")
-                    && !stack.getUnlocalizedName()
-                        .contains("Dust"))
-                    return true;
-                if (Class.forName("gtPlusPlus.core.block.base.BlockBaseModular")
-                    .isAssignableFrom(
-                        Block.getBlockFromItem(stack.getItem())
-                            .getClass()))
-                    return true;
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-            if (stack.getItem() == GT_ModHandler.getModItem(GTPlusPlus.ID, "itemDustHeLiCoPtEr", 1L)
-                .getItem()) {
+        try {
+            if (Class.forName("gtPlusPlus.core.item.base.BaseItemComponent")
+                .isAssignableFrom(
+                    stack.getItem()
+                        .getClass())
+                && !stack.getUnlocalizedName()
+                    .contains("dust")
+                && !stack.getUnlocalizedName()
+                    .contains("Dust")) {
                 return true;
             }
-            if (stack.getItem() == GT_ModHandler.getModItem(GTPlusPlus.ID, "itemDustWhiteMetal", 1L)
-                .getItem()) {
+            if (Class.forName("gtPlusPlus.core.block.base.BlockBaseModular")
+                .isAssignableFrom(
+                    Block.getBlockFromItem(stack.getItem())
+                        .getClass())) {
                 return true;
             }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (stack.getItem() == GT_ModHandler.getModItem(GTPlusPlus.ID, "itemDustHeLiCoPtEr", 1L)
+            .getItem()) {
+            return true;
+        }
+        if (stack.getItem() == GT_ModHandler.getModItem(GTPlusPlus.ID, "itemDustWhiteMetal", 1L)
+            .getItem()) {
+            return true;
         }
         if (GalaxySpace.isModLoaded()) {
             if (stack.getItem() == GT_ModHandler.getModItem(GalaxySpace.ID, "metalsblock", 1L, 7)

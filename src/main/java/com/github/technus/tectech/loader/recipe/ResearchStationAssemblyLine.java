@@ -67,8 +67,7 @@ public class ResearchStationAssemblyLine implements Runnable {
         itemPartsUXVAsslineRecipes();
         addWirelessEnergyRecipes();
 
-        if (TinkersGregworks.isModLoaded() && GoodGenerator.isModLoaded() // Shirabon
-            && Avaritia.isModLoaded() // Infinity, Cosmic Neutronium
+        if (TinkersGregworks.isModLoaded() && Avaritia.isModLoaded() // Infinity, Cosmic Neutronium
             && ExtraUtilities.isModLoaded() // Bedrockium
         ) {
             addEOHRecipes();
@@ -118,47 +117,44 @@ public class ResearchStationAssemblyLine implements Runnable {
             60 * 20,
             8_000_000);
 
-        if (GTPlusPlus.isModLoaded()) {
-            // Hypogen Coil
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
-                ItemList.Casing_Coil_Infinity.get(1),
-                16_777_216 * 2,
-                2048 * 2,
-                32_000_000,
-                1,
-                new Object[] { new Object[] { OrePrefixes.circuit.get(Materials.Bio), 1L },
-                    GT_OreDictUnificator.get("wireGt02Hypogen", 8L),
-                    getModItem(GTPlusPlus.ID, "itemScrewHypogen", 8, 0),
-                    getModItem(NewHorizonsCoreMod.ID, "item.MicaInsulatorFoil", 64, 0),
-                    getModItem(NewHorizonsCoreMod.ID, "item.MicaInsulatorFoil", 64, 0),
-                    getModItem(NewHorizonsCoreMod.ID, "item.MicaInsulatorFoil", 64, 0), },
-                new FluidStack[] { Materials.Infinity.getMolten(576), },
-                ItemList.Casing_Coil_Hypogen.get(1),
-                60 * 20,
-                8000000 * 4);
+        // Hypogen Coil
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+            ItemList.Casing_Coil_Infinity.get(1),
+            16_777_216 * 2,
+            2048 * 2,
+            32_000_000,
+            1,
+            new Object[] { new Object[] { OrePrefixes.circuit.get(Materials.Bio), 1L },
+                GT_OreDictUnificator.get("wireGt02Hypogen", 8L), getModItem(GTPlusPlus.ID, "itemScrewHypogen", 8, 0),
+                getModItem(NewHorizonsCoreMod.ID, "item.MicaInsulatorFoil", 64, 0),
+                getModItem(NewHorizonsCoreMod.ID, "item.MicaInsulatorFoil", 64, 0),
+                getModItem(NewHorizonsCoreMod.ID, "item.MicaInsulatorFoil", 64, 0), },
+            new FluidStack[] { Materials.Infinity.getMolten(576), },
+            ItemList.Casing_Coil_Hypogen.get(1),
+            60 * 20,
+            8000000 * 4);
 
-            // Eternal coil
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
-                ItemList.Casing_Coil_Hypogen.get(1),
-                16_777_216 * 4,
-                8_192,
-                128_000_000,
-                1,
-                new Object[] { new Object[] { OrePrefixes.circuit.get(Materials.Optical), 1L },
-                    GT_OreDictUnificator.get(OrePrefixes.wireGt02, MaterialsUEVplus.SpaceTime, 8),
-                    GT_OreDictUnificator.get(OrePrefixes.screw, MaterialsUEVplus.SpaceTime, 8),
-                    getModItem(EternalSingularity.ID, "eternal_singularity", 1L),
-                    getModItem(NewHorizonsCoreMod.ID, "item.MicaInsulatorFoil", 64, 0),
-                    getModItem(NewHorizonsCoreMod.ID, "item.MicaInsulatorFoil", 64, 0),
-                    getModItem(NewHorizonsCoreMod.ID, "item.MicaInsulatorFoil", 64, 0),
-                    getModItem(NewHorizonsCoreMod.ID, "item.MicaInsulatorFoil", 64, 0),
-                    getModItem(NewHorizonsCoreMod.ID, "item.MicaInsulatorFoil", 64, 0),
-                    getModItem(NewHorizonsCoreMod.ID, "item.MicaInsulatorFoil", 64, 0), },
-                new FluidStack[] { new FluidStack(FluidRegistry.getFluid("molten.hypogen"), 576), },
-                ItemList.Casing_Coil_Eternal.get(1),
-                60 * 20,
-                8_000_000 * 16);
-        }
+        // Eternal coil
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+            ItemList.Casing_Coil_Hypogen.get(1),
+            16_777_216 * 4,
+            8_192,
+            128_000_000,
+            1,
+            new Object[] { new Object[] { OrePrefixes.circuit.get(Materials.Optical), 1L },
+                GT_OreDictUnificator.get(OrePrefixes.wireGt02, MaterialsUEVplus.SpaceTime, 8),
+                GT_OreDictUnificator.get(OrePrefixes.screw, MaterialsUEVplus.SpaceTime, 8),
+                getModItem(EternalSingularity.ID, "eternal_singularity", 1L),
+                getModItem(NewHorizonsCoreMod.ID, "item.MicaInsulatorFoil", 64, 0),
+                getModItem(NewHorizonsCoreMod.ID, "item.MicaInsulatorFoil", 64, 0),
+                getModItem(NewHorizonsCoreMod.ID, "item.MicaInsulatorFoil", 64, 0),
+                getModItem(NewHorizonsCoreMod.ID, "item.MicaInsulatorFoil", 64, 0),
+                getModItem(NewHorizonsCoreMod.ID, "item.MicaInsulatorFoil", 64, 0),
+                getModItem(NewHorizonsCoreMod.ID, "item.MicaInsulatorFoil", 64, 0), },
+            new FluidStack[] { new FluidStack(FluidRegistry.getFluid("molten.hypogen"), 576), },
+            ItemList.Casing_Coil_Eternal.get(1),
+            60 * 20,
+            8_000_000 * 16);
 
         // UHV-UMV Energy Hatch & Dynamo
         {
@@ -818,28 +814,26 @@ public class ResearchStationAssemblyLine implements Runnable {
         }
 
         // Deep Dark Portal
-        if (BartWorks.isModLoaded()) {
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
-                getModItem(NewHorizonsCoreMod.ID, "item.HeavyDutyPlateTier8", 1, 0),
-                16_777_216,
-                2048,
-                2_000_000,
-                64,
-                new Object[] { getModItem(ExtraUtilities.ID, "cobblestone_compressed", 1, 7),
-                    getModItem(IndustrialCraft2.ID, "blockMachine2", 1, 0),
-                    GT_OreDictUnificator.get(OrePrefixes.block, Materials.Infinity, 4L),
-                    new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 1 },
-                    new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 1 },
-                    new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 1 },
-                    new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 1 },
-                    getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 32, 0), ItemList.Robot_Arm_UMV.get(4),
-                    ItemList.Emitter_UMV.get(4), ItemList.Sensor_UMV.get(4), },
-                new FluidStack[] { new FluidStack(FluidRegistry.getFluid("oganesson"), 50000),
-                    Materials.Infinity.getMolten(144L * 512), Materials.Cheese.getMolten(232000L), },
-                ItemList.Block_BedrockiumCompressed.get(1),
-                10000,
-                5000000);
-        }
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+            getModItem(NewHorizonsCoreMod.ID, "item.HeavyDutyPlateTier8", 1, 0),
+            16_777_216,
+            2048,
+            2_000_000,
+            64,
+            new Object[] { getModItem(ExtraUtilities.ID, "cobblestone_compressed", 1, 7),
+                getModItem(IndustrialCraft2.ID, "blockMachine2", 1, 0),
+                GT_OreDictUnificator.get(OrePrefixes.block, Materials.Infinity, 4L),
+                new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 1 },
+                new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 1 },
+                new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 1 },
+                new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 1 },
+                getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 32, 0), ItemList.Robot_Arm_UMV.get(4),
+                ItemList.Emitter_UMV.get(4), ItemList.Sensor_UMV.get(4), },
+            new FluidStack[] { new FluidStack(FluidRegistry.getFluid("oganesson"), 50000),
+                Materials.Infinity.getMolten(144L * 512), Materials.Cheese.getMolten(232000L), },
+            ItemList.Block_BedrockiumCompressed.get(1),
+            10000,
+            5000000);
 
         // Batteries
         {
@@ -965,127 +959,125 @@ public class ResearchStationAssemblyLine implements Runnable {
             }
         }
 
-        if (GTPlusPlus.isModLoaded()) {
-            // MK4 Computer
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
-                GregtechItemList.Compressed_Fusion_Reactor.get(1),
-                320000,
-                512,
-                2000000,
-                1,
-                new Object[] { GregtechItemList.Casing_Fusion_Internal.get(1),
-                    new Object[] { OrePrefixes.circuit.get(Materials.Bio), 1L },
-                    new Object[] { OrePrefixes.circuit.get(Materials.Bio), 1L },
-                    new Object[] { OrePrefixes.circuit.get(Materials.Bio), 1L },
-                    new Object[] { OrePrefixes.circuit.get(Materials.Bio), 1L },
-                    GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Neutronium, 4),
-                    ItemList.Field_Generator_UHV.get(2), ItemList.Circuit_Wafer_QPIC.get(64),
-                    GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUHV, 32) },
-                new FluidStack[] { Materials.UUMatter.getFluid(50000), ALLOY.CINOBITE.getFluidStack(9216),
-                    ALLOY.OCTIRON.getFluidStack(9216), ELEMENT.STANDALONE.ASTRAL_TITANIUM.getFluidStack(9216), },
-                GregtechItemList.FusionComputer_UV2.get(1),
-                6000,
-                2000000);
+        // MK4 Computer
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+            GregtechItemList.Compressed_Fusion_Reactor.get(1),
+            320000,
+            512,
+            2000000,
+            1,
+            new Object[] { GregtechItemList.Casing_Fusion_Internal.get(1),
+                new Object[] { OrePrefixes.circuit.get(Materials.Bio), 1L },
+                new Object[] { OrePrefixes.circuit.get(Materials.Bio), 1L },
+                new Object[] { OrePrefixes.circuit.get(Materials.Bio), 1L },
+                new Object[] { OrePrefixes.circuit.get(Materials.Bio), 1L },
+                GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Neutronium, 4),
+                ItemList.Field_Generator_UHV.get(2), ItemList.Circuit_Wafer_QPIC.get(64),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUHV, 32) },
+            new FluidStack[] { Materials.UUMatter.getFluid(50000), ALLOY.CINOBITE.getFluidStack(9216),
+                ALLOY.OCTIRON.getFluidStack(9216), ELEMENT.STANDALONE.ASTRAL_TITANIUM.getFluidStack(9216), },
+            GregtechItemList.FusionComputer_UV2.get(1),
+            6000,
+            2000000);
 
-            // MK4 Coils
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
-                ItemList.Casing_Fusion_Coil.get(1L),
-                160000,
-                512,
-                2000000,
-                1,
-                new Object[] { ItemList.Energy_LapotronicOrb2.get(16L),
-                    new Object[] { OrePrefixes.circuit.get(Materials.Master), 16L },
-                    new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 8L },
-                    GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 8), ItemList.Emitter_UHV.get(1),
-                    ItemList.Sensor_UHV.get(1), ItemList.Casing_Fusion_Coil.get(1L), },
-                new FluidStack[] { Materials.UUMatter.getFluid(8000L), ALLOY.CINOBITE.getFluidStack(2304),
-                    ALLOY.OCTIRON.getFluidStack(2304), ELEMENT.STANDALONE.ASTRAL_TITANIUM.getFluidStack(2304), },
-                GregtechItemList.Casing_Fusion_Internal.get(1),
-                1200,
-                2000000);
+        // MK4 Coils
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+            ItemList.Casing_Fusion_Coil.get(1L),
+            160000,
+            512,
+            2000000,
+            1,
+            new Object[] { ItemList.Energy_LapotronicOrb2.get(16L),
+                new Object[] { OrePrefixes.circuit.get(Materials.Master), 16L },
+                new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 8L },
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 8), ItemList.Emitter_UHV.get(1),
+                ItemList.Sensor_UHV.get(1), ItemList.Casing_Fusion_Coil.get(1L), },
+            new FluidStack[] { Materials.UUMatter.getFluid(8000L), ALLOY.CINOBITE.getFluidStack(2304),
+                ALLOY.OCTIRON.getFluidStack(2304), ELEMENT.STANDALONE.ASTRAL_TITANIUM.getFluidStack(2304), },
+            GregtechItemList.Casing_Fusion_Internal.get(1),
+            1200,
+            2000000);
 
-            // MK4 Casing
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
-                ItemList.Casing_Fusion2.get(1L),
-                80000,
-                512,
-                2000000,
-                1,
-                new Object[] { new Object[] { OrePrefixes.circuit.get(Materials.Data), 16L },
-                    new Object[] { OrePrefixes.circuit.get(Materials.Elite), 8L },
-                    GT_OreDictUnificator.get(OrePrefixes.block, Materials.TungstenCarbide, 8),
-                    GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 8),
-                    ItemList.Electric_Motor_UHV.get(2), ItemList.Electric_Piston_UHV.get(1),
-                    ItemList.Casing_Fusion2.get(1L), },
-                new FluidStack[] { Materials.UUMatter.getFluid(1000L), ALLOY.CINOBITE.getFluidStack(576),
-                    ALLOY.OCTIRON.getFluidStack(576), ELEMENT.STANDALONE.ASTRAL_TITANIUM.getFluidStack(576), },
-                GregtechItemList.Casing_Fusion_External.get(1),
-                300,
-                2000000);
+        // MK4 Casing
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+            ItemList.Casing_Fusion2.get(1L),
+            80000,
+            512,
+            2000000,
+            1,
+            new Object[] { new Object[] { OrePrefixes.circuit.get(Materials.Data), 16L },
+                new Object[] { OrePrefixes.circuit.get(Materials.Elite), 8L },
+                GT_OreDictUnificator.get(OrePrefixes.block, Materials.TungstenCarbide, 8),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 8),
+                ItemList.Electric_Motor_UHV.get(2), ItemList.Electric_Piston_UHV.get(1),
+                ItemList.Casing_Fusion2.get(1L), },
+            new FluidStack[] { Materials.UUMatter.getFluid(1000L), ALLOY.CINOBITE.getFluidStack(576),
+                ALLOY.OCTIRON.getFluidStack(576), ELEMENT.STANDALONE.ASTRAL_TITANIUM.getFluidStack(576), },
+            GregtechItemList.Casing_Fusion_External.get(1),
+            300,
+            2000000);
 
-            // MK5 Computer
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
-                GregtechItemList.FusionComputer_UV2.get(1),
-                2560000,
-                4096,
-                (int) TierEU.RECIPE_UEV,
-                8,
-                new Object[] { GregtechItemList.Casing_Fusion_Internal2.get(1),
-                    new Object[] { OrePrefixes.circuit.get(Materials.Optical), 1L },
-                    new Object[] { OrePrefixes.circuit.get(Materials.Optical), 1L },
-                    new Object[] { OrePrefixes.circuit.get(Materials.Optical), 1L },
-                    new Object[] { OrePrefixes.circuit.get(Materials.Optical), 1L },
-                    GT_OreDictUnificator.get("plateDenseMetastableOganesson", 4), ItemList.Field_Generator_UEV.get(2),
-                    getItemContainer("PicoWafer").get(64L),
-                    GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUEV, 32) },
-                new FluidStack[] { ELEMENT.getInstance().CURIUM.getFluidStack(9216),
-                    ELEMENT.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(9216), ALLOY.ABYSSAL.getFluidStack(9216),
-                    ELEMENT.STANDALONE.DRAGON_METAL.getFluidStack(9216) },
-                GregtechItemList.FusionComputer_UV3.get(1),
-                6000,
-                (int) TierEU.RECIPE_UEV);
+        // MK5 Computer
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+            GregtechItemList.FusionComputer_UV2.get(1),
+            2560000,
+            4096,
+            (int) TierEU.RECIPE_UEV,
+            8,
+            new Object[] { GregtechItemList.Casing_Fusion_Internal2.get(1),
+                new Object[] { OrePrefixes.circuit.get(Materials.Optical), 1L },
+                new Object[] { OrePrefixes.circuit.get(Materials.Optical), 1L },
+                new Object[] { OrePrefixes.circuit.get(Materials.Optical), 1L },
+                new Object[] { OrePrefixes.circuit.get(Materials.Optical), 1L },
+                GT_OreDictUnificator.get("plateDenseMetastableOganesson", 4), ItemList.Field_Generator_UEV.get(2),
+                getItemContainer("PicoWafer").get(64L),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUEV, 32) },
+            new FluidStack[] { ELEMENT.getInstance().CURIUM.getFluidStack(9216),
+                ELEMENT.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(9216), ALLOY.ABYSSAL.getFluidStack(9216),
+                ELEMENT.STANDALONE.DRAGON_METAL.getFluidStack(9216) },
+            GregtechItemList.FusionComputer_UV3.get(1),
+            6000,
+            (int) TierEU.RECIPE_UEV);
 
-            // MK5 Coils
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
-                GregtechItemList.Casing_Fusion_Internal.get(1),
-                2560000,
-                4096,
-                (int) TierEU.RECIPE_UEV,
-                8,
-                new Object[] { ItemList.Energy_Module.get(16),
-                    new Object[] { OrePrefixes.circuit.get(Materials.Ultimate), 16L },
-                    new Object[] { OrePrefixes.circuit.get(Materials.Infinite), 8L },
-                    ELEMENT.STANDALONE.RHUGNOR.getPlate(8), ItemList.Emitter_UEV.get(1), ItemList.Sensor_UEV.get(1),
-                    getModItem(GoodGenerator.ID, "compactFusionCoil", 1, 2) },
-                new FluidStack[] { ELEMENT.getInstance().NEPTUNIUM.getFluidStack(2304),
-                    ELEMENT.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(2304), ALLOY.ABYSSAL.getFluidStack(2304),
-                    ELEMENT.STANDALONE.DRAGON_METAL.getFluidStack(2304) },
-                GregtechItemList.Casing_Fusion_Internal2.get(1),
-                1200,
-                (int) TierEU.RECIPE_UEV);
+        // MK5 Coils
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+            GregtechItemList.Casing_Fusion_Internal.get(1),
+            2560000,
+            4096,
+            (int) TierEU.RECIPE_UEV,
+            8,
+            new Object[] { ItemList.Energy_Module.get(16),
+                new Object[] { OrePrefixes.circuit.get(Materials.Ultimate), 16L },
+                new Object[] { OrePrefixes.circuit.get(Materials.Infinite), 8L },
+                ELEMENT.STANDALONE.RHUGNOR.getPlate(8), ItemList.Emitter_UEV.get(1), ItemList.Sensor_UEV.get(1),
+                getModItem(GoodGenerator.ID, "compactFusionCoil", 1, 2) },
+            new FluidStack[] { ELEMENT.getInstance().NEPTUNIUM.getFluidStack(2304),
+                ELEMENT.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(2304), ALLOY.ABYSSAL.getFluidStack(2304),
+                ELEMENT.STANDALONE.DRAGON_METAL.getFluidStack(2304) },
+            GregtechItemList.Casing_Fusion_Internal2.get(1),
+            1200,
+            (int) TierEU.RECIPE_UEV);
 
-            // MK5 Casing
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
-                GregtechItemList.Casing_Fusion_External.get(1L),
-                2560000,
-                4096,
-                (int) TierEU.RECIPE_UEV,
-                8,
-                new Object[] { new Object[] { OrePrefixes.circuit.get(Materials.Elite), 16L },
-                    new Object[] { OrePrefixes.circuit.get(Materials.Master), 8L },
-                    GT_OreDictUnificator.get(OrePrefixes.block, Materials.NaquadahAlloy, 8),
-                    ELEMENT.STANDALONE.CHRONOMATIC_GLASS.getPlate(8), ItemList.Electric_Motor_UEV.get(2),
-                    ItemList.Electric_Piston_UEV.get(1), GregtechItemList.Casing_Fusion_External.get(1L) },
-                new FluidStack[] { ELEMENT.getInstance().FERMIUM.getFluidStack(1152),
-                    ELEMENT.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(1152), ALLOY.ABYSSAL.getFluidStack(1152),
-                    ELEMENT.STANDALONE.DRAGON_METAL.getFluidStack(1152) },
-                GregtechItemList.Casing_Fusion_External2.get(1),
-                300,
-                (int) TierEU.RECIPE_UEV);
-        }
+        // MK5 Casing
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+            GregtechItemList.Casing_Fusion_External.get(1L),
+            2560000,
+            4096,
+            (int) TierEU.RECIPE_UEV,
+            8,
+            new Object[] { new Object[] { OrePrefixes.circuit.get(Materials.Elite), 16L },
+                new Object[] { OrePrefixes.circuit.get(Materials.Master), 8L },
+                GT_OreDictUnificator.get(OrePrefixes.block, Materials.NaquadahAlloy, 8),
+                ELEMENT.STANDALONE.CHRONOMATIC_GLASS.getPlate(8), ItemList.Electric_Motor_UEV.get(2),
+                ItemList.Electric_Piston_UEV.get(1), GregtechItemList.Casing_Fusion_External.get(1L) },
+            new FluidStack[] { ELEMENT.getInstance().FERMIUM.getFluidStack(1152),
+                ELEMENT.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(1152), ALLOY.ABYSSAL.getFluidStack(1152),
+                ELEMENT.STANDALONE.DRAGON_METAL.getFluidStack(1152) },
+            GregtechItemList.Casing_Fusion_External2.get(1),
+            300,
+            (int) TierEU.RECIPE_UEV);
 
-        if (BloodMagic.isModLoaded() && KubaTech.isModLoaded() && DraconicEvolution.isModLoaded()) {
+        if (BloodMagic.isModLoaded() && DraconicEvolution.isModLoaded()) {
             // Draconic Evolution Fusion Crafter Controller
             TT_recipeAdder.addResearchableAssemblylineRecipe(
                 getModItem(KubaTech.ID, "defc.casing", 1, 8),
@@ -1188,25 +1180,23 @@ public class ResearchStationAssemblyLine implements Runnable {
             6000,
             500000);
 
-        if (GTPlusPlus.isModLoaded()) {
-            // Debug uncertainty resolver
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
-                CustomItemList.UncertaintyX_Hatch.get(1L),
-                72_000_000,
-                5_120,
-                16_000_000,
-                6,
-                new Object[] { CustomItemList.eM_Computer_Bus.get(1), CustomItemList.hatch_CreativeMaintenance.get(1),
-                    ItemList.Field_Generator_UIV.get(1L), GregtechItemList.Laser_Lens_Special.get(4),
-                    new Object[] { OrePrefixes.circuit.get(Materials.Piko), 2 }, CustomItemList.DATApipe.get(64),
-                    CustomItemList.DATApipe.get(64), ItemList.Cover_Screen.get(1) },
-                new FluidStack[] { Materials.Iridium.getMolten(INGOTS * 100), new FluidStack(solderUEV, 2592),
-                    new FluidStack(ELEMENT.getInstance().NEPTUNIUM.getPlasma(), 20000),
-                    new FluidStack(ELEMENT.getInstance().FERMIUM.getPlasma(), 20000) },
-                CustomItemList.hatch_CreativeUncertainty.get(1),
-                200 * 20,
-                (int) TierEU.RECIPE_UIV);
-        }
+        // Debug uncertainty resolver
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+            CustomItemList.UncertaintyX_Hatch.get(1L),
+            72_000_000,
+            5_120,
+            16_000_000,
+            6,
+            new Object[] { CustomItemList.eM_Computer_Bus.get(1), CustomItemList.hatch_CreativeMaintenance.get(1),
+                ItemList.Field_Generator_UIV.get(1L), GregtechItemList.Laser_Lens_Special.get(4),
+                new Object[] { OrePrefixes.circuit.get(Materials.Piko), 2 }, CustomItemList.DATApipe.get(64),
+                CustomItemList.DATApipe.get(64), ItemList.Cover_Screen.get(1) },
+            new FluidStack[] { Materials.Iridium.getMolten(INGOTS * 100), new FluidStack(solderUEV, 2592),
+                new FluidStack(ELEMENT.getInstance().NEPTUNIUM.getPlasma(), 20000),
+                new FluidStack(ELEMENT.getInstance().FERMIUM.getPlasma(), 20000) },
+            CustomItemList.hatch_CreativeUncertainty.get(1),
+            200 * 20,
+            (int) TierEU.RECIPE_UIV);
     }
 
     private void itemPartsUHVAsslineRecipes() {

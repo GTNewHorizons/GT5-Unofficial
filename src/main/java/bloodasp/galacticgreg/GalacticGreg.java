@@ -1,5 +1,7 @@
 package bloodasp.galacticgreg;
 
+import static gregtech.api.enums.Mods.AppliedEnergistics2;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -13,7 +15,6 @@ import bloodasp.galacticgreg.command.AEStorageCommand;
 import bloodasp.galacticgreg.command.ProfilingCommand;
 import bloodasp.galacticgreg.registry.GalacticGregRegistry;
 import bloodasp.galacticgreg.schematics.SpaceSchematicHandler;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -90,26 +91,21 @@ public class GalacticGreg {
 
         // new WorldGenGaGT().run(); DO NOT UNCOMMENT, was moved to gregtech.loaders.postload.GT_Worldgenloader
 
-        if (Loader.isModLoaded("bartworks")) {
-            for (int f = 0,
-                j = GregTech_API.sWorldgenFile.get("worldgen.GaGregBartworks", "AmountOfCustomLargeVeinSlots", 0); f
-                    < j; f++) {
-                new BW_Worldgen_Ore_Layer_Space(
-                    "mix.custom." + (f < 10 ? "0" : "") + f,
-                    GregTech_API.sWorldgenFile
-                        .get("worldgen.GaGregBartworks." + "mix.custom." + (f < 10 ? "0" : "") + f, "Enabled", false));
-            }
+        for (int f = 0,
+            j = GregTech_API.sWorldgenFile.get("worldgen.GaGregBartworks", "AmountOfCustomLargeVeinSlots", 0); f
+                < j; f++) {
+            new BW_Worldgen_Ore_Layer_Space(
+                "mix.custom." + (f < 10 ? "0" : "") + f,
+                GregTech_API.sWorldgenFile
+                    .get("worldgen.GaGregBartworks." + "mix.custom." + (f < 10 ? "0" : "") + f, "Enabled", false));
+        }
 
-            for (int f = 0,
-                j = GregTech_API.sWorldgenFile.get("worldgen.GaGregBartworks", "AmountOfCustomSmallSlots", 0); f
-                    < j; f++) {
-                new BW_Worldgen_Ore_SmallOre_Space(
-                    "small.custom." + (f < 10 ? "0" : "") + f,
-                    GregTech_API.sWorldgenFile.get(
-                        "worldgen.GaGregBartworks." + "small.custom." + (f < 10 ? "0" : "") + f,
-                        "Enabled",
-                        false));
-            }
+        for (int f = 0, j = GregTech_API.sWorldgenFile.get("worldgen.GaGregBartworks", "AmountOfCustomSmallSlots", 0); f
+            < j; f++) {
+            new BW_Worldgen_Ore_SmallOre_Space(
+                "small.custom." + (f < 10 ? "0" : "") + f,
+                GregTech_API.sWorldgenFile
+                    .get("worldgen.GaGregBartworks." + "small.custom." + (f < 10 ? "0" : "") + f, "Enabled", false));
         }
 
         for (Runnable r : ADDITIONALVEINREGISTER) {
@@ -136,7 +132,7 @@ public class GalacticGreg {
 
         if (GalacticConfig.ProfileOreGen) pEvent.registerServerCommand(new ProfilingCommand());
 
-        if (Loader.isModLoaded("appliedenergistics2") && GalacticConfig.EnableAEExportCommand
+        if (AppliedEnergistics2.isModLoaded() && GalacticConfig.EnableAEExportCommand
             && GalacticConfig.SchematicsEnabled) pEvent.registerServerCommand(new AEStorageCommand());
 
         Logger.trace("Leaving SERVERLOAD");

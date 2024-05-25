@@ -864,15 +864,13 @@ public class RecipeLoader_02 {
                 .addTo(fluidExtractionRecipes);
         }
 
-        if (GTPlusPlus.isModLoaded()) {
-            GT_Values.RA.stdBuilder()
-                .itemInputs(GT_Utility.getIntegratedCircuit(24))
-                .fluidInputs(FluidRegistry.getFluidStack("fluid.coaltaroil", 100))
-                .fluidOutputs(MyMaterial.cyclopentadiene.getFluidOrGas(30))
-                .duration(5 * SECONDS)
-                .eut(TierEU.RECIPE_MV)
-                .addTo(distilleryRecipes);
-        }
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(24))
+            .fluidInputs(FluidRegistry.getFluidStack("fluid.coaltaroil", 100))
+            .fluidOutputs(MyMaterial.cyclopentadiene.getFluidOrGas(30))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(distilleryRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(24))
@@ -947,18 +945,16 @@ public class RecipeLoader_02 {
             30 * SECONDS,
             TierEU.RECIPE_MV);
 
-        if (GTPlusPlus.isModLoaded()) {
-            GT_Values.RA.stdBuilder()
-                .itemInputs(MyMaterial.ferrocene.get(OrePrefixes.dust, 4), Materials.SodiumHydroxide.getDust(8))
-                .fluidInputs(
-                    FluidRegistry.getFluidStack("fluid.kerosene", 40000),
-                    Materials.Naphtha.getFluid(3000),
-                    MyMaterial.diethylamine.getFluidOrGas(1000))
-                .fluidOutputs(MyMaterial.ironedKerosene.getFluidOrGas(44000))
-                .duration(2 * MINUTES)
-                .eut(TierEU.RECIPE_EV)
-                .addTo(multiblockChemicalReactorRecipes);
-        }
+        GT_Values.RA.stdBuilder()
+            .itemInputs(MyMaterial.ferrocene.get(OrePrefixes.dust, 4), Materials.SodiumHydroxide.getDust(8))
+            .fluidInputs(
+                FluidRegistry.getFluidStack("fluid.kerosene", 40000),
+                Materials.Naphtha.getFluid(3000),
+                MyMaterial.diethylamine.getFluidOrGas(1000))
+            .fluidOutputs(MyMaterial.ironedKerosene.getFluidOrGas(44000))
+            .duration(2 * MINUTES)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(multiblockChemicalReactorRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(MyMaterial.ferrocene.get(OrePrefixes.dust, 4))
@@ -1408,82 +1404,78 @@ public class RecipeLoader_02 {
             .addTo(AssemblyLine);
 
         // Compact MK4 Fusion Coil
-        if (GTPlusPlus.isModLoaded()) {
-            MyRecipeAdder.instance.addPreciseAssemblerRecipe(
-                new ItemStack[] { GT_ModHandler.getModItem("miscutils", "gtplusplus.blockcasings.3", 3, 13),
-                    ItemRefer.HiC_T5.get(1), GT_ModHandler.getModItem("miscutils", "item.itemBufferCore4", 1), },
-                new FluidStack[] { FluidRegistry.getFluidStack("molten.energycrystal", 1152),
-                    FluidRegistry.getFluidStack("molten.laurenium", 144) },
-                ItemRefer.Compact_Fusion_Coil_T3.get(1),
-                520000,
-                2000,
-                3);
+        MyRecipeAdder.instance.addPreciseAssemblerRecipe(
+            new ItemStack[] { GT_ModHandler.getModItem(GTPlusPlus.ID, "gtplusplus.blockcasings.3", 3, 13),
+                ItemRefer.HiC_T5.get(1), GT_ModHandler.getModItem(GTPlusPlus.ID, "item.itemBufferCore4", 1), },
+            new FluidStack[] { FluidRegistry.getFluidStack("molten.energycrystal", 1152),
+                FluidRegistry.getFluidStack("molten.laurenium", 144) },
+            ItemRefer.Compact_Fusion_Coil_T3.get(1),
+            520000,
+            2000,
+            3);
 
-            // Compact MK4 Fusion Disassembly Recipe
-            GT_Values.RA.stdBuilder()
-                .itemInputs(ItemRefer.Compact_Fusion_Coil_T3.get(1))
-                .itemOutputs(GregtechItemList.Casing_Fusion_Internal.get(3))
-                .duration(30 * SECONDS)
-                .eut(TierEU.RECIPE_UEV)
-                .addTo(assemblerRecipes);
+        // Compact MK4 Fusion Disassembly Recipe
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemRefer.Compact_Fusion_Coil_T3.get(1))
+            .itemOutputs(GregtechItemList.Casing_Fusion_Internal.get(3))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_UEV)
+            .addTo(assemblerRecipes);
 
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
-                ItemRefer.Compact_Fusion_MK3.get(1),
-                2_560_000,
-                4_096,
-                (int) TierEU.RECIPE_UHV,
-                256,
-                new Object[] { GregtechItemList.FusionComputer_UV2.get(48), new Object[] { "circuitInfinite", 1 },
-                    new Object[] { "circuitInfinite", 1 }, new Object[] { "circuitInfinite", 1 },
-                    new Object[] { "circuitInfinite", 1 }, ItemList.Circuit_Wafer_PPIC.get(64),
-                    ItemList.UHV_Coil.get(16), ALLOY.TITANSTEEL.getPlateDense(8), ItemRefer.HiC_T4.get(8),
-                    ItemList.Field_Generator_UHV.get(8),
-                    MyMaterial.enrichedNaquadahAlloy.get(OrePrefixes.gearGtSmall, 64) },
-                new FluidStack[] { GenericChem.TEFLON.getFluidStack(2304), MyMaterial.dalisenite.getMolten(1152),
-                    ALLOY.BOTMIUM.getFluidStack(288) },
-                ItemRefer.Compact_Fusion_MK4.get(1),
-                6000,
-                (int) TierEU.RECIPE_UV);
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+            ItemRefer.Compact_Fusion_MK3.get(1),
+            2_560_000,
+            4_096,
+            (int) TierEU.RECIPE_UHV,
+            256,
+            new Object[] { GregtechItemList.FusionComputer_UV2.get(48), new Object[] { "circuitInfinite", 1 },
+                new Object[] { "circuitInfinite", 1 }, new Object[] { "circuitInfinite", 1 },
+                new Object[] { "circuitInfinite", 1 }, ItemList.Circuit_Wafer_PPIC.get(64), ItemList.UHV_Coil.get(16),
+                ALLOY.TITANSTEEL.getPlateDense(8), ItemRefer.HiC_T4.get(8), ItemList.Field_Generator_UHV.get(8),
+                MyMaterial.enrichedNaquadahAlloy.get(OrePrefixes.gearGtSmall, 64) },
+            new FluidStack[] { GenericChem.TEFLON.getFluidStack(2304), MyMaterial.dalisenite.getMolten(1152),
+                ALLOY.BOTMIUM.getFluidStack(288) },
+            ItemRefer.Compact_Fusion_MK4.get(1),
+            6000,
+            (int) TierEU.RECIPE_UV);
 
-            // Compact MK5 Fusion Coil
-            MyRecipeAdder.instance.addPreciseAssemblerRecipe(
-                new ItemStack[] { GregtechItemList.Casing_Fusion_Internal2.get(3),
-                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Bio, 1), ItemRefer.HiC_T5.get(4),
-                    CI.getEnergyCore(5, 1), },
-                new FluidStack[] { ALLOY.BLACK_TITANIUM.getFluidStack(1152),
-                    MyMaterial.metastableOganesson.getMolten(576) },
-                ItemRefer.Compact_Fusion_Coil_T4.get(1),
-                (int) TierEU.RECIPE_UHV,
-                2000,
-                3);
+        // Compact MK5 Fusion Coil
+        MyRecipeAdder.instance.addPreciseAssemblerRecipe(
+            new ItemStack[] { GregtechItemList.Casing_Fusion_Internal2.get(3),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Bio, 1), ItemRefer.HiC_T5.get(4),
+                CI.getEnergyCore(5, 1), },
+            new FluidStack[] { ALLOY.BLACK_TITANIUM.getFluidStack(1152),
+                MyMaterial.metastableOganesson.getMolten(576) },
+            ItemRefer.Compact_Fusion_Coil_T4.get(1),
+            (int) TierEU.RECIPE_UHV,
+            2000,
+            3);
 
-            // Compact MK5 Computer
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
-                ItemRefer.Compact_Fusion_MK4.get(1),
-                10_240_000,
-                16_384,
-                (int) TierEU.RECIPE_UEV,
-                256,
-                new Object[] { GregtechItemList.FusionComputer_UV3.get(48), new Object[] { "circuitBio", 1 },
-                    new Object[] { "circuitBio", 1 }, new Object[] { "circuitBio", 1 },
-                    new Object[] { "circuitBio", 1 }, ItemList.Circuit_Wafer_QPIC.get(64), ItemList.UHV_Coil.get(64),
-                    ELEMENT.STANDALONE.HYPOGEN.getPlateDense(8), ItemRefer.HiC_T5.get(8),
-                    ItemList.Field_Generator_UEV.get(8),
-                    MyMaterial.metastableOganesson.get(OrePrefixes.gearGtSmall, 64) },
-                new FluidStack[] { MyMaterial.tairitsu.getMolten(2304), ALLOY.OCTIRON.getFluidStack(1152),
-                    ELEMENT.STANDALONE.RHUGNOR.getFluidStack(288) },
-                ItemRefer.Compact_Fusion_MK5.get(1),
-                6000,
-                (int) TierEU.RECIPE_UHV);
+        // Compact MK5 Computer
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+            ItemRefer.Compact_Fusion_MK4.get(1),
+            10_240_000,
+            16_384,
+            (int) TierEU.RECIPE_UEV,
+            256,
+            new Object[] { GregtechItemList.FusionComputer_UV3.get(48), new Object[] { "circuitBio", 1 },
+                new Object[] { "circuitBio", 1 }, new Object[] { "circuitBio", 1 }, new Object[] { "circuitBio", 1 },
+                ItemList.Circuit_Wafer_QPIC.get(64), ItemList.UHV_Coil.get(64),
+                ELEMENT.STANDALONE.HYPOGEN.getPlateDense(8), ItemRefer.HiC_T5.get(8),
+                ItemList.Field_Generator_UEV.get(8), MyMaterial.metastableOganesson.get(OrePrefixes.gearGtSmall, 64) },
+            new FluidStack[] { MyMaterial.tairitsu.getMolten(2304), ALLOY.OCTIRON.getFluidStack(1152),
+                ELEMENT.STANDALONE.RHUGNOR.getFluidStack(288) },
+            ItemRefer.Compact_Fusion_MK5.get(1),
+            6000,
+            (int) TierEU.RECIPE_UHV);
 
-            // Compact MK5 Fusion Disassembly Recipe
-            GT_Values.RA.stdBuilder()
-                .itemInputs(ItemRefer.Compact_Fusion_Coil_T4.get(1))
-                .itemOutputs(GregtechItemList.Casing_Fusion_Internal2.get(3))
-                .duration(1 * MINUTES)
-                .eut(TierEU.RECIPE_UIV)
-                .addTo(assemblerRecipes);
-        }
+        // Compact MK5 Fusion Disassembly Recipe
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemRefer.Compact_Fusion_Coil_T4.get(1))
+            .itemOutputs(GregtechItemList.Casing_Fusion_Internal2.get(3))
+            .duration(1 * MINUTES)
+            .eut(TierEU.RECIPE_UIV)
+            .addTo(assemblerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(Materials.Antimony.getDust(8), GT_Utility.getIntegratedCircuit(24))
