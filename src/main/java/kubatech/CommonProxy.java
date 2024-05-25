@@ -38,6 +38,7 @@ import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import kubatech.api.LoaderReference;
 import kubatech.commands.CommandHandler;
 import kubatech.config.Config;
+import kubatech.loaders.EIGBucketLoader;
 import kubatech.loaders.MTLoader;
 import kubatech.loaders.MobHandlerLoader;
 import kubatech.loaders.RecipeLoader;
@@ -66,6 +67,7 @@ public class CommonProxy {
 
     public void postInit(FMLPostInitializationEvent event) {
         RecipeLoader.addRecipes();
+        EIGBucketLoader.LoadEIGBuckets();
         if (LoaderReference.Thaumcraft) TCLoader.init();
     }
 

@@ -15,6 +15,7 @@ public enum Mixin {
     StringTranslateMixin("minecraft.StringTranslateMixin", VANILLA),
     LanguageRegistryMixin("minecraft.LanguageRegistryMixin", VANILLA),
     LocaleMixin("minecraft.LocaleMixin", Side.CLIENT, VANILLA),
+    BlockStemMixin("minecraft.BlockStemMixin", VANILLA),
 
     ;
 
