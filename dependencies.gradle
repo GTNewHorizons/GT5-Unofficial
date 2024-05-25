@@ -73,8 +73,9 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:OpenComputers:1.10.11-GTNH:dev") {transitive = false}
     // https://www.curseforge.com/minecraft/mc-mods/advancedsolarpanels
     implementation rfg.deobf('curse.maven:advsolar-362768:2885953')
+    compileOnly('com.github.GTNewHorizons:ThaumicEnergistics:1.6.10-GTNH:dev') {transitive =  false}
 
-    compileOnly('com.github.GTNewHorizons:Baubles:1.0.4:dev') {transitive=false}
+    implementation('com.github.GTNewHorizons:Baubles:1.0.4:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:SC2:2.1.1:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:Binnie:2.3.4:dev') {transitive = false}
     compileOnly('curse.maven:PlayerAPI-228969:2248928') {transitive=false}
