@@ -2,16 +2,20 @@ package gregtech.asm;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import net.minecraftforge.common.config.Configuration;
 
 import com.github.bartimaeusnek.bartworks.ASM.BWCore;
 import com.github.bartimaeusnek.bartworks.ASM.BWCoreTransformer;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
+import com.gtnewhorizon.gtnhmixins.IEarlyMixinLoader;
 
 import cpw.mods.fml.relauncher.FMLInjectionData;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
+import gregtech.mixin.Mixin;
 import gtPlusPlus.preloader.CORE_Preloader;
 import gtPlusPlus.preloader.asm.AsmConfig;
 import gtPlusPlus.preloader.asm.Preloader_DummyContainer;
@@ -23,7 +27,7 @@ import gtPlusPlus.preloader.asm.transformers.Preloader_Transformer_Handler;
     "gregtech.asm" })
 @IFMLLoadingPlugin.Name("GregTech 5 Unofficial core plugin")
 @SuppressWarnings("unused") // loaded by FML
-public class GTCorePlugin implements IFMLLoadingPlugin {
+public class GTCorePlugin implements IFMLLoadingPlugin, IEarlyMixinLoader {
 
     public static final String BWCORE_PLUGIN_NAME = "BartWorks ASM Core Plugin";
     public static File minecraftDir;
@@ -81,5 +85,15 @@ public class GTCorePlugin implements IFMLLoadingPlugin {
     @Override
     public String getAccessTransformerClass() {
         return null;
+    }
+
+    @Override
+    public String getMixinConfig() {
+        return "mixins.gregtech.early.json";
+    }
+
+    @Override
+    public List<String> getMixins(Set<String> loadedCoreMods) {
+        return Mixin.getEarlyMixins(loadedCoreMods);
     }
 }

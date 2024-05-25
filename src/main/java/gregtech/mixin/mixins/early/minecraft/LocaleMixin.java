@@ -1,4 +1,4 @@
-package gregtech.mixin.mixins.minecraft;
+package gregtech.mixin.mixins.early.minecraft;
 
 import static gregtech.mixin.MixinsVariablesHelper.currentlyTranslating;
 
