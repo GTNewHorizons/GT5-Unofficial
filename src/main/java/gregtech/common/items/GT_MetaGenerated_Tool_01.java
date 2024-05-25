@@ -798,36 +798,27 @@ public class GT_MetaGenerated_Tool_01 extends GT_MetaGenerated_Tool {
                 new Object[] { "  S", " I ", "S f", 'I', OrePrefixes.ingot.get(Materials.IronWood), 'S',
                     OrePrefixes.stick.get(Materials.IronWood) });
 
-            if (GregTech_API.sRecipeFile.get(ConfigCategories.Tools.mortar, "Coal", true)) {
-                GT_ModHandler.addShapelessCraftingRecipe(
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1L),
-                    GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                    new Object[] { ToolDictNames.craftingToolMortar, new ItemStack(Items.coal, 1) });
-            }
-            if (GregTech_API.sRecipeFile.get(ConfigCategories.Tools.mortar, "Clay", true)) {
-                GT_ModHandler.addShapelessCraftingRecipe(
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Clay, 1L),
-                    GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                    new Object[] { ToolDictNames.craftingToolMortar, new ItemStack(Blocks.clay, 1) });
-            }
-            if (GregTech_API.sRecipeFile.get(ConfigCategories.Tools.mortar, "Wheat", true)) {
-                GT_ModHandler.addShapelessCraftingRecipe(
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 1L),
-                    GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                    new Object[] { ToolDictNames.craftingToolMortar, new ItemStack(Items.wheat, 1) });
-            }
-            if (GregTech_API.sRecipeFile.get(ConfigCategories.Tools.mortar, "Flint", true)) {
-                GT_ModHandler.addShapelessCraftingRecipe(
-                    new ItemStack(Items.flint, 1),
-                    GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                    new Object[] { ToolDictNames.craftingToolMortar, new ItemStack(Blocks.gravel, 1) });
-            }
-            if (GregTech_API.sRecipeFile.get(ConfigCategories.Tools.mortar, "Blaze", true)) {
-                GT_ModHandler.addShapelessCraftingRecipe(
-                    new ItemStack(Items.blaze_powder, 2),
-                    GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                    new Object[] { ToolDictNames.craftingToolMortar, new ItemStack(Items.blaze_rod, 1) });
-            }
+            GT_ModHandler.addShapelessCraftingRecipe(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1L),
+                GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+                new Object[] { ToolDictNames.craftingToolMortar, new ItemStack(Items.coal, 1) });
+            GT_ModHandler.addShapelessCraftingRecipe(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Clay, 1L),
+                GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+                new Object[] { ToolDictNames.craftingToolMortar, new ItemStack(Blocks.clay, 1) });
+            GT_ModHandler.addShapelessCraftingRecipe(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 1L),
+                GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+                new Object[] { ToolDictNames.craftingToolMortar, new ItemStack(Items.wheat, 1) });
+            GT_ModHandler.addShapelessCraftingRecipe(
+                new ItemStack(Items.flint, 1),
+                GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+                new Object[] { ToolDictNames.craftingToolMortar, new ItemStack(Blocks.gravel, 1) });
+            GT_ModHandler.addShapelessCraftingRecipe(
+                new ItemStack(Items.blaze_powder, 2),
+                GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+                new Object[] { ToolDictNames.craftingToolMortar, new ItemStack(Items.blaze_rod, 1) });
+
         }
     }
 }

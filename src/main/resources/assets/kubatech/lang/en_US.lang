@@ -1,0 +1,132 @@
+#This file is a translation file for KubaTech
+
+#RecipeMaps
+kubatech.defusioncrafter=Draconic Evolution Fusion Crafter
+
+#NEI
+kubatech.defusioncrafter.tier=Tier Casing: %s
+kubatech.mobhandler.eec_chance=§5Chance to drop in EEC: %.2f%%
+kubatech.mobhandler.eec_disabled=§5Does not drop in EEC
+
+#Commands
+kubatech.commandhandler.invalid=§cInvalid use ! The proper use of this command is /%s
+kubatech.commandhandler.cant_find=§cCan't find command option %s
+kubatech.commandhandler.generic_help=§cYou can also use "/kubatech help" to get possible commands
+kubatech.commandhandler.usage=<option>
+kubatech.command.help.possible_commands=Possible commands: 
+kubatech.command.help.usage=- Shows all possible commands
+kubatech.command.config.invalid_option=§cInvalid option ! Possible options: reload
+kubatech.command.config.success=§aConfig reloaded successfully !
+kubatech.command.config.usage=<option>
+
+kubatech.command.tea.invalid_option=§cInvalid usage !
+kubatech.command.tea.player_not_found=§cPlayer not found !
+kubatech.command.tea.success_get=Player %s has %d Tea
+kubatech.command.tea.success_set=Player %s now has %d Tea
+kubatech.command.tea.success_add=Player %s now has %d Tea
+kubatech.command.tea.usage=<username> get/set/add (<amount>)
+
+#GUI
+GT5U.gui.text.EEC_nospawner=No powered spawner!
+GT5U.gui.text.EEC_invalidspawner=Invalid spawner!
+GT5U.gui.text.EEC_peaceful=Inserted mob cannot spawn on peaceful mode!
+GT5U.gui.text.MegaApiary_slotoverflow=Too much bees inside!
+GT5U.gui.text.MegaApiary_noflowers=Missing flowers!
+GT5U.gui.text.EIG_slotoverflow=Too much crops inside!
+GT5U.gui.text.EIG_missingwater=No water!
+GT5U.gui.text.EIG_ic2glass=Insufficient glass tier!
+
+#Blocks
+kubablock.tea_acceptor.name=§4§lTea Acceptor
+kubablock.tea_storage.name=§4§lTea Storage Extender
+
+#DEFC Casings
+defc.casing.tip=Draconic Evolution Fusion Crafter Casing, Tier %d
+
+#Items
+kubaitem.fromcollection=This item is from
+kubaitem.notyours=It looks like that item is not yours
+kubaitem.defc_schematic_t1.name=Draconic Core Schematic
+kubaitem.defc_schematic_t1.tip=This Schematic can be found in Pluto Dungeons
+kubaitem.defc_schematic_t2.name=Wyvern Core Schematic
+kubaitem.defc_schematic_t3.name=Awakened Core Schematic
+kubaitem.defc_schematic_t4.name=Chaotic Core Schematic
+
+#Tea
+kubaitem.tea.black_tea.name=Black Tea
+kubaitem.tea.earl_gray_tea.name=Earl Gray Tea
+kubaitem.tea.green_tea.name=Green Tea
+kubaitem.tea.lemon_tea.name=Lemon Tea
+kubaitem.tea.milk_tea.name=Milk Tea
+kubaitem.tea.oolong_tea.name=Oolong Tea
+kubaitem.tea.peppermint_tea.name=Peppermint Tea
+kubaitem.tea.pu-erh_tea.name=Pu-erh Tea
+kubaitem.tea.white_tea.name=White Tea
+kubaitem.tea.yellow_tea.name=Yellow Tea
+kubaitem.teaingredient.black_tea_leaf.name=Black Tea Leaf
+kubaitem.teaingredient.green_tea_leaf.name=Green Tea Leaf
+kubaitem.teaingredient.oolong_tea_leaf.name=Oolong Tea Leaf
+kubaitem.teaingredient.pu-erh_tea_leaf.name=Pu-erh Tea Leaf
+kubaitem.teaingredient.white_tea_leaf.name=White Tea Leaf
+kubaitem.teaingredient.yellow_tea_leaf.name=Yellow Tea Leaf
+kubaitem.teaingredient.tea_leaf_dehydrated.name=Dehydrated Tea Leaf
+kubaitem.teaingredient.steamed_tea_leaf.name=Steamed Tea Leaf
+kubaitem.teaingredient.rolled_tea_leaf.name=Rolled Tea Leaf
+kubaitem.teaingredient.oxidized_tea_leaf.name=Oxidized Tea Leaf
+kubaitem.teaingredient.fermented_tea_leaf.name=Fermented Tea Leaf
+kubaitem.teaingredient.bruised_tea_leaf.name=Bruised Tea Leaf
+kubaitem.teaingredient.partially_oxidized_tea_leaf.name=Partially Oxidized Tea Leaf
+
+#Legendary Tea collection
+kubaitem.teacollection=Turbo Legendary Secret Tea Collection
+kubaitem.teacollection.mmm=Mmmm Tea
+kubaitem.teacollection.black_tea.name=§6§lKuba's Black Tea
+kubaitem.teacollection.butterfly_tea.name=§1§lKuba's Butterfly Pea Tea
+kubaitem.teacollection.earl_gray_tea.name=§6§lKuba's Earl Gray Tea
+kubaitem.teacollection.green_tea.name=§2§lKuba's Green Tea
+kubaitem.teacollection.lemon_tea.name=§e§lKuba's Lemon Tea
+kubaitem.teacollection.milk_tea.name=§f§lKuba's Milk Tea
+kubaitem.teacollection.oolong_tea.name=§e§lKuba's Oolong Tea
+kubaitem.teacollection.peppermint_tea.name=§a§lKuba's Peppermint Tea
+kubaitem.teacollection.pu-erh_tea.name=§4§lKuba's Pu-erh Tea
+kubaitem.teacollection.red_tea.name=§c§lKuba's Hibiscus Tea
+kubaitem.teacollection.white_tea.name=§e§lKuba's White Tea
+kubaitem.teacollection.yellow_tea.name=§6§lKuba's Yellow Tea
+kubaitem.teacollection.ultimate_tea.name=§6§lKuba's %s §6§lTea
+
+kubaitem.tea_acceptor_research_note.name=Tea Acceptor Research Note
+
+#Achievements
+achievement.teacollection.black_tea=§6§lKuba's Black Tea
+achievement.teacollection.butterfly_tea=§1§lKuba's Butterfly Pea Tea
+achievement.teacollection.earl_gray_tea=§6§lKuba's Earl Gray Tea
+achievement.teacollection.green_tea=§2§lKuba's Green Tea
+achievement.teacollection.lemon_tea=§e§lKuba's Lemon Tea
+achievement.teacollection.milk_tea=§f§lKuba's Milk Tea
+achievement.teacollection.oolong_tea=§e§lKuba's Oolong Tea
+achievement.teacollection.peppermint_tea=§a§lKuba's Peppermint Tea
+achievement.teacollection.pu-erh_tea=§4§lKuba's Pu-erh Tea
+achievement.teacollection.red_tea=§c§lKuba's Hibiscus Tea
+achievement.teacollection.white_tea=§e§lKuba's White Tea
+achievement.teacollection.yellow_tea=§6§lKuba's Yellow Tea
+achievement.teacollection.ultimate_tea=§4§l§k??????
+
+achievement.teacollection.black_tea.desc=§6The most common and popular type of Tea
+achievement.teacollection.butterfly_tea.desc=§1Not even Tea
+achievement.teacollection.earl_gray_tea.desc=§6For the true Brits
+achievement.teacollection.green_tea.desc=§2Based
+achievement.teacollection.lemon_tea.desc=§eBlack Tea with lemon, what did You expect ?
+achievement.teacollection.milk_tea.desc=§fBlack Tea with milk, my favourite
+achievement.teacollection.oolong_tea.desc=§e對於真正的鑑賞家
+achievement.teacollection.peppermint_tea.desc=§aGood for stomach ache
+achievement.teacollection.pu-erh_tea.desc=§4Good for digestion, also tastes like dirt
+achievement.teacollection.red_tea.desc=§cWhy would anyone drink this ?
+achievement.teacollection.white_tea.desc=§eThe healthiest one
+achievement.teacollection.yellow_tea.desc=§6Green Tea with more grassy flavour
+achievement.teacollection.ultimate_tea.desc=§4§lOne Tea to drink them all
+
+#Thaumcraft
+tc.research_category.KUBATECH=§lCamellia sinensis
+tc.research_name.KT_UltimateTea=%s §6§lTea
+tc.research_text.KT_UltimateTea=§4§lPure power
+KT.research.ultimatetea=You have found a way to convert all this Tea into pure power creating the %s §6§lTea

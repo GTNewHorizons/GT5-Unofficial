@@ -20,14 +20,12 @@ public enum ConfigCategories {
     }
 
     public enum Recipes {
-        researches,
         harderrecipes,
         gregtechrecipes,
         disabledrecipes,
         recipereplacements,
         storageblockcrafting,
-        storageblockdecrafting,
-        crops
+        storageblockdecrafting
     }
 
     public enum Machines {

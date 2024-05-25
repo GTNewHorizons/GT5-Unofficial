@@ -115,12 +115,10 @@ public class GT_BaseCrop extends CropCard implements ICropCardInfo {
             mStats[4] = aStatWeed;
             mAttributes = aAttributes;
             mBlock = aBlock;
-            if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.crops, aCropName, true)) {
-                if (!Crops.instance.registerCrop(this, aID))
-                    throw new GT_ItsNotMyFaultException("Make sure the Crop ID is valid!");
-                if (aBaseSeed != null) Crops.instance.registerBaseSeed(aBaseSeed, this, 1, 1, 1, 1);
-                sCropList.add(this);
-            }
+            if (!Crops.instance.registerCrop(this, aID))
+                throw new GT_ItsNotMyFaultException("Make sure the Crop ID is valid!");
+            if (aBaseSeed != null) Crops.instance.registerBaseSeed(aBaseSeed, this, 1, 1, 1, 1);
+            sCropList.add(this);
         }
         if (bIc2NeiLoaded) {
             try {
@@ -226,7 +224,7 @@ public class GT_BaseCrop extends CropCard implements ICropCardInfo {
 
     /**
      * Checks if the crop needs a block below it
-     * 
+     *
      * @return True if the crop needs a block below it to grow to its max size
      */
     public boolean needsBlockBelow() {
@@ -263,7 +261,7 @@ public class GT_BaseCrop extends CropCard implements ICropCardInfo {
 
     /**
      * An isolated function to check if an item stack is a block that should be below this crop
-     * 
+     *
      * @param aItem a stack of the block placed under the crop
      * @return The result of the check
      */

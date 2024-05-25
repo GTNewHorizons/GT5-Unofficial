@@ -1,5 +1,16 @@
 // Add any additional repositories for your dependencies here
 
 repositories {
-    mavenLocal()
+    ivy {
+        url 'https://files.vexatos.com/'
+        patternLayout {
+            artifact "[module]/[artifact]-[revision](-[classifier])(.[ext])"
+        }
+        content {
+            includeGroup("TGregworks")
+        }
+        metadataSources {
+            artifact()
+        }
+    }
 }

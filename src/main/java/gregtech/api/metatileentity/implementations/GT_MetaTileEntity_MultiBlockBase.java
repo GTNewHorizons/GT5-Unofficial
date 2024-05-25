@@ -16,7 +16,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.function.IntConsumer;
 
 import javax.annotation.Nonnull;
@@ -106,6 +105,8 @@ import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.IDualInputInventory;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine;
+import it.unimi.dsi.fastutil.objects.Object2ReferenceOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -403,6 +404,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             if (--mUpdate == 0 || --mStartUpCheck == 0) {
                 checkStructure(true, aBaseMetaTileEntity);
             }
+
             if (mStartUpCheck < 0) {
                 if (mMachine) {
                     checkMaintenance();
@@ -794,21 +796,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         processingLogic.setInputFluids(getStoredFluids());
 
         if (isInputSeparationEnabled()) {
-            for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
-                if (bus instanceof GT_MetaTileEntity_Hatch_CraftingInput_ME) {
-                    continue;
-                }
-                List<ItemStack> inputItems = new ArrayList<>();
-                for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
-                    ItemStack stored = bus.getStackInSlot(i);
-                    if (stored != null) {
-                        inputItems.add(stored);
-                    }
-                }
-                if (canUseControllerSlotForRecipe() && getControllerSlot() != null) {
-                    inputItems.add(getControllerSlot());
-                }
-                processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
+            if (mInputBusses.isEmpty()) {
                 CheckRecipeResult foundResult = processingLogic.process();
                 if (foundResult.wasSuccessful()) {
                     return foundResult;
@@ -816,6 +804,31 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                 if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
                     // Recipe failed in interesting way, so remember that and continue searching
                     result = foundResult;
+                }
+            } else {
+                for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
+                    if (bus instanceof GT_MetaTileEntity_Hatch_CraftingInput_ME) {
+                        continue;
+                    }
+                    List<ItemStack> inputItems = new ArrayList<>();
+                    for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
+                        ItemStack stored = bus.getStackInSlot(i);
+                        if (stored != null) {
+                            inputItems.add(stored);
+                        }
+                    }
+                    if (canUseControllerSlotForRecipe() && getControllerSlot() != null) {
+                        inputItems.add(getControllerSlot());
+                    }
+                    processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
+                    CheckRecipeResult foundResult = processingLogic.process();
+                    if (foundResult.wasSuccessful()) {
+                        return foundResult;
+                    }
+                    if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
+                        // Recipe failed in interesting way, so remember that and continue searching
+                        result = foundResult;
+                    }
                 }
             }
         } else {
@@ -1350,7 +1363,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     /**
-     * Drains fluid from the given hatch, including {@link IDualInputHatch}.
+     * Drains fluid from the given hatch, including {@link IDualInputHatch}. Should never be used during recipe check!
      *
      * @param doDrain If false, fluid will not actually be consumed
      * @return Whether the hatch contains enough fluid to drain
@@ -1472,6 +1485,37 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         return rList;
     }
 
+    public Map<GT_Utility.ItemId, ItemStack> getStoredInputsFromME() {
+        Map<GT_Utility.ItemId, ItemStack> inputsFromME = new Object2ReferenceOpenHashMap<>();
+        for (GT_MetaTileEntity_Hatch_InputBus tHatch : filterValidMTEs(mInputBusses)) {
+            if (tHatch instanceof GT_MetaTileEntity_Hatch_InputBus_ME meBus) {
+                for (int i = meBus.getSizeInventory() - 1; i >= 0; i--) {
+                    ItemStack itemStack = meBus.getStackInSlot(i);
+                    if (itemStack != null) {
+                        // Prevent the same item from different ME buses from being recognized
+                        inputsFromME.put(GT_Utility.ItemId.createNoCopy(itemStack), itemStack);
+                    }
+                }
+            }
+        }
+        return inputsFromME;
+    }
+
+    public Map<Fluid, FluidStack> getStoredFluidsFromME() {
+        Map<Fluid, FluidStack> fluidsFromME = new Reference2ReferenceOpenHashMap<>();
+        for (GT_MetaTileEntity_Hatch_Input tHatch : filterValidMTEs(mInputHatches)) {
+            if (tHatch instanceof GT_MetaTileEntity_Hatch_Input_ME meHatch) {
+                for (FluidStack fluid : meHatch.getStoredFluids()) {
+                    if (fluid != null) {
+                        // Prevent the same fluid from different ME hatches from being recognized
+                        fluidsFromME.put(fluid.getFluid(), fluid);
+                    }
+                }
+            }
+        }
+        return fluidsFromME;
+    }
+
     @Override
     public RecipeMap<?> getRecipeMap() {
         return null;
@@ -1505,21 +1549,21 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         }
     }
 
-    protected void endRecipeProcessing() {
-        Consumer<CheckRecipeResult> setResultIfFailure = result -> {
-            if (!result.wasSuccessful()) {
-                this.checkRecipeResult = result;
-            }
-        };
+    public void setResultIfFailure(CheckRecipeResult result) {
+        if (!result.wasSuccessful()) {
+            this.checkRecipeResult = result;
+        }
+    }
 
+    protected void endRecipeProcessing() {
         for (GT_MetaTileEntity_Hatch_InputBus hatch : filterValidMTEs(mInputBusses)) {
             if (hatch instanceof IRecipeProcessingAwareHatch aware) {
-                setResultIfFailure.accept(aware.endRecipeProcessing(this));
+                setResultIfFailure(aware.endRecipeProcessing(this));
             }
         }
         for (GT_MetaTileEntity_Hatch_Input hatch : filterValidMTEs(mInputHatches)) {
             if (hatch instanceof IRecipeProcessingAwareHatch aware) {
-                setResultIfFailure.accept(aware.endRecipeProcessing(this));
+                setResultIfFailure(aware.endRecipeProcessing(this));
             }
         }
     }
@@ -1885,6 +1929,11 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             int tAverageTime = tag.getInteger("averageNS");
             currentTip.add("Average CPU load of ~" + formatNumbers(tAverageTime) + " ns");
         }
+        super.getWailaBody(itemStack, currentTip, accessor, config);
+    }
+
+    public final void getMTEWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
     }
 
