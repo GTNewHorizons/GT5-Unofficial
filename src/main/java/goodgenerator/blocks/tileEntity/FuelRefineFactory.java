@@ -49,13 +49,13 @@ import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 
 public class FuelRefineFactory extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
-        implements IConstructable, ISurvivalConstructable {
+    implements IConstructable, ISurvivalConstructable {
 
     private IStructureDefinition<FuelRefineFactory> multiDefinition = null;
     private int Tier = -1;
     private int[] cnt = new int[] { 0, 0, 0, 0 };
     private static final Block[] coils = new Block[] { Loaders.FRF_Coil_1, Loaders.FRF_Coil_2, Loaders.FRF_Coil_3,
-            Loaders.FRF_Coil_4 };
+        Loaders.FRF_Coil_4 };
 
     public FuelRefineFactory(String name) {
         super(name);
@@ -88,44 +88,46 @@ public class FuelRefineFactory extends GT_MetaTileEntity_TooltipMultiBlockBase_E
     public IStructureDefinition<FuelRefineFactory> getStructure_EM() {
         if (multiDefinition == null) {
             multiDefinition = StructureDefinition.<FuelRefineFactory>builder()
-                    .addShape(
-                            mName,
-                            transpose(
-                                    new String[][] { { "               ", "      CCC      ", "               " },
-                                            { "      XGX      ", "    CCFFFCC    ", "      XGX      " },
-                                            { "    CC   CC    ", "   CFFCCCFFC   ", "    CC   CC    " },
-                                            { "   C       C   ", "  CFCC   CCFC  ", "   C       C   " },
-                                            { "  C         C  ", " CFC       CFC ", "  C         C  " },
-                                            { "  C         C  ", " CFC       CFC ", "  C         C  " },
-                                            { " X           X ", "CFC         CFC", " X           X " },
-                                            { " G           G ", "CFC         CFC", " G           G " },
-                                            { " X           X ", "CFC         CFC", " X           X " },
-                                            { "  C         C  ", " CFC       CFC ", "  C         C  " },
-                                            { "  C         C  ", " CFC       CFC ", "  C         C  " },
-                                            { "   C       C   ", "  CFCC   CCFC  ", "   C       C   " },
-                                            { "    CC   CC    ", "   CFFC~CFFC   ", "    CC   CC    " },
-                                            { "      XGX      ", "    CCFFFCC    ", "      XGX      " },
-                                            { "               ", "      CCC      ", "               " } }))
-                    .addElement(
-                            'X',
-                            buildHatchAdder(FuelRefineFactory.class)
-                                    .atLeast(
-                                            GT_HatchElement.Maintenance,
-                                            GT_HatchElement.InputHatch,
-                                            GT_HatchElement.InputBus,
-                                            GT_HatchElement.OutputHatch,
-                                            HatchElement.EnergyMulti.or(GT_HatchElement.Energy))
-                                    .casingIndex(179).dot(1).buildAndChain(ofBlock(Loaders.FRF_Casings, 0)))
-                    .addElement('C', ofBlock(Loaders.FRF_Casings, 0))
-                    .addElement('G', ofBlock(Loaders.fieldRestrictingGlass, 0))
-                    .addElement(
-                            'F',
-                            ofChain(
-                                    onElementPass(x -> ++x.cnt[0], ofFieldCoil(0)),
-                                    onElementPass(x -> ++x.cnt[1], ofFieldCoil(1)),
-                                    onElementPass(x -> ++x.cnt[2], ofFieldCoil(2)),
-                                    onElementPass(x -> ++x.cnt[3], ofFieldCoil(3))))
-                    .build();
+                .addShape(
+                    mName,
+                    transpose(
+                        new String[][] { { "               ", "      CCC      ", "               " },
+                            { "      XGX      ", "    CCFFFCC    ", "      XGX      " },
+                            { "    CC   CC    ", "   CFFCCCFFC   ", "    CC   CC    " },
+                            { "   C       C   ", "  CFCC   CCFC  ", "   C       C   " },
+                            { "  C         C  ", " CFC       CFC ", "  C         C  " },
+                            { "  C         C  ", " CFC       CFC ", "  C         C  " },
+                            { " X           X ", "CFC         CFC", " X           X " },
+                            { " G           G ", "CFC         CFC", " G           G " },
+                            { " X           X ", "CFC         CFC", " X           X " },
+                            { "  C         C  ", " CFC       CFC ", "  C         C  " },
+                            { "  C         C  ", " CFC       CFC ", "  C         C  " },
+                            { "   C       C   ", "  CFCC   CCFC  ", "   C       C   " },
+                            { "    CC   CC    ", "   CFFC~CFFC   ", "    CC   CC    " },
+                            { "      XGX      ", "    CCFFFCC    ", "      XGX      " },
+                            { "               ", "      CCC      ", "               " } }))
+                .addElement(
+                    'X',
+                    buildHatchAdder(FuelRefineFactory.class)
+                        .atLeast(
+                            GT_HatchElement.Maintenance,
+                            GT_HatchElement.InputHatch,
+                            GT_HatchElement.InputBus,
+                            GT_HatchElement.OutputHatch,
+                            HatchElement.EnergyMulti.or(GT_HatchElement.Energy))
+                        .casingIndex(179)
+                        .dot(1)
+                        .buildAndChain(ofBlock(Loaders.FRF_Casings, 0)))
+                .addElement('C', ofBlock(Loaders.FRF_Casings, 0))
+                .addElement('G', ofBlock(Loaders.fieldRestrictingGlass, 0))
+                .addElement(
+                    'F',
+                    ofChain(
+                        onElementPass(x -> ++x.cnt[0], ofFieldCoil(0)),
+                        onElementPass(x -> ++x.cnt[1], ofFieldCoil(1)),
+                        onElementPass(x -> ++x.cnt[2], ofFieldCoil(2)),
+                        onElementPass(x -> ++x.cnt[3], ofFieldCoil(3))))
+                .build();
         }
         return multiDefinition;
     }
@@ -158,24 +160,24 @@ public class FuelRefineFactory extends GT_MetaTileEntity_TooltipMultiBlockBase_E
 
             @Override
             public BlocksToPlace getBlocksToPlace(T t, World world, int x, int y, int z, ItemStack trigger,
-                    AutoPlaceEnvironment env) {
+                AutoPlaceEnvironment env) {
                 return BlocksToPlace.create(coils[getIndex(trigger)], 0);
             }
 
             @Override
             public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
-                    AutoPlaceEnvironment env) {
+                AutoPlaceEnvironment env) {
                 if (check(t, world, x, y, z)) return PlaceResult.SKIP;
                 return StructureUtility.survivalPlaceBlock(
-                        coils[getIndex(trigger)],
-                        0,
-                        world,
-                        x,
-                        y,
-                        z,
-                        env.getSource(),
-                        env.getActor(),
-                        env.getChatter());
+                    coils[getIndex(trigger)],
+                    0,
+                    world,
+                    x,
+                    y,
+                    z,
+                    env.getSource(),
+                    env.getActor(),
+                    env.getChatter());
             }
         };
     }
@@ -183,15 +185,21 @@ public class FuelRefineFactory extends GT_MetaTileEntity_TooltipMultiBlockBase_E
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Naquadah Fuel Refinery").addInfo("Controller block for the Naquadah Fuel Refinery")
-                .addInfo("But at what cost?").addInfo("Produces naquadah fuels.")
-                .addInfo("Needs field restriction coils to control the fatal radiation.")
-                .addInfo("Use higher tier coils to unlock more fuel types and reduce the processing times.")
-                .addInfo("The structure is too complex!").addInfo(BLUE_PRINT_INFO).addSeparator()
-                .beginStructureBlock(3, 15, 15, false).addInputHatch("The casings adjoin the field restriction glass.")
-                .addInputBus("The casings adjoin the field restriction glass.", 1)
-                .addOutputHatch("The casings adjoin the field restriction glass.", 1)
-                .addEnergyHatch("The casings adjoin the field restriction glass.", 1).toolTipFinisher("Good Generator");
+        tt.addMachineType("Naquadah Fuel Refinery")
+            .addInfo("Controller block for the Naquadah Fuel Refinery")
+            .addInfo("But at what cost?")
+            .addInfo("Produces naquadah fuels.")
+            .addInfo("Needs field restriction coils to control the fatal radiation.")
+            .addInfo("Use higher tier coils to unlock more fuel types and reduce the processing times.")
+            .addInfo("The structure is too complex!")
+            .addInfo(BLUE_PRINT_INFO)
+            .addSeparator()
+            .beginStructureBlock(3, 15, 15, false)
+            .addInputHatch("The casings adjoin the field restriction glass.")
+            .addInputBus("The casings adjoin the field restriction glass.", 1)
+            .addOutputHatch("The casings adjoin the field restriction glass.", 1)
+            .addEnergyHatch("The casings adjoin the field restriction glass.", 1)
+            .toolTipFinisher("Good Generator");
         return tt;
     }
 
@@ -344,15 +352,18 @@ public class FuelRefineFactory extends GT_MetaTileEntity_TooltipMultiBlockBase_E
     @Override
     @SuppressWarnings("ALL")
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-            int colorIndex, boolean aActive, boolean aRedstone) {
+        int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(179),
-                    new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE),
-                    TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW).glow()
-                            .build() };
+                new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE), TextureFactory.builder()
+                    .addIcon(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW)
+                    .glow()
+                    .build() };
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(179),
-                    new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE), TextureFactory.builder()
-                            .addIcon(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_GLOW).glow().build() };
+                new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE), TextureFactory.builder()
+                    .addIcon(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_GLOW)
+                    .glow()
+                    .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(179) };
     }

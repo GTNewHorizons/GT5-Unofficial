@@ -37,7 +37,7 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 
 public class CoolantTower extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
-        implements IConstructable, ISurvivalConstructable {
+    implements IConstructable, ISurvivalConstructable {
 
     protected IStructureDefinition<CoolantTower> multiDefinition = null;
     private final int CASING_INDEX = 1542;
@@ -54,58 +54,45 @@ public class CoolantTower extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     public IStructureDefinition<? extends GT_MetaTileEntity_MultiblockBase_EM> getStructure_EM() {
         if (multiDefinition == null) {
             multiDefinition = StructureDefinition.<CoolantTower>builder()
-                    .addShape(
-                            mName,
-                            transpose(
-                                    new String[][] {
-                                            { "           ", "           ", "    BBB    ", "   B   B   ", "  B     B  ",
-                                                    "  B     B  ", "  B     B  ", "   B   B   ", "    BBB    ",
-                                                    "           ", "           " },
-                                            { "           ", "           ", "    BBB    ", "   BBBBB   ", "  BB   BB  ",
-                                                    "  BB   BB  ", "  BB   BB  ", "   BBBBB   ", "    BBB    ",
-                                                    "           ", "           " },
-                                            { "           ", "           ", "           ", "    BBB    ", "   B   B   ",
-                                                    "   B   B   ", "   B   B   ", "    BBB    ", "           ",
-                                                    "           ", "           " },
-                                            { "           ", "           ", "           ", "    BBB    ", "   B   B   ",
-                                                    "   B   B   ", "   B   B   ", "    BBB    ", "           ",
-                                                    "           ", "           " },
-                                            { "           ", "           ", "           ", "    BBB    ", "   B   B   ",
-                                                    "   B   B   ", "   B   B   ", "    BBB    ", "           ",
-                                                    "           ", "           " },
-                                            { "           ", "           ", "    BBB    ", "   BBBBB   ", "  BB   BB  ",
-                                                    "  BB   BB  ", "  BB   BB  ", "   BBBBB   ", "    BBB    ",
-                                                    "           ", "           " },
-                                            { "           ", "           ", "    BBB    ", "   B   B   ", "  B     B  ",
-                                                    "  B     B  ", "  B     B  ", "   B   B   ", "    BBB    ",
-                                                    "           ", "           " },
-                                            { "           ", "           ", "    BBB    ", "   B   B   ", "  B     B  ",
-                                                    "  B     B  ", "  B     B  ", "   B   B   ", "    BBB    ",
-                                                    "           ", "           " },
-                                            { "           ", "    BBB    ", "   BBBBB   ", "  BB   BB  ", " BB     BB ",
-                                                    " BB     BB ", " BB     BB ", "  BB   BB  ", "   BBBBB   ",
-                                                    "    BBB    ", "           " },
-                                            { "           ", "    BBB    ", "   B   B   ", "  B     B  ", " B       B ",
-                                                    " B       B ", " B       B ", "  B     B  ", "   B   B   ",
-                                                    "    BBB    ", "           " },
-                                            { "           ", "   BBBBB   ", "  BB   BB  ", " BB     BB ", " B       B ",
-                                                    " B       B ", " B       B ", " BB     BB ", "  BB   BB  ",
-                                                    "   BBBBB   ", "           " },
-                                            { "   HH~HH   ", "  HBBBBBH  ", " HB     BH ", "HB       BH", "HB       BH",
-                                                    "HB       BH", "HB       BH", "HB       BH", " HB     BH ",
-                                                    "  HBBBBBH  ", "   HHHHH   " },
-                                            { "   CCCCC   ", "  C     C  ", " C       C ", "C         C", "C         C",
-                                                    "C         C", "C         C", "C         C", " C       C ",
-                                                    "  C     C  ", "   CCCCC   " }, }))
-                    .addElement('B', ofBlockAnyMeta(GregTech_API.sBlockConcretes, 8))
-                    .addElement('C', ofFrame(Materials.TungstenCarbide))
-                    .addElement(
-                            'H',
-                            buildHatchAdder(CoolantTower.class)
-                                    .atLeast(GT_HatchElement.InputHatch, GT_HatchElement.OutputHatch)
-                                    .casingIndex(CASING_INDEX).dot(1)
-                                    .buildAndChain(ofBlockAnyMeta(GregTech_API.sBlockConcretes, 8)))
-                    .build();
+                .addShape(
+                    mName,
+                    transpose(
+                        new String[][] {
+                            { "           ", "           ", "    BBB    ", "   B   B   ", "  B     B  ", "  B     B  ",
+                                "  B     B  ", "   B   B   ", "    BBB    ", "           ", "           " },
+                            { "           ", "           ", "    BBB    ", "   BBBBB   ", "  BB   BB  ", "  BB   BB  ",
+                                "  BB   BB  ", "   BBBBB   ", "    BBB    ", "           ", "           " },
+                            { "           ", "           ", "           ", "    BBB    ", "   B   B   ", "   B   B   ",
+                                "   B   B   ", "    BBB    ", "           ", "           ", "           " },
+                            { "           ", "           ", "           ", "    BBB    ", "   B   B   ", "   B   B   ",
+                                "   B   B   ", "    BBB    ", "           ", "           ", "           " },
+                            { "           ", "           ", "           ", "    BBB    ", "   B   B   ", "   B   B   ",
+                                "   B   B   ", "    BBB    ", "           ", "           ", "           " },
+                            { "           ", "           ", "    BBB    ", "   BBBBB   ", "  BB   BB  ", "  BB   BB  ",
+                                "  BB   BB  ", "   BBBBB   ", "    BBB    ", "           ", "           " },
+                            { "           ", "           ", "    BBB    ", "   B   B   ", "  B     B  ", "  B     B  ",
+                                "  B     B  ", "   B   B   ", "    BBB    ", "           ", "           " },
+                            { "           ", "           ", "    BBB    ", "   B   B   ", "  B     B  ", "  B     B  ",
+                                "  B     B  ", "   B   B   ", "    BBB    ", "           ", "           " },
+                            { "           ", "    BBB    ", "   BBBBB   ", "  BB   BB  ", " BB     BB ", " BB     BB ",
+                                " BB     BB ", "  BB   BB  ", "   BBBBB   ", "    BBB    ", "           " },
+                            { "           ", "    BBB    ", "   B   B   ", "  B     B  ", " B       B ", " B       B ",
+                                " B       B ", "  B     B  ", "   B   B   ", "    BBB    ", "           " },
+                            { "           ", "   BBBBB   ", "  BB   BB  ", " BB     BB ", " B       B ", " B       B ",
+                                " B       B ", " BB     BB ", "  BB   BB  ", "   BBBBB   ", "           " },
+                            { "   HH~HH   ", "  HBBBBBH  ", " HB     BH ", "HB       BH", "HB       BH", "HB       BH",
+                                "HB       BH", "HB       BH", " HB     BH ", "  HBBBBBH  ", "   HHHHH   " },
+                            { "   CCCCC   ", "  C     C  ", " C       C ", "C         C", "C         C", "C         C",
+                                "C         C", "C         C", " C       C ", "  C     C  ", "   CCCCC   " }, }))
+                .addElement('B', ofBlockAnyMeta(GregTech_API.sBlockConcretes, 8))
+                .addElement('C', ofFrame(Materials.TungstenCarbide))
+                .addElement(
+                    'H',
+                    buildHatchAdder(CoolantTower.class).atLeast(GT_HatchElement.InputHatch, GT_HatchElement.OutputHatch)
+                        .casingIndex(CASING_INDEX)
+                        .dot(1)
+                        .buildAndChain(ofBlockAnyMeta(GregTech_API.sBlockConcretes, 8)))
+                .build();
         }
         return multiDefinition;
     }
@@ -124,10 +111,15 @@ public class CoolantTower extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Coolant Tower").addInfo("Controller block for the Coolant Tower.")
-                .addInfo("Turn Steam back to Distilled Water.").addInfo(BLUE_PRINT_INFO).addSeparator()
-                .addController("Mid of the second layer.").addInputHatch("Input Hatch", 1)
-                .addOutputHatch("Output Hatch", 1).toolTipFinisher("Good Generator");
+        tt.addMachineType("Coolant Tower")
+            .addInfo("Controller block for the Coolant Tower.")
+            .addInfo("Turn Steam back to Distilled Water.")
+            .addInfo(BLUE_PRINT_INFO)
+            .addSeparator()
+            .addController("Mid of the second layer.")
+            .addInputHatch("Input Hatch", 1)
+            .addOutputHatch("Output Hatch", 1)
+            .toolTipFinisher("Good Generator");
         return tt;
     }
 
@@ -201,15 +193,26 @@ public class CoolantTower extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-            int colorIndex, boolean aActive, boolean aRedstone) {
+        int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
-            if (aActive) return new ITexture[] { casingTexturePages[12][6],
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE_GLOW).extFacing().glow()
-                            .build() };
-            return new ITexture[] { casingTexturePages[12][6],
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_HEAT_EXCHANGER).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_GLOW).extFacing().glow().build() };
+            if (aActive) return new ITexture[] { casingTexturePages[12][6], TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
+            return new ITexture[] { casingTexturePages[12][6], TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
         }
         return new ITexture[] { casingTexturePages[12][6] };
     }

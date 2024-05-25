@@ -13,7 +13,7 @@ import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 
 public abstract class GT_MetaTileEntity_TooltipMultiBlockBase_EM extends GT_MetaTileEntity_MultiblockBase_EM
-        implements ISecondaryDescribable {
+    implements ISecondaryDescribable {
 
     private static final Map<Integer, GT_Multiblock_Tooltip_Builder> tooltips = new ConcurrentHashMap<>();
 

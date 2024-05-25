@@ -23,7 +23,7 @@ public class DepletedFuelRod extends RadioactiveItem implements IReactorComponen
 
     @Override
     public boolean acceptUraniumPulse(IReactor iReactor, ItemStack itemStack, ItemStack itemStack1, int i, int i1,
-            int i2, int i3, boolean b) {
+        int i2, int i3, boolean b) {
         return false;
     }
 

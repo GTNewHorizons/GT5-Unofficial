@@ -26,13 +26,13 @@ public class DieselGenerator extends GT_MetaTileEntity_BasicGenerator {
 
     public DieselGenerator(int aID, String aName, String aNameRegional, int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                new String[] { "Requires liquid Fuel", "Causes "
-                        + (int) (GT_Mod.gregtechproxy.mPollutionBaseDieselGeneratorPerSecond * (1.1 - aTier * 0.1))
-                        + " Pollution per second" });
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            new String[] { "Requires liquid Fuel",
+                "Causes " + (int) (GT_Mod.gregtechproxy.mPollutionBaseDieselGeneratorPerSecond * (1.1 - aTier * 0.1))
+                    + " Pollution per second" });
         mEfficiency = 100 - aTier * 10;
     }
 
@@ -83,13 +83,13 @@ public class DieselGenerator extends GT_MetaTileEntity_BasicGenerator {
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aTick % 100 == 0 && mFluid != null && mFluid.amount > this.getCapacity()) {
             GT_Log.err.println(
-                    "Dupe Abuse: " + aBaseMetaTileEntity.getOwnerName()
-                            + " Coords: "
-                            + aBaseMetaTileEntity.getXCoord()
-                            + " "
-                            + aBaseMetaTileEntity.getYCoord()
-                            + " "
-                            + aBaseMetaTileEntity.getZCoord());
+                "Dupe Abuse: " + aBaseMetaTileEntity.getOwnerName()
+                    + " Coords: "
+                    + aBaseMetaTileEntity.getXCoord()
+                    + " "
+                    + aBaseMetaTileEntity.getYCoord()
+                    + " "
+                    + aBaseMetaTileEntity.getZCoord());
             aBaseMetaTileEntity.setToFire();
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
@@ -98,83 +98,113 @@ public class DieselGenerator extends GT_MetaTileEntity_BasicGenerator {
     @Override
     public ITexture[] getFront(byte aColor) {
         return new ITexture[] { super.getFront(aColor)[0],
-                TextureFactory.of(
-                        TextureFactory.of(DIESEL_GENERATOR_FRONT),
-                        TextureFactory.builder().addIcon(DIESEL_GENERATOR_FRONT_GLOW).glow().build()),
-                OVERLAYS_ENERGY_OUT[this.mTier] };
+            TextureFactory.of(
+                TextureFactory.of(DIESEL_GENERATOR_FRONT),
+                TextureFactory.builder()
+                    .addIcon(DIESEL_GENERATOR_FRONT_GLOW)
+                    .glow()
+                    .build()),
+            OVERLAYS_ENERGY_OUT[this.mTier] };
     }
 
     @Override
     public ITexture[] getBack(byte aColor) {
         return new ITexture[] { super.getBack(aColor)[0],
-                TextureFactory.of(
-                        TextureFactory.of(DIESEL_GENERATOR_BACK),
-                        TextureFactory.builder().addIcon(DIESEL_GENERATOR_BACK_GLOW).glow().build()) };
+            TextureFactory.of(
+                TextureFactory.of(DIESEL_GENERATOR_BACK),
+                TextureFactory.builder()
+                    .addIcon(DIESEL_GENERATOR_BACK_GLOW)
+                    .glow()
+                    .build()) };
     }
 
     @Override
     public ITexture[] getBottom(byte aColor) {
         return new ITexture[] { super.getBottom(aColor)[0],
-                TextureFactory.of(
-                        TextureFactory.of(DIESEL_GENERATOR_BOTTOM),
-                        TextureFactory.builder().addIcon(DIESEL_GENERATOR_BOTTOM_GLOW).glow().build()) };
+            TextureFactory.of(
+                TextureFactory.of(DIESEL_GENERATOR_BOTTOM),
+                TextureFactory.builder()
+                    .addIcon(DIESEL_GENERATOR_BOTTOM_GLOW)
+                    .glow()
+                    .build()) };
     }
 
     @Override
     public ITexture[] getTop(byte aColor) {
         return new ITexture[] { super.getTop(aColor)[0],
-                TextureFactory.of(
-                        TextureFactory.of(DIESEL_GENERATOR_TOP),
-                        TextureFactory.builder().addIcon(DIESEL_GENERATOR_TOP_GLOW).glow().build()) };
+            TextureFactory.of(
+                TextureFactory.of(DIESEL_GENERATOR_TOP),
+                TextureFactory.builder()
+                    .addIcon(DIESEL_GENERATOR_TOP_GLOW)
+                    .glow()
+                    .build()) };
     }
 
     @Override
     public ITexture[] getSides(byte aColor) {
         return new ITexture[] { super.getSides(aColor)[0],
-                TextureFactory.of(
-                        TextureFactory.of(DIESEL_GENERATOR_SIDE),
-                        TextureFactory.builder().addIcon(DIESEL_GENERATOR_SIDE_GLOW).glow().build()) };
+            TextureFactory.of(
+                TextureFactory.of(DIESEL_GENERATOR_SIDE),
+                TextureFactory.builder()
+                    .addIcon(DIESEL_GENERATOR_SIDE_GLOW)
+                    .glow()
+                    .build()) };
     }
 
     @Override
     public ITexture[] getFrontActive(byte aColor) {
         return new ITexture[] { super.getFrontActive(aColor)[0],
-                TextureFactory.of(
-                        TextureFactory.of(DIESEL_GENERATOR_FRONT_ACTIVE),
-                        TextureFactory.builder().addIcon(DIESEL_GENERATOR_FRONT_ACTIVE_GLOW).glow().build()),
-                OVERLAYS_ENERGY_OUT[this.mTier] };
+            TextureFactory.of(
+                TextureFactory.of(DIESEL_GENERATOR_FRONT_ACTIVE),
+                TextureFactory.builder()
+                    .addIcon(DIESEL_GENERATOR_FRONT_ACTIVE_GLOW)
+                    .glow()
+                    .build()),
+            OVERLAYS_ENERGY_OUT[this.mTier] };
     }
 
     @Override
     public ITexture[] getBackActive(byte aColor) {
         return new ITexture[] { super.getBackActive(aColor)[0],
-                TextureFactory.of(
-                        TextureFactory.of(DIESEL_GENERATOR_BACK_ACTIVE),
-                        TextureFactory.builder().addIcon(DIESEL_GENERATOR_BACK_ACTIVE_GLOW).glow().build()) };
+            TextureFactory.of(
+                TextureFactory.of(DIESEL_GENERATOR_BACK_ACTIVE),
+                TextureFactory.builder()
+                    .addIcon(DIESEL_GENERATOR_BACK_ACTIVE_GLOW)
+                    .glow()
+                    .build()) };
     }
 
     @Override
     public ITexture[] getBottomActive(byte aColor) {
         return new ITexture[] { super.getBottomActive(aColor)[0],
-                TextureFactory.of(
-                        TextureFactory.of(DIESEL_GENERATOR_BOTTOM_ACTIVE),
-                        TextureFactory.builder().addIcon(DIESEL_GENERATOR_BOTTOM_ACTIVE_GLOW).glow().build()) };
+            TextureFactory.of(
+                TextureFactory.of(DIESEL_GENERATOR_BOTTOM_ACTIVE),
+                TextureFactory.builder()
+                    .addIcon(DIESEL_GENERATOR_BOTTOM_ACTIVE_GLOW)
+                    .glow()
+                    .build()) };
     }
 
     @Override
     public ITexture[] getTopActive(byte aColor) {
         return new ITexture[] { super.getTopActive(aColor)[0],
-                TextureFactory.of(
-                        TextureFactory.of(DIESEL_GENERATOR_TOP_ACTIVE),
-                        TextureFactory.builder().addIcon(DIESEL_GENERATOR_TOP_ACTIVE_GLOW).glow().build()) };
+            TextureFactory.of(
+                TextureFactory.of(DIESEL_GENERATOR_TOP_ACTIVE),
+                TextureFactory.builder()
+                    .addIcon(DIESEL_GENERATOR_TOP_ACTIVE_GLOW)
+                    .glow()
+                    .build()) };
     }
 
     @Override
     public ITexture[] getSidesActive(byte aColor) {
         return new ITexture[] { super.getSidesActive(aColor)[0],
-                TextureFactory.of(
-                        TextureFactory.of(DIESEL_GENERATOR_SIDE_ACTIVE),
-                        TextureFactory.builder().addIcon(DIESEL_GENERATOR_SIDE_ACTIVE_GLOW).glow().build()) };
+            TextureFactory.of(
+                TextureFactory.of(DIESEL_GENERATOR_SIDE_ACTIVE),
+                TextureFactory.builder()
+                    .addIcon(DIESEL_GENERATOR_SIDE_ACTIVE_GLOW)
+                    .glow()
+                    .build()) };
     }
 
     @Override

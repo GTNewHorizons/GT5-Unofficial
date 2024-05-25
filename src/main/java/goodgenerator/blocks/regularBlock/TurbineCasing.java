@@ -47,7 +47,7 @@ public class TurbineCasing extends Casing implements ITextureBlock {
 
     @Override
     public ITexture[] getTexture(Block aBlock, ForgeDirection side, IBlockAccess aWorld, int xCoord, int yCoord,
-            int zCoord) {
+        int zCoord) {
         final int ordinalSide = side.ordinal();
         int tInvertLeftRightMod = ordinalSide % 2 * 2 - 1;
         switch (ordinalSide / 2) {

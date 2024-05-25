@@ -23,7 +23,7 @@ import gregtech.nei.formatter.INEISpecialInfoFormatter;
 public class ExtremeHeatExchangerFrontend extends RecipeMapFrontend {
 
     public ExtremeHeatExchangerFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
-            NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(uiPropertiesBuilder, neiPropertiesBuilder.neiSpecialInfoFormatter(new EHESpecialValueFormatter()));
     }
 
@@ -45,14 +45,14 @@ public class ExtremeHeatExchangerFrontend extends RecipeMapFrontend {
             FluidStack[] Outputs = recipeInfo.recipe.mFluidOutputs;
             int threshold = recipeInfo.recipe.mSpecialValue;
             return Arrays.asList(
-                    StatCollector.translateToLocal("value.extreme_heat_exchanger.0") + " "
-                            + GT_Utility.formatNumbers(Inputs[0].amount)
-                            + " L/s",
-                    StatCollector.translateToLocal("value.extreme_heat_exchanger.1"),
-                    GT_Utility.formatNumbers(Outputs[0].amount / 160) + " L/s",
-                    StatCollector.translateToLocal("value.extreme_heat_exchanger.2"),
-                    GT_Utility.formatNumbers(Outputs[1].amount / 160) + " L/s",
-                    StatCollector.translateToLocal("value.extreme_heat_exchanger.4") + " " + threshold + " L/s");
+                StatCollector.translateToLocal("value.extreme_heat_exchanger.0") + " "
+                    + GT_Utility.formatNumbers(Inputs[0].amount)
+                    + " L/s",
+                StatCollector.translateToLocal("value.extreme_heat_exchanger.1"),
+                GT_Utility.formatNumbers(Outputs[0].amount / 160) + " L/s",
+                StatCollector.translateToLocal("value.extreme_heat_exchanger.2"),
+                GT_Utility.formatNumbers(Outputs[1].amount / 160) + " L/s",
+                StatCollector.translateToLocal("value.extreme_heat_exchanger.4") + " " + threshold + " L/s");
         }
     }
 }

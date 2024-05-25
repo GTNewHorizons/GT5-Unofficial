@@ -39,81 +39,77 @@ public class FuelRodLoader {
 
     public static void RegisterRod() {
         rodCompressedUraniumDepleted = new DepletedFuelRod(
-                "rodCompressedUraniumDepleted",
-                addText("depletedfuelrod.tooltip", 1),
-                GoodGenerator.GG,
-                100);
+            "rodCompressedUraniumDepleted",
+            addText("depletedfuelrod.tooltip", 1),
+            GoodGenerator.GG,
+            100);
         rodCompressedUraniumDepleted_2 = new DepletedFuelRod(
-                "rodCompressedUraniumDepleted2",
-                addText("depletedfuelrod.tooltip", 1),
-                GoodGenerator.GG,
-                200);
+            "rodCompressedUraniumDepleted2",
+            addText("depletedfuelrod.tooltip", 1),
+            GoodGenerator.GG,
+            200);
         rodCompressedUraniumDepleted_4 = new DepletedFuelRod(
-                "rodCompressedUraniumDepleted4",
-                addText("depletedfuelrod.tooltip", 1),
-                GoodGenerator.GG,
-                400);
+            "rodCompressedUraniumDepleted4",
+            addText("depletedfuelrod.tooltip", 1),
+            GoodGenerator.GG,
+            400);
         rodCompressedPlutoniumDepleted = new DepletedFuelRod(
-                "rodCompressedPlutoniumDepleted",
-                addText("depletedfuelrod.tooltip", 1),
-                GoodGenerator.GG,
-                120);
+            "rodCompressedPlutoniumDepleted",
+            addText("depletedfuelrod.tooltip", 1),
+            GoodGenerator.GG,
+            120);
         rodCompressedPlutoniumDepleted_2 = new DepletedFuelRod(
-                "rodCompressedPlutoniumDepleted2",
-                addText("depletedfuelrod.tooltip", 1),
-                GoodGenerator.GG,
-                240);
+            "rodCompressedPlutoniumDepleted2",
+            addText("depletedfuelrod.tooltip", 1),
+            GoodGenerator.GG,
+            240);
         rodCompressedPlutoniumDepleted_4 = new DepletedFuelRod(
-                "rodCompressedPlutoniumDepleted4",
-                addText("depletedfuelrod.tooltip", 1),
-                GoodGenerator.GG,
-                480);
+            "rodCompressedPlutoniumDepleted4",
+            addText("depletedfuelrod.tooltip", 1),
+            GoodGenerator.GG,
+            480);
         rodLiquidUraniumDepleted = new DepletedFuelRod(
-                "rodLiquidUraniumDepleted",
-                addText("depletedfuelrod.tooltip", 1),
-                GoodGenerator.GG,
-                800);
+            "rodLiquidUraniumDepleted",
+            addText("depletedfuelrod.tooltip", 1),
+            GoodGenerator.GG,
+            800);
         rodLiquidUraniumDepleted_2 = new DepletedFuelRod(
-                "rodLiquidUraniumDepleted2",
-                addText("depletedfuelrod.tooltip", 1),
-                GoodGenerator.GG,
-                1600);
+            "rodLiquidUraniumDepleted2",
+            addText("depletedfuelrod.tooltip", 1),
+            GoodGenerator.GG,
+            1600);
         rodLiquidUraniumDepleted_4 = new DepletedFuelRod(
-                "rodLiquidUraniumDepleted4",
-                addText("depletedfuelrod.tooltip", 1),
-                GoodGenerator.GG,
-                3200);
+            "rodLiquidUraniumDepleted4",
+            addText("depletedfuelrod.tooltip", 1),
+            GoodGenerator.GG,
+            3200);
         rodLiquidPlutoniumDepleted = new DepletedFuelRod(
-                "rodLiquidPlutoniumDepleted",
-                addText("depletedfuelrod.tooltip", 1),
-                GoodGenerator.GG,
-                1000);
+            "rodLiquidPlutoniumDepleted",
+            addText("depletedfuelrod.tooltip", 1),
+            GoodGenerator.GG,
+            1000);
         rodLiquidPlutoniumDepleted_2 = new DepletedFuelRod(
-                "rodLiquidPlutoniumDepleted2",
-                addText("depletedfuelrod.tooltip", 1),
-                GoodGenerator.GG,
-                2000);
+            "rodLiquidPlutoniumDepleted2",
+            addText("depletedfuelrod.tooltip", 1),
+            GoodGenerator.GG,
+            2000);
         rodLiquidPlutoniumDepleted_4 = new DepletedFuelRod(
-                "rodLiquidPlutoniumDepleted4",
-                addText("depletedfuelrod.tooltip", 1),
-                GoodGenerator.GG,
-                4000);
+            "rodLiquidPlutoniumDepleted4",
+            addText("depletedfuelrod.tooltip", 1),
+            GoodGenerator.GG,
+            4000);
 
         GameRegistry.registerItem(rodCompressedUraniumDepleted, "rodCompressedUraniumDepleted", GoodGenerator.MOD_ID);
         GameRegistry
-                .registerItem(rodCompressedUraniumDepleted_2, "rodCompressedUraniumDepleted2", GoodGenerator.MOD_ID);
+            .registerItem(rodCompressedUraniumDepleted_2, "rodCompressedUraniumDepleted2", GoodGenerator.MOD_ID);
         GameRegistry
-                .registerItem(rodCompressedUraniumDepleted_4, "rodCompressedUraniumDepleted4", GoodGenerator.MOD_ID);
+            .registerItem(rodCompressedUraniumDepleted_4, "rodCompressedUraniumDepleted4", GoodGenerator.MOD_ID);
         GameRegistry
-                .registerItem(rodCompressedPlutoniumDepleted, "rodCompressedPlutoniumDepleted", GoodGenerator.MOD_ID);
-        GameRegistry.registerItem(
-                rodCompressedPlutoniumDepleted_2,
-                "rodCompressedPlutoniumDepleted2",
-                GoodGenerator.MOD_ID);
-        GameRegistry.registerItem(
-                rodCompressedPlutoniumDepleted_4,
-                "rodCompressedPlutoniumDepleted4",
-                GoodGenerator.MOD_ID);
+            .registerItem(rodCompressedPlutoniumDepleted, "rodCompressedPlutoniumDepleted", GoodGenerator.MOD_ID);
+        GameRegistry
+            .registerItem(rodCompressedPlutoniumDepleted_2, "rodCompressedPlutoniumDepleted2", GoodGenerator.MOD_ID);
+        GameRegistry
+            .registerItem(rodCompressedPlutoniumDepleted_4, "rodCompressedPlutoniumDepleted4", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(rodLiquidUraniumDepleted, "rodLiquidUraniumDepleted", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(rodLiquidUraniumDepleted_2, "rodLiquidUraniumDepleted2", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(rodLiquidUraniumDepleted_4, "rodLiquidUraniumDepleted4", GoodGenerator.MOD_ID);
@@ -122,119 +118,119 @@ public class FuelRodLoader {
         GameRegistry.registerItem(rodLiquidPlutoniumDepleted_4, "rodLiquidPlutoniumDepleted4", GoodGenerator.MOD_ID);
 
         rodCompressedUranium = new FuelRod(
-                "rodCompressedUranium",
-                1,
-                100,
-                4,
-                800,
-                70000,
-                new ItemStack(rodCompressedUraniumDepleted, 1),
-                GoodGenerator.GG);
+            "rodCompressedUranium",
+            1,
+            100,
+            4,
+            800,
+            70000,
+            new ItemStack(rodCompressedUraniumDepleted, 1),
+            GoodGenerator.GG);
         rodCompressedUranium_2 = new FuelRod(
-                "rodCompressedUranium2",
-                2,
-                100,
-                4,
-                1600,
-                70000,
-                new ItemStack(rodCompressedUraniumDepleted_2, 1),
-                GoodGenerator.GG);
+            "rodCompressedUranium2",
+            2,
+            100,
+            4,
+            1600,
+            70000,
+            new ItemStack(rodCompressedUraniumDepleted_2, 1),
+            GoodGenerator.GG);
         rodCompressedUranium_4 = new FuelRod(
-                "rodCompressedUranium4",
-                4,
-                100,
-                4,
-                3200,
-                70000,
-                new ItemStack(rodCompressedUraniumDepleted_4, 1),
-                GoodGenerator.GG);
+            "rodCompressedUranium4",
+            4,
+            100,
+            4,
+            3200,
+            70000,
+            new ItemStack(rodCompressedUraniumDepleted_4, 1),
+            GoodGenerator.GG);
         rodCompressedPlutonium = new FuelRod(
-                "rodCompressedPlutonium",
-                1,
-                50,
-                4,
-                1000,
-                30000,
-                6,
-                new ItemStack(rodCompressedPlutoniumDepleted, 1),
-                GoodGenerator.GG);
+            "rodCompressedPlutonium",
+            1,
+            50,
+            4,
+            1000,
+            30000,
+            6,
+            new ItemStack(rodCompressedPlutoniumDepleted, 1),
+            GoodGenerator.GG);
         rodCompressedPlutonium_2 = new FuelRod(
-                "rodCompressedPlutonium2",
-                2,
-                50,
-                4,
-                2000,
-                30000,
-                6,
-                new ItemStack(rodCompressedPlutoniumDepleted_2, 1),
-                GoodGenerator.GG);
+            "rodCompressedPlutonium2",
+            2,
+            50,
+            4,
+            2000,
+            30000,
+            6,
+            new ItemStack(rodCompressedPlutoniumDepleted_2, 1),
+            GoodGenerator.GG);
         rodCompressedPlutonium_4 = new FuelRod(
-                "rodCompressedPlutonium4",
-                4,
-                50,
-                4,
-                4000,
-                30000,
-                6,
-                new ItemStack(rodCompressedPlutoniumDepleted_4, 1),
-                GoodGenerator.GG);
+            "rodCompressedPlutonium4",
+            4,
+            50,
+            4,
+            4000,
+            30000,
+            6,
+            new ItemStack(rodCompressedPlutoniumDepleted_4, 1),
+            GoodGenerator.GG);
         rodLiquidUranium = new FuelRod(
-                "rodLiquidUranium",
-                1,
-                1200,
-                64,
-                8000,
-                6000,
-                new ItemStack(rodLiquidUraniumDepleted, 1),
-                GoodGenerator.GG);
+            "rodLiquidUranium",
+            1,
+            1200,
+            64,
+            8000,
+            6000,
+            new ItemStack(rodLiquidUraniumDepleted, 1),
+            GoodGenerator.GG);
         rodLiquidUranium_2 = new FuelRod(
-                "rodLiquidUranium2",
-                2,
-                1200,
-                64,
-                8000,
-                6000,
-                new ItemStack(rodLiquidUraniumDepleted_2, 1),
-                GoodGenerator.GG);
+            "rodLiquidUranium2",
+            2,
+            1200,
+            64,
+            8000,
+            6000,
+            new ItemStack(rodLiquidUraniumDepleted_2, 1),
+            GoodGenerator.GG);
         rodLiquidUranium_4 = new FuelRod(
-                "rodLiquidUranium4",
-                4,
-                1200,
-                64,
-                8000,
-                6000,
-                new ItemStack(rodLiquidUraniumDepleted_4, 1),
-                GoodGenerator.GG);
+            "rodLiquidUranium4",
+            4,
+            1200,
+            64,
+            8000,
+            6000,
+            new ItemStack(rodLiquidUraniumDepleted_4, 1),
+            GoodGenerator.GG);
         rodLiquidPlutonium = new FuelRod(
-                "rodLiquidPlutonium",
-                1,
-                1600,
-                64,
-                10000,
-                10000,
-                2,
-                new ItemStack(rodLiquidPlutoniumDepleted, 1),
-                GoodGenerator.GG);
+            "rodLiquidPlutonium",
+            1,
+            1600,
+            64,
+            10000,
+            10000,
+            2,
+            new ItemStack(rodLiquidPlutoniumDepleted, 1),
+            GoodGenerator.GG);
         rodLiquidPlutonium_2 = new FuelRod(
-                "rodLiquidPlutonium2",
-                2,
-                1600,
-                64,
-                10000,
-                10000,
-                2,
-                new ItemStack(rodLiquidPlutoniumDepleted_2, 1),
-                GoodGenerator.GG);
+            "rodLiquidPlutonium2",
+            2,
+            1600,
+            64,
+            10000,
+            10000,
+            2,
+            new ItemStack(rodLiquidPlutoniumDepleted_2, 1),
+            GoodGenerator.GG);
         rodLiquidPlutonium_4 = new FuelRod(
-                "rodLiquidPlutonium4",
-                4,
-                1600,
-                64,
-                10000,
-                10000,
-                2,
-                new ItemStack(rodLiquidPlutoniumDepleted_4, 1),
-                GoodGenerator.GG);
+            "rodLiquidPlutonium4",
+            4,
+            1600,
+            64,
+            10000,
+            10000,
+            2,
+            new ItemStack(rodLiquidPlutoniumDepleted_4, 1),
+            GoodGenerator.GG);
 
         GameRegistry.registerItem(rodCompressedUranium, "rodCompressedUranium", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(rodCompressedUranium_2, "rodCompressedUranium2", GoodGenerator.MOD_ID);

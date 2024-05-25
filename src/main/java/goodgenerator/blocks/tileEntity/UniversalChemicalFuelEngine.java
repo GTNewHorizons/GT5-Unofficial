@@ -50,7 +50,7 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 
 public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
-        implements IConstructable, ISurvivalConstructable {
+    implements IConstructable, ISurvivalConstructable {
 
     protected final double DIESEL_EFFICIENCY_COEFFICIENT = 0.04D;
     protected final double GAS_EFFICIENCY_COEFFICIENT = 0.04D;
@@ -132,26 +132,25 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_TooltipMultiB
     @Override
     public IStructureDefinition<UniversalChemicalFuelEngine> getStructure_EM() {
         if (multiDefinition == null) {
-            multiDefinition = StructureDefinition.<UniversalChemicalFuelEngine>builder().addShape(
+            multiDefinition = StructureDefinition.<UniversalChemicalFuelEngine>builder()
+                .addShape(
                     mName,
                     transpose(
-                            new String[][] {
-                                    { "TTTTT", "TTMMT", "TTMMT", "TTMMT", "TTMMT", "TTMMT", "TTMMT", "TTMMT", "TTTTT" },
-                                    { "TTTTT", "SPCCI-", "SPCCI-", "SPCCI-", "SPCCI-", "SPCCI-", "SPCCI-", "SPCCI-",
-                                            "TTTTT" },
-                                    { "TT~TT", "SPGGI-", "SPGGI-", "SPGGI-", "SPGGI-", "SPGGI-", "SPGGI-", "SPGGI-",
-                                            "TTETT" },
-                                    { "TTWTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT",
-                                            "TTTTT" } }))
-                    .addElement('T', ofBlock(GregTech_API.sBlockCasings4, 2))
-                    .addElement('W', GT_HatchElement.Maintenance.newAny(50, 1))
-                    .addElement('M', GT_HatchElement.Muffler.newAny(50, 2))
-                    .addElement('S', GT_HatchElement.InputHatch.newAny(50, 3))
-                    .addElement('E', GT_HatchElement.Dynamo.newAny(50, 4))
-                    .addElement('P', ofBlock(GregTech_API.sBlockCasings2, 14))
-                    .addElement('C', ofBlock(Loaders.titaniumPlatedCylinder, 0))
-                    .addElement('G', ofBlock(GregTech_API.sBlockCasings2, 4))
-                    .addElement('I', ofBlock(GregTech_API.sBlockCasings4, 13)).build();
+                        new String[][] {
+                            { "TTTTT", "TTMMT", "TTMMT", "TTMMT", "TTMMT", "TTMMT", "TTMMT", "TTMMT", "TTTTT" },
+                            { "TTTTT", "SPCCI-", "SPCCI-", "SPCCI-", "SPCCI-", "SPCCI-", "SPCCI-", "SPCCI-", "TTTTT" },
+                            { "TT~TT", "SPGGI-", "SPGGI-", "SPGGI-", "SPGGI-", "SPGGI-", "SPGGI-", "SPGGI-", "TTETT" },
+                            { "TTWTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT" } }))
+                .addElement('T', ofBlock(GregTech_API.sBlockCasings4, 2))
+                .addElement('W', GT_HatchElement.Maintenance.newAny(50, 1))
+                .addElement('M', GT_HatchElement.Muffler.newAny(50, 2))
+                .addElement('S', GT_HatchElement.InputHatch.newAny(50, 3))
+                .addElement('E', GT_HatchElement.Dynamo.newAny(50, 4))
+                .addElement('P', ofBlock(GregTech_API.sBlockCasings2, 14))
+                .addElement('C', ofBlock(Loaders.titaniumPlatedCylinder, 0))
+                .addElement('G', ofBlock(GregTech_API.sBlockCasings2, 4))
+                .addElement('I', ofBlock(GregTech_API.sBlockCasings4, 13))
+                .build();
         }
         return multiDefinition;
     }
@@ -184,29 +183,35 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_TooltipMultiB
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Chemical Engine").addInfo("Controller block for the Chemical Engine")
-                .addInfo("BURNING BURNING BURNING").addInfo("Use combustible liquid to generate power.")
-                .addInfo("You need to supply Combustion Promoter to keep it running.")
-                .addInfo("It will consume all the fuel and promoter in the hatch every second.")
-                .addInfo("If the Dynamo Hatch's buffer fills up, the machine will stop.")
-                .addInfo("When turned on, there's 10-second period where the machine will not stop.")
-                .addInfo("Even if it doesn't stop, all the fuel in the hatch will be consumed.")
-                .addInfo("The efficiency is determined by the proportion of Combustion Promoter to fuel.")
-                .addInfo("The proportion is bigger, and the efficiency will be higher.")
-                .addInfo("Start machine with power button to force structure check.")
-                .addInfo("It creates sqrt(Current Output Power) pollution every second")
-                .addInfo(
-                        "If you forget to supply Combustion Promoter, this engine will swallow all the fuel "
-                                + EnumChatFormatting.YELLOW
-                                + "without outputting energy"
-                                + EnumChatFormatting.GRAY
-                                + ".")
-                .addInfo("The efficiency is up to 150%.").addInfo("The structure is too complex!")
-                .addInfo(BLUE_PRINT_INFO).addSeparator().beginStructureBlock(5, 4, 9, false)
-                .addMaintenanceHatch("Hint block with dot 1")
-                .addMufflerHatch("Hint block with dot 2 (fill all slots with mufflers)")
-                .addInputHatch("Hint block with dot 3 (fill all slots with input hatches)")
-                .addDynamoHatch("Hint block with dot 4").toolTipFinisher("Good Generator");
+        tt.addMachineType("Chemical Engine")
+            .addInfo("Controller block for the Chemical Engine")
+            .addInfo("BURNING BURNING BURNING")
+            .addInfo("Use combustible liquid to generate power.")
+            .addInfo("You need to supply Combustion Promoter to keep it running.")
+            .addInfo("It will consume all the fuel and promoter in the hatch every second.")
+            .addInfo("If the Dynamo Hatch's buffer fills up, the machine will stop.")
+            .addInfo("When turned on, there's 10-second period where the machine will not stop.")
+            .addInfo("Even if it doesn't stop, all the fuel in the hatch will be consumed.")
+            .addInfo("The efficiency is determined by the proportion of Combustion Promoter to fuel.")
+            .addInfo("The proportion is bigger, and the efficiency will be higher.")
+            .addInfo("Start machine with power button to force structure check.")
+            .addInfo("It creates sqrt(Current Output Power) pollution every second")
+            .addInfo(
+                "If you forget to supply Combustion Promoter, this engine will swallow all the fuel "
+                    + EnumChatFormatting.YELLOW
+                    + "without outputting energy"
+                    + EnumChatFormatting.GRAY
+                    + ".")
+            .addInfo("The efficiency is up to 150%.")
+            .addInfo("The structure is too complex!")
+            .addInfo(BLUE_PRINT_INFO)
+            .addSeparator()
+            .beginStructureBlock(5, 4, 9, false)
+            .addMaintenanceHatch("Hint block with dot 1")
+            .addMufflerHatch("Hint block with dot 2 (fill all slots with mufflers)")
+            .addInputHatch("Hint block with dot 3 (fill all slots with input hatches)")
+            .addDynamoHatch("Hint block with dot 4")
+            .toolTipFinisher("Good Generator");
         return tt;
     }
 
@@ -234,7 +239,7 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_TooltipMultiB
     }
 
     protected CheckRecipeResult processFuel(ArrayList<FluidStack> tFluids, RecipeMap<FuelBackend> recipeMap,
-            long PromoterAmount, double efficiencyCoefficient, double FuelsValueBonus) {
+        long PromoterAmount, double efficiencyCoefficient, double FuelsValueBonus) {
         for (GT_Recipe recipe : recipeMap.getAllRecipes()) {
             FluidStack tFuel = findFuel(recipe);
             if (tFuel == null) continue;
@@ -269,7 +274,8 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_TooltipMultiB
             isStoppingSafe = true;
         } else if (isStoppingSafe) isStoppingSafe = false;
 
-        if (this.getBaseMetaTileEntity().isServerSide()) {
+        if (this.getBaseMetaTileEntity()
+            .isServerSide()) {
             addAutoEnergy();
         }
         return true;
@@ -279,17 +285,17 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_TooltipMultiB
     public String[] getInfoData() {
         String[] info = super.getInfoData();
         info[4] = "Probably makes: " + EnumChatFormatting.RED
-                + GT_Utility.formatNumbers(this.getPowerFlow())
-                + EnumChatFormatting.RESET
-                + " EU/t";
+            + GT_Utility.formatNumbers(this.getPowerFlow())
+            + EnumChatFormatting.RESET
+            + " EU/t";
         info[6] = "Problems: " + EnumChatFormatting.RED
-                + GT_Utility.formatNumbers(this.getIdealStatus() - this.getRepairStatus())
-                + EnumChatFormatting.RESET
-                + " Efficiency: "
-                + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(tEff / 100D)
-                + EnumChatFormatting.RESET
-                + " %";
+            + GT_Utility.formatNumbers(this.getIdealStatus() - this.getRepairStatus())
+            + EnumChatFormatting.RESET
+            + " Efficiency: "
+            + EnumChatFormatting.YELLOW
+            + GT_Utility.formatNumbers(tEff / 100D)
+            + EnumChatFormatting.RESET
+            + " %";
         return info;
     }
 
@@ -298,7 +304,11 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_TooltipMultiB
         if (!mDynamoHatches.isEmpty()) {
             GT_MetaTileEntity_Hatch_Dynamo tHatch = mDynamoHatches.get(0);
             if (tHatch.maxEUOutput() * tHatch.maxAmperesOut() >= exEU) {
-                tHatch.setEUVar(Math.min(tHatch.maxEUStore(), tHatch.getBaseMetaTileEntity().getStoredEU() + exEU));
+                tHatch.setEUVar(
+                    Math.min(
+                        tHatch.maxEUStore(),
+                        tHatch.getBaseMetaTileEntity()
+                            .getStoredEU() + exEU));
             } else if (!isStoppingSafe) {
                 stopMachine();
             }
@@ -306,7 +316,11 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_TooltipMultiB
         if (!eDynamoMulti.isEmpty()) {
             GT_MetaTileEntity_Hatch_DynamoMulti tHatch = eDynamoMulti.get(0);
             if (tHatch.maxEUOutput() * tHatch.maxAmperesOut() >= exEU) {
-                tHatch.setEUVar(Math.min(tHatch.maxEUStore(), tHatch.getBaseMetaTileEntity().getStoredEU() + exEU));
+                tHatch.setEUVar(
+                    Math.min(
+                        tHatch.maxEUStore(),
+                        tHatch.getBaseMetaTileEntity()
+                            .getStoredEU() + exEU));
             } else if (!isStoppingSafe) {
                 stopMachine();
             }
@@ -350,13 +364,18 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_TooltipMultiB
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-            int colorIndex, boolean aActive, boolean aRedstone) {
+        int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
             if (aActive) return new ITexture[] { casingTexturePages[0][50],
-                    TextureFactory.of(OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE_GLOW).glow().build() };
+                TextureFactory.of(OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE), TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE_GLOW)
+                    .glow()
+                    .build() };
             return new ITexture[] { casingTexturePages[0][50], TextureFactory.of(OVERLAY_FRONT_DIESEL_ENGINE),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_DIESEL_ENGINE_GLOW).glow().build() };
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_DIESEL_ENGINE_GLOW)
+                    .glow()
+                    .build() };
         }
         return new ITexture[] { casingTexturePages[0][50] };
     }

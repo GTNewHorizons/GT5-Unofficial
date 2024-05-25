@@ -133,7 +133,8 @@ public class EssentiaOutputHatch_ME extends EssentiaOutputHatch implements IActi
     protected boolean getEssentiaMonitor() {
         IMEEssentiaMonitor essentiaMonitor = null;
         IGrid grid = null;
-        IGridNode node = this.getProxy().getNode();
+        IGridNode node = this.getProxy()
+            .getNode();
 
         if (node != null) {
             grid = node.getGrid();

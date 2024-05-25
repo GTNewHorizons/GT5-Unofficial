@@ -91,19 +91,19 @@ public class EssentiaHatch extends TileEntity implements IAspectContainer, IEsse
         TileEntity[] te = new TileEntity[ForgeDirection.VALID_DIRECTIONS.length];
         for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
             te[i] = ThaumcraftApiHelper.getConnectableTile(
-                    this.worldObj,
-                    this.xCoord,
-                    this.yCoord,
-                    this.zCoord,
-                    ForgeDirection.VALID_DIRECTIONS[i]);
+                this.worldObj,
+                this.xCoord,
+                this.yCoord,
+                this.zCoord,
+                ForgeDirection.VALID_DIRECTIONS[i]);
             if (te[i] != null) {
                 IEssentiaTransport pipe = (IEssentiaTransport) te[i];
                 if (!pipe.canOutputTo(ForgeDirection.VALID_DIRECTIONS[i])) {
                     continue;
                 }
                 if ((pipe.getEssentiaType(ForgeDirection.VALID_DIRECTIONS[i].getOpposite()) != null)
-                        && (pipe.getSuctionAmount(ForgeDirection.VALID_DIRECTIONS[i])
-                                < getSuctionAmount(ForgeDirection.VALID_DIRECTIONS[i]))) {
+                    && (pipe.getSuctionAmount(ForgeDirection.VALID_DIRECTIONS[i])
+                        < getSuctionAmount(ForgeDirection.VALID_DIRECTIONS[i]))) {
                     Aspect readyInput = pipe.getEssentiaType(ForgeDirection.VALID_DIRECTIONS[i].getOpposite());
                     int type = LargeEssentiaEnergyData.getAspectTypeIndex(readyInput);
                     if (type != -1 && (mState & (1 << type)) == 0) continue;
@@ -111,11 +111,11 @@ public class EssentiaHatch extends TileEntity implements IAspectContainer, IEsse
                         addToContainer(mLocked, pipe.takeEssentia(mLocked, 1, ForgeDirection.VALID_DIRECTIONS[i]));
                     }
                     if (mLocked == null) addToContainer(
+                        pipe.getEssentiaType(ForgeDirection.VALID_DIRECTIONS[i]),
+                        pipe.takeEssentia(
                             pipe.getEssentiaType(ForgeDirection.VALID_DIRECTIONS[i]),
-                            pipe.takeEssentia(
-                                    pipe.getEssentiaType(ForgeDirection.VALID_DIRECTIONS[i]),
-                                    1,
-                                    ForgeDirection.VALID_DIRECTIONS[i]));
+                            1,
+                            ForgeDirection.VALID_DIRECTIONS[i]));
                 }
             }
         }

@@ -58,7 +58,7 @@ public class BlockRenderHandler implements ISimpleBlockRenderingHandler {
 
     @Override
     public boolean renderWorldBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, int aModelID,
-            RenderBlocks aRenderer) {
+        RenderBlocks aRenderer) {
         aRenderer.enableAO = Minecraft.isAmbientOcclusionEnabled() && GT_Mod.gregtechproxy.mRenderTileAmbientOcclusion;
         aRenderer.useInventoryTint = false;
         if (aBlock instanceof ITextureBlock) {
@@ -66,59 +66,59 @@ public class BlockRenderHandler implements ISimpleBlockRenderingHandler {
             aRenderer.setRenderBoundsFromBlock(aBlock);
             ITextureBlock tc = (ITextureBlock) aBlock;
             renderNegativeYFacing(
-                    aWorld,
-                    aRenderer,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tc.getTexture(aBlock, DOWN, aWorld, aX, aY, aZ),
-                    true);
+                aWorld,
+                aRenderer,
+                aBlock,
+                aX,
+                aY,
+                aZ,
+                tc.getTexture(aBlock, DOWN, aWorld, aX, aY, aZ),
+                true);
             renderPositiveYFacing(
-                    aWorld,
-                    aRenderer,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tc.getTexture(aBlock, UP, aWorld, aX, aY, aZ),
-                    true);
+                aWorld,
+                aRenderer,
+                aBlock,
+                aX,
+                aY,
+                aZ,
+                tc.getTexture(aBlock, UP, aWorld, aX, aY, aZ),
+                true);
             renderNegativeZFacing(
-                    aWorld,
-                    aRenderer,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tc.getTexture(aBlock, NORTH, aWorld, aX, aY, aZ),
-                    true);
+                aWorld,
+                aRenderer,
+                aBlock,
+                aX,
+                aY,
+                aZ,
+                tc.getTexture(aBlock, NORTH, aWorld, aX, aY, aZ),
+                true);
             renderPositiveZFacing(
-                    aWorld,
-                    aRenderer,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tc.getTexture(aBlock, SOUTH, aWorld, aX, aY, aZ),
-                    true);
+                aWorld,
+                aRenderer,
+                aBlock,
+                aX,
+                aY,
+                aZ,
+                tc.getTexture(aBlock, SOUTH, aWorld, aX, aY, aZ),
+                true);
             renderNegativeXFacing(
-                    aWorld,
-                    aRenderer,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tc.getTexture(aBlock, WEST, aWorld, aX, aY, aZ),
-                    true);
+                aWorld,
+                aRenderer,
+                aBlock,
+                aX,
+                aY,
+                aZ,
+                tc.getTexture(aBlock, WEST, aWorld, aX, aY, aZ),
+                true);
             renderPositiveXFacing(
-                    aWorld,
-                    aRenderer,
-                    aBlock,
-                    aX,
-                    aY,
-                    aZ,
-                    tc.getTexture(aBlock, EAST, aWorld, aX, aY, aZ),
-                    true);
+                aWorld,
+                aRenderer,
+                aBlock,
+                aX,
+                aY,
+                aZ,
+                tc.getTexture(aBlock, EAST, aWorld, aX, aY, aZ),
+                true);
         }
         return false;
     }

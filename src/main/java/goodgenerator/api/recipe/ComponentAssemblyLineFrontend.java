@@ -19,7 +19,7 @@ import gregtech.common.gui.modularui.UIHelper;
 public class ComponentAssemblyLineFrontend extends RecipeMapFrontend {
 
     public ComponentAssemblyLineFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
-            NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(uiPropertiesBuilder, neiPropertiesBuilder);
     }
 

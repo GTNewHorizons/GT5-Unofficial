@@ -30,7 +30,8 @@ public class FluidsBuilder {
 
     public static void crackedNaquadahGas_Lightly() {
         Fluid tmp = BaseFluid.BuildFluid("lightlyCrackedNaquadahGas");
-        tmp.setGaseous(true).setTemperature(800);
+        tmp.setGaseous(true)
+            .setTemperature(800);
         BaseFluid tmp2 = new BaseFluid(tmp, Material.water);
         tmp2.SetTexture("lightlyCrackedNaquadahGas");
         tmp2.setBlockName("lightlyCrackedNaquadahGas");
@@ -40,7 +41,8 @@ public class FluidsBuilder {
 
     public static void crackedNaquadahGas_Moderately() {
         Fluid tmp = BaseFluid.BuildFluid("moderatelyCrackedNaquadahGas");
-        tmp.setGaseous(true).setTemperature(800);
+        tmp.setGaseous(true)
+            .setTemperature(800);
         BaseFluid tmp2 = new BaseFluid(tmp, Material.water);
         tmp2.SetTexture("moderatelyCrackedNaquadahGas");
         tmp2.setBlockName("moderatelyCrackedNaquadahGas");
@@ -50,7 +52,8 @@ public class FluidsBuilder {
 
     public static void crackedNaquadahGas_Heavily() {
         Fluid tmp = BaseFluid.BuildFluid("heavilyCrackedNaquadahGas");
-        tmp.setGaseous(true).setTemperature(800);
+        tmp.setGaseous(true)
+            .setTemperature(800);
         BaseFluid tmp2 = new BaseFluid(tmp, Material.water);
         tmp2.SetTexture("heavilyCrackedNaquadahGas");
         tmp2.setBlockName("heavilyCrackedNaquadahGas");
@@ -60,7 +63,8 @@ public class FluidsBuilder {
 
     public static void crackedLightNaquadahFuel_Lightly() {
         Fluid tmp = BaseFluid.BuildFluid("lightlyCrackedLightNaquadahFuel");
-        tmp.setGaseous(false).setTemperature(1200);
+        tmp.setGaseous(false)
+            .setTemperature(1200);
         BaseFluid tmp2 = new BaseFluid(tmp, Material.water);
         tmp2.SetTexture("lightlyCrackedLightNaquadahFuel");
         tmp2.setBlockName("lightlyCrackedLightNaquadahFuel");
@@ -70,7 +74,8 @@ public class FluidsBuilder {
 
     public static void crackedLightNaquadahFuel_Moderately() {
         Fluid tmp = BaseFluid.BuildFluid("moderatelyCrackedLightNaquadahFuel");
-        tmp.setGaseous(false).setTemperature(1200);
+        tmp.setGaseous(false)
+            .setTemperature(1200);
         BaseFluid tmp2 = new BaseFluid(tmp, Material.water);
         tmp2.SetTexture("moderatelyCrackedLightNaquadahFuel");
         tmp2.setBlockName("moderatelyCrackedLightNaquadahFuel");
@@ -80,7 +85,8 @@ public class FluidsBuilder {
 
     public static void crackedLightNaquadahFuel_Heavily() {
         Fluid tmp = BaseFluid.BuildFluid("heavilyCrackedLightNaquadahFuel");
-        tmp.setGaseous(false).setTemperature(1200);
+        tmp.setGaseous(false)
+            .setTemperature(1200);
         BaseFluid tmp2 = new BaseFluid(tmp, Material.water);
         tmp2.SetTexture("heavilyCrackedLightNaquadahFuel");
         tmp2.setBlockName("heavilyCrackedLightNaquadahFuel");
@@ -90,7 +96,8 @@ public class FluidsBuilder {
 
     public static void crackedHeavyNaquadahFuel_Lightly() {
         Fluid tmp = BaseFluid.BuildFluid("lightlyCrackedHeavyNaquadahFuel");
-        tmp.setGaseous(false).setTemperature(1200);
+        tmp.setGaseous(false)
+            .setTemperature(1200);
         BaseFluid tmp2 = new BaseFluid(tmp, Material.water);
         tmp2.SetTexture("lightlyCrackedHeavyNaquadahFuel");
         tmp2.setBlockName("lightlyCrackedHeavyNaquadahFuel");
@@ -100,7 +107,8 @@ public class FluidsBuilder {
 
     public static void crackedHeavyNaquadahFuel_Moderately() {
         Fluid tmp = BaseFluid.BuildFluid("moderatelyCrackedHeavyNaquadahFuel");
-        tmp.setGaseous(false).setTemperature(1200);
+        tmp.setGaseous(false)
+            .setTemperature(1200);
         BaseFluid tmp2 = new BaseFluid(tmp, Material.water);
         tmp2.SetTexture("moderatelyCrackedHeavyNaquadahFuel");
         tmp2.setBlockName("moderatelyCrackedHeavyNaquadahFuel");
@@ -110,7 +118,8 @@ public class FluidsBuilder {
 
     public static void crackedHeavyNaquadahFuel_Heavily() {
         Fluid tmp = BaseFluid.BuildFluid("heavilyCrackedHeavyNaquadahFuel");
-        tmp.setGaseous(false).setTemperature(1200);
+        tmp.setGaseous(false)
+            .setTemperature(1200);
         BaseFluid tmp2 = new BaseFluid(tmp, Material.water);
         tmp2.SetTexture("heavilyCrackedHeavyNaquadahFuel");
         tmp2.setBlockName("heavilyCrackedHeavyNaquadahFuel");
@@ -120,7 +129,10 @@ public class FluidsBuilder {
 
     public static void crackedNaquadahAsphalt_Lightly() {
         Fluid tmp = BaseFluid.BuildFluid("lightlyCrackedNaquadahAsphalt");
-        tmp.setGaseous(false).setTemperature(1800).setDensity(20000).setViscosity(20000);
+        tmp.setGaseous(false)
+            .setTemperature(1800)
+            .setDensity(20000)
+            .setViscosity(20000);
         BaseFluid tmp2 = new BaseFluid(tmp, Material.water);
         tmp2.SetTexture("lightlyCrackedNaquadahAsphalt");
         tmp2.setBlockName("lightlyCrackedNaquadahAsphalt");
@@ -130,7 +142,10 @@ public class FluidsBuilder {
 
     public static void crackedNaquadahAsphalt_Moderately() {
         Fluid tmp = BaseFluid.BuildFluid("moderatelyCrackedNaquadahAsphalt");
-        tmp.setGaseous(false).setTemperature(1800).setDensity(20000).setViscosity(20000);
+        tmp.setGaseous(false)
+            .setTemperature(1800)
+            .setDensity(20000)
+            .setViscosity(20000);
         BaseFluid tmp2 = new BaseFluid(tmp, Material.water);
         tmp2.SetTexture("moderatelyCrackedNaquadahAsphalt");
         tmp2.setBlockName("moderatelyCrackedNaquadahAsphalt");
@@ -140,7 +155,10 @@ public class FluidsBuilder {
 
     public static void crackedNaquadahAsphalt_Heavily() {
         Fluid tmp = BaseFluid.BuildFluid("heavilyCrackedNaquadahAsphalt");
-        tmp.setGaseous(false).setTemperature(1800).setDensity(20000).setViscosity(20000);
+        tmp.setGaseous(false)
+            .setTemperature(1800)
+            .setDensity(20000)
+            .setViscosity(20000);
         BaseFluid tmp2 = new BaseFluid(tmp, Material.water);
         tmp2.SetTexture("heavilyCrackedNaquadahAsphalt");
         tmp2.setBlockName("heavilyCrackedNaquadahAsphalt");
@@ -150,7 +168,8 @@ public class FluidsBuilder {
 
     public static void combustionPromotor() {
         Fluid tmp = BaseFluid.BuildFluid("combustionPromotor");
-        tmp.setGaseous(false).setTemperature(300);
+        tmp.setGaseous(false)
+            .setTemperature(300);
         BaseFluid tmp2 = new BaseFluid(tmp, Material.water);
         tmp2.SetTexture("combustionPromotor");
         tmp2.setBlockName("combustionPromotor");
@@ -160,7 +179,9 @@ public class FluidsBuilder {
 
     public static void coalTar() {
         Fluid tmp = BaseFluid.BuildFluid("fluid.coalTar");
-        tmp.setGaseous(false).setTemperature(450).setUnlocalizedName("fluid.coalTar");
+        tmp.setGaseous(false)
+            .setTemperature(450)
+            .setUnlocalizedName("fluid.coalTar");
         BaseFluid tmp2 = new BaseFluid(tmp, Material.water);
         tmp2.SetTexture("coalTar");
         tmp2.setBlockTextureName("coalTar");
@@ -170,7 +191,9 @@ public class FluidsBuilder {
 
     public static void supercriticalSteam() {
         Fluid tmp = BaseFluid.BuildFluid("supercriticalSteam");
-        tmp.setGaseous(true).setTemperature(648).setUnlocalizedName("supercriticalSteam");
+        tmp.setGaseous(true)
+            .setTemperature(648)
+            .setUnlocalizedName("supercriticalSteam");
         BaseFluid tmp2 = new BaseFluid(tmp, Material.water);
         tmp2.SetTexture("supercriticalSteam");
         tmp2.setBlockTextureName("supercriticalSteam");

@@ -58,7 +58,7 @@ public class StructureHelper {
                 if (tFrame.getItem() instanceof ItemBlock) {
                     ItemBlock tFrameStackItem = (ItemBlock) tFrame.getItem();
                     return tFrameStackItem
-                            .placeBlockAt(tFrame, null, world, x, y, z, 6, 0, 0, 0, Items.feather.getDamage(tFrame));
+                        .placeBlockAt(tFrame, null, world, x, y, z, 6, 0, 0, 0, Items.feather.getDamage(tFrame));
                 }
                 return false;
             }
@@ -67,7 +67,7 @@ public class StructureHelper {
 
     // Only support to use meta to tier
     public static <T> IStructureElement<T> addTieredBlock(Block aBlock, BiConsumer<T, Integer> aSetTheFuckingMeta,
-            Function<T, Integer> aGetTheFuckingMeta, int maxMeta) {
+        Function<T, Integer> aGetTheFuckingMeta, int maxMeta) {
         return addTieredBlock(aBlock, (t, i) -> {
             aSetTheFuckingMeta.accept(t, i);
             return true;
@@ -75,7 +75,7 @@ public class StructureHelper {
     }
 
     public static <T> IStructureElement<T> addTieredBlock(Block aBlock, BiPredicate<T, Integer> aSetTheFuckingMeta,
-            Function<T, Integer> aGetTheFuckingMeta, int maxMeta) {
+        Function<T, Integer> aGetTheFuckingMeta, int maxMeta) {
 
         return new IStructureElement<T>() {
 

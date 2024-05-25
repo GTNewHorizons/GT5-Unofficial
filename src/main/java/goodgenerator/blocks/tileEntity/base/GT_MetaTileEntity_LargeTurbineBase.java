@@ -38,7 +38,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 
 public abstract class GT_MetaTileEntity_LargeTurbineBase extends
-        GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_LargeTurbineBase> implements ISurvivalConstructable {
+    GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_LargeTurbineBase> implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final ClassValue<IStructureDefinition<GT_MetaTileEntity_LargeTurbineBase>> STRUCTURE_DEFINITION = new ClassValue<IStructureDefinition<GT_MetaTileEntity_LargeTurbineBase>>() {
@@ -46,32 +46,32 @@ public abstract class GT_MetaTileEntity_LargeTurbineBase extends
         @Override
         protected IStructureDefinition<GT_MetaTileEntity_LargeTurbineBase> computeValue(Class<?> type) {
             return StructureDefinition.<GT_MetaTileEntity_LargeTurbineBase>builder()
-                    .addShape(
-                            STRUCTURE_PIECE_MAIN,
-                            transpose(
-                                    new String[][] { { "     ", "xxxxx", "xxxxx", "xxxxx", "xxxxx", },
-                                            { " --- ", "xcccx", "xchcx", "xchcx", "xcccx", },
-                                            { " --- ", "xc~cx", "xh-hx", "xh-hx", "xcdcx", },
-                                            { " --- ", "xcccx", "xchcx", "xchcx", "xcccx", },
-                                            { "     ", "xxxxx", "xxxxx", "xxxxx", "xxxxx", }, }))
-                    .addElement('c', lazy(t -> ofBlock(t.getCasingBlock(), t.getCasingMeta())))
-                    .addElement('d', lazy(t -> Dynamo.newAny(t.getCasingTextureIndex(), 1)))
-                    .addElement(
-                            'h',
-                            lazy(
-                                    t -> buildHatchAdder(GT_MetaTileEntity_LargeTurbineBase.class)
-                                            .atLeast(Maintenance, InputHatch, OutputHatch, OutputBus, InputBus, Muffler)
-                                            .casingIndex(t.getCasingTextureIndex()).dot(2)
-                                            .buildAndChain(t.getCasingBlock(), t.getCasingMeta())))
-                    .addElement(
-                            'x',
-                            (IStructureElementCheckOnly<GT_MetaTileEntity_LargeTurbineBase>) (aContext, aWorld, aX, aY,
-                                    aZ) -> {
-                                TileEntity tTile = aWorld.getTileEntity(aX, aY, aZ);
-                                return !(tTile instanceof IGregTechTileEntity) || !(((IGregTechTileEntity) tTile)
-                                        .getMetaTileEntity() instanceof GT_MetaTileEntity_LargeTurbineBase);
-                            })
-                    .build();
+                .addShape(
+                    STRUCTURE_PIECE_MAIN,
+                    transpose(
+                        new String[][] { { "     ", "xxxxx", "xxxxx", "xxxxx", "xxxxx", },
+                            { " --- ", "xcccx", "xchcx", "xchcx", "xcccx", },
+                            { " --- ", "xc~cx", "xh-hx", "xh-hx", "xcdcx", },
+                            { " --- ", "xcccx", "xchcx", "xchcx", "xcccx", },
+                            { "     ", "xxxxx", "xxxxx", "xxxxx", "xxxxx", }, }))
+                .addElement('c', lazy(t -> ofBlock(t.getCasingBlock(), t.getCasingMeta())))
+                .addElement('d', lazy(t -> Dynamo.newAny(t.getCasingTextureIndex(), 1)))
+                .addElement(
+                    'h',
+                    lazy(
+                        t -> buildHatchAdder(GT_MetaTileEntity_LargeTurbineBase.class)
+                            .atLeast(Maintenance, InputHatch, OutputHatch, OutputBus, InputBus, Muffler)
+                            .casingIndex(t.getCasingTextureIndex())
+                            .dot(2)
+                            .buildAndChain(t.getCasingBlock(), t.getCasingMeta())))
+                .addElement(
+                    'x',
+                    (IStructureElementCheckOnly<GT_MetaTileEntity_LargeTurbineBase>) (aContext, aWorld, aX, aY, aZ) -> {
+                        TileEntity tTile = aWorld.getTileEntity(aX, aY, aZ);
+                        return !(tTile instanceof IGregTechTileEntity) || !(((IGregTechTileEntity) tTile)
+                            .getMetaTileEntity() instanceof GT_MetaTileEntity_LargeTurbineBase);
+                    })
+                .build();
         }
     };
 
@@ -105,7 +105,7 @@ public abstract class GT_MetaTileEntity_LargeTurbineBase extends
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         maxPower = 0;
         if (checkPiece(STRUCTURE_PIECE_MAIN, 2, 2, 1) && mMaintenanceHatches.size() == 1
-                && mMufflerHatches.isEmpty() == (getPollutionPerTick(null) == 0)) {
+            && mMufflerHatches.isEmpty() == (getPollutionPerTick(null) == 0)) {
             maxPower = getMaximumOutput();
             return true;
         }
@@ -121,9 +121,9 @@ public abstract class GT_MetaTileEntity_LargeTurbineBase extends
     @Override
     public boolean addToMachineList(IGregTechTileEntity tTileEntity, int aBaseCasingIndex) {
         return addMaintenanceToMachineList(tTileEntity, getCasingTextureIndex())
-                || addInputToMachineList(tTileEntity, getCasingTextureIndex())
-                || addOutputToMachineList(tTileEntity, getCasingTextureIndex())
-                || addMufflerToMachineList(tTileEntity, getCasingTextureIndex());
+            || addInputToMachineList(tTileEntity, getCasingTextureIndex())
+            || addOutputToMachineList(tTileEntity, getCasingTextureIndex())
+            || addMufflerToMachineList(tTileEntity, getCasingTextureIndex());
     }
 
     @Override
@@ -140,29 +140,31 @@ public abstract class GT_MetaTileEntity_LargeTurbineBase extends
     public @NotNull CheckRecipeResult checkProcessing() {
         ItemStack controllerSlot = getControllerSlot();
         if ((counter & 7) == 0
-                && (controllerSlot == null || !(controllerSlot.getItem() instanceof GT_MetaGenerated_Tool)
-                        || controllerSlot.getItemDamage() < 170
-                        || controllerSlot.getItemDamage() > 179)) {
+            && (controllerSlot == null || !(controllerSlot.getItem() instanceof GT_MetaGenerated_Tool)
+                || controllerSlot.getItemDamage() < 170
+                || controllerSlot.getItemDamage() > 179)) {
             stopMachine();
             return CheckRecipeResultRegistry.NO_TURBINE_FOUND;
         }
         ArrayList<FluidStack> tFluids = getStoredFluids();
         if (tFluids.size() > 0) {
             if (baseEff == 0 || optFlow == 0
-                    || counter >= 512
-                    || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled()
-                    || this.getBaseMetaTileEntity().hasInventoryBeenModified()) {
+                || counter >= 512
+                || this.getBaseMetaTileEntity()
+                    .hasWorkJustBeenEnabled()
+                || this.getBaseMetaTileEntity()
+                    .hasInventoryBeenModified()) {
                 counter = 0;
                 baseEff = GT_Utility.safeInt(
-                        (long) ((5F + ((GT_MetaGenerated_Tool) controllerSlot.getItem())
-                                .getToolCombatDamage(controllerSlot)) * 1000F));
+                    (long) ((5F
+                        + ((GT_MetaGenerated_Tool) controllerSlot.getItem()).getToolCombatDamage(controllerSlot))
+                        * 1000F));
                 optFlow = GT_Utility.safeInt(
-                        (long) Math.max(
-                                Float.MIN_NORMAL,
-                                ((GT_MetaGenerated_Tool) controllerSlot.getItem()).getToolStats(controllerSlot)
-                                        .getSpeedMultiplier()
-                                        * GT_MetaGenerated_Tool.getPrimaryMaterial(controllerSlot).mToolSpeed
-                                        * 50));
+                    (long) Math.max(
+                        Float.MIN_NORMAL,
+                        ((GT_MetaGenerated_Tool) controllerSlot.getItem()).getToolStats(controllerSlot)
+                            .getSpeedMultiplier() * GT_MetaGenerated_Tool.getPrimaryMaterial(controllerSlot).mToolSpeed
+                            * 50));
                 if (optFlow <= 0 || baseEff <= 0) {
                     stopMachine(); // in case the turbine got removed
                     return CheckRecipeResultRegistry.NO_FUEL_FOUND;
@@ -240,83 +242,84 @@ public abstract class GT_MetaTileEntity_LargeTurbineBase extends
         }
 
         String tRunning = mMaxProgresstime > 0
-                ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.turbine.running.true")
-                        + EnumChatFormatting.RESET
-                : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.turbine.running.false")
-                        + EnumChatFormatting.RESET;
+            ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.turbine.running.true")
+                + EnumChatFormatting.RESET
+            : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.turbine.running.false")
+                + EnumChatFormatting.RESET;
         String tMaintainance = getIdealStatus() == getRepairStatus()
-                ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.turbine.maintenance.false")
-                        + EnumChatFormatting.RESET
-                : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.turbine.maintenance.true")
-                        + EnumChatFormatting.RESET;
+            ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.turbine.maintenance.false")
+                + EnumChatFormatting.RESET
+            : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.turbine.maintenance.true")
+                + EnumChatFormatting.RESET;
         int tDura = 0;
 
         if (mInventory[1] != null && mInventory[1].getItem() instanceof GT_MetaGenerated_Tool_01) {
             tDura = GT_Utility.safeInt(
-                    (long) (100.0f / GT_MetaGenerated_Tool.getToolMaxDamage(mInventory[1])
-                            * (GT_MetaGenerated_Tool.getToolDamage(mInventory[1])) + 1));
+                (long) (100.0f / GT_MetaGenerated_Tool.getToolMaxDamage(mInventory[1])
+                    * (GT_MetaGenerated_Tool.getToolDamage(mInventory[1])) + 1));
         }
 
         long storedEnergy = 0;
         long maxEnergy = 0;
         for (GT_MetaTileEntity_Hatch_Dynamo tHatch : filterValidMTEs(mDynamoHatches)) {
-            storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
-            maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
+            storedEnergy += tHatch.getBaseMetaTileEntity()
+                .getStoredEU();
+            maxEnergy += tHatch.getBaseMetaTileEntity()
+                .getEUCapacity();
         }
         String[] ret = new String[] {
-                // 8 Lines available for information panels
-                tRunning + ": "
-                        + EnumChatFormatting.RED
-                        + GT_Utility.formatNumbers(mEUt)
-                        + EnumChatFormatting.RESET
-                        + " EU/t", /* 1 */
-                tMaintainance, /* 2 */
-                StatCollector.translateToLocal("GT5U.turbine.efficiency") + ": "
-                        + EnumChatFormatting.YELLOW
-                        + (mEfficiency / 100F)
-                        + EnumChatFormatting.RESET
-                        + "%", /* 2 */
-                StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                        + EnumChatFormatting.GREEN
-                        + GT_Utility.formatNumbers(storedEnergy)
-                        + EnumChatFormatting.RESET
-                        + " EU / "
-                        + /* 3 */ EnumChatFormatting.YELLOW
-                        + GT_Utility.formatNumbers(maxEnergy)
-                        + EnumChatFormatting.RESET
-                        + " EU",
-                StatCollector.translateToLocal("GT5U.turbine.flow") + ": "
-                        + EnumChatFormatting.YELLOW
-                        + GT_Utility.formatNumbers(GT_Utility.safeInt((long) realOptFlow))
-                        + EnumChatFormatting.RESET
-                        + " L/t"
-                        + /* 4 */ EnumChatFormatting.YELLOW
-                        + " ("
-                        + (looseFit ? StatCollector.translateToLocal("GT5U.turbine.loose")
-                                : StatCollector.translateToLocal("GT5U.turbine.tight"))
-                        + ")", /* 5 */
-                StatCollector.translateToLocal("GT5U.turbine.fuel") + ": "
-                        + EnumChatFormatting.GOLD
-                        + GT_Utility.formatNumbers(storedFluid)
-                        + EnumChatFormatting.RESET
-                        + "L", /* 6 */
-                StatCollector.translateToLocal("GT5U.turbine.dmg") + ": "
-                        + EnumChatFormatting.RED
-                        + tDura
-                        + EnumChatFormatting.RESET
-                        + "%", /* 7 */
-                StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
-                        + EnumChatFormatting.GREEN
-                        + mPollutionReduction
-                        + EnumChatFormatting.RESET
-                        + " %" /* 8 */
+            // 8 Lines available for information panels
+            tRunning + ": "
+                + EnumChatFormatting.RED
+                + GT_Utility.formatNumbers(mEUt)
+                + EnumChatFormatting.RESET
+                + " EU/t", /* 1 */
+            tMaintainance, /* 2 */
+            StatCollector.translateToLocal("GT5U.turbine.efficiency") + ": "
+                + EnumChatFormatting.YELLOW
+                + (mEfficiency / 100F)
+                + EnumChatFormatting.RESET
+                + "%", /* 2 */
+            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
+                + EnumChatFormatting.GREEN
+                + GT_Utility.formatNumbers(storedEnergy)
+                + EnumChatFormatting.RESET
+                + " EU / "
+                + /* 3 */ EnumChatFormatting.YELLOW
+                + GT_Utility.formatNumbers(maxEnergy)
+                + EnumChatFormatting.RESET
+                + " EU",
+            StatCollector.translateToLocal("GT5U.turbine.flow") + ": "
+                + EnumChatFormatting.YELLOW
+                + GT_Utility.formatNumbers(GT_Utility.safeInt((long) realOptFlow))
+                + EnumChatFormatting.RESET
+                + " L/t"
+                + /* 4 */ EnumChatFormatting.YELLOW
+                + " ("
+                + (looseFit ? StatCollector.translateToLocal("GT5U.turbine.loose")
+                    : StatCollector.translateToLocal("GT5U.turbine.tight"))
+                + ")", /* 5 */
+            StatCollector.translateToLocal("GT5U.turbine.fuel") + ": "
+                + EnumChatFormatting.GOLD
+                + GT_Utility.formatNumbers(storedFluid)
+                + EnumChatFormatting.RESET
+                + "L", /* 6 */
+            StatCollector.translateToLocal(
+                "GT5U.turbine.dmg") + ": " + EnumChatFormatting.RED + tDura + EnumChatFormatting.RESET + "%", /* 7 */
+            StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
+                + EnumChatFormatting.GREEN
+                + mPollutionReduction
+                + EnumChatFormatting.RESET
+                + " %" /* 8 */
         };
-        if (!this.getClass().getName().contains("Steam"))
+        if (!this.getClass()
+            .getName()
+            .contains("Steam"))
             ret[4] = StatCollector.translateToLocal("GT5U.turbine.flow") + ": "
-                    + EnumChatFormatting.YELLOW
-                    + GT_Utility.safeInt((long) realOptFlow)
-                    + EnumChatFormatting.RESET
-                    + " L/t";
+                + EnumChatFormatting.YELLOW
+                + GT_Utility.safeInt((long) realOptFlow)
+                + EnumChatFormatting.RESET
+                + " L/t";
         return ret;
     }
 

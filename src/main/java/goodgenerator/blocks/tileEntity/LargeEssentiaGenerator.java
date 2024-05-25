@@ -52,7 +52,7 @@ import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.config.ConfigBlocks;
 
 public class LargeEssentiaGenerator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
-        implements IConstructable, ISurvivalConstructable {
+    implements IConstructable, ISurvivalConstructable {
 
     private IStructureDefinition<LargeEssentiaGenerator> multiDefinition = null;
     protected int mStableValue = 0;
@@ -85,9 +85,9 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_TooltipMultiBlockB
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mStableValue = 0;
         return structureCheck_EM(mName, 4, 0, 4) && (mDynamoHatches.size() + eDynamoMulti.size()) == 1
-                && checkHatchTier()
-                && checkNoLaser()
-                && updateEssentiaHatchState();
+            && checkHatchTier()
+            && checkNoLaser()
+            && updateEssentiaHatchState();
     }
 
     private boolean checkNoLaser() {
@@ -137,18 +137,20 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_TooltipMultiBlockB
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (this.getBaseMetaTileEntity().isServerSide()) {
+        if (this.getBaseMetaTileEntity()
+            .isServerSide()) {
             ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
-            if (tCurrentItem != null
-                    && tCurrentItem.getItem().equals(ItemRefer.Essentia_Upgrade_Empty.get(1).getItem())) {
+            if (tCurrentItem != null && tCurrentItem.getItem()
+                .equals(
+                    ItemRefer.Essentia_Upgrade_Empty.get(1)
+                        .getItem())) {
                 int tMeta = tCurrentItem.getItemDamage();
                 if ((mUpgrade & (1 << tMeta)) == 0 && tMeta != 0) {
                     tCurrentItem.stackSize--;
                     mUpgrade = mUpgrade | (1 << tMeta);
                     GT_Utility.sendChatToPlayer(
-                            aPlayer,
-                            tCurrentItem.getDisplayName()
-                                    + StatCollector.translateToLocal("largeessentiagenerator.chat"));
+                        aPlayer,
+                        tCurrentItem.getDisplayName() + StatCollector.translateToLocal("largeessentiagenerator.chat"));
                 }
                 updateEssentiaHatchState();
                 return true;
@@ -162,47 +164,50 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_TooltipMultiBlockB
     public IStructureDefinition<LargeEssentiaGenerator> getStructure_EM() {
         if (multiDefinition == null) {
             multiDefinition = StructureDefinition.<LargeEssentiaGenerator>builder()
-                    .addShape(
-                            mName,
-                            transpose(
-                                    new String[][] {
-                                            { "A       A", "         ", "         ", "         ", "    ~    ",
-                                                    "         ", "         ", "         ", "A       A" },
-                                            { "T   C   T", "   CEC   ", "  CEEEC  ", " CEEEEEC ", "CEEEEEEEC",
-                                                    " CEEEEEC ", "  CEEEC  ", "   CEC   ", "T   C   T" },
-                                            { "T  TXT  T", "  TCXCT  ", " TCCXCCT ", "TCCCXCCCT", "XXXXXXXXX",
-                                                    "TCCCXCCCT", " TCCXCCT ", "  TCXCT  ", "T  TXT  T" } }))
-                    .addElement('A', ofBlock(ConfigBlocks.blockCosmeticOpaque, 1))
-                    .addElement('T', ofBlock(ConfigBlocks.blockCosmeticSolid, 7))
-                    .addElement('C', ofBlock(Loaders.magicCasing, 0)) //
-                    .addElement('E', ofChain(onElementPass(x -> {
-                        ++x.mStableValue;
-                        x.mTierLimit = Math.max(x.mTierLimit, 4);
-                    }, ofBlock(Loaders.essentiaCell, 0)), onElementPass(x -> {
-                        x.mStableValue += 2;
-                        x.mTierLimit = Math.max(x.mTierLimit, 5);
-                    }, ofBlock(Loaders.essentiaCell, 1)), onElementPass(x -> {
-                        x.mStableValue += 5;
-                        x.mTierLimit = Math.max(x.mTierLimit, 6);
-                    }, ofBlock(Loaders.essentiaCell, 2)), onElementPass(x -> {
-                        x.mStableValue += 10;
-                        x.mTierLimit = Math.max(x.mTierLimit, 8);
-                    },
-                            ofBlock(Loaders.essentiaCell, 3))))
-                    .addElement(
-                            'X',
-                            ofChain(
-                                    buildHatchAdder(LargeEssentiaGenerator.class).atLeast(
-                                            HatchElement.DynamoMulti.or(GT_HatchElement.Dynamo),
-                                            GT_HatchElement.Maintenance,
-                                            GT_HatchElement.InputHatch).casingIndex(1536).dot(1).build(),
-                                    ofBlock(Loaders.magicCasing, 0),
-                                    ofSpecificTileAdder(
-                                            LargeEssentiaGenerator::addEssentiaHatch,
-                                            EssentiaHatch.class,
-                                            Loaders.magicCasing,
-                                            0)))
-                    .build();
+                .addShape(
+                    mName,
+                    transpose(
+                        new String[][] {
+                            { "A       A", "         ", "         ", "         ", "    ~    ", "         ", "         ",
+                                "         ", "A       A" },
+                            { "T   C   T", "   CEC   ", "  CEEEC  ", " CEEEEEC ", "CEEEEEEEC", " CEEEEEC ", "  CEEEC  ",
+                                "   CEC   ", "T   C   T" },
+                            { "T  TXT  T", "  TCXCT  ", " TCCXCCT ", "TCCCXCCCT", "XXXXXXXXX", "TCCCXCCCT", " TCCXCCT ",
+                                "  TCXCT  ", "T  TXT  T" } }))
+                .addElement('A', ofBlock(ConfigBlocks.blockCosmeticOpaque, 1))
+                .addElement('T', ofBlock(ConfigBlocks.blockCosmeticSolid, 7))
+                .addElement('C', ofBlock(Loaders.magicCasing, 0)) //
+                .addElement('E', ofChain(onElementPass(x -> {
+                    ++x.mStableValue;
+                    x.mTierLimit = Math.max(x.mTierLimit, 4);
+                }, ofBlock(Loaders.essentiaCell, 0)), onElementPass(x -> {
+                    x.mStableValue += 2;
+                    x.mTierLimit = Math.max(x.mTierLimit, 5);
+                }, ofBlock(Loaders.essentiaCell, 1)), onElementPass(x -> {
+                    x.mStableValue += 5;
+                    x.mTierLimit = Math.max(x.mTierLimit, 6);
+                }, ofBlock(Loaders.essentiaCell, 2)), onElementPass(x -> {
+                    x.mStableValue += 10;
+                    x.mTierLimit = Math.max(x.mTierLimit, 8);
+                }, ofBlock(Loaders.essentiaCell, 3))))
+                .addElement(
+                    'X',
+                    ofChain(
+                        buildHatchAdder(LargeEssentiaGenerator.class)
+                            .atLeast(
+                                HatchElement.DynamoMulti.or(GT_HatchElement.Dynamo),
+                                GT_HatchElement.Maintenance,
+                                GT_HatchElement.InputHatch)
+                            .casingIndex(1536)
+                            .dot(1)
+                            .build(),
+                        ofBlock(Loaders.magicCasing, 0),
+                        ofSpecificTileAdder(
+                            LargeEssentiaGenerator::addEssentiaHatch,
+                            EssentiaHatch.class,
+                            Loaders.magicCasing,
+                            0)))
+                .build();
         }
         return multiDefinition;
     }
@@ -459,28 +464,36 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_TooltipMultiBlockB
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Essentia Generator").addInfo("Controller block for the Large Essentia Generator")
-                .addInfo("Maybe some Thaumaturges are upset by it. . .").addInfo("Transform Essentia into energy!")
-                .addInfo("The Diffusion Cell determines the highest hatch tier that the LEG can accept.")
-                .addInfo("Supports normal Dynamo Hatches or TecTech ones for up to 64A, but no Laser Hatches.")
-                .addInfo("You can find more information about this generator in the Thaumonomicon.")
-                .addInfo("The structure is too complex!").addInfo(BLUE_PRINT_INFO).addSeparator()
-                .addMaintenanceHatch("Hint block with dot 1", 1).addInputHatch("Hint block with dot 1", 1)
-                .addDynamoHatch("Hint block with dot 1", 1)
-                .addOtherStructurePart("Essentia Input Hatch", "Essentia Input", 1).toolTipFinisher("Good Generator");
+        tt.addMachineType("Essentia Generator")
+            .addInfo("Controller block for the Large Essentia Generator")
+            .addInfo("Maybe some Thaumaturges are upset by it. . .")
+            .addInfo("Transform Essentia into energy!")
+            .addInfo("The Diffusion Cell determines the highest hatch tier that the LEG can accept.")
+            .addInfo("Supports normal Dynamo Hatches or TecTech ones for up to 64A, but no Laser Hatches.")
+            .addInfo("You can find more information about this generator in the Thaumonomicon.")
+            .addInfo("The structure is too complex!")
+            .addInfo(BLUE_PRINT_INFO)
+            .addSeparator()
+            .addMaintenanceHatch("Hint block with dot 1", 1)
+            .addInputHatch("Hint block with dot 1", 1)
+            .addDynamoHatch("Hint block with dot 1", 1)
+            .addOtherStructurePart("Essentia Input Hatch", "Essentia Input", 1)
+            .toolTipFinisher("Good Generator");
         return tt;
     }
 
     @Override
     @SuppressWarnings("ALL")
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-            int colorIndex, boolean aActive, boolean aRedstone) {
+        int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(1536),
-                    new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_DRAGONEGG), TextureFactory.builder()
-                            .addIcon(Textures.BlockIcons.MACHINE_CASING_DRAGONEGG_GLOW).glow().build() };
+                new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_DRAGONEGG), TextureFactory.builder()
+                    .addIcon(Textures.BlockIcons.MACHINE_CASING_DRAGONEGG_GLOW)
+                    .glow()
+                    .build() };
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(1536),
-                    new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_DRAGONEGG) };
+                new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_DRAGONEGG) };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(1536) };
     }

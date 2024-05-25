@@ -20,8 +20,9 @@ public class LargeEssentiaEnergyData {
 
     public static String readJsonFile() {
         try {
-            URL url = Thread.currentThread().getContextClassLoader()
-                    .getResource("assets/goodgenerator/data/essentia.json");
+            URL url = Thread.currentThread()
+                .getContextClassLoader()
+                .getResource("assets/goodgenerator/data/essentia.json");
             assert url != null;
             BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8));
             String s;
@@ -44,15 +45,20 @@ public class LargeEssentiaEnergyData {
         }
         JsonParser jsonParser = new JsonParser();
         JsonObject jsonObject = (JsonObject) jsonParser.parse(data);
-        JsonArray jsonArray = jsonObject.get("Essentia").getAsJsonArray();
+        JsonArray jsonArray = jsonObject.get("Essentia")
+            .getAsJsonArray();
         for (JsonElement elm : jsonArray) {
             JsonObject essData = elm.getAsJsonObject();
-            String aspectName = essData.get("name").getAsString();
+            String aspectName = essData.get("name")
+                .getAsString();
             Aspect aspect = Aspect.getAspect(aspectName.toLowerCase());
             if (aspect != null) {
-                int fuel = essData.get("fuelValue").getAsInt();
-                String cate = essData.get("category").getAsString();
-                float ceo = essData.get("consumeCeo").getAsFloat();
+                int fuel = essData.get("fuelValue")
+                    .getAsInt();
+                String cate = essData.get("category")
+                    .getAsString();
+                float ceo = essData.get("consumeCeo")
+                    .getAsFloat();
                 ASPECT_FUEL_DATA.put(aspect, new FuelData(fuel, cate, ceo));
             }
         }
@@ -60,25 +66,29 @@ public class LargeEssentiaEnergyData {
 
     public static int getAspectTypeIndex(Aspect aspect) {
         if (ASPECT_FUEL_DATA.containsKey(aspect)) {
-            return ASPECT_FUEL_DATA.get(aspect).getCategoryIndex();
+            return ASPECT_FUEL_DATA.get(aspect)
+                .getCategoryIndex();
         } else return -1;
     }
 
     public static String getAspectType(Aspect aspect) {
         if (ASPECT_FUEL_DATA.containsKey(aspect)) {
-            return ASPECT_FUEL_DATA.get(aspect).getCategory();
+            return ASPECT_FUEL_DATA.get(aspect)
+                .getCategory();
         } else return null;
     }
 
     public static int getAspectFuelValue(Aspect aspect) {
         if (ASPECT_FUEL_DATA.containsKey(aspect)) {
-            return ASPECT_FUEL_DATA.get(aspect).getFuelValue();
+            return ASPECT_FUEL_DATA.get(aspect)
+                .getFuelValue();
         } else return 0;
     }
 
     public static float getAspectCeo(Aspect aspect) {
         if (ASPECT_FUEL_DATA.containsKey(aspect)) {
-            return ASPECT_FUEL_DATA.get(aspect).getConsumeSpeed();
+            return ASPECT_FUEL_DATA.get(aspect)
+                .getConsumeSpeed();
         } else return 0;
     }
 }

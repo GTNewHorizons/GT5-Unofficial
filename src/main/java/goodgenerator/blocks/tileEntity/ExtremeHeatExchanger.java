@@ -54,7 +54,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
 
 public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
-        implements IConstructable, ISurvivalConstructable {
+    implements IConstructable, ISurvivalConstructable {
 
     protected IStructureDefinition<ExtremeHeatExchanger> multiDefinition = null;
 
@@ -78,11 +78,11 @@ public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBas
     public IStructureDefinition<ExtremeHeatExchanger> getStructure_EM() {
         if (multiDefinition == null) {
             multiDefinition = StructureDefinition.<ExtremeHeatExchanger>builder()
-                    .addShape(
-                            mName,
-                            transpose(
-                                    new String[][] {
-                                            // spotless:off
+                .addShape(
+                    mName,
+                    transpose(
+                        new String[][] {
+                            // spotless:off
                                             { " CCC ", "TTTTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT", " CCC " },
                                             { " CCC ", "GPPPG", "GWWWG", "GPPPG", "GWWWG", "GPPPG", "GWWWG", "GPPPG", "GWWWG", "GPPPG", " CCC " },
                                             { " CFC ", "GPPPG", "GWWWG", "GPPPG", "GWWWG", "GPPPG", "GWWWG", "GPPPG", "GWWWG", "GPPPG", " CEC " },
@@ -90,32 +90,39 @@ public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBas
                                             { " CCC ", "GPPPG", "GWWWG", "GPPPG", "GWWWG", "GPPPG", "GWWWG", "GPPPG", "GWWWG", "GPPPG", " CCC " },
                                             { " C~C ", "BBBBB", "BBBBB", "BBBBB", "BBBBB", "BBBBB", "BBBBB", "BBBBB", "BBBBB", "BBBBB", " CCC " },
                                         //spotless:on
-                                    }))
-                    .addElement(
-                            'B',
-                            ofChain(
-                                    buildHatchAdder(ExtremeHeatExchanger.class)
-                                            .atLeast(GT_HatchElement.InputHatch, GT_HatchElement.Maintenance)
-                                            .casingIndex(48).dot(1).build(),
-                                    onElementPass(x -> x.casingAmount++, ofBlock(GregTech_API.sBlockCasings4, 0))))
-                    .addElement(
-                            'T',
-                            ofChain(
-                                    buildHatchAdder(ExtremeHeatExchanger.class)
-                                            .atLeast(GT_HatchElement.OutputHatch, GT_HatchElement.Maintenance)
-                                            .casingIndex(48).dot(2).build(),
-                                    onElementPass(x -> x.casingAmount++, ofBlock(GregTech_API.sBlockCasings4, 0))))
-                    .addElement('F', EHEHatches.HotInputHatch.newAny(48, 3))
-                    .addElement('E', EHEHatches.ColdOutputHatch.newAny(48, 4))
-                    .addElement(
-                            'C',
-                            ofChain(
-                                    buildHatchAdder(ExtremeHeatExchanger.class).atLeast(GT_HatchElement.Maintenance)
-                                            .casingIndex(48).dot(5).build(),
-                                    onElementPass(x -> x.casingAmount++, ofBlock(GregTech_API.sBlockCasings4, 0))))
-                    .addElement('G', Glasses.chainAllGlasses())
-                    .addElement('P', ofBlock(GregTech_API.sBlockCasings2, 15))
-                    .addElement('W', ofBlock(Loaders.pressureResistantWalls, 0)).build();
+                        }))
+                .addElement(
+                    'B',
+                    ofChain(
+                        buildHatchAdder(ExtremeHeatExchanger.class)
+                            .atLeast(GT_HatchElement.InputHatch, GT_HatchElement.Maintenance)
+                            .casingIndex(48)
+                            .dot(1)
+                            .build(),
+                        onElementPass(x -> x.casingAmount++, ofBlock(GregTech_API.sBlockCasings4, 0))))
+                .addElement(
+                    'T',
+                    ofChain(
+                        buildHatchAdder(ExtremeHeatExchanger.class)
+                            .atLeast(GT_HatchElement.OutputHatch, GT_HatchElement.Maintenance)
+                            .casingIndex(48)
+                            .dot(2)
+                            .build(),
+                        onElementPass(x -> x.casingAmount++, ofBlock(GregTech_API.sBlockCasings4, 0))))
+                .addElement('F', EHEHatches.HotInputHatch.newAny(48, 3))
+                .addElement('E', EHEHatches.ColdOutputHatch.newAny(48, 4))
+                .addElement(
+                    'C',
+                    ofChain(
+                        buildHatchAdder(ExtremeHeatExchanger.class).atLeast(GT_HatchElement.Maintenance)
+                            .casingIndex(48)
+                            .dot(5)
+                            .build(),
+                        onElementPass(x -> x.casingAmount++, ofBlock(GregTech_API.sBlockCasings4, 0))))
+                .addElement('G', Glasses.chainAllGlasses())
+                .addElement('P', ofBlock(GregTech_API.sBlockCasings2, 15))
+                .addElement('W', ofBlock(Loaders.pressureResistantWalls, 0))
+                .build();
         }
         return multiDefinition;
     }
@@ -153,7 +160,8 @@ public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBas
             if (hotFluid != null) {
                 hotName = loadedHotName;
                 tRunningRecipe = (ExtremeHeatExchangerRecipe) GoodGeneratorRecipeMaps.extremeHeatExchangerFuels
-                        .getBackend().findFuel(hotFluid);
+                    .getBackend()
+                    .findFuel(hotFluid);
             }
         } else {
             hotName = null;
@@ -191,14 +199,20 @@ public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBas
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Heat Exchanger/Plasma Heat Exchanger")
-                .addInfo("Controller block for the Extreme Heat Exchanger.")
-                .addInfo("Accept Hot fluid like lava, hot coolant or plasma.")
-                .addInfo("Output SC Steam/SH Steam/Steam.").addInfo("Check NEI for more info.").addInfo(BLUE_PRINT_INFO)
-                .addSeparator().addController("Front bottom").addOtherStructurePart("Input Hatch", "distilled water", 1)
-                .addOtherStructurePart("Output Hatch", "SC Steam/SH Steam/Steam", 2)
-                .addOtherStructurePart("Input Hatch", "Hot fluid or plasma", 3)
-                .addOtherStructurePart("Output Hatch", "Cold fluid", 4).addMaintenanceHatch("Any Casing", 1, 2, 5)
-                .addCasingInfoMin("Robust Tungstensteel Machine Casings", 25, false).toolTipFinisher("Good Generator");
+            .addInfo("Controller block for the Extreme Heat Exchanger.")
+            .addInfo("Accept Hot fluid like lava, hot coolant or plasma.")
+            .addInfo("Output SC Steam/SH Steam/Steam.")
+            .addInfo("Check NEI for more info.")
+            .addInfo(BLUE_PRINT_INFO)
+            .addSeparator()
+            .addController("Front bottom")
+            .addOtherStructurePart("Input Hatch", "distilled water", 1)
+            .addOtherStructurePart("Output Hatch", "SC Steam/SH Steam/Steam", 2)
+            .addOtherStructurePart("Input Hatch", "Hot fluid or plasma", 3)
+            .addOtherStructurePart("Output Hatch", "Cold fluid", 4)
+            .addMaintenanceHatch("Any Casing", 1, 2, 5)
+            .addCasingInfoMin("Robust Tungstensteel Machine Casings", 25, false)
+            .toolTipFinisher("Good Generator");
         return tt;
     }
 
@@ -207,10 +221,13 @@ public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBas
         tRunningRecipe = null;
         if (mHotFluidHatch.getFluid() == null) return CheckRecipeResultRegistry.SUCCESSFUL;
         ExtremeHeatExchangerRecipe tRecipe = (ExtremeHeatExchangerRecipe) GoodGeneratorRecipeMaps.extremeHeatExchangerFuels
-                .getBackend().findFuel(mHotFluidHatch.getFluid());
+            .getBackend()
+            .findFuel(mHotFluidHatch.getFluid());
         if (tRecipe == null) return CheckRecipeResultRegistry.NO_RECIPE;
         tRunningRecipe = tRecipe;
-        this.hotName = mHotFluidHatch.getFluid().getFluid().getName();
+        this.hotName = mHotFluidHatch.getFluid()
+            .getFluid()
+            .getName();
         int tMaxConsume = tRecipe.getMaxHotFluidConsume();
         int transformed_threshold = tRecipe.mSpecialValue;
         int tRealConsume = Math.min(tMaxConsume, mHotFluidHatch.getFluid().amount);
@@ -218,7 +235,8 @@ public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBas
         double efficiency = 1d;
         int shs_reduction_per_config = 150;
 
-        if (mInventory[1] != null && mInventory[1].getUnlocalizedName().startsWith("gt.integrated_circuit")) {
+        if (mInventory[1] != null && mInventory[1].getUnlocalizedName()
+            .startsWith("gt.integrated_circuit")) {
             int circuit_config = mInventory[1].getItemDamage();
             if (circuit_config >= 1 && circuit_config <= 25) {
                 penalty = (circuit_config - 1) * penalty_per_config;
@@ -250,7 +268,8 @@ public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBas
                 addOutput(new FluidStack(tReadySteam, waterAmount * 160));
             } else {
                 GT_Log.exp.println(this.mName + " had no more Distilled water!");
-                mHotFluidHatch.getBaseMetaTileEntity().doExplosion(V[8]);
+                mHotFluidHatch.getBaseMetaTileEntity()
+                    .doExplosion(V[8]);
                 return false;
             }
         }
@@ -294,49 +313,60 @@ public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBas
     public String[] getInfoData() {
         int tThreshold = tRunningRecipe != null ? tRunningRecipe.mSpecialValue : 0;
         return new String[] {
-                StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                        + EnumChatFormatting.GREEN
-                        + GT_Utility.formatNumbers(mProgresstime / 20)
-                        + EnumChatFormatting.RESET
-                        + " s / "
-                        + EnumChatFormatting.YELLOW
-                        + GT_Utility.formatNumbers(mMaxProgresstime / 20)
-                        + EnumChatFormatting.RESET
-                        + " s",
-                StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
-                        + EnumChatFormatting.RED
-                        + (getIdealStatus() - getRepairStatus())
-                        + EnumChatFormatting.RESET
-                        + " "
-                        + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
-                        + ": "
-                        + EnumChatFormatting.YELLOW
-                        + mEfficiency / 100.0F
-                        + EnumChatFormatting.RESET
-                        + " %",
-                StatCollector.translateToLocal("scanner.info.XHE.0") + " "
-                        + (transformed ? EnumChatFormatting.RED : EnumChatFormatting.YELLOW)
-                        + GT_Utility.formatNumbers(this.mEUt)
-                        + EnumChatFormatting.RESET
-                        + " EU/t",
-                StatCollector.translateToLocal("scanner.info.XHE.1") + " "
-                        + EnumChatFormatting.GREEN
-                        + GT_Utility.formatNumbers(tThreshold)
-                        + EnumChatFormatting.RESET
-                        + " L/s" };
+            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
+                + EnumChatFormatting.GREEN
+                + GT_Utility.formatNumbers(mProgresstime / 20)
+                + EnumChatFormatting.RESET
+                + " s / "
+                + EnumChatFormatting.YELLOW
+                + GT_Utility.formatNumbers(mMaxProgresstime / 20)
+                + EnumChatFormatting.RESET
+                + " s",
+            StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
+                + EnumChatFormatting.RED
+                + (getIdealStatus() - getRepairStatus())
+                + EnumChatFormatting.RESET
+                + " "
+                + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
+                + ": "
+                + EnumChatFormatting.YELLOW
+                + mEfficiency / 100.0F
+                + EnumChatFormatting.RESET
+                + " %",
+            StatCollector.translateToLocal("scanner.info.XHE.0") + " "
+                + (transformed ? EnumChatFormatting.RED : EnumChatFormatting.YELLOW)
+                + GT_Utility.formatNumbers(this.mEUt)
+                + EnumChatFormatting.RESET
+                + " EU/t",
+            StatCollector.translateToLocal("scanner.info.XHE.1") + " "
+                + EnumChatFormatting.GREEN
+                + GT_Utility.formatNumbers(tThreshold)
+                + EnumChatFormatting.RESET
+                + " L/s" };
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-            int colorIndex, boolean aActive, boolean aRedstone) {
+        int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
-            if (aActive) return new ITexture[] { casingTexturePages[0][48],
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE_GLOW).extFacing().glow()
-                            .build() };
-            return new ITexture[] { casingTexturePages[0][48],
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_HEAT_EXCHANGER).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_GLOW).extFacing().glow().build() };
+            if (aActive) return new ITexture[] { casingTexturePages[0][48], TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
+            return new ITexture[] { casingTexturePages[0][48], TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
         }
         return new ITexture[] { casingTexturePages[0][48] };
     }

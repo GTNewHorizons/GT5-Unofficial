@@ -33,7 +33,7 @@ public class NeutronSensor extends GT_MetaTileEntity_Hatch {
 
     private static final IIconContainer textureFont = new Textures.BlockIcons.CustomIcon("icons/NeutronSensorFont");
     private static final IIconContainer textureFont_Glow = new Textures.BlockIcons.CustomIcon(
-            "icons/NeutronSensorFont_GLOW");
+        "icons/NeutronSensorFont_GLOW");
 
     protected int threshold = 0;
     protected boolean inverted = false;
@@ -50,8 +50,8 @@ public class NeutronSensor extends GT_MetaTileEntity_Hatch {
     @Override
     public String[] getDescription() {
         return new String[] { "Can be installed in Neutron Activator.",
-                "Output Redstone Signal according to the Neutron Kinetic Energy.",
-                "Right click to open the GUI and setting." };
+            "Output Redstone Signal according to the Neutron Kinetic Energy.",
+            "Right click to open the GUI and setting." };
     }
 
     @Override
@@ -85,7 +85,7 @@ public class NeutronSensor extends GT_MetaTileEntity_Hatch {
      */
     private void setThresholdFromString(String text) {
         Matcher matcher = Pattern.compile("^(<|>|<=|>=|==|!=)([0-9]*)(|k|m)(ev)$", Pattern.CASE_INSENSITIVE)
-                .matcher(text);
+            .matcher(text);
 
         if (!matcher.matches()) {
             Log.error("Failed to parse Neutron Sensor setting: \"" + text + "\"!");
@@ -171,7 +171,7 @@ public class NeutronSensor extends GT_MetaTileEntity_Hatch {
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-            float aX, float aY, float aZ) {
+        float aX, float aY, float aZ) {
         GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
@@ -187,8 +187,10 @@ public class NeutronSensor extends GT_MetaTileEntity_Hatch {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(textureFont),
-                TextureFactory.builder().addIcon(textureFont_Glow).glow().build() };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(textureFont), TextureFactory.builder()
+            .addIcon(textureFont_Glow)
+            .glow()
+            .build() };
     }
 
     @Override
@@ -222,13 +224,13 @@ public class NeutronSensor extends GT_MetaTileEntity_Hatch {
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection Side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
@@ -243,25 +245,33 @@ public class NeutronSensor extends GT_MetaTileEntity_Hatch {
         final String NORMAL = GT_Utility.trans("NORMAL", "Normal");
 
         builder.widget(
-                new CoverCycleButtonWidget().setToggle(() -> inverted, (val) -> inverted = val)
-                        .setTextureGetter(
-                                (state) -> state == 1 ? GT_UITextures.OVERLAY_BUTTON_REDSTONE_ON
-                                        : GT_UITextures.OVERLAY_BUTTON_REDSTONE_OFF)
-                        .addTooltip(0, NORMAL).addTooltip(1, INVERTED).setPos(10, 8))
-                .widget(
-                        new TextWidget().setStringSupplier(() -> inverted ? INVERTED : NORMAL)
-                                .setDefaultColor(COLOR_TEXT_GRAY.get()).setTextAlignment(Alignment.CenterLeft)
-                                .setPos(28, 12))
-                .widget(
-                        new NumericWidget().setBounds(0, 1200000000).setGetter(() -> threshold)
-                                .setSetter((value) -> threshold = (int) value).setScrollValues(1000, 1, 1_000_000)
-                                .setTextColor(Color.WHITE.dark(1)).setTextAlignment(Alignment.CenterLeft)
-                                .setFocusOnGuiOpen(true)
-                                .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
-                                .setPos(10, 28).setSize(77, 12))
-                .widget(
-                        new TextWidget(StatCollector.translateToLocal("gui.NeutronSensor.4"))
-                                .setDefaultColor(COLOR_TEXT_GRAY.get()).setTextAlignment(Alignment.CenterLeft)
-                                .setPos(90, 30));
+            new CoverCycleButtonWidget().setToggle(() -> inverted, (val) -> inverted = val)
+                .setTextureGetter(
+                    (state) -> state == 1 ? GT_UITextures.OVERLAY_BUTTON_REDSTONE_ON
+                        : GT_UITextures.OVERLAY_BUTTON_REDSTONE_OFF)
+                .addTooltip(0, NORMAL)
+                .addTooltip(1, INVERTED)
+                .setPos(10, 8))
+            .widget(
+                new TextWidget().setStringSupplier(() -> inverted ? INVERTED : NORMAL)
+                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(28, 12))
+            .widget(
+                new NumericWidget().setBounds(0, 1200000000)
+                    .setGetter(() -> threshold)
+                    .setSetter((value) -> threshold = (int) value)
+                    .setScrollValues(1000, 1, 1_000_000)
+                    .setTextColor(Color.WHITE.dark(1))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setFocusOnGuiOpen(true)
+                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
+                    .setPos(10, 28)
+                    .setSize(77, 12))
+            .widget(
+                new TextWidget(StatCollector.translateToLocal("gui.NeutronSensor.4"))
+                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(90, 30));
     }
 }

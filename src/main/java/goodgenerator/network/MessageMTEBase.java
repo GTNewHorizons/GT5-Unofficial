@@ -59,7 +59,7 @@ public abstract class MessageMTEBase implements IMessage {
     }
 
     public abstract static class Handler<REQ extends MessageMTEBase, REPLY extends IMessage>
-            implements IMessageHandler<REQ, REPLY> {
+        implements IMessageHandler<REQ, REPLY> {
 
         protected abstract REPLY onError(REQ message, MessageContext ctx);
 

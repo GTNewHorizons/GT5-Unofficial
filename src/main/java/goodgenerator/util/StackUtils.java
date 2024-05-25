@@ -69,7 +69,10 @@ public class StackUtils {
     public static HashMap<ItemStack, Integer> getTotalItems(List<ItemStack> items) {
         HashMap<ItemStack, Integer> totals = new HashMap<>();
         itemLoop: for (ItemStack item : items) {
-            int t = items.stream().filter(i2 -> GT_Utility.areStacksEqual(item, i2)).mapToInt(i -> i.stackSize).sum();
+            int t = items.stream()
+                .filter(i2 -> GT_Utility.areStacksEqual(item, i2))
+                .mapToInt(i -> i.stackSize)
+                .sum();
             for (ItemStack i2 : totals.keySet()) if (GT_Utility.areStacksEqual(item, i2)) continue itemLoop;
             totals.put(GT_Utility.copyAmount(1, item), t);
         }
@@ -128,7 +131,9 @@ public class StackUtils {
     }
 
     public static IAEFluidStack createAEFluidStack(FluidStack fluid) {
-        return AEApi.instance().storage().createFluidStack(fluid);
+        return AEApi.instance()
+            .storage()
+            .createFluidStack(fluid);
     }
 
     public static IAEFluidStack createAEFluidStack(int fluidId, long amount) {

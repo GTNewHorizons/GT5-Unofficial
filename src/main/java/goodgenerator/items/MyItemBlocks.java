@@ -26,9 +26,9 @@ import gregtech.api.util.GT_LanguageManager;
 public class MyItemBlocks extends ItemBlock {
 
     private final String mNoMobsToolTip = GT_LanguageManager
-            .addStringLocalization("gt.nomobspawnsonthisblock", "Mobs cannot Spawn on this Block");
+        .addStringLocalization("gt.nomobspawnsonthisblock", "Mobs cannot Spawn on this Block");
     private final String mNoTileEntityToolTip = GT_LanguageManager
-            .addStringLocalization("gt.notileentityinthisblock", "This is NOT a TileEntity!");
+        .addStringLocalization("gt.notileentityinthisblock", "This is NOT a TileEntity!");
 
     public MyItemBlocks(Block block) {
         super(block);
@@ -78,27 +78,28 @@ public class MyItemBlocks extends ItemBlock {
             if (tile.getIndex() == 2) {
                 tooltip.add(StatCollector.translateToLocal("EssentiaOutputHatch.tooltip.0"));
                 tooltip.add(
-                        StatCollector.translateToLocal("EssentiaOutputHatch.tooltip.1") + " "
-                                + EssentiaOutputHatch.CAPACITY);
+                    StatCollector.translateToLocal("EssentiaOutputHatch.tooltip.1") + " "
+                        + EssentiaOutputHatch.CAPACITY);
             }
         } else {
             tooltip.add(mNoTileEntityToolTip);
         }
 
-        if (Block.getBlockFromItem(stack.getItem()).equals(yottaFluidTankCell)) {
+        if (Block.getBlockFromItem(stack.getItem())
+            .equals(yottaFluidTankCell)) {
             StringBuilder cap = new StringBuilder();
             cap.append(" 1000000");
             for (int i = 0; i < stack.getItemDamage(); i++) cap.append("00");
             cap.append(" L");
             tooltip.add(
-                    StatCollector.translateToLocal("YOTTankCell.tooltip.0")
-                            + CharExchanger.formatNumber(cap.toString()));
+                StatCollector.translateToLocal("YOTTankCell.tooltip.0") + CharExchanger.formatNumber(cap.toString()));
             tooltip.add(StatCollector.translateToLocal("YOTTankCell.tooltip.1"));
         }
 
-        if (Block.getBlockFromItem(stack.getItem()).equals(essentiaCell)) {
-            tooltip.add(
-                    StatCollector.translateToLocal("hatchTier.tooltip.0") + " " + tierName[stack.getItemDamage() + 4]);
+        if (Block.getBlockFromItem(stack.getItem())
+            .equals(essentiaCell)) {
+            tooltip
+                .add(StatCollector.translateToLocal("hatchTier.tooltip.0") + " " + tierName[stack.getItemDamage() + 4]);
         }
     }
 }

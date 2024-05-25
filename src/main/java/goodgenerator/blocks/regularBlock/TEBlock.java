@@ -156,7 +156,7 @@ public class TEBlock extends BlockContainer {
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7,
-            float par8, float par9) {
+        float par8, float par9) {
         if (world.isRemote) {
             return false;
         } else {
@@ -167,16 +167,17 @@ public class TEBlock extends BlockContainer {
                     if (tItemStack != null) {
                         Item tItem = tItemStack.getItem();
                         if (tItem instanceof IEssentiaContainerItem
-                                && ((IEssentiaContainerItem) tItem).getAspects(player.getHeldItem()) != null
-                                && ((IEssentiaContainerItem) tItem).getAspects(player.getHeldItem()).size() > 0) {
+                            && ((IEssentiaContainerItem) tItem).getAspects(player.getHeldItem()) != null
+                            && ((IEssentiaContainerItem) tItem).getAspects(player.getHeldItem())
+                                .size() > 0) {
                             Aspect tLocked = ((IEssentiaContainerItem) tItem).getAspects(player.getHeldItem())
-                                    .getAspects()[0];
+                                .getAspects()[0];
                             ((EssentiaHatch) tile).setLockedAspect(tLocked);
                             GT_Utility.sendChatToPlayer(
-                                    player,
-                                    String.format(
-                                            StatCollector.translateToLocal("essentiahatch.chat.0"),
-                                            tLocked.getLocalizedDescription()));
+                                player,
+                                String.format(
+                                    StatCollector.translateToLocal("essentiahatch.chat.0"),
+                                    tLocked.getLocalizedDescription()));
                         }
                     } else {
                         ((EssentiaHatch) tile).setLockedAspect(null);
@@ -191,7 +192,7 @@ public class TEBlock extends BlockContainer {
                     if (tItemStack == null) {
                         ((EssentiaOutputHatch) tile).clear();
                         GT_Utility
-                                .sendChatToPlayer(player, StatCollector.translateToLocal("essentiaoutputhatch.chat.0"));
+                            .sendChatToPlayer(player, StatCollector.translateToLocal("essentiaoutputhatch.chat.0"));
                     }
                     return true;
                 } else return false;
