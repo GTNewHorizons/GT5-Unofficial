@@ -15,6 +15,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import gregtech.GT_Version;
 import gregtech.api.enums.Mods;
 
 /**
@@ -36,7 +37,7 @@ public class KekzCore {
 
     public static final String NAME = "KekzTech";
     public static final String MODID = Mods.Names.KEKZ_TECH;
-    public static final String VERSION = "GRADLETOKEN_VERSION";
+    public static final String VERSION = GT_Version.VERSION;
 
     public static final Logger LOGGER = LogManager.getLogger(NAME);
 
