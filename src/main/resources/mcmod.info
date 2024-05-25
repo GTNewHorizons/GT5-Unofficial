@@ -204,6 +204,38 @@
       "logoFile": "TecTechIcon.png",
       "screenshots": [],
       "dependencies": []
+    },
+    {
+      "modid": "kekztech",
+      "name": "KekzTech",
+      "description": "",
+      "version": "${modVersion}",
+      "mcversion": "${minecraftVersion}",
+      "url": "",
+      "updateUrl": "",
+      "authorList": [
+        "Shinkuri"
+      ],
+      "credits": "",
+      "logoFile": "",
+      "screenshots": [],
+      "requiredMods": [
+        "IC2",
+        "gregtech",
+        "tectech",
+        "Thaumcraft",
+        "ThaumicTinkerer"
+      ],
+      "dependencies": [
+        "IC2",
+        "gregtech",
+        "tectech",
+        "Thaumcraft",
+        "ThaumicTinkerer",
+        "bartworks",
+        "dreamcraft"
+      ],
+      "useDependencyInformation": true
     }
   ]
 }
