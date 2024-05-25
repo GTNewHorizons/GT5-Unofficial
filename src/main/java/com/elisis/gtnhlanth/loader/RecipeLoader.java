@@ -132,7 +132,7 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 
-import com.dreammaster.gthandler.CustomItemList;
+
 import com.elisis.gtnhlanth.Tags;
 import com.elisis.gtnhlanth.common.item.MaskList;
 import com.elisis.gtnhlanth.common.register.BotWerkstoffMaterialPool;
@@ -265,6 +265,8 @@ public class RecipeLoader {
             800,
             7680);
 
+        ItemStack insulator = GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorSheet", 1);
+        
         // Coolant Delivery Casing
         GT_Values.RA.addAssemblylineRecipe(
             ItemList.Casing_Pipe_TungstenSteel.get(1L),
@@ -273,8 +275,8 @@ public class RecipeLoader {
                 Materials.Copper.getPlates(6), GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Naquadah, 2),
                 ItemList.Electric_Pump_LuV.get(3L), new ItemStack(LanthItemList.CAPILLARY_EXCHANGE, 1),
                 new ItemStack(LanthItemList.CAPILLARY_EXCHANGE, 1), new ItemStack(LanthItemList.CAPILLARY_EXCHANGE, 1),
-                CustomItemList.MicaInsulatorSheet.get(2), CustomItemList.MicaInsulatorSheet.get(2),
-                CustomItemList.MicaInsulatorSheet.get(2),
+                GT_Utility.copyAmount(2, insulator), GT_Utility.copyAmount(2, insulator),
+                GT_Utility.copyAmount(2, insulator),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Tungsten, 1) },
             new FluidStack[] { Materials.SolderingAlloy.getMolten(288), Materials.Lubricant.getFluid(1152) },
             new ItemStack(LanthItemList.COOLANT_DELIVERY_CASING),
@@ -395,7 +397,7 @@ public class RecipeLoader {
         GT_Values.RA.addAssemblerRecipe(
             new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.TungstenSteel, 8),
                 GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Copper, 2), Materials.Titanium.getPlates(6),
-                CustomItemList.MicaInsulatorFoil.get(4), ItemList.Electric_Pump_LuV.get(1),
+                GT_Utility.copyAmount(4, insulator), ItemList.Electric_Pump_LuV.get(1),
                 Materials.Silver.getDust(2) },
             Materials.Silicone.getMolten(288L),
             new ItemStack(LanthItemList.CAPILLARY_EXCHANGE, 1),
