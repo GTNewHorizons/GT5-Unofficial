@@ -148,7 +148,7 @@ public class RecipeLoader {
                 new Object[] { "AZA", "BRB", "AZA", 'B', gregtech.api.enums.ItemList.Casing_CleanStainlessSteel, 'R',
                     GT_ModHandler.getModItem("EnderIO", "blockFarmStation", 1, new ItemStack(Items.diamond_hoe)), 'A',
                     NewHorizonsCoreMod.isModLoaded()
-                        ? GT_ModHandler.getModItem(GregTech.ID, "gt.blockmachines", 1, 11104)
+                        ? GT_ModHandler.getModItem(GregTech.ID, "gt.blockmachines", 1, 11104) // IV World Accelerator
                         : gregtech.api.enums.ItemList.Robot_Arm_IV,
                     'Z', OrePrefixes.circuit.get(Materials.Ultimate) });
         }
@@ -350,7 +350,7 @@ public class RecipeLoader {
                     LegendaryUltimateTea.get(0),
                     GameRegistry.findItemStack("Avaritia", "Neutronium_Compressor", 1),
                     gregtech.api.enums.ItemList.Quantum_Tank_EV.get(1),
-                    GT_ModHandler.getModItem(GregTech.ID, "gt.blockmachines", 10, 11193),
+                    GT_ModHandler.getModItem(GregTech.ID, "gt.blockmachines", 10, 11193), // UHV Fluid extractor
                     new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4L },
                     new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4L },
                     new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4L },
