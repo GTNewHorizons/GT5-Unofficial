@@ -21,8 +21,12 @@
 package kubatech.loaders;
 
 import static gregtech.api.enums.Mods.Avaritia;
+import static gregtech.api.enums.Mods.DraconicEvolution;
+import static gregtech.api.enums.Mods.EnderIO;
+import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.enums.Mods.PamsHarvestCraft;
 import static gregtech.api.recipe.RecipeMaps.benderRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
@@ -79,7 +83,6 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
-import kubatech.api.LoaderReference;
 import kubatech.api.enums.ItemList;
 import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_DEFusionCrafter;
 import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeEntityCrusher;
@@ -101,7 +104,7 @@ public class RecipeLoader {
             GT_MetaTileEntity_ExtremeEntityCrusher.class,
             "multimachine.entitycrusher",
             "Extreme Entity Crusher",
-            LoaderReference.EnderIO)) {
+            EnderIO.isModLoaded())) {
             GT_ModHandler.addCraftingRecipe(
                 ItemList.ExtremeEntityCrusher.get(1),
                 bitsd,
@@ -114,7 +117,7 @@ public class RecipeLoader {
             GT_MetaTileEntity_MegaIndustrialApiary.class,
             "multimachine.extremeapiary",
             "Industrial Apicultural Acclimatiser and Drone Domestication Station",
-            LoaderReference.Forestry)) {
+            Forestry.isModLoaded())) {
             GT_Values.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, gregtech.api.enums.ItemList.Machine_IndustrialApiary.get(1))
                 .metadata(RESEARCH_TIME, 8 * MINUTES + 20 * SECONDS)
@@ -158,7 +161,7 @@ public class RecipeLoader {
             GT_MetaTileEntity_DEFusionCrafter.class,
             "multimachine.defusioncrafter",
             "Draconic Evolution Fusion Crafter",
-            LoaderReference.DraconicEvolution)) {
+            DraconicEvolution.isModLoaded())) {
             // Controller recipe added in TecTech
             DEFCRecipes.addRecipes();
         }
@@ -212,7 +215,7 @@ public class RecipeLoader {
 
     private static void RegisterTeaLine() {
         // TEA LINE //
-        if (LoaderReference.GTPlusPlus && LoaderReference.HarvestCraft) {
+        if (PamsHarvestCraft.isModLoaded()) {
             CORE.RA.addDehydratorRecipe(
                 new ItemStack[] { GameRegistry.findItemStack("harvestcraft", "tealeafItem", 1) },
                 null,

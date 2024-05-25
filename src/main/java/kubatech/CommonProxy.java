@@ -20,6 +20,8 @@
 
 package kubatech;
 
+import static gregtech.api.enums.Mods.MineTweaker;
+import static gregtech.api.enums.Mods.Thaumcraft;
 import static kubatech.loaders.BlockLoader.registerBlocks;
 import static kubatech.loaders.ItemLoader.registerItems;
 
@@ -35,7 +37,6 @@ import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
-import kubatech.api.LoaderReference;
 import kubatech.commands.CommandHandler;
 import kubatech.config.Config;
 import kubatech.loaders.MTLoader;
@@ -61,12 +62,12 @@ public class CommonProxy {
     }
 
     public void init(FMLInitializationEvent event) {
-        if (LoaderReference.MineTweaker) MTLoader.init();
+        if (MineTweaker.isModLoaded()) MTLoader.init();
     }
 
     public void postInit(FMLPostInitializationEvent event) {
         RecipeLoader.addRecipes();
-        if (LoaderReference.Thaumcraft) TCLoader.init();
+        if (Thaumcraft.isModLoaded()) TCLoader.init();
     }
 
     public void serverAboutToStart(FMLServerAboutToStartEvent event) {}
