@@ -237,6 +237,8 @@ public class MobHandlerLoader {
             final Class<?> cMainRegistry = Class.forName("com.dreammaster.main.MainRegistry");
             final Object dropsHandler = cMainRegistry.getField("Module_CustomDrops")
                 .get(null);
+            if (dropsHandler == null)
+                return;
             final Class<?> cDrops = Class.forName("com.dreammaster.modcustomdrops.CustomDrops");
             final Object coredrops = ReflectionHelper.getField(dropsHandler, "_mCustomDrops", null);
             final Method mGetCustomDrops = cDrops.getMethod("getCustomDrops");
