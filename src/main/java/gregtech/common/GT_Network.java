@@ -34,6 +34,7 @@ import gregtech.api.net.GT_Packet_TileEntity;
 import gregtech.api.net.GT_Packet_TileEntityCover;
 import gregtech.api.net.GT_Packet_TileEntityCoverGUI;
 import gregtech.api.net.GT_Packet_TileEntityCoverNew;
+import gregtech.api.net.GT_Packet_ToolSwitchMode;
 import gregtech.api.net.GT_Packet_UpdateItem;
 import gregtech.api.net.GT_Packet_WirelessRedstoneCover;
 import gregtech.api.net.IGT_NetworkHandler;
@@ -75,7 +76,8 @@ public class GT_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet>
             new GT_Packet_SendCoverData(), // 16
             new GT_Packet_RequestCoverData(), // 17
             new GT_Packet_MultiTileEntity(true), // 18
-            new GT_Packet_SendOregenPattern() // 19
+            new GT_Packet_SendOregenPattern(), // 19
+            new GT_Packet_ToolSwitchMode() // 20
         );
     }
 
