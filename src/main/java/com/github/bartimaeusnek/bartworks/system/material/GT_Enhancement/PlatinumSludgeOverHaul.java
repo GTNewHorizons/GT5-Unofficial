@@ -372,6 +372,7 @@ public class PlatinumSludgeOverHaul {
             .duration(1200)
             .eut(30)
             .addTo(multiblockChemicalReactorRecipes);
+        // transitional recipe. to be removed in 2.8.0 and onwards
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(2))
             .itemOutputs(PTSaltCrude.get(dust, 16), PTRawPowder.get(dust, 4))
@@ -382,6 +383,7 @@ public class PlatinumSludgeOverHaul {
                 Materials.DilutedSulfuricAcid.getFluid(9000))
             .duration(1400)
             .eut(240)
+            .hidden()
             .addTo(multiblockChemicalReactorRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(3))
