@@ -7,12 +7,12 @@ import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
-
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 
 /**
  * This makes it easier to build multi tooltips, with a standardized format. <br>
@@ -109,19 +109,19 @@ public class GT_Multiblock_Tooltip_Builder {
         iLines.add(info);
         return this;
     }
-    
+
     /**
      * Add a number of basic lines of information about this structure
      *
      * @param infoStrings The lines to be added.
      * @return Instance this method was called on.
      */
-    
+
     public GT_Multiblock_Tooltip_Builder addInfoAll(String... infoStrings) {
-    	for (String str : infoStrings) {
-    		iLines.add(str);
-    	}
-    	return this;
+        for (String str : infoStrings) {
+            iLines.add(str);
+        }
+        return this;
     }
 
     /**
