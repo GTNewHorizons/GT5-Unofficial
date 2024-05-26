@@ -26,6 +26,7 @@ import static kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeE
 import static kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeEntityCrusher.MOB_SPAWN_INTERVAL;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -45,8 +46,6 @@ import net.minecraftforge.common.MinecraftForge;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.dreammaster.main.MainRegistry;
-import com.dreammaster.modcustomdrops.CustomDrops;
 import com.kuba6000.mobsinfo.api.IChanceModifier;
 import com.kuba6000.mobsinfo.api.MobDrop;
 import com.kuba6000.mobsinfo.api.MobOverride;
@@ -213,11 +212,13 @@ public class MobHandlerLoader {
     }
 
     @SubscribeEvent
+    @SuppressWarnings("unused")
     public void onPreMobsRegistration(PreMobsRegistrationEvent event) {
         recipeMap.clear();
     }
 
     @SubscribeEvent
+    @SuppressWarnings("unused")
     public void onPostMobRegistration(PostMobRegistrationEvent event) {
         if (!event.drops.isEmpty() && event.recipe.isUsableInVial) {
             @SuppressWarnings("unchecked")
@@ -229,24 +230,43 @@ public class MobHandlerLoader {
     }
 
     @SubscribeEvent
-    public void onPostOverridesConfigLoad(PostMobsOverridesLoadEvent event) {
+    @SuppressWarnings("unused")
+    public void onPostOverridesConfigLoad(PostMobsOverridesLoadEvent event) throws ReflectiveOperationException {
         if (NewHorizonsCoreMod.isModLoaded()) {
             LOG.info("Detected GTNH Core Mod, parsing custom drops from there.");
-            CustomDrops coredrops = ReflectionHelper.getField(MainRegistry.Module_CustomDrops, "_mCustomDrops", null);
+            final Class<?> cMainRegistry = Class.forName("com.dreammaster.main.MainRegistry");
+            final Object dropsHandler = cMainRegistry.getField("Module_CustomDrops")
+                .get(null);
+            final Class<?> cDrops = Class.forName("com.dreammaster.modcustomdrops.CustomDrops");
+            final Object coredrops = ReflectionHelper.getField(dropsHandler, "_mCustomDrops", null);
+            final Method mGetCustomDrops = cDrops.getMethod("getCustomDrops");
+
+            final Class<?> cCustomDrop = Class.forName("com.dreammaster.modcustomdrops.CustomDrops$CustomDrop");
+            final Method mGetCustomDropEntityName = cCustomDrop.getMethod("getEntityName");
+            final Method mGetCustomDropDrops = cCustomDrop.getMethod("getDrops");
+
+            final Class<?> cDrop = Class.forName("com.dreammaster.modcustomdrops.CustomDrops$CustomDrop$Drop");
+            final Method mDropGetItemName = cDrop.getMethod("getItemName");
+            final Method mDropGetChance = cDrop.getMethod("getChance");
+            final Method mDropGetAmount = cDrop.getMethod("getAmount");
+            final Method mDropGetIsRandomAmount = cDrop.getMethod("getIsRandomAmount");
+
             if (coredrops != null) {
-                @SuppressWarnings("unchecked")
-                ArrayList<CustomDrops.CustomDrop> customdrops = (ArrayList<CustomDrops.CustomDrop>) ((ArrayList<CustomDrops.CustomDrop>) coredrops
-                    .getCustomDrops()).clone();
-                for (CustomDrops.CustomDrop customdrop : customdrops) {
+                final ArrayList<?> customDrops = new ArrayList<>((ArrayList<?>) mGetCustomDrops.invoke(coredrops));
+                for (final Object customDrop : customDrops) {
                     try {
-                        Class<?> eclass = Class.forName(customdrop.getEntityName());
+                        final String entityName = (String) mGetCustomDropEntityName.invoke(customDrop);
+
+                        final Class<?> eclass = Class.forName(entityName);
                         if (!EntityLiving.class.isAssignableFrom(eclass)) continue;
-                        String ename = (String) EntityList.classToStringMapping.get(eclass);
+                        final String ename = EntityList.classToStringMapping.get(eclass);
                         if (ename == null) continue;
-                        MobOverride override = event.overrides.computeIfAbsent(ename, k -> new MobOverride());
-                        for (CustomDrops.CustomDrop.Drop drop : customdrop.getDrops()) {
-                            String[] parts = drop.getItemName()
-                                .split(":");
+                        final MobOverride override = event.overrides.computeIfAbsent(ename, k -> new MobOverride());
+                        final List<?> entityDrops = (List<?>) mGetCustomDropDrops.invoke(customDrop);
+
+                        for (final Object drop : entityDrops) {
+                            final String itemName = (String) mDropGetItemName.invoke(drop);
+                            String[] parts = itemName.split(":");
                             ItemStack stack = GameRegistry.findItemStack(parts[0], parts[1], 1);
                             if (stack == null) continue;
                             if (parts.length > 2) stack.setItemDamage(Integer.parseInt(parts[2]));
@@ -256,9 +276,9 @@ public class MobHandlerLoader {
                                     stack.stackTagCompound = (NBTTagCompound) JsonToNBT.func_150315_a(pNBT);
                                 } catch (Exception ignored) {}
                             }
-                            int chance = drop.getChance() * 100;
-                            int amount = drop.getAmount();
-                            if (drop.getIsRandomAmount()) {
+                            int chance = ((int) mDropGetChance.invoke(drop)) * 100;
+                            int amount = (int) mDropGetAmount.invoke(drop);
+                            if ((boolean) mDropGetIsRandomAmount.invoke(drop)) {
                                 // average chance formula
                                 // chance *= ((((amount * (amount + 1d)) / 2d)) + 1d) / (amount + 1d);
                                 chance *= (2d + (amount * amount) + amount) / (2d * (amount + 1d));
@@ -295,6 +315,7 @@ public class MobHandlerLoader {
     }
 
     @SubscribeEvent
+    @SuppressWarnings("unused")
     public void onMobNEIRegistration(MobNEIRegistrationEvent event) {
         MobEECRecipe recipe = recipeMap.get(event.mobName);
         if (recipe != null) {

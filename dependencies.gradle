@@ -82,9 +82,6 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:CraftTweaker:3.3.1:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:BetterLoadingScreen:1.6.1-GTNH:dev") { transitive = false }
 
-    // TODO: Remove ASAP!
-    compileOnly("com.github.GTNewHorizons:NewHorizonsCoreMod:2.4.8:dev") { transitive = false }
-
     implementation('com.github.GTNewHorizons:Baubles:1.0.4:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:SC2:2.1.1:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:Binnie:2.3.4:dev') {transitive = false}
