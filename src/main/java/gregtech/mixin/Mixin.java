@@ -45,13 +45,13 @@ public enum Mixin {
             .setSide(Side.BOTH)),
     // Extra utilities
     RemoveLastMilleniumRain(new Builder("Remove rain from the Last Millenium (Extra Utilities)")
-        .addMixinClasses("xu.WorldProviderEndOfTime")
+        .addMixinClasses("xu.WorldProviderEndOfTimeMixin")
         .addTargetedMod(EXTRA_UTILITIES)
         .setApplyIf(() -> ConfigHandler.enabledPatches[0])
         .setPhase(Phase.LATE)
         .setSide(Side.BOTH)),
     RemoveLastMilleniumCreatures(new Builder("Remove creatures from the Last Millenium (Extra Utilities)")
-        .addMixinClasses("xu.ChunkProviderEndOfTime")
+        .addMixinClasses("xu.ChunkProviderEndOfTimeMixin")
         .addTargetedMod(EXTRA_UTILITIES)
         .setApplyIf(() -> ConfigHandler.enabledPatches[1])
         .setPhase(Phase.LATE)

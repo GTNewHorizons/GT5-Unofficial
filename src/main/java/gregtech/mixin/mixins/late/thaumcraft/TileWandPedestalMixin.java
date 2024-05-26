@@ -12,6 +12,7 @@ import thaumcraft.api.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.IAspectContainer;
 import thaumcraft.common.items.baubles.ItemAmuletVis;
+import thaumcraft.common.items.wands.ItemWandCasting;
 import thaumcraft.common.tiles.TileWandPedestal;
 
 @Mixin(TileWandPedestal.class)
@@ -21,9 +22,9 @@ public abstract class TileWandPedestalMixin extends TileThaumcraft implements IS
         method = "updateEntity",
         at = @At(
             value = "INVOKE",
-            target = "Lthaumcraft/common/items/baubles/ItemAmuletVis;addVis(Lnet/minecraft/item/ItemStack;Lthaumcraft/api/aspects/Aspect;IZ)I",
+            target = "Lthaumcraft/common/items/wands/ItemWandCasting;addVis(Lnet/minecraft/item/ItemStack;Lthaumcraft/api/aspects/Aspect;IZ)I",
             remap = false))
-    boolean gregtech$checkWandServerWorld(ItemAmuletVis instance, ItemStack is, Aspect aspect, int amount,
+    boolean gregtech$checkWandServerWorld(ItemWandCasting instance, ItemStack is, Aspect aspect, int amount,
         boolean doit) {
         return !this.worldObj.isRemote;
     }
