@@ -14,6 +14,8 @@ import java.util.function.Supplier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
+
 import cpw.mods.fml.relauncher.FMLLaunchHandler;
 
 public enum Mixin {
@@ -38,27 +40,27 @@ public enum Mixin {
     CacheCraftingManagerRecipes(
         new Builder("Cache CraftingManager recipes").addMixinClasses("minecraft.CraftingManagerMixin")
             .addTargetedMod(VANILLA)
-            .setApplyIf(() -> true)
+            .setApplyIf(() -> ConfigHandler.enabledPatches[3])
             .setPhase(Phase.EARLY)
             .setSide(Side.BOTH)),
     // Extra utilities
     RemoveLastMilleniumRain(new Builder("Remove rain from the Last Millenium (Extra Utilities)")
         .addMixinClasses("xu.WorldProviderEndOfTime")
         .addTargetedMod(EXTRA_UTILITIES)
-        .setApplyIf(() -> true)
+        .setApplyIf(() -> ConfigHandler.enabledPatches[0])
         .setPhase(Phase.LATE)
         .setSide(Side.BOTH)),
     RemoveLastMilleniumCreatures(new Builder("Remove creatures from the Last Millenium (Extra Utilities)")
         .addMixinClasses("xu.ChunkProviderEndOfTime")
         .addTargetedMod(EXTRA_UTILITIES)
-        .setApplyIf(() -> true)
+        .setApplyIf(() -> ConfigHandler.enabledPatches[1])
         .setPhase(Phase.LATE)
         .setSide(Side.BOTH)),
     // Thaumcraft
     PatchWandPedestalVisDuplication(new Builder("Fix wand pedestal vis duplication (Thaumcraft)")
         .addMixinClasses("thaumcraft.TileWandPedestalMixin")
         .addTargetedMod(THAUMCRAFT)
-        .setApplyIf(() -> true)
+        .setApplyIf(() -> ConfigHandler.enabledPatches[2])
         .setPhase(Phase.LATE)
         .setSide(Side.BOTH)),;
 

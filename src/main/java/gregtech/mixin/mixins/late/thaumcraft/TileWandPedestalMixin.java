@@ -21,7 +21,8 @@ public abstract class TileWandPedestalMixin extends TileThaumcraft implements IS
         method = "updateEntity",
         at = @At(
             value = "INVOKE",
-            target = "Lthaumcraft/common/items/baubles/ItemAmuletVis;addVis(Lnet/minecraft/item/ItemStack;Lthaumcraft/api/aspects/Aspect;IZ)I"))
+            target = "Lthaumcraft/common/items/baubles/ItemAmuletVis;addVis(Lnet/minecraft/item/ItemStack;Lthaumcraft/api/aspects/Aspect;IZ)I",
+            remap = false))
     boolean gregtech$checkWandServerWorld(ItemAmuletVis instance, ItemStack is, Aspect aspect, int amount,
         boolean doit) {
         return !this.worldObj.isRemote;
@@ -31,7 +32,8 @@ public abstract class TileWandPedestalMixin extends TileThaumcraft implements IS
         method = "updateEntity",
         at = @At(
             value = "INVOKE",
-            target = "Lthaumcraft/common/items/baubles/ItemAmuletVis;addVis(Lnet/minecraft/item/ItemStack;Lthaumcraft/api/aspects/Aspect;IZ)I"))
+            target = "Lthaumcraft/common/items/baubles/ItemAmuletVis;addVis(Lnet/minecraft/item/ItemStack;Lthaumcraft/api/aspects/Aspect;IZ)I",
+            remap = false))
     boolean gregtech$checkAmuletServerWorld(ItemAmuletVis instance, ItemStack is, Aspect aspect, int amount,
         boolean doit) {
         return !this.worldObj.isRemote;
