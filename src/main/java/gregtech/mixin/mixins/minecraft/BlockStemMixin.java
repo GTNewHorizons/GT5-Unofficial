@@ -1,4 +1,4 @@
-package kubatech.mixin.mixins.minecraft;
+package gregtech.mixin.mixins.minecraft;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStem;

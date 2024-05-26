@@ -24,6 +24,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.Mods.BartWorks;
 import static gregtech.api.enums.Mods.ProjectRedIllumination;
 import static gregtech.api.enums.Mods.RandomThings;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER;
@@ -116,7 +117,6 @@ import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
 import kubatech.Tags;
 import kubatech.api.EIGDynamicInventory;
-import kubatech.api.LoaderReference;
 import kubatech.api.eig.EIGBucket;
 import kubatech.api.eig.EIGDropTable;
 import kubatech.api.eig.EIGMode;
@@ -240,14 +240,14 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
         .addElement('C', onElementPass(t -> t.mCasing++, ofBlock(GregTech_API.sBlockCasings4, 1)))
         .addElement(
             'l',
-            LoaderReference.ProjRedIllumination
+            ProjectRedIllumination.isModLoaded()
                 ? ofChain(
                     ofBlock(Block.getBlockFromName("ProjRed|Illumination:projectred.illumination.lamp"), 10),
                     ofBlock(Block.getBlockFromName("ProjRed|Illumination:projectred.illumination.lamp"), 26))
                 : ofChain(ofBlock(Blocks.redstone_lamp, 0), ofBlock(Blocks.lit_redstone_lamp, 0)))
         .addElement(
             'g',
-            LoaderReference.Bartworks
+            BartWorks.isModLoaded()
                 ? BorosilicateGlass
                     .ofBoroGlass((byte) 0, (byte) 1, Byte.MAX_VALUE, (te, t) -> te.glassTier = t, te -> te.glassTier)
                 : onElementPass(t -> t.glassTier = 100, ofBlock(Blocks.glass, 0)))

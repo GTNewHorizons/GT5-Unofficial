@@ -1,6 +1,7 @@
 package kubatech.loaders;
 
-import kubatech.api.LoaderReference;
+import static gregtech.api.enums.Mods.ThaumicBases;
+
 import kubatech.api.enums.EIGModes;
 import kubatech.tileentity.gregtech.multiblock.eigbuckets.EIGFlowerBucket;
 import kubatech.tileentity.gregtech.multiblock.eigbuckets.EIGIC2Bucket;
@@ -15,7 +16,7 @@ public class EIGBucketLoader {
         EIGModes.IC2.addLowPriorityFactory(EIGIC2Bucket.factory);
 
         // Regular Mode Buckets
-        if (LoaderReference.ThaumicBases) {
+        if (ThaumicBases.isModLoaded()) {
             EIGModes.Normal.addLowPriorityFactory(EIGRainbowCactusBucket.factory);
         }
         EIGModes.Normal.addLowPriorityFactory(EIGFlowerBucket.factory);
