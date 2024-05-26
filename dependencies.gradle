@@ -40,10 +40,10 @@ dependencies {
     api("com.github.GTNewHorizons:GTNHLib:0.2.11:dev")
     api("com.github.GTNewHorizons:ModularUI:1.2.0:dev")
     api("com.github.GTNewHorizons:waila:1.8.0:dev")
-    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-402-GTNH:dev")
+    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-404-GTNH:dev")
     api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.3.0-gtnh:dev")
     api('com.github.GTNewHorizons:Yamcl:0.6.0:dev')
-    api('com.github.GTNewHorizons:ThaumicTinkerer:2.9.4:dev')
+    api('com.github.GTNewHorizons:ThaumicTinkerer:2.10.0:dev')
     api("com.github.GTNewHorizons:Mobs-Info:0.2.6-GTNH:dev")
 
     devOnlyNonPublishable("com.github.GTNewHorizons:Infernal-Mobs:1.8.1-GTNH:dev")
@@ -51,25 +51,25 @@ dependencies {
 
     implementation('com.github.GTNewHorizons:GTNEIOrePlugin:1.2.0:dev') { transitive = false }
     implementation("com.github.GTNewHorizons:Avaritia:1.49:dev")
-    implementation("com.github.GTNewHorizons:ForestryMC:4.9.0:dev") { transitive = false }
+    implementation("com.github.GTNewHorizons:ForestryMC:4.9.1:dev") { transitive = false }
 
-    compileOnlyApi('com.github.GTNewHorizons:Angelica:1.0.0-alpha50:api') { transitive = false }
+    compileOnlyApi('com.github.GTNewHorizons:Angelica:1.0.0-alpha51:api') { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:AppleCore:3.3.0:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:BuildCraft:7.1.39:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.8.0:dev") { transitive = false }
-    compileOnlyApi("com.github.GTNewHorizons:ProjectRed:4.9.5-GTNH:dev") { transitive = false }
+    compileOnlyApi("com.github.GTNewHorizons:ProjectRed:4.10.0-GTNH:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:Railcraft:9.15.8:dev") { transitive = false }
 
     compileOnly("TGregworks:TGregworks:1.7.10-GTNH-1.0.26:deobf") {transitive = false}
     compileOnly("com.github.GTNewHorizons:EnderCore:0.4.6:dev") { transitive = false }
     implementation("com.github.GTNewHorizons:Galacticraft:3.1.5-GTNH:dev") { transitive = false }
-    implementation("com.github.GTNewHorizons:TinkersConstruct:1.12.1-GTNH:dev")
+    implementation("com.github.GTNewHorizons:TinkersConstruct:1.12.2-GTNH:dev")
     compileOnly("com.github.GTNewHorizons:Chisel:2.15.0-GTNH:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Translocators:1.2.1:dev") { transitive = false }
     compileOnly rfg.deobf("curse.maven:cofh-core-69162:2388751")
     compileOnly("com.github.GTNewHorizons:Nuclear-Control:2.6.2:dev") { transitive = false }
     compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") { transitive = false }
-    compileOnly("com.github.GTNewHorizons:Hodgepodge:2.5.8:dev") { transitive = false }
+    compileOnly("com.github.GTNewHorizons:Hodgepodge:2.5.10:dev") { transitive = false }
     compileOnly('com.github.GTNewHorizons:Botania:1.11.1-GTNH:dev') { transitive = false }
     compileOnly('com.github.GTNewHorizons:HoloInventory:2.4.10-GTNH:dev') { transitive = false }
     compileOnly rfg.deobf("curse.maven:extra-utilities-225561:2264384")
@@ -93,7 +93,7 @@ dependencies {
     annotationProcessor("com.google.auto.value:auto-value:1.10.1")
 
     // For testing iApiary
-    //runtimeOnlyNonPublishable("com.github.GTNewHorizons:ForestryMC:4.9.0:dev")
+    //runtimeOnlyNonPublishable("com.github.GTNewHorizons:ForestryMC:4.9.1:dev")
 
     testImplementation(platform('org.junit:junit-bom:5.9.2'))
     testImplementation('org.junit.jupiter:junit-jupiter')
