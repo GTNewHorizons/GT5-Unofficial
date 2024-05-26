@@ -374,7 +374,7 @@ public class MixerRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Titanium, 3),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 3),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Vanadium, 1),
-                GT_Utility.getIntegratedCircuit(1))
+                GT_Utility.getIntegratedCircuit(4))
             .itemOutputs(GT_OreDictUnificator.getDust(Materials.TPV, 7L * OrePrefixes.dust.mMaterialAmount))
             .duration(8 * SECONDS + 15 * TICKS)
             .eut(TierEU.RECIPE_EV)
