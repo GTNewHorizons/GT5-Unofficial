@@ -24,6 +24,8 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.Mods.ProjectRedIllumination;
+import static gregtech.api.enums.Mods.RandomThings;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
@@ -252,7 +254,7 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
         .addElement(
             'd',
             ofBlock(
-                LoaderReference.RandomThings ? Block.getBlockFromName("RandomThings:fertilizedDirt_tilled")
+                RandomThings.isModLoaded() ? Block.getBlockFromName("RandomThings:fertilizedDirt_tilled")
                     : Blocks.farmland,
                 0))
         .addElement(

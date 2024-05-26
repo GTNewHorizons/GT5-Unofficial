@@ -20,6 +20,8 @@
 
 package kubatech.loaders;
 
+import static gregtech.api.enums.Mods.InfernalMobs;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeEntityCrusher.DIAMOND_SPIKES_DAMAGE;
 import static kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeEntityCrusher.MOB_SPAWN_INTERVAL;
 
@@ -59,7 +61,6 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GT_Utility;
 import kubatech.Tags;
-import kubatech.api.LoaderReference;
 import kubatech.api.helpers.ReflectionHelper;
 import kubatech.config.Config;
 import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeEntityCrusher;
@@ -161,7 +162,7 @@ public class MobHandlerLoader {
                 }
             }
 
-            if (LoaderReference.InfernalMobs) {
+            if (InfernalMobs.isModLoaded()) {
                 InfernalMobsCore infernalMobsCore = InfernalMobsCore.instance();
                 if (recipe.infernalityAllowed && mEUt * 8 <= MTE.getMaxInputEu()
                     && !infernalMobsCore.getDimensionBlackList()
@@ -229,7 +230,7 @@ public class MobHandlerLoader {
 
     @SubscribeEvent
     public void onPostOverridesConfigLoad(PostMobsOverridesLoadEvent event) {
-        if (LoaderReference.GTNHCoreMod) {
+        if (NewHorizonsCoreMod.isModLoaded()) {
             LOG.info("Detected GTNH Core Mod, parsing custom drops from there.");
             CustomDrops coredrops = ReflectionHelper.getField(MainRegistry.Module_CustomDrops, "_mCustomDrops", null);
             if (coredrops != null) {

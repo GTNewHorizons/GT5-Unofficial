@@ -288,6 +288,22 @@
       "dependencies": [],
       "dependants": [],
       "useDependencyInformation": false
+    },
+    {
+      "modid": "gtnhlanth",
+      "name": "GTNH: Lanthanides",
+      "description": "",
+      "version": "${modVersion}",
+      "mcversion": "${minecraftVersion}",
+      "url": "",
+      "updateUrl": "",
+      "authorList": [
+        "Elisis"
+      ],
+      "credits": "",
+      "logoFile": "",
+      "screenshots": [],
+      "dependencies": []
     }
   ]
 }

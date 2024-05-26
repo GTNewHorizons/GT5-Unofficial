@@ -126,7 +126,6 @@ import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
 import kubatech.Tags;
 import kubatech.api.DynamicInventory;
-import kubatech.api.LoaderReference;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.client.effect.MegaApiaryBeesRenderer;
 
@@ -181,11 +180,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                                 .replaceAll("F", " "))
                         .toArray(String[]::new))
                 .toArray(String[][]::new))
-        .addElement(
-            'A',
-            LoaderReference.Bartworks
-                ? BorosilicateGlass.ofBoroGlass((byte) 0, (t, v) -> t.mGlassTier = v, t -> t.mGlassTier)
-                : onElementPass(t -> t.mGlassTier = 100, ofBlock(Blocks.glass, 0)))
+        .addElement('A', BorosilicateGlass.ofBoroGlass((byte) 0, (t, v) -> t.mGlassTier = v, t -> t.mGlassTier))
         .addElement('B', ofChain(ofBlockAnyMeta(Blocks.dirt, 0), ofBlock(Blocks.grass, 0)))
         .addElement(
             'G',

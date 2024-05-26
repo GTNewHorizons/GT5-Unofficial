@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
-import static gregtech.api.enums.Mods.TecTech;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import java.lang.reflect.InvocationTargetException;
@@ -547,7 +546,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
 
     /**
      * Causes a Random Maint. Issue.
-     * 
+     *
      * @return {@link boolean} - Returns whether or not an issue was caused, should always be true.
      */
     public boolean causeMaintenanceIssue() {
@@ -719,14 +718,14 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
         }
 
         // Handle TT Multi-A Energy Hatches
-        else if (TecTech.isModLoaded() && isThisHatchMultiEnergy(aMetaTileEntity)) {
+        else if (isThisHatchMultiEnergy(aMetaTileEntity)) {
             log("Found isThisHatchMultiEnergy");
             aDidAdd = addToMachineListInternal(mTecTechEnergyHatches, aMetaTileEntity, aBaseCasingIndex);
             updateMasterEnergyHatchList(aMetaTileEntity);
         }
 
         // Handle TT Multi-A Dynamos
-        else if (TecTech.isModLoaded() && isThisHatchMultiDynamo(aMetaTileEntity)) {
+        else if (isThisHatchMultiDynamo(aMetaTileEntity)) {
             log("Found isThisHatchMultiDynamo");
             aDidAdd = addToMachineListInternal(mTecTechDynamoHatches, aMetaTileEntity, aBaseCasingIndex);
             updateMasterDynamoHatchList(aMetaTileEntity);
@@ -975,7 +974,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
 
     /**
      * TecTech Multi-Amp Dynamo Support
-     * 
+     *
      * @param aTileEntity      - The Dynamo Hatch
      * @param aBaseCasingIndex - Casing Texture
      * @return
@@ -1028,7 +1027,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
 
     /**
      * TecTech Multi-Amp Energy Hatch Support
-     * 
+     *
      * @param aTileEntity      - The Energy Hatch
      * @param aBaseCasingIndex - Casing Texture
      * @return
@@ -1221,7 +1220,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
 
     /**
      * accept meta [0, maxMeta)
-     * 
+     *
      * @param maxMeta exclusive
      */
     public static <T> IStructureElement<T> addTieredBlock(Block aBlock, BiConsumer<T, Integer> aSetTheMeta,

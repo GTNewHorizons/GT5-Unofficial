@@ -2015,14 +2015,12 @@ public class GT_CraftingRecipeLoader implements Runnable {
             Materials.Fireclay.getDust(2),
             new Object[] { Materials.Brick.getDust(1), Materials.Clay.getDust(1) });
 
-        if (BartWorks.isModLoaded()) {
-            GT_ModHandler.addCraftingRecipe(
-                ItemList.Casing_Advanced_Rhodium_Palladium.get(1L),
-                bits,
-                new Object[] { "PhP", "PFP", aTextPlateWrench, 'P',
-                    GT_ModHandler.getModItem(BartWorks.ID, "gt.bwMetaGeneratedplate", 1L, 88), 'F',
-                    OrePrefixes.frameGt.get(Materials.Chrome) });
-        }
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Casing_Advanced_Rhodium_Palladium.get(1L),
+            bits,
+            new Object[] { "PhP", "PFP", aTextPlateWrench, 'P',
+                GT_ModHandler.getModItem(BartWorks.ID, "gt.bwMetaGeneratedplate", 1L, 88), 'F',
+                OrePrefixes.frameGt.get(Materials.Chrome) });
 
         if (Forestry.isModLoaded()) {
             ItemStack[] coverIDs = { ItemList.Plank_Larch.get(2L), ItemList.Plank_Teak.get(2L),
