@@ -1,6 +1,17 @@
 # RecipeMaps
 gtnhlanth.recipe.digester=Digester
 gtnhlanth.recipe.disstank=Dissolution Tank
+gtnhlanth.recipe.tc=Target Chamber
+gtnhlanth.recipe.sc=Source Chamber
+
+gtnhlanth.tt.beaminfo=Use a §bportable scanner §7for info about the input/output of this multiblock.
+gtnhlanth.tt.blueprint=Follow the §9Structure§2Lib §7hologram projector to build the main structure.
+gtnhlanth.tt.pc=§6Partially consumed: §7Takes damage in the process
+
+gtnhlanth.tt.hintdot=Hint block with dot %s
+
+GT5U.gui.text.gtnhlanth.nocoolant=No coolant present in machine!
+GT5U.gui.text.gtnhlanth.inscoolant=Insufficient coolant in machine!
 
 # NEI
 value.disstank=Ratio: %s:1
@@ -52,4 +63,53 @@ fluid.Diaminotoluene=Diaminotoluene
 fluid.Toluene Tetramethyl Diisocyanate=Toluene Tetramethyl Diisocyanate
 fluid.Diluted Acetone=Diluted Acetone
 
+tile.casing.shielded_accelerator_glass.name=Shielded Accelerator Glass
+casing.electrode.name=Electrode Casing
+casing.coolant_delivery.name=Coolant Delivery Casing
+casing.antenna_t1.name=Antenna Casing (T1)
+casing.antenna_t2.name=Antenna Casing (T2)
+casing.focus_manipulator.name=Focus Manipulator
+casing.focus_holder.name=Focus Holder
+casing.target_receptacle.name=Target Receptacle
+casing.target_holder.name=Target Holder
+casing.shielded_accelerator.name=Shielded Accelerator Casing
+
+item.capillary_exchange.name=Capillary Exchange
+item.mm_lattice.name=Mu-Metal Lattice
+item.iron_quartz_plate.name=Iron Quartz Plate
+item.mask_substrate.name=Mask Substrate
+item.etched_mask1.name=Etched Mask
+item.substrate_precursor.name=Substrate Precursor
+item.masked_mask_substrate.name=Processed Mask Substrate
+
+
+
+
+beamline.info=Machine Information
+
+beamline.in_pre=Multiblock Beamline Input
+beamline.particle=Particle
+beamline.energy=Energy
+beamline.focus=Focus
+beamline.amount=Amount
+beamline.rate=Rate
+
+beamline.temperature=Temperature
+beamline.coolusage=Coolant Usage
+
+beamline.out_pre=Multiblock Beamline Output
+
+beamline.particleinput=Input Particle Info:
+
+beamline.pipe.desc.0=Transport for particles
+beamline.pipe.desc.1=Does not auto-connect or bend
+
+tile.recipe.tc=Target Chamber
+tile.recipe.sc=Source Chamber
+
+particle.electron=Electron
+particle.photon=Photon
+particle.alpha=Alpha
+particle.neutron=Neutron
+particle.proton=Proton
 GT5U.gui.text.dissolution_ratio=§7Wrong fluid input ratio
