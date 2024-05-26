@@ -121,7 +121,6 @@ import gregtech.api.items.GT_Generic_Item;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
@@ -784,9 +783,9 @@ public class PlatinumSludgeOverHaul {
         }
         // gt machines
         maploop: for (RecipeMap<?> map : RecipeMap.ALL_RECIPE_MAPS.values()) {
-            if (map == RecipeMaps.fusionRecipes || map == RecipeMaps.unpackagerRecipes
-                || map == RecipeMaps.packagerRecipes
-                || map == RecipeMaps.replicatorRecipes
+            if (map == fusionRecipes || map == unpackagerRecipes
+                || map == packagerRecipes
+                || map == replicatorRecipes
                 || "gt.recipe.eyeofharmony".equals(map.unlocalizedName)
                 || "gtpp.recipe.quantumforcesmelter".equals(map.unlocalizedName)) continue;
             HashSet<GT_Recipe> toDel = new HashSet<>();
@@ -794,9 +793,9 @@ public class PlatinumSludgeOverHaul {
                 if (recipe.mFakeRecipe) continue maploop;
 
                 for (int i = 0; i < recipe.mFluidOutputs.length; i++) {
-                    if (map.equals(RecipeMaps.fluidExtractionRecipes)) continue maploop;
+                    if (map.equals(fluidExtractionRecipes)) continue maploop;
                     if ("gtpp.recipe.alloyblastsmelter".equals(map.unlocalizedName)) continue maploop;
-                    if (map.equals(multiblockChemicalReactorRecipes) || map.equals(RecipeMaps.chemicalReactorRecipes)) {
+                    if (map.equals(multiblockChemicalReactorRecipes) || map.equals(chemicalReactorRecipes)) {
                         if (GT_Utility.areFluidsEqual(Ruthenium.getMolten(1), recipe.mFluidOutputs[i])
                             || GT_Utility.areFluidsEqual(Rhodium.getMolten(1), recipe.mFluidOutputs[i]))
                             toDel.add(recipe);
@@ -966,7 +965,7 @@ public class PlatinumSludgeOverHaul {
             Materials.Nikolite.getDust(8),
             1800,
             120);
-        for (GT_Recipe recipe : RecipeMaps.circuitAssemblerRecipes.getAllRecipes()) {
+        for (GT_Recipe recipe : circuitAssemblerRecipes.getAllRecipes()) {
             if (recipe.mEUt > 512) continue;
             if (BW_Util.checkStackAndPrefix(recipe.mOutputs[0])) {
                 for (int i = 0; i < recipe.mInputs.length; i++) {
