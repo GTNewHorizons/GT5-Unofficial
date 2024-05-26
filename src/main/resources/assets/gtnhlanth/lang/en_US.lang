@@ -11,7 +11,7 @@ gtnhlanth.tt.pc=§6Partially consumed: §7Takes damage in the process
 gtnhlanth.tt.hintdot=Hint block with dot %s
 
 GT5U.gui.text.gtnhlanth.nocoolant=No coolant present in machine!
-GT5U.gui.text.gtnhlanth.inscoolant=Insufficiant coolant in machine!
+GT5U.gui.text.gtnhlanth.inscoolant=Insufficient coolant in machine!
 
 # NEI
 value.disstank=Ratio: %s:1

@@ -711,9 +711,12 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
         inputFocus = this.getInputInformation()
             .getFocus();
 
-        outputFocus = (inputFocus > machineFocus) ? ((inputFocus + machineFocus) / 2)
-            : inputFocus * (machineFocus / 100); // If input focus > machine focus, take the average of both, else
-                                                 // weigh the former by the latter
+        outputFocus = (inputFocus > machineFocus) ? ((inputFocus + machineFocus) / 2.5f)
+            : inputFocus * (machineFocus / 100); // If input focus > machine focus, divide their sum by 2.5, else
+                                                 // weigh the former by the latter. This punishes having too low a machine focus for low values of input focus
+        										 // E.g. An input focus of 50 requires a machine focus of 100 to get an output focus of 50, 
+        										 // whereas an input focus of 60 only requires around 80
+        										 // In general, as input focus increases, output scales better with machine focus
 
         voltageFactor = getVoltageFactor(voltage, this.antennaeTier);
 
