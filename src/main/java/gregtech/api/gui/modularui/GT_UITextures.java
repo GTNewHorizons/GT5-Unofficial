@@ -392,6 +392,13 @@ public class GT_UITextures {
     public static final UITexture OVERLAY_BUTTON_HOURGLASS = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/hourglass");
 
+    public static final UITexture OVERLAY_BUTTON_LIQUIDMODE = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/LiquidMode");
+
+    public static final UITexture OVERLAY_BUTTON_LIQUIDMODE_OFF = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/LiquidMode_off");
+
+
     /**
      * Can adjust size as needed.
      */
