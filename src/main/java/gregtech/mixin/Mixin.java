@@ -1,5 +1,7 @@
 package gregtech.mixin;
 
+import static gregtech.mixin.TargetedMod.EXTRA_UTILITIES;
+import static gregtech.mixin.TargetedMod.THAUMCRAFT;
 import static gregtech.mixin.TargetedMod.VANILLA;
 
 import java.util.ArrayList;
@@ -32,7 +34,33 @@ public enum Mixin {
         .addTargetedMod(VANILLA)
         .setApplyIf(() -> true)
         .setPhase(Phase.EARLY)
-        .setSide(Side.CLIENT)),;
+        .setSide(Side.CLIENT)),
+    CacheCraftingManagerRecipes(
+        new Builder("Cache CraftingManager recipes").addMixinClasses("minecraft.CraftingManagerMixin")
+            .addTargetedMod(VANILLA)
+            .setApplyIf(() -> true)
+            .setPhase(Phase.EARLY)
+            .setSide(Side.BOTH)),
+    // Extra utilities
+    RemoveLastMilleniumRain(new Builder("Remove rain from the Last Millenium (Extra Utilities)")
+        .addMixinClasses("xu.WorldProviderEndOfTime")
+        .addTargetedMod(EXTRA_UTILITIES)
+        .setApplyIf(() -> true)
+        .setPhase(Phase.LATE)
+        .setSide(Side.BOTH)),
+    RemoveLastMilleniumCreatures(new Builder("Remove creatures from the Last Millenium (Extra Utilities)")
+        .addMixinClasses("xu.ChunkProviderEndOfTime")
+        .addTargetedMod(EXTRA_UTILITIES)
+        .setApplyIf(() -> true)
+        .setPhase(Phase.LATE)
+        .setSide(Side.BOTH)),
+    // Thaumcraft
+    PatchWandPedestalVisDuplication(new Builder("Fix wand pedestal vis duplication (Thaumcraft)")
+        .addMixinClasses("thaumcraft.TileWandPedestalMixin")
+        .addTargetedMod(THAUMCRAFT)
+        .setApplyIf(() -> true)
+        .setPhase(Phase.LATE)
+        .setSide(Side.BOTH)),;
 
     public static final Logger LOGGER = LogManager.getLogger("GregTech-Mixin");
 

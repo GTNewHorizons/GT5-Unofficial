@@ -1,15 +1,12 @@
 package gregtech.asm;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import net.minecraftforge.common.config.Configuration;
 
-import com.github.bartimaeusnek.bartworks.ASM.BWCore;
-import com.github.bartimaeusnek.bartworks.ASM.BWCoreTransformer;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.gtnewhorizon.gtnhmixins.IEarlyMixinLoader;
 
@@ -38,17 +35,15 @@ public class GTCorePlugin implements IFMLLoadingPlugin, IEarlyMixinLoader {
         minecraftDir = (File) FMLInjectionData.data()[6];
         // do all the configuration already now...
         new ConfigHandler(new Configuration(new File(new File(minecraftDir, "config"), "bartworks.cfg")));
-        BWCoreTransformer.shouldTransform[2] = false;
     }
 
     @Override
     public String[] getASMTransformerClass() {
-        return new String[] { BWCoreTransformer.class.getName(), Preloader_Transformer_Handler.class.getName() };
+        return new String[] { Preloader_Transformer_Handler.class.getName() };
     }
 
     @Override
     public String getModContainerClass() {
-        FMLInjectionData.containers.add(BWCore.class.getName());
         return Preloader_DummyContainer.class.getName();
     }
 
@@ -66,20 +61,6 @@ public class GTCorePlugin implements IFMLLoadingPlugin, IEarlyMixinLoader {
             CORE_Preloader.setMinecraftDirectory(mcDir);
         }
         CORE_Preloader.DEBUG_MODE = AsmConfig.debugMode;
-
-        // Bartworks
-        if (data.get("runtimeDeobfuscationEnabled") != null) {
-            BWCoreTransformer.obfs = (boolean) data.get("runtimeDeobfuscationEnabled");
-        }
-        if (data.get("coremodList") != null) {
-            for (Object o : (ArrayList) data.get("coremodList")) {
-                if (o.toString()
-                    .contains("MicdoodlePlugin")) {
-                    BWCoreTransformer.shouldTransform[2] = ConfigHandler.enabledPatches[2];
-                    break;
-                }
-            }
-        }
     }
 
     @Override
