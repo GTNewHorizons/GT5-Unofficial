@@ -21,7 +21,6 @@ import java.util.Set;
 import net.minecraftforge.common.config.Configuration;
 
 import com.github.bartimaeusnek.bartworks.API.API_ConfigValues;
-import com.github.bartimaeusnek.bartworks.ASM.BWCoreTransformer;
 
 public class ConfigHandler {
 
@@ -103,6 +102,14 @@ public class ConfigHandler {
         "Ultimate High Voltage", "Ultimate Extreme Voltage", "Ultimate Insane Voltage", "Ultimate Mega Voltage",
         "Ultimate Extended Mega Voltage", "Overpowered Voltage", "Maximum Voltage" };
     private static final String[] names = { "Generators", "Buffers", "Cables", "Machines" };
+
+    public static final String[] ASM_TRANSFORMER_DESCRIPTIONS = { "REMOVING RAIN FROM LAST MILLENNIUM (EXU)",
+        "REMOVING CREATURES FROM LAST MILLENNIUM (EXU)", "PATCHING THAUMCRAFT WAND PEDESTAL TO PREVENT VIS DUPLICATION",
+        "PATCHING CRAFTING MANAGER FOR CACHING RECIPES" };
+    public static final String[] ASM_TRANSFORMER_CLASSES = {
+        "com.rwtema.extrautils.worldgen.endoftime.WorldProviderEndOfTime",
+        "com.rwtema.extrautils.worldgen.endoftime.ChunkProviderEndOfTime", "thaumcraft.common.tiles.TileWandPedestal",
+        "net.minecraft.item.crafting.CraftingManager" };
 
     public ConfigHandler(Configuration C) {
         ConfigHandler.c = C;
@@ -255,18 +262,11 @@ public class ConfigHandler {
             .get("System", "Enable Debug Log", false, "Enables or Disables the debug log.")
             .getBoolean(false);
 
-        for (int i = 0; i < BWCoreTransformer.CLASSESBEINGTRANSFORMED.length; i++)
-            BWCoreTransformer.shouldTransform[i] = ConfigHandler.c
-                .get(
-                    "ASM fixes",
-                    BWCoreTransformer.DESCRIPTIONFORCONFIG[i] + " in class: "
-                        + BWCoreTransformer.CLASSESBEINGTRANSFORMED[i],
-                    true)
-                .getBoolean(true);
+        ConfigHandler.enabledPatches = new boolean[ASM_TRANSFORMER_CLASSES.length];
+        for (int i = 0; i < ASM_TRANSFORMER_CLASSES.length; i++) ConfigHandler.enabledPatches[i] = ConfigHandler.c
+            .get("ASM fixes", ASM_TRANSFORMER_DESCRIPTIONS[i] + " in class: " + ASM_TRANSFORMER_CLASSES[i], true)
+            .getBoolean(true);
 
-        ConfigHandler.enabledPatches = new boolean[BWCoreTransformer.shouldTransform.length];
-        ConfigHandler.enabledPatches = Arrays
-            .copyOf(BWCoreTransformer.shouldTransform, BWCoreTransformer.shouldTransform.length);
         ConfigHandler.ross128BID = ConfigHandler.c
             .get("CrossMod Interactions", "DimID - Ross128b", -64, "The Dim ID for Ross128b")
             .getInt(-64);

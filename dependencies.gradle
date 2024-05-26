@@ -51,7 +51,7 @@ dependencies {
 
     implementation('com.github.GTNewHorizons:GTNEIOrePlugin:1.2.0:dev') { transitive = false }
     implementation("com.github.GTNewHorizons:Avaritia:1.49:dev")
-    implementation("com.github.GTNewHorizons:ForestryMC:4.9.1:dev") { transitive = false }
+    implementation("com.github.GTNewHorizons:ForestryMC:4.9.3:dev") { transitive = false }
 
     compileOnlyApi('com.github.GTNewHorizons:Angelica:1.0.0-alpha51:api') { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:AppleCore:3.3.0:dev") { transitive = false }
@@ -82,9 +82,6 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:CraftTweaker:3.3.1:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:BetterLoadingScreen:1.6.1-GTNH:dev") { transitive = false }
 
-    // TODO: Remove ASAP!
-    compileOnly("com.github.GTNewHorizons:NewHorizonsCoreMod:2.4.11:dev") { transitive = false }
-
     implementation('com.github.GTNewHorizons:Baubles:1.0.4:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:SC2:2.1.1:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:Binnie:2.3.4:dev') {transitive = false}
@@ -96,7 +93,7 @@ dependencies {
     annotationProcessor("com.google.auto.value:auto-value:1.10.1")
 
     // For testing iApiary
-    //runtimeOnlyNonPublishable("com.github.GTNewHorizons:ForestryMC:4.9.1:dev")
+    //runtimeOnlyNonPublishable("com.github.GTNewHorizons:ForestryMC:4.9.3:dev")
 
     testImplementation(platform('org.junit:junit-bom:5.9.2'))
     testImplementation('org.junit.jupiter:junit-jupiter')
