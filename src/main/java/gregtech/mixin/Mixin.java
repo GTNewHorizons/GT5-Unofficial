@@ -21,6 +21,7 @@ import cpw.mods.fml.relauncher.FMLLaunchHandler;
 public enum Mixin {
 
     // Minecraft
+    BlockStemMixin("minecraft.BlockStemMixin", VANILLA),
     WorldMixin(new Builder("Block update detection").addMixinClasses("minecraft.WorldMixin")
         .addTargetedMod(VANILLA)
         .setApplyIf(() -> true)
