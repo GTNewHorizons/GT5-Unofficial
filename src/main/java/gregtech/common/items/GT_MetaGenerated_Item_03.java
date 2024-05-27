@@ -5,7 +5,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_METRICS_TRANSMITTER
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_UEV;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_UHV;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_UIV;
-import static gregtech.client.GT_TooltipHandler.registerTieredTooltip;
 import static gregtech.client.GT_TooltipHandler.Tier.EV;
 import static gregtech.client.GT_TooltipHandler.Tier.HV;
 import static gregtech.client.GT_TooltipHandler.Tier.IV;
@@ -21,6 +20,7 @@ import static gregtech.client.GT_TooltipHandler.Tier.UMV;
 import static gregtech.client.GT_TooltipHandler.Tier.UV;
 import static gregtech.client.GT_TooltipHandler.Tier.UXV;
 import static gregtech.client.GT_TooltipHandler.Tier.ZPM;
+import static gregtech.client.GT_TooltipHandler.registerTieredTooltip;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;

@@ -9,6 +9,8 @@ import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
 
 import java.util.ArrayList;
 
+import net.minecraft.item.ItemStack;
+
 import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
@@ -18,7 +20,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.item.ItemStack;
 
 public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistrator {
 

@@ -71,13 +71,13 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
 
     private static final int CASING_INDEX = 49;
 
-	private static final byte MIN_GLASS_TIER = 6;
+    private static final byte MIN_GLASS_TIER = 6;
 
     private int energyHatchTier;
 
     private int antennaeTier;
 
-	private Byte glassTier;
+    private Byte glassTier;
 
     /*
      * c: Shielded accelerator casing v: Vacuum k: Superconducting coil d: Coolant Delivery casing
@@ -583,9 +583,9 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-    	elementBudget = 200;
-    	
-    	if (mMachine) return -1;
+        elementBudget = 200;
+
+        if (mMachine) return -1;
 
         int build = survivialBuildPiece(STRUCTURE_PIECE_ENTRANCE, stackSize, 16, 3, 1, elementBudget, env, false, true);
 
@@ -1042,7 +1042,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
         this.mEnergyHatches.clear();
         this.energyHatchTier = 0;
         this.antennaeTier = 0;
-        
+
         this.glassTier = 0;
 
         this.outputEnergy = 0;
@@ -1055,7 +1055,8 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
 
         return this.mInputBeamline.size() == 1 && this.mOutputBeamline.size() == 1
             && this.mMaintenanceHatches.size() == 1
-            && this.mEnergyHatches.size() == 4 && this.glassTier >= MIN_GLASS_TIER;
+            && this.mEnergyHatches.size() == 4
+            && this.glassTier >= MIN_GLASS_TIER;
     }
 
     @Override

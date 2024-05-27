@@ -2,6 +2,10 @@ package com.elisis.gtnhlanth.common.register;
 
 import java.util.HashMap;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+
 import com.elisis.gtnhlanth.common.beamline.TileBeamline;
 import com.elisis.gtnhlanth.common.block.AntennaCasing;
 import com.elisis.gtnhlanth.common.block.Casing;
@@ -22,9 +26,6 @@ import com.elisis.gtnhlanth.common.tileentity.TargetChamber;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GT_LanguageManager;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 
 public final class LanthItemList {
 

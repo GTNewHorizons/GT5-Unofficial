@@ -3,10 +3,11 @@ package gregtech.loaders.postload.recipes;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.NotEnoughItems;
 
+import net.minecraft.item.ItemStack;
+
 import codechicken.nei.api.API;
 import gregtech.api.enums.ItemList;
 import gregtech.common.items.GT_MetaGenerated_Item_03;
-import net.minecraft.item.ItemStack;
 
 public class NEIHiding implements Runnable {
 

@@ -17,16 +17,16 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
-import com.github.bartimaeusnek.bartworks.util.NonNullWrappedHashSet;
-import com.github.bartimaeusnek.bartworks.util.accessprioritylist.AccessPriorityList;
-import com.github.bartimaeusnek.bartworks.util.accessprioritylist.AccessPriorityListNode;
-
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
+
+import com.github.bartimaeusnek.bartworks.util.NonNullWrappedHashSet;
+import com.github.bartimaeusnek.bartworks.util.accessprioritylist.AccessPriorityList;
+import com.github.bartimaeusnek.bartworks.util.accessprioritylist.AccessPriorityListNode;
 
 public class BWCoreStaticReplacementMethodes {
 

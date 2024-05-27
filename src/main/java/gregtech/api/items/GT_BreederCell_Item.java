@@ -5,18 +5,19 @@ import static gregtech.api.util.GT_Utility.formatNumbers;
 import java.util.List;
 import java.util.function.Supplier;
 
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.util.GT_Utility;
-import ic2.api.reactor.IReactor;
-import ic2.api.reactor.IReactorComponent;
-import ic2.core.IC2Potion;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+
+import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.util.GT_Utility;
+import ic2.api.reactor.IReactor;
+import ic2.api.reactor.IReactorComponent;
+import ic2.core.IC2Potion;
 
 /**
  * A {@link ic2.core.item.reactor.ItemReactorLithiumCell}, but can be used to produce anything!

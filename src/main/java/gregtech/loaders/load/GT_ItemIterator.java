@@ -7,6 +7,14 @@ import static gregtech.api.util.GT_RecipeBuilder.WILDCARD;
 import static gregtech.api.util.GT_RecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
 
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemFood;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.IFluidContainerItem;
+
 import buildcraft.api.tools.IToolWrench;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
@@ -22,13 +30,6 @@ import gregtech.api.util.GT_RecipeBuilder;
 import gregtech.api.util.GT_RecipeConstants;
 import gregtech.api.util.GT_Utility;
 import mods.railcraft.api.core.items.IToolCrowbar;
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemFood;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.IFluidContainerItem;
 
 public class GT_ItemIterator implements Runnable {
 

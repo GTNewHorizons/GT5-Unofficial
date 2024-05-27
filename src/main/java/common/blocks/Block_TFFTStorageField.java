@@ -2,14 +2,6 @@ package common.blocks;
 
 import java.util.List;
 
-import common.itemBlocks.IB_TFFTStorageField;
-import common.tileentities.GTMTE_TFFT;
-import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Utility;
-import kekztech.KekzCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -19,6 +11,16 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
+
+import common.itemBlocks.IB_TFFTStorageField;
+import common.tileentities.GTMTE_TFFT;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_Utility;
+import kekztech.KekzCore;
 
 public class Block_TFFTStorageField extends BaseGTUpdateableBlock {
 

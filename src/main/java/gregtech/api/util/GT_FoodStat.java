@@ -1,14 +1,15 @@
 package gregtech.api.util;
 
-import gregtech.api.damagesources.GT_DamageSources;
-import gregtech.api.enums.SoundResource;
-import gregtech.api.interfaces.IFoodStat;
-import gregtech.api.items.GT_MetaBase_Item;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
+
+import gregtech.api.damagesources.GT_DamageSources;
+import gregtech.api.enums.SoundResource;
+import gregtech.api.interfaces.IFoodStat;
+import gregtech.api.items.GT_MetaBase_Item;
 
 public class GT_FoodStat implements IFoodStat {
 

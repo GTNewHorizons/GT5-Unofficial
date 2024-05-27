@@ -12,6 +12,10 @@
  */
 package goodgenerator.network;
 
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
+
 import com.github.technus.tectech.TecTech;
 
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
@@ -21,9 +25,6 @@ import cpw.mods.fml.relauncher.Side;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.common.DimensionManager;
 
 public abstract class MessageMTEBase implements IMessage {
 

@@ -1,10 +1,11 @@
 package gregtech.loaders.oreprocessing;
 
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_OreDictUnificator;
-import net.minecraft.item.ItemStack;
 
 public class ProcessingItem implements gregtech.api.interfaces.IOreRecipeRegistrator {
 

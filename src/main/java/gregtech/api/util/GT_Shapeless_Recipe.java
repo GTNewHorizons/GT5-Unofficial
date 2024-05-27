@@ -1,6 +1,5 @@
 package gregtech.api.util;
 
-import gregtech.api.interfaces.internal.IGT_CraftingRecipe;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.inventory.InventoryCrafting;
@@ -8,6 +7,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
+
+import gregtech.api.interfaces.internal.IGT_CraftingRecipe;
 
 public class GT_Shapeless_Recipe extends ShapelessOreRecipe implements IGT_CraftingRecipe {
 

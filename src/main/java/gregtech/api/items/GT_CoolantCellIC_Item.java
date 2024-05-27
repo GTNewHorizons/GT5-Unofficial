@@ -1,8 +1,9 @@
 package gregtech.api.items;
 
+import net.minecraft.item.ItemStack;
+
 import ic2.api.reactor.IReactor;
 import ic2.api.reactor.IReactorComponent;
-import net.minecraft.item.ItemStack;
 
 public class GT_CoolantCellIC_Item extends GT_CoolantCell_Item implements IReactorComponent {
 

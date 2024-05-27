@@ -2,6 +2,8 @@ package gtPlusPlus.preloader;
 
 import static gregtech.api.enums.Mods.GregTech;
 
+import net.minecraft.item.ItemStack;
+
 import org.apache.logging.log4j.Level;
 
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
@@ -9,7 +11,6 @@ import gregtech.common.items.GT_MetaGenerated_Item_01;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import net.minecraft.item.ItemStack;
 
 public class Preloader_GT_OreDict {
 

@@ -24,6 +24,9 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
@@ -39,8 +42,6 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.GT_StructureUtilityMuTE.UpgradeCasings;
 import gregtech.common.tileentities.machines.multiblock.logic.LayeredCokeBatteryProcessingLogic;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 
 public class LayeredCokeBattery
     extends StackableModularController<LayeredCokeBattery, LayeredCokeBatteryProcessingLogic> {

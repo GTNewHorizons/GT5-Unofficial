@@ -2,11 +2,11 @@ package com.elisis.gtnhlanth.common.item;
 
 import java.util.List;
 
-import com.elisis.gtnhlanth.Tags;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+
+import com.elisis.gtnhlanth.Tags;
 
 public class PhotolithographicMask extends Item implements ICanFocus {
 

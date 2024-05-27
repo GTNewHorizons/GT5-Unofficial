@@ -8,9 +8,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.google.common.collect.Maps;
-
 import net.minecraft.util.ResourceLocation;
+
+import com.google.common.collect.Maps;
 
 /**
  * Enumerates known sounds with id and resource-location

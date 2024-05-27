@@ -1,6 +1,5 @@
 package gtPlusPlus.core.slots;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -11,6 +10,8 @@ import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.stats.AchievementList;
+
+import cpw.mods.fml.common.FMLCommonHandler;
 
 public class SlotCraftingNoCollect extends SlotCrafting {
 

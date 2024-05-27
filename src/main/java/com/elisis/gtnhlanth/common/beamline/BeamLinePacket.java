@@ -1,8 +1,8 @@
 package com.elisis.gtnhlanth.common.beamline;
 
-import com.github.technus.tectech.mechanics.dataTransport.DataPacket;
-
 import net.minecraft.nbt.NBTTagCompound;
+
+import com.github.technus.tectech.mechanics.dataTransport.DataPacket;
 
 public class BeamLinePacket extends DataPacket<BeamInformation> {
 

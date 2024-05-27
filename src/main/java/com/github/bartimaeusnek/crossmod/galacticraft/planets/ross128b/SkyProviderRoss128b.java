@@ -13,9 +13,9 @@
 
 package com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128b;
 
-import com.github.bartimaeusnek.crossmod.BartWorksCrossmod;
-
 import net.minecraft.util.ResourceLocation;
+
+import com.github.bartimaeusnek.crossmod.BartWorksCrossmod;
 
 public class SkyProviderRoss128b {
 

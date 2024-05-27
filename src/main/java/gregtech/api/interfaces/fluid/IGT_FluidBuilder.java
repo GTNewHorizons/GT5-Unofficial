@@ -2,11 +2,12 @@ package gregtech.api.interfaces.fluid;
 
 import javax.annotation.Nonnull;
 
-import gregtech.api.enums.FluidState;
 import net.minecraft.block.Block;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+
+import gregtech.api.enums.FluidState;
 
 @SuppressWarnings("unused") // API might legitimately expose unused methods within this local project's scope
 public interface IGT_FluidBuilder {

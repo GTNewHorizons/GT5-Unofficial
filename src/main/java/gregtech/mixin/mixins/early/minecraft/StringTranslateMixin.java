@@ -4,12 +4,13 @@ import static gregtech.mixin.MixinsVariablesHelper.currentlyTranslating;
 
 import java.util.regex.Matcher;
 
+import net.minecraft.util.StringTranslate;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 import kubatech.Tags;
-import net.minecraft.util.StringTranslate;
 
 @SuppressWarnings("unused")
 @Mixin(value = StringTranslate.class)

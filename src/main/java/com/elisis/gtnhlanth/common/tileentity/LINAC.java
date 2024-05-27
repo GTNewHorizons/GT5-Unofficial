@@ -2,7 +2,6 @@ package com.elisis.gtnhlanth.common.tileentity;
 
 import static com.elisis.gtnhlanth.util.DescTextLocalization.addDotText;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static gregtech.api.enums.GT_HatchElement.Energy;
 import static gregtech.api.enums.GT_HatchElement.InputHatch;
 import static gregtech.api.enums.GT_HatchElement.Maintenance;
@@ -17,6 +16,14 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
 import java.util.Objects;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 import com.elisis.gtnhlanth.common.beamline.BeamInformation;
 import com.elisis.gtnhlanth.common.beamline.BeamLinePacket;
@@ -45,13 +52,6 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> implements ISurvivalConstructable {
 
@@ -62,7 +62,7 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
     protected static final String STRUCTURE_PIECE_END = "end";
 
     private byte glassTier;
-    
+
     private boolean onEndInnerLayer = false;
 
     private int machineTemp = 0; // Coolant temperature
@@ -72,7 +72,7 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
 
     private static final int CASING_INDEX = 49;
 
-	private static final byte MIN_GLASS_TIER = 6;
+    private static final byte MIN_GLASS_TIER = 6;
 
     /*
      * g: Grate Machine Casing b: Borosilicate glass c: Shielded accelerator casing v: Vacuum k: Shielded glass d:
@@ -108,7 +108,14 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
                     { "ccccccc", "cbbbbbc", "cbbbbbc", "cbbobbc", "cbbbbbc", "cbbbbbc", "ccccccc" } })
             .addElement('c', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
             .addElement('g', ofBlock(GregTech_API.sBlockCasings3, 10)) // Grate Machine Casing
-            .addElement('b', BorosilicateGlass.ofBoroGlass((byte) 0, MIN_GLASS_TIER, Byte.MAX_VALUE, (te, t) ->  te.glassTier = t, te -> te.glassTier))
+            .addElement(
+                'b',
+                BorosilicateGlass.ofBoroGlass(
+                    (byte) 0,
+                    MIN_GLASS_TIER,
+                    Byte.MAX_VALUE,
+                    (te, t) -> te.glassTier = t,
+                    te -> te.glassTier))
             .addElement(
                 'i',
                 buildHatchAdder(LINAC.class).hatchClass(TileHatchInputBeamline.class)
@@ -610,7 +617,7 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
         this.outputFocus = 0;
 
         this.glassTier = 0;
-        
+
         this.onEndInnerLayer = false;
 
         length = 8; // Base piece length
@@ -636,7 +643,8 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
 
         return this.mInputBeamline.size() == 1 && this.mOutputBeamline.size() == 1
             && this.mMaintenanceHatches.size() == 1
-            && this.mEnergyHatches.size() <= 2 && this.glassTier >= MIN_GLASS_TIER;
+            && this.mEnergyHatches.size() <= 2
+            && this.glassTier >= MIN_GLASS_TIER;
     }
 
     @Override
@@ -664,9 +672,9 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-    	
-    	elementBudget = 200; // Maybe make a config
-    	
+
+        elementBudget = 200; // Maybe make a config
+
         if (mMachine) return -1;
 
         int build = 0;

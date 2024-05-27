@@ -11,13 +11,14 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import gregtech.api.enums.InventoryType;
-import gregtech.api.logic.FluidInventoryLogic;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+
+import gregtech.api.enums.InventoryType;
+import gregtech.api.logic.FluidInventoryLogic;
 
 public interface FluidInventoryLogicHost extends IFluidHandler {
 

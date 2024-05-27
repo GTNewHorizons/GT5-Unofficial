@@ -2,11 +2,12 @@ package com.github.technus.tectech.mechanics.tesla;
 
 import static com.github.technus.tectech.mechanics.tesla.ITeslaConnectable.TeslaUtil.teslaSimpleNodeSetRemove;
 
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.google.common.base.Objects;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class TeslaCoverConnection implements ITeslaConnectableSimple {
 

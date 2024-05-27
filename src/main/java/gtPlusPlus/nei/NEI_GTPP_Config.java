@@ -2,6 +2,8 @@ package gtPlusPlus.nei;
 
 import java.util.Arrays;
 
+import net.minecraft.item.ItemStack;
+
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 import codechicken.nei.event.NEIRegisterHandlerInfosEvent;
@@ -16,7 +18,6 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import net.minecraft.item.ItemStack;
 
 public class NEI_GTPP_Config implements IConfigureNEI {
 

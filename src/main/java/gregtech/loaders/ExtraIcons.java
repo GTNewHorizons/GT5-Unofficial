@@ -2,10 +2,11 @@ package gregtech.loaders;
 
 import static gregtech.api.enums.Mods.GregTech;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.event.TextureStitchEvent;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class ExtraIcons {
 

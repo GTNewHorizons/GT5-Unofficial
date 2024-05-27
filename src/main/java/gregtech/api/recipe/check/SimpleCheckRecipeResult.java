@@ -4,10 +4,10 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
-import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
-
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.StatCollector;
+
+import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 /**
  * Simple implementation of {@link CheckRecipeResult}. You can create new object without registering it.

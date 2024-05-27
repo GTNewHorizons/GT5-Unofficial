@@ -4,9 +4,10 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
-import gregtech.api.util.GT_Utility;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.StatCollector;
+
+import gregtech.api.util.GT_Utility;
 
 public class ResultInsufficientPower implements CheckRecipeResult {
 

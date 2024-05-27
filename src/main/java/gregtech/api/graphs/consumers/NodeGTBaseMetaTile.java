@@ -2,9 +2,10 @@ package gregtech.api.graphs.consumers;
 
 import java.util.ArrayList;
 
+import net.minecraftforge.common.util.ForgeDirection;
+
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
 
 // consumer for gt machines
 public class NodeGTBaseMetaTile extends ConsumerNode {

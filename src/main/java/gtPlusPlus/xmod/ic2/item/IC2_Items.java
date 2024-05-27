@@ -2,10 +2,11 @@ package gtPlusPlus.xmod.ic2.item;
 
 import static gregtech.api.enums.Mods.EnderIO;
 
+import net.minecraft.item.ItemStack;
+
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.CoreItem;
 import gtPlusPlus.core.item.wearable.hazmat.ItemArmorHazmatEx;
-import net.minecraft.item.ItemStack;
 
 public class IC2_Items {
 

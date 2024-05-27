@@ -99,6 +99,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import net.minecraft.item.ItemStack;
+
 import com.github.bartimaeusnek.bartworks.client.renderer.BW_GT_ItemRenderer;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -108,7 +110,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.item.ItemStack;
 
 public class CircuitPartLoader implements Runnable {
 

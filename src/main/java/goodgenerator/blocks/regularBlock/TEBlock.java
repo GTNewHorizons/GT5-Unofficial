@@ -2,14 +2,6 @@ package goodgenerator.blocks.regularBlock;
 
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import goodgenerator.blocks.tileEntity.EssentiaHatch;
-import goodgenerator.blocks.tileEntity.EssentiaOutputHatch;
-import goodgenerator.blocks.tileEntity.EssentiaOutputHatch_ME;
-import goodgenerator.main.GoodGenerator;
-import gregtech.api.GregTech_API;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -25,6 +17,15 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import goodgenerator.blocks.tileEntity.EssentiaHatch;
+import goodgenerator.blocks.tileEntity.EssentiaOutputHatch;
+import goodgenerator.blocks.tileEntity.EssentiaOutputHatch_ME;
+import goodgenerator.main.GoodGenerator;
+import gregtech.api.GregTech_API;
+import gregtech.api.util.GT_Utility;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
 

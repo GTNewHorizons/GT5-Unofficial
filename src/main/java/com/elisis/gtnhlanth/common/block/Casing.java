@@ -1,10 +1,5 @@
 package com.elisis.gtnhlanth.common.block;
 
-import com.elisis.gtnhlanth.Tags;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTech_API;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
@@ -12,6 +7,12 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import com.elisis.gtnhlanth.Tags;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.GregTech_API;
 
 public class Casing extends Block {
 
@@ -70,10 +71,10 @@ public class Casing extends Block {
     public String getUnlocalizedName() {
         return "casing." + this.name;
     }
-    
+
     @Override
     public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z) {
-    	return false;	
+        return false;
     }
-    
+
 }

@@ -1,5 +1,8 @@
 package gregtech.api.metatileentity;
 
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.google.common.collect.Sets;
 
 import gregtech.api.interfaces.metatileentity.IConnectable;
@@ -9,8 +12,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
 import gregtech.api.util.GT_Utility;
 import ic2.api.energy.tile.IEnergySink;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileIC2EnergySink extends TileEntity implements IEnergySink {
 

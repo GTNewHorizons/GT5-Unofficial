@@ -16,23 +16,6 @@ package com.github.bartimaeusnek.bartworks.common.tileentities.classic;
 import java.util.Arrays;
 import java.util.Optional;
 
-import com.github.bartimaeusnek.bartworks.MainMod;
-import com.github.bartimaeusnek.bartworks.API.ITileAddsInformation;
-import com.github.bartimaeusnek.bartworks.API.ITileDropsContent;
-import com.github.bartimaeusnek.bartworks.API.ITileHasDifferentTextureSides;
-import com.github.bartimaeusnek.bartworks.API.modularUI.BW_UITextures;
-import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
-import com.gtnewhorizons.modularui.api.ModularUITextures;
-import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
-import com.gtnewhorizons.modularui.api.forge.InvWrapper;
-import com.gtnewhorizons.modularui.api.screen.ITileWithModularUI;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.ProgressBar;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-
-import gregtech.api.util.GT_Utility;
-import gregtech.common.GT_Pollution;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -49,6 +32,24 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.IFluidTank;
+
+import com.github.bartimaeusnek.bartworks.API.ITileAddsInformation;
+import com.github.bartimaeusnek.bartworks.API.ITileDropsContent;
+import com.github.bartimaeusnek.bartworks.API.ITileHasDifferentTextureSides;
+import com.github.bartimaeusnek.bartworks.API.modularUI.BW_UITextures;
+import com.github.bartimaeusnek.bartworks.MainMod;
+import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
+import com.gtnewhorizons.modularui.api.ModularUITextures;
+import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
+import com.gtnewhorizons.modularui.api.forge.InvWrapper;
+import com.gtnewhorizons.modularui.api.screen.ITileWithModularUI;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.ProgressBar;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+
+import gregtech.api.util.GT_Utility;
+import gregtech.common.GT_Pollution;
 
 public class BW_TileEntity_HeatedWaterPump extends TileEntity implements ITileDropsContent, IFluidHandler, IFluidTank,
     ITileWithModularUI, ITileAddsInformation, ITileHasDifferentTextureSides {

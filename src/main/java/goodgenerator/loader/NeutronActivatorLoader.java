@@ -7,13 +7,14 @@ import static goodgenerator.items.MyMaterial.thoriumBasedLiquidFuelExcited;
 import static goodgenerator.items.MyMaterial.uraniumBasedLiquidFuel;
 import static goodgenerator.items.MyMaterial.uraniumBasedLiquidFuelExcited;
 
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
 import goodgenerator.util.MyRecipeAdder;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 public class NeutronActivatorLoader {
 

@@ -59,10 +59,10 @@ public class ShieldedAccGlass extends Block {
         if (worldClient.getBlock(xCoord, yCoord, zCoord) instanceof ShieldedAccGlass) return false;
         return super.shouldSideBeRendered(worldClient, xCoord, yCoord, zCoord, aSide);
     }
-    
+
     @Override
     public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z) {
-    	return false;	
+        return false;
     }
-    
+
 }
