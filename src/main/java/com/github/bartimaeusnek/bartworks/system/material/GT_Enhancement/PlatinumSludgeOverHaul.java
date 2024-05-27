@@ -74,11 +74,7 @@ import static gregtech.api.enums.OrePrefixes.dustTiny;
 import static gregtech.api.enums.OrePrefixes.ingot;
 import static gregtech.api.enums.OrePrefixes.nugget;
 import static gregtech.api.enums.OrePrefixes.rawOre;
-import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
-import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
-import static gregtech.api.recipe.RecipeMaps.fluidHeaterRecipes;
-import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
-import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
+import static gregtech.api.recipe.RecipeMaps.*;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
@@ -125,7 +121,6 @@ import gregtech.api.items.GT_Generic_Item;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
@@ -366,22 +361,40 @@ public class PlatinumSludgeOverHaul {
             .eut(TierEU.RECIPE_LV)
             .addTo(centrifugeRecipes);
 
-        GT_Values.RA.addMultiblockChemicalRecipe(
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(1) },
-            new FluidStack[] { PTConcentrate.getFluidOrGas(2000), AmmoniumChloride.getFluidOrGas(400) },
-            new FluidStack[] { PDAmmonia.getFluidOrGas(400), Materials.NitrogenDioxide.getGas(1000),
-                Materials.DilutedSulfuricAcid.getFluid(1000) },
-            new ItemStack[] { PTSaltCrude.get(dustTiny, 16), PTRawPowder.get(dustTiny, 4) },
-            1200,
-            30);
-        GT_Values.RA.addMultiblockChemicalRecipe(
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(2) },
-            new FluidStack[] { PTConcentrate.getFluidOrGas(18000), AmmoniumChloride.getFluidOrGas(3600) },
-            new FluidStack[] { PDAmmonia.getFluidOrGas(3600), Materials.NitrogenDioxide.getGas(9000),
-                Materials.DilutedSulfuricAcid.getFluid(9000) },
-            new ItemStack[] { PTSaltCrude.get(dust, 16), PTRawPowder.get(dust, 4) },
-            1400,
-            240);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(1))
+            .itemOutputs(PTSaltCrude.get(dustTiny, 16), PTRawPowder.get(dustTiny, 4))
+            .fluidInputs(PTConcentrate.getFluidOrGas(2000), AmmoniumChloride.getFluidOrGas(400))
+            .fluidOutputs(
+                PDAmmonia.getFluidOrGas(400),
+                Materials.NitrogenDioxide.getGas(1000),
+                Materials.DilutedSulfuricAcid.getFluid(1000))
+            .duration(1200)
+            .eut(30)
+            .addTo(multiblockChemicalReactorRecipes);
+        // transitional recipe. to be removed in 2.8.0 and onwards
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(2))
+            .itemOutputs(PTSaltCrude.get(dust, 16), PTRawPowder.get(dust, 4))
+            .fluidInputs(PTConcentrate.getFluidOrGas(18000), AmmoniumChloride.getFluidOrGas(3600))
+            .fluidOutputs(
+                PDAmmonia.getFluidOrGas(3600),
+                Materials.NitrogenDioxide.getGas(9000),
+                Materials.DilutedSulfuricAcid.getFluid(9000))
+            .duration(1400)
+            .eut(240)
+            .addTo(multiblockChemicalReactorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(3))
+            .itemOutputs(PTSaltCrude.get(dust, 16), PTRawPowder.get(dust, 4))
+            .fluidInputs(PTConcentrate.getFluidOrGas(18000), AmmoniumChloride.getFluidOrGas(3600))
+            .fluidOutputs(
+                PDAmmonia.getFluidOrGas(3600),
+                Materials.NitrogenDioxide.getGas(9000),
+                Materials.DilutedSulfuricAcid.getFluid(9000))
+            .duration(700)
+            .eut(480)
+            .addTo(multiblockChemicalReactorRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(PTSaltCrude.get(dust))
@@ -771,9 +784,9 @@ public class PlatinumSludgeOverHaul {
         }
         // gt machines
         maploop: for (RecipeMap<?> map : RecipeMap.ALL_RECIPE_MAPS.values()) {
-            if (map == RecipeMaps.fusionRecipes || map == RecipeMaps.unpackagerRecipes
-                || map == RecipeMaps.packagerRecipes
-                || map == RecipeMaps.replicatorRecipes
+            if (map == fusionRecipes || map == unpackagerRecipes
+                || map == packagerRecipes
+                || map == replicatorRecipes
                 || "gt.recipe.eyeofharmony".equals(map.unlocalizedName)
                 || "gtpp.recipe.quantumforcesmelter".equals(map.unlocalizedName)) continue;
             HashSet<GT_Recipe> toDel = new HashSet<>();
@@ -781,10 +794,9 @@ public class PlatinumSludgeOverHaul {
                 if (recipe.mFakeRecipe) continue maploop;
 
                 for (int i = 0; i < recipe.mFluidOutputs.length; i++) {
-                    if (map.equals(RecipeMaps.fluidExtractionRecipes)) continue maploop;
+                    if (map.equals(fluidExtractionRecipes)) continue maploop;
                     if ("gtpp.recipe.alloyblastsmelter".equals(map.unlocalizedName)) continue maploop;
-                    if (map.equals(RecipeMaps.multiblockChemicalReactorRecipes)
-                        || map.equals(RecipeMaps.chemicalReactorRecipes)) {
+                    if (map.equals(multiblockChemicalReactorRecipes) || map.equals(chemicalReactorRecipes)) {
                         if (GT_Utility.areFluidsEqual(Ruthenium.getMolten(1), recipe.mFluidOutputs[i])
                             || GT_Utility.areFluidsEqual(Rhodium.getMolten(1), recipe.mFluidOutputs[i]))
                             toDel.add(recipe);
@@ -954,7 +966,7 @@ public class PlatinumSludgeOverHaul {
             Materials.Nikolite.getDust(8),
             1800,
             120);
-        for (GT_Recipe recipe : RecipeMaps.circuitAssemblerRecipes.getAllRecipes()) {
+        for (GT_Recipe recipe : circuitAssemblerRecipes.getAllRecipes()) {
             if (recipe.mEUt > 512) continue;
             if (BW_Util.checkStackAndPrefix(recipe.mOutputs[0])) {
                 for (int i = 0; i < recipe.mInputs.length; i++) {
