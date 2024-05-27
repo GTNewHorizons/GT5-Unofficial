@@ -224,23 +224,21 @@ public class RecipeLoader {
 
         // Synchrotron
         GT_Values.RA.stdBuilder()
-        	.fluidInputs(Materials.SolderingAlloy.getMolten(6000))
-        	.itemInputs(
-        		ItemList.Hull_LuV.get(1),
-        		WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plateDense, 8),
-        		ItemList.Casing_Coil_Superconductor.get(12),  		
-        		GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 8),
-        		GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.SuperconductorUHV, 8),
-        		GT_Utility.copyAmount(8, LanthItemList.BEAMLINE_PIPE),
-        		GT_OreDictUnificator.get(OrePrefixes.cableGt08, Materials.NiobiumTitanium, 8),
-        		GT_Utility.getIntegratedCircuit(16)
-        	)
-        	.itemOutputs(LanthItemList.SYNCHROTRON)
-        	.duration(60 * GT_RecipeBuilder.SECONDS)
-        	.eut(7680)
-        	.addTo(assemblerRecipes);
-        	
-        
+            .fluidInputs(Materials.SolderingAlloy.getMolten(6000))
+            .itemInputs(
+                ItemList.Hull_LuV.get(1),
+                WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plateDense, 8),
+                ItemList.Casing_Coil_Superconductor.get(12),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 8),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.SuperconductorUHV, 8),
+                GT_Utility.copyAmount(8, LanthItemList.BEAMLINE_PIPE),
+                GT_OreDictUnificator.get(OrePrefixes.cableGt08, Materials.NiobiumTitanium, 8),
+                GT_Utility.getIntegratedCircuit(16))
+            .itemOutputs(LanthItemList.SYNCHROTRON)
+            .duration(60 * GT_RecipeBuilder.SECONDS)
+            .eut(7680)
+            .addTo(assemblerRecipes);
+
         /*
          * //Permalloy GT_Values.RA.addMixerRecipe( GT_Utility.getIntegratedCircuit(4), Materials.Nickel.getDust(4),
          * Materials.Iron.getDust(1), Materials.Molybdenum.getDust(1), null, null,
@@ -449,58 +447,56 @@ public class RecipeLoader {
             LanthItemList.BEAMLINE_PIPE,
             400,
             1920);
-        
+
         // Beamline Input Hatch
         GT_Values.RA.stdBuilder()
-        	.fluidInputs(
-        			Materials.SolderingAlloy.getMolten(6000),
-        			Materials.Argon.getGas(1000),
-        			Materials.Helium.getGas(2000)
-        			
-        			
-        			)
-        	.itemInputs(
-        			ItemList.Hull_LuV.get(1),
-        			new Object[] { OrePrefixes.circuit.get(Materials.Master), 2},
-        			new ItemStack(LanthItemList.CAPILLARY_EXCHANGE, 2),
-        			ItemList.Electric_Pump_LuV.get(1),
-        			LanthItemList.BEAMLINE_PIPE,
-        			WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plate, 4)
-        			
-        			
-        			)
-        	.itemOutputs(LanthItemList.LUV_BEAMLINE_INPUT_HATCH)
-        	.metadata(GT_RecipeConstants.RESEARCH_ITEM, ItemList.Hatch_Input_LuV.get(1))
-        	.metadata(GT_RecipeConstants.RESEARCH_TIME, 30 * GT_RecipeBuilder.MINUTES)
-        	.duration(2 * GT_RecipeBuilder.MINUTES)
-        	.eut(30720).addTo(AssemblyLine);
-        
-     // Beamline Output Hatch
+            .fluidInputs(
+                Materials.SolderingAlloy.getMolten(6000),
+                Materials.Argon.getGas(1000),
+                Materials.Helium.getGas(2000)
+
+            )
+            .itemInputs(
+                ItemList.Hull_LuV.get(1),
+                new Object[] { OrePrefixes.circuit.get(Materials.Master), 2 },
+                new ItemStack(LanthItemList.CAPILLARY_EXCHANGE, 2),
+                ItemList.Electric_Pump_LuV.get(1),
+                LanthItemList.BEAMLINE_PIPE,
+                WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plate, 4)
+
+            )
+            .itemOutputs(LanthItemList.LUV_BEAMLINE_INPUT_HATCH)
+            .metadata(GT_RecipeConstants.RESEARCH_ITEM, ItemList.Hatch_Input_LuV.get(1))
+            .metadata(GT_RecipeConstants.RESEARCH_TIME, 30 * GT_RecipeBuilder.MINUTES)
+            .duration(2 * GT_RecipeBuilder.MINUTES)
+            .eut(30720)
+            .addTo(AssemblyLine);
+
+        // Beamline Output Hatch
         GT_Values.RA.stdBuilder()
-        	.fluidInputs(
-        			Materials.SolderingAlloy.getMolten(8000),
-        			Materials.Argon.getGas(1000),
-        			Materials.Helium.getGas(6000)
-        			
-        			
-        			)
-        	.itemInputs(
-        			ItemList.Hull_LuV.get(1),
-        			new Object[] { OrePrefixes.circuit.get(Materials.Master), 6},
-        			new ItemStack(LanthItemList.CAPILLARY_EXCHANGE, 4),
-        			ItemList.Electric_Pump_LuV.get(2),
-        			ItemList.Electric_Motor_LuV.get(4),
-        			GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 8),      			
-        			LanthItemList.BEAMLINE_PIPE,
-        			WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plate, 8)
-        			
-        			
-        			)
-        	.itemOutputs(LanthItemList.LUV_BEAMLINE_OUTPUT_HATCH)
-        	.metadata(GT_RecipeConstants.RESEARCH_ITEM, ItemList.Hatch_Output_LuV.get(1))
-        	.metadata(GT_RecipeConstants.RESEARCH_TIME, 40 * GT_RecipeBuilder.MINUTES)
-        	.duration(4 * GT_RecipeBuilder.MINUTES)
-        	.eut(30720).addTo(AssemblyLine);
+            .fluidInputs(
+                Materials.SolderingAlloy.getMolten(8000),
+                Materials.Argon.getGas(1000),
+                Materials.Helium.getGas(6000)
+
+            )
+            .itemInputs(
+                ItemList.Hull_LuV.get(1),
+                new Object[] { OrePrefixes.circuit.get(Materials.Master), 6 },
+                new ItemStack(LanthItemList.CAPILLARY_EXCHANGE, 4),
+                ItemList.Electric_Pump_LuV.get(2),
+                ItemList.Electric_Motor_LuV.get(4),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 8),
+                LanthItemList.BEAMLINE_PIPE,
+                WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plate, 8)
+
+            )
+            .itemOutputs(LanthItemList.LUV_BEAMLINE_OUTPUT_HATCH)
+            .metadata(GT_RecipeConstants.RESEARCH_ITEM, ItemList.Hatch_Output_LuV.get(1))
+            .metadata(GT_RecipeConstants.RESEARCH_TIME, 40 * GT_RecipeBuilder.MINUTES)
+            .duration(4 * GT_RecipeBuilder.MINUTES)
+            .eut(30720)
+            .addTo(AssemblyLine);
 
         GT_Values.RA.stdBuilder()
             .fluidInputs(Materials.Chloroform.getFluid(1000), Materials.HydrofluoricAcid.getFluid(3000))

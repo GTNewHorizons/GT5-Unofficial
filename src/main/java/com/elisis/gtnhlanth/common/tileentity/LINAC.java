@@ -49,7 +49,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
@@ -595,7 +594,7 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
     private boolean addGlass(Block block, int meta) {
         return block == ItemRegistry.bw_glasses[0];
     }
-    
+
     @Override
     public String[] getStructureDescription(ItemStack arg0) {
         return DescTextLocalization.addText("LINAC.hint", 11);
@@ -709,8 +708,8 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int aColorIndex, boolean active, boolean aRedstone) {
-    	
-    	// Placeholder
+
+        // Placeholder
         if (side == facing) {
             if (active) return new ITexture[] { casingTexturePages[0][47], TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE)

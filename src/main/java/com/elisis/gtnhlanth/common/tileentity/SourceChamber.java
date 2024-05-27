@@ -42,7 +42,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -234,9 +233,10 @@ public class SourceChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Sour
 
     @Override
     public String[] getStructureDescription(ItemStack arg0) {
-        return DescTextLocalization.addText("SourceChamber.hint", 7); // Generate 7 localised hint strings in structure description
+        return DescTextLocalization.addText("SourceChamber.hint", 7); // Generate 7 localised hint strings in structure
+                                                                      // description
     }
-    
+
     private void outputAfterRecipe() {
 
         if (!mOutputBeamline.isEmpty()) {

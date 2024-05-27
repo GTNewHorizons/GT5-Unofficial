@@ -45,7 +45,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -379,8 +378,9 @@ public class TargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Targ
         for (TileHatchInputBeamline in : this.mInputBeamline) {
 
             if (in.q == null) return new BeamInformation(0, 0, 0, 0);
-            //if (in.q == null) return new BeamInformation(10, 10, Particle.PHOTON.ordinal(), 90); // TODO temporary for
-                                                                                                 // testing purposes
+            // if (in.q == null) return new BeamInformation(10, 10, Particle.PHOTON.ordinal(), 90); // TODO temporary
+            // for
+            // testing purposes
 
             return in.q.getContent();
         }
@@ -436,7 +436,7 @@ public class TargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Targ
     public String[] getStructureDescription(ItemStack arg0) {
         return DescTextLocalization.addText("TargetChamber.hint", 13);
     }
-    
+
     @Override
     public String[] getInfoData() {
 
