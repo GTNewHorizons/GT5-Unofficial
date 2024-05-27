@@ -21,6 +21,7 @@ import java.util.Objects;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_Ores;
@@ -29,7 +30,6 @@ import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.oregen.BW_OreLayer;
 import com.github.bartimaeusnek.bartworks.system.oregen.BW_WorldGenRoss128b;
 import com.github.bartimaeusnek.bartworks.system.oregen.BW_WorldGenRoss128ba;
-import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
@@ -128,13 +128,13 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
                 return;
 
             if (cachedOreRecipe.worldGen != null) GuiDraw.drawString(
-                ChatColorHelper.BOLD + "DIM: " + ChatColorHelper.RESET + cachedOreRecipe.worldGen.getDimName(),
+                EnumChatFormatting.BOLD + "DIM: " + EnumChatFormatting.RESET + cachedOreRecipe.worldGen.getDimName(),
                 0,
                 40,
                 0,
                 false);
 
-            GuiDraw.drawString(ChatColorHelper.BOLD + "Primary:", 0, 50, 0, false);
+            GuiDraw.drawString(EnumChatFormatting.BOLD + "Primary:", 0, 50, 0, false);
             GuiDraw.drawString(
                 cachedOreRecipe.getOtherStacks()
                     .get(0).item.getDisplayName(),
@@ -144,7 +144,7 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
                 false);
 
             if (!cachedOreRecipe.small) {
-                GuiDraw.drawString(ChatColorHelper.BOLD + "Secondary:", 0, 70, 0, false);
+                GuiDraw.drawString(EnumChatFormatting.BOLD + "Secondary:", 0, 70, 0, false);
                 GuiDraw.drawString(
                     cachedOreRecipe.getOtherStacks()
                         .get(1).item.getDisplayName(),
@@ -152,7 +152,7 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
                     80,
                     0,
                     false);
-                GuiDraw.drawString(ChatColorHelper.BOLD + "InBetween:", 0, 90, 0, false);
+                GuiDraw.drawString(EnumChatFormatting.BOLD + "InBetween:", 0, 90, 0, false);
                 GuiDraw.drawString(
                     cachedOreRecipe.getOtherStacks()
                         .get(2).item.getDisplayName(),
@@ -160,7 +160,7 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
                     100,
                     0,
                     false);
-                GuiDraw.drawString(ChatColorHelper.BOLD + "Sporadic:", 0, 110, 0, false);
+                GuiDraw.drawString(EnumChatFormatting.BOLD + "Sporadic:", 0, 110, 0, false);
                 GuiDraw.drawString(
                     cachedOreRecipe.getOtherStacks()
                         .get(3).item.getDisplayName(),
@@ -169,7 +169,7 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
                     0,
                     false);
             } else if (cachedOreRecipe.worldGen != null) {
-                GuiDraw.drawString(ChatColorHelper.BOLD + "Amount per Chunk:", 0, 70, 0, false);
+                GuiDraw.drawString(EnumChatFormatting.BOLD + "Amount per Chunk:", 0, 70, 0, false);
                 GuiDraw.drawString(cachedOreRecipe.worldGen.mDensity + "", 0, 80, 0, false);
             }
         }

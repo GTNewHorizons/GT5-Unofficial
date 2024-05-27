@@ -41,7 +41,6 @@ import com.github.bartimaeusnek.bartworks.common.items.GT_Teslastaff_Item;
 import com.github.bartimaeusnek.bartworks.common.items.SimpleIconItem;
 import com.github.bartimaeusnek.bartworks.common.items.SimpleSubItemClass;
 import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BW_RotorBlock;
-import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BW_TileEntity_ExperimentalFloodGate;
 import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BW_TileEntity_HeatedWaterPump;
 import com.github.bartimaeusnek.bartworks.common.tileentities.debug.CreativeScanner;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_CircuitAssemblyLine;
@@ -151,10 +150,6 @@ public class ItemRegistry {
         BW_TileEntity_HeatedWaterPump.class,
         "BWHeatedWaterPump");
     public static final Item PUMPPARTS = new SimpleSubItemClass("BWrawtube", "BWmotor");
-    public static final Block EXPPUMP = new BW_TileEntityContainer(
-        Material.coral,
-        BW_TileEntity_ExperimentalFloodGate.class,
-        "ExpReversePump");
 
     public static final Block bw_realglas = new BW_GlasBlocks(
         "BW_GlasBlocks",
@@ -253,8 +248,6 @@ public class ItemRegistry {
         GameRegistry.registerBlock(ItemRegistry.PUMPBLOCK, BW_ItemBlocks.class, "BWHeatedWaterPumpBlock");
         GameRegistry.registerItem(ItemRegistry.PUMPPARTS, "BWPumpParts");
         GameRegistry.registerItem(ItemRegistry.WINDMETER, "BW_SimpleWindMeter");
-        GameRegistry.registerTileEntity(BW_TileEntity_ExperimentalFloodGate.class, "BWExpReversePump");
-        GameRegistry.registerBlock(ItemRegistry.EXPPUMP, BW_ItemBlocks.class, "BWExpReversePumpBlock");
 
         // GT2 stuff
         GameRegistry.registerBlock(ItemRegistry.BW_BLOCKS[0], BW_ItemBlocks.class, "BW_ItemBlocks");
@@ -267,11 +260,7 @@ public class ItemRegistry {
         GameRegistry.registerItem(ItemRegistry.ROCKCUTTER_HV, ItemRegistry.ROCKCUTTER_HV.getUnlocalizedName());
         GameRegistry.registerItem(ItemRegistry.TAB, "tabIconGT2");
 
-        if (ConfigHandler.creativeScannerID != 0) new CreativeScanner(
-            ConfigHandler.creativeScannerID,
-            "Creative Debug Scanner",
-            "Creative Debug Scanner",
-            20);
+        new CreativeScanner(ConfigHandler.IDOffset + 200, "Creative Debug Scanner", "Creative Debug Scanner", 14);
         ItemRegistry.eic = new GT_TileEntity_ElectricImplosionCompressor(
             ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 6,
             "ElectricImplosionCompressor",
