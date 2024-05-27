@@ -383,7 +383,6 @@ public class PlatinumSludgeOverHaul {
                 Materials.DilutedSulfuricAcid.getFluid(9000))
             .duration(1400)
             .eut(240)
-            .hidden()
             .addTo(multiblockChemicalReactorRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(3))
