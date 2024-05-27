@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 
+import com.elisis.gtnhlanth.Tags;
 import com.elisis.gtnhlanth.common.beamline.Particle;
 
 import cpw.mods.fml.relauncher.Side;
@@ -62,7 +63,7 @@ public class ParticleItem extends Item {
         this.iconArray = new IIcon[NUMBER_OF_SUBTYPES];
 
         for (int i = 0; i < NUMBER_OF_SUBTYPES; ++i) {
-            this.iconArray[i] = register.registerIcon(this.getIconString() + "_" + names[i]);
+            this.iconArray[i] = register.registerIcon(Tags.MODID + ":" + "particle/" + names[i]);
         }
     }
 
