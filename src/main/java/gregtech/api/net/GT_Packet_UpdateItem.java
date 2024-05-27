@@ -1,18 +1,17 @@
 package gregtech.api.net;
 
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.INetHandler;
-import net.minecraft.network.NetHandlerPlayServer;
-import net.minecraft.world.IBlockAccess;
-
 import com.google.common.io.ByteArrayDataInput;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 import gregtech.api.interfaces.INetworkUpdatableItem;
 import gregtech.api.util.ISerializableObject;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.INetHandler;
+import net.minecraft.network.NetHandlerPlayServer;
+import net.minecraft.world.IBlockAccess;
 
 /**
  * Client -> Server: send arbitrary data to server and update the currently held item.

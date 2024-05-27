@@ -5,6 +5,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
+import buildcraft.api.tools.IToolWrench;
+import cpw.mods.fml.common.Optional;
+import gregtech.api.enchants.Enchantment_Radioactivity;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
+import gregtech.api.interfaces.IDamagableItem;
+import gregtech.api.interfaces.IToolStats;
+import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Utility;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_ToolStats;
+import mods.railcraft.api.core.items.IToolCrowbar;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -22,20 +35,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
-
-import buildcraft.api.tools.IToolWrench;
-import cpw.mods.fml.common.Optional;
-import gregtech.api.enchants.Enchantment_Radioactivity;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.Mods;
-import gregtech.api.interfaces.IDamagableItem;
-import gregtech.api.interfaces.IToolStats;
-import gregtech.api.items.GT_MetaGenerated_Tool;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Utility;
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_ToolStats;
-import mods.railcraft.api.core.items.IToolCrowbar;
 
 /**
  * This is an example on how you can create a Tool ItemStack, in this case a Bismuth Wrench:

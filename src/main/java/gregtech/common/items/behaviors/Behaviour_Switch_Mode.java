@@ -2,16 +2,15 @@ package gregtech.common.items.behaviors;
 
 import java.util.List;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.world.World;
-
 import gregtech.api.enums.GT_Values;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.net.GT_Packet_ToolSwitchMode;
 import gregtech.api.util.GT_Utility;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.World;
 
 public class Behaviour_Switch_Mode extends Behaviour_None {
 

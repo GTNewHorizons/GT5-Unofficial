@@ -4,9 +4,6 @@ import static gregtech.api.util.GT_Utility.trans;
 
 import java.util.List;
 
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-
 import com.elisis.gtnhlanth.util.Util;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 
@@ -18,6 +15,8 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.nei.GT_NEI_DefaultHandler;
 import gregtech.nei.RecipeDisplayInfo;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 public class TargetChamberFrontend extends RecipeMapFrontend {
 

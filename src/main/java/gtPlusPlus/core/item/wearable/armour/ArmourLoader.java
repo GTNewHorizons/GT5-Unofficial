@@ -2,12 +2,11 @@ package gtPlusPlus.core.item.wearable.armour;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import gtPlusPlus.core.item.wearable.armour.tinfoil.ArmourTinFoilHat;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraftforge.common.util.EnumHelper;
-
-import cpw.mods.fml.common.registry.GameRegistry;
-import gtPlusPlus.core.item.wearable.armour.tinfoil.ArmourTinFoilHat;
 
 public class ArmourLoader {
 

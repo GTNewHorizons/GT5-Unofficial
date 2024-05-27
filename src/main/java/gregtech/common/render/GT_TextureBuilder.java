@@ -4,15 +4,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import gregtech.GT_Mod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.ITextureBuilder;
+import net.minecraft.block.Block;
+import net.minecraftforge.common.util.ForgeDirection;
 
 @SuppressWarnings({ "unused", "ClassWithTooManyFields" })
 public class GT_TextureBuilder implements ITextureBuilder {

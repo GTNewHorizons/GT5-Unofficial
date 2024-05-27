@@ -34,10 +34,10 @@ import java.util.Objects;
 import java.util.jar.JarFile;
 import java.util.stream.Collectors;
 
-import net.minecraft.launchwrapper.Launch;
-
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.tree.ClassNode;
+
+import net.minecraft.launchwrapper.Launch;
 
 public class ReflectionHelper {
 

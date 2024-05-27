@@ -1,9 +1,8 @@
 package gtPlusPlus.plugin.agrichem.block;
 
+import gtPlusPlus.core.util.minecraft.FluidUtils;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
-
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 
 public class AgrichemFluids {
 

@@ -3,14 +3,13 @@ package com.github.bartimaeusnek.bartworks.common.loaders.recipes;
 import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-
 import com.github.bartimaeusnek.bartworks.common.loaders.BioItemList;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_Utility;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 
 public class LaserEngraver implements Runnable {
 

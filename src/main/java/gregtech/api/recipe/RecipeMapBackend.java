@@ -18,10 +18,6 @@ import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-
 import org.jetbrains.annotations.Unmodifiable;
 
 import com.google.common.collect.HashMultimap;
@@ -35,6 +31,9 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_RecipeBuilder;
 import gregtech.api.util.GT_StreamUtil;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 
 /**
  * Responsible for recipe addition / search for recipemap.

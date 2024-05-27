@@ -1,9 +1,8 @@
 package gregtech.api.interfaces;
 
-import net.minecraft.item.ItemStack;
-
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import net.minecraft.item.ItemStack;
 
 public interface IOreRecipeRegistrator {
 

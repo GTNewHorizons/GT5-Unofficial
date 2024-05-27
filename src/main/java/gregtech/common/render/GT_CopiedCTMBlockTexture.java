@@ -1,14 +1,13 @@
 package gregtech.common.render;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import gregtech.api.interfaces.IBlockContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.util.GT_RenderingWorld;
 import gregtech.api.util.LightingHelper;
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.common.util.ForgeDirection;
 
 class GT_CopiedCTMBlockTexture extends GT_TextureBase implements ITexture, IBlockContainer {
 

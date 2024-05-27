@@ -5,12 +5,11 @@ import java.util.Set;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraftforge.fluids.FluidStack;
-
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
+import net.minecraftforge.fluids.FluidStack;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault

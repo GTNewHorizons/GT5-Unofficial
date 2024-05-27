@@ -17,9 +17,6 @@ import static gregtech.api.util.GT_Utility.filterValidMTEs;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
-
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -40,6 +37,8 @@ import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GT_MetaTileEntity_Hatch_CustomFluidBase;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends
     GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialVacuumFreezer> implements ISurvivalConstructable {

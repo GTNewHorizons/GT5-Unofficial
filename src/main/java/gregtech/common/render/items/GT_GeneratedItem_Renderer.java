@@ -13,13 +13,6 @@ import static gregtech.api.enums.Mods.HodgePodge;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.fluids.FluidStack;
-
 import org.lwjgl.opengl.GL11;
 
 import com.mitchej123.hodgepodge.textures.IPatchedTextureAtlasSprite;
@@ -30,6 +23,12 @@ import gregtech.api.items.GT_MetaGenerated_Item;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.render.GT_RenderUtil;
 import gregtech.loaders.ExtraIcons;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.fluids.FluidStack;
 
 public class GT_GeneratedItem_Renderer implements IItemRenderer {
 

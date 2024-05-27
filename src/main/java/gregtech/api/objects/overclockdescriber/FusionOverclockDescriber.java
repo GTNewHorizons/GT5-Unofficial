@@ -2,14 +2,13 @@ package gregtech.api.objects.overclockdescriber;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.util.EnumChatFormatting;
-
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.formatter.FusionSpecialValueFormatter;
+import net.minecraft.util.EnumChatFormatting;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault

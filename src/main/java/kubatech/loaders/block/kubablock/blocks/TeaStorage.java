@@ -24,6 +24,9 @@ import static kubatech.api.Variables.numberFormat;
 
 import java.util.List;
 
+import kubatech.loaders.block.kubablock.BlockProxy;
+import kubatech.loaders.block.kubablock.IProxyTileEntityProvider;
+import kubatech.tileentity.TeaStorageTile;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -31,10 +34,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
-
-import kubatech.loaders.block.kubablock.BlockProxy;
-import kubatech.loaders.block.kubablock.IProxyTileEntityProvider;
-import kubatech.tileentity.TeaStorageTile;
 
 public class TeaStorage extends BlockProxy implements IProxyTileEntityProvider {
 

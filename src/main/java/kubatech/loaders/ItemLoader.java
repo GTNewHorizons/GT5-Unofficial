@@ -65,11 +65,6 @@ import static kubatech.api.enums.ItemList.YellowTeaLeaf;
 
 import java.util.List;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-
 import cpw.mods.fml.common.registry.GameRegistry;
 import kubatech.loaders.item.ItemProxy;
 import kubatech.loaders.item.KubaItems;
@@ -77,6 +72,10 @@ import kubatech.loaders.item.items.Tea;
 import kubatech.loaders.item.items.TeaCollection;
 import kubatech.loaders.item.items.TeaIngredient;
 import kubatech.loaders.item.items.TeaUltimate;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 public class ItemLoader {
 

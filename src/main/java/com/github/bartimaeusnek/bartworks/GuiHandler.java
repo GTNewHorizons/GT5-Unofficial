@@ -13,12 +13,11 @@
 
 package com.github.bartimaeusnek.bartworks;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.World;
-
 import com.github.bartimaeusnek.bartworks.API.SideReference;
 
 import cpw.mods.fml.common.network.IGuiHandler;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
 
 public class GuiHandler implements IGuiHandler {
 

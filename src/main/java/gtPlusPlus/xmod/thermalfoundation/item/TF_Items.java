@@ -1,8 +1,5 @@
 package gtPlusPlus.xmod.thermalfoundation.item;
 
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-
 import cofh.core.item.ItemBase;
 import cofh.core.item.ItemBucket;
 import cofh.core.util.energy.FurnaceFuelHandler;
@@ -12,6 +9,8 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.thermalfoundation.block.TF_Blocks;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TF_Fluids;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidContainerRegistry;
 
 public class TF_Items {
 

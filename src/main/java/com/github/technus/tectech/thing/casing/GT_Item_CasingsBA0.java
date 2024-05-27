@@ -10,13 +10,12 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.List;
 
+import gregtech.api.enums.TierEU;
+import gregtech.common.blocks.GT_Item_Casings_Abstract;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-
-import gregtech.api.enums.TierEU;
-import gregtech.common.blocks.GT_Item_Casings_Abstract;
 
 public class GT_Item_CasingsBA0 extends GT_Item_Casings_Abstract {
 

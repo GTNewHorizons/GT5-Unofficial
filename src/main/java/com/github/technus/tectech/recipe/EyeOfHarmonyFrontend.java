@@ -15,9 +15,6 @@ import java.util.List;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
@@ -33,6 +30,8 @@ import gregtech.common.gui.modularui.UIHelper;
 import gregtech.nei.GT_NEI_DefaultHandler;
 import gregtech.nei.RecipeDisplayInfo;
 import gregtech.nei.formatter.INEISpecialInfoFormatter;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault

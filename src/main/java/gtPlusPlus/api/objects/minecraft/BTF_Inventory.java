@@ -2,15 +2,14 @@ package gtPlusPlus.api.objects.minecraft;
 
 import java.util.ArrayList;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import gregtech.api.util.GT_Utility;
 import gregtech.common.covers.CoverInfo;
 import gtPlusPlus.core.tileentities.base.TileEntityBase;
 import gtPlusPlus.core.util.data.ArrayUtils;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class BTF_Inventory implements ISidedInventory {
 

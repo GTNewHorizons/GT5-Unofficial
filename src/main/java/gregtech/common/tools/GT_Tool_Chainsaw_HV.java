@@ -1,9 +1,8 @@
 package gregtech.common.tools;
 
-import net.minecraft.item.ItemStack;
-
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
+import net.minecraft.item.ItemStack;
 
 public class GT_Tool_Chainsaw_HV extends GT_Tool_Chainsaw_LV {
 

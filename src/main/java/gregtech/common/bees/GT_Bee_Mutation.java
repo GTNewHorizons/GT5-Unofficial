@@ -3,9 +3,6 @@ package gregtech.common.bees;
 import java.lang.reflect.Field;
 import java.util.List;
 
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.world.World;
-
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import forestry.api.apiculture.BeeManager;
@@ -19,6 +16,8 @@ import forestry.api.genetics.IGenome;
 import forestry.api.genetics.IMutationCondition;
 import forestry.apiculture.genetics.BeeMutation;
 import forestry.core.genetics.mutations.Mutation;
+import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.world.World;
 
 public class GT_Bee_Mutation extends BeeMutation {
 

@@ -1,10 +1,5 @@
 package goodgenerator.blocks.regularBlock;
 
-import net.minecraft.block.Block;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import goodgenerator.blocks.tileEntity.base.GT_MetaTileEntity_LargeTurbineBase;
 import goodgenerator.client.render.BlockRenderHandler;
 import goodgenerator.main.GoodGenerator;
@@ -13,6 +8,10 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
+import net.minecraft.block.Block;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class TurbineCasing extends Casing implements ITextureBlock {
 

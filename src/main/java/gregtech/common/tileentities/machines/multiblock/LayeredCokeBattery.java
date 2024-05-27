@@ -1,7 +1,12 @@
 package gregtech.common.tileentities.machines.multiblock;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.enums.Mods.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockUnlocalizedName;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.Mods.BartWorks;
+import static gregtech.api.enums.Mods.IndustrialCraft2;
+import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ENERGY_IN;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.FLUID_IN;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.FLUID_OUT;
@@ -19,9 +24,6 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
@@ -37,6 +39,8 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.GT_StructureUtilityMuTE.UpgradeCasings;
 import gregtech.common.tileentities.machines.multiblock.logic.LayeredCokeBatteryProcessingLogic;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 public class LayeredCokeBattery
     extends StackableModularController<LayeredCokeBattery, LayeredCokeBatteryProcessingLogic> {

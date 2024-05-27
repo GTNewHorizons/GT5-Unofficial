@@ -1,8 +1,7 @@
 package gtPlusPlus.plugin.agrichem;
 
-import net.minecraft.item.ItemStack;
-
 import gtPlusPlus.plugin.agrichem.logic.AlgaeGeneticData;
+import net.minecraft.item.ItemStack;
 
 public interface IAlgalItem {
 

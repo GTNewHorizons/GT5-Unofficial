@@ -6,6 +6,21 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
+
+import appeng.api.crafting.ICraftingIconProvider;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Dyes;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.modularui.IGetGUITextureSet;
+import gregtech.api.interfaces.tileentity.IGearEnergyTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
+import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
+import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.util.GT_Config;
+import gregtech.api.util.GT_Util;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -22,22 +37,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.IFluidTank;
-
-import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
-
-import appeng.api.crafting.ICraftingIconProvider;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.Dyes;
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IGetGUITextureSet;
-import gregtech.api.interfaces.tileentity.IGearEnergyTileEntity;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
-import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
-import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.util.GT_Config;
-import gregtech.api.util.GT_Util;
 
 /**
  * Warning, this Interface has just been made to be able to add multiple kinds of MetaTileEntities (Cables, Pipes,

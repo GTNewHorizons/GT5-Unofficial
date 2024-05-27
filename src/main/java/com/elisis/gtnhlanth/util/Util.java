@@ -3,9 +3,9 @@ package com.elisis.gtnhlanth.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.item.ItemStack;
-
 import com.gtnewhorizons.modularui.api.math.Pos2d;
+
+import net.minecraft.item.ItemStack;
 
 public class Util {
 

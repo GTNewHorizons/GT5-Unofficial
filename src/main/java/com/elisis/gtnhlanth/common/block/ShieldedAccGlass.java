@@ -2,6 +2,7 @@ package com.elisis.gtnhlanth.common.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -58,4 +59,10 @@ public class ShieldedAccGlass extends Block {
         if (worldClient.getBlock(xCoord, yCoord, zCoord) instanceof ShieldedAccGlass) return false;
         return super.shouldSideBeRendered(worldClient, xCoord, yCoord, zCoord, aSide);
     }
+    
+    @Override
+    public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z) {
+    	return false;	
+    }
+    
 }

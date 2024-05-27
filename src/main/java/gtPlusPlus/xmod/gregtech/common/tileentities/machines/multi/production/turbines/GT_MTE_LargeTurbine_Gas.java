@@ -6,11 +6,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-
 import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.enums.Materials;
@@ -26,6 +21,10 @@ import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 
 @SuppressWarnings("deprecation")
 public class GT_MTE_LargeTurbine_Gas extends GregtechMetaTileEntity_LargerTurbineBase {

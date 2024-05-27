@@ -1,9 +1,8 @@
 package gregtech.common.covers.redstone;
 
-import net.minecraftforge.common.util.ForgeDirection;
-
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class GT_Cover_AdvancedRedstoneReceiverExternal extends GT_Cover_AdvancedRedstoneReceiverBase {
 

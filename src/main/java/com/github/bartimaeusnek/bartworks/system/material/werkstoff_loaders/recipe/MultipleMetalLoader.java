@@ -20,8 +20,6 @@ import static gregtech.api.enums.OrePrefixes.plateDouble;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
-import net.minecraft.item.ItemStack;
-
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 
@@ -31,6 +29,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import net.minecraft.item.ItemStack;
 
 public class MultipleMetalLoader implements IWerkstoffRunnable {
 

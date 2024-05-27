@@ -2,14 +2,13 @@ package gregtech.common.gui.modularui.widget;
 
 import java.util.function.Supplier;
 
-import net.minecraft.item.ItemStack;
-
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.api.util.GT_Utility;
+import net.minecraft.item.ItemStack;
 
 /**
  * Watches specific ItemStack and pulls changes from it. Player cannot interact with slot, other than viewing NEI recipe

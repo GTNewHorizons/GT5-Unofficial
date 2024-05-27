@@ -8,6 +8,23 @@ import static ic2.core.util.LiquidUtil.placeFluid;
 
 import java.util.List;
 
+import com.gtnewhorizons.modularui.api.ModularUITextures;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.math.Color;
+import com.gtnewhorizons.modularui.api.screen.IItemWithModularUI;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.gtnewhorizons.modularui.common.widget.VanillaButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.items.GT_Generic_Item;
+import gregtech.api.util.GT_Utility;
+import ic2.core.util.LiquidUtil;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -29,24 +46,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
-
-import com.gtnewhorizons.modularui.api.ModularUITextures;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.math.Color;
-import com.gtnewhorizons.modularui.api.screen.IItemWithModularUI;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.gtnewhorizons.modularui.common.widget.VanillaButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.gui.modularui.GT_UIInfos;
-import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.api.items.GT_Generic_Item;
-import gregtech.api.util.GT_Utility;
-import ic2.core.util.LiquidUtil;
 
 public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContainerItem, IItemWithModularUI {
 

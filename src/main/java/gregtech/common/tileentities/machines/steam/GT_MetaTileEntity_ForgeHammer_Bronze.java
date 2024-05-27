@@ -18,9 +18,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_HAMMER_AC
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_HAMMER_GLOW;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
-import net.minecraft.block.Block;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ParticleFX;
@@ -34,6 +31,8 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
+import net.minecraft.block.Block;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class GT_MetaTileEntity_ForgeHammer_Bronze extends GT_MetaTileEntity_BasicMachine_Bronze {
 

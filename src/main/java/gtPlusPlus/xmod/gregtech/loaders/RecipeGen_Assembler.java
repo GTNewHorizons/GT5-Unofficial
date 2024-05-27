@@ -3,14 +3,13 @@ package gtPlusPlus.xmod.gregtech.loaders;
 import java.util.HashSet;
 import java.util.Set;
 
-import net.minecraft.item.ItemStack;
-
 import gregtech.api.enums.GT_Values;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import net.minecraft.item.ItemStack;
 
 public class RecipeGen_Assembler extends RecipeGen_Base {
 

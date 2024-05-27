@@ -3,9 +3,6 @@ package com.github.bartimaeusnek.bartworks.common.loaders.recipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 
@@ -13,6 +10,8 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.TierEU;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 
 public class FluidSolidifier implements Runnable {
 

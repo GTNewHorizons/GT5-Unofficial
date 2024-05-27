@@ -13,9 +13,6 @@
 
 package com.github.bartimaeusnek.crossmod.tectech.tileentites.tiered;
 
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-
 import org.apache.commons.lang3.ArrayUtils;
 
 import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
@@ -25,6 +22,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GT_Utility;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 public class TT_MetaTileEntity_LowPowerLaserDynamo extends GT_MetaTileEntity_Hatch_DynamoTunnel
     implements LowPowerLaser {

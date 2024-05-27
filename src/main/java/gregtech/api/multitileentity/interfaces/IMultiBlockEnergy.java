@@ -1,8 +1,7 @@
 package gregtech.api.multitileentity.interfaces;
 
-import net.minecraftforge.common.util.ForgeDirection;
-
 import gregtech.api.multitileentity.multiblock.base.MultiBlockPart;
+import net.minecraftforge.common.util.ForgeDirection;
 
 interface IMultiBlockEnergy {
 

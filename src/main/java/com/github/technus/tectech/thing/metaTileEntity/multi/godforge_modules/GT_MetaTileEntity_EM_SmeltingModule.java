@@ -18,8 +18,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.nbt.NBTTagCompound;
-
 import org.jetbrains.annotations.NotNull;
 
 import com.github.technus.tectech.util.CommonValues;
@@ -44,6 +42,7 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class GT_MetaTileEntity_EM_SmeltingModule extends GT_MetaTileEntity_EM_BaseModule {
 

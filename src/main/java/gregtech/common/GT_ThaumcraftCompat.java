@@ -5,16 +5,15 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import gregtech.api.enums.TC_Aspects;
+import gregtech.api.interfaces.internal.IThaumcraftCompat;
+import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
-
-import gregtech.api.enums.TC_Aspects;
-import gregtech.api.interfaces.internal.IThaumcraftCompat;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Utility;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;

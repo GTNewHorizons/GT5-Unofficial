@@ -2,13 +2,12 @@ package gregtech.common.tileentities.casings.upgrade;
 
 import java.util.List;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-
 import gregtech.api.enums.GT_Values;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
 import gregtech.api.multitileentity.multiblock.casing.UpgradeCasing;
 import gregtech.api.util.GT_Utility;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class Ampere extends UpgradeCasing {
 

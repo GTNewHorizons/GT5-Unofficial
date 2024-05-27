@@ -9,15 +9,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ForkJoinPool;
 
-import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.entity.RenderPlayer;
-import net.minecraft.potion.Potion;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.event.RenderPlayerEvent;
-
 import org.apache.commons.io.IOUtils;
 import org.lwjgl.opengl.GL11;
 
@@ -31,6 +22,14 @@ import gtPlusPlus.core.proxy.ClientProxy;
 import gtPlusPlus.core.util.data.AES;
 import gtPlusPlus.core.util.data.FileUtils;
 import gtPlusPlus.core.util.math.MathUtils;
+import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.RenderPlayer;
+import net.minecraft.potion.Potion;
+import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 
 public class GTPP_CapeRenderer extends RenderPlayer {
 

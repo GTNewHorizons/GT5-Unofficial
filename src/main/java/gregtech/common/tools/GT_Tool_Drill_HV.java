@@ -1,11 +1,10 @@
 package gregtech.common.tools;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-
 import gregtech.GT_Mod;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 
 public class GT_Tool_Drill_HV extends GT_Tool_Drill_LV {
 

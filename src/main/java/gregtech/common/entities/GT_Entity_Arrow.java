@@ -3,6 +3,13 @@ package gregtech.common.entities;
 import java.util.List;
 import java.util.UUID;
 
+import com.mojang.authlib.GameProfile;
+
+import gregtech.api.enums.ParticleFX;
+import gregtech.api.objects.ItemData;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
+import gregtech.api.util.WorldSpawnedEventBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.Enchantment;
@@ -28,14 +35,6 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayerFactory;
-
-import com.mojang.authlib.GameProfile;
-
-import gregtech.api.enums.ParticleFX;
-import gregtech.api.objects.ItemData;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
-import gregtech.api.util.WorldSpawnedEventBuilder;
 
 public class GT_Entity_Arrow extends EntityArrow {
 
