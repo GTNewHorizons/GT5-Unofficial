@@ -378,14 +378,13 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
         currentRecipe = recipe;
         currentStick = stick;
         currentInputLength = recipe.mInputs.length;
-        // Reset parallel, we need to re-check on next recipe check to see if there are enough items in the first slice
-        currentRecipeParallel = 1;
     }
 
     private void clearCurrentRecipe() {
         currentRecipe = null;
         currentStick = null;
         currentInputLength = -1;
+        currentRecipeParallel = 1;
         stuck = false;
         baseEUt = 0;
         for (Slice slice : slices) {
