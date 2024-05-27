@@ -5,22 +5,29 @@ import static gregtech.api.enums.GT_HatchElement.InputBus;
 import static gregtech.api.enums.GT_HatchElement.InputHatch;
 import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.enums.GT_Values.VN;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import java.util.List;
 
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.IFluidBlock;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.gtnewhorizons.modularui.api.math.Pos2d;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.*;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
+import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.widgets.GT_LockedWhileActiveButton;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -34,6 +41,20 @@ public abstract class GT_MetaTileEntity_ConcreteBackfillerBase extends GT_MetaTi
 
     /** Used to drive the readout in the GUI for the backfiller's current y-level. */
     private int clientYHead;
+
+    protected boolean mLiquidEnabled = true;
+
+    private static boolean isWater(Block aBlock) {
+        return aBlock == Blocks.water || aBlock == Blocks.flowing_water;
+    }
+
+    private static boolean isLava(Block aBlock) {
+        return aBlock == Blocks.lava || aBlock == Blocks.flowing_lava;
+    }
+
+    private static boolean isFluid(Block aBlock) {
+        return isWater(aBlock) || isLava(aBlock) || aBlock instanceof IFluidBlock;
+    }
 
     public GT_MetaTileEntity_ConcreteBackfillerBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -132,11 +153,12 @@ public abstract class GT_MetaTileEntity_ConcreteBackfillerBase extends GT_MetaTi
 
     private boolean isRefillableBlock(int aX, int aY, int aZ) {
         IGregTechTileEntity aBaseTile = getBaseMetaTileEntity();
-        if (!aBaseTile.getBlock(aX, aY, aZ)
-            .isAir(aBaseTile.getWorld(), aX, aY, aZ) || aBaseTile.getBlock(aX, aY, aZ)
-                .getMaterial()
-                .isSolid())
-            return false;
+        Block aBlock = getBaseMetaTileEntity().getBlock(aX, aY, aZ);
+        if (mLiquidEnabled) {
+            if (!aBaseTile.getBlock(aX, aY, aZ)
+                .isAir(aBaseTile.getWorld(), aX, aY, aZ) && !isFluid(aBlock)) return false;
+        } else if (!aBaseTile.getBlock(aX, aY, aZ)
+            .isAir(aBaseTile.getWorld(), aX, aY, aZ)) return false;
         return GT_Utility
             .setBlockByFakePlayer(getFakePlayer(aBaseTile), aX, aY, aZ, GregTech_API.sBlockConcretes, 8, true);
     }
@@ -176,5 +198,43 @@ public abstract class GT_MetaTileEntity_ConcreteBackfillerBase extends GT_MetaTi
                     .setEnabled(widget -> getBaseMetaTileEntity().isActive() && workState == STATE_UPWARD))
             .widget(new FakeSyncWidget.IntegerSyncer(this::getYHead, newInt -> clientYHead = newInt))
             .widget(new FakeSyncWidget.IntegerSyncer(() -> workState, newInt -> workState = newInt));
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        super.addUIWidgets(builder, buildContext);
+        final int BUTTON_Y_LEVEL = 91;
+
+        builder.widget(
+            new GT_LockedWhileActiveButton(this.getBaseMetaTileEntity(), builder)
+                .setOnClick((clickData, widget) -> mLiquidEnabled = !mLiquidEnabled)
+                .setPlayClickSound(true)
+                .setBackground(() -> {
+                    if (mLiquidEnabled) {
+                        return new IDrawable[] { GT_UITextures.BUTTON_STANDARD_PRESSED,
+                            GT_UITextures.OVERLAY_BUTTON_LIQUIDMODE };
+                    }
+                    return new IDrawable[] { GT_UITextures.BUTTON_STANDARD,
+                        GT_UITextures.OVERLAY_BUTTON_LIQUIDMODE_OFF };
+                })
+                .attachSyncer(
+                    new FakeSyncWidget.BooleanSyncer(() -> mLiquidEnabled, newBoolean -> mLiquidEnabled = newBoolean),
+                    builder,
+                    (widget, val) -> widget.notifyTooltipChange())
+                .dynamicTooltip(
+                    () -> ImmutableList.of(
+                        StatCollector.translateToLocal(
+                            mLiquidEnabled ? "GT5U.gui.button.liquid_filling_ON"
+                                : "GT5U.gui.button.liquid_filling_OFF")))
+                .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                .setPos(new Pos2d(100, BUTTON_Y_LEVEL))
+                .setSize(16, 16));
+        int left = 98;
+        for (ButtonWidget button : getAdditionalButtons(builder, buildContext)) {
+            button.setPos(new Pos2d(left, BUTTON_Y_LEVEL))
+                .setSize(16, 16);
+            builder.widget(button);
+            left += 18;
+        }
     }
 }
