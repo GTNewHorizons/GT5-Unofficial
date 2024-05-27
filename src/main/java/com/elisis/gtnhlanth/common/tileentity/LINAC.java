@@ -2,7 +2,7 @@ package com.elisis.gtnhlanth.common.tileentity;
 
 import static com.elisis.gtnhlanth.util.DescTextLocalization.addDotText;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAdder;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static gregtech.api.enums.GT_HatchElement.Energy;
 import static gregtech.api.enums.GT_HatchElement.InputHatch;
 import static gregtech.api.enums.GT_HatchElement.Maintenance;
@@ -18,15 +18,6 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-
 import com.elisis.gtnhlanth.common.beamline.BeamInformation;
 import com.elisis.gtnhlanth.common.beamline.BeamLinePacket;
 import com.elisis.gtnhlanth.common.beamline.Particle;
@@ -35,7 +26,7 @@ import com.elisis.gtnhlanth.common.hatch.TileHatchOutputBeamline;
 import com.elisis.gtnhlanth.common.register.LanthItemList;
 import com.elisis.gtnhlanth.common.tileentity.recipe.beamline.BeamlineRecipeLoader;
 import com.elisis.gtnhlanth.util.DescTextLocalization;
-import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
+import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.gtnewhorizon.structurelib.StructureLib;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -54,6 +45,13 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> implements ISurvivalConstructable {
 
@@ -63,6 +61,8 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
     protected static final String STRUCTURE_PIECE_LAYER = "layer";
     protected static final String STRUCTURE_PIECE_END = "end";
 
+    private byte glassTier;
+    
     private boolean onEndInnerLayer = false;
 
     private int machineTemp = 0; // Coolant temperature
@@ -71,6 +71,8 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
     private ArrayList<TileHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
 
     private static final int CASING_INDEX = 49;
+
+	private static final byte MIN_GLASS_TIER = 6;
 
     /*
      * g: Grate Machine Casing b: Borosilicate glass c: Shielded accelerator casing v: Vacuum k: Shielded glass d:
@@ -106,7 +108,7 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
                     { "ccccccc", "cbbbbbc", "cbbbbbc", "cbbobbc", "cbbbbbc", "cbbbbbc", "ccccccc" } })
             .addElement('c', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
             .addElement('g', ofBlock(GregTech_API.sBlockCasings3, 10)) // Grate Machine Casing
-            .addElement('b', ofBlockAdder(LINAC::addGlass, ItemRegistry.bw_glasses[0], 1))
+            .addElement('b', BorosilicateGlass.ofBoroGlass((byte) 0, MIN_GLASS_TIER, Byte.MAX_VALUE, (te, t) ->  te.glassTier = t, te -> te.glassTier))
             .addElement(
                 'i',
                 buildHatchAdder(LINAC.class).hatchClass(TileHatchInputBeamline.class)
@@ -189,7 +191,7 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
             .addCasingInfoRange("Superconducting Coil Block", 56, 312, false)
             .addCasingInfoRange(LanthItemList.ELECTRODE_CASING.getLocalizedName(), 156, 732, false)
             .addCasingInfoExactly("Grate Machine Casing", 47, false)
-            .addCasingInfoExactly("Borosilicate Glass", 48, true)
+            .addCasingInfoExactly("Borosilicate Glass (LuV+)", 48, false)
             .addEnergyHatch(addDotText(1))
             .addMaintenanceHatch(addDotText(1))
             .addInputHatch(addDotText(2))
@@ -591,10 +593,6 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
         return factor;
     }
 
-    private boolean addGlass(Block block, int meta) {
-        return block == ItemRegistry.bw_glasses[0];
-    }
-
     @Override
     public String[] getStructureDescription(ItemStack arg0) {
         return DescTextLocalization.addText("LINAC.hint", 11);
@@ -611,6 +609,8 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
         this.outputParticle = 0;
         this.outputFocus = 0;
 
+        this.glassTier = 0;
+        
         this.onEndInnerLayer = false;
 
         length = 8; // Base piece length
@@ -636,7 +636,7 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
 
         return this.mInputBeamline.size() == 1 && this.mOutputBeamline.size() == 1
             && this.mMaintenanceHatches.size() == 1
-            && this.mEnergyHatches.size() <= 2;
+            && this.mEnergyHatches.size() <= 2 && this.glassTier >= MIN_GLASS_TIER;
     }
 
     @Override
@@ -664,6 +664,9 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+    	
+    	elementBudget = 200; // Maybe make a config
+    	
         if (mMachine) return -1;
 
         int build = 0;

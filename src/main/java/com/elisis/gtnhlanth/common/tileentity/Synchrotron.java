@@ -36,6 +36,7 @@ import com.elisis.gtnhlanth.common.hatch.TileHatchOutputBeamline;
 import com.elisis.gtnhlanth.common.register.LanthItemList;
 import com.elisis.gtnhlanth.common.tileentity.recipe.beamline.BeamlineRecipeLoader;
 import com.elisis.gtnhlanth.util.DescTextLocalization;
+import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -70,9 +71,13 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
 
     private static final int CASING_INDEX = 49;
 
+	private static final byte MIN_GLASS_TIER = 6;
+
     private int energyHatchTier;
 
     private int antennaeTier;
+
+	private Byte glassTier;
 
     /*
      * c: Shielded accelerator casing v: Vacuum k: Superconducting coil d: Coolant Delivery casing
@@ -91,9 +96,9 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
                 		{ 
                 			"                                    ", 
                 			"  ccc                               ",
-                			" c---c                              ", 
-                        	" c-v-c                              ",
-                        	" c---c                              ", 
+                			" cgggc                              ", 
+                        	" cgvgc                              ",
+                        	" cgggc                              ", 
                         	"  ccc                               " 
                 		} 
                 })
@@ -104,9 +109,9 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
                     	{ 
                     		"                                    ", 
                     		"  ccc                               ",
-                    		" c---c       cjjjjjc                ", 
-                    		" c---c      cjjc~cjjc               ",
-                    		" c---c       cjjjjjc                ", 
+                    		" ccccc       cjjjjjc                ", 
+                    		" cc-cc      cjjc~cjjc               ",
+                    		" ccccc       cjjjjjc                ", 
                     		"  ccc                               ",
                     		"                                    " 
                     	},
@@ -379,9 +384,9 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
                     	{
                     		"        cccccccccccccccccccc        ",
                     		"      cc-------------------ccccccccc",
-                    		"     cc-----------------------------",
-                    		"     c------------------------------",
-                    		"     cc-----------------------------",
+                    		"     cc---------------------------cg",
+                    		"     c----------------------------cg",
+                    		"     cc---------------------------cg",
                     		"       c-------------------ccccccccc",
                     		"        ccccccccccccccccccc         "
                     		
@@ -389,9 +394,9 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
                     	{
                     		"         ccccccccccccccccccc        ",
                     		"       cc-----------------cccccccccc",
-                    		"       c----------------------------",
+                    		"       c--------------------------cg",
                     		"      cc---------------------------b",
-                    		"       c----------------------------",
+                    		"       c--------------------------cg",
                     		"        c-----------------cccccccccc",
                     		"         ccccccccccccccccc          "
                     		
@@ -399,9 +404,9 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
                     	{
                     		"            ccccccccccccccc         ",
                     		"         ccc-------------ccccccccccc",
-                    		"        cc--------------------------",
-                    		"        cc--------------------------",
-                    		"        cc--------------------------",
+                    		"        cc------------------------cg",
+                    		"        cc------------------------cg",
+                    		"        cc------------------------cg",
                     		"         ccc-------------ccccccccccc",
                     		"            ccccccccccccc           "
                     		
@@ -440,7 +445,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
                         .dot(1).adder(Synchrotron::addBeamlineInputHatch).build())
                 .addElement('b', buildHatchAdder(Synchrotron.class).hatchClass(TileHatchOutputBeamline.class).casingIndex(CASING_INDEX)
                         .dot(2).adder(Synchrotron::addBeamlineOutputHatch).build())
-                
+                .addElement('g', BorosilicateGlass.ofBoroGlass((byte) 0, MIN_GLASS_TIER, Byte.MAX_VALUE, (te, t) ->  te.glassTier = t, te -> te.glassTier))
                 .addElement('j', 
                 		buildHatchAdder(Synchrotron.class).atLeast(Maintenance).dot(3).casingIndex(CASING_INDEX)
                 		.buildAndChain(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
@@ -500,10 +505,11 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
             .addSeparator()
             .beginStructureBlock(36, 7, 34, true)
             .addController("Front middle")
-            .addCasingInfoExactly(LanthItemList.SHIELDED_ACCELERATOR_CASING.getLocalizedName(), 660, false)
+            .addCasingInfoExactly(LanthItemList.SHIELDED_ACCELERATOR_CASING.getLocalizedName(), 676, false)
             .addCasingInfoExactly("Superconducting Coil Block", 90, false)
             .addCasingInfoExactly("Niobium Block", 64, false)
             .addCasingInfoExactly(LanthItemList.COOLANT_DELIVERY_CASING.getLocalizedName(), 28, false)
+            .addCasingInfoExactly("Borosilicate Glass Block (LuV+)", 16, false)
             .addCasingInfoExactly("Antenna Casing (must match)", 4, true)
             .addOtherStructurePart("Beamline Input Hatch", addDotText(1))
             .addOtherStructurePart("Beamline Output Hatch", addDotText(2))
@@ -577,7 +583,9 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        if (mMachine) return -1;
+    	elementBudget = 200;
+    	
+    	if (mMachine) return -1;
 
         int build = survivialBuildPiece(STRUCTURE_PIECE_ENTRANCE, stackSize, 16, 3, 1, elementBudget, env, false, true);
 
@@ -894,7 +902,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
 
     @Override
     public String[] getStructureDescription(ItemStack arg0) {
-        return DescTextLocalization.addText("Synchrotron.hint", 11);
+        return DescTextLocalization.addText("Synchrotron.hint", 12);
     }
 
     @Override
@@ -1034,6 +1042,8 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
         this.mEnergyHatches.clear();
         this.energyHatchTier = 0;
         this.antennaeTier = 0;
+        
+        this.glassTier = 0;
 
         this.outputEnergy = 0;
         this.outputRate = 0;
@@ -1045,7 +1055,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
 
         return this.mInputBeamline.size() == 1 && this.mOutputBeamline.size() == 1
             && this.mMaintenanceHatches.size() == 1
-            && this.mEnergyHatches.size() == 4;
+            && this.mEnergyHatches.size() == 4 && this.glassTier >= MIN_GLASS_TIER;
     }
 
     @Override
