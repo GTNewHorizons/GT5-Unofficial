@@ -31,6 +31,7 @@ import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
 import ic2.core.Ic2Items;
@@ -96,7 +97,7 @@ public class BeforeGTPreload implements Runnable {
                 .get(null);
             GameRegistry.registerBlock(bw_glasses[0], BW_ItemBlocks.class, "BW_GlasBlocks");
             GameRegistry.registerBlock(bw_glasses[1], BW_ItemBlocks.class, "BW_GlasBlocks2");
-            OreDictionary.registerOre("blockGlassHV", new ItemStack(Blocks.glass, 1, Short.MAX_VALUE));
+            OreDictionary.registerOre("blockGlassHV", new ItemStack(Blocks.glass, 1, GT_Values.W));
             OreDictionary.registerOre("blockGlassHV", new ItemStack(bw_glasses[0], 1, 0));
             OreDictionary.registerOre("blockGlassEV", Ic2Items.reinforcedGlass);
             OreDictionary.registerOre("blockGlassEV", new ItemStack(bw_glasses[0], 1, 1));

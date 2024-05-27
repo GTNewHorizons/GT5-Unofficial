@@ -22,6 +22,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 
@@ -31,7 +32,6 @@ import com.github.bartimaeusnek.bartworks.common.blocks.BW_Blocks;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.system.oredict.OreDictHandler;
 import com.github.bartimaeusnek.bartworks.util.BW_ColorUtil;
-import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import com.github.bartimaeusnek.bartworks.util.Pair;
 import com.github.bartimaeusnek.crossmod.BartWorksCrossmod;
 
@@ -74,18 +74,18 @@ public class TooltipEventHandler {
                                     || "BWCore".equals(UI.modId)) break;
                                 if (UI.modId.equals(modContainer.getModId())) {
                                     tooAdd.add(
-                                        "Shared ItemStack between " + ChatColorHelper.DARKGREEN
+                                        "Shared ItemStack between " + EnumChatFormatting.DARK_GREEN
                                             + "BartWorks"
-                                            + ChatColorHelper.GRAY
+                                            + EnumChatFormatting.GRAY
                                             + " and "
-                                            + ChatColorHelper.RED
+                                            + EnumChatFormatting.RED
                                             + modContainer.getName());
                                 }
                             }
                         } else tooAdd.add(
-                            "Shared ItemStack between " + ChatColorHelper.DARKGREEN
+                            "Shared ItemStack between " + EnumChatFormatting.DARK_GREEN
                                 + "BartWorks"
-                                + ChatColorHelper.GRAY
+                                + EnumChatFormatting.GRAY
                                 + " and another Mod, that doesn't use the ModContainer propperly!");
                     }
                 }
@@ -107,14 +107,14 @@ public class TooltipEventHandler {
                         StatCollector.translateToLocal("tooltip.glas.0.name") + " "
                             + BW_ColorUtil.getColorForTier(tier)
                             + GT_Values.VN[tier]
-                            + ChatColorHelper.RESET);
+                            + EnumChatFormatting.RESET);
                 } else if (BLOCK.getMaterial()
                     .equals(Material.glass)) {
                         tooAdd.add(
                             StatCollector.translateToLocal("tooltip.glas.0.name") + " "
                                 + BW_ColorUtil.getColorForTier(3)
                                 + GT_Values.VN[3]
-                                + ChatColorHelper.RESET);
+                                + EnumChatFormatting.RESET);
                     }
             }
 

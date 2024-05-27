@@ -25,6 +25,7 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -32,7 +33,6 @@ import net.minecraftforge.fluids.FluidStack;
 import com.github.bartimaeusnek.bartworks.API.recipe.BartWorksRecipeMaps;
 import com.github.bartimaeusnek.bartworks.common.items.SimpleSubItemClass;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
-import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import com.github.bartimaeusnek.bartworks.util.MathUtils;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -165,7 +165,7 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
             .addOutputHatch("Any bottom layer casing", 1)
             .addEnergyHatch("Any bottom layer casing", 1)
             .addMaintenanceHatch("Any bottom layer casing", 1)
-            .toolTipFinisher(MULTIBLOCK_ADDED_VIA_BARTWORKS.apply(ChatColorHelper.GOLD + "kuba6000"));
+            .toolTipFinisher(MULTIBLOCK_ADDED_VIA_BARTWORKS.apply(EnumChatFormatting.GOLD + "kuba6000"));
         return tt;
     }
 

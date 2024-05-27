@@ -13,12 +13,12 @@
 
 package com.github.bartimaeusnek.bartworks.common.tileentities.tiered;
 
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.github.bartimaeusnek.bartworks.API.recipe.BartWorksRecipeMaps;
 import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
-import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
@@ -144,13 +144,13 @@ public class GT_MetaTileEntity_AcidGenerator extends GT_MetaTileEntity_BasicGene
         return new String[] { StatCollector.translateToLocal("tooltip.tile.acidgen.0.name"),
             StatCollector.translateToLocal("tooltip.tile.acidgen.1.name"),
             StatCollector.translateToLocal("tooltip.tile.tiereddsc.0.name") + " "
-                + ChatColorHelper.YELLOW
+                + EnumChatFormatting.YELLOW
                 + GT_Values.V[this.mTier],
             StatCollector.translateToLocal("tooltip.rotor.2.name") + " "
-                + ChatColorHelper.YELLOW
+                + EnumChatFormatting.YELLOW
                 + this.getEfficiency(),
             StatCollector.translateToLocal("tooltip.tile.tiereddsc.2.name") + " "
-                + ChatColorHelper.YELLOW
+                + EnumChatFormatting.YELLOW
                 + this.maxAmperesOut(),
             BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get() };
     }

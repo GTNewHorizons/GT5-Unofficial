@@ -17,7 +17,6 @@ import static gregtech.api.enums.Mods.GalaxySpace;
 import static net.minecraft.util.EnumChatFormatting.DARK_PURPLE;
 import static net.minecraft.util.EnumChatFormatting.GREEN;
 
-import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,7 +44,6 @@ import com.github.bartimaeusnek.bartworks.util.NonNullWrappedHashMap;
 import com.github.bartimaeusnek.bartworks.util.Pair;
 import com.github.bartimaeusnek.crossmod.BartWorksCrossmod;
 import com.github.bartimaeusnek.crossmod.tgregworks.MaterialsInjector;
-import com.github.bartimaeusnek.crossmod.thaumcraft.util.ThaumcraftHandler;
 
 import cpw.mods.fml.common.Loader;
 import gregtech.api.GregTech_API;
@@ -59,6 +57,7 @@ import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
+import thaumcraft.api.aspects.Aspect;
 
 public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
 
@@ -430,13 +429,11 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         final List<TC_Aspects.TC_AspectStack> ret = new ArrayList<>();
         Arrays.stream(this.getTCAspects())
             .forEach(objectIntegerPair -> {
-                try {
-                    new TC_Aspects.TC_AspectStack(
-                        TC_Aspects.valueOf(
-                            ((String) ThaumcraftHandler.AspectAdder.getName.invoke(objectIntegerPair.getKey()))
-                                .toUpperCase(Locale.US)),
-                        objectIntegerPair.getValue()).addToAspectList(ret);
-                } catch (IllegalAccessException | InvocationTargetException ignored) {}
+                new TC_Aspects.TC_AspectStack(
+                    TC_Aspects.valueOf(
+                        ((Aspect) objectIntegerPair.getKey()).getName()
+                            .toUpperCase(Locale.US)),
+                    objectIntegerPair.getValue()).addToAspectList(ret);
             });
         return ret;
     }
