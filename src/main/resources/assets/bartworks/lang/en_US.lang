@@ -32,6 +32,7 @@ tile.BWHeatedWaterPump.0.name=Simple Stirling Water Pump
 item.BWrawtube.name=Elongated Glass Tube
 item.BWmotor.name=Simple Stirling Motor
 item.BWstove.name=Simple Heated Stove
+gt.blockmachines.creativeScanner.desc.1=Finishes Scanning instantly. Does not require power.
 
 itemGroup.BioTab=BartWorks BioEngineering
 filled.item.petriDish.name=Petri Dish with a Culture

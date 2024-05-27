@@ -13,6 +13,13 @@
 
 package com.github.bartimaeusnek.bartworks.common.tileentities.debug;
 
+import net.minecraft.util.StatCollector;
+
+import org.apache.commons.lang3.ArrayUtils;
+
+import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
+
+import gregtech.api.enums.MachineType;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -34,8 +41,20 @@ public class CreativeScanner extends GT_MetaTileEntity_Scanner {
     }
 
     @Override
+    public String[] getDescription() {
+        return ArrayUtils.addAll(
+            MachineType.SCANNER.tooltipDescription(),
+            StatCollector.translateToLocal("gt.blockmachines.creativeScanner.desc.1"),
+            BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get());
+    }
+
+    @Override
+    public long maxEUStore() {
+        return 0;
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        this.setEUVar(this.maxEUStore());
         this.mProgresstime = this.mMaxProgresstime;
         super.onPostTick(aBaseMetaTileEntity, aTick);
     }
