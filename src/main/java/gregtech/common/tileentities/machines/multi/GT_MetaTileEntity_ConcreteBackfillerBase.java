@@ -9,14 +9,6 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import java.util.List;
 
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.math.Pos2d;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.*;
-import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.api.gui.widgets.GT_LockedWhileActiveButton;
-import gregtech.api.util.GT_ModHandler;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -25,10 +17,17 @@ import net.minecraftforge.fluids.IFluidBlock;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.math.Pos2d;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.*;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
+import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.widgets.GT_LockedWhileActiveButton;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -56,10 +55,6 @@ public abstract class GT_MetaTileEntity_ConcreteBackfillerBase extends GT_MetaTi
     private static boolean isFluid(Block aBlock) {
         return isWater(aBlock) || isLava(aBlock) || aBlock instanceof IFluidBlock;
     }
-
-
-
-
 
     public GT_MetaTileEntity_ConcreteBackfillerBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -159,13 +154,11 @@ public abstract class GT_MetaTileEntity_ConcreteBackfillerBase extends GT_MetaTi
     private boolean isRefillableBlock(int aX, int aY, int aZ) {
         IGregTechTileEntity aBaseTile = getBaseMetaTileEntity();
         Block aBlock = getBaseMetaTileEntity().getBlock(aX, aY, aZ);
-        if (mLiquidEnabled){
+        if (mLiquidEnabled) {
             if (!aBaseTile.getBlock(aX, aY, aZ)
-                .isAir(aBaseTile.getWorld(), aX, aY, aZ) && !isFluid(aBlock))
-                return false;
+                .isAir(aBaseTile.getWorld(), aX, aY, aZ) && !isFluid(aBlock)) return false;
         } else if (!aBaseTile.getBlock(aX, aY, aZ)
-            .isAir(aBaseTile.getWorld(), aX, aY, aZ))
-             return false;
+            .isAir(aBaseTile.getWorld(), aX, aY, aZ)) return false;
         return GT_Utility
             .setBlockByFakePlayer(getFakePlayer(aBaseTile), aX, aY, aZ, GregTech_API.sBlockConcretes, 8, true);
     }
@@ -206,6 +199,7 @@ public abstract class GT_MetaTileEntity_ConcreteBackfillerBase extends GT_MetaTi
             .widget(new FakeSyncWidget.IntegerSyncer(this::getYHead, newInt -> clientYHead = newInt))
             .widget(new FakeSyncWidget.IntegerSyncer(() -> workState, newInt -> workState = newInt));
     }
+
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
@@ -217,16 +211,14 @@ public abstract class GT_MetaTileEntity_ConcreteBackfillerBase extends GT_MetaTi
                 .setPlayClickSound(true)
                 .setBackground(() -> {
                     if (mLiquidEnabled) {
-                        return new IDrawable[]{GT_UITextures.BUTTON_STANDARD_PRESSED,
-                            GT_UITextures.OVERLAY_BUTTON_LIQUIDMODE};
+                        return new IDrawable[] { GT_UITextures.BUTTON_STANDARD_PRESSED,
+                            GT_UITextures.OVERLAY_BUTTON_LIQUIDMODE };
                     }
-                    return new IDrawable[]{GT_UITextures.BUTTON_STANDARD,
-                        GT_UITextures.OVERLAY_BUTTON_LIQUIDMODE_OFF};
+                    return new IDrawable[] { GT_UITextures.BUTTON_STANDARD,
+                        GT_UITextures.OVERLAY_BUTTON_LIQUIDMODE_OFF };
                 })
                 .attachSyncer(
-                    new FakeSyncWidget.BooleanSyncer(
-                        () -> mLiquidEnabled,
-                        newBoolean -> mLiquidEnabled = newBoolean),
+                    new FakeSyncWidget.BooleanSyncer(() -> mLiquidEnabled, newBoolean -> mLiquidEnabled = newBoolean),
                     builder,
                     (widget, val) -> widget.notifyTooltipChange())
                 .dynamicTooltip(
