@@ -199,9 +199,11 @@ public class TargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Targ
             .addCasingInfoExactly("Grate Machine Casing", 29, false)
             .addCasingInfoExactly("Shielded Accelerator Casing", 28, false)
             .addCasingInfoExactly("Borosilicate Glass", 16, true)
+            .addCasingInfoExactly(LanthItemList.SHIELDED_ACCELERATOR_GLASS.getLocalizedName(), 34, false)
             .addCasingInfoExactly(LanthItemList.TARGET_RECEPTACLE_CASING.getLocalizedName(), 4, false)
             .addCasingInfoExactly(LanthItemList.FOCUS_MANIPULATION_CASING.getLocalizedName(), 4, false)
-            .addCasingInfoExactly(LanthItemList.SHIELDED_ACCELERATOR_GLASS.getLocalizedName(), 34, false)
+            .addCasingInfoExactly(LanthItemList.FOCUS_HOLDER.getLocalizedName(), 1, false)
+            .addCasingInfoExactly(LanthItemList.TARGET_HOLDER.getLocalizedName(), 1, false)
             .addOtherStructurePart("Focus Input Bus", addDotText(1))
             .addMaintenanceHatch(addDotText(2))
             .addEnergyHatch(addDotText(2))
@@ -376,8 +378,8 @@ public class TargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Targ
 
         for (TileHatchInputBeamline in : this.mInputBeamline) {
 
-            // if (in.q == null) return new BeamInformation(0, 0, 0, 0);
-            if (in.q == null) return new BeamInformation(10, 10, Particle.PHOTON.ordinal(), 90); // TODO temporary for
+            if (in.q == null) return new BeamInformation(0, 0, 0, 0);
+            //if (in.q == null) return new BeamInformation(10, 10, Particle.PHOTON.ordinal(), 90); // TODO temporary for
                                                                                                  // testing purposes
 
             return in.q.getContent();
@@ -431,13 +433,12 @@ public class TargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Targ
     }
 
     @Override
+    public String[] getStructureDescription(ItemStack arg0) {
+        return DescTextLocalization.addText("TargetChamber.hint", 13);
+    }
+    
+    @Override
     public String[] getInfoData() {
-        int mPollutionReduction = 0;
-        for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) {
-            if (tHatch.isValid()) {
-                mPollutionReduction = Math.max(tHatch.calculatePollutionReduction(100), mPollutionReduction);
-            }
-        }
 
         long storedEnergy = 0;
         long maxEnergy = 0;
@@ -497,13 +498,8 @@ public class TargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Targ
                 + Float.toString(mEfficiency / 100.0F)
                 + EnumChatFormatting.RESET
                 + " %",
-            /* 6 */ StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
-                + EnumChatFormatting.GREEN
-                + mPollutionReduction
-                + EnumChatFormatting.RESET
-                + " %",
 
-            /* 7 */ EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.in_pre")
+            /* 6 */ EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.in_pre")
                 + ": "
                 + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("beamline.particle") + ": " // "Multiblock Beamline Input:"

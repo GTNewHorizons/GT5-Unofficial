@@ -232,6 +232,11 @@ public class SourceChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Sour
         return true;
     }
 
+    @Override
+    public String[] getStructureDescription(ItemStack arg0) {
+        return DescTextLocalization.addText("SourceChamber.hint", 7); // Generate 7 localised hint strings in structure description
+    }
+    
     private void outputAfterRecipe() {
 
         if (!mOutputBeamline.isEmpty()) {
@@ -262,12 +267,6 @@ public class SourceChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Sour
 
     @Override
     public String[] getInfoData() {
-        int mPollutionReduction = 0;
-        for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) {
-            if (tHatch.isValid()) {
-                mPollutionReduction = Math.max(tHatch.calculatePollutionReduction(100), mPollutionReduction);
-            }
-        }
 
         long storedEnergy = 0;
         long maxEnergy = 0;
@@ -323,11 +322,6 @@ public class SourceChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Sour
                 + ": "
                 + EnumChatFormatting.YELLOW
                 + Float.toString(mEfficiency / 100.0F)
-                + EnumChatFormatting.RESET
-                + " %",
-            /* 6 */ StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
-                + EnumChatFormatting.GREEN
-                + mPollutionReduction
                 + EnumChatFormatting.RESET
                 + " %",
             EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.out_pre")
