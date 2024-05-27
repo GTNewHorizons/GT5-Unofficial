@@ -21,7 +21,6 @@ import cpw.mods.fml.relauncher.FMLLaunchHandler;
 public enum Mixin {
 
     // Minecraft
-    BlockStemMixin("minecraft.BlockStemMixin", VANILLA),
     WorldMixin(new Builder("Block update detection").addMixinClasses("minecraft.WorldMixin")
         .addTargetedMod(VANILLA)
         .setApplyIf(() -> true)
@@ -63,7 +62,12 @@ public enum Mixin {
         .addTargetedMod(THAUMCRAFT)
         .setApplyIf(() -> ConfigHandler.enabledPatches[2])
         .setPhase(Phase.LATE)
-        .setSide(Side.BOTH)),;
+        .setSide(Side.BOTH)),
+    BlockStemMixin(new Builder("Block Stem Mixin").addMixinClasses("minecraft.BlockStemMixin")
+        .addTargetedMod(VANILLA)
+        .setApplyIf(() -> true)
+        .setPhase(Phase.LATE)
+        .setSide(Side.BOTH));
 
     public static final Logger LOGGER = LogManager.getLogger("GregTech-Mixin");
 
