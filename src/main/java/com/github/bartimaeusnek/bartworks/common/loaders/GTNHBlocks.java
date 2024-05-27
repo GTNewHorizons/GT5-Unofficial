@@ -128,9 +128,7 @@ public class GTNHBlocks {
             }
         }
 
-        if (TecTech.isModLoaded()) {
-            BioVatLogicAdder.BioVatGlass.addCustomGlass(TecTech.ID, "tile.quantumGlass", 0, 8);
-        }
+        BioVatLogicAdder.BioVatGlass.addCustomGlass(TecTech.ID, "tile.quantumGlass", 0, 8);
 
         if (Witchery.isModLoaded()) {
             for (int i = 0; i < 16; i++) {

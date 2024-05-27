@@ -20,6 +20,9 @@
 
 package kubatech.loaders;
 
+import static gregtech.api.enums.Mods.DraconicEvolution;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -32,7 +35,6 @@ import net.minecraft.world.World;
 import com.kuba6000.mobsinfo.api.utils.ItemID;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import kubatech.api.LoaderReference;
 import kubatech.api.enums.ItemList;
 import kubatech.loaders.item.items.TeaUltimate;
 import thaumcraft.api.ThaumcraftApi;
@@ -55,7 +57,7 @@ public class TCLoader {
          * new ResourceLocation(Tags.MODID, "textures/gui/green_tea.png"),
          * new ResourceLocation("thaumcraft", "textures/gui/gui_researchback.png"));
          */
-        if (!LoaderReference.GTNHCoreMod || !LoaderReference.DraconicEvolution) return;
+        if (!NewHorizonsCoreMod.isModLoaded() || !DraconicEvolution.isModLoaded()) return;
         registerRecipe();
         registerResearch();
     }

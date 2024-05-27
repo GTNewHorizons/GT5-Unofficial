@@ -9,7 +9,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChann
 import static gregtech.api.enums.GT_HatchElement.Dynamo;
 import static gregtech.api.enums.GT_HatchElement.Energy;
 import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.Mods.TecTech;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
@@ -466,7 +465,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends
                 return addToMachineList(aTileEntity, aBaseCasingIndex);
             } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance) {
                 return addToMachineList(aTileEntity, aBaseCasingIndex);
-            } else if (TecTech.isModLoaded()) {
+            } else {
                 if (isThisHatchMultiDynamo(aMetaTileEntity)) {
                     return addToMachineList(aTileEntity, aBaseCasingIndex);
                 } else if (isThisHatchMultiEnergy(aMetaTileEntity)) {

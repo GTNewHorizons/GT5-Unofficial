@@ -4965,18 +4965,21 @@ public class GT_Utility {
         return 0;
     }
 
-    public static MovingObjectPosition getPlayerLookingTarget() {
-        // Basically copied from waila, thanks Caedis for such challenge
-        Minecraft mc = Minecraft.getMinecraft();
-        EntityLivingBase viewpoint = mc.renderViewEntity;
-        if (viewpoint == null) return null;
-
-        float reachDistance = mc.playerController.getBlockReachDistance();
-        Vec3 posVec = viewpoint.getPosition(0);
+    public static MovingObjectPosition getPlayerLookingTarget(EntityPlayer viewpoint) {
+        double reachDistance = viewpoint instanceof EntityPlayerMP mp ? mp.theItemInWorldManager.getBlockReachDistance()
+            : getClientReachDistance();
+        Vec3 posVec = Vec3.createVectorHelper(
+            viewpoint.posX,
+            viewpoint.posY + (viewpoint.getEyeHeight() - viewpoint.getDefaultEyeHeight()),
+            viewpoint.posZ);
         Vec3 lookVec = viewpoint.getLook(0);
         Vec3 modifiedPosVec = posVec
             .addVector(lookVec.xCoord * reachDistance, lookVec.yCoord * reachDistance, lookVec.zCoord * reachDistance);
 
         return viewpoint.worldObj.rayTraceBlocks(posVec, modifiedPosVec);
+    }
+
+    public static float getClientReachDistance() {
+        return Minecraft.getMinecraft().playerController.getBlockReachDistance();
     }
 }

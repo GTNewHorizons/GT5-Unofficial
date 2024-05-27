@@ -29,6 +29,9 @@ import static gregtech.api.enums.GT_HatchElement.InputBus;
 import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
+import static gregtech.api.enums.Mods.BloodMagic;
+import static gregtech.api.enums.Mods.ExtraUtilities;
+import static gregtech.api.enums.Mods.InfernalMobs;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
@@ -54,7 +57,6 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -119,7 +121,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import kubatech.Tags;
-import kubatech.api.LoaderReference;
 import kubatech.api.helpers.ReflectionHelper;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.api.tileentity.CustomTileEntityPacketHandler;
@@ -147,12 +148,12 @@ public class GT_MetaTileEntity_ExtremeEntityCrusher
     public GT_MetaTileEntity_ExtremeEntityCrusher(String aName) {
         super(aName);
         weaponCache = new WeaponCache(mInventory);
-        if (LoaderReference.BloodMagic) MinecraftForge.EVENT_BUS.register(this);
+        if (BloodMagic.isModLoaded()) MinecraftForge.EVENT_BUS.register(this);
     }
 
     @Override
     public void onRemoval() {
-        if (LoaderReference.BloodMagic) MinecraftForge.EVENT_BUS.unregister(this);
+        if (BloodMagic.isModLoaded()) MinecraftForge.EVENT_BUS.unregister(this);
         if (getBaseMetaTileEntity().isClientSide() && entityRenderer != null) {
             entityRenderer.setDead();
         }
@@ -160,7 +161,7 @@ public class GT_MetaTileEntity_ExtremeEntityCrusher
 
     @Override
     public void onUnload() {
-        if (LoaderReference.BloodMagic) MinecraftForge.EVENT_BUS.unregister(this);
+        if (BloodMagic.isModLoaded()) MinecraftForge.EVENT_BUS.unregister(this);
     }
 
     private static final String WellOfSufferingRitualName = "AW013Suffering";
@@ -190,15 +191,11 @@ public class GT_MetaTileEntity_ExtremeEntityCrusher
                 .casingIndex(CASING_INDEX)
                 .dot(1)
                 .buildAndChain(onElementPass(t -> t.mCasing++, ofBlock(GregTech_API.sBlockCasings2, 0))))
-        .addElement(
-            'g',
-            LoaderReference.Bartworks
-                ? BorosilicateGlass.ofBoroGlass((byte) 0, (t, v) -> t.mGlassTier = v, t -> t.mGlassTier)
-                : onElementPass(t -> t.mGlassTier = 100, ofBlock(Blocks.glass, 0)))
+        .addElement('g', BorosilicateGlass.ofBoroGlass((byte) 0, (t, v) -> t.mGlassTier = v, t -> t.mGlassTier))
         .addElement('f', ofFrame(Materials.Steel))
         .addElement(
             's',
-            LoaderReference.ExtraUtilities ? ofBlock(Block.getBlockFromName("ExtraUtilities:spike_base_diamond"), 0)
+            ExtraUtilities.isModLoaded() ? ofBlock(Block.getBlockFromName("ExtraUtilities:spike_base_diamond"), 0)
                 : isAir())
         .build();
 
@@ -400,13 +397,13 @@ public class GT_MetaTileEntity_ExtremeEntityCrusher
             return;
         }
         if (aPlayer.isSneaking()) {
-            if (!LoaderReference.InfernalMobs) return;
+            if (!InfernalMobs.isModLoaded()) return;
             mIsProducingInfernalDrops = !mIsProducingInfernalDrops;
             if (!mIsProducingInfernalDrops)
                 GT_Utility.sendChatToPlayer(aPlayer, "Mobs will now be prevented from spawning infernal");
             else GT_Utility.sendChatToPlayer(aPlayer, "Mobs can spawn infernal now");
         } else {
-            if (!LoaderReference.BloodMagic) return;
+            if (!BloodMagic.isModLoaded()) return;
             isInRitualMode = !isInRitualMode;
             if (!isInRitualMode) {
                 GT_Utility.sendChatToPlayer(aPlayer, "Ritual mode disabled");
@@ -633,7 +630,7 @@ public class GT_MetaTileEntity_ExtremeEntityCrusher
     }
 
     private boolean connectToRitual() {
-        if (!LoaderReference.BloodMagic) return false;
+        if (!BloodMagic.isModLoaded()) return false;
         ChunkCoordinates coords = this.getBaseMetaTileEntity()
             .getCoords();
         int[] abc = new int[] { 0, -8, 2 };

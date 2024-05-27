@@ -17,7 +17,6 @@ import static com.github.bartimaeusnek.bartworks.common.loaders.BioRecipeLoader.
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.removeIC2Recipes;
 import static gregtech.api.enums.GT_Values.VN;
 import static gregtech.api.enums.Mods.BartWorks;
-import static gregtech.api.enums.Mods.GTPlusPlus;
 
 import java.io.IOException;
 import java.util.Map;
@@ -113,9 +112,7 @@ public final class MainMod {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent preinit) {
-        if (GTPlusPlus.isModLoaded()) {
-            MainMod.LOGGER.info("Found GT++, continuing");
-        }
+        MainMod.LOGGER.info("Found GT++, continuing");
 
         if (API_ConfigValues.debugLog) {
             try {

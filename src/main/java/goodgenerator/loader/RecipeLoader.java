@@ -1,6 +1,5 @@
 package goodgenerator.loader;
 
-import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
@@ -899,28 +898,26 @@ public class RecipeLoader {
             .eut(TierEU.RECIPE_MV)
             .addTo(multiblockChemicalReactorRecipes);
 
-        if (GTPlusPlus.isModLoaded()) {
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_Utility.getIntegratedCircuit(16),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Saltpeter, 2))
-                .fluidInputs(
-                    FluidRegistry.getFluidStack("fluid.hydrogenperoxide", 1000),
-                    Materials.NitrogenDioxide.getGas(1000))
-                .fluidOutputs(FluidRegistry.getFluidStack("combustionpromotor", 2000))
-                .duration(10 * SECONDS)
-                .eut(TierEU.RECIPE_MV)
-                .addTo(multiblockChemicalReactorRecipes);
-            GT_Values.RA.stdBuilder()
-                .itemInputs(GT_Utility.getIntegratedCircuit(16), WerkstoffLoader.SodiumNitrate.get(OrePrefixes.dust, 2))
-                .fluidInputs(
-                    FluidRegistry.getFluidStack("fluid.hydrogenperoxide", 1000),
-                    Materials.NitrogenDioxide.getGas(1000))
-                .fluidOutputs(FluidRegistry.getFluidStack("combustionpromotor", 2000))
-                .duration(10 * SECONDS)
-                .eut(TierEU.RECIPE_MV)
-                .addTo(multiblockChemicalReactorRecipes);
-        }
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(16),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Saltpeter, 2))
+            .fluidInputs(
+                FluidRegistry.getFluidStack("fluid.hydrogenperoxide", 1000),
+                Materials.NitrogenDioxide.getGas(1000))
+            .fluidOutputs(FluidRegistry.getFluidStack("combustionpromotor", 2000))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(multiblockChemicalReactorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(16), WerkstoffLoader.SodiumNitrate.get(OrePrefixes.dust, 2))
+            .fluidInputs(
+                FluidRegistry.getFluidStack("fluid.hydrogenperoxide", 1000),
+                Materials.NitrogenDioxide.getGas(1000))
+            .fluidOutputs(FluidRegistry.getFluidStack("combustionpromotor", 2000))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(multiblockChemicalReactorRecipes);
 
         GT_ModHandler.addCraftingRecipe(
             ItemRefer.Universal_Chemical_Fuel_Engine.get(1),

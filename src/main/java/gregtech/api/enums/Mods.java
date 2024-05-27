@@ -92,6 +92,7 @@ public enum Mods {
     IC2NuclearControl(Names.I_C2_NUCLEAR_CONTROL),
     IguanaTweaksTinkerConstruct(Names.IGUANA_TWEAKS_TINKER_CONSTRUCT),
     IndustrialCraft2(Names.INDUSTRIAL_CRAFT2),
+    InfernalMobs(Names.INFERNAL_MOBS),
     IronChests(Names.IRON_CHESTS),
     IronChestsMinecarts(Names.IRON_CHESTS_MINECARTS),
     IronTanks(Names.IRON_TANKS),
@@ -105,6 +106,7 @@ public enum Mods {
     Mantle(Names.MANTLE),
     MineAndBladeBattleGear2(Names.MINE_AND_BLADE_BATTLE_GEAR2),
     Minecraft(Names.MINECRAFT),
+    MineTweaker(Names.MINE_TWEAKER),
     NEICustomDiagrams(Names.N_E_I_CUSTOM_DIAGRAMS),
     NEIOrePlugin(Names.N_E_I_ORE_PLUGIN),
     Natura(Names.NATURA),
@@ -269,6 +271,7 @@ public enum Mods {
         public static final String I_C2_NUCLEAR_CONTROL = "IC2NuclearControl";
         public static final String IGUANA_TWEAKS_TINKER_CONSTRUCT = "IguanaTweaksTConstruct";
         public static final String INDUSTRIAL_CRAFT2 = "IC2";
+        public static final String INFERNAL_MOBS = "InfernalMobs";
         public static final String IRON_CHESTS = "IronChest";
         public static final String IRON_CHESTS_MINECARTS = "ironchestminecarts";
         public static final String IRON_TANKS = "irontank";
@@ -282,6 +285,7 @@ public enum Mods {
         public static final String MANTLE = "Mantle";
         public static final String MINE_AND_BLADE_BATTLE_GEAR2 = "battlegear2";
         public static final String MINECRAFT = "minecraft";
+        public static final String MINE_TWEAKER = "MineTweaker3";
         public static final String N_E_I_CUSTOM_DIAGRAMS = "neicustomdiagram";
         public static final String N_E_I_ORE_PLUGIN = "gtneioreplugin";
         public static final String NATURA = "Natura";
