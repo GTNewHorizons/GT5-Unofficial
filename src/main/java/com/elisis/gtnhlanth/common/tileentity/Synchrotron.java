@@ -611,7 +611,6 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
 
             GT_MetaTileEntity_Hatch_Energy hatch = (GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity;
 
-            
             // First energy hatch added
             if (this.mEnergyHatches.size() == 0) this.energyHatchTier = hatch.mTier;
 
@@ -713,7 +712,8 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
         mMaxProgresstime = 20;
 
         long voltage = this.getMaxInputVoltage();
-        mEUt = (int) (-voltage / GT_Values.V[(int) this.getInputVoltageTier()] * GT_Values.VP[(int) this.getInputVoltageTier()]); // Multiply VP by amps
+        mEUt = (int) (-voltage / GT_Values.V[(int) this.getInputVoltageTier()]
+            * GT_Values.VP[(int) this.getInputVoltageTier()]); // Multiply VP by amps
 
         outputParticle = 1; // Photon
 
@@ -739,10 +739,13 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
 
         outputFocus = (inputFocus > machineFocus) ? ((inputFocus + machineFocus) / 2.5f)
             : inputFocus * (machineFocus / 100); // If input focus > machine focus, divide their sum by 2.5, else
-                                                 // weigh the former by the latter. This punishes having too low a machine focus for low values of input focus
-        										 // E.g. An input focus of 50 requires a machine focus of 100 to get an output focus of 50, 
-        										 // whereas an input focus of 60 only requires around 80
-        										 // In general, as input focus increases, output scales better with machine focus
+                                                 // weigh the former by the latter. This punishes having too low a
+                                                 // machine focus for low values of input focus
+                                                 // E.g. An input focus of 50 requires a machine focus of 100 to get an
+                                                 // output focus of 50,
+                                                 // whereas an input focus of 60 only requires around 80
+                                                 // In general, as input focus increases, output scales better with
+                                                 // machine focus
 
         voltageFactor = getVoltageFactor(voltage, this.antennaeTier);
 
@@ -750,7 +753,6 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
             .getEnergy();
         float mass = inputParticle.getMass();
 
-        
         // Perhaps divide by mass somehow here too
         outputEnergy = (float) calculateOutputParticleEnergy(voltage, inputEnergy, this.antennaeTier); // TODO maybe
                                                                                                        // adjust
@@ -1025,12 +1027,12 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-    	
+
         this.mInputBeamline.clear();
         this.mOutputBeamline.clear();
 
         this.mAntennaCasings.clear();
-        
+
         this.mEnergyHatches.clear();
         this.energyHatchTier = 0;
         this.antennaeTier = 0;
