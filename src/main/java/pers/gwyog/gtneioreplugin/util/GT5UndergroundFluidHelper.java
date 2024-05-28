@@ -8,13 +8,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
-import net.minecraft.world.WorldProvider;
-import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
@@ -41,37 +37,23 @@ public class GT5UndergroundFluidHelper {
                     .get(GT_Mod.gregtechproxy.mUndergroundOil);
             for (Map.Entry<String, GT_UO_Dimension> dimensionEntry : dimensionList.entrySet()) {
                 String rawDimension = dimensionEntry.getKey();
-                String dimension = null;
+                String dimension;
                 try {
                     dimension = getDimensionFromID(Integer.parseInt(rawDimension));
                 } catch (NumberFormatException ignored) {
-                    Field fieldProviders = DimensionManager.class.getDeclaredField("providers");
-                    fieldProviders.setAccessible(true);
-                    Hashtable<Integer, Class<? extends WorldProvider>> providers = (Hashtable<Integer, Class<? extends WorldProvider>>) fieldProviders
-                            .get(null);
-
-                    // some short dimension names like Io might be caught by multiple dimension classes,
-                    // so we'll check them all.
-                    // List<WorldProvider> dimensionCandidates = providers.values()
-                    List<Class<? extends WorldProvider>> dimensionCandidates = providers.values().stream()
-                            .filter(p -> p.getName().contains(rawDimension)).collect(Collectors.toList());
-                    loop: for (Class<? extends WorldProvider> candidate : dimensionCandidates) {
+                    dimension = getDimensionForEdgeCase(rawDimension);
+                    if (dimension == null) {
                         for (int i = 0; i < DimensionHelper.DimNameTrimmed.length; i++) {
-                            if (DimensionHelper.DimNameTrimmed[i]
-                                    .equalsIgnoreCase(candidate.getConstructor().newInstance().getDimensionName())) {
+                            if (DimensionHelper.DimNameTrimmed[i].equalsIgnoreCase(rawDimension)) {
                                 dimension = DimensionHelper.DimNameDisplayed[i];
-                                break loop;
+                                break;
                             }
                         }
                     }
                 }
-
                 if (dimension == null) {
-                    dimension = getDimensionForEdgeCase(rawDimension);
-                    if (dimension == null) {
-                        LOG.warn("Unknown dimension found in GT5 config: " + rawDimension);
-                        continue;
-                    }
+                    LOG.warn("Unknown dimension found in GT5 config: " + rawDimension);
+                    continue;
                 }
 
                 Field fieldFluids = GT_UO_Dimension.class.getDeclaredField("fFluids");
